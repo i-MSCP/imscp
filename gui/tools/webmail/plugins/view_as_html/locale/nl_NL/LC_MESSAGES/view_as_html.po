@@ -1,0 +1,24 @@
+# Dutch (nl_NL) view_as_html plugin translation.
+# Copyright (C) 2006 The SquirrelMail Development Team.
+# Bram Mol <gnoise@gmail.com>, 2006.
+#
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: view_as_html.po,v 1.1 2006/03/05 04:48:02 indiri69 Exp $\n"
+"POT-Creation-Date: 2002-11-01 12:33-0700\n"
+"PO-Revision-Date: 2006-03-05 04:39+GMT+1\n"
+"Last-Translator: Bram Mol <gnoise@gmail.com>\n"
+"Language-Team: Dutch <NL@nl.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:81
+msgid "View as HTML"
+msgstr "HTML weergave"
+
+#: setup.php:76
+msgid "View as plain text"
+msgstr "TEKST weergave"

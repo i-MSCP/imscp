@@ -1,0 +1,45 @@
+# Dutch (nl_NL) restrict_senders Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: restrict_senders.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: restrict_senders\n"
+"POT-Creation-Date: 2005-06-07 15:40+0300\n"
+"PO-Revision-Date: 2007-04-04 00:08+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#, php-format
+msgid "Too many outgoing recipients. Please limit number of recipients to %d."
+msgstr "Teveel uitgaande geadresseerden. Beperk het aantal geadresseerden tot %d."
+
+#, php-format
+msgid ""
+"Daily e-mail limit has been reached. Please limit number of emails per day "
+"to %d."
+msgstr "U hebt uw dagelijkse e-maillimiet bereikt. Beperk het aantal e-mailberichten tot %d per dag."
+
+msgid "All recipients in the To: field are illegal destinations."
+msgstr "Alle geadresseerden in het Aan-veld zijn niet toegestaan."
+
+#, php-format
+msgid "\"%s\" plugin is not configured correctly."
+msgstr "Plugin \"%s\" is niet correct ingesteld."
+
+#, php-format
+msgid "Error on data/send_restrictions.dat line number %d."
+msgstr "Fout in data/send_restrictions.dat, regel %d."
+
+msgid "Message not sent."
+msgstr "Bericht niet verzonden."
+
+#, php-format
+msgid "\"%s\" plugin could not open its restriction table."
+msgstr "Plugin \"%s\" kon niet diens tabel met restricties openen."
+

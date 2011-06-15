@@ -1,0 +1,49 @@
+# Swedish (sv_SE) folder_settings Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: folder_settings.po 13541 2009-04-15 12:42:12Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings 0.3\n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2006-06-30 07:47+0200\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Folder Sorting Options"
+msgstr "Mappsortering"
+
+msgid "Enable per-folder sorting"
+msgstr "Aktivera sortering per mapp"
+
+msgid "Default sort_order"
+msgstr "Förvald sorteringsordning"
+
+msgid "Date (descending)"
+msgstr "Datum (fallande)"
+
+msgid "Date (ascending)"
+msgstr "Datum (stigande)"
+
+msgid "From (descending)"
+msgstr "Från (fallande)"
+
+msgid "From (ascending)"
+msgstr "Från (stigande)"
+
+msgid "Subject (descending)"
+msgstr "Ärende (fallande)"
+
+msgid "Subject (ascending)"
+msgstr "Ärende (stigande)"
+
+msgid "Unsorted"
+msgstr "Osorterad"
+
+msgid ""
+"Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr "Insticksmodulen för mappsortering kan inte användas med denna version av SquirrelMail."

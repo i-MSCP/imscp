@@ -1,0 +1,351 @@
+#!/usr/bin/perl
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "VHCS - Virtual Hosting Control System".
+#
+# The Initial Developer of the Original Code is moleSoftware GmbH.
+# Portions created by Initial Developer are Copyright (C) 2001-2006
+# by moleSoftware GmbH. All Rights Reserved.
+#
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+use FindBin;
+use lib "$FindBin::Bin/";
+require 'imscp_common_code.pl';
+
+use strict;
+use warnings;
+
+$main::htusers_task_id = undef;
+
+sub htusers_mngr_start_up {
+
+	push_el(\@main::el, 'htusers_mngr_start_up()', 'Starting...');
+
+	my $rs;
+
+	# checking for master process;
+	$rs = check_master();
+	return $rs if ($rs != 0);
+
+	# Let's clear Execution Logs, if any.
+	if (-e $main::imscp_htusers_mngr_el) {
+		$rs = del_file($main::imscp_htusers_mngr_el);
+		return $rs if ($rs != 0);
+	}
+
+	# Get task id;
+	$main::htusers_task_id = $ARGV[0];
+
+	push_el(\@main::el, 'htusers_mngr_start_up()', 'Ending...');
+
+	0;
+}
+
+sub htusers_mngr_shut_down {
+
+	push_el(\@main::el, 'htusers_mngr_shut_down()', 'Starting...');
+	push_el(\@main::el, 'htusers_mngr_shut_down()', 'Ending...');
+
+	0;
+}
+
+sub htusers_add_user_data {
+
+	push_el(\@main::el, 'htusers_add_user_data()', 'Starting...');
+
+	my ($dmn_name, $uname, $upass) = @_;
+
+	my $rs;
+	my $htusers_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $htusers_file = "$apache_www_dir/$dmn_name/$htusers_file_name";
+	my $htusers_content = '';
+
+	if (-e $htusers_file) {
+		open(F, '<', $htusers_file);
+
+		while (!eof(F)) {
+			my $line = readline(F);
+			$htusers_content .= $line if ($line !~ /^$uname:/);
+		}
+
+		close(F);
+
+		$htusers_content .= "$uname:$upass\n";
+
+	} else {
+		$htusers_content = "$uname:$upass\n";
+	}
+
+	if (-e "$apache_www_dir/$dmn_name/") {
+		$rs = store_file(
+			$htusers_file, $htusers_content, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'htusers_add_user_data()', 'Ending...');
+
+	0;
+}
+
+sub htusers_del_user_data {
+
+	push_el(\@main::el, 'htusers_del_user_data()', 'Starting...');
+
+	my ($dmn_name, $uname) = @_;
+
+	my $rs;
+	my $htusers_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $htusers_file = "$apache_www_dir/$dmn_name/$htusers_file_name";
+	my $htusers_content = '';
+
+	if (-e $htusers_file) {
+		open(F, '<', $htusers_file);
+
+		while (!eof(F)) {
+			my $line = readline(F);
+			$htusers_content .= $line if ($line !~ /^$uname:/);
+		}
+
+		close(F);
+
+		$rs = store_file(
+			$htusers_file, $htusers_content, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return $rs if ($rs != 0);
+
+	} elsif(-e "$apache_www_dir/$dmn_name/") {
+		$rs = sys_command("$main::cfg{'CMD_TOUCH'} $htusers_file");
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'htusers_del_user_data()', 'Ending...');
+
+	0;
+}
+
+sub htusers_mngr_engine {
+
+	push_el(\@main::el, 'htusers_mngr_engine()', 'Starting...');
+
+	my ($rs, $rows);
+
+	my $sql = "
+		SELECT
+			`t1`.`uname`, `t1`.`upass`, `t1`.`dmn_id`, `t1`.`status`, `t1`.`id`,
+			`t2`.`domain_name`
+		FROM
+			`htaccess_users` as `t1`
+		LEFT JOIN
+			`domain` as `t2`
+		ON
+			`t1`.`dmn_id` = `t2`.`domain_id`
+		WHERE
+			`t1`.`id` = '$main::htusers_task_id'
+		AND
+			`t1`.`status` != 'ok'
+		;
+	";
+
+	($rs, $rows) = doHashSQL($sql, 'id');
+	return $rs if ($rs != 0);
+
+	if (keys( %$rows )  != 0) {
+		foreach(keys( %$rows )) {
+			push_el(\@main::el, 'htuser-usermanagement()', 'Starting...');
+
+			my (
+				$htpasswd_name,
+				$htpasswd_pass,
+				$htpasswd_dnm,
+				$htpasswd_status,
+				$htpasswd_id,
+				$htpasswd_dnm_id
+			) = (
+				@$rows{$_}->{'uname'},
+				@$rows{$_}->{'upass'},
+				@$rows{$_}->{'domain_name'},
+				@$rows{$_}->{'status'},
+				@$rows{$_}->{'id'},
+				@$rows{$_}->{'dmn_id'}
+			);
+
+			if (!defined $htpasswd_dnm){
+
+				$sql = "update `htaccess_users` set `status`='orphaned' where `id` = '$main::htusers_task_id'";
+				($rs, undef) = doSQL($sql);
+				return $rs if ($rs != 0);
+
+				push_el(
+					\@main::el, 'htgroup_mngr_engine()',
+					"Detected orphan entry in table htaccess_groups, id: $htpasswd_id ".
+					"Domain id $htpasswd_dnm_id is missing!"
+				);
+
+				return -1;
+
+			}
+
+
+			push_el(
+				\@main::el, 'htuser-usermanagement()',
+				"TASK : $htpasswd_status user: $htpasswd_name"
+			);
+
+			if ($htpasswd_status eq 'change') {
+				push_el(
+					\@main::el, 'htuser-usermanagement()',
+					"Change User Name: $htpasswd_name, Id: $htpasswd_id..."
+				);
+
+				$rs = htusers_del_user_data($htpasswd_dnm, $htpasswd_name);
+				return $rs if ($rs != 0);
+
+				$rs = htusers_add_user_data(
+					$htpasswd_dnm, $htpasswd_name, $htpasswd_pass
+				);
+				return $rs if ($rs != 0);
+
+				$sql = "
+					UPDATE
+						`htaccess_users`
+					SET
+						`status` = 'ok'
+					WHERE
+						`id` = '$htpasswd_id'
+					;
+				";
+
+			} elsif ($htpasswd_status eq 'delete') {
+
+				push_el(
+					\@main::el, 'htuser-usermanagement()',
+					"Delete User Name: $htpasswd_name, Id: $htpasswd_id..."
+				);
+
+				$rs = htusers_del_user_data($htpasswd_dnm, $htpasswd_name);
+				return $rs if ($rs != 0);
+
+				$sql = "
+					DELETE FROM
+						`htaccess_users`
+					WHERE
+						`id` = '$htpasswd_id'
+					;
+				";
+
+			} elsif ($htpasswd_status eq 'toadd') {
+
+				push_el(
+					\@main::el, 'htuser-usermanagement()',
+					"Add User Name: $htpasswd_name, Id: $htpasswd_id..."
+				);
+
+				$rs = htusers_add_user_data(
+					$htpasswd_dnm, $htpasswd_name, $htpasswd_pass
+				);
+				return $rs if ($rs != 0);
+
+				$sql = "
+					UPDATE
+						`htaccess_users`
+					SET
+						`status` = 'ok'
+					WHERE
+						`id` = '$htpasswd_id'
+					;
+				";
+
+			} elsif ($htpasswd_status eq 'ok') {
+				## TODO: ?
+
+			} else {
+				push_el(
+					\@main::el, 'htuser-usermanagement()',
+					"Failure modifying user in Domain $htpasswd_dnm : $htpasswd_name"
+				);
+
+				$sql = "
+					UPDATE
+						`htaccess_users`
+					SET
+						`status` = 'failure'
+					WHERE
+						`id` = '$htpasswd_id'
+					;
+				";
+
+			}
+
+			($rs, undef) = doSQL($sql);
+			return $rs if ($rs != 0);
+		}
+
+		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
+	}
+
+	push_el(\@main::el, 'htusers_mngr_engine()', 'Ending...');
+
+	0;
+}
+
+my $rs;
+
+$rs = htusers_mngr_start_up();
+
+if ($rs != 0) {
+    dump_el(\@main::el, $main::imscp_htusers_mngr_el);
+    htusers_mngr_shut_down();
+
+    exit 1;
+}
+
+$rs = htusers_mngr_engine();
+
+if ($rs != 0) {
+    dump_el(\@main::el, $main::imscp_htusers_mngr_el);
+    htusers_mngr_shut_down();
+
+    exit 1;
+}
+
+$rs = htusers_mngr_shut_down();
+
+if ($rs != 0) {
+    dump_el(\@main::el, $main::imscp_htusers_mngr_el);
+
+    exit 1;
+}
+
+exit 0;

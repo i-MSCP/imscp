@@ -1,0 +1,5799 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: uk_UA\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
+"PO-Revision-Date: 2009-12-18 14:32+0100\n"
+"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
+"Language-Team: Ukrainian <uk_UA@li.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: x64PoPot 0.2\n"
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
+
+msgid "_: Localised language"
+msgstr "Українська - Ukrainian"
+
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr ""
+
+msgid "Error while trying to obtain list of network cards."
+msgstr ""
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Day"
+msgstr "День"
+
+#, fuzzy
+msgid "Days"
+msgstr "День"
+
+msgid "Hour"
+msgstr "Година"
+
+#, fuzzy
+msgid "Hours"
+msgstr "Година"
+
+#, fuzzy
+msgid "Minute"
+msgstr "хвилин"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "хвилин"
+
+#, fuzzy
+msgid "An error occured! Please, contact your administrator!"
+msgstr ""
+"Не можу відкрити директорію!<br>Зверніться до Вашого системного "
+"адміністратора!"
+
+msgid "Couldn't check for updates. Website not reachable."
+msgstr ""
+
+msgid "General information"
+msgstr "Загальна інформація"
+
+msgid "Manage hosting plans"
+msgstr "Керування хостінг-планами"
+
+msgid "System tools"
+msgstr "Системні інструменти"
+
+msgid "Manage users"
+msgstr "Керування користувачами"
+
+msgid "Statistics"
+msgstr "Статистика"
+
+msgid "Support system"
+msgstr "Система підтримки"
+
+msgid "Settings"
+msgstr "Налаштування"
+
+msgid "Change password"
+msgstr "Змінити пароль"
+
+msgid "Change personal data"
+msgstr "Змінити персональні дані"
+
+msgid "Add admin"
+msgstr "Додати адміністратора"
+
+msgid "Add reseller"
+msgstr "Додати реселера"
+
+msgid "Reseller assignment"
+msgstr "Призначення реселера"
+
+msgid "User assignment"
+msgstr "Призначення користувача"
+
+msgid "Email setup"
+msgstr "Налаштування електронної пошти"
+
+msgid "Email marketing"
+msgstr "Розсилка користувачам"
+
+msgid "Add hosting plan"
+msgstr "Додати хостинґ-план"
+
+msgid "Reseller statistics"
+msgstr "Статистика реселера"
+
+msgid "Server statistics"
+msgstr "Статистика сервера"
+
+msgid "Admin log"
+msgstr "Журнал адміністратора"
+
+msgid "Manage IPs"
+msgstr "Керування IP"
+
+msgid "System info"
+msgstr "Системна інформація"
+
+msgid "Internationalisation"
+msgstr ""
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "Layout"
+msgstr "Макет"
+
+msgid "Logout"
+msgstr "Вийти"
+
+msgid "Server traffic settings"
+msgstr "Налаштування трафіку сервера"
+
+msgid "Server status"
+msgstr "Стан сервера"
+
+msgid "i-MSCP updates"
+msgstr "Оновлення i-MSCP"
+
+#, fuzzy
+msgid "i-MSCP database updates"
+msgstr "Оновлення i-MSCP"
+
+msgid "i-MSCP debugger"
+msgstr "Налагоджувач i-MSCP"
+
+msgid "Custom menus"
+msgstr "Персональні меню"
+
+msgid "Overview"
+msgstr "Перегляд"
+
+msgid "User sessions"
+msgstr "Сесії користувачів"
+
+msgid "Lostpw email setup"
+msgstr "Налаштування E-mail для відновлення пароля"
+
+#, fuzzy
+msgid "Maintenance mode"
+msgstr "Керування замовленнями"
+
+msgid "General settings"
+msgstr "Головні налаштування"
+
+#, fuzzy
+msgid "Server ports"
+msgstr "Стан сервера"
+
+msgid "Rootkit Log"
+msgstr ""
+
+#, fuzzy
+msgid "Services status"
+msgstr "Стан сервера"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "Стан сервера"
+
+#, fuzzy
+msgid "IP usage"
+msgstr "Використання дискового простору"
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr "Обліковий запис"
+
+msgid "Admin users"
+msgstr "Користувачі-адміни"
+
+msgid "Reseller users"
+msgstr "Користувачі реселера"
+
+msgid "Normal users"
+msgstr "Нормальні користувачі"
+
+msgid "Domains"
+msgstr "Домени"
+
+msgid "Subdomains"
+msgstr "Піддомени"
+
+msgid "Domain aliases"
+msgstr "Аліаси домену"
+
+msgid "Mail accounts"
+msgstr "Поштові скриньки"
+
+msgid "FTP accounts"
+msgstr "Користувачі FTP"
+
+msgid "SQL databases"
+msgstr "Бази даних SQL"
+
+msgid "SQL users"
+msgstr "Користувачі SQL"
+
+msgid "System messages"
+msgstr "Системні повідомлення"
+
+msgid "No new messages"
+msgstr "Немає нових повідомлень"
+
+msgid "Server traffic"
+msgstr "Трафік сервера"
+
+msgid "Administrators list is empty!"
+msgstr ""
+
+msgid "Username"
+msgstr "Ім'я користувача"
+
+msgid "Creation date"
+msgstr "Дата створення"
+
+msgid "Created by"
+msgstr "Створено"
+
+msgid "Options"
+msgstr "Параметри"
+
+msgid "Delete"
+msgstr "Видалити"
+
+#, fuzzy
+msgid "System"
+msgstr "Системна інформація"
+
+msgid "Resellers list is empty!"
+msgstr "Список реселерів порожній!"
+
+#, fuzzy
+msgid "Switch to user interface"
+msgstr "Змінити інтерфейс користувача"
+
+msgid "Switch"
+msgstr ""
+
+msgid "Not found user records matching the search criteria!"
+msgstr "Згідно пошукового запиту не знайдено жодного користувача!"
+
+msgid "view aliases"
+msgstr "переглянути аліаси"
+
+msgid "Users list is empty!"
+msgstr "Список користувачів порожній!"
+
+msgid "Status"
+msgstr "Стан"
+
+msgid "Details"
+msgstr "Деталі"
+
+#, fuzzy
+msgid "Edit domain"
+msgstr "Редагувати домен"
+
+msgid "Edit user"
+msgstr "Редагувати користувача"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#, fuzzy
+msgid "Reload"
+msgstr "Завантажити"
+
+msgid "Error"
+msgstr "Помилка"
+
+msgid "Not Set"
+msgstr ""
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Ви впевнені, що бажаєте змінити статус облікового запису домена?"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Ви впевнені, що хочете видалити %s?"
+
+msgid "Administrators"
+msgstr "Адміністратори"
+
+msgid "Resellers"
+msgstr "Реселери"
+
+msgid "Users"
+msgstr "Користувачі"
+
+msgid "Search"
+msgstr "Пошук"
+
+#, fuzzy
+msgid "Expire date"
+msgstr "Дата замовлення"
+
+msgid "Edit"
+msgstr "Редагувати"
+
+msgid "Domain name"
+msgstr "Ім'я домену"
+
+msgid "Customer ID"
+msgstr "ID користувача"
+
+msgid "Last name"
+msgstr "Прізвище"
+
+msgid "Company"
+msgstr "Компанія"
+
+msgid "City"
+msgstr "Місто"
+
+#, fuzzy
+msgid "State/Province"
+msgstr "Сервіс"
+
+msgid "Country"
+msgstr "Країна"
+
+msgid "All"
+msgstr "Усі"
+
+msgid "OK"
+msgstr ""
+
+msgid "Suspended"
+msgstr "Блоковано"
+
+#, fuzzy
+msgid "i-MSCP - Order Panel"
+msgstr "Контрольна панель i-MSCP"
+
+msgid "hide aliases"
+msgstr "приховати аліаси"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr ""
+
+msgid "Go back"
+msgstr "Назад"
+
+msgid "Unknown"
+msgstr "Невідомо"
+
+msgid "No language tables found in the database."
+msgstr ""
+
+msgid "Add user"
+msgstr "Додати користувача"
+
+msgid "Manage domains"
+msgstr "Керування доменами"
+
+msgid "Domain alias"
+msgstr "Аліас домену"
+
+msgid "Domain statistics"
+msgstr "Статистика домену"
+
+msgid "New ticket"
+msgstr "Новий запит"
+
+msgid "Layout settings"
+msgstr "Налаштування макету"
+
+msgid "Manage Orders"
+msgstr "Керування замовленнями"
+
+msgid "Order settings"
+msgstr "Налаштування замовлення"
+
+msgid "Order email setup"
+msgstr "Налаштування повідомлення замовлення"
+
+msgid "yes"
+msgstr "так"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Будь ласка, введіть пароль двічі!"
+
+msgid "Passwords don't match!"
+msgstr ""
+
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr ""
+"Пароль дані коротше %s знаками або включає в себе не допускаються знаки!"
+
+msgid "Incorrect email length or syntax!"
+msgstr ""
+
+msgid "Add subdomain"
+msgstr "Додати піддомен"
+
+msgid "Email and FTP accounts"
+msgstr "Користувачі E-mail і FTP"
+
+msgid "Add mail user"
+msgstr "Додати поштову скриньку"
+
+msgid "Add FTP user"
+msgstr "Додати користувача FTP"
+
+msgid "Manage SQL"
+msgstr "Керування SQL"
+
+msgid "Error pages"
+msgstr "Сторінки помилок"
+
+msgid "Add SQL database"
+msgstr "Додати SQL базу"
+
+msgid "Daily backup"
+msgstr "Щоденна архівація"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
+msgid "Webmail"
+msgstr ""
+
+msgid "Filemanager"
+msgstr "Менеджер файлів"
+
+msgid "Webtools"
+msgstr "Web-інструменти"
+
+msgid "Protected areas"
+msgstr "Захищені зони"
+
+msgid "Web statistics"
+msgstr ""
+
+msgid "Group/User management"
+msgstr ""
+
+msgid "Email Accounts"
+msgstr "Поштові скриньки"
+
+msgid "FTP Accounts"
+msgstr "Користувачі FTP"
+
+msgid "Catch all"
+msgstr "Перехопити все"
+
+msgid "Add alias"
+msgstr "Додати аліас"
+
+msgid "Update Hosting Package"
+msgstr ""
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Manage SSL certificate"
+msgstr ""
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+#, fuzzy
+msgid "internet Multi Server Control Panel"
+msgstr "Контрольна панель i-MSCP"
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "Контрольна панель i-MSCP"
+
+msgid "Administrator login"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "Контрольна панель i-MSCP"
+
+msgid "Login"
+msgstr "Ввійти"
+
+msgid "Password"
+msgstr "Пароль"
+
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Адміністратору"
+
+#, fuzzy
+msgid "FileManager"
+msgstr "Менеджер файлів"
+
+msgid "Secure Connection"
+msgstr ""
+
+msgid "Normal Connection"
+msgstr ""
+
+msgid "Lost password"
+msgstr "Відновити пароль"
+
+msgid "php-extension 'gd' not loaded."
+msgstr ""
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr "i-MSCP - Клієнт/Зміна пароля користувача SQL"
+
+msgid "Security code"
+msgstr "Код безпеки"
+
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr ""
+
+#, fuzzy
+msgid "Get password"
+msgstr "Оновити пароль"
+
+msgid "Back"
+msgstr "Назад"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "Запит на відновлення паролю виконаний"
+
+msgid "New password has not been sent. Ask your administrator."
+msgstr ""
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "ПОМИЛКА: Невірний код безпеки!"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Додавання користувача"
+
+msgid "Administrator"
+msgstr "Адміністратор"
+
+msgid "Incorrect username length or syntax!"
+msgstr ""
+
+msgid "Entered passwords do not match!"
+msgstr ""
+
+#, fuzzy
+msgid "This user name already exist."
+msgstr "Цей користувач уже існує!"
+
+msgid "Empty data or wrong field!"
+msgstr "Не введені або невірні дані!"
+
+msgid "Core data"
+msgstr "Загальні відомості"
+
+msgid "Repeat password"
+msgstr ""
+
+msgid "Email"
+msgstr "Електронна пошта"
+
+msgid "Additional data"
+msgstr "Додаткові відомості"
+
+msgid "First name"
+msgstr "Ім'я"
+
+#, fuzzy
+msgid "Gender"
+msgstr "Верхня частина"
+
+#, fuzzy
+msgid "Male"
+msgstr "Пошта"
+
+#, fuzzy
+msgid "Female"
+msgstr "Функція"
+
+msgid "Zip/Postal code"
+msgstr "Поштовий індекс"
+
+msgid "Street 1"
+msgstr "Вулиця 1"
+
+msgid "Street 2"
+msgstr "Вулиця 2"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Add"
+msgstr "Додати"
+
+msgid "User session was killed!"
+msgstr "Сесія користувача знищена!"
+
+msgid "Reseller"
+msgstr "Реселер"
+
+msgid "Domain account"
+msgstr "Обліковий запис домену"
+
+#, fuzzy
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Редагування користувача"
+
+#, fuzzy
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Додавання користувача"
+
+msgid "Edit admin"
+msgstr "Редагувати адміністратора"
+
+msgid "Update"
+msgstr "Оновити"
+
+msgid "Send new login data"
+msgstr "Надіслати нові дані автентифікації"
+
+#, fuzzy
+msgid "Generate password"
+msgstr "Оновити пароль"
+
+#, fuzzy
+msgid "Password change is disabled!"
+msgstr "Оновлення мови встановлене!"
+
+msgid "Demo Version!"
+msgstr ""
+
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
+msgstr "i-MSCP - Адміністратор/Журнал адміністратора"
+
+msgid "Log is empty!"
+msgstr "Журнал порожній!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
+
+msgid "Invalid time period!"
+msgstr ""
+
+msgid "Admin Log"
+msgstr "Журнал адміністратора"
+
+msgid "Clear log"
+msgstr "Очистити журнал"
+
+msgid "Date"
+msgstr "Дата"
+
+msgid "Message"
+msgstr "Повідомлення"
+
+msgid "Delete from log:"
+msgstr "Видалити з журналу:"
+
+msgid "everything"
+msgstr "усе"
+
+msgid "older than 2 weeks"
+msgstr "давніші за 2 тижні"
+
+msgid "older than 1 month"
+msgstr "давніші за 1 місяць"
+
+msgid "older than 3 months"
+msgstr "давніші за 3 місяці"
+
+msgid "older than 6 months"
+msgstr "давніші за 6 місяців"
+
+msgid "older than 12 months"
+msgstr "давніші за 12 місяців"
+
+msgid "i-MSCP - Admin - Email Marketing"
+msgstr ""
+
+msgid "Please specify a message subject!"
+msgstr "Укажіть тему повідомлення!"
+
+msgid "Please specify a message content!"
+msgstr "Укажіть текст повідомлення!"
+
+msgid "Please specify a sender name!"
+msgstr "Укажіть ім'я відправника!"
+
+msgid "Please specify a sender email!"
+msgstr "Укажіть скриньку відправника!"
+
+msgid "You send email to your users successfully!"
+msgstr "Повідомлення користувачам надіслане успішно!"
+
+msgid "Send message to"
+msgstr "Надіслати повідомлення:"
+
+msgid "All users"
+msgstr "Усі користувачі"
+
+msgid "All resellers"
+msgstr "Усі реселери"
+
+msgid "All users & resellers"
+msgstr "Усі користувачі й реселери"
+
+msgid "Message subject"
+msgstr "Тема повідомлення"
+
+msgid "Senders email"
+msgstr "E-mail відправника"
+
+msgid "Senders name"
+msgstr "Ім'я відправника"
+
+msgid "Send message"
+msgstr "Надіслати повідомлення"
+
+msgid "You have no custom menus."
+msgstr "Ви не маєте персональних меню."
+
+msgid "User"
+msgstr "Користувач"
+
+msgid "Missing or incorrect data input!"
+msgstr "Введені дані невірні або відсутні!"
+
+msgid "Invalid URL!"
+msgstr ""
+
+#, fuzzy
+msgid "Invalid target!"
+msgstr "Список поштових скриньок"
+
+msgid "Custom menu data updated successful!"
+msgstr "Дані персональних меню успішно оновлені!"
+
+msgid "Custom menu deleted successful!"
+msgstr "Персональне меню успішно видалене!"
+
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Адміністратор - Керування персональними меню"
+
+msgid "Manage custom menus"
+msgstr "Керування персональними меню"
+
+msgid "Add new button"
+msgstr "Додати нову кнопку"
+
+msgid "Button name"
+msgstr "Назва кнопки"
+
+msgid "Button link"
+msgstr "Посилання"
+
+msgid "Button target"
+msgstr "Вікно (_top, _blank)"
+
+msgid "Show in"
+msgstr "Показати в"
+
+msgid "Administrator level"
+msgstr ""
+
+msgid "Reseller level"
+msgstr "Рівень реселера"
+
+msgid "Enduser level"
+msgstr "Рівень користувача"
+
+msgid "Reseller and enduser level"
+msgstr "Рівень реселера й користувача"
+
+msgid "Menu button"
+msgstr "Кнопка меню"
+
+msgid "Action"
+msgstr "Дія"
+
+msgid "Level"
+msgstr "Рівень"
+
+msgid "Save"
+msgstr "Зберегти"
+
+msgid "Edit button"
+msgstr "Редагувати кнопку"
+
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "Адміністратор i-MSCP / Системні інструменти / Стан сервера"
+
+#, fuzzy
+msgid "Database updates"
+msgstr "Користувачі баз даних"
+
+#, fuzzy
+msgid "Available database updates"
+msgstr "Доступні оновлення i-MSCP"
+
+msgid "Update details"
+msgstr "Деталі оновлення"
+
+#, fuzzy
+msgid "New Database update is now available"
+msgstr "Доступне оновлення i-MSCP"
+
+msgid "No provided"
+msgstr ""
+
+#, fuzzy
+msgid "Execute updates"
+msgstr "Виконати запит"
+
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - Домен/Деталі"
+
+msgid "Domain details"
+msgstr "Деталі домену"
+
+msgid "Domain IP"
+msgstr "IP домену"
+
+msgid "PHP support"
+msgstr "Підтримка PHP"
+
+msgid "CGI support"
+msgstr "Підтримка CGI"
+
+msgid "Manual DNS support (EXPERIMENTAL)"
+msgstr ""
+
+#, fuzzy
+msgid "Backup support"
+msgstr "Підтримка PHP"
+
+msgid "MySQL support"
+msgstr "Підтримка MySQL"
+
+msgid "Traffic in MB"
+msgstr "Трафік у МБ"
+
+msgid "Disk in MB"
+msgstr "Диск у МБ"
+
+msgid "Feature"
+msgstr "Функція"
+
+msgid "Used"
+msgstr "Використано"
+
+msgid "Limit"
+msgstr "Ліміт"
+
+msgid "Submit changes"
+msgstr "Внести зміни"
+
+msgid "Full"
+msgstr ""
+
+msgid "SQL"
+msgstr ""
+
+msgid "Domain"
+msgstr "Домен"
+
+msgid "No"
+msgstr "Ні"
+
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "Невірне введення даних!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "Невірне введення даних!"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Піддомен"
+
+msgid "Alias"
+msgstr "Аліас"
+
+msgid "Mail"
+msgstr "Пошта"
+
+msgid "FTP"
+msgstr ""
+
+msgid "SQL Database"
+msgstr "База даних SQL"
+
+msgid "SQL User"
+msgstr "Користувач SQL"
+
+msgid "Traffic"
+msgstr "Трафік"
+
+msgid "Disk"
+msgstr "Диск"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "Властивості домену успішно оновлені!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Властивості домену успішно оновлені!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Admin/Edit Domain"
+msgstr "i-MSCP - Адміністратор/Журнал адміністратора"
+
+msgid "Edit Domain"
+msgstr "Редагувати домен"
+
+msgid "Domain properties"
+msgstr "Властивості домену"
+
+#, fuzzy
+msgid "Domain expire"
+msgstr "Характеристики домену"
+
+msgid "New expire date"
+msgstr ""
+
+#, fuzzy
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+msgid "Backup"
+msgstr "Резервне копіювання"
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Yes"
+msgstr "Так"
+
+msgid ""
+"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgstr ""
+
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
+msgid ""
+"You cannot access this page directly. You must switch to reseller level."
+msgstr ""
+
+msgid ""
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
+msgstr ""
+
+msgid "Unable to update domain: Domain ID not found."
+msgstr ""
+
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
+
+msgid "Unable to edit domain: ID not found."
+msgstr ""
+
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - Статистика домену"
+
+msgid "Reseller users table"
+msgstr "Таблиця користувачів реселера"
+
+msgid "Month"
+msgstr "Місяць"
+
+msgid "Year"
+msgstr "Рік"
+
+msgid "Show"
+msgstr "Показати"
+
+msgid "Web traffic"
+msgstr "Web-трафік"
+
+msgid "FTP traffic"
+msgstr "Трафік FTP"
+
+msgid "SMTP traffic"
+msgstr "Трафік SMTP"
+
+msgid "POP3/IMAP traffic"
+msgstr "Трафік POP3/IMAP"
+
+msgid "All traffic"
+msgstr "Весь трафік"
+
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Адміністратор/Керування хостінг-планами"
+
+msgid "Hosting plans"
+msgstr "Хостінг-плани"
+
+msgid "Purchasing"
+msgstr "Замовлення"
+
+msgid "Add new user hosting plan"
+msgstr "Додати новий хостінґ-план"
+
+msgid "Return to previous menu"
+msgstr "Повернутися до попереднього меню"
+
+msgid "Hosting plan added!"
+msgstr "Додано хостінг-план!"
+
+msgid "Hosting plan deleted!"
+msgstr "Видалено хостінг-план!"
+
+msgid "Hosting plan updated!"
+msgstr "Оновлено хостінг-план!"
+
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Хостінг-план із введеною назвою вже існує!"
+
+msgid "Hosting plans not found!"
+msgstr "Хостінг-плани не знайдені!"
+
+msgid "No."
+msgstr "№"
+
+msgid "Name"
+msgstr "Ім'я"
+
+msgid "Show hosting plan"
+msgstr ""
+
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Адміністратор/Додавання хостінг-плану"
+
+msgid "Hosting plan properties"
+msgstr "Властивості хостінг-плану"
+
+msgid "Template name"
+msgstr "Назва шаблону"
+
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Ліміт трафіку [МБ]<br><i>(0 - необмежено)</i>"
+
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+msgid "PHP"
+msgstr ""
+
+msgid "CGI / Perl"
+msgstr ""
+
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
+msgstr ""
+
+msgid "Apache logfiles"
+msgstr "Журнали веб-сервера"
+
+msgid "AwStats"
+msgstr "AWStats"
+
+msgid "no"
+msgstr "ні"
+
+msgid "Billing Settings"
+msgstr "Налаштування рахунків"
+
+msgid "Price"
+msgstr "Ціна"
+
+msgid "Setup fee"
+msgstr "Плата за установку"
+
+msgid "Currency"
+msgstr "Валюта"
+
+msgid "Payment period"
+msgstr "Термін оплати"
+
+msgid "Available for purchasing"
+msgstr "Замовлення можливе"
+
+msgid "Description"
+msgstr "Опис"
+
+msgid "(e.g. EUR)"
+msgstr "(Наприклад, UAH)"
+
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Сервіс"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
+msgid "Add plan"
+msgstr "Додати план"
+
+msgid "Incorrect template name length!"
+msgstr ""
+
+msgid "Incorrect template description length!"
+msgstr ""
+
+#, fuzzy
+msgid "Incorrect price syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect setup fee syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect subdomains limit!"
+msgstr "Невірний синтаксис <i>ліміту піддоменів</i>!"
+
+#, fuzzy
+msgid "Incorrect aliases limit!"
+msgstr "Невірне введення даних!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit!"
+msgstr "Невірний синтаксис <i>ліміту FTP</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit!"
+msgstr "Невірний синтаксис <i>ліміту баз даних mySQL</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit!"
+msgstr "Невірний синтаксис <i>ліміту користувачів mySQL</i>!"
+
+#, fuzzy
+msgid "Incorrect traffic limit!"
+msgstr "Невірний синтаксис <i>ліміту трафіку</i>!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit!"
+msgstr "Невірне введення даних!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "Хостінг-план із введеною назвою вже існує!"
+
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Адміністратор/Редагування хостінг-плану"
+
+#, fuzzy
+msgid "Price Style"
+msgstr "Ціна"
+
+msgid "Text"
+msgstr ""
+
+msgid "Update plan"
+msgstr "Оновити план"
+
+msgid "Edit hosting plan"
+msgstr "Редагувати хостинг-план"
+
+msgid "Undefined reference to data!"
+msgstr "Невизначене посилання на дані!"
+
+msgid "Incorrect price. Example: 9.99"
+msgstr ""
+
+msgid "Incorrect setup fee. Example: 19.99"
+msgstr ""
+
+msgid "No domain system errors"
+msgstr "Немає помилок системи доменів"
+
+msgid "No domain alias system errors"
+msgstr "Немає помилок системи аліасів доменів"
+
+msgid "No subdomain system errors"
+msgstr "Немає помилок системи піддоменів"
+
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "Немає помилок системи піддоменів"
+
+msgid "No email account system errors"
+msgstr "Немає помилок системи електронних скриньок"
+
+#, fuzzy
+msgid "missing domain"
+msgstr "Головний домен"
+
+#, fuzzy
+msgid "missing alias"
+msgstr "Аліас домену"
+
+msgid "orphan entry"
+msgstr ""
+
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "Немає помилок системи аліасів доменів"
+
+#, fuzzy
+msgid "Missing domain"
+msgstr "Головний домен"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown type!"
+msgstr "Невідомий тип"
+
+msgid "Done"
+msgstr "Завершено"
+
+msgid "Unknown Error"
+msgstr ""
+
+msgid "Domain errors"
+msgstr "Помилки системи доменів"
+
+msgid "Domain alias errors"
+msgstr "Помилки аліасів домену"
+
+msgid "Subdomain errors"
+msgstr "Помилки піддомену"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "Перенаправлення піддомену"
+
+msgid "Mail account errors"
+msgstr "Помилки поштових скриньок"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP - Клієнт/Web-інструменти"
+
+#, fuzzy
+msgid "Execute requests"
+msgstr "Виконати запит"
+
+msgid "Set status to 'change'"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+#, fuzzy
+msgid "Update checking is disabled!"
+msgstr "Оновлення мови встановлене!"
+
+#, fuzzy
+msgid "Enable update at"
+msgstr "Користувачі баз даних"
+
+msgid "New i-MSCP update is now available"
+msgstr "Доступне оновлення i-MSCP"
+
+msgid "Get it at"
+msgstr "Завантажити з"
+
+msgid "Available i-MSCP updates"
+msgstr "Доступні оновлення i-MSCP"
+
+msgid "No new i-MSCP updates available"
+msgstr "Немає нових оновлень i-MSCP"
+
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr ""
+
+msgid "View"
+msgstr "Переглянути"
+
+msgid "One or more updates to the database are available."
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Ви вичерпали ліміт трафіку!"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr ""
+
+msgid "i-MSCP - Admin/Main Index"
+msgstr "i-MSCP - Адміністратор/Головна"
+
+msgid "You cannot delete the last active IP address!"
+msgstr ""
+
+msgid "Error: we have a domain using this IP!"
+msgstr ""
+
+msgid "Error: we have a reseller using this IP!"
+msgstr ""
+
+msgid "IP was deleted!"
+msgstr "IP видалено!"
+
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Адміністратор/Керування IP"
+
+#, fuzzy
+msgid "Remove IP"
+msgstr "Видалити"
+
+#, fuzzy
+msgid "No IP's available"
+msgstr "Немає нових оновлень i-MSCP"
+
+msgid "New IP was added!"
+msgstr "Нова адреса IP додана!"
+
+msgid "Wrong IP number!"
+msgstr "Невірний номер IP!"
+
+msgid "Please specify domain!"
+msgstr "Будь ласка, укажіть домен!"
+
+msgid "Please specify alias!"
+msgstr "Будь ласка, укажіть аліас!"
+
+msgid "This IP already exist!"
+msgstr "Цей IP уже існує!"
+
+#, fuzzy
+msgid "Please select nework interface!"
+msgstr "Змінити інтерфейс користувача"
+
+msgid "Available IPs"
+msgstr "Доступні IP"
+
+msgid "IP"
+msgstr ""
+
+#, fuzzy
+msgid "Network interface"
+msgstr "Змінити інтерфейс користувача"
+
+msgid "Add new IP"
+msgstr "Додати новий IP"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete this IP: %s?"
+msgstr "Ви впевнені, що хочете видалити цей IP: %s?"
+
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - Адміністратор/Керування IP"
+
+#, fuzzy
+msgid "Total Domains"
+msgstr "Домени"
+
+msgid "No records found"
+msgstr ""
+
+#, fuzzy
+msgid "Admin/IP usage statistics"
+msgstr "Статистика домену"
+
+#, fuzzy
+msgid "Domain Name"
+msgstr "Ім'я домену"
+
+#, fuzzy
+msgid "Reseller Name"
+msgstr "Ім'я реселера"
+
+#, fuzzy
+msgid "User language updated successfully."
+msgstr "Мова користувача успішно оновлена!"
+
+#, fuzzy
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Клієнт/Зміна мови"
+
+#, fuzzy
+msgid "Choose your default language"
+msgstr "Вибір основної мови"
+
+msgid "Error we have user that uses that language!"
+msgstr ""
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Сторінка помилки оновлена!"
+
+msgid "Reseller list is empty!"
+msgstr "Список реселерів порожній!"
+
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Призначення реселера"
+
+msgid "Mark"
+msgstr "Відмітка"
+
+msgid "Reseller name"
+msgstr "Ім'я реселера"
+
+msgid "Owner"
+msgstr "Власник"
+
+msgid "To Admin"
+msgstr "Адміністратору"
+
+msgid "Move"
+msgstr "Перемістити"
+
+msgid "Reseller or user list is empty!"
+msgstr "Список реселерів або користувачів порожній!"
+
+msgid "User list is empty!"
+msgstr "Список користувачів порожній!"
+
+msgid "User was moved"
+msgstr "Користувача переміщено"
+
+msgid "Please select some user(s)!"
+msgstr "Оберіть користувача (користувачів)!"
+
+msgid "Source and destination reseller are the same!"
+msgstr "Вихідний і кінцевий реселери співпадають!"
+
+#, php-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgstr ""
+
+#, php-format
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
+msgstr ""
+
+#, php-format
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
+msgstr ""
+
+msgid "Moving aborted!"
+msgstr "Переміщення перерване!"
+
+#, php-format
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Призначення користувача"
+
+msgid "User name"
+msgstr "Ім'я користувача"
+
+msgid "From reseller"
+msgstr "Від реселера"
+
+msgid "To reseller"
+msgstr "Реселеру"
+
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Адміністратор/Керування користувачами"
+
+msgid "User added"
+msgstr "Користувача додано"
+
+msgid "Reseller added"
+msgstr "Реселер доданий"
+
+msgid "User updated"
+msgstr "Користувача оновлено"
+
+msgid "User deleted"
+msgstr "Користувача видалено"
+
+msgid "Email Updated"
+msgstr "Поштова скринька оновлена"
+
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr ""
+
+msgid "User was disabled"
+msgstr "Користувача заблоковано"
+
+#, fuzzy
+msgid "Uninstall"
+msgstr "видалити"
+
+#, php-format
+msgid "%d messages translated"
+msgstr ""
+
+msgid "Gzipped"
+msgstr ""
+
+msgid "Upload file error!"
+msgstr "Помилка завантаження файлу!"
+
+msgid "You can upload only text files!"
+msgstr "Можна завантажувати лише текстові файли!"
+
+#, fuzzy
+msgid "Could not read language file!"
+msgstr "Неможливо прочитати файл мови!"
+
+#, fuzzy
+msgid "Uploaded file is not a valid language file!"
+msgstr "Неможливо прочитати файл мови!"
+
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
+msgstr "Неможливо прочитати файл мови!"
+
+#, php-format
+msgid "%s added new language: %s"
+msgstr ""
+
+msgid "New language installed!"
+msgstr "Нова мова встановлена!"
+
+#, php-format
+msgid "%s updated language: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Language was updated!"
+msgstr "Сторінка помилки оновлена!"
+
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr ""
+
+msgid "Installed languages"
+msgstr "Установлені мови"
+
+msgid "Messages"
+msgstr "Повідомлення"
+
+#, fuzzy
+msgid "Panel default language"
+msgstr "Вибір основної мови"
+
+msgid "Install new language"
+msgstr "Установити нову мову"
+
+msgid "Language file"
+msgstr "Файл мови"
+
+msgid "Install"
+msgstr "Установити"
+
+msgid "Export"
+msgstr "Експорт"
+
+msgid "Incorrect data input!"
+msgstr "Невірне введення даних!"
+
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Адміністратор/Зміна пароля"
+
+msgid "Please fill up all data fields!"
+msgstr "Будь ласка, заповніть усі поля!"
+
+msgid "Passwords do not match!"
+msgstr ""
+
+msgid "The current password is wrong!"
+msgstr "Поточний пароль невірний"
+
+msgid "User password updated successfully!"
+msgstr "Пароль користувача успішно оновлений!"
+
+msgid "Password data"
+msgstr "Пароль"
+
+msgid "Update password"
+msgstr "Оновити пароль"
+
+msgid "Current password"
+msgstr "Поточний пароль"
+
+#, fuzzy
+msgid "Password change is deactivated!"
+msgstr "Аліас домену додано!"
+
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Адміністратор/Зміна персональних даних"
+
+msgid "Personal data updated successfully!"
+msgstr "Персональні дані успішно оновлені!"
+
+msgid "Personal data"
+msgstr "Персональні дані"
+
+msgid "Update data"
+msgstr "Оновити відомості"
+
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr ""
+
+msgid "Reseller IP list is empty!"
+msgstr "Список IP реселера порожній!"
+
+msgid "Assign"
+msgstr "Призначити"
+
+msgid "Label"
+msgstr "Мітка"
+
+msgid "Number"
+msgstr "Номер"
+
+msgid "This user name already exist!"
+msgstr "Цей користувач уже існує!"
+
+#, fuzzy
+msgid "Incorrect email syntax!"
+msgstr "Невірний синтаксис <i>ліміту поштових скриньок</i>!"
+
+#, fuzzy
+msgid "Incorrect domains limit!"
+msgstr "Невірний синтаксис <i>доменного імені</i>"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Ви маєте призначити хоча б одну IP-адресу реселеру!"
+
+#, fuzzy
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Дисковий простір [МБ]<br><i>(0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#, fuzzy
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "JSP"
+msgstr ""
+
+msgid "SSI"
+msgstr ""
+
+msgid "Frontpage extensions"
+msgstr ""
+
+msgid "Backup and restore"
+msgstr "Резервне копіювання та відновлення"
+
+msgid "Custom error pages"
+msgstr "Індивідуальні сторінки помилок"
+
+msgid "Directory listing"
+msgstr "Список директорій"
+
+msgid "Logo upload"
+msgstr "Завантаження логотипа"
+
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
+
+msgid "Reseller IPs"
+msgstr "IP реселера"
+
+msgid "Aliases"
+msgstr "Аліаси"
+
+msgid "SQL Databases"
+msgstr ""
+
+msgid "SQL Users"
+msgstr ""
+
+#, fuzzy
+msgid "Web Traffic"
+msgstr "Web-трафік"
+
+#, fuzzy
+msgid "Disk storage"
+msgstr "Використання дискового простору"
+
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+
+#, fuzzy, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!"
+msgstr "Це Реселлер має областей покладених на <b>%s</b> адресу!<br />"
+
+#, fuzzy
+msgid "If you want to limit the reseller, you must first limit its customers!"
+msgstr ""
+"Якщо Ви бажаєте обмежити реселера, спочатку Ви маєте обмежити його "
+"користувачів!<br>"
+
+#, fuzzy, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!"
+msgstr "Це Реселлер має областей покладених на <b>%s</b> адресу!<br />"
+
+msgid "ERROR: The reseller account you trying to edit does not exist!"
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Редагування реселера"
+
+msgid ""
+"ERROR: One or more errors was found! Please, correct them and try again!"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller data inconsistency!"
+msgstr "Таблиця статистики реселера"
+
+msgid "Please, read the message(s) above and trying to correct!"
+msgstr ""
+
+msgid "Edit reseller"
+msgstr "Редагувати реселера"
+
+msgid "E-mail"
+msgstr "Електронна пошта"
+
+msgid "unlimited"
+msgstr "необмежено"
+
+msgid "Reset"
+msgstr "Очистити"
+
+#, fuzzy
+msgid "Generated password:"
+msgstr "Оновити пароль"
+
+msgid "Type `CTRL+C` to copy the generated password in the clipboard."
+msgstr ""
+
+#, php-format
+msgid ""
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"\\nInstead, use the %s button to update the data."
+msgstr ""
+
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - Статистика реселера"
+
+#, fuzzy
+msgid "No reseller is registered in your system!"
+msgstr "У системі не знайдено реселера(-ів)!"
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, fuzzy
+msgid "<b>disabled</b>"
+msgstr "вимкнено"
+
+msgid "Reseller statistics table"
+msgstr "Таблиця статистики реселера"
+
+msgid "SQL database"
+msgstr "База даних SQL"
+
+msgid "SQL user"
+msgstr "Користувач SQL"
+
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Адміністратор/Статистика реселера"
+
+#, php-format
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr ""
+
+msgid "This reseller has no domains."
+msgstr "Цей реселер не має доменів."
+
+msgid "Traffic<br>usage"
+msgstr "Використання<br>трафіку"
+
+msgid "Disk<br>usage"
+msgstr "Використання<br>диску"
+
+msgid "Web<br>traffic"
+msgstr "Web<br>трафік"
+
+msgid "FTP<br>traffic"
+msgstr "Трафік<br>FTP"
+
+msgid "SMTP<br>traffic"
+msgstr "Трафік<br>SMTP"
+
+msgid "POP3/IMAP<br>traffic"
+msgstr "Трафік<br>POP3/IMAP"
+
+msgid "SQL<br>database"
+msgstr "БД<br>SQL"
+
+msgid "SQL<br>user"
+msgstr "Користувач<br>SQL"
+
+#, fuzzy
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "Адміністратор i-MSCP / Системні інструменти / Стан сервера"
+
+#, fuzzy, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "%s Не існує або порожній"
+
+msgid "Anti-Rootkits Tools Log Checker"
+msgstr ""
+
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Адміністратор/Статистика сервера"
+
+msgid "Web in"
+msgstr ""
+
+msgid "Web out"
+msgstr ""
+
+#, fuzzy
+msgid "SMTP in"
+msgstr "Трафік SMTP"
+
+#, fuzzy
+msgid "SMTP out"
+msgstr "Користувач FTP"
+
+#, fuzzy
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP in"
+
+#, fuzzy
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP out"
+
+msgid "Other in"
+msgstr "Інші в"
+
+msgid "Other out"
+msgstr "Інші за"
+
+msgid "All in"
+msgstr "Усі в"
+
+msgid "All out"
+msgstr "Усі за"
+
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Адміністратор/Денна статистика сервера"
+
+msgid "Server day statistics"
+msgstr "Денна статистика сервера"
+
+msgid "Month:"
+msgstr "Місяць:"
+
+msgid "Year:"
+msgstr "Рік:"
+
+msgid "Day:"
+msgstr "День:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
+msgstr "Адміністратор i-MSCP / Системні інструменти / Стан сервера"
+
+msgid "Host"
+msgstr "Хост"
+
+msgid "Service"
+msgstr "Сервіс"
+
+msgid "UP"
+msgstr ""
+
+msgid "DOWN"
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Адміністратор/Керування сесіями"
+
+msgid "Manage user sessions"
+msgstr "Керування сесіями користувача"
+
+msgid "User type"
+msgstr "Тип користувача"
+
+msgid "Last access"
+msgstr "Останній доступ"
+
+msgid "Kill session"
+msgstr "Завершити сесію"
+
+msgid "i-MSCP - Admin/Settings"
+msgstr ""
+
+msgid "Error: Only positive numbers are allowed!"
+msgstr ""
+
+#, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr ""
+
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
+
+msgid "Activation link expire time (minutes)"
+msgstr ""
+
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Bruteforce detection"
+msgstr "Визначення перебором"
+
+msgid "Block time between logins"
+msgstr ""
+
+msgid "Max number of login attempts"
+msgstr ""
+
+msgid "Blocktime (minutes)"
+msgstr "Час блокування (хвилини)"
+
+msgid "Block time between logins (seconds)"
+msgstr ""
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr ""
+
+msgid "Other settings"
+msgstr "Налаштування замовлення"
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+msgid "Apply changes"
+msgstr "Застосувати зміни"
+
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "Адміністратору"
+
+msgid "Domains per page"
+msgstr "Доменів на сторінку"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Рівень"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Помилка"
+
+#, fuzzy
+msgid "Check for update"
+msgstr "Користувача оновлено"
+
+msgid "Show compression size comment"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Введіть Ваш логін і пароль"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+#, fuzzy
+msgid "Custom orderpanel ID"
+msgstr "ID користувача"
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Ім'я домену"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
+msgid "You can only upload images!"
+msgstr ""
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
+
+msgid "Your logo was successful uploaded!"
+msgstr "Логотип успішно завантажено!"
+
+msgid "Installed layouts"
+msgstr "Установлені макети"
+
+msgid "Layout name"
+msgstr "Назва макету"
+
+msgid "default"
+msgstr "довільне"
+
+msgid "Upload logo"
+msgstr "Завантажити логотип"
+
+msgid "Logo file"
+msgstr "Файл логотипа"
+
+msgid "Upload"
+msgstr "Завантажити"
+
+msgid "Remove"
+msgstr "Видалити"
+
+msgid "Choose default layout"
+msgstr "Вибір основного оформлення"
+
+msgid "Please specify a subject!"
+msgstr "Укажіть тему!"
+
+msgid "Please specify message!"
+msgstr "Будь ласка, укажіть повідомлення!"
+
+msgid "Auto email template data updated!"
+msgstr "Шаблон автовідповідача пошти оновлено!"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Адміністратор/Налаштування втрати пароля"
+
+msgid "Lost password e-mail"
+msgstr ""
+
+msgid "Message template info"
+msgstr "Інформація про шаблон"
+
+msgid "Message template"
+msgstr "Шаблон повідомлення"
+
+msgid "Activation E-Mail"
+msgstr ""
+
+msgid "Password E-Mail"
+msgstr ""
+
+msgid "User login (system) name"
+msgstr "Логін користувача"
+
+msgid "User password"
+msgstr "Пароль користувача"
+
+msgid "User (first and last) name"
+msgstr "Ім'я й прізвище користувача"
+
+msgid "Lost password link"
+msgstr ""
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "URL to this admin panel"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Протокол"
+
+#, fuzzy
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Адміністратор/Головна"
+
+msgid "Settings saved !"
+msgstr "Налаштування збережені!"
+
+#, fuzzy
+msgid "Under this mode only administrators can login"
+msgstr "Лише адміністратори можуть входити в цьому режимі"
+
+#, fuzzy
+msgid "Error: Wrong Ip number!"
+msgstr "Невірний номер IP!"
+
+msgid "Error: Only positive numbers are allowed for services ports!"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Service port with same name already exists!"
+msgstr "Вказаний користувач бази даних уже існує!"
+
+msgid "Error: Unallowed protocol!"
+msgstr ""
+
+msgid "Error: Wrong value for show entry!"
+msgstr ""
+
+#, fuzzy
+msgid "Service port was successfully added"
+msgstr "Нова адреса IP додана!"
+
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
+msgstr ""
+
+msgid "Nothing's been changed"
+msgstr ""
+
+#, fuzzy
+msgid "You have no custom service ports defined"
+msgstr "Ви не маєте персональних меню."
+
+#, fuzzy
+msgid "Service port was successfully removed!"
+msgstr "Користувача переміщено"
+
+#, fuzzy
+msgid "Error: You are not allowed to remove this service port entry!"
+msgstr "Ви впевнені, що хочете видалити %s?"
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP - Адміністратор/Керування сесіями"
+
+msgid "udp"
+msgstr ""
+
+msgid "tcp"
+msgstr ""
+
+msgid "Port"
+msgstr ""
+
+msgid "Protocol"
+msgstr "Протокол"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s service port ?"
+msgstr "Ви впевнені, що хочете видалити %s?"
+
+msgid "View / Update service(s) port"
+msgstr ""
+
+#, fuzzy
+msgid "Add new service port"
+msgstr "Додати новий хостінґ-план"
+
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Адміністратор/Налаштування трафіка сервера"
+
+msgid "Wrong data input!"
+msgstr "Невірно введені дані!"
+
+msgid "Warning traffic is bigger than max traffic!"
+msgstr "Ліміт трафіка більший за максимальний трафік!"
+
+msgid "Server traffic settings updated successfully!"
+msgstr "Налаштування трафіку сервера успішно оновлені!"
+
+msgid "Modify"
+msgstr "Змінити"
+
+msgid "Set server traffic settings"
+msgstr "Налаштувати трафік сервера"
+
+msgid "Max traffic [MB]"
+msgstr "Макс. трафік [MB]"
+
+msgid "Warning traffic [MB]"
+msgstr "Ліміт трафіка [МБ]"
+
+msgid "i-MSCP - Admin/Manage users/Email setup"
+msgstr ""
+"i-MSCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
+
+msgid "User real (first and last) name"
+msgstr ""
+
+msgid "User type (admin, reseller, user)"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong software id."
+msgstr "Невірний ID замовлення!"
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "Реселери"
+
+#, fuzzy
+msgid "Rights succesfully added."
+msgstr "Користувач SQL успішно доданий!"
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "IP видалено!"
+
+#, fuzzy
+msgid "Fill out a message text!"
+msgstr "Ваше повідомлення надіслане!"
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP - Клієнт/Керування завданнями Cron"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+#, fuzzy
+msgid "Delete reseller software"
+msgstr "Редагування реселера перервано!"
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "Ім'я реселера"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr ""
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "База даних SQL успішно видалена!"
+
+msgid "Download"
+msgstr ""
+
+#, fuzzy
+msgid "Activate"
+msgstr "Активне"
+
+#, fuzzy
+msgid "Import"
+msgstr "Експорт"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "Користувача FTP успішно видалено!"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "видалити"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "Налаштування замовлення"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "Такий домен уже існує в системі!"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+#, fuzzy
+msgid "Update from web depot"
+msgstr "Оновити замовлення"
+
+#, fuzzy
+msgid "Package title"
+msgstr "Ціна"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "Характеристика хостінг-плану"
+
+#, fuzzy
+msgid "Package version"
+msgstr "Ціна"
+
+#, fuzzy
+msgid "Package language"
+msgstr "Характеристика хостінг-плану"
+
+#, fuzzy
+msgid "Package type"
+msgstr "Ціна"
+
+#, fuzzy
+msgid "Package vendor HP"
+msgstr "Характеристика хостінг-плану"
+
+#, fuzzy
+msgid "Package actions"
+msgstr "Характеристика хостінг-плану"
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Remote File not found!"
+msgstr "Помилка 404 (сторінку не знайдено)"
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "Логотип успішно завантажено!"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "Завантажити логотип"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "Статистика реселера"
+
+#, fuzzy
+msgid "Application"
+msgstr "Дія"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Тип"
+
+#, fuzzy
+msgid "Depot import"
+msgstr "Стан сервера"
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "Ім'я реселера"
+
+#, fuzzy
+msgid "Waiting for activation"
+msgstr "Триває додавання аліасу!"
+
+#, fuzzy
+msgid "Activated software"
+msgstr "Активне"
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Ви впевнені, що хочете змінити статус %s?"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - Адміністратор/Керування сесіями"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "Доступні IP"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "Від реселера"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "Немає нових оновлень i-MSCP"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "Установлені макети"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "Реселери"
+
+msgid "Softwaredepot"
+msgstr ""
+
+msgid "Admin not available"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "Усі реселери"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Адміністратор/Керування сесіями"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+msgid "Remove permissions"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "Таблиця статистики реселера"
+
+msgid "Added by"
+msgstr ""
+
+#, fuzzy
+msgid "Add permissions"
+msgstr "Додати існуючого користувача"
+
+msgid "Software permissions"
+msgstr ""
+
+msgid "CPU bogomips"
+msgstr ""
+
+msgid "CPU cache"
+msgstr "Кеш процесора"
+
+msgid "Number of CPU Cores"
+msgstr ""
+
+msgid "CPU MHz"
+msgstr "Швидкість процесора (MHz)"
+
+msgid "CPU model"
+msgstr "Модель процесора"
+
+msgid "CPU system Info"
+msgstr "Системна інформація CPU"
+
+msgid "Filesystem system Info"
+msgstr "Інформація про файлову систему"
+
+msgid "Free"
+msgstr "Вільно"
+
+#, fuzzy
+msgid "Kernel Version"
+msgstr "Завершити сесію"
+
+msgid "Load (1 Min, 5 Min, 15 Min)"
+msgstr ""
+
+msgid "Memory system info"
+msgstr "Інформація про пам'ять"
+
+msgid "Mount"
+msgstr "Монтувати"
+
+msgid "RAM"
+msgstr ""
+
+msgid "Partition"
+msgstr "Розділ"
+
+msgid "Percent"
+msgstr "Процент(ів)"
+
+msgid "Size"
+msgstr "Розмір"
+
+msgid "Swap"
+msgstr "Своп"
+
+msgid "Vital system info"
+msgstr "Істотна системна інформація"
+
+msgid "Total"
+msgstr "Разом"
+
+msgid "Up time"
+msgstr "Час роботи"
+
+msgid "i-MSCP - Client/Questions & Comments"
+msgstr "i-MSCP - Клієнт/Питання та пропозиції"
+
+msgid "Support tickets"
+msgstr "Запити підтримки"
+
+msgid "Priority"
+msgstr "Пріоритет"
+
+msgid "Last reply"
+msgstr "Остання відповідь"
+
+msgid "Delete all"
+msgstr "Видалити все"
+
+msgid "Open tickets"
+msgstr "Відкриті запити"
+
+msgid "Closed tickets"
+msgstr "Закриті запити"
+
+msgid "From"
+msgstr "Від"
+
+msgid "Support ticket deleted successfully!"
+msgstr "Запит підтримки успішно видалено!"
+
+msgid "All open support tickets deleted successfully!"
+msgstr "Усі незакриті заявки успішно видалено!"
+
+msgid "All closed support tickets deleted successfully!"
+msgstr "Усі закриті заявки успішно видалено!"
+
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
+msgstr "i-MSCP - Клієнт/Активація автовідповідача"
+
+msgid "i-MSCP - Client: Support System: View Ticket"
+msgstr "i-MSCP - Клієнт : Система підтримки: Перегляд запитів"
+
+msgid "Please type your message!"
+msgstr "Будь ласка, введіть повідомлення!"
+
+msgid "Ticket not found!"
+msgstr "Запит не знайдено!"
+
+msgid "i-MSCP - Admin: Support System: View Ticket"
+msgstr ""
+
+msgid "View support ticket"
+msgstr "Перегляд запиту підтримки"
+
+msgid "Send message reply"
+msgstr "Надіслати відповідь"
+
+msgid "Send reply"
+msgstr "Надіслати відповідь"
+
+#, fuzzy
+msgid "i-MSCP - Delete Domain"
+msgstr "i-MSCP - Клієнт/Керування доменами"
+
+msgid "Wrong domain ID!"
+msgstr "Невірний ID домену!"
+
+#, fuzzy
+msgid "Invalid user id!"
+msgstr "Список поштових скриньок"
+
+#, fuzzy
+msgid "Logo could not be deleted:"
+msgstr "Властивості домену успішно оновлені!"
+
+msgid "There are active domains of reseller/admin!"
+msgstr ""
+
+#, fuzzy
+msgid "Delete domain"
+msgstr "Реальний домен"
+
+#, fuzzy
+msgid "Domain summary:"
+msgstr "Пошта домену"
+
+#, fuzzy
+msgid "Domain e-mails:"
+msgstr "Пошта домену"
+
+#, fuzzy
+msgid "Domain FTP accounts:"
+msgstr "Обліковий запис домену"
+
+#, fuzzy
+msgid "Domain aliases:"
+msgstr "Аліаси домену"
+
+#, fuzzy
+msgid "Domain subdomains:"
+msgstr "Головному домену"
+
+#, fuzzy
+msgid "Domain databases:"
+msgstr "Аліаси домену"
+
+msgid ""
+"Do you really want to delete the entire domain? This operation cannot be "
+"undone!"
+msgstr ""
+
+msgid "Yes, delete the domain."
+msgstr ""
+
+msgid "Domain alias limit reached!"
+msgstr ""
+
+msgid "Domain with that name already exists on the system!"
+msgstr "Такий домен уже існує в системі!"
+
+msgid "Incorrect mount point syntax"
+msgstr "Невірний синтаксис <i>точки монтування</i>!"
+
+#, fuzzy
+msgid "Master domain cannot be used!"
+msgstr "Аліас домену не додано!"
+
+#, fuzzy
+msgid "Wrong address in forward URL!"
+msgstr "Невірний запис доменного імені!"
+
+#, fuzzy
+msgid "Wrong domain part in forward URL!"
+msgstr "Невірний запис доменного імені!"
+
+msgid "Domain with this name already exist"
+msgstr "Такий домен уже існує!"
+
+#, fuzzy
+msgid "There is a subdomain with the same mount point!"
+msgstr "Існують аліаси з ідентичною точкою монтування"
+
+#, fuzzy
+msgid "Alias scheduled for activation!"
+msgstr "Триває додавання аліасу!"
+
+#, fuzzy
+msgid "Alias scheduled for addition!"
+msgstr "Триває додавання аліасу!"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "Клієнт i-MSCP : Додавання аліасу"
+
+msgid "Manage domain alias"
+msgstr "Керування аліасами домену"
+
+msgid "Add domain alias"
+msgstr "Додати аліас домену"
+
+msgid "User account"
+msgstr "Обліковий запис користувача"
+
+msgid "Directory mount point"
+msgstr "Точка монтування (директорія)"
+
+msgid "Forward to URL"
+msgstr "Переслати на URL"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr ""
+
+#, fuzzy
+msgid "Wrong domain name!"
+msgstr "Невірний запис доменного імені!"
+
+#, fuzzy
+msgid "Please write mount point!"
+msgstr "Будь ласка, зачекайте оновлення!"
+
+#, fuzzy
+msgid "Enable Forward"
+msgstr "Пересилання пошти"
+
+msgid "Enable"
+msgstr "Увімкнути"
+
+msgid "Disable"
+msgstr "Вимкнути"
+
+#, fuzzy
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!"
+"<br>Спочатку видаліть їх!"
+
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить поштові скриньки!"
+"<br>Спочатку видаліть їх!"
+
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr ""
+"Аліас домену, що Ви намагаєтеся видалити, містить користувачів FTP!"
+"<br>Спочатку видаліть їх!"
+
+msgid "Alias scheduled for deletion!"
+msgstr "Триває видалення аліасу!"
+
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
+msgstr "i-MSCP - Керування аліасами домену/Редагування аліасів"
+
+msgid "Edit domain alias"
+msgstr "Редагувати аліас домену"
+
+msgid "Alias name"
+msgstr "Назва аліасу"
+
+#, fuzzy
+msgid "Mount Point"
+msgstr "Точка монтування"
+
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Піддомен, що Ви бажаєте видалити, містить поштові скриньки!<br>Спочатку "
+"видаліть їх!"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Триває видалення піддомену!"
+
+msgid "Backup archive scheduled for restoring!"
+msgstr "Триває відновлення архівів..."
+
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Клієнт/Щоденна архівація"
+
+msgid "Instructions to download today's backup"
+msgstr ""
+
+msgid "Login with your FTP account"
+msgstr "Ввійти як користувач FTP"
+
+msgid "Switch to backups/ directory"
+msgstr ""
+
+msgid "Download the files stored in this directory"
+msgstr ""
+
+msgid "(usually named"
+msgstr ""
+
+msgid "Restore backup"
+msgstr "Відновити резервний архів"
+
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
+msgstr ""
+
+msgid "Restore"
+msgstr "Відновити"
+
+#, fuzzy
+msgid "Are you sure you want to restore the backup?"
+msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
+
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP - Клієнт/Керування завданнями Cron"
+
+msgid "Cronjob Manager"
+msgstr "Менеджер завдань Cron'a"
+
+msgid "Add Cronjob"
+msgstr "Додати завдання в Cron"
+
+msgid "Active"
+msgstr "Активне"
+
+msgid "Cronjob"
+msgstr "Завдання Cron'a"
+
+msgid "Command to run:"
+msgstr "Команда для виконання"
+
+msgid "Minute(s):"
+msgstr "Хвилин:"
+
+msgid "Hour(s):"
+msgstr "Година(и):"
+
+msgid "Day(s):"
+msgstr "День(днів):"
+
+#, fuzzy
+msgid "Month(s):"
+msgstr "Місяць(і):"
+
+msgid "Weekday(s):"
+msgstr "Дні тижня:"
+
+msgid "Edit Cronjob"
+msgstr "Редагувати завдання Cron"
+
+msgid "Cronjobs"
+msgstr "Завдання Cron'a"
+
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
+#, fuzzy
+msgid "Custom DNS record scheduled for deletion!"
+msgstr "Триває видалення піддомену!"
+
+#, fuzzy
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "i-MSCP - Керування аліасами домену/Редагування аліасів"
+
+#, fuzzy
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "i-MSCP - Керування аліасами домену/Редагування аліасів"
+
+msgid "Add DNS zone's record (EXPERIMENTAL)"
+msgstr ""
+
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
+msgstr ""
+
+msgid "DNS zone's records"
+msgstr ""
+
+#, fuzzy
+msgid "Class"
+msgstr "Аліаси"
+
+#, fuzzy
+msgid "Service name"
+msgstr "Стан обслуговування"
+
+#, fuzzy
+msgid "IP address"
+msgstr "Введіть адресу"
+
+msgid "IPv6 address"
+msgstr ""
+
+#, fuzzy
+msgid "Service protocol"
+msgstr "Стан сервера"
+
+msgid "TTL"
+msgstr ""
+
+msgid "Relative weight for records with the same priority"
+msgstr ""
+
+msgid "Target host"
+msgstr ""
+
+#, fuzzy
+msgid "Target port"
+msgstr "Стан сервера"
+
+msgid "Canonical name"
+msgstr ""
+
+#, fuzzy
+msgid "Plain record data"
+msgstr "Пароль"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
+
+#, fuzzy
+msgid "You are not allowed to edit this DNS record!"
+msgstr "Ви не маєте записів аліасів."
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr ""
+
+msgid "Name must be filled."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr ""
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr ""
+
+msgid "Port must be a number!"
+msgstr ""
+
+msgid "TTL must be a number!"
+msgstr ""
+
+msgid "Priority must be a number!"
+msgstr ""
+
+msgid "Relative weight must be a number!"
+msgstr ""
+
+msgid "Service must be filled."
+msgstr ""
+
+msgid "Host must be filled."
+msgstr ""
+
+msgid "conflict with CNAME record"
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in NAME"
+msgstr ""
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr ""
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Unknown zone type %s!"
+msgstr "Невідомий тип зони %s!"
+
+#, fuzzy
+msgid "Error: DNS record already exist!"
+msgstr "Користувач уже існує!"
+
+msgid "i-MSCP - Client/Domain Statistics"
+msgstr "i-MSCP - Клієнт/Статистика домену"
+
+msgid "Web Stats"
+msgstr ""
+
+msgid "WEB"
+msgstr ""
+
+msgid "SMTP"
+msgstr ""
+
+msgid "POP3/IMAP"
+msgstr ""
+
+msgid "Sum"
+msgstr "Сума"
+
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "Список поштових скриньок порожній!"
+
+#, fuzzy, php-format
+msgid "%s record"
+msgstr "%s секунд"
+
+msgid "Subdomain list is empty!"
+msgstr "Список піддоменів порожній!"
+
+msgid "Delete order"
+msgstr "Видалити замовлення"
+
+msgid "Alias list is empty!"
+msgstr "Список аліасів порожній!"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Клієнт/Керування доменами"
+
+msgid "Mount point"
+msgstr "Точка монтування"
+
+msgid "Forward"
+msgstr "Переслати"
+
+#, fuzzy
+msgid "Actions"
+msgstr "Дія"
+
+#, fuzzy
+msgid "Record data"
+msgstr "Загальні відомості"
+
+msgid "i-MSCP - Client/Manage Error Custom Pages"
+msgstr "i-MSCP - Клієнт/Керування власними сторінками помилок"
+
+msgid "Server error - please choose error page"
+msgstr "Серверна помилка - оберіть сторінку помилки"
+
+msgid "Edit error page"
+msgstr "Редагувати сторінку помилок"
+
+msgid "Custom error page was updated!"
+msgstr "Сторінка помилки оновлена!"
+
+#, fuzzy
+msgid "System error - custom error page was not updated!"
+msgstr "Системна помилка - сторінка помилок НЕ оновлена!"
+
+msgid "Error 401 (unauthorised)"
+msgstr ""
+
+msgid "Error 403 (forbidden)"
+msgstr "Помилка 403 (доступ заборонено)"
+
+msgid "Error 404 (not found)"
+msgstr "Помилка 404 (сторінку не знайдено)"
+
+msgid "Error 500 (internal server error)"
+msgstr "Помилка 500 (внутрішня помилка серверу)"
+
+msgid "Error 503 (service unavailable)"
+msgstr ""
+
+msgid "FTP list is empty!"
+msgstr "Список FTP порожній!"
+
+msgid "i-MSCP - Client/Manage Users"
+msgstr "i-MSCP - Клієнт/Керування користувачами"
+
+msgid "FTPs total"
+msgstr "Усього FTP"
+
+msgid "FTP users"
+msgstr "Користувачі FTP"
+
+msgid "FTP account"
+msgstr "Користувач FTP"
+
+#, fuzzy
+msgid "Login As"
+msgstr "Ввійти"
+
+msgid "Empty List"
+msgstr "Порожній список"
+
+msgid "Empty list"
+msgstr "Порожній список"
+
+msgid "FTP account already exists!"
+msgstr "Користувач FTP уже існує!"
+
+msgid "Unknown domain type"
+msgstr ""
+
+msgid "Incorrect mount point length or syntax"
+msgstr ""
+
+#, php-format
+msgid "%s does not exist"
+msgstr ""
+
+msgid "FTP account added!"
+msgstr "Користувача FTP додано!"
+
+msgid "Please enter FTP account username!"
+msgstr "Введіть користувача FTP!"
+
+#, fuzzy
+msgid "Password is missing!"
+msgstr "Пароль порожній!"
+
+#, fuzzy
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
+msgstr "Список піддоменів порожній! Неможливо додати користувача FTP!"
+
+#, fuzzy
+msgid "Alias list is empty! You cannot add FTP accounts there!"
+msgstr ""
+"Список аліасів порожній! Ви не можете тут додавати облікові записи FTP!"
+
+#, fuzzy
+msgid "Please specify other FTP account directory!"
+msgstr "Будь ласка, укажіть іншу директорію користувача FTP!"
+
+msgid "FTP accounts limit reached!"
+msgstr ""
+
+msgid "i-MSCP - Client/Add FTP User"
+msgstr "i-MSCP - Клієнт/Додавання користувача FTP"
+
+msgid "To main domain"
+msgstr "Головному домену"
+
+msgid "To domain alias"
+msgstr "Аліасу домену"
+
+msgid "To subdomain"
+msgstr "Піддомену"
+
+msgid "Use other dir"
+msgstr "Використовувати іншу директорію"
+
+msgid "Choose dir"
+msgstr "Вибір директорії"
+
+#, fuzzy
+msgid "Unknown FTP user id!"
+msgstr "Невідомий тип"
+
+#, fuzzy
+msgid "Cannot open directory! Please contact your administrator!"
+msgstr ""
+"Не можу відкрити директорію!<br>Зверніться до Вашого системного "
+"адміністратора!"
+
+msgid "Parent Directory"
+msgstr "Батьківська директорія"
+
+msgid "i-MSCP - Client/Webtools"
+msgstr "i-MSCP - Клієнт/Web-інструменти"
+
+msgid "Directory tree"
+msgstr "Дерево директорій"
+
+msgid "Directories"
+msgstr "Директорії"
+
+msgid "Choose"
+msgstr "Вибрати"
+
+msgid "FTP account deleted successfully!"
+msgstr "Користувача FTP успішно видалено!"
+
+msgid "FTP account data updated!"
+msgstr "Дані користувача FTP оновлені!"
+
+msgid "i-MSCP - Client/Edit FTP Account"
+msgstr "i-MSCP - Клієнт/Редагування облікового запису FTP"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
+
+msgid "Edit FTP user"
+msgstr "Редагувати користувача FTP"
+
+msgid "Save changes"
+msgstr "Зберегти зміни"
+
+msgid "Hosting plans available for update"
+msgstr "Хостінг-плани, доступні для оновлення"
+
+msgid "Cancel order"
+msgstr "Скасувати замовлення"
+
+msgid "Your order"
+msgstr "Ваше замовлення"
+
+msgid "Purchase"
+msgstr "Замовлення"
+
+msgid "There are no available updates"
+msgstr "Немає наявних оновлень"
+
+msgid "PHP Support: enabled"
+msgstr "Підтрика PHP: увімкнена"
+
+msgid "PHP Support: disabled"
+msgstr "Підтримка PHP: вимкнена"
+
+msgid ""
+"You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+msgid "CGI Support: enabled"
+msgstr "Підтримка CGI: увімкнено"
+
+msgid "CGI Support: disabled"
+msgstr "Підтримка CGI: вимкнено"
+
+msgid ""
+"You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+#, fuzzy
+msgid "DNS Support: enabled"
+msgstr "Підтрика PHP: увімкнена"
+
+#, fuzzy
+msgid "DNS Support: disabled"
+msgstr "Підтримка PHP: вимкнена"
+
+msgid ""
+"You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
+msgstr ""
+
+msgid "You have more disk space in use than the new hosting plan limits."
+msgstr ""
+
+#, fuzzy
+msgid "Disk limit"
+msgstr "Диск у МБ"
+
+msgid "You did have more traffic than the new hosting plan limits."
+msgstr ""
+
+#, fuzzy
+msgid "Traffic limit"
+msgstr "Трафік"
+
+msgid "You have more aliases in use than the new hosting plan limits."
+msgstr ""
+
+msgid "You have more subdomains in use than the new hosting plan limits."
+msgstr ""
+
+msgid "You have more Email addresses in use than the new hosting plan limits."
+msgstr ""
+
+msgid "Emails"
+msgstr ""
+
+msgid "You have more FTP accounts in use than the new hosting plan limits."
+msgstr ""
+
+msgid "FTPs"
+msgstr ""
+
+msgid "You have more SQL databases in use than the new hosting plan limits."
+msgstr ""
+
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits."
+msgstr ""
+
+msgid "free of charge"
+msgstr "безкоштовно"
+
+msgid "You cannot update to this hosting plan, see notices in text."
+msgstr ""
+
+msgid "Warning:"
+msgstr ""
+
+msgid "Caution:"
+msgstr ""
+
+msgid "I understand the warnings - Purchase!"
+msgstr ""
+
+msgid "There are no available hosting plans for update"
+msgstr "Немає хостінг-планів для переходу"
+
+msgid "i-MSCP - Update hosting plan"
+msgstr "i-MSCP - Оновлення хостінг-плану"
+
+msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgstr ""
+
+msgid "Your request for hosting pack update was added successfully"
+msgstr "Ваш запит на зміну хостінг-плану успішно доданий"
+
+msgid "[i-MSCP OrderPanel] - You have an update order"
+msgstr ""
+
+#, php-format
+msgid ""
+"You have an update order for the account %s\n"
+"\n"
+"Please login into your i-MSCP control panel at %s for more details"
+msgstr ""
+
+msgid "Your request for hosting pack update was removed successfully"
+msgstr "Ваш запит на зміну хостінг-плану успішно видалений"
+
+msgid "disabled"
+msgstr "вимкнено"
+
+#, fuzzy, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Ви <b>%d</n> Нові відповіді на ваші питання підтримки"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr ""
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr ""
+
+msgid "You are exceeding your disk limit!"
+msgstr "Ви вичерпали ліміт дискового простору!"
+
+msgid "You have no new support questions!"
+msgstr "Немає нових питань підтримки!"
+
+#, fuzzy
+msgid "This Domain is expired"
+msgstr "Характеристики домену"
+
+msgid "i-MSCP - Client/Main Index"
+msgstr "i-MSCP - Клієнт/Головна"
+
+msgid "Main domain"
+msgstr "Головний домен"
+
+msgid "Manual DNS support"
+msgstr ""
+
+msgid "SQL support"
+msgstr "Підтримка SQL"
+
+msgid "Choose default language"
+msgstr "Вибір основної мови"
+
+msgid "Traffic usage"
+msgstr "Використання трафіку"
+
+msgid "Disk usage"
+msgstr "Використання дискового простору"
+
+msgid "Alternative URL to reach your website"
+msgstr ""
+
+msgid "User language updated successfully!"
+msgstr "Мова користувача успішно оновлена!"
+
+msgid "i-MSCP - Client/Change Language"
+msgstr "i-MSCP - Клієнт/Зміна мови"
+
+msgid "Please wait for update"
+msgstr "Будь ласка, зачекайте оновлення!"
+
+msgid "Mail accounts list is empty!"
+msgstr "Список поштових скриньок порожній!"
+
+msgid "Mail users"
+msgstr "Користувачі пошти"
+
+msgid "Auto respond"
+msgstr "Автовідповідач"
+
+msgid "Domain mails"
+msgstr "Пошта домену"
+
+msgid "Subdomain mails"
+msgstr "Пошта піддомена"
+
+msgid "Alias mails"
+msgstr "Поштові аліаси"
+
+msgid "Mails total"
+msgstr "Усього поштових скриньок"
+
+msgid "Show default E-Mail addresses"
+msgstr ""
+
+msgid "Hide default E-Mail Addresses"
+msgstr ""
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr ""
+
+msgid "Mail forward list empty!"
+msgstr "Список пересилань порожній!"
+
+#, fuzzy
+msgid "Forward to same address is not allowed!"
+msgstr "Піддомен уже існує!"
+
+msgid "Mail account already exists!"
+msgstr "Поштова скринька вже існує!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Триває додавання поштової скриньки!"
+
+#, fuzzy
+msgid "Please select at least one mail type!"
+msgstr "Укажіть скриньку відправника!"
+
+msgid "Please enter mail account username!"
+msgstr "Введіть користувача електронної пошти!"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Використано невірний формат Mail Localpart"
+
+msgid "Password data is missing!"
+msgstr "Пароль порожній!"
+
+msgid "Entered passwords differ!"
+msgstr "Паролі не співпадають!"
+
+#, fuzzy
+msgid "Subdomain alias"
+msgstr "Пошта піддомена"
+
+#, fuzzy, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "%s список порожній! Ви не можете додавати облікові записи!"
+
+#, fuzzy, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
+msgstr "%s ідентифікатор невірний! Ви не можете додавати облікові записи!"
+
+msgid "Forward list is empty!"
+msgstr "Список пересилання порожній!"
+
+msgid "Mail accounts limit reached!"
+msgstr ""
+
+msgid "i-MSCP - Client/Add Mail User"
+msgstr "i-MSCP - Клієнт/Додавання поштової скриньки"
+
+msgid "Add mail users"
+msgstr "Додати поштові скриньки"
+
+#, fuzzy
+msgid "To alias subdomain"
+msgstr "Піддомену"
+
+msgid "Normal mail"
+msgstr "Нормальний E-mail"
+
+msgid "Forward mail"
+msgstr "Пересилання пошти"
+
+msgid "Forward to"
+msgstr "Переслати:"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr ""
+
+msgid "You did not fill all required fields"
+msgstr ""
+
+msgid "Mail account scheduled for modification!"
+msgstr "Триває оновлення поштової скриньки!"
+
+msgid "Please type your mail autorespond message!"
+msgstr "Будь ласка, введіть повідомлення автовідповідача!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Оновлення поштової скриньки!"
+
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
+msgstr "i-MSCP - Клієнт/Активація автовідповідача"
+
+msgid "Edit mail auto responder"
+msgstr "Редагувати поштовий автовідповідач"
+
+msgid "Your message"
+msgstr "Ваше повідомлення"
+
+msgid "Enable mail auto responder"
+msgstr "Увімкнути автовідповідач"
+
+msgid "Delete CatchAll"
+msgstr "Видалити перехоплювач пошти"
+
+msgid "None"
+msgstr "Ні"
+
+msgid "Create catch all"
+msgstr "Створити перехоплення всього"
+
+msgid "Catch all account"
+msgstr "перехопити всю пошту"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Перехоплення всього в процесі створення!"
+
+msgid "Mail forward list error!"
+msgstr "Помилка списку пересилання пошти!"
+
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Клієнт/Створення \"перехоплювача пошти\""
+
+msgid "Create catch all mail account"
+msgstr "Створити перехоплення всіх поштових облікових записів"
+
+msgid "Mail accounts list"
+msgstr "Список поштових скриньок"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr "Перехоплення всього в процесі видалення!"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Видаліть спочатку \"перехоплювач усіх\" для цієї скриньки!"
+
+msgid "Email account not found!"
+msgstr ""
+
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
+msgstr "i-MSCP - Керування поштою та FTP / Редагування поштової скриньки"
+
+msgid "Mail were updated successfully!"
+msgstr "Пошта успішно оновлена!"
+
+msgid "Edit email account"
+msgstr "Редагувати поштову скриньку"
+
+msgid "i-MSCP - Client/Change Password"
+msgstr "i-MSCP - Клієнт/Зміна пароля"
+
+msgid "i-MSCP - Client/Change Personal Data"
+msgstr "i-MSCP - Клієнт/Зміна персональних даних"
+
+#, fuzzy
+msgid "Unknown SQL user id."
+msgstr "Невідомий тип"
+
+msgid "Error: An error occurred while authentication."
+msgstr ""
+
+msgid "You do not have protected areas"
+msgstr "Ви не маєте захищених зон"
+
+msgid "Manage users and groups"
+msgstr "Керування користувачами й групами"
+
+msgid "Group name"
+msgstr "Назва групи"
+
+msgid "Group members"
+msgstr "Члени групи"
+
+msgid "Add group"
+msgstr "Додати групу"
+
+msgid "Group"
+msgstr "Група"
+
+msgid "Add new protected area"
+msgstr "Додати захищену зону"
+
+msgid "Please choose user or group"
+msgstr "Оберіть користувача або групу"
+
+msgid "Please enter area name"
+msgstr "Введіть назву зони"
+
+msgid "Please enter area path"
+msgstr "Введіть шлях зони"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr ""
+
+#, fuzzy
+msgid "You cannot protect area without selected user(s)!"
+msgstr "Ви не можете створити захищену зону без вибору групи або груп"
+
+msgid "You cannot protect area without selected group(s)"
+msgstr "Ви не можете створити захищену зону без вибору групи або груп"
+
+msgid "Protected area updated successfully!"
+msgstr "Захищена зона успішно оновлена!"
+
+msgid "Protected area created successfully!"
+msgstr "Захищена зона успішно створена!"
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr ""
+
+msgid "You have no users !"
+msgstr "Ви не маєте користувачів!"
+
+msgid "You have no groups!"
+msgstr "Ви не маєте груп!"
+
+msgid "Protect this area"
+msgstr "Захистити цю зону"
+
+msgid "Path"
+msgstr "Шлях"
+
+msgid "Groups"
+msgstr "Групи"
+
+msgid "Protect it"
+msgstr "Захистити"
+
+msgid "User auth"
+msgstr "Авторизація користувача"
+
+msgid "Group auth"
+msgstr "Авторизація групи"
+
+msgid "Area name"
+msgstr "Ім'я зони"
+
+msgid "Unprotect it"
+msgstr "Відкрити"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr ""
+
+msgid "Protected area deleted successfully!"
+msgstr "Захищена зона успішно видалена!"
+
+msgid "Permission deny!"
+msgstr "Доступ заборонено!"
+
+msgid "Protected area was deleted successful!"
+msgstr "Захищена зона успішно видалена!"
+
+#, fuzzy
+msgid "Invalid group name!"
+msgstr "Список поштових скриньок"
+
+#, fuzzy
+msgid "Group already exists!"
+msgstr "Група вже існує!"
+
+msgid "Manage user"
+msgstr "Керування користувачем"
+
+msgid "Wrong username!"
+msgstr "Невірне ім'я користувача!"
+
+msgid "User already exist !"
+msgstr "Користувач уже існує!"
+
+#, fuzzy, php-format
+msgid "User was assigned to the %s group"
+msgstr "Користувач було покладено на %s групу"
+
+#, fuzzy, php-format
+msgid "User was deleted from the %s group "
+msgstr "Користувач був видалений з %s групи"
+
+msgid "User assign"
+msgstr "Призначення користувача"
+
+msgid "Already in:"
+msgstr "Уже в групі:"
+
+msgid "Member of group:"
+msgstr ""
+
+msgid "Select group:"
+msgstr ""
+
+msgid "Update user"
+msgstr "Оновити користувача"
+
+msgid "You have no users!"
+msgstr "Ви не маєте користувачів!"
+
+#, fuzzy
+msgid "Install in progress..."
+msgstr "Додавання..."
+
+#, fuzzy
+msgid "Deletion in progress..."
+msgstr "Триває видалення"
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "Немає нових оновлень i-MSCP"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permissions to install software"
+msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP - Клієнт/Керування завданнями Cron"
+
+#, fuzzy
+msgid "Install software"
+msgstr "Установити нову мову"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Завершити сесію"
+
+#, fuzzy
+msgid "Database"
+msgstr "База даних SQL"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "Доступні IP"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "Захищена зона успішно видалена!"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr "Список користувачів баз даних порожній!"
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "Додати SQL базу"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "Запит не знайдено!"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "Оберіть користувача (користувачів)!"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "Ви не маєте груп!"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "Установити нову мову"
+
+#, fuzzy
+msgid "Database required"
+msgstr "Користувачі баз даних"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "Реальний домен"
+
+#, fuzzy
+msgid "back"
+msgstr "Назад"
+
+#, fuzzy
+msgid "install"
+msgstr "видалити"
+
+#, fuzzy
+msgid "Install path"
+msgstr "Установити"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "База даних SQL"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "Користувач SQL"
+
+#, fuzzy
+msgid "installed"
+msgstr "видалити"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "Стан сервера"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "База даних SQL"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - Домен/Деталі"
+
+#, fuzzy
+msgid "Software details"
+msgstr "Деталі замовлення"
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Please type user password!"
+msgstr "Будь ласка, введіть пароль користувача!"
+
+msgid "Too long user password!"
+msgstr "Занадто довгий пароль користувача!"
+
+msgid "Don't use special chars like \"@, $, %...\" in the password!"
+msgstr ""
+
+msgid "SQL user password was successfully changed!"
+msgstr "Пароль користувача SQL успішно змінений!"
+
+msgid "i-MSCP - Client/Change SQL User Password"
+msgstr "i-MSCP - Клієнт/Зміна пароля користувача SQL"
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr ""
+"Користувач не існує, або Ви не маєте прав для доступу до цього інтерфейсу!"
+
+msgid "Change SQL user password"
+msgstr "Змінити пароль користувача SQL"
+
+msgid "Change"
+msgstr "Змінити"
+
+msgid "Please type database name!"
+msgstr "Будь ласка, введіть назву бази даних!"
+
+msgid "Database name is too long!"
+msgstr ""
+
+msgid "Specified database name already exists!"
+msgstr "Вказане ім'я бази даних уже існує!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr ""
+
+msgid "SQL database created successfully!"
+msgstr "База даних SQL успішно створена!"
+
+msgid "SQL accounts limit reached!"
+msgstr ""
+
+msgid "i-MSCP - Client/Add SQL Database"
+msgstr "i-MSCP - Клієнт/Додавання бази даних SQL"
+
+msgid "Database name"
+msgstr "Назва бази даних"
+
+msgid "Use numeric ID"
+msgstr "Використовувати числовий ID"
+
+msgid "Before the name"
+msgstr ""
+
+msgid "After the name"
+msgstr ""
+
+msgid "SQL database was removed successfully!"
+msgstr "База даних SQL успішно видалена!"
+
+msgid "SQL user was removed successfully!"
+msgstr "Користувач SQL успішно видалений!"
+
+msgid "Database list is empty!"
+msgstr "Список баз даних порожній!"
+
+msgid "i-MSCP - Client/Manage SQL"
+msgstr "i-MSCP - Клієнт/Керування SQL"
+
+#, fuzzy
+msgid "Database Name and Users"
+msgstr "Користувачі баз даних"
+
+msgid "Database users"
+msgstr "Користувачі баз даних"
+
+msgid "Add SQL user"
+msgstr "Додати SQL користувача"
+
+msgid "Execute query"
+msgstr "Виконати запит"
+
+msgid "Login phpMyAdmin"
+msgstr ""
+
+#, php-format
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered. "
+"All users linked to this database will also be deleted if not linked to "
+"another database. Are you sure you want to delete %s?"
+msgstr ""
+
+#, fuzzy
+msgid "SQL users limit reached!"
+msgstr "Ліміт користувачів SQL вичерпаний!"
+
+msgid "Please type user name!"
+msgstr "Будь ласка, введіть ім'я користувача!"
+
+msgid "Too user long password!"
+msgstr "Занадто довгий пароль користувача!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr ""
+
+msgid "User name too long!"
+msgstr "Занадто довге ім'я користувача!"
+
+msgid "Specified SQL username name already exists!"
+msgstr "Вказаний користувач бази даних уже існує!"
+
+msgid "SQL user successfully added!"
+msgstr "Користувач SQL успішно доданий!"
+
+msgid "i-MSCP - Client/Add SQL User"
+msgstr "i-MSCP - Клієнт/Додавання користувача SQL"
+
+msgid "SQL user name"
+msgstr "Користувач SQL"
+
+msgid "In front the name"
+msgstr "На початку назви"
+
+msgid "Behind the name"
+msgstr "У кінці імені"
+
+msgid "Add existing user"
+msgstr "Додати існуючого користувача"
+
+msgid "Existing SQL users"
+msgstr "Існуючі користувачі SQL"
+
+msgid "Subdomains limit reached!"
+msgstr ""
+
+msgid "Please specify subdomain name!"
+msgstr "Будь ласка, укажіть назву піддомена!"
+
+msgid "No valid alias domain selected!"
+msgstr ""
+
+#, fuzzy
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Піддомен уже існує!"
+
+#, fuzzy
+msgid "Mount point already in use!"
+msgstr "Точка монтування піддомену вже існує!"
+
+#, fuzzy
+msgid "Incorrect mount point syntax!"
+msgstr "Невірний синтаксис <i>точки монтування</i>!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Триває додавання піддомену!"
+
+msgid "i-MSCP - Client/Add Subdomain"
+msgstr "i-MSCP - Клієнт/Додавання піддомену"
+
+msgid "Subdomain data"
+msgstr "Відомості піддомену"
+
+msgid "Subdomain name"
+msgstr "Ім'я піддомену"
+
+#, fuzzy
+msgid "Directory tree mount point"
+msgstr "Точка монтування (директорія)"
+
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP - Адміністратор/Журнал адміністратора"
+
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "Керування доменами"
+
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "Редагувати домен"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
+msgstr "i-MSCP - Система підтримки"
+
+msgid "Please specify message subject!"
+msgstr "Будь ласка, укажіть тему повідомлення!"
+
+msgid "Low"
+msgstr "Низький"
+
+msgid "Medium"
+msgstr "Середній"
+
+msgid "High"
+msgstr "Високий"
+
+msgid "Very high"
+msgstr "Невідкладний"
+
+#, fuzzy
+msgid "Customize error pages for your domain"
+msgstr "Сторінка помилки оновлена!"
+
+msgid "Backup and restore settings"
+msgstr "Налаштування резервного копіювання та відновлення"
+
+msgid "Access your mail through the web interface"
+msgstr "Доступ до Вашої пошти через веб-інтерфейс"
+
+msgid "Access your files through the web interface"
+msgstr "Доступ до Ваших файлів через веб-інтерфейс"
+
+msgid "Access your Awstats statistics"
+msgstr ""
+
+msgid "Manage protected areas, users and groups"
+msgstr "Керування захищеними зонами, користувачами й групами"
+
+msgid "Install various software with a few *clicks*"
+msgstr ""
+
+msgid "{ADMIN} activated your software package"
+msgstr ""
+
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid " was deleted by {ADMIN}!"
+msgstr "IP видалено!"
+
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr ""
+
+#, php-format
+msgid "%.2f TB"
+msgstr ""
+
+#, php-format
+msgid "%.2f GB"
+msgstr ""
+
+#, php-format
+msgid "%.2f MB"
+msgstr ""
+
+#, php-format
+msgid "%.2f KB"
+msgstr ""
+
+#, php-format
+msgid "%d B"
+msgstr ""
+
+msgid "Domain mail"
+msgstr "Пошта домену"
+
+msgid "Email forward"
+msgstr "Пересилання пошти"
+
+msgid "Alias mail"
+msgstr "Поштовий аліас"
+
+msgid "Alias forward"
+msgstr "Перенаправити аліас"
+
+msgid "Subdomain mail"
+msgstr "Пошта піддомена"
+
+msgid "Subdomain forward"
+msgstr "Перенаправлення піддомену"
+
+#, fuzzy
+msgid "Alias subdomain mail"
+msgstr "Пошта піддомена"
+
+#, fuzzy
+msgid "Alias subdomain forward"
+msgstr "Перенаправлення піддомену"
+
+msgid "Unknown type"
+msgstr "Невідомий тип"
+
+msgid "Welcome {USERNAME} to i-MSCP!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+
+#, fuzzy
+msgid "Please activate your new i-MSCP password!"
+msgstr "Будь ласка, введіть пароль користувача!"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"Use this link to activate your new i-MSCP password:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+
+msgid "Your new i-MSCP login!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"Your user name is: {USERNAME}\n"
+"Your password is: {PASSWORD}\n"
+"\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+
+msgid "Confirmation for domain order {DOMAIN}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {NAME},\n"
+"This is an automatic confirmation for the order of the domain:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"You have to click the following link to continue the domain creation "
+"process.\n"
+"\n"
+"{ACTIVATE_LINK}\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+
+msgid "New alias order for {CUSTOMER}!"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+
+#, fuzzy
+msgid "Your message has been sent."
+msgstr "Ваше повідомлення надіслане!"
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "Ваше повідомлення надіслане!"
+
+msgid "Ticket was closed!"
+msgstr "Запит закрито!"
+
+msgid "Ticket was reopened!"
+msgstr ""
+
+#, fuzzy
+msgid "Never"
+msgstr "Рівень"
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "Ви не маєте запитів підтримки."
+
+msgid "[New]"
+msgstr "[Нове]"
+
+msgid "[Re]"
+msgstr "[Відповідь]"
+
+msgid "Open ticket"
+msgstr "Відкритий запит"
+
+msgid "Close ticket"
+msgstr "Закрити запит підтримки"
+
+msgid "[Ticket]"
+msgstr ""
+
+#, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have a new ticket:\n"
+msgstr ""
+
+#, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have an answer for this ticket:\n"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Priority: %s\n"
+msgstr "Пріоритет: %s\n"
+
+msgid "Log in to answer"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Невірний запис доменного імені!"
+
+#, fuzzy
+msgid "Wrong domain name lenght!"
+msgstr "Невірний запис доменного імені!"
+
+#, fuzzy
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Невірний запис субдомену!"
+
+#, fuzzy
+msgid "Wrong subdomain lenght!"
+msgstr "Невірний запис субдомену!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Зарезервована неправильне ім'я домену: <b>%s</b>!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr ""
+
+msgid ""
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "You have to wait %d seconds."
+msgstr "Ви повинні почекати %d секунд."
+
+#, fuzzy, php-format
+msgid "You have been blocked for %d minutes."
+msgstr "Ви були заблоковані протягом %d хвилин."
+
+#, fuzzy
+msgid "You entered an incorrect username!"
+msgstr "Введіть користувача електронної пошти!"
+
+#, fuzzy
+msgid "System is currently under maintenance! Only administrators can login."
+msgstr ""
+"Система знаходиться в стані обслуговування! Лише адміністратори можуть "
+"входити до системи."
+
+#, fuzzy, php-format
+msgid "%s user already logged or session sharing problem! Aborting..."
+msgstr "%s користувач уже увійшов чи сеанс обміну проблема! Переривання..."
+
+msgid "User already logged or session sharing problem! Aborting..."
+msgstr "Користувач уже ввійшов, або проблема визначення сесій! Переривання..."
+
+#, php-format
+msgid "%s's account status is not ok!"
+msgstr ""
+
+#, php-format
+msgid "%s's domain expired!"
+msgstr ""
+
+msgid "You entered an incorrect password!"
+msgstr ""
+
+msgid "Request from foreign host was blocked!"
+msgstr ""
+
+msgid "You do not have permission to access this interface!"
+msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
+
+msgid "Addition in progress"
+msgstr "Додавання..."
+
+msgid "Modification in progress"
+msgstr "Триває зміна"
+
+msgid "Deletion in progress"
+msgstr "Триває видалення"
+
+#, fuzzy
+msgid "Being enabled"
+msgstr "увімкнено"
+
+#, fuzzy
+msgid "Being suspended"
+msgstr "блоковано"
+
+msgid "Awaiting approval"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown error"
+msgstr "Невідомий тип"
+
+msgid "You have reached your domains limit.<br />You cannot add more domains!"
+msgstr ""
+
+msgid ""
+"You have a subdomains limit!<br />You cannot add an user with unlimited "
+"subdomains!"
+msgstr ""
+
+msgid "You are exceeding your subdomains limit!"
+msgstr ""
+
+msgid ""
+"You have an aliases limit!<br />You cannot add an user with unlimited "
+"aliases!"
+msgstr ""
+
+msgid "You Are Exceeding Your Alias Limit!"
+msgstr "Ви вичерпали ліміт аліасів!"
+
+msgid ""
+"You have a mail accounts limit!<br />You cannot add an user with unlimited "
+"mail accounts!"
+msgstr ""
+
+msgid "You are exceeding your mail accounts limit!"
+msgstr ""
+
+msgid ""
+"You have a FTP accounts limit!<br />You cannot add an user with unlimited "
+"FTP accounts!"
+msgstr ""
+
+msgid "You are exceeding your FTP accounts limit!"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"You have a SQL databases limit!<br />You cannot add an user with unlimited "
+"SQL databases!"
+msgstr ""
+"Бази даних для цього користувача заблоковані.<br>Ви не можете мати "
+"користувачів SQL!"
+
+msgid "You are exceeding your SQL databases limit!"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"You have an SQL users limit!<br />You cannot add an user with unlimited SQL "
+"users!"
+msgstr ""
+"Бази даних для цього користувача заблоковані.<br>Ви не можете мати "
+"користувачів SQL!"
+
+#, fuzzy
+msgid ""
+"You have disabled SQL databases for this user!<br />You cannot have SQL "
+"users here!"
+msgstr ""
+"Бази даних для цього користувача заблоковані.<br>Ви не можете мати "
+"користувачів SQL!"
+
+msgid "You are exceeding your SQL database limit!"
+msgstr ""
+
+msgid ""
+"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+msgstr ""
+
+msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgstr ""
+
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
+
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "Детально"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "Невірне ім'я користувача!"
+
+#, fuzzy
+msgid "Login password"
+msgstr "Відновити пароль"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "Електронна пошта"
+
+#, fuzzy
+msgid "enabled"
+msgstr "Увімкнено"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "Опис"
+
+#, fuzzy
+msgid "You do not have permissions to install application yet"
+msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+msgid "Start installation"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
+msgstr ""
+
+msgid "You have a new order"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
+"\n"
+"Please login into your i-MSCP control panel for more details.\n"
+"\n"
+msgstr ""
+
+#, fuzzy
+msgid "Your order has been successfully created."
+msgstr "Пароль користувача SQL успішно змінений!"
+
+msgid "Error creating order! Perhaps already activated?"
+msgstr ""
+
+#, fuzzy
+msgid "Order confirmation"
+msgstr "Загальна інформація"
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "Такий домен уже існує в системі!"
+
+#, fuzzy
+msgid "This hosting plan is not available for purchase"
+msgstr "Хостінг-плани, доступні для оновлення"
+
+msgid "Add On A Domain"
+msgstr "Додати домен"
+
+msgid "Continue"
+msgstr "Далі"
+
+msgid "(e.g. domain-of-your-choice.com)"
+msgstr ""
+
+msgid "Please fill out all needed fields!"
+msgstr "Будь ласка, заповніть усі потрібні поля!"
+
+msgid "Enter Address"
+msgstr "Введіть адресу"
+
+msgid "* denotes mandatory field."
+msgstr "* позначені обов'язкові для заповнення поля"
+
+#, fuzzy
+msgid "Term of Service"
+msgstr "Сервіс"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
+msgid "Your Chart"
+msgstr "Ваша схема"
+
+msgid "Costs"
+msgstr "Ціни"
+
+msgid "Personal Data"
+msgstr "Персональні дані"
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+
+#, fuzzy
+msgid "Security code was incorrect!"
+msgstr "ПОМИЛКА: Невірний код безпеки!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
+
+msgid "Check Out"
+msgstr "Перевірено"
+
+#, fuzzy
+msgid ""
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
+msgstr ""
+"<b>Дякуємо за замовлення</b><br>Ви отримаєте електронне повідомлення з більш "
+"детальною інформацією"
+
+msgid "No available hosting packages"
+msgstr "Хостінг-плани відсутні"
+
+msgid "Webspace"
+msgstr "Місце на диску"
+
+msgid "Domain Features"
+msgstr "Характеристики домену"
+
+msgid "Package Features"
+msgstr "Характеристика хостінг-плану"
+
+msgid "Backup and Restore"
+msgstr "Резервне копіювання та відновлення"
+
+msgid "Custom Error Pages"
+msgstr "Індивідуальні сторінки помилок"
+
+msgid "Protected Areas"
+msgstr "Захищені зони"
+
+msgid "Custom Apache Logs"
+msgstr "Журнали Apache"
+
+msgid "Web & E-Mail Support"
+msgstr "Web & E-mail підтримка"
+
+msgid "Your Own Domain"
+msgstr "Ваш власний домен"
+
+msgid "i-MSCP Control Panel"
+msgstr "Контрольна панель i-MSCP"
+
+msgid "Automatic Updates"
+msgstr "Автоматичні оновлення"
+
+msgid "Package Price"
+msgstr "Ціна"
+
+msgid "Setup Fee"
+msgstr "Плата за установку"
+
+msgid "Performance"
+msgstr "Виконання"
+
+msgid "You have no alias records."
+msgstr "Ви не маєте записів аліасів."
+
+msgid "Domain alias added for termination!"
+msgstr "Видалення аліаса домену!"
+
+msgid "Domain alias not added for termination!"
+msgstr "Аліас домену не може бути видалений!"
+
+msgid "Domain alias added!"
+msgstr "Аліас домену додано!"
+
+msgid "Domain alias not added!"
+msgstr "Аліас домену не додано!"
+
+msgid "Domain alias modified!"
+msgstr "Аліас домену змінено!"
+
+msgid "Domain alias not modified!"
+msgstr "Аліас домену не змінено!"
+
+#, fuzzy
+msgid "Ordered domain alias not deleted!"
+msgstr "Аліас домену не додано!"
+
+#, fuzzy
+msgid "Ordered domain alias activated!"
+msgstr "Аліас домену додано!"
+
+#, fuzzy
+msgid "Ordered domain alias not activated!"
+msgstr "Аліас домену не додано!"
+
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Керування доменами/Аліаси"
+
+msgid "Manage alias"
+msgstr "Керування аліасами"
+
+msgid "Real domain"
+msgstr "Реальний домен"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "Реселер i-MSCP : Додавання аліасу"
+
+msgid "i-MSCP - Circular"
+msgstr "i-MSCP - Адміністратор/Реклама"
+
+msgid "Circular"
+msgstr "Масова розсилка пошти"
+
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Домен/Редагування"
+
+#, fuzzy
+msgid "Domain properties could not be updated!"
+msgstr "Властивості домену успішно оновлені!"
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled!"
+msgstr ""
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited!"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Реселер/Головна"
+
+msgid "View details"
+msgstr "Перегляд деталей"
+
+msgid "i-MSCP - Reseller/Add hosting plan"
+msgstr "i-MSCP - Реселер/Додавання хостінг-плану"
+
+msgid "Price must be a number!"
+msgstr ""
+
+msgid "Setup fee must be a number!"
+msgstr ""
+
+#, fuzzy
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Edit hosting plan"
+msgstr "i-MSCP - Реселер/Редагування хостінг-плану"
+
+msgid "View hosting plan"
+msgstr "Перегляд хостінг-плану"
+
+msgid "User accounts"
+msgstr "Облікові записи користувачів"
+
+msgid "Mail account"
+msgstr "Поштова скринька"
+
+msgid "Extras"
+msgstr "Додатково"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$s</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr ""
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr ""
+
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - Клієнт/Зміна мови"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "Статистика реселера"
+
+#, fuzzy
+msgid "i-MSCP - Reseller/Change Language"
+msgstr "i-MSCP - Клієнт/Зміна мови"
+
+msgid "i-MSCP - Reseller/Order email setup"
+msgstr "i-MSCP - Реселер/Налаштування замовлення"
+
+msgid "Manage orders"
+msgstr "Керування замовленнями"
+
+#, fuzzy
+msgid "Activation Link"
+msgstr "Посилання"
+
+msgid "i-MSCP - Reseller/Order settings"
+msgstr "i-MSCP - Реселер/Налаштування замовлення"
+
+msgid "Header"
+msgstr "Верхня частина"
+
+msgid "Preview"
+msgstr "Перегляд"
+
+msgid "Implementation URL"
+msgstr "Робочий URL"
+
+msgid "Footer"
+msgstr "Нижня частина"
+
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Реселер/Керування замовленнями"
+
+msgid "You do not have new orders!"
+msgstr "Ви не маєте нових замовлень!"
+
+msgid "New order"
+msgstr "Нове замовлення"
+
+msgid "Update order"
+msgstr "Оновити замовлення"
+
+msgid "ID"
+msgstr ""
+
+msgid "Customer data"
+msgstr "Дані користувача"
+
+msgid "Order"
+msgstr "Замовлення"
+
+msgid "Hosting plan"
+msgstr "Хостінг-план"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+msgid "Add/Details"
+msgstr "Додати/Деталі"
+
+msgid "Wrong order ID!"
+msgstr "Невірний ID замовлення!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "Wrong domain name syntax!"
+msgstr "Невірний запис доменного імені!"
+
+msgid "User added!"
+msgstr "Користувача додано!"
+
+msgid "Customer order was removed successful!"
+msgstr "Замовлення було успішно видалене!"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Реселер/Деталі замовлення"
+
+msgid "Order data updated successfully!"
+msgstr "Дані про замовлення успішно оновлені!"
+
+msgid "Order date"
+msgstr "Дата замовлення"
+
+msgid "Hosting details"
+msgstr "Детально"
+
+msgid "Order details"
+msgstr "Деталі замовлення"
+
+msgid "Add to the system"
+msgstr "Додати в систему"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Change Password"
+msgstr "i-MSCP - Реселер/Зміна пароля"
+
+msgid "i-MSCP - Reseller/Change Personal Data"
+msgstr "i-MSCP - Реселер/Зміна персональних даних"
+
+msgid "i-MSCP - Reseller/Lostpw email setup"
+msgstr "i-MSCP - Реселер/Налаштування відновлення пароля"
+
+msgid "Lostpw email"
+msgstr "E-mail для відновлення пароля"
+
+msgid "Lostpw link"
+msgstr "Посилання на відновлення пароля"
+
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "Укажіть тему!"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "Шаблон автовідповідача пошти оновлено!"
+
+msgid "i-MSCP - Reseller/Manage users/Email setup"
+msgstr ""
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+#, fuzzy
+msgid "waiting for activation"
+msgstr "Триває додавання аліасу!"
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "Активне"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have any software uploaded yet"
+msgstr "Ви не маєте нових замовлень!"
+
+#, fuzzy
+msgid "You do not have permissions to upload software"
+msgstr "Ви не маєте прав доступу до цього інтерфейсу!"
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "Завершити сесію"
+
+#, fuzzy
+msgid "Software status"
+msgstr "Стан сервера"
+
+#, fuzzy
+msgid "Software upload"
+msgstr "Завантаження логотипа"
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "База даних SQL"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "Назва бази даних"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - Система підтримки"
+
+msgid "i-MSCP - Reseller: Support System: View Ticket"
+msgstr "i-MSCP - Реселер : Система підтримки: Перегляд запитів"
+
+msgid "i-MSCP - Users/Add user"
+msgstr "i-MSCP - Користувачі/Додавання користувача"
+
+#, fuzzy
+msgid "Domain expire date"
+msgstr "Характеристики домену"
+
+msgid "Choose hosting plan"
+msgstr "Вибір хостінґ-плану"
+
+msgid "Personalise template"
+msgstr ""
+
+msgid "Next step"
+msgstr "Наступний крок"
+
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr ""
+
+msgid "i-MSCP - User/Add user(step2)"
+msgstr "i-MSCP - Користувач/Додавання користувача (крок 2)"
+
+msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr ""
+
+msgid "Apache logs"
+msgstr "Журнали веб-сервера"
+
+msgid "Awstats"
+msgstr "AWStats"
+
+msgid "Domain data has been altered. Please enter again"
+msgstr ""
+
+msgid "i-MSCP - User/Add user"
+msgstr "i-MSCP - Користувач/Додавання користувача"
+
+msgid "Add other domains to this account"
+msgstr "Додати інші домени до цього облікового запису"
+
+#, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
+
+msgid "i-MSCP - Users/Edit"
+msgstr "i-MSCP - Користувачі/Редагування"
+
+msgid "Users list"
+msgstr "Список користувачів"
+
+msgid "This reseller has no domains yet."
+msgstr "Цей реселер не має доменів."
+
+msgid "i-MSCP - Users"
+msgstr "i-MSCP - Користувачі"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Ви впевнені, що хочете змінити статус %s?"
+
+msgid "Stats"
+msgstr "Статистика"
+
+#, fuzzy
+msgid "Edit User"
+msgstr "Редагувати користувача"
+
+msgid "Bandwidth"
+msgstr ""
+
+#, fuzzy
+msgid "View aliases"
+msgstr "переглянути аліаси"
+
+#, fuzzy
+msgid "You do not have customers."
+msgstr "Ви не маєте нових замовлень!"
+
+#, php-format
+msgid "%1$s of %2$s MB"
+msgstr ""
+
+#, php-format
+msgid "%1$s of <b>unlimited</b> MB"
+msgstr ""
+
+msgid "User data updated!"
+msgstr "Дані користувача оновлені!"
+
+msgid "User data not updated!"
+msgstr "Дані користувача не оновлені!"
+
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
+msgstr "Цей користувач має домен!<br>Спочатку видаліть домен із системи!"
+
+msgid "User terminated!"
+msgstr "Користувач видалений!"
+
+msgid "User not terminated!"
+msgstr "Користувач не видалений!"
+
+#~ msgid "Please enter your login information"
+#~ msgstr "Введіть Ваш логін і пароль"
+
+#~ msgid "Retry"
+#~ msgstr "Повторити"
+
+#~ msgid "Request password"
+#~ msgstr "Запит пароля"
+
+#, fuzzy
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "Ви впевнені, що бажаєте видалити це замовлення?"
+
+#, fuzzy
+#~ msgid "A database update is available"
+#~ msgstr "Немає нових оновлень i-MSCP"
+
+#, fuzzy
+#~ msgid "Panel Default"
+#~ msgstr "Довільне"
+
+#, fuzzy
+#~ msgid "Settings saved!"
+#~ msgstr "Налаштування збережені!"
+
+#~ msgid "Message was sent."
+#~ msgstr "Повідомлення відправлене."
+
+#, fuzzy
+#~ msgid "ISPCP - Client/Webtools"
+#~ msgstr "i-MSCP - Клієнт/Web-інструменти"
+
+#, fuzzy
+#~ msgid "i-MSCP Error"
+#~ msgstr "Помилка"
+
+#, fuzzy
+#~ msgid "Error Message"
+#~ msgstr "Сторінки помилок"
+
+#, fuzzy
+#~ msgid "Unchanged"
+#~ msgstr "Змінити"
+
+#, fuzzy
+#~ msgid "- 1 Month"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "+ 1 Month"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "+ 2 Months"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "+ 3 Months"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "+ 6 Months"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "+ 1 Year"
+#~ msgstr "Рік"
+
+#, fuzzy
+#~ msgid "+ 2 Years"
+#~ msgstr "Рік"
+
+#, fuzzy
+#~ msgid "1 Month"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "2 Months"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "3 Months"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "6 Months"
+#~ msgstr "Місяць"
+
+#, fuzzy
+#~ msgid "1 Year"
+#~ msgstr "Рік"
+
+#, fuzzy
+#~ msgid "2 Years"
+#~ msgstr "Рік"
+
+#~ msgid "You have no users."
+#~ msgstr "Ви не маєте користувачів."
+
+#~ msgid "days"
+#~ msgstr "дні"
+
+#~ msgid "hours"
+#~ msgstr "год."
+
+#~ msgid "Load"
+#~ msgstr "Завантаження"
+
+#, fuzzy
+#~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+#~ msgstr "Користувач(і) SQL<br><i>(-1 - заборонено, 0 - необмежено)</i>"
+
+#~ msgid "Incorrect forward syntax"
+#~ msgstr "Невірний синтаксис <i>пересилання</i>!"
+
+#~ msgid "Entered passwords differ from the another!"
+#~ msgstr "Паролі не співпадають!"
+
+#, fuzzy
+#~ msgid "Error:"
+#~ msgstr "Помилка"

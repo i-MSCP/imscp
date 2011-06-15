@@ -1,0 +1,75 @@
+# French (fr_FR) change_pass plugin translation.
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# Ludovic Marcotte <ludovic@Sophos.ca>, 2003.
+# $Id: change_pass.po 13719 2009-05-18 12:02:52Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: change_pass 2.6\n"
+"POT-Creation-Date: 2003-09-12 12:12-0600\n"
+"PO-Revision-Date: 2003-12-17 15:37-0700\n"
+"Last-Translator: Ludovic Marcotte <ludovic@Sophos.ca>\n"
+"Language-Team: French <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:36 setup.php:18
+msgid "Change Password"
+msgstr "Changer le mot de passe"
+
+#: options.php:77
+msgid "Closing Connection"
+msgstr "Fermeture de la connexion"
+
+#: options.php:137
+msgid "Connecting to Password Server"
+msgstr "Connexion au serveur de mot de passe"
+
+#: options.php:141
+msgid "ERROR:"
+msgstr "ERREUR:"
+
+#: options.php:52
+msgid "New Password"
+msgstr "Nouveau mot de passe"
+
+#: options.php:51
+msgid "Old Password"
+msgstr "Ancien mot de passe"
+
+#: options.php:173 setup.php:35
+msgid "Password changed successfully."
+msgstr "Le mot de passe a &#233;t&#233; chang&#233; avec succ&#232;s."
+
+#: options.php:64
+msgid "Submit"
+msgstr "Soumettre"
+
+#: setup.php:20
+msgid ""
+"This connects to your local Password Server to change your email password."
+msgstr "Ceci se connecte &#224; votre serveur de mot de passe afin de le changer."
+
+#: options.php:53
+msgid "Verify New Password"
+msgstr "V&#233;rifiez le nouveau mot de passe"
+
+#: options.php:112
+msgid "You must also type in your new password in the verify box."
+msgstr "Vous devez aussi sp&#233;cifiez le nouveau mot de passe dans le champ de v&#233;rification."
+
+#: options.php:109
+msgid "You must type in a new password."
+msgstr "Vous devez sp&#233;cifiez un nouveau mot de passe."
+
+#: options.php:106
+msgid "You must type in your old password."
+msgstr "Vous devez sp&#233;cifiez votre ancien mot de passe."
+
+#: options.php:115
+msgid "Your new password doesn't match the verify password."
+msgstr "Votre nouveau mot de passe n'est pas identique &#224; celui de v&#233;rification."
+
+#: options.php:118
+msgid "Your old password is not correct."
+msgstr "Votre ancien mot de passe est incorrect."

@@ -1,0 +1,5041 @@
+# Hebrew translation
+# Copyright (c) 2002-2009 The SquirrelMail Project Team
+# yoav <yoavb@zavit.net.il>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: squirrelmail.po,v 1.1 2003/07/13 09:40:51 tokul Exp "
+"$\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-16 19:47+0200\n"
+"PO-Revision-Date: 2002-05-03 13:21+0200\n"
+"Last-Translator: yoav <yoavb@zavit.net.il>\n"
+"Language-Team: HEBREW <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Address Book"
+msgstr "ספר כתובות"
+
+msgid "Name"
+msgstr "שם"
+
+msgid "E-mail"
+msgstr "כתובת דוא\"ל"
+
+msgid "Info"
+msgstr "מידע"
+
+msgid "Source"
+msgstr "מקור"
+
+msgid "To"
+msgstr "אל"
+
+msgid "Cc"
+msgstr "העתקים"
+
+msgid "Bcc"
+msgstr "העתקים עיוורים"
+
+#, fuzzy
+msgid "No persons matching your search were found"
+msgstr "לא נמצאו מכותבים המתאימים לתנאי החיפוש"
+
+msgid "Search for"
+msgstr "חפש את"
+
+msgid "in"
+msgstr "ב"
+
+msgid "All address books"
+msgstr "כל ספרי הכתובות"
+
+msgid "Search"
+msgstr "חפש"
+
+msgid "List all"
+msgstr "הצג הכל"
+
+msgid "Close"
+msgstr "סגור"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "לא יכול להציג כתובות מ %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "החיפוש נכשל עם השגיאות הבאות"
+
+msgid "All"
+msgstr "הכל"
+
+msgid "Use Addresses"
+msgstr "השתמש בכתובות"
+
+#, fuzzy
+msgid "Cancel"
+msgstr "שנה"
+
+msgid "Address Book Search"
+msgstr "חיפוש בספר כתובות"
+
+msgid "Return"
+msgstr "חזור"
+
+msgid "Nickname"
+msgstr "כינוי"
+
+msgid "Must be unique"
+msgstr "חייב להיות ייחודי"
+
+msgid "E-mail address"
+msgstr "כתובת דוא\"ל"
+
+msgid "Last name"
+msgstr "שם משפחה"
+
+msgid "First name"
+msgstr "שם פרטי"
+
+msgid "Additional info"
+msgstr "מידע נוסף"
+
+#, fuzzy
+msgid "Add to:"
+msgstr "הוסף ל %s"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "לא הוגדר ספר כתובות אישי. צור קשר עם מנהל המערכת."
+
+msgid "You can only edit one address at the time"
+msgstr "ביכולתך לערוך ספר כתובות אחד בכל פעם"
+
+msgid "Update address"
+msgstr "עדכן כתובת"
+
+msgid "ERROR"
+msgstr "שגיאה"
+
+msgid "Please select address that you want to edit"
+msgstr ""
+
+msgid "Add address"
+msgstr "הוסף כתובת"
+
+msgid "Edit selected"
+msgstr "ערוך נבחרים"
+
+msgid "Delete selected"
+msgstr "מחק נבחרים"
+
+#, php-format
+msgid "Add to %s"
+msgstr "הוסף ל %s"
+
+#, php-format
+msgid "%s wrote:"
+msgstr ""
+
+msgid "quote"
+msgstr "ציטוט"
+
+msgid "who"
+msgstr "מי"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr ""
+
+msgid "Subject"
+msgstr "נושא"
+
+msgid "From"
+msgstr "מאת"
+
+msgid "Date"
+msgstr "תאריך"
+
+msgid "Original Message"
+msgstr "הודעה מקורית"
+
+msgid "Draft Email Saved"
+msgstr "טיוטת דוא\"ל נשמרה"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "לא יכול להעתיק/להעביר את הקובץ. הקובץ לא צורף."
+
+msgid "Draft Saved"
+msgstr "טיוטה נשמרה"
+
+#, fuzzy
+msgid "Your Message has been sent."
+msgstr "הודעתך נשלחה"
+
+msgid "From:"
+msgstr "מאת:"
+
+msgid "Send"
+msgstr "שלח"
+
+msgid "Attach:"
+msgstr "צרף:"
+
+msgid "Add"
+msgstr "הוסף"
+
+msgid "Delete selected attachments"
+msgstr "מחק מצורפים נבחרים"
+
+msgid "Priority"
+msgstr "עדיפות"
+
+msgid "High"
+msgstr "גבוהה"
+
+msgid "Normal"
+msgstr "רגילה"
+
+msgid "Low"
+msgstr "נמוכה"
+
+msgid "Receipt"
+msgstr "קבלה"
+
+#, fuzzy
+msgid "On Read"
+msgstr "בקריאה"
+
+msgid "On Delivery"
+msgstr "בשליחה"
+
+msgid "Signature"
+msgstr "חתימה"
+
+msgid "Addresses"
+msgstr "כתובות"
+
+msgid "Save Draft"
+msgstr "שמור טיוטה"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "לא מילאת את שדה ה-\"אל\""
+
+#, fuzzy, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "משתמש '%s' אינו קיים"
+
+#, fuzzy
+msgid "Server replied:"
+msgstr "השרת השיב:"
+
+msgid "Folders"
+msgstr "תיקיות"
+
+#, fuzzy
+msgid "Subscribed successfully."
+msgstr "נרשמת בהצלחה!"
+
+#, fuzzy
+msgid "Unsubscribed successfully."
+msgstr "בטלת הרשמה בהצלחה!"
+
+#, fuzzy
+msgid "Deleted folder successfully."
+msgstr "תיקיה נמחקה!"
+
+#, fuzzy
+msgid "Created folder successfully."
+msgstr "התיקיה נוצרה!"
+
+#, fuzzy
+msgid "Renamed successfully."
+msgstr "השם שונה בהצלחה!"
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr ""
+
+msgid "refresh folder list"
+msgstr "רענן רשימת תיקיות"
+
+msgid "Create Folder"
+msgstr "צור תיקיה"
+
+msgid "as a subfolder of"
+msgstr "כתת-תיקיה של"
+
+msgid "None"
+msgstr "כלום"
+
+msgid "Let this folder contain subfolders"
+msgstr "אפשר לתיקיה זו להכיל תת-תיקיות"
+
+msgid "Create"
+msgstr "צור"
+
+msgid "Rename a Folder"
+msgstr "שנה שם תיקיה"
+
+msgid "Select a folder"
+msgstr "בחר תיקיה"
+
+msgid "Rename"
+msgstr "שנה שם"
+
+msgid "No folders found"
+msgstr "לא נמצאו תיקיות"
+
+msgid "Delete Folder"
+msgstr "מחק תיקיה"
+
+msgid "Delete"
+msgstr "מחק"
+
+msgid "Unsubscribe"
+msgstr "בטל הרשמה"
+
+msgid "Subscribe"
+msgstr "הרשם"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "לא נמצאו תיקיות לביטול הרשמה מהן!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "לא נמצאו תיקיות להרשם אליהן!"
+
+#, fuzzy
+msgid "Subscribe to:"
+msgstr "הרשם"
+
+#, fuzzy
+msgid "Illegal folder name. Please select a different name."
+msgstr "שם תיקיה לא חוקי. אנא בחר שם אחר."
+
+msgid "Click here to go back"
+msgstr "לחץ כאן לחזור אחורה"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "לא בחרת תיקיה למחיקה."
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "האם ברצונך למחוק ארוע זה?"
+
+msgid "Yes"
+msgstr "כן"
+
+msgid "No"
+msgstr "לא"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "לא בחרת תיקיה אשר ברצונך לשנות את שמה."
+
+msgid "Rename a folder"
+msgstr "שינוי שם תיקיה"
+
+msgid "New name:"
+msgstr "שם חדש:"
+
+msgid "Submit"
+msgstr "שלח"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr ""
+
+msgid "Help"
+msgstr "עזרה"
+
+#, fuzzy, php-format
+msgid ""
+"The help has not been translated to %s. It will be displayed in English "
+"instead."
+msgstr "העזרה עדיין לא תורגמה ל %s. היא תוצג באנגלית במקום זאת."
+
+msgid "Some or all of the help documents are not present!"
+msgstr "חלק או כל ממסמכי העזרה לא נמצאו!"
+
+msgid "Table of Contents"
+msgstr "תוכן עניינים"
+
+msgid "Previous"
+msgstr "הקודם"
+
+msgid "Next"
+msgstr "הבא"
+
+msgid "Top"
+msgstr "למעלה"
+
+msgid "Viewing an image attachment"
+msgstr "מציג תמונה מצורפת"
+
+msgid "View message"
+msgstr "הצג הודעה"
+
+msgid "Download this as a file"
+msgstr "הורד כקובץ"
+
+msgid "INBOX"
+msgstr "דואר נכנס"
+
+#, fuzzy
+msgid "Purge"
+msgstr "מחק"
+
+msgid "Login"
+msgstr "כניסה"
+
+#, php-format
+msgid "%s Logo"
+msgstr "לוגו של %s"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail גירסא %s"
+
+#, fuzzy
+msgid "By the SquirrelMail Project Team"
+msgstr "ע\"י צוות הפיתוח של SquirrelMail"
+
+#, php-format
+msgid "%s Login"
+msgstr "כניסה ל-%s"
+
+msgid "Name:"
+msgstr "שם משתמש:"
+
+msgid "Password:"
+msgstr "סיסמא:"
+
+msgid "No messages were selected."
+msgstr "לא נבחרו הודעות."
+
+msgid "Personal Information"
+msgstr "מידע אישי"
+
+msgid "Display Preferences"
+msgstr "אפשרויות תצוגה"
+
+msgid "Message Highlighting"
+msgstr "הדגשת הודעות"
+
+msgid "Folder Preferences"
+msgstr "אפשרויות תיקיה"
+
+msgid "Index Order"
+msgstr "סידור"
+
+msgid "Options"
+msgstr "אפשרויות"
+
+msgid "Error(s) occurred while saving your options"
+msgstr ""
+
+msgid "Some of your preference changes were not applied."
+msgstr ""
+
+msgid "Successfully Saved Options"
+msgstr "אפשרויות נשמרו בהצלחה"
+
+msgid "Refresh Folder List"
+msgstr "רענן רשימת תיקיות"
+
+msgid "Refresh Page"
+msgstr "רענן דף"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "דף זה מכיל הגדרות אישיות כגון, שמך, כתובת דוא\"ל שלך וכ\"ו..."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"ביכולתך לשנות את הגדרות התצוגה של תיבת הדואר שלך כגון צבעים, שפה, ועוד..."
+
+#, fuzzy
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"ביכולתך לצבוע הודעות מסוימות בתיבת הדואר שלך לפי קריטריונים שונים (כגון שם "
+"השולח, נושא ההודעה וכ\"ו). אפשרות זו עוזרת להבחין בדואר אשר מגיע ממכותב "
+"מסוים, מכיל נושא מסוים ועוד..."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "הגדרות אלו משנות את תצוגת התיקיות והצורה בה הן מנוהלות."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"הצורה בה הודעות מסודרות ומדפסות ניתנת לסידור מחדש ולשינוי כך שיכילו את "
+"הכותרות שברצונך לראות."
+
+msgid "New"
+msgstr "חדש"
+
+msgid "Done"
+msgstr "סיים"
+
+msgid "To or Cc"
+msgstr "אל או העתקים"
+
+msgid "subject"
+msgstr "נושא"
+
+msgid "Edit"
+msgstr "ערוך"
+
+msgid "Up"
+msgstr "למעלה"
+
+msgid "Down"
+msgstr "למטה"
+
+msgid "No highlighting is defined"
+msgstr "לא הוגדרו הדגשות"
+
+msgid "Identifying name"
+msgstr "שם מתאר"
+
+msgid "Color"
+msgstr "צבע"
+
+msgid "Dark Blue"
+msgstr "כחול כהה"
+
+msgid "Dark Green"
+msgstr "ירוק כהה"
+
+msgid "Dark Yellow"
+msgstr "צהוב כהה"
+
+msgid "Dark Cyan"
+msgstr "תכלת כהה"
+
+msgid "Dark Magenta"
+msgstr "אדום כהה"
+
+msgid "Light Blue"
+msgstr "כחול בהיר"
+
+msgid "Light Green"
+msgstr "ירוק בהיר"
+
+msgid "Light Yellow"
+msgstr "צהוב בהיר"
+
+msgid "Light Cyan"
+msgstr "תכלת בהיר"
+
+msgid "Light Magenta"
+msgstr "אדום בהיר"
+
+msgid "Dark Gray"
+msgstr "אפור כהה"
+
+msgid "Medium Gray"
+msgstr "אפור בינוני"
+
+msgid "Light Gray"
+msgstr "אפור בהיר"
+
+msgid "White"
+msgstr "לבן"
+
+msgid "Other:"
+msgstr "אחר:"
+
+msgid "Ex: 63aa7f"
+msgstr "לדוגמא: 63aa7f"
+
+msgid "Matches"
+msgstr "התאם לטקסט"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "זהות משנית %d"
+
+msgid "Advanced Identities"
+msgstr "זהויות מרובות"
+
+msgid "Default Identity"
+msgstr "זהות ברירת-מחדל"
+
+msgid "Add a New Identity"
+msgstr "הוסף זהות חדשה"
+
+msgid "Full Name"
+msgstr "שם מלא"
+
+msgid "E-Mail Address"
+msgstr "כתובת דוא\"ל"
+
+msgid "Reply To"
+msgstr "השב אל"
+
+msgid "Save / Update"
+msgstr "שמור \\ עדכן"
+
+msgid "Make Default"
+msgstr "הפוך לברירת מחדל"
+
+msgid "Move Up"
+msgstr "העבר למעלה"
+
+msgid "Checkbox"
+msgstr "תיבת בחירה"
+
+msgid "Flags"
+msgstr "סימון"
+
+msgid "Size"
+msgstr "גודל"
+
+#, fuzzy
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"ביכולתך לשנות את הסדר של העמודות בתיבת הדואר. ביכולתך להוסיף, להוריד או "
+"להזיז עמודות."
+
+msgid "up"
+msgstr "העלה"
+
+msgid "down"
+msgstr "הורד"
+
+msgid "remove"
+msgstr "הסר"
+
+msgid "Return to options page"
+msgstr "חזור לדף אפשרויות"
+
+msgid "Message not printable"
+msgstr "ההודעה לא ניתנת להדפסה"
+
+msgid "Invalid URL"
+msgstr ""
+
+msgid "Printer Friendly"
+msgstr "גירסאת הדפסה"
+
+msgid "Print"
+msgstr "הדפס"
+
+msgid "View Printable Version"
+msgstr "הצג גירסאת הדפסה"
+
+msgid "Read:"
+msgstr "נקרא:"
+
+msgid "Your message"
+msgstr "ההודעה שלך"
+
+#, fuzzy
+msgid "Sent"
+msgstr "נשלח:"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "נקרא ב %s"
+
+msgid "less"
+msgstr "פחות"
+
+msgid "more"
+msgstr "יותר"
+
+#, fuzzy
+msgid "Unknown sender"
+msgstr "שולח לא ידוע"
+
+msgid "Mailer"
+msgstr "תכנית דיוור"
+
+msgid "Read receipt"
+msgstr "קבלה על קריאה"
+
+#, fuzzy
+msgid "sent"
+msgstr "שלח"
+
+msgid "requested"
+msgstr "מבוקש"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"השולח של ההודעה ביקש שתשלח קבלה בעת קריאת ההודעה. האם ברצונך לשלוח אלי קבלה "
+"כעת?"
+
+msgid "Send read receipt now"
+msgstr "שלח קבלה על קריאה עכשיו"
+
+msgid "Search Results"
+msgstr "תוצאות חיפוש"
+
+msgid "Message List"
+msgstr "רשימת הודעות"
+
+msgid "Resume Draft"
+msgstr "המשך טיוטה"
+
+msgid "Edit Message as New"
+msgstr "ערוך הודעה כחדשה"
+
+#, fuzzy
+msgid "View Message"
+msgstr "הצג הודעה"
+
+msgid "Forward"
+msgstr "הפץ"
+
+#, fuzzy
+msgid "Forward as Attachment"
+msgstr "מצורפים"
+
+msgid "Reply"
+msgstr "השב"
+
+msgid "Reply All"
+msgstr "השב לכל"
+
+msgid "View Full Header"
+msgstr "הצג כל הכותרות"
+
+msgid "Attachments"
+msgstr "מצורפים"
+
+msgid "You must be logged in to access this page."
+msgstr "עליך להכנס למערכת בכדי לראות דף זה."
+
+msgid "Folder:"
+msgstr "תיקיה:"
+
+msgid "edit"
+msgstr "ערוך"
+
+msgid "search"
+msgstr "חיפוש"
+
+msgid "delete"
+msgstr "מחק"
+
+msgid "Recent Searches"
+msgstr "חיפושים אחרונים"
+
+msgid "save"
+msgstr "שמור"
+
+msgid "forget"
+msgstr "שכח"
+
+msgid "Current Search"
+msgstr "חיפוש נוכחי"
+
+msgid "All Folders"
+msgstr "כל התיקיות"
+
+msgid "Body"
+msgstr "גוף ההודעה"
+
+msgid "Everywhere"
+msgstr "כל השדות"
+
+msgid "No Messages Found"
+msgstr "לא נמצאו הודעות"
+
+#, fuzzy
+msgid "Signout"
+msgstr "התנתק"
+
+msgid "Sign Out"
+msgstr "התנתק"
+
+msgid "You have been successfully signed out."
+msgstr "התנתקת מהמערכת בהצלחה."
+
+msgid "Click here to log back in."
+msgstr "לחץ כאן בכדי להתחבר מחדש."
+
+msgid "Viewing a Business Card"
+msgstr "מציג כרטיס ביקור"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+
+msgid "Title"
+msgstr "כותרת"
+
+msgid "Email"
+msgstr "דוא\"ל"
+
+msgid "Web Page"
+msgstr "דף בית"
+
+msgid "Organization / Department"
+msgstr "אירגון \\ מחלקה"
+
+msgid "Address"
+msgstr "כתובת"
+
+msgid "Work Phone"
+msgstr "טלפון בעבודה"
+
+msgid "Home Phone"
+msgstr "טלפון בבית"
+
+msgid "Cellular Phone"
+msgstr "טלפון סלולרי"
+
+msgid "Fax"
+msgstr "פקס"
+
+msgid "Note"
+msgstr "פתק"
+
+msgid "Add to Addressbook"
+msgstr "הוסף לספר כתובות"
+
+msgid "Title & Org. / Dept."
+msgstr "תואר וארגון \\ מחלקה"
+
+#, fuzzy
+msgid "Add to Address Book"
+msgstr "הוסף לספר כתובות"
+
+msgid "Viewing Full Header"
+msgstr "מציג כל הכותרות"
+
+msgid "Viewing a text attachment"
+msgstr "מציג טקסט מצורף"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+
+msgid "Please contact your system administrator and report this error."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+msgid "Personal address book"
+msgstr "ספר כתובות אישי"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "שגיאת מסד נתונים: %s"
+
+msgid "Addressbook is read-only"
+msgstr "ספר כתובות הוא לקריאה בלבד"
+
+#, php-format
+msgid "User '%s' already exist"
+msgstr "משתמש '%s' כבר קיים"
+
+#, php-format
+msgid "User '%s' does not exist"
+msgstr "משתמש '%s' אינו קיים"
+
+msgid "Not a file name"
+msgstr "לא שם קובץ"
+
+msgid "No such file or directory"
+msgstr "קובץ או ספרייה בשם זה אינו קיים"
+
+msgid "Open failed"
+msgstr "פתיחה נכשלה"
+
+#, fuzzy
+msgid "Write failed"
+msgstr "פתיחה נכשלה"
+
+#, fuzzy
+msgid "Unable to update"
+msgstr "שמור \\ עדכן"
+
+msgid "Could not lock datafile"
+msgstr "לא יכול לנעול את קובץ המידע"
+
+msgid "Write to addressbook failed"
+msgstr "כתיבה לספר כתובות נכשלה"
+
+msgid "Error initializing addressbook database."
+msgstr "שגיאה באתחול מסד הנתונים של ספר הכתובות."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "שגיאה בפתיחת קובץ %s"
+
+msgid "Global address book"
+msgstr "ספר כתובות כללי"
+
+msgid "Error initializing global addressbook."
+msgstr "שגיאה באתחול ספר כתובות כללי."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "שגיאה באתחול שרת LDAP %s:"
+
+msgid "Invalid input data"
+msgstr "מידע קלט שגוי"
+
+msgid "Name is missing"
+msgstr "שם חסר"
+
+msgid "E-mail address is missing"
+msgstr "דוא\"ל חסר"
+
+msgid "Nickname contains illegal characters"
+msgstr "כינוי מכיל תווים לא חוקיים"
+
+#, fuzzy
+msgid "View"
+msgstr "הצג"
+
+#, fuzzy
+msgid "View Business Card"
+msgstr "מציג כרטיס ביקור"
+
+msgid "Sunday"
+msgstr "ראשון"
+
+msgid "Monday"
+msgstr "שני"
+
+msgid "Tuesday"
+msgstr "שלישי"
+
+msgid "Wednesday"
+msgstr "רביעי"
+
+msgid "Thursday"
+msgstr "חמישי"
+
+msgid "Friday"
+msgstr "שישי"
+
+msgid "Saturday"
+msgstr "שבת"
+
+#, fuzzy
+msgid "Sun"
+msgstr "ראשון"
+
+#, fuzzy
+msgid "Mon"
+msgstr "שני"
+
+#, fuzzy
+msgid "Tue"
+msgstr "שלישי"
+
+msgid "Wed"
+msgstr ""
+
+msgid "Thu"
+msgstr ""
+
+#, fuzzy
+msgid "Fri"
+msgstr "שישי"
+
+msgid "Sat"
+msgstr ""
+
+msgid "January"
+msgstr "ינואר"
+
+msgid "February"
+msgstr "פברואר"
+
+msgid "March"
+msgstr "מרץ"
+
+msgid "April"
+msgstr "אפריל"
+
+msgid "May"
+msgstr "מאי"
+
+msgid "June"
+msgstr "יוני"
+
+msgid "July"
+msgstr "יולי"
+
+msgid "August"
+msgstr "אוגוסט"
+
+msgid "September"
+msgstr "ספטמבר"
+
+msgid "October"
+msgstr "אוקטובר"
+
+msgid "November"
+msgstr "נובמבר"
+
+msgid "December"
+msgstr "דצמבר"
+
+#, fuzzy
+msgid "Jan"
+msgstr "ינואר"
+
+msgid "Feb"
+msgstr ""
+
+#, fuzzy
+msgid "Mar"
+msgstr "מרץ"
+
+#, fuzzy
+msgid "Apr"
+msgstr "אפריל"
+
+msgid "Ma&#121;"
+msgstr ""
+
+#, fuzzy
+msgid "Jun"
+msgstr "יוני"
+
+#, fuzzy
+msgid "Jul"
+msgstr "יולי"
+
+#, fuzzy
+msgid "Aug"
+msgstr "אוגוסט"
+
+msgid "Sep"
+msgstr ""
+
+#, fuzzy
+msgid "Oct"
+msgstr "אוקטובר"
+
+#, fuzzy
+msgid "Nov"
+msgstr "לא"
+
+msgid "Dec"
+msgstr ""
+
+msgid "D, F j, Y g:i a"
+msgstr "l, j F, Y a g:i"
+
+#, fuzzy
+msgid "D, F j, Y H:i"
+msgstr "l, j F, Y G:i"
+
+msgid "M j, Y"
+msgstr "j M, Y"
+
+msgid "g:i a"
+msgstr "a g:i"
+
+#, fuzzy
+msgid "H:i"
+msgstr "G:i"
+
+msgid "D, g:i a"
+msgstr "l, a g:i"
+
+#, fuzzy
+msgid "D, H:i"
+msgstr "l, G:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "שגיאת מסד נתונים של ההגדרות (%s). יוצא בצורה אבנורמלית."
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "לחץ כאן בכדי לחזור ל-%s"
+
+msgid "Go to the login page"
+msgstr "לך לדף הכניסה"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"קובץ ההגדרות, %s, אינו קיים. התנתק, והכנס מחדש בכדי ליצור קובץ הגדרות ברירת "
+"מחדש."
+
+#, fuzzy, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+#, fuzzy, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+#, fuzzy, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "שגיאה בפתיחת %s"
+
+#, fuzzy
+msgid "Default preference file not found or not readable!"
+msgstr "קובץ הגדרות ברירת מחדל לא נמצא!"
+
+msgid "Could not create initial preference file!"
+msgstr "לא יכול ליצור קובץ הגדרות ראשוני!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "המשתמש %s זקוק להרשאות כתיבה על %s"
+
+#, fuzzy
+msgid "Signature is too big."
+msgstr "אפשרויות חתימה"
+
+#, fuzzy, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+#, fuzzy, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+#, fuzzy, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr "אנא צור קשר עם מנהל המערכת ודווח על שגיאה זו."
+
+msgid ""
+"You need to have php4 installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+
+msgid "ERROR: No available IMAP stream."
+msgstr ""
+
+#, fuzzy
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "שגיאה בהתחברות לשרת IMAP: %s"
+
+#, fuzzy
+msgid "ERROR: Could not complete request."
+msgstr "שגיאה: לא יכול להשלים בקשה."
+
+msgid "Query:"
+msgstr "בקשה:"
+
+#, fuzzy
+msgid "Reason Given:"
+msgstr "סיבה:"
+
+#, fuzzy
+msgid "ERROR: Bad or malformed request."
+msgstr "שגיאה: בקשה שגויה."
+
+#, fuzzy
+msgid "Server responded:"
+msgstr "השרת השיב:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr ""
+
+msgid "ERROR: Unknown IMAP response."
+msgstr ""
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "שגיאה בהתחברות לשרת IMAP: %s"
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "בקשה שגויה: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "שגיאה לא ידועה: %s"
+
+msgid "Read data:"
+msgstr "מידע נקרא:"
+
+msgid "Unknown user or password incorrect."
+msgstr "שם משתמש או סיסמא אינם נכונים."
+
+#, fuzzy
+msgid "ERROR: Could not append message to"
+msgstr "שגיאה: לא יכול להשלים בקשה."
+
+#, fuzzy
+msgid "Solution:"
+msgstr "הצעות:"
+
+msgid ""
+"Remove unneccessary messages from your folder and start with your Trash "
+"folder."
+msgstr ""
+
+msgid "(no subject)"
+msgstr "(ללא נושא)"
+
+msgid "Unknown Sender"
+msgstr "שולח לא ידוע"
+
+#, fuzzy
+msgid "Unknown response from IMAP server:"
+msgstr "תשובה לא ידועה משרת IMAP: "
+
+msgid "The server couldn't find the message you requested."
+msgstr ""
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+
+#, fuzzy
+msgid "Unknown date"
+msgstr "שולח לא ידוע"
+
+msgid "A"
+msgstr "ע"
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr ""
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr ""
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "התיקיה ריקה"
+
+#, fuzzy
+msgid "Move Selected To"
+msgstr "העבר נבחרות אל:"
+
+msgid "Transform Selected Messages"
+msgstr "שנה הודעות נבחרות"
+
+msgid "Move"
+msgstr "העבר"
+
+msgid "Expunge"
+msgstr "מחק"
+
+msgid "mailbox"
+msgstr "תיבת דואר"
+
+msgid "Read"
+msgstr "נקרא"
+
+msgid "Unread"
+msgstr "לא נקרא"
+
+msgid "Unthread View"
+msgstr "ללא חלוקה לדפים"
+
+msgid "Thread View"
+msgstr "חלוקה לדפים"
+
+msgid "Toggle All"
+msgstr "סמן הכל"
+
+msgid "Unselect All"
+msgstr "הסר סימון מהכל"
+
+msgid "Select All"
+msgstr "בחר הכל"
+
+#, fuzzy, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "מציג הודעות: <b>%s</b> עד <b>%s</b> (%s בסה\"כ)"
+
+#, fuzzy, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "מציג הודעה: <b>%s</b> (1 בסה\"כ)"
+
+msgid "Paginate"
+msgstr "מספר עמודים"
+
+msgid "Show All"
+msgstr "הצג הכל"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr ""
+
+msgid "the provided bodystructure by your imap-server"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"שגיאה באחזור גוף ההודעה. קרוב לוודאי שהסביה נובעת מגוף הודעה מעוות. אנא עזור "
+"לנו בשיפור גרסאות עתידיות ע\"י שליחת הודעה זו למאגר המידע של המפתחים!"
+
+msgid "Command:"
+msgstr "פקודה:"
+
+msgid "Response:"
+msgstr "תשובה:"
+
+msgid "Message:"
+msgstr "הודעה:"
+
+msgid "FETCH line:"
+msgstr "שורת FETCH:"
+
+msgid "Hide Unsafe Images"
+msgstr "הסתר תמונות לא בטוחות"
+
+msgid "View Unsafe Images"
+msgstr "הצג תמונות לא בטוחות"
+
+#, fuzzy
+msgid "Download"
+msgstr "הורד"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_he_IL.png"
+
+msgid "This external link will open in a new window"
+msgstr ""
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "לא נמצאה אפשרות מסוג '%s'"
+
+msgid "Current Folder"
+msgstr "תיקיה נוכחית"
+
+msgid "Compose"
+msgstr "הודעה חדשה"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "שגיאה ביצירת הספרייה %s."
+
+msgid "Could not create hashed directory structure!"
+msgstr "לא יכול ליצור ספרייה בעלת מבנה משורשר!"
+
+msgid "Service not available, closing channel"
+msgstr ""
+
+msgid "A password transition is needed"
+msgstr ""
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "Requested action aborted: error in processing"
+msgstr ""
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr ""
+
+#, fuzzy
+msgid "Temporary authentication failure"
+msgstr "אימות apop נכשל"
+
+msgid "Syntax error; command not recognized"
+msgstr ""
+
+msgid "Syntax error in parameters or arguments"
+msgstr ""
+
+#, fuzzy
+msgid "Command not implemented"
+msgstr "פקודה נכשלה "
+
+msgid "Bad sequence of commands"
+msgstr ""
+
+msgid "Command parameter not implemented"
+msgstr ""
+
+#, fuzzy
+msgid "Authentication required"
+msgstr "אימות נכשל"
+
+msgid "Authentication mechanism is too weak"
+msgstr ""
+
+#, fuzzy
+msgid "Authentication failed"
+msgstr "אימות נכשל"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr ""
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr ""
+
+msgid "User not local; please try forwarding"
+msgstr ""
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr ""
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr ""
+
+#, fuzzy
+msgid "Transaction failed"
+msgstr "אימות נכשל"
+
+#, fuzzy
+msgid "Unknown response"
+msgstr "שולח לא ידוע"
+
+msgid "General Display Options"
+msgstr "הגדרות תצוגה - כללי"
+
+msgid "Theme"
+msgstr "נושא"
+
+msgid "Default"
+msgstr "ברירת מחדל"
+
+msgid "Custom Stylesheet"
+msgstr "סגנון מותאם אישית"
+
+msgid "Language"
+msgstr "שפה"
+
+msgid "Use Javascript"
+msgstr "השתמש ב-JavaScript"
+
+msgid "Autodetect"
+msgstr "זיהוי אוטומטי"
+
+msgid "Always"
+msgstr "תמיד"
+
+msgid "Never"
+msgstr "אף-פעם"
+
+msgid "Mailbox Display Options"
+msgstr "הגדרות תצוגה - תיבת דואר"
+
+#, fuzzy
+msgid "Number of Messages per Page"
+msgstr "מספר ההודעות לדף"
+
+msgid "Enable Alternating Row Colors"
+msgstr "אפשר צבעי שורה מתחלפים"
+
+msgid "Enable Page Selector"
+msgstr "אפשר בוחר דפים"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "מספר הדפים לתצוגה"
+
+msgid "Always Show Full Date"
+msgstr ""
+
+msgid "Message Display and Composition"
+msgstr "הגדרות תצוגה - הודעה וכתיבה"
+
+msgid "Wrap Incoming Text At"
+msgstr "גלישת טקסט ב"
+
+#, fuzzy
+msgid "Width of Editor Window"
+msgstr "גודל תיבת עריכה"
+
+#, fuzzy
+msgid "Height of Editor Window"
+msgstr "גודל תיבת עריכה"
+
+msgid "Location of Buttons when Composing"
+msgstr "מיקום הכפתורים כאשר עורכים הודעות"
+
+msgid "Before headers"
+msgstr "לפני כותרות"
+
+msgid "Between headers and message body"
+msgstr "בין הכותרות וגוף ההודעה"
+
+msgid "After message body"
+msgstr "מתחת לגוף ההודעה"
+
+msgid "Addressbook Display Format"
+msgstr "תבנית תצוגה של ספר כתובות"
+
+msgid "Javascript"
+msgstr ""
+
+msgid "HTML"
+msgstr ""
+
+msgid "Show HTML Version by Default"
+msgstr "הצג גירסאת HTML כברירת מחדל"
+
+msgid "Enable Forward as Attachment"
+msgstr ""
+
+#, fuzzy
+msgid "Include CCs when Forwarding Messages"
+msgstr "כלול העתקים כאשר אני מפיץ הודעה"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "כלול אותי בהעתקים כאשר אני משיב לכולם"
+
+msgid "Enable Mailer Display"
+msgstr "אפשר תצוגת תכנית דיוור"
+
+msgid "Display Attached Images with Message"
+msgstr "הצג תמונות מצורפות עם ההודעה"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "אפשר תצוגה נקיה של גירסאת הדפסה"
+
+#, fuzzy
+msgid "Enable Mail Delivery Notification"
+msgstr "אפשר הודעה על הודעות חדשות"
+
+#, fuzzy
+msgid "Compose Messages in New Window"
+msgstr "תמיד ערוך הודעה בחלון חדש"
+
+#, fuzzy
+msgid "Width of Compose Window"
+msgstr "רוחב חלון עריכה"
+
+#, fuzzy
+msgid "Height of Compose Window"
+msgstr "גובה חלון עריכה"
+
+#, fuzzy
+msgid "Append Signature before Reply/Forward Text"
+msgstr "הדבק חתימה לפני טקסט התשובה\\הפצה"
+
+msgid "Prefix for Original Message when Replying"
+msgstr ""
+
+msgid "Cursor Position when Replying"
+msgstr ""
+
+msgid "To: field"
+msgstr ""
+
+msgid "Focus in body"
+msgstr ""
+
+#, fuzzy
+msgid "Select body"
+msgstr "בחר תיקיה"
+
+#, fuzzy
+msgid "No focus"
+msgstr "ללא שעון"
+
+msgid "Sort by Received Date"
+msgstr ""
+
+msgid "Enable Thread Sort by References Header"
+msgstr ""
+
+msgid "Special Folder Options"
+msgstr "אפשרויות תיקיות מיוחדות"
+
+msgid "Folder Path"
+msgstr "מיקום תיקיה"
+
+msgid "Do not use Trash"
+msgstr "אל תשתמש בסל מיחזור"
+
+msgid "Trash Folder"
+msgstr "סל מיחזור"
+
+msgid "Do not use Drafts"
+msgstr "אל תשתמש בטיוטה"
+
+msgid "Draft Folder"
+msgstr "תיקית טיוטות"
+
+msgid "Do not use Sent"
+msgstr "אל תשתמש בדואר יוצא"
+
+msgid "Sent Folder"
+msgstr "תיקית דואר יוצא"
+
+msgid "Folder List Options"
+msgstr "אפשרויות רשימת תיקיות"
+
+msgid "Location of Folder List"
+msgstr "מיקום רשימת תיקיות:"
+
+msgid "Left"
+msgstr "שמאל"
+
+msgid "Right"
+msgstr "ימין"
+
+msgid "pixels"
+msgstr "פיקסלים"
+
+msgid "Width of Folder List"
+msgstr "רוחב רשימת תיקיות"
+
+msgid "Minutes"
+msgstr "דקות"
+
+msgid "Seconds"
+msgstr "שניות"
+
+msgid "Minute"
+msgstr "דקה"
+
+msgid "Auto Refresh Folder List"
+msgstr "רענן אוטומטית את רשימת התיקיות"
+
+msgid "Enable Unread Message Notification"
+msgstr "אפשר הודעה על הודעות חדשות"
+
+msgid "No Notification"
+msgstr "ללא הודעה"
+
+msgid "Only INBOX"
+msgstr "רק בדואר נכנס"
+
+msgid "Unread Message Notification Type"
+msgstr "סוג הודעה על הודעה חדשה"
+
+msgid "Only Unseen"
+msgstr "רק לא נראה"
+
+msgid "Unseen and Total"
+msgstr "לא נראה וסה\"כ"
+
+msgid "Enable Collapsable Folders"
+msgstr "אפשר תיקיות מתקפלות"
+
+#, fuzzy
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "אפשר הודעה על הודעות חדשות"
+
+msgid "Show Clock on Folders Panel"
+msgstr "הצג שעון ברשימת תיקיות"
+
+#, fuzzy
+msgid "International date and time"
+msgstr "הוסף מילונים בינלאומיים"
+
+msgid "American date and time"
+msgstr ""
+
+#, fuzzy
+msgid "European date and time"
+msgstr "ספרדית (אירופה)"
+
+msgid "Show weekday and time"
+msgstr ""
+
+msgid "Show time with seconds"
+msgstr ""
+
+#, fuzzy
+msgid "Show time"
+msgstr "זמן התחלה:"
+
+msgid "No Clock"
+msgstr "ללא שעון"
+
+msgid "Hour Format"
+msgstr "סגנון שעות"
+
+msgid "12-hour clock"
+msgstr "12 שעות"
+
+msgid "24-hour clock"
+msgstr "24 שעות"
+
+msgid "Memory Search"
+msgstr "חיפוש בזכרון"
+
+msgid "Disabled"
+msgstr "מבוטל"
+
+#, fuzzy
+msgid "Folder Selection Options"
+msgstr "אפשרויות רשימת תיקיות"
+
+#, fuzzy
+msgid "Selection List Style"
+msgstr "סגנון ציטוט משוב"
+
+#, fuzzy
+msgid "Long:"
+msgstr "אורך:"
+
+#, fuzzy
+msgid "Folder"
+msgstr "תיקיות"
+
+#, fuzzy
+msgid "Subfolder"
+msgstr "השתמש בתתי-תיקיות תחת דואר יוצא"
+
+msgid "Indented:"
+msgstr ""
+
+#, fuzzy
+msgid "Delimited:"
+msgstr "מחק"
+
+msgid "Name and Address Options"
+msgstr "אפשרויות שם וכתובת"
+
+msgid "Email Address"
+msgstr "כתובת דוא\"ל"
+
+msgid "Edit Advanced Identities"
+msgstr "ערוך זהויות מרובות"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(מבטל שינויים שנעשו על הטופס עד כה)"
+
+msgid "Multiple Identities"
+msgstr "זהויות מרובות"
+
+msgid "Same as server"
+msgstr "אותו דבר כמו שרת"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr ""
+
+msgid "Timezone Options"
+msgstr "אפשרויות אזור זמן"
+
+msgid "Your current timezone"
+msgstr "אזור זמן נוכחי"
+
+msgid "Reply Citation Options"
+msgstr "אפשרויות ציטוט משוב"
+
+msgid "Reply Citation Style"
+msgstr "סגנון ציטוט משוב"
+
+msgid "No Citation"
+msgstr "ללא ציטוט"
+
+#, fuzzy
+msgid "AUTHOR Wrote"
+msgstr "המחבר אמר"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr ""
+
+msgid "Quote Who XML"
+msgstr ""
+
+msgid "User-Defined"
+msgstr "מותאם אישית"
+
+msgid "User-Defined Citation Start"
+msgstr "התחלת ציטוט מותאם אישית"
+
+msgid "User-Defined Citation End"
+msgstr "סיום ציטוט מותאם אישית"
+
+msgid "Signature Options"
+msgstr "אפשרויות חתימה"
+
+msgid "Use Signature"
+msgstr "השתמש בחתימה"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "הקדם חתימה בשורה של '-- '"
+
+msgid "Take Address"
+msgstr "הוסף כתובת"
+
+#, fuzzy
+msgid "Address Book Take:"
+msgstr "הוסף לספר כתובות"
+
+msgid "Try to verify addresses"
+msgstr "נסה לוודא כתובת דוא\"ל"
+
+msgid "Config File Version"
+msgstr "גירסאת קובץ הגדרות"
+
+#, fuzzy
+msgid "SquirrelMail Version"
+msgstr "SquirrelMail גירסא"
+
+msgid "PHP Version"
+msgstr "PHP גירסא"
+
+msgid "Organization Preferences"
+msgstr "הגדרות חברה"
+
+msgid "Organization Name"
+msgstr "שם חברה"
+
+msgid "Organization Logo"
+msgstr "לוגו חברה"
+
+msgid "Organization Logo Width"
+msgstr "רוחב לוגו חברה"
+
+msgid "Organization Logo Height"
+msgstr "אורך לוגו חברה"
+
+msgid "Organization Title"
+msgstr "כותרת חברה"
+
+msgid "Signout Page"
+msgstr "דף התנתקות"
+
+msgid "Provider Link URI"
+msgstr ""
+
+#, fuzzy
+msgid "Provider Name"
+msgstr "שם שרת:"
+
+msgid "Top Frame"
+msgstr "חלק עליון"
+
+msgid "Server Settings"
+msgstr "הגדרות שרת"
+
+msgid "Mail Domain"
+msgstr "דומיין דואר"
+
+msgid "IMAP Server Address"
+msgstr "כתובת שרת IMAP"
+
+msgid "IMAP Server Port"
+msgstr "יציאת שרת IMAP"
+
+msgid "IMAP Server Type"
+msgstr "סוג שרת IMAP"
+
+msgid "Cyrus IMAP server"
+msgstr ""
+
+msgid "University of Washington's IMAP server"
+msgstr ""
+
+msgid "Microsoft Exchange IMAP server"
+msgstr ""
+
+msgid "Courier IMAP server"
+msgstr ""
+
+msgid "Mac OS X Mailserver"
+msgstr ""
+
+#, fuzzy
+msgid "hMailServer IMAP server"
+msgstr "פותח שרת IMAP"
+
+msgid "Not one of the above servers"
+msgstr ""
+
+msgid "IMAP Folder Delimiter"
+msgstr ""
+
+#, fuzzy
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "השתמש ב \"detect\" לזיהוי אוטומטי"
+
+msgid "Use TLS for IMAP Connections"
+msgstr ""
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr ""
+
+#, fuzzy
+msgid "IMAP Authentication Type"
+msgstr "אימות נכשל"
+
+msgid "IMAP login"
+msgstr ""
+
+#, fuzzy
+msgid "Use Sendmail Binary"
+msgstr "השתמש ב-SendMail"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr ""
+
+msgid "Sendmail Path"
+msgstr "נתיב SendMail"
+
+msgid "SMTP Server Address"
+msgstr "כתובת שרת SMTP"
+
+msgid "SMTP Server Port"
+msgstr "יציאת שרת SMTP"
+
+msgid "Use TLS for SMTP Connections"
+msgstr ""
+
+#, fuzzy
+msgid "SMTP Authentication Type"
+msgstr "אימות נכשל"
+
+msgid "No SMTP auth"
+msgstr ""
+
+msgid "Login (plain text)"
+msgstr ""
+
+msgid "POP3 Before SMTP?"
+msgstr ""
+
+msgid "Invert Time"
+msgstr "הפוך זמן"
+
+msgid "Folders Defaults"
+msgstr "ברירת מחדל של תיקיות"
+
+msgid "Default Folder Prefix"
+msgstr ""
+
+msgid "Show Folder Prefix Option"
+msgstr ""
+
+msgid "By default, move to trash"
+msgstr ""
+
+msgid "By default, move to sent"
+msgstr ""
+
+msgid "By default, save as draft"
+msgstr ""
+
+msgid "List Special Folders First"
+msgstr ""
+
+msgid "Show Special Folders Color"
+msgstr ""
+
+msgid "Auto Expunge"
+msgstr ""
+
+msgid "Default Sub. of INBOX"
+msgstr ""
+
+msgid "Show 'Contain Sub.' Option"
+msgstr ""
+
+msgid "Default Unseen Notify"
+msgstr ""
+
+msgid "Default Unseen Type"
+msgstr ""
+
+msgid "Auto Create Special Folders"
+msgstr ""
+
+msgid "Auto delete folders"
+msgstr ""
+
+#, fuzzy
+msgid "Enable /NoSelect folder fix"
+msgstr "אפשר בוחר דפים"
+
+msgid "General Options"
+msgstr ""
+
+msgid "Data Directory"
+msgstr ""
+
+msgid "Temp Directory"
+msgstr ""
+
+msgid "Hash Level"
+msgstr ""
+
+msgid "Hash Disabled"
+msgstr ""
+
+msgid "Moderate"
+msgstr ""
+
+msgid "Medium"
+msgstr ""
+
+msgid "Default Left Size"
+msgstr ""
+
+msgid "Usernames in Lowercase"
+msgstr ""
+
+msgid "Allow use of priority"
+msgstr ""
+
+msgid "Hide SM attributions"
+msgstr ""
+
+msgid "Enable use of delivery receipts"
+msgstr ""
+
+msgid "Allow editing of identities"
+msgstr ""
+
+msgid "Allow editing of full name"
+msgstr ""
+
+msgid "Use server-side sorting"
+msgstr ""
+
+#, fuzzy
+msgid "Use server-side thread sorting"
+msgstr "השתמש בכותרות הערה למיון"
+
+msgid "Allow server charset search"
+msgstr ""
+
+msgid "UID support"
+msgstr ""
+
+#, fuzzy
+msgid "PHP session name"
+msgstr "PHP גירסא"
+
+msgid "Message of the Day"
+msgstr ""
+
+msgid "Database"
+msgstr ""
+
+msgid "Address book DSN"
+msgstr ""
+
+msgid "Address book table"
+msgstr ""
+
+msgid "Preferences DSN"
+msgstr ""
+
+msgid "Preferences table"
+msgstr ""
+
+msgid "Preferences username field"
+msgstr ""
+
+msgid "Preferences key field"
+msgstr ""
+
+msgid "Preferences value field"
+msgstr ""
+
+#, fuzzy
+msgid "Global address book DSN"
+msgstr "ספר כתובות כללי"
+
+#, fuzzy
+msgid "Global address book table"
+msgstr "ספר כתובות כללי"
+
+#, fuzzy
+msgid "Allow writing into global address book"
+msgstr "לא יכול לעדכן ספר כתובות כללי"
+
+#, fuzzy
+msgid "Allow listing of global address book"
+msgstr "לא יכול לעדכן ספר כתובות כללי"
+
+#, fuzzy
+msgid "Language settings"
+msgstr "שנה הגדרות הצפנה"
+
+msgid "Default Language"
+msgstr "שפה ברירת מחדל"
+
+msgid "Default Charset"
+msgstr ""
+
+msgid "Enable lossy encoding"
+msgstr ""
+
+#, fuzzy
+msgid "Address Books"
+msgstr "ספר כתובות"
+
+msgid "Default Javascript Addressbook"
+msgstr ""
+
+#, fuzzy
+msgid "Global address book file"
+msgstr "ספר כתובות כללי"
+
+#, fuzzy
+msgid "Allow writing into global address book file"
+msgstr "כתיבה לספר כתובות נכשלה"
+
+msgid "Themes"
+msgstr ""
+
+msgid "Style Sheet URL (css)"
+msgstr ""
+
+#, fuzzy
+msgid "Default theme"
+msgstr "ברירת מחדל"
+
+msgid "Use index number of theme"
+msgstr ""
+
+msgid "Configuration Administrator"
+msgstr ""
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+
+msgid "Theme Name"
+msgstr ""
+
+msgid "Theme Path"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr ""
+
+msgid "Change Settings"
+msgstr ""
+
+msgid "Test Configuration"
+msgstr ""
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+
+#, fuzzy
+msgid "Submit a Bug Report"
+msgstr "דיווח על באגים:"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+
+msgid "This bug involves"
+msgstr ""
+
+msgid "the general program"
+msgstr ""
+
+msgid "a specific plugin"
+msgstr ""
+
+#, fuzzy
+msgid "Start Bug Report Form"
+msgstr "דיווח על באגים:"
+
+msgid "Bug"
+msgstr ""
+
+msgid "Bug Reports:"
+msgstr "דיווח על באגים:"
+
+msgid "Show button in toolbar"
+msgstr "הצג כפתור בסרגל כלים"
+
+msgid "TODAY"
+msgstr "היום"
+
+msgid "Go"
+msgstr "לך"
+
+#, fuzzy, php-format
+msgid "Could not write calendar file %s"
+msgstr "לא יכול ליצור קובץ הגדרות ראשוני!"
+
+#, fuzzy
+msgid "l, F j Y"
+msgstr "l, j F, Y G:i"
+
+msgid "ADD"
+msgstr "הוסף"
+
+msgid "EDIT"
+msgstr "ערוך"
+
+msgid "DEL"
+msgstr "מחק"
+
+msgid "Start time:"
+msgstr "זמן התחלה:"
+
+msgid "Length:"
+msgstr "אורך:"
+
+msgid "Priority:"
+msgstr "עדיפות:"
+
+msgid "Title:"
+msgstr "כותרת:"
+
+msgid "Set Event"
+msgstr "צור ארוע"
+
+msgid "Event Has been added!"
+msgstr "ארוע הוסף!"
+
+msgid "Date:"
+msgstr "תאריך:"
+
+msgid "Time:"
+msgstr "זמן:"
+
+msgid "Day View"
+msgstr "תצוגת יום"
+
+msgid "Do you really want to delete this event?"
+msgstr "האם ברצונך למחוק ארוע זה?"
+
+msgid "Event deleted!"
+msgstr "ארוע נמחק!"
+
+msgid "Nothing to delete!"
+msgstr "אין מה למחוק!"
+
+msgid "Update Event"
+msgstr "עדכן ארוע"
+
+msgid "Do you really want to change this event from:"
+msgstr "האם ברצונך לשנות ארוע זה מ:"
+
+msgid "to:"
+msgstr "ל:"
+
+msgid "Event updated!"
+msgstr "ארוע עודכן!"
+
+msgid "Month View"
+msgstr "תצוגה חודשית"
+
+msgid "0 min."
+msgstr "0 דקות"
+
+msgid "15 min."
+msgstr "15 דקות"
+
+#, fuzzy
+msgid "30 min."
+msgstr "0 דקות"
+
+msgid "45 min."
+msgstr "45 דקות"
+
+msgid "1 hr."
+msgstr "שעה"
+
+msgid "1.5 hr."
+msgstr "שעה וחצי"
+
+msgid "2 hr."
+msgstr "שעתיים"
+
+msgid "2.5 hr."
+msgstr "שעתיים וחצי"
+
+msgid "3 hr."
+msgstr "3 שעות"
+
+msgid "3.5 hr."
+msgstr "3 וחצי שעות"
+
+msgid "4 hr."
+msgstr "4 שעות"
+
+msgid "5 hr."
+msgstr "5 שעות"
+
+msgid "6 hr."
+msgstr "6 שעות"
+
+msgid "Calendar"
+msgstr "לוח שנה"
+
+msgid "Delete & Prev"
+msgstr "מחק והקודם"
+
+msgid "Delete & Next"
+msgstr "מחק והבא"
+
+msgid "Move to:"
+msgstr "העבר אל:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "כפתורי מחק/העבר/הבא:"
+
+msgid "Display at top"
+msgstr "הצג למעלה"
+
+msgid "with move option"
+msgstr "עם אפשרויות העברה"
+
+msgid "Display at bottom"
+msgstr "הצג בתחתית"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"מסחרי - רשימה זו מכילה שרתים הידועים כשולחי דואר זבל. זוהי רשימה מהימנה "
+"לבדיקת דואר זבל."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"מסחרי - שרתים אשר מוגדרים (או מוגדרים לא נכון), ומאפשרים בכך שליחת דואר זבל "
+"דרכם."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"מסחרי - לעיתים קרובות מסננים החוצה משתמשי חיוג מכיוון שהם משתמשים בשרתי "
+"הדואר של שרת האינטרנט שלהם."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "מסחרי - רשומות של RBL ו-Blackhole."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "מסחרי - רשומות של RBL ו-OpenRelay."
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "מסחרי - רשומות של RBL ושרתי חיוג."
+
+msgid ""
+"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+"false positives than ORBS did though."
+msgstr ""
+"חינם - ORDB נולדה כאשר ORBS ירדה מהאוויר. בכל-זאת נראה שיש להם יותר טעויות."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "חינם - Five-Ten-sg.com - מקורות SPAM ישירים."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr "חינם - Five-Ten-sg.com - רשימות חיוג - כולל כמה IPים של DSL."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+"חינם - Five-Ten-sg.com - רשימה של שולחי דואר בכמויות אשר אינם משתמשים בבקשת "
+"אישור."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "חינם - Five-Ten-sg.com - שרתים אחרים."
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "חינם - Five-Ten-sg.com - שרתי רמה אחת (Single Stage)."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "חינם - Five-Ten-sg.com - שרתים אשר תומכים ב-SPAM."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "חינם - Five-Ten-sg.com - IPים של טפסי Web."
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"חינם - נראה ,שבכדי למנוע תביעות, דורקסליירס כוללים רק שרתים אשר יושבים מחוץ "
+"לארה\"ב ומשמשים כתחנת ממסר פתוחה. למרבה הפלא, האתר שלהם ממליץ לא להתשמש "
+"בשירות שלהם."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "חינם - SPAMhaus - רשימה של מקורות ידועים של SPAM."
+
+#, fuzzy
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"חינם, בינתיים - SPAMCOP - פתרון מעניין של רשימות שרתים שיש להם יחס גבוה בין "
+"דואר לא חוקי (SPAM) לדואר חוקי (85% או יותר)."
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "חינם - dev.null.dk - אין מידע על השירות הזה."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr ""
+"חינם - visi.com - רשימת עצירת ממסר. רשימה מאוד שמרנית של שרתים המשמשים "
+"כתחנות ממסר פתוחות."
+
+#, fuzzy
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr ""
+"חינם - 2mbit.com תחנות ממסר פתוחות - עוד רשימה של שרתים המשמשים כתחנות ממסר "
+"פתוחות."
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "חינם - 2mbit.com מקורות SPAM - רשימה של מקורות SPAM ישירים."
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+"חינם - 2mbit.com ספקי שרותי אינטרנט - רשימה של ספקי אינטרנט אשר מאשרים SPAM."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"חינם - Leadmon DUL - עוד רשימה של חיוג או באופן אחר IPים המוקנים באופן דינמי."
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"חינם - Leadmon SPAM Source - רשימה של IPים אשר Leadmon.net קיבלו SPAM ישירות "
+"מהם."
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr "חינם - Leadmon Bulk Mailers - "
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"חינם - Leadmon Open Relays - תחנות ממסר פתוחות בעלות שלב אחד, אשר אינן "
+"רשומות אצל RBLים פעילים אחרים."
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"חינם - Leadmon Multi-stage - תחנות ממסר פתוחות מרובות שלבים, אשר אינן רשומות "
+"אצל RBLים אחרים, ושלחו SPAM ל-Leadmon.net."
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"חינם - Leadmon SpamBlock - אתרים ברשימה זו שלחו SPAM ישירות אל Leadmon.net מ-"
+"IPים בקבוצות רשת, כאשר לכל הקבוצה אין מיפוי DNS. זוהיא רשימה של קבוצות של "
+"IPים אשר נמצאים בשימוש ע\"י אנשים אשר שלחו SPAM אל Leadmon.net."
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"חינם, לעת עתה - לא עוד רשימה שחורה - גם תחנות ממסר פתוחות וגם מקורות ישירים "
+"של SPAM."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr "חינם, לעת עתה - לא עוד רשימה שחורה - IPים של חיוג."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+
+msgid "WARNING! You must enter something to search for."
+msgstr ""
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+
+msgid "Saved Scan type"
+msgstr "סוג סריקה שמורה"
+
+msgid "Message Filtering"
+msgstr "מיון הודעות"
+
+msgid "What to Scan:"
+msgstr "סרוק את:"
+
+msgid "All messages"
+msgstr "כל ההודעות"
+
+msgid "Only unread messages"
+msgstr "רק הודעות חדשות"
+
+msgid "Save"
+msgstr "שמור"
+
+msgid "Match:"
+msgstr "לפי שדה:"
+
+msgid "Header"
+msgstr "כותרות"
+
+msgid "Contains:"
+msgstr "מכיל:"
+
+#, fuzzy, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "אם <b>%s</b> מכיל <b>%s</b> אז תעביר את ההודעה ל-<b>%s</b>"
+
+msgid "Message Filters"
+msgstr "מיון הודעות"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"בעזרת מיון הודעות ניתן להעביר הודעות אוטומטית לתוך תיקיות מסויימות, לפי "
+"קריטריונים המצויינים מראש."
+
+msgid "SPAM Filters"
+msgstr "מסנני דואר זבל (SPAM)"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr "בעזרת מסנני דואר ביכולתך לחסום שרתים אשר ידועים כשולחי דואר זבל."
+
+#, fuzzy
+msgid "You must select a spam folder."
+msgstr "בחר תיקיה"
+
+#, fuzzy
+msgid "You must select a scan type."
+msgstr "עלייך לבחור אחת מהאפשרויות"
+
+msgid "Spam Filtering"
+msgstr "סינון דואר זבל (SPAM)"
+
+#, fuzzy, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "אזהרה! תגיד למנהל המערכת להגדיר את המשתנה SpamFilters_YourHop"
+
+msgid "Move spam to:"
+msgstr "העבר דואר זבל ל:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"לא מומלץ להעביר דואר זבל ישירות לסל המיחזור, בגלל שהודעותמחברים ורשימות "
+"תפוצה יכולות בטעות להיות מסומנות כדואר זבל. נא לדאוג להעביר את דואר הזבל "
+"לתיקיה אשר מתנקה אוטומטית בכדי למנוע עליה בגודל תיבת הדואר שלך."
+
+#, fuzzy
+msgid "Unread messages only"
+msgstr "הודעות חדשות בלבד"
+
+#, fuzzy
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"ככל שמספר ההודעות הנסרקות גדול יותר, כך זמן הסריקה לוקח יותר זמן. מומלץ "
+"לסרוק רק הודעות חדשות. במקרה ונעשה שינויים במסננים, מומלץ להגדיר למסנן לבדוק "
+"את כל ההודעה, לאחר מכן ללכת לדואר נכנס, ולאחר מכן להגידר את המסנן מחדש לבדוק "
+"רק דואר חדש. בצורה זו, יוגדר המסנן החדש וגם הדואר הישן יבדק נגדו."
+
+#, fuzzy, php-format
+msgid "Spam is sent to %s."
+msgstr "דואר זבל נשלח ל: <b>%s</b>"
+
+#, fuzzy
+msgid "not set yet"
+msgstr "[<i>עדיין לא הוגדר</i>]"
+
+#, fuzzy, php-format
+msgid "Spam scan is limited to %s."
+msgstr "סריקת דואר זבל מוגבלת ל: <b>%s</b>"
+
+msgid "ON"
+msgstr "פועל"
+
+msgid "OFF"
+msgstr "כבוי"
+
+#, php-format
+msgid "%s is not found."
+msgstr ""
+
+msgid "Today's Fortune"
+msgstr ""
+
+#, fuzzy
+msgid "Fortunes:"
+msgstr "פורטוגזית"
+
+msgid "Show fortunes at top of mailbox"
+msgstr ""
+
+msgid "Plugin is disabled."
+msgstr ""
+
+#, fuzzy
+msgid "IMAP server information"
+msgstr "יציאת שרת IMAP"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+
+msgid "Mailinglist"
+msgstr "רשימת תפוצה"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"אפשרות זו תשלח הודעה ל-%s בבקשה לעזרה עם רשימה זו. תשובה תשלח לכתובת הדוא\"ל "
+"הרשומה מטה."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"אפשרות זו תשלח הודעה ל-%s בבקשה לצרף אותך לרשימה זו. כתובת הדוא\"ל הרשומה "
+"מטה תצורף לרשימה."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"אפשרות זו תשלח הודעה ל-%s בבקשה לביטול ההרשמה לרשימה זו. ההרשמה תבוטל לכתובת "
+"הרשומה מטה."
+
+msgid "Send Mail"
+msgstr "שלח דואר"
+
+msgid "Post to List"
+msgstr "שלח לרשימה"
+
+msgid "Reply to List"
+msgstr "השב לרשימה"
+
+msgid "List Archives"
+msgstr "הצג ארכיונים"
+
+msgid "Contact Listowner"
+msgstr "צור קשר עם מנהל הרשימה"
+
+#, fuzzy
+msgid "Mailing List"
+msgstr "רשימת תפוצה"
+
+msgid "POP3 connect:"
+msgstr "חיבור POP3:"
+
+msgid "No server specified"
+msgstr "לא הוגדר שרת"
+
+msgid "Error "
+msgstr "שגיאה"
+
+msgid "POP3 user:"
+msgstr "משתמש POP3:"
+
+msgid "no login ID submitted"
+msgstr "לא נשלח שם משתמש"
+
+msgid "connection not established"
+msgstr "לא נוצר חיבור"
+
+msgid "POP3 pass:"
+msgstr "סיסמאת POP3:"
+
+msgid "No password submitted"
+msgstr "לא נשלחה סיסמא"
+
+msgid "authentication failed "
+msgstr "אימות נכשל"
+
+msgid "POP3 apop:"
+msgstr ""
+
+msgid "No connection to server"
+msgstr "אין חיבור לשרת"
+
+msgid "No login ID submitted"
+msgstr "לא נשלח שם משתמש"
+
+msgid "No server banner"
+msgstr "אין כרזת שרת"
+
+msgid "abort"
+msgstr "בטל"
+
+msgid "apop authentication failed"
+msgstr "אימות apop נכשל"
+
+msgid "POP3 login:"
+msgstr ""
+
+msgid "POP3 top:"
+msgstr ""
+
+msgid "POP3 pop_list:"
+msgstr ""
+
+msgid "Premature end of list"
+msgstr "סיום מוקדם של רשימה"
+
+msgid "POP3 get:"
+msgstr ""
+
+msgid "POP3 last:"
+msgstr ""
+
+msgid "POP3 reset:"
+msgstr ""
+
+msgid "POP3 send_cmd:"
+msgstr ""
+
+msgid "Empty command string"
+msgstr "מחרוזת פקודה ריקה"
+
+msgid "POP3 quit:"
+msgstr ""
+
+msgid "connection does not exist"
+msgstr "לא נמצא חיבור"
+
+msgid "POP3 uidl:"
+msgstr ""
+
+msgid "POP3 delete:"
+msgstr ""
+
+msgid "No msg number submitted"
+msgstr "לא נשלח מספר הודעה"
+
+msgid "Command failed "
+msgstr "פקודה נכשלה "
+
+msgid "Remote POP server Fetching Mail"
+msgstr "מושך דואר משרת POP3 מרוחק"
+
+msgid "Select Server:"
+msgstr "בחר שרת:"
+
+msgid "Password for"
+msgstr "סיסמא בשביל"
+
+msgid "Fetch Mail"
+msgstr "משוך דואר"
+
+msgid "Fetching from "
+msgstr "מושך מ-"
+
+msgid "Oops, "
+msgstr "אופס, "
+
+msgid "Opening IMAP server"
+msgstr "פותח שרת IMAP"
+
+msgid "Opening POP server"
+msgstr "פותח שרת POP"
+
+msgid "Login Failed:"
+msgstr "כניסה שגויה:"
+
+msgid "Login OK: No new messages"
+msgstr "כניסה אושרה: אין הודעות חדשות"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "כניסה אושרה: תיבת דואר נכנס ריקה"
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "כניסה אושרה: תיבת דואר נכנס מכילה ["
+
+msgid "Fetching UIDL..."
+msgstr "מושך UIDL..."
+
+msgid "Server does not support UIDL."
+msgstr "שרת לא תומך ב UIDL."
+
+#, fuzzy
+msgid "Leaving mail on server..."
+msgstr "משאיר את הדואר על השרת..."
+
+msgid "Deleting messages from server..."
+msgstr "מוחק הודעות מהשרת..."
+
+msgid "Fetching message "
+msgstr "מושך הודעה "
+
+msgid "Server error. Disconnect"
+msgstr ""
+
+msgid "Reconnect from dead connection"
+msgstr ""
+
+msgid "Saving UIDL"
+msgstr "שומר UIDL"
+
+#, fuzzy
+msgid "Refetching message "
+msgstr "מושך הודעה "
+
+msgid "Error Appending Message!"
+msgstr "שגיאה בצירוף ההודעה!"
+
+msgid "Closing POP"
+msgstr "סוגר את ה-POP"
+
+msgid "Logging out from IMAP"
+msgstr "מתנתק משרת IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "הודעה צורפה לתיבת הדואר"
+
+#, fuzzy, php-format
+msgid "Message %d deleted from remote server!"
+msgstr " נמחקה משרת מרוחק!"
+
+msgid "Delete failed:"
+msgstr "מחיקה נכשלה:"
+
+msgid "Remote POP server settings"
+msgstr "הגדרות שרת POP מרוחק"
+
+#, fuzzy
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"עלייך להיות מודע לכך שההצפנה הנמצאת בשימוש בכדי להצפין את סיסמאתך איננה "
+"בטוחה לחלוטין. למרות זאת, אם הינך משתמש ב-POP, אין הצפנה בכל מקרה. בנוסף, כל "
+"פורץ אשר יקרא את הקוד של קובץ זה יוכל לפענח את ההצפנה שאנו משתמשים בה בכדי "
+"להצפין את סיסמאתך על השרת."
+
+#, fuzzy
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "במקרה ותשאיר את הסיסמא ריקה, היא תדרש כאשר תנסה להביא את הדואר."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "הצפן סיסמאות (אינפורמטיבי בלבד)"
+
+msgid "Add Server"
+msgstr "הוסף שרת"
+
+msgid "Server:"
+msgstr "שרת:"
+
+#, fuzzy
+msgid "Port:"
+msgstr "עדיפות:"
+
+msgid "Alias:"
+msgstr "כינוי:"
+
+msgid "Username:"
+msgstr "שם משתמש:"
+
+msgid "Store in Folder:"
+msgstr "אחסן בתיקיה:"
+
+#, fuzzy
+msgid "Leave mail on server"
+msgstr "השאר דואר על השרת"
+
+#, fuzzy
+msgid "Check mail at login"
+msgstr "בדוק דואר בכניסה"
+
+#, fuzzy
+msgid "Check mail at folder refresh"
+msgstr "בדוק דואר ברענון תיקיה"
+
+msgid "Modify Server"
+msgstr "עדכן שרת"
+
+msgid "Server Name:"
+msgstr "שם שרת:"
+
+msgid "Modify"
+msgstr "עדכן"
+
+#, fuzzy
+msgid "No servers known."
+msgstr "אין כרזת שרת"
+
+msgid "Fetching Servers"
+msgstr "מושך שרתים"
+
+msgid "Confirm Deletion of a Server"
+msgstr "אשר מחיקת שרת"
+
+msgid "Selected Server:"
+msgstr "שרת נבחר:"
+
+msgid "Confirm delete of selected server?"
+msgstr "מאשר מחיקת שרת נבחר?"
+
+msgid "Confirm Delete"
+msgstr "אשר מחיקה"
+
+msgid "Leave Mail on Server"
+msgstr "השאר דואר על השרת"
+
+msgid "Undefined Function"
+msgstr "פונקציה לא מוגדרת"
+
+msgid "The function you requested is unknown."
+msgstr ""
+
+msgid "Fetch"
+msgstr "משוך"
+
+msgid "Warning, "
+msgstr "אזהרה, "
+
+msgid "Mail Fetch Result:"
+msgstr "תוצאת ניסיון משיכת דואר:"
+
+#, fuzzy
+msgid "POP3 Fetch Mail"
+msgstr "משיכת דואר מ-POP3"
+
+#, fuzzy
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr "הגדרות הורדת דוא\"ל מתיבת POP3 לתיבת הדואר שלך בשרת זה."
+
+#, fuzzy
+msgid "Message Details"
+msgstr "רשימת הודעות"
+
+msgid "Bodystructure"
+msgstr ""
+
+#, fuzzy
+msgid "Entity"
+msgstr "ערוך"
+
+msgid "Content-Type"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+#, fuzzy
+msgid "RFC822 Message body"
+msgstr "מתחת לגוף ההודעה"
+
+msgid "Close Window"
+msgstr "סגור חלון"
+
+#, fuzzy
+msgid "Save Message"
+msgstr "הצג הודעה"
+
+#, fuzzy
+msgid "View Message details"
+msgstr "הצג הודעה"
+
+msgid "New Mail"
+msgstr "דואר חדש"
+
+msgid "SquirrelMail Notice:"
+msgstr "הודעת SquirrelMail:"
+
+#, fuzzy, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "יש לך דואר חדש!"
+msgstr[1] "יש לך דואר חדש!"
+
+#, fuzzy, php-format
+msgid "You have %s new messages"
+msgstr "יש לך דואר חדש!"
+
+msgid "New Mail Notification"
+msgstr "הודעה על דואר חדש"
+
+#, fuzzy, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"בכדי לבדוק דואר חדש בכל התיקיות ולא רק בתיבת הדואר הנכנס, סמן את האפשרות "
+"<b>בדוק את כל התיקיות, לא רק את תיבת הדואר הנכנס</b>."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "בדוק את כל התיבות, לא רק את תיבת הדואר הנכנס"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"אם ברצונך שיפתח חלון קטן המודיע על הודעות חדשות בחר באפשרות <b>כשיש הודעות "
+"חדשות הצג חלון קטן</b> (מצריך JavaScript)"
+
+msgid "Show popup window on new mail"
+msgstr "כשיש הודעות חדשות הצג חלון קטן"
+
+#, fuzzy, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"בחר באפשרות <b>ספור רק הודעות שהגיעו לאחרונה</b> בכדי לבדוק רק הודעות שהגיעו "
+"לאחרונה. הודעות אשר הגיעו לאחרונה הן הודעות אשר הגיעו לפני זמן קצר אך לא "
+"נקראו או סומנו עדיין. אפשרות זו מונעת הטרדה רצופה של צלילים וחלונות אשר "
+"נפתחים בגלל דואר שלא נקרא."
+
+msgid "Count only messages that are RECENT"
+msgstr "ספור רק הודעות שהגיעו לאחרונה"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript, and only works in IE but "
+"you won't see errors with other browsers). This will always tell you if you "
+"have new mail, even if you have %s enabled."
+msgstr ""
+"האפשרות <b>שנה כותרת בדפדפנים נתמכים</b> תשנה את כותרת החלון של הדפדפן כאשר "
+"מגיע דואר חדש (אפשרות זו מצריכה JavaScript ודפדפן אינטרנט אקספלורר, אך לא "
+"יופיעו הודעות שגיאה בדפדפנים אחרים). אפשרות זו תודיע תמיד על דואר חדש, אפילו "
+"אם סומנה האפשרות <b>ספור רק הודעות שהגיעו לאחרונה</b>."
+
+#, fuzzy
+msgid "Change title on supported browsers"
+msgstr "שנה כותרת בדפדפנים נתמכים."
+
+#, fuzzy, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"בכדי להפעיל ניגון קובץ מדיה כאשר יש דואר חדש בחר באפשרות <b>אפשר ניגון מדיה</"
+"b>. ביכולתך לציין את קובץ המדיה שינוגן."
+
+msgid "Enable Media Playing"
+msgstr "אפשר ניגון מדיה"
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+
+#, fuzzy
+msgid "Select server file"
+msgstr "בחר קובץ שרת:"
+
+#, fuzzy
+msgid "(none)"
+msgstr "כלום"
+
+msgid "requires JavaScript to work"
+msgstr "בכדי לעבוד נחוץ JavaScript"
+
+msgid "Try"
+msgstr "נסה"
+
+msgid "Current File:"
+msgstr "קובץ נוכחי:"
+
+msgid "NewMail Options"
+msgstr "אפשרויות דואר חדש"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"באפשרותך להגדיר ניגנון צלילים ו\\או פתיחת חלון קטן במקרה שמגיע דואר חדש."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s הודעות חדשות"
+
+#, fuzzy, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s הודעה חדשה"
+msgstr[1] "%s הודעה חדשה"
+
+msgid "Test Sound"
+msgstr "בדוק צלילים"
+
+#, fuzzy
+msgid "No sound specified"
+msgstr "לא הוגדר שרת"
+
+msgid "Loading the sound..."
+msgstr "טוען את הצליל..."
+
+msgid "Sent Subfolders Options"
+msgstr "אפשרויות תתי-ספריות של תיקיית דואר יוצא"
+
+msgid "Use Sent Subfolders"
+msgstr "השתמש בתתי-תיקיות תחת דואר יוצא"
+
+msgid "Monthly"
+msgstr "חודשי"
+
+msgid "Quarterly"
+msgstr "רבעוני"
+
+msgid "Yearly"
+msgstr "שנתי"
+
+msgid "Base Sent Folder"
+msgstr ""
+
+#, fuzzy
+msgid "Enabled"
+msgstr "מבוטל"
+
+#, fuzzy
+msgid "Disable it"
+msgstr "מבוטל"
+
+msgid "Enable it"
+msgstr ""
+
+#, fuzzy
+msgid "Spam reporting"
+msgstr "סינון דואר זבל (SPAM)"
+
+msgid "SpamCop link is:"
+msgstr ""
+
+#, fuzzy
+msgid "Delete spam when reported:"
+msgstr "מחק נבחרים"
+
+msgid "Only works with email-based reporting"
+msgstr ""
+
+msgid "Spam Reporting Method:"
+msgstr ""
+
+msgid "Quick email-based reporting"
+msgstr ""
+
+msgid "Thorough email-based reporting"
+msgstr ""
+
+msgid "Web-based form"
+msgstr ""
+
+#, fuzzy
+msgid "Save Method"
+msgstr "העבר אל:"
+
+msgid "Your SpamCop authorization code:"
+msgstr ""
+
+msgid "see below"
+msgstr ""
+
+#, fuzzy
+msgid "Save ID"
+msgstr "שמור"
+
+msgid "About SpamCop"
+msgstr ""
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+
+msgid "Before you sign up, be warned"
+msgstr ""
+
+#, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+
+msgid "Email-based reporting"
+msgstr ""
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+
+msgid "Web-based reporting"
+msgstr ""
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+
+msgid "SpamCop service type"
+msgstr ""
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+
+#, fuzzy
+msgid "More information"
+msgstr "מידע אישי"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+
+msgid "Report as Spam"
+msgstr ""
+
+msgid "SpamCop - Spam Reporting"
+msgstr ""
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+
+msgid "Cancel / Done"
+msgstr ""
+
+msgid "Send Spam Report"
+msgstr ""
+
+msgid "SpellChecker Options"
+msgstr "אפשרויות בודק איות"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"ביכולתך להגדיר את המילון האישי שלך, לערוןך אותו, או לבחור את ספת המילון."
+
+msgid "Check Spelling"
+msgstr "בדוק איות"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "בחזרה לדף &quot;אפשרויות בודק איות&quot;"
+
+msgid "ATTENTION:"
+msgstr "שים לב:"
+
+#, fuzzy
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"SquirrelSpell לא הצליח לפענח את המילון האישי שלך. רוב הסיכויים שזה בגלל "
+"ששינת את הסיסמא שלך. בכדי להמשיך, עלייך לספק את הסיסמא הישנה שלך על-מנת ש-"
+"SquirrelSpell יוכל לפענח את המילון האישי שלך. הוא יוצפן מחדש בעזרת הסיסמא "
+"החדשה שלך.<br>אם לא הצפנת את המילון שלך, אז כנראה שהוא הושחת ואינו זמין "
+"יותר. עלייך למחוק אותו והתחיל מחדש. זה גם נכון במקרה ושכחת את הסיסמא שלך -- "
+"ללא הסיסמא הישנה המידע המוצפן אינו זמין."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "מחק את המילון שלי והתחל חדש."
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "פענח את המילון שלי בעזרת הסיסמא הישנה שלי."
+
+msgid "Proceed"
+msgstr "התקדם"
+
+msgid "You must make a choice"
+msgstr "עלייך לבחור אחת מהאפשרויות"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr "ביכולתך למחוק את המילון הישן או להקליד את סיסמאתך הישנה. לא שניהם."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "האם אתה בטוח שברצונך למחוק את המילון האישי הישן שלך?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "שגיאה בפענוח המילון"
+
+msgid "Cute."
+msgstr "חמוד."
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr ""
+
+msgid "Error while writing to pipe."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "לא יכול לנעול את קובץ המידע"
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr ""
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "ניסיתי לבצע את %s, אבל הוא החזיר:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell לא מוגדר נכון"
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "בדיק איות הסתיימה. לבצע שינויים?"
+
+msgid "No changes were made."
+msgstr "לא נעשו שינויים."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "שומר כעת את המילון האישי שלך... אנא המתן."
+
+msgid "SquirrelSpell Results"
+msgstr "תוצאות SquirrelSpell"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "נמצאו %s שגיאות"
+
+msgid "Line with an error:"
+msgstr "שורה עם שגיאה:"
+
+msgid "Error:"
+msgstr "שגיאה:"
+
+#, fuzzy
+msgid "Suggestions:"
+msgstr "הצעות"
+
+msgid "Suggestions"
+msgstr "הצעות"
+
+msgid "Change to:"
+msgstr "שנה ל:"
+
+msgid "Occurs times:"
+msgstr "מספר חזרות:"
+
+msgid "Change this word"
+msgstr "שנה מילה זו"
+
+msgid "Change"
+msgstr "שנה"
+
+msgid "Change ALL occurances of this word"
+msgstr "שנה את כל המקרים למילה זו"
+
+msgid "Change All"
+msgstr "שנה הכל"
+
+msgid "Ignore this word"
+msgstr "התעלם ממלה זו"
+
+msgid "Ignore"
+msgstr "התעלם"
+
+msgid "Ignore ALL occurances this word"
+msgstr "התעלם מכל המקרים למילה זו"
+
+msgid "Ignore All"
+msgstr "התעלם מהכל"
+
+msgid "Add this word to your personal dictionary"
+msgstr "הוסף מילה זו למילון האישי שלך"
+
+msgid "Add to Dic"
+msgstr "הוסף למילון"
+
+msgid "Close and Commit"
+msgstr "סגור ובצע"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr "בדיקת האיות לא הושלמה. האם אתה בטוח שברצונך לסגור ולבצע את השינויים?"
+
+msgid "Close and Cancel"
+msgstr "סגור ובטל"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr "בדיקת האיות לא הושלמה. האם אתה בטוח שברצונך לסגור ולבטל את השינויים?"
+
+msgid "No errors found"
+msgstr "לא נמצאו שגיאות"
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"המילון האישי שלך <strong>הוצפן</strong> והוא מאוחסן כעת <strong>בצורה "
+"מאובטחת</strong>."
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"המילון האישי שלך <strong>פוענח</strong> והוא מאוחסן כעת <strong>בצורה רגילה</"
+"strong>."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "הגדרות הצפנה למילון אישי"
+
+msgid "Your personal dictionary was erased."
+msgstr "המילון האישי שלך נמחק."
+
+msgid "Dictionary Erased"
+msgstr "מילון נמחק"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"המילון האישי שלך נמחק. אנא סגור חלון זה ולחץ שוב על הכפתור \"בדוק איות\" "
+"בכדי להתחיל מחדש את בדיקת האיות."
+
+msgid "Close this Window"
+msgstr "סגור חלון זה"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"המילון האישי שלך הוצפן מחדש בהצלחה. כעת חזור לתפריט &quot;אפשרויות בודק "
+"האיות&quot; ובצע את בחירתך בשנית."
+
+#, fuzzy
+msgid "Successful re-encryption"
+msgstr "הצפנה מחדש מוצלחת"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"המילון האישי שלך הוצפן מחדש בהצלחה. אנא סגור חלון זה ולחץ על \"בדוק איות\" "
+"שובבכדי להתחיל מחדש את בדיקת האיות."
+
+msgid "Dictionary re-encrypted"
+msgstr "מילון הוצפן שוב"
+
+msgid "Personal Dictionary"
+msgstr "מילון אישי"
+
+msgid "No words in your personal dictionary."
+msgstr "אין מילים במילון האישי שלך"
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "אנא בחר את המילים אשר ברצונך למחוק מהמילון האישי שלך."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "מילון %s"
+
+msgid "Delete checked words"
+msgstr "מחק מילים נבחרות"
+
+msgid "Edit your Personal Dictionary"
+msgstr "ערוך את המילון האישי שלך"
+
+msgid "Please make your selection first."
+msgstr "אנא בצע את הבחירה קודם."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr "האם אתה בטוח שברצונך להצפין, ולאחסן בצורה מוצפנת את המילון האישי שלך?"
+
+#, fuzzy
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr "האם אתה בטוח שברצונך לפענח, ולאחסן בצורה רגילה את המילון האישי שלך?"
+
+#, fuzzy
+msgid "Your personal dictionary is currently encrypted."
+msgstr "המילון האישי שלך נמחק."
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "פענח בבקשה את המילון האישי שלי ואחסן אותו בצורה רגילה."
+
+msgid "Change crypto settings"
+msgstr "שנה הגדרות הצפנה"
+
+#, fuzzy
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "המילון האישי שלך נמחק."
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+
+#, fuzzy
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"<p>המילון האישי שלך נמצא כעת <strong>במצב רגיל</strong>. אם ברצונך להגן על "
+"פרטיות המילון האישי שלך במקרה שהוא נגנב, עלייך להציפנו. כאשר במצב מוצפן, "
+"תכולת הקובץ נראת מעוותת, וקשה לפענוח ללא המפתח (שהוא סיסמאת תיבת הדואר שלך)."
+"</p> <p><strong>שים לב:</strong> אם הינך מחליט שברצונך להצפין את המילון "
+"האישי שלך, עלייך לזכור שהוא מוצפן בעזרת סיסמאת תיבת הדואר שלך. במקרה ושכחת "
+"את הסיסמא ומנהל המערכת שינה אותה, המילון האישי שלך יהיה חסר שימוש ויהיה "
+"עלייך להתחיל מחדש. בכל אופן, במקרה ומנהל המערכת שינה את הסיסמא שלך, והינך "
+"זוכר את הסיסמא הישנה, יהיה ביכולתך להקליד את הסיסמא הישנה ולהצפין מחדש את "
+"המילון בעזרת הסיסמא החדשה.</p>"
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "הצפן בבקשה את המילון האישי שלי ואחסן אותו בצורה מוצפנת."
+
+#, fuzzy, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "מוחק את הרשומות הבאות מהמילון <strong>%s</strong>:"
+
+msgid "All done!"
+msgstr "הכל סויים!"
+
+msgid "Personal Dictionary Updated"
+msgstr "עודכן המילון האישי"
+
+msgid "No changes requested."
+msgstr "לא נתבקשו שינויים."
+
+msgid "Please wait, communicating with the server..."
+msgstr "אנא המתן, יוצר קשר עם השרת..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr "אנא בחר באיזה מילון ברצונך להשתמש לבדיקת האיות של הודעה זו:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "מאתחל את SquirrelSpell"
+
+#, fuzzy, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr ""
+"הגדרות הותאמו ל: <strong>%s</strong> עם <strong>%s</strong> כמילון ברירת "
+"המחדל."
+
+#, fuzzy, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "משתמש במילון <strong>%s</strong> (ברירת מחדל של המערכת) לבדיקת איות."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "הגדרות מילון בינלאומי עודכנו"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr "אנא סמן את כל המילונים הבינלאומיים שברצונך להשתמש בבדיק איות:"
+
+msgid "Make this dictionary my default selection:"
+msgstr "הפוך מילון זה לברירת המחדל שלי:"
+
+msgid "Make these changes"
+msgstr "בצע שינויים אלו"
+
+msgid "Add International Dictionaries"
+msgstr "הוסף מילונים בינלאומיים"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "אנא בחר את האפשרויות שברצונך להגדיר:"
+
+msgid "Edit your personal dictionary"
+msgstr "ערוך את המילון האישי שלך"
+
+msgid "Set up international dictionaries"
+msgstr "הכן מילונים בינלאומיים"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "הצפן או פענח את המילון האישי שלך"
+
+#, fuzzy
+msgid "not available"
+msgstr "לא זמין"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "תפריט אפשרויות SquirrelSpell"
+
+msgid "Translator"
+msgstr "מתרגם"
+
+#, fuzzy
+msgid "Saved Translation Options"
+msgstr "אפשרויות תרגום"
+
+msgid "Your server options are as follows:"
+msgstr "אפשרויות השרת שלך הן:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr ""
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr ""
+
+msgid "No known limits, powered by Systran"
+msgstr ""
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr ""
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr ""
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr ""
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr "אתה גם מחליט האם תוצג קופסאת התרגום, ואיכן היא תמוקם."
+
+msgid "Select your translator:"
+msgstr "בחר את המתרגם שלך:"
+
+msgid "When reading:"
+msgstr "כאשר בקריאה:"
+
+msgid "Show translation box"
+msgstr "הצג קופסאת תרגום"
+
+msgid "to the left"
+msgstr "משמאל"
+
+msgid "in the center"
+msgstr "במרכז"
+
+msgid "to the right"
+msgstr "מימין"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "תרגם בתוך המסגרות של SquirrelMail"
+
+msgid "Translation Options"
+msgstr "אפשרויות תרגום"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "באיזה מתרגם להתשמש כאשר הינך מקבל הודעות בשפות שונות?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s ל-%s"
+
+msgid "Chinese, Simplified"
+msgstr ""
+
+msgid "English"
+msgstr "אנגלית"
+
+msgid "Chinese, Traditional"
+msgstr ""
+
+msgid "Dutch"
+msgstr "הולנדית"
+
+msgid "French"
+msgstr "צרפתית"
+
+msgid "German"
+msgstr "גרמנית"
+
+msgid "Greek"
+msgstr "יוונית"
+
+msgid "Italian"
+msgstr "איטלקית"
+
+msgid "Japanese"
+msgstr "יפנית"
+
+#, fuzzy
+msgid "Korean"
+msgstr "נורווגית"
+
+msgid "Portuguese"
+msgstr "פורטוגזית"
+
+msgid "Russian"
+msgstr "רוסית"
+
+msgid "Spanish"
+msgstr "ספרדית"
+
+msgid "Translate"
+msgstr "תרגם"
+
+msgid "Brazilian Portuguese"
+msgstr "פורטוגזית (ברזיל)"
+
+msgid "Bulgarian"
+msgstr "בולגרית"
+
+msgid "Croatian"
+msgstr "קרואטית"
+
+msgid "Czech"
+msgstr "צ'כית"
+
+msgid "Danish"
+msgstr "דנית"
+
+msgid "Filipino (Tagalog)"
+msgstr ""
+
+msgid "Finnish"
+msgstr "פינית"
+
+msgid "Hungarian"
+msgstr "הונגרית"
+
+msgid "Icelandic"
+msgstr "איסלנדית"
+
+msgid "Latin"
+msgstr "לטינית"
+
+msgid "Latin American Spanish"
+msgstr "ספרדית (דרום-אמריקה)"
+
+msgid "Norwegian"
+msgstr "נורווגית"
+
+msgid "Polish"
+msgstr "פולנית"
+
+msgid "Romanian"
+msgstr "רומנית"
+
+msgid "Serbian"
+msgstr "סרבית"
+
+msgid "Slovenian"
+msgstr "סלובנית"
+
+msgid "Swedish"
+msgstr "שוודית"
+
+msgid "Turkish"
+msgstr ""
+
+msgid "Welsh"
+msgstr "וולשית"
+
+msgid "Indonesian"
+msgstr "אינדונזית"
+
+#, fuzzy
+msgid "to English"
+msgstr "אנגלית"
+
+#, fuzzy
+msgid "from English"
+msgstr "אנגלית"
+
+#, fuzzy
+msgid "Interface language"
+msgstr "שפה ברירת מחדל"
+
+#, fuzzy
+msgid "Translation direction"
+msgstr "אפשרויות תרגום"
+
+#, fuzzy, php-format
+msgid "About SquirrelMail %s"
+msgstr "SquirrelMail גירסא %s"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+#, fuzzy
+msgid "System information"
+msgstr "מידע אישי"
+
+#, fuzzy, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "SquirrelMail גירסא %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr ""
+
+msgid "none installed"
+msgstr ""
+
+msgid "sort by nickname"
+msgstr ""
+
+#, fuzzy
+msgid "sort by name"
+msgstr "שם משפחה"
+
+msgid "sort by email"
+msgstr ""
+
+msgid "sort by info"
+msgstr ""
+
+#, fuzzy
+msgid "Add to address book"
+msgstr "הוסף לספר כתובות"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "לא נמצאו תיקיות לביטול הרשמה מהן!"
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "לא נמצאו תיקיות להרשם אליהן!"
+
+msgid "Last Refresh"
+msgstr "רוענן לאחרונה"
+
+#, fuzzy
+msgid "Check mail"
+msgstr "בדוק דואר בכניסה"
+
+msgid "Save folder tree"
+msgstr ""
+
+#, fuzzy
+msgid "SquirrelMail Webmail Application"
+msgstr "SquirrelMail גירסא %s"
+
+#, fuzzy
+msgid "Compose Preferences"
+msgstr "אפשרויות תיקיה"
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+#, fuzzy
+msgid "Received"
+msgstr "קבלה"
+
+#, fuzzy
+msgid "As Attachment"
+msgstr "מצורפים"
+
+msgid "Bypass Trash"
+msgstr ""
+
+msgid "Please enter something to search for"
+msgstr ""
+
+msgid "There must be at least one criteria to search for"
+msgstr ""
+
+msgid "Error in criteria argument"
+msgstr ""
+
+msgid "(Illegal date)"
+msgstr ""
+
+msgid "(Wrong date)"
+msgstr ""
+
+#, fuzzy
+msgid "In"
+msgstr "מידע"
+
+msgid "(Missing argument)"
+msgstr ""
+
+msgid "(Spurious argument)"
+msgstr ""
+
+#, fuzzy
+msgid "Fold"
+msgstr "תיקיות"
+
+#, fuzzy
+msgid "Unfold"
+msgstr "מידע"
+
+#, fuzzy
+msgid "Saved Searches"
+msgstr "חיפושים אחרונים"
+
+msgid "Missing"
+msgstr ""
+
+msgid "and&nbsp;subfolders:"
+msgstr ""
+
+msgid "Exclude Criteria:"
+msgstr ""
+
+#, fuzzy
+msgid "Search Criteria"
+msgstr "חפש את"
+
+#, fuzzy
+msgid "Add New Criteria"
+msgstr "הוסף שרת"
+
+msgid "Remove Excluded Criteria"
+msgstr ""
+
+msgid "Remove All Criteria"
+msgstr ""
+
+#, fuzzy
+msgid "Not"
+msgstr "פתק"
+
+#, fuzzy
+msgid "Answered"
+msgstr "ממורכז"
+
+#, fuzzy
+msgid "Before"
+msgstr "שכח"
+
+#, fuzzy
+msgid "Message Body"
+msgstr "הודעה "
+
+#, fuzzy
+msgid "Deleted"
+msgstr "מחק"
+
+#, fuzzy
+msgid "Draft"
+msgstr "שמור טיוטה"
+
+#, fuzzy
+msgid "Flagged"
+msgstr "סימון"
+
+#, fuzzy
+msgid "Sent By"
+msgstr "נשלח:"
+
+#, fuzzy
+msgid "Header Field"
+msgstr "כותרות"
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Larger Than"
+msgstr ""
+
+msgid "Old"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+#, fuzzy
+msgid "Recent"
+msgstr "קבלה"
+
+#, fuzzy
+msgid "Seen"
+msgstr "שלח"
+
+#, fuzzy
+msgid "Sent Before"
+msgstr "תיקית דואר יוצא"
+
+#, fuzzy
+msgid "Sent On"
+msgstr "נשלח:"
+
+msgid "Sent Since"
+msgstr ""
+
+#, fuzzy
+msgid "Since"
+msgstr "גודל"
+
+msgid "Smaller Than"
+msgstr ""
+
+#, fuzzy
+msgid "Subject Contains"
+msgstr "מכיל:"
+
+msgid "Header and Body"
+msgstr ""
+
+#, fuzzy
+msgid "Sent To"
+msgstr "נשלח:"
+
+msgid "And In"
+msgstr ""
+
+msgid "Or In"
+msgstr ""
+
+#, fuzzy
+msgid "And"
+msgstr "הוסף"
+
+msgid "Or"
+msgstr ""
+
+msgid "Standard search"
+msgstr ""
+
+msgid "Advanced search"
+msgstr ""
+
+#, fuzzy
+msgid "Folder List"
+msgstr "תיקיות"
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Click here to change the sorting of the address list"
+msgstr ""
+
+msgid "Illegal folder name."
+msgstr ""
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Please select a different name."
+msgstr "שם תיקיה לא חוקי. אנא בחר שם אחר."
+
+#, fuzzy
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "לא בחרת תיקיה אשר ברצונך לשנות את שמה."
+
+#, fuzzy
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "לא בחרת תיקיה אשר ברצונך לשנות את שמה."
+
+msgid "Possible reason:"
+msgstr ""
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+#, fuzzy
+msgid "Reason:"
+msgstr "תשובה:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown recipient"
+msgstr "שולח לא ידוע"
+
+msgid "Unflag"
+msgstr ""
+
+#, fuzzy
+msgid "Flag"
+msgstr "סימון"
+
+#, fuzzy
+msgid "Undelete"
+msgstr "מחק"
+
+#, fuzzy
+msgid "General Message Composition"
+msgstr "הגדרות תצוגה - הודעה וכתיבה"
+
+#, fuzzy
+msgid "Replying and Forwarding Messages"
+msgstr "כלול העתקים כאשר אני מפיץ הודעה"
+
+msgid "Strip signature when replying"
+msgstr ""
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Message Flags Icon Theme"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+#, fuzzy
+msgid "Use Compact Page Selector"
+msgstr "אפשר בוחר דפים"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr ""
+
+msgid "Length of Subject Field (0 for full)"
+msgstr ""
+
+#, fuzzy
+msgid "Message Display Options"
+msgstr "הגדרות תצוגה - כללי"
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr ""
+
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "הודעה מקורית"
+
+#, fuzzy, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "דקה"
+msgstr[1] "דקה"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr ""
+
+#, fuzzy
+msgid "Hide SquirrelMail Header"
+msgstr "הצג כל הכותרות"
+
+#, fuzzy
+msgid "Search functions"
+msgstr "חפש את"
+
+msgid "Only basic search"
+msgstr ""
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+#, fuzzy
+msgid "Enable aggressive decoding"
+msgstr "אפשר בוחר דפים"
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use advanced tree folder listing"
+msgstr ""
+
+#, fuzzy
+msgid "Use icons"
+msgstr "שניות"
+
+msgid "Use PHP recode functions"
+msgstr ""
+
+msgid "Use PHP iconv functions"
+msgstr ""
+
+msgid "Allow remote configuration test"
+msgstr ""
+
+msgid "Show System Specifications"
+msgstr ""
+
+#, fuzzy
+msgid "Search Mailing List Archives"
+msgstr "הצג ארכיונים"
+
+msgid "Search SourceForge Bugtracker"
+msgstr ""
+
+#, fuzzy
+msgid "Search for words:"
+msgstr "חפש את"
+
+msgid "Written by:"
+msgstr ""
+
+#, fuzzy
+msgid "Email addresses only"
+msgstr "כתובת דוא\"ל"
+
+#, fuzzy
+msgid "Mailing list:"
+msgstr "רשימת תפוצה"
+
+#, fuzzy
+msgid "SquirrelMail users list"
+msgstr "SquirrelMail גירסא %s"
+
+#, fuzzy
+msgid "SquirrelMail plugins list"
+msgstr "SquirrelMail גירסא %s"
+
+#, fuzzy
+msgid "SquirrelMail developers list"
+msgstr "SquirrelMail גירסא %s"
+
+#, fuzzy
+msgid "SquirrelMail internationalization list"
+msgstr "SquirrelMail גירסא %s"
+
+#, fuzzy
+msgid "Sort by:"
+msgstr "עדיפות:"
+
+msgid "Relevance"
+msgstr ""
+
+#, fuzzy
+msgid "Search Archives"
+msgstr "תוצאות חיפוש"
+
+#, fuzzy
+msgid "Reset Form"
+msgstr "מחק תיקיה"
+
+msgid "Summary keyword:"
+msgstr ""
+
+#, fuzzy
+msgid "Sort By:"
+msgstr "עדיפות:"
+
+msgid "ID"
+msgstr ""
+
+#, fuzzy
+msgid "Summary"
+msgstr "ראשון"
+
+#, fuzzy
+msgid "Open Date"
+msgstr "פתיחה נכשלה"
+
+#, fuzzy
+msgid "Close Date"
+msgstr "סגור"
+
+#, fuzzy
+msgid "Submitter"
+msgstr "שלח"
+
+msgid "Assignee"
+msgstr ""
+
+#, fuzzy
+msgid "Order:"
+msgstr "אחר:"
+
+#, fuzzy
+msgid "Ascending"
+msgstr "שלח"
+
+msgid "Descending"
+msgstr ""
+
+msgid "Search Bugtracker"
+msgstr ""
+
+msgid "You must type in a new password."
+msgstr ""
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+
+msgid "Your new password does not match the verify password."
+msgstr ""
+
+msgid "You must type in your current password."
+msgstr ""
+
+#, fuzzy
+msgid "Your current password is not correct."
+msgstr "שם משתמש או סיסמא אינם נכונים."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+#, fuzzy
+msgid "Your new password contains invalid characters."
+msgstr "כינוי מכיל תווים לא חוקיים"
+
+#, fuzzy
+msgid "Change Password"
+msgstr "שנה מילה זו"
+
+#, fuzzy
+msgid "Current Password:"
+msgstr "סיסמא:"
+
+#, fuzzy
+msgid "New Password:"
+msgstr "סיסמא:"
+
+#, fuzzy
+msgid "Verify New Password:"
+msgstr "סיסמא:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+#, fuzzy
+msgid "User's Password"
+msgstr "סיסמא:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to use TLS."
+msgstr "שמור \\ עדכן"
+
+#, fuzzy, php-format
+msgid "Error: %s"
+msgstr "שגיאה"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Server replied: %s"
+msgstr "השרת השיב:"
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to connect to LDAP server."
+msgstr "אין חיבור לשרת"
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+#, fuzzy
+msgid "Search error."
+msgstr "חפש את"
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr ""
+
+msgid "PHP mhash extension is missing."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+#, fuzzy
+msgid "unknown"
+msgstr "שולח לא ידוע"
+
+msgid "Unable to validate user's password."
+msgstr ""
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+#, fuzzy
+msgid "Cannot change password!"
+msgstr "שנה מילה זו"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr ""
+
+msgid "SQL call failed, try again later."
+msgstr ""
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr ""
+
+msgid "Closing Connection"
+msgstr ""
+
+#, fuzzy
+msgid "Connecting to Password Server"
+msgstr "אין חיבור לשרת"
+
+msgid "No valid backend defined."
+msgstr ""
+
+msgid "Incorrent path to vmail.inc file."
+msgstr ""
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr ""
+
+msgid "Invalid user."
+msgstr ""
+
+#, fuzzy
+msgid "Empty domain"
+msgstr "מחרוזת פקודה ריקה"
+
+#, fuzzy
+msgid "Empty domain password"
+msgstr "מחרוזת פקודה ריקה"
+
+#, fuzzy
+msgid "Empty username"
+msgstr "שם משתמש:"
+
+msgid "Empty new password"
+msgstr ""
+
+#, fuzzy
+msgid "Server Capability response:"
+msgstr "השרת השיב:"
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+#, fuzzy
+msgid "Select"
+msgstr "בחר הכל"
+
+#, fuzzy
+msgid "Test Name"
+msgstr "שם משפחה"
+
+#, fuzzy
+msgid "IMAP command string"
+msgstr "מחרוזת פקודה ריקה"
+
+#, fuzzy
+msgid "Request:"
+msgstr "מבוקש"
+
+#, fuzzy
+msgid "No POP3 servers configured yet."
+msgstr "לא הוגדר שרת"
+
+#, fuzzy
+msgid "Click here to go to the options page."
+msgstr "לחץ כאן בכדי להתחבר מחדש."
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "כניסה אושרה: תיבת דואר נכנס מכילה ["
+msgstr[1] "כניסה אושרה: תיבת דואר נכנס מכילה ["
+
+#, fuzzy
+msgid "Width of popup window:"
+msgstr "רוחב חלון עריכה"
+
+msgid "If set to 0, reverts to default value"
+msgstr ""
+
+#, fuzzy
+msgid "Height of popup window:"
+msgstr "גובה חלון עריכה"
+
+#, fuzzy
+msgid "uploaded media file"
+msgstr "קובץ מדיה מקומי:"
+
+#, fuzzy
+msgid "none"
+msgstr "סיים"
+
+#, fuzzy
+msgid "Upload Media File:"
+msgstr "קובץ מדיה מקומי:"
+
+#, fuzzy
+msgid "Uploaded Media File:"
+msgstr "קובץ מדיה מקומי:"
+
+#, fuzzy
+msgid "unavailable"
+msgstr "לא זמין"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr ""
+
+#, fuzzy
+msgid "Spam Service Type:"
+msgstr "סוג שרת IMAP"
+
+msgid "Free reporting"
+msgstr ""
+
+msgid "Member services"
+msgstr ""
+
+#, fuzzy
+msgid "Save Service Type"
+msgstr "סוג סריקה שמורה"
+
+#, fuzzy
+msgid "SpamCop reporting"
+msgstr "סינון דואר זבל (SPAM)"
+
+#, fuzzy
+msgid "Translation Theme:"
+msgstr "תרגם"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+
+#, fuzzy
+msgid "Translation Preferences"
+msgstr "הגדרות חברה"
+
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr ""
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr ""
+
+msgid "Transliterate unknown words:"
+msgstr ""
+
+msgid "When composing:"
+msgstr "כאשר בכתיבה:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "לא פעיל עדיין, לעת עתה לא עושה כלום"
+
+msgid "Delivery error report"
+msgstr ""
+
+msgid "Undelivered Message Headers"
+msgstr ""
+
+msgid "This image has been removed for security reasons"
+msgstr ""
+
+#~ msgid "Business Card"
+#~ msgstr "כרטיס ביקור"
+
+#~ msgid "Click here to try again"
+#~ msgstr "לחץ כאן בכדי לנסות שוב"
+
+#~ msgid "Unknown message number in reply from server: "
+#~ msgstr "מספר לא ידוע של הודעה בתשובה מהשרת: "
+
+#~ msgid "(unknown sender)"
+#~ msgstr "(שולח לא ידוע)"
+
+#~ msgid "Enable Subtle Printer Friendly Link"
+#~ msgstr "אפשר קישור עדין להדפסת ההודעה"
+
+#~ msgid "Authenticated SMTP"
+#~ msgstr "SMTP מאומת"
+
+#~ msgid "35 min."
+#~ msgstr "35 דקות"
+
+#~ msgid ""
+#~ "FREE - Osirusoft Relays - Osirusofts list of verified open relays. Seems "
+#~ "to include servers used by abuse@uunet.net auto-replies too."
+#~ msgstr ""
+#~ "חינם - רשומות של שרתי דואר הפתוחים לכולם, ובכך מאפשרים שליחת דואר "
+#~ "אלקטרוני דרכם לכל אחד (Osirusoft)."
+
+#~ msgid "FREE - Osirusoft Dialups - Osirusofts Dialup Spam Source list."
+#~ msgstr ""
+#~ "חינם - רשימה של שרתי חיוג אשר לעיתים קרובות שימשו כשרתים לשליחת דואר זבל "
+#~ "(Osirusoft)."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Confirmed Spam Source - Sites that continually spam and "
+#~ "have been manually added after multiple nominations. Use with caution. "
+#~ "Seems to catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "חינם - רשימה ידנית של שרתים אשר שולחים דואר זבל ללא הרף, וקבלו תלונות "
+#~ "רבות. אנא השתמשו ברשימה זו בזהירות (Osirusoft)."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Smart Hosts - List of hosts that are secure but relay "
+#~ "for other mail servers that are not secure."
+#~ msgstr ""
+#~ "חינם - רשימה של שרתים בטוחים אשר מאשרים שימוש בשרתי הדואר שלהם לשרתים אשר "
+#~ "אינם בטוחים (Osirusoft)."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Spamware Developers - It is believed that these are IP "
+#~ "ranges of companies that are known to produce spam software. Seems to "
+#~ "catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "חינם - רשימה של כתובות IP אשר כביכול משמשות חברות אשר שולחות דואר זבל "
+#~ "(Osirusoft)."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Unconfirmed OptIn Servers - List of listservers that opt "
+#~ "users in without confirmation."
+#~ msgstr ""
+#~ "חינם - רשימה של שרתי רשימות תפוצה אשר מוסיפים אליהם משתמשים ללא בקשת "
+#~ "אישור (Osirusoft)."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Insecure formmail.cgi scripts - List of insecure "
+#~ "formmail.cgi scripts. (planned)."
+#~ msgstr "חינם - רשימה של סקריפטים לא בטוחים אשר שולחים דואר זבל (Osirusoft)."
+
+#~ msgid "FREE - Osirusoft Open Proxy Servers - List of Open Proxy Servers."
+#~ msgstr "חינם - רשימה של שרתי פרוקסי פתוחים (Osirusoft)."
+
+#~ msgid "All Messages"
+#~ msgstr "כל ההודעות"
+
+#~ msgid "] messages"
+#~ msgstr "] הודעות"
+
+#~ msgid "No-one server in use. Try to add."
+#~ msgstr "לא נמצא אף שרת אחד בשימוש. נסה להוסיף."
+
+#~ msgid "Mofify a Server"
+#~ msgstr "עדכן שרת"
+
+#~ msgid ""
+#~ "Select from the list of <b>server files</b> the media file to play when "
+#~ "new mail arrives.  Selecting <b>local media</b> will play the file "
+#~ "specified in the <b>local media file</b> box to play from the local "
+#~ "computer.  If no file is specified, the system will use a default from "
+#~ "the server."
+#~ msgstr ""
+#~ "בחר מהרשימה של <b>קבצי השרת</b> את קובץ המדיה שברצונך שינגן כאשר מגיע "
+#~ "דואר חדש. בחירת האפשרות <b>קובץ מדיה מקומי</b> ינגן את הקובץ אשר יבחר "
+#~ "מהמחשב שלך. אם לא נבחר שום קובץ המערכת תשתמש בקובץ ברירת המחדל."
+
+#~ msgid "(local media)"
+#~ msgstr "(מדיה מקומית)"
+
+#~ msgid "New Mail Notification options saved"
+#~ msgstr "הגדרות הודעה על דואר חדש נשמרו"
+
+#~ msgid "Unknown error"
+#~ msgstr "שגיאה לא ידועה"
+
+#~ msgid "To:"
+#~ msgstr "אל:"
+
+#~ msgid "CC:"
+#~ msgstr "העתקים:"
+
+#~ msgid "BCC:"
+#~ msgstr "העתקים עיוורים:"
+
+#~ msgid "Subject:"
+#~ msgstr "נושא:"
+
+#~ msgid "said"
+#~ msgstr "אמר"
+
+#, fuzzy
+#~ msgid "Draft folder"
+#~ msgstr "תיקית טיוטות"
+
+#~ msgid "CC"
+#~ msgstr "העתקים"
+
+#~ msgid "Viewing a message attachment"
+#~ msgstr "מציג מצורף להודעה"
+
+#~ msgid "Cc:"
+#~ msgstr "העתקים:"
+
+#~ msgid "Bcc:"
+#~ msgstr "העתקים עיוורים:"
+
+#~ msgid "<No subject>"
+#~ msgstr ">ללא נושא<"
+
+#~ msgid "Enable request/confirm reading"
+#~ msgstr "אפשר בקשת\\אישור קריאה"
+
+#~ msgid "Use receive date for sort"
+#~ msgstr "השתמש בתאריך הקבלה למיון"
+
+#~ msgid "There was an error contacting the mail server."
+#~ msgstr "היתה שגיאה ביצירת קשר עם שרת הדואר."
+
+#~ msgid "Contact your administrator for help."
+#~ msgstr "צור קשר עם מנהל המערכת לקבלת עזרה."
+
+#~ msgid "No Messages found"
+#~ msgstr "לא נמצאו הודעות"
+
+#~ msgid ""
+#~ "Please contact your system administrator and report the following error:"
+#~ msgstr "אנא צור קשר עם מנהל המערכת ודווח על השגיאה הבאה."
+
+#~ msgid "No To Address"
+#~ msgstr "חסר מכותב (אל)"
+
+#~ msgid "Found"
+#~ msgstr "נמצא"
+
+#~ msgid "messages"
+#~ msgstr "הודעות"
+
+#~ msgid "Error decoding mime structure.  Report this as a bug!"
+#~ msgstr "שגיאה בפענוח מבנה סוג קובץ. אנא דווח על באג זה!"
+
+#~ msgid "Submit message"
+#~ msgstr "שלח הודעה"
+
+#~ msgid ""
+#~ "<p>Your personal dictionary is <strong>currently encrypted</strong>. This "
+#~ "helps protect your privacy in case the web-mail system gets compromized "
+#~ "and your personal dictionary ends up stolen. It is currently encrypted "
+#~ "with the password you use to access your mailbox, making it hard for "
+#~ "anyone to see what is stored in your personal dictionary.</p> "
+#~ "<p><strong>ATTENTION:</strong> If you forget your password, your personal "
+#~ "dictionary will become unaccessible, since it can no longer be decrypted. "
+#~ "If you change your mailbox password, SquirrelSpell will recognize it and "
+#~ "prompt you for your old password in order to re-encrypt the dictionary "
+#~ "with a new key.</p>"
+#~ msgstr ""
+#~ "<p>המילון האישי שלך נמצא כעת <strong>במצב מוצפן</strong>. זה עוזר לשמור "
+#~ "על הפרטיות שלך במקרה והמילון נגנב. כרגע הוא מוצפן בעזרת הסיסמא של תיבת "
+#~ "הדואר שלך, מה שמקשה על מי שרוצה לראות את המידע המאוחסן במילון האישי שלך.</"
+#~ "p> <p><strong>שים לב:</strong> אם שכחת את הסיסמא שלך, המילון האישי יהפך "
+#~ "ללא זמין, מכיוון שלא ניתן לפענח את הקידוד. במקרה ותשנה את סיסמאת הדואר "
+#~ "שלך, SquirrelMail יזהה זאת ויבקש ממך להכניס את הסיסמא הישנה בכדי להצפין "
+#~ "את המילון בעזרת הסיסמא החדשה.</p>"
+
+#~ msgid "NOOP failed. Server not RFC 1939 compliant"
+#~ msgstr "NOOP נכשל. שרת אינו תואם RFC 1939"
+
+#~ msgid "Left aligned"
+#~ msgstr "מוצמד לשמאל"
+
+#~ msgid "Right aligned"
+#~ msgstr "מוצמד לימין"
+
+#~ msgid "on the Read screen"
+#~ msgstr "במסך הקריאה"
+
+#~ msgid "Hide the box"
+#~ msgstr "הסתר את הקופסא"

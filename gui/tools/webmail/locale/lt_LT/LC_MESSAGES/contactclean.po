@@ -1,0 +1,127 @@
+# Lithuanian translation of
+# SquirrelMail's contactclean plugin.
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: contactclean.po,v 1.1 2003/09/13 10:01:24 tokul Exp "
+"$\n"
+"POT-Creation-Date: 2003-09-06 14:01+0300\n"
+"PO-Revision-Date: 2003-09-13 12:49+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Verify Contacts in Addressbook(s)"
+msgstr "Patikrinti kontaktus adresų knygutėje(se)"
+
+msgid "Register my Old Address(es)"
+msgstr "Įrašyti mano senajį adresą(us)"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(visi pakeitimai padaryti šioje formoje dings)"
+
+msgid "Previous address"
+msgstr "Ankstesnis adresas"
+
+msgid "Email Address History"
+msgstr "Elektroninio pašto adreso istorija"
+
+msgid "Current address"
+msgstr "Dabartinis adresas"
+
+msgid "Old address"
+msgstr "Senasis adresas"
+
+msgid "Once you've registered an old address you can:"
+msgstr "Užregistravę senąjį adresą Jūs galite:"
+
+msgid ""
+"You haven't set your email address yet. You need to go back to the Personal "
+"Information options page and set your own email before you can register any "
+"old addresses."
+msgstr ""
+"Jūs kol kas dar nenustatėte savo elektroninio pašto adreso. Reikia grįžti į "
+"Asmeninės informacijos nustatymų puslapį ir įvesti savo dabartinį "
+"elektroninio pašto adresą. Tik tada jūs galėsite surašyti savo senuosius "
+"pašto adresus."
+
+msgid ""
+"You haven't set your email address yet.<br><br>You need to go to the "
+"Personal Information options page and set your own email address before you "
+"can verify your address book"
+msgstr ""
+"Jūs dar nenustatėte savo elektroninio pašto adreso.<br><br>Jūs turite nueiti "
+"į Asmeninės informacijos nustatymų puslapį ir nustatyti savo dabartinį pašto "
+"adresą. Tik tada Jūs galėsite patikrinti savo adresų knygutę."
+
+msgid "No personal address book is defined. Contact your administrator."
+msgstr ""
+"Asmeninė adresų knygutė neegzistuoja. Susisiekite su Jūsų pašto "
+"administratoriumi."
+
+msgid "Nothing in the addressbook (is this what you expect?) - nothing to do"
+msgstr ""
+"Adresų knygutėje nieko nerasta (ar tai ir yra tai, ko Jūs tikėjotės?) - "
+"programai nereikia nieko daryti"
+
+msgid ""
+"ERROR: You need to select some addresses to use the 'Replace Selected' "
+"button!"
+msgstr ""
+"KLAIDA: Jūs turite pasirinkti bent vieną adresą prieš paspausdami mygtuką "
+"'Pakeisti pasirinktus'!"
+
+msgid "Updating the addressbook"
+msgstr "Atnaujinama adresų knygutė"
+
+#, c-format
+msgid "Replacing %s with %s"
+msgstr "%s keičiamas į %s"
+
+#, c-format
+msgid "Changed from %s => %s by ContactClean plugin %s"
+msgstr "%s buvo pakeistas į %s naudojant ContactClean priedą %s"
+
+msgid "ERROR"
+msgstr "KLAIDA"
+
+msgid ""
+"The following new addresses have been found!<p>Select the ones you want to "
+"update in your addressbook.<p>"
+msgstr ""
+"Aptikti šie nauji adresai! <p>Pasirinkite tuos, kuriuos Jūs norite "
+"atnaujinti savo adresų knygoje.<p>"
+
+msgid "Nickname"
+msgstr "Trumpas vardas"
+
+msgid "Name"
+msgstr "Vardas"
+
+msgid "E-mail"
+msgstr "Elektroninis paštas"
+
+msgid "Replace?"
+msgstr "Pakeisti?"
+
+msgid "Replace with"
+msgstr "Pakeisti į"
+
+msgid "Your address book seems completely up to date."
+msgstr "Jūsų adresų knygutė atrodo pilnai užpildyta."
+
+msgid ""
+"Some parts of your addressbook search may have been registered with the "
+"MailLocate.com database to await authorisation with the searchee. Please try "
+"again in a few days time in case you have been authorised to see some new "
+"addresses."
+msgstr ""
+"Dalis jūsų adresų paieškų registruotų MailLocate.com duomenų bazėje laukia "
+"patvirtinimo iš ieškotojo pusės. Pabandykite po kelių dienų. Gal tada Jūs "
+"jau sulauksi naujų adresų patvirtinimų."
+
+msgid "Powered by"
+msgstr "Sistema naudoja"

@@ -1,0 +1,11 @@
+--- ../../src/compose.php.html_mail	Sat Sep 13 13:27:22 2003
++++ ../../src/compose.php	Sat Sep 13 13:27:59 2003
+@@ -1005,6 +1005,8 @@
+         showComposeButtonRow();
+     }
+ 
++    do_hook('compose_before_textarea');
++
+     /* why this distinction? */
+     if ($compose_new_win == '1') {
+         echo '   <TR>' . "\n" .

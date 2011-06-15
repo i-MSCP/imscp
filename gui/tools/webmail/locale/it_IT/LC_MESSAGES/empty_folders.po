@@ -1,0 +1,47 @@
+# Italian(it_IT) empty_folders Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: empty_folders.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: empty_folders 1.2\n"
+"POT-Creation-Date: 2005-11-12 16:57+0200\n"
+"PO-Revision-Date: 2009-04-27 11:12+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:57
+msgid "empty"
+msgstr "svuota"
+
+#: functions.php:142
+msgid "Empty Link"
+msgstr "Link svuota"
+
+#: functions.php:181
+msgid "Toggle Special Folders"
+msgstr "Seleziona cartelle speciali"
+
+#: functions.php:182
+msgid "Toggle All"
+msgstr "Seleziona tutti"
+
+#: functions.php:188
+msgid "Link behavior"
+msgstr "Comportamento link"
+
+#: functions.php:192
+msgid "Move to Trash"
+msgstr "Sposta in Cestino"
+
+#: functions.php:196
+msgid "Expunge"
+msgstr "Cancella"
+
+#: functions.php:201
+msgid "Save"
+msgstr "Salva"

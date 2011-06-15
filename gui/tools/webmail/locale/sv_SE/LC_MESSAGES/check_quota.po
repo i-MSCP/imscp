@@ -1,0 +1,60 @@
+# Swedish (sv_SE) check_quota Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: check_quota.po 13541 2009-04-15 12:42:12Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: check_quota\n"
+"POT-Creation-Date: 2005-01-11 09:59+0200\n"
+"PO-Revision-Date: 2005-01-14 02:28+0100\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s%s of %s%s"
+msgstr "%s %s av %s %s"
+
+#, c-format
+msgid "%s%% of %s%s"
+msgstr "%s%% av %s %s"
+
+msgid "Quota Usage:"
+msgstr "Använd kvot:"
+
+msgid "OVER QUOTA!"
+msgstr "Kvoten överskriden!"
+
+#, c-format
+msgid "%s of %s files"
+msgstr "%s av %s filer"
+
+#, c-format
+msgid "%s%% of %s files"
+msgstr "%s%% av %s filer"
+
+msgid "File Usage:"
+msgstr "Använda filer:"
+
+msgid ""
+"<strong>WARNING:</strong> Your quota usage is currently "
+"<strong>###PERCENT_USED###%</strong>. To avoid losing any email, you should "
+"immediately empty out your Trash and Sent folders and delete any emails with "
+"large attachments."
+msgstr ""
+"<strong>Varning:</strong> Du använder <strong>###PERCENT_USED###%</strong> "
+"av ditt lagringsutrymme. För att undvika att förlora några brev bör du "
+"omedelbart tömma papperskorgen, utkorgen och kasta alla brev med stora "
+"bilagor."
+
+msgid ""
+"<strong>WARNING:</strong> Your quota usage is currently "
+"<strong>###PERCENT_USED###%</strong>. You may want to make sure you empty "
+"out your Trash and clean your Sent folder."
+msgstr ""
+"<strong>Varning:</strong> Du använder <strong>###PERCENT_USED###%</strong> "
+"av ditt lagringsutrymme. Du bör överväga att tömma papperskorgen och "
+"utkorgen."

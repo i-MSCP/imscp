@@ -1,0 +1,332 @@
+<chapter>
+   <title>
+      Indstillinger
+   </title>
+   <summary>
+      Du kan indstille SquirrelMails udseende, og den måde den reagerer på, ved
+      at ændre på indstillingerne i denne sektion.
+   </summary>
+   <description>
+      <p>
+      En af de bedste ting ved SquirrelMail er i hvor høj grad den kan tilpasses.
+      Afhængig af opsætningen kan du have mulighed for at vælge mellem mange forskellige
+      temaer, sprog, mapper og andre indstillinger. Alle disse indstillinger kan ændres
+      uden at det påvirker de øvrige brugere på systemet. Der er mindst fem hovedpunkter
+      under indstillingerne: Personlig information, Formateringsindstillinger,
+      Beskedfremhævning, Mappeindstillinger og Indekssortering.
+      Andre punkter kan være tilgængelige afhængig af opsætningen af SquirrelMail.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Personlig information
+   </title>
+   <description>
+      <b>Fuldt navn</b><br>
+      Du skal skrive dit fulde navn her. For eksempel "Jens Hansen". Når du sender en e-mail
+      er dette det navn som bliver vist for modtageren, der vil kunne se at afsenderen er
+      "Jens Hansen". Hvis du ikke udfylder dette felt vil modtageren i stedet blive vist
+      din e-mail adresse, for eksempel "jens@mitdomaene.dk".
+      <br><br>
+
+      <b>E-mail adresse</b><br>
+      <i>Valgfri</i> - Hvis din e-mail adresse er forskellig fra den der tildeles automatisk
+      kan du ændre den her.
+      <br><br>
+
+      <b>Svar til</b><br>
+      <i>Valgfri</i> - Dette er den e-mail adresse som folk svarer til, når de svarer
+      på din besked. Hvis den e-mail adresse, folk skal svare til, er anderledes end
+      din afsender adresse, kan du skrive den her. Dette er brugbart, hvis du gerne vil
+      have folk til at svare til en anden e-mail konto, end den, du sender fra.
+      <br><br>
+
+      <b>Flere identiteter</b><BR>
+      Klik på dette link for at redigere flere identiteter. Dette er en brugbar
+      funktion, hvis du vil kunne vælge mellem forskellige afsender-linier til
+      forskellige beskeder (for eksempel indeholdende din private e-mail
+      adresse eller din e-mail adresse på arbejde). På den side, der bliver åbnet,
+      kan du tilføje så mange identiteter som du har lyst til. Du vil få mulighed for
+      at vælge mellem disse, når du skriver en ny besked.<br><br>
+
+      <b>Citationsindstillinger</b><BR>
+      Når du trykker svar på en besked, vil du blive præsenteret for Skriv ny siden
+      med den originale besked citeret. Før denne citerede besked, vil der blive indsat
+      en besked i stil med <TT>Jens Hansen skrev:</TT> (hvis beskeden, du svarede på,
+      kom fra Jens Hansen). Dette kaldes citationslinien. Her kan du vælge hvordan
+      denne linie ser ud.<BR>
+      <UL>
+      <LI><B>Ingen citation</B><br>
+      Indsætter overhovedet ingen citationslinie.<br><br>
+      <LI><B>Forfatteren sagde</B><br>
+      Dette genererer linien: <TT>Jens Hansen sagde:</TT> hvor Jens Hansen vil blive
+      erstattet med navnet på afsenderen af den besked, du svarer på.<br><br>
+      <LI><B>Citer hvem XML</B><br>
+      Dette genererer linien: <TT>&lt;Citer hvem="Jens Hansen"&gt;</TT>.<br><br>
+      <LI><B>Brugerdefineret</B><br>
+      Med denne indstilling kan du lave din egen citationslinie. I de to indtastningsfelter
+      herunder kan du indsætte den begyndelse og afslutning på citationslinien, som du
+      gerne vil have. Afsenderens navn vil blive indsat imellem disse to linier.
+      </UL><br><br>
+
+      <b>Signatur</b><br>
+      <i>Valgfri</i> - Signaturer indsættes i bunden af alle beskeder du sender.
+      Hvis du ønsker at bruge en signatur skal du sikre dig, at afkrydsningsfeltet ved
+      siden af "Brug signatur" er afkrydset. Du kan så udfylde feltet Signatur med
+      den signatur, du gerne vil bruge.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Formateringsindstillinger
+   </title>
+   <description>
+      <b>Tema</b><br>
+      SquirrelMail tilbyder forskellige farvetemaer, alt efter hvad du ønsker.
+      Du kan vælge mellem de mange temaer, der er nævnt i boksen.
+      <br><br>
+
+      <b>Brugerdefineret stylesheet</b><br>
+      At ændre temaet ændrer kun på farverne, et stylesheet kan ændre andre ting
+      som for eksempel fontstørrelser og andet, der bliver brugt af SquirrelMail.
+      <br><br>
+
+      <b>Sprog</b><br>
+      Du kan her vælge hvilket sprog de fleste ting bliver vist på. Hvis det sprog,
+      du ønsker at bruge, er i listen, så kan du vælge dette. Herefter vil tekster
+      i SquirrelMail blive vist på dette sprog. Bemærk at dette ikke oversætter
+      dine beskeder eller mappenavne for dig.
+      <br><br>
+
+      <b>Brug JavaScript</b><br>
+      Et af de primære mål bag skabelsen af SquirrelMail var at der ikke skulle
+      bruges JavaScript på nogen af siderne. Men udviklerne har lavet en meget
+      god søgefunktion til adressebogen, der bruger JavaScript. Enkelte andre
+      JavaScript funktioner er også blevet tilføjet. I stedet for at fjerne disse
+      er der blevet tilføjet en valgmulighed, hvor brugeren kan vælge, om der
+      skal bruges ren HTML eller om der også må bruges JavaScript. Hvis du ikke
+      ved, hvad dette betyder er det sikreste valg at lade denne indstilling stå
+      på autodetekter.
+      <br><br>
+
+      <b>Antal beskeder i oversigten</b><br>
+      Dette er antallet af beskeder der vil blive vist ad gangen i en en mappe.
+      Hvis der er flere beskeder end dette i en mappe vil du se et "Forrige" og
+      et "Næste" link over og under oversigten. Disse links vil sende dig til de
+      forrige eller de næste beskeder.
+      <br><br>
+
+      <b>Aktivér opdeling i sider</b><br>
+      Sættes denne indstilling til Ja vil der blive vist sidenumre over og under
+      oversigten over beskeder. Ved hjælp af disse sidenumre kan du hurtigt springe
+      til en bestemt side. Tallet i feltet <B>Det maksimale antal sider som vises</B>
+      bestemmer hvor mange af disse sidenumre, der vises ad gangen.
+      <br><br>
+
+      <b>Ombryd modtagede beskeder ved</b><br>
+      Her kan du sætte op hvor mange tegn, der skal vises, før teksten ombrydes
+      til en ny linie. dette forhindrer beskeder i at blive for brede til skærmen.
+      86 er standardværdien og den vil passe for de fleste, men det kan ændres
+      alt efter ønske.
+      <br><br>
+
+      <b>Størrelse på skrivevinduet</b><br>
+      Her kan du sætte op hvor bred du gerne vil have skrivevinduet når du skriver
+      en ny besked. Dette er antallet af tegn, der kan være på en linie i skrivevinduet.
+      <br><br>
+
+      <b>Placering af knapper når du skriver</b><br>
+      Her kan du vælge, hvor knapperne Adresser, Gem kladde og Send er placeret,
+      når du skriver en ny besked.<br><br>
+
+      <b>Adressebog formatteringsindstilling</B><br>
+      Her vælger du, hvordan adressebogen skal vises. Hvis du vil være sikker på,
+      at adressebogen vises korrekt på alle browsere, så skal du vælge HTML.
+      Hvis din browser understøtter JavaScript kan du i stedet vælge dette og
+      få en pænere adressebog.
+      <br><br>
+
+      <b>Vis HTML-versionen som standard</b><br>
+      Hvis du modtager en besked, der er i både HTML og tekstformat kan du her
+      vælge om du vil se HTML-versionen (Ja) eller tekstversionen (Nej) som
+      standard.
+      <br><br>
+
+      <b>Inkludér mig i Kopi-til når jeg svarer til alle</b><br>
+      "Svar til alle" sender dit svar til alle modtagerne af den oprindelige
+      besked, inklusive dig selv. For at udelade din egen e-mail adresse fra
+      svaret kan du sætte denne indstilling til Nej.
+      <br><br>
+
+      <b>Aktivér besked display</b><BR>
+      Når du læser en besked kan du her vælge om du gerne vil kunne se, hvilket
+      mailprogram afsenderen brugte.
+      <br><br>
+
+      <b>Vis vedhæftede billeder i beskeden</b><br>
+      Hvis nogen sender dig en besked med et eller flere billeder vedhæftet og
+      denne indstilling er sat til Ja, vil billederne automatisk blive vist
+      sammen med beskeden.
+      <br><br>
+
+      <b>Aktivér printervenlige links</b><br>
+      Denne indstilling vælger, hvordan links til den printervenlige formatering vil blive vist.
+      <br><br>
+
+      <b>Aktivér printervenlig formatering</b><br>
+      Dette vil rydde op i beskeden for at gøre udskrifter pænere.
+      <br><br>
+
+      <b>Andre indstillinger</b><br>
+      Afhængig af opsætningen af din SquirrelMail kan der være flere indstillinger
+      på denne side. Disse indstillinger forklarer forhåbentlig sig selv.
+      <br><br>
+
+   </description>
+</section>
+
+<section>
+   <title>
+      Beskedfremhævning
+   </title>
+   <description>
+      Ideen bag denne funktion kom fra at abonnere på for mange maillister.
+      Det kan da være svært at skelne mellem hvilke beskeder, der kommer hvorfra
+      mens man kigger igennem oversigten over beskeder. Med beskedfremhævning kan
+      du få baggrunden bag alle beskeder fra en bestemt mailliste eller afsender
+      til at have en bestemt farve.<br><br>
+
+      Bare klik på [Ny] for at oprette en ny farve til en afsender eller på Ret for
+      at rette i en eksisterende, så vil indstillingerne dukke op nedenunder.<br><br>
+
+      <b>Betegnelse for den markering</b><br>
+      Dette er det navn, der vil beskrive denne fremhævning i oversigten over
+      fremhævninger. Hvis denne fremhævning for eksempel giver en bestemt farve
+      til alle beskeder fra din mor, kan du give den navnet "Fra mor".<br><br>
+
+      <b>Farve</b><br>
+      Dette er den baggrundsfarve, der vil blive brugt. Du kan vælge mellem en række
+      foruddefinerede farver, eller du kan indtaste HEX-værdien for den farve, du ønsker
+      (fx. a6b492). Hvis du vælger at indtaste din egen farve skal du huske også at
+      vælge i afkrydsningsfeltet ved siden af, at det er denne farve, der skal bruges.
+      <br><br>
+
+      <b>Kriterie</b><br>
+      Her kan du vælge hvilket kriterie, der skal være opfyldt, for at denne
+      fremhævning bruges. I feltet til venstre kan du vælge hvilken information,
+      der skal checkes på (Fra, Til, Emne osv.) og i indtastningsboksen kan du
+      skrive den værdi, der skal sammenlignes med (mor@mitdomaene.dk).
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Mappeindstillinger
+   </title>
+   <description>
+      <b>Sti til mapper</b><br>
+      Denne indstilling er ikke tilgængelig på alle systemer. Hvis denne indstilling
+      ikke er der, ignorer da  blot dette. På andre systemer er dette en nødvendig
+      opsætning. Normalt vil den værdi, der allerede er indsat, være korrekt.
+      Dette er den mappe i din hjemmemappe, der indeholder alle dine e-mail mapper.
+      Hvis du ikke ved, hvad dette er, så lad være med at ændre denne indstilling.
+      <br><br>
+
+      <b>Papirkurv</b><br>
+      Her kan du vælge, hvor beskeder flyttes til, når du sletter dem.
+      Hvis du ikke ønsker at flytte slettede beskeder til en papirkurvsmappe kan du
+      sætte denne indstilling til "Brug ikke papirkurven".
+      <br><br>
+
+      <b>Sendt</b><br>
+      Her kan du vælge en mappe, hvor der vil blive gemt en kopi af beskeder,
+      du sender. Hvis du ikke vil gemme en kopi af beskeder, du har sendt,
+      kan du vælge "Gem ikke sendt post".
+      <br><br>
+
+      <b>Kladder</b><br>
+      Her kan du vælge en mappe, hvor du gerne vil gemme kladder.
+      Hvis du ikke vil bruge kladder, så kan du vælge "Brug ikke kladder".
+      <br><br>
+
+      <b>Placering af mappelisten</b><br>
+      Her vælger du, om du gerne vil have listen over mapper i venstre eller højre
+      side af vinduet.
+      <br><br>
+
+      <b>Bredde på mappelisten.</b><br>
+      Med denne opsætning kan du ændre på bredden af mappelisten. Hvis du har
+      meget lange navne på dine mapper eller du bruger en stor skrifttype kan
+      du sættte denne værdi op til et større tal. Ellers bør du sætte den så
+      lavt som det er praktisk for at mappelisten ikke bruger for meget af din
+      skærmplads.
+      <br><br>
+
+      <b>Opdatér automatisk mappelisten</b><br>
+      SquirrelMail kan automatisk opdatere mappelisten i siden af dit vindue.
+      Dette vil også opdatere antallet af ulæste beskeder, der er i mapperne.
+      Dette er en god måde at checke om der er nye beskeder på, uden at behøve
+      at klikke på indbakken hele tiden.
+      <br><br>
+
+      <b>Gør opmærksom på ulæste beskeder</b><br>
+      Her kan du vælge, hvordan du gerne vil gøres opmærksom på ulæste beskeder
+      i  mappelisten i siden af dit vindue. Hvis du her vælger "Nej" vil du ikke
+      blive gjort opmærksom på ulæste beskeder. Vælger du "Kun i indbakken" vil
+      indbakken blive med fed skrifttype, når der er ulæste beskeder og antallet
+      af ulæste beskeder vil stå ved siden af den. Vælger du "I alle mapper" vil
+      dette ske for alle mapper, der indeholder ulæste beskeder. Hvis du gør
+      dette kan det tage længere tid at opdatere mappelisten. er dette tilfældet
+      kan du vælge "Nej" eller "Kun i indbakken" for at det bliver hurtigere.
+      <br><br>
+
+      <b>Hvordan</b><br>
+      Når der er ulæste bekeder i en mappe kan du her vælge, hvordan det skal
+      vises. Du kan enten vælge kun at vise antallet af ulæste beskeder eller
+      både antallet af ulæste beskeder og det samlede antal beskeder i mappen.
+      <br><br>
+
+      <b>Aktivér sammenklappelige mapper</b><br>
+      Hvis du her vælger "Ja" kan du sammenklappe dine mapper, hvis de indeholder
+      undermapper, så du kun kan se den øverste mappe og ikke undermapperne.
+      Du kan sammenklappe en mappe ved at klikke på "-"-tegnet ved siden af mappen
+      og folde den ud igen ved at klikke på "+"-tegnet. Vælger du "Nej" i denne
+      indstilling kan mapper med undermapper ikke klappes sammen.
+      <br><br>
+
+      <b>Vis klokken i mappelisten</b><br>
+      Her vælger du, om du vil have vist i mappelisten, hvad klokken er. Du kan
+      også vælge, hvordan klokken skal vises (Y=årstal, M=måned, D=Dag,
+      H=Timer, M=Minutter, S=Sekunder). Indstillingen "Formatering" vælger om,
+      du ønsker 12- eller 24-timers visning af uret.
+      <br><br>
+
+      <b>Hukommelsessøgning</b><br>
+      Når du søger i dine beskeder kan søgningen gemmes, så den er hurtig at
+      få fat i på et senere tidspunkt. Denne indstilling vælger, hvor mange
+      søgninger, der skal gemmes.
+      <br><br>
+
+   </description>
+</section>
+
+<section>
+   <title>
+      Indekssortering
+   </title>
+   <description>
+      Disse indstillinger giver dig mulighed for at vælge, hvordan oversigten
+      over beskeder ser ud. Du kan vælge hvilke informationer om den enkelte
+      besked, du gerne vil have vist i oversigten, samt i hvilken rækkefølge,
+      disse skal vises.
+      <br><br>
+      Brug linkene Op eller Ned til at ændre på rækkefølgen. Med Slet kan
+      du fjerne informationen. Nederst kan du vælge yderligere informationer
+      og tilføje disse.
+   </description>
+</section>

@@ -1,0 +1,98 @@
+<chapter>
+   <title>
+      Frequently Asked Questions
+   </title>   
+   <summary>
+     Yn aml bydd pobl yn gofyn yr un cwestiynau ag sydd wedi cael eu gofyn sawl gwaith or blaen. Dyma restr o gwestiynau a fydd yn cael eu gofyn yn aml, ar atebion iddynt.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Can I use multiple names from the address book?
+   </title>
+   <description>
+      <p>
+  Bydd. Bydd chwilior llyfr cyfeiriadau yn dangos pob peth syn cyfateb ir meini prawf chwilio a deipiwyd yn y  blwch chwi
+lio. Os oes 10 enw yn cael eu dangos, gallwch ddewis unrhyw gyfuniad ar gyfer naill air meysydd To: neu CC:  Bydd pob cyfeiri
+ad a ddewiswch yn cael ei fewnosod yn y maes cywir pan for botwm Use Address yn cael ei bwyso.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Can I add names directly to the address book from a email?
+   </title>
+   <description>
+      <p>
+      Na. Ar hyn o bryd, allwch chi ddim ychwanegu enwau yn uniongyrchol ir llyfr cyfeiriadau o e-bost yr ydych wedi ei dderb
+yn. Fodd bynnag, gallwch dde glicio ar y cyfeiriad ai gadw ar y clipfwrdd a phastio hwn i mewn ir llyfr cyfeiriadau. Peidiwch
+ â chymryd eich siomi. Mae SquirrelMail yn cael ei ddatblygun barhaus ac efallai y bydd hyn yn cael ei gynnwys yn y dyfodol, 
+ar ryw ffurf neui gilydd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Who made SquirrelMail? 
+   </title>
+   <description>
+      <p>
+      Mae llawer o bobl wedi bod o gymorth. I gael rhestr ohonynt, gallwch ymweld ân gwefan <a href="http://www.squirrelmail.
+org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      What is webmail?
+   </title>
+   <description>
+      <p>
+      O ran SquirrelMail maen gadael i chi fynd at eich cyfrif e-bost trwyr protocol IMAP. Mae hyn yn golygu nad oes raid i c
+hi ddatrys y broses o sefydlu deunydd rhywun arall, dim ond er mwyn edrych ar eich e-bost.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Where can I use this webmail?
+   </title>
+   <description>
+      <p>
+      Unrhyw fan lle bo porwr ar gael.
+Nid oes gynlluniau ar gyfer mynediad trwy radio (WAP/WML) ar ar hyn o bryd er hynny.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Why use webmail instead of a regular email client?
+   </title>
+   <description>
+      <p>
+      O ran cleient syn defnyddio e-bost yn rheolaidd, maen ansicr a fydd post ar y we fyth yn cymryd lle e-bost. Ond pwy a y
+r Beth bynnag, os ydych chi erioed wedi bod yn nh ffrind, ar daith, gartref neu yn y gwaith ac ymhell oddi wrth eich cyfrifi
+adur, rydych chin gwybod pam yn barod. Am ei bod yn drafferth fawr i sefydlu eich post ar eu cyfrifiadur ai ddileu wedyn. Cyn
+lluniwyd SquirrelMail fel ychwanegiad ich cleient arferol syn defnyddio e-bost.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      How does this stuff work?
+   </title>
+   <description>
+      <p>
+      Mae SquirrelMail yn defnyddior protocol IMAP. Gallwch gael gwybodaeth amdano <A HREF="http://imap.org"/>yma</a>. Maer r
+haglen yn defnyddio ei swyddogaethau IMAP ei hun hefyd, nid y rhai hynny sydd wedi eu cynnwys yn PHP4. Ni fydd hyn o bwys i u
+nrhyw un ar wahân ir rhai hynny syn gyfrifol am ei osod, ond coeliwch ni pan ddywedwn eu bod yn ei werthfawrogi
+      </p>
+   </description>
+</section>

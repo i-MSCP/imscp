@@ -1,0 +1,5761 @@
+# Romanian (ro_RO) SquirrelMail Translation
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# Eugen Hoanca <eugenh@urban-grafx.ro>, 2003.
+# Veaceslav Chicu <slavic@chicu.ro>, 2005.
+# Cristian Klein <cristiklein@gmail.com>, 2008.
+# $Id: squirrelmail.po 13693 2009-05-14 00:26:43Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: SquirrelMail HEAD\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
+"i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2008-05-06 01:29+0200\n"
+"PO-Revision-Date: 2008-05-15 02:12+0100\n"
+"Last-Translator: Cristian Klein <cristiklein@gmail.com>\n"
+"Language-Team: Romanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3;plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?"
+"2:1))\n"
+"X-Poedit-Bookmarks: -1,-1,1429,-1,571,-1,-1,-1,-1,-1\n"
+
+msgid "Address Book"
+msgstr "Agenda"
+
+msgid "All"
+msgstr "Toate"
+
+msgid "To"
+msgstr "Către"
+
+msgid "Cc"
+msgstr "CC"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Source"
+msgstr "Sursa"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Use Addresses"
+msgstr "Foloseşte adresele"
+
+msgid "Cancel"
+msgstr "Renunţă"
+
+msgid "Address Book Search"
+msgstr "Căutare agenda"
+
+msgid "Search for"
+msgstr "Căutare dupa"
+
+msgid "in"
+msgstr "în"
+
+msgid "All address books"
+msgstr "Toate agendele"
+
+msgid "Search"
+msgstr "Caută"
+
+msgid "List all"
+msgstr "Afişează toate"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "Nu se pot lista adresele din %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "Căutarea dumneavoastră a eşuat cu următoarea(le) eroare/erori"
+
+msgid "No persons matching your search were found"
+msgstr "Nu s-a găsit nici o persoană potrivită căutării"
+
+msgid "Return"
+msgstr "Întoarcere"
+
+msgid "Close"
+msgstr "Închide"
+
+msgid "Nickname"
+msgstr "Pseudonim"
+
+msgid "Must be unique"
+msgstr "Trebuie să fie unic(ă)"
+
+msgid "E-mail address"
+msgstr "Adresa e-mail"
+
+msgid "Last name"
+msgstr "Nume"
+
+msgid "First name"
+msgstr "Prenume"
+
+msgid "Additional info"
+msgstr "Informaţii suplimentare"
+
+msgid "Add to:"
+msgstr "Adăugare în %s"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Nu e definită nici o agendă. Contactaţi administratorul."
+
+msgid "You can only edit one address at the time"
+msgstr "Puteţi edita doar o adresă deodata"
+
+msgid "Update address"
+msgstr "Actualizare adresa"
+
+msgid "ERROR"
+msgstr "EROARE"
+
+msgid "Please select address that you want to edit"
+msgstr "Selectaţi adresa pe care doriţi să o editati"
+
+msgid "Add address"
+msgstr "Adăugă adresa"
+
+msgid "Edit selected"
+msgstr "Modifică selectate"
+
+msgid "Delete selected"
+msgstr "Şterge selecţia"
+
+msgid "Compose to selected"
+msgstr "Compune către selecţie"
+
+msgid "sort by nickname"
+msgstr "sortează după pseudonim"
+
+msgid "sort by name"
+msgstr "sortează după nume"
+
+msgid "sort by email"
+msgstr "sortează după mail"
+
+msgid "sort by info"
+msgstr "sortează după informaţii"
+
+#, php-format
+msgid "Add to %s"
+msgstr "Adăugare în %s"
+
+#, php-format
+msgid "%s wrote:"
+msgstr "%s a scris:"
+
+msgid "quote"
+msgstr "a citat"
+
+msgid "who"
+msgstr "cine"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr "În %s, %s a scris:"
+
+msgid "Subject"
+msgstr "Subiect"
+
+msgid "From"
+msgstr "De la"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Original Message"
+msgstr "Mesaj original"
+
+msgid "Draft Email Saved"
+msgstr "Ciornă email salvată"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "Nu s-a putut muta/copia fişier. Fişier neataşat."
+
+msgid "Your draft has been saved."
+msgstr "Ciorna dvs. a fost salvată."
+
+msgid "Your mail has been sent."
+msgstr "Mesajul a fost trimis."
+
+msgid "From:"
+msgstr "De la:"
+
+msgid "To:"
+msgstr "Catre"
+
+msgid "Cc:"
+msgstr "Cc:"
+
+msgid "Bcc:"
+msgstr "Bcc:"
+
+msgid "Subject:"
+msgstr "Subiect:"
+
+msgid "Send"
+msgstr "Trimite"
+
+msgid "Attach:"
+msgstr "Ataşează:"
+
+msgid "Add"
+msgstr "Adaugă"
+
+msgid "Delete selected attachments"
+msgstr "Ştergere ataşamente selectate"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+"Din cauză că încărcarea de fişiere este dezactivată din PHP, nu puteţi ataşa "
+"fişiere la acest mesaj. Contactaţi administratorul de sistem pentru detalii."
+
+msgid "Priority"
+msgstr "Prioritate"
+
+msgid "High"
+msgstr "Mare"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Low"
+msgstr "Mică"
+
+msgid "Receipt"
+msgstr "Confirmare de primire"
+
+msgid "On Read"
+msgstr "La citire"
+
+msgid "On Delivery"
+msgstr "La livrare"
+
+msgid "Signature"
+msgstr "Semnatură"
+
+msgid "Addresses"
+msgstr "Adrese"
+
+msgid "Save Draft"
+msgstr "Salvare ciornă"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "Nu aţi completat câmpul \"Către:\"."
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Utilizatorul '%s' nu există"
+
+msgid "Message not sent."
+msgstr "Mesajul nu a fost trimis."
+
+msgid "Server replied:"
+msgstr "Răspunsul serverului:"
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "Nume dosar invalid. Selectaţi un nume diferit."
+
+msgid "Click here to go back"
+msgstr "Clic aici pentru întoarcere"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Nu aţi selectat un dosar pentru ştergere. Vă rugăm selectaţi."
+
+msgid "Delete Folder"
+msgstr "Ştergere dosar"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Sunteţi sigur că vreţi să ştergeţi %s?"
+
+msgid "Yes"
+msgstr "Da"
+
+msgid "No"
+msgstr "Nu"
+
+msgid "Folders"
+msgstr "Dosare"
+
+msgid "Subscribed successfully."
+msgstr "Abonat cu succes."
+
+msgid "Unsubscribed successfully."
+msgstr "Dezabonat cu succes."
+
+msgid "Deleted folder successfully."
+msgstr "Dosar şters cu succes."
+
+msgid "Created folder successfully."
+msgstr "Dosar creat cu succes."
+
+msgid "Renamed successfully."
+msgstr "Redenumit cu succes."
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "Abonare nereuşită - dosar inexistent."
+
+msgid "refresh folder list"
+msgstr "împrospătare lista dosare"
+
+msgid "Create Folder"
+msgstr "Creare dosar"
+
+msgid "as a subfolder of"
+msgstr "ca subdosar al"
+
+msgid "None"
+msgstr "Nici unul(una)"
+
+msgid "Let this folder contain subfolders"
+msgstr "Permite dosarului să conţină subdosare"
+
+msgid "Create"
+msgstr "Crează"
+
+msgid "Rename a Folder"
+msgstr "Redenumire dosar"
+
+msgid "Select a folder"
+msgstr "Selectare dosar"
+
+msgid "Rename"
+msgstr "Redenumire"
+
+msgid "No folders found"
+msgstr "Nici un dosar găsit"
+
+msgid "Delete"
+msgstr "Şterge"
+
+msgid "Unsubscribe"
+msgstr "Dezabonare"
+
+msgid "Subscribe"
+msgstr "Abonare"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "Nici un dosar găsit pentru dezabonare!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "Nici un dosar găsit pentru abonare!"
+
+msgid "Subscribe to:"
+msgstr "Abonare la:"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "Nu aţi selectat un dosar pentru redenumire. Vă rugam selectaţi."
+
+msgid "Rename a folder"
+msgstr "Redenumire dosar"
+
+msgid "New name:"
+msgstr "Nume nou:"
+
+msgid "Submit"
+msgstr "Trimite"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "Eroare: fişierele de ajutor nu sunt in format obişnuit!"
+
+msgid "Help"
+msgstr "Ajutor"
+
+msgid ""
+"Help is not available in the selected language. It will be displayed in "
+"English instead."
+msgstr ""
+"Ajutorul nu este disponibil în limba selectată. Va fi afişat în limba "
+"engleză."
+
+msgid ""
+"Help is not available. Please contact your system administrator for "
+"assistance."
+msgstr ""
+"Ajutorul nu este disponibil. Pentru detalii contactaţi administratorul de "
+"sistem."
+
+msgid ""
+"This chapter is not available in the selected language. It will be displayed "
+"in English instead."
+msgstr ""
+"Acest capitol nu este disponibil în limba selectată. Va fi afişat în limba "
+"engleză."
+
+msgid "This chapter is missing"
+msgstr "Capitolul lipseşte"
+
+#, php-format
+msgid "For some reason, chapter %s is not available."
+msgstr "Capitolul %s nu este disponibil."
+
+msgid "Table of Contents"
+msgstr "Cuprins"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Next"
+msgstr "Următor"
+
+msgid "Top"
+msgstr "Început de pagină"
+
+msgid "Viewing an image attachment"
+msgstr "Vizualizare ataşament imagine"
+
+msgid "View message"
+msgstr "Vizualizare mesaj"
+
+msgid "Download this as a file"
+msgstr "Salvează ca fişier"
+
+msgid "INBOX"
+msgstr "INBOX"
+
+msgid "Purge"
+msgstr "Curăţă"
+
+msgid "Last Refresh"
+msgstr "Ultima actualizare"
+
+msgid "Check mail"
+msgstr "Verifică poşta"
+
+msgid "Login"
+msgstr "Intrare"
+
+#, php-format
+msgid "%s Logo"
+msgstr "Sigla %s"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail versiunea %s"
+
+msgid "By the SquirrelMail Project Team"
+msgstr "De către echipa de dezvoltare SquirrelMail"
+
+#, php-format
+msgid "%s Login"
+msgstr "Intrare %s"
+
+msgid "Name:"
+msgstr "Nume:"
+
+msgid "Password:"
+msgstr "Parola:"
+
+msgid "No messages were selected."
+msgstr "Nici un mesaj selectat"
+
+msgid "Options"
+msgstr "Opţiuni"
+
+msgid "Message Highlighting"
+msgstr "Evidenţiere mesaj"
+
+msgid "New"
+msgstr "Nou"
+
+msgid "Done"
+msgstr "Finalizat"
+
+msgid "To or Cc"
+msgstr "Către sau Cc"
+
+msgid "subject"
+msgstr "subiect"
+
+msgid "Edit"
+msgstr "Editare"
+
+msgid "Up"
+msgstr "Sus"
+
+msgid "Down"
+msgstr "Jos"
+
+msgid "No highlighting is defined"
+msgstr "Nici o evidenţiere definită"
+
+msgid "Identifying name"
+msgstr "Identificare nume"
+
+msgid "Color"
+msgstr "Culoare"
+
+msgid "Dark Blue"
+msgstr "Albastru închis"
+
+msgid "Dark Green"
+msgstr "Verde închis"
+
+msgid "Dark Yellow"
+msgstr "Galben închis"
+
+msgid "Dark Cyan"
+msgstr "Bleu închis"
+
+msgid "Dark Magenta"
+msgstr "Mov îinchis"
+
+msgid "Light Blue"
+msgstr "Albastru deschis"
+
+msgid "Light Green"
+msgstr "Verde deschis"
+
+msgid "Light Yellow"
+msgstr "Galben deschis"
+
+msgid "Light Cyan"
+msgstr "Bleu deschis"
+
+msgid "Light Magenta"
+msgstr "Mov deschis"
+
+msgid "Dark Gray"
+msgstr "Cenuşiu înschis"
+
+msgid "Medium Gray"
+msgstr "Cenuşiu mediu"
+
+msgid "Light Gray"
+msgstr "Cenuşiu deschis"
+
+msgid "White"
+msgstr "Alb"
+
+msgid "Other:"
+msgstr "Alta:"
+
+msgid "Ex: 63aa7f"
+msgstr "Ex: 63aa7f"
+
+msgid "Matches"
+msgstr "Potriviri"
+
+msgid "Editing identities is disabled."
+msgstr "Editarea identităţilor este dezactivată."
+
+msgid "Default Identity"
+msgstr "Identitate implicită"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Identitate alternativă %d"
+
+msgid "Add a New Identity"
+msgstr "Adăugare identitate nouă"
+
+msgid "Advanced Identities"
+msgstr "Identitaţi avansate"
+
+msgid "Full Name"
+msgstr "Nume întreg"
+
+msgid "E-Mail Address"
+msgstr "Adresa e-mail"
+
+msgid "Reply To"
+msgstr "Răspunde către"
+
+msgid "Save / Update"
+msgstr "Salvare/Actualizare"
+
+msgid "Make Default"
+msgstr "Fă implicit"
+
+msgid "Move Up"
+msgstr "Mută sus"
+
+msgid "Index Order"
+msgstr "Ordine index"
+
+msgid "Checkbox"
+msgstr "Casuţa"
+
+msgid "Flags"
+msgstr "Marcaje"
+
+msgid "Size"
+msgstr "Mărime"
+
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"Ordine index este ordinea în care sunt aranjate coloanele în indexul de "
+"mesaje. Puteţi adăuga, şterge şi muta coloane după preferinţe în funcţie de "
+"nevoi."
+
+msgid "up"
+msgstr "sus"
+
+msgid "down"
+msgstr "jos"
+
+msgid "remove"
+msgstr "şterge"
+
+msgid "Return to options page"
+msgstr "Intoarcere la pagina de opţiuni"
+
+msgid "Personal Information"
+msgstr "Informaţii personale"
+
+msgid "Display Preferences"
+msgstr "Preferinţe afişaj"
+
+msgid "Folder Preferences"
+msgstr "Preferinţe dosar"
+
+msgid "Error(s) occurred while saving your options"
+msgstr " Nu s-au putut salva opţiunile dvs."
+
+msgid "Some of your preference changes were not applied."
+msgstr "Unele schimbări ale preferinţelor dvs. nu au fost efectuate."
+
+msgid "Successfully Saved Options"
+msgstr "Opţiuni salvate cu succes"
+
+msgid "Refresh Folder List"
+msgstr "Actualizare lista dosare"
+
+msgid "Refresh Page"
+msgstr "Actualiare pagină"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+"Aici sunt informaţii personale despre dumneavoastră precum numele, adresa de "
+"email, etc."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"Puteţi schimba modul in care arată şi va afişează informaţiile SquirrelMail "
+"precum culori, limbi sau alte setări."
+
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"După criterii stabilite, mesajele care vin pot avea culori de fundal "
+"diferite în lista de mesaje. Aceasta ajută la distingerea mai uşoara a "
+"sursei mesajelor, în special din listele de mail."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "Aceste setări schimbă modul de afişare şi manipulare al dosarelor."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"Ordinea sortarii de mesaje poate fi schimbată pentru a conţine antete în "
+"ordine dorită."
+
+msgid "Message not printable"
+msgstr "Mesaj netiparibil"
+
+msgid "Attachments:"
+msgstr "Ataşamente:"
+
+msgid "Unknown sender"
+msgstr "Expeditor necunoscut"
+
+msgid "Info:"
+msgstr "Informaţii:"
+
+msgid "Size:"
+msgstr "Dimensiune:"
+
+msgid "Type:"
+msgstr "Tip:"
+
+msgid "Invalid URL"
+msgstr "URL nevalid"
+
+msgid "Printer Friendly"
+msgstr "Versiune pentru tiparire"
+
+msgid "Print"
+msgstr "Tipăreşte"
+
+msgid "View Printable Version"
+msgstr "Vizualizare versiune tiparibilă"
+
+msgid "Read:"
+msgstr "Citire:"
+
+msgid "Your message"
+msgstr "Mesajul dumneavoastră"
+
+msgid "Sent"
+msgstr "Trimis"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "A fost afişat în %s"
+
+msgid "less"
+msgstr "sumar"
+
+msgid "more"
+msgstr "detalii"
+
+msgid "Mailer"
+msgstr "Mailer"
+
+msgid "Read receipt"
+msgstr "Confirmare de citire"
+
+msgid "sent"
+msgstr "trimis"
+
+msgid "requested"
+msgstr "solicitat(a)"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"Expeditorul a solicitat un răspuns care să indice că aţi citit acest mesaj. "
+"Doriţi să trimiteţi o confirmare?"
+
+msgid "Send read receipt now"
+msgstr "Trimitere confirmare citire acum"
+
+msgid "Search Results"
+msgstr "Rezultatele căutarii"
+
+msgid "Message List"
+msgstr "Lista mesaje"
+
+msgid "Resume Draft"
+msgstr "Continuă ciorna"
+
+msgid "Edit Message as New"
+msgstr "Editare mesaj ca nou"
+
+msgid "View Message"
+msgstr "Vizualizare mesaj"
+
+msgid "Forward"
+msgstr "Înaintează"
+
+msgid "Forward as Attachment"
+msgstr "Înaintare ca ataşament"
+
+msgid "Reply"
+msgstr "Răspunde"
+
+msgid "Reply All"
+msgstr "Răspunde la toţi"
+
+msgid "View Full Header"
+msgstr "Vizualizare antet complet"
+
+msgid "Attachments"
+msgstr "Ataşamente"
+
+msgid "You must be logged in to access this page."
+msgstr "Trebuie sa fţi logaţi pentru a accesa această pagina."
+
+msgid "Folder:"
+msgstr "Dosar:"
+
+msgid "Saved Searches"
+msgstr "Căutări salvate"
+
+msgid "edit"
+msgstr "modifică"
+
+msgid "search"
+msgstr "caută"
+
+msgid "delete"
+msgstr "şterge"
+
+msgid "Recent Searches"
+msgstr "Căutari recente"
+
+msgid "save"
+msgstr "salvare"
+
+msgid "forget"
+msgstr "omitere"
+
+msgid "Current Search"
+msgstr "Căutarea curentă"
+
+msgid "All Folders"
+msgstr "Toate dosarele"
+
+msgid "Body"
+msgstr "Conţinut"
+
+msgid "Everywhere"
+msgstr "Peste tot"
+
+msgid "No Messages Found"
+msgstr "Nici un mesaj găsit"
+
+msgid "Please enter something to search for"
+msgstr "Tastaţi ceva după care să aibă loc căutarea"
+
+msgid "Signout"
+msgstr "Ieşire"
+
+msgid "Sign Out"
+msgstr "Ieşire"
+
+msgid "You have been successfully signed out."
+msgstr "Aţi ieşit cu succes."
+
+msgid "Click here to log back in."
+msgstr "Clic aici pentru reintrare."
+
+msgid "Viewing a Business Card"
+msgstr "Vizualizare Business Card"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+"vCard versiunea %s nu este suportată. Unele informaţii s-ar putea să nu fie "
+"convertite corect."
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Web Page"
+msgstr "Pagina web"
+
+msgid "Organization / Department"
+msgstr "Organizaţie / Departament"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "Work Phone"
+msgstr "Telefon birou"
+
+msgid "Home Phone"
+msgstr "Telefon acasă"
+
+msgid "Cellular Phone"
+msgstr "Telefon mobil"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Note"
+msgstr "Nota"
+
+msgid "Add to address book"
+msgstr "Adaugă în agendă"
+
+msgid "Title &amp; Org. / Dept."
+msgstr "Titlu şi Org. / Dept."
+
+msgid "Viewing Full Header"
+msgstr "Vizualizare antet complet"
+
+msgid "Viewing a text attachment"
+msgstr "Vizualizare ataşament text"
+
+msgid "View Unsafe Images"
+msgstr "Afişeaza imagini nesigure"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+"Nu s-au putut include funcţiile pentru baza de date PEAR necesare pentru "
+"funcţionalităţi ale bazei de date."
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+"Sunteţi sigur că PEAR este instalat şi că „include path” este setat corect "
+"pentru a găsi %s?"
+
+msgid "Please contact your system administrator and report this error."
+msgstr "Contactaţi administratorul de reţea şi raportaţi aceasta eroare."
+
+msgid "Personal address book"
+msgstr "Agenda personală"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "Eroare baza de date: %s"
+
+msgid "Address book is read-only"
+msgstr "Agenda este protejată la scriere"
+
+#, php-format
+msgid "User \"%s\" already exists"
+msgstr "Utilizatorul „%s” exista deja"
+
+#, php-format
+msgid "User \"%s\" does not exist"
+msgstr "Utilizatorul „%s” nu exista"
+
+#, php-format
+msgid "User '%s' already exist."
+msgstr "Utilizatorul „%s” exista deja"
+
+msgid "Not a file name"
+msgstr "Nu este nume de fişier"
+
+msgid "No such file or directory"
+msgstr "Nu exista fişierul sau directorul"
+
+msgid "Open failed"
+msgstr "Deschidere eşuată"
+
+msgid "Write failed"
+msgstr "Scriere eşuată"
+
+msgid "Unable to update"
+msgstr "Reînnoire eşuată"
+
+msgid "Address book is corrupted. Required fields are missing."
+msgstr "Agenda este coruptă. Câmpurile necesare lipsesc."
+
+msgid "Address book entry is too big"
+msgstr "Intarea în agendă este prea mare"
+
+msgid "Could not lock datafile"
+msgstr "Nu se poate bloca fişierul de date"
+
+msgid "Write to address book failed"
+msgstr "Scrierea în agendă a eşuat"
+
+msgid "Error initializing address book database."
+msgstr "Eroare la iniţializarea bazei de date a agendei."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "Eroare la deschiderea fişierului %s"
+
+msgid "Global address book"
+msgstr "Agenda globală"
+
+msgid "Error initializing global address book."
+msgstr "Eroare la iniţializarea agendei globale."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Eroare la iniţializarea serverului LDAP %s:"
+
+msgid "Click here to change the sorting of the address list"
+msgstr "Daţi clic aici pentru a schimba sortarea agendei"
+
+msgid "Invalid input data"
+msgstr "Date invalide introduse"
+
+msgid "Name is missing"
+msgstr "Numele lipseşte"
+
+msgid "E-mail address is missing"
+msgstr "Adresa e-mail lipseşte"
+
+msgid "Nickname contains illegal characters"
+msgstr "Pseudonimul conţine caractere ilegale"
+
+msgid "View"
+msgstr "Vizualizare"
+
+msgid "View Business Card"
+msgstr "Afişează cartea de vizită"
+
+msgid "Your session has expired, but will be resumed after logging in again."
+msgstr ""
+"Sesiunea dvs. a expirat, dar va fi rezumată după ce vă reautentificaţi."
+
+msgid "Sunday"
+msgstr "Duminica"
+
+msgid "Monday"
+msgstr "Luni"
+
+msgid "Tuesday"
+msgstr "Marţi"
+
+msgid "Wednesday"
+msgstr "Miercuri"
+
+msgid "Thursday"
+msgstr "Joi"
+
+msgid "Friday"
+msgstr "Vineri"
+
+msgid "Saturday"
+msgstr "Sâmbata"
+
+msgid "Sun"
+msgstr "Dum"
+
+msgid "Mon"
+msgstr "Lun"
+
+msgid "Tue"
+msgstr "Mar"
+
+msgid "Wed"
+msgstr "Mie"
+
+msgid "Thu"
+msgstr "Joi"
+
+msgid "Fri"
+msgstr "Vin"
+
+msgid "Sat"
+msgstr "Sâm"
+
+msgid "January"
+msgstr "Ianuarie"
+
+msgid "February"
+msgstr "Februarie"
+
+msgid "March"
+msgstr "Martie"
+
+msgid "April"
+msgstr "Aprilie"
+
+msgid "May"
+msgstr "Mai"
+
+msgid "June"
+msgstr "Iunie"
+
+msgid "July"
+msgstr "Iulie"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "Septembrie"
+
+msgid "October"
+msgstr "Octombrie"
+
+msgid "November"
+msgstr "Noiembrie"
+
+msgid "December"
+msgstr "Decembrie"
+
+msgid "Jan"
+msgstr "Ian"
+
+msgid "Feb"
+msgstr "Feb"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Apr"
+
+msgid "Ma&#121;"
+msgstr "Hartă"
+
+msgid "Jun"
+msgstr "Iun"
+
+msgid "Jul"
+msgstr "Iul"
+
+msgid "Aug"
+msgstr "Aug"
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Oct"
+msgstr "Oct"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Dec"
+
+msgid "D, F j, Y g:i a"
+msgstr "D, F j, Y g:i a"
+
+#, fuzzy
+msgid "D, F j, Y H:i"
+msgstr "D, F j, Y G:i"
+
+msgid "M j, Y"
+msgstr "M j, Y"
+
+msgid "g:i a"
+msgstr "g:i a"
+
+#, fuzzy
+msgid "H:i"
+msgstr "G:i"
+
+msgid "D, g:i a"
+msgstr "D, g:i a"
+
+#, fuzzy
+msgid "D, H:i"
+msgstr "D, G:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "Eroare baza de date preferinţe (%s). Ieşire anormală"
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "Click aici pentru întoarcere la %s"
+
+msgid "Go to the login page"
+msgstr "Mergi la pagina de login"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"Fişierul de preferinţe, %s, nu exista. Ieşiţi şi reintraţi pentru a crea un "
+"fişier implicit de preferinţe."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Fişierul de preferinţe, %s, nu a putut fi deschis. Contactaţi "
+"administratorul pentru rezolvarea acestei probleme."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Fişierul de preferinţe %s nu a putut fi scris. Contactaţi administratorul "
+"pentru rezolvarea acestei probleme."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Fişierul de preferinţe, %s, nu a putut fi copiat din fişierul temporar, %s. "
+"Contactaţi administratorul pentru rezolvarea acestei probleme."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "Eroare la deschiderea %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "Fişierul implicit de preferinţe negăsit sau necitibil!"
+
+msgid "Could not create initial preference file!"
+msgstr "Nu s-a putut crea fişierul de preferinţe iniţiale!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s ar trebui să poată fi scrisă de userul %s"
+
+msgid "Signature is too big."
+msgstr "Semnatura este prea mare"
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Fişierul de semnaturş %s nu poate fi deschis. Contactaţi administratorul de "
+"reţea."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Fişierul de semnatură %s nu a putut fi scris. Contactaţi administratorul de "
+"reţea."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Fişierul de semnatură, %s, nu a putut fi copiat din fişierul temporar, %s. "
+"Contactaţi administratorul pentru rezolvarea acestei probleme."
+
+msgid ""
+"You need to have PHP installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+"Aveţi nevoie de PHP cu funcţia şir multioctet activată (utilizând opţiunea "
+"de configurare --enable-mbstring)."
+
+msgid "ERROR: No available IMAP stream."
+msgstr "EROARE: IMAP indisponibil"
+
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "EROARE: Conexiune taiată de serverul IMAP."
+
+msgid "ERROR: Could not complete request."
+msgstr "EROARE: Nu s-a putut finaliza cererea."
+
+msgid "Query:"
+msgstr "Chestionare:"
+
+msgid "Reason Given:"
+msgstr "Explicaţia dată:"
+
+msgid "ERROR: Bad or malformed request."
+msgstr "EROARE: Cerere greţita sau corupta."
+
+msgid "Server responded:"
+msgstr "Răspunsul serverului:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr "Eroare: Serverul IMAP a închis conexiunea."
+
+msgid "ERROR: Unknown IMAP response."
+msgstr "Eroare: Răspuns IMAP necunoscut."
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Eroare în conectarea la serverul IMAP: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+"Serverul IMAP raportează că autentificările în text clar sunt dezactivate."
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+"Utilizând în schimb autentificare CRAM-MD5 sau DIGEST-MD5 ar putea funcţiona."
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr "De asemenea, TLS ar putea permite lui SquirrelMail să se autentifice."
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "Cerere greşită: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "Eroare necunoscută: %s"
+
+msgid "Read data:"
+msgstr "Citire date:"
+
+msgid "Unknown user or password incorrect."
+msgstr "User necunoscut sau parola incorectă."
+
+msgid "ERROR: Could not append message to"
+msgstr "EROARE: Nu s-a putut adauga mesajul la"
+
+msgid "Solution:"
+msgstr "Soluţia: "
+
+msgid ""
+"Remove unneccessary messages from your folders. Start with your Trash folder."
+msgstr "Ştergeţi mesaje inutile din dosarele dvs. Începeţi cu Gunoi."
+
+#, php-format
+msgid "Invalid mailbox name: %s"
+msgstr "Nume de căsuţa nevalid: %s"
+
+msgid "(no subject)"
+msgstr "(nici un subiect)"
+
+msgid "Unknown Sender"
+msgstr "Expeditor necunoscut"
+
+msgid "Unknown response from IMAP server:"
+msgstr "Răspuns necunoscut de la serverul IMAP: "
+
+msgid "The server couldn't find the message you requested."
+msgstr "Serverul nu a putut găsi mesajul căutat."
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+"Cel mai probabil lista de mesaje a fost neactualizată şi mesajul a fost "
+"mutat sau şters (posibil de un alt program care accesează aceaşi căsuţa "
+"poştală)."
+
+msgid "Unknown date"
+msgstr "Data necunoscută"
+
+msgid "A"
+msgstr "Un/o"
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr "Sortarea fir nesuportata de serverul IMAP."
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr "Sortare server-side nesuportata de serverul vostru IMAP."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "ACEST DOSAR E GOL"
+
+msgid "Move Selected To"
+msgstr "Mută selectate în"
+
+msgid "Transform Selected Messages"
+msgstr "Transformă mesaje selectate"
+
+msgid "Move"
+msgstr "Mută"
+
+msgid "Expunge"
+msgstr "Eliminare"
+
+msgid "Read"
+msgstr "Citit(e)"
+
+msgid "Unread"
+msgstr "Necitit(e)"
+
+msgid "Unthread View"
+msgstr "Vizualizare fără fir"
+
+msgid "Thread View"
+msgstr "Vizualizare fir"
+
+msgid "Toggle All"
+msgstr "Selectează toate"
+
+msgid "Unselect All"
+msgstr "Deselectează toate"
+
+msgid "Select All"
+msgstr "Selectează toate"
+
+#, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "Vizualizare mesaje %s ­– %s (total %s)"
+
+#, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "Vizualizare mesaj: %s (total %s)"
+
+msgid "Paginate"
+msgstr "Paginare"
+
+msgid "Show All"
+msgstr "Afişează toate"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "SquirrelMail nu a putut decoda structura corpului mesajului"
+
+msgid "The bodystructure provided by your IMAP server:"
+msgstr "Structura de corp furnizată de serverul imap"
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"Eroare În aducere corp mesaj. Motivul cel mai probabil este că mesajul este "
+"corupt."
+
+msgid "Command:"
+msgstr "Comanda:"
+
+msgid "Response:"
+msgstr "Răspuns:"
+
+msgid "Message:"
+msgstr "Mesaj:"
+
+msgid "FETCH line:"
+msgstr "Linie aducere:"
+
+msgid "Hide Unsafe Images"
+msgstr "Ascunde imagini nesigure"
+
+msgid "Download"
+msgstr "Download"
+
+#, fuzzy
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_eng.png"
+
+msgid "This external link will open in a new window"
+msgstr "Această legătură externă se va deschide într-o fereastră nouă"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "Opţiunea tip '%s' nu a fost găsită"
+
+msgid "Delete Selected"
+msgstr "Şterge cele selectate"
+
+#, fuzzy, php-format
+msgid "Edit List Layout Type '%s' Not Found"
+msgstr "Nu a fost găsit arajamentul editorului de liste de tipul „%s”"
+
+msgid "Current Folder"
+msgstr "Dosar curent"
+
+msgid "Compose"
+msgstr "Compune"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "Eroare la crearea directorului %s."
+
+msgid "Could not create hashed directory structure!"
+msgstr "Nu s-a putut crea structura de directoare!"
+
+msgid "Email delivery error"
+msgstr "Eroare la livrarea mesajului"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr "Nu s-a putut executa comanda: „%s”"
+
+msgid "Can't open SMTP stream."
+msgstr "Nu s-a putut deschide fluxul SMTP."
+
+msgid "Service not available, closing channel"
+msgstr "Serviciul este indisponibil, canalul se închide"
+
+msgid "A password transition is needed"
+msgstr "O tranziţie de parolă este necesară"
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "Acţiunea cerută nu a fost efectuată: căsuţă poştală indisponibilă"
+
+msgid "Requested action aborted: error in processing"
+msgstr "Acţiunea cerută a fost întreruptă: eroare la procesare"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "Acţiunea cerută nu a fost efectuată: spaţiu insuficient"
+
+msgid "Temporary authentication failure"
+msgstr "Autentificare temporară eşuată"
+
+msgid "Syntax error; command not recognized"
+msgstr "Eroare de sintaxă; comanda nu a fost recunoscută"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "Eroare de sintaxă în parametri"
+
+msgid "Command not implemented"
+msgstr "Comanda neimplementată"
+
+msgid "Bad sequence of commands"
+msgstr "Secvenţa incorectă de comenzi"
+
+msgid "Command parameter not implemented"
+msgstr "Parametrul comenzii nu este implementat"
+
+msgid "Authentication required"
+msgstr "Este nevoie de autentificare"
+
+msgid "Authentication mechanism is too weak"
+msgstr "Mecanismul de autentificare este prea slab"
+
+msgid "Authentication failed"
+msgstr "Autentificarea a eşuat"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "Mecanismul de autentificare cerut necesită criptare"
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "Acţiunea cerută nu a fost efectuată: căsuţă poştală indisponibilă"
+
+msgid "User not local; please try forwarding"
+msgstr "Utilizatorul nu este local; încercaţi să-l înaintaţi"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr "Acţiunea cerută nu a fost efectuată: se depăşeşte spaţiul alocat"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr ""
+"Acţiunea cerută nu a fost efectuată: numele căsuţei poştale nu este permis"
+
+msgid "Transaction failed"
+msgstr "Tranzacţia a eşuat"
+
+msgid "Unknown response"
+msgstr "Răspuns necunoscut"
+
+msgid "General Display Options"
+msgstr "Opţiuni generale de afişaj"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Default"
+msgstr "Implicită"
+
+msgid "Custom Stylesheet"
+msgstr "Schema de culori personalizată"
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "Use Javascript"
+msgstr "Folosire Javascript"
+
+msgid "Autodetect"
+msgstr "Autodetecţie"
+
+msgid "Always"
+msgstr "Întotdeauna"
+
+msgid "Never"
+msgstr "Niciodată"
+
+msgid "Mailbox Display Options"
+msgstr "Opţiuni afisşaj mailbox"
+
+msgid "Number of Messages per Page"
+msgstr "Număr de mesaje pe pagină"
+
+msgid "Enable Alternating Row Colors"
+msgstr "Activare culori rânduri alternante"
+
+msgid "Enable Page Selector"
+msgstr "Activare selector pagini"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "Număr maxim de pagini de afişat"
+
+msgid "Always Show Full Date"
+msgstr "Întotdeauna afişează data completă"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr "Lungimea câmpului De la / Către (0 pentru complet)"
+
+msgid "Length of Subject Field (0 for full)"
+msgstr "Lungimea câmpului subiect (0 pentru complet)"
+
+msgid "Message Display and Composition"
+msgstr "Afişarea şi compunerea mesajelor"
+
+msgid "Wrap Incoming Text At"
+msgstr "Fixare text sosit la"
+
+msgid "Width of Editor Window"
+msgstr "Lăţime fereastra editor"
+
+msgid "Height of Editor Window"
+msgstr "Înălţime fereastra editor"
+
+msgid "Location of Buttons when Composing"
+msgstr "Locaţie butoane în compunere"
+
+msgid "Before headers"
+msgstr "Înainte de antete"
+
+msgid "Between headers and message body"
+msgstr "Intre antete şi corp mesaj"
+
+msgid "After message body"
+msgstr "După corp mesaj"
+
+msgid "Address Book Display Format"
+msgstr "Format afişaj agenda"
+
+msgid "Javascript"
+msgstr "Javascript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Format of Addresses Added From Address Book"
+msgstr "Formatul adreselor adăugate din agendă"
+
+msgid "No prefix/Address only"
+msgstr "Nici un prefix / doar adresă"
+
+msgid "Nickname and address"
+msgstr "Pseudonim şi adresă"
+
+msgid "Full name and address"
+msgstr "Nume complet şi adresă"
+
+msgid "Show HTML Version by Default"
+msgstr "Afişare versiune HTML implicită"
+
+msgid "Enable Forward as Attachment"
+msgstr "Activare înaintare ca ataşament"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "Includere în CC când răspund la toate"
+
+msgid "Enable Mailer Display"
+msgstr "Activare afişaj mailer"
+
+msgid "Display Attached Images with Message"
+msgstr "Afişare imagini ataşate cu mesaj"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "Activare afişare versiune pentru tipărit"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "Activare Notificare livrare mail"
+
+msgid "Compose Messages in New Window"
+msgstr "Compunere mesaje în fereastra nouă"
+
+msgid "Width of Compose Window"
+msgstr "Lăţime fereastra compunere"
+
+msgid "Height of Compose Window"
+msgstr "Înalţime fereastră compunere"
+
+msgid "Prepend Signature before Reply/Forward Text"
+msgstr "Adaugă semnătura înainte de text răspuns/înaintare"
+
+msgid "Prefix for Original Message when Replying"
+msgstr "Prefix pentru mesajul original când se răspunde"
+
+msgid "Cursor Position when Replying"
+msgstr "Poziţia cursorul când se răspunde"
+
+msgid "To: field"
+msgstr "Câmpul To:"
+
+msgid "Focus in body"
+msgstr "Focalizare în corpul mesajului"
+
+msgid "Select body"
+msgstr "Selectează conţinut"
+
+msgid "No focus"
+msgstr "Fără focus"
+
+msgid "Sort by Received Date"
+msgstr "Sortare după data recepţionării"
+
+msgid "Enable Thread Sort by References Header"
+msgstr "Activare sortare fir după antetele referinţe"
+
+msgid "Special Folder Options"
+msgstr "Opţiuni dosar special"
+
+msgid "Folder Path"
+msgstr "Cale dosar"
+
+msgid "Do not use Trash"
+msgstr "Nu utiliza Coş"
+
+msgid "Trash Folder"
+msgstr "Coş"
+
+msgid "Do not use Drafts"
+msgstr "Nu utiliza Ciorne"
+
+msgid "Draft Folder"
+msgstr "Ciorne"
+
+msgid "Do not use Sent"
+msgstr "Nu utiliza Trimise"
+
+msgid "Sent Folder"
+msgstr "Trimise"
+
+msgid "Folder List Options"
+msgstr "Opţiuni lista dosare"
+
+msgid "Location of Folder List"
+msgstr "Locaţie lista dosare"
+
+msgid "Left"
+msgstr "Stânga"
+
+msgid "Right"
+msgstr "Dreapta"
+
+msgid "pixels"
+msgstr "pixeli"
+
+msgid "Width of Folder List"
+msgstr "Lăţime lista dosare"
+
+msgid "Minutes"
+msgstr "Minute"
+
+msgid "Seconds"
+msgstr "Secunde"
+
+msgid "Minute"
+msgstr "Minut"
+
+msgid "Auto Refresh Folder List"
+msgstr "Autoîmprospătare lista dosare"
+
+msgid "Enable Unread Message Notification"
+msgstr "Activare notificare mesaje necitite"
+
+msgid "No Notification"
+msgstr "Nici o notificare"
+
+msgid "Only INBOX"
+msgstr "Doar INBOX"
+
+msgid "Unread Message Notification Type"
+msgstr "Tip notificare mesaj necitit"
+
+msgid "Only Unseen"
+msgstr "Doar nevăzutele"
+
+msgid "Unseen and Total"
+msgstr "Nevăzute şi total"
+
+msgid "Enable Collapsable Folders"
+msgstr "Activare dosare cu restrângere"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "Activare notificare cumulativă mesaje necitite"
+
+msgid "Show Clock on Folders Panel"
+msgstr "Afişare ceas în panou dosare"
+
+msgid "International date and time"
+msgstr "Ziua şi ora Internaţională"
+
+msgid "American date and time"
+msgstr "Ziua şi ora Americană"
+
+msgid "European date and time"
+msgstr "Ziua şi ora europeană"
+
+msgid "Show weekday and time"
+msgstr "Afişează ziua săptămânii şi ora"
+
+msgid "Show time with seconds"
+msgstr "Afişează ora şi secundele"
+
+msgid "Show time"
+msgstr "Moment început:"
+
+msgid "No Clock"
+msgstr "Fără ceas"
+
+msgid "Hour Format"
+msgstr "Format ora"
+
+msgid "12-hour clock"
+msgstr "Ceas 12 ore"
+
+msgid "24-hour clock"
+msgstr "Ceas 24 ore"
+
+msgid "Memory Search"
+msgstr "Căutare în memorie"
+
+msgid "Disabled"
+msgstr "Dezactivat"
+
+msgid "Folder Selection Options"
+msgstr "Opţiuni selecţie dosar"
+
+msgid "Selection List Style"
+msgstr "Stil lista selecţie"
+
+msgid "Long:"
+msgstr "Lung: "
+
+msgid "Folder"
+msgstr "Dosar"
+
+msgid "Subfolder"
+msgstr "Subdosar"
+
+msgid "Indented:"
+msgstr "Spaţiat: "
+
+msgid "Delimited:"
+msgstr "Delimitat: "
+
+msgid "You can't select INBOX as Trash folder."
+msgstr "Nu puteţi alege „Mesaje Primite” ca Gunoi."
+
+msgid "You can't select INBOX as Sent folder."
+msgstr "Nu puteţi alege „Mesaje Primite” pentru a stoca mesajele trimise."
+
+msgid "You can't select INBOX as Draft folder."
+msgstr "Nu puteţi alege „Mesaje Primite” pentru a stoca ciornele."
+
+msgid "Name and Address Options"
+msgstr "Opţiuni nume şi adresa"
+
+msgid "E-mail Address"
+msgstr "Adresă de mail"
+
+msgid "Edit Advanced Identities"
+msgstr "Editare identitaţi avansate"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(anulare modificări făcute până acum)"
+
+msgid "Multiple Identities"
+msgstr "Identitaţi multiple"
+
+msgid "Same as server"
+msgstr "La fel ca serverul"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr ""
+"Nu s-a putut deschide configuraţia fusului orar; contactaţi administratorul."
+
+msgid "Timezone Options"
+msgstr "Opţiuni fus orar"
+
+msgid "Your current timezone"
+msgstr "Fusul orar curent"
+
+msgid "Reply Citation Options"
+msgstr "Opţiuni citare răspuns"
+
+msgid "Reply Citation Style"
+msgstr "Stil citare răspuns"
+
+msgid "No Citation"
+msgstr "Fără citare"
+
+msgid "AUTHOR Wrote"
+msgstr "AUTORUL a scris"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr "În DATE, AUTHOR a scris"
+
+msgid "Quote Who XML"
+msgstr "Citare cine XML"
+
+msgid "User-Defined"
+msgstr "Definit de utilizator"
+
+msgid "User-Defined Citation Start"
+msgstr "Început citare definit de utilizator"
+
+msgid "User-Defined Citation End"
+msgstr "Sfarşit citare definit de utilizator"
+
+msgid "Signature Options"
+msgstr "Opţiuni semnatură"
+
+msgid "Use Signature"
+msgstr "Utilizează semnatura"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Prefixează semnatura cu linie '--'"
+
+msgid "Take Address"
+msgstr "Ia adresa"
+
+msgid "Address Book Take:"
+msgstr "Adaugă în agendă:"
+
+msgid "Try to verify addresses"
+msgstr "Încearcă verificarea adreselor"
+
+msgid "Config File Version"
+msgstr "Versiune fişier configurare"
+
+msgid "SquirrelMail Version"
+msgstr "Versiune SquirrelMail"
+
+msgid "PHP Version"
+msgstr "Versiune PHP"
+
+msgid "Organization Preferences"
+msgstr "Preferinţe organizaţie"
+
+msgid "Organization Name"
+msgstr "Nume organizaţie"
+
+msgid "Organization Logo"
+msgstr "Sigla organizaţie"
+
+msgid "Organization Logo Width"
+msgstr "Lăţime sigla organizaţie"
+
+msgid "Organization Logo Height"
+msgstr "Înalţime sigla organizaţie"
+
+msgid "Organization Title"
+msgstr "Titlu organizaţie"
+
+msgid "Signout Page"
+msgstr "Pagina ieşire"
+
+msgid "Provider Link URI"
+msgstr "URI-ul furnizorului"
+
+msgid "Provider Name"
+msgstr "Nume furnizor:"
+
+msgid "Top Frame"
+msgstr "Cadrul de sus"
+
+msgid "Server Settings"
+msgstr "Setări server"
+
+msgid "Mail Domain"
+msgstr "Domeniu mail"
+
+msgid "IMAP Server Address"
+msgstr "Adresa server IMAP"
+
+msgid "IMAP Server Port"
+msgstr "Port server IMAP"
+
+msgid "IMAP Server Type"
+msgstr "Tip server IMAP"
+
+msgid "Cyrus IMAP server"
+msgstr "Server Cyrus IMAP"
+
+msgid "University of Washington's IMAP server"
+msgstr "Server IMAP-Universitatea Washington"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "Server IMAP Microsoft Exchange"
+
+msgid "Courier IMAP server"
+msgstr "Server Courier IMAP"
+
+msgid "Mac OS X Mailserver"
+msgstr "Server de mail Mac OS X"
+
+msgid "hMailServer IMAP server"
+msgstr "Server IMAP"
+
+msgid "Mercury/32 IMAP server"
+msgstr "Server IMAP Mercury/32"
+
+msgid "Binc IMAP server"
+msgstr "Server IMAP Binc"
+
+msgid "Dovecot IMAP server"
+msgstr "Server IMAP Dovecot"
+
+msgid "Not one of the above servers"
+msgstr "Nici unul din serverele de mai sus"
+
+msgid "IMAP Folder Delimiter"
+msgstr "Delimitator dosar IMAP"
+
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Utilizează „detect” pentru auto-detecţie."
+
+msgid "Use TLS for IMAP Connections"
+msgstr "Utilizează TLS pentru conexiuni IMAP"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "Necesită PHP 4.3.x! Experimental."
+
+msgid "IMAP Authentication Type"
+msgstr "Tipul autentificării IMAP"
+
+msgid "IMAP login"
+msgstr "Login IMAP:"
+
+msgid "Use Sendmail Binary"
+msgstr "Utilizează binarul sendmail"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr "Alegeţi „nu” pentru SMTP"
+
+msgid "Sendmail Path"
+msgstr "Cale sendmail"
+
+msgid "Sendmail Arguments"
+msgstr "Argumente pentru sendmail"
+
+msgid "SMTP Server Address"
+msgstr "Adresa server SMTP"
+
+msgid "SMTP Server Port"
+msgstr "Port server SMTP"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "Utilizează TLS pentru conexiuni SMTP"
+
+msgid "SMTP Authentication Type"
+msgstr "Tipul autentificării SMTP"
+
+msgid "No SMTP auth"
+msgstr "Fără authentificare SMTP"
+
+msgid "Login (plain text)"
+msgstr "Login (text clar)"
+
+msgid "Custom SMTP AUTH username"
+msgstr "Utilizator SMTP AUTH personalizat"
+
+msgid "Custom SMTP AUTH password"
+msgstr "Parolă SMTP AUTH personalizată"
+
+msgid "POP3 Before SMTP?"
+msgstr "POP3 înainte de SMTP?"
+
+msgid "Header Encryption Key"
+msgstr "Cheia de criptare a antetului"
+
+msgid "Invert Time"
+msgstr "Timp inversat"
+
+msgid "Folders Defaults"
+msgstr "Setări implicite dosar"
+
+msgid "Default Folder Prefix"
+msgstr "Prefix implicit dosar"
+
+msgid "Show Folder Prefix Option"
+msgstr "Afişare opţiuni prefix dosar"
+
+msgid "By default, move to trash"
+msgstr "Implicit mută în coş"
+
+msgid "By default, move to sent"
+msgstr "Implicit mută în trimise"
+
+msgid "By default, save as draft"
+msgstr "Implicit salvează ca şi ciornă"
+
+msgid "List Special Folders First"
+msgstr "Listare dosare speciale primele"
+
+msgid "Show Special Folders Color"
+msgstr "Afişare culoare dosare speciale"
+
+msgid "Auto Expunge"
+msgstr "Auto eliminare"
+
+msgid "Default Sub. of INBOX"
+msgstr "Sub. implicit al INBOX"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Afişare opţiune 'Conţine Sub.'"
+
+msgid "Default Unseen Notify"
+msgstr "Notificare implicită nevăzute"
+
+msgid "Default Unseen Type"
+msgstr "Tip implicit nevăzute"
+
+msgid "Auto Create Special Folders"
+msgstr "Auto creare dosare speciale"
+
+msgid "Auto delete folders"
+msgstr "Auto ştergere dosare"
+
+msgid "Enable /NoSelect folder fix"
+msgstr "Activează /Neselectat dosar fix"
+
+msgid "General Options"
+msgstr "Opţiuni generale"
+
+msgid "Data Directory"
+msgstr "Director date"
+
+msgid "Temp Directory"
+msgstr "Director temporar"
+
+msgid "Hash Level"
+msgstr "Nivel prezentare"
+
+msgid "Hash Disabled"
+msgstr "Prezentare dezactivată"
+
+msgid "Moderate"
+msgstr "Moderată"
+
+msgid "Medium"
+msgstr "Medie"
+
+msgid "Default Left Size"
+msgstr "Mărime implicită stânga"
+
+msgid "Usernames in Lowercase"
+msgstr "Nume utilizatori în litere mici"
+
+msgid "Allow use of priority"
+msgstr "Permite utilizarea prioritaţii"
+
+msgid "Hide SM attributions"
+msgstr "Ascundere atribute SM"
+
+msgid "Enable use of delivery receipts"
+msgstr "Activează utilizarea confirmărilor de primire"
+
+msgid "Allow editing of identities"
+msgstr "Permite editarea identitaţilor"
+
+msgid "Allow editing of full name"
+msgstr "Permite editarea numelui"
+
+msgid "Remove username from headers"
+msgstr "Şterge utilizatorii din antete"
+
+msgid "Used only when identities can't be modified"
+msgstr "Folosit doar când identităţile nu pot fi modificate"
+
+msgid "Use server-side sorting"
+msgstr "Utilizează sortare pe partea serverului"
+
+msgid "Use server-side thread sorting"
+msgstr "Utilizare sortarea pe server"
+
+#, fuzzy
+msgid "Allow server charset search"
+msgstr "Permite „server charset search”"
+
+msgid "UID support"
+msgstr "Suport UID"
+
+msgid "PHP session name"
+msgstr "Numele sesiunii PHP"
+
+msgid "Location base"
+msgstr ""
+
+msgid "Message of the Day"
+msgstr "Mesajul zilei"
+
+msgid "Database"
+msgstr "Baza de date"
+
+msgid "Address book DSN"
+msgstr "Agenda DSN"
+
+msgid "Address book table"
+msgstr "Tabel agenda"
+
+msgid "Preferences DSN"
+msgstr "Preferinţe DSN"
+
+msgid "Preferences table"
+msgstr "Tabel preferinţe"
+
+msgid "Preferences username field"
+msgstr "Câmp preferinţe username"
+
+msgid "Preferences key field"
+msgstr "Câmp preferinţe cheie"
+
+msgid "Preferences value field"
+msgstr "Câmp preferinţe valoare"
+
+msgid "Global address book DSN"
+msgstr "DSN-ul agendei globale"
+
+msgid "Global address book table"
+msgstr "Tabela agendei globale"
+
+msgid "Allow writing into global address book"
+msgstr "Permite scrierea agendei globale"
+
+msgid "Allow listing of global address book"
+msgstr "Permite afişarea agendei globale"
+
+msgid "Language settings"
+msgstr "Setări limba"
+
+msgid "Default Language"
+msgstr "Limba implicită"
+
+msgid "Default Charset"
+msgstr "Set caractere implicit"
+
+msgid "Enable lossy encoding"
+msgstr "Permite codare cu pierdere"
+
+msgid "Address Books"
+msgstr "Agende"
+
+msgid "Default Javascript Addressbook"
+msgstr "Agenda Javascript implicită"
+
+msgid "Global address book file"
+msgstr "Fişierul agendei globale"
+
+msgid "Allow writing into global address book file"
+msgstr "Permite scrierea în fişierul agendei globale"
+
+msgid "Themes"
+msgstr "Teme"
+
+msgid "Style Sheet URL (css)"
+msgstr "URL Style Sheet (css)"
+
+msgid "Default theme"
+msgstr "Tema implicită"
+
+msgid "Use index number of theme"
+msgstr "Utilizează numărul de index al temei"
+
+msgid "Configuration Administrator"
+msgstr "Administrator configurare"
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+"Notă: este recomandat să configuraţi sistemul utilizând conf.pl şi nu acest "
+"modul. conf.pl conţine informaţii suplimentare despre scopul anumitor "
+"variabile şi valori potrivite, precum şi paşi adiţionali de verificare."
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr "Rulaţi sau consultaţi conf.pl dacă aveţi probleme cu configuraţia dvs."
+
+msgid "Theme Name"
+msgstr "Nume tema"
+
+msgid "Theme Path"
+msgstr "Cale tema"
+
+msgid "Plugins"
+msgstr "Pluginuri"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr "Dosarul modulelor nu a putut fi găsit: %s"
+
+msgid "Change Settings"
+msgstr "Schimbare setări"
+
+msgid "Test Configuration"
+msgstr "Configurarea test"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr "Fişerul de configurari nu a putut fi deschis. Verificaţi config.php."
+
+msgid "Administration"
+msgstr "Administrare"
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+"Acest modul permite administratorilor să schimbe principala configuraţie a "
+"SquirrelMail de la distanţa."
+
+msgid "Plugin is not enabled"
+msgstr "Modulul este dezactivat"
+
+msgid "Submit a Bug Report"
+msgstr "Rapoartează eroare"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+"Înainte să trimiteţi raportul de defecţiune (bug), asiguraţi-vă că aţi citit "
+"această listă pentru probleme întâlnite frecvent."
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+"Asiguraţi-vă că rulaţi cea mai recentă versiune de %s. Momentan folosiţi "
+"versiunea %s."
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+"Asiguraţi-vă că defecţiunea (bug) dvs. nu este deja listată în %sLista "
+"defecţiunilor%s pe SourceForge. Dacă este, înseamnă că ştim deja despre ea "
+"şi încercăm să o rezolvăm."
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+"Asiguraţi-vă că puteţi repeta defecţiunea. Dacă defecţiunea are loc "
+"sporadic, încercaţi să documentaţi ce aţi făcut în momentul în care a avut "
+"loc. Dacă a avut loc când v-aţi unitat la un mesaj anume, păstraţi mesajul "
+"respectiv ca eventual să ne putem uita la el."
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+"Dacă apar averismente mai sus, încercaţi să le rezolvaţi. Citiţi ghidul din "
+"dosarul %s unde a fost instalat SquirrelMail."
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+"Apăsând pe butonul de mai jos va începe un mesaj către dezvoltatorii "
+"SquirrelMail care va conţine multe informaţii despre sistemul dvs., "
+"navigatorul dvs. şi serverul IMAP. De asemenea vi se vor cere câteva "
+"informaţii. Completaţi secţiunea de sus. Dacă doriţi, puteţi să derulaţi în "
+"jos mesajul pentru a vedea ce alte informaţii vor fi transmise."
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+"Vă rugăm să completaţi cât mai multe informaţii pentru a acorda tuturor o "
+"şansă să găsească şi să rezolve defecţiunea. Trimiţând defecţiunea în acest "
+"fel nu-l va dăuga automat la lista de defecţiune de pe SourceForge, dar "
+"altcineva cine primeşte mesajul dvs. l-ar putea adăuga."
+
+msgid "This bug involves:"
+msgstr "Această defecţiune implică:"
+
+msgid "the general program"
+msgstr "programul general"
+
+msgid "a specific plugin"
+msgstr "un modul anume"
+
+msgid "Start Bug Report Form"
+msgstr "Deschide formularul de raportare erori:"
+
+msgid "Bug"
+msgstr "Bug"
+
+msgid "Bug Reports"
+msgstr "Rapoarte defecţiuni"
+
+msgid "Show button in toolbar"
+msgstr "AfiŞare buton În toolbar"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "Nu pot scrie fişierul calendar %s"
+
+msgid "TODAY"
+msgstr "AZI"
+
+msgid "Go"
+msgstr "Du-te"
+
+msgid "l, F j Y"
+msgstr "l, F j Y"
+
+msgid "ADD"
+msgstr "ADAUGĂ"
+
+msgid "EDIT"
+msgstr "MODIFICĂ"
+
+msgid "DEL"
+msgstr "ŞTERGE"
+
+msgid "Start time:"
+msgstr "Moment început:"
+
+msgid "Length:"
+msgstr "Lungime:"
+
+msgid "Priority:"
+msgstr "Prioritate:"
+
+msgid "Title:"
+msgstr "Titlu:"
+
+msgid "Set Event"
+msgstr "Setare eveniment"
+
+msgid "Event Has been added!"
+msgstr "Eveniment adăugat!"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "m/d/Y"
+msgstr "d.m.Y"
+
+msgid "Time:"
+msgstr "Ora:"
+
+msgid "Day View"
+msgstr "Vizualizare zi"
+
+msgid "Do you really want to delete this event?"
+msgstr "Chiar vreţi sa ştergeti acest eveniment?"
+
+msgid "Event deleted!"
+msgstr "Eveniment şters!"
+
+msgid "Nothing to delete!"
+msgstr "Nimic de şters"
+
+msgid "Update Event"
+msgstr "Înnoire eveniment"
+
+msgid "Do you really want to change this event from:"
+msgstr "Sigur vreţi să modificati acest eveniment din:"
+
+msgid "to:"
+msgstr "către:"
+
+msgid "Event updated!"
+msgstr "Eveniment înnoit"
+
+msgid "Month View"
+msgstr "Vizualizare lunară"
+
+msgid "0 min."
+msgstr "0 min."
+
+msgid "15 min."
+msgstr "15 min."
+
+msgid "30 min."
+msgstr "30 min."
+
+msgid "45 min."
+msgstr "45 min."
+
+msgid "1 hr."
+msgstr "1 ora"
+
+msgid "1.5 hr."
+msgstr "1,5 ore"
+
+msgid "2 hr."
+msgstr "2 ore"
+
+msgid "2.5 hr."
+msgstr "2,5 ore"
+
+msgid "3 hr."
+msgstr "3 ore"
+
+msgid "3.5 hr."
+msgstr "3,5 ore"
+
+msgid "4 hr."
+msgstr "4 ore"
+
+msgid "5 hr."
+msgstr "5 ore"
+
+msgid "6 hr."
+msgstr "6 ore"
+
+msgid "Calendar"
+msgstr "Calendar"
+
+msgid "Delete &amp; Prev"
+msgstr "Şterge &amp; Înapoi"
+
+msgid "Delete &amp; Next"
+msgstr "Şterge &amp; Înainte"
+
+msgid "Move to:"
+msgstr "Mutare în:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "Butoane Ştergere/Mutare/Următor(are):"
+
+msgid "Display at top"
+msgstr "Afişare sus"
+
+msgid "with move option"
+msgstr "cu opţiune de mutare"
+
+msgid "Display at bottom"
+msgstr "Afişare jos"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"COMERCIAL -Aceasta lista contine servere care trimit spam. Este o lista "
+"potrivita pentru a scana de spam."
+
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"COMERCIAL - Serverele care sunt configurate (sau rău configurate) să permită "
+"retransmiterea mesajelor nesolicitate prin sistemul lor vor fi bocate de "
+"acesta. Încă unul util."
+
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"COMERCIAL - Utilizatorii dial-up sunt deseori filtraţi deoarece trebuie să "
+"folosească mail serverele ISP-urilor pentru a trimite mail. Spammerii de "
+"obicei fac rost de un cont dial-up şi trimit de acolo spam."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "COMERCIAL - intrari RBL+ Blackhole."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "COMERCIAL - intrari RBL+ OpenRelay."
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "COMERCIAL - intrari RBL+ Dial-up."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "GRATUIT - Five-Ten-sg.com - Surse directe de SPAM."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr "GRATUIT - Five-Ten-sg.com - Liste Dialup - include IP-uri DSL."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr "GRATUIT - Five-Ten-sg.com - Mailere in masa care nu au confirmare."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "GRATUIT - Five-Ten-sg.com - Diferite alte servere "
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "GRATUIT - Five-Ten-sg.com - Servere stadiu singur"
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "GRATUIT - Five-Ten-sg.com - Servere SPAM suport."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "GRATUIT - Five-Ten-sg.com - IP-uri formulare web."
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"GRATUIT - Dorkslayer pare sa includa doar openrelayurile cu adevarat "
+"periculoase din afara SUA pentru a evita actionarea in judecata. Destul de "
+"interesanta, pagina de web recomanda sa NU folositi serviciile lor."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "GRATUIT -SPAMhaus - lista de binecunoscute surse de SPAM."
+
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"GRATUIT, deocamdata – SpamCop – soluţie interesantă care listează servere "
+"care trimit foarte multe mesaje nesolicitate faţă de mesaje solicitate (85% "
+"sau mai mult)."
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "GRATUIT - dev.null.dk - Nu exista informatii detaliate despre lista."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr "GRATUIT - visi.com - Relay Stop List. Lista OpenRelay conservatoare."
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "GRATUIT – ahbl.org Open Relays – Inca o lista de relee deschise."
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr ""
+"GRATUIT – ahbl.org SPAM Source – Listă de surse directe de mesaje "
+"nesolicitate."
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+"GRATUIT – ahbl.org SPAM ISPs - Listă de ISP-uri care încurajează mesajele "
+"nesolicitate."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"GRATUIT - Leadmon DUL - Inca o lista de Dialupuri sau alte IP-uri alocate "
+"dinamic."
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"GRATUIT - Leadmon SPAM Source - Lista de IP-uri Leadmon.net la care s-a "
+"primit in mod direct spam."
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"GRATUIT - Leadmon Bulk Mailers - Mailere in masa care nu au nevoie de "
+"confirmare sau permit spammeri cunoscuti sa le devina clienti si sa abuzeze "
+"de servicii."
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"GRATUIT - Leadmon Open Relays - Open Relayuri stagiu unic care nu sunt "
+"listate pe alte RBL-uri active."
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"GRATUIT - Leadmon Multi-stagiu - Open Relayuri Multi-Stage care nu sunt "
+"listate pe alte RBL-uri activesi au trimis spam la Leadmon.net."
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"GRATUIT - Leadmon SpamBlock - Site-uri de pe acest listing au trimis in mod "
+"direct SPAM catre Leadmon.net dinspre IP-uri in care intregul bloc nu are "
+"mapari DNS. E o lista ale IP-urilor BLOCATE utilizate de persoane care au "
+"trimis SPAM catre Leadmon.net."
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"GRATUIT, deocamdata - Not Just Another Blacklist - Surse direct SPAM si Open "
+"Relayuri."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr "GRATUIT, deocamdata - Not Just Another Blacklist - Ip-uri Dial-up."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr "GRATUIT - Distributed Sender Boycott List - Relayuri confirmate"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+"GRATUIT - Distributed Sender Boycott List - Relayuri M-stage confirmate"
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr "GRATUIT - Distributed Sender Boycott List - Relayuri confirmate UN"
+
+msgid "WARNING! You must enter something to search for."
+msgstr "Atenţie! Trebuie să tastaţi ceva după care să se caute."
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr "Atenţie! Filtrele antetelor trebuie să fie de forma „Antet: valoare”"
+
+msgid "Saved Scan type"
+msgstr "Tip scanare salvat"
+
+msgid "Message Filtering"
+msgstr "Filtrare mesaje"
+
+msgid "What to Scan:"
+msgstr "Ce sa scanaţi:"
+
+msgid "All messages"
+msgstr "Toate mesajele"
+
+msgid "Only unread messages"
+msgstr "Doar mesajele necitite"
+
+msgid "Save"
+msgstr "Salvare"
+
+msgid "Match:"
+msgstr "Potrivire:"
+
+msgid "Header"
+msgstr "Antet"
+
+msgid "Contains:"
+msgstr "Conţine:"
+
+#, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "Dacă <b>%s</b> conţine <b>%s</b> atunci mută în <b>%s</b>"
+
+msgid "Message Filters"
+msgstr "Filtre mesaje"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"Filtrarea face ca mesajele sa fie filtrate automat după mai multe criterii "
+"in diferite foldere pentru o mai uşoară organizare."
+
+msgid "SPAM Filters"
+msgstr "Filtre SPAM"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"Filtrele SPAM vă permit selectarea de liste negre din mai multe DNS-uri "
+"pentru detectarea de junk mail din INBOX si mutare în alt dosar (ex. coş)."
+
+msgid "You must select a spam folder."
+msgstr "Trebuie sa alegeţi un dosar pentru spam"
+
+msgid "You must select a scan type."
+msgstr "Trebuie sa alegeti un tip de scan"
+
+msgid "Spam Filtering"
+msgstr "Filtrare spam"
+
+#, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "ATENŢIE! Spuneţi administratorului să seteze variabila %s."
+
+msgid "Move spam to:"
+msgstr "Mutare spam în:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"Mutarea spamului direct în coş nu e o idee prea bună, atata timp cât "
+"mesajele de la anumiţi prieteni sau liste de discuţii pot fi accidental "
+"marcate ca spam. Orice alt dosar aţi alege, asiguraţi-vă că se va goli "
+"periodic pentru a nu mări excesiv mailboxul."
+
+msgid "Unread messages only"
+msgstr "Doar mesajele necitite"
+
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"Cu cat mai multe mesaje se scaneaza cu atât mai mult durează. Sugerăm să "
+"scanaţi doar mesajele noi. Dacă schimbaţi filtrele, este recomandată "
+"scanarea tuturor mesajelor, apoi vedeti în INBOX, apoi întoceţiva şi "
+"verificaţi doar mesajele noi. În acest fel, noile filtre de spam vor fi "
+"aplicate şi veti scana chiar şi spamul citit cu noile filtre."
+
+#, php-format
+msgid "Spam is sent to %s."
+msgstr "Spamul e trimis în <b>%s</b>"
+
+msgid "not set yet"
+msgstr "[<i>nesetat înca</i>]"
+
+#, php-format
+msgid "Spam scan is limited to %s."
+msgstr "Scanarea de spam e limitată la <b>%s</b>"
+
+msgid "ON"
+msgstr "Activ"
+
+msgid "OFF"
+msgstr "Inactiv"
+
+#, php-format
+msgid "%s is not found."
+msgstr "%s nu a putut fi găsit"
+
+msgid "Today's Fortune"
+msgstr "Zicerea de azi"
+
+msgid "Fortunes"
+msgstr "Ziceri"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "Arată zicerile în partea de sus a căsuţei poştale"
+
+msgid "Plugin is disabled."
+msgstr "Modulul este dezactivat."
+
+msgid "IMAP server information"
+msgstr "Informaţii server IMAP"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+"Rulează nişte comenzi IMAP de test, afişând atât comanda cât şi rezultatul. "
+"Aceste teste utilizează comenzile IMAP din SquirrelMail şi configuraţia dvs. "
+"curentă. Se pot de asemenea utiliza comenzi personalizate."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"Aceasta va trimite un mesaj către %s cu cerere de ajutor pentru aceasta "
+"listă. Veţi primi un raspuns la adresa de mai jos."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"Aceasta va trimite un mesaj către %s cu cerere de abonare la aceasta listă."
+"Veţi fi abonat cu adresa de mai jos."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"Aceasta va trimite un mesaj către %s cu cerere de dezabonare de la aceasta "
+"listă. Se va încerca dezabonarea adresei de mai jos."
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Acţiune necunoscută: %s"
+
+msgid "Mailinglist"
+msgstr "Lista discuţii"
+
+msgid "Send Mail"
+msgstr "Trimitere Mail"
+
+msgid "Post to List"
+msgstr "Postare către listă"
+
+msgid "Reply to List"
+msgstr "Răspuns către listă"
+
+msgid "List Archives"
+msgstr "Arhive lista"
+
+msgid "Contact Listowner"
+msgstr "Contactare posesor lista"
+
+msgid "Mailing List"
+msgstr "Lista discuţii"
+
+msgid "No server specified"
+msgstr "Nici un server specificat"
+
+msgid "Error "
+msgstr "Eroare"
+
+msgid "no login ID submitted"
+msgstr "nici un ID de intrare trimis"
+
+msgid "connection not established"
+msgstr "conexiune nerealizată"
+
+msgid "No password submitted"
+msgstr "Nici o parolă trimisa"
+
+msgid "No connection to server"
+msgstr "Nici o conexiune la server"
+
+msgid "No login ID submitted"
+msgstr "Nici un ID de intrare trimis"
+
+msgid "No server banner"
+msgstr "Nici un banner de server"
+
+msgid "abort"
+msgstr "eşuare"
+
+msgid "apop authentication failed"
+msgstr "autentificare apop eşuată"
+
+msgid "Premature end of list"
+msgstr "Sfârşit de listă prematur"
+
+msgid "Empty command string"
+msgstr "Şir de comenzi vid"
+
+msgid "connection does not exist"
+msgstr "conexiune inexistentă"
+
+msgid "No msg number submitted"
+msgstr "Nici un număr de mesaj trimis"
+
+msgid "Command failed "
+msgstr "Comanda eşuată "
+
+msgid "Remote POP server Fetching Mail"
+msgstr "Server POP pentru aducere mail remote"
+
+msgid "Select Server:"
+msgstr "Selectare server:"
+
+msgid "Password for"
+msgstr "Parola pentru"
+
+msgid "Fetch Mail"
+msgstr "Aducere Mail"
+
+msgid "Fetching from "
+msgstr "Aducere de la"
+
+msgid "Oops, "
+msgstr "Oops, "
+
+msgid "Opening IMAP server"
+msgstr "Deschidere server IMAP"
+
+msgid "Opening POP server"
+msgstr "Deschidere server POP"
+
+msgid "Login Failed:"
+msgstr "Intrare eşuată:"
+
+msgid "Login OK: No new messages"
+msgstr "Intrare OK: nici un mesaj nou"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "Intrare OK: Inbox VID"
+
+#, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "Intrare OK: Inbox contine %s mesage"
+
+msgid "Fetching UIDL..."
+msgstr "Aducere UIDL..."
+
+msgid "Server does not support UIDL."
+msgstr "Serverul nu permite UIDL."
+
+msgid "Leaving mail on server..."
+msgstr "Lăsare mail pe server..."
+
+msgid "Deleting messages from server..."
+msgstr "Ştergere mesaje de pe server..."
+
+msgid "Fetching message "
+msgstr "Aducere mesaj "
+
+msgid "Server error. Disconnect"
+msgstr "Eroare server. Deconectare"
+
+msgid "Reconnect from dead connection"
+msgstr "Reconectare din conexiune căzută"
+
+msgid "Saving UIDL"
+msgstr "Salvare UIDL"
+
+msgid "Refetching message "
+msgstr "Readucere mesaj"
+
+msgid "Error Appending Message!"
+msgstr "Eroare la adăugare mesaj!"
+
+msgid "Closing POP"
+msgstr "Închidere POP"
+
+msgid "Logging out from IMAP"
+msgstr "Ieşire din IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "Mesaj adăugat la mailbox"
+
+#, php-format
+msgid "Message %d deleted from remote server!"
+msgstr " Mesajul %d şters de pe server!"
+
+msgid "Delete failed:"
+msgstr "Ştergere eşuată:"
+
+msgid "Remote POP server settings"
+msgstr "Setări server POP remote"
+
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"Trebuie sa fiţi conştienţi că criptarea utilizată pentru reţinerea parolei "
+"nu este total sigură. Oricum, daca utilizati POP, nu exista nici o criptare. "
+"În plus, criptarea pe care o folosim pentru salvarea pe server poate fi "
+"spartă de un hacker care citeşte sursele acestui fişier."
+
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "Dacă lăsaţi parola vidă, va fi cerută când aduceţi poşta."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "Encripţie parole (doar informativ)"
+
+msgid "Add Server"
+msgstr "Adăugare server"
+
+msgid "Server:"
+msgstr "Server:"
+
+msgid "Port:"
+msgstr "Port:"
+
+msgid "Alias:"
+msgstr "Alias:"
+
+msgid "Username:"
+msgstr "Nume utilizator:"
+
+msgid "Store in Folder:"
+msgstr "Stocare în dosar:"
+
+msgid "Leave mail on server"
+msgstr "Lasă poşta pe server"
+
+msgid "Check mail at login"
+msgstr "Verificare poşta la intrare"
+
+msgid "Check mail at folder refresh"
+msgstr "Verificare poşta la înnoirea dosarului"
+
+msgid "Modify Server"
+msgstr "Modificare server"
+
+msgid "Server Name:"
+msgstr "Nume server:"
+
+msgid "Modify"
+msgstr "Modificare"
+
+msgid "No servers known."
+msgstr "Nici un server cunoscut."
+
+msgid "Fetching Servers"
+msgstr "Aducere servere"
+
+msgid "Confirm Deletion of a Server"
+msgstr "Confirmare ştergere server"
+
+msgid "Selected Server:"
+msgstr "Server selectat:"
+
+msgid "Confirm delete of selected server?"
+msgstr "Confirmare ştergere server selectat?"
+
+msgid "Confirm Delete"
+msgstr "Confirmare ştergere"
+
+msgid "Leave Mail on Server"
+msgstr "Păstrează poşta pe server"
+
+msgid "Undefined Function"
+msgstr "Funcţie nedefinită"
+
+msgid "The function you requested is unknown."
+msgstr "Funcţia cerută este necunoscută."
+
+msgid "Fetch"
+msgstr "Aducere"
+
+msgid "Warning, "
+msgstr "Atenţie, "
+
+msgid "Mail Fetch Result:"
+msgstr "Rezultate aducere mail:"
+
+msgid "POP3 Fetch Mail"
+msgstr "Aducere poşta cu POP3"
+
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"Aceasta configurează setările pentru descărcarea poşteil din căsuţa POP3 în "
+"contul pe acest server."
+
+msgid "Message Details"
+msgstr "Detalii mesaj"
+
+msgid "Bodystructure"
+msgstr "Structura corpului"
+
+msgid "Entity"
+msgstr "Entitate"
+
+msgid "Content-Type"
+msgstr "Tipul conţinutului"
+
+msgid "Encoding"
+msgstr "Codare"
+
+msgid "RFC822 Message body"
+msgstr "Corp mesaj RFC822"
+
+msgid "Close Window"
+msgstr "Închidere fereastra"
+
+msgid "Save Message"
+msgstr "Salvează mesaj"
+
+msgid "View Message details"
+msgstr "Vizualizare detalii mesaj"
+
+msgid "New Mail Notification"
+msgstr "Notificare mail nou"
+
+#, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"Optiunea <b>%s</b> va verifica TOATE dosarele pentru poştal necitită, nu "
+"doar inbox-ul pentru notificare."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "Selectare toate casuţele, nu doar INBOX"
+
+#, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"Selectarea optiunii %s va activa afişarea ferestrei de popup când aveţi mail "
+"necitit în dosare (solicită JavaScript)."
+
+msgid "Show popup window on new mail"
+msgstr "Afişare fereastră popup la mail nou"
+
+#, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"Utilizati %s doar pentru verificare mesaje recente. Mesajele recente sunt "
+"acelea care au aparut recent şi care nu au fost \"vizualizate\" sau "
+"selectate înca. Aceasta previne notificarea poştei necitite prin sunete sau "
+"popup-uri care pot deveni plictisitoare."
+
+msgid "Count only messages that are RECENT"
+msgstr "Contorizează doar mesajele RECENTE"
+
+#, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript). This will always tell you "
+"if you have new mail, even if you have %s enabled."
+msgstr ""
+"Selectarea opţiunii %s va schimba titlul în anumite browsere pentru a vă "
+"anunţa când aveţi mesaje noi (solicită JavaScript). Aceasta vă va anunţa "
+"când aveţi mesaje noi, chiar şi cu %s activat."
+
+msgid "Change title on supported browsers"
+msgstr "Schimbă titlul în browserele suportate."
+
+#, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"Selectati %s pentru a porni un fişier media când exista poştă necitită în "
+"dosare. Dacă este activat, puteţi specifica fişierul media rulabil în casuţa "
+"de fişiere furnizată."
+
+msgid "Enable Media Playing"
+msgstr "Activare Media"
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+"Selectaţi din lista %s fişierul pe care doriţi să-l auziţi când aveţi un "
+"mesaj nou. Dacă nu specificaţi nici un fişier, %s, nu va fi utilizat nici un "
+"sunet."
+
+msgid "Select server file"
+msgstr "Selectează fişier server:"
+
+msgid "(none)"
+msgstr "Nici unul(a)"
+
+msgid "requires JavaScript to work"
+msgstr "solicită JavaScript pentru funcţionare"
+
+msgid "Width of popup window:"
+msgstr "Laţimea ferestrelor de dialog:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "Dacă este setat la 0, va fi încărcat cu valoarea implicită"
+
+msgid "Height of popup window:"
+msgstr "Înălţimea fereastrelor de dialog:"
+
+msgid "Try"
+msgstr "Incercare"
+
+msgid "Current File:"
+msgstr "Fişier curent:"
+
+msgid "New Mail"
+msgstr "Mail nou"
+
+msgid "SquirrelMail Notice:"
+msgstr "Notificare SquirrelMail"
+
+#, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "Aveţi %s mesaj nou"
+msgstr[1] "Aveţi %s mesaje noi"
+msgstr[2] "Aveţi %s de mesaje noi"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "Aveţi %s mesaje noi"
+
+msgid "NewMail Options"
+msgstr "Opţiuni MailNou"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"Aici se configurează setări pentru sunete şi/sau afişare ferestre popup când "
+"vine mail nou."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s mesaje noi"
+
+#, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s mesaj nou"
+msgstr[1] "%s mesaje noi"
+msgstr[2] "%s de mesaje noi"
+
+msgid "Test Sound"
+msgstr "Test sunet"
+
+msgid "No sound specified"
+msgstr "Nici un sunet specificat"
+
+msgid "Loading the sound..."
+msgstr "Incărcare sunet..."
+
+msgid "Sent Subfolders Options"
+msgstr "Opţiuni subdosare Trimise"
+
+msgid "Use Sent Subfolders"
+msgstr "Utilizare Subdosare Trimise"
+
+msgid "Monthly"
+msgstr "Lunar"
+
+msgid "Quarterly"
+msgstr "Trimestrial"
+
+msgid "Yearly"
+msgstr "Anual"
+
+msgid "Base Sent Folder"
+msgstr "Dosar de bază Trimise"
+
+msgid "Enabled"
+msgstr "Activat"
+
+msgid "Disable it"
+msgstr "Dezactivează"
+
+msgid "Enable it"
+msgstr "Activează-l"
+
+msgid "Spam reporting"
+msgstr "Raportare spam"
+
+msgid "SpamCop link is:"
+msgstr "Legătura SpamCop este:"
+
+msgid "Delete spam when reported:"
+msgstr "Şterge spam când e raportat:"
+
+msgid "Only works with email-based reporting"
+msgstr "Funcţionează doar pentru raportare pe bază de mail"
+
+msgid "Spam Reporting Method:"
+msgstr "Metoda de raportare spam"
+
+msgid "Quick email-based reporting"
+msgstr "Raportare rapidă pe bază de mail"
+
+msgid "Thorough email-based reporting"
+msgstr "Prin raportare pe bază de mail"
+
+#, fuzzy
+msgid "Web-based form"
+msgstr "Formular web-based"
+
+msgid "Save Method"
+msgstr "Metoda de salvare"
+
+msgid "Your SpamCop authorization code:"
+msgstr "Codul dvs. de autorizare SpamCop:"
+
+msgid "see below"
+msgstr "vedeţi mai jos"
+
+msgid "Save ID"
+msgstr "Salvează ID"
+
+msgid "About SpamCop"
+msgstr "Despre SpamCop"
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+"SpamCop este un serviciu gratuit care ajută la găsirea sursei adevărate a "
+"mesaje nesolicitate (spam) şi ajută în înştiinţarea persoanelor potrivite "
+"despre abuz."
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+"Pentru a-l utiliza, trebuie să obţineţi un cod de autorizare SpamCop. Există "
+"o pagină gratuită %sde înregistrare%s pentru a putea utiliza SpamCop."
+
+msgid "Before you sign up, be warned"
+msgstr "Înainte să vă înscrieţi, atenţie"
+
+#, fuzzy, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+"Unii utilizatori au raportat că adresele de mail utilizate pentru SpamCop "
+"ajung pe listele spamărilor. Pentru a fi sigur, puteţi să vă creaţi un cont "
+"de înaintare de mail şi să trimiteţi toate rapoartele SpamCop către el. De "
+"asemenea, dacă acel cont va fi „înecat” în mesaj nesolicitate, puteţi pur şi "
+"simplu să-l ştergeţi fără să vă îngrijoraţi de pierderea adresei de mail "
+"reale. Tot ce trebuie să faceţi este să vă creaţi un înaintator de mesaje (%"
+"s are o listă)."
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+"Odată ce v-aţi înregistrat la SpamCop şi aţi primit codul de autorizare "
+"SpamCop, va trebui să activaţi acest modul dând clic pe legătura de mai sus. "
+"Odată activat, puteţi să vă continuaţi viaţa normală. Când primiţi un mesaj "
+"nesolicitat tot ce trebuie să faceţi este să vă uitaţi la el. În dreaptă, "
+"partea de sus a mesajului, veţi vedea o legătură pentru a raporta acest "
+"mesaj ca nesolicitat. Dând clic pe el vă va duce către o pagină de "
+"confirmare. Confirmarea faptului că doriţi mesajul nesolicitat să fie "
+"raportat va face lucruri diferite în funcţie de metoda de raportare."
+
+msgid "Email-based reporting"
+msgstr "Raportare pe bază de mail"
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+"Apăsând acest buton înaintează mesajul către serviciul SpamCop şi, opţional, "
+"îl va şterge. De aici, trebuie doar să mergeţi în Mesaje Primite şi imediat "
+"ar trebui să apară un mesaj de la SpamCop. (Mesajul va fi trimis către "
+"contul cu care v-aţi înregistrat la SpamCop, aşa că asiguraţi-vă că "
+"înaintarea mesajelor funcţionează!) Deschideţi-l, daţi clic pe legătura "
+"potrivită din partea de sus şi o nouă fereastră de navigator se va deschide."
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+"Momentan, raportarea rapidă înaintează cererea către raportarea meticuloasă. "
+"De asemenea, se pare că această facilitate este doar pentru membri (nu e "
+"gratis). Să sperăm că acest lucru se va schimba în curând."
+
+msgid "Web-based reporting"
+msgstr "Raportare „web-based”"
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+"Când apăsaţi butonul de pe pagina de confirmare, o nouă fereastră de "
+"navigator se va deschide şi serviciu SpamCop ar trebui să apară în "
+"interiorul ei. Mesajul nu va fi şters (se lucrează la acea parte), dar nu va "
+"trebui să aşteptaţi pentru mail de răspund pentru a începe raportarea "
+"mesajului nesolicitat."
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+"Serviciul SpamCop va afişa informaţii pe măsură ce le găseşte, aşa că "
+"derulaţi până ce vedeţi un buton. S-ar putea să apară mici pauze în timp ce "
+"caută informaţii, aşa că va trebui să aveţi răbdare. Citiţi textul "
+"respectiv, apoi trimiteţi mesajul nesolicitat. Închideţi fereastra "
+"navigatorului. Apăsaţi pe Renunţă sau daţi clic pe dosarul corespunzător de "
+"mesaje pentru a vedea mesajele şi/sau a şterge mesajele nesolicitate."
+
+msgid "SpamCop service type"
+msgstr "Tipul de serviciu SpamCop"
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+"Tipul serviciului vă permite să alegeţi ce fel de serviciu SpamCop folosiţi. "
+"Serviciile pentru membri arată formulare diferite şi nu afişează cicălituri. "
+"Puteţi cumpăra aceste servicii dacă doriţi să susţineţi SpamCop."
+
+msgid "More information"
+msgstr "Mai multe informaţii"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+"Pentru mai multe informaţii despre SpamCop, serviciile pe care le oferă, "
+"mesaje nesolicitate (spam) în general şi alte subiecte relevante, încercaţi "
+"să citiţi secţiunea %sAjutorul şi Reactii%s din SpamCop."
+
+msgid "Report as Spam"
+msgstr "Raportează ca Spam"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "SpamCop - Raportare Spam"
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+"Contribuiţi la lupta împotriva poştei nesolicitate. SpamCop citeste emailul "
+"spam si determină adresele corecte la care să se trimită plângeri. Destul de "
+"rapid, inteligent şi uşor de folosit."
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+"Trimiţând acest raport de mesaj nesolicitat veţi primi un răspuns cu URL-ul "
+"pe care trebuie să daţi clic pentru a definitiva raportarea mesajului "
+"nesolicitat. Acesta este un serviciu gratuit. Apăsând butonul „Trimite "
+"raport mesaj nesolicitat” sunteţi de acord cu termenii serviciilor SpamCop."
+
+msgid "Cancel / Done"
+msgstr "Anulează / Gata"
+
+msgid "Send Spam Report"
+msgstr "Trimite raportul spam"
+
+msgid "SpellChecker Options"
+msgstr "Opţiuni Verificare Ortografie"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"Aici puteţi seta modul în care este stocat dicţionarul personal, edita sau "
+"alege ce limbi vor fi disponibile pentru verificarea ortografiei."
+
+msgid "Check Spelling"
+msgstr "Verificare ortografie"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "Înapoi la pagina „Opţiuni verificare ortografică”"
+
+msgid "ATTENTION:"
+msgstr "ATENŢIUNE:"
+
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"SquirrelSpell nu a putut decripta dicţionarul personal. Aceasta este de "
+"obicei din cauza faptului că aţi schimbat parola la mailbox. Pentru a "
+"continua, va trebui să furinzaţi vechea parola pentru ca SquirrelSpell să "
+"decripteze dictionarul personal. Va fi reincriptat cu noua parolă după "
+"aceasta.<br>Dacă nu aţi incriptat dicţionarul, atunci acesta este corupt şi "
+"invalid. Va trebui să îl ştergeţi şi să porniţi unul nou. De asemenea poate "
+"fi şi din cauza că nu vă amitiţi vechea parolă -- fără ea, datele incriptate "
+"nu mai sunt accesibile."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "Şterge dicţionarul şi începe cu unul nou"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "Decripteaza dicţionarul cu vechea parolă:"
+
+msgid "Proceed"
+msgstr "Continuare"
+
+msgid "You must make a choice"
+msgstr "Trebuie săa alegeţi ceva"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr ""
+"Puteţi sa ştergeţi dicţionarul ori sa introduceţi vechea parolă. Nu ambele."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "Aceasta va şterge dicţionarul personal. Continuăm?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "Eroare în decriptarea dicţionarului"
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr "Nu s-a putut rula comanda pentru verficarea ortografiei (%s)."
+
+msgid "Error while writing to pipe."
+msgstr "Eroare la scriere în ţeavă (pipe)."
+
+#, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "Nu pot deschide fişierul temporar '%s'."
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr "Eroare la scrierea fişierului temporar „%s”."
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "S-a încercat rularea „%s”, dar s-a returnat:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell nu este configurat corect."
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "Verificarea ortografică a luat sfârşit. Doriţi salvearea schimbărilor?"
+
+msgid "No changes were made."
+msgstr "Nu au fost făcute modificări"
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "Se salvează dicţionarul dvs. personal ... Aşteptaţi."
+
+msgid "SquirrelSpell Results"
+msgstr "Rezultatele SquirrelSpell"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "Au fost găsite %s greşeli"
+
+msgid "Line with an error:"
+msgstr "Linie cu greşelă:"
+
+msgid "Error:"
+msgstr "EroareŞ"
+
+msgid "Suggestions:"
+msgstr "Sugestie: "
+
+msgid "Suggestions"
+msgstr "Sugestii"
+
+msgid "Change to:"
+msgstr "Schimbă înŞ"
+
+msgid "Occurs times:"
+msgstr "Apare de:"
+
+msgid "Change this word"
+msgstr "Schimbă acest cuvânt"
+
+msgid "Change"
+msgstr "Schimbă"
+
+msgid "Change ALL occurances of this word"
+msgstr "Schimbă TOATE apariţiile acestui cuvânt"
+
+msgid "Change All"
+msgstr "Modifică toate"
+
+msgid "Ignore this word"
+msgstr "Ignoră acest cuvânt"
+
+msgid "Ignore"
+msgstr "Ignora"
+
+msgid "Ignore ALL occurances this word"
+msgstr "Ignoră TOATE apariţiile acestui cuvânt"
+
+msgid "Ignore All"
+msgstr "Ignoră toate"
+
+msgid "Add this word to your personal dictionary"
+msgstr "Adauga acest cuvânt în dicţionarul personal"
+
+msgid "Add to Dic"
+msgstr "Adăugare în dicţionar"
+
+msgid "Close and Commit"
+msgstr "Închidere şi comite"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr ""
+"Corectarea ortografică nu a fost terminată. Sigur doriţi închiderea şi "
+"salvearea modificărilor?"
+
+msgid "Close and Cancel"
+msgstr "Închide şi Renunţă"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr ""
+"Corectarea ortografică nu a fost terminată. Sigur doriţi închiderea şi "
+"salvearea modificărilor?"
+
+msgid "No errors found"
+msgstr "Nu au fost gasite erori"
+
+msgid "Your personal dictionary was erased."
+msgstr "Dicţionarul personal a fost şters"
+
+msgid "Dictionary Erased"
+msgstr "Dicţionarul şters"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"Dicţionarul dvs. personal a fost şters. Închideţi fereastra daţi clic pe "
+"butonul „Verificare ortografică” din nou pentru a reîncepe."
+
+msgid "Close this Window"
+msgstr "Inchide fereastra"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"Dicţionarul dvs. personal a fost recriptat cu succes.  Întoarceţi-vă la "
+"meniul „Opţiuni verificare ortografică” şi efectuaţi selectaţia din nou."
+
+msgid "Successful re-encryption"
+msgstr "Recriptare terminată cu succes"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"Dicţionarul dvs. personal a fost recriptat cu succes. Închideţi această "
+"fereastră şi daţi clic pe butonul „Verifică ortografia” pentrua reîncepe "
+"verificarea ortografică."
+
+msgid "Dictionary re-encrypted"
+msgstr "Dicţionar recriptat"
+
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"Dicţionarul dvs. personal a fost criptate şi este stocat într-un format "
+"criptat."
+
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"Dicţionarul dvs. personal a fost decriptate şi este stocat în text clar."
+
+msgid "No action requested."
+msgstr "Nu a fost solicitată nici o acţiune"
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Setări criptografice ale dicţionarului personal"
+
+msgid "Personal Dictionary"
+msgstr "Dicţionar personal"
+
+msgid "No words in your personal dictionary."
+msgstr "Nu sunt cuvinte în dicţionarul personal."
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr ""
+"Selectaţi cuvintele pe care doriţi să le ştergeţi din dicţionarul personal."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "Dicţionarul %s"
+
+msgid "Delete checked words"
+msgstr "Şterge cuvinte selectate"
+
+msgid "Edit your Personal Dictionary"
+msgstr "Modifică dicţionarul personal"
+
+msgid "Please make your selection first."
+msgstr "Vă rog faceţi întâi o selecţie."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+"Aceasta va cripta dicţionarul personal şi îl va stoca in format criptat. "
+"Continuăm?"
+
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr ""
+"Aceasta va decripta dicţionarul personal şi îl va stoca în formatul text. "
+"Continuăm?"
+
+msgid "Your personal dictionary is currently encrypted."
+msgstr "Dicţionarul dvs. personal este momentan criptat."
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+"Acest lucru vă protejează intimitatea în caz că sistemul de mail este "
+"compromis şi dicţionarul dvs. personal este furat. Momentan este criptat cu "
+"parola pe care o folosiţi pentru a accesa căsuţa poştală, ceea ce "
+"îngreunează pentru orice să vadă ce aţi stocat în dicţionarul personal."
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+"Dacă vă uitaţi parola, dicţionarul personal va deveni inaccesibil, deoarece "
+"ce nu mai poate fi decriptată. Dacă vă schimbaţi parola, SquirrelSpell va "
+"vedea acest lucru şi vă va cere parola veche, pentru a recripta dicţionarul "
+"cu o cheie nouă."
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "Decriptează dicţionarul personal şi stochează-l în text clar."
+
+msgid "Change crypto settings"
+msgstr "Schimbare setări criptografice"
+
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "Dicţionarul dvs. personal nu este momentan criptat."
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+"S-ar putea să doriţi criptarea dicţionarului personal pentru a vă proteja "
+"intimitatea în caz că sistemul este compromis şi dicţionarul dvs. personal "
+"este furat. Când el este criptat, conţinutul fişierului arată distorsionat "
+"şi este greu de decriptat fără a ştii cheia corectă (care este parola de la "
+"căsuţa dvs. poştală)."
+
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"Dacă decideţi să criptaţi dicţionarul personal, reţineţi că el va fi criptat "
+"cu parola dvs. Dacă uitaţi să criptaţi parola de la căsuţa dvs. poştală şi "
+"administratorul o schimbă, dicţionarul dvs. personal va deveni inaccesibil "
+"şi va trebuie să-l recreaţi. În schimb, dacă dvs. sau administratorul "
+"sistemului dvs. schimbaţi parola căsuţei dvs., dar aţi reţinut parola veche, "
+"veţi putea tasta paroal veche pentru a recripta dicţionarul cu parola nouă."
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr ""
+"Criptează dicţionarul meu personal şi stochează-l într-un format criptat."
+
+#, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "Şterge următoarele intrări din dicţionarul %s:"
+
+msgid "All done!"
+msgstr "Totul făcut"
+
+msgid "Personal Dictionary Updated"
+msgstr "Dicţionarul personal a fost actualizat"
+
+msgid "No changes requested."
+msgstr "Nu au fost solicitate modificări"
+
+msgid "Please wait, communicating with the server..."
+msgstr "Aşteptaţi, se comunică cu serverul ..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr ""
+"Alegeţi dicţionarul cu care doriţi să verificaţi ortografic acest mesaj:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "Se iniţializează SquirrelSpell"
+
+msgid ", "
+msgstr ","
+
+#, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr "Setările au fost schimbate în: %s cu %s ca dicţionar implicit."
+
+#, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr ""
+"Se utilizează dicţionarul %s (implicit pentru sistem) pentru verificarea "
+"ortografică."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "Preferinţele dicţionarului internaţional au fost actualizate"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr "Selectaţi dicţionarele internaţionale pe care aţi dori să le folosiţi:"
+
+msgid "Make this dictionary my default selection:"
+msgstr "Alege acest dicţionar ca cel implicit:"
+
+msgid "Make these changes"
+msgstr "Efectuează acest modificări"
+
+msgid "Add International Dictionaries"
+msgstr "Adaugă dicţionare internaţionale"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "Alegeţi opţiunile pe care doriţi să le configuraţi:"
+
+msgid "Edit your personal dictionary"
+msgstr "Modifică dicţionarul personal"
+
+msgid "Set up international dictionaries"
+msgstr "Configurează dicţionare internaţionale"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "Criptează sau decriptează dicţionarul personal"
+
+msgid "Personal dictionary encryption options are not available"
+msgstr "Opţiunile de criptare a dicţionarului personal nu sunt disponibile"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "Meniul de opţiuni SquirrelSpell"
+
+msgid "Translator"
+msgstr "Translator."
+
+msgid "Saved Translation Options"
+msgstr "Opţiuni translatare salvate"
+
+msgid "Your server options are as follows:"
+msgstr "Opţiunile serverului dumneavoastră sunt:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "10 limbaje, maxim 25 kiloocteti traduşi, powered by Systran"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "Numărul de perechi de limbi suportate: %s"
+
+msgid "No known limits, powered by Systran"
+msgstr "12 limbaje, nici o limita cunoscută, powered by Systran"
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+"767 limbaje, nici o limita cunoscută, powered by Translation Experts's "
+"InterTran"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "Numărul de limbi suportate: %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "12 limbaje, nici o limita cunoscută, powered by Systran"
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr "Traducere rusească, maxim 500 caractere traduse"
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr ""
+"Hotărâţi de asemenea dacă doriţi afişare de căsuţa de traducere şi "
+"localizarea acesteia."
+
+msgid "Select your translator:"
+msgstr "Selectare translator:"
+
+msgid "When reading:"
+msgstr "În citire:"
+
+msgid "Show translation box"
+msgstr "Afişsare căsuţa traducere"
+
+msgid "to the left"
+msgstr "în stanga"
+
+msgid "in the center"
+msgstr "în centru"
+
+msgid "to the right"
+msgstr "în dreapta"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "Traducere în frame-urile SquirrelMail"
+
+msgid "Translation Options"
+msgstr "Opţiuni traducere"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr ""
+"Ce translator ar trebui utilizat când se primesc mesaje într-o limbă "
+"diferită?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "de la %s la %s"
+
+msgid "Chinese, Simplified"
+msgstr "Chineză, simplificată"
+
+msgid "English"
+msgstr "Engleza"
+
+msgid "Chinese, Traditional"
+msgstr "Chineză, tradiţională"
+
+msgid "Dutch"
+msgstr "Olandeza"
+
+msgid "French"
+msgstr "Franceza"
+
+msgid "German"
+msgstr "Germana"
+
+msgid "Greek"
+msgstr "Greaca"
+
+msgid "Italian"
+msgstr "Italiana"
+
+msgid "Japanese"
+msgstr "Japoneza"
+
+msgid "Korean"
+msgstr "Coreana"
+
+msgid "Portuguese"
+msgstr "Portugheza"
+
+msgid "Russian"
+msgstr "Rusa"
+
+msgid "Spanish"
+msgstr "Spaniola"
+
+msgid "Translate"
+msgstr "Traducere"
+
+msgid "Brazilian Portuguese"
+msgstr "Portugheza braziliana"
+
+msgid "Bulgarian"
+msgstr "Bulgara"
+
+msgid "Croatian"
+msgstr "Croata"
+
+msgid "Czech"
+msgstr "Ceha"
+
+msgid "Danish"
+msgstr "Daneza"
+
+#, fuzzy
+msgid "Filipino (Tagalog)"
+msgstr "Filipino (Tagalog)"
+
+msgid "Finnish"
+msgstr "Finlandeza"
+
+msgid "Hungarian"
+msgstr "Maghiara"
+
+msgid "Icelandic"
+msgstr "Islandeza"
+
+msgid "Latin"
+msgstr "Latina"
+
+msgid "Latin American Spanish"
+msgstr "Spaniola latin-americană"
+
+msgid "Norwegian"
+msgstr "Norvegiană"
+
+msgid "Polish"
+msgstr "Poloneză"
+
+msgid "Romanian"
+msgstr "Română"
+
+msgid "Serbian"
+msgstr "Sârbă"
+
+msgid "Slovenian"
+msgstr "Slovenă"
+
+msgid "Swedish"
+msgstr "Suedeză"
+
+msgid "Turkish"
+msgstr "Turcă"
+
+msgid "Welsh"
+msgstr "Galeză"
+
+msgid "Indonesian"
+msgstr "Indoneziană"
+
+msgid "to English"
+msgstr "în Engleza"
+
+msgid "from English"
+msgstr "din Engleza"
+
+msgid "Interface language"
+msgstr "Limba implicită"
+
+msgid "Translation direction"
+msgstr "Opţiuni traducere"
+
+msgid "Arabic"
+msgstr "Arabic"
+
+#, php-format
+msgid "About SquirrelMail %s"
+msgstr "Despre SquirrelMail %s"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+"SquirrelMail este numele programului care vă permite să accesaţi mail-ul "
+"dvs. printr-o interfaţă web."
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+"Dacă aveţi întrebări sau probleme cu sistemul de mail, conturi, parole, abuz "
+"etc., contactaţi administratorul dvs. de sistem sau furnizorul%s."
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+"Ei vă vor putea ajuta cu aceste probleme. Echipa Proiectului SquirrelMail nu "
+"vă va putea ajuta. %sSistemul de ajutor%s vă poate răspunde la cele mai "
+"frecvente întrebări."
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+"SquirrelMail este o aplicatie de webmail scrisă în PHP, cu multe facilităţi "
+"şi conformă cu standarde. Este creat de un grup de voluntari unit în Echipa "
+"Proiectului SquirrelMail şi este lansat cu sursa deschisă, software liber "
+"sub %sLicenţa Generală Publică GNU%s."
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+"Pentru mai multe informaţii despre SquirrelMail şi Echipa Proiectului "
+"SquirrelMail, vizitaţi %spagina web SquirrelMail%s."
+
+msgid "System information"
+msgstr "Informaţii despre sistem"
+
+#, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "Utilizaţi SquirrelMail versiunea: %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr "Administratorul a instalat următoarele module:"
+
+msgid "none installed"
+msgstr "nici unul"
+
+msgid "Nothing to search"
+msgstr "Nimic de căutat"
+
+msgid "SquirrelMail Webmail"
+msgstr "SquirrelMail Webmail"
+
+#, php-format
+msgid "The %s logo"
+msgstr "Sigla %s"
+
+msgid "Add New Identity"
+msgstr "Adaugă identitate nouă"
+
+msgid "Received"
+msgstr "Primite"
+
+msgid "Compose Preferences"
+msgstr "Preferinţe compunere"
+
+#, php-format
+msgid "Folder list should automatically %srefresh%s."
+msgstr "Lista de dosar ar trebui să se %sreîmprospăteze%s automat."
+
+#, php-format
+msgid "This page should automatically %srefresh%s."
+msgstr "Această pagină ar trebui să se %sreîmprospăteze%s automat."
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+"Controlează comportamentul şi aranjamentul în timpul scrierii mesajelor, "
+"compunerii unui răspuns sau înaintarea mesajelor."
+
+#, php-format
+msgid "Welcome to %s. Please supply your full name and email address."
+msgstr "Bine aţi venit la %s. Tastaţi numele complet şi adresa de mail."
+
+msgid "Read Receipt"
+msgstr "Confirmare la ciţire"
+
+msgid "deleted"
+msgstr "şters"
+
+msgid "answered"
+msgstr "răspuns"
+
+msgid "draft"
+msgstr "ciornă"
+
+msgid "flagged"
+msgstr "marcat"
+
+msgid "Status"
+msgstr "Stare"
+
+msgid "View as plain text"
+msgstr "Vezi ca text simplu"
+
+msgid "View as HTML"
+msgstr "Vezi ca HTML"
+
+msgid "There must be at least one criteria to search for"
+msgstr "Trebuie să existe cel puţin un criteriu de căutare"
+
+msgid "Error in criteria argument"
+msgstr "Eroare de argumentul criteriu"
+
+msgid "(Illegal date)"
+msgstr "(Dată nevalidă)"
+
+msgid "(Wrong date)"
+msgstr "(Dată greşită)"
+
+msgid "In"
+msgstr "În"
+
+msgid "(Missing argument)"
+msgstr "(Argument lipsă)"
+
+msgid "(Spurious argument)"
+msgstr "(Argument prefăcut)"
+
+msgid "Missing"
+msgstr "Lipsă"
+
+msgid "Standard Search"
+msgstr "Căutare standard"
+
+msgid "Advanced search"
+msgstr "Căutare avansată"
+
+msgid "Add New Criteria"
+msgstr "Adaugă criteriu nou"
+
+msgid "Remove Excluded Criteria"
+msgstr "Şterge criteriile excluse"
+
+msgid "Remove All Criteria"
+msgstr "Şterge toate criteriile"
+
+msgid "Not"
+msgstr "Nu"
+
+msgid "Answered"
+msgstr "Răspuns"
+
+msgid "Before"
+msgstr "Înainte"
+
+msgid "Message Body"
+msgstr "Corpul mesajului"
+
+msgid "Deleted"
+msgstr "Șters"
+
+msgid "Draft"
+msgstr "Ciornă"
+
+msgid "Flagged"
+msgstr "Marcat"
+
+msgid "Sent By"
+msgstr "Trimis de"
+
+msgid "Header Field"
+msgstr "Câmp din antet"
+
+msgid "Keyword"
+msgstr "Cuvând cheie"
+
+msgid "Larger Than"
+msgstr "Mai mare decât"
+
+msgid "Old"
+msgstr "Vechi"
+
+msgid "On"
+msgstr "Activat"
+
+msgid "Recent"
+msgstr "Recent"
+
+msgid "Seen"
+msgstr "Văzut"
+
+msgid "Sent Before"
+msgstr "Trimis înainte de"
+
+msgid "Sent On"
+msgstr "Trimis în"
+
+msgid "Sent Since"
+msgstr "Trimis din"
+
+msgid "Since"
+msgstr "Din"
+
+msgid "Smaller Than"
+msgstr "Mai mic decât"
+
+msgid "Subject Contains"
+msgstr "Subiectul conţine"
+
+msgid "Header and Body"
+msgstr "Antet şi corp"
+
+msgid "Sent To"
+msgstr "Trimis către"
+
+msgid "And In"
+msgstr "Și în"
+
+msgid "Or In"
+msgstr "Sau în"
+
+msgid "And"
+msgstr "Și"
+
+msgid "Or"
+msgstr "Sau"
+
+msgid "No RPC action given"
+msgstr "Nu s-a specificat nici o acţiune RPC"
+
+msgid "No deletion ID given"
+msgstr "Nu s-a specificat ID-ul de ştergere"
+
+msgid "No mailbox given"
+msgstr "Nu s-a specificat căsuţa poştală"
+
+msgid "RPC action not understood"
+msgstr "Acţiune RPC neînţeleasă"
+
+msgid "PHP install does not have LDAP support."
+msgstr "Instalarea PHP nu are suport LDAP."
+
+msgid "Removing entry from address book failed"
+msgstr "Ștergerea înregistrării din agendă a eşuat"
+
+msgid "LDAP rename is not supported by used protocol version"
+msgstr ""
+"Redenumirea LDAP nu este suportată de versiunea utilizată a protocolului"
+
+msgid ""
+"LDAP rename is not supported by used LDAP library. You can't change nickname"
+msgstr ""
+"Redenumirea LDAP nu este suportată de librăria LDAP utilizată. Nu puteţi să "
+"schimbaţi pseudonimul"
+
+msgid "LDAP rename failed"
+msgstr "Redenumirea LDAP a eşuat"
+
+msgid "Unable to remove some field values"
+msgstr "Nu s-au putut şterge valorile unor câmpuri"
+
+#, php-format
+msgid "Unable to rename user \"%s\" to \"%s\""
+msgstr "Nu s-a putut redenumi utilizatorul „%s” în „%s”"
+
+msgid "Error initializing other address books."
+msgstr "Eroare la iniţializarea celorlalor agende."
+
+msgid "Unknown address book backend"
+msgstr "Backend necunoscut pentru agendă"
+
+#, php-format
+msgid "%s %s"
+msgstr "%s %s"
+
+msgid ""
+"Could not open temporary file to store attachment. Contact your system "
+"administrator to resolve this issue."
+msgstr ""
+"Nu s-a putut deschide fişierul temporar pentru stocarea ataşamentului. "
+"Contactaţi administratorul de sistem pentru a rezolva problema."
+
+#, php-format
+msgid "%s should be writable by user %s."
+msgstr "%s ar trebui să poată fi scrisă de utilizatorul %s."
+
+msgid "Illegal folder name."
+msgstr "Numele dosarului este nevalid."
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr "Numele nu are voie să conţină nici unul din caracterele: %s"
+
+msgid "Please select a different name."
+msgstr "Alegeţi un alt nume."
+
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr ""
+"Nu aţi selectat nici un dosar la care să vă abonaţi. Vă rog să-l selectaţi."
+
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr ""
+"Nu aţi selectat nici un dosar de la care să vă dezabonaţi. Vă rog să-l "
+"selectaţi."
+
+msgid "Illegal filesystem access was requested"
+msgstr "S-a cerut un acces ilegal la sistemul de fişiere"
+
+msgid "Possible reason:"
+msgstr "Cauză posibilă:"
+
+msgid "ERROR: Bad function call."
+msgstr "Eroare: funcţie greşită."
+
+msgid "Reason:"
+msgstr "Motiv:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+"TLS este activat, dar această versiune de PHP nu suportă socluri TLS sau îi "
+"lipseşte extensia OpenSSL."
+
+msgid ""
+"IMAP STARTTLS is enabled in SquirrelMail configuration, but used IMAP server "
+"does not support STARTTLS."
+msgstr ""
+"IMAP STARTTLS este activat în configuraţia SquirrelMail, dar serverul IMAP "
+"nu suportă STARTTLS."
+
+msgid "Unable to start TLS."
+msgstr "Nu s-a putut porni TLS."
+
+msgid ""
+"IMAP STARTTLS is enabled in SquirrelMail configuration, but used PHP version "
+"does not support functions that allow to enable encryption on open socket."
+msgstr ""
+"IMAP STARTTLS este activat în configuraţia SquirrelMail, dar versiune de PHP "
+"utilizată nu suportă funcţii care permit activarea criptării pe un soclu "
+"(socket)."
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+"Căsuţa dvs. poştală nu se alfă pe acest server. Încercaţi un alt server sau "
+"consultaţi-vă cu administratorul de sistem."
+
+msgid "Trash"
+msgstr "Gunoi"
+
+msgid "Drafts"
+msgstr "Ciorne"
+
+msgid "Unknown recipient"
+msgstr "Destinatar necunoscut"
+
+msgid "Unflag"
+msgstr "Demarchează"
+
+msgid "Flag"
+msgstr "Marchează"
+
+msgid "Undelete"
+msgstr "Restaurează"
+
+msgid "Bypass Trash"
+msgstr "Ocoleşte gunoiul."
+
+msgid "Copy"
+msgstr "Copiază"
+
+msgid "unavailable"
+msgstr "indisponibil(ă)"
+
+msgid "KiB"
+msgstr "KiO"
+
+msgid "MiB"
+msgstr "MiO"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Terminating SquirrelMail due to a fatal error"
+msgstr "SquirrelMail a fost terminat din cauza unei erori fatale"
+
+msgid ""
+"Secure SMTP (TLS) is enabled in SquirrelMail configuration, but used PHP "
+"version does not support it."
+msgstr ""
+"SMTP securizat (TLS) este activat în configurarea SquirrelMail, dar versiune "
+"de PHP utilizată nu îl suportă."
+
+msgid "TLS session is already activated."
+msgstr "Sesiunea TLS este deja activată."
+
+msgid ""
+"SMTP STARTTLS is enabled in SquirrelMail configuration, but used SMTP server "
+"does not support it"
+msgstr ""
+"SMTP STARTTLS este activat în configuraţia SquirrelMail, dar serverul SMTP "
+"nu îl suportă."
+
+msgid ""
+"SMTP STARTTLS is enabled in SquirrelMail configuration, but used PHP version "
+"does not support functions that allow to enable encryption on open socket."
+msgstr ""
+"SMTP STARTTLS este activat în configuraţia SquirrelMail, dar versiunea de "
+"PHP utilizată nu suportă funcţii care permit activarea criptării pe un soclu "
+"(socket)."
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 10 "
+"(Disable server thread sort) to true)."
+msgstr ""
+"Rulaţi „configure”, alegeţi opţiunea 4 (Opţiune generale) şi setaţi opţiunea "
+"10 (Dezactivează sortarea pe fire de către server) la adevărat."
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 11 "
+"(Disable server-side sorting) to true."
+msgstr ""
+"Ruleaţi „configure”, alegeţi opţiunea 4 (Opţiuni generale) şi setaţi "
+"opţiunea 11 (Dezactivează sortarea pe partea serverului) la adevărat."
+
+msgid "Your used charset is not supported by your IMAP server."
+msgstr "Setul de caractere utilizat nu este suportat de către server."
+
+msgid ""
+"Run \"configure\", choose option 4 (General options) and set option 12 "
+"(Allow server charset search) to false) or choose option 10 (Language "
+"settings) and set option 2 (Default charset) to a charset supported by your "
+"IMAP server."
+msgstr ""
+"Rulaţi „configure”, alegeţi opţiunea 4 (Opţiune generale) şi setaţi opţiunea "
+"12 (Permite căutarea setului de caracter pe server) la fals, sau alegeţi "
+"opţiunea 10 (Setări de limbă) şi setaţi opţiunea 2 (Set de caractere "
+"implicit) la un set de caractere suportat de serverul dvs. IMAP."
+
+msgid "Out of quota error."
+msgstr "Eroare: s-a depăşit cota."
+
+msgid ""
+"An error occured when SquirrelMail appended a message to the mailbox as "
+"listed in this message."
+msgstr ""
+"S-a produs o eroare în timp ce SquirrelMail a adăugat un mesaj la căsuţa "
+"poştală după cum urmează."
+
+msgid "Your IMAP server returned an error."
+msgstr "Serverul IMAP a returnat o eroare."
+
+msgid "IMAP server closed the connection."
+msgstr "Serverul IMAP a închis conexiunea."
+
+msgid "General Message Composition"
+msgstr "Compunere generală de mesaje"
+
+msgid "Pop-up window"
+msgstr "Fereastră dialog"
+
+msgid "In-page"
+msgstr "În pagină"
+
+msgid "Replying and Forwarding Messages"
+msgstr "Răspuns şi înaintare de mesaje"
+
+msgid "Strip signature when replying"
+msgstr "Șterge semnătura la răspuns"
+
+msgid "Skin"
+msgstr "Faţetă"
+
+msgid "Icon Theme"
+msgstr "Icoana temei"
+
+msgid "Default font style"
+msgstr "Stilul implicit al fontului"
+
+msgid "Font style"
+msgstr "Stilul fontului"
+
+msgid "Font size"
+msgstr "Dimensiune font"
+
+msgid "Default font size"
+msgstr "Dimensiunea implictă a fontului"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr "Activează evidenţierea rândurilor la trecereau mausului peste ele"
+
+msgid "Show Flag / Unflag Buttons"
+msgstr "Arată butoanele Marchează / Demarchează"
+
+msgid "Enable Message Copy Buttons"
+msgstr "Activează butoanele de copiere a mesajelor"
+
+msgid "Use Compact Page Selector"
+msgstr "Utilizează selectorul compact pentru pagini"
+
+msgid "Custom Date Format"
+msgstr "Formatul dăţii personalizat"
+
+msgid "(Uses format of PHP date() function)"
+msgstr "(Utilizează formatul funcţiei date() din PHP)"
+
+msgid "Message Display Options"
+msgstr "Opţiuni de afişare a mesajelor"
+
+msgid "Height of inline frame"
+msgstr "Înălţimea cadrului în linie"
+
+msgid "Show 'Delete &amp; Prev/Next' Links"
+msgstr "Arată legăturile „Şterge şi Înapoi / Înainte”"
+
+msgid "Translate Special Folders"
+msgstr "Tradu dosarele speciale"
+
+msgid "Save Replies with Original Message"
+msgstr "Salvează răspunsul cu mesajul original"
+
+#, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "%d minut"
+msgstr[1] "%d minute"
+msgstr[2] "%d de minute"
+
+msgid "Show only subscribed folders"
+msgstr "Arată doar dosarele abonate"
+
+msgid "XP"
+msgstr "XP"
+
+msgid "Address Book Take"
+msgstr "Adaugă în agenda"
+
+msgid "IMAP Connection Security"
+msgstr "Securitatea conexiunii IMAP"
+
+msgid "Plain text connection"
+msgstr "Conexiune în text clar"
+
+msgid "Secure IMAP (TLS) connection"
+msgstr "Conexiune IMAP sigură (TLS)"
+
+msgid "IMAP STARTTLS connection"
+msgstr "Conexiune IMAP STARTTLS"
+
+msgid ""
+"Requires higher PHP version and special functions. See SquirrelMail "
+"documentation."
+msgstr ""
+"Necesită o versiune de PHP mai mare şi funcţii speciale. Consultaţi "
+"documentaţia SquirrelMail pentru detalii."
+
+msgid "SMTP Connection Security"
+msgstr "Securitatea conexiunii SMTP"
+
+msgid "Disable server-side sorting"
+msgstr "Dezactivează sortarea pe partea serverului"
+
+msgid "Disable server-side thread sorting"
+msgstr "Dezactivează sortarea firelor pe partea serverului"
+
+msgid "Search functions"
+msgstr "Funcţii de căutare"
+
+msgid "Only basic search"
+msgstr "Doar căutare simplă"
+
+msgid "Only advanced search"
+msgstr "Doar căutare avansată"
+
+msgid "Both search functions"
+msgstr "Ambele funcţii de căutare"
+
+msgid "Time Zone Configuration"
+msgstr "Configurare fus orar"
+
+msgid "Standard GNU C time zones"
+msgstr "Zone de timp standard GNU C"
+
+msgid "Strict time zones"
+msgstr "Zone de timp stricte"
+
+msgid "Custom GNU C time zones"
+msgstr "Zone de timp personalizate GNU C"
+
+msgid "Custom strict time zones"
+msgstr "Zone de timp personalizate stricte"
+
+msgid "Size of username field"
+msgstr "Dimensiunea câmpului nume utilizator"
+
+msgid "Size of key field"
+msgstr "Dimensiunea câmpului cheie"
+
+msgid "Size of value field"
+msgstr "Dimensiunea câmpului valoare"
+
+msgid "Show alternative language names"
+msgstr "Arată numele alternativ al limbilor"
+
+msgid "Enable aggressive decoding"
+msgstr "Activează decodare agresivă"
+
+msgid "Tweaks"
+msgstr "Ajustări"
+
+msgid "Use icons"
+msgstr "Utilizează icoane"
+
+msgid "Use inline frames with HTML mails"
+msgstr "Utilizează cadre în linie pentru mesaje HTML"
+
+msgid "Use PHP recode functions"
+msgstr "Utilizează funcţiile PHP recode"
+
+msgid "Use PHP iconv functions"
+msgstr "Utilizează funcţiile PHP iconv"
+
+msgid "Allow remote configuration test"
+msgstr "Permite testarea configurării de la distanţă"
+
+msgid "Address book file line length"
+msgstr "Lungimea unei linii în agendă"
+
+msgid "Templates"
+msgstr "Șabloane"
+
+#, fuzzy
+msgid "Default font set"
+msgstr "Setul implicit de fonturi"
+
+msgid "Default template"
+msgstr "Săblon implicit"
+
+msgid "Fallback template"
+msgstr "Săblon rezervă"
+
+msgid "Warnings were reported in your setup:"
+msgstr "S-au raportat avertismente în configuraţia dvs.:"
+
+#, php-format
+msgid "%d warning(s) reported."
+msgstr "%d avertismente raportate."
+
+msgid "Show System Specifications"
+msgstr "Arată specificaţiile sistemului"
+
+msgid "my email account"
+msgstr "contul meu de mail"
+
+msgid "You must type in a new password."
+msgstr "Este necesar să tastaţi o parolă nouă"
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+"Este de asemenea necesar să tastaţi parola nouă în câmpul de verificare"
+
+msgid "Your new password does not match the verify password."
+msgstr "Parola nouă nu corespunde cu parola verificată."
+
+msgid "You must type in your current password."
+msgstr "Este necesar să tastaţi parola curentă"
+
+msgid "Your current password is not correct."
+msgstr "Parola curentă nu este corectă."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr "Parola trebuie să aibă lungimea  %s şi %s."
+
+msgid "Your new password contains invalid characters."
+msgstr "Parola nouă conţine caractere nevalide."
+
+msgid "Change Password"
+msgstr "Schimbă parola"
+
+msgid "Current Password:"
+msgstr "Parola curentă:"
+
+msgid "New Password:"
+msgstr "Parola nouă:"
+
+msgid "Verify New Password:"
+msgstr "Verifică parola nouă:"
+
+msgid "Use this to change your email password."
+msgstr "Utilizaţi asta pentru a schimba parola dvs. de mail"
+
+msgid "User's Password"
+msgstr "Parola utilizatorului"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr "Configuraţia curentă necesită suport LDAP în PHP."
+
+msgid "Plugin is not configured correctly."
+msgstr "Modulul nu este configurat corect."
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr "Setarea opţiunii conexiunii LDAP %s la %s a eşuat."
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr "Opţiune incorectă pentru conexiune LDAP: %s"
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+"Extensia PHP LDAP curentă nu permite utilizarea funcţiei ldap_set_option()."
+
+msgid "Unable to use TLS."
+msgstr "Nu s-a putut utiliza TLS"
+
+#, php-format
+msgid "Error: %s"
+msgstr "Eroare: %s"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr "Nu sa putut folosi LDAP TLS în configuraţia curentă."
+
+msgid "Unable to bind to LDAP server."
+msgstr "Nu s-a putut face legătura (bind) la serverul LDAP."
+
+#, php-format
+msgid "Server replied: %s"
+msgstr "Serverul a răspuns: %s"
+
+msgid "Unable to find user's password attribute."
+msgstr "Nu s-a putut găsi atributul parolă al utilizatorului."
+
+msgid "Unable to rebind to LDAP server."
+msgstr "Nu s-a putut reface legătura (rebind) la serverul LDAP."
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+"Serverul LDAP foloseşte atribute diferite pentru a stoca parola "
+"utilizatorului."
+
+msgid "Unable to connect to LDAP server."
+msgstr "Nu s-a putut stabili conexiunea la serverul LDAP."
+
+msgid "Unable to find user's DN."
+msgstr "Nu s-a putut găsi DN-ul utilizatorului."
+
+msgid "Search error."
+msgstr "Eroare la căutare."
+
+msgid "Multiple userid matches found."
+msgstr "Au fost găsite mai multe potriviri pentru userid-uri."
+
+msgid "ldap_get_dn error."
+msgstr "Eroare ldap_get_dn."
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr "Algoritm de criptare nesuportat: %s"
+
+msgid "PHP mhash extension is missing or does not support selected crypto."
+msgstr ""
+"Extensia PHP mhash lipseşte sau nu suportă algoritmul de criptare selectat."
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr "Librăria crypt a sistemului nu suportă criptarea DES standard."
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr "Librăria crypt a sistemului nu suportă MD5."
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr "Librăria crypt a sistemului nu suportă criptarea DES extinsă."
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr "Librăria crypt a sistemului nu suportă Blowfish."
+
+msgid "unknown"
+msgstr "necunoscută"
+
+msgid "Unable to validate user's password."
+msgstr "Nu s-a putut valida parola utilizatorului."
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+"Blowfish nu este suportat de librăria de sistem crypt a serverului web."
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr "MD5 nu este suportat de librăria de sistem crypt a serverului web."
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+"Criptarea DES extinsă nu este suportată de librăria de system crypt a "
+"serverul web."
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+"Criptarea DES standard nu este suportată de librăria cript de sistem a "
+"serverului web."
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr "Extensia PHP Curl nu este disponibilă. Nu se poate schimba parola."
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+"Nu se poate schimba parola. (Este utilizatorul „auto configurabil ­– self "
+"configurable user”?) (401)"
+
+msgid "Cannot change password!"
+msgstr "Nu s-a putut schimba parola"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+"Nu s-a putut face legătura la serverul de bază de date. Reîncercaţi mai "
+"târziu."
+
+msgid "Database not found on server"
+msgstr "Baza de date nu a putut fi găsită pe server."
+
+msgid "SQL call failed, try again later."
+msgstr "Apelul SQL a eşuat. Reîncercaţi mai târziu."
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+"Au fost găsite intrări de autentificare duplicate. Nu s-a putut schimba "
+"parola."
+
+msgid "Password change was not successful!"
+msgstr "Schimbarea parolei a eşuat."
+
+msgid ""
+"Plugin is unable to use PHP Pear DB libraries. PHP Pear includes must be "
+"available in your PHP include_path setting."
+msgstr ""
+"Modulul nu a putut utilizat librăria PHP Pear DB. Incluziunile PHP Pear "
+"trebuie să fie disponibile în setarea include_path din PHP."
+
+msgid "Required change password backend configuration options are missing."
+msgstr "Opţiunile necesare pentru backend-ul de schimbare a parolei lipsesc."
+
+#, php-format
+msgid "Connection error: %s"
+msgstr "Eroare la conectare: %s"
+
+#, php-format
+msgid "Invalid table name: %s"
+msgstr "Numele tabelului este invalid: %s"
+
+msgid "User table is empty."
+msgstr "Tabelul cu utilizatorii este vid."
+
+msgid "Invalid uid field."
+msgstr "Câmpul uid este nevalid."
+
+msgid "Invalid password field"
+msgstr "Câmpul parolă este nevalid"
+
+msgid "Invalid domain field"
+msgstr "Câmpul domeniu este invalid"
+
+#, php-format
+msgid "Query failed: %s"
+msgstr "Interogarea a eşuat: %s"
+
+msgid "Unable to find user in user table."
+msgstr "Nu s-a putut găsi utilizatorul în tabelul utilizatorilor."
+
+msgid "Too many matches found in user table."
+msgstr "S-au găsit prea multe potriviri în tabelul utilizatorilor."
+
+msgid "Unable to detect password crypto algorithm."
+msgstr "Nu s-a putut detecta algoritmul de criptare a parolei."
+
+msgid "Unable to encrypt new password."
+msgstr "Nu s-a putut cripta parola nouă."
+
+#, php-format
+msgid "Unable to set new password: %s"
+msgstr "Nu s-a putut seta parola nouă: %s"
+
+msgid "Unable to use digest-md5 crypto."
+msgstr "Nu s-a putut folosi digest-md5."
+
+msgid "Closing Connection"
+msgstr "Se închide conexiunea"
+
+msgid "Connecting to Password Server"
+msgstr "Se face conexiunea la serverul de parole"
+
+msgid "No valid backend defined."
+msgstr "Nu s-a definit nici un backend valid."
+
+msgid "Incorrent path to vmail.inc file."
+msgstr "Calea către vmail.inc este incorectă."
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr "Fişierul vmail.inc este nevalid sau corupt."
+
+msgid "Invalid user."
+msgstr "Utilizator nevalid."
+
+msgid "Empty domain"
+msgstr "Domeniul este vid"
+
+msgid "Empty domain password"
+msgstr "Parola domeniului este vidă"
+
+msgid "Empty username"
+msgstr "Numele utilizatorului este vid"
+
+msgid "Empty new password"
+msgstr "Parola nouă este vidă"
+
+#, php-format
+msgid "Unable to execute \"%s\"."
+msgstr "Nu s-a putut executa „%s”."
+
+msgid "Fortunes:"
+msgstr "Ziceri:"
+
+msgid "Server Capability response:"
+msgstr "Răspunsul capabilităţilor serverului:"
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+"Selectaţi comenzile IMAP care doriţi să fie rulate. Cele mai multe comenzi "
+"necesită o căsuţă de mesaje selectată, aşa că comanda „select” este deja "
+"iniţializată. Puteţi şterge toate comenzile şi să testaţi propriile comenzi "
+"IMAP. Comenzile sunt executate în ordine. Valorile implicite sunt comenzi "
+"IMAP simple care la nevoie utilizează setul de caractere implicit şi "
+"prefixul dosarelor din SquirrelMail."
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+"Notă: Aceste comenzi sunt reale. Orice modificări vor avea impact asupra "
+"contului dvs. de mail."
+
+msgid "Select"
+msgstr "Selectează"
+
+msgid "Test Name"
+msgstr "Nume de test"
+
+msgid "IMAP command string"
+msgstr "Șir de comenzi IMAP"
+
+msgid "Request:"
+msgstr "Cerere:"
+
+msgid "Execution time:"
+msgstr "Timp de execuţie:"
+
+#, php-format
+msgid "%s ms"
+msgstr "%s ms"
+
+msgid "Mailing Lists"
+msgstr "Liste de discuţii"
+
+msgid ""
+"Manage the (non-RFC-compliant) mailing lists that you are subscribed to for "
+"the purpose of providing one-click list replies when responding to list "
+"messages."
+msgstr ""
+"Gestionează listele de discuţii (neconforme cu RFC) la care sunteţi înscris, "
+"cu scopul de a putea răspunde la listă cu un singur clic."
+
+msgid "No POP3 servers configured yet."
+msgstr "Încă nu s-a configurat nici un server POP3."
+
+msgid "Click here to go to the options page."
+msgstr "Clic aici pentru pagina de opţiuni."
+
+#, php-format
+msgid "Fetching from %s"
+msgstr "Se aduc datele de la %s"
+
+msgid "Can't get mailbox status:"
+msgstr "Nu s-a putut citi starea căsuţei poştale:"
+
+msgid "Fetching list of messages..."
+msgstr "Se aduce lista de mesaje ..."
+
+#, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "Autentificare OK: Inbox conţine %s mesaj"
+msgstr[1] "Autentificare OK: Inbox conţine %s mesaje"
+msgstr[2] "Autentificare OK: Inbox conţine %s de mesaj"
+
+#, php-format
+msgid "Fetching message %s."
+msgstr "Se aduce mesajul %s."
+
+msgid "Warning:"
+msgstr "Atenţie:"
+
+msgid "Authentication type:"
+msgstr "Tipul autentificării:"
+
+#, fuzzy
+msgid "USER"
+msgstr "USER"
+
+#, fuzzy
+msgid "APOP"
+msgstr "APOP"
+
+#, fuzzy
+msgid "APOP or USER"
+msgstr "APOP sau USER"
+
+msgid "Connection type:"
+msgstr "Tipul conexiunii:"
+
+msgid "Plain text"
+msgstr "Text simplu"
+
+msgid "Use TLS"
+msgstr "Utilizează TLS"
+
+msgid "Use StartTLS"
+msgstr "Utilizează StartTLS"
+
+msgid ""
+"The NewMail plugin will follow the Folder Preferences option &quot;Enable "
+"Unread Message Notification&quot;"
+msgstr ""
+"Modulul NewMail va urmări opţiunea „Activare notificare mesaje necitite” din "
+"Preferinţe dosar."
+
+msgid "Follow folder preferences"
+msgstr "Urmăreşte preferinţe dosar"
+
+msgid "All folders"
+msgstr "Toate dosarele"
+
+msgid "Special folders"
+msgstr "Dosare speciale"
+
+msgid "Regular folders"
+msgstr "Dosare obişnuite"
+
+msgid "Check for new messages in:"
+msgstr "Verifică pentru mesaje noi în:"
+
+msgid "uploaded media file"
+msgstr "fişier media încărcat"
+
+msgid "none"
+msgstr "niciunul"
+
+msgid "Upload Media File:"
+msgstr "Încarcă fişier media:"
+
+msgid "Uploaded Media File:"
+msgstr "Fişier media încărcat:"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr "Fişierul media %s va fi şters dacă încărcaţi alte fişiere media."
+
+#, php-format
+msgid "%s notice:"
+msgstr "Observaţie %s:"
+
+msgid "Warning"
+msgstr "Atenţie"
+
+msgid "There are some restrictions in Sent Subfolder options."
+msgstr "Există câteva restricţii în opţiunile subdosarului Trimise."
+
+msgid "Sent Subfolders plugin is misconfigured."
+msgstr "Modului Subdosare Mesaje Trimise este rău configurat."
+
+msgid "Save emails submitted to SpamCop:"
+msgstr "Salvează mesajele trimisă către SpamCop:"
+
+msgid "SpamCop reporting"
+msgstr "Raportare SpamCop"
+
+#, php-format
+msgid ""
+"Your %s dictionary is encrypted with password that differs from your current "
+"password."
+msgstr ""
+"Dicţionarul %s este criptat cu o parolă care diferă de parola dvs. curentă."
+
+msgid "Invalid SquirrelSpell module."
+msgstr "Modulul SquirrelSpell este nevalid."
+
+msgid "Unknown error"
+msgstr "Eroare necunoscuta"
+
+msgid "SquirrelSpell error."
+msgstr "Eroare SquirrelSpell."
+
+#, php-format
+msgid "Found %d error"
+msgid_plural "Found %d errors"
+msgstr[0] "A fost găsită %d greşeală"
+msgstr[1] "Au fost găsite %d greşeli"
+msgstr[2] "Au fost găsite %d de greşeli"
+
+#, php-format
+msgid "Using %s dictionary for spellcheck."
+msgstr "Se utilizează dicţionarul %s pentru verificarea ortografică."
+
+msgid "Translation Theme:"
+msgstr "Tema traducerii:"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+"Motorul de traducere selectat este dezactivat. Actualizaţi-vă preferinţele "
+"traducerilor."
+
+msgid "Translation Preferences"
+msgstr "Preferinţe traducere"
+
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr "Maxim 25 kiloocteţi traduşi, powered by Systran"
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr "Nici o limită cunoscută, powered by GPLTrans (liber, sursa deschisa)"
+
+msgid "Transliterate unknown words:"
+msgstr "Translitează cuvintele necunoscute:"
+
+msgid "When composing:"
+msgstr "In compunere:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "Nefunctional inca, in prezent nu face nimic"
+
+msgid "Address book is empty"
+msgstr "Agenda este vidă"
+
+msgid "Address book search"
+msgstr "Căutare în agenda"
+
+msgid "New attachment"
+msgstr "Ataşament nou"
+
+msgid "Attach"
+msgstr "Ataşează"
+
+msgid "Max."
+msgstr "Max."
+
+msgid "Receipts"
+msgstr "Confirmarări de primire"
+
+msgid "SquirrelMail notice messages"
+msgstr "Mesaje de notificare SquirrelMail"
+
+msgid "Category:"
+msgstr "Categorie:"
+
+msgid "Tip:"
+msgstr "Sfat:"
+
+msgid "More info:"
+msgstr "Mai multe informaţii:"
+
+msgid "No folders were found to unsubscribe from."
+msgstr "Nu s-a găsit nici un dosar pentru dezabonare."
+
+msgid "No folders were found to subscribe to."
+msgstr "Nu s-a găsit nici un dosar pentru abonare."
+
+msgid "Message Flags"
+msgstr "Fanioane mesaj"
+
+msgid "Attachment"
+msgstr "Ataşament"
+
+msgid "Click here to change the sorting of the message list"
+msgstr "Clic aici pentru a schimba sortarea listei de mesaje"
+
+msgid "Add/Edit"
+msgstr "Adaugă / Editează"
+
+msgid "Rule Conditions"
+msgstr "Condiţiile regulii"
+
+msgid "Identifying Name"
+msgstr "Nume de identificare"
+
+msgid "To or cc"
+msgstr "Către sau Cc"
+
+msgid "Other"
+msgstr "Alta"
+
+msgid "Save Changes"
+msgstr "Salvează modificările"
+
+msgid "Requested"
+msgstr "Solicitat(ă)"
+
+msgid "Send Read Receipt Now"
+msgstr "Trimite confirmare la citire acum"
+
+msgid "Viewing HTML formatted email"
+msgstr "Afişare mail HTML"
+
+msgid "As Attachment"
+msgstr "Ca ataşament"
+
+msgid "Move To"
+msgstr "Mută în"
+
+msgid "Delete &amp; Previous"
+msgstr "Şterge şi înapoi"
+
+msgid "and subfolders"
+msgstr "şi subdosare"
+
+msgid "Exclude"
+msgstr "Exclude"
+
+msgid "Fold"
+msgstr "Pliază"
+
+msgid "Unfold"
+msgstr "Depliază"
+
+msgid "Forget"
+msgstr "Uită"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Additional Info"
+msgstr "Informaţii suplimentare"
+
+msgid "Folder List"
+msgstr "Dosare"
+
+msgid "Open all"
+msgstr "Deschide-le pe toate"
+
+msgid "Close all"
+msgstr "Închide-le pe toate"
+
+msgid "Purge trash"
+msgstr "Curăţă"
+
+msgid "The SquirrelMail logo"
+msgstr "Signal SquirrelMail"
+
+msgid "OR"
+msgstr "SAU"
+
+msgid "Reset"
+msgstr "Resetează"
+
+msgid "Reorder indexes"
+msgstr "Reordonează indecşi"
+
+msgid "Add an index"
+msgstr "Adăugă la index"
+
+#, php-format
+msgid "%s from %s on %s"
+msgstr "%s de la %s din %s"
+
+msgid "Expand Header"
+msgstr "Desfăşoară antetul"
+
+msgid "Collapse Header"
+msgstr "Pliază antetul"
+
+msgid "Message Preview"
+msgstr "Previzualizare mesaj"
+
+msgid "Delivery error report"
+msgstr "Raport erori livrare"
+
+msgid "Undelivered Message Headers"
+msgstr "Headere mesaj nelivrat"
+
+msgid "This image has been removed for security reasons"
+msgstr "Această imagine a fost eliminată din motive de securitate"
+
+#~ msgid "Draft Saved"
+#~ msgstr "Ciornă salvată"
+
+#~ msgid "Some or all of the help documents are not present!"
+#~ msgstr "Anumite sau toate documentele de ajutor lipsesc!"
+
+#~ msgid "Add to Addressbook"
+#~ msgstr "Adăugare în agenda"
+
+#~ msgid "Add to Address Book"
+#~ msgstr "Adăugare în agenda"
+
+#~ msgid "Include CCs when Forwarding Messages"
+#~ msgstr "Includere CC în înaintare mesaje"
+
+#~ msgid ""
+#~ "FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+#~ "false positives than ORBS did though."
+#~ msgstr ""
+#~ "Gratuit - ORDB s-a nascut cand ORBS a incetat activitatea. Se pare ca "
+#~ "avem mai putine falsuri decat a avut ORBS."
+
+#~ msgid "POP3 connect:"
+#~ msgstr "Conectare POP3:"
+
+#~ msgid "POP3 user:"
+#~ msgstr "Utilizator POP3:"
+
+#~ msgid "POP3 pass:"
+#~ msgstr "Parola POP3:"
+
+#~ msgid "authentication failed "
+#~ msgstr "autentificare eşuata"
+
+#~ msgid "POP3 apop:"
+#~ msgstr "POP3 apop:"
+
+#~ msgid "POP3 login:"
+#~ msgstr "Login POP3:"
+
+#~ msgid "POP3 top:"
+#~ msgstr "POP3 top:"
+
+#~ msgid "POP3 pop_list:"
+#~ msgstr "POP3 pop_list:"
+
+#~ msgid "POP3 get:"
+#~ msgstr "POP3 get:"
+
+#~ msgid "POP3 last:"
+#~ msgstr "POP3 last:"
+
+#~ msgid "POP3 reset:"
+#~ msgstr "POP3 reset:"
+
+#~ msgid "POP3 send_cmd:"
+#~ msgstr "POP3 send_cmd:"
+
+#~ msgid "POP3 quit:"
+#~ msgstr "POP3 quit:"
+
+#~ msgid "POP3 uidl:"
+#~ msgstr "POP3 uidl:"
+
+#~ msgid "POP3 delete:"
+#~ msgstr "POP3 ştergere:"
+
+#~ msgid "Cute."
+#~ msgstr "Draguţ."
+
+#, fuzzy
+#~ msgid "not available"
+#~ msgstr "Indisponibil(a)"
+
+#~ msgid "Save folder tree"
+#~ msgstr "Salvare structura dosare"
+
+#, fuzzy
+#~ msgid "Search Criteria"
+#~ msgstr "Cautare dupa"
+
+#, fuzzy
+#~ msgid "Hide SquirrelMail Header"
+#~ msgstr "Vizualizare header"
+
+#, fuzzy
+#~ msgid "Search Mailing List Archives"
+#~ msgstr "Arhive lista"
+
+#, fuzzy
+#~ msgid "Search for words:"
+#~ msgstr "Cautare dupa"
+
+#, fuzzy
+#~ msgid "Email addresses only"
+#~ msgstr "Adresa e-mail"
+
+#, fuzzy
+#~ msgid "Mailing list:"
+#~ msgstr "Lista discutii:"
+
+#, fuzzy
+#~ msgid "SquirrelMail users list"
+#~ msgstr "SquirrelMail versiunea %s"
+
+#, fuzzy
+#~ msgid "SquirrelMail plugins list"
+#~ msgstr "SquirrelMail versiunea %s"
+
+#, fuzzy
+#~ msgid "SquirrelMail developers list"
+#~ msgstr "SquirrelMail versiunea %s"
+
+#, fuzzy
+#~ msgid "SquirrelMail internationalization list"
+#~ msgstr "SquirrelMail versiunea %s"
+
+#, fuzzy
+#~ msgid "Sort by:"
+#~ msgstr "Port:"
+
+#, fuzzy
+#~ msgid "Search Archives"
+#~ msgstr "Rezultate cautare"
+
+#, fuzzy
+#~ msgid "Reset Form"
+#~ msgstr "Stergere dosar"
+
+#, fuzzy
+#~ msgid "Sort By:"
+#~ msgstr "Port:"
+
+#, fuzzy
+#~ msgid "Summary"
+#~ msgstr "Duminica"
+
+#, fuzzy
+#~ msgid "Open Date"
+#~ msgstr "Deschidere esuata"
+
+#, fuzzy
+#~ msgid "Submitter"
+#~ msgstr "Trimitere"
+
+#, fuzzy
+#~ msgid "Order:"
+#~ msgstr "Alta:"
+
+#, fuzzy
+#~ msgid "Ascending"
+#~ msgstr "trimitere"
+
+#, fuzzy
+#~ msgid "Spam Service Type:"
+#~ msgstr "Tip server IMAP"
+
+#, fuzzy
+#~ msgid "Save Service Type"
+#~ msgstr "Tip scanare salvat"
+
+#~ msgid "Business Card"
+#~ msgstr "Business Card"
+
+#~ msgid "Click here to try again"
+#~ msgstr "Click aici pentru a incerca din nou"
+
+#~ msgid "Unknown message number in reply from server: "
+#~ msgstr "Numar mesaj necunoscut in raspunsul de la server: "
+
+#~ msgid "No To Address"
+#~ msgstr "Nu exista Catre"
+
+#~ msgid "(unknown sender)"
+#~ msgstr "(expeditor necunoscut)"
+
+#~ msgid "Found"
+#~ msgstr "Gasite"
+
+#~ msgid "messages"
+#~ msgstr "mesaje"
+
+#~ msgid "Move Selected To:"
+#~ msgstr "Muta selectate in:"
+
+#~ msgid "Error decoding mime structure.  Report this as a bug!"
+#~ msgstr "Eroare in decodare structura mime. Raportati ca eroare!"
+
+#~ msgid "Authenticated SMTP"
+#~ msgstr "Autentificare SMTP"
+
+#~ msgid "l, F d Y"
+#~ msgstr "l, F d Y"
+
+#~ msgid "35 min."
+#~ msgstr "35 min."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Relays - Osirusofts list of verified open relays. Seems "
+#~ "to include servers used by abuse@uunet.net auto-replies too."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Relays - lista Osirusoft de open relay-uri verificate."
+#~ "Pare sa includa si servere utilizate de autoraspunsurile abuse@uunet.net."
+
+#~ msgid "FREE - Osirusoft Dialups - Osirusofts Dialup Spam Source list."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Dialups - lista Osirusoft de surse dialup de spam."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Confirmed Spam Source - Sites that continually spam and "
+#~ "have been manually added after multiple nominations. Use with caution. "
+#~ "Seems to catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Confirmed Spam Source - site-uri care trimis spam "
+#~ "continuu si au fost adaugate manual dupa multiple nominalizari. Utilizati "
+#~ "cu atentie.Pare sa prinda auto-raspunsuri de abuz de la unele ISP-uri."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Smart Hosts - List of hosts that are secure but relay "
+#~ "for other mail servers that are not secure."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Smart Hosts - Lista de hosturi care sunt sigure dar "
+#~ "relayuri pentru alte servere mail nesigure."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Spamware Developers - It is believed that these are IP "
+#~ "ranges of companies that are known to produce spam software. Seems to "
+#~ "catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Spamware Developers - Se banuieste ca aceste "
+#~ "intervale IP ale companiilor cunoscute producatoare de software de spam. "
+#~ "Pare sa primeasca autoraspunsuri de abuz de la unele ISP-uri."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Unconfirmed OptIn Servers - List of listservers that opt "
+#~ "users in without confirmation."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Unconfirmed OptIn Servers - Lista de listservere care "
+#~ "primesc utilizatori fara confirmare."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Insecure formmail.cgi scripts - List of insecure "
+#~ "formmail.cgi scripts. (planned)."
+#~ msgstr ""
+#~ "GRATUI - Osirusoft Insecure formmail.cg scripts - Lista de scripturi "
+#~ "nesigure formmail.cgi (planificat)."
+
+#~ msgid "FREE - Osirusoft Open Proxy Servers - List of Open Proxy Servers."
+#~ msgstr ""
+#~ "GRATUIT - Osirusoft Open Proxy Servers - Lista de servere OpenProxy."
+
+#~ msgid "All Messages"
+#~ msgstr "Toate mesajele"
+
+#~ msgid "POP3 noop:"
+#~ msgstr "POP3 noop:"
+
+#~ msgid "] messages"
+#~ msgstr "] mesaje"
+
+#~ msgid "No-one server in use. Try to add."
+#~ msgstr "Nici un server utilizat. Incercati adaugare."
+
+#~ msgid "Mofify a Server"
+#~ msgstr "Modificare server"
+
+#~ msgid "Hey! Wath do You are looking for?"
+#~ msgstr "Hei! Dupa ce cautati?"
+
+#~ msgid ""
+#~ "Select from the list of <b>server files</b> the media file to play when "
+#~ "new mail arrives.  Selecting <b>local media</b> will play the file "
+#~ "specified in the <b>local media file</b> box to play from the local "
+#~ "computer.  If no file is specified, the system will use a default from "
+#~ "the server."
+#~ msgstr ""
+#~ "Selectare din lista <b>fisierele de pe server<b> fisierul media rulabil "
+#~ "in momentul cand vine mail nou. Selectand <b>media local</b> va rula un "
+#~ "fisier specificat in casuta <b>fisier media local</b> pentru a rula de pe "
+#~ "computerul local. Daca nu e specificat nici un fisier, sistemul va "
+#~ "utiliza unul implicit de pe server."
+
+#~ msgid "(local media)"
+#~ msgstr "(media local)"
+
+#~ msgid "New Mail Notification options saved"
+#~ msgstr "Notificari de mail nou salvate"
+
+#~ msgid "CC:"
+#~ msgstr "CC:"
+
+#~ msgid "BCC:"
+#~ msgstr "BCC:"
+
+#~ msgid "On read"
+#~ msgstr "La citire"
+
+#~ msgid "said"
+#~ msgstr "a spus"
+
+#~ msgid "Viewing a message attachment"
+#~ msgstr "Vizualizare atasament mesaj"
+
+#~ msgid "<No subject>"
+#~ msgstr "<Fara subiect>"
+
+#~ msgid "Include CCs when forwarding messages"
+#~ msgstr "Includere CC la inaintare mesaje"
+
+#~ msgid "Enable Subtle Printer Friendly Link"
+#~ msgstr "Activare legatura versiune pentru tiparit"
+
+#~ msgid "Enable request/confirm reading"
+#~ msgstr "Activare citire cerere/confirmare"
+
+#~ msgid "Always compose in a new window"
+#~ msgstr "Compunere intotdeauna in fereastra noua"
+
+#~ msgid "Append signature before reply/forward text"
+#~ msgstr "Adaugare semnatura inainte de text raspuns/inaintare"
+
+#~ msgid "Use receive date for sort"
+#~ msgstr "Utilizare data primire pentru sortare"
+
+#~ msgid "CC"
+#~ msgstr "CC"
+
+#~ msgid "There was an error contacting the mail server."
+#~ msgstr "S-a produs o eroare la contactarea serverului mail."
+
+#~ msgid "Contact your administrator for help."
+#~ msgstr "Contactati administratorul pentru ajutor."
+
+#~ msgid "No Messages found"
+#~ msgstr "Nici un mesaj gasit"
+
+#~ msgid "Note Field Contains"
+#~ msgstr "Campul nota contine"
+
+#~ msgid ""
+#~ "Server-side sorting is not supported by your IMAP server.<br>Please "
+#~ "report this to the system administrator."
+#~ msgstr ""
+#~ "Sortarea server-side nesuportata de serverul IMAP.<br>Raportati "
+#~ "administratorului de retea."
+
+#~ msgid "Draft folder"
+#~ msgstr "Dosar ciorne"

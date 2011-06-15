@@ -1,0 +1,65 @@
+<chapter>
+   <title>
+      Beskedliste
+   </title>
+   <summary>
+      En liste over de e-mails, som ligger i en given mappe.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Oversigt over beskeder
+   </title>
+   <description>
+      <p>
+      Når du har klikket på en mappes navn vil du i hovedvinduet komme til
+      oversigten over meddelelser i denne mappe. Under menulisten er der en
+      linie, der angiver hvilke beskeder, der netop nu bliver vist og hvor
+      mange der i alt er i mappen.
+      </p><p>
+      For eksempel: Viser beskederne <B>20</B> til <B>30</B> (i alt 45).
+      </p><p>
+      Bemærk at det totale antal af beskeder kan være forskelligt fra antallet
+      af ulæste beskeder, som er det tal, der er til højre for indbakken.
+      </p><p>
+      Det næste på skærmen er en liste med fire knapper. Til venstre er der en
+      liste. I denne liste er alle dine aktive mapper. Hvis du vælger en mappe
+      fra denne liste og klikker på "Flyt"-knappen vil alle markerede beskeder
+      blive flyttet til denne mappe. På denne måde kan du flytte flere beskeder
+      på én gang. Helt til højre er en "Slet"-knap, der bruges til at slette
+      beskeder. Du markerer bare de uønskede beskeder og klikker på knappen for
+      at slette dem. De to knapper til venstre for denne knap kan bruges til at
+      markere de valgte beskeder som enten læst eller ulæst.
+      </p><p>
+      En liste der indeholder tre felter (Fra, Dato og Emne) er det næste.
+      Disse overskrifter inddeler listen over beskeder i tre logiske kolonner.
+      Fra viser hvem der har sendt beskeden til dig, eller i det mindste den
+      e-mail adresse vedkommende benytter. Dato viser hvornår beskeden er sendt.
+      Emne er det emne, som afsenderen har givet beskeden. <b>Bemærk:</b>
+      Mellem Dato og Emne er der en smal kolonne uden overskrift. Heri kan der
+      stå "+", "!" eller "B". "+" betyder at der er vedhæftede filer ved
+      beskeden. "!" betyder, at beskeden er markeret med høj prioritet af
+      afsenderen. "B" betyder, at du har besvaret beskeden.
+      </p><p>
+      Herunder er så selve oversigten over beskeder. Bemærk at ulæste beskeder
+      er med <b>fed</B> skrift, mens beskeder, du allerede har læst, er med
+      normal skrift. Der er fire elementer på hver linie herunder. Helt til
+      venstre er et afkrydsningsfelt. Dette felt bruges til at markere beskeden,
+      så du kan udføre de tidligere omtalte funktioner på den (flytte, slette
+      eller markere som læst/ulæst). "Skift alle markeringer" linket vil
+      skifte alle disse felter på én gang.<BR>
+      I kolonnen under Fra er der skrevet hvem beskeden er fra. Herefter er
+      datoen og til sidst emnet.
+      </p>
+      <p>
+      Hvis du har mange beskeder vil oversigten blive delt ind i flere sider og
+      du vil som standard komme til den første side. For at se andre sider kan
+      du bruge "Forrige" og "Næste" linkene på siden. Du kan også klikke på et
+      tal for at gå direkte til en side (hvert tal repræsenterer en side).
+      Hvis du klikker på "Vis alle" vil sideopdelingen blive slået fra og alle
+      dine beskeder vil blive vist på én stor side.
+      </p>
+
+   </description>
+</section>

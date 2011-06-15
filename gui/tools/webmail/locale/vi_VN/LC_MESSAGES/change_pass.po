@@ -1,0 +1,79 @@
+# Vietnamese (vi_VI) change_pass Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: change_pass.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: change_pass 2.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-12 12:12-0600\n"
+"PO-Revision-Date: 2008-03-31 22:48+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:36
+#: setup.php:18
+msgid "Change Password"
+msgstr "Đổi mật khẩu"
+
+#: options.php:77
+msgid "Closing Connection"
+msgstr "Đang đóng kết nối"
+
+#: options.php:137
+msgid "Connecting to Password Server"
+msgstr "Đang kết nối tới máy phục vụ mật khẩu"
+
+#: options.php:141
+msgid "ERROR:"
+msgstr "LỖI:"
+
+#: options.php:52
+msgid "New Password"
+msgstr "Mật khẩu mới"
+
+#: options.php:51
+msgid "Old Password"
+msgstr "Mật khẩu cũ"
+
+#: options.php:173
+#: setup.php:35
+msgid "Password changed successfully."
+msgstr "Mật khẩu đã được thay đổi."
+
+#: options.php:64
+msgid "Submit"
+msgstr "Gửi"
+
+#: setup.php:20
+msgid ""
+"This connects to your local Password Server to change your email password."
+msgstr "Đây kết nối tới máy phục vụ mật khẩu cục bộ để thay đổi mật khẩu thư điện tử của bạn."
+
+#: options.php:53
+msgid "Verify New Password"
+msgstr "Thẩm tra mật khẩu mới"
+
+#: options.php:112
+msgid "You must also type in your new password in the verify box."
+msgstr "Bạn cũng cần phải gõ mật khẩu mới vào hộp xác nhận."
+
+#: options.php:109
+msgid "You must type in a new password."
+msgstr "Bạn cần phải gõ một mật khẩu mới."
+
+#: options.php:106
+msgid "You must type in your old password."
+msgstr "Bạn cần phải gõ mật khẩu cũ."
+
+#: options.php:115
+msgid "Your new password doesn't match the verify password."
+msgstr "Mật khẩu mới không trùng với mật khẩu xác nhận."
+
+#: options.php:118
+msgid "Your old password is not correct."
+msgstr "Mật khẩu cũ không đúng."

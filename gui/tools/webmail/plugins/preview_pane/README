@@ -1,0 +1,80 @@
+Preview Pane plugin for SquirrelMail
+====================================
+Ver 1.2, 06/08/04
+
+Original author: Paul Lesneiwski <pdontthink@angrynerds.com>
+
+
+Description
+===========
+
+This plugin allows the user to turn on an extra frame below
+the mailbox message list where the messages themselves are 
+displayed, very similar to many other popular (typically
+non-web-based) email clients.
+
+Note that users must turn this functionality on by going to
+the Options-->Display Preferences menu.  
+
+While this plugin has been tested thoroughly, there may be
+some functionalities and/or plugins that don't quite work 
+when the preview pane is turned on, since SquirrelMail was 
+not designed with this type of layout in mind.  Future versions
+of SquirrelMail will have its presentation layer abstracted
+to a larger degree, at which time any anomalies you may 
+experience with this plugin will probably go away.  But for
+the most part, this plugin should be very solid.
+
+Feel free to report any anomalous behavior to the SquirrelMail
+Plugins mailing list.  
+
+Also note that this plugin was meant to work with SquirrelMail
+versions 1.4.3 and 1.5.1.
+
+Finally, for users of the Sent Confirmation plugin, you should
+have at least version 1.6 of that plugin, which contains changes
+that are designed to work more seamlessly with Preview Pane.
+
+
+
+Help Requests
+=============
+
+Help requests are welcome at my personal email address, but I
+request that you first post to the SquirrelMail Plugins mailing
+list, where you'll get faster help from more people and other
+people with the same problem will be able to see how your issue
+was resolved.  If you don't get good answers that way, you may
+try emailing me directly.
+
+Info about the SquirrelMail Plugins mailing list can be found
+on the SquirrelMail web site.  It is currently located at:
+
+http://lists.sourceforge.net/mailman/listinfo/squirrelmail-plugins
+squirrelmail-plugins@lists.sourceforge.net
+
+
+
+Change Log
+==========
+
+  v1.2  06/08/04  Paul Lesneiwski <pdontthink@angrynerds.com>
+   * Added javascript fix so delete link will work when messages are 
+     viewed "in new window" - please give feedback if this causes problems
+   * Fixed missing locale switch (Thanks to Alexandros Vellis <avel@noc.uoa.gr>)
+   * Added Greek locale (Thanks to Alexandros Vellis <avel@noc.uoa.gr>)
+   * Updated patch for compatibility with Archive Mail plugin version 1.2
+   * Fixed placement of Clear button (no, non Archive Mail users, that button
+     was never supposed to be so blatantly placed in the middle of your screen)
+     Please report placement problems if they persist.
+   * Updated patch for 1.5.1 (works only against 1.5.1cvs as of approximately
+     06/08/04)
+   * Added patch for compatibility with the delete_move_next plugin under 
+     SquirrelMail 1.4.x
+
+  v1.1  07/03/04  Paul Lesneiwski <pdontthink@angrynerds.com>
+   * Added option to split frames vertically instead of horizontally
+
+  v1.0  20/02/04  Paul Lesneiwski <pdontthink@angrynerds.com>
+   * Initial version
+

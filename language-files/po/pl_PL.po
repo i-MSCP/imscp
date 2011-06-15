@@ -1,0 +1,6114 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: i-MSCP 1.0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
+"PO-Revision-Date: 2010-04-16 22:47+0100\n"
+"Last-Translator: Arkadiusz Petruczynik <voxar@voxar.pl>\n"
+"Language-Team: Polish <pl_PL@li.org>\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: x64PoPot 0.2\n"
+"X-Poedit-Language: Polish\n"
+"X-Poedit-Country: POLAND\n"
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
+
+msgid "_: Localised language"
+msgstr "Polski - Polish"
+
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr "Plik %s nie istnieje lub nie jest osiągalny!"
+
+#, fuzzy
+msgid "Error while trying to obtain list of network cards."
+msgstr "Błąd podczas próby wczytania listy kart sieciowych!"
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr "Ten IP (%s) nie został przypisany do żadnej karty sieciowej!"
+
+msgid "N/A"
+msgstr "N/D"
+
+msgid "Day"
+msgstr "Dzień"
+
+#, fuzzy
+msgid "Days"
+msgstr "Dzień"
+
+msgid "Hour"
+msgstr "Godzina"
+
+#, fuzzy
+msgid "Hours"
+msgstr "Godzina"
+
+#, fuzzy
+msgid "Minute"
+msgstr "minut"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "minut"
+
+#, fuzzy
+msgid "An error occured! Please, contact your administrator!"
+msgstr "Nie można otworzyć katalogu!<br>Skontaktuj się z administratorem !"
+
+#, fuzzy
+msgid "Couldn't check for updates. Website not reachable."
+msgstr "Nie można sprawdzić czy są aktualizacje! Strona jest niedostępna."
+
+msgid "General information"
+msgstr "Ogólne informacje"
+
+msgid "Manage hosting plans"
+msgstr "Zarządzanie planami hostingowymi"
+
+msgid "System tools"
+msgstr "Narzędzia systemowe"
+
+msgid "Manage users"
+msgstr "Zarządzaj użytkownikami"
+
+msgid "Statistics"
+msgstr "Statystyki"
+
+msgid "Support system"
+msgstr "System wsparcia"
+
+msgid "Settings"
+msgstr "Ustawienia"
+
+msgid "Change password"
+msgstr "Zmień hasło"
+
+msgid "Change personal data"
+msgstr "Zmień dane osobowe"
+
+msgid "Add admin"
+msgstr "Dodaj administratora"
+
+msgid "Add reseller"
+msgstr "Dodaj resellera"
+
+msgid "Reseller assignment"
+msgstr "Przypisanie resellera"
+
+msgid "User assignment"
+msgstr "Przypisanie użytkownika"
+
+msgid "Email setup"
+msgstr "Ustawienia poczty"
+
+msgid "Email marketing"
+msgstr "Marketing pocztowy"
+
+msgid "Add hosting plan"
+msgstr "Dodaj plan hostingowy"
+
+msgid "Reseller statistics"
+msgstr "Statystyki resellera"
+
+msgid "Server statistics"
+msgstr "Statystyki serwera"
+
+msgid "Admin log"
+msgstr "Log administratora"
+
+msgid "Manage IPs"
+msgstr "Zarządzaj adresami IP"
+
+msgid "System info"
+msgstr "Informacje o systemie"
+
+msgid "Internationalisation"
+msgstr "Menadżer języków"
+
+msgid "Language"
+msgstr "Język"
+
+msgid "Layout"
+msgstr "Szablon"
+
+msgid "Logout"
+msgstr "Wyloguj"
+
+msgid "Server traffic settings"
+msgstr "Ustawienia transferu serwera"
+
+msgid "Server status"
+msgstr "Stan serwera"
+
+msgid "i-MSCP updates"
+msgstr "Aktualizacje i-MSCP"
+
+msgid "i-MSCP database updates"
+msgstr "Aktualizacje bazy i-MSCP"
+
+msgid "i-MSCP debugger"
+msgstr "i-MSCP debugger"
+
+msgid "Custom menus"
+msgstr "Spersonalizowane menu"
+
+msgid "Overview"
+msgstr "Podsumowanie"
+
+msgid "User sessions"
+msgstr "Sesje użytkownika"
+
+msgid "Lostpw email setup"
+msgstr "Ustawienia zapomnianego hasła"
+
+msgid "Maintenance mode"
+msgstr "Tryb serwisowy"
+
+msgid "General settings"
+msgstr "Ustawienia główne"
+
+msgid "Server ports"
+msgstr "Porty serwera"
+
+msgid "Rootkit Log"
+msgstr "Log Rootkit'a"
+
+#, fuzzy
+msgid "Services status"
+msgstr "Stan serwera"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "Porty serwera"
+
+#, fuzzy
+msgid "IP usage"
+msgstr "Wykorzystanie dysku"
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr "Nazwa konta"
+
+msgid "Admin users"
+msgstr "Administratorzy"
+
+msgid "Reseller users"
+msgstr "Użytkownicy resellera"
+
+msgid "Normal users"
+msgstr "Zwykli użytkownicy"
+
+msgid "Domains"
+msgstr "Domeny"
+
+msgid "Subdomains"
+msgstr "Subdomeny"
+
+msgid "Domain aliases"
+msgstr "Aliasy domeny"
+
+msgid "Mail accounts"
+msgstr "Konta pocztowe"
+
+msgid "FTP accounts"
+msgstr "Konta FTP"
+
+msgid "SQL databases"
+msgstr "Bazy danych SQL"
+
+msgid "SQL users"
+msgstr "Użytkownicy SQL"
+
+msgid "System messages"
+msgstr "Wiadomości systemowe"
+
+msgid "No new messages"
+msgstr "Brak nowych wiadomości"
+
+msgid "Server traffic"
+msgstr "Transfer serwera"
+
+msgid "Administrators list is empty!"
+msgstr "Lista administratorów jest pusta!"
+
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+msgid "Creation date"
+msgstr "Data utworzenia"
+
+msgid "Created by"
+msgstr "Utworzone przez"
+
+msgid "Options"
+msgstr "Opcje"
+
+msgid "Delete"
+msgstr "Usuń"
+
+msgid "System"
+msgstr "Informacje o systemie"
+
+msgid "Resellers list is empty!"
+msgstr "Lista resellerów jest pusta!"
+
+msgid "Switch to user interface"
+msgstr "Zmień na interfejs użytkownika"
+
+msgid "Switch"
+msgstr "Przełącz"
+
+msgid "Not found user records matching the search criteria!"
+msgstr ""
+"Nie znaleziono rekordów użytkownika odpowiadającym kryteriom wyszukiwania!"
+
+msgid "view aliases"
+msgstr "przeglądaj aliasy"
+
+msgid "Users list is empty!"
+msgstr "Lista użytkowników jest pusta!"
+
+msgid "Status"
+msgstr "Stan"
+
+msgid "Details"
+msgstr "Szczegóły"
+
+msgid "Edit domain"
+msgstr "Edytuj domenę"
+
+msgid "Edit user"
+msgstr "Edytuj użytkownika"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "Wyłączone"
+
+#, fuzzy
+msgid "Reload"
+msgstr "Prześlij"
+
+msgid "Error"
+msgstr "Błąd"
+
+msgid "Not Set"
+msgstr ""
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Czy na pewno chcesz zmienić  stan konta domeny?"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Czy napewno chcesz usunąć %s"
+
+msgid "Administrators"
+msgstr "Administratorzy"
+
+msgid "Resellers"
+msgstr "Resellerzy"
+
+msgid "Users"
+msgstr "Użytkownicy"
+
+msgid "Search"
+msgstr "Szukaj"
+
+msgid "Expire date"
+msgstr "Data ekspiracji"
+
+msgid "Edit"
+msgstr "Edytuj"
+
+msgid "Domain name"
+msgstr "Nazwa domeny"
+
+msgid "Customer ID"
+msgstr "ID Użytkownika"
+
+msgid "Last name"
+msgstr "Nazwisko"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "City"
+msgstr "Miasto"
+
+msgid "State/Province"
+msgstr "Województwo"
+
+msgid "Country"
+msgstr "Kraj"
+
+msgid "All"
+msgstr "Wszystkie"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Suspended"
+msgstr "Zawieszone"
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP Panel Zamówień"
+
+msgid "hide aliases"
+msgstr "ukryj aliasy"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s jesteś teraz zalogowany jako %2$s"
+
+msgid "Go back"
+msgstr "Wstecz"
+
+msgid "Unknown"
+msgstr "Nieznany"
+
+msgid "No language tables found in the database."
+msgstr ""
+
+msgid "Add user"
+msgstr "Dodaj użytkownika"
+
+msgid "Manage domains"
+msgstr "Zarządzaj domenami"
+
+msgid "Domain alias"
+msgstr "Alias domeny"
+
+msgid "Domain statistics"
+msgstr "Statystyki domeny"
+
+msgid "New ticket"
+msgstr "Nowe zgłoszenie"
+
+msgid "Layout settings"
+msgstr "Ustawienia szablonu"
+
+msgid "Manage Orders"
+msgstr "Zarządzaj Zamówieniami"
+
+msgid "Order settings"
+msgstr "Ustawienia zamówień"
+
+msgid "Order email setup"
+msgstr "Ustawienia emaila zamówień"
+
+msgid "yes"
+msgstr "tak"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Wypełnij obydwa pola z hasłem!"
+
+msgid "Passwords don't match!"
+msgstr "Hasła nie pasują do siebie!"
+
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+"Hasło musi mieć co najmniej %s znaków oraz musi zawierać litery i cyfry."
+
+#, php-format
+msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgstr "Hasło jest krótsze niż %s znaków lub zawiera niedozwolone znaki!"
+
+msgid "Incorrect email length or syntax!"
+msgstr "Błędna długość nazwy email lub składnia"
+
+msgid "Add subdomain"
+msgstr "Dodaj subdomenę"
+
+msgid "Email and FTP accounts"
+msgstr "Konta poczty i FTP"
+
+msgid "Add mail user"
+msgstr "Dodaj użytkownika poczty"
+
+msgid "Add FTP user"
+msgstr "Dodaj użytkownika FTP"
+
+msgid "Manage SQL"
+msgstr "Zarządzaj bazami SQL"
+
+msgid "Error pages"
+msgstr "Strony błędów"
+
+msgid "Add SQL database"
+msgstr "Dodaj bazę SQL"
+
+msgid "Daily backup"
+msgstr "Dzienna kopia zapasowa"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Filemanager"
+msgstr "Menadżer plików"
+
+msgid "Webtools"
+msgstr "Narzędzia sieciowe"
+
+msgid "Protected areas"
+msgstr "Chronione obszary"
+
+msgid "Web statistics"
+msgstr "Statystyki WWW"
+
+msgid "Group/User management"
+msgstr "Menadżer grup/użytkowników"
+
+msgid "Email Accounts"
+msgstr "Konta Pocztowe"
+
+msgid "FTP Accounts"
+msgstr "Konta FTP"
+
+msgid "Catch all"
+msgstr "Przechwyć wszystkie"
+
+msgid "Add alias"
+msgstr "Dodaj alias"
+
+msgid "Update Hosting Package"
+msgstr "Zaktualizuj Plan Hostingowy"
+
+msgid "Add DNS zone's record"
+msgstr "Dodaj wpis strefy w DNS"
+
+msgid "Manage SSL certificate"
+msgstr "Zarządzaj certyfikatem SSL"
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+#, fuzzy
+msgid "internet Multi Server Control Panel"
+msgstr "i-MSCP Panel Kontrolny"
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "i-MSCP Panel Kontrolny"
+
+msgid "Administrator login"
+msgstr "Login administratora"
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "i-MSCP Panel Kontrolny"
+
+msgid "Login"
+msgstr "Logowanie"
+
+msgid "Password"
+msgstr "Hasło"
+
+msgid "phpMyAdmin"
+msgstr "phpMyAdmin"
+
+#, fuzzy
+msgid "FileManager"
+msgstr "Menadżer plików"
+
+msgid "Secure Connection"
+msgstr "Połączenie szyfrowane"
+
+msgid "Normal Connection"
+msgstr "Połączenie nie szyfrowane"
+
+msgid "Lost password"
+msgstr "Zapomniałeś hasło?"
+
+#, fuzzy
+msgid "php-extension 'gd' not loaded."
+msgstr "BŁĄD: nie załadowany moduł 'mcrypt' dla PHP!"
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr "i-MSCP - Klient/Zmień Hasło Użytkownika SQL"
+
+msgid "Security code"
+msgstr "Kod zabezpieczający"
+
+#, fuzzy
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr ""
+"(Aby uniknąć nadużyć, prosimy o wpisanie kombinacji liter z obrazka powyżej "
+"do pola \"Kod zabezpieczający\")"
+
+#, fuzzy
+msgid "Get password"
+msgstr "Generuj hasło"
+
+msgid "Back"
+msgstr "Wstecz"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "Twoje nowe hasło zostało wysłane."
+
+#, fuzzy
+msgid "New password has not been sent. Ask your administrator."
+msgstr "Nowe hasło nie mogło być wysłane."
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+"Twoje żądanie nowego hasła jest w trakcie realizacji. Otrzymasz e-mail z "
+"instrukcją by zakończyć proces. Żądanie zresetowania hasła wygaśnie w ciągu "
+"%s minut."
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "Kod bezpieczeństwa lub nazwa użytkownika jest niepoprawna!"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Dodaj użytkownika"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Błędna długość nazwy użytkownika lub składnia!"
+
+msgid "Entered passwords do not match!"
+msgstr "Wprowadzone hasła nie są jednakowe!"
+
+#, fuzzy
+msgid "This user name already exist."
+msgstr "Ta nazwa użytkownika już istnieje!"
+
+msgid "Empty data or wrong field!"
+msgstr "Brak danych lub niewłaściwe pole!"
+
+msgid "Core data"
+msgstr "Treść wiadomości"
+
+msgid "Repeat password"
+msgstr "Powtórz hasło"
+
+msgid "Email"
+msgstr "Poczta"
+
+msgid "Additional data"
+msgstr "Dodatkowe informacje"
+
+msgid "First name"
+msgstr "Imię"
+
+msgid "Gender"
+msgstr "Płeć"
+
+msgid "Male"
+msgstr "Mężczyzna"
+
+msgid "Female"
+msgstr "Kobieta"
+
+msgid "Zip/Postal code"
+msgstr "Kod pocztowy"
+
+msgid "Street 1"
+msgstr "Ulica 1"
+
+msgid "Street 2"
+msgstr "Ulica 2"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Add"
+msgstr "Dodaj"
+
+msgid "User session was killed!"
+msgstr "Sesja użytkownika została zabita!"
+
+msgid "Reseller"
+msgstr "Reseller"
+
+msgid "Domain account"
+msgstr "Konto domeny"
+
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Edytuj Administratora"
+
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Edytuj użytkownika"
+
+msgid "Edit admin"
+msgstr "Edytuj administratora"
+
+msgid "Update"
+msgstr "Aktualizuj"
+
+msgid "Send new login data"
+msgstr "Wyślij nowe dane logowania"
+
+msgid "Generate password"
+msgstr "Generuj hasło"
+
+msgid "Password change is disabled!"
+msgstr "Zmiana hasła jest wyłączona!"
+
+msgid "Demo Version!"
+msgstr "Wersja Demo!"
+
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
+msgstr "i-MSCP – Admin/Log Admina"
+
+msgid "Log is empty!"
+msgstr "Log jest pusty!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr "%s usunął cały log admina!"
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr "%s usunął log admina starszy niż dwa tygodnie!"
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr "%s usunął log admina starszy niż miesiąc!"
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr "%s usunął log admina starszy niż trzy miesiące!"
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr "%s usunął log admina starszy niż sześć miesięcy!"
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr "%s usunął log admina starszy niż rok!"
+
+msgid "Invalid time period!"
+msgstr "Błędny okres czasu!"
+
+msgid "Admin Log"
+msgstr "Log Admina"
+
+msgid "Clear log"
+msgstr "Wyczyść log"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Message"
+msgstr "Wiadomość"
+
+msgid "Delete from log:"
+msgstr "Usuń z logu:"
+
+msgid "everything"
+msgstr "wszystko"
+
+msgid "older than 2 weeks"
+msgstr "starsze niż 2 tygodnie"
+
+msgid "older than 1 month"
+msgstr "starsze niż 1 miesiąc"
+
+msgid "older than 3 months"
+msgstr "starsze niż 3 miesiące"
+
+msgid "older than 6 months"
+msgstr "starsze niż 6 miesięcy"
+
+msgid "older than 12 months"
+msgstr "starsze niż 12 miesięcy"
+
+msgid "i-MSCP - Admin - Email Marketing"
+msgstr "i-MSCP - Admin – Marketing pocztowy"
+
+msgid "Please specify a message subject!"
+msgstr "Podaj temat wiadomości!"
+
+msgid "Please specify a message content!"
+msgstr "Podaj treść wiadomości!"
+
+msgid "Please specify a sender name!"
+msgstr "Podaj imię nadawcy!"
+
+msgid "Please specify a sender email!"
+msgstr "Podaj email nadawcy!"
+
+msgid "You send email to your users successfully!"
+msgstr "Twoja wiadomość została wysłana do użytkowników!"
+
+msgid "Send message to"
+msgstr "Wyślij wiadomość do"
+
+msgid "All users"
+msgstr "Wszyscy użytkownicy"
+
+msgid "All resellers"
+msgstr "Wszyscy resellerzy"
+
+msgid "All users & resellers"
+msgstr "Wszyscy użytkownicy i resellerzy"
+
+msgid "Message subject"
+msgstr "Temat wiadomości"
+
+msgid "Senders email"
+msgstr "Email nadawców"
+
+msgid "Senders name"
+msgstr "Nazwa nadawców"
+
+msgid "Send message"
+msgstr "Wyślij wiadomość"
+
+msgid "You have no custom menus."
+msgstr "Nie masz spersonalizowanych menu."
+
+msgid "User"
+msgstr "Użytkownik"
+
+msgid "Missing or incorrect data input!"
+msgstr "Brak danych lub dane niepoprawne!"
+
+msgid "Invalid URL!"
+msgstr "Błędny adres URL!"
+
+msgid "Invalid target!"
+msgstr "Błędny cel!"
+
+msgid "Custom menu data updated successful!"
+msgstr "Spersonalizowane dane menu zostały zaktualizowane!"
+
+msgid "Custom menu deleted successful!"
+msgstr "Spersonalizowane menu zostało usunięte!"
+
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Admin - Zarządzaj spersonalizowanymi menu"
+
+msgid "Manage custom menus"
+msgstr "Zarządzaj spersonalizowanymi menu"
+
+msgid "Add new button"
+msgstr "Dodaj nowy przycisk"
+
+msgid "Button name"
+msgstr "Nazwa przycisku"
+
+msgid "Button link"
+msgstr "Łącze przycisku"
+
+msgid "Button target"
+msgstr "Cel przycisku"
+
+msgid "Show in"
+msgstr "Wyświetl w"
+
+msgid "Administrator level"
+msgstr "Poziom administratora"
+
+msgid "Reseller level"
+msgstr "Poziom resellera"
+
+msgid "Enduser level"
+msgstr "Poziom użytkownika końcowego"
+
+msgid "Reseller and enduser level"
+msgstr "Poziom resellera i użytkownika końcowego"
+
+msgid "Menu button"
+msgstr "Przycisk menu"
+
+msgid "Action"
+msgstr "Akcja"
+
+msgid "Level"
+msgstr "Poziom"
+
+msgid "Save"
+msgstr "Zapisz"
+
+msgid "Edit button"
+msgstr "Edytuj przycisk"
+
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "Admin i-MSCP / Narzędzia systemowe / Stan Serwera"
+
+msgid "Database updates"
+msgstr "Aktualizacje bazy danych"
+
+msgid "Available database updates"
+msgstr "Dostępne aktualizacje bazy danych"
+
+msgid "Update details"
+msgstr "Szczegóły aktualizacji"
+
+msgid "New Database update is now available"
+msgstr "Nowa aktualizacja bazy jest dostępna!"
+
+msgid "No provided"
+msgstr ""
+
+msgid "Execute updates"
+msgstr "Wykonaj aktualizacje"
+
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - Domena/Szczegóły"
+
+msgid "Domain details"
+msgstr "Szczególy domeny"
+
+msgid "Domain IP"
+msgstr "IP domeny"
+
+msgid "PHP support"
+msgstr "Obsługa PHP"
+
+msgid "CGI support"
+msgstr "Obsługa CGI"
+
+msgid "Manual DNS support (EXPERIMENTAL)"
+msgstr "Ręczna obsługa DNS"
+
+msgid "Backup support"
+msgstr "Kopia zapasowa / Przywrócenie kopii zapasowej"
+
+msgid "MySQL support"
+msgstr "Obsługa MySQL"
+
+msgid "Traffic in MB"
+msgstr "Transfer w MB"
+
+msgid "Disk in MB"
+msgstr "Powierzchnia dyskowa w MB"
+
+msgid "Feature"
+msgstr "Cecha"
+
+msgid "Used"
+msgstr "Używane"
+
+msgid "Limit"
+msgstr "Limit"
+
+msgid "Submit changes"
+msgstr "Zapisz zmiany"
+
+msgid "Full"
+msgstr "Pełny"
+
+msgid "SQL"
+msgstr "SQL"
+
+msgid "Domain"
+msgstr "Domena"
+
+msgid "No"
+msgstr "Nie"
+
+msgid "Enabled"
+msgstr "Włączone"
+
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "Nieprawidłowy limit subdomen!"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "Nieprawidłowy limit aliasów!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "Nieprawidłowy limit kont pocztowych!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "Nieprawidłowy limit kont FTP!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "Nieprawidłowy limit użytkowników baz SQL!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Limit baz danych SQL jest <i>wyłączony</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "Nieprawidłowy limit baz SQL!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Limit użytkowników SQL jest <i>wyłączony</i>!"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "Nieprawidłowy limit transferu!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "Nieprawidłowy limit obszaru dysku!"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Subdomena"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Mail"
+msgstr "Poczta"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "Baza Danych SQL"
+
+msgid "SQL User"
+msgstr "Użytkownik SQL"
+
+msgid "Traffic"
+msgstr "Transfer"
+
+msgid "Disk"
+msgstr "Dysk"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "Właściwości domeny nie mogły być zaktualizowane!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Właściwości domeny zostały zaktualizowane!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "Usługa <em>%s</em> nie może być wyłączona! "
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "W systemie istnieją wpisy <em>%s</em>!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "Usługa <em>%s</em> nie może mieć limitu! "
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"Podana liczba jest mniejsza niż rekordy <em>%s</em> , istniejące w systemie!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "Usługa <em>%s</em> nie może być wyłączona! "
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Istnieją wpisy <em>%s</em> w systemie!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "Usługa <em>%s</em> nie może być bez limitu! "
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Istnieją limity resellera na usługę <em>%s</em> !"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "Przekraczasz limity resellera na usługę <em>%s</em> !"
+
+msgid "i-MSCP - Admin/Edit Domain"
+msgstr "i-MSCP – Admin/Edycja Domeny"
+
+msgid "Edit Domain"
+msgstr "Edytuj domenę"
+
+msgid "Domain properties"
+msgstr "Właściwości domeny"
+
+msgid "Domain expire"
+msgstr "Ekspiracja domeny"
+
+msgid "New expire date"
+msgstr "Nowa data ekspiracji"
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit subdomen<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit aliasów<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit kont pocztowych<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit kont FTP<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit baz danych SQL<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit użytkowników SQL<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limit transferu [MB]<br><i>(0 bez limitu)</i>"
+
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Limit dyskowy [MB]<br><i>(0 bez limitu)</i>"
+
+msgid "Backup"
+msgstr "Kopia zapasowa"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Yes"
+msgstr "Tak"
+
+msgid ""
+"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgstr ""
+"'Ekspiracja domeny' jest 'N/A', data upływu ważności zostanie ustawiona od "
+"dzisiaj. "
+
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
+msgid ""
+"You cannot access this page directly. You must switch to reseller level."
+msgstr ""
+
+msgid ""
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
+msgstr ""
+
+msgid "Unable to update domain: Domain ID not found."
+msgstr ""
+
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
+
+msgid "Unable to edit domain: ID not found."
+msgstr ""
+
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - Dane Statystyk Domeny"
+
+msgid "Reseller users table"
+msgstr "Tabela użytkowników resellera"
+
+msgid "Month"
+msgstr "Miesiąc"
+
+msgid "Year"
+msgstr "Rok"
+
+msgid "Show"
+msgstr "Wyświetl"
+
+msgid "Web traffic"
+msgstr "Transfer WWW"
+
+msgid "FTP traffic"
+msgstr "Transfer FTP"
+
+msgid "SMTP traffic"
+msgstr "Transfer SMTP"
+
+msgid "POP3/IMAP traffic"
+msgstr "Transfer POP3/IMAP"
+
+msgid "All traffic"
+msgstr "Cały transfer"
+
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administrator/Zarządzanie planami hostingowymi"
+
+msgid "Hosting plans"
+msgstr "Plany hostingowe"
+
+msgid "Purchasing"
+msgstr "Zakup"
+
+msgid "Add new user hosting plan"
+msgstr "Dodaj nowy plan hostingu użytkownika"
+
+msgid "Return to previous menu"
+msgstr "Powrót do poprzedniego menu"
+
+msgid "Hosting plan added!"
+msgstr "Plan hostingowy dodany!"
+
+msgid "Hosting plan deleted!"
+msgstr "Plan hostingowy usunięty!"
+
+msgid "Hosting plan updated!"
+msgstr "Plan hostingowy zaktualizowany!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr ""
+"Plan hostingowy nie może być usunięty, istnieją zamówienia na ten plan!"
+
+msgid "Hosting plans not found!"
+msgstr "Nie znaleziono planów hostingowych!"
+
+msgid "No."
+msgstr "Nie."
+
+msgid "Name"
+msgstr "Nazwa"
+
+msgid "Show hosting plan"
+msgstr "Pokaż plan hostingowy"
+
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Administrator/Dodaj plan hostingowy"
+
+msgid "Hosting plan properties"
+msgstr "Właściwości planu hostingowego"
+
+msgid "Template name"
+msgstr "Nazwa szablonu"
+
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Ilość subdomen<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Ilość aliasów<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit kont pocztowych<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit kont FTP<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limity baz danych SQL<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit użytkowników SQL<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Limit transferu [MB]<br><i>(0 bez limitu)</i>"
+
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Limit dyskowy [MB]<br><i>(0 bez limitu)</i>"
+
+msgid "PHP"
+msgstr "PHP"
+
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
+msgstr "Pozwól dodawać rekordy do strefy DNS"
+
+msgid "Apache logfiles"
+msgstr "Pliki log Apache'a"
+
+msgid "AwStats"
+msgstr "AwStats"
+
+msgid "no"
+msgstr "nie"
+
+msgid "Billing Settings"
+msgstr "Ustawienia opłat"
+
+msgid "Price"
+msgstr "Cena"
+
+msgid "Setup fee"
+msgstr "Opłata aktywacyjna"
+
+msgid "Currency"
+msgstr "Waluta"
+
+msgid "Payment period"
+msgstr "Okres płatności"
+
+msgid "Available for purchasing"
+msgstr "Dostępne do zakupu"
+
+msgid "Description"
+msgstr "Opis"
+
+msgid "(e.g. EUR)"
+msgstr "(n.p. ZŁ)"
+
+msgid "Term Of Service"
+msgstr "Regulamin Usługi"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+"<b>Opcjonalnie:</b>Pozostaw to pole puste jeśli nie chcesz określać "
+"Regulaminu dla tego planu hostingowego."
+
+msgid "Text Only"
+msgstr "Tylko tekst"
+
+msgid "Add plan"
+msgstr "Dodaj plan"
+
+msgid "Incorrect template name length!"
+msgstr "Błędna długość nazwy planu!"
+
+msgid "Incorrect template description length!"
+msgstr "Błędna długość opisu planu!"
+
+msgid "Incorrect price syntax!"
+msgstr "Błędna składnia ceny!"
+
+msgid "Incorrect setup fee syntax!"
+msgstr "Błędna składnia ceny za ustawienie!"
+
+msgid "Incorrect subdomains limit!"
+msgstr "Nieprawidłowy limit subdomen!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Nieprawidłowy limit aliasów!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Nieprawidłowy limit kont pocztowych!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Nieprawidłowy limit kont FTP!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Nieprawidłowy limit baz SQL!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Nieprawidłowy limit użytkowników baz SQL!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Nieprawidłowy limit transferu!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Nieprawidłowy limit obszaru dysku!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "Plan hostingowy o podanej nazwie już istnieje!"
+
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Administrator/Edytuj plan hostingowy"
+
+msgid "Price Style"
+msgstr "Styl ceny"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Update plan"
+msgstr "Aktualizuj plan"
+
+msgid "Edit hosting plan"
+msgstr "Edytuj plan hostingowy"
+
+msgid "Undefined reference to data!"
+msgstr "Niezdefiniowane powiązanie z danymi!"
+
+msgid "Incorrect price. Example: 9.99"
+msgstr "Błędna cena. Przykład: 9.99"
+
+msgid "Incorrect setup fee. Example: 19.99"
+msgstr "Błędna opłata aktywacyjna. Przykład: 19.99"
+
+msgid "No domain system errors"
+msgstr "Brak błędów systemu domen"
+
+msgid "No domain alias system errors"
+msgstr "Brak błędów systemu aliasów domeny"
+
+msgid "No subdomain system errors"
+msgstr "Brak błędów systemu subdomen"
+
+msgid "No alias subdomain system errors"
+msgstr "Brak błędów systemu aliasów subdomen"
+
+msgid "No email account system errors"
+msgstr "Brak błędów systemu pocztowego"
+
+#, fuzzy
+msgid "missing domain"
+msgstr "Główna domena"
+
+#, fuzzy
+msgid "missing alias"
+msgstr "Alias domeny"
+
+msgid "orphan entry"
+msgstr ""
+
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "Brak błędów systemu aliasów domeny"
+
+#, fuzzy
+msgid "Missing domain"
+msgstr "Główna domena"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "Daemon zwrócił kod stanu %d "
+
+msgid "Unknown type!"
+msgstr "Nieznany typ"
+
+msgid "Done"
+msgstr "Zakończono"
+
+msgid "Unknown Error"
+msgstr "Nieznany błąd"
+
+msgid "Domain errors"
+msgstr "Błędy domeny"
+
+msgid "Domain alias errors"
+msgstr "Błędy aliasów domeny"
+
+msgid "Subdomain errors"
+msgstr "Błędy subdomeny"
+
+msgid "Alias subdomain errors"
+msgstr "Błędy aliasu subdomeny"
+
+msgid "Mail account errors"
+msgstr "Błędy konta pocztowego"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "Narzędzia demonów i-MSCP"
+
+msgid "Execute requests"
+msgstr "Wykonaj żądania"
+
+msgid "Set status to 'change'"
+msgstr "Ustaw status na \"zmień\""
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr "Sprawdzanie aktualizacji jest wyłączone!"
+
+msgid "Enable update at"
+msgstr "Włączenie aktualizacji bazy danych o"
+
+msgid "New i-MSCP update is now available"
+msgstr "Nowa aktualizacja i-MSCP jest dostępna!"
+
+msgid "Get it at"
+msgstr "Pobierz na"
+
+msgid "Available i-MSCP updates"
+msgstr "Dostępne aktualizacje i-MSCP"
+
+msgid "No new i-MSCP updates available"
+msgstr "Brak aktualizacji i-MSCP"
+
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr "Masz <b>%d</b> nowych zapytań"
+
+msgid "View"
+msgstr "Przeglądaj"
+
+msgid "One or more updates to the database are available."
+msgstr ""
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Przekraczasz limit transferu!"
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s z nielimitowanego]"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s z %3$s]"
+
+msgid "i-MSCP - Admin/Main Index"
+msgstr "i-MSCP - Admin/Indeks główny"
+
+msgid "You cannot delete the last active IP address!"
+msgstr "Nie możesz skasować ostatniego aktywnego adresu IP!"
+
+msgid "Error: we have a domain using this IP!"
+msgstr "Błąd: mamy już domenę przypisaną do tego adresu IP!"
+
+msgid "Error: we have a reseller using this IP!"
+msgstr "Błąd: mamy resellera używającego tego adresu IP!"
+
+msgid "IP was deleted!"
+msgstr "IP został usunięty!"
+
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Admin/Zarządzaj IP"
+
+msgid "Remove IP"
+msgstr "Usuń IP"
+
+#, fuzzy
+msgid "No IP's available"
+msgstr "Brak aktualizacji i-MSCP"
+
+msgid "New IP was added!"
+msgstr "Nowy numer IP dodany!"
+
+msgid "Wrong IP number!"
+msgstr "Niepoprawny numer IP!"
+
+msgid "Please specify domain!"
+msgstr "Podaj nazwę domeny!"
+
+msgid "Please specify alias!"
+msgstr "Podaj alias!"
+
+msgid "This IP already exist!"
+msgstr "Ten adres IP już istnieje!"
+
+msgid "Please select nework interface!"
+msgstr "Proszę wybrać interfejs sieciowy!"
+
+msgid "Available IPs"
+msgstr "Dostępne adresy IP"
+
+msgid "IP"
+msgstr "IP"
+
+msgid "Network interface"
+msgstr "Interfejs sieciowy"
+
+msgid "Add new IP"
+msgstr "Dodaj nowy adres IP"
+
+#, php-format
+msgid "Are you sure you want to delete this IP: %s?"
+msgstr "Czy na pewno chcesz usunąć ten IP: %s?"
+
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - Admin/Zarządzaj IP"
+
+#, fuzzy
+msgid "Total Domains"
+msgstr "Domeny"
+
+msgid "No records found"
+msgstr ""
+
+#, fuzzy
+msgid "Admin/IP usage statistics"
+msgstr "Statystyki domeny"
+
+#, fuzzy
+msgid "Domain Name"
+msgstr "Nazwa domeny"
+
+#, fuzzy
+msgid "Reseller Name"
+msgstr "Nazwa resellera"
+
+#, fuzzy
+msgid "User language updated successfully."
+msgstr "Język użytkownika został zaktualizowany!"
+
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Admin/Zmień Język"
+
+msgid "Choose your default language"
+msgstr "Wybierz domyślny język"
+
+#, fuzzy
+msgid "Error we have user that uses that language!"
+msgstr "Błąd: mamy resellera używającego tego adresu IP!"
+
+msgid "Language was removed!"
+msgstr "Język został usunięty!"
+
+msgid "Reseller list is empty!"
+msgstr "Lista resellerów jest pusta!"
+
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Przypisanie resellera"
+
+msgid "Mark"
+msgstr "Zaznacz"
+
+msgid "Reseller name"
+msgstr "Nazwa resellera"
+
+msgid "Owner"
+msgstr "Właściciel"
+
+msgid "To Admin"
+msgstr "Do Administratora"
+
+msgid "Move"
+msgstr "Przenieś"
+
+msgid "Reseller or user list is empty!"
+msgstr "Lista resellerów lub użytkowników jest pusta!"
+
+msgid "User list is empty!"
+msgstr "Lista użytkowników jest pusta!"
+
+msgid "User was moved"
+msgstr "Użytkownik został przeniesiony"
+
+msgid "Please select some user(s)!"
+msgstr "Wybierz jakichś użytkowników!"
+
+msgid "Source and destination reseller are the same!"
+msgstr "Nazwa źródłowego i docelowego resellera jest taka sama!"
+
+#, php-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgstr "<b>%1$s</b> ma nieograniczone uprawnienia usługi <b>%2$s</b> !<br>"
+
+#, php-format
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
+msgstr ""
+"Nie możesz przenieść <b>%1$s</b> do resellera,<br>który ma limity na usługę "
+"<b>%2$s</b> !"
+
+#, php-format
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
+msgstr ""
+"<b>%1$s</b> przewyższa limity usługi <b>%2$s</b><br> u docelowego resellera!"
+"<br>"
+
+msgid "Moving aborted!"
+msgstr "Przeniesienie przerwane!"
+
+#, php-format
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
+msgstr ""
+"<b>%s</b> ma adres IP, który nie może być zarządzany przez docelowego "
+"resellera !<br>Ten użytkownik nie może być przeniesiony!"
+
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Przypisanie użytkownika"
+
+msgid "User name"
+msgstr "Nazwa użytkownika"
+
+msgid "From reseller"
+msgstr "Od resellera"
+
+msgid "To reseller"
+msgstr "Do resellera"
+
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami"
+
+msgid "User added"
+msgstr "Użytkownik dodany"
+
+msgid "Reseller added"
+msgstr "Reseller dodany"
+
+msgid "User updated"
+msgstr "Użytkownik zaktualizowany"
+
+msgid "User deleted"
+msgstr "Użytkownik usunięty"
+
+msgid "Email Updated"
+msgstr "Poczta Zaktualizowana"
+
+msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgstr "Ten użytkownik posiada domenę!<br>Aby go usunąć najpierw usuń domenę!"
+
+msgid "User was disabled"
+msgstr "Użytkownik został wyłączony"
+
+#, fuzzy
+msgid "Uninstall"
+msgstr "odinstaluj"
+
+#, php-format
+msgid "%d messages translated"
+msgstr "%d fraz przetłumaczonych"
+
+msgid "Gzipped"
+msgstr ""
+
+msgid "Upload file error!"
+msgstr "Błąd wysyłania pliku!"
+
+msgid "You can upload only text files!"
+msgstr "Możesz przesyłać jedynie pliki tekstowe!"
+
+msgid "Could not read language file!"
+msgstr "Nie można odczytać pliku językowego i-MSCP!"
+
+msgid "Uploaded file is not a valid language file!"
+msgstr "Przesłany plik nie jest poprawnym plikiem językowym i-MSCP!"
+
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
+msgstr "Przesłany plik nie zawiera informacji o języku!"
+
+#, php-format
+msgid "%s added new language: %s"
+msgstr ""
+
+msgid "New language installed!"
+msgstr "Nowy język zainstalowany!"
+
+#, php-format
+msgid "%s updated language: %s"
+msgstr ""
+
+msgid "Language was updated!"
+msgstr "Język został zaktualizowany!"
+
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP – Admin/Menadżer języków"
+
+msgid "Installed languages"
+msgstr "Zainstalowane języki"
+
+msgid "Messages"
+msgstr "Wiadomości"
+
+msgid "Panel default language"
+msgstr "Domyślny język panelu"
+
+msgid "Install new language"
+msgstr "Instaluj nowy język"
+
+msgid "Language file"
+msgstr "Plik języka"
+
+msgid "Install"
+msgstr "Instaluj"
+
+msgid "Export"
+msgstr "Eksportuj"
+
+msgid "Incorrect data input!"
+msgstr "Nieprawidłowe dane!"
+
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Admin/Zmiana hasła"
+
+msgid "Please fill up all data fields!"
+msgstr "Wypełnij wszystkie pola!"
+
+msgid "Passwords do not match!"
+msgstr "Hasła nie pasują do siebie!"
+
+msgid "The current password is wrong!"
+msgstr "Podane hasło jest nieprawidłowe!"
+
+msgid "User password updated successfully!"
+msgstr "Hasło użytkownika zostało zaktualizowane!"
+
+msgid "Password data"
+msgstr "Dane hasła"
+
+msgid "Update password"
+msgstr "Aktualizuj hasło"
+
+msgid "Current password"
+msgstr "Obecne hasło"
+
+msgid "Password change is deactivated!"
+msgstr "Zmiana hasła jest nieaktywna!"
+
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Admin/Zmiana Danych Osobowych"
+
+msgid "Personal data updated successfully!"
+msgstr "Dane osobowe zostały zaktualizowane!"
+
+msgid "Personal data"
+msgstr "Dane osobowe"
+
+msgid "Update data"
+msgstr "Aktualizuj dane"
+
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr "i-MSCP – Admin/Zarządzaj użytkownikami/Dodaj resellera"
+
+msgid "Reseller IP list is empty!"
+msgstr "Lista numerów IP resellera jest pusta!"
+
+msgid "Assign"
+msgstr "Przypisz"
+
+msgid "Label"
+msgstr "Etykieta"
+
+msgid "Number"
+msgstr "Numer"
+
+msgid "This user name already exist!"
+msgstr "Ta nazwa użytkownika już istnieje!"
+
+msgid "Incorrect email syntax!"
+msgstr "Nieprawidłowy format adresu email!"
+
+msgid "Incorrect domains limit!"
+msgstr "Nieprawidłowy limit domen!"
+
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgstr ""
+"Limit baz danych SQL jest <i>wyłączony</i>,ale limit użytkowników SQL nie!"
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgstr "Limit użytkowników SQL jest <i>wyłączony</i> ale limit baz SQL nie!"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Musisz przypisać przynajmniej jeden numer IP dla resellera!"
+
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Limit domen<br><i>(0 bez limitu)</i>"
+
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit subdomen<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit aliasów<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "JSP"
+msgstr "JSP"
+
+msgid "SSI"
+msgstr "SSI"
+
+msgid "Frontpage extensions"
+msgstr "Rozszerzenia Frontpage"
+
+msgid "Backup and restore"
+msgstr "Kopia zapasowa i przywracanie"
+
+msgid "Custom error pages"
+msgstr "Spersonalizowane strony błędów"
+
+msgid "Directory listing"
+msgstr "Zawartość katalogu"
+
+msgid "Logo upload"
+msgstr "Upload pliku z logo"
+
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
+
+msgid "Reseller IPs"
+msgstr "Numery IP resellera"
+
+msgid "Aliases"
+msgstr "Aliasy"
+
+msgid "SQL Databases"
+msgstr "Bazy danych SQL"
+
+msgid "SQL Users"
+msgstr "Użytkownicy SQL"
+
+msgid "Web Traffic"
+msgstr "Transfer WWW"
+
+msgid "Disk storage"
+msgstr "Wykorzystanie dysku"
+
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+"Użytkownicy tego resellera używają/posiadają większe/wyższe <b>%s</b> konta/"
+"limity od tych, przypisanych przez Ciebie."
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+"Ten reseller ma przypisane większe/wyższe <b>%s</b> konta/limity od tych, "
+"przypisanych przez Ciebie."
+
+#, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!"
+msgstr ""
+"Ten reseller ma użytkownika(ów) z nieograniczonymi uprawnieniami dla usługi "
+"<b>%s</b>!"
+
+msgid "If you want to limit the reseller, you must first limit its customers!"
+msgstr ""
+"Jeśli chcesz ograniczyć resellera, najpierw musisz ograniczyć jego "
+"użytkowników!"
+
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!"
+msgstr "Ten reseller ma domeny przypisane do adresu <b>%s</b>!"
+
+msgid "ERROR: The reseller account you trying to edit does not exist!"
+msgstr "BŁĄD: Konto resellera, które próbujesz edytować, nie istnieje!"
+
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Edytuj Resselera"
+
+msgid ""
+"ERROR: One or more errors was found! Please, correct them and try again!"
+msgstr ""
+"UWAGA: Znaleziono jeden lub więcej błędów! Proszę, skoryguj je i wtedy "
+"spróbuj ponownie!"
+
+msgid "Reseller data inconsistency!"
+msgstr "Niespójność danych resellera!"
+
+msgid "Please, read the message(s) above and trying to correct!"
+msgstr "Proszę przeczytać powyższą(e) wiadomość(ści) i spróbować poprawić!"
+
+msgid "Edit reseller"
+msgstr "Edytuj resellera"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "unlimited"
+msgstr "bez limitu"
+
+msgid "Reset"
+msgstr "Wyczyść"
+
+msgid "Generated password:"
+msgstr "Wygenerowane hasło:"
+
+msgid "Type `CTRL+C` to copy the generated password in the clipboard."
+msgstr "Wciśnij `CTRL+C` aby skopiować wygenerowane hasło do schowka."
+
+#, php-format
+msgid ""
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"\\nInstead, use the %s button to update the data."
+msgstr ""
+"NOTA i-MSCP:\\n\\nKlawisz `Enter` jest wyłaczony ze względów bezpieczeństwa!"
+"\\nZamiast tego należy użyć klawisza %s ,aby zaktualizować dane."
+
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - statystyki resellera"
+
+#, fuzzy
+msgid "No reseller is registered in your system!"
+msgstr "Nie znaleziono resellera w systemie!"
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr "%1$s / %2$s <br/>z<br/> <b>%3$s</b>"
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$s / %2$s <br/>z<br/> <b>nielimitowanych</b>"
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr "%1$d / %2$d <br/>z<br/> <b>%3$d</b>"
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$d / %2$d <br/>z<br/> <b>nielimitowanych</b>"
+
+msgid "<b>disabled</b>"
+msgstr "<b>wyłączone</b>"
+
+msgid "Reseller statistics table"
+msgstr "Tabela statystyk resellera"
+
+msgid "SQL database"
+msgstr "baza danych SQL"
+
+msgid "SQL user"
+msgstr "Użytkownik SQL"
+
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Admin/Statystyki resellera"
+
+#, php-format
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
+msgstr "%1$s <br/>z<br/> <b>%2$s</b>"
+
+#, php-format
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr "%s <br/>z<br/> <b>nielimitowanych</b>"
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgstr "%1$d <br/>z<br/> <b>%2$d</b>"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr "%d <br/>z<br/> <b>nielimitowanych</b>"
+
+msgid "This reseller has no domains."
+msgstr "Ten reseller nie ma domen."
+
+msgid "Traffic<br>usage"
+msgstr "Wykorzystanie<br>transferu"
+
+msgid "Disk<br>usage"
+msgstr "Wykorzystanie<br>dysku"
+
+msgid "Web<br>traffic"
+msgstr "Transfer<br>WWW"
+
+msgid "FTP<br>traffic"
+msgstr "Transfer<br>FTP"
+
+msgid "SMTP<br>traffic"
+msgstr "Transfer<br>SMTP"
+
+msgid "POP3/IMAP<br>traffic"
+msgstr "Transfer<br>POP3/IMAP"
+
+msgid "SQL<br>database"
+msgstr "Baza danych<br>SQL"
+
+msgid "SQL<br>user"
+msgstr "Użytkownik<br>SQL"
+
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr ""
+"Admin i-MSCP / Narzędzia systemowe / Kontrola logu narzędzi przeciwko "
+"rootkit-om"
+
+#, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "%s nie istnieje lub jest pusty!"
+
+msgid "Anti-Rootkits Tools Log Checker"
+msgstr "Kontrola logu narzędzi przeciwko rootkit-om"
+
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Admin/Statystyki serwera"
+
+msgid "Web in"
+msgstr "WWW - przychodzące"
+
+msgid "Web out"
+msgstr "WWW - wychodzące"
+
+msgid "SMTP in"
+msgstr "SMTP przychodząca"
+
+msgid "SMTP out"
+msgstr "SMTP wychodząca"
+
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP przychodząca"
+
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP wychodząca"
+
+msgid "Other in"
+msgstr "Inne przychodzące"
+
+msgid "Other out"
+msgstr "Inne wychodzące"
+
+msgid "All in"
+msgstr "Wszystkie przychodzące"
+
+msgid "All out"
+msgstr "Wszystkie wychodzące"
+
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Admin/Dzienne statystyki serwera"
+
+msgid "Server day statistics"
+msgstr "Dzienne statystyki serwera"
+
+msgid "Month:"
+msgstr "Miesiąc:"
+
+msgid "Year:"
+msgstr "Rok:"
+
+msgid "Day:"
+msgstr "Dzień:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
+msgstr "Admin i-MSCP / Narzędzia systemowe / Stan Serwera"
+
+msgid "Host"
+msgstr "Host"
+
+msgid "Service"
+msgstr "Usługa"
+
+msgid "UP"
+msgstr "WŁ"
+
+msgid "DOWN"
+msgstr "WYŁ"
+
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Admin/Zarządzaj Sesjami"
+
+msgid "Manage user sessions"
+msgstr "Zarządzaj sesjami użytkownika"
+
+msgid "User type"
+msgstr "Typ użytkownika"
+
+msgid "Last access"
+msgstr "Ostatni dostęp"
+
+msgid "Kill session"
+msgstr "Zabij sesję"
+
+msgid "i-MSCP - Admin/Settings"
+msgstr "i-MSCP -Admin/Ustawienia"
+
+#, fuzzy
+msgid "Error: Only positive numbers are allowed!"
+msgstr "BŁĄD: Tylko numery dodatnie są dozwolone!"
+
+#, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr ""
+
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
+
+msgid "Activation link expire time (minutes)"
+msgstr "Ważność linku aktywacyjnego (minuty)"
+
+msgid "Password settings"
+msgstr "Ustawienia haseł"
+
+msgid "Use strong Passwords"
+msgstr "Wymuszanie silnych haseł"
+
+msgid "Password length"
+msgstr "Długość hasła"
+
+msgid "Bruteforce detection"
+msgstr "Detekcja bruteforce"
+
+msgid "Block time between logins"
+msgstr "Czas blokady pomiędzy logowaniami"
+
+msgid "Max number of login attempts"
+msgstr "Maksymalna liczba prób logowania"
+
+msgid "Blocktime (minutes)"
+msgstr "Czas blokady (minuty)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Czas blokady pomiędzy logowaniami (sekundy)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Liczba prób sprawdzeń CAPTCHA"
+
+msgid "Other settings"
+msgstr "Inne ustawienia"
+
+msgid "E-Mail settings"
+msgstr "Ustawienia E-Mail"
+
+msgid "Create default E-Mail addresses"
+msgstr "Twórz domyślne adresy E-Mail"
+
+msgid "Count default E-Mail addresses"
+msgstr "Licz domyślne adresy E-Mail"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "Odrzucanie poczty zablokowanych kont"
+
+msgid "Apply changes"
+msgstr "Zatwierdź zmiany"
+
+msgid "Hosting plans available for"
+msgstr "Plany hostingowe dostępne dla"
+
+msgid "Admin"
+msgstr "Administrator"
+
+msgid "Domains per page"
+msgstr "Domen na stronę"
+
+msgid "Log Level"
+msgstr "Poziom logowania"
+
+msgid "Notices, Warnings and Errors"
+msgstr "Uwagi, Ostrzeżenia i Błędy"
+
+msgid "Warnings and Errors"
+msgstr "Ostrzeżenia i Błędy"
+
+msgid "Errors"
+msgstr "Błędy"
+
+msgid "Check for update"
+msgstr "Sprawdź aktualizacje"
+
+msgid "Show compression size comment"
+msgstr ""
+
+msgid "Prevent external login for admins"
+msgstr "Zapobiegaj zewnętrznemu logowaniu administratorów"
+
+msgid "Prevent external login for resellers"
+msgstr "Zapobiegaj zewnętrznemu logowaniu dla resellerów"
+
+msgid "Prevent external login for clients"
+msgstr "Zapobiegaj zewnętrznemu logowaniu dla klientów"
+
+msgid "Custom orderpanel ID"
+msgstr "ID Własnego Panelu Zamówień"
+
+msgid "Domain names validation"
+msgstr "Sprawdzenie nazw domen"
+
+msgid "Top Level Domain name strict validation"
+msgstr "Sprawdzanie nazw domen najwyższego poziomu"
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+"Mogą być używane tylko domeny najwyższego poziomu (TLD) będące w bazie "
+"głównej strefy organizacji IANA."
+
+msgid "Second Level Domain name strict validation"
+msgstr "Sprawdzanie nazw domen drugiego poziomu"
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+"Pojedyncza litera w domenach drugiego poziomu (SLD) nie jest dopuszczalna "
+"przy większości domen najwyższego poziomu (TLD). Istnieje mała liczba "
+"wyjątków, np.  tylda (TLD) .pl."
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+"Maksymalna liczba of labels for domain names<br />(<i>Excluding SLD & TLD</"
+"i>)"
+
+msgid "Maximal number of labels for subdomains"
+msgstr "Maximal number of labels for subdomains"
+
+msgid "You can only upload images!"
+msgstr "Możesz wysyłać tylko obrazki!"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Obrazki muszą być mniejsze niż 195 x 195 pikseli!"
+
+msgid "Your logo was successful uploaded!"
+msgstr "Logo zostało załadowane!"
+
+msgid "Installed layouts"
+msgstr "Zainstalowane szablony"
+
+msgid "Layout name"
+msgstr "Nazwa szablonu"
+
+msgid "default"
+msgstr "domyślny"
+
+msgid "Upload logo"
+msgstr "Wczytaj logo"
+
+msgid "Logo file"
+msgstr "Plik z logo"
+
+msgid "Upload"
+msgstr "Prześlij"
+
+msgid "Remove"
+msgstr "Usuń"
+
+msgid "Choose default layout"
+msgstr "Wybierz domyślny szablon"
+
+msgid "Please specify a subject!"
+msgstr "Podaj temat!"
+
+msgid "Please specify message!"
+msgstr "Wpisz wiadomość!"
+
+msgid "Auto email template data updated!"
+msgstr "Szablon automatycznej poczty zaktualizowany!"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - ustawienia Admin/Zgub.hasło ustawienia poczty"
+
+msgid "Lost password e-mail"
+msgstr "Utracone hasło konta e-mail"
+
+msgid "Message template info"
+msgstr "Informacje o szablonie wiadomości"
+
+msgid "Message template"
+msgstr "Szablon wiadomości"
+
+msgid "Activation E-Mail"
+msgstr "E-Mail Aktywacyjny"
+
+msgid "Password E-Mail"
+msgstr "E-Mail z hasłem"
+
+msgid "User login (system) name"
+msgstr "Login (systemowy) użytkownika"
+
+msgid "User password"
+msgstr "Hasło użytkownika"
+
+msgid "User (first and last) name"
+msgstr "Imię i nazwisko"
+
+msgid "Lost password link"
+msgstr "Link utraconego hasła"
+
+msgid "Subject"
+msgstr "Temat"
+
+msgid "URL to this admin panel"
+msgstr "URL do tego panelu administratora"
+
+msgid "URL protocol"
+msgstr "Protokół"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Admin/Tryb serwisowy"
+
+msgid "Settings saved !"
+msgstr "Ustawienia zapisane!"
+
+msgid "Under this mode only administrators can login"
+msgstr "W tym trybie tylko administratorzy mogą się zalogować"
+
+#, fuzzy
+msgid "Error: Wrong Ip number!"
+msgstr "Niepoprawny numer IP!"
+
+#, fuzzy
+msgid "Error: Only positive numbers are allowed for services ports!"
+msgstr "BŁĄD: Tylko numery dodatnie są dozwolone!"
+
+#, fuzzy
+msgid "Error: Service port with same name already exists!"
+msgstr "BŁAD: Port już istnieje!"
+
+msgid "Error: Unallowed protocol!"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Wrong value for show entry!"
+msgstr "BŁĄD: Hasło nie zostało wysłane"
+
+#, fuzzy
+msgid "Service port was successfully added"
+msgstr "Nowy numer IP dodany!"
+
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
+msgstr ""
+
+msgid "Nothing's been changed"
+msgstr ""
+
+#, fuzzy
+msgid "You have no custom service ports defined"
+msgstr "Nie masz zdefiniowanych własnych portów usług."
+
+#, fuzzy
+msgid "Service port was successfully removed!"
+msgstr "Zgłoszenie zostało ponownie otwarte!"
+
+#, fuzzy
+msgid "Error: You are not allowed to remove this service port entry!"
+msgstr "Czy napewno chcesz usunąć %s"
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP -Admin/Ustawienia"
+
+msgid "udp"
+msgstr "udp"
+
+msgid "tcp"
+msgstr "tcp"
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Protocol"
+msgstr "Protokół"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s service port ?"
+msgstr "Czy napewno chcesz usunąć %s"
+
+msgid "View / Update service(s) port"
+msgstr ""
+
+#, fuzzy
+msgid "Add new service port"
+msgstr "Dodaj nowy obszar chroniony"
+
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Admin/Ustawienia transferu serwera"
+
+msgid "Wrong data input!"
+msgstr "Niepoprawne dane!"
+
+msgid "Warning traffic is bigger than max traffic!"
+msgstr "Transfer ostrzegawczy jest większy niż maksymalny!"
+
+msgid "Server traffic settings updated successfully!"
+msgstr "Ustawienia transferu serwera zostały zaktualizowane!"
+
+msgid "Modify"
+msgstr "Modyfikuj"
+
+msgid "Set server traffic settings"
+msgstr "Ustaw transfer serwera"
+
+msgid "Max traffic [MB]"
+msgstr "Maksymalny transfer [MB]"
+
+msgid "Warning traffic [MB]"
+msgstr "Transfer ostrzegawczy [MB]"
+
+msgid "i-MSCP - Admin/Manage users/Email setup"
+msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Ustawienia poczty"
+
+msgid "User real (first and last) name"
+msgstr "Prawdziwe imię i nazwisko użytkownika"
+
+msgid "User type (admin, reseller, user)"
+msgstr "Typ użytkownika (administrator, reseller, użytkownik)"
+
+#, fuzzy
+msgid "Wrong software id."
+msgstr "Niepoprawne ID zamówienia!"
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "Resellerzy"
+
+#, fuzzy
+msgid "Rights succesfully added."
+msgstr "Użytkownik SQL został dodany!"
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%1$s (%2$s)"
+msgstr "%1$s z %2$s MB"
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "IP został usunięty!"
+
+#, fuzzy
+msgid "Fill out a message text!"
+msgstr "Twoja wiadomość została wysłana!"
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP -Klient/Menadżer zadań Cron'a"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+#, fuzzy
+msgid "Delete reseller software"
+msgstr "Edycja resellera przerwana!"
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "Nazwa resellera"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr "%s nie istnieje"
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "Baza danych SQL została usunięta!"
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "Aktywuj"
+
+#, fuzzy
+msgid "Import"
+msgstr "Eksportuj"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "Konto FTP zostało usunięte!"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "odinstaluj"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "Ustawienia zamówień"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "Domena o tej nazwie już istnieje w systemie!"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+#, fuzzy
+msgid "Update from web depot"
+msgstr "Aktualizuj zamówienie"
+
+#, fuzzy
+msgid "Package title"
+msgstr "Cena pakietu"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "Dodatki"
+
+#, fuzzy
+msgid "Package version"
+msgstr "Cena pakietu"
+
+#, fuzzy
+msgid "Package language"
+msgstr "Dodatki"
+
+#, fuzzy
+msgid "Package type"
+msgstr "Cena pakietu"
+
+#, fuzzy
+msgid "Package vendor HP"
+msgstr "Dodatki"
+
+#, fuzzy
+msgid "Package actions"
+msgstr "Dodatki"
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Remote File not found!"
+msgstr "Błąd 404 (nie znaleziono)"
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "Logo zostało załadowane!"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "Wczytaj logo"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "Statystyki resellera"
+
+#, fuzzy
+msgid "Application"
+msgstr "Akcja"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Typ"
+
+#, fuzzy
+msgid "Depot import"
+msgstr "Port docelowy"
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "Nazwa resellera"
+
+#, fuzzy
+msgid "Waiting for activation"
+msgstr "Czeka na zatwierdzenie"
+
+#, fuzzy
+msgid "Activated software"
+msgstr "Aktywuj"
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "Czy na pewno chcesz usunąć to konto?"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Czy na pewno chcesz zmienić  stan konta %s?"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "Czy na pewno chcesz usunąć to konto?"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - Admin/Zarządzaj Sesjami"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "Dostępne adresy IP"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "Od resellera"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "Brak dostępnych aktualizacji bazy"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "Zainstalowane szablony"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "Resellerzy"
+
+msgid "Softwaredepot"
+msgstr ""
+
+#, fuzzy
+msgid "Admin not available"
+msgstr "Plany hostingowe dostępne dla"
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "Czy na pewno chcesz przywrócić kopię?"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "Wszyscy resellerzy"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Admin/Zarządzaj Sesjami"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+#, fuzzy
+msgid "Remove permissions"
+msgstr "Wersja Demo!"
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "Tabela statystyk resellera"
+
+msgid "Added by"
+msgstr ""
+
+#, fuzzy
+msgid "Add permissions"
+msgstr "Dodaj istniejącego użytkownika"
+
+msgid "Software permissions"
+msgstr ""
+
+msgid "CPU bogomips"
+msgstr "Bogomips CPU"
+
+msgid "CPU cache"
+msgstr "Cache CPU"
+
+msgid "Number of CPU Cores"
+msgstr "Liczba rdzeni CPU"
+
+msgid "CPU MHz"
+msgstr "Mhz CPU"
+
+msgid "CPU model"
+msgstr "Model CPU"
+
+msgid "CPU system Info"
+msgstr "Informacja o CPU"
+
+msgid "Filesystem system Info"
+msgstr "Informacje o systemie plików"
+
+msgid "Free"
+msgstr "Wolne"
+
+#, fuzzy
+msgid "Kernel Version"
+msgstr "Wersja Demo!"
+
+msgid "Load (1 Min, 5 Min, 15 Min)"
+msgstr ""
+
+msgid "Memory system info"
+msgstr "Informacje o pamięci w systemie"
+
+msgid "Mount"
+msgstr "Montowanie"
+
+msgid "RAM"
+msgstr "RAM"
+
+msgid "Partition"
+msgstr "Partycja"
+
+msgid "Percent"
+msgstr "Procent"
+
+msgid "Size"
+msgstr "Wielkość"
+
+msgid "Swap"
+msgstr "Podręczna"
+
+msgid "Vital system info"
+msgstr "Informacje o stanie systemu"
+
+msgid "Total"
+msgstr "Ogółem"
+
+msgid "Up time"
+msgstr "Czas działania"
+
+msgid "i-MSCP - Client/Questions & Comments"
+msgstr "i-MSCP - Klient/Pytania i Komentarze"
+
+msgid "Support tickets"
+msgstr "Zgłoszenia wsparcia"
+
+msgid "Priority"
+msgstr "Priorytet"
+
+msgid "Last reply"
+msgstr "Ostatnia odpowiedź"
+
+msgid "Delete all"
+msgstr "Usuń wszystko"
+
+msgid "Open tickets"
+msgstr "Otwarte zgłoszenia"
+
+msgid "Closed tickets"
+msgstr "Zamknięte zgłoszenia"
+
+msgid "From"
+msgstr "Od"
+
+msgid "Support ticket deleted successfully!"
+msgstr "Zgłoszenia wsparcia zostały usunięte!"
+
+msgid "All open support tickets deleted successfully!"
+msgstr "Wszystkie otwarte zgłoszenia wsparcia usunięte!"
+
+msgid "All closed support tickets deleted successfully!"
+msgstr "Wszystkie zamknięte zgłoszenia wsparcia usunięte pomyślnie!"
+
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
+msgstr "i-MSCP - Klient/Włącz Funkcję autoodpowiedzi (Autoresponder)"
+
+msgid "i-MSCP - Client: Support System: View Ticket"
+msgstr "i-MSCP - Klient : System Wsparcia: Przeglądaj Bilety"
+
+msgid "Please type your message!"
+msgstr "Wpisz wiadomość!"
+
+msgid "Ticket not found!"
+msgstr "Zgłoszenie nie znalezione!"
+
+msgid "i-MSCP - Admin: Support System: View Ticket"
+msgstr "i-MSCP - Admin : System wsparcia: Przeglądanie zgłoszeń"
+
+msgid "View support ticket"
+msgstr "Przeglądaj zgłoszenia wsparcia"
+
+msgid "Send message reply"
+msgstr "Wyślij odpowiedź"
+
+msgid "Send reply"
+msgstr "Wyślij odpowiedź"
+
+msgid "i-MSCP - Delete Domain"
+msgstr "i-MSCP - Usuwanie domeny"
+
+msgid "Wrong domain ID!"
+msgstr "Niepoprawny ID domeny!"
+
+msgid "Invalid user id!"
+msgstr "Błędny id użytkownika!"
+
+msgid "Logo could not be deleted:"
+msgstr "Logo nie może być usunięte:"
+
+msgid "There are active domains of reseller/admin!"
+msgstr "Istnieją aktywne domeny resellera/admina!"
+
+msgid "Delete domain"
+msgstr "Usuń domenę"
+
+msgid "Domain summary:"
+msgstr "Podsumowanie domeny:"
+
+msgid "Domain e-mails:"
+msgstr "Konta pocztowe domeny:"
+
+msgid "Domain FTP accounts:"
+msgstr "Konta FTP domeny:"
+
+msgid "Domain aliases:"
+msgstr "Aliasy domeny:"
+
+msgid "Domain subdomains:"
+msgstr "Subdomeny:"
+
+msgid "Domain databases:"
+msgstr "Bazy danych domeny:"
+
+#, fuzzy
+msgid ""
+"Do you really want to delete the entire domain? This operation cannot be "
+"undone!"
+msgstr "Naprawdę chcesz usunąć domenę? Ta operacja może być nieodwracalna!"
+
+msgid "Yes, delete the domain."
+msgstr "Tak, usuń domenę."
+
+msgid "Domain alias limit reached!"
+msgstr "Limit aliasów domeny został osiągnięty!"
+
+msgid "Domain with that name already exists on the system!"
+msgstr "Domena o tej nazwie już istnieje w systemie!"
+
+msgid "Incorrect mount point syntax"
+msgstr "Nieprawidłowa składnia punktu montowania"
+
+msgid "Master domain cannot be used!"
+msgstr "Główna domena nie może być użyta!"
+
+#, fuzzy
+msgid "Wrong address in forward URL!"
+msgstr "Niepoprawna składnia nazwy domeny!"
+
+msgid "Wrong domain part in forward URL!"
+msgstr "Niepoprawna składnia nazwy domeny!"
+
+msgid "Domain with this name already exist"
+msgstr "Domena o takiej nazwie już istnieje"
+
+msgid "There is a subdomain with the same mount point!"
+msgstr "Alias z tym samym punktem montowania już istnieje!"
+
+msgid "Alias scheduled for activation!"
+msgstr "Alias zaplanowany do aktywacji!"
+
+msgid "Alias scheduled for addition!"
+msgstr "Alias zaplanowany do dodania!"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP Klient : Dodaj Alias"
+
+msgid "Manage domain alias"
+msgstr "Zarządzaj aliasami domen"
+
+msgid "Add domain alias"
+msgstr "Dodaj alias domeny"
+
+msgid "User account"
+msgstr "Konto użytkownika"
+
+msgid "Directory mount point"
+msgstr "Punkt montowania katalogu"
+
+msgid "Forward to URL"
+msgstr "Przekieruj do adresu URL"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Nie musisz wpisywać 'www.' i-MSCP doda to automatycznie."
+
+msgid "Wrong domain name!"
+msgstr "Niepoprawna składnia nazwy domeny!"
+
+msgid "Please write mount point!"
+msgstr "Proszę zapisać punk montowania!"
+
+msgid "Enable Forward"
+msgstr "Włącz przekierowanie"
+
+msgid "Enable"
+msgstr "Włącz"
+
+msgid "Disable"
+msgstr "Wyłącz"
+
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Alias domeny, który chcesz usunąć posiada subdomeny!<br>Najpierw je usuń!"
+
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Alias domeny który chcesz usunąć posiada konta pocztowe !<br>Najpierw je "
+"usuń!"
+
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr ""
+"Alias domeny który próbujesz usunąć posiada konta FTP!<br>Najpierw je usuń!"
+
+msgid "Alias scheduled for deletion!"
+msgstr "Alias zaplanowany do usunięcia!"
+
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
+msgstr "i-MSCP - Zarządzaj Aliasem Domeny/Edytuj Alias"
+
+msgid "Edit domain alias"
+msgstr "Edytuj alias domeny"
+
+msgid "Alias name"
+msgstr "Nazwa aliasu"
+
+msgid "Mount Point"
+msgstr "Punkt montowania"
+
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+msgstr ""
+"Subdomeny które próbujesz usunąć posiadają konta pocztowe!<br>Najpierw je "
+"usuń!"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Subdomena została zaplanowana do usunięcia!"
+
+msgid "Backup archive scheduled for restoring!"
+msgstr "Kopia zapasowa zaplanowana do przywrócenia!"
+
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Klient/Dzienna Kopia Zapasowa"
+
+msgid "Instructions to download today's backup"
+msgstr "Instrukcja pobrania dzisiejszej kopii bezpieczeństwa"
+
+msgid "Login with your FTP account"
+msgstr "Zaloguj się do konta FTP"
+
+msgid "Switch to backups/ directory"
+msgstr "Przejdź do katalogu backups/"
+
+msgid "Download the files stored in this directory"
+msgstr "Pobierz pliki z tego katalogu"
+
+msgid "(usually named"
+msgstr "(zazwyczaj nazwany "
+
+msgid "Restore backup"
+msgstr "Przywróć kopię zapasową"
+
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
+msgstr ""
+"Kliknij na przycisk 'Przywróć' a system przywróci ostatnią dzienną kopię"
+
+msgid "Restore"
+msgstr "Przywróć"
+
+msgid "Are you sure you want to restore the backup?"
+msgstr "Czy na pewno chcesz przywrócić kopię?"
+
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP -Klient/Menadżer zadań Cron'a"
+
+msgid "Cronjob Manager"
+msgstr "Menadżer zadań Cron'a"
+
+msgid "Add Cronjob"
+msgstr "Dodaj zadanie cron'a"
+
+msgid "Active"
+msgstr "Aktywny"
+
+msgid "Cronjob"
+msgstr "Zadanie Cron'a"
+
+msgid "Command to run:"
+msgstr "Polecenie do wykonania:"
+
+msgid "Minute(s):"
+msgstr "Minut:"
+
+msgid "Hour(s):"
+msgstr "Godzin:"
+
+msgid "Day(s):"
+msgstr "Dni:"
+
+msgid "Month(s):"
+msgstr "Miesięcy:"
+
+msgid "Weekday(s):"
+msgstr "Dni tygodnia:"
+
+msgid "Edit Cronjob"
+msgstr "Edytuj zadanie Cron'a"
+
+msgid "Cronjobs"
+msgstr "Zadania Cron'a"
+
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
+#, fuzzy
+msgid "Custom DNS record scheduled for deletion!"
+msgstr "Wpis strefy DNS został przeznaczony do usunięcia!"
+
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "i-MSCP - Zarządzaj Aliasem Domeny/Dodaj rekord strefy DNS"
+
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "i-MSCP - Zarządzaj Aliasem Domeny/Edytuj rekord strefy DNS"
+
+msgid "Add DNS zone's record (EXPERIMENTAL)"
+msgstr "Dodaj wpis strefy w DNS"
+
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
+msgstr "Edytuj wpis strefy w DNS"
+
+msgid "DNS zone's records"
+msgstr "Rekordy strefy DNS"
+
+msgid "Class"
+msgstr "Klasa"
+
+msgid "Service name"
+msgstr "Nazwa usługi"
+
+msgid "IP address"
+msgstr "Adres IP"
+
+msgid "IPv6 address"
+msgstr "Adres IPv6"
+
+msgid "Service protocol"
+msgstr "Protokół usługi"
+
+msgid "TTL"
+msgstr "TTL"
+
+msgid "Relative weight for records with the same priority"
+msgstr "Względna waga dla zapisów z takim samym priorytetem"
+
+msgid "Target host"
+msgstr "Host docelowy"
+
+msgid "Target port"
+msgstr "Port docelowy"
+
+msgid "Canonical name"
+msgstr "Nazwa kanoniczna"
+
+msgid "Plain record data"
+msgstr "Dane rekordu"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr "Rekordy strefy DNS"
+
+#, fuzzy
+msgid "You are not allowed to edit this DNS record!"
+msgstr "Nie masz żadnych aliasów."
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr "Użyłeś niedozwolonego znaku (\"%s\") w rekordzie CNAME"
+
+msgid "Name must be filled."
+msgstr "Pole \"Nazwa\" musi być wypełnione."
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr "Błędny adres IPv4 (\"%s\")."
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr "Błędny adres IPv6 (\"%s\")."
+
+msgid "Port must be a number!"
+msgstr "Port musi być liczbą!"
+
+msgid "TTL must be a number!"
+msgstr "TTL musi być liczbą!"
+
+msgid "Priority must be a number!"
+msgstr "Priorytet musi być liczbą!"
+
+msgid "Relative weight must be a number!"
+msgstr "Względna waga musi być liczbą! "
+
+msgid "Service must be filled."
+msgstr "Pole \"Usługa\" musi być wypełnione."
+
+msgid "Host must be filled."
+msgstr "Pole 'Host' musi być wypełnione"
+
+msgid "conflict with CNAME record"
+msgstr "konflikt z rekordem CNAME"
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in NAME"
+msgstr "Użyłeś niedozwolonego znaku (\"%s\") w rekordzie NAME"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr "Rekord \"%s\" nie jest częścią domeny \"%s\"."
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr "Nie można zapisać rekordu %s. Powód \"%s\"."
+
+#, php-format
+msgid "Unknown zone type %s!"
+msgstr "Nieznany typ strefy %s!"
+
+#, fuzzy
+msgid "Error: DNS record already exist!"
+msgstr "Taki użytkownik już istnieje!"
+
+msgid "i-MSCP - Client/Domain Statistics"
+msgstr "i-MSCP - Klient/Statystyki Domeny"
+
+msgid "Web Stats"
+msgstr "Statystyki WWW"
+
+msgid "WEB"
+msgstr "WWW"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "Suma"
+
+msgid "Manual zone's records list is empty!"
+msgstr "Lista ręcznych rekordów strefy jest pusta!"
+
+#, php-format
+msgid "%s record"
+msgstr "rekord %s"
+
+msgid "Subdomain list is empty!"
+msgstr "Lista subdomen jest pusta!"
+
+msgid "Delete order"
+msgstr "Usuń zamówienie"
+
+msgid "Alias list is empty!"
+msgstr "Lista aliasów jest pusta!"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Klient/Zarządzaj Domenami"
+
+msgid "Mount point"
+msgstr "Punkt montowania"
+
+msgid "Forward"
+msgstr "Przekierowanie"
+
+msgid "Actions"
+msgstr "Akcja"
+
+msgid "Record data"
+msgstr "Dane rekordu"
+
+msgid "i-MSCP - Client/Manage Error Custom Pages"
+msgstr "i-MSCP - Klient/Zarządzaj własnymi stronami błędów"
+
+msgid "Server error - please choose error page"
+msgstr "Błąd serwera - wybierz stronę błędu"
+
+msgid "Edit error page"
+msgstr "Edytuj stronę błędu"
+
+msgid "Custom error page was updated!"
+msgstr "Spersonalizowane strony błędów zostały zaktualizowane!"
+
+#, fuzzy
+msgid "System error - custom error page was not updated!"
+msgstr ""
+"Błąd systemu - spersonalizowana strona błędu NIE została zaktualizowana!"
+
+msgid "Error 401 (unauthorised)"
+msgstr "Błąd 401 (nieautoryzowany dostęp)"
+
+msgid "Error 403 (forbidden)"
+msgstr "Błąd 403 (dostęp zabroniony)"
+
+msgid "Error 404 (not found)"
+msgstr "Błąd 404 (nie znaleziono)"
+
+msgid "Error 500 (internal server error)"
+msgstr "Błąd 500 (wewnętrzny błąd serwera)"
+
+msgid "Error 503 (service unavailable)"
+msgstr "Błąd 503 (usługa niedostępna)"
+
+msgid "FTP list is empty!"
+msgstr "Lista FTP jest pusta!"
+
+msgid "i-MSCP - Client/Manage Users"
+msgstr "i-MSCP - Klient/Zarządzaj Użytkownikami"
+
+msgid "FTPs total"
+msgstr "Suma FTP'ów"
+
+msgid "FTP users"
+msgstr "Użytkownicy FTP"
+
+msgid "FTP account"
+msgstr "Konto FTP"
+
+#, fuzzy
+msgid "Login As"
+msgstr "Logowanie"
+
+msgid "Empty List"
+msgstr "Wyczyść Listę"
+
+msgid "Empty list"
+msgstr "Wyczyść listę"
+
+msgid "FTP account already exists!"
+msgstr "Konto FTP już istnieje!"
+
+msgid "Unknown domain type"
+msgstr "Nieznany typ domeny"
+
+msgid "Incorrect mount point length or syntax"
+msgstr "Nieprawidłowa długość lub składnia punktu montowania"
+
+#, php-format
+msgid "%s does not exist"
+msgstr "%s nie istnieje"
+
+msgid "FTP account added!"
+msgstr "Konto FTP dodane!"
+
+msgid "Please enter FTP account username!"
+msgstr "Podaj nazwę użytkownika FTP!"
+
+msgid "Password is missing!"
+msgstr "Brak danych hasła!"
+
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
+msgstr "Lista subdomen jest pusta! Nie możesz dodać tam kont FTP!"
+
+msgid "Alias list is empty! You cannot add FTP accounts there!"
+msgstr "Lista aliasów jest pusta! Nie możesz dodać tam kont FTP!"
+
+#, fuzzy
+msgid "Please specify other FTP account directory!"
+msgstr "Podaj inny katalog konta FTP!"
+
+msgid "FTP accounts limit reached!"
+msgstr "Został osiągnięty limit kont FTP!"
+
+msgid "i-MSCP - Client/Add FTP User"
+msgstr "i-MSCP - Klient/Dodaj Użytkownika FTP"
+
+msgid "To main domain"
+msgstr "Do domeny głównej"
+
+msgid "To domain alias"
+msgstr "Do aliasu domeny"
+
+msgid "To subdomain"
+msgstr "Do subdomeny"
+
+msgid "Use other dir"
+msgstr "Użyj innego katalogu"
+
+msgid "Choose dir"
+msgstr "Wybierz katalog"
+
+#, fuzzy
+msgid "Unknown FTP user id!"
+msgstr "Nieznany typ"
+
+#, fuzzy
+msgid "Cannot open directory! Please contact your administrator!"
+msgstr "Nie można otworzyć katalogu!<br>Skontaktuj się z administratorem !"
+
+msgid "Parent Directory"
+msgstr "Poprzedni Katalog"
+
+msgid "i-MSCP - Client/Webtools"
+msgstr "i-MSCP - Klient/Narzędzia sieciowe"
+
+msgid "Directory tree"
+msgstr "Drzewo katalogu"
+
+msgid "Directories"
+msgstr "Katalogi"
+
+msgid "Choose"
+msgstr "Wybierz"
+
+msgid "FTP account deleted successfully!"
+msgstr "Konto FTP zostało usunięte!"
+
+msgid "FTP account data updated!"
+msgstr "Dane konta FTP zostały zaktualizowane!"
+
+msgid "i-MSCP - Client/Edit FTP Account"
+msgstr "i-MSCP - Klient/Edytuj Konto FTP"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr "Użytkownik nie istnieje lub nie masz dostępu do tego interfejsu!"
+
+msgid "Edit FTP user"
+msgstr "Edytuj użytkownika FTP"
+
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+msgid "Hosting plans available for update"
+msgstr "Dostępne zaktualizowane plany hostingowe"
+
+msgid "Cancel order"
+msgstr "Anuluj zamówienie"
+
+msgid "Your order"
+msgstr "Twoje zamówienie"
+
+msgid "Purchase"
+msgstr "Zamów!"
+
+msgid "There are no available updates"
+msgstr "Nie ma dostępnych aktualizacji"
+
+msgid "PHP Support: enabled"
+msgstr "Obsługa PHP: włączona"
+
+msgid "PHP Support: disabled"
+msgstr "Obsługa PHP: wyłączona"
+
+msgid ""
+"You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgstr "PHP jest włączony, ale nowy plan hostingowy nie ma tej cechy."
+
+msgid "CGI Support: enabled"
+msgstr "Obsługa CGI: włączone"
+
+msgid "CGI Support: disabled"
+msgstr "Obsługa CGI: wyłączone"
+
+msgid ""
+"You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgstr "CGI jest włączone, ale nowy plan hostingowy nie ma tej cechy."
+
+msgid "DNS Support: enabled"
+msgstr "Obsługa DNS: włączona"
+
+msgid "DNS Support: disabled"
+msgstr "Obsługa DNS: wyłączona"
+
+msgid ""
+"You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr "Obsługa DNS jest włączona, ale nowy plan hostingowy nie ma tej cechy."
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
+msgstr "PHP jest włączony, ale nowy plan hostingowy nie ma tej cechy."
+
+msgid "You have more disk space in use than the new hosting plan limits."
+msgstr ""
+"Masz zajęte wiecej przestrzeni dyskowej, niż jest to dozwolone w nowym "
+"planie hostingowym."
+
+msgid "Disk limit"
+msgstr "Limit dyskowy"
+
+msgid "You did have more traffic than the new hosting plan limits."
+msgstr ""
+"Osiągnąłeś większy ruch sieciowy, niż jest to dozwolone w nowym planie "
+"hostingowym."
+
+msgid "Traffic limit"
+msgstr "Limit transferu"
+
+msgid "You have more aliases in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej aliasów, niż jest to dozwolone w nowym planie hostingowym."
+
+msgid "You have more subdomains in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej subdomen, niż jest to dozwolone w nowym planie hostingowym."
+
+msgid "You have more Email addresses in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej adresów e-mail, niż jest to dozwolone w nowym planie "
+"hostingowym."
+
+msgid "Emails"
+msgstr "Emaile"
+
+msgid "You have more FTP accounts in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej kont FTP, niż jest to dozwolone w nowym planie hostingowym."
+
+msgid "FTPs"
+msgstr "FTP"
+
+msgid "You have more SQL databases in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej użytkowników baz danych SQL, niż jest to dozwolone w nowym "
+"planie hostingowym."
+
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej użytkowników baz danych SQL, niż jest to dozwolone w nowym "
+"planie hostingowym."
+
+msgid "free of charge"
+msgstr "bezpłatnie"
+
+#, fuzzy
+msgid "You cannot update to this hosting plan, see notices in text."
+msgstr ""
+"Nie możesz dokonać zmiany na ten plan hostingowy, zobacz informacje w "
+"tekście."
+
+msgid "Warning:"
+msgstr "Uwaga:"
+
+msgid "Caution:"
+msgstr "Uwaga:"
+
+msgid "I understand the warnings - Purchase!"
+msgstr "Rozumiem ostrzeżenia - Zamawiam!"
+
+msgid "There are no available hosting plans for update"
+msgstr "Nie ma żadnych dostępnych planów hostingowych do aktualizacji"
+
+msgid "i-MSCP - Update hosting plan"
+msgstr "i-MSCP - Aktualizuj plan hostingowy"
+
+msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgstr ""
+"Posiadasz więcej adresów e-mail, niż jest to dozwolone w nowym planie "
+"hostingowym."
+
+msgid "Your request for hosting pack update was added successfully"
+msgstr "Twoja prośba o aktualizację planu hostingowego została dodana!"
+
+msgid "[i-MSCP OrderPanel] - You have an update order"
+msgstr "[i-MSCP Panel Zamówień] – Masz zamówienie"
+
+#, php-format
+msgid ""
+"You have an update order for the account %s\n"
+"\n"
+"Please login into your i-MSCP control panel at %s for more details"
+msgstr ""
+"Masz zamówienie aktualizacji dla konta %s\n"
+"\n"
+"\n"
+"Zaloguj się do swojego panelu i-MSCP pod %s, aby uzyskać więcej informacji."
+
+msgid "Your request for hosting pack update was removed successfully"
+msgstr " Twoja prośba o uaktualnienie planu hostingowego została usunięta"
+
+msgid "disabled"
+msgstr "wyłączone"
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "Masz <b>%d</b> nowych odpowiedzi na zgłoszenia wsparcia"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s z %3$s]"
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s z nielimitowanych]"
+
+msgid "You are exceeding your disk limit!"
+msgstr "Przekraczasz limit dostępnej powierzchni dysku!"
+
+msgid "You have no new support questions!"
+msgstr "Nie masz żadnych nowych pytań o wsparcie!"
+
+msgid "This Domain is expired"
+msgstr "Upłynął termin ważności tej domeny"
+
+msgid "i-MSCP - Client/Main Index"
+msgstr "i-MSCP - Klient/Indeks Główny"
+
+msgid "Main domain"
+msgstr "Główna domena"
+
+msgid "Manual DNS support"
+msgstr "Ręczna obsługa DNS"
+
+msgid "SQL support"
+msgstr "Obsługa SQL"
+
+msgid "Choose default language"
+msgstr "Wybierz domyślny język"
+
+msgid "Traffic usage"
+msgstr "Wykorzystanie transferu"
+
+msgid "Disk usage"
+msgstr "Wykorzystanie dysku"
+
+msgid "Alternative URL to reach your website"
+msgstr ""
+
+msgid "User language updated successfully!"
+msgstr "Język użytkownika został zaktualizowany!"
+
+msgid "i-MSCP - Client/Change Language"
+msgstr "i-MSCP - Klient/Zmień Język"
+
+msgid "Please wait for update"
+msgstr "Proszę czekać na aktualizację"
+
+msgid "Mail accounts list is empty!"
+msgstr "Lista kont pocztowych jest pusta"
+
+msgid "Mail users"
+msgstr "Użytkownicy poczty"
+
+msgid "Auto respond"
+msgstr "Automatyczna odpowiedź"
+
+msgid "Domain mails"
+msgstr "Poczta domeny"
+
+msgid "Subdomain mails"
+msgstr "Poczta subdomeny"
+
+msgid "Alias mails"
+msgstr "Aliasy pocztowe"
+
+msgid "Mails total"
+msgstr "Suma emaili"
+
+msgid "Show default E-Mail addresses"
+msgstr "Pokaż domyślne adresy E-Mail"
+
+msgid "Hide default E-Mail Addresses"
+msgstr "Ukryj domyślne adresy E-Mail"
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr "Adres email na twojej liście przekierowań jest nieprawidłowy!"
+
+msgid "Mail forward list empty!"
+msgstr "Lista przekierowań poczty jest pusta!"
+
+msgid "Forward to same address is not allowed!"
+msgstr "Forward do tego samego adresu jest niedozwolony!!"
+
+msgid "Mail account already exists!"
+msgstr "Konto pocztowe już istnieje!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Konto pocztowe zostało zaplanowane do dodania!"
+
+msgid "Please select at least one mail type!"
+msgstr "Proszę wybrać przynajmniej jeden typ poczty!"
+
+msgid "Please enter mail account username!"
+msgstr "Podaj nazwę użytkownika konta poczty!"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr " Niepoprawny format poczty!"
+
+msgid "Password data is missing!"
+msgstr "Brak danych hasła!"
+
+msgid "Entered passwords differ!"
+msgstr "Wprowadzone hasła różnią się!"
+
+msgid "Subdomain alias"
+msgstr "Alias subdomeny"
+
+#, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "Lista %s jest pusta! Nie możesz dodać kont pocztowych!"
+
+#, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
+msgstr "Id %s  jest błędny! Nie możesz dodać kont pocztowych!"
+
+msgid "Forward list is empty!"
+msgstr "Lista przekierowań jest pusta!"
+
+msgid "Mail accounts limit reached!"
+msgstr "Limit kont email został osiągnięty!"
+
+msgid "i-MSCP - Client/Add Mail User"
+msgstr "i-MSCP - Klient/Dodaj Użytkownika Poczty"
+
+msgid "Add mail users"
+msgstr "Dodaj użytkowników poczty"
+
+msgid "To alias subdomain"
+msgstr "Do aliasu subdomeny"
+
+msgid "Normal mail"
+msgstr "Zwykła poczta"
+
+msgid "Forward mail"
+msgstr "Przekierowanie poczty"
+
+msgid "Forward to"
+msgstr "Przekieruj do"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr "Oddziel poszczególne adresy mailowe 'enterem'."
+
+msgid "You did not fill all required fields"
+msgstr "Nie wypełniłeś wszystkich wymaganych pól"
+
+msgid "Mail account scheduled for modification!"
+msgstr "Konto pocztowe zostało zaplanowane do modyfikacji!"
+
+msgid "Please type your mail autorespond message!"
+msgstr "Wpisz wiadomość do automatycznej odpowiedzi!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Konto pocztowe zostało zaplanowane do modyfikacji!"
+
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
+msgstr "i-MSCP - Klient/Włącz Funkcję Automatycznej Odpowiedzi w Poczcie"
+
+msgid "Edit mail auto responder"
+msgstr "Edytuj automatyczną odpowiedź pocztową"
+
+msgid "Your message"
+msgstr "Twoja wiadomość"
+
+msgid "Enable mail auto responder"
+msgstr "Włącz automatyczne odpowiedzi na pocztę"
+
+msgid "Delete CatchAll"
+msgstr "Usuń CatchAll"
+
+msgid "None"
+msgstr "Brak"
+
+msgid "Create catch all"
+msgstr "Stwórz CatchAll"
+
+msgid "Catch all account"
+msgstr "Konto CatchAll"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Konto CatchAll zostało zaplanowane do utworzenia!"
+
+msgid "Mail forward list error!"
+msgstr "Błąd listy przekierowań pocztowych!"
+
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Klient/Utwórz Konto Poczty CatchAll"
+
+msgid "Create catch all mail account"
+msgstr "Utwórz Konto Poczty CatchAll"
+
+msgid "Mail accounts list"
+msgstr "Lista kont pocztowych"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr "Konto CatchAll zaplanowane do usunięcia!"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Najpierw usuń konto CatchAll dla tego konta pocztowego!"
+
+msgid "Email account not found!"
+msgstr "Nie znaleziono konta pocztowego!"
+
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
+msgstr "i-MSCP - Zarządzaj Pocztą i FTP / Edytuj konto pocztowe"
+
+msgid "Mail were updated successfully!"
+msgstr "Poczta została zaktualizowana!"
+
+msgid "Edit email account"
+msgstr "Edytuj konto pocztowe"
+
+msgid "i-MSCP - Client/Change Password"
+msgstr "i-MSCP - Klient/Zmień Hasło"
+
+msgid "i-MSCP - Client/Change Personal Data"
+msgstr "i-MSCP - Klient/Zmień Dane Osobowe"
+
+#, fuzzy
+msgid "Unknown SQL user id."
+msgstr "Nieznany błąd"
+
+#, fuzzy
+msgid "Error: An error occurred while authentication."
+msgstr "Błąd podczas uwierzytelniania!"
+
+msgid "You do not have protected areas"
+msgstr "Nie posiadasz chronionych obszarów"
+
+msgid "Manage users and groups"
+msgstr "Zarządzaj użytkownikami i grupami"
+
+msgid "Group name"
+msgstr "Nazwa grupy"
+
+msgid "Group members"
+msgstr "Członkowie grupy"
+
+msgid "Add group"
+msgstr "Dodaj grupę"
+
+msgid "Group"
+msgstr "Grupa"
+
+msgid "Add new protected area"
+msgstr "Dodaj nowy obszar chroniony"
+
+msgid "Please choose user or group"
+msgstr "Wybierz użytkownika lub grupę"
+
+msgid "Please enter area name"
+msgstr "Podaj nazwę obszaru"
+
+msgid "Please enter area path"
+msgstr "Podaj ścieżkę do obszaru"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr "%s nie istnieje"
+
+msgid "You cannot protect area without selected user(s)!"
+msgstr "Nie możesz chronić obszaru nie wybierając użytkownika(ów)"
+
+msgid "You cannot protect area without selected group(s)"
+msgstr "Nie możesz chronić obszaru nie wybierając grup(y)"
+
+msgid "Protected area updated successfully!"
+msgstr "Obszar chroniony zaktualizowany!"
+
+msgid "Protected area created successfully!"
+msgstr "Obszar chroniony utworzony!"
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr "Stan chronionego obszaru powinien być OK, jeśli chcesz go edytować!"
+
+msgid "You have no users !"
+msgstr "Nie masz użytkowników !"
+
+msgid "You have no groups!"
+msgstr "Nie masz żadnych grup!"
+
+msgid "Protect this area"
+msgstr "Chroń ten obszar"
+
+msgid "Path"
+msgstr "Ścieżka"
+
+msgid "Groups"
+msgstr "Grupy"
+
+msgid "Protect it"
+msgstr "Chroń"
+
+msgid "User auth"
+msgstr "Autoryzacja użytkownika"
+
+msgid "Group auth"
+msgstr "Autoryzacja grupy"
+
+msgid "Area name"
+msgstr "Nazwa obszaru"
+
+msgid "Unprotect it"
+msgstr "Odblokuj"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr "Stan chronionego obszaru powinien być OK, jeśli chcesz go usunąć!"
+
+msgid "Protected area deleted successfully!"
+msgstr "Zabezpieczona strefa została usunięta!"
+
+msgid "Permission deny!"
+msgstr "Dostęp zabroniony!"
+
+msgid "Protected area was deleted successful!"
+msgstr "Chroniony obszar został usunięty!"
+
+msgid "Invalid group name!"
+msgstr "Błędna nazwa grupy!"
+
+msgid "Group already exists!"
+msgstr "Grupa już istnieje!"
+
+msgid "Manage user"
+msgstr "Zarządzaj użytkownikiem"
+
+msgid "Wrong username!"
+msgstr "Niepoprawna nazwa użytkownika!"
+
+msgid "User already exist !"
+msgstr "Taki użytkownik już istnieje!"
+
+#, php-format
+msgid "User was assigned to the %s group"
+msgstr "Użytkownik został przypisany do grupy %s"
+
+#, php-format
+msgid "User was deleted from the %s group "
+msgstr "Użytkownik został usunięty z grupy %s"
+
+msgid "User assign"
+msgstr "Przypisanie użytkownika"
+
+msgid "Already in:"
+msgstr "Już w:"
+
+msgid "Member of group:"
+msgstr "Członek grupy:"
+
+msgid "Select group:"
+msgstr "Wybierz grupę:"
+
+msgid "Update user"
+msgstr "Aktualizuj użytkownika"
+
+msgid "You have no users!"
+msgstr "Nie masz użytkowników!"
+
+#, fuzzy
+msgid "Install in progress..."
+msgstr "Dodawanie w toku"
+
+#, fuzzy
+msgid "Deletion in progress..."
+msgstr "Usuwanie w toku"
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "Czy na pewno chcesz usunąć to konto?"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "Brak dostępnych aktualizacji bazy"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permissions to install software"
+msgstr "Nie masz uprawnień do uzyskania dostępu do tego interfejsu!"
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP -Klient/Menadżer zadań Cron'a"
+
+#, fuzzy
+msgid "Install software"
+msgstr "Instaluj nowy język"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Wersja Demo!"
+
+#, fuzzy
+msgid "Database"
+msgstr "Baza Danych SQL"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "Dostępne adresy IP"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "Zabezpieczona strefa została usunięta!"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr "Lista użytkowników baz danych jest pusta!"
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "Dodaj bazę SQL"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "Zgłoszenie nie znalezione!"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "Wybierz jakichś użytkowników!"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "Nie masz żadnych grup!"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "Instaluj nowy język"
+
+#, fuzzy
+msgid "Database required"
+msgstr "Użytkownicy baz danych"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "Usuń domenę"
+
+#, fuzzy
+msgid "back"
+msgstr "Wstecz"
+
+#, fuzzy
+msgid "install"
+msgstr "odinstaluj"
+
+#, fuzzy
+msgid "Install path"
+msgstr "Instaluj"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "baza danych SQL"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "Użytkownik SQL"
+
+#, fuzzy
+msgid "installed"
+msgstr "odinstaluj"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "Stan serwera"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "baza danych SQL"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - Domena/Szczegóły"
+
+#, fuzzy
+msgid "Software details"
+msgstr "Szczegóły zamówienia"
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Please type user password!"
+msgstr "Podaj hasło użytkownika!"
+
+msgid "Too long user password!"
+msgstr "Hasło użytkownika jest za długie!"
+
+msgid "Don't use special chars like \"@, $, %...\" in the password!"
+msgstr ""
+
+msgid "SQL user password was successfully changed!"
+msgstr "Hasło użytkownika SQL zostało zmienione!"
+
+msgid "i-MSCP - Client/Change SQL User Password"
+msgstr "i-MSCP - Klient/Zmień Hasło Użytkownika SQL"
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr "Użytkownik nie istnieje lub nie masz dostępu do tego interfejsu!"
+
+msgid "Change SQL user password"
+msgstr "Zmień hasło użytkownika bazy SQL"
+
+msgid "Change"
+msgstr "Zmień"
+
+msgid "Please type database name!"
+msgstr "Podaj nazwę bazy danych!"
+
+msgid "Database name is too long!"
+msgstr "Nazwa bazy jest za długa!"
+
+msgid "Specified database name already exists!"
+msgstr "Podana baza danych już istnieje!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr "Znaki takie jak %% i ? nie są dozwolone!"
+
+msgid "SQL database created successfully!"
+msgstr "Baza danych SQL została utworzona!"
+
+msgid "SQL accounts limit reached!"
+msgstr "Został osiągnięty limit baz SQL"
+
+msgid "i-MSCP - Client/Add SQL Database"
+msgstr "i-MSCP - Klient/Dodaj Bazę SQL"
+
+msgid "Database name"
+msgstr "Nazwa bazy danych"
+
+msgid "Use numeric ID"
+msgstr "Użyj numerycznego ID"
+
+msgid "Before the name"
+msgstr "Przed nazwą"
+
+msgid "After the name"
+msgstr "Po nazwie"
+
+msgid "SQL database was removed successfully!"
+msgstr "Baza danych SQL została usunięta!"
+
+msgid "SQL user was removed successfully!"
+msgstr "Użytkownik SQL został usunięty!"
+
+msgid "Database list is empty!"
+msgstr "Lista baz danych jest pusta!"
+
+msgid "i-MSCP - Client/Manage SQL"
+msgstr "i-MSCP - Klient/Zarządzaj SQL"
+
+msgid "Database Name and Users"
+msgstr "Nazwa i użytkownicy bazy danych"
+
+msgid "Database users"
+msgstr "Użytkownicy baz danych"
+
+msgid "Add SQL user"
+msgstr "Dodaj użytkownika bazy SQL"
+
+msgid "Execute query"
+msgstr "Wykonaj zapytanie"
+
+msgid "Login phpMyAdmin"
+msgstr "Zaloguj się do PhpMyAdmin"
+
+#, php-format
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered. "
+"All users linked to this database will also be deleted if not linked to "
+"another database. Are you sure you want to delete %s?"
+msgstr ""
+"Ta baza danych zostanie całkowicie usunięta. Ten proces nie może być "
+"odwrócony. Wszyscy użytkownicy tej bazy zostaną również usunięci, jeżeli nie "
+"są przypisani do innej bazy. Jesteś pewny, że chcesz usunąć %s?"
+
+msgid "SQL users limit reached!"
+msgstr "Osiągnąłeś limit użytkowników SQL!"
+
+msgid "Please type user name!"
+msgstr "Podaj nazwę użytkownika!"
+
+msgid "Too user long password!"
+msgstr "Hasło użytkownika jest za długie!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr ""
+"Nie znaleziono użytkownika SQL! Możliwe, że został usunięty przez innego "
+"użytkownika!"
+
+msgid "User name too long!"
+msgstr "Nazwa użytkownika jest za długa!"
+
+msgid "Specified SQL username name already exists!"
+msgstr "Podana nazwa użytkownika SQL już istnieje!"
+
+msgid "SQL user successfully added!"
+msgstr "Użytkownik SQL został dodany!"
+
+msgid "i-MSCP - Client/Add SQL User"
+msgstr "i-MSCP - Klient/Dodaj Użytkownika SQL"
+
+msgid "SQL user name"
+msgstr "Nazwa użytkownika SQL"
+
+msgid "In front the name"
+msgstr "Przed nazwą"
+
+msgid "Behind the name"
+msgstr "Za nazwą"
+
+msgid "Add existing user"
+msgstr "Dodaj istniejącego użytkownika"
+
+msgid "Existing SQL users"
+msgstr "Istniejący użytkownicy SQL"
+
+msgid "Subdomains limit reached!"
+msgstr " Osiągnięto limit subdomen!"
+
+msgid "Please specify subdomain name!"
+msgstr "Podaj nazwę subdomeny!"
+
+msgid "No valid alias domain selected!"
+msgstr "Wybrałeś niepoprawny alias domeny!"
+
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Taka subdomena już istnieje lub jest niedozwolona!"
+
+msgid "Mount point already in use!"
+msgstr "Punkt montowania już istnieje i jest w użyciu!"
+
+msgid "Incorrect mount point syntax!"
+msgstr "Nieprawidłowa składnia punktu montowania!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Subdomena została zaplanowana do dodania!"
+
+msgid "i-MSCP - Client/Add Subdomain"
+msgstr "i-MSCP - Klient/Dodaj subdomenę"
+
+msgid "Subdomain data"
+msgstr "Dane subdomeny"
+
+msgid "Subdomain name"
+msgstr "Nazwa subdomeny"
+
+msgid "Directory tree mount point"
+msgstr "Punkt montowania<br>drzewa katalogów"
+
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP – Admin/Edycja Domeny"
+
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "Zarządzaj domenami"
+
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "Edytuj domenę"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "Adres URL przekierowania musi zaczynać się od 'http://'"
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
+msgstr "i-MSCP - System Wsparcia - Nowe zgłoszenie"
+
+msgid "Please specify message subject!"
+msgstr "Podaj temat wiadomości!"
+
+msgid "Low"
+msgstr "Niski"
+
+msgid "Medium"
+msgstr "Średni"
+
+msgid "High"
+msgstr "Wysoki"
+
+msgid "Very high"
+msgstr "Bardzo wysoki"
+
+msgid "Customize error pages for your domain"
+msgstr "Spersonalizowane strony błędów dla twojej domeny"
+
+msgid "Backup and restore settings"
+msgstr "Ustawienia kopii zapasowej i przywracania"
+
+msgid "Access your mail through the web interface"
+msgstr "Dostęp do poczty przez interfejs www"
+
+msgid "Access your files through the web interface"
+msgstr "Dostęp do plików przez interfejs www"
+
+msgid "Access your Awstats statistics"
+msgstr "Dostęp do twoich statystyk Awstats"
+
+msgid "Manage protected areas, users and groups"
+msgstr "Zarządzaj strefami chronionymi, użytkownikami i grupami"
+
+msgid "Install various software with a few *clicks*"
+msgstr ""
+
+msgid "{ADMIN} activated your software package"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid " was deleted by {ADMIN}!"
+msgstr "IP został usunięty!"
+
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
+
+#, php-format
+msgid "%.2f PB"
+msgstr "%.2f PB"
+
+#, php-format
+msgid "%.2f TB"
+msgstr "%.2f TB"
+
+#, php-format
+msgid "%.2f GB"
+msgstr "%.2f GB"
+
+#, php-format
+msgid "%.2f MB"
+msgstr "%.2f MB"
+
+#, php-format
+msgid "%.2f KB"
+msgstr "%.2f KB"
+
+#, php-format
+msgid "%d B"
+msgstr "%d B"
+
+msgid "Domain mail"
+msgstr "Poczta domeny"
+
+msgid "Email forward"
+msgstr "Przekierowanie poczty"
+
+msgid "Alias mail"
+msgstr "Alias pocztowy"
+
+msgid "Alias forward"
+msgstr "Przekierowanie aliasu"
+
+msgid "Subdomain mail"
+msgstr "Poczta w subdomenie"
+
+msgid "Subdomain forward"
+msgstr "Przekierowanie subdomeny"
+
+msgid "Alias subdomain mail"
+msgstr "Poczta aliasu subdomeny"
+
+msgid "Alias subdomain forward"
+msgstr "Przekierowanie aliasu subdomeny"
+
+msgid "Unknown type"
+msgstr "Nieznany typ"
+
+msgid "Welcome {USERNAME} to i-MSCP!"
+msgstr "Witaj {USERNAME} w systemie i-MSCP!"
+
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Witaj {NAME}!\n"
+"\n"
+"Zostało utworzone Twoje nowe konto w i-MSCP.\n"
+"Informacje o Twoim koncie:\n"
+"\n"
+"Typ użytkownika: {USERTYPE}\n"
+"Nazwa użytkownika: {USERNAME}\n"
+"Hasło: {PASSWORD}\n"
+"\n"
+"Pamiętaj o częstej zmianie hasła oraz po pierwszym zalogowaniu.\n"
+"\n"
+"Możesz się teraz zalogować pod tym adresem {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
+"\n"
+"Statystyki domeny: http://{USERNAME}/stats/\n"
+"Nazwa użytkownika: {USERNAME}\n"
+"Hasło: {PASSWORD}\n"
+"\n"
+"Powodzenia z systemem i-MSCP!\n"
+"Zespół i-MSCP.\n"
+"\n"
+
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Witaj {NAME}!\n"
+"\n"
+"Zostało utworzone Twoje nowe konto w i-MSCP.\n"
+"Informacje o Twoim koncie:\n"
+"\n"
+"Typ użytkownika: {USERTYPE}\n"
+"Nazwa użytkownika: {USERNAME}\n"
+"Hasło: {PASSWORD}\n"
+"\n"
+"Pamiętaj o częstej zmianie hasła oraz po pierwszym zalogowaniu.\n"
+"\n"
+"Możesz się teraz zalogować pod tym adresem {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
+"\n"
+"Statystyki domeny: http://{USERNAME}/stats/\n"
+"Nazwa użytkownika: {USERNAME}\n"
+"Hasło: {PASSWORD}\n"
+"\n"
+"Powodzenia z systemem i-MSCP!\n"
+"Zespół i-MSCP.\n"
+"\n"
+
+msgid "Please activate your new i-MSCP password!"
+msgstr "Aktywuj nowe hasło do panelu i-MSCP!"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"Use this link to activate your new i-MSCP password:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Witaj {NAME}!\n"
+"Kliknij na poniższy link, aby aktywować nowe hasło do panelu i-MSCP:\n"
+"\n"
+"{LINK}\n"
+"\n"
+"Powodzenia z systemem i-MSCP\n"
+"Zespół i-MSCP\n"
+"\n"
+
+msgid "Your new i-MSCP login!"
+msgstr "Twój nowy login w systemie i-MSCP!"
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"Your user name is: {USERNAME}\n"
+"Your password is: {PASSWORD}\n"
+"\n"
+"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Witaj {NAME}!\n"
+"\n"
+"Twoja nazwa użytkownika to: {USERNAME}\n"
+"Twoje hasło to: {PASSWORD}\n"
+"\n"
+"Możesz się zalogować pod adresem {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
+"\n"
+"Powodzenia z systemem i-MSCP!\n"
+"Zespół i-MSCP\n"
+"\n"
+
+msgid "Confirmation for domain order {DOMAIN}!"
+msgstr "Potwierdzenie zamówienia domeny {DOMAIN}!"
+
+msgid ""
+"\n"
+"\n"
+"Dear {NAME},\n"
+"This is an automatic confirmation for the order of the domain:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"You have to click the following link to continue the domain creation "
+"process.\n"
+"\n"
+"{ACTIVATE_LINK}\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Witaj {NAME},\n"
+"To jest automatyczne potwierdzenie przyjęcia zamówienia domeny:\n"
+"\n"
+"{DOMAIN}\n"
+"\n"
+"Musisz kliknąć poniższy link, aby kontynuować proces tworzenia  domeny.\n"
+"\n"
+"{ACTIVATE_LINK}\n"
+"\n"
+"Dziękujemy za korzystanie z usług i-MSCP.\n"
+"Zespół i-MSCP\n"
+"\n"
+
+msgid "New alias order for {CUSTOMER}!"
+msgstr "Nowe zamówienie aliasu dla {CUSTOMER}!"
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Drogi {RESELLER},\n"
+"Twój Klient {CUSTOMER} czeka na zatwierdzenie nowego aliasu:\n"
+"\n"
+"{ALIAS}\n"
+"\n"
+"Gdy się zalogujesz, możesz aktywować ten alias pod adresem "
+"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"\n"
+"Dziękujemy za korzystanie z usług i-MSCP.\n"
+"Zespół i-MSCP\n"
+"\n"
+
+#, fuzzy
+msgid "Your message has been sent."
+msgstr "Twoja wiadomość została wysłana!"
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "Twoja wiadomość została wysłana!"
+
+msgid "Ticket was closed!"
+msgstr "Zgłoszenia zostały zamknięte!"
+
+msgid "Ticket was reopened!"
+msgstr "Zgłoszenie zostało ponownie otwarte!"
+
+msgid "Never"
+msgstr "Nigdy"
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "Nie masz żadnych zgłoszeń wsparcia."
+
+msgid "[New]"
+msgstr "[Nowy]"
+
+msgid "[Re]"
+msgstr "[Re]"
+
+msgid "Open ticket"
+msgstr "Otwórz zgłoszenie"
+
+msgid "Close ticket"
+msgstr "Zamknij zgłoszenie"
+
+msgid "[Ticket]"
+msgstr "[Zgłoszenie]"
+
+#, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have a new ticket:\n"
+msgstr ""
+"Witaj %s !\n"
+"\n"
+"Masz nowe zgłoszenie:\n"
+
+#, php-format
+msgid ""
+"Hello %s!\n"
+"\n"
+"You have an answer for this ticket:\n"
+msgstr ""
+"Witaj %s !\n"
+"\n"
+"Masz odpowiedź na zgłoszenie:\n"
+
+#, php-format
+msgid "Priority: %s\n"
+msgstr "Priorytet: %s\n"
+
+msgid "Log in to answer"
+msgstr "Zaloguj się, aby odpowiedzieć"
+
+msgid "Wrong domain name syntax or number of labels"
+msgstr "Niepoprawna składnia subdomeny lub liczba wpisów!"
+
+msgid "Wrong domain name lenght!"
+msgstr "Niepoprawna długość nazwy domeny!"
+
+msgid "Wrong subdomain syntax or number of labels!"
+msgstr "Niepoprawna składnia subdomeny lub liczba wpisów!"
+
+msgid "Wrong subdomain lenght!"
+msgstr "Niepoprawna długość subdomeny!"
+
+#, php-format
+msgid "Label not allowed: <b>%s</b>"
+msgstr "Niedozwolona etykieta: <b>%s</b>"
+
+#, php-format
+msgid "Wrong label syntax: <b>%s</b>"
+msgstr "Błędna składnia etykiety: <b>%s</b>"
+
+#, php-format
+msgid "Wrong label lenght: <b>%s</b>"
+msgstr "Zbyt długi wpis: <b>%s</b>"
+
+#, php-format
+msgid "Wrong Top Level Domain syntax: <b>%s</b>"
+msgstr "Błędna składnia domeny najwyższego pozimu: <b>%s</b>"
+
+#, php-format
+msgid "Wrong Top Level Domain lenght: <b>%s</b>"
+msgstr "Zbyt długa domena najwyższego poziomu: <b>%s</b>"
+
+#, php-format
+msgid "Wrong Second Level Domain lenght: <b>%s</b>"
+msgstr "Zbyt długa domena drugiego poziomu: <b>%s</b>"
+
+#, php-format
+msgid "Wrong domain name: <b>%s</b> is reserved!"
+msgstr "Nieprawidłowa nazwa domeny. <b>%s</b> jest zarezerwowana!"
+
+#, php-format
+msgid "Wrong Second Level Domain syntax: <b>%s</b>"
+msgstr "Błedna składnia domeny drugiego poziomu: <b>%s</b>"
+
+#, fuzzy
+msgid ""
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
+msgstr ""
+"Błąd: Wpisy w formacie ACE są niedozwolone. Użyj odpowiedników Unicode.<br /"
+"><small>Przykład: dla wpisu ACE <b>xn--maczak-jeb</b> użyj <b>mańczak</b></"
+"small>."
+
+#, php-format
+msgid "You have to wait %d seconds."
+msgstr "Musisz poczekać %d sekund"
+
+#, php-format
+msgid "You have been blocked for %d minutes."
+msgstr "Zostałeś zablokowany na %d minut"
+
+#, fuzzy
+msgid "You entered an incorrect username!"
+msgstr "Wprowadziłeś niepoprawną nazwę użytkownika lub hasło."
+
+msgid "System is currently under maintenance! Only administrators can login."
+msgstr ""
+"System jest w takcie prac konserwacyjnych! Tylko administratorzy mogą się "
+"zalogować."
+
+#, php-format
+msgid "%s user already logged or session sharing problem! Aborting..."
+msgstr ""
+"Użytkownik %s jest już zalogowany lub wystąpił błąd współdzielenia sesji! "
+"Przerwano..."
+
+msgid "User already logged or session sharing problem! Aborting..."
+msgstr ""
+"Użytkownik jest już zalogowany lub wystąpił błąd współdzielenia sesji! "
+"Przerwano..."
+
+#, php-format
+msgid "%s's account status is not ok!"
+msgstr "Stan konta %s nie jest ok! "
+
+#, php-format
+msgid "%s's domain expired!"
+msgstr "Upłynął termin ważności %s domen!"
+
+#, fuzzy
+msgid "You entered an incorrect password!"
+msgstr "Wprowadziłeś niepoprawną nazwę użytkownika lub hasło."
+
+msgid "Request from foreign host was blocked!"
+msgstr "Żądanie ze zdalnego hosta zostało zablokowane!"
+
+msgid "You do not have permission to access this interface!"
+msgstr "Nie masz uprawnień do uzyskania dostępu do tego interfejsu!"
+
+msgid "Addition in progress"
+msgstr "Dodawanie w toku"
+
+msgid "Modification in progress"
+msgstr "Modyfikacja w toku"
+
+msgid "Deletion in progress"
+msgstr "Usuwanie w toku"
+
+msgid "Being enabled"
+msgstr "Włączone"
+
+msgid "Being suspended"
+msgstr "Zawieszone"
+
+#, fuzzy
+msgid "Awaiting approval"
+msgstr "Czeka na zatwierdzenie"
+
+msgid "Unknown error"
+msgstr "Nieznany błąd"
+
+msgid "You have reached your domains limit.<br />You cannot add more domains!"
+msgstr "Osiągnąłeś limit domen.<br />Nie możesz dodać więcej domen!"
+
+msgid ""
+"You have a subdomains limit!<br />You cannot add an user with unlimited "
+"subdomains!"
+msgstr ""
+"Masz limit subdomen!<br />Nie możesz dodać użytkownika bez limitu subdomen!"
+
+msgid "You are exceeding your subdomains limit!"
+msgstr " Osiągnąłeś swój limit subdomen!"
+
+msgid ""
+"You have an aliases limit!<br />You cannot add an user with unlimited "
+"aliases!"
+msgstr ""
+"Masz limit aliasów!<br />Nie możesz dodać użytkownika bez limitu aliasów!"
+
+msgid "You Are Exceeding Your Alias Limit!"
+msgstr " Osiągnąłeś swój limit aliasów!"
+
+msgid ""
+"You have a mail accounts limit!<br />You cannot add an user with unlimited "
+"mail accounts!"
+msgstr ""
+"Masz limit kont pocztowych!<br />Nie możesz dodać użytkownika bez limitu "
+"kont pocztowych!"
+
+msgid "You are exceeding your mail accounts limit!"
+msgstr " Osiągnąłeś swój limit kont pocztowych!"
+
+msgid ""
+"You have a FTP accounts limit!<br />You cannot add an user with unlimited "
+"FTP accounts!"
+msgstr ""
+"Masz limit kont FTP!<br />Nie możesz dodać użytkownika bez limitu kont FTP!"
+
+msgid "You are exceeding your FTP accounts limit!"
+msgstr "Osiągnąłeś swój limit kont FTP!"
+
+msgid ""
+"You have a SQL databases limit!<br />You cannot add an user with unlimited "
+"SQL databases!"
+msgstr ""
+"Masz limit baz SQL!<br />Nie możesz dodać użytkownika bez limitu baz SQL!"
+
+msgid "You are exceeding your SQL databases limit!"
+msgstr "Osiągnąłeś swój limit baz SQL"
+
+msgid ""
+"You have an SQL users limit!<br />You cannot add an user with unlimited SQL "
+"users!"
+msgstr ""
+"Masz limit użytkowników SQL!<br />Nie możesz dodać użytkownika bez limitu "
+"użytkowników SQL!"
+
+msgid ""
+"You have disabled SQL databases for this user!<br />You cannot have SQL "
+"users here!"
+msgstr ""
+"Masz wyłączone bazy danych SQL dla tego użytkownika!<br />Nie możesz tutaj "
+"posiadać użytkowników SQL!"
+
+msgid "You are exceeding your SQL database limit!"
+msgstr "Osiągnąłeś swój limit baz SQL!"
+
+msgid ""
+"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+msgstr ""
+"Masz limit transferu!<br />Nie możesz dodać użytkownika bez limitu transferu!"
+
+msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgstr ""
+"Masz limit obszaru dysku!<br />Nie możesz dodać użytkownika bez limitu "
+"obszaru dysku!"
+
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "Szczegóły hostingu"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "Niepoprawna nazwa użytkownika!"
+
+#, fuzzy
+msgid "Login password"
+msgstr "Zapomniałeś hasło?"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "Emaile"
+
+#, fuzzy
+msgid "enabled"
+msgstr "Włączone"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "Opis"
+
+#, fuzzy
+msgid "You do not have permissions to install application yet"
+msgstr "Nie masz uprawnień do uzyskania dostępu do tego interfejsu!"
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+#, fuzzy
+msgid "Start installation"
+msgstr "Menadżer języków"
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Czy na pewno chcesz przywrócić kopię?"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
+msgstr ""
+
+msgid "You have a new order"
+msgstr "Masz nowe zamówienie"
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
+"\n"
+"Please login into your i-MSCP control panel for more details.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Drogi {RESELLER},\n"
+"masz nowe zamówienie od {NAME} <{MAIL}> na domenę {DOMAIN}\n"
+"\n"
+"Zaloguj się do panelu administracyjnego, aby uzyskać więcej informacji.\n"
+"\n"
+
+msgid "Your order has been successfully created."
+msgstr "Twoje zamówienie zostało złożone"
+
+msgid "Error creating order! Perhaps already activated?"
+msgstr "Błąd podczas tworzenia zamówienia! Może już jest aktywne?"
+
+msgid "Order confirmation"
+msgstr "Potwierdzenie zamówienia"
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "Domena o tej nazwie już istnieje w systemie!"
+
+msgid "This hosting plan is not available for purchase"
+msgstr "Ten plan hostingowy nie jest dostępny do sprzedaży"
+
+msgid "Add On A Domain"
+msgstr "Zaproponuj domenę"
+
+msgid "Continue"
+msgstr "Kontynuuj"
+
+msgid "(e.g. domain-of-your-choice.com)"
+msgstr "(np. twoja-domena.pl)"
+
+msgid "Please fill out all needed fields!"
+msgstr "Wypełnij wszystkie wymagane pola!"
+
+msgid "Enter Address"
+msgstr "Podaj adres"
+
+msgid "* denotes mandatory field."
+msgstr "* pola wymagane."
+
+msgid "Term of Service"
+msgstr "Regulamin Usługi"
+
+msgid "I Accept The Term of Service"
+msgstr "Akceptuję Regulamin Usługi"
+
+msgid "Your Chart"
+msgstr "Twój wykres"
+
+msgid "Costs"
+msgstr "Koszty"
+
+msgid "Personal Data"
+msgstr "Dane osobowe"
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Aby uniknąć nadużyć, prosimy o wpisanie kombinacji liter z obrazka powyżej "
+"do pola \"Kod zabezpieczający\")"
+
+msgid "Security code was incorrect!"
+msgstr "Kod bezpieczeństwa jest niepoprawny!"
+
+msgid "You have to accept the Term of Service!"
+msgstr "Musisz zaakceptować Regulamin Usługi!"
+
+msgid "Check Out"
+msgstr "Zakończono"
+
+msgid ""
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
+msgstr ""
+"<strong>Dziękujemy za zakup</strong><br>Otrzymasz e-mail ze szczegółowymi "
+"informacjami."
+
+msgid "No available hosting packages"
+msgstr "Brak dostępnych planów hostingowych"
+
+msgid "Webspace"
+msgstr "Miejsce na stronę"
+
+msgid "Domain Features"
+msgstr "Usługi"
+
+msgid "Package Features"
+msgstr "Dodatki"
+
+msgid "Backup and Restore"
+msgstr "Kopia zapasowa i Przywracanie"
+
+msgid "Custom Error Pages"
+msgstr "Własne strony błędów"
+
+msgid "Protected Areas"
+msgstr "Obszary chronione"
+
+msgid "Custom Apache Logs"
+msgstr "Własne logi Apache"
+
+msgid "Web & E-Mail Support"
+msgstr "Wsparcie dla poczty i WWW"
+
+msgid "Your Own Domain"
+msgstr "Twoja własna domena"
+
+msgid "i-MSCP Control Panel"
+msgstr "i-MSCP Panel Kontrolny"
+
+msgid "Automatic Updates"
+msgstr "Automatyczne uaktualnienia"
+
+msgid "Package Price"
+msgstr "Cena pakietu"
+
+msgid "Setup Fee"
+msgstr "Opłata aktywacyjna"
+
+msgid "Performance"
+msgstr "Wydajność"
+
+msgid "You have no alias records."
+msgstr "Nie masz żadnych aliasów."
+
+msgid "Domain alias added for termination!"
+msgstr "Alias domeny przeznaczony do usunięcia!"
+
+msgid "Domain alias not added for termination!"
+msgstr "Alias domeny nie został przeznaczony do usunięcia!"
+
+msgid "Domain alias added!"
+msgstr "Alias domeny dodany!"
+
+msgid "Domain alias not added!"
+msgstr "Alias domeny nie został dodany!"
+
+msgid "Domain alias modified!"
+msgstr "Alias domeny zmodyfikowany!"
+
+msgid "Domain alias not modified!"
+msgstr "Alias domeny nie został zmodyfikowany!"
+
+msgid "Ordered domain alias not deleted!"
+msgstr "Zamówiony alias domeny nie został usunięty!"
+
+msgid "Ordered domain alias activated!"
+msgstr "Alias domeny dodany!"
+
+msgid "Ordered domain alias not activated!"
+msgstr "Alias domeny nie został aktywowany!"
+
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Zarządzaj Domeną/Alias"
+
+msgid "Manage alias"
+msgstr "Zarządzaj aliasami"
+
+msgid "Real domain"
+msgstr "Prawdziwa domena"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+"Brak wpisów użytkownika dla tego resellera, aby dodać dla nie go alias."
+
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP Reseller: Dodaj Alias"
+
+msgid "i-MSCP - Circular"
+msgstr "i-MSCP - Okólniki"
+
+msgid "Circular"
+msgstr "Kołowy"
+
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Domena/Edytuj"
+
+msgid "Domain properties could not be updated!"
+msgstr "Właściwości domeny nie mogły być zaktualizowane!"
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled!"
+msgstr "Usługa <em>%s</em> musi być wyłączona! "
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system!"
+msgstr "Admin posiada wyłączone usługi <em>%s</em> w tym systemie!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited!"
+msgstr "Usługa <em>%s</em> nie może mieć limitu! "
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited!"
+msgstr "Usługa <em>%s</em> nie może być bez limitu! "
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Reseller/Indeks Główny"
+
+msgid "View details"
+msgstr "Pokaż szczegóły"
+
+msgid "i-MSCP - Reseller/Add hosting plan"
+msgstr "i-MSCP - Reseller/Dodaj plan hostingowy"
+
+msgid "Price must be a number!"
+msgstr "Cena musi być liczbą!"
+
+msgid "Setup fee must be a number!"
+msgstr "Opłata instalacyjna musi być liczbą!"
+
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "Limit baz danych SQL nie jest <i>wyłączony</i>!"
+
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr ""
+"Wartości planu hostingowego przekraczają maksymalne wartości resellera!"
+
+msgid "i-MSCP - Reseller/Edit hosting plan"
+msgstr "i-MSCP - Reseller/Edytuj plan hostingowy"
+
+msgid "View hosting plan"
+msgstr "Pokaż plan hostingowy"
+
+msgid "User accounts"
+msgstr "Konta użytkowników"
+
+msgid "Mail account"
+msgstr "Konto pocztowe"
+
+msgid "Extras"
+msgstr "Dodatki"
+
+#, php-format
+msgid "%1$s / %2$s of <b>%3$s</b>"
+msgstr "%1$s / %2$s of <b>%3$s</b>"
+
+#, php-format
+msgid "%1$s / %2$s of <b>unlimited</b>"
+msgstr "%1$s / %2$s z <b>nielimitowanych</b>"
+
+#, php-format
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr "%1$d / %2$d z <b>%3$d</b>"
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr "%1$d / %2$d z <b>nielimitowanych</b>"
+
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - Reseller/Zmień Język"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "Statystyki resellera"
+
+msgid "i-MSCP - Reseller/Change Language"
+msgstr "i-MSCP - Reseller/Zmień Język"
+
+msgid "i-MSCP - Reseller/Order email setup"
+msgstr "i-MSCP - Reseller/Zamówienia ustawienia poczty"
+
+msgid "Manage orders"
+msgstr "Zarządzaj zamówieniami"
+
+msgid "Activation Link"
+msgstr "Link aktywacyjny"
+
+msgid "i-MSCP - Reseller/Order settings"
+msgstr "i-MSCP - Reseller/Ustawienia zamówień"
+
+msgid "Header"
+msgstr "Nagłówek"
+
+msgid "Preview"
+msgstr "Podgląd"
+
+msgid "Implementation URL"
+msgstr "Adres do zaimplementowania"
+
+msgid "Footer"
+msgstr "Stopka"
+
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Reseller/Zarządzanie zamówieniami"
+
+msgid "You do not have new orders!"
+msgstr "Nie masz nowych zamówień!"
+
+msgid "New order"
+msgstr "Nowe zamówienie"
+
+msgid "Update order"
+msgstr "Aktualizuj zamówienie"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Customer data"
+msgstr "Dane klienta"
+
+msgid "Order"
+msgstr "Zamówienie"
+
+msgid "Hosting plan"
+msgstr "Plan hostingowy"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Czy na pewno usunąć to zamówienie?"
+
+msgid "Add/Details"
+msgstr "Dodaj/Szczegóły"
+
+msgid "Wrong order ID!"
+msgstr "Niepoprawne ID zamówienia!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr "Zamówienie anulowane: osiągnięto maksimum dla resellera!"
+
+msgid "Wrong domain name syntax!"
+msgstr "Niepoprawna składnia nazwy domeny!"
+
+msgid "User added!"
+msgstr "Użytkownik dodany!"
+
+msgid "Customer order was removed successful!"
+msgstr "Zamówienie zostało usunięte!"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Reseller/Szczegóły zamówienia"
+
+msgid "Order data updated successfully!"
+msgstr "Dane zamówienia zaktualizowane!"
+
+msgid "Order date"
+msgstr "Data zamówienia"
+
+msgid "Hosting details"
+msgstr "Szczegóły hostingu"
+
+msgid "Order details"
+msgstr "Szczegóły zamówienia"
+
+msgid "Add to the system"
+msgstr "Dodaj do systemu"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Zamówienie anulowane: osiągnięto maksimum dla resellera!"
+
+msgid "i-MSCP - Reseller/Change Password"
+msgstr "i-MSCP - Reseller/Zmień Hasło"
+
+msgid "i-MSCP - Reseller/Change Personal Data"
+msgstr "i-MSCP - Reseller/Zmień Dane Osobowe"
+
+msgid "i-MSCP - Reseller/Lostpw email setup"
+msgstr "i-MSCP - Reseller/Zgub.hasło ustawienia poczty"
+
+msgid "Lostpw email"
+msgstr "Zapomniane hasło email"
+
+msgid "Lostpw link"
+msgstr "Zapomniane hasło link"
+
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "Podaj temat!"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "Szablon automatycznej poczty zaktualizowany!"
+
+msgid "i-MSCP - Reseller/Manage users/Email setup"
+msgstr "i-MSCP – Reseller/Zarządzaj użytkownikami/Zarządzaj kontami pocztowymi"
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+#, fuzzy
+msgid "waiting for activation"
+msgstr "Czeka na zatwierdzenie"
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "Aktywuj"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have any software uploaded yet"
+msgstr "Nie masz nowych zamówień!"
+
+#, fuzzy
+msgid "You do not have permissions to upload software"
+msgstr "Nie masz uprawnień do uzyskania dostępu do tego interfejsu!"
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "Wersja Demo!"
+
+#, fuzzy
+msgid "Software status"
+msgstr "Stan serwera"
+
+#, fuzzy
+msgid "Software upload"
+msgstr "Pokaż obciążenie serwera"
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "Baza Danych SQL"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "Nazwa bazy danych"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - System Wsparcia - Nowe zgłoszenie"
+
+msgid "i-MSCP - Reseller: Support System: View Ticket"
+msgstr "i-MSCP - Reseller : System Wsparcia: Przeglądaj Zgłoszenia"
+
+msgid "i-MSCP - Users/Add user"
+msgstr "i-MSCP - Użytkownicy/Dodaj użytkownika"
+
+#, fuzzy
+msgid "Domain expire date"
+msgstr "Ekspiracja domeny"
+
+msgid "Choose hosting plan"
+msgstr "Wybierz plan hostingowy"
+
+msgid "Personalise template"
+msgstr "Własny szablon"
+
+msgid "Next step"
+msgstr "Następny krok"
+
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr "Nie masz planów hostingowych. Skontaktuj się z administratorem."
+
+msgid "i-MSCP - User/Add user(step2)"
+msgstr "i-MSCP - Użytkownik/Dodaj użytkownika(krok2)"
+
+msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Limit domen<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+msgid "Apache logs"
+msgstr "Logi Apache'a"
+
+msgid "Awstats"
+msgstr "Awstats"
+
+msgid "Domain data has been altered. Please enter again"
+msgstr "Dane domeny zostały zmienione. Proszę podać je ponownie"
+
+msgid "i-MSCP - User/Add user"
+msgstr "i-MSCP - Użytkownik/Dodaj użytkownika"
+
+msgid "Add other domains to this account"
+msgstr "Dodaj inne domeny do tego konta"
+
+#, php-format
+msgid "System error with Domain Id: %d"
+msgstr "Błąd systemu z Domeną o Identyfikatorze: %d"
+
+msgid "i-MSCP - Users/Edit"
+msgstr "i-MSCP - Użytkownicy/Edytuj"
+
+msgid "Users list"
+msgstr "Lista użytkowników"
+
+msgid "This reseller has no domains yet."
+msgstr "Ten reseller nie ma jeszcze domen."
+
+msgid "i-MSCP - Users"
+msgstr "i-MSCP - Użytkownicy"
+
+#, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Czy na pewno chcesz zmienić  stan konta %s?"
+
+msgid "Stats"
+msgstr "Statystyki"
+
+msgid "Edit User"
+msgstr "Edytuj użytkownika"
+
+msgid "Bandwidth"
+msgstr "Transfer"
+
+msgid "View aliases"
+msgstr "Przeglądaj aliasy"
+
+#, fuzzy
+msgid "You do not have customers."
+msgstr "Nie masz nowych zamówień!"
+
+#, php-format
+msgid "%1$s of %2$s MB"
+msgstr "%1$s z %2$s MB"
+
+#, php-format
+msgid "%1$s of <b>unlimited</b> MB"
+msgstr "%1$s z <b>nielimitowanych</b> MB"
+
+msgid "User data updated!"
+msgstr "Dane użytkownika zostały zaktualizowane!"
+
+msgid "User data not updated!"
+msgstr "Dane użytkownika nie zaktualizowane!"
+
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
+msgstr ""
+"Ten użytkownik ma przypisaną domenę !<br>Najpierw usuń domenę z systemu!"
+
+msgid "User terminated!"
+msgstr "Użytkownik usunięty!"
+
+msgid "User not terminated!"
+msgstr "Użytkownik nie usunięty!"
+
+#~ msgid "i-MSCP  a Virtual Hosting Control System"
+#~ msgstr "i-MSCP  - System Kontroli Wirtualnym Hostingiem"
+
+#~ msgid "Please enter your login information"
+#~ msgstr "Podaj dane logowania"
+
+#~ msgid "Retrieving lost passwords is currently not possible"
+#~ msgstr "Odzyskanie utraconego hasła jest obecnie niemożliwe"
+
+#~ msgid "i-MSCP - Virtual Hosting Control System"
+#~ msgstr "i-MSCP - System Kontroli Wirtualnym Hostingiem"
+
+#~ msgid "Retry"
+#~ msgstr "Powtórz"
+
+#~ msgid "Request password"
+#~ msgstr "Przypomnienie hasła"
+
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "Czy na pewno zaktualizować?"
+
+#~ msgid "A database update is available"
+#~ msgstr "Aktualizacja bazy jest dostępna"
+
+#~ msgid "Panel Default"
+#~ msgstr "Domyślny"
+
+#, fuzzy
+#~ msgid "Settings saved!"
+#~ msgstr "Ustawienia zapisane!"
+
+#, fuzzy
+#~ msgid ""
+#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
+#~ "services names!"
+#~ msgstr "BŁĄD: Tylko litery, cyfry, myślnik i podkreślnik są dopuszczalne!"
+
+#, fuzzy
+#~ msgid "ERROR: Unknown service port name!"
+#~ msgstr "BŁĄD: Nieznany użytkownik"
+
+#~ msgid "To"
+#~ msgstr "Do"
+
+#~ msgid "Message was sent."
+#~ msgstr "Wiadomość została wysłana."
+
+#~ msgid "ISPCP - Client/Webtools"
+#~ msgstr "i-MSCP - Klient/Narzędzia sieciowe"
+
+#~ msgid "i-MSCP Error"
+#~ msgstr "Błąd i-MSCP"
+
+#~ msgid "Error Message"
+#~ msgstr "Komunikat błędu"
+
+#~ msgid "Unchanged"
+#~ msgstr "Niezmieniony"
+
+#~ msgid "- 1 Month"
+#~ msgstr "- 1 miesiąc"
+
+#~ msgid "+ 1 Month"
+#~ msgstr "+ 1 miesiąc"
+
+#~ msgid "+ 2 Months"
+#~ msgstr "+ 2 miesiące"
+
+#~ msgid "+ 3 Months"
+#~ msgstr "+ 3 miesiące"
+
+#~ msgid "+ 6 Months"
+#~ msgstr "+ 6 miesięcy"
+
+#~ msgid "+ 1 Year"
+#~ msgstr "+ 1 rok"
+
+#~ msgid "+ 2 Years"
+#~ msgstr "+ 2 lata"
+
+#~ msgid "1 Month"
+#~ msgstr "1 miesiąc"
+
+#~ msgid "2 Months"
+#~ msgstr "2 miesiące"
+
+#~ msgid "3 Months"
+#~ msgstr "3 miesiace"
+
+#~ msgid "6 Months"
+#~ msgstr "6 miesięcy"
+
+#~ msgid "1 Year"
+#~ msgstr "1 rok"
+
+#~ msgid "2 Years"
+#~ msgstr "2 lata"
+
+#~ msgid "You have no users."
+#~ msgstr "Nie masz użytkowników."
+
+#~ msgid "Services"
+#~ msgstr "Usługi"
+
+#~ msgid "days"
+#~ msgstr "dni"
+
+#~ msgid "hours"
+#~ msgstr "godziny"
+
+#~ msgid "Kernel"
+#~ msgstr "Kernel"
+
+#~ msgid "Load"
+#~ msgstr "Obciążenie"
+
+#~ msgid ""
+#~ "We are sorry, but the system is currently under maintenance.\n"
+#~ "Please try again later."
+#~ msgstr ""
+#~ "Przepraszamy, system jest w trakcie prac konserwacyjnych.\n"
+#~ "Spróbuj ponownie później."
+
+#~ msgid "Could not get config from database"
+#~ msgstr "Nie można uzyskać konfiguracji z bazy danych"
+
+#~ msgid ""
+#~ "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
+#~ msgstr ""
+#~ "Niespójność między current_als_cnt a rzeczywistym aliasem: %1$d != %2$d"
+
+#~ msgid "! Trying to correct!"
+#~ msgstr "! Spróbuj poprawić!"
+
+#~ msgid ""
+#~ "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
+#~ msgstr ""
+#~ "Niespójność między current_ftp_cnt i rzeczywistym kontem ftp: %1$d != %2$d"
+
+#~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+#~ msgstr "Limit domen<br><i>(-1 wyłączone, 0 bez limitu)</i>"
+
+#~ msgid "Incorrect forward syntax"
+#~ msgstr "Nieprawidłowa składnia przekierowania"
+
+#~ msgid "Entered passwords differ from the another!"
+#~ msgstr "Wprowadzone hasła różnią się od innych!"
+
+#~ msgid "Error:"
+#~ msgstr "Błąd:"
+
+#~ msgid "You have more disk space in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Masz zajęte wiecej przestrzeni dyskowej, niż jest to dozwolone w nowym "
+#~ "planie hostingowym"
+
+#~ msgid "You have more traffic than the new hosting plan limits"
+#~ msgstr ""
+#~ "Osiągnąłeś większy ruch sieciowy, niż jest to dozwolone w nowym planie "
+#~ "hostingowym"
+
+#~ msgid "You have more aliases in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Posiadasz więcej aliasów, niż jest to dozwolone w nowym planie hostingowym"
+
+#~ msgid "You have more subdomains in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Posiadasz więcej subdomen, niż jest to dozwolone w nowym planie "
+#~ "hostingowym"
+
+#~ msgid ""
+#~ "You have more Email addresses in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Posiadasz więcej adresów e-mail, niż jest to dozwolone w nowym planie "
+#~ "hostingowym"
+
+#~ msgid "You have more FTP accounts in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Posiadasz więcej kont FTP, niż jest to dozwolone w nowym planie "
+#~ "hostingowym"
+
+#~ msgid "You have more SQL databases in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Posiadasz więcej baz danych SQL, niż jest to dozwolone w nowym planie "
+#~ "hostingowym"
+
+#~ msgid ""
+#~ "You have more SQL database users in use than the new hosting plan limits"
+#~ msgstr ""
+#~ "Posiadasz więcej użytkowników baz danych SQL, niż jest to dozwolone w "
+#~ "nowym planie hostingowym"
+
+#~ msgid "Incorrect domain name syntax"
+#~ msgstr "Nieprawidłowa składnia nazwy domeny!"
+
+#~ msgid "Disk Usage Percent"
+#~ msgstr "Procent wykorzystania dysku"
+
+#~ msgid "You have no user records."
+#~ msgstr "Nie masz wpisów użytkownika."
+
+#, fuzzy
+#~ msgid "Default panel language changed!"
+#~ msgstr "Domyślny język zmieniony!"
+
+#~ msgid "Default language"
+#~ msgstr "Domyślny język"
+
+#, fuzzy
+#~ msgid "i-MSCP - Client/SSL Domains"
+#~ msgstr "i-MSCP - Klient/Zarządzaj Domenami"
+
+#, fuzzy
+#~ msgid "Field Company can not be empty!\n"
+#~ msgstr "Główna domena nie może być użyta!"
+
+#, fuzzy
+#~ msgid "Email is not valid!\n"
+#~ msgstr "Alias domeny nie został dodany!"
+
+#, fuzzy
+#~ msgid "Generate self signed"
+#~ msgstr "Generuj hasło"
+
+#, fuzzy
+#~ msgid "CRT for domain name"
+#~ msgstr "Niepoprawna składnia nazwy domeny!"
+
+#, fuzzy
+#~ msgid "State"
+#~ msgstr "Statystyki"
+
+#, fuzzy
+#~ msgid "Company division"
+#~ msgstr "Firma"
+
+#, fuzzy
+#~ msgid "Generate"
+#~ msgstr "Płeć"
+
+#, fuzzy
+#~ msgid "Key identifier already exists!\n"
+#~ msgstr "Taki użytkownik już istnieje!"
+
+#, fuzzy
+#~ msgid ""
+#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
+#~ msgstr "Hasło jest krótsze niż %s znaków lub zawiera niedozwolone znaki!"
+
+#, fuzzy
+#~ msgid "Key for this domain already exists!\n"
+#~ msgstr "Ten adres IP już istnieje!"
+
+#, fuzzy
+#~ msgid "Add new key"
+#~ msgstr "Dodaj nowy adres IP"
+
+#, fuzzy
+#~ msgid "Key for domain name"
+#~ msgstr "Niepoprawna składnia nazwy domeny!"
+
+#, fuzzy
+#~ msgid "Paste generated key"
+#~ msgstr "Podaj nazwę obszaru"
+
+#, fuzzy
+#~ msgid "Generate new"
+#~ msgstr "Generuj hasło"
+
+#, fuzzy
+#~ msgid "List is empty!"
+#~ msgstr "Log jest pusty!"
+
+#, fuzzy
+#~ msgid "Certificate sign request"
+#~ msgstr "Wykonaj żądania"
+
+#, fuzzy
+#~ msgid "Key host name"
+#~ msgstr "Nazwa szablonu"
+
+#, fuzzy
+#~ msgid "Certificate host name"
+#~ msgstr "Usługa"
+
+#, fuzzy
+#~ msgid "Domain is not instantiated"
+#~ msgstr "Alias domeny nie został dodany!"
+
+#, fuzzy
+#~ msgid "Domain do not exists"
+#~ msgstr "%s nie istnieje"
+
+#, fuzzy
+#~ msgid "Invalid destination for key!"
+#~ msgstr "Błędna nazwa grupy!"
+
+#, fuzzy
+#~ msgid "User do not have domains!"
+#~ msgstr "Dane użytkownika nie zaktualizowane!"
+
+#~ msgid "Password sent"
+#~ msgstr "Hasło wysłane"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has email accounts !<br> first remove "
+#~ "them !"
+#~ msgstr ""
+#~ "Domena którą próbujesz usunąć posiada konta pocztowe !<br> najpierw je "
+#~ "usuń !"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has FTP accounts !<br> first remove them !"
+#~ msgstr ""
+#~ "Domena którą próbujesz usunąć posiada konta FTP !<br> najpierw je usuń !"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has domain alias!<br> first remove them !"
+#~ msgstr ""
+#~ "Domena którą próbujesz usunąć ma przypisane aliasy!<br> najpierw je usuń !"
+
+#~ msgid ""
+#~ "Domain you are trying to remove has subdomains accounts !<br> first "
+#~ "remove them !"
+#~ msgstr ""
+#~ "Domena którą próbujesz usunąć ma przypisane subdomeny !<br> najpierw je "
+#~ "usuń !"
+
+#~ msgid "Set status to \"change\""
+#~ msgstr "Ustaw status na \"zmień\""
+
+#~ msgid "%1$s / %2$s of <b>%3$d</b>"
+#~ msgstr "%1$s / %2$s z <b>%3$d</b>"
+
+#~ msgid "Please enter an SQL query!"
+#~ msgstr "Podaj zapytanie SQL!"
+
+#~ msgid "Could not connect to the SQL server as %s!"
+#~ msgstr "Nie można połączyć się z serwerem SQL jako %s!"
+
+#~ msgid "Execution of SQL query failed!"
+#~ msgstr "Zapytanie SQL nie powiodło się!"
+
+#~ msgid "Execution of SQL query succeeded!"
+#~ msgstr "Zapytanie SQL zakończone poprawnie!"
+
+#~ msgid "i-MSCP - Client/Execute SQL Query"
+#~ msgstr "i-MSCP - Klient/Wykonaj Zapytanie SQL"
+
+#~ msgid "Execute SQL query"
+#~ msgstr "Wykonaj zapytanie SQL"
+
+#~ msgid "SQL query"
+#~ msgstr "Zapytanie SQL"
+
+#~ msgid "Query status"
+#~ msgstr "Stan zapytania"
+
+#~ msgid "Query result"
+#~ msgstr "Wynik zapytania"
+
+#~ msgid "Execute"
+#~ msgstr "Wykonaj"
+
+#~ msgid "Mail in"
+#~ msgstr "Poczta przychodząca"
+
+#~ msgid "Mail out"
+#~ msgstr "Poczta wychodząca"
+
+#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
+#~ msgstr "Lista subdomen jest pusta! Nie możesz dodać kont pocztowych!"
+
+#~ msgid "Catchall account"
+#~ msgstr "Konto CatchAll"
+
+#~ msgid "Incorrect password length or syntax!"
+#~ msgstr "Błędna długość hasła lub składnia!"
+
+#~ msgid "Message was sent!"
+#~ msgstr "Wiadomość została wysłana!"
+
+#~ msgid "Message was send!"
+#~ msgstr "Wiadomośc została wysłana!"
+
+#~ msgid "Database update %s failed"
+#~ msgstr "Aktualizacje bazy danych %s nieudana"
+
+#~ msgid "Missing or wrong data!"
+#~ msgstr "Brak lub niekompletne dane!"
+
+#~ msgid "Password data includes not valid signs!"
+#~ msgstr "Wprowadzone hasło zawiera niedozwolone znaki!"
+
+#~ msgid "Unknown domain status!"
+#~ msgstr "Nieznany stan domeny!"
+
+#~ msgid "Unknown account type!"
+#~ msgstr "Nieznany typ konta!"
+
+#~ msgid ""
+#~ "Inconsistency between current_mail_cnt and actual mail count: %1$d != %2$d"
+#~ msgstr ""
+#~ "Niespójność między current_mail_cnt a rzeczywistym kontem mailowym: %1$d !"
+#~ "= %2$d"
+
+#~ msgid "There's a conflicting admin / reseller fix that first!"
+#~ msgstr "Jest konflikt admin / reseller, musisz to zmienić!"

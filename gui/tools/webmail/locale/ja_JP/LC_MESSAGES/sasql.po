@@ -1,0 +1,925 @@
+# Japanese (ja_JP) sasql translation (SquirrelMail plugin)
+# Copyright (C) 2005 Randy Smith
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: 3.1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-29 08:36-0700\n"
+"PO-Revision-Date: 2005-11-09 20:14-0500\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dspam.inc.php:82
+msgid "DSPAM Settings"
+msgstr "DSPAM の設定"
+
+#: dspam.inc.php:89
+msgid "Warning"
+msgstr "警告"
+
+#: dspam.inc.php:91
+msgid "Enabling DSPAM will disable SpamAssassin scanning of your email."
+msgstr ""
+
+#: dspam.inc.php:94
+msgid "SpamAssassin settings and white/blacklists will not be used by dspam."
+msgstr ""
+"DSPAM は SpamAssassin の保存とホワイトリスト・ブラックリストを利用しません。"
+
+#. *
+#. * To translators: %s's will be replaced with <a ..> and </a>
+#.
+#: dspam.inc.php:102
+#, php-format
+msgid ""
+"This %sFAQ%s from the DSPAM web site explains the differences between "
+"SpamAssassin and DSPAM and why you might want to use dspam instead of "
+"SpamAssassin."
+msgstr ""
+
+#: dspam.inc.php:113
+msgid ""
+"DSPAM is a learning system that filters spam based on what <i>you</i> tell "
+"it is spam and what isn't. Messages are analyzed as they are delivered and "
+"are assigned a spam probability between 0 and 1. The more messages you "
+"receive, both spam and innocent, the better DSPAM learns what <i>you</i> "
+"think is spam and what is not."
+msgstr ""
+
+#: dspam.inc.php:117
+msgid "Reporting Spam"
+msgstr "スパムを届け出るたこと"
+
+#: dspam.inc.php:120
+msgid ""
+"If you receive a spam message in your Inbox, forward the message to "
+"<nobr>username-spam@domain</nobr> and it will be learned as spam. For "
+"example, if your address is joe@example.com, you would forward the message "
+"to <nobr>joe-spam@example.com</nobr>."
+msgstr ""
+
+#: dspam.inc.php:126
+#, php-format
+msgid ""
+"You can also move your spam messages to the <i>%s</i> folder. This folder is "
+"periodically checked for messages which are then learned as spam and "
+"deleted. You do not need to move messages from your %s folder here because "
+"they have already been learned as spam."
+msgstr ""
+
+#: dspam.inc.php:131
+msgid "Reporting False Positives"
+msgstr "偽陽性を届け出るたこと"
+
+#: dspam.inc.php:134
+msgid ""
+"From time to time, DSPAM will catch an innocent messages as spam. These "
+"messages are called \"false positives\". There is no way to prevent false "
+"positives entirely. If you find a false positive, forward the message to "
+"<nobr>username-fp@domain</nobr> and it will be learned as an innocent "
+"message. For example, if your email address is joe@example.com, you would "
+"forward the message to <nobr>joe-fp@example.com</nobr>."
+msgstr ""
+
+#: dspam.inc.php:140
+#, php-format
+msgid ""
+"You can also move your false positives to the <i>%s</i> folder from the %s "
+"folder. This folder is periodically checked for messages which are then "
+"learned as false positives and deleted."
+msgstr ""
+
+#: dspam.inc.php:145
+msgid "Disclaimer"
+msgstr "免責条項"
+
+#: dspam.inc.php:148
+msgid ""
+"DSPAM is a learning system. It only knows what is spam based on what you "
+"teach it is spam and what is not. Due to DSPAM's nature, you are more likely "
+"to see errors in spam detection until it is trained on your email. If you do "
+"not report a message as spam within ten days, the message will be "
+"permanently learned as innocent and you will be more likely to receive more "
+"spam."
+msgstr ""
+
+#. *
+#. * To translators: %s's will be replaced by <a ..> and </a>
+#.
+#: dspam.inc.php:162
+#, php-format
+msgid "Please read the %sDSPAM Primer%s before enabling DSPAM."
+msgstr "DSPAM を有効にするの前に、%sDSPAM 手引書%s を読んでください。"
+
+#: dspam.inc.php:183
+msgid "Use DSPAM"
+msgstr "DSPAM を使う"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:198
+#, php-format
+msgid "Clean out your %s folder on opt-in?"
+msgstr ""
+
+#: dspam.inc.php:200 purge.inc.php:37
+msgid "Note"
+msgstr "お知らせ"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:205 purge.inc.php:38
+#, php-format
+msgid ""
+"Your %s folder may be unavailable during the purge. It will become available "
+"again when the purge is complete."
+msgstr ""
+
+#: dspam.inc.php:214
+msgid "Update"
+msgstr "更新"
+
+#: move_to.php:98
+msgid "No messages were selected."
+msgstr "メッセージが選択されていません"
+
+#: purge.inc.php:30
+msgid "Purge"
+msgstr "空にする"
+
+#: purge.inc.php:33
+#, php-format
+msgid "Delete all messages from your %s folder."
+msgstr "すべてメッセージを %s フォルダーから削除します。"
+
+#: sa_abooksync.inc.php:20
+msgid "Allow Senders from Address Book"
+msgstr "アドレス帳で送信者を許可します"
+
+#: sa_abooksync.inc.php:26
+msgid "Allow"
+msgstr "可能にする"
+
+#: sa_abooksync.inc.php:27
+msgid "Allow all address in the address book."
+msgstr ""
+
+#. required_hists
+#: sa_opts-dist.php:19
+msgid "Spam Score"
+msgstr "スパムスコア"
+
+#: sa_opts-dist.php:20
+msgid ""
+"Once all SpamAssassin tests have been run, the resulting score is matched "
+"against this value, and if greater than this value, the e-mail message is "
+"marked as spam. We recommend a value of '5'."
+msgstr ""
+
+#: sa_opts-dist.php:22
+msgid "0 - Very Aggressive"
+msgstr "0 - もっと攻撃的"
+
+#: sa_opts-dist.php:23
+msgid "1"
+msgstr "1"
+
+#: sa_opts-dist.php:24
+msgid "2 - Aggressive"
+msgstr "2 - 攻撃的"
+
+#: sa_opts-dist.php:25
+msgid "3"
+msgstr "3"
+
+#: sa_opts-dist.php:26
+msgid "4"
+msgstr "4"
+
+#: sa_opts-dist.php:27
+msgid "5 - Recommended"
+msgstr "5 - 推薦"
+
+#: sa_opts-dist.php:28
+msgid "6"
+msgstr "6"
+
+#: sa_opts-dist.php:29
+msgid "7"
+msgstr "7"
+
+#: sa_opts-dist.php:30
+msgid "8 - Lenient"
+msgstr "8 - 寛大"
+
+#: sa_opts-dist.php:31
+msgid "9"
+msgstr "9"
+
+#: sa_opts-dist.php:32
+msgid "10 - Very Lenient"
+msgstr "10 - もっと寛大"
+
+#: sa_opts-dist.php:33
+msgid "Don't Filter"
+msgstr "フィルターしてない"
+
+#. NOTE: The ordering here is a little odd to allow some inclusion of
+#. other option names.
+#. subject_tag
+#: sa_opts-dist.php:43
+msgid "Spam Subject Tag"
+msgstr "スパム件名のタグ"
+
+#: sa_opts-dist.php:45
+msgid "*****SPAM*****"
+msgstr "*****SPAM*****"
+
+#. rewrite_subject
+#: sa_opts-dist.php:48 sa_opts-dist.php:63
+msgid "Rewrite Subject Line"
+msgstr "件名を書き直します"
+
+#. To translators: %s is the default from subject_tag
+#: sa_opts-dist.php:50
+#, php-format
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with: %s.  To turn "
+"on this feature, select this option."
+msgstr ""
+
+#. This is here to allow me to include the rewrite_subject title
+#. *
+#. * To Translators: %s is the title from rewrite_subject
+#.
+#: sa_opts-dist.php:60
+#, php-format
+msgid ""
+"The text to prefix to the subject of messages determined to be spam. %s must "
+"be turned on."
+msgstr ""
+
+#: sa_opts-dist.php:64
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with this value."
+msgstr ""
+
+#. use_terse_report
+#: sa_opts-dist.php:70
+msgid "Short Report"
+msgstr "短いレポート"
+
+#: sa_opts-dist.php:71
+msgid ""
+"This option will tell SpamAssassin to use a shorter spam report once the "
+"message has been found to be spam."
+msgstr ""
+
+#. use_dcc
+#: sa_opts-dist.php:77
+msgid "Use DCC"
+msgstr "DCC を使う"
+
+#: sa_opts-dist.php:78
+msgid ""
+"Checks messages against the DCC (Distrubuted Checksum Clearinghouse) to see "
+"if a message matches a known spam message."
+msgstr ""
+
+#. use_razor1
+#: sa_opts-dist.php:84
+msgid "Use SpamNet (version 1)"
+msgstr "SpamNet バージョン 1 を使う"
+
+#: sa_opts-dist.php:85 sa_opts-dist.php:92
+msgid ""
+"Checks messages against SpamNet to see if a message is a known spam message."
+msgstr ""
+
+#. use_razor2
+#: sa_opts-dist.php:91
+msgid "Use SpamNet (version 2)"
+msgstr "SpamNet バージョン 2 を使う"
+
+#. always_add_headers
+#: sa_opts-dist.php:98
+msgid "Always Add Headers"
+msgstr "いつもヘッダを追加する"
+
+#: sa_opts-dist.php:99
+msgid "Uncheck if you do not want to add the headers to non-spam."
+msgstr ""
+
+#. ok_languages
+#: sa_opts-dist.php:105
+msgid "Acceptable Languages"
+msgstr "適切な言語"
+
+#: sa_opts-dist.php:106
+msgid "Select all the languages you expect to receive e-mail in."
+msgstr ""
+
+#: sa_opts-dist.php:112
+msgid "All"
+msgstr "すべて"
+
+#: sa_opts-dist.php:113
+msgid "Afrikaans"
+msgstr "アフリカーンス語"
+
+#: sa_opts-dist.php:114
+msgid "Albanian"
+msgstr "アルバニア語"
+
+#: sa_opts-dist.php:115
+msgid "Amharic"
+msgstr "アムハラ語"
+
+#: sa_opts-dist.php:116
+msgid "Arabic"
+msgstr "アラビア語"
+
+#: sa_opts-dist.php:117
+msgid "Armenian"
+msgstr "アルメニア語"
+
+#: sa_opts-dist.php:118
+msgid "Basque"
+msgstr "バスク語"
+
+#: sa_opts-dist.php:119
+msgid "Bosnian"
+msgstr "ボスニア語"
+
+#: sa_opts-dist.php:120
+msgid "Bulgarian"
+msgstr "ブルガリア語"
+
+#: sa_opts-dist.php:121
+msgid "Byelorussian"
+msgstr "ベラルーシ語"
+
+#: sa_opts-dist.php:122
+msgid "Catalan"
+msgstr "カタロニア語"
+
+#: sa_opts-dist.php:123
+msgid "Chinese"
+msgstr "中国語"
+
+#: sa_opts-dist.php:124
+msgid "Croatian"
+msgstr "クロアチア語"
+
+#: sa_opts-dist.php:125
+msgid "Czech"
+msgstr "チェコ語"
+
+#: sa_opts-dist.php:126
+msgid "Danish"
+msgstr "デンマーク語"
+
+#: sa_opts-dist.php:127
+msgid "Dutch"
+msgstr "オランダ語"
+
+#: sa_opts-dist.php:128
+msgid "English"
+msgstr "英語"
+
+#: sa_opts-dist.php:129
+msgid "Esperanto"
+msgstr "エスペラント語"
+
+#: sa_opts-dist.php:130
+msgid "Estonian"
+msgstr "エストニア語"
+
+#: sa_opts-dist.php:131
+msgid "Finnish"
+msgstr "フィンランド語"
+
+#: sa_opts-dist.php:132
+msgid "French"
+msgstr "フランス語"
+
+#: sa_opts-dist.php:133
+msgid "Frisian"
+msgstr "フリースランド語"
+
+#: sa_opts-dist.php:134
+msgid "Georgian"
+msgstr "グルジア語"
+
+#: sa_opts-dist.php:135
+msgid "German"
+msgstr "ドイツ語"
+
+#: sa_opts-dist.php:136
+msgid "Greek"
+msgstr "ギリシャ語"
+
+#: sa_opts-dist.php:137
+msgid "Hebrew"
+msgstr "ヘブライ語"
+
+#: sa_opts-dist.php:138
+msgid "Hindi"
+msgstr "ヒンディー語"
+
+#: sa_opts-dist.php:139
+msgid "Hungarian"
+msgstr "ハンガリー語"
+
+#: sa_opts-dist.php:140
+msgid "Icelandic"
+msgstr "アイスランド語"
+
+#: sa_opts-dist.php:141
+msgid "Indonesian"
+msgstr "インドネシア語"
+
+#: sa_opts-dist.php:142
+msgid "Irish Gaelic"
+msgstr "アイルランドのゲール語"
+
+#: sa_opts-dist.php:143
+msgid "Italian"
+msgstr "イタリア語"
+
+#: sa_opts-dist.php:144
+msgid "Japanese"
+msgstr "日本語"
+
+#: sa_opts-dist.php:145
+msgid "Korean"
+msgstr "韓国語"
+
+#: sa_opts-dist.php:146
+msgid "Latin"
+msgstr "ラテン語"
+
+#: sa_opts-dist.php:147
+msgid "Latvian"
+msgstr "ラトビア語"
+
+#: sa_opts-dist.php:148
+msgid "Lithuanian"
+msgstr "リトアニア語"
+
+#: sa_opts-dist.php:149
+msgid "Malay"
+msgstr "マレー語"
+
+#: sa_opts-dist.php:150
+msgid "Marathi"
+msgstr "マラーティー語"
+
+#: sa_opts-dist.php:151
+msgid "Nepali"
+msgstr "ネパール語"
+
+#: sa_opts-dist.php:152
+msgid "Norwegian"
+msgstr "ノルウェー語"
+
+#: sa_opts-dist.php:153
+msgid "Persian"
+msgstr "ペルシア語"
+
+#: sa_opts-dist.php:154
+msgid "Polish"
+msgstr "ポーランド語"
+
+#: sa_opts-dist.php:155
+msgid "Portuguese"
+msgstr "ポルトガル語"
+
+#: sa_opts-dist.php:156
+msgid "Quechua"
+msgstr "ケチュア語"
+
+#: sa_opts-dist.php:157
+msgid "Rhaeto-Romance"
+msgstr "レート−ロマン語"
+
+#: sa_opts-dist.php:158
+msgid "Romanian"
+msgstr "ルーマニア語"
+
+#: sa_opts-dist.php:159
+msgid "Russian"
+msgstr "ロシア語"
+
+#: sa_opts-dist.php:160
+msgid "Sanskrit"
+msgstr "梵語"
+
+#: sa_opts-dist.php:161
+msgid "Scots"
+msgstr "スコットランド語"
+
+#: sa_opts-dist.php:162
+msgid "Scottish Gaelic"
+msgstr "スコットランドのゲール語"
+
+#: sa_opts-dist.php:163
+msgid "Serbian"
+msgstr "セルビア語"
+
+#: sa_opts-dist.php:164
+msgid "Slovak"
+msgstr "スロバキア語"
+
+#: sa_opts-dist.php:165
+msgid "Slovenian"
+msgstr "スロベニア語"
+
+#: sa_opts-dist.php:166
+msgid "Spanish"
+msgstr "スペイン語"
+
+#: sa_opts-dist.php:167
+msgid "Swahili"
+msgstr "スワヒリ語"
+
+#: sa_opts-dist.php:168
+msgid "Swedish"
+msgstr "スウェーデン語"
+
+#: sa_opts-dist.php:169
+msgid "Tagalog"
+msgstr "タガログ語"
+
+#: sa_opts-dist.php:170
+msgid "Tamil"
+msgstr "タミル語"
+
+#: sa_opts-dist.php:171
+msgid "Thai"
+msgstr "タイ語"
+
+#: sa_opts-dist.php:172
+msgid "Turkish"
+msgstr "トルコ語"
+
+#: sa_opts-dist.php:173
+msgid "Ukrainian"
+msgstr "ウクライナ語"
+
+#: sa_opts-dist.php:174
+msgid "Vietnamese"
+msgstr "ベトナム語"
+
+#: sa_opts-dist.php:175
+msgid "Welsh"
+msgstr "ウェールズ語"
+
+#: sa_opts-dist.php:176
+msgid "Yiddish"
+msgstr "イディッシュ語"
+
+#. use_bayes
+#: sa_opts-dist.php:179
+msgid "Use Bayesian Filter"
+msgstr "ベイズフィルタを使う"
+
+#: sa_opts-dist.php:180
+msgid ""
+"The Baysian Filter will learn what is spam and what isn't to become a better "
+"filter."
+msgstr ""
+
+#. auto_learn
+#: sa_opts-dist.php:186
+msgid "Auto-learn"
+msgstr "Auto-learn"
+
+#: sa_opts-dist.php:187
+msgid ""
+"Automatically feed high and low scoring mails into SpamAssassin's learning "
+"systems. (Currently, only Bayesian filtering is supported.)"
+msgstr ""
+
+#. report_safe
+#: sa_opts-dist.php:193
+msgid "Spam Encapsulation"
+msgstr "スパムカプセル封じ"
+
+#: sa_opts-dist.php:194
+msgid ""
+"Encapsulate spam messages into a MIME or plain-text attachment, or you can "
+"disable it altogether."
+msgstr ""
+
+#: sa_opts-dist.php:196
+msgid "Disabled"
+msgstr "無効"
+
+#: sa_opts-dist.php:197
+msgid "MIME Attachment"
+msgstr "MIME 形式の添付ファイル"
+
+#: sa_opts-dist.php:198
+msgid "Text Attachment"
+msgstr "テキスト形式の添付ファイル"
+
+#. These options were removed as of SpamAssassin 2.50-ish
+#. They are here for those running older versions of SA.
+#. report_header
+#: sa_opts-dist.php:205
+msgid "Report in Header"
+msgstr "ヘッダにレポート"
+
+#: sa_opts-dist.php:206
+msgid ""
+"SpamAssassin will create a report when it determines an e-mail message to be "
+"spam.  This report is normally prepended to the e-mail message.  To have the "
+"report written as part of the e-mail header, select this option."
+msgstr ""
+
+#. defang_mime
+#: sa_opts-dist.php:212
+msgid "Reformat HTML Spam"
+msgstr "HTML でスパムを再フォーマットします"
+
+#: sa_opts-dist.php:213
+msgid ""
+"When an e-mail in HTML format is determined to be spam, SpamAssassin can "
+"convert the message to text. To allow this, select this option."
+msgstr ""
+
+#. White/black list info
+#: sa_opts-dist.php:243
+msgid "Whitelist From"
+msgstr "ホワイトリストに載せられる差出人"
+
+#: sa_opts-dist.php:244
+msgid ""
+"E-mail from these addresses will not be marked as spam. You may use '*' as a "
+"wildcard to allow a large number of addresses at one time. E.g. Whitelist "
+"From '*@aol.com' will not mark any message that claims to be from aol.com as "
+"spam."
+msgstr ""
+
+#: sa_opts-dist.php:246
+msgid "Don't Whitelist From"
+msgstr "差出人をホワイトリストに載せありません"
+
+#: sa_opts-dist.php:247
+msgid ""
+"This address will be excluded from a previous whitelist and will be treated "
+"as a normal address, i.e. it will not be automatically allowed."
+msgstr ""
+
+#: sa_opts-dist.php:249
+msgid "Blacklist From"
+msgstr "差出人をブラックリストに載せられます"
+
+#: sa_opts-dist.php:250
+msgid ""
+"E-mail from these addresses will always be marked as spam. You may use '*' "
+"as a wildcard to block a large number of addresses at one time. E.g. "
+"Blacklist From '*@aol.com' will mark all messages that claims to be from aol."
+"com as spam."
+msgstr ""
+
+#: sa_opts-dist.php:252
+msgid "Don't Blacklist From"
+msgstr "差出人をブラックリストに載せありません"
+
+#: sa_opts-dist.php:253
+msgid ""
+"This address will be excluded from a previous blacklist and will be treated "
+"as a normal address, i.e. it will not be automatically denied."
+msgstr ""
+
+#: sa_opts-dist.php:255
+msgid "Whitelist To"
+msgstr "宛先をホワイトリストに載せられます"
+
+#: sa_opts-dist.php:256
+msgid ""
+"E-mail to these addresses will not be marked as spam. This is useful for "
+"allowing e-mail lists. For example, you can allow all messages from an e-"
+"mail list that sends to 'Tofu-Support-List@beeflovers.com'. You may use '*' "
+"as a wildcard to allow a large number of addresses at one time. E.g. "
+"Whitelist To '*@aol.com' will not mark any message that claims to be to aol."
+"com as spam."
+msgstr ""
+
+#: sa_opts-dist.php:258
+msgid "Blacklist To"
+msgstr "宛先をブラックリストに載せられるます"
+
+#: sa_opts-dist.php:259
+msgid ""
+"E-mail to these addresses will be marked as spam. You may use '*' as a "
+"wildcard to reject a large number of addresses at one time. E.g. Blacklist "
+"To '*@aol.com' will mark all messages that claims to be to aol.com as spam."
+msgstr ""
+
+#: sa_settings.inc.php:114
+msgid "General Settings"
+msgstr "一般保存"
+
+#: sa_settings.inc.php:173
+msgid "Save Settings"
+msgstr "設定を保存"
+
+#: sa_whitelist.inc.php:43 sasql_wblist.php:41
+msgid "Error: You must include an e-mail address."
+msgstr "エラー：必ずメールアドレスを含みます。"
+
+#: sa_whitelist.inc.php:49 sasql_wblist.php:48
+msgid "Error: You have entered an invalid e-mail address."
+msgstr "エラー：入力したメールアドレスが無効です。"
+
+#: sa_whitelist.inc.php:53
+msgid "Error: You must select Allow or Deny."
+msgstr ""
+
+#: sa_whitelist.inc.php:76
+msgid "Global Allow / Deny Address List"
+msgstr ""
+
+#: sa_whitelist.inc.php:83 sa_whitelist.inc.php:125
+msgid "Address"
+msgstr "アドレス"
+
+#: sa_whitelist.inc.php:84 sa_whitelist.inc.php:126
+msgid "Type"
+msgstr "タイプ"
+
+#: sa_whitelist.inc.php:118
+msgid "Personal Allow / Deny Address List"
+msgstr ""
+
+#: sa_whitelist.inc.php:127
+msgid "Action"
+msgstr "動作"
+
+#: sa_whitelist.inc.php:134
+msgid "Address Removed"
+msgstr "アドレスを削除しました"
+
+#: sa_whitelist.inc.php:160
+#, php-format
+msgid "Unknown option: %s"
+msgstr "知らないオプション：%s"
+
+#: sa_whitelist.inc.php:168
+msgid "Delete"
+msgstr "削除"
+
+#: sa_whitelist.inc.php:174
+msgid "Edit"
+msgstr "編集"
+
+#. echo $edit;
+#: sa_whitelist.inc.php:188
+msgid "Edit Address"
+msgstr "アドレスを編集"
+
+#: sa_whitelist.inc.php:194
+msgid "Add New Address"
+msgstr "新しいアドレスを追加"
+
+#: sa_whitelist.inc.php:220
+msgid "Address:"
+msgstr "アドレス："
+
+#: sa_whitelist.inc.php:224
+msgid "Type:"
+msgstr "タイプ："
+
+#. End Form
+#. Help
+#: sa_whitelist.inc.php:245
+msgid "Legend"
+msgstr "凡例"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:14 sasql_db.php:37 sasql_db.php:121 sasql_db.php:165
+#: sasql_db.php:206 sasql_db.php:246 sasql_db.php:263 sasql_db.php:296
+#: sasql_db.php:326
+#, php-format
+msgid "Database error in %s: %s"
+msgstr "%s にデータベースエラー：%s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:188
+#, php-format
+msgid "Database error: %s"
+msgstr "データベースエラー：%s"
+
+#: sasql_db.php:227
+#, php-format
+msgid "sasql_AddPref_multiple Database error: %s"
+msgstr "sasql_AddPref_multiple データベースエラー：%s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:280
+#, php-format
+msgid "Database error %s: %s"
+msgstr "データベースエラー %s：%s"
+
+#: sasql_hooks.php:104 sasql_options.php:62
+msgid "Spam Filters"
+msgstr "スパムフィルター"
+
+#: sasql_hooks.php:106
+msgid "Configure the behavior of your spam filters."
+msgstr ""
+
+#: sasql_hooks.php:199
+msgid "Add Email to Whitelist"
+msgstr "ホワイトリストにメールを追加します"
+
+#: sasql_hooks.php:200
+msgid "Allow Sender"
+msgstr "送信者を許可します"
+
+#: sasql_hooks.php:201
+msgid "Remove Email from Whitelist"
+msgstr "ホワイトリストにメールを削除します"
+
+#: sasql_hooks.php:202 sasql_hooks.php:204 sasql_hooks.php:209
+#: sasql_hooks.php:211
+msgid "remove"
+msgstr "削除"
+
+#: sasql_hooks.php:203
+msgid "Remove Domain from Whitelist"
+msgstr "ホワイトリストにドメインを削除します"
+
+#: sasql_hooks.php:206
+msgid "Add Email to Blacklist"
+msgstr "ブラックリストにメールを追加します"
+
+#: sasql_hooks.php:207
+msgid "Block Sender"
+msgstr "送信者をブロックします"
+
+#: sasql_hooks.php:208
+msgid "Remove Email from Blacklist"
+msgstr "ブラックリストでメールを削除します"
+
+#: sasql_hooks.php:210
+msgid "Remove Domain from Blacklist"
+msgstr "ブラックリストでドメインを削除します"
+
+#: sasql_hooks.php:217
+msgid "Address is already in your whitelist"
+msgstr "すでにアドレスはホワイトリストに掲載されました"
+
+#: sasql_hooks.php:218 sasql_hooks.php:226
+msgid "Whitelisted"
+msgstr "ホワイトリストに載せられる"
+
+#: sasql_hooks.php:225
+msgid "Domain is already in your whitelist"
+msgstr "すでにドメインはホワイトリストに掲載されました"
+
+#: sasql_hooks.php:239
+msgid "Address is already in your blacklist"
+msgstr "すでにアドレスはブラックリストに掲載されました"
+
+#: sasql_hooks.php:240 sasql_hooks.php:248
+msgid "Blacklisted"
+msgstr "ブラックリストに載せられる"
+
+#: sasql_hooks.php:247
+msgid "Domain is already in your blacklist"
+msgstr "すでにドメインはブラックリストに掲載されました"
+
+#: sasql_hooks.php:291 sasql_hooks.php:349
+msgid "Learn as False Positive"
+msgstr "偽陽性として学習する"
+
+#: sasql_hooks.php:295 sasql_hooks.php:353
+msgid "Learn as Spam"
+msgstr "スパムとして学習する"
+
+#: sasql_options.php:62
+msgid "Options"
+msgstr "オプション"
+
+#: sasql_wblist.php:53
+msgid "Error: Missing option."
+msgstr "エラー：オプションを紛失しました。"

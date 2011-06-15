@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" dir="ltr">
+<head>
+<title>net2ftp help</title>
+<link rel="stylesheet" type="text/css" href="main.css.php?ltr=ltr" />
+</head>
+
+<body style="margin-left: 70px; margin-right: 70px;">
+
+<div class="header21">Web server requirements</div>
+<ul>
+<li> Web server: any web server which can run PHP. The most popular one is <a href="http://httpd.apache.org" target="_blank">Apache</a>.</li>
+<li> <a href="http://www.php.net" target="_blank">PHP</a>: at least version 4.2.3. net2ftp works under <a href="http://www.php.net/manual/en/features.safe-mode.php" target="_blank">Safe Mode</a>. One advanced feature requires PHP 5 (send raw FTP command).</li>
+<li> Disk space: 7.5 MB for net2ftp (less if you remove the plugins), and a few MB for the temporary files.</li>
+</ul>
+
+<br />
+
+<div style="text-align: center;">
+<script type="text/javascript"><!--
+google_ad_client = "pub-8420366685399799";
+google_ad_output = "textlink";
+google_ad_format = "ref_text";
+google_cpa_choice = "CAAQidTQgAIaCDFyD7PiBqtPKN2uuIEB";
+google_ad_channel = "0194414494";
+//--></script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+<br />
+
+<div class="header21">Installation procedure</div>
+<br />
+1 - Unzip all the files on your computer, and upload them to your server.<br /><br />
+2 - The /temp directory should be chmodded to 777 (you can use <a href="http://www.net2ftp.com">net2ftp.com</a> to do this).<br /><br />
+3 - Set your settings in the settings.inc.php file; read "Next steps" below for more details.<br /><br />
+4 - A database is only required if you want to log the actions of the users. To create the tables, execute the SQL queries below (also in the "create_tables.sql" file). This can be done easily in <a href="http://www.phpmyadmin.net/" target="_blank">PhpMyAdmin</a>, the popular front-end to MySQL.<br />
+<br />
+<textarea cols="70" rows="8" style="white-space: nowrap;">
+
+DROP TABLE IF EXISTS `net2ftp_logAccess`;
+DROP TABLE IF EXISTS `net2ftp_log_access`;
+CREATE TABLE `net2ftp_log_access` (`id` int(10) unsigned NOT NULL auto_increment,`date` date NOT NULL default '0000-00-00',`time` time NOT NULL default '00:00:00',`remote_addr` text NOT NULL,`remote_port` text NOT NULL,`http_user_agent` text NOT NULL,`page` text NOT NULL,`datatransfer` int(10) unsigned default '0',`executiontime` mediumint(8) unsigned default '0',`ftpserver` text NOT NULL,`username` text NOT NULL,`state` text NOT NULL,`state2` text NOT NULL,`screen` text NOT NULL,`directory` text NOT NULL,`entry` text NOT NULL,`http_referer` text NOT NULL,KEY `index1` (`id`)) TYPE=MyISAM;
+DROP TABLE IF EXISTS `net2ftp_logError`;
+DROP TABLE IF EXISTS `net2ftp_log_error`;
+CREATE TABLE `net2ftp_log_error` (`date` date NOT NULL default '0000-00-00',`time` time NOT NULL default '00:00:00',`ftpserver` text NOT NULL,`username` text NOT NULL,`message` text NOT NULL,`backtrace` text NOT NULL,`state` text NOT NULL,`state2` text NOT NULL,`directory` text NOT NULL,`remote_addr` text NOT NULL,`remote_port` text NOT NULL,`http_user_agent` text NOT NULL,KEY `index1` (`date`,`time`,`ftpserver`(100),`username`(50))) TYPE=MyISAM;
+DROP TABLE IF EXISTS `net2ftp_logConsumptionFtpserver`;
+DROP TABLE IF EXISTS `net2ftp_log_consumption_ftpserver`;
+CREATE TABLE `net2ftp_log_consumption_ftpserver`(`date` date NOT NULL default '0000-00-00',`ftpserver` varchar(255) NOT NULL default '0',`datatransfer` int(10) unsigned default '0',`executiontime` mediumint(8) unsigned default '0',PRIMARY KEY  (`date`,`ftpserver`)) TYPE=MyISAM;
+DROP TABLE IF EXISTS `net2ftp_logConsumptionIpaddress`;
+DROP TABLE IF EXISTS `net2ftp_log_consumption_ipaddress`;
+CREATE TABLE `net2ftp_log_consumption_ipaddress`(`date` date NOT NULL default '0000-00-00',`ipaddress` varchar(15) NOT NULL default '0',`datatransfer` int(10) unsigned default '0',`executiontime` mediumint(8) unsigned default '0',PRIMARY KEY  (`date`,`ipaddress`)) TYPE=MyISAM;
+DROP TABLE IF EXISTS `net2ftp_users`;
+CREATE TABLE `net2ftp_users` (`ftpserver` varchar(255) NOT NULL default '0',`username` text NOT NULL,`homedirectory` text NOT NULL,KEY `index1` (`ftpserver`,`username`(50))) TYPE=MyISAM;
+
+</textarea><br />
+
+<br /><br />
+
+<div class="header21">Next steps</div>
+<ul>
+<li> Important settings in settings.inc.php:
+	<ul>
+	<li> Enter an Admin panel password. If no password is entered, the Admin panel is not accessible.</li>
+	<li> Turn logging on or off (requires a MySQL database).</li>
+	<li> Choose if you want to set a daily consumption limit (requires a MySQL database). 
+	Since version 0.81, it is possible to restrict each user's daily data transfer volume and script execution time.
+	By default the data transfer volume is set to 50 MB per day and the script execution time to 1000 seconds per day - but this may be changed.
+	Both figures are logged per IP address, and per FTP server.
+	Once the daily consumption limit is reached, you will still be able to browse FTP servers, but the transfer of data to/from the server will be blocked.
+	If you need unrestricted access to net2ftp, contact your net2ftp Administrator or install net2ftp on your own web server.</li>
+	</ul>
+</li>
+<li> Set authorizations in settings_authorizations.inc.php:
+	<ul>
+	<li> Allow the users to connect to any FTP server, or only to a restricted list of FTP servers</li>
+	<li> Ban certain FTP servers</li>
+	<li> Ban certain IP addresses; users connecting from these addresses will not be able to use the website</li>
+	<li> Allow the users to connect to any FTP server port, or only to one port</li>
+	<li> Set the user home directories in the table net2ftp_users.
+           This will direct a user to his home directory when he logs in, and also restrict the browsing to this directory. 
+           The other actions (rename, copy, ...) are not protected!!
+           If you need tighter security, set the user permissions directly on the FTP server.
+	</li>
+	</ul>
+</li>
+<li> To allow large file uploads and transfers, you may have to change these settings:
+	<ul>
+	<li> in the file php.ini (directory C:\windows or /etc): upload_max_filesize, post_max_size, max_execution_time, memory_limit</li>
+	<li> in the file php.conf (directory /etc/httpd/conf.d): LimitRequestBody</li>
+	</ul>
+</li>
+<li>Protect the /temp directory. If you use the Apache web server, the .htaccess file which is provided already does this.</li>
+<li> In your php.ini file, register_globals can be set to "off" (this is more secure), but the application will off course also work if it is set to "on".</li>
+<li> The files are transmitted using the BINARY mode by default. There is a list of file extensions (txt, php, ...) which are transmitted in ASCII mode. Edit this list if needed, it is located in /includes/filesystem.inc.php. Look for function ftpAsciiBinary.</li>
+</ul>
+
+<br /><br />
+
+<div class="header21">Integration of net2ftp in an existing website</div>
+
+<div class="header31">General tips and tricks</div>
+
+The overall architecture of net2ftp has been completely reviewed in version 0.90, to allow easy integration of net2ftp in other web-based PHP applications.
+The index.php file is a school example of how to integrate net2ftp: <br /><br />
+<ul>
+	<li> Set the constants NET2FTP_APPLICATION_ROOTDIR and NET2FTP_APPLICATION_ROOTDIR_URL </li>
+	<li> Include the net2ftp file main.inc.php </li>
+	<li> Execute 5 net2ftp() calls to send the HTTP headers, print the Javascript code, etc. </li>
+	<li> Check if an error occured to print out an error message. </li>
+</ul>
+
+<br /><br />
+
+<div class="header31">Linking directly to a particular net2ftp page</div>
+
+It is possible to direct users to a particular net2ftp page (browse a particular directory, upload page, ...).
+Log in, go to the page you want to link to, and click on the Bookmark button: <img src="../../skins/blue/images/actions/bookmark.png" alt="Icon" />.
+The next page will show you the link to use; this link does not contain any login information (username or password).
+When the users click on the link, they will be prompted for their login information by a popup window.
+
+<br /><br />
+
+<div class="header31">Mambo, Drupal and Xoops modules</div>
+Ready-made net2ftp modules for Mambo, Drupal and Xoops are provided with net2ftp version 0.90!
+Detailed installation instructions are given in the readme.txt file in the respective directories.
+In all cases you'll first need to install the standalone version of net2ftp, and then install the Mambo, Drupal or Xoops module.
+Read the instructions carefully, as each step is important.
+
+<br /><br />
+
+<div class="header31">Web-based control panels</div>
+net2ftp has been integrated in the following control panels:
+<ul>
+	<li> Zpanel: <a href="http://www.thezpanel.com/">http://www.thezpanel.com/</a></li>
+	<li> Web-cp (as of version 0.6): <a href="http://www.web-cp.net/demo.php">http://www.web-cp.net/demo.php</a></li>
+</ul>
+
+<br /><br />
+
+<div class="header21">Known bugs and limitations</div>
+
+<div class="header31">PHP bugs</div>
+
+<ul>
+
+<li> There is a bug in the PHP FTP function ftp_get() which causes end-of-line characters to be wrongly translated.
+As a result, \r\n becomes \r on Windows when using the ASCII mode.
+There is a workaround: on the net2ftp login screen, the BINARY mode is chosen by default.
+Refer to <a href="http://bugs.php.net/bug.php?id=27633">http://bugs.php.net/bug.php?id=27633</a> for more details.
+<br />UPDATE 2004-12-13: A patch has been posted for this bug on the PHP internals mailing list. 
+<br />UPDATE 2005-04-08: This bug is fixed in PHP version 4.3.11 and 5.0.4. 
+</li>
+
+</ul>
+
+<div class="header31">If your web server runs on Windows</div>
+If you can log in but you cannot see any directory or file in the Browse Screen, then it is probably caused by a filesystem permission problem on your web server.<br /><br />
+
+<span style="text-decoration: underline;">Quote from the PHP bug report database:</span><br />
+<i>
+ftp_rawlist requires write permissions to the system's tempoarary directory. <br />
+IIS's default installation does not include this in the permissions for IUSR.<br /> 
+The bug is in system configuration, not PHP.<br />
+</i><br />
+
+This was discussed in the following PHP bug reports:<br />
+<a href="http://bugs.php.net/bug.php?id=8874"  target="_blank">http://bugs.php.net/bug.php?id=8874</a><br />
+<a href="http://bugs.php.net/bug.php?id=13720" target="_blank">http://bugs.php.net/bug.php?id=13720</a><br />
+<a href="http://bugs.php.net/bug.php?id=16057" target="_blank">http://bugs.php.net/bug.php?id=16057</a><br /><br />
+
+<div class="header31">If your FTP server is the IIS FTP server</div>
+In the FTP server's configuration, set it for UNIX style directory listings rather than MSDOS style listings.
+
+<br /><br />
+
+</body>
+</html>

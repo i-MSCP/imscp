@@ -1,0 +1,7 @@
+ispcp_table = EnglishBritain
+ispcp_language = English - English
+ispcp_languageSetlocaleValue = en_GB
+ispcp_languageRevision = 201009151932
+encoding = UTF-8
+Mail = e-mail
+Incorrect mount point syntax = Incorrect <i>mount point</i> syntax!

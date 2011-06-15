@@ -1,0 +1,188 @@
+<chapter>
+   <title>
+      Opcions
+   </title>
+   <summary>
+      Vostè pot modificar la forma com SquirrelMail mira i respon segons les
+      seves preferències segons aquesta secció.
+   </summary>
+   <description>
+      <p>
+      Una de les grans coses del SquirrelMail es el grau amb el que es poden
+      personalitzar les preferències de cada usuari. Vostè pot personalitzar
+      els temes de colors, idiomes, carpetes, etc. Totes aquestes i més 
+      preferències poden ser modificades sense que això afecti a cap altra
+      usuari del sistema. Hi ha quatre menús: informació personal, ressaltat 
+      missatges, preferències de pantalla i preferències de carpetes.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Informació personal
+   </title>
+   <description>
+      <b>Nom complet</b><br>
+      Vostè ha de posar aquí el seu nom complet. Per exemple, "Josep Sanz". 
+      Això es el que la gent veurà quan rebin un missatge seu. Si no completa
+      aquest camp, el que veurà la gent serà la direcció de correu.
+      <br><br>
+      
+      <b>Direcció de correu</b><br>
+      <i>Opcional</i> - Si la seva direcció de correu es diferent a la que
+      s'assigna automàticament, vostè la pot canviar aquí.
+      <br><br>
+      
+      <b>Respondre a</b><br>
+      <i>Opcional</i> - Aquesta es la direcció de correu que la gent utilitzarà
+      quan facin Respondre (Reply) al seu missatge. Això es útil quan volem
+      que la gent respongui a una altra direcció de correu.
+      <br><br>
+      
+      <b>Signatura</b><br>
+      <i>Opcional</i> - Es la signatura que acompanyarà a tots el missatges
+      que s'enviïn. Si vostè desitja utilitzar-la, s'haurà de seleccionar la
+      casella de verificació que té la etiqueta "Utilitzar signatura ?"
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Preferències de pantalla
+   </title>
+   <description>
+      <b>Tema</b><br>
+      SquirrelMail ofereix diversos temes de colors. Vostè pot seleccionar 
+      el la combinació de colors que més li agradi.
+      <br><br>
+
+      <b>Idioma</b><br>
+      Si l'anglès no es el seu idioma, vostè pot fàcilment canviar l'idioma
+      amb el que visualitzarà la majoria de coses. Si l'idioma que vostè
+      vol es troba a la llista d'idiomes, pot seleccionar-lo i SquirrelMail
+      respondrà a gaire be tots els missatges amb aquest idioma. Observi que
+      això no tradueix els missatges de correu o els noms de les carpetes.
+      <br><br>
+
+      <b>Usar Javascript a la llista de contactes?</b><br>
+      Una de les nostres fites principals al fer SquirrelMail era no dependre
+      del llenguatge JavaScript. Però, alguns dels nostres col·laboradors, 
+      van fer un llibre de direccions molt bo que buscava l'utilitari del 
+      JavaScript. Ara, en lloc de treure'l o no utilitzar-lo, també pot 
+      utilitzar-lo en HTML. Si el seu navegador no suporta JavaScript 
+      seleccioni HTML però si sí que ho suporta, es mes pràctic el llibre
+      de direccions usant JavaScript.
+      <br><br>
+      
+      <b>Numero de missatges a indexar</b><br>
+      Aquest es el número de missatges a mostrar al mateix temps d'una carpeta.
+      Si hi han més missatges que el número a mostrar, vostè veurà uns links
+      que permetran mouràs per tots els demés missatges (anteriors i següents).
+      <br><br>
+      
+      <b>Acomodar texts entrants a</b><br>
+      El número de caràcters que es deixaran mostrar abans de acomodar el text.
+      Generalment 86 es un valor correcte però es pot canviar al gust de 
+      l'usuari.
+      <br><br>
+      
+      <b>Mida de la finestra de l'editor</b><br>
+      Vostè desitja que la caixa per redactar el missatge sigui d'una mida
+      concreta?. Aquest es el número de caràcters que vostè podrà prémer
+      abans de canviar automàticament la línia.
+      <br><br>
+      
+      <b>Ample de la columna de la llista de carpetes</b><br>
+      A la part de l'esquerra, vostè veurà la llista de carpetes. Amb aquesta
+      opció pot definir com serà d'ample aquesta columna. Això s'ha de mirar
+      segons les mides de les fonts o si té carpetes on els noms son llargs.
+      S'ha de mirar de configurar de forma que no quedi espai buit.
+      <br><br>
+      
+      <b>Actualització automàtica de la llista de carpetes</b><br>
+      SquirrelMail te la funció de refrescar el contingut del menú de carpetes.
+      Això pot ser útil per veure quan hi han missatges no llegits a l'INBOX.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ressaltat de missatges
+   </title>
+   <description>
+      La idea d'això va venir per que en molts casos, s'està donat d'alta a
+      diverses llistes de distribució i quan arriben molts missatges, es 
+      difícil veure d'on venen cadascú. Amb això, podrà ressaltar amb un color
+      els missatges que arribin d'una llista, amb un altra els d'una altra
+      llista, etc.
+      <br><br>
+      Només cal fer clic a [Nou] per crear un nou ressaltat, o [Editar] per 
+      modificar qualsevol paràmetre. Les opcions apareixeran tot seguit.
+      <br><br>
+      
+      <b>Nom per identificar-lo</b><br>
+      Això es simplement el nom que vostè defineix per aquest ressaltat.
+      Per exemple, si vostè vol ressaltar d'un color tots els missatges que
+      arribin de "jsanz@fa.upc.es", pot posar "jsanz".
+      <br><br>
+      
+      <b>Color</b><br>
+      Aquest es el color real que serà de fons. Vostè pot seleccionar d'entre
+      un número de colors definits o introduir el color en format 
+      hexadecimal (p.e. a6b492). Si vostè selecciona el seu propi color,
+      també ha de seleccionar el botó de selecció que indica que s'utilitzi
+      aquest.
+      <br><br>
+      
+      <b>Coincidència</b><br>
+      Aquí vostè ha de seleccionar quina serà la cadena de text que es buscarà
+      i a quin camp del missatge es buscarà.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Preferències de carpetes
+   </title>
+   <description>
+      <b>Ruta de la carpeta</b><br>
+      En alguns sistemes això no es mostra. Si no veu aquesta opció, no faci
+      cas d'això. En altres sistemes, aquesta en una dada necessària. 
+      Normalment aquesta opció, mostra la opció mes adient al nostre sistema.
+      Aquesta es la carpeta en el nostre directori personal d'on pengen
+      les carpetes de correu. Si vostè no entén això, deixi la opció que
+      surt al seu sistema per defecte.
+      <br><br>
+
+      <b>Paperera</b><br>
+      Vostè pot seleccionar a quina carpeta es mouran els missatges suprimits.
+      Si no desitja que els elements suprimits passin per la paperera, 
+      seleccioni la opció "No utilitzar paperera"
+      <br><br>
+      
+      <b>Elements enviats</b><br>
+      També pot indicar a quina carpeta posar els elements enviats. Si no
+      vol que es guardin els missatges enviats, seleccioni la opció "No 
+      utilitzar elements enviats".
+      <br><br>
+      
+      <b>Notificació de missatges no llegits</b><br>
+      Aquesta opció especifica com es mostrarà la llista de carpetes de 
+      l'esquerra de la pantalla. Es pot seleccionar que no s'indiqui, que
+      només indiqui la carpeta d'entrada o totes les carpetes. En el cas
+      de que seleccioni que notifiqui els missatges no llegits, quan
+      hagin missatges no llegits a qualsevol carpeta, aquesta es mostrarà 
+      en <B>negreta</B>.
+      <br><br>
+      
+      <b>Tipus de notificació de missatges no llegits</b><br>
+      Quan nou missatges arriben a una carpeta, aquesta opció diu com es 
+      notificarà. Les opcions son dues: només no llegits (4) o no llegits i
+      total (4/27).
+      <br><br>
+   </description>
+</section>

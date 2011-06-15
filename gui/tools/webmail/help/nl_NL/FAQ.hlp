@@ -1,0 +1,77 @@
+<chapter>
+   <title>
+      Frequently Asked Questions (FAQ)
+   </title>   
+   <summary>
+      Dit hoofdstuk geeft antwoord op veel gestelde vragen (Frequently
+      Asked Questions, FAQ) over Webmail.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Kan ik meerdere namen uit het adresboek tegelijk gebruiken?
+   </title>
+   <description>
+      <p>
+      Ja. Via de zoekoptie in het adresboek kunt u bij meerdere zoek resultaten, via de checkboxen 
+      <I>Aan:</I>, of <I>Cc:</I> of <I>BCC</I>-veld de betreffende geadresserde selecteren.
+      Met <I>Alle</I> kunt u de <I>Aan:</I>, of <I>Cc:</I> of <I>BCC</I>-veld voor alle gevonden adressen 
+      selecteren.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Kan ik namen direct vanuit een e-mail toevoegen aan het adresboek?
+   </title>
+   <description>
+      <p>
+      Nee. Momenteel kunt u nog geen namen direct uit een ontvangen e-mail
+      toevoegen aan het adresboek. U kunt wel het adres kopi&euml;ren naar
+      het klembord en vervolgens plakken in het adresboek. In de toekomst
+      zal deze functionaliteit wellicht toegevoegd worden.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vanaf waar kan ik deze webmail gebruiken?
+   </title>
+   <description>
+      <p>
+      Vanaf elke computer met een internetverbinding.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Waarom zou ik webmail gebruiken in plaats van een normaal e-mailprogramma?
+   </title>
+   <description>
+      <p>
+      Webmail zal waarschijnlijk nooit een complete vervanger worden voor een
+      normaal e-mailprogramma. Echter, als u bij iemand op bezoek bent, op
+      vakantie, op uw werk of juist thuis, heeft u zo toegang tot uw e-mail
+      zonder dat u op die locatie een e-mailprogramma hoeft op te zetten.
+      Webmail is ontworpen om in deze zin een aanvulling te zijn op een
+      normaal e-mailprogramma.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Wie heeft SquirrelMail gemaakt? 
+   </title>
+   <description>
+      <p>
+      SquirrelMail is een groot project waar veel mensen aan hebben bijgedragen.
+      Voor een lijst, zie onze website
+      <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>

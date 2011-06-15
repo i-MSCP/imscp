@@ -1,0 +1,27 @@
+--- plugins/delete_move_next/setup.php.orig	Thu Aug  5 22:46:14 2004
++++ plugins/delete_move_next/setup.php	Thu Aug  5 23:16:20 2004
+@@ -183,14 +183,22 @@
+              '<tr>'.
+                  "<td bgcolor=\"$color[9]\" width=\"100%\" align=center><small>";
+ 
++        global $data_dir, $username;
++        
+         if ($prev > 0){
+-            echo "<a href=\"read_body.php?passed_id=$prev_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id\">" . _("Delete & Prev") . "</a>" . "&nbsp;|&nbsp;\n";
++            if (getPref($data_dir, $username, 'use_previewPane', 0) == 1)
++                echo "<a href=\"read_body.php?passed_id=$prev_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0\" onClick=\"if (parent.right) {parent.right.document.location='" . SM_PATH . "src/delete_message.php?mailbox=$urlMailbox&amp;message=$passed_id&amp;sort=$sort&amp;startMessage=$startMessage'}\">" . _("Delete & Prev") . "</a>" . "&nbsp;|&nbsp;\n";
++            else
++                echo "<a href=\"read_body.php?passed_id=$prev_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id\">" . _("Delete & Prev") . "</a>" . "&nbsp;|&nbsp;\n";
+         }
+         else {
+             echo _("Delete & Prev") . "&nbsp;|&nbsp;";
+         }
+         if ($next > 0){
+-            echo "<a href=\"read_body.php?passed_id=$next_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id\">" . _("Delete & Next") . "</a>\n";
++            if (getPref($data_dir, $username, 'use_previewPane', 0) == 1)
++               echo "<a href=\"read_body.php?passed_id=$next_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0\" onClick=\"if (parent.right) {parent.right.document.location='" . SM_PATH . "src/delete_message.php?mailbox=$urlMailbox&amp;message=$passed_id&amp;sort=$sort&amp;startMessage=$startMessage'}\">" . _("Delete & Next") . "</a>\n";
++           else
++               echo "<a href=\"read_body.php?passed_id=$next_if_del&amp;mailbox=$urlMailbox&amp;sort=$sort&amp;startMessage=$startMessage&amp;show_more=0&amp;delete_id=$passed_id\">" . _("Delete & Next") . "</a>\n";
+         } else {
+             echo _("Delete & Next");
+         }

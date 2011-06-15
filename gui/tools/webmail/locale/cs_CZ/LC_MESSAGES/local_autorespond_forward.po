@@ -1,0 +1,186 @@
+# Czech (cs_CZ) local_autorespond_forward Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Michal Kminek <mkminek@getnet.cz>, 2009.
+# Tomas Drbohlav <tomas.drbohlav@mff.cuni.cz>, 2007.
+# $Id: $
+msgid ""
+msgstr ""
+"Project-Id-Version: local_autorespond_forward\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-07-17 21:09-0700\n"
+"PO-Revision-Date: 2009-05-04 23:10-0800\n"
+"Last-Translator: Michal Kminek <mkminek@getnet.cz>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Autoresponder / Mail Forwarding"
+msgstr "Automatická odpověď/ Přeposílání emailů"
+
+msgid "Set up an auto-reply message and optionally forward your incoming email to other addresses. This can be useful when you are away on vacation."
+msgstr "Nastavení automatické odpovědi a volitelné přeposílání přicházející pošty na jiné emailové adresy. Vhodné když jste pryč na dovolené."
+
+msgid "Autoresponder"
+msgstr "Automatická odpověď"
+
+msgid "Set up an auto-reply message for you incoming email. This can be useful when you are away on vacation."
+msgstr "Nastavení automatické odpovědi na přicházející emaily. Vhodné když jste pryč na dovolené."
+
+msgid "Mail Forwarding"
+msgstr "Přeposílání emailů"
+
+msgid "Set up other email addresses to which your incoming messages will be forwarded."
+msgstr "Nastavení dalších emailových adres, na které budou přeposílány příchozí zprávy."
+
+msgid "Bad characters in list of forwarding addresses"
+msgstr "Seznam adres obsahuje nepovolené znaky"
+
+msgid "Forwarding has not been activated (no addresses given)"
+msgstr "Přeposílání nebylo aktivováno (nebyla zadána žádná adresa)"
+
+msgid "Forwarding has been activated"
+msgstr "Přeposílání bylo aktivováno"
+
+msgid "Forwarding has been deactivated"
+msgstr "Přeposílání bylo deaktivováno"
+
+msgid "Autoresponder has been deactivated"
+msgstr "Automatická odpověď byla deaktivována"
+
+msgid "Autoresponder has not been activated (message is empty)"
+msgstr "Automatická odpověď nebyla aktivována (zpráva je prázdná)"
+
+msgid "Autoresponder has been activated"
+msgstr "Automatická odpověď byla aktivována"
+
+msgid "Autoresponder has been initialized"
+msgstr "Automatická odpověď byla inicializována"
+
+msgid "Autoresponder has been re-initialized"
+msgstr "Automatická odpověď byla znovuinicializována"
+
+msgid "Messages will be saved in this account (no forwarding is active)"
+msgstr "Zprávy budou uloženy do aktuálního účtu (není aktivní žádné přeposílání)"
+
+msgid "Messages will be saved in this account (no forwarding or auto-reply is active)"
+msgstr "Zprávy budou uloženy do aktuálního účtu (není aktivní žádné přeposílání nebo automatická odpověď)"
+
+msgid "Error: Could not bind to LDAP server"
+msgstr "Chyba: Nepodařilo se spojit s LDAP serverem"
+
+#, php-format
+msgid "Error: Could not find FTP server for %s in LDAP server"
+msgstr "Chyba: Nepodařilo se najít FTP server pro %s v LDAP serveru"
+
+msgid "Error: Could not connect to LDAP server"
+msgstr "Chyba: Nepodařilo se připojit k LDAP serveru"
+
+msgid "Error: Unable to connect to FTP server. Please try again later"
+msgstr "Chyba: Nelze se připojit k FTP serveru. Zkuste to později."
+
+msgid "Error: Unable to log in to FTP server. Please contact your system administrator"
+msgstr "Chyba: Nelze se přihlásit k FTP serveru. Prosím kontaktujte vašeho správce"
+
+msgid "Error: Unable to switch to passive FTP mode. Please contact your system administrator"
+msgstr "Chyba: FTP spojení nelze přepnout do pasivního režimu. Prosím kontaktujte vašeho správce"
+
+msgid "Error: Unable to establish connection. Please contact your system administrator"
+msgstr "Chyba: Nelze se připojit. Prosím kontaktujte vašeho správce"
+
+msgid "Error: Unable to send password. Please contact your system administrator"
+msgstr "Chyba: Nelze odeslat heslo. Prosím kontaktujte vašeho správce"
+
+#, php-format
+msgid "Error: Unable to handle list request (%s)"
+msgstr "Chyba: Požadavek nelze zpracovat (%s)"
+
+msgid "Error: Unable to upload file. Please contact your system administrator"
+msgstr "Chyba: Soubor není možné nahrát. Prosím kontaktujte vašeho správce"
+
+#, php-format
+msgid "Error: Unable to handle upload request (%s)"
+msgstr "Chyba: Požadavek na nahrání souboru není možné zpracovat (%s)"
+
+msgid "Error: unable to download file. Please contact your system administrator"
+msgstr "Chyba: Soubor není možné nahrát. Prosím kontaktujte vašeho správce"
+
+#, php-format
+msgid "Error: Unable to handle download request (%s)"
+msgstr "Chyba: Požadavek na stažení souboru není možné zpracovat (%s)"
+
+msgid "Error: unable to delete file. Please contact your system administrator"
+msgstr "Chyba: Soubor není možné smazat. Prosím kontaktujte vašeho správce"
+
+#, php-format
+msgid "Error: Unable to handle delete request (%s)"
+msgstr "Chyba: Požadavek na smazání souboru není možné zpracovat (%s)"
+
+#, php-format
+msgid "Error: Unable to handle init request (%s); you might need to configure with --enable-vacation"
+msgstr "Chyba: Požadavek na inicializaci není možné zpracovat (%s); možná bude třeba pustit configure s parametrem --enable-vacation"
+
+#, php-format
+msgid "Error: Unable to handle init request (%s)"
+msgstr "Chyba: Požadavek na inicializaci není možné zpracovat (%s)"
+
+#, php-format
+msgid "An error occurred initializing the autoresponder: %s"
+msgstr "Během inicializace automatické odpovědi došlo k chybě: %s"
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Neznámá akce: %s"
+
+msgid "An error occurred attempting to read temp file; check permissions on attachments directory"
+msgstr "Při pokusu o čtení dočasného souboru došlo k chybě; zkontrolujte práva adresáře pro přílohy"
+
+msgid "An error occurred attempting to create temp file; check permissions on attachments directory"
+msgstr "Při pokusu o vytvoření dočasného souboru došlo k chybě; zkontrolujte práva adresáře pro přílohy"
+
+msgid "Options - Autoresponder / Mail Forwarding"
+msgstr "Možnosti - Automatická odpověď/ Přeposílání emailů"
+
+msgid "Options - Autoresponder"
+msgstr "Možnosti - Automatická odpověď"
+
+msgid "Options - Mail Forwarding"
+msgstr "Možnosti - Přeposílání emailů"
+
+msgid "ERROR:"
+msgstr "CHYBA:"
+
+msgid "Settings Saved"
+msgstr "Nastavení bylo uloženo"
+
+msgid "Enable auto-reply to sender"
+msgstr "Povolit automatickou odpověď pro odesílatele"
+
+msgid "Send from:"
+msgstr "Odesílatel pro odpovědi:"
+
+msgid "Subject:"
+msgstr "Předmět:"
+
+msgid "Message:"
+msgstr "Text automatické odpovědi:"
+
+msgid "Forward incoming messages to addresses listed below"
+msgstr "Přeposílat příchozí zprávy na níže uvedené adresy"
+
+msgid "Forwarding email addresses (one address per line):"
+msgstr "Přeposílat na tyto adresy (na každý řádek jednu adresu):"
+
+msgid "Keep copies of incoming messages in this account"
+msgstr "Uchovávat kopie příchozích zpráv na serveru"
+
+msgid "(must have at least one forwarding address to disable)"
+msgstr "(musíte mít uvedenou alespoň jednu adresu pro přeposílání, aby šla volba vypnout)"
+
+msgid "(must have at least one forwarding address or an active auto-reply to disable)"
+msgstr "(musíte mít uvedenou alespoň jednu adresu pro přeposílání nebo aktivní automatickou odpověď, aby šla volba vypnout)"
+
+msgid "Submit"
+msgstr "Odeslat"
+

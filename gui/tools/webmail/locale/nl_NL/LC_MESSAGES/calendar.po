@@ -1,0 +1,711 @@
+# translation of calendar.po to Dutch
+# Japie <japie@deserver.nl>, 2006.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# Dutch translation of SquirrelMail shared_calendars plugin
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
+# $Id: calendar.po 13698 2009-05-14 09:09:30Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: calendar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-07 15:56+0300\n"
+"PO-Revision-Date: 2007-04-02 21:00+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Badly formatted header color"
+msgstr "Onjuiste kopkleur"
+
+msgid "Badly formatted today color"
+msgstr "Onjuiste vandaagkleur"
+
+msgid "Badly formatted event color"
+msgstr "Onjuiste gebeurteniskleur"
+
+msgid "Badly formatted day color"
+msgstr "Onjuiste dagkleur"
+
+msgid "Day view start time must come before end time"
+msgstr "Dag starttijd moet vroeger zijn dan eindtijd"
+
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgid "Emergency"
+msgstr "Noodgeval"
+
+msgid "Urgent"
+msgstr "Dringend"
+
+msgid "Serious"
+msgstr "Serieus"
+
+msgid "Important"
+msgstr "Belangrijk"
+
+msgid "Normal"
+msgstr "Normaal"
+
+msgid "Secondary"
+msgstr "Secundair"
+
+msgid "Low"
+msgstr "Laag"
+
+msgid "Insignificant"
+msgstr "Onbelangrijk"
+
+msgid "Ignore"
+msgstr "Negeren"
+
+msgid "Days"
+msgstr "Dagen"
+
+msgid "Weeks"
+msgstr "Weken"
+
+msgid "Months"
+msgstr "Maanden"
+
+msgid "Years"
+msgstr "Jaren"
+
+msgid "Event Created Successfully"
+msgstr "Evenement succesvol aangemaakt"
+
+msgid "Event Updated Successfully"
+msgstr "Evenement succesvol bijgewerkt"
+
+#, php-format
+msgid "Personal Calendar for %s"
+msgstr "Persoonlijke agenda voor %s"
+
+msgid "Today"
+msgstr "Vandaag"
+
+msgid "All Day"
+msgstr "Hele dag"
+
+msgid "Calendar"
+msgstr "Agenda"
+
+msgid "Calendar Preferences"
+msgstr "Agendavoorkeuren"
+
+msgid ""
+"Change the way your calendars behave and are displayed, including the "
+"miniature calendar beneath the folder list."
+msgstr "Wijzig de wijze waarop uw agenda's zich gedragen en worden weergegeven, inclusief de miniatuuragenda onder de mappenlijst."
+
+msgid "Calendar Administration"
+msgstr "Agenda-administratie"
+
+msgid ""
+"Create and maintain shared calendars. Edit holidays, assign calendar access "
+"by user, or create publicly available calendars."
+msgstr "Maak gedeelde agenda's aan en beheer ze. Bewerk feestdagen, wijs per gebruiker agendatoegang toe of maak publiekelijk toegankelijke agenda's."
+
+msgid "Sunday"
+msgstr "zondag"
+
+msgid "Monday"
+msgstr "maandag"
+
+msgid "Tuesday"
+msgstr "dinsdag"
+
+msgid "Wednesday"
+msgstr "woensdag"
+
+msgid "Thursday"
+msgstr "donderdag"
+
+msgid "Friday"
+msgstr "vrijdag"
+
+msgid "Saturday"
+msgstr "zaterdag"
+
+#, php-format
+msgid "%d min."
+msgstr "%d min."
+
+#, php-format
+msgid "%s hr."
+msgstr "%s uur"
+
+#, php-format
+msgid "%s day"
+msgstr "%s dag"
+
+#, php-format
+msgid "%s days"
+msgstr "%s dagen"
+
+#, php-format
+msgid "%s wk."
+msgstr "%s.wk."
+
+#, php-format
+msgid "%sam"
+msgstr "%sam"
+
+#, php-format
+msgid "%spm"
+msgstr "%spm"
+
+msgid "Could not load external calendar"
+msgstr "Kan externe agenda niet laden"
+
+msgid "Could not load external calendar; bad address"
+msgstr "Kan externe agenda niet laden, foutief adres"
+
+msgid "Converting old calendar. . ."
+msgstr "Oude agenda converteren..."
+
+#, php-format
+msgid "Problem converting old calendar; please contact your administrator (%s)"
+msgstr ""
+"Probleem met converteren van oude agenda. Neem contact met uw "
+"systeembeheerder (%s)."
+
+#, php-format
+msgid "Can't rename %s to %s"
+msgstr "Kan %s niet hernoemen naar %s"
+
+#, php-format
+msgid ""
+"Problem converting old calendar; please contact your administrator (cannot "
+"execute %s)"
+msgstr ""
+"Probleem met converteren van oude agenda. Neem contact op met uw "
+"systeembeheerder (kan %s niet uitvoeren)."
+
+#, php-format
+msgid "Can't find old personal calendar: %s"
+msgstr "Kan oude persoonlijke agenda niet vinden: %s"
+
+#, php-format
+msgid "Successfully merged calendar into \"%s\""
+msgstr "Agenda succesvol samengevoegd met \"%s\""
+
+msgid ""
+"You already have a calendar with the same ID.  Are you sure you don't want "
+"to merge/synch the calendar you are uploading?"
+msgstr "U heeft al een agenda met die naam.  Weet u zeker dat die wilt samenvoegen/synchroniseren met de agenda die u wilt uploaden?"
+
+msgid "..."
+msgstr "..."
+
+msgid "Must have domain information"
+msgstr "Domeininformatie benodigd"
+
+msgid "Valid event type must be specified"
+msgstr "Geef een geldig evenementtype op"
+
+msgid "Must specify valid recurrence type"
+msgstr "Geef een geldig herhaaltype op"
+
+msgid ""
+"Overall end of recurrence for recurring events must come after end of "
+"initial occurrence"
+msgstr "Het einde van de herhaling moet komen na het einde van de startperiode"
+
+msgid "Must specify valid recurrence interval"
+msgstr "Geef een geldige herhalingsinterval op"
+
+msgid "Event must have a summary/title"
+msgstr "Geef het evenement een samenvatting of titel"
+
+msgid "Must specify valid event priority"
+msgstr "Geen een geldige evenementprioriteit op"
+
+msgid "Event must have a valid start date/time"
+msgstr "Evenement moet een geldige starttijd/datum hebben"
+
+msgid "Event must have a valid end date/time"
+msgstr "Evenement moet een geldige eindtijd/datum hebben"
+
+msgid "End date/time must come after start date and time"
+msgstr "Eindtijd/datum moet na de start tijd/datum komen"
+
+msgid "At least one parent calendar must be given"
+msgstr "Er moet minstens één hoofdagenda opgegeven worden"
+
+msgid "Event must have a creator"
+msgstr "Evenement moet de maker bevatten"
+
+msgid "Event must have a creation date"
+msgstr "Evenement moet de aanmaakdatum bevatten"
+
+msgid "Event must have at least one owner"
+msgstr "Evenement moet tenminste één eigenaar hebben"
+
+msgid "Error:"
+msgstr "Fout:"
+
+msgid "Create New Calendar"
+msgstr "Nieuwe agenda aanmaken"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Create"
+msgstr "Aanmaken"
+
+msgid "Calendar Setup"
+msgstr "Agenda instellen"
+
+msgid ""
+"Create shared access calendars for select users\n"
+" or public calendars for all users.\n"
+msgstr ""
+"Maak een gedeelde agenda aan voor de geselecteerde gebruikers\n"
+" of een publieke agenda voor alle gebruikers.\n"
+
+msgid "Manage user permissions for your shared calendars.\n"
+msgstr "Beheer gebruikerspermissies voor uw gedeelde agenda's.\n"
+
+msgid "Calendars"
+msgstr "Agenda's"
+
+msgid "Users"
+msgstr "Gebruikers"
+
+msgid ""
+"<b>Shared</b> calendars can be assigned to users with read only or read/"
+"write access. To manage user access to your shared calendars, use the \"Users"
+"\" button."
+msgstr "<b>Gedeeld</b> agenda's kunnen met lees/schrijftoegang aan gebruikers worden toegewezen. Om de toegang tot uw agenda's te beheren, klik op de knop \"Gebruikers\"."
+
+msgid ""
+"<b>Public</b> calendars are available to all users in addition to their "
+"private personal calendar."
+msgstr ""
+"<b>Publiek</b> agenda's zijn beschikbaar voor alle gebruikers als "
+"aanvulling op hun persoonlijke agenda."
+
+msgid "Shared Calendars"
+msgstr "Gedeelde agenda's"
+
+msgid "Shared calendars"
+msgstr "Gedeelde agenda's"
+
+msgid "No Shared Calendars Defined"
+msgstr "Geen gedeelde agenda's gedefinieerd"
+
+msgid "Public Calendars"
+msgstr "Publieke agenda's"
+
+msgid "Public calendars"
+msgstr "Publieke agenda's"
+
+msgid "No Public Calendars Defined"
+msgstr "Geen publieke agenda's gedefinieerd"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Add a new calender"
+msgstr "Een nieuwe agenda toevoegen"
+
+msgid "make <b>PUBLIC</b> (read/write for all users)"
+msgstr "<b>PUBLIEK</b> maken (lees/schrijfbaar voor alle gebruikers)"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid ""
+"<b>To delete one or more users</b> from a calendar, check the box next to "
+"each username and click the 'Delete Users' button."
+msgstr "<b>Om één of meer gebruikers</b> uit een agenda te <b>verwijderen</b>, selecteer het vakje rechts naast elke gebruikersnaam en klik op de knop 'Gebruikers verwijderen'."
+
+msgid ""
+"<b>To add a user</b> to a calendar, type in the username below the calendar, "
+"choose the user's access level, and click the 'Add User' button."
+msgstr "<b>Om een gebruiker</b> aan een agenda <b>toe te voegen</b>, typ de gebruikersnaam in onder de agenda, kies het toegangsniveau voor de gebruiker en klik op te knop 'Gebruiker toevoegen'."
+
+msgid ""
+"Note that you may use wildcards in user names: * means \"zero or more "
+"characters\" and ? means \"exactly one alphanumeric character\". For "
+"example, \"*@mydomain.com\" will give everyone in \"mydomain.com\" access to "
+"the calendars you assign to that username.\n"
+msgstr "Opmerking: u mag jokertekens gebruikenin gebruikersnamen. * betekent \"nul of meer lettertekens\" en ? betekent \"exact één alfanumeriek letterteken\". Bijvoorbeeld, \"*domein.nl\" geeft iedereen binnen \"mijndomein.nl\" toegang tot de agenda's die aan die gebruikersnaam toewijst.\n"
+
+msgid ""
+"<b>To update user access levels</b> for a calendar, adjust the 'Access "
+"Level' selections, then click the 'Save' button below that calendar."
+msgstr "<b>Om de toegangsniveaus</b> voor een agenda <b>bij te werken</b>, pas de selecties bij 'Toegangsniveau' aan en klik op de knop 'Opslaan' onder die agenda."
+
+msgid ""
+"Note that only owners of public calendars will have write access to those "
+"calendars.\n"
+msgstr ""
+"Merk op dat alleen de eigenaren van publieke agenda's schrijftoegang hebben "
+"tot die agenda's.\n"
+
+msgid "No Shared Calendars Have Been Defined"
+msgstr "Geen gedeelde agenda's gedefinieerd"
+
+msgid "Public"
+msgstr "Publiek"
+
+msgid "Edit Holidays"
+msgstr "Vakanties bewerken"
+
+msgid "User"
+msgstr "Gebruiker"
+
+msgid "Access Level"
+msgstr "Toegangsniveau"
+
+msgid "No users defined for this calendar"
+msgstr "Geen gebruikers gedefinieerd voor deze agenda"
+
+msgid "Read"
+msgstr "Lezen"
+
+msgid "Write"
+msgstr "Schrijven"
+
+msgid "Owner"
+msgstr "Eigenaar"
+
+msgid "Delete Users"
+msgstr "Gebruikers verwijderen"
+
+msgid "Add User"
+msgstr "Gebruiker toevoegen"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "<b>To create a holiday,</b> blah blah and click the 'Blah Blah' button."
+msgstr "<b>Om een feestdag toe te voegen,</b> blah, blah en klik op de knop 'Blah Blah' ."
+
+msgid "Note that you must also add the new holiday to your calendar if desired.\n"
+msgstr "Merk op dat u de nieuwe feestdag ook moet toevoegen aan uw eigen agenda als dat gewenst is.\n"
+
+msgid ""
+"<b>To add a holiday</b> to a calendar, blah blah blah and click the 'Blah "
+"Blah' button."
+msgstr ""
+"<b>Om een feestdag toe te voegen</b> aan een agenda, blah blah blah en "
+"klik op de knop 'Blah Blah'."
+
+msgid ""
+"<b>To remove a holiday</b> from a calendar, blah blah blah, then click the "
+"'Blah' button below that calendar."
+msgstr ""
+"<b>Om een feestdag te verwijderen</b> uit een agenda, blah blah blah, en "
+"klik op de knop 'Blah' onder die agenda."
+
+msgid "No Holidays Have Been Defined"
+msgstr "Geen feestdagen gedefinieerd"
+
+msgid "General Calendar Options"
+msgstr "Algemene agendaopties"
+
+msgid "First Day of Week:"
+msgstr "Eerste dag van de week:"
+
+msgid "Priority at which Events Are Highlighted:"
+msgstr "Prioriteit waarbij evenementen worden geaccentueerd:"
+
+msgid "Show Daily Add Event Buttons in Month View:"
+msgstr "Knop voor dagelijks toevoegen van evenementen in maandweergave tonen:"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Show Week Numbers in Month View:"
+msgstr "Weeknummers in maandweergave tonen:"
+
+msgid "Show Event Start Times in Month View:"
+msgstr "Starttijden van evenementen in maandweergave tonen:"
+
+msgid "Maximum Number Events Shown Per Day in Month View:"
+msgstr "Maximum aantal evenementen per dag getoond in maandweergave:"
+
+msgid "Click on Event in Month View Goes To:"
+msgstr "Klik op evenement in maandweergave gaat naar:"
+
+msgid "Event View"
+msgstr "Evenementweergave"
+
+msgid "Day View"
+msgstr "Dagweergave"
+
+msgid "Show Compacted Time of Day in Day View:"
+msgstr "Beknopte dagtijd in dagweergave tonen:"
+
+msgid "Show Hourly Add Event Buttons in Day View:"
+msgstr "Knop voor elk uur evenementen toevoegen tonen in dagweergave:"
+
+msgid "Day View Start Time:"
+msgstr "Begintijd van dagweergave:"
+
+msgid "Day View End Time:"
+msgstr "Eindtijd van dagweergave"
+
+msgid "Clock Skew To Remotely Hosted Calendars:"
+msgstr "Tijdsverschil met agenda's op afstand:"
+
+msgid "Small Calendar"
+msgstr "Kleine agenda"
+
+msgid "Show Small Calendar Under Folder List:"
+msgstr "Kleine agenda tonen onder mappenlijst:"
+
+msgid "Small Calendar Source:"
+msgstr "Bron van kleine agenda:"
+
+msgid "Personal"
+msgstr "Persoonlijk"
+
+msgid "Small Calendar Size:"
+msgstr "Grootte van kleine agenda:"
+
+msgid "Default"
+msgstr "Standaard"
+
+msgid "10px"
+msgstr "10px"
+
+msgid "12px"
+msgstr "12px"
+
+msgid "14px"
+msgstr "14px"
+
+msgid "16px"
+msgstr "16px"
+
+msgid "Small Calendar Separator:"
+msgstr "Scheidingslijn van kleine agenda:"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "Horizontal rule"
+msgstr "Horizontale lijn"
+
+msgid "Box"
+msgstr "Vak"
+
+msgid "Show Year Title Above Small Calendar:"
+msgstr "Jaartal boven kleine agenda tonen:"
+
+msgid "Show Today Link Above Small Calendar:"
+msgstr "Vandaagkoppeling boven kleine agenda tonen:"
+
+msgid "Show Day Headers Above Small Calendar:"
+msgstr "Dagkoppen boven kleine agenda tonen:"
+
+msgid "Use Same Background Colors for Days as Regular Calendar:"
+msgstr "Zelfde achtergrondkleuren gebruiken voor dagen als in reguliere agenda:"
+
+msgid "Header Color:"
+msgstr "Kopkleur:"
+
+msgid "Today Color:"
+msgstr "Vandaagkleur:"
+
+msgid "Event Color:"
+msgstr "Evenementkleur:"
+
+msgid "Day Color:"
+msgstr "Dagkleur:"
+
+msgid "Event Text Style:"
+msgstr "Tekststijl voor evenementen:"
+
+msgid "normal"
+msgstr "normaal"
+
+msgid "italic"
+msgstr "cursief"
+
+msgid "Submit"
+msgstr "Indienen"
+
+msgid "Year View"
+msgstr "Jaarweergave"
+
+msgid "Month View"
+msgstr "Maandweergave"
+
+msgid "Tasks"
+msgstr "Taken"
+
+msgid "Color Picker"
+msgstr "Kleurenkiezer"
+
+msgid ""
+"Click a box and the hexadecimal color will be shown below.  Use these hex "
+"values for color box settings."
+msgstr ""
+"Klik op een vakje en de hexadecimale kleurwaarde zal onderaan getoond worden. "
+"Gebruik deze waarde voor de kleurinstellingen."
+
+msgid "Hex Value"
+msgstr "Hex-waarde"
+
+msgid "More"
+msgstr "Meer"
+
+msgid "Go"
+msgstr "Ga naar"
+
+msgid "Add Event"
+msgstr "Evenement toevoegen"
+
+msgid "Edit Calendar"
+msgstr "Agenda bewerken"
+
+msgid "Update Event"
+msgstr "Evenement bijwerken"
+
+msgid "Create Event"
+msgstr "Evenement aanmaken"
+
+msgid "Summary:"
+msgstr "Samenvatting:"
+
+msgid "Start:"
+msgstr "Aanvang:"
+
+msgid "End:"
+msgstr "Einde:"
+
+msgid "Duration:"
+msgstr "Duur:"
+
+msgid "Recurrence:"
+msgstr "Herhaling:"
+
+msgid "One Time"
+msgstr "Eenmalig"
+
+msgid "Recurring Every"
+msgstr "Herhalen iedere"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "On"
+msgstr "Aan"
+
+msgid "Sun"
+msgstr "Zo"
+
+msgid "Mon"
+msgstr "Ma"
+
+msgid "Tue"
+msgstr "Di"
+
+msgid "Wed"
+msgstr "Wo"
+
+msgid "Thu"
+msgstr "Do"
+
+msgid "Fri"
+msgstr "Vr"
+
+msgid "Sat"
+msgstr "Za"
+
+msgid "End Recurrence:"
+msgstr "Einde herhaling:"
+
+msgid "Recurrence Count:"
+msgstr "Aantal herhalingen:"
+
+msgid "Priority:"
+msgstr "Prioriteit:"
+
+msgid "Reminder:"
+msgstr "Herinnering:"
+
+msgid "before event start"
+msgstr "voor evenementstart"
+
+msgid "Description:"
+msgstr "Beschrijving:"
+
+msgid "Delete Event"
+msgstr "Evenement verwijderen"
+
+msgid "Last Updated:"
+msgstr "Laatst bijgewerkt:"
+
+msgid "Created:"
+msgstr "Aangemaakt:"
+
+msgid "Reminder not set"
+msgstr "Herinnering niet gezet"
+
+msgid "Occurrences"
+msgstr "Voorkomens"
+
+msgid "Confirm Deletion"
+msgstr "Verwijderen bevestigen"
+
+msgid "Calendar Helper"
+msgstr "Agendahelper"
+
+msgid "TODAY"
+msgstr "VANDAAG"
+
+msgid "Time Helper"
+msgstr "Tijdhelper"
+
+msgid "Available Calendars"
+msgstr "Beschikbare agenda's"
+
+msgid "remove"
+msgstr "verwijderen"
+
+msgid "edit"
+msgstr "bewerken"
+
+msgid "export"
+msgstr "exporteren"
+
+msgid "Add Personal Calendar"
+msgstr "Persoonlijke agenda toevoegen"
+
+msgid "Add External Calendar"
+msgstr "Externe agenda toevoegen"
+
+msgid "Address:"
+msgstr "Adres:"
+
+msgid "Override Name:"
+msgstr "Naam forceren:"
+
+msgid "Import Calendar"
+msgstr "Agenda importeren"
+
+msgid "Synch/Merge With"
+msgstr "Synchroniseren/samenvoegen met"
+
+msgid "Auto-detect"
+msgstr "Autodetecteren"
+
+msgid "S M T W T F S"
+msgstr "Z M D W D V Z"
+
+msgid "cont'd"
+msgstr "cont'd"
+

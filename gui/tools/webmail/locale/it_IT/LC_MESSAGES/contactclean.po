@@ -1,0 +1,233 @@
+# Italian (it_IT) contactclean Translation (SquirrelMail plugin)
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: contactclean.pot 13047 2008-03-22 19:40:52Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: contactclean 3.3.1\n"
+"Report-Msgid-Bugs-To: Ian Rogers <admin@contactclean.com>\n"
+"POT-Creation-Date: 2007-10-27 00:30+0200\n"
+"PO-Revision-Date: 2009-04-27 10:19+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: addressbook_functions.php:12
+msgid "Verify Contacts in Addressbook(s)"
+msgstr "Verifica contatti in rubrica"
+
+#: options.php:40
+#: options.php:44
+msgid "Set E-mail Address"
+msgstr "Imposta indirizzo email"
+
+#: options.php:49
+msgid "You need to set your address in the <a href=\"options.php?optpage=personal\">Personal Information options page</a>"
+msgstr "Devi impostare il tuo indirizzo nella <a href=\"options.php?optpage=personal\">pagina Informazioni personali</a>"
+
+#: options.php:51
+msgid "Once you've done that, come back here to continue the ContactClean setup "
+msgstr "Una volta fatto torna qui per continuare l'impostazione di ContactClean"
+
+#: options.php:81
+msgid "Confirm or Register with ContactClean"
+msgstr "Conferma o registrati con ContactClean"
+
+#: options.php:85
+#, php-format
+msgid "Register with %s"
+msgstr "Registrati con %s"
+
+#: options.php:90
+msgid "If you don't have an account with ContactClean then you need to register before continuing further."
+msgstr "Se non hai un account con ContactClean, ti devi registrare prima di proseguire oltre."
+
+#: options.php:96
+msgid "Current email address"
+msgstr "Indirizzo email corrente"
+
+#: options.php:100
+msgid "Previous email address"
+msgstr "Indirizzo email precedente"
+
+#: options.php:102
+msgid "optional"
+msgstr "opzionale"
+
+#: options.php:106
+msgid "Register Address"
+msgstr "Indirizzo di registrazione"
+
+#: options.php:113
+#, php-format
+msgid "Then fetch your %s and paste it in below."
+msgstr "Recupera il tuo %s e incollalo qui sotto."
+
+#: options.php:114
+msgid "search-license key"
+msgstr "chiave licenza di ricerca"
+
+#: options.php:128
+msgid "Signature Options"
+msgstr "Opzioni firma"
+
+#: options.php:134
+msgid "Set Signature"
+msgstr "Imposta firma"
+
+#: options.php:139
+#, php-format
+msgid "You don't have a signature. <a %s>Click here</a> to set one and share ContactClean with others."
+msgstr "Non hai una firma. <a %s>Clicca qui</a> per impostarne una e condividere ContactClean con gli altri."
+
+#: options.php:147
+msgid "Keep in Touch - make sure your address book is up to date by using ContactClean's easy to use services. "
+msgstr "Tieniti aggiornato - assicurati che la tua rubrica sia aggiornata usando i servizi di ContactClean."
+
+#: options.php:148
+msgid "To find out more go to www.ContactClean.com"
+msgstr "Per ulteriori informazioni visita www.ContactClean.com"
+
+#: options.php:171
+msgid "Signature"
+msgstr "Firma"
+
+#: options.php:179
+msgid "Use Signature"
+msgstr "Usa firma"
+
+#: options.php:185
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Precedi la firma con una riga di '--'"
+
+#: options.php:195
+#: verify.php:339
+msgid "Powered by"
+msgstr "Powered by"
+
+#: options.php:202
+msgid "See your account"
+msgstr "Guarda il tuo account"
+
+#: options_functions.php:29
+msgid "Set your ContactClean account details to enable the Addressbook cleaning function."
+msgstr "Imposta i dettagli del tuo account ContactClean per attivare le funzionalità di pulizia rubrica."
+
+#: options_functions.php:46
+msgid "Register my Old Address(es) with ContactClean"
+msgstr "Registra il mio vecchio indirizzo(i) con ContactClean"
+
+#: options_functions.php:48
+msgid "(discards changes made on this form so far)"
+msgstr "(perderai le modifiche fatte in questo form)"
+
+#: options_functions.php:51
+msgid "Previous Address"
+msgstr "Indirizzo precedente"
+
+#: verify.php:49
+msgid "You haven't set your email address yet."
+msgstr "Non hai ancora impostato il tuo indirizzo email."
+
+#: verify.php:52
+#, php-format
+msgid "You need to go to the <a href='%ssrc/options.php?optpage=personal'>Personal Information options page</a> and set your own email address before you can verify your address book"
+msgstr "Devi andare sulla <a href='%ssrc/options.php?optpage=personal'>pagina Informazioni personali</a> e impostare il tuo indirizzo email "
+
+#: verify.php:61
+msgid "You haven't set your ContactClean.com account key yet."
+msgstr "Non hai ancora impostato il tuo account ContactClean.com."
+
+#: verify.php:64
+#, php-format
+msgid "You need to go to the <a href='%ssrc/options.php?optpage=contactclean'>ContactClean options page</a>"
+msgstr "Devi andare alla <a href='%ssrc/options.php?optpage=contactclean'>pagina opzioni ContactClean</a>"
+
+#: verify.php:80
+msgid "No personal address book is defined. Contact your administrator."
+msgstr "Nessuna rubrica personale definita. Contatta il tuo amministratore."
+
+#: verify.php:93
+msgid "Nothing in the addressbook (is this what you expect?) - nothing to do"
+msgstr "Rubrica vuota (è quello che ti aspettavi?) - nessuna operazione da fare"
+
+#: verify.php:122
+msgid "No quota returned. Some kind of soap error!!!"
+msgstr "Nessuna quota ricevuta. Errore soap!!!"
+
+#: verify.php:126
+msgid "You are out of quota. Please try again later"
+msgstr "Sei fuori quota. Riprova più tardi"
+
+#: verify.php:209
+msgid "ERROR: You need to select some addresses to use the 'Replace Selected' button!"
+msgstr "ERRORE: Devi selezionare qualche indirizzo prima di usare il pulsante 'Sostituisci selezionati'!"
+
+#: verify.php:222
+msgid "Updating the addressbook"
+msgstr "Aggiornamento rubrica"
+
+#: verify.php:234
+#, php-format
+msgid "Replacing %s with %s"
+msgstr "Sostituzione di %s con %s"
+
+#: verify.php:237
+#, php-format
+msgid "Changed from %s => %s by ContactClean plugin %s"
+msgstr "Cambiato da %s => %s dal plugin ContactClean %s"
+
+#: verify.php:251
+msgid "ERROR"
+msgstr "ERRORE"
+
+#: verify.php:278
+msgid "The following new addresses have been found!<p>Select the ones you want to update in your addressbook.<p>"
+msgstr "Sono stati trovati i seguenti nuovi indirizzi!<p>Seleziona quelli che vuoi aggiornare nella tua rubrica.<p>"
+
+#: verify.php:286
+msgid "Nickname"
+msgstr "Nickname"
+
+#: verify.php:287
+msgid "Name"
+msgstr "Nome"
+
+#: verify.php:288
+msgid "E-mail"
+msgstr "E-mail"
+
+#: verify.php:289
+msgid "Replace?"
+msgstr "Sostituire?"
+
+#: verify.php:290
+msgid "Replace with"
+msgstr "Sostituisci con"
+
+#: verify.php:320
+msgid "Your address book seems completely up to date."
+msgstr "La tua rubrica sembra aggiornata."
+
+#: verify.php:321
+msgid "Check Again"
+msgstr "Controlla di nuovo"
+
+#: verify.php:330
+msgid "% entries in your addressbook have been registered with the ContactClean.com database to await authorisation with the searchee. Please try again in a few days time in case you have been authorised to see some new addresses."
+msgstr "% contatti della tua rubrica sono stati registrati nel database di ContactClean.com in attesa di autorizazzione. Riprova tra qualche giorno per controllare se sei stato autorizzato a vedere nuovi indirizzi."
+
+#: verify.php:376
+msgid "Replace selected"
+msgstr "Sostituisci selezionati"
+
+#: verify.php:377
+msgid "Replace all"
+msgstr "R"
+
+#: verify.php:378
+msgid "Refresh"
+msgstr "Aggiorna"

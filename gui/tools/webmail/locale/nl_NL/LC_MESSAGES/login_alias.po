@@ -1,0 +1,26 @@
+# Dutch (nl_NL) login_alias Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: login_alias.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: login_alias\n"
+"POT-Creation-Date: 2005-02-08 19:52-0800\n"
+"PO-Revision-Date: 2007-04-02 22:21+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Login Alias"
+msgstr "Login-alias"
+
+msgid "You can use this or your regular account name to log in to your account."
+msgstr "U kunt dit gebruiken of uw reguliere accountnaam om in te loggen bij uw account"
+
+msgid "Alias is already in use.  Please select another alias."
+msgstr "Alias wordt al gebruikt. Selecteer een andere alias."
+

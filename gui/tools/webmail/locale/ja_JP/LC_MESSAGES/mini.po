@@ -1,0 +1,133 @@
+# Japanese (ja_JP) archive_mail translation (SquirrelMail plugin)
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3rc1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-27 15:22+0300\n"
+"PO-Revision-Date: 2005-10-23 23:12-0400\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese  <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:34
+msgid "mini window"
+msgstr "ミニウインドウ"
+
+#. *
+#. * FIXME: try html page header functions.
+#. * html goodness
+#.
+#: functions.php:49 mini.php:85 mini.php:96
+msgid "Mini SquirrelMail"
+msgstr "ミニ SquirrelMail"
+
+#: functions.php:53
+msgid "Window width (in pixels)"
+msgstr "ウインドウ幅（画素で）"
+
+#: functions.php:60
+msgid "Window height (in pixels)"
+msgstr "ウインドウ高（画素で）"
+
+#: functions.php:67
+msgid "never"
+msgstr "使用しない"
+
+#: functions.php:70
+#, c-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] "%s 秒"
+
+#: functions.php:73
+#, c-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] "%s 分"
+
+#: functions.php:79
+msgid "Window refresh time"
+msgstr "ウインドウのリフレッシュ時"
+
+#: functions.php:87
+msgid "Window text size"
+msgstr "ウインドウのテキストサイズ"
+
+#: functions.php:90
+msgid "Very small"
+msgstr "ごく小さい"
+
+#: functions.php:91
+msgid "Small"
+msgstr "小さい"
+
+#: functions.php:92
+msgid "Normal"
+msgstr "標準"
+
+#: functions.php:162
+msgid ""
+"This message has additional parts. Please use the main SquirrelMail "
+"interface to open them"
+msgstr ""
+
+#: functions.php:166 functions.php:178
+msgid ""
+"Could not find a text part. Please use the main SquirrelMail window to read "
+"this message"
+msgstr ""
+
+#: functions.php:296 mini.php:121
+msgid "No subject"
+msgstr "無題"
+
+#: functions.php:304 functions.php:305 mini.php:126
+msgid "No sender"
+msgstr "送信者不明"
+
+#: mini.php:75 mini.php:135
+msgid "Back"
+msgstr "戻る"
+
+#: mini.php:78
+msgid "Refresh"
+msgstr "リフレッシュ"
+
+#: mini.php:129 mini.php:170
+msgid "Subject"
+msgstr "件名"
+
+#: mini.php:130 mini.php:172
+msgid "From"
+msgstr "差出人"
+
+#: mini.php:137
+msgid "Keep as new"
+msgstr ""
+
+#. finish all the tables.
+#: mini.php:144
+msgid "Folder"
+msgstr "フォルダ"
+
+#: mini.php:146
+msgid "New Mail"
+msgstr "新しいメール"
+
+#: mini.php:156
+msgid "INBOX"
+msgstr "受信箱"
+
+#: mini.php:189
+msgid "No New Messages"
+msgstr "新しいメッセージはありません"
+
+#: mini.php:205
+msgid "Close"
+msgstr "閉じる"

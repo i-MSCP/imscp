@@ -1,0 +1,50 @@
+# Persian (fa_IR) qmailadmin_login Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Abbas Esmaeeli Some'eh <abbas (AT) gnu (DOT) org>, 2007.
+# $Id: qmailadmin_login.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: SquirrelMail QmailAdmin_Login Plugin\n"
+"POT-Creation-Date: 2005-07-27 07:55+0300\n"
+"PO-Revision-Date: 2007-12-09 09:00+0330\n"
+"Last-Translator: Abbas Esmaeeli Some'eh <abbas (AT) gnu (DOT) org>\n"
+"Language-Team: Persian <persian (AT) gnu (DOT) org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:58
+#: qmlogin.php:57
+msgid "Account Administration"
+msgstr "مدیریت حساب"
+
+#: functions.php:60
+msgid "This option provides access to account management interface."
+msgstr "این گزینه امکان دسترسی به صفحه مدیریت حساب را برای شما فراهم می‌کند."
+
+#: functions.php:74
+msgid "Please confirm your password in order to access account management pages."
+msgstr "لطفا جهت ورود به صفحه مدیریت حساب، گذرواژه خود را وارد نمایید."
+
+#: functions.php:81
+msgid "Your password: "
+msgstr "گذرواژه شما:"
+
+#: functions.php:82
+#: qmlogin_iframe.php:74
+msgid "Login"
+msgstr "ورود"
+
+#: qmlogin_iframe.php:64
+msgid "Redirecting to QmailAdmin"
+msgstr "در حال هدایت به QmailAdmin"
+
+#: qmlogin_iframe.php:68
+msgid "Your are being redirected to the administration page. If your browser does not automatically redirect you, please click on login button."
+msgstr "شما به صفحه مدیریت هدایت می‌شوید. در صورتی که مرورگر شما به طور خودکار صفحه را تغییر نداد، بر روی دکمه ورود کلیک کنید."
+
+#: qmlogin.php:61
+msgid "WARNING: You will have to relogin into SquirrelMail, if you change your password."
+msgstr "هشدار: در صورتی که گذرواژه خود را تغییر دهید، باید مجددا به سیستم وارد شوید"
+

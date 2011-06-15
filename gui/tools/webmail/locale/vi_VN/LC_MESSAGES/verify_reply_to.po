@@ -1,0 +1,29 @@
+# Vietnamese (vi) verify_reply_to Translation (SquirrelMail plugin)
+# Copyright © 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: verify_reply_to.pot 10877 2006-03-04 11:22:22Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: verify_reply_to 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-10 12:50-0700\n"
+"PO-Revision-Date: 2008-03-11 21:53+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
+
+msgid ""
+"Reply To field must contain a full email address. Reply To has been reset."
+msgstr "Trường « Trả lời cho » phải chứa một địa chỉ thư điện tử đầy đủ. Vậy trường « Trả lời cho » đã bị đặt lại."
+
+#, php-format
+msgid ""
+"Reply To field must contain a full email address. Reply To has been reset to "
+"%s."
+msgstr "Trường « Trả lời cho » phải chứa một địa chỉ thư điện tử đầy đủ. Vậy trường « Trả lời cho » đã bị đặt lại về %s."

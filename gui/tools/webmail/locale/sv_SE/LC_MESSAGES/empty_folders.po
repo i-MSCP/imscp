@@ -1,0 +1,39 @@
+# Swedish (sv_SE) empty_folders Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: empty_folders.po 13541 2009-04-15 12:42:12Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: empty_folders\n"
+"POT-Creation-Date: 2004-02-23 00:25-0800\n"
+"PO-Revision-Date: 2004-12-08 23:24+0100\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "empty"
+msgstr "Töm"
+
+msgid "Empty Link"
+msgstr "Töm mapp"
+
+msgid "Toggle Special Folders"
+msgstr "Växla särskilda mappar"
+
+msgid "Toggle All"
+msgstr "Växla val"
+
+msgid "Link behavior"
+msgstr "Länken"
+
+msgid "Move to Trash"
+msgstr "Flyttar breven till papperskorgen"
+
+msgid "Expunge"
+msgstr "Kastar breven omedelbart"
+
+msgid "Save"
+msgstr "Spara"

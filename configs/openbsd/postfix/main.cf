@@ -1,0 +1,155 @@
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "VHCS - Virtual Hosting Control System".
+#
+# The Initial Developer of the Original Code is moleSoftware GmbH.
+# Portions created by Initial Developer are Copyright (C) 2001-2006
+# by moleSoftware GmbH. All Rights Reserved.
+#
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+# Postfix directory settings; These are critical for normal Postfix MTA functionallity;
+command_directory = /usr/local/sbin
+daemon_directory = /usr/local/libexec/postfix
+sendmail_path = /usr/local/sbin/sendmail
+newaliases_path = /usr/local/sbin/newaliases
+mailq_path = /usr/local/sbin/mailq
+unknown_local_recipient_reject_code = 550
+mail_owner = _postfix
+
+
+# Some common configuration parameters;
+inet_interfaces  = all
+mynetworks_style = host
+
+myhostname = {MTA_HOSTNAME}
+mydomain   = {MTA_LOCAL_DOMAIN}
+myorigin   = $myhostname
+
+smtpd_banner = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
+setgid_group = postdrop
+
+# Receiving messages parameters;
+mydestination       = $myhostname, $mydomain
+append_dot_mydomain = no
+append_at_myorigin  = yes
+local_transport     = local
+virtual_transport   = virtual
+transport_maps      = hash:{MTA_TRANSPORT_HASH}
+alias_maps 			= hash:{MTA_LOCAL_ALIAS_HASH}
+
+# Delivering local messages parameters;
+mail_spool_directory = {MTA_LOCAL_MAIL_DIR}
+
+# Mailboxquota
+# => 0 for unlimited
+# => 104857600 for 100 MB
+mailbox_size_limit = 0
+mailbox_command    = procmail -a "$EXTENSION"
+
+# Message size limit
+# => 0 for unlimited
+# => 104857600 for 100 MB
+message_size_limit           = 0
+
+biff                         = no
+recipient_delimiter          = +
+
+alias_database                    = hash:{MTA_LOCAL_ALIAS_HASH}
+
+local_destination_recipient_limit = 1
+local_recipient_maps              = unix:passwd.byname $alias_database
+
+# i-MSCP Autoresponder parameters;
+imscp-arpl_destination_recipient_limit = 1
+
+# Delivering virtual messages parameters;
+virtual_mailbox_base    = {MTA_VIRTUAL_MAIL_DIR}
+virtual_mailbox_limit   = 0
+
+virtual_mailbox_domains = hash:{MTA_VIRTUAL_DMN_HASH}
+virtual_mailbox_maps    = hash:{MTA_VIRTUAL_MAILBOX_HASH}
+
+virtual_alias_maps      = hash:{MTA_VIRTUAL_ALIAS_HASH}
+
+virtual_minimum_uid     = {MTA_MAILBOX_MIN_UID}
+virtual_uid_maps        = static:{MTA_MAILBOX_UID}
+virtual_gid_maps        = static:{MTA_MAILBOX_GID}
+
+# SASL paramters;
+smtpd_sasl_auth_enable       = yes
+smtpd_sasl_security_options  = noanonymous
+smtpd_sasl_local_domain      =
+broken_sasl_auth_clients     = yes
+
+smtpd_helo_required 		 = yes
+
+smtpd_helo_restrictions      = permit_mynetworks,
+                               permit_sasl_authenticated,
+                               reject_invalid_helo_hostname,
+                               reject_non_fqdn_helo_hostname
+
+smtpd_sender_restrictions    = reject_non_fqdn_sender,
+                               reject_unknown_sender_domain,
+                               permit_mynetworks,
+                               permit_sasl_authenticated
+
+smtpd_recipient_restrictions = reject_non_fqdn_recipient,
+                               reject_unknown_recipient_domain,
+                               permit_mynetworks,
+                               permit_sasl_authenticated,
+                               reject_unauth_destination,
+                               reject_unlisted_recipient,
+                               check_policy_service inet:127.0.0.1:12525,
+                               check_policy_service inet:127.0.0.1:{PORT_POSTGREY},
+                               permit
+
+smtpd_data_restrictions      = reject_multi_recipient_bounce,
+                               reject_unauth_pipelining
+
+
+
+# TLS parameters; activate, if avaible/used
+#smtpd_tls_loglevel        = 2
+#smtpd_tls_cert_file       = /etc/postfix/cert.pem
+#smtpd_tls_key_file        = /etc/postfix/privkey.pem
+#smtpd_use_tls             = yes
+#smtpd_tls_auth_only       = no
+#smtpd_tls_received_header = yes
+
+
+# AMaViS parameters; activate, if available/used
+#content_filter = amavis:[127.0.0.1]:10024
+
+# Quota support; activate, if available/used
+#virtual_create_maildirsize     = yes
+#virtual_mailbox_extended       = yes
+#virtual_mailbox_limit_maps     = mysql:/etc/postfix/mysql_virtual_mailbox_limit_maps.cf
+#virtual_mailbox_limit_override = yes
+#virtual_maildir_limit_message  = "The user you're trying to reach is over mailbox quota."
+#virtual_overquota_bounce       = yes

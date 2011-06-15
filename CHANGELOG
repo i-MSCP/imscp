@@ -1,0 +1,80 @@
+i-MSCP ChangeLog
+~~~~~~~~~~~~~~~~
+
+-------------------------------------------------------------------------------------
+i-MSCP 1.0.0-beta1
+-------------------------------------------------------------------------------------
+Distributions:
+    Debian:
+        - Added support for testing (wheezy)
+        - Removed support for oldstable (lenny) - Perl >= v5.10.1 required
+
+Features / Enhancements:
+    Database:
+            - Switched to InnoDB engine
+    Engine:
+        Config:
+            - Moved keys file into /etc
+        Core:
+            - Improved logging system
+        Migration:
+            - Added migration script for ispCP version >= 1.0.7
+        Setup/Update:
+            - New i-mscp tree builder
+            - New installer (Dialog ; merged setup and update scripts)
+    Gui:
+        Core:
+            - Added DebugBar component
+            - Added Events system component
+            - Added on-click-logon ftp-user - Thanks to William Lightning
+            - Added Software installer - Thanks to Sascha Bay
+            - Dropped password encryption for Ftp, Mail accounts...
+            - New theme (XHTML strict) - Thanks to Henrik Schytte and Marc Pujol
+            - Rewritten Update component
+        Tools:
+            - Updated PhpMyAdmin to version 3.4.2
+        Vendor:
+            - Updated idna_convert.class.php to version 0.8.0
+            - Updated Net_DNS to version 1.0.7
+
+Tickets:
+    - Fixed #3:  Defect - Wrong DNS entry when using multiple IP for alternative
+    - Fixed #5:  Update - jQuery - version 1.4.4 available
+    - Fixed #6:  Update - idna_convert class - version 0.6.9 available
+    - Fixed #7:  Task - Import i-MSCP theme
+    - Fixed #10: Enhancement - IP-Overview for admin and reseller
+    - Fixed #11: Defect - Wrong used variables
+    - Fixed #12: Some CSRF issues in admin log
+    - Fixed #14: Feature - Software Installer
+    - Fixed #23: Merge Config files if not Distribution specific
+    - Fixed #24: Missing Program "Dialog" in package list
+    - Fixed #25: Little Error in INSTALL
+    - Fixed #26: Warnings in build script being installed via serial console
+    - Fixed #27: Add logger to build script
+    - Fixed #28: Defect - [FreeBSD] imscp-build use wrong path
+    - Fixed #29: Wrong link during Setup
+    - Fixed #30: Domainname Error during setup
+    - Fixed #31: [FreeBSD] An error occurred during setup process
+    - Fixed #34: Task - Default and Disabled Headers picture mismatch
+    - Fixed #35: Defect - Missing back stick in SQL
+    - Fixed #36: Deprecated: Call-time pass
+    - Fixed #37: Cosmetics - Hosting plan Header Color
+    - Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
+    - Fixed #39: Cosmetics - Missing background for the datepicker header
+    - Fixed #40: Updated phpMyAdmin to version 3.3.8.1
+    - Fixed #42: Cosmetics - Wrong design in phpMyAdmin
+    - Fixed #44: Update - Net::DNS v1.0.7 is available
+    - Fixed #48: Licence header for create_release.sh
+    - Fixed #49: Some improvements on multilanguage.php
+    - Fixed #50: Patch to fix the exception when switching users
+    - Fixed #51: Enhancement - Change Package actions if software is installed
+    - Fixed #52: Cosmetics - Occurences of ispcp in Sources
+    - Fixed #53: Cosmetics - Wrong link in docs/Ubuntu/INSTALL
+    - Fixed #54: Cosmetics - Wrong header in gui/admin/ip_usage.php
+    - Fixed #56: Cosmetics - Wrong logo path
+    - Fixed #59: Bug - Wrong path in debian and ubuntu config
+    - Fixed #66: Migration script
+    - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
+    - Fixed #73: Problem with Mail
+    - Fixed #75: Bug - Can't change Admin password
+    - Fixed #76: Bug - Typo in SQL query

@@ -1,0 +1,115 @@
+<chapter>
+   <title>
+      Useimmin Esitettyjä Kysymyksiä
+   </title>   
+   <summary>
+      Monet tavallisimmat kysymykset tulevat esille kerta kerran jälkeen.
+      Tämä on lista useasti esitetyistä kysymyksistä vastauksineen.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Voinko samalla kertaa käyttää useampia nimiä osoitekirjasta?
+   </title>
+   <description>
+      <p>
+      Kyllä. Osoitekirjahaku näyttää kaikki osumat jotka täyttävat
+      annetut ehdot. Jos näytössä on esimerkiksi 10 nimeä niin ne
+      voidaan halutulla tavalla valita <B>Vastaanottajiksi</B> tai
+      <B>Kopion (CC) vastaanottajiksi</B>. Kaikki valitut osoitteet
+      sijoitetaan oikeaan kenttään kun <B>Käytä Osoitteita</B> nappia
+      klikataan. 
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Voinko poimia nimiä osoitekirjaan viestistä?
+   </title>
+   <description>
+      <p>
+      Et voi. Tätä toimintaa ei valitettavasti vielä tueta. Voit merkitä
+      osoitteen ja kopioida sen jos käyttämäsi selain (esimerkiksi Netscape)
+      tätä tukee. SquirrelMailiä kehitetään kuitenkin jatkuvasti, ja voi olla
+      että tulevaisuudessa osoitteiden poimiminen on mahdollista.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kuka on tehnyt SquirrelMailin?
+   </title>
+   <description>
+      <p>
+      Monet ovat auttaneet. Nähdäksesi listan heistä voit käydä katsomassa
+      osoitteessa <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Mitä verkkoselainpostipalvelu tarkoittaa?
+   </title>
+   <description>
+      <p>
+      SquirrelMailin tapauksessa se antaa sinulle pääsyn sähköpostilaatikollesi
+      IMAP-protokollan avulla. Tämä tarkoittaa sitä ettei sinun tarvitse
+      pahemmin miettiä kaikenlaisia ohjelma-asetuksia päästäksesi lukemaan
+      postiasi.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Missä voin käyttää tätä verkkoselainpostipalvelua?
+   </title>
+   <description>
+      <p>
+      Missä tahansa, kunhan sinulla käytössäsi nykyaikainen verkkoselain,
+      ja olet yhteydessä verkkoon.
+      Langaton yhteys WAP/WML palveluja käyttäen ei ole kuitenkaan vielä edes
+      suunnitteilla.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Miksi käyttää verkkoselainpostia eikä tavallista postiohjemaa?
+   </title>
+   <description>
+      <p>
+      On todennäköistä ettei verkkoselainpostipalvelu koskaan tule täysin
+      syrjäyttäämään tavallisia sähköpostiohjelmia, mutta kuka tietää
+      varmasti? Joka tapauksessa se on kätevää jos olet vierailulla ystäväsi
+      luona, matkoilla, kotona tai työpaikalla pois tietokoneesi luota ja
+      haluat tarkistaa sähköpostilaatikkosi. Ei ole erityisen hauskaa
+      selvittää käytettävissäolevan postiohjelman käyttöä ja asetuksia,
+      lukea ja lähettää viestejä, ja senjälkeen poistaa kaikki tehdyt
+      asetukset systeemistä.
+      SquirrelMail on suunniteltu tavallisten sähköpostiohjelmien
+      täydennykseksi, ei korvaamaan niitä.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Miten tämä homma oikein toimii?
+   </title>
+   <description>
+      <p>
+      SquirrelMail käyttää IMAP-protokollaa, informaatiota siitä löytyy
+      <A HREF="http://imap.org"/>täältä</A>. Ohjelma käyttää myös
+      omia IMAP funktioitaan, ei niitä jotka ovat valmiina PHP4-paketissa.
+      Tällä ei oikeastaan ole merkitystä kenellekään, paitsi niille
+      jotka ovat vastuussa SquirrelMailin installoinnista, mutta usko pois
+      kun sanomme että he antavat arvoa sille.
+      </p>
+   </description>
+</section>

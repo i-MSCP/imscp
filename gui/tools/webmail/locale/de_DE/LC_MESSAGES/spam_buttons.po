@@ -1,0 +1,71 @@
+# German (de_DE) spam_buttons Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Florian Daeumling <jam@qv90.de>, 2006.
+# $Id: spam_buttons.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: spam_buttons 1.0\n"
+"POT-Creation-Date: 2006-01-07 13:03+0100\n"
+"PO-Revision-Date: 2007-01-21 08:12+0100\n"
+"Last-Translator: Florian Daeumling <jam@qv90.de>\n"
+"Language-Team: German <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Server replied: "
+msgstr "Antwort vom Server:"
+
+msgid "Spam"
+msgstr "Spam"
+
+msgid "Not Spam"
+msgstr "Kein Spam"
+
+msgid "Successfully reported as spam"
+msgstr "Nachricht erfolgreich als Spam gemeldet"
+
+#, php-format
+msgid "Error: Spam folder %s does not exist."
+msgstr "Fehler: Spamordner %s existiert nicht."
+
+msgid "Successfully reported as non-spam"
+msgstr "Nachricht erfolgreich als kein Spam gemeldet"
+
+msgid "ERROR:"
+msgstr "Fehler:"
+
+msgid ""
+"ERROR: Counld not open temp file; check attachments directory permissions"
+msgstr "Fehler: Konnte temporäre Datei nicht öffnen. Bitte prüfen Sie die "
+"Dateiattribute des Anhang-Verzeichnisses"
+
+#, php-format
+msgid "ERROR %d: Problem reporting message ID %d: %s"
+msgstr "Fehler %d: Probleme beim melden der Nachricht ID: %d: %s"
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Fehler: Entwurfsordner %s existiert nicht."
+
+msgid "Message Details"
+msgstr "Nachrichten Details"
+
+msgid "Bodystructure"
+msgstr "Struktur des Nachrichtentextes"
+
+msgid "Entity"
+msgstr "Dateneinheit"
+
+msgid "Content-Type"
+msgstr "Typ des Inhalts"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Encoding"
+msgstr "Kodierung"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 Nachricht"

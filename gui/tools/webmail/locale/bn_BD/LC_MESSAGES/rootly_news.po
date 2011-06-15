@@ -1,0 +1,468 @@
+# Bengali (bn_BD) rootly_news Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: rootly_news.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: rootly_news 1.0\n"
+"POT-Creation-Date: 2007-10-27 12:37+0200\n"
+"PO-Revision-Date: 2008-12-28 12:52+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:55
+msgid "Rootly News"
+msgstr "মূল খবর"
+
+#: functions.php:57
+msgid ""
+"Here you can add news by keyword search, set news update options and more."
+msgstr ""
+"আপনি কীশব্দ খুঁজে খবর যোগ করতে পারবেন, হালনাগাদ খবর পছন্দ এবং আরও কিছু নিযুক্ত করুন।"
+
+#: options.php:27
+msgid "Sports"
+msgstr "খেলাধুলা"
+
+#: options.php:27
+msgid "Technology"
+msgstr "প্রযুক্তি"
+
+#: options.php:27
+msgid "Science"
+msgstr "বিজ্ঞান"
+
+#: options.php:27
+msgid "Business"
+msgstr "ব্যবসা"
+
+#: options.php:27
+msgid "World"
+msgstr "বিশ্ব"
+
+#: options.php:27
+msgid "Entertainment"
+msgstr "আমোদ প্রোমদ"
+
+#: options.php:28
+msgid "Africa"
+msgstr "আফ্রিকা"
+
+#: options.php:28
+msgid "Asia-Pacific"
+msgstr "এশিয়া-প্যাসিফিক"
+
+#: options.php:28
+msgid "Canada"
+msgstr "কানাডা"
+
+#: options.php:28
+msgid "Europe"
+msgstr "ইউরোপ"
+
+#: options.php:28
+msgid "Middle East"
+msgstr "মধ্যপ্রাচ্য"
+
+#: options.php:28
+msgid "South Asia"
+msgstr "দক্ষিন এশিয়া"
+
+#: options.php:28
+msgid "UK"
+msgstr "ইউকে"
+
+#: options.php:28
+msgid "US"
+msgstr "ইউএস"
+
+#: options.php:29
+msgid "American Football"
+msgstr "আমেরিকান ফুটবল"
+
+#: options.php:29
+msgid "Athletics"
+msgstr "অ্যাথলেটিকস"
+
+#: options.php:29
+msgid "Badminton"
+msgstr "ব্যাডমিন্টন"
+
+#: options.php:29
+msgid "Baseball"
+msgstr "বেসবল"
+
+#: options.php:29
+msgid "Basketball"
+msgstr "বাস্কেটবল"
+
+#: options.php:29
+msgid "Boxing"
+msgstr "বক্সিং"
+
+#: options.php:30
+msgid "College basketball"
+msgstr "কলেজ বাস্কেটবল"
+
+#: options.php:30
+msgid "Cricket"
+msgstr "ক্রিকেট"
+
+#: options.php:30
+msgid "Cycling"
+msgstr "সাইক্লিং"
+
+#: options.php:30
+msgid "Football"
+msgstr "ফুটবল"
+
+#: options.php:30
+msgid "Golf"
+msgstr "গলফ"
+
+#: options.php:30
+msgid "Horse Racing"
+msgstr "ঘোড়দৌড়"
+
+#: options.php:31
+msgid "Ice Hockey"
+msgstr "আইস/বরফ হকি"
+
+#: options.php:31
+msgid "Motorsport"
+msgstr "মটরখেলাধুলা"
+
+#: options.php:31
+msgid "Olympics"
+msgstr "অলিম্পিক"
+
+#: options.php:31
+msgid "Rugby"
+msgstr "রাগবি"
+
+#: options.php:31
+msgid "Tennis"
+msgstr "টেনিস"
+
+#: options.php:31
+msgid "Winter sports"
+msgstr "শীতকালীন খেলাধূলা"
+
+#: options.php:32
+msgid "Apple"
+msgstr "আপেল"
+
+#: options.php:32
+msgid "Automobiles"
+msgstr "অটোমোবাইল"
+
+#: options.php:32
+msgid "Design"
+msgstr "নকশা"
+
+#: options.php:32
+msgid "Digital Music"
+msgstr "ডিজিটাল সংগীত"
+
+#: options.php:32
+msgid "Gadgets"
+msgstr "গ্যাজেট"
+
+#: options.php:32
+msgid "Gaming"
+msgstr "খেলছে"
+
+#: options.php:33
+msgid "Hardware"
+msgstr "ধাতব সামগ্রীর ব্যবসা"
+
+#: options.php:33
+msgid "Linux/Unix"
+msgstr "লিনাক্স/ইউনিক্স"
+
+#: options.php:33
+msgid "Microsoft"
+msgstr "মাইক্রোসফট"
+
+#: options.php:33
+msgid "Nanotechnology"
+msgstr "ন্যানো প্রযুক্তি"
+
+#: options.php:33
+msgid "Programming"
+msgstr "প্রোগ্রামিং"
+
+#: options.php:33
+msgid "SearchEngines"
+msgstr "খোঁজারযন্ত্র"
+
+#: options.php:34
+msgid "Security"
+msgstr "নিরাপত্তা"
+
+#: options.php:34
+msgid "Software"
+msgstr "সফটওয়ার"
+
+#: options.php:34
+msgid "Web2.0"
+msgstr "ওয়েব২.০"
+
+#: options.php:35
+msgid "Arts"
+msgstr "কলা"
+
+#: options.php:35
+msgid "Celebrities"
+msgstr "তারকা"
+
+#: options.php:35
+msgid "Fun"
+msgstr "মজা"
+
+#: options.php:35
+msgid "Gossip"
+msgstr "গল্পগুজব"
+
+#: options.php:35
+msgid "Movies"
+msgstr "সিনেমা"
+
+#: options.php:35
+msgid "Music"
+msgstr "সংগীত"
+
+#: options.php:35
+msgid "Opinion"
+msgstr "মতামত"
+
+#: options.php:35
+msgid "TV"
+msgstr "টিভি"
+
+#: options.php:35
+msgid "Weird"
+msgstr "অন্যরকম"
+
+#: options.php:36
+msgid "Agriculture"
+msgstr "কৃষিকাজ"
+
+#: options.php:36
+msgid "Animals"
+msgstr "পশু"
+
+#: options.php:36
+msgid "Archaeology"
+msgstr "প্রত্নতত্ব"
+
+#: options.php:36
+msgid "AtmosphericScience"
+msgstr "পরিবেশবিজ্ঞান"
+
+#: options.php:36
+msgid "Biology"
+msgstr "জীববিজ্ঞান"
+
+#: options.php:36
+msgid "Biotechnology"
+msgstr "জীবপ্রযুক্তি"
+
+#: options.php:37
+msgid "Chemistry"
+msgstr "রসায়ন"
+
+#: options.php:37
+msgid "EarthScience"
+msgstr "পৃথিবীবিজ্ঞান"
+
+#: options.php:37
+msgid "Education"
+msgstr "শিক্ষা"
+
+#: options.php:37
+msgid "Mathematics"
+msgstr "গাণিতিক"
+
+#: options.php:37
+msgid "MedicineandHealth"
+msgstr "ঔষধএবংস্বাস্থ্য"
+
+#: options.php:37
+msgid "Nature"
+msgstr "প্রাকৃতিক"
+
+#: options.php:38
+msgid "Physics"
+msgstr "পদার্থ"
+
+#: options.php:38
+msgid "PolicyandEthics"
+msgstr "নিয়মএবংরীতি"
+
+#: options.php:38
+msgid "SocialandBehavior"
+msgstr "সমাজিকএবংআচরণ"
+
+#: options.php:38
+msgid "Space &amp; Astronomy"
+msgstr "স্পেস &amp; জোতির্বিদ্যা"
+
+#: options.php:39
+msgid "Bonds"
+msgstr "বন্ধনগুলো"
+
+#: options.php:39
+msgid "Careers"
+msgstr "জীবনের পথে অগ্রসর"
+
+#: options.php:39
+msgid "CIO"
+msgstr "সিআইও"
+
+#: options.php:39
+msgid "Commerce"
+msgstr "কমার্স"
+
+#: options.php:39
+msgid "Currencies"
+msgstr "কারেন্সী"
+
+#: options.php:39
+msgid "E-business"
+msgstr "ই-ব্যবসা"
+
+#: options.php:39
+msgid "Economy"
+msgstr "অর্থনীতি"
+
+#: options.php:40
+msgid "EmergingMarkets"
+msgstr "প্রকাশিতমার্কেটগুলো"
+
+#: options.php:40
+msgid "Energy"
+msgstr "শক্তি"
+
+#: options.php:40
+msgid "Enterprise"
+msgstr "এন্টারপ্রাইজ"
+
+#: options.php:40
+msgid "Finance"
+msgstr "অর্থহিসাব"
+
+#: options.php:40
+msgid "HealthCare"
+msgstr "স্বাস্থ্যসচেতনতা"
+
+#: options.php:40
+msgid "Infoimaging"
+msgstr "Infoimaging"
+
+#: options.php:41
+msgid "LawandTaxation"
+msgstr "LawandTaxation"
+
+#: options.php:41
+msgid "Logistics"
+msgstr "সামরিক বিদ্যা"
+
+#: options.php:41
+msgid "Management"
+msgstr "ব্যবস্থাপনা"
+
+#: options.php:41
+msgid "Manufacturing"
+msgstr "প্রস্তুতকারক"
+
+#: options.php:41
+msgid "PersonalFinance"
+msgstr "ব্যক্তিগতঅর্থহিসাব"
+
+#: options.php:41
+msgid "RealEstate"
+msgstr "রিয়েলএস্টেট"
+
+#: options.php:42
+msgid "SalesandMarketing"
+msgstr "বিক্রয়এবংমার্কেটিং"
+
+#: options.php:42
+msgid "Services"
+msgstr "পরিসেবাগুলো"
+
+#: options.php:42
+msgid "Tech"
+msgstr "প্রযুক্তি"
+
+#: options.php:42
+msgid "Wireless"
+msgstr "তারবিহীন"
+
+#: options.php:100
+msgid "Settings Updated"
+msgstr "মানসমূহ হাল নাগাদ করা হয়েছে"
+
+#: templates/default/options.tpl:14
+msgid "Refresh Folder List"
+msgstr "ফোল্ডার তালিকা পুনরায় করুন"
+
+#: templates/default/options.tpl:17
+msgid "Show me news about..."
+msgstr "এর সম্পর্কে আমাকে খবর দেখান..."
+
+#: templates/default/options.tpl:19
+msgid ""
+"Enter keywords of the news content that you want to see.  Each field's "
+"entries will show news that matches the entire field, with a total of three "
+"searches across  Rootly news."
+msgstr ""
+"আপনি যে খবর দেখতে চান তার কীশব্দ প্রবেশ করুন। প্রত্যেক এন্ট্রি মিলপাওয়া খবর দেখাবে, "
+"মূল খবর তিনবার খুঁজে।"
+
+#: templates/default/options.tpl:24
+msgid "Keywords"
+msgstr "মূলশব্দ"
+
+#: templates/default/options.tpl:25 templates/default/options.tpl:29
+msgid "or"
+msgstr "বা"
+
+#: templates/default/options.tpl:40
+msgid "Display Settings"
+msgstr "প্রদর্শনী মানসমূহ"
+
+#: templates/default/options.tpl:44
+msgid "News List Location"
+msgstr "খবর তালিকার অবস্থান"
+
+#: templates/default/options.tpl:59
+msgid "Update frequency"
+msgstr "পৌনঃপুন্য হালনাগাদ করো"
+
+#: templates/default/options.tpl:75
+msgid "News updates"
+msgstr "হালনাগাদ খবর"
+
+#: templates/default/options.tpl:92
+msgid "News Categories &amp; Topics"
+msgstr "খবর বিভাগ &amp; প্রসঙ্গ"
+
+#: templates/default/options.tpl:94
+msgid ""
+"Select a top-level category, such as Science, to see news relavent to all "
+"that category's topics"
+msgstr ""
+"এর সম্পর্কিত সকল খবর জানতে,একটি উচ্চ-স্তরের বিভাগ নির্বাচন করুন,যেমন বিজ্ঞান ।"
+
+#: templates/default/options.tpl:95
+msgid ""
+"or select as many of the news topics individually that you want to see in "
+"your Rootly news list for Squiremail."
+msgstr ""
+"বা Squiremail এর জন্য মূল বার্তার সব খবর দেখার জন্য যত সম্ভব প্রসঙ্গ নির্বাচন করুন।"

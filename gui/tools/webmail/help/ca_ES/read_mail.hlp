@@ -1,0 +1,159 @@
+<chapter>
+   <title>
+     Llegint un missatge de correu 
+   </title>
+   <summary>
+      L'opció de llegir un missatge de correu es una de les coses mes bàsiques
+      que ha de oferir un client de correu. Sens dubte, SquirrelMail te 
+      diverses opcions per tal de que mentre llegeix els missatges, tingui 
+      opcions per aquell missatge.
+   </summary>
+   <description>
+      <p>
+      Faci clic a l'Assumpte de qualsevol missatge i aquest serà mostrat.
+      Una cosa que vostè s'adonarà es que els missatges y direccions WEB 
+      tenen links que vostè pot utilitzar per enviar correu o obrir planes.
+      Una altra cosa útil es que separa per colors la capçalera dels missatges.
+      Al respondre un missatge, el text apareix amb el prefix de ">". Quan
+      es mostri un missatge, les línies que continguin al davant ">", 
+      canviaran de color de forma que un missatge respost, tindrà un cert 
+      color. Una barra de tasques es mostra sota la barra de sempre. Aquesta
+      es dividida en tres parts. La primera permet tornar a la llista 
+      d'abans o suprimir el missatge. El segon (al mig), permet mouràs pels
+      missatges adjacents. L'últim permet tornar a enviar-lo, respondre o 
+      respondre a tots.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Llista de missatges
+   </title>
+   <description>
+      <p>
+      Faci clic a aquest link per tornar a la llista de missatges.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Suprimir
+   </title>
+   <description>
+      <p>
+      Aquesta opció permet suprimir el missatge i tornar a la llista de 
+      missatges. Tots els fitxers adjunts al missatge també es perden. Pot
+      preveure la pèrdua d'aquests guardant els adjunts (s'explica mes 
+      endavant)
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navegació
+   </title>
+   <description>
+      <p>
+      Al mig de la barra de tasques, es troben els links de navegació. Amb 
+      aquests podrà mouràs al missatge d'abans sense tenir que tornar a la
+      llista de missatges. En el cas de que no hi hagi un missatge abans,
+      el link passarà a ser només text.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Següent
+   </title>
+   <description>
+      <p>
+      Amb aquesta opció passarà al següent missatge sense tenir que anar a la 
+      llista de missatges. Si no hi han mes missatges, el text es mostrarà
+      com a tal sense poder ser utilitzat com un link.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Tornar a enviar
+   </title>
+   <description>
+      <p>
+      A la part de la dreta, el link "Tornar a enviar" s'utilitza per tornar
+      a enviar el missatge que hem rebut a un altre destinatari. El missatge
+      original apareixerà dins la capça de text.
+      Els Adjunts també tornaran a enviar-se. No caldrà seleccionar-los com 
+      si es tractes d'un nou missatge.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Respondre
+   </title>
+   <description>
+      <p>
+      Faci clic aquì per respondre a la direcció d'on prové el missatge.
+      al camp Assumpte s'afegeix "RE:" al que ja hi havia. El text del
+      missatge original es afegit a la capça de text amb el caràcter ">"
+      al davant de cada línia. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Respondre a tots
+   </title>
+   <description>
+      <p>
+      Es com la opció d'abans, però també s'envia a totes les demés direccions
+      que hi ha al missatge.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Veure capçalera completa
+   </title>
+   <description>
+      <p>
+      Això mostra la capçalera completa del missatge de correu. Pot ser útil
+      per obtenir determinada informació dels servidors que l'envien i que el
+      reben.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Descarregar aquest missatge com un fitxer
+   </title>
+   <description>
+      <p>
+      A la part del final del missatge, hi ha una barra de tasques on es troba
+      aquest link. Al fer clic a aquest link, el missatge es descarrega al 
+      nostre ordinador com un fitxer de text.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Attachments
+   </title>
+   <description>
+      <p>
+      Un attachment (Adjunt) es que el missatge conte un fitxer. Amb aquesta 
+      opció, es permet obrir-lo o descarregar-lo al nostre ordinador. També
+      s'indica de quin tipus de fitxer es tracta.
+      </p>
+   </description>
+</section>

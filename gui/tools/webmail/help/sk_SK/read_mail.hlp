@@ -1,0 +1,175 @@
+<chapter>
+   <title>
+      Čítanie elektonickej správy
+   </title>
+   <summary>
+      Schopnosť čítať správy (e-maily) je jedna z najzákladnejších schopností
+      poštového programu. Ale, SquirrelMail má niekoľko zaujímavostí na chvíľu,
+      kým čítate správy. Táto sekcia pomocníka vysvetľuje, čo všetky robia.
+   </summary>
+   <description>
+      <p>
+      Kliknutím na predmet čiastočných správ sa správy zobrazia. Mali by sme ešte
+      pripomenúť, že e-maily a internetové adresy sú skutočné odkazy, takže na
+      nich môžte kliknúť a tak napísať novú správu, či otvoriť web stránku.
+      Ďalšia skutočne šikovnou črtou SquirrelMailu je že časti textov správ sú
+      zobrazované inými farbami. Štandard pre pri odpovedi na správu je, že citát
+      predchádzajúcej správy začína znakom ">" pred každým riadkom správy. Keď
+      toto SquirrelMail zistí, zobrazí ho odlišnou farbou. Odpovedaná správa je 
+      zobrazená inou farbou, ako text na ktorý odpovedáte, a tiez inou farbou ako
+      text novej spravy. Toto funguje v dvoch vrstvách. Ďalšia lišta s menu je
+      pod voľbami hlavného menu. Táto lišta má tri sekcie. Na ľavej strane je
+      mazanie alebo moznost návratu na zoznam správ. V strede je možná navigácia
+      medzi správami. V pravo sú rôzne funkcie na odosielanie pošty.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Zoznam správ
+   </title>
+   <description>
+      <p>
+      Kliknite na tento odkaz pre návrat do priečinka, z ktorého ste prišli.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odstrániť
+   </title>
+   <description>
+      <p>
+      Kliknite na tento odkaz pre odstránenie správy, ktorú práve píšete. Všetky
+      prílohy odstránenej správy sú taktiež automaticky odstránené. Strate správ
+      v budúcnosti môžte jednoducho zabrániť stiahnutím si príloh ešte pri čítaní
+      správy.(ďalej vysvetlené v tejto kapitole).<BR>
+      V tomto kontexte, zmazanie znamená, že správa bude presunutá do priečinka
+      nazvaného Kôš. Ak chcete po tomto nechať správu, presuňte ju von z priečinka
+      Kôš.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navigácia
+   </title>
+   <description>
+      <p>
+      V strede panela sú navigačné tlačidlá. Tlačidlo "Predchádzajúci" môže byť
+      znázornené ako textový odkaz. Kliknutím na tento odkaz sa zobrazí predchádzajúca
+      správa bez toho, aby ste museli znova ísť do zoznamu správ. To isté platí
+      aj pre odkaz  "Ďalší" ktorý vas premiestni na ďalšiu správu nasledujúcu
+      ihneď po správu, ktorú si teraz prezeráte.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      "Preposlať"
+   </title>
+   <description>
+      <p>
+      Ak kliknete na odkaz "Preposlať", ktorý je vpravo, otvorí sa stránka "Nová
+      správa" s pred chvíľou čítanou správou v textovom poli pod názvom 
+      --Pôvodná správa--".  "Fwd:" je predpona ktorá sa v tomto prípade dopíše na
+      začiatok správneho poľa. Množstvo polí pre poslanie na poštové adresy vás
+      čaká pre dokončením správy. Pozícia kurzoru môže byť v textovom poli v poradí
+      pre pridanie komentára do už existujúceho textu. Môžte tiež využiť možnosť
+      Preposlať ako prílohu.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odpovedať
+   </title>
+   <description>
+      <p>
+     Kliknutím na tento odkaz sa dostanete na písanie novej správy odosielateľovi
+     pred chvíľou čítanej správy. 
+     Click this link to return a new message to the originator of the
+      previously viewed message.  "Re:" je predpona ktorá sa dopíše na začiatok
+      riadku poľa "Predmet". Taktiež sa symbol ">" dopíše pred každý riadok pôvodnej
+      správy. Text ktorým odpovedáte, nebude tento znak na začiatku každého riadku.
+      Toto môže zapríčiniť ze funkcia zalomenia riadkov spôsobí nečitateľnosť
+      správy. Skúste sa teda v nastavení nastaviť voľbu <i>Zalomiť prichádzajúci
+      text</i> na väčšie číslo. Vaše komnetáre môžete urobiť kdekoľvek v textovom
+      poli alebo ich aj pridať ku citovanej správe. Môžte taktiež využiť možnosť
+      s prílohou.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odpovedať všetkým
+   </title>
+   <description>
+      <p>
+      Je to to isté ako voľba "Odpovedať", ale odpoviete všetkým ktorý túto správu
+      dostali (v hlavičke správy boli uvedení ako prijímatelia).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      	Zobraziť celú Hlavičku
+   </title>
+   <description>
+      <p>
+      Toto zobrazí úplnú hlavičku správy. To zahŕňa trasu odkiaľ správa ide kam,
+      a mnono detailných informácií o správe samej.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Zobraziť Verziu pre Tlač
+   </title>
+   <description>
+      <p>
+      Ak chcete vytlačiť správu, pravdepodobne budete chcieť kliknúť na tento
+      odkaz. Vytvorí nové okno, obsahujúce správu, ale s odstránenými všetkými
+      nepotrebnými informáciami a menu, pripravenú na tlač. Kliknutím na tlačítko
+      Tlačiť v tomto okne to urobíte, Pre návrat na pôvodnú správu kliknite na
+      Zavrieť.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Stiahnuť toto ako súbor
+   </title>
+   <description>
+      <p>
+      Dole nad spodnou lištou nájdete tento odkaz. Kliknutím na tento odkaz uložíte
+      túto správu ako jednoduchý text. Zjednodušená hlavička správy sa vloži na
+      začiatok správy.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prílohy
+   </title>
+   <description>
+      <p>
+      Všetky prílohy poslané s prijatou správou sa zobrazia na spodku správy vo
+      vyfarbenom políčku. Vpravo je súbor reprezentovaný odkazom s popisom typu
+      súboru. Kliknutím na meno súboru sa zobrazí dialóg na stihnutie súboru.
+      Kliknite na "Stiahnuť" na pravej strane. <BR>
+      Ak váš prehliadač podporuje prezeranie typu súboru prílohy, iný odkaz,
+      "Zobraziť", vám zobrazí priamo v prehliadači čo obsahuje súbor.
+      </p>
+   </description>
+</section>

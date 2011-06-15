@@ -1,0 +1,109 @@
+# Khmer (km) captcha Translation
+# Eng Vannak <evannak@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: captcha\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-26 17:35+0200\n"
+"PO-Revision-Date: 2009-04-24 09:22+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:199
+msgid "Sorry, you did not provide the correct challenge response."
+msgstr "សូម​ទោស អ្នក​មិន​បាន​ផ្ដល់​ចម្លើយ​កំណត់​សម្គាល់​ត្រឹមត្រូវ​ទេ ។"
+
+#: backends/b2evo/b2evo.php:91 backends/csi/csi.php:93
+#: backends/freecap/freecap.php:80 backends/hn_captcha/hn_captcha.php:129
+#: backends/meezerk/meezerk.php:80 backends/opencaptcha/opencaptcha.php:80
+#: backends/phpcaptcha/phpcaptcha.php:80
+#: backends/quickcaptcha/quickcaptcha.php:80
+#: backends/quickform/quickform.php:258
+#: backends/textcaptcha/textcaptcha.php:79 backends/watercap/watercap.php:81
+#: templates/default/b2evo.tpl:35 templates/default/csi.tpl:35
+#: templates/default/freecap.tpl:35 templates/default/hn_captcha.tpl:36
+#: templates/default/meezerk.tpl:35 templates/default/opencaptcha.tpl:35
+#: templates/default/phpcaptcha.tpl:35 templates/default/quickcaptcha.tpl:35
+#: templates/default/quickform.tpl:44 templates/default/textcaptcha.tpl:35
+#: templates/default/watercap.tpl:35
+msgid ""
+"This is a CAPTCHA image; please enter the text you see in this image into "
+"the input box below"
+msgstr "នេះ​គឺ​ជា​រូបភាព CAPTCHA សូម​បញ្ចូល​អត្ថបទ ដែល​អ្នក​ឃើញ​ក្នុង​រូបភាព​ទៅ​ជា​ប្រអប់​បញ្ចូល​ខាងក្រោម"
+
+#: backends/b2evo/b2evo.php:92 backends/captcha_php/captcha_php.php:109
+#: backends/csi/csi.php:94 backends/freecap/freecap.php:81
+#: backends/hec/hec.php:92 backends/hn_captcha/hn_captcha.php:130
+#: backends/meezerk/meezerk.php:81 backends/opencaptcha/opencaptcha.php:81
+#: backends/phpcaptcha/phpcaptcha.php:81
+#: backends/quickcaptcha/quickcaptcha.php:81
+#: backends/quickform/quickform.php:259
+#: backends/textcaptcha/textcaptcha.php:80 backends/watercap/watercap.php:82
+#: templates/default/b2evo.tpl:35 templates/default/captcha_php.tpl:36
+#: templates/default/csi.tpl:35 templates/default/freecap.tpl:35
+#: templates/default/hec.tpl:35 templates/default/hn_captcha.tpl:36
+#: templates/default/meezerk.tpl:35 templates/default/opencaptcha.tpl:35
+#: templates/default/phpcaptcha.tpl:35 templates/default/quickcaptcha.tpl:35
+#: templates/default/quickform.tpl:44 templates/default/textcaptcha.tpl:35
+#: templates/default/watercap.tpl:35
+msgid "Enter the text you see in the image above:"
+msgstr "សូម​បញ្ចូល​អត្ថបទ​ដែល​អ្នក​ឃើញ​ក្នុង​ប្រអប់​ខាងក្រោម ៖"
+
+#: backends/quickform/quickform.php:178
+msgid "zero "
+msgstr "zero "
+
+#: backends/quickform/quickform.php:181
+msgid "one "
+msgstr "one "
+
+#: backends/quickform/quickform.php:184
+msgid "two "
+msgstr "two "
+
+#: backends/quickform/quickform.php:187
+msgid "three "
+msgstr "three "
+
+#: backends/quickform/quickform.php:190
+msgid "four "
+msgstr "four "
+
+#: backends/quickform/quickform.php:193
+msgid "five "
+msgstr "five "
+
+#: backends/quickform/quickform.php:196
+msgid "six "
+msgstr "six "
+
+#: backends/quickform/quickform.php:199
+msgid "seven "
+msgstr "seven "
+
+#: backends/quickform/quickform.php:202
+msgid "eight "
+msgstr "eight "
+
+#: backends/quickform/quickform.php:205
+msgid "nine "
+msgstr "nine "
+
+#: backends/quickform/quickform.php:263 templates/default/quickform.tpl:46
+msgid "Enter the text you see above:"
+msgstr "បញ្ចូល​អត្ថបទ​ដែល​អ្នក​ឃើញ​ខាងលើ ៖"
+
+#: backends/quickform/quickform.php:266 backends/textcapnum/textcapnum.php:86
+#: templates/default/quickform.tpl:48 templates/default/textcapnum.tpl:35
+#, php-format
+msgid "What is %s?"
+msgstr "តើ %s ជា​អ្វី?"
+

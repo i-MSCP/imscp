@@ -1,0 +1,8 @@
+
+# Rename this file to .htaccess if you want to allow large file uploads
+# Note that this file is not always taken into account, depending on your server configuration
+
+php_value max_execution_time 1200
+php_value memory_limit 200M
+php_value post_max_size 200M
+php_value upload_max_filesize 200M

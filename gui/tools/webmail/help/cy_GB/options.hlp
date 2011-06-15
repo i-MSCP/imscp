@@ -1,0 +1,302 @@
+<chapter>
+   <title>
+      Options
+   </title>
+   <summary>
+Gallwch deilwrior modd y mae SquirrelMail yn edrych ac yn ymateb i chi trwy osod dewisiadau gwahanol yn yr adran yma.
+   </summary>
+   <description>
+      <p>
+Un or pethau gwych am SquirrelMail ywr modd y gallwch ei deilwrio. Gan ddibynnu ar y ffurfwedd, efallai y bydd gennych 
+sawl dewis o ran themâu, ieithoedd, ffolderi a dewisiadau eraill. Gallwch newid pob un or rhain heb effeithio ar unrhyw ddefn
+yddiwr arall ar y system. Mae pump prif ran o leiaf ir Options: Personal, Display, Message Highlighting, Folders ac Index Ord
+er. Gall fod mwy o rannau ar gael. Bydd hyn yn dibynnu ar y modd y mae eich SquirrelMail wedi ei osod.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Personal Information
+   </title>
+   <description>
+      <b>Enw Llawn</b><br>
+      Dylech roi eich enw cyflawn yma. Er enghraifft, "John Jones". Dymar hyn syn cael ei ddangos i bobl syn derbyn neges gen
+nych. Byddant yn gweld ei fod yn dod oddi wrth "John Jones". Os na fyddwch chin ei deipio i mewn, yna byddant yn ei weld och 
+cyfeiriad e-bost, "jjones@mydomain.org".
+      <br><br>
+
+      <b>Cyfeiriad E-bost</b><br>
+      <i>Dewisol</i> - Os yw eich cyfeiriad e-bost yn wahanol ir hyn syn cael ei neilltuon awtomatig, gallwch ei newid yma.
+      <br><br>
+
+      <b>Reply To</b><br>
+      <i>Dewisol</i> - Dewisol - Dymar cyfeiriad e-bost y bydd pobl yn anfon ato pan fyddant yn ateb eich neges. Os yw hwn yn
+ wahanol ir cyfeiriad e-bost yr ydych chin anfon eich neges ohono, gallwch ei deipio yma. Mae hwn yn ddefnyddiol os ydych chi
+ eisiau i bobl ateb ich cyfrif Yahoo yn hytrach nag i gyfeiriad eich swyddfa.
+      <br><br>
+
+      <b>Multiple Identities</b><BR>
+Cliciwch ar y cyswllt yma i olygu mwy ag un dynodiad. Mae hwn yn ddefnyddiol os ydych chi eisiau dewis rhwng gwahanol linella
+u From ar gyfer negesau gwahanol (yn cynnwys eich cyfeiriad e-bost gartref neu yn y gwaith er enghraifft.) Gallwch ychwanegu 
+cynifer o ddynodiadau ag y dymunwch ar y dudalen syn ymddangos. Byddwch yn cael cynnig dewis or rhain wrth gyfansoddi neges.
+<br><br>
+
+      <b>Dyfynnu Ateb</b><BR>
+      Os ydych chin pwyso Reply ar neges, byddwch yn gweld y ffurflen Compose âr neges wreiddiol wedi ei dyfynnu arni. O flae
+n y neges yma syn cael ei dyfynnu, gall fod brawddeg  fel  <tt>Ysgrifennodd John Jones</tt>: wedi ei gosod (os daeth y neges 
+yr ydych yn ei hateb oddi wrth John Jones yn wreiddiol). Y llinell ddyfyniad ywr enw ar hyn. Gallwch ddewis sut y maer llinel
+l yn edrych yma.
+
+<BR>
+      <UL>
+      <LI><B>No Citation</B><br>
+      Dim llinell ddyfyniad o fath yn y byd.<br><br>
+      <LI><B>Author Said</B><br>
+      Mae hwn yn cynhyrchur llinell: <tt>Meddai John Jones</tt>: lle y bydd John Jones yn cael ei newid i enwr sawl yr ydych 
+yn ateb ei neges.
+<br><br>
+      <LI><B>Quote Who XML</B><br>
+      Mae hwn yn cynhyrchur llinell: <TT>&lt;quote who="John Doe"&gt;</TT>.<br><br>
+      <LI><B>User-Defined</B><br>
+     Mae hyn yn fodd i chi  ddiffinio eich llinell ddyfyniad eich hun. Yn y ddau flwch testun isod, gallwch deipio dechrau a 
+diwedd y dyfyniad. Bydd enwr awdur yn cael ei gynnwys rhwng y rhain.
+      </UL><br><br>
+
+      <b>Llofnod</b><br>
+      <i>Dewisol</i> - Mae Llofnodau wedi eu hatodi ar waelod pob neges a anfonwch chi. Os ydych chi eisiau llofnod, maen rha
+id i chi wneud yn siwr eich bod yn archwilior blwch gwirio wrth ymyl "use a signature", ac yna nodwch yr hyn y dymunwch ich l
+lofnod fod yn y blwch oddi tano.
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Display Preferences
+   </title>
+   <description>
+     <b>Thema</b><br>
+      Mae SquirrelMail yn cynnig themâu lliw gwahanol fel y gallwch wneud y gwylion bleser. Gallwch ddewis o blith y niferoed
+d sydd wedi eu rhestru yno os y dymunwch.
+      <br><br>
+
+      <b>Addasur Daflen Arddull</b><br>
+      Dim ond newid y lliwiau syn dilyn o newid thema. Gall taflen arddull newid mwy, maint y ffont syn cael ei ddefnyddio ga
+n SquirrelMail er enghraifft.
+      <br><br>
+
+      <b>Iaith</b><br>
+      Os nad Saesneg yw eich iaith gyntaf, gallwch newid iaith y rhan fwyaf or pethau syn cael eu harddangos yn rhwydd. Os yw
+ eich dewis iaith ar y rhestr, gallwch ei dewis a bydd pob neges mewn perthynas â SquirrelMail yn yr iaith honno yn y dyfodol
+. Sylwch nad ywn cyfieithu negesau e-bost a ddaw i mewn nag enwau ffolderi.
+      <br><br>
+
+      <b>Defnyddio Javascript</b><br>
+      Un on prif nodau wrth greu SquirrelMail oedd i beidio â chynnwys unrhyw Javascript ar unrhyw un on tudalennau. Fodd byn
+nag, cynhyrchodd rhai on datblygwyr wasanaeth llyfr cyfeiriadau da iawn syn defnyddio Javascript. Ychwanegwyd rhai swyddogaet
+hau eraill syn perthyn i Javascript ato hefyd. Yn hytrach nai gymryd oddi yno, rydym bellach yn cynnig y dewis i chi o ddefny
+ddio HTML pur neu alluogi  Javascript hefyd. Os nad ydych chin gwybod beth y mae hyn yn ei olygu, y peth gorau i chi ei wneud
+ yw dewis Autodetect.
+
+      <br><br>
+
+      <b>Nifer o Negesau iw Mynegio</b><br>
+      Dymar nifer o negesau syn cael eu dangos ar y tro mewn ffolder. Os oes mwy nar nifer yma yn y ffolder, byddwch yn gweld
+ cyswllt "Previous" a "Next" uwchben ac o dan y rhestriad a fydd yn mynd â chi ir negesau blaenorol neu nesaf.
+
+      <br><br>
+
+      <b>Galluogi Page Selector</b><br>
+      Bydd gosod hwn i Yes yn dangos rhifau tudalennau uwchben ac o dan y rhestr negesau fel y gallwch neidion gyflym i dudal
+en benodol o negesau. Gall y rhif <b>Maximum pages to show</b> gyfyngu ar sawl rhif tudalen a fydd yn cael eu harddangos uwch
+ben ac o dan y rhestr negesau.
+br><br>
+
+      <b>Wrap incoming text at</b><br>
+      Nifer y nodau y dylem eu caniatáu cyn lapior testun. Mae hwn yn atal negesau rhag sgrolio ymhell oddi ar y sgrîn. Fel a
+rfer maen ddiogel rhoi 86 yma, ond mae rhyddid i chi ei newid i beth bynnag y dymunwch.
+      <br><br>
+
+      <b>Maent y ffenest olygu</b><br>
+      Pa mor llydan hoffech chi eich blwch "Compose" Dyma nifer y nodau fesul llinell y gallwch eu teipio cyn lapio yn yr ad
+ran Compose.
+      <br><br>
+
+      <b>Lleoliad Botymau wrth Gyfansoddi</b><br>
+      Lle maer botymau Addresses, Save Draft a Sendr<br><br>
+
+      <b>Fformat Arddangos Llyfr Cyfeiriadau</B><br>
+      Dewiswch sut yr hoffech chi arddangos y llyfr cyfeiriadau. Os ydych chi eisiau iddo fod mor gytûn ag syn bosib â phob p
+orwr, defnyddiwch HTML. Dewiswch Javascript os ydych chin gwybod fod eich porwr yn ei gynnal. Bydd yn arddangos llyfr cyfeiri
+adau mwy deniadol.
+      <br><br>
+
+      <b>Dangos Fersiwn HTML Heb Ofyn</b><br>
+      Os ydych chin derbyn neges yn y fformat text a HTML, gallwch ddewis a ydych chi eisiau gweld y fersiwn HTML (Yes) neur 
+fersiwn text (No) heb ofyn.
+br><br>
+
+      <b>Cynhwyswch Fi yn CC pan ddefnyddiaf Reply All</b><br>
+      Mae Reply All yn anfon eich ateb i bawb a dderbyniodd y neges wreiddiol, yn cynnwys chi eich hun. I hepgor eich cyfeiri
+ad e-bost eich hun, gosodwch hwn i No.
+      <br><br>
+
+      <b>Galluogi Mailer Display</b><BR>
+Wrth edrych ar neges, mae hwn yn dangos pa raglen e-bost a ddefnyddiodd y sawl ai hanfonodd.
+      <br><br>
+
+      <b>Dangos Delweddau wedi eu Hatodi âr Neges</b><br>
+      Os fydd rhywun yn anfon neges atoch yn cynnwys un neu fwy o ddelweddau wedi eu hatodi ach bod wedi gosod hwn i Yes, byd
+d y delweddaun cael eu harddangos ar unwaith pan edrychwch chi ar y neges.
+      <br><br>
+
+      <b> Galluogi Cyswllt Subtle Printer Friendly
+</b><br>
+Mae hwn yn nodir modd y bydd y cyswllt Fersiwn y gellir ei Argraffu yn cael ei ddangos.
+      <br><br>
+
+      <b>Galluogi Printer Friendly Clean Display</b><br>
+      Bydd hwn yn glanhaur neges gan wneud ir argraffu edrych yn well.
+      <br><br>
+
+      <b>Dewisiadau eraill</b><br>
+      Gan ddibynnu ar ffurfwedd eich arsefydliad SquirrelMail, efallai y bydd mwy o ddewisiadau iw gweld yma. Gyda lwc byddan
+t yn ddigon hawdd eu deall.
+      <br><br>
+ 
+   </description>
+</section>
+
+<section>
+   <title>
+      Message Highlighting
+   </title>
+   <description>
+      Deilliodd y syniad yma or ffaith ei bod yn anodd iawn gwahaniaethu rhwng pa negesau a ddaeth o ble wrth ddarllen trwyr 
+rhestr o negesau os ydych chi wedi tanysgrifio i nifer o restrau postio. O ddefnyddio Message Highlighting, gallwch gael lliw
+ cefndir pob neges o un rhestr bostio yn wahanol i liw rhestr arall.
+
+Cliciwch ar [New] i greu un newydd, neu [Edit] i olygu un sydd gennych yn barod a bydd y dewisiadaun ymddangos isod.
+br><br>
+
+
+      <b>Adnabod Enw</b><br>
+      Dymar enw a welwch chi syn disgrifior hyn ydyw. Er enghraifft, os ydych chin tanlinellu negesau oddi wrth eich mam, efa
+llai y byddech yn gosod hwn i "Oddi wrth Mam".
+      <br><br>
+
+      <b>Lliw</b><br>
+      Dymar union liw y bydd y cefndir. Gallwch ddewis o blith nifer o liwiau wedi eu diffinio ymlaen llaw a ddewiswyd gennym
+ ar eich cyfer, neu gallwch deipior cod HEX i gael y lliw y dymunwch (h.y. a6b492). Os penderfynwch chi deipio eich lliw eich
+ hun, rhaid i chi hefyd ddewis y botwm radio yn y pen blaen fel y gellir ei wirio.
+      <br><br>
+
+      <b>Cyfateb</b><br>
+      Yma gallwch ddewis y frawddeg syn cyfateb. Or blwch cwympo, gallwch ddewis pa faes pennawd i gyfateb iddo (to, from, su
+bject...) ac yn y blwch testun gallwch deipior frawddeg i gyfateb (mam@yahoo.com).
+      <br><br>
+   </description>
+</section>
+
+<section>
+   <title>
+      Folder Preferences
+   </title>
+   <description>
+        <b>Llwybr Ffolder</b><br>
+      Ni fydd hwn yn cael ei arddangos ar rai systemau. Os na welwch chir dewis yma, anwybyddwch hyn. Ar systemau eraill, mae
+ hon yn nodwedd eithaf angenrheidiol. Fel arfer y dewis sydd yno ywr un ddylai fod yno. Dymar ffolder yn eich cyfeiriadur Hom
+e syn dal eich holl ffolderi e-bost. Os nad ydych chin deall hyn, gadewch fel ag y mae.
+      <br><br>
+
+      <b>Ffolder Trash</b><br>
+      Gallwch ddewis pa negesau ffolder a fydd yn cael eu hanfon yma pan wnewch chi eu dileu. Os nad ydych chi eisiau i neges
+au wedi eu dileu fynd ir trash, gosodwch hwn i "Don't use Trash".
+      <br><br>
+
+      <b>Ffolder Sent</b><br>
+      Gallwch ddewis i ba ffolder y byddwch yn anfon eich negesau Sent iddo. Os nad ydych chi eisiaur rhain, gosodwch i "Don'
+t use Sent".
+
+      <br><br>
+
+      <b>Ffolder Ddrafft</b><br>
+      Gallwch ddewis i ba ffolder y byddwch yn anfon y negesau y cadwch fel rhai drafft. Os nad ydych chi eisiau defnyddio hw
+n, gosodwch i "Don't use Drafts".
+
+      <br><br>
+
+      <b> Lleoliad rhestr ffolderi
+</b><br>
+      Mae hwn yn nodi a ydych chi eisiaur rhestr ffolderi ar y chwith neu ir dde och ffenest.
+
+      <br><br>
+
+      <b> Lled eich rhestr ffolderi
+</b><br>
+      Gydar dewis yma, gallwch ddewis pa mor llydan y dymunwch ir rhestr ffolderi fod. Os oes gennych chi enwau hir iawn ar f
+folderi neu os ydych chin defnyddio ffontiau mawr, maen beth da i osod hwn yn eithaf uchel. Fel arall, dylech ei osod yn isel
+ fel nad ydych chin gwastraffu lle ar y sgrîn.
+
+      <br><br>
+
+      <b> Rhestr ffolderi Auto refresh
+</b><br>
+      Mae SquirrelMail yn gallu adnewyddur rhestriad ffolderi ar ochr chwith ffenest eich porwr.Bydd hwn yn diweddaru nifer y
+ negesau nad ydynt wedi cael eu gweld ym mhob ffolder hefyd. Mae hwn yn ddull da o edrych am negesau heb eu gweld yn yr INBOX
+ heb fod yn rhaid clicio arno bob tro.
+      <br><br>
+
+      <b> Galluogi Hysbysiad Neges heb ei Darllen
+</b><br>
+      Maer dewis yman nodi sut i arddangos negesau heb eu gweld yn y rhestriad ffolderi ar ochr dde eich ffenest  porwr. Os f
+yddwch chin gosod hwn i No Notification, ni fyddwch yn cael eich hysbysu o negesau heb eu gweld. Os wnewch chi ei osod i INBO
+X, pan fydd gennych negesau newydd , bydd y gair INBOX yn troin drwm a bydd rhif yn ymddangos ir dde ohono i ddweud sawl nege
+s newydd sydd ynddo. Os wnewch chi ei osod i All Folders, bydd hyn yn digwydd ar bob ffolder. Os fyddwch chin sylwi fod llwyt
+hor rhestr ffolderi yn wirioneddol ara deg, gallwch osod hwn i INBOX neu None a dylai hynny gyflymu pethau.
+
+      <br><br>
+
+      <b> Y math o hysbysiad yngln â negesau sydd heb eu gweld
+</b><br>
+      Pan fo negesau newydd mewn ffolder, bydd y dewis yman dweud am naill ai ddangos  nifer y negesau newydd neu hefyd i dda
+ngos cyfanswm y negesau yn y ffolder hwnnw.
+      <br><br>
+
+      <b> Galluogi Collapsable Folders
+</b><br>
+      Mae Collapsable Folders yn fodd i chi 'blygu neu grebachu  ffolder syn cynnwys is-ffolderi fel na fydd yr is-ffolderi w
+edi eu harddangos. Gallwch grebachu ffolder trwy glicio ar y - y drws nesaf iddo ai wneud yn fwy eto trwy glicio ar yr arwydd
+ +. Mae gosod hwn i No yn analluogir crebachu.
+
+      <br><br>
+
+      <b> Panel Show Clock on Folders
+</b><br>
+      rhestr ffolderi a sut y byddai'n edrych (Y=year, D=day, H=hour, M=minute, S=second). Maer dewis <b>Hour Format</b> isod
+ yn rhoir dewis i chi o gloc 12 awr neu 24 awr.
+      <br><br>
+
+      <b> Chwilior Cof
+</b><br>
+      Os fyddwch chin chwilio blwch postio, bydd y chwiliad yn cael ei gadw fel y gallwch ei gyrchun gyflym yn ddiweddarach. 
+Mae hwn yn diffinio sawl chwiliad blwch post fydd yn cael eu cadw.
+
+      <br><br>
+ 
+   </description>
+</section>
+
+<section>
+   <title>
+      Index Order
+   </title>
+   <description>
+      Maer adran yman rhoi rheolaeth i chi dros y rhestr negesau. Gallwch ddewis faint o wybodaeth rydych chi ei eisiau yn y 
+rhestr negesau ac ym mha drefn y dylai gael ei arddangos.
+      <br><br>
+      Defnyddiwch y cysylltau  Up and Down i symud colofnau o gwmpas, Del i fynd â cholofn or arddangosydd ac Add i ychwanegu
+ un.
+   </description>
+</section>

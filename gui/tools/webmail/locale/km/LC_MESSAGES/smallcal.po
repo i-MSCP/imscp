@@ -1,0 +1,103 @@
+# Khmer (km) smallcal Translation
+# piseth <piseth_dv@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: smallcal\n"
+"POT-Creation-Date: 2003-10-20 16:27+0300\n"
+"PO-Revision-Date: 2009-04-24 09:31+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "S M T W T F S"
+msgstr "S M T W T F S"
+
+msgid "Today"
+msgstr "ថ្ងៃនេះ"
+
+msgid "Color Picker"
+msgstr "ឧបករណ៍​ជ្រើស​ពណ៌"
+
+msgid ""
+"Click a box and the hexadecimal color will be shown <br>below. Use these hex "
+"values for color box settings."
+msgstr "ចុច​លើ​ប្រអប់ ហើយ​ពណ៌​គោល ៦ ត្រូវបាន​បង្ហាញនៅ​ខាងក្រោម ។ <br> ប្រើ​តម្លៃ​គោល ៦ ទាំងនេះ​សម្រាប់​ការ​កំណត់​ប្រអប់ ។"
+
+msgid "Hex Value"
+msgstr "តម្លៃ​គោល ៦"
+
+msgid "Small Calendar Options"
+msgstr "ជម្រើស​ប្រតិទិន​តូច"
+
+msgid "Small Calendar:"
+msgstr "ប្រតិទិន​តូច ៖"
+
+msgid "Show small calendar in left bar"
+msgstr "បង្ហាញ​​ប្រតិទិន​តូច​នៅ​ក្នុង​របារ​ខាង​ឆ្វេង"
+
+msgid "Use Default Theme:"
+msgstr "ប្រើ​ស្បែក​លំនាំដើម ៖"
+
+msgid "This will override values below"
+msgstr "វា​នឹង​បដិសេធ​តម្លៃ​ខាងក្រោម"
+
+msgid "Header Color:"
+msgstr "ពណ៌​បឋមកថា ៖"
+
+msgid "Day Color:"
+msgstr "ពណ៌​ថ្ងៃ ៖"
+
+msgid "Today Color:"
+msgstr "ពណ៌​ថ្ងៃ​នេះ ៖"
+
+msgid "Event Color:"
+msgstr "ពណ៌​ព្រឹត្តិការណ៍ ៖"
+
+msgid "Calendar separator:"
+msgstr "អក្សរ​បំបែក​ប្រតិទិន ៖"
+
+msgid "None"
+msgstr "គ្មាន"
+
+msgid "Horizontal rule"
+msgstr "ក្បួន​ផ្ដេក"
+
+msgid "Box"
+msgstr "ប្រអប់"
+
+msgid "Calendar size:"
+msgstr "ទំហំ​ប្រតិទិន ៖"
+
+msgid "Default size"
+msgstr "ទំហំ​លំនាំដើម"
+
+msgid "10 px"
+msgstr "១០ ភីកសែល"
+
+msgid "12 px"
+msgstr "១២ ភីកសែល"
+
+msgid "14 px"
+msgstr "១៤ ភីកសែល"
+
+msgid "16 px"
+msgstr "១៦ ភីកសែល"
+
+msgid "Use Shared Calendar:"
+msgstr "ប្រើ​ប្រតិទិន​ដែល​បាន​ចែករំលែក ៖"
+
+msgid ""
+"Use the shared calendar selected below as your<br>small calendar (default is "
+"Personal calendar)"
+msgstr "ប្រើ​ប្រតិទិន​ដែល​បាន​ចែករំលែក ដែល​បាន​ជ្រើស​នៅ​ខាងក្រោមដូចនឹង<br>ប្រតិទិន​តូច​របស់​អ្នក (លំនាំដើម គឺ​ប្រតិទិន​ផ្ទាល់ខ្លួន)"
+
+msgid "Shared Calendar:"
+msgstr "ប្រតិទិន​ដែល​បាន​ចែករំលែក ៖"
+
