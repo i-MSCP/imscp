@@ -80,3 +80,4 @@ Tickets:
     - Fixed #75: Bug - Can't change Admin password
     - Fixed #76: Bug - Typo in SQL query
     - Fixed #78: Bug - Typo error in HTML
+    - Fixed #82: Cosmetics - client/webtools.php lookout lack picture
