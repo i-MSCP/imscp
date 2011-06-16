@@ -81,3 +81,4 @@ Tickets:
     - Fixed #76: Bug - Typo in SQL query
     - Fixed #78: Bug - Typo error in HTML
     - Fixed #82: Cosmetics - client/webtools.php lookout lack picture
+    - Fixed #83: Bug - client/ftp_choose_dir.php result in blank page
