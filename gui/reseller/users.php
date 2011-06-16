@@ -104,7 +104,9 @@ $tpl->assign(array(
                   'TR_EDIT_DOMAIN' => tr('Edit Domain'),
                   'TR_EDIT_USER' => tr('Edit User'),
                   'TR_BW_USAGE' => tr('Bandwidth'),
-                  'TR_DISK_USAGE' => tr('Disk')));
+                  'TR_DISK_USAGE' => tr('Disk'),
+                  'TR_PREVIOUS' => tr('Previous'),
+                  'TR_NEXT' => tr('Next')));
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	$tpl->assign('EDIT_OPTION', '');

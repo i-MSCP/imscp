@@ -18,14 +18,18 @@
         <script type="text/javascript">
             /* <![CDATA[ */
             function action_status(dom_id, dmn_name) {
-                if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
+                if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name))) {
                     return false;
+                }
+
                 location = ("domain_status_change.php?domain_id=" + dom_id);
             }
 
             function action_delete(url, dmn_name) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name)))
+                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name))) {
                     return false;
+                }
+
                 location = url;
             }
             /* ]]> */
@@ -88,7 +92,6 @@
                 <input type="hidden" name="details" value="" />
             </form>
             <!-- EDP: users_search -->
-
             <!-- BDP: users_list -->
             <table>
                 <thead>
@@ -113,7 +116,6 @@
                         <td>{DISK_USAGE}</td>
                         <td>
                             <a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
-
                             <!-- BDP: edit_option -->
                             <a class="icon i_user" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
                             <a class="icon i_edit" href="user_edit.php?edit_id={USER_ID}">{TR_EDIT_USER}</a>
@@ -125,7 +127,6 @@
                             <a class="icon i_delete" href="domain_delete.php?domain_id={DOMAIN_ID}">{ACTION}</a>
                         </td>
                     </tr>
-
                     <!-- BDP: user_details -->
                     <tr>
                         <td colspan="5">
@@ -137,22 +138,22 @@
                 </tbody>
             </table>
             <!-- EDP: users_list -->
-
             <div class="paginator">
-
                 <!-- BDP: scroll_next_gray -->
                 <a class="icon i_next_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_next_gray -->
+
+                <!-- BDP: scroll_next -->
+                <a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
+                <!-- EDP: scroll_next -->
+
                 <!-- BDP: scroll_prev -->
-                <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="previous">previous</a>
+                <a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
                 <!-- EDP: scroll_prev -->
 
                 <!-- BDP: scroll_prev_gray -->
                 <a class="icon i_prev_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_prev_gray -->
-                <!-- BDP: scroll_next -->
-                <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
-                <!-- EDP: scroll_next -->
             </div>
         </div>
     </body>

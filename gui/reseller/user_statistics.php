@@ -333,7 +333,9 @@ $tpl->assign(
          'TR_SQL_DB' => tr('SQL<br>database'),
          'TR_SQL_USER' => tr('SQL<br>user'),
          'VALUE_NAME' => $name,
-         'VALUE_RID' => $rid));
+         'VALUE_RID' => $rid,
+         'TR_NEXT' => tr('Next'),
+         'TR_PREVIOUS' => tr('Previous')));
 
 gen_select_lists($tpl, $month, $year);
 generate_page($tpl, $rid, $name);
