@@ -83,3 +83,4 @@ Tickets:
     - Fixed #82: Cosmetics - client/webtools.php lookout lack picture
     - Fixed #83: Bug - client/ftp_choose_dir.php result in blank page
     - Fixed #84: Bug - Unable to edit custom errors pages (client)
+    - Fixed #85: Defect - http://app-pkg.i-mscp.net is not reachable
