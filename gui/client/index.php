@@ -44,7 +44,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
  */
 
 /**
- * 
+ *
  * @param  $num
  * @param  $limit
  * @return string|Translated
@@ -115,7 +115,8 @@ function gen_traff_usage($tpl, $usage, $max_usage, $bars_max)
     $tpl->assign(array(
                       'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
                       'TRAFFIC_BARS' => $bars,
-                      'TRAFFIC_PERCENT' => $percent));
+                      'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent
+                      ));
 
     if ($max_usage != 0 && $usage > $max_usage) {
         $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
@@ -146,7 +147,8 @@ function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
     $tpl->assign(array(
                       'DISK_USAGE_DATA' => $traffic_usage_data,
                       'DISK_BARS' => $bars,
-                      'DISK_PERCENT' => $percent));
+                      'DISK_PERCENT' => $percent > 100 ? 100 : $percent
+                      ));
 
     if ($max_usage != 0 && $usage > $max_usage) {
         $tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit!'));

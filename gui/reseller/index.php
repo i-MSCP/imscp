@@ -107,7 +107,7 @@ function gen_traff_usage($tpl, $usage, $max_usage, $bars_max) {
 		array(
 			'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
 			'TRAFFIC_BARS'       => $bars,
-			'TRAFFIC_PERCENT'    => $percent,
+			'TRAFFIC_PERCENT'    => $percent > 100 ? 100 : $percent,
 		)
 	);
 }
@@ -126,7 +126,7 @@ function gen_disk_usage($tpl, $usage, $max_usage, $bars_max) {
 		array(
 			'DISK_USAGE_DATA' => $traffic_usage_data,
 			'DISK_BARS'       => $bars,
-			'DISK_PERCENT'    => $percent,
+			'DISK_PERCENT'    => $percent > 100 ? 100 : $percent,
 		)
 	);
 }
@@ -232,7 +232,7 @@ function generate_page_data($tpl, $reseller_id, $reseller_name) {
 
 			'TRAFF_RED' => $traff_red * 3,
 			'TRAFF_GREEN' => $traff_green * 3,
-			'TRAFF_PERCENT' => $traff_percent,
+			'TRAFF_PERCENT' => $traff_percent > 100 ? 100 : $traff_percent,
 
 			'TRAFF_MSG' => ($rtraff_max)
 				? tr('%1$s / %2$s of <b>%3$s</b>', sizeit($utraff_current), sizeit($rtraff_current), sizeit($rtraff_max))
