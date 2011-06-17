@@ -8,6 +8,9 @@
     <IfModule suexec_module>
            SuexecUserGroup {SUEXEC_USER} {SUEXEC_GROUP}
     </IfModule>
+    <IfModule mpm_itk_module>
+           AssignUserID {SUEXEC_USER} {SUEXEC_GROUP}
+    </IfModule>
 
     ServerAdmin     webmaster@{DMN_NAME}
     DocumentRoot    {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs
