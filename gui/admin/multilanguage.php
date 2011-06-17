@@ -102,9 +102,7 @@ function generatePage($tpl)
             $tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
         } else {
             $tpl->assign(array('TR_UNINSTALL' => tr('Uninstall'),
-                              'URL_DELETE' =>
-                              //"language_delete.php?delete_lang=lang_{$languageMeta[1]}",
-                              "language_delete.php?delete_lang=$tableName",
+                              'URL_DELETE' => "language_delete.php?delete_lang=$tableName",
                               'LANG_DELETE_SHOW' => '',
                               'LANGUAGE' => tohtml($languageName),
                               'LANGUAGE_REVISION' => $languageRevision,
@@ -155,7 +153,7 @@ function importLanguageFile()
         } else {
             set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
             return;
-            // Deprecated since r4589
+            // Deprecated since r4592
             //$ab = _importTextFile($filePath);
         }
 
@@ -233,7 +231,7 @@ function importLanguageFile()
  *
  * @param string $file translation file
  * @return array|int
- * @deprecated since r4589
+ * @deprecated since r4592
  */
 function _importTextFile($file)
 {

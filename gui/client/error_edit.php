@@ -38,6 +38,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -61,9 +62,6 @@ function gen_error_page_data($tpl, $user_id, $eid) {
 	// No error page
 	$tpl->assign(array('ERROR' => ''));
 }
-
-// common page data.
-
 
 
 $tpl->assign(
