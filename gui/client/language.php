@@ -55,16 +55,20 @@ $tpl->define_dynamic('logged_from', 'page');
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 	$user_id = $_SESSION['user_id'];
 	$user_lang = $_POST['def_language'];
-	$query = "
-		UPDATE
-			`user_gui_props`
-		SET
-			`lang` = ?
-		WHERE
-			`user_id` = ?
-	";
 
-	$rs = exec_query($query, array($user_lang, $user_id));
+
+    $query = "
+        REPLACE INTO
+            `user_gui_props` (
+                user_id, lang, layout
+            ) VALUES (
+                ?, ?, ?
+            )
+        ;
+    ";
+
+     exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme']));
+
 	unset($_SESSION['user_def_lang']);
 	$_SESSION['user_def_lang'] = $user_lang;
 	set_page_message(tr('User language updated successfully!'), 'success');

@@ -670,4 +670,73 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         return $sqlUpd;
     }
+
+    /**
+     * Adds unique index on user_id column from the user_gui_props table.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4592
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_56()
+    {
+        return array("ALTER IGNORE TABLE `user_gui_props` ADD UNIQUE (`user_id`);");
+    }
+
+    /**
+     * Remove all parentheses from language database tables.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4592
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_57()
+    {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+
+        $sqlUpd = $queryParts = array();
+
+        foreach ($db->metaTables() as $tableName) {
+            // Is language database table ?
+            if (strpos($tableName, 'lang_') === false ||
+                (strpos($tableName, '(') === false &&
+                 strpos($tableName, ')') === false)
+            ) {
+                continue;
+            }
+
+            $newTableName = str_replace(array('(', ')'), '', $tableName);
+            $queryParts[] = "`$tableName` TO `$newTableName`";
+        }
+
+        if (!empty($queryParts)) {
+            $sqlUpd[] = 'RENAME TABLE ' . implode(', ', $queryParts) . ';';
+
+            foreach ($queryParts as $queryPart) {
+                $table = substr($queryPart, strrpos($queryPart, 'TO ') + 3);
+                $sqlUpd[] = "UPDATE $table SET `msgstr` = " .
+                            str_replace(array('lang_', '`'), array('', '\''), $table) .
+                            " WHERE `msgid` = 'imscp_table';";
+                $sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
+            }
+        }
+
+        $sqlUpd[] = "
+            UPDATE
+                `config`
+            SET
+                `value` = 'lang_EnglishBritain'
+            WHERE
+                `name` = 'USER_INITIAL_LANG'
+            ;
+        ";
+
+        // Will reset the language property for all users (expected behavior) to
+        // ensure compatibility with the fix. So then each user will have to set
+        // (again) his own language if he want use an other language than the default.
+        $sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_EnglishBritain';";
+
+        return $sqlUpd;
+    }
 }
