@@ -17,11 +17,10 @@
         <![endif]-->
         <script type="text/javascript">
             /* <![CDATA[ */
-            function action_delete(url, subject) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", domain))) {
+            function delete_order(url, subject) {
+                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", subject))) {
                     return false;
                 }
-
                 location = url;
             }
             /* ]]> */
