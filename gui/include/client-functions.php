@@ -686,7 +686,7 @@ function delete_sql_database($domain_id, $database_id)
 
     write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name));
 
-    $query = "DELETE FROM sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?;";
+    $query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?;";
     exec_query($query, array($domain_id, $database_id));
 
     update_reseller_c_props(get_reseller_id($database_id));
