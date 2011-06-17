@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `config` (
 -- Dumping data for table `config`
 --
 
-INSERT INTO `config` (`name`, `value`) VALUES
+INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PORT_IMSCP_DAEMON', '9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1'),
 ('PORT_FTP', '21;tcp;FTP;1;0;'),
 ('PORT_SSH', '22;tcp;SSH;1;0;'),
@@ -618,7 +618,7 @@ CREATE TABLE IF NOT EXISTS `straff_settings` (
 -- Dumping data for table `straff_settings`
 --
 
-INSERT INTO `straff_settings` (`straff_max`, `straff_warn`, `straff_email`) VALUES (0, 0, 0);
+INSERT IGNORE INTO `straff_settings` (`straff_max`, `straff_warn`, `straff_email`) VALUES (0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -781,4 +781,4 @@ CREATE TABLE IF NOT EXISTS `web_software_options` (
 -- Dumping data for table `web_software_options`
 --
 
-INSERT INTO `web_software_options` (`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`) VALUES (1, 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00');
+INSERT IGNORE INTO `web_software_options` (`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`) VALUES (1, 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00');
