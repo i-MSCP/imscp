@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
@@ -26,19 +26,21 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 check_login(__FILE__);
 
-/**
- * @var $cfg iMSCP_Config_Handler_File
- */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -108,7 +110,7 @@ $tpl->assign(
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 gen_logged_from($tpl);
 generatePageMessage($tpl);
 
@@ -123,7 +125,7 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		user_goto('users.php?psi=last');
 	}
 
-	if (check_user_data($tpl, $sql, $_SESSION['user_id'], $editid)) { // Save data to db
+	if (check_user_data($tpl, $_SESSION['user_id'], $editid)) { // Save data to db
 		$_SESSION['dedit'] = "_yes_";
 		user_goto('users.php?psi=last');
 	}
@@ -135,7 +137,7 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 	}
 
 	load_user_data($_SESSION['user_id'], $editid);
-	// $_SESSION['edit_ID'] = $editid;
+
 	$_SESSION['edit_id'] = $editid;
 	$tpl->assign('MESSAGE', "");
 }
@@ -145,13 +147,15 @@ gen_editdomain_page($tpl);
 // Begin function block
 
 /**
- * Load data from sql
+ * Load domain properties.
+ *
+ * @param  $user_id
+ * @param  $domain_id
+ * @return void
  */
 function load_user_data($user_id, $domain_id) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $software_supp;
-
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -164,7 +168,7 @@ function load_user_data($user_id, $domain_id) {
 			`domain_created_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id, $user_id));
+	$rs = exec_query($query, array($domain_id, $user_id));
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
@@ -174,26 +178,22 @@ function load_user_data($user_id, $domain_id) {
 
 	list(,$sub,,$als,,$mail,,$ftp,,$sql_db,,$sql_user,$traff,$disk) = generate_user_props($domain_id);
 	load_additional_data($user_id, $domain_id);
-} // End of load_user_data()
+}
 
 /**
- * Load additional data
+ * Load additional domain properties.
+ *
+ * @param  $user_id
+ * @param  $domain_id
+ * @return void
  */
 function load_additional_data($user_id, $domain_id) {
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup, $cgi_supp, $username, $allowbackup, $dns_supp,
 	$domain_expires_date, $software_supp;
 
-	/**
-	 * @var $cfg iMSCP_Config_Handler_File
-	 */
+    /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 
 	// Get domain data
 	$query = "
@@ -206,7 +206,7 @@ function load_additional_data($user_id, $domain_id) {
 			`domain_id` = ?
 	";
 
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	$data = $res->fetchRow();
 
 	$domain_name = $data['domain_name'];
@@ -241,7 +241,7 @@ function load_additional_data($user_id, $domain_id) {
 			`ip_id` = ?
 	";
 
-	$res = exec_query($sql, $query, $domain_ip_id);
+	$res = exec_query($query, $domain_ip_id);
 	$data = $res->fetchRow();
 
 	$domain_ip = $data['ip_number'] . '&nbsp;(' . $data['ip_domain'] . ')';
@@ -260,23 +260,24 @@ function load_additional_data($user_id, $domain_id) {
 			`created_by` = ?
 	";
 
-	$res = exec_query($sql, $query, array($domain_admin_id, $user_id));
+	$res = exec_query($query, array($domain_admin_id, $user_id));
 	$data = $res->fetchRow();
 
 	$username = $data['admin_name'];
 } // End of load_additional_data()
 
 /**
- * Show user data
+ * Generates edit page.
+ *
+ * @param  iMSCP_pTemplate $tpl
+ * @return void
  */
 function gen_editdomain_page($tpl) {
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup, $cgi_supp , $sub, $als, $mail, $ftp,
 		$sql_db,$sql_user, $traff, $disk, $username, $allowbackup, $dns_supp, $domain_expires_date, $software_supp;
 
-	/**
-	 * @var $cfg iMSCP_Config_Handler_File
-	 */
+    /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// Fill in the fields
@@ -377,12 +378,15 @@ function gen_editdomain_page($tpl) {
 			'VL_USER_NAME'			=> tohtml($username),
 		)
 	);
-} // End of gen_editdomain_page()
+}
 
 /**
- * Check input data
+ * @param  iMSCP_pTemplate $tpl
+ * @param  $reseller_id Reseller unique identifier
+ * @param  $user_id
+ * @return bool
  */
-function check_user_data($tpl, $sql, $reseller_id, $user_id) {
+function check_user_data($tpl, $reseller_id, $user_id) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql, $domain_php, $domain_cgi, $allowbackup,
 		$domain_dns, $domain_expires, $domain_new_expire, $domain_software_allowed;
@@ -398,7 +402,6 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 	$traff				= clean_input($_POST['dom_traffic']);
 	$disk				= clean_input($_POST['dom_disk']);
 
-	// $domain_ip = $_POST['domain_ip'];
 	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
 	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
 	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
@@ -461,8 +464,6 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 		$ed_error .= tr('The i-MSCP application installer needs PHP to enable it!');
 	}
 
-	// $user_props = generate_user_props($user_id);
-	// $reseller_props = generate_reseller_props($reseller_id);
 	list(
 		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
 		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $utraff_max, $udisk_max
@@ -474,7 +475,7 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 		$rdmn_current, $rdmn_max, $rsub_current, $rsub_max, $rals_current, $rals_max, $rmail_current, $rmail_max,
 		$rftp_current, $rftp_max, $rsql_db_current, $rsql_db_max, $rsql_user_current, $rsql_user_max, $rtraff_current,
 		$rtraff_max, $rdisk_current, $rdisk_max
-	) = get_reseller_default_props($sql, $reseller_id);
+	) = get_reseller_default_props($reseller_id);
 
 	list(,,,,,,$utraff_current, $udisk_current) = generate_user_traffic($user_id);
 
@@ -500,7 +501,7 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 			;
 		";
 
-		$rs = exec_query($sql, $query, $_SESSION['edit_id']);
+		$rs = exec_query($query, $_SESSION['edit_id']);
 		calculate_user_dvals($sql_user, $rs->fields['cnt'], $usql_user_max, $rsql_user_current, $rsql_user_max, $ed_error, tr('SQL User'));
 	}
 
@@ -518,9 +519,9 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 		// Set domains status to 'change' to update mod_cband's limit
 		if ($previous_utraff_max != $utraff_max) {
 			$query = "UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_id` = ?";
-			exec_query($sql, $query, $user_id);
+			exec_query($query, $user_id);
 			$query = "UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `domain_id` = ?";
-			exec_query($sql, $query, $user_id);
+			exec_query($query, $user_id);
 			send_request();
 		}
 
@@ -567,15 +568,15 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 
 		// Backup Settings
 		$query = "UPDATE `domain` SET `allowbackup` = ? WHERE `domain_id` = ?;";
-		$rs = exec_query($sql, $query, array($allowbackup, $user_id));
+		$rs = exec_query($query, array($allowbackup, $user_id));
 
 		// update the sql quotas, too
 		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?;";
-		$rs = exec_query($sql, $query, array($user_id));
+		$rs = exec_query($query, array($user_id));
 		$temp_dmn_name = $rs->fields['domain_name'];
 
 		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?;";
-		$rs = exec_query($sql, $query, $temp_dmn_name);
+		$rs = exec_query($query, $temp_dmn_name);
 
 		if ($rs->fields['cnt'] > 0) {
 			// we need to update it
@@ -586,7 +587,7 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 			}
 
 			$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?;";
-			$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
+			$rs = exec_query($query, array($dlim, $temp_dmn_name));
 		}
 
 		set_page_message(tr('Domain properties updated successfully!'));
@@ -598,8 +599,21 @@ function check_user_data($tpl, $sql, $reseller_id, $user_id) {
 
 		return false;
 	}
-} // End of check_user_data()
+}
 
+/**
+ * Must be documented.
+ *
+ * @throws iMSCP_Exception
+ * @param  $data
+ * @param  $u
+ * @param  $umax
+ * @param  $r
+ * @param  $rmax
+ * @param  $err
+ * @param  $obj
+ * @return void
+ */
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 
 	if ($rmax == -1 && $umax >= 0) {
@@ -729,13 +743,13 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		}
 	}
-} // End of calculate_user_dvals()
+}
 
 $tpl->parse('PAGE', 'page');
-$tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+
+$tpl->prnt();
 
 unsetMessages();
