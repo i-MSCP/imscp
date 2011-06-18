@@ -61,7 +61,7 @@ sub _init{
 	};
 
 	$self->{programs} = {
-		'php'	=> {version	=> 'php -v',	regexp	=> 'PHP ([\d.]+)',	minversion => '5.3.3'},
+		'php'	=> {version	=> 'php -v',	regexp	=> 'PHP ([\d.]+)',	minversion => '5.3.2'},
 		'perl'	=> {version	=> 'perl -v',	regexp	=> 'v([\d.]+)',	minversion => '5.10.1'}
 	};
 }
