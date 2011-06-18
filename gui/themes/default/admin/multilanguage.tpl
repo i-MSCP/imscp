@@ -93,9 +93,11 @@
                             <!-- EDP: lang_radio -->
                         </td>
                         <td>
+                            <!--
                             <a class="icon i_details" href="{URL_EXPORT}" id="url_export{INDEX}" target="_blank">{TR_EXPORT}</a>
                             <input id="gz_export{INDEX}" type="checkbox" onClick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" />
                             <span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
+                            -->
 
 							<!-- BDP: lang_delete_link -->
                             <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')">{TR_UNINSTALL}</a>
