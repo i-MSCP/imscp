@@ -92,25 +92,25 @@
 				</div>
 				<div class="paginator">
 					<!-- BDP: scroll_next_gray -->
-					<a class="icon i_next_gray" href="#" title="next">next</a>
+					<a class="icon i_next_gray" href="#">&nbsp;</a>
 					<!-- EDP: scroll_next_gray -->
+
 					<!-- BDP: scroll_next -->
-					<a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="next">next</a>
+					<a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
 					<!-- EDP: scroll_next -->
-					<!-- BDP: scroll_prev_gray -->
-					<a class="icon i_prev_gray" href="#" title="next">next</a>
-					<!-- EDP: scroll_prev_gray -->
+
 					<!-- BDP: scroll_prev -->
-					<a class="icon i_prev" href="ticket_system.php?psi={PREV_PSI}" title="previous">previous</a>
+					<a class="icon i_prev" href="ticket_system.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 					<!-- EDP: scroll_prev -->
+
+					<!-- BDP: scroll_prev_gray -->
+					<a class="icon i_prev_gray" href="#">&nbsp;</a>
+					<!-- EDP: scroll_prev_gray -->
 				</div>
-			<!-- EDP: tickets_list -->
-
+			    <!-- EDP: tickets_list -->
 		</div>
-
 		<div class="footer">
 			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
 		</div>
-
 	</body>
 </html>

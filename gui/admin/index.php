@@ -29,7 +29,7 @@
  *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
@@ -134,7 +134,7 @@ function getUpdateInfo($tpl) {
 
 /**
  * Generate server traffic
- * 
+ *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
@@ -193,7 +193,7 @@ function generateServerTraffic($tpl) {
 		array(
 			'TRAFFIC_WARNING' => $traff_msg,
 			'BAR_VALUE' => $bar_value,
-			'TRAFFIC_PERCENT' => $percent,
+			'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent
 		)
 	);
 }

@@ -431,7 +431,9 @@ $tpl->assign(array(
                   'TR_STATUS' => tr('Status'),
                   'TR_ACTION' => tr('Action'),
                   'TR_ADD_ALIAS' => tr('Add alias'),
-                  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
+                  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+                  'TR_PREVIOUS' => tr('Previous'),
+                  'TR_NEXT' => tr('Next')));
 
 $tpl->parse('PAGE', 'page');
 

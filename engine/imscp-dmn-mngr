@@ -376,7 +376,7 @@ sub _dmn_add_named_db_data {
 			'{DMN_NAME}' => $dmnName,
 			'{DMN_IP}' => $dmnIp,
 			'{BASE_SERVER_IP}' => $baseServerIp,
-			'{SECONDARY_DNS_IP}' => ($slaveDnsIp ne '') ? $slaveDnsIp : $dmnIp
+			'{SECONDARY_DNS_IP}' => ($slaveDnsIp ne '' && $slaveDnsIp ne 'no' ) ? $slaveDnsIp : $dmnIp
 		},
 		$tplDbEntries
 	);

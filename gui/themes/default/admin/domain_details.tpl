@@ -43,7 +43,7 @@
             <h2 class="general"><span>{TR_DOMAIN_DETAILS}</span></h2>
             <table>
                 <tr>
-                    <td>{TR_DOMAIN_NAME}</td>
+                    <td style="width: 300px;">{TR_DOMAIN_NAME}</td>
                     <td>{VL_DOMAIN_NAME}</td>
                 </tr>
                 <tr>
@@ -93,7 +93,7 @@
             </table>
             <table>
                 <tr>
-                    <th>{TR_FEATURE}</th>
+                    <th style="width: 300px;">{TR_FEATURE}</th>
                     <th>{TR_USED}</th>
                     <th>{TR_LIMIT}</th>
                 </tr>

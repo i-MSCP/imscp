@@ -17,21 +17,16 @@
         <![endif]-->
         <script type="text/javascript">
 		/*<![CDATA[*/
-		
 			function action_delete(url, language) {
-		
-				if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language)))
+				if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language))) {
 					return false;
+                }
 		
 				location = url;
 			}
 		
 			// Overrides exportation url to enable/disable gzip compression
-			//
-			// author Laurent Declercq <l.declercq@nuxwin.com>
-			// Since 1.0.6
 			function override_export_url(ob) {
-		
 				regexp = new RegExp('[a-z_]*([0-9]+)');
 				link = document.getElementById('url_export' + regexp.exec(ob.id)[1]);
 		
@@ -45,7 +40,6 @@
 		/*]]>*/
         </script>
     </head>
-
     <body>
     <div class="header">
         {MAIN_MENU}
@@ -54,7 +48,6 @@
             <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
         </div>
     </div>
-
     <div class="location">
         <div class="location-area icons-left">
             <h1 class="settings">{TR_GENERAL_SETTINGS}</h1>
@@ -68,11 +61,9 @@
             <li><a href="multilanguage.php">{TR_MULTILANGUAGE}</a></li>
         </ul>
     </div>
-
     <div class="left_menu">
         {MENU}
     </div>
-
     <div class="body">
         <h2 class="multilanguage"><span>{TR_MULTILANGUAGE}</span></h2>
 
@@ -98,12 +89,16 @@
                         <td>{LANGUAGE_REVISION}</td>
                         <td>
 							<!-- BDP: lang_radio -->
-                            	<input type="radio" name="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}" />
+                            <input type="radio" name="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
                             <!-- EDP: lang_radio -->
                         </td>
-                        <td><a class="icon i_details" href="{URL_EXPORT}" id="url_export{INDEX}" target="_blank">{TR_EXPORT}</a><input id="gz_export{INDEX}" type="checkbox" onClick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
-                            <!-- BDP: lang_delete_show -->
-                			<!-- EDP: lang_delete_show -->
+                        <td>
+                            <!--
+                            <a class="icon i_details" href="{URL_EXPORT}" id="url_export{INDEX}" target="_blank">{TR_EXPORT}</a>
+                            <input id="gz_export{INDEX}" type="checkbox" onClick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" />
+                            <span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
+                            -->
+
 							<!-- BDP: lang_delete_link -->
                             <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')">{TR_UNINSTALL}</a>
                             <!-- EDP: lang_delete_link -->
@@ -112,26 +107,22 @@
                     <!-- EDP: lang_row -->
                 </table>
             </fieldset>
-
             <div class="buttons">
-                <input name="Button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0],'change_language');" />
+                <input name="Button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0],'changeLanguage');" />
             </div>
-
             <fieldset>
                 <legend>{TR_INSTALL_NEW_LANGUAGE}</legend>
                 <table>
                     <tr>
                         <td style="width:300px;">{TR_LANGUAGE_FILE}</td>
-                        <td><input type="file" name="lang_file" /></td>
+                        <td><input type="file" name="languageFile" /></td>
                     </tr>
                 </table>
             </fieldset>
-
             <div class="buttons">
-                <input name="Button" type="button" value="{TR_INSTALL}" onclick="return sbmt(document.forms[0],'upload_language');" />
+                <input name="button" type="button" value="{TR_INSTALL}" onclick="return sbmt(document.forms[0],'uploadLanguage');" />
                 <input type="hidden" name="uaction" value="" />
             </div>
-
         </form>
     </div>
     <div class="footer">

@@ -502,7 +502,7 @@ sub _als_add_named_db_data {
 			'{DMN_NAME}' => $alsName,
 			'{DMN_IP}' => $alsIp,
 			'{BASE_SERVER_IP}' => $baseServerIp,
-			'{SECONDARY_DNS_IP}' => ($slaveDnsIp ne '') ? $slaveDnsIp : $alsIp
+			'{SECONDARY_DNS_IP}' => ($slaveDnsIp ne '' && $slaveDnsIp ne 'no') ? $slaveDnsIp : $alsIp
 		},
 		$tplDbEntries
 	);

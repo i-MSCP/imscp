@@ -143,15 +143,15 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 		// An Update was been made in the database ?
 		if($updt_count > 0) {
-			set_page_message(tr('%d configuration parameter(s) was updated!', $updt_count), 'success');
+			set_page_message(tr('%d configuration parameter(s) have/has been updated.', $updt_count), 'success');
 		}
 
 		if($new_count > 0){
-			set_page_message(tr('%d configuration parameter(s) was created!', $new_count), 'success');
+			set_page_message(tr('%d configuration parameter(s) have/has been created.', $new_count), 'success');
 		}
 
 		if($new_count == 0 && $updt_count == 0){
-			set_page_message(tr("Nothing's been changed!"), 'warning');
+			set_page_message(tr("Nothing's been changed."), 'info');
 		}
 	}
 }

@@ -1170,6 +1170,10 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 function get_logo($user_id)
 {
+
+    # See #90 Defect - Custom logo feature is broken (since a lot)
+    return 0;
+
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 

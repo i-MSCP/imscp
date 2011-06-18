@@ -253,7 +253,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
             <script type="text/javascript">
                 if (typeof jQuery == "undefined") {
                     var scriptObj = document.createElement("script");
-                    scriptObj.src = "http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js";
+                    scriptObj.src = "../themes/default/js/jquery.js";
                     scriptObj.type = "text/javascript";
                     var head=document.getElementsByTagName("head")[0];
                     head.insertBefore(scriptObj,head.firstChild);

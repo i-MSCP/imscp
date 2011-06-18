@@ -16,18 +16,19 @@
         </script>
         <![endif]-->
         <script type="text/javascript">
-            /* <![CDATA[ */
-            function delete_account(url, name) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE}", name)))
-                    return false;
-                location = url;
-            }
-            /* ]]> */
+            /*<![CDATA[*/
+                function delete_account(url, name) {
+                    if (!confirm(sprintf("{TR_MESSAGE_DELETE}", name))) {
+                        return false;
+                    }
+                    location = url;
+                }
+            /*]]>*/
         </script>
     </head>
     <body>
         <div class="header">
-            {MAIN_MENU}
+        {MAIN_MENU}
             <div class="logo">
                 <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
             </div>
@@ -43,7 +44,8 @@
                     <a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
                 </li>
                 <!-- EDP: logged_from -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+                </li>
             </ul>
             <ul class="path">
                 <li><a href="users.php">{TR_MENU_MANAGE_USERS}</a></li>
@@ -51,15 +53,13 @@
             </ul>
         </div>
         <div class="left_menu">
-            {MENU}
+        {MENU}
         </div>
         <div class="body">
             <h2 class="users"><span>{TR_MANAGE_ALIAS}</span></h2>
-
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
             <!-- BDP: search_form -->
             <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
                 <input name="search_for" type="text" value="{SEARCH_FOR}" />
@@ -71,7 +71,6 @@
                 <input type="hidden" name="uaction" value="go_search" />
             </form>
             <!-- EDP: search_form -->
-
             <!-- BDP: table_list -->
             <table>
                 <thead>
@@ -101,27 +100,26 @@
                 </tbody>
             </table>
             <!-- EDP: table_list -->
-
             <div class="buttons">
                 <input name="Submit" type="submit" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="{TR_ADD_ALIAS}" />
             </div>
-
             <div class="paginator">
                 <!-- BDP: scroll_next_gray -->
                 <a class="icon i_next_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_next_gray -->
+
                 <!-- BDP: scroll_next -->
-                <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
+                <a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
                 <!-- EDP: scroll_next -->
+
                 <!-- BDP: scroll_prev -->
-                <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="previous">previous</a>
+                <a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
                 <!-- EDP: scroll_prev -->
+
                 <!-- BDP: scroll_prev_gray -->
                 <a class="icon i_prev_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_prev_gray -->
             </div>
-
         </div>
-
     </body>
 </html>

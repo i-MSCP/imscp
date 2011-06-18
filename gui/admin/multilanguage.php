@@ -1,14 +1,14 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,296 +26,230 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Include needed libraries
-require '../include/imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
 
 /*******************************************************************************
- * View functions
+ * Script functions
  */
 
 /**
- * Prepares page data to show available languages
+ * Generate page
  *
- * @param  iMSCP_pTemplate $tpl An iMSCP_pTemplate instance
+ * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function showLang($tpl) {
+function generatePage($tpl)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
 
-	/**
-	 * @var $cfg iMSCP_Config_Handler_File
-	 */
-	$cfg = iMSCP_Registry::get('config');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
+    list($userDefinedLanguage) = get_user_gui_props($_SESSION['user_id']);
+    $userDefinedLanguage = explode('_', $userDefinedLanguage);
 
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
+    $index = 0;
 
-	$tables = $db->metaTables();
+    foreach($db->metaTables() as $tableName) {
+        // Is language database table ?
+        if (strpos($tableName, 'lang_') === false) {
+            continue;
+        }
 
-	$nlang = count($tables);
+        $stmt = array();
 
-	$row = 1;
+        foreach (array('imscp_language', 'imscp_languageSetlocaleValue',
+            'imscp_languageRevision') as $msgstr
+        ) {
+            $stmt[] = exec_query(
+                "SELECT `msgstr` FROM `$tableName` WHERE `msgid` = '$msgstr'");
+        }
 
-	list($user_def_lang) = get_user_gui_props($_SESSION['user_id']);
-
-	$usr_def_lng = explode('_', $user_def_lang);
-
-	for ($i = 0; $i < $nlang; $i++) {
-		$data = $tables[$i];
-		$pos = strpos($data, 'lang_');
-
-		if ($pos === false) {
-			// not found... ... next :)
-			continue;
-		}
-
-		$dat = explode('_', $data);
-
-		/**
-		 * @var $stmt iMSCP_Database_ResultSet
-		 */
-		$stmt = array();
-
-		foreach(array(
-			'imscp_language', 'imscp_languageSetlocaleValue',
-			'imscp_languageRevision') as $msgstr) {
-
-			$stmt[] = exec_query(
-				"SELECT `msgstr` FROM `{$tables[$i]}` WHERE `msgid` = '$msgstr'
-			");
-		}
-
-		if ($stmt[0]->recordCount() == 0 || $stmt[1]->recordCount() == 0) {
-			$language_name = tr('Unknown');
-		} else {
-			$tr_langcode = tr($stmt[1]->fields['msgstr']);
-
-			if ($stmt[1]->fields['msgstr'] == $tr_langcode) {
-				// no translation found
-				$language_name = $stmt[0]->fields['msgstr'];
-			} else {
-				$language_name = $tr_langcode;
-			}
-		}
-
-		if ($stmt[2]->recordCount() !== 0 && $stmt[2]->fields['msgstr'] != '' &&
-			class_exists('DateTime')) {
-
-			$tmp_lang = new DateTime($stmt[2]->fields['msgstr']);
-			$language_revision = $tmp_lang->format('Y-m-d H:i');
-
-			unset($tmp_lang);
-		} else {
-			$language_revision = tr('Unknown');
-		}
-
-		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content4');
-
-		if ($cfg->USER_INITIAL_LANG == "lang_{$dat[1]}" ||
-			$usr_def_lng[1] == $dat[1]) {
-
-			$tpl->assign(
-				array(
-					'TR_UNINSTALL' => tr('N/A'),
-					'LANG_DELETE_LINK' => '',
-					'LANGUAGE' => tohtml($language_name),
-					'LANGUAGE_REVISION' => $language_revision,
-					'LANG_VALUE_CHECKED' => $cfg->HTML_CHECKED,
-					'LANG_VALUE' => $tr_langcode
-				)
-			);
-
-			$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
-		} else {
-			$tpl->assign(
-				array(
-					'TR_UNINSTALL' => tr('Uninstall'),
-					'URL_DELETE' =>
-						"language_delete.php?delete_lang=lang_{$dat[1]}",
-					'LANG_DELETE_SHOW' => '',
-					'LANGUAGE' => tohtml($language_name),
-					'LANGUAGE_REVISION' => $language_revision,
-					'LANG_VALUE_CHECKED' => '',
-					'LANG_VALUE' => $tr_langcode
-				)
-			);
-
-			$tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
-		}
-
-		// Retrieving number of translated messages
-		$query = "SELECT COUNT(`msgid`) AS `cnt` FROM `{$tables[$i]}`;";
-
-		$stmt = exec_query($query);
-
-		$tpl->assign(
-			array(
-				'MESSAGES' =>
-					tr('%d messages translated', $stmt->fields['cnt'] - 5),
-				'URL_EXPORT' =>
-					"multilanguage_export.php?export_lang=lang_{$dat[1]}",
-				'INDEX' => $i,
-				'TR_GZIPPED' => tr('Gzipped')
-			)
-		);
-
-		$tpl->parse('LANG_ROW', '.lang_row');
-	}
-} // end showLang()
-
-/*******************************************************************************
- * Importation functions
- */
-
-/**
- * Import all translation string from a language file
- *
- */
-function importLanguageFile() {
-
-	// Add new language
-	$file_type = $_FILES['lang_file']['type'];
-	$file = $_FILES['lang_file']['tmp_name'];
-
-	if (empty($_FILES['lang_file']['name']) || !is_readable($file)) {
-		set_page_message(tr('Upload file error!'), 'error');
-		return;
-	}
-
-	if ($file_type != 'text/plain' && $file_type != 'application/octet-stream'
-		&& $file_type != 'text/x-gettext-translation') {
-
-		set_page_message(tr
-                ('You can upload only text files!'),
-                'error'
-        );
-		return;
-	} else {
-		if ($file_type == 'text/x-gettext-translation') {
-			$ab = _importGettextFile($file, $_FILES['lang_file']['name']);
-		} else {
-			$ab = _importTextFile($file);
-		}
-
-		if (is_int($ab)) {
-			if ($ab == 1) {
-				set_page_message(tr('Could not read language file!'), 'error');
-				return;
-			} elseif ($ab == 2) {
-				set_page_message(tr('Uploaded file is not a valid language file!'), 'error');
-				return;
-			}
-		}
-            //funk this Language Error! Language: upload bug removed, not copied by Benedict.
-        if (empty($ab['imscp_languageSetlocaleValue']) ||
-                 empty($ab['imscp_table'])
-                || empty($ab['imscp_language'])
-                || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',$ab['imscp_languageSetlocaleValue'])
-                || !preg_match('/^[a-z0-9()]+$/Di', $ab['imscp_table']))
-                        {
-                        set_page_message(
-                                tr('Uploaded file does not contain language information!'),
-                                'error'
-                                );
-                                return;
-                        }
+         // User better language name if available
+         if ($stmt[0]->recordCount() != 0) {
+            $languageName = $stmt[0]->fields['msgstr'];
+         } else {
+             $languageName = substr($tableName, strrpos($tableName, '_') + 1);
+         }
 
 
-        /** @var $sql iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
+        if ($stmt[2]->recordCount() !== 0 && $stmt[2]->fields['msgstr'] != '' &&
+            class_exists('DateTime')
+        ) {
+            $datetime = new DateTime($stmt[2]->fields['msgstr']);
+            $languageRevision = $datetime->format('Y-m-d H:i');
+        } else {
+            $languageRevision = tr('Unknown');
+        }
 
-		$lang_table = 'lang_' . $ab['imscp_table'];
-		$lang_update = false;
 
-		for ($i = 0, $tables = $db->metaTables(), $nlang = count($tables) ;
-			$i < $nlang; $i++) {
+        if ($cfg->USER_INITIAL_LANG == $tableName || $userDefinedLanguage == $tableName) {
+            $tpl->assign(array('TR_UNINSTALL' => tr('N/A'),
+                              'LANG_DELETE_LINK' => '',
+                              'LANGUAGE' => tohtml($languageName),
+                              'LANGUAGE_REVISION' => $languageRevision,
+                              'LANG_VALUE_CHECKED' => $cfg->HTML_CHECKED,
+                              'LANG_VALUE' => $tableName));
 
-			if ($lang_table == $tables[$i]) {
-				$lang_update = true;
-				break;
-			}
-		}
+            $tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
+        } else {
+            $tpl->assign(array('TR_UNINSTALL' => tr('Uninstall'),
+                              'URL_DELETE' => "language_delete.php?delete_lang=$tableName",
+                              'LANG_DELETE_SHOW' => '',
+                              'LANGUAGE' => tohtml($languageName),
+                              'LANGUAGE_REVISION' => $languageRevision,
+                              'LANG_VALUE_CHECKED' => '',
+                              'LANG_VALUE' => $tableName));
 
-		if ($lang_update) {
-			execute_query("DROP TABLE IF EXISTS `$lang_table`;");
-		}
+            $tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
+        }
 
-		$query = "
-			CREATE TABLE `$lang_table` (
-				`msgid`     text collate utf8_unicode_ci,
-				`msgstr`    text collate utf8_unicode_ci,
-				 KEY        `msgid` (msgid(25)
-				 )
-			) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-		";
+        // Retrieving number of translated messages
+        $query = "SELECT COUNT(`msgid`) AS `cnt` FROM `$tableName`;";
+        $stmt = exec_query($query);
 
-		execute_query($query);
+        $tpl->assign(array('MESSAGES' => tr('%d messages translated', $stmt->fields['cnt'] - 5),
+                          'URL_EXPORT' => "multilanguage_export.php?export_lang=$tableName",
+                          'INDEX' => $index,
+                          'TR_GZIPPED' => tr('Gzipped')));
 
-		foreach ($ab as $msgid => $msgstr) {
-			$query = "
-				INSERT INTO `$lang_table` (
-					`msgid`, `msgstr`
-				) VALUES (?, ?);
-			";
-
-			exec_query($query, str_replace("\\n", "\n", array($msgid, $msgstr)));
-		}
-
-		if (!$lang_update) {
-			write_log(
-				tr(
-					'%s added new language: %s', $_SESSION['user_logged'],
-					$ab['imscp_language']
-				)
-			);
-
-			set_page_message(tr('New language installed!'), 'success');
-		} else {
-			write_log(
-				tr(
-					'%s updated language: %s', $_SESSION['user_logged'],
-					$ab['imscp_language']
-				)
-			);
-
-			set_page_message(tr('Language was updated!'), 'success');
-		}
-	}
+        $tpl->parse('LANG_ROW', '.lang_row');
+    }
 }
 
 /**
- * Import traditional i-MSCP  translation file format
+ * Imports the translation strings from a language file.
+ *
+ * @return void
+ */
+function importLanguageFile()
+{
+    $fileType = $_FILES['languageFile']['type'];
+    $filePath = $_FILES['languageFile']['tmp_name'];
+
+    if (empty($_FILES['languageFile']['name']) || !is_readable($filePath)) {
+        set_page_message(tr('Upload file error!'), 'error');
+        return;
+    } else {
+        $fileName = $_FILES['languageFile']['name'];
+    }
+
+    if ($fileType != 'text/plain' && $fileType != 'application/octet-stream' &&
+       $fileType != 'text/x-gettext-translation'
+    ) {
+        set_page_message(tr('You can upload only portable object files.'), 'error');
+        return;
+    } else {
+        if ($fileType == 'text/x-gettext-translation') {
+            $parseResult = _parseGettextFile($filePath, $fileName);
+        } else {
+            set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
+            return;
+            // Deprecated since r4592
+            //$ab = _importTextFile($filePath);
+        }
+
+        if (is_int($parseResult)) {
+            if ($parseResult == 1) {
+                set_page_message(tr('Could not read language file.'), 'error');
+                return;
+            } elseif ($parseResult == 2) {
+                set_page_message(tr('Uploaded file is not a valid language file.'), 'error');
+                return;
+            }
+        }
+
+        if (empty($parseResult['imscp_languageSetlocaleValue']) ||
+            empty($parseResult['imscp_table']) ||
+            empty($parseResult['imscp_language']) ||
+            !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $parseResult['imscp_languageSetlocaleValue'])
+            || !preg_match('/^[a-z0-9()]+$/Di', $parseResult['imscp_table'])
+        ) {
+            set_page_message(tr('The file does not contain all the necessary information.'), 'error');
+            return;
+        }
+
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+
+        $languageTable = 'lang_' . $parseResult['imscp_table'];
+        $isUpdate = false;
+
+        if(in_array($languageTable, $db->metaTables())) {
+            execute_query("DROP TABLE IF EXISTS `$languageTable`;");
+            $isUpdate = true;
+        }
+
+        $query = "
+			CREATE TABLE
+			    `$languageTable` (
+				    `msgid` text collate utf8_unicode_ci,
+				    `msgstr` text collate utf8_unicode_ci,
+				    KEY `msgid` (msgid(25))
+			    ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+			;
+		";
+        execute_query($query);
+
+        $parameters = array();
+
+        foreach($parseResult as $msgid => $msgstr){
+            $parameters[] = $msgid;
+            $parameters[] = $msgstr;
+        }
+
+        $queryPart = str_repeat('(?,?), ', count($parseResult));
+        $query = "INSERT INTO `$languageTable`  (`msgid`, `msgstr`) VALUES " .
+            substr_replace($queryPart, '', strrpos($queryPart, ','));
+
+        exec_query($query, $parameters);
+
+        if (!$isUpdate) {
+            write_log(tr('%s added new language: %s', $_SESSION['user_logged'],
+                          $parseResult['imscp_language']));
+
+            set_page_message(tr('Language was successfully installed.'), 'success');
+        } else {
+            write_log(tr('%s updated language: %s', $_SESSION['user_logged'],
+                         $parseResult['imscp_language']));
+
+            set_page_message(tr('Language was successfully updated.'), 'success');
+        }
+    }
+}
+
+/**
+ * Imports all translation string from a text file
  *
  * @param string $file translation file
  * @return array|int
+ * @deprecated since r4592
  */
-function _importTextFile($file) {
+function _importTextFile($file)
+{
+    /*
+    if (!($fp = fopen($file, 'r'))) return 1;
 
-    if(!($fp= fopen($file, 'r'))) return 1;
-
-    $ab = array(
-        'imscp_languageRevision'        => '',
-        'imscp_languageSetlocaleValue'  => '',
-        'imscp_table'                   => '',
-        'imscp_language'                => ''
-    );
+    $ab = array('imscp_languageRevision' => '',
+                'imscp_languageSetlocaleValue' => '',
+                'imscp_table' => '',
+                'imscp_language' => '');
 
     $errors = 0;
 
     while (!feof($fp) && $errors <= 3) {
         $t = fgets($fp);
 
-        $msgid = '';
-        $msgstr = '';
+        //$msgid = '';
+        //$msgstr = '';
 
         @list($msgid, $msgstr) = $t = explode(' = ', $t);
 
@@ -333,113 +267,106 @@ function _importTextFile($file) {
     }
 
     return $ab;
+    */
 }
 
 /**
- * Import all translation string from a PO file
+ * Imports all translation string from a portable object (po) file.
  *
- * @param  string $file
- * @param  string $filename
- * @return mixed Array that contain all translation string or int on failure
+ * @param  string $file Absolute path to the uploaded file
+ * @param  string $filename Filename
+ * @return mixed array An array that contains all translation string or an integer on
+ *                     failure
  */
-function _importGettextFile($file, $filename) {
-
+function _parseGettextFile($file, $filename)
+{
     $content = file_get_contents($file);
 
-    if (empty($content)) return 1;
+    if (empty($content)) {
+        return 1;
+    }
 
-    $ab = array(
-        'imscp_languageRevision'        => '',
-        'imscp_languageSetlocaleValue'  => '',
-        'imscp_table'                   => '',
-        'imscp_language'                => ''
-    );
+    $parseResult = array();
 
-    // Parse all messages
-    $n = preg_match_all(
+    // Parses all messages
+    $countMessages = preg_match_all(
         '/(msgid\s+("([^"]|\\\\")*?"\s*)+)\s+(msgstr\s+("([^"]|\\\\")*?"\s*)+)/',
-        $content, $matches
+        $content, $messagesStack
     );
 
-    for ($i = 0; $i < $n; $i++) {
-        $id = preg_replace('/\s*msgid\s*"(.*)"\s*/s', '\\1', $matches[1][$i]);
-        $str = preg_replace('/\s*msgstr\s*"(.*)"\s*/s', '\\1', $matches[4][$i]);
+    // Normalize all messages id and messages strings
+    for ($i = 0; $i < $countMessages; $i++) {
+        $msgid = preg_replace('/\s*msgid\s*"(.*)"\s*/s', '\\1', $messagesStack[1][$i]);
+        $msgstr = preg_replace('/\s*msgstr\s*"(.*)"\s*/s', '\\1', $messagesStack[4][$i]);
 
-        if (!empty($str)) {
-            $ab[_decodePoFileString($id)] = _decodePoFileString($str);
+        if (!empty($msgstr)) {
+            $parseResult[_decodePoFileString((!empty($msgid) ? $msgid : 'headers'))] =
+                _decodePoFileString($msgstr);
         }
     }
 
-    // set language
-    if (isset($ab['_: Localised language'])) {
-        $ab['imscp_language'] = $ab['_: Localised language'];
-        unset($ab['_: Localised language']);
+    // Sets the language
+    if (isset($parseResult['_: Localised language'])) {
+        $parseResult['imscp_language'] = $parseResult['_: Localised language'];
+        unset($parseResult['_: Localised language']);
     } else {
         return 2;
     }
 
-    // Parse some relevant header information
-	if (isset($ab[''])) {
-		$ameta = array();
+    // Parses some relevant header information
+    if (isset($parseResult['headers'])) {
+        $headers = array();
 
-		$header = explode("\n", $ab['']);
-
-		foreach ($header as $hline) {
-            $n = strpos($hline, ':');
-            if ($n !== false) {
-                $key = substr($hline, 0, $n);
-                $ameta[$key] = trim(substr($hline, $n+1));
+        foreach (explode("\n", $parseResult['headers']) as $header) {
+            if (($np = strpos($header, ':')) !== false) {
+                $key = substr($header, 0, $np);
+                $headers[$key] = trim(substr($header, $np + 1));
             }
         }
 
-		# Retrieving language translation team
-        if (isset($ameta['Language-Team'])) {
-            $s = $ameta['Language-Team'];
-            $n = strpos($s, '<');
+        // Retrieves the name of language team
+        if (isset($headers['Language-Team'])) {
+            $languageTeam = $headers['Language-Team'];
+            if (($np = strpos($languageTeam, '<')) !== false) {
 
-            if ($n !== false) {
-                $ab['imscp_table'] = str_replace(' ', '', mb_substr($s, 0, $n));
+                // Normalizes the name of the language team and uses it as database
+                // table name
+                $parseResult['imscp_table'] = str_replace(
+                    array(' ', '(', ')'), '', mb_substr($languageTeam, 0, $np));
             }
         }
 
-        // Getting i-MSCP_language Revision by PO-Revision-Date
-        if (isset($ameta['PO-Revision-Date'])) {
+        // Retrieves the i-MSCP_language Revision from the PO-Revision-Date header
+        if (isset($headers['PO-Revision-Date'])) {
             // trim timezone
-            $n = strpos($ameta['PO-Revision-Date'], '+');
-            if ($n !== false) {
-                $ameta['PO-Revision-Date'] = substr($ameta['PO-Revision-Date'], 0, $n);
+            if (($np = strpos($headers['PO-Revision-Date'], '+')) !== false) {
+                $headers['PO-Revision-Date'] = substr($headers['PO-Revision-Date'], 0, $np);
             }
 
             // currently some problems with hour/minute parsing?!
-            $time = strptime($ameta['PO-Revision-Date'], '%Y-%m-%d %H:%I');
+            $time = strptime($headers['PO-Revision-Date'], '%Y-%m-%d %H:%I');
 
-            $ab['imscp_languageRevision'] = sprintf(
-                '%04d%02d%02d%02d%02d%02d',
-                $time['tm_year']+1900,
-                $time['tm_mon']+1,
-                $time['tm_mday'],
-                $time['tm_hour'],
-                $time['tm_min'],
-                $time['tm_sec']
-            );
+            $parseResult['imscp_languageRevision'] = sprintf(
+                '%04d%02d%02d%02d%02d%02d', $time['tm_year'] + 1900, $time['tm_mon'] + 1,
+                $time['tm_mday'], $time['tm_hour'], $time['tm_min'], $time['tm_sec']);
         } else {
-            $ab['imscp_languageRevision'] = strftime('%Y%m%d%H%I%S');
+            $parseResult['imscp_languageRevision'] = strftime('%Y%m%d%H%I%S');
         }
 
-        // get locale from file name
-        $ab['imscp_languageSetlocaleValue'] = basename($filename, '.po');
+        // Retrieves the locale from language filename
+        $parseResult['imscp_languageSetlocaleValue'] = basename($filename, '.po');
 
-        unset($ab['']);
+        unset($parseResult['headers']);
     } else {
         return 2;
     }
 
     // set default encoding to UTF-8 if not present
-    if (!isset($ab['encoding'])) {
-        $ab['encoding'] = 'UTF-8';
+    if (!isset($parseResult['encoding'])) {
+        $parseResult['encoding'] = 'UTF-8';
     }
 
-    return $ab;
+    return $parseResult;
 }
 
 
@@ -449,24 +376,78 @@ function _importGettextFile($file, $filename) {
  * @param string $s
  * @return string Normalized string
  */
-function _decodePoFileString($s) {
+function _decodePoFileString($s)
+{
     return str_replace(
-        array('\\n', '\\r', '\\t', '\"'), array("\n", "\r", "\t", '"'),
-	    preg_replace('/"\s+"/', '', $s)
-    );
+        array('\\n', '\\r', '\\t', '\"'),
+        array("\n", "\r", "\t", '"'),
+        preg_replace('/"\s+"/', '', $s));
+}
+
+/**
+ * Change panel default language.
+ *
+ * @return void
+ */
+function changeDefaultLanguage()
+{
+    if (isset($_POST['default_language'])) {
+        /** @var $cfg iMSCP_Config_Handler_File */
+        $cfg = iMSCP_Registry::get('config');
+
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $defaultLanguage = clean_input($_POST['default_language']);
+
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $dbConfig = iMSCP_Registry::get('dbConfig');
+        $dbConfig->USER_INITIAL_LANG = $defaultLanguage;
+        $cfg->USER_INITIAL_LANG = $defaultLanguage;
+
+        // Ensures language change on next load for current user in case he has not yet
+        // his gui properties explicitly set (eg. for the first admin user when i-MSCP
+        // was just installed
+
+        $stmt = exec_query(
+            "SELECT
+                lang
+            FROM
+                `user_gui_props`
+            WHERE
+                `user_id` = {$_SESSION['user_id']};
+            ;
+        ");
+
+        if ($stmt->fields['lang'] == null) {
+            unset($_SESSION['user_def_lang']);
+        }
+    } else {
+        return;
+    }
 }
 
 /*******************************************************************************
  * Main script
  */
 
+// Include needed libraries
+require '../include/imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
 // Check for login
 check_login(__FILE__);
 
-/**
- * @var $cfg iMSCP_Config_Handler_File
- */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
+
+// Dispatches the request
+if (isset($_POST['uaction'])) {
+    if($_POST['uaction'] == 'uploadLanguage') {
+        importLanguageFile();
+    } elseif($_POST['uaction'] == 'changeLanguage') {
+        changeDefaultLanguage();
+    }
+}
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');
@@ -477,48 +458,30 @@ $tpl->define_dynamic('lang_delete_show', 'lang_row');
 $tpl->define_dynamic('lang_radio', 'lang_row');
 $tpl->define_dynamic('lang_def', 'lang_row');
 
-$tpl->assign(
-	array(
-		'TR_ADMIN_I18N_PAGE_TITLE'  => tr('i-MSCP - Admin/Internationalisation'),
-		'THEME_COLOR_PATH'          => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'             => tr('encoding'),
-		'ISP_LOGO'                  => get_logo($_SESSION['user_id'])
-	)
-);
-
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'upload_language') {
-	importLanguageFile();
-}
-
-showLang($tpl);
-
-/**
- * static page messages
- */
+$tpl->assign(array(
+                  'TR_ADMIN_I18N_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
+                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                  'THEME_CHARSET' => tr('encoding'),
+                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'TR_MULTILANGUAGE' => tr('Internationalisation'),
+                  'TR_INSTALLED_LANGUAGES' => tr('Installed languages'),
+                  'TR_LANGUAGE' => tr('Language'),
+                  'TR_MESSAGES' => tr('Messages'),
+                  'TR_LANG_REV' => tr('Date'),
+                  'TR_DEFAULT' => tr('Panel default language'),
+                  'TR_ACTION' => tr('Action'),
+                  'TR_SAVE' => tr('Save'),
+                  'TR_INSTALL_NEW_LANGUAGE' => tr('Install new language'),
+                  'TR_LANGUAGE_FILE' => tr('Language file'),
+                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'TR_INSTALL' => tr('Install'),
+                  'TR_EXPORT' => tr('Export'),
+                  'TR_MESSAGE_DELETE' =>
+                  tr('Are you sure you want to delete %s?', true, '%s')));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
-
-$tpl->assign(
-	array(
-		'TR_MULTILANGUAGE'          => tr('Internationalisation'),
-		'TR_INSTALLED_LANGUAGES'    => tr('Installed languages'),
-		'TR_LANGUAGE'               => tr('Language'),
-		'TR_MESSAGES'               => tr('Messages'),
-		'TR_LANG_REV'               => tr('Date'),
-		'TR_DEFAULT'                => tr('Panel default language'),
-		'TR_ACTION'                 => tr('Action'),
-		'TR_SAVE'                   => tr('Save'),
-		'TR_INSTALL_NEW_LANGUAGE'   => tr('Install new language'),
-		'TR_LANGUAGE_FILE'          => tr('Language file'),
-		'ISP_LOGO'                  => get_logo($_SESSION['user_id']),
-		'TR_INSTALL'                => tr('Install'),
-		'TR_EXPORT'                 => tr('Export'),
-		'TR_MESSAGE_DELETE'         =>
-			tr('Are you sure you want to delete %s?', true, '%s'),
-	)
-);
-
+generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

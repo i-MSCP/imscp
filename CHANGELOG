@@ -31,6 +31,7 @@ Features / Enhancements:
             - Dropped password encryption for Ftp, Mail accounts...
             - New theme (XHTML strict) - Thanks to Henrik Schytte and Marc Pujol
             - Rewritten Update component
+            - Removed support for importation of languages from text files
         Tools:
             - Updated PhpMyAdmin to version 3.4.2
         Vendor:
@@ -77,5 +78,17 @@ Tickets:
     - Fixed #66: Migration script
     - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
     - Fixed #73: Problem with Mail
+    - Fixed #74: Task - Template not yet updated
     - Fixed #75: Bug - Can't change Admin password
     - Fixed #76: Bug - Typo in SQL query
+    - Fixed #78: Bug - Typo error in HTML
+    - Fixed #80: Bug - Wrong referenced links
+    - Fixed #81: Bug - reseller can not edit user from view details
+    - Fixed #82: Cosmetics - client/webtools.php lookout lack picture
+    - Fixed #83: Bug - client/ftp_choose_dir.php result in blank page
+    - Fixed #84: Bug - Unable to edit custom errors pages (client)
+    - Fixed #85: Defect - http://app-pkg.i-mscp.net is not reachable
+    - Fixed #86: Bug - Administrator can not change default language for panel
+    - Fixed #87: Bug - Can not delete database
+    - Fixed #88: Bug - Reseller can not delete orders
+    - Fixed #89: Cosmetics - Traffic display in client/index.php

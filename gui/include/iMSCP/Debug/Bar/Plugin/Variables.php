@@ -98,7 +98,7 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
         $vars .= '<h4>$_COOKIE:</h4>'
                  . '<div id="iMSCPdebug_cookie">' . $this->_humanize($_COOKIE) . '</div>';
 
-        $vars .= '<h4>$_FILE:</h4>'
+        $vars .= '<h4>$_FILES:</h4>'
                  . '<div id="iMSCPdebug_file">' . $this->_humanize($_FILES) . '</div>';
 
         $vars .= '<h4>$_SESSION:</h4>'

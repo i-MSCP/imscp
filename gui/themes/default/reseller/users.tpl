@@ -18,14 +18,18 @@
         <script type="text/javascript">
             /* <![CDATA[ */
             function action_status(dom_id, dmn_name) {
-                if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
+                if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name))) {
                     return false;
+                }
+
                 location = ("domain_status_change.php?domain_id=" + dom_id);
             }
 
             function action_delete(url, dmn_name) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name)))
+                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name))) {
                     return false;
+                }
+
                 location = url;
             }
             /* ]]> */
@@ -61,9 +65,11 @@
         </div>
         <div class="body">
             <h2 class="users"><span>{TR_MANAGE_USERS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: users_search -->
             <form action="users.php" method="post" name="search_user" id="search_user">
                 <a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
@@ -110,19 +116,15 @@
                         <td>{DISK_USAGE}</td>
                         <td>
                             <a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
-                            <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}">{CHANGE_INTERFACE}</a>
                             <!-- BDP: edit_option -->
-                            <a class="icon i_edit" href="user_edit.php?edit_id={USER_ID}">{TR_EDIT_USER}</a>
                             <a class="icon i_user" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
-                            <a class="icon i_stats" href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}">{TR_STAT}</a>
+                            <a class="icon i_edit" href="user_edit.php?edit_id={USER_ID}">{TR_EDIT_USER}</a>
                             <!-- EDP: edit_option -->
 
-                            <!-- BDP: usr_delete_show -->
-                            <!-- EDP: usr_delete_show -->
-                            
-                            <!-- BDP: usr_delete_link -->
+                            <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}">{CHANGE_INTERFACE}</a>
+
+                            <a class="icon i_stats" href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}">{TR_STAT}</a>
                             <a class="icon i_delete" href="domain_delete.php?domain_id={DOMAIN_ID}">{ACTION}</a>
-                            <!-- EDP: usr_delete_link -->
                         </td>
                     </tr>
                     <!-- BDP: user_details -->
@@ -140,12 +142,15 @@
                 <!-- BDP: scroll_next_gray -->
                 <a class="icon i_next_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_next_gray -->
+
                 <!-- BDP: scroll_next -->
-                <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
+                <a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
                 <!-- EDP: scroll_next -->
+
                 <!-- BDP: scroll_prev -->
-                <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="previous">previous</a>
+                <a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
                 <!-- EDP: scroll_prev -->
+
                 <!-- BDP: scroll_prev_gray -->
                 <a class="icon i_prev_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_prev_gray -->
