@@ -8,6 +8,10 @@ Distributions:
 
 Features / Enhancements:
 
+Other:
+    Gui:
+        - Removed support for PHP version < 5.3.3
+
 Tickets:
 
 -------------------------------------------------------------------------------------
