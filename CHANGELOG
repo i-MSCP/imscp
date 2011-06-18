@@ -78,7 +78,7 @@ Tickets:
     - Fixed #66: Migration script
     - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
     - Fixed #73: Problem with Mail
-    - Fixed #74:  Template not yet updated
+    - Fixed #74: Task - Template not yet updated
     - Fixed #75: Bug - Can't change Admin password
     - Fixed #76: Bug - Typo in SQL query
     - Fixed #78: Bug - Typo error in HTML
