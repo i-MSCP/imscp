@@ -148,14 +148,15 @@ function importLanguageFile()
         set_page_message(tr('You can upload only portable object files.'), 'error');
         return;
     } else {
-        if ($fileType == 'text/x-gettext-translation') {
+        // Quick fix for #92
+        //if ($fileType == 'text/x-gettext-translation') {
             $parseResult = _parseGettextFile($filePath, $fileName);
-        } else {
-            set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
-            return;
+        //} else {
+        //    set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
+        //    return;
             // Deprecated since r4592
             //$ab = _importTextFile($filePath);
-        }
+        //}
 
         if (is_int($parseResult)) {
             if ($parseResult == 1) {
