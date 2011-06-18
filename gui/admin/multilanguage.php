@@ -132,7 +132,6 @@ function generatePage($tpl)
  */
 function importLanguageFile()
 {
-    $fileType = $_FILES['languageFile']['type'];
     $filePath = $_FILES['languageFile']['tmp_name'];
 
     if (empty($_FILES['languageFile']['name']) || !is_readable($filePath)) {
@@ -142,21 +141,19 @@ function importLanguageFile()
         $fileName = $_FILES['languageFile']['name'];
     }
 
-    if ($fileType != 'text/plain' && $fileType != 'application/octet-stream' &&
-       $fileType != 'text/x-gettext-translation'
-    ) {
+    $mimeType = checkMimeType($filePath, array('text/plain', 'text/x-po'));
+
+    if(false == $mimeType) {
         set_page_message(tr('You can upload only portable object files.'), 'error');
         return;
     } else {
-        // Quick fix for #92
-        //if ($fileType == 'text/x-gettext-translation') {
+
+        if ($mimeType == 'text/x-po') {
             $parseResult = _parseGettextFile($filePath, $fileName);
-        //} else {
-        //    set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
-        //    return;
-            // Deprecated since r4592
-            //$ab = _importTextFile($filePath);
-        //}
+        } else {
+            set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
+            return;
+        }
 
         if (is_int($parseResult)) {
             if ($parseResult == 1) {
@@ -225,50 +222,6 @@ function importLanguageFile()
             set_page_message(tr('Language was successfully updated.'), 'success');
         }
     }
-}
-
-/**
- * Imports all translation string from a text file
- *
- * @param string $file translation file
- * @return array|int
- * @deprecated since r4592
- */
-function _importTextFile($file)
-{
-    /*
-    if (!($fp = fopen($file, 'r'))) return 1;
-
-    $ab = array('imscp_languageRevision' => '',
-                'imscp_languageSetlocaleValue' => '',
-                'imscp_table' => '',
-                'imscp_language' => '');
-
-    $errors = 0;
-
-    while (!feof($fp) && $errors <= 3) {
-        $t = fgets($fp);
-
-        //$msgid = '';
-        //$msgstr = '';
-
-        @list($msgid, $msgstr) = $t = explode(' = ', $t);
-
-        if (count($t) != 1) {
-            $ab[$msgid] = rtrim($msgstr);
-        } else {
-            $errors++;
-        }
-    }
-
-    fclose($fp);
-
-    if ($errors > 3) {
-        return 2;
-    }
-
-    return $ab;
-    */
 }
 
 /**

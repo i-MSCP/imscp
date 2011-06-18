@@ -1,10 +1,3 @@
-# i-MSCP  Turkish Language File
-# i-MSCP  Türkçe Dil Dosyası
-# Copyright (C) 2008 i-MSCP Team
-# This file is distributed under the same license as the PACKAGE package.
-# VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008
-# Fikret TOZAK <ftozak@akyobi.com>, 2008/7/22
-# Seviye Kaloğlu<seviye@gmail.com>, 06/08/2008, eksik kısımları (%50)tercüme ve düzenleme
 #
 msgid ""
 msgstr ""

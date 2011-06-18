@@ -1,8 +1,4 @@
-# translation of sk_SK.po to Slovak language
-# Copyright (C) YEAR i-MSCP Team
-# This file is distributed under the same license as the PACKAGE package.
 #
-# Tomas Srnka <tomas.srnka@linuxsro.sk>, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"

@@ -1035,3 +1035,45 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 
     return $who;
 }
+
+/**
+ * Checks if a file match the given mimetype(s).
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since r4619
+ * @throws iMSCP_Exception When magicfile cannot be found or is not valid
+ * @throws iMSCP_Exception When the PHP finfo extension is not available
+ * @param  string $pathFile File to check for mimetype
+ * @param  array|string $mimeTypes Accepted mimetype(s)
+ * @return bool|string The file mimetype on success, FALSE otherwise
+ */
+function checkMimeType($pathFile, $mimeTypes)
+{
+    static $finfo = null;
+
+    if (null == $finfo) {
+        if (!is_readable(INCLUDEPATH . '/resources/magic.mgc')) {
+            require_once 'iMSCP/Exception.php';
+            throw new iMSCP_Exception('Unable to found a magicfile to use.');
+        } elseif (!(class_exists('finfo', false))) {
+            require_once 'iMSCP/Exception.php';
+            throw new iMSCP_Exception('PHP finfo extension not installed.');
+        }
+
+        $const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
+        $finfo = @finfo_open($const, INCLUDEPATH . '/resources/magic.mgc');
+
+        if (empty($finfo)) {
+            require_once 'iMSCP/Exception.php';
+            throw new iMSCP_Exception('The given magicfile is not accepted by finfo');
+        }
+    }
+
+    $mimeType = finfo_file($finfo, $pathFile);
+
+    if(!in_array($mimeType, (array)$mimeTypes)) {
+        return false;
+    }
+
+    return $mimeType;
+}

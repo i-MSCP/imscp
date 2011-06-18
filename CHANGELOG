@@ -10,9 +10,10 @@ Features / Enhancements:
 
 Other:
     Gui:
-        - Removed support for PHP version older than 5.3.3
+        - Removed support for PHP version older than 5.3.2
 
 Tickets:
+    - Fixed #92: Bug - Installation of Language File not possible
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta1

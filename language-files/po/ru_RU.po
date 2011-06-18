@@ -1,6 +1,3 @@
-# Russian Language File
-# Copyright (C) 2009 i-MSCP Team
-# This file is distributed under the same license as the PACKAGE package.
 #
 msgid ""
 msgstr ""

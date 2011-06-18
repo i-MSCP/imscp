@@ -1,8 +1,4 @@
-# translation of eu_ES.po to Euskara
-# Copyright (C) YEAR i-MSCP Team
-# This file is distributed under the same license as the PACKAGE package.
 #
-# Danel Ibañez <laborategia@gmail.com>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"

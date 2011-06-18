@@ -1,10 +1,4 @@
-# translation of ca_ES.po to Catalan
-# Copyright (C) YEAR i-MSCP Team
-# This file is distributed under the same license as the PACKAGE package.
 #
-# Joan Juvanteny <jjuvan@grn.cat>, 2008, 2009, 2010.
-# David Bancells <dbancells@grn.es>, 2008.
-# Esteve Camós <ecamos@grn.cat>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: ca_ES\n"

@@ -289,6 +289,7 @@ class iMSCP_Initializer
      */
     protected function _setEncryptionKeys()
     {
+        return;
         $db_pass_key = $db_pass_iv = '';
 
         eval(@file_get_contents($this->_config->CONF_DIR . '/imscp-db-keys'));
@@ -322,7 +323,8 @@ class iMSCP_Initializer
         try {
             $connection = iMSCP_Database::connect(
                 $this->_config->DATABASE_USER,
-                decrypt_db_password($this->_config->DATABASE_PASSWORD),
+                //decrypt_db_password($this->_config->DATABASE_PASSWORD),
+                $this->_config->DATABASE_PASSWORD,
                 $this->_config->DATABASE_TYPE,
                 $this->_config->DATABASE_HOST, $this->_config->DATABASE_NAME);
 

@@ -1,4 +1,4 @@
-# INGG - ideias web <terry@ingg.com.br>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"

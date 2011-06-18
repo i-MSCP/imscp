@@ -1,6 +1,4 @@
-# Ispcp Farsi translation.
-# Copyright (C) 2006-2010 i-MSCP Team
-# This file is distributed under the same license as the PACKAGE package.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: fa_IR\n"
