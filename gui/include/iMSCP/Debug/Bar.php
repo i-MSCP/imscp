@@ -157,7 +157,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
         }
 
         $this->_event = $event[0];
-        $this->buidDebugBar();
+        $this->buildDebugBar();
     }
 
     /**
@@ -175,7 +175,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
      *
      * @return void
      */
-    protected function buidDebugBar()
+    protected function buildDebugBar()
     {
         // Doesn't act on AJAX request.
         if (is_xhr()) {
