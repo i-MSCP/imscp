@@ -572,6 +572,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $sqlUpd = array();
 
         $status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
+        $db = iMSCP_Registry::get('db');
 
         $query = "
 			SELECT
@@ -595,7 +596,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`mail_users`
 					SET
-						`mail_pass`= '" . decrypt_db_password($stmt->fields['mail_pass']) . "',
+						`mail_pass`= " . $db->quote(decrypt_db_password($stmt->fields['mail_pass'])) . ",
 						`status` = '$status' WHERE `mail_id` = '" . $stmt->fields['mail_id'] . "'
 					;
 				";
@@ -612,7 +613,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`sql_user`
 					SET
-						`sqlu_pass` = '" . decrypt_db_password($stmt->fields['sqlu_pass']) . "'
+						`sqlu_pass` = " . $db->quote(decrypt_db_password($stmt->fields['sqlu_pass'])) . "
 					WHERE `sqlu_id` = '" . $stmt->fields['sqlu_id'] . "'
 					;
 				";
@@ -629,7 +630,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					UPDATE
 						`ftp_users`
 					SET
-						`rawpasswd` = '" . decrypt_db_password($stmt->fields['rawpasswd']) . "'
+						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['rawpasswd'])) . "
 					WHERE
 					    `userid` = '" . $stmt->fields['userid'] . "'
 					;
