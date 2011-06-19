@@ -20,7 +20,7 @@ i-MSCP Version:		1.0.0-beta1
 INSTALL Script:		1.8
 Maintainer:
 Homepage:			http://i-mscp.net
-Linux Distros:		Ubuntu
+Linux Distros:		Ubuntu >= Lucid Lynx
 
 ================================================================================
 2) Requirements
