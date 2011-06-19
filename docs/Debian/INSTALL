@@ -20,7 +20,7 @@ i-MSCP Version:		1.0.0-beta1
 INSTALL Script:		2.8
 Maintainer:
 Homepage:			http://i-mscp.net
-Linux Distros:		Debian Lenny, Squeeze
+Linux Distros:		Debian Squeeze, Wheezy
 
 ================================================================================
 2) Requirements
