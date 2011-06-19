@@ -404,7 +404,6 @@ class iMSCP_Update_Database extends iMSCP_Update
                     `domain`
                 ADD
                     `domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
-                ;
             "
         );
 
@@ -415,7 +414,6 @@ class iMSCP_Update_Database extends iMSCP_Update
                     `reseller_props`
                 ADD
                     `software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
-                ;
             "
         );
 
@@ -426,7 +424,6 @@ class iMSCP_Update_Database extends iMSCP_Update
                     `reseller_props`
                 ADD
                     `softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'
-                ;
             "
         );
 
@@ -480,7 +477,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`rawpasswd` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 			AFTER
 				`passwd`
-			;
 		";
 
         $sqlUpd[] = self::secureAddColumnTable('ftp_users', 'rawpasswd', $query);
@@ -545,7 +541,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`software_installtype` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
 				AFTER
 					`reseller_id`
-			    ;
 			"
         );
 
@@ -559,7 +554,6 @@ class iMSCP_Update_Database extends iMSCP_Update
                     `reseller_props`
                 ADD
                     `websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
-                ;
             "
         );
 
