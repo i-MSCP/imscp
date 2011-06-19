@@ -18,12 +18,11 @@ Table of Content
 1) Version Info
 ---------------
 i-MSCP Version:		1.0.0-beta1
-INSTALL file:		2.4
 postinst script:	1.0.6
 preinst script:		1.0.1
-Maintainer:			Laurent Declercq (Nuxwin) <laurent.declercq@i-mscp.net>
+Maintainer:			Unmaintained
 Homepage:			http://i-mscp.net
-Linux Distros:		openSuse 11.3
+Linux Distros:		openSuse >= 11.3
 
 ================================================================================
 2) Requirements
