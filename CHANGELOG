@@ -12,7 +12,7 @@ Features / Enhancements:
 Other:
 
 Tickets:
-    - Fixed #91: Bug - Undefined variable: DB in reseller/software_upload.php on line 457
+    - Fixed #99: Bug - Undefined variable: DB in reseller/software_upload.php on line 457
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta2
