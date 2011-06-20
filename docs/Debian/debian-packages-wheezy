@@ -40,6 +40,7 @@ libdbi-perl
 libemail-valid-perl
 libfile-copy-recursive-perl
 libfile-mimeinfo-perl
+libio-socket-inet6-perl
 libio-stringy-perl
 libmail-sendmail-perl
 libmailtools-perl
