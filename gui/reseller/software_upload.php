@@ -454,7 +454,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						);
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
-		$sw_id = $DB->insertId();
+		$sw_id = $db->insertId();
 		if ($file == 0) {
 			$dest_dir = $cfg->GUI_SOFTWARE_DIR.'/'.$user_id.'/'.$filename.'-'.$sw_id.$extension;
 			if (!is_dir($cfg->GUI_SOFTWARE_DIR.'/'.$user_id)) {
