@@ -51,7 +51,7 @@
  */
 function get_user_name($user_id)
 {
-    $query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?;";
+    $query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
     $rs = exec_query($query, $user_id);
 
     return $rs->fields('admin_name');
@@ -73,7 +73,7 @@ function generate_user_props($domainId)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT * FROM `domain` WHERE `domain_id` = ?;";
+    $query = "SELECT * FROM `domain` WHERE `domain_id` = ?";
     $rs = exec_query($query, $domainId);
 
     if ($rs->rowCount() == 0) {
@@ -108,7 +108,6 @@ function generate_user_props($domainId)
 				`mail_type` NOT RLIKE '_catchall'
 			AND
 				`domain_id`
-			;
 		";
 
         $mail_current = records_count('mail_users', $where, $domainId);
@@ -187,7 +186,6 @@ function update_user_props($domainId, $props)
 			`domain_dns` = ?
 		AND
 			`domain_software_allowed` = ?
-		;
 	";
     $stmt = exec_query($query, array($domainId, $phpSupport, $cgiSupport,
                                     $customDnsSupport, $softwareInstallerSupport));
@@ -211,7 +209,6 @@ function update_user_props($domainId, $props)
 				`domain_dns` = ?, `domain_software_allowed` = ?
 			WHERE
 				`domain_id` = ?
-			;
 		";
         exec_query($query, array($domainLastModified, $mailMaxValue, $ftpMaxValue,
                                 $trafficMaxValue, $sqlDbMaxValue, $sqlUserMaxValue,
@@ -228,7 +225,6 @@ function update_user_props($domainId, $props)
 				`alias_status` = ?
 			WHERE
 				`domain_id` = ?
-			;
 		";
         exec_query($query, array($updateStatus, $domainId));
 
@@ -240,7 +236,6 @@ function update_user_props($domainId, $props)
 				`subdomain_status` = ?
 			WHERE
 				`domain_id` = ?
-			;
 		";
         exec_query($query, array($updateStatus, $domainId));
 
@@ -259,7 +254,6 @@ function update_user_props($domainId, $props)
 					WHERE
 						`domain_id` = ?
 				)
-			;
 		";
         exec_query($query, array($updateStatus, $domainId));
 
@@ -280,7 +274,6 @@ function update_user_props($domainId, $props)
 			    `domain_disk_limit` = ?
 			WHERE
 				domain_id = ?
-			;
 		";
         exec_query($query, array($domainLastModified, $subMaxValue, $alsMaxValue,
                                 $mailMaxValue, $ftpMaxValue, $sqlDbMaxValue,
@@ -305,7 +298,6 @@ function update_expire_date($user_id, $domain_new_expire)
 			`domain_expires` = ?
 		WHERE
 			`domain_id` = ?
-		;
 	";
     exec_query($query, array($domain_new_expire, $user_id));
 }
@@ -339,7 +331,6 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
             `mail_users`
         WHERE
             `domain_id` = ?
-        ;
     ";
     $rs = exec_query($query, $domain_id);
 
@@ -384,13 +375,12 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
                 `mail_pass` = ?, `status` = ?
             WHERE
                 `mail_id` = ?
-            ;
         ";
         exec_query($query, array($mail_pass, $mail_status, $mail_id));
         $rs->moveNext();
     }
 
-    $query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?;";
+    $query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?";
 
     exec_query($query, array($new_status, $domain_id));
     send_request();
@@ -439,7 +429,6 @@ function delete_domain($domain_id, $goto, $breseller = false)
 			`domain`
 		WHERE
 			`domain_id` = ?
-		;
 	";
 
     if ($breseller) {
@@ -484,7 +473,6 @@ function delete_domain($domain_id, $goto, $breseller = false)
 			`htaccess_groups` AS `groups` ON `groups`.`dmn_id` = `dmn`.`domain_id`
 		WHERE
 			`dmn`.`domain_id` = ?
-		;
 	";
     exec_query($query, $domain_id);
 
@@ -513,7 +501,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     }
 
     // Delete SQL databases and users
-    $query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?;";
+    $query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?";
     $res = exec_query($query, $domain_id);
 
     while (!$res->EOF) {
@@ -529,55 +517,54 @@ function delete_domain($domain_id, $goto, $breseller = false)
             `alias_status` =  ?
         WHERE
             `domain_id` = ?
-        ;
     ";
     exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Remove domain traffic
-    $query = "DELETE FROM `domain_traffic` WHERE`domain_id` = ?;";
+    $query = "DELETE FROM `domain_traffic` WHERE`domain_id` = ?";
     exec_query($query, $domain_id);
 
     // Delete domain DNS entries
-    $query = "DELETE FROM `domain_dns` WHERE `domain_id` = ?;";
+    $query = "DELETE FROM `domain_dns` WHERE `domain_id` = ?";
     exec_query($query, $domain_id);
 
     // Set domain deletion status
-    $query = "UPDATE `domain` SET `domain_status` = 'delete' WHERE `domain_id` = ?;";
+    $query = "UPDATE `domain` SET `domain_status` = 'delete' WHERE `domain_id` = ?";
     exec_query($query, $domain_id);
 
     // Set domain subdomains deletion status
-    $query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?;";
+    $query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
     exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // --- Send request to the daemon
     send_request();
 
     // Delete FTP users:
-    $query = "DELETE FROM `ftp_users` WHERE `uid` = ?;";
+    $query = "DELETE FROM `ftp_users` WHERE `uid` = ?";
     exec_query($query, $domain_uid);
 
     // Delete FTP groups:
-    $query = "DELETE FROM `ftp_group` WHERE `gid` = ?;";
+    $query = "DELETE FROM `ftp_group` WHERE `gid` = ?";
     exec_query($query, $domain_gid);
 
     // Delete i-MSCP login:
-    $query = "DELETE FROM `admin` WHERE `admin_id` = ?;";
+    $query = "DELETE FROM `admin` WHERE `admin_id` = ?";
     exec_query($query, $domain_admin_id);
 
     // Delete the quota section:
-    $query = "DELETE FROM `quotalimits` WHERE `name` = ?;";
+    $query = "DELETE FROM `quotalimits` WHERE `name` = ?";
     exec_query($query, $domain_name);
 
     // Delete the quota section:
-    $query = "DELETE FROM `quotatallies` WHERE `name` = ?;";
+    $query = "DELETE FROM `quotatallies` WHERE `name` = ?";
     exec_query($query, $domain_name);
 
     // Remove support tickets:
-    $query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?;";
+    $query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?";
     exec_query($query, array($domain_admin_id, $domain_admin_id));
 
     // Delete user gui properties
-    $query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?;";
+    $query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?";
 
     exec_query($query, $domain_admin_id);
     write_log($_SESSION['user_logged'] . ': deletes domain ' . $domain_name);
@@ -608,10 +595,10 @@ function delete_domain($domain_id, $goto, $breseller = false)
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname)
 {
     if ($where != '') {
-        $query = "SELECT $field AS `field` FROM $table WHERE $where = ?;";
+        $query = "SELECT $field AS `field` FROM $table WHERE $where = ?";
         $rs = exec_query($query, $value);
     } else {
-        $query = "SELECT $field AS `field` FROM $table;";
+        $query = "SELECT $field AS `field` FROM $table";
         $rs = exec_query($query);
     }
 
@@ -639,7 +626,6 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                     $subtable
                 WHERE
                     `sqld_id` IN ($sqld_ids)
-                ;
             ";
             $subres = exec_query($query);
             $result = $subres->fields['cnt'];
@@ -658,7 +644,6 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                         $subtable
                     WHERE
                         $subwhere = ?
-                    ;
                 ";
             } else {
                 return $result;
@@ -692,11 +677,11 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 {
 
     if ($where != '') {
-        $query = "SELECT $field AS `field` FROM $table WHERE $where = ?;";
+        $query = "SELECT $field AS `field` FROM $table WHERE $where = ?";
 
         $rs = exec_query($query, $value);
     } else {
-        $query = "SELECT $field AS `field` FROM $table;";
+        $query = "SELECT $field AS `field` FROM $table";
 
         $rs = exec_query($query);
     }
@@ -711,7 +696,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
         $contents = $rs->fields['field'];
 
         if ($subwhere != '') {
-            $query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere RLIKE ?;";
+            $query = "SELECT COUNT(*) AS `cnt` FROM $subtable WHERE $subwhere RLIKE ?";
         } else {
             return $result;
         }
@@ -761,7 +746,6 @@ function update_reseller_props($reseller_id, $props)
 			`max_disk_amnt` = ?
 		WHERE
 			`reseller_id` = ?
-		;
 	";
 
     $res = exec_query($query, array(
@@ -1094,7 +1078,6 @@ function generate_user_traffic($domainId)
 			`domain_id` = ?
 		ORDER BY
 			`domain_name`
-		;
 	";
 
     $rs = exec_query($query, $domainId);
@@ -1129,7 +1112,6 @@ function generate_user_traffic($domainId)
 				`dtraff_time` >= ?
 			AND
 				`dtraff_time` < ?
-			;
 		";
         $rs1 = exec_query($query, array($domain_id, $from_timestamp, $to_timestamp));
 
@@ -1185,7 +1167,6 @@ function get_logo($user_id)
             `admin`
         WHERE
             `admin_id` = ?
-        ;
     ";
 
     $rs = exec_query($query, $user_id);
@@ -1223,7 +1204,7 @@ function get_admin_logo($user_id)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?;";
+    $query = "SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?";
     $rs = exec_query($query, $user_id);
 
     $user_logo = $rs->fields['logo'];
@@ -1262,7 +1243,7 @@ function write_log($msg, $level = E_USER_WARNING)
     $msg = replace_html($msg . '<br /><small>User IP: ' . $client_ip . '</small>',
                         ENT_COMPAT, tr('encoding'));
 
-    $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
+    $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
     exec_query($query, $msg, false);
 
     $msg = strip_tags(str_replace('<br />', "\n", $msg));
@@ -1306,7 +1287,7 @@ AUTO_LOG_MSG;
             $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
             $log_message = "$admin_login: Logging Daemon Mail To: |$to|, " .
                            "From: |$admin_email|, Status: |$mail_status|!";
-            $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
+            $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
 
             // Change this to be compatible with PDO Exception only
             exec_query($query, $log_message, false);
@@ -1409,7 +1390,6 @@ function get_client_software_permission($tpl, $user_id)
 			`domain`
 		WHERE
 			`domain_admin_id` = ?
-		;
 	";
     $rs = exec_query($query, array($user_id));
 
@@ -1457,7 +1437,6 @@ function get_reseller_software_permission($tpl, $reseller_id)
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-		;
 	";
     $rs = exec_query($query, array($reseller_id));
 
@@ -1485,7 +1464,7 @@ function get_reseller_software_permission($tpl, $reseller_id)
  */
 function get_application_installer_conf()
 {
-    $query = "SELECT * FROM `web_software_options`;";
+    $query = "SELECT * FROM `web_software_options`";
     $rs = exec_query($query);
 
     return array(
@@ -1516,7 +1495,6 @@ function check_package_is_installed($package_installtype, $package_name,
             `admin`
         WHERE
             `admin_id` = '" . $user_id . "'
-        ;
     ";
     $rs_admin_type = exec_query($query);
     if ($rs_admin_type->fields['admin_type'] == "admin") {
@@ -1535,7 +1513,6 @@ function check_package_is_installed($package_installtype, $package_name,
                 `software_language`     = '" . $package_language . "'
             AND
                 `software_depot`        = 'no'
-            ;
         ";
     } else {
         $query = "
@@ -1555,7 +1532,6 @@ function check_package_is_installed($package_installtype, $package_name,
                 `reseller_id`           = '" . $user_id . "'
             AND
                 `software_depot`        = 'no'
-            ;
         ";
     }
     $rs = exec_query($query);
@@ -1578,7 +1554,6 @@ function check_package_is_installed($package_installtype, $package_name,
             `software_master_id`    = '0'
         AND
             `software_depot`        = 'yes'
-        ;
     ";
     $rs = exec_query($query);
     $sw_count_swdepot = $rs->recordCount();
@@ -1614,7 +1589,6 @@ function get_webdepot_software_list($tpl, $user_id)
 		ORDER BY
 		    `package_install_type` ASC,
 		    `package_title` ASC
-		;
 	";
     $rs = exec_query($query);
 
@@ -1691,7 +1665,7 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
     $XML_FILE = simplexml_import_dom($webdepot_xml_file);
 
     if (utf8_decode($XML_FILE->LAST_UPDATE->DATE) != $webdepot_last_update) {
-        $truncatequery = "TRUNCATE TABLE `web_software_depot`;";
+        $truncatequery = "TRUNCATE TABLE `web_software_depot`";
         exec_query($truncatequery);
 
         foreach ($XML_FILE->PACKAGE as $output) {
@@ -1711,7 +1685,6 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
                         ) VALUES (
                             ?, ?, ?, ?, ?, ?, ?, ?, ?
                         )
-                    ;
                 ";
                 exec_query($query,
                            array(
@@ -1731,7 +1704,6 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
                 `web_software_options`
             SET
                 `webdepot_last_update` = '" . $XML_FILE->LAST_UPDATE->DATE . "'
-            ;
         ";
         exec_query($query);
 
@@ -1770,7 +1742,6 @@ function get_reseller_sw_installer($reseller_id)
             `reseller_props`
         WHERE
             `reseller_id` = ?
-        ;
     ";
     $stmt = exec_query($query, $reseller_id);
 
@@ -2034,14 +2005,14 @@ function records_count($table, $where = '', $bind = '')
 {
     if ($where != '') {
         if ($bind != '') {
-            $query = "SELECT COUNT(*) AS `cnt` FROM `$table` WHERE $where = ?;";
+            $query = "SELECT COUNT(*) AS `cnt` FROM `$table` WHERE $where = ?";
             $rs = exec_query($query, $bind);
         } else {
-            $query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where;";
+            $query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where";
             $rs = exec_query($query);
         }
     } else {
-        $query = "SELECT COUNT(*) AS `cnt` FROM `$table`;";
+        $query = "SELECT COUNT(*) AS `cnt` FROM `$table`";
         $rs = exec_query($query);
     }
 

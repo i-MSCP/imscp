@@ -127,13 +127,17 @@ function check_user_data() {
 		$dmn_name = strtolower(trim($_POST['dmn_name']));
 	}
 
-	if (isset($_POST['dmn_expire'])) {
+	if ($_POST['dmn_expire']) {
 		$dmn_expire = $_POST['dmn_expire'];
+		if(datepicker_reseller_convert($neverexpire) == false){
+			$even_txt = tr('Invalid data');
+		}
+	} elseif (isset($_POST['neverexpire'])) {
+		$neverexpire = $_POST['neverexpire'];
+	} else {
+		$even_txt = tr('Choose expiration data');
 	}
 
-	if (isset($_POST['neverexpire'])) {
-		$neverexpire = $_POST['neverexpire'];
-	}
 
 	if (isset($_POST['dmn_tpl'])) {
 		$dmn_chp = $_POST['dmn_tpl'];
@@ -309,7 +313,7 @@ function get_hp_data_list($tpl, $reseller_id) {
 				$hp_dns,
 				$hp_allowsoftware
 			) = explode(";", $data['props']);
-			
+
 			if($hp_allowsoftware == "_no_" || $hp_allowsoftware == "" || $hp_allowsoftware == "_yes_" && get_reseller_sw_installer($reseller_id) == "yes") {
 				$orders_count++;
 				$dmn_chp = isset($dmn_chp) ? $dmn_chp : $data['id'];
@@ -320,7 +324,7 @@ function get_hp_data_list($tpl, $reseller_id) {
 							'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? $cfg->HTML_SELECTED : ''
 						)
 				);
-	
+
 				$tpl->parse('HP_ENTRY', '.hp_entry');
 			}
 		}
