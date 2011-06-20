@@ -60,16 +60,13 @@
                 <!-- EDP: table_header -->
                 <!-- BDP: update_message -->
                 <tr>
-                    <td colspan="2">{TR_MESSAGE}</td>
+					<td style="width:300px;">{UPDATE}</td>
+                    <td>{TR_MESSAGE}</td>
                 </tr>
-                <!-- EDP: update_message -->
+               <!-- EDP: update_message -->
                 <!-- BDP: update_infos -->
                 <tr>
-                    <td style="width:300px;">{TR_UPDATE}</td>
-                    <td>{UPDATE}</td>
-                </tr>
-                <tr>
-                    <th>{TR_INFOS}</th>
+                    <td style="width:300px;">{UPDATE}</td>
                     <td>{INFOS}</td>
                 </tr>
                 <!-- EDP: update_infos -->

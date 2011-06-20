@@ -126,3 +126,4 @@ Tickets:
     - Fixed #87: Bug - Can not delete database
     - Fixed #88: Bug - Reseller can not delete orders
     - Fixed #89: Cosmetics - Traffic display in client/index.php
+    - Fixed #95: Bug - Version update check is broken

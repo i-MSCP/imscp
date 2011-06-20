@@ -77,15 +77,14 @@ function get_update_infos($tpl)
 
     if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
         $tpl->assign(array(
-                          'UPDATE_MESSAGE' => '',
+                          'UPDATE_INFOS' => '',
                           'UPDATE' => tr('New i-MSCP update is now available'),
-                          'INFOS' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.i-mscp.net/download.html</a>"));
+                          'TR_MESSAGE' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.i-mscp.net/download.html</a>"
+        ));
 
-        $tpl->parse('UPDATE_INFOS', 'update_infos');
+        $tpl->parse('UPDATE_MESSAGE', 'update_message');
     } elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
         $tpl->assign(array('TR_MESSAGE' => iMSCP_Update_Version::getInstance()->getError()));
-    } else {
-        $tpl->assign('TABLE_HEADER', '');
     }
 
     $tpl->assign('UPDATE_INFOS', '');
@@ -103,11 +102,11 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
 
 $tpl->assign(
 	array(
-		'TR_UPDATES_TITLE' => tr('i-MSCP updates'),
-		'TR_AVAILABLE_UPDATES' => tr('Available i-MSCP updates'),
-		'TR_MESSAGE' => tr('No new i-MSCP updates available'),
-		'TR_UPDATE' => tr('Update'),
-		'TR_INFOS' => tr('Update details')
+		'TR_UPDATES_TITLE'		=> tr('i-MSCP updates'),
+		'TR_AVAILABLE_UPDATES'	=> tr('Available i-MSCP updates'),
+		'TR_MESSAGE'			=> tr('No new i-MSCP updates available'),
+		'TR_UPDATE'				=> tr('Update'),
+		'UPDATE'				=> tr('Update details')
 	)
 );
 
