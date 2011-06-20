@@ -104,6 +104,9 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
         $vars .= '<h4>$_SESSION:</h4>'
                  . '<div id="iMSCPdebug_session">' . $this->_humanize($_SESSION) . '</div>';
 
+        $vars .= '<h4>$_SERVER:</h4>'
+                 . '<div id="iMSCPdebug_server">' . $this->_humanize($_SERVER) . '</div>';
+
         $vars .= '<h4>$_ENV:</h4>'
                  . '<div id="iMSCPdebug_env">' . $this->_humanize($_ENV) . '</div>';
 
