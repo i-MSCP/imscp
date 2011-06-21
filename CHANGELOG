@@ -8,16 +8,21 @@ i-MSCP 1.0.1.3 (beta)
 Distributions:
 
 Features / Enhancements:
+    Gui:
+        Components:
+            - DebugBar: Added $_SERVER variable (plugin variables)
 
 Other:
 
 Tickets:
 	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default page.
-	- Fixed #97   Good practices - Throw an exception if the phptmp directory is unwritable
+	- Fixed #97:  Good practices - Throw an exception if the phptmp directory is unwritable
 	- Fixed #98:  Bug - Encoding issue in include/i18n.php
 	- Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on line 457
 	- Fixed #100: Bug - Default language overrides user language at admin level
-	- Fixed #102  Bug - Unable to install more than one language file
+	- Fixed #102: Bug - Unable to install more than one language file
+	- Fixed #104: Task - autoreplies_log database table still use MYISAM engine)
+	- Fixed #105: Bug - Database update 58 is faulty
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta2

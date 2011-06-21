@@ -768,49 +768,47 @@ class iMSCP_Update_Database extends iMSCP_Update
         ");
     }
 
-	/**
-	 * Convert tables to InnoDB.
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4650
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_60() {
-		return array(
-			"ALTER TABLE `autoreplies_log` ENGINE=InnoDB"
-		);
-	}
+    /**
+     * Convert tables to InnoDB.
+     *
+     * @author Daniel Andreca <sci2tech@gmail.com>
+     * @since r4650
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_60()
+    {
+        return array("ALTER TABLE `autoreplies_log` ENGINE=InnoDB");
+    }
 
-	/**
-	 * Fix for #102 - Changes naming convention for database language tables
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4644
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_61(){
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
+    /**
+     * Fix for #102 - Changes naming convention for database language tables
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4644
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_61()
+    {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
 
-		$sqlUpd = array();
+        $sqlUpd = array();
 
-		// Drop all old database language tables excepted the lang_en_GB that creted
-		// by engine on setup / install
-		foreach ($db->metaTables() as $tableName) {
-			if (strpos($tableName, 'lang_') !== false &&
-				$tableName != 'lang_en_GB'
-			) {
-				$sqlUpd[] = "DROP TABLE `$tableName`";
-			}
-		}
+        // Drop all old database language tables excepted the lang_en_GB that is
+        // created by engine on setup / install
+        foreach ($db->metaTables() as $tableName) {
+            if (strpos($tableName, 'lang_') !== false &&
+                $tableName != 'lang_en_GB'
+            ) {
+                $sqlUpd[] = "DROP TABLE `$tableName`";
+            }
+        }
 
-		// Will reset the language property for all users (expected behavior) to
-		// ensure compatibility with the fix. So then each user will have to set
-		// (again) his own language if he want use an other language than the default.
-		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_en_GB'";
+        // Will reset the language property for all users (expected behavior) to
+        // ensure compatibility with the fix. So then each user will have to set
+        // (again) his own language if he want use an other language than the default.
+        $sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_en_GB'";
 
-		//Do not forget to return statemets!
-		return $sqlUpd;
-	}
-
+        return $sqlUpd;
+    }
 }
