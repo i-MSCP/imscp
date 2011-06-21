@@ -106,7 +106,7 @@ sub FETCH {
 sub STORE {
 	my $self	= shift;
 	my $config	= shift;
-	my $value	= shift;
+	my $value	= shift || '';
 
 	debug((caller(0))[3].': Starting...');
 
@@ -121,11 +121,32 @@ sub STORE {
 	debug((caller(0))[3].': Ending...');
 }
 
+sub FIRSTKEY {
+	my $self = shift;
+
+	debug((caller(0))[3].': Starting...');
+
+	$self->{_list} = [ sort keys %{$self->{configValues}} ];
+
+	debug((caller(0))[3].': Ending...');
+
+	return $self->NEXTKEY;
+}
+
+sub NEXTKEY {
+	my $self = shift;
+
+	debug((caller(0))[3].': Starting...');
+
+	debug((caller(0))[3].': Ending...');
+
+	return shift @{$self->{_list}};
+}
 
 sub _replaceConfig{
 	my $self	= shift;
 	my $config	= shift;
-	my $value	= shift;
+	my $value	= shift || '';
 
 	debug((caller(0))[3].': Starting...');
 

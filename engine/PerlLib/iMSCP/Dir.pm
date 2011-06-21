@@ -34,9 +34,11 @@ use warnings;
 use iMSCP::Debug;
 
 use vars qw/@ISA $AUTOLOAD/;
-use Common::SimpleClass;
 
-@ISA = ('Common::SimpleClass');
+@ISA = ('Common::SimpleClass', 'Common::SetterClass');
+use Common::SimpleClass;
+use Common::SetterClass;
+
 
 sub _init{
 	my $self = shift;
@@ -47,6 +49,19 @@ sub _init{
 	debug((caller(0))[3].': Ending...');
 }
 
+sub getFiles{
+	my $self = shift;
+	debug((caller(0))[3].': Starting...');
+	if(! $self->{files}) {
+		my $files = $self->get();
+		foreach (@{$self->{dirContent}}){
+			push(@{$self->{files}}, $_) if( -f "$self->{dirname}/$_" && $_ =~ m!$self->{fileType}$!);
+		}
+	}
+	debug((caller(0))[3].': Ending...');
+	return (wantarray ? @{$self->{files}} : join(' ', @{$self->{files}}));
+}
+
 sub get{
 
 	my $self = shift;
@@ -54,17 +69,19 @@ sub get{
 	debug((caller(0))[3].': Starting...');
 
 	if(! $self->{dirContent}) {
+		debug((caller(0))[3].": open directory $self->{dirname}");
+		$self->{dirContent} = ();
 		unless (opendir(DIRH, $self->{dirname})){
 			error((caller(0))[3].": Cannot open directory $self->{dirname}");
 			return 1;
 		}
-		my $self->{dirContent} = readdir(DIRH);
+		@{$self->{dirContent}} = readdir(DIRH);
 		closedir(DIRH);
 	}
 
 	debug((caller(0))[3].': Ending...');
 
-	return join("\n", @{$self->{dirContent}});
+	return (wantarray ? $self->{dirContent} : join(" ", @{$self->{dirContent}}));
 }
 
 sub mode{

@@ -66,6 +66,7 @@ Features / Enhancements:
 		Setup/Update:
 			- New i-mscp tree builder
 			- New installer (Dialog ; merged setup and update scripts)
+			- Added ssl suport for apache, courier, postfix and proftpd for master domain
 	Gui:
 		Core:
 			- Added DebugBar component
@@ -138,4 +139,4 @@ Tickets:
 	- Fixed #89: Cosmetics - Traffic display in client/index.php
 	- Fixed #95: Bug - Version update check is broken
 	- Fixed #104: Task - autoreplies_log database table still use MYISAM engine
-	- Fixed #105: Bug - Changing named convention is faulty
+	- Fixed #105: Bug - Database update 58 is faulty

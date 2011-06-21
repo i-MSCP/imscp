@@ -126,12 +126,12 @@ smtpd_data_restrictions      = reject_multi_recipient_bounce,
                                reject_unauth_pipelining
 
 # TLS parameters; activate, if avaible/used
-#smtpd_tls_security_level    = may
-#smtpd_tls_loglevel          = 2
-#smtpd_tls_cert_file         = /etc/postfix/cert.pem
-#smtpd_tls_key_file          = /etc/postfix/privkey.pem
-#smtpd_tls_auth_only         = no
-#smtpd_tls_received_header   = yes
+{SSL}smtpd_tls_security_level    = may
+{SSL}smtpd_tls_loglevel          = 2
+{SSL}smtpd_tls_cert_file         = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
+{SSL}smtpd_tls_key_file          = {GUI_CERT_DIR}/{MTA_HOSTNAME}.pem
+{SSL}smtpd_tls_auth_only         = no
+{SSL}smtpd_tls_received_header   = yes
 
 # AMaViS parameters; activate, if available/used
 #content_filter               = amavis:[127.0.0.1]:10024

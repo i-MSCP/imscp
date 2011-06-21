@@ -47,12 +47,11 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- table structure for table `lang_en_GB`
 --
 
-DROP TABLE IF EXISTS `lang_en_GB`;
 CREATE TABLE IF NOT EXISTS `lang_en_GB` (
-  `msgid` text collate utf8_unicode_ci,
-  `msgstr` text collate utf8_unicode_ci,
-  KEY msgid (msgid(25))
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `msgid` text COLLATE utf8_unicode_ci NOT NULL,
+  `msgstr` text COLLATE utf8_unicode_ci,
+  UNIQUE KEY `msgid` (`msgid`(255))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- data for table `lang_en_GB`

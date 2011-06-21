@@ -144,6 +144,9 @@ sub copyFile{
 
 	debug((caller(0))[3].': Starting...');
 
+	use File::Copy;
+	use File::Basename;
+
 	if(!$self->{filename} || !-e $self->{filename}){
 		error((caller(0))[3].": ".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
 		return 1;
@@ -151,17 +154,27 @@ sub copyFile{
 
 	debug((caller(0))[3].": Copy $self->{filename} to $dest");
 
-	use iMSCP::Execute;
-	my ($stdout, $stderr);
-	my $rs = execute("$main::imscpConfig{'CMD_CP'} -p $self->{filename} $dest", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
+	my $fileMode	= (stat($self->{filename}))[2] & 00777;
+	my $owner		= (stat($self->{filename}))[4];
+	my $group		= (stat($self->{filename}))[5];
 
-	#if(! File::Copy::syscopy ($self->{filename}, $dest) ) {
-		#error((caller(0))[3].": Copy $self->{filename} to $dest failed: $!");
-		#return 1;
-	#}
+	if(! copy ($self->{filename}, $dest) ) {
+		error((caller(0))[3].": Copy $self->{filename} to $dest failed: $!");
+		return 1;
+	}
+	if( -d $dest){
+		my ($name,$path,$suffix) = fileparse($self->{filename});
+		$dest .= "/$name$suffix";
+	}
+	debug((caller(0))[3]. sprintf ": Change mode mode: %o for '$dest'", $fileMode);
+	unless (chmod($fileMode, $dest)){
+		error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
+		return 1;
+	}
+	unless (chown($owner, $group, $dest)){
+		error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
+		return 1;
+	}
 
 	debug((caller(0))[3].': Ending...');
 

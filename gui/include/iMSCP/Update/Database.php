@@ -785,4 +785,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         return $sqlUpd;
     }
+
+	/**
+	 * Fix for #102 - Changes naming convention for database language tables
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @since r4650
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_62(){
+		return array(
+			'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
+			'CREATE UNIQUE INDEX `msgid` ON `lang_en_GB` (`msgid`(255))'
+		);
+	}
+
 }

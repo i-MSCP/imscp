@@ -32,6 +32,7 @@ use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
 use Exporter;
 use Common::SingletonClass;
+use Term::ReadKey;
 
 use vars qw/@ISA @EXPORT/;
 @ISA = ("Common::SingletonClass", 'Exporter');
@@ -118,12 +119,9 @@ sub _determine_dialog_variant {
 sub _getConsoleSize{
 	my $self = shift;
 	debug((caller(0))[3].': Starting...');
-	my ($output, $error);
-	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
-	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
-	$self->{'lines'}	= (defined($1) && $1 != 0) ? $1-3 : 39;
-	$self->{'columns'}	= (defined($2) && $2 != 0) ? $2-2 : 80;
-	error((caller(0))[3].": $error") unless (!$?);
+	my ($columns, $lines, undef, undef) = GetTerminalSize();
+	$self->{'lines'} = $lines - 3;
+	$self->{'columns'} = $columns - 2;
 	debug((caller(0))[3].": Lines->$self->{'lines'}");
 	debug((caller(0))[3].": Columns->$self->{'columns'}");
 	debug((caller(0))[3].': Ending...');
@@ -161,7 +159,7 @@ sub _buildCommand {
 		){
 			$command .= " --$prop ";
 			if (ref $self->{'_opts'}->{$prop} eq 'ARRAY') {
-				$command .= $self->_clean(join(' ', $self->{'_opts'}->{$prop}))
+				$command .= $self->_clean("@{$self->{'_opts'}->{$prop}}")
 			}elsif($self->{'_opts'}->{$prop} !~ /^\d+$/ && $self->{'_opts'}->{$prop}){
 					$command .= '\''.$self->_clean($self->{'_opts'}->{$prop}).'\'';
 			} elsif($self->{'_opts'}->{$prop} =~ /^\d+$/){
@@ -223,6 +221,30 @@ sub _execute{
 	wantarray ? return ($rv, $return) : $return;
 }
 
+sub fselect{
+	my $self = shift;
+	my $file = shift;
+	$self->{'lines'} = $self->{'lines'} - 8;
+	my $rv = $self->_execute($file, undef, "fselect");
+	$self->{'lines'} = $self->{'lines'} + 8;
+	return $rv;
+}
+
+sub _textbox{
+	my $self = shift;
+	my $text = shift;
+	my $mode = shift;
+	my $init = shift || 0;
+	my $autosize = $self->{'autosize'};
+	$self->{'autosize'} = "";
+	my $begin = $self->{'_opts'}->{'begin'};
+	$self->{'_opts'}->{'begin'} = undef;
+	my ($rv, $rs) = $self->_execute($text, $init, $mode);
+	$self->{'_opts'}->{'begin'} = $begin;
+	$self->{'autosize'} = $autosize;
+	wantarray ? return ($rv, $rs) : $rs;
+}
+
 sub radiolist{
 	my $self = shift;
 	my $text = shift;
@@ -249,21 +271,6 @@ sub checkbox{
 	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
 }
 
-sub _textbox{
-	my $self = shift;
-	my $text = shift;
-	my $mode = shift;
-	my $init = shift || 0;
-	my $autosize = $self->{'autosize'};
-	$self->{'autosize'} = "";
-	my $begin = $self->{'_opts'}->{'begin'};
-	$self->{'_opts'}->{'begin'} = undef;
-	my ($rv, $rs) = $self->_execute($text, $init, $mode);
-	$self->{'_opts'}->{'begin'} = $begin;
-	$self->{'autosize'} = $autosize;
-	wantarray ? return ($rv, $rs) : $rs;
-}
-
 sub tailbox{
 	my $self = shift;
 	my $file = shift;
@@ -274,15 +281,6 @@ sub editbox{
 	my $self = shift;
 	my $file = shift;
 	return $self->_execute($file, undef, 'editbox');
-}
-
-sub fselect{
-	my $self = shift;
-	my $file = shift;
-	$self->{'lines'} = $self->{'lines'} - 8;
-	my $rv = $self->_execute($file, undef, 'fselect');
-	$self->{'lines'} = $self->{'lines'} + 8;
-	return $rv;
 }
 
 sub dselect{
@@ -394,11 +392,11 @@ sub setGauge{
 }
 
 sub endGauge{
-	my $self = shift || iMSCP::Dialog->new();
+	my $self = iMSCP::Dialog->new();
 
 	debug((caller(0))[3].': Starting...');
 
-	return(0) unless $self->{'gauge'}->{'FH'};
+	return 0 unless ref $self->{'gauge'}->{'FH'};
 	$self->{'gauge'}->{'FH'}->close();
 	delete($self->{'gauge'});
 
@@ -416,6 +414,10 @@ sub set{
 		$self->{'_opts'}->{$param}	= $value;
 	}
 	$return;
+}
+
+sub DESTROY{
+	execute('clear');
 }
 
 1;

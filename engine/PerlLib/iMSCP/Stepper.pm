@@ -33,7 +33,7 @@ use vars qw/@ISA @EXPORT_OK @EXPORT %EXPORT_TAGS/;
 use Exporter;
 use Common::SingletonClass;
 
-@ISA = ("Common::SingletonClass", 'Exporter');
+@ISA = ('Common::SingletonClass', 'Exporter');
 @EXPORT = qw/step startDetail endDetail/;
 
 sub _init{
@@ -69,7 +69,7 @@ sub endDetail{
 
 	my $self = iMSCP::Stepper->new();
 
-	pop (@{$self->{all}});
+	$self->{last} = pop (@{$self->{all}});
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -84,7 +84,7 @@ sub step{
 
 	$self->{last} = sprintf ($self->{title}, $index, $steps, $text);
 
-	my $msg = join ("\n", @{$self->{all}}) . $self->{last};
+	my $msg = join ("\n", @{$self->{all}}) . "\n\n" . $self->{last};
 
 	if(!$exit) { $exit = 'yes';}
 

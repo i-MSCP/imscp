@@ -1210,6 +1210,7 @@ sub setup_awstats_vhost {
 
 	use iMSCP::File;
 	use iMSCP::Templator;
+	use Servers::httpd;
 
 	# Do not generate configuration files if the service is disabled
 	return 0 if($main::imscpConfig{'AWSTATS_ACTIVE'} =~ /^no$/i);
@@ -1238,36 +1239,13 @@ sub setup_awstats_vhost {
 		}
 	}
 
-	# Saving the '01_awstats.conf' file if it exists
-	if(-f "$main::imscpConfig{'APACHE_SITES_DIR'}/01_awstats.conf") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_SITES_DIR'}/01_awstats.conf")->copyFile("$bkpDir/01_awstats.conf." . time) and return 1;
-	}
+	my $httpd = Servers::httpd->new()->factory('apache2');
 
-	## Building, storage and installation of new files
+	$rs = $httpd->buildConfFile('01_awstats.conf');
+	return $rs if $rs;
 
-	# Loading the template from /etc/imscp/apache
-	$file = iMSCP::File->new(filename => "$cfgDir/01_awstats.conf");
-	$cfgTpl = $file->get() or return 1;
-
-	# Building the new file
-	$cfgTpl = iMSCP::Templator::process(
-		{
-			AWSTATS_ENGINE_DIR	=> $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
-			AWSTATS_WEB_DIR		=> $main::imscpConfig{'AWSTATS_WEB_DIR'}
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Store the new Awstats Vhost file in working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/01_awstats.conf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Install the new new Awstats Vhost file in the production directory
-	$file->copyFile("$main::imscpConfig{'APACHE_SITES_DIR'}/") and return 1;
+	$rs = $httpd->enableSite('01_awstats.conf');
+	return $rs if $rs;
 
 	# If Awstats is active and then, dynamic mode is selected
 	if ($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes' && $main::imscpConfig{'AWSTATS_MODE'} eq 0) {
@@ -1457,7 +1435,9 @@ sub setup_mta {
 			MTA_MAILBOX_MIN_UID			=> $uid,
 			MTA_MAILBOX_UID				=> $uid,
 			MTA_MAILBOX_GID				=> $gid,
-			PORT_POSTGREY				=> $main::imscpConfig{'PORT_POSTGREY'}
+			PORT_POSTGREY				=> $main::imscpConfig{'PORT_POSTGREY'},
+			GUI_CERT_DIR				=> $main::imscpConfig{'GUI_CERT_DIR'},
+			SSL							=> ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
 		},
 		$cfgTpl
 	);
@@ -1574,6 +1554,31 @@ sub setup_po {
 	}
 
 	## Building, storage and installation of new file
+
+	# Saving all current production files if they exist
+	for (($main::imscpConfig{'COURIER_IMAP_SSL'}, $main::imscpConfig{'COURIER_POP_SSL'})) {
+		$file = iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_");
+		next if(!-f "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_");
+		if(!-f "$bkpDir/$_.system"){
+			$file->copyFile("$bkpDir/$_.system") and return 1;
+		} else {
+			$file->copyFile("$bkpDir/$_.$timestamp") and return 1;
+		}
+		$rdata = $file->get();
+		return 1 if (!$rdata);
+		if($rdata =~ m/^TLS_CERTFILE=/msg){
+			$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!mg;
+		} else {
+			$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
+		}
+		$file = iMSCP::File->new(filename => "$wrkDir/$_");
+		$file->set($rdata) and return 1;
+		$file->save() and return 1;
+		$file->mode(0644) and return 1;
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+		# Installing the new file in the production directory
+		$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}/") and return 1;
+	}
 
 	# authdaemonrc file
 
@@ -1827,7 +1832,9 @@ sub setup_ftpd {
 		DATABASE_USER	=> $dbUser,
 		DATABASE_PASS	=> $dbPass,
 		FTPD_MIN_UID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'},
-		FTPD_MIN_GID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}
+		FTPD_MIN_GID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'},
+		GUI_CERT_DIR	=> $main::imscpConfig{'GUI_CERT_DIR'},
+		SSL				=> ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
 		},
 		$cfgTpl
 	);
@@ -2389,75 +2396,14 @@ sub setup_gui_httpd {
 	use iMSCP::File;
 	use iMSCP::Templator;
 	use iMSCP::Execute;
+	use Servers::httpd;
 
 	my ($rs, $cfgTpl, $file);
 
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/apache";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
+	my $httpd = Servers::httpd->new()->factory('apache2');
 
-	my $adminEmailAddress = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'};
-	my ($user, $domain) = split /@/, $adminEmailAddress;
-	use Net::LibIDN qw/idn_to_ascii/;
-	$adminEmailAddress = "$user@".idn_to_ascii($domain, 'utf-8');
-
-	# Saving the current production file if it exists
-	if(-f "$main::imscpConfig{'APACHE_SITES_DIR'}/00_master.conf") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_SITES_DIR'}/00_master.conf")->copyFile("$bkpDir/00_master.conf." . time) and return 1;
-	}
-
-	# Loading the template from /etc/imscp/apache
-	$cfgTpl = iMSCP::File->new(filename => "$cfgDir/00_master.conf")->get();
-	return 1 if(!$cfgTpl);
-
-
-	# Building the new file
-	$cfgTpl = process(
-		{
-			BASE_SERVER_IP			=> $main::imscpConfig{'BASE_SERVER_IP'},
-			BASE_SERVER_VHOST		=> $main::imscpConfig{'BASE_SERVER_VHOST'},
-			DEFAULT_ADMIN_ADDRESS	=> $adminEmailAddress,
-			ROOT_DIR				=> $main::imscpConfig{'ROOT_DIR'},
-			APACHE_WWW_DIR			=> $main::imscpConfig{'APACHE_WWW_DIR'},
-			APACHE_USERS_LOG_DIR	=> $main::imscpConfig{'APACHE_USERS_LOG_DIR'},
-			APACHE_LOG_DIR			=> $main::imscpConfig{'APACHE_LOG_DIR'},
-			PHP_STARTER_DIR			=> $main::imscpConfig{'PHP_STARTER_DIR'},
-			PHP_VERSION				=> $main::imscpConfig{'PHP_VERSION'},
-			WWW_DIR					=> $main::imscpConfig{'ROOT_DIR'},
-			DMN_NAME				=> 'gui',
-			CONF_DIR				=> $main::imscpConfig{'CONF_DIR'},
-			MR_LOCK_FILE			=> $main::imscpConfig{'MR_LOCK_FILE'},
-			RKHUNTER_LOG			=> $main::imscpConfig{'RKHUNTER_LOG'},
-			CHKROOTKIT_LOG			=> $main::imscpConfig{'CHKROOTKIT_LOG'},
-			PEAR_DIR				=> $main::imscpConfig{'PEAR_DIR'},
-			OTHER_ROOTKIT_LOG		=> $main::imscpConfig{'OTHER_ROOTKIT_LOG'},
-			APACHE_SUEXEC_USER_PREF	=> $main::imscpConfig{'APACHE_SUEXEC_USER_PREF'},
-			APACHE_SUEXEC_MIN_UID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'},
-			APACHE_SUEXEC_MIN_GID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Storing the new file
-	$file = iMSCP::File->new(filename => "$wrkDir/00_master.conf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file
-	$file->copyFile("$main::imscpConfig{'APACHE_SITES_DIR'}/") and return 1;
-
-	## Disable 000-default vhost (Debian like distributions)
-	my ($stdout, $stderr);
-	if (-f "/usr/sbin/a2dissite") {
-		$rs = execute('/usr/sbin/a2dissite 000-default', \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if($stdout);
-		error((caller(0))[3].": $stderr") if($stderr);
-		return $rs if $rs;
-	}
+	$rs = $httpd->disableSite('000-default');
+	return $rs if $rs;
 
 	# Disable the default NameVirtualHost directive
 	# (Debian like distributions)
@@ -2475,13 +2421,33 @@ sub setup_gui_httpd {
 		$file->save() and return 1;
 	}
 
-	# Enable GUI vhost (Debian like distributions)
-	if (-f '/usr/sbin/a2ensite') {
-		$rs = execute('/usr/sbin/a2ensite 00_master.conf', \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if($stdout);
-		error((caller(0))[3].": $stderr") if($stderr);
+	my $adminEmailAddress = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'};
+	my ($user, $domain) = split /@/, $adminEmailAddress;
+	use Net::LibIDN qw/idn_to_ascii/;
+	$adminEmailAddress = "$user@".idn_to_ascii($domain, 'utf-8');
+
+	$httpd->{DEFAULT_ADMIN_ADDRESS}	= $adminEmailAddress;
+	$httpd->{WWW_DIR}				= $main::imscpConfig{'ROOT_DIR'};
+	$httpd->{DMN_NAME}				= 'gui';
+
+	$rs = $httpd->buildConfFile($httpd->{masterConf});
+	return $rs if $rs;
+
+	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
+		$rs = $httpd->buildConfFile($httpd->{masterSSLConf});
 		return $rs if $rs;
 	}
+
+	$rs = $httpd->enableSite($httpd->{masterConf});
+	return $rs if $rs;
+
+	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
+		$rs = $httpd->enableSite($httpd->{masterSSLConf});
+		return $rs if $rs;
+		$rs = $httpd->enableMod('ssl');
+		return $rs if $rs;
+	}
+
 
 	debug((caller(0))[3].': Ending...');
 
@@ -2722,8 +2688,6 @@ sub setup_gui_named_cfg_data {
 	my $bkpDir	= "$cfgDir/bind/backup";
 	my $wrkDir	= "$cfgDir/bind/working";
 	my $dbDir	= $main::imscpConfig{'BIND_DB_DIR'};
-
-	askVHOST();
 
 	# Saving the current production file if it exists
 	if(-f $main::imscpConfig{'BIND_CONF_FILE'}){
@@ -2992,21 +2956,6 @@ sub update_imscp_cfg {
 		HTACCESS_GROUPS_FILE_NAME
 		GUI_EXCEPTION_WRITERS
 		DEBUG
-		CMD_AMAVIS
-		CMD_AUTHD
-		CMD_FTPD
-		CMD_HTTPD_CTL
-		CMD_HTTPD
-		CMD_IMAP
-		CMD_IMAP_SSL
-		CMD_POSTGREY
-		CMD_POLICYD_WEIGHT
-		CMD_MTA
-		CMD_NAMED
-		CMD_POP
-		CMD_POP_SSL
-		CMD_IMSCPD
-		CMD_IMSCPN
 	/){
 		if($main::imscpConfigOld{$_} && $main::imscpConfigOld{$_} ne $main::imscpConfig{$_}){
 			$main::imscpConfig{$_} = $main::imscpConfigOld{$_};
@@ -3051,7 +3000,6 @@ sub disableGUI{
 		$rs = execute("$main::imscpConfig{'CMD_HTTPD'} reload", \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
 		error((caller(0))[3].": $stderr") if $stderr;
-		return $rs if $rs;
 	}
 
 	debug((caller(0))[3].': Ending...');
@@ -3299,7 +3247,7 @@ sub rebuild_customers_cfg {
 				SET
 					$field = 'change'
 				WHERE
-					($field = 'ok' OR $field = 'disabled')
+					$field = 'ok'
 				;
 			"
 		);
@@ -3321,4 +3269,144 @@ sub rebuild_customers_cfg {
 
 	0;
 }
+
+sub setup_ssl{
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Dialog;
+
+	my $rs;
+
+	$main::imscpConfig{'SSL_ENABLED'} = $main::imscpConfigOld{'SSL_ENABLED'} if(!$main::imscpConfig{'SSL_ENABLED'} && $main::imscpConfigOld{'SSL_ENABLED'});
+
+	if(!$main::imscpConfig{'SSL_ENABLED'}){
+		Modules::openssl->new()->{openssl_path} = $main::imscpConfig{'CMD_OPENSSL'};
+		$rs = sslDialog();
+		return $rs if $rs;
+	} elsif($main::imscpConfig{'SSL_ENABLED'} eq 'yes') {
+		Modules::openssl->new()->{openssl_path}				= $main::imscpConfig{'CMD_OPENSSL'};
+		Modules::openssl->new()->{cert_path}				= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
+		Modules::openssl->new()->{intermediate_cert_path}	= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
+		Modules::openssl->new()->{key_path}					= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
+		if(Modules::openssl->new()->ssl_check_all()){
+			iMSCP::Dialog->new()->msgbox("Certificate is missing or corrupt. Starting recover");
+			$rs = sslDialog();
+			return $rs if $rs;
+		}
+	}
+
+	$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "http://" if($main::imscpConfig{'SSL_ENABLED'} ne 'yes');
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+sub ask_certificate_key_path{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Dialog;
+	use Modules::openssl;
+
+	my $rs;
+	my $key = "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.key";
+	my $pass = '';
+
+	do{
+		$rs = iMSCP::Dialog->new()->passwordbox("Please enter password for key if needed:", $pass);
+		$rs =~s/(["\$`\\])/\\$1/g;
+		Modules::openssl->new()->{key_pass} = $rs;
+		do{
+			while (! ($rs = iMSCP::Dialog->new()->fselect($key))){}
+		}while (! -f $rs);
+		Modules::openssl->new()->{key_path} = $rs;
+		$key = $rs;
+		$rs = Modules::openssl->new()->ssl_check_key();
+	}while($rs);
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub ask_intermediate_certificate_path{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Dialog;
+	use Modules::openssl;
+
+	my $rs;
+	my $cert = '/root/';
+
+	iMSCP::Dialog->new()->set('yes-label');
+	iMSCP::Dialog->new()->set('no-label');
+	return 0 if(iMSCP::Dialog->new()->yesno('Do you have an intermediate certificate?'));
+	do{
+		while (! ($rs = iMSCP::Dialog->new()->fselect($cert))){}
+	}while ($rs && !-f $rs);
+	Modules::openssl->new()->{intermediate_cert_path} = $rs;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub ask_certificate_path{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Dialog;
+	use Modules::openssl;
+
+	my $rs;
+	my $cert = "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.crt";
+
+	iMSCP::Dialog->new()->msgbox('Please select certificate');
+	do{
+		do{
+			while (! ($rs = iMSCP::Dialog->new()->fselect($cert))){}
+		}while (! -f $rs);
+		Modules::openssl->new()->{cert_path} = $rs;
+		$cert = $rs;
+		$rs = Modules::openssl->new()->ssl_check_cert();
+	}while($rs);
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub sslDialog{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Dialog;
+	use Modules::openssl;
+
+	my $rs;
+
+	while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to activate SSL?", 'no', 'yes'))){}
+	if($rs ne $main::imscpConfig{'SSL_ENABLED'}){ $main::imscpConfig{'SSL_ENABLED'} = $rs; }
+	if($rs eq 'yes'){
+		Modules::openssl->new()->{new_cert_path} = $main::imscpConfig{'GUI_CERT_DIR'};
+		Modules::openssl->new()->{new_cert_name} = $main::imscpConfig{'SERVER_HOSTNAME'};
+		while (! ($rs = iMSCP::Dialog->new()->radiolist('Select method', 'Create a self signed certificate', 'I already have a signed certificate'))){}
+		$rs = $rs eq 'Create a self signed certificate' ? 0 : 1;
+		Modules::openssl->new()->{cert_selfsigned} = $rs;
+		Modules::openssl->new()->{vhost_cert_name} = $main::imscpConfig{'SERVER_HOSTNAME'} if ( !$rs );
+
+		if( Modules::openssl->new()->{cert_selfsigned}){
+			Modules::openssl->new()->{intermediate_cert_path} = '';
+			ask_certificate_key_path();
+			ask_certificate_path();
+			ask_intermediate_certificate_path();
+		}
+		$rs = Modules::openssl->new()->ssl_export_all();
+		return $rs if $rs;
+	}
+	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
+		while (! ($rs = iMSCP::Dialog->new()->radiolist("Select default access mode for master domain?", 'https', 'http'))){}
+		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "$rs://";
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
 1;

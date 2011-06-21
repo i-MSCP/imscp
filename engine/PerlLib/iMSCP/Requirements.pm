@@ -46,6 +46,7 @@ sub _init{
 		#'Crypt::Blowfish'			=> '',
 		'Crypt::PasswdMD5'			=> '',
 		'MIME::Base64'				=> '',
+		'Term::ReadKey'				=> '',
 		#'Term::ReadPassword'		=> '',
 		#'File::Basename'			=> '',
 		'File::Path'				=> '',
