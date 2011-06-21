@@ -13,6 +13,7 @@ Other:
 
 Tickets:
     - Fixed #96:  Bug - Notice raised when clicking on link from the domain' default page.
+    - Fixed #97   Good practices - Throw an exception if the phptmp directory is unwritable
     - Fixed #98:  Bug - Encoding issue in include/i18n.php
     - Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on line 457
     - Fixed #100: Bug - Default language overrides user language at admin level

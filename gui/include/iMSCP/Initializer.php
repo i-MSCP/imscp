@@ -143,9 +143,6 @@ class iMSCP_Initializer
         // Include path
         $this->_setIncludePath();
 
-        // Create or restore the session
-        $this->_initializeSession();
-
         // initialize the debug bar
         $this->initializeDebugBar();
 
@@ -167,6 +164,9 @@ class iMSCP_Initializer
 
         // Initialize output buffering
         $this->_initializeOutputBuffering();
+
+         // Create or restore the session
+        $this->_initializeSession();
 
         // Initialize internationalization libraries
         // $this->_initializeI18n();
@@ -272,6 +272,10 @@ class iMSCP_Initializer
      */
     protected function _initializeSession()
     {
+        if (!is_writable($this->_config->GUI_ROOT_DIR . '/phptmp')) {
+            throw new iMSCP_Exception('The GUI `phptmp` directory must be writable.');
+        }
+
         session_name('i-MSCP');
 
         if (!isset($_SESSION)) {
