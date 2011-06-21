@@ -102,18 +102,22 @@ function tr($msgid, $substitution = false)
     }
 
     $lang = curlang();
-    $encoding = 'UTF-8';
+    
+    // Fix for #98 - (Quick fix)
+    //$encoding = 'UTF-8';
 
     if (isset($cache[$lang][$msgid])) {
         $msgstr = $cache[$lang][$msgid];
     } else {
         $msgstr = $msgid;
 
+        /* Fix for #98 - (Quick fix)
         if (!$substitution) {
             // $substitution is true in this call because we need it that way
             // and to prevent an infinite loop
             $encoding = tr('encoding', true);
         }
+        */
 
         // Prepare the query only once to improve performances
         if ($stmt == null) {
@@ -132,9 +136,11 @@ function tr($msgid, $substitution = false)
         }
     }
 
+/* Fix for #98 - (Quick fix)
     if ($msgid == 'encoding' && $msgstr == 'encoding') {
         $msgstr = $encoding;
     }
+*/
 
     // Detect comments and strip them if $msgid == $msgstr
     // e.g. tr('_: This is just a comment\nReal message to translate here')
@@ -160,7 +166,9 @@ function tr($msgid, $substitution = false)
     }
 
     if (!$substitution) {
-        $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, $encoding));
+        // Fix for #98 - (Quick fix)
+        //$msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, $encoding));
+        $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, 'UTF-8'));
     }
 
     return $msgstr;
