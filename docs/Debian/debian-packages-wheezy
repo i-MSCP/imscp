@@ -11,8 +11,10 @@ chkrootkit
 courier-authdaemon
 courier-base
 courier-imap
+courier-imap-ssl
 courier-maildrop
 courier-pop
+courier-pop-ssl
 dialog
 diff
 dnsutils
