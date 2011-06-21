@@ -2,7 +2,7 @@ i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
 -------------------------------------------------------------------------------------
-i-MSCP 1.0.1.3 (beta)
+i-MSCP 1.0.1.3 (beta 3)
 -------------------------------------------------------------------------------------
 
 Distributions:
@@ -11,8 +11,7 @@ Features / Enhancements:
     Gui:
         Components:
             - DebugBar: Added $_SERVER variable (plugin variables)
-
-Other:
+            - Update (database): Improved both execution time and memory consumption
 
 Tickets:
 	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default page.

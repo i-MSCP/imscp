@@ -124,53 +124,56 @@ class iMSCP_Update_Database extends iMSCP_Update
             // Get the database update method name
             $databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
 
-            // Gets the stack of queries from the databse update method
+            // Gets the querie(s) from the databse update method
+            // A database update can return void, an array or a string
             $queryStack = $this->$databaseUpdateMethod();
 
-            // Checks if the current database update was already executed with a failed
-            // status
-            if (isset($dbConfig->FAILED_UPDATE)) {
-                list($failedUpdate, $failedQueryIndex) = $dbConfig->FAILED_UPDATE;
-            } else {
-                $failedUpdate = '';
-                $failedQueryIndex = -1;
-            }
-
-            // Execute all queries from the queries stack returned by the database
-            // update method
-            foreach ($queryStack as $index => $query)
-            {
-                // Query was already applied with success ?
-                if ($databaseUpdateMethod == $failedUpdate &&
-                    $index < $failedQueryIndex
-                ) {
-                    continue;
+            if (!empty($queryStack)) {
+                // Checks if the current database update was already executed with a
+                // failed status
+                if (isset($dbConfig->FAILED_UPDATE)) {
+                    list($failedUpdate, $failedQueryIndex) = $dbConfig->FAILED_UPDATE;
+                } else {
+                    $failedUpdate = '';
+                    $failedQueryIndex = -1;
                 }
 
-                try {
-                    // Execute query
-                    $pdo->query($query);
-                } catch (PDOException $e) {
-                    // Store the query index that was failed and the database update
-                    // method that wrap it
-                    $dbConfig->FAILED_UPDATE = "$databaseUpdateMethod;$index";
-
-                    // Prepare error message
-                    $errorMessage = sprintf(
-                        'Database update %s failed', $databaseUpdateRevision);
-
-                    // Extended error message
-                    if (PHP_SAPI != 'cli') {
-                        $errorMessage .= ':<br /><br />' . $e->getMessage() .
-                                         '<br /><br />Query: ' . trim($query);
-                    } else {
-                        $errorMessage .= ":\n\n" . $e->getMessage() .
-                                         "\nQuery: " . trim($query);
+                // Execute all queries from the queries stack returned by the database
+                // update method
+                foreach ((array)$queryStack as $index => $query)
+                {
+                    // Query was already applied with success ?
+                    if ($databaseUpdateMethod == $failedUpdate &&
+                        $index < $failedQueryIndex
+                    ) {
+                        continue;
                     }
 
-                    $this->_lastError = $errorMessage;
+                    try {
+                        // Execute query
+                        $pdo->query($query);
+                    } catch (PDOException $e) {
+                        // Store the query index that failed and the database update
+                        // method that wrap it
+                        $dbConfig->FAILED_UPDATE = "$databaseUpdateMethod;$index";
 
-                    return false;
+                        // Prepare error message
+                        $errorMessage = sprintf(
+                            'Database update %s failed', $databaseUpdateRevision);
+
+                        // Extended error message
+                        if (PHP_SAPI != 'cli') {
+                            $errorMessage .= ':<br /><br />' . $e->getMessage() .
+                                             '<br /><br />Query: ' . trim($query);
+                        } else {
+                            $errorMessage .= ":\n\n" . $e->getMessage() .
+                                             "\nQuery: " . trim($query);
+                        }
+
+                        $this->_lastError = $errorMessage;
+
+                        return false;
+                    }
                 }
             }
 
@@ -252,8 +255,8 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Check if a column exists in a database table and if not execute query to add
-     * that column.
+     * Checks if a column exists in a database table and if not, execute a query to
+     * add that column.
      *
      * @author Daniel Andreca <sci2tech@gmail.com>
      * @since r4509
@@ -290,56 +293,45 @@ class iMSCP_Update_Database extends iMSCP_Update
 		";
     }
 
-    // Implement all database update methods below
-
     /**
-     * Catch all database updates methods (2 to 45) that were removed.
-     *
-     * Note: Database update 1 is now useless.
+     * Catch any database update that were removed.
      *
      * @param  string $updateMethod Database method name
      * @param  array $param $parameter
-     * @return array Stack of SQL statements to be applied
+     * @return void
      */
-    public function __call($updateMethod, $param)
-    {
-        return array();
-    }
+    public function __call($updateMethod, $param) {}
 
     /**
-     * Fixed some CSRF issues in admin log.
+     * Fixes some CSRF issues in admin log.
      *
      * @author Thomas Wacker <thomas.wacker@ispcp.net>
      * @since r3695
-     * @return array Stack of SQL statements to be executed
+     * @return array SQL Statement
      */
     protected function _databaseUpdate_46()
     {
-        $sqlUpd = array();
-
-        $sqlUpd[] = "TRUNCATE TABLE `log`;";
-
-        return $sqlUpd;
+        return 'TRUNCATE TABLE `log`;';
     }
 
     /**
-     * Removed unused 'suexec_props' table.
+     * Removes useless 'suexec_props' table.
      *
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since r3709
-     * @return array Stack of SQL statements to be applied
+     * @return array SQL Statement
      */
     protected function _databaseUpdate_47()
     {
-        return array("DROP TABLE IF EXISTS `suexec_props`;");
+        return 'DROP TABLE IF EXISTS `suexec_props`;';
     }
 
     /**
-     * Adding apps-installer ticket #14.
+     * Adds table for software installer (ticket #14).
      *
-     * @author  Sascha Bay <worst.case@gmx.de>
-     * @since   r3695
-     * @return  array Stack of SQL statements to be executed
+     * @author Sascha Bay <worst.case@gmx.de>
+     * @since  r3695
+     * @return array Stack of SQL statements to be executed
      */
     protected function _databaseUpdate_48()
     {
@@ -433,43 +425,27 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Add i-MSCP daemon service properties (moved to 50).
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @since r3985
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_49()
-    {
-        return array();
-    }
-
-    /**
-     * Add i-MSCP daemon service properties
+     * Adds i-MSCP daemon service properties.
      *
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since r4004
-     * @return array Stack of SQL statements to be executed
+     * @return void
      */
     protected function _databaseUpdate_50()
     {
         /** @var $dbConfig iMSCP_Config_Handler_Db */
         $dbConfig = iMSCP_Registry::get('dbConfig');
         $dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1";
-
-        return array();
     }
 
     /**
-     * Added field for on-click-logon from the ftp-user site(such as PMA).
+     * Adds field for on-click-logon from the ftp-user site(such as PMA).
      *
      * @author William Lightning <kassah@gmail.com>
-     * @return array Stack of SQL statements to be executed
+     * @return string SQL Statement
      */
     protected function _databaseUpdate_51()
     {
-        $sqlUpd = array();
-
         $query = "
 			ALTER IGNORE TABLE
 				`ftp_users`
@@ -479,17 +455,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`passwd`
 		";
 
-        $sqlUpd[] = self::secureAddColumnTable('ftp_users', 'rawpasswd', $query);
-
-        return $sqlUpd;
+        return self::secureAddColumnTable('ftp_users', 'rawpasswd', $query);
     }
 
     /**
-     * Adding apps-installer new options.
+     * Adds new options for applications instller.
      *
-     * @author  Sascha Bay (TheCry) <worst.case@gmx.de>
-     * @since   r4036
-     * @return  array Stack of SQL statements to be executed
+     * @author Sascha Bay <worst.case@gmx.de>
+     * @since  r4036
+     * @return array Stack of SQL statements to be executed
      */
     protected function _databaseUpdate_52()
     {
@@ -662,7 +636,7 @@ class iMSCP_Update_Database extends iMSCP_Update
         $tables = $db->metaTables();
 
         foreach ($tables as $table) {
-            $sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
+            $sqlUpd[] = "ALTER TABLE `$table` ENGINE=InnoDB;";
         }
 
         return $sqlUpd;
@@ -673,11 +647,11 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since r4592
-     * @return array Stack of SQL statements to be executed
+     * @return array SQL Statement
      */
     protected function _databaseUpdate_56()
     {
-        return array("ALTER IGNORE TABLE `user_gui_props` ADD UNIQUE (`user_id`);");
+        return 'ALTER IGNORE TABLE `user_gui_props` ADD UNIQUE (`user_id`);';
     }
 
     /**
@@ -742,11 +716,11 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since r4644
-     * @return array Stack of SQL statements to be executed
+     * @return string SQL Statement
      */
     protected function _databaseUpdate_59()
     {
-        return array("
+        return "
             DROP PROCEDURE IF EXISTS schema_change;
                 CREATE PROCEDURE schema_change()
                 BEGIN
@@ -765,7 +739,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 END;
                 CALL schema_change();
             DROP PROCEDURE IF EXITST schema_change;
-        ");
+        ";
     }
 
     /**
@@ -773,11 +747,11 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @author Daniel Andreca <sci2tech@gmail.com>
      * @since r4650
-     * @return array Stack of SQL statements to be executed
+     * @return string SQL Statement
      */
     protected function _databaseUpdate_60()
     {
-        return array("ALTER TABLE `autoreplies_log` ENGINE=InnoDB");
+        return 'ALTER TABLE `autoreplies_log` ENGINE=InnoDB';
     }
 
     /**
