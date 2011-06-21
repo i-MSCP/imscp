@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `autoreplies_log` (
   `from` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message sender',
   `to` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message recipient',
   INDEX ( `time` )
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table';
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table';
 
 -- --------------------------------------------------------
 

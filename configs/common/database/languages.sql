@@ -48,7 +48,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 DROP TABLE IF EXISTS `lang_en_GB`;
-CREATE TABLE `lang_en_GB` (
+CREATE TABLE IF NOT EXISTS `lang_en_GB` (
   `msgid` text collate utf8_unicode_ci,
   `msgstr` text collate utf8_unicode_ci,
   KEY msgid (msgid(25))
@@ -58,7 +58,7 @@ CREATE TABLE `lang_en_GB` (
 -- data for table `lang_en_GB`
 --
 
-INSERT INTO `lang_en_GB` (`msgid`, `msgstr`) VALUES
+INSERT IGNORE INTO `lang_en_GB` (`msgid`, `msgstr`) VALUES
 ('imscp_languageSetlocaleValue', 'en_GB'),
 ('imscp_table', 'lang_en_GB'),
 ('imscp_language', 'English (EnglishBritain)'),
