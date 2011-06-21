@@ -651,7 +651,10 @@ class iMSCP_Update_Database extends iMSCP_Update
      */
     protected function _databaseUpdate_56()
     {
-        return 'ALTER IGNORE TABLE `user_gui_props` ADD UNIQUE (`user_id`);';
+        return array(
+            'ALTER TABLE `user_gui_props` DROP INDEX `user_id`',
+            'ALTER IGNORE TABLE `user_gui_props` ADD UNIQUE (`user_id`)'
+        );
     }
 
     /**
@@ -786,18 +789,18 @@ class iMSCP_Update_Database extends iMSCP_Update
         return $sqlUpd;
     }
 
-	/**
-	 * Fix for #102 - Changes naming convention for database language tables
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4650
-	 * @return string SQL Statement
-	 */
-	protected function _databaseUpdate_63(){
-		return array(
-			'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
-			'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
-		);
-	}
-
+    /**
+     * Fix for #102 - Changes naming convention for database language tables
+     *
+     * @author Daniel Andreca <sci2tech@gmail.com>
+     * @since r4650
+     * @return string SQL Statement
+     */
+    protected function _databaseUpdate_63()
+    {
+        return array(
+            'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
+            'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
+        );
+    }
 }
