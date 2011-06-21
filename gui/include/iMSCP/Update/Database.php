@@ -793,10 +793,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4650
 	 * @return string SQL Statement
 	 */
-	protected function _databaseUpdate_62(){
+	protected function _databaseUpdate_63(){
 		return array(
 			'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
-			'CREATE UNIQUE INDEX `msgid` ON `lang_en_GB` (`msgid`(255))'
+			'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
 		);
 	}
 
