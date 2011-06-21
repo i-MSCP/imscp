@@ -177,7 +177,7 @@ function gen_admin_menu($tpl, $menu_file)
                       'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
                       'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
                       'TR_MENU_SYSTEM_INFO' => tr('System info'),
-                      'TR_MENU_I18N' => tr('Internationalisation'),
+                      'TR_MENU_I18N' => tr('Internationalization'),
                       'TR_MENU_LANGUAGE' => tr('Language'),
                       'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
                       'TR_MENU_LOGOUT' => tr('Logout'),
