@@ -572,6 +572,8 @@ class iMSCP_Update_Database extends iMSCP_Update
         $sqlUpd = array();
 
         $status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
+
+        /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
 
         $query = "
@@ -733,5 +735,68 @@ class iMSCP_Update_Database extends iMSCP_Update
         $sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_EnglishBritain';";
 
         return $sqlUpd;
+    }
+
+    /**
+     * Fix for #102 - Changes naming convention for database language tables
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4644
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_58()
+    {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+
+        $sqlUpd = array();
+
+        // Drop all old database language tables excepted the EnglishBritain that will
+        // be simply renamed.
+        foreach ($db->metaTables() as $tableName) {
+            if (strpos($tableName, 'lang_') !== false &&
+                $tableName != 'lang_EnglishBritain'
+            ) {
+                $sqlUpd[] = "DROP TABLE `$tableName`";
+            } elseif ($tableName == 'lang_EnglishBritain') {
+                $sqlUpd[] = 'RENAME TABLE `lang_EnglishBritain` TO `lang_en_GB`';
+            }
+        }
+
+        // Will reset the language property for all users (expected behavior) to
+        // ensure compatibility with the fix. So then each user will have to set
+        // (again) his own language if he want use an other language than the default.
+        $sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_en_GB';";
+    }
+
+    /**
+     * Drop useless column in user_gui_props table.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4644
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_59()
+    {
+        return array("
+            DROP PROCEDURE IF EXISTS schema_change;
+                CREATE PROCEDURE schema_change()
+                BEGIN
+                    IF EXISTS (
+		                SELECT
+			                *
+		                FROM
+			                information_schema.COLUMNS
+		                WHERE
+			                table_name = 'user_gui_props'
+		                AND
+			                column_name = 'id'
+	                ) THEN
+		                ALTER TABLE `user_gui_props` DROP column `id`;
+                    END IF;
+                END;
+                CALL schema_change();
+            DROP PROCEDURE IF EXITST schema_change;
+        ");
     }
 }

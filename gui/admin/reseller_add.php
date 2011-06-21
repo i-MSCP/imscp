@@ -247,15 +247,12 @@ function add_reseller($tpl) {
 			$user_logo = 0;
 
 			$query = "
-				INSERT INTO `user_gui_props`
-					(
-					`user_id`,
-					`lang`,
-					`layout`,
-					`logo`
-					)
-				VALUES
-					(?, ?, ?, ?)
+				REPLACE INTO
+				    `user_gui_props` (
+				        `user_id`, `lang`, `layout`, `logo`
+					) VALUES (
+					    ?, ?, ?, ?
+                    )
 			";
 
 			exec_query($query, array($new_admin_id,

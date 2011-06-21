@@ -44,24 +44,24 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- table structure for table `lang_EnglishBritain`
+-- table structure for table `lang_en_GB`
 --
 
-DROP TABLE IF EXISTS `lang_EnglishBritain`;
-CREATE TABLE `lang_EnglishBritain` (
+DROP TABLE IF EXISTS `lang_en_GB`;
+CREATE TABLE `lang_en_GB` (
   `msgid` text collate utf8_unicode_ci,
   `msgstr` text collate utf8_unicode_ci,
   KEY msgid (msgid(25))
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- data for table `lang_EnglishBritain`
+-- data for table `lang_en_GB`
 --
 
-INSERT INTO `lang_EnglishBritain` (`msgid`, `msgstr`) VALUES
+INSERT INTO `lang_en_GB` (`msgid`, `msgstr`) VALUES
 ('imscp_languageSetlocaleValue', 'en_GB'),
-('imscp_table', 'EnglishBritain'),
-('imscp_language', 'English (GB)'),
+('imscp_table', 'lang_en_GB'),
+('imscp_language', 'English (EnglishBritain)'),
 ('encoding', 'UTF-8'),
 ('Incorrect domain name syntax', 'Incorrect <i>domain name</i> syntax'),
 ('Incorrect forward syntax', 'Incorrect <i>forward</i> syntax!'),

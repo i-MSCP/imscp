@@ -465,8 +465,9 @@ function add_user_data($reseller_id) {
 	$query = "
 		INSERT INTO `user_gui_props`
 			(`user_id`, `lang`, `layout`)
-		VALUES
-			(?, ?, ?)
+		VALUES (
+		    ?, ?, ?
+        )
 	";
 
 	exec_query($query, array($record_id,

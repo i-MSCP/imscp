@@ -59,7 +59,7 @@ function generatePage($tpl)
     $index = 0;
 
     foreach($db->metaTables() as $tableName) {
-        // Is language database table ?
+        // Is  not a language database table ?
         if (strpos($tableName, 'lang_') === false) {
             continue;
         }
@@ -141,52 +141,32 @@ function importLanguageFile()
         $fileName = $_FILES['languageFile']['name'];
     }
 
-    $mimeType = checkMimeType($filePath, array('text/plain', 'text/x-po'));
-
-    if(false == $mimeType) {
-        set_page_message(tr('You can upload only portable object files.'), 'error');
+    if(($parseResult = _parseGettextFile($filePath, $fileName)) === false) {
         return;
-    } else {
+    }
 
-        if ($mimeType == 'text/x-po') {
-            $parseResult = _parseGettextFile($filePath, $fileName);
-        } else {
-            set_page_message(tr('Importing a language from a text file is no longer supported.<br /> You must now import the languages from portable object files (*.po).'), 'warning');
-            return;
-        }
+    if (empty($parseResult['imscp_languageSetlocaleValue']) ||
+        empty($parseResult['imscp_table']) ||
+        empty($parseResult['imscp_language']) ||
+        !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $parseResult['imscp_languageSetlocaleValue'])
+        || !preg_match('/^[a-z0-9_]+$/Di', $parseResult['imscp_table'])
+    ) {
+        set_page_message(tr('The file does not contain all the necessary information.'), 'error');
+        return;
+    }
 
-        if (is_int($parseResult)) {
-            if ($parseResult == 1) {
-                set_page_message(tr('Could not read language file.'), 'error');
-                return;
-            } elseif ($parseResult == 2) {
-                set_page_message(tr('Uploaded file is not a valid language file.'), 'error');
-                return;
-            }
-        }
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
-        if (empty($parseResult['imscp_languageSetlocaleValue']) ||
-            empty($parseResult['imscp_table']) ||
-            empty($parseResult['imscp_language']) ||
-            !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $parseResult['imscp_languageSetlocaleValue'])
-            || !preg_match('/^[a-z0-9()]+$/Di', $parseResult['imscp_table'])
-        ) {
-            set_page_message(tr('The file does not contain all the necessary information.'), 'error');
-            return;
-        }
+    $languageTable = 'lang_' . $parseResult['imscp_table'];
+    $isUpdate = false;
 
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
+    if (in_array($languageTable, $db->metaTables())) {
+        execute_query("DROP TABLE IF EXISTS `$languageTable`;");
+        $isUpdate = true;
+    }
 
-        $languageTable = 'lang_' . $parseResult['imscp_table'];
-        $isUpdate = false;
-
-        if(in_array($languageTable, $db->metaTables())) {
-            execute_query("DROP TABLE IF EXISTS `$languageTable`;");
-            $isUpdate = true;
-        }
-
-        $query = "
+    $query = "
 			CREATE TABLE
 			    `$languageTable` (
 				    `msgid` text collate utf8_unicode_ci,
@@ -195,32 +175,31 @@ function importLanguageFile()
 			    ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
 			;
 		";
-        execute_query($query);
+    execute_query($query);
 
-        $parameters = array();
+    $parameters = array();
 
-        foreach($parseResult as $msgid => $msgstr){
-            $parameters[] = $msgid;
-            $parameters[] = $msgstr;
-        }
+    foreach ($parseResult as $msgid => $msgstr) {
+        $parameters[] = $msgid;
+        $parameters[] = $msgstr;
+    }
 
-        $queryPart = str_repeat('(?,?), ', count($parseResult));
-        $query = "INSERT INTO `$languageTable`  (`msgid`, `msgstr`) VALUES " .
-            substr_replace($queryPart, '', strrpos($queryPart, ','));
+    $queryPart = str_repeat('(?,?), ', count($parseResult));
+    $query = "INSERT INTO `$languageTable`  (`msgid`, `msgstr`) VALUES " .
+             substr_replace($queryPart, '', strrpos($queryPart, ','));
 
-        exec_query($query, $parameters);
+    exec_query($query, $parameters);
 
-        if (!$isUpdate) {
-            write_log(tr('%s added new language: %s', $_SESSION['user_logged'],
-                          $parseResult['imscp_language']));
+    if (!$isUpdate) {
+        write_log(tr('%s added new language: %s', $_SESSION['user_logged'],
+                     $parseResult['imscp_language']));
 
-            set_page_message(tr('Language was successfully installed.'), 'success');
-        } else {
-            write_log(tr('%s updated language: %s', $_SESSION['user_logged'],
-                         $parseResult['imscp_language']));
+        set_page_message(tr('Language was successfully installed.'), 'success');
+    } else {
+        write_log(tr('%s updated language: %s', $_SESSION['user_logged'],
+                     $parseResult['imscp_language']));
 
-            set_page_message(tr('Language was successfully updated.'), 'success');
-        }
+        set_page_message(tr('Language was successfully updated.'), 'success');
     }
 }
 
@@ -229,15 +208,19 @@ function importLanguageFile()
  *
  * @param  string $file Absolute path to the uploaded file
  * @param  string $filename Filename
- * @return mixed array An array that contains all translation string or an integer on
+ * @return mixed array An array that contains all translation string or FALSE on
  *                     failure
  */
 function _parseGettextFile($file, $filename)
 {
-    $content = file_get_contents($file);
+    if(($content = @file_get_contents($file)) == false) {
+        set_page_message(tr("Unable to read the language file."), 'error');
+        return false;
+    }
 
     if (empty($content)) {
-        return 1;
+        set_page_message(tr("The file doesn't contains any content"), 'error');
+        return false;
     }
 
     $parseResult = array();
@@ -264,7 +247,7 @@ function _parseGettextFile($file, $filename)
         $parseResult['imscp_language'] = $parseResult['_: Localised language'];
         unset($parseResult['_: Localised language']);
     } else {
-        return 2;
+        return false;
     }
 
     // Parses some relevant header information
@@ -278,16 +261,16 @@ function _parseGettextFile($file, $filename)
             }
         }
 
-        // Retrieves the name of language team
-        if (isset($headers['Language-Team'])) {
-            $languageTeam = $headers['Language-Team'];
-            if (($np = strpos($languageTeam, '<')) !== false) {
-
-                // Normalizes the name of the language team and uses it as database
-                // table name
-                $parseResult['imscp_table'] = str_replace(
-                    array(' ', '(', ')'), '', mb_substr($languageTeam, 0, $np));
+        // Use the Language header as database language table name
+        if(isset($headers['Language'])) {
+            if(!empty($headers['Language'])) {
+                $parseResult['imscp_table'] = trim($headers['Language']);
+            } else {
+                set_page_message(tr("The 'Language' header doesn't contains the required value"), 'error');
             }
+        } else {
+            set_page_message(tr("The language file doesn't contains the required 'Language' header."), 'error');
+            return false;
         }
 
         // Retrieves the i-MSCP_language Revision from the PO-Revision-Date header
@@ -312,7 +295,8 @@ function _parseGettextFile($file, $filename)
 
         unset($parseResult['headers']);
     } else {
-        return 2;
+        set_page_message(tr("No headers found in language file."), 'error');
+        return false;
     }
 
     // set default encoding to UTF-8 if not present

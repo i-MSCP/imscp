@@ -117,7 +117,7 @@ function add_user($tpl)
             $user_logo = 0;
 
             $query = "
-				INSERT INTO
+				REPLACE INTO
 				    `user_gui_props` (
                         `user_id`, `lang`, `layout`, `logo`
                     ) VALUES (

@@ -12,7 +12,9 @@ Features / Enhancements:
 Other:
 
 Tickets:
-    - Fixed #99: Bug - Undefined variable: DB in reseller/software_upload.php on line 457
+    - Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on line 457
+    - Fixed #100: Bug - Default language overrides user language at admin level
+    - Fixed #102  Bug - Unable to install more than one language file
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta2
