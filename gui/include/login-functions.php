@@ -298,8 +298,9 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
     } elseif (!$autoDeny) {
         return true;
     }
-
     deny_access();
+    return false; // Only to make some IDE happy
+
 }
 
 /**
@@ -647,7 +648,6 @@ function check_user_login()
  */
 function check_login($fileName = null, $preventExternalLogin = true)
 {
-    // session-type check:
     if (!check_user_login()) {
         if (is_xhr()) {
             header('HTTP/1.0 403 Forbidden');
@@ -657,6 +657,7 @@ function check_login($fileName = null, $preventExternalLogin = true)
         user_goto('/index.php');
     }
 
+    // Check user level
     if (!is_null($fileName)) {
 
         $levels = explode('/', realpath(dirname($fileName)));
@@ -685,19 +686,26 @@ function check_login($fileName = null, $preventExternalLogin = true)
 
     // prevent external login / check for referer
     if ($preventExternalLogin) {
+
+        // An user try to access the panel from another url ?
         if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
 
+            // Extracting the URL scheme
             $info = parse_url($_SERVER['HTTP_REFERER']);
 
+            // The URL does contains the host element ?
             if (isset($info['host']) && !empty($info['host'])) {
                 $http_host = $_SERVER['HTTP_HOST'];
 
+                // The referer doesn't match the panel hostname ?
                 if ($info['host'] != substr($http_host, 0, (int)(strlen($http_host) - strlen(strrchr($http_host, ':'))))
                     || $info['host'] != $_SERVER['SERVER_NAME']
                 ) {
 
-                    set_page_message(tr('Request from foreign host was blocked!'));
+                    set_page_message(tr('Request from foreign host was blocked.'));
 
+                    # Quick fix for #96 (will be rewritten ASAP)
+                    isset($_SERVER['REDIRECT_URL']) ?: $_SERVER['REDIRECT_URL'] = '';
                     if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']),
                                  strlen($_SERVER['REDIRECT_URL'])) == $_SERVER['REDIRECT_URL'])
                     ) {
@@ -726,12 +734,12 @@ function change_user_interface($fromId, $toId)
     while (1) {
         $query = "
 			SELECT
-				`admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by`
+				`admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`,
+				`created_by`
 			FROM
 				`admin`
 			WHERE
 				binary `admin_id` = ?
-			;
 		";
 
         $rsFrom = exec_query($query, $fromId);
@@ -746,7 +754,9 @@ function change_user_interface($fromId, $toId)
         $toUserData = $rsTo->fetchRow();
 
         if (!is_userdomain_ok($toUserData['admin_name'])) {
-            set_page_message(tr("%s's account status is not ok!", decode_idna($toUserData['admin_name'])), 'warning');
+            set_page_message(tr("%s's account status is not ok!",
+                                decode_idna($toUserData['admin_name'])),
+                             'warning');
             break;
         }
 
@@ -762,13 +772,13 @@ function change_user_interface($fromId, $toId)
         $allowedChanges['reseller']['user'] = 'index.php';
         $allowedChanges['reseller']['BACK'] = 'users.php?psi=last';
 
-        if (!isset($allowedChanges[$fromAdminType][$toAdminType]) || ($toAdminType == $fromAdminType &&
-                                                                      $fromAdminType != 'admin')
+        if (!isset($allowedChanges[$fromAdminType][$toAdminType]) ||
+            ($toAdminType == $fromAdminType && $fromAdminType != 'admin')
         ) {
 
             if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $toId) {
                 $index = $allowedChanges[$toAdminType]['BACK'];
-                $restore = true;
+                //$restore = true;
             } else {
                 set_page_message(tr('You do not have permission to access this interface!'), 'error');
                 break;
@@ -777,10 +787,13 @@ function change_user_interface($fromId, $toId)
 
         $index = $index ? $index : $allowedChanges[$fromAdminType][$toAdminType];
 
-        unset_user_login_data(false, $restore);
+        //unset_user_login_data(false, $restore);
+        unset_user_login_data(false, true);
 
-        if (($toAdminType != 'admin' && ((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $toId)
-                                         || !isset($_SESSION['logged_from_id']))) || ($fromAdminType == 'admin' && $toAdminType == 'admin')
+        if (($toAdminType != 'admin' && ((isset($_SESSION['logged_from_id']) &&
+                                          $_SESSION['logged_from_id'] != $toId)
+                                         || !isset($_SESSION['logged_from_id'])))
+            || ($fromAdminType == 'admin' && $toAdminType == 'admin')
         ) {
 
             $_SESSION['logged_from'] = $fromUserData['admin_name'];
@@ -802,16 +815,20 @@ function change_user_interface($fromId, $toId)
         $_SESSION['user_created_by'] = $toUserData['created_by'];
         $_SESSION['user_login_time'] = time();
 
-        $query = "REPLACE INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?);";
+        $query = "
+            REPLACE INTO
+                `login` (
+                    `session_id`, `ipaddr`, `user_name`, `lastaccess`
+                ) VALUES (
+                    ?, ?, ?, ?
+                )
+            ";
 
         exec_query($query, array(session_id(), getipaddr(), $toUserData['admin_name'], $_SESSION['user_login_time']));
 
-        write_log(
-            sprintf(
-                "%s changes into %s's interface", decode_idna($fromUserData['admin_name']),
-                decode_idna($toUserData['admin_name'])
-            )
-        );
+        write_log(sprintf("%s changes into %s's interface",
+                          decode_idna($fromUserData['admin_name']),
+                          decode_idna($toUserData['admin_name'])));
 
         break;
     }
