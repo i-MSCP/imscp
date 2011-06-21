@@ -14,6 +14,7 @@ Features / Enhancements:
             - Update (database): Improved both execution time and memory consumption
 
 Tickets:
+    - Fixed #2:   Feature - SSL support for master vhost
 	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default page.
 	- Fixed #97:  Good practices - Throw an exception if the phptmp directory is unwritable
 	- Fixed #98:  Bug - Encoding issue in include/i18n.php
