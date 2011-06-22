@@ -796,11 +796,15 @@ class iMSCP_Update_Database extends iMSCP_Update
      * @since r4650
      * @return string SQL Statement
      */
-    protected function _databaseUpdate_63()
-    {
-        return array(
-            'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
-            'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
-        );
-    }
+	protected function _databaseUpdate_64() {
+		$db = iMSCP_Registry::get('db');
+		if (in_array('lang_en_GB', $db->metaTables())) {
+			if ($tableName == 'lang_en_GB') {
+				return array(
+					'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
+					'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
+				);
+			}
+		}
+	}
 }
