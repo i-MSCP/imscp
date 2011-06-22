@@ -1,19 +1,20 @@
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ro_RO\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
 "POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2010-10-03 22:16+0200\n"
-"Last-Translator: Daniel Andreca <sci2tech@gmail.com>\n"
-"Language-Team: Romanian <ro_RO@li.org>\n"
-"Language: ro\n"
+"PO-Revision-Date: 2011-06-14 06:16+0000\n"
+"Last-Translator: gOOvER <goover0976@yahoo.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Translation-Date: 2008-04-30 16:03-0500\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: x64PoPot 0.2\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1))\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -26,9 +27,8 @@ msgstr "Română - Romanian"
 msgid "File %s does not exists or cannot be reached!"
 msgstr "Acest fisier %s nu exista sau nu poate fi accesat!"
 
-#, fuzzy
 msgid "Error while trying to obtain list of network cards."
-msgstr "Eroare la obtinerea listei de placi de retea!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -55,15 +55,11 @@ msgstr "Minut"
 msgid "Minutes"
 msgstr "Minute"
 
-#, fuzzy
 msgid "An error occured! Please, contact your administrator!"
-msgstr "Nu se poate deschide directorul!<br>Contactati administratorul!"
+msgstr ""
 
-#, fuzzy
 msgid "Couldn't check for updates. Website not reachable."
 msgstr ""
-"Nu s-a putut verifica daca exista actualizari disponibile! Website-ul nu "
-"este disponibil."
 
 msgid "General information"
 msgstr "Informatii Generale"
@@ -179,17 +175,14 @@ msgstr "Porturi server"
 msgid "Rootkit Log"
 msgstr "Log Rootkit"
 
-#, fuzzy
 msgid "Services status"
-msgstr "Status Server"
+msgstr ""
 
-#, fuzzy
 msgid "Services ports"
-msgstr "Porturi server"
+msgstr ""
 
-#, fuzzy
 msgid "IP usage"
-msgstr "Utilizare disc"
+msgstr ""
 
 msgid "Application management"
 msgstr ""
@@ -296,9 +289,8 @@ msgstr ""
 msgid "Disabled"
 msgstr "Dezactivat"
 
-#, fuzzy
 msgid "Reload"
-msgstr "Incarca"
+msgstr ""
 
 msgid "Error"
 msgstr "Eroare"
@@ -425,7 +417,8 @@ msgstr ""
 "pentru a fi valida"
 
 #, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!"
 msgstr ""
 "Parola este mai scurta de %s caractere sau contine caractere ce nu sunt "
 "permise!"
@@ -505,23 +498,20 @@ msgstr ""
 msgid "All fields are required!"
 msgstr ""
 
-#, fuzzy
 msgid "internet Multi Server Control Panel"
-msgstr "Panou Control i-MSCP"
+msgstr ""
 
 msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr "Panou Control i-MSCP"
+msgstr ""
 
 msgid "Administrator login"
 msgstr "Autentificare Administrator"
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "Panou Control i-MSCP"
+msgstr ""
 
 msgid "Login"
 msgstr "Autentificare"
@@ -532,9 +522,8 @@ msgstr "Parola"
 msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
-#, fuzzy
 msgid "FileManager"
-msgstr "Manager fisiere"
+msgstr ""
 
 msgid "Secure Connection"
 msgstr "Conexiune Securizata"
@@ -545,42 +534,34 @@ msgstr "Conexiune Normala"
 msgid "Lost password"
 msgstr "Parola Pierduta"
 
-#, fuzzy
 msgid "php-extension 'gd' not loaded."
-msgstr "EROARE: Extensia PHP 'mcript' nu este disponibila!"
+msgstr ""
 
 msgid "Captcha fontfile not found."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
-msgstr "i-MSCP - Client/ Modifica Parola Utilizator SQL"
+msgstr ""
 
 msgid "Security code"
 msgstr "Code de securitate"
 
-#, fuzzy
 msgid ""
 "To avoid abuse, we ask you to write the combination of letters on the "
 "picture above into the field \"Security code\""
 msgstr ""
-"Pentru evitarea abuzurilor, solicitam tastarea combinatiei de litere din "
-"imagineade mai sus in campul \"Cod Securitate\")"
 
-#, fuzzy
 msgid "Get password"
-msgstr "Genereaza parola!"
+msgstr ""
 
 msgid "Back"
 msgstr "Inapoi"
 
-#, fuzzy
 msgid "Your new password has been sent. Check your mail."
-msgstr "Parola solicitata a fost trimisa"
+msgstr ""
 
-#, fuzzy
 msgid "New password has not been sent. Ask your administrator."
-msgstr "Noua parola nu a putut fi salvata"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -591,9 +572,8 @@ msgstr ""
 "Cererea pentru o noua parola a fost initiata.Veti primi un email cu "
 "instructiuni pentru a finaliza acest proces. Cererea expira in %s minute"
 
-#, fuzzy
 msgid "User or security code are incorrect."
-msgstr "EROARE: Cod de securitate sau utilizator incorect"
+msgstr ""
 
 msgid "All fields are required."
 msgstr ""
@@ -610,9 +590,8 @@ msgstr "Nume utilizator incorect: lungime sau sintaxa"
 msgid "Entered passwords do not match!"
 msgstr "Parola introdusa nu corespunde"
 
-#, fuzzy
 msgid "This user name already exist."
-msgstr "Utilizatorul deja existent!"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "Camp gol sau incorect!"
@@ -693,9 +672,8 @@ msgstr "Modificarea parolei este dezactivata!"
 msgid "Demo Version!"
 msgstr "Versiune demo!"
 
-#, fuzzy
 msgid "iMSCP - Admin/Admin Log"
-msgstr "i-MSCP - Administrator/Log Administrator"
+msgstr ""
 
 msgid "Log is empty!"
 msgstr "Log-ul este gol!"
@@ -871,9 +849,8 @@ msgstr "Salveaza"
 msgid "Edit button"
 msgstr "Buton editare"
 
-#, fuzzy
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr "i-MSCP Administrator / Unelte Sistem / Status Server"
+msgstr ""
 
 msgid "Database updates"
 msgstr "Actualizari baza de date"
@@ -950,43 +927,35 @@ msgstr "Nu"
 msgid "Enabled"
 msgstr "Pornit"
 
-#, fuzzy
 msgid "Incorrect subdomains limit."
-msgstr "Limita subdomeniilor este incorecta!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect aliases limit."
-msgstr "Limita aliasurilor este incorecta!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect mail accounts limit."
-msgstr "Limita conturilor email este incorecta!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect FTP accounts limit."
-msgstr "Limita conturilor FTP este incorecta!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect SQL users limit."
-msgstr "Limita userilor SQL este incorecta!"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "Limita pentru bazele de date SQL este <i>dezactivata</i>!"
 
-#, fuzzy
 msgid "Incorrect SQL databases limit."
-msgstr "Limita bazelor de date SQL este incorecta!"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "Limita pentru useri SQL este <i>dezactivata</i>!"
 
-#, fuzzy
 msgid "Incorrect traffic limit."
-msgstr "Limita de traficului este incorecta!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect disk quota limit."
-msgstr "Limita spatiului este incorecta!"
+msgstr ""
 
 msgid "The application installer needs PHP to enable."
 msgstr ""
@@ -1018,9 +987,8 @@ msgstr "Trafic"
 msgid "Disk"
 msgstr "Disc"
 
-#, fuzzy
 msgid "Domain properties could not be updated."
-msgstr "Proprietatile domeniului nu pot fi modificate!"
+msgstr ""
 
 msgid "Domain properties updated successfully!"
 msgstr "Proprietatile domeniului actualizate cu succes!"
@@ -1113,10 +1081,11 @@ msgid "Yes"
 msgstr "Da"
 
 msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+"In case 'Domain expire' is 'N/A', the expiration date will be set from "
+"today."
 msgstr ""
-"In cazul in care 'Data expirarii' este 'N/A', data expirarii va fi calculata "
-"incepand cu data de azi."
+"In cazul in care 'Data expirarii' este 'N/A', data expirarii va fi calculata"
+" incepand cu data de azi."
 
 msgid "or Check for <strong>never Expire</strong>"
 msgstr ""
@@ -1290,8 +1259,8 @@ msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
 msgstr ""
-"<b>Optional:</b> Lasa acest camp liber daca nu doresti sa folosesti 'Termeni "
-"de Utilizare' pentru acest plan."
+"<b>Optional:</b> Lasa acest camp liber daca nu doresti sa folosesti 'Termeni"
+" de Utilizare' pentru acest plan."
 
 msgid "Text Only"
 msgstr "Doar text"
@@ -1380,24 +1349,20 @@ msgstr "Nu exista erori pentru subdomenii ale alias-urilor"
 msgid "No email account system errors"
 msgstr "Nu exista erori de sistem in contul de e-mail"
 
-#, fuzzy
 msgid "missing domain"
-msgstr "Domeniu Principal"
+msgstr ""
 
-#, fuzzy
 msgid "missing alias"
-msgstr "Alias domeniu"
+msgstr ""
 
 msgid "orphan entry"
 msgstr ""
 
-#, fuzzy
 msgid "No htaccess related system errors"
-msgstr "Nu exista erori de sistem in aliasuri"
+msgstr ""
 
-#, fuzzy
 msgid "Missing domain"
-msgstr "Domeniu Principal"
+msgstr ""
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1439,7 +1404,7 @@ msgstr "Executa cererile"
 msgid "Set status to 'change'"
 msgstr "Modifica status-ul in \"modificare\" "
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s Errors in database"
 msgstr ""
 
@@ -1503,9 +1468,8 @@ msgstr "i-MSCP - Administrator/ Manager Ip-uri"
 msgid "Remove IP"
 msgstr "Sterge IP"
 
-#, fuzzy
 msgid "No IP's available"
-msgstr "Nici o actualizare i-MSCP disponibila"
+msgstr ""
 
 msgid "New IP was added!"
 msgstr "Noul IP a fost adaugat!"
@@ -1541,32 +1505,26 @@ msgstr "Adauga IP nou"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Sigur doriti sa stergeti aceast IP: %s?"
 
-#, fuzzy
 msgid "i-MSCP - Admin/IP Usage"
-msgstr "i-MSCP - Administrator/ Manager Ip-uri"
+msgstr ""
 
-#, fuzzy
 msgid "Total Domains"
-msgstr "Domenii"
+msgstr ""
 
 msgid "No records found"
 msgstr ""
 
-#, fuzzy
 msgid "Admin/IP usage statistics"
-msgstr "Statistici domeniu"
+msgstr ""
 
-#, fuzzy
 msgid "Domain Name"
-msgstr "Nume domeniu"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller Name"
-msgstr "Nume reseller"
+msgstr ""
 
-#, fuzzy
 msgid "User language updated successfully."
-msgstr "Limba user actualizata cu succes!"
+msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Administrator/ Schimba Limba"
@@ -1574,9 +1532,8 @@ msgstr "i-MSCP - Administrator/ Schimba Limba"
 msgid "Choose your default language"
 msgstr "Alege limbajul prestabilit"
 
-#, fuzzy
 msgid "Error we have user that uses that language!"
-msgstr "EROARE: exista un reseller care foloseste acest IP!"
+msgstr ""
 
 msgid "Language was removed!"
 msgstr "Limba a fost stearsa!"
@@ -1686,9 +1643,8 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Utilizatorul a fost dezactivat"
 
-#, fuzzy
 msgid "Uninstall"
-msgstr "dezinstaleaza"
+msgstr ""
 
 #, php-format
 msgid "%d messages translated"
@@ -1709,9 +1665,8 @@ msgstr "Nu se poate citi fisierul de limba i-MSCP!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "Fisierul incarcat nu este un fisier de limba valid!"
 
-#, fuzzy
 msgid "Uploaded file does not contain language information!"
-msgstr "Fisierul incarcat nu contine informatiile de limba!"
+msgstr ""
 
 #, php-format
 msgid "%s added new language: %s"
@@ -1886,8 +1841,8 @@ msgstr "Utilizare disc"
 
 #, php-format
 msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
+"This reseller's customers are using/have more/higher <b>%s</b> "
+"accounts/limits than the new limit you entered."
 msgstr ""
 "Acest reseller foloseste deja mai mult/peste <b>%s</b> conturi/limitedecat "
 "noua limita introdusa"
@@ -1897,21 +1852,21 @@ msgid ""
 "This reseller has already assigned more/higher <b>%s</b> accounts/limits "
 "than the new limit you entered."
 msgstr ""
-"Acest reseller are deja alocat mai mult/peste <b>%s</b> conturi/limite decat "
-"noua limita introdusa"
+"Acest reseller are deja alocat mai mult/peste <b>%s</b> conturi/limite decat"
+" noua limita introdusa"
 
 #, php-format
 msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
 "service!"
 msgstr ""
-"Acest reseller(i) are deja alocate drepturi nelimitate pentru serviciu<b>%s</"
-"b>!"
+"Acest reseller(i) are deja alocate drepturi nelimitate pentru "
+"serviciu<b>%s</b>!"
 
 msgid "If you want to limit the reseller, you must first limit its customers!"
 msgstr ""
-"Daca se doreste limitarea resellerului intai trebuie introdusa limita pentru "
-"clienti!"
+"Daca se doreste limitarea resellerului intai trebuie introdusa limita pentru"
+" clienti!"
 
 #, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
@@ -1934,7 +1889,8 @@ msgstr "Date Reseller inconsistente!"
 
 msgid "Please, read the message(s) above and trying to correct!"
 msgstr ""
-"Va rugam sa cititi mesajul / mesajele urmatoare si incercati sa le corectati!"
+"Va rugam sa cititi mesajul / mesajele urmatoare si incercati sa le "
+"corectati!"
 
 msgid "Edit reseller"
 msgstr "Editeaza reseller"
@@ -1956,18 +1912,18 @@ msgstr "Tastati `CTRL+C` pentru a copia parola generata in clipboard."
 
 #, php-format
 msgid ""
-"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
-"\\nInstead, use the %s button to update the data."
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance "
+"reasons!\\nInstead, use the %s button to update the data."
 msgstr ""
-"Nota i-MSCP:\\n\\nTasta `Enter` este dezactivata din ratiuni de performanta!"
-"\\nCa alternativa, folositi tasta %s pentru a reinprospata datele."
+"Nota i-MSCP:\\n\\nTasta `Enter` este dezactivata din ratiuni de "
+"performanta!\\nCa alternativa, folositi tasta %s pentru a reinprospata "
+"datele."
 
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Statistici reseller"
 
-#, fuzzy
 msgid "No reseller is registered in your system!"
-msgstr "Nu s-au gasit reseller(i) in sistem"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
@@ -2101,9 +2057,8 @@ msgstr "Anul:"
 msgid "Day:"
 msgstr "Ziua:"
 
-#, fuzzy
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "i-MSCP Administrator / Unelte Sistem / Status Server"
+msgstr ""
 
 msgid "Host"
 msgstr "Host"
@@ -2135,13 +2090,12 @@ msgstr "Stergere sesiune"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Administrator/Setari"
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed!"
-msgstr "EROARE: Numai numerele pozitive sunt permise!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%d configuration parameter(s) was updated!"
-msgstr "%d Portul pentru serviciul (serviciile) a fost modificat!"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) was created!"
@@ -2355,53 +2309,42 @@ msgstr "Setarile au fost salvate!"
 msgid "Under this mode only administrators can login"
 msgstr "In acest mod doar administratorii pot sa se autentifice"
 
-#, fuzzy
 msgid "Error: Wrong Ip number!"
-msgstr "Erroare: Numar IP gresit!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed for services ports!"
-msgstr "EROARE: Numai numerele pozitive sunt permise ca port pentru servicii!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Service port with same name already exists!"
-msgstr "EROARE: Portul deja exista!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Unallowed protocol!"
-msgstr "EROARE: Protocol nepermis!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Wrong value for show entry!"
-msgstr "EROARE: Valoare gresita pentru afisare!"
+msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully added"
-msgstr "Portul a fost adaugat!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%d Service(s) port was successfully updated"
-msgstr "%d Portul pentru serviciul (serviciile) a fost modificat!"
+msgstr ""
 
-#, fuzzy
 msgid "Nothing's been changed"
-msgstr "Nu a fost modificat nimic!"
+msgstr ""
 
-#, fuzzy
 msgid "You have no custom service ports defined"
-msgstr "Nu ai definit porturi pentru serviciu custom."
+msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully removed!"
-msgstr "Portul a fost sters!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: You are not allowed to remove this service port entry!"
-msgstr "EROARE: Nu puteti modifica aceasta inregistrare pentru port!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Admin / Settings"
-msgstr "i-MSCP - Administrator/Setari"
+msgstr ""
 
 msgid "udp"
 msgstr "udp"
@@ -2458,39 +2401,33 @@ msgstr "Numele real utilizator (nume si prenume)"
 msgid "User type (admin, reseller, user)"
 msgstr "Tip utilizator (administrator, reseller, utilizator)"
 
-#, fuzzy
 msgid "Wrong software id."
-msgstr "Id-ul comenzii este gresit!"
+msgstr ""
 
 msgid "Software was activated."
 msgstr ""
 
-#, fuzzy
 msgid "No Resellers found."
-msgstr "Reselleri"
+msgstr ""
 
-#, fuzzy
 msgid "Rights succesfully added."
-msgstr "Utilizator SQL adaugat cu succes!"
+msgstr ""
 
 msgid "Rights succesfully removed."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s (%2$s)"
-msgstr "%1$s din %2$s MB"
+msgstr ""
 
-#, fuzzy
 msgid "Software was deleted."
-msgstr "IP-ul a fost sters!"
+msgstr ""
 
-#, fuzzy
 msgid "Fill out a message text!"
-msgstr "Mesajul dumneavoastra a fost trimis!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management"
-msgstr "i-MSCP - Client/Administrare CronJob"
+msgstr ""
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
@@ -2498,20 +2435,18 @@ msgstr ""
 msgid "Delete reseller software"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller data"
-msgstr "Nume reseller"
+msgstr ""
 
 msgid "Delete software and send message"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr "%s nu exista"
+msgstr ""
 
-#, fuzzy
 msgid "Software was imported succesfully."
-msgstr "Baza de date SQL stearsa cu succes!"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -2519,16 +2454,14 @@ msgstr ""
 msgid "Activate"
 msgstr "Activeaza"
 
-#, fuzzy
 msgid "Import"
-msgstr "Exporta"
+msgstr ""
 
 msgid "No software is waiting for activation"
 msgstr ""
 
-#, fuzzy
 msgid "Package installed successfully!"
-msgstr "Contul de FTP a fost sters!"
+msgstr ""
 
 msgid "Rights"
 msgstr ""
@@ -2540,13 +2473,12 @@ msgid "Installing your uploaded package. Please refresh this site."
 msgstr ""
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br /"
-">Refresh your site to see the new status!"
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "installing"
-msgstr "dezinstaleaza"
+msgstr ""
 
 msgid "Failure in the package. Deleting!"
 msgstr ""
@@ -2556,9 +2488,8 @@ msgid ""
 "site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "deleting"
-msgstr "Setari comenzi"
+msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -2571,9 +2502,8 @@ msgid ""
 "package two times.<br />Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "This package already exist in the software depot!"
-msgstr "Exista un domeniu cu acelasi nume in sistem!"
+msgstr ""
 
 msgid "Package already exist in the reseller depot!"
 msgstr ""
@@ -2599,37 +2529,29 @@ msgstr ""
 msgid "i-MSCP application installer web software depot"
 msgstr ""
 
-#, fuzzy
 msgid "Update from web depot"
-msgstr "Actualizeaza comanda"
+msgstr ""
 
-#, fuzzy
 msgid "Package title"
-msgstr "Pret Pachet"
+msgstr ""
 
-#, fuzzy
 msgid "Package install type"
-msgstr "Caracteristici Pachet"
+msgstr ""
 
-#, fuzzy
 msgid "Package version"
-msgstr "Pret Pachet"
+msgstr ""
 
-#, fuzzy
 msgid "Package language"
-msgstr "Caracteristici Pachet"
+msgstr ""
 
-#, fuzzy
 msgid "Package type"
-msgstr "Pret Pachet"
+msgstr ""
 
-#, fuzzy
 msgid "Package vendor HP"
-msgstr "Caracteristici Pachet"
+msgstr ""
 
-#, fuzzy
 msgid "Package actions"
-msgstr "Caracteristici Pachet"
+msgstr ""
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -2649,25 +2571,24 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
 msgid ""
-"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d "
+"MB"
 msgstr ""
 
-#, fuzzy
 msgid "Error: Remote File not found!"
-msgstr "Eroare 404 (lipsa)"
+msgstr ""
 
 msgid "Error: Could not upload the file. File not found!"
 msgstr ""
 
-#, fuzzy
 msgid "File was successfully uploaded."
-msgstr "Logo-ul a fost incarcat cu succes!"
+msgstr ""
 
 msgid "Software depot"
 msgstr ""
@@ -2686,20 +2607,17 @@ msgstr ""
 msgid "or remote file (Max: %1$d MB)"
 msgstr ""
 
-#, fuzzy
 msgid "Upload now"
-msgstr "Incarca logo"
+msgstr ""
 
 msgid "Awaiting Activation"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller software list"
-msgstr "Statistici reseller"
+msgstr ""
 
-#, fuzzy
 msgid "Application"
-msgstr "Actiune"
+msgstr ""
 
 msgid "App-Version"
 msgstr ""
@@ -2707,43 +2625,35 @@ msgstr ""
 msgid "Type"
 msgstr "Tip"
 
-#, fuzzy
 msgid "Depot import"
-msgstr "Port destinatie"
+msgstr ""
 
 msgid "Software total"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller total"
-msgstr "Nume reseller"
+msgstr ""
 
-#, fuzzy
 msgid "Waiting for activation"
-msgstr "Asteapta aprobarea"
+msgstr ""
 
-#, fuzzy
 msgid "Activated software"
-msgstr "Activeaza"
+msgstr ""
 
 msgid "Total installations"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to activate this package?"
-msgstr "Sigur doriti sa stergeti aceasta comanda?"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "Sigur doriti sa schimbati statusul domeniului %s?"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete this package?"
-msgstr "Sigur doriti sa stergeti aceasta comanda?"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application management options"
-msgstr "i-MSCP - Administrator/Administreaza sesiuni"
+msgstr ""
 
 msgid "Main application installer options updated!"
 msgstr ""
@@ -2763,13 +2673,11 @@ msgstr ""
 msgid "Last i-MSCP websoftware depot update"
 msgstr ""
 
-#, fuzzy
 msgid "not available"
-msgstr "IP-uri disponibile"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong reseller id."
-msgstr "De la reseller-ul"
+msgstr ""
 
 msgid "This package is installed on following domain(s):"
 msgstr ""
@@ -2785,42 +2693,35 @@ msgstr ""
 msgid "%1$s`s - Software"
 msgstr ""
 
-#, fuzzy
 msgid "No software available!"
-msgstr "Nu exista actualizari disponibile pentru baza de date"
+msgstr ""
 
-#, fuzzy
 msgid "Installed on"
-msgstr "Sabloane instalate"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller list"
-msgstr "Reselleri"
+msgstr ""
 
 msgid "Softwaredepot"
 msgstr ""
 
-#, fuzzy
 msgid "Admin not available"
-msgstr "Planuri de gazduire disponibile pentru actualizare"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to remove the permissions ?"
-msgstr "Sigur doriti sa restaurati salvarea?"
+msgstr ""
 
 msgid "No Reseller with permissions for this software found"
 msgstr ""
 
-#, fuzzy
 msgid "All reseller"
-msgstr "Toti reseller-ii"
+msgstr ""
 
 msgid "No Reseller available to add the permissions"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr "i-MSCP - Administrator/Administreaza sesiuni"
+msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -2829,20 +2730,17 @@ msgstr ""
 msgid "Add permissions for reseller to software:"
 msgstr ""
 
-#, fuzzy
 msgid "Remove permissions"
-msgstr "Versiune demo!"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller with permissions total"
-msgstr "Tabel statistici reseller"
+msgstr ""
 
 msgid "Added by"
 msgstr ""
 
-#, fuzzy
 msgid "Add permissions"
-msgstr "Adauga utilizator existent"
+msgstr ""
 
 msgid "Software permissions"
 msgstr ""
@@ -3004,7 +2902,8 @@ msgid ""
 "Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
 msgstr ""
-"Chiar doriti sa stergeti intreg domeniul? Aceasta operatiune este permanenta!"
+"Chiar doriti sa stergeti intreg domeniul? Aceasta operatiune este "
+"permanenta!"
 
 msgid "Yes, delete the domain."
 msgstr "Da, stergere domeniu."
@@ -3078,21 +2977,22 @@ msgstr "Dezactiveaza"
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr ""
-"Aliasul de domeniu pe care incercati sa-l stergeti are subdomenii!"
-"<br>Stergeti-le inainte!"
+"Aliasul de domeniu pe care incercati sa-l stergeti are subdomenii!<br"
+">Stergeti-le inainte!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
 "them!"
 msgstr ""
-"Aliasul de domeniu pe care incercati sa-l stergeti are conturi de email!"
-"<br>Stergeti-le inainte!"
+"Aliasul de domeniu pe care incercati sa-l stergeti are conturi de email!<br"
+">Stergeti-le inainte!"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+"Domain alias you are trying to remove has FTP accounts!<br>First remove "
+"them!"
 msgstr ""
-"Aliasul de domeniu pe care incercati sa-l stergeti are conturi FTP!"
-"<br>Stergeti-le inainte!"
+"Aliasul de domeniu pe care incercati sa-l stergeti are conturi FTP!<br"
+">Stergeti-le inainte!"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Alias programat pentru stergere!"
@@ -3110,7 +3010,8 @@ msgid "Mount Point"
 msgstr "Punct de instalare"
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+"Subdomain you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 "Subdomeniul dorit a se sterge are conturi de email!<br>Sterge-le pe acestea "
 "intai!"
@@ -3191,13 +3092,11 @@ msgstr "Editare Cronjob"
 msgid "Cronjobs"
 msgstr "Cronojob-uri"
 
-#, fuzzy
 msgid "You are not allowed to remove this DNS record!"
-msgstr "EROARE: Nu puteti modifica aceasta inregistrare pentru port!"
+msgstr ""
 
-#, fuzzy
 msgid "Custom DNS record scheduled for deletion!"
-msgstr "Inregistrare DNS programata pentru stergere!"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "i-MSCP -  Administrare Alias Domeniu/ Adaugare inregistrari DNS"
@@ -3250,9 +3149,8 @@ msgstr "Inregistre tip text"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr "Iinregistrari DNS (EXPERIMENTAL)"
 
-#, fuzzy
 msgid "You are not allowed to edit this DNS record!"
-msgstr "EROARE: Nu puteti modifica aceasta inregistrare pentru port!"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3306,9 +3204,8 @@ msgstr "Nu pot valida inregistrarea %s. Motiv: '%s'."
 msgid "Unknown zone type %s!"
 msgstr "Tip inregistrare necunoscut %s!"
 
-#, fuzzy
 msgid "Error: DNS record already exist!"
-msgstr "Utilizator deja existent!"
+msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Client/ Statistici Domeniu"
@@ -3371,9 +3268,8 @@ msgstr "Editeaza pagina de eroare"
 msgid "Custom error page was updated!"
 msgstr "Pagina de eroare personalizata actualizata!"
 
-#, fuzzy
 msgid "System error - custom error page was not updated!"
-msgstr "Eroare sistem - pagina de eroare personalizata nu a fost actualizata!"
+msgstr ""
 
 msgid "Error 401 (unauthorised)"
 msgstr "Eroare 401 (acces neautorizat)"
@@ -3405,9 +3301,8 @@ msgstr "Utilizatori FTP"
 msgid "FTP account"
 msgstr "Cont FTP"
 
-#, fuzzy
 msgid "Login As"
-msgstr "Autentificare"
+msgstr ""
 
 msgid "Empty List"
 msgstr "Goleste lista"
@@ -3443,9 +3338,8 @@ msgstr "Lista subdomenii este goala! Nu poti adauga conturi FTP acolo!"
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Lista de alias-e este goala! Nu puteti adauga conturi FTP!"
 
-#, fuzzy
 msgid "Please specify other FTP account directory!"
-msgstr "Stabileste alt director pentru contul FTP!"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "Limita de conturi FTP a fost atinsa!"
@@ -3468,13 +3362,11 @@ msgstr "Foloseste alt director"
 msgid "Choose dir"
 msgstr "Alege director"
 
-#, fuzzy
 msgid "Unknown FTP user id!"
-msgstr "Tip necunoscut!"
+msgstr ""
 
-#, fuzzy
 msgid "Cannot open directory! Please contact your administrator!"
-msgstr "Nu se poate deschide directorul!<br>Contactati administratorul!"
+msgstr ""
 
 msgid "Parent Directory"
 msgstr "Directorul parinte"
@@ -3562,11 +3454,10 @@ msgstr ""
 msgid "i-MSCP application installer: disabled"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
 "doesn't has this feature."
-msgstr "Aveti PHP activat, insa noul plan nu are aceasta optiune."
+msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Folositi mai mult spatiu decat permite noul plan de hosting."
@@ -3604,8 +3495,8 @@ msgstr "Folositi mai mult baze de date decat permite noul plan de hosting."
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
 msgstr ""
-"Folositi mai multi utilizatori pentru bazele de date decat permite noul plan "
-"de hosting."
+"Folositi mai multi utilizatori pentru bazele de date decat permite noul plan"
+" de hosting."
 
 msgid "free of charge"
 msgstr "gratuit"
@@ -3630,11 +3521,13 @@ msgstr "Nu exista planuri de gazduire disponibile pentru actualizare"
 msgid "i-MSCP - Update hosting plan"
 msgstr "Actualizare plan gazduire"
 
-msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgid ""
+"You have more e-mail addresses in use than the new hosting plan limits."
 msgstr "Folositi mai mult adrese email decat permite noul plan de hosting."
 
 msgid "Your request for hosting pack update was added successfully"
-msgstr "Cererea pentru actualizarea pachetului de gazduire adaugata cu succes!"
+msgstr ""
+"Cererea pentru actualizarea pachetului de gazduire adaugata cu succes!"
 
 msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr "[i-MSCP PanouComenzi] - Aveti o cerere de actualizare"
@@ -3879,13 +3772,11 @@ msgstr "i-MSCP - Client/Schimba parola"
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Client/Schimba Date Personale"
 
-#, fuzzy
 msgid "Unknown SQL user id."
-msgstr "Eroare necunoscuta"
+msgstr ""
 
-#, fuzzy
 msgid "Error: An error occurred while authentication."
-msgstr "Eroare in timpul autentificarii!"
+msgstr ""
 
 msgid "You do not have protected areas"
 msgstr "Nu ai zone protejate"
@@ -4019,17 +3910,14 @@ msgstr "Actualizeaza utilizatorul"
 msgid "You have no users!"
 msgstr "Nu aveti nici un user!"
 
-#, fuzzy
 msgid "Install in progress..."
-msgstr "Adaugare in progres"
+msgstr ""
 
-#, fuzzy
 msgid "Deletion in progress..."
-msgstr "Stergere in curs"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package?"
-msgstr "Sigur doriti sa stergeti aceasta comanda?"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4041,9 +3929,8 @@ msgstr ""
 msgid "Installed Package which was deleted by your reseller!"
 msgstr ""
 
-#, fuzzy
 msgid "No software available"
-msgstr "Nu exista actualizari disponibile pentru baza de date"
+msgstr ""
 
 msgid "required"
 msgstr ""
@@ -4051,39 +3938,32 @@ msgstr ""
 msgid "not required"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install software"
-msgstr "Nu ai permisiunea de a accesa aceasta interfata!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - application installer"
-msgstr "i-MSCP - Client/Administrare CronJob"
+msgstr ""
 
-#, fuzzy
 msgid "Install software"
-msgstr "Instaleaza limba noua"
+msgstr ""
 
 msgid "Software"
 msgstr ""
 
-#, fuzzy
 msgid "Version"
-msgstr "Versiune demo!"
+msgstr ""
 
-#, fuzzy
 msgid "Database"
-msgstr "Baze Date SQL"
+msgstr ""
 
-#, fuzzy
 msgid "Apps available"
-msgstr "IP-uri disponibile"
+msgstr ""
 
 msgid "Software installation"
 msgstr ""
 
-#, fuzzy
 msgid "Software deleted successful."
-msgstr "Zone protejate sterse cu succes!"
+msgstr ""
 
 msgid "Software will be deleted now."
 msgstr ""
@@ -4094,25 +3974,21 @@ msgstr "Nu exista utilizatori pentru baza de date"
 msgid "At first you must create a database!"
 msgstr ""
 
-#, fuzzy
 msgid "Add new database"
-msgstr "Adauga baza de date SQL"
+msgstr ""
 
-#, fuzzy
 msgid "Software not found!"
-msgstr "Ticket-ul nu a fost gasit!"
+msgstr ""
 
 #, php-format
 msgid "The directory -%1$s- was created!"
 msgstr ""
 
-#, fuzzy
 msgid "Please select the correct user for your database!"
-msgstr "Selecteaza cel putin un utilizator!"
+msgstr ""
 
-#, fuzzy
 msgid "You have to fill out inputs!"
-msgstr "Nu exista grupuri!"
+msgstr ""
 
 msgid "You cant't install outside from htdocs!"
 msgstr ""
@@ -4131,69 +4007,56 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
-#, fuzzy
 msgid "Install Software"
-msgstr "Instaleaza limba noua"
+msgstr ""
 
-#, fuzzy
 msgid "Database required"
-msgstr "Utilizatori pentru baza de date"
+msgstr ""
 
-#, fuzzy
 msgid "Select Domain"
-msgstr "Stergere domeniul"
+msgstr ""
 
-#, fuzzy
 msgid "back"
-msgstr "Mergi inapoi"
+msgstr ""
 
-#, fuzzy
 msgid "install"
-msgstr "dezinstaleaza"
+msgstr ""
 
-#, fuzzy
 msgid "Install path"
-msgstr "Instaleaza"
+msgstr ""
 
 msgid "Create directory, if not exist!"
 msgstr ""
 
-#, fuzzy
 msgid "Select database"
-msgstr "Baza date SQL"
+msgstr ""
 
-#, fuzzy
 msgid "SQL-User"
-msgstr "Utilizator SQL"
+msgstr ""
 
-#, fuzzy
 msgid "installed"
-msgstr "dezinstaleaza"
+msgstr ""
 
 msgid "Installation infos"
 msgstr ""
 
-#, fuzzy
 msgid "Software status:"
-msgstr "Status Server"
+msgstr ""
 
 msgid "Installation path:"
 msgstr ""
 
-#, fuzzy
 msgid "Used database:"
-msgstr "Baza date SQL"
+msgstr ""
 
 msgid "You need a Database for this software"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Software details"
-msgstr "i-MSCP- Domenii/Detalii"
+msgstr ""
 
-#, fuzzy
 msgid "Software details"
-msgstr "Detalii comanda"
+msgstr ""
 
 msgid "Homepage"
 msgstr ""
@@ -4213,11 +4076,9 @@ msgstr "Parola pentru utilizatorul SQL modificata cu succes!"
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Client/ Modifica Parola Utilizator SQL"
 
-#, fuzzy
 msgid ""
 "User does not exist or you do not have permission to access this interface."
 msgstr ""
-"Utilizatorul nu exista sau nu ai permisiunea sa accesezi aceasta interfata!"
 
 msgid "Change SQL user password"
 msgstr "Schimba parola utilizatorului SQL"
@@ -4288,12 +4149,12 @@ msgstr "Atentificare in phpMyAdmin"
 
 #, php-format
 msgid ""
-"This database will be permanently deleted. This process cannot be recovered. "
-"All users linked to this database will also be deleted if not linked to "
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
-"Aceasta baza de date va fi definitiv stearsa. Acest proces este ireversibil. "
-"Toti utilizatorii SQL vor fi de asemenea stersi daca nu sunt atasati altei "
+"Aceasta baza de date va fi definitiv stearsa. Acest proces este ireversibil."
+" Toti utilizatorii SQL vor fi de asemenea stersi daca nu sunt atasati altei "
 "baze de date. Sunteti sigur ca doriti sa stergeti %s?"
 
 msgid "SQL users limit reached!"
@@ -4368,24 +4229,20 @@ msgstr "Nume subdomeniu"
 msgid "Directory tree mount point"
 msgstr "Arbore directoare locul montarii"
 
-#, fuzzy
 msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
-msgstr "i-MSCP - Administrator/Log Administrator"
+msgstr ""
 
-#, fuzzy
 msgid "Manage subdomain"
-msgstr "Administreaza domeniile"
+msgstr ""
 
-#, fuzzy
 msgid "Edit subdomain"
-msgstr "Editare domeniu"
+msgstr ""
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Support System - New ticket"
-msgstr "i-MSCP - Sistem de suport - Interogare noua"
+msgstr ""
 
 msgid "Please specify message subject!"
 msgstr "Specifica un subiect pentru mesaj!"
@@ -4426,7 +4283,6 @@ msgstr ""
 msgid "{ADMIN} activated your software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {RESELLER},\n"
 "\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
@@ -4438,9 +4294,8 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid " was deleted by {ADMIN}!"
-msgstr "IP-ul a fost sters!"
+msgstr ""
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -4508,7 +4363,6 @@ msgstr "Tip necunoscut"
 msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr "Bun-Venit {USERNAME} in i-MSCP!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4533,32 +4387,7 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Salut {NAME}!\n"
-"\n"
-"Un nou cont i-MSCP a fost creat pentru tine.\n"
-"Iata informatiile contului tau:\n"
-"\n"
-"Tip utilizator: {USERTYPE}\n"
-"Nume utilizator: {USERNAME}\n"
-"Parola: {PASSWORD}\n"
-"\n"
-"Nu uita sa schimba parola din cand in cand si prima oara cand accesezi "
-"contul.\n"
-"\n"
-"Poti sa te autentifici imediat la {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}\n"
-"\n"
-"Statistici: http://{USERNAME}/stats/\n"
-"Nume utilizator: {USERNAME}\n"
-"Parola: {PASSWORD}\n"
-"\n"
-"Speram ca  i-MSCP sa constituie o experienta placuta!\n"
-"Echipa i-MSCP.\n"
-"\n"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4582,30 +4411,6 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Salut {NAME}!\n"
-"\n"
-"Un nou cont i-MSCP a fost creat pentru tine.\n"
-"Iata informatiile contului tau:\n"
-"\n"
-"Tip utilizator: {USERTYPE}\n"
-"Nume utilizator: {USERNAME}\n"
-"Parola: {PASSWORD}\n"
-"\n"
-"Nu uita sa schimba parola din cand in cand si prima oara cand accesezi "
-"contul.\n"
-"\n"
-"Poti sa te autentifici imediat la {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}\n"
-"\n"
-"Statistici: http://{USERNAME}/stats/\n"
-"Nume utilizator: {USERNAME}\n"
-"Parola: {PASSWORD}\n"
-"\n"
-"Speram ca  i-MSCP sa constituie o experienta placuta!\n"
-"Echipa i-MSCP.\n"
-"\n"
 
 msgid "Please activate your new i-MSCP password!"
 msgstr "Esti rugat sa activezi noua parola i-MSCP!"
@@ -4674,8 +4479,7 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation "
-"process.\n"
+"You have to click the following link to continue the domain creation process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4709,8 +4513,7 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
 "The i-MSCP Team\n"
@@ -4730,13 +4533,11 @@ msgstr ""
 "Echipa i-MSCP\n"
 "\n"
 
-#, fuzzy
 msgid "Your message has been sent."
-msgstr "Mesajul dumneavoastra a fost trimis!"
+msgstr ""
 
-#, fuzzy
 msgid "Your message has been sent"
-msgstr "Mesajul dumneavoastra a fost trimis!"
+msgstr ""
 
 msgid "Ticket was closed!"
 msgstr "Ticket-ul a fost inchis!"
@@ -4747,9 +4548,8 @@ msgstr "Ticket-ul a fost redeschis!"
 msgid "Never"
 msgstr "Niciodata"
 
-#, fuzzy
 msgid "You don't have support tickets."
-msgstr "Nu exista ticket-uri de suport"
+msgstr ""
 
 msgid "[New]"
 msgstr "[Nou]"
@@ -4837,15 +4637,11 @@ msgstr "Sitaxa gresita a numelui de domeniu : <b>%s</b> este rezervat!"
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr "Sintaxa gresita a SLD: <b>%s</b>"
 
-#, fuzzy
 msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
-"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
+"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
-"EROARE: Etichetele ACE nu sunt permise. Folositi echivalentul unicode.<br /"
-"><small>Examplu: pentru eticheta ACE <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
 
 #, php-format
 msgid "You have to wait %d seconds."
@@ -4855,14 +4651,13 @@ msgstr "Trebuie sa asteptati %d secunde"
 msgid "You have been blocked for %d minutes."
 msgstr "Sunteti blocat pentru %d minute"
 
-#, fuzzy
 msgid "You entered an incorrect username!"
-msgstr "Ai introdus un nume utilizator sau o parola gresita."
+msgstr ""
 
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
-"Sistemul isi actualizeaza serviciile si continutul! Numai administratorii se "
-"pot autentifica"
+"Sistemul isi actualizeaza serviciile si continutul! Numai administratorii se"
+" pot autentifica"
 
 #, php-format
 msgid "%s user already logged or session sharing problem! Aborting..."
@@ -4883,9 +4678,8 @@ msgstr "%s status-uri de cont in neregula! "
 msgid "%s's domain expired!"
 msgstr "%s's domenii expirate!"
 
-#, fuzzy
 msgid "You entered an incorrect password!"
-msgstr "Ai introdus un nume utilizator sau o parola gresita."
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr "Cererea de la host-ul strain a fost blocata!"
@@ -4908,9 +4702,8 @@ msgstr "Este activat"
 msgid "Being suspended"
 msgstr "Asteapta sa fie suspendat/e"
 
-#, fuzzy
 msgid "Awaiting approval"
-msgstr "Asteapta aprobarea"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "Eroare necunoscuta"
@@ -4923,8 +4716,8 @@ msgid ""
 "You have a subdomains limit!<br />You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
-"Exista limita pentru subdomenii!<br>Nu poti adauga un utilizator fara limita "
-"de subdomenii!"
+"Exista limita pentru subdomenii!<br>Nu poti adauga un utilizator fara limita"
+" de subdomenii!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Ai depasit limita subdomeniilor!"
@@ -4987,12 +4780,14 @@ msgid "You are exceeding your SQL database limit!"
 msgstr "Ai depasit limita bazei de date SQL"
 
 msgid ""
-"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+"You have a traffic limit!<br />You cannot add an user with unlimited "
+"traffic!"
 msgstr ""
 "Exista o limita a traficului!<br>Nu poti adauga utilizator cu trafic "
 "nelimitat!"
 
-msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgid ""
+"You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 "Exista o limita a spatiului pe disc!<br>Nu poti adauga utilizatori fara "
 "limita a spatiului pe disc!"
@@ -5000,7 +4795,6 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {ADMIN},\n"
 "\t{RESELLER} has uploaded a new software package.\n"
@@ -5013,38 +4807,31 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid "Installation details"
-msgstr "Detalii gazduire"
+msgstr ""
 
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
 msgstr ""
 
-#, fuzzy
 msgid "Login username"
-msgstr "Nume utilizator gresit!"
+msgstr ""
 
-#, fuzzy
 msgid "Login password"
-msgstr "Parola Pierduta"
+msgstr ""
 
-#, fuzzy
 msgid "Emailadress"
-msgstr "E-mail-uri"
+msgstr ""
 
-#, fuzzy
 msgid "enabled"
-msgstr "Pornit"
+msgstr ""
 
-#, fuzzy
 msgid "Application Description"
-msgstr "Descriere"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install application yet"
-msgstr "Nu ai permisiunea de a accesa aceasta interfata!"
+msgstr ""
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5055,13 +4842,11 @@ msgstr ""
 msgid "Installed in reseller depot"
 msgstr ""
 
-#, fuzzy
 msgid "Start installation"
-msgstr "Internationalizare"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package from the webdepot?"
-msgstr "Sigur doriti sa restaurati salvarea?"
+msgstr ""
 
 msgid "No software in webdepot found!"
 msgstr ""
@@ -5101,9 +4886,8 @@ msgstr "Erroare la crearea comenzii! posibil sa fie deja activata?"
 msgid "Order confirmation"
 msgstr "Confirmare Comanda"
 
-#, fuzzy
 msgid "Domain already exists on the system!"
-msgstr "Exista un domeniu cu acelasi nume in sistem!"
+msgstr ""
 
 msgid "This hosting plan is not available for purchase"
 msgstr "Nu sunt disponibile Planuri de gazduire pentru actualizare"
@@ -5142,8 +4926,8 @@ msgid "Personal Data"
 msgstr "Date Personale"
 
 msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
+"(To avoid abuse, we ask you to write the combination of letters on the above"
+" picture into the field \"Security code\")"
 msgstr ""
 "Pentru evitarea abuzurilor, solicitam tastarea combinatiei de litere din "
 "imagineade mai sus in campul \"Cod Securitate\")"
@@ -5339,13 +5123,11 @@ msgstr "%1$d / %2$d din <b>nelimitat</b>"
 msgid "No Ip statistics to be show."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Reseller/IP Usage"
-msgstr "i-MSCP - Reseller/Schimba Limba"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller/IP usage statistics"
-msgstr "Statistici reseller"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Reseller/Schimba Limba"
@@ -5455,13 +5237,11 @@ msgstr "E-Mail parola pierduta"
 msgid "Lostpw link"
 msgstr "Link parola pierduta"
 
-#, fuzzy
 msgid "Please specify a subject."
-msgstr "Te rog specifica un subiect!"
+msgstr ""
 
-#, fuzzy
 msgid "Auto email template data updated."
-msgstr "Sablunul pentru email a fost actualizat!"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Reseller/Administreaza utilizatori/Setare Mail"
@@ -5475,23 +5255,21 @@ msgstr ""
 msgid "This package is not installed yet"
 msgstr ""
 
-#, fuzzy
 msgid "waiting for activation"
-msgstr "Asteapta aprobarea"
+msgstr ""
 
 msgid "activated (Softwaredepot)"
 msgstr ""
 
-#, fuzzy
 msgid "activated"
-msgstr "Activeaza"
+msgstr ""
 
 msgid "Installing your uploaded package. Please refresh the site."
 msgstr ""
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br /"
-">Refresh your site to see the new status!"
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "Failure in package. Deleting!"
@@ -5507,8 +5285,8 @@ msgstr ""
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br /"
-">Refresh your site to see the new status!"
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in the administrator software depot!"
@@ -5519,20 +5297,18 @@ msgstr ""
 
 msgid ""
 "Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br /"
-">Refresh your site to see the new status!"
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in your software depot!"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have any software uploaded yet"
-msgstr "Nu aveti comenzi noi!"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to upload software"
-msgstr "Nu ai permisiunea de a accesa aceasta interfata!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5541,8 +5317,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
@@ -5563,25 +5339,20 @@ msgstr ""
 msgid "Software-Synonym"
 msgstr ""
 
-#, fuzzy
 msgid "Software-Version"
-msgstr "Versiune Kernel"
+msgstr ""
 
-#, fuzzy
 msgid "Software status"
-msgstr "Status Server"
+msgstr ""
 
-#, fuzzy
 msgid "Software upload"
-msgstr "Upload Logo"
+msgstr ""
 
-#, fuzzy
 msgid "Requires Database?"
-msgstr "Baze Date SQL"
+msgstr ""
 
-#, fuzzy
 msgid "Database prefix"
-msgstr "Numele bazei de date"
+msgstr ""
 
 msgid "Link to authors homepage"
 msgstr ""
@@ -5595,9 +5366,8 @@ msgstr "i-MSCP - Reseller: Sistem Suport: Vezi Cereri"
 msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - Utilizatori/Adauga"
 
-#, fuzzy
 msgid "Domain expire date"
-msgstr "Expirare domeniu"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Alege plan gazduire"
@@ -5625,8 +5395,8 @@ msgstr "Awstats"
 
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
-"Datele domeniului din sesiune au fost modificate. Va rugam sa le introduceti "
-"din nou."
+"Datele domeniului din sesiune au fost modificate. Va rugam sa le introduceti"
+" din nou."
 
 msgid "i-MSCP - User/Add user"
 msgstr "i-MSCP - Utilizator/Adauga utilizator"
@@ -5666,9 +5436,8 @@ msgstr "Banda"
 msgid "View aliases"
 msgstr "Alias-e"
 
-#, fuzzy
 msgid "You do not have customers."
-msgstr "Nu aveti comenzi noi!"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -5694,100 +5463,4 @@ msgstr "Utilizator sters"
 msgid "User not terminated!"
 msgstr "Utilizatorul nu a fost sters!"
 
-#~ msgid "i-MSCP  a Virtual Hosting Control System"
-#~ msgstr "i-MSCP  un Sistem Virtual De Control al Hostingului"
 
-#~ msgid "Please enter your login information"
-#~ msgstr "Va rugam sa introduceti datele de autentificare"
-
-#~ msgid "Retrieving lost passwords is currently not possible"
-#~ msgstr "Recuperarea parolei pierdute nu este disponibila deocamdata"
-
-#~ msgid "i-MSCP - Virtual Hosting Control System"
-#~ msgstr "i-MSCP - Sistem Virtual De Control al Hostingului"
-
-#~ msgid "Retry"
-#~ msgstr "Reincearca"
-
-#~ msgid "Request password"
-#~ msgstr "Solicitare parola"
-
-#~ msgid "Do you want to execute the Updates now?"
-#~ msgstr "Doresti sa executi actualizarea acum?"
-
-#~ msgid "A database update is available"
-#~ msgstr "Un update pentru baza de date este disponibil"
-
-#~ msgid "Panel Default"
-#~ msgstr "Prestabilit"
-
-#~ msgid "Settings saved!"
-#~ msgstr "Setarile au fost salvate!"
-
-#~ msgid ""
-#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
-#~ "services names!"
-#~ msgstr "EROARE: Doar Litere, Numere, Liniute si UnderScore sunt permise!"
-
-#~ msgid "ERROR: Unknown service port name!"
-#~ msgstr "EROARE: Nume port necunoscut!"
-
-#~ msgid "To"
-#~ msgstr "Catre"
-
-#~ msgid "Message was sent."
-#~ msgstr "Mesajul a fost trimis."
-
-#~ msgid "ISPCP - Client/Webtools"
-#~ msgstr "i-MSCP - Client/ Instrumente Web"
-
-#~ msgid "i-MSCP Error"
-#~ msgstr "Eroare i-MSCP"
-
-#~ msgid "Error Message"
-#~ msgstr "Mesaj Eroare"
-
-#~ msgid "Unchanged"
-#~ msgstr "Nemodificat"
-
-#~ msgid "- 1 Month"
-#~ msgstr "-1 Luna"
-
-#~ msgid "+ 1 Month"
-#~ msgstr "+1 Luna"
-
-#~ msgid "+ 2 Months"
-#~ msgstr "+2 Luni"
-
-#~ msgid "+ 3 Months"
-#~ msgstr "+3 Luni"
-
-#~ msgid "+ 6 Months"
-#~ msgstr "+6 Luni"
-
-#~ msgid "+ 1 Year"
-#~ msgstr "+1 An"
-
-#~ msgid "+ 2 Years"
-#~ msgstr "+2 Ani"
-
-#~ msgid "1 Month"
-#~ msgstr "1 Luna"
-
-#~ msgid "2 Months"
-#~ msgstr "2 Luni"
-
-#~ msgid "3 Months"
-#~ msgstr "3 Luni"
-
-#~ msgid "6 Months"
-#~ msgstr "6 Luni"
-
-#~ msgid "1 Year"
-#~ msgstr "1 Ani"
-
-#~ msgid "2 Years"
-#~ msgstr "2 Ani"
-
-#~ msgid "You have no users."
-#~ msgstr "Nu aveti nici un utilizator."

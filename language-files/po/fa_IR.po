@@ -1,21 +1,20 @@
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: fa_IR\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
 "POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2010-08-26 23:19+0100\n"
-"Last-Translator: Amir Gholami <contact@18asb.com>\n"
-"Language-Team: Farsi (Iran)\n"
-"Language: \n"
+"PO-Revision-Date: 2011-06-14 05:38+0000\n"
+"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n >1);\n"
-"X-Generator: x64PoPot 0.2\n"
-"X-Poedit-Language: Farsi\n"
-"X-Poedit-Country: IRAN\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language: fa_IR\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -28,9 +27,8 @@ msgstr "ایران) فارسی) - Iranian (Farsi)"
 msgid "File %s does not exists or cannot be reached!"
 msgstr "فایل %s وجود ندارد یا اینکه قابل دسترس نیست!"
 
-#, fuzzy
 msgid "Error while trying to obtain list of network cards."
-msgstr "خطا در حین گرفتن لیست کارت های شبکه!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -42,32 +40,26 @@ msgstr "تعیین نشده"
 msgid "Day"
 msgstr "روز"
 
-#, fuzzy
 msgid "Days"
-msgstr "روز"
+msgstr ""
 
 msgid "Hour"
 msgstr "ساعت"
 
-#, fuzzy
 msgid "Hours"
-msgstr "ساعت"
+msgstr ""
 
-#, fuzzy
 msgid "Minute"
-msgstr "دقیقه"
+msgstr ""
 
-#, fuzzy
 msgid "Minutes"
-msgstr "دقیقه"
+msgstr ""
 
-#, fuzzy
 msgid "An error occured! Please, contact your administrator!"
-msgstr "دایرکتوری را نمی توان باز کرد!<br> لطفا با مدیر تماس بگیرید!"
+msgstr ""
 
-#, fuzzy
 msgid "Couldn't check for updates. Website not reachable."
-msgstr "بررسی برای یافتن بروزرسانی ممکن نیست! وبسایت قابل دسترسی نیست!"
+msgstr ""
 
 msgid "General information"
 msgstr "اطلاعات عمومی"
@@ -183,17 +175,14 @@ msgstr "پورت های سرور"
 msgid "Rootkit Log"
 msgstr "لاگ روتکیت"
 
-#, fuzzy
 msgid "Services status"
-msgstr "وضعیت سرور"
+msgstr ""
 
-#, fuzzy
 msgid "Services ports"
-msgstr "پورت های سرور"
+msgstr ""
 
-#, fuzzy
 msgid "IP usage"
-msgstr "فضای دیسک استفاده شده"
+msgstr ""
 
 msgid "Application management"
 msgstr ""
@@ -300,9 +289,8 @@ msgstr ""
 msgid "Disabled"
 msgstr "غیرفعال"
 
-#, fuzzy
 msgid "Reload"
-msgstr "آپلود"
+msgstr ""
 
 msgid "Error"
 msgstr "خطا"
@@ -424,11 +412,14 @@ msgstr "رمزهای عبور مطابقت ندارند!"
 msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
 "valid."
-msgstr "رمز عبور باید حداقل %s کاراکتر و حاوی حروف و اعداد باشد تا تأیید شود.."
+msgstr ""
+"رمز عبور باید حداقل %s کاراکتر و حاوی حروف و اعداد باشد تا تأیید شود.."
 
 #, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
-msgstr "رشته ی رمز عبور کوتاه تر از %s کاراکتر است یا شامل نمادهای غیرمجاز است"
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!"
+msgstr ""
+"رشته ی رمز عبور کوتاه تر از %s کاراکتر است یا شامل نمادهای غیرمجاز است"
 
 msgid "Incorrect email length or syntax!"
 msgstr "سینتکس یا طول ایمیل نادرست است!"
@@ -505,23 +496,20 @@ msgstr ""
 msgid "All fields are required!"
 msgstr ""
 
-#, fuzzy
 msgid "internet Multi Server Control Panel"
-msgstr "کنترل پنل آی اس پی سی پی"
+msgstr ""
 
 msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr "کنترل پنل آی اس پی سی پی"
+msgstr ""
 
 msgid "Administrator login"
 msgstr "ورود مدیر"
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "کنترل پنل آی اس پی سی پی"
+msgstr ""
 
 msgid "Login"
 msgstr "ورود"
@@ -532,9 +520,8 @@ msgstr "رمز ورود"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-#, fuzzy
 msgid "FileManager"
-msgstr "مدیریت فایل ها"
+msgstr ""
 
 msgid "Secure Connection"
 msgstr "اتصال ایمن"
@@ -551,35 +538,28 @@ msgstr ""
 msgid "Captcha fontfile not found."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
-msgstr "آی اس پی سی پی - مشتری/تغییر رمز عبور کاربر اس کیو ال"
+msgstr ""
 
 msgid "Security code"
 msgstr "کد امنیتی"
 
-#, fuzzy
 msgid ""
 "To avoid abuse, we ask you to write the combination of letters on the "
 "picture above into the field \"Security code\""
 msgstr ""
-"(برای اجتناب از سوءاستفاده از شما می خواهیم که ترکیب حروف تصویر بالا را در "
-"فیلد \"کد امنیتی\" وارد کنید"
 
-#, fuzzy
 msgid "Get password"
-msgstr "ایجاد رمز ورود"
+msgstr ""
 
 msgid "Back"
 msgstr "برگشت"
 
-#, fuzzy
 msgid "Your new password has been sent. Check your mail."
-msgstr "رمز عبور جدید شما فرستاده شد."
+msgstr ""
 
-#, fuzzy
 msgid "New password has not been sent. Ask your administrator."
-msgstr "فرستادن رمز عبور جدید ممکن نیست"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -591,9 +571,8 @@ msgstr ""
 "راهنمایی برایتان فرستاده می شود. این درخواست بازیافت رمز عبور ظرف %s دقیقه "
 "منقضی می شود."
 
-#, fuzzy
 msgid "User or security code are incorrect."
-msgstr "خطا: نام کاربری یا کد امنیتی نادرست است!"
+msgstr ""
 
 msgid "All fields are required."
 msgstr ""
@@ -610,9 +589,8 @@ msgstr "طول یا سینتکس نام کاربری نادرست است!"
 msgid "Entered passwords do not match!"
 msgstr "رمز عبورهای وارد شده مطابقت ندارند!"
 
-#, fuzzy
 msgid "This user name already exist."
-msgstr "این نام کاربری پیش تر ثبت شده است!"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "داده خالی یا فیلد اشتباه!"
@@ -692,9 +670,8 @@ msgstr "تغییر رمز عبور ممنوع شده!"
 msgid "Demo Version!"
 msgstr "نسخه نمایشی!"
 
-#, fuzzy
 msgid "iMSCP - Admin/Admin Log"
-msgstr "آی اس پی سی پی - مدیر/ لاگ مدیر"
+msgstr ""
 
 msgid "Log is empty!"
 msgstr "لاگ خالی است!"
@@ -870,9 +847,8 @@ msgstr "ذخیره"
 msgid "Edit button"
 msgstr "ویرایش دکمه"
 
-#, fuzzy
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr "مدیر آی ای پی سی پی / ابزارهای سیستم / وضعیت سرور"
+msgstr ""
 
 msgid "Database updates"
 msgstr "بروزرسانه بانک داده"
@@ -949,43 +925,35 @@ msgstr "نه"
 msgid "Enabled"
 msgstr "فعال"
 
-#, fuzzy
 msgid "Incorrect subdomains limit."
-msgstr "تعداد حداکثر زیردامنه اشتباه است!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect aliases limit."
-msgstr "تعداد حداکثر دامنه الحاقی نادرست است!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect mail accounts limit."
-msgstr "تعداد حداکثر حساب ایمیل نادرست است!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect FTP accounts limit."
-msgstr "تعداد حداکثر حساب اف تی پی نادرست است!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect SQL users limit."
-msgstr "تعداد حداکثر کاربران اس کیو ال نادرست است!"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "تعداد حداکثر بانک داده ی اس کیو ال <i>غیرفعال شده </i>!"
 
-#, fuzzy
 msgid "Incorrect SQL databases limit."
-msgstr "تعداد حداکثر بانک داده ی اس کیو ال نادرست است!"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "تعداد حداکثر کاربران اس کیو ال <i>غیرفعال شده </i>!"
 
-#, fuzzy
 msgid "Incorrect traffic limit."
-msgstr "حداکثر ترافیک نادرست است!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect disk quota limit."
-msgstr "حداکثر حجم دیسک نادرست است!"
+msgstr ""
 
 msgid "The application installer needs PHP to enable."
 msgstr ""
@@ -1017,9 +985,8 @@ msgstr "Trafic"
 msgid "Disk"
 msgstr "فضای دیسک"
 
-#, fuzzy
 msgid "Domain properties could not be updated."
-msgstr "Les propriétés du domaine n'ont pas pu être mises à jour!"
+msgstr ""
 
 msgid "Domain properties updated successfully!"
 msgstr "مشخصات دامنه با موفقیت بروز شد!"
@@ -1110,9 +1077,11 @@ msgid "Yes"
 msgstr "بله"
 
 msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+"In case 'Domain expire' is 'N/A', the expiration date will be set from "
+"today."
 msgstr ""
-".اگر تاریخی برای انقضای دامنه تعیین نشده، تاریخ انقضا از امروز محاسبه می شود "
+".اگر تاریخی برای انقضای دامنه تعیین نشده، تاریخ انقضا از امروز محاسبه می شود"
+" "
 
 msgid "or Check for <strong>never Expire</strong>"
 msgstr ""
@@ -1279,9 +1248,8 @@ msgstr "توصیف"
 msgid "(e.g. EUR)"
 msgstr "(مثلاEUR)"
 
-#, fuzzy
 msgid "Term Of Service"
-msgstr "سرویس"
+msgstr ""
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
@@ -1375,24 +1343,20 @@ msgstr "هیچ خطای زیردامنه ی الحاقی وجود ندارد"
 msgid "No email account system errors"
 msgstr "هیچ خطای حساب ایمیل وجود ندارد"
 
-#, fuzzy
 msgid "missing domain"
-msgstr "دامنه اصلی"
+msgstr ""
 
-#, fuzzy
 msgid "missing alias"
-msgstr "دامنه الحاقی"
+msgstr ""
 
 msgid "orphan entry"
 msgstr ""
 
-#, fuzzy
 msgid "No htaccess related system errors"
-msgstr "هیچ خطای دامنه ی الحاقی وجود ندارد"
+msgstr ""
 
-#, fuzzy
 msgid "Missing domain"
-msgstr "دامنه اصلی"
+msgstr ""
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1434,7 +1398,7 @@ msgstr "اجرای درخواست ها"
 msgid "Set status to 'change'"
 msgstr "وضعیت را روی «تغییر» تنظیم کن"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s Errors in database"
 msgstr ""
 
@@ -1498,9 +1462,8 @@ msgstr "آی اس پی سی پی - مدیر/مدیریت آی پی"
 msgid "Remove IP"
 msgstr "حذف آدرس آی پی"
 
-#, fuzzy
 msgid "No IP's available"
-msgstr "هیچ بروزرسانی آی اس پی سی پی وجود ندارد"
+msgstr ""
 
 msgid "New IP was added!"
 msgstr "آدرس آی پی جدید افزوده شد!"
@@ -1536,32 +1499,26 @@ msgstr " افزودن آی پی جدید"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "آیا مطمئن اید می خواهید آی پی %s را حذف کنید؟?"
 
-#, fuzzy
 msgid "i-MSCP - Admin/IP Usage"
-msgstr "آی اس پی سی پی - مدیر/مدیریت آی پی"
+msgstr ""
 
-#, fuzzy
 msgid "Total Domains"
-msgstr "تعداد دامنه"
+msgstr ""
 
 msgid "No records found"
 msgstr ""
 
-#, fuzzy
 msgid "Admin/IP usage statistics"
-msgstr "آمار دامنه"
+msgstr ""
 
-#, fuzzy
 msgid "Domain Name"
-msgstr "نام دامنه"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller Name"
-msgstr "نام ریسلر"
+msgstr ""
 
-#, fuzzy
 msgid "User language updated successfully."
-msgstr "بروزرسانی زبان کاربر با موفقیت انجام شد!"
+msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "آی اس پی سی پی - مدیر/تغییر زبان"
@@ -1569,9 +1526,8 @@ msgstr "آی اس پی سی پی - مدیر/تغییر زبان"
 msgid "Choose your default language"
 msgstr "زبان پیشفرض خود را انتخاب کنید"
 
-#, fuzzy
 msgid "Error we have user that uses that language!"
-msgstr "خطا: ما کاربری داریم که از این آی پی استفاده می کند!"
+msgstr ""
 
 msgid "Language was removed!"
 msgstr "زبان حذف شد!"
@@ -1621,8 +1577,8 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
-"شما نمی توانید <b>%1$s</b> را به مقصد ریسلر جابجا کنید <b>%2$s</b> که حداکثر "
-"می تواند سرویس داشته باشد!"
+"شما نمی توانید <b>%1$s</b> را به مقصد ریسلر جابجا کنید <b>%2$s</b> که حداکثر"
+" می تواند سرویس داشته باشد!"
 
 #, php-format
 msgid ""
@@ -1673,14 +1629,14 @@ msgid "Email Updated"
 msgstr "ایمیل بروز شد"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr "!این کاربر یک دامنه دارد! <br>برای حذف کاربر نخست دامنه اش را حذف کنید"
+msgstr ""
+"!این کاربر یک دامنه دارد! <br>برای حذف کاربر نخست دامنه اش را حذف کنید"
 
 msgid "User was disabled"
 msgstr "کاربر غیرفعال شد"
 
-#, fuzzy
 msgid "Uninstall"
-msgstr "از نصب درآوردن"
+msgstr ""
 
 #, php-format
 msgid "%d messages translated"
@@ -1701,20 +1657,19 @@ msgstr "خواندن فایل زبان ممکن نیست!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "فایل آپلود شده یک فایل زبان معتبر نیست!"
 
-#, fuzzy
 msgid "Uploaded file does not contain language information!"
-msgstr "فایل آپلود شده حاوی اطلاعات زبان نیست!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s added new language: %s"
-msgstr "%s نصب زبان جدید %s"
+msgstr ""
 
 msgid "New language installed!"
 msgstr "زبان جدید نصب شد!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s updated language: %s"
-msgstr "%s زبان های نصب شده %s"
+msgstr ""
 
 msgid "Language was updated!"
 msgstr "زبان بروزرسانی شد"
@@ -1811,8 +1766,8 @@ msgstr "تعداد حداکثر دامنه ها نادرست است!"
 
 msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
 msgstr ""
-"تعداد حداکثر بانک داده اس کیو ال <i>غیرفعال</i> شده اما حد کاربران اس کیو ال "
-"غیرفعال نشده "
+"تعداد حداکثر بانک داده اس کیو ال <i>غیرفعال</i> شده اما حد کاربران اس کیو ال"
+" غیرفعال نشده "
 
 msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
 msgstr ""
@@ -1878,8 +1833,8 @@ msgstr "فضای استفاده شده ی دیسک"
 
 #, php-format
 msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
+"This reseller's customers are using/have more/higher <b>%s</b> "
+"accounts/limits than the new limit you entered."
 msgstr ""
 "مشتریان این ریسلر بیش از حداکثر جدیدی  <b>%s</b> که وارد کرده اید حساب/حد "
 "دارند "
@@ -1943,18 +1898,17 @@ msgstr "برای کپی کردن رمز ورود تولید شده به کلیپ
 
 #, php-format
 msgid ""
-"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
-"\\nInstead, use the %s button to update the data."
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance "
+"reasons!\\nInstead, use the %s button to update the data."
 msgstr ""
-"i-MSCP NOTICE:\\n\\nدکمه ی Enter به دلیل افزایش کارآیی غیرفعال شده است"
-"\\nلطفا به جای آن از دکمه %s برای بروزرسانی اطلاعات استفاده کنید."
+"i-MSCP NOTICE:\\n\\nدکمه ی Enter به دلیل افزایش کارآیی غیرفعال شده "
+"است\\nلطفا به جای آن از دکمه %s برای بروزرسانی اطلاعات استفاده کنید."
 
 msgid "i-MSCP - Reseller statistics"
 msgstr "آی اس پی سی پی - آمار ریسلر"
 
-#, fuzzy
 msgid "No reseller is registered in your system!"
-msgstr "هیچ ریسلری در سیستم یافت نشد!"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
@@ -1999,9 +1953,9 @@ msgstr "%s<br />از<br /><b>illimité</b>"
 msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr "%1$d<br />de<br /><b>%2$d</b>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br />از<br /><b>illimité</b>"
+msgstr ""
 
 msgid "This reseller has no domains."
 msgstr "این ریسلر هیچ دامنه ای ندارد"
@@ -2088,9 +2042,8 @@ msgstr "سال:"
 msgid "Day:"
 msgstr "روز:"
 
-#, fuzzy
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "مدیر آی ای پی سی پی / ابزارهای سیستم / وضعیت سرور"
+msgstr ""
 
 msgid "Host"
 msgstr "میزبان"
@@ -2122,9 +2075,8 @@ msgstr "توقف سشن"
 msgid "i-MSCP - Admin/Settings"
 msgstr "آی اس پی سی پی = مدیر/تنظیمات"
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed!"
-msgstr "خطا: فقط اعداد مثبت مجازند!"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) was updated!"
@@ -2343,17 +2295,14 @@ msgstr "تنظیمات ذخیره شد!"
 msgid "Under this mode only administrators can login"
 msgstr "در این مد فقط مدیر می تواند لاگین کند"
 
-#, fuzzy
 msgid "Error: Wrong Ip number!"
-msgstr "آدرس آی پی خطا!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed for services ports!"
-msgstr "خطا: فقط اعداد مثبت مجازند!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Service port with same name already exists!"
-msgstr "خطا: پورت پیشتر وجود دارد!"
+msgstr ""
 
 msgid "Error: Unallowed protocol!"
 msgstr ""
@@ -2361,32 +2310,27 @@ msgstr ""
 msgid "Error: Wrong value for show entry!"
 msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully added"
-msgstr "آدرس آی پی جدید افزوده شد!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
 msgid "Nothing's been changed"
 msgstr ""
 
-#, fuzzy
 msgid "You have no custom service ports defined"
-msgstr "شما هیچ پورت سرویس شخصی شده ای تعریف نکرده اید."
+msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully removed!"
-msgstr "تیکت بازگشایی شد!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: You are not allowed to remove this service port entry!"
-msgstr "مطمئن هستید که می خواهید %s را پاک کنید؟"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Admin / Settings"
-msgstr "آی اس پی سی پی = مدیر/تنظیمات"
+msgstr ""
 
 msgid "udp"
 msgstr "یو دی پی"
@@ -2400,16 +2344,15 @@ msgstr "پورت ها"
 msgid "Protocol"
 msgstr "پروتکل"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr "مطمئن هستید که می خواهید %s را پاک کنید؟"
+msgstr ""
 
 msgid "View / Update service(s) port"
 msgstr ""
 
-#, fuzzy
 msgid "Add new service port"
-msgstr "افزودن پلن میزبانی کاربری جدید"
+msgstr ""
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "آی اس پی سی پی - مدیر/تنظیمات ترافیک سرور"
@@ -2444,39 +2387,33 @@ msgstr "نام و نام خانوادگی (واقعی) کاربر"
 msgid "User type (admin, reseller, user)"
 msgstr "نوع کاربر (مدیر، ریسلر، کاربر)"
 
-#, fuzzy
 msgid "Wrong software id."
-msgstr "آی دی سفارش خطاست!"
+msgstr ""
 
 msgid "Software was activated."
 msgstr ""
 
-#, fuzzy
 msgid "No Resellers found."
-msgstr "ریسلرها"
+msgstr ""
 
-#, fuzzy
 msgid "Rights succesfully added."
-msgstr "کاربر اس کیو ال با موفقیت افزوده شد!"
+msgstr ""
 
 msgid "Rights succesfully removed."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s (%2$s)"
-msgstr "%1$s از %2$s MB"
+msgstr ""
 
-#, fuzzy
 msgid "Software was deleted."
-msgstr "آی پی حذف شده است!"
+msgstr ""
 
-#, fuzzy
 msgid "Fill out a message text!"
-msgstr "پیام شما فرستاده شد!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management"
-msgstr "آی اس پی سی پی - مشتری/مدیر کرون جاب"
+msgstr ""
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
@@ -2484,20 +2421,18 @@ msgstr ""
 msgid "Delete reseller software"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller data"
-msgstr "نام ریسلر"
+msgstr ""
 
 msgid "Delete software and send message"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr "وجود ندارد %s"
+msgstr ""
 
-#, fuzzy
 msgid "Software was imported succesfully."
-msgstr "بانک داده ی اس کیو ال با موفقیت حذف شد!"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -2505,16 +2440,14 @@ msgstr ""
 msgid "Activate"
 msgstr "فعال سازی"
 
-#, fuzzy
 msgid "Import"
-msgstr "صادر کردن"
+msgstr ""
 
 msgid "No software is waiting for activation"
 msgstr ""
 
-#, fuzzy
 msgid "Package installed successfully!"
-msgstr "حساب اف تی پی با موفقیت حذف شد!"
+msgstr ""
 
 msgid "Rights"
 msgstr ""
@@ -2526,13 +2459,12 @@ msgid "Installing your uploaded package. Please refresh this site."
 msgstr ""
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br /"
-">Refresh your site to see the new status!"
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "installing"
-msgstr "از نصب درآوردن"
+msgstr ""
 
 msgid "Failure in the package. Deleting!"
 msgstr ""
@@ -2542,9 +2474,8 @@ msgid ""
 "site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "deleting"
-msgstr "تنظیمات سفارش"
+msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -2557,9 +2488,8 @@ msgid ""
 "package two times.<br />Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "This package already exist in the software depot!"
-msgstr "دامنه ای با این نام قبلا در سیستم وجود دارد!"
+msgstr ""
 
 msgid "Package already exist in the reseller depot!"
 msgstr ""
@@ -2585,37 +2515,29 @@ msgstr ""
 msgid "i-MSCP application installer web software depot"
 msgstr ""
 
-#, fuzzy
 msgid "Update from web depot"
-msgstr "به روزرسانی سفارش"
+msgstr ""
 
-#, fuzzy
 msgid "Package title"
-msgstr "قیمت پکیج"
+msgstr ""
 
-#, fuzzy
 msgid "Package install type"
-msgstr "ویژگی های پکیج"
+msgstr ""
 
-#, fuzzy
 msgid "Package version"
-msgstr "قیمت پکیج"
+msgstr ""
 
-#, fuzzy
 msgid "Package language"
-msgstr "ویژگی های پکیج"
+msgstr ""
 
-#, fuzzy
 msgid "Package type"
-msgstr "قیمت پکیج"
+msgstr ""
 
-#, fuzzy
 msgid "Package vendor HP"
-msgstr "ویژگی های پکیج"
+msgstr ""
 
-#, fuzzy
 msgid "Package actions"
-msgstr "ویژگی های پکیج"
+msgstr ""
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -2635,25 +2557,24 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
 msgid ""
-"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d "
+"MB"
 msgstr ""
 
-#, fuzzy
 msgid "Error: Remote File not found!"
-msgstr "خطای ۴۰۴ (یافت نشد)"
+msgstr ""
 
 msgid "Error: Could not upload the file. File not found!"
 msgstr ""
 
-#, fuzzy
 msgid "File was successfully uploaded."
-msgstr "لوگوی شما با موفقیت آپلود شد!"
+msgstr ""
 
 msgid "Software depot"
 msgstr ""
@@ -2672,20 +2593,17 @@ msgstr ""
 msgid "or remote file (Max: %1$d MB)"
 msgstr ""
 
-#, fuzzy
 msgid "Upload now"
-msgstr "آپلود لوگو"
+msgstr ""
 
 msgid "Awaiting Activation"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller software list"
-msgstr "آمارهای ریسلر"
+msgstr ""
 
-#, fuzzy
 msgid "Application"
-msgstr "کنش"
+msgstr ""
 
 msgid "App-Version"
 msgstr ""
@@ -2693,43 +2611,35 @@ msgstr ""
 msgid "Type"
 msgstr "نوع"
 
-#, fuzzy
 msgid "Depot import"
-msgstr "پورت هدف"
+msgstr ""
 
 msgid "Software total"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller total"
-msgstr "نام ریسلر"
+msgstr ""
 
-#, fuzzy
 msgid "Waiting for activation"
-msgstr "در انتظار تأیید"
+msgstr ""
 
-#, fuzzy
 msgid "Activated software"
-msgstr "فعال سازی"
+msgstr ""
 
 msgid "Total installations"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to activate this package?"
-msgstr "آیا مطمئن هستید که می خواهید این سفارش را حذف کنید؟"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "آیا مطمئن اید که می خواهید وضعیت %s را تغییر دهید؟"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete this package?"
-msgstr "آیا مطمئن هستید که می خواهید این سفارش را حذف کنید؟"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application management options"
-msgstr "آی اس پی سی پی - مدیر/مدیریت سشن ها"
+msgstr ""
 
 msgid "Main application installer options updated!"
 msgstr ""
@@ -2749,13 +2659,11 @@ msgstr ""
 msgid "Last i-MSCP websoftware depot update"
 msgstr ""
 
-#, fuzzy
 msgid "not available"
-msgstr "آی پی های فراهم"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong reseller id."
-msgstr "از ریسلر"
+msgstr ""
 
 msgid "This package is installed on following domain(s):"
 msgstr ""
@@ -2771,42 +2679,35 @@ msgstr ""
 msgid "%1$s`s - Software"
 msgstr ""
 
-#, fuzzy
 msgid "No software available!"
-msgstr "هیچ بروزرسانی بانک داده ای فراهم نیست"
+msgstr ""
 
-#, fuzzy
 msgid "Installed on"
-msgstr "طرحواره های نصب شده"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller list"
-msgstr "ریسلرها"
+msgstr ""
 
 msgid "Softwaredepot"
 msgstr ""
 
-#, fuzzy
 msgid "Admin not available"
-msgstr "پلن های میزبانی فراهم برای"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to remove the permissions ?"
-msgstr "آیا مطمئن هستید که می خواهید بک آپ را بازیابی کنید؟"
+msgstr ""
 
 msgid "No Reseller with permissions for this software found"
 msgstr ""
 
-#, fuzzy
 msgid "All reseller"
-msgstr "همه ی ریسلران"
+msgstr ""
 
 msgid "No Reseller available to add the permissions"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr "آی اس پی سی پی - مدیر/مدیریت سشن ها"
+msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -2815,20 +2716,17 @@ msgstr ""
 msgid "Add permissions for reseller to software:"
 msgstr ""
 
-#, fuzzy
 msgid "Remove permissions"
-msgstr "نسخه نمایشی!"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller with permissions total"
-msgstr "جدول اطلاعات ریسلر"
+msgstr ""
 
 msgid "Added by"
 msgstr ""
 
-#, fuzzy
 msgid "Add permissions"
-msgstr "افزودن کاربر موجود"
+msgstr ""
 
 msgid "Software permissions"
 msgstr ""
@@ -2857,9 +2755,8 @@ msgstr "اطلاعات فایل سیستم"
 msgid "Free"
 msgstr "آزاد"
 
-#, fuzzy
 msgid "Kernel Version"
-msgstr "نسخه نمایشی!"
+msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
@@ -2987,12 +2884,10 @@ msgstr "زیردامنه های دامنه:"
 msgid "Domain databases:"
 msgstr "بانک داده های دامنه:"
 
-#, fuzzy
 msgid ""
 "Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
 msgstr ""
-"آیا واقعا می خواهید کل دامنه را پاک کنید؟ این عملیات را نمی توان ملغی کرد!"
 
 msgid "Yes, delete the domain."
 msgstr "بله، دامنه را پاک کن."
@@ -3009,9 +2904,8 @@ msgstr "سینتکس نقطه ی مونت نادرست است"
 msgid "Master domain cannot be used!"
 msgstr "دامنه مستر را نمی توان استفاده کرد!"
 
-#, fuzzy
 msgid "Wrong address in forward URL!"
-msgstr "بخش نادرست دامنه در فوروارد یوآرال!"
+msgstr ""
 
 msgid "Wrong domain part in forward URL!"
 msgstr "بخش نادرست دامنه در فوروارد یوآرال!"
@@ -3079,7 +2973,8 @@ msgstr ""
 "کنید!"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+"Domain alias you are trying to remove has FTP accounts!<br>First remove "
+"them!"
 msgstr ""
 " الحاقی دامنه که می کوشید اکانت اف تی پی دارد! <br>نخست آنها را پاک کنید!"
 
@@ -3099,7 +2994,8 @@ msgid "Mount Point"
 msgstr "نقطه ی پوینت"
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+"Subdomain you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 "زیردامنه هایی که می خواهید پاک کنید حساب ایمیل دارند!<br> نخست آنها را پاک "
 "کنید!"
@@ -3183,9 +3079,8 @@ msgstr "کرون جاب ها"
 msgid "You are not allowed to remove this DNS record!"
 msgstr ""
 
-#, fuzzy
 msgid "Custom DNS record scheduled for deletion!"
-msgstr "رکورد ناحیه دی ان اس در برنامه ی حذف قرار گرفت!"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "آی اس پی سی پی - مدیریت دامنه های الحاقی/افزودن رکورد ناحیه دی ان اس"
@@ -3238,9 +3133,8 @@ msgstr "اطلاعات رکورد دی ان اس"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr "رکوردهای ناحیه دی ان اس (آزمایشی)"
 
-#, fuzzy
 msgid "You are not allowed to edit this DNS record!"
-msgstr "شما هیچ رکورد دامنه الحاقی ندارید"
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3294,9 +3188,8 @@ msgstr " .این %s نمی تواند تأیید شود به دلیل '%s'  "
 msgid "Unknown zone type %s!"
 msgstr "نوع ناحیه ی %s نامشخص است!"
 
-#, fuzzy
 msgid "Error: DNS record already exist!"
-msgstr "کاربر از قبل وجود دارد!"
+msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "آی اس پی سی پی - مشتری/آمار دامنه"
@@ -3359,9 +3252,8 @@ msgstr "ویرایش صفحه خطا"
 msgid "Custom error page was updated!"
 msgstr "صفحه خطای شخصی شده بروز شد!"
 
-#, fuzzy
 msgid "System error - custom error page was not updated!"
-msgstr "خطای سیستم - صفحه خطای شخصی شده بروز نشد!"
+msgstr ""
 
 msgid "Error 401 (unauthorised)"
 msgstr "خطای ۴۰۱ (بی مجوز)"
@@ -3393,9 +3285,8 @@ msgstr "کاربران اف تی پی"
 msgid "FTP account"
 msgstr "حساب اف تی پی"
 
-#, fuzzy
 msgid "Login As"
-msgstr "ورود"
+msgstr ""
 
 msgid "Empty List"
 msgstr "لیست خالی"
@@ -3432,9 +3323,8 @@ msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr ""
 "لیست دامنه الحاقی خالی است! شما نمی توانید آنجا حساب اف تی پی اضافه کنید!"
 
-#, fuzzy
 msgid "Please specify other FTP account directory!"
-msgstr "لطفا دایرکتوری دیگری برای حساب اف تی پی مشخص کنید!"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "تعداد حساب های اف تی پی به حداکثر رسیده!"
@@ -3457,13 +3347,11 @@ msgstr "استفاده از دایرکتوری دیگر"
 msgid "Choose dir"
 msgstr "انتخاب دایرکتوری"
 
-#, fuzzy
 msgid "Unknown FTP user id!"
-msgstr "نوع نامشخص!"
+msgstr ""
 
-#, fuzzy
 msgid "Cannot open directory! Please contact your administrator!"
-msgstr "دایرکتوری را نمی توان باز کرد!<br> لطفا با مدیر تماس بگیرید!"
+msgstr ""
 
 msgid "Parent Directory"
 msgstr "دایرکتوری والد"
@@ -3552,11 +3440,10 @@ msgstr ""
 msgid "i-MSCP application installer: disabled"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
 "doesn't has this feature."
-msgstr "شما پی اچ پی را فعال کرده اید، اما پلن میزبانی این ویژگی را ندارد."
+msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "فضای دیسک مورد استفاده ی شما بیش از حد پلن میزبانی جدید شماست"
@@ -3583,13 +3470,15 @@ msgid "Emails"
 msgstr "ایمیل ها"
 
 msgid "You have more FTP accounts in use than the new hosting plan limits."
-msgstr " حساب های اف تی پی مورد استفاده ی شما بیش از حد پلن میزبانی جدید شماست"
+msgstr ""
+" حساب های اف تی پی مورد استفاده ی شما بیش از حد پلن میزبانی جدید شماست"
 
 msgid "FTPs"
 msgstr "اف تی پی ها"
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
-msgstr " بانک های اطلاعاتی مورد استفاده ی شما بیش از حد پلن میزبانی جدید شماست"
+msgstr ""
+" بانک های اطلاعاتی مورد استفاده ی شما بیش از حد پلن میزبانی جدید شماست"
 
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
@@ -3600,10 +3489,8 @@ msgstr ""
 msgid "free of charge"
 msgstr "رایگان"
 
-#, fuzzy
 msgid "You cannot update to this hosting plan, see notices in text."
 msgstr ""
-"شما نمی توانید این پلن میزبانی را ارتقا دهید، به ملاحظات متن نگاه کنید."
 
 msgid "Warning:"
 msgstr "هشدار:"
@@ -3620,7 +3507,8 @@ msgstr "هیچ پلن میزبانی برای ارتقا وجود ندارد"
 msgid "i-MSCP - Update hosting plan"
 msgstr "آی اس پی سی پی - ارتقای پلن میزبانی"
 
-msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgid ""
+"You have more e-mail addresses in use than the new hosting plan limits."
 msgstr " آدرس های ایمیل مورد استفاده ی شما بیش از حد پلن میزبانی جدید شماست"
 
 msgid "Your request for hosting pack update was added successfully"
@@ -3869,13 +3757,11 @@ msgstr "آی اس پی سی پی - مشتری/تغییر رمز عبور"
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "آی اس پی سی پی - مشتری/تغییر اطلاعات شخصی"
 
-#, fuzzy
 msgid "Unknown SQL user id."
-msgstr "خطای نامعلوم"
+msgstr ""
 
-#, fuzzy
 msgid "Error: An error occurred while authentication."
-msgstr "خطا حین تأیید!"
+msgstr ""
 
 msgid "You do not have protected areas"
 msgstr "شما بخش حفاظت شده ای ندارید"
@@ -4009,17 +3895,14 @@ msgstr "بروزرسانی کاربر"
 msgid "You have no users!"
 msgstr "شما هیچ کاربری ندارید!"
 
-#, fuzzy
 msgid "Install in progress..."
-msgstr "افزودن در حال انجام است"
+msgstr ""
 
-#, fuzzy
 msgid "Deletion in progress..."
-msgstr "حذف در حال انجام است"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package?"
-msgstr "آیا مطمئن هستید که می خواهید این سفارش را حذف کنید؟"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4031,9 +3914,8 @@ msgstr ""
 msgid "Installed Package which was deleted by your reseller!"
 msgstr ""
 
-#, fuzzy
 msgid "No software available"
-msgstr "هیچ بروزرسانی بانک داده ای فراهم نیست"
+msgstr ""
 
 msgid "required"
 msgstr ""
@@ -4041,39 +3923,32 @@ msgstr ""
 msgid "not required"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install software"
-msgstr "شما مجوز دسترسی به این رابط را ندارید!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - application installer"
-msgstr "آی اس پی سی پی - مشتری/مدیر کرون جاب"
+msgstr ""
 
-#, fuzzy
 msgid "Install software"
-msgstr "نصب زبان جدید"
+msgstr ""
 
 msgid "Software"
 msgstr ""
 
-#, fuzzy
 msgid "Version"
-msgstr "نسخه نمایشی!"
+msgstr ""
 
-#, fuzzy
 msgid "Database"
-msgstr "بانک داده اس کیو ال"
+msgstr ""
 
-#, fuzzy
 msgid "Apps available"
-msgstr "آی پی های فراهم"
+msgstr ""
 
 msgid "Software installation"
 msgstr ""
 
-#, fuzzy
 msgid "Software deleted successful."
-msgstr "بخش حفاظت شده با موفقیت حذف شد!"
+msgstr ""
 
 msgid "Software will be deleted now."
 msgstr ""
@@ -4084,25 +3959,21 @@ msgstr "لیست کاربر اس کیو ال خالی است!"
 msgid "At first you must create a database!"
 msgstr ""
 
-#, fuzzy
 msgid "Add new database"
-msgstr "افزودن بانک داده اس کیو ال"
+msgstr ""
 
-#, fuzzy
 msgid "Software not found!"
-msgstr "تیکت یافت نشد!"
+msgstr ""
 
 #, php-format
 msgid "The directory -%1$s- was created!"
 msgstr ""
 
-#, fuzzy
 msgid "Please select the correct user for your database!"
-msgstr "لطفا کاربر(ها) را انتخاب کنید"
+msgstr ""
 
-#, fuzzy
 msgid "You have to fill out inputs!"
-msgstr "شما هیچ گروهی ندارید!"
+msgstr ""
 
 msgid "You cant't install outside from htdocs!"
 msgstr ""
@@ -4121,69 +3992,56 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
-#, fuzzy
 msgid "Install Software"
-msgstr "نصب زبان جدید"
+msgstr ""
 
-#, fuzzy
 msgid "Database required"
-msgstr "کاربران بانک داده"
+msgstr ""
 
-#, fuzzy
 msgid "Select Domain"
-msgstr "حذف دامنه"
+msgstr ""
 
-#, fuzzy
 msgid "back"
-msgstr "برگرد"
+msgstr ""
 
-#, fuzzy
 msgid "install"
-msgstr "از نصب درآوردن"
+msgstr ""
 
-#, fuzzy
 msgid "Install path"
-msgstr "نصب"
+msgstr ""
 
 msgid "Create directory, if not exist!"
 msgstr ""
 
-#, fuzzy
 msgid "Select database"
-msgstr "بانک های داده اس کیو ال"
+msgstr ""
 
-#, fuzzy
 msgid "SQL-User"
-msgstr "کاربر اس کیو ال"
+msgstr ""
 
-#, fuzzy
 msgid "installed"
-msgstr "از نصب درآوردن"
+msgstr ""
 
 msgid "Installation infos"
 msgstr ""
 
-#, fuzzy
 msgid "Software status:"
-msgstr "وضعیت سرور"
+msgstr ""
 
 msgid "Installation path:"
 msgstr ""
 
-#, fuzzy
 msgid "Used database:"
-msgstr "بانک های داده اس کیو ال"
+msgstr ""
 
 msgid "You need a Database for this software"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Software details"
-msgstr "آی اس پی سی پی - دامنه/جزئیات"
+msgstr ""
 
-#, fuzzy
 msgid "Software details"
-msgstr "جزئیات سفارش"
+msgstr ""
 
 msgid "Homepage"
 msgstr ""
@@ -4203,10 +4061,9 @@ msgstr "رمز عبور کاربر اس کیو ال با موفقیت تغییر
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "آی اس پی سی پی - مشتری/تغییر رمز عبور کاربر اس کیو ال"
 
-#, fuzzy
 msgid ""
 "User does not exist or you do not have permission to access this interface."
-msgstr "کاربری وجود ندارد یا شما مجوز دسترسی به این رابط را ندارید!"
+msgstr ""
 
 msgid "Change SQL user password"
 msgstr "تغییر رمز عبور کاربر اس کیو ال"
@@ -4277,12 +4134,12 @@ msgstr " phpMyAdmin ورود به "
 
 #, php-format
 msgid ""
-"This database will be permanently deleted. This process cannot be recovered. "
-"All users linked to this database will also be deleted if not linked to "
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
-"این بانک داده برای همیشه حذف می شود. این فرآیند را نمی توان بازگرداند. همه ی "
-"کاربران مربوط به این بانک داده نیز پاک خواهند شد اگر به بانک داده ی دیگری "
+"این بانک داده برای همیشه حذف می شود. این فرآیند را نمی توان بازگرداند. همه ی"
+" کاربران مربوط به این بانک داده نیز پاک خواهند شد اگر به بانک داده ی دیگری "
 "مربوط نباشند. آیا مطمئن اید که می خواهید %s را حذف کنید؟"
 
 msgid "SQL users limit reached!"
@@ -4357,24 +4214,20 @@ msgstr "نام زیردامنه"
 msgid "Directory tree mount point"
 msgstr "نقطه ی مونت درخت دایرکتوری"
 
-#, fuzzy
 msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
-msgstr "آی اس پی سی پی - مدیر/ویرایش دامنه"
+msgstr ""
 
-#, fuzzy
 msgid "Manage subdomain"
-msgstr "مدیریت دامنه ها"
+msgstr ""
 
-#, fuzzy
 msgid "Edit subdomain"
-msgstr "ویرایش دامنه"
+msgstr ""
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Support System - New ticket"
-msgstr "آی اس پی سی پی - سیستم پشتیبانی - تیکت جدید"
+msgstr ""
 
 msgid "Please specify message subject!"
 msgstr "لطفا موضوع پیام را مشخص کنید!"
@@ -4415,7 +4268,6 @@ msgstr ""
 msgid "{ADMIN} activated your software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {RESELLER},\n"
 "\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
@@ -4427,9 +4279,8 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid " was deleted by {ADMIN}!"
-msgstr "آی پی حذف شده است!"
+msgstr ""
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -4447,9 +4298,9 @@ msgstr ""
 msgid "%.2f PB"
 msgstr "%.2f P‌B"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%.2f TB"
-msgstr "%.2f P‌B"
+msgstr ""
 
 #, php-format
 msgid "%.2f GB"
@@ -4497,7 +4348,6 @@ msgstr "نوع نامعلوم"
 msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr " سلام {USERNAME}به آی اس پی سی پی خوش آمدید"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4522,28 +4372,7 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"،{NAME} سلام\n"
-"\n"
-"\n"
-"یک حساب آی اس پی سی پی جدید برای شما ایجاد شد.\n"
-" اطلاعات مربوط به حساب شما عبارتند از:\n"
-"\n"
-"نوع کاربر:‌ {USERNAME}\n"
-" نام کاربر: {USERNAME}\n"
-" رمز ورود:‌ {PASSWORD}\n"
-"\n"
-" .به یاد داشته باشید که مرتبا و به خصوص در نخستین بار ورود به حساب تان "
-"پسورود خود را تغییر دهید\n"
-"\n"
-" شما اکنون می توانید به {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} وارد "
-"شوید\n"
-"\n"
-"امیدواریم از آی اس پی سی پی لذت ببرید!\n"
-" تیم آی اس پی سی پی\n"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4567,26 +4396,6 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"،{NAME} سلام\n"
-"\n"
-"\n"
-"یک حساب آی اس پی سی پی جدید برای شما ایجاد شد.\n"
-" اطلاعات مربوط به حساب شما عبارتند از:\n"
-"\n"
-"نوع کاربر:‌ {USERNAME}\n"
-" نام کاربر: {USERNAME}\n"
-" رمز ورود:‌ {PASSWORD}\n"
-"\n"
-" .به یاد داشته باشید که مرتبا و به خصوص در نخستین بار ورود به حساب تان "
-"پسورود خود را تغییر دهید\n"
-"\n"
-" شما اکنون می توانید به {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} وارد "
-"شوید\n"
-"\n"
-"امیدواریم از آی اس پی سی پی لذت ببرید!\n"
-" تیم آی اس پی سی پی\n"
 
 msgid "Please activate your new i-MSCP password!"
 msgstr "لطفا رمز عبور جدید ای اس پی سی پی خود را فعال کنید!"
@@ -4655,8 +4464,7 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation "
-"process.\n"
+"You have to click the following link to continue the domain creation process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4686,8 +4494,7 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
 "The i-MSCP Team\n"
@@ -4701,20 +4508,17 @@ msgstr ""
 "{ALIAS}\n"
 "\n"
 "\n"
-" به محض ورود می توانید دامنه الحاقی جدیدش را فعال کنید."
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+" به محض ورود می توانید دامنه الحاقی جدیدش را فعال کنید.{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "\n"
 " سپاسگزاریم که از آی اس پی سی پی استفاده می کنید.\n"
 " تیم آی اس پی سی پی\n"
 
-#, fuzzy
 msgid "Your message has been sent."
-msgstr "پیام شما فرستاده شد!"
+msgstr ""
 
-#, fuzzy
 msgid "Your message has been sent"
-msgstr "پیام شما فرستاده شد!"
+msgstr ""
 
 msgid "Ticket was closed!"
 msgstr "تیکت بسته شد!"
@@ -4725,9 +4529,8 @@ msgstr "تیکت بازگشایی شد!"
 msgid "Never"
 msgstr "هرگز"
 
-#, fuzzy
 msgid "You don't have support tickets."
-msgstr "شما تیکت پشتیبانی ندارید."
+msgstr ""
 
 msgid "[New]"
 msgstr "[جدید]"
@@ -4815,15 +4618,11 @@ msgstr "نام دامنه ی <b>%s</b> قبلا ثبت شده است!"
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr " <b>%s</b> سینتکس دامنه سطح دوم نادرست است:"
 
-#, fuzzy
 msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
-"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
+"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
-"خطا:‌برچسب های ACE مجاز نیستند. لطفا از معادل یونیکد استفاده کنید. .<br /"
-"><small>مثال: برای برچسب \"xn--bcher-kva\", شکل یونیکد را استفاده کنید:: "
-"\"bücher\"</small>"
 
 #, php-format
 msgid "You have to wait %d seconds."
@@ -4833,9 +4632,8 @@ msgstr "شماباید ثانیه %d صبر کنید."
 msgid "You have been blocked for %d minutes."
 msgstr "شما برای %d دقیقه بلوکه شده اید."
 
-#, fuzzy
 msgid "You entered an incorrect username!"
-msgstr "نام کاربری یا رمزعبور وارد شده نادرست است."
+msgstr ""
 
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr "سیستم اکنون در حال نگهداری است! فقط مدیر می تواند وارد شود."
@@ -4855,9 +4653,8 @@ msgstr "وضعیت حساب %s مرتب نیست!"
 msgid "%s's domain expired!"
 msgstr "دامنه ی %s منقضی شده است!"
 
-#, fuzzy
 msgid "You entered an incorrect password!"
-msgstr "نام کاربری یا رمزعبور وارد شده نادرست است."
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr "درخواست از میزبان خارجی بلوکه شد!"
@@ -4880,9 +4677,8 @@ msgstr "در حال فعال سازی"
 msgid "Being suspended"
 msgstr "در حال حذف"
 
-#, fuzzy
 msgid "Awaiting approval"
-msgstr "در انتظار تأیید"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "خطای نامعلوم"
@@ -4953,19 +4749,21 @@ msgid ""
 "You have disabled SQL databases for this user!<br />You cannot have SQL "
 "users here!"
 msgstr ""
-"شما بانک داده های اس کیو ال این کاربر را غیرفعال کرده اید! <br /> نمی توانید "
-"اینجا کاربران اس کیو ال بیفزایید!"
+"شما بانک داده های اس کیو ال این کاربر را غیرفعال کرده اید! <br /> نمی توانید"
+" اینجا کاربران اس کیو ال بیفزایید!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "شما از حداکثر بانک داده های اس کیو ال خود فراتر رفته اید!"
 
 msgid ""
-"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+"You have a traffic limit!<br />You cannot add an user with unlimited "
+"traffic!"
 msgstr ""
 " شما حدی برای ترافیک تان دارید!<br /> نمی توانید کاربری با ترافیک نامحدود "
 "بیفزایید! "
 
-msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgid ""
+"You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 " شما حدی برای فضای دیسک تان دارید!<br /> نمی توانید کاربری با فضای دیسک "
 "نامحدود بیفزایید! "
@@ -4973,7 +4771,6 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {ADMIN},\n"
 "\t{RESELLER} has uploaded a new software package.\n"
@@ -4986,38 +4783,31 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid "Installation details"
-msgstr "جزئیات میزبانی"
+msgstr ""
 
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
 msgstr ""
 
-#, fuzzy
 msgid "Login username"
-msgstr "نام کاربری اشتباه است!"
+msgstr ""
 
-#, fuzzy
 msgid "Login password"
-msgstr "رمز عبور گم شده"
+msgstr ""
 
-#, fuzzy
 msgid "Emailadress"
-msgstr "ایمیل ها"
+msgstr ""
 
-#, fuzzy
 msgid "enabled"
-msgstr "فعال"
+msgstr ""
 
-#, fuzzy
 msgid "Application Description"
-msgstr "توصیف"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install application yet"
-msgstr "شما مجوز دسترسی به این رابط را ندارید!"
+msgstr ""
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5028,13 +4818,11 @@ msgstr ""
 msgid "Installed in reseller depot"
 msgstr ""
 
-#, fuzzy
 msgid "Start installation"
-msgstr "بین المللی کردن"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package from the webdepot?"
-msgstr "آیا مطمئن هستید که می خواهید بک آپ را بازیابی کنید؟"
+msgstr ""
 
 msgid "No software in webdepot found!"
 msgstr ""
@@ -5075,9 +4863,8 @@ msgstr "خطا در ایجاد سفارش! شاید قبلا فعال شده؟"
 msgid "Order confirmation"
 msgstr "تأیید سفارش"
 
-#, fuzzy
 msgid "Domain already exists on the system!"
-msgstr "دامنه ای با این نام قبلا در سیستم وجود دارد!"
+msgstr ""
 
 msgid "This hosting plan is not available for purchase"
 msgstr "این پلن میزبانی مهیای خرید نیست"
@@ -5100,9 +4887,8 @@ msgstr "آدرس را وارد کنید"
 msgid "* denotes mandatory field."
 msgstr "* فیلد لازم"
 
-#, fuzzy
 msgid "Term of Service"
-msgstr "سرویس"
+msgstr ""
 
 msgid "I Accept The Term of Service"
 msgstr ""
@@ -5117,8 +4903,8 @@ msgid "Personal Data"
 msgstr "اطلاعات شخصی"
 
 msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
+"(To avoid abuse, we ask you to write the combination of letters on the above"
+" picture into the field \"Security code\")"
 msgstr ""
 "(برای اجتناب از سوءاستفاده از شما می خواهیم که ترکیب حروف تصویر بالا را در "
 "فیلد \"کد امنیتی\" وارد کنید"
@@ -5312,13 +5098,11 @@ msgstr "%1$d / %2$d از <b>illimité</b>"
 msgid "No Ip statistics to be show."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Reseller/IP Usage"
-msgstr "آی اس پی سی پی - ریسلر/تغییر زبان"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller/IP usage statistics"
-msgstr "آمارهای ریسلر"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "آی اس پی سی پی - ریسلر/تغییر زبان"
@@ -5428,13 +5212,11 @@ msgstr "ایمیل بازیابی رمز عبور"
 msgid "Lostpw link"
 msgstr "پیوند رمز ورود گم شده"
 
-#, fuzzy
 msgid "Please specify a subject."
-msgstr "لطفا یک موضوع مشخص کنید!"
+msgstr ""
 
-#, fuzzy
 msgid "Auto email template data updated."
-msgstr "قالب اتوماتیک ایمیل بروز شد!"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "آی اس پی سی پی - ریسلر/مدیریت کاربران/راه اندازی ایمیل"
@@ -5448,23 +5230,21 @@ msgstr ""
 msgid "This package is not installed yet"
 msgstr ""
 
-#, fuzzy
 msgid "waiting for activation"
-msgstr "در انتظار تأیید"
+msgstr ""
 
 msgid "activated (Softwaredepot)"
 msgstr ""
 
-#, fuzzy
 msgid "activated"
-msgstr "فعال سازی"
+msgstr ""
 
 msgid "Installing your uploaded package. Please refresh the site."
 msgstr ""
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br /"
-">Refresh your site to see the new status!"
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "Failure in package. Deleting!"
@@ -5480,8 +5260,8 @@ msgstr ""
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br /"
-">Refresh your site to see the new status!"
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in the administrator software depot!"
@@ -5492,20 +5272,18 @@ msgstr ""
 
 msgid ""
 "Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br /"
-">Refresh your site to see the new status!"
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in your software depot!"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have any software uploaded yet"
-msgstr "شما سفارش جدیدی ندارید"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to upload software"
-msgstr "شما مجوز دسترسی به این رابط را ندارید!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5514,8 +5292,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
@@ -5536,25 +5314,20 @@ msgstr ""
 msgid "Software-Synonym"
 msgstr ""
 
-#, fuzzy
 msgid "Software-Version"
-msgstr "نسخه نمایشی!"
+msgstr ""
 
-#, fuzzy
 msgid "Software status"
-msgstr "وضعیت سرور"
+msgstr ""
 
-#, fuzzy
 msgid "Software upload"
-msgstr "نمایش بار سرور"
+msgstr ""
 
-#, fuzzy
 msgid "Requires Database?"
-msgstr "بانک داده اس کیو ال"
+msgstr ""
 
-#, fuzzy
 msgid "Database prefix"
-msgstr "نام بانک داده"
+msgstr ""
 
 msgid "Link to authors homepage"
 msgstr ""
@@ -5568,9 +5341,8 @@ msgstr "آی اس پی سی پی - ریسلر: سیستم پشتیبانی: دی
 msgid "i-MSCP - Users/Add user"
 msgstr "آی اس پی سی پی - کاربران/افزودن کاربر"
 
-#, fuzzy
 msgid "Domain expire date"
-msgstr "انقضای دامنه"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "انتخاب پلن میزبانی"
@@ -5605,9 +5377,9 @@ msgstr "آی اس پی سی پی - کاربران/افزودن کاربر"
 msgid "Add other domains to this account"
 msgstr "دامنه های دیگری به این حساب اضافه کنید."
 
-#, fuzzy, php-format
+#, php-format
 msgid "System error with Domain Id: %d"
-msgstr "%d خطای سیستم با ای دی دامنه"
+msgstr ""
 
 msgid "i-MSCP - Users/Edit"
 msgstr "آی اس پی سی پی - کاربران/ویرایش "
@@ -5637,9 +5409,8 @@ msgstr "پهنای باند"
 msgid "View aliases"
 msgstr "دیدن دامنه های الحاقی"
 
-#, fuzzy
 msgid "You do not have customers."
-msgstr "شما سفارش جدیدی ندارید"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -5665,130 +5436,4 @@ msgstr "کاربر حذف شد!"
 msgid "User not terminated!"
 msgstr "کاربر حذف نشده است!"
 
-#~ msgid "i-MSCP  a Virtual Hosting Control System"
-#~ msgstr "آی اس پی سی پی امگا - سیستم کنترل پنل مجازی"
 
-#~ msgid "Please enter your login information"
-#~ msgstr "لطفا اطلاعات ورود خود را وارد کنید"
-
-#~ msgid "Retrieving lost passwords is currently not possible"
-#~ msgstr "بازیابی رمز عبور گم شده فعلا ممکن نیست"
-
-#~ msgid "i-MSCP - Virtual Hosting Control System"
-#~ msgstr "آی اس پی سی پی - سیستم کنترل پنل مجازی"
-
-#~ msgid "Retry"
-#~ msgstr "دوباره سعی کنید"
-
-#~ msgid "Request password"
-#~ msgstr "درخواست رمز عبور"
-
-#~ msgid "Do you want to execute the Updates now?"
-#~ msgstr "آیا اکنون می خواهید بروزرسانی را اعمال کنید؟"
-
-#~ msgid "A database update is available"
-#~ msgstr "یک بروزرسانی بانک داده فراهم است"
-
-#~ msgid "Panel Default"
-#~ msgstr "پنل پیشفرض"
-
-#, fuzzy
-#~ msgid "Settings saved!"
-#~ msgstr "تنظیمات ذخیره شد!"
-
-#, fuzzy
-#~ msgid ""
-#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
-#~ "services names!"
-#~ msgstr "خطا: فقط حروف، اعداد، خط تیره و زیرخط مجازند!"
-
-#~ msgid "To"
-#~ msgstr "به"
-
-#~ msgid "Message was sent."
-#~ msgstr "پیام فرستاده شد."
-
-#~ msgid "ISPCP - Client/Webtools"
-#~ msgstr "آی اس پی سی پی - مشتری/ابزارهای وب"
-
-#~ msgid "i-MSCP Error"
-#~ msgstr "خطای آی اس پی سی پی"
-
-#~ msgid "Error Message"
-#~ msgstr "پیام خطا"
-
-#~ msgid "Unchanged"
-#~ msgstr "تغییر نکرده"
-
-#~ msgid "- 1 Month"
-#~ msgstr "- ۱ ماه"
-
-#~ msgid "+ 1 Month"
-#~ msgstr "+ ۱ ماه"
-
-#~ msgid "+ 2 Months"
-#~ msgstr "+ ۲ ماه"
-
-#~ msgid "+ 3 Months"
-#~ msgstr "+ ۳ ماه"
-
-#~ msgid "+ 6 Months"
-#~ msgstr "+ ۶ ماه"
-
-#~ msgid "+ 1 Year"
-#~ msgstr "+ ۱ سال"
-
-#~ msgid "+ 2 Years"
-#~ msgstr "+ ۲ سال"
-
-#~ msgid "1 Month"
-#~ msgstr "۱ ماه"
-
-#~ msgid "2 Months"
-#~ msgstr "۲ ماه"
-
-#~ msgid "3 Months"
-#~ msgstr "۳ ماه"
-
-#~ msgid "6 Months"
-#~ msgstr "۶ ماه"
-
-#~ msgid "1 Year"
-#~ msgstr "۱ سال"
-
-#~ msgid "2 Years"
-#~ msgstr "۲ سال"
-
-#~ msgid "You have no users."
-#~ msgstr "شما هیچ کاربری ندارید!"
-
-#~ msgid "%d <br/>از<br/> <b>unlimited</b>"
-#~ msgstr "%d<br />de<br /><b>illimité</b>"
-
-#~ msgid "Services"
-#~ msgstr "سرویس ها"
-
-#~ msgid "days"
-#~ msgstr "روز"
-
-#~ msgid "hours"
-#~ msgstr "ساعت"
-
-#~ msgid "Kernel"
-#~ msgstr "کرنل"
-
-#~ msgid "Load"
-#~ msgstr "بار"
-
-#~ msgid "ترابایت %.2f"
-#~ msgstr "%.2f ترابایت"
-
-#~ msgid ""
-#~ "We are sorry, but the system is currently under maintenance.\n"
-#~ "Please try again later."
-#~ msgstr ""
-#~ "\n"
-#~ " با پوزش از شما اکنون سیستم در حال نگهداری استلطفا بعدا دوباره تلاش کنید."
-
-#~ msgid "Could not get config from database"
-#~ msgstr "گرفتن کانفیگ از بانک داده ممکن نشد"

@@ -1,19 +1,20 @@
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: ar_AE\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
 "POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2009-12-18 14:26+0100\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
-"Language-Team: Arabic <ar_AE@li.org>\n"
-"Language: ar\n"
+"PO-Revision-Date: 2011-06-14 05:23+0000\n"
+"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: x64PoPot 0.2\n"
-"X-Poedit-Language: Arabic\n"
-"X-Poedit-Country: United Arabic Emirates\n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -39,24 +40,20 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-#, fuzzy
 msgid "Days"
-msgstr "يوم:"
+msgstr ""
 
 msgid "Hour"
 msgstr "ساعة:"
 
-#, fuzzy
 msgid "Hours"
-msgstr "ساعة:"
+msgstr ""
 
-#, fuzzy
 msgid "Minute"
-msgstr "دقائق"
+msgstr ""
 
-#, fuzzy
 msgid "Minutes"
-msgstr "دقائق"
+msgstr ""
 
 msgid "An error occured! Please, contact your administrator!"
 msgstr ""
@@ -178,9 +175,8 @@ msgstr ""
 msgid "Rootkit Log"
 msgstr ""
 
-#, fuzzy
 msgid "Services status"
-msgstr "إحصاءات الخادم"
+msgstr ""
 
 msgid "Services ports"
 msgstr ""
@@ -419,7 +415,8 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!"
 msgstr ""
 
 msgid "Incorrect email length or syntax!"
@@ -521,9 +518,8 @@ msgstr "كلمة المرور"
 msgid "phpMyAdmin"
 msgstr ""
 
-#, fuzzy
 msgid "FileManager"
-msgstr "مدير الملفات"
+msgstr ""
 
 msgid "Secure Connection"
 msgstr "إتصال آمن"
@@ -551,20 +547,17 @@ msgid ""
 "picture above into the field \"Security code\""
 msgstr ""
 
-#, fuzzy
 msgid "Get password"
-msgstr "توليد كلمة مرور"
+msgstr ""
 
 msgid "Back"
 msgstr "رجوع"
 
-#, fuzzy
 msgid "Your new password has been sent. Check your mail."
-msgstr "تم إرسال كلمة المرور الجديدة"
+msgstr ""
 
-#, fuzzy
 msgid "New password has not been sent. Ask your administrator."
-msgstr "تعذر إرسال كلمة المرور الجديدة"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -591,9 +584,8 @@ msgstr ""
 msgid "Entered passwords do not match!"
 msgstr ""
 
-#, fuzzy
 msgid "This user name already exist."
-msgstr "إسم المستخدم موجود مسبقا"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr ""
@@ -667,9 +659,8 @@ msgstr ""
 msgid "Generate password"
 msgstr "توليد كلمة مرور"
 
-#, fuzzy
 msgid "Password change is disabled!"
-msgstr "تم تعطيل حساب المستخدم"
+msgstr ""
 
 msgid "Demo Version!"
 msgstr ""
@@ -929,9 +920,8 @@ msgstr "لا"
 msgid "Enabled"
 msgstr "مفعّل"
 
-#, fuzzy
 msgid "Incorrect subdomains limit."
-msgstr "لقد تجاوز الحد الأعلى للنطاقات الفرعية!"
+msgstr ""
 
 msgid "Incorrect aliases limit."
 msgstr ""
@@ -1082,7 +1072,8 @@ msgid "Yes"
 msgstr "نعم"
 
 msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+"In case 'Domain expire' is 'N/A', the expiration date will be set from "
+"today."
 msgstr ""
 
 msgid "or Check for <strong>never Expire</strong>"
@@ -1345,9 +1336,8 @@ msgstr ""
 msgid "No email account system errors"
 msgstr ""
 
-#, fuzzy
 msgid "missing domain"
-msgstr "أدر النطاقات"
+msgstr ""
 
 msgid "missing alias"
 msgstr ""
@@ -1358,9 +1348,8 @@ msgstr ""
 msgid "No htaccess related system errors"
 msgstr ""
 
-#, fuzzy
 msgid "Missing domain"
-msgstr "أدر النطاقات"
+msgstr ""
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1402,7 +1391,7 @@ msgstr ""
 msgid "Set status to 'change'"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s Errors in database"
 msgstr ""
 
@@ -1506,20 +1495,17 @@ msgstr ""
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
 
-#, fuzzy
 msgid "Total Domains"
-msgstr "نطاقات"
+msgstr ""
 
 msgid "No records found"
 msgstr ""
 
-#, fuzzy
 msgid "Admin/IP usage statistics"
-msgstr "إحصائيات الويب"
+msgstr ""
 
-#, fuzzy
 msgid "Domain Name"
-msgstr "إسم النطاق"
+msgstr ""
 
 msgid "Reseller Name"
 msgstr ""
@@ -1636,9 +1622,8 @@ msgstr "لدى هذا المستخدم نطاق!<br>لمسح هذا المستخ
 msgid "User was disabled"
 msgstr "تم تعطيل حساب المستخدم"
 
-#, fuzzy
 msgid "Uninstall"
-msgstr "تثبيت"
+msgstr ""
 
 #, php-format
 msgid "%d messages translated"
@@ -1659,9 +1644,8 @@ msgstr "تعذر قراءة ملف اللغة!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "الملف الذي تم تحميله ليس ملف لغة صالح!"
 
-#, fuzzy
 msgid "Uploaded file does not contain language information!"
-msgstr "الملف الذي تم تحميله ليس ملف لغة صالح!"
+msgstr ""
 
 #, php-format
 msgid "%s added new language: %s"
@@ -1686,9 +1670,8 @@ msgstr ""
 msgid "Messages"
 msgstr ""
 
-#, fuzzy
 msgid "Panel default language"
-msgstr "تم تغيير اللغة الإفتراضية!"
+msgstr ""
 
 msgid "Install new language"
 msgstr ""
@@ -1833,8 +1816,8 @@ msgstr "تخزين"
 
 #, php-format
 msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
+"This reseller's customers are using/have more/higher <b>%s</b> "
+"accounts/limits than the new limit you entered."
 msgstr ""
 
 #, php-format
@@ -1884,17 +1867,16 @@ msgstr "غير محدود"
 msgid "Reset"
 msgstr ""
 
-#, fuzzy
 msgid "Generated password:"
-msgstr "توليد كلمة مرور"
+msgstr ""
 
 msgid "Type `CTRL+C` to copy the generated password in the clipboard."
 msgstr ""
 
 #, php-format
 msgid ""
-"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
-"\\nInstead, use the %s button to update the data."
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance "
+"reasons!\\nInstead, use the %s button to update the data."
 msgstr ""
 
 msgid "i-MSCP - Reseller statistics"
@@ -2068,9 +2050,8 @@ msgstr ""
 msgid "i-MSCP - Admin/Settings"
 msgstr ""
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed!"
-msgstr "خطأ: لا يسمح بإستخدام إلا أرقم موجبة !"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) was updated!"
@@ -2170,9 +2151,8 @@ msgstr ""
 msgid "Custom orderpanel ID"
 msgstr ""
 
-#, fuzzy
 msgid "Domain names validation"
-msgstr "إسم النطاق"
+msgstr ""
 
 msgid "Top Level Domain name strict validation"
 msgstr ""
@@ -2289,13 +2269,11 @@ msgstr ""
 msgid "Error: Wrong Ip number!"
 msgstr ""
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed for services ports!"
-msgstr "خطأ: لا يسمح بإستخدام إلا أرقم موجبة !"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Service port with same name already exists!"
-msgstr "هناك نطاق بذات الإسم قبلا"
+msgstr ""
 
 msgid "Error: Unallowed protocol!"
 msgstr ""
@@ -2303,9 +2281,8 @@ msgstr ""
 msgid "Error: Wrong value for show entry!"
 msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully added"
-msgstr "تم انشاء الطلب بنجاح"
+msgstr ""
 
 #, php-format
 msgid "%d Service(s) port was successfully updated"
@@ -2317,9 +2294,8 @@ msgstr ""
 msgid "You have no custom service ports defined"
 msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully removed!"
-msgstr "تم انشاء الطلب بنجاح"
+msgstr ""
 
 msgid "Error: You are not allowed to remove this service port entry!"
 msgstr ""
@@ -2401,9 +2377,8 @@ msgstr ""
 msgid "%1$s (%2$s)"
 msgstr ""
 
-#, fuzzy
 msgid "Software was deleted."
-msgstr "تم مسح عنوان الIP!"
+msgstr ""
 
 msgid "Fill out a message text!"
 msgstr ""
@@ -2417,9 +2392,8 @@ msgstr ""
 msgid "Delete reseller software"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller data"
-msgstr "البيانات الشخصية"
+msgstr ""
 
 msgid "Delete software and send message"
 msgstr ""
@@ -2437,9 +2411,8 @@ msgstr ""
 msgid "Activate"
 msgstr ""
 
-#, fuzzy
 msgid "Import"
-msgstr "ترحيل"
+msgstr ""
 
 msgid "No software is waiting for activation"
 msgstr ""
@@ -2457,13 +2430,12 @@ msgid "Installing your uploaded package. Please refresh this site."
 msgstr ""
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br /"
-">Refresh your site to see the new status!"
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "installing"
-msgstr "تثبيت"
+msgstr ""
 
 msgid "Failure in the package. Deleting!"
 msgstr ""
@@ -2520,16 +2492,14 @@ msgstr ""
 msgid "Package title"
 msgstr ""
 
-#, fuzzy
 msgid "Package install type"
-msgstr "تم تثبيت اللغة الجديدة!"
+msgstr ""
 
 msgid "Package version"
 msgstr ""
 
-#, fuzzy
 msgid "Package language"
-msgstr "العربية - Arabic"
+msgstr ""
 
 msgid "Package type"
 msgstr ""
@@ -2537,9 +2507,8 @@ msgstr ""
 msgid "Package vendor HP"
 msgstr ""
 
-#, fuzzy
 msgid "Package actions"
-msgstr "أدر النطاقات"
+msgstr ""
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -2559,13 +2528,14 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
 msgid ""
-"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d "
+"MB"
 msgstr ""
 
 msgid "Error: Remote File not found!"
@@ -2574,9 +2544,8 @@ msgstr ""
 msgid "Error: Could not upload the file. File not found!"
 msgstr ""
 
-#, fuzzy
 msgid "File was successfully uploaded."
-msgstr "تم انشاء الطلب بنجاح"
+msgstr ""
 
 msgid "Software depot"
 msgstr ""
@@ -2622,9 +2591,8 @@ msgstr ""
 msgid "Reseller total"
 msgstr ""
 
-#, fuzzy
 msgid "Waiting for activation"
-msgstr "في إنتظار الموافقة"
+msgstr ""
 
 msgid "Activated software"
 msgstr ""
@@ -2632,17 +2600,14 @@ msgstr ""
 msgid "Total installations"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to activate this package?"
-msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete this package?"
-msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
+msgstr ""
 
 msgid "i-MSCP - Application management options"
 msgstr ""
@@ -2688,13 +2653,11 @@ msgstr ""
 msgid "No software available!"
 msgstr ""
 
-#, fuzzy
 msgid "Installed on"
-msgstr "تثبيت"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller list"
-msgstr "قائمة المستخدمين"
+msgstr ""
 
 msgid "Softwaredepot"
 msgstr ""
@@ -2702,9 +2665,8 @@ msgstr ""
 msgid "Admin not available"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure to remove the permissions ?"
-msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
+msgstr ""
 
 msgid "No Reseller with permissions for this software found"
 msgstr ""
@@ -2913,13 +2875,11 @@ msgstr ""
 msgid "Master domain cannot be used!"
 msgstr ""
 
-#, fuzzy
 msgid "Wrong address in forward URL!"
-msgstr "إسم نطاق خاطئ"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong domain part in forward URL!"
-msgstr "إسم نطاق خاطئ"
+msgstr ""
 
 msgid "Domain with this name already exist"
 msgstr "هناك نطاق بذات الإسم قبلا"
@@ -2979,7 +2939,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+"Domain alias you are trying to remove has FTP accounts!<br>First remove "
+"them!"
 msgstr ""
 
 msgid "Alias scheduled for deletion!"
@@ -2998,7 +2959,8 @@ msgid "Mount Point"
 msgstr ""
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+"Subdomain you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 
 msgid "Subdomain scheduled for deletion!"
@@ -3286,9 +3248,8 @@ msgstr ""
 msgid "FTP account"
 msgstr ""
 
-#, fuzzy
 msgid "Login As"
-msgstr "دخول"
+msgstr ""
 
 msgid "Empty List"
 msgstr ""
@@ -3315,9 +3276,8 @@ msgstr ""
 msgid "Please enter FTP account username!"
 msgstr ""
 
-#, fuzzy
 msgid "Password is missing!"
-msgstr "إعدادات كلمة المرور"
+msgstr ""
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr ""
@@ -3503,7 +3463,8 @@ msgstr ""
 msgid "i-MSCP - Update hosting plan"
 msgstr ""
 
-msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgid ""
+"You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -3887,17 +3848,14 @@ msgstr ""
 msgid "You have no users!"
 msgstr ""
 
-#, fuzzy
 msgid "Install in progress..."
-msgstr "قيد الإضافة"
+msgstr ""
 
-#, fuzzy
 msgid "Deletion in progress..."
-msgstr "قيد الإضافة"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package?"
-msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -3918,16 +3876,14 @@ msgstr ""
 msgid "not required"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install software"
-msgstr "ليس لديك صلاحيات للوصول إلى هذه الواجهة!"
+msgstr ""
 
 msgid "i-MSCP - application installer"
 msgstr ""
 
-#, fuzzy
 msgid "Install software"
-msgstr "تثبيت"
+msgstr ""
 
 msgid "Software"
 msgstr ""
@@ -3935,9 +3891,8 @@ msgstr ""
 msgid "Version"
 msgstr ""
 
-#, fuzzy
 msgid "Database"
-msgstr "قواعد بيانات SQL"
+msgstr ""
 
 msgid "Apps available"
 msgstr ""
@@ -3957,9 +3912,8 @@ msgstr ""
 msgid "At first you must create a database!"
 msgstr ""
 
-#, fuzzy
 msgid "Add new database"
-msgstr "قاعدة بيانات SQL"
+msgstr ""
 
 msgid "Software not found!"
 msgstr ""
@@ -3991,43 +3945,35 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
-#, fuzzy
 msgid "Install Software"
-msgstr "تثبيت"
+msgstr ""
 
-#, fuzzy
 msgid "Database required"
-msgstr "تحديثات قاعدة البيانات"
+msgstr ""
 
-#, fuzzy
 msgid "Select Domain"
-msgstr "مسح نطاق"
+msgstr ""
 
 msgid "back"
 msgstr ""
 
-#, fuzzy
 msgid "install"
-msgstr "تثبيت"
+msgstr ""
 
-#, fuzzy
 msgid "Install path"
-msgstr "تثبيت"
+msgstr ""
 
 msgid "Create directory, if not exist!"
 msgstr ""
 
-#, fuzzy
 msgid "Select database"
-msgstr "قاعدة بيانات SQL"
+msgstr ""
 
-#, fuzzy
 msgid "SQL-User"
-msgstr "مستخدمي SQL"
+msgstr ""
 
-#, fuzzy
 msgid "installed"
-msgstr "تثبيت"
+msgstr ""
 
 msgid "Installation infos"
 msgstr ""
@@ -4038,9 +3984,8 @@ msgstr ""
 msgid "Installation path:"
 msgstr ""
 
-#, fuzzy
 msgid "Used database:"
-msgstr "قاعدة بيانات SQL"
+msgstr ""
 
 msgid "You need a Database for this software"
 msgstr ""
@@ -4069,10 +4014,9 @@ msgstr ""
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "User does not exist or you do not have permission to access this interface."
-msgstr "ليس لديك صلاحيات للوصول إلى هذه الواجهة!"
+msgstr ""
 
 msgid "Change SQL user password"
 msgstr ""
@@ -4143,8 +4087,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"This database will be permanently deleted. This process cannot be recovered. "
-"All users linked to this database will also be deleted if not linked to "
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 
@@ -4223,9 +4167,8 @@ msgstr ""
 msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
 msgstr ""
 
-#, fuzzy
 msgid "Manage subdomain"
-msgstr "أدر النطاقات"
+msgstr ""
 
 msgid "Edit subdomain"
 msgstr ""
@@ -4286,9 +4229,8 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid " was deleted by {ADMIN}!"
-msgstr "تم مسح عنوان الIP!"
+msgstr ""
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -4450,8 +4392,7 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation "
-"process.\n"
+"You have to click the following link to continue the domain creation process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4471,21 +4412,18 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
 "The i-MSCP Team\n"
 "\n"
 msgstr ""
 
-#, fuzzy
 msgid "Your message has been sent."
-msgstr "تم إرسال كلمة المرور الجديدة"
+msgstr ""
 
-#, fuzzy
 msgid "Your message has been sent"
-msgstr "تم إرسال كلمة المرور الجديدة"
+msgstr ""
 
 msgid "Ticket was closed!"
 msgstr ""
@@ -4538,16 +4476,14 @@ msgstr ""
 msgid "Wrong domain name syntax or number of labels"
 msgstr ""
 
-#, fuzzy
 msgid "Wrong domain name lenght!"
-msgstr "إسم نطاق خاطئ"
+msgstr ""
 
 msgid "Wrong subdomain syntax or number of labels!"
 msgstr ""
 
-#, fuzzy
 msgid "Wrong subdomain lenght!"
-msgstr "إسم نطاق خاطئ"
+msgstr ""
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
@@ -4573,17 +4509,17 @@ msgstr "<b>%s</b>: الخطأ هرم المجال طول"
 msgid "Wrong Second Level Domain lenght: <b>%s</b>"
 msgstr "<b>%s</b>: الخطأ الثاني المستوى المجال طول"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "خطأ اسم المجال : <b>%s</b> محجوز!"
+msgstr ""
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
 msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
-"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
+"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
 
@@ -4640,9 +4576,8 @@ msgstr "قيد التفعيل"
 msgid "Being suspended"
 msgstr ""
 
-#, fuzzy
 msgid "Awaiting approval"
-msgstr "في إنتظار الموافقة"
+msgstr ""
 
 msgid "Unknown error"
 msgstr ""
@@ -4704,10 +4639,12 @@ msgid "You are exceeding your SQL database limit!"
 msgstr ""
 
 msgid ""
-"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+"You have a traffic limit!<br />You cannot add an user with unlimited "
+"traffic!"
 msgstr ""
 
-msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgid ""
+"You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
@@ -4733,27 +4670,23 @@ msgid ""
 "Application. (Required fiels!)"
 msgstr ""
 
-#, fuzzy
 msgid "Login username"
-msgstr "إسم النطاق"
+msgstr ""
 
-#, fuzzy
 msgid "Login password"
-msgstr "فقدت كلمة المرور"
+msgstr ""
 
 msgid "Emailadress"
 msgstr ""
 
-#, fuzzy
 msgid "enabled"
-msgstr "مفعّل"
+msgstr ""
 
 msgid "Application Description"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install application yet"
-msgstr "ليس لديك صلاحيات للوصول إلى هذه الواجهة!"
+msgstr ""
 
 msgid "Vendor hompage"
 msgstr ""
@@ -4767,9 +4700,8 @@ msgstr ""
 msgid "Start installation"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package from the webdepot?"
-msgstr "هل أنت متأكد أنك تود الإسترجاع من النسخة الإحتياطية؟"
+msgstr ""
 
 msgid "No software in webdepot found!"
 msgstr ""
@@ -4842,8 +4774,8 @@ msgid "Personal Data"
 msgstr "البانات الشخصية"
 
 msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
+"(To avoid abuse, we ask you to write the combination of letters on the above"
+" picture into the field \"Security code\")"
 msgstr ""
 
 msgid "Security code was incorrect!"
@@ -5036,9 +4968,8 @@ msgstr ""
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller/IP usage statistics"
-msgstr "إحصاءات الخادم"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr ""
@@ -5166,23 +5097,21 @@ msgstr ""
 msgid "This package is not installed yet"
 msgstr ""
 
-#, fuzzy
 msgid "waiting for activation"
-msgstr "في إنتظار الموافقة"
+msgstr ""
 
 msgid "activated (Softwaredepot)"
 msgstr ""
 
-#, fuzzy
 msgid "activated"
-msgstr "مفعل"
+msgstr ""
 
 msgid "Installing your uploaded package. Please refresh the site."
 msgstr ""
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br /"
-">Refresh your site to see the new status!"
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "Failure in package. Deleting!"
@@ -5198,8 +5127,8 @@ msgstr ""
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br /"
-">Refresh your site to see the new status!"
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in the administrator software depot!"
@@ -5210,8 +5139,8 @@ msgstr ""
 
 msgid ""
 "Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br /"
-">Refresh your site to see the new status!"
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in your software depot!"
@@ -5220,9 +5149,8 @@ msgstr ""
 msgid "You do not have any software uploaded yet"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to upload software"
-msgstr "ليس لديك صلاحيات للوصول إلى هذه الواجهة!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5231,8 +5159,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
@@ -5265,9 +5193,8 @@ msgstr ""
 msgid "Requires Database?"
 msgstr ""
 
-#, fuzzy
 msgid "Database prefix"
-msgstr "تحديثات قاعدة البيانات"
+msgstr ""
 
 msgid "Link to authors homepage"
 msgstr ""
@@ -5281,9 +5208,8 @@ msgstr ""
 msgid "i-MSCP - Users/Add user"
 msgstr ""
 
-#, fuzzy
 msgid "Domain expire date"
-msgstr "نطاقات في كل صفحة"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "إختر خطة الإستضافة"
@@ -5377,69 +5303,4 @@ msgstr ""
 msgid "User not terminated!"
 msgstr ""
 
-#~ msgid "Please enter your login information"
-#~ msgstr "الرجاء إدخال بيانات الدخول"
 
-#~ msgid "Retrieving lost passwords is currently not possible"
-#~ msgstr "إسترجاع كلمة المرور المفقودة غير ممكن حاليا"
-
-#~ msgid "Retry"
-#~ msgstr "إعادة المحاولة"
-
-#~ msgid "Panel Default"
-#~ msgstr "إفترا"
-
-#, fuzzy
-#~ msgid "Settings saved!"
-#~ msgstr "تم تخزين الإعدادات"
-
-#~ msgid "To"
-#~ msgstr "إلى"
-
-#~ msgid "Message was sent."
-#~ msgstr "تم إرسال الرسالة."
-
-#~ msgid "- 1 Month"
-#~ msgstr "- شهر"
-
-#~ msgid "+ 1 Month"
-#~ msgstr "+ شهر"
-
-#~ msgid "+ 2 Months"
-#~ msgstr "+ شهرين"
-
-#~ msgid "+ 3 Months"
-#~ msgstr "+ 3 أشهر"
-
-#~ msgid "+ 6 Months"
-#~ msgstr "+ 6 أشهر"
-
-#~ msgid "+ 1 Year"
-#~ msgstr "+ سنة"
-
-#~ msgid "+ 2 Years"
-#~ msgstr "+ سنتين"
-
-#~ msgid "1 Month"
-#~ msgstr "شهر"
-
-#~ msgid "2 Months"
-#~ msgstr "شهرين"
-
-#~ msgid "3 Months"
-#~ msgstr "3 أشهر"
-
-#~ msgid "6 Months"
-#~ msgstr "ستة أشهر"
-
-#~ msgid "1 Year"
-#~ msgstr "سنة"
-
-#~ msgid "2 Years"
-#~ msgstr "سنتين"
-
-#~ msgid "days"
-#~ msgstr "أيام"
-
-#~ msgid "hours"
-#~ msgstr "ساعات"

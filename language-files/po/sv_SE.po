@@ -1,21 +1,20 @@
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: i-MSCP 1.0.3\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
 "POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2010-04-14 00:06+0100\n"
-"Last-Translator: Fredrik Kilegran <atomicoz@gmail.com>\n"
-"Language-Team: Swedish <sv_SE@li.org>\n"
-"Language: sv\n"
+"PO-Revision-Date: 2011-06-14 06:20+0000\n"
+"Last-Translator: gOOvER <goover0976@yahoo.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: x64PoPot 0.2\n"
-"X-Poedit-Language: Swedish\n"
-"X-Poedit-Country: SWEDEN\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language: sv_SE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -28,9 +27,8 @@ msgstr "Svenska - Swedish"
 msgid "File %s does not exists or cannot be reached!"
 msgstr "Filen %s existerar inte eller kan inte nås!"
 
-#, fuzzy
 msgid "Error while trying to obtain list of network cards."
-msgstr "Fel vid försök att hämta listan över nätverkskort!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -42,32 +40,26 @@ msgstr "Inte tillgänglig"
 msgid "Day"
 msgstr "Dag"
 
-#, fuzzy
 msgid "Days"
-msgstr "Dag"
+msgstr ""
 
 msgid "Hour"
 msgstr "Timme"
 
-#, fuzzy
 msgid "Hours"
-msgstr "Timme"
+msgstr ""
 
-#, fuzzy
 msgid "Minute"
-msgstr "minuter"
+msgstr ""
 
-#, fuzzy
 msgid "Minutes"
-msgstr "minuter"
+msgstr ""
 
-#, fuzzy
 msgid "An error occured! Please, contact your administrator!"
-msgstr "Kan inte öppna katalogen!<br>Vänligen kontakta din administratör!"
+msgstr ""
 
-#, fuzzy
 msgid "Couldn't check for updates. Website not reachable."
-msgstr "Kunde inte söka efter uppdateringar! Webbplats inte kan nås."
+msgstr ""
 
 msgid "General information"
 msgstr "Allmän information"
@@ -183,17 +175,14 @@ msgstr "Serverportar"
 msgid "Rootkit Log"
 msgstr "Rootkit-logg"
 
-#, fuzzy
 msgid "Services status"
-msgstr "Serverstatus"
+msgstr ""
 
-#, fuzzy
 msgid "Services ports"
-msgstr "Serverportar"
+msgstr ""
 
-#, fuzzy
 msgid "IP usage"
-msgstr "Diskanvändning"
+msgstr ""
 
 msgid "Application management"
 msgstr ""
@@ -300,9 +289,8 @@ msgstr ""
 msgid "Disabled"
 msgstr "Inaktiv"
 
-#, fuzzy
 msgid "Reload"
-msgstr "Ladda upp"
+msgstr ""
 
 msgid "Error"
 msgstr "Fel"
@@ -429,7 +417,8 @@ msgstr ""
 "för att vara giltigt."
 
 #, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "Lösenordet är kortare än %s tecken eller inkluderar otillåtna tecken!"
 
 msgid "Incorrect email length or syntax!"
@@ -507,23 +496,20 @@ msgstr ""
 msgid "All fields are required!"
 msgstr ""
 
-#, fuzzy
 msgid "internet Multi Server Control Panel"
-msgstr "i-MSCP Kontrollpanel"
+msgstr ""
 
 msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr "i-MSCP Kontrollpanel"
+msgstr ""
 
 msgid "Administrator login"
 msgstr "Administratörsinloggning"
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "i-MSCP Kontrollpanel"
+msgstr ""
 
 msgid "Login"
 msgstr "Logga in"
@@ -534,9 +520,8 @@ msgstr "Lösenord"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-#, fuzzy
 msgid "FileManager"
-msgstr "Filhanterare"
+msgstr ""
 
 msgid "Secure Connection"
 msgstr "Säker uppkoppling"
@@ -547,42 +532,34 @@ msgstr "Normal uppkoppling"
 msgid "Lost password"
 msgstr "Glömt lösenord"
 
-#, fuzzy
 msgid "php-extension 'gd' not loaded."
-msgstr "FEL: PHP-tillägget 'mcrypt' är inte laddat!"
+msgstr ""
 
 msgid "Captcha fontfile not found."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
-msgstr "i-MSCP - Kund/Ändra SQL-användarens lösenord"
+msgstr ""
 
 msgid "Security code"
 msgstr "Säkerhetskod"
 
-#, fuzzy
 msgid ""
 "To avoid abuse, we ask you to write the combination of letters on the "
 "picture above into the field \"Security code\""
 msgstr ""
-"(För att undvika missbruk ber vi dig att skriva in kombinationen från bilden "
-"ovan i fältet \"Säkerhetskod \")"
 
-#, fuzzy
 msgid "Get password"
-msgstr "Generera lösenord"
+msgstr ""
 
 msgid "Back"
 msgstr "Tillbaka"
 
-#, fuzzy
 msgid "Your new password has been sent. Check your mail."
-msgstr "Ditt nya lösenord har skickats."
+msgstr ""
 
-#, fuzzy
 msgid "New password has not been sent. Ask your administrator."
-msgstr "Ditt nya lösenord kunde inte skickas."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -591,12 +568,11 @@ msgid ""
 "minutes."
 msgstr ""
 "Din lösenordsbegäran har inletts. Du kommer att få ett e-postmeddelande med "
-"instruktioner för att slutföra processen. Denna återställningsbegäran kommer "
-"att sluta gälla om %s minuter."
+"instruktioner för att slutföra processen. Denna återställningsbegäran kommer"
+" att sluta gälla om %s minuter."
 
-#, fuzzy
 msgid "User or security code are incorrect."
-msgstr "Användarnamn eller säkerhetskod var felaktig!"
+msgstr ""
 
 msgid "All fields are required."
 msgstr ""
@@ -613,9 +589,8 @@ msgstr "Felaktig längd eller syntax på användarnamnet"
 msgid "Entered passwords do not match!"
 msgstr "Lösenorden stämmer inte överens!"
 
-#, fuzzy
 msgid "This user name already exist."
-msgstr "Användarnamnet finns redan!"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "Tom data eller fel fält!"
@@ -695,9 +670,8 @@ msgstr "Lösenordsbyte är inaktiverat!"
 msgid "Demo Version!"
 msgstr "Demoversion!"
 
-#, fuzzy
 msgid "iMSCP - Admin/Admin Log"
-msgstr "i-MSCP - Administratör/Administratörslogg"
+msgstr ""
 
 msgid "Log is empty!"
 msgstr "Loggen är tom!"
@@ -876,9 +850,8 @@ msgstr "Spara"
 msgid "Edit button"
 msgstr "Redigera knapp"
 
-#, fuzzy
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr "i-MSCP Administratör / Systemverktyg / Serverstatus"
+msgstr ""
 
 msgid "Database updates"
 msgstr "Databasuppdateringar"
@@ -955,43 +928,35 @@ msgstr "Nej"
 msgid "Enabled"
 msgstr "Aktiv"
 
-#, fuzzy
 msgid "Incorrect subdomains limit."
-msgstr "Felaktig subdomängräns!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect aliases limit."
-msgstr "Felaktig aliasgräns!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect mail accounts limit."
-msgstr "Felaktig e-postkontogräns!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect FTP accounts limit."
-msgstr "Felaktig FTP-kontogräns!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect SQL users limit."
-msgstr "Felaktig SQL-användargräns!"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "SQL-databasgränsen <i>inaktiverat</i>!"
 
-#, fuzzy
 msgid "Incorrect SQL databases limit."
-msgstr "Felaktig SQL-databasgräns"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL-användargränsen är <i>inaktiverat</i>!"
 
-#, fuzzy
 msgid "Incorrect traffic limit."
-msgstr "Felaktig trafikgräns!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect disk quota limit."
-msgstr "Felaktig diskkvot!"
+msgstr ""
 
 msgid "The application installer needs PHP to enable."
 msgstr ""
@@ -1023,9 +988,8 @@ msgstr "Trafik"
 msgid "Disk"
 msgstr "Diskutrymme"
 
-#, fuzzy
 msgid "Domain properties could not be updated."
-msgstr "Domänegenskaperna kunde inte uppdateras!"
+msgstr ""
 
 msgid "Domain properties updated successfully!"
 msgstr "Domänegenskaperna har uppdaterats!"
@@ -1045,7 +1009,8 @@ msgstr "Tjänsten <em>%s</em> kan inte begränsas!"
 #, php-format
 msgid ""
 "Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr "Det angivna numret är mindre än de  <em>%s</em> som finns på systemet!"
+msgstr ""
+"Det angivna numret är mindre än de  <em>%s</em> som finns på systemet!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled! "
@@ -1116,7 +1081,8 @@ msgid "Yes"
 msgstr "Ja"
 
 msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+"In case 'Domain expire' is 'N/A', the expiration date will be set from "
+"today."
 msgstr ""
 "Om 'Domän upphör' är 'Inte tillgänglig' kommer upphörningsdatumet att bli "
 "satt utifrån idag."
@@ -1226,9 +1192,8 @@ msgstr "Max subdomäner <br><i>(-1 inaktiv, 0 obegränsat)</i>"
 msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max alias <br><i>(-1 inaktiv, 0 obegränsat)</i>"
 
-#, fuzzy
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "E-postkontogräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
+msgstr ""
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP-kontogräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
@@ -1287,9 +1252,8 @@ msgstr "Beskrivning"
 msgid "(e.g. EUR)"
 msgstr "(ex. EUR)"
 
-#, fuzzy
 msgid "Term Of Service"
-msgstr "Användarvillkor"
+msgstr ""
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
@@ -1383,24 +1347,20 @@ msgstr "Inga systemfel för subdomänalias"
 msgid "No email account system errors"
 msgstr "Inget systemfel för e-postkonton"
 
-#, fuzzy
 msgid "missing domain"
-msgstr "Huvuddomän"
+msgstr ""
 
-#, fuzzy
 msgid "missing alias"
-msgstr "Domänalias"
+msgstr ""
 
 msgid "orphan entry"
 msgstr ""
 
-#, fuzzy
 msgid "No htaccess related system errors"
-msgstr "Inga domänalias systemfel"
+msgstr ""
 
-#, fuzzy
 msgid "Missing domain"
-msgstr "Huvuddomän"
+msgstr ""
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1442,7 +1402,7 @@ msgstr "systemfrågor att utföra"
 msgid "Set status to 'change'"
 msgstr "Ange status till 'ändra'"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s Errors in database"
 msgstr ""
 
@@ -1506,9 +1466,8 @@ msgstr "i-MSCP - Admin/IP-adresshantering"
 msgid "Remove IP"
 msgstr "Ta bort IP-adress"
 
-#, fuzzy
 msgid "No IP's available"
-msgstr "Det finns inga tillgängliga uppdateringar för i-MSCP"
+msgstr ""
 
 msgid "New IP was added!"
 msgstr "Ny IP-adress lades till!"
@@ -1544,32 +1503,26 @@ msgstr "Lägg till ny IP-adress"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Är du säker på att du vill ta bort denna IP-adress: %s?"
 
-#, fuzzy
 msgid "i-MSCP - Admin/IP Usage"
-msgstr "i-MSCP - Admin/IP-adresshantering"
+msgstr ""
 
-#, fuzzy
 msgid "Total Domains"
-msgstr "Domäner"
+msgstr ""
 
 msgid "No records found"
 msgstr ""
 
-#, fuzzy
 msgid "Admin/IP usage statistics"
-msgstr "Domänstatistik"
+msgstr ""
 
-#, fuzzy
 msgid "Domain Name"
-msgstr "Domännamn"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller Name"
-msgstr "Återförsäljarnamn"
+msgstr ""
 
-#, fuzzy
 msgid "User language updated successfully."
-msgstr "Språket är nu uppdaterat!"
+msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Administratör/Ändra språk"
@@ -1577,9 +1530,8 @@ msgstr "i-MSCP - Administratör/Ändra språk"
 msgid "Choose your default language"
 msgstr "Välj ditt standardspråk"
 
-#, fuzzy
 msgid "Error we have user that uses that language!"
-msgstr "Fel: Vi har en återförsäljare som använder denna IP-adress!"
+msgstr ""
 
 msgid "Language was removed!"
 msgstr "Språket är nu borttaget!"
@@ -1588,7 +1540,8 @@ msgid "Reseller list is empty!"
 msgstr "Återförsäljarlistan är tom!"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
-msgstr "i-MSCP - Administratör/Hantera användare/Överlåtelse av återförsäljare"
+msgstr ""
+"i-MSCP - Administratör/Hantera användare/Överlåtelse av återförsäljare"
 
 msgid "Mark"
 msgstr "Välj"
@@ -1629,8 +1582,8 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
-"Du kan inte flytta <b>%1$s</b> i en mottagande återförsäljare,<br>vilket har "
-"gränser för tjänsten <b>%2$s</b>"
+"Du kan inte flytta <b>%1$s</b> i en mottagande återförsäljare,<br>vilket har"
+" gränser för tjänsten <b>%2$s</b>"
 
 #, php-format
 msgid ""
@@ -1683,15 +1636,14 @@ msgstr "E-post uppdaterad"
 
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
 msgstr ""
-"Den här användaren har en domän!<br>För att radera användaren måste du först "
-"ta bort domänen!"
+"Den här användaren har en domän!<br>För att radera användaren måste du först"
+" ta bort domänen!"
 
 msgid "User was disabled"
 msgstr "Användare blev inaktiverad"
 
-#, fuzzy
 msgid "Uninstall"
-msgstr "Avinstallera"
+msgstr ""
 
 #, php-format
 msgid "%d messages translated"
@@ -1712,9 +1664,8 @@ msgstr "Kunde inte läsa språkfil!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "Den uppladdade filen är inte en giltig språkfil!"
 
-#, fuzzy
 msgid "Uploaded file does not contain language information!"
-msgstr "Den uppladdade filen innehåller inte språkinformation!"
+msgstr ""
 
 #, php-format
 msgid "%s added new language: %s"
@@ -1822,11 +1773,13 @@ msgstr "Felaktig domängräns!"
 
 msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
 msgstr ""
-"SQL-databasgränsen är <i>inaktiverad</i> men SQL-användargränsen är inte det!"
+"SQL-databasgränsen är <i>inaktiverad</i> men SQL-användargränsen är inte "
+"det!"
 
 msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
 msgstr ""
-"SQL-användargränsen är <i>inaktiverad</i> men SQL-databasgränsen är inte det!"
+"SQL-användargränsen är <i>inaktiverad</i> men SQL-databasgränsen är inte "
+"det!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Du måste tilldela minst en IP-adress per återförsäljare"
@@ -1887,19 +1840,19 @@ msgstr "Disklagring"
 
 #, php-format
 msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
+"This reseller's customers are using/have more/higher <b>%s</b> "
+"accounts/limits than the new limit you entered."
 msgstr ""
-"Denna återförsäljares kunder använder/har mer/högre <b>%s</b> användare/"
-"begränsningar än den nya gränsen du angav."
+"Denna återförsäljares kunder använder/har mer/högre <b>%s</b> "
+"användare/begränsningar än den nya gränsen du angav."
 
 #, php-format
 msgid ""
 "This reseller has already assigned more/higher <b>%s</b> accounts/limits "
 "than the new limit you entered."
 msgstr ""
-"Denna återförsäljare har redan tilldelats mer/högre <b>%s</b> användare/"
-"begränsningar än den nya gränsen du angav."
+"Denna återförsäljare har redan tilldelats mer/högre <b>%s</b> "
+"användare/begränsningar än den nya gränsen du angav."
 
 #, php-format
 msgid ""
@@ -1955,8 +1908,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
-"\\nInstead, use the %s button to update the data."
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance "
+"reasons!\\nInstead, use the %s button to update the data."
 msgstr ""
 "i-MSCP MEDDELANDE:\\n\\nTangenten `Enter` är inaktiverad för bättre "
 "prestanda!\\nAnvänd i stället knappen %s för att uppdatera uppgifterna."
@@ -1964,9 +1917,8 @@ msgstr ""
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Återförsäljarstatistik"
 
-#, fuzzy
 msgid "No reseller is registered in your system!"
-msgstr "Kunde inte hitta någon/några återförsäljare i ditt system!"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
@@ -2101,9 +2053,8 @@ msgstr "År:"
 msgid "Day:"
 msgstr "Dag:"
 
-#, fuzzy
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "i-MSCP Administratör / Systemverktyg / Serverstatus"
+msgstr ""
 
 msgid "Host"
 msgstr "Värd"
@@ -2135,9 +2086,8 @@ msgstr "Döda session"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Administratör/Inställningar"
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed!"
-msgstr "FEL: Endast positiva siffror är tillåtna!"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) was updated!"
@@ -2256,8 +2206,8 @@ msgid ""
 "Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
 msgstr ""
 "Huvuddomäner (SLD) med ett tecken är inte tillåtna under de flesta "
-"toppdomäner (TLD). Det finns en liten lista med undantag, t ex. toppdomänen ."
-"de"
+"toppdomäner (TLD). Det finns en liten lista med undantag, t ex. toppdomänen "
+".de"
 
 msgid ""
 "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
@@ -2311,8 +2261,8 @@ msgstr "Automatisk e-postmall uppdaterad!"
 
 msgid "i-MSCP - Admin/Lostpw email setup"
 msgstr ""
-"i-MSCP - Administratör/Inställningar för utskick av förlorat lösenord via e-"
-"post"
+"i-MSCP - Administratör/Inställningar för utskick av förlorat lösenord via "
+"e-post"
 
 msgid "Lost password e-mail"
 msgstr "E-postmeddelande för förlorat lösenord"
@@ -2359,17 +2309,14 @@ msgstr "Inställningar sparade!"
 msgid "Under this mode only administrators can login"
 msgstr "Under detta läge kan endast administratörer logga in"
 
-#, fuzzy
 msgid "Error: Wrong Ip number!"
-msgstr "Fel IP-adress!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed for services ports!"
-msgstr "FEL: Endast positiva siffror är tillåtna!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Service port with same name already exists!"
-msgstr "FEL: Port finns redan!"
+msgstr ""
 
 msgid "Error: Unallowed protocol!"
 msgstr ""
@@ -2377,32 +2324,27 @@ msgstr ""
 msgid "Error: Wrong value for show entry!"
 msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully added"
-msgstr "Ny IP-adress lades till!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
 msgid "Nothing's been changed"
 msgstr ""
 
-#, fuzzy
 msgid "You have no custom service ports defined"
-msgstr "Du har inga anpassade portar för tjänster."
+msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully removed!"
-msgstr "Ärende återöppnat!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: You are not allowed to remove this service port entry!"
-msgstr "Är du säker på att du vill radera %s?"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Admin / Settings"
-msgstr "i-MSCP - Administratör/Inställningar"
+msgstr ""
 
 msgid "udp"
 msgstr "udp"
@@ -2416,16 +2358,15 @@ msgstr "Port"
 msgid "Protocol"
 msgstr "Protokoll"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr "Är du säker på att du vill radera %s?"
+msgstr ""
 
 msgid "View / Update service(s) port"
 msgstr ""
 
-#, fuzzy
 msgid "Add new service port"
-msgstr "Lägg till ny användarwebbhotellsplan"
+msgstr ""
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - Administratör/Servertrafikinställningar"
@@ -2460,39 +2401,33 @@ msgstr "Användares riktiga (första och sista) namn"
 msgid "User type (admin, reseller, user)"
 msgstr "Användartyp (administratör, återförsäljare, användare)"
 
-#, fuzzy
 msgid "Wrong software id."
-msgstr "Fel beställnings-id!"
+msgstr ""
 
 msgid "Software was activated."
 msgstr ""
 
-#, fuzzy
 msgid "No Resellers found."
-msgstr "Återförsäljare"
+msgstr ""
 
-#, fuzzy
 msgid "Rights succesfully added."
-msgstr "SQL-användaren har blivit tillagd!"
+msgstr ""
 
 msgid "Rights succesfully removed."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s (%2$s)"
-msgstr "%1$s av %2$s MB"
+msgstr ""
 
-#, fuzzy
 msgid "Software was deleted."
-msgstr "IP-adressen är borttagen!"
+msgstr ""
 
-#, fuzzy
 msgid "Fill out a message text!"
-msgstr "Ditt meddelande har skickats!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management"
-msgstr "i-MSCP - Kund/Cronjobshanterare"
+msgstr ""
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
@@ -2500,20 +2435,18 @@ msgstr ""
 msgid "Delete reseller software"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller data"
-msgstr "Återförsäljarnamn"
+msgstr ""
 
 msgid "Delete software and send message"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr "%s finns inte"
+msgstr ""
 
-#, fuzzy
 msgid "Software was imported succesfully."
-msgstr "SQL-databasen borttagen!"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -2521,16 +2454,14 @@ msgstr ""
 msgid "Activate"
 msgstr "Aktivera"
 
-#, fuzzy
 msgid "Import"
-msgstr "Exportera"
+msgstr ""
 
 msgid "No software is waiting for activation"
 msgstr ""
 
-#, fuzzy
 msgid "Package installed successfully!"
-msgstr "FTP-konto borttaget!"
+msgstr ""
 
 msgid "Rights"
 msgstr ""
@@ -2542,13 +2473,12 @@ msgid "Installing your uploaded package. Please refresh this site."
 msgstr ""
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br /"
-">Refresh your site to see the new status!"
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "installing"
-msgstr "Avinstallera"
+msgstr ""
 
 msgid "Failure in the package. Deleting!"
 msgstr ""
@@ -2558,9 +2488,8 @@ msgid ""
 "site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "deleting"
-msgstr "Beställningsinställningar"
+msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -2573,9 +2502,8 @@ msgid ""
 "package two times.<br />Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "This package already exist in the software depot!"
-msgstr "Domän med det namnet finns redan på systemet!"
+msgstr ""
 
 msgid "Package already exist in the reseller depot!"
 msgstr ""
@@ -2601,37 +2529,29 @@ msgstr ""
 msgid "i-MSCP application installer web software depot"
 msgstr ""
 
-#, fuzzy
 msgid "Update from web depot"
-msgstr "Uppdatera beställning"
+msgstr ""
 
-#, fuzzy
 msgid "Package title"
-msgstr "Paketpris"
+msgstr ""
 
-#, fuzzy
 msgid "Package install type"
-msgstr "Paketfunktioner"
+msgstr ""
 
-#, fuzzy
 msgid "Package version"
-msgstr "Paketpris"
+msgstr ""
 
-#, fuzzy
 msgid "Package language"
-msgstr "Paketfunktioner"
+msgstr ""
 
-#, fuzzy
 msgid "Package type"
-msgstr "Paketpris"
+msgstr ""
 
-#, fuzzy
 msgid "Package vendor HP"
-msgstr "Paketfunktioner"
+msgstr ""
 
-#, fuzzy
 msgid "Package actions"
-msgstr "Paketfunktioner"
+msgstr ""
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -2651,25 +2571,24 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
 msgid ""
-"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d "
+"MB"
 msgstr ""
 
-#, fuzzy
 msgid "Error: Remote File not found!"
-msgstr "Error 404 (hittades inte)"
+msgstr ""
 
 msgid "Error: Could not upload the file. File not found!"
 msgstr ""
 
-#, fuzzy
 msgid "File was successfully uploaded."
-msgstr "Uppladdningen av logotypen lyckades!"
+msgstr ""
 
 msgid "Software depot"
 msgstr ""
@@ -2688,20 +2607,17 @@ msgstr ""
 msgid "or remote file (Max: %1$d MB)"
 msgstr ""
 
-#, fuzzy
 msgid "Upload now"
-msgstr "Ladda upp logotyp"
+msgstr ""
 
 msgid "Awaiting Activation"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller software list"
-msgstr "Återförsäljarstatistik"
+msgstr ""
 
-#, fuzzy
 msgid "Application"
-msgstr "Process"
+msgstr ""
 
 msgid "App-Version"
 msgstr ""
@@ -2709,43 +2625,35 @@ msgstr ""
 msgid "Type"
 msgstr "Typ"
 
-#, fuzzy
 msgid "Depot import"
-msgstr "Målport"
+msgstr ""
 
 msgid "Software total"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller total"
-msgstr "Återförsäljarnamn"
+msgstr ""
 
-#, fuzzy
 msgid "Waiting for activation"
-msgstr "Väntar på godkännande"
+msgstr ""
 
-#, fuzzy
 msgid "Activated software"
-msgstr "Aktivera"
+msgstr ""
 
 msgid "Total installations"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to activate this package?"
-msgstr "Är du säker på att du vill ta bort denna beställning?"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "Är du säker på att du vill ändra status för %s?"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete this package?"
-msgstr "Är du säker på att du vill ta bort denna beställning?"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application management options"
-msgstr "i-MSCP - Administratör/Hantera Sessioner"
+msgstr ""
 
 msgid "Main application installer options updated!"
 msgstr ""
@@ -2765,13 +2673,11 @@ msgstr ""
 msgid "Last i-MSCP websoftware depot update"
 msgstr ""
 
-#, fuzzy
 msgid "not available"
-msgstr "Tillgängliga IP-adresser"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong reseller id."
-msgstr "Från återförsäljare"
+msgstr ""
 
 msgid "This package is installed on following domain(s):"
 msgstr ""
@@ -2787,42 +2693,35 @@ msgstr ""
 msgid "%1$s`s - Software"
 msgstr ""
 
-#, fuzzy
 msgid "No software available!"
-msgstr "Inga databasuppdateringar tillgängliga"
+msgstr ""
 
-#, fuzzy
 msgid "Installed on"
-msgstr "Installerade layouter"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller list"
-msgstr "Återförsäljare"
+msgstr ""
 
 msgid "Softwaredepot"
 msgstr ""
 
-#, fuzzy
 msgid "Admin not available"
-msgstr "Webbhotellsplaner finns tillgängliga för"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to remove the permissions ?"
-msgstr "Är du säker på att du vill återställa backupen?"
+msgstr ""
 
 msgid "No Reseller with permissions for this software found"
 msgstr ""
 
-#, fuzzy
 msgid "All reseller"
-msgstr "Alla återförsäljare"
+msgstr ""
 
 msgid "No Reseller available to add the permissions"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr "i-MSCP - Administratör/Hantera Sessioner"
+msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -2831,20 +2730,17 @@ msgstr ""
 msgid "Add permissions for reseller to software:"
 msgstr ""
 
-#, fuzzy
 msgid "Remove permissions"
-msgstr "Demoversion!"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller with permissions total"
-msgstr "Statistiktabell för återförsäljare"
+msgstr ""
 
 msgid "Added by"
 msgstr ""
 
-#, fuzzy
 msgid "Add permissions"
-msgstr "Lägg till existerande användare"
+msgstr ""
 
 msgid "Software permissions"
 msgstr ""
@@ -2873,9 +2769,8 @@ msgstr "Systeminfo för filsystemet"
 msgid "Free"
 msgstr "Ledigt"
 
-#, fuzzy
 msgid "Kernel Version"
-msgstr "Demoversion!"
+msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
@@ -3003,11 +2898,10 @@ msgstr "Domänsubdomäner:"
 msgid "Domain databases:"
 msgstr "Domändatabaser:"
 
-#, fuzzy
 msgid ""
 "Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
-msgstr "Vill du verkligen ta bort hela domänen? Denna åtgärd kan inte ångras!"
+msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "Ja, ta bort domänen."
@@ -3024,9 +2918,8 @@ msgstr "Felaktig syntax för monteringspunkten"
 msgid "Master domain cannot be used!"
 msgstr "Huvuddomänen kan inte användas!"
 
-#, fuzzy
 msgid "Wrong address in forward URL!"
-msgstr "Fel i fältet för URL-vidarebefordring"
+msgstr ""
 
 msgid "Wrong domain part in forward URL!"
 msgstr "Fel i fältet för URL-vidarebefordring"
@@ -3095,7 +2988,8 @@ msgstr ""
 "först!"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+"Domain alias you are trying to remove has FTP accounts!<br>First remove "
+"them!"
 msgstr ""
 "Domänaliaset du försöker ta bort har FTP-konton!<br>Vänligen ta bort dem "
 "först!"
@@ -3116,7 +3010,8 @@ msgid "Mount Point"
 msgstr "Monteringspunkt"
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+"Subdomain you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
 "Subdomänen du försöker ta bort har e-postkonton!<br />Vänligen ta bort dem "
 "först!"
@@ -3202,9 +3097,8 @@ msgstr "Cronjobs"
 msgid "You are not allowed to remove this DNS record!"
 msgstr ""
 
-#, fuzzy
 msgid "Custom DNS record scheduled for deletion!"
-msgstr "DNS-posten är nu schemalagd för borttagning!"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "i-MSCP - Hantera Domänalias/Lägg till DNS-post"
@@ -3257,9 +3151,8 @@ msgstr "Simpel postdata"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr "DNS-poster (EXPERIMENTELL)"
 
-#, fuzzy
 msgid "You are not allowed to edit this DNS record!"
-msgstr "Du har inga alias."
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3313,9 +3206,8 @@ msgstr "Kan inte validera posten %s. Anledning: '%s'."
 msgid "Unknown zone type %s!"
 msgstr "Okänd zontyp %s!"
 
-#, fuzzy
 msgid "Error: DNS record already exist!"
-msgstr "Användaren finns redan!"
+msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Kund/Domänstatistik"
@@ -3378,9 +3270,8 @@ msgstr "Redigera felsida"
 msgid "Custom error page was updated!"
 msgstr "Anpassad felsida är uppdaterad!"
 
-#, fuzzy
 msgid "System error - custom error page was not updated!"
-msgstr "Systemfel - anpassad felsida uppdaterades INTE!"
+msgstr ""
 
 msgid "Error 401 (unauthorised)"
 msgstr "Error 401 (otillåten)"
@@ -3412,9 +3303,8 @@ msgstr "FTP-användare"
 msgid "FTP account"
 msgstr "FTP-konto"
 
-#, fuzzy
 msgid "Login As"
-msgstr "Logga in"
+msgstr ""
 
 msgid "Empty List"
 msgstr "Tom lista"
@@ -3450,9 +3340,8 @@ msgstr "Subdomänlistan är tom! Du kan inte lägga till FTP-konton där!"
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Aliaslistan är tom! Du kan inte lägga till FTP-konton där!"
 
-#, fuzzy
 msgid "Please specify other FTP account directory!"
-msgstr "Vänligen ange en annan mapp för FTP-kontot!"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "Gränsen över antalet FTP-konton är nådd!"
@@ -3475,13 +3364,11 @@ msgstr "Använd en annan katalog"
 msgid "Choose dir"
 msgstr "Välj katalog"
 
-#, fuzzy
 msgid "Unknown FTP user id!"
-msgstr "Okänd typ!"
+msgstr ""
 
-#, fuzzy
 msgid "Cannot open directory! Please contact your administrator!"
-msgstr "Kan inte öppna katalogen!<br>Vänligen kontakta din administratör!"
+msgstr ""
 
 msgid "Parent Directory"
 msgstr "Föregående katalog"
@@ -3510,7 +3397,8 @@ msgstr "i-MSCP - Kund/Redigera FTP-konto"
 msgid ""
 "User does not exist or you do not have permission to access this interface!"
 msgstr ""
-"Användaren finns inte eller du har inte behörighet till det här gränssnittet!"
+"Användaren finns inte eller du har inte behörighet till det här "
+"gränssnittet!"
 
 msgid "Edit FTP user"
 msgstr "Redigera FTP-användare"
@@ -3572,15 +3460,14 @@ msgstr ""
 msgid "i-MSCP application installer: disabled"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
 "doesn't has this feature."
 msgstr ""
-"Du har PHP aktiverat, men den nya webbhotellsplanen har inte denna funktion."
 
 msgid "You have more disk space in use than the new hosting plan limits."
-msgstr "Du använder mer diskutrymme än vad den nya webbhotellsplanen tillåter."
+msgstr ""
+"Du använder mer diskutrymme än vad den nya webbhotellsplanen tillåter."
 
 msgid "Disk limit"
 msgstr "Diskutrymmesgräns"
@@ -3595,7 +3482,8 @@ msgid "You have more aliases in use than the new hosting plan limits."
 msgstr "Du använder fler alias än vad den nya webbhotellsplanen tillåter."
 
 msgid "You have more subdomains in use than the new hosting plan limits."
-msgstr "Du använder fler subdomäner än vad den nya webbhotellsplanen tillåter."
+msgstr ""
+"Du använder fler subdomäner än vad den nya webbhotellsplanen tillåter."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
 msgstr ""
@@ -3605,7 +3493,8 @@ msgid "Emails"
 msgstr "E-postkonton"
 
 msgid "You have more FTP accounts in use than the new hosting plan limits."
-msgstr "Du använder fler FTP-konton än vad den nya webbhotellsplanen tillåter."
+msgstr ""
+"Du använder fler FTP-konton än vad den nya webbhotellsplanen tillåter."
 
 msgid "FTPs"
 msgstr "FTPs"
@@ -3623,10 +3512,8 @@ msgstr ""
 msgid "free of charge"
 msgstr "gratis"
 
-#, fuzzy
 msgid "You cannot update to this hosting plan, see notices in text."
 msgstr ""
-"Du kan inte byta till denna webbhotelsplan, vänligen se notiserna i texten"
 
 msgid "Warning:"
 msgstr "Varning:"
@@ -3643,7 +3530,8 @@ msgstr "Det finns inga tillgängliga webbhotellsplaner att uppdatera"
 msgid "i-MSCP - Update hosting plan"
 msgstr "i-MSCP - Uppdatera webbhotellsplaner"
 
-msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgid ""
+"You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
 "Du använder fler e-postadresser än vad den nya webbhotelsplanen tillåter."
 
@@ -3752,7 +3640,8 @@ msgstr "Göm standard e-postadresser"
 
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr ""
-"E-postformatet för en av dina adresser i vidarebefordringslistan är felaktig!"
+"E-postformatet för en av dina adresser i vidarebefordringslistan är "
+"felaktig!"
 
 msgid "Mail forward list empty!"
 msgstr "Vidarebefordringslistan för e-postkonton är tom!"
@@ -3894,13 +3783,11 @@ msgstr "i-MSCP - Kund/Ändra lösenord"
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Kund/Ändra personlig information"
 
-#, fuzzy
 msgid "Unknown SQL user id."
-msgstr "Okänt fel"
+msgstr ""
 
-#, fuzzy
 msgid "Error: An error occurred while authentication."
-msgstr "Fel vid autentisering!"
+msgstr ""
 
 msgid "You do not have protected areas"
 msgstr "Du har inga skyddade områden"
@@ -4034,17 +3921,14 @@ msgstr "Uppdatera användare"
 msgid "You have no users!"
 msgstr "Du har inga användare!"
 
-#, fuzzy
 msgid "Install in progress..."
-msgstr "Tilläggning pågår"
+msgstr ""
 
-#, fuzzy
 msgid "Deletion in progress..."
-msgstr "Radering pågår"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package?"
-msgstr "Är du säker på att du vill ta bort denna beställning?"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4056,9 +3940,8 @@ msgstr ""
 msgid "Installed Package which was deleted by your reseller!"
 msgstr ""
 
-#, fuzzy
 msgid "No software available"
-msgstr "Inga databasuppdateringar tillgängliga"
+msgstr ""
 
 msgid "required"
 msgstr ""
@@ -4066,39 +3949,32 @@ msgstr ""
 msgid "not required"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install software"
-msgstr "Du har inte behörighet till det här gränssnittet!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - application installer"
-msgstr "i-MSCP - Kund/Cronjobshanterare"
+msgstr ""
 
-#, fuzzy
 msgid "Install software"
-msgstr "Installera nytt språk"
+msgstr ""
 
 msgid "Software"
 msgstr ""
 
-#, fuzzy
 msgid "Version"
-msgstr "Demoversion!"
+msgstr ""
 
-#, fuzzy
 msgid "Database"
-msgstr "SQL-databas"
+msgstr ""
 
-#, fuzzy
 msgid "Apps available"
-msgstr "Tillgängliga IP-adresser"
+msgstr ""
 
 msgid "Software installation"
 msgstr ""
 
-#, fuzzy
 msgid "Software deleted successful."
-msgstr "Skyddat område borttaget!"
+msgstr ""
 
 msgid "Software will be deleted now."
 msgstr ""
@@ -4109,25 +3985,21 @@ msgstr "Användarlistan för databaser är tom!"
 msgid "At first you must create a database!"
 msgstr ""
 
-#, fuzzy
 msgid "Add new database"
-msgstr "Lägg till SQL-databas"
+msgstr ""
 
-#, fuzzy
 msgid "Software not found!"
-msgstr "Ärendet hittades inte!"
+msgstr ""
 
 #, php-format
 msgid "The directory -%1$s- was created!"
 msgstr ""
 
-#, fuzzy
 msgid "Please select the correct user for your database!"
-msgstr "Välj någon/några användare!"
+msgstr ""
 
-#, fuzzy
 msgid "You have to fill out inputs!"
-msgstr "Du har inga grupper!"
+msgstr ""
 
 msgid "You cant't install outside from htdocs!"
 msgstr ""
@@ -4146,69 +4018,56 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
-#, fuzzy
 msgid "Install Software"
-msgstr "Installera nytt språk"
+msgstr ""
 
-#, fuzzy
 msgid "Database required"
-msgstr "Databasanvändare"
+msgstr ""
 
-#, fuzzy
 msgid "Select Domain"
-msgstr "Ta bort domän"
+msgstr ""
 
-#, fuzzy
 msgid "back"
-msgstr "Gå tillbaka"
+msgstr ""
 
-#, fuzzy
 msgid "install"
-msgstr "Avinstallera"
+msgstr ""
 
-#, fuzzy
 msgid "Install path"
-msgstr "Intallera"
+msgstr ""
 
 msgid "Create directory, if not exist!"
 msgstr ""
 
-#, fuzzy
 msgid "Select database"
-msgstr "SQL-databas"
+msgstr ""
 
-#, fuzzy
 msgid "SQL-User"
-msgstr "SQL-användare"
+msgstr ""
 
-#, fuzzy
 msgid "installed"
-msgstr "Avinstallera"
+msgstr ""
 
 msgid "Installation infos"
 msgstr ""
 
-#, fuzzy
 msgid "Software status:"
-msgstr "Serverstatus"
+msgstr ""
 
 msgid "Installation path:"
 msgstr ""
 
-#, fuzzy
 msgid "Used database:"
-msgstr "SQL-databas"
+msgstr ""
 
 msgid "You need a Database for this software"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Software details"
-msgstr "i-MSCP - Domän/Detaljer"
+msgstr ""
 
-#, fuzzy
 msgid "Software details"
-msgstr "Beställningsdetaljer"
+msgstr ""
 
 msgid "Homepage"
 msgstr ""
@@ -4228,11 +4087,9 @@ msgstr "SQL-användarens lösenord ändrades!"
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Kund/Ändra SQL-användarens lösenord"
 
-#, fuzzy
 msgid ""
 "User does not exist or you do not have permission to access this interface."
 msgstr ""
-"Användaren finns inte eller du har inte behörighet till det här gränssnittet!"
 
 msgid "Change SQL user password"
 msgstr "Ändra SQL-användarens lösenord"
@@ -4303,14 +4160,14 @@ msgstr "Logga in på phpMyAdmin"
 
 #, php-format
 msgid ""
-"This database will be permanently deleted. This process cannot be recovered. "
-"All users linked to this database will also be deleted if not linked to "
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 "Denna databas kommer att tas bort permanent. Denna process kan inte "
-"återställas. Alla användare kopplade till denna databas kommer också att tas "
-"bort om de inte är knuten till en annan databas. Är du säker på att du vill "
-"ta bort %s?"
+"återställas. Alla användare kopplade till denna databas kommer också att tas"
+" bort om de inte är knuten till en annan databas. Är du säker på att du vill"
+" ta bort %s?"
 
 msgid "SQL users limit reached!"
 msgstr "SQL användare uppnådd!"
@@ -4386,24 +4243,20 @@ msgstr "Namn på subdomänen"
 msgid "Directory tree mount point"
 msgstr "Katalogträdet monteringspunkt"
 
-#, fuzzy
 msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
-msgstr "i-MSCP - Admin/Ändra domän"
+msgstr ""
 
-#, fuzzy
 msgid "Manage subdomain"
-msgstr "Hantera domäner"
+msgstr ""
 
-#, fuzzy
 msgid "Edit subdomain"
-msgstr "Redigera domän"
+msgstr ""
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Support System - New ticket"
-msgstr "i-MSCP - Stödsystem - Skapa supportärende"
+msgstr ""
 
 msgid "Please specify message subject!"
 msgstr "Vänligen ange en rubrik för meddelandet!"
@@ -4444,7 +4297,6 @@ msgstr ""
 msgid "{ADMIN} activated your software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {RESELLER},\n"
 "\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
@@ -4456,9 +4308,8 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid " was deleted by {ADMIN}!"
-msgstr "IP-adressen är borttagen!"
+msgstr ""
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -4526,7 +4377,6 @@ msgstr "Okänd typ"
 msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr "Välkommen {USERNAME} till i-MSCP!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4551,31 +4401,7 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Hej {NAME}!\n"
-"\n"
-"Ett nytt konto i i-MSCP har skapats för dig.\n"
-"Din kontoinformation:\n"
-"\n"
-"Användartyp: {USERTYPE}\n"
-"Användarnamn: {USERNAME}\n"
-"Lösenord: {PASSWORD}\n"
-"\n"
-"Kom ihåg att byta lösenordet när du loggar in och även regelbundet i "
-"framtiden.\n"
-"\n"
-"Du kan nu logga in på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"Statistik: http://{USERNAME}/stats/\n"
-"Användarnamn: {USERNAME}\n"
-"Lösenord: {PASSWORD}\n"
-"\n"
-"Lycka till med i-MSCP!\n"
-"Teamet bakom i-MSCP. \n"
-"\n"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4599,29 +4425,6 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Hej {NAME}!\n"
-"\n"
-"Ett nytt konto i i-MSCP har skapats för dig.\n"
-"Din kontoinformation:\n"
-"\n"
-"Användartyp: {USERTYPE}\n"
-"Användarnamn: {USERNAME}\n"
-"Lösenord: {PASSWORD}\n"
-"\n"
-"Kom ihåg att byta lösenordet när du loggar in och även regelbundet i "
-"framtiden.\n"
-"\n"
-"Du kan nu logga in på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"Statistik: http://{USERNAME}/stats/\n"
-"Användarnamn: {USERNAME}\n"
-"Lösenord: {PASSWORD}\n"
-"\n"
-"Lycka till med i-MSCP!\n"
-"Teamet bakom i-MSCP. \n"
-"\n"
 
 msgid "Please activate your new i-MSCP password!"
 msgstr "Vänligen aktivera ditt nya lösenord för i-MSCP!"
@@ -4690,8 +4493,7 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation "
-"process.\n"
+"You have to click the following link to continue the domain creation process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4706,8 +4508,7 @@ msgstr ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"Du måste klicka på följande länk för att fortsätta processen skapande av "
-"domän.\n"
+"Du måste klicka på följande länk för att fortsätta processen skapande av domän.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4726,8 +4527,7 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
 "The i-MSCP Team\n"
@@ -4740,20 +4540,17 @@ msgstr ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"När du har loggat in kan du aktivera sitt nya alias vid "
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"När du har loggat in kan du aktivera sitt nya alias vid {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Tack för att du använder tjänster från i-MSCP.\n"
 "Teamet bakom i-MSCP\n"
 "\n"
 
-#, fuzzy
 msgid "Your message has been sent."
-msgstr "Ditt meddelande har skickats!"
+msgstr ""
 
-#, fuzzy
 msgid "Your message has been sent"
-msgstr "Ditt meddelande har skickats!"
+msgstr ""
 
 msgid "Ticket was closed!"
 msgstr "Ärende var stängt!"
@@ -4764,9 +4561,8 @@ msgstr "Ärende återöppnat!"
 msgid "Never"
 msgstr "Aldrig"
 
-#, fuzzy
 msgid "You don't have support tickets."
-msgstr "Du har inga supportärenden."
+msgstr ""
 
 msgid "[New]"
 msgstr "[Ny]"
@@ -4854,15 +4650,11 @@ msgstr "Felaktig domännamn: <b>%s</b> är reserverad!"
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr "Felaktig huvuddomänssyntax: <b>%s</b>"
 
-#, fuzzy
 msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
-"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
+"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
-"FEL: ACE-etiketter är inte tillåtna. Vänligen använd ToUnicode-"
-"motsvarigheten.<br /><small>Exempel: För ACE-etikett <b>xn--bcher-kva</b> "
-"använd istället <b>bücher</b></small>."
 
 #, php-format
 msgid "You have to wait %d seconds."
@@ -4872,9 +4664,8 @@ msgstr "Du måste vänta %d sekunder."
 msgid "You have been blocked for %d minutes."
 msgstr "Du har blockerats i %d minuter."
 
-#, fuzzy
 msgid "You entered an incorrect username!"
-msgstr "Du har angett ett felaktigt användarnamn eller lösenord."
+msgstr ""
 
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr ""
@@ -4900,9 +4691,8 @@ msgstr "Kontostatus för domän %s är inte OK!"
 msgid "%s's domain expired!"
 msgstr "Domänen %s har upphört"
 
-#, fuzzy
 msgid "You entered an incorrect password!"
-msgstr "Du har angett ett felaktigt användarnamn eller lösenord."
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr "Begäran från extern värd blockerades!"
@@ -4925,9 +4715,8 @@ msgstr "Får möjlighet"
 msgid "Being suspended"
 msgstr "Håller på att stängas av"
 
-#, fuzzy
 msgid "Awaiting approval"
-msgstr "Väntar på godkännande"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "Okänt fel"
@@ -5005,12 +4794,14 @@ msgid "You are exceeding your SQL database limit!"
 msgstr "Du överskrider din gräns för antalet SQL-databaser!"
 
 msgid ""
-"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+"You have a traffic limit!<br />You cannot add an user with unlimited "
+"traffic!"
 msgstr ""
 "Du har en trafikgräns!<br />Du kan inte lägga till en användare med "
 "obegränsad trafik!"
 
-msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgid ""
+"You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 "Du har en utrymmesgräns!<br />Du kan inte lägga till en användare med "
 "obegränsat utrymme!"
@@ -5018,7 +4809,6 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {ADMIN},\n"
 "\t{RESELLER} has uploaded a new software package.\n"
@@ -5031,38 +4821,31 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid "Installation details"
-msgstr "Webbhotellsdetaljer"
+msgstr ""
 
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
 msgstr ""
 
-#, fuzzy
 msgid "Login username"
-msgstr "Fel användarnamn!"
+msgstr ""
 
-#, fuzzy
 msgid "Login password"
-msgstr "Glömt lösenord"
+msgstr ""
 
-#, fuzzy
 msgid "Emailadress"
-msgstr "E-postkonton"
+msgstr ""
 
-#, fuzzy
 msgid "enabled"
-msgstr "Aktiv"
+msgstr ""
 
-#, fuzzy
 msgid "Application Description"
-msgstr "Beskrivning"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install application yet"
-msgstr "Du har inte behörighet till det här gränssnittet!"
+msgstr ""
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5073,13 +4856,11 @@ msgstr ""
 msgid "Installed in reseller depot"
 msgstr ""
 
-#, fuzzy
 msgid "Start installation"
-msgstr "Internationalisering"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package from the webdepot?"
-msgstr "Är du säker på att du vill återställa backupen?"
+msgstr ""
 
 msgid "No software in webdepot found!"
 msgstr ""
@@ -5119,9 +4900,8 @@ msgstr "Kunde inte skapa order! Kanske redan aktiverad?"
 msgid "Order confirmation"
 msgstr "Orderbekräftelse"
 
-#, fuzzy
 msgid "Domain already exists on the system!"
-msgstr "Domän med det namnet finns redan på systemet!"
+msgstr ""
 
 msgid "This hosting plan is not available for purchase"
 msgstr "Dena webbhotellsplan finns inte tillgänglig för köp."
@@ -5160,11 +4940,11 @@ msgid "Personal Data"
 msgstr "Personuppgifter"
 
 msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
+"(To avoid abuse, we ask you to write the combination of letters on the above"
+" picture into the field \"Security code\")"
 msgstr ""
-"(För att undvika missbruk ber vi dig att skriva in kombinationen från bilden "
-"ovan i fältet \"Säkerhetskod \")"
+"(För att undvika missbruk ber vi dig att skriva in kombinationen från bilden"
+" ovan i fältet \"Säkerhetskod \")"
 
 msgid "Security code was incorrect!"
 msgstr "Säkerhetskoden var felaktig!"
@@ -5268,8 +5048,8 @@ msgstr "Fullständig domän"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
-"Det finns ingen användare poster för detta återförsäljare att lägga till ett "
-"alias för."
+"Det finns ingen användare poster för detta återförsäljare att lägga till ett"
+" alias för."
 
 msgid "i-MSCP Reseller: Add Alias"
 msgstr "i-MSCP Återförsäljare: Lägg till Alias"
@@ -5357,13 +5137,11 @@ msgstr "%1$d / %2$d av <b>obegränsat</b>"
 msgid "No Ip statistics to be show."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Reseller/IP Usage"
-msgstr "i-MSCP - Återförsäljare/Ändra Språk"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller/IP usage statistics"
-msgstr "Återförsäljarstatistik"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Återförsäljare/Ändra Språk"
@@ -5473,13 +5251,11 @@ msgstr "E-postinställningar för förlorat lösenord"
 msgid "Lostpw link"
 msgstr "Länk för förlorat lösenord"
 
-#, fuzzy
 msgid "Please specify a subject."
-msgstr "Vänligen fyll i ett ämne!"
+msgstr ""
 
-#, fuzzy
 msgid "Auto email template data updated."
-msgstr "Automatisk e-postmall uppdaterad!"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Återförsäljare/Hantera användare/E-postinställningar"
@@ -5493,23 +5269,21 @@ msgstr ""
 msgid "This package is not installed yet"
 msgstr ""
 
-#, fuzzy
 msgid "waiting for activation"
-msgstr "Väntar på godkännande"
+msgstr ""
 
 msgid "activated (Softwaredepot)"
 msgstr ""
 
-#, fuzzy
 msgid "activated"
-msgstr "Aktivera"
+msgstr ""
 
 msgid "Installing your uploaded package. Please refresh the site."
 msgstr ""
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br /"
-">Refresh your site to see the new status!"
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "Failure in package. Deleting!"
@@ -5525,8 +5299,8 @@ msgstr ""
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br /"
-">Refresh your site to see the new status!"
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in the administrator software depot!"
@@ -5537,20 +5311,18 @@ msgstr ""
 
 msgid ""
 "Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br /"
-">Refresh your site to see the new status!"
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in your software depot!"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have any software uploaded yet"
-msgstr "Du har inga nya beställningar!"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to upload software"
-msgstr "Du har inte behörighet till det här gränssnittet!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5559,8 +5331,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
@@ -5581,25 +5353,20 @@ msgstr ""
 msgid "Software-Synonym"
 msgstr ""
 
-#, fuzzy
 msgid "Software-Version"
-msgstr "Demoversion!"
+msgstr ""
 
-#, fuzzy
 msgid "Software status"
-msgstr "Serverstatus"
+msgstr ""
 
-#, fuzzy
 msgid "Software upload"
-msgstr "Visa serverns belastning"
+msgstr ""
 
-#, fuzzy
 msgid "Requires Database?"
-msgstr "SQL-databas"
+msgstr ""
 
-#, fuzzy
 msgid "Database prefix"
-msgstr "Databasnamn"
+msgstr ""
 
 msgid "Link to authors homepage"
 msgstr ""
@@ -5613,9 +5380,8 @@ msgstr "i-MSCP - Återförsäljare: Stödsystem: Visa Ämne"
 msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - Användare/Lägg till Användare"
 
-#, fuzzy
 msgid "Domain expire date"
-msgstr "Domän upphör"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Välj webbhotell"
@@ -5650,9 +5416,9 @@ msgstr "i-MSCP - Användare/Lägg till användare"
 msgid "Add other domains to this account"
 msgstr "Lägga till andra domäner till detta konto"
 
-#, fuzzy, php-format
+#, php-format
 msgid "System error with Domain Id: %d"
-msgstr "Systemfel med domän-ID: %d"
+msgstr ""
 
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Användare/Redigera"
@@ -5682,9 +5448,8 @@ msgstr "Bandbredd"
 msgid "View aliases"
 msgstr "Se alias"
 
-#, fuzzy
 msgid "You do not have customers."
-msgstr "Du har inga nya beställningar!"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -5702,7 +5467,8 @@ msgstr "Användardata uppdaterades inte!"
 
 msgid ""
 "This user has domain record !<br>First remove the domain from the system!"
-msgstr "Denna användaren har en domän!<br>Ta först bort domänen från systemet!"
+msgstr ""
+"Denna användaren har en domän!<br>Ta först bort domänen från systemet!"
 
 msgid "User terminated!"
 msgstr "Användare avslutad!"
@@ -5710,125 +5476,4 @@ msgstr "Användare avslutad!"
 msgid "User not terminated!"
 msgstr "Användaren avslutades inte!"
 
-#~ msgid "i-MSCP  a Virtual Hosting Control System"
-#~ msgstr "i-MSCP , ett virtuellt hanteringssystem för hosting"
 
-#~ msgid "Please enter your login information"
-#~ msgstr "Fyll i dina inloggningsuppgifter"
-
-#~ msgid "Retrieving lost passwords is currently not possible"
-#~ msgstr "Hämta förlorade lösenord är för närvarande inte möjligt"
-
-#~ msgid "i-MSCP - Virtual Hosting Control System"
-#~ msgstr "i-MSCP - Virtuellt hanteringssystem för hosting"
-
-#~ msgid "Retry"
-#~ msgstr "Försök igen"
-
-#~ msgid "Request password"
-#~ msgstr "Begär lösenord"
-
-#~ msgid "Do you want to execute the Updates now?"
-#~ msgstr "Vill du utföra uppdateringarna nu?"
-
-#~ msgid "A database update is available"
-#~ msgstr "En ny databasuppdatering finns tillgänglig"
-
-#~ msgid "Panel Default"
-#~ msgstr "Panelstandard"
-
-#, fuzzy
-#~ msgid "Settings saved!"
-#~ msgstr "Inställningar sparade!"
-
-#, fuzzy
-#~ msgid ""
-#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
-#~ "services names!"
-#~ msgstr ""
-#~ "FEL: Endast bokstäver, siffror, bindestreck och understreck är tillåtna!"
-
-#~ msgid "To"
-#~ msgstr "Till"
-
-#~ msgid "Message was sent."
-#~ msgstr "Meddelande skickat."
-
-#~ msgid "ISPCP - Client/Webtools"
-#~ msgstr "ISPCP - Kund/Webbverktyg"
-
-#~ msgid "i-MSCP Error"
-#~ msgstr "i-MSCP Fel"
-
-#~ msgid "Error Message"
-#~ msgstr "Felmeddelande"
-
-#~ msgid "Unchanged"
-#~ msgstr "Oförändrat"
-
-#~ msgid "- 1 Month"
-#~ msgstr "- 1 Månad"
-
-#~ msgid "+ 1 Month"
-#~ msgstr "+ 1 Månad"
-
-#~ msgid "+ 2 Months"
-#~ msgstr "+ 2 Månader"
-
-#~ msgid "+ 3 Months"
-#~ msgstr "+ 3 Månader"
-
-#~ msgid "+ 6 Months"
-#~ msgstr "+ 6 Månader"
-
-#~ msgid "+ 1 Year"
-#~ msgstr "+ 1 År"
-
-#~ msgid "+ 2 Years"
-#~ msgstr "+ 2 År"
-
-#~ msgid "1 Month"
-#~ msgstr "1 Månad"
-
-#~ msgid "2 Months"
-#~ msgstr "2 Månader"
-
-#~ msgid "3 Months"
-#~ msgstr "3 Månader"
-
-#~ msgid "6 Months"
-#~ msgstr "6 Månader"
-
-#~ msgid "1 Year"
-#~ msgstr "1 År"
-
-#~ msgid "2 Years"
-#~ msgstr "2 År"
-
-#~ msgid "You have no users."
-#~ msgstr "Du har inga användare."
-
-#~ msgid "Services"
-#~ msgstr "Tjänster"
-
-#~ msgid "days"
-#~ msgstr "dagar"
-
-#~ msgid "hours"
-#~ msgstr "timmar"
-
-#~ msgid "Kernel"
-#~ msgstr "Kärna"
-
-#~ msgid "Load"
-#~ msgstr "Belastning"
-
-#~ msgid ""
-#~ "We are sorry, but the system is currently under maintenance.\n"
-#~ "Please try again later."
-#~ msgstr ""
-#~ "Vi beklagar, systemet är för närvarande nere på grund av underhåll.\n"
-#~ "Vänligen försök igen senare."
-
-#~ msgid "Could not get config from database"
-#~ msgstr "Kunde inte hämta konfiguration från databas"

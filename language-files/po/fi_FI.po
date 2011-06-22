@@ -1,18 +1,20 @@
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: fi_FI\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
 "POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2009-12-18 14:29+0100\n"
-"Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
-"Language-Team: Finnish <fi_FI@li.org>\n"
-"Language: fi\n"
+"PO-Revision-Date: 2011-06-14 05:39+0000\n"
+"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: x64PoPot 0.2\n"
+"Language: fi_FI\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -25,9 +27,8 @@ msgstr "Suomi - Finnish"
 msgid "File %s does not exists or cannot be reached!"
 msgstr "Tiedostoa %s ei ole olemassa tai ei löydetty!"
 
-#, fuzzy
 msgid "Error while trying to obtain list of network cards."
-msgstr "Virhe haettaessa tietoa verkkokorteista!"
+msgstr ""
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
@@ -39,32 +40,26 @@ msgstr "N/A"
 msgid "Day"
 msgstr "Päivä"
 
-#, fuzzy
 msgid "Days"
-msgstr "Päivä"
+msgstr ""
 
 msgid "Hour"
 msgstr "Tunti"
 
-#, fuzzy
 msgid "Hours"
-msgstr "Tunti"
+msgstr ""
 
-#, fuzzy
 msgid "Minute"
-msgstr "minuuttia"
+msgstr ""
 
-#, fuzzy
 msgid "Minutes"
-msgstr "minuuttia"
+msgstr ""
 
-#, fuzzy
 msgid "An error occured! Please, contact your administrator!"
-msgstr "Tiedostoa ei voi avata! Ota yhteys ylläpitoon!"
+msgstr ""
 
-#, fuzzy
 msgid "Couldn't check for updates. Website not reachable."
-msgstr "Ei voitu tarkistaa päivityksiä! Websivua tavoittamattomissa."
+msgstr ""
 
 msgid "General information"
 msgstr "Yleistiedot"
@@ -180,17 +175,14 @@ msgstr "Palvelinportit"
 msgid "Rootkit Log"
 msgstr "Rootkit Loki"
 
-#, fuzzy
 msgid "Services status"
-msgstr "Palvelimen tila"
+msgstr ""
 
-#, fuzzy
 msgid "Services ports"
-msgstr "Palvelinportit"
+msgstr ""
 
-#, fuzzy
 msgid "IP usage"
-msgstr "Levytilankäyttä"
+msgstr ""
 
 msgid "Application management"
 msgstr ""
@@ -297,9 +289,8 @@ msgstr ""
 msgid "Disabled"
 msgstr "Ei käytössä"
 
-#, fuzzy
 msgid "Reload"
-msgstr "Lähetä"
+msgstr ""
 
 msgid "Error"
 msgstr "Virhe"
@@ -426,7 +417,8 @@ msgstr ""
 "kirjaimia että numeroita."
 
 #, php-format
-msgid "Password data is shorter than %s signs or includes not permitted signs!"
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "Salasana on lyhempi kuin %s tai sisältää kiellettyjä merkkejä"
 
 msgid "Incorrect email length or syntax!"
@@ -504,23 +496,20 @@ msgstr ""
 msgid "All fields are required!"
 msgstr ""
 
-#, fuzzy
 msgid "internet Multi Server Control Panel"
-msgstr " i-MSCP-Ohjauspaneeli"
+msgstr ""
 
 msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr " i-MSCP-Ohjauspaneeli"
+msgstr ""
 
 msgid "Administrator login"
 msgstr "Pääkäyttäjän kirjautuminen"
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr " i-MSCP-Ohjauspaneeli"
+msgstr ""
 
 msgid "Login"
 msgstr "Kirjaudu"
@@ -531,9 +520,8 @@ msgstr "Salasana"
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
 
-#, fuzzy
 msgid "FileManager"
-msgstr "Tiedostonhallinta"
+msgstr ""
 
 msgid "Secure Connection"
 msgstr "Suojattu yhteys"
@@ -550,35 +538,28 @@ msgstr ""
 msgid "Captcha fontfile not found."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
-msgstr "i-MSCP - Asiakas / Muuta SQL-käyttäjän salasana"
+msgstr ""
 
 msgid "Security code"
 msgstr "Tarkistuskoodi"
 
-#, fuzzy
 msgid ""
 "To avoid abuse, we ask you to write the combination of letters on the "
 "picture above into the field \"Security code\""
 msgstr ""
-"(Välttääksemme väärinkäyttöjä, pyydämme teitä kirjoittamaan yläpuolella "
-"olevan merkkijonon kohtaan \"Turvakoodi\")"
 
-#, fuzzy
 msgid "Get password"
-msgstr "Luo salasana"
+msgstr ""
 
 msgid "Back"
 msgstr "Takaisin"
 
-#, fuzzy
 msgid "Your new password has been sent. Check your mail."
-msgstr "Uusi salasana lähetetty"
+msgstr ""
 
-#, fuzzy
 msgid "New password has not been sent. Ask your administrator."
-msgstr "Uutta salasanaa ei voitu lähettää."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -589,9 +570,8 @@ msgstr ""
 "Salasanan pyyntö on alustettu. Saatte sähköpostilla ohjeet suorittamiseen. "
 "Tämä pyyntö sulkeutuu %s minuutissa."
 
-#, fuzzy
 msgid "User or security code are incorrect."
-msgstr "VIRHE: Tarkistuskoodi on virheellinen!"
+msgstr ""
 
 msgid "All fields are required."
 msgstr ""
@@ -608,9 +588,8 @@ msgstr "Väärä käyttäjätunnuksen pituus tai muoto!"
 msgid "Entered passwords do not match!"
 msgstr "Antamasi salasana ei täsmää!"
 
-#, fuzzy
 msgid "This user name already exist."
-msgstr "Tämä  käyttäjänimi on olemassa!"
+msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "Tyhjä tai väärä tietue!"
@@ -684,16 +663,14 @@ msgstr "lähetä uudet kirjautumistiedot"
 msgid "Generate password"
 msgstr "Luo salasana"
 
-#, fuzzy
 msgid "Password change is disabled!"
-msgstr "Päivitysten tarkistaminen poissa käytöstä"
+msgstr ""
 
 msgid "Demo Version!"
 msgstr ""
 
-#, fuzzy
 msgid "iMSCP - Admin/Admin Log"
-msgstr "i-MSCP - Ylläpito / Ylläpitologi"
+msgstr ""
 
 msgid "Log is empty!"
 msgstr "Logi on tyhjä!"
@@ -869,9 +846,8 @@ msgstr "Tallenna"
 msgid "Edit button"
 msgstr "Muokkaa nappia"
 
-#, fuzzy
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr "i-MSCP Ylläpitäjä / Järjestelmätyökalut / Palvelimen tila"
+msgstr ""
 
 msgid "Database updates"
 msgstr "Tietokantapäivitykset"
@@ -906,13 +882,11 @@ msgstr "PHP-tuki"
 msgid "CGI support"
 msgstr "CGI-tuki"
 
-#, fuzzy
 msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr "Manuaalinen DNS tuki"
+msgstr ""
 
-#, fuzzy
 msgid "Backup support"
-msgstr "Varmuuskopio / palautus"
+msgstr ""
 
 msgid "MySQL support"
 msgstr "MySQL-tuki"
@@ -950,43 +924,35 @@ msgstr "Ei"
 msgid "Enabled"
 msgstr "Käytässä"
 
-#, fuzzy
 msgid "Incorrect subdomains limit."
-msgstr "Virheellinen alidomainien määrä!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect aliases limit."
-msgstr "Virheellinen aliasten määrä!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect mail accounts limit."
-msgstr "Virheellinen sähköpostien määrä!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect FTP accounts limit."
-msgstr "Virheellinen FTP-käyttäjien määrä!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect SQL users limit."
-msgstr "Virheellinen tietokantakäyttäjien määrä!"
+msgstr ""
 
 msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "SQL-tietokantaraja on <i>pois päältä</i>!"
 
-#, fuzzy
 msgid "Incorrect SQL databases limit."
-msgstr "Virheellinen tietokantojen määrä!"
+msgstr ""
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL-käyttäjien rajoitus on <i>pois päätlä</i>!"
 
-#, fuzzy
 msgid "Incorrect traffic limit."
-msgstr "Virheellinen liikennemäärä!"
+msgstr ""
 
-#, fuzzy
 msgid "Incorrect disk quota limit."
-msgstr "Virheellinen levytilarajoitus!"
+msgstr ""
 
 msgid "The application installer needs PHP to enable."
 msgstr ""
@@ -1018,9 +984,8 @@ msgstr "Liikenne"
 msgid "Disk"
 msgstr "Levytila"
 
-#, fuzzy
 msgid "Domain properties could not be updated."
-msgstr "Domainin ominaisuuksia ei voitu päivittää!"
+msgstr ""
 
 msgid "Domain properties updated successfully!"
 msgstr "Domainin ominaisuuksia päivitetty onnistuneesti!"
@@ -1113,7 +1078,8 @@ msgid "Yes"
 msgstr "Kyllä"
 
 msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+"In case 'Domain expire' is 'N/A', the expiration date will be set from "
+"today."
 msgstr ""
 "Jos 'Domain vanhenee' on 'N/A', päättymispäivä asetetaan täksi päiväksi."
 
@@ -1246,9 +1212,8 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-#, fuzzy
 msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
-msgstr "Salli tietueiden lisääminen DNS-alueeseen"
+msgstr ""
 
 msgid "Apache logfiles"
 msgstr "Apachen logitiedostot"
@@ -1283,9 +1248,8 @@ msgstr "Kuvaus"
 msgid "(e.g. EUR)"
 msgstr "(esim. EUR)"
 
-#, fuzzy
 msgid "Term Of Service"
-msgstr "Palvelu"
+msgstr ""
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
@@ -1379,24 +1343,20 @@ msgstr "Ei alias alidomain-järjestelmän virheitä"
 msgid "No email account system errors"
 msgstr "Ei email-järjestelmän virheitä"
 
-#, fuzzy
 msgid "missing domain"
-msgstr "Päädomain"
+msgstr ""
 
-#, fuzzy
 msgid "missing alias"
-msgstr "Domain-alias"
+msgstr ""
 
 msgid "orphan entry"
 msgstr ""
 
-#, fuzzy
 msgid "No htaccess related system errors"
-msgstr "Ei domain-aliasjärjestelmän virheitä"
+msgstr ""
 
-#, fuzzy
 msgid "Missing domain"
-msgstr "Päädomain"
+msgstr ""
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1438,7 +1398,7 @@ msgstr "Suorita kyselyt"
 msgid "Set status to 'change'"
 msgstr "Aseta tila 'change'"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%s Errors in database"
 msgstr ""
 
@@ -1502,9 +1462,8 @@ msgstr "i-MSCP - Ylläpito / IP-hallinta"
 msgid "Remove IP"
 msgstr "Poista IP"
 
-#, fuzzy
 msgid "No IP's available"
-msgstr "Ei uusia i-MSCP-päivityksiä saatavilla"
+msgstr ""
 
 msgid "New IP was added!"
 msgstr "Uusi IP-osoite lisätty!"
@@ -1540,32 +1499,26 @@ msgstr "Lisää uusi IP-osoite"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Haluatko varmasti poistaa tämän IP-osoitteen: %s?"
 
-#, fuzzy
 msgid "i-MSCP - Admin/IP Usage"
-msgstr "i-MSCP - Ylläpito / IP-hallinta"
+msgstr ""
 
-#, fuzzy
 msgid "Total Domains"
-msgstr "Domainit"
+msgstr ""
 
 msgid "No records found"
 msgstr ""
 
-#, fuzzy
 msgid "Admin/IP usage statistics"
-msgstr "Domain-statistiikka"
+msgstr ""
 
-#, fuzzy
 msgid "Domain Name"
-msgstr "Domain-nimi"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller Name"
-msgstr "Jälleenmyyjän nimi"
+msgstr ""
 
-#, fuzzy
 msgid "User language updated successfully."
-msgstr "Käyttäjän kieli päivitetty onnistuneesti!"
+msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Ylläpito / Muuta kieltä"
@@ -1573,9 +1526,8 @@ msgstr "i-MSCP - Ylläpito / Muuta kieltä"
 msgid "Choose your default language"
 msgstr "Valitse oletuskiel"
 
-#, fuzzy
 msgid "Error we have user that uses that language!"
-msgstr "Virhe: Jälleenmyyjä käyttää IP:tä!"
+msgstr ""
 
 msgid "Language was removed!"
 msgstr "Kieli poistettu!"
@@ -1626,8 +1578,8 @@ msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
 "for the <b>%2$s</b> service!"
 msgstr ""
-"Et voi siirtää <b>%1$s</b> jälleenmyyjäller,<br>jolla on rajat palvelulle <b>"
-"%2$s</b>!"
+"Et voi siirtää <b>%1$s</b> jälleenmyyjäller,<br>jolla on rajat palvelulle "
+"<b>%2$s</b>!"
 
 #, php-format
 msgid ""
@@ -1645,8 +1597,8 @@ msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller !<br>This user cannot be moved!"
 msgstr ""
-"<b>%s</b>:llä on IP-osoite, jota ei voida hallinnoida kohdejälleenmyyjällä!"
-"<br>Käyttäjää ei voida siirtää!"
+"<b>%s</b>:llä on IP-osoite, jota ei voida hallinnoida "
+"kohdejälleenmyyjällä!<br>Käyttäjää ei voida siirtää!"
 
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Ylläpito / Hallitse käyttäjiä / Käyttäjämääritys"
@@ -1707,9 +1659,8 @@ msgstr "Kielitiedostoa ei voi lukea!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "Lähetetty tiedosto ei ole kielitiedosto!"
 
-#, fuzzy
 msgid "Uploaded file does not contain language information!"
-msgstr "Lähetetty tiedosto ei sisällä kielitietoja!"
+msgstr ""
 
 #, php-format
 msgid "%s added new language: %s"
@@ -1776,9 +1727,8 @@ msgstr "Päivitä salasana"
 msgid "Current password"
 msgstr "Nykyinen salasana"
 
-#, fuzzy
 msgid "Password change is deactivated!"
-msgstr "Tilattu domain-alias aktivoitu!"
+msgstr ""
 
 msgid "i-MSCP - Admin/Change Personal Data"
 msgstr "i-MSCP - Ylläpito / Muuta henkiläkohtaisia tietoja"
@@ -1816,13 +1766,11 @@ msgstr "Virheellinen sähköpostin muoto!"
 msgid "Incorrect domains limit!"
 msgstr "Virheellinen domainien raja!"
 
-#, fuzzy
 msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
-msgstr "SQL-tietokantaraja on <i>pois päältä</i>!"
+msgstr ""
 
-#, fuzzy
 msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
-msgstr "SQL-käyttäjien rajoitus on <i>pois päätlä</i>!"
+msgstr ""
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Sinun täytyy määrittää vähintään yksi IP-osoite jälleenmyyjälle!"
@@ -1883,8 +1831,8 @@ msgstr "Levytila"
 
 #, php-format
 msgid ""
-"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
-"limits than the new limit you entered."
+"This reseller's customers are using/have more/higher <b>%s</b> "
+"accounts/limits than the new limit you entered."
 msgstr ""
 "Jälleenmyyjän asiakkaat käyttää enemmän <b>%s</b> tilejä/rajoituksia kuin "
 "uusi annettu raja."
@@ -1897,24 +1845,18 @@ msgstr ""
 "Jälleenmyyjälle on määritetty enemmän/korkeampi <b>%s</b> tiliä/rajoitusta "
 "kuin uusi annettu raja."
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
 "service!"
 msgstr ""
-"Jälleenmyyjällä on asiakas/asiakkaita rajoittamattomilla oikeuksilla "
-"palveluun <b>%s</b>!<br>"
 
-#, fuzzy
 msgid "If you want to limit the reseller, you must first limit its customers!"
 msgstr ""
-"Jos haluat rajoittaa jälleenmyyjää, sinun pitää rajoittaa käyttäjiä ensin!"
-"<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
 msgstr ""
-"Tällä jälleenmyyjällä on domaineja määritettynä <b>%s</b> osoitteeseen!<br>"
 
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
@@ -1944,25 +1886,23 @@ msgstr "rajoittamaton"
 msgid "Reset"
 msgstr "Tyhjennä"
 
-#, fuzzy
 msgid "Generated password:"
-msgstr "Luo salasana"
+msgstr ""
 
 msgid "Type `CTRL+C` to copy the generated password in the clipboard."
 msgstr ""
 
 #, php-format
 msgid ""
-"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
-"\\nInstead, use the %s button to update the data."
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance "
+"reasons!\\nInstead, use the %s button to update the data."
 msgstr ""
 
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Jälleenmyyjätilastot"
 
-#, fuzzy
 msgid "No reseller is registered in your system!"
-msgstr "Ei jälleenmyyjiä järjestelmässä!"
+msgstr ""
 
 #, php-format
 msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
@@ -2098,9 +2038,8 @@ msgstr "Vuosi:"
 msgid "Day:"
 msgstr "Päivä:"
 
-#, fuzzy
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "i-MSCP Ylläpitäjä / Järjestelmätyökalut / Palvelimen tila"
+msgstr ""
 
 msgid "Host"
 msgstr "Host"
@@ -2132,9 +2071,8 @@ msgstr "Tapa sessio"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Pääkäyttäjä/Asetukset"
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed!"
-msgstr "VIRHE: Vain positiiviset arvot sallittuja!"
+msgstr ""
 
 #, php-format
 msgid "%d configuration parameter(s) was updated!"
@@ -2234,9 +2172,8 @@ msgstr "Estä ulkopuoliset kirjautumiset asiakkailta"
 msgid "Custom orderpanel ID"
 msgstr "Kustomoitu tilauspaneelin ID"
 
-#, fuzzy
 msgid "Domain names validation"
-msgstr "Domain-nimi"
+msgstr ""
 
 msgid "Top Level Domain name strict validation"
 msgstr ""
@@ -2350,17 +2287,14 @@ msgstr "Asetukset tallennettu"
 msgid "Under this mode only administrators can login"
 msgstr "Vain ylläpitäjät voivat kirjautua tässä tilassa"
 
-#, fuzzy
 msgid "Error: Wrong Ip number!"
-msgstr "Virheellinen IP-osoite!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Only positive numbers are allowed for services ports!"
-msgstr "VIRHE: Vain positiiviset arvot sallittuja!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: Service port with same name already exists!"
-msgstr "VIRHE: Portti on jo olemassa!"
+msgstr ""
 
 msgid "Error: Unallowed protocol!"
 msgstr ""
@@ -2368,32 +2302,27 @@ msgstr ""
 msgid "Error: Wrong value for show entry!"
 msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully added"
-msgstr "Uusi IP-osoite lisätty!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
 msgid "Nothing's been changed"
 msgstr ""
 
-#, fuzzy
 msgid "You have no custom service ports defined"
-msgstr "Sinulla ei ole kustomoitua palvelun porttia määritetty."
+msgstr ""
 
-#, fuzzy
 msgid "Service port was successfully removed!"
-msgstr "Tiketti uudelleeavattu!"
+msgstr ""
 
-#, fuzzy
 msgid "Error: You are not allowed to remove this service port entry!"
-msgstr "Oletko varma että haluat poistaa %s?"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Admin / Settings"
-msgstr "i-MSCP - Pääkäyttäjä/Asetukset"
+msgstr ""
 
 msgid "udp"
 msgstr "udp"
@@ -2407,16 +2336,15 @@ msgstr "Portti"
 msgid "Protocol"
 msgstr "Protokolla"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr "Oletko varma että haluat poistaa %s?"
+msgstr ""
 
 msgid "View / Update service(s) port"
 msgstr ""
 
-#, fuzzy
 msgid "Add new service port"
-msgstr "Lisää uusi suojattu alue"
+msgstr ""
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - Ylläpito / Palvelimen liikenneasetukset"
@@ -2451,20 +2379,17 @@ msgstr "Käyttäjän oikea (etu ja suku) nimi"
 msgid "User type (admin, reseller, user)"
 msgstr "Käyttäjätyyppi (ylläpitäjä, jälleenmyyjä, käyttäjä)"
 
-#, fuzzy
 msgid "Wrong software id."
-msgstr "Virheellinen tilauksen ID!"
+msgstr ""
 
 msgid "Software was activated."
 msgstr ""
 
-#, fuzzy
 msgid "No Resellers found."
-msgstr "Jälleenmyyjät"
+msgstr ""
 
-#, fuzzy
 msgid "Rights succesfully added."
-msgstr "SQL-käyttäjä lisätty!"
+msgstr ""
 
 msgid "Rights succesfully removed."
 msgstr ""
@@ -2473,39 +2398,33 @@ msgstr ""
 msgid "%1$s (%2$s)"
 msgstr ""
 
-#, fuzzy
 msgid "Software was deleted."
-msgstr "IP-osoite poistettu!"
+msgstr ""
 
-#, fuzzy
 msgid "Fill out a message text!"
-msgstr "Viestisi on lähetetty!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management"
-msgstr "i-MSCP - Asiakas / Cronjob-hallinta"
+msgstr ""
 
 msgid "Message to reseller before deleting the software"
 msgstr ""
 
-#, fuzzy
 msgid "Delete reseller software"
-msgstr "Jälleenmyyjän muokkaus keskeytetty!"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller data"
-msgstr "Jälleenmyyjän nimi"
+msgstr ""
 
 msgid "Delete software and send message"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "File does not exist. %1$s.tar.gz"
-msgstr "%s ei ole olemassa!"
+msgstr ""
 
-#, fuzzy
 msgid "Software was imported succesfully."
-msgstr "SQL-tietokanta poistettu onnistuneesti!"
+msgstr ""
 
 msgid "Download"
 msgstr ""
@@ -2513,16 +2432,14 @@ msgstr ""
 msgid "Activate"
 msgstr "Aktivoi"
 
-#, fuzzy
 msgid "Import"
-msgstr "Vie"
+msgstr ""
 
 msgid "No software is waiting for activation"
 msgstr ""
 
-#, fuzzy
 msgid "Package installed successfully!"
-msgstr "FTP-tunnus poistettu onnistuneesti!"
+msgstr ""
 
 msgid "Rights"
 msgstr ""
@@ -2534,13 +2451,12 @@ msgid "Installing your uploaded package. Please refresh this site."
 msgstr ""
 
 msgid ""
-"The package will be installed automaticly to your system after upload.<br /"
-">Refresh your site to see the new status!"
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "installing"
-msgstr "poista"
+msgstr ""
 
 msgid "Failure in the package. Deleting!"
 msgstr ""
@@ -2550,9 +2466,8 @@ msgid ""
 "site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "deleting"
-msgstr "poista"
+msgstr ""
 
 msgid "Your package is corrupt. Please correct it!"
 msgstr ""
@@ -2565,9 +2480,8 @@ msgid ""
 "package two times.<br />Refresh your site to see the new status!"
 msgstr ""
 
-#, fuzzy
 msgid "This package already exist in the software depot!"
-msgstr "Domain samalla nimellä on jo olemassa järjestelmässä!"
+msgstr ""
 
 msgid "Package already exist in the reseller depot!"
 msgstr ""
@@ -2593,37 +2507,29 @@ msgstr ""
 msgid "i-MSCP application installer web software depot"
 msgstr ""
 
-#, fuzzy
 msgid "Update from web depot"
-msgstr "Päivitä tilaus"
+msgstr ""
 
-#, fuzzy
 msgid "Package title"
-msgstr "Paketin hinta"
+msgstr ""
 
-#, fuzzy
 msgid "Package install type"
-msgstr "Paketin ominaisuudet"
+msgstr ""
 
-#, fuzzy
 msgid "Package version"
-msgstr "Paketin hinta"
+msgstr ""
 
-#, fuzzy
 msgid "Package language"
-msgstr "Paketin ominaisuudet"
+msgstr ""
 
-#, fuzzy
 msgid "Package type"
-msgstr "Paketin hinta"
+msgstr ""
 
-#, fuzzy
 msgid "Package vendor HP"
-msgstr "Paketin ominaisuudet"
+msgstr ""
 
-#, fuzzy
 msgid "Package actions"
-msgstr "Paketin ominaisuudet"
+msgstr ""
 
 msgid "Web software depot packages total"
 msgstr ""
@@ -2643,25 +2549,24 @@ msgstr ""
 
 #, php-format
 msgid ""
-"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
 msgid ""
-"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d "
+"MB"
 msgstr ""
 
-#, fuzzy
 msgid "Error: Remote File not found!"
-msgstr "Virhe 404 (ei löydy)"
+msgstr ""
 
 msgid "Error: Could not upload the file. File not found!"
 msgstr ""
 
-#, fuzzy
 msgid "File was successfully uploaded."
-msgstr "Logo on lähetetty onnistuneesti!"
+msgstr ""
 
 msgid "Software depot"
 msgstr ""
@@ -2680,20 +2585,17 @@ msgstr ""
 msgid "or remote file (Max: %1$d MB)"
 msgstr ""
 
-#, fuzzy
 msgid "Upload now"
-msgstr "Lähetä logo"
+msgstr ""
 
 msgid "Awaiting Activation"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller software list"
-msgstr "Jälleenmyyjätilastot"
+msgstr ""
 
-#, fuzzy
 msgid "Application"
-msgstr "Toiminto"
+msgstr ""
 
 msgid "App-Version"
 msgstr ""
@@ -2701,43 +2603,35 @@ msgstr ""
 msgid "Type"
 msgstr "Tyyppi"
 
-#, fuzzy
 msgid "Depot import"
-msgstr "Kohdeportti"
+msgstr ""
 
 msgid "Software total"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller total"
-msgstr "Jälleenmyyjän nimi"
+msgstr ""
 
-#, fuzzy
 msgid "Waiting for activation"
-msgstr "Odottaa hyväksymistä"
+msgstr ""
 
-#, fuzzy
 msgid "Activated software"
-msgstr "Aktivoi"
+msgstr ""
 
 msgid "Total installations"
 msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to activate this package?"
-msgstr "Oletko varma että haluat poistaa tämän tunnuksen?"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr "Oletko varma että haluat muuttaa %s:n tilaa?"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure you want to delete this package?"
-msgstr "Oletko varma että haluat poistaa tämän tunnuksen?"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application management options"
-msgstr "i-MSCP - Ylläpito / Hallitse sessioita"
+msgstr ""
 
 msgid "Main application installer options updated!"
 msgstr ""
@@ -2757,13 +2651,11 @@ msgstr ""
 msgid "Last i-MSCP websoftware depot update"
 msgstr ""
 
-#, fuzzy
 msgid "not available"
-msgstr "Saatavilla olevat IP-osoitteet"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong reseller id."
-msgstr "Jälleenmyyjältä"
+msgstr ""
 
 msgid "This package is installed on following domain(s):"
 msgstr ""
@@ -2779,42 +2671,35 @@ msgstr ""
 msgid "%1$s`s - Software"
 msgstr ""
 
-#, fuzzy
 msgid "No software available!"
-msgstr "Ei uusia tietokantapäivityksiä saatavilla"
+msgstr ""
 
-#, fuzzy
 msgid "Installed on"
-msgstr "Asennetut teemat"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller list"
-msgstr "Jälleenmyyjät"
+msgstr ""
 
 msgid "Softwaredepot"
 msgstr ""
 
-#, fuzzy
 msgid "Admin not available"
-msgstr "Palvelupaketit ovat tarjolla"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to remove the permissions ?"
-msgstr "Oletko varma että haluat palautaa varmuuskopion?"
+msgstr ""
 
 msgid "No Reseller with permissions for this software found"
 msgstr ""
 
-#, fuzzy
 msgid "All reseller"
-msgstr "Kaikki jälleenmyyjät"
+msgstr ""
 
 msgid "No Reseller available to add the permissions"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Application Management (Permissions)"
-msgstr "i-MSCP - Ylläpito / Hallitse sessioita"
+msgstr ""
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -2826,16 +2711,14 @@ msgstr ""
 msgid "Remove permissions"
 msgstr ""
 
-#, fuzzy
 msgid "Reseller with permissions total"
-msgstr "Jälleenmyyjätilastotaulukko"
+msgstr ""
 
 msgid "Added by"
 msgstr ""
 
-#, fuzzy
 msgid "Add permissions"
-msgstr "Lisää olemassa oleva käyttäjä"
+msgstr ""
 
 msgid "Software permissions"
 msgstr ""
@@ -2864,9 +2747,8 @@ msgstr "Tiedostojärjestelmän tiedot"
 msgid "Free"
 msgstr "Vapaana"
 
-#, fuzzy
 msgid "Kernel Version"
-msgstr "Tapa sessio"
+msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
@@ -2967,9 +2849,8 @@ msgstr "Virheellinen domain ID!"
 msgid "Invalid user id!"
 msgstr "Väärä käyttäjä id!"
 
-#, fuzzy
 msgid "Logo could not be deleted:"
-msgstr "Domainin ominaisuuksia ei voitu päivittää!"
+msgstr ""
 
 msgid "There are active domains of reseller/admin!"
 msgstr "Jälleenmyyjällä/pääkäyttäjällä on aktiivia domaineja!"
@@ -2995,12 +2876,10 @@ msgstr "Domainin alidomainit:"
 msgid "Domain databases:"
 msgstr "Domainin tietokannat:"
 
-#, fuzzy
 msgid ""
 "Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
 msgstr ""
-"Haluatko varmasti poistaa koko domainin? Tätä toimintoa ei voida peruuttaa!"
 
 msgid "Yes, delete the domain."
 msgstr "Kyllä, poista domain."
@@ -3017,13 +2896,11 @@ msgstr "Virheellinen liitospiste!"
 msgid "Master domain cannot be used!"
 msgstr "Päädomainia ei voi käyttää!"
 
-#, fuzzy
 msgid "Wrong address in forward URL!"
-msgstr "Virheellinen domainnimi!"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong domain part in forward URL!"
-msgstr "Virheellinen domainnimi!"
+msgstr ""
 
 msgid "Domain with this name already exist"
 msgstr "Domain tällä nimellä on jo olemassa"
@@ -3086,7 +2963,8 @@ msgstr ""
 "ensin!"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+"Domain alias you are trying to remove has FTP accounts!<br>First remove "
+"them!"
 msgstr ""
 "Domain-alias jota yrität muokata sisältää FTP-tunnuksia!<br>Poista ne ensin!"
 
@@ -3106,10 +2984,11 @@ msgid "Mount Point"
 msgstr "Liitospiste"
 
 msgid ""
-"Subdomain you are trying to remove has email accounts !<br>First remove them!"
+"Subdomain you are trying to remove has email accounts !<br>First remove "
+"them!"
 msgstr ""
-"Alidomain jota yrität poistaa sisältää sähköpostitunnuksia! <br>Poista ensin "
-"ne!"
+"Alidomain jota yrität poistaa sisältää sähköpostitunnuksia! <br>Poista ensin"
+" ne!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Alidomain poistojonossa!"
@@ -3140,7 +3019,8 @@ msgstr "Palauta varmuuskopio"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr "Paina Palautus nappia ja järjestelmä palauttaa edellisen varmuuskopion"
+msgstr ""
+"Paina Palautus nappia ja järjestelmä palauttaa edellisen varmuuskopion"
 
 msgid "Restore"
 msgstr "Palauta"
@@ -3190,9 +3070,8 @@ msgstr "Cronjobit"
 msgid "You are not allowed to remove this DNS record!"
 msgstr ""
 
-#, fuzzy
 msgid "Custom DNS record scheduled for deletion!"
-msgstr "DNS-alueen tietue ajoitettu poistattavaksi!"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "i-MSCP - Hallitse Domain-aliaksia / Lisää DNS-alueen tietue"
@@ -3200,13 +3079,11 @@ msgstr "i-MSCP - Hallitse Domain-aliaksia / Lisää DNS-alueen tietue"
 msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "i-MSCP - Hallitse Domain-aliaksia / Muokkaa DNS-alueen tietue"
 
-#, fuzzy
 msgid "Add DNS zone's record (EXPERIMENTAL)"
-msgstr "Lisää DNS alueen tietue"
+msgstr ""
 
-#, fuzzy
 msgid "Edit DNS zone's record (EXPERIMENTAL)"
-msgstr "Muokkaa DNS alueen tietuetta"
+msgstr ""
 
 msgid "DNS zone's records"
 msgstr "DNS alueen tietueet"
@@ -3244,13 +3121,11 @@ msgstr "Kanoninen nimi"
 msgid "Plain record data"
 msgstr "Yksinkertainen tietuetieto"
 
-#, fuzzy
 msgid "DNS zone's records (EXPERIMENTAL)"
-msgstr "DNS alueen tietueet"
+msgstr ""
 
-#, fuzzy
 msgid "You are not allowed to edit this DNS record!"
-msgstr "Sinulla ei ole aliaksia."
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3304,9 +3179,8 @@ msgstr "Ei voitu varmentaa tietuetta %s. Syy '%s'."
 msgid "Unknown zone type %s!"
 msgstr "Tuntematon alueen tyyppi %s!"
 
-#, fuzzy
 msgid "Error: DNS record already exist!"
-msgstr "Käyttäjä on jo olemassa!"
+msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Asiakas / Domainstatistiikka"
@@ -3369,9 +3243,8 @@ msgstr "Muokkaa virhesivua"
 msgid "Custom error page was updated!"
 msgstr "Vaihtoehtoinen virhesivu päivitetty!"
 
-#, fuzzy
 msgid "System error - custom error page was not updated!"
-msgstr "Järjestelmävirhe - vaihtoehtoista virhesivua EI päivitetty!"
+msgstr ""
 
 msgid "Error 401 (unauthorised)"
 msgstr "Error 401 (unauthorised)"
@@ -3403,9 +3276,8 @@ msgstr "FTP-käyttäjät"
 msgid "FTP account"
 msgstr "FTP-tunnus"
 
-#, fuzzy
 msgid "Login As"
-msgstr "Kirjaudu"
+msgstr ""
 
 msgid "Empty List"
 msgstr "Tyhjennä lista"
@@ -3432,9 +3304,8 @@ msgstr "FTP-tunnus lisätty!"
 msgid "Please enter FTP account username!"
 msgstr "Anna FTP-käyttäjänimesi!"
 
-#, fuzzy
 msgid "Password is missing!"
-msgstr "Salasanatiedot uupuvat!"
+msgstr ""
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Alidomain-lista on tyhjä! Et voi tehdä FTP-tilejä tänne!"
@@ -3442,9 +3313,8 @@ msgstr "Alidomain-lista on tyhjä! Et voi tehdä FTP-tilejä tänne!"
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Alias-lista on tyhjä! Et voi lisätä FTP-tilejä tänne!"
 
-#, fuzzy
 msgid "Please specify other FTP account directory!"
-msgstr "Määritä toinen FTP-tunnuksen hakemisto!"
+msgstr ""
 
 msgid "FTP accounts limit reached!"
 msgstr "FTP tilien raja saavutettu"
@@ -3467,13 +3337,11 @@ msgstr "Käytä muuta hakemistoa"
 msgid "Choose dir"
 msgstr "Valitse hakemisto"
 
-#, fuzzy
 msgid "Unknown FTP user id!"
-msgstr "Tuntematon tyyppi!"
+msgstr ""
 
-#, fuzzy
 msgid "Cannot open directory! Please contact your administrator!"
-msgstr "Ei voi avata hakemistoa!<br>Ota yhteys ylläpitoon!"
+msgstr ""
 
 msgid "Parent Directory"
 msgstr "Yläkansio"
@@ -3501,7 +3369,8 @@ msgstr "i-MSCP - Asiakas / Muokkaa FTP-tunnusta"
 
 msgid ""
 "User does not exist or you do not have permission to access this interface!"
-msgstr "Käyttäjää ei ole olemassa tai sinulla ei ole oikeuksia tähän paikkaan!"
+msgstr ""
+"Käyttäjää ei ole olemassa tai sinulla ei ole oikeuksia tähän paikkaan!"
 
 msgid "Edit FTP user"
 msgstr "Muokkaa FTP-käyttäjää"
@@ -3566,24 +3435,21 @@ msgstr ""
 msgid "i-MSCP application installer: disabled"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
 "doesn't has this feature."
 msgstr ""
-"Sinulla on PHP päällä, mutta uudessa hosting-paketissa ei ole tätä "
-"ominaisuutta."
 
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr ""
-"Sinulla on enemmän levytilaa käytössä kuin uudessa hosting-paketissa on rajat"
+"Sinulla on enemmän levytilaa käytössä kuin uudessa hosting-paketissa on "
+"rajat"
 
 msgid "Disk limit"
 msgstr "Levytilarajoitus"
 
-#, fuzzy
 msgid "You did have more traffic than the new hosting plan limits."
-msgstr "Sinulla on enemmän liikennettä kuin uudessa hosting-paketissa on rajat"
+msgstr ""
 
 msgid "Traffic limit"
 msgstr "Liikennerajoitus"
@@ -3627,9 +3493,8 @@ msgstr ""
 msgid "free of charge"
 msgstr "ilmainen"
 
-#, fuzzy
 msgid "You cannot update to this hosting plan, see notices in text."
-msgstr "Et voi päivittää hosting-pakettia, katso ilmoitus tekstistä."
+msgstr ""
 
 msgid "Warning:"
 msgstr "Varoitus:"
@@ -3637,9 +3502,8 @@ msgstr "Varoitus:"
 msgid "Caution:"
 msgstr ""
 
-#, fuzzy
 msgid "I understand the warnings - Purchase!"
-msgstr "Olen tietoinen varoituksesta - Osta!"
+msgstr ""
 
 msgid "There are no available hosting plans for update"
 msgstr "Ei saatavilla olevia hosting-paketteja"
@@ -3647,11 +3511,9 @@ msgstr "Ei saatavilla olevia hosting-paketteja"
 msgid "i-MSCP - Update hosting plan"
 msgstr "i-MSCP - Päivitä hosting-paketti"
 
-#, fuzzy
-msgid "You have more e-mail addresses in use than the new hosting plan limits."
+msgid ""
+"You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
-"Sinulla on enemmän sähköpostitilejä käytössä kuin uudessa hosting-paketissa "
-"on rajat"
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Pyyntäsi päivittää hosting-paketti on lisätty onnistuneesti"
@@ -3693,9 +3555,8 @@ msgstr "Olet ylittämässä levytilarajoitustasi!"
 msgid "You have no new support questions!"
 msgstr "Sinulla ei ole uusia tukikysymyksiä!"
 
-#, fuzzy
 msgid "This Domain is expired"
-msgstr "Domain vanhenee"
+msgstr ""
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - Asiakas / Pääsivu"
@@ -3754,9 +3615,8 @@ msgstr "Sähkäposteja yhteensä"
 msgid "Show default E-Mail addresses"
 msgstr "Näytä oletus sähköpostiosoite"
 
-#, fuzzy
 msgid "Hide default E-Mail Addresses"
-msgstr "Luo oletussähköpostiosoitteet"
+msgstr ""
 
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Osoitteen muoto edelleenlähetyslistalla on väärä!"
@@ -3901,13 +3761,11 @@ msgstr "i-MSCP - Asiakas / Vaihda salasana"
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Asiakas / Muuta henkiläkohtaisia tietoja"
 
-#, fuzzy
 msgid "Unknown SQL user id."
-msgstr "Tuntematon virhe"
+msgstr ""
 
-#, fuzzy
 msgid "Error: An error occurred while authentication."
-msgstr "Virhe tunnistuksessa!"
+msgstr ""
 
 msgid "You do not have protected areas"
 msgstr "Sinulla ei ole suojattuja alueita"
@@ -4041,17 +3899,14 @@ msgstr "Päivitä käyttäjä"
 msgid "You have no users!"
 msgstr "Sinulla ei ole käyttäjiä!"
 
-#, fuzzy
 msgid "Install in progress..."
-msgstr "Lisäys kesken"
+msgstr ""
 
-#, fuzzy
 msgid "Deletion in progress..."
-msgstr "Poisto käynnissä"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package?"
-msgstr "Oletko varma että haluat poistaa tämän tunnuksen?"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4063,9 +3918,8 @@ msgstr ""
 msgid "Installed Package which was deleted by your reseller!"
 msgstr ""
 
-#, fuzzy
 msgid "No software available"
-msgstr "Ei uusia tietokantapäivityksiä saatavilla"
+msgstr ""
 
 msgid "required"
 msgstr ""
@@ -4073,39 +3927,32 @@ msgstr ""
 msgid "not required"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install software"
-msgstr "Sinulla ei ole oikeuksia tähän sivuun!"
+msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - application installer"
-msgstr "i-MSCP - Asiakas / Cronjob-hallinta"
+msgstr ""
 
-#, fuzzy
 msgid "Install software"
-msgstr "Asenna uusi kielipaketti"
+msgstr ""
 
 msgid "Software"
 msgstr ""
 
-#, fuzzy
 msgid "Version"
-msgstr "Tapa sessio"
+msgstr ""
 
-#, fuzzy
 msgid "Database"
-msgstr "SQL-tietokanta"
+msgstr ""
 
-#, fuzzy
 msgid "Apps available"
-msgstr "Saatavilla olevat IP-osoitteet"
+msgstr ""
 
 msgid "Software installation"
 msgstr ""
 
-#, fuzzy
 msgid "Software deleted successful."
-msgstr "Suojattu alue poistettu onnistuneesti!"
+msgstr ""
 
 msgid "Software will be deleted now."
 msgstr ""
@@ -4116,25 +3963,21 @@ msgstr "Tietokantakäyttäjien lista on tyhjä!"
 msgid "At first you must create a database!"
 msgstr ""
 
-#, fuzzy
 msgid "Add new database"
-msgstr "Lisää SQL-tietokanta"
+msgstr ""
 
-#, fuzzy
 msgid "Software not found!"
-msgstr "Kysymystä ei läydy!"
+msgstr ""
 
 #, php-format
 msgid "The directory -%1$s- was created!"
 msgstr ""
 
-#, fuzzy
 msgid "Please select the correct user for your database!"
-msgstr "Valitse käyttäj(i)ä!"
+msgstr ""
 
-#, fuzzy
 msgid "You have to fill out inputs!"
-msgstr "Sinulla ei ole ryhmiä!"
+msgstr ""
 
 msgid "You cant't install outside from htdocs!"
 msgstr ""
@@ -4153,69 +3996,56 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
-#, fuzzy
 msgid "Install Software"
-msgstr "Asenna uusi kielipaketti"
+msgstr ""
 
-#, fuzzy
 msgid "Database required"
-msgstr "Tietokantakäyttäjät"
+msgstr ""
 
-#, fuzzy
 msgid "Select Domain"
-msgstr "Poista domain"
+msgstr ""
 
-#, fuzzy
 msgid "back"
-msgstr "Takaisin"
+msgstr ""
 
-#, fuzzy
 msgid "install"
-msgstr "poista"
+msgstr ""
 
-#, fuzzy
 msgid "Install path"
-msgstr "Asenna"
+msgstr ""
 
 msgid "Create directory, if not exist!"
 msgstr ""
 
-#, fuzzy
 msgid "Select database"
-msgstr "SQL-tietokanta"
+msgstr ""
 
-#, fuzzy
 msgid "SQL-User"
-msgstr "SQL-käyttäjä"
+msgstr ""
 
-#, fuzzy
 msgid "installed"
-msgstr "poista"
+msgstr ""
 
 msgid "Installation infos"
 msgstr ""
 
-#, fuzzy
 msgid "Software status:"
-msgstr "Palvelimen tila"
+msgstr ""
 
 msgid "Installation path:"
 msgstr ""
 
-#, fuzzy
 msgid "Used database:"
-msgstr "SQL-tietokanta"
+msgstr ""
 
 msgid "You need a Database for this software"
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Software details"
-msgstr "i-MSCP - Domain / Tiedot"
+msgstr ""
 
-#, fuzzy
 msgid "Software details"
-msgstr "Tilauksen tiedot"
+msgstr ""
 
 msgid "Homepage"
 msgstr ""
@@ -4235,10 +4065,9 @@ msgstr "SQL-käyttäjän salasana vaihdettu!"
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Asiakas / Muuta SQL-käyttäjän salasana"
 
-#, fuzzy
 msgid ""
 "User does not exist or you do not have permission to access this interface."
-msgstr "Käyttäjää ei ole olemassa tai sinulla ei ole oikeuksia tähän paikkaan!"
+msgstr ""
 
 msgid "Change SQL user password"
 msgstr "Muuta SQL-käyttäjän salasana"
@@ -4309,8 +4138,8 @@ msgstr "Kirjaudu phpMyAdminiin"
 
 #, php-format
 msgid ""
-"This database will be permanently deleted. This process cannot be recovered. "
-"All users linked to this database will also be deleted if not linked to "
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete %s?"
 msgstr ""
 "Tietokanta poistetaan pysyvästi. Tätä prosessia ei voida palauttaa. Kaikki "
@@ -4372,9 +4201,8 @@ msgstr "Alidomain on olemassa tai ei ole sallittu!"
 msgid "Mount point already in use!"
 msgstr "Lliitospiste on jo olemassa!"
 
-#, fuzzy
 msgid "Incorrect mount point syntax!"
-msgstr "Virheellinen liitospiste!"
+msgstr ""
 
 msgid "Subdomain scheduled for addition!"
 msgstr "Alidomain lisäysjonossa!"
@@ -4391,24 +4219,20 @@ msgstr "Alidomainin nimi"
 msgid "Directory tree mount point"
 msgstr "Hakemistopuu liitospiste"
 
-#, fuzzy
 msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
-msgstr "i-MSCP - Ylläpito/Muokkaa domainia"
+msgstr ""
 
-#, fuzzy
 msgid "Manage subdomain"
-msgstr "Hallitse domaineja"
+msgstr ""
 
-#, fuzzy
 msgid "Edit subdomain"
-msgstr "Muokkaa Domainia"
+msgstr ""
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Edelleenlähetettävän URL:n on alettava 'http://'"
 
-#, fuzzy
 msgid "i-MSCP - Support System - New ticket"
-msgstr "i-MSCP - Tukijärjestelmä - Uusi kysymys"
+msgstr ""
 
 msgid "Please specify message subject!"
 msgstr "Määritä viestin aihe!"
@@ -4449,7 +4273,6 @@ msgstr ""
 msgid "{ADMIN} activated your software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {RESELLER},\n"
 "\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
@@ -4461,9 +4284,8 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid " was deleted by {ADMIN}!"
-msgstr "IP-osoite poistettu!"
+msgstr ""
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -4531,7 +4353,6 @@ msgstr "Tuntematon tyyppi"
 msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr "Tervetuloa {USERNAME} i-MSCP:hen!"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4556,30 +4377,7 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Hei {NAME}!\n"
-"\n"
-"Uusi i-MSCP tili on luotu\n"
-"Tilisi tiedot:\n"
-"\n"
-"Käyttäjätyyppi: {USERTYPE}\n"
-"Käyttäjänimi: {USERNAME}\n"
-"Salasana: {PASSWORD}\n"
-"\n"
-"Muista vaihtaa salasana ensimmäisellä kirjautumisella.\n"
-"\n"
-"Voit kirjautua osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"Tilastot: http://{USERNAME}/stats/\n"
-"Käyttäjänimi: {USERNAME}\n"
-"Salasana: {PASSWORD}\n"
-"\n"
-"Ystävällisin terveisin,\n"
-"Ylläpito\n"
-"\n"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4603,28 +4401,6 @@ msgid ""
 "The i-MSCP Team.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Hei {NAME}!\n"
-"\n"
-"Uusi i-MSCP tili on luotu\n"
-"Tilisi tiedot:\n"
-"\n"
-"Käyttäjätyyppi: {USERTYPE}\n"
-"Käyttäjänimi: {USERNAME}\n"
-"Salasana: {PASSWORD}\n"
-"\n"
-"Muista vaihtaa salasana ensimmäisellä kirjautumisella.\n"
-"\n"
-"Voit kirjautua osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"Tilastot: http://{USERNAME}/stats/\n"
-"Käyttäjänimi: {USERNAME}\n"
-"Salasana: {PASSWORD}\n"
-"\n"
-"Ystävällisin terveisin,\n"
-"Ylläpito\n"
-"\n"
 
 msgid "Please activate your new i-MSCP password!"
 msgstr "Aktivoi uusi i-MSCP salasana!"
@@ -4693,8 +4469,7 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation "
-"process.\n"
+"You have to click the following link to continue the domain creation process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4709,8 +4484,7 @@ msgstr ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"Sinun täytyy käydä seuraavassa osoitteessa jatkaaksesi tilauksen "
-"käsittelyä.\n"
+"Sinun täytyy käydä seuraavassa osoitteessa jatkaaksesi tilauksen käsittelyä.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -4729,8 +4503,7 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
-"{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using i-MSCP services.\n"
 "The i-MSCP Team\n"
@@ -4743,20 +4516,17 @@ msgstr ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Kun olet kirjautunut sisään, voit aktivoida hänen aliaksen osoitteessa "
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Kun olet kirjautunut sisään, voit aktivoida hänen aliaksen osoitteessa {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Ystävällisin terveisin,\n"
 "Ylläpito\n"
 "\n"
 
-#, fuzzy
 msgid "Your message has been sent."
-msgstr "Viestisi on lähetetty!"
+msgstr ""
 
-#, fuzzy
 msgid "Your message has been sent"
-msgstr "Viestisi on lähetetty!"
+msgstr ""
 
 msgid "Ticket was closed!"
 msgstr "Kysymys suljettu!"
@@ -4767,9 +4537,8 @@ msgstr "Tiketti uudelleeavattu!"
 msgid "Never"
 msgstr "Ei koskaan"
 
-#, fuzzy
 msgid "You don't have support tickets."
-msgstr "Sinulle ei ole tukikysymyksiä."
+msgstr ""
 
 msgid "[New]"
 msgstr "[Uusi]"
@@ -4813,21 +4582,17 @@ msgstr "Tärkeys: %s\n"
 msgid "Log in to answer"
 msgstr "Kirjaudu sisään saadaksesi vastaus"
 
-#, fuzzy
 msgid "Wrong domain name syntax or number of labels"
-msgstr "Virheellinen domainnimen syntaksi!"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong domain name lenght!"
-msgstr "Virheellinen domainnimen syntaksi!"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Virheellinen alidomainsyntaksi!"
+msgstr ""
 
-#, fuzzy
 msgid "Wrong subdomain lenght!"
-msgstr "Virheellinen alidomainsyntaksi!"
+msgstr ""
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
@@ -4862,8 +4627,8 @@ msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
 msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
-"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
+"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
 
@@ -4875,9 +4640,8 @@ msgstr "Sinun täytyy odottaa %d sekuntia."
 msgid "You have been blocked for %d minutes."
 msgstr "Teidät on estettu %d minuutiksi."
 
-#, fuzzy
 msgid "You entered an incorrect username!"
-msgstr "Annoit väärän käyttäjänimen/salasanan."
+msgstr ""
 
 msgid "System is currently under maintenance! Only administrators can login."
 msgstr "Järjestelmä on huoltotilassa! Vain ylläpitäjät voivat kirjautua."
@@ -4900,9 +4664,8 @@ msgstr "%s tilin tila ei ole ok!"
 msgid "%s's domain expired!"
 msgstr "%s domain vanhentunut!"
 
-#, fuzzy
 msgid "You entered an incorrect password!"
-msgstr "Annoit väärän käyttäjänimen/salasanan."
+msgstr ""
 
 msgid "Request from foreign host was blocked!"
 msgstr "Pyyntö  vieraalta isännältä estetty!"
@@ -4925,108 +4688,80 @@ msgstr "on käytössä"
 msgid "Being suspended"
 msgstr "on jäädytetty"
 
-#, fuzzy
 msgid "Awaiting approval"
-msgstr "Odottaa hyväksymistä"
+msgstr ""
 
 msgid "Unknown error"
 msgstr "Tuntematon virhe"
 
-#, fuzzy
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
-msgstr "Olet ylittänyt domainrajoituksen!<br> Et voi lisätä enempää domaineja!"
+msgstr ""
 
-#, fuzzy
 msgid ""
 "You have a subdomains limit!<br />You cannot add an user with unlimited "
 "subdomains!"
 msgstr ""
-"Sinulla on alidomaneilla raja!<br>Et voi lisätä käyttäjää rajoittamattomilla "
-"alidomaineilla!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Olet ylittämässä alidomain rajan!"
 
-#, fuzzy
 msgid ""
 "You have an aliases limit!<br />You cannot add an user with unlimited "
 "aliases!"
 msgstr ""
-"Sinulla on aliasrajoitus!<br>Et voi lisätä käyttäjää rajoittamattomilla "
-"aliaksilla!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Olet ylittämässä aliasten määrää!"
 
-#, fuzzy
 msgid ""
 "You have a mail accounts limit!<br />You cannot add an user with unlimited "
 "mail accounts!"
 msgstr ""
-"Sinulla on sähköpostitilien rajoitus!<br>Et voi lisätä käyttäjää "
-"rajoittamattomilla sähköpostitileillä!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Olet ylittämässä sähköpostitilien rajoitusta!"
 
-#, fuzzy
 msgid ""
 "You have a FTP accounts limit!<br />You cannot add an user with unlimited "
 "FTP accounts!"
 msgstr ""
-"Sinullaon FTP-tilien raja!<br>Et voi lisätä käyttäjää rajoittamattomilla FTP-"
-"tilellä!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Olet ylittämässä FTP-tilien rajaa!"
 
-#, fuzzy
 msgid ""
 "You have a SQL databases limit!<br />You cannot add an user with unlimited "
 "SQL databases!"
 msgstr ""
-"Sinulla on SQL tietokantojen raja!<br>Et voi lisätä käyttäjää "
-"rajoittamattomilla SQL-tietokannoilla!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Olet ylittämässä SQL-tietokantojen rajaa!"
 
-#, fuzzy
 msgid ""
 "You have an SQL users limit!<br />You cannot add an user with unlimited SQL "
 "users!"
 msgstr ""
-"Sinulla on SQL käyttäjien raja<br>Et voi lisätä käyttäjää rajoittamattomilla "
-"SQL käyttäjillä!"
 
-#, fuzzy
 msgid ""
 "You have disabled SQL databases for this user!<br />You cannot have SQL "
 "users here!"
 msgstr ""
-"Olet ottanut tietokannat pois käytöstä tällä käyttäjällä!<br>Et voi lisätä "
-"tietokantakäyttäjiä!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Olet ylittämässä SQL-tietokantarajoitusta!"
 
-#, fuzzy
 msgid ""
-"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+"You have a traffic limit!<br />You cannot add an user with unlimited "
+"traffic!"
 msgstr ""
-"Sinulla on liikennerajoitus<br>Et voi lisätä käyttäjää rajoittamattomalla "
-"liikenteellä!"
 
-#, fuzzy
-msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgid ""
+"You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
-"Sinulla on levytilarajoitus<br>Et voi lisätä käyttäjää rajoittamattomalla "
-"tilalla!"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-#, fuzzy
 msgid ""
 "Dear {ADMIN},\n"
 "\t{RESELLER} has uploaded a new software package.\n"
@@ -5039,38 +4774,31 @@ msgid ""
 "\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-#, fuzzy
 msgid "Installation details"
-msgstr "Hosting-ominaisuudet"
+msgstr ""
 
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
 msgstr ""
 
-#, fuzzy
 msgid "Login username"
-msgstr "Virheellinen käyttäjätunnus!"
+msgstr ""
 
-#, fuzzy
 msgid "Login password"
-msgstr "Salasana unohtunut?"
+msgstr ""
 
-#, fuzzy
 msgid "Emailadress"
-msgstr "Sähköpostit"
+msgstr ""
 
-#, fuzzy
 msgid "enabled"
-msgstr "Käytässä"
+msgstr ""
 
-#, fuzzy
 msgid "Application Description"
-msgstr "Kuvaus"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to install application yet"
-msgstr "Sinulla ei ole oikeuksia tähän sivuun!"
+msgstr ""
 
 msgid "Vendor hompage"
 msgstr ""
@@ -5081,13 +4809,11 @@ msgstr ""
 msgid "Installed in reseller depot"
 msgstr ""
 
-#, fuzzy
 msgid "Start installation"
-msgstr "Kansainvälistäminen"
+msgstr ""
 
-#, fuzzy
 msgid "Are you sure to install this package from the webdepot?"
-msgstr "Oletko varma että haluat palautaa varmuuskopion?"
+msgstr ""
 
 msgid "No software in webdepot found!"
 msgstr ""
@@ -5101,7 +4827,6 @@ msgstr ""
 msgid "You have a new order"
 msgstr "Sinulla on uusi tilaus"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -5111,14 +4836,6 @@ msgid ""
 "Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
-"\n"
-"\n"
-"Arvoisa {RESELLER},\n"
-"Sonulla on uusi tilaus käyttäjältä {NAME} <{MAIL}> domainille {DOMAIN}\n"
-"\n"
-"Kirjaudu i-MSCP -hallintapaneeliin saadaksesi lisätietoja.\n"
-"\n"
-"\n"
 
 msgid "Your order has been successfully created."
 msgstr "Tilauksesi on vastaanotettu."
@@ -5129,13 +4846,11 @@ msgstr "Virhe luotaessa tilausta! Onko jo aktivoitu?"
 msgid "Order confirmation"
 msgstr "Tilausvahvistus"
 
-#, fuzzy
 msgid "Domain already exists on the system!"
-msgstr "Domain samalla nimellä on jo olemassa järjestelmässä!"
+msgstr ""
 
-#, fuzzy
 msgid "This hosting plan is not available for purchase"
-msgstr "Saatavilla olevat hosting-paketit"
+msgstr ""
 
 msgid "Add On A Domain"
 msgstr "Lisää domainille"
@@ -5155,9 +4870,8 @@ msgstr "Osoite"
 msgid "* denotes mandatory field."
 msgstr "* voi tarkoittaa mitä tahansa merkkiä"
 
-#, fuzzy
 msgid "Term of Service"
-msgstr "Palvelu"
+msgstr ""
 
 msgid "I Accept The Term of Service"
 msgstr ""
@@ -5172,8 +4886,8 @@ msgid "Personal Data"
 msgstr "Henkiläkohtaiset tiedot"
 
 msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
+"(To avoid abuse, we ask you to write the combination of letters on the above"
+" picture into the field \"Security code\")"
 msgstr ""
 "(Välttääksemme väärinkäyttöjä, pyydämme teitä kirjoittamaan yläpuolella "
 "olevan merkkijonon kohtaan \"Turvakoodi\")"
@@ -5281,9 +4995,8 @@ msgstr "Oikea domain"
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP Reseller: Add Alias"
-msgstr "i-MSCP Jälleenmyyjä : Lisää alias"
+msgstr ""
 
 msgid "i-MSCP - Circular"
 msgstr "i-MSCP - Keskus"
@@ -5297,13 +5010,13 @@ msgstr "i-MSCP - Domain / Muokkaa"
 msgid "Domain properties could not be updated!"
 msgstr "Domainin ominaisuuksia ei voitu päivittää!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> have to be disabled!"
-msgstr "<em>%s</em> palvelu ei voi olla poissa päältä!"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "The admin has <em>%s</em> disabled on this system!"
-msgstr "Järjestelmässä on <em>%s</em> merkintää!"
+msgstr ""
 
 #, php-format
 msgid "The <em>%s</em> service cannot be limited!"
@@ -5368,13 +5081,11 @@ msgstr "%1$d / %2$d / <b>rajoittamaton</b>"
 msgid "No Ip statistics to be show."
 msgstr ""
 
-#, fuzzy
 msgid "i-MSCP - Reseller/IP Usage"
-msgstr "i-MSCP - Jälleenmyyjä / Muuta kieltä"
+msgstr ""
 
-#, fuzzy
 msgid "Reseller/IP usage statistics"
-msgstr "Jälleenmyyjätilastot"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Jälleenmyyjä / Muuta kieltä"
@@ -5436,9 +5147,8 @@ msgstr "Lisää/Tiedot"
 msgid "Wrong order ID!"
 msgstr "Virheellinen tilauksen ID!"
 
-#, fuzzy
 msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr "Tilaus peruttu: jälleenmyyjien maksimi ylitetty!"
+msgstr ""
 
 msgid "Wrong domain name syntax!"
 msgstr "Virheellinen domainnimen syntaksi!"
@@ -5485,13 +5195,11 @@ msgstr "Salasanamuistuttaja"
 msgid "Lostpw link"
 msgstr "Salasanamuistuttajan linkki"
 
-#, fuzzy
 msgid "Please specify a subject."
-msgstr "Määritä aihe!"
+msgstr ""
 
-#, fuzzy
 msgid "Auto email template data updated."
-msgstr "Automaattisen sähköpostin tiedot päivitetty!"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Jälleenmyyjä/Hallitse käyttäjiä/Sähköpostiasennus"
@@ -5505,23 +5213,21 @@ msgstr ""
 msgid "This package is not installed yet"
 msgstr ""
 
-#, fuzzy
 msgid "waiting for activation"
-msgstr "Odottaa hyväksymistä"
+msgstr ""
 
 msgid "activated (Softwaredepot)"
 msgstr ""
 
-#, fuzzy
 msgid "activated"
-msgstr "Aktivoi"
+msgstr ""
 
 msgid "Installing your uploaded package. Please refresh the site."
 msgstr ""
 
 msgid ""
-"After your upload the package it will be installed on your systems.<br /"
-">Refresh your site to see the new status!"
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "Failure in package. Deleting!"
@@ -5537,8 +5243,8 @@ msgstr ""
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br /"
-">Refresh your site to see the new status!"
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in the administrator software depot!"
@@ -5549,20 +5255,18 @@ msgstr ""
 
 msgid ""
 "Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br /"
-">Refresh your site to see the new status!"
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
 msgstr ""
 
 msgid "This package already exist in your software depot!"
 msgstr ""
 
-#, fuzzy
 msgid "You do not have any software uploaded yet"
-msgstr "Sinulle ei ole uusia tilauksia!"
+msgstr ""
 
-#, fuzzy
 msgid "You do not have permissions to upload software"
-msgstr "Sinulla ei ole oikeuksia tähän sivuun!"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5571,8 +5275,8 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
-"URL!"
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
+" URL!"
 msgstr ""
 
 #, php-format
@@ -5593,25 +5297,20 @@ msgstr ""
 msgid "Software-Synonym"
 msgstr ""
 
-#, fuzzy
 msgid "Software-Version"
-msgstr "Tapa sessio"
+msgstr ""
 
-#, fuzzy
 msgid "Software status"
-msgstr "Palvelimen tila"
+msgstr ""
 
-#, fuzzy
 msgid "Software upload"
-msgstr "Näytä palvelimen kuorma"
+msgstr ""
 
-#, fuzzy
 msgid "Requires Database?"
-msgstr "SQL-tietokanta"
+msgstr ""
 
-#, fuzzy
 msgid "Database prefix"
-msgstr "Tietokannan nimi"
+msgstr ""
 
 msgid "Link to authors homepage"
 msgstr ""
@@ -5625,9 +5324,8 @@ msgstr "i-MSCP - Jälleenmyyjä : Tukijärjestelmä: Lue kysymyksiä"
 msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - Käyttäjät / Lisää käyttäjä"
 
-#, fuzzy
 msgid "Domain expire date"
-msgstr "Domain vanhenee"
+msgstr ""
 
 msgid "Choose hosting plan"
 msgstr "Valitse hosting-paketti"
@@ -5695,9 +5393,8 @@ msgstr "Kaistanleveys"
 msgid "View aliases"
 msgstr "Näytä aliakset"
 
-#, fuzzy
 msgid "You do not have customers."
-msgstr "Sinulle ei ole uusia tilauksia!"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -5723,549 +5420,4 @@ msgstr "Käyttäjä poistettu!"
 msgid "User not terminated!"
 msgstr "Käyttäjää ei poistettu!"
 
-#~ msgid "i-MSCP  a Virtual Hosting Control System"
-#~ msgstr "i-MSCP  a Virtual Hosting Control System"
 
-#~ msgid "Please enter your login information"
-#~ msgstr "Anna kirjautumistiedot"
-
-#~ msgid "Retrieving lost passwords is currently not possible"
-#~ msgstr "Salasanan palauttaminen ei ole tällä hetkellä mahdollista"
-
-#~ msgid "i-MSCP - Virtual Hosting Control System"
-#~ msgstr "i-MSCP - Virtual Hosting Control System"
-
-#~ msgid "Retry"
-#~ msgstr "Uudelleen"
-
-#~ msgid "Request password"
-#~ msgstr "Pyydä salasana"
-
-#~ msgid "Do you want to execute the Updates now?"
-#~ msgstr "Haluatko suorittaa päivitykset nyt?"
-
-#~ msgid "A database update is available"
-#~ msgstr "Tietokantapäivitys saatavilla"
-
-#~ msgid "Panel Default"
-#~ msgstr "Paneelin oletus"
-
-#, fuzzy
-#~ msgid "Settings saved!"
-#~ msgstr "Asetukset tallennettu"
-
-#, fuzzy
-#~ msgid ""
-#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
-#~ "services names!"
-#~ msgstr "VIRHE: Vain kirjaimet, numerot, viiva ja alaviiva on sallittu!"
-
-#, fuzzy
-#~ msgid "ERROR: Unknown service port name!"
-#~ msgstr "VIRHE: Tuntematon käyttäjä"
-
-#~ msgid "To"
-#~ msgstr "Kenelle"
-
-#~ msgid "Message was sent."
-#~ msgstr "Viesti on lähetetty."
-
-#~ msgid "ISPCP - Client/Webtools"
-#~ msgstr "ISPCP - Asiakas / Web-työkalut"
-
-#~ msgid "i-MSCP Error"
-#~ msgstr "i-MSCP Virhe"
-
-#~ msgid "Error Message"
-#~ msgstr "Virheviesti"
-
-#~ msgid "Unchanged"
-#~ msgstr "Ennallaan"
-
-#~ msgid "- 1 Month"
-#~ msgstr "- 1 Kuukausi"
-
-#~ msgid "+ 1 Month"
-#~ msgstr "+ 1 Kuukausi"
-
-#~ msgid "+ 2 Months"
-#~ msgstr "+ 2 Kuukautta"
-
-#~ msgid "+ 3 Months"
-#~ msgstr "+ 3 Kuukautta"
-
-#~ msgid "+ 6 Months"
-#~ msgstr "+ 6 Kuukautta"
-
-#~ msgid "+ 1 Year"
-#~ msgstr "+ 1 Vuosi"
-
-#~ msgid "+ 2 Years"
-#~ msgstr "+ 2 Vuotta"
-
-#~ msgid "1 Month"
-#~ msgstr "1 Kuukausi"
-
-#~ msgid "2 Months"
-#~ msgstr "2 Kuukautta"
-
-#~ msgid "3 Months"
-#~ msgstr "3 Kuukautta"
-
-#~ msgid "6 Months"
-#~ msgstr "6 Kuukautta"
-
-#~ msgid "1 Year"
-#~ msgstr "1 Vuosi"
-
-#~ msgid "2 Years"
-#~ msgstr "2 vuotta"
-
-#~ msgid "You have no users."
-#~ msgstr "Sinulla ei ole käyttäjiä."
-
-#~ msgid "Services"
-#~ msgstr "Palvelut"
-
-#~ msgid "days"
-#~ msgstr "päivää"
-
-#~ msgid "hours"
-#~ msgstr "tuntia"
-
-#~ msgid "Kernel"
-#~ msgstr "Kernel"
-
-#~ msgid "Load"
-#~ msgstr "Kuorma"
-
-#~ msgid ""
-#~ "We are sorry, but the system is currently under maintenance.\n"
-#~ "Please try again later."
-#~ msgstr ""
-#~ "Järjestelmämme on huoltotilassa\n"
-#~ "Yrittäkää myöhemmin uudelleen."
-
-#~ msgid "Could not get config from database"
-#~ msgstr "Ei pystytty hakemaan asetuksia tietokannasta"
-
-#~ msgid ""
-#~ "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-#~ msgstr ""
-#~ "Epäjohdonmukaisuutta current_als_cnt ja todellisen alias määrän välillä: "
-#~ "%1$d != %2$d"
-
-#~ msgid "! Trying to correct!"
-#~ msgstr "! Yritetään korjata!"
-
-#~ msgid ""
-#~ "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-#~ msgstr ""
-#~ "Epäjohdonmukaisuutta current_ftp_cnt ja todellisen ftp määrän välillä: "
-#~ "%1$d != %2$d"
-
-#~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
-#~ msgstr "Domainien rajoitus<br><i>(-1 pois käytöstä, 0 rajoittamaton)</i>"
-
-#~ msgid "Incorrect forward syntax"
-#~ msgstr "Virheellinen ohjaus"
-
-#~ msgid "Entered passwords differ from the another!"
-#~ msgstr "Annetut salasanat eivät täsmää!"
-
-#~ msgid "Error:"
-#~ msgstr "Virhe:"
-
-#~ msgid "You have more disk space in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän levytilaa käytössä kuin uudessa hosting-paketissa on "
-#~ "rajat"
-
-#~ msgid "You have more traffic than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän liikennettä kuin uudessa hosting-paketissa on rajat"
-
-#~ msgid "You have more aliases in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän aliaksia käytössä kuin uudessa hosting-paketissa on "
-#~ "rajat"
-
-#~ msgid "You have more subdomains in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän alidomaineja käytössä kuin uudessa hosting-paketissa "
-#~ "on rajat"
-
-#~ msgid ""
-#~ "You have more Email addresses in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän sähköpostiosoitteita käytössä kuin uudessa hosting-"
-#~ "paketissa on rajat"
-
-#~ msgid "You have more FTP accounts in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän FTP-tilejä käytössä kuin uudessa hosting-paketissa on "
-#~ "rajat"
-
-#~ msgid "You have more SQL databases in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän SQL-tietokantoja käytössä kuin uudessa hosting-"
-#~ "paketissa on rajat"
-
-#~ msgid ""
-#~ "You have more SQL database users in use than the new hosting plan limits"
-#~ msgstr ""
-#~ "Sinulla on enemmän SQL-tietokanta käyttäjiä käytössä kuin uudessa hosting-"
-#~ "paketissa on rajat"
-
-#~ msgid "Incorrect domain name syntax"
-#~ msgstr "Virheellinen domain-nimi!"
-
-#~ msgid "Disk Usage Percent"
-#~ msgstr "Levytilankäyttö prosenteissa"
-
-#~ msgid "You have no user records."
-#~ msgstr "Sinulla ei ole käyttäjätunnuksia."
-
-#~ msgid "Default panel language changed!"
-#~ msgstr "Oletuskieli vaihdettu!"
-
-#~ msgid "Default language"
-#~ msgstr "Oletuskieli"
-
-#, fuzzy
-#~ msgid "i-MSCP - Client/SSL Domains"
-#~ msgstr "i-MSCP - Asiakas / Hallitse domaineja"
-
-#, fuzzy
-#~ msgid "Field Company can not be empty!\n"
-#~ msgstr "Domain-aliasta ei lisätty!"
-
-#, fuzzy
-#~ msgid "Email is not valid!\n"
-#~ msgstr "Domain-aliasta ei lisätty!"
-
-#, fuzzy
-#~ msgid "Generate self signed"
-#~ msgstr "Päivitä salasana"
-
-#, fuzzy
-#~ msgid "CRT for domain name"
-#~ msgstr "Virheellinen domainnimen syntaksi!"
-
-#, fuzzy
-#~ msgid "State"
-#~ msgstr "Tilastot"
-
-#, fuzzy
-#~ msgid "Company division"
-#~ msgstr "Yritys"
-
-#, fuzzy
-#~ msgid "Generate"
-#~ msgstr "Ylätunniste"
-
-#, fuzzy
-#~ msgid "Key identifier already exists!\n"
-#~ msgstr "Käyttäjä on jo olemassa!"
-
-#, fuzzy
-#~ msgid ""
-#~ "Password data is shorter than %s signs or includes not permitted signs!\n"
-#~ msgstr "Salasana sisältää kiellettyjä merkkejä"
-
-#, fuzzy
-#~ msgid "Key for this domain already exists!\n"
-#~ msgstr "Tämä IP-osoite on jo olemassa!"
-
-#, fuzzy
-#~ msgid "Add new key"
-#~ msgstr "Lisää uusi IP-osoite"
-
-#, fuzzy
-#~ msgid "Key for domain name"
-#~ msgstr "Virheellinen domainnimen syntaksi!"
-
-#, fuzzy
-#~ msgid "Paste generated key"
-#~ msgstr "Luo salasana"
-
-#, fuzzy
-#~ msgid "Generate new"
-#~ msgstr "Päivitä salasana"
-
-#, fuzzy
-#~ msgid "List is empty!"
-#~ msgstr "Logi on tyhjä!"
-
-#, fuzzy
-#~ msgid "Certificate sign request"
-#~ msgstr "Suorita kysely"
-
-#, fuzzy
-#~ msgid "Key host name"
-#~ msgstr "Teeman nimi"
-
-#, fuzzy
-#~ msgid "Certificate host name"
-#~ msgstr "Huoltotila"
-
-#, fuzzy
-#~ msgid "Domain is not instantiated"
-#~ msgstr "Domain-aliasta ei lisätty!"
-
-#, fuzzy
-#~ msgid "Domain do not exists"
-#~ msgstr "Käyttäjää ei ole olemassa!"
-
-#, fuzzy
-#~ msgid "Invalid destination for key!"
-#~ msgstr "Sähkäpostikäyttäjien lista"
-
-#, fuzzy
-#~ msgid "User do not have domains!"
-#~ msgstr "Käyttäjää ei ole olemassa!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has email accounts !<br> first remove "
-#~ "them !"
-#~ msgstr ""
-#~ "Domain jota yrität poistaa sisältää sähköpostitunnuksia!<br> poista ensin "
-#~ "ne!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has FTP accounts !<br> first remove them !"
-#~ msgstr ""
-#~ "Domain jota yrität poistaa sisältää FTP-tunnuksia!<br> poista ne ensin!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has domain alias!<br> first remove them !"
-#~ msgstr ""
-#~ "Domain jota yrität poistaa sisältää domain-aliaksia!<br> poista ensin ne!"
-
-#~ msgid ""
-#~ "Domain you are trying to remove has subdomains accounts !<br> first "
-#~ "remove them !"
-#~ msgstr ""
-#~ "Domain jota yrität poistaa sisältää alidomaintunnuksia!<br>poista ensin "
-#~ "ne!"
-
-#, fuzzy
-#~ msgid "Please enter an SQL query!"
-#~ msgstr "Anna SQL-kysely!"
-
-#, fuzzy
-#~ msgid "Execution of SQL query failed!"
-#~ msgstr "Suorita SQL-kysely"
-
-#, fuzzy
-#~ msgid "Execution of SQL query succeeded!"
-#~ msgstr "Suorita SQL-kysely"
-
-#~ msgid "i-MSCP - Client/Execute SQL Query"
-#~ msgstr "i-MSCP - Asiakas / Suorita SQL-kysely"
-
-#~ msgid "Execute SQL query"
-#~ msgstr "Suorita SQL-kysely"
-
-#~ msgid "SQL query"
-#~ msgstr "SQL-kysely"
-
-#~ msgid "Query status"
-#~ msgstr "Kyselyn tila"
-
-#~ msgid "Query result"
-#~ msgstr "Kyselun tulos"
-
-#~ msgid "Execute"
-#~ msgstr "Suorita"
-
-#~ msgid "Mail in"
-#~ msgstr "E-mail sisään"
-
-#~ msgid "Mail out"
-#~ msgstr "E-mail ulos"
-
-#~ msgid "Subdomain list is empty! You cannot add mail accounts!"
-#~ msgstr "Alidomain-lista on tyhjä! Et voi luoda sähköposteja!"
-
-#~ msgid "Message was send!"
-#~ msgstr "Viesti läetetty!"
-
-#, fuzzy
-#~ msgid "Database update %s failed"
-#~ msgstr "Tietokantakäyttäjät"
-
-#~ msgid "Missing or wrong data!"
-#~ msgstr "Uupuvaa tai väärää tietoa!"
-
-#, fuzzy
-#~ msgid "Unknown domain status!"
-#~ msgstr "epämääräinen tila"
-
-#, fuzzy
-#~ msgid "Unknown account type!"
-#~ msgstr "Tuntematon tyyppi"
-
-#~ msgid "Max domain count"
-#~ msgstr "Max domainien määrä"
-
-#~ msgid "Max subdomain count"
-#~ msgstr "Max alidomainmäärä"
-
-#~ msgid "Max aliases count"
-#~ msgstr "Max aliasten määrä"
-
-#~ msgid "Max mail users count"
-#~ msgstr "Max sähköpostikäyttäjien määrä"
-
-#~ msgid "Max FTP users count"
-#~ msgstr "Max FTP-käyttäjien määrä"
-
-#~ msgid "Max SQL databases count"
-#~ msgstr "Max tietokantojen määrä"
-
-#~ msgid "Max SQL users count"
-#~ msgstr "Max tietokantakäyttäjien määrä"
-
-#~ msgid "Max traffic amount [MB]"
-#~ msgstr "Max liikennemäärä [MT]"
-
-#~ msgid "Max disk amount [MB]"
-#~ msgstr "Max levytila [MT]"
-
-#, fuzzy
-#~ msgid "Order in progress"
-#~ msgstr "Lisäys kesken"
-
-#, fuzzy
-#~ msgid "Incorrect username number or syntax!"
-#~ msgstr "Virheellinen tietokantakäyttäjien määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect password number or syntax!"
-#~ msgstr "Virheellinen aliasten määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect max domain number or syntax!"
-#~ msgstr "Virheellinen domainmäärä!"
-
-#, fuzzy
-#~ msgid "Incorrect max subdomain number or syntax!"
-#~ msgstr "Virheellinen alidomainien määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect max alias number or syntax!"
-#~ msgstr "Virheellinen aliasten määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect max FTP number or syntax!"
-#~ msgstr "Virheellinen FTP-käyttäjien määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect max mail number or syntax!"
-#~ msgstr "Virheellinen sähköpostien määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect max SQL databases number or syntax!"
-#~ msgstr "Virheellinen tietokantojen määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect max SQL users number or syntax!"
-#~ msgstr "Virheellinen tietokantakäyttäjien määrä!"
-
-#~ msgid "Incorrect max traffic amount or syntax!"
-#~ msgstr "Virheellinen liikennemäärä!"
-
-#~ msgid "Incorrect max disk amount or syntax!"
-#~ msgstr "Virheellinen levytilan määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect alias number or syntax!"
-#~ msgstr "Virheellinen aliasten määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect disk number or syntax!"
-#~ msgstr "Virheellinen levytilan määrä!"
-
-#, fuzzy
-#~ msgid "Incorrect FTP account count or no number<br />"
-#~ msgstr "Virheellinen FTP-käyttäjien määrä!"
-
-#~ msgid "Change user interface"
-#~ msgstr "Muuta ulkoasua"
-
-#, fuzzy
-#~ msgid "show"
-#~ msgstr "Näytä"
-
-#~ msgid "Edit properties"
-#~ msgstr "Muokkaa ominaisuuksia"
-
-#~ msgid "Undefined user accounting error!"
-#~ msgstr "Määrittämätän käyttäjävirhe!"
-
-#~ msgid "This reseller has already dispatched more <b>"
-#~ msgstr "Tämä jälleenmyyjä on toimittanut enemmän kuin <b>"
-
-#~ msgid "Then the value you are trying to enter now !<br>"
-#~ msgstr "Ja sitten arvo jota yrität antaa nyt!<br>"
-
-#~ msgid "This reseller has more <b>"
-#~ msgstr "Tällä jälleenmyyjällä on enemmän <b>"
-
-#~ msgid "Then the value you are trying to enter now!<br>"
-#~ msgstr "Ja sitten arvo jota yrität antaa nyt!<br>"
-
-#~ msgid "</b> Address !<br>Edit reseller aborted!"
-#~ msgstr "</b> Osoite!<br>Jälleenmyyjän muokkaus keskeytetty!"
-
-#~ msgid "You have"
-#~ msgstr "Sinulla on"
-
-#~ msgid "Support question(s)"
-#~ msgstr "Tukikysymys(tä)"
-
-#~ msgid "New"
-#~ msgstr "Uusi"
-
-#~ msgid "of"
-#~ msgstr "/"
-
-#~ msgid "Catch all mail account cannot be created!"
-#~ msgstr "Nappaa kaikki -tunnusta ei voi luoda!"
-
-#~ msgid "Alias scheduled for modification!"
-#~ msgstr "Alias muokkausjonossa!"
-
-#~ msgid "support question(s)"
-#~ msgstr "tukikysymystä"
-
-#~ msgid "new"
-#~ msgstr "uusi"
-
-#~ msgid "Not in:"
-#~ msgstr "Ei kuulu:"
-
-#~ msgid "Cannot connect as MySQL administrator!"
-#~ msgstr "Ei voida yhdistää MySQL:n pääkäyttäjänä!"
-
-#~ msgid "SQL query has error"
-#~ msgstr "SQL-kyselyssä on virhe"
-
-#~ msgid "SQL query is ok"
-#~ msgstr "SQL-kysely on ok"
-
-#~ msgid "wait to be added"
-#~ msgstr "odottaa lisäämistä"
-
-#~ msgid "wait to be modified"
-#~ msgstr "odottaa muokkausta"
-
-#~ msgid "wait to be deleted"
-#~ msgstr "odottaa poistamista"
-
-#~ msgid "wait to be enabled"
-#~ msgstr "odottaa aktivoimista"
-
-#~ msgid "wait to be suspended"
-#~ msgstr "odottaa keskeytystä"
