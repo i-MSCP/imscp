@@ -20,11 +20,7 @@
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-				// Tooltips - end
-				
-				// Request for encode_idna request
 				$('input[name=ndomain_name]').blur(function(){
 					dmnName = $('#ndomain_name').val();
 					// Configure the request for encode_idna request
@@ -86,10 +82,10 @@
 
 		<div class="body">
 			<h2 class="general"><span>{TR_ADD_USER}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
 
 			<!-- BDP: add_form -->
 			<form name="add_alias_frm" method="post" action="user_add4.php">
