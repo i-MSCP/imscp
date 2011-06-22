@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
@@ -57,22 +57,22 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 function get_reseller_default_props($reseller_id)
 {
     $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
-    $rs = exec_query($query, $reseller_id);
+    $stmt = exec_query($query, $reseller_id);
 
-    if (!$rs->rowCount()) {
+    if (!$stmt->rowCount()) {
         return NULL;
     }
 
-    return array($rs->fields['current_dmn_cnt'], $rs->fields['max_dmn_cnt'],
-                 $rs->fields['current_sub_cnt'], $rs->fields['max_sub_cnt'],
-                 $rs->fields['current_als_cnt'], $rs->fields['max_als_cnt'],
-                 $rs->fields['current_mail_cnt'], $rs->fields['max_mail_cnt'],
-                 $rs->fields['current_ftp_cnt'], $rs->fields['max_ftp_cnt'],
-                 $rs->fields['current_sql_db_cnt'], $rs->fields['max_sql_db_cnt'],
-                 $rs->fields['current_sql_user_cnt'], $rs->fields['max_sql_user_cnt'],
-                 $rs->fields['current_traff_amnt'], $rs->fields['max_traff_amnt'],
-                 $rs->fields['current_disk_amnt'], $rs->fields['max_disk_amnt'],
-                 $rs->fields['software_allowed']);
+    return array($stmt->fields['current_dmn_cnt'], $stmt->fields['max_dmn_cnt'],
+                 $stmt->fields['current_sub_cnt'], $stmt->fields['max_sub_cnt'],
+                 $stmt->fields['current_als_cnt'], $stmt->fields['max_als_cnt'],
+                 $stmt->fields['current_mail_cnt'], $stmt->fields['max_mail_cnt'],
+                 $stmt->fields['current_ftp_cnt'], $stmt->fields['max_ftp_cnt'],
+                 $stmt->fields['current_sql_db_cnt'], $stmt->fields['max_sql_db_cnt'],
+                 $stmt->fields['current_sql_user_cnt'], $stmt->fields['max_sql_user_cnt'],
+                 $stmt->fields['current_traff_amnt'], $stmt->fields['max_traff_amnt'],
+                 $stmt->fields['current_disk_amnt'], $stmt->fields['max_disk_amnt'],
+                 $stmt->fields['software_allowed']);
 }
 
 /**
@@ -209,7 +209,6 @@ function get_user_traffic($user_id)
 			`domain_id` = ?
 		ORDER BY
 			`domain_id`
-		;
 	";
     $stmt = exec_query($query, $user_id);
 
@@ -237,7 +236,6 @@ function get_user_traffic($user_id)
 				`domain_id` = ?
 			GROUP BY
 				`tyear`, `tmonth`
-			;
 		";
         $stmt = exec_query($query, $domain_id);
 
@@ -292,15 +290,17 @@ function get_user_props($user_id)
                                       'mail_type NOT RLIKE \'_catchall\' AND domain_id',
                                       $user_id);
     } else {
-        $where = "`mail_acc` != 'abuse'
-		    AND
-		        `mail_acc` != 'postmaster'
-		    AND
-		        `mail_acc` != 'webmaster'
-		    AND
-		        `mail_type` NOT RLIKE '_catchall'
-		    AND
-		        `domain_id`";
+        $where = "
+                `mail_acc` != 'abuse'
+            AND
+                `mail_acc` != 'postmaster'
+            AND
+                `mail_acc` != 'webmaster'
+            AND
+                `mail_type` NOT RLIKE '_catchall'
+            AND
+                `domain_id`
+		";
 
         $mail_current = records_count('mail_users', $where, $user_id);
     }
@@ -377,7 +377,6 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`domain`
 		WHERE
 			`domain_name` = ?
-		;
 	";
     $stmt_domain = exec_query($query_domain, $domain_name);
 
@@ -391,7 +390,6 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`t1`.`domain_id` = `t2`.`domain_id`
 		AND
 			`t1`.`alias_name` = ?
-		;
 	";
     $stmt_aliases = exec_query($query_alias, $domain_name);
 
@@ -405,7 +403,6 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`domain_name` = ?
 		AND
 			`domain_created_id` <> ?
-		;
 	";
 
     // redefine query to check in the table aliases if 3rd level for this reseller is allowed
@@ -420,11 +417,10 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`t1`.`alias_name` = ?
 		AND
 			`t2`.`domain_created_id` <> ?
-		;
 	";
     // here we split the domain name by point separator
     $split_domain = explode('.', trim($domain_name));
-    $dom_cnt = strlen(trim($domain_name));
+    //$dom_cnt = strlen(trim($domain_name));
     $dom_part_cnt = 0;
     $error = 0;
     // here starts a loop to check if the splitted domain is available for other resellers
@@ -443,8 +439,8 @@ function imscp_domain_exists($domain_name, $reseller_id)
 
     // if we have : db entry in the tables domain AND no problem with 3rd level domains
     // AND enduser (no reseller) => the function returns OK => domain can be added
-    if ($stmt_domain->fields['cnt'] == 0 && $stmt_aliases->fields['cnt'] == 0
-        && $error == 0 && $reseller_id == 0
+    if ($stmt_domain->fields['cnt'] == 0 && $stmt_aliases->fields['cnt'] == 0 &&
+        $error == 0 && $reseller_id == 0
     ) {
         return false;
     }
@@ -464,7 +460,6 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`t1`.`domain_id` = `t2`.`domain_id`
 		AND
 			`t2`.`domain_created_id` = ?
-		;
 	";
     $subdomains = array();
 
@@ -512,7 +507,6 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				`domain`
 			WHERE
 				`domain_created_id` = '$reseller_id'
-			;
 		";
 
         $search_query = "
@@ -526,7 +520,6 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-			;
 		";
     } elseif ($search_for === '' && $search_status != '') {
         if ($search_status === 'all') {
@@ -546,7 +539,6 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				`domain`
 			WHERE
 				$add_query
-			;
 		";
 
         $search_query = "
@@ -560,7 +552,6 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-			;
 		";
     } elseif ($search_for != '') {
         if ($search_common === 'domain_name') {
@@ -582,7 +573,7 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 
         if (isset($add_query)) {
             if ($search_status != 'all') {
-                $add_query = sprintf($add_query, " AND t1.`created_by` = '$reseller_id' AND t2.`domain_status` = '$search_status'");
+                $add_query = sprintf($add_query," AND t1.`created_by` = '$reseller_id' AND t2.`domain_status` = '$search_status'");
                 $count_query = "
 				    SELECT
 					    COUNT(`admin_id`) AS `cnt`
@@ -591,18 +582,16 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				    $add_query
 				AND
 					`t1`.`admin_id` = `t2`.`domain_admin_id`
-				;
 			";
             } else {
                 $add_query = sprintf($add_query, " AND `created_by` = '$reseller_id'");
                 $count_query = "
-				SELECT
-					COUNT(`admin_id`) AS `cnt`
-				FROM
-					`admin`
-				$add_query
-				;
-			";
+				    SELECT
+					    COUNT(`admin_id`) AS `cnt`
+				    FROM
+					    `admin`
+				    $add_query
+			    ";
             }
 
             $search_query = "
@@ -617,61 +606,42 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				    `t2`.`domain_name` ASC
 			    LIMIT
 				    $start_index, $rows_per_page
-				;
 		    ";
         }
     }
 }
 
 /**
+ * Must be documented.
  *
  * @param  $err_msg
- * @param  $reseller_id
- * @param  $hpid
+ * @param  int $reseller_id
+ * @param  int $hpid
  * @param string $newprops
  * @return bool
  */
-function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = "")
+function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = '')
 {
-    $error = false;
-
     if (empty($newprops)) {
         // this hosting plan exists
         if (isset($_SESSION["ch_hpprops"])) {
             $props = $_SESSION["ch_hpprops"];
         } else {
-            $query = "
-				SELECT
-					`props`
-				FROM
-					`hosting_plans`
-				WHERE
-					`id` = ?
-			";
-
-            $res = exec_query($query, $hpid);
-            $data = $res->fetchRow();
+            $query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
+            $stmt = exec_query($query, $hpid);
+            $data = $stmt->fetchRow();
             $props = $data['props'];
         }
     } else {
-        // we want to check _before_ inserting
         $props = $newprops;
     }
 
-    list($php_new, $cgi_new, $sub_new,
-        $als_new, $mail_new, $ftp_new,
-        $sql_db_new, $sql_user_new,
-        $traff_new, $disk_new) = explode(';', $props);
+    list(
+        , , $sub_new, $als_new, $mail_new, $ftp_new, $sql_db_new, $sql_user_new,
+        $traff_new, $disk_new
+        ) = explode(';', $props);
 
-    $query = "
-		SELECT
-			*
-		FROM
-			`reseller_props`
-		WHERE
-			`reseller_id` = ?
-		;
-	";
+    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
 
     $res = exec_query($query, $reseller_id);
     $data = $res->fetchRow();
@@ -696,19 +666,16 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = "")
 
     if ($dmn_max != 0) {
         if ($dmn_current + 1 > $dmn_max) {
-            set_page_message(tr('You have reached your domains limit.<br />You cannot add more domains!'));
-            $error = true;
+            set_page_message(tr('You have reached your domains limit.<br />You cannot add more domains!'), 'error');
         }
     }
 
     if ($sub_max != 0) {
         if ($sub_new != -1) {
             if ($sub_new == 0) {
-                set_page_message(tr('You have a subdomains limit!<br />You cannot add an user with unlimited subdomains!'));
-                $error = true;
+                set_page_message(tr('You have a subdomains limit!<br />You cannot add an user with unlimited subdomains!'), 'error');
             } else if ($sub_current + $sub_new > $sub_max) {
-                set_page_message(tr('You are exceeding your subdomains limit!'));
-                $error = true;
+                set_page_message(tr('You are exceeding your subdomains limit!'), 'error');
             }
         }
     }
@@ -716,43 +683,35 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = "")
     if ($als_max != 0) {
         if ($als_new != -1) {
             if ($als_new == 0) {
-                set_page_message(tr('You have an aliases limit!<br />You cannot add an user with unlimited aliases!'));
-                $error = true;
+                set_page_message(tr('You have an aliases limit!<br />You cannot add an user with unlimited aliases!'), 'error');
             } else if ($als_current + $als_new > $als_max) {
                 set_page_message(tr('You Are Exceeding Your Alias Limit!'));
-                $error = true;
             }
         }
     }
 
     if ($mail_max != 0) {
         if ($mail_new == 0) {
-            set_page_message(tr('You have a mail accounts limit!<br />You cannot add an user with unlimited mail accounts!'));
-            $error = true;
+            set_page_message(tr('You have a mail accounts limit!<br />You cannot add an user with unlimited mail accounts!'), 'error');
         } else if ($mail_current + $mail_new > $mail_max) {
-            set_page_message(tr('You are exceeding your mail accounts limit!'));
-            $error = true;
+            set_page_message(tr('You are exceeding your mail accounts limit!'), 'error');
         }
     }
 
     if ($ftp_max != 0) {
         if ($ftp_new == 0) {
-            set_page_message(tr('You have a FTP accounts limit!<br />You cannot add an user with unlimited FTP accounts!'));
-            $error = true;
+            set_page_message(tr('You have a FTP accounts limit!<br />You cannot add an user with unlimited FTP accounts!'), 'error');
         } else if ($ftp_current + $ftp_new > $ftp_max) {
-            set_page_message(tr('You are exceeding your FTP accounts limit!'));
-            $error = true;
+            set_page_message(tr('You are exceeding your FTP accounts limit!'), 'error');
         }
     }
 
     if ($sql_db_max != 0) {
         if ($sql_db_new != -1) {
             if ($sql_db_new == 0) {
-                set_page_message(tr('You have a SQL databases limit!<br />You cannot add an user with unlimited SQL databases!'));
-                $error = true;
+                set_page_message(tr('You have a SQL databases limit!<br />You cannot add an user with unlimited SQL databases!'), 'error');
             } else if ($sql_db_current + $sql_db_new > $sql_db_max) {
-                set_page_message(tr('You are exceeding your SQL databases limit!'));
-                $error = true;
+                set_page_message(tr('You are exceeding your SQL databases limit!'), 'error');
             }
         }
     }
@@ -760,39 +719,32 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = "")
     if ($sql_user_max != 0) {
         if ($sql_user_new != -1) {
             if ($sql_user_new == 0) {
-                set_page_message(tr('You have an SQL users limit!<br />You cannot add an user with unlimited SQL users!'));
-                $error = true;
+                set_page_message(tr('You have an SQL users limit!<br />You cannot add an user with unlimited SQL users!'), 'error');
             } else if ($sql_db_new == -1) {
-                set_page_message(tr('You have disabled SQL databases for this user!<br />You cannot have SQL users here!'));
-                $error = true;
+                set_page_message(tr('You have disabled SQL databases for this user!<br />You cannot have SQL users here!'), 'error');
             } else if ($sql_user_current + $sql_user_new > $sql_user_max) {
                 set_page_message(tr('You are exceeding your SQL database limit!'));
-                $error = true;
             }
         }
     }
 
     if ($traff_max != 0) {
         if ($traff_new == 0) {
-            set_page_message(tr('You have a traffic limit!<br />You cannot add an user with unlimited traffic!'));
-            $error = true;
+            set_page_message(tr('You have a traffic limit!<br />You cannot add an user with unlimited traffic!'), 'error');
         } else if ($traff_current + $traff_new > $traff_max) {
             set_page_message(tr('You are exceeding your traffic limit!'));
-            $error = true;
         }
     }
 
     if ($disk_max != 0) {
         if ($disk_new == 0) {
-            set_page_message(tr('You have a disk limit!<br />You cannot add an user with unlimited disk!'));
-            $error = true;
+            set_page_message(tr('You have a disk limit!<br />You cannot add an user with unlimited disk!'), 'error');
         } else if ($disk_current + $disk_new > $disk_max) {
             set_page_message(tr('You are exceeding your disk limit!'));
-            $error = true;
         }
     }
 
-    if ($error === true) {
+    if (isset($_SESSION['user_page_message'])) {
         return false;
     }
 
@@ -800,13 +752,14 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = "")
 }
 
 /**
+ * Must be documented.
  *
- * @param  $admin_id
- * @param  $domain_name
- * @param  $ufname
- * @param  $ulname
- * @param  $uemail
- * @param  $order_id
+ * @param  int $admin_id
+ * @param  string $domain_name
+ * @param  string $ufname
+ * @param  string $ulname
+ * @param  string $uemail
+ * @param  int $order_id
  * @return void
  */
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
@@ -838,6 +791,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
         } else {
             $name = $uemail;
         }
+
         $to = $uemail;
     }
 
@@ -872,8 +826,9 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
 }
 
 /**
+ * Must be documented.
  *
- * @param  $alias_name
+ * @param  string $alias_name
  * @return void
  */
 function send_alias_order_email($alias_name)
@@ -882,15 +837,13 @@ function send_alias_order_email($alias_name)
     $cfg = iMSCP_Registry::get('config');
 
     $user_id = $_SESSION['user_id'];
-
     $reseller_id = who_owns_this($user_id, 'user');
 
     $query = 'SELECT `fname`, `lname` FROM `admin` WHERE `admin_id` = ?;';
-    $rs = exec_query($query, $user_id);
-    $ufname = $rs->fields['fname'];
-    $ulname = $rs->fields['lname'];
+    $stmt = exec_query($query, $user_id);
+    $ufname = $stmt->fields['fname'];
+    $ulname = $stmt->fields['lname'];
     $uemail = $_SESSION['user_email'];
-
     $data = get_alias_order_email($reseller_id);
     $to_name = $data['sender_name'];
     $to_email = $data['sender_email'];
@@ -943,12 +896,10 @@ function send_alias_order_email($alias_name)
 }
 
 /**
- * add the 3 mail accounts/forwardings to a new domain...
- */
-/**
- * @param  $dmn_id
- * @param  $user_email
- * @param  $dmn_part
+ * Adds the 3 mail accounts/forwardings to a new domain....
+ * @param int $dmn_id
+ * @param string $user_email
+ * @param string $dmn_part
  * @param string $dmn_type
  * @param int $sub_id
  * @return void
@@ -960,7 +911,6 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
     $cfg = iMSCP_Registry::get('config');
 
     if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
-
         $forward_type = ($dmn_type == 'alias') ? 'alias_forward' : 'normal_forward';
 
         // prepare SQL
@@ -972,28 +922,24 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
 				) VALUES (
 				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
-			;
 		";
 
         // create default forwarder for webmaster@domain.tld to the account's owner
-        exec_query($query, array(
-                                     'webmaster', '_no_', $user_email, $dmn_id,
-                                     $forward_type, $sub_id, $cfg->ITEM_ADD_STATUS,
-                                     '_no_', 10485760, 'webmaster@' . $dmn_part));
+        exec_query($query, array('webmaster', '_no_', $user_email, $dmn_id,
+                                $forward_type, $sub_id, $cfg->ITEM_ADD_STATUS,
+                                '_no_', 10485760, 'webmaster@' . $dmn_part));
 
         // create default forwarder for postmaster@domain.tld to the account's reseller
-        exec_query($query, array(
-                                     'postmaster', '_no_', $_SESSION['user_email'],
-                                     $dmn_id, $forward_type, $sub_id,
-                                     $cfg->ITEM_ADD_STATUS, '_no_', 10485760,
-                                     'postmaster@' . $dmn_part));
+        exec_query($query, array('postmaster', '_no_', $_SESSION['user_email'],
+                                $dmn_id, $forward_type, $sub_id,
+                                $cfg->ITEM_ADD_STATUS, '_no_', 10485760,
+                                'postmaster@' . $dmn_part));
 
         // create default forwarder for abuse@domain.tld to the account's reseller
-        exec_query($query, array(
-                                     'abuse', '_no_', $_SESSION['user_email'],
-                                     $dmn_id, $forward_type, $sub_id,
-                                     $cfg->ITEM_ADD_STATUS, '_no_', 10485760,
-                                     'abuse@' . $dmn_part));
+        exec_query($query, array('abuse', '_no_', $_SESSION['user_email'],
+                                $dmn_id, $forward_type, $sub_id,
+                                $cfg->ITEM_ADD_STATUS, '_no_', 10485760,
+                                'abuse@' . $dmn_part));
     }
 }
 
@@ -1030,19 +976,19 @@ function recalc_reseller_c_props($reseller_id)
 			`domain_status` != ?
 		;
 	";
-    $res = exec_query($query, array($reseller_id, $delstatus));
+    $stmt = exec_query($query, array($reseller_id, $delstatus));
 
-    $current_dmn_cnt = $res->fields['crn_domains'];
+    $current_dmn_cnt = $stmt->fields['crn_domains'];
 
     if ($current_dmn_cnt > 0) {
-        $current_sub_cnt = $res->fields['current_sub_cnt'];
-        $current_als_cnt = $res->fields['current_als_cnt'];
-        $current_mail_cnt = $res->fields['current_mail_cnt'];
-        $current_ftp_cnt = $res->fields['current_ftp_cnt'];
-        $current_sql_db_cnt = $res->fields['current_sql_db_cnt'];
-        $current_sql_user_cnt = $res->fields['current_sql_user_cnt'];
-        $current_disk_amnt = $res->fields['current_disk_amnt'];
-        $current_traff_amnt = $res->fields['current_traff_amnt'];
+        $current_sub_cnt = $stmt->fields['current_sub_cnt'];
+        $current_als_cnt = $stmt->fields['current_als_cnt'];
+        $current_mail_cnt = $stmt->fields['current_mail_cnt'];
+        $current_ftp_cnt = $stmt->fields['current_ftp_cnt'];
+        $current_sql_db_cnt = $stmt->fields['current_sql_db_cnt'];
+        $current_sql_user_cnt = $stmt->fields['current_sql_user_cnt'];
+        $current_disk_amnt = $stmt->fields['current_disk_amnt'];
+        $current_traff_amnt = $stmt->fields['current_traff_amnt'];
     } else {
         $current_sub_cnt = $current_als_cnt = $current_mail_cnt = $current_ftp_cnt =
         $current_sql_db_cnt = $current_sql_user_cnt = $current_disk_amnt =
@@ -1066,14 +1012,11 @@ function update_reseller_c_props($reseller_id)
 		UPDATE
 			`reseller_props`
 		SET
-			`current_dmn_cnt` = ?, `current_sub_cnt` = ?,
-			`current_als_cnt` = ?, `current_mail_cnt` = ?,
-			`current_ftp_cnt` = ?, `current_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?, `current_disk_amnt` = ?,
-			`current_traff_amnt` = ?
+			`current_dmn_cnt` = ?, `current_sub_cnt` = ?, `current_als_cnt` = ?,
+			`current_mail_cnt` = ?, `current_ftp_cnt` = ?, `current_sql_db_cnt` = ?,
+			`current_sql_user_cnt` = ?, `current_disk_amnt` = ?, `current_traff_amnt` = ?
 		WHERE
 			`reseller_id` = ?
-		;
 	";
 
     $props = recalc_reseller_c_props($reseller_id);
@@ -1089,7 +1032,6 @@ function update_reseller_c_props($reseller_id)
  */
 function get_reseller_id($domain_id)
 {
-
     $query = "
 		SELECT
 			a.`created_by`
@@ -1101,13 +1043,13 @@ function get_reseller_id($domain_id)
 			d.`domain_admin_id` = a.`admin_id`
 		;
 	";
-    $rs = exec_query($query, $domain_id);
+    $stmt = exec_query($query, $domain_id);
 
-    if ($rs->recordCount() == 0) {
+    if ($stmt->recordCount() == 0) {
         return 0;
     }
 
-    $data = $rs->fetchRow();
+    $data = $stmt->fetchRow();
     return $data['created_by'];
 }
 
@@ -1149,7 +1091,7 @@ function check_reseller_permissions($reseller_id, $permission)
  * @author Peter Ziergoebel <info@fisa4.de>
  * @since 1.0.0 (i-MSCP)
  * @param string $time A date/time string
- * @return int Unix timestamp
+ * @return int|false
  */
 function datepicker_reseller_convert($time)
 {
@@ -1171,35 +1113,31 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
 
     $query = "
 		SELECT
-			`admin_name` as reseller,
-			`created_by`,
-			`email` as res_email
+			`admin_name` as reseller, `created_by`, `email` as res_email
 		FROM
 			`admin`
 		WHERE
 			`admin_id` = ?
 	";
+    $stmt = exec_query($query, $reseller_id);
 
-    $res = exec_query($query, $reseller_id);
-
-    $from_name = $res->fields['reseller'];
-    $from_email = $res->fields['res_email'];
-    $admin_id = $res->fields['created_by'];
+    $from_name = $stmt->fields['reseller'];
+    $from_email = $stmt->fields['res_email'];
+    $admin_id = $stmt->fields['created_by'];
 
     $query = "
 		SELECT
-			`email` as adm_email,
-			`admin_name` as admin
+			`email` as adm_email, `admin_name` as admin
 		FROM
 			`admin`
 		WHERE
 			`admin_id` = ?
 		;
 	";
-    $res = exec_query($query, $admin_id);
+    $stmt = exec_query($query, $admin_id);
 
-    $to_name = $res->fields['admin'];
-    $to_email = $res->fields['adm_email'];
+    $to_name = $stmt->fields['admin'];
+    $to_email = $stmt->fields['adm_email'];
 
     if ($from_name) {
         $from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
@@ -1239,6 +1177,6 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
     $subject = str_replace($search, $replace, $subject);
     $message = str_replace($search, $replace, $message);
     $subject = encode($subject);
+
     mail($to_email, $subject, $message, $headers);
 }
-

@@ -45,7 +45,7 @@ function gen_button_list($tpl) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('BUTTON_LIST', '');
 
-		set_page_message(tr('You have no custom menus.'));
+		set_page_message(tr('You have no custom menus.'), 'info');
 	} else {
 		global $i;
 
