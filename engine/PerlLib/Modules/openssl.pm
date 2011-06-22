@@ -213,7 +213,7 @@ sub ssl_generate_selsigned_cert{
 
 	my $self = shift;
 
-	my $cmd = "$self->{openssl_path} req -x509 -nodes -days 365 -subj '/C=/ST=/L=/CN=$self->{vhost_cert_name}' -newkey rsa:1024 -keyout $self->{new_cert_path}/$self->{new_cert_name}.pem -out $self->{new_cert_path}/$self->{new_cert_name}.pem";
+	my $cmd = "$self->{openssl_path} req -x509 -nodes -days 1825 -subj '/C=/ST=/L=/CN=$self->{vhost_cert_name}' -newkey rsa:1024 -keyout $self->{new_cert_path}/$self->{new_cert_name}.pem -out $self->{new_cert_path}/$self->{new_cert_name}.pem";
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);

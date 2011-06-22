@@ -3296,7 +3296,11 @@ sub setup_ssl{
 		}
 	}
 
-	$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "http://" if($main::imscpConfig{'SSL_ENABLED'} ne 'yes');
+	if($main::imscpConfig{'SSL_ENABLED'} ne 'yes'){
+		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "http://";
+		my $httpd = Servers::httpd->new()->factory('apache2');
+		$httpd->disableSite($httpd->{masterSSLConf});
+	};
 
 	debug((caller(0))[3].': Ending...');
 
