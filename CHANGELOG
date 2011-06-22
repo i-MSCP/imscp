@@ -13,7 +13,7 @@ Features / Enhancements:
             - DebugBar: Added $_SERVER variable (plugin variables)
             - Update (database): Improved both execution time and memory consumption
         Core:
-            - Added support SSL for master (panel) vhost
+            - Added SSL support for master (panel) vhost
             - Added SSL support for Postfix, courier (imap/pop)
             - Added SSL support for Proftpd
 
