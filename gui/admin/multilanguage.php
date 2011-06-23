@@ -419,7 +419,8 @@ $tpl->assign(array(
                   'TR_INSTALL' => tr('Install / Update'),
                   'TR_EXPORT' => tr('Export'),
                   'TR_MESSAGE_DELETE' =>
-                  tr('Are you sure you want to delete %s?', true, '%s')));
+                  tr('Are you sure you want to delete %s?', true, '%s'),
+                  'TR_NOTE_DELETION' => tr("<strong>Note:</strong> You can't delete the system language, and any language that is currently used by one or more users.")));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');

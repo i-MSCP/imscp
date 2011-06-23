@@ -108,6 +108,7 @@
                     </tr>
                     <!-- EDP: lang_row -->
                 </table>
+                <p style="margin: 10px;">{TR_NOTE_DELETION}</p>
             </fieldset>
             <div class="buttons">
                 <input name="Button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0],'changeLanguage');" />
