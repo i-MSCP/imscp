@@ -61,7 +61,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
     $query = "
         REPLACE INTO
             `user_gui_props` (
-                user_id, lang, layout, logo
+                user_id, lang, layout
             ) VALUES (
                 ?, ?, ?
             )
