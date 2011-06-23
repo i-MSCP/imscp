@@ -94,7 +94,11 @@ function generatePage($tpl)
             $tableName
         );
 
-        if ($stmt->fields['cnt'] > 0 || $tableName == 'lang_en_GB') {
+        // The langue is currently used or it's the system language or it's the
+        // default language
+        if ($stmt->fields['cnt'] > 0 || $tableName == 'lang_en_GB' ||
+            $default_language == $tableName
+        ) {
             $tpl->assign(array('TR_UNINSTALL' => tr('N/A'),
                               'LANG_DELETE_LINK' => '',
                               'LANGUAGE' => tohtml($languageName),
