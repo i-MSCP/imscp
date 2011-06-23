@@ -5,6 +5,9 @@ i-MSCP ChangeLog
 i-MSCP 1.0.1.3 (beta 3)
 -------------------------------------------------------------------------------------
 
+2011-06-24: Laurent Declercq
+    - RELEASE i-MSCP 1.0.1.3 beta 3
+
 Distributions:
 
 Features / Enhancements:
@@ -14,6 +17,7 @@ Features / Enhancements:
             - Update (database): Improved both execution time and memory consumption
         Core:
             - Added SSL support for master (panel) vhost
+    Engine
             - Added SSL support for Postfix, courier (imap/pop)
             - Added SSL support for Proftpd
 
@@ -34,7 +38,7 @@ i-MSCP 1.0.0-beta2
 -------------------------------------------------------------------------------------
 
 2011-06-20: Laurent Declercq
-    - RELEASE i-MSCP 1.0.0 beta2
+    - RELEASE i-MSCP 1.0.0 beta 2
 
 Distributions:
 
@@ -52,7 +56,7 @@ i-MSCP 1.0.0-beta1
 -------------------------------------------------------------------------------------
 
 2011-06-18: Torsten Widmann
-    - RELEASE i-MSCP 1.0.0 beta1
+    - RELEASE i-MSCP 1.0.0 beta 1
 
 Distributions:
     Debian:
