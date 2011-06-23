@@ -94,7 +94,7 @@ function generatePage($tpl)
             $tableName
         );
 
-        if ($stmt->fields['cnt'] > 0) {
+        if ($stmt->fields['cnt'] > 0 || $tableName == 'lang_en_GB') {
             $tpl->assign(array('TR_UNINSTALL' => tr('N/A'),
                               'LANG_DELETE_LINK' => '',
                               'LANGUAGE' => tohtml($languageName),

@@ -52,9 +52,13 @@ $language = $_GET['delete_lang'];
 if ($language == $cfg->USER_INITIAL_LANG) {
     set_page_message("You can't delete default language.", 'error');
     redirectTo('multilanguage.php');
+} elseif($language = 'lang_en_GB') {
+    set_page_message(tr("You can't delete system language."), 'error');
+    redirectTo('multilanguage.php');
+} elseif(strpos($tableName, 'lang_') == false) {
+    set_page_message(tr("Wrong language table name."), 'error');
 }
 
-// Check if someone still uses that lang
 $query = "SELECT count(`lang`) `cnt` FROM `user_gui_props` WHERE `lang` = ?";
 $stmt = exec_query($query, $language);
 
@@ -66,6 +70,6 @@ if ($stmt->fields['cnt'] > 0) {
 $query = "DROP TABLE `$language`";
 exec_query($query);
 
-write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $language));
+write_log(sprintf('%s removed language: %s', $_SESSION['user_logged'], $language));
 set_page_message(tr('Language was successfully removed.'), 'success');
 redirectTo('multilanguage.php');
