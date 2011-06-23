@@ -20,14 +20,10 @@
         <script language="JavaScript" type="text/JavaScript">
         /*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
-				// Tooltips - end
 			});
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('span.i_app_installed').iMSCPtooltips('span.title');
-				// Tooltips - end
 			});
 			function action_delete() {
 				if (!confirm("{TR_MESSAGE_DELETE}"))
@@ -59,7 +55,9 @@
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
+                <!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
+                <!-- EDP: logged_from -->
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
