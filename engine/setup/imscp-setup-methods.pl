@@ -185,9 +185,10 @@ sub load_old_imscp_cfg {
 
 	$main::imscpConfigOld = {};
 
-	if (-f "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf"){
-		tie %main::imscpConfigOld, 'iMSCP::Config','fileName' => "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
-	}
+	$main::imscpConfigOld = {};
+	my $oldConf = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
+
+	tie %main::imscpConfigOld, 'iMSCP::Config','fileName' => $oldConf if (-f $oldConf);
 
 	debug((caller(0))[3].': Ending...');
 
