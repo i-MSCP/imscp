@@ -145,10 +145,7 @@ function importLanguageFile()
         return;
     }
 
-    if (empty($parseResult['imscp_languageSetlocaleValue']) ||
-        empty($parseResult['imscp_table']) ||
-        empty($parseResult['imscp_language']) ||
-        !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $parseResult['imscp_languageSetlocaleValue'])
+    if (empty($parseResult['imscp_table']) || empty($parseResult['imscp_language'])
         || !preg_match('/^[a-z0-9_]+$/Di', $parseResult['imscp_table'])
     ) {
         set_page_message(tr('The file does not contain all the necessary information.'), 'error');
@@ -267,6 +264,7 @@ function _parseGettextFile($file, $filename)
                 $parseResult['imscp_table'] = trim($headers['Language']);
             } else {
                 set_page_message(tr("The 'Language' header doesn't contains the required value"), 'error');
+                return false;
             }
         } else {
             set_page_message(tr("The language file doesn't contains the required 'Language' header."), 'error');
@@ -289,9 +287,6 @@ function _parseGettextFile($file, $filename)
         } else {
             $parseResult['imscp_languageRevision'] = strftime('%Y%m%d%H%I%S');
         }
-
-        // Retrieves the locale from language filename
-        $parseResult['imscp_languageSetlocaleValue'] = basename($filename, '.po');
 
         unset($parseResult['headers']);
     } else {

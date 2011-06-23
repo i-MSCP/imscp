@@ -27,6 +27,7 @@ Tickets:
     - Fixed #102: Bug - Unable to install more than one language file
     - Fixed #104: Task - autoreplies_log database table still use MYISAM engine)
     - Fixed #105: Bug - Database update 58 is faulty
+    - Fixed #107: Defect - Unable to import languages files pulled from transifex
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta2
