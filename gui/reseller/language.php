@@ -1,10 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-msCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-msCP | http://i-mscp.net
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
@@ -26,19 +26,21 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ */
+
+/************************************************************************************
+ * Main script
  */
 
 require '../include/imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
-/************************************************************************************
- * Main script
- */
 
 check_login(__FILE__);
 
@@ -46,15 +48,15 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/language.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('def_language', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(array(
+                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/language.tpl',
+                          'page_message' => 'page',
+                          'def_language' => 'page',
+                          'logged_from' => 'page'));
 
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
-
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
 	$user_id = $_SESSION['user_id'];
-	$user_lang = $_POST['def_language'];
+	$user_lang = clean_input($_POST['def_language']);
 
     $query = "
         REPLACE INTO
@@ -63,21 +65,21 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
             ) VALUES (
                 ?, ?, ?, ?
             )
-        ;
     ";
 
     exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'], get_logo($user_id)));
 
-	unset($_SESSION['user_def_lang']);
-	$_SESSION['user_def_lang'] = $user_lang;
-	set_page_message(tr('User language updated successfully.'), 'success');
+    if(!isset($_SESSION['logged_from_id'])) {
+	    unset($_SESSION['user_def_lang']);
+	    $_SESSION['user_def_lang'] = $user_lang;
+    }
+
+	set_page_message(tr('Language updated successfully.'), 'success');
 }
 
-// Makes sure that the language selected is the reseller's language
-if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-	list($user_def_lang, $user_def_layout) = get_user_gui_props($_SESSION['user_id']);
+if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
+	list($user_def_lang) = get_user_gui_props($_SESSION['user_id']);
 } else {
-	$user_def_layout = $_SESSION['user_theme'];
 	$user_def_lang = $_SESSION['user_def_lang'];
 }
 
@@ -87,19 +89,16 @@ $tpl->assign(array(
                   'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'TR_GENERAL_INFO' => tr('General information'),
+                  'TR_LANGUAGE' => tr('Language'),
+                  'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your default language'),
+                  'TR_SAVE' => tr('Save')));
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
 gen_logged_from($tpl);
 check_permissions($tpl);
-
-$tpl->assign(array(
-                  'TR_GENERAL_INFO' => tr('General information'),
-                  'TR_LANGUAGE' => tr('Language'),
-                  'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-                  'TR_SAVE' => tr('Save')));
-
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
