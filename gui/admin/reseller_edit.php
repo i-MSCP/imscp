@@ -80,9 +80,9 @@ function get_clean_input_data() {
 			'pass_rep' => clean_input($_POST['pass1']),
 			'edit_username' => clean_input($_POST['edit_username']),
 			'edit_id' => clean_input($_POST['edit_id']),
-			'domain_software_allowed' => clean_input($_POST['domain_software_allowed']),
-			'domain_softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed']),
-            'domain_websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed'])
+			'software_allowed' => clean_input($_POST['domain_software_allowed']),
+			'softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed']),
+            'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed'])
 		);
 	}
 
@@ -524,7 +524,7 @@ function get_servers_ips($tpl, $rip_lst) {
 
 	return $reseller_ips;
 
-} // End get_servers_ips()
+}
 
 /**
  * @param  int $reseller_id Reseller unique identifier
@@ -605,6 +605,7 @@ function update_reseller() {
 
 	exec_query($query, $qparams);
 
+
 	if($rdata['software_allowed'] == "no") {
  		$query_user = "
  			UPDATE
@@ -682,9 +683,9 @@ function update_reseller() {
                             $rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
                             $rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
                             $rdata['support_system'], $rdata['customer_id'],
-                            $rdata['domain_software_allowed'],
-                            $rdata['domain_softwaredepot_allowed'],
-                            $rdata['domain_websoftwaredepot_allowed'],
+                            $rdata['software_allowed'],
+                            $rdata['softwaredepot_allowed'],
+                            $rdata['websoftwaredepot_allowed'],
                             $rdata['edit_id']));
 
 }
@@ -783,15 +784,10 @@ $cfg = iMSCP_Registry::get('config');
 
 check_login(__FILE__);
 
-// Error fields indicators
+// Error fields
 $errFields = array();
 
-/**
- * Script dispatcher - begin
- *
- * Dispatch the request according the state of $_GET || $_POST
- */
-
+/** Dispatches the request */
 if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 
 	// Ajax request
@@ -873,7 +869,6 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 				tr('ERROR: One or more errors was found! Please, correct them and try again!'), 'error'
 			);
 		}
-
 	} else { // Default action
 
 		// Pre-check - possible inconsistency data
@@ -887,7 +882,6 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			);
 		}
 	}
-
 } else { // Not reseller id provided or cancel action
 	// Prevent the 'update' message on the parent page after cancel action
 	if (isset($_POST['Cancel']) && isset($_SESSION['user_updated'])) {
@@ -895,7 +889,6 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	}
 	user_goto('manage_users.php');
 }
-
 
 // Input Fields Errors Highlighting
 fields_highlighting($tpl, $errFields);
@@ -907,7 +900,6 @@ if ($rdata['support_system'] == 'yes') {
 	$support_no = $cfg->HTML_CHECKED;
 	$support_yes = '';
 }
-
 
 $tpl->assign(
 	array(
