@@ -178,8 +178,11 @@ class iMSCP_Update_Database extends iMSCP_Update
             }
 
             // Database update was successfully applied - updating revision number
-            // in the database
+            // in the database and do some cleanup if needed
             $dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
+            if($dbConfig->exists('FAILED_UPDATE')) {
+                $dbConfig->del('FAILED_UPDATE');
+            }
         }
 
         // We should never run the backend scripts from the CLI update script
@@ -806,6 +809,34 @@ class iMSCP_Update_Database extends iMSCP_Update
                 'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
                 'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
             );
+        }
+
+        return '';
+    }
+
+    /**
+     * Remove useless msgid.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4672
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_65()
+    {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+
+        $sqlUpd = array();
+
+        foreach ($db->metaTables() as $tableName) {
+            if (strpos($tableName, 'lang_') !== false) {
+                $sqlUpd[] = "
+                    DELETE FROM
+                        `$tableName`
+                    WHERE
+                        `msgid` = 'imscp_languageSetlocaleValue'
+                ";
+            }
         }
     }
 }

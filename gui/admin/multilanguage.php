@@ -53,13 +53,12 @@ function generatePage($tpl)
     /** @var $db iMSCP_Database */
     $db = iMSCP_Registry::get('db');
 
-    list($userDefinedLanguage) = get_user_gui_props($_SESSION['user_id']);
-    $userDefinedLanguage = explode('_', $userDefinedLanguage);
+    $default_language = $cfg->USER_INITIAL_LANG;
 
-    $index = 0;
+    //$index = 0;
 
     foreach($db->metaTables() as $tableName) {
-        // Is  not a language database table ?
+        // Is not a language database table ?
         if (strpos($tableName, 'lang_') === false) {
             continue;
         }
@@ -74,7 +73,7 @@ function generatePage($tpl)
         }
 
          // User better language name if available
-         if ($stmt[0]->recordCount() != 0) {
+         if ($stmt[0]->recordCount() !== 0) {
             $languageName = $stmt[0]->fields['msgstr'];
          } else {
              $languageName = substr($tableName, strrpos($tableName, '_') + 1);
@@ -90,36 +89,46 @@ function generatePage($tpl)
             $languageRevision = tr('Unknown');
         }
 
+        $stmt = exec_query(
+            "SELECT COUNT(`user_id`) `cnt` FROM `user_gui_props` WHERE `lang` =  ?",
+            $tableName
+        );
 
-        if ($cfg->USER_INITIAL_LANG == $tableName || $userDefinedLanguage == $tableName) {
+        if ($stmt->fields['cnt'] > 0) {
             $tpl->assign(array('TR_UNINSTALL' => tr('N/A'),
                               'LANG_DELETE_LINK' => '',
                               'LANGUAGE' => tohtml($languageName),
                               'LANGUAGE_REVISION' => $languageRevision,
-                              'LANG_VALUE_CHECKED' => $cfg->HTML_CHECKED,
-                              'LANG_VALUE' => $tableName));
+                              'LANG_VALUE_CHECKED' => $default_language == $tableName
+                                  ? $cfg->HTML_CHECKED : '',
+                              'LANG_VALUE' => $tableName,
+                              'LANG_DELETE_LINK' => ''));
 
-            $tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
+            $tpl->parse('LANG_SHOW', 'lang_show');
         } else {
             $tpl->assign(array('TR_UNINSTALL' => tr('Uninstall'),
                               'URL_DELETE' => "language_delete.php?delete_lang=$tableName",
                               'LANG_DELETE_SHOW' => '',
                               'LANGUAGE' => tohtml($languageName),
                               'LANGUAGE_REVISION' => $languageRevision,
-                              'LANG_VALUE_CHECKED' => '',
-                              'LANG_VALUE' => $tableName));
+                              'LANG_VALUE_CHECKED' => $default_language == $tableName
+                                  ? $cfg->HTML_CHECKED : '',
+                              'LANG_VALUE' => $tableName,
+                              'LANG_SHOW' => ''));
 
             $tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
         }
 
         // Retrieving number of translated messages
-        $query = "SELECT COUNT(`msgid`) AS `cnt` FROM `$tableName`;";
-        $stmt = exec_query($query);
+        $stmt = exec_query("SELECT COUNT(`msgid`) AS `cnt` FROM `$tableName`");
 
-        $tpl->assign(array('MESSAGES' => tr('%d messages translated', $stmt->fields['cnt'] - 5),
+        $tpl->assign('MESSAGES', tr('%d messages translated', $stmt->fields['cnt'] - 4));
+        /*
+        $tpl->assign(array('MESSAGES' => tr('%d messages translated', $stmt->fields['cnt'] - 4),
                           'URL_EXPORT' => "multilanguage_export.php?export_lang=$tableName",
                           'INDEX' => $index,
                           'TR_GZIPPED' => tr('Gzipped')));
+        */
 
         $tpl->parse('LANG_ROW', '.lang_row');
     }
@@ -134,14 +143,12 @@ function importLanguageFile()
 {
     $filePath = $_FILES['languageFile']['tmp_name'];
 
-    if (empty($_FILES['languageFile']['name']) || !is_readable($filePath)) {
-        set_page_message(tr('Upload file error!'), 'error');
+    if (!is_readable($filePath)) {
+        set_page_message(tr('Upload fileno readable error.'), 'error');
         return;
-    } else {
-        $fileName = $_FILES['languageFile']['name'];
     }
 
-    if(($parseResult = _parseGettextFile($filePath, $fileName)) === false) {
+    if(($parseResult = _parseGettextFile($filePath)) === false) {
         return;
     }
 
@@ -204,11 +211,10 @@ function importLanguageFile()
  * Imports all translation string from a portable object (po) file.
  *
  * @param  string $file Absolute path to the uploaded file
- * @param  string $filename Filename
  * @return mixed array An array that contains all translation string or FALSE on
  *                     failure
  */
-function _parseGettextFile($file, $filename)
+function _parseGettextFile($file)
 {
     if(($content = @file_get_contents($file)) == false) {
         set_page_message(tr("Unable to read the language file."), 'error');
@@ -386,9 +392,8 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lang_row', 'page');
+$tpl->define_dynamic('lang_show', 'lang_row');
 $tpl->define_dynamic('lang_delete_link', 'lang_row');
-$tpl->define_dynamic('lang_delete_show', 'lang_row');
-$tpl->define_dynamic('lang_radio', 'lang_row');
 $tpl->define_dynamic('lang_def', 'lang_row');
 
 $tpl->assign(array(
@@ -396,7 +401,7 @@ $tpl->assign(array(
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                  'TR_MULTILANGUAGE' => tr('Internationalisation'),
+                  'TR_MULTILANGUAGE' => tr('Internationalization'),
                   'TR_INSTALLED_LANGUAGES' => tr('Installed languages'),
                   'TR_LANGUAGE' => tr('Language'),
                   'TR_MESSAGES' => tr('Messages'),
@@ -404,10 +409,10 @@ $tpl->assign(array(
                   'TR_DEFAULT' => tr('Panel default language'),
                   'TR_ACTION' => tr('Action'),
                   'TR_SAVE' => tr('Save'),
-                  'TR_INSTALL_NEW_LANGUAGE' => tr('Install new language'),
+                  'TR_INSTALL_NEW_LANGUAGE' => tr('Install / Update language'),
                   'TR_LANGUAGE_FILE' => tr('Language file'),
                   'ISP_LOGO' => get_logo($_SESSION['user_id']),
-                  'TR_INSTALL' => tr('Install'),
+                  'TR_INSTALL' => tr('Install / Update'),
                   'TR_EXPORT' => tr('Export'),
                   'TR_MESSAGE_DELETE' =>
                   tr('Are you sure you want to delete %s?', true, '%s')));

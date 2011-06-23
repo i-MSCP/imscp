@@ -32,24 +32,19 @@
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/**
- * @see iMSCP_Exception_Writer
- */
+/** @see iMSCP_Exception_Writer */
 require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
 
 /**
  * Browser writer class
  *
- * This writer writes an exception messages to the client browser. This writer
- * acts also as a formatter that will use a specific template for the message
- * formatting. If no template path is given, or if the template file is not
- * reachable, a string that represent the message is write to the client
- * browser.
+ * This writer writes an exception messages to the client browser. This writer acts
+ * also as a formatter that will use a specific template for the message formatting.
+ * If no template path is given, or if the template file is not reachable, a string
+ * that represent the message is write to the client browser.
  *
  * The given template should be a template file that can be treated by a
  * pTemplate object.
- *
- * <b>Note:</b> Will be improved later.
  *
  * @category    i-MSCP
  * @package     iMSCP_Exception
@@ -58,7 +53,6 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  */
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 {
-
     /**
      * pTemplate instance
      *
@@ -74,7 +68,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
     protected $_templateFile = null;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $templateFile Template file path
      */
@@ -91,7 +85,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
     }
 
     /**
-     * Writes the exception message to the client browser
+     * Writes the exception message to the client browser.
      *
      * @return void
      * @todo Add inline template for rescue
@@ -107,14 +101,13 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
     }
 
     /**
-     * This methods is called from the subject (i.e. when an event occur)
+     * This methods is called from the subject.
      *
      * @param SplSubject $exceptionHandler iMSCP_Exception_Handler
      * @return void
      */
     public function update(SplSubject $exceptionHandler)
     {
-
         // Always write the real exception message if we are the admin
         if (isset($_SESSION) &&
             ((isset($_SESSION['logged_from']) && $_SESSION['logged_from'] == 'admin')
@@ -147,6 +140,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
     protected function _render()
     {
         $tpl = new iMSCP_pTemplate();
+
         $tpl->define('page', $this->_templateFile);
 
         if (iMSCP_Registry::isRegistered('backButtonDestination')) {
@@ -158,26 +152,13 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
         $tpl->assign(array('THEME_COLOR_PATH' => '/themes/' . 'default',
                           'BACK_BUTTON_DESTINATION' => $backButtonDestination,
                           'MESSAGE' => $this->_message,
-                          'productLink' => 'http://www.i-mscp.net'));
-
-        // translation service is available ?
-        if (function_exists('tr')) {
-            $tpl->assign(array(
-                              'TR_EXCEPTION_PAGE_TITLE' => tr('i-MSCP - internet Multi Server Control Panel - Exception'),
-                              'THEME_CHARSET' => tr('encoding'),
-                              'productLongName' => tr('internet Multi Server Control Panel'),
-                              'productCopyright' => tr('© Copyright 2010-2011 i-MSCP Team<br/>All Rights Reserved.'),
-                              'MESSAGE_TITLE' => tr('An exception occurred'),
-                              'TR_BACK' => tr('Back')));
-        } else {
-            $tpl->assign(array(
-                              'TR_EXCEPTION_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
-                              'THEME_CHARSET' => 'UTF-8',
-                              'productLongName' => 'internet Multi Server Control Panel',
-                              'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved',
-                              'MESSAGE_TITLE' => 'An exception occured',
-                              'TR_BACK' => 'Back'));
-        }
+                          'productLink' => 'http://www.i-mscp.net',
+                          'TR_EXCEPTION_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
+                          'THEME_CHARSET' => 'UTF-8',
+                          'productLongName' => 'internet Multi Server Control Panel',
+                          'productCopyright' => '© 2010-2011 i-MSCP Team<br/>All Rights Reserved',
+                          'MESSAGE_TITLE' => 'An exception have been thrown',
+                          'TR_BACK' => 'Back'));
 
         $tpl->parse('PAGE', 'page');
         $this->_tpl = $tpl;

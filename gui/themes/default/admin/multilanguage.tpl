@@ -86,11 +86,9 @@
                     <tr>
                         <td><span class="icon i_locale">{LANGUAGE}</span></td>
                         <td>{MESSAGES}</td>
-                        <td>{LANGUAGE_REVISION}</td>
+                        <td><label for="default_language">{LANGUAGE_REVISION}</label></td>
                         <td>
-							<!-- BDP: lang_radio -->
-                            <input type="radio" name="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
-                            <!-- EDP: lang_radio -->
+                            <input type="radio" name="default_language" id="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
                         </td>
                         <td>
                             <!--
@@ -99,8 +97,12 @@
                             <span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
                             -->
 
+                            <!-- BDP: lang_show -->
+                            <a class="icon i_delete" href="#">{TR_UNINSTALL}</a>
+                            <!-- EDP: lang_show -->
+
 							<!-- BDP: lang_delete_link -->
-                            <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')">{TR_UNINSTALL}</a>
+                            <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}');return false;">{TR_UNINSTALL}</a>
                             <!-- EDP: lang_delete_link -->
                         </td>
                     </tr>
@@ -112,6 +114,7 @@
             </div>
             <fieldset>
                 <legend>{TR_INSTALL_NEW_LANGUAGE}</legend>
+
                 <table>
                     <tr>
                         <td style="width:300px;">{TR_LANGUAGE_FILE}</td>

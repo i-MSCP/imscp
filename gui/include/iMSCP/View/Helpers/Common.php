@@ -93,7 +93,6 @@ function gen_logged_from($tpl)
  */
 function gen_def_language($tpl, $user_def_language)
 {
-
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
@@ -106,44 +105,24 @@ function gen_def_language($tpl, $user_def_language)
 
     $stmt->setFetchStyle(PDO::FETCH_NUM);
 
-    if ($stmt->recordCount()) {
+    if ($stmt->recordCount() !== 0) {
         while (!$stmt->EOF) {
             $lang_table = $stmt->fields[0];
 
             $query = "
-			SELECT
-				`msgstr`
-			FROM
-				`$lang_table`
-			WHERE
-				`msgid` = 'iMSCP_language'
-			;
-		";
+			    SELECT
+				    `msgstr`
+			    FROM
+				    `$lang_table`
+			    WHERE
+				    `msgid` = 'imscp_language'
+		    ";
 
             $stmt2 = exec_query($query);
-
-            $query = "
-			SELECT
-				`msgstr`
-			FROM
-				`$lang_table`
-			WHERE
-				`msgid` = 'iMSCP_languageSetlocaleValue'
-			;
-		";
-
-            $stmt3 = exec_query($query);
-
-            if ($stmt2->recordCount() == 0 || $stmt3->recordCount() == 0) {
+            if ($stmt2->recordCount() == 0) {
                 $language_name = tr('Unknown');
             } else {
-                $tr_langcode = tr($stmt3->fields['msgstr']);
-
-                if ($stmt3->fields['msgstr'] == $tr_langcode) { // no translation found
-                    $language_name = $stmt2->fields['msgstr'];
-                } else { // found translation
-                    $language_name = $tr_langcode;
-                }
+                $language_name = $stmt2->fields['msgstr'];
             }
 
             $selected = ($lang_table === $user_def_language) ? $htmlSelected : '';
@@ -152,20 +131,17 @@ function gen_def_language($tpl, $user_def_language)
         }
 
         asort($languages[0], SORT_STRING);
-        foreach ($languages as $lang) {
-            $tpl->assign(
-                array(
-                     'LANG_VALUE' => $lang[0],
-                     'LANG_SELECTED' => $lang[1],
-                     'LANG_NAME' => tohtml($lang[2])
-                )
-            );
+        foreach ($languages as $language) {
+            $tpl->assign(array(
+                              'LANG_VALUE' => $language[0],
+                              'LANG_SELECTED' => $language[1],
+                              'LANG_NAME' => tohtml($language[2])));
 
             $tpl->parse('DEF_LANGUAGE', '.def_language');
         }
-    } else { // Only occur when all languages database tables were dropped
+    } else { // Must never occurs but...
         $tpl->assign('LANGUAGES_AVAILABLE', '');
-        set_page_message(tr('No language tables found in the database.'), 'warning');
+        set_page_message(tr('No language tables found in database.'), 'warning');
     }
 }
 

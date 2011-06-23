@@ -74,10 +74,8 @@ spl_autoload_register('autoload_class');
  * Sets the exception handler for uncaught exceptions and register it in the
  * registry.
  */
-iMSCP_Registry::setAlias(
-	'exceptionHandler',
-	iMSCP_Exception_Handler::getInstance()->setHandler()
-);
+iMSCP_Registry::setAlias('exceptionHandler',
+                         iMSCP_Exception_Handler::getInstance()->setHandler());
 
 /**
  * Attach the primary exception writer to write uncaught exceptions messages to the
@@ -91,8 +89,8 @@ iMSCP_Registry::setAlias(
  * Another writers will be attached to this object during initialization process if
  * enabled in the application wide configuration file.
  */
-iMSCP_Registry::get('exceptionHandler')
-	->attach(new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
+iMSCP_Registry::get('exceptionHandler')->attach(
+    new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
 
 /**
  * Include i-MSCP common functions
