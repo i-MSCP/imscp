@@ -86,9 +86,9 @@
                     <tr>
                         <td><span class="icon i_locale">{LANGUAGE}</span></td>
                         <td>{MESSAGES}</td>
-                        <td><label for="default_language">{LANGUAGE_REVISION}</label></td>
+                        <td>{LANGUAGE_REVISION}</td>
                         <td>
-                            <input type="radio" name="default_language" id="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
+                            <input type="radio" name="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
                         </td>
                         <td>
                             <!--
@@ -101,7 +101,7 @@
                             <a class="icon i_delete" href="#">{TR_UNINSTALL}</a>
                             <!-- EDP: lang_show -->
 
-							<!-- BDP: lang_delete_link -->
+                            <!-- BDP: lang_delete_link -->
                             <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}');return false;">{TR_UNINSTALL}</a>
                             <!-- EDP: lang_delete_link -->
                         </td>

@@ -144,7 +144,7 @@ function importLanguageFile()
     $filePath = $_FILES['languageFile']['tmp_name'];
 
     if (!is_readable($filePath)) {
-        set_page_message(tr('Upload fileno readable error.'), 'error');
+        set_page_message(tr('Language file no readable.'), 'error');
         return;
     }
 
