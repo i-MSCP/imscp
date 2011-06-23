@@ -63,11 +63,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
             `user_gui_props` (
                 user_id, lang, layout, logo
             ) VALUES (
-                ?, ?, ?, ?
+                ?, ?, ?
             )
     ";
 
-    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'], get_logo($user_id)));
+    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme']));
 
     if(!isset($_SESSION['logged_from_id'])) {
 	    unset($_SESSION['user_def_lang']);
@@ -86,7 +86,7 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 gen_def_language($tpl, $user_def_lang);
 
 $tpl->assign(array(
-                  'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
+                  'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Client/Change Language'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => get_logo($_SESSION['user_id']),
