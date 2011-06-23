@@ -20,7 +20,6 @@
 		<script type="text/javascript">
 		/* <![CDATA[ */
 		$(document).ready(function(){
-			// Tooltips - begin
 			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
 			// Tooltips - end
 		});

@@ -20,9 +20,7 @@
         <script language="JavaScript" type="text/JavaScript">
         /*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('a.i_app_installer').sw_iMSCPtooltips('a.title');
-				// Tooltips - end
 			});
 			function action_delete(url) {
 				if (!confirm("{TR_MESSAGE_DELETE}"))

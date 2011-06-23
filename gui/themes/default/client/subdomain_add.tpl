@@ -20,7 +20,6 @@
 		<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 				$(document).ready(function(){
-					// Tooltips - begin
 					$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
 					// Tooltips - end
 					
