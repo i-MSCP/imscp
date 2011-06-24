@@ -679,10 +679,6 @@ function update_reseller() {
 			`reseller_id` = ?
 	";
 
-    //echo '<pre>';
-    //    print_r($rdata);
-    //exit;
-    
     exec_query($query, array(
                             $rdata['reseller_ips'], $rdata['max_dmn_cnt'],
                             $rdata['max_sub_cnt'], $rdata['max_als_cnt'],
