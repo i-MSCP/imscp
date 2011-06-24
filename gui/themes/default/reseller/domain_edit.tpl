@@ -23,7 +23,6 @@
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('#dmn_exp_help').iMSCPtooltips({msg:"{TR_DMN_EXP_HELP}"});
 				// Tooltips - end
 			});
@@ -51,9 +50,7 @@
 		/*]]>*/
 		</script>
 	</head>
-
 	<body>
-
 		<div class="header">
 			{MAIN_MENU}
 
@@ -113,13 +110,6 @@
 					<tr>
 						<td>{TR_DOMAIN_IP}</td>
 						<td>{VL_DOMAIN_IP}</td>
-						<!--
-				<select name="domain_ip">
-
-				<option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM}&nbsp;({IP_NAME})</option>
-
-			  </select>
-				-->
 					</tr>
 					<tr>
 						<td>{TR_PHP_SUPP}</td>
@@ -131,7 +121,7 @@
 					</tr>
 					<!-- BDP: t_software_support -->
 					<tr>
-						<td>{TR_SOFTWARE_SUPP}</td>
+						<td>{SW_ALLOWED}</td>
 						<td><select name="domain_software_allowed" id="domain_software_allowed">
 								<option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
 								<option value="no" {SOFTWARE_NO}>{TR_NO}</option>

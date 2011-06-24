@@ -33,6 +33,7 @@ Tickets:
     - Fixed #105: Bug - Database update 58 is faulty
     - Fixed #107: Defect - Unable to import languages files pulled from transifex
     - Fixed #108: Bug - Reseller's properties set to NULL when editing a domain
+    - Fixed #93:  Defect - Login page doesn't look good on IE7
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta2

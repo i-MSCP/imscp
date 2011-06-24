@@ -421,10 +421,10 @@ function get_reseller_prop($reseller_id) {
 
 	if ($rs->recordCount() <= 0) {
 			set_page_message(
-				tr('ERROR: The reseller account you trying to edit does not exist!'), 'error'
+				tr('The reseller account you trying to edit does not exist.'), 'error'
 			);
 
-			user_goto('manage_users.php');
+			redirectTo('manage_users.php');
 	}
 
     $rdata = array();
@@ -581,6 +581,8 @@ function update_reseller() {
 	// Get needed data
 	$rdata =& get_data();
 
+    // Updating personal data
+
 	$query = "
 		UPDATE
 			`admin`
@@ -605,6 +607,7 @@ function update_reseller() {
 
 	exec_query($query, $qparams);
 
+    // Updating software installer proeperties
 
 	if($rdata['software_allowed'] == "no") {
  		$query_user = "
@@ -661,7 +664,7 @@ function update_reseller() {
 	 	}
 	}
 
-    /** Update reseller's properties */
+    /** Updating reseller's properties */
 
 	$query = "
 		UPDATE
@@ -676,6 +679,10 @@ function update_reseller() {
 			`reseller_id` = ?
 	";
 
+    //echo '<pre>';
+    //    print_r($rdata);
+    //exit;
+    
     exec_query($query, array(
                             $rdata['reseller_ips'], $rdata['max_dmn_cnt'],
                             $rdata['max_sub_cnt'], $rdata['max_als_cnt'],
