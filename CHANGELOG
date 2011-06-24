@@ -5,17 +5,21 @@ i-MSCP ChangeLog
 i-MSCP 1.0.1.3 (beta 3)
 -------------------------------------------------------------------------------------
 
+2011-06-24: Laurent Declercq
+    - RELEASE i-MSCP 1.0.1.3 beta 3
+
 Distributions:
 
 Features / Enhancements:
+    Engine
+            - Added SSL support for Postfix, courier (imap/pop)
+            - Added SSL support for Proftpd
     Gui:
         Components:
             - DebugBar: Added $_SERVER variable (plugin variables)
             - Update (database): Improved both execution time and memory consumption
         Core:
             - Added SSL support for master (panel) vhost
-            - Added SSL support for Postfix, courier (imap/pop)
-            - Added SSL support for Proftpd
 
 Tickets:
     - Fixed #2:   Feature - SSL support for master vhost
@@ -28,13 +32,15 @@ Tickets:
     - Fixed #104: Task - autoreplies_log database table still use MYISAM engine)
     - Fixed #105: Bug - Database update 58 is faulty
     - Fixed #107: Defect - Unable to import languages files pulled from transifex
+    - Fixed #108: Bug - Reseller's properties set to NULL when editing a domain
+    - Fixed #93:  Defect - Login page doesn't look good on IE7
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta2
 -------------------------------------------------------------------------------------
 
 2011-06-20: Laurent Declercq
-    - RELEASE i-MSCP 1.0.0 beta2
+    - RELEASE i-MSCP 1.0.0 beta 2
 
 Distributions:
 
@@ -52,7 +58,7 @@ i-MSCP 1.0.0-beta1
 -------------------------------------------------------------------------------------
 
 2011-06-18: Torsten Widmann
-    - RELEASE i-MSCP 1.0.0 beta1
+    - RELEASE i-MSCP 1.0.0 beta 1
 
 Distributions:
     Debian:
@@ -75,7 +81,7 @@ Features / Enhancements:
             - Added ssl suport for apache, courier, postfix and proftpd for master domain
     Gui:
         Core:
-		    - Added DebugBar component
+            - Added DebugBar component
             - Added Events system component
             - Added on-click-logon ftp-user - Thanks to William Lightning
             - Added Software installer - Thanks to Sascha Bay
@@ -85,7 +91,7 @@ Features / Enhancements:
             - Removed support for importation of languages from text files
         Tools:
             - Updated PhpMyAdmin to version 3.4.2
-		Vendor:
+        Vendor:
             - Updated idna_convert.class.php to version 0.8.0
             - Updated Net_DNS to version 1.0.7
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
@@ -36,7 +36,6 @@
 
 require 'include/imscp-lib.php';
 
-// The onLoginScriptStart is fired here
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -68,15 +67,16 @@ if (check_user_login() && !redirect_to_level_page()) {
 shall_user_wait();
 
 $theme_color = isset($_SESSION['user_theme'])
-    ? $_SESSION['user_theme']: $cfg->USER_INITIAL_THEME;
+    ? $_SESSION['user_theme'] : $cfg->USER_INITIAL_THEME;
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lostpwd_button', 'page');
+$tpl->define_dynamic('ssl_support', 'page');
 $tpl->assign(array(
                   'productLongName' => tr('internet Multi Server Control Panel'),
                   'productLink' => 'http://www.i-mscp.net',
-                  'productCopyright' => tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
+                  'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
                   'THEME_CHARSET' => tr('encoding'),
                   'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH));
 
@@ -98,18 +98,24 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableU
                       'TR_PHPMYADMIN' => tr('phpMyAdmin'),
                       'TR_FILEMANAGER' => tr('FileManager'),
                       'TR_WEBMAIL' => tr('Webmail'),
-                      // @todo: make this configurable by i-mscp-lib
-                      'TR_SSL_LINK' => isset($_SERVER['HTTPS'])
+                      'TR_WEBMAIL_LINK' => '/webmail',
+                      'TR_FTP_LINK' => '/ftp',
+                      'TR_PMA_LINK' => '/pma'));
+}
+
+if ($cfg->exists('SSL_ENABLED') && $cfg->SSL_ENABLED == 'yes') {
+    $tpl->assign(array(
+                      'SSL_LINK' => isset($_SERVER['HTTPS'])
                           ? 'http://' . htmlentities($_SERVER['HTTP_HOST'])
                           : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
-                      'TR_WEBMAIL_LINK' => 'webmail',
-                      'TR_FTP_LINK' => 'ftp',
-                      'TR_PMA_LINK' => 'pma',
-                      'TR_SSL_IMAGE' => isset($_SERVER['HTTPS']) ? 'lock.png'
-                          : 'unlock.png',
+                      'SSL_IMAGE_CLASS' => isset($_SERVER['HTTPS'])
+                          ? 'i_unlock' : 'i_lock',
                       'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS'])
                           ? tr('Secure Connection') : tr('Normal Connection')));
+} else {
+    $tpl->assign('SSL_SUPPORT', '');
 }
+
 
 if ($cfg->LOSTPASSWORD) {
     $tpl->assign('TR_LOSTPW', tr('Lost password'));
@@ -121,7 +127,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-// The onLoginScriptEnd event is fired here
 iMSCP_Events_Manager::getInstance()->dispatch(
     iMSCP_Events::onLoginScriptEnd, new iMSCP_Events_Response($tpl));
 

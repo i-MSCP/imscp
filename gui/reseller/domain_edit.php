@@ -103,14 +103,13 @@ $tpl->assign(
 		'TR_YES'				=> tr('Yes'),
 		'TR_NO'					=> tr('No'),
 		'TR_EXPIRE_CHECKBOX'	=> tr('or Check for <strong>never Expire</strong>'),
-		'TR_SOFTWARE_SUPP' 					=> tr('i-MSCP application installer'),
 		'TR_DMN_EXP_HELP'		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
 	)
 );
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-get_reseller_software_permission ($tpl, $_SESSION['user_id']);
+get_reseller_software_permission($tpl, $_SESSION['user_id']);
 gen_logged_from($tpl);
 generatePageMessage($tpl);
 
@@ -388,7 +387,7 @@ function gen_editdomain_page($tpl) {
  */
 function check_user_data($tpl, $reseller_id, $user_id) {
 
-	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql, $domain_php, $domain_cgi, $allowbackup,
+	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $domain_php, $domain_cgi, $allowbackup,
 		$domain_dns, $domain_expires, $domain_new_expire, $domain_software_allowed;
 
 	$datepicker			= clean_input($_POST['dmn_expire_date']);
@@ -402,11 +401,11 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 	$traff				= clean_input($_POST['dom_traffic']);
 	$disk				= clean_input($_POST['dom_disk']);
 
-	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
-	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
-	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
-	$allowbackup	= preg_replace("/\_/", "", $_POST['backup']);
-	$domain_software_allowed = preg_replace("/\_/", "", $_POST['domain_software_allowed']);
+	$domain_php		= preg_replace("/\_/", '', $_POST['domain_php']);
+	$domain_cgi		= preg_replace("/\_/", '', $_POST['domain_cgi']);
+	$domain_dns		= preg_replace("/\_/", '', $_POST['domain_dns']);
+	$allowbackup	= preg_replace("/\_/", '', $_POST['backup']);
+	$domain_software_allowed = preg_replace("/\_/", '', $_POST['domain_software_allowed']);
 
 	$ed_error = '';
 
@@ -568,7 +567,7 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 
 		// Backup Settings
 		$query = "UPDATE `domain` SET `allowbackup` = ? WHERE `domain_id` = ?;";
-		$rs = exec_query($query, array($allowbackup, $user_id));
+		exec_query($query, array($allowbackup, $user_id));
 
 		// update the sql quotas, too
 		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?;";
@@ -587,10 +586,10 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 			}
 
 			$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?;";
-			$rs = exec_query($query, array($dlim, $temp_dmn_name));
+			exec_query($query, array($dlim, $temp_dmn_name));
 		}
 
-		set_page_message(tr('Domain properties updated successfully!'));
+		set_page_message(tr('Domain properties updated successfully!'), 'success');
 
 		return true;
 	} else {
