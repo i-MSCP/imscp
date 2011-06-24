@@ -722,8 +722,6 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
  */
 function update_reseller_props($reseller_id, $props)
 {
-    $props = (array)$props;
-
     if (empty($props)) {
         return null;
     }
@@ -1443,13 +1441,13 @@ function get_reseller_software_permission($tpl, $reseller_id)
     if ($rs->fields('software_allowed') == 'yes') {
         $tpl->assign(array(
                           'SOFTWARE_SUPPORT' => tr('yes'),
-                          'SW_ALLOWED' => tr('i-MSCP application installer'),
+                          'SW_ALLOWED' => tr('Software installer'),
                           'SW_MSG' => tr('enabled')));
-        $tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
+        $tpl->parse('T_SOFTWARE_SUPPORT', 't_software_support');
     } else {
         $tpl->assign(array(
                           'SOFTWARE_SUPPORT' => tr('no'),
-                          'SW_ALLOWED' => tr('i-MSCP application installer'),
+                          'SW_ALLOWED' => tr('Software installer'),
                           'SW_MSG' => tr('disabled'),
                           'T_SOFTWARE_SUPPORT' => ''));
     }
