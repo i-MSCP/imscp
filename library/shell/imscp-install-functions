@@ -308,7 +308,7 @@ _chmod_file(){
 # @return	void
 # @see process_install
 specific() {
-	VFILE=$(echo "${SELFDIR}/${1}" | tr [:upper:] [:lower:])
+	VFILE="${SELFDIR}/${1}"
 	if [ ! -f "$VFILE" ];then
 		colortxt 'yellow' "$VFILE not found"; failtxt;
 	fi

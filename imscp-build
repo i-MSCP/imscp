@@ -95,13 +95,14 @@ done
 TEXT=$(cat README | sed -e "s/'/\"/g")
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
+_os=$(echo "$OS" | tr [:upper:] [:lower:])
+
 #Load OS / Distribution specific operation list
 title "Loading $OS specific variable"
-specific "library/shell/build-files/${OS}-variable"
+specific "library/shell/build-files/${_os}-variable"
 oktxt "Done"; writelog "\n"
 
 #Process configuration list
-_os=$(echo "$OS" | tr [:upper:] [:lower:])
 title "Proccess $_os specific configuration files"
 process_file
 oktxt "Done"; writelog "\n"
