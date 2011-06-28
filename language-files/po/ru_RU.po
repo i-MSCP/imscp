@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2011-06-20 13:02+0000\n"
+"POT-Creation-Date: 2011-06-24 00:46+0200\n"
+"PO-Revision-Date: 2011-06-24 16:50+0000\n"
 "Last-Translator: hosterdev <rwer353453534@mail.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,10 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "_: Localised language"
 msgstr "Русский язык - Russian"
@@ -175,6 +171,9 @@ msgstr "Порты сервера"
 
 msgid "Rootkit Log"
 msgstr "Лог анти-взлома"
+
+msgid "Internationalization"
+msgstr ""
 
 msgid "Services status"
 msgstr ""
@@ -354,9 +353,6 @@ msgstr "Ок"
 msgid "Suspended"
 msgstr "Приостановлен"
 
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - Панель заказов"
-
 msgid "hide aliases"
 msgstr "скрыть псевдонимы"
 
@@ -370,8 +366,11 @@ msgstr "Назад"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-msgid "No language tables found in the database."
+msgid "No language tables found in database."
 msgstr ""
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - Панель заказов"
 
 msgid "Add user"
 msgstr "Добавить пользователя"
@@ -500,6 +499,10 @@ msgstr ""
 
 msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
 
 msgid "i-MSCP - Multi Server Control Panel"
 msgstr ""
@@ -928,112 +931,8 @@ msgstr "Нет"
 msgid "Enabled"
 msgstr "Включено"
 
-msgid "Incorrect subdomains limit."
-msgstr ""
-
-msgid "Incorrect aliases limit."
-msgstr ""
-
-msgid "Incorrect mail accounts limit."
-msgstr ""
-
-msgid "Incorrect FTP accounts limit."
-msgstr ""
-
-msgid "Incorrect SQL users limit."
-msgstr ""
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "Лимит баз данных SQL <i>отключен</i>!"
-
-msgid "Incorrect SQL databases limit."
-msgstr ""
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "Лимит пользователей SQL <i>отключен</i>"
-
-msgid "Incorrect traffic limit."
-msgstr ""
-
-msgid "Incorrect disk quota limit."
-msgstr ""
-
-msgid "The application installer needs PHP to enable."
-msgstr ""
-
-msgid "The application installer of the users reseller is not activated."
-msgstr ""
-
-msgid "Subdomain"
-msgstr "Поддомен"
-
-msgid "Alias"
-msgstr "Алиас"
-
-msgid "Mail"
-msgstr "Email"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Database"
-msgstr "База данных SQL"
-
-msgid "SQL User"
-msgstr "Пользователь SQL"
-
-msgid "Traffic"
-msgstr "Трафик"
-
-msgid "Disk"
-msgstr "Диск"
-
-msgid "Domain properties could not be updated."
-msgstr ""
-
-msgid "Domain properties updated successfully!"
-msgstr "Настройки домена успешно изменены!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "Сервис <em>%s</em> не может быть отключен!"
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "В системе <em>%s</em> записей!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "Сервис <em>%s</em> не может быть ограничен!"
-
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-"Указанное число меньше чем <em>%s</em> записей, существующих в системе!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "Сервис <em>%s</em> не может быть отключен! "
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "В системе <em>%s</em> записей!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "Сервис <em>%s</em> не может быть неограниченным! "
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "Для сервиса <em>%s</em> существуют лимиты реселлера!"
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "Вы превысили лимит реселлера для сервиса <em>%s</em>"
-
-msgid "i-MSCP - Admin/Edit Domain"
-msgstr "i-MSCP - Администратор / Редактировать домен"
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Домен / Редактировать"
 
 msgid "Edit Domain"
 msgstr "Редактировать домен"
@@ -1080,6 +979,9 @@ msgstr "Отмена"
 msgid "Yes"
 msgstr "Да"
 
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
 msgid ""
 "In case 'Domain expire' is 'N/A', the expiration date will be set from "
 "today."
@@ -1087,26 +989,115 @@ msgstr ""
 "В случае если не установлен срок истечения домена, дата истечения домена "
 "устанавливается с текущего дня."
 
-msgid "or Check for <strong>never Expire</strong>"
-msgstr ""
-
 msgid ""
-"You cannot access this page directly. You must switch to reseller level."
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Пользователь не существует или Вы не имеете доступа к этому интерфейсу!"
+
+msgid "Incorrect subdomains limit!"
+msgstr "Некорректный лимит поддоменов!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Некорректный лимит алиасов!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Некорректный лимит почтовых ящиков!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Некорректный лимит учётных записей FTP!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Некорректный лимит пользователей SQL!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Лимит баз данных SQL <i>отключен</i>!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Некорректный лимит баз данных SQL!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Лимит пользователей SQL <i>отключен</i>"
+
+msgid "Incorrect traffic limit!"
+msgstr "Некорректный лимит по трафику!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Некорректный лимит дискового пространства!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
 msgstr ""
 
+msgid "Subdomain"
+msgstr "Поддомен"
+
+msgid "Alias"
+msgstr "Алиас"
+
+msgid "Mail"
+msgstr "Email"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "База данных SQL"
+
+msgid "SQL User"
+msgstr "Пользователь SQL"
+
+msgid "Traffic"
+msgstr "Трафик"
+
+msgid "Disk"
+msgstr "Диск"
+
+msgid "Domain properties could not be updated!"
+msgstr "Настройки домена не могут быть изменены!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Настройки домена успешно изменены!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "Сервис <em>%s</em> не может быть отключен!"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "В системе <em>%s</em> записей!"
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled!"
+msgstr "Сервис <em>%s</em> должен быть отключен!"
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system!"
+msgstr "У администратора отключен сервис <em>%s</em> в системе!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited!"
+msgstr "Сервис <em>%s</em> не может быть ограничен!"
+
+#, php-format
 msgid ""
-"Unable to update domain properties: The domain does not exist or is an "
-"orphan."
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
+"Указанное число меньше чем <em>%s</em> записей, существующих в системе!"
 
-msgid "Unable to update domain: Domain ID not found."
-msgstr ""
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "В системе <em>%s</em> записей!"
 
-msgid "Unable to edit domain: The domain does not exist or is an orphan."
-msgstr ""
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited!"
+msgstr "Сервис <em>%s</em> не может быть неограниченным!"
 
-msgid "Unable to edit domain: ID not found."
-msgstr ""
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Для сервиса <em>%s</em> существуют лимиты реселлера!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "Вы превысили лимит реселлера для сервиса <em>%s</em>"
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - Данные статистики домена"
@@ -1277,33 +1268,6 @@ msgstr "Некорректный синтаксис стоимости!"
 
 msgid "Incorrect setup fee syntax!"
 msgstr "Некорректный синтаксис стоимости подключения!"
-
-msgid "Incorrect subdomains limit!"
-msgstr "Некорректный лимит поддоменов!"
-
-msgid "Incorrect aliases limit!"
-msgstr "Некорректный лимит алиасов!"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Некорректный лимит почтовых ящиков!"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "Некорректный лимит учётных записей FTP!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Некорректный лимит баз данных SQL!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Некорректный лимит пользователей SQL!"
-
-msgid "Incorrect traffic limit!"
-msgstr "Некорректный лимит по трафику!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Некорректный лимит дискового пространства!"
-
-msgid "The i-MSCP application installer needs PHP to enable it!"
-msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "Хостинг-план с введённым именем уже существует!"
@@ -1530,11 +1494,17 @@ msgstr "i-MSCP - Администратор / Изменить язык"
 msgid "Choose your default language"
 msgstr "Выбор языка по умолчанию"
 
-msgid "Error we have user that uses that language!"
+msgid "You can't delete system language."
 msgstr ""
 
-msgid "Language was removed!"
-msgstr "Язык был удален!"
+msgid "Wrong language table name."
+msgstr ""
+
+msgid "This language is used by one or more users."
+msgstr ""
+
+msgid "Language was successfully removed."
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Список реселлеров пуст!"
@@ -1650,37 +1620,40 @@ msgstr ""
 msgid "%d messages translated"
 msgstr "%d сообщений переведено"
 
-msgid "Gzipped"
+msgid "Language file no readable."
 msgstr ""
 
-msgid "Upload file error!"
-msgstr "Ошибка закачки файла!"
-
-msgid "You can upload only text files!"
-msgstr "Вы можете закачивать только текстовые файлы!"
-
-msgid "Could not read language file!"
-msgstr "Невозможно прочитать файл языка!"
-
-msgid "Uploaded file is not a valid language file!"
-msgstr "Закачанный файл не является языковым файлом!"
-
-msgid "Uploaded file does not contain language information!"
+msgid "The file does not contain all the necessary information."
 msgstr ""
 
 #, php-format
 msgid "%s added new language: %s"
 msgstr ""
 
-msgid "New language installed!"
-msgstr "Новый язык установлен!"
+msgid "Language was successfully installed."
+msgstr ""
 
 #, php-format
 msgid "%s updated language: %s"
 msgstr ""
 
-msgid "Language was updated!"
-msgstr "Язык изменён!"
+msgid "Language was successfully updated."
+msgstr ""
+
+msgid "Unable to read the language file."
+msgstr ""
+
+msgid "The file doesn't contains any content"
+msgstr ""
+
+msgid "The 'Language' header doesn't contains the required value"
+msgstr ""
+
+msgid "The language file doesn't contains the required 'Language' header."
+msgstr ""
+
+msgid "No headers found in language file."
+msgstr ""
 
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP - Администратор / Интернационализация"
@@ -1694,17 +1667,22 @@ msgstr "Сообщения"
 msgid "Panel default language"
 msgstr "Выбор языка панели по умолчанию"
 
-msgid "Install new language"
-msgstr "Установить новый язык"
+msgid "Install / Update language"
+msgstr ""
 
 msgid "Language file"
 msgstr "Файл перевода"
 
-msgid "Install"
-msgstr "Установить"
+msgid "Install / Update"
+msgstr ""
 
 msgid "Export"
 msgstr "Экспортировать"
+
+msgid ""
+"<strong>Note:</strong> You can't delete the system language, and any "
+"language that is currently used by one or more users."
+msgstr ""
 
 msgid "Incorrect data input!"
 msgstr "Некорректный ввод данных!"
@@ -2095,14 +2073,14 @@ msgid "Error: Only positive numbers are allowed!"
 msgstr ""
 
 #, php-format
-msgid "%d configuration parameter(s) was updated!"
+msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d configuration parameter(s) was created!"
+msgid "%d configuration parameter(s) have/has been created."
 msgstr ""
 
-msgid "Nothing's been changed!"
+msgid "Nothing's been changed."
 msgstr ""
 
 msgid "Activation link expire time (minutes)"
@@ -2222,6 +2200,9 @@ msgstr ""
 
 msgid "Maximal number of labels for subdomains"
 msgstr "Максимальное количество меток для поддоменов"
+
+msgid "Upload file error!"
+msgstr "Ошибка закачки файла!"
 
 msgid "You can only upload images!"
 msgstr "Вы можете закачивать только изображения!"
@@ -3396,11 +3377,6 @@ msgstr "Данные учётной записи FTP изменены!"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Клиент / Редактировать учётную запись FTP"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"Пользователь не существует или Вы не имеете доступа к этому интерфейсу!"
-
 msgid "Edit FTP user"
 msgstr "Редактировать пользователя FTP"
 
@@ -3607,8 +3583,8 @@ msgstr "Использование диска"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "User language updated successfully!"
-msgstr "Язык интерфейса пользователя был успешно изменен!"
+msgid "Language updated successfully."
+msgstr ""
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - Клиент / Изменить язык"
@@ -3937,6 +3913,9 @@ msgstr ""
 
 msgid "Are you sure to install this package?"
 msgstr ""
+
+msgid "Install"
+msgstr "Установить"
 
 #, php-format
 msgid ""
@@ -4694,8 +4673,8 @@ msgstr "У %s домен истёк!"
 msgid "You entered an incorrect password!"
 msgstr ""
 
-msgid "Request from foreign host was blocked!"
-msgstr "Запрос от неизвестного хоста был заблокирован!"
+msgid "Request from foreign host was blocked."
+msgstr ""
 
 msgid "You do not have permission to access this interface!"
 msgstr "У Вас недостаточно прав для доступа к этому интерфейсу!"
@@ -5045,6 +5024,12 @@ msgstr "Управление алиасами"
 msgid "Real domain"
 msgstr "Реальный домен"
 
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 "У этого реселлера нет учетных записей пользователей чтобы добавить алиас."
@@ -5057,28 +5042,6 @@ msgstr "i-MSCP - Почтовая рассылка"
 
 msgid "Circular"
 msgstr "Почтовая рассылка"
-
-msgid "i-MSCP - Domain/Edit"
-msgstr "i-MSCP - Домен / Редактировать"
-
-msgid "Domain properties could not be updated!"
-msgstr "Настройки домена не могут быть изменены!"
-
-#, php-format
-msgid "The <em>%s</em> have to be disabled!"
-msgstr "Сервис <em>%s</em> должен быть отключен!"
-
-#, php-format
-msgid "The admin has <em>%s</em> disabled on this system!"
-msgstr "У администратора отключен сервис <em>%s</em> в системе!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited!"
-msgstr "Сервис <em>%s</em> не может быть ограничен!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited!"
-msgstr "Сервис <em>%s</em> не может быть неограниченным!"
 
 msgid "i-MSCP - Reseller/Main Index"
 msgstr "i-MSCP - Реселлер / Главная"
@@ -5292,7 +5255,7 @@ msgid ""
 "the new status!"
 msgstr ""
 
-msgid "The package is corrupt. Please correct it!"
+msgid "The package is corrupt. Please correct it."
 msgstr ""
 
 msgid ""
@@ -5301,7 +5264,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "This package already exist in the administrator software depot!"
+msgid "This package already exist in the administrator software depot."
 msgstr ""
 
 msgid "Package already exist in your software depot!"
@@ -5313,7 +5276,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "This package already exist in your software depot!"
+msgid "This package already exist in your software depot."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
@@ -5322,27 +5285,27 @@ msgstr ""
 msgid "You do not have permissions to upload software"
 msgstr ""
 
-#, php-format
-msgid ""
-"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgid "Unable to read xml file for web softwares."
 msgstr ""
 
 #, php-format
-msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
-" URL!"
+msgid "Could not upload the file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
-"MB"
+"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
 msgstr ""
 
-msgid "ERROR: Remote File not found!"
+#, php-format
+msgid ""
+"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
 msgstr ""
 
-msgid "ERROR: Could not upload the file. File not found!"
+msgid "Remote File not found!"
+msgstr ""
+
+msgid "Could not upload the file. File not found!"
 msgstr ""
 
 msgid "Software available"
@@ -5375,8 +5338,27 @@ msgstr "i-MSCP - Техподдержка / Новый тикет"
 msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "i-MSCP - Реселлер / Служба Поддержки / Просмотр тикетов"
 
-msgid "i-MSCP - Users/Add user"
-msgstr "i-MSCP - Пользователи / Добавить пользователя"
+msgid "Invalide domain expiration date."
+msgstr ""
+
+msgid "Domain expiration date must be filled."
+msgstr ""
+
+msgid "Domain already registered on the system."
+msgstr ""
+
+msgid "Master domain cannot be used."
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values."
+msgstr ""
+
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr ""
+"У вас нет хостинг планов. Свяжитесь с вашим системным администратором."
+
+msgid "i-MSCP - Users/Add domain account - step 1"
+msgstr ""
 
 msgid "Domain expire date"
 msgstr ""
@@ -5390,15 +5372,44 @@ msgstr "Персонализировать шаблон"
 msgid "Next step"
 msgstr "Следующий шаг"
 
-msgid "You have no hosting plans. Please contact your system administrator."
+msgid "Incorrect subdomains limit."
 msgstr ""
-"У вас нет хостинг планов. Свяжитесь с вашим системным администратором."
 
-msgid "i-MSCP - User/Add user(step2)"
-msgstr "i-MSCP - Пользователь / Добавить пользователя (шаг 2)"
+msgid "Incorrect aliases limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
+
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
+msgid "Incorrect SQL users limit."
+msgstr ""
+
+msgid "SQL databases limit is not <i>disabled</i>."
+msgstr ""
+
+msgid "Incorrect traffic limit."
+msgstr ""
+
+msgid "Incorrect disk quota limit."
+msgstr ""
+
+msgid "The i-MSCP application installer needs PHP to enable it."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain account - step 2"
+msgstr ""
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Максимум доменов<br><i>(-1 отключено, 0 неограниченно)</i>"
+
+msgid "Custom DNS support"
+msgstr ""
 
 msgid "Apache logs"
 msgstr "Журнал Apache"
@@ -5406,17 +5417,35 @@ msgstr "Журнал Apache"
 msgid "Awstats"
 msgstr "Статистика AwStats"
 
-msgid "Domain data has been altered. Please enter again"
-msgstr "Данные по домену изменились. Пожалуйста введите снова"
+msgid "Domain data were been altered. Please try again."
+msgstr ""
 
-msgid "i-MSCP - User/Add user"
-msgstr "i-MSCP - Пользователь / Добавить пользователя"
+msgid "i-MSCP - User/Add domain account - step 3"
+msgstr ""
 
 msgid "Add other domains to this account"
 msgstr "Добавить другие домены в эту учетную запись"
 
+msgid "Domain already regiostered on the system."
+msgstr ""
+
+msgid "Wrong syntax in forward URL."
+msgstr ""
+
+msgid "Wrong hostname in forward URL."
+msgstr ""
+
+msgid "Mount point already in use."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain alias"
+msgstr ""
+
 #, php-format
 msgid "System error with Domain Id: %d"
+msgstr ""
+
+msgid "Domain alias scheduled for creation."
 msgstr ""
 
 msgid "i-MSCP - Users/Edit"
@@ -5427,6 +5456,39 @@ msgstr "Список пользователей"
 
 msgid "This reseller has no domains yet."
 msgstr "У реселлера пока что нет доменов."
+
+msgid "View aliases"
+msgstr "Смотреть алиасы"
+
+msgid "You do not have customers."
+msgstr ""
+
+#, php-format
+msgid "%1$s of %2$s MB"
+msgstr "%1$s из %2$s Мб"
+
+#, php-format
+msgid "%1$s of <b>unlimited</b> MB"
+msgstr "%1$s из <b>неограниченно</b> Мб"
+
+msgid "Domain account scheduled for creation."
+msgstr ""
+
+msgid "User data were succefully updated."
+msgstr ""
+
+msgid "User data were not updated."
+msgstr ""
+
+msgid ""
+"This user has domain record !<br>First remove the domain from the system."
+msgstr ""
+
+msgid "User scheduled for deletion."
+msgstr ""
+
+msgid "User was not deleted."
+msgstr "Пользователь не был удален."
 
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Пользователи"
@@ -5443,37 +5505,5 @@ msgstr "Редактировать пользователя"
 
 msgid "Bandwidth"
 msgstr "Полоса"
-
-msgid "View aliases"
-msgstr "Смотреть алиасы"
-
-msgid "You do not have customers."
-msgstr ""
-
-#, php-format
-msgid "%1$s of %2$s MB"
-msgstr "%1$s из %2$s Мб"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b> MB"
-msgstr "%1$s из <b>неограниченно</b> Мб"
-
-msgid "User data updated!"
-msgstr "Данные пользователя изменены!"
-
-msgid "User data not updated!"
-msgstr "Данные пользователя не изменены!"
-
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
-msgstr ""
-"У этого пользователя есть доменная запись!<br> Сперва удалите домен из "
-"системы!"
-
-msgid "User terminated!"
-msgstr "Пользователь завершил работу!"
-
-msgid "User not terminated!"
-msgstr "Пользователь не завершил работу!"
 
 

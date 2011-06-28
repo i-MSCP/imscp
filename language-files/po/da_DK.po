@@ -7,19 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-06-13 16:29+0200\n"
-"PO-Revision-Date: 2011-06-16 09:17+0000\n"
-"Last-Translator: HenrikS <henrik@schytte.net>\n"
+"POT-Creation-Date: 2011-06-24 00:46+0200\n"
+"PO-Revision-Date: 2011-06-23 22:50+0000\n"
+"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: da_DK\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-
-#. Please ignore this entry
-msgid "encoding"
-msgstr "UTF-8"
 
 msgid "_: Localised language"
 msgstr "Dansk - Danish"
@@ -175,6 +171,9 @@ msgstr "Server porte"
 
 msgid "Rootkit Log"
 msgstr "Rootkit log"
+
+msgid "Internationalization"
+msgstr ""
 
 msgid "Services status"
 msgstr ""
@@ -354,9 +353,6 @@ msgstr "OK"
 msgid "Suspended"
 msgstr "Suspenderet"
 
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - Ordrer Panel"
-
 msgid "hide aliases"
 msgstr "Skjul aliaser"
 
@@ -370,8 +366,11 @@ msgstr "Gå tilbage"
 msgid "Unknown"
 msgstr "Ukendt"
 
-msgid "No language tables found in the database."
+msgid "No language tables found in database."
 msgstr ""
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - Ordrer Panel"
 
 msgid "Add user"
 msgstr "Tilføj bruger"
@@ -503,6 +502,10 @@ msgstr "internet Multi Server Kontrolpanel"
 
 msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© Copyright 2010 i-MSCP Team<br/>Alle rettigheder forbeholdes"
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
 
 msgid "i-MSCP - Multi Server Control Panel"
 msgstr "i-MSCP - Multi Server Kontrolpanel"
@@ -927,112 +930,8 @@ msgstr "Nej"
 msgid "Enabled"
 msgstr "Aktiveret"
 
-msgid "Incorrect subdomains limit."
-msgstr ""
-
-msgid "Incorrect aliases limit."
-msgstr ""
-
-msgid "Incorrect mail accounts limit."
-msgstr ""
-
-msgid "Incorrect FTP accounts limit."
-msgstr ""
-
-msgid "Incorrect SQL users limit."
-msgstr ""
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "SQL database grænse er <i>(deaktiveret)</i>!"
-
-msgid "Incorrect SQL databases limit."
-msgstr ""
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "SQL bruger grænse er <i>(deaktiveret)</i>!"
-
-msgid "Incorrect traffic limit."
-msgstr ""
-
-msgid "Incorrect disk quota limit."
-msgstr ""
-
-msgid "The application installer needs PHP to enable."
-msgstr ""
-
-msgid "The application installer of the users reseller is not activated."
-msgstr ""
-
-msgid "Subdomain"
-msgstr "Subdomæne"
-
-msgid "Alias"
-msgstr "Alias"
-
-msgid "Mail"
-msgstr "Mail"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Database"
-msgstr "SQL Database"
-
-msgid "SQL User"
-msgstr "SQL Bruger"
-
-msgid "Traffic"
-msgstr "Trafik"
-
-msgid "Disk"
-msgstr "Disk"
-
-msgid "Domain properties could not be updated."
-msgstr ""
-
-msgid "Domain properties updated successfully!"
-msgstr "Domæne Egenskaber opdateret succesfuldt."
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "<em>%s</em> servicen kan ikke deaktiveres!"
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "Der er <em>%s</em> records på systemet!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "<em>%s</em> service kan ikke være begrænset!"
-
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr ""
-"Det angivet antal er mindre end <em>%s</em> records, faktisk på systemet!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "<em>%s</em> service kan ikke deaktiveres!"
-
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "Der er <em>%s</em> filer på systemet!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "<em>%s</em> service kan ikke være ubegrænset!"
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "Der er forhandler begrænsning for <em>%s</em> service!"
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "Du overskrider forhandler grænsen for <em>%s</em> service!"
-
-msgid "i-MSCP - Admin/Edit Domain"
-msgstr "i-MSCP - Admin/Rediger Domæne"
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Domæne/Rediger"
 
 msgid "Edit Domain"
 msgstr "Rediger domæne"
@@ -1079,6 +978,9 @@ msgstr "Anullér"
 msgid "Yes"
 msgstr "Ja"
 
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
 msgid ""
 "In case 'Domain expire' is 'N/A', the expiration date will be set from "
 "today."
@@ -1086,26 +988,114 @@ msgstr ""
 "I tilfælde af 'Domæne udløbe' er 'N/A', vil udløbsdatoen blive fastsat fra i"
 " dag."
 
-msgid "or Check for <strong>never Expire</strong>"
-msgstr ""
-
 msgid ""
-"You cannot access this page directly. You must switch to reseller level."
+"User does not exist or you do not have permission to access this interface!"
+msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
+
+msgid "Incorrect subdomains limit!"
+msgstr "Ukorrekt subdomæne grænse!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Ukorrekt alias grænse!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Ukorrekt mail konti grænse!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Ukorrekt FTP konti grænse!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Ukorrekt SQL bruger grænse!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "SQL database grænse er <i>(deaktiveret)</i>!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Ukorrekt SQL databaser grænse!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQL bruger grænse er <i>(deaktiveret)</i>!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Ukorrekt trafik grænse!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Ukorrekt disk kvota grænse!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
 msgstr ""
 
+msgid "Subdomain"
+msgstr "Subdomæne"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Mail"
+msgstr "Mail"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "SQL Database"
+
+msgid "SQL User"
+msgstr "SQL Bruger"
+
+msgid "Traffic"
+msgstr "Trafik"
+
+msgid "Disk"
+msgstr "Disk"
+
+msgid "Domain properties could not be updated!"
+msgstr "Domæne egenskaber kunne ikke opdateres!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domæne Egenskaber opdateret succesfuldt."
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "<em>%s</em> servicen kan ikke deaktiveres!"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "Der er <em>%s</em> records på systemet!"
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled!"
+msgstr ""
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited!"
+msgstr "<em>%s</em> servicen kan ikke være begrænset!"
+
+#, php-format
 msgid ""
-"Unable to update domain properties: The domain does not exist or is an "
-"orphan."
+"Specified number is smaller than <em>%s</em> records, present on the system!"
 msgstr ""
+"Det angivet antal er mindre end <em>%s</em> records, faktisk på systemet!"
 
-msgid "Unable to update domain: Domain ID not found."
-msgstr ""
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Der er <em>%s</em> filer på systemet!"
 
-msgid "Unable to edit domain: The domain does not exist or is an orphan."
-msgstr ""
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited!"
+msgstr "<em>%s</em> servicen kan ikke være ubegrænset!"
 
-msgid "Unable to edit domain: ID not found."
-msgstr ""
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Der er forhandler begrænsning for <em>%s</em> service!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "Du overskrider forhandler grænsen for <em>%s</em> service!"
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - Domæne Statistik Data"
@@ -1276,33 +1266,6 @@ msgstr "Ukorrekt pris syntaks!"
 
 msgid "Incorrect setup fee syntax!"
 msgstr "Ukorrekt setup gebyr syntaks!"
-
-msgid "Incorrect subdomains limit!"
-msgstr "Ukorrekt subdomæne grænse!"
-
-msgid "Incorrect aliases limit!"
-msgstr "Ukorrekt alias grænse!"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Ukorrekt mail konti grænse!"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "Ukorrekt FTP konti grænse!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Ukorrekt SQL databaser grænse!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Ukorrekt SQL bruger grænse!"
-
-msgid "Incorrect traffic limit!"
-msgstr "Ukorrekt trafik grænse!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Ukorrekt disk kvota grænse!"
-
-msgid "The i-MSCP application installer needs PHP to enable it!"
-msgstr ""
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "Der findes allerede en hosting plan med det indtastede navn!"
@@ -1529,11 +1492,17 @@ msgstr "i-MSCP - Admin/Ændre Sprog"
 msgid "Choose your default language"
 msgstr "Vælg standard sprog"
 
-msgid "Error we have user that uses that language!"
+msgid "You can't delete system language."
 msgstr ""
 
-msgid "Language was removed!"
-msgstr "Sproget blev fjernet!"
+msgid "Wrong language table name."
+msgstr ""
+
+msgid "This language is used by one or more users."
+msgstr ""
+
+msgid "Language was successfully removed."
+msgstr ""
 
 msgid "Reseller list is empty!"
 msgstr "Forhandler liste er tom!"
@@ -1647,37 +1616,40 @@ msgstr "Fjern"
 msgid "%d messages translated"
 msgstr "%d meddelser oversat"
 
-msgid "Gzipped"
+msgid "Language file no readable."
 msgstr ""
 
-msgid "Upload file error!"
-msgstr "Fejl under upload af fil!"
-
-msgid "You can upload only text files!"
-msgstr "Du kan kun uploade tekst filer!"
-
-msgid "Could not read language file!"
-msgstr "Kunne ikke læse sprog fil!"
-
-msgid "Uploaded file is not a valid language file!"
-msgstr "Den uploaded fil er ikke en gyldig sprog fil!"
-
-msgid "Uploaded file does not contain language information!"
+msgid "The file does not contain all the necessary information."
 msgstr ""
 
 #, php-format
 msgid "%s added new language: %s"
 msgstr ""
 
-msgid "New language installed!"
-msgstr "Nyt sprog installeret!"
+msgid "Language was successfully installed."
+msgstr ""
 
 #, php-format
 msgid "%s updated language: %s"
 msgstr ""
 
-msgid "Language was updated!"
-msgstr "Sproget blev opdateret!"
+msgid "Language was successfully updated."
+msgstr ""
+
+msgid "Unable to read the language file."
+msgstr ""
+
+msgid "The file doesn't contains any content"
+msgstr ""
+
+msgid "The 'Language' header doesn't contains the required value"
+msgstr ""
+
+msgid "The language file doesn't contains the required 'Language' header."
+msgstr ""
+
+msgid "No headers found in language file."
+msgstr ""
 
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP - Admin/Internationalisering"
@@ -1691,17 +1663,22 @@ msgstr "Meddelser"
 msgid "Panel default language"
 msgstr "Vælg standard sprog"
 
-msgid "Install new language"
-msgstr "Installér nyt sprog"
+msgid "Install / Update language"
+msgstr ""
 
 msgid "Language file"
 msgstr "Sprogfil"
 
-msgid "Install"
-msgstr "Installér"
+msgid "Install / Update"
+msgstr ""
 
 msgid "Export"
 msgstr "Eksportér"
+
+msgid ""
+"<strong>Note:</strong> You can't delete the system language, and any "
+"language that is currently used by one or more users."
+msgstr ""
 
 msgid "Incorrect data input!"
 msgstr "Ukorrekt data input!"
@@ -2076,14 +2053,14 @@ msgid "Error: Only positive numbers are allowed!"
 msgstr ""
 
 #, php-format
-msgid "%d configuration parameter(s) was updated!"
+msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d configuration parameter(s) was created!"
+msgid "%d configuration parameter(s) have/has been created."
 msgstr ""
 
-msgid "Nothing's been changed!"
+msgid "Nothing's been changed."
 msgstr ""
 
 msgid "Activation link expire time (minutes)"
@@ -2201,6 +2178,9 @@ msgstr ""
 
 msgid "Maximal number of labels for subdomains"
 msgstr "Maximalt antal labels for subDomæner "
+
+msgid "Upload file error!"
+msgstr "Fejl under upload af fil!"
 
 msgid "You can only upload images!"
 msgstr "Du kan kun uploade billeder!"
@@ -3370,10 +3350,6 @@ msgstr "FTP konto data opdateret!"
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Bruger/Rediger FTP Konto"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "Bruger eksistere ikke, eller du har ikke adgang til dette interface!"
-
 msgid "Edit FTP user"
 msgstr "Rediger FTP-bruger"
 
@@ -3573,8 +3549,8 @@ msgstr "Diskforbrug"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "User language updated successfully!"
-msgstr "Bruger sprog opdateret!"
+msgid "Language updated successfully."
+msgstr ""
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - Bruger/Ændre Sprog"
@@ -3898,6 +3874,9 @@ msgstr ""
 
 msgid "Are you sure to install this package?"
 msgstr ""
+
+msgid "Install"
+msgstr "Installér"
 
 #, php-format
 msgid ""
@@ -4658,8 +4637,8 @@ msgstr "%s's domænet er udløbet!"
 msgid "You entered an incorrect password!"
 msgstr ""
 
-msgid "Request from foreign host was blocked!"
-msgstr "Forspørgelse fra fremmed host blev blokkeret!"
+msgid "Request from foreign host was blocked."
+msgstr ""
 
 msgid "You do not have permission to access this interface!"
 msgstr "Du har ikke adgang til denne brugerflade!"
@@ -4983,6 +4962,12 @@ msgstr "Håndtér alias"
 msgid "Real domain"
 msgstr "Hoved domæne"
 
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
 msgid "There is no user records for this reseller to add an alias for."
 msgstr "Der er ingen brugerdata for denne forhandler til at tilføje et alias."
 
@@ -4994,28 +4979,6 @@ msgstr "i-MSCP - Rundsend"
 
 msgid "Circular"
 msgstr "Rundsend"
-
-msgid "i-MSCP - Domain/Edit"
-msgstr "i-MSCP - Domæne/Rediger"
-
-msgid "Domain properties could not be updated!"
-msgstr "Domæne egenskaber kunne ikke opdateres!"
-
-#, php-format
-msgid "The <em>%s</em> have to be disabled!"
-msgstr ""
-
-#, php-format
-msgid "The admin has <em>%s</em> disabled on this system!"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited!"
-msgstr "<em>%s</em> servicen kan ikke være begrænset!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited!"
-msgstr "<em>%s</em> servicen kan ikke være ubegrænset!"
 
 msgid "i-MSCP - Reseller/Main Index"
 msgstr "i-MSCP - Forhandler/Hoved Index"
@@ -5229,7 +5192,7 @@ msgid ""
 "the new status!"
 msgstr ""
 
-msgid "The package is corrupt. Please correct it!"
+msgid "The package is corrupt. Please correct it."
 msgstr ""
 
 msgid ""
@@ -5238,7 +5201,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "This package already exist in the administrator software depot!"
+msgid "This package already exist in the administrator software depot."
 msgstr ""
 
 msgid "Package already exist in your software depot!"
@@ -5250,7 +5213,7 @@ msgid ""
 "/>Refresh your site to see the new status!"
 msgstr ""
 
-msgid "This package already exist in your software depot!"
+msgid "This package already exist in your software depot."
 msgstr ""
 
 msgid "You do not have any software uploaded yet"
@@ -5259,27 +5222,27 @@ msgstr ""
 msgid "You do not have permissions to upload software"
 msgstr ""
 
-#, php-format
-msgid ""
-"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgid "Unable to read xml file for web softwares."
 msgstr ""
 
 #, php-format
-msgid ""
-"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
-" URL!"
+msgid "Could not upload the file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
 #, php-format
 msgid ""
-"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
-"MB"
+"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
 msgstr ""
 
-msgid "ERROR: Remote File not found!"
+#, php-format
+msgid ""
+"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
 msgstr ""
 
-msgid "ERROR: Could not upload the file. File not found!"
+msgid "Remote File not found!"
+msgstr ""
+
+msgid "Could not upload the file. File not found!"
 msgstr ""
 
 msgid "Software available"
@@ -5312,8 +5275,27 @@ msgstr "i-MSCP - Support system - Ny Support sag"
 msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "i-MSCP - Forhandler : Support System: Se Biletter"
 
-msgid "i-MSCP - Users/Add user"
-msgstr "i-MSCP - Bruger/Tilføj bruger"
+msgid "Invalide domain expiration date."
+msgstr ""
+
+msgid "Domain expiration date must be filled."
+msgstr ""
+
+msgid "Domain already registered on the system."
+msgstr ""
+
+msgid "Master domain cannot be used."
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values."
+msgstr ""
+
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr ""
+"Du har ingen hosting planer. Venligst kontakt din system administrator."
+
+msgid "i-MSCP - Users/Add domain account - step 1"
+msgstr ""
 
 msgid "Domain expire date"
 msgstr "Domæne udløbsdato"
@@ -5327,15 +5309,44 @@ msgstr "Personligt tema"
 msgid "Next step"
 msgstr "Næste trin"
 
-msgid "You have no hosting plans. Please contact your system administrator."
+msgid "Incorrect subdomains limit."
 msgstr ""
-"Du har ingen hosting planer. Venligst kontakt din system administrator."
 
-msgid "i-MSCP - User/Add user(step2)"
-msgstr "i-MSCP - Bruger/Tilføj bruger(trin 2)"
+msgid "Incorrect aliases limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
+
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
+msgid "Incorrect SQL users limit."
+msgstr ""
+
+msgid "SQL databases limit is not <i>disabled</i>."
+msgstr ""
+
+msgid "Incorrect traffic limit."
+msgstr ""
+
+msgid "Incorrect disk quota limit."
+msgstr ""
+
+msgid "The i-MSCP application installer needs PHP to enable it."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain account - step 2"
+msgstr ""
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max domæner<br><i>(-1 deaktiveret, 0 ubegrænset)</i>"
+
+msgid "Custom DNS support"
+msgstr ""
 
 msgid "Apache logs"
 msgstr "Apache logs"
@@ -5343,18 +5354,36 @@ msgstr "Apache logs"
 msgid "Awstats"
 msgstr "Awstats"
 
-msgid "Domain data has been altered. Please enter again"
-msgstr "Domæne data er ændret. Skriv igen"
+msgid "Domain data were been altered. Please try again."
+msgstr ""
 
-msgid "i-MSCP - User/Add user"
-msgstr "i-MSCP - Bruger/Tilføj bruger"
+msgid "i-MSCP - User/Add domain account - step 3"
+msgstr ""
 
 msgid "Add other domains to this account"
 msgstr "Tilføj andre domæner til denne konto"
 
+msgid "Domain already regiostered on the system."
+msgstr ""
+
+msgid "Wrong syntax in forward URL."
+msgstr ""
+
+msgid "Wrong hostname in forward URL."
+msgstr ""
+
+msgid "Mount point already in use."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain alias"
+msgstr ""
+
 #, php-format
 msgid "System error with Domain Id: %d"
 msgstr "Systemfejl med Domæne Id: %d"
+
+msgid "Domain alias scheduled for creation."
+msgstr ""
 
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Bruger/Rediger"
@@ -5364,6 +5393,39 @@ msgstr "Bruger liste"
 
 msgid "This reseller has no domains yet."
 msgstr "Denne Forhandler har endnu ingen Domæner."
+
+msgid "View aliases"
+msgstr "Vis aliaser"
+
+msgid "You do not have customers."
+msgstr "Du har ingen kunder"
+
+#, php-format
+msgid "%1$s of %2$s MB"
+msgstr "%1$s af %2$s MB"
+
+#, php-format
+msgid "%1$s of <b>unlimited</b> MB"
+msgstr "%1$s af <b>ubegrænset</b> MB"
+
+msgid "Domain account scheduled for creation."
+msgstr ""
+
+msgid "User data were succefully updated."
+msgstr ""
+
+msgid "User data were not updated."
+msgstr ""
+
+msgid ""
+"This user has domain record !<br>First remove the domain from the system."
+msgstr ""
+
+msgid "User scheduled for deletion."
+msgstr ""
+
+msgid "User was not deleted."
+msgstr ""
 
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Brugere"
@@ -5380,37 +5442,5 @@ msgstr "Rediger Bruger"
 
 msgid "Bandwidth"
 msgstr "Trafik"
-
-msgid "View aliases"
-msgstr "Vis aliaser"
-
-msgid "You do not have customers."
-msgstr "Du har ingen kunder"
-
-#, php-format
-msgid "%1$s of %2$s MB"
-msgstr "%1$s af %2$s MB"
-
-#, php-format
-msgid "%1$s of <b>unlimited</b> MB"
-msgstr "%1$s af <b>ubegrænset</b> MB"
-
-msgid "User data updated!"
-msgstr "Bruger data opdateret!"
-
-msgid "User data not updated!"
-msgstr "Bruger data ikke opdateret!"
-
-msgid ""
-"This user has domain record !<br>First remove the domain from the system!"
-msgstr ""
-"Denne bruger har et domæne! <br>For at slette brugere skal du første slette "
-"domænet!"
-
-msgid "User terminated!"
-msgstr "Bruger slettet!"
-
-msgid "User not terminated!"
-msgstr "Bruger ikke slettet!"
 
 
