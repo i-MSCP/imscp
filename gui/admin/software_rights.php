@@ -196,12 +196,12 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		$software_id = $_POST['id'];
 	} else {
 		set_page_message(tr('Wrong software id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 
 } else {
 	set_page_message(tr('Wrong software id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }
 
 $tpl->assign(

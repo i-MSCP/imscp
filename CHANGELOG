@@ -8,8 +8,11 @@ i-MSCP 1.0.1.4 (beta 4)
 Distributions:
 
 Features / Enhancements:
-
+    Gui:
+        Core:
+            - Added #103: Enhancement - Admin should have the rights to delete packages
 Tickets:
+    - Fixed #101: Defect - Missing messages in Software Installer
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)

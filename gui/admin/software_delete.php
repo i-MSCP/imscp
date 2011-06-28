@@ -64,7 +64,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		$software_id = $_POST['id'];
 	} else {
 		set_page_message(tr('Wrong software id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 	
 	$query = "
@@ -84,7 +84,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 
 	$query_res = "
@@ -128,13 +128,17 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		";
 		$res = exec_query($delete, $rs->fields['software_id']);
 		$res = exec_query($delete_master, $rs->fields['software_id']);
+        echo "hallo";
 		set_page_message(tr('Software was deleted.'), 'success');
-		header('Location: software_manage.php');
-	}else{
+        redirectTo('software_manage.php');
+	} else {
 		if(isset($_POST['id']) && is_numeric($_POST['id']) && $_POST['uaction'] === 'send_delmessage') {
 			if (!empty($_POST['id']) && !empty($_POST['delete_msg_text'])) {
 				send_deleted_sw($rs->fields['reseller_id'], $rs->fields['software_archive'].'.tar.gz', $rs->fields['software_id'], 'Software '.$rs->fields['software_name'].' (V'.$rs->fields['software_version'].')', clean_input($_POST['delete_msg_text']));
-				$del_path = $cfg->GUI_SOFTWARE_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
+				update_existing_client_installations_res_upload(
+			        $rs->fields['software_id'], $rs->fields['reseller_id'], $rs->fields['software_id'], TRUE
+		        );
+                $del_path = $cfg->GUI_SOFTWARE_DIR."/".$rs->fields['reseller_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 				@unlink($del_path);
 				$delete="
 					DELETE FROM
@@ -144,7 +148,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				";
 				$res = exec_query($delete, $rs->fields['software_id']);
 				set_page_message(tr('Software was deleted.'), 'success');
-				header('Location: software_manage.php');
+				redirectTo('software_manage.php');
 			} else {
 				set_page_message(tr('Fill out a message text!'), 'error');
 			}
@@ -176,9 +180,8 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	
 	$tpl->parse('PAGE', 'page');
 	$tpl->prnt();
-
-	unsetMessages();
+    unsetMessages();
 } else {
 	set_page_message(tr('Wrong software id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }

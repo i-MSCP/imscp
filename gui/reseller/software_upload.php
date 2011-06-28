@@ -607,6 +607,7 @@ $tpl->assign(
 			'TR_UPLOAD_SOFTWARE_BUTTON' 	=> tr('Upload now'),
 			'TR_UPLOAD_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
 			'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete this package?', true),
+            'TR_MESSAGE_INSTALL' 		    => tr('Are you sure to install this package from the webdepot?', true),
 			'TR_SOFTWARE_NAME_ASC' 			=> 'software_upload.php?sortby=name&order=asc',
 			'TR_SOFTWARE_NAME_DESC' 		=> 'software_upload.php?sortby=name&order=desc',
 			'TR_SOFTWARE_TYPE_ASC' 			=> 'software_upload.php?sortby=type&order=asc',

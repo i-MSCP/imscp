@@ -29,6 +29,14 @@
 				$('span.i_help').iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
+            function action_import() {
+				if (!confirm("{TR_MESSAGE_IMPORT}"))
+				return false;
+			}
+            function action_delete() {
+				if (!confirm("{TR_MESSAGE_DELETE}"))
+				return false;
+			}
 		/*]]>*/
 		</script>
 	</head>
@@ -71,27 +79,32 @@
             <table>
             	<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
-					<th width="90">{TR_SOFTWARE_INSTALLED}</th>
-					<th width="90">{TR_SOFTWARE_VERSION}</th>
-					<th width="90">{TR_SOFTWARE_LANGUAGE}</th>
-					<th width="90">{TR_SOFTWARE_TYPE}</th>
+                    <th width="90" style="text-align: center">{TR_SOFTWARE_IMPORT}</th>
+                    <th width="90" style="text-align: center">{TR_SOFTWARE_DELETE}</th>
+					<th width="90" style="text-align: center">{TR_SOFTWARE_INSTALLED}</th>
+					<th width="90" style="text-align: center">{TR_SOFTWARE_VERSION}</th>
+					<th width="90" style="text-align: center">{TR_SOFTWARE_LANGUAGE}</th>
+					<th width="90" style="text-align: center">{TR_SOFTWARE_TYPE}</th>
 				</tr>
 				<!-- BDP: no_softwaredepot_list -->
 				<tr>
-					<td colspan="5"><div class="warning">{NO_SOFTWAREDEPOT}</div></td>
-				</tr>
-				<!-- EDP: no_softwaredepot_list -->
-				<!-- BDP: list_softwaredepot -->
-				<tr>
 					<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
-					<td align="center"><span class="icon i_help" id="tld_help" title="{SW_INSTALLED}">help</span></td>
-					<td>{TR_VERSION}</td>
-					<td>{TR_LANGUAGE}</td>
-					<td>{TR_TYPE}</td>
+                    <!-- BDP: software_is_in_softwaredepot -->
+                    <td style="text-align: center">{IS_IN_SOFTWAREDEPOT}</td>
+                    <td style="text-align: center">{IS_IN_SOFTWAREDEPOT}</td>
+                    <!-- EDP: software_is_in_softwaredepot -->
+                    <!-- BDP: software_is_not_in_softwaredepot -->
+                    <td style="text-align: center"><a href="{IMPORT_LINK}" class="icon i_app_download" onClick="return action_import()">{TR_IMPORT}</a></td>
+                    <td style="text-align: center"><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete()">{TR_DELETE}</a></td>
+                    <!-- EDP: software_is_not_in_softwaredepot -->
+					<td style="text-align: center"><span class="icon i_help" id="tld_help" title="{SW_INSTALLED}">help</span></td>
+					<td style="text-align: center">{TR_VERSION}</td>
+					<td style="text-align: center">{TR_LANGUAGE}</td>
+					<td style="text-align: center">{TR_TYPE}</td>
 				</tr>
 				<!-- EDP: list_softwaredepot -->
 				<tr>
-					<th colspan="5">{TR_SOFTWAREDEPOT_COUNT}:&nbsp;{TR_SOFTWAREDEPOT_NUM}</th>
+					<th colspan="7">{TR_SOFTWAREDEPOT_COUNT}:&nbsp;{TR_SOFTWAREDEPOT_NUM}</th>
 				</tr>
             </table>
             <br />

@@ -46,18 +46,20 @@ $tpl->define_dynamic('list_softwaredepot', 'page');
 $tpl->define_dynamic('no_softwaredepot_list', 'page');
 $tpl->define_dynamic('no_reseller_list', 'page');
 $tpl->define_dynamic('list_reseller', 'page');
+$tpl->define_dynamic('software_is_in_softwaredepot', 'page');
+$tpl->define_dynamic('software_is_not_in_softwaredepot', 'page');
 
 if (isset($_GET['id'])){
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		$reseller_id = $_GET['id'];
 	} else {
 		set_page_message(tr('Wrong reseller id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 
 } else {
 	set_page_message(tr('Wrong reseller id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }
 
 function get_installed_res_software ($tpl, $reseller_id) {
@@ -85,7 +87,6 @@ function get_installed_res_software ($tpl, $reseller_id) {
 		AND
 			a.`software_status` = 'ok' 
 		ORDER BY
-			a.`reseller_id` ASC,
 			a.`software_type` ASC,
 			a.`software_name` ASC
 	";
@@ -125,19 +126,38 @@ function get_installed_res_software ($tpl, $reseller_id) {
 				}
 				if ($rs->fields['swdepot'] == "yes") {
 					$tpl->assign('TR_NAME', tr('%1$s - (Softwaredepot)', $rs->fields['name']));
+                    $tpl->assign('SOFTWARE_IS_NOT_IN_SOFTWAREDEPOT', '');
+                    $tpl->parse('SOFTWARE_IS_IN_SOFTWAREDEPOT', 'software_is_in_softwaredepot');
 				} else {
-					$tpl->assign('TR_NAME', $rs->fields['name']);
+                    $import_url = "software_import.php?id=".$rs->fields['id'];
+                    $del_url 	= "software_delete.php?id=".$rs->fields['id'];
+                    $tpl->assign(
+                            array(
+                                'TR_NAME'       =>  $rs->fields['name'],
+                                'IMPORT_LINK'   => $import_url,
+                                'DELETE_LINK' 	=> $del_url,
+                            )
+                        );
+                    $tpl->parse('SOFTWARE_IS_NOT_IN_SOFTWAREDEPOT', 'software_is_not_in_softwaredepot');
+                    $tpl->assign('SOFTWARE_IS_IN_SOFTWAREDEPOT', '');
 				}
 				$tpl->assign(
 						array(
-							'LINK_COLOR' 		=> '#000000',
-							'TR_TOOLTIP' 		=> $rs->fields['description'],
-							'TR_VERSION' 		=> $rs->fields['version'],
-							'TR_LANGUAGE' 		=> $rs->fields['language'],
-							'TR_TYPE' 			=> $rs->fields['type'],
-							'TR_ADMIN' 			=> 'List',
-							'TR_RESELLER' 		=> $rs->fields['admin'],
-							'TR_SOFTWARE_DEPOT' => tr('%1$s`s - Software', $rs->fields['admin'])
+							'LINK_COLOR' 		    => '#000000',
+							'TR_TOOLTIP' 		    => $rs->fields['description'],
+							'TR_VERSION' 		    => $rs->fields['version'],
+							'TR_LANGUAGE' 		    => $rs->fields['language'],
+							'TR_TYPE' 			    => $rs->fields['type'],
+							'TR_ADMIN' 			    => 'List',
+							'TR_RESELLER' 		    => $rs->fields['admin'],
+							'TR_SOFTWARE_DEPOT'     => tr('%1$s`s - Software', $rs->fields['admin']),
+                            'TR_IMPORT'             => tr('Import'),
+                            'TR_SOFTWARE_IMPORT'    => tr('Depot import'),
+                            'TR_SOFTWARE_DELETE'    => tr('Delete'),
+                            'TR_DELETE'             => tr('Delete'),
+                            'IS_IN_SOFTWAREDEPOT'   => tr('N/A'),
+                            'TR_MESSAGE_IMPORT' 	=> tr('Are you sure you want to import this package into the software depot?', true),
+                            'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete this package?', true)
 							)
 						);
 			$tpl->parse('LIST_SOFTWAREDEPOT', '.list_softwaredepot');
@@ -165,7 +185,7 @@ function get_installed_res_software ($tpl, $reseller_id) {
 			$tpl->assign('LIST_SOFTWAREDEPOT', '');
 		} else {
 			set_page_message(tr('Wrong reseller id.'), 'error');
-			header('Location: software_manage.php');
+			redirectTo('software_manage.php');
 		}
 	}
 	return $rs->recordCount();

@@ -727,6 +727,7 @@ $tpl->assign(
 		'TR_MESSAGE_ACTIVATE' 			=> tr('Are you sure you want to activate this package?', true),
 		'TR_MESSAGE_IMPORT' 			=> tr('Are you sure you want to import this package into the software depot?', true),
 		'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete this package?', true),
+        'TR_MESSAGE_INSTALL' 		    => tr('Are you sure to install this package from the webdepot?', true),
 		'TR_ADMIN_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management')
 	)
 );

@@ -45,13 +45,11 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			`web_software`
 		WHERE
 			`software_id` = ?
-		AND
-			`software_active` = 0
 	";
 	$rs = exec_query($query, $_GET['id']);
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	} else {
 		$source_file = $cfg->GUI_SOFTWARE_DIR.'/'.$rs->fields['reseller_id'].'/'.$rs->fields['software_archive'].'-'.$rs->fields['software_id'].'.tar.gz';
 		$dest_file = $cfg->GUI_SOFTWARE_DEPOT_DIR.'/'.$rs->fields['software_archive'].'-'.$rs->fields['software_id'].'.tar.gz';
@@ -124,15 +122,13 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
         $db = iMSCP_Registry::get('db');
 		$sw_id = $db->insertId();
 		update_existing_client_installations_res_upload(
-			$sw_id, $rs->fields['software_name'], $rs->fields['software_version'],
-			$rs->fields['software_language'], $rs->fields['reseller_id'], $rs->fields['software_id'],
-			true
+			$sw_id, $rs->fields['reseller_id'], $rs->fields['software_id']
 		);
 		
-		set_page_message(tr('Software was imported succesfully.'), 'success');
-		header('Location: software_manage.php');
+		set_page_message(tr('Software was imported successfully.'), 'success');
+		redirectTo('software_manage.php');
 	}
 } else {
 	set_page_message(tr('Wrong software id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }

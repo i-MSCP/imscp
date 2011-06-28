@@ -39,7 +39,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		$software_id = $_POST['id'];
 	} else {
 		set_page_message(tr('Wrong software id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 	
 	if(isset($_POST['change']) && $_POST['change'] == "add"){
@@ -130,7 +130,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				}
 			}else{
 				set_page_message(tr('No Resellers found.'), 'error');
-				header('Location: software_rights.php?id='.$software_id);
+				redirectTo('software_rights.php?id='.$software_id);
 			}
 		}else{
 			exec_query(
@@ -157,7 +157,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			update_existing_client_installations_sw_depot($sw_id, $software_id, $reseller_id);
 		}
 		set_page_message(tr('Rights succesfully added.'), 'success');
-		header('Location: software_rights.php?id='.$software_id);
+		redirectTo('software_rights.php?id='.$software_id);
 	} else {
 		$reseller_id = $_GET['reseller_id'];
 		$delete = "
@@ -179,9 +179,9 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		exec_query($delete, array($software_id, $reseller_id));
 		exec_query($update, $software_id);
 		set_page_message(tr('Rights succesfully removed.'), 'success');
-		header('Location: software_rights.php?id='.$software_id);
+		redirectTo('software_rights.php?id='.$software_id);
 	}
 } else {
 	set_page_message(tr('Wrong software id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }

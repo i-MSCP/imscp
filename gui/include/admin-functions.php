@@ -301,19 +301,13 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
  * Must be documented
  *
  * @param  $software_id
- * @param  $software_name
- * @param  $software_version
- * @param  $software_language
  * @param int $reseller_id Reseller unique identifier
  * @param int $software_master_id
- * @param bool $sw_depot
+ * @param int $software_deleted
  * @return void
  */
-function update_existing_client_installations_res_upload($software_id, $software_name,
-    $software_version, $software_language, $reseller_id, $software_master_id = 0,
-    $sw_depot = false)
+function update_existing_client_installations_res_upload($software_id, $reseller_id, $software_master_id, $software_deleted = FALSE)
 {
-
     $query = "
         SELECT
             `domain_id`
@@ -329,52 +323,36 @@ function update_existing_client_installations_res_upload($software_id, $software
 
     if ($res->RecordCount() > 0) {
         while (!$res->EOF) {
-            if ($sw_depot) {
-                $updatequery = "
-					UPDATE
-						`web_software_inst`
-					SET
-						`software_id` = ?, `software_master_id` = ?,
-						`software_res_del` = 0
-					WHERE
-						`software_name` = ?
-					AND
-						`software_version` = ?
-					AND
-						`software_language` = ?
-					AND
-						`software_res_del` = 1
-					AND
-						`domain_id` = ?
-					;
-				";
-                exec_query($updatequery, array($software_id, $software_master_id,
-                                              $software_name, $software_version,
-                                              $software_language,
-                                              $res->fields['domain_id']));
+            if($software_deleted === FALSE) {
+                $update_query = "
+                    UPDATE
+                        `web_software_inst`
+                    SET
+                        `software_id` = ?, `software_master_id` = ?, `software_depot` = ?
+                    WHERE
+                        `software_id` = ?
+                    AND
+                        `domain_id` = ?
+                    ;
+                ";
+                exec_query($update_query, array($software_id, $software_master_id, 'yes',
+                                                $software_master_id, $res->fields['domain_id']
+                                                )
+                                            );
             } else {
-                $updatequery = "
-					UPDATE
-						`web_software_inst`
-					SET
-						`software_id` = ?, `software_res_del` = 0
-					WHERE
-						`software_name` = ?
-					AND
-						`software_version` = ?
-					AND
-						`software_language` = ?
-					AND
-						`software_res_del` = 1
-					AND
-						`domain_id` = ?
-					;
-				";
-                exec_query($updatequery, array($software_id, $software_name,
-                                              $software_version, $software_language,
-                                              $res->fields['domain_id']));
+                $update_query = "
+                    UPDATE
+                        `web_software_inst`
+                    SET
+                        `software_res_del` = 1
+                    WHERE
+                        `software_id` = ?
+                    AND
+                        `domain_id` = ?
+                    ;
+                ";
+                exec_query($update_query, array($software_id, $res->fields['domain_id']));
             }
-
             $res->MoveNext();
         }
     }
@@ -406,7 +384,7 @@ function update_existing_client_installations_sw_depot($software_id,
 
     if ($res->RecordCount() > 0) {
         while (!$res->EOF) {
-            $updatequery = "
+            $update_query = "
 				UPDATE
 					`web_software_inst`
 				SET
@@ -420,7 +398,7 @@ function update_existing_client_installations_sw_depot($software_id,
 				;
 			";
 
-            exec_query($updatequery, array($software_id, $software_master_id,
+            exec_query($update_query, array($software_id, $software_master_id,
                                           $res->fields['domain_id']));
             $res->MoveNext();
         }
@@ -517,7 +495,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
  * @param  $messageinput
  * @return void
  */
-function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messageinput)
+function send_deleted_sw($reseller_id, $file_name, $sw_id, $subject_input, $message_input)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -573,7 +551,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
                 $cfg['Version'] . " Service Mailer";
 
     // lets send mail to the reseller => new order
-    $subject = tr($subjectinput . ' was deleted by {ADMIN}!');
+    $subject = tr($subject_input . ' was deleted by {ADMIN}!');
     $message = tr('Dear {RESELLER},
 		Your uploaded software was deleted by {ADMIN}.
 
@@ -582,7 +560,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
 	Package ID: {SOFTWARE_ID}
 
 	Message from {ADMIN}:
-	' . $messageinput, true);
+	' . $message_input, true);
 
     $subject = str_replace($search, $replace, $subject);
     $message = str_replace($search, $replace, $message);

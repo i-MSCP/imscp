@@ -53,7 +53,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$rs = exec_query($query, array($_GET['id'], $_SESSION['user_id']));
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'));
-		header('Location: software_upload.php');
+		redirectTo('software_upload.php');
 	} else {
 		if ($rs->fields['software_depot'] == "no") {
 			$del_path = $cfg->GUI_SOFTWARE_DIR."/".$_SESSION['user_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
@@ -78,9 +78,9 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		";
 		$res = exec_query($delete, array($_GET['id'], $_SESSION['user_id']));
 		set_page_message(tr('Software was deleted.'));
-		header('Location: software_upload.php');
+		redirectTo('software_upload.php');
 	}
 } else {
 	set_page_message(tr('Wrong software id.'));
-	header('Location: software_upload.php');
+	redirectTo('software_upload.php');
 }

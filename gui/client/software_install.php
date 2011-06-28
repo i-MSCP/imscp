@@ -378,7 +378,7 @@ function get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_
 
   	if (!check_software_avail($software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
-		header('Location: software.php');
+		redirectTo('software.php');
 		exit;
   	} else {
 		gen_user_domain_list($tpl, $_SESSION['user_id']);
@@ -423,7 +423,7 @@ function get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_
 function gen_page_lists($tpl, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'), 'error');
-		header('Location: software.php');
+		redirectTo('software.php');
 		exit;
 	} else {
 		$software_id = $_GET['id'];
@@ -699,7 +699,7 @@ if (isset($_POST['Submit2'])) {
 			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, "not_required", "not_required", "not_required", "not_required", $install_username, $install_password, $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
 		}
 		send_request();
-		header('Location: software.php');
+		redirectTo('software.php');
 	}
 	if($rs->fields['software_db'] == "1") {
 		$tpl->assign(

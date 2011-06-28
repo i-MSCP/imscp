@@ -96,7 +96,7 @@ function get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_
 
 	if (!check_software_avail($software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
-		header('Location: software.php');
+		redirectTo('software.php');
 		exit;
 	} else {
 		$software_props = "
@@ -166,7 +166,7 @@ function get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_
 function gen_page_lists($tpl, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'), 'error');
-		header('Location: software.php');
+		redirectTo('software.php');
 		exit;
 	} else {
 		$software_id = $_GET['id'];

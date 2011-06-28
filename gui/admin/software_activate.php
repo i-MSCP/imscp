@@ -48,7 +48,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$rs = exec_query($query, $_GET['id']);
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	} else {
 		$update="
 			UPDATE
@@ -74,12 +74,6 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		";
 		$res = exec_query($query, $_GET['id']);
 		
-		update_existing_client_installations_res_upload(
-			$res->fields['software_id'], $res->fields['software_name'],
-			$res->fields['software_version'], $res->fields['software_language'],
-			$res->fields['reseller_id']
-		);
-		
 		send_activated_sw (
 			$res->fields['reseller_id'],
 			$res->fields['software_archive'].".tar.gz",
@@ -87,9 +81,9 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		);
 		
 		set_page_message(tr('Software was activated.'), 'success');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 } else {
 	set_page_message(tr('Wrong software id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }
