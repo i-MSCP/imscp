@@ -54,12 +54,12 @@ if (isset($_GET['id'])){
 		$reseller_id = $_GET['id'];
 	} else {
 		set_page_message(tr('Wrong reseller id.'), 'error');
-		header('Location: software_manage.php');
+		redirectTo('software_manage.php');
 	}
 
 } else {
 	set_page_message(tr('Wrong reseller id.'), 'error');
-	header('Location: software_manage.php');
+	redirectTo('software_manage.php');
 }
 
 $tpl->assign(
