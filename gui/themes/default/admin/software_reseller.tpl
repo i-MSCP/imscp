@@ -87,6 +87,11 @@
 					<th width="90" style="text-align: center">{TR_SOFTWARE_TYPE}</th>
 				</tr>
 				<!-- BDP: no_softwaredepot_list -->
+                <tr>
+					<td colspan="7"><div class="warning">{NO_SOFTWAREDEPOT}</div></td>
+				</tr>
+                <!-- EDP: no_softwaredepot_list -->
+                <!-- BDP: list_softwaredepot -->
 				<tr>
 					<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
                     <!-- BDP: software_is_in_softwaredepot -->

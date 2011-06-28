@@ -10,6 +10,7 @@ Distributions:
 Features / Enhancements:
     Gui:
         Core:
+            - Fixed #65:  Good practices - Software Installer - All shared functions must be put in specific file
             - Added #103: Enhancement - Admin should have the rights to delete packages
 Tickets:
     - Fixed #101: Defect - Missing messages in Software Installer

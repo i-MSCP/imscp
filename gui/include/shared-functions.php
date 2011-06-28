@@ -36,7 +36,7 @@
 
 
 /************************************************************************************
- * This file contains funtion that are used at many level (eg. admin, reseller, client)
+ * This file contains functions that are used at many level (eg. admin, reseller, client)
  */
 
 /************************************************************************************

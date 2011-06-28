@@ -100,6 +100,11 @@ require_once INCLUDEPATH . '/shared-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**
+ * Include i-MSCP app installer functions
+ */
+require_once INCLUDEPATH . '/sw-functions.php';
+
+/**
  * Bootstrap the i-MSCP environment, and default configuration
  *
  * @see {@link iMSCP_Bootstrap} class

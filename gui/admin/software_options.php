@@ -26,15 +26,6 @@
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/**
- *  Functions
- */
-
-
-/**
- * Main program
- */
-
 require '../include/imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
