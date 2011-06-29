@@ -324,9 +324,9 @@
                 <div style="clear: both;"></div>
                 <div>
                     <ul>
-                        <li><a class="pma" href="{TR_PMA_LINK}">{TR_PHPMYADMIN}</a></li>
-                        <li><a class="filemanager" href="{TR_FTP_LINK}">FileManager</a></li>
-                        <li><a class="webmail" href="{TR_WEBMAIL_LINK}">{TR_WEBMAIL}</a></li>
+                        <li><a class="pma" href="{TR_PMA_LINK}" target="blank">{TR_PHPMYADMIN}</a></li>
+                        <li><a class="filemanager" href="{TR_FTP_LINK}" target="blank">FileManager</a></li>
+                        <li><a class="webmail" href="{TR_WEBMAIL_LINK}" target="blank">{TR_WEBMAIL}</a></li>
                     </ul>
                 </div>
             </div>
