@@ -221,17 +221,17 @@ function generate_als_list($tpl, $reseller_id) {
 		}
 
 		if (isset($_SESSION['search_for'])) {
-            set_page_message(tr('Not found user records matching the search criteria!', 'info'));
+            set_page_message(tr('Not found user records matching the search criteria', 'warning'));
 		} else {
 			if (isset($_SESSION['almax'])) {
 				if ($_SESSION['almax'] === '_yes_') {
-                    set_page_message(tr('Domain alias limit reached!'), 'warning');
+                    set_page_message(tr('Domain aliases limit reached.'), 'error');
                 } else {
-                    set_page_message(tr('You have no alias records.'), 'info');
+                    set_page_message(tr('You do not have domain aliases.'), 'info');
                 }
 				unset($_SESSION['almax']);
 			} else {
-                set_page_message(tr('You have no alias records.'), 'info');
+                set_page_message(tr('You do not have domain aliases.'), 'info');
 			}
 		}
 		return;
@@ -341,47 +341,47 @@ function generate_als_messages() {
     if(isset($_SESSION['user_page_message'])) {
         return;
 	} elseif (isset($_SESSION["dahavemail"])) {
-        set_page_message(tr('Domain alias you are trying to remove has email accounts !<br>First remove them!'), 'warning');
+        set_page_message(tr('Domain alias you are trying to remove has email accounts.<br>First remove them.'), 'warning');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION["dahaveftp"])) {
-        set_page_message(tr('Domain alias you are trying to remove has FTP accounts!<br>First remove them!'), 'warning');
+        set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br>First remove them.'), 'warning');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION["aldel"])) {
 		if ('_yes_' === $_SESSION['aldel']) {
-            set_page_message(tr('Domain alias added for termination!'), 'info');
+            set_page_message(tr('Domain alias successfully scheduled for deletion.'), 'success');
         } else {
-            set_page_message(tr('Domain alias not added for termination!'), 'error');
+            set_page_message(tr('Domain alias not scheduled for deletion.'), 'error');
         }
 		unset($_SESSION['aldel']);
 	} elseif (isset($_SESSION['aladd'])) {
 		if ('_yes_' === $_SESSION['aladd']) {
-            set_page_message(tr('Domain alias added!'), 'success');
+            set_page_message(tr('Domain alias successfully scheduled for addition'), 'success');
         } else {
-            set_page_message(tr('Domain alias not added!'), 'error');
+            set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
         }
 		unset($_SESSION['aladd']);
 	} elseif (isset($_SESSION['aledit'])) {
 		if ('_yes_' === $_SESSION['aledit']) {
-            set_page_message(tr('Domain alias modified!'), 'success');
+            set_page_message(tr('Domain alias successfully modified'), 'success');
         } else {
-            set_page_message(tr('Domain alias not modified!'), 'error');
+            set_page_message(tr('Domain alias not modified.'), 'error');
         }
 		unset($_SESSION['aledit']);
 	} elseif (isset($_SESSION['orderaldel'])) {
 		if ('_no_' === $_SESSION['orderaldel']) {
-            set_page_message(tr('Ordered domain alias not deleted!'), 'error');
+            set_page_message(tr('Order for domain alias not deleted.'), 'error');
 		}
 		unset($_SESSION['orderaldel']);
 	} elseif (isset($_SESSION['orderalact'])) {
 		if ('_yes_' === $_SESSION['orderalact']) {
-            set_page_message(tr('Ordered domain alias activated!'), 'error');
+            set_page_message(tr('Dommain alias successfully scheduled for addition.'), 'success');
         } else {
-            set_page_message(tr('Ordered domain alias not activated!'), 'error');
+            set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
         }
 		unset($_SESSION['orderalact']);
 	} elseif (isset($_SESSION['almax'])) {
 		if ('_yes_' === $_SESSION['almax']) {
-            set_page_message(tr('Domain alias limit reached!'), 'error');
+            set_page_message(tr('Domain alias limit reached.'), 'error');
         }
 		unset($_SESSION['almax']);
 	}
