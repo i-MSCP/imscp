@@ -374,7 +374,7 @@ function generate_als_messages() {
 		unset($_SESSION['orderaldel']);
 	} elseif (isset($_SESSION['orderalact'])) {
 		if ('_yes_' === $_SESSION['orderalact']) {
-            set_page_message(tr('Dommain alias successfully scheduled for addition.'), 'success');
+            set_page_message(tr('Domain alias successfully scheduled for addition.'), 'success');
         } else {
             set_page_message(tr('Domain alias not scheduled for addition.'), 'error');
         }
