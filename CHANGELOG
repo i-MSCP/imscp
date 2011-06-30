@@ -16,6 +16,7 @@ Tickets:
 	- Fixed #113: Bug - Tree Builder only works with lowercase dirs
 	- Fixed #121: Bug - Users with domain set not to expire can not login
 	- Fixed #122: Bug - Lost password do not work
+	- Fixed #118: Update - PMA 3.4.3 released
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)

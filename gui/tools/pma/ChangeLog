@@ -1,5 +1,20 @@
-﻿phpMyAdmin - ChangeLog
+phpMyAdmin - ChangeLog
 ======================
+
+3.4.3.0 (2011-06-27)
+- bug #3311170 [sync] Missing helper icons in Synchronize
+- patch #3304473 [setup] Redefine a lable that was wrong
+- bug #3304544 [parser] master is not a reserved word
+- bug #3307616 [edit] Inline edit updates multiple duplicate rows
+- patch #3311539 [edit] Inline edit does not escape backslashes
+- bug #3313210 [interface] Columns class sometimes changed for nothing
+- patch #3313326 [interface] Some tooltips do not disappear
+- bug #3315720 [search] Fix search in non unicode tables
+- bug #3315741 [display] Inline query edit broken
+- patch #3317206 [privileges] Generate password option missing on new accounts
+- bug #3317293 [edit] Inline edit places HTML line breaks in edit area
+- bug #3319466 [interface] Inline query edit does not escape special characters
+- minor XSS (require a valid token)
 
 3.4.2.0 (2011-06-07)
 - bug #3301249 [interface] Iconic table operations does not remove inline edit label
