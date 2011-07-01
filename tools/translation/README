@@ -22,6 +22,7 @@ usage that ommit some parameters.
 With Transifex, the process is more simple except the first time because you have to
 install a specific client on your system to communicate with Transifex service.
 
+
 System Requirements
 -------------------
 - gettext
@@ -61,6 +62,7 @@ username = USERNAME
 Of course, you have to change the PASSWORD and USERNAME with your own Transifex login
 data.
 
+
 Updating translation files
 --------------------------
 
@@ -84,7 +86,6 @@ needed from your side.
 
 	$ cd {YOUR_WORKING_COPY}/gui/i18n
 	$ tx pull -a
-
 
 
 Compiling translation files

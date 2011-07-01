@@ -467,18 +467,39 @@ class iMSCP_Initializer
         ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
     }
 
-    /**
-     * Initialize translation libraries.
-     *
-     * <b>Note:</b> Not Yet Implemented
-     *
-     * @return void
-     * @todo Ask Jochen for the new i18n library and initialization processing
-     */
-    protected function _initializeI18n()
-    {
-        throw new iMSCP_Exception('Not Yet Implemented.');
-    }
+	/**
+	 * Initialize localization.
+	 *
+	 * Note: We are using the PHP-gettext library as gettext wrapper to be able to
+	 * use all locales same if they are not installed on the server. In case the
+	 * current locale is installed on the server, the navive gettext functions are
+	 * still used.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since i-MSCP 1.0.1.4
+	 * @return void
+	 */
+	protected function _initializeI18n()
+	{
+		require_once INCLUDEPATH . '/vendor/php-gettext/gettext.inc';
+
+		$locale = isset($_SESSION['user_def_lang'])
+			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
+
+		// Transitional code - will be removed ASAP
+		if (count($locale == 10)) {
+			$locale = substr($locale, 5);
+		}
+
+		T_setlocale(LC_MESSAGES, $locale . '.UTF-8');
+		T_bindtextdomain($locale, $this->_config->GUI_ROOT_DIR . '/l10n/locales');
+		T_bind_textdomain_codeset($locale, 'UTF-8');
+		T_textdomain($locale);
+
+		if (locale_emulation()) {
+			// TODO ask admin to install locale on server for better performances
+		}
+	}
 
     /**
      * Initialize logger.
