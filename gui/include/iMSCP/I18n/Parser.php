@@ -17,14 +17,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_I18n
- * @subpackage	Parser
- * @copyright	2010-2011 i-MSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN:$Id$
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_I18n
+ * @subpackage  Parser
+ * @copyright   2010-2011 i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     SVN: $Id$
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
@@ -81,15 +81,15 @@ abstract class iMSCP_I18n_Parser
 	 * Constructor.
 	 *
 	 * @throws iMSCP_i18n_Exception When file is not readable
-	 * @param $filePath Path to Machine object file
+	 * @param $filePath Path to gettext file
 	 */
 	public function __construct($filePath)
 	{
 		$filePath = (string)$filePath;
 
 		if (!is_readable($filePath)) {
-			require_once 'iMSCP/I18n/Exception.php';
-			throw new iMSCP_i18n_Exception("$filePath is not readable");
+			require_once 'iMSCP/I18n/Parser/Exception.php';
+			throw new iMSCP_i18n_Parser_Exception("$filePath is not readable");
 		}
 
 		$this->_filePath = $filePath;

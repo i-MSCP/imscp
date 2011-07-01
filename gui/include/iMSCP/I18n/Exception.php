@@ -18,12 +18,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_i18n
- * @copyright   2010-2011 by i-MSCP team
+ * @package     iMSCP_I18n
+ * @copyright   2010-2011 i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /** @see iMSCP_Exception */
@@ -32,10 +32,10 @@ require_once 'iMSCP/Exception.php';
 /**
  * Events Exception class.
  * 
- * @category    iMSCP
- * @package     iMSCP_i18n
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @category iMSCP
+ * @package iMSCP_i18n
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @version 0.0.1
  */
 class iMSCP_I18n_Exception extends iMSCP_Exception
 {

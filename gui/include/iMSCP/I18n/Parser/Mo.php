@@ -17,18 +17,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_I18n
- * @subpackage	Parser
- * @copyright	2010-2011 i-MSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN:$Id$
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_I18n
+ * @subpackage  Parser
+ * @copyright   2010-2011 i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     SVN: $Id$
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
  * Class to parse gettext machine object files.
+ *
  * @see http://www.gnu.org/software/gettext/manual/gettext.html#MO-Files
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @version 0.0.1
@@ -80,20 +81,21 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 	/**
 	 * Parse a machine object file.
 	 *
-	 * @throws iMSCP_i18n_Exception When file cannot be opened
-	 * @throws iMSCP_i18n_Exception When file have bad magic number
-	 * @throws iMSCP_i18n_Exception When file part to parse is unknow
+	 * @throws iMSCP_i18n_Parser_Exception When file cannot be opened
+	 * @throws iMSCP_i18n_Parser_Exception When file have bad magic number
+	 * @throws iMSCP_i18n_Parser_Exception When file part to parse is unknow
 	 * @param int $part Part to parse - Can be either iMSCP_I18n_Parser::HEADERS or
-	 * 									iMSCP_I18n_Parser::TRANSLATION_TABLE
+	 *                                  iMSCP_I18n_Parser::TRANSLATION_TABLE
 	 * @return Array|string An array that represent a translation table or a string
-	 * 						that represent the headers
+	 *                      that represent the headers
 	 */
 	protected function _parse($part)
 	{
 		if ($this->_fh === null) {
 			if (!($this->_fh = fopen($this->_filePath, 'rb'))) {
-				require_once 'iMSCP/I18n/Exception.php';
-				throw new iMSCP_i18n_Exception("Unable to open $this->_filePath");
+				require_once 'iMSCP/I18n/Parser/Exception.php';
+				throw new iMSCP_i18n_Parser_Exception(
+						'Unable to open ' . $this->_filePath);
 			}
 		}
 
@@ -109,8 +111,9 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 			} elseif($magicNumber == (int)0x0de120495) {
 				$this->_order = 'N'; // big endian
 			} else {
-				require_once 'iMSCP/I18n/Exception.php';
-				throw new iMSCP_i18n_Exception("Bad magic number in $this->_filePath");
+				require_once 'iMSCP/I18n/Parser/Exception.php';
+				throw new iMSCP_i18n_Parser_Exception(
+						'Bad magic number in ' . $this->_filePath);
 			}
 
 			// Skipping the revision number (byte 4 to 8)
@@ -153,14 +156,14 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 				$index = 1;
 				break;
 			default:
-				require_once 'iMSCP/I18n/Exception.php';
-				throw new iMSCP_i18n_Exception("Unknown part type to parse");
+				require_once 'iMSCP/I18n/Parser/Exception.php';
+				throw new iMSCP_i18n_Parser_Exception('Unknown part type to parse');
 		}
 
 		$parseResult = null;
 
 		for ($index; $index < $nbString; $index++) {
-			fseek($this->_fh, $this->_msgidIndexTable[($index * 2) + 2]);
+			fseek($this->_fh, $this->_msgidIndexTable[$index * 2 + 2]);
 
 			if (!($length = $this->_msgidIndexTable[$index * 2 + 1])) {
 				$msgid = '__headers__';
