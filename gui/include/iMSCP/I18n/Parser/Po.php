@@ -38,19 +38,19 @@ class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 	/**
 	 * Returns number of translated strings.
 	 *
-	 * @return int Number of translated strings
+	 * @throws iMSCP_I18n_Parser_Exception
+	 * @return void
 	 */
-
 	public function getNumberOfTranslatedStrings()
 	{
-		require_once 'iMSCP/I18n/Exception.php';
-		throw new iMSCP_i18n_Exception('Not Yet Implemented');
+		require_once 'iMSCP/I18n/Parser/Exception.php';
+		throw new iMSCP_I18n_Parser_Exception('Not Yet Implemented');
 	}
 
 	/**
 	 * Parse a portable object file.
 	 *
-	 * @throws iMSCP_i18n_Exception
+	 * @throws iMSCP_I18n_Parser_Exception
 	 * @param int $part Part to parse (default to iMSCP_I18n_Parser::ALL)
 	 * @return array|string An array of pairs key/value where the keys are the
 	 *                      original strings (msgid) and the values, the translated
@@ -59,7 +59,7 @@ class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 	 */
 	protected function _parse($part)
 	{
-		require_once 'iMSCP/I18n/Exception.php';
+		require_once 'iMSCP/I18n/Parser/Exception.php';
 		throw new iMSCP_i18n_Exception('Not Yet Implemented');
 	}
 }
