@@ -66,12 +66,17 @@ abstract class iMSCP_I18n_Parser
 	/**
 	 * Headers from gettext file.
 	 *
+	 * A string that contains headers, each of them separated by EOL.
+	 *
 	 * @var string
 	 */
 	protected $_headers = '';
 
 	/**
 	 * Translation table.
+	 *
+	 * An array of pairs key/value where the keys are the original strings (msgid)
+	 * and the values, the translated strings (msgstr).
 	 *
 	 * @var array
 	 */
@@ -98,7 +103,7 @@ abstract class iMSCP_I18n_Parser
 	/**
 	 * Returns headers.
 	 *
-	 * @return string A string that contains headers
+	 * @return string A string that contains gettext file headers, each separed by EOL
 	 */
 	public function getHeaders()
 	{
@@ -112,7 +117,8 @@ abstract class iMSCP_I18n_Parser
 	/**
 	 * Returns translation table.
 	 *
-	 * @return array
+	 * @return array An array of pairs key/value where the keys are the original
+	 *               strings (msgid) and the values, the translated strings (msgstr)
 	 */
 	public function getTranslationTable()
 	{
@@ -124,9 +130,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Retruns project id version.
+	 * Retruns project id version header value.
 	 *
-	 * @return string Header value
+	 * @return string Project id version header value
 	 */
 	public function getProjectIdVersion()
 	{
@@ -134,9 +140,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns report msgid bugs value.
+	 * Returns report msgid bugs value header value.
 	 *
-	 * @return string Header value
+	 * @return string R eport msgid bugs header value
 	 */
 	public function getReportMsgidBugs()
 	{
@@ -144,9 +150,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns pot creation date.
+	 * Returns pot creation date header value.
 	 *
-	 * @return string Header value
+	 * @return string POT creation date header value
 	 */
 	public function getPotCreationDate()
 	{
@@ -154,9 +160,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns po creation date.
+	 * Returns po creation date header value.
 	 *
-	 * @return string Header value
+	 * @return string PO creation date header value
 	 */
 	public function getPoRevisionDate()
 	{
@@ -164,9 +170,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns last translator.
+	 * Returns last translator header value.
 	 *
-	 * @return string Header value
+	 * @return string Last translator header value
 	 */
 	public function getLastTranslator()
 	{
@@ -174,9 +180,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns language team.
+	 * Returns language team header value.
 	 *
-	 * @return string Header value
+	 * @return string language team header value
 	 */
 	public function getLanguageTeam()
 	{
@@ -184,9 +190,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns mime version.
+	 * Returns mime version header value.
 	 *
-	 * @return string Header value
+	 * @return string Mime version header value
 	 */
 	public function getMimeVersion()
 	{
@@ -194,9 +200,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns content type.
+	 * Returns content type header value.
 	 *
-	 * @return string Header value
+	 * @return string Content type header value
 	 */
 	public function getContentType()
 	{
@@ -204,9 +210,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns content transfer encoding.
+	 * Returns content transfer encoding header value.
 	 *
-	 * @return string Header value
+	 * @return string Content transfer encoding header value
 	 */
 	public function getContentTransferEncoding()
 	{
@@ -214,9 +220,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns language.
+	 * Returns language header value.
 	 *
-	 * @return string
+	 * @return string Language header value
 	 */
 	public function getLanguage()
 	{
@@ -224,9 +230,9 @@ abstract class iMSCP_I18n_Parser
 	}
 
 	/**
-	 * Returns Plural Forms value.
+	 * Returns plural forms header value.
 	 *
-	 * @return string
+	 * @return string Plural forms header value
 	 */
 	public function getPluralForms()
 	{
@@ -245,8 +251,12 @@ abstract class iMSCP_I18n_Parser
 	 * Parse file.
 	 *
 	 * @abstract
-	 * @param $part part file to parse (ALL|HEADER|TRANSLATION_TABLE
-	 * @return void
+	 * @param int $part Part file to parse {@link self::HEADER} or
+	 *                  {@link self::TRANSLATION_TABLE}
+	 * @return array|string An array of pairs key/value where the keys are the
+	 *                      original strings (msgid) and the values, the translated
+	 *                      strings (msgstr) or a string that contains headers, each
+	 * 						of them separated by EOL.
 	 */
 	abstract protected function _parse($part);
 
@@ -254,12 +264,12 @@ abstract class iMSCP_I18n_Parser
 	 * Returns given header value.
 	 *
 	 * @param string $header header name
-	 * @return string header
+	 * @return string header value
 	 */
 	protected function _getHeaderValue($header)
 	{
 		$headers = $this->getHeaders();
-		$header = substr($headers, strpos($headers, $header));
+		$header = str_replace(chr(13), '',substr($headers, strpos($headers, $header)));
 
 		return substr($header, ($start = strpos($header, ':') + 2),
 			(strpos($header, chr(10)) - $start));
@@ -267,7 +277,6 @@ abstract class iMSCP_I18n_Parser
 
 	/**
 	 * Destructor.
-	 *
 	 */
 	public function __destruct()
 	{

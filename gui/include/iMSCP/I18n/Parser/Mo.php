@@ -48,17 +48,17 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 	 *
 	 * @var int
 	 */
-	protected $_nbString;
+	protected $_nbStrings;
 
 	/**
-	 * Index table of original strings (msgid)
+	 * Index table of original strings (msgid).
 	 *
 	 * @var array
 	 */
 	protected $_msgidIndexTable;
 
 	/**
-	 * Index table of translated strings (msgstr)
+	 * Index table of translated strings (msgstr).
 	 *
 	 * @var array
 	 */
@@ -71,11 +71,11 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 	 */
 	public function getNumberOfTranslatedStrings()
 	{
-		if(null === $this->_nbString) {
+		if(null === $this->_nbStrings) {
 			$this->getHeaders();
 		}
 
-		return $this->_nbString - 1;
+		return $this->_nbStrings - 1;
 	}
 
 	/**
@@ -86,8 +86,10 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 	 * @throws iMSCP_i18n_Parser_Exception When file part to parse is unknow
 	 * @param int $part Part to parse - Can be either iMSCP_I18n_Parser::HEADERS or
 	 *                                  iMSCP_I18n_Parser::TRANSLATION_TABLE
-	 * @return Array|string An array that represent a translation table or a string
-	 *                      that represent the headers
+	 * @return array|string An array of pairs key/value where the keys are the
+	 *                      original strings (msgid) and the values, the translated
+	 *                      strings (msgstr) or a string that contains headers, each
+	 * 						of them separated by EOL.
 	 */
 	protected function _parse($part)
 	{
@@ -121,7 +123,7 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 
 			// number of strings (byte 8 to 12)
 			$value = unpack($this->_order, fread($this->_fh, 4));
-			$this->_nbString = array_shift($value);
+			$this->_nbStrings = array_shift($value);
 
 			// offset of table with original strings (byte 12 to 16)
 			$value = unpack($this->_order, fread($this->_fh, 4));
@@ -132,7 +134,7 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 			$msgstrTableOffset = array_shift($value);
 
 			// two integers per string (offset and size)
-			$count = $this->_nbString * 2;
+			$count = $this->_nbStrings * 2;
 
 			// index of original strings
 			fseek($this->_fh, $msgidtableOffset);
@@ -152,7 +154,7 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 				$index = 0;
 				break;
 			case self::TRANSLATION_TABLE:
-				$nbString = $this->_nbString;
+				$nbString = $this->_nbStrings;
 				$index = 1;
 				break;
 			default:
@@ -173,10 +175,11 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 
 			fseek($this->_fh, $this->_msgstrIndexTable[$index * 2 + 2]);
 
-			if (!$length = $this->_msgstrIndexTable[$index * 2 + 1])
+			if (!$length = $this->_msgstrIndexTable[$index * 2 + 1]) {
 				$msgstr = '';
-			else
+			} else {
 				$msgstr = fread($this->_fh, $length);
+			}
 
 			if ($msgid == '__headers__') {
 				$parseResult = $msgstr;

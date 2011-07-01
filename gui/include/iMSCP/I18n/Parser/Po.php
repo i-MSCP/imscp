@@ -52,7 +52,10 @@ class iMSCP_I18n_Parser_Po extends iMSCP_I18n_Parser
 	 *
 	 * @throws iMSCP_i18n_Exception
 	 * @param int $part Part to parse (default to iMSCP_I18n_Parser::ALL)
-	 * @return void
+	 * @return array|string An array of pairs key/value where the keys are the
+	 *                      original strings (msgid) and the values, the translated
+	 *                      strings (msgstr) or a string that contains headers, each
+	 * 						of them separated by EOL.
 	 */
 	protected function _parse($part)
 	{
