@@ -1,45 +1,89 @@
-################################################################################
-# Readme to work with translations.                                            #
-################################################################################
+#####################################################################################
+# How to update translations files.                                                 #
+#####################################################################################
 
 Introduction
 ------------
-Try to keep the default order. If there aren't any new strings in the GUI php
-files you can jump to point 3.
 
+Since i-MSCP Beta 1, we use the Transifex service to translate our translation files.
+In the past, we used several shell scripts for updating translation files but it was
+tedious.
+
+Before the process was as follows:
+
+1.	Updating the iMSCP.pot (portable object template) file with the makemsgs script
+2.	Updating all the *.po files (portable object files) with the updateToPOT script
+3.	Checking all the *.po files (in strict mode) with the checkPo script
+
+The remaining problem with the process described below is that the developer had to
+fix some issues manually in the *.po files after the update due to the fuzzy strings
+usage that ommit some parameters.
+
+With Transifex, the process is more simple except the first time because we have to
+install a specific client on your system to communicate with Transifex service.
 
 System Requirements
 -------------------
-Be sure that you have installed gettext. If not install gettext.
+- gettext
+- Transifex client
+
+In order, to be able to update translation files, we must have gettext tool and the
+Transifex client installed on your system.
+
+Installation process (Debian)
+
+As root:
+
+1.	Installing gettext
+
+	# aptitude install gettext
+
+2.	Installing Transifex client
+
+	# aptitude install python-setuptools
+	# easy_install -- upgrade transifex-client
+
+As normal user:
+
+3. Creating the Transifex configuration file
+
+	$ touch ~/.transifexrc
+
+And putting the following content in it:
+
+[main]
+[https://www.transifex.net]
+hostname = https://www.transifex.net
+password = PASSWORD
+token =
+username = USERNAME
+
+Of course, you have to change the PASSWORD and USERNAME with your own Transifex login
+data.
+
+Updating translation files
+--------------------------
+
+As normal user:
+
+1.	Use the shell script "makemsgs" to get all strings from GUI php files within
+	the gui/i18n/po/iMSCP.pot file
+
+	$ cd {YOUR_WORKING_COPY}/tools/translation
+	$ sh ./makemsgs
 
 
-Default order
--------------
+2.	Pushing the new iMSCP.pot on Transifex
 
-1. makemsgs
-	Use the shell script "makemsgs" to get all strings from GUI php files within
-	the i-mscp.pot file. But be aware that this will remove all existing
-	strings in i-MSCP.pot that aren't hardcoded in the GUI PHP files.
+	$ cd {YOUR_WORKING_COPY}/gui/i18n
+	$ tx push -s
 
-2. updateToPot
-	Use the shell script "updateToPot" to merge automatically the new i-mscp.pot
-	file (see point 1) with the language specific *.po files.
+The *.po files will be automatically updated by Transifex and no more checking is
+needed from your side.
 
-3. modify *.po files
-	Add translations for empty strings or fix wrong translations in the language
-	specific *.po files.
+3. Getting updated *.po files from Transifex
 
-4. check all *.po files
-	Check the syntax of all *.po files with the check_po script. If the script
-	return one or more error, correct them and rerun the script.
+	$ cd {YOUR_WORKING_COPY}/gui/i18n
+	$ tx pull -a
 
-	Note : If one or more localization files have been added, add it in the
-	localization list of the check_po script before run.
-
-5. create language text files
-	Create/export language specific (.ini-like) text files with a language tool
-	out of language specific *.po files. These text files can be used to upload
-	them to the i-MSCP GUI panel.
-
-	See http://atomo64.puffinhost.com/i-mscp/poconverter.php for the online
-	generator.
+After that, you have just to commit the changes on our svn repository (trunk).

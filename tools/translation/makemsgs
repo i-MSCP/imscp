@@ -3,7 +3,7 @@
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2011 by internet Multi Server Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -43,9 +43,9 @@
 set -e
 
 if [ $1 ] && [ -d $1 ]; then
-	GUI=${1}/
+	GUI=${1}
 else
-	GUI=../../gui/
+	GUI=../../gui
 fi
 
 if [ ! -f ${GUI}/index.php ]; then
@@ -59,22 +59,27 @@ if [ ! -f ${GUI}/index.php ]; then
 	exit 1
 fi
 
-/usr/bin/xgettext --language=PHP \
+/usr/bin/xgettext \
+--foreign-user \
+--language=PHP \
 -d "i-MSCP" \
+--copyright-holder="iMSCP Team - All rights reserved" \
+--package-name="i-MSCP" \
+--package-version="1.0.1.3" \
+--msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="tr" \
 --no-location \
---copyright-holder="iMSCP Team" \
-${GUI}include/i18n.php \
-${GUI}include/iMSCP/*.php \
-${GUI}include/iMSCP/*/*.php \
-${GUI}include/iMSCP/View/Helpers/*.php \
-${GUI}*.php \
-${GUI}*/*.php \
+${GUI}/include/i18n.php \
+${GUI}/include/iMSCP/*.php \
+${GUI}/include/iMSCP/*/*.php \
+${GUI}/include/iMSCP/View/Helpers/*.php \
+${GUI}/*.php \
+${GUI}/*/*.php \
 --from-code=utf-8 \
--p ${GUI}../language-files/po \
+-p ${GUI}/i18n/po \
 -o "iMSCP.pot"
 
-sed --in-place '/#. Please ignore this entry/d' ${GUI}../language-files/po/iMSCP.pot
-sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}../language-files/po/iMSCP.pot
+sed --in-place '/#. Please ignore this entry/d' ${GUI}/i18n/po/iMSCP.pot
+sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}/i18n/po/iMSCP.pot
 
 exit 0
