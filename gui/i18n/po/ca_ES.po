@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR iMSCP Team
+# Copyright (C) YEAR iMSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # David Bancells <dbancells@grn.es>, 2008.
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-06-24 00:46+0200\n"
-"PO-Revision-Date: 2011-06-23 22:50+0000\n"
+"POT-Creation-Date: 2011-07-01 18:48+0200\n"
+"PO-Revision-Date: 2011-06-30 10:54+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -502,7 +502,7 @@ msgstr ""
 msgid "internet Multi Server Control Panel"
 msgstr ""
 
-msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010-2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 #. Please ignore this entry
@@ -546,6 +546,9 @@ msgid "Captcha fontfile not found."
 msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr ""
+
+msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
@@ -1852,8 +1855,8 @@ msgstr ""
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
 msgstr "Aquest distribuïdor té dominis assignats a l'adreça <b>%s</b>!"
 
-msgid "ERROR: The reseller account you trying to edit does not exist!"
-msgstr "ERROR: El distribuïdor que estas intentant editar no existeix!"
+msgid "The reseller account you trying to edit does not exist."
+msgstr ""
 
 msgid "i-MSCP - Admin/Manage users/Edit Reseller"
 msgstr "i-MSCP - Admin/Administrar usuaris/Editar Distribuïdor"
@@ -2430,82 +2433,7 @@ msgstr ""
 msgid "File does not exist. %1$s.tar.gz"
 msgstr ""
 
-msgid "Software was imported succesfully."
-msgstr ""
-
-msgid "Download"
-msgstr ""
-
-msgid "Activate"
-msgstr "Activar"
-
-msgid "Import"
-msgstr ""
-
-msgid "No software is waiting for activation"
-msgstr ""
-
-msgid "Package installed successfully!"
-msgstr ""
-
-msgid "Rights"
-msgstr ""
-
-msgid "Softwarerights"
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh this site."
-msgstr ""
-
-msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "installing"
-msgstr ""
-
-msgid "Failure in the package. Deleting!"
-msgstr ""
-
-msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr ""
-
-msgid "deleting"
-msgstr ""
-
-msgid "Your package is corrupt. Please correct it!"
-msgstr ""
-
-msgid "Package already exist in the software depot!"
-msgstr ""
-
-msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr ""
-
-msgid "This package already exist in the software depot!"
-msgstr ""
-
-msgid "Package already exist in the reseller depot!"
-msgstr ""
-
-msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr ""
-
-#, php-format
-msgid "This package already exist in the depot of the reseller \"%1$s\"!"
-msgstr ""
-
-msgid "No software in software depot available!"
-msgstr ""
-
-msgid "No reseller with activated software installer found!"
+msgid "Software was imported successfully."
 msgstr ""
 
 msgid "Unable to read xml file for web softwares!"
@@ -2578,6 +2506,9 @@ msgstr ""
 msgid "Software depot"
 msgstr ""
 
+msgid "Softwarerights"
+msgstr ""
+
 msgid "Software depot total"
 msgstr ""
 
@@ -2613,6 +2544,12 @@ msgstr "Tipus"
 msgid "Depot import"
 msgstr ""
 
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "Activar"
+
 msgid "Software total"
 msgstr ""
 
@@ -2635,6 +2572,9 @@ msgid "Are you sure you want to import this package into the software depot?"
 msgstr ""
 
 msgid "Are you sure you want to delete this package?"
+msgstr ""
+
+msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
 msgid "i-MSCP - Application management options"
@@ -2664,23 +2604,6 @@ msgstr ""
 msgid "Wrong reseller id."
 msgstr ""
 
-msgid "This package is installed on following domain(s):"
-msgstr ""
-
-msgid "This package is not installed"
-msgstr ""
-
-#, php-format
-msgid "%1$s - (Softwaredepot)"
-msgstr ""
-
-#, php-format
-msgid "%1$s`s - Software"
-msgstr ""
-
-msgid "No software available!"
-msgstr ""
-
 msgid "Installed on"
 msgstr ""
 
@@ -2688,21 +2611,6 @@ msgid "Reseller list"
 msgstr ""
 
 msgid "Softwaredepot"
-msgstr ""
-
-msgid "Admin not available"
-msgstr ""
-
-msgid "Are you sure to remove the permissions ?"
-msgstr ""
-
-msgid "No Reseller with permissions for this software found"
-msgstr ""
-
-msgid "All reseller"
-msgstr ""
-
-msgid "No Reseller available to add the permissions"
 msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
@@ -3910,40 +3818,6 @@ msgstr "Actualitzar usuari"
 msgid "You have no users!"
 msgstr "No teniu usuaris!"
 
-msgid "Install in progress..."
-msgstr ""
-
-msgid "Deletion in progress..."
-msgstr ""
-
-msgid "Are you sure to install this package?"
-msgstr ""
-
-msgid "Install"
-msgstr "Instal·lar"
-
-#, php-format
-msgid ""
-"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
-"manually!"
-msgstr ""
-
-msgid "Installed Package which was deleted by your reseller!"
-msgstr ""
-
-msgid "No software available"
-msgstr ""
-
-msgid "required"
-msgstr ""
-
-msgid "not required"
-msgstr ""
-
-msgid "You do not have permissions to install software"
-msgstr ""
-
 msgid "i-MSCP - application installer"
 msgstr ""
 
@@ -3969,15 +3843,6 @@ msgid "Software deleted successful."
 msgstr ""
 
 msgid "Software will be deleted now."
-msgstr ""
-
-msgid "Database user list is empty!"
-msgstr "La llista d'usuaris de base de dades és buida!"
-
-msgid "At first you must create a database!"
-msgstr ""
-
-msgid "Add new database"
 msgstr ""
 
 msgid "Software not found!"
@@ -4037,24 +3902,6 @@ msgstr ""
 msgid "SQL-User"
 msgstr ""
 
-msgid "installed"
-msgstr ""
-
-msgid "Installation infos"
-msgstr ""
-
-msgid "Software status:"
-msgstr ""
-
-msgid "Installation path:"
-msgstr ""
-
-msgid "Used database:"
-msgstr ""
-
-msgid "You need a Database for this software"
-msgstr ""
-
 msgid "i-MSCP - Software details"
 msgstr ""
 
@@ -4063,6 +3910,9 @@ msgstr ""
 
 msgid "Homepage"
 msgstr ""
+
+msgid "Install"
+msgstr "Instal·lar"
 
 msgid "Please type user password!"
 msgstr "Si us plau escriviu la contrasenya de l'usuari!"
@@ -4128,6 +3978,9 @@ msgstr "La base de dades SQL s'ha eliminat correctament!"
 
 msgid "SQL user was removed successfully!"
 msgstr "Usuari SQL eliminat satisfactòriament!"
+
+msgid "Database user list is empty!"
+msgstr "La llista d'usuaris de base de dades és buida!"
 
 msgid "Database list is empty!"
 msgstr "La llista de bases de dades és buida!"
@@ -4283,35 +4136,6 @@ msgid "Manage protected areas, users and groups"
 msgstr "Administrar àrees protegides, usuaris i grups"
 
 msgid "Install various software with a few *clicks*"
-msgstr ""
-
-msgid "{ADMIN} activated your software package"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
-msgid " was deleted by {ADMIN}!"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
 msgstr ""
 
 #, php-format
@@ -4655,7 +4479,15 @@ msgstr "Heu d'esperar %d segons"
 msgid "You have been blocked for %d minutes."
 msgstr "Heu estat bloquejats durant %d minuts"
 
+#, php-format
+msgid "Login error, <b><i>%s</i></b> unknown username"
+msgstr ""
+
 msgid "You entered an incorrect username!"
+msgstr ""
+
+#, php-format
+msgid "Login error, <b><i>%s</i></b> system currently in maintenance mode"
 msgstr ""
 
 msgid "System is currently under maintenance! Only administrators can login."
@@ -4680,6 +4512,14 @@ msgstr "L'estat del compte %s no és correcte!"
 #, php-format
 msgid "%s's domain expired!"
 msgstr "%s dominis caducats!"
+
+#, php-format
+msgid "%s logged in."
+msgstr ""
+
+#, php-format
+msgid "%s entered incorrect password."
+msgstr ""
 
 msgid "You entered an incorrect password!"
 msgstr ""
@@ -4793,21 +4633,6 @@ msgid ""
 msgstr ""
 "Teniu límits de disc!<br /> No podeu afegir un usuari amb disc il·limitat!"
 
-msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
 msgid "Installation details"
 msgstr ""
 
@@ -4834,6 +4659,9 @@ msgstr ""
 msgid "You do not have permissions to install application yet"
 msgstr ""
 
+msgid "Software installer"
+msgstr ""
+
 msgid "Vendor hompage"
 msgstr ""
 
@@ -4846,9 +4674,6 @@ msgstr ""
 msgid "Start installation"
 msgstr ""
 
-msgid "Are you sure to install this package from the webdepot?"
-msgstr ""
-
 msgid "No software in webdepot found!"
 msgstr ""
 
@@ -4856,6 +4681,267 @@ msgid "Websoftware depot list was updated"
 msgstr ""
 
 msgid "No update for the websoftware depot list available"
+msgstr ""
+
+msgid "{ADMIN} activated your software package"
+msgstr ""
+
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+msgid " was deleted by {ADMIN}!"
+msgstr ""
+
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+msgid "Package installed successfully!"
+msgstr ""
+
+msgid "Rights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br "
+"/>Refresh your site to see the new status!"
+msgstr ""
+
+msgid "installing"
+msgstr ""
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+msgid "deleting"
+msgstr ""
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the software depot!"
+msgstr ""
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+msgid "No software available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Admin not available"
+msgstr ""
+
+msgid "Are you sure to remove the permissions ?"
+msgstr ""
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+msgid "All reseller"
+msgstr ""
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
+
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+msgid "waiting for activation"
+msgstr ""
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+msgid "activated"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br "
+"/>Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it."
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br "
+"/>Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot."
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br "
+"/>Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot."
+msgstr ""
+
+msgid "You do not have any software uploaded yet"
+msgstr ""
+
+msgid "You do not have permissions to upload software"
+msgstr ""
+
+msgid "Install in progress..."
+msgstr ""
+
+msgid "Deletion in progress..."
+msgstr ""
+
+msgid "Are you sure to install this package?"
+msgstr ""
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+msgid "No software available"
+msgstr ""
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+msgid "You do not have permissions to install software"
+msgstr ""
+
+msgid "installed"
+msgstr ""
+
+msgid "Installation infos"
+msgstr ""
+
+msgid "Software status:"
+msgstr ""
+
+msgid "Installation path:"
+msgstr ""
+
+msgid "Used database:"
+msgstr ""
+
+msgid "You need a Database for this software"
+msgstr ""
+
+msgid "At first you must create a database!"
+msgstr ""
+
+msgid "Add new database"
 msgstr ""
 
 msgid "You have a new order"
@@ -4994,35 +5080,51 @@ msgstr "Alta"
 msgid "Performance"
 msgstr "Rendiment"
 
-msgid "You have no alias records."
-msgstr "No teniu registres d'àlies"
+msgid "Not found user records matching the search criteria"
+msgstr ""
 
-msgid "Domain alias added for termination!"
-msgstr "L'àlies de domini està preparat per eliminar-lo"
+msgid "Domain aliases limit reached."
+msgstr ""
 
-msgid "Domain alias not added for termination!"
-msgstr "L'àlies de domini no està preparat per eliminar-lo"
+msgid "You do not have domain aliases."
+msgstr ""
 
-msgid "Domain alias added!"
-msgstr "Àlies de domini afegit!"
+msgid ""
+"Domain alias you are trying to remove has email accounts.<br>First remove "
+"them."
+msgstr ""
 
-msgid "Domain alias not added!"
-msgstr "Àlies de domini no afegit!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"them."
+msgstr ""
 
-msgid "Domain alias modified!"
-msgstr "Àlies de domini modificat!"
+msgid "Domain alias successfully scheduled for deletion."
+msgstr ""
 
-msgid "Domain alias not modified!"
-msgstr "Àlies de domini no modificat!"
+msgid "Domain alias not scheduled for deletion."
+msgstr ""
 
-msgid "Ordered domain alias not deleted!"
-msgstr "Àlies de domini sol·licitat no eliminat!"
+msgid "Domain alias successfully scheduled for addition"
+msgstr ""
 
-msgid "Ordered domain alias activated!"
-msgstr "Àlies de domini sol·licitat activat!"
+msgid "Domain alias not scheduled for addition."
+msgstr ""
 
-msgid "Ordered domain alias not activated!"
-msgstr "Àlies de domini sol·licitat no activat!"
+msgid "Domain alias successfully modified"
+msgstr ""
+
+msgid "Domain alias not modified."
+msgstr ""
+
+msgid "Order for domain alias not deleted."
+msgstr ""
+
+msgid "Domain alias successfully scheduled for addition."
+msgstr ""
+
+msgid "Domain alias limit reached."
+msgstr ""
 
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Administrar Domini/Àlies"
@@ -5229,70 +5331,6 @@ msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Distribuïdor/Administració usuaris/Configuració Correu"
-
-msgid "Package installed successfully... Awaiting release from Admin!"
-msgstr ""
-
-msgid "This software is installed on following domain(s):"
-msgstr ""
-
-msgid "This package is not installed yet"
-msgstr ""
-
-msgid "waiting for activation"
-msgstr ""
-
-msgid "activated (Softwaredepot)"
-msgstr ""
-
-msgid "activated"
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
-
-msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "Failure in package. Deleting!"
-msgstr ""
-
-msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
-"the new status!"
-msgstr ""
-
-msgid "The package is corrupt. Please correct it."
-msgstr ""
-
-msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "This package already exist in the administrator software depot."
-msgstr ""
-
-msgid "Package already exist in your software depot!"
-msgstr ""
-
-msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "This package already exist in your software depot."
-msgstr ""
-
-msgid "You do not have any software uploaded yet"
-msgstr ""
-
-msgid "You do not have permissions to upload software"
-msgstr ""
 
 msgid "Unable to read xml file for web softwares."
 msgstr ""
