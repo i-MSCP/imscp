@@ -19,7 +19,7 @@ The remaining problem with the process described below is that the developer had
 fix some issues manually in the *.po files after the update due to the fuzzy strings
 usage that ommit some parameters.
 
-With Transifex, the process is more simple except the first time because we have to
+With Transifex, the process is more simple except the first time because you have to
 install a specific client on your system to communicate with Transifex service.
 
 System Requirements
@@ -27,8 +27,8 @@ System Requirements
 - gettext
 - Transifex client
 
-In order, to be able to update translation files, we must have gettext tool and the
-Transifex client installed on your system.
+In order, to be able to update translation files, you must have the gettext tool and
+the Transifex client installed on your system.
 
 Installation process (Debian)
 
