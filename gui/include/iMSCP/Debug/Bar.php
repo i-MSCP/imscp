@@ -237,9 +237,11 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 
         return ('
             <style type="text/css" media="screen">
+            	#iMSCPdebug_debug h4 {margin:5px;}
                 #iMSCPdebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:5px; left:0px; color:#000; z-index: 255;}
                 #iMSCPdebug_debug a {color:blue;}
-                #iMSCPdebug_debug p {margin:0:}
+                #iMSCPdebug_debug span {color:black;}
+                #iMSCPdebug_debug p {margin:0;}
                 #iMSCPdebug_debug ol {margin:10px 0px; padding:0 25px}
                 #iMSCPdebug_debug li {margin:0 0 10px 0;}
                 #iMSCPdebug_debug .clickable { cursor:pointer }

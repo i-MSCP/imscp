@@ -14,9 +14,10 @@ Tickets:
 	- Fixed #101: Defect - Missing messages in Software Installer
 	- Fixed #103: Enhancement - Admin should have the rights to delete packages
 	- Fixed #113: Bug - Tree Builder only works with lowercase dirs
+	- Fixed #118: Update - PMA 3.4.3 released
 	- Fixed #121: Bug - Users with domain set not to expire can not login
 	- Fixed #122: Bug - Lost password do not work
-	- Fixed #118: Update - PMA 3.4.3 released
+	- Fixed #123: Cosmetics - Tabs's links are not showed properly on login page
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)

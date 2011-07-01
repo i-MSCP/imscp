@@ -220,7 +220,7 @@
                 background-image:       url('/themes/default/images/login/i_unlock.png');
             }
 
-            ul {
+            #center ul, #tools ul {
                 float:                  left;
                 width:                  312px;
                 margin-top:             30px;
@@ -228,7 +228,7 @@
                 list-style-type:        none;
             }
 
-            li {
+            #center li, #tools li {
                 display:                inline;
                 margin-left:            10px;
             }
@@ -239,7 +239,7 @@
                 color:                  rgb(102, 102, 102);
                 background-repeat:      no-repeat;
                 width:                  90px;
-                line-height:            80px;
+                line-height:            90px;
             }
 
             #center p {
@@ -322,7 +322,7 @@
                     </div>
                 </form>
                 <div style="clear: both;"></div>
-                <div>
+                <div id="tools">
                     <ul>
                         <li><a class="pma" href="{TR_PMA_LINK}" target="blank">{TR_PHPMYADMIN}</a></li>
                         <li><a class="filemanager" href="{TR_FTP_LINK}" target="blank">FileManager</a></li>
