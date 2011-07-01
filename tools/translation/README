@@ -72,7 +72,6 @@ As normal user:
 	$ cd {YOUR_WORKING_COPY}/tools/translation
 	$ sh ./makemsgs
 
-
 2.	Pushing the new iMSCP.pot on Transifex
 
 	$ cd {YOUR_WORKING_COPY}/gui/i18n
@@ -85,5 +84,17 @@ needed from your side.
 
 	$ cd {YOUR_WORKING_COPY}/gui/i18n
 	$ tx pull -a
+
+
+
+Compiling translation files
+---------------------------
+
+As normal user
+
+1.	Use the shell script "compilePo" to compile all *.po files
+
+	$ cd {YOUR_WORKING_COPY}/tools/translation
+	$ sh ./compilePo
 
 After that, you have just to commit the changes on our svn repository (trunk).

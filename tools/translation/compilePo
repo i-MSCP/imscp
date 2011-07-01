@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# i-MSCP - internet Multi Server Control Panel
+#
+# Copyright 2010 - 2011 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>
+#
+# The Original Code is "i-MSCP internet Multi Server Control Panel".
+#
+# The Initial Developer of the Original Code is i-MSCP Team.
+# Portions created by Initial Developer are Copyright (C) 22010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# @category		i-MSCP
+# @package		i-MSCP_Tools
+# @subpackage	Tools_i18n
+# @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+# @author		Laurent Declercq <l.declercq@nuxwin.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/ GPL v2
+
+set -e
+
+GUI=../../gui
+
+if [ ! -f ${GUI}/index.php ]; then
+	echo "${GUI} isn't a valid gui/ location!"
+	exit 1
+fi
+
+for i in `find ${GUI}/i18n/po -name "*.po"` ; do
+	echo "Compiling $i file"
+	FILENAME=`expr substr $i 19 5`
+
+	if [ "$FILENAME" = 'ar.po' ] ; then
+		FILENAME="ar_AE"
+	fi
+
+	DESTDIR=${GUI}/i18n/locales/${FILENAME}/LC_MESSAGES
+	mkdir -p ${DESTDIR}
+	msgfmt --strict -o ${DESTDIR}/${FILENAME}.mo $i
+done
+
+exit 0
