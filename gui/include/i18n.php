@@ -90,7 +90,8 @@ function curlang($newlang = null, $force = false)
  *                            with html entities
  * @return Translated or original string
  */
-function tr($msgid, $substitution = false)
+
+function old_tr($msgid, $substitution = false)
 {
     static $cache = array();
     static $stmt = null;
@@ -168,6 +169,69 @@ function tr($msgid, $substitution = false)
     if (!$substitution) {
         // Fix for #98 - (Quick fix)
         //$msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, $encoding));
+        $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, 'UTF-8'));
+    }
+
+    return $msgstr;
+}
+
+/**
+ * Translates a given string into the selected language, if exists.
+ *
+ * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
+ * @author Raphael Geissert (2007)
+ * @param string $msgid string to translate
+ * @param mixed $substitution Prevent the returned string from being replaced
+ *                            with html entities
+ * @return Translated or original string
+ */
+
+function tr($msgid, $substitution = false)
+{
+
+	static $translation = null;
+
+	if(null === $translation) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+		$parser = new iMSCP_I18n_Parser_Mo($cfg->GUI_ROOT_DIR . '/i18n/locales/fr_FR/LC_MESSAGES/fr_FR.mo');
+		$translation =  $parser->getTranslationTable();
+		//echo $parser->getContentType();
+		//exit;
+	}
+
+	$msgstr = isset($translation[$msgid]) ? $translation[$msgid] : $msgid;
+	//$msgstr = T_($msgid);
+
+    // Detect whether $substitution is really a substitution or just a value to
+    // be replaced in $msgstr
+    if (!is_bool($substitution)) {
+        $substitution = false;
+    }
+
+    // Detect comments and strip them if $msgid == $msgstr
+    // e.g. tr('_: This is just a comment\nReal message to translate here')
+    if (substr($msgid, 0, 3) == '_: ' && $msgid == $msgstr &&
+        count($l = explode("\n", $msgid)) > 1
+    ) {
+        unset($l[0]);
+        $msgstr = implode("\n", $l);
+    }
+
+    // Replace values
+    if (func_num_args() > 1) {
+        $argv = func_get_args();
+        unset($argv[0]);
+
+        if (is_bool($argv[1])) {
+            unset($argv[1]);
+        }
+
+        $msgstr = vsprintf($msgstr, $argv);
+    }
+
+    if (!$substitution) {
         $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, 'UTF-8'));
     }
 

@@ -169,7 +169,7 @@ class iMSCP_Initializer
         $this->_initializeSession();
 
         // Initialize internationalization libraries
-        // $this->_initializeI18n();
+        $this->_initializeI18n();
 
         // Initialize logger
         // $this->_initializeLogger();
@@ -492,7 +492,7 @@ class iMSCP_Initializer
 		}
 
 		T_setlocale(LC_MESSAGES, $locale . '.UTF-8');
-		T_bindtextdomain($locale, $this->_config->GUI_ROOT_DIR . '/l10n/locales');
+		T_bindtextdomain($locale, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
 		T_bind_textdomain_codeset($locale, 'UTF-8');
 		T_textdomain($locale);
 
