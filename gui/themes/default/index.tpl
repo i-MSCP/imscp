@@ -26,7 +26,7 @@
                 color:                  #ffffff;
             }
 
-            #buttons input:hover, a:hover {
+			a:hover {
                 color:                  rgb(92,186,218);
             }
 
@@ -39,6 +39,7 @@
                 height:                 50px;
                 background:             url('/themes/default/images/background/stripe.png') repeat-x top left;
                 border-bottom:          2px solid rgb(102, 102, 102);
+				color:					#fff;
             }
 
             #logo {
@@ -88,8 +89,6 @@
             #center, #message {
                 position:               absolute;
                 top:                    150px;
-                height:                 30px;
-                line-height:            30px;
                 width:                  316px;
                 left:                   -154px;
                 margin-left:            50%;
@@ -104,6 +103,10 @@
 
             }
 
+			#message p {
+				margin-left:50px;
+			}
+
             .icon {
                 background-position:    top left;
                 background-repeat:      no-repeat;
@@ -116,40 +119,16 @@
                 float:                  right;
             }
 
-            .warning, .success, .error, .info {
+            .error {
                 padding:                15px 0 15px 0;
                 border:                 1px solid;
                 text-align:             left;
                 background-repeat:      no-repeat;
                 background-position:    10px center;
-            }
-
-            .warning {
-                color:                  rgb(149,74,0);
-                border-color:           rgb(149,74,0);
-                background-color:       rgb(255,236,156);
-                background-image:       url('/themes/default/images/messages/warning.png');
-            }
-
-            .success {
-                color:                  rgb(61,122,21);
-                border-color:           rgb(61,122,21);
-                background-color:       rgb(214,241,179);
-                background-image:       url('/themes/default/images/messages/success.png');
-            }
-
-            .error {
                 color:                  rgb(202,29,17);
                 border-color:           rgb(202,29,17);
                 background-color:       rgb(253,191,173);
                 background-image:       url('/themes/default/images/messages/error.png');
-            }
-
-            .info {
-                color:                  rgb(15,61,135);
-                border-color:           rgb(15,61,135);
-                background-color:       rgb(176,222,245);
-                background-image:       url('/themes/default/images/messages/info.png');
             }
 
             form {
@@ -175,41 +154,40 @@
                 font-weight:            bold;
             }
 
-            input {
-                background-color:       #edeceb;
-                outline-style:          none;
-                vertical-align:         middle;
-                height:                 20px;
-                border-style:           inset;
-                width:                  149px;
-                padding:                3px;
-            }
+			input {
+				width:					151px;
+				height:					26px;
+				line-height:			22px;
+				border:					2px inset #fff;
+				outline-style:          none;
+				vertical-align:			middle;
+				padding-left:			3px;
+				padding-right:			3px;
+				
+			}
 
-            input[type=text]:hover, input[type=text]:focus,
-            input[type=password]:hover, input[type=password]:focus {
-                background-color:       rgb(92,186,218);
-            }
-
-            #buttons {
-                margin-top:             10px;
-                margin-right:           5px;
-                text-align:             right;
-
-            }
-
-            #buttons input {
-                width:                  auto;
-                height:                 auto;
-                border:                 2px solid #ffffff;
-                border-outset:          none;
-                cursor:                 pointer;
-                background-color:       #2d2587;
-                color:                  #ffffff;
+			.buttons input {
+				background-color:		#2d2587;
+				height:					30px;
+				width:					136px;
+				color:					#fff;
                 -webkit-border-radius:  4px;
                 -moz-border-radius:     4px;
+				border-style: solid;
                 border-radius:          4px;
                 font-weight:            bold;
+				cursor:					pointer;
+			}
 
+            .buttons input:hover {
+                color:                  rgb(92,186,218);
+            }
+
+            input[type=text]:hover,
+			input[type=text]:focus,
+            input[type=password]:hover,
+			input[type=password]:focus {
+                background-color:       rgb(92,186,218);
             }
 
             .i_lock {
@@ -248,10 +226,6 @@
 
             p#ssl_link {
                 margin-top:             20px;
-            }
-
-            span {
-                color: #ffffff;
             }
 
             li a.pma{
@@ -294,7 +268,7 @@
             </div>
             <!-- BDP: page_message -->
             <div id="message" class="{MESSAGE_CLS}">
-                <p style="margin-left:50px;">{MESSAGE}</p>
+                <p>{MESSAGE}</p>
             </div>
             <!-- EDP: page_message -->
             <div id="center">
@@ -307,13 +281,15 @@
                             <label for="upass">{TR_PASSWORD}:</label>
                             <input type="password" name="upass" id="upass" tabindex="2" />
                         </p>
-                        <p id="buttons">
+
+                        <p class="buttons">
                             <!-- BDP: lostpwd_button -->
-                            <input type="button" name="lostpwd" value="{TR_LOSTPW}" tabindex="3" onclick="location.href='lostpassword.php';return false" />
-                            &nbsp;&nbsp;&nbsp;
+                            <input type="submit" name="lostpwd" value="{TR_LOSTPW}" tabindex="3" onclick="location.href='lostpassword.php';return false" />
+                            &nbsp;&nbsp;
                             <!-- EDP: lostpwd_button -->
                             <input type="submit" name="submit" value="{TR_LOGIN}" tabindex="4" />
                         </p>
+
                         <!-- BDP: ssl_support -->
                         <p id="ssl_link">
                             <a class="icon {SSL_IMAGE_CLASS}" href="{SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a>

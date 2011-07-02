@@ -72,7 +72,7 @@ function createImage($strSessionVar){
 	$y = $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT;
 	$font = $cfg->LOSTPASSWORD_CAPTCHA_FONT;
 
-	$iRandVal = strRandom(8, $strSessionVar);
+	$iRandVal = strRandom(10, $strSessionVar);
 
 	if (!($image = imagecreate($x, $y))) {
 		throw new iMSCP_Exception('Cannot initialize new GD image stream.');
@@ -84,7 +84,7 @@ function createImage($strSessionVar){
 									$rgTextColor[2]);
 	$white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
 
-	imagettftext($image, 34, 0, 10, 50, $textColor, $font, $iRandVal);
+	imagettftext($image, 15, 0, 80, 22, $textColor, $font, $iRandVal);
 
 	// Some obfuscation
 	for ($i = 0; $i < 5; $i++) {

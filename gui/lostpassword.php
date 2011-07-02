@@ -49,7 +49,7 @@ if (!$cfg->LOSTPASSWORD) {
 
 // Check for gd library availability
 if (!check_gd()) {
-	throw new iMSCP_Exception(tr('php-extension \'gd\' not loaded.'));
+	throw new iMSCP_Exception(tr("PHP GD extension not loaded."));
 }
 
 // Check for font files availability
@@ -73,16 +73,15 @@ $tpl->assign(
 		'THEME_CHARSET'				=> tr('encoding'),
 		'productLongName'			=> tr('internet Multi Server Control Panel'),
 		'productLink'				=> 'http://www.i-mscp.net',
-		'productCopyright'			=> tr('© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),
+		'productCopyright'			=> tr('© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),
 		'TR_CAPCODE'				=> tr('Security code'),
-		'TR_IMGCAPCODE_DESCRIPTION'	=> tr('To avoid abuse, we ask you to write the combination of letters on the picture above into the field "Security code"'),
-		'TR_IMGCAPCODE'				=> '<img src="imagecode.php" width="' .
+		'TR_IMGCAPCODE'				=> '<img id="captcha" src="imagecode.php" width="' .
 											$cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
 											$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT .
-											'" border="0" alt="captcha image" />',
+											' alt="captcha image" />',
 		'TR_USERNAME'				=> tr('Username'),
-		'TR_SEND'					=> tr('Get password'),
-		'TR_BACK'					=> tr('Back')
+		'TR_SEND'					=> tr('Send'),
+		'TR_CANCEL'					=> tr('Cancel')
 	)
 );
 
@@ -97,7 +96,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	} else {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
-} elseif (isset($_POST['uname'])) { // Request for new password
+} elseif(isset($_POST['uname'])) { // Request for new password
 
 	// Check if we are not blocked (brute force feature)
 	check_ipaddr(getipaddr(), 'captcha');
@@ -106,10 +105,12 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
-		if ($_SESSION['image'] == $_POST['capcode'] && requestPassword($_POST['uname'])) {
-			set_page_message(tr('Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.'));
+		if($_SESSION['image'] != $_POST['capcode']) {
+			set_page_message(tr('Wrong security code'), 'error');
+		} elseif(!requestPassword($_POST['uname'])) {
+			set_page_message(tr('Wrong username'), 'error');
 		} else {
-			set_page_message(tr('User or security code are incorrect.'), 'error');
+			set_page_message(tr('Your request for new password was registered. You will receive an email with instructions to complete the process.'), 'sucess');
 		}
 	} else {
 		set_page_message(tr('All fields are required.'), 'error');
@@ -126,7 +127,7 @@ generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onLostPasswordScriptStart, new iMSCP_Events_Response($tpl)
+	iMSCP_Events::onLostPasswordScriptEnd, new iMSCP_Events_Response($tpl)
 );
 
 $tpl->prnt();

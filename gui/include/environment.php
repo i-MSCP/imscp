@@ -128,10 +128,10 @@ $config->LOSTPASSWORD = true;
 $config->LOSTPASSWORD_TIMEOUT = 30;
 
 // Captcha imagewidth
-$config->LOSTPASSWORD_CAPTCHA_WIDTH = 280;
+$config->LOSTPASSWORD_CAPTCHA_WIDTH = 286;
 
 // Captcha imagehigh
-$config->LOSTPASSWORD_CAPTCHA_HEIGHT = 70;
+$config->LOSTPASSWORD_CAPTCHA_HEIGHT = 30;
 
 // Captcha background color
 $config->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(176,222,245);
@@ -143,11 +143,11 @@ $config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(1, 53, 920);
  * Captcha ttf fontfiles (have to be under compatible open source license)
  */
 $fonts = array(
-	'Essays1743.ttf',
+	//'Essays1743.ttf',
 	'Essays1743-Bold.ttf',
 	'Essays1743-BoldItalic.ttf',
-	'Essays1743-Italic.ttf',
-	'StayPuft.ttf'
+	//'Essays1743-Italic.ttf',
+	//'StayPuft.ttf'
 );
 
 // Set random captcha font file
