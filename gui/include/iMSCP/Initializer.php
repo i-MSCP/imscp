@@ -169,7 +169,7 @@ class iMSCP_Initializer
         $this->_initializeSession();
 
         // Initialize internationalization libraries
-        $this->_initializeI18n();
+        //$this->_initializeI18n();
 
         // Initialize logger
         // $this->_initializeLogger();
