@@ -11,6 +11,7 @@ Features / Enhancements:
 
 Tickets:
 	- Fixed #65:  Good practices - Software Installer - All shared functions must be put in specific file
+	- Fixed #90:  Defect - Custom logo feature is broken
 	- Fixed #101: Defect - Missing messages in Software Installer
 	- Fixed #103: Enhancement - Admin should have the rights to delete packages
 	- Fixed #113: Bug - Tree Builder only works with lowercase dirs
