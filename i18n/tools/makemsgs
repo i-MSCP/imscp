@@ -76,10 +76,10 @@ ${GUI}/include/iMSCP/View/Helpers/*.php \
 ${GUI}/*.php \
 ${GUI}/*/*.php \
 --from-code=utf-8 \
--p ${GUI}/i18n/po \
+-p ../po \
 -o "iMSCP.pot"
 
-sed --in-place '/#. Please ignore this entry/d' ${GUI}/i18n/po/iMSCP.pot
-sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}/i18n/po/iMSCP.pot
+sed --in-place '/#. Please ignore this entry/d' ../po/iMSCP.pot
+sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ../po/iMSCP.pot
 
 exit 0

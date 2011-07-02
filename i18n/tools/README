@@ -69,14 +69,14 @@ Updating translation files
 As normal user:
 
 1.	Use the shell script "makemsgs" to get all strings from GUI php files within
-	the gui/i18n/po/iMSCP.pot file
+	the i18n/po/iMSCP.pot file
 
-	$ cd {YOUR_WORKING_COPY}/tools/translation
+	$ cd {YOUR_WORKING_COPY}/i18n/tools
 	$ sh ./makemsgs
 
 2.	Pushing the new iMSCP.pot on Transifex
 
-	$ cd {YOUR_WORKING_COPY}/gui/i18n
+	$ cd {YOUR_WORKING_COPY}/i18n
 	$ tx push -s
 
 The *.po files will be automatically updated by Transifex and no more checking is
@@ -84,8 +84,8 @@ needed from your side.
 
 3. Getting updated *.po files from Transifex
 
-	$ cd {YOUR_WORKING_COPY}/gui/i18n
-	$ tx pull -a
+	$ cd {YOUR_WORKING_COPY}/i18n
+	$ tx pull -af
 
 
 Compiling translation files
@@ -95,7 +95,7 @@ As normal user
 
 1.	Use the shell script "compilePo" to compile all *.po files
 
-	$ cd {YOUR_WORKING_COPY}/tools/translation
+	$ cd {YOUR_WORKING_COPY}/i18n/tools
 	$ sh ./compilePo
 
 After that, you have just to commit the changes on our svn repository (trunk).

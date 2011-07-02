@@ -41,9 +41,9 @@ if [ ! -f ${GUI}/index.php ]; then
 	exit 1
 fi
 
-for i in `find ${GUI}/i18n/po -name "*.po"` ; do
+for i in `find ../po -name "*.po"` ; do
 	echo "Compiling $i file"
-	FILENAME=`expr substr $i 19 5`
+	FILENAME=`expr substr $i 7 5`
 
 	if [ "$FILENAME" = 'ar.po' ] ; then
 		FILENAME="ar_AE"
