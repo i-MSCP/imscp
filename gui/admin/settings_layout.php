@@ -70,7 +70,7 @@ function update_logo() {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'delete_logo') {
 		$logo = get_own_logo($user_id);
 
-		if (basename($logo) == 'isp_logo.gif') { // default logo
+		if (basename($logo) == 'imscp_logo.png') { // default logo
 			return;
 		}
 
@@ -112,8 +112,8 @@ function update_logo() {
 		}
 		// get the size of the image to prevent over large images
 		list($fwidth, $fheight, $ftype, $fattr) = getimagesize($fname);
-		if ($fwidth > 195 || $fheight > 195) {
-			set_page_message(tr('Images have to be smaller than 195 x 195 pixels!'), 'error');
+		if ($fwidth > 500 || $fheight > 90) {
+			set_page_message(tr('Images have to be smaller than 500 x 90 pixels!'), 'error');
 			return;
 		}
 
@@ -158,7 +158,7 @@ update_logo();
 
 gen_def_layout($tpl, $_SESSION['user_theme']);
 
-if (get_own_logo($_SESSION['user_id']) != $cfg->ISP_LOGO_PATH . '/isp_logo.gif') {
+if (get_own_logo($_SESSION['user_id']) != '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
 	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
 } else {
 	$tpl->assign('LOGO_REMOVE_BUTTON', '');

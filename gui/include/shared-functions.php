@@ -1150,10 +1150,6 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 function get_logo($user_id)
 {
-
-    # See #90 Defect - Custom logo feature is broken (since a lot)
-    return 0;
-
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
@@ -1172,7 +1168,7 @@ function get_logo($user_id)
     if ($rs->fields['admin_type'] == 'admin') {
         return get_admin_logo($user_id);
     } else {
-        if (get_admin_logo($rs->fields['created_by']) == $cfg->ISP_LOGO_PATH . '/isp_logo.gif') {
+        if (get_admin_logo($rs->fields['created_by']) == '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
             return get_admin_logo($user_id);
         } else {
             return get_admin_logo($rs->fields['created_by']);
@@ -1208,7 +1204,7 @@ function get_admin_logo($user_id)
     $user_logo = $rs->fields['logo'];
 
     if (empty($user_logo)) { // default logo
-        return $cfg->ISP_LOGO_PATH . '/isp_logo.gif';
+        return '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png';
     } else {
         return $cfg->ISP_LOGO_PATH . '/' . $user_logo;
     }
