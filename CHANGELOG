@@ -170,5 +170,4 @@ Tickets:
 	- Fixed #95: Bug - Version update check is broken
 	- Fixed #104: Task - autoreplies_log database table still use MYISAM engine
 	- Fixed #105: Bug - Database update 58 is faulty
-	- Fixed #105: Bug - Database update 58 is faulty
 	- Fixed #125: Defect - Database Upgrade Required on Clean Install
