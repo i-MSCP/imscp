@@ -271,7 +271,7 @@
                         </p>
                         <p class="buttons">
                             <!-- BDP: lostpwd_button -->
-                            <input type="submit" name="lostpwd" value="{TR_CANCEL}" tabindex="3" onclick="location.href='index.php';return false" />
+                            <input type="button" name="lostpwd" value="{TR_CANCEL}" tabindex="3" onclick="location.href='index.php';return false" />
                             &nbsp;&nbsp;
                             <!-- EDP: lostpwd_button -->
                             <input type="submit" name="submit" value="{TR_SEND}" tabindex="4" />

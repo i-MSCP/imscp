@@ -284,10 +284,10 @@
 
                         <p class="buttons">
                             <!-- BDP: lostpwd_button -->
-                            <input type="submit" name="lostpwd" value="{TR_LOSTPW}" tabindex="3" onclick="location.href='lostpassword.php';return false" />
+                            <input type="button" name="lostpwd" value="{TR_LOSTPW}" tabindex="4" onclick="location.href='lostpassword.php';return false" />
                             &nbsp;&nbsp;
                             <!-- EDP: lostpwd_button -->
-                            <input type="submit" name="submit" value="{TR_LOGIN}" tabindex="4" />
+                            <input type="submit" name="submit" value="{TR_LOGIN}" tabindex="3"  />
                         </p>
 
                         <!-- BDP: ssl_support -->

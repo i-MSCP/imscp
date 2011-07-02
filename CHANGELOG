@@ -20,6 +20,7 @@ Tickets:
 	- Fixed #122: Bug - Lost password do not work
 	- Fixed #123: Cosmetics - Tabs's links are not showed properly on login page
 	- Fixed #125: Defect - Database Upgrade Required on Clean Install
+	- Fixed #126: Defect - Enter on Login Form takes you to Lost Password Form
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
