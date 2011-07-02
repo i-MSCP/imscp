@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     iMSCP_SoftwareInstaller
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author 		Sascha Bay
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
