@@ -435,7 +435,7 @@ process_install() {
 # Build daemon
 # @return	void
 builddaemon() {
-	cd ${SELFDIR}/tools/daemon
+	cd ${SELFDIR}/daemon
 	$rm -vrf *~
 	$rm -vrf *.o
 	$rm -vrf imscp_daemon
