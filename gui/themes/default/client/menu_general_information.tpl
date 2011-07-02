@@ -6,7 +6,3 @@
 				<li><a href="language.php">{TR_MENU_LANGUAGE}</a></li>
 				<li><a href="hosting_plan_update.php">{TR_MENU_UPDATE_HP}</a></li>
 			</ul>
-
-			<div class="isp_logo">
-				<img class="isp_logo" src="{ISP_LOGO}" alt="" />
-			</div>

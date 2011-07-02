@@ -7,7 +7,3 @@
 				<li><a href="dns_add.php">{TR_MENU_ADD_DNS}</a></li>
 				<!-- EDP: isactive_dns_menu -->
 			</ul>
-
-			<div class="isp_logo">
-				<img class="isp_logo" src="{ISP_LOGO}" alt="" />
-			</div>

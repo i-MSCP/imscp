@@ -6,7 +6,3 @@
 				<li><a href="settings_lostpassword.php">{TR_MENU_LOSTPW_EMAIL}</a></li>
 				<li><a href="circular.php">{TR_MENU_CIRCULAR}</a></li>
 			</ul>
-
-			<div class="isp_logo">
-				<img class="isp_logo" src="{ISP_LOGO}" alt="" />
-			</div>

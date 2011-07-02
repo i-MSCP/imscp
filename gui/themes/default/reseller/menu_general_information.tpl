@@ -9,7 +9,3 @@
  	            <li><a href="software_upload.php">{TR_SOFTWARE_MENU}</a></li>
 				<!-- EDP: t_software_menu -->
 			</ul>
-
-			<div class="isp_logo">
-				<img class="isp_logo" src="{ISP_LOGO}" alt="" />
-			</div>
