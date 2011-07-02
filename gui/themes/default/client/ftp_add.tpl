@@ -86,7 +86,7 @@ function changeDom(wath) {
 			{MAIN_MENU}
 
 			<div class="logo">
-				<img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
+				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>
 		</div>
 

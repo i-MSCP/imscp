@@ -28,7 +28,7 @@
 	<body>
 		<div class="header">
 			{MAIN_MENU}
-			<div class="logo"><img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" /></div>
+			<div class="logo"><img src="{ISP_LOGO}" alt="i-MSCP logo" /></div>
 		</div>
 		<div class="location">
 			<div class="location-area icons-left"><h1 class="settings">{TR_MENU_SETTINGS}</h1></div>
