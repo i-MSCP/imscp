@@ -8,6 +8,9 @@ i-MSCP 1.0.1.4 (beta 4)
 Distributions:
 
 Features / Enhancements:
+	Gui:
+		Tools:
+			Updated PhpMyAdmin to version 3.4.3
 
 Tickets:
 	- Fixed #65:  Good practices - Software Installer - All shared functions must be put in specific file
@@ -99,7 +102,6 @@ Features / Enhancements:
 		Setup/Update:
 			- New i-mscp tree builder
 			- New installer (Dialog ; merged setup and update scripts)
-			- Added ssl suport for apache, courier, postfix and proftpd for master domain
 	Gui:
 		Core:
 			- Added DebugBar component
