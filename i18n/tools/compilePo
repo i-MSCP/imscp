@@ -51,7 +51,7 @@ for i in `find ../po -name "*.po"` ; do
 
 	DESTDIR=${GUI}/i18n/locales/${FILENAME}/LC_MESSAGES
 	mkdir -p ${DESTDIR}
-	msgfmt --strict -o ${DESTDIR}/${FILENAME}.mo $i
+	msgfmt --strict --no-hash -o ${DESTDIR}/${FILENAME}.mo $i
 done
 
 exit 0
