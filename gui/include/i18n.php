@@ -82,7 +82,7 @@ function curlang($newlang = null, $force = false)
 /**
  * Translates a given string into the selected language, if exists.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@isp-control.net>
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
