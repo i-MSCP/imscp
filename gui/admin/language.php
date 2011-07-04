@@ -64,10 +64,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
             ) VALUES (
                 ?, ?, ?, ?
             )
-        ;
     ";
 
-    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'], get_logo($user_id)));
+    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'],
+							get_admin_logo($user_id, false)));
 
     unset($_SESSION['user_def_lang']);
     $_SESSION['user_def_lang'] = $user_lang;

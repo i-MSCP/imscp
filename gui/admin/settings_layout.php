@@ -68,7 +68,7 @@ function update_logo() {
 	$user_id = $_SESSION['user_id'];
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'delete_logo') {
-		$logo = get_own_logo($user_id);
+		$logo = get_admin_logo($user_id);
 
 		if (basename($logo) == 'imscp_logo.png') { // default logo
 			return;
@@ -158,7 +158,7 @@ update_logo();
 
 gen_def_layout($tpl, $_SESSION['user_theme']);
 
-if (get_own_logo($_SESSION['user_id']) != '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
+if (get_admin_logo($_SESSION['user_id']) != '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
 	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
 } else {
 	$tpl->assign('LOGO_REMOVE_BUTTON', '');
@@ -169,7 +169,7 @@ $tpl->assign(
 		'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		'OWN_LOGO' => get_own_logo($_SESSION['user_id']),
+		'OWN_LOGO' => get_admin_logo($_SESSION['user_id']),
 		'THEME_CHARSET' => tr('encoding')
 	)
 );

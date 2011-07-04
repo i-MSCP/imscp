@@ -1143,35 +1143,34 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 
 /**
- * Returns user logo path
+ * Returns user logo path.
  *
- * @param  int $user_id User unique identifier
+ * @param  int $userId User unique identifier
  * @return string
  */
-function get_logo($user_id)
+function get_logo($userId)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    // check which logo we should return:
-    $query = "
+    // Getting type and creator of the user
+    $query = '
         SELECT
-            `admin_id`, `created_by`, `admin_type`
+            `admin_type`, `created_by`
         FROM
             `admin`
         WHERE
             `admin_id` = ?
-    ";
+    ';
+    $stmt = exec_query($query, $userId);
 
-    $rs = exec_query($query, $user_id);
-
-    if ($rs->fields['admin_type'] == 'admin') {
-        return get_admin_logo($user_id);
+    if ($stmt->fields['admin_type'] == 'admin') {
+        return get_admin_logo($userId);
     } else {
-        if (get_admin_logo($rs->fields['created_by']) == '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
-            return get_admin_logo($user_id);
+        if (get_admin_logo($stmt->fields['created_by']) == '../themes/' . $cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
+            return get_admin_logo($userId);
         } else {
-            return get_admin_logo($rs->fields['created_by']);
+            return get_admin_logo($stmt->fields['created_by']);
         }
     }
 }
@@ -1179,34 +1178,30 @@ function get_logo($user_id)
 /**
  * Returns admin logo path.
  *
- * @param  int $user_id User unique identifier
- * @return string
+ * @param int $userId User unique identifier
+ * @param bool $returnDefault Tell whether or not default logo must be returned if
+ *                            logo is not found for user (default TRUE)
+ * @return string|int Admin logo path or 0 in case user has not his own logo and
+ *                    $returnDefault is set to false
  */
-function get_own_logo($user_id)
-{
-    return get_admin_logo($user_id);
-}
-
-/**
- * Returns admin logo path.
- *
- * @param  int $user_id User unique identifier
- * @return string Admin logo path
- */
-function get_admin_logo($user_id)
+function get_admin_logo($userId, $returnDefault = true)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?";
-    $rs = exec_query($query, $user_id);
+    $query = 'SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?';
+    $stmt = exec_query($query, $userId);
 
-    $user_logo = $rs->fields['logo'];
+    $userLogo = $stmt->fields['logo'];
 
-    if (empty($user_logo)) { // default logo
-        return '../themes/'.$cfg->USER_INITIAL_THEME . '/images/imscp_logo.png';
+    if (empty($userLogo)) { // default logo
+		if($returnDefault) {
+        	return '../themes/' . $cfg->USER_INITIAL_THEME . '/images/imscp_logo.png';
+		} else {
+			return 0;
+		}
     } else {
-        return $cfg->ISP_LOGO_PATH . '/' . $user_logo;
+        return $cfg->ISP_LOGO_PATH . '/' . $userLogo;
     }
 }
 

@@ -67,7 +67,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
             )
     ";
 
-    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'], get_logo($user_id)));
+    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'],
+							get_admin_logo($user_id, false)));
 
     if(!isset($_SESSION['logged_from_id'])) {
 	    unset($_SESSION['user_def_lang']);
