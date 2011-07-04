@@ -18,9 +18,12 @@
                 height:                 100%;
                 text-align:             center;
                 background-color:       #edeceb;
-                font-family:            arial;
-                font-size:              12px;
             }
+
+			body {
+                font-family:            arial, serif, sans-serif;
+                font-size:				12px;
+			}
 
             a {
                 color:                  #ffffff;
@@ -104,7 +107,7 @@
             }
 
 			#message p {
-				margin-left:50px;
+				margin-left:			50px;
 			}
 
             .icon {
@@ -151,7 +154,6 @@
                 display:                inline-block;
                 width:                  120px;
                 color:                  #ffffff;
-                font-weight:            bold;
             }
 
 			input {
@@ -163,6 +165,8 @@
 				vertical-align:			middle;
 				padding-left:			3px;
 				padding-right:			3px;
+				font-size:				12px;
+				font-family:            arial, serif, sans-serif;
 				
 			}
 
@@ -173,9 +177,8 @@
 				color:					#fff;
                 -webkit-border-radius:  4px;
                 -moz-border-radius:     4px;
-				border-style: solid;
+				border-style:			solid;
                 border-radius:          4px;
-                font-weight:            bold;
 				cursor:					pointer;
 			}
 
