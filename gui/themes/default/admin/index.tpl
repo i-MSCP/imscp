@@ -53,7 +53,10 @@
             <!-- EDP: update_message -->
 
             <!-- BDP: database_update_message -->
-            <div class="warning">{DATABASE_UPDATE}</div>
+            <div class="info">
+				{TR_DATABASE_UPDATE}
+				<a href="database_update.php" class="link">{TR_DATABASE_UPDATE_LINK}</a>
+			</div>
             <!-- EDP: database_update_message -->
             <table>
                 <tr>

@@ -1,10 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
@@ -26,9 +26,11 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -38,7 +40,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
-// Get a reference to the Config object
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -74,7 +76,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$hosting_plan_level = $_POST['hosting_plan_level'];
 	$domain_rows_per_page = clean_input($_POST['domain_rows_per_page']);
 	$checkforupdate = $_POST['checkforupdate'];
-	$show_compression_size = $_POST['show_compression_size'];
+	$compress_output = intval($_POST['compress_output']);
+	$show_compression_size = intval($_POST['show_compression_size']);
 	$prev_ext_login_admin = $_POST['prevent_external_login_admin'];
 	$prev_ext_login_reseller = $_POST['prevent_external_login_reseller'];
 	$prev_ext_login_client = $_POST['prevent_external_login_client'];
@@ -94,7 +97,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		|| (!is_number($domain_rows_per_page))
 		|| (!is_number($max_dnames_labels))
 		|| (!is_number($max_subdnames_labels))) {
-		set_page_message(tr('Error: Only positive numbers are allowed!'), 'error');
+		set_page_message(tr('Only positive numbers are allowed.'), 'error');
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
 	} else if ($max_dnames_labels < 1) {
@@ -103,7 +106,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$max_subdnames_labels = 1;
 	} else {
 
-		// Get a reference to the DB_Config Objects
+		/** @var $db_cfg iMSCP_Config_Handler_Db */
 		$db_cfg = iMSCP_Registry::get('dbConfig');
 
 		$db_cfg->LOSTPASSWORD = $lostpwd;
@@ -125,6 +128,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->DOMAIN_ROWS_PER_PAGE = $domain_rows_per_page;
 		$db_cfg->LOG_LEVEL = $log_level;
 		$db_cfg->CHECK_FOR_UPDATES = $checkforupdate;
+		$db_cfg->COMPRESS_OUTPUT = $compress_output;
 		$db_cfg->SHOW_COMPRESSION_SIZE = $show_compression_size;
 		$db_cfg->PREVENT_EXTERNAL_LOGIN_ADMIN = $prev_ext_login_admin;
 		$db_cfg->PREVENT_EXTERNAL_LOGIN_RESELLER = $prev_ext_login_reseller;
@@ -154,6 +158,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 			set_page_message(tr("Nothing's been changed."), 'info');
 		}
 	}
+
+	// Fix to see changes on next load
+	redirectTo('settings.php');
 }
 
 $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
@@ -274,6 +281,14 @@ if ($cfg->CHECK_FOR_UPDATES) {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', $html_selected);
 }
 
+if ($cfg->COMPRESS_OUTPUT) {
+	$tpl->assign('COMPRESS_OUTPUT_ON', $html_selected);
+	$tpl->assign('COMPRESS_OUTPUT_OFF', '');
+} else {
+	$tpl->assign('COMPRESS_OUTPUT_ON', '');
+	$tpl->assign('COMPRESS_OUTPUT_OFF', $html_selected);
+}
+
 if ($cfg->SHOW_COMPRESSION_SIZE) {
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', $html_selected);
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', '');
@@ -382,6 +397,7 @@ $tpl->assign(
 		'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' => tr('Errors'),
 		'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
+		'TR_COMPRESS_OUTPUT' => tr('Compress output'),
 		'TR_SHOW_COMPRESSION_SIZE' => tr('Show compression size comment'),
 		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' =>
 			tr('Prevent external login for admins'),

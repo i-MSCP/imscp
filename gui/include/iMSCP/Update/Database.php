@@ -797,7 +797,7 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * @author Daniel Andreca <sci2tech@gmail.com>
      * @since r4650
-     * @return string SQL Statement
+     * @return string SQL Statement or empty string if table is not found
      */
     protected function _databaseUpdate_64()
     {
@@ -839,4 +839,21 @@ class iMSCP_Update_Database extends iMSCP_Update
             }
         }
     }
+
+	/**
+	 * Deletes old parameters from config table.
+	 *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4779
+	 * @return void
+	 */
+	protected function _databaseUpdate_66()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if(isset($dbConfig->DUMP_GUI_DEBUG)) {
+			$dbConfig->del('DUMP_GUI_DEBUG');
+		}
+	}
 }

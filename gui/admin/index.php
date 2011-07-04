@@ -94,12 +94,9 @@ function getUpdateInfo($tpl) {
 	$cfg = iMSCP_Registry::get('config');
 
 	if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-		$tpl->assign(
-			array(
-				'DATABASE_UPDATE' => '<a href="database_update.php" class="link">' .
-				tr('One or more updates to the database are available.') . '</a>'
-			)
-		);
+		$tpl->assign(array(
+						  'TR_DATABASE_UPDATE' => tr('Database update is available.'),
+						  'TR_DATABASE_UPDATE_LINK' => 'Click here to process update.'));
 
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
@@ -117,7 +114,7 @@ function getUpdateInfo($tpl) {
 		$tpl->assign(
 			array(
 				'UPDATE' => '<a href="imscp_updates.php" class="link">' .
-				tr('New i-MSCP update is now available') . '</a>'
+				tr('New i-MSCP update is available') . '</a>'
 			)
 		);
 

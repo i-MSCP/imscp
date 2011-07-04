@@ -228,6 +228,15 @@
 							</td>
 						</tr>
 						<tr>
+							<td><label for="compress_output">{TR_COMPRESS_OUTPUT}</label></td>
+							<td>
+								<select name="compress_output" id="compress_output">
+									<option value="0" {COMPRESS_OUTPUT_OFF}>{TR_DISABLED}</option>
+									<option value="1" {COMPRESS_OUTPUT_ON}>{TR_ENABLED}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
 							<td><label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label></td>
 							<td>
 								<select name="show_compression_size" id="show_compression_size">

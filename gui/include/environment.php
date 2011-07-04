@@ -67,11 +67,11 @@ $config->HTML_SELECTED = ' selected="selected"';
 // Standard Language (if not set)
 $config->USER_INITIAL_LANG = 'lang_en_GB';
 
-// variable for development edition: show all php variables beyond page content
-$config->DUMP_GUI_DEBUG = false;
+// Tell whether or not output must be compressed
+$config->COMPRESS_OUTPUT = 1;
 
 // show spGZIP compression information in HTML output
-$config->SHOW_COMPRESSION_SIZE = true;
+$config->SHOW_COMPRESSION_SIZE = 1;
 
 // Session timeout in minutes
 $config->SESSION_TIMEOUT = 30;

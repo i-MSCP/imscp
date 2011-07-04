@@ -452,19 +452,23 @@ class iMSCP_Initializer
      */
     protected function _initializeOutputBuffering()
     {
-        // Create a new filter that will be applyed on the buffer output
-        /** @var $filter  iMSCP_Filter_Compress_Gzip*/
-        $filter = iMSCP_Registry::set('bufferFilter',
-                                      new iMSCP_Filter_Compress_Gzip(
+		if(isset($this->_config->COMPRESS_OUTPUT) && $this->_config->COMPRESS_OUTPUT) {
+        	// Create a new filter that will be applyed on the buffer output
+        	/** @var $filter  iMSCP_Filter_Compress_Gzip*/
+        	$filter = iMSCP_Registry::set('bufferFilter',
+										  new iMSCP_Filter_Compress_Gzip(
                                           iMSCP_Filter_Compress_Gzip::FILTER_BUFFER));
 
-        // Show compression information in HTML comment ?
-        if (!$this->_config->SHOW_COMPRESSION_SIZE) {
-            $filter->compressionInformation = false;
-        }
+        	// Show compression information in HTML comment ?
+        	if (isset($this->_config->SHOW_COMPRESSION_SIZE) &&
+				!$this->_config->SHOW_COMPRESSION_SIZE
+			) {
+            	$filter->compressionInformation = false;
+        	}
 
-        // Start the buffer and attach the filter to him
-        ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
+        	// Start the buffer and attach the filter to him
+        	ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
+		}
     }
 
 	/**
@@ -535,25 +539,24 @@ class iMSCP_Initializer
      */
     public function initializeDebugBar()
     {
-        if($this->_config->DEBUG) {
-            $debugBarPlugins = array(
+        if(isset($this->_config->DEBUG) && intval($this->_config->DEBUG)) {
+            new iMSCP_Debug_Bar(iMSCP_Events_Manager::getInstance(), array(
                 // Debug information about variables such as $_GET, $_POST...
                 new iMSCP_Debug_Bar_Plugin_Variables(),
+
                 // Debug information about script execution time
                 new iMSCP_Debug_Bar_Plugin_Timer(),
+
                 // Debug information about memory consumption
                 new iMSCP_Debug_Bar_Plugin_Memory(),
-                // Debug information about any exception thrown
-                //new iMSCP_Debug_Bar_Plugin_Exception(),
+
                 // Debug information about all included files
                 new iMSCP_Debug_Bar_Plugin_Files(),
+
                 // Debug information about all queries made during a script exection
                 // and their execution time.
                 new iMSCP_Debug_Bar_Plugin_Database()
-            );
-
-            $eventManager = iMSCP_Events_Manager::getInstance();
-            new iMSCP_Debug_Bar($eventManager, $debugBarPlugins);
+            ));
         }
     }
 
