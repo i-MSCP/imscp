@@ -56,9 +56,9 @@ function kill_session()
 
 		if($stmt->rowCount()) { // A row was deleted ?
 			set_page_message(tr('User session was killed.'), 'success');
-			write_log($_SESSION['user_logged'] . ": killed user session from: $username!");
+			write_log($_SESSION['user_logged'] . ": killed $username session");
 		} else {
-			set_page_message(tr('Session not found in login table.'), 'error');
+			set_page_message(tr('Session not found in login table.'), 'warning');
 		}
 	} elseif(isset($_GET['own'])) {
 		set_page_message(tr("You can't remove your own session."), 'warning');
