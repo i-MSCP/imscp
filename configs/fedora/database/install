@@ -37,7 +37,6 @@ FOLDERS='
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/database/amavisd.sql
 	${SYSTEM_CONF}/database/database.sql
-	${SYSTEM_CONF}/database/languages.sql
 	${SYSTEM_CONF}/database/spamassassin.sql
 ';
 
