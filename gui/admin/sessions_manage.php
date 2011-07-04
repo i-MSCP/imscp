@@ -75,7 +75,7 @@ function gen_user_sessions($tpl)
 {
 	$currentUserSessionId = session_id();
 
-	$query = "SELECT * FROM `login`";
+	$query = "SELECT `session_id`, `user_name`, `lastaccess` FROM `login`";
 	$stmt = exec_query($query);
 
 	while (!$stmt->EOF) {
@@ -87,14 +87,11 @@ function gen_user_sessions($tpl)
 							  'ADMIN_USERNAME' => tr('Unknown'),
 							  'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])));
 		} else {
-			if($username == $_SESSION['user_logged'] &&
-			   $currentUserSessionId !== $sessionId
-			) {
-				$username .= ' ('. tr('from other browser') . ')';
-			}
-
 			$tpl->assign(array(
-							  'ADMIN_USERNAME' => $username,
+							  'ADMIN_USERNAME' =>
+									$username . (($username == $_SESSION['user_logged'] &&
+												  $currentUserSessionId !== $sessionId)
+										? ' ('. tr('from other browser') . ')' : ''),
 							  'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])));
 		}
 
@@ -119,6 +116,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
