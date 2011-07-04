@@ -53,10 +53,7 @@ ini_set('display_errors', 1);
  * Check PHP version (5.2.6 or newer ) and SPL availability
  */
 if (version_compare(phpversion(), '5.3.2', '<') === true) {
-	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.3 or newer.\n");
-} elseif(!extension_loaded('SPL')) {
-    die("Standard PHP Library (SPL) was not detected on your system.\n " .
-        'See http://php.net/manual/en/book.spl.php for more information');
+	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
 }
 
 // Define path for the i-MSCP include directory
