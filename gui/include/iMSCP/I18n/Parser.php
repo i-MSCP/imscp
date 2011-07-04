@@ -54,7 +54,7 @@ abstract class iMSCP_I18n_Parser
 	 *
 	 * @var resource
 	 */
-	protected $_fh;
+	public $_fh;
 
 	/**
 	 * Path to the gettext file.
@@ -280,6 +280,8 @@ abstract class iMSCP_I18n_Parser
 	 */
 	public function __destruct()
 	{
-		fclose($this->_fh);
+		if($this->_fh !== null) {
+			fclose($this->_fh);
+		}
 	}
 }
