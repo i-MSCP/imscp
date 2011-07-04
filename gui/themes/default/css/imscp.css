@@ -429,7 +429,7 @@ form table tbody td textarea{
 .left_menu a {
     color: #fff;
     display: block;
-    padding: 5px 18px;
+	padding: 5px 5px 5px 25px;
     font-weight: bold;
     background: transparent url(../images/background/bullet.png) no-repeat 3px center;
     margin: 2px;
