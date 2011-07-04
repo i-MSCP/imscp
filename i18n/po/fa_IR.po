@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-01 18:48+0200\n"
-"PO-Revision-Date: 2011-06-30 10:54+0000\n"
+"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"PO-Revision-Date: 2011-07-04 16:05+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -362,10 +362,7 @@ msgstr " %1$s شما به عنوان %2$s وارد شده اید"
 msgid "Go back"
 msgstr "برگرد"
 
-msgid "Unknown"
-msgstr "نامعلوم"
-
-msgid "No language tables found in database."
+msgid "No language found."
 msgstr ""
 
 msgid "i-MSCP - Order Panel"
@@ -535,7 +532,7 @@ msgstr "اتصال عادی"
 msgid "Lost password"
 msgstr "رمز عبور گم شده"
 
-msgid "php-extension 'gd' not loaded."
+msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
@@ -544,22 +541,17 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
 msgstr ""
 
-msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
 msgstr "کد امنیتی"
 
-msgid ""
-"To avoid abuse, we ask you to write the combination of letters on the "
-"picture above into the field \"Security code\""
+msgid "Send"
 msgstr ""
 
-msgid "Get password"
-msgstr ""
-
-msgid "Back"
-msgstr "برگشت"
+msgid "Cancel"
+msgstr "انصراف"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr ""
@@ -567,17 +559,15 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-#, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Wrong security code"
 msgstr ""
-"  درخواست رمز عبور شما پذیرفته شد. برای تکمیل فرآیند ایمیلی همراه با "
-"راهنمایی برایتان فرستاده می شود. این درخواست بازیافت رمز عبور ظرف %s دقیقه "
-"منقضی می شود."
 
-msgid "User or security code are incorrect."
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
 msgstr ""
 
 msgid "All fields are required."
@@ -624,6 +614,9 @@ msgstr "مرد"
 
 msgid "Female"
 msgstr "زن"
+
+msgid "Unknown"
+msgstr "نامعلوم"
 
 msgid "Zip/Postal code"
 msgstr " کدپستی"
@@ -916,6 +909,9 @@ msgstr "حد"
 msgid "Submit changes"
 msgstr "اعمال تغییرات"
 
+msgid "Back"
+msgstr "برگشت"
+
 msgid "Full"
 msgstr "پر"
 
@@ -972,9 +968,6 @@ msgstr " حداکثر فضای دیسک - مگ  <br /><i>(0 نامحدود)</i>"
 
 msgid "Backup"
 msgstr "بک آپ"
-
-msgid "Cancel"
-msgstr "انصراف"
 
 msgid "Yes"
 msgstr "بله"
@@ -1393,7 +1386,10 @@ msgstr "شما  <b>%d</b> درخواست های پشتیبانی دارید"
 msgid "View"
 msgstr "نمایش"
 
-msgid "One or more updates to the database are available."
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1483,7 +1479,7 @@ msgstr ""
 msgid "Reseller Name"
 msgstr ""
 
-msgid "User language updated successfully."
+msgid "User language successfully updated."
 msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
@@ -1607,12 +1603,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr "کاربر غیرفعال شد"
 
-msgid "Uninstall"
-msgstr ""
-
 #, php-format
-msgid "%d messages translated"
-msgstr "پیام ترجمه شد %d"
+msgid "%d strings translated"
+msgstr ""
 
 msgid "Language file no readable."
 msgstr ""
@@ -1649,17 +1642,29 @@ msgstr ""
 msgid "No headers found in language file."
 msgstr ""
 
+msgid "Default language was successfully changed."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "آی اس پی سی پی - مدیر/ بین المللی کردن"
 
-msgid "Installed languages"
-msgstr " زبان های نصب شده"
+msgid "Available languages"
+msgstr ""
 
-msgid "Messages"
-msgstr "پیام ها"
+msgid "Translated strings"
+msgstr ""
 
-msgid "Panel default language"
-msgstr "زبان پیشفرض پنل"
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
 
 msgid "Install / Update language"
 msgstr ""
@@ -1673,9 +1678,7 @@ msgstr ""
 msgid "Export"
 msgstr "صادر کردن"
 
-msgid ""
-"<strong>Note:</strong> You can't delete the system language, and any "
-"language that is currently used by one or more users."
+msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Incorrect data input!"
@@ -2037,6 +2040,18 @@ msgstr "روشن"
 msgid "DOWN"
 msgstr "خاموش"
 
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "آی اس پی سی پی - مدیر/مدیریت سشن ها"
 
@@ -2055,7 +2070,7 @@ msgstr "توقف سشن"
 msgid "i-MSCP - Admin/Settings"
 msgstr "آی اس پی سی پی = مدیر/تنظیمات"
 
-msgid "Error: Only positive numbers are allowed!"
+msgid "Only positive numbers are allowed."
 msgstr ""
 
 #, php-format
@@ -2114,6 +2129,9 @@ msgstr "شمار آدرس های ایمیل پیشفرض"
 msgid "E-Mail accounts are hard suspended"
 msgstr "حساب های ایمیل تعلیق شده اند"
 
+msgid "Panel default language"
+msgstr "زبان پیشفرض پنل"
+
 msgid "Apply changes"
 msgstr "اعمال تغییرات"
 
@@ -2140,6 +2158,9 @@ msgstr "خطاها"
 
 msgid "Check for update"
 msgstr "وارسی برای بروزرسانی"
+
+msgid "Compress output"
+msgstr ""
 
 msgid "Show compression size comment"
 msgstr ""
@@ -2191,8 +2212,8 @@ msgstr "خطای آپلود فایل!"
 msgid "You can only upload images!"
 msgstr "شما فقط می توانید تصاویر را آپلود کنید!"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "تصاویر باید کوچکتر از ۱۹۵در ۱۹۵ پیکسل باشند!"
+msgid "Images have to be smaller than 500 x 90 pixels!"
+msgstr ""
 
 msgid "Your logo was successful uploaded!"
 msgstr "لوگوی شما با موفقیت آپلود شد!"
@@ -4472,9 +4493,6 @@ msgstr ""
 msgid "%s entered incorrect password."
 msgstr ""
 
-msgid "You entered an incorrect password!"
-msgstr ""
-
 msgid "Request from foreign host was blocked."
 msgstr ""
 
@@ -4849,6 +4867,9 @@ msgstr ""
 msgid "Deletion in progress..."
 msgstr ""
 
+msgid "Uninstall"
+msgstr ""
+
 msgid "Are you sure to install this package?"
 msgstr ""
 
@@ -5160,6 +5181,9 @@ msgstr "%1$d / %2$d از <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d از <b>illimité</b>"
 
+msgid "Messages"
+msgstr "پیام ها"
+
 msgid "No Ip statistics to be show."
 msgstr ""
 
@@ -5267,6 +5291,9 @@ msgstr "آی اس پی سی پی - ریسلر/تغییر رمز عبور"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "آی اس پی سی پی - ریسلر/تغییر اطلاعات شخصی"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "تصاویر باید کوچکتر از ۱۹۵در ۱۹۵ پیکسل باشند!"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "آی اس پی سی پی - ریسلر/راه اندازی ایمیل بازیابی رمز عبور"

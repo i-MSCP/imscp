@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-01 18:48+0200\n"
-"PO-Revision-Date: 2011-06-30 10:54+0000\n"
+"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"PO-Revision-Date: 2011-07-04 16:05+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -362,10 +362,7 @@ msgstr "%1$s 你現在已登入為 %2$s"
 msgid "Go back"
 msgstr "返回"
 
-msgid "Unknown"
-msgstr "保密"
-
-msgid "No language tables found in database."
+msgid "No language found."
 msgstr ""
 
 msgid "i-MSCP - Order Panel"
@@ -533,7 +530,7 @@ msgstr "正常連接"
 msgid "Lost password"
 msgstr "找回密碼"
 
-msgid "php-extension 'gd' not loaded."
+msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
@@ -542,22 +539,17 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
 msgstr ""
 
-msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
 msgstr "驗證碼"
 
-msgid ""
-"To avoid abuse, we ask you to write the combination of letters on the "
-"picture above into the field \"Security code\""
+msgid "Send"
 msgstr ""
 
-msgid "Get password"
-msgstr ""
-
-msgid "Back"
-msgstr "返回"
+msgid "Cancel"
+msgstr "取消"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr ""
@@ -565,14 +557,15 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-#, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
-msgstr "您的密碼請求已經收到。您將收到一封電子郵件，並依照指示完成。這個請求將於 %s 分鐘到期。"
+msgid "Wrong security code"
+msgstr ""
 
-msgid "User or security code are incorrect."
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
 msgstr ""
 
 msgid "All fields are required."
@@ -619,6 +612,9 @@ msgstr "男"
 
 msgid "Female"
 msgstr "女"
+
+msgid "Unknown"
+msgstr "保密"
 
 msgid "Zip/Postal code"
 msgstr "郵區編號"
@@ -911,6 +907,9 @@ msgstr "限制"
 msgid "Submit changes"
 msgstr "提交更改"
 
+msgid "Back"
+msgstr "返回"
+
 msgid "Full"
 msgstr "全部"
 
@@ -967,9 +966,6 @@ msgstr "磁碟空間限制 [MB] <br /><i>(0 無限制)</i>"
 
 msgid "Backup"
 msgstr "備份"
-
-msgid "Cancel"
-msgstr "取消"
 
 msgid "Yes"
 msgstr "是"
@@ -1386,7 +1382,10 @@ msgstr "你有 <b>%d</b> 新的客戶疑問"
 msgid "View"
 msgstr "查閱"
 
-msgid "One or more updates to the database are available."
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1476,7 +1475,7 @@ msgstr ""
 msgid "Reseller Name"
 msgstr ""
 
-msgid "User language updated successfully."
+msgid "User language successfully updated."
 msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
@@ -1594,12 +1593,9 @@ msgstr "此使用者有網域！<br>要刪除使用者請先刪除此使用者�
 msgid "User was disabled"
 msgstr "使用者已被停用"
 
-msgid "Uninstall"
-msgstr ""
-
 #, php-format
-msgid "%d messages translated"
-msgstr "%d 資訊已翻譯"
+msgid "%d strings translated"
+msgstr ""
 
 msgid "Language file no readable."
 msgstr ""
@@ -1636,16 +1632,28 @@ msgstr ""
 msgid "No headers found in language file."
 msgstr ""
 
+msgid "Default language was successfully changed."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP - 管理員/語言設定"
 
-msgid "Installed languages"
-msgstr "已安裝語言"
+msgid "Available languages"
+msgstr ""
 
-msgid "Messages"
-msgstr "訊息"
+msgid "Translated strings"
+msgstr ""
 
-msgid "Panel default language"
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
 msgstr ""
 
 msgid "Install / Update language"
@@ -1660,9 +1668,7 @@ msgstr ""
 msgid "Export"
 msgstr "導出"
 
-msgid ""
-"<strong>Note:</strong> You can't delete the system language, and any "
-"language that is currently used by one or more users."
+msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Incorrect data input!"
@@ -2012,6 +2018,18 @@ msgstr "已運行"
 msgid "DOWN"
 msgstr "未運行"
 
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - 管理員/管理會話層"
 
@@ -2030,7 +2048,7 @@ msgstr "終止會話層"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - 管理員/設定"
 
-msgid "Error: Only positive numbers are allowed!"
+msgid "Only positive numbers are allowed."
 msgstr ""
 
 #, php-format
@@ -2089,6 +2107,9 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail 帳號強制暫停"
 
+msgid "Panel default language"
+msgstr ""
+
 msgid "Apply changes"
 msgstr "應用更改"
 
@@ -2115,6 +2136,9 @@ msgstr "錯誤"
 
 msgid "Check for update"
 msgstr "檢查更新"
+
+msgid "Compress output"
+msgstr ""
 
 msgid "Show compression size comment"
 msgstr ""
@@ -2162,8 +2186,8 @@ msgstr "上傳檔案錯誤！"
 msgid "You can only upload images!"
 msgstr "你只能上傳圖像檔！"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "圖像檔必須小於 195 x 195 像素！"
+msgid "Images have to be smaller than 500 x 90 pixels!"
+msgstr ""
 
 msgid "Your logo was successful uploaded!"
 msgstr "你的圖像已經上傳！"
@@ -4399,9 +4423,6 @@ msgstr ""
 msgid "%s entered incorrect password."
 msgstr ""
 
-msgid "You entered an incorrect password!"
-msgstr ""
-
 msgid "Request from foreign host was blocked."
 msgstr ""
 
@@ -4756,6 +4777,9 @@ msgstr ""
 msgid "Deletion in progress..."
 msgstr ""
 
+msgid "Uninstall"
+msgstr ""
+
 msgid "Are you sure to install this package?"
 msgstr ""
 
@@ -5055,6 +5079,9 @@ msgstr "%1$d / %2$d 的 <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d 的 <b>無限制</b>"
 
+msgid "Messages"
+msgstr "訊息"
+
 msgid "No Ip statistics to be show."
 msgstr ""
 
@@ -5162,6 +5189,9 @@ msgstr "i-MSCP - 代理商/修改密碼"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - 代理商/修改個人資料"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "圖像檔必須小於 195 x 195 像素！"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - 代理商/忘記密碼郵件設定"

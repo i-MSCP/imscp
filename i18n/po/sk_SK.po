@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-01 18:48+0200\n"
-"PO-Revision-Date: 2011-06-30 10:54+0000\n"
+"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"PO-Revision-Date: 2011-07-04 16:05+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -363,10 +363,7 @@ msgstr "%1$s teraz ste prihlásený ako %2$s"
 msgid "Go back"
 msgstr "Ísť späť"
 
-msgid "Unknown"
-msgstr "Neznámy"
-
-msgid "No language tables found in database."
+msgid "No language found."
 msgstr ""
 
 msgid "i-MSCP - Order Panel"
@@ -534,7 +531,7 @@ msgstr ""
 msgid "Lost password"
 msgstr "Zabudnuté heslo"
 
-msgid "php-extension 'gd' not loaded."
+msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
@@ -543,22 +540,17 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
 msgstr ""
 
-msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
 msgstr "Bezpečnostný kód"
 
-msgid ""
-"To avoid abuse, we ask you to write the combination of letters on the "
-"picture above into the field \"Security code\""
+msgid "Send"
 msgstr ""
 
-msgid "Get password"
-msgstr ""
-
-msgid "Back"
-msgstr "Späť"
+msgid "Cancel"
+msgstr "Zrušiť"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr ""
@@ -566,14 +558,15 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-#, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Wrong security code"
 msgstr ""
 
-msgid "User or security code are incorrect."
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
 msgstr ""
 
 msgid "All fields are required."
@@ -620,6 +613,9 @@ msgstr ""
 
 msgid "Female"
 msgstr ""
+
+msgid "Unknown"
+msgstr "Neznámy"
 
 msgid "Zip/Postal code"
 msgstr "PSČ"
@@ -912,6 +908,9 @@ msgstr "Limit"
 msgid "Submit changes"
 msgstr "Odoslať zmeny"
 
+msgid "Back"
+msgstr "Späť"
+
 msgid "Full"
 msgstr ""
 
@@ -968,9 +967,6 @@ msgstr ""
 
 msgid "Backup"
 msgstr "Záloha"
-
-msgid "Cancel"
-msgstr "Zrušiť"
 
 msgid "Yes"
 msgstr "Áno"
@@ -1389,7 +1385,10 @@ msgstr "Máte <b>%d</b> nových porporných otázok"
 msgid "View"
 msgstr "Zobraziť"
 
-msgid "One or more updates to the database are available."
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1479,7 +1478,7 @@ msgstr ""
 msgid "Reseller Name"
 msgstr ""
 
-msgid "User language updated successfully."
+msgid "User language successfully updated."
 msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
@@ -1603,12 +1602,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Užívateľ bol zablokovaný"
 
-msgid "Uninstall"
-msgstr ""
-
 #, php-format
-msgid "%d messages translated"
-msgstr "%d správ preložených"
+msgid "%d strings translated"
+msgstr ""
 
 msgid "Language file no readable."
 msgstr ""
@@ -1645,16 +1641,28 @@ msgstr ""
 msgid "No headers found in language file."
 msgstr ""
 
+msgid "Default language was successfully changed."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP - Admin/Zmedzinárodnenie"
 
-msgid "Installed languages"
-msgstr "Nainštalované jazyky"
+msgid "Available languages"
+msgstr ""
 
-msgid "Messages"
-msgstr "Správy"
+msgid "Translated strings"
+msgstr ""
 
-msgid "Panel default language"
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
 msgstr ""
 
 msgid "Install / Update language"
@@ -1669,9 +1677,7 @@ msgstr ""
 msgid "Export"
 msgstr "Export"
 
-msgid ""
-"<strong>Note:</strong> You can't delete the system language, and any "
-"language that is currently used by one or more users."
+msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Incorrect data input!"
@@ -2021,6 +2027,18 @@ msgstr ""
 msgid "DOWN"
 msgstr ""
 
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "ISCP - Admin/Spravovať sedenie"
 
@@ -2039,7 +2057,7 @@ msgstr "Zrušiť sedenie"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Admin/Nastavenia"
 
-msgid "Error: Only positive numbers are allowed!"
+msgid "Only positive numbers are allowed."
 msgstr ""
 
 #, php-format
@@ -2098,6 +2116,9 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
+msgid "Panel default language"
+msgstr ""
+
 msgid "Apply changes"
 msgstr "Vykonať zmeny"
 
@@ -2123,6 +2144,9 @@ msgid "Errors"
 msgstr ""
 
 msgid "Check for update"
+msgstr ""
+
+msgid "Compress output"
 msgstr ""
 
 msgid "Show compression size comment"
@@ -2171,7 +2195,7 @@ msgstr "Chyba pri nahrávaní súboru!"
 msgid "You can only upload images!"
 msgstr "Môžete nahrať iba obrázky!"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
+msgid "Images have to be smaller than 500 x 90 pixels!"
 msgstr ""
 
 msgid "Your logo was successful uploaded!"
@@ -4386,9 +4410,6 @@ msgstr ""
 msgid "%s entered incorrect password."
 msgstr ""
 
-msgid "You entered an incorrect password!"
-msgstr ""
-
 msgid "Request from foreign host was blocked."
 msgstr ""
 
@@ -4743,6 +4764,9 @@ msgstr ""
 msgid "Deletion in progress..."
 msgstr ""
 
+msgid "Uninstall"
+msgstr ""
+
 msgid "Are you sure to install this package?"
 msgstr ""
 
@@ -5044,6 +5068,9 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
+msgid "Messages"
+msgstr "Správy"
+
 msgid "No Ip statistics to be show."
 msgstr ""
 
@@ -5151,6 +5178,9 @@ msgstr "i-MSCP - Predajca/Zmeniť heslo"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Predajca/Zmeniť osobné údaje"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Predajca/Nastavenie e-mailu strateného hesla"

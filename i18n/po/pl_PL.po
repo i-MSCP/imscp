@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-01 18:48+0200\n"
-"PO-Revision-Date: 2011-06-30 10:54+0000\n"
+"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"PO-Revision-Date: 2011-07-04 16:05+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -363,10 +363,7 @@ msgstr "%1$s jesteś teraz zalogowany jako %2$s"
 msgid "Go back"
 msgstr "Wstecz"
 
-msgid "Unknown"
-msgstr "Nieznany"
-
-msgid "No language tables found in database."
+msgid "No language found."
 msgstr ""
 
 msgid "i-MSCP - Order Panel"
@@ -535,7 +532,7 @@ msgstr "Połączenie nie szyfrowane"
 msgid "Lost password"
 msgstr "Zapomniałeś hasło?"
 
-msgid "php-extension 'gd' not loaded."
+msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
@@ -544,22 +541,17 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
 msgstr ""
 
-msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
 msgstr "Kod zabezpieczający"
 
-msgid ""
-"To avoid abuse, we ask you to write the combination of letters on the "
-"picture above into the field \"Security code\""
+msgid "Send"
 msgstr ""
 
-msgid "Get password"
-msgstr ""
-
-msgid "Back"
-msgstr "Wstecz"
+msgid "Cancel"
+msgstr "Anuluj"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr ""
@@ -567,17 +559,15 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-#, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Wrong security code"
 msgstr ""
-"Twoje żądanie nowego hasła jest w trakcie realizacji. Otrzymasz e-mail z "
-"instrukcją by zakończyć proces. Żądanie zresetowania hasła wygaśnie w ciągu "
-"%s minut."
 
-msgid "User or security code are incorrect."
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
 msgstr ""
 
 msgid "All fields are required."
@@ -624,6 +614,9 @@ msgstr "Mężczyzna"
 
 msgid "Female"
 msgstr "Kobieta"
+
+msgid "Unknown"
+msgstr "Nieznany"
 
 msgid "Zip/Postal code"
 msgstr "Kod pocztowy"
@@ -916,6 +909,9 @@ msgstr "Limit"
 msgid "Submit changes"
 msgstr "Zapisz zmiany"
 
+msgid "Back"
+msgstr "Wstecz"
+
 msgid "Full"
 msgstr "Pełny"
 
@@ -972,9 +968,6 @@ msgstr "Limit dyskowy [MB]<br><i>(0 bez limitu)</i>"
 
 msgid "Backup"
 msgstr "Kopia zapasowa"
-
-msgid "Cancel"
-msgstr "Anuluj"
 
 msgid "Yes"
 msgstr "Tak"
@@ -1397,7 +1390,10 @@ msgstr "Masz <b>%d</b> nowych zapytań"
 msgid "View"
 msgstr "Przeglądaj"
 
-msgid "One or more updates to the database are available."
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1487,7 +1483,7 @@ msgstr ""
 msgid "Reseller Name"
 msgstr ""
 
-msgid "User language updated successfully."
+msgid "User language successfully updated."
 msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
@@ -1611,12 +1607,9 @@ msgstr "Ten użytkownik posiada domenę!<br>Aby go usunąć najpierw usuń domen
 msgid "User was disabled"
 msgstr "Użytkownik został wyłączony"
 
-msgid "Uninstall"
-msgstr ""
-
 #, php-format
-msgid "%d messages translated"
-msgstr "%d fraz przetłumaczonych"
+msgid "%d strings translated"
+msgstr ""
 
 msgid "Language file no readable."
 msgstr ""
@@ -1653,17 +1646,29 @@ msgstr ""
 msgid "No headers found in language file."
 msgstr ""
 
+msgid "Default language was successfully changed."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP – Admin/Menadżer języków"
 
-msgid "Installed languages"
-msgstr "Zainstalowane języki"
+msgid "Available languages"
+msgstr ""
 
-msgid "Messages"
-msgstr "Wiadomości"
+msgid "Translated strings"
+msgstr ""
 
-msgid "Panel default language"
-msgstr "Domyślny język panelu"
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
 
 msgid "Install / Update language"
 msgstr ""
@@ -1677,9 +1682,7 @@ msgstr ""
 msgid "Export"
 msgstr "Eksportuj"
 
-msgid ""
-"<strong>Note:</strong> You can't delete the system language, and any "
-"language that is currently used by one or more users."
+msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Incorrect data input!"
@@ -2045,6 +2048,18 @@ msgstr "WŁ"
 msgid "DOWN"
 msgstr "WYŁ"
 
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Admin/Zarządzaj Sesjami"
 
@@ -2063,7 +2078,7 @@ msgstr "Zabij sesję"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP -Admin/Ustawienia"
 
-msgid "Error: Only positive numbers are allowed!"
+msgid "Only positive numbers are allowed."
 msgstr ""
 
 #, php-format
@@ -2122,6 +2137,9 @@ msgstr "Licz domyślne adresy E-Mail"
 msgid "E-Mail accounts are hard suspended"
 msgstr "Odrzucanie poczty zablokowanych kont"
 
+msgid "Panel default language"
+msgstr "Domyślny język panelu"
+
 msgid "Apply changes"
 msgstr "Zatwierdź zmiany"
 
@@ -2148,6 +2166,9 @@ msgstr "Błędy"
 
 msgid "Check for update"
 msgstr "Sprawdź aktualizacje"
+
+msgid "Compress output"
+msgstr ""
 
 msgid "Show compression size comment"
 msgstr ""
@@ -2202,8 +2223,8 @@ msgstr "Błąd wysyłania pliku!"
 msgid "You can only upload images!"
 msgstr "Możesz wysyłać tylko obrazki!"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Obrazki muszą być mniejsze niż 195 x 195 pikseli!"
+msgid "Images have to be smaller than 500 x 90 pixels!"
+msgstr ""
 
 msgid "Your logo was successful uploaded!"
 msgstr "Logo zostało załadowane!"
@@ -4502,9 +4523,6 @@ msgstr ""
 msgid "%s entered incorrect password."
 msgstr ""
 
-msgid "You entered an incorrect password!"
-msgstr ""
-
 msgid "Request from foreign host was blocked."
 msgstr ""
 
@@ -4873,6 +4891,9 @@ msgstr ""
 msgid "Deletion in progress..."
 msgstr ""
 
+msgid "Uninstall"
+msgstr ""
+
 msgid "Are you sure to install this package?"
 msgstr ""
 
@@ -5185,6 +5206,9 @@ msgstr "%1$d / %2$d z <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d z <b>nielimitowanych</b>"
 
+msgid "Messages"
+msgstr "Wiadomości"
+
 msgid "No Ip statistics to be show."
 msgstr ""
 
@@ -5292,6 +5316,9 @@ msgstr "i-MSCP - Reseller/Zmień Hasło"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Reseller/Zmień Dane Osobowe"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Obrazki muszą być mniejsze niż 195 x 195 pikseli!"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Reseller/Zgub.hasło ustawienia poczty"

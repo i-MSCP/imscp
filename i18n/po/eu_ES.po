@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-01 18:48+0200\n"
-"PO-Revision-Date: 2011-06-30 10:54+0000\n"
+"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"PO-Revision-Date: 2011-07-04 16:05+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -363,10 +363,7 @@ msgstr "%1$s orain %2$s gisa zaude izen emanda"
 msgid "Go back"
 msgstr "Jo atzera"
 
-msgid "Unknown"
-msgstr "Ezezaguna"
-
-msgid "No language tables found in database."
+msgid "No language found."
 msgstr ""
 
 msgid "i-MSCP - Order Panel"
@@ -538,7 +535,7 @@ msgstr "Konexio arrunta"
 msgid "Lost password"
 msgstr "Ez dut pasahitza gogoratzen"
 
-msgid "php-extension 'gd' not loaded."
+msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
@@ -547,22 +544,17 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
 msgstr ""
 
-msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
 msgstr "Segurtasun kodea"
 
-msgid ""
-"To avoid abuse, we ask you to write the combination of letters on the "
-"picture above into the field \"Security code\""
+msgid "Send"
 msgstr ""
 
-msgid "Get password"
-msgstr ""
-
-msgid "Back"
-msgstr "Atzera"
+msgid "Cancel"
+msgstr "Ezeztatu"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr ""
@@ -570,16 +562,15 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-#, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Wrong security code"
 msgstr ""
-"Zure pasahitz eskaera hasi da. Email bat jasoko duzu prozesua burutzeko "
-"argibideekin. Eskaera hau %s minututan amaituo da."
 
-msgid "User or security code are incorrect."
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
 msgstr ""
 
 msgid "All fields are required."
@@ -626,6 +617,9 @@ msgstr "Gizonezkoa"
 
 msgid "Female"
 msgstr "Emakumezkoa"
+
+msgid "Unknown"
+msgstr "Ezezaguna"
 
 msgid "Zip/Postal code"
 msgstr "Posta kodea"
@@ -921,6 +915,9 @@ msgstr "Muga"
 msgid "Submit changes"
 msgstr "Bidali aldaketak"
 
+msgid "Back"
+msgstr "Atzera"
+
 msgid "Full"
 msgstr "Osoa"
 
@@ -977,9 +974,6 @@ msgstr "Disko tamaina<br /><i>(0 mugagabea)</i>"
 
 msgid "Backup"
 msgstr "Segurtasun kopia"
-
-msgid "Cancel"
-msgstr "Ezeztatu"
 
 msgid "Yes"
 msgstr "Bai"
@@ -1402,7 +1396,10 @@ msgstr "<b>%d</b> euskarri txartel berri dauzkazu"
 msgid "View"
 msgstr "Ikusi"
 
-msgid "One or more updates to the database are available."
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1492,7 +1489,7 @@ msgstr ""
 msgid "Reseller Name"
 msgstr ""
 
-msgid "User language updated successfully."
+msgid "User language successfully updated."
 msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
@@ -1618,12 +1615,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Erabiltzailea ezgaitu da "
 
-msgid "Uninstall"
-msgstr ""
-
 #, php-format
-msgid "%d messages translated"
-msgstr "%d mezu itzulirik"
+msgid "%d strings translated"
+msgstr ""
 
 msgid "Language file no readable."
 msgstr ""
@@ -1660,17 +1654,29 @@ msgstr ""
 msgid "No headers found in language file."
 msgstr ""
 
+msgid "Default language was successfully changed."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP - Admin/Internazionalizazioa"
 
-msgid "Installed languages"
-msgstr "Instalatutako hizkuntzak"
+msgid "Available languages"
+msgstr ""
 
-msgid "Messages"
-msgstr "Mezuak"
+msgid "Translated strings"
+msgstr ""
 
-msgid "Panel default language"
-msgstr "Panelaren berezko hizkuntza"
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
 
 msgid "Install / Update language"
 msgstr ""
@@ -1684,9 +1690,7 @@ msgstr ""
 msgid "Export"
 msgstr "Exportatu"
 
-msgid ""
-"<strong>Note:</strong> You can't delete the system language, and any "
-"language that is currently used by one or more users."
+msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Incorrect data input!"
@@ -2042,6 +2046,18 @@ msgstr "MARTXAN"
 msgid "DOWN"
 msgstr "ERORIA"
 
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Admin/Kudeatu Saioak"
 
@@ -2060,7 +2076,7 @@ msgstr "Amaitu saioa"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Admin/Ezarpenak"
 
-msgid "Error: Only positive numbers are allowed!"
+msgid "Only positive numbers are allowed."
 msgstr ""
 
 #, php-format
@@ -2119,6 +2135,9 @@ msgstr "Zenbatu berezkoa Posta elektroniko helbideak"
 msgid "E-Mail accounts are hard suspended"
 msgstr "Posta elektroniko kontuak gogor ezgaituak"
 
+msgid "Panel default language"
+msgstr "Panelaren berezko hizkuntza"
+
 msgid "Apply changes"
 msgstr "Aldaketak ezarri"
 
@@ -2145,6 +2164,9 @@ msgstr "Akatsak"
 
 msgid "Check for update"
 msgstr "Eguneratua berriak aurkitu"
+
+msgid "Compress output"
+msgstr ""
 
 msgid "Show compression size comment"
 msgstr ""
@@ -2199,8 +2221,8 @@ msgstr "Akatsa fitxategia igotzerakoan!"
 msgid "You can only upload images!"
 msgstr "Irudiak soilik igo ditzazkezu!"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Irudiak 195 x 195 pixel baino txikiagoa izan behar du!"
+msgid "Images have to be smaller than 500 x 90 pixels!"
+msgstr ""
 
 msgid "Your logo was successful uploaded!"
 msgstr "Zure logoa zuzen igo da!"
@@ -4491,9 +4513,6 @@ msgstr ""
 msgid "%s entered incorrect password."
 msgstr ""
 
-msgid "You entered an incorrect password!"
-msgstr ""
-
 msgid "Request from foreign host was blocked."
 msgstr ""
 
@@ -4848,6 +4867,9 @@ msgstr ""
 msgid "Deletion in progress..."
 msgstr ""
 
+msgid "Uninstall"
+msgstr ""
+
 msgid "Are you sure to install this package?"
 msgstr ""
 
@@ -5153,6 +5175,9 @@ msgstr "%1$d / %2$d <b>%3$d</b>-tik"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d <b> mugagabetik</b>"
 
+msgid "Messages"
+msgstr "Mezuak"
+
 msgid "No Ip statistics to be show."
 msgstr ""
 
@@ -5260,6 +5285,9 @@ msgstr "i-MSCP - Bersaltzailea/Pasahitza aldatu"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Bersaltzailea/Aldatu datu pertsonalak"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Irudiak 195 x 195 pixel baino txikiagoa izan behar du!"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Bersaltzailea/Ahaztutako posta elek.-aren ezarpenak"

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-01 18:48+0200\n"
-"PO-Revision-Date: 2011-06-30 10:54+0000\n"
+"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"PO-Revision-Date: 2011-07-04 16:05+0000\n"
 "Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -362,10 +362,7 @@ msgstr "%1$s olet kirjautunut nyt käyttäjänä %2$s"
 msgid "Go back"
 msgstr "Takaisin"
 
-msgid "Unknown"
-msgstr "Tuntematon"
-
-msgid "No language tables found in database."
+msgid "No language found."
 msgstr ""
 
 msgid "i-MSCP - Order Panel"
@@ -535,7 +532,7 @@ msgstr "Normaali yhteys"
 msgid "Lost password"
 msgstr "Salasana unohtunut?"
 
-msgid "php-extension 'gd' not loaded."
+msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
@@ -544,22 +541,17 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
 msgstr ""
 
-msgid "© Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "Security code"
 msgstr "Tarkistuskoodi"
 
-msgid ""
-"To avoid abuse, we ask you to write the combination of letters on the "
-"picture above into the field \"Security code\""
+msgid "Send"
 msgstr ""
 
-msgid "Get password"
-msgstr ""
-
-msgid "Back"
-msgstr "Takaisin"
+msgid "Cancel"
+msgstr "Peruuta"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr ""
@@ -567,16 +559,15 @@ msgstr ""
 msgid "New password has not been sent. Ask your administrator."
 msgstr ""
 
-#, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Wrong security code"
 msgstr ""
-"Salasanan pyyntö on alustettu. Saatte sähköpostilla ohjeet suorittamiseen. "
-"Tämä pyyntö sulkeutuu %s minuutissa."
 
-msgid "User or security code are incorrect."
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
 msgstr ""
 
 msgid "All fields are required."
@@ -623,6 +614,9 @@ msgstr "Mies"
 
 msgid "Female"
 msgstr "Nainen"
+
+msgid "Unknown"
+msgstr "Tuntematon"
 
 msgid "Zip/Postal code"
 msgstr "Postinumero"
@@ -915,6 +909,9 @@ msgstr "Rajoita"
 msgid "Submit changes"
 msgstr "Hyväksy muutokset"
 
+msgid "Back"
+msgstr "Takaisin"
+
 msgid "Full"
 msgstr "Täysi"
 
@@ -971,9 +968,6 @@ msgstr "Levytilarajoitus [MT]<br><i>(0 rajoittamaton)</i>"
 
 msgid "Backup"
 msgstr "Varmuuskopio"
-
-msgid "Cancel"
-msgstr "Peruuta"
 
 msgid "Yes"
 msgstr "Kyllä"
@@ -1394,7 +1388,10 @@ msgstr "Sinulla on <b>%d</b> uutta tukikysymystä"
 msgid "View"
 msgstr "Katsele"
 
-msgid "One or more updates to the database are available."
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -1484,7 +1481,7 @@ msgstr ""
 msgid "Reseller Name"
 msgstr ""
 
-msgid "User language updated successfully."
+msgid "User language successfully updated."
 msgstr ""
 
 msgid "i-MSCP - Admin/Change Language"
@@ -1610,12 +1607,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Käyttäjä poistettu käytöstä"
 
-msgid "Uninstall"
-msgstr "Poista"
-
 #, php-format
-msgid "%d messages translated"
-msgstr "%d viestiä käännetty"
+msgid "%d strings translated"
+msgstr ""
 
 msgid "Language file no readable."
 msgstr ""
@@ -1652,17 +1646,29 @@ msgstr ""
 msgid "No headers found in language file."
 msgstr ""
 
+msgid "Default language was successfully changed."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
 msgid "i-MSCP - Admin/Internationalisation"
 msgstr "i-MSCP - Pääkäyttäjä/Kansainvälistäminen"
 
-msgid "Installed languages"
-msgstr "Asennetut kielipaketit"
+msgid "Available languages"
+msgstr ""
 
-msgid "Messages"
-msgstr "Viestit"
+msgid "Translated strings"
+msgstr ""
 
-msgid "Panel default language"
-msgstr "Paneelin oletuskieli"
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
 
 msgid "Install / Update language"
 msgstr ""
@@ -1676,9 +1682,7 @@ msgstr ""
 msgid "Export"
 msgstr "Vie"
 
-msgid ""
-"<strong>Note:</strong> You can't delete the system language, and any "
-"language that is currently used by one or more users."
+msgid "Rebuild languages index"
 msgstr ""
 
 msgid "Incorrect data input!"
@@ -2034,6 +2038,18 @@ msgstr "YLÖS"
 msgid "DOWN"
 msgstr "ALAS"
 
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Ylläpito / Hallitse sessioita"
 
@@ -2052,7 +2068,7 @@ msgstr "Tapa sessio"
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Pääkäyttäjä/Asetukset"
 
-msgid "Error: Only positive numbers are allowed!"
+msgid "Only positive numbers are allowed."
 msgstr ""
 
 #, php-format
@@ -2111,6 +2127,9 @@ msgstr "Laske oletussähköpostiosoitteet"
 msgid "E-Mail accounts are hard suspended"
 msgstr "Sähköpostitilit ovat vahvasti pysäytetty"
 
+msgid "Panel default language"
+msgstr "Paneelin oletuskieli"
+
 msgid "Apply changes"
 msgstr "Hyväksy muutokset"
 
@@ -2137,6 +2156,9 @@ msgstr "Virheet"
 
 msgid "Check for update"
 msgstr "Tarkista päivitykset"
+
+msgid "Compress output"
+msgstr ""
 
 msgid "Show compression size comment"
 msgstr ""
@@ -2184,8 +2206,8 @@ msgstr "Tiedoston lähetysvirhe"
 msgid "You can only upload images!"
 msgstr "Voit lähettää vain kuvia!"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Kuvien pitää olla pienempiä kuin 195 x 195 pikseliä!"
+msgid "Images have to be smaller than 500 x 90 pixels!"
+msgstr ""
 
 msgid "Your logo was successful uploaded!"
 msgstr "Logo on lähetetty onnistuneesti!"
@@ -4483,9 +4505,6 @@ msgstr ""
 msgid "%s entered incorrect password."
 msgstr ""
 
-msgid "You entered an incorrect password!"
-msgstr ""
-
 msgid "Request from foreign host was blocked."
 msgstr ""
 
@@ -4840,6 +4859,9 @@ msgstr ""
 msgid "Deletion in progress..."
 msgstr ""
 
+msgid "Uninstall"
+msgstr "Poista"
+
 msgid "Are you sure to install this package?"
 msgstr ""
 
@@ -5143,6 +5165,9 @@ msgstr "%1$d / %2$d / <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d / <b>rajoittamaton</b>"
 
+msgid "Messages"
+msgstr "Viestit"
+
 msgid "No Ip statistics to be show."
 msgstr ""
 
@@ -5250,6 +5275,9 @@ msgstr "i-MSCP - Jälleenmyyjä / Muuta salasana"
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Jälleenmyyjä / Muokkaa henkiläkohtaisia tietoja"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Kuvien pitää olla pienempiä kuin 195 x 195 pikseliä!"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Jälleenmyyjä / Salasanamuistuttajan sähköpostiasetukset"
