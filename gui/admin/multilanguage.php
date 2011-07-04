@@ -47,95 +47,64 @@
  */
 function generatePage($tpl)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
+	$default_language = $cfg->USER_INITIAL_LANG;
+	$availableLanguages = i18n_getAvailableLanguages();
 
-    $default_language = $cfg->USER_INITIAL_LANG;
+	// Assign the items per page variable
+	$perPage = 10;
 
-    //$index = 0;
+	// Assign the page variable
+	if (!empty($_GET['psi'])) {
+		$page = intval($_GET['psi']); // using the get method
+	} else {
+		$page = 1; // if we don't have a page number then assume we are on the first page
+	}
 
-    foreach($db->metaTables() as $tableName) {
-        // Is not a language database table ?
-        if (strpos($tableName, 'lang_') === false) {
-            continue;
-        }
+	$pages = ceil(count($availableLanguages) / $perPage);
 
-        $stmt = array();
+	if ($page > $pages) {
+		$page = $pages;
+	}
 
-        foreach (array('imscp_language', 'imscp_languageSetlocaleValue',
-            'imscp_languageRevision') as $msgstr
-        ) {
-            $stmt[] = exec_query(
-                "SELECT `msgstr` FROM `$tableName` WHERE `msgid` = '$msgstr'");
-        }
+	$start = ceil(($page - 1) * $perPage);
+	$availableLanguages = array_slice($availableLanguages, $start, $perPage);
 
-         // User better language name if available
-         if ($stmt[0]->recordCount() !== 0) {
-            $languageName = $stmt[0]->fields['msgstr'];
-         } else {
-             $languageName = substr($tableName, strrpos($tableName, '_') + 1);
-         }
+	if ($page < $pages) {
+		$tpl->assign('NEXT_PSI', $page + 1);
+		$tpl->assign('SCROLL_NEXT_GRAY', '');
+	} else {
+		$tpl->assign('SCROLL_NEXT', '');
+	}
+
+	if ($page != 1) {
+		$tpl->assign('PREV_PSI', $page - 1);
+		$tpl->assign('SCROLL_PREV_GRAY', '');
+	} else {
+		$tpl->assign('SCROLL_PREV', '');
+	}
 
 
-        if ($stmt[2]->recordCount() !== 0 && $stmt[2]->fields['msgstr'] != '' &&
-            class_exists('DateTime')
-        ) {
-            $datetime = new DateTime($stmt[2]->fields['msgstr']);
-            $languageRevision = $datetime->format('Y-m-d H:i');
-        } else {
-            $languageRevision = tr('Unknown');
-        }
+	foreach ($availableLanguages as $language) {
+			$tpl->assign(array(
+							  'LANGUAGE' => tohtml($language['language']),
+							  'MESSAGES' => tr('%d strings translated', $language['translatedStrings']),
+							  'LANGUAGE_REVISION' => $language['revision'],
+							  'LAST_TRANSLATOR' => preg_replace('/\s<.*>/', '', $language['lastTranslator']),
+							  'LANG_VALUE_CHECKED' => $default_language == $language['locale']
+								  ? $cfg->HTML_CHECKED : '',
+							  'LANG_VALUE' => $language['locale']));
 
-        $stmt = exec_query(
-            "SELECT COUNT(`user_id`) `cnt` FROM `user_gui_props` WHERE `lang` =  ?",
-            $tableName
-        );
+		$tpl->parse('LANG_ROW', '.lang_row');
+	}
 
-        // The langue is currently used or it's the system language or it's the
-        // default language
-        if ($stmt->fields['cnt'] > 0 || $tableName == 'lang_en_GB' ||
-            $default_language == $tableName
-        ) {
-            $tpl->assign(array('TR_UNINSTALL' => tr('N/A'),
-                              'LANG_DELETE_LINK' => '',
-                              'LANGUAGE' => tohtml($languageName),
-                              'LANGUAGE_REVISION' => $languageRevision,
-                              'LANG_VALUE_CHECKED' => $default_language == $tableName
-                                  ? $cfg->HTML_CHECKED : '',
-                              'LANG_VALUE' => $tableName,
-                              'LANG_DELETE_LINK' => ''));
-
-            $tpl->parse('LANG_SHOW', 'lang_show');
-        } else {
-            $tpl->assign(array('TR_UNINSTALL' => tr('Uninstall'),
-                              'URL_DELETE' => "language_delete.php?delete_lang=$tableName",
-                              'LANG_DELETE_SHOW' => '',
-                              'LANGUAGE' => tohtml($languageName),
-                              'LANGUAGE_REVISION' => $languageRevision,
-                              'LANG_VALUE_CHECKED' => $default_language == $tableName
-                                  ? $cfg->HTML_CHECKED : '',
-                              'LANG_VALUE' => $tableName,
-                              'LANG_SHOW' => ''));
-
-            $tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
-        }
-
-        // Retrieving number of translated messages
-        $stmt = exec_query("SELECT COUNT(`msgid`) AS `cnt` FROM `$tableName`");
-
-        $tpl->assign('MESSAGES', tr('%d messages translated', $stmt->fields['cnt'] - 4));
-        /*
-        $tpl->assign(array('MESSAGES' => tr('%d messages translated', $stmt->fields['cnt'] - 4),
-                          'URL_EXPORT' => "multilanguage_export.php?export_lang=$tableName",
-                          'INDEX' => $index,
-                          'TR_GZIPPED' => tr('Gzipped')));
-        */
-
-        $tpl->parse('LANG_ROW', '.lang_row');
-    }
+	if($page != 1) {
+		$tpl->assign('PSI', '?psi=' . $page);
+	} else {
+		$tpl->assign('PSI', '');
+	}
 }
 
 /**
@@ -349,7 +318,6 @@ function changeDefaultLanguage()
         // Ensures language change on next load for current user in case he has not yet
         // his gui properties explicitly set (eg. for the first admin user when i-MSCP
         // was just installed
-
         $stmt = exec_query(
             "SELECT
                 lang
@@ -357,7 +325,6 @@ function changeDefaultLanguage()
                 `user_gui_props`
             WHERE
                 `user_id` = {$_SESSION['user_id']};
-            ;
         ");
 
         if ($stmt->fields['lang'] == null) {
@@ -385,11 +352,16 @@ $cfg = iMSCP_Registry::get('config');
 
 // Dispatches the request
 if (isset($_POST['uaction'])) {
-    if($_POST['uaction'] == 'uploadLanguage') {
-        importLanguageFile();
-    } elseif($_POST['uaction'] == 'changeLanguage') {
+    //if($_POST['uaction'] == 'uploadLanguage') {
+    //    importLanguageFile();
+    //} else
+	if($_POST['uaction'] == 'changeLanguage') {
         changeDefaultLanguage();
-    }
+		set_page_message(tr('Default language was successfully changed.'), 'success');
+    } elseif($_POST['uaction'] == 'rebuildIndex') {
+		i18n_buildLanguageIndex(true);
+		set_page_message(tr('Languages index was successfully re-built.'), 'success');
+	}
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -400,17 +372,23 @@ $tpl->define_dynamic('lang_show', 'lang_row');
 $tpl->define_dynamic('lang_delete_link', 'lang_row');
 $tpl->define_dynamic('lang_def', 'lang_row');
 
+$tpl->define_dynamic('scroll_prev_gray', 'page');
+$tpl->define_dynamic('scroll_prev', 'page');
+$tpl->define_dynamic('scroll_next_gray', 'page');
+$tpl->define_dynamic('scroll_next', 'page');
+
 $tpl->assign(array(
                   'TR_ADMIN_I18N_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => get_logo($_SESSION['user_id']),
                   'TR_MULTILANGUAGE' => tr('Internationalization'),
-                  'TR_INSTALLED_LANGUAGES' => tr('Installed languages'),
+                  'TR_INSTALLED_LANGUAGES' => tr('Available languages'),
                   'TR_LANGUAGE' => tr('Language'),
-                  'TR_MESSAGES' => tr('Messages'),
-                  'TR_LANG_REV' => tr('Date'),
-                  'TR_DEFAULT' => tr('Panel default language'),
+                  'TR_MESSAGES' => tr('Translated strings'),
+                  'TR_LANG_REV' => tr('Revision Date'),
+				  'TR_LAST_TRANSLATOR' => tr('Last translator'),
+                  'TR_DEFAULT' => tr('Default language'),
                   'TR_ACTION' => tr('Action'),
                   'TR_SAVE' => tr('Save'),
                   'TR_INSTALL_NEW_LANGUAGE' => tr('Install / Update language'),
@@ -418,9 +396,8 @@ $tpl->assign(array(
                   'ISP_LOGO' => get_logo($_SESSION['user_id']),
                   'TR_INSTALL' => tr('Install / Update'),
                   'TR_EXPORT' => tr('Export'),
-                  'TR_MESSAGE_DELETE' =>
-                  tr('Are you sure you want to delete %s?', true, '%s'),
-                  'TR_NOTE_DELETION' => tr("<strong>Note:</strong> You can't delete the system language, and any language that is currently used by one or more users.")));
+				  'TR_REBUILD_INDEX' => tr('Rebuild languages index')
+           ));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');

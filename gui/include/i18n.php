@@ -35,54 +35,8 @@
  */
 
 /**
- * false: don't set (not even auto),
- * null: set if missing,
- * true: force update from session/default, anything else: set it as a language
- */
-
-/**
- * Sets and return the current language.
- *
- * @param string|null $newlang New language to be used or NULL to use existing
- * @param boolean $force If TRUE, $newlang will be forced
- * @return string Current language
- */
-function curlang($newlang = null, $force = false)
-{
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-    static $language = null;
-
-    // We store old value so if $language is changed old value is returned
-    $_language = $language;
-
-    // Forcibly set $language to $newlang (use with CARE!)
-    if ($force) {
-        $language = $newlang;
-        return $_language;
-    }
-
-    if ($language === null || ($newlang !== null && $newlang !== false)) {
-        if ($newlang === true || (($newlang === null || $newlang === false) &&
-                                  $language === null)
-        ) {
-
-            $newlang = (isset($_SESSION['user_def_lang']))
-                ? $_SESSION['user_def_lang'] : $cfg->USER_INITIAL_LANG;
-        }
-
-        if ($newlang !== false) {
-            $language = $newlang;
-        }
-    }
-
-    return ($_language !== null) ? $_language : $language;
-}
-
-/**
  * Translates a given string into the selected language, if exists.
  *
- * @author Benedikt Heintel <benedikt.heintel@isp-control.net>
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
@@ -92,86 +46,40 @@ function curlang($newlang = null, $force = false)
  */
 function tr($msgid, $substitution = false)
 {
-    static $cache = array();
-    static $stmt = null;
+	$msgstr = T_($msgid);
 
-    // Detect whether $substitution is really $substitution or just a value to
-    // be replaced in $msgstr
-    if (!is_bool($substitution)) {
-        $substitution = false;
-    }
+	// Detect whether $substitution is really a substitution or just a value to
+	// be replaced in $msgstr
+	if (!is_bool($substitution)) {
+		$substitution = false;
+	}
 
-    $lang = curlang();
-    
-    // Fix for #98 - (Quick fix)
-    //$encoding = 'UTF-8';
+	// Detect comments and strip them if $msgid == $msgstr
+	// e.g. tr('_: This is just a comment\nReal message to translate here')
+	if (substr($msgid, 0, 3) == '_: ' && $msgid == $msgstr &&
+		count($l = explode("\n", $msgid)) > 1
+	) {
+		unset($l[0]);
+		$msgstr = implode("\n", $l);
+	}
 
-    if (isset($cache[$lang][$msgid])) {
-        $msgstr = $cache[$lang][$msgid];
-    } else {
-        $msgstr = $msgid;
+	// Replace values
+	if (func_num_args() > 1) {
+		$argv = func_get_args();
+		unset($argv[0]);
 
-        /* Fix for #98 - (Quick fix)
-        if (!$substitution) {
-            // $substitution is true in this call because we need it that way
-            // and to prevent an infinite loop
-            $encoding = tr('encoding', true);
-        }
-        */
+		if (is_bool($argv[1])) {
+			unset($argv[1]);
+		}
 
-        // Prepare the query only once to improve performances
-        if ($stmt == null) {
-            $query = "SELECT `msgstr` FROM `$lang` WHERE `msgid` = :msgid;";
+		$msgstr = vsprintf($msgstr, $argv);
+	}
 
-            /** @var $pdo iMSCP_Database */
-            $pdo = iMSCP_Database::getRawInstance();
-            $stmt = $pdo->prepare($query);
-        }
+	if (!$substitution) {
+		$msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, 'UTF-8'));
+	}
 
-        // Execute the query
-        $stmt->execute(array(':msgid' => $msgid));
-
-        if (($row = $stmt->fetch(PDO::FETCH_ASSOC))) {
-            $msgstr = $row['msgstr'];
-        }
-    }
-
-/* Fix for #98 - (Quick fix)
-    if ($msgid == 'encoding' && $msgstr == 'encoding') {
-        $msgstr = $encoding;
-    }
-*/
-
-    // Detect comments and strip them if $msgid == $msgstr
-    // e.g. tr('_: This is just a comment\nReal message to translate here')
-    if (substr($msgid, 0, 3) == '_: ' && $msgid == $msgstr &&
-        count($l = explode("\n", $msgid)) > 1
-    ) {
-        unset($l[0]);
-        $msgstr = implode("\n", $l);
-    }
-
-    $cache[$lang][$msgid] = $msgstr;
-
-    // Replace values
-    if (func_num_args() > 1) {
-        $argv = func_get_args();
-        unset($argv[0]); //msgid
-
-        if (is_bool($argv[1])) {
-            unset($argv[1]);
-        }
-
-        $msgstr = vsprintf($msgstr, $argv);
-    }
-
-    if (!$substitution) {
-        // Fix for #98 - (Quick fix)
-        //$msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, $encoding));
-        $msgstr = replace_html(htmlentities($msgstr, ENT_COMPAT, 'UTF-8'));
-    }
-
-    return $msgstr;
+	return $msgstr;
 }
 
 /**
@@ -183,40 +91,95 @@ function tr($msgid, $substitution = false)
  */
 function replace_html($string)
 {
-    $pattern = array(
-        '#&lt;[ ]*b[ ]*&gt;#i',
-        '#&lt;[ ]*/[ ]*b[ ]*&gt;#i',
-        '#&lt;[ ]*strong[ ]*&gt;#i',
-        '#&lt;[ ]*/[ ]*strong[ ]*&gt;#i',
-        '#&lt;[ ]*em[ ]*&gt;#i',
-        '#&lt;[ ]*/[ ]*em[ ]*&gt;#i',
-        '#&lt;[ ]*i[ ]*&gt;#i',
-        '#&lt;[ ]*/[ ]*i[ ]*&gt;#i',
-        '#&lt;[ ]*small[ ]*&gt;#i',
-        '#&lt;[ ]*/[ ]*small[ ]*&gt;#i',
-        '#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i'
-    );
+	$pattern = array(
+		'#&lt;[ ]*b[ ]*&gt;#i', '#&lt;[ ]*/[ ]*b[ ]*&gt;#i',
+		'#&lt;[ ]*strong[ ]*&gt;#i', '#&lt;[ ]*/[ ]*strong[ ]*&gt;#i',
+		'#&lt;[ ]*em[ ]*&gt;#i', '#&lt;[ ]*/[ ]*em[ ]*&gt;#i',
+		'#&lt;[ ]*i[ ]*&gt;#i', '#&lt;[ ]*/[ ]*i[ ]*&gt;#i',
+		'#&lt;[ ]*small[ ]*&gt;#i', '#&lt;[ ]*/[ ]*small[ ]*&gt;#i',
+		'#&lt;[ ]*br[ ]*(/|)[ ]*&gt;#i');
 
-    $replacement = array(
-        '<b>',
-        '</b>',
-        '<strong>',
-        '</strong>',
-        '<em>',
-        '</em>',
-        '<i>',
-        '</i>',
-        '<small>',
-        '</small>',
-        '<br />'
-    );
+	$replacement = array(
+		'<b>', '</b>', '<strong>', '</strong>', '<em>', '</em>', '<i>', '</i>',
+		'<small>', '</small>', '<br />');
 
-    $string = preg_replace($pattern, $replacement, $string);
+	$string = preg_replace($pattern, $replacement, $string);
 
-    return $string;
+	return $string;
 }
 
 // Dirty hack to make gettext add this entry to the .pot file
 if (false) {
-    tr('_: Localised language');
+	tr('_: Localised language');
+}
+
+/**
+ * Build languages index from machine object files.
+ *
+ * Note: Only the files that are readable will be processed.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @return void
+ */
+function i18n_buildLanguageIndex()
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
+			$cfg->GUI_ROOT_DIR . '/i18n/locales/', FilesystemIterator::SKIP_DOTS));
+
+	$availableLanguages = array();
+
+	/** @var $item SplFileInfo */
+	foreach ($iterator as $item) {
+		$basename = $item->getBasename();
+
+		if ($item->isReadable()) {
+			$parser = new iMSCP_I18n_Parser_Mo($item->getPathname());
+			$poRevisionDate = DateTime::createFromFormat(
+				'Y-m-d H:i O', $parser->getPotCreationDate());
+
+			$availableLanguages[$basename] = array(
+				'locale' => $parser->getLanguage(),
+				'revision' => $poRevisionDate->format('Y-m-d H:i'),
+				'translatedStrings' => $parser->getNumberOfTranslatedStrings(),
+				'lastTranslator' => $parser->getLastTranslator());
+
+			// Getting localized language name
+			$translationTable = $parser->getTranslationTable();
+			$availableLanguages[$basename]['language'] =
+				$translationTable['_: Localised language'];
+		}
+	}
+
+	/** @var $dbConfig iMSCP_Config_Handler_Db */
+	$dbConfig = iMSCP_Registry::get('dbConfig');
+
+	sort($availableLanguages);
+	$dbConfig->AVAILABLE_LANGUAGES = serialize($availableLanguages);
+	$cfg->replaceWith($dbConfig);
+}
+
+/**
+ * Returns list of available languages with some informations.
+ *
+ * Note: For safe reasons, only the files that are readable will be indexed.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @return array Array that contains information about available languages
+ */
+function i18n_getAvailableLanguages()
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	if (!isset($cfg->AVAILABLE_LANGUAGES) || !is_serialized($cfg->AVAILABLE_LANGUAGES)
+	) {
+		i18n_buildLanguageIndex();
+	}
+
+	return unserialize(($cfg->AVAILABLE_LANGUAGES));
 }

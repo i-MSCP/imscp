@@ -64,8 +64,8 @@ $config->HTML_DISABLED = ' disabled="disabled"';
 $config->HTML_READONLY = ' readonly="readonly"';
 $config->HTML_SELECTED = ' selected="selected"';
 
-// Standard Language (if not set)
-$config->USER_INITIAL_LANG = 'lang_en_GB';
+// Default Language (if not overriden by admin)
+$config->USER_INITIAL_LANG = 'en_GB';
 
 // Tell whether or not output must be compressed
 $config->COMPRESS_OUTPUT = 1;

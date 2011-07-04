@@ -169,7 +169,7 @@ class iMSCP_Initializer
         $this->_initializeSession();
 
         // Initialize internationalization libraries
-        //$this->_initializeI18n();
+        $this->_initializeI18n();
 
         // Initialize logger
         // $this->_initializeLogger();
@@ -454,7 +454,7 @@ class iMSCP_Initializer
     {
 		if(isset($this->_config->COMPRESS_OUTPUT) && $this->_config->COMPRESS_OUTPUT) {
         	// Create a new filter that will be applyed on the buffer output
-        	/** @var $filter  iMSCP_Filter_Compress_Gzip*/
+        	/** @var $filter iMSCP_Filter_Compress_Gzip*/
         	$filter = iMSCP_Registry::set('bufferFilter',
 										  new iMSCP_Filter_Compress_Gzip(
                                           iMSCP_Filter_Compress_Gzip::FILTER_BUFFER));
@@ -489,11 +489,6 @@ class iMSCP_Initializer
 
 		$locale = isset($_SESSION['user_def_lang'])
 			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
-
-		// Transitional code - will be removed ASAP
-		if (count($locale == 10)) {
-			$locale = substr($locale, 5);
-		}
 
 		T_setlocale(LC_MESSAGES, $locale . '.UTF-8');
 		T_bindtextdomain($locale, $this->_config->GUI_ROOT_DIR . '/i18n/locales');

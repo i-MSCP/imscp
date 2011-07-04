@@ -858,4 +858,45 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->del('DUMP_GUI_DEBUG');
 		}
 	}
+
+
+	/**
+	 * #124: Enhancement - Switch to PHP gettext
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4792
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_67()
+	{
+		$sqlUpd = array();
+
+		// First step: Update default language (new naming convention)
+
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+		if (isset($dbConfig->USER_INITIAL_LANG)) {
+			$dbConfig->USER_INITIAL_LANG = str_replace(
+				'lang_', '', $dbConfig->USER_INITIAL_LANG);
+		}
+
+		// second step: Removing all database languages tables
+
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
+
+		foreach ($db->metaTables() as $tableName) {
+			if (strpos($tableName, 'lang_') !== false) {
+				$sqlUpd[] = "DROP TABLE `$tableName`";
+			}
+		}
+
+		// third step: Update user language property
+
+		// Will reset the language property for all users (expected behavior) to
+		// ensure compatibility with the transition. So then each user will have to set
+		// (again) his own language if he want use an other language than the default.
+		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'en_GB'";
+
+		return $sqlUpd;
+	}
 }

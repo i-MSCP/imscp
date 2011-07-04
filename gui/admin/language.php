@@ -71,7 +71,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
     unset($_SESSION['user_def_lang']);
     $_SESSION['user_def_lang'] = $user_lang;
-    set_page_message(tr('User language updated successfully.'), 'success');
+
+    set_page_message(tr('User language successfully updated.'), 'success');
+
+	// Fix to see change on next load
+	redirectTo('language.php');
 }
 
 

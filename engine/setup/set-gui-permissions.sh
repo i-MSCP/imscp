@@ -53,6 +53,8 @@ recursive_set_permissions "$ROOT_DIR/gui/" \
 # php-generated or uploaded files will be stored there.
 recursive_set_permissions "$ROOT_DIR/gui/phptmp" \
 	$PANEL_USER $APACHE_GROUP 0750 0640
+recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
 	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \

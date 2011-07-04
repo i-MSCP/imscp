@@ -76,6 +76,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
     }
 
 	set_page_message(tr('Language updated successfully.'), 'success');
+
+	// Fix to see change on next load
+	redirectTo('language.php');
 }
 
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {

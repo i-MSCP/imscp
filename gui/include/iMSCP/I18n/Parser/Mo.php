@@ -28,7 +28,7 @@
  */
 
 /**
- * Class to parse gettext machine object files.
+ * Class to parse gettext machine object (MO) files.
  *
  * @see http://www.gnu.org/software/gettext/manual/gettext.html#MO-Files
  * @author Laurent Declercq <l.declercq@nuxwin.com>
@@ -102,46 +102,48 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 		}
 
 		if ($this->_order === null) {
-			// Magic number (byte 0 to 4)
+			// Magic number
 			$value = unpack('V', fread($this->_fh, 4));
 			$magicNumber = array_shift($value);
 
 			if ($magicNumber == (int)0x0950412de ||
 				dechex($magicNumber) == 'ffffffff950412de'
 			) {
-				$this->_order = 'V'; // low endian
+				$this->_order = 'V'; // Little Endian
 			} elseif($magicNumber == (int)0x0de120495) {
-				$this->_order = 'N'; // big endian
+				$this->_order = 'N'; // Big endian
 			} else {
 				require_once 'iMSCP/I18n/Parser/Exception.php';
 				throw new iMSCP_i18n_Parser_Exception(
 						'Bad magic number in ' . $this->_filePath);
 			}
 
-			// Skipping the revision number (byte 4 to 8)
+			// Skipping the revision number
 			fseek($this->_fh, 4, SEEK_CUR);
 
-			// number of strings (byte 8 to 12)
+			// number of strings 											N
 			$value = unpack($this->_order, fread($this->_fh, 4));
 			$this->_nbStrings = array_shift($value);
 
-			// offset of table with original strings (byte 12 to 16)
+			// offset of table with original strings						O
 			$value = unpack($this->_order, fread($this->_fh, 4));
 			$msgidtableOffset = array_shift($value);
 
-			// offset of table with translation strings (byte 16 to 20)
+			// offset of table with translation strings						T
 			$value = unpack($this->_order, fread($this->_fh, 4));
 			$msgstrTableOffset = array_shift($value);
 
-			// two integers per string (offset and size)
+
+			// each string descriptor uses two 32 bits integers, one for the string
+			// length, another for the offset of the string
 			$count = $this->_nbStrings * 2;
 
-			// index of original strings
+			// getting index of original strings
 			fseek($this->_fh, $msgidtableOffset);
 			$this->_msgidIndexTable = unpack(
 				$this->_order . $count, fread($this->_fh, ($count * 4)));
 
-			// index of translated strings
+			// getting index of translated strings
 			fseek($this->_fh, $msgstrTableOffset);
 			$this->_msgstrIndexTable = unpack(
 				$this->_order . $count, fread($this->_fh, ($count * 4)));
@@ -150,44 +152,34 @@ class iMSCP_I18n_Parser_Mo extends iMSCP_I18n_Parser
 
 		switch ((int)$part) {
 			case self::HEADERS:
-				$nbString = 1;
-				$index = 0;
+				fseek($this->_fh, $this->_msgstrIndexTable[2]);
+				return fread($this->_fh, $this->_msgstrIndexTable[1]);
 				break;
 			case self::TRANSLATION_TABLE:
 				$nbString = $this->_nbStrings;
-				$index = 1;
+				$parseResult = array();
+
+				for ($index = 1; $index < $nbString; $index++) {
+					// Getting msgid
+					fseek($this->_fh, $this->_msgidIndexTable[$index * 2 + 2]);
+					$msgid = fread($this->_fh, $this->_msgidIndexTable[$index * 2 + 1]);
+
+					// Getting msgstr
+					fseek($this->_fh, $this->_msgstrIndexTable[$index * 2 + 2]);
+					if (!$length = $this->_msgstrIndexTable[$index * 2 + 1]) {
+						$msgstr = '';
+					} else {
+						$msgstr = fread($this->_fh, $length);
+					}
+
+					$parseResult[$msgid] = $msgstr;
+				}
+
+				return $parseResult;
 				break;
 			default:
 				require_once 'iMSCP/I18n/Parser/Exception.php';
 				throw new iMSCP_i18n_Parser_Exception('Unknown part type to parse');
 		}
-
-		$parseResult = null;
-
-		for ($index; $index < $nbString; $index++) {
-			fseek($this->_fh, $this->_msgidIndexTable[$index * 2 + 2]);
-
-			if (!($length = $this->_msgidIndexTable[$index * 2 + 1])) {
-				$msgid = '__headers__';
-			} else {
-				$msgid = fread($this->_fh, $length);
-			}
-
-			fseek($this->_fh, $this->_msgstrIndexTable[$index * 2 + 2]);
-
-			if (!$length = $this->_msgstrIndexTable[$index * 2 + 1]) {
-				$msgstr = '';
-			} else {
-				$msgstr = fread($this->_fh, $length);
-			}
-
-			if ($msgid == '__headers__') {
-				$parseResult = $msgstr;
-			} else {
-				$parseResult[$msgid] = $msgstr;
-			}
-		}
-
-		return $parseResult;
 	}
 }

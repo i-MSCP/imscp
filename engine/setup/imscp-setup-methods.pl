@@ -472,21 +472,22 @@ sub updateDb {
 # Creating default language table
 #
 # @return int 0 on success, other on failure
+# @depracted since r4792
 #
-sub setup_default_language_table {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::Database;
-
-	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-
-	my $error = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/languages.sql");
-	return $error if ($error);
-
-	debug((caller(0))[3].': Ending...');
-	0;
-}
+#sub setup_default_language_table {
+#
+#	debug((caller(0))[3].': Starting...');
+#
+#	use iMSCP::Database;
+#
+#	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+#
+#	my $error = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/languages.sql");
+#	return $error if ($error);
+#
+#	debug((caller(0))[3].': Ending...');
+#	0;
+#}
 
 ################################################################################
 # create all directories required by i-MSCP and the managed services
