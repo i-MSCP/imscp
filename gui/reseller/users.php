@@ -161,9 +161,11 @@ function generate_users_list($tpl, $resellerId)
             if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
                 $status_icon = 'ok.png';
                 $status_domain = 'ok';
+                $status_bool = true;
             } else if ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
                 $status_icon = 'disabled.png';
                 $status_domain = 'disabled';
+                $status_bool = false;
             } else if ($stmt->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
                        || $stmt->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS
                        || $stmt->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS
@@ -173,9 +175,11 @@ function generate_users_list($tpl, $resellerId)
             ) {
                 $status_icon = 'reload.png';
                 $status_domain = 'reload';
+                $status_bool = false;
             } else {
                 $status_icon = 'error.png';
                 $status_domain = 'error';
+                $status_bool = false;
             }
 
             $status_url = $stmt->fields['domain_id'];
@@ -185,7 +189,18 @@ function generate_users_list($tpl, $resellerId)
                               'STATUS_ICON' => $status_icon,
                               'URL_CHANGE_STATUS' => $status_url));
 
-            $admin_name = decode_idna($stmt->fields['domain_name']);
+			$admin_name = decode_idna($stmt->fields['domain_name']);
+			
+			if($status_bool == false) { // reload
+				$tpl->assign('STATUS_RELOAD_TRUE', '');
+				$tpl->assign('NAME', tohtml($admin_name));
+				$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
+			} else {
+				$tpl->assign('STATUS_RELOAD_FALSE', '');
+				$tpl->assign('NAME', tohtml($admin_name));
+				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
+			}
+
             $dom_created = $stmt->fields['domain_created'];
             $dom_expires = $stmt->fields['domain_expires'];
 
@@ -205,7 +220,6 @@ function generate_users_list($tpl, $resellerId)
                               'CREATION_DATE' => $dom_created,
                               'EXPIRE_DATE' => $dom_expires,
                               'DOMAIN_ID' => $stmt->fields['domain_id'],
-                              'NAME' => tohtml($admin_name),
                               'ACTION' => tr('Delete'),
                               'USER_ID' => $stmt->fields['domain_admin_id'],
                               'CHANGE_INTERFACE' => tr('Switch'),
@@ -219,7 +233,7 @@ function generate_users_list($tpl, $resellerId)
             $stmt->moveNext();
         }
 
-        $tpl->parse('USER_LIST', 'users_list');
+        //$tpl->parse('USER_LIST', 'users_list');
     }
 }
 
@@ -281,6 +295,8 @@ $tpl->define_dynamic(array(
                           'page' => $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl',
                           'users_list' => 'page',
                           'user_entry' => 'users_list',
+                          'status_reload_true' => 'users_list',
+                          'status_reload_false' => 'users_list',
                           'user_details' => 'users_list',
                           'page_message' => 'page',
                           'logged_from' => 'page',

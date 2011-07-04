@@ -86,7 +86,15 @@
                     <!-- BDP: table_item -->
                     <tr>
                         <td>
-                            <a href="http://www.{NAME}/" target="_blank" class="icon i_domain_icon">{NAME}</a><br />{ALIAS_IP}
+                            <!-- BDP: status_reload_true -->
+                            <a href="http://www.{NAME}/" target="_blank" class="icon i_domain_icon">{NAME}</a>
+                            <!-- EDP: status_reload_true -->
+
+                            <!-- BDP: status_reload_false -->
+                            <span class="icon i_domain_icon">{NAME}</span>
+                            <!-- EDP: status_reload_false -->
+
+                            <br />{ALIAS_IP}
                         </td>
                         <td>{REAL_DOMAIN}<br />{REAL_DOMAIN_MOUNT}</td>
                         <td>{FORWARD}</td>

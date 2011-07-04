@@ -170,7 +170,15 @@
                 <!-- BDP: usr_item -->
                 <tr>
                     <td><a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{USR_USERNAME}')" class="icon i_{STATUS}">{TR_STATUS}</a></td>
-                    <td><a href="http://www.{USR_USERNAME}/" target="_blank" class="icon i_goto">{USR_USERNAME}</a></td>
+                    <td>
+                            <!-- BDP: usr_status_reload_true -->
+                            <a href="http://{USR_USERNAME}/" target="_blank" class="icon i_goto">{USR_USERNAME}</a>
+                            <!-- EDP: usr_status_reload_true -->
+
+                            <!-- BDP: usr_status_reload_false -->
+                            <span class="icon i_goto">{USR_USERNAME}</span>
+                            <!-- EDP: usr_status_reload_false -->
+                    </td>
                     <td>{USER_CREATED_ON}</td>
                     <td>{USR_CREATED_BY}</td>
                     <td>

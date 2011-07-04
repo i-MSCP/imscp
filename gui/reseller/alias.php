@@ -284,16 +284,19 @@ function generate_als_list($tpl, $reseller_id) {
 			$edit_link = "alias_edit.php?edit_id=" . $als_id;
 			$action_text = tr('Delete');
 			$edit_text = tr('Edit');
+            $status_bool = true;
 		} else if ($als_status === $cfg->ITEM_ORDERED_STATUS) {
 			$delete_link = 'alias_order.php?action=delete&del_id=' . $als_id;
 			$edit_link = 'alias_order.php?action=activate&act_id=' . $als_id;
 			$action_text = tr('Delete order');
 			$edit_text = tr('Activate');
+            $status_bool = false;
 		} else {
 			$delete_link = '#';
 			$edit_link = '#';
 			$action_text = tr('N/A');
 			$edit_text = tr('N/A');
+            $status_bool = false;
 		}
 		$als_status = translate_dmn_status($als_status);
 		$als_name = decode_idna($als_name);
@@ -308,6 +311,16 @@ function generate_als_list($tpl, $reseller_id) {
 			$domain_name_selected = $cfg->HTML_SELECTED;
 			$account_name_selected = '';
 		}
+
+        if($status_bool == false) { // reload
+            $tpl->assign('STATUS_RELOAD_TRUE', '');
+            $tpl->assign('NAME', tohtml($als_name));
+            $tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
+        } else {
+            $tpl->assign('STATUS_RELOAD_FALSE', '');
+            $tpl->assign('NAME', tohtml($als_name));
+            $tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
+        }
 
         $tpl->assign(array(
                           'NAME' => tohtml($als_name),
@@ -405,6 +418,8 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('table_list', 'page');
 $tpl->define_dynamic('table_header', 'page');
 $tpl->define_dynamic('table_item', 'table_list');
+$tpl->define_dynamic('status_reload_true','table_list');
+$tpl->define_dynamic('status_reload_false','table_list');
 $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');

@@ -110,7 +110,13 @@
                             <a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}')" class="icon i_{STATUS_DOMAIN}">{STATUS_DOMAIN}</a>
                         </td>
                         <td>
+                            <!-- BDP: status_reload_true -->
                             <a href="http://{NAME}/" target="_blank" class="icon i_goto">{NAME}</a>
+                            <!-- EDP: status_reload_true -->
+
+                            <!-- BDP: status_reload_false -->
+                            <span class="icon i_goto">{NAME}</span>
+                            <!-- EDP: status_reload_false -->
                         </td>
                         <td>{CREATION_DATE}</td>
                         <td>{DISK_USAGE}</td>

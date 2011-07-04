@@ -649,11 +649,13 @@ function gen_user_list($tpl)
                 $status_txt = tr('Ok');
                 $status_url = 'domain_status_change.php?domain_id=' .
                               $rs->fields['domain_id'];
+                $status_bool = true;
             } elseif ($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
                 $status = 'disabled';
                 $status_txt = tr('Disabled');
                 $status_url = 'domain_status_change.php?domain_id=' .
                               $rs->fields['domain_id'];
+                $status_bool = false;
             } elseif ($rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
                       || $rs->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS
                       || $rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS
@@ -664,10 +666,12 @@ function gen_user_list($tpl)
                 $status = 'reload';
                 $status_txt = tr('Reload');
                 $status_url = '#';
+                $status_bool = false;
             } else {
                 $status = 'error';
                 $status_txt = tr('Error');
                 $status_url = 'domain_details.php?domain_id=' . $rs->fields['domain_id'];
+                $status_bool = false;
             }
 
             $tpl->assign(array(
@@ -696,8 +700,17 @@ function gen_user_list($tpl)
                 $domain_expires = date($date_formt, $domain_expires);
             }
 
+            if($status_bool == false) { // reload
+				$tpl->assign('USR_STATUS_RELOAD_TRUE', '');
+				$tpl->assign('USR_USERNAME', tohtml($admin_name));
+				$tpl->parse('USR_STATUS_RELOAD_FALSE', 'usr_status_reload_false');
+			} else {
+				$tpl->assign('USR_STATUS_RELOAD_FALSE', '');
+				$tpl->assign('USR_USERNAME', tohtml($admin_name));
+				$tpl->parse('USR_STATUS_RELOAD_TRUE', 'usr_status_reload_true');
+			}
+
             $tpl->assign(array(
-                              'USR_USERNAME' => tohtml($admin_name),
                               'USER_CREATED_ON' => tohtml($domain_created),
                               'USER_EXPIRES_ON' => $domain_expires,
                               'USR_CREATED_BY' => tohtml($created_by_name),

@@ -57,6 +57,8 @@ $tpl->define_dynamic('usr_message', 'page');
 $tpl->define_dynamic('usr_list', 'page');
 $tpl->define_dynamic('usr_item', 'usr_list');
 $tpl->define_dynamic('user_details', 'usr_list');
+$tpl->define_dynamic('usr_status_reload_true','usr_item');
+$tpl->define_dynamic('usr_status_reload_false','usr_item');
 $tpl->define_dynamic('usr_delete_show', 'usr_item');
 $tpl->define_dynamic('usr_delete_link', 'usr_item');
 $tpl->define_dynamic('icon', 'usr_item');
