@@ -54,7 +54,7 @@ abstract class iMSCP_I18n_Parser
 	 *
 	 * @var resource
 	 */
-	public $_fh;
+	protected $_fh;
 
 	/**
 	 * Path to the gettext file.
