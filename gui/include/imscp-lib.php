@@ -97,7 +97,6 @@ iMSCP_Registry::get('exceptionHandler')->attach(
  */
 require_once 'vendor/net_idna/idna_convert.class.php';
 require_once INCLUDEPATH . '/shared-functions.php';
-require_once INCLUDEPATH . '/deprecated.php';
 
 /**
  * Include i-MSCP app installer functions
