@@ -561,7 +561,8 @@ function register_user($userName, $userPassword){
 		write_log(tr('%s logged in.', tohtml($userName)));
 	} else {
 		write_log(tr('%s entered incorrect password.', tohtml($userName)));
-		throw new iMSCP_Exception(tr('You entered an incorrect password!'));
+		set_page_message('You entered an incorrect password!', 'error');
+		return false;
 	}
 
 	// Redirect the user to his level interface
