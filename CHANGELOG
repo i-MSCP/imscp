@@ -6,11 +6,17 @@ i-MSCP 1.0.1.4 (beta 4)
 -------------------------------------------------------------------------------------
 
 Distributions:
+	- Removed support un-supported distributions:
+		Centos Fedora FreeBSD Gentoo OpenBSD Opensuse
 
 Features / Enhancements:
 	Gui:
 		i18n:
-			Switched to gettext (Machine object files)
+			Migrated to gettext system (Machine object files), included:
+				- Database is no longer used to store translation tables
+				- It's no longer possible to delete languages
+				- Importing languages files for install/update will still supported
+				but only for Machine Object files files (work in progress...)
 		Tools:
 			Updated PhpMyAdmin to version 3.4.3
 
@@ -41,8 +47,6 @@ i-MSCP 1.0.1.3 (beta 3)
 
 2011-06-24: Laurent Declercq
 	- RELEASE i-MSCP 1.0.1.3 beta 3
-
-Distributions:
 
 Features / Enhancements:
 	Engine
@@ -75,8 +79,6 @@ i-MSCP 1.0.0-beta2
 
 2011-06-20: Laurent Declercq
 	- RELEASE i-MSCP 1.0.0 beta 2
-
-Distributions:
 
 Features / Enhancements:
 
