@@ -84,6 +84,7 @@ php5-adodb
 php5-cgi
 php5-cli
 php5-gd
+php-gettext
 php5-mcrypt
 php5-mysql
 policyd-weight

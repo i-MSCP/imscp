@@ -39,15 +39,15 @@ use Carp;
 
 BEGIN{
 
-	$SIG{__DIE__} = sub {
-		debug("Developer dump:");
-		fatal("@_");
-	};
-
-	$SIG{__WARN__} = sub{
-		debug("Developer dump:");
-		error("@_");
-	};
+	#$SIG{__DIE__} = sub {
+		#debug("Developer dump:");
+		#fatal("@_");
+	#};
+#
+	#$SIG{__WARN__} = sub{
+		#debug("Developer dump:");
+		#error("@_");
+	#};
 
 }
 

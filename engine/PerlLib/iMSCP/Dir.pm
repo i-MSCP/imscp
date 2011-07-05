@@ -53,13 +53,30 @@ sub getFiles{
 	my $self = shift;
 	debug((caller(0))[3].': Starting...');
 	if(! $self->{files}) {
-		my $files = $self->get();
+		$self->{files} = ();
+		$self->get();
 		foreach (@{$self->{dirContent}}){
 			push(@{$self->{files}}, $_) if( -f "$self->{dirname}/$_" && $_ =~ m!$self->{fileType}$!);
 		}
 	}
 	debug((caller(0))[3].': Ending...');
 	return (wantarray ? @{$self->{files}} : join(' ', @{$self->{files}}));
+}
+
+
+sub getDirs{
+	my $self = shift;
+	debug((caller(0))[3].': Starting...');
+	if(! $self->{dirs}) {
+		$self->{dirs} = ();
+		$self->get();
+		foreach (@{$self->{dirContent}}){
+			next if($_ eq '.' || $_ eq '..');
+			push(@{$self->{dirs}}, $_) if( -d "$self->{dirname}/$_");
+		}
+	}
+	debug((caller(0))[3].': Ending...');
+	return (wantarray ? @{$self->{dirs}} : join(' ', @{$self->{dirs}}));
 }
 
 sub get{
@@ -107,7 +124,7 @@ sub owner{
 	my $self	= shift;
 	my $owner	= shift;
 	my $group	= shift;
-	my $dir		= shift;
+	my $dir	= shift;
 
 	debug((caller(0))[3].': Starting...');
 
@@ -180,8 +197,8 @@ sub make{
 		if($option->{mode}){
 			return 1 if $self->mode( $option->{mode}, $self->{dirname});
 		}
-		if($option->{user} || $option->{group}){
-			return 1 if $self->owner($option->{user} || -1, $option->{group} || -1,  $self->{dirname});
+		if(defined $option->{user} || defined $option->{group}){
+			return 1 if $self->owner(defined $option->{user} ? $option->{user} : -1, defined $option->{group} ? $option->{group} : -1,  $self->{dirname});
 		}
 
 	}
@@ -227,6 +244,56 @@ sub remove{
 	0;
 }
 
+sub rcopy{
+	my $self	= shift;
+	my $destDir	= shift;
+	my $option	= shift;
+
+	$option = {} if(ref $option ne 'HASH');
+
+	debug((caller(0))[3].': Starting...');
+	use iMSCP::File;
+
+	my $dh;
+
+	unless(opendir $dh, $self->{dirname}){
+		error((caller(0))[3].": Could not open dir '$self->{dirname}': $!");
+		return 1;
+	}
+
+	for my $entry (readdir $dh) {
+		next if($entry eq '.' or $entry eq '..');
+		my $source = "$self->{dirname}/$entry";
+		my $destination = "$destDir/$entry";
+		if (-d $source) {
+			next if($option->{excludeDir} && $source =~ /$option->{excludeDir}/);
+			my $opts = {};
+			if(!$option->{preserve} || (lc($option->{preserve}) ne 'no')){
+				my $mode	= (stat($source))[2] & 00777;
+				my $user	= (stat($source))[4];
+				my $group	= (stat($source))[5];
+				$opts	= {user =>$user, mode =>$mode, group =>$group}
+			}
+			debug((caller(0))[3].": Copy directory $source to $destination");
+			my $dir=iMSCP::Dir->new();
+			$dir->{dirname} = $destination;
+			$dir->make($opts) and return 1;
+			$dir->{dirname} = $source;
+			$dir->rcopy($destination, $option) and return 1;
+		} else {
+			if($option->{excludeFile}){error"$option->{excludeFile}";}
+			next if($option->{excludeFile} && ($source =~ /$option->{excludeFile}/));
+			debug((caller(0))[3]."Copy file $self->{dirname}/$entry to $destDir/$entry");
+			my $file=iMSCP::File->new();
+			$file->{filename} = $source;
+			$file->copyFile($destination, $option) and return 1;
+		}
+	}
+	closedir $dh;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
 1;
 
 __END__

@@ -141,6 +141,9 @@ sub get{
 sub copyFile{
 	my $self	= shift;
 	my $dest	= shift;
+	my $option	= shift;
+
+	$option = {} if(ref $option ne 'HASH');
 
 	debug((caller(0))[3].': Starting...');
 
@@ -154,10 +157,6 @@ sub copyFile{
 
 	debug((caller(0))[3].": Copy $self->{filename} to $dest");
 
-	my $fileMode	= (stat($self->{filename}))[2] & 00777;
-	my $owner		= (stat($self->{filename}))[4];
-	my $group		= (stat($self->{filename}))[5];
-
 	if(! copy ($self->{filename}, $dest) ) {
 		error((caller(0))[3].": Copy $self->{filename} to $dest failed: $!");
 		return 1;
@@ -166,14 +165,23 @@ sub copyFile{
 		my ($name,$path,$suffix) = fileparse($self->{filename});
 		$dest .= "/$name$suffix";
 	}
-	debug((caller(0))[3]. sprintf ": Change mode mode: %o for '$dest'", $fileMode);
-	unless (chmod($fileMode, $dest)){
-		error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
-		return 1;
-	}
-	unless (chown($owner, $group, $dest)){
-		error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
-		return 1;
+
+	if(!$option->{preserve} || (lc($option->{preserve}) ne 'no')){
+
+		my $fileMode	= (stat($self->{filename}))[2] & 00777;
+		my $owner		= (stat($self->{filename}))[4];
+		my $group		= (stat($self->{filename}))[5];
+
+		debug((caller(0))[3]. sprintf ": Change mode mode: %o for '$dest'", $fileMode);
+		unless (chmod($fileMode, $dest)){
+			error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
+			return 1;
+		}
+		debug((caller(0))[3]. sprintf ": Change owner: %s:%s for '$dest'", $owner, $group);
+		unless (chown($owner, $group, $dest)){
+			error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
+			return 1;
+		}
 	}
 
 	debug((caller(0))[3].': Ending...');

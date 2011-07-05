@@ -47,7 +47,7 @@ sub factory{
 
 	debug((caller(0))[3].': Ending...');
 
-	return $class->new();;
+	return $class->new();
 }
 
 1;

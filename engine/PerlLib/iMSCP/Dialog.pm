@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 by internet Multi Server Control Panel
 #
@@ -137,7 +139,7 @@ sub _find_bin {
 			last;
 		}
 	}
-	error((caller(0))[3].': Can`t find dialog binary '.$variant) unless (-x $self->{'bin'});
+	fatal((caller(0))[3].': Can`t find dialog binary '.$variant) unless (-x $self->{'bin'});
 	debug((caller(0))[3].': Ending...');
 }
 
@@ -416,9 +418,6 @@ sub set{
 	$return;
 }
 
-sub DESTROY{
-	execute('clear');
-}
 
 1;
 

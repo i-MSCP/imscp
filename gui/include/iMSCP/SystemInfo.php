@@ -25,7 +25,7 @@
  * @package		iMSCP_SystemInfo
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author 		Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author 		Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @version 	SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1

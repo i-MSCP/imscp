@@ -68,7 +68,7 @@ testroot
 writelog 'All tests... '; oktxt "PASS"; writelog "\n"
 
 #list of suported distribution
-_AvailableOS="Centos Debian Fedora FreeBSD Gentoo OpenBSD Opensuse Ubuntu"
+_AvailableOS="Debian Ubuntu"
 
 while [ ! $OS ]; do
 	#check with user if we corectly detected OS

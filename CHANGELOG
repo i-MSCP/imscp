@@ -6,11 +6,17 @@ i-MSCP 1.0.1.4 (beta 4)
 -------------------------------------------------------------------------------------
 
 Distributions:
+	- Removed support for un-supported distributions:
+		Centos Fedora FreeBSD Gentoo OpenBSD Opensuse
 
 Features / Enhancements:
 	Gui:
 		i18n:
-			Switched to gettext (Machine object files)
+			Migrated to gettext system (Machine object files), included:
+				- Database is no longer used to store translation tables
+				- It's no longer possible to delete languages
+				- Importing languages files for install/update will still supported
+				but only for Machine Object files files (work in progress...)
 		Tools:
 			Updated PhpMyAdmin to version 3.4.3
 
@@ -20,7 +26,8 @@ Other:
 		- Updated jQuery UI (core and datepicker) to version 1.8.14
 
 Tickets:
-	- Fixed #65:  Good practices - Software Installer - All shared functions must be put in specific file
+	- Fixed #65:  Good practices - Software Installer - All shared functions must be
+	put in specific file
 	- Fixed #90:  Defect - Custom logo feature is broken
 	- Fixed #101: Defect - Missing messages in Software Installer
 	- Fixed #103: Enhancement - Admin should have the rights to delete packages
@@ -42,8 +49,6 @@ i-MSCP 1.0.1.3 (beta 3)
 2011-06-24: Laurent Declercq
 	- RELEASE i-MSCP 1.0.1.3 beta 3
 
-Distributions:
-
 Features / Enhancements:
 	Engine
 			- Added SSL support for Postfix, courier (imap/pop)
@@ -58,10 +63,13 @@ Features / Enhancements:
 Tickets:
 	- Fixed #2:   Feature - SSL support for master vhost
 	- Fixed #93:  Defect - Login page doesn't look good on IE7
-	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default page
-	- Fixed #97:  Good practices - Throw an exception if the phptmp directory is unwritable
+	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default
+	page
+	- Fixed #97:  Good practices - Throw an exception if the phptmp directory is
+	unwritable
 	- Fixed #98:  Bug - Encoding issue in include/i18n.php
-	- Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on line 457
+	- Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on
+	line 457
 	- Fixed #100: Bug - Default language overrides user language at admin level
 	- Fixed #102: Bug - Unable to install more than one language file
 	- Fixed #104: Task - autoreplies_log database table still use MYISAM engine)
@@ -75,8 +83,6 @@ i-MSCP 1.0.0-beta2
 
 2011-06-20: Laurent Declercq
 	- RELEASE i-MSCP 1.0.0 beta 2
-
-Distributions:
 
 Features / Enhancements:
 
