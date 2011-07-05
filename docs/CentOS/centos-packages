@@ -79,6 +79,7 @@ php-bcmath
 php-cli
 php-dba
 php-gd
+php-gettext
 php-ldap
 php-mbstring
 php-mcrypt

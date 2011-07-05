@@ -63,6 +63,7 @@ php5-domxml
 php5-extensions
 php5-filepro
 php5-gd-4.4.1p5-no_x11
+php5-gettext
 php5-gmp
 php5-imap
 php5-mcrypt
