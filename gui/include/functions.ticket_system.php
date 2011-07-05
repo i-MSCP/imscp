@@ -38,7 +38,7 @@
  * Checks if the ticket system is globally enabled and if the specific user has
  * the right to access it.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $user_id Id of the user created the current user or null if admin
  * @return boolean
  */
@@ -71,7 +71,7 @@ function hasTicketSystem($user_id = null)
  *    3 - read (if status was 2 or 4)
  *    4 - answered by client
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id the ticket ID
  * @return int ticket status ID
  */
@@ -108,7 +108,7 @@ function getTicketStatus($ticket_id)
  *    3 - read (if status was 2 or 4)
  *    4 - answered by client
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id ticket Id
  * @param int $ticket_status New status id
  */
@@ -138,7 +138,7 @@ function changeTicketStatus($ticket_id, $ticket_status)
 /**
  * Creates the ticket and informs the recipient.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $user_id The ID of the user
  * @param int $admin_id The ID of the user's creator
  * @param int $urgency The ticket's urgency
@@ -182,7 +182,7 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 /**
  * Updates the ticket with a new answer and informs the recipient.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id id of the ticket's parent ticket
  * @param int $user_id Id of the user
  * @param int $urgency The parent ticket's urgency
@@ -283,7 +283,7 @@ function getUserLevel($ticket_id)
 /**
  * Close the given ticket.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id Ticket id
  */
 function closeTicket($ticket_id)
@@ -295,7 +295,7 @@ function closeTicket($ticket_id)
 /**
  * Open the given ticket.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id Ticket id
  */
 function openTicket($ticket_id)
@@ -307,7 +307,7 @@ function openTicket($ticket_id)
 /**
  * Get priority as translated string.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_urgency values from 1 to 4
  * @return string translated priority string
  */
@@ -329,7 +329,7 @@ function getTicketUrgency($ticket_urgency)
 /**
  * Gets the sender of a ticket answer.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id Id of the ticket to display
  * @return string Formatted ticket sender
  */
@@ -358,7 +358,7 @@ function getTicketSender($ticket_id)
 /**
  * Gets the last modifikation date of a ticket.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param int $ticket_id Ticket to get last date for
  * @return string|date Last date translated 'Never' string if no date is set
  */
@@ -391,7 +391,7 @@ function ticketGetLastDate($ticket_id)
 /**
  * Generates the list with all closed tickets
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $user_id The ID of the admin
  * @param int $start The first ticket to show
@@ -512,7 +512,7 @@ function generateTicketList($tpl, $user_id, $start, $count, $userLevel, $status)
 /**
  * Gets the content of the selected ticket and generates its output.
  *
- * @author    Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author    Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $ticket_id Id of the ticket to display
  * @param int $user_id Id of the user
@@ -576,7 +576,7 @@ function showTicketContent($tpl, $ticket_id, $user_id, $screenwidth)
 /**
  * Gets the answers of the selected ticket and generates its output.
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param iMSCP_pTemplate $tpl The Template object
  * @param int $ticket_id Id of the ticket to display
  * @param int $screenwidth The width of the display

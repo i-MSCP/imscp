@@ -152,7 +152,7 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  *
  * @package     iMSCP_Config
  * @subpackage  Handler
- * @author      Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author      Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.6
  */

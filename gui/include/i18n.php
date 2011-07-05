@@ -85,7 +85,7 @@ function tr($msgid, $substitution = false)
 /**
  * Replaces special encoded strings back to their original signs
  *
- * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @param string $string String to replace chars
  * @return String with replaced chars
  */
