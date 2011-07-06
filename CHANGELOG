@@ -15,8 +15,8 @@ Features / Enhancements:
 			Migrated to gettext system (Machine object files), included:
 				- Database is no longer used to store translation tables
 				- It's no longer possible to delete languages
-				- Importing languages files for install/update will still supported
-				but only for Machine Object files files (work in progress...)
+				- Importing languages files for install/update is still supported but
+				only for Machine Object files (re-integration in progress...)
 		Tools:
 			Updated PhpMyAdmin to version 3.4.3
 
@@ -26,6 +26,7 @@ Other:
 		- Updated jQuery UI (core and datepicker) to version 1.8.14
 
 Tickets:
+	- Fixed #43:  Enhancement - You are blocked for 30 minutes
 	- Fixed #65:  Good practices - Software Installer - All shared functions must be
 	put in specific file
 	- Fixed #90:  Defect - Custom logo feature is broken
@@ -33,6 +34,7 @@ Tickets:
 	- Fixed #103: Enhancement - Admin should have the rights to delete packages
 	- Fixed #113: Bug - Tree Builder only works with lowercase dirs
 	- Fixed #118: Update - PMA 3.4.3 released
+	- Fixed #119: Defect - Error when adding IP's
 	- Fixed #121: Bug - Users with domain set not to expire can not login
 	- Fixed #122: Bug - Lost password do not work
 	- Fixed #123: Cosmetics - Tabs's links are not showed properly on login page
