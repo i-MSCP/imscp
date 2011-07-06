@@ -45,7 +45,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  * @package     iMSCP_Exception
  * @subpackage  Writer
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.4
+ * @version     1.0.5
  */
 class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 {
@@ -113,14 +113,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
      */
     public function __construct($to)
     {
-        // filter_var() is only available in PHP >= 5.2
-        if (function_exists('filter_var')) {
-            $ret = filter_var($to, FILTER_VALIDATE_EMAIL);
-        } else {
-            $ret = (bool)preg_match('/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!\.)){0,61}[a-zA-Z0-9_-]?\.)+[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!$)){0,61}[a-zA-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/', $to);
-        }
-
-        if ($ret === false) {
+        if (filter_var($to, FILTER_VALIDATE_EMAIL) === false) {
             throw new iMSCP_Exception(
                 'iMSCP_Exception_Writer_Mail error: Invalid email address!');
         } else {
@@ -163,6 +156,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
      * Load cached mail body footprints from the database.
      *
      * @return void
+	 * @todo using file instead of database to store mail body footprints
      */
     protected function _loadCache()
     {
