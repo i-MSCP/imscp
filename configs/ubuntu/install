@@ -1,5 +1,5 @@
-#!/bin/sh
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
@@ -29,15 +29,20 @@
 # @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
+-->
 
-SYSTEM_FOLDERS=''
-FOLDERS='';
+<install>
 
-COPY_CONFIG_FILE='
-	${SYSTEM_CONF}/imscp.conf
-';
+	<folders />
 
-COPY_FILE=''
-CREATE_FILE=''
-CHOWN_FILE=''
-CHMOD_FILE=''
+	<copy_config>${SYSTEM_CONF}/imscp.conf</copy_config>
+
+	<copy />
+
+	<create_file />
+
+	<chown_file />
+
+	<chmod_file />
+
+</install>
