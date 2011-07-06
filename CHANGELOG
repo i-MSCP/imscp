@@ -26,7 +26,7 @@ Other:
 		- Updated jQuery UI (core and datepicker) to version 1.8.14
 
 Tickets:
-	- Fixed #47:  Enhancement - You are blocked for 30 minutes
+	- Fixed #43:  Enhancement - You are blocked for 30 minutes
 	- Fixed #65:  Good practices - Software Installer - All shared functions must be
 	put in specific file
 	- Fixed #90:  Defect - Custom logo feature is broken
