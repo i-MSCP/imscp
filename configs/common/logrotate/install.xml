@@ -1,5 +1,5 @@
-#!/bin/sh
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
@@ -26,26 +26,21 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: install 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
+-->
 
-SYSTEM_FOLDERS=''
-FOLDERS='
-	${SYSTEM_CONF}/proftpd
-	${ROOT_CONF}/proftpd
-	${ROOT_CONF}/proftpd/imscp
-';
+<install>
 
-COPY_CONFIG_FILE='
-	${SYSTEM_CONF}/proftpd/backup
-	${SYSTEM_CONF}/proftpd/parts
-	${SYSTEM_CONF}/proftpd/working
-	${ROOT_CONF}/proftpd/imscp/root_domain.conf
-	${SYSTEM_CONF}/proftpd/proftpd.conf
-';
+	<folders>${ROOT_CONF}/logrotate.d</folders>
 
-COPY_FILE=''
-CREATE_FILE=''
-CHOWN_FILE=''
-CHMOD_FILE=''
+	<copy>${ROOT_CONF}/logrotate.d/imscp</copy>
+
+	<create_file />
+
+	<chown_file />
+
+	<chmod_file />
+
+</install>
