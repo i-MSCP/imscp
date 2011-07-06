@@ -147,7 +147,8 @@ function get_userdata($userName)
  * @param string $userName User account name
  * @return boolTRUE if the user account is not expired, FALSE otherwise
  */
-function is_userdomain_expired($userName){
+function is_userdomain_expired($userName)
+{
 	$userData = get_userdata($userName);
 
 	if (!is_array($userData)) {
@@ -271,17 +272,36 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
+	// Fix for #47: Enhancement - You are blocked for 30 minutes
+	// Read the ticket for further explainations
+	if(isset($cfg->GUI_BYPASS_BRUTEFORCE) && intval($cfg->GUI_BYPASS_BRUTEFORCE)) {
+		$ipAddress = getipaddr();
+		$query = '
+			UPDATE
+		 		`login`
+		 	SET
+		 		`lastaccess` = UNIX_TIMESTAMP(),
+		 		`login_count` = ?,
+		 		`captcha_count` = ?
+
+		 	WHERE
+		 		ipaddr = ?
+		 ';
+		exec_query($query, array(0, 0, $ipAddress));
+		return false;
+	}
+
 	if (is_null($ipAddress)) {
 		$ipAddress = getipaddr();
 	}
 
 	switch ($type) {
 		case 'bruteforce':
-			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `login_count` = ?;";
+			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `login_count` = ?";
 			$max = $cfg->BRUTEFORCE_MAX_LOGIN;
 			break;
 		case 'captcha':
-			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `captcha_count` = ?;";
+			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `captcha_count` = ?";
 			$max = $cfg->BRUTEFORCE_MAX_CAPTCHA;
 			break;
 		default:
@@ -515,9 +535,7 @@ function register_user($userName, $userPassword){
 
 	$userData = get_userdata($userName);
 
-	if (
-		(iMSCP_Update_Database::getInstance()->isAvailableUpdate()
-		||
+	if ((iMSCP_Update_Database::getInstance()->isAvailableUpdate() ||
 		($cfg->MAINTENANCEMODE)) && $userData['admin_type'] != 'admin'
 	) {
 		write_log(tr('Login error, <b><i>%s</i></b> system currently in maintenance mode', tohtml($userName)));
@@ -525,9 +543,7 @@ function register_user($userName, $userPassword){
 		return false;
 	}
 
-	if (
-		crypt($userPassword, $userData['admin_pass']) == $userData['admin_pass']
-		||
+	if (crypt($userPassword, $userData['admin_pass']) == $userData['admin_pass'] ||
 		md5($userPassword) == $userData['admin_pass']
 	) {
 
