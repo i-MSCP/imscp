@@ -33,14 +33,15 @@
 
 ### BEGIN INIT INFO
 # Provides:             imscp_daemon
-# Required-Start:       $local_fs $remote_fs $network
-# Required-Stop:        $local_fs $remote_fs $network
-# Should-Start:         $named $time mysql sendmail
-# Should-Stop:          $named $time mysql sendmail
+# Required-Start:       $local_fs $remote_fs $network imscp_network
+# Required-Stop:        $local_fs $remote_fs $network imscp_network
+# Should-Start:         $named $time sendmail
+# Should-Stop:          $named $time sendmail
 # Default-Start:        2 3 4 5
 # Default-Stop:         0 1 6
 # Short-Description:    i-MSCP GUI-Backend communication Daemon
 ### END INIT INFO
+
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin

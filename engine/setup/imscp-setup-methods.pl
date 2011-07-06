@@ -1885,7 +1885,12 @@ sub setup_imscp_daemon_network {
 
 	my ($rs, $rdata, $fileName, $stdout, $stderr);
 
-	for ($main::imscpConfig{'CMD_IMSCPD'}, $main::imscpConfig{'CMD_IMSCPN'}) {
+	# Odering is important here.
+	# Service imscp_network has to be enabled to start service imscp_daemon. It's a
+	# dependency added to be sure that if an admin adds an new IP through the GUI,
+	# the traffic will always be correctly computed. When we'll switch to mutli-server,
+	# the traffic logger will be review to avoid this dependency
+	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
 		# Do not process if the service is disabled
 		next if(/^no$/i);
 
@@ -1896,38 +1901,45 @@ sub setup_imscp_daemon_network {
 		$file->mode(0755) and return 1;
 
 		# Services installation / update (Debian, Ubuntu)
-		# Todo Check it for Debian Squeeze
+
 		if(-x '/usr/sbin/update-rc.d') {
 			$rs = execute("/usr/sbin/update-rc.d -f $fileName remove", \$stdout, \$stderr);
 			debug((caller(0))[3].": $stdout") if $stdout;
 			error((caller(0))[3].": $stderr") if $rs;
 
+			# Fix for #119: Defect - Error when adding IP's
+			# We are now using dependency based boot sequencing (insserv)
+			# See http://wiki.debian.org/LSBInitScripts ; Must be read carrefully
+			$rs = execute("/usr/sbin/update-rc.d $fileName defaults", \$stdout, \$stderr);
+			debug((caller(0))[3].": $stdout") if $stdout;
+			error((caller(0))[3].": $stderr") if $rs;
 
 			# imscp_network should be stopped before the MySQL server (due to the
 			# interfaces deletion process)
-			if($fileName eq 'imscp_network') {
-				$rs = execute("/usr/sbin/update-rc.d $fileName defaults 99 20", \$stdout, \$stderr);
-				debug((caller(0))[3].": $stdout") if $stdout;
-				error((caller(0))[3].": $stderr") if $rs;
-			} else {
-				$rs = execute("/usr/sbin/update-rc.d $fileName defaults 99", \$stdout, \$stderr);
-				debug((caller(0))[3].": $stdout") if $stdout;
-				error((caller(0))[3].": $stderr") if $rs;
-			}
-
-		# LSB 3.1 Core section 20.4 compatibility (ex. OpenSUSE > 10.1)
-		} elsif(-x '/usr/lib/lsb/install_initd') {
-			# Update task
-			if(-x '/usr/lib/lsb/remove_initd') {
-				$rs = execute("/usr/lib/lsb/remove_initd $_", \$stdout, \$stderr);
-				debug((caller(0))[3].": $stdout") if $stdout;
-				error((caller(0))[3].": $stderr") if $rs;
-			}
-
-			$rs = execute("/usr/lib/lsb/install_initd $_", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout") if $stdout;
-			error((caller(0))[3].": $stderr") if $rs;
+			#if($fileName eq 'imscp_network') {
+			#	$rs = execute("/usr/sbin/update-rc.d $fileName defaults 99 20", \$stdout, \$stderr);
+			#	debug((caller(0))[3].": $stdout") if $stdout;
+			#	error((caller(0))[3].": $stderr") if $rs;
+			#} else {
+			#	$rs = execute("/usr/sbin/update-rc.d $fileName defaults 99", \$stdout, \$stderr);
+			#	debug((caller(0))[3].": $stdout") if $stdout;
+			#	error((caller(0))[3].": $stderr") if $rs;
+			#}
 		}
+
+#		# LSB 3.1 Core section 20.4 compatibility (ex. OpenSUSE > 10.1)
+#		} elsif(-x '/usr/lib/lsb/install_initd') {
+#			# Update task
+#			if(-x '/usr/lib/lsb/remove_initd') {
+#				$rs = execute("/usr/lib/lsb/remove_initd $_", \$stdout, \$stderr);
+#				debug((caller(0))[3].": $stdout") if $stdout;
+#				error((caller(0))[3].": $stderr") if $rs;
+#			}
+#
+#			$rs = execute("/usr/lib/lsb/install_initd $_", \$stdout, \$stderr);
+#			debug((caller(0))[3].": $stdout") if $stdout;
+#			error((caller(0))[3].": $stderr") if $rs;
+#		}
 	}
 
 	debug((caller(0))[3].': Ending...');
