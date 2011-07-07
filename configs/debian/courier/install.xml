@@ -37,9 +37,11 @@
 
 	<folders>${SYSTEM_CONF}/courier</folders>
 
-	<copy>${SYSTEM_CONF}/courier/userdb</copy>
-	<copy>${SYSTEM_CONF}/courier/backup</copy>
-	<copy>${SYSTEM_CONF}/courier/working</copy>
+	<copy_config>${SYSTEM_CONF}/courier/userdb</copy_config>
+	<copy_config>${SYSTEM_CONF}/courier/backup</copy_config>
+	<copy_config>${SYSTEM_CONF}/courier/working</copy_config>
+
+	<copy />
 
 	<create_file />
 

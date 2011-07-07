@@ -26,23 +26,19 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: install 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 -->
 
 <install>
 
-	<folders />
-
-	<copy_config>${SYSTEM_CONF}/imscp.conf</copy_config>
-
-	<copy />
-
-	<create_file />
-
-	<chown_file />
-
-	<chmod_file />
+	<folders export="INST_PREF">/tmp/imscp</folders>
+	<folders export="ROOT_CONF">${INST_PREF}/etc</folders>
+	<folders export="SYSTEM_ROOT">${INST_PREF}/var/www/imscp</folders>
+	<folders export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folders>
+	<folders export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</folders>
+	<folders export="SYSTEM_VIRTUAL">${INST_PREF}/var/www/virtual</folders>
+	<folders export="SYSTEM_MAIL_VIRTUAL">${INST_PREF}/var/mail/virtual</folders>
 
 </install>

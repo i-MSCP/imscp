@@ -1,5 +1,5 @@
-#!/bin/sh
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
@@ -26,53 +26,26 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: install 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
+-->
 
-if [ "$DIST" = "FreeBSD" ] || [ "$DIST" = "OpenBSD" ]; then
-	root_group='wheel';
-else
-	root_group='root';
-fi
+<install>
 
-SYSTEM_FOLDERS='
-	SYSTEM_ENGINE_ROOT=${SYSTEM_ROOT}/engine
-'
-FOLDERS='
-	${SYSTEM_ENGINE_ROOT}/awstats
-	${SYSTEM_ENGINE_ROOT}/backup
-	${SYSTEM_ENGINE_ROOT}/quota
-	${SYSTEM_ENGINE_ROOT}/traffic
-	${SYSTEM_ENGINE_ROOT}/messenger
-	${SYSTEM_ENGINE_ROOT}/setup
-	${SYSTEM_ENGINE_ROOT}/tools
-	${SYSTEM_ENGINE_ROOT}/traffic
-	${SYSTEM_ENGINE_ROOT}/PerlLib
-	${SYSTEM_ENGINE_ROOT}/PerlLib/Common
-	${SYSTEM_ENGINE_ROOT}/PerlLib/iMSCP
-	${SYSTEM_ENGINE_ROOT}/PerlLib/iMSCP/Database
-	${SYSTEM_ENGINE_ROOT}/PerlLib/iMSCP/Database/mysql
-';
-COPY_CONFIG_FILE='';
-COPY_FILE='
-	${SYSTEM_ENGINE_ROOT}/imscp*
-	${SYSTEM_ENGINE_ROOT}/PerlLib*
-';
-CREATE_FILE=''
-CHOWN_FILE='
-	root:'${root_group}'|${SYSTEM_ENGINE_ROOT}
-'
-CHMOD_FILE='
-	0755|${SYSTEM_ENGINE_ROOT}
-	0700|${SYSTEM_ENGINE_ROOT}/awstats
-	0700|${SYSTEM_ENGINE_ROOT}/backup
-	0700|${SYSTEM_ENGINE_ROOT}/quota
-	0700|${SYSTEM_ENGINE_ROOT}/traffic
-	0700|${SYSTEM_ENGINE_ROOT}/setup
-	0700|${SYSTEM_ENGINE_ROOT}/tools
-	0700|${SYSTEM_ENGINE_ROOT}/imscp-*
-	0700|${SYSTEM_ENGINE_ROOT}/PerlLib
-'
+	<folders></folders>
 
+	<copy_config></copy_config>
 
+	<copy>${SYSTEM_ENGINE_ROOT}/setup/imscp*</copy>
+	<copy>${SYSTEM_ENGINE_ROOT}/setup/reset-setup</copy>
+	<copy>${SYSTEM_ENGINE_ROOT}/setup/set*</copy>
+	<copy>${SYSTEM_ENGINE_ROOT}/setup/updDB.php</copy>
+
+	<create_file></create_file>
+
+	<chown_file owner="root" group="root">${SYSTEM_ENGINE_ROOT}/setup</chown_file>
+
+	<chmod_file mode="0700">${SYSTEM_ENGINE_ROOT}/setup</chmod_file>
+
+</install>

@@ -35,6 +35,8 @@
 
 	<folders />
 
+	<copy_config />
+
 	<copy />
 
 	<create_file />

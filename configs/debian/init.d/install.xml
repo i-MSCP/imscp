@@ -36,8 +36,10 @@
 	<folders>${ROOT_CONF}/init.d</folders>
 	<folders>${ROOT_CONF}/default</folders>
 
-	<copy mode = "0755" user="root" group="root">${ROOT_CONF}/init.d/imscp_daemon</copy>
-	<copy mode = "0755" user="root" group="root">${ROOT_CONF}/init.d/imscp_network</copy>
+	<copy_config mode = "0755" user="root" group="root">${ROOT_CONF}/init.d/imscp_daemon</copy_config>
+	<copy_config mode = "0755" user="root" group="root">${ROOT_CONF}/init.d/imscp_network</copy_config>
+
+	<copy />
 
 	<create_file />
 

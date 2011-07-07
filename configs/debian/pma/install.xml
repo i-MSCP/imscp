@@ -35,9 +35,11 @@
 
 	<folders>${SYSTEM_CONF}/pma</folders>
 
-	<copy>${SYSTEM_CONF}/pma/config.inc.tpl</copy>
-	<copy>${SYSTEM_CONF}/pma/backup</copy>
-	<copy>${SYSTEM_CONF}/pma/working</copy>
+	<copy_config>${SYSTEM_CONF}/pma/config.inc.tpl</copy_config>
+	<copy_config>${SYSTEM_CONF}/pma/backup</copy_config>
+	<copy_config>${SYSTEM_CONF}/pma/working</copy_config>
+
+	<copy />
 
 	<create_file />
 

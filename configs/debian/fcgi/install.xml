@@ -35,9 +35,11 @@
 	<folders>${INST_PREF}/var/www/fcgi</folders>
 	<folders>${SYSTEM_CONF}/fcgi</folders>
 
-	<copy>${SYSTEM_CONF}/fcgi/backup</copy>
-	<copy>${SYSTEM_CONF}/fcgi/parts</copy>
-	<copy>${SYSTEM_CONF}/fcgi/working</copy>
+	<copy_config>${SYSTEM_CONF}/fcgi/backup</copy_config>
+	<copy_config>${SYSTEM_CONF}/fcgi/parts</copy_config>
+	<copy_config>${SYSTEM_CONF}/fcgi/working</copy_config>
+
+	<copy />
 
 	<create_file />
 

@@ -43,16 +43,18 @@
 	<folders>${ROOT_APACHE_CONF}/imscp</folders>
 	<folders>${INST_PREF}/var/www/scoreboards</folders>
 
-	<copy>${SYSTEM_CONF}/apache/httpd.conf</copy>
-	<copy>${SYSTEM_CONF}/apache/00_master.conf</copy>
-	<copy>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy>
-	<copy>${SYSTEM_CONF}/apache/01_awstats.conf</copy>
-	<copy>${SYSTEM_CONF}/apache/backup</copy>
-	<copy>${SYSTEM_CONF}/apache/parts</copy>
-	<copy>${SYSTEM_CONF}/apache/working</copy>
-	<copy>${SYSTEM_CONF}/apache/parts/imscp_base.tpl/httpd.conf</copy>
-	<copy>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy>
-	<copy>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy>
+	<copy_config>${SYSTEM_CONF}/apache/httpd.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/01_awstats.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/backup</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/working</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/parts/imscp_base.tpl/httpd.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>
+
+	<copy />
 
 	<create_file />
 

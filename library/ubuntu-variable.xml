@@ -1,5 +1,5 @@
-#!/bin/sh
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
@@ -26,40 +26,20 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: so-functions 3917 2010-11-30 21:20:52Z sci2tech $
+# @version		SVN: $Id: install 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
+-->
 
-# detect_os() {{{
-#
-# Determine operating system saving in script wide variale HOST_OS
-# If SO is Linux also save flavour as DIST, version as VER and codename as CODENAME
-# @return	void
-detect_os() {
-	HOST_OS=$(uname)
-	# If error executing uname exit
-	if [ $? -ne 0 ];then printf "Can not guess operating system"; failtxt 'fail'; exit 1; fi
-	if [ "${HOST_OS}" = "FreeBSD" ]; then
-		export DIST="FreeBSD"
-	elif [ "${HOST_OS}" = "OpenBSD" ]; then
-		export DIST="OpenBSD"
-	elif [ "${HOST_OS}" = "Linux" ]; then
-		# get lsb_version full path in $lsb_variable
-		testCommand "lsb_release"
-		export DIST=$($lsb_release -si)
-		export VER=$($lsb_release -sr)
-		export CODENAME=$($lsb_release -sc)
-	fi
-}
-# }}}
+<install>
+	<folders export="INST_PREF">/tmp/imscp</folders>
+	<folders export="ROOT_CONF">${INST_PREF}/etc</folders>
+	<folders export="SYSTEM_ROOT">${INST_PREF}/var/www/imscp</folders>
+	<folders export="SYSTEM_CONF">${INST_PREF}/etc/imscp</folders>
+	<folders export="SYSTEM_LOG">${INST_PREF}/var/log/imscp</folders>
 
-# testroot() {{{
-#
-# Check if script is running as root user if not exit
-# @return	void
-testroot(){
-	title 'Testing for root'
-	local _ERR='You must be root to install'
-	if [ $(id -u) -ne 0 ]; then msgbox "$_ERR"; failtxt "$_ERR"; fi
-}
-# }}}
+	<folders export="SYSTEM_VIRTUAL">${INST_PREF}/var/www/virtual</folders>
+
+	<folders export="SYSTEM_MAIL_VIRTUAL">${INST_PREF}/var/mail/virtual</folders>
+
+</install>

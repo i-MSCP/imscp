@@ -36,7 +36,9 @@
 	<folders>${INST_PREF}/var/www/awstats</folders>
 	<folders>${SYSTEM_CONF}/awstats</folders>
 
-	<copy>${SYSTEM_CONF}/awstats/awstats.imscp_tpl.conf</copy>
+	<copy_config>${SYSTEM_CONF}/awstats/awstats.imscp_tpl.conf</copy_config>
+
+	<copy />
 
 	<create_file />
 

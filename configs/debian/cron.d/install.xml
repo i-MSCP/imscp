@@ -35,10 +35,12 @@
 
 	<folders>${SYSTEM_CONF}/cron.d</folders>
 
-	<copy>${SYSTEM_CONF}/cron.d/imscp</copy>
-	<copy>${SYSTEM_CONF}/cron.d/backup</copy>
-	<copy>${SYSTEM_CONF}/cron.d/parts</copy>
-	<copy>${SYSTEM_CONF}/cron.d/working</copy>
+	<copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
+	<copy_config>${SYSTEM_CONF}/cron.d/backup</copy_config>
+	<copy_config>${SYSTEM_CONF}/cron.d/parts</copy_config>
+	<copy_config>${SYSTEM_CONF}/cron.d/working</copy_config>
+
+	<copy />
 
 	<create_file />
 

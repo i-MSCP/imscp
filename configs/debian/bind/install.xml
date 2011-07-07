@@ -35,10 +35,12 @@
 
 	<folders>${SYSTEM_CONF}/bind</folders>
 
-	<copy>${SYSTEM_CONF}/bind/named.conf</copy>
-	<copy>${SYSTEM_CONF}/bind/backup</copy>
-	<copy>${SYSTEM_CONF}/bind/parts</copy>
-	<copy>${SYSTEM_CONF}/bind/working</copy>
+	<copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/bind/backup</copy_config>
+	<copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
+	<copy_config>${SYSTEM_CONF}/bind/working</copy_config>
+
+	<copy />
 
 	<create_file />
 

@@ -35,7 +35,9 @@
 
 	<folders>${ROOT_CONF}/logrotate.d</folders>
 
-	<copy>${ROOT_CONF}/logrotate.d/imscp</copy>
+	<copy_config>${ROOT_CONF}/logrotate.d/imscp</copy_config>
+
+	<copy />
 
 	<create_file />
 
