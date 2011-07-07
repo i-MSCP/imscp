@@ -101,17 +101,17 @@ require_once INCLUDEPATH . '/shared-functions.php';
 require_once INCLUDEPATH . '/sw-functions.php';
 
 /**
+ * Internationalization functions
+ */
+require_once 'i18n.php';
+
+/**
  * Bootstrap the i-MSCP environment, and default configuration
  *
  * @see {@link iMSCP_Bootstrap} class
  * @see {@link iMSCP_Initializer} class
  */
 require_once INCLUDEPATH . '/environment.php';
-
-/**
- * Internationalization functions
- */
-require_once 'i18n.php';
 
 /**
  * Authentication functions
@@ -140,8 +140,10 @@ require_once 'functions.ticket_system.php';
 /**
  * View helper functions
  */
+require_once INCLUDEPATH . '/iMSCP/View/Helpers/Common.php';
+
 if(isset($_SESSION['user_type'])) {
     $helperFileName = ucfirst(strtolower($_SESSION['user_type']));
-    require_once INCLUDEPATH . '/iMSCP/View/Helpers/Common.php';
+
     require_once INCLUDEPATH . '/iMSCP/View/Helpers/' . $helperFileName . '.php';
 }

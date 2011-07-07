@@ -183,3 +183,62 @@ function i18n_getAvailableLanguages()
 
 	return unserialize(($cfg->AVAILABLE_LANGUAGES));
 }
+
+/**
+ * Return name of domain being used.
+ *
+ * Note: See #130 for further explaination.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @throws iMSCP_Exception
+ * @param string $upstreamDomain Upstream domain name
+ * @return string Domain being used
+ */
+function i18n_getDomain($upstreamDomain)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$domainDirectory = $cfg->GUI_ROOT_DIR . "/i18n/locales/$upstreamDomain/LC_MESSAGES";
+	$upstreamFileModificationTime = filemtime($domainDirectory . "/$upstreamDomain.mo");
+	$domain = $upstreamDomain . '_' . $upstreamFileModificationTime;
+
+	if(!file_exists($domainDirectory . "/$domain.mo")) {
+		if(!@copy($domainDirectory . "/$upstreamDomain.mo", $domainDirectory . "/$domain.mo")) {
+			write_log("i18n: Unable to create $domainDirectory/$domain.mo domain file for production", E_USER_ERROR);
+		} else {
+			write_log("i18n: Created new machine object file $domainDirectory/$domain.mo for production.", E_USER_NOTICE);
+			i18n_domainsGarbageCollector($domainDirectory,  $domain . '.mo');
+		}
+	}
+
+	return $domain;
+}
+
+/**
+ * Garbage collector for domains translation files.
+ *
+ * Note: See #130 for further explaination.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @param $domainDirectory Current domain directory path
+ * @param $skipDomain Domain that must not be removed
+ * @return void
+ */
+function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)
+{
+	$currentDomainFilepath = $domainDirectory . '/' . $skipDomain;
+	$domainsFiles = glob($domainDirectory . '/*_*_*.mo');
+
+	foreach($domainsFiles as $file) {
+		if($file !=  $currentDomainFilepath) {
+			if(@unlink($file)) {
+				write_log("i18n: Removed $file machine object production file.", E_USER_NOTICE);
+			} else {
+				write_log("i18n: Unable to removed $file machine object production file.", E_USER_ERROR);
+			}
+		}
+	}
+}

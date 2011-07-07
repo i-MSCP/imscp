@@ -43,6 +43,7 @@ Tickets:
 	- Fixed #126: Bug - Enter key on login form redirect on lost password page
 	- Fixed #127: Update - jQuery v1.6.2 available
 	- Fixed #129: Bug - Default ISP logo not showed - wrong path generated
+	- Fixed #130: Defect - PHP gettext native support - Files cache issue
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
