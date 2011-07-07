@@ -16,7 +16,7 @@ Features / Enhancements:
 				- Database is no longer used to store translation tables
 				- It's no longer possible to delete languages
 				- Importing languages files for install/update is still supported but
-				only for Machine Object files (re-integration in progress...)
+				only for Machine Object files
 		Tools:
 			Updated PhpMyAdmin to version 3.4.3
 
