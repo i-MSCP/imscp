@@ -490,6 +490,12 @@ class iMSCP_Initializer
 		$locale = isset($_SESSION['user_def_lang'])
 			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
+		// Small fix for ar_AE locale
+		// TODO Ask Transifex to add it
+		if($locale == 'ar') {
+			$locale = 'ar_AE';
+		}
+
 		T_setlocale(LC_ALL, $locale . '.UTF-8');
 
 		if (locale_emulation()) {
