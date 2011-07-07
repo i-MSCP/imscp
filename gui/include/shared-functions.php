@@ -1212,50 +1212,52 @@ function get_admin_logo($userId, $returnDefault = true)
 /**
  * Writes a log message in the database and sends it to the administrator by email.
  *
- * @param  string $msg Message to log
+ * @param string $msg Message to log
  * @param int $level Log level
  * @return void
  */
 function write_log($msg, $level = E_USER_WARNING)
 {
-    global $send_log_to;
-
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    if (isset($_SERVER['REMOTE_ADDR'])) {
-        $client_ip = $_SERVER['REMOTE_ADDR'];
-    } else {
-        $client_ip = "unknown";
-    }
+	$logLevel = isset($cfg->LOG_LEVEL) ? $cfg->LOG_LEVEL : E_USER_WARNING;
+    $clientIp = (isset($_SERVER['REMOTE_ADDR'])) ?$_SERVER['REMOTE_ADDR'] : 'unknown';
 
-    $msg = replace_html($msg . '<br /><small>User IP: ' . $client_ip . '</small>',
+    $msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>',
                         ENT_COMPAT, tr('encoding'));
 
     $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
     exec_query($query, $msg, false);
 
     $msg = strip_tags(str_replace('<br />', "\n", $msg));
-    $send_log_to = $cfg->DEFAULT_ADMIN_ADDRESS;
+    $to = isset($cfg->DEFAULT_ADMIN_ADDRESS) ? $cfg->DEFAULT_ADMIN_ADDRESS : '';
 
-    // now send email if DEFAULT_ADMIN_ADDRESS != ''
-    if ($send_log_to != '' && $level <= $cfg->LOG_LEVEL) {
-        global $default_hostname, $default_base_server_ip, $Version, $BuildDate,
+    if ($to != '' && $logLevel <= $cfg->LOG_LEVEL) {
+        $hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : '';
+        $baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : '';
+        $version = isset($cfg->Version) ? $cfg->Version : 'unknown' ;
+        $buildDate = isset($cfg->BuildDate) ? $cfg->BuildDate : 'unknown' ;
+        $subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
-        $admin_login;
-        $admin_email = $cfg->DEFAULT_ADMIN_ADDRESS;
-        $default_hostname = $cfg->SERVER_HOSTNAME;
-        $default_base_server_ip = $cfg->BASE_SERVER_IP;
-        $Version = $cfg->Version;
-        $BuildDate = $cfg->BuildDate;
-        $subject = "i-MSCP $Version on $default_hostname ($default_base_server_ip)";
-        $to = $send_log_to;
+
+		if($level == E_USER_NOTICE) {
+			$severity = 'Notice (You can ignore this message)';
+		} elseif($level == E_USER_WARNING) {
+			$severity = 'Warning';
+		} elseif($level == E_USER_ERROR) {
+			$severity = 'Error';
+		} else {
+			$severity = 'Unknown';
+		}
+
         $message = <<<AUTO_LOG_MSG
 
 i-MSCP Log
 
-Server: $default_hostname ($default_base_server_ip)
-Version: i-MSCP $Version ($BuildDate)
+Server: $hostname ($baseServerIp)
+Version: i-MSCP $version ($buildDate)
+Message severity: $severity
 
 Message: ----------------[BEGIN]--------------------------
 
@@ -1263,22 +1265,21 @@ $msg
 
 Message: ----------------[END]----------------------------
 
+_________________________
+i-MSCP Log Mailer
+
 AUTO_LOG_MSG;
 
-        $headers = "From: \"i-MSCP Logging Daemon\" <" . $admin_email . ">\n";
-        $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
-        $headers .= "X-Mailer: i-MSCP $Version Logging Mailer";
-        $mail_result = mail($to, $subject, $message, $headers);
+        $headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
+        $headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
+		$headers.= "Content-Transfer-Encoding: 7bit\n";
+        $headers .= "X-Mailer: i-MSCP $version Logging Mailer";
 
-        // Reduce admin log entries by only logging email notification if not
-        // successful
-        if (!$mail_result) {
-            $mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-            $log_message = "$admin_login: Logging Daemon Mail To: |$to|, " .
-                           "From: |$admin_email|, Status: |$mail_status|!";
+        if (!mail($to, $subject, $message, $headers)) {
+            $log_message =
+				"Logging Mailer Mail To: |$to|, From: |$to|, Status: |NOT OK|!";
+
             $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
-
-            // Change this to be compatible with PDO Exception only
             exec_query($query, $log_message, false);
         }
     }
@@ -1936,7 +1937,6 @@ function exec_query($query, $bind = null, $failDie = true)
         $db = iMSCP_Registry::get('db');
     }
 
-    //echo $query . '<br />';
     if (!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
         if ($failDie) {
             throw new iMSCP_Exception_Database(

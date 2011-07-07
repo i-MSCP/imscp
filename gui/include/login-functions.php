@@ -251,7 +251,7 @@ function unblock($timeout = null, $type = 'bruteforce')
 			$max = $cfg->BRUTEFORCE_MAX_CAPTCHA;
 			break;
 		default:
-			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s', __FILE__, __LINE__, $type));
+			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s', __FILE__, __LINE__, $type), E_USER_ERROR);
 			throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__);
 	}
 
@@ -305,7 +305,7 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
 			$max = $cfg->BRUTEFORCE_MAX_CAPTCHA;
 			break;
 		default:
-			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown block reason %s', __FILE__, __LINE__, $type));
+			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown block reason %s', __FILE__, __LINE__, $type), E_USER_ERROR);
 			throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__);
 	}
 
@@ -473,7 +473,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 
 			exec_query($query, $ipAddress);
 		} else {
-			write_log("Login error, <b><i>$ipAddress</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
+			write_log("Login error, <b><i>$ipAddress</i></b> wait " . ($btime - time()) . " seconds");
 			iMSCP_Registry::set('backButtonDestination', $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);
 			throw new iMSCP_Exception_Production(tr('You have to wait %d seconds.', $btime - time()));
 		}
@@ -574,7 +574,7 @@ function register_user($userName, $userPassword){
 		$_SESSION['user_created_by']	= $userData['created_by'];
 		$_SESSION['user_login_time']	= time();
 
-		write_log(tr('%s logged in.', tohtml($userName)));
+		write_log(tr('%s logged in.', tohtml($userName)), E_USER_NOTICE);
 	} else {
 		write_log(tr('%s entered incorrect password.', tohtml($userName)));
 		set_page_message('You entered an incorrect password!', 'error');
