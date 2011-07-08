@@ -106,7 +106,7 @@ sub FETCH {
 sub STORE {
 	my $self	= shift;
 	my $config	= shift;
-	my $value	= shift || '';
+	my $value	= shift;
 
 	debug((caller(0))[3].': Starting...');
 
@@ -146,9 +146,11 @@ sub NEXTKEY {
 sub _replaceConfig{
 	my $self	= shift;
 	my $config	= shift;
-	my $value	= shift || '';
+	my $value	= shift;
 
 	debug((caller(0))[3].': Starting...');
+
+	$value = '' unless defined $value;
 
 	@{$self->{confFile}}[$self->{lineMap}->{$config}] = "$config = $value";
 	$self->{configValues}->{$config} = $value;
@@ -162,6 +164,8 @@ sub _insertConfig{
 	my $value	= shift;
 
 	debug((caller(0))[3].': Starting...');
+
+	$value = '' unless defined $value;
 
 	push (@{$self->{confFile}}, "$config = $value");
 	$self->{configValues}->{$config} = $value;

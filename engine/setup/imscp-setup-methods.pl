@@ -516,14 +516,8 @@ sub setup_system_dirs {
 		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755}) and return 1;
 	}
 
-	if(!$main::imscpConfig{'AWSTATS_ACTIVE'}){
-		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
-			$main::imscpConfig{'AWSTATS_ACTIVE'}	= $main::imscpConfigOld{'AWSTATS_ACTIVE'};
-			$main::imscpConfig{'AWSTATS_MODE'}		= $main::imscpConfigOld{'AWSTATS_MODE'};
-		} else {
-			askAwstats();
-		}
-	}
+	askAwstats();
+
 	if ($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes') {
 		iMSCP::Dir->new(dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->make({ user => $main::imscpConfig{'APACHE_USER'}, group => $main::imscpConfig{'APACHE_GROUP'}, mode => 0755}) and return 1;
 	}
@@ -539,14 +533,32 @@ sub askAwstats{
 
 	use iMSCP::Dialog;
 
-	my $rs;
+	my ($rs, $force);
 
-	while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
-	if($rs ne $main::imscpConfig{'AWSTATS_ACTIVE'}){ $main::imscpConfig{'AWSTATS_ACTIVE'} = $rs; }
-	if($rs eq 'yes'){
-		while (! ($rs = iMSCP::Dialog->new()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
-		$rs = $rs eq 'dynamic' ? 0 : 1;
-		if($rs ne $main::imscpConfig{'AWSTATS_MODE'}){ $main::imscpConfig{'AWSTATS_MODE'} = $rs; }
+	if(!$main::imscpConfig{'AWSTATS_ACTIVE'}){
+		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
+			$main::imscpConfig{'AWSTATS_ACTIVE'}	= $main::imscpConfigOld{'AWSTATS_ACTIVE'};
+		} else {
+			while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
+			if($rs ne $main::imscpConfig{'AWSTATS_ACTIVE'}){
+				$main::imscpConfig{'AWSTATS_ACTIVE'} = $rs;
+				$force = 'yes';
+			}
+		}
+	}
+
+	if($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes'){
+		unless(!$force && defined $main::imscpConfig{'AWSTATS_MODE'} && $main::imscpConfig{'AWSTATS_MODE'} =~ /0|1/){
+			if(!$force && defined $main::imscpConfigOld{'AWSTATS_MODE'} && $main::imscpConfigOld{'AWSTATS_MODE'} =~ /0|1/){
+				$main::imscpConfig{'AWSTATS_MODE'}	= $main::imscpConfigOld{'AWSTATS_MODE'};
+			} else {
+				while (! ($rs = iMSCP::Dialog->new()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
+				$rs = $rs eq 'dynamic' ? 0 : 1;
+				$main::imscpConfig{'AWSTATS_MODE'} = $rs if $rs ne $main::imscpConfig{'AWSTATS_MODE'};
+			}
+		}
+	} else {
+		$main::imscpConfig{'AWSTATS_MODE'} = '' if $main::imscpConfig{'AWSTATS_MODE'} ne '';
 	}
 	debug((caller(0))[3].': Ending...');
 
@@ -688,18 +700,18 @@ sub askHostname{
 	$hostname = gethostbyaddr($main::imscpConfig{'BASE_SERVER_IP'}, &AF_INET);
 	if( !$hostname || $hostname !~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 		if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)){
-			error((caller(0))[3].": $err");
-			return 1;
+			error((caller(0))[3].': Can not find hostname (misconfigured?!!)');
+			$hostname = '';
 		}
 	}
 
 	chomp($hostname);
 
-	if($main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
+	if($hostname && $main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
 		debug((caller(0))[3].': Ending...');
 		return 0;
 	}
-	if($main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
+	if($hostname && $main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
 		$main::imscpConfig{'SERVER_HOSTNAME'} = $main::imscpConfigOld{'SERVER_HOSTNAME'};
 		debug((caller(0))[3].': Ending...');
 		return 0;
