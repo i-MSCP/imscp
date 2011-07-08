@@ -236,7 +236,7 @@ if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
 	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
-# Converting some possible IDN to ACE (see #2476 on ispcp)
+# Converting some possible IDN to ACE
 $config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
 $config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
 $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
