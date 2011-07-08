@@ -700,7 +700,7 @@ sub askHostname{
 	$hostname = gethostbyaddr($main::imscpConfig{'BASE_SERVER_IP'}, &AF_INET);
 	if( !$hostname || $hostname !~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 		if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)){
-			error((caller(0))[3].": Can not find hostname (misconfigured?!!): $err");
+			error((caller(0))[3].": Can not find hostname: $err");
 			$hostname = '';
 		}
 	}
