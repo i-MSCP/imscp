@@ -226,21 +226,21 @@ function add_user_data($reseller_id)
     $query = "
 		INSERT INTO
 		    `domain` (
-			    `domain_name`, `domain_admin_id`, `domain_created_id`,
-			    `domain_created`, `domain_expires`, `domain_mailacc_limit`,
-			    `domain_ftpacc_limit`, `domain_traffic_limit`, `domain_sqld_limit`,
-			    `domain_sqlu_limit`, `domain_status`, `domain_subd_limit`,
-			    `domain_alias_limit`, `domain_ip_id`, `domain_disk_limit`,
-			    `domain_disk_usage`, `domain_php`, `domain_cgi`, `allowbackup`,
-			    `domain_dns`, `domain_software_allowed`
+			    `domain_name`, `domain_admin_id`, `domain_created_id`, `domain_created`,
+			    `domain_expires`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
+			    `domain_traffic_limit`, `domain_sqld_limit`, `domain_sqlu_limit`,
+			    `domain_status`, `domain_subd_limit`, `domain_alias_limit`,
+			    `domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
+			    `domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
+			    `domain_software_allowed`
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '0', ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
 	";
 
-    exec_query($query, array($dmn_name, $record_id, $reseller_id, time(), $mail,
-                            $dmn_expire, $ftp, $traff, $sql_db, $sql_user,
-                            $cfg->ITEM_ADD_STATUS, $sub, $als, $domain_ip, $disk,
+    exec_query($query, array($dmn_name, $record_id, $reseller_id, time(), $dmn_expire,
+                            $mail, $ftp, $traff, $sql_db, $sql_user,
+                            $cfg->ITEM_ADD_STATUS, $sub, $als, $domain_ip, $disk, 0,
                             $php, $cgi, $backup, $dns, $software_allowed));
 
     $dmn_id = $db->insertId();

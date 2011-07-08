@@ -392,26 +392,28 @@ check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl');
-$tpl->define_dynamic('def_language', 'page');
-$tpl->define_dynamic('def_layout', 'page');
-$tpl->define_dynamic('no_messages', 'page');
-$tpl->define_dynamic('msg_entry', 'page');
-$tpl->define_dynamic('sql_support', 'page');
-$tpl->define_dynamic('t_sql1_support', 'page');
-$tpl->define_dynamic('t_sql2_support', 'page');
-$tpl->define_dynamic('t_php_support', 'page');
-$tpl->define_dynamic('t_cgi_support', 'page');
-$tpl->define_dynamic('t_dns_support', 'page');
-$tpl->define_dynamic('t_backup_support', 'page');
-$tpl->define_dynamic('t_sdm_support', 'page');
-$tpl->define_dynamic('t_alias_support', 'page');
-$tpl->define_dynamic('t_mails_support', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('traff_warn', 'page');
-$tpl->define_dynamic('disk_warn', 'page');
-$tpl->define_dynamic('dmn_mngmnt', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
+$tpl->define_dynamic(array(
+                          'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
+                          'def_language' => 'page',
+                          'def_layout' => 'page',
+                          'no_messages' => 'page',
+                          'msg_entry' => 'page',
+                          'sql_support' => 'page',
+                          't_sql1_support' => 'page',
+                          't_sql2_support' => 'page',
+                          't_php_support' => 'page',
+                          't_cgi_support' => 'page',
+                          't_dns_support' => 'page',
+                          't_backup_support' => 'page',
+                          't_sdm_support' => 'page',
+                          't_alias_support' => 'page',
+                          't_mails_support' => 'page',
+                          'logged_from' => 'page',
+                          'traff_warn' => 'page',
+                          'disk_warn' => 'page',
+                          'dmn_mngmnt' => 'page',
+                          't_software_support' => 'page',
+                          'alternative_domain_url' => 'page'));
 
 $theme_color = $cfg->USER_INITIAL_THEME;
 
@@ -479,14 +481,15 @@ if (time() < $dmn_expires) {
     $tpl->assign('DMN_EXPIRES', '');
 }
 
-// Prepare alternative customer URL
-// @todo alternative ports and ssl support
-$domainAlsUrl =
-    "http://{$cfg->APACHE_SUEXEC_USER_PREF}$dmn_uid.{$_SERVER['SERVER_NAME']}";
+if($dmn_status == $cfg->ITEM_OK_STATUS) {
+    $tpl->assign('DOMAIN_ALS_URL',
+                 "http://{$cfg->APACHE_SUEXEC_USER_PREF}$dmn_uid.{$_SERVER['SERVER_NAME']}");
+} else {
+    $tpl->assign('ALTERNATIVE_DOMAIN_URL', '');
+}
 
 $tpl->assign(array(
                   'ACCOUNT_NAME' => tohtml($account_name),
-                  'DOMAIN_ALS_URL' => $domainAlsUrl,
                   'MAIN_DOMAIN' => tohtml($dmn_name),
                   'DMN_EXPIRES_DATE' => $dmn_expires_date,
                   'MYSQL_SUPPORT' => ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1)
