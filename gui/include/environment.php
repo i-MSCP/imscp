@@ -37,7 +37,7 @@ iMSCP_Bootstrap::boot();
 // Creating new iMSCP_Config_Handler_File instance
 $config = new iMSCP_Config_Handler_File();
 
-// Set some configuration parameters
+// Configuration parameters
 
 // Template paths
 $config->ROOT_TEMPLATE_PATH = 'themes/';
@@ -94,7 +94,7 @@ $config->MAX_SQL_USER_LENGTH = 16;
 $config->MAX_SQL_PASS_LENGTH = 32;
 
 /**
- * The following parameters are overwritten via admin cp
+ * The following settings can be overridden via the control panel - (admin/settings.php)
  */
 
 // Domain rows pagination
@@ -108,7 +108,7 @@ $config->HOSTING_PLANS_LEVEL = 'reseller';
 // TLD strict validation (according IANA database)
 $config->TLD_STRICT_VALIDATION = 1;
 
-// SLD strict validation
+// SLD strict validation (according IANA database)
 $config->SLD_STRICT_VALIDATION = 1;
 
 // Maximum number of labels for the domain names
@@ -173,6 +173,8 @@ $config->BRUTEFORCE_BETWEEN = 1;
 $config->BRUTEFORCE_BETWEEN_TIME = 30;
 
 // Enable or disable maintenance mode
+// 1: Maintenance mode enabled
+// 0: Maintenance mode disabled
 $config->MAINTENANCEMODE = 0;
 
 // Servicemode message
@@ -184,39 +186,44 @@ $config->MAINTENANCEMODE_MESSAGE =
 $config->PASSWD_CHARS = 6;
 
 // Enable or disable strong passwords
+// 1: Strong password not allowed
+// 0: Strong password allowed
 $config->PASSWD_STRONG = 1;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
 $config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
 
-// The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
-// PHP's E_USER_* values are used for simplicity:
-// E_USER_NOTICE: logins, and all info that isn't very relevant
-// E_USER_WARNING: switching to an other account, etc
-// E_USER_ERROR: "admin MUST know" messages
-$config->LOG_LEVEL = E_USER_NOTICE;
+/**
+ * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
+ *
+ * E_USER_NOTICE: common operations (normal work flow)
+ * E_USER_WARNING: Operations that may be related to a problem
+ * E_USER_ERROR: Errors for which the admin should pay attention
+ *
+ * Note: PHP's E_USER_* constants are used for simplicity.
+ */
+$config->LOG_LEVEL = E_USER_WARNING;
 
 // Creation of webmaster, postmaster and abuse forwarders when
-// domain/alias/ subdomain is created
 $config->CREATE_DEFAULT_EMAIL_ADDRESSES = 1;
 
-// Count default e-mail (abuse,postmaster,webmaster) in user limit
-// true: default e-mail are counted
-// false: default e-mail are NOT counted
+// Count default e-mail (abuse, postmaster, webmaster) in user limit
+// 1: default e-mail are counted
+// 0: default e-mail are NOT counted
 $config->COUNT_DEFAULT_EMAIL_ADDRESSES = 1;
 
 // Use hard mail suspension when suspending a domain:
-// true: email accounts are hard suspended (completely unreachable)
-// false: email accounts are soft suspended (passwords are modified so
+// 1: email accounts are hard suspended (completely unreachable)
+// 0: email accounts are soft suspended (passwords are modified so
 // user can't access the accounts)
 $config->HARD_MAIL_SUSPENSION = 1;
 
 // Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
 // This option allows to use external login scripts
-// true: prevent external login, check for referer, more secure
-// false: allow external login, do not check for referer, less
+// 1: prevent external login, check for referer, more secure
+// 0: allow external login, do not check for referer, less
 // security (risky)
 $config->PREVENT_EXTERNAL_LOGIN_ADMIN = 1;
 $config->PREVENT_EXTERNAL_LOGIN_RESELLER = 1;
@@ -229,7 +236,7 @@ if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
 	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
-# Converting some possible IDN to ACE (see #2476)
+# Converting some possible IDN to ACE (see #2476 on ispcp)
 $config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
 $config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
 $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);

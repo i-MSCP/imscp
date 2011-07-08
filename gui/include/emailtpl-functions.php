@@ -177,7 +177,7 @@ function get_welcome_email($admin_id, $admin_type = 'user')
 
     // No custom template for welcome mail - return the default
     if (empty($data['message'])) {
-        if ($admin_type == 'user' && $cfg->AWSTATS_ACTIVE == 'no') {
+        if ($admin_type == 'user' && $cfg->AWSTATS_ACTIVE == 'yes') {
             $data['message'] = tr('
 
 Hello {NAME}
