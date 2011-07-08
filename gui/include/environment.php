@@ -240,8 +240,10 @@ $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 iMSCP_Initializer::run($config);
 
 // Please: Don't move this statement before the initialization process
-$config->MAINTENANCEMODE_MESSAGE =
-    tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
+if( PHP_SAPI != 'cli') {
+    $config->MAINTENANCEMODE_MESSAGE =
+        tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
+}
 
 // Remove useless variable
 unset($config);
