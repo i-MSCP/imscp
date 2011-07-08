@@ -177,11 +177,6 @@ $config->BRUTEFORCE_BETWEEN_TIME = 30;
 // 0: Maintenance mode disabled
 $config->MAINTENANCEMODE = 0;
 
-// Servicemode message
-// Please: Leave the comment for 'tr'
-$config->MAINTENANCEMODE_MESSAGE =
-	/*tr*/("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
-
 // Minimum password chars
 $config->PASSWD_CHARS = 6;
 
@@ -223,8 +218,7 @@ $config->HARD_MAIL_SUSPENSION = 1;
 // separated in admin, reseller and client
 // This option allows to use external login scripts
 // 1: prevent external login, check for referer, more secure
-// 0: allow external login, do not check for referer, less
-// security (risky)
+// 0: allow external login, do not check for referer, less security (risky)
 $config->PREVENT_EXTERNAL_LOGIN_ADMIN = 1;
 $config->PREVENT_EXTERNAL_LOGIN_RESELLER = 1;
 $config->PREVENT_EXTERNAL_LOGIN_CLIENT = 1;
@@ -244,6 +238,10 @@ $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 
 // Initialize the application
 iMSCP_Initializer::run($config);
+
+// Please: Don't move this statement before the initialization process
+$config->MAINTENANCEMODE_MESSAGE =
+    tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
 
 // Remove useless variable
 unset($config);
