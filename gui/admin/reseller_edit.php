@@ -846,7 +846,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 
 			// Adds admin log entry
 			write_log("{$_SESSION['user_logged']}: changes data/password for reseller: " .
-                      "{$rdata['edit_username']}!");
+                      "{$rdata['edit_username']}!", E_USER_NOTICE);
 
 			// Send new authentication data to reseller if needed
 			if (isset($_POST['send_data']) && !empty($_POST['pass0'])) {

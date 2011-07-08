@@ -106,10 +106,10 @@ $config->DOMAIN_ROWS_PER_PAGE = 10;
 $config->HOSTING_PLANS_LEVEL = 'reseller';
 
 // TLD strict validation (according IANA database)
-$config->TLD_STRICT_VALIDATION = true;
+$config->TLD_STRICT_VALIDATION = 1;
 
 // SLD strict validation
-$config->SLD_STRICT_VALIDATION = true;
+$config->SLD_STRICT_VALIDATION = 1;
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)
@@ -119,10 +119,10 @@ $config->MAX_DNAMES_LABELS = 1;
 $config->MAX_SUBDNAMES_LABELS = 1;
 
 // Enable or disable support system
-$config->IMSCP_SUPPORT_SYSTEM = true;
+$config->IMSCP_SUPPORT_SYSTEM = 1;
 
 // Enable or disable lost password support
-$config->LOSTPASSWORD = true;
+$config->LOSTPASSWORD = 1;
 
 // Uniqkeytimeout in minutes
 $config->LOSTPASSWORD_TIMEOUT = 30;
@@ -155,7 +155,7 @@ $config->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection
-$config->BRUTEFORCE = true;
+$config->BRUTEFORCE = 1;
 
 // Blocktime in minutes
 $config->BRUTEFORCE_BLOCK_TIME = 30;
@@ -167,13 +167,13 @@ $config->BRUTEFORCE_MAX_LOGIN = 3;
 $config->BRUTEFORCE_MAX_CAPTCHA = 5;
 
 // Enable or disable time between logins
-$config->BRUTEFORCE_BETWEEN = true;
+$config->BRUTEFORCE_BETWEEN = 1;
 
 // Time between logins in seconds
 $config->BRUTEFORCE_BETWEEN_TIME = 30;
 
 // Enable or disable maintenance mode
-$config->MAINTENANCEMODE = false;
+$config->MAINTENANCEMODE = 0;
 
 // Servicemode message
 // Please: Leave the comment for 'tr'
@@ -184,7 +184,7 @@ $config->MAINTENANCEMODE_MESSAGE =
 $config->PASSWD_CHARS = 6;
 
 // Enable or disable strong passwords
-$config->PASSWD_STRONG = true;
+$config->PASSWD_STRONG = 1;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
@@ -199,18 +199,18 @@ $config->LOG_LEVEL = E_USER_NOTICE;
 
 // Creation of webmaster, postmaster and abuse forwarders when
 // domain/alias/ subdomain is created
-$config->CREATE_DEFAULT_EMAIL_ADDRESSES = true;
+$config->CREATE_DEFAULT_EMAIL_ADDRESSES = 1;
 
 // Count default e-mail (abuse,postmaster,webmaster) in user limit
 // true: default e-mail are counted
 // false: default e-mail are NOT counted
-$config->COUNT_DEFAULT_EMAIL_ADDRESSES = true;
+$config->COUNT_DEFAULT_EMAIL_ADDRESSES = 1;
 
 // Use hard mail suspension when suspending a domain:
 // true: email accounts are hard suspended (completely unreachable)
 // false: email accounts are soft suspended (passwords are modified so
 // user can't access the accounts)
-$config->HARD_MAIL_SUSPENSION = true;
+$config->HARD_MAIL_SUSPENSION = 1;
 
 // Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
@@ -218,9 +218,9 @@ $config->HARD_MAIL_SUSPENSION = true;
 // true: prevent external login, check for referer, more secure
 // false: allow external login, do not check for referer, less
 // security (risky)
-$config->PREVENT_EXTERNAL_LOGIN_ADMIN = true;
-$config->PREVENT_EXTERNAL_LOGIN_RESELLER = true;
-$config->PREVENT_EXTERNAL_LOGIN_CLIENT = true;
+$config->PREVENT_EXTERNAL_LOGIN_ADMIN = 1;
+$config->PREVENT_EXTERNAL_LOGIN_RESELLER = 1;
+$config->PREVENT_EXTERNAL_LOGIN_CLIENT = 1;
 
 // Automatic search for new version
 $config->CHECK_FOR_UPDATES = true;

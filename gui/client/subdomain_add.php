@@ -368,7 +368,7 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 
 	update_reseller_c_props(get_reseller_id($domain_id));
 
-	write_log($_SESSION['user_logged'] . ": adds new subdomain: " . $sub_name);
+	write_log($_SESSION['user_logged'] . ": adds new subdomain: " . $sub_name, E_USER_NOTICE);
 	send_request();
 }
 

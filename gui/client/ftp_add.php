@@ -447,7 +447,7 @@ function add_ftp_user($dmn_name) {
 	$domain_props = get_domain_default_props($_SESSION['user_id']);
 	update_reseller_c_props($domain_props[4]);
 
-	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user");
+	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user", E_USER_NOTICE);
 	set_page_message(tr('FTP account added!'), 'success');
 	user_goto('ftp_accounts.php');
 }

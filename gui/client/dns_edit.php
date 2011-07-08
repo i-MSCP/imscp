@@ -662,7 +662,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: " . (($add_mode) ? 'add new' : ' modify') . " dns zone record.");
+		write_log("$admin_login: " . (($add_mode) ? 'add new' : ' modify') . " dns zone record.", E_USER_NOTICE);
 
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");

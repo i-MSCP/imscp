@@ -240,7 +240,7 @@ function add_reseller($tpl) {
 
 			$user_logged = $_SESSION['user_logged'];
 
-			write_log("$user_logged: add reseller: $username");
+			write_log("$user_logged: add reseller: $username", E_USER_NOTICE);
 
 			$user_def_lang = $_SESSION['user_def_lang'];
 			$user_theme_color = $_SESSION['user_theme'];

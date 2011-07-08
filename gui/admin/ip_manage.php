@@ -162,7 +162,7 @@ function add_ip($tpl) {
 
 			set_page_message(tr('New IP was added!'), 'success');
 
-			write_log("{$_SESSION['user_logged']}: adds new IPv4 address: {$ip_number}!");
+			write_log("{$_SESSION['user_logged']}: adds new IPv4 address: {$ip_number}!", E_USER_NOTICE);
 
 			$sucess = true;
 		}

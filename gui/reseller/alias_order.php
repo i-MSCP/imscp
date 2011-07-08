@@ -96,7 +96,7 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 
 	$admin_login = $_SESSION['user_logged'];
 
-	write_log("$admin_login: domain alias activated: $alias_name.");
+	write_log("$admin_login: domain alias activated: $alias_name.", E_USER_NOTICE);
 
 	set_page_message(tr('Alias scheduled for activation!'));
 

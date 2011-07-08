@@ -101,7 +101,7 @@ update_reseller_c_props($reseller_id);
 
 send_request();
 $admin_login = $_SESSION['user_logged'];
-write_log("$admin_login: deletes domain alias: " . $dat['alias_name']);
+write_log("$admin_login: deletes domain alias: " . $dat['alias_name'], E_USER_NOTICE);
 
 $_SESSION['aldel'] = '_yes_';
 

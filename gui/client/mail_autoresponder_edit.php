@@ -142,7 +142,7 @@ function gen_page_dynamic_data($tpl, $mail_id, $read_from_db) {
 
 		$rs = exec_query($query, $mail_id);
 		$mail_name = $rs->fields['mailbox'];
-		write_log($_SESSION['user_logged'] . ": changes mail autoresponder: " . $mail_name);
+		write_log($_SESSION['user_logged'] . ": changes mail autoresponder: " . $mail_name, E_USER_NOTICE);
 		set_page_message(tr('Mail account scheduler for modification!'));
 		user_goto('mail_accounts.php');
 	} else {

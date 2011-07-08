@@ -149,13 +149,13 @@ function update_data()
                 $rs = exec_query($query, $admin_name);
                 if ($rs->recordCount() != 0) {
                     set_page_message(tr('User session was killed!'));
-                    write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change");
+                    write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change", E_USER_WARNING);
                 }
             }
 
             $edit_username = clean_input($_POST['edit_username']);
             $user_logged = $_SESSION['user_logged'];
-            write_log("$user_logged: changes data/password for $edit_username!");
+            write_log("$user_logged: changes data/password for $edit_username!", E_USER_NOTICE);
 
             if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
                 $query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";

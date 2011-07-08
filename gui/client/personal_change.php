@@ -146,7 +146,7 @@ function update_user_personal_data($user_id) {
                             $street1, $street2, $email, $phone, $fax, $gender,
                             $user_id));
 
-	write_log($_SESSION['user_logged'] . ": update personal data");
+	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
 	set_page_message(tr('Personal data updated successfully!'), 'success');
 }
 

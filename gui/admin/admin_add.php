@@ -110,7 +110,7 @@ function add_user($tpl)
             $new_admin_id = $db->insertId();
             $user_logged = $_SESSION['user_logged'];
 
-            write_log("$user_logged: add admin: $username");
+            write_log("$user_logged: add admin: $username", E_USER_WARNING);
 
             $user_def_lang = $_SESSION['user_def_lang'];
             $user_theme_color = $_SESSION['user_theme'];

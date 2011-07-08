@@ -356,7 +356,7 @@ function create_catchall_mail_account($id) {
 				exec_query($query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 				send_request();
-				write_log($_SESSION['user_logged'] . ": adds new email catch all");
+				write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
 				set_page_message(tr('Catch all account scheduled for creation!'));
 				user_goto('mail_catchall.php');
 			} else {
@@ -447,7 +447,7 @@ function create_catchall_mail_account($id) {
             exec_query($query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
-			write_log($_SESSION['user_logged'] . ": adds new email catch all ");
+			write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
 			set_page_message(tr('Catch all account scheduled for creation!'));
 			user_goto('mail_catchall.php');
 		} else {

@@ -729,7 +729,7 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
     write_log(sprintf("%s send ticket To: %s, From: %s, Status: %s!",
                   $_SESSION['user_logged'], $toname . ": " . $to_email, $fromname .
                     ": " . $from_email,
-                  $mail_status));
+                  $mail_status), E_USER_NOTICE);
 }
 
 /**

@@ -114,5 +114,5 @@ while (!$rs->EOF) {
 
 send_request();
 
-write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id");
+write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id", E_USER_NOTICE);
 user_goto('protected_user_manage.php');

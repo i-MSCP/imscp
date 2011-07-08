@@ -272,7 +272,7 @@ function add_domain_alias()
     send_request();
 
     $admin_login = $_SESSION['user_logged'];
-    write_log("$admin_login: add domain alias: $alias_name");
+    write_log("$admin_login: add domain alias: $alias_name", E_USER_NOTICE);
 
     $_SESSION['alias_scheduled_for_creation'] = 1;
 

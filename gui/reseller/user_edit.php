@@ -425,12 +425,12 @@ function update_data_in_db($hpid) {
 		$rs = exec_query($query, $admin_name);
 			if ($rs->recordCount() != 0) {
 				set_page_message(tr('User session was killed!'));
-				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");
+				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change", E_USER_NOTICE);
 		}
 	}
 
 	$admin_login = $_SESSION['user_logged'];
-	write_log("$admin_login changes data/password for $dmn_user_name!");
+	write_log("$admin_login changes data/password for $dmn_user_name!", E_USER_NOTICE);
 
 	if (isset($_POST['send_data']) && !empty($inpass)) {
 		send_add_user_auto_msg(

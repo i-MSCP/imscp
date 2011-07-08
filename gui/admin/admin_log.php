@@ -234,7 +234,7 @@ function clear_log()
         }
 
         execute_query($query);
-        write_log($msg);
+        write_log($msg, E_USER_NOTICE);
     }
 }
 

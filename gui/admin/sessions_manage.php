@@ -56,7 +56,7 @@ function kill_session()
 
 		if($stmt->rowCount()) { // A row was deleted ?
 			set_page_message(tr('User session was killed.'), 'success');
-			write_log($_SESSION['user_logged'] . ": killed $username session");
+			write_log($_SESSION['user_logged'] . ": killed $username session", E_USER_NOTICE);
 		} else {
 			set_page_message(tr('Session not found in login table.'), 'warning');
 		}

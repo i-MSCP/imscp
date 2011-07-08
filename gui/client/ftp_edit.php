@@ -158,7 +158,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 				exec_query($query, array($pass, $rawpass, $ftp_acc));
 			}
 
-			write_log($_SESSION['user_logged'] . ": updated FTP " . $ftp_acc . " account data");
+			write_log($_SESSION['user_logged'] . ": updated FTP " . $ftp_acc . " account data", E_USER_NOTICE);
 			set_page_message(tr('FTP account data updated!'), 'success');
 			user_goto('ftp_accounts.php');
 		} else {
