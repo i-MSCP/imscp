@@ -54,16 +54,11 @@
 		<div class="left_menu">
 			{MENU}
 		</div>
-
-
 		<div class="body">
 			<h2 class="sql"><span>{TR_MANAGE_SQL}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
-
 			<table>
 				<thead>
 					<tr>
@@ -90,7 +85,7 @@
 						<!-- BDP: user_list -->
 							<tr>
 								<td>{DB_USER}</td>
-								<td><a href="pma_auth.php?id={USER_ID}" class="icon i_pma">{TR_PHP_MYADMIN}</a>
+								<td><a href="pma_auth.php?id={USER_ID}" class="icon i_pma" target="_blank">{TR_PHP_MYADMIN}</a>
 								<a href="sql_change_password.php?id={USER_ID}"
 									class="icon i_change_password">{TR_CHANGE_PASSWORD}</a> <a href="#"
 									class="icon i_delete"
