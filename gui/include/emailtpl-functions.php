@@ -365,7 +365,7 @@ This is an automatic confirmation for the order of the domain:
 
 You have to click the following link to continue the domain creation process.
 
-{ACTIVATE_LINK}
+{ACTIVATION_LINK}
 
 Thank you for using i-MSCP services.
 The i-MSCP Team

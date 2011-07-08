@@ -808,7 +808,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
     $replace[] = $uemail;
     $search [] = '{NAME}';
     $replace[] = $name;
-    $search [] = '{ACTIVATE_LINK}';
+    $search [] = '{ACTIVATION_LINK}';
     $replace[] = $activate_link;
 
     $subject = str_replace($search, $replace, $subject);
