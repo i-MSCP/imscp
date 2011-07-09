@@ -3207,8 +3207,11 @@ sub setup_rkhunter {
 	my ($rs, $rdata);
 
 	# Deleting any existent log files
-	my $file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'}."*");
-	$file->delFile() and return 1;
+	$file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'});
+	$file->set();
+	$file->save() and return 1;
+	$file->owner('root', 'adm');
+	$file->mode(0644);
 
 	# Updates the rkhunter configuration provided by Debian like distributions
 	# to disable the default cron task (i-MSCP provides its own cron job for rkhunter)
