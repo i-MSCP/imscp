@@ -899,4 +899,39 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		return $sqlUpd;
 	}
+
+	/**
+	 * #119: Defect - Error when adding IP's
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @since r4844
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_68(){
+		$sqlUpd = array();
+
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
+
+		$stmt = exec_query("SELECT `ip_id`, `ip_card` FROM `server_ips`");
+
+		if ($stmt->recordCount() != 0) {
+			while (!$stmt->EOF) {
+				$cardname = explode(':', $stmt->fields['ip_card']);
+				$cardname = $cardname[0];
+				$sqlUpd[] = "
+					UPDATE
+						`server_ips`
+					SET
+						`ip_card` = " . $db->quote($cardname) . "
+					WHERE
+						`ip_id` = '" . $stmt->fields['ip_id'] . "'
+				";
+
+				$stmt->moveNext();
+			}
+		}
+
+		return $sqlUpd;
+	}
 }

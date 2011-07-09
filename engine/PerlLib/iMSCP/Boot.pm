@@ -1,5 +1,7 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,19 +40,38 @@ use Common::SingletonClass;
 
 sub init{
 	my $self = shift;
-	my $mode = shift || 'all';
+	my $option = shift;
+
+	$option = {} if ref $option ne 'HASH';
 
 	debug((caller(0))[3].': Starting...');
 
-	if (!$self->{'loaded'}) {
+	unless($self->{'loaded'}) {
 		debug((caller(0))[3].': Booting...');
 
 		tie %main::imscpConfig, 'iMSCP::Config','fileName' => (($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'imscp/imscp.conf');
 
-		iMSCP::Requirements->new()->test($self->{args}->{mode} eq 'setup' ? 'all' : 'user');
+		iMSCP::Requirements->new()->test($self->{args}->{mode} && $self->{args}->{mode} eq 'setup' ? 'all' : 'user');
 
-		$self->lock($main::imscpConfig{MR_LOCK_FILE});
+		$self->lock($main::imscpConfig{MR_LOCK_FILE}) unless($option->{nolock} && $option->{nolock} eq 'yes');
+
 		$self->genKey();
+
+		unless ($option->{nodatabase} && $option->{nodatabase} eq 'yes'){
+				use iMSCP::Database;
+				use iMSCP::Crypt;
+
+				my $crypt = iMSCP::Crypt->new();
+				my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+
+				$database->set('DATABASE_HOST', $main::imscpConfig{'DATABASE_HOST'});
+				$database->set('DATABASE_PORT', $main::imscpConfig{'DATABASE_PORT'});
+				$database->set('DATABASE_NAME', $main::imscpConfig{'DATABASE_NAME'});
+				$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
+				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
+				my $rs = $database->connect();
+				fatal((caller(0))[3].": $rs") if $rs;
+		}
 
 		$self->{'loaded'} = 1;
 	}
@@ -67,6 +88,7 @@ sub lock{
 	debug((caller(0))[3].': Starting...');
 
 	fatal('Unable to open lock file!') if(!open($self->{lock}, '>', $lock));
+
 	use Fcntl ":flock";
 	fatal('Unable to acquire global lock!') if(!flock($self->{lock}, LOCK_EX));
 
@@ -82,7 +104,7 @@ sub unlock{
 	debug((caller(0))[3].': Starting...');
 
 	use Fcntl ":flock";
-	fatal('Unable to acquire global lock!') if(!flock($self->{lock}, LOCK_UN));
+	fatal('Unable to release global lock!') if(!flock($self->{lock}, LOCK_UN));
 
 	debug((caller(0))[3].': Ending...');
 

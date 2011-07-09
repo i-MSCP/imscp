@@ -1,5 +1,7 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -570,6 +572,7 @@ sub setup_base_server_IP{
 	debug((caller(0))[3].': Starting...');
 
 	use iMSCP::Dialog;
+	use iMSCP::IP;
 
 	if($main::imscpConfig{'BASE_SERVER_IP'} && $main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1'){
 		debug((caller(0))[3].': Ending...');
@@ -582,28 +585,29 @@ sub setup_base_server_IP{
 		return 0;
 	}
 
-	my ($out, $err);
-	my $ips = {};
+	my $ips = iMSCP::IP->factory();
 
-	if (execute("$main::imscpConfig{'CMD_IFCONFIG'} -a", \$out, \$err)){
-		error((caller(0))[3].": $err");
-		return 1 ;
+	my $rs = $ips->loadIpConfiguredIps();
+	return $rs if $rs;
+
+	if(keys %{$ips->{ips}} == 0){
+		error((caller(0))[3].': Can not determine servers ips');
+		return 1;
 	}
 
-	while($out =~ m/(\S*)[^\n]*\n\s*inet (?:addr:)?([\d.]+).*?cast/sgi){
-		if($1 ne 'lo'){
-			$ips->{$1} = $2;
-		}
-	}
+	my ($out, $card);
 
 	use Data::Validate::IP qw/is_ipv4/;
 
-	while (! ($out = iMSCP::Dialog->new()->radiolist("Please select your external ip:", values %{$ips}, 'none'))){}
+	while (! ($out = iMSCP::Dialog->new()->radiolist("Please select your external ip:", keys %{$ips->{ips}}, 'none'))){}
 	if(! (is_ipv4($out))){
 		do{
-			while (! ($out = iMSCP::Dialog->new()->inputbox("Please enter your ip:", (values %{$ips})[0]))){}
-		}while(! (is_ipv4($out) && $out ne '127.0.0.1') );
-		$ips->{'NULL'} = $out;
+			while (! ($out = iMSCP::Dialog->new()->inputbox("Please enter your ip:", (keys %{$ips->{ips}})[0]))){}
+		} while(! (is_ipv4($out) && $out ne '127.0.0.1') );
+		unless(exists $ips->{ips}->{$out}){
+			while (! ($card = iMSCP::Dialog->new()->radiolist("Please enter your ip:", keys %{$ips->{cards}}))){}
+			$ips->{ips}->{$out}->{card} = $card;
+		}
 	}
 
 	$main::imscpConfig{'BASE_SERVER_IP'} = $out if($main::imscpConfig{'BASE_SERVER_IP'} ne $out);
@@ -613,16 +617,13 @@ sub setup_base_server_IP{
 
 	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-	my $other = {};
-	my $all = {};
-	%$all = %$other = reverse(%$ips);
-	delete ($other->{$out});
-	%$ips = reverse(%$other);
+	my %otherIPs	= %{$ips->{ips}};
+	delete($otherIPs{$out}) if ($otherIPs{$out});
 
 	my $toSave ='';
-	if (scalar(values %{$ips}) > 0 ){
+	if (scalar(keys %otherIPs) > 0 ){
 		my $out = iMSCP::Dialog->new()->yesno("\n\n\t\t\tInsert other ips into database?");
-		$toSave = iMSCP::Dialog->new()->checkbox("Please select ip`s to be entered to database:", values %{$ips}) if !$out;
+		$toSave = iMSCP::Dialog->new()->checkbox("Please select ip`s to be entered to database:", keys %otherIPs) if !$out;
 		$toSave =~ s/"//g;
 	}
 
@@ -630,7 +631,8 @@ sub setup_base_server_IP{
 		my $error = $database->doQuery(
 			'dummy',
 			"INSERT IGNORE INTO `server_ips` (`ip_number`, `ip_card`, `ip_status`, `ip_id`)
-			VALUES(?, ?, 'toadd', (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?));", $_, $all->{$_}, $_
+			VALUES(?, ?, 'toadd', (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?));",
+			$_, $ips->{ips}->{$_}->{card}, $_
 		);
 		return $error if (ref $error ne 'HASH');
 	}

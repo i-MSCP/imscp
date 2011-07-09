@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ use Data::Dumper;
 
 umask(027);
 
-iMSCP::Boot->new(mode => 'all')->init();
+iMSCP::Boot->new(mode => 'all')->init({nodatabase => 'yes'});
 
 loadConfigs();
 
@@ -89,7 +89,7 @@ sub loadConfigs{
 
 	my $path = ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/');
 
-	fatal((caller(0))[3].': conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
+	fatal((caller(0))[3].': ispcp.conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
 
 	tie %main::ispcpConfig, 'iMSCP::Config','fileName' => $path.'ispcp/ispcp.conf';
 

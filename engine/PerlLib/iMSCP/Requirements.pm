@@ -1,5 +1,7 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -40,7 +42,7 @@ sub _init{
 		#'IO::Socket'				=> '',
 		'DBI'						=> '',
 		#'DBD::mysql'				=> '',
-		#'MIME::Entity'				=> '',
+		'MIME::Entity'				=> '',
 		#'MIME::Parser'				=> '',
 		'Crypt::CBC'				=> '',
 		#'Crypt::Blowfish'			=> '',

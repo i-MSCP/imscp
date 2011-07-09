@@ -24,79 +24,32 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Database::mysql::Result;
+package iMSCP::IP;
 
 use strict;
 use warnings;
 use iMSCP::Debug;
 
+use FindBin;
+
+
 use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
 
-sub TIEHASH {
-
-	my $self = shift;
-
-	$self = $self->new(@_);
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].': Tieing ...');
-
-	debug((caller(0))[3].': Ending...');
-
-	return $self;
-};
-
-sub FIRSTKEY {
+sub factory{
 	my $self	= shift;
+	my $mode	= shift || 'IPv4';
+	my $file	= "iMSCP/IP/$mode.pm";
+	my $class	= "iMSCP::IP::$mode";
 
 	debug((caller(0))[3].': Starting...');
 
-	my $a = scalar keys %{$self->{args}->{result}};
+	require $file;
 
 	debug((caller(0))[3].': Ending...');
 
-	each %{$self->{args}->{result}};
+	return $class->new();;
 }
-
-sub NEXTKEY {
-	my $self	= shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].': Ending...');
-
-	each %{$self->{args}->{result}};
-}
-
-sub FETCH {
-	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Fetching $key");
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
-};
-
-sub EXISTS {
-	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? 1 : 0;
-};
-
-sub STORE {};
 
 1;
