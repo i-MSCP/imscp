@@ -1,35 +1,28 @@
 <!-- BDP: purchase_header -->
 <!-- EDP: purchase_header -->
 
+<!-- BDP: page_message -->
+<div class="{MESSAGE_CLS}" style="width:550px;">{MESSAGE}</div>
+<!-- EDP: page_message -->
+
 <form name="addon" method="post" action="addon.php">
-	<table width="400">
-		<tr>
-			<td colspan="2" class="content3"><strong>{DOMAIN_ADDON}</strong></td>
-		</tr>
-
-		<!-- BDP: page_message -->
-		<tr>
-			<td colspan="2" class="title" style="color:red;">{MESSAGE}</td>
-		</tr>
-		<!-- EDP: page_message -->
-
-		<tr>
-			<td class="content2">{TR_DOMAIN_NAME}</td>
-			<td class="content">www.
-				<input name="domainname" type="text" class="textinput" style="width:210px" />
-				<br />
-				<small>{TR_EXAMPLE}</small>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">&nbsp;</td>
-		</tr>
-		<tr align="right">
-			<td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_CONTINUE}  " /></td>
-		</tr>
-	</table>
+    <table style="width:550px;">
+        <tr>
+            <th colspan="2">{DOMAIN_ADDON}</th>
+        </tr>
+        <tr>
+            <td><label for="domainname"><strong>{TR_DOMAIN_NAME}:</strong></label></td>
+            <td>
+                <p style="margin:0">
+                    <span><strong>www.</strong> </span> <input id="domainname" name="domainname" type="text" />
+                </p>
+                <small>{TR_EXAMPLE}</small>
+            </td>
+        </tr>
+    </table>
+    <div class="buttons" style="width:550px;margin-top:25px;">
+        <input name="Submit" type="submit" class="button" value="{TR_CONTINUE}" />
+    </div>
 </form>
-<br />
-
 <!-- BDP: purchase_footer -->
 <!-- EDP: purchase_footer -->

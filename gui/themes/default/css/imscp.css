@@ -2,14 +2,18 @@
  * PAGE LAYOUT
  ***********************************************************************************/
 
-body,html {
+
+body, html {
     min-height: 100%;
     min-width: 850px;
     margin: 0;
     padding: 0;
-    background: url(../images/background/left_bg.jpg) repeat-y top left;
     font-family: arial;
     font-size: 12px;
+}
+
+body {
+    background: url(../images/background/left_bg.jpg) repeat-y top left;
 }
 
 html {
