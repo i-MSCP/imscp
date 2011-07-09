@@ -752,64 +752,66 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = '')
 }
 
 /**
- * Must be documented.
+ * Sends order emails to customer.
  *
- * @param  int $admin_id
- * @param  string $domain_name
- * @param  string $ufname
- * @param  string $ulname
- * @param  string $uemail
- * @param  int $order_id
+ * @param int $resellerId Resller unique identifier
+ * @param string $domainName Domain name ordered
+ * @param string $userFirstName Customer first name
+ * @param string $userLastName Customer last name
+ * @param string $userEmail Customer email
+ * @param int $orderId Order unique identifier
  * @return void
  */
-function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
-    $order_id)
+function send_order_emails($resellerId, $domainName, $userFirstName, $userLastName,
+    $userEmail, $orderId)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $data = get_order_email($admin_id);
-    $from_name = $data['sender_name'];
-    $from_email = $data['sender_email'];
+    $data = get_order_email($resellerId);
+    $fromName = $data['sender_name'];
+    $fromEmail = $data['sender_email'];
     $subject = $data['subject'];
     $message = $data['message'];
 
-    if ($from_name) {
-        $from = '"' . encode($from_name) . "\" <" . $from_email . ">";
+    if ($fromName) {
+        $from = '"' . encode($fromName) . "\" <" . $fromEmail . ">";
     } else {
-        $from = $from_email;
+        $from = $fromEmail;
     }
 
-    if ($ufname && $ulname) {
-        $name = "$ufname $ulname";
-        $to = '"' . encode($name) . "\" <" . $uemail . ">";
+    if ($userFirstName && $userLastName) {
+        $name = "$userFirstName $userLastName";
+        $to = '"' . encode($name) . "\" <" . $userEmail . ">";
     } else {
-        if ($ufname) {
-            $name = $ufname;
-        } else if ($ulname) {
-            $name = $ulname;
+        if ($userFirstName) {
+            $name = $userFirstName;
+        } else if ($userLastName) {
+            $name = $userLastName;
         } else {
-            $name = $uemail;
+            $name = $userEmail;
         }
 
-        $to = $uemail;
+        $to = $userEmail;
     }
 
-    $activate_link = $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
+    $activateLink = $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
     $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
-    $key = sha1($order_id . '-' . $domain_name . '-' . $admin_id . '-' . $coid);
-    $activate_link .= '/orderpanel/activate.php?id=' . $order_id . '&k=' . $key;
+    $key = sha1($orderId . '-' . $domainName . '-' . $resellerId . '-' . $coid);
+    $activateLink .= '/orderpanel/activate.php?id=' . $orderId . '&k=' . $key;
 
     $search = array();
     $replace = array();
     $search [] = '{DOMAIN}';
-    $replace[] = $domain_name;
+    $replace[] = $domainName;
     $search [] = '{MAIL}';
-    $replace[] = $uemail;
+    $replace[] = $userEmail;
     $search [] = '{NAME}';
     $replace[] = $name;
     $search [] = '{ACTIVATION_LINK}';
-    $replace[] = $activate_link;
+    $replace[] = $activateLink;
+    $search[]  = '{EXPIRE_DATE}';
+    $replace[] = date('d/m/Y', time() + $cfg->ORDERS_EXPIRE_TIME);
 
     $subject = str_replace($search, $replace, $subject);
     $message = str_replace($search, $replace, $message);
@@ -1097,4 +1099,3 @@ function datepicker_reseller_convert($time)
 {
     return strtotime($time);
 }
-

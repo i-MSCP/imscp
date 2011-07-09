@@ -47,6 +47,9 @@
  */
 function generateCheckout($user_id, $plan_id)
 {
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
     $date = time();
     $domain_name = $_SESSION['domainname'];
     $fname = $_SESSION['fname'];
@@ -62,44 +65,31 @@ function generateCheckout($user_id, $plan_id)
     $fax = (isset($_SESSION['fax'])) ? $_SESSION['fax'] : '';
     $street1 = $_SESSION['street1'];
     $street2 = (isset($_SESSION['street2'])) ? $_SESSION['street2'] : '';
-    $status = 'unconfirmed';
 
     $query = "
-		INSERT INTO
-			`orders`(
-			    `user_id`, `plan_id`, `date`, `domain_name`, `fname`, `lname`,
-			    `gender`, `firm`,`zip`, `city`, `state`, `country`, `email`, `phone`,
-				`fax`, `street1`, `street2`, `status`)
-		VALUES
-			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO `orders` (
+            `user_id`, `plan_id`, `date`, `domain_name`, `fname`, `lname`, `gender`,
+            `firm`,`zip`, `city`, `state`, `country`, `email`, `phone`, `fax`,
+            `street1`, `street2`, `status`
+        ) VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+        )
 	";
     exec_query($query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname,
                             $gender, $firm, $zip, $city, $state, $country, $email,
-                            $phone, $fax, $street1, $street2, $status));
+                            $phone, $fax, $street1, $street2,
+                            $cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
 
     /** @var $db iMSCP_Database */
     $db = iMSCP_Registry::get('db');
     send_order_emails($user_id, $domain_name, $fname, $lname, $email, $db->insertId());
 
     // Remove useless data
-    unset($_SESSION['details']);
-    unset($_SESSION['domainname']);
-    unset($_SESSION['fname']);
-    unset($_SESSION['lname']);
-    unset($_SESSION['gender']);
-    unset($_SESSION['email']);
-    unset($_SESSION['firm']);
-    unset($_SESSION['zip']);
-    unset($_SESSION['city']);
-    unset($_SESSION['state']);
-    unset($_SESSION['country']);
-    unset($_SESSION['street1']);
-    unset($_SESSION['street2']);
-    unset($_SESSION['phone']);
-    unset($_SESSION['fax']);
-    unset($_SESSION['plan_id']);
-    unset($_SESSION['image']);
-    unset($_SESSION['tos']);
+    unset($_SESSION['details'], $_SESSION['domainname'], $_SESSION['fname'],
+        $_SESSION['lname'], $_SESSION['gender'], $_SESSION['email'], $_SESSION['firm'],
+        $_SESSION['zip'], $_SESSION['city'], $_SESSION['state'], $_SESSION['country'],
+        $_SESSION['street1'], $_SESSION['street2'], $_SESSION['phone'], $_SESSION['fax'],
+        $_SESSION['plan_id'], $_SESSION['image'], $_SESSION['tos']);
 }
 
 /************************************************************************************
@@ -162,7 +152,7 @@ generatePageMessage($tpl);
 $tpl->assign(array(
                   'TR_ORDER_PANEL_PAGE_TITLE' => tr('Order Panel / Checkout'),
                   'CHECK_OUT' => tr('Check Out'),
-                  'THANK_YOU_MESSAGE' => tr("<strong>Thank you for purchasing.</strong><br />An email has been sent to your email address for confirmation. Do not forget to click on the link in email to validate your order."),
+                  'THANK_YOU_MESSAGE' => tr("<strong>Thank you for purchasing.</strong><br /><br />An email has been sent to your email address for confirmation. Do not forget to click on the link in email to validate your order."),
                   'THEME_CHARSET' => tr('encoding')));
 
 $tpl->parse('PAGE', 'page');

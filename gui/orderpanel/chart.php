@@ -95,11 +95,11 @@ function generateChart($tpl, $user_id, $plan_id)
             $tpl->assign(array(
                               'TR_TOS_PROPS' => tr('Term of Service'),
                               'TR_TOS_ACCEPT' => tr('I Accept The Term of Service'),
-                              'TOS' => $stmt->fields['tos']));
+                              'TOS' => tohtml($stmt->fields['tos'])));
 
             $_SESSION['tos'] = true;
         } else {
-            $tpl->assign(array('TOS_FIELD' => ''));
+            $tpl->assign('TOS_FIELD', '');
             $_SESSION['tos'] = false;
         }
     }

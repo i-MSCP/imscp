@@ -87,9 +87,11 @@ $config->ITEM_TOENABLE_STATUS = 'toenable';
 $config->ITEM_TODISABLED_STATUS = 'todisable';
 $config->ITEM_ORDERED_STATUS = 'ordered';
 $config->ITEM_DNSCHANGE_STATUS = 'dnschange';
-$config->ITEM_ORDER_UNCONFIRMED = 'unconfirmed';
-$config->ITEM_ORDER_CONFIRMED = 'confirmed';
-$config->ITEM_ORDER_TREATED = 'treated';
+
+// Orders status
+$config->ITEM_ORDER_UNCONFIRMED_STATUS = 'unconfirmed';
+$config->ITEM_ORDER_CONFIRMED_STATUS = 'confirmed';
+$config->ITEM_ORDER_TREATED_STATUS = 'added';
 
 // SQL variables
 $config->MAX_SQL_DATABASE_LENGTH = 64;
@@ -245,6 +247,9 @@ $config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
 $config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
 $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
 $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
+
+// Default expiration time for unconfirmed orders  - defaulted to one week
+$config->ORDERS_EXPIRE_TIME = 604800;
 
 // Initialize the application
 iMSCP_Initializer::run($config);

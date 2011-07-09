@@ -205,6 +205,27 @@
 						</tr>
 					</table>
 				</fieldset>
+                <fieldset>
+                    <legend>{TR_ORDERS_SETTINGS}</legend>
+                    <table>
+                        <tr>
+                            <td style="width:300px;">
+                                <label for="ordersExpireTime">{TR_ORDERS_EXPIRE_TIME}</label>
+                            </td>
+                            <td>
+                                <input type="text" name="ordersExpireTime" id="ordersExpireTime" value="{ORDERS_EXPIRATION_TIME_VALUE}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label>
+                            </td>
+                            <td>
+                                <input type="text" name="coid" id="coid" value="{CUSTOM_ORDERPANEL_ID}" />
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
 				<fieldset>
 					<legend>{TR_OTHER_SETTINGS}</legend>
 					<table>
@@ -295,10 +316,6 @@
 									<option value="1" {PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
-						</tr>
-						<tr>
-							<td><label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label></td>
-							<td><input type="text" name="coid" id="coid" value="{CUSTOM_ORDERPANEL_ID}" /></td>
 						</tr>
 					</table>
 				</fieldset>

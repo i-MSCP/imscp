@@ -100,37 +100,42 @@
         <tr style="background:none;border: none;">
             <td colspan="2">&nbsp;</td>
         </tr>
+        <!-- BDP: tos_field -->
+        <tr>
+            <th colspan="2">
+                <label for="tos"><strong>{TR_TOS_PROPS}</strong></label>
+            </th>
+        </tr>
         <tr>
             <td colspan="2">
-                <label for="capcode"><strong>{TR_CAPCODE}</strong></label>
+                <textarea readonly="readonly" style="padding:5px;resize:none;" id="tos" cols="75" rows="5">{TOS}</textarea>
             </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input style="vertical-align: middle;" type="checkbox" id="tosAccept" name="tosAccept" value="1" />
+                <label for="tosAccept">{TR_TOS_ACCEPT}</label>
+            </td>
+        </tr>
+        <tr style="background:none;border: none;">
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <!-- EDP: tos_field -->
+        <tr>
+            <th colspan="2">
+                <label for="capcode"><strong>{TR_CAPCODE}</strong></label>
+            </th>
         </tr>
         <tr style="background:none;">
             <td colspan="2" style="text-align: center;">{TR_IMGCAPCODE}</td>
         </tr>
         <tr>
             <td colspan="2" style="text-align:center;">
-                <input name="capcode" type="text" id="capcode" value=""></td>
+                <input name="capcode" type="text" id="capcode" value="" /></td>
         </tr>
         <tr>
             <td colspan="2">{TR_IMGCAPCODE_DESCRIPTION}</td>
         </tr>
-        <!-- BDP: tos_field -->
-        <tr>
-            <td colspan="2">
-                <label for="tosAccept"<strong>{TR_TOS_PROPS}</strong></label></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <textarea readonly="readonly" style="width=400px" cols="50" rows="5">{TOS}</textarea>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="checkbox" id="tosAccept" name="tosAccept" value="1" />{TR_TOS_ACCEPT}
-            </td>
-        </tr>
-        <!-- EDP: tos_field -->
     </table>
     <div class="buttons" style="width:550px;margin-top:25px;">
         <input name="Submit" type="submit" class="button" value="{TR_CONTINUE}" />

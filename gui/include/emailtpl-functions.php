@@ -356,21 +356,27 @@ function get_order_email($admin_id)
     }
 
     if (!$data['message']) {
-        $data['message'] = tr('
+        $data['message'] = tr("
 
 Dear {NAME},
+
 This is an automatic confirmation for the order of the domain:
 
 {DOMAIN}
 
-You have to click the following link to continue the domain creation process.
+You have to click the following link to confirm your order.
 
 {ACTIVATION_LINK}
 
+If you do not confirm it before the {EXPIRE_DATE}, it will
+automatically be canceled.
+
 Thank you for using i-MSCP services.
+
+___________________________
 The i-MSCP Team
 
-', true);
+", true);
     }
 
     return $data;

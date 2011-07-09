@@ -7,7 +7,7 @@
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<link href="{THEME_COLOR_PATH}/css/login-imscp.css" rel="stylesheet" type="text/css" />
-		<link href="{THEME_COLOR_PATH}/css/exception.css" rel="stylesheet" type="text/css">
+		<link href="{THEME_COLOR_PATH}/css/box.css" rel="stylesheet" type="text/css">
 		<!--[if IE 6]>
 			<script type="text/javascript" src="themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
 			<script type="text/javascript">

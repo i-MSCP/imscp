@@ -907,7 +907,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4844
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_68(){
+	protected function _databaseUpdate_68()
+    {
 		$sqlUpd = array();
 
 		/** @var $db iMSCP_Database */
