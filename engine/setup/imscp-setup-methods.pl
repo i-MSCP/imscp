@@ -3207,7 +3207,7 @@ sub setup_rkhunter {
 	my ($rs, $rdata);
 
 	# Deleting any existent log files
-	$file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'});
+	my $file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'});
 	$file->set();
 	$file->save() and return 1;
 	$file->owner('root', 'adm');
@@ -3223,6 +3223,22 @@ sub setup_rkhunter {
 
 		# Disable cron task default
 		$rdata =~ s/CRON_DAILY_RUN="(yes)?"/CRON_DAILY_RUN="no"/gmi;
+
+		# Saving the modified file
+		$file->set($rdata) and return 1;
+		$file->save() and return 1;
+	}
+
+	# Updates the logrotate configuration provided by Debian like distributions
+	# to modify rigts
+	if(-e '/etc/logrotate.d/rkhunter') {
+		# Get the file as a string
+		$file = iMSCP::File->new (filename => '/etc/logrotate.d/rkhunter');
+		$rdata = $file->get();
+		return 1 if(!$rdata);
+
+		# Disable cron task default
+		$rdata =~ s/create 640 root adm/create 644 root adm/gmi;
 
 		# Saving the modified file
 		$file->set($rdata) and return 1;
