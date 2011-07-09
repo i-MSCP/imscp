@@ -143,11 +143,18 @@ $config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(1, 53, 920);
  * Captcha ttf fontfiles (have to be under compatible open source license)
  */
 $fonts = array(
-	//'Essays1743.ttf',
-	'Essays1743-Bold.ttf',
-	'Essays1743-BoldItalic.ttf',
-	//'Essays1743-Italic.ttf',
-	//'StayPuft.ttf'
+    'FreeMono.ttf',
+    'FreeMonoBold.ttf',
+    'FreeMonoBoldOblique.ttf',
+    'FreeMonoOblique.ttf',
+    'FreeSans.ttf',
+    'FreeSansBold.ttf',
+    'FreeSansBoldOblique.ttf',
+    'FreeSansOblique.ttf',
+    'FreeSerif.ttf',
+    'FreeSerifBold.ttf',
+    'FreeSerifBoldItalic.ttf',
+    'FreeSerifItalic.ttf'
 );
 
 // Set random captcha font file
