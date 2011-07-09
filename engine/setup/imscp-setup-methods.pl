@@ -332,7 +332,7 @@ sub setup_imscp_database {
 
 	my $crypt = iMSCP::Crypt->new();
 
-	my $dbName = $main::imscpConfig{'DATABASE_NAME'} ? $main::imscpConfig{'DATABASE_NAME'} : ($main::imscpConfigOld{'DATABASE_NAME'} ? $main::imscpConfigOld{'DATABASE_NAME'} : 'imscp');
+	my $dbName = $main::imscpConfig{'DATABASE_NAME'} ? $main::imscpConfig{'DATABASE_NAME'} : ($main::imscpConfigOld{'DATABASE_NAME'} ? $main::imscpConfigOld{'DATABASE_NAME'} : undef);
 
 	if(!$dbName || check_sql_connection(
 			$main::imscpConfig{'DATABASE_TYPE'},
@@ -343,6 +343,8 @@ sub setup_imscp_database {
 			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
 		)
 	){
+
+		$dbName = 'imscp' unless $dbName;
 
 		do{
 			$dbName = iMSCP::Dialog->new()->inputbox("Please enter database name (default $dbName)", $dbName);
@@ -388,7 +390,6 @@ sub createDB{
 	return $error if $error;
 
 	$error = $database->doQuery('dummy', "CREATE DATABASE `$dbName` CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-	return $error if (ref $error ne 'HASH');
 
 	$database->set('DATABASE_NAME', $dbName);
 	$error = $database->connect();
