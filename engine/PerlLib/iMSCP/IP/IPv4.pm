@@ -53,7 +53,9 @@ sub loadIpConfiguredIps{
 		error((caller(0))[3].": $stderr") if ($stderr);
 		return $rs if $rs;
 
-		while($stdout =~ m/(\S*)\s{1,}.ink[^\n]*\n(?:\s*inet (?:addr:)?([\d.]+)[^\n]*\n)?/sgi){
+		while($stdout =~ m/(\S*)\s{1,}.ink[^\n]*\n(?:(?:\s[^\d]+:)?([\d.]+)[^\n]*\n)?/sgi){
+			debug((caller(0))[3].": $1") if $1;
+			debug((caller(0))[3].": $2") if $2;
 			if($1 ne 'lo'){
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
@@ -90,6 +92,7 @@ sub loadNetworkCards{
 		return $rs if $rs;
 
 		while($stdout =~ m/(\S*)\s{1,}.ink[^\n]*\n/sgi){
+			debug((caller(0))[3].": $1") if $1;
 			if($1 ne 'lo'){
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
@@ -201,6 +204,11 @@ sub isCardUp{
 
 	return (exists $self->{cards}->{$card}->{up});
 }
-1;
 
+sub DESTROY{
+	my $self	= shift;
+	use Data::Dumper;
+	debug('a'.Dumper($self));
+}
+1;
 __END__
