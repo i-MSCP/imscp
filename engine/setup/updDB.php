@@ -34,20 +34,20 @@
  */
 
 // GUI root directory absolute path
-$gui_root_dir = '{GUI_ROOT_DIR}';
+$guiRootDir = '{GUI_ROOT_DIR}';
 
-if(strpos($gui_root_dir, 'GUI_ROOT_DIR') !== false) {
+if(strpos($guiRootDir, 'GUI_ROOT_DIR') !== false) {
 	print 'The gui root directory is not defined in the ' . __FILE__ ." file.\n";
 	exit(1);
 }
 
 // Sets include path
-set_include_path('./' . PATH_SEPARATOR . $gui_root_dir . '/library');
+set_include_path('.' . PATH_SEPARATOR . $guiRootDir . '/library');
+
+// Include core library
+require_once 'imscp-lib.php';
 
 try {
-	// Include i-MSCP core libraries and initialize the environment
-	require_once $gui_root_dir . '/library/imscp-lib.php';
-
 	// Gets an iMSCP_Update_Database instance
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
 
