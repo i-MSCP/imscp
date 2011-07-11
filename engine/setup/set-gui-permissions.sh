@@ -53,17 +53,17 @@ recursive_set_permissions "$ROOT_DIR/gui/public" \
 
 # Fixing GUI library directory permissions
 recursive_set_permissions "$ROOT_DIR/gui/library" \
-	$PANEL_USER $APACHE_GROUP 0500 0400
+	$PANEL_USER $PANEL_USER 0500 0400
 
 # Fixing GUI phptmp directory permission
 recursive_set_permissions "$ROOT_DIR/gui/phptmp" \
-	$PANEL_USER $APACHE_GROUP 0700 0600
+	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
 	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
-	$PANEL_USER $PANEL_USER 0700 0600
+	$PANEL_USER $APACHE_GROUP 0750 0640
 
 recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
 	$PANEL_USER $PANEL_USER 0700 0600
