@@ -44,25 +44,35 @@ if [ $DEBUG -eq 1 ]; then
     echo	"";
 fi
 
-# By default, gui files must be readable by both the panel user (php files are
-# run under this user) and apache (static files are served by it).
-recursive_set_permissions "$ROOT_DIR/gui/" \
+# Fixing gui root directory permisions
+set_permissions "$ROOT_DIR/gui" $PANEL_USER $APACHE_GROUP 0550
+
+# Fixing GUI public directory permissions
+recursive_set_permissions "$ROOT_DIR/gui/public" \
 	$PANEL_USER $APACHE_GROUP 0550 0440
 
-# But the following folders must be writable by the panel user, because
-# php-generated or uploaded files will be stored there.
+# Fixing GUI library directory permissions
+recursive_set_permissions "$ROOT_DIR/gui/library" \
+	$PANEL_USER $APACHE_GROUP 0500 0400
+
+# Fixing GUI phptmp directory permission
 recursive_set_permissions "$ROOT_DIR/gui/phptmp" \
-	$PANEL_USER $APACHE_GROUP 0750 0640
+	$PANEL_USER $APACHE_GROUP 0700 0600
+
 recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
-	$PANEL_USER $APACHE_GROUP 0750 0640
+	$PANEL_USER $PANEL_USER 0700 0600
+
 recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
-	$PANEL_USER $APACHE_GROUP 0750 0640
+	$PANEL_USER $PANEL_USERP 0700 0600
+
 recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
-	$PANEL_USER $APACHE_GROUP 0750 0640
+	$PANEL_USER $APACHE_GROUP 0700 0600
+
 recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
-	$PANEL_USER $APACHE_GROUP 0750 0640
+	$PANEL_USER $APACHE_GROUP 0700 0600
+
 recursive_set_permissions "$ROOT_DIR/gui/software" \
-	$PANEL_USER $APACHE_GROUP 0755 0644
+	$PANEL_USER $APACHE_GROUP 0700 0600
 
 # Main virtual webhosts directory must be owned by root and readable by all
 # the domain-specific users.
@@ -71,9 +81,6 @@ set_permissions $APACHE_WWW_DIR $ROOT_USER $ROOT_GROUP 0555
 # Main fcgid directory must be world-readable, because all the domain-specific
 # users must be able to access its contents.
 set_permissions "$PHP_STARTER_DIR" $ROOT_USER $ROOT_GROUP 0555
-
-# Required on centos
-set_permissions "$PHP_STARTER_DIR/master" $PANEL_USER $PANEL_GROUP 0755
 
 echo " done";
 
