@@ -779,7 +779,7 @@ function fields_highlighting($tpl, &$errFields) {
  */
 
 // include needed libraries
-require 'include/imscp-lib.php';
+require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 

@@ -43,7 +43,7 @@ if(strpos($gui_root_dir, 'GUI_ROOT_DIR') !== false) {
 
 try {
 	// Include i-MSCP core libraries and initialize the environment
-	require_once $gui_root_dir . '/include/imscp-lib.php';
+	require_once $gui_root_dir . '/library/imscp-lib.php';
 
 	// Gets an iMSCP_Update_Database instance
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
