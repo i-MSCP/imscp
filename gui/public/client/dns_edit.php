@@ -27,7 +27,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require_once '../include/imscp-lib.php';
+require_once 'include/imscp-lib.php';
 require_once '../include/vendor/Net_DNS/DNS.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);

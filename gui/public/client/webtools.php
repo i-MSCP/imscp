@@ -32,7 +32,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-include '../include/imscp-lib.php';
+include 'include/imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 

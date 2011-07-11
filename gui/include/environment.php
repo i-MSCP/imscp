@@ -40,7 +40,7 @@ $config = new iMSCP_Config_Handler_File();
 // Configuration parameters
 
 // Template paths
-$config->ROOT_TEMPLATE_PATH = 'themes/';
+$config->ROOT_TEMPLATE_PATH = '../themes/';
 
 // Get template path
 $tpl_path = $config->ROOT_TEMPLATE_PATH . $config->USER_INITIAL_THEME;

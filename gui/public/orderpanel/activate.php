@@ -144,7 +144,7 @@ i-MSCP Service Mailer
  */
 
 // Include needed libraries
-require '../include/imscp-lib.php';
+require 'include/imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
 
