@@ -41,6 +41,9 @@ if(strpos($gui_root_dir, 'GUI_ROOT_DIR') !== false) {
 	exit(1);
 }
 
+// Sets include path
+set_include_path('./' . PATH_SEPARATOR . $gui_root_dir . '/library');
+
 try {
 	// Include i-MSCP core libraries and initialize the environment
 	require_once $gui_root_dir . '/library/imscp-lib.php';
