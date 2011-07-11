@@ -90,14 +90,14 @@ sub step{
 
 	if(!$exit) { $exit = 'yes';}
 
-	iMSCP::Dialog->new()->startGauge($msg, int($index*100/$steps)) if iMSCP::Dialog->new()->needGauge();
-	iMSCP::Dialog->new()->setGauge(int($index*100/$steps), $msg);
+	iMSCP::Dialog->factory()->startGauge($msg, int($index*100/$steps)) if iMSCP::Dialog->factory()->needGauge();
+	iMSCP::Dialog->factory()->setGauge(int($index*100/$steps), $msg);
 
 	my $rs = &{$code} if (ref $code eq 'CODE');
 
 	if($rs && $exit eq 'yes'){
-		iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
-		iMSCP::Dialog->new()->msgbox(
+		iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
+		iMSCP::Dialog->factory()->msgbox(
 					"\n
 					\\Z1[ERROR]\\Zn
 

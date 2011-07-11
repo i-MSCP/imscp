@@ -351,7 +351,7 @@ sub setGauge{
 	return 0 unless $self->{'gauge'}->{'FH'};
 
 	if($text){
-		$text = "XXX\n$value\n".$self->_clean($text)."\nXXX\n" ;
+		$text = "XXX\n".$self->_clean($text)."\nXXX\n$value\n" ;
 	} else {
 		$text = "$value\n";
 	}
