@@ -1,194 +1,199 @@
 #!/usr/bin/perl
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# Version: $Id$
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
-#
-# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
-#
-# The Initial Developer of the Original Code is ispCP Team.
-# Portions created by Initial Developer are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
-
-use FindBin;
-use lib "$FindBin::Bin/..";
-require 'imscp_common_code.pl';
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+use lib "$FindBin::Bin/../PerlLib";
+use lib "$FindBin::Bin/../PerlVendor";
+
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Dialog;
+
+iMSCP::Debug->newDebug('imscp-net-interfaces-mngr.log');
 
 my $rs = undef;
 our $proceed = $ARGV[0];
 
 sub net_interfaces_mngr_start_up {
 
-	my $ref = undef;
-
-	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Starting...');
+	debug((caller(0))[3].': Starting...');
 
 	umask(027);
+	iMSCP::Boot->new()->init({nolock => 'yes'});
 
-	if (-e $main::imccp_net_interfaces_mngr_el) {
-		$rs = del_file($main::imccp_net_interfaces_mngr_el);
-		return $rs if ($rs != 0);
-	}
-
-	#$rs = get_conf();
-	#return $rs if ($rs != 0);
-
-	my $sql = "
-		SELECT
-			`value`
-		FROM
-			`config`
-		WHERE
-			`name` = 'DATABASE_REVISION'
-		;
-	";
-
-	($rs, $ref) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $version = @$ref[0];
-
-	if (@$version[0] < 18){
-		$proceed = '';
-	}
-
-	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Ending...');
+	debug((caller(0))[3].': Ending...');
 
 	0;
 }
 
-sub virtual_netcard_add(){
+sub virtual_netcard_add{
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::IP;
+	use iMSCP::Mail;
+	use iMSCP::Database;
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+
+	my $ips = iMSCP::IP->factory();
+
+	$rs = $database->doQuery(
+		'ip_id',
+		'SELECT
+			`ip_id`,
+			`ip_number`,
+			`ip_card`
+		FROM
+			`server_ips`
+		'
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs");
+		iMSCP::Mail->new()->errmsg($rs);
+	} else {
+		foreach(values %$rs){
+			#if ip is attached to a network card?
+			if($ips->getCardByIP($_->{ip_number})){
+				#if is a virtual interface?
+				my $vcard = $ips->addedToVCard($_->{ip_number});
+				if( $vcard ){
+					my $msg =
+						"$_->{ip_number} is already attached to $vcard\n".
+						"Consider remove from network configuration ".
+						"and let i-MSCP handle it"
+					;
+					error((caller(0))[3].": $msg");
+					iMSCP::Mail->new()->errmsg($msg);
+				}
+			} else {
+				#ip is not attached so we will attached to virtual card
+				#check if phisical card exits
+				if($ips->existsNetCard($_->{ip_card})){
+					my $slot = $ips->getFirstFreeSlotOnCard($_->{ip_card}, 'reserve');
+					$rs = execute(
+						"ifconfig ".
+						"$_->{ip_card}:$slot ".
+						"$_->{ip_number} ".
+						"netmask 255.255.255.255 ".
+						"up",
+						\$stdout,
+						\$stderr
+					);
+					debug((caller(0))[3].": $stdout")if $stdout;
+					error((caller(0))[3].": $stderr")if $stderr;
+					iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+				} else {
+					my $msg =
+						"Card $_->{ip_card} do not exists. Please fix this in ".
+						"$main::imscpConfig{BASE_SERVER_VHOST_PREFIX}".
+						"$main::imscpConfig{BASE_SERVER_VHOST}/admin/ip_manage.php"
+					;
+					error((caller(0))[3].": $msg");
+					iMSCP::Mail->new()->errmsg($msg);
+				}
+			}
+		}
+
+		my @cards = $ips->getNetworkCards();
+		foreach(@cards){
+			if(!$ips->isCardUp($_)){
+				#net card is not up so we try put that up
+				$rs = execute("ifconfig $_ up", \$stdout, \$stderr);
+				debug((caller(0))[3].": $stdout")if $stdout;
+				error((caller(0))[3].": $stderr")if $stderr;
+				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+			}
+
+		}
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub virtual_netcard_remove{
 
 	my $ref = undef;
 
-	push_el(\@main::el, 'virtual_netcard_add()', 'Starting...');
+	debug((caller(0))[3].': Starting...');
 
-	my $sql = "
-		SELECT
-			`ip_id`, `ip_number`, `ip_card`
+	use iMSCP::IP;
+	use iMSCP::Mail;
+	use iMSCP::Database;
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+
+	my $ips = iMSCP::IP->factory();
+	$ips->loadIpConfiguredIps();
+
+	$rs = $database->doQuery(
+		'ip_id',
+		"SELECT
+			`ip_id`,
+			`ip_number`,
+			`ip_card`
 		FROM
 			`server_ips`
 		WHERE
-			`ip_number` != '$main::cfg{'BASE_SERVER_IP'}'
-		;
-	";
-
-	($rs, $ref) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $server_ips = $ref;
-
-	foreach (@$server_ips) {
-
-		my $ip_id = @$_[0];
-		my $ip_number = @$_[1];
-		my $ip_card = @$_[2];
-
-		if (defined($ip_card)){
-			push_el(
-				\@main::el, 'virtual_netcard_add()',
-				"$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} " .
-				"netmask 255.255.255.255 up"
-			);
-
-            $rs = sys_command(
-                "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} " .
-                "netmask 255.255.255.255 up"
-			);
-
-			if ($rs != 0){
-				send_error_mail(
-					'virtual_netcard_add()',
-					"Error while trying to add add IP ${ip_number} to network " .
-					"card '${ip_card}'!"
-				)
+			`ip_number` != '$main::imscpConfig{'BASE_SERVER_IP'}'
+		"
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs");
+		iMSCP::Mail->new()->errmsg($rs);
+	} else {
+		foreach(values %$rs){
+			my $vcard = $ips->addedToVCard($_->{ip_number});
+			if($vcard){
+				#We bring down only virtual network cards
+				$rs = execute("ifconfig $vcard down", \$stdout, \$stderr);
+				debug((caller(0))[3].": $stdout")if $stdout;
+				error((caller(0))[3].": $stderr")if $stderr;
+				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
 			}
 		}
 	}
 
-	push_el(\@main::el, 'virtual_netcard_add()', 'Ending...');
-
-	0;
-}
-
-sub virtual_netcard_remove(){
-
-	my $ref = undef;
-
-	push_el(\@main::el, 'virtual_netcard_remove()', 'Starting...');
-
-	my $sql = "
-		SELECT
-			`ip_id`, `ip_number`, `ip_card`
-		FROM
-			`server_ips`
-		WHERE
-			`ip_number` != '$main::cfg{'BASE_SERVER_IP'}'
-		AND
-			`ip_status` != 'toadd'
-		;
-	";
-
-	($rs, $ref) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $server_ips = $ref;
-
-	foreach (@$server_ips) {
-
-		my $ip_id = @$_[0];
-		my $ip_number = @$_[1];
-		my $ip_card = @$_[2];
-
-		push_el(
-			\@main::el, 'virtual_netcard_remove()',
-			"$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down"
-		);
-
-		$rs = sys_command(
-			"$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down"
-		);
-
-		send_error_mail(
-			'virtual_netcard_remove()',
-			"Error while trying to remove add IP ${ip_number} to network " .
-			"card '${ip_card}'!") if ($rs != 0);
-	}
-
-	push_el(\@main::el, 'virtual_netcard_remove()', 'Ending...');
+	debug((caller(0))[3].': Ending...');
 
 	0;
 }
 
 sub net_interfaces_mngr_engine {
 
-	my $ref = undef;
-
-	push_el(\@main::el, 'net_interfaces_mngr_engine()', 'Starting...');
+	debug((caller(0))[3].': Starting...');
 
 	if ($proceed eq 'start') {
 		$rs = virtual_netcard_add();
@@ -199,63 +204,61 @@ sub net_interfaces_mngr_engine {
 		return $rs if ($rs != 0);
 	}
 
-	my $sql = "
+	my $rs;
+	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+	$rs = $database->doQuery(
+		'dummy',
+		"
 		DELETE FROM
 			`server_ips`
 		WHERE
 			`ip_status` = 'delete'
-		;
-	";
+		"
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs")if $rs;
+		iMSCP::Mail->new()->errmsg($rs)if $rs;
+	}
 
-	($rs, $ref) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	$sql = "
+	$rs = $database->doQuery(
+		'dummy',
+		"
 		UPDATE
 			`server_ips`
 		SET
 			`ip_status` = 'ok'
-		;
-	";
+		"
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs")if $rs;
+		iMSCP::Mail->new()->errmsg($rs)if $rs;
+	}
 
-	($rs, $ref) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'net_interfaces_mngr_engine()', 'Ending...');
+	debug((caller(0))[3].': Ending...');
 
 	0;
 }
 
 sub net_interfaces_mngr_shut_down {
-
-	push_el(\@main::el, 'net_interfaces_mngr_shut_down()', 'Starting...');
-
-	push_el(\@main::el, 'net_interfaces_mngr_shut_down()', 'Ending...');
-
+	debug((caller(0))[3].': Starting...');
+	debug((caller(0))[3].': Ending...');
 	0;
 }
 
-$rs = net_interfaces_mngr_start_up();
-if ($rs != 0) {
 
-	dump_el(\@main::el, $main::imccp_net_interfaces_mngr_el);
-	net_interfaces_mngr_shut_down();
-	exit 1;
-}
+exit 1 if net_interfaces_mngr_start_up();
 
+exit 1 if net_interfaces_mngr_engine();
 
-$rs = net_interfaces_mngr_engine();
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imccp_net_interfaces_mngr_el);
-	net_interfaces_mngr_shut_down();
-	exit 1;
-}
-
-$rs = net_interfaces_mngr_shut_down();
-if ($rs != 0) {
-	dump_el(\@main::el, $main::imccp_net_interfaces_mngr_el);
-	exit 1;
-}
+exit 1 if net_interfaces_mngr_shut_down();
 
 exit 0;
+
+END{
+	my $message = getMessage();
+	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
+		open(F, '>:utf8', "$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log' for writing: $!");
+		print F $message;
+		close F;
+	}
+}

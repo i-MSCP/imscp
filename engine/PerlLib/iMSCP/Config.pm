@@ -1,5 +1,7 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -106,7 +108,7 @@ sub FETCH {
 sub STORE {
 	my $self	= shift;
 	my $config	= shift;
-	my $value	= shift || '';
+	my $value	= shift;
 
 	debug((caller(0))[3].': Starting...');
 
@@ -146,9 +148,11 @@ sub NEXTKEY {
 sub _replaceConfig{
 	my $self	= shift;
 	my $config	= shift;
-	my $value	= shift || '';
+	my $value	= shift;
 
 	debug((caller(0))[3].': Starting...');
+
+	$value = '' unless defined $value;
 
 	@{$self->{confFile}}[$self->{lineMap}->{$config}] = "$config = $value";
 	$self->{configValues}->{$config} = $value;
@@ -162,6 +166,8 @@ sub _insertConfig{
 	my $value	= shift;
 
 	debug((caller(0))[3].': Starting...');
+
+	$value = '' unless defined $value;
 
 	push (@{$self->{confFile}}, "$config = $value");
 	$self->{configValues}->{$config} = $value;

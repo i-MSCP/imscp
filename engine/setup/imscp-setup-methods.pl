@@ -1,5 +1,7 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -330,7 +332,7 @@ sub setup_imscp_database {
 
 	my $crypt = iMSCP::Crypt->new();
 
-	my $dbName = $main::imscpConfig{'DATABASE_NAME'} ? $main::imscpConfig{'DATABASE_NAME'} : ($main::imscpConfigOld{'DATABASE_NAME'} ? $main::imscpConfigOld{'DATABASE_NAME'} : 'imscp');
+	my $dbName = $main::imscpConfig{'DATABASE_NAME'} ? $main::imscpConfig{'DATABASE_NAME'} : ($main::imscpConfigOld{'DATABASE_NAME'} ? $main::imscpConfigOld{'DATABASE_NAME'} : undef);
 
 	if(!$dbName || check_sql_connection(
 			$main::imscpConfig{'DATABASE_TYPE'},
@@ -341,6 +343,8 @@ sub setup_imscp_database {
 			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
 		)
 	){
+
+		$dbName = 'imscp' unless $dbName;
 
 		do{
 			$dbName = iMSCP::Dialog->new()->inputbox("Please enter database name (default $dbName)", $dbName);
@@ -386,7 +390,6 @@ sub createDB{
 	return $error if $error;
 
 	$error = $database->doQuery('dummy', "CREATE DATABASE `$dbName` CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-	return $error if (ref $error ne 'HASH');
 
 	$database->set('DATABASE_NAME', $dbName);
 	$error = $database->connect();
@@ -516,14 +519,8 @@ sub setup_system_dirs {
 		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755}) and return 1;
 	}
 
-	if(!$main::imscpConfig{'AWSTATS_ACTIVE'}){
-		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
-			$main::imscpConfig{'AWSTATS_ACTIVE'}	= $main::imscpConfigOld{'AWSTATS_ACTIVE'};
-			$main::imscpConfig{'AWSTATS_MODE'}		= $main::imscpConfigOld{'AWSTATS_MODE'};
-		} else {
-			askAwstats();
-		}
-	}
+	askAwstats();
+
 	if ($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes') {
 		iMSCP::Dir->new(dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->make({ user => $main::imscpConfig{'APACHE_USER'}, group => $main::imscpConfig{'APACHE_GROUP'}, mode => 0755}) and return 1;
 	}
@@ -539,14 +536,32 @@ sub askAwstats{
 
 	use iMSCP::Dialog;
 
-	my $rs;
+	my ($rs, $force);
 
-	while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
-	if($rs ne $main::imscpConfig{'AWSTATS_ACTIVE'}){ $main::imscpConfig{'AWSTATS_ACTIVE'} = $rs; }
-	if($rs eq 'yes'){
-		while (! ($rs = iMSCP::Dialog->new()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
-		$rs = $rs eq 'dynamic' ? 0 : 1;
-		if($rs ne $main::imscpConfig{'AWSTATS_MODE'}){ $main::imscpConfig{'AWSTATS_MODE'} = $rs; }
+	if(!$main::imscpConfig{'AWSTATS_ACTIVE'}){
+		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
+			$main::imscpConfig{'AWSTATS_ACTIVE'}	= $main::imscpConfigOld{'AWSTATS_ACTIVE'};
+		} else {
+			while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
+			if($rs ne $main::imscpConfig{'AWSTATS_ACTIVE'}){
+				$main::imscpConfig{'AWSTATS_ACTIVE'} = $rs;
+				$force = 'yes';
+			}
+		}
+	}
+
+	if($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes'){
+		unless(!$force && defined $main::imscpConfig{'AWSTATS_MODE'} && $main::imscpConfig{'AWSTATS_MODE'} =~ /0|1/){
+			if(!$force && defined $main::imscpConfigOld{'AWSTATS_MODE'} && $main::imscpConfigOld{'AWSTATS_MODE'} =~ /0|1/){
+				$main::imscpConfig{'AWSTATS_MODE'}	= $main::imscpConfigOld{'AWSTATS_MODE'};
+			} else {
+				while (! ($rs = iMSCP::Dialog->new()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
+				$rs = $rs eq 'dynamic' ? 0 : 1;
+				$main::imscpConfig{'AWSTATS_MODE'} = $rs if $rs ne $main::imscpConfig{'AWSTATS_MODE'};
+			}
+		}
+	} else {
+		$main::imscpConfig{'AWSTATS_MODE'} = '' if $main::imscpConfig{'AWSTATS_MODE'} ne '';
 	}
 	debug((caller(0))[3].': Ending...');
 
@@ -558,6 +573,7 @@ sub setup_base_server_IP{
 	debug((caller(0))[3].': Starting...');
 
 	use iMSCP::Dialog;
+	use iMSCP::IP;
 
 	if($main::imscpConfig{'BASE_SERVER_IP'} && $main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1'){
 		debug((caller(0))[3].': Ending...');
@@ -570,28 +586,29 @@ sub setup_base_server_IP{
 		return 0;
 	}
 
-	my ($out, $err);
-	my $ips = {};
+	my $ips = iMSCP::IP->factory();
 
-	if (execute("$main::imscpConfig{'CMD_IFCONFIG'} -a", \$out, \$err)){
-		error((caller(0))[3].": $err");
-		return 1 ;
+	my $rs = $ips->loadIpConfiguredIps();
+	return $rs if $rs;
+
+	if(keys %{$ips->{ips}} == 0){
+		error((caller(0))[3].': Can not determine servers ips');
+		return 1;
 	}
 
-	while($out =~ m/(\S*)[^\n]*\n\s*inet (?:addr:)?([\d.]+).*?cast/sgi){
-		if($1 ne 'lo'){
-			$ips->{$1} = $2;
-		}
-	}
+	my ($out, $card);
 
 	use Data::Validate::IP qw/is_ipv4/;
 
-	while (! ($out = iMSCP::Dialog->new()->radiolist("Please select your external ip:", values %{$ips}, 'none'))){}
+	while (! ($out = iMSCP::Dialog->new()->radiolist("Please select your external ip:", keys %{$ips->{ips}}, 'none'))){}
 	if(! (is_ipv4($out))){
 		do{
-			while (! ($out = iMSCP::Dialog->new()->inputbox("Please enter your ip:", (values %{$ips})[0]))){}
-		}while(! (is_ipv4($out) && $out ne '127.0.0.1') );
-		$ips->{'NULL'} = $out;
+			while (! ($out = iMSCP::Dialog->new()->inputbox("Please enter your ip:", (keys %{$ips->{ips}})[0]))){}
+		} while(! (is_ipv4($out) && $out ne '127.0.0.1') );
+		unless(exists $ips->{ips}->{$out}){
+			while (! ($card = iMSCP::Dialog->new()->radiolist("Please enter your ip:", keys %{$ips->{cards}}))){}
+			$ips->{ips}->{$out}->{card} = $card;
+		}
 	}
 
 	$main::imscpConfig{'BASE_SERVER_IP'} = $out if($main::imscpConfig{'BASE_SERVER_IP'} ne $out);
@@ -601,16 +618,13 @@ sub setup_base_server_IP{
 
 	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-	my $other = {};
-	my $all = {};
-	%$all = %$other = reverse(%$ips);
-	delete ($other->{$out});
-	%$ips = reverse(%$other);
+	my %otherIPs	= %{$ips->{ips}};
+	delete($otherIPs{$out}) if ($otherIPs{$out});
 
 	my $toSave ='';
-	if (scalar(values %{$ips}) > 0 ){
+	if (scalar(keys %otherIPs) > 0 ){
 		my $out = iMSCP::Dialog->new()->yesno("\n\n\t\t\tInsert other ips into database?");
-		$toSave = iMSCP::Dialog->new()->checkbox("Please select ip`s to be entered to database:", values %{$ips}) if !$out;
+		$toSave = iMSCP::Dialog->new()->checkbox("Please select ip`s to be entered to database:", keys %otherIPs) if !$out;
 		$toSave =~ s/"//g;
 	}
 
@@ -618,7 +632,8 @@ sub setup_base_server_IP{
 		my $error = $database->doQuery(
 			'dummy',
 			"INSERT IGNORE INTO `server_ips` (`ip_number`, `ip_card`, `ip_status`, `ip_id`)
-			VALUES(?, ?, 'toadd', (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?));", $_, $all->{$_}, $_
+			VALUES(?, ?, 'toadd', (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?));",
+			$_, $ips->{ips}->{$_}->{card}, $_
 		);
 		return $error if (ref $error ne 'HASH');
 	}
@@ -688,18 +703,18 @@ sub askHostname{
 	$hostname = gethostbyaddr($main::imscpConfig{'BASE_SERVER_IP'}, &AF_INET);
 	if( !$hostname || $hostname !~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 		if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)){
-			error((caller(0))[3].": $err");
-			return 1;
+			error((caller(0))[3].": Can not find hostname (misconfigured?): $err");
+			$hostname = '';
 		}
 	}
 
 	chomp($hostname);
 
-	if($main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
+	if($hostname && $main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
 		debug((caller(0))[3].': Ending...');
 		return 0;
 	}
-	if($main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
+	if($hostname && $main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
 		$main::imscpConfig{'SERVER_HOSTNAME'} = $main::imscpConfigOld{'SERVER_HOSTNAME'};
 		debug((caller(0))[3].': Ending...');
 		return 0;
@@ -3192,8 +3207,11 @@ sub setup_rkhunter {
 	my ($rs, $rdata);
 
 	# Deleting any existent log files
-	my $file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'}."*");
-	$file->delFile() and return 1;
+	my $file = iMSCP::File->new (filename => $main::imscpConfig{'RKHUNTER_LOG'});
+	$file->set();
+	$file->save() and return 1;
+	$file->owner('root', 'adm');
+	$file->mode(0644);
 
 	# Updates the rkhunter configuration provided by Debian like distributions
 	# to disable the default cron task (i-MSCP provides its own cron job for rkhunter)
@@ -3205,6 +3223,22 @@ sub setup_rkhunter {
 
 		# Disable cron task default
 		$rdata =~ s/CRON_DAILY_RUN="(yes)?"/CRON_DAILY_RUN="no"/gmi;
+
+		# Saving the modified file
+		$file->set($rdata) and return 1;
+		$file->save() and return 1;
+	}
+
+	# Updates the logrotate configuration provided by Debian like distributions
+	# to modify rigts
+	if(-e '/etc/logrotate.d/rkhunter') {
+		# Get the file as a string
+		$file = iMSCP::File->new (filename => '/etc/logrotate.d/rkhunter');
+		$rdata = $file->get();
+		return 1 if(!$rdata);
+
+		# Disable cron task default
+		$rdata =~ s/create 640 root adm/create 644 root adm/gmi;
 
 		# Saving the modified file
 		$file->set($rdata) and return 1;
