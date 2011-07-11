@@ -31,8 +31,8 @@ Pentium III or K6-4 with 500 MHz
 100 MB disk space (only for install of i-MSCP)
 Debian (or even any other *NIX-Distribution)
 
-All Squeeze required packages are listed in ./docs/Debian/debian-packages-squeeze
-All Wheezy required packages are listed in ./docs/Debian/debian-packages-wheezy
+All Squeeze required packages are listed in ./docs/Debian/debian-packages-squeeze.xml
+All Wheezy required packages are listed in ./docs/Debian/debian-packages-wheezy.xml
 
 ================================================================================
 3) Introduction
@@ -59,58 +59,19 @@ Make sure you are logged in as root and MySQL is running.
 2. Change to the newly created directory:
 	# cd ./imscp-1.0.1.3
 
-3. Install the required packages
+3. (optional) Check the imscp.conf and adapt it to your requirements.
 
-   First update your system:
-	# aptitude update && aptitude safe-upgrade
-
-   Make sure you have added the non-free into your /etc/apt/sources.list:
-
-   Squeeze:
-  	deb     http://ftp.debian.org/debian/	squeeze	main contrib non-free
-	deb     http://security.debian.org/	squeeze/updates main contrib non-free
-
-   Wheezy:
-	deb     http://ftp.debian.org/debian/	wheezy main contrib non-free
-	deb     http://security.debian.org/	wheezy/updates main contrib non-free
-
-   Install all required packages:
-
-	# aptitude install lsb-release
-	# aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
-
-	(if you get to the courier screen select 'no' to web directories)
-	(if you get to the postfix screen select 'internet site'. 'mail name' should
-	be the server's domain. If you've set debian up correctly on install your
-	domain should be already shown.)
-	(if you get to the proftpd screen, select 'standalone')
-
-4. (optional) Check the imscp.conf and adapt it to your requirements.
-
-5. Build the Software by using make:
-	# ./imscp-build
-
-6. Copy all the directories into your system. If you have not yet, now is a good
-   time to make backups of your server. The following steps do fundamental
-   changes to your system configuration.
-	# cp -R /tmp/imscp/* /
-
-7. Change or create MySQL root password, remove anonymous users, disallow root
+4. Change or create MySQL root password, remove anonymous users, disallow root
 	login remotely, remove test database (and access to it), reload privilege tables.
 	# mysql_secure_installation
 
-8. Now it's time to set up the frontend. Change into the engine directory and
-	start the engine setup:
-	# cd /var/www/imscp/engine/setup
-	# perl imscp-setup
+5. Install using:
+	# ./imscp-autoinstall
 
-9. Install i-MSCP step-by-step
+6. Install i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.
-
-10. Clean the temporary folders:
-	# rm -fR /tmp/imscp/
 
 ================================================================================
 5) Update
@@ -125,64 +86,13 @@ Make sure you are logged in as root and MySQL is running.
 2. Change to the newly created directory:
 	# cd ./imscp-1.0.1.3
 
-3. Install the required packages
+3. Start the engine update:
+	# perl imscp-autoinstall
 
-   First update your system:
-	# aptitude update && aptitude safe-upgrade
-
-   Make sure you have added the non-free into your /etc/apt/sources.list:
-
-   Lenny:
-	deb     http://ftp.debian.org/debian/	lenny main contrib non-free
-	deb     http://security.debian.org/	lenny/updates main contrib non-free
-
-   Squeeze:
-  	deb     http://ftp.debian.org/debian/	squeeze	main contrib non-free
-	deb     http://security.debian.org/	squeeze/updates main contrib non-free
-
-   Install all required packages:
-
-	# aptitude install lsb-release
-	# aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
-
-	(if you get to the courier screen select 'no' to web directories)
-	(if you get to the postfix screen select 'internet site' and then type 'root'
-	for mail. If you've set debian up correctly on install your domain should be
-	already on screen. Select 'no' to force sync updates.)
-	(if you get to the proftpd screen, select 'standalone')
-	(if you get to the rootkithunter screen, select two time 'yes')
-
-4. Stop the imscp_daemon and build the Software by using make:
-	# /etc/init.d/imscp_daemon stop
-	# ./imscp-build
-
-5. Backup files if needed
-	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/imscp/var/www/imscp/gui/themes/user_logos/
-	# cp -TRv /var/www/imscp/gui/domain_default_page /tmp/imscp/var/www/imscp/gui/domain_default_page
-	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/imscp/var/www/imscp/gui/tools/webmail/data/
-
-6. Delete old files to avoid security risks:
-	# rm -Rf /var/www/imscp/engine/
-	# rm -Rf /var/www/imscp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -Rf /var/www/imscp/gui/tools/{pma/,filemanager/,webmail/,index.php}
-	# rm -Rf /var/www/imscp/gui/{*.php,favicon.ico,robots.txt}
-
-7. Copy directories into your system (you may make backups):
-	# cp -R /tmp/imscp/* /
-
-8. Now it's time to update your installation. Change into the engine directory:
-	# cd /var/www/imscp/engine/setup
-
-9. Start the engine update:
-	# perl imscp-setup
-
-10. Update i-MSCP step-by-step
+4. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.
-
-11. Clean the temporary folders:
-	# rm -fR /tmp/imscp/
 
 ================================================================================
 6) Uninstall
