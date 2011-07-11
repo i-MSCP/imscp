@@ -63,16 +63,16 @@ recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
 	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
-	$PANEL_USER $PANEL_USERP 0700 0600
+	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
-	$PANEL_USER $APACHE_GROUP 0700 0600
+	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
-	$PANEL_USER $APACHE_GROUP 0700 0600
+	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/software" \
-	$PANEL_USER $APACHE_GROUP 0700 0600
+	$PANEL_USER $PANEL_USER 0700 0600
 
 # Main virtual webhosts directory must be owned by root and readable by all
 # the domain-specific users.
