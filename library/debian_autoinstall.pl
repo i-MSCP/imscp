@@ -59,17 +59,60 @@ sub preBuild{
 }
 
 sub processAptList{
+
 	debug((caller(0))[3].': Starting...');
+
 	use iMSCP::File;
+	use Data::Dumper;
+
 	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
+
 	$file->copyFile('/etc/apt/sources.list.backup') if(! -f '/etc/apt/sources.list.bkp');
 	my $content = $file->get();
-	return 1 if !$content;
-	$content =~ s/^(deb(?:\s|\t{1,})(?:[^\s\t]{1,})(?:\s|\t{1,})(?:[^\s\t]{1,})(?:\s|\t{1,})main(?:\s|\t{0,}))$/$1 contrib non-free/mg;
+
+	unless ($content){
+		error((caller(0))[3].': Can not read /etc/apt/sources.list');
+		return 1;
+	}
+
+	my ($foundNonFree, $rs, $stdout, $stderr);
+
+	while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/mg){
+
+		my %repos = %+;
+		#is non-free enabled?
+		unless($repos{'components'} =~ /\s?non-free(\s|$)/ ){
+			my $uri = "$repos{uri}/dists/$repos{distrib}/non-free/";
+			$rs = execute("wget --spider $uri", \$stdout, \$stderr);
+			debug((caller(0))[3].": $stdout") if $stdout;
+			debug((caller(0))[3].": $stderr") if $stderr;
+			unless ($rs){
+				$foundNonFree	= 1;
+				debug((caller(0))[3].": Enable non free on $repos{uri}");
+				$content =~ s/^($&)$/$1 non-free/mg;
+			}
+		} else {
+			debug((caller(0))[3].": Non free already enabled on $repos{uri}");
+			$foundNonFree = 1;
+		}
+
+	}
+
+	unless($foundNonFree){
+		error((caller(0))[3].': Cound not found repository that support non-free packages');
+		return 1;
+	}
+
 	$file->set($content);
 	$file->save() and return 1;
+
+	$rs = execute('apt-get update', \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	return $rs if $rs;
+
 	debug((caller(0))[3].': Ending...');
-	0;
+	$rs;
 }
 
 sub readPackages{
