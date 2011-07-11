@@ -115,7 +115,7 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 			$uname = $rs->fields['uname'];
 
 			$admin_login = $_SESSION['user_logged'];
-			write_log("$admin_login: modify user ID (protected areas): $uname");
+			write_log("$admin_login: modify user ID (protected areas): $uname", E_USER_NOTICE);
 			user_goto('protected_user_manage.php');
 		}
 	} else {

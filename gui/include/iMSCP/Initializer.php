@@ -169,7 +169,7 @@ class iMSCP_Initializer
         $this->_initializeSession();
 
         // Initialize internationalization libraries
-        $this->_initializeI18n();
+        $this->_initializeLocalization();
 
         // Initialize logger
         // $this->_initializeLogger();
@@ -483,21 +483,30 @@ class iMSCP_Initializer
 	 * @since i-MSCP 1.0.1.4
 	 * @return void
 	 */
-	protected function _initializeI18n()
+	protected function _initializeLocalization()
 	{
 		require_once INCLUDEPATH . '/vendor/php-gettext/gettext.inc';
 
 		$locale = isset($_SESSION['user_def_lang'])
 			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
-		T_setlocale(LC_MESSAGES, $locale . '.UTF-8');
-		T_bindtextdomain($locale, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
-		T_bind_textdomain_codeset($locale, 'UTF-8');
-		T_textdomain($locale);
+		// Small fix for ar_AE locale
+		// TODO Ask Transifex to add it
+		if($locale == 'ar') {
+			$locale = 'ar_AE';
+		}
+
+		T_setlocale(LC_ALL, $locale . '.UTF-8');
 
 		if (locale_emulation()) {
-			// TODO ask admin to install locale on server for better performances
+			$domain = $locale;
+		} else { // Small workaround related to #130
+			$domain = i18n_getDomain($locale);
 		}
+
+		T_bindtextdomain($domain, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
+		T_bind_textdomain_codeset($locale, 'UTF-8');
+		T_textdomain($domain);
 	}
 
     /**

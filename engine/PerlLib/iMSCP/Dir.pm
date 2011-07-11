@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 by internet Multi Server Control Panel
 #
@@ -56,7 +58,10 @@ sub getFiles{
 		$self->{files} = ();
 		$self->get();
 		foreach (@{$self->{dirContent}}){
-			push(@{$self->{files}}, $_) if( -f "$self->{dirname}/$_" && $_ =~ m!$self->{fileType}$!);
+			push(
+				@{$self->{files}},
+				$_
+			) if( -f "$self->{dirname}/$_" && $_ =~ m!$self->{fileType}$!);
 		}
 	}
 	debug((caller(0))[3].': Ending...');
@@ -187,7 +192,11 @@ sub make{
 				return 1 if $self->mode($option->{mode}, $_);
 			}
 			if($option->{user} || $option->{group}){
-				return 1 if $self->owner($option->{user} || -1, $option->{group} || -1, $_);
+				return 1 if $self->owner(
+					$option->{user} || -1,
+					$option->{group} || -1,
+					$_
+				);
 			}
 		}
 
@@ -198,7 +207,11 @@ sub make{
 			return 1 if $self->mode( $option->{mode}, $self->{dirname});
 		}
 		if(defined $option->{user} || defined $option->{group}){
-			return 1 if $self->owner(defined $option->{user} ? $option->{user} : -1, defined $option->{group} ? $option->{group} : -1,  $self->{dirname});
+			return 1 if $self->owner(
+				defined $option->{user} ? $option->{user} : -1,
+				defined $option->{group} ? $option->{group} : -1,
+				$self->{dirname}
+			);
 		}
 
 	}

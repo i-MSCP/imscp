@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 by internet Multi Server Control Panel
 #
@@ -180,9 +182,7 @@ sub output{
 
 	$options = {} if ref $options ne 'HASH';
 
-	if ($options->{mode} && lc($options->{mode}) eq 'title') {
-		return "\n\033[4m".$text."\033[0m\n";
-	} elsif ($options->{mode} && lc($options->{mode}) eq 'fatal') {
+	if ($options->{mode} && lc($options->{mode}) eq 'fatal') {
 		return "[ \033[0;31m".($options->{text} ? uc($options->{text}) : 'FATAL ERROR')."\033[0m ] ${text}\n";
 	} elsif ($options->{mode} && lc($options->{mode}) eq 'error') {
 		return "[ \033[0;31m".($options->{text} ? uc($options->{text}) : 'ERROR')."\033[0m ] ${text}\n";

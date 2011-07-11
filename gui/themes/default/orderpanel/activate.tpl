@@ -1,32 +1,33 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
-		<title>{PAGE_TITLE}</title>
+		<title>{TR_ORDER_PANEL_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex">
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 		<meta http-equiv="Content-Style-Type" content="text/css">
-		<meta http-equiv="Content-Script-Type" content="text/javascript">
-		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css">
+		<link href="{THEME_COLOR_PATH}/css/login-imscp.css" rel="stylesheet" type="text/css">
+		<link href="{THEME_COLOR_PATH}/css/box.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
-			<tr>
-				<td style="vertical-align:middle; text-align:center;">
-					<table width="453" align="center" style="border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
-						<tr>
-							<td colspan="7" width="453" height="69" class="loginTop">&nbsp;</td>
-						</tr>
-						<tr>
-							<td align="center"><br /><strong>{ORDER_STATUS_MESSAGE}</strong><br /><br /></td>
-						</tr>
-					</table>
-					<table width="453" align="center">
-						<tr>
-							<td align="right" class="login">Powered by <a class="login" href="http://www.i-mscp.net" target="_blank">i-MSCP</a></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
+		<div class="header">
+			<div id="logo">
+				<div id="logoInner">
+					<img src="/themes/default/images/imscp_logo32.png" alt="{productLongName}" />
+					<span>{productLongName}</span>
+				</div>
+			</div>
+			<div id="copyright">
+				<div id="copyrightInner">
+					<a href="{productLink}" target="blank" tabindex="8">{productCopyright}</a>
+				</div>
+			</div>
+		</div>
+		<div id="box">
+			<div id="boxHeader"></div>
+			<div id="content">
+				<h1>Order confirmation</h1>
+				<p style="text-align: left">{ORDER_STATUS_MESSAGE}</p>
+			</div>
+		</div>
 	</body>
 </html>

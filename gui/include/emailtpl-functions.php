@@ -165,19 +165,25 @@ function set_email_tpl_data($admin_id, $tpl_name, $data)
  */
 function get_welcome_email($admin_id, $admin_type = 'user')
 {
+
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
     $data = get_email_tpl_data($admin_id, 'add-user-auto-msg');
 
-    if (!$data['subject']) {
+    if (empty($data['subject'])) {
         $data['subject'] = tr('Welcome {USERNAME} to i-MSCP!', true);
     }
 
-    if (!$data['message']) {
-        if ($admin_type == 'user') {
+    // No custom template for welcome mail - return the default
+    if (empty($data['message'])) {
+        if ($admin_type == 'user' && $cfg->AWSTATS_ACTIVE == 'yes') {
             $data['message'] = tr('
 
-Hello {NAME}!
+Hello {NAME}
 
 A new i-MSCP account has been created for you.
+
 Your account information:
 
 User type: {USERTYPE}
@@ -188,20 +194,21 @@ Remember to change your password often and the first time you login.
 
 You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 
-Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/
-User name: {USERNAME}
-Password: {PASSWORD}
+Statistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/
+(Same username and password than above)
 
 Best wishes with i-MSCP!
 The i-MSCP Team.
 
 ', true);
+
         } else {
             $data['message'] = tr('
 
-Hello {NAME}!
+Hello {NAME}
 
 A new i-MSCP account has been created for you.
+
 Your account information:
 
 User type: {USERTYPE}
@@ -211,9 +218,6 @@ Password: {PASSWORD}
 Remember to change your password often and the first time you login.
 
 You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
-
-User name: {USERNAME}
-Password: {PASSWORD}
 
 Best wishes with i-MSCP!
 The i-MSCP Team.
@@ -352,21 +356,27 @@ function get_order_email($admin_id)
     }
 
     if (!$data['message']) {
-        $data['message'] = tr('
+        $data['message'] = tr("
 
 Dear {NAME},
+
 This is an automatic confirmation for the order of the domain:
 
 {DOMAIN}
 
-You have to click the following link to continue the domain creation process.
+You have to click the following link to confirm your order.
 
-{ACTIVATE_LINK}
+{ACTIVATION_LINK}
+
+If you do not confirm it before the {EXPIRE_DATE}, it will
+automatically be canceled.
 
 Thank you for using i-MSCP services.
+
+___________________________
 The i-MSCP Team
 
-', true);
+", true);
     }
 
     return $data;

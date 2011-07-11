@@ -37,7 +37,7 @@ iMSCP_Bootstrap::boot();
 // Creating new iMSCP_Config_Handler_File instance
 $config = new iMSCP_Config_Handler_File();
 
-// Set some configuration parameters
+// Configuration parameters
 
 // Template paths
 $config->ROOT_TEMPLATE_PATH = 'themes/';
@@ -88,13 +88,18 @@ $config->ITEM_TODISABLED_STATUS = 'todisable';
 $config->ITEM_ORDERED_STATUS = 'ordered';
 $config->ITEM_DNSCHANGE_STATUS = 'dnschange';
 
+// Orders status
+$config->ITEM_ORDER_UNCONFIRMED_STATUS = 'unconfirmed';
+$config->ITEM_ORDER_CONFIRMED_STATUS = 'confirmed';
+$config->ITEM_ORDER_TREATED_STATUS = 'added';
+
 // SQL variables
 $config->MAX_SQL_DATABASE_LENGTH = 64;
 $config->MAX_SQL_USER_LENGTH = 16;
 $config->MAX_SQL_PASS_LENGTH = 32;
 
 /**
- * The following parameters are overwritten via admin cp
+ * The following settings can be overridden via the control panel - (admin/settings.php)
  */
 
 // Domain rows pagination
@@ -106,10 +111,10 @@ $config->DOMAIN_ROWS_PER_PAGE = 10;
 $config->HOSTING_PLANS_LEVEL = 'reseller';
 
 // TLD strict validation (according IANA database)
-$config->TLD_STRICT_VALIDATION = true;
+$config->TLD_STRICT_VALIDATION = 1;
 
-// SLD strict validation
-$config->SLD_STRICT_VALIDATION = true;
+// SLD strict validation (according IANA database)
+$config->SLD_STRICT_VALIDATION = 1;
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)
@@ -119,10 +124,10 @@ $config->MAX_DNAMES_LABELS = 1;
 $config->MAX_SUBDNAMES_LABELS = 1;
 
 // Enable or disable support system
-$config->IMSCP_SUPPORT_SYSTEM = true;
+$config->IMSCP_SUPPORT_SYSTEM = 1;
 
 // Enable or disable lost password support
-$config->LOSTPASSWORD = true;
+$config->LOSTPASSWORD = 1;
 
 // Uniqkeytimeout in minutes
 $config->LOSTPASSWORD_TIMEOUT = 30;
@@ -143,11 +148,18 @@ $config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(1, 53, 920);
  * Captcha ttf fontfiles (have to be under compatible open source license)
  */
 $fonts = array(
-	//'Essays1743.ttf',
-	'Essays1743-Bold.ttf',
-	'Essays1743-BoldItalic.ttf',
-	//'Essays1743-Italic.ttf',
-	//'StayPuft.ttf'
+    'FreeMono.ttf',
+    'FreeMonoBold.ttf',
+    'FreeMonoBoldOblique.ttf',
+    'FreeMonoOblique.ttf',
+    'FreeSans.ttf',
+    'FreeSansBold.ttf',
+    'FreeSansBoldOblique.ttf',
+    'FreeSansOblique.ttf',
+    'FreeSerif.ttf',
+    'FreeSerifBold.ttf',
+    'FreeSerifBoldItalic.ttf',
+    'FreeSerifItalic.ttf'
 );
 
 // Set random captcha font file
@@ -155,7 +167,7 @@ $config->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection
-$config->BRUTEFORCE = true;
+$config->BRUTEFORCE = 1;
 
 // Blocktime in minutes
 $config->BRUTEFORCE_BLOCK_TIME = 30;
@@ -167,60 +179,61 @@ $config->BRUTEFORCE_MAX_LOGIN = 3;
 $config->BRUTEFORCE_MAX_CAPTCHA = 5;
 
 // Enable or disable time between logins
-$config->BRUTEFORCE_BETWEEN = true;
+$config->BRUTEFORCE_BETWEEN = 1;
 
 // Time between logins in seconds
 $config->BRUTEFORCE_BETWEEN_TIME = 30;
 
 // Enable or disable maintenance mode
-$config->MAINTENANCEMODE = false;
-
-// Servicemode message
-// Please: Leave the comment for 'tr'
-$config->MAINTENANCEMODE_MESSAGE =
-	/*tr*/("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
+// 1: Maintenance mode enabled
+// 0: Maintenance mode disabled
+$config->MAINTENANCEMODE = 0;
 
 // Minimum password chars
 $config->PASSWD_CHARS = 6;
 
 // Enable or disable strong passwords
-$config->PASSWD_STRONG = true;
+// 1: Strong password not allowed
+// 0: Strong password allowed
+$config->PASSWD_STRONG = 1;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
 $config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
 
-// The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
-// PHP's E_USER_* values are used for simplicity:
-// E_USER_NOTICE: logins, and all info that isn't very relevant
-// E_USER_WARNING: switching to an other account, etc
-// E_USER_ERROR: "admin MUST know" messages
-$config->LOG_LEVEL = E_USER_NOTICE;
+/**
+ * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)
+ *
+ * E_USER_NOTICE: common operations (normal work flow)
+ * E_USER_WARNING: Operations that may be related to a problem
+ * E_USER_ERROR: Errors for which the admin should pay attention
+ *
+ * Note: PHP's E_USER_* constants are used for simplicity.
+ */
+$config->LOG_LEVEL = E_USER_WARNING;
 
 // Creation of webmaster, postmaster and abuse forwarders when
-// domain/alias/ subdomain is created
-$config->CREATE_DEFAULT_EMAIL_ADDRESSES = true;
+$config->CREATE_DEFAULT_EMAIL_ADDRESSES = 1;
 
-// Count default e-mail (abuse,postmaster,webmaster) in user limit
-// true: default e-mail are counted
-// false: default e-mail are NOT counted
-$config->COUNT_DEFAULT_EMAIL_ADDRESSES = true;
+// Count default e-mail (abuse, postmaster, webmaster) in user limit
+// 1: default e-mail are counted
+// 0: default e-mail are NOT counted
+$config->COUNT_DEFAULT_EMAIL_ADDRESSES = 1;
 
 // Use hard mail suspension when suspending a domain:
-// true: email accounts are hard suspended (completely unreachable)
-// false: email accounts are soft suspended (passwords are modified so
+// 1: email accounts are hard suspended (completely unreachable)
+// 0: email accounts are soft suspended (passwords are modified so
 // user can't access the accounts)
-$config->HARD_MAIL_SUSPENSION = true;
+$config->HARD_MAIL_SUSPENSION = 1;
 
 // Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
 // This option allows to use external login scripts
-// true: prevent external login, check for referer, more secure
-// false: allow external login, do not check for referer, less
-// security (risky)
-$config->PREVENT_EXTERNAL_LOGIN_ADMIN = true;
-$config->PREVENT_EXTERNAL_LOGIN_RESELLER = true;
-$config->PREVENT_EXTERNAL_LOGIN_CLIENT = true;
+// 1: prevent external login, check for referer, more secure
+// 0: allow external login, do not check for referer, less security (risky)
+$config->PREVENT_EXTERNAL_LOGIN_ADMIN = 1;
+$config->PREVENT_EXTERNAL_LOGIN_RESELLER = 1;
+$config->PREVENT_EXTERNAL_LOGIN_CLIENT = 1;
 
 // Automatic search for new version
 $config->CHECK_FOR_UPDATES = true;
@@ -229,14 +242,23 @@ if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
 	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
-# Converting some possible IDN to ACE (see #2476)
+# Converting some possible IDN to ACE
 $config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
 $config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
 $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
 $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 
+// Default expiration time for unconfirmed orders  - defaulted to one week
+$config->ORDERS_EXPIRE_TIME = 604800;
+
 // Initialize the application
 iMSCP_Initializer::run($config);
+
+// Please: Don't move this statement before the initialization process
+if( PHP_SAPI != 'cli') {
+    $config->MAINTENANCEMODE_MESSAGE =
+        tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
+}
 
 // Remove useless variable
 unset($config);

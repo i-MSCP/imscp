@@ -123,7 +123,7 @@ update_reseller_c_props(get_reseller_id($data['domain_id']));
 
 send_request();
 $admin_login = decode_idna($_SESSION['user_logged']);
-write_log("$admin_login: deletes mail account: " . $mail_name);
+write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
 $_SESSION['maildel'] = 1;
 
 user_goto('mail_accounts.php');

@@ -1,18 +1,32 @@
 <!-- BDP: purchase_header -->
 <!-- EDP: purchase_header -->
-
-<!-- BDP: purchase_list -->
-<table width="400">
-	<tr>
-		<td class="content3"><a href="package_info.php?id={PACK_ID}&amp;user_id={USER_ID}" class="linkdark"><strong>{PACK_NAME}</strong></a> {PRICE}</td>
-		<td width="40" align="center" style="white-space:nowrap;" class="content3"><a href="addon.php?id={PACK_ID}&amp;user_id={USER_ID}" class="linkdark">{PURCHASE}</a></td>
-	</tr>
-	<tr>
-		<td colspan="2" class="content"><div class="contentdiv">{PACK_INFO}</div></td>
-	</tr>
+<table style="width:550px;">
+    <tr>
+        <th colspan="2">Hosting Plans Availables</th>
+    </tr>
+    <tr style="background:none;border: none;">
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <!-- BDP: purchase_list -->
+    <tr>
+        <td>
+            <a href="package_info.php?id={PACK_ID}&amp;user_id={USER_ID}"><strong>{PACK_NAME}</strong></a> {PRICE}
+        </td>
+        <td>
+            <a href="addon.php?id={PACK_ID}&amp;user_id={USER_ID}">{PURCHASE}</a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div>{PACK_INFO}</div>
+        </td>
+    </tr>
+    <tr style="border: none;background: none;">
+        <td colspan="2" style="border: none;">
+            &nbsp;
+        </td>
+    </tr>
+    <!-- EDP: purchase_list -->
 </table>
-<br />
-<!-- EDP: purchase_list -->
-
 <!-- BDP: purchase_footer -->
 <!-- EDP: purchase_footer -->

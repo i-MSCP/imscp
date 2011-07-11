@@ -205,7 +205,7 @@ sub installPackages{
 
 	$rs = execute("apt-get -y install $self->{toInstall}", undef, \$stderr);
 	error((caller(0))[3]. ": $stderr") if $stderr;
-	error((caller(0))[3].": Can not install packages") if $rs;
+	error((caller(0))[3].": Can not install packages.") if $rs;
 	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');

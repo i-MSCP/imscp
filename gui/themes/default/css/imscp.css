@@ -1,15 +1,43 @@
+/**
+ * i-MSCP - internet Multi Server Control Panel
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @version     SVN: $Id: imscp.css 4847 2011-07-09 21:24:19Z nuxwin $
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ */
+
 /***********************************************************************************
  * PAGE LAYOUT
  ***********************************************************************************/
 
-body,html {
+body, html {
     min-height: 100%;
     min-width: 850px;
     margin: 0;
     padding: 0;
-    background: url(../images/background/left_bg.jpg) repeat-y top left;
-    font-family: arial;
+    font-family: aria sans-serif;
     font-size: 12px;
+}
+
+body {
+    background: url(../images/background/left_bg.jpg) repeat-y top left;
 }
 
 html {
@@ -40,6 +68,7 @@ html {
 
 .body {
     margin: 0 20px 0 240px;
+	padding-bottom: 30px;
 }
 
 .footer {

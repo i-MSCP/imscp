@@ -71,6 +71,6 @@ if ($stmt->fields['cnt'] > 0) {
 $query = "DROP TABLE `$language`";
 exec_query($query);
 
-write_log(sprintf('%s removed language: %s', $_SESSION['user_logged'], $language));
+write_log(sprintf('%s removed language: %s', $_SESSION['user_logged'], $language), E_USER_NOTICE);
 set_page_message(tr('Language was successfully removed.'), 'success');
 redirectTo('multilanguage.php');

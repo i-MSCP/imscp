@@ -277,8 +277,8 @@ $res = exec_query($query, array($record_id, $user_def_lang,
 send_request();
 
 $admin_login = $_SESSION['user_logged'];
-write_log("$admin_login: add user: $dmn_user_name (for domain $dmn_user_name)");
-write_log("$admin_login: add domain: $dmn_user_name");
+write_log("$admin_login: add user: $dmn_user_name (for domain $dmn_user_name)", E_USER_NOTICE);
+write_log("$admin_login: add domain: $dmn_user_name", E_USER_NOTICE);
 
 update_reseller_c_props($reseller_id);
 

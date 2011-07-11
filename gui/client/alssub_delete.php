@@ -84,7 +84,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$rs = exec_query($query, $sub_id);
 	send_request();
-	write_log($_SESSION['user_logged'].": delete alias subdomain: ".$sub_name);
+	write_log($_SESSION['user_logged'].": delete alias subdomain: ".$sub_name, E_USER_NOTICE);
 	set_page_message('Alias '.tr('Subdomain scheduled for deletion!'));
 	user_goto('domains_manage.php');
 

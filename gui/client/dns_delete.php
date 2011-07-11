@@ -125,7 +125,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
 	write_log(
 		$_SESSION['user_logged'] . ': deletes dns zone record: ' . $dns_name .
-		' of domain ' . $dom_name
+		' of domain ' . $dom_name, E_USER_NOTICE
 	);
 
 	set_page_message(tr('Custom DNS record scheduled for deletion!'));

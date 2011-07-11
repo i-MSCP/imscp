@@ -251,7 +251,7 @@ function sendPassword($uniqueKey){
 
 		$userPassword = passgen();
 		setPassword($uniqueKey, $userPassword);
-		write_log('Lostpassword: ' . $adminName . ': password updated');
+		write_log('Lostpassword: ' . $adminName . ': password updated', E_USER_NOTICE);
 
 		$query = '
 			UPDATE

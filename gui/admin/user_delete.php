@@ -146,7 +146,7 @@ function delete_user($user_id) {
 	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
 	exec_query($query, $user_id);
 
-	write_log($_SESSION['user_logged'] .": deletes user " . $user_id);
+	write_log($_SESSION['user_logged'] .": deletes user " . $user_id, E_USER_NOTICE);
 
 	$_SESSION['ddel'] = '_yes_';
 	user_goto('manage_users.php');

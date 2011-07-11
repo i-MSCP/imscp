@@ -77,5 +77,5 @@ $rs = exec_query($query, $order_id);
 
 set_page_message(tr('Customer order was removed successful!'));
 
-write_log($_SESSION['user_logged'].": deletes customer order.");
+write_log($_SESSION['user_logged'].": deletes customer order.", E_USER_NOTICE);
 user_goto('orders.php');

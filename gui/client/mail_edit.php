@@ -234,7 +234,7 @@ function update_email_pass() {
 		$status = $cfg->ITEM_CHANGE_STATUS;
 		$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
 		exec_query($query, array($pass, $status, $mail_id));
-		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account");
+		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account", E_USER_NOTICE);
 		return true;
 	}
 }
@@ -304,7 +304,7 @@ function update_email_forward($tpl) {
 	$query = "UPDATE `mail_users` SET `mail_forward` = ?, `mail_type` = ?, `status` = ? WHERE `mail_id` = ?";
     exec_query($query, array($forward_list, $mail_type, $status, $mail_id));
 
-	write_log($_SESSION['user_logged'] . ": change mail forward: $mail_account");
+	write_log($_SESSION['user_logged'] . ": change mail forward: $mail_account", E_USER_NOTICE);
 	return true;
 }
 

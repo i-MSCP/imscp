@@ -114,7 +114,7 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	$query = "SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')";
 	execute_query($query);
 
-	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name));
+	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
 	set_page_message(tr('SQL user password was successfully changed!'), 'success');
 	user_goto('sql_manage.php');
 }

@@ -86,7 +86,7 @@ SQL_QUERY;
 	$rs = exec_query($query, array($id, $dmn_id));
 	send_request();
 
-	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id']);
+	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id'], E_USER_NOTICE);
 	set_page_message(tr('Protected area deleted successfully!'), 'success');
 	user_goto('protected_areas.php');
 } else {

@@ -84,7 +84,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	update_reseller_c_props(get_reseller_id($dmn_id));
 
 	send_request();
-	write_log($_SESSION['user_logged'].": deletes subdomain: ".$sub_name);
+	write_log($_SESSION['user_logged'].": deletes subdomain: ".$sub_name, E_USER_NOTICE);
 	set_page_message(tr('Subdomain scheduled for deletion!'));
 	user_goto('domains_manage.php');
 

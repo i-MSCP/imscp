@@ -73,7 +73,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	exec_query($query, array($item_delete_status, $mail_id));
 
 	send_request();
-	write_log($_SESSION['user_logged'].': deletes email catch all!');
+	write_log($_SESSION['user_logged'].': deletes email catch all!', E_USER_NOTICE);
 	set_page_message(tr('Catch all account scheduled for deletion!'));
 	user_goto('mail_catchall.php');
 

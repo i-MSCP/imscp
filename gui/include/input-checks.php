@@ -60,7 +60,7 @@ function check_input($value = '')
         foreach ($checkVariables as $variable) {
             if (preg_match($variable, $value) > 0) {
                 $message = 'Possible hacking attempt. Script terminated.';
-                write_log($message);
+                write_log($message, E_USER_ERROR);
                 throw new iMSCP_Exception(tr($message));
             }
         }

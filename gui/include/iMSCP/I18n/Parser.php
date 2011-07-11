@@ -271,8 +271,10 @@ abstract class iMSCP_I18n_Parser
 		$headers = $this->getHeaders();
 		$header = str_replace(chr(13), '',substr($headers, strpos($headers, $header)));
 
-		return substr($header, ($start = strpos($header, ':') + 2),
+		$header =  substr($header, ($start = strpos($header, ':') + 2),
 			(strpos($header, chr(10)) - $start));
+
+		return (!empty($header)) ? $header : '';
 	}
 
 	/**

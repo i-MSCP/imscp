@@ -306,7 +306,7 @@ function add_domain_alias(&$err_al) {
 
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
-	write_log("$admin_login: add domain alias: $alias_name");
+	write_log("$admin_login: add domain alias: $alias_name", E_USER_NOTICE);
 
 	$_SESSION["aladd"] = '_yes_';
 	user_goto('alias.php');

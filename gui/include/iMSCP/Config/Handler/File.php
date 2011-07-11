@@ -17,14 +17,15 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
  * @package     iMSCP_Config
  * @subpackage  Handler
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
@@ -68,6 +69,9 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string ITEM_TODISABLED_STATUS Status for scheduled disabling
  * @property string ITEM_ORDERED_STATUS Status for domain/alias order
  * @property string ITEM_DNSCHANGE_STATUS Status for scheduled dns change
+ * @property string ITEM_ORDER_UNCONFIRMED_STATUS Unconfirmed order
+ * @property string ITEM_ORDER_CONFIRMED_STATUS Confirmed order
+ * @property string ITEM_ORDER_TREATED_STATUS Order added
  * @property int MAX_SQL_DATABASE_LENGTH Max. length for database name
  * @property int MAX_SQL_USER_LENGTH Max. length for Sql username
  * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
@@ -149,6 +153,7 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string IMSCP_SUPPORT_SYSTEM_PATH
  * @property string Version
  * @property string CodeName
+ * @property int ORDERS_EXPIRE_TIME Default expiration time for unconfirmed orders
  *
  * @package     iMSCP_Config
  * @subpackage  Handler

@@ -1,4 +1,4 @@
-phpMyAdmin 3.4.3 Documentation
+phpMyAdmin 3.4.3.1 Documentation
 
   * Top
   * Requirements

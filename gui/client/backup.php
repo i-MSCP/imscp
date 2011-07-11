@@ -62,7 +62,7 @@ function send_backup_restore_request($user_id) {
 		exec_query($query, $user_id);
 
 		send_request();
-		write_log($_SESSION['user_logged'] . ": restore backup files.");
+		write_log($_SESSION['user_logged'] . ": restore backup files.", E_USER_NOTICE);
 		set_page_message(tr('Backup archive scheduled for restoring!'));
 	}
 }

@@ -79,13 +79,8 @@
 							<td>{LANGUAGE_REVISION}</td>
 							<td>{LAST_TRANSLATOR}</td>
 							<td>
-								<input type="radio" name="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
+								<input type="radio" name="defaultLanguage" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
 							</td>
-							<!--<td>
-                            <a class="icon i_details" href="{URL_EXPORT}" id="url_export{INDEX}" target="_blank">{TR_EXPORT}</a>
-                            <input id="gz_export{INDEX}" type="checkbox" onClick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" />
-                            <span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
-							</td>-->
 						</tr>
 						<!-- EDP: lang_row -->
 						<tr>
@@ -112,10 +107,8 @@
 					</div>
 				</fieldset>
 				<div class="buttons">
-					<input style="float: right;"name="button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0], 'changeLanguage');" />
-
+					<input name="button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0], 'changeLanguage');" />
 				</div>
-				<!--
 				<fieldset>
 					<legend>{TR_INSTALL_NEW_LANGUAGE}</legend>
 					<table>
@@ -127,9 +120,7 @@
 				</fieldset>
 				<div class="buttons">
 					<input name="button" type="button" value="{TR_INSTALL}" onclick="return sbmt(document.forms[0],'uploadLanguage');" />
-
 				</div>
-				-->
 				<input type="hidden" name="uaction" value="" />
 			</form>
 		</div>

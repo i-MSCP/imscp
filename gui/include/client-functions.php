@@ -684,7 +684,7 @@ function delete_sql_database($domain_id, $database_id)
 
     exec_query("DROP DATABASE IF EXISTS $db_name;");
 
-    write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name));
+    write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name), E_USER_NOTICE);
 
     $query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?;";
     exec_query($query, array($domain_id, $database_id));

@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+
 # i-MSCP - internet Multi Server Control Panel
 # Copyright (C) 2010 by internet Multi Server Control Panel
 #
@@ -161,6 +163,7 @@ sub copyFile{
 		error((caller(0))[3].": Copy $self->{filename} to $dest failed: $!");
 		return 1;
 	}
+
 	if( -d $dest){
 		my ($name,$path,$suffix) = fileparse($self->{filename});
 		$dest .= "/$name$suffix";

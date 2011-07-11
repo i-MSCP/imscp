@@ -87,6 +87,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$max_dnames_labels = clean_input($_POST['max_dnames_labels']);
 	$max_subdnames_labels = clean_input($_POST['max_subdnames_labels']);
 	$log_level = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
+    $ordersExpireTime = clean_input($_POST['ordersExpireTime']);
 
 	if ((!is_number($lostpwd_timeout))
 		|| (!is_number($pwd_chars))
@@ -96,7 +97,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		|| (!is_number($bruteforce_max_capcha))
 		|| (!is_number($domain_rows_per_page))
 		|| (!is_number($max_dnames_labels))
-		|| (!is_number($max_subdnames_labels))) {
+		|| (!is_number($max_subdnames_labels))
+        || (!is_number($ordersExpireTime))
+    ) {
 		set_page_message(tr('Only positive numbers are allowed.'), 'error');
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
@@ -138,6 +141,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->SLD_STRICT_VALIDATION = $sld_strict_validation;
 		$db_cfg->MAX_DNAMES_LABELS = $max_dnames_labels;
 		$db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
+        $db_cfg->ORDERS_EXPIRE_TIME = $ordersExpireTime * 86400;
 
 		$cfg->replaceWith($db_cfg);
 
@@ -176,7 +180,8 @@ $tpl->assign(
 		'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
 		'CUSTOM_ORDERPANEL_ID' => tohtml($coid),
 		'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
-		'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS
+		'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
+        'ORDERS_EXPIRATION_TIME_VALUE' => $cfg->ORDERS_EXPIRE_TIME / 86400
 	)
 );
 
@@ -416,9 +421,11 @@ $tpl->assign(
 		'TR_SLD_STRICT_VALIDATION_HELP' =>
 			tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
 		'TR_MAX_DNAMES_LABELS' =>
-			tr('Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)'),
+			tr('Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)'),
 		'TR_MAX_SUBDNAMES_LABELS' =>
-			tr('Maximal number of labels for subdomains')
+			tr('Maximal number of labels for subdomains'),
+        'TR_ORDERS_SETTINGS' => tr('Orders settings'),
+        'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true)
 	)
 );
 

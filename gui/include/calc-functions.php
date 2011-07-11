@@ -86,7 +86,7 @@ function sizeit($bytes, $to = 'B')
         case 'B':
             break;
         default:
-            write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown byte count %s', __FILE__, __LINE__, $to));
+            write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown byte count %s', __FILE__, __LINE__, $to), E_USER_ERROR);
             throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__);
     }
 
