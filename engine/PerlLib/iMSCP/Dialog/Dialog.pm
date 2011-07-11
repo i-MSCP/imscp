@@ -44,7 +44,7 @@ sub _init{
 	my $self	= shift;
 	debug((caller(0))[3].': Starting...');
 
-	$self->{'autosize'}						= '';
+	$self->{'autosize'}						= undef;
 	$self->{'autoreset'}					= '';
 	$self->{'lines'}						= undef;
 	$self->{'columns'}						= undef;
@@ -239,7 +239,7 @@ sub _textbox{
 	my $mode = shift;
 	my $init = shift || 0;
 	my $autosize = $self->{'autosize'};
-	$self->{'autosize'} = "";
+	$self->{'autosize'} = undef;
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
 	my ($rv, $rs) = $self->_execute($text, $init, $mode);
