@@ -188,7 +188,7 @@ class iMSCP_Initializer
     protected function _processCLI()
     {
         // Include path
-        $this->_setIncludePath();
+        //$this->_setIncludePath();
 
         // Sets encryption keys
         $this->_setEncryptionKeys();
@@ -253,6 +253,7 @@ class iMSCP_Initializer
      */
     protected function _setIncludePath()
     {
+        /*
         $ps = PATH_SEPARATOR;
 
         // Get the current PHP include path string and transform it in array
@@ -263,6 +264,7 @@ class iMSCP_Initializer
 
         // Transform array of path to string and set the new PHP include_path
         set_include_path('.' . $ps . implode($ps, array_unique($include_path)));
+        */
     }
 
     /**
