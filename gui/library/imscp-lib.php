@@ -87,7 +87,7 @@ iMSCP_Registry::setAlias('exceptionHandler',
  * enabled in the application wide configuration file.
  */
 iMSCP_Registry::get('exceptionHandler')->attach(
-    new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
+    new iMSCP_Exception_Writer_Browser('../themes/default/exception.tpl'));
 
 /**
  * Include i-MSCP common functions
