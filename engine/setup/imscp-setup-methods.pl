@@ -449,7 +449,7 @@ sub updateDb {
 
 	use iMSCP::File;
 
-	my ($rs);
+	my ($rs, $stdout, $stderr);
 
 	my $file	= iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php");
 	my $content	= $file->get();
@@ -461,10 +461,10 @@ sub updateDb {
 		$rs = $file->save();
 		return 1 if($rs != 0);
 	}
-	my ($stdout);
-	$rs = execute("$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout);
-	error((caller(0))[3].": $stdout")if($rs != 0);
-	return $stdout if($rs != 0);
+
+	$rs = execute("$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
+	error((caller(0))[3].": $stdout $stderr") if $rs;
+	return ($stdout ? "$stdout " : '' ).$stderr." exitcode: $rs" if $rs;
 
 	debug((caller(0))[3].': Ending...');
 
