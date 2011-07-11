@@ -26,7 +26,7 @@ $net2ftp_settings["email_feedback"] = "webmaster@enter-your-domain-here.com";
 
 // Default language and skin (look in /languages and /skins to see which are available)
 $net2ftp_settings["default_language"] = "en";
-$net2ftp_settings["default_skin"]     = "omega";
+$net2ftp_settings["default_skin"]     = "imscp";
 
 // Enter the address of your help pages, support forum or ticket system
 // This will add a link in the footer; leave empty if you don't have this
@@ -132,7 +132,7 @@ $net2ftp_settings["check_homedirectory"] = "yes";
 // ----------------------------------------------------------------------------------
 // TEMP DIR OVERRIDING (iMSCP Mod to avoid PHP error)
 // ----------------------------------------------------------------------------------
-$tmpdir = realpath(dirname(__FILE__) . '../../phptmp');
+$tmpdir = realpath(dirname(__FILE__) . '/../../../data/sessions');
 $_ENV['PHP_TMPDIR'] = $tmpdir;
 putenv("PHP_TMPDIR=" . $tmpdir);
 
