@@ -64,6 +64,7 @@
 							<td></td>
 						</tr>
 <?php /* ----- Skin ----- */ ?>
+                        <!--
 						<tr style="vertical-align: middle;"> 
 							<td style="padding-<?php echo __("left"); ?>: 10px;"><?php echo __("Skin"); ?></td>
 							<td>
@@ -71,6 +72,7 @@
 							</td>
 							<td></td>
 						</tr>
+						-->
 <?php /* ----- FTP mode radio button ----- */ ?>
 						<tr style="vertical-align: middle;"> 
 							<td style="padding-<?php echo __("left"); ?>: 10px;"><?php echo __("FTP mode"); ?></td>
@@ -91,7 +93,7 @@
 							<td colspan="1" style="text-align: <?php echo __("left"); ?>; padding-<?php echo __("left"); ?>: 20px; padding-bottom: 5px;"></td>
 							<td colspan="2" style="text-align: <?php echo __("right"); ?>; padding-<?php echo __("right"); ?>: 20px; padding-bottom: 5px;">
 								<a href="javascript:ClearCookies();"><?php echo __("Clear cookies"); ?></a> &nbsp;
-								<a href="<?php echo $admin_url; ?>"><?php echo __("Admin"); ?></a>
+								<!--<a href="<?php echo $admin_url; ?>"><?php echo __("Admin"); ?></a>-->
 							</td>
 						</tr>
 					</tbody>
