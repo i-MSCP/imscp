@@ -53,7 +53,7 @@ sub loadIpConfiguredIps{
 		error((caller(0))[3].": $stderr") if ($stderr);
 		return $rs if $rs;
 
-		while($stdout =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?([\d.]+)[^\n]*\n)?/mgi){
+		while($stdout =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/mgi){
 			debug((caller(0))[3].": $1") if $1;
 			debug((caller(0))[3].": $2") if $2;
 			if($1 ne 'lo'){

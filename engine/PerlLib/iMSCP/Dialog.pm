@@ -139,7 +139,7 @@ sub _find_bin {
 			last;
 		}
 	}
-	error((caller(0))[3].': Can`t find dialog binary '.$variant) unless (-x $self->{'bin'});
+	fatal((caller(0))[3].': Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
 	debug((caller(0))[3].': Ending...');
 }
 
