@@ -274,8 +274,8 @@ class iMSCP_Initializer
      */
     protected function _initializeSession()
     {
-        if (!is_writable($this->_config->GUI_ROOT_DIR . '/phptmp')) {
-            throw new iMSCP_Exception('The GUI `phptmp` directory must be writable.');
+        if (!is_writable($this->_config->GUI_ROOT_DIR . '/data/sessions')) {
+            throw new iMSCP_Exception('The GUI `gui/data/sessions` directory must be writable.');
         }
 
         session_name('i-MSCP');

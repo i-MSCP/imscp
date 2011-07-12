@@ -98,7 +98,7 @@ class iMSCP_VirtualFileSystem
 
         $this->_domain = $domain;
 
-        defined('VFS_TMP_DIR') or define('VFS_TMP_DIR', "$cfg->GUI_ROOT_DIR/phptmp");
+        defined('VFS_TMP_DIR') or define('VFS_TMP_DIR', $cfg->GUI_ROOT_DIR . '/data/tmp');
 
         $_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
         $_ENV['TMPDIR'] = VFS_TMP_DIR;
