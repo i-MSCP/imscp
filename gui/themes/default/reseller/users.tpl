@@ -107,7 +107,7 @@
                     <!-- BDP: user_entry -->
                     <tr>
                         <td>
-                            <a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}')" class="icon i_{STATUS_DOMAIN}">{STATUS_DOMAIN}</a>
+                            <a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}'); return false;" class="icon i_{STATUS_DOMAIN}">{STATUS_DOMAIN}</a>
                         </td>
                         <td>
                             <!-- BDP: status_reload_true -->
