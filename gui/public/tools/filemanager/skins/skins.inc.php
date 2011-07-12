@@ -2,7 +2,7 @@
 
 //   -------------------------------------------------------------------------------
 //  |                  net2ftp: a web based FTP client                              |
-//  |              Copyright (c) 2003-2008 by David Gartner                         |
+//  |              Copyright (c) 2003-2009 by David Gartner                         |
 //  |                                                                               |
 //  | This program is free software; you can redistribute it and/or                 |
 //  | modify it under the terms of the GNU General Public License                   |
@@ -31,16 +31,18 @@ function getSkinArray() {
 // -------------------------------------------------------------------------
 // i-MSCP
 // -------------------------------------------------------------------------
-	$skinArray["imscp"]["name"]             = __("imscp");
+	$skinArray["imscp"]["name"]             = "imscp";
 	$skinArray["imscp"]["iconset"]          = "nuvola";
 	$skinArray["imscp"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/imscp/images";
 	$skinArray["imscp"]["icon_size_mime"]   = "16";
 
-	$skinArray["imscp"]["name"]             = __("modern");
-	$skinArray["imscp"]["iconset"]          = "nuvola";
-	$skinArray["imscp"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/modern/images";
-	$skinArray["imscp"]["icon_size_mime"]   = "16";
-
+// -------------------------------------------------------------------------
+// Mobile
+// -------------------------------------------------------------------------
+	$skinArray["mobile"]["name"]           = "Mobile";
+	$skinArray["mobile"]["iconset"]        = "nuvola";
+	$skinArray["mobile"]["image_url"]      = $net2ftp_globals["application_rootdir_url"] . "/skins/mobile/images";
+	$skinArray["mobile"]["icon_size_mime"] = "0";
 	return $skinArray;
 
 } // End function getSkinArray
@@ -50,16 +52,11 @@ function getSkinArray() {
 // **************************************************************************************
 // **************************************************************************************
 
-
-
-
-
 // **************************************************************************************
 // **************************************************************************************
 // **                                                                                  **
 // **                                                                                  **
 function printSkinSelect($fieldname, $onchange, $style, $class) {
-
 
 // --------------
 // This function prints a select with the available skins
@@ -71,7 +68,7 @@ function printSkinSelect($fieldname, $onchange, $style, $class) {
 
 	if     ($net2ftp_globals["skin"] != "")        { $currentskin = $net2ftp_globals["skin"]; }
 	elseif ($net2ftp_globals["cookie_skin"] != "") { $currentskin = $net2ftp_globals["cookie_skin"]; }
-	else                                           { $currentskin = "imscp"; }
+	else                                           { $currentskin = "blue"; }
 
 	if ($onchange == "") { $onchange_full = ""; }
 	else                 { $onchange_full = "onchange=\"$onchange\""; }
