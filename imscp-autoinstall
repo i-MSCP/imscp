@@ -40,19 +40,16 @@ iMSCP::Debug->newDebug('imscp-build.log');
 
 require "$FindBin::Bin/library/autoinstall-methods.pl";
 
-print output( "Detecting Debian variant", {mode=>'title'});
+iMSCP::Dialog->factory()->infobox("\\ZuDetecting Debian variant\\Zn");
 my $SO = iMSCP::SO->new();
 my $rs = $SO->getSO();
 exit $rs if $rs;
-print output( "Detection ... ", {mode=>'ok'});
+
 
 #test if script run as root
-print output( "Check if runned as root", {mode=>'title'});
+iMSCP::Dialog->factory()->infobox("\\Z1Check if runned as root\\Zn");
 use iMSCP::Requirements;
 iMSCP::Requirements->new()->user();
-
-#if we are here all test passed so display a message
-print output( "All tests... ", {mode=>'ok', text =>'PASS'});
 
 #Display a marketing message
 use iMSCP::File;
@@ -70,7 +67,7 @@ if(
 }
 
 #we have an OS / Distribution selected
-my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall.pm';
+my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall1.pm';
 my $class = 'iMSCP::'.lc($SO->{Distribution}).'_autoinstall';
 my $autoInstallClass;
 
@@ -84,31 +81,27 @@ if(-f $autoinstallFile){
 iMSCP::Requirements->new()->test('all');
 
 ############Load OS / Distribution specific operation list
-print output( "Loading $SO->{Distribution} specific variable", {mode => 'title'});
+iMSCP::Dialog->factory()->infobox("Loading $SO->{Distribution} specific variable");
 $rs = processConfFile("$FindBin::Bin/library/".lc($SO->{Distribution}).'-variable.xml');
 exit $rs if $rs;
-print output("", {mode=>'ok', text =>'DONE'});
 
-print output( "Process disribution specific configurations", {mode => 'title'});
-$rs = processSpecificConfFile();
-exit $rs if $rs;
-print output("", {mode=>'ok', text =>'DONE'});
 
-print output("Daemon build", {mode => 'title'});
-builddaemon();
-print output('', {mode=>'ok', text =>'DONE'});
+	use iMSCP::Stepper;
 
-print output("Engine setup", {mode => 'title'});
-engine();
-print output('', {mode=>'ok', text =>'DONE'});
+	my @steps = (
+		[\&processSpecificConfFile, 'Process distribution specific configurations'],
+		[\&builddaemon, 'Daemon build'],
+		[\&engine, 'Install engine'],
+		[\&gui, 'GUI setup'],
+		[\&maintainer, '"Maintainer scripts'],
+	);
+	my $step = 1;
+	for (@steps){
+		step($_->[0], $_->[1], scalar @steps, $step);
+		$step++;
+	}
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
-print output("GUI setup", {mode => 'title'});
-#gui();
-print output('', {mode=>'ok', text =>'DONE'});
-
-print output("Maintainer scripts", {mode => 'title'});
-maintainer();
-print output('', {mode=>'ok', text =>'DONE'});
 
 $autoInstallClass->postBuild() if( defined  $autoInstallClass && $autoInstallClass->can('postBuild'));
 

@@ -49,7 +49,7 @@ sub setup_shut_down {
 
 	debug((caller(0))[3].': Starting...');
 
-	iMSCP::Dialog->new()->msgbox(
+	iMSCP::Dialog->factory()->msgbox(
 					"\n
 					\\Z1Congratulations!!!\\Zn
 
@@ -81,7 +81,7 @@ sub setup_start_up {
 		'backtitle'	=> "i-MSCP internet Multi Server Control Panel",
 	);
 	if(-e '/tmp/imscp-backup-all.lock') {
-		iMSCP::Dialog->new()->msgbox(
+		iMSCP::Dialog->factory()->msgbox(
 					"\n
 					\\Z4[NOTICE]\\Zn
 
@@ -148,7 +148,7 @@ sub setup_engine {
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->new()->needGauge();
 	debug((caller(0))[3].': Ending...');
 	0;
 }

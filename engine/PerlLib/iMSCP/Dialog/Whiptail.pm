@@ -46,7 +46,7 @@ sub _init{
 	my $self	= shift;
 	debug((caller(0))[3].': Starting...');
 
-	$self->{autosize} = '';
+	$self->{autosize} = undef;
 
 	$self->{'_opts'}->{'clear'}					= '';
 	$self->{'_opts'}->{'defaultno'}				= undef;
@@ -168,7 +168,7 @@ sub _execute{
 	debug((caller(0))[3].": $self->{'bin'} $command --$mode '$text' $height $width $init");
 
 	my ($return, $rv);
-	$rv = execute("$self->{'bin'} $command --$mode '$text' $height $width $init", undef, \$return);
+	$rv = execute("export TERM=linux;$self->{'bin'} $command --$mode '$text' $height $width $init", undef, \$return);
 
 	debug((caller(0))[3].': Returned text: '.$return) if($return);
 
@@ -187,7 +187,7 @@ sub _textbox{
 	my $init = shift || 0;
 
 	my $autosize = $self->{'autosize'};
-	$self->{'autosize'} = "";
+	$self->{'autosize'} = undef;
 	my $begin = $self->{'_opts'}->{'begin'};
 	$self->{'_opts'}->{'begin'} = undef;
 	my ($rv, $rs) = $self->_execute($text, $init, $mode);
@@ -278,6 +278,21 @@ sub inputbox{
 	return $self->_textbox($text, 'inputbox', $init);
 }
 
+sub infobox{
+	debug((caller(0))[3].': Starting...');
+
+	my $self = shift;
+	my $text = shift;
+
+	my $clear					= $self->{'_opts'}->{'clear'};
+	$self->{'_opts'}->{'clear'}	= undef;
+	my $rs						= $self->_textbox($text, 'infobox');
+	$self->{'_opts'}->{'clear'}	= $clear;
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
 sub passwordbox{
 	debug((caller(0))[3].': Starting...');
 
@@ -314,7 +329,7 @@ sub startGauge{
 
 	my $command = $self->_buildCommand();
 
-	$command = "$self->{'bin'} $command --gauge '$text' $height $width $init";
+	$command = "export TERM=linux;$self->{'bin'} $command --gauge '$text' $height $width $init";
 
 	$self->{'_opts'}->{'begin'} = $begin;
 
@@ -351,7 +366,7 @@ sub setGauge{
 	return 0 unless $self->{'gauge'}->{'FH'};
 
 	if($text){
-		$text = "XXX\n".$self->_clean($text)."\nXXX\n$value\n" ;
+		$text = "XXX\n$value\n".$self->_clean($text)."\nXXX\n$value\n" ;
 	} else {
 		$text = "$value\n";
 	}
@@ -370,7 +385,7 @@ sub setGauge{
 }
 
 sub endGauge{
-	my $self = iMSCP::Dialog->new();
+	my $self = iMSCP::Dialog->factory();
 
 	debug((caller(0))[3].': Starting...');
 

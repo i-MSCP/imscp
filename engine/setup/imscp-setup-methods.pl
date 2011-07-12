@@ -38,9 +38,9 @@ sub user_dialog {
 
 	debug((caller(0))[3].': Starting...');
 
-	iMSCP::Dialog->new()->set('yes-label','CONTINUE');
-	iMSCP::Dialog->new()->set('no-label','EXIT');
-	if (iMSCP::Dialog->new()->yesno(
+	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
+	iMSCP::Dialog->factory()->set('no-label','EXIT');
+	if (iMSCP::Dialog->factory()->yesno(
 					"\n
 						Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn Setup Dialog.
 
@@ -56,7 +56,7 @@ sub user_dialog {
 
 					)
 	){
-		iMSCP::Dialog->new()->msgbox(
+		iMSCP::Dialog->factory()->msgbox(
 					"\n
 					\\Z1[NOTICE]\\Zn
 
@@ -255,20 +255,20 @@ sub setup_imscp_database_connection {
 		while (check_sql_connection($dbType, '', $dbHost, $dbPort, $dbUser, $dbPass)){
 			my $msg = '';
 			do{
-				$dbHost = iMSCP::Dialog->new()->inputbox( "Please enter database host name (default localhost) $msg", $dbHost);
+				$dbHost = iMSCP::Dialog->factory()->inputbox( "Please enter database host name (default localhost) $msg", $dbHost);
 				$msg = "\n\n$dbHost is not a valid hostname!"
 			} while (! (Data::Validate::Domain->new(%options)->is_domain($dbHost)) && $dbHost ne 'localhost');
 
 			$msg = '';
 			do{
-				$dbPort = iMSCP::Dialog->new()->inputbox("Please enter database port name (default null or 3306) $msg", $dbPort);
+				$dbPort = iMSCP::Dialog->factory()->inputbox("Please enter database port name (default null or 3306) $msg", $dbPort);
 				$dbPort =~ s/[^\d]//g;
 				$msg = "\n\n$dbPort is not a valid port number!";
 			} while ($dbPort && $dbPort !~ /^[\d]*$/);
 
-			$dbUser =  iMSCP::Dialog->new()->inputbox('Please enter database user name (default root)', $dbUser);
+			$dbUser =  iMSCP::Dialog->factory()->inputbox('Please enter database user name (default root)', $dbUser);
 
-			$dbPass =  iMSCP::Dialog->new()->inputbox('Please enter database password','');
+			$dbPass =  iMSCP::Dialog->factory()->inputbox('Please enter database password','');
 
 		}
 
@@ -347,7 +347,7 @@ sub setup_imscp_database {
 		$dbName = 'imscp' unless $dbName;
 
 		do{
-			$dbName = iMSCP::Dialog->new()->inputbox("Please enter database name (default $dbName)", $dbName);
+			$dbName = iMSCP::Dialog->factory()->inputbox("Please enter database name (default $dbName)", $dbName);
 		}while (!$dbName);
 
 		if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
@@ -542,7 +542,7 @@ sub askAwstats{
 		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
 			$main::imscpConfig{'AWSTATS_ACTIVE'}	= $main::imscpConfigOld{'AWSTATS_ACTIVE'};
 		} else {
-			while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
+			while (! ($rs = iMSCP::Dialog->factory()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
 			if($rs ne $main::imscpConfig{'AWSTATS_ACTIVE'}){
 				$main::imscpConfig{'AWSTATS_ACTIVE'} = $rs;
 				$force = 'yes';
@@ -555,7 +555,7 @@ sub askAwstats{
 			if(!$force && defined $main::imscpConfigOld{'AWSTATS_MODE'} && $main::imscpConfigOld{'AWSTATS_MODE'} =~ /0|1/){
 				$main::imscpConfig{'AWSTATS_MODE'}	= $main::imscpConfigOld{'AWSTATS_MODE'};
 			} else {
-				while (! ($rs = iMSCP::Dialog->new()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
+				while (! ($rs = iMSCP::Dialog->factory()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
 				$rs = $rs eq 'dynamic' ? 0 : 1;
 				$main::imscpConfig{'AWSTATS_MODE'} = $rs if $rs ne $main::imscpConfig{'AWSTATS_MODE'};
 			}
@@ -600,21 +600,21 @@ sub setup_base_server_IP{
 
 	use Data::Validate::IP qw/is_ipv4/;
 
-	while (! ($out = iMSCP::Dialog->new()->radiolist("Please select your external ip:", keys %{$ips->{ips}}, 'none'))){}
+	while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select your external ip:", keys %{$ips->{ips}}, 'none'))){}
 	if(! (is_ipv4($out))){
 		do{
-			while (! ($out = iMSCP::Dialog->new()->inputbox("Please enter your ip:", (keys %{$ips->{ips}})[0]))){}
+			while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter your ip:", (keys %{$ips->{ips}})[0]))){}
 		} while(! (is_ipv4($out) && $out ne '127.0.0.1') );
 		unless(exists $ips->{ips}->{$out}){
-			while (! ($card = iMSCP::Dialog->new()->radiolist("Please enter your ip:", keys %{$ips->{cards}}))){}
+			while (! ($card = iMSCP::Dialog->factory()->radiolist("Please enter your ip:", keys %{$ips->{cards}}))){}
 			$ips->{ips}->{$out}->{card} = $card;
 		}
 	}
 
 	$main::imscpConfig{'BASE_SERVER_IP'} = $out if($main::imscpConfig{'BASE_SERVER_IP'} ne $out);
 
-	iMSCP::Dialog->new()->set('yes-label','Yes');
-	iMSCP::Dialog->new()->set('no-label','No');
+	iMSCP::Dialog->factory()->set('yes-label','Yes');
+	iMSCP::Dialog->factory()->set('no-label','No');
 
 	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
@@ -623,8 +623,8 @@ sub setup_base_server_IP{
 
 	my $toSave ='';
 	if (scalar(keys %otherIPs) > 0 ){
-		my $out = iMSCP::Dialog->new()->yesno("\n\n\t\t\tInsert other ips into database?");
-		$toSave = iMSCP::Dialog->new()->checkbox("Please select ip`s to be entered to database:", keys %otherIPs) if !$out;
+		my $out = iMSCP::Dialog->factory()->yesno("\n\n\t\t\tInsert other ips into database?");
+		$toSave = iMSCP::Dialog->factory()->checkbox("Please select ip`s to be entered to database:", keys %otherIPs) if !$out;
 		$toSave =~ s/"//g;
 	}
 
@@ -726,7 +726,7 @@ sub askHostname{
 
 	my ($msg, @labels) = ('', ());
 	do{
-		while (! ($out = iMSCP::Dialog->new()->inputbox( "Please enter a fully qualified hostname (fqdn): $msg", $hostname))){}
+		while (! ($out = iMSCP::Dialog->factory()->inputbox( "Please enter a fully qualified hostname (fqdn): $msg", $hostname))){}
 		$msg = "\n\n$out is not a valid fqdn!";
 		@labels = split(/\./, $out);
 	} while (! (Data::Validate::Domain->new(%options)->is_domain($out) && ( @labels >= 3)));
@@ -767,7 +767,7 @@ sub setup_resolver {
 			if($main::imscpConfigOld{'LOCAL_DNS_RESOLVER'} && $main::imscpConfigOld{'LOCAL_DNS_RESOLVER'} =~ /yes|no/i){
 				$main::imscpConfig{'LOCAL_DNS_RESOLVER'} = $main::imscpConfigOld{'LOCAL_DNS_RESOLVER'};
 			} else {
-				while (! ($out = iMSCP::Dialog->new()->radiolist("Do you want allow the system resolver to use the local nameserver?:", ('yes', 'no')))){}
+				while (! ($out = iMSCP::Dialog->factory()->radiolist("Do you want allow the system resolver to use the local nameserver?:", ('yes', 'no')))){}
 				$main::imscpConfig{'LOCAL_DNS_RESOLVER'} = $out;
 			}
 		}
@@ -1070,7 +1070,7 @@ sub setup_fastcgi_modules {
 				$main::imscpConfig{'PHP_FASTCGI'} = $main::imscpConfigOld{'PHP_FASTCGI'};
 			} else {
 				my $out;
-				while (! ($out = iMSCP::Dialog->new()->radiolist("Please select a Fast CGI module: fcgid or fastcgi", 'fcgid', 'fastcgi'))){}
+				while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select a Fast CGI module: fcgid or fastcgi", 'fcgid', 'fastcgi'))){}
 				$main::imscpConfig{'PHP_FASTCGI'} = $out;
 			}
 		}
@@ -1723,7 +1723,7 @@ sub setup_ftpd {
 				$dbUser = $5;
 				$dbPass = $6
 			} else {
-				iMSCP::Dialog->new()->msgbox(
+				iMSCP::Dialog->factory()->msgbox(
 					"\n
 					\\Z1[WARNING]\\Zn
 
@@ -1750,7 +1750,7 @@ sub setup_ftpd {
 
 		}
 	} else {
-		iMSCP::Dialog->new()->msgbox("
+		iMSCP::Dialog->factory()->msgbox("
 					\n
 					\\Z1[WARNING]\\Zn
 
@@ -1768,18 +1768,18 @@ sub setup_ftpd {
 		# Ask for proftpd SQL username
 		$dbUser = 'vftp';
 		do{
-			$dbUser = iMSCP::Dialog->new()->inputbox("Please enter database user name (default vftp)", $dbUser);
+			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name (default vftp)", $dbUser);
 		} while (!$dbUser || $main::imscpConfig{'DATABASE_USER'} eq $dbUser);
-		iMSCP::Dialog->new()->set('cancel-label','Autogenerate');
+		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 
 		# Ask for proftpd SQL user password
-		$dbPass = iMSCP::Dialog->new()->inputbox("Please enter database password (leave blank for autogenerate)", $dbPass);
+		$dbPass = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", $dbPass);
 		if(!$dbPass){
 			$dbPass = iMSCP::Crypt::randomString(8);
 		}
 		$dbPass =~ s/('|"|`|#|;|\s)/_/g;
-		iMSCP::Dialog->new()->msgbox("Your password is '".$dbPass."' (we have stripped not allowed chars)");
-		iMSCP::Dialog->new()->set('cancel-label');
+		iMSCP::Dialog->factory()->msgbox("Your password is '".$dbPass."' (we have stripped not allowed chars)");
+		iMSCP::Dialog->factory()->set('cancel-label');
 
 		## Setup of new SQL ftp user
 		my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
@@ -2001,7 +2001,7 @@ sub restart_services {
 
 	startDetail();
 
-	#iMSCP::Dialog->new()->startGauge('Restarting service', 0) if iMSCP::Dialog->new()->needGauge();
+	#iMSCP::Dialog->factory()->startGauge('Restarting service', 0) if iMSCP::Dialog->factory()->needGauge();
 
 	my @services = (
 		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
@@ -2041,7 +2041,7 @@ sub restart_services {
 		$count++;
 	}
 
-	iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
 	endDetail();
 
@@ -2084,10 +2084,10 @@ sub setup_default_sql_data {
 	my $msg = '';
 	if( ! scalar keys %{$admins} ){
 		my ($admin, $pass, $rpass, $msg, $admin_email) = ('admin');
-		while(!($admin	= iMSCP::Dialog->new()->inputbox('Please enter administrator login name', $admin))){};
+		while(!($admin	= iMSCP::Dialog->factory()->inputbox('Please enter administrator login name', $admin))){};
 		do{
-			while(!($pass	= iMSCP::Dialog->new()->passwordbox("Please enter administrator password ". ($msg ? $msg : ''),''))){};
-			while(!($rpass	= iMSCP::Dialog->new()->passwordbox('Please repeat administrator password',''))){};
+			while(!($pass	= iMSCP::Dialog->factory()->passwordbox("Please enter administrator password ". ($msg ? $msg : ''),''))){};
+			while(!($rpass	= iMSCP::Dialog->factory()->passwordbox('Please repeat administrator password',''))){};
 			$msg = "\n\n\\Z1Password do not match\\Zn.\n\nPlease try again";
 		}while($pass ne $rpass);
 		$pass = iMSCP::Crypt->new()->crypt_md5_data($pass);
@@ -2151,7 +2151,7 @@ sub askMYSQLPrefix{
 	my $useprefix	= $main::imscpConfig{'MYSQL_PREFIX'} ?  $main::imscpConfig{'MYSQL_PREFIX'} : ($main::imscpConfigOld{'MYSQL_PREFIX'} ? $main::imscpConfigOld{'MYSQL_PREFIX'} : '');
 	my $prefix		= $main::imscpConfig{'MYSQL_PREFIX_TYPE'} ?  $main::imscpConfig{'MYSQL_PREFIX_TYPE'} : ($main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} : '');
 	while(!$useprefix || !$prefix){
-		my $prefix = $prefix = iMSCP::Dialog->new()->radiolist("Use MySQL Prefix? Possible values:", 'do not use', 'infront', 'after');
+		my $prefix = $prefix = iMSCP::Dialog->factory()->radiolist("Use MySQL Prefix? Possible values:", 'do not use', 'infront', 'after');
 		if($prefix eq 'do not use'){
 			$useprefix	= 'no';
 			$prefix		= 'none';
@@ -2170,7 +2170,7 @@ sub askAdminEmail{
 	use Email::Valid;
 	my $msg = '';
 	while(!$admin_email){
-		$admin_email = iMSCP::Dialog->new()->inputbox("Please enter administrator e-mail address .$msg");
+		$admin_email = iMSCP::Dialog->factory()->inputbox("Please enter administrator e-mail address .$msg");
 		$admin_email = '' if(!Email::Valid->address($admin_email));
 		$msg = "\n\n\\Z1Email is not valid\\Zn.\n\nPlease try again";
 	}
@@ -2244,7 +2244,7 @@ sub setup_gui_pma {
 	}
 
 	if($rebuild){
-		iMSCP::Dialog->new()->msgbox("
+		iMSCP::Dialog->factory()->msgbox("
 							\n\\Z1[WARNING]\\Zn
 
 							Unable to found your working PMA configuration file !
@@ -2256,18 +2256,18 @@ sub setup_gui_pma {
 		$ctrlUser = $ctrlUser ? $ctrlUser : ($main::imscpConfig{'PMA_USER'} ? $main::imscpConfig{'PMA_USER'} : ($main::imscpConfigOld{'PMA_USER'} ? $main::imscpConfigOld{'PMA_USER'} : 'pma'));
 
 		do{
-			$ctrlUser = iMSCP::Dialog->new()->inputbox("Please enter database user name", $ctrlUser);
+			$ctrlUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name", $ctrlUser);
 		} while (!$ctrlUser || ($main::imscpConfig{'DATABASE_USER'} eq $ctrlUser));
-		iMSCP::Dialog->new()->set('cancel-label','Autogenerate');
+		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 
 		# Ask for proftpd SQL user password
-		$ctrlUserPwd = iMSCP::Dialog->new()->inputbox("Please enter database password (leave blank for autogenerate)", '');
+		$ctrlUserPwd = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", '');
 		if(!$ctrlUserPwd){
 			$ctrlUserPwd = iMSCP::Crypt::randomString(16);
 		}
 		$ctrlUserPwd =~ s/('|"|`|#|;|\\)/_/g;
-		iMSCP::Dialog->new()->msgbox("Your password is '".$ctrlUserPwd."'");
-		iMSCP::Dialog->new()->set('cancel-label');
+		iMSCP::Dialog->factory()->msgbox("Your password is '".$ctrlUserPwd."'");
+		iMSCP::Dialog->factory()->set('cancel-label');
 
 		my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
@@ -2623,7 +2623,7 @@ sub askPHPTimezone{
 
 	my $msg = '';
 	do{
-		while (! ($dt = iMSCP::Dialog->new()->inputbox( "Please enter Server`s Timezone $msg", $dt))){}
+		while (! ($dt = iMSCP::Dialog->factory()->inputbox( "Please enter Server`s Timezone $msg", $dt))){}
 		$msg = "$dt is not a valid timezone! The continent and the city, both must start with a capital letter, e.g. Europe/London'";
 	} while (! DateTime::TimeZone->is_valid_name($dt));
 
@@ -2681,7 +2681,7 @@ sub askVHOST{
 
 	my ($msg, @labels) = ('', ());
 	do{
-		while (! ($hostname = iMSCP::Dialog->new()->inputbox( "Please enter the domain name where i-MSCP will be reachable on:  $msg", $hostname))){}
+		while (! ($hostname = iMSCP::Dialog->factory()->inputbox( "Please enter the domain name where i-MSCP will be reachable on:  $msg", $hostname))){}
 		$msg = "\n\n$hostname is not a valid fqdn!";
 		@labels = split(/\./, $hostname);
 	} while (! (Data::Validate::Domain->new(%options)->is_domain($hostname) && ( @labels >= 3)));
@@ -2792,7 +2792,7 @@ sub askSecondaryDNS{
 		return 0;
 	}
 
-	while (! ($out = iMSCP::Dialog->new()->radiolist("Enable secondary DNS server address IP?", 'no', 'yes'))){}
+	while (! ($out = iMSCP::Dialog->factory()->radiolist("Enable secondary DNS server address IP?", 'no', 'yes'))){}
 	if($out eq 'no'){
 		$main::imscpConfig{'SECONDARY_DNS'} = 'no';
 		debug((caller(0))[3].': Ending...');
@@ -2802,7 +2802,7 @@ sub askSecondaryDNS{
 	use Data::Validate::IP qw/is_ipv4/;
 
 	do{
-		while (! ($out = iMSCP::Dialog->new()->inputbox("Please enter secondary DNS server address IP"))){}
+		while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter secondary DNS server address IP"))){}
 	}while(! (is_ipv4($out) && $out ne '127.0.0.1') );
 
 	$main::imscpConfig{'SECONDARY_DNS'} = $out;
@@ -2860,7 +2860,7 @@ sub setup_gui_named_db_data {
 	# Load the current working db file
 
 	if(!-f $wrkCfg) {
-		iMSCP::Dialog->new()->msgbox(
+		iMSCP::Dialog->factory()->msgbox(
 						"\\Z1[WARNING]\\Zn
 
 						$main::imscpConfig{'BASE_SERVER_VHOST'}: Working db file not found!.
@@ -3148,12 +3148,12 @@ sub askBackup{
 	my $BACKUP_DOMAINS	= $main::imscpConfig{'BACKUP_DOMAINS'} ?  $main::imscpConfig{'BACKUP_DOMAINS'} : ($main::imscpConfigOld{'BACKUP_DOMAINS'} ? $main::imscpConfigOld{'BACKUP_DOMAINS'} : '');
 
 	if (!$BACKUP_IMSCP){
-		while (! ($BACKUP_IMSCP = iMSCP::Dialog->new()->radiolist("Do you want to enable backup for iMSCP configuration?", 'yes', 'no'))){}
+		while (! ($BACKUP_IMSCP = iMSCP::Dialog->factory()->radiolist("Do you want to enable backup for iMSCP configuration?", 'yes', 'no'))){}
 	}
 	if($BACKUP_IMSCP ne $main::imscpConfig{'BACKUP_IMSCP'}){ $main::imscpConfig{'BACKUP_IMSCP'} = $BACKUP_IMSCP; }
 
 	if (!$BACKUP_DOMAINS){
-		while (! ($BACKUP_DOMAINS = iMSCP::Dialog->new()->radiolist("Do you want to enable backup for domains?", 'yes', 'no'))){}
+		while (! ($BACKUP_DOMAINS = iMSCP::Dialog->factory()->radiolist("Do you want to enable backup for domains?", 'yes', 'no'))){}
 	}
 	if($BACKUP_DOMAINS ne $main::imscpConfig{'BACKUP_DOMAINS'}){ $main::imscpConfig{'BACKUP_DOMAINS'} = $BACKUP_DOMAINS; }
 
@@ -3181,7 +3181,7 @@ sub additional_tasks{
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
 	debug((caller(0))[3].': Ending...');
 
@@ -3338,7 +3338,7 @@ sub setup_ssl{
 		Modules::openssl->new()->{intermediate_cert_path}	= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
 		Modules::openssl->new()->{key_path}					= "$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
 		if(Modules::openssl->new()->ssl_check_all()){
-			iMSCP::Dialog->new()->msgbox("Certificate is missing or corrupt. Starting recover");
+			iMSCP::Dialog->factory()->msgbox("Certificate is missing or corrupt. Starting recover");
 			$rs = sslDialog();
 			return $rs if $rs;
 		}
@@ -3366,11 +3366,11 @@ sub ask_certificate_key_path{
 	my $pass = '';
 
 	do{
-		$rs = iMSCP::Dialog->new()->passwordbox("Please enter password for key if needed:", $pass);
+		$rs = iMSCP::Dialog->factory()->passwordbox("Please enter password for key if needed:", $pass);
 		$rs =~s/(["\$`\\])/\\$1/g;
 		Modules::openssl->new()->{key_pass} = $rs;
 		do{
-			while (! ($rs = iMSCP::Dialog->new()->fselect($key))){}
+			while (! ($rs = iMSCP::Dialog->factory()->fselect($key))){}
 		}while (! -f $rs);
 		Modules::openssl->new()->{key_path} = $rs;
 		$key = $rs;
@@ -3390,11 +3390,11 @@ sub ask_intermediate_certificate_path{
 	my $rs;
 	my $cert = '/root/';
 
-	iMSCP::Dialog->new()->set('yes-label');
-	iMSCP::Dialog->new()->set('no-label');
-	return 0 if(iMSCP::Dialog->new()->yesno('Do you have an intermediate certificate?'));
+	iMSCP::Dialog->factory()->set('yes-label');
+	iMSCP::Dialog->factory()->set('no-label');
+	return 0 if(iMSCP::Dialog->factory()->yesno('Do you have an intermediate certificate?'));
 	do{
-		while (! ($rs = iMSCP::Dialog->new()->fselect($cert))){}
+		while (! ($rs = iMSCP::Dialog->factory()->fselect($cert))){}
 	}while ($rs && !-f $rs);
 	Modules::openssl->new()->{intermediate_cert_path} = $rs;
 
@@ -3411,10 +3411,10 @@ sub ask_certificate_path{
 	my $rs;
 	my $cert = "/root/$main::imscpConfig{'SERVER_HOSTNAME'}.crt";
 
-	iMSCP::Dialog->new()->msgbox('Please select certificate');
+	iMSCP::Dialog->factory()->msgbox('Please select certificate');
 	do{
 		do{
-			while (! ($rs = iMSCP::Dialog->new()->fselect($cert))){}
+			while (! ($rs = iMSCP::Dialog->factory()->fselect($cert))){}
 		}while (! -f $rs);
 		Modules::openssl->new()->{cert_path} = $rs;
 		$cert = $rs;
@@ -3433,12 +3433,12 @@ sub sslDialog{
 
 	my $rs;
 
-	while (! ($rs = iMSCP::Dialog->new()->radiolist("Do you want to activate SSL?", 'no', 'yes'))){}
+	while (! ($rs = iMSCP::Dialog->factory()->radiolist("Do you want to activate SSL?", 'no', 'yes'))){}
 	if($rs ne $main::imscpConfig{'SSL_ENABLED'}){ $main::imscpConfig{'SSL_ENABLED'} = $rs; }
 	if($rs eq 'yes'){
 		Modules::openssl->new()->{new_cert_path} = $main::imscpConfig{'GUI_CERT_DIR'};
 		Modules::openssl->new()->{new_cert_name} = $main::imscpConfig{'SERVER_HOSTNAME'};
-		while (! ($rs = iMSCP::Dialog->new()->radiolist('Select method', 'Create a self signed certificate', 'I already have a signed certificate'))){}
+		while (! ($rs = iMSCP::Dialog->factory()->radiolist('Select method', 'Create a self signed certificate', 'I already have a signed certificate'))){}
 		$rs = $rs eq 'Create a self signed certificate' ? 0 : 1;
 		Modules::openssl->new()->{cert_selfsigned} = $rs;
 		Modules::openssl->new()->{vhost_cert_name} = $main::imscpConfig{'SERVER_HOSTNAME'} if ( !$rs );
@@ -3453,7 +3453,7 @@ sub sslDialog{
 		return $rs if $rs;
 	}
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
-		while (! ($rs = iMSCP::Dialog->new()->radiolist("Select default access mode for master domain?", 'https', 'http'))){}
+		while (! ($rs = iMSCP::Dialog->factory()->radiolist("Select default access mode for master domain?", 'https', 'http'))){}
 		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "$rs://";
 	}
 
