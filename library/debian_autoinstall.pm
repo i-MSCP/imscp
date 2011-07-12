@@ -36,6 +36,17 @@ use vars qw/@ISA/;
 @ISA = ("Common::SingletonClass");
 use Common::SingletonClass;
 
+sub _init{
+
+	my $self = shift;
+	debug((caller(0))[3].': Starting...');
+
+	$self->{nonfree} = 'non-free';
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
 sub preBuild{
 	debug((caller(0))[3].': Starting...');
 
@@ -62,12 +73,14 @@ sub processAptList{
 
 	debug((caller(0))[3].': Starting...');
 
+	my $self = shift;
+
 	use iMSCP::File;
 	use Data::Dumper;
 
 	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
 
-	$file->copyFile('/etc/apt/sources.list.backup') if(! -f '/etc/apt/sources.list.bkp');
+	$file->copyFile('/etc/apt/sources.list.bkp') unless( -f '/etc/apt/sources.list.bkp');
 	my $content = $file->get();
 
 	unless ($content){
@@ -81,15 +94,15 @@ sub processAptList{
 
 		my %repos = %+;
 		#is non-free enabled?
-		unless($repos{'components'} =~ /\s?non-free(\s|$)/ ){
-			my $uri = "$repos{uri}/dists/$repos{distrib}/non-free/";
+		unless($repos{'components'} =~ /\s?$self->{nonfree}(\s|$)/ ){
+			my $uri = "$repos{uri}/dists/$repos{distrib}/$self->{nonfree}/";
 			$rs = execute("wget --spider $uri", \$stdout, \$stderr);
 			debug((caller(0))[3].": $stdout") if $stdout;
 			debug((caller(0))[3].": $stderr") if $stderr;
 			unless ($rs){
 				$foundNonFree	= 1;
 				debug((caller(0))[3].": Enable non free on $repos{uri}");
-				$content =~ s/^($&)$/$1 non-free/mg;
+				$content =~ s/^($&)$/$1 $self->{nonfree}/mg;
 			}
 		} else {
 			debug((caller(0))[3].": Non free already enabled on $repos{uri}");
