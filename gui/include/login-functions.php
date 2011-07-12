@@ -473,7 +473,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 
 			exec_query($query, $ipAddress);
 		} else {
-			write_log("Login error, <b><i>$ipAddress</i></b> wait " . ($btime - time()) . " seconds", E_USER_WARNING);
+			write_log("Login error, <b><i>$ipAddress</i></b> wait " . ($btime - time()) . " seconds");
 			iMSCP_Registry::set('backButtonDestination', $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);
 			throw new iMSCP_Exception_Production(tr('You have to wait %d seconds.', $btime - time()));
 		}
@@ -492,7 +492,7 @@ function block_ipaddr($ipAddress, $type = 'General')
 	$cfg = iMSCP_Registry::get('config');
 
 	write_log("$type protection, <b><i> " . tohtml($ipAddress) .
-			  "</i></b> blocked for " . $cfg->BRUTEFORCE_BLOCK_TIME ." minutes.", E_USER_WARNING);
+			  "</i></b> blocked for " . $cfg->BRUTEFORCE_BLOCK_TIME ." minutes.");
 
 	deny_access();
 }
@@ -527,7 +527,7 @@ function register_user($userName, $userPassword){
 	check_ipaddr();
 
 	if (!username_exists($userName)) {
-		write_log(tr('Login error, <b><i>%s</i></b> unknown username', tohtml($userName)), E_USER_NOTICE);
+		write_log(tr('Login error, <b><i>%s</i></b> unknown username', tohtml($userName)));
 
 		set_page_message(tr('You entered an incorrect username!'), 'error');
 		return false;
@@ -538,7 +538,7 @@ function register_user($userName, $userPassword){
 	if ((iMSCP_Update_Database::getInstance()->isAvailableUpdate() ||
 		($cfg->MAINTENANCEMODE)) && $userData['admin_type'] != 'admin'
 	) {
-		write_log(tr('Login error, <b><i>%s</i></b> system currently in maintenance mode', tohtml($userName)), E_USER_NOTICE);
+		write_log(tr('Login error, <b><i>%s</i></b> system currently in maintenance mode', tohtml($userName)));
 		set_page_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
 	}
@@ -548,17 +548,17 @@ function register_user($userName, $userPassword){
 	) {
 
 		if (isset($_SESSION['user_logged'])) {
-			write_log(tr('%s user already logged or session sharing problem! Aborting...', $userName), E_USER_WARNING);
+			write_log(tr('%s user already logged or session sharing problem! Aborting...', $userName));
 			throw new iMSCP_Exception(tr('User already logged or session sharing problem! Aborting...'));
 		}
 
 		if (!is_userdomain_ok($userName)) {
-			write_log(tr('%s\'s account status is not ok!', $userName), E_USER_WARNING);
+			write_log(tr('%s\'s account status is not ok!', $userName));
 			throw new iMSCP_Exception(tr('%s\'s account status is not ok!', $userName));
 		}
 
 		if ($userData['admin_type'] == 'user' && is_userdomain_expired($userName)) {
-			write_log(tr('%s\'s domain expired!', $userName), E_USER_NOTICE);
+			write_log(tr('%s\'s domain expired!', $userName));
 			throw new iMSCP_Exception(tr('%s\'s domain expired!', tohtml($userName)));
 		}
 
@@ -576,7 +576,7 @@ function register_user($userName, $userPassword){
 
 		write_log(tr('%s logged in.', tohtml($userName)), E_USER_NOTICE);
 	} else {
-		write_log(tr('%s entered incorrect password.', tohtml($userName)), E_USER_NOTICE);
+		write_log(tr('%s entered incorrect password.', tohtml($userName)));
 		set_page_message('You entered an incorrect password!', 'error');
 		return false;
 	}
@@ -630,7 +630,7 @@ function check_user_login()
 	$rs = exec_query($query, array($userLogged, $userPassword, $userType, $userId, $sessionId));
 
 	if ($rs->recordCount() != 1) {
-		write_log("Detected session manipulation on " . $userLogged . "'s session!", E_USER_WARNING);
+		write_log("Detected session manipulation on " . $userLogged . "'s session!");
 		unset_user_login_data();
 
 		return false;
@@ -640,7 +640,7 @@ function check_user_login()
 		$userType != 'admin'
 	) {
 		unset_user_login_data(true);
-		write_log("System is currently in maintenance mode. Logging out <b><i>" . $userLogged . "</i></b>", E_USER_NOTICE);
+		write_log("System is currently in maintenance mode. Logging out <b><i>" . $userLogged . "</i></b>");
 		user_goto('/index.php');
 	}
 
@@ -692,7 +692,7 @@ function check_login($fileName = null, $preventExternalLogin = true)
 
 				write_log('Warning! user |' . $userLoggued . '| requested |' .
 						  tohtml($_SERVER['REQUEST_URI']) .
-						  '| with REQUEST_METHOD |' . $_SERVER['REQUEST_METHOD'] . '|', E_USER_WARNING);
+						  '| with REQUEST_METHOD |' . $_SERVER['REQUEST_METHOD'] . '|');
 			}
 
 			user_goto('/index.php');
@@ -843,7 +843,7 @@ function change_user_interface($fromId, $toId)
 
 		write_log(sprintf("%s changes into %s's interface",
 						  decode_idna($fromUserData['admin_name']),
-						  decode_idna($toUserData['admin_name'])), E_USER_NOTICE);
+						  decode_idna($toUserData['admin_name'])));
 
 		break;
 	}
