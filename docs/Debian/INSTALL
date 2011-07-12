@@ -16,20 +16,21 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-i-MSCP Version:		1.0.1.3
+
+i-MSCP Version:     1.0.1.3
 Maintainer:         i-MSCP Team
-Homepage:			http://i-mscp.net
-Linux Distros:		Debian Squeeze, Wheezy
+Homepage:           http://www.i-mscp.net
+Linux Distros:      Debian Squeeze, Wheezy
 
 ================================================================================
 2) Requirements
 ---------------
+
 There is no must have for a system using i-MSCP. This is only a recommendation:
 
 Pentium III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of i-MSCP)
-Debian (or even any other *NIX-Distribution)
+150 MB disk space (only for install of i-MSCP)
 
 All Squeeze required packages are listed in ./docs/Debian/debian-packages-squeeze
 All Wheezy required packages are listed in ./docs/Debian/debian-packages-wheezy
@@ -37,6 +38,7 @@ All Wheezy required packages are listed in ./docs/Debian/debian-packages-wheezy
 ================================================================================
 3) Introduction
 ---------------
+
 i-MSCP delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
@@ -50,57 +52,65 @@ provides graphic user interfaces for the administrators, resellers and users.
 ================================================================================
 4) Installation
 ---------------
+
 Make sure you are logged in as root and MySQL is running.
 
-1. Untar or unzip the distribution files to a secure directory:
+1.  Untar or unzip the distribution files to a secure directory
+
 	# cd /usr/local/src
 	# tar xjvf imscp-1.0.1.3.tar.bz2
 
-2. Change to the newly created directory:
+2.  Change to the newly created directory
+
 	# cd ./imscp-1.0.1.3
 
-3. Install the required packages
+3.  Install the required packages
 
-   First update your system:
-	# aptitude update && aptitude safe-upgrade
+    First update your system:
 
-   Make sure you have added the non-free into your /etc/apt/sources.list:
+        # aptitude update && aptitude safe-upgrade
 
-   Squeeze:
-  	deb     http://ftp.debian.org/debian/	squeeze	main contrib non-free
-	deb     http://security.debian.org/	squeeze/updates main contrib non-free
+   Make sure you have added the contrib and non-free into your /etc/apt/sources.list:
 
-   Wheezy:
-	deb     http://ftp.debian.org/debian/	wheezy main contrib non-free
-	deb     http://security.debian.org/	wheezy/updates main contrib non-free
+    Squeeze:
+        deb http://ftp.debian.org/debian/ squeeze main contrib non-free
+        deb http://security.debian.org/ squeeze/updates main contrib non-free
+
+    Wheezy:
+        deb http://ftp.debian.org/debian/ wheezy main contrib non-free
+        deb http://security.debian.org/ wheezy/updates main contrib non-free
 
    Install all required packages:
 
-	# aptitude install lsb-release
-	# aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
+        # aptitude install lsb-release
+        # aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
 
-	(if you get to the courier screen select 'no' to web directories)
+    (if you get to the courier screen select 'no' to web directories)
 	(if you get to the postfix screen select 'internet site'. 'mail name' should
 	be the server's domain. If you've set debian up correctly on install your
 	domain should be already shown.)
 	(if you get to the proftpd screen, select 'standalone')
 
-4. (optional) Check the imscp.conf and adapt it to your requirements.
+4.  (optional) Check the imscp.conf and adapt it to your requirements
 
-5. Build the Software by using make:
+5.  Build the i-MSCP directory tree
+
 	# ./imscp-build
 
-6. Copy all the directories into your system. If you have not yet, now is a good
-   time to make backups of your server. The following steps do fundamental
-   changes to your system configuration.
+6.  Copy all directories into your system. If you have not yet, now is a good time to
+    make backups of your server. The following steps do fundamental changes to your
+    system configuration
+
 	# cp -R /tmp/imscp/* /
 
-7. Change or create MySQL root password, remove anonymous users, disallow root
-	login remotely, remove test database (and access to it), reload privilege tables.
+7.  Change or create MySQL root password, remove anonymous users, disallow root login
+    remotely, remove test database (and access to it), reload privilege tables
+
 	# mysql_secure_installation
 
-8. Now it's time to set up the frontend. Change into the engine directory and
-	start the engine setup:
+8.  Now it's time to set up the frontend. Change into the engine directory and start
+    the engine setup
+
 	# cd /var/www/imscp/engine/setup
 	# perl imscp-setup
 
@@ -109,8 +119,9 @@ Make sure you are logged in as root and MySQL is running.
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.
 
-10. Clean the temporary folders:
-	# rm -fR /tmp/imscp/
+10. Clean the temporary folder
+
+	# rm -Rf /tmp/imscp/
 
 ================================================================================
 5) Update
@@ -118,92 +129,85 @@ Make sure you are logged in as root and MySQL is running.
 
 Make sure you are logged in as root and MySQL is running.
 
-1. Untar or unzip the distribution files to a secure directory:
+1.  Untar or unzip the distribution files to a secure directory
+
 	# cd /usr/local/src
 	# tar xjvf imscp-1.0.1.3.tar.bz2
 
-2. Change to the newly created directory:
+2.  Change to the newly created directory
+
 	# cd ./imscp-1.0.1.3
 
-3. Install the required packages
+3.  Install the required package
 
-   First update your system:
-	# aptitude update && aptitude safe-upgrade
+	    # aptitude update && aptitude safe-upgrade
+	    # aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
 
-   Make sure you have added the non-free into your /etc/apt/sources.list:
+4.  Stop the imscp_daemon and build the i-MSCP directory tree
 
-   Lenny:
-	deb     http://ftp.debian.org/debian/	lenny main contrib non-free
-	deb     http://security.debian.org/	lenny/updates main contrib non-free
+    # service imscp_daemon stop
+    # ./imscp-build
 
-   Squeeze:
-  	deb     http://ftp.debian.org/debian/	squeeze	main contrib non-free
-	deb     http://security.debian.org/	squeeze/updates main contrib non-free
+5.  Purge all GUI sessions files
 
-   Install all required packages:
+    # rm -Rf /var/www/imscp/gui/data/session
 
-	# aptitude install lsb-release
-	# aptitude install $(cat ./docs/Debian/debian-packages-`lsb_release -cs`)
+6.  Backup needed files
 
-	(if you get to the courier screen select 'no' to web directories)
-	(if you get to the postfix screen select 'internet site' and then type 'root'
-	for mail. If you've set debian up correctly on install your domain should be
-	already on screen. Select 'no' to force sync updates.)
-	(if you get to the proftpd screen, select 'standalone')
-	(if you get to the rootkithunter screen, select two time 'yes')
+    # cp -Rfv /var/www/imscp/gui/data /tmp/imscp/var/www/imscp/gui
+    # cp -Rfv /var/www/imscp/gui/public/tools/webmail/data /tmp/imscp/var/www/imscp/gui/public/tools/webmail
 
-4. Stop the imscp_daemon and build the Software by using make:
-	# /etc/init.d/imscp_daemon stop
-	# ./imscp-build
+7.  Delete old directories:
 
-5. Backup files if needed
-	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/imscp/var/www/imscp/gui/themes/user_logos/
-	# cp -TRv /var/www/imscp/gui/domain_default_page /tmp/imscp/var/www/imscp/gui/domain_default_page
-	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/imscp/var/www/imscp/gui/tools/webmail/data/
+    # rm -Rf /var/www/imscp/{daemon,engine,gui}
 
-6. Delete old directories to avoid security risks:
-	# rm -Rf /var/www/imscp/{engine,daemon,gui}
+8.  Copy directories into your system (you may make backups)
 
-7. Copy directories into your system (you may make backups):
-	# cp -R /tmp/imscp/* /
+    # cp -R /tmp/imscp/* /
 
-8. Now it's time to update your installation. Change into the engine directory:
-	# cd /var/www/imscp/engine/setup
+9.  Now it's time to update your installation. Change into the engine directory
 
-9. Start the engine update:
-	# perl imscp-setup
+    # cd /var/www/imscp/engine/setup
 
-10. Update i-MSCP step-by-step
+10. Start the engine update
 
-	If you get no error, all went good; if you get one, look at
-	http://i-mscp.net to solve the problem.
+    # perl imscp-setup
 
-11. Clean the temporary folders:
-	# rm -fR /tmp/imscp/
+11. Update i-MSCP step-by-step
+
+    If you get no error, all went good; if you get one, look at
+    http://forum.i-mscp.net to solve the problem.
+
+12. Clean the temporary folder
+
+    # rm -Rf /tmp/imscp/
 
 ================================================================================
 6) Uninstall
 ------------
+
 Make sure you are logged in as root and MySQL is running.
 
-1. Change into the engine directory:
-	# cd /var/www/imscp/engine/setup
+1.  Change into the engine directory
 
-2. Start the uninstall script:
-	# perl imscp-uninstall
+    # cd /var/www/imscp/engine/setup
 
-3. Clean up your system
+2.  Start the uninstall script
+
+    # perl imscp-uninstall
+
+3.  Clean up your system
 
 ================================================================================
 7) Credits
 ----------
 
-i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
-i-MSCP, internet Multi Server Control Panel and the i-MSCP logo are trademarks
-of the i-MSCP | internet Multi Server Control Panel Project Team.
+i-MSCP is a project of i-MSCP | internet Multi Server Control Panel. i-MSCP, internet
+Multi Server Control Panel and the i-MSCP logo are trademarks of the i-MSCP |
+internet Multi Server Control Panel Project Team.
 
-Please visit our site under http://i-mscp.net for further information on
-i-MSCP and other themes.
+Please visit our site under http://i-mscp.net for further information on i-MSCP and
+other themes.
 
-We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We
-would be glad on any help provided!
+We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We would
+be glad on any help provided.

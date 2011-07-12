@@ -1869,7 +1869,7 @@ sub als_add_httpd_file_data {
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 
 		($rs, $index_tpl) = get_file(
-			"$root_dir/gui/domain_default_page/index.html"
+			"$root_dir/gui/data/domain_default_page/index.html"
 		);
 		return $rs if ($rs != 0);
 
@@ -1886,7 +1886,7 @@ sub als_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		$rs = sys_command("$main::cfg{'CMD_CP'} -rp " .
-			"$root_dir/gui/domain_default_page/images $www_dir/$als_name/htdocs/");
+			"$root_dir/gui/data/domain_default_page/images $www_dir/$als_name/htdocs/");
 		return $rs if ($rs != 0);
 
 		$rs = setfmode(

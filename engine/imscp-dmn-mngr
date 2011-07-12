@@ -1687,7 +1687,7 @@ sub dmn_add_httpd_file_data {
 		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 		my $prefix = $main::cfg{'BASE_SERVER_VHOST_PREFIX'};
-		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
+		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/data/domain_default_page";
 
 		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
 		return $rs if ($rs != 0);
@@ -1710,7 +1710,7 @@ sub dmn_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		$rs = sys_command(
-			"$main::cfg{'CMD_CP'} -Rp $root_dir/gui/domain_default_page/images " .
+			"$main::cfg{'CMD_CP'} -Rp $root_dir/gui/data/domain_default_page/images " .
 				"$www_dir/$dmn_name/htdocs/"
 			);
 		return $rs if ($rs != 0);
