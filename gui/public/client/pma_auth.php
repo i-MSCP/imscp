@@ -166,7 +166,7 @@ function pmaAuth($dbUserId)
  */
 
 // Include all needed libraries
-require '../include/imscp-lib.php';
+require 'include/imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 

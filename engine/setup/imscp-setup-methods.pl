@@ -2193,7 +2193,7 @@ sub setup_gui_pma {
 	my $cfgDir	= "$main::imscpConfig{'CONF_DIR'}/pma";
 	my $bkpDir	= "$cfgDir/backup";
 	my $wrkDir	= "$cfgDir/working";
-	my $prodDir	= "$main::imscpConfig{'GUI_ROOT_DIR'}/../tools/pma";
+	my $prodDir	= "$main::imscpConfig{'GUI_ROOT_DIR'}/tools/pma";
 	my $dbType	= $main::imscpConfig{'DATABASE_TYPE'};
 	my $dbHost	= $main::imscpConfig{'DATABASE_HOST'};
 	my $dbPort	= $main::imscpConfig{'DATABASE_PORT'};
