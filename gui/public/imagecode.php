@@ -34,6 +34,6 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'include/imscp-lib.php';
+require 'imscp-lib.php';
 
 createImage('image');

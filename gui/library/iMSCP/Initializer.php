@@ -487,7 +487,7 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeLocalization()
 	{
-		require_once INCLUDEPATH . '/vendor/php-gettext/gettext.inc';
+		require_once 'vendor/php-gettext/gettext.inc';
 
 		$locale = isset($_SESSION['user_def_lang'])
 			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;

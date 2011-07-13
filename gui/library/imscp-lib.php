@@ -62,7 +62,7 @@ define('INCLUDEPATH', dirname(__FILE__));
 /**
  * Autoloading classes
  */
-require_once INCLUDEPATH . '/imscp-loader.php';
+require_once 'imscp-loader.php';
 spl_autoload_register('autoload_class');
 
 /**
@@ -87,18 +87,18 @@ iMSCP_Registry::setAlias('exceptionHandler',
  * enabled in the application wide configuration file.
  */
 iMSCP_Registry::get('exceptionHandler')->attach(
-    new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
+    new iMSCP_Exception_Writer_Browser('../themes/default/exception.tpl'));
 
 /**
  * Include i-MSCP common functions
  */
 require_once 'vendor/net_idna/idna_convert.class.php';
-require_once INCLUDEPATH . '/shared-functions.php';
+require_once 'shared-functions.php';
 
 /**
  * Include i-MSCP app installer functions
  */
-require_once INCLUDEPATH . '/sw-functions.php';
+require_once 'sw-functions.php';
 
 /**
  * Internationalization functions
@@ -111,7 +111,7 @@ require_once 'i18n.php';
  * @see {@link iMSCP_Bootstrap} class
  * @see {@link iMSCP_Initializer} class
  */
-require_once INCLUDEPATH . '/environment.php';
+require_once 'environment.php';
 
 /**
  * Authentication functions
@@ -140,10 +140,10 @@ require_once 'functions.ticket_system.php';
 /**
  * View helper functions
  */
-require_once INCLUDEPATH . '/iMSCP/View/Helpers/Common.php';
+require_once 'iMSCP/View/Helpers/Common.php';
 
 if(isset($_SESSION['user_type'])) {
     $helperFileName = ucfirst(strtolower($_SESSION['user_type']));
 
-    require_once INCLUDEPATH . '/iMSCP/View/Helpers/' . $helperFileName . '.php';
+    require_once 'iMSCP/View/Helpers/' . $helperFileName . '.php';
 }
