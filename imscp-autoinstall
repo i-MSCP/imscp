@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -65,8 +65,7 @@ if(
 		"\nWe have detected $SO->{Distribution} $SO->{CodeName}. Is this ok?"
 	)
 ){
-	print output( "Fail detecting distribution ...", {mode=>'fatal'});
-	exit 1;
+	fatal( "Fail detecting distribution ...");
 }
 
 #we have an OS / Distribution selected
@@ -118,7 +117,6 @@ if (@errors > 0 ) {
 	$msg .= "\nFix those errors and try again";
 	iMSCP::Dialog->factory()->msgbox("\n\\Zb\\Z1 -> Finished but with errors:\\Zn\n".$msg);
 	execute('clear');
-	print $msg;
 	exit 1;
 } elsif(@warnings > 0) {
 	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n";
@@ -129,7 +127,6 @@ if (@errors > 0 ) {
 			"\nThis warnings are not fatal errors. Do you want to continue?"
 	)){
 		execute('clear');
-		print $msg;
 		exit 1;
 	}
 } else {
@@ -155,4 +152,10 @@ END{
 	#} else {
 		#print STDOUT $message;
 	#}
+	my @warnings	= getMessageByType('WARNING');
+	my @errors		= getMessageByType('ERROR');
+	my $msg;
+	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
+	print $msg;
 }

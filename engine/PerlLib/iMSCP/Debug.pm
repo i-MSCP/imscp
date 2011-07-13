@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +37,6 @@ use Carp;
 
 @ISA = ('Common::SingletonClass', 'Exporter');
 @EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent/;
-
 
 BEGIN{
 
