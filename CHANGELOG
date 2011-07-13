@@ -49,6 +49,7 @@ Tickets:
 	- Fixed #130: Defect - PHP gettext native support - Files cache issue
 	- Fixed #131: Bug - Awstats in dynamic mode do not work
 	- Fixed #132: Bug - ACTIVATION_LINK placeholder not replaced in mail
+	- Fixed #139: Bug - Unable to disable domain account
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)

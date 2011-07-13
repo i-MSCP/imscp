@@ -43,7 +43,7 @@ $net2ftp_settings["functionuse_easyWebsite"] = "no";
 $net2ftp_settings["functionuse_bookmark"] = "yes";
 
 // Install functions
-$net2ftp_settings["functionuse_install"] = "yes";
+$net2ftp_settings["functionuse_install"] = "no";
 
 // Advanced functions
 $net2ftp_settings["functionuse_advanced"] = "yes";
@@ -100,5 +100,3 @@ $net2ftp_settings["functionuse_update"] = "no";
 
 // Open file 
 $net2ftp_settings["functionuse_open"] = "yes";
-
-?>

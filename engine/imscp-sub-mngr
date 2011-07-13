@@ -598,7 +598,7 @@ sub sub_add_httpd_file_data {
 
 		# Get default index.html default page content
 		($rs, my $indexTpl) = get_file(
-			"$main::cfg{ROOT_DIR}/gui/domain_default_page/index.html"
+			"$main::cfg{ROOT_DIR}/gui/data/domain_default_page/index.html"
 		);
 		return -1 if ($rs != 0);
 
@@ -624,7 +624,7 @@ sub sub_add_httpd_file_data {
 		# Installing all needed images for index.html default page
 		$rs = sys_command_rs(
 			"$main::cfg{CMD_CP} -Rp $main::cfg{ROOT_DIR}/gui/" .
-				"domain_default_page/images $subDir/htdocs/"
+				"data/domain_default_page/images $subDir/htdocs/"
 			);
 		return -1 if ($rs != 0);
 
