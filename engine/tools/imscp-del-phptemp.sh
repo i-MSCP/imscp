@@ -86,4 +86,4 @@ for wdir in ${APACHE_WWW_DIR}*; do
 done
 
 # And finally remove older files from panel's temporary folder
-removeOldFiles "${ROOT_DIR}/gui/phptmp" "${PHP_STARTER_DIR}/master"
+removeOldFiles "${ROOT_DIR}/gui/data/sessions" "${PHP_STARTER_DIR}/master"

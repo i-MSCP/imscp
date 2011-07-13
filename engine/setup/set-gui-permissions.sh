@@ -44,19 +44,15 @@ if [ $DEBUG -eq 1 ]; then
     echo	"";
 fi
 
-# Fixing gui root directory permisions
 set_permissions "$ROOT_DIR/gui" $PANEL_USER $APACHE_GROUP 0550
 
-# Fixing GUI public directory permissions
 recursive_set_permissions "$ROOT_DIR/gui/public" \
 	$PANEL_USER $APACHE_GROUP 0550 0440
 
-# Fixing GUI library directory permissions
 recursive_set_permissions "$ROOT_DIR/gui/library" \
 	$PANEL_USER $PANEL_USER 0500 0400
 
-# Fixing GUI phptmp directory permission
-recursive_set_permissions "$ROOT_DIR/gui/phptmp" \
+recursive_set_permissions "$ROOT_DIR/gui/data" \
 	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
@@ -65,10 +61,10 @@ recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
 recursive_set_permissions "$ROOT_DIR/gui/themes/user_logos" \
 	$PANEL_USER $APACHE_GROUP 0750 0640
 
-recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
+recursive_set_permissions "$ROOT_DIR/gui/public/tools/filemanager/temp" \
 	$PANEL_USER $PANEL_USER 0700 0600
 
-recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
+recursive_set_permissions "$ROOT_DIR/gui/public/tools/webmail/data" \
 	$PANEL_USER $PANEL_USER 0700 0600
 
 recursive_set_permissions "$ROOT_DIR/gui/software" \

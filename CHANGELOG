@@ -11,6 +11,8 @@ Distributions:
 
 Features / Enhancements:
 	Gui:
+	    Core:
+	        Improved security by moving some files outside documentRoot
 		i18n:
 			Migrated to gettext system (Machine object files), included:
 				- Database is no longer used to store translation tables
