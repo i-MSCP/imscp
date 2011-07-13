@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,13 +36,6 @@ use Common::SingletonClass;
 use vars qw/@ISA/;
 @ISA = ('Common::SingletonClass');
 
-
-sub _init{
-	my $self	= shift;
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].': Ending...');
-}
-
 sub factory{
 
 	debug((caller(0))[3].': Starting...');
@@ -64,6 +57,8 @@ sub factory{
 		} else {
 			fatal((caller(0))[3].': Can not find whiptail or dialog. Please reinstall...');
 		}
+		$self->{instance}->set('title', 'i-MSCP Setup');
+		$self->{instance}->set('backtitle',	'i-MSCP internet Multi Server Control Panel');
 	}
 
 	debug((caller(0))[3].': Ending...');

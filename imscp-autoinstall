@@ -40,6 +40,9 @@ iMSCP::Debug->newDebug('imscp-build.log');
 
 require "$FindBin::Bin/library/autoinstall-methods.pl";
 
+#enter silent mode
+silent(1);
+
 iMSCP::Dialog->factory()->infobox("\\ZuDetecting Debian variant\\Zn");
 my $SO = iMSCP::SO->new();
 my $rs = $SO->getSO();
@@ -67,7 +70,7 @@ if(
 }
 
 #we have an OS / Distribution selected
-my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall1.pm';
+my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall.pm';
 my $class = 'iMSCP::'.lc($SO->{Distribution}).'_autoinstall';
 my $autoInstallClass;
 
@@ -90,9 +93,9 @@ exit $rs if $rs;
 
 	my @steps = (
 		[\&processSpecificConfFile, 'Process distribution specific configurations'],
-		[\&builddaemon, 'Daemon build'],
-		[\&engine, 'Install engine'],
-		[\&gui, 'GUI setup'],
+		#[\&builddaemon, 'Daemon build'],
+		#[\&engine, 'Install engine'],
+		#[\&gui, 'GUI setup'],
 		[\&maintainer, '"Maintainer scripts'],
 	);
 	my $step = 1;

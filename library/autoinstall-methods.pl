@@ -49,7 +49,6 @@ sub builddaemon {
 	$return |= $rs;
 
 	unless($rs){
-		print output("Daemon builded successful", {mode=>'ok'});
 		my $dir = iMSCP::Dir->new();
 		$dir->{dirname} = "$main::SYSTEM_ROOT/daemon";
 		$dir->make() and return 1;
@@ -64,7 +63,6 @@ sub builddaemon {
 	$rs = execute("make clean", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
-	print output("$stderr", {mode=>'error'}) if $rs;
 	error((caller(0))[3].": Can not clean daemon artifacts") if $rs;
 	$return |= $rs;
 

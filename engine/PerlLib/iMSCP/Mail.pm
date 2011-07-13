@@ -31,7 +31,7 @@ use warnings;
 use iMSCP::Debug;
 
 use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass', "Common::SetterClass");
+@ISA = ('Common::SimpleClass', 'Common::SetterClass');
 use Common::SimpleClass;
 use Common::SetterClass;
 

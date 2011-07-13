@@ -47,11 +47,38 @@ sub _init{
 	0;
 }
 
+sub installDialog{
+	debug((caller(0))[3].': Starting...');
+
+	my $self = shift;
+
+	use iMSCP::Execute;
+	use iMSCP::Dialog;
+
+	iMSCP::Dialog->factory()->infobox("Installing Dialog");
+
+	my($rs, $stderr);
+
+	$rs = execute("apt-get -y install dialog", undef, \$stderr);
+	error((caller(0))[3]. ": $stderr") if $stderr;
+	error((caller(0))[3].": Can not install packages.") if $rs;
+	return $rs if $rs;
+
+	#force dialog now
+	iMSCP::Dialog->reset();
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
 sub preBuild{
 	debug((caller(0))[3].': Starting...');
 
 	my $self = shift;
 	my $rs;
+
+	$rs = $self->installDialog();
+	return $rs if $rs;
 
 	$rs = $self->processAptList();
 	return $rs if $rs;
@@ -61,9 +88,6 @@ sub preBuild{
 
 	$rs = $self->installPackages();
 	return $rs if $rs;
-
-	#force dialog now
-	iMSCP::Dialog->reset();
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -76,7 +100,9 @@ sub processAptList{
 	my $self = shift;
 
 	use iMSCP::File;
-	use Data::Dumper;
+	use iMSCP::Dialog;
+
+	iMSCP::Dialog->factory()->infobox("Processing apt sources");
 
 	my $file = iMSCP::File->new(filename => '/etc/apt/sources.list');
 
@@ -118,6 +144,8 @@ sub processAptList{
 
 	$file->set($content);
 	$file->save() and return 1;
+
+	iMSCP::Dialog->factory()->infobox("Update apt sources");
 
 	$rs = execute('apt-get update', \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
@@ -213,6 +241,9 @@ sub installPackages{
 	my $self = shift;
 
 	use iMSCP::Execute;
+	use iMSCP::Dialog;
+
+	iMSCP::Dialog->factory()->infobox("Installing needed packages");
 
 	my($rs, $stderr);
 

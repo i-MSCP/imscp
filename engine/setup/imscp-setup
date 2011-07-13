@@ -76,7 +76,7 @@ sub setup_start_up {
 	umask(027);
 
 	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
-	iMSCP::Dialog->new(
+	iMSCP::Dialog->factory(
 		'title'		=> 'i-MSCP Setup',
 		'backtitle'	=> "i-MSCP internet Multi Server Control Panel",
 	);
@@ -148,7 +148,7 @@ sub setup_engine {
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->new()->needGauge();
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 	debug((caller(0))[3].': Ending...');
 	0;
 }

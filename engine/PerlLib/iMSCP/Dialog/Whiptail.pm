@@ -33,14 +33,12 @@ use FileHandle;
 use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
 use Exporter;
-use Common::SingletonClass;
 use Term::ReadKey;
 
 use vars qw/@ISA @EXPORT/;
-@ISA = ("Common::SingletonClass", 'Exporter');
-@EXPORT = qw/msgbox yesno passwordbox/;
-
-
+@ISA = ('Common::SingletonClass', 'iMSCP::Dialog::Dialog');
+use Common::SingletonClass;
+use iMSCP::Dialog::Dialog;
 
 sub _init{
 	my $self	= shift;
@@ -72,17 +70,6 @@ sub _init{
 	0;
 }
 
-sub _getConsoleSize{
-	my $self = shift;
-	debug((caller(0))[3].': Starting...');
-	my ($columns, $lines, undef, undef) = GetTerminalSize();
-	$self->{'lines'} = $lines - 3;
-	$self->{'columns'} = $columns - 2;
-	debug((caller(0))[3].": Lines->$self->{'lines'}");
-	debug((caller(0))[3].": Columns->$self->{'columns'}");
-	debug((caller(0))[3].': Ending...');
-}
-
 sub _find_bin {
 	debug((caller(0))[3].': Starting...');
 
@@ -95,58 +82,6 @@ sub _find_bin {
 	$self->{'bin'} = $stdout if $stdout;
 	fatal((caller(0))[3].': Can`t find whiptail binary '.$variant) unless (-x $self->{'bin'});
 
-	debug((caller(0))[3].': Ending...');
-}
-
-sub _strip_formats {
-	my ($self, $text)	= (shift, shift);
-	debug((caller(0))[3].': Starting...');
-	$text =~ s!\\Z[0-9bBuUrRn]!!gmi;
-	debug((caller(0))[3].': Ending...');
-	return($text);
-}
-
-sub _buildCommand {
-	my $self = shift;
-	debug((caller(0))[3].': Starting...');
-	my $command = '';
-	foreach my $prop (keys %{$self->{'_opts'}}){
-		if(
-			defined($self->{'_opts'}->{$prop})
-		){
-			$command .= " --$prop ";
-			if (ref $self->{'_opts'}->{$prop} eq 'ARRAY') {
-				$command .= $self->_clean("@{$self->{'_opts'}->{$prop}}")
-			}elsif($self->{'_opts'}->{$prop} !~ /^\d+$/ && $self->{'_opts'}->{$prop}){
-					$command .= '\''.$self->_clean($self->{'_opts'}->{$prop}).'\'';
-			} elsif($self->{'_opts'}->{$prop} =~ /^\d+$/){
-				$command .= $self->{'_opts'}->{$prop};
-			}
-		}
-	}
-	debug((caller(0))[3].": command parametters -> ".$command);
-	debug((caller(0))[3].': Ending...');
-	return $command;
-}
-
-sub _clean{
-	my ($self, $text) = (shift, shift);
-	debug((caller(0))[3].': Starting...');
-	#$text =~ s!\\!\\\\!g;
-	$text =~ s!'!"!g;
-	debug((caller(0))[3].': Ending...');
-	return $text;
-}
-
-sub _restoreDefaults{
-	my $self = shift;
-	debug((caller(0))[3].': Starting...');
-	foreach my $prop (keys %{$self->{'_opts'}}){
-		if(!(grep $_ eq $prop, qw/title backtitle colors begin/)){
-			$self->{'_opts'}->{$prop} = undef;
-		}
-	}
-	$self->{'_opts'}->{'begin'} = [1,0];
 	debug((caller(0))[3].': Ending...');
 }
 
@@ -178,57 +113,9 @@ sub _execute{
 	wantarray ? return ($rv, $return) : $return;
 }
 
-sub _textbox{
-	debug((caller(0))[3].': Starting...');
 
-	my $self = shift;
-	my $text = shift;
-	my $mode = shift;
-	my $init = shift || 0;
-
-	my $autosize = $self->{'autosize'};
-	$self->{'autosize'} = undef;
-	my $begin = $self->{'_opts'}->{'begin'};
-	$self->{'_opts'}->{'begin'} = undef;
-	my ($rv, $rs) = $self->_execute($text, $init, $mode);
-	$self->{'_opts'}->{'begin'} = $begin;
-	$self->{'autosize'} = $autosize;
-
-	debug((caller(0))[3].': Ending...');
-	wantarray ? return ($rv, $rs) : $rs;
-}
-
-sub set{
-	debug((caller(0))[3].': Starting...');
-
-	my $self	= shift;
-	my $param	= shift;
-	my $value	= shift;
-	my $return	= undef;
-
-	if($param  && exists $self->{'_opts'}->{$param}){
-		$return						= $self->{'_opts'}->{$param};
-		$self->{'_opts'}->{$param}	= $value;
-	}
-
-	debug((caller(0))[3].': Ending...');
-	$return;
-}
 ########################################################################################
 
-sub checkbox{
-	debug((caller(0))[3].': Starting...');
-
-	my $self = shift;
-	my $text = shift;
-	my @init = (@_);
-	my $opts = '';
-
-	$opts .= "$_ '' on " foreach(@init);
-
-	debug((caller(0))[3].': Ending...');
-	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
-}
 
 sub radiolist{
 	debug((caller(0))[3].': Starting...');
@@ -245,54 +132,6 @@ sub radiolist{
 	return $self->_textbox($text, 'radiolist', (@init +1)." $opts");
 }
 
-sub msgbox{
-	debug((caller(0))[3].': Starting...');
-
-	my $self = shift;
-	my $text = shift;
-
-	debug((caller(0))[3].': Ending...');
-	return $self->_textbox($text, 'msgbox');
-}
-
-sub yesno{
-	debug((caller(0))[3].': Starting...');
-
-	my $self = shift;
-	my $text = shift;
-
-	my ($rv, undef) = ($self->_textbox($text, 'yesno'));
-
-	debug((caller(0))[3].': Ending...');
-	return $rv;
-}
-
-sub inputbox{
-	debug((caller(0))[3].': Starting...');
-
-	my $self = shift;
-	my $text = shift;
-	my $init = shift || '';
-
-	debug((caller(0))[3].': Ending...');
-	return $self->_textbox($text, 'inputbox', $init);
-}
-
-sub infobox{
-	debug((caller(0))[3].': Starting...');
-
-	my $self = shift;
-	my $text = shift;
-
-	my $clear					= $self->{'_opts'}->{'clear'};
-	$self->{'_opts'}->{'clear'}	= undef;
-	my $rs						= $self->_textbox($text, 'infobox');
-	$self->{'_opts'}->{'clear'}	= $clear;
-
-	debug((caller(0))[3].': Ending...');
-	$rs;
-}
-
 sub passwordbox{
 	debug((caller(0))[3].': Starting...');
 
@@ -300,7 +139,7 @@ sub passwordbox{
 	my $text = shift;
 	my $init = shift || '';
 
-	$self->{'_opts'}->{'insecure'} = '';
+	$self->{'_opts'}->{'insecure'} = undef;
 
 	debug((caller(0))[3].': Ending...');
 	return $self->_textbox($text, 'passwordbox', "'$init'");
@@ -314,9 +153,7 @@ sub startGauge{
 	debug((caller(0))[3].': Starting...');
 
 	$self->{'gauge'} ||= {};
-	if (defined $self->{'gauge'}->{'FH'}) {
-		return(0);
-	}
+	return(0) if (defined $self->{'gauge'}->{'FH'});
 
 	$text = $self->_clean($text);
 	$init = $init ? " $init" : 0;
@@ -397,7 +234,6 @@ sub endGauge{
 	0;
 }
 
-#sub infobox <text> <height> <width> # todo
 #sub textbox <file> <height> <width> # todo
 #sub menu <text> <height> <width> <listheight> [tag item] ... # todo
 

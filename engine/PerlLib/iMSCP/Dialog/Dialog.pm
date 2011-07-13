@@ -37,8 +37,7 @@ use Common::SingletonClass;
 use Term::ReadKey;
 
 use vars qw/@ISA @EXPORT/;
-@ISA = ("Common::SingletonClass", 'Exporter');
-@EXPORT = qw/msgbox yesno passwordbox/;
+@ISA = ('Common::SingletonClass');
 
 sub _init{
 	my $self	= shift;
@@ -139,7 +138,7 @@ sub _find_bin {
 	fatal((caller(0))[3].": Can't find $variant binary $stderr") if $stderr;
 
 	$self->{'bin'} = $stdout if $stdout;
-	fatal((caller(0))[3].': Can`t find dialog binary '.$variant) unless (-x $self->{'bin'});
+	fatal((caller(0))[3].': Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
 
 	debug((caller(0))[3].': Ending...');
 }
@@ -264,13 +263,15 @@ sub radiolist{
 }
 
 sub checkbox{
+	debug((caller(0))[3].': Starting...');
 	my $self = shift;
 	my $text = shift;
 	my @init = (@_);
 	my $opts = '';
-	for my $init (@init){
-		$opts .= "$init '' on ";
-	}
+
+	$opts .= "$_ '' on " foreach(@init);
+
+	debug((caller(0))[3].': Ending...');
 	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
 }
 
@@ -296,30 +297,63 @@ sub dselect{
 }
 
 sub msgbox{
+	debug((caller(0))[3].': Starting...');
+
 	my $self = shift;
 	my $text = shift;
+
+	debug((caller(0))[3].': Ending...');
 	return $self->_textbox($text, 'msgbox');
 }
 
 sub yesno{
+	debug((caller(0))[3].': Starting...');
+
 	my $self = shift;
 	my $text = shift;
+
 	my ($rv, undef) = ($self->_textbox($text, 'yesno'));
+
+	debug((caller(0))[3].': Ending...');
 	return $rv;
 }
 
 sub inputbox{
+	debug((caller(0))[3].': Starting...');
+
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
+
+	debug((caller(0))[3].': Ending...');
 	return $self->_textbox($text, 'inputbox', $init);
 }
 
+sub infobox{
+	debug((caller(0))[3].': Starting...');
+
+	my $self = shift;
+	my $text = shift;
+
+	my $clear					= $self->{'_opts'}->{'clear'};
+	$self->{'_opts'}->{'clear'}	= undef;
+	my $rs						= $self->_textbox($text, 'infobox');
+	$self->{'_opts'}->{'clear'}	= $clear;
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
 sub passwordbox{
+	debug((caller(0))[3].': Starting...');
+
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
+
 	$self->{'_opts'}->{'insecure'} = '';
+
+	debug((caller(0))[3].': Ending...');
 	return $self->_textbox($text, 'passwordbox', "'$init'");
 }
 
@@ -331,9 +365,7 @@ sub startGauge{
 	debug((caller(0))[3].': Starting...');
 
 	$self->{'gauge'} ||= {};
-	if (defined $self->{'gauge'}->{'FH'}) {
-		return(0);
-	}
+	return(0) if (defined $self->{'gauge'}->{'FH'});
 
 	$text = $self->_clean($text);
 	$init = $init ? " $init" : 0;
@@ -361,11 +393,18 @@ sub startGauge{
 	debug((caller(0))[3].': Ending...');
 	$rv;
 }
+
 sub needGauge{
+	debug((caller(0))[3].': Starting...');
+
 	my $self	= shift;
+
+	debug((caller(0))[3].': Ending...');
+
 	return 0 if $self->{'gauge'}->{'FH'};
 	1;
 }
+
 sub setGauge{
 	my $self	= shift;
 	my $value	= shift;
@@ -395,7 +434,7 @@ sub setGauge{
 }
 
 sub endGauge{
-	my $self = iMSCP::Dialog->new();
+	my $self = iMSCP::Dialog->factory();
 
 	debug((caller(0))[3].': Starting...');
 

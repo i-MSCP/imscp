@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,8 +35,8 @@ use Common::SingletonClass;
 use Log::Message;
 use Carp;
 
-@ISA = ("Common::SingletonClass", 'Exporter');
-@EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastError output getMessageByType/;
+@ISA = ('Common::SingletonClass', 'Exporter');
+@EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent/;
 
 
 BEGIN{
@@ -54,11 +54,12 @@ BEGIN{
 }
 
 sub _init{
-	my $self	= shift;
-	$self->{log}		= {};
-	$self->{logLevels}	= ();
-	$self->{lastLog}	= Log::Message->new( private => 1);
-	$self->{log}->{'default'} = $self->{lastLog};
+	my $self					= shift;
+	$self->{log}				= {};
+	$self->{logLevels}			= ();
+	$self->{lastLog}			= Log::Message->new( private => 1);
+	$self->{log}->{'default'}	= $self->{lastLog};
+	$self->{silent}				= 0;
 }
 
 sub newDebug{
@@ -77,6 +78,10 @@ sub endDebug{
 	1;
 }
 
+sub silent{
+	iMSCP::Debug->new()->{silent} = shift || 0;
+}
+
 sub debug{
 	my $message		= shift || '';
 	iMSCP::Debug->new()->{lastLog}->store(message => $message, tag => 'DEBUG', level => 'log');
@@ -87,7 +92,7 @@ sub warning{
 	my $verbosity	= shift or 1;
 	my $self = iMSCP::Debug->new();
 	$self->{lastLog}->store(message => $message, tag => 'WARNING', level => $verbosity ? 'cluck' : 'log');
-	print STDERR output("$message", {mode=>'warning'});
+	print STDERR output("$message", {mode=>'warning'}) unless $self->{silent};
 }
 
 sub error{
@@ -95,7 +100,7 @@ sub error{
 	my $verbosity	= shift or 1;
 	my $self = iMSCP::Debug->new();
 	$self->{lastLog}->store(message => $message, tag => 'ERROR', level => $verbosity ? 'cluck' : 'log');
-	print STDERR output("$message", {mode=>'error'});
+	print STDERR output("$message", {mode=>'error'}) unless $self->{silent};
 }
 
 sub fatal{
