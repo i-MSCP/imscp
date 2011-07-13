@@ -390,10 +390,10 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
     update_reseller_c_props(get_reseller_id($domain_id));
 
     if ($action == 'disable') {
-        write_log("$user_logged: suspended domain: $domain_name");
+        write_log("$user_logged: suspended domain: $domain_name", E_USER_NOTICE);
         $_SESSION['user_disabled'] = 1;
     } else if ($action == 'enable') {
-        write_log("$user_logged: enabled domain: $domain_name");
+        write_log("$user_logged: enabled domain: $domain_name", E_USER_NOTICE);
         $_SESSION['user_enabled'] = 1;
     } else {
         return;
@@ -567,7 +567,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     $query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?";
 
     exec_query($query, $domain_admin_id);
-    write_log($_SESSION['user_logged'] . ': deletes domain ' . $domain_name);
+    write_log($_SESSION['user_logged'] . ': deletes domain ' . $domain_name, E_USER_NOTICE);
 
     if(isset($reseller_id)) {
         update_reseller_c_props($reseller_id);
@@ -1083,7 +1083,7 @@ function generate_user_traffic($domainId)
     if ($rs->rowCount() == 0 || $rs->rowCount() > 1) {
         write_log(
             'TRAFFIC WARNING: ' . $rs->fields['domain_name'] .
-            ' manages incorrect number of domains: ' . $rs->rowCount()
+            ' manages incorrect number of domains: ' . $rs->rowCount(), E_USER_WARNING
         );
 
         return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -1213,15 +1213,14 @@ function get_admin_logo($userId, $returnDefault = true)
  * Writes a log message in the database and sends it to the administrator by email.
  *
  * @param string $msg Message to log
- * @param int $level Log level
+ * @param int $logLevel Log level
  * @return void
  */
-function write_log($msg, $level = E_USER_WARNING)
+function write_log($msg, $logLevel = E_USER_WARNING)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-	$logLevel = isset($cfg->LOG_LEVEL) ? $cfg->LOG_LEVEL : E_USER_WARNING;
     $clientIp = (isset($_SERVER['REMOTE_ADDR'])) ?$_SERVER['REMOTE_ADDR'] : 'unknown';
 
     $msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>',
@@ -1241,11 +1240,11 @@ function write_log($msg, $level = E_USER_WARNING)
         $subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
 
-		if($level == E_USER_NOTICE) {
+		if($logLevel == E_USER_NOTICE) {
 			$severity = 'Notice (You can ignore this message)';
-		} elseif($level == E_USER_WARNING) {
+		} elseif($logLevel == E_USER_WARNING) {
 			$severity = 'Warning';
-		} elseif($level == E_USER_ERROR) {
+		} elseif($logLevel == E_USER_ERROR) {
 			$severity = 'Error';
 		} else {
 			$severity = 'Unknown';
@@ -1356,7 +1355,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
     $from_name = tohtml($from_name);
 
     write_log("$admin_login: Auto Add User To: |$name <$uemail>|, From: " .
-              "|$from_name <$from_email>|, Status: |$mail_status|!");
+              "|$from_name <$from_email>|, Status: |$mail_status|!", E_USER_NOTICE);
 }
 
 /************************************************************************************

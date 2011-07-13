@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.3\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2011-07-04 18:06+0200\n"
+"POT-Creation-Date: 2011-07-08 17:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "_: Localised language"
+msgstr ""
+
+msgid "File is not readable."
+msgstr ""
+
+msgid "Only gettext Machine Object files (MO files) are accepted."
+msgstr ""
+
+#, php-format
+msgid "%s is not a valid i-MSCP language file."
+msgstr ""
+
+#, php-format
+msgid "Unable to create '%s' directory for language file."
+msgstr ""
+
+msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr ""
+
+msgid "Unable to move language file in language directory."
+msgstr ""
+
+msgid "File exceeds the size limit."
+msgstr ""
+
+msgid "Upload failed."
+msgstr ""
+
+msgid "Temporary folder not found."
+msgstr ""
+
+msgid "Failed to write file to disk."
+msgstr ""
+
+msgid "A PHP extension stopped the file upload."
 msgstr ""
 
 #, php-format
@@ -1596,42 +1631,10 @@ msgstr ""
 msgid "%d strings translated"
 msgstr ""
 
-msgid "Language file no readable."
+msgid "Language file successfully installed/updated."
 msgstr ""
 
-msgid "The file does not contain all the necessary information."
-msgstr ""
-
-#, php-format
-msgid "%s added new language: %s"
-msgstr ""
-
-msgid "Language was successfully installed."
-msgstr ""
-
-#, php-format
-msgid "%s updated language: %s"
-msgstr ""
-
-msgid "Language was successfully updated."
-msgstr ""
-
-msgid "Unable to read the language file."
-msgstr ""
-
-msgid "The file doesn't contains any content"
-msgstr ""
-
-msgid "The 'Language' header doesn't contains the required value"
-msgstr ""
-
-msgid "The language file doesn't contains the required 'Language' header."
-msgstr ""
-
-msgid "No headers found in language file."
-msgstr ""
-
-msgid "Default language was successfully changed."
+msgid "Default language successfully updated."
 msgstr ""
 
 msgid "Languages index was successfully re-built."
@@ -4123,9 +4126,10 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"Hello {NAME}!\n"
+"Hello {NAME}\n"
 "\n"
 "A new i-MSCP account has been created for you.\n"
+"\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -4136,9 +4140,8 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n"
+"(Same username and password than above)\n"
 "\n"
 "Best wishes with i-MSCP!\n"
 "The i-MSCP Team.\n"
@@ -4148,9 +4151,10 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"Hello {NAME}!\n"
+"Hello {NAME}\n"
 "\n"
 "A new i-MSCP account has been created for you.\n"
+"\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -4160,9 +4164,6 @@ msgid ""
 "Remember to change your password often and the first time you login.\n"
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
 "\n"
 "Best wishes with i-MSCP!\n"
 "The i-MSCP Team.\n"
@@ -4241,6 +4242,11 @@ msgid ""
 "Thank you for using i-MSCP services.\n"
 "The i-MSCP Team\n"
 "\n"
+msgstr ""
+
+msgid ""
+"We are sorry, but the system is currently under maintenance.\n"
+"Please try again later."
 msgstr ""
 
 msgid "Your message has been sent."

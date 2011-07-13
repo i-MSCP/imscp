@@ -18,7 +18,7 @@ Features / Enhancements:
 				- Importing languages files for install/update is still supported but
 				only for Machine Object files
 		Tools:
-			Updated PhpMyAdmin to version 3.4.3
+			Updated PhpMyAdmin to version 3.4.3.1
 
 Other:
 	Gui:
@@ -42,8 +42,11 @@ Tickets:
 	- Fixed #125: Defect - Database Upgrade Required on Clean Install
 	- Fixed #126: Bug - Enter key on login form redirect on lost password page
 	- Fixed #127: Update - jQuery v1.6.2 available
+	- Fixed #128: Update - phpMyAdmin 3.4.3.1 available
 	- Fixed #129: Bug - Default ISP logo not showed - wrong path generated
 	- Fixed #130: Defect - PHP gettext native support - Files cache issue
+	- Fixed #131: Bug - Awstats in dynamic mode do not work
+	- Fixed #132: Bug - ACTIVATION_LINK placeholder not replaced in mail
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
