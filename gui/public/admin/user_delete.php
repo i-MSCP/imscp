@@ -402,7 +402,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 		redirectTo('manage_users.php');
 	}
 } elseif (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
-	validate_domain_deletion(intval($_GET['domain_id']));
+	validate_domain_deletion($tpl, intval($_GET['domain_id']));
 } elseif (isset($_POST['domain_id']) && is_numeric($_POST['domain_id']) &&
           isset($_POST['delete']) && $_POST['delete'] == 1) {
 	delete_domain((int)$_POST['domain_id'], 'manage_users.php');
