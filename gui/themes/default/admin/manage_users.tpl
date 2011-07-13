@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
@@ -16,52 +16,42 @@
         </script>
         <![endif]-->
         <script type="text/javascript">
-        <!--
-        function action_status(url, dmn_name) {
-            if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
-                return false;
-            location = url;
-        }
+            <!--
+            function action_status(url, dmn_name) {
+                if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name))) {
+                    return false;
+                }
 
-        function action_delete(url, dmn_name) {
-            if (!confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name)))
-                return false;
-            location = url;
-        }
-        //-->
+                location = url;
+            }
+            //-->
         </script>
     </head>
-
     <body>
-
         <div class="header">
             {MAIN_MENU}
-
             <div class="logo">
                 <img src="{ISP_LOGO}" alt="i-MSCP logo" />
             </div>
         </div>
-
         <div class="location">
             <div class="location-area icons-left">
                 <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+                </li>
             </ul>
             <ul class="path">
                 <li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
             </ul>
         </div>
-
         <div class="left_menu">
             {MENU}
         </div>
-
         <div class="body">
             <h2 class="users"><span>{TR_ADMINISTRATORS}</span></h2>
-
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
@@ -90,7 +80,7 @@
 
                         <!-- EDP: admin_delete_show -->
                         <!-- BDP: admin_delete_link -->
-                            <a href="#" class="icon i_delete" onclick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
+                        <a href="#" class="icon i_delete" onclick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
                         <!-- EDP: admin_delete_link -->
                     </td>
                 </tr>
@@ -107,27 +97,26 @@
 
             <!-- BDP: rsl_list -->
             <table>
-            <tr>
-                <th style="width:300px;">{TR_RSL_USERNAME}</th>
-                <th>{TR_CREATED_ON}</th>
-                <th>{TR_RSL_CREATED_BY}</th>
-                <th>{TR_RSL_OPTIONS}</th>
-            </tr>
-            <!-- BDP: rsl_item -->
-            <tr>
-                <td>{RSL_USERNAME}</td>
-                <td>{RESELLER_CREATED_ON}</td>
-                <td>{RSL_CREATED_BY}</td>
-                <td>
-                    <a class="icon i_details" href="{URL_CHANGE_INTERFACE}" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
-                    <a href="{URL_EDIT_RSL}" class="icon i_user">{TR_EDIT}</a>
-                    <a href="#" class="icon i_delete" onclick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')">{TR_DELETE}</a>
-                </td>
-            </tr>
-            <!-- EDP: rsl_item -->
+                <tr>
+                    <th style="width:300px;">{TR_RSL_USERNAME}</th>
+                    <th>{TR_CREATED_ON}</th>
+                    <th>{TR_RSL_CREATED_BY}</th>
+                    <th>{TR_RSL_OPTIONS}</th>
+                </tr>
+                <!-- BDP: rsl_item -->
+                <tr>
+                    <td>{RSL_USERNAME}</td>
+                    <td>{RESELLER_CREATED_ON}</td>
+                    <td>{RSL_CREATED_BY}</td>
+                    <td>
+                        <a class="icon i_details" href="{URL_CHANGE_INTERFACE}" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
+                        <a href="{URL_EDIT_RSL}" class="icon i_user">{TR_EDIT}</a>
+                        <a href="#" class="icon i_delete" onclick="action_delete('{URL_DELETE_RSL}', '{RSL_USERNAME}')">{TR_DELETE}</a>
+                    </td>
+                </tr>
+                <!-- EDP: rsl_item -->
             </table>
             <!-- EDP: rsl_list -->
-
 
             <h2 class="users"><span>{TR_USERS}</span></h2>
 
@@ -157,8 +146,6 @@
                 <input name="Submit" type="submit" value="{TR_SEARCH}" />
                 <input type="hidden" name="uaction" value="go_search" />
             </form>
-
-
             <table>
                 <tr>
                     <th>{TR_USER_STATUS}</th>
@@ -169,15 +156,17 @@
                 </tr>
                 <!-- BDP: usr_item -->
                 <tr>
-                    <td><a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{USR_USERNAME}')" class="icon i_{STATUS}">{TR_STATUS}</a></td>
                     <td>
-                            <!-- BDP: usr_status_reload_true -->
-                            <a href="http://{USR_USERNAME}/" target="_blank" class="icon i_goto">{USR_USERNAME}</a>
-                            <!-- EDP: usr_status_reload_true -->
+                        <a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{USR_USERNAME}')" class="icon i_{STATUS}">{TR_STATUS}</a>
+                    </td>
+                    <td>
+                        <!-- BDP: usr_status_reload_true -->
+                        <a href="http://{USR_USERNAME}/" target="_blank" class="icon i_goto">{USR_USERNAME}</a>
+                        <!-- EDP: usr_status_reload_true -->
 
-                            <!-- BDP: usr_status_reload_false -->
-                            <span class="icon i_goto">{USR_USERNAME}</span>
-                            <!-- EDP: usr_status_reload_false -->
+                        <!-- BDP: usr_status_reload_false -->
+                        <span class="icon i_goto">{USR_USERNAME}</span>
+                        <!-- EDP: usr_status_reload_false -->
                     </td>
                     <td>{USER_CREATED_ON}</td>
                     <td>{USR_CREATED_BY}</td>
@@ -185,36 +174,38 @@
                         <a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
                         <a class="icon i_details" href="{URL_CHANGE_INTERFACE}" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
                         <!-- BDP: edit_option -->
-                            <a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
+                        <a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
                         <!-- EDP: edit_option -->
-                            <a class="icon i_user" href="{URL_EDIT_USR}">{TR_EDIT_USR}</a>
+                        <a class="icon i_user" href="{URL_EDIT_USR}">{TR_EDIT_USR}</a>
                         <!-- BDP: usr_delete_show -->
-                        
+
                         <!-- EDP: usr_delete_show -->
                         <!-- BDP: usr_delete_link -->
-                            <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE_USR}', '{USR_USERNAME}')">{TR_DELETE}</a>
+                        <a class="icon i_delete" href="user_delete.php?domain_id={DOMAIN_ID}">{TR_DELETE}</a>
                         <!-- EDP: usr_delete_link -->
                     </td>
                 </tr>
                 <!-- BDP: user_details -->
                 <tr>
-                    <td colspan="5"><a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto">{ALIAS_DOMAIN}</a></td>
+                    <td colspan="5">
+                        <a href="http://www.{ALIAS_DOMAIN}/" target="_blank" class="icon i_goto">{ALIAS_DOMAIN}</a>
+                    </td>
                 </tr>
                 <!-- EDP: user_details -->
                 <!-- EDP: usr_item -->
             </table>
             <div class="paginator">
                 <!-- BDP: scroll_next_gray -->
-                    <a class="icon i_next_gray" href="#">&nbsp;</a>
+                <a class="icon i_next_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_next_gray -->
                 <!-- BDP: scroll_next -->
-                    <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
+                <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
                 <!-- EDP: scroll_next -->
                 <!-- BDP: scroll_prev -->
-                    <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="previous">previous</a>
+                <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="previous">previous</a>
                 <!-- EDP: scroll_prev -->
                 <!-- BDP: scroll_prev_gray -->
-                    <a class="icon i_prev_gray" href="#">&nbsp;</a>
+                <a class="icon i_prev_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_prev_gray -->
             </div>
             <!-- EDP: usr_list -->
