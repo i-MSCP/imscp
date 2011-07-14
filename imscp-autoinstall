@@ -35,6 +35,7 @@ use lib "$FindBin::Bin/engine/PerlVendor";
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::SO;
+use iMSCP::Config;
 
 iMSCP::Debug->newDebug('imscp-build.log');
 
@@ -69,8 +70,11 @@ if(
 	exit 1;
 }
 
+my $defaultConf = "$FindBin::Bin/configs/".lc($SO->{Distribution})."/imscp.conf";
+tie %main::defaultConf, 'iMSCP::Config','fileName' => $defaultConf;
+
 #we have an OS / Distribution selected
-my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall1.pm';
+my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall.pm';
 my $class = 'iMSCP::'.lc($SO->{Distribution}).'_autoinstall';
 my $autoInstallClass;
 
@@ -94,8 +98,8 @@ exit $rs if $rs;
 	my @steps = (
 		[\&processSpecificConfFile, 'Process distribution specific configurations'],
 		[\&builddaemon, 'Daemon build'],
-		#[\&engine, 'Install engine'],
-		#[\&gui, 'GUI setup'],
+		[\&engine, 'Install engine'],
+		[\&gui, 'GUI setup'],
 		[\&maintainer, '"Maintainer scripts'],
 	);
 	my $step = 1;
@@ -134,29 +138,43 @@ if (@errors > 0 ) {
 	iMSCP::Dialog->factory()->msgbox("\n\\Z2 -> Finished without errors");
 }
 
-iMSCP::Dialog->factory()->msgbox("\nNow we can start setup process\n ");
+iMSCP::Dialog->factory()->msgbox(
+	"\n\\Z2 Now we can start setup process\n "
+);
 
 exit 0;
 
 END{
+	execute('clear');
+
+	use iMSCP::Dir;
+	my $dir = iMSCP::Dir->new(dirname => $main::defaultConf{LOG_DIR});
+
+	my $rs = $dir->make(
+		{
+				mode => 0755,
+				user => $main::defaultConf{ROOT_USER},
+				group => $main::defaultConf{ROOT_GROUP}
+		}
+	) unless( -d $main::defaultConf{LOG_DIR});
+
 	my @warnings	= getMessageByType('WARNING');
 	my @errors		= getMessageByType('ERROR');
-	my $msg;
-	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
+
+	my $msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
-	print $msg;
+	print $msg if $msg;
 
 	my $message = getMessage();
 	iMSCP::Debug->newDebug('discard');
-	#execute('clear');
-	#if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
-		#open(F, '>:utf8', "$main::imscpConfig{'LOG_DIR'}/imscp-setup.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-setup.log' for writing: $!");
-		open(F, '>:utf8', "/imscp-setup.log") or fatal("Error: Can't open file '/imscp-setup.log' for writing: $!");
-		print F $message;
-		close F;
-		#print STDOUT "A log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
-		#print STDOUT "A log file with details can be found at: /imscp-setup.log";
-	#} else {
-		#print STDOUT $message;
-	#}
+
+	fatal("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
+
+	open(F, '>:utf8', "$main::defaultConf{'LOG_DIR'}/imscp-setup.log")
+	or
+	fatal("Error: Can't open file '$main::defaultConf{'LOG_DIR'}/imscp-setup.log' for writing: $!");
+	print F $message;
+	close F;
+	print STDOUT "A log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
+
 }

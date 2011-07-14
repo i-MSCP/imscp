@@ -76,10 +76,6 @@ sub setup_start_up {
 	umask(027);
 
 	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
-	iMSCP::Dialog->factory(
-		'title'		=> 'i-MSCP Setup',
-		'backtitle'	=> "i-MSCP internet Multi Server Control Panel",
-	);
 	if(-e '/tmp/imscp-backup-all.lock') {
 		iMSCP::Dialog->factory()->msgbox(
 					"\n

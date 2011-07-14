@@ -30,6 +30,7 @@ use strict;
 use warnings;
 
 use iMSCP::Debug;
+use Symbol;
 use iMSCP::Execute qw/execute/;
 
 use vars qw/@ISA/;
@@ -80,6 +81,8 @@ sub preBuild{
 	$rs = $self->installDialog();
 	return $rs if $rs;
 
+	$rs = $self->load_old_imscp_cfg();
+
 	$rs = $self->processAptList();
 	return $rs if $rs;
 
@@ -90,6 +93,29 @@ sub preBuild{
 	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+################################################################################
+# Load old i-MSCP main configuration file
+#
+# @return void
+#
+sub load_old_imscp_cfg {
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Config;
+
+	$main::imscpConfigOld = {};
+
+	$main::imscpConfigOld = {};
+	my $oldConf = "$main::defaultConf{'CONF_DIR'}/imscp.old.conf";
+
+	tie %main::imscpConfigOld, 'iMSCP::Config', 'fileName' => $oldConf, noerrors => 1 if (-f $oldConf);
+
+	debug((caller(0))[3].': Ending...');
+
 	0;
 }
 
@@ -164,14 +190,12 @@ sub readPackages{
 	my $confile = "$FindBin::Bin/docs/Debian/debian-packages-".lc($SO->{CodeName}).".xml";
 
 	fatal("Debian $SO->{CodeName} is not supported!") if (! -f  $confile);
-	# create object
+
 	use XML::Simple;
 	my $xml = XML::Simple->new(NoEscape => 1);
 
-	# read XML file
 	my $data = eval { $xml->XMLin($confile, KeyAttr => 'name') };
-	use Data::Dumper;
-	#fatal(Dumper($data));
+
 	foreach(keys %{$data}){
 		if(ref($data->{$_}) eq 'ARRAY'){
 			$self->parseArray($data->{$_});
@@ -179,6 +203,21 @@ sub readPackages{
 			if($data->{$_}->{alternative}){
 				my $server  = $_;
 				my @alternative = keys %{$data->{$server}->{alternative}};
+
+				for ( my $index = $#alternative; $index >= 0; --$index ){
+					my $defServer = $alternative[$index];
+					my $oldServer = $main::imscpConfigOld{uc($server).'_SERVER'};
+					if($@){
+						error((caller(0))[3]." :$@");
+						return 1;
+					}
+					if($oldServer && $defServer eq $oldServer){
+						splice @alternative, $index, 1 ;
+						unshift(@alternative, $defServer);
+						last;
+					}
+				}
+
 				my $rs;
 				do{
 					$rs = iMSCP::Dialog->factory()->radiolist(
@@ -261,6 +300,12 @@ sub postBuild{
 
 	my $self = shift;
 
+	my $x = qualify_to_ref("SYSTEM_CONF", 'main');
+
+	my $nextConf = $$$x."/imscp.conf";
+	tie %main::nextConf, 'iMSCP::Config', 'fileName' => $nextConf;
+
+	$main::nextConf{uc($_)."_SERVER"} = lc($self->{userSelection}->{$_}) foreach(keys %{$self->{userSelection}});
 
 	debug((caller(0))[3].': Ending...');
 	0;

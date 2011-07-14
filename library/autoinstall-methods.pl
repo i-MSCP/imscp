@@ -224,7 +224,10 @@ sub processConfFile{
 
 	# read XML file
 	my $data = eval { $xml->XMLin($confile, VarAttr => 'export') };
-	fatal((caller(0))[3].": $@") if $@;
+	if ($@){
+		error((caller(0))[3].": $@");
+		return 1;
+	}
 
 	my $rs;
 
