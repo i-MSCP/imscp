@@ -114,7 +114,8 @@ sub fatal{
 
 sub getLastError{
 	my $self = iMSCP::Debug->new();
-	my $last = $self->getMessageByType('ERROR', {amount => 1, chrono => 0});
+	my $last = getMessageByType('ERROR', {amount => 1, chrono => 0});
+	error("\$last:$last");
 	return $last;
 }
 
@@ -126,7 +127,7 @@ sub getMessageByType{
 
 	$mode = 'ERROR' unless( defined($mode) && $mode =~ 'DEBUG|WARNING|ERROR');
 
-	$opts->{amount}	= 0 unless( defined($opts->{amount}) && $opts->{amount} =~ /\d+/);
+	$opts->{amount}	= 0 unless (defined($opts->{amount}) && $opts->{amount} =~ /\d+/);
 	$opts->{chrono}	= 1 unless (defined($opts->{chrono}) && $opts->{chrono} =~ /0|1/);
 	$opts->{remove}	= 0 unless (defined($opts->{remove}) && $opts->{remove} =~ /0|1/);
 

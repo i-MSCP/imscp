@@ -57,7 +57,8 @@ sub builddaemon {
 		$file->{filename} = 'imscp_daemon';
 		$file->copyFile("$main::SYSTEM_ROOT/daemon");
 	} else {
-		fatal("Fail build daemon");
+		error("Fail build daemon");
+		return 1;
 	}
 
 	$rs = execute("make clean", \$stdout, \$stderr);

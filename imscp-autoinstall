@@ -65,11 +65,12 @@ if(
 		"\nWe have detected $SO->{Distribution} $SO->{CodeName}. Is this ok?"
 	)
 ){
-	fatal( "Fail detecting distribution ...");
+	error( "Fail detecting distribution ...");
+	exit 1;
 }
 
 #we have an OS / Distribution selected
-my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall.pm';
+my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall1.pm';
 my $class = 'iMSCP::'.lc($SO->{Distribution}).'_autoinstall';
 my $autoInstallClass;
 
@@ -92,7 +93,7 @@ exit $rs if $rs;
 
 	my @steps = (
 		[\&processSpecificConfFile, 'Process distribution specific configurations'],
-		#[\&builddaemon, 'Daemon build'],
+		[\&builddaemon, 'Daemon build'],
 		#[\&engine, 'Install engine'],
 		#[\&gui, 'GUI setup'],
 		[\&maintainer, '"Maintainer scripts'],
@@ -138,6 +139,12 @@ iMSCP::Dialog->factory()->msgbox("\nNow we can start setup process\n ");
 exit 0;
 
 END{
+	my @warnings	= getMessageByType('WARNING');
+	my @errors		= getMessageByType('ERROR');
+	my $msg;
+	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
+	print $msg;
 
 	my $message = getMessage();
 	iMSCP::Debug->newDebug('discard');
@@ -152,10 +159,4 @@ END{
 	#} else {
 		#print STDOUT $message;
 	#}
-	my @warnings	= getMessageByType('WARNING');
-	my @errors		= getMessageByType('ERROR');
-	my $msg;
-	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
-	print $msg;
 }
