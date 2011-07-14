@@ -137,7 +137,7 @@ $cfg['GD2Available']                            = 'yes';
 $cfg['BrowseMIME']                              = true;
 
 /* Default Theme */
-$cfg['ThemeDefault']                          = 'pmahome';
+$cfg['ThemeDefault']                          = 'pmahomme';
 
 /* switch off new 'hex as binaray' mode */
 $cfg['DisplayBinaryAsHex']                      = false;
