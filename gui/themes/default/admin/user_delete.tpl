@@ -44,6 +44,9 @@
         </div>
         <div class="body">
             <h2 class="users"><span>{TR_DOMAIN_SUMMARY}</span></h2>
+        	<!-- BDP: page_message -->
+            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
+            <!-- EDP: page_message -->
             <form name="admin_delete_domain_frm" method="post" action="user_delete.php">
                 <table>
                     <tr>

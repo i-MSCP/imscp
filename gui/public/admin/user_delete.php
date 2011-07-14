@@ -164,7 +164,7 @@ function validate_user_deletion($user_id)
 			set_page_message(tr('Invalid user id.'), 'error');
 		}
 	} else {
-		set_page_message(tr('There are active domains of reseller/admin.'), 'error');
+		set_page_message(tr('You cannot delete a reseller that has domain accounts. Please, remove them before.'), 'error');
 	}
 
 	return $result;
@@ -192,7 +192,7 @@ function validate_domain_deletion($tpl, $domain_id)
 	$data = $res->fetchRow();
 
 	if ($data['domain_id'] == 0) {
-		set_page_message(tr('Wrong domain ID!'), 'error');
+		set_page_message(tr('Wrong domain ID.'), 'error');
 		redirectTo('manage_users.php');
 	}
 
@@ -207,7 +207,7 @@ function validate_domain_deletion($tpl, $domain_id)
 			'TR_DOMAIN_ALIASES'	=> tr('Domain aliases:'),
 			'TR_DOMAIN_SUBS'	=> tr('Domain subdomains:'),
 			'TR_DOMAIN_DBS'		=> tr('Domain databases:'),
-			'TR_REALLY_WANT_TO_DELETE_DOMAIN'	=> tr('Do you really want to delete the entire domain? This operation cannot be undone!'),
+			'TR_REALLY_WANT_TO_DELETE_DOMAIN'	=> tr('Do you really want to delete the entire domain? This operation cannot be undone.'),
 			'TR_BUTTON_DELETE'	=> tr('Delete domain'),
 			'TR_YES_DELETE_DOMAIN'	=> tr('Yes, delete the domain.'),
 			'DOMAIN_NAME'		=> tohtml($data['domain_name']),
@@ -393,8 +393,6 @@ $tpl->assign(array(
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
-
-
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	if (validate_user_deletion(intval($_GET['delete_id']))) {
 		delete_user(intval($_GET['delete_id']));
@@ -407,7 +405,13 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
           isset($_POST['delete']) && $_POST['delete'] == 1) {
 	delete_domain((int)$_POST['domain_id'], 'manage_users.php');
 } else {
-	set_page_message(tr('Wrong domain ID.'), 'error');
+    if(isset($_GET['delete'])) {
+        set_page_message(tr('Wrong domain ID.'), 'error');
+    } else {
+        set_page_message(tr('You must confirm domain deletion.'), 'error');
+        redirectTo('user_delete.php?domain_id=' . intval($_POST['domain_id']));
+    }
+
 	redirectTo('manage_users.php');
 }
 
