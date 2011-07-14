@@ -16,7 +16,7 @@
         </script>
         <![endif]-->
         <script type="text/javascript">
-            <!--
+            /* <![CDATA[ */
             function action_status(url, dmn_name) {
                 if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name))) {
                     return false;
@@ -24,7 +24,15 @@
 
                 location = url;
             }
-            //-->
+
+            function action_delete(url, dmn_name) {
+                if (!confirm(sprintf("{TR_MESSAGE_DELETE}", dmn_name))) {
+                    return false;
+                }
+
+                location = url;
+            }
+            /* ]]> */
         </script>
     </head>
     <body>
@@ -34,6 +42,7 @@
                 <img src="{ISP_LOGO}" alt="i-MSCP logo" />
             </div>
         </div>
+
         <div class="location">
             <div class="location-area icons-left">
                 <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
@@ -52,6 +61,7 @@
         </div>
         <div class="body">
             <h2 class="users"><span>{TR_ADMINISTRATORS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
@@ -60,7 +70,6 @@
             <div class="info">{ADMIN_MESSAGE}</div>
             <!-- EDP: admin_message -->
 
-            <!-- BDP: props_list -->
             <!-- BDP: admin_list -->
             <table>
                 <tr>
@@ -76,9 +85,10 @@
                     <td>{ADMIN_CREATED_BY}</td>
                     <td>
                         <a href="{URL_EDIT_ADMIN}" class="icon i_user">{TR_EDIT}</a>
-                        <!-- BDP: admin_delete_show -->
 
+                        <!-- BDP: admin_delete_show -->
                         <!-- EDP: admin_delete_show -->
+
                         <!-- BDP: admin_delete_link -->
                         <a href="#" class="icon i_delete" onclick="action_delete('{URL_DELETE_ADMIN}', '{ADMIN_USERNAME}')" class="link">{TR_DELETE}</a>
                         <!-- EDP: admin_delete_link -->
@@ -87,7 +97,6 @@
                 <!-- EDP: admin_item -->
             </table>
             <!-- EDP: admin_list -->
-            <!-- EDP: props_list -->
 
             <h2 class="users"><span>{TR_RESELLERS}</span></h2>
 
@@ -125,9 +134,8 @@
             <!-- EDP: usr_message -->
 
             <!-- BDP: usr_list -->
-
             <form action="manage_users.php" method="post" name="search_user" id="search_user">
-                <a class="icon i_show_alias" href="#" onclick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
+                <a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
                 <input name="search_for" type="text" value="{SEARCH_FOR}" />
                 <select name="search_common">
                     <option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
@@ -143,8 +151,12 @@
                     <option value="ok" {M_OK_SELECTED}>{M_OK}</option>
                     <option value="disabled" {M_SUSPENDED_SELECTED}>{M_SUSPENDED}</option>
                 </select>
-                <input name="Submit" type="submit" value="{TR_SEARCH}" />
                 <input type="hidden" name="uaction" value="go_search" />
+                <input type="hidden" name="details" value="" />
+                <div class="buttons" style="display:inline">
+                    <input name="Submit" type="submit" value="{TR_SEARCH}" />
+                </div>
+
             </form>
             <table>
                 <tr>
@@ -173,13 +185,16 @@
                     <td>
                         <a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
                         <a class="icon i_details" href="{URL_CHANGE_INTERFACE}" title="{TR_CHANGE_USER_INTERFACE}">{GO_TO_USER_INTERFACE}</a>
+
                         <!-- BDP: edit_option -->
                         <a class="icon i_edit" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
                         <!-- EDP: edit_option -->
-                        <a class="icon i_user" href="{URL_EDIT_USR}">{TR_EDIT_USR}</a>
-                        <!-- BDP: usr_delete_show -->
 
+                        <a class="icon i_user" href="{URL_EDIT_USR}">{TR_EDIT_USR}</a>
+
+                        <!-- BDP: usr_delete_show -->
                         <!-- EDP: usr_delete_show -->
+
                         <!-- BDP: usr_delete_link -->
                         <a class="icon i_delete" href="user_delete.php?domain_id={DOMAIN_ID}">{TR_DELETE}</a>
                         <!-- EDP: usr_delete_link -->
@@ -194,6 +209,7 @@
                 <!-- EDP: user_details -->
                 <!-- EDP: usr_item -->
             </table>
+
             <div class="paginator">
                 <!-- BDP: scroll_next_gray -->
                 <a class="icon i_next_gray" href="#">&nbsp;</a>
