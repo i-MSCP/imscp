@@ -24,14 +24,6 @@
 
                 location = ("domain_status_change.php?domain_id=" + dom_id);
             }
-
-            function action_delete(url, dmn_name) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name))) {
-                    return false;
-                }
-
-                location = url;
-            }
             /* ]]> */
         </script>
     </head>

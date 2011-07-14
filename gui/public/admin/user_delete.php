@@ -62,7 +62,7 @@ function delete_user($user_id)
 	$type = $data['admin_type'];
 
 	if (empty($type) || $type == 'user') {
-		set_page_message(tr('Invalid user id!'), 'error');
+		set_page_message(tr('Invalid user Id.'), 'error');
 		user_goto('manage_users.php');
 	}
 
@@ -161,10 +161,10 @@ function validate_user_deletion($user_id)
 		if ($type == 'admin' || $type == 'reseller') {
 			$result = true;
 		} else {
-			set_page_message(tr('Invalid user id.'), 'error');
+			set_page_message(tr('Invalid user Id.'), 'error');
 		}
 	} else {
-		set_page_message(tr('There are active domains of reseller/admin.'), 'error');
+		set_page_message(tr('You cannot delete a reseller that has domain accounts. Please, remove them before.'), 'error');
 	}
 
 	return $result;
@@ -192,28 +192,25 @@ function validate_domain_deletion($tpl, $domain_id)
 	$data = $res->fetchRow();
 
 	if ($data['domain_id'] == 0) {
-		set_page_message(tr('Wrong domain ID!'), 'error');
+		set_page_message(tr('Wrong domain Id.'), 'warning');
 		redirectTo('manage_users.php');
 	}
 
 	$reseller = $data['domain_created_id'];
 
-	$tpl->assign(
-		array(
-			'TR_DELETE_DOMAIN'	=> tr('Delete domain'),
-			'TR_DOMAIN_SUMMARY'	=> tr('Domain summary:'),
-			'TR_DOMAIN_EMAILS'	=> tr('Domain e-mails:'),
-			'TR_DOMAIN_FTPS'	=> tr('Domain FTP accounts:'),
-			'TR_DOMAIN_ALIASES'	=> tr('Domain aliases:'),
-			'TR_DOMAIN_SUBS'	=> tr('Domain subdomains:'),
-			'TR_DOMAIN_DBS'		=> tr('Domain databases:'),
-			'TR_REALLY_WANT_TO_DELETE_DOMAIN'	=> tr('Do you really want to delete the entire domain? This operation cannot be undone!'),
-			'TR_BUTTON_DELETE'	=> tr('Delete domain'),
-			'TR_YES_DELETE_DOMAIN'	=> tr('Yes, delete the domain.'),
-			'DOMAIN_NAME'		=> tohtml($data['domain_name']),
-			'DOMAIN_ID'			=> $data['domain_id']
-		)
-	);
+    $tpl->assign(array(
+                      'TR_DELETE_DOMAIN' => tr('Delete domain'),
+                      'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
+                      'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
+                      'TR_DOMAIN_FTPS' => tr('Domain FTP accounts'),
+                      'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
+                      'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
+                      'TR_DOMAIN_DBS' => tr('Domain databases'),
+                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr('Do you really want to delete the entire domain? This operation cannot be undone.'),
+                      'TR_BUTTON_DELETE' => tr('Delete domain'),
+                      'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
+                      'DOMAIN_NAME' => tohtml($data['domain_name']),
+                      'DOMAIN_ID' => $data['domain_id']));
 
 	// Checking for domain's mail accounts
 	$query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
@@ -224,17 +221,16 @@ function validate_domain_deletion($tpl, $domain_id)
 			// Create mail type's text
 			$mail_types = explode(',', $res->fields['mail_type']);
 			$mdisplay_a = array();
+
 			foreach ($mail_types as $mtype) {
 				$mdisplay_a[] = user_trans_mail_type($mtype);
 			}
+
 			$mdisplay_txt = implode(', ', $mdisplay_a);
 
-			$tpl->assign(
-				array(
+			$tpl->assign(array(
 					'MAIL_ADDR' => tohtml($res->fields['mail_addr']),
-					'MAIL_TYPE' => $mdisplay_txt
-				)
-			);
+					'MAIL_TYPE' => $mdisplay_txt));
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 			$res->moveNext();
@@ -310,9 +306,15 @@ function validate_domain_deletion($tpl, $domain_id)
 
 	// Check subdomain_alias
 	if (count($alias_a) > 0) {
-		$query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN (";
-		$query .= implode(',', $alias_a);
-		$query .= ")";
+        $aliasIds = implode(',', $alias_a);
+		$query = "
+		    SELECT
+		        *
+		    FROM
+		        `subdomain_alias`
+		    WHERE
+		        `alias_id` IN ($aliasIds)
+		";
 		$res = exec_query($query);
 
 		while (!$res->EOF) {
@@ -393,8 +395,6 @@ $tpl->assign(array(
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
-
-
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	if (validate_user_deletion(intval($_GET['delete_id']))) {
 		delete_user(intval($_GET['delete_id']));
@@ -402,12 +402,18 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 		redirectTo('manage_users.php');
 	}
 } elseif (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
-	validate_domain_deletion(intval($_GET['domain_id']));
+	validate_domain_deletion($tpl, intval($_GET['domain_id']));
 } elseif (isset($_POST['domain_id']) && is_numeric($_POST['domain_id']) &&
           isset($_POST['delete']) && $_POST['delete'] == 1) {
 	delete_domain((int)$_POST['domain_id'], 'manage_users.php');
 } else {
-	set_page_message(tr('Wrong domain ID.'), 'error');
+    if(isset($_GET['delete'])) {
+        set_page_message(tr('Wrong domain ID.'), 'error');
+    } else {
+        set_page_message(tr('You must confirm domain deletion.'), 'error');
+        redirectTo('user_delete.php?domain_id=' . intval($_POST['domain_id']));
+    }
+
 	redirectTo('manage_users.php');
 }
 
