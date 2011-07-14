@@ -6,7 +6,7 @@ i-MSCP 1.0.1.4 (beta 4)
 -------------------------------------------------------------------------------------
 
 Distributions:
-	- Removed support for un-supported distributions:
+	- Removed 'configs' directories for distributions that are no longer supported:
 		Centos Fedora FreeBSD Gentoo OpenBSD Opensuse
 
 Features / Enhancements:
@@ -14,7 +14,7 @@ Features / Enhancements:
 	    Core:
 	        Improved security by moving some files outside documentRoot
 		i18n:
-			Migrated to gettext system (Machine object files), included:
+			Migrated to gettext (Machine object files), included:
 				- Database is no longer used to store translation tables
 				- It's no longer possible to delete languages
 				- Importing languages files for install/update is still supported but
@@ -94,8 +94,6 @@ i-MSCP 1.0.0-beta2
 
 2011-06-20: Laurent Declercq
 	- RELEASE i-MSCP 1.0.0 beta 2
-
-Features / Enhancements:
 
 Other:
 	Gui:
