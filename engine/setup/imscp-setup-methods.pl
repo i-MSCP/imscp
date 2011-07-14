@@ -2373,7 +2373,8 @@ sub setup_gui_pma {
 			PMA_USER => $ctrlUser,
 			PMA_PASS => $ctrlUserPwd,
 			HOSTNAME => $dbHost,
-			TMP_DIR  => "$main::imscpConfig{'GUI_ROOT_DIR'}/phptmp",
+			UPLOADS_DIR  => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
+			TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 			BLOWFISH => $blowfishSecret
 		},
 		$cfgFile

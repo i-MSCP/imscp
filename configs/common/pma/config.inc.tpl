@@ -92,9 +92,20 @@ $cfg['Servers'][$i]['SignonSession']            = 'i-MSCP';
 /* Contrib / Swekey authentication */
 // $cfg['Servers'][$i]['auth_swekey_config']    = '/etc/swekey-pma.conf';
 
-/* Directories for saving/loading files from server */
-$cfg['UploadDir']                               = '{TMP_DIR}';
+/**
+ * Directories for saving/loading files from server
+ */
+$cfg['UploadDir']                               = '{UPLOADS_DIR}';
+
+/**
+ * The name of the directory where dumps can be saved. (not used)
+ */
 $cfg['SaveDir']                                 = '{TMP_DIR}';
+
+/**
+ * The name of the directory where temporary files can be stored.
+ */
+$cfg['TempDir']                                 = '{TMP_DIR}';
 
 /**
  * Layout preferences
@@ -126,7 +137,7 @@ $cfg['GD2Available']                            = 'yes';
 $cfg['BrowseMIME']                              = true;
 
 /* Default Theme */
-//$cfg['ThemeDefault']                          = 'imscp';
+$cfg['ThemeDefault']                          = 'pmahome';
 
 /* switch off new 'hex as binaray' mode */
 $cfg['DisplayBinaryAsHex']                      = false;
