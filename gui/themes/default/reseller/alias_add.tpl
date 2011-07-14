@@ -20,24 +20,23 @@
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-				// Tooltips - end
 				
 				// Request for encode_idna request
-				$('input[name=ndomain_name]').blur(function(){
+				$('input[name=ndomain_name]').bind('blur', function(){
 					dmnName = $('#ndomain_name').val();
-					// Configure the request for encode_idna request
-					$.ajaxSetup({
-					url: $(location).attr('pathname'),
-						type:'POST',
-						data: 'domain=' + dmnName + '&uaction=toASCII',
-						datatype: 'text',
-						beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
-						success: function(r){$('#ndomain_mpoint').val(r);},
-						error: iMSCPajxError
-					});
-					$.ajax();
+                    if(dmnName != '') {
+					    $.ajaxSetup({
+					        url: $(location).attr('pathname'),
+						    type:'POST',
+						    data: 'domain=' + dmnName + '&uaction=toASCII',
+						    datatype: 'text',
+						    beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+						    success: function(r){$('#ndomain_mpoint').val(r);},
+						    error: iMSCPajxError
+					    });
+					    $.ajax();
+                    }
 				});
 			});
 			
@@ -54,17 +53,13 @@
 		/* ]]> */
 		</script>
 	</head>
-
 	<body>
-
 		<div class="header">
 			{MAIN_MENU}
-
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>
 		</div>
-
 		<div class="location">
 			<div class="location-area icons-left">
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
@@ -82,11 +77,9 @@
 				<li><a href="alias_add.php">{TR_ADD_ALIAS}</a></li>
 			</ul>
 		</div>
-
 		<div class="left_menu">
 			{MENU}
 		</div>
-
 		<div class="body">
 			<h2 class="domains"><span>{TR_MANAGE_DOMAIN_ALIAS}</span></h2>
 			<!-- BDP: page_message -->
@@ -154,9 +147,6 @@
 				</div>
 				<input type="hidden" name="uaction" value="add_alias" />
 			</form>
-
-
 		</div>
-
 	</body>
 </html>

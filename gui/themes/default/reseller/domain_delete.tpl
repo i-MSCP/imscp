@@ -56,10 +56,10 @@
                     <tr>
                         <th colspan="2">{TR_DOMAIN_SUMMARY}</th>
                     </tr>
+
                     <!-- BDP: mail_list -->
                     <tr>
-                        <td colspan="2"><strong><i>{TR_DOMAIN_EMAILS}</i></strong>
-                        </td>
+                        <td colspan="2"><strong><i>{TR_DOMAIN_EMAILS}</i></strong></td>
                     </tr>
                     <!-- BDP: mail_item -->
                     <tr>
@@ -68,9 +68,10 @@
                     </tr>
                     <!-- EDP: mail_item -->
                     <!-- EDP: mail_list -->
+
                     <!-- BDP: ftp_list -->
                     <tr>
-                        <th colspan="2">{TR_DOMAIN_FTPS}</th>
+                        <td colspan="2"><strong><i>{TR_DOMAIN_FTPS}</strong></i></td>
                     </tr>
                     <!-- BDP: ftp_item -->
                     <tr>
@@ -79,9 +80,10 @@
                     </tr>
                     <!-- EDP: ftp_item -->
                     <!-- EDP: ftp_list -->
+
                     <!-- BDP: als_list -->
                     <tr>
-                        <th colspan="2">{TR_DOMAIN_ALIASES}</th>
+                        <td colspan="2"><strong><i>{TR_DOMAIN_ALIASES}</i></strong></td>
                     </tr>
                     <!-- BDP: als_item -->
                     <tr>
@@ -90,9 +92,10 @@
                     </tr>
                     <!-- EDP: als_item -->
                     <!-- EDP: als_list -->
+
                     <!-- BDP: sub_list -->
                     <tr>
-                        <th colspan="2">{TR_DOMAIN_SUBS}</th>
+                        <td colspan="2"><strong><i>{TR_DOMAIN_SUBS}</strong></i></td>
                     </tr>
                     <!-- BDP: sub_item -->
                     <tr>
@@ -101,9 +104,10 @@
                     </tr>
                     <!-- EDP: sub_item -->
                     <!-- EDP: sub_list -->
+
                     <!-- BDP: db_list -->
                     <tr>
-                        <th colspan="2">{TR_DOMAIN_DBS}</th>
+                        <td colspan="2"><strong><i>{TR_DOMAIN_DBS}</strong></i></td>
                     </tr>
                     <!-- BDP: db_item -->
                     <tr>
@@ -112,6 +116,10 @@
                     </tr>
                     <!-- EDP: db_item -->
                     <!-- EDP: db_list -->
+
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
                     <tr>
                         <td colspan="2">
                             <input type="hidden" name="domain_id" value="{DOMAIN_ID}" />

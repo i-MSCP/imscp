@@ -1,10 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-msCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-msCP | http://i-mscp.net
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
@@ -26,15 +26,13 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
-
-require 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 /************************************************************************************
  * Script functions
@@ -47,8 +45,8 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
  * @param  int $reseller_id Reseller unique identifier
  * @return void
  */
-function generate_als_list($tpl, $reseller_id) {
-
+function generate_als_list($tpl, $reseller_id)
+{
     /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -349,15 +347,15 @@ function generate_als_list($tpl, $reseller_id) {
  *
  * @return void
  */
-function generate_als_messages() {
-
+function generate_als_messages()
+{
     if(isset($_SESSION['user_page_message'])) {
         return;
 	} elseif (isset($_SESSION["dahavemail"])) {
-        set_page_message(tr('Domain alias you are trying to remove has email accounts.<br>First remove them.'), 'warning');
+        set_page_message(tr('Domain alias you are trying to remove has email accounts.<br>First remove them.'), 'error');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION["dahaveftp"])) {
-        set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br>First remove them.'), 'warning');
+        set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br>First remove them.'), 'error');
 		unset($_SESSION['dahavemail']);
 	} elseif (isset($_SESSION["aldel"])) {
 		if ('_yes_' === $_SESSION['aldel']) {
@@ -404,6 +402,10 @@ function generate_als_messages() {
  * Main script
  */
 
+require 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 check_login(__FILE__);
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -412,18 +414,19 @@ $cfg = iMSCP_Registry::get('config');
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_alias.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('table_list', 'page');
-$tpl->define_dynamic('table_header', 'page');
-$tpl->define_dynamic('table_item', 'table_list');
-$tpl->define_dynamic('status_reload_true','table_list');
-$tpl->define_dynamic('status_reload_false','table_list');
-$tpl->define_dynamic('scroll_prev', 'page');
-$tpl->define_dynamic('scroll_next_gray', 'page');
-$tpl->define_dynamic('scroll_next', 'page');
-$tpl->define_dynamic('als_add_button', 'page');
+$tpl->define_dynamic(array(
+                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_alias.tpl',
+                          'page_message' => 'page',
+                          'logged_from' => 'page',
+                          'table_list' => 'page',
+                          'table_header' => 'page',
+                          'table_item' => 'table_list',
+                          'status_reload_true' => 'table_list',
+                          'status_reload_false' => 'table_list',
+                          'scroll_prev' => 'page',
+                          'scroll_next_gray' => 'page',
+                          'scroll_next' => 'page',
+                          'als_add_button' => 'page'));
 
 $tpl->assign(array(
                   'TR_ALIAS_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),

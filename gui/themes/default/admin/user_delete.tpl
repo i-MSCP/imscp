@@ -52,6 +52,7 @@
                     <tr>
                         <th colspan="2"><strong>{TR_DOMAIN_SUMMARY}</strong></th>
                     </tr>
+
                     <!-- BDP: mail_list -->
                     <tr>
                         <td colspan="2"><strong><i>{TR_DOMAIN_EMAILS}</i></strong>
@@ -113,6 +114,7 @@
                     </tr>
                     <!-- EDP: db_item -->
                     <!-- EDP: db_list -->
+
                     <tr>
                         <td colspan="2">&nbsp;</td>
                     </tr>

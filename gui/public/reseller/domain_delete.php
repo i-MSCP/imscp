@@ -65,19 +65,19 @@ function validate_domain_deletion($tpl, $domain_id)
     $data = $res->fetchRow();
 
     if ($data['domain_id'] == 0) {
-        set_page_message(tr('Wrong domain ID.'));
+        set_page_message(tr('Wrong domain Id.'), 'error');
         user_goto('users.php?psi=last');
     }
 
     $tpl->assign(array(
                       'TR_DELETE_DOMAIN' => tr('Delete domain'),
-                      'TR_DOMAIN_SUMMARY' => tr('Domain summary:'),
-                      'TR_DOMAIN_EMAILS' => tr('Domain e-mails:'),
-                      'TR_DOMAIN_FTPS' => tr('Domain FTP accounts:'),
-                      'TR_DOMAIN_ALIASES' => tr('Domain aliases:'),
-                      'TR_DOMAIN_SUBS' => tr('Domain subdomains:'),
-                      'TR_DOMAIN_DBS' => tr('Domain databases:'),
-                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr('Do you really want to delete the entire domain? This operation cannot be undone!'),
+                      'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
+                      'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
+                      'TR_DOMAIN_FTPS' => tr('Domain FTP accounts'),
+                      'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
+                      'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
+                      'TR_DOMAIN_DBS' => tr('Domain databases'),
+                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr('Do you really want to delete the entire domain? This operation cannot be undone.'),
                       'TR_BUTTON_DELETE' => tr('Delete domain'),
                       'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
                       'DOMAIN_NAME' => $data['domain_name'],
@@ -92,11 +92,12 @@ function validate_domain_deletion($tpl, $domain_id)
             // Create mail type's text
             $mail_types = explode(',', $res->fields['mail_type']);
             $mdisplay_a = array();
+
             foreach ($mail_types as $mtype) {
                 $mdisplay_a[] = user_trans_mail_type($mtype);
             }
-            $mdisplay_txt = implode(', ', $mdisplay_a);
 
+            $mdisplay_txt = implode(', ', $mdisplay_a);
             $tpl->assign(array(
                               'MAIL_ADDR' => tohtml($res->fields['mail_addr']),
                               'MAIL_TYPE' => $mdisplay_txt));
@@ -175,9 +176,15 @@ function validate_domain_deletion($tpl, $domain_id)
 
     // Check subdomain_alias
     if (count($alias_a) > 0) {
-        $query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN (";
-        $query .= implode(',', $alias_a);
-        $query .= ")";
+        $aliasIds = implode(',', $alias_a);
+        $query = "
+            SELECT
+                *
+            FROM
+                `subdomain_alias`
+            WHERE
+                `alias_id` IN ($aliasIds)
+        ";
         $res = exec_query($query);
 
         while (!$res->EOF) {
@@ -263,8 +270,14 @@ if (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
 ) {
     delete_domain((int)$_POST['domain_id'], 'users.php?psi=last', true);
 } else {
-    set_page_message(tr('Wrong domain ID!'));
-    user_goto('users.php?psi=last');
+    if(isset($_GET['delete'])) {
+        set_page_message(tr('Wrong domain Id.'), 'error');
+    } else {
+        set_page_message(tr('You must confirm domain deletion.'), 'error');
+        redirectTo('domain_delete.php?domain_id=' . intval($_POST['domain_id']));
+    }
+
+	redirectTo('users.php?psi=last');
 }
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
