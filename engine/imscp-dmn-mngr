@@ -1640,10 +1640,10 @@ sub dmn_add_httpd_file_data {
 	for($i = 0; $i < scalar(@errordocs); $i++) {
 		$key = $errordocs[$i];
 
-		if (-e "$root_dir/gui/errordocs/$key.html") {
+		if (-e "$root_dir/gui/public/errordocs/$key.html") {
 			$rs = sys_command(
 				"$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip " .
-				"$root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/ ".
+				"$root_dir/gui/public/errordocs/$key.html $www_dir/$dmn_name/errors/ ".
 				"2>/dev/null"
 			);
 			return $rs if ($rs != 0);
@@ -1656,7 +1656,7 @@ sub dmn_add_httpd_file_data {
 		}
 	}
 
-	opendir(DIR, "$root_dir/gui/errordocs/inc/");
+	opendir(DIR, "$root_dir/gui/public/errordocs/inc/");
 	my @files = readdir(DIR);
 	closedir(DIR);
 
@@ -1664,7 +1664,7 @@ sub dmn_add_httpd_file_data {
 		next if ($_ eq '.' || $_ eq '..');
 		sys_command(
 			"$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip " .
-				"$root_dir/gui/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ ".
+				"$root_dir/gui/public/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ ".
 					"2>/dev/null"
 		);
 		return $rs if ($rs != 0);
@@ -1943,10 +1943,10 @@ sub dmn_change_httpd_file_data {
 	for($i = 0; $i < scalar(@errordocs); $i++) {
 		$key = $errordocs[$i];
 
-		if (-e "$root_dir/gui/errordocs/$key.html") {
+		if (-e "$root_dir/gui/public/errordocs/$key.html") {
 			$rs = sys_command(
 				"$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip " .
-				"$root_dir/gui/errordocs/$key.html $www_dir/$dmn_name/errors/ " .
+				"$root_dir/gui/public/errordocs/$key.html $www_dir/$dmn_name/errors/ " .
 				"2>/dev/null"
 			);
 			return $rs if ($rs != 0);
@@ -1959,7 +1959,7 @@ sub dmn_change_httpd_file_data {
 		}
 	}
 
-	opendir(DIR, "$root_dir/gui/errordocs/inc/");
+	opendir(DIR, "$root_dir/gui/public/errordocs/inc/");
 	my @files = readdir(DIR);
 	closedir(DIR);
 
@@ -1967,7 +1967,7 @@ sub dmn_change_httpd_file_data {
 		next if ($_ eq '.' || $_ eq '..');
 		sys_command(
 			"$main::cfg{'CMD_ECHO'} n | $main::cfg{'CMD_CP'} -ip ".
-			"$root_dir/gui/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ ".
+			"$root_dir/gui/public/errordocs/inc/$_ $www_dir/$dmn_name/errors/inc/ ".
 			"2>/dev/null"
 		);
 		return $rs if ($rs != 0);

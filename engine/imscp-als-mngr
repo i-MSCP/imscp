@@ -1800,9 +1800,9 @@ sub als_add_httpd_file_data {
 
 		$key = $errordocs[$i];
 
-		if (-e "$root_dir/gui/errordocs/$key.html") {
+		if (-e "$root_dir/gui/public/errordocs/$key.html") {
 			$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
-				"$root_dir/gui/errordocs/$key.html $www_dir/$als_name/errors/");
+				"$root_dir/gui/public/errordocs/$key.html $www_dir/$als_name/errors/");
 			return $rs if ($rs != 0);
 
 			$rs = setfmode(
@@ -1816,15 +1816,15 @@ sub als_add_httpd_file_data {
 	}
 
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
-		"$root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$als_name/errors/inc/");
+		"$root_dir/gui/public/errordocs/inc/error_top.jpg $www_dir/$als_name/errors/inc/");
 	return $rs if ($rs != 0);
 
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
-		"$root_dir/gui/errordocs/inc/errordocs.js $www_dir/$als_name/errors/inc/");
+		"$root_dir/gui/public/errordocs/inc/errordocs.js $www_dir/$als_name/errors/inc/");
 	return $rs if ($rs != 0);
 
 	$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
-		"$root_dir/gui/errordocs/inc/errordocs.css $www_dir/$als_name/errors/inc/");
+		"$root_dir/gui/public/errordocs/inc/errordocs.css $www_dir/$als_name/errors/inc/");
 	return $rs if ($rs != 0);
 
 	$rs = setfmode(
