@@ -3310,7 +3310,7 @@ sub rebuild_customers_cfg {
 	$rs = execute("perl $FindBin::Bin/../imscp-rqst-mngr update", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
-	error((caller(0))[3].": Error while rebuilding customers configuration files") unless $stderr;
+	error((caller(0))[3].": Error while rebuilding customers configuration files") if(!$stderr && $rs);
 	return $rs if $rs;
 
 	iMSCP::Boot->new()->lock();
