@@ -351,7 +351,7 @@ function layout_updateUserLogo()
         $fileName = sha1(rand(10, 10) . '-' . $_SESSION['user_id']) .
                     '.' . $fileExtension;
 
-        // Return distination file path
+        // Return destination file path
         return $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $fileName;
     };
 

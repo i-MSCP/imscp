@@ -904,6 +904,8 @@ function decode_idna($domain)
 /**
  * Utils function to upload file.
  *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @version i-MSCP 1.0.1.4
  * @param string $inputFieldName upload input field name
  * @param string|Array $destPath Destination path string or an array where the first
  *                               item is an anonymous function to run before moving
