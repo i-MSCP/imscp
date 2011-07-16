@@ -327,7 +327,7 @@ $tpl->assign(
 		'TR_DISK_USAGE' => tr ('Disk usage'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 
@@ -344,12 +344,10 @@ if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 }
 
 gen_messages_table($tpl, $_SESSION['user_id']);
-
 gen_logged_from($tpl);
-
 gen_def_language($tpl, $user_def_lang);
 
-gen_def_layout($tpl, $user_def_layout);
+//gen_def_layout($tpl, $user_def_layout);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');

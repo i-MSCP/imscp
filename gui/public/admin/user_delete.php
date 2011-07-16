@@ -393,7 +393,7 @@ $tpl->assign(array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Delete Domain'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	if (validate_user_deletion(intval($_GET['delete_id']))) {

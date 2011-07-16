@@ -42,7 +42,6 @@ if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) &&
     $_SESSION['user_def_lang'] = $user_def_lang;
 }
 
-
 /**
  * Must be documented.
  *
@@ -235,4 +234,217 @@ function gen_def_layout($tpl, $user_def_layout)
 
         $tpl->parse('DEF_LAYOUT', '.def_layout');
     }
+}
+
+/**
+ * Get user logo path.
+ *
+ * Note: Only administrators and resellers can have their own logo. Search is done in
+ * the following order: user logo -> user's creator logo -> theme logo --> isp logo.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @param bool $searchForCreator Tell whether or not search must be done for user's
+ *                               creator in case no logo is found for user
+ * @param bool $returnDefault    Tell whether or not default logo must be returned
+ * @return string User logo path.
+ * @todo cache issues
+ */
+function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    // On switched level, we want show logo from logged user
+    if (isset($_SESSION['logged_from_id']) && $searchForCreator) {
+        $userId = $_SESSION['logged_from_id'];
+        // Customers inherit the logo of their reseller
+    } elseif ($_SESSION['user_type'] == 'user') {
+        $userId = $_SESSION['user_created_by'];
+    } else {
+        $userId = $_SESSION['user_id'];
+    }
+
+    $query = 'SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?';
+    $stmt = exec_query($query, $userId);
+
+    // No logo is found for the user, let see for it creator
+    if ($searchForCreator && $userId != 1 && empty($stmt->fields['logo'])) {
+        $query = '
+            SELECT
+                `b`.`logo`
+            FROM
+                `admin` `a`
+            LEFT JOIN
+                `user_gui_props` `b` ON (`b`.`user_id` = `a`.`created_by`)
+            WHERE
+                `a`.`admin_id`= ?
+        ';
+        $stmt = exec_query($query, $userId);
+    }
+
+    // No  user logo found
+    if (empty($stmt->fields['logo'])) {
+        if (!$returnDefault) {
+            return '';
+        } elseif (file_exists($cfg->GUI_ROOT_DIR . '/public/themes/' .
+                              $_SESSION['user_theme'] . '/images/imscp_logo.png')
+        ) {
+            return '../themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png';
+        } else {
+            // no logo available, we are using default
+            return $cfg->ISP_LOGO_PATH . '/' . 'isp_logo.gif';
+        }
+    }
+
+    return $cfg->ISP_LOGO_PATH . '/' . $stmt->fields['logo'];
+}
+
+/**
+ * Updates user logo.
+ *
+ * Note: Only administrators and resellers can have their own logo.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function layout_updateUserLogo()
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    // closure that is run before move_uploaded_file() function - See the
+    // Utils_UploadFile() function for further information about implementation
+    // details
+    $beforeMove = function($cfg)
+    {
+        $tmpFilePath = $_FILES['logoFile']['tmp_name'];
+
+        // Checking file mime type
+        if (!($fileMimeType = checkMimeType($tmpFilePath, array('image/gif',
+                                                               'image/jpeg',
+                                                               'image/pjpeg',
+                                                               'image/png')))
+        ) {
+            set_page_message(tr('You can only upload images.'), 'error');
+            return false;
+        }
+
+        // Retrieving file extension (gif|jpeg|png)
+        if ($fileMimeType == 'image/pjpeg' || $fileMimeType == 'image/jpeg') {
+            $fileExtension = 'jpeg';
+        } else {
+            $fileExtension = substr($fileMimeType, -3);
+        }
+
+        // Getting the image size
+        list($imageWidth, $imageHeigth) = getimagesize($tmpFilePath);
+
+        // Checking image size
+        if ($imageWidth > 500 || $imageHeigth > 90) {
+            set_page_message(tr('Images have to be smaller than 500 x 90 pixels.'), 'error');
+            return false;
+        }
+
+        // Building an unique file name
+        $fileName = sha1(rand(10, 10) . '-' . $_SESSION['user_id']) .
+                    '.' . $fileExtension;
+
+        // Return distination file path
+        return $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $fileName;
+    };
+
+    if (($logoPath = utils_uploadFile('logoFile', array($beforeMove, $cfg)))) {
+        if ($_SESSION['user_type'] == 'admin') {
+            $userId = 1;
+        } else {
+            $userId = $_SESSION['user_id'];
+        }
+
+        // We must catch old logo before update
+        $oldLogoFile = layout_getUserLogo(false, false);
+
+        $query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
+        exec_query($query, array(basename($logoPath), $userId));
+
+        // Delete old logo
+        layout_deleteUserLogo($oldLogoFile, true);
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
+
+/**
+ * Deletes user logo.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @param string $logoFilePath OPTIONAL Logo file path
+ * @param bool $onlyFile OPTIONAL Tell whether or not only logo file must be deleted
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    if (null === $logoFilePath) {
+        if ($_SESSION['user_type'] == 'admin') {
+            $logoFilePath = layout_getUserLogo(true);
+        } else {
+            $logoFilePath = layout_getUserLogo(false);
+        }
+    }
+
+    if ($_SESSION['user_type'] == 'admin') {
+        $userId = 1;
+    } else {
+        $userId = $_SESSION['user_id'];
+    }
+
+    if (strpos($logoFilePath, $cfg->ISP_LOGO_PATH) !== false) {
+        $logoFilePath = $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . basename($logoFilePath);
+
+        if (file_exists($logoFilePath)) { // Make this function safe
+            if (@unlink($logoFilePath)) {
+                if (!$onlyFile) {
+                    $query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
+                    exec_query($query, array(0, $userId));
+                }
+
+                return true;
+            } else {
+                write_log(tr("System is unable to remove '%s' user logo.", $logoFilePath), E_USER_WARNING);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Is user logo?
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.4
+ * @param $logoPath Logo path to match against
+ * @return bool TRUE if $logoPath is an user's logo, FALSE otherwise
+ */
+function layout_isUserLogo($logoPath)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    if ($logoPath == '../themes/' . $_SESSION['user_theme'] . '/images/imscp_logo.png'
+        || $logoPath == $cfg->ISP_LOGO_PATH . '/' . 'isp_logo.gif'
+    ) {
+        return false;
+    }
+
+    return true;
 }

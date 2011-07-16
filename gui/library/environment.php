@@ -53,8 +53,8 @@ $config->ADMIN_TEMPLATE_PATH =  "../$tpl_path/admin";
 $config->RESELLER_TEMPLATE_PATH = "../$tpl_path/reseller";
 $config->CLIENT_TEMPLATE_PATH = "../$tpl_path/client";
 
-// Set the user logo path
-$config->ISP_LOGO_PATH = '../themes/user_logos';
+// Set the isp logos path
+$config->ISP_LOGO_PATH = '/ispLogos';
 
 // Set the order panel templates path
 $config->PURCHASE_TEMPLATE_PATH = "../$tpl_path/orderpanel";

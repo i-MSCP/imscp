@@ -1040,7 +1040,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
  * Checks if a file match the given mimetype(s).
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since r4619
+ * @since  i-MSCP 1.0.1.3
  * @throws iMSCP_Exception When magicfile cannot be found or is not valid
  * @throws iMSCP_Exception When the PHP finfo extension is not available
  * @param  string $pathFile File to check for mimetype

@@ -130,7 +130,7 @@ $tpl->assign(array(
 				  'TR_ADMIN_MANAGE_SESSIONS_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+				  'ISP_LOGO' => layout_getUserLogo(),
 				  'TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),
 				  'TR_USERNAME' => tr('Username'),
 				  'TR_USERTYPE' => tr('User type'),

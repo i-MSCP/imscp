@@ -223,7 +223,7 @@ $tpl->assign(
 	array(
 		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Admin/Main Index'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		'ISP_LOGO' => layout_getUserLogo(),
 		'THEME_CHARSET' => tr('encoding')
 	)
 );

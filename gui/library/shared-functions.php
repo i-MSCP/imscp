@@ -900,6 +900,68 @@ function decode_idna($domain)
     return ($result == false) ? $domain : $result;
 }
 
+
+/**
+ * Utils function to upload file.
+ *
+ * @param string $inputFieldName upload input field name
+ * @param string|Array $destPath Destination path string or an array where the first
+ *                               item is an anonymous function to run before moving
+ *                               file and any other items the arguments passed to the
+ *                               anonymous function. The anonymous function must
+ *                               return a string that is the destination path or
+ *                               FALSE on failure.
+ *
+ * @return string|bool File destination path on success, FALSE otherwise
+ */
+function utils_uploadFile($inputFieldName, $destPath)
+{
+    $inputFieldName = (string) $inputFieldName;
+
+    if ($_FILES[$inputFieldName]['error'] == UPLOAD_ERR_OK) {
+		$tmpFilePath = $_FILES[$inputFieldName]['tmp_name'];
+
+		if (!is_readable($tmpFilePath)) {
+			set_page_message(tr('File is not readable.'), 'error');
+			return false;
+		}
+
+        if(!is_string($destPath) && is_array($destPath)) {
+            if(!($destPath = call_user_func_array(array_shift($destPath), $destPath))) {
+                return false;
+            }
+        }
+
+		if (!@move_uploaded_file($tmpFilePath, $destPath)) {
+			set_page_message(tr('Unable to move file.'), 'error');
+			return false;
+		}
+
+        return $destPath;
+    } else {
+		switch ($_FILES[$inputFieldName]['error']) {
+			case UPLOAD_ERR_INI_SIZE:
+			case UPLOAD_ERR_FORM_SIZE:
+				set_page_message(tr('File exceeds the size limit.'), 'error');
+				break;
+			case UPLOAD_ERR_PARTIAL:
+			case UPLOAD_ERR_NO_FILE:
+				set_page_message(tr('Upload failed.'), 'error');
+				break;
+			case UPLOAD_ERR_NO_TMP_DIR:
+				set_page_message(tr('Temporary folder not found.'), 'error');
+				break;
+			case UPLOAD_ERR_CANT_WRITE:
+				set_page_message(tr('Failed to write file to disk.'), 'error');
+				break;
+			default:
+				set_page_message(tr('A PHP extension stopped the file upload.'), 'error');
+		}
+
+		return false;
+	}
+}
+
 /************************************************************************************
  * Checks functions
  */
@@ -1135,73 +1197,6 @@ function calc_bar_value($value, $value_max, $bar_width)
     } else {
         $ret_value = ($value * $bar_width) / $value_max;
         return ($ret_value > $bar_width) ? $bar_width : $ret_value;
-    }
-}
-
-/************************************************************************************
- * Layout related functions
- */
-
-/**
- * Returns user logo path.
- *
- * @param  int $userId User unique identifier
- * @return string
- */
-function get_logo($userId)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    // Getting type and creator of the user
-    $query = '
-        SELECT
-            `admin_type`, `created_by`
-        FROM
-            `admin`
-        WHERE
-            `admin_id` = ?
-    ';
-    $stmt = exec_query($query, $userId);
-
-    if ($stmt->fields['admin_type'] == 'admin') {
-        return get_admin_logo($userId);
-    } else {
-        if (get_admin_logo($stmt->fields['created_by']) == '../themes/' . $cfg->USER_INITIAL_THEME . '/images/imscp_logo.png') {
-            return get_admin_logo($userId);
-        } else {
-            return get_admin_logo($stmt->fields['created_by']);
-        }
-    }
-}
-
-/**
- * Returns admin logo path.
- *
- * @param int $userId User unique identifier
- * @param bool $returnDefault Tell whether or not default logo must be returned if
- *                            logo is not found for user (default TRUE)
- * @return string|int Admin logo path or 0 in case user has not his own logo and
- *                    $returnDefault is set to false
- */
-function get_admin_logo($userId, $returnDefault = true)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $query = 'SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?';
-    $stmt = exec_query($query, $userId);
-
-    $userLogo = $stmt->fields['logo'];
-
-    if (empty($userLogo)) { // default logo
-		if($returnDefault) {
-        	return '../themes/' . $cfg->USER_INITIAL_THEME . '/images/imscp_logo.png';
-		} else {
-			return 0;
-		}
-    } else {
-        return $cfg->ISP_LOGO_PATH . '/' . $userLogo;
     }
 }
 
@@ -2081,3 +2076,4 @@ function unsetMessages()
         }
     }
 }
+

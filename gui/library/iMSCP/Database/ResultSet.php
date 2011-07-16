@@ -75,7 +75,6 @@ class iMSCP_Database_ResultSet {
 	 *
 	 * @throws iMSCP_Exception_Database
 	 * @param PDOStatement $stmt A PDOStatement instance
-	 * @return void
 	 */
 	public function __construct($stmt) {
 

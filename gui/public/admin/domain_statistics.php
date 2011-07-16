@@ -54,7 +54,7 @@ $tpl->assign(
 		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Domain Statistics Data'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 

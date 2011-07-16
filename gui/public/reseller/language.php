@@ -68,7 +68,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
     ";
 
     exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'],
-							get_admin_logo($user_id, false)));
+							basename(layout_getUserLogo(false, false))));
 
     if(!isset($_SESSION['logged_from_id'])) {
 	    unset($_SESSION['user_def_lang']);
@@ -93,7 +93,7 @@ $tpl->assign(array(
                   'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'ISP_LOGO' => layout_getUserLogo(),
                   'TR_GENERAL_INFO' => tr('General information'),
                   'TR_LANGUAGE' => tr('Language'),
                   'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your default language'),

@@ -822,7 +822,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 				tr('i-MSCP - Admin/Manage users/Edit Reseller'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+			'ISP_LOGO' => layout_getUserLogo()
 		)
 	);
 

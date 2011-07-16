@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
 #
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2011 by internet Multi Server Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -27,7 +27,7 @@
 # Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # The i-MSCP Home Page is:
@@ -44,7 +44,8 @@ if [ $DEBUG -eq 1 ]; then
     echo	"";
 fi
 
-set_permissions "$ROOT_DIR/gui" $PANEL_USER $APACHE_GROUP 0550
+set_permissions "$ROOT_DIR/gui" \
+    $PANEL_USER $APACHE_GROUP 0550
 
 recursive_set_permissions "$ROOT_DIR/gui/public" \
 	$PANEL_USER $APACHE_GROUP 0550 0440
@@ -54,6 +55,12 @@ recursive_set_permissions "$ROOT_DIR/gui/library" \
 
 recursive_set_permissions "$ROOT_DIR/gui/data" \
 	$PANEL_USER $PANEL_USER 0700 0600
+
+set_permissions "$ROOT_DIR/gui/data" \
+    $PANEL_USER $APACHE_GROUP 0550
+
+recursive_set_permissions "$ROOT_DIR/gui/data/ispLogos" \
+	$PANEL_USER $APACHE_GROUP 0750 0640
 
 recursive_set_permissions "$ROOT_DIR/gui/i18n/locales" \
 	$PANEL_USER $PANEL_USER 0700 0600
@@ -66,11 +73,13 @@ recursive_set_permissions "$ROOT_DIR/gui/public/tools/webmail/data" \
 
 # Main virtual webhosts directory must be owned by root and readable by all
 # the domain-specific users.
-set_permissions $APACHE_WWW_DIR $ROOT_USER $ROOT_GROUP 0555
+set_permissions "$APACHE_WWW_DIR" \
+    $ROOT_USER $ROOT_GROUP 0555
 
 # Main fcgid directory must be world-readable, because all the domain-specific
 # users must be able to access its contents.
-set_permissions "$PHP_STARTER_DIR" $ROOT_USER $ROOT_GROUP 0555
+set_permissions "$PHP_STARTER_DIR" \
+    $ROOT_USER $ROOT_GROUP 0555
 
 echo " done";
 
