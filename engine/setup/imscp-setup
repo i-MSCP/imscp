@@ -166,7 +166,7 @@ exit 0;
 END{
 	my $message = getMessage();
 	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
-		open(F, '>:utf8', "$main::imscpConfig{'LOG_DIR'}/imscp-setup.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-setup.log' for writing: $!");
+		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-setup.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-setup.log' for writing: $!");
 		print F $message;
 		close F;
 		print STDOUT "A log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
