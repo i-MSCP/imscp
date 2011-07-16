@@ -107,9 +107,9 @@ if(isset($_POST['uaction'])) {
 $ispLogo = layout_getUserLogo(false);
 
 if (layout_isUserLogo($ispLogo)) {
-    $tpl->assign('LOGO_REMOVE_BUTTON', '');
-} else {
     $tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
+} else {
+    $tpl->assign('LOGO_REMOVE_BUTTON', '');
 }
 
 $tpl->assign(array(
