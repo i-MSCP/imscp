@@ -355,7 +355,9 @@ function layout_updateUserLogo()
         return $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $fileName;
     };
 
-    if (($logoPath = utils_uploadFile('logoFile', array($beforeMove, $cfg)))) {
+    if (($logoPath = utils_uploadFile('logoFile', array($beforeMove, $cfg))) === false) {
+        return false;
+    } else {
         if ($_SESSION['user_type'] == 'admin') {
             $userId = 1;
         } else {
@@ -368,15 +370,13 @@ function layout_updateUserLogo()
         $query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
         exec_query($query, array(basename($logoPath), $userId));
 
-        // Delete old logo
+        // Deleting old logo (we are safe here) - We don't return FALSE on failure .
+        // The administrator will be warned through logs.
         layout_deleteUserLogo($oldLogoFile, true);
-    } else {
-        return false;
     }
 
     return true;
 }
-
 
 /**
  * Deletes user logo.
