@@ -39,10 +39,11 @@
  */
 function get_sql_user_count()
 {
-    $query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`;";
-    $rs = exec_query($query);
+    $query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`";
+    $rs = execute_query($query);
 
     return $rs->recordCount();
+
 }
 
 /**

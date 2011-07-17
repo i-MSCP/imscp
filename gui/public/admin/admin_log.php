@@ -84,12 +84,11 @@ function generate_page($tpl)
 			`log_time` DESC
 		LIMIT
 			$start_index, $rows_per_page
-		;
 	";
 
     $rs = exec_query($count_query);
     $records_count = $rs->fields['cnt'];
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     if ($rs->rowCount() == 0) {
         $tpl->assign(array(

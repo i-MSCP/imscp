@@ -127,7 +127,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if (isset($_SESSION['domainname'])) {
-    user_goto('address.php');
+    redirectTo('address.php');
 }
 
 if (isset($_POST['domainname']) && $_POST['domainname'] != '') {

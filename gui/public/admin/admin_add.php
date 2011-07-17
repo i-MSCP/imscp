@@ -139,7 +139,7 @@ function add_user($tpl)
 
             $_SESSION['user_added'] = 1;
 
-            user_goto('manage_users.php');
+            redirectTo('manage_users.php');
         } else { // check user data
             $tpl->assign(array(
                               'EMAIL' => clean_input($_POST['email'], true),

@@ -68,7 +68,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	if ($status !== $ok_status) {
 		set_page_message(tr('Protected area status should be OK if you want to delete it!'), 'error');
-		user_goto('protected_areas.php');
+		redirectTo('protected_areas.php');
 	}
 
 	// TODO use prepared statement for $delete_status
@@ -88,8 +88,8 @@ SQL_QUERY;
 
 	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id'], E_USER_NOTICE);
 	set_page_message(tr('Protected area deleted successfully!'), 'success');
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 } else {
 	set_page_message(tr('Permission deny!'), 'error');
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }

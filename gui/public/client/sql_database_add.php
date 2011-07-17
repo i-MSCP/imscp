@@ -161,7 +161,7 @@ function add_sql_database($user_id) {
 	}
 
 	$query = 'create database ' . quoteIdentifier($db_name);
-	exec_query($query);
+	execute_query($query);
 
 	$query = "
 		INSERT INTO `sql_database`
@@ -176,7 +176,7 @@ function add_sql_database($user_id) {
 
 	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . tohtml($db_name), E_USER_NOTICE);
 	set_page_message(tr('SQL database created successfully!'), 'success');
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
 // common page data.
@@ -218,7 +218,7 @@ function check_sql_permissions($user_id) {
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
 		set_page_message(tr('SQL accounts limit reached!'), 'error');
-		user_goto('sql_manage.php');
+		redirectTo('sql_manage.php');
 	}
 }
 

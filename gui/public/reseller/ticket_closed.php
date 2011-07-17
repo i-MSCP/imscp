@@ -67,7 +67,7 @@ $tpl->assign(
 $admin_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($admin_id)) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 if (isset($_GET['psi'])) {
 	$start = $_GET['psi'];

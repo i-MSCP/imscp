@@ -71,7 +71,7 @@ function gen_reseller_table($tpl) {
 			`admin_id`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	$i = 0;
 
@@ -86,12 +86,6 @@ function gen_reseller_table($tpl) {
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		while (!$rs->EOF) {
-
-			$tpl->assign(
-				array(
-					'RSL_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
-				)
-			);
 
 			$admin_id = $rs->fields['admin_id'];
 
@@ -129,7 +123,7 @@ function gen_reseller_table($tpl) {
 			`admin_name`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	while (!$rs->EOF) {
 

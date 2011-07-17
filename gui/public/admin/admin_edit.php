@@ -48,7 +48,7 @@ if (isset($_GET['edit_id'])) {
 } else if (isset($_POST['edit_id'])) {
     $edit_id = $_POST['edit_id'];
 } else {
-    user_goto('manage_users.php');
+    redirectTo('manage_users.php');
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -109,7 +109,7 @@ function update_data()
                 if ($_POST['pass'] != $_POST['pass_rep']) {
                     set_page_message(tr("Entered passwords do not match!"), 'error');
 
-                    user_goto('admin_edit.php?edit_id=' . $edit_id);
+                    redirectTo('admin_edit.php?edit_id=' . $edit_id);
                 }
 
                 if (!chk_password($_POST['pass'])) {
@@ -121,7 +121,7 @@ function update_data()
                                                  $cfg->PASSWD_CHARS), 'error');
                     }
 
-                    user_goto('admin_edit.php?edit_id=' . $edit_id);
+                    redirectTo('admin_edit.php?edit_id=' . $edit_id);
                 }
 
                 $upass = crypt_user_pass($_POST['pass']);
@@ -144,7 +144,7 @@ function update_data()
                 // Kill any existing session of the edited user
 
                 $admin_name = get_user_name($edit_id);
-                $query = "DELETE FROM `login` WHERE `user_name` = ?;";
+                $query = "DELETE FROM `login` WHERE `user_name` = ?";
 
                 $rs = exec_query($query, $admin_name);
                 if ($rs->recordCount() != 0) {
@@ -160,7 +160,7 @@ function update_data()
             if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
                 $query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";
 
-                $res = exec_query($query);
+                $res = execute_query($query);
 
                 if ($res->fields['admin_type'] == 'admin') {
                     $admin_type = tr('Administrator');
@@ -180,7 +180,7 @@ function update_data()
             }
 
             $_SESSION['user_updated'] = 1;
-            user_goto('manage_users.php');
+            redirectTo('manage_users.php');
         }
     }
 }
@@ -200,7 +200,7 @@ function check_user_data()
 }
 
 if ($edit_id == $_SESSION['user_id']) {
-    user_goto('personal_change.php');
+    redirectTo('personal_change.php');
 }
 
 $query = "
@@ -217,7 +217,7 @@ $query = "
 $rs = exec_query($query, $edit_id);
 
 if ($rs->recordCount() <= 0) {
-    user_goto('manage_users.php');
+    redirectTo('manage_users.php');
 }
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');

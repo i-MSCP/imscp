@@ -91,10 +91,9 @@ function gen_reseller_mainmenu($tpl, $menu_file)
 			`menu_level` = 'reseller'
 		OR
 			`menu_level` = 'all'
-	    ;
 	";
 
-    $rs = exec_query($query);
+    $rs = execute_query($query);
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
     } else {
@@ -193,10 +192,9 @@ function gen_reseller_menu($tpl, $menu_file)
 			`menu_level` = 'reseller'
 		OR
 			`menu_level` = 'all'
-		;
 	";
 
-    $rs = exec_query($query);
+    $rs = execute_query($query);
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
     } else {
@@ -262,7 +260,7 @@ function generate_ip_list($tpl, $reseller_id)
 
     global $domain_ip;
 
-    $query = "SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?";
 
     $res = exec_query($query, $reseller_id);
 
@@ -270,9 +268,9 @@ function generate_ip_list($tpl, $reseller_id)
 
     $reseller_ips = $data['reseller_ips'];
 
-    $query = "SELECT * FROM `server_ips`;";
+    $query = "SELECT * FROM `server_ips`";
 
-    $res = exec_query($query);
+    $res = execute_query($query);
 
     while ($data = $res->fetchRow()) {
         $ip_id = $data['ip_id'];

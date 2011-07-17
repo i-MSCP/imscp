@@ -552,7 +552,7 @@ function add_new_order($tpl,$order_id, $user_id) {
 
 	if (count($error_msgs) > 0) {
 		set_page_message(implode('<br />', $error_msgs));
-		user_goto('hosting_plan_update.php');
+		redirectTo('hosting_plan_update.php');
 	}
 
 	$date = time();

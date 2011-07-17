@@ -538,11 +538,11 @@ function sql_delete_user($domain_id, $db_user_id)
         ) {
             return;
         }
-        user_goto('sql_manage.php');
+        redirectTo('sql_manage.php');
     }
 
     // remove from i-MSCP sql_user table.
-    $query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?;';
+    $query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
     exec_query($query, $db_user_id);
 
     update_reseller_c_props(get_reseller_id($domain_id));
@@ -552,22 +552,22 @@ function sql_delete_user($domain_id, $db_user_id)
 
     if (count_sql_user_by_name($stmt->fields['sqlu_name']) == 0) {
         // revoke grants on global level, if any;
-        $query = "REVOKE ALL ON *.* FROM ?@'%';";
+        $query = "REVOKE ALL ON *.* FROM ?@'%'";
         exec_query($query, $db_user_name);
 
-        $query = "REVOKE ALL ON *.* FROM ?@localhost;";
+        $query = "REVOKE ALL ON *.* FROM ?@localhost";
         exec_query($query, $db_user_name);
 
         // delete user record from mysql.user table;
-        $query = "DROP USER ?@'%';";
+        $query = "DROP USER ?@'%'";
         exec_query($query, $db_user_name);
 
-        $query = "DROP USER ?@'localhost';";
+        $query = "DROP USER ?@'localhost'";
         exec_query($query, $db_user_name);
 
         // flush privileges.
-        $query = "FLUSH PRIVILEGES;";
-        exec_query($query);
+        $query = "FLUSH PRIVILEGES";
+        execute_query($query);
     } else {
         $query = "REVOKE ALL ON $db_name.* FROM ?@'%';";
         exec_query($query, $db_user_name);
@@ -651,7 +651,7 @@ function delete_sql_database($domain_id, $database_id)
             return;
         }
 
-        user_goto('sql_manage.php');
+        redirectTo('sql_manage.php');
     }
 
     $db_name = quoteIdentifier($stmt->fields['db_name']);

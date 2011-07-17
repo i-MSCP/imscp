@@ -325,7 +325,7 @@ function get_avail_software($tpl)
 		ORDER BY
 			`a`.`reseller_id` ASC, `a`.`software_type` ASC, `a`.`software_name` ASC
 	";
-	$rs = exec_query($query, array());
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() > 0) {
 		while (!$rs->EOF) {
@@ -393,7 +393,7 @@ function get_avail_softwaredepot($tpl)
 		ORDER BY
 			`a`.`reseller_id` ASC, `a`.`software_type` ASC, `a`.`software_name` ASC
 	";
-	$rs = exec_query($query, array());
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() > 0) {
 		while (!$rs->EOF) {
@@ -706,7 +706,7 @@ function get_reseller_software($tpl)
 		ORDER BY
 			t1.`admin_id` ASC
 	";
-	$rs = exec_query($query, array());
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() > 0) {
 		while (!$rs->EOF) {
@@ -777,7 +777,7 @@ function get_reseller_software($tpl)
 					AND
 						`software_status` = 'ok'
 				";
-				$rscountin_use = exec_query($query);
+				$rscountin_use = execute_query($query);
 				$sw_in_use = $rscountin_use->fields['in_use'];
 			} else {
 				$sw_in_use = 0;
@@ -892,7 +892,7 @@ function get_reseller_list($tpl, $software_id)
 		AND
 			a.`softwaredepot_allowed` = 'yes'
 	";
-	$rs = exec_query($query, array());
+	$rs = execute_query($query, array());
 
 	if ($rs->recordCount() > 0) {
 		$reseller_count = 0;

@@ -67,7 +67,7 @@ $tpl->assign(
 $reseller_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($reseller_id)) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 if (isset($_GET['psi'])) {
 	$start = $_GET['psi'];

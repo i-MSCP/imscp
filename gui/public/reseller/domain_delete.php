@@ -66,7 +66,7 @@ function validate_domain_deletion($tpl, $domain_id)
 
     if ($data['domain_id'] == 0) {
         set_page_message(tr('Wrong domain Id.'), 'error');
-        user_goto('users.php?psi=last');
+        redirectTo('users.php?psi=last');
     }
 
     $tpl->assign(array(
@@ -177,15 +177,8 @@ function validate_domain_deletion($tpl, $domain_id)
     // Check subdomain_alias
     if (count($alias_a) > 0) {
         $aliasIds = implode(',', $alias_a);
-        $query = "
-            SELECT
-                *
-            FROM
-                `subdomain_alias`
-            WHERE
-                `alias_id` IN ($aliasIds)
-        ";
-        $res = exec_query($query);
+        $query = "SELECT *  FROM `subdomain_alias`  WHERE `alias_id` IN ($aliasIds)";
+        $res = execute_query($query);
 
         while (!$res->EOF) {
             $any_sub_found = true;

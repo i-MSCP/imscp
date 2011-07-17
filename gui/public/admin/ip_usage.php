@@ -62,16 +62,8 @@ $tpl->assign(array(
  */
 function listIPDomains($tpl) {
 	
-	$query = "
-		SELECT
-			`ip_id`,
-			`ip_number`
-		FROM
-			`server_ips`
-		;
-	";
-	
-	$rs = exec_query($query);
+	$query = "SELECT `ip_id`, `ip_number` FROM `server_ips`";
+	$rs = execute_query($query);
 
     if ($rs->rowCount()) {
         while (!$rs->EOF) {

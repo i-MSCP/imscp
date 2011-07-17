@@ -785,20 +785,20 @@ if (isset($_GET['action'])) {
 				break;
 			default:
 				set_page_message(tr('Unknown type!'), 'error');
-				user_goto('imscp_debugger.php');
+				redirectTo('imscp_debugger.php');
 		}
 
 		$rs = exec_query($query, $_GET['id']);
 
 		if ($rs !== false) {
 			set_page_message(tr('Done'), 'success');
-			user_goto('imscp_debugger.php');
+			redirectTo('imscp_debugger.php');
 		} else {
             /** @var $db iMSCP_Database */
             $db = iMSCP_Registry::get('db');
 			$msg = tr('Unknown Error') . '<br />' . $db->errorMsg();
 			set_page_message($msg, 'error');
-			user_goto('imscp_debugger.php');
+			redirectTo('imscp_debugger.php');
 		}
 	}
 }

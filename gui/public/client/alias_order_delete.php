@@ -46,10 +46,10 @@ if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
 	$del_id = $_GET['del_id'];
 } else {
 	$_SESSION['orderaldel'] = '_no_';
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 }
 
 $query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = '" . $del_id . "'";
-$rs = exec_query($query);
+$rs = execute_query($query);
 
-user_goto('domains_manage.php');
+redirectTo('domains_manage.php');

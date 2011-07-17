@@ -177,8 +177,8 @@ check_login(__FILE__);
  */
 if(isset($_GET['id'])) {
 	if(!net2ftpAuth($_GET['id'])) {
-		user_goto('ftp_accounts.php');
+		redirectTo('ftp_accounts.php');
 	}
 } else {
-	user_goto('/index.php');
+	redirectTo('/index.php');
 }

@@ -41,7 +41,7 @@ check_login(__FILE__);
 $admin_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($admin_id)) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 $back_url = 'ticket_system.php';
@@ -65,7 +65,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 	$rs = exec_query($query, array($ticket_id, $user_id, $user_id));
 
 	if ($rs->recordCount() == 0) {
-		user_goto('ticket_system.php');
+		redirectTo('ticket_system.php');
 	}
 
 	$back_url = (getTicketStatus($ticket_id) == 0) ?
@@ -91,4 +91,4 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 	$back_url = 'ticket_closed.php';
 }
 
-user_goto($back_url);
+redirectTo($back_url);

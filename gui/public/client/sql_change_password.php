@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$db_user_id = $_POST['id'];
 } else {
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
 // page functions.
@@ -116,7 +116,7 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
 	set_page_message(tr('SQL user password was successfully changed!'), 'success');
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
 function gen_page_data(&$tpl, $db_user_id) {
@@ -143,7 +143,7 @@ function gen_page_data(&$tpl, $db_user_id) {
 // common page data.
 
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 $tpl->assign(
@@ -160,7 +160,7 @@ $db_user_name = gen_page_data($tpl, $db_user_id);
 if(!check_user_sql_perms($db_user_id))
 {
     set_page_message(tr('User does not exist or you do not have permission to access this interface.'));
-    user_goto('sql_manage.php');
+    redirectTo('sql_manage.php');
 }
 
 check_user_sql_perms($db_user_id);

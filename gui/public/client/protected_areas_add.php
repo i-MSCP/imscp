@@ -200,7 +200,7 @@ SQL_QUERY;
 		set_page_message(tr('Protected area created successfully!'), 'success');
 	}
 
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }
 
 function gen_protect_it($tpl, &$dmn_id) {
@@ -240,7 +240,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$rs = exec_query($query, array($dmn_id, $ht_id));
 
 		if ($rs->recordCount() == 0) {
-			user_goto('protected_areas_add.php');
+			redirectTo('protected_areas_add.php');
 		}
 
 		$user_id = $rs->fields['user_id'];
@@ -251,7 +251,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$ok_status = $cfg->ITEM_OK_STATUS;
 		if ($status !== $ok_status) {
 			set_page_message(tr('Protected area status should be OK if you want to edit it!'), 'error');
-			user_goto('protected_areas.php');
+			redirectTo('protected_areas.php');
 		}
 
 		$tpl->assign(

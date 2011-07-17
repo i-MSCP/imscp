@@ -44,16 +44,16 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	global $delete_id;
 	$delete_id = $_GET['id'];
 } else {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 // Test if we have a proper delete_id.
 if (!isset($delete_id)) {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 if (!is_numeric($delete_id)) {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 $dmn_name = $_SESSION['user_logged'];
@@ -75,7 +75,7 @@ $query = "
 $rs = exec_query($query, array($delete_id, $dmn_name));
 
 if ($rs->recordCount() == 0) {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 // check for catchall assigment !!
@@ -110,7 +110,7 @@ $num = $res_tmp->rowCount();
 if ($num > 0) {
 	set_page_message(tr('Please delete first CatchAll account for this email!'), 'error');
 	$_SESSION['catchall_assigned'] = 1;
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 /**
@@ -126,4 +126,4 @@ $admin_login = decode_idna($_SESSION['user_logged']);
 write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
 $_SESSION['maildel'] = 1;
 
-user_goto('mail_accounts.php');
+redirectTo('mail_accounts.php');

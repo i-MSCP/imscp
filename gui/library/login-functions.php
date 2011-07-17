@@ -641,7 +641,7 @@ function check_user_login()
 	) {
 		unset_user_login_data(true);
 		write_log("System is currently in maintenance mode. Logging out <b><i>" . $userLogged . "</i></b>", E_USER_NOTICE);
-		user_goto('/index.php');
+		redirectTo('/index.php');
 	}
 
 	// If user login data correct - update session and lastaccess
@@ -669,7 +669,7 @@ function check_login($fileName = null, $preventExternalLogin = true)
 			exit;
 		}
 
-		user_goto('/index.php');
+		redirectTo('/index.php');
 	}
 
 	// Check user level
@@ -695,7 +695,7 @@ function check_login($fileName = null, $preventExternalLogin = true)
 						  '| with REQUEST_METHOD |' . $_SERVER['REQUEST_METHOD'] . '|', E_USER_WARNING);
 			}
 
-			user_goto('/index.php');
+			redirectTo('/index.php');
 		}
 	}
 
@@ -925,9 +925,9 @@ function redirect_to_level_page($file = null, $force = false)
 			$userType = 'client';
 		case 'admin':
 		case 'reseller':
-			user_goto('/' . $userType . '/' . $file);
+			redirectTo('/' . $userType . '/' . $file);
 			break;
 		default:
-			user_goto('/index.php');
+			redirectTo('/index.php');
 	}
 }

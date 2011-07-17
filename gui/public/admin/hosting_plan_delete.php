@@ -41,7 +41,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 
@@ -49,7 +49,7 @@ if (isset($_GET['hpid']) && is_numeric($_GET['hpid'])) {
 	$hpid = $_GET['hpid'];
 } else {
 	$_SESSION['hp_deleted'] = '_no_';
-	user_goto('hosting_plan.php');
+	redirectTo('hosting_plan.php');
 }
 
 // Check if there is no order for this plan
@@ -58,7 +58,7 @@ $data = $res->fetchRow();
 
 if ($data['0'] > 0) {
 	$_SESSION['hp_deleted_ordererror'] = '_yes_';
-	user_goto('hosting_plan.php');
+	redirectTo('hosting_plan.php');
 }
 
 // Try to delete hosting plan from db
@@ -67,4 +67,4 @@ exec_query($query, $hpid);
 
 $_SESSION['hp_deleted'] = '_yes_';
 
-user_goto('hosting_plan.php');
+redirectTo('hosting_plan.php');

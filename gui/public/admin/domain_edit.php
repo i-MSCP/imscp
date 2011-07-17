@@ -60,7 +60,7 @@ $tpl->define_dynamic('t_software_support', 'page');
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL !== 'admin') {
-	user_goto('users.php?psi=last');
+	redirectTo('users.php?psi=last');
 }
 
 $tpl->assign(
@@ -124,12 +124,12 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		unset($_SESSION['edit_id']);
 		$_SESSION['edit'] = '_no_';
 
-		user_goto('users.php?psi=last');
+		redirectTo('users.php?psi=last');
 	}
 
 	if (check_user_data($tpl, $_SESSION['user_id'], $editid)) { // Save data to db
 		$_SESSION['dedit'] = "_yes_";
-		user_goto('users.php?psi=last');
+		redirectTo('users.php?psi=last');
 	}
 	load_additional_data($_SESSION['user_id'], $editid);
 } else {
@@ -173,7 +173,7 @@ function load_user_data($user_id, $domain_id) {
 	if ($rs->recordCount() == 0) {;
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
-		user_goto('users.php?psi=last');
+		redirectTo('users.php?psi=last');
 	}
 
 	list(,$sub,,$als,,$mail,,$ftp,,$sql_db,,$sql_user,$traff,$disk) = generate_user_props($domain_id);

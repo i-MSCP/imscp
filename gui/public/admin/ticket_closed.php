@@ -64,7 +64,7 @@ $tpl->assign(
 // dynamic page data
 
 if (!hasTicketSystem()) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 if (isset($_GET['psi'])) {
 	$start = $_GET['psi'];

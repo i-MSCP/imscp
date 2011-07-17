@@ -34,14 +34,9 @@
 
 // site functions
 function gen_button_list($tpl) {
-	$query = "
-		SELECT
-			*
-		FROM
-			`custom_menus`
-	";
+	$query = "SELECT * FROM `custom_menus`";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('BUTTON_LIST', '');
 

@@ -254,7 +254,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 	}
 
 	if ($res->rowCount() !== 1) { // Error
-		user_goto('hosting_plan.php');
+		redirectTo('hosting_plan.php');
 	}
 
 	$data = $res->fetchRow();
@@ -527,7 +527,7 @@ function save_data_to_db() {
 			);
 
 			$_SESSION['hp_updated'] = '_yes_';
-			user_goto('hosting_plan.php');
+			redirectTo('hosting_plan.php');
 		}
 	} else {
 		set_page_message(

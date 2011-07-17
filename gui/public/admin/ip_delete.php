@@ -42,12 +42,12 @@ $cfg = iMSCP_Registry::get('config');
 
 // Test if we have a proper delete_id.
 if (!isset($_GET['delete_id'])) {
-	user_goto('ip_manage.php');
+	redirectTo('ip_manage.php');
 }
 
 if (!is_numeric($_GET['delete_id'])) {
 	set_page_message(tr('You cannot delete the last active IP address!'), 'error');
-	user_goto('ip_manage.php');
+	redirectTo('ip_manage.php');
 }
 
 $delete_id = $_GET['delete_id'];
@@ -69,17 +69,16 @@ if ($rs->fields['dcnt'] > 0) {
 
 	set_page_message(tr('Error: we have a domain using this IP!'), 'error');
 
-	user_goto('ip_manage.php');
+	redirectTo('ip_manage.php');
 }
 // check if the IP is assigned to reseller
 $query = "SELECT `reseller_ips` FROM `reseller_props`";
-
-$res = exec_query($query);
+$res = execute_query($query);
 
 while (($data = $res->fetchRow())) {
 	if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
 		set_page_message(tr('Error: we have a reseller using this IP!'), 'error');
-		user_goto('ip_manage.php');
+		redirectTo('ip_manage.php');
 	}
 }
 
@@ -117,4 +116,4 @@ send_request();
 
 set_page_message(tr('IP was deleted!'), 'success');
 
-user_goto('ip_manage.php');
+redirectTo('ip_manage.php');

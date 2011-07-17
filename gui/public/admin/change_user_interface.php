@@ -55,5 +55,5 @@ if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 
     change_user_interface($from_id, $to_id);
 } else {
-    user_goto('manage_users.php');
+    redirectTo('manage_users.php');
 }

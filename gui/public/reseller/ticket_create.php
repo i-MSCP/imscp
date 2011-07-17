@@ -61,7 +61,7 @@ $tpl->assign(
 $admin_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($admin_id)) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 if (isset($_POST['uaction'])) {
@@ -72,7 +72,7 @@ if (isset($_POST['uaction'])) {
 	} else {
 		createTicket($_SESSION['user_id'], $_SESSION['user_created_by'],
 				$_POST['urgency'], $_POST['subj'], $_POST['user_message'], 2);
-		user_goto('ticket_system.php');
+		redirectTo('ticket_system.php');
 	}
 }
 

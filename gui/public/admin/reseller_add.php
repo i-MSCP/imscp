@@ -75,7 +75,7 @@ function get_server_ip($tpl) {
 			`ip_number`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	$i = 0;
 
@@ -345,7 +345,7 @@ function add_reseller($tpl) {
 
 			$_SESSION['reseller_added'] = 1;
 
-			user_goto('manage_users.php');
+			redirectTo('manage_users.php');
 		} else {
 			$tpl->assign(
 				array(

@@ -66,7 +66,7 @@ function check_email_user() {
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
-		user_goto('mail_accounts.php');
+		redirectTo('mail_accounts.php');
 	}
 }
 
@@ -113,8 +113,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_name = $rs->fields['mailbox'];
 	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name, E_USER_NOTICE);
 	set_page_message(tr('Mail account scheduled for modification!'));
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 
 } else {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }

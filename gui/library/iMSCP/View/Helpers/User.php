@@ -111,10 +111,9 @@ function gen_client_mainmenu($tpl, $menu_file)
 			`menu_level` = 'user'
 		OR
 			`menu_level` = 'all'
-		;
 	";
 
-    $stmt = exec_query($query);
+    $stmt = execute_query($query);
 
     if ($stmt->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -260,9 +259,8 @@ function gen_client_menu($tpl, $menu_file)
 			`menu_level` = 'user'
 		OR
 			`menu_level` = 'all'
-		;
 	";
-    $stmt = exec_query($query);
+    $stmt = execute_query($query);
 
     if (!$stmt->recordCount()) {
         $tpl->assign('CUSTOM_BUTTONS', '');

@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$item_id = $_POST['id'];
 } else {
-	user_goto('mail_catchall.php');
+	redirectTo('mail_catchall.php');
 }
 
 // page functions.
@@ -96,7 +96,7 @@ function gen_dynamic_page_data($tpl, $id) {
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'), 'error');
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -284,7 +284,7 @@ function gen_dynamic_page_data($tpl, $id) {
 			}
 		}
 	} else {
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 }
 
@@ -296,7 +296,7 @@ function create_catchall_mail_account($id) {
 	// Check if user is owner of the domain
 	if (!preg_match('(normal|alias|subdom|alssub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 
 	$match = array();
@@ -358,9 +358,9 @@ function create_catchall_mail_account($id) {
 				send_request();
 				write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
 				set_page_message(tr('Catch all account scheduled for creation!'));
-				user_goto('mail_catchall.php');
+				redirectTo('mail_catchall.php');
 			} else {
-				user_goto('mail_catchall.php');
+				redirectTo('mail_catchall.php');
 			}
 		}
 	} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'forward' && isset($_POST['forward_list'])) {
@@ -449,9 +449,9 @@ function create_catchall_mail_account($id) {
 			send_request();
 			write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
 			set_page_message(tr('Catch all account scheduled for creation!'));
-			user_goto('mail_catchall.php');
+			redirectTo('mail_catchall.php');
 		} else {
-			user_goto('mail_catchall.php');
+			redirectTo('mail_catchall.php');
 		}
 	}
 }

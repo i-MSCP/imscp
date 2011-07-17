@@ -59,7 +59,7 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && iss
 
 		if (who_owns_this($to_id, 'client') != $from_id) {
 			set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'warning');
-			user_goto('users.php?psi=last');
+			redirectTo('users.php?psi=last');
 		}
 	}
 
@@ -83,5 +83,5 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && iss
 	change_user_interface($from_id, $to_id);
 
 } else {
-	user_goto('index.php');
+	redirectTo('index.php');
 }

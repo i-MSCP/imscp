@@ -376,7 +376,7 @@ gen_logged_from($tpl);
 if (!init_in_values()) {
     set_page_message(tr('Domain data were been altered. Please try again.'));
     unsetMessages();
-    user_goto('user_add1.php');
+    redirectTo('user_add1.php');
 }
 
 if (isset($_POST['uaction']) && ($_POST['uaction'] === 'user_add3_nxt') &&

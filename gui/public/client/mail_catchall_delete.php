@@ -59,7 +59,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($query, array($dmn_id, $mail_id));
 
 	if (!$rs->recordCount()) {
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 
 	$query = "
@@ -75,8 +75,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 	write_log($_SESSION['user_logged'].': deletes email catch all!', E_USER_NOTICE);
 	set_page_message(tr('Catch all account scheduled for deletion!'));
-	user_goto('mail_catchall.php');
+	redirectTo('mail_catchall.php');
 
 } else {
-	user_goto('mail_catchall.php');
+	redirectTo('mail_catchall.php');
 }

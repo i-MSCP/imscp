@@ -69,10 +69,10 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	// DNS record not found or not owned by current customer ?
 	if ($rs->recordCount() == 0) {
 		// Back to the main page
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	} elseif($rs->fields['protected'] == 'yes') {
 		set_page_message(tr('You are not allowed to remove this DNS record!'), 'error');
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	// Delete DNS record from the database
@@ -132,4 +132,4 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 }
 
 //  Back to the main page
-user_goto('domains_manage.php');
+redirectTo('domains_manage.php');

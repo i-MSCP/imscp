@@ -47,7 +47,7 @@ if (isset($_GET['uname'])
 	&& is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 } else {
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }
 
 $query = "
@@ -163,4 +163,4 @@ send_request();
 
 $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes user ID (protected areas): $uname", E_USER_NOTICE);
-user_goto('protected_user_manage.php');
+redirectTo('protected_user_manage.php');

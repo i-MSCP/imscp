@@ -107,12 +107,12 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		$_SESSION['dnsedit'] = "_yes_";
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 } elseif (isset($_POST['uaction']) && ($_POST['uaction'] === 'add')) {
 	if (check_fwd_data($tpl, true)) {
 		$_SESSION['dnsedit'] = "_yes_";
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 } else {
@@ -172,7 +172,7 @@ function create_options($data, $value = null) {
 // Show user data
 function not_allowed() {
 	$_SESSION['dnsedit'] = '_no_';
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 }
 
 function decode_zone_data($data) {

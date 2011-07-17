@@ -443,7 +443,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
 
     if (empty($data['domain_uid']) || empty($data['domain_admin_id'])) {
         set_page_message(tr('Wrong domain ID!'));
-        user_goto($goto);
+        redirectTo($goto);
     }
 
     $domain_admin_id = $data['domain_admin_id'];
@@ -574,7 +574,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     }
 
     $_SESSION['ddel'] = '_yes_';
-    user_goto($goto);
+    redirectTo($goto);
 }
 
 /**
@@ -599,7 +599,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
         $rs = exec_query($query, $value);
     } else {
         $query = "SELECT $field AS `field` FROM $table";
-        $rs = exec_query($query);
+        $rs = execute_query($query);
     }
 
     $result = 0;
@@ -627,7 +627,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                 WHERE
                     `sqld_id` IN ($sqld_ids)
             ";
-            $subres = exec_query($query);
+            $subres = execute_query($query);
             $result = $subres->fields['cnt'];
         } else {
             return $result;
@@ -683,7 +683,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
     } else {
         $query = "SELECT $field AS `field` FROM $table";
 
-        $rs = exec_query($query);
+        $rs = execute_query($query);
     }
 
     $result = 0;
@@ -808,23 +808,14 @@ function encode($string, $charset = 'UTF-8')
  */
 
 /**
- * goto the given destination file
- *
- * @param string $dest destination for header location (path + filename + params)
- */
-function user_goto($dest) {
-	header('Location: ' . $dest);
-	exit;
-}
-
-/**
  * Redirect to other page.
  *
  * @param  string $destination URL to redirect to
  * @return void
  */
 function redirectTo($destination) {
-    user_goto($destination);
+	header('Location: ' . $destination);
+	exit;
 }
 
 /**
@@ -1451,7 +1442,7 @@ function get_reseller_software_permission($tpl, $reseller_id)
 function get_application_installer_conf()
 {
     $query = "SELECT * FROM `web_software_options`";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     return array(
         $rs->fields['use_webdepot'], $rs->fields['webdepot_xml_url'],
@@ -1482,7 +1473,8 @@ function check_package_is_installed($package_installtype, $package_name,
         WHERE
             `admin_id` = '" . $user_id . "'
     ";
-    $rs_admin_type = exec_query($query);
+    $rs_admin_type = execute_query($query);
+
     if ($rs_admin_type->fields['admin_type'] == "admin") {
         $query = "
             SELECT
@@ -1520,7 +1512,7 @@ function check_package_is_installed($package_installtype, $package_name,
                 `software_depot`        = 'no'
         ";
     }
-    $rs = exec_query($query);
+    $rs = execute_query($query);
     $sw_count_res = $rs->recordCount();
 
     $query = "
@@ -1541,7 +1533,7 @@ function check_package_is_installed($package_installtype, $package_name,
         AND
             `software_depot`        = 'yes'
     ";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
     $sw_count_swdepot = $rs->recordCount();
 
     if ($sw_count_res > 0 || $sw_count_swdepot > 0) {
@@ -1576,7 +1568,7 @@ function get_webdepot_software_list($tpl, $user_id)
 		    `package_install_type` ASC,
 		    `package_title` ASC
 	";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     if ($rs->recordCount() > 0) {
         while (!$rs->EOF) {
@@ -1691,7 +1683,7 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
             SET
                 `webdepot_last_update` = '" . $XML_FILE->LAST_UPDATE->DATE . "'
         ";
-        exec_query($query);
+        execute_query($query);
 
         set_page_message(tr("Websoftware depot list was updated"), 'info');
     } else {
@@ -2004,11 +1996,11 @@ function records_count($table, $where = '', $bind = '')
             $rs = exec_query($query, $bind);
         } else {
             $query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where";
-            $rs = exec_query($query);
+            $rs = execute_query($query);
         }
     } else {
         $query = "SELECT COUNT(*) AS `cnt` FROM `$table`";
-        $rs = exec_query($query);
+        $rs = execute_query($query);
     }
 
     return (int)$rs->fields['cnt'];

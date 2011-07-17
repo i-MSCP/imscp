@@ -103,8 +103,8 @@ function gen_admin_mainmenu($tpl, $menu_file)
                       'TR_GENERAL_SETTINGS' => tr('General settings'),
                       'TR_SERVERPORTS' => tr('Server ports')));
 
-    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin';";
-    $rs = exec_query($query);
+    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin'";
+    $rs = execute_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -205,8 +205,8 @@ function gen_admin_menu($tpl, $menu_file)
                       'BUILDDATE' => $cfg->BuildDate,
                       'CODENAME' => $cfg->CodeName));
 
-    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin';";
-    $rs = exec_query($query);
+    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin'";
+    $rs = execute_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -335,9 +335,8 @@ function gen_admin_list($tpl)
 			`t1`.`admin_type` = 'admin'
 		ORDER BY
 			`t1`.`admin_name` ASC
-		;
 	";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
@@ -424,9 +423,8 @@ function gen_reseller_list($tpl)
 				`t1`.`admin_type` = 'reseller'
 		ORDER BY
 				`t1`.`admin_name` ASC
-		;
 	";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(

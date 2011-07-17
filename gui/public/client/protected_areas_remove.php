@@ -44,7 +44,7 @@ $cfg = iMSCP_Registry::get('config');
  * @todo Do we have a proper cdir?
  */
 if (!isset($_GET['cdir'])) {
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }
 $domain_name = $_SESSION['user_logged'];
 $cdir = $_GET['cdir'];
@@ -53,4 +53,4 @@ unlink($cfg->FTP_HOMEDIR . '/' . $domain_name . $cdir . '.htaccess');
 
 set_page_message(tr('Protected area was deleted successful!'), 'success');
 
-user_goto('protected_areas.php?cur_dir=' . $cdir);
+redirectTo('protected_areas.php?cur_dir=' . $cdir);

@@ -60,7 +60,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$ftp_name = $rs->fields['userid'];
 
 	if ($rs->recordCount() == 0) {
-		user_goto('ftp_accounts.php');
+		redirectTo('ftp_accounts.php');
 	}
 
 	$query = "
@@ -124,8 +124,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	write_log($_SESSION['user_logged'].": deletes FTP account: ".$ftp_name, E_USER_NOTICE);
 	set_page_message(tr('FTP account deleted successfully!'), 'success');
-	user_goto('ftp_accounts.php');
+	redirectTo('ftp_accounts.php');
 
 } else {
-	user_goto('ftp_accounts.php');
+	redirectTo('ftp_accounts.php');
 }

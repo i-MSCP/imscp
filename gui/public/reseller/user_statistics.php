@@ -299,7 +299,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 }
 
 if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
-    user_goto('./reseller_statistics.php');
+    redirectTo('./reseller_statistics.php');
 }
 
 $tpl->assign(

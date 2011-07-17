@@ -569,7 +569,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$stmt = exec_query($query);
+		$stmt = execute_query($query);
 
 		if ($stmt->recordCount() != 0) {
 			while (!$stmt->EOF) {

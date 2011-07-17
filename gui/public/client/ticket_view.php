@@ -63,7 +63,7 @@ $tpl->assign(
 $reseller_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($reseller_id)) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 if (isset($_GET['ticket_id'])) {
@@ -100,14 +100,14 @@ if (isset($_GET['ticket_id'])) {
 		} else {
 			updateTicket($ticket_id, $user_id, $_POST['urgency'],
 					$_POST['subject'], $_POST['user_message'], 1, 1);
-			user_goto('ticket_system.php');
+			redirectTo('ticket_system.php');
 		}
 	}
 
 	showTicketContent($tpl, $ticket_id, $user_id, $screenwidth);
 } else {
 	set_page_message(tr('Ticket not found!'), 'error');
-	user_goto('ticket_system.php');
+	redirectTo('ticket_system.php');
 }
 
 // static page messages
