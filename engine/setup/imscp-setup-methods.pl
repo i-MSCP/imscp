@@ -345,9 +345,16 @@ sub setup_imscp_database {
 	){
 
 		$dbName = 'imscp' unless $dbName;
+		my $msg = '';
 
 		do{
-			$dbName = iMSCP::Dialog->new()->inputbox("Please enter database name (default $dbName)", $dbName);
+			$dbName = iMSCP::Dialog->new()->inputbox("Please enter database name (default imscp)$msg", $dbName);
+			if($dbName =~ /[:;]/){
+				$dbName = undef ;
+				$msg = "\nNot allowed chars : and ;";
+			} else {
+				$msg = '';
+			}
 		}while (!$dbName);
 
 		if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
@@ -389,7 +396,8 @@ sub createDB{
 	my $error = $database->connect();
 	return $error if $error;
 
-	$error = $database->doQuery('dummy', "CREATE DATABASE `$dbName` CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+	my $qdbName = $database->quoteIdentifier($dbName);
+	$error = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
 
 	$database->set('DATABASE_NAME', $dbName);
 	$error = $database->connect();

@@ -135,9 +135,10 @@ sub getDBTables{
 }
 
 sub quoteIdentifier{
-	my $self		= shift;
-	my $identifier	= shift;
-
+	my ($self, $identifier)	= (@_);
+	debug((caller(0))[3].': Starting...');
+	$identifier = join(', ', $identifier) if( ref $identifier eq 'ARRAY');
+	debug((caller(0))[3].': Ending...');
 	return $self->{connection}->quote_identifier($identifier)
 }
 1;
