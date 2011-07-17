@@ -571,7 +571,7 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 
 		// update the sql quotas, too
 		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?;";
-		$rs = exec_query($query, array($user_id));
+		$rs = exec_query($query, $user_id);
 		$temp_dmn_name = $rs->fields['domain_name'];
 
 		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?;";

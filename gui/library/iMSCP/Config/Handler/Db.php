@@ -268,7 +268,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
     public function get($key)
     {
         if (!isset($this->_parameters[$key])) {
-            throw new iMSCP_Exception("Configuration variable `$key` is missing!");
+            throw new iMSCP_Exception("Configuration variable `$key` is missing.");
         }
 
         return $this->_parameters[$key];

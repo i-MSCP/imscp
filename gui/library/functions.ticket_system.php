@@ -378,7 +378,7 @@ function ticketGetLastDate($ticket_id)
 			`ticket_date` DESC
 	    ;
 	";
-    $stmt = exec_query($query, array($ticket_id));
+    $stmt = exec_query($query, $ticket_id);
 
     if (null == $stmt->fields['ticket_date']) {
         return tr('Never');

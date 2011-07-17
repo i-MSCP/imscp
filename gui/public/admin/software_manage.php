@@ -170,7 +170,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
 				// Delete software entry
 				$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
-				exec_query($query, array($sw_id));
+				exec_query($query, $sw_id);
 
 				$sw_wget = '';
 

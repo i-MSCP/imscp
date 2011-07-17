@@ -183,7 +183,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					WHERE
 						`software_id` = ?
 				";
-				exec_query($query, array($sw_id));
+				exec_query($query, $sw_id);
 				$sw_wget = "";
 				set_page_message(tr('Could not upload the file. Max. upload filesize (%1$d MB) reached?', ini_get('upload_max_filesize')), 'error');
 				$upload = 0;

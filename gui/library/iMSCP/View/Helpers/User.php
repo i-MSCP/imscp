@@ -372,7 +372,7 @@ function gen_client_menu($tpl, $menu_file)
 			`domain_admin_id` = ?
 		;
 	";
-    $stmt = exec_query($query, array($_SESSION['user_id']));
+    $stmt = exec_query($query, $_SESSION['user_id']);
 
     if ($stmt->fields('domain_software_allowed') == 'yes'
         && $stmt->fields('domain_ftpacc_limit') != '-1'

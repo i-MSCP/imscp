@@ -1918,13 +1918,13 @@ function execute_query($query, $parameters = null)
  * @throws iMSCP_Exception_Database
  * @param string $query             SQL statement
  * @param string|int|array $bind    Data to bind to the placeholders
- * @param boolean $failDie          If TRUE, throws an iMSCP_Exception_Database
+ * @param boolean $throwException   If TRUE, throws an iMSCP_Exception_Database
  *                                  exception on failure
  * @return iMSCP_Database_ResultSet A iMSCP_Database_ResultSet object that represents
  *                                  a result set or FALSE on failure if $failDie is
  *                                  set to FALSE
  */
-function exec_query($query, $bind = null, $failDie = true)
+function exec_query($query, $bind = null, $throwException = true)
 {
     static $db = null;
 
@@ -1933,6 +1933,15 @@ function exec_query($query, $bind = null, $failDie = true)
         $db = iMSCP_Registry::get('db');
     }
 
+    try {
+        $stmt = $db->execute($db->prepare($query), $bind);
+    } catch(PDOException $e) {
+        if ($throwException) {
+            throw new iMSCP_Exception_Database($e->getMessage() . " - Query: $query");
+        }
+    }
+    
+    /*
     if (!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
         if ($failDie) {
             throw new iMSCP_Exception_Database(
@@ -1940,6 +1949,7 @@ function exec_query($query, $bind = null, $failDie = true)
             );
         }
     }
+    */
 
     return $stmt;
 }
