@@ -150,7 +150,7 @@ $tpl->assign(array(
                   'TR_ADMIN_I18N_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'ISP_LOGO' => layout_getUserLogo(),
                   'TR_MULTILANGUAGE' => tr('Internationalization'),
                   'TR_INSTALLED_LANGUAGES' => tr('Available languages'),
                   'TR_LANGUAGE' => tr('Language'),
@@ -162,7 +162,7 @@ $tpl->assign(array(
                   'TR_SAVE' => tr('Save'),
                   'TR_INSTALL_NEW_LANGUAGE' => tr('Install / Update language'),
                   'TR_LANGUAGE_FILE' => tr('Language file'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'ISP_LOGO' => layout_getUserLogo(),
                   'TR_INSTALL' => tr('Install / Update'),
                   'TR_EXPORT' => tr('Export'),
 				  'TR_REBUILD_INDEX' => tr('Rebuild languages index')

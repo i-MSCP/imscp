@@ -398,7 +398,7 @@ if (!is_xhr()) {
     $tpl->assign(array(
              'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
              'THEME_CHARSET' => tr('encoding'),
-             'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+             'ISP_LOGO' => layout_getUserLogo()));
 
     $reseller_id = $_SESSION['user_id'];
 

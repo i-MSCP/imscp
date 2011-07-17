@@ -257,7 +257,7 @@ exit 0;
 END{
 	my $message = getMessage();
 	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
-		open(F, '>:utf8', "$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log' for writing: $!");
+		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log' for writing: $!");
 		print F $message;
 		close F;
 	}

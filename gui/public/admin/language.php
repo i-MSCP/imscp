@@ -51,7 +51,6 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
     $user_id = $_SESSION['user_id'];
@@ -67,7 +66,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
     ";
 
     exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'],
-							get_admin_logo($user_id, false)));
+							basename(layout_getUserLogo(false, false))));
 
     unset($_SESSION['user_def_lang']);
     $_SESSION['user_def_lang'] = $user_lang;
@@ -92,7 +91,7 @@ $tpl->assign(array(
                   'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Admin/Change Language'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+                  'ISP_LOGO' => layout_getUserLogo()));
 
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');

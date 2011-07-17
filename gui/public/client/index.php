@@ -513,7 +513,7 @@ $tpl->assign(array(
                   'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
                   'THEME_COLOR_PATH' => "../themes/$theme_color",
                   'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id']),
+                  'ISP_LOGO' => layout_getUserLogo(),
                   'TR_GENERAL_INFORMATION' => tr('General information'),
                   'TR_ACCOUNT_NAME' => tr('Account name'),
                   'TR_DOMAIN_EXPIRE' => tr('Domain expire'),

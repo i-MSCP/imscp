@@ -511,14 +511,14 @@ function gen_user_list($tpl)
         $start_index = $_GET['psi'];
     }
 
-    // Search request generated ?!
+    // Search request generated ?
     if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
         $_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
         $_SESSION['search_common'] = $_POST['search_common'];
         $_SESSION['search_status'] = $_POST['search_status'];
         $start_index = 0;
     } elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-        // He have not got scroll through patient records.
+        // He have not got scroll through patient records
         unset($_SESSION['search_for']);
         unset($_SESSION['search_common']);
         unset($_SESSION['search_status']);
@@ -547,12 +547,11 @@ function gen_user_list($tpl)
 
     $records_count = $rs->fields['cnt'];
     $rs = execute_query($search_query);
-    $i = 0;
 
     if ($rs->recordCount() == 0) {
         if (isset($_SESSION['search_for'])) {
             $tpl->assign(array(
-                              'USR_MESSAGE' => tr('Not found user records matching the search criteria!'),
+                              'USR_MESSAGE' => tr('Not found user records matching the search criteria.'),
                               'USR_LIST' => '',
                               'SCROLL_PREV' => '',
                               'SCROLL_NEXT' => '',
@@ -602,22 +601,18 @@ function gen_user_list($tpl)
                           'TR_DETAILS' => tr('Details')));
 
         while (!$rs->EOF) {
-            // @todo Not longer needed with the new theme
-            $tpl->assign('USR_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-
             // user status icon
             $domain_created_id = $rs->fields['domain_created_id'];
 
             $query = "
 				SELECT
-						`admin_name`
+                    `admin_name`
 				FROM
-						`admin`
+                    `admin`
 				WHERE
-						`admin_id` = ?
+                    `admin_id` = ?
 				ORDER BY
-						`admin_name` ASC
-				;
+                    `admin_name` ASC
 			";
             $rs2 = exec_query($query, $domain_created_id);
 
@@ -627,17 +622,14 @@ function gen_user_list($tpl)
                 $created_by_name = $rs2->fields['admin_name'];
             }
 
-            // Get disk usage by user
             $tpl->assign(array(
                               'USR_DELETE_SHOW' => '',
                               'DOMAIN_ID' => $rs->fields['domain_id'],
                               'TR_DELETE' => tr('Delete'),
-                              'URL_DELETE_USR' => 'user_delete.php?domain_id=' .
-                                                  $rs->fields['domain_id'],
+                              'URL_DELETE_USR' => 'user_delete.php?domain_id=' . $rs->fields['domain_id'],
                               'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
                               'GO_TO_USER_INTERFACE' => tr('Switch'),
-                              'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' .
-                                                        $rs->fields['domain_admin_id'],
+                              'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' . $rs->fields['domain_admin_id'],
                               'USR_USERNAME' => tohtml($rs->fields['domain_name']),
                               'TR_EDIT_DOMAIN' => tr('Edit domain'),
                               'TR_EDIT_USR' => tr('Edit user')));
@@ -675,12 +667,11 @@ function gen_user_list($tpl)
             }
 
             $tpl->assign(array(
-                              'STATUS_ICON' => $status . '.png', // Only used in omega_original
                               'STATUS' => $status,
                               'TR_STATUS' => $status_txt,
-                              'URL_CHANGE_STATUS' => $status_url,));
+                              'URL_CHANGE_STATUS' => $status_url));
 
-            // end of user status icon
+
             $admin_name = decode_idna($rs->fields['domain_name']);
             $domain_created = $rs->fields['domain_created'];
 
@@ -715,15 +706,13 @@ function gen_user_list($tpl)
                               'USER_EXPIRES_ON' => $domain_expires,
                               'USR_CREATED_BY' => tohtml($created_by_name),
                               'USR_OPTIONS' => '',
-                              'URL_EDIT_USR' => 'admin_edit.php?edit_id=' .
-                                                $rs->fields['domain_admin_id'],
-                              'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?', true),
-                              'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
+                              'URL_EDIT_USR' => 'admin_edit.php?edit_id=' . $rs->fields['domain_admin_id'],
+                              'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s domain account?', tohtml($admin_name)),
+                              'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', '%s')));
 
             gen_domain_details($tpl, $rs->fields['domain_id']);
             $tpl->parse('USR_ITEM', '.usr_item');
             $rs->moveNext();
-            $i++;
         }
 
         $tpl->parse('USR_LIST', 'usr_list');

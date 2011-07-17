@@ -345,9 +345,17 @@ sub setup_imscp_database {
 	){
 
 		$dbName = 'imscp' unless $dbName;
+		my $msg = '';
 
 		do{
-			$dbName = iMSCP::Dialog->factory()->inputbox("Please enter database name (default $dbName)", $dbName);
+			$dbName = iMSCP::Dialog->factory()->inputbox("Please enter database name (default $dbName)$msg", $dbName);
+
+			if($dbName =~ /[:;]/){
+				$dbName = undef ;
+				$msg = "\nNot allowed chars : and ;";
+			} else {
+				$msg = '';
+			}
 		}while (!$dbName);
 
 		if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
@@ -389,7 +397,8 @@ sub createDB{
 	my $error = $database->connect();
 	return $error if $error;
 
-	$error = $database->doQuery('dummy', "CREATE DATABASE `$dbName` CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+	my $qdbName = $database->quoteIdentifier($dbName);
+	$error = $database->doQuery('dummy', "CREATE DATABASE $qdbName CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
 
 	$database->set('DATABASE_NAME', $dbName);
 	$error = $database->connect();
@@ -3310,6 +3319,7 @@ sub rebuild_customers_cfg {
 	$rs = execute("perl $FindBin::Bin/../imscp-rqst-mngr update", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
+	error((caller(0))[3].": Error while rebuilding customers configuration files") if(!$stderr && $rs);
 	return $rs if $rs;
 
 	iMSCP::Boot->new()->lock();

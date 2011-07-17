@@ -15,12 +15,9 @@
         </script>
         <![endif]-->
     </head>
-
     <body>
-
         <div class="header">
-            {MAIN_MENU}
-
+        {MAIN_MENU}
             <div class="logo">
                 <img src="{ISP_LOGO}" alt="i-MSCP logo" />
             </div>
@@ -32,18 +29,17 @@
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+                </li>
             </ul>
             <ul class="path">
-		<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
+                <li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
                 <li><a href="settings_layout.php">{TR_LAYOUT_SETTINGS}</a></li>
             </ul>
         </div>
-
         <div class="left_menu">
-            {MENU}
+        {MENU}
         </div>
-
         <div class="body">
             <h2 class="multilanguage"><span>{TR_LAYOUT_SETTINGS}</span></h2>
 
@@ -51,34 +47,35 @@
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-			<table>
-				<tr>
-					<th >{TR_LOGO_FILE}</th>
-				</tr>
-				<tr>
-					<td>
-						<form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
-							<input type="file" name="logo_file" />
-							<div class="buttons">
-								<input type="hidden" name="uaction" value="upload_logo" />
-								<input name="Submit" type="submit" class="button" value="{TR_UPLOAD}" />
-							</div>
-						</form>
-					</td>
-				</tr>
-				<!-- BDP: logo_remove_button -->
-				<tr>
-					<td><img src="{OWN_LOGO}" alt="admin logo" />
-						<form method="post" action="settings_layout.php">
-							<div class="buttons">
-								<input type="hidden" name="uaction" value="delete_logo" />
-								<input name="Submit" type="submit" class="button" value="{TR_REMOVE}" />
-							</div>
-						</form>
-					</td>
-				</tr>
-				<!-- EDP: logo_remove_button -->
-			</table>		
+            <table>
+                <tr>
+                    <th>{TR_LOGO_FILE}</th>
+                </tr>
+                <!-- BDP: logo_remove_button -->
+                <tr>
+                    <td style="text-align:center;">
+                        <form name="ispLogoDeleteFrm" method="post" enctype="application/x-www-form-urlencoded" action="settings_layout.php">
+                            <img src="{OWN_LOGO}" title="ISP Logo" alt="ISP Logo" />
+                            <div class="buttons">
+                                <input type="hidden" name="uaction" value="deleteIspLogo" />
+                                <input name="Submit" type="submit" class="button" value="{TR_REMOVE}" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                <!-- EDP: logo_remove_button -->
+                <tr>
+                    <td>
+                        <form name="ispLogoUpdateFrm" method="post" enctype="multipart/form-data" action="settings_layout.php">
+                            <input type="file" name="logoFile" />
+                            <div class="buttons" style="display: inline;">
+                                <input type="hidden" name="uaction" value="updateIspLogo" />
+                                <input name="Submit" type="submit" class="button" value="{TR_UPLOAD}" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>

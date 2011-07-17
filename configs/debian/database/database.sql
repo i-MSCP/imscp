@@ -682,7 +682,7 @@ CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `user_id` int(10) unsigned NOT NULL default '0',
   `lang` varchar(255) collate utf8_unicode_ci default '',
   `layout` varchar(255) collate utf8_unicode_ci default '',
-  `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '0',
+  `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '',
   UNIQUE `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

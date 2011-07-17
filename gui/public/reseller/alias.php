@@ -432,7 +432,7 @@ $tpl->assign(array(
                   'TR_ALIAS_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
+                  'ISP_LOGO' => layout_getUserLogo()));
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');

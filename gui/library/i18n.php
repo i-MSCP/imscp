@@ -260,89 +260,74 @@ function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)
  */
 function i18n_importMachineObjectFile()
 {
-	if ($_FILES['languageFile']['error'] == UPLOAD_ERR_OK) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-		$localesDirectory = $cfg->GUI_ROOT_DIR . '/i18n/locales';
+    // closure that is run before move_uploaded_file() function - See the
+    // Utils_UploadFile() function for further information about implementation
+    // details
+    $beforeMove = function()
+    {
+        /** @var $cfg iMSCP_Config_Handler_File */
+        $cfg = iMSCP_Registry::get('config');
+        $localesDirectory = $cfg->GUI_ROOT_DIR . '/i18n/locales';
 
-		$filePath = $_FILES['languageFile']['tmp_name'];
+        $filePath = $_FILES['languageFile']['tmp_name'];
 
-		if (!is_readable($filePath)) {
-			set_page_message(tr('File is not readable.'), 'error');
-			return false;
-		}
+        if (!is_readable($filePath)) {
+            set_page_message(tr('File is not readable.'), 'error');
+            return false;
+        }
 
-		try {
-			$parser = new iMSCP_I18n_Parser_Mo($filePath);
-			$encoding = $parser->getContentType();
-			$locale = $parser->getLanguage();
-			$revision = $parser->getPoRevisionDate();
-			$lastTranslator =  $parser->getLastTranslator();
-			$translationTable = $parser->getTranslationTable();
-		} catch(iMSCP_Exception $e) {
-			set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
-			return false;
-		}
+        try {
+            $parser = new iMSCP_I18n_Parser_Mo($filePath);
+            $encoding = $parser->getContentType();
+            $locale = $parser->getLanguage();
+            $revision = $parser->getPoRevisionDate();
+            $lastTranslator = $parser->getLastTranslator();
+            $translationTable = $parser->getTranslationTable();
+        } catch (iMSCP_Exception $e) {
+            set_page_message(tr('Only gettext Machine Object files (MO files) are accepted.'), 'error');
+            return false;
+        }
 
-		if(isset($translationTable['_: Localised language'])) {
-			$language = $translationTable['_: Localised language'];
-		} else {
-			$language = '';
-		}
+        if (isset($translationTable['_: Localised language'])) {
+            $language = $translationTable['_: Localised language'];
+        } else {
+            $language = '';
+        }
 
-		if(empty($encoding) || empty($locale) || empty($revision) ||
-			empty($lastTranslator) || empty($language)
-		) {
-			set_page_message(
-				tr("%s is not a valid i-MSCP language file.", $_FILES['languageFile']['name']), 'error'
-			);
-			return false;
-		}
+        if (empty($encoding) || empty($locale) || empty($revision) ||
+            empty($lastTranslator) || empty($language)
+        ) {
+            set_page_message(
+                tr("%s is not a valid i-MSCP language file.", tohtml($_FILES['languageFile']['name'])), 'error'
+            );
+            return false;
+        }
 
-		if (!is_dir("$localesDirectory/$locale")) {
-			if (!@mkdir("$localesDirectory/$locale", 0750)) {
-				set_page_message(tr("Unable to create '%s' directory for language file.", $locale), 'error');
-				return false;
-			}
-		}
+        if (!is_dir("$localesDirectory/$locale")) {
+            if (!@mkdir("$localesDirectory/$locale", 0700)) {
+                set_page_message(tr("Unable to create '%s' directory for language file.", tohtml($locale)), 'error');
+                return false;
+            }
+        }
 
-		if (!is_dir("$localesDirectory/$locale/LC_MESSAGES")) {
-			if (!@mkdir("$localesDirectory/$locale/LC_MESSAGES", 0750)) {
-				set_page_message(tr("Unable to create 'LC_MESSAGES' directory for language file."), 'error');
-				return false;
-			}
-		}
+        if (!is_dir("$localesDirectory/$locale/LC_MESSAGES")) {
+            if (!@mkdir("$localesDirectory/$locale/LC_MESSAGES", 0700)) {
+                set_page_message(tr("Unable to create 'LC_MESSAGES' directory for language file."), 'error');
+                return false;
+            }
+        }
 
-		if (!@move_uploaded_file($filePath, "$localesDirectory/$locale/LC_MESSAGES/$locale.mo")) {
-			set_page_message(tr('Unable to move language file in language directory.'), 'error');
-			return false;
-		}
+        // Return destination file path
+        return "$localesDirectory/$locale/LC_MESSAGES/$locale.mo";
+    };
 
-		// Rebuild language index
-		i18n_buildLanguageIndex();
-		return true;
-	} else {
-		switch ($_FILES['languageFile']['error']) {
-			case UPLOAD_ERR_INI_SIZE:
-			case UPLOAD_ERR_FORM_SIZE:
-				set_page_message(tr('File exceeds the size limit.'), 'error');
-				break;
-			case UPLOAD_ERR_PARTIAL:
-			case UPLOAD_ERR_NO_FILE:
-				set_page_message(tr('Upload failed.'), 'error');
-				break;
-			case UPLOAD_ERR_NO_TMP_DIR:
-				set_page_message(tr('Temporary folder not found.'), 'error');
-				break;
-			case UPLOAD_ERR_CANT_WRITE:
-				set_page_message(tr('Failed to write file to disk.'), 'error');
-				break;
-			default:
-				set_page_message(tr('A PHP extension stopped the file upload.'), 'error');
-		}
+    if (utils_uploadFile('languageFile', array($beforeMove)) === false) {
+        return false;
+    }
 
-		return false;
-	}
+    // Rebuild language index
+    i18n_buildLanguageIndex();
+    return true;
 }
 
 /**

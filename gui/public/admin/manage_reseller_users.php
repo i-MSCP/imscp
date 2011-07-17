@@ -499,7 +499,7 @@ $tpl->assign(
 		'TR_ADMIN_MANAGE_RESELLER_USERS_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/User assignment'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 

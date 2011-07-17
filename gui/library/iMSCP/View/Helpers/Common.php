@@ -47,11 +47,11 @@ function gen_domain_details($tpl, $domain_id)
 
     if (isset($_SESSION['details']) && $_SESSION['details'] == 'hide') {
         $tpl->assign(array(
-                          'TR_VIEW_DETAILS' => tr('view aliases'),
+                          'TR_VIEW_DETAILS' => tr('View aliases'),
                           'SHOW_DETAILS' => "show"));
 
         return;
-    } else if (isset($_SESSION['details']) && $_SESSION['details'] === "show") {
+    } else if (isset($_SESSION['details']) && $_SESSION['details'] === 'show') {
         $tpl->assign(array(
                           'TR_VIEW_DETAILS' => tr('hide aliases'),
                           'SHOW_DETAILS' => "hide"));

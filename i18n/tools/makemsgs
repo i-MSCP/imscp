@@ -65,7 +65,7 @@ fi
 -d "i-MSCP" \
 --copyright-holder="iMSCP Team - All rights reserved" \
 --package-name="i-MSCP" \
---package-version="1.0.1.3" \
+--package-version="1.0.1.4" \
 --msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="tr" \
 --no-location \

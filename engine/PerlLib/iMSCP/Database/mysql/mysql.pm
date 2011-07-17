@@ -134,10 +134,81 @@ sub getDBTables{
 
 }
 
-sub quoteIdentifier{
-	my $self		= shift;
-	my $identifier	= shift;
+sub dumpdb{
 
+	my $self		= shift;
+	my $db			= shift;
+	my $filename	= shift;
+
+	debug((caller(0))[3].': Starting...');
+
+	unless($self->{connection}){
+		error((caller(0))[3].': Not connected');
+		return 1;
+	}
+
+	unless($self ne __PACKAGE__){
+		error((caller(0))[3].': Not an instance instances');
+		return 1;
+	}
+
+	unless($filename){
+		error((caller(0))[3].': No filename provided');
+		return 1;
+	}
+
+	$db = $self->{db}->{DATABASE_NAME} unless $db;
+
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+	$rs = execute('which mysqldump', \$stdout, \$stderr);
+	#chomp($stdout);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	error((caller(0))[3].": Can find mysqldump") if (!$stderr && $rs);
+	return $rs if $rs;
+
+	my $dbName = $db;
+	my $dbHost = $self->{db}->{DATABASE_HOST};
+	my $dbPort = $self->{db}->{DATABASE_PORT};
+	my $dbUser = $self->{db}->{DATABASE_USER};
+	my $dbPass = $self->{db}->{DATABASE_PASSWORD};
+
+	eval "\$$_ =~ s/\'/\\'/g" for (qw/dbHost dbPort dbName dbUser dbPass/);
+
+	my $bkpCmd	=	"$stdout ".
+					"--add-drop-database ".
+					"--add-drop-table ".
+					"--add-drop-database ".
+					"--allow-keywords ".
+					"--compress ".
+					"--create-options ".
+					"--default-character-set=utf8 ".
+					"--extended-insert ".
+					"--lock-tables ".
+					"--quote-names ".
+					"-h '$dbHost' ".
+					"-P '$dbPort' ".
+					"-u '$dbUser' ".
+					"-p'$dbPass' ".
+					"'$db' > '$filename'";
+
+	$rs = execute($bkpCmd, \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	error((caller(0))[3].": Can not dump $dbName") if (!$stderr && $rs);
+	return $rs if $rs;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub quoteIdentifier{
+	my ($self, $identifier)	= (@_);
+	debug((caller(0))[3].': Starting...');
+	$identifier = join(', ', $identifier) if( ref $identifier eq 'ARRAY');
+	debug((caller(0))[3].': Ending...');
 	return $self->{connection}->quote_identifier($identifier)
 }
 1;
