@@ -217,7 +217,17 @@ sub processSpecificConfFile{
 sub processConfFile{
 
 	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::SO;
+
 	my $confile = shift;
+
+	$confile = "$FindBin::Bin/library/".lc(iMSCP::SO->new()->{Distribution}).'-variable.xml' unless $confile;
+
+	unless( -f $confile){
+		error((caller(0))[3].": Error $confile not found");
+		return 1;
+	}
 
 	# create object
 	my $xml = XML::Simple->new(ForceArray => 1, ForceContent => 1);
@@ -441,6 +451,109 @@ sub chmod_file{
 		return $rs if $rs;
 	}
 
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub installDepends{
+	debug((caller(0))[3].': Starting...');
+
+	my $autoinstallFile = "$FindBin::Bin/library/".lc(iMSCP::SO->new()->{Distribution}).'_autoinstall.pm';
+	my $class = 'iMSCP::'.lc(iMSCP::SO->new()->{Distribution}).'_autoinstall';
+
+	if(-f $autoinstallFile){
+		require $autoinstallFile ;
+		$main::autoInstallClass = $class->new();
+		my $rs = $main::autoInstallClass->preBuild() if $main::autoInstallClass->can('preBuild');
+		return $rs if $rs;
+	}
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub finishBuild{
+	debug((caller(0))[3].': Starting...');
+	my $rs = 0;
+	$rs = $main::autoInstallClass->postBuild() if( defined  $main::autoInstallClass && $main::autoInstallClass->can('postBuild'));
+	return $rs if $rs;
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub testRequirements{
+	debug((caller(0))[3].': Starting...');
+	iMSCP::Requirements->new()->test('all');
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub backup{
+	debug((caller(0))[3].': Starting...');
+
+	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp"){
+		my ($rs, $stdout, $stderr);
+		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub cleanUp{
+	debug((caller(0))[3].': Starting...');
+	my $tmp = qualify_to_ref('INST_PREF', 'main');
+	my ($rs, $stdout, $stderr);
+	$rs = execute("find $$$tmp -type d -name '.svn' -print0 |xargs -0 -r rm -fr", \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	return $rs if $rs;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub saveCustom{
+	debug((caller(0))[3].': Starting...');
+
+	my ($rs, $stdout, $stderr);
+	my $tmp = qualify_to_ref('INST_PREF', 'main');
+
+	if(-f "/etc/init.d/imscp_daemon" && -f "$main::defaultConf{'ROOT_DIR'}/daemon/imscp_daemon"){
+		$rs = execute("/etc/init.d/imscp_daemon stop", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+	}
+
+	if(-d "$main::defaultConf{'ROOT_DIR'}/gui/data"){
+		$rs = execute("rm -fr $main::defaultConf{'ROOT_DIR'}/gui/data/sessions", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+
+		$rs = execute("cp -Rf $main::defaultConf{'ROOT_DIR'}/gui/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+
+		$rs = execute("cp -Rf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+
+		$rs = execute("rm -fr $main::defaultConf{'ROOT_DIR'}/{daemon,engine,gui}", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+
+		$rs = execute("cp -Rf $$$tmp/* /", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+	}
 
 	debug((caller(0))[3].': Ending...');
 	0;

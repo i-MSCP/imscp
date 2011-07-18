@@ -178,7 +178,7 @@ sub processAptList{
 	error((caller(0))[3].": $stderr") if $stderr;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug((caller(0))[3].": Ending... $rs");
 	$rs;
 }
 

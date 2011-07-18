@@ -93,7 +93,7 @@ sub step{
 	iMSCP::Dialog->factory()->startGauge($msg, int($index*100/$steps)) if iMSCP::Dialog->factory()->needGauge();
 	iMSCP::Dialog->factory()->setGauge(int($index*100/$steps), $msg);
 
-	my $rs = &{$code} if (ref $code eq 'CODE');
+	my $rs = &{$code}() if (ref $code eq 'CODE');
 
 	if($rs && $exit eq 'yes'){
 		iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
@@ -107,9 +107,7 @@ sub step{
 
 					Error was:
 
-					\\Z1".($rs =~ /^\d+$/ ? getLastError() : $rs)."\\Zn\n
-
-					Error detail can be found in $main::imscpConfig{'LOG_DIR'}/imscp-setup.log
+					\\Z1".($rs =~ /^-?\d+$/ ? getLastError() : $rs)."\\Zn\n
 
 					To obtain help please use http://i-mscp.net/forum/
 

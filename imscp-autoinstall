@@ -74,107 +74,88 @@ my $defaultConf = "$FindBin::Bin/configs/".lc($SO->{Distribution})."/imscp.conf"
 tie %main::defaultConf, 'iMSCP::Config','fileName' => $defaultConf;
 
 #we have an OS / Distribution selected
-my $autoinstallFile = "$FindBin::Bin/library/".lc($SO->{Distribution}).'_autoinstall.pm';
-my $class = 'iMSCP::'.lc($SO->{Distribution}).'_autoinstall';
-my $autoInstallClass;
 
-if(-f $autoinstallFile){
-	require $autoinstallFile ;
-	$autoInstallClass = $class->new();
-	$rs = $autoInstallClass->preBuild() if $autoInstallClass->can('preBuild');
-	exit $rs if $rs;
+use iMSCP::Stepper;
+
+my @steps = (
+	[\&installDepends,			"Installing $SO->{Distribution} required packages"],
+	[\&testRequirements,		'Test if all requirements are meet'],
+	[\&processConfFile,			"Loading $SO->{Distribution} specific variable"],
+	[\&processSpecificConfFile,	'Process distribution specific configuration files'],
+	[\&builddaemon,				'Daemon build'],
+	[\&engine,					'Install engine'],
+	[\&gui,						'GUI install'],
+	[\&maintainer,				'Maintainer scripts'],
+	[\&finishBuild,				'Process post build operations'],
+	[\&cleanUp,					'Perform cleanup'],
+
+	[\&backup,					'Backup existing instalation'],
+	[\&saveCustom,				'Save custom data'],
+	#[\&setup,				'Copy i-MSCP Data to default location'],
+
+
+);
+my $step = 1;
+for (@steps){
+	step($_->[0], $_->[1], scalar @steps, $step);
+	$step++;
 }
+iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
-iMSCP::Requirements->new()->test('all');
-
-############Load OS / Distribution specific operation list
-iMSCP::Dialog->factory()->infobox("Loading $SO->{Distribution} specific variable");
-$rs = processConfFile("$FindBin::Bin/library/".lc($SO->{Distribution}).'-variable.xml');
-exit $rs if $rs;
-
-
-	use iMSCP::Stepper;
-
-	my @steps = (
-		[\&processSpecificConfFile, 'Process distribution specific configurations'],
-		[\&builddaemon, 'Daemon build'],
-		[\&engine, 'Install engine'],
-		[\&gui, 'GUI setup'],
-		[\&maintainer, '"Maintainer scripts'],
-	);
-	my $step = 1;
-	for (@steps){
-		step($_->[0], $_->[1], scalar @steps, $step);
-		$step++;
-	}
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
-
-
-$autoInstallClass->postBuild() if( defined  $autoInstallClass && $autoInstallClass->can('postBuild'));
 
 my @warnings	= getMessageByType('WARNING');
 my @errors		= getMessageByType('ERROR');
 my $msg;
 
-if (@errors > 0 ) {
+if (@errors > 0  || @warnings > 0) {
 	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
-	$msg .= "\nFix those errors and try again";
-	iMSCP::Dialog->factory()->msgbox("\n\\Zb\\Z1 -> Finished but with errors:\\Zn\n".$msg);
+	iMSCP::Dialog->factory()->msgbox(
+		"\n\\Z".(@errors > 0 ? 1 : 3 )." -> Finished but with ".
+		(@errors > 0 ? 'errors' : 'warnings')
+		.":\\Zn\n".$msg
+	);
 	execute('clear');
-	exit 1;
-} elsif(@warnings > 0) {
-	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n";
-	iMSCP::Dialog->factory()->set('defaultno', '');
-	if (iMSCP::Dialog->factory()->yesno(
-			"\n\\Z3 -> Finished but with warnings:\\Zn\n".
-			$msg.
-			"\nThis warnings are not fatal errors. Do you want to continue?"
-	)){
-		execute('clear');
-		exit 1;
-	}
 } else {
 	iMSCP::Dialog->factory()->msgbox("\n\\Z2 -> Finished without errors");
 }
-
-iMSCP::Dialog->factory()->msgbox(
-	"\n\\Z2 Now we can start setup process\n "
-);
 
 exit 0;
 
 END{
 	execute('clear');
 
-	use iMSCP::Dir;
-	my $dir = iMSCP::Dir->new(dirname => $main::defaultConf{LOG_DIR});
-
-	my $rs = $dir->make(
-		{
-				mode => 0755,
-				user => $main::defaultConf{ROOT_USER},
-				group => $main::defaultConf{ROOT_GROUP}
-		}
-	) unless( -d $main::defaultConf{LOG_DIR});
-
 	my @warnings	= getMessageByType('WARNING');
 	my @errors		= getMessageByType('ERROR');
+	my @fatals		= getMessageByType('FATAL ERROR');
 
-	my $msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
-	print $msg if $msg;
+	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
+	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
+	$msg	.= "\nFATAL ERRORS:\n"	. join("\n", @fatals)	. "\n" if @fatals > 0;
 
 	my $message = getMessage();
 	iMSCP::Debug->newDebug('discard');
 
-	fatal("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
+	if($main::defaultConf{LOG_DIR}){
+		use iMSCP::Dir;
+		my $dir = iMSCP::Dir->new(dirname => $main::defaultConf{LOG_DIR});
 
-	open(F, '>:utf8', "$main::defaultConf{'LOG_DIR'}/imscp-setup.log")
-	or
-	fatal("Error: Can't open file '$main::defaultConf{'LOG_DIR'}/imscp-setup.log' for writing: $!");
-	print F $message;
-	close F;
-	print STDOUT "A log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
+		my $rs = $dir->make(
+			{
+					mode	=> 0755,
+					user	=> $main::defaultConf{ROOT_USER},
+					group	=> $main::defaultConf{ROOT_GROUP}
+			}
+		) unless( -d $main::defaultConf{LOG_DIR});
 
+		fatal("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
+
+		open(F, '>:utf8', "$main::defaultConf{LOG_DIR}/imscp-build.log")
+		or
+		fatal("Error: Can't open file '$main::defaultConf{LOG_DIR}/imscp-build.log' for writing: $!");
+		print F $message;
+		close F;
+		print STDOUT "A log file with details can be found at: $main::defaultConf{'LOG_DIR'}/imscp-build.log";
+	}
+	print STDERR $msg if $msg;
 }

@@ -133,7 +133,7 @@ sub getMessageByType{
 
 	my $amount	= shift || 1;
 	my @log		= $self->{lastLog}->retrieve(
-		tag		=> qr/$mode$/i,
+		tag		=> qr/^$mode$/i,
 		amount	=> $opts->{amount},
 		chrono	=> $opts->{chrono},
 		remove	=> $opts->{remove}

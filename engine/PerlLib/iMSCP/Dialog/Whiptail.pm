@@ -100,8 +100,6 @@ sub _execute{
 	my $height = defined $self->{'autosize'} ? 0 : ($self->{'lines'});
 	my $width = defined $self->{'autosize'} ? 0 : ($self->{'columns'});
 
-	debug((caller(0))[3].": $self->{'bin'} $command --$mode '$text' $height $width $init");
-
 	my ($return, $rv);
 	$rv = execute("export TERM=linux;$self->{'bin'} $command --$mode '$text' $height $width $init", undef, \$return);
 
