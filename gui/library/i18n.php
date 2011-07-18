@@ -344,7 +344,7 @@ function i18n_changeDefaultLanguage()
         $cfg = iMSCP_Registry::get('config');
 
         /** @var $dbConfig iMSCP_Config_Handler_Db */
-        $defaultLanguage = clean_input($_POST['default_language']);
+        $defaultLanguage = clean_input($_POST['defaultLanguage']);
 
         /** @var $dbConfig iMSCP_Config_Handler_Db */
         $dbConfig = iMSCP_Registry::get('dbConfig');
