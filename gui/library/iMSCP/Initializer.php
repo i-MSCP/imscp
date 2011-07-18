@@ -334,7 +334,7 @@ class iMSCP_Initializer
 
         } catch (PDOException $e) {
             throw new iMSCP_Exception_Database(
-                'Error: Unable to establish connection to the database. ' .
+                'Unable to establish connection to the database. ' .
                 'SQL returned: ' . $e->getMessage()
             );
         }
@@ -493,12 +493,19 @@ class iMSCP_Initializer
 			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
 		// Small fix for ar_AE locale
-		// TODO Ask Transifex to add it
 		if($locale == 'ar') {
 			$locale = 'ar_AE';
 		}
 
-		T_setlocale(LC_ALL, $locale . '.UTF-8');
+        $checkedLocale = setlocale(LC_MESSAGES, array(
+                                                 $locale . '.utf8',
+                                                 $locale . '.utf-8',
+                                                 $locale . '.UTF8',
+                                                 $locale . '.UTF-8'));
+
+        $checkedLocale = (empty($checkedLocale)) ? $locale.'.utf8' : $checkedLocale;
+
+		T_setlocale(LC_MESSAGES, $checkedLocale);
 
 		if (locale_emulation()) {
 			$domain = $locale;
@@ -507,7 +514,7 @@ class iMSCP_Initializer
 		}
 
 		T_bindtextdomain($domain, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
-		T_bind_textdomain_codeset($locale, 'UTF-8');
+		T_bind_textdomain_codeset($domain, 'UTF-8');
 		T_textdomain($domain);
 	}
 
