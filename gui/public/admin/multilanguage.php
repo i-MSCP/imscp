@@ -127,6 +127,9 @@ if (isset($_POST['uaction'])) {
     } elseif($_POST['uaction'] == 'changeLanguage') {
         i18n_changeDefaultLanguage();
 		set_page_message(tr('Default language successfully updated.'), 'success');
+
+        // Fix to see change on next load
+        redirectTo('multilanguage.php');
     } elseif($_POST['uaction'] == 'rebuildIndex') {
 		i18n_buildLanguageIndex();
 		set_page_message(tr('Languages index was successfully re-built.'), 'success');
