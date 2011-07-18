@@ -90,10 +90,11 @@ function padd_group($tpl, $dmn_id) {
 				$change_status = $cfg->ITEM_ADD_STATUS;
 
 				$query = "
-					INSERT INTO `htaccess_groups`
-						(`dmn_id`, `ugroup`, `status`)
-					VALUES
-						(?, ?, ?)
+					INSERT INTO `htaccess_groups` (
+					    `dmn_id`, `ugroup`, `status`
+					) VALUES (
+					    ?, ?, ?
+					)
 				";
 
 				exec_query($query, array($dmn_id, $groupname, $change_status));
@@ -102,7 +103,7 @@ function padd_group($tpl, $dmn_id) {
 
 				$admin_login = $_SESSION['user_logged'];
 				write_log("$admin_login: add group (protected areas): $groupname", E_USER_NOTICE);
-				user_goto('protected_user_manage.php');
+				redirectTo('protected_user_manage.php');
 			} else {
 				set_page_message(tr('Group already exists!'), 'error');
 				return;

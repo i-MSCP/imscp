@@ -120,16 +120,9 @@ function gen_hp($tpl, $user_id) {
 		$availabe_order = 1;
 		$availabe_hp_id = $rs->fields['plan_id'];
 
-		$query = "
-			SELECT
-				*
-			FROM
-				`hosting_plans`
-			WHERE
-				`id` = ?
-		";
-
+		$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
 		$rs = exec_query($query, $availabe_hp_id);
+
 		$count = 2;
 		$purchase_text = tr('Cancel order');
 		$purchase_link = 'delete_id';
@@ -139,11 +132,9 @@ function gen_hp($tpl, $user_id) {
 		if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			$query = "
 				SELECT
-					t1.*,
-					t2.`admin_id`, t2.`admin_type`
+					t1.*, t2.`admin_id`, t2.`admin_type`
 				FROM
-					`hosting_plans` AS t1,
-					`admin` AS t2
+					`hosting_plans` AS t1, `admin` AS t2
 				WHERE
 					t2.`admin_type` = ?
 				AND
@@ -500,14 +491,7 @@ function add_new_order($tpl,$order_id, $user_id) {
 	$rs = exec_query($query, $domain_id);
 	$current = $rs->fetchRow();
 
-	$query = "
-		SELECT
-			*
-		FROM
-			`hosting_plans`
-		WHERE
-			`id` = ?
-	";
+	$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
 
 	$error_msgs = array();
 	$rs = exec_query($query, $order_id);
@@ -552,7 +536,7 @@ function add_new_order($tpl,$order_id, $user_id) {
 
 	if (count($error_msgs) > 0) {
 		set_page_message(implode('<br />', $error_msgs));
-		user_goto('hosting_plan_update.php');
+		redirectTo('hosting_plan_update.php');
 	}
 
 	$date = time();
@@ -619,26 +603,13 @@ function add_new_order($tpl,$order_id, $user_id) {
 	$mail_result = mail($to, $subject, $message, $headers);
 }
 
-function del_order($tpl, $order_id, $user_id) {
-
-	$query = "
-		DELETE FROM
-			`orders`
-		WHERE
-			`user_id` = ?
-		AND
-			`customer_id` = ?
-	";
+function del_order($tpl, $order_id, $user_id)
+{
+	$query = "DELETE FROM `orders` WHERE `user_id` = ? AND `customer_id` = ?";
 
 	exec_query($query, array($_SESSION['user_created_by'], $user_id));
 	set_page_message(tr('Your request for hosting pack update was removed successfully'), 'success');
 }
-
-/*
- *
- * static page messages.
- *
- */
 
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	del_order($tpl, $_GET['delete_id'], $_SESSION['user_id']);

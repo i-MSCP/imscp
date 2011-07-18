@@ -271,7 +271,7 @@ function check_user_permissions($tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php
  */
 function make_traff_usage($domain_id)
 {
-    $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
+    $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
     $stmt = exec_query($query, $domain_id);
 
     $domain_id = $stmt->fields('domain_id');
@@ -296,7 +296,6 @@ function make_traff_usage($domain_id)
             `dtraff_time` > ?
         AND
             `dtraff_time` < ?
-        ;
     ";
     $stmt = exec_query($query, array($domain_id, $fdofmnth, $ldofmnth));
 
@@ -328,7 +327,6 @@ function gen_user_messages_label($tpl, &$user_id)
 			`ticket_from` = ?
 		AND
 			`ticket_status` = '2'
-	    ;
 	";
 
     $stmt = exec_query($query, $user_id);

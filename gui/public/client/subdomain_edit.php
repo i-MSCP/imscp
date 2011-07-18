@@ -92,7 +92,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 		unset($_SESSION['edit_ID']);
 
 		$_SESSION['subedit'] = '_no_';
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 	// Get subdomain type
 	if (isset($_POST['dmn_type'])) {
@@ -101,12 +101,12 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 		unset($_SESSION['edit_ID']);
 
 		$_SESSION['subedit'] = '_no_';
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 	// Save data to db
 	if (check_fwd_data($tpl, $editid, $dmntype)) {
 		$_SESSION['subedit'] = '_yes_';
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 } else {
 	// Get user id that comes for edit
@@ -118,7 +118,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	if (isset($_GET['dmn_type'])) {
 		$dmntype = $_GET['dmn_type'];
 	} else {
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	$_SESSION['edit_ID'] = $editid;
@@ -178,7 +178,7 @@ function gen_editsubdomain_page($tpl, $edit_id, $dmn_type) {
 
 	if ($res->RecordCount() <= 0) {
 		$_SESSION['subedit'] = '_no_';
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 	$data = $res->FetchRow();
 

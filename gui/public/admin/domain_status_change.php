@@ -41,11 +41,11 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 if (!isset($_GET['domain_id'])) {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }
 
 if (!is_numeric($_GET['domain_id'])) {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }
 
 $domain_id = $_GET['domain_id'];
@@ -71,5 +71,5 @@ if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$action = "enable";
 	change_domain_status($domain_id, $rs->fields['domain_name'], $action, $location);
 } else {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }

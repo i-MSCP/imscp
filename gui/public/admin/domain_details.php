@@ -95,7 +95,7 @@ generatePageMessage($tpl);
 
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }
 
 $editid = $_GET['domain_id'];
@@ -132,7 +132,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 
 
 	if ($res->recordCount() <= 0) {
-		user_goto('manage_users.php');
+		redirectTo('manage_users.php');
 	}
 
 	// Get admin data
@@ -140,7 +140,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$res1 = exec_query($query, $data['domain_admin_id']);
 	$data1 = $res1->fetchRow();
 	if ($res1->recordCount() <= 0) {
-		user_goto('manage_users.php');
+		redirectTo('manage_users.php');
 	}
 	// Get IP info
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";

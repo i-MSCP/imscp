@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$db_user_id = $_POST['id'];
 } else {
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
 // page functions.
@@ -95,14 +95,7 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	$user_pass = $_POST['pass'];
 
 	// update user pass in the i-MSCP sql_user table;
-	$query = "
-		UPDATE
-			`sql_user`
-		SET
-			`sqlu_pass` = ?
-		WHERE
-			`sqlu_name` = ?
-	";
+	$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
 	exec_query($query, array($user_pass, $db_user_name));
 
 	// update user pass in the mysql system tables;
@@ -116,21 +109,15 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
 	set_page_message(tr('SQL user password was successfully changed!'), 'success');
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
-function gen_page_data(&$tpl, $db_user_id) {
+function gen_page_data(&$tpl, $db_user_id)
+{
 
-	$query = "
-		SELECT
-			`sqlu_name`
-		FROM
-			`sql_user`
-		WHERE
-			`sqlu_id` = ?
-	";
-
+	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
 	$rs = exec_query($query, $db_user_id);
+
 	$tpl->assign(
 		array(
 			'USER_NAME' => tohtml($rs->fields['sqlu_name']),
@@ -140,10 +127,8 @@ function gen_page_data(&$tpl, $db_user_id) {
 	return $rs->fields['sqlu_name'];
 }
 
-// common page data.
-
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 $tpl->assign(
@@ -160,7 +145,7 @@ $db_user_name = gen_page_data($tpl, $db_user_id);
 if(!check_user_sql_perms($db_user_id))
 {
     set_page_message(tr('User does not exist or you do not have permission to access this interface.'));
-    user_goto('sql_manage.php');
+    redirectTo('sql_manage.php');
 }
 
 check_user_sql_perms($db_user_id);

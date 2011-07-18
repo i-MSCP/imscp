@@ -45,7 +45,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$ftp_acc = $_POST['id'];
 } else {
-	user_goto('ftp_accounts.php');
+	redirectTo('ftp_accounts.php');
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -160,7 +160,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 
 			write_log($_SESSION['user_logged'] . ": updated FTP " . $ftp_acc . " account data", E_USER_NOTICE);
 			set_page_message(tr('FTP account data updated!'), 'success');
-			user_goto('ftp_accounts.php');
+			redirectTo('ftp_accounts.php');
 		} else {
 			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
 				$other_dir = clean_input($_POST['other_dir']);
@@ -201,7 +201,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 			exec_query($query, array($other_dir, $ftp_acc));
 
 			set_page_message(tr('FTP account data updated!'), 'success');
-			user_goto('ftp_accounts.php');
+			redirectTo('ftp_accounts.php');
 		}
 	}
 }
@@ -235,7 +235,7 @@ $dmn_name = $rs->fields['domain_name'];
 
 if(!check_ftp_perms($ftp_acc)) {
     set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-    user_goto('ftp_accounts.php');
+    redirectTo('ftp_accounts.php');
 }
 
 gen_page_dynamic_data($tpl, $ftp_acc);

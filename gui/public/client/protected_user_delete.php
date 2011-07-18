@@ -47,48 +47,21 @@ if (isset($_GET['uname'])
 	&& is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 } else {
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }
 
-$query = "
-	SELECT
-		`uname`
-	FROM
-		`htaccess_users`
-	WHERE
-		`dmn_id` = ?
-	AND
-		`id` = ?
-";
-
+$query = "SELECT `uname` FROM `htaccess_users` WHERE `dmn_id` = ? AND `id` = ?";
 $rs = exec_query($query, array($dmn_id, $uuser_id));
+
 $uname = $rs->fields['uname'];
 
 $change_status = $cfg->ITEM_DELETE_STATUS;
 // let's delete the user from the SQL
-$query = "
-	UPDATE
-		`htaccess_users`
-	SET
-		`status` = ?
-	WHERE
-		`id` = ?
-	AND
-		`dmn_id` = ?
-";
-
+$query = "UPDATE `htaccess_users` SET `status` = ? WHERE `id` = ? AND `dmn_id` = ?";
 $rs = exec_query($query, array($change_status, $uuser_id, $dmn_id));
 
 // let's delete this user if assigned to a group
-$query = "
-	SELECT
-		`id`,
-		`members`
-	FROM
-		`htaccess_groups`
-	WHERE
-		`dmn_id` = ?
-";
+$query = "SELECT `id`, `members` FROM `htaccess_groups` WHERE `dmn_id` = ?";
 $rs = exec_query($query, $dmn_id);
 
  if ($rs->recordCount() !== 0) {
@@ -105,8 +78,7 @@ $rs = exec_query($query, $dmn_id);
 				UPDATE
 					`htaccess_groups`
 				SET
-					`members` = ?,
-					`status` = ?
+					`members` = ?, `status` = ?
 				WHERE
 					`id` = ?
 			";
@@ -117,15 +89,7 @@ $rs = exec_query($query, $dmn_id);
  }
 
 // let's delete or update htaccess files if this user is assigned
-$query = "
-	SELECT
-		*
-	FROM
-		`htaccess`
-	WHERE
-		`dmn_id` = ?
-";
-
+$query = "SELECT * FROM `htaccess` WHERE `dmn_id` = ?";
 $rs = exec_query($query, $dmn_id);
 
 while (!$rs->EOF) {
@@ -143,16 +107,8 @@ while (!$rs->EOF) {
 			$usr_id = implode(",", $usr_id_splited);
 			$status = $cfg->ITEM_CHANGE_STATUS;
 		}
-		$update_query = "
-			UPDATE
-				`htaccess`
-			SET
-				`user_id` = ?,
-				`status` = ?
-			WHERE
-				`id` = ?
-		";
 
+		$update_query = "UPDATE `htaccess` SET `user_id` = ?, `status` = ? WHERE `id` = ?";
 		$rs_update = exec_query($update_query, array($usr_id, $status, $ht_id));
 	}
 
@@ -163,4 +119,4 @@ send_request();
 
 $admin_login = $_SESSION['user_logged'];
 write_log("$admin_login: deletes user ID (protected areas): $uname", E_USER_NOTICE);
-user_goto('protected_user_manage.php');
+redirectTo('protected_user_manage.php');

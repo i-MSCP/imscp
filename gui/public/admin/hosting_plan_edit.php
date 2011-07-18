@@ -41,7 +41,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -218,7 +218,6 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 			`hosting_plans`
 		WHERE
 			`id` = ?
-		;
 	";
 
 	$res = exec_query($query, $hpid);
@@ -228,7 +227,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 	$edit_hp = tr('Edit hosting plan');
 
 	if ($res->rowCount() !== 1) {
-		user_goto('hosting_plan.php');
+		redirectTo('hosting_plan.php');
 	}
 
 	$data 		= $res->fetchRow();
@@ -453,13 +452,12 @@ function save_data_to_db() {
 			`tos` = ?
 		WHERE
 			`id` = ?
-		;
 	";
 
 	exec_query($query,array($hp_name, $description, $hp_props, $price,
                                   $setup_fee, $value, $payment, $status, $tos, $hpid));
 
 	$_SESSION['hp_updated'] = "_yes_";
-	user_goto('hosting_plan.php');
+	redirectTo('hosting_plan.php');
 
 }

@@ -63,7 +63,7 @@ $tpl->assign(
 $admin_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($admin_id)) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 if (isset($_GET['ticket_id'])) {
@@ -104,7 +104,7 @@ if (isset($_GET['ticket_id'])) {
 			$userLevel = getUserLevel($_GET['ticket_id']);
 			updateTicket($ticket_id, $user_id, $_POST['urgency'],
 					$_POST['subject'], $_POST['user_message'], $userLevel, 2);
-			user_goto('ticket_system.php');
+			redirectTo('ticket_system.php');
 		}
 	}
 
@@ -112,7 +112,7 @@ if (isset($_GET['ticket_id'])) {
 } else {
 	set_page_message(tr('Ticket not found!'));
 
-	user_goto('ticket_system.php');
+	redirectTo('ticket_system.php');
 }
 
 // static page messages

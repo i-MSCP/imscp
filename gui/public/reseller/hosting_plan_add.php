@@ -42,7 +42,7 @@ $cfg = iMSCP_Registry::get('config');
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
-		user_goto('hosting_plan.php');
+		redirectTo('hosting_plan.php');
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -449,7 +449,7 @@ function save_data_to_db(&$tpl, $admin_id) {
                                         $tos));
 
 				$_SESSION['hp_added'] = '_yes_';
-				user_goto('hosting_plan.php');
+				redirectTo('hosting_plan.php');
 			}
 		} else {
 			set_page_message(tr("Hosting plan values exceed reseller maximum values!"));

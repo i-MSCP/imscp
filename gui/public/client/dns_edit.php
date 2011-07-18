@@ -107,12 +107,12 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		$_SESSION['dnsedit'] = "_yes_";
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 } elseif (isset($_POST['uaction']) && ($_POST['uaction'] === 'add')) {
 	if (check_fwd_data($tpl, true)) {
 		$_SESSION['dnsedit'] = "_yes_";
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 } else {
@@ -172,7 +172,7 @@ function create_options($data, $value = null) {
 // Show user data
 function not_allowed() {
 	$_SESSION['dnsedit'] = '_no_';
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 }
 
 function decode_zone_data($data) {
@@ -268,13 +268,16 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$tpl->assign('SELECT_ALIAS', $sel);
 
 	} else {
-		$query = "SELECT * FROM
-					`domain_dns`
-				WHERE
-					`domain_dns_id` = ?
-				AND
-					`domain_id` = ?
-			;";
+		$query = "
+            SELECT
+                *
+            FROM
+                `domain_dns`
+            WHERE
+                `domain_dns_id` = ?
+            AND
+                `domain_id` = ?
+		";
 		$res = exec_query($query, array($edit_id, $dmn_id));
 		if ($res->recordCount() <= 0)
 		not_allowed();
@@ -579,7 +582,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 					) VALUES (
 						?, ?, ?, ?, ?, ?
 					)
-				;
 			";
 
 			$rs = exec_query(
@@ -616,7 +618,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain_text` = ?
 				WHERE
 					`domain_dns_id` = ?
-				;
 			";
 
 			exec_query(
@@ -633,7 +634,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain`.`domain_status` = ?
  				WHERE
     				`domain`.`domain_id` = ?
-    			;
    			";
 
 			exec_query(

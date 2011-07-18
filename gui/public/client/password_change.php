@@ -75,18 +75,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 		$user_id = $_SESSION['user_id'];
 
-		$query = "
-			UPDATE
-				`admin`
-			SET
-				`admin_pass` = ?
-			WHERE
-				`admin_id` = ?
-		";
+		$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?";
 
 		$rs = exec_query($query, array($upass, $user_id));
-		write_log($_SESSION['user_logged'] . ": update password!", E_USER_NOTICE);
-		set_page_message(tr('User password updated successfully!'), 'success');
+		write_log($_SESSION['user_logged'] . ": updated password.", E_USER_NOTICE);
+		set_page_message(tr('Password successfully updated.'), 'success');
 	}
 }
 

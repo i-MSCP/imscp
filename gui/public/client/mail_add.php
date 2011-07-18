@@ -186,7 +186,7 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 			`subdomain_status` = ?
 		ORDER BY
 			`subdomain_name`
-";
+    ";
 
 	$rs = exec_query($query, array($dmn_id, $ok_status));
 
@@ -251,8 +251,7 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 	$query = "
 		SELECT
 			t1.`subdomain_alias_id` AS als_sub_id,
-			t1.`subdomain_alias_name` AS als_sub_name,
-			t2.`alias_name` AS als_name
+			t1.`subdomain_alias_name` AS als_sub_name, t2.`alias_name` AS als_name
 		FROM
 			`subdomain_alias` AS t1
 		LEFT JOIN (`domain_aliasses` AS t2) ON (t1.`alias_id` = t2.`alias_id`)
@@ -422,15 +421,8 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 
 	$query = "
 		INSERT INTO `mail_users` (
-			`mail_acc`,
-			`mail_pass`,
-			`mail_forward`,
-			`domain_id`,
-			`mail_type`,
-			`sub_id`,
-			`status`,
-			`mail_auto_respond`,
-			`mail_auto_respond_text`,
+			`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
+			`sub_id`, `status`, `mail_auto_respond`, `mail_auto_respond_text`,
 			`mail_addr`
 		) VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -452,7 +444,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	write_log($_SESSION['user_logged'] . ": adds new mail account: " . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
 	set_page_message(tr('Mail account scheduled for addition!'));
 	send_request();
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 function check_mail_acc_data($dmn_id, $dmn_name) {
@@ -601,7 +593,7 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'), 'error');
-		user_goto('mail_accounts.php');
+		redirectTo('mail_accounts.php');
 	} else {
 		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
 		gen_page_form_data($tpl, $dmn_name, $post_check);

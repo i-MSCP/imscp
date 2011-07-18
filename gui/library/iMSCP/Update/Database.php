@@ -116,7 +116,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		/** @var $pdo PDO */
 		$pdo = iMSCP_Database::getRawInstance();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		while ($this->isAvailableUpdate()) {
 			$databaseUpdateRevision = $this->getNextUpdate();
@@ -523,7 +522,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"
 		);
 
-		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install';";
+		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
 
 		$sqlUpd[] = self::secureAddColumnTable(
 			'reseller_props',
@@ -566,10 +565,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`mail_type` RLIKE '^alias_mail'
 			OR
 				`mail_type` RLIKE '^subdom_mail'
-			;
 		";
 
-		$stmt = exec_query($query);
+		$stmt = execute_query($query);
 
 		if ($stmt->recordCount() != 0) {
 			while (!$stmt->EOF) {
@@ -586,7 +584,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		$stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`;");
+		$stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`");
 
 		if ($stmt->recordCount() != 0) {
 			while (!$stmt->EOF) {
@@ -603,7 +601,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`;");
+		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`");
 
 		if ($stmt->recordCount() != 0) {
 			while (!$stmt->EOF) {
@@ -641,106 +639,71 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$tables = $db->metaTables();
 
 		foreach ($tables as $table) {
-			$sqlUpd[] = "ALTER TABLE `$table` ENGINE=InnoDB;";
+			$sqlUpd[] = "ALTER TABLE `$table` ENGINE=InnoDB";
 		}
 
 		return $sqlUpd;
 	}
 
-	/**
-	 * Adds unique index on user_id column from the user_gui_props table.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4592
-	 * @return array SQL Statement
-	 */
-	protected function _databaseUpdate_56()
-	{
-		return array(
-			'ALTER TABLE `user_gui_props` DROP INDEX `user_id`',
-			'ALTER IGNORE TABLE `user_gui_props` ADD UNIQUE (`user_id`)'
-		);
-	}
+    /**
+     * Adds unique index on user_gui_props.user_id column.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4592
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_56()
+    {
+        $sqlUpd = array();
 
-	/**
-	 * Remove all parentheses from language database tables.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4592
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_57()
-	{
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-
-		$sqlUpd = $queryParts = array();
-
-		foreach ($db->metaTables() as $tableName) {
-			// Is language database table ?
-			if (strpos($tableName, 'lang_') === false ||
-				(strpos($tableName, '(') === false &&
-				 strpos($tableName, ')') === false)
-			) {
-				continue;
-			}
-
-			$newTableName = str_replace(array('(', ')'), '', $tableName);
-			$queryParts[] = "`$tableName` TO `$newTableName`";
-		}
-
-		if (!empty($queryParts)) {
-			$sqlUpd[] = 'RENAME TABLE ' . implode(', ', $queryParts) . ';';
-
-			foreach ($queryParts as $queryPart) {
-				$table = substr($queryPart, strrpos($queryPart, 'TO ') + 3);
-				$sqlUpd[] = "UPDATE $table SET `msgstr` = " .
-							str_replace(array('lang_', '`'), array('', '\''), $table) .
-							" WHERE `msgid` = 'imscp_table';";
-				$sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
-			}
-		}
-
-		$sqlUpd[] = "
-            UPDATE
-                `config`
-            SET
-                `value` = 'lang_EnglishBritain'
-            WHERE
-                `name` = 'USER_INITIAL_LANG'
-            ;
-        ";
-
-		// Will reset the language property for all users (expected behavior) to
-		// ensure compatibility with the fix. So then each user will have to set
-		// (again) his own language if he want use an other language than the default.
-		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_EnglishBritain';";
-
-		return $sqlUpd;
-	}
-
-	/**
-	 * Drop useless column in user_gui_props table.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4644
-	 * @return string SQL Statement
-	 */
-	protected function _databaseUpdate_59()
-	{
-		return "
+        $sqlUpd[] = "
             DROP PROCEDURE IF EXISTS schema_change;
                 CREATE PROCEDURE schema_change()
                 BEGIN
                     IF EXISTS (
 		                SELECT
-			                *
+			                CONSTRAINT_NAME
+		                FROM
+			                `information_schema`.`KEY_COLUMN_USAGE`
+		                WHERE
+			                TABLE_NAME = 'user_gui_props'
+			            AND
+			                CONSTRAINT_NAME = 'user_id'
+	                ) THEN
+		                ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
+                    END IF;
+                END;
+                CALL schema_change();
+            DROP PROCEDURE IF EXITST schema_change;
+        ";
+
+        $sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
+
+        return $sqlUpd;
+    }
+
+    /**
+     * Drop useless column in user_gui_props table.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4644
+     * @return string SQL Statement
+     */
+    protected function _databaseUpdate_59()
+    {
+        return "
+            DROP PROCEDURE IF EXISTS schema_change;
+                CREATE PROCEDURE schema_change()
+                BEGIN
+                    IF EXISTS (
+		                SELECT
+			                COLUMN_NAME
 		                FROM
 			                information_schema.COLUMNS
 		                WHERE
-			                table_name = 'user_gui_props'
+			                TABLE_NAME = 'user_gui_props'
 		                AND
-			                column_name = 'id'
+			                COLUMN_NAME = 'id'
 	                ) THEN
 		                ALTER TABLE `user_gui_props` DROP column `id`;
                     END IF;
@@ -748,7 +711,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                 CALL schema_change();
             DROP PROCEDURE IF EXITST schema_change;
         ";
-	}
+    }
 
 	/**
 	 * Convert tables to InnoDB.
@@ -760,86 +723,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_60()
 	{
 		return 'ALTER TABLE `autoreplies_log` ENGINE=InnoDB';
-	}
-
-	/**
-	 * Fix for #102 - Changes naming convention for database language tables
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4644
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_61()
-	{
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-
-		$sqlUpd = array();
-
-		// Drop all old database language tables excepted the lang_en_GB that is
-		// created by engine on setup / install
-		foreach ($db->metaTables() as $tableName) {
-			if (strpos($tableName, 'lang_') !== false &&
-				$tableName != 'lang_en_GB'
-			) {
-				$sqlUpd[] = "DROP TABLE `$tableName`";
-			}
-		}
-
-		// Will reset the language property for all users (expected behavior) to
-		// ensure compatibility with the fix. So then each user will have to set
-		// (again) his own language if he want use an other language than the default.
-		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_en_GB'";
-
-		return $sqlUpd;
-	}
-
-	/**
-	 * Fix for #102 - Changes naming convention for database language tables
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4650
-	 * @return string SQL Statement or empty string if table is not found
-	 */
-	protected function _databaseUpdate_64()
-	{
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-
-		if (in_array('lang_en_GB', $db->metaTables())) {
-			return array(
-				'ALTER TABLE `lang_en_GB` DROP INDEX `msgid`',
-				'ALTER IGNORE TABLE `lang_en_GB` ADD UNIQUE (`msgid`(25))'
-			);
-		}
-
-		return '';
-	}
-
-	/**
-	 * Remove useless msgid.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4672
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_65()
-	{
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-
-		$sqlUpd = array();
-
-		foreach ($db->metaTables() as $tableName) {
-			if (strpos($tableName, 'lang_') !== false) {
-				$sqlUpd[] = "
-                    DELETE FROM
-                        `$tableName`
-                    WHERE
-                        `msgid` = 'imscp_languageSetlocaleValue'
-                ";
-			}
-		}
 	}
 
 	/**
@@ -861,7 +744,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 
 	/**
-	 * #124: Enhancement - Switch to PHP gettext
+	 * #124: Enhancement - Switch to gettext (Machine Object Files)
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4792
@@ -890,12 +773,33 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		// third step: Update user language property
+		// third step: Update users language property
 
-		// Will reset the language property for all users (expected behavior) to
-		// ensure compatibility with the transition. So then each user will have to set
-		// (again) his own language if he want use an other language than the default.
-		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'en_GB'";
+        $languagesMap = array(
+            'Arabic' => 'ar_AE', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
+            'Bulgarian' => 'bg_BG', 'Catalan' => 'ca_ES', 'ChineseChina' => 'zh_CN',
+            'ChineseHongKong' => 'zh_HK', 'ChineseTaiwan' => 'zh_TW', 'Czech' => 'cs_CZ',
+            'Danish' => 'da_DK', 'Dutch' => 'nl_NL', 'EnglishBritain' => 'en_GB',
+            'FarsiIran' => 'fa_IR', 'Finnish' => 'fi_FI', 'FrenchFrance' => 'fr_FR',
+            'Galego' => 'gl_ES', 'GermanGermany' => 'de_DE', 'GreekGreece' => 'el_GR',
+            'Hungarian' => 'hu_HU', 'ItalianItaly' => 'it_IT', 'Japanese' => 'ja_JP',
+            'Lithuanian' => 'lt_LT', 'NorwegianNorway' => 'nb_NO', 'Polish' => 'pl_PL',
+            'PortugueseBrazil' => 'pt_BR', 'Portuguese' => 'pt_PT', 'Romanian' => 'ro_RO',
+            'Russian' => 'ru_RU', 'Slovak' => 'sk_SK', 'SpanishArgentina' => 'es_AR',
+            'SpanishSpain' => 'es_ES', 'Swedish' => 'sv_SE', 'Thai' => 'th_TH',
+            'Turkish' => 'tr_TR', 'Ukrainian' => 'uk_UA');
+
+		// Updates language property of each users by using new naming convention
+        // Thanks to Marc Pujol for idea
+        foreach($languagesMap as $language => $locale) {
+            $sqlUpd[] = "
+                UPDATE
+                    `user_gui_props`
+                SET
+                    `lang` = '$locale'
+                WHERE
+                    `lang` = 'lang_{$language}'";
+        }
 
 		return $sqlUpd;
 	}
@@ -934,5 +838,25 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 
 		return $sqlUpd;
+	}
+
+	/**
+	 * Some fixes for user_gui_props table.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4961
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_69()
+    {
+		return array(
+            "ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` INT( 10 ) UNSIGNED NOT NULL",
+            "ALTER TABLE `user_gui_props` CHANGE `layout` `layout`
+                VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
+            "ALTER TABLE `user_gui_props` CHANGE `logo` `logo`
+                VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''",
+            "ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
+                VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
+            "UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
 	}
 }

@@ -103,8 +103,7 @@ function generate_server_data($tpl) {
 
 	$query = "
 		SELECT
-			`straff_max`,
-			`straff_warn`
+			`straff_max`, `straff_warn`
 		FROM
 			`straff_settings`
 	";

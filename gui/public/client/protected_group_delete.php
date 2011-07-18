@@ -48,7 +48,7 @@ if (isset($_GET['gname'])
 	&& is_numeric($_GET['gname'])) {
 	$group_id = $_GET['gname'];
 } else {
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }
 
 $change_status = $cfg->ITEM_DELETE_STATUS;
@@ -70,14 +70,7 @@ $query = "
 $rs = exec_query($query, array($change_status, $group_id, $dmn_id, $awstats_auth));
 
 
-$query = "
-	SELECT
-		*
-	FROM
-		`htaccess`
-	WHERE
-		`dmn_id` = ?
-";
+$query = "SELECT *  FROM `htaccess` WHERE `dmn_id` = ?";
 
 $rs = exec_query($query, $dmn_id);
 
@@ -101,8 +94,7 @@ while (!$rs->EOF) {
 			UPDATE
 				`htaccess`
 			SET
-				`group_id` = ?,
-				`status` = ?
+				`group_id` = ?, `status` = ?
 			WHERE
 				`id` = ?
 		";
@@ -115,4 +107,4 @@ while (!$rs->EOF) {
 send_request();
 
 write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id", E_USER_NOTICE);
-user_goto('protected_user_manage.php');
+redirectTo('protected_user_manage.php');

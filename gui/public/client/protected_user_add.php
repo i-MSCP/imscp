@@ -102,10 +102,11 @@ function padd_user($tpl, $dmn_id) {
 			if ($rs->recordCount() == 0) {
 
 				$query = "
-					INSERT INTO `htaccess_users`
-						(`dmn_id`, `uname`, `upass`, `status`)
-					VALUES
-						(?, ?, ?, ?)
+					INSERT INTO `htaccess_users` (
+					    `dmn_id`, `uname`, `upass`, `status`
+					) VALUES (
+					    ?, ?, ?, ?
+					)
 				";
 				exec_query($query, array($dmn_id, $uname, $upass, $status));
 
@@ -113,7 +114,7 @@ function padd_user($tpl, $dmn_id) {
 
 				$admin_login = $_SESSION['user_logged'];
 				write_log("$admin_login: add user (protected areas): $uname", E_USER_NOTICE);
-				user_goto('protected_user_manage.php');
+				redirectTo('protected_user_manage.php');
 			} else {
 				set_page_message(tr('User already exist !'), 'error');
 				return;

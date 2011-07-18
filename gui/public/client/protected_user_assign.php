@@ -78,7 +78,7 @@ function get_htuser_name(&$uuser_id, &$dmn_id) {
 	$rs = exec_query($query, array($dmn_id, $uuser_id));
 
 	if ($rs->recordCount() == 0) {
-		user_goto('protected_user_manage.php');
+		redirectTo('protected_user_manage.php');
 	} else {
 		return $rs->fields['uname'];
 	}
@@ -100,23 +100,15 @@ function gen_user_assign($tpl, &$dmn_id) {
 		$tpl->assign('UNAME', tohtml(get_htuser_name($uuser_id, $dmn_id)));
 		$tpl->assign('UID', $uuser_id);
 	} else {
-		user_goto('protected_user_manage.php');
+		redirectTo('protected_user_manage.php');
 	}
 	// get groups
-	$query = "
-		SELECT
-			*
-		FROM
-			`htaccess_groups`
-		WHERE
-			`dmn_id` = ?
-	";
-
+	$query = "SELECT * FROM `htaccess_groups` WHERE `dmn_id` = ?";
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('You have no groups!'), 'error');
-		user_goto('protected_user_manage.php');
+		redirectTo('protected_user_manage.php');
 	} else {
 		$added_in = 0;
 		$not_added_in = 0;
@@ -179,9 +171,7 @@ function add_user_to_group($tpl, &$dmn_id) {
 
 		$query = "
 			SELECT
-				`id`,
-				`ugroup`,
-				`members`
+				`id`, `ugroup`, `members`
 			FROM
 				`htaccess_groups`
 			WHERE
@@ -205,8 +195,7 @@ function add_user_to_group($tpl, &$dmn_id) {
 			UPDATE
 				`htaccess_groups`
 			SET
-				`members` = ?,
-				`status` = ?
+				`members` = ?, `status` = ?
 			WHERE
 				`id` = ?
 			AND
@@ -234,9 +223,7 @@ function delete_user_from_group($tpl, &$dmn_id) {
 
 		$query = "
 			SELECT
-				`id`,
-				`ugroup`,
-				`members`
+				`id`, `ugroup`, `members`
 			FROM
 				`htaccess_groups`
 			WHERE
@@ -257,8 +244,7 @@ function delete_user_from_group($tpl, &$dmn_id) {
 				UPDATE
 					`htaccess_groups`
 				SET
-					`members` = ?,
-					`status` = ?
+					`members` = ?, `status` = ?
 				WHERE
 					`id` = ?
 				AND

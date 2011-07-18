@@ -76,14 +76,8 @@ function show_IPs($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "
-		SELECT
-			*
-		FROM
-			`server_ips`
-	";
-
-	$rs = exec_query($query);
+	$query = "SELECT * FROM `server_ips`";
+	$rs = execute_query($query);
 
 	$row = 1;
 	$single = false;

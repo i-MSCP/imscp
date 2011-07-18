@@ -50,7 +50,7 @@ function hasTicketSystem($user_id = null)
     if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
         return false;
     } elseif ($user_id !== null) {
-        $query = "SELECT`support_system`  FROM `reseller_props` WHERE `reseller_id` = ?;";
+        $query = "SELECT`support_system`  FROM `reseller_props` WHERE `reseller_id` = ?";
         $stmt = exec_query($query, $user_id);
 
         if ($stmt->fields['support_system'] == 'no') {
@@ -86,7 +86,6 @@ function getTicketStatus($ticket_id)
             `ticket_id` = ?
         AND
             (`ticket_from` = ? OR `ticket_to` = ?)
-        ;
     ";
     $stmt = exec_query($query, array(
                                         $ticket_id,
@@ -125,7 +124,6 @@ function changeTicketStatus($ticket_id, $ticket_status)
 			`ticket_reply` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	    ;
 	";
     exec_query($query, array(
                                   $ticket_status,
@@ -167,7 +165,6 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 		    ) VALUES (
                 ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
-	    ;
 	";
     exec_query($query, array(
                                  $userLevel, $user_id, $admin_id, $ticket_status,
@@ -205,7 +202,6 @@ function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
 			`tickets`
 		WHERE
 			`ticket_id` = ?
-	    ;
 	";
     $stmt = exec_query($query, $ticket_id);
 
@@ -232,7 +228,6 @@ function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
 			) VALUES (
 			    ?, ?, ?, ?, ?, ?, ?, ?
 			)
-	    ;
 	";
 
     exec_query($query, array($ticket_from, $ticket_to, null, $ticket_id,
@@ -274,7 +269,7 @@ function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
 function getUserLevel($ticket_id)
 {
     // Get info about the type of message
-    $query = "SELECT `ticket_level` FROM `tickets` WHERE `ticket_id` = ?;";
+    $query = "SELECT `ticket_level` FROM `tickets` WHERE `ticket_id` = ?";
     $stmt = exec_query($query, $ticket_id);
 
     return $stmt->fields['ticket_level'];
@@ -344,7 +339,6 @@ function getTicketSender($ticket_id)
 	        `admin` `a` ON (`t`.`ticket_from` = `a`.`admin_id`)
 		WHERE
 			`ticket_id` = ?
-	    ;
 	";
     $stmt = exec_query($query, $ticket_id);
 
@@ -376,9 +370,8 @@ function ticketGetLastDate($ticket_id)
 			`ticket_reply` = ?
 		ORDER BY
 			`ticket_date` DESC
-	    ;
 	";
-    $stmt = exec_query($query, array($ticket_id));
+    $stmt = exec_query($query, $ticket_id);
 
     if (null == $stmt->fields['ticket_date']) {
         return tr('Never');
@@ -414,9 +407,9 @@ function generateTicketList($tpl, $user_id, $start, $count, $userLevel, $status)
 	";
 
     if ($status == 'open') {
-        $count_query .= " `ticket_status` != 0;";
+        $count_query .= " `ticket_status` != 0";
     } else {
-        $count_query .= " `ticket_status` = 0;";
+        $count_query .= " `ticket_status` = 0";
     }
 
     $rs = exec_query($count_query, array($user_id, $user_id));
@@ -441,7 +434,7 @@ function generateTicketList($tpl, $user_id, $start, $count, $userLevel, $status)
         $query .= " `ticket_status` = 0";
     }
 
-    $query .= " ORDER BY `ticket_date` DESC LIMIT $start,$count;";
+    $query .= " ORDER BY `ticket_date` DESC LIMIT $start,$count";
 
     $rs = exec_query($query, array($user_id, $user_id));
 
@@ -533,7 +526,6 @@ function showTicketContent($tpl, $ticket_id, $user_id, $screenwidth)
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	    ;
 	";
     $stmt = exec_query($query, array($ticket_id, $user_id, $user_id));
 
@@ -595,7 +587,6 @@ function showTicketReplies($tpl, $ticket_id, $screenwidth)
 			`ticket_reply` = ?
 		ORDER BY
 			`ticket_date` ASC
-	    ;
 	";
 
     $stmt = exec_query($query, $ticket_id);
@@ -642,7 +633,6 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
 			`admin`
 		WHERE
 			`admin_id` = ?
-		;
 	";
 
     $stmt = exec_query($query, $to_id);
@@ -659,7 +649,6 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
 			`admin`
 		WHERE
 			`admin_id` = ?
-		;
     ";
 
     $stmt = exec_query($query, $from_id);
@@ -740,7 +729,7 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
  */
 function deleteTicket($ticket_id)
 {
-    $query = "DELETE FROM `tickets` WHERE `ticket_id` = ? OR `ticket_reply` = ?;";
+    $query = "DELETE FROM `tickets` WHERE `ticket_id` = ? OR `ticket_reply` = ?";
     exec_query($query, array($ticket_id, $ticket_id));
 }
 
@@ -762,9 +751,9 @@ function deleteTickets($status, $user_id)
 	";
 
     if ($status == 'open') {
-        $query .= " `ticket_status` != 0;";
+        $query .= " `ticket_status` != 0";
     } else {
-        $query .= " `ticket_status` = 0;";
+        $query .= " `ticket_status` = 0";
     }
 
     exec_query($query, array($user_id, $user_id));

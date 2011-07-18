@@ -169,8 +169,8 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
 				// Delete software entry
-				$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
-				exec_query($query, array($sw_id));
+				$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
+				exec_query($query, $sw_id);
 
 				$sw_wget = '';
 
@@ -210,7 +210,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 				if($remote_file_size < 1){
 					// Delete software entry
-					$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
+					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
@@ -224,7 +224,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					$upload = 0;
 				} elseif($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
 					// Delete software entry
-					$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
+					$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
@@ -244,7 +244,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						fclose($output_file);
 					} else {
 						// Delete software entry
-						$query = "DELETE FROM `web_software` WHERE`software_id` = ?;";
+						$query = "DELETE FROM `web_software` WHERE`software_id` = ?";
 						exec_query($query, $sw_id);
 						set_page_message(tr('Error: Remote File not found!'), 'error');
 						$upload = 0;
@@ -252,7 +252,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				}
    			} else {
 				// Delete software entry
-				$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
+				$query = "DELETE FROM `web_software` WHERE `software_id` = ?";
 				exec_query($query, $sw_id);
 				set_page_message(tr('Error: Could not upload the file. File not found!'), 'error');
 				$upload = 0;

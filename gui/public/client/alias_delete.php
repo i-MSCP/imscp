@@ -58,7 +58,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$alias_name = $rs->fields['alias_name'];
 
 	if ($rs->recordCount() == 0) {
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	// check for subdomains
@@ -74,7 +74,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($query, $als_id);
 	if ($rs->fields['count'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has subdomains!<br>First remove them!'), 'error');
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	// check for mail accounts
@@ -97,7 +97,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has email accounts !<br>First remove them!'), 'error');
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	// check for ftp accounts
@@ -121,7 +121,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($query, $als_id);
 	if ($rs->fields['ftpnum'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has FTP accounts!<br>First remove them!'), 'error');
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	$query = "
@@ -140,7 +140,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias ".$alias_name."!", E_USER_NOTICE);
 	set_page_message(tr('Alias scheduled for deletion!'));
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 } else {
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 }

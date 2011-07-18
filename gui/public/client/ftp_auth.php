@@ -62,7 +62,6 @@ function _getLoginCredentials($userId) {
 			`ftp_users`.`userid` = ?
 		AND
 			`domain`.`domain_admin_id` = ?
-		;
 	";
 	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
 
@@ -177,8 +176,8 @@ check_login(__FILE__);
  */
 if(isset($_GET['id'])) {
 	if(!net2ftpAuth($_GET['id'])) {
-		user_goto('ftp_accounts.php');
+		redirectTo('ftp_accounts.php');
 	}
 } else {
-	user_goto('/index.php');
+	redirectTo('/index.php');
 }

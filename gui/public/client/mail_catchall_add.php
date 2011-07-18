@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$item_id = $_POST['id'];
 } else {
-	user_goto('mail_catchall.php');
+	redirectTo('mail_catchall.php');
 }
 
 // page functions.
@@ -96,7 +96,7 @@ function gen_dynamic_page_data($tpl, $id) {
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'), 'error');
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -193,11 +193,11 @@ function gen_dynamic_page_data($tpl, $id) {
 		} else if ($item_type === 'subdom') {
 			$query = "
 				SELECT
-					t1.`mail_id`, t1.`mail_type`, CONCAT(t2.`subdomain_name`, '.', t3.`domain_name`) AS subdomain_name, t1.`mail_acc`
+					t1.`mail_id`, t1.`mail_type`,
+					CONCAT(t2.`subdomain_name`, '.', t3.`domain_name`) AS subdomain_name,
+					t1.`mail_acc`
 				FROM
-					`mail_users` AS t1,
-					`subdomain` AS t2,
-					`domain` AS t3
+					`mail_users` AS t1, `subdomain` AS t2, `domain` AS t3
 				WHERE
 					t1.`sub_id` = t2.`subdomain_id`
 				AND
@@ -239,11 +239,11 @@ function gen_dynamic_page_data($tpl, $id) {
 		} else if ($item_type === 'alssub') {
 			$query = "
 				SELECT
-					t1.`mail_id`, t1.`mail_type`, CONCAT(t2.`subdomain_alias_name`, '.', t3.`alias_name`) AS subdomain_name, t1.`mail_acc`
+					t1.`mail_id`, t1.`mail_type`,
+					CONCAT(t2.`subdomain_alias_name`, '.', t3.`alias_name`) AS subdomain_name,
+					t1.`mail_acc`
 				FROM
-					`mail_users` AS t1,
-					`subdomain_alias` AS t2,
-					`domain_aliasses` AS t3
+					`mail_users` AS t1, `subdomain_alias` AS t2, `domain_aliasses` AS t3
 				WHERE
 					t1.`sub_id` = t2.`subdomain_alias_id`
 				AND
@@ -284,7 +284,7 @@ function gen_dynamic_page_data($tpl, $id) {
 			}
 		}
 	} else {
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 }
 
@@ -296,7 +296,7 @@ function create_catchall_mail_account($id) {
 	// Check if user is owner of the domain
 	if (!preg_match('(normal|alias|subdom|alssub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
-		user_goto('mail_catchall.php');
+		redirectTo('mail_catchall.php');
 	}
 
 	$match = array();
@@ -339,28 +339,22 @@ function create_catchall_mail_account($id) {
 				$mail_addr = '@' . $match[1];
 
 				$query = "
-					INSERT INTO `mail_users`
-						(`mail_acc`,
-						`mail_pass`,
-						`mail_forward`,
-						`domain_id`,
-						`mail_type`,
-						`sub_id`,
-						`status`,
-						`mail_auto_respond`,
-						`quota`,
-						`mail_addr`)
-					VALUES
-						(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+					INSERT INTO `mail_users` (
+					    `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`,
+						`mail_type`, `sub_id`, `status`, `mail_auto_respond`, `quota`,
+						`mail_addr`
+					) VALUES (
+					    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    )
 				";
 				exec_query($query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 				send_request();
 				write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
 				set_page_message(tr('Catch all account scheduled for creation!'));
-				user_goto('mail_catchall.php');
+				redirectTo('mail_catchall.php');
 			} else {
-				user_goto('mail_catchall.php');
+				redirectTo('mail_catchall.php');
 			}
 		}
 	} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'create_catchall' && $_POST['mail_type'] === 'forward' && isset($_POST['forward_list'])) {
@@ -395,18 +389,16 @@ function create_catchall_mail_account($id) {
 				$sub_id = $item_id;
 				$query = "
 					SELECT
-						t1.`subdomain_alias_name`,
-						t2.`alias_name`,
-						t2.`domain_id`
+						t1.`subdomain_alias_name`, t2.`alias_name`, t2.`domain_id`
 					FROM
-						`subdomain_alias` AS t1,
-						`domain_aliasses` AS t2
+						`subdomain_alias` AS t1, `domain_aliasses` AS t2
 					WHERE
 						t1.`subdomain_alias_id` = ?
 					AND
 						t1.`alias_id` = t2.`alias_id`
-					";
+				";
 				$rs = exec_query($query, $item_id);
+
 				$domain_id = $rs->fields['domain_id'];
 				$mail_addr = '@' . $rs->fields['subdomain_alias_name'] . '.' . $rs->fields['alias_name'];
 			}
@@ -430,28 +422,21 @@ function create_catchall_mail_account($id) {
 			$status = $cfg->ITEM_ADD_STATUS;
 
 			$query = "
-				INSERT INTO `mail_users`
-					(`mail_acc`,
-					`mail_pass`,
-					`mail_forward`,
-					`domain_id`,
-					`mail_type`,
-					`sub_id`,
-					`status`,
-					`mail_auto_respond`,
-					`quota`,
-					`mail_addr`)
-				VALUES
-					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+				INSERT INTO `mail_users` (
+				    `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
+					`sub_id`, `status`, `mail_auto_respond`, `quota`, `mail_addr`
+				) VALUES (
+				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
 			";
             exec_query($query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
 			write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
 			set_page_message(tr('Catch all account scheduled for creation!'));
-			user_goto('mail_catchall.php');
+			redirectTo('mail_catchall.php');
 		} else {
-			user_goto('mail_catchall.php');
+			redirectTo('mail_catchall.php');
 		}
 	}
 }

@@ -617,7 +617,6 @@ function update_reseller() {
  				`domain_software_allowed` = ?
  			WHERE
  				`domain_created_id` = ?
- 			;
  		";
          exec_query($query_user, array(
                                       $rdata['softwaredepot_allowed'],
@@ -727,7 +726,7 @@ function &get_data($tpl = false) {
 			$rs = exec_query($query, $rdata['edit_id']);
 
 			if ($rs->recordCount() <= 0) {
-				user_goto('manage_users.php');
+				redirectTo('manage_users.php');
 			}
 			$rdata['admin_name'] = $rs->fields['admin_name'];
 			$rdata['rip_lst'] = $rs->fields['reseller_ips'];
@@ -864,7 +863,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			$_SESSION['reseller_ips'] = $rdata['reseller_ips'];
 
 			// Back to the parent page after a successfull updates
-			user_goto('manage_users.php');
+			redirectTo('manage_users.php');
 
 		} else { // An error was occured during data checking
 			set_page_message(
@@ -890,7 +889,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	if (isset($_POST['Cancel']) && isset($_SESSION['user_updated'])) {
 		unset($_SESSION['user_updated']);
 	}
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }
 
 // Input Fields Errors Highlighting

@@ -44,7 +44,7 @@ $cfg = iMSCP_Registry::get('config');
 
 // Lost password feature is disabled ?
 if (!$cfg->LOSTPASSWORD) {
-	user_goto('/index.php');
+	redirectTo('/index.php');
 }
 
 // Check for gd library availability

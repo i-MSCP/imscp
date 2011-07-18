@@ -41,11 +41,11 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 if (!isset($_GET['domain_id'])) {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }
 
 if (!is_numeric($_GET['domain_id'])) {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }
 
 // so we have domain id and let's disable or enable it
@@ -54,8 +54,7 @@ $domain_id = $_GET['domain_id'];
 // check status to know if have to disable or enable it
 $query = "
 	SELECT
-		`domain_name`,
-		`domain_status`
+		`domain_name`, `domain_status`
 	FROM
 		`domain`
 	WHERE
@@ -75,5 +74,5 @@ if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	change_domain_status($domain_id, $rs->fields['domain_name'], $action, $location);
 
 } else {
-	user_goto('manage_users.php');
+	redirectTo('manage_users.php');
 }

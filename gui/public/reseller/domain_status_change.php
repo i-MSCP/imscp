@@ -82,5 +82,5 @@ if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
     set_page_message(tr('Domain account scheduled for activation.'), 'info');
     change_domain_status($domain_id, $stmt->fields['domain_name'], 'enable', 'reseller');
 } else {
-    user_goto('users.php?psi=last');
+    redirectTo('users.php?psi=last');
 }

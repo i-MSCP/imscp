@@ -93,12 +93,12 @@ if (isset($_POST['uaction']) && ('modify' === $_POST['uaction'])) {
 		unset($_SESSION['edit_ID']);
 
 		$_SESSION['aledit'] = '_no_';
-		user_goto('alias.php');
+		redirectTo('alias.php');
 	}
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		$_SESSION['aledit'] = "_yes_";
-		user_goto('alias.php');
+		redirectTo('alias.php');
 	}
 } else {
 	// Get user id that comes for edit
@@ -154,14 +154,14 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-		user_goto('alias.php');
+		redirectTo('alias.php');
 	}
 	// Get data from sql
 	$res = exec_query("SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", $edit_id);
 
 	if ($res->recordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
-		user_goto('alias.php');
+		redirectTo('alias.php');
 	}
 	$data = $res->fetchRow();
 	// Get IP data

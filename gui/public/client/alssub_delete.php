@@ -60,7 +60,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$sub_name = $rs->fields['subdomain_alias_name'];
 
 	if ($rs->recordCount() == 0) {
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	// check for mail accounts
@@ -70,7 +70,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'), 'error');
-		user_goto('domains_manage.php');
+		redirectTo('domains_manage.php');
 	}
 
 	$query = "
@@ -86,8 +86,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias subdomain: ".$sub_name, E_USER_NOTICE);
 	set_page_message('Alias '.tr('Subdomain scheduled for deletion!'));
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 
 } else {
-	user_goto('domains_manage.php');
+	redirectTo('domains_manage.php');
 }

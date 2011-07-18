@@ -60,7 +60,7 @@ $tpl->assign(
 // dynamic page data
 
 if (!hasTicketSystem()) {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 if (isset($_GET['ticket_id'])) {
@@ -101,7 +101,7 @@ if (isset($_GET['ticket_id'])) {
 				$_POST['subject'], $_POST['user_message'], 2, 3
 			);
 
-			user_goto('ticket_system.php');
+			redirectTo('ticket_system.php');
 		}
 	}
 
@@ -109,7 +109,7 @@ if (isset($_GET['ticket_id'])) {
 } else {
 	set_page_message(tr('Ticket not found!'), 'error');
 
-	user_goto('ticket_system.php');
+	redirectTo('ticket_system.php');
 }
 
 // static page messages

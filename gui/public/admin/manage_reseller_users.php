@@ -66,11 +66,11 @@ function gen_user_table($tpl) {
 			`admin_name`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Reseller or user list is empty!'), 'error');
-		user_goto('manage_users.php');
+		redirectTo('manage_users.php');
 	}
 
 	$reseller_id = $rs->fields['admin_id'];
@@ -219,7 +219,7 @@ function check_user_data() {
 			`admin_name`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	$selected_users = '';
 

@@ -53,9 +53,7 @@ function check_email_user() {
 
 	$query = "
 		SELECT
-			t1.*,
-			t2.`domain_id`,
-			t2.`domain_name`
+			t1.*, t2.`domain_id`, t2.`domain_name`
 		FROM
 			`mail_users` AS t1,
 			`domain` AS t2
@@ -71,7 +69,7 @@ function check_email_user() {
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
-		user_goto('mail_accounts.php');
+		redirectTo('mail_accounts.php');
 	}
 }
 
@@ -93,9 +91,7 @@ function gen_page_dynamic_data($tpl, $mail_id) {
 			UPDATE
 				`mail_users`
 			SET
-				`status` = ?,
-				`mail_auto_respond` = 1,
-				`mail_auto_respond_text` = ?
+				`status` = ?, `mail_auto_respond` = 1, `mail_auto_respond_text` = ?
 			WHERE
 				`mail_id` = ?
 		";
@@ -126,7 +122,7 @@ function gen_page_dynamic_data($tpl, $mail_id) {
 		$mail_name = $rs->fields['mailbox'];
 		write_log($_SESSION['user_logged'] . ": add mail autoresponder: " . $mail_name, E_USER_NOTICE);
 		set_page_message(tr('Mail account scheduler for modification!'));
-		user_goto('mail_accounts.php');
+		redirectTo('mail_accounts.php');
 	} else {
 		// Get Message
 		$query = "
@@ -153,7 +149,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$mail_id = $_POST['id'];
 } else {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {

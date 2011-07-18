@@ -58,7 +58,7 @@ if (isset($_GET['id'])) {
 } else if (isset($_POST['id'])) {
 	$db_id = $_POST['id'];
 } else {
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
 // page functions.
@@ -94,7 +94,7 @@ function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
 		if (!$sqluser_available) {
 			set_page_message(tr('SQL users limit reached!'), 'error');
-			user_goto('sql_manage.php');
+			redirectTo('sql_manage.php');
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
 		}
@@ -120,7 +120,7 @@ function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 
 	if (!$rs->recordCount()) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
-		user_goto('sql_manage.php');
+		redirectTo('sql_manage.php');
 	}
 }
 
@@ -156,14 +156,12 @@ function gen_sql_user_list($tpl, $user_id, $db_id) {
 	// Let's select all sqlusers of the current domain except the users of the current database
 	$query = "
 		SELECT
-			t1.`sqlu_name`,
-			t1.`sqlu_id`
+			t1.`sqlu_name`, t1.`sqlu_id`
 		FROM
-			`sql_user` AS t1,
-			`sql_database` AS t2
+			`sql_user` AS t1, `sql_database` AS t2
 		WHERE
 			t1.`sqld_id` = t2.`sqld_id`
-			AND
+		AND
 			t2.`domain_id` = ?
 		AND
 			t1.`sqld_id` <> ?
@@ -330,10 +328,11 @@ function add_sql_user($user_id, $db_id) {
 	// add user in the i-MSCP table;
 
 	$query = "
-		INSERT INTO `sql_user`
-			(`sqld_id`, `sqlu_name`, `sqlu_pass`)
-		VALUES
-			(?, ?, ?)
+		INSERT INTO `sql_user` (
+		    `sqld_id`, `sqlu_name`, `sqlu_pass`
+		) VALUES (
+		    ?, ?, ?
+		)
 	";
 	exec_query($query, array($db_id, $db_user, $user_pass));
 
@@ -361,7 +360,7 @@ function add_sql_user($user_id, $db_id) {
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
 	set_page_message(tr('SQL user successfully added!'), 'success');
-	user_goto('sql_manage.php');
+	redirectTo('sql_manage.php');
 }
 
 function gen_page_post_data(&$tpl, $db_id) {
@@ -412,7 +411,7 @@ function gen_page_post_data(&$tpl, $db_id) {
 // common page data.
 
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	user_goto('index.php');
+	redirectTo('index.php');
 }
 
 $tpl->assign(

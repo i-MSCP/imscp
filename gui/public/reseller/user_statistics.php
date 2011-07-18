@@ -79,7 +79,6 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 			`admin_type` = 'user'
 		AND
 			`created_by` = ?
-		;
 	";
 
     $rs = exec_query($count_query, $reseller_id);
@@ -98,7 +97,6 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 			`admin_name` ASC
 		LIMIT
 			$start_index, $rows_per_page
-		;
 	";
 
     $rs = exec_query($query, $reseller_id);
@@ -139,7 +137,6 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 					`domain`
 				WHERE
 					`domain_admin_id` = ?
-				;
 			";
 
             $dres = exec_query($query, $admin_id);
@@ -299,7 +296,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 }
 
 if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
-    user_goto('./reseller_statistics.php');
+    redirectTo('./reseller_statistics.php');
 }
 
 $tpl->assign(

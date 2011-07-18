@@ -61,7 +61,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 	set_page_message('All database update were successfully applied', 'success');
 
 	// Redirect back to database_update.php
-	user_goto($_SERVER['PHP_SELF']);
+	redirectTo($_SERVER['PHP_SELF']);
 }
 
 $tpl = new iMSCP_pTemplate();

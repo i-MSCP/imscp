@@ -90,8 +90,7 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 				UPDATE
 					`htaccess_users`
 				SET
-					`upass` = ?,
-					`status` = ?
+					`upass` = ?, `status` = ?
 				WHERE
 					`dmn_id` = ?
 				AND
@@ -116,7 +115,7 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 
 			$admin_login = $_SESSION['user_logged'];
 			write_log("$admin_login: modify user ID (protected areas): $uname", E_USER_NOTICE);
-			user_goto('protected_user_manage.php');
+			redirectTo('protected_user_manage.php');
 		}
 	} else {
 		return;
@@ -168,7 +167,7 @@ if (isset($_GET['uname'])
 	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
-		user_goto('protected_user_manage.php');
+		redirectTo('protected_user_manage.php');
 	} else {
 		$tpl->assign(
 			array(
@@ -199,7 +198,7 @@ if (isset($_GET['uname'])
 	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
-		user_goto('protected_user_manage.php');
+		redirectTo('protected_user_manage.php');
 	} else {
 		$tpl->assign(
 			array(
@@ -210,7 +209,7 @@ if (isset($_GET['uname'])
 		pedit_user($tpl, $dmn_id, $uuser_id);
 	}
 } else {
-	user_goto('protected_user_manage.php');
+	redirectTo('protected_user_manage.php');
 }
 
 $tpl->assign(

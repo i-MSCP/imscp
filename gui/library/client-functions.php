@@ -62,7 +62,6 @@ function get_domain_default_props($domain_admin_id, $returnWKeys = false)
 			`domain`
 		WHERE
 			`domain_admin_id` = ?
-		;
 	";
     $stmt = exec_query($query, $domain_admin_id);
 
@@ -102,7 +101,6 @@ function get_domain_running_sub_cnt($domain_id)
 			`subdomain`
 		WHERE
 			`domain_id` = ?
-		;
 	";
     $stmt1 = exec_query($query, $domain_id);
 
@@ -113,7 +111,6 @@ function get_domain_running_sub_cnt($domain_id)
 			`subdomain_alias`
 		WHERE
 			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-		;
 	";
     $stmt2 = exec_query($query, $domain_id);
 
@@ -135,7 +132,6 @@ function get_domain_running_als_cnt($domain_id)
 			`domain_aliasses`
 		WHERE
 			`domain_id` = ?
-		;
 	";
     $stmt = exec_query($query, $domain_id);
 
@@ -177,7 +173,6 @@ function get_domain_running_mail_acc_cnt($domain_id)
 				`mail_acc` != 'postmaster'
 			AND
 				`mail_acc` != 'webmaster'
-			;
 		";
     }
 
@@ -215,7 +210,6 @@ function get_domain_running_dmn_ftp_acc_cnt($domain_id)
 			`domain`
 		WHERE
 			`domain_id` = ?
-		;
 	";
 
     $stmt = exec_query($query, $domain_id);
@@ -227,7 +221,6 @@ function get_domain_running_dmn_ftp_acc_cnt($domain_id)
 			`ftp_users`
 		WHERE
 			`userid` LIKE ?
-		;
 	";
 
     $stmt = exec_query($query, '%' . $cfg->FTP_USERNAME_SEPARATOR .
@@ -245,7 +238,7 @@ function get_domain_running_dmn_ftp_acc_cnt($domain_id)
  */
 function get_domain_running_sub_ftp_acc_cnt($domain_id)
 {
-    $query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?;";
+    $query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
     $stmt1 = exec_query($query, $domain_id);
 
     $query = "
@@ -257,7 +250,6 @@ function get_domain_running_sub_ftp_acc_cnt($domain_id)
 			`domain_id` = ?
 		ORDER BY
 			`subdomain_id`
-		;
 	";
     $stmt2 = exec_query($query, $domain_id);
 
@@ -276,7 +268,6 @@ function get_domain_running_sub_ftp_acc_cnt($domain_id)
 				    `ftp_users`
 			    WHERE
 				    `userid` LIKE ?
-			    ;
 		    ";
             $stmt3 = exec_query($query,
                                 '%' . $ftpSeparator .
@@ -309,7 +300,6 @@ function get_domain_running_als_ftp_acc_cnt($domain_id)
 			`domain_id` = ?
 		ORDER BY
 			`alias_id`
-		;
 	";
     $stmt1 = exec_query($query, $domain_id);
 
@@ -327,7 +317,6 @@ function get_domain_running_als_ftp_acc_cnt($domain_id)
 				    `ftp_users`
 			    WHERE
 				    `userid` LIKE ?
-			    ;
 		    ";
             $stmt2 = exec_query($query,
                                 '%' . $ftpSeparator . $stmt1->fields['alias_name']);
@@ -372,7 +361,6 @@ function get_domain_running_sqld_acc_cnt($domain_id)
 			`sql_database`
 		WHERE
 			`domain_id` = ?
-		;
 	";
     $stmt = exec_query($query, $domain_id);
 
@@ -396,7 +384,6 @@ function get_domain_running_sqlu_acc_cnt($domain_id)
 			`t2`.`domain_id` = ?
 		AND
 			`t2`.`sqld_id` = `t1`.`sqld_id`
-		;
 	";
     $stmt = exec_query($query, $domain_id);
 
@@ -445,7 +432,7 @@ function get_domain_running_props_cnt($domain_id)
  */
 function get_user_domain_id($user_id)
 {
-    $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
+    $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
     $stmt = exec_query($query, $user_id);
 
     return $stmt->fields['domain_id'];
@@ -499,7 +486,6 @@ function count_sql_user_by_name($sqlu_name)
 			`sql_user`
 		WHERE
 			`sqlu_name` = ?
-		;
 	";
     $stmt = exec_query($query, $sqlu_name);
 
@@ -509,7 +495,6 @@ function count_sql_user_by_name($sqlu_name)
 /**
  * Deletes a SQL user.
  *
- * @param  iMSCP_Database $db Databas instance
  * @param  int $domain_id Domain unique identifier
  * @param  int $db_user_id Sql user unique identifier
  * @return
@@ -528,7 +513,6 @@ function sql_delete_user($domain_id, $db_user_id)
 			`t2`.`domain_id` = ?
 		AND
 			`t1`.`sqlu_id` = ?
-		;
 	";
     $stmt = exec_query($query, array($domain_id, $db_user_id));
 
@@ -538,11 +522,11 @@ function sql_delete_user($domain_id, $db_user_id)
         ) {
             return;
         }
-        user_goto('sql_manage.php');
+        redirectTo('sql_manage.php');
     }
 
     // remove from i-MSCP sql_user table.
-    $query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?;';
+    $query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
     exec_query($query, $db_user_id);
 
     update_reseller_c_props(get_reseller_id($domain_id));
@@ -552,27 +536,27 @@ function sql_delete_user($domain_id, $db_user_id)
 
     if (count_sql_user_by_name($stmt->fields['sqlu_name']) == 0) {
         // revoke grants on global level, if any;
-        $query = "REVOKE ALL ON *.* FROM ?@'%';";
+        $query = "REVOKE ALL ON *.* FROM ?@'%'";
         exec_query($query, $db_user_name);
 
-        $query = "REVOKE ALL ON *.* FROM ?@localhost;";
+        $query = "REVOKE ALL ON *.* FROM ?@localhost";
         exec_query($query, $db_user_name);
 
         // delete user record from mysql.user table;
-        $query = "DROP USER ?@'%';";
+        $query = "DROP USER ?@'%'";
         exec_query($query, $db_user_name);
 
-        $query = "DROP USER ?@'localhost';";
+        $query = "DROP USER ?@'localhost'";
         exec_query($query, $db_user_name);
 
         // flush privileges.
-        $query = "FLUSH PRIVILEGES;";
-        exec_query($query);
+        $query = "FLUSH PRIVILEGES";
+        execute_query($query);
     } else {
-        $query = "REVOKE ALL ON $db_name.* FROM ?@'%';";
+        $query = "REVOKE ALL ON $db_name.* FROM ?@'%'";
         exec_query($query, $db_user_name);
 
-        $query = "REVOKE ALL ON $db_name.* FROM ?@localhost;";
+        $query = "REVOKE ALL ON $db_name.* FROM ?@localhost";
         exec_query($query, $db_user_name);
     }
 }
@@ -640,7 +624,6 @@ function delete_sql_database($domain_id, $database_id)
 			`domain_id` = ?
 		AND
 			`sqld_id` = ?
-		;
 	";
     $stmt = exec_query($query, array($domain_id, $database_id));
 
@@ -651,7 +634,7 @@ function delete_sql_database($domain_id, $database_id)
             return;
         }
 
-        user_goto('sql_manage.php');
+        redirectTo('sql_manage.php');
     }
 
     $db_name = quoteIdentifier($stmt->fields['db_name']);
@@ -670,7 +653,6 @@ function delete_sql_database($domain_id, $database_id)
 			`t1`.`domain_id` = ?
 		AND
 			`t1`.`sqld_id` = ?
-		;
 	";
     $stmt = exec_query($query, array($domain_id, $database_id));
 
@@ -682,11 +664,11 @@ function delete_sql_database($domain_id, $database_id)
         }
     }
 
-    exec_query("DROP DATABASE IF EXISTS $db_name;");
+    exec_query("DROP DATABASE IF EXISTS $db_name");
 
     write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name), E_USER_NOTICE);
 
-    $query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?;";
+    $query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
     exec_query($query, array($domain_id, $database_id));
 
     update_reseller_c_props(get_reseller_id($database_id));
@@ -750,7 +732,6 @@ function mount_point_exists($domain_id, $mnt_point)
 			OR
 				`subdomain_alias_mount` = ?
 			)
-		;
 	";
 
     $stmt = exec_query($query,  array(

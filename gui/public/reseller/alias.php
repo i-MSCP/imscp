@@ -108,7 +108,6 @@ function generate_als_list($tpl, $reseller_id)
 					t1.`alias_name` ASC
 				LIMIT
 					$start_index, $rows_per_page
-				;
 			";
 
 			// count query
@@ -123,7 +122,6 @@ function generate_als_list($tpl, $reseller_id)
 					`alias_name` RLIKE '$search_for'
 				AND
 					t1.`domain_id` = t2.`domain_id`
-				;
 			";
 		} else {
 			$query = "
@@ -156,7 +154,6 @@ function generate_als_list($tpl, $reseller_id)
 					t2.`domain_name` RLIKE '$search_for'
 				AND
 					t1.`domain_id` = t2.`domain_id`
-				;
 			";
 		}
 	} else {
@@ -173,7 +170,6 @@ function generate_als_list($tpl, $reseller_id)
 				t1.`alias_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-			;
 		";
 
 		// count query
@@ -186,7 +182,6 @@ function generate_als_list($tpl, $reseller_id)
 				t1.`domain_id` = t2.domain_id
 			AND
 				t2.`domain_created_id` = ?
-			;
 		";
 	}
 
@@ -267,7 +262,7 @@ function generate_als_list($tpl, $reseller_id)
 		$show_als_fwd = ($als_fwd == 'no') ? "-" : $als_fwd;
 		$domain_name = decode_idna($rs->fields['domain_name']);
 
-		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?;";
+		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
 
 		$alsip_r = exec_query($query, $als_ip_id);
 		$alsip_d = $alsip_r->fetchRow();

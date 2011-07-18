@@ -102,7 +102,7 @@ gen_logged_from($tpl);
 generatePageMessage($tpl);
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
-	user_goto('users.php?psi=last');
+	redirectTo('users.php?psi=last');
 }
 
 $editid = $_GET['domain_id'];
@@ -139,7 +139,7 @@ function gen_detaildom_page($tpl, $user_id, $domain_id) {
 	$data = $res->fetchRow();
 
 	if ($res->recordCount() <= 0) {
-		user_goto('users.php?psi=last');
+		redirectTo('users.php?psi=last');
 	}
 	// Get admin data
 	$created_by = $_SESSION['user_id'];
@@ -148,7 +148,7 @@ function gen_detaildom_page($tpl, $user_id, $domain_id) {
 
 	$res1->fetchRow();
 	if ($res1->recordCount() <= 0) {
-		user_goto('users.php?psi=last');
+		redirectTo('users.php?psi=last');
 	}
 	// Get IP info
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
@@ -160,7 +160,8 @@ function gen_detaildom_page($tpl, $user_id, $domain_id) {
 	// Traffic diagram
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
-	$query = "SELECT
+	$query = "
+        SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS dtraff_web,
 			IFNULL(SUM(`dtraff_ftp`), 0) AS dtraff_ftp,
 			IFNULL(SUM(`dtraff_mail`), 0) AS dtraff_mail,

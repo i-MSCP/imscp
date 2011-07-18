@@ -225,7 +225,7 @@ function gen_user_sub_list($tpl, $user_id) {
 			`subdomain`.`domain_id` = ?
 		ORDER BY
 			`subdomain_name`
-";
+    ";
 
 	$query2 = "
 		SELECT
@@ -365,19 +365,14 @@ function gen_user_als_list($tpl, $user_id) {
 
 	$query = "
 		SELECT
-			`alias_id`,
-			`alias_name`,
-			`alias_status`,
-			`alias_mount`,
-			`alias_ip_id`,
+			`alias_id`, `alias_name`, `alias_status`, `alias_mount`, `alias_ip_id`,
 			`url_forward`
 		FROM
 			`domain_aliasses`
 		WHERE
 			`domain_id` = ?
 		ORDER BY
-			`alias_mount`,
-			`alias_name`
+			`alias_mount`, `alias_name`
 	";
 
 	$rs = exec_query($query, $domain_id);

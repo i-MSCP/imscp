@@ -443,7 +443,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
 
     if (empty($data['domain_uid']) || empty($data['domain_admin_id'])) {
         set_page_message(tr('Wrong domain ID!'));
-        user_goto($goto);
+        redirectTo($goto);
     }
 
     $domain_admin_id = $data['domain_admin_id'];
@@ -456,7 +456,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     }
 
     // Mail users:
-    $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?;";
+    $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?";
     exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Delete all protected areas related data (areas, groups and users)
@@ -479,7 +479,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     // Delete subdomain aliases:
     $alias_a = array();
 
-    $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?;";
+    $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?";
     $res = exec_query($query, $domain_id);
 
     while (!$res->EOF) {
@@ -574,7 +574,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     }
 
     $_SESSION['ddel'] = '_yes_';
-    user_goto($goto);
+    redirectTo($goto);
 }
 
 /**
@@ -599,7 +599,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
         $rs = exec_query($query, $value);
     } else {
         $query = "SELECT $field AS `field` FROM $table";
-        $rs = exec_query($query);
+        $rs = execute_query($query);
     }
 
     $result = 0;
@@ -627,7 +627,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                 WHERE
                     `sqld_id` IN ($sqld_ids)
             ";
-            $subres = exec_query($query);
+            $subres = execute_query($query);
             $result = $subres->fields['cnt'];
         } else {
             return $result;
@@ -683,7 +683,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
     } else {
         $query = "SELECT $field AS `field` FROM $table";
 
-        $rs = exec_query($query);
+        $rs = execute_query($query);
     }
 
     $result = 0;
@@ -746,14 +746,13 @@ function update_reseller_props($reseller_id, $props)
 			`reseller_id` = ?
 	";
 
-    $res = exec_query($query, array(
-                                         $dmn_current, $dmn_max, $sub_current,
-                                         $sub_max, $als_current, $als_max,
-                                         $mail_current, $mail_max, $ftp_current,
-                                         $ftp_max, $sql_db_current, $sql_db_max,
-                                         $sql_user_current, $sql_user_max,
-                                         $traff_current, $traff_max, $disk_current,
-                                         $disk_max, $reseller_id));
+    $res = exec_query($query, array($dmn_current, $dmn_max, $sub_current,
+                                   $sub_max, $als_current, $als_max,
+                                   $mail_current, $mail_max, $ftp_current,
+                                   $ftp_max, $sql_db_current, $sql_db_max,
+                                   $sql_user_current, $sql_user_max,
+                                   $traff_current, $traff_max, $disk_current,
+                                   $disk_max, $reseller_id));
 
     return $res;
 }
@@ -808,23 +807,14 @@ function encode($string, $charset = 'UTF-8')
  */
 
 /**
- * goto the given destination file
- *
- * @param string $dest destination for header location (path + filename + params)
- */
-function user_goto($dest) {
-	header('Location: ' . $dest);
-	exit;
-}
-
-/**
  * Redirect to other page.
  *
  * @param  string $destination URL to redirect to
  * @return void
  */
 function redirectTo($destination) {
-    user_goto($destination);
+	header('Location: ' . $destination);
+	exit;
 }
 
 /**
@@ -1451,7 +1441,7 @@ function get_reseller_software_permission($tpl, $reseller_id)
 function get_application_installer_conf()
 {
     $query = "SELECT * FROM `web_software_options`";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     return array(
         $rs->fields['use_webdepot'], $rs->fields['webdepot_xml_url'],
@@ -1482,7 +1472,8 @@ function check_package_is_installed($package_installtype, $package_name,
         WHERE
             `admin_id` = '" . $user_id . "'
     ";
-    $rs_admin_type = exec_query($query);
+    $rs_admin_type = execute_query($query);
+
     if ($rs_admin_type->fields['admin_type'] == "admin") {
         $query = "
             SELECT
@@ -1520,7 +1511,7 @@ function check_package_is_installed($package_installtype, $package_name,
                 `software_depot`        = 'no'
         ";
     }
-    $rs = exec_query($query);
+    $rs = execute_query($query);
     $sw_count_res = $rs->recordCount();
 
     $query = "
@@ -1541,7 +1532,7 @@ function check_package_is_installed($package_installtype, $package_name,
         AND
             `software_depot`        = 'yes'
     ";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
     $sw_count_swdepot = $rs->recordCount();
 
     if ($sw_count_res > 0 || $sw_count_swdepot > 0) {
@@ -1576,7 +1567,7 @@ function get_webdepot_software_list($tpl, $user_id)
 		    `package_install_type` ASC,
 		    `package_title` ASC
 	";
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     if ($rs->recordCount() > 0) {
         while (!$rs->EOF) {
@@ -1691,7 +1682,7 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
             SET
                 `webdepot_last_update` = '" . $XML_FILE->LAST_UPDATE->DATE . "'
         ";
-        exec_query($query);
+        execute_query($query);
 
         set_page_message(tr("Websoftware depot list was updated"), 'info');
     } else {
@@ -1918,13 +1909,11 @@ function execute_query($query, $parameters = null)
  * @throws iMSCP_Exception_Database
  * @param string $query             SQL statement
  * @param string|int|array $bind    Data to bind to the placeholders
- * @param boolean $failDie          If TRUE, throws an iMSCP_Exception_Database
- *                                  exception on failure
  * @return iMSCP_Database_ResultSet A iMSCP_Database_ResultSet object that represents
  *                                  a result set or FALSE on failure if $failDie is
  *                                  set to FALSE
  */
-function exec_query($query, $bind = null, $failDie = true)
+function exec_query($query, $bind = null)
 {
     static $db = null;
 
@@ -1933,12 +1922,10 @@ function exec_query($query, $bind = null, $failDie = true)
         $db = iMSCP_Registry::get('db');
     }
 
-    if (!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
-        if ($failDie) {
-            throw new iMSCP_Exception_Database(
-                $db->getLastErrorMessage() . " - Query: $query"
-            );
-        }
+    try {
+        $stmt = $db->execute($db->prepare($query), $bind);
+    } catch(PDOException $e) {
+        throw new iMSCP_Exception_Database($e->getMessage() . " - Query: $query");
     }
 
     return $stmt;
@@ -1994,11 +1981,11 @@ function records_count($table, $where = '', $bind = '')
             $rs = exec_query($query, $bind);
         } else {
             $query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where";
-            $rs = exec_query($query);
+            $rs = execute_query($query);
         }
     } else {
         $query = "SELECT COUNT(*) AS `cnt` FROM `$table`";
-        $rs = exec_query($query);
+        $rs = execute_query($query);
     }
 
     return (int)$rs->fields['cnt'];

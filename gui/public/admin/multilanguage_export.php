@@ -51,7 +51,6 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 			`$language_table`
 		WHERE
 			`msgid` = 'encoding'
-		;
 	";
 
 	$stmt = execute_query($query);
@@ -63,23 +62,16 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		$encoding = 'UTF-8';
 	}
 
-	$query = "
-		SELECT
-			`msgid`,
-			`msgstr`
-		FROM
-			`$language_table`
-		;
-	";
+	$query = "SELECT `msgid`, `msgstr` FROM `$language_table`";
 
 	/**
 	 * @var $stmt iMSCP_Database_ResultSet
 	 */
-	$stmt = exec_query( $query);
+	$stmt = execute_query( $query);
 
 	if ($stmt->recordCount() == 0) {
 		set_page_message(tr('Incorrect data input!'), 'error');
-		user_goto('multilanguage.php');
+		redirectTo('multilanguage.php');
 	} else {
 		// Get all translation strings
 		$data = '';
@@ -129,5 +121,5 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 	}
 } else {
 	set_page_message(tr('Incorrect data input!'), 'error');
-	user_goto('multilanguage.php');
+	redirectTo('multilanguage.php');
 }

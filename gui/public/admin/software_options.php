@@ -61,7 +61,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
     if(strlen($webdepot_xml_url) > 0 && $use_webdepot === "1") {
         $xml_file = @file_get_contents($webdepot_xml_url);
         if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
-            set_page_message(tr("Unable to read xml file for web softwares!"), 'error');
+            set_page_message(tr("Unable to read xml file for web softwares."), 'error');
             $error = 1;
         }
     }
@@ -72,21 +72,14 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
             SET
                 `use_webdepot` = '".$use_webdepot."',
                 `webdepot_xml_url` = '".$webdepot_xml_url."'
-            ;
         ";
-        exec_query($query);
-        set_page_message(tr("Main application installer options updated!"), 'info');
+        execute_query($query);
+        set_page_message(tr("Main application installer options updated."), 'info');
     }
 }
 
-$query = "
-    SELECT
-        *
-    FROM
-        `web_software_options`
-    ;
-";
-$rs = exec_query($query);
+$query = "SELECT * FROM `web_software_options`";
+$rs = execute_query($query);
 
 $tpl->assign(
 	array(

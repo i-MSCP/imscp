@@ -47,9 +47,7 @@ function check_email_user() {
 
 	$query = "
 		SELECT
-			t1.*,
-			t2.domain_id,
-			t2.domain_name
+			t1.*, t2.domain_id, t2.domain_name
 		FROM
 			mail_users AS t1,
 			domain AS t2
@@ -59,14 +57,14 @@ function check_email_user() {
 			t2.domain_id = t1.domain_id
 		AND
 			t2.domain_name = ?
-";
+    ";
 
 	$rs = exec_query($query, array($mail_id, $dmn_name));
 	$mail_acc = $rs->fields['mail_acc'];
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
-		user_goto('mail_accounts.php');
+		redirectTo('mail_accounts.php');
 	}
 }
 
@@ -80,8 +78,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		UPDATE
 			mail_users
 		SET
-			status = ?,
-			mail_auto_respond = 0
+			status = ?, mail_auto_respond = 0
 		WHERE
 			mail_id = ?
 	";
@@ -99,12 +96,12 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			) AS mailbox
 		FROM
 			`mail_users` AS t1
-		left join (domain AS t2) ON (t1.domain_id = t2.domain_id)
-		left join (domain_aliasses AS t3) ON (sub_id = alias_id)
-		left join (subdomain AS t4) ON (sub_id = subdomain_id)
-		left join (subdomain_alias AS t5) ON (sub_id = subdomain_alias_id)
-		left join (domain AS t6) ON (t4.domain_id = t6.domain_id)
-		left join (domain_aliasses AS t7) ON (t5.alias_id = t7.alias_id)
+		LEFT JOIN (domain AS t2) ON (t1.domain_id = t2.domain_id)
+		LEFT JOIN (domain_aliasses AS t3) ON (sub_id = alias_id)
+		LEFT JOIN (subdomain AS t4) ON (sub_id = subdomain_id)
+		LEFT JOIN (subdomain_alias AS t5) ON (sub_id = subdomain_alias_id)
+		LEFT JOIN (domain AS t6) ON (t4.domain_id = t6.domain_id)
+		LEFT JOIN (domain_aliasses AS t7) ON (t5.alias_id = t7.alias_id)
 		WHERE
 			`mail_id` = ?
 	";
@@ -113,8 +110,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_name = $rs->fields['mailbox'];
 	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name, E_USER_NOTICE);
 	set_page_message(tr('Mail account scheduled for modification!'));
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 
 } else {
-	user_goto('mail_accounts.php');
+	redirectTo('mail_accounts.php');
 }

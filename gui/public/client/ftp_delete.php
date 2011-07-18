@@ -53,14 +53,13 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`t1`.`uid` = t2.`domain_uid`
 		AND
 			`t2`.`domain_name` = ?
-		;
 	";
 
 	$rs = exec_query($query, array($ftp_id, $dmn_name));
 	$ftp_name = $rs->fields['userid'];
 
 	if ($rs->recordCount() == 0) {
-		user_goto('ftp_accounts.php');
+		redirectTo('ftp_accounts.php');
 	}
 
 	$query = "
@@ -72,7 +71,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`t1`.`gid` = `t2`.`gid`
 		AND
 			`t1`.`userid` = ?
-		;
 	";
 
 	$rs = exec_query($query, $ftp_id);
@@ -90,7 +88,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 				`ftp_group`
 			WHERE
 				`gid` = ?
-			;
 		";
 
 		$rs = exec_query($query, $ftp_gid);
@@ -103,7 +100,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 				`members` = ?
 			WHERE
 				`gid` = ?
-			;
 		";
 
 		$rs = exec_query($query, array($members, $ftp_gid));
@@ -114,7 +110,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`ftp_users`
 		WHERE
 			`userid` = ?
-		;
 	";
 
 	$rs = exec_query($query, $ftp_id);
@@ -124,8 +119,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	write_log($_SESSION['user_logged'].": deletes FTP account: ".$ftp_name, E_USER_NOTICE);
 	set_page_message(tr('FTP account deleted successfully!'), 'success');
-	user_goto('ftp_accounts.php');
+	redirectTo('ftp_accounts.php');
 
 } else {
-	user_goto('ftp_accounts.php');
+	redirectTo('ftp_accounts.php');
 }

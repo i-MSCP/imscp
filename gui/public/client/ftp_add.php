@@ -58,14 +58,7 @@ $tpl->define_dynamic('js_not_domain', 'page');
 // page functions.
 
 function get_alias_mount_point($alias_name) {
-	$query = "
-		SELECT
-			`alias_mount`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`alias_name` = ?
-	";
+	$query = "SELECT `alias_mount` FROM `domain_aliasses` WHERE `alias_name` = ?";
 
 	$rs = exec_query($query, $alias_name);
 	return $rs->fields['alias_mount'];
@@ -449,7 +442,7 @@ function add_ftp_user($dmn_name) {
 
 	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user", E_USER_NOTICE);
 	set_page_message(tr('FTP account added!'), 'success');
-	user_goto('ftp_accounts.php');
+	redirectTo('ftp_accounts.php');
 }
 
 function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
@@ -530,7 +523,7 @@ function gen_page_ftp_acc_props($tpl, $user_id) {
 
 	if ($dmn_ftpacc_limit != 0 && $ftp_acc_cnt >= $dmn_ftpacc_limit) {
 		set_page_message(tr('FTP accounts limit reached!'), 'error');
-		user_goto('ftp_accounts.php');
+		redirectTo('ftp_accounts.php');
 	} else {
 		if (!isset($_POST['uaction'])) {
 			gen_page_form_data($tpl, $dmn_name, 'no');

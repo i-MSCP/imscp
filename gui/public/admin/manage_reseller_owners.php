@@ -60,18 +60,16 @@ function gen_reseller_table($tpl) {
 		SELECT
 			t1.`admin_id`, t1.`admin_name`, t2.`admin_name` AS created_by
 		FROM
-			`admin` AS t1,
-			`admin` AS t2
+			`admin` AS t1, `admin` AS t2
 		WHERE
 			t1.`admin_type` = 'reseller'
 		AND
 			t1.`created_by` = t2.`admin_id`
 		ORDER BY
-			`created_by`,
-			`admin_id`
+			`created_by`, `admin_id`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	$i = 0;
 
@@ -86,12 +84,6 @@ function gen_reseller_table($tpl) {
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		while (!$rs->EOF) {
-
-			$tpl->assign(
-				array(
-					'RSL_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
-				)
-			);
 
 			$admin_id = $rs->fields['admin_id'];
 
@@ -129,7 +121,7 @@ function gen_reseller_table($tpl) {
 			`admin_name`
 	";
 
-	$rs = exec_query($query);
+	$rs = execute_query($query);
 
 	while (!$rs->EOF) {
 

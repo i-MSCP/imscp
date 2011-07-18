@@ -62,16 +62,8 @@ $tpl->assign(array(
  */
 function listIPDomains($tpl) {
 	
-	$query = "
-		SELECT
-			`ip_id`,
-			`ip_number`
-		FROM
-			`server_ips`
-		;
-	";
-	
-	$rs = exec_query($query);
+	$query = "SELECT `ip_id`, `ip_number` FROM `server_ips`";
+	$rs = execute_query($query);
 
     if ($rs->rowCount()) {
         while (!$rs->EOF) {
@@ -92,7 +84,6 @@ function listIPDomains($tpl) {
 				`d`.`domain_ip_id` = ?
 			ORDER BY 
 				`d`.`domain_name`
-			;
 		";
 
             $rs2 = exec_query($query, $rs->fields['ip_id']);
@@ -132,7 +123,6 @@ function listIPDomains($tpl) {
 				`da`.`alias_ip_id` = ?
 			ORDER BY 
 				`da`.`alias_name`
-		    ;
 		";
 
             $rs3 = exec_query($query, $rs->fields['ip_id']);

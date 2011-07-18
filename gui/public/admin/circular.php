@@ -78,7 +78,6 @@ function gen_page_data($tpl)
 				`admin_id` = ?
 			GROUP BY
 				`email`
-			;
 		";
         $rs = exec_query($query, $user_id);
 
@@ -159,7 +158,6 @@ function send_reseller_message()
 			`admin_type` = 'reseller' AND `created_by` = ?
 		GROUP BY
 			`email`
-		;
 	";
 
     $rs = exec_query($query, $user_id);
@@ -219,7 +217,6 @@ function send_reseller_users_message($admin_id)
 			`admin_type` = 'user' AND `created_by` = ?
 		GROUP BY
 			`email`
-		;
 	";
 
     $rs = exec_query($query, $admin_id);

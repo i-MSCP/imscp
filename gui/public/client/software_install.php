@@ -81,12 +81,8 @@ if (isset($_POST['Submit2'])) {
 	$other_dir = clean_input($_POST['other_dir'], true);
 	$query = "
 		SELECT
-			`software_master_id`,
-			`software_db`,
-			`software_name`,
-			`software_version`,
-			`software_language`,
-			`software_depot`
+			`software_master_id`, `software_db`, `software_name`, `software_version`,
+			`software_language`, `software_depot`
 		FROM
 			`web_software`
 		WHERE
@@ -132,8 +128,7 @@ if (isset($_POST['Submit2'])) {
 
 	$querypath = "
 		SELECT
-			`software_name` as swname,
-			`software_version` as swversion
+			`software_name` as swname, `software_version` as swversion
 		FROM
 			`web_software_inst`
 		WHERE
@@ -189,14 +184,7 @@ if (isset($_POST['Submit2'])) {
 	if($rs->fields['software_db'] == "1") {
 		$selected_db = clean_input($_POST['selected_db'], true);
 		$sql_user = clean_input($_POST['sql_user'], true);
-		$querydbuser = "
-			SELECT
-				`sqlu_pass`
-			FROM
-				`sql_user`
-			WHERE
-				`sqlu_name` = ?
-		";
+		$querydbuser = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ?";
 		$rsdatabase = exec_query($querydbuser, $sql_user);
 
 		$db_connection_ok = check_db_connection($selected_db, $sql_user, $rsdatabase->fields['sqlu_pass']);
@@ -229,34 +217,21 @@ if (isset($_POST['Submit2'])) {
 		$software_language = $rs->fields['software_language'];
 
 
-		$query = "
-			SELECT
-				`software_prefix`
-			FROM
-				`web_software`
-			WHERE
-				`software_id` = ?
-		";
+		$query = "SELECT `software_prefix` FROM `web_software` WHERE `software_id` = ?";
 		$rs = exec_query($query, $_GET['id']);
 
 		$prefix = $rs->fields['software_prefix'];
 		if($sw_db_required == "1") {
 			$query="
-				INSERT INTO
-					`web_software_inst`
-						(
-							`domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`,
-							`software_master_id`, `software_name`, `software_version`, `software_language`, `path`,
-							`software_prefix`, `db`, `database_user`, `database_tmp_pwd`, `install_username`,
-							`install_password`, `install_email`, `software_status`, `software_depot`
-						)
-				VALUES
-						(
-							?, ?, ?, ?, ?,
-							?, ?, ?, ?, ?,
-							?, ?, ?, ?, ?,
-							?, ?, ?, ?
-						)
+				INSERT INTO `web_software_inst` (
+                    `domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`,
+                    `software_id`, `software_master_id`, `software_name`,
+                    `software_version`, `software_language`, `path`, `software_prefix`,
+                    `db`, `database_user`, `database_tmp_pwd`, `install_username`,
+                    `install_password`, `install_email`, `software_status`, `software_depot`
+				) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
 			";
 			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id,
                                           $posted_subdomain_id,
@@ -270,21 +245,15 @@ if (isset($_POST['Submit2'])) {
                                           $software_depot));
 		} else {
 			$query="
-				INSERT INTO
-					`web_software_inst`
-						(
-							`domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`,
-							`software_master_id`, `software_name`, `software_version`, `software_language`, `path`,
-							`software_prefix`, `db`, `database_user`, `database_tmp_pwd`, `install_username`,
-							`install_password`, `install_email`, `software_status`, `software_depot`
-						)
-				VALUES
-						(
-							?, ?, ?, ?, ?,
-							?, ?, ?, ?, ?,
-							?, ?, ?, ?, ?,
-							?, ?, ?, ?
-						)
+				INSERT INTO `web_software_inst` (
+                    `domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`,
+                    `software_id`, `software_master_id`, `software_name`,
+                    `software_version`, `software_language`, `path`, `software_prefix`,
+                    `db`, `database_user`, `database_tmp_pwd`, `install_username`,
+                    `install_password`, `install_email`, `software_status`, `software_depot`
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
 			";
 			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, "not_required", "not_required", "not_required", "not_required", $install_username, $install_password, $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
 		}
@@ -333,25 +302,14 @@ $tpl -> assign(
 			)
 		);
 
-//
-// dynamic page data.
-//
 
 $software_id = gen_page_lists($tpl, $_SESSION['user_id']);
 
-//
-// static page messages.
-//
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-
 gen_logged_from($tpl);
-
 get_client_software_permission ($tpl, $_SESSION['user_id']);
-
 check_permissions($tpl);
-
 
 $tpl -> assign(
 	array(

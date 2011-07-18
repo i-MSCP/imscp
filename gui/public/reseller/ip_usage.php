@@ -57,7 +57,6 @@ function listIPDomains($tpl)
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-		;
 	";
 
     $res = exec_query($query, $reseller_id);
@@ -73,10 +72,9 @@ function listIPDomains($tpl)
 			`ip_id`
 		IN
 			(" . implode(',', $reseller_ips) . ")
-		;
 	";
 
-    $rs = exec_query($query);
+    $rs = execute_query($query);
 
     if (!$rs->recordCount()) {
         while (!$rs->EOF) {
@@ -99,7 +97,6 @@ function listIPDomains($tpl)
 				`d`.`domain_created_id` = ?
 			ORDER BY
 				`d`.`domain_name`
-			;
 		";
 
             $rs2 = exec_query($query, array($rs->fields['ip_id'], $reseller_id));
@@ -116,25 +113,24 @@ function listIPDomains($tpl)
             }
 
             $query = "
-			SELECT
-				`da`.`alias_name`, `a`.`admin_name`
-			FROM
-				`domain_aliasses` da
-			INNER JOIN
-				`domain` d
-			ON
-				(`d`.`domain_id` = `da`.`domain_id`)
-			INNER JOIN
-				`admin` a
-			ON
-				(`a`.`admin_id` = `d`.`domain_created_id`)
-			WHERE
-				`da`.`alias_ip_id` = ?
-			AND
-				`d`.`domain_created_id` = ?
-			ORDER BY
-				`da`.`alias_name`
-			;
+			    SELECT
+				    `da`.`alias_name`, `a`.`admin_name`
+			    FROM
+				    `domain_aliasses` da
+			    INNER JOIN
+				    `domain` d
+                ON
+				    (`d`.`domain_id` = `da`.`domain_id`)
+			    INNER JOIN
+				    `admin` a
+			    ON
+				    (`a`.`admin_id` = `d`.`domain_created_id`)
+			    WHERE
+				    `da`.`alias_ip_id` = ?
+			    AND
+				    `d`.`domain_created_id` = ?
+			    ORDER BY
+				    `da`.`alias_name`
 		";
 
             $rs3 = exec_query($query, array($rs->fields['ip_id'], $reseller_id));

@@ -51,16 +51,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 	// let's see the status of this thing
-	$query = "
-		SELECT
-			`status`
-		FROM
-			`htaccess`
-		WHERE
-			`id` = ?
-		AND
-			`dmn_id` = ?
-	";
+	$query = "SELECT `status` FROM `htaccess` WHERE `id` = ? AND `dmn_id` = ?";
 
 	$rs = exec_query($query, array($id, $dmn_id));
 	$status = $rs->fields['status'];
@@ -68,28 +59,28 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	if ($status !== $ok_status) {
 		set_page_message(tr('Protected area status should be OK if you want to delete it!'), 'error');
-		user_goto('protected_areas.php');
+		redirectTo('protected_areas.php');
 	}
 
 	// TODO use prepared statement for $delete_status
-	$query = <<<SQL_QUERY
-		UPDATE
-			`htaccess`
-		SET
-			`status` = '$delete_status'
-		WHERE
-			`id` = ?
-		AND
-			`dmn_id` = ?
-SQL_QUERY;
+	$query = "
+        UPDATE
+            `htaccess`
+        SET
+            `status` = '$delete_status'
+        WHERE
+            `id` = ?
+        AND
+            `dmn_id` = ?
+    ";
 
 	$rs = exec_query($query, array($id, $dmn_id));
 	send_request();
 
 	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id'], E_USER_NOTICE);
 	set_page_message(tr('Protected area deleted successfully!'), 'success');
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 } else {
 	set_page_message(tr('Permission deny!'), 'error');
-	user_goto('protected_areas.php');
+	redirectTo('protected_areas.php');
 }
