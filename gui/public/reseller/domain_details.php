@@ -160,7 +160,8 @@ function gen_detaildom_page($tpl, $user_id, $domain_id) {
 	// Traffic diagram
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
-	$query = "SELECT
+	$query = "
+        SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS dtraff_web,
 			IFNULL(SUM(`dtraff_ftp`), 0) AS dtraff_ftp,
 			IFNULL(SUM(`dtraff_mail`), 0) AS dtraff_mail,

@@ -171,28 +171,27 @@ function protect_area($tpl, $dmn_id) {
 	if ($rs->recordCount() !== 0) {
 		$update_id = $rs->fields['id'];
 		// @todo Can we move $update_id to the prepared statement variables?
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`htaccess`
 			SET
-				`user_id` = ?,
-				`group_id` = ?,
-				`auth_name` = ?,
-				`path` = ?,
+				`user_id` = ?, `group_id` = ?, `auth_name` = ?, `path` = ?,
 				`status` = ?
 			WHERE
 				`id` = '$update_id';
-SQL_QUERY;
+        ";
 
 		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status));
 		send_request();
 		set_page_message(tr('Protected area updated successfully!'), 'success');
 	} else {
 		$query = "
-			INSERT INTO `htaccess`
-				(`dmn_id`, `user_id`, `group_id`, `auth_type`, `auth_name`, `path`, `status`)
-			VALUES
-				(?, ?, ?, ?, ?, ?, ?);
+			INSERT INTO `htaccess` (
+			    `dmn_id`, `user_id`, `group_id`, `auth_type`, `auth_name`, `path`,
+			    `status`
+            ) VALUES (
+			    ?, ?, ?, ?, ?, ?, ?
+			)
 		";
 
 		exec_query($query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
@@ -226,17 +225,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$tpl->assign('CDIR', $ht_id);
 		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
 
-		$query = "
-			SELECT
-				*
-			FROM
-				`htaccess`
-			WHERE
-				`dmn_id` = ?
-			AND
-				`id` = ?;
-		";
-
+		$query = "SELECT * FROM `htaccess` WHERE `dmn_id` = ? AND `id` = ?";
 		$rs = exec_query($query, array($dmn_id, $ht_id));
 
 		if ($rs->recordCount() == 0) {
@@ -295,15 +284,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		);
 	}
 
-	$query = "
-		SELECT
-			*
-		FROM
-			`htaccess_users`
-		WHERE
-			`dmn_id` = ?;
-	";
-
+	$query = "SELECT *  FROM `htaccess_users` WHERE `dmn_id` = ?";
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
@@ -341,14 +322,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		}
 	}
 
-	$query = "
-		SELECT
-			*
-		FROM
-			`htaccess_groups`
-		WHERE
-			`dmn_id` = ?
-	";
+	$query = "SELECT * FROM `htaccess_groups` WHERE `dmn_id` = ?";
 
 	$rs = exec_query($query, $dmn_id);
 

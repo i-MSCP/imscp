@@ -268,13 +268,16 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$tpl->assign('SELECT_ALIAS', $sel);
 
 	} else {
-		$query = "SELECT * FROM
-					`domain_dns`
-				WHERE
-					`domain_dns_id` = ?
-				AND
-					`domain_id` = ?
-			;";
+		$query = "
+            SELECT
+                *
+            FROM
+                `domain_dns`
+            WHERE
+                `domain_dns_id` = ?
+            AND
+                `domain_id` = ?
+		";
 		$res = exec_query($query, array($edit_id, $dmn_id));
 		if ($res->recordCount() <= 0)
 		not_allowed();
@@ -579,7 +582,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 					) VALUES (
 						?, ?, ?, ?, ?, ?
 					)
-				;
 			";
 
 			$rs = exec_query(
@@ -616,7 +618,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain_text` = ?
 				WHERE
 					`domain_dns_id` = ?
-				;
 			";
 
 			exec_query(
@@ -633,7 +634,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain`.`domain_status` = ?
  				WHERE
     				`domain`.`domain_id` = ?
-    			;
    			";
 
 			exec_query(

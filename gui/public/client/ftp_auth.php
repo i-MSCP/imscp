@@ -62,7 +62,6 @@ function _getLoginCredentials($userId) {
 			`ftp_users`.`userid` = ?
 		AND
 			`domain`.`domain_admin_id` = ?
-		;
 	";
 	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
 

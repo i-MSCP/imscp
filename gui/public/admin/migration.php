@@ -39,52 +39,27 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 check_login(__FILE__);
 redirect_to_level_page();
 
-$query = "
-	UPDATE
-		`domain`
-	SET
-		`domain_status` = 'toadd'
-";
+$query = "UPDATE `domain` SET `domain_status` = 'toadd'";
 
 $rs = execute_query($query);
 print "Domains updated";
 
-$query = "
-	UPDATE
-		`domain_aliasses`
-	SET
-		`alias_status` = 'toadd'
-";
+$query = "UPDATE `domain_aliasses` SET `alias_status` = 'toadd'";
 
 $rs = execute_query($query);
 print "Domain aliases updated";
 
-$query = "
-	UPDATE
-		`subdomain`
-	SET
-		`subdomain_status` = 'toadd'
-";
+$query = "UPDATE `subdomain` SET `subdomain_status` = 'toadd'";
 
 $rs = execute_query($query);
 print "Subdomains updated";
 
-$query = "
-	UPDATE
-		`subdomain_alias`
-	SET
-		`subdomain_alias_status` = 'toadd'
-";
+$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = 'toadd'";
 
 $rs = execute_query($query);
 print "Subdomains alias updated";
 
-$query = "
-	UPDATE
-		`mail_users`
-	SET
-		`status` = 'toadd'
-";
+$query = "UPDATE `mail_users` SET `status` = 'toadd'";
 
 $rs = execute_query($query);
 print "Emails updated";

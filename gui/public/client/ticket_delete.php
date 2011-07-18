@@ -61,7 +61,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] != '') {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	;";
+	";
 
 	$rs = exec_query($query, array($ticket_id, $user_id, $user_id));
 

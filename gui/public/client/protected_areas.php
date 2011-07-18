@@ -57,16 +57,9 @@ $tpl->assign(
 	)
 );
 
-function gen_htaccess_entries($tpl, &$dmn_id) {
-	$query = "
-		SELECT
-			*
-		FROM
-			`htaccess`
-		WHERE
-			`dmn_id` = ?
-	";
-
+function gen_htaccess_entries($tpl, &$dmn_id)
+{
+	$query = "SELECT * FROM `htaccess` WHERE `dmn_id` = ?";
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {

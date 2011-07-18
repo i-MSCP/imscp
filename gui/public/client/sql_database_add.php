@@ -164,12 +164,12 @@ function add_sql_database($user_id) {
 	execute_query($query);
 
 	$query = "
-		INSERT INTO `sql_database`
-			(`domain_id`, `sqld_name`)
-		VALUES
-			(?, ?)
+		INSERT INTO `sql_database` (
+		    `domain_id`, `sqld_name`
+		) VALUES (
+		    ?, ?
+		)
 	";
-
 	exec_query($query, array($dmn_id, $db_name));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));

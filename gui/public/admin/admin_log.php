@@ -73,7 +73,7 @@ function generate_page($tpl)
     if (isset($_GET['psi']) && is_numeric($_GET['psi']))
         $start_index = intval($_GET['psi']);
 
-    $count_query = "SELECT COUNT(`log_id`) AS `cnt` FROM `log`;";
+    $count_query = "SELECT COUNT(`log_id`) AS `cnt` FROM `log`";
 
     $query = "
 		SELECT
@@ -183,7 +183,6 @@ function clear_log()
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 14 DAY) >= `log_time`
-					;
 				";
                 $msg = tr('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
                 break;
@@ -193,7 +192,6 @@ function clear_log()
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 1 MONTH) >= `log_time`
-					;
 				";
                 $msg = tr('%s deleted the admin log older than one month!', $_SESSION['user_logged']);
                 break;
@@ -203,7 +201,6 @@ function clear_log()
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 3 MONTH) >= `log_time`
-					;
 				";
                 $msg = tr('%s deleted the admin log older than three months!', $_SESSION['user_logged']);
                 break;
@@ -214,7 +211,6 @@ function clear_log()
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 6 MONTH) >= `log_time`
-					;
 				";
                 $msg = tr('%s deleted the admin log older than six months!', $_SESSION['user_logged']);
                 break;
@@ -224,7 +220,6 @@ function clear_log()
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 1 YEAR) >= `log_time`
-					;
 				";
                 $msg = tr('%s deleted the admin log older than one year!', $_SESSION['user_logged']);
                 break;

@@ -124,7 +124,7 @@ function gen_reseller_mainmenu($tpl, $menu_file)
         }
     }
 
-    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
     $rs = exec_query($query, $_SESSION['user_id']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
@@ -222,7 +222,7 @@ function gen_reseller_menu($tpl, $menu_file)
         }
     }
 
-    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
     $rs = exec_query($query, $_SESSION['user_id']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
@@ -233,7 +233,7 @@ function gen_reseller_menu($tpl, $menu_file)
         $tpl->assign('HP_MENU_ADD', '');
     }
 
-    $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?";
     $rs = exec_query($query, $_SESSION['user_id']);
 
     if ($rs->fields('software_allowed') == 'yes') {

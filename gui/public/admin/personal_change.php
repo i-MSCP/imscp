@@ -66,19 +66,8 @@ function gen_admin_personal_data(&$tpl, $user_id) {
 
 	$query = "
 		SELECT
-			`fname`,
-			`lname`,
-			`gender`,
-			`firm`,
-			`zip`,
-			`city`,
-			`state`,
-			`country`,
-			`street1`,
-			`street2`,
-			`email`,
-			`phone`,
-			`fax`
+			`fname`, `lname`, `gender`, `firm`, `zip`, `city`, `state`, `country`,
+			`street1`, `street2`, `email`, `phone`, `fax`
 		FROM
 			`admin`
 		WHERE
@@ -128,22 +117,12 @@ function update_admin_personal_data($user_id) {
 		UPDATE
 			`admin`
 		SET
-			`fname` = ?,
-			`lname` = ?,
-			`firm` = ?,
-			`zip` = ?,
-			`city` = ?,
-			`state` = ?,
-			`country` = ?,
-			`street1` = ?,
-			`street2` = ?,
-			`email` = ?,
-			`phone` = ?,
-			`fax` = ?,
-			`gender` = ?
+			`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
+		    `country` = ?, `street1` = ?, `street2` = ?, `email` = ?, `phone` = ?,
+			`fax` = ?, `gender` = ?
 		WHERE
 			`admin_id` = ?
-";
+    ";
 
 	exec_query($query, array($fname,
 			$lname,

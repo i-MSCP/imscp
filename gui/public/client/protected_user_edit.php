@@ -90,8 +90,7 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 				UPDATE
 					`htaccess_users`
 				SET
-					`upass` = ?,
-					`status` = ?
+					`upass` = ?, `status` = ?
 				WHERE
 					`dmn_id` = ?
 				AND

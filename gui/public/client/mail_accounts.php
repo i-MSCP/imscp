@@ -157,11 +157,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$dmn_query = "
 		SELECT
-			`mail_id`,
-			`mail_acc`,
-			`mail_type`,
-			`status`,
-			`mail_auto_respond`,
+			`mail_id`, `mail_acc`, `mail_type`, `status`, `mail_auto_respond`,
 		CONCAT(
 			LEFT(`mail_forward`, 	20),
 			IF( LENGTH(`mail_forward`) > 20, '...', '')
@@ -174,10 +170,11 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			`sub_id` = 0
 		AND
 			(
-				`mail_type` LIKE '%".MT_NORMAL_MAIL."%'
+				`mail_type` LIKE '%" . MT_NORMAL_MAIL . "%'
 			OR
-				`mail_type` LIKE '%".MT_NORMAL_FORWARD."%'
-			) ";
+				`mail_type` LIKE '%" . MT_NORMAL_FORWARD . "%'
+			)
+	";
 
 	if (!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
 		$dmn_query .= "
@@ -190,11 +187,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 		";
 	}
 
-	$dmn_query .= "
-		ORDER BY
-			`mail_acc` ASC,
-			`mail_type` DESC
-	";
+	$dmn_query .= "ORDER BY `mail_acc` ASC, `mail_type` DESC";
 
 	$rs = exec_query($dmn_query, $dmn_id);
 
@@ -317,12 +310,7 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 		";
 	}
 
-	$sub_query .= "
-		ORDER BY
-			t2.`mail_acc` ASC,
-			t2.`mail_type` DESC
-	";
-
+	$sub_query .= "ORDER BY t2.`mail_acc` ASC, t2.`mail_type` DESC";
 	$rs = exec_query($sub_query, array($dmn_id, $dmn_id));
 
 	if ($rs->recordCount() == 0) {
@@ -406,10 +394,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$sub_query = "
 		SELECT
-			t1.`mail_id`,
-			t1.`mail_acc`,
-			t1.`mail_type`,
-			t1.`status`,
+			t1.`mail_id`, t1.`mail_acc`, t1.`mail_type`, t1.`status`,
 			t1.`mail_auto_respond`,
 		CONCAT(
 			LEFT(t1.`mail_forward`, 20),
@@ -434,9 +419,9 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 			t1.`domain_id` = ?
 		AND
 			(
-				t1.`mail_type` LIKE '%".MT_ALSSUB_MAIL."%'
+				t1.`mail_type` LIKE '%" . MT_ALSSUB_MAIL . "%'
 			OR
-				t1.`mail_type` LIKE '%".MT_ALSSUB_FORWARD."%'
+				t1.`mail_type` LIKE '%" . MT_ALSSUB_FORWARD . "%'
 			)
 	";
 
@@ -451,12 +436,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 		";
 	}
 
-	$sub_query .= "
-		ORDER BY
-			t1.`mail_acc` ASC,
-			t1.`mail_type` DESC
-	";
-
+	$sub_query .= "ORDER BY t1.`mail_acc` ASC, t1.`mail_type` DESC";
 	$rs = exec_query($sub_query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
@@ -532,13 +512,8 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$als_query = "
 		SELECT
-			t1.`alias_id` AS als_id,
-			t1.`alias_name` AS als_name,
-			t2.`mail_id`,
-			t2.`mail_acc`,
-			t2.`mail_type`,
-			t2.`status`,
-			t2.`mail_auto_respond`,
+			t1.`alias_id` AS als_id, t1.`alias_name` AS als_name, t2.`mail_id`,
+			t2.`mail_acc`, t2.`mail_type`, t2.`status`, t2.`mail_auto_respond`,
 		CONCAT(
 			LEFT(t2.`mail_forward`, 20),
 			IF( LENGTH(t2.`mail_forward`) > 20, '...', '')
@@ -554,9 +529,9 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 			t1.`alias_id` = t2.`sub_id`
 		AND
 			(
-				t2.`mail_type` LIKE '%".MT_ALIAS_MAIL."%'
+				t2.`mail_type` LIKE '%" . MT_ALIAS_MAIL . "%'
 			OR
-				t2.`mail_type` LIKE '%".MT_ALIAS_FORWARD."%'
+				t2.`mail_type` LIKE '%" . MT_ALIAS_FORWARD . "%'
 			)
 	";
 
@@ -571,12 +546,7 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 		";
 	}
 
-	$als_query .= "
-		ORDER BY
-			t2.`mail_acc` ASC,
-			t2.`mail_type` DESC
-	";
-
+	$als_query .= "ORDER BY t2.`mail_acc` ASC, t2.`mail_type` DESC";
 	$rs = exec_query($als_query, array($dmn_id, $dmn_id));
 
 	if ($rs->recordCount() == 0) {

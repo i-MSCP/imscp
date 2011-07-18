@@ -56,7 +56,7 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  */
 function get_reseller_default_props($reseller_id)
 {
-    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
     $stmt = exec_query($query, $reseller_id);
 
     if (!$stmt->rowCount()) {
@@ -91,7 +91,7 @@ function generate_reseller_user_props($reseller_id)
     $rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
     $rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
-    $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?;";
+    $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
     $stmt = exec_query($query, $reseller_id);
 
     if ($stmt->rowCount() == 0) {
@@ -101,7 +101,7 @@ function generate_reseller_user_props($reseller_id)
     while ($data = $stmt->fetchRow()) {
         $admin_id = $data['admin_id'];
 
-        $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
+        $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
         $stmt1 = exec_query($query, $admin_id);
 
         $ddata = $stmt1->fetchRow();
@@ -271,7 +271,7 @@ function get_user_props($user_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT * FROM `domain` WHERE `domain_id` = ?;";
+    $query = "SELECT * FROM `domain` WHERE `domain_id` = ?";
     $stmt = exec_query($query, $user_id);
 
     if ($stmt->rowCount() == 0) {
@@ -976,7 +976,6 @@ function recalc_reseller_c_props($reseller_id)
 			`domain_created_id` = ?
 		AND
 			`domain_status` != ?
-		;
 	";
     $stmt = exec_query($query, array($reseller_id, $delstatus));
 
@@ -1043,7 +1042,6 @@ function get_reseller_id($domain_id)
 			d.`domain_id` = ?
 		AND
 			d.`domain_admin_id` = a.`admin_id`
-		;
 	";
     $stmt = exec_query($query, $domain_id);
 

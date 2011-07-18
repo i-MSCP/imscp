@@ -51,16 +51,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 	// let's see the status of this thing
-	$query = "
-		SELECT
-			`status`
-		FROM
-			`htaccess`
-		WHERE
-			`id` = ?
-		AND
-			`dmn_id` = ?
-	";
+	$query = "SELECT `status` FROM `htaccess` WHERE `id` = ? AND `dmn_id` = ?";
 
 	$rs = exec_query($query, array($id, $dmn_id));
 	$status = $rs->fields['status'];
@@ -72,16 +63,16 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	}
 
 	// TODO use prepared statement for $delete_status
-	$query = <<<SQL_QUERY
-		UPDATE
-			`htaccess`
-		SET
-			`status` = '$delete_status'
-		WHERE
-			`id` = ?
-		AND
-			`dmn_id` = ?
-SQL_QUERY;
+	$query = "
+        UPDATE
+            `htaccess`
+        SET
+            `status` = '$delete_status'
+        WHERE
+            `id` = ?
+        AND
+            `dmn_id` = ?
+    ";
 
 	$rs = exec_query($query, array($id, $dmn_id));
 	send_request();

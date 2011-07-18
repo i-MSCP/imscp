@@ -167,7 +167,6 @@ function gen_client_mainmenu($tpl, $menu_file)
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-		;
 	";
 
     $stmt = exec_query($query, $_SESSION['user_created_by']);
@@ -289,7 +288,7 @@ function gen_client_menu($tpl, $menu_file)
         }
     }
 
-    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
     $stmt = exec_query($query, $_SESSION['user_created_by']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] == 'no') {
@@ -351,7 +350,6 @@ function gen_client_menu($tpl, $menu_file)
 			`reseller_id` = ?
 		AND
 			`status` = '1'
-		;
 	";
     $stmt = exec_query($query, $_SESSION['user_created_by']);
 
@@ -368,7 +366,6 @@ function gen_client_menu($tpl, $menu_file)
 			`domain`
 		WHERE
 			`domain_admin_id` = ?
-		;
 	";
     $stmt = exec_query($query, $_SESSION['user_id']);
 

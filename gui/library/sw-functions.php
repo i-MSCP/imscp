@@ -533,7 +533,7 @@ function get_avail_softwaredepot($tpl)
 								$rs->fields['id'] . '.tar.gz';
 
 					@unlink($del_path);
-					$delete = "DELETE FROM `web_software` WHERE `software_id` = ?;";
+					$delete = "DELETE FROM `web_software` WHERE `software_id` = ?";
 					exec_query($delete, $rs->fields['id']);
 				}
 			}
@@ -892,7 +892,7 @@ function get_reseller_list($tpl, $software_id)
 		AND
 			a.`softwaredepot_allowed` = 'yes'
 	";
-	$rs = execute_query($query, array());
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() > 0) {
 		$reseller_count = 0;

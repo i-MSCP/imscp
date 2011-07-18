@@ -218,7 +218,6 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 			`hosting_plans`
 		WHERE
 			`id` = ?
-		;
 	";
 
 	$res = exec_query($query, $hpid);
@@ -453,7 +452,6 @@ function save_data_to_db() {
 			`tos` = ?
 		WHERE
 			`id` = ?
-		;
 	";
 
 	exec_query($query,array($hp_name, $description, $hp_props, $price,

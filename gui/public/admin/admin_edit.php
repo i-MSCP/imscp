@@ -135,7 +135,6 @@ function update_data()
 						`phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?, `gender` = ?
 					WHERE
 						`admin_id` = ?
-					;
 				";
                 exec_query($query, array($upass, $fname, $lname, $firm, $zip, $city,
                                         $state, $country, $email, $phone, $fax,
@@ -211,7 +210,6 @@ $query = "
 		`admin`
 	WHERE
 		`admin_id` = ?
-	;
 ";
 
 $rs = exec_query($query, $edit_id);

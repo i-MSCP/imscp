@@ -98,7 +98,6 @@ function add_user($tpl)
                         ?, ?, 'admin', unix_timestamp(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                         ?, ?, ?, ?
 					)
-                ;
 			";
 
             exec_query($query, array($username, $upass, $user_id, $fname, $lname,
@@ -123,7 +122,6 @@ function add_user($tpl)
                     ) VALUES (
                         ?, ?, ?, ?
                     )
-                ;
 			";
 
             exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color,
@@ -225,7 +223,7 @@ function check_user_data()
         return false;
     }
 
-    $query = "SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?;";
+    $query = "SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?";
 
     $username = clean_input($_POST['username']);
     $rs = exec_query($query, $username);

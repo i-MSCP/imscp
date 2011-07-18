@@ -53,9 +53,7 @@ function check_email_user() {
 
 	$query = "
 		SELECT
-			t1.*,
-			t2.`domain_id`,
-			t2.`domain_name`
+			t1.*, t2.`domain_id`, t2.`domain_name`
 		FROM
 			`mail_users` AS t1,
 			`domain` AS t2
@@ -93,9 +91,7 @@ function gen_page_dynamic_data($tpl, $mail_id) {
 			UPDATE
 				`mail_users`
 			SET
-				`status` = ?,
-				`mail_auto_respond` = 1,
-				`mail_auto_respond_text` = ?
+				`status` = ?, `mail_auto_respond` = 1, `mail_auto_respond_text` = ?
 			WHERE
 				`mail_id` = ?
 		";

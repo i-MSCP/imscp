@@ -44,8 +44,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$query = "
 		SELECT
-			`subdomain_id`,
-			`subdomain_name`
+			`subdomain_id`, `subdomain_name`
 		FROM
 			`subdomain`
 		WHERE

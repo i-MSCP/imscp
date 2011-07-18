@@ -57,7 +57,6 @@ function listIPDomains($tpl)
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-		;
 	";
 
     $res = exec_query($query, $reseller_id);

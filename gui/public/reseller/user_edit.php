@@ -415,14 +415,10 @@ function update_data_in_db($hpid) {
 
 		// Kill any existing session of the edited user
 		$admin_name = get_user_name($hpid);
-		$query = "
-			DELETE FROM
-				`login`
-			WHERE
-				`user_name` = ?
-		";
 
+		$query = "DELETE FROM `login` WHERE `user_name` = ? ";
 		$rs = exec_query($query, $admin_name);
+
 			if ($rs->recordCount() != 0) {
 				set_page_message(tr('User session was killed!'));
 				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change", E_USER_NOTICE);

@@ -58,7 +58,6 @@ function count_requests($statusField, $tableName) {
 			`$tableName`
 		WHERE
 			`$statusField` IN (?, ?, ?, ?, ?, ?, ?)
-		;
 	";
 
 	$rs = exec_query($query,array(
@@ -102,7 +101,6 @@ function get_error_domains($tpl) {
 			`domain`
 		WHERE
 			`domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?, ?)
-		;
 	";
 
 	$rs = exec_query($dmn_query, array($ok_status, $disabled_status, $delete_status,
@@ -177,7 +175,6 @@ function get_error_aliases($tpl) {
 			`alias_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-		;
 	";
 
 	$rs = exec_query($dmn_query, array(
@@ -333,7 +330,6 @@ function get_error_alias_subdomains($tpl) {
 			`subdomain_alias_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?)
-		;
 	";
 
 	$rs = exec_query(
@@ -414,7 +410,6 @@ function get_error_mails($tpl) {
 			`status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
-		;
 	";
 
 	$rs = exec_query(
@@ -457,7 +452,6 @@ function get_error_mails($tpl) {
 							`domain`
 						WHERE
 							`domain_id` = ?
-						;
 					";
 					break;
 				case 'subdom_mail':
@@ -474,7 +468,6 @@ function get_error_mails($tpl) {
 							t1.`domain_id` = t2.`domain_id`
 						WHERE
 							`subdomain_id` = ?
-						;
 					";
 					break;
 				case 'alssub_mail':
@@ -491,7 +484,6 @@ function get_error_mails($tpl) {
 							t1.`alias_id` = t2.`alias_id`
 						WHERE
 							`subdomain_alias_id` = ?
-						;
 					";
 					break;
 				case 'normal_catchall':
@@ -505,7 +497,6 @@ function get_error_mails($tpl) {
 							`mail_users`
 						WHERE
 							`mail_id` = ?
-						;
 					";
 					$searched_id	= $mail_id;
 					$mail_acc		= '';
@@ -520,7 +511,6 @@ function get_error_mails($tpl) {
 							`domain_aliasses`
 						WHERE
 							`alias_id` = ?
-						;
 					";
 					break;
 				default:
@@ -724,7 +714,6 @@ if (isset($_GET['action'])) {
 						`domain_status` = 'change'
 					WHERE
 						`domain_id` = ?
-					;
 				";
 				break;
 			case 'alias':
@@ -745,7 +734,6 @@ if (isset($_GET['action'])) {
 						`subdomain_status` = 'change'
 					WHERE
 						`subdomain_id` = ?
-					;
 				";
 				break;
 			case 'subdomain_alias':
@@ -756,7 +744,6 @@ if (isset($_GET['action'])) {
 						`subdomain_alias_status` = 'change'
 					WHERE
 						`subdomain_alias_id` = ?
-					;
 				";
 				break;
 			case 'mail':
@@ -767,7 +754,6 @@ if (isset($_GET['action'])) {
 						`status` = 'change'
 					WHERE
 						`mail_id` = ?
-					;
 				";
 				break;
 			case 'htaccess':
@@ -780,7 +766,6 @@ if (isset($_GET['action'])) {
 						`status` = 'change'
 					WHERE
 						`id` = ?
-					;
 				";
 				break;
 			default:

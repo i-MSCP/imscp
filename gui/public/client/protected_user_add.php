@@ -102,10 +102,11 @@ function padd_user($tpl, $dmn_id) {
 			if ($rs->recordCount() == 0) {
 
 				$query = "
-					INSERT INTO `htaccess_users`
-						(`dmn_id`, `uname`, `upass`, `status`)
-					VALUES
-						(?, ?, ?, ?)
+					INSERT INTO `htaccess_users` (
+					    `dmn_id`, `uname`, `upass`, `status`
+					) VALUES (
+					    ?, ?, ?, ?
+					)
 				";
 				exec_query($query, array($dmn_id, $uname, $upass, $status));
 

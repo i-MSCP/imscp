@@ -51,7 +51,6 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 			`$language_table`
 		WHERE
 			`msgid` = 'encoding'
-		;
 	";
 
 	$stmt = execute_query($query);
@@ -63,8 +62,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		$encoding = 'UTF-8';
 	}
 
-	$query = "
-		SELECT `msgid`, `msgstr` FROM `$language_table`";
+	$query = "SELECT `msgid`, `msgstr` FROM `$language_table`";
 
 	/**
 	 * @var $stmt iMSCP_Database_ResultSet

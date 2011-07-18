@@ -172,15 +172,7 @@ function gen_pgroups($tpl, &$dmn_id) {
 				$members = explode(',', $rs->fields['members']);
 
 				for ($i = 0, $cnt_members = count($members); $i < $cnt_members; $i++) {
-					$query = "
-						SELECT
-							`uname`
-						FROM
-							`htaccess_users`
-						WHERE
-							`id` = ?
-					";
-
+					$query = "SELECT `uname` FROM `htaccess_users` WHERE `id` = ?";
 					$rs_members = exec_query($query, $members[$i]);
 
 					if ($cnt_members == 1 || $cnt_members == $i + 1) {

@@ -72,20 +72,19 @@ $tpl->assign(
 			)
 	);
 
-$res_cnt = get_reseller_rights ($tpl, $software_id);
+$res_cnt = get_reseller_rights($tpl, $software_id);
 $res_list = get_reseller_list ($tpl, $software_id);
 
 $query = "
 	SELECT
-		`software_name`,
-		`software_version`,
-		`software_language`
+		`software_name`, `software_version`, `software_language`
 	FROM
 		`web_software`
 	WHERE
 		`software_id` = ?
 ";
 $rs = exec_query($query, $software_id);
+
 $tpl->assign(
 		array(
 			'SOFTWARE_RIGHTS_ID'			=> $software_id,

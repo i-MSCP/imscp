@@ -95,14 +95,7 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	$user_pass = $_POST['pass'];
 
 	// update user pass in the i-MSCP sql_user table;
-	$query = "
-		UPDATE
-			`sql_user`
-		SET
-			`sqlu_pass` = ?
-		WHERE
-			`sqlu_name` = ?
-	";
+	$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
 	exec_query($query, array($user_pass, $db_user_name));
 
 	// update user pass in the mysql system tables;
@@ -119,18 +112,12 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	redirectTo('sql_manage.php');
 }
 
-function gen_page_data(&$tpl, $db_user_id) {
+function gen_page_data(&$tpl, $db_user_id)
+{
 
-	$query = "
-		SELECT
-			`sqlu_name`
-		FROM
-			`sql_user`
-		WHERE
-			`sqlu_id` = ?
-	";
-
+	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
 	$rs = exec_query($query, $db_user_id);
+
 	$tpl->assign(
 		array(
 			'USER_NAME' => tohtml($rs->fields['sqlu_name']),
@@ -139,8 +126,6 @@ function gen_page_data(&$tpl, $db_user_id) {
 	);
 	return $rs->fields['sqlu_name'];
 }
-
-// common page data.
 
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	redirectTo('index.php');

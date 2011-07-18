@@ -456,7 +456,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     }
 
     // Mail users:
-    $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?;";
+    $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?";
     exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Delete all protected areas related data (areas, groups and users)
@@ -479,7 +479,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     // Delete subdomain aliases:
     $alias_a = array();
 
-    $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?;";
+    $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?";
     $res = exec_query($query, $domain_id);
 
     while (!$res->EOF) {
@@ -746,14 +746,13 @@ function update_reseller_props($reseller_id, $props)
 			`reseller_id` = ?
 	";
 
-    $res = exec_query($query, array(
-                                         $dmn_current, $dmn_max, $sub_current,
-                                         $sub_max, $als_current, $als_max,
-                                         $mail_current, $mail_max, $ftp_current,
-                                         $ftp_max, $sql_db_current, $sql_db_max,
-                                         $sql_user_current, $sql_user_max,
-                                         $traff_current, $traff_max, $disk_current,
-                                         $disk_max, $reseller_id));
+    $res = exec_query($query, array($dmn_current, $dmn_max, $sub_current,
+                                   $sub_max, $als_current, $als_max,
+                                   $mail_current, $mail_max, $ftp_current,
+                                   $ftp_max, $sql_db_current, $sql_db_max,
+                                   $sql_user_current, $sql_user_max,
+                                   $traff_current, $traff_max, $disk_current,
+                                   $disk_max, $reseller_id));
 
     return $res;
 }
@@ -1910,13 +1909,11 @@ function execute_query($query, $parameters = null)
  * @throws iMSCP_Exception_Database
  * @param string $query             SQL statement
  * @param string|int|array $bind    Data to bind to the placeholders
- * @param boolean $throwException   If TRUE, throws an iMSCP_Exception_Database
- *                                  exception on failure
  * @return iMSCP_Database_ResultSet A iMSCP_Database_ResultSet object that represents
  *                                  a result set or FALSE on failure if $failDie is
  *                                  set to FALSE
  */
-function exec_query($query, $bind = null, $throwException = true)
+function exec_query($query, $bind = null)
 {
     static $db = null;
 
@@ -1928,20 +1925,8 @@ function exec_query($query, $bind = null, $throwException = true)
     try {
         $stmt = $db->execute($db->prepare($query), $bind);
     } catch(PDOException $e) {
-        if ($throwException) {
-            throw new iMSCP_Exception_Database($e->getMessage() . " - Query: $query");
-        }
+        throw new iMSCP_Exception_Database($e->getMessage() . " - Query: $query");
     }
-    
-    /*
-    if (!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
-        if ($failDie) {
-            throw new iMSCP_Exception_Database(
-                $db->getLastErrorMessage() . " - Query: $query"
-            );
-        }
-    }
-    */
 
     return $stmt;
 }

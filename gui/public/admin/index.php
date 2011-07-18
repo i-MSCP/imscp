@@ -59,7 +59,6 @@ function generateSystemMessage($tpl) {
 			`ticket_status` IN ('1', '2')
 		AND
 			`ticket_reply` = 0
-		;
 	";
 
 	$rs = exec_query($query, $userId);

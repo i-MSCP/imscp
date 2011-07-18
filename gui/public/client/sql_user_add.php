@@ -156,14 +156,12 @@ function gen_sql_user_list($tpl, $user_id, $db_id) {
 	// Let's select all sqlusers of the current domain except the users of the current database
 	$query = "
 		SELECT
-			t1.`sqlu_name`,
-			t1.`sqlu_id`
+			t1.`sqlu_name`, t1.`sqlu_id`
 		FROM
-			`sql_user` AS t1,
-			`sql_database` AS t2
+			`sql_user` AS t1, `sql_database` AS t2
 		WHERE
 			t1.`sqld_id` = t2.`sqld_id`
-			AND
+		AND
 			t2.`domain_id` = ?
 		AND
 			t1.`sqld_id` <> ?
@@ -330,10 +328,11 @@ function add_sql_user($user_id, $db_id) {
 	// add user in the i-MSCP table;
 
 	$query = "
-		INSERT INTO `sql_user`
-			(`sqld_id`, `sqlu_name`, `sqlu_pass`)
-		VALUES
-			(?, ?, ?)
+		INSERT INTO `sql_user` (
+		    `sqld_id`, `sqlu_name`, `sqlu_pass`
+		) VALUES (
+		    ?, ?, ?
+		)
 	";
 	exec_query($query, array($db_id, $db_user, $user_pass));
 

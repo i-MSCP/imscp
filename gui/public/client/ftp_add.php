@@ -58,14 +58,7 @@ $tpl->define_dynamic('js_not_domain', 'page');
 // page functions.
 
 function get_alias_mount_point($alias_name) {
-	$query = "
-		SELECT
-			`alias_mount`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`alias_name` = ?
-	";
+	$query = "SELECT `alias_mount` FROM `domain_aliasses` WHERE `alias_name` = ?";
 
 	$rs = exec_query($query, $alias_name);
 	return $rs->fields['alias_mount'];

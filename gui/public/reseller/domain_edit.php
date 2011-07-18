@@ -497,7 +497,6 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 				su.`sqld_id` = sd.`sqld_id`
 			AND
 				sd.`domain_id` = ?
-			;
 		";
 
 		$rs = exec_query($query, $_SESSION['edit_id']);
@@ -566,15 +565,15 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 		}
 
 		// Backup Settings
-		$query = "UPDATE `domain` SET `allowbackup` = ? WHERE `domain_id` = ?;";
+		$query = "UPDATE `domain` SET `allowbackup` = ? WHERE `domain_id` = ?";
 		exec_query($query, array($allowbackup, $user_id));
 
 		// update the sql quotas, too
-		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?;";
+		$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
 		$rs = exec_query($query, $user_id);
 		$temp_dmn_name = $rs->fields['domain_name'];
 
-		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?;";
+		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
 		$rs = exec_query($query, $temp_dmn_name);
 
 		if ($rs->fields['cnt'] > 0) {
@@ -585,7 +584,7 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 				$dlim = $disk * 1024 * 1024;
 			}
 
-			$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?;";
+			$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?";
 			exec_query($query, array($dlim, $temp_dmn_name));
 		}
 

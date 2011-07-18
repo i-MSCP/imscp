@@ -57,7 +57,6 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			`domain_dns`.`domain_dns_id` = ?
 		AND
 			`domain`.`domain_id` = `domain_dns`.`domain_id`
-		;
 	";
 
 	$rs = exec_query($query, array($dmn_id, $dns_id));
@@ -81,7 +80,6 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			`domain_dns`
 		WHERE
 			`domain_dns_id` = ?
-		;
 	";
 
 	$rs = exec_query($query, $dns_id);
@@ -95,7 +93,6 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 				`domain`.`domain_status` = ?
 			WHERE
    				`domain`.`domain_id` = ?
-   			;
   		";
 
 		exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id));
@@ -111,7 +108,6 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 				`domain_aliasses`.`domain_id` = ?
 			AND
 				`domain_aliasses`.`alias_id` = ?
-			;
 		";
 
 		exec_query(

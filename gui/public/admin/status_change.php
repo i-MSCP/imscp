@@ -54,8 +54,7 @@ $domain_id = $_GET['domain_id'];
 // check status to know if have to disable or enable it
 $query = "
 	SELECT
-		`domain_name`,
-		`domain_status`
+		`domain_name`, `domain_status`
 	FROM
 		`domain`
 	WHERE

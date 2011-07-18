@@ -67,12 +67,7 @@ if ($rs->recordCount() == 0) {
 }
 
 // delete all FTP Accounts
-$query = "
-	DELETE FROM
-		`orders`
-	WHERE
-		`id` = ?
-";
+$query = "DELETE FROM `orders` WHERE `id` = ?";
 $rs = exec_query($query, $order_id);
 
 set_page_message(tr('Customer order was removed successful!'));

@@ -111,8 +111,7 @@ function gen_page_dynamic_data($tpl, $mail_id, $read_from_db) {
 			UPDATE
 				`mail_users`
 			SET
-				`status` = ?,
-				`mail_auto_respond_text` = ?
+				`status` = ?, `mail_auto_respond_text` = ?
 			WHERE
 				`mail_id` = ?
 		";

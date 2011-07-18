@@ -46,7 +46,7 @@ function do_session_timeout()
 
 	$ttl = time() - $cfg->SESSION_TIMEOUT * 60;
 
-	$query = "DELETE FROM `login` WHERE `lastaccess` < ?;";
+	$query = "DELETE FROM `login` WHERE `lastaccess` < ?";
 
 	exec_query($query, $ttl);
 
@@ -75,7 +75,6 @@ function session_exists($sessionId)
 			`session_id` = ?
 		AND
 			`ipaddr` = ?
-		;
 	 ";
 	$stmt = exec_query($query, array($sessionId, $ip));
 
@@ -228,7 +227,6 @@ function unblock($timeout = null, $type = 'bruteforce')
 					`lastaccess` < ?
 				AND
 					`user_name` is NULL
-				;
 			";
 
 			$max = $cfg->BRUTEFORCE_MAX_LOGIN;
@@ -245,7 +243,6 @@ function unblock($timeout = null, $type = 'bruteforce')
 					`lastaccess` < ?
 				AND
 					`user_name` is NULL
-				;
 			";
 
 			$max = $cfg->BRUTEFORCE_MAX_CAPTCHA;
@@ -399,7 +396,6 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 			`ipaddr` = ?
 		AND
 			`user_name` IS NULL
-		;
 	";
 
 	$stmt = exec_query($query, $ipAddress);
@@ -413,7 +409,6 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 				) VALUES (
 					?, ?, UNIX_TIMESTAMP(), ?, ?
 				)
-			;
 		";
 
 		exec_query($query, array($sessionId, $ipAddress,
@@ -454,7 +449,6 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 						`ipaddr` = ?
 					AND
 						`user_name` IS NULL
-					;
 				";
 			} else if ($type == 'captcha') {
 				$query = "
@@ -467,7 +461,6 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 						`ipaddr` = ?
 					AND
 						`user_name` IS NULL
-					;
 				";
 			}
 
@@ -624,7 +617,6 @@ function check_user_login()
 			admin.`admin_id` = ?
 		AND
 			login.`session_id` = ?
-		;
 	";
 
 	$rs = exec_query($query, array($userLogged, $userPassword, $userType, $userId, $sessionId));
@@ -647,7 +639,7 @@ function check_user_login()
 	// If user login data correct - update session and lastaccess
 	$_SESSION['user_login_time'] = time();
 
-	$query = "UPDATE `login` SET `lastaccess` = ? WHERE `session_id` = ?;";
+	$query = "UPDATE `login` SET `lastaccess` = ? WHERE `session_id` = ?";
 
 	exec_query($query, array(time(), $sessionId));
 
@@ -866,7 +858,7 @@ function unset_user_login_data($ignorePreserve = false, $restore = false)
 		$sessionId = session_id();
 		$adminName = $_SESSION['user_logged'];
 
-		$query = "DELETE FROM `login` WHERE `session_id` = ? AND `user_name` = ?;";
+		$query = "DELETE FROM `login` WHERE `session_id` = ? AND `user_name` = ?";
 		exec_query($query, array($sessionId, $adminName));
 	}
 

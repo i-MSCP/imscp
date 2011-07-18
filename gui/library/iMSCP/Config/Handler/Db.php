@@ -407,7 +407,6 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 				`{$this->_keysColumn}`, `{$this->_valuesColumn}`
 			FROM
 				`{$this->_tableName}`
-			;
 		";
 
         if (($stmt = $this->_db->query($query, PDO::FETCH_ASSOC))) {
@@ -440,7 +439,6 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 					) VALUES (
 						:index, :value
 					)
-				;
 			";
 
             $this->_insertStmt = $this->_db->prepare($query);
@@ -474,7 +472,6 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 					`{$this->_valuesColumn}` = :value
 				WHERE
 					`{$this->_keysColumn}` = :index
-				;
 			";
 
             $this->_updateStmt = $this->_db->prepare($query);
@@ -506,7 +503,6 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator
 					`{$this->_tableName}`
 				WHERE
 					`{$this->_keysColumn}` = :index
-				;
 			";
 
             $this->_deleteStmt = $this->_db->prepare($query);

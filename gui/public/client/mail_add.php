@@ -186,7 +186,7 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 			`subdomain_status` = ?
 		ORDER BY
 			`subdomain_name`
-";
+    ";
 
 	$rs = exec_query($query, array($dmn_id, $ok_status));
 
@@ -251,8 +251,7 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 	$query = "
 		SELECT
 			t1.`subdomain_alias_id` AS als_sub_id,
-			t1.`subdomain_alias_name` AS als_sub_name,
-			t2.`alias_name` AS als_name
+			t1.`subdomain_alias_name` AS als_sub_name, t2.`alias_name` AS als_name
 		FROM
 			`subdomain_alias` AS t1
 		LEFT JOIN (`domain_aliasses` AS t2) ON (t1.`alias_id` = t2.`alias_id`)
@@ -422,15 +421,8 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 
 	$query = "
 		INSERT INTO `mail_users` (
-			`mail_acc`,
-			`mail_pass`,
-			`mail_forward`,
-			`domain_id`,
-			`mail_type`,
-			`sub_id`,
-			`status`,
-			`mail_auto_respond`,
-			`mail_auto_respond_text`,
+			`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
+			`sub_id`, `status`, `mail_auto_respond`, `mail_auto_respond_text`,
 			`mail_addr`
 		) VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)

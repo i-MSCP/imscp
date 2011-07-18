@@ -132,7 +132,6 @@ function set_email_tpl_data($admin_id, $tpl_name, $data)
 			    ) VALUES (
 			        ?, ?, ?, ?
 			    )
-			;
 		";
     } else {
         $query = "
@@ -144,7 +143,6 @@ function set_email_tpl_data($admin_id, $tpl_name, $data)
 				`owner_id` = ?
 			AND
 				`name` = ?
-			;
 		";
 
     }

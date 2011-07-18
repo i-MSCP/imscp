@@ -72,7 +72,6 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
             SET
                 `use_webdepot` = '".$use_webdepot."',
                 `webdepot_xml_url` = '".$webdepot_xml_url."'
-            ;
         ";
         execute_query($query);
         set_page_message(tr("Main application installer options updated."), 'info');

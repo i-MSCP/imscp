@@ -36,8 +36,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	list($dmn_id, $rest) = get_domain_default_props($_SESSION['user_id']);
 	$query = "
 		SELECT
-			`software_id`,
-			`software_res_del`
+			`software_id`, `software_res_del`
 		FROM
 			`web_software_inst`
 		WHERE
@@ -46,6 +45,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			`domain_id` = ?
 	";
 	$rs = exec_query($query, array($_GET['id'], $dmn_id));
+
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
 		redirectTo('software.php');

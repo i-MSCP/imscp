@@ -66,8 +66,7 @@ function edit_mail_account($tpl) {
 		SELECT
 			t1.*, t2.`domain_id`, t2.`domain_name`
 		FROM
-			`mail_users` AS t1,
-			`domain` AS t2
+			`mail_users` AS t1, `domain` AS t2
 		WHERE
 			t1.`mail_id` = ?
 		AND

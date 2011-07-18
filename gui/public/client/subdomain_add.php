@@ -83,8 +83,7 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 
 	$query = '
 		SELECT
-			`domain_name`,
-			`domain_id`
+			`domain_name`, `domain_id`
 		FROM
 			`domain`
 		WHERE
@@ -295,8 +294,10 @@ function subdmn_mnt_pt_exists($user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 			AND
 				`subdomain_alias_mount` = ?
 		";
+
 		if (isset($query2))
 			unset($query2);
+
 		if (isset($rs2))
 			unset($rs2);
 	} else {
@@ -340,27 +341,21 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
-			INSERT INTO
-				`subdomain_alias`
-					(`alias_id`,
-					`subdomain_alias_name`,
-					`subdomain_alias_mount`,
-					`subdomain_alias_url_forward`,
-					`subdomain_alias_status`)
-			VALUES
-				(?, ?, ?, ?, ?)
+			INSERT INTO `subdomain_alias` (
+			    `alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`,
+			    `subdomain_alias_url_forward`, `subdomain_alias_status`
+			) VALUES (
+			    ?, ?, ?, ?, ?
+			)
 		";
 	} else {
 		$query = "
-			INSERT INTO
-				`subdomain`
-					(`domain_id`,
-					`subdomain_name`,
-					`subdomain_mount`,
-					`subdomain_url_forward`,
-					`subdomain_status`)
-			VALUES
-				(?, ?, ?, ?, ?)
+			INSERT INTO `subdomain` (
+			    `domain_id`, `subdomain_name`, `subdomain_mount`,
+			    `subdomain_url_forward`, `subdomain_status`
+			) VALUES (
+			    ?, ?, ?, ?, ?
+			)
 		";
 	}
 

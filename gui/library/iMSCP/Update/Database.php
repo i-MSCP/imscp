@@ -523,7 +523,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"
 		);
 
-		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install';";
+		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
 
 		$sqlUpd[] = self::secureAddColumnTable(
 			'reseller_props',
@@ -566,7 +566,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 				`mail_type` RLIKE '^alias_mail'
 			OR
 				`mail_type` RLIKE '^subdom_mail'
-			;
 		";
 
 		$stmt = execute_query($query);
@@ -586,7 +585,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		$stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`;");
+		$stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`");
 
 		if ($stmt->recordCount() != 0) {
 			while (!$stmt->EOF) {
@@ -603,7 +602,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			}
 		}
 
-		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`;");
+		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`");
 
 		if ($stmt->recordCount() != 0) {
 			while (!$stmt->EOF) {
@@ -641,7 +640,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$tables = $db->metaTables();
 
 		foreach ($tables as $table) {
-			$sqlUpd[] = "ALTER TABLE `$table` ENGINE=InnoDB;";
+			$sqlUpd[] = "ALTER TABLE `$table` ENGINE=InnoDB";
 		}
 
 		return $sqlUpd;
@@ -696,8 +695,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 				$table = substr($queryPart, strrpos($queryPart, 'TO ') + 3);
 				$sqlUpd[] = "UPDATE $table SET `msgstr` = " .
 							str_replace(array('lang_', '`'), array('', '\''), $table) .
-							" WHERE `msgid` = 'imscp_table';";
-				$sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
+							" WHERE `msgid` = 'imscp_table'";
+				$sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB";
 			}
 		}
 
@@ -714,7 +713,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		// Will reset the language property for all users (expected behavior) to
 		// ensure compatibility with the fix. So then each user will have to set
 		// (again) his own language if he want use an other language than the default.
-		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_EnglishBritain';";
+		$sqlUpd[] = "UPDATE `user_gui_props` SET `lang` = 'lang_EnglishBritain'";
 
 		return $sqlUpd;
 	}

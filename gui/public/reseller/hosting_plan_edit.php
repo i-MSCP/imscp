@@ -214,18 +214,8 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 
 	$_SESSION['hpid'] = $hpid;
 
-	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
-		$query = "
-			SELECT
-				*
-			FROM
-				`hosting_plans`
-			WHERE
-				`id` = ?
-			;
-		";
-
+	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+		$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
 		$res = exec_query($query, $hpid);
 
 		$readonly = $cfg->HTML_READONLY;
@@ -244,7 +234,6 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 				`reseller_id` = ?
 			AND
 				`id` = ?
-			;
 		";
 
 		$res = exec_query($query, array($admin_id, $hpid));
@@ -515,7 +504,6 @@ function save_data_to_db() {
 					`tos` = ?
 				WHERE
 					`id` = ?
-				;
 			";
 
 			exec_query(

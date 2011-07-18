@@ -617,7 +617,6 @@ function update_reseller() {
  				`domain_software_allowed` = ?
  			WHERE
  				`domain_created_id` = ?
- 			;
  		";
          exec_query($query_user, array(
                                       $rdata['softwaredepot_allowed'],

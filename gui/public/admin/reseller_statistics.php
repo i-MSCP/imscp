@@ -106,7 +106,6 @@ function generate_page($tpl) {
 			`admin`
 		WHERE
 			`admin_type` = 'reseller'
-	    ;
 	";
 
 	$query = "
@@ -120,7 +119,6 @@ function generate_page($tpl) {
 			`admin_name` DESC
 		LIMIT
 			$start_index, $rows_per_page
-		;
     ";
 
 	$rs = exec_query($count_query);

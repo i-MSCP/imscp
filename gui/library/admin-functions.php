@@ -54,7 +54,7 @@ function get_sql_user_count()
  */
 function generate_reseller_props($reseller_id)
 {
-    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
     $rs = exec_query($query, $reseller_id);
 
     if ($rs->rowCount() == 0) {
@@ -89,7 +89,7 @@ function generate_reseller_users_props($reseller_id)
     $rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
     $rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
-    $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?;";
+    $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
     $rs = exec_query($query, $reseller_id);
 
     if ($rs->rowCount() == 0) {
@@ -105,7 +105,7 @@ function generate_reseller_users_props($reseller_id)
     while (!$rs->EOF) {
         $admin_id = $rs->fields['admin_id'];
 
-        $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
+        $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
 
         $dres = exec_query($query, $admin_id);
         $user_id = $dres->fields['domain_id'];
@@ -211,7 +211,7 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 {
     if ($search_for == 'n/a' && $search_common == 'n/a' && $search_status == 'n/a') {
         // We have pure list query;
-        $count_query = "SELECT COUNT(*) AS `cnt` FROM `domain`;";
+        $count_query = "SELECT COUNT(*) AS `cnt` FROM `domain`";
 
         $search_query = "
             SELECT
@@ -228,10 +228,10 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
         if ($search_status == 'all') {
             $add_query = '';
         } else {
-            $add_query = " WHERE `domain_status` = '$search_status';";
+            $add_query = " WHERE `domain_status` = '$search_status'";
         }
 
-        $count_query = "SELECT COUNT(*) AS `cnt` FROM `domain` $add_query;";
+        $count_query = "SELECT COUNT(*) AS `cnt` FROM `domain` $add_query";
         $search_query = "
             SELECT
                 *
@@ -241,7 +241,6 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
                 `domain_name` ASC
             LIMIT
                 $start_index, $rows_per_page
-            ;
         ";
     } elseif ($search_for != '') {
         if ($search_common == 'domain_name') {
@@ -273,11 +272,10 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 				        $add_query
 				    AND
 					    t1.`admin_id` = t2.`domain_admin_id`
-				    ;
 			    ";
             } else {
                 $add_query = sprintf($add_query, ' ');
-                $count_query = "SELECT COUNT(*) AS cnt FROM `admin` $add_query;";
+                $count_query = "SELECT COUNT(*) AS cnt FROM `admin` $add_query";
             }
 
             $search_query = "
@@ -292,7 +290,6 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 				t2.`domain_name` ASC
 			LIMIT
 				$start_index, $rows_per_page
-			;
 		";
         }
     }

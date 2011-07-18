@@ -122,8 +122,11 @@ class iMSCP_Database
             iMSCP_Database_Events::onAfterConnection,
             new iMSCP_Database_Events_Database('', $this));
 
+        // Set Errorhandling to Exception
+        $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
         // @todo: Bad for future support of another RDBMS.
-        $this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+        //$this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
     }
 
     /**
@@ -228,18 +231,9 @@ class iMSCP_Database
      */
     public function prepare($sql, $driver_options = null)
     {
-        if (version_compare(PHP_VERSION, '5.2.5', '<')) {
-            if (preg_match('/(ALTER |CREATE |DROP |GRANT |REVOKE |FLUSH )/i', $sql)) {
-                $this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, true);
-            } else {
-                $this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, false);
-            }
-        }
-
         // The onBeforePrepare event is fired here.
-        $this->_eventManager->dispatch(
-            iMSCP_Database_Events::onBeforePrepare,
-            new iMSCP_Database_Events_Database($sql, $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforePrepare,
+                                       new iMSCP_Database_Events_Database($sql, $this));
 
         if (is_array($driver_options)) {
             $stmt = $this->_db->prepare($sql, $driver_options);
@@ -248,9 +242,8 @@ class iMSCP_Database
         }
 
         // The onAfterPrepare event is fired here.
-        $this->_eventManager->dispatch(
-            iMSCP_Database_Events::onAfterPrepare,
-            new iMSCP_Database_Events_Statement($stmt, $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterPrepare,
+                                       new iMSCP_Database_Events_Statement($stmt, $this));
 
         if (!$stmt) {
             $errorInfo = $this->errorInfo();
@@ -332,9 +325,8 @@ class iMSCP_Database
         if ($stmt instanceof PDOStatement) {
 
             // The onBeforeExecute event is fired here
-            $this->_eventManager->dispatch(
-                iMSCP_Database_Events::onBeforeExecute,
-                new iMSCP_Database_Events_Statement($stmt, $this));
+            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute,
+                                           new iMSCP_Database_Events_Statement($stmt, $this));
 
             if (null === $parameters) {
                 $rs = $stmt->execute();
@@ -344,9 +336,8 @@ class iMSCP_Database
         } elseif (null == $parameters) {
 
             // The onBeforeExecute event is fired here
-            $this->_eventManager->dispatch(
-                iMSCP_Database_Events::onBeforeExecute,
-                new iMSCP_Database_Events_Database($stmt, $this));
+            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute,
+                                           new iMSCP_Database_Events_Database($stmt, $this));
 
             $rs = $this->_db->query($stmt);
         } else {
@@ -358,9 +349,8 @@ class iMSCP_Database
             $stmt = $rs === true ? $stmt : $rs;
 
             // The onAfterExecute event is fired here
-            $this->_eventManager->dispatch(
-                iMSCP_Database_Events::onAfterExecute,
-                new iMSCP_Database_Events_Statement($stmt, $this));
+            $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterExecute,
+                                           new iMSCP_Database_Events_Statement($stmt, $this));
 
             return new iMSCP_Database_ResultSet($stmt);
         } else {
@@ -454,34 +444,37 @@ class iMSCP_Database
     }
 
     /**
-     *  Initiates a transaction.
+     * Initiates a transaction.
      *
-     * @return boolean TRUE on success, FALSE on failure
+	 * @link http://php.net/manual/en/pdo.begintransaction.php
+	 * @return bool Returns true on success or false on failure.
      */
-    public function startTransaction()
+    public function beginTransaction()
     {
-        $this->_db->beginTransaction();
+        return $this->_db->beginTransaction();
+    }
+
+
+    /**
+	 * Commits a transaction.
+     *
+	 * @link http://php.net/manual/en/pdo.commit.php
+	 * @return bool Returns true on success or false on failure.
+     */
+    public function commit()
+    {
+        return $this->_db->commit();
     }
 
     /**
-     * Commits a transaction.
+	 * Rolls back a transaction.
      *
-     * @return boolean TRUE on success, FALSE on failure
+	 * @link http://php.net/manual/en/pdo.rollback.php
+	 * @return bool Returns true on success or false on failure.
      */
-    public function completeTransaction()
+    public function rollBack()
     {
-        $this->_db->commit();
-    }
-
-    /**
-     * Rolls back the current transaction.
-     *
-     * @return bool TRUE on success or FALSE on failure
-     */
-    public function rollbackTransaction()
-    {
-
-        return $this->_db->rollback();
+        return $this->_db->rollBack();
     }
 
     /**

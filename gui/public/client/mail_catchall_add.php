@@ -193,11 +193,11 @@ function gen_dynamic_page_data($tpl, $id) {
 		} else if ($item_type === 'subdom') {
 			$query = "
 				SELECT
-					t1.`mail_id`, t1.`mail_type`, CONCAT(t2.`subdomain_name`, '.', t3.`domain_name`) AS subdomain_name, t1.`mail_acc`
+					t1.`mail_id`, t1.`mail_type`,
+					CONCAT(t2.`subdomain_name`, '.', t3.`domain_name`) AS subdomain_name,
+					t1.`mail_acc`
 				FROM
-					`mail_users` AS t1,
-					`subdomain` AS t2,
-					`domain` AS t3
+					`mail_users` AS t1, `subdomain` AS t2, `domain` AS t3
 				WHERE
 					t1.`sub_id` = t2.`subdomain_id`
 				AND
@@ -239,11 +239,11 @@ function gen_dynamic_page_data($tpl, $id) {
 		} else if ($item_type === 'alssub') {
 			$query = "
 				SELECT
-					t1.`mail_id`, t1.`mail_type`, CONCAT(t2.`subdomain_alias_name`, '.', t3.`alias_name`) AS subdomain_name, t1.`mail_acc`
+					t1.`mail_id`, t1.`mail_type`,
+					CONCAT(t2.`subdomain_alias_name`, '.', t3.`alias_name`) AS subdomain_name,
+					t1.`mail_acc`
 				FROM
-					`mail_users` AS t1,
-					`subdomain_alias` AS t2,
-					`domain_aliasses` AS t3
+					`mail_users` AS t1, `subdomain_alias` AS t2, `domain_aliasses` AS t3
 				WHERE
 					t1.`sub_id` = t2.`subdomain_alias_id`
 				AND
@@ -339,19 +339,13 @@ function create_catchall_mail_account($id) {
 				$mail_addr = '@' . $match[1];
 
 				$query = "
-					INSERT INTO `mail_users`
-						(`mail_acc`,
-						`mail_pass`,
-						`mail_forward`,
-						`domain_id`,
-						`mail_type`,
-						`sub_id`,
-						`status`,
-						`mail_auto_respond`,
-						`quota`,
-						`mail_addr`)
-					VALUES
-						(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+					INSERT INTO `mail_users` (
+					    `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`,
+						`mail_type`, `sub_id`, `status`, `mail_auto_respond`, `quota`,
+						`mail_addr`
+					) VALUES (
+					    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                    )
 				";
 				exec_query($query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
@@ -395,18 +389,16 @@ function create_catchall_mail_account($id) {
 				$sub_id = $item_id;
 				$query = "
 					SELECT
-						t1.`subdomain_alias_name`,
-						t2.`alias_name`,
-						t2.`domain_id`
+						t1.`subdomain_alias_name`, t2.`alias_name`, t2.`domain_id`
 					FROM
-						`subdomain_alias` AS t1,
-						`domain_aliasses` AS t2
+						`subdomain_alias` AS t1, `domain_aliasses` AS t2
 					WHERE
 						t1.`subdomain_alias_id` = ?
 					AND
 						t1.`alias_id` = t2.`alias_id`
-					";
+				";
 				$rs = exec_query($query, $item_id);
+
 				$domain_id = $rs->fields['domain_id'];
 				$mail_addr = '@' . $rs->fields['subdomain_alias_name'] . '.' . $rs->fields['alias_name'];
 			}
@@ -430,19 +422,12 @@ function create_catchall_mail_account($id) {
 			$status = $cfg->ITEM_ADD_STATUS;
 
 			$query = "
-				INSERT INTO `mail_users`
-					(`mail_acc`,
-					`mail_pass`,
-					`mail_forward`,
-					`domain_id`,
-					`mail_type`,
-					`sub_id`,
-					`status`,
-					`mail_auto_respond`,
-					`quota`,
-					`mail_addr`)
-				VALUES
-					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+				INSERT INTO `mail_users` (
+				    `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
+					`sub_id`, `status`, `mail_auto_respond`, `quota`, `mail_addr`
+				) VALUES (
+				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
 			";
             exec_query($query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 

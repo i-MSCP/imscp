@@ -7,7 +7,7 @@ i-MSCP 1.0.1.4 (beta 4)
 
 Distributions:
 	- Removed 'configs' directories for distributions that are no longer supported:
-		Centos Fedora FreeBSD Gentoo OpenBSD Opensuse
+		Centos, Fedora, FreeBSD, Gentoo, OpenBSD, Opensuse
 
 Features / Enhancements:
 	Gui:

@@ -53,8 +53,7 @@ $tpl->define_dynamic('table_list', 'page');
 function gen_page_ftp_list($tpl, $dmn_id, $dmn_name) {
 	$query = "
 		SELECT
-			`gid`,
-			`members`
+			`gid`, `members`
 		FROM
 			`ftp_group`
 		WHERE

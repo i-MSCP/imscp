@@ -356,7 +356,6 @@ class iMSCP_VirtualFileSystem
                 `domain`
             WHERE
                 `domain_name` = ?
-            ;
         ";
         $stmt = exec_query($query, $this->_domain);
 
@@ -377,7 +376,6 @@ class iMSCP_VirtualFileSystem
 				) VALUES (
 					?, ?, ?, ?, ?, ?
 				)
-			;
 		";
 
         $stmt = exec_query($query, array(
@@ -401,7 +399,7 @@ class iMSCP_VirtualFileSystem
      */
     protected function _removeTmpUser()
     {
-        $query = "DELETE FROM `ftp_users` WHERE `userid` = ?;";
+        $query = "DELETE FROM `ftp_users` WHERE `userid` = ?";
         $stmt = exec_query($query, $this->_user);
 
         return $stmt ? true : false;

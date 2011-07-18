@@ -66,7 +66,6 @@ function _getLoginCredentials($dbUserId)
 			`sql_database`.`domain_id` = `domain`.`domain_id`
 		AND
 			`domain`.`domain_admin_id` = ?
-		;
 	";
 
 	$stmt = exec_query($query, array($dbUserId, $_SESSION['user_id']));

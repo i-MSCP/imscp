@@ -84,7 +84,6 @@ function listIPDomains($tpl) {
 				`d`.`domain_ip_id` = ?
 			ORDER BY 
 				`d`.`domain_name`
-			;
 		";
 
             $rs2 = exec_query($query, $rs->fields['ip_id']);
@@ -124,7 +123,6 @@ function listIPDomains($tpl) {
 				`da`.`alias_ip_id` = ?
 			ORDER BY 
 				`da`.`alias_name`
-		    ;
 		";
 
             $rs3 = exec_query($query, $rs->fields['ip_id']);
