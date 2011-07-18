@@ -679,7 +679,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
 --
 
 CREATE TABLE IF NOT EXISTS `user_gui_props` (
-  `user_id` int(10) unsigned NOT NULL default '0',
+  `user_id` int(10) unsigned NOT NULL,
   `lang` varchar(5) collate utf8_unicode_ci default '',
   `layout` varchar(100) collate utf8_unicode_ci default '',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '',
