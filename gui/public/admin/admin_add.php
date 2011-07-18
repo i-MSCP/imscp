@@ -113,19 +113,17 @@ function add_user($tpl)
 
             $user_def_lang = $_SESSION['user_def_lang'];
             $user_theme_color = $_SESSION['user_theme'];
-            $user_logo = 0;
 
             $query = "
 				REPLACE INTO
 				    `user_gui_props` (
-                        `user_id`, `lang`, `layout`, `logo`
+                        `user_id`, `lang`, `layout`
                     ) VALUES (
-                        ?, ?, ?, ?
+                        ?, ?, ?
                     )
 			";
 
-            exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color,
-                                    $user_logo));
+            exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
 
             send_add_user_auto_msg($user_id, clean_input($_POST['username']),
                                    clean_input($_POST['pass']),
@@ -192,7 +190,7 @@ function check_user_data()
     $cfg = iMSCP_Registry::get('config');
 
     if (!validates_username($_POST['username'])) {
-        set_page_message(tr("Incorrect username length or syntax!"), 'error');
+        set_page_message(tr('Incorrect username length or syntax.'), 'error');
 
         return false;
     }
@@ -204,8 +202,8 @@ function check_user_data()
                         $cfg->PASSWD_CHARS), 'error');
         } else {
             set_page_message(
-                sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'),
-                    $cfg->PASSWD_CHARS), 'error');
+                tr('Password data is shorter than %s signs or includes not permitted signs.',
+                   $cfg->PASSWD_CHARS), 'error');
         }
 
         return false;

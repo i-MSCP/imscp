@@ -244,22 +244,18 @@ function add_reseller($tpl) {
 
 			$user_def_lang = $_SESSION['user_def_lang'];
 			$user_theme_color = $_SESSION['user_theme'];
-			$user_logo = 0;
 
 			$query = "
 				REPLACE INTO
 				    `user_gui_props` (
 				        `user_id`, `lang`, `layout`, `logo`
 					) VALUES (
-					    ?, ?, ?, ?
+					    ?, ?, ?
                     )
 			";
 
-			exec_query($query, array($new_admin_id,
-					$user_def_lang,
-					$user_theme_color,
-					$user_logo)
-			);
+			exec_query($query, array($new_admin_id, $user_def_lang,
+                                    $user_theme_color));
 
 			/*
 			 * 'reseller_props' table entry;

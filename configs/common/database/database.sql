@@ -129,7 +129,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '68');
+('DATABASE_REVISION', '69');
 
 -- --------------------------------------------------------
 
@@ -680,8 +680,8 @@ CREATE TABLE IF NOT EXISTS `tickets` (
 
 CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `user_id` int(10) unsigned NOT NULL default '0',
-  `lang` varchar(255) collate utf8_unicode_ci default '',
-  `layout` varchar(255) collate utf8_unicode_ci default '',
+  `lang` varchar(5) collate utf8_unicode_ci default '',
+  `layout` varchar(100) collate utf8_unicode_ci default '',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '',
   UNIQUE `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
