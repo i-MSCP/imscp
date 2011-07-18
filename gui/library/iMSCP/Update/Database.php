@@ -116,7 +116,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		/** @var $pdo PDO */
 		$pdo = iMSCP_Database::getRawInstance();
-		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		while ($this->isAvailableUpdate()) {
 			$databaseUpdateRevision = $this->getNextUpdate();
