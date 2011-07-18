@@ -165,7 +165,7 @@ class iMSCP_Initializer
         // Initialize output buffering
         $this->_initializeOutputBuffering();
 
-         // Create or restore the session
+        // Create or restore the session
         $this->_initializeSession();
 
         // Initialize internationalization libraries
@@ -454,69 +454,70 @@ class iMSCP_Initializer
      */
     protected function _initializeOutputBuffering()
     {
-		if(isset($this->_config->COMPRESS_OUTPUT) && $this->_config->COMPRESS_OUTPUT) {
-        	// Create a new filter that will be applyed on the buffer output
-        	/** @var $filter iMSCP_Filter_Compress_Gzip*/
-        	$filter = iMSCP_Registry::set('bufferFilter',
-										  new iMSCP_Filter_Compress_Gzip(
-                                          iMSCP_Filter_Compress_Gzip::FILTER_BUFFER));
+        if (isset($this->_config->COMPRESS_OUTPUT) && $this->_config->COMPRESS_OUTPUT) {
+            // Create a new filter that will be applyed on the buffer output
+            /** @var $filter iMSCP_Filter_Compress_Gzip*/
+            $filter = iMSCP_Registry::set('bufferFilter',
+                                          new iMSCP_Filter_Compress_Gzip(
+                                              iMSCP_Filter_Compress_Gzip::FILTER_BUFFER));
 
-        	// Show compression information in HTML comment ?
-        	if (isset($this->_config->SHOW_COMPRESSION_SIZE) &&
-				!$this->_config->SHOW_COMPRESSION_SIZE
-			) {
-            	$filter->compressionInformation = false;
-        	}
+            // Show compression information in HTML comment ?
+            if (isset($this->_config->SHOW_COMPRESSION_SIZE) &&
+                !$this->_config->SHOW_COMPRESSION_SIZE
+            ) {
+                $filter->compressionInformation = false;
+            }
 
-        	// Start the buffer and attach the filter to him
-        	ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
-		}
+            // Start the buffer and attach the filter to him
+            ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
+        }
     }
 
-	/**
-	 * Initialize localization.
-	 *
-	 * Note: We are using the PHP-gettext library as gettext wrapper to be able to
-	 * use all locales same if they are not installed on the server. In case the
-	 * current locale is installed on the server, the navive gettext functions are
-	 * still used.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since i-MSCP 1.0.1.4
-	 * @return void
-	 */
-	protected function _initializeLocalization()
-	{
-		require_once 'vendor/php-gettext/gettext.inc';
+    /**
+     * Initialize localization.
+     *
+     * Note: We are using the PHP-gettext library as gettext wrapper to be able to
+     * use all locales same if they are not installed on the server. In case the
+     * current locale is installed on the server, the navive gettext functions are
+     * still used.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since i-MSCP 1.0.1.4
+     * @return void
+     */
+    protected function _initializeLocalization()
+    {
+        require_once 'vendor/php-gettext/gettext.inc';
 
-		$locale = isset($_SESSION['user_def_lang'])
-			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
+        $locale = isset($_SESSION['user_def_lang'])
+            ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
-		// Small fix for ar_AE locale
-		if($locale == 'ar') {
-			$locale = 'ar_AE';
-		}
+        // Small fix for ar_AE locale
+        if ($locale == 'ar') {
+            $locale = 'ar_AE';
+        }
 
         $checkedLocale = setlocale(LC_MESSAGES, array(
-                                                 $locale . '.utf8',
-                                                 $locale . '.utf-8',
-                                                 $locale . '.UTF8',
-                                                 $locale . '.UTF-8'));
+                                                     $locale . '.utf8',
+                                                     $locale . '.utf-8',
+                                                     $locale . '.UTF8',
+                                                     $locale . '.UTF-8'));
 
-        $checkedLocale = (empty($checkedLocale)) ? $locale.'.utf8' : $checkedLocale;
+        $checkedLocale = (empty($checkedLocale)) ? $locale . '.utf8'
+            : $checkedLocale;
 
-		T_setlocale(LC_MESSAGES, $checkedLocale);
+        T_setlocale(LC_MESSAGES, $checkedLocale);
 
-		if (locale_emulation()) {
-			$domain = $locale;
-		} else { // Small workaround related to #130
-			$domain = i18n_getDomain($locale);
-		}
+        if (locale_emulation()) {
+            $domain = $locale;
+        } else { // Small workaround related to #130
+            $domain = i18n_getDomain($locale);
+        }
 
-		T_bindtextdomain($domain, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
-		T_bind_textdomain_codeset($domain, 'UTF-8');
-		T_textdomain($domain);
-	}
+        T_bindtextdomain($domain, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
+        T_bind_textdomain_codeset($domain, 'UTF-8');
+        T_textdomain($domain);
+    }
 
     /**
      * Initialize logger.
@@ -552,24 +553,25 @@ class iMSCP_Initializer
      */
     public function initializeDebugBar()
     {
-        if(isset($this->_config->DEBUG) && intval($this->_config->DEBUG)) {
-            new iMSCP_Debug_Bar(iMSCP_Events_Manager::getInstance(), array(
-                // Debug information about variables such as $_GET, $_POST...
-                new iMSCP_Debug_Bar_Plugin_Variables(),
+        if (isset($this->_config->DEBUG) && intval($this->_config->DEBUG)) {
+            new iMSCP_Debug_Bar(iMSCP_Events_Manager::getInstance(),
+                array(
+                     // Debug information about variables such as $_GET, $_POST...
+                     new iMSCP_Debug_Bar_Plugin_Variables(),
 
-                // Debug information about script execution time
-                new iMSCP_Debug_Bar_Plugin_Timer(),
+                     // Debug information about script execution time
+                     new iMSCP_Debug_Bar_Plugin_Timer(),
 
-                // Debug information about memory consumption
-                new iMSCP_Debug_Bar_Plugin_Memory(),
+                     // Debug information about memory consumption
+                     new iMSCP_Debug_Bar_Plugin_Memory(),
 
-                // Debug information about all included files
-                new iMSCP_Debug_Bar_Plugin_Files(),
+                     // Debug information about all included files
+                     new iMSCP_Debug_Bar_Plugin_Files(),
 
-                // Debug information about all queries made during a script exection
-                // and their execution time.
-                new iMSCP_Debug_Bar_Plugin_Database()
-            ));
+                     // Debug information about all queries made during a script exection
+                     // and their execution time.
+                     new iMSCP_Debug_Bar_Plugin_Database()
+                ));
         }
     }
 
