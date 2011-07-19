@@ -548,12 +548,32 @@ sub saveCustom{
 		debug((caller(0))[3].": $stdout") if $stdout;
 		error((caller(0))[3].": $stderr") if $stderr;
 		return $rs if $rs;
+	} elsif(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos"){
+		$rs = execute("cp -Rf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos/* $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos/", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
 
-		$rs = execute("cp -Rf $$$tmp/* /", \$stdout, \$stderr);
+		$rs = execute("cp -Rf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data/* $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data/", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+
+		$rs = execute("cp -TRf $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/domain_default_page", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+
+		$rs = execute("rm -fr $main::defaultConf{'ROOT_DIR'}/{daemon,engine,gui}", \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
 		error((caller(0))[3].": $stderr") if $stderr;
 		return $rs if $rs;
 	}
+
+	$rs = execute("cp -Rf $$$tmp/* /", \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
 	0;
