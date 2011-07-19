@@ -84,7 +84,7 @@ class iMSCP_Debug_Bar_Plugin_Version extends iMSCP_Debug_Bar_Plugin
         $panel .= '<h4>i-MSCP '.$version.' / PHP '.phpversion().' with extensions:</h4>';
         $extensions = get_loaded_extensions();
         natcasesort($extensions);
-        $panel .= implode('<br>', $extensions);
+        $panel .= implode('<br />', $extensions);
         return $panel;
     }
 
