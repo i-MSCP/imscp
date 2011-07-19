@@ -113,7 +113,7 @@ function gen_logged_from($tpl)
 }
 
 /**
- * Helper function to generates a html list of available languages.
+ * Helper function to generates an html list of available languages.
  *
  * This method generate a HTML list of available languages. The language used by the
  * user is pre-selected. If no language is found, a specific message is shown.
@@ -142,7 +142,7 @@ function gen_def_language($tpl, $user_def_language)
 		}
 	} else {
 		$tpl->assign('LANGUAGES_AVAILABLE', '');
-		set_page_message(tr('No language found.'), 'warning');
+		set_page_message(tr('No languages found.'), 'warning');
 	}
 }
 
