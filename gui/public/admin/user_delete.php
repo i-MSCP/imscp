@@ -71,10 +71,10 @@ function admin_deleteUser($userId)
         redirectTo('manage_users.php');
     }
 
-    // Users (admins/resellers) common item to delete
-    // Note: Item ordering is not relevant here since we are using transactions
+    // Users (admins/resellers) common items to delete
     $itemsToDelete = array(
         'admin' => 'admin_id = ?',
+        'email_tpls' => 'owner_id = ?',
         'tickets' => 'ticket_from = ? OR ticket_to = ?',
         'user_gui_props' => 'user_id = ?');
 
@@ -98,7 +98,6 @@ function admin_deleteUser($userId)
 
         // Add specific reseller items to remove
         $itemsToDelete = array_merge(array(
-                                          'email_tpls' => 'owner_id = ?',
                                           'hosting_plans' => 'reseller_id = ?',
                                           'reseller_props' => 'reseller_id = ?',
                                           'web_software' => 'reseller_id = ?',
