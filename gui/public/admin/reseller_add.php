@@ -26,9 +26,11 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -73,6 +75,7 @@ function reseller_getServerIps($tpl)
                           'TR_RSL_IP_ASSIGN' => tr('Assign'),
                           'TR_RSL_IP_LABEL' => tr('Label'),
                           'TR_RSL_IP_IP' => tr('Number')));
+
         while (!$stmt->EOF) {
             $ip_id = $stmt->fields['ip_id'];
             $ip_var_name = "ip_$ip_id";
@@ -118,6 +121,9 @@ function reseller_addReseller($tpl)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+
     if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_reseller') {
         if (reseller_checkData()) {
             $upass = crypt_user_pass($_POST['pass']);
@@ -137,7 +143,10 @@ function reseller_addReseller($tpl)
             $street1 = clean_input($_POST['street1']);
             $street2 = clean_input($_POST['street2']);
 
-            $query = "
+            try {
+                $db->beginTransaction();
+
+                $query = "
 				INSERT INTO `admin` (
 					`admin_name`, `admin_pass`, `admin_type`, `domain_created`,
 					`created_by`, `fname`, `lname`, `firm`, `zip`, `city`, `state`,
@@ -148,71 +157,77 @@ function reseller_addReseller($tpl)
 				)
 			";
 
-            exec_query($query, array($username, $upass, $user_id, $fname, $lname,
-                                    $firm, $zip, $city, $state, $country, $email,
-                                    $phone, $fax, $street1, $street2, $gender));
+                exec_query($query, array($username, $upass, $user_id, $fname, $lname,
+                                        $firm, $zip, $city, $state, $country, $email,
+                                        $phone, $fax, $street1, $street2, $gender));
 
-            /** @var $db iMSCP_Database */
-            $db = iMSCP_Registry::get('db');
-            $new_admin_id = $db->insertId();
+                /** @var $db iMSCP_Database */
+                $db = iMSCP_Registry::get('db');
+                $new_admin_id = $db->insertId();
 
-            $user_logged = $_SESSION['user_logged'];
-            write_log("$user_logged: add reseller: $username", E_USER_NOTICE);
+                $user_logged = $_SESSION['user_logged'];
+                write_log("$user_logged: add reseller: $username", E_USER_NOTICE);
 
-            $user_def_lang = $_SESSION['user_def_lang'];
-            $user_theme_color = $_SESSION['user_theme'];
+                $user_def_lang = $_SESSION['user_def_lang'];
+                $user_theme_color = $_SESSION['user_theme'];
 
-            $query = "
-				REPLACE INTO
-				    `user_gui_props` (
-				        `user_id`, `lang`, `layout`
-					) VALUES (
-					    ?, ?, ?
-                    )
-			";
-            exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
+                $query = "
+				    REPLACE INTO
+				        `user_gui_props` (
+				            `user_id`, `lang`, `layout`
+					    ) VALUES (
+					     ?, ?, ?
+                        )
+			    ";
+                exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
 
-            // Reseller properties
-            $nreseller_max_domain_cnt = clean_input($_POST['nreseller_max_domain_cnt']);
-            $nreseller_max_subdomain_cnt = clean_input($_POST['nreseller_max_subdomain_cnt']);
-            $nreseller_max_alias_cnt = clean_input($_POST['nreseller_max_alias_cnt']);
-            $nreseller_max_mail_cnt = clean_input($_POST['nreseller_max_mail_cnt']);
-            $nreseller_max_ftp_cnt = clean_input($_POST['nreseller_max_ftp_cnt']);
-            $nreseller_max_sql_db_cnt = clean_input($_POST['nreseller_max_sql_db_cnt']);
-            $nreseller_max_sql_user_cnt = clean_input($_POST['nreseller_max_sql_user_cnt']);
-            $nreseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
-            $nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
-            $nreseller_software_allowed = clean_input($_POST['nreseller_software_allowed']);
-            $nreseller_softwaredepot_allowed = clean_input($_POST['nreseller_softwaredepot_allowed']);
-            $nreseller_websoftwaredepot_allowed = clean_input($_POST['nreseller_websoftwaredepot_allowed']);
-            $customer_id = clean_input($_POST['customer_id']);
-            $support_system = clean_input($_POST['support_system']);
+                // Reseller properties
+                $nreseller_max_domain_cnt = clean_input($_POST['nreseller_max_domain_cnt']);
+                $nreseller_max_subdomain_cnt = clean_input($_POST['nreseller_max_subdomain_cnt']);
+                $nreseller_max_alias_cnt = clean_input($_POST['nreseller_max_alias_cnt']);
+                $nreseller_max_mail_cnt = clean_input($_POST['nreseller_max_mail_cnt']);
+                $nreseller_max_ftp_cnt = clean_input($_POST['nreseller_max_ftp_cnt']);
+                $nreseller_max_sql_db_cnt = clean_input($_POST['nreseller_max_sql_db_cnt']);
+                $nreseller_max_sql_user_cnt = clean_input($_POST['nreseller_max_sql_user_cnt']);
+                $nreseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
+                $nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
+                $nreseller_software_allowed = clean_input($_POST['nreseller_software_allowed']);
+                $nreseller_softwaredepot_allowed = clean_input($_POST['nreseller_softwaredepot_allowed']);
+                $nreseller_websoftwaredepot_allowed = clean_input($_POST['nreseller_websoftwaredepot_allowed']);
+                $customer_id = clean_input($_POST['customer_id']);
+                $support_system = clean_input($_POST['support_system']);
 
-            $query = "
-				INSERT INTO `reseller_props` (
-					`reseller_id`, `reseller_ips`, `max_dmn_cnt`, `current_dmn_cnt`,
-					`max_sub_cnt`, `current_sub_cnt`, `max_als_cnt`, `current_als_cnt`,
-					`max_mail_cnt`, `current_mail_cnt`, `max_ftp_cnt`, `current_ftp_cnt`,
-					`max_sql_db_cnt`, `current_sql_db_cnt`, `max_sql_user_cnt`,
-					`current_sql_user_cnt`, `max_traff_amnt`, `current_traff_amnt`,
-					`max_disk_amnt`, `current_disk_amnt`, `support_system`, `customer_id`,
-					`software_allowed`, `softwaredepot_allowed`,
-					`websoftwaredepot_allowed`
-				) VALUES (
-					?, ?, ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0',
-					?, '0', ?, ?, ?, ?, ?
-				)
-			";
+                $query = "
+				    INSERT INTO `reseller_props` (
+					    `reseller_id`, `reseller_ips`, `max_dmn_cnt`, `current_dmn_cnt`,
+					    `max_sub_cnt`, `current_sub_cnt`, `max_als_cnt`, `current_als_cnt`,
+					    `max_mail_cnt`, `current_mail_cnt`, `max_ftp_cnt`, `current_ftp_cnt`,
+					    `max_sql_db_cnt`, `current_sql_db_cnt`, `max_sql_user_cnt`,
+					    `current_sql_user_cnt`, `max_traff_amnt`, `current_traff_amnt`,
+					    `max_disk_amnt`, `current_disk_amnt`, `support_system`, `customer_id`,
+					    `software_allowed`, `softwaredepot_allowed`,
+					    `websoftwaredepot_allowed`
+				    ) VALUES (
+					    ?, ?, ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0', ?, '0',
+					    ?, '0', ?, ?, ?, ?, ?
+				    )
+			    ";
 
-            exec_query($query,
-                       array($new_admin_id, $reseller_ips, $nreseller_max_domain_cnt,
-                            $nreseller_max_subdomain_cnt, $nreseller_max_alias_cnt,
-                            $nreseller_max_mail_cnt, $nreseller_max_ftp_cnt,
-                            $nreseller_max_sql_db_cnt, $nreseller_max_sql_user_cnt,
-                            $nreseller_max_traffic, $nreseller_max_disk,
-                            $support_system, $customer_id, $nreseller_software_allowed,
-                            $nreseller_softwaredepot_allowed,
-                            $nreseller_websoftwaredepot_allowed));
+                exec_query($query,
+                           array($new_admin_id, $reseller_ips, $nreseller_max_domain_cnt,
+                                $nreseller_max_subdomain_cnt, $nreseller_max_alias_cnt,
+                                $nreseller_max_mail_cnt, $nreseller_max_ftp_cnt,
+                                $nreseller_max_sql_db_cnt, $nreseller_max_sql_user_cnt,
+                                $nreseller_max_traffic, $nreseller_max_disk,
+                                $support_system, $customer_id, $nreseller_software_allowed,
+                                $nreseller_softwaredepot_allowed,
+                                $nreseller_websoftwaredepot_allowed));
+
+                $db->commit();
+            } catch (PDOException $e) {
+                $db->rollBack();
+                throw new iMSCP_Exception_Database($e->getMessage());
+            }
 
             send_add_user_auto_msg($user_id, clean_input($_POST['username']),
                                    $_POST['pass'], clean_input($_POST['email']),
@@ -220,9 +235,7 @@ function reseller_addReseller($tpl)
                                    clean_input($_POST['lname']), tr('Reseller'),
                                    $gender);
 
-            @mkdir($cfg->GUI_SOFTWARE_DIR . "/" . $new_admin_id, 0755, true);
-            #@chown($cfg->GUI_SOFTWARE_DIR."/".$new_admin_id, "vu2000");
-            #@chgrp($cfg->GUI_SOFTWARE_DIR."/".$new_admin_id, "www-data");
+            @mkdir($cfg->GUI_SOFTWARE_DIR . "/" . $new_admin_id, 0750, true);
 
             $_SESSION['reseller_added'] = 1;
             redirectTo('manage_users.php');

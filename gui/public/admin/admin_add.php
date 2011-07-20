@@ -210,13 +210,13 @@ function check_user_data()
     }
 
     if ($_POST['pass'] != $_POST['pass_rep']) {
-        set_page_message(tr("Entered passwords do not match!"), 'error');
+        set_page_message(tr("Entered passwords do not match."), 'error');
 
         return false;
     }
 
     if (!chk_email($_POST['email'])) {
-        set_page_message(tr("Incorrect email length or syntax!"), 'error');
+        set_page_message(tr("Incorrect email length or syntax."), 'error');
 
         return false;
     }
