@@ -871,7 +871,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     {
         $sqlUpd = array();
 
-        $tablesToForeighKey = array(
+        $tablesToForeignKey = array(
             'email_tpls' => 'owner_id', 'hosting_plans' => 'reseller_id',
             'orders' => 'user_id', 'orders_settings' => 'user_id',
             'reseller_props' => 'reseller_id', 'tickets' => 'ticket_to',
@@ -879,10 +879,10 @@ class iMSCP_Update_Database extends iMSCP_Update
             'web_software' => 'reseller_id');
 
         $stmt = execute_query('SELECT `admin_id` FROM `admin`');
-        $usersIds = $stmt->fetchall(PDO::FETCH_COLUMN);
+        $usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
 
-        foreach ($tablesToForeighKey as $table => $foreignKey) {
-            $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN (" . implode(',', $usersIds) . ')';
+        foreach ($tablesToForeignKey as $table => $foreignKey) {
+            $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
         }
 
         return $sqlUpd;
