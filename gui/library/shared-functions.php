@@ -954,6 +954,27 @@ function utils_uploadFile($inputFieldName, $destPath)
 	}
 }
 
+/**
+ * Generates a random string.
+ *
+ * @param int $length random string length
+ * @return array|string
+ */
+function utils_randomString($length = 10)
+{
+    $base = 'ABCDEFGHKLMNOPQRSTWXYZabcdefghjkmnpqrstwxyz123456789';
+    $max = strlen($base) - 1;
+    $string = '';
+
+    mt_srand((double) microtime() * 1000000);
+
+    while (strlen($string) < $length + 1) {
+        $string .= $base{mt_rand(0, $max)};
+    }
+
+    return $string;
+}
+
 /************************************************************************************
  * Checks functions
  */
@@ -1027,7 +1048,6 @@ function is_serialized($data)
     if (preg_match("/^[aOs]:[0-9]+:.*[;}]\$/s", $data) ||
         preg_match("/^[bid]:[0-9.E-]+;\$/", $data)
     ) {
-
         return true;
     }
 
@@ -1035,7 +1055,7 @@ function is_serialized($data)
 }
 
 /**
- * Must be documented
+ * Checks for feature permissions.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
@@ -1045,30 +1065,37 @@ function check_permissions($tpl)
     if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == 'no') {
         $tpl->assign('SQL_SUPPORT', '');
     }
+
     if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
         $tpl->assign('ADD_EMAIL', '');
     }
+
     if (isset($_SESSION['subdomain_support'])
         && $_SESSION['subdomain_support'] == 'no'
     ) {
         $tpl->assign('SUBDOMAIN_SUPPORT', '');
     }
+
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
         $tpl->assign('DOMAINALIAS_SUPPORT', '');
     }
+
     if (isset($_SESSION['subdomain_support'])
         && $_SESSION['subdomain_support'] == 'no') {
         $tpl->assign('SUBDOMAIN_SUPPORT_CONTENT', '');
     }
+
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
         $tpl->assign('DOMAINALIAS_SUPPORT_CONTENT', '');
     }
+
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no'
         && isset($_SESSION['subdomain_support'])
         && $_SESSION['subdomain_support'] == 'no'
     ) {
         $tpl->assign('DMN_MNGMNT', '');
     }
+
     if (isset($_SESSION['software_support'])
         && $_SESSION['software_support'] == 'no'
     ) {
@@ -1102,14 +1129,15 @@ function make_usage_vals($current, $max)
 }
 
 /**
- * Generate user traffic.
+ * Generates user traffic.
  *
  * @param  int $domainId Domain unique identifier
  * @return array An array that contains traffic usage information
  */
 function generate_user_traffic($domainId)
 {
-    global $crnt_month, $crnt_year;
+    $crnt_month = date('m');
+    $crnt_year = date('Y');
 
     $from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 

@@ -53,14 +53,7 @@ function get_user_gui_props($user_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $query = "
-		SELECT
-			`lang`, `layout`
-		FROM
-			`user_gui_props`
-		WHERE
-			`user_id` = ?
-	";
+    $query = "SELECT `lang`, `layout` FROM `user_gui_props` WHERE `user_id` = ?";
     $stmt = exec_query($query, $user_id);
 
     if ($stmt->recordCount() == 0 ||
@@ -284,7 +277,9 @@ function layout_getUserLogo($searchForCreator = true, $returnDefault = true)
     }
 
     // No  user logo found
-    if (empty($stmt->fields['logo'])) {
+    if (empty($stmt->fields['logo']) ||
+        !file_exists($cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $stmt->fields['logo'])
+    ) {
         if (!$returnDefault) {
             return '';
         } elseif (file_exists($cfg->GUI_ROOT_DIR . '/public/themes/' .
@@ -348,7 +343,7 @@ function layout_updateUserLogo()
         }
 
         // Building an unique file name
-        $fileName = sha1(rand(10, 10) . '-' . $_SESSION['user_id']) .
+        $fileName = sha1(utils_randomString(15) . '-' . $_SESSION['user_id']) .
                     '.' . $fileExtension;
 
         // Return destination file path
@@ -406,21 +401,19 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
         $userId = $_SESSION['user_id'];
     }
 
+    if (!$onlyFile) {
+        $query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
+        exec_query($query, array('', $userId));
+    }
+
     if (strpos($logoFilePath, $cfg->ISP_LOGO_PATH) !== false) {
         $logoFilePath = $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . basename($logoFilePath);
 
-        if (file_exists($logoFilePath)) { // Make this function safe
-            if (@unlink($logoFilePath)) {
-                if (!$onlyFile) {
-                    $query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
-                    exec_query($query, array(0, $userId));
-                }
-
-                return true;
-            } else {
-                write_log(tr("System is unable to remove '%s' user logo.", $logoFilePath), E_USER_WARNING);
-                return false;
-            }
+        if (file_exists($logoFilePath) && @unlink($logoFilePath)) {
+            return true;
+        } else {
+            write_log(tr("System is unable to remove '%s' user logo.", $logoFilePath), E_USER_WARNING);
+            return false;
         }
     }
 
