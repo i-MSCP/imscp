@@ -37,149 +37,214 @@
  */
 
 /**
- * Deletes a domain account.
+ * Deletes an user (admin or reseller).
  *
- * @param int $user_id User unique identifier
+ * @param int $userId User unique identifier
  */
-function delete_user($user_id)
+function admin_deleteUser($userId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+    $userId = (int) $userId;
 
-	$query = "
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+
+    $query = "
 		SELECT
 			a.`admin_type`, b.`logo`
 		FROM
-		    `admin` AS a
+		    `admin` a
 		LEFT JOIN
-			`user_gui_props` AS b ON b.`user_id` = a.`admin_id`
+			`user_gui_props` b ON (b.`user_id` = a.`admin_id`)
 		WHERE
 			`admin_id` = ?
 	";
 
-	$res = exec_query($query, $user_id);
-	$data = $res->fetchRow();
-	$type = $data['admin_type'];
+    $stmt = exec_query($query, $userId);
+    $data = $stmt->fetchRow();
+    $userType = $data['admin_type'];
 
-	if (empty($type) || $type == 'user') {
-		set_page_message(tr('Invalid user Id.'), 'error');
-		user_goto('manage_users.php');
-	}
+    if (empty($userType) || $userType == 'user') {
+        set_page_message(tr('Invalid user Id.'), 'error');
+        redirectTo('manage_users.php');
+    }
 
-	if ($type == 'reseller') {
-		$reseller_logo = $data['logo'];
-		// delete reseller props
-		$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
-		exec_query($query, $user_id);
+    // Users (admins/resellers) common item to delete
+    // Note: Item ordering is not relevant here since we are using transactions
+    $itemsToDelete = array(
+        'admin' => 'admin_id = ?',
+        'tickets' => 'ticket_from = ? OR ticket_to = ?',
+        'user_gui_props' => 'user_id = ?');
 
-		// delete hosting plans
-		$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
-		exec_query($query, $user_id);
+    // Note: Admin can also have they own hosting_plans bug must not be considerated
+    // as common item since first admin must be never removed
+    if ($userType == 'reseller') {
+        // Getting reseller's software package to remove inf any
+        $query = '
+		    SELECT
+			    `software_id`, `software_archive`
+		    FROM
+			    `web_software`
+		    WHERE
+			    `reseller_id` = ?
+	    ';
+        $stmt = exec_query($query, $userId);
+        $swPackages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		// delete all software
-		delete_reseller_software($user_id);
-		$query = "DELETE FROM `web_software` WHERE `reseller_id` = ?";
-		exec_query($query, array($user_id));
+        // Getting custom relesse isp logo if set
+        $resellerLogo = $data['logo'];
 
-		// delete reseller logo if exists
-		if (!empty($reseller_logo) && $reseller_logo !== 0) {
-			try {
-				unlink($cfg->ISP_LOGO_PATH . '/' . $reseller_logo);
-			} catch(Exception $e) {
-				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage(), 'error');
-			}
-		}
-	}
+        // Add specific reseller items to remove
+        $itemsToDelete = array_merge(array(
+                                          'email_tpls' => 'owner_id = ?',
+                                          'hosting_plans' => 'reseller_id = ?',
+                                          'reseller_props' => 'reseller_id = ?',
+                                          'web_software' => 'reseller_id = ?',
+                                          'orders' => 'user_id = ?',
+                                          'orders_settings' => 'user_id = ?'
+                                     ),
+                                     $itemsToDelete);
+    }
 
-	// Delete i-mscp login:
-	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
-	exec_query($query, $user_id);
+    // We are using transaction to ensure data consistency and prevent any garbage in
+    // the database. If one query fail, the whole process is reverted (annulé).
 
-	write_log($_SESSION['user_logged'] .": deletes user " . $user_id, E_USER_NOTICE);
+    try {
+        // Cleanup database
+        $db->beginTransaction();
 
-	$_SESSION['ddel'] = '_yes_';
-	user_goto('manage_users.php');
+        foreach ($itemsToDelete as $table => $where) {
+            // Build the DELETE statement
+            $query = "DELETE FROM "
+                     . quoteIdentifier($table)
+                     . (($where) ? " WHERE $where" : '');
+
+            exec_query($query, array_fill(0, substr_count($where, '?'), $userId));
+        }
+
+        $db->commit();
+
+        // Cleanup file system
+
+        // We are safe here. We don't stop the process same if files cannot be
+        // removed. That can result in garbages but the sysadmin can easily delete
+        // them through ssh.
+
+        // Deleting reseller software instaler local repository
+        if(isset($swPackages) && !empty($swPackages)) {
+            _admin_deleteResellerSwPackages($userId, $swPackages);
+        }
+
+        // Deleting user logo
+        if (isset($resellerLogo) && !empty($resellerLogo)) {
+            $logoPath = $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $resellerLogo;
+
+            if (file_exists($logoPath) && !@unlink($logoPath)) {
+                write_log('Unable to remove user logo ' . $logoPath, E_USER_ERROR);
+            }
+        }
+
+        $userTr = ($userType == 'reseller') ? tr('Reseller') : tr('Admin');
+        set_page_message(tr('%s account successfully deleted.', $userTr), 'success');
+        write_log($_SESSION['user_logged'] . ": deletes user " . $userId, E_USER_NOTICE);
+    } catch (PDOException $e) {
+        $db->rollBack();
+        set_page_message(tr('Unable to delete user with Id: %d', $userId), 'error');
+        write_log('Unable to delete user Id ' . $userId, E_USER_ERROR);
+
+    }
+
+    redirectTo('manage_users.php');
 }
 
 /**
- * Delete reseller software pakets.
+ * Delete reseller softwares.
  *
- * @param integer $user_id Reseller ID to delete software pakets
+ * @param int $userId Reseller unique identifier
+ * @param array $swPackages Array that contains software package to remove
+ * @return void
  */
-function delete_reseller_software($user_id)
+function _admin_deleteResellerSwPackages($userId, array $swPackages)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-	$query = "
-		SELECT
-			`software_id`, `software_archive`
-		FROM
-			`web_software`
-		WHERE
-			`reseller_id` = ?
-	";
-	$res = exec_query($query, $user_id);
+    // Remove all reseller's software packages if any
+    foreach($swPackages as $package) {
+        $packagePath = $cfg->GUI_SOFTWARE_DIR . '/' . $userId . '/' .
+                   $package['software_archive'] . '-' .
+                   $package['software_id'] . '.tar.gz';
 
-	if ($res->RecordCount() > 0) {
-		while (!$res ->EOF) {
-			$del_path = $cfg->GUI_SOFTWARE_DIR . "/" . $user_id . "/" .
-                $res->fields['software_archive'] . "-" . $res->fields['software_id'] .
-                        ".tar.gz";
-			@unlink($del_path);
-			$res->MoveNext();
-		}
-	}
 
-	$del_dir = $cfg->GUI_SOFTWARE_DIR."/".$user_id."/";
-	if(is_dir($del_dir)) @rmdir($del_dir);
+        if (file_exists($packagePath) && !@unlink($packagePath)) {
+            write_log('Unable to remove reseller package ' . $packagePath, E_USER_ERROR);
+        }
+    }
+
+    // Remove reseller software installer local repository directory
+    $resellerSwDirectory = $cfg->GUI_SOFTWARE_DIR . '/' . $userId . '/';
+
+    if (is_dir($resellerSwDirectory) && @rmdir($resellerSwDirectory)) {
+        write_log('Unable to remove reseller softwares directory ' .
+                  $resellerSwDirectory, E_USER_ERROR);
+    }
 }
 
 /**
- * Validate if delete process is valid
- * @param integer $user_id User-ID to delete
- * @return boolean true = deletion can be done
+ * Validates user deletion.
+ *
+ * @param int $userId User unique identifier
+ * @return bool TRUE if deletion can be done, FALSE otherwise
  */
-function validate_user_deletion($user_id)
+function admin_validateUserDeletion($userId)
 {
-	$result = false;
+    $userId = (int) $userId;
+    $retVal = false;
 
-	// Checking for domains created by user
-	$query = "
-	    SELECT COUNT(`domain_id`) AS `num_domains` FROM `domain` WHERE `domain_created_id` = ?";
-	$res = exec_query($query, $user_id);
+    // Checking for domains created by user
+    $query = "
+	    SELECT
+	        COUNT(`domain_id`) `num_domains`
+	    FROM
+	        `domain`
+	    WHERE
+	        `domain_created_id` = ?
+	";
+    $stmt = exec_query($query, $userId);
 
-	$data = $res->fetchRow();
+    if ($stmt->fields['num_domains'] == 0) {
+        $query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+        $stmt = exec_query($query, $userId);
 
-	if ($data['num_domains'] == 0) {
-		$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
-		$res = exec_query($query, $user_id);
+        $type = $stmt->fields['admin_type'];
 
-		$data = $res->fetchRow();
-		$type = $data['admin_type'];
+        if ($type == 'admin' || $type == 'reseller') {
+            $retVal = true;
+        } else {
+            set_page_message(tr('Invalid user Id.'), 'error');
+        }
+    } else {
+        set_page_message(tr("You can't delete a reseller that has domain accounts. Please, remove them before."), 'error');
+    }
 
-		if ($type == 'admin' || $type == 'reseller') {
-			$result = true;
-		} else {
-			set_page_message(tr('Invalid user Id.'), 'error');
-		}
-	} else {
-		set_page_message(tr('You cannot delete a reseller that has domain accounts. Please, remove them before.'), 'error');
-	}
-
-	return $result;
+    return $retVal;
 }
 
 /**
- * Validate domain deletion, display all items to delete.
+ * Validates domain account deletion.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param integer $domain_id Domain account unique identifier
+ * @param int $domainId Domain account unique identifier
  */
-function validate_domain_deletion($tpl, $domain_id)
+function admin_validateDomainAccountDeletion($tpl, $domainId)
 {
-	// Checking for domain account owner
-	$query = "
+
+    $domainId = (int) $domainId;
+
+    // Checking for domain account owner
+    $query = "
 	    SELECT
 	        `domain_id`, `domain_name`, `domain_created_id`
 	    FROM
@@ -187,16 +252,12 @@ function validate_domain_deletion($tpl, $domain_id)
 	    WHERE
 	        `domain_id` = ?
 	";
-	$res = exec_query($query, $domain_id);
+    $stmt = exec_query($query, $domainId);
 
-	$data = $res->fetchRow();
-
-	if ($data['domain_id'] == 0) {
-		set_page_message(tr('Wrong domain Id.'), 'warning');
-		redirectTo('manage_users.php');
-	}
-
-	$reseller = $data['domain_created_id'];
+    if ($stmt->fields['domain_id'] == 0) {
+        set_page_message(tr('Wrong domain Id.'), 'warning');
+        redirectTo('manage_users.php');
+    }
 
     $tpl->assign(array(
                       'TR_DELETE_DOMAIN' => tr('Delete domain'),
@@ -209,38 +270,38 @@ function validate_domain_deletion($tpl, $domain_id)
                       'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr('Do you really want to delete the entire domain? This operation cannot be undone.'),
                       'TR_BUTTON_DELETE' => tr('Delete domain'),
                       'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
-                      'DOMAIN_NAME' => tohtml($data['domain_name']),
-                      'DOMAIN_ID' => $data['domain_id']));
+                      'DOMAIN_NAME' => tohtml($stmt->fields['domain_name']),
+                      'DOMAIN_ID' => $stmt->fields['domain_id']));
 
-	// Checking for domain's mail accounts
-	$query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
-	$res = exec_query($query, $domain_id);
+    // Checking for domain's mail accounts
+    $query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
+    $stmt = exec_query($query, $domainId);
 
-	if (!$res->EOF) {
-		while (!$res->EOF) {
-			// Create mail type's text
-			$mail_types = explode(',', $res->fields['mail_type']);
-			$mdisplay_a = array();
+    if (!$stmt->EOF) {
+        while (!$stmt->EOF) {
+            // Create mail type's text
+            $mail_types = explode(',', $stmt->fields['mail_type']);
+            $mdisplay_a = array();
 
-			foreach ($mail_types as $mtype) {
-				$mdisplay_a[] = user_trans_mail_type($mtype);
-			}
+            foreach ($mail_types as $mtype) {
+                $mdisplay_a[] = user_trans_mail_type($mtype);
+            }
 
-			$mdisplay_txt = implode(', ', $mdisplay_a);
+            $mdisplay_txt = implode(', ', $mdisplay_a);
 
-			$tpl->assign(array(
-					'MAIL_ADDR' => tohtml($res->fields['mail_addr']),
-					'MAIL_TYPE' => $mdisplay_txt));
+            $tpl->assign(array(
+                              'MAIL_ADDR' => tohtml($stmt->fields['mail_addr']),
+                              'MAIL_TYPE' => $mdisplay_txt));
 
-			$tpl->parse('MAIL_ITEM', '.mail_item');
-			$res->moveNext();
-		}
-	} else {
-		$tpl->assign('MAIL_LIST', '');
-	}
+            $tpl->parse('MAIL_ITEM', '.mail_item');
+            $stmt->moveNext();
+        }
+    } else {
+        $tpl->assign('MAIL_LIST', '');
+    }
 
-	// Check for FTP account in domain
-	$query = "
+    // Check for FTP account in domain
+    $query = "
 	    SELECT
 	        `ftp_users`.*
 	    FROM
@@ -250,114 +311,108 @@ function validate_domain_deletion($tpl, $domain_id)
 	    AND
 	        `ftp_users`.`uid` = `domain`.`domain_uid`
 	";
-	$res = exec_query($query, $domain_id);
+    $stmt = exec_query($query, $domainId);
 
-	if (!$res->EOF) {
-		while (!$res->EOF) {
+    if (!$stmt->EOF) {
+        while (!$stmt->EOF) {
 
-			$tpl->assign(array(
-					'FTP_USER' => tohtml($res->fields['userid']),
-					'FTP_HOME' => tohtml($res->fields['homedir'])));
+            $tpl->assign(array(
+                              'FTP_USER' => tohtml($stmt->fields['userid']),
+                              'FTP_HOME' => tohtml($stmt->fields['homedir'])));
 
-			$tpl->parse('FTP_ITEM', '.ftp_item');
-			$res->moveNext();
-		}
-	} else {
-		$tpl->assign('FTP_LIST', '');
-	}
+            $tpl->parse('FTP_ITEM', '.ftp_item');
+            $stmt->moveNext();
+        }
+    } else {
+        $tpl->assign('FTP_LIST', '');
+    }
 
-	// Check for domain's aliases
-	$alias_a = array();
-	$query = "SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?";
-	$res = exec_query($query, $domain_id);
-	if (!$res->EOF) {
-		while (!$res->EOF) {
-			$alias_a[] = $res->fields['alias_id'];
+    // Check for domain's aliases
+    $alias_a = array();
+    $query = "SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?";
+    $stmt = exec_query($query, $domainId);
 
-			$tpl->assign(array(
-					'ALS_NAME' => tohtml($res->fields['alias_name']),
-					'ALS_MNT' => tohtml($res->fields['alias_mount'])));
+    if (!$stmt->EOF) {
+        while (!$stmt->EOF) {
+            $alias_a[] = $stmt->fields['alias_id'];
 
-			$tpl->parse('ALS_ITEM', '.als_item');
-			$res->moveNext();
-		}
-	} else {
-		$tpl->assign('ALS_LIST', '');
-	}
+            $tpl->assign(array(
+                              'ALS_NAME' => tohtml($stmt->fields['alias_name']),
+                              'ALS_MNT' => tohtml($stmt->fields['alias_mount'])));
 
-	// check for subdomains
-	$any_sub_found = false;
-	$query = "SELECT * FROM `subdomain` WHERE `domain_id` = ?";
-	$res = exec_query($query, $domain_id);
+            $tpl->parse('ALS_ITEM', '.als_item');
+            $stmt->moveNext();
+        }
+    } else {
+        $tpl->assign('ALS_LIST', '');
+    }
 
-	while (!$res->EOF) {
-		$any_sub_found = true;
-		$tpl->assign(array(
-				'SUB_NAME' => tohtml($res->fields['subdomain_name']),
-				'SUB_MNT' => tohtml($res->fields['subdomain_mount'])));
+    // check for subdomains
+    $any_sub_found = false;
+    $query = "SELECT * FROM `subdomain` WHERE `domain_id` = ?";
+    $stmt = exec_query($query, $domainId);
 
-		$tpl->parse('SUB_ITEM', '.sub_item');
-		$res->moveNext();
-	}
+    while (!$stmt->EOF) {
+        $any_sub_found = true;
+        $tpl->assign(array(
+                          'SUB_NAME' => tohtml($stmt->fields['subdomain_name']),
+                          'SUB_MNT' => tohtml($stmt->fields['subdomain_mount'])));
 
-	if (!$any_sub_found) {
-		$tpl->assign('SUB_LIST', '');
-	}
+        $tpl->parse('SUB_ITEM', '.sub_item');
+        $stmt->moveNext();
+    }
 
-	// Check subdomain_alias
-	if (count($alias_a) > 0) {
+    if (!$any_sub_found) {
+        $tpl->assign('SUB_LIST', '');
+    }
+
+    // Check subdomain_alias
+    if (count($alias_a) > 0) {
         $aliasIds = implode(',', $alias_a);
-		$query = "
-		    SELECT
-		        *
-		    FROM
-		        `subdomain_alias`
-		    WHERE
-		        `alias_id` IN ($aliasIds)
-		";
-		$res = exec_query($query);
 
-		while (!$res->EOF) {
-			$any_sub_found = true;
-			$tpl->assign(array(
-					'SUB_NAME' => tohtml($res->fields['subdomain_alias_name']),
-					'SUB_MNT' => tohtml($res->fields['subdomain_alias_mount'])));
+        $query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN ($aliasIds)";
+        $stmt = execute_query($query);
 
-			$tpl->parse('SUB_ITEM', '.sub_item');
-			$res->moveNext();
-		}
-	}
+        while (!$stmt->EOF) {
+            $any_sub_found = true;
+            $tpl->assign(array(
+                              'SUB_NAME' => tohtml($stmt->fields['subdomain_alias_name']),
+                              'SUB_MNT' => tohtml($stmt->fields['subdomain_alias_mount'])));
 
-	// Check for databases and -users
-	$query = "SELECT * FROM `sql_database` WHERE `domain_id` = ?";
-	$res = exec_query($query, $domain_id);
+            $tpl->parse('SUB_ITEM', '.sub_item');
+            $stmt->moveNext();
+        }
+    }
 
-	if (!$res->EOF) {
-		while (!$res->EOF) {
-			$query = "SELECT * FROM `sql_user` WHERE `sqld_id` = ?";
-			$ures = exec_query($query, $res->fields['sqld_id']);
+    // Check for databases and -users
+    $query = "SELECT * FROM `sql_database` WHERE `domain_id` = ?";
+    $stmt = exec_query($query, $domainId);
 
-			$users_a = array();
+    if (!$stmt->EOF) {
+        while (!$stmt->EOF) {
+            $query = "SELECT * FROM `sql_user` WHERE `sqld_id` = ?";
+            $ures = exec_query($query, $stmt->fields['sqld_id']);
 
-			while (!$ures->EOF) {
-				$users_a[] = $ures->fields['sqlu_name'];
-				$ures->moveNext();
-			}
+            $users_a = array();
 
-			$users_txt = implode(', ', $users_a);
+            while (!$ures->EOF) {
+                $users_a[] = $ures->fields['sqlu_name'];
+                $ures->moveNext();
+            }
 
-			$tpl->assign(array(
-					'DB_NAME' => tohtml($res->fields['sqld_name']),
-					'DB_USERS' => tohtml($users_txt)));
+            $users_txt = implode(', ', $users_a);
 
-			$tpl->parse('DB_ITEM', '.db_item');
-			$res->moveNext();
-		}
-	} else {
-		$tpl->assign('DB_LIST', '');
-	}
+            $tpl->assign(array(
+                              'DB_NAME' => tohtml($stmt->fields['sqld_name']),
+                              'DB_USERS' => tohtml($users_txt)));
+
+            $tpl->parse('DB_ITEM', '.db_item');
+            $stmt->moveNext();
+        }
+    } else {
+        $tpl->assign('DB_LIST', '');
+    }
 }
-
 
 /************************************************************************************
  * Main script
@@ -396,14 +451,14 @@ $tpl->assign(array(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
-	if (validate_user_deletion(intval($_GET['delete_id']))) {
-		delete_user(intval($_GET['delete_id']));
+	if (admin_validateUserDeletion($_GET['delete_id'])) {
+		admin_deleteUser($_GET['delete_id']);
 	} else {
 		redirectTo('manage_users.php');
 	}
-} elseif (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
-	validate_domain_deletion($tpl, intval($_GET['domain_id']));
-} elseif (isset($_POST['domain_id']) && is_numeric($_POST['domain_id']) &&
+} elseif (isset($_GET['domain_id'])) {
+	admin_validateDomainAccountDeletion($tpl, $_GET['domain_id']);
+} elseif (isset($_POST['domain_id']) &&
           isset($_POST['delete']) && $_POST['delete'] == 1) {
 	delete_domain((int)$_POST['domain_id'], 'manage_users.php');
 } else {
