@@ -161,13 +161,9 @@ function reseller_addReseller($tpl)
                                         $firm, $zip, $city, $state, $country, $email,
                                         $phone, $fax, $street1, $street2, $gender));
 
-                /** @var $db iMSCP_Database */
-                $db = iMSCP_Registry::get('db');
                 $new_admin_id = $db->insertId();
-
                 $user_logged = $_SESSION['user_logged'];
                 write_log("$user_logged: add reseller: $username", E_USER_NOTICE);
-
                 $user_def_lang = $_SESSION['user_def_lang'];
                 $user_theme_color = $_SESSION['user_theme'];
 
