@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
@@ -1319,7 +1319,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
     $cfg = iMSCP_Registry::get('config');
 
     $admin_login = $_SESSION['user_logged'];
-    $data = get_welcome_email($admin_id, 'user');
+    $data = get_welcome_email($admin_id, $_SESSION['user_type']);
     $from_name = $data['sender_name'];
     $from_email = $data['sender_email'];
     $message = $data['message'];

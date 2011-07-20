@@ -81,7 +81,7 @@ function admin_deleteUser($userId)
     // Note: Admin can also have they own hosting_plans bug must not be considerated
     // as common item since first admin must be never removed
     if ($userType == 'reseller') {
-        // Getting reseller's software package to remove inf any
+        // Getting reseller's software packages to remove if any
         $query = '
 		    SELECT
 			    `software_id`, `software_archive`
@@ -108,7 +108,7 @@ function admin_deleteUser($userId)
     }
 
     // We are using transaction to ensure data consistency and prevent any garbage in
-    // the database. If one query fail, the whole process is reverted (annulé).
+    // the database. If one query fail, the whole process is reverted.
 
     try {
         // Cleanup database
@@ -125,7 +125,7 @@ function admin_deleteUser($userId)
 
         $db->commit();
 
-        // Cleanup file system
+        // Cleanup files system
 
         // We are safe here. We don't stop the process same if files cannot be
         // removed. That can result in garbages but the sysadmin can easily delete
@@ -152,7 +152,6 @@ function admin_deleteUser($userId)
         $db->rollBack();
         set_page_message(tr('Unable to delete user with Id: %d', $userId), 'error');
         write_log('Unable to delete user Id ' . $userId, E_USER_ERROR);
-
     }
 
     redirectTo('manage_users.php');
@@ -430,7 +429,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/user_delete.tpl');
 
-$tpl->define_dynamic(array('mail_list' => 'page',
+$tpl->define_dynamic(array(
+                          'mail_list' => 'page',
                           'ftp_list' => 'page',
                           'als_list' => 'page',
                           'sub_list' => 'page',
@@ -477,7 +477,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
+                                              new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
