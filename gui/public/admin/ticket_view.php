@@ -111,7 +111,7 @@ $tpl->assign(array(
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_ticket_system.tpl');
-showTicketContent($tpl, $ticketId, $userId, 800);
+showTicketContent($tpl, $ticketId, $userId);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
