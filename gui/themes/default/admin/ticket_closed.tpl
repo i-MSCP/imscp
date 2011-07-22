@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_CLIENT_QUESTION_PAGE_TITLE}</title>
+        <title>{TR_TICKET_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
@@ -18,39 +18,44 @@
         <script type="text/javascript">
             /* <![CDATA[ */
             function action_delete(url, subject) {
-                return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
+                if(subject == 'all') {
+                    if(confirm("{TR_TICKETS_DELETE_ALL_MESSAGE}")) {
+                        document.location.href = url;
+                    }
+                } else {
+                    if(confirm(sprintf("{TR_TICKETS_DELETE_MESSAGE}", subject))) {
+                        document.location.href = url;
+                    }
+                }
+
+                return false;
             }
             /* ]]> */
         </script>
     </head>
-
     <body>
         <div class="header">
             {MAIN_MENU}
-
             <div class="logo">
                 <img src="{ISP_LOGO}" alt="i-MSCP logo" />
             </div>
         </div>
-
         <div class="location">
             <div class="location-area icons-left">
-                <h1 class="general">{TR_MENU_QUESTIONS_AND_COMMENTS}</h1>
+                <h1 class="support">{TR_SUPPORT_SYSTEM}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->               
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
+                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_SUPPORT_SYSTEM}</a></li>
                 <li><a href="ticket_closed.php">{TR_CLOSED_TICKETS}</a></li>
             </ul>
         </div>
-
         <div class="left_menu">
             {MENU}
         </div>
-
-
         <div class="body">
             <h2 class="support"><span>{TR_CLOSED_TICKETS}</span></h2>
 
@@ -62,62 +67,64 @@
             <table>
                 <thead>
                     <tr>
-                        <th>{TR_STATUS}</th>
+                        <th>{TR_TICKET_STATUS}</th>
                         <th>{TR_TICKET_FROM}</th>
-                        <th>{TR_TICKET_TO}</th>
-                        <th>{TR_SUBJECT}</th>
-                        <th>{TR_URGENCY}</th>
-                        <th>{TR_LAST_DATA}</th>
-                        <th>{TR_ACTION}</th>
+                        <th>{TR_TICKET_SUBJECT}</th>
+                        <th>{TR_TICKET_URGENCY}</th>
+                        <th>{TR_TICKET_LAST_ANSWER_DATE}</th>
+                        <th>{TR_TICKET_ACTION}</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <td colspan="7"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','ticket_delete.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}" /></td>
-                    </tr>
-                </tfoot>
                 <tbody>
                     <!-- BDP: tickets_item -->
                     <tr>
-                        <td><b>{NEW}</b></td>
-                        <td>{FROM}</td>
-                        <td>{TO}</td>
-                        <td><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="12" height="15" align="left" />
-                            <script type="text/javascript">
-                                <!--
-                                document.write('<a href="ticket_view.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">{SUBJECT}</a>');
-                                //-->
-                            </script>
-                            <noscript><a href="ticket_view.php?ticket_id={ID}&amp;screenwidth='800'" class="link"> {SUBJECT}</a></noscript>
+                        <td><strong>{TICKET_STATUS_VAL}</strong></td>
+                        <td>{TICKET_FROM_VAL}</td>
+                        <td>
+                            <img src="{THEME_COLOR_PATH}/images/icons/document.png" style="vertical-align:middle;" alt="" />&nbsp;
+                            <a href="ticket_view.php?ticket_id={TICKET_ID_VAL}"
+                               class="link" title="{TR_TICKET_READ_LINK}">{TICKET_SUBJECT_VAL}</a>
                         </td>
-                        <td>{URGENCY}</td>
-                        <td>{LAST_DATE}</td>
-                        <td><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="absmiddle" /> <a href="ticket_delete.php?ticket_id={ID}" onclick="return action_delete('ticket_delete.php?ticket_id={ID}', '{SUBJECT2}')" class="link">{TR_DELETE}</a></td>
+                        <td>{TICKET_URGENCY_VAL}</td>
+                        <td>{TICKET_LAST_DATE_VAL}</td>
+                        <td>
+                            <img src="{THEME_COLOR_PATH}/images/icons/delete.png" style="vertical-align: middle;" alt="" />&nbsp;
+                            <a href="#" onclick="return action_delete('ticket_delete.php?ticket_id={TICKET_ID_VAL}', '{TICKET_SUBJECT2_VAL}')"
+                               class="link" title="{TR_TICKET_DELETE_LINK}">{TR_TICKET_DELETE}</a>
+
+                            <img src="{THEME_COLOR_PATH}/images/icons/open.png" style="vertical-align:middle;" alt="" />&nbsp;
+                            <a href="ticket_closed.php?ticket_id={TICKET_ID_VAL}"
+                               class="link" title="{TR_TICKET_REOPEN_LINK}">{TR_TICKET_REOPEN}</a>
+                        </td>
                     </tr>
                     <!-- EDP: tickets_item -->
+                    <tr>
+                        <td colspan="6">
+                            <div class="buttons">
+                                <input name="deleteAll" type="button" onclick="return action_delete('ticket_delete.php?delete=closed', 'all');" value="{TR_TICKET_DELETE_ALL}" style="float:left;" />
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="paginator">
                 <!-- BDP: scroll_next_gray -->
-                <a class="icon i_next_gray" href="#" title="next">next</a>
+                <a class="icon i_next_gray" href="#" onclick="return false;">&nbsp;</a>
                 <!-- EDP: scroll_next_gray -->
                 <!-- BDP: scroll_next -->
-                <a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="next">next</a>
+                <a class="icon i_next" href="ticket_system.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
                 <!-- EDP: scroll_next -->
-                <!-- BDP: scroll_prev_gray -->
-                <a class="icon i_prev_gray" href="#" title="next">next</a>
-                <!-- EDP: scroll_prev_gray -->
                 <!-- BDP: scroll_prev -->
-                <a class="icon i_prev" href="ticket_system.php?psi={PREV_PSI}" title="previous">previous</a>
+                <a class="icon i_prev" href="ticket_system.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
                 <!-- EDP: scroll_prev -->
+                <!-- BDP: scroll_prev_gray -->
+                <a class="icon i_prev_gray" href="#" onclick="return false;">&nbsp;</a>
+                <!-- EDP: scroll_prev_gray -->
             </div>
             <!-- EDP: tickets_list -->
-
         </div>
-
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
-
     </body>
 </html>

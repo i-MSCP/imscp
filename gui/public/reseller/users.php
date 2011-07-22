@@ -248,7 +248,7 @@ function check_externel_events()
 
     if (isset($_SESSION['user_add3_added'])) {
         if ($_SESSION['user_add3_added'] === '_yes_') {
-            set_page_message(tr('Domain account scheduled for creation.'), 'info');
+            set_page_message(tr('Domain account successfully scheduled for creation.'), 'success');
 
             $externel_event = '_on_';
             unset($_SESSION['user_add3_added']);
@@ -276,7 +276,6 @@ function check_externel_events()
         unset($_SESSION['user_deleted']);
     }
 }
-
 
 /************************************************************************************
  * Main script
