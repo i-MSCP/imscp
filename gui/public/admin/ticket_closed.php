@@ -85,7 +85,7 @@ $tpl->assign(array(
                   'TR_TICKET_SUBJECT' => tr('Subject'),
                   'TR_TICKET_URGENCY' => tr('Priority'),
                   'TR_TICKET_LAST_ANSWER_DATE' => tr('Last reply date'),
-                  'TR_TICKET_ACTION' => tr('Action'),
+                  'TR_TICKET_ACTION' => tr('Actions'),
                   'TR_TICKET_DELETE' => tr('Delete'),
                   'TR_TICKET_READ_LINK' => tr('Read the ticket'),
                   'TR_TICKET_DELETE_LINK' => tr('Delete the ticket'),
