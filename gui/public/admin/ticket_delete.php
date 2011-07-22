@@ -51,7 +51,7 @@ if (!hasTicketSystem()) {
 }
 
 $userId = $_SESSION['user_id'];
-$previouspage = 'ticket_system';
+$previousPage = 'ticket_system';
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 
@@ -71,12 +71,12 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 
 	if ($stmt->rowCount() == 0) {
         set_page_message(tr("Ticket with Id: '%d' no found.", $ticketId), 'error');
-		redirectTo($previouspage . '.php');
+		redirectTo($previousPage . '.php');
 	}
 
     // The ticket status was 0 so we come from ticket_closed.php
     if($stmt->fields['ticket_status'] == 0 ) {
-        $previouspage = 'ticket_closed';
+        $previousPage = 'ticket_closed';
     }
 
 	deleteTicket($ticketId);
@@ -90,7 +90,7 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 	deleteTickets('closed', $userId);
     set_page_message(tr('All closed tickets were successfully deleted.'), 'success');
 	write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
-    $previouspage = 'ticket_closed';
+    $previousPage = 'ticket_closed';
 } else {
     set_page_message(tr('Unknown action requested.'), 'error');
 }
