@@ -86,7 +86,6 @@ $tpl->assign(array(
                   'TR_CLOSED_TICKETS' => tr('Closed tickets'),
                   'TR_TICKET_STATUS' => tr('Status'),
                   'TR_TICKET_FROM' => tr('From'),
-                  'TR_TICKET_TO' => tr('From'),
                   'TR_TICKET_SUBJECT' => tr('Subject'),
                   'TR_TICKET_URGENCY' => tr('Priority'),
                   'TR_TICKET_LAST_ANSWER_DATE' => tr('Last reply date'),
