@@ -191,40 +191,43 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
 }
 
 /**
- * Validates user deletion.
+ * Validates user (administrators, resellers) deletion.
  *
  * @param int $userId User unique identifier
  * @return bool TRUE if deletion can be done, FALSE otherwise
  */
 function admin_validateUserDeletion($userId)
 {
-    $userId = (int) $userId;
-    $retVal = false;
+    $userId = (int)$userId;
+    $retVal = true;
 
-    // Checking for domains created by user
-    $query = "
-	    SELECT
-	        COUNT(`domain_id`) `num_domains`
-	    FROM
-	        `domain`
-	    WHERE
-	        `domain_created_id` = ?
-	";
-    $stmt = exec_query($query, $userId);
-
-    if ($stmt->fields['num_domains'] == 0) {
-        $query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+    // User is super admin
+    if ($userId == 1) {
+        set_page_message(tr('Invalid user Id.'), 'error');
+        $retVal = false;
+    } else {
+        $query = "
+            SELECT
+                `a`.`admin_type`, `b`.`domain_id`
+            FROM
+                `admin` a
+            LEFT JOIN
+                `domain` `b` ON (`b`.`domain_created_id` = `a`.`admin_id`)
+            WHERE
+                `a`.`admin_id` = ?
+            LIMIT 1
+        ";
         $stmt = exec_query($query, $userId);
 
-        $type = $stmt->fields['admin_type'];
-
-        if ($type == 'admin' || $type == 'reseller') {
-            $retVal = true;
-        } else {
+        // User was not found or user is a client
+        if ($stmt->rowCount() == 0 || $stmt->fields['admin_type'] == 'user') {
             set_page_message(tr('Invalid user Id.'), 'error');
+            $retVal = false;
+            // user has domain accounts (reseller)
+        } elseif($stmt->fields['domain_id'] != null) {
+            set_page_message(tr("You can't delete a reseller that has domain accounts. Please, remove them before."), 'error');
+            $retVal = false;
         }
-    } else {
-        set_page_message(tr("You can't delete a reseller that has domain accounts. Please, remove them before."), 'error');
     }
 
     return $retVal;
