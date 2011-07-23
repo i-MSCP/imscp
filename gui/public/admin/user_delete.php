@@ -136,13 +136,19 @@ function admin_deleteUser($userId)
         // Deleting reseller software instaler local repository
         if (isset($swPackages) && !empty($swPackages)) {
             _admin_deleteResellerSwPackages($userId, $swPackages);
+        } elseif($userType == 'reseller' &&
+                 is_dir($cfg->GUI_SOFTWARE_DIR . '/' . $userId) &&
+                 @rmdir($cfg->GUI_SOFTWARE_DIR . '/' . $userId) == false
+        ) {
+            write_log('Unable to remove reseller softwares directory: ' .
+                  $cfg->GUI_SOFTWARE_DIR . '/' . $userId, E_USER_ERROR);
         }
 
         // Deleting user logo
         if (isset($resellerLogo) && !empty($resellerLogo)) {
             $logoPath = $cfg->GUI_ROOT_DIR . '/data/ispLogos/' . $resellerLogo;
 
-            if (file_exists($logoPath) && !@unlink($logoPath)) {
+            if (file_exists($logoPath) && @unlink($logoPath) == false) {
                 write_log('Unable to remove user logo ' . $logoPath, E_USER_ERROR);
             }
         }
@@ -190,9 +196,9 @@ function _admin_deleteResellerSwPackages($userId, array $swPackages)
     }
 
     // Remove reseller software installer local repository directory
-    $resellerSwDirectory = $cfg->GUI_SOFTWARE_DIR . '/' . $userId . '/';
+    $resellerSwDirectory = $cfg->GUI_SOFTWARE_DIR . '/' . $userId;
 
-    if (is_dir($resellerSwDirectory) && @rmdir($resellerSwDirectory)) {
+    if (is_dir($resellerSwDirectory) && @rmdir($resellerSwDirectory) == false) {
         write_log('Unable to remove reseller softwares directory ' .
                   $resellerSwDirectory, E_USER_ERROR);
     }
