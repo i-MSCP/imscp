@@ -40,8 +40,10 @@
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
- * @param mixed $substitution Prevent the returned string from being replaced
- *                            with html entities
+ * @param mixed $substitution,... If second parameter is bool (true), prevent the
+ *                                returned string from being replaced with html
+ *                                entities. If not considere the parameter(s) as
+ *                                simple substitution value(s)
  * @return Translated or original string
  */
 function tr($msgid, $substitution = false)
