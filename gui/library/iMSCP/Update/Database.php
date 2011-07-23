@@ -865,6 +865,8 @@ class iMSCP_Update_Database extends iMSCP_Update
      *
      * See #145 on i-MSCP issue tracker for more information.
      *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4961
      * @return array Stack of SQL statements to be executed
      */
     protected function _databaseUpdate_70()
@@ -886,5 +888,19 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         return $sqlUpd;
+    }
+
+    /**
+     * Changes log table schema to allow storage of large messages.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r5002
+     * @return string SQL statement to be executed
+     */
+    protected function _databaseUpdate_71()
+    {
+        return '
+            ALTER TABLE `log` CHANGE `log_message` `log_message`
+            TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL';
     }
 }

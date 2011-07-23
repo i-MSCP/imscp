@@ -150,10 +150,16 @@ function admin_deleteUser($userId)
         $userTr = ($userType == 'reseller') ? tr('Reseller') : tr('Admin');
         set_page_message(tr('%s account successfully deleted.', $userTr), 'success');
         write_log($_SESSION['user_logged'] . ": deletes user " . $userId, E_USER_NOTICE);
-    } catch (PDOException $e) {
+    } catch (iMSCP_Exception_Database $e) {
         $db->rollBack();
-        set_page_message(tr('Unable to delete user with Id: %d', $userId), 'error');
-        write_log('Unable to delete user Id ' . $userId, E_USER_ERROR);
+
+        if (!$cfg->DEBUG) {
+            set_page_message(tr('Unable to delete user with Id: %d', $userId), 'error');
+            write_log(sprintf("Unable to delete user with Id '%s' for the following reason: %s",
+                              $userId, $e->getMessage()), E_USER_ERROR);
+        } else {
+            throw new iMSCP_Exception_Database($e->getMessage());
+        }
     }
 
     redirectTo('manage_users.php');
@@ -260,9 +266,8 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
     $domainName = tohtml(decode_idna($stmt->fields['domain_name']));
 
     $tpl = new iMSCP_pTemplate();
-    $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/user_delete.tpl');
     $tpl->define_dynamic(array(
-                              'logged_from' => 'page',
+                              'page' => $cfg->ADMIN_TEMPLATE_PATH . '/user_delete.tpl',
                               'page_message' => 'page',
                               'mail_list' => 'page',
                               'mail_item' => 'mail_list',
@@ -478,7 +483,7 @@ check_login(__FILE__);
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
+if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
     if (admin_validateUserDeletion($_GET['delete_id'])) {
         admin_deleteUser($_GET['delete_id']);
     } else {
@@ -486,10 +491,14 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     }
 } elseif (isset($_GET['domain_id'])) {
     $tpl = admin_generateDomainAcountDeletionValidationPage($_GET['domain_id']);
-} elseif (isset($_POST['domain_id']) &&
-          isset($_POST['delete']) && $_POST['delete'] == 1
+} elseif (isset($_POST['domain_id']) && isset($_POST['delete']) &&
+          $_POST['delete'] == 1
 ) {
-    delete_domain((int)$_POST['domain_id'], 'manage_users.php');
+    if(delete_domain($_POST['domain_id'])) {
+        set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
+    }
+
+    redirectTo('manage_users.php');
 } else {
     if (isset($_GET['delete'])) {
         set_page_message(tr('Wrong domain ID.'), 'error');
@@ -501,9 +510,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     redirectTo('manage_users.php');
 }
 
-
 generatePageMessage($tpl);
-
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,

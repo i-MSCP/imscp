@@ -34,25 +34,27 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-
 /************************************************************************************
  * Script functions
  */
 
 /**
- * Validate domain deletion, display all items to delete.
+ * Generates domain account deletion validation page.
  *
- * @param iMSCP_pTemplate $tpl Template engine
- * @param int $domain_id Domain unique identifier
+ * @param int $domainId Domain account unique identifier
+ * @return iMSCP_pTemplate
  */
-function validate_domain_deletion($tpl, $domain_id)
+function reseller_generateDomainAcountDeletionValidationPage($domainId)
 {
-    $reseller = $_SESSION['user_id'];
+    $domainId = (int)$domainId;
 
-    // check for domain owns
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    // check for domain owner
     $query = "
         SELECT
-            `domain_id`, `domain_name`
+            `domain_name`
         FROM
             `domain`
         WHERE
@@ -60,16 +62,36 @@ function validate_domain_deletion($tpl, $domain_id)
         AND
             `domain_created_id` = ?
     ";
-    $res = exec_query($query, array($domain_id, $reseller));
+    $stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 
-    $data = $res->fetchRow();
-
-    if ($data['domain_id'] == 0) {
+    if ($stmt->rowCount() == 0) {
         set_page_message(tr('Wrong domain Id.'), 'error');
-        redirectTo('users.php?psi=last');
+        redirectTo('users.php');
     }
 
+    $domainName = tohtml(decode_idna($stmt->fields['domain_name']));
+
+    $tpl = new iMSCP_pTemplate();
+    $tpl->define_dynamic(array(
+                              'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl',
+                              'logged_from' => 'page',
+                              'page_message' => 'page',
+                              'mail_list' => 'page',
+                              'mail_item' => 'mail_list',
+                              'ftp_list' => 'page',
+                              'ftp_item' => 'ftp_list',
+                              'als_list' => 'page',
+                              'als_item' => 'als_list',
+                              'sub_list' => 'page',
+                              'sub_item' => 'sub_list',
+                              'db_list' => 'page',
+                              'db_item' => 'db_list'));
+
     $tpl->assign(array(
+                      'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Domain Account Deletion Validation'),
+                      'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                      'THEME_CHARSET' => tr('encoding'),
+                      'ISP_LOGO' => layout_getUserLogo(),
                       'TR_DELETE_DOMAIN' => tr('Delete domain'),
                       'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
                       'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
@@ -77,146 +99,182 @@ function validate_domain_deletion($tpl, $domain_id)
                       'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
                       'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
                       'TR_DOMAIN_DBS' => tr('Domain databases'),
-                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr('Do you really want to delete the entire domain? This operation cannot be undone.'),
+                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr("Do you really want to delete the entire <strong>'%s'</strong> domain? This operation cannot be undone.", true, $domainName),
                       'TR_BUTTON_DELETE' => tr('Delete domain'),
                       'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
-                      'DOMAIN_NAME' => $data['domain_name'],
-                      'DOMAIN_ID' => $data['domain_id']));
+                      'DOMAIN_NAME' => $domainName,
+                      'DOMAIN_ID' => $domainId));
 
-    // check for mail acc in MAIN domain
-    $query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
-    $res = exec_query($query, $domain_id);
+    gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+    gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
+    gen_logged_from($tpl);
 
-    if (!$res->EOF) {
-        while (!$res->EOF) {
-            // Create mail type's text
-            $mail_types = explode(',', $res->fields['mail_type']);
-            $mdisplay_a = array();
+    // Checks for domain's mail accounts
 
-            foreach ($mail_types as $mtype) {
-                $mdisplay_a[] = user_trans_mail_type($mtype);
+    $query = "SELECT `mail_type`, `mail_addr` FROM `mail_users` WHERE `domain_id` = ?";
+    $stmt = exec_query($query, $domainId);
+
+    if ($stmt->rowCount() != 0) {
+        while (!$stmt->EOF) {
+            $mailTypes = explode(',', $stmt->fields['mail_type']);
+            $mailTypesdisplayArray = array();
+
+            foreach ($mailTypes as $mtype) {
+                $mailTypesdisplayArray[] = user_trans_mail_type($mtype);
             }
 
-            $mdisplay_txt = implode(', ', $mdisplay_a);
+            $mailTypesdisplayTxt = implode(', ', $mailTypesdisplayArray);
+            $addr = explode('@', $stmt->fields['mail_addr']);
+
             $tpl->assign(array(
-                              'MAIL_ADDR' => tohtml($res->fields['mail_addr']),
-                              'MAIL_TYPE' => $mdisplay_txt));
+                              'MAIL_ADDR' => tohtml($addr[0] . '@' . decode_idna($addr[1])),
+                              'MAIL_TYPE' => $mailTypesdisplayTxt));
 
             $tpl->parse('MAIL_ITEM', '.mail_item');
-            $res->moveNext();
+            $stmt->moveNext();
         }
     } else {
         $tpl->assign('MAIL_LIST', '');
     }
 
-    // check for ftp acc in MAIN domain
-    $query = "
-        SELECT
-            `ftp_users`.*
-        FROM
-            `ftp_users`, `domain`
-        WHERE
-            `domain`.`domain_id` = ?
-        AND
-            `ftp_users`.`uid` = `domain`.`domain_uid`
-    ";
-    $res = exec_query($query, $domain_id);
+    // Checks for FTP accounts in domain
 
-    if (!$res->EOF) {
-        while (!$res->EOF) {
+    $query = "
+	    SELECT
+	        `ftp_users`.`userid`, `ftp_users`.`homedir`
+	    FROM
+	        `ftp_users`, `domain`
+	    WHERE
+	        `domain`.`domain_id` = ?
+	    AND
+	        `ftp_users`.`uid` = `domain`.`domain_uid`
+	";
+    $stmt = exec_query($query, $domainId);
+
+    if ($stmt->rowCount() != 0) {
+        while (!$stmt->EOF) {
+            $username = explode('@', $stmt->fields['userid']);
             $tpl->assign(array(
-                              'FTP_USER' => tohtml($res->fields['userid']),
-                              'FTP_HOME' => tohtml($res->fields['homedir'])));
+                              'FTP_USER' => tohtml($username[0] . '@' . decode_idna($username[1])),
+                              'FTP_HOME' => tohtml(substr($stmt->fields['homedir'], strlen($cfg->APACHE_WWW_DIR)))));
 
             $tpl->parse('FTP_ITEM', '.ftp_item');
-            $res->moveNext();
+            $stmt->moveNext();
         }
     } else {
         $tpl->assign('FTP_LIST', '');
     }
 
-    // check for alias domains
-    $alias_a = array();
-    $query = "SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?";
-    $res = exec_query($query, $domain_id);
+    // Checks for domain's aliases
 
-    if (!$res->EOF) {
-        while (!$res->EOF) {
-            $alias_a[] = $res->fields['alias_id'];
+    $aliasIds = array();
+    $query = "
+        SELECT
+            `alias_id`, `alias_name`, `alias_mount`
+        FROM
+            `domain_aliasses`
+        WHERE
+            `domain_id` = ?
+    ";
+    $stmt = exec_query($query, $domainId);
 
+    if ($stmt->rowCount() != 0) {
+        while (!$stmt->EOF) {
+            $aliasIds[] = $stmt->fields['alias_id'];
             $tpl->assign(array(
-                              'ALS_NAME' => tohtml($res->fields['alias_name']),
-                              'ALS_MNT' => tohtml($res->fields['alias_mount'])));
+                              'ALS_NAME' => tohtml(decode_idna($stmt->fields['alias_name'])),
+                              'ALS_MNT' => tohtml($stmt->fields['alias_mount'])));
 
             $tpl->parse('ALS_ITEM', '.als_item');
-            $res->moveNext();
+            $stmt->moveNext();
         }
     } else {
         $tpl->assign('ALS_LIST', '');
     }
 
-    // check for subdomains
-    $any_sub_found = false;
-    $query = "SELECT * FROM `subdomain` WHERE `domain_id` = ?";
-    $res = exec_query($query, $domain_id);
+    // Checks for subdomains
 
-    while (!$res->EOF) {
-        $any_sub_found = true;
-        $tpl->assign(array(
-                          'SUB_NAME' => tohtml($res->fields['subdomain_name']),
-                          'SUB_MNT' => tohtml($res->fields['subdomain_mount'])));
+    $query = "
+        SELECT
+            `subdomain_name`, `subdomain_mount`
+        FROM
+            `subdomain`
+        WHERE
+            `domain_id` = ?
+    ";
+    $stmt = exec_query($query, $domainId);
 
-        $tpl->parse('SUB_ITEM', '.sub_item');
-        $res->moveNext();
-    }
+    if ($stmt->rowCount() != 0) {
+        while (!$stmt->EOF) {
+            $tpl->assign(array(
+                              'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_name'])),
+                              'SUB_MNT' => tohtml($stmt->fields['subdomain_mount'])));
 
-    if (!$any_sub_found) {
+            $tpl->parse('SUB_ITEM', '.sub_item');
+            $stmt->moveNext();
+        }
+    } else {
         $tpl->assign('SUB_LIST', '');
     }
 
-    // Check subdomain_alias
-    if (count($alias_a) > 0) {
-        $aliasIds = implode(',', $alias_a);
-        $query = "SELECT *  FROM `subdomain_alias`  WHERE `alias_id` IN ($aliasIds)";
-        $res = execute_query($query);
+    // Checks subdomain_alias
 
-        while (!$res->EOF) {
-            $any_sub_found = true;
-            $tpl->assign(array(
-                              'SUB_NAME' => tohtml($res->fields['subdomain_alias_name']),
-                              'SUB_MNT' => tohtml($res->fields['subdomain_alias_mount'])));
+    if (count($aliasIds) > 0) {
+        $aliasIds = implode(',', $aliasIds);
 
-            $tpl->parse('SUB_ITEM', '.sub_item');
-            $res->moveNext();
+        $query = "
+            SELECT
+                `subdomain_alias_name`, `subdomain_alias_mount`
+            FROM
+                `subdomain_alias`
+            WHERE
+                `alias_id` IN ($aliasIds)
+        ";
+        $stmt = execute_query($query);
+
+        if ($stmt->rowCount() != 0) {
+            while (!$stmt->EOF) {
+                $tpl->assign(array(
+                                  'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_alias_name'])),
+                                  'SUB_MNT' => tohtml($stmt->fields['subdomain_alias_mount'])));
+
+                $tpl->parse('SUB_ITEM', '.sub_item');
+                $stmt->moveNext();
+            }
         }
     }
 
-    // Check for databases and -users
-    $query = "SELECT * FROM `sql_database` WHERE `domain_id` = ?";
-    $res = exec_query($query, $domain_id);
-    if (!$res->EOF) {
-        while (!$res->EOF) {
-            $query = "SELECT * FROM `sql_user` WHERE `sqld_id` = ?";
-            $ures = exec_query($query, $res->fields['sqld_id']);
-            $users_a = array();
+    // Checks for databases and SQL users
 
-            while (!$ures->EOF) {
-                $users_a[] = $ures->fields['sqlu_name'];
-                $ures->moveNext();
+    $query = "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
+    $stmt = exec_query($query, $domainId);
+
+    if ($stmt->rowCount() != 0) {
+        while (!$stmt->EOF) {
+            $query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
+            $stmt2 = exec_query($query, $stmt->fields['sqld_id']);
+
+            $sqlUsersList = array();
+
+            if ($stmt2->rowCount() != 0) {
+                while (!$stmt2->EOF) {
+                    $sqlUsersList[] = $stmt2->fields['sqlu_name'];
+                    $stmt2->moveNext();
+                }
             }
 
-            $users_txt = implode(', ', $users_a);
             $tpl->assign(array(
-                              'DB_NAME' => tohtml($res->fields['sqld_name']),
-                              'DB_USERS' => tohtml($users_txt)));
+                              'DB_NAME' => tohtml($stmt->fields['sqld_name']),
+                              'DB_USERS' => tohtml(implode(', ', $sqlUsersList))));
 
             $tpl->parse('DB_ITEM', '.db_item');
-            $res->moveNext();
+            $stmt->moveNext();
         }
     } else {
         $tpl->assign('DB_LIST', '');
     }
 
+    return $tpl;
 }
 
 /************************************************************************************
@@ -230,57 +288,32 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login(__FILE__);
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl',
-                          'mail_list' => 'page',
-                          'ftp_list' => 'page',
-                          'als_list' => 'page',
-                          'sub_list' => 'page',
-                          'db_list' => 'page',
-                          'mail_item' => 'mail_list',
-                          'sub_item' => 'sub_list',
-                          'als_item' => 'als_list',
-                          'ftp_item' => 'ftp_list',
-                          'db_item' => 'db_list'));
-
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Delete Domain'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
-
-if (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
-    validate_domain_deletion($tpl, intval($_GET['domain_id']));
-} else if (isset($_POST['domain_id']) && is_numeric($_POST['domain_id'])
-           && isset($_POST['delete']) && $_POST['delete'] == 1
+if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
+    $tpl = reseller_generateDomainAcountDeletionValidationPage($_GET['domain_id']);
+} elseif (isset($_POST['domain_id']) && !empty($_POST['domain_id']) &&
+          isset($_POST['delete']) && $_POST['delete'] == 1
 ) {
-    delete_domain((int)$_POST['domain_id'], 'users.php?psi=last', true);
+    if(delete_domain($_POST['domain_id'], true)) {
+        set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
+    }
+
+    redirectTo('users.php');
 } else {
-    if(isset($_GET['delete'])) {
+    if (isset($_GET['delete'])) {
         set_page_message(tr('Wrong domain Id.'), 'error');
     } else {
         set_page_message(tr('You must confirm domain deletion.'), 'error');
         redirectTo('domain_delete.php?domain_id=' . intval($_POST['domain_id']));
     }
 
-	redirectTo('users.php?psi=last');
+    redirectTo('users.php');
 }
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
 generatePageMessage($tpl);
-
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,
+                                              new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
+unsetMessages();

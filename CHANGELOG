@@ -49,6 +49,7 @@ Tickets:
 	- Fixed #130: Defect - PHP gettext native support - Files cache issue
 	- Fixed #131: Bug - Awstats in dynamic mode do not work
 	- Fixed #132: Bug - ACTIVATION_LINK placeholder not replaced in mail
+	- Fixed #133: Bug - SQL users are not deleted on domain deletion
 	- Fixed #139: Bug - Unable to disable domain account
 	- Fixed #141: Bug - View Aliases link doesn't work (admin level)
 	- Fixed #142: Task - PMA config File have to be updated to new Dir Structure
