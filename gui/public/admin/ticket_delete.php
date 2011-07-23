@@ -1,10 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
@@ -26,28 +26,36 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+/************************************************************************************
+ * Main script
+ */
+
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+// Checks if support ticket system is activated
 if (!hasTicketSystem()) {
 	redirectTo('index.php');
 }
 
-$back_url = 'ticket_system.php';
-$user_id = $_SESSION['user_id'];
+$userId = $_SESSION['user_id'];
+$previousPage = 'ticket_system';
 
-if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
+if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 
-	$ticket_id = $_GET['ticket_id'];
+	$ticketId = (int) $_GET['ticket_id'];
 
 	$query = "
 		SELECT
@@ -58,35 +66,33 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	;";
+	";
+	$stmt = exec_query($query, array($ticketId, $userId, $userId));
 
-	$rs = exec_query($query, array($ticket_id, $user_id, $user_id));
-
-	if ($rs->recordCount() == 0) {
-		redirectTo('ticket_system.php');
+	if ($stmt->rowCount() == 0) {
+        set_page_message(tr("Ticket with Id: '%d' no found.", $ticketId), 'error');
+		redirectTo($previousPage . '.php');
 	}
 
-	$back_url = (getTicketStatus($ticket_id) == 0) ?
-		'ticket_closed.php' : 'ticket_system.php';
+    // The ticket status was 0 so we come from ticket_closed.php
+    if($stmt->fields['ticket_status'] == 0 ) {
+        $previousPage = 'ticket_closed';
+    }
 
-	deleteTicket($ticket_id);
-
-	write_log(sprintf("%s: deletes support ticket %d", $_SESSION['user_logged'],
-			$ticket_id), E_USER_NOTICE);
-	set_page_message(tr('Support ticket deleted successfully!'), 'success');
-} elseif (isset($_GET['delete']) && $_GET['delete'] == 'open') {
-
-	deleteTickets('open', $user_id);
-
-	write_log(sprintf("%s: deletes all open support tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
-	set_page_message(tr('All open support tickets deleted successfully!'), 'success');
-} elseif (isset($_GET['delete']) && $_GET['delete'] == 'closed') {
-
-	deleteTickets('closed', $user_id);
-
-	write_log(sprintf("%s: deletes all closed support ticket.", $_SESSION['user_logged']), E_USER_NOTICE);
-	set_page_message(tr('All closed support tickets deleted successfully!'), 'success');
-	$back_url = 'ticket_closed.php';
+	deleteTicket($ticketId);
+    set_page_message(tr('Ticket successfully deleted.'), 'success');
+	write_log(sprintf("%s: deleted ticket %d", $_SESSION['user_logged'], $ticketId), E_USER_NOTICE);
+} elseif(isset($_GET['delete']) && $_GET['delete'] == 'open') {
+	deleteTickets('open', $userId);
+    set_page_message(tr('All open tickets were successfully deleted.'), 'success');
+	write_log(sprintf("%s: deleted all open tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+} elseif(isset($_GET['delete']) && $_GET['delete'] == 'closed') {
+	deleteTickets('closed', $userId);
+    set_page_message(tr('All closed tickets were successfully deleted.'), 'success');
+	write_log(sprintf("%s: deleted all closed tickets.", $_SESSION['user_logged']), E_USER_NOTICE);
+    $previousPage = 'ticket_closed';
+} else {
+    set_page_message(tr('Unknown action requested.'), 'error');
 }
 
-redirectTo($back_url);
+redirectTo($previousPage . '.php');

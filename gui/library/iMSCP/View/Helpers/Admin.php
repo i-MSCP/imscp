@@ -274,7 +274,7 @@ function gen_admin_list($tpl)
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
-                          'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
+                          'ADMIN_MESSAGE' => tr('No administrator account found.'),
                           'ADMIN_LIST' => ''));
 
         $tpl->parse('ADMIN_MESSAGE', 'admin_message');
@@ -362,7 +362,7 @@ function gen_reseller_list($tpl)
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
-                          'RSL_MESSAGE' => tr('Resellers list is empty!'),
+                          'RSL_MESSAGE' => tr('No reseller account found.'),
                           'RSL_LIST' => ''));
 
         $tpl->parse('RSL_MESSAGE', 'rsl_message');
@@ -372,11 +372,7 @@ function gen_reseller_list($tpl)
                           'TR_RSL_CREATED_BY' => tr('Created by'),
                           'TR_RSL_OPTIONS' => tr('Options')));
 
-        $i = 0;
         while (!$rs->EOF) {
-            // @todo Not longer needed with the new theme
-            $tpl->assign('RSL_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-
             if ($rs->fields['created_by'] == '') {
                 $tpl->assign(array(
                                   'TR_DELETE' => tr('Delete'),
@@ -417,7 +413,6 @@ function gen_reseller_list($tpl)
 
             $tpl->parse('RSL_ITEM', '.rsl_item');
             $rs->moveNext();
-            $i++;
         }
 
         $tpl->parse('RSL_LIST', 'rsl_list');
@@ -495,7 +490,7 @@ function gen_user_list($tpl)
             unset($_SESSION['search_status']);
         } else {
             $tpl->assign(array(
-                              'USR_MESSAGE' => tr('Users list is empty!'),
+                              'USR_MESSAGE' => tr('No user account found.'),
                               'USR_LIST' => '',
                               'SCROLL_PREV' => '',
                               'SCROLL_NEXT' => '',

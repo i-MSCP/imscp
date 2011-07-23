@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_VIEW_TICKET_PAGE_TITLE}</title>
+		<title>{TR_TICKET_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
@@ -16,86 +16,101 @@
 		</script>
 		<![endif]-->
 	</head>
-
-	<body>
-		<div class="header">
-			{MAIN_MENU}
-
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
-		</div>
-
-		<div class="location">
-			<div class="location-area icons-left">
-				<h1 class="support">{TR_MENU_QUESTIONS_AND_COMMENTS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<!-- BDP: logged_from -->
+    <body>
+        <div class="header">
+        {MAIN_MENU}
+            <div class="logo">
+                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
+            </div>
+        </div>
+        <div class="location">
+            <div class="location-area icons-left">
+                <h1 class="general">{TR_SUPPORT_SYSTEM}</h1>
+            </div>
+            <ul class="location-menu">
+                <!-- <li><a class="help" href="#">Help</a></li> -->
+                <!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="ticket_system.php">{TR_MENU_QUESTIONS_AND_COMMENTS}</a></li>
-				<li>{TR_VIEW_SUPPORT_TICKET}</li>
-			</ul>
-		</div>
+                <!-- EDP: logged_from -->
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+            </ul>
+            <ul class="path">
+                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_SUPPORT_SYSTEM}</a></li>
+                <li><a href="ticket_view.php?ticket_id={TICKET_ID_VAL}">{TR_VIEW_SUPPORT_TICKET}</a></li>
+            </ul>
+        </div>
+        <div class="left_menu">
+            {MENU}
+        </div>
+        <div class="body">
+            <h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
 
-		<div class="left_menu">
-			{MENU}
-		</div>
+            <!-- BDP: page_message -->
+            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
+            <!-- EDP: page_message -->
 
-		<div class="body">
-            			<h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
+            <table>
+                <tr>
+                    <th colspan="2">{TR_TICKET_INFO}</th>
+                </tr>
+                <tr>
+                    <td style="width:200px;"><strong>{TR_TICKET_URGENCY}:</strong></td>
+                    <td>{TICKET_URGENCY_VAL}</td>
+                </tr>
+                <tr>
+                    <td><strong>{TR_TICKET_SUBJECT}</strong>:</td>
+                    <td>{TICKET_SUBJECT_VAL}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th colspan="2">{TR_TICKET_MESSAGES}</th>
+                </tr>
+                <!-- BDP: tickets_item -->
+                <tr>
+                    <td><strong>{TR_TICKET_FROM}:</strong></td>
+                    <td>{TICKET_FROM_VAL}</td>
+                </tr>
+                <tr>
+                    <td><strong>{TR_TICKET_DATE}:</strong></td>
+                    <td>{TICKET_DATE_VAL}</td>
+                </tr>
+                <tr>
+                    <td><strong>{TR_TICKET_CONTENT}:</strong></td>
+                    <td>
+                        <div style="background:#fefefe;padding:5px;border:1px solid#dedede;">
+                        {TICKET_CONTENT_VAL}
+                        </div>
+                    </td>
+                </tr>
+                <tr style="background:transparent;border: none;">
+                    <td colspan="2" style="border:none;">&nbsp;</td>
+                </tr>
+                <!-- EDP: tickets_item -->
+            </table>
 
+            <h2 class="doc"><span>{TR_TICKET_NEW_REPLY}</span></h2>
 
-
-			<table>
-				<!-- BDP: tickets_list -->
-					<thead>
-						<tr><th>{TR_TICKET_URGENCY}:</th><th>{URGENCY}</th></tr>
-						<tr><th>{TR_TICKET_SUBJECT}: </th><th>{SUBJECT}</th></tr>
-					</thead>
-					<tbody>
-						<!-- BDP: tickets_item -->
-							<tr class="line_top"><td>{TR_TICKET_FROM}:</td><td>{FROM}</td></tr>
-							<tr><td>{TR_TICKET_DATE}: </td><td>{DATE}</td></tr>
-							<tr><td colspan="2">{TICKET_CONTENT}</td></tr>
-						<!-- EDP: tickets_item -->
-					</tbody>
-				<!-- EDP: tickets_list -->
-			</table>
-
-			<h2 class="doc">{TR_NEW_TICKET_REPLY}</h2>
-			<form name="question_frm" method="post" action="ticket_view.php?ticket_id={ID}">
-				<table>
-					<tbody>
-						<tr>
-							<td><textarea name="user_message" cols="80" rows="12"></textarea></td>
-						</tr>
-					</tbody>
-				</table>
-
-				<div class="buttons">
-					<input name="button_reply" type="button" class="button" value="{TR_REPLY}" onclick="return sbmt(document.forms[0],'send_msg');" />
-					<input name="button_action" type="button" class="button" value="{TR_ACTION}" onclick="return sbmt(document.forms[0],'{ACTION}');" />
-				</div>
-				<input name="uaction" type="hidden" value="" />
-				<input name="screenwidth" type="hidden" value="{SCREENWIDTH}" />
-				<input name="subject" type="hidden" value="{SUBJECT}" />
-				<input name="urgency" type="hidden" value="{URGENCY_ID}" />
-			</form>
-
-		</div>
-
-		<div class="footer">
-			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
-		</div>
-
-	</body>
+            <form name="ticketFrm" method="post" action="ticket_view.php?ticket_id={TICKET_ID_VAL}">
+                <table>
+                    <tr>
+                        <td style="text-align: center">
+                            <textarea style="padding:3px;" name="user_message" cols="80" rows="12"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <div class="buttons">
+                    <input name="button_reply" type="button" class="button" value="{TR_TICKET_REPLY}" onclick="return sbmt(document.forms[0], 'send_msg');" />
+                    <input name="button_action" type="button" class="button" value="{TR_TICKET_ACTION}" onclick="return sbmt(document.forms[0],'{TICKET_ACTION_VAL}');" />
+                </div>
+                <input name="uaction" type="hidden" value="" />
+                <input name="subject" type="hidden" value="{TICKET_SUBJECT_VAL}" />
+                <input name="urgency" type="hidden" value="{TICKET_URGENCY_ID_VAL}" />
+            </form>
+        </div>
+        <div class="footer">
+            i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+        </div>
+    </body>
 </html>

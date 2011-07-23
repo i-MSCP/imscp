@@ -92,7 +92,6 @@ iMSCP_Registry::get('exceptionHandler')->attach(
 /**
  * Include i-MSCP common functions
  */
-require_once 'vendor/net_idna/idna_convert.class.php';
 require_once 'shared-functions.php';
 
 /**

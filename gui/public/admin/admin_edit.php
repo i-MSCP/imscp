@@ -222,7 +222,7 @@ gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tp
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 update_data();
 
-$admin_name = tohtml(decode_idna($rs->fields['admin_name']));
+$admin_name = decode_idna($rs->fields['admin_name']);
 
 if (isset($_POST['genpass'])) {
     $tpl->assign('VAL_PASSWORD', passgen());

@@ -255,7 +255,7 @@ function get_domain_running_sub_ftp_acc_cnt($domain_id)
 
     $sub_ftp_acc_cnt = 0;
 
-    if ($stmt2->recordCount()) {
+    if ($stmt2->rowCount() != 0) {
         /** @var $cfg iMSCP_Config_Handler_File */
         $cfg = iMSCP_Registry::get('config');
         $ftpSeparator = $cfg->FTP_USERNAME_SEPARATOR;
@@ -305,7 +305,7 @@ function get_domain_running_als_ftp_acc_cnt($domain_id)
 
     $als_ftp_acc_cnt = 0;
 
-    if ($stmt1->recordCount()) {
+    if ($stmt1->rowCount() != 0) {
         /** @var $cfg iMSCP_Config_Handler_File */
         $cfg = iMSCP_Registry::get('config');
         $ftpSeparator = $cfg->FTP_USERNAME_SEPARATOR;
@@ -516,7 +516,7 @@ function sql_delete_user($domain_id, $db_user_id)
 	";
     $stmt = exec_query($query, array($domain_id, $db_user_id));
 
-    if (!$stmt->recordCount()) {
+    if ($stmt->rowCount() == 0) {
         if ($_SESSION['user_type'] === 'admin'
             || $_SESSION['user_type'] === 'reseller'
         ) {
@@ -627,7 +627,7 @@ function delete_sql_database($domain_id, $database_id)
 	";
     $stmt = exec_query($query, array($domain_id, $database_id));
 
-    if (!$stmt->recordCount()) {
+    if ($stmt->recordCount() == 0) {
         if ($_SESSION['user_type'] === 'admin'
             || $_SESSION['user_type'] === 'reseller'
         ) {
@@ -656,7 +656,7 @@ function delete_sql_database($domain_id, $database_id)
 	";
     $stmt = exec_query($query, array($domain_id, $database_id));
 
-    if (!$stmt->recordCount()) {
+    if ($stmt->rowCount() != 0) {
         while (!$stmt->EOF) {
             $db_user_id = $stmt->fields['db_user_id'];
             sql_delete_user($domain_id, $db_user_id);
@@ -737,7 +737,7 @@ function mount_point_exists($domain_id, $mnt_point)
     $stmt = exec_query($query,  array(
                                      $domain_id, $mnt_point, $mnt_point, $mnt_point));
 
-    if ($stmt->recordCount()) {
+    if ($stmt->recordCount() != 0) {
         return true;
     }
 

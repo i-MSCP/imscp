@@ -48,13 +48,13 @@ else
 	GUI=../../gui
 fi
 
-if [ ! -f ${GUI}/index.php ]; then
+if [ ! -f ${GUI}/public/index.php ]; then
 	if [ -f ${GUI}/gui/index.php ]; then
 		GUI=${GUI}/gui/
 	fi
 fi
 
-if [ ! -f ${GUI}/index.php ]; then
+if [ ! -f ${GUI}/public/index.php ]; then
 	echo "${GUI} isn't a valid gui/ location!"
 	exit 1
 fi
@@ -69,12 +69,12 @@ fi
 --msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="tr" \
 --no-location \
-${GUI}/include/i18n.php \
-${GUI}/include/iMSCP/*.php \
-${GUI}/include/iMSCP/*/*.php \
-${GUI}/include/iMSCP/View/Helpers/*.php \
-${GUI}/*.php \
-${GUI}/*/*.php \
+${GUI}/library/i18n.php \
+${GUI}/library/iMSCP/*.php \
+${GUI}/library/iMSCP/*/*.php \
+${GUI}/library/iMSCP/View/Helpers/*.php \
+${GUI}/public/*.php \
+${GUI}/public/*/*.php \
 --from-code=utf-8 \
 -p ../po \
 -o "iMSCP.pot"

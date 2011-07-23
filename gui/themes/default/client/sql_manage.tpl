@@ -17,10 +17,18 @@
 		<![endif]-->
 		<script type="text/javascript">
 		/* <![CDATA[ */
-		function action_delete(url, subject) {
-			if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
-				return false;
-			location = url;
+		function action_delete(url, subject, object) {
+            if(object == 'database') {
+                msg = "{TR_DATABASE_MESSAGE_DELETE}"
+            } else {
+                msg = "{TR_USER_MESSAGE_DELETE}"
+            }
+
+			if (confirm(sprintf(msg, subject))) {
+                location = url;
+            }
+
+			return false;
 		}
 		/* ]]> */
 		</script>
@@ -72,7 +80,7 @@
 							<th>{DB_NAME}</th>
 							<th>
 								<a href="sql_user_add.php?id={DB_ID}"class="icon i_add_user">{TR_ADD_USER}</a>
-								<a href="#" class="icon i_delete" onclick="action_delete('sql_database_delete.php?id={DB_ID}', '{DB_NAME}')">{TR_DELETE}</a>
+								<a href="#" class="icon i_delete" onclick="return action_delete('sql_database_delete.php?id={DB_ID}', '{DB_NAME}', 'database')">{TR_DELETE}</a>
 							</th>
 						</tr>
 					</thead>
@@ -89,7 +97,7 @@
 								<a href="sql_change_password.php?id={USER_ID}"
 									class="icon i_change_password">{TR_CHANGE_PASSWORD}</a> <a href="#"
 									class="icon i_delete"
-									onclick="action_delete('sql_delete_user.php?id={USER_ID}', '{DB_USER}')">{TR_DELETE}</a>
+									onclick="return action_delete('sql_delete_user.php?id={USER_ID}', '{DB_USER}', 'user')">{TR_DELETE}</a>
 								</td>
 							</tr>
 						<!-- EDP: user_list -->
