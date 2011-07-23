@@ -395,9 +395,7 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
         while (!$stmt->EOF) {
             $tpl->assign(array(
                               'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_name'])),
-                              'SUB_MNT' => tohtml(substr(
-
-                                                      $stmt->fields['subdomain_mount'], strpos($stmt->fields['subdomain_mount'], $cfg->APACHE_WWW_DIR)))));
+                              'SUB_MNT' => tohtml($stmt->fields['subdomain_mount'])));
 
             $tpl->parse('SUB_ITEM', '.sub_item');
             $stmt->moveNext();
