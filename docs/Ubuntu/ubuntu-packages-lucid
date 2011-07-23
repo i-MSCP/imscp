@@ -78,6 +78,7 @@ patch
 perl
 perl-base
 perl-modules
+php-gettext
 php-pear
 php5
 php5-adodb
@@ -85,7 +86,7 @@ php5-cgi
 php5-cli
 php5-common
 php5-gd
-php-gettext
+php5-intl
 php5-mcrypt
 php5-mysql
 policyd-weight
