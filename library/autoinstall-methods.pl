@@ -122,7 +122,7 @@ sub gui{
 
 	my ($rs, $stdout, $stderr);
 
-	$rs = execute("cp -R $FindBin::Bin/gui $main::SYSTEM_ROOT/gui", \$stdout, \$stderr);
+	$rs = execute("cp -R $FindBin::Bin/gui $main::SYSTEM_ROOT", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
 
@@ -487,19 +487,48 @@ sub testRequirements{
 	0;
 }
 
-sub backup{
+sub setup{
 	debug((caller(0))[3].': Starting...');
 
-	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp"){
-		my ($rs, $stdout, $stderr);
-		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if $stderr;
+	my ($rs, $stdout, $stderr);
+
+	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup"){
+		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup");
+		error(
+			(caller(0))[3].": ".
+			"Error while running $main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup\n\n".
+			"Full log can be found $main::defaultConf{LOG_DIR}/imscp-setup.log"
+		) if $rs;
 		return $rs if $rs;
+	} else {
+		fatal((caller(0))[3].": Can`t find $main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup");
+		return 1;
 	}
 
 	debug((caller(0))[3].': Ending...');
 	0;
+}
+
+sub backup{
+	debug((caller(0))[3].': Starting...');
+
+	my ($rs, $stdout, $stderr);
+
+	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp"){
+		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		warning((caller(0))[3].": $stderr") if $stderr;
+		error((caller(0))[3].": Could not create backups") if $rs;
+		$rs = iMSCP::Dialog->factory()->yesno(
+			"\n\n\\Z1Could not create backups\\Zn\n\n".
+			"This is not a fatal error, setup may continue, but ".
+			"you will not have a backup (unless you already builded one)\n\n".
+			"Do you want to continue?"
+		) if $rs;
+	}
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
 }
 
 sub cleanUp{
@@ -579,4 +608,20 @@ sub saveCustom{
 	0;
 }
 
+sub cleanTMP{
+	debug((caller(0))[3].': Starting...');
+
+	my ($rs, $stdout, $stderr);
+	my $tmp = qualify_to_ref('INST_PREF', 'main');
+
+	if($$$tmp && -d $$$tmp){
+		$rs = execute("rm -fr $$$tmp", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		return $rs if $rs;
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
 1;

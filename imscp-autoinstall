@@ -87,13 +87,7 @@ my @steps = (
 	[\&gui,						'GUI install'],
 	[\&maintainer,				'Maintainer scripts'],
 	[\&finishBuild,				'Process post build operations'],
-	[\&cleanUp,					'Perform cleanup'],
-
-	[\&backup,					'Backup existing instalation'],
-	[\&saveCustom,				'Save custom data'],
-	#[\&setup,				'Copy i-MSCP Data to default location'],
-
-
+	[\&cleanUp,					'Perform cleanup']
 );
 my $step = 1;
 for (@steps){
@@ -108,19 +102,41 @@ my @errors		= getMessageByType('ERROR');
 my $msg;
 
 if (@errors > 0  || @warnings > 0) {
-	$msg = "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
+	$msg  =	"\n\\Z".(@errors > 0 ? 1 : 3 )."Build section finished but with ".
+			(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
+	$msg .= "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
-	iMSCP::Dialog->factory()->msgbox(
-		"\n\\Z".(@errors > 0 ? 1 : 3 )." -> Finished but with ".
-		(@errors > 0 ? 'errors' : 'warnings')
-		.":\\Zn\n".$msg
-	);
-	execute('clear');
+	iMSCP::Dialog->factory()->set('defaultno', '');
 } else {
-	iMSCP::Dialog->factory()->msgbox("\n\\Z2 -> Finished without errors");
+	$msg  =	"\n\\Z2 -> Build section finished without errors\n";
 }
 
-exit 0;
+$msg .= "\nDo you want continue to setup section?";
+
+unless(iMSCP::Dialog->factory()->yesno($msg)){
+	@steps = (
+		[\&backup,		'Backup existing instalation'],
+		[\&saveCustom,	'Save custom data'],
+		[\&setup,		'Copy i-MSCP Data to default location']
+	);
+	$step = 1;
+	for (@steps){
+		step($_->[0], $_->[1], scalar @steps, $step);
+		$step++;
+	}
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
+	iMSCP::Dialog->factory()->msgbox("Enjoy i-MSCP $main::defaultConf{Version}");
+} else {
+	iMSCP::Dialog->factory()->msgbox(
+		"To continue setup run from console\n\n".
+		"\\Zu$main::defaultConf{ROOT_DIR}/engine/setup/imscp-setup"
+	);
+}
+
+iMSCP::Dialog->factory()->infobox("Cleaning temporary files");
+
+$rs = cleanTMP();
+exit $rs;
 
 END{
 	execute('clear');

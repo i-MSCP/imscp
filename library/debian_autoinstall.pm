@@ -62,7 +62,7 @@ sub installDialog{
 
 	$rs = execute("apt-get -y install dialog", undef, \$stderr);
 	error((caller(0))[3]. ": $stderr") if $stderr;
-	error((caller(0))[3].": Can not install packages.") if $rs;
+	error((caller(0))[3].": Can not install packages.") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	#force dialog now
@@ -173,13 +173,13 @@ sub processAptList{
 
 	iMSCP::Dialog->factory()->infobox("Update apt sources");
 
-	$rs = execute('apt-get update', \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
+	#$rs = execute('apt-get update', \$stdout, \$stderr);
+	#debug((caller(0))[3].": $stdout") if $stdout;
+	#error((caller(0))[3].": $stderr") if $stderr;
+	#return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
-	$rs;
+	0;
 }
 
 sub readPackages{
@@ -288,7 +288,7 @@ sub installPackages{
 
 	$rs = execute("apt-get -y install $self->{toInstall}", undef, \$stderr);
 	error((caller(0))[3]. ": $stderr") if $stderr;
-	error((caller(0))[3].": Can not install packages.") if $rs;
+	error((caller(0))[3].": Can not install packages.") if $rs && ! $stderr;
 	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');

@@ -115,7 +115,7 @@ sub fatal{
 sub getLastError{
 	my $self = iMSCP::Debug->new();
 	my $last = getMessageByType('ERROR', {amount => 1, chrono => 0});
-	error("\$last:$last");
+	#error("\$last:$last");
 	return $last;
 }
 
