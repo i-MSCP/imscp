@@ -173,10 +173,11 @@ sub processAptList{
 
 	iMSCP::Dialog->factory()->infobox("Update apt sources");
 
-	#$rs = execute('apt-get update', \$stdout, \$stderr);
-	#debug((caller(0))[3].": $stdout") if $stdout;
-	#error((caller(0))[3].": $stderr") if $stderr;
-	#return $rs if $rs;
+	$rs = execute('apt-get update', \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	error((caller(0))[3].": Can not get update from repository") if $rs && !$stderr;
+	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
 	0;
