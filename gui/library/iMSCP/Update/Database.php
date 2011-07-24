@@ -859,4 +859,48 @@ class iMSCP_Update_Database extends iMSCP_Update
                 VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
             "UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
 	}
+
+    /**
+     * Deletes possible orphan items.
+     *
+     * See #145 on i-MSCP issue tracker for more information.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4961
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_70()
+    {
+        $sqlUpd = array();
+
+        $tablesToForeignKey = array(
+            'email_tpls' => 'owner_id', 'hosting_plans' => 'reseller_id',
+            'orders' => 'user_id', 'orders_settings' => 'user_id',
+            'reseller_props' => 'reseller_id', 'tickets' => 'ticket_to',
+            'tickets' => 'ticket_from', 'user_gui_props' => 'user_id',
+            'web_software' => 'reseller_id');
+
+        $stmt = execute_query('SELECT `admin_id` FROM `admin`');
+        $usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
+
+        foreach ($tablesToForeignKey as $table => $foreignKey) {
+            $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
+        }
+
+        return $sqlUpd;
+    }
+
+    /**
+     * Changes log table schema to allow storage of large messages.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r5002
+     * @return string SQL statement to be executed
+     */
+    protected function _databaseUpdate_71()
+    {
+        return '
+            ALTER TABLE `log` CHANGE `log_message` `log_message`
+            TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL';
+    }
 }

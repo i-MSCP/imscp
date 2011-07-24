@@ -36,7 +36,7 @@ set -e
 
 GUI=../../gui
 
-if [ ! -f ${GUI}/index.php ]; then
+if [ ! -f ${GUI}/public/index.php ]; then
 	echo "${GUI} isn't a valid gui/ location!"
 	exit 1
 fi

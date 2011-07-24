@@ -116,45 +116,9 @@
 
 		</div>
 
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+		</div>
+
 	</body>
 </html>
-<!--
-					  <tr>
-						<td width="25">&nbsp;</td>
-						<td width="200" class="content2" style="vertical-align:top;"></td>
-						<td class="content">
-							<br />
-							<input type="radio" name="status" {CHECK_DIS} value="0" /> {}
-						</td>
-					  </tr>
-					  <tr>
-						<td width="25">&nbsp;</td>
-						<td width="200" class="content2">
-						 {TR_FORWARD} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
-						</td>
-						<td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}" /></td>
-					  </tr>
-					  <tr>
-						<td width="25">&nbsp;</td>
-						<td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  " />
-						  &nbsp;&nbsp;&nbsp;
-						  </td>
-					  </tr>
-					</table>
-
-				</form></td>
-				<td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			  </tr>
-			</table></td>
-		  </tr>
-		</table>
-	  </td>
-	</tr>
-</table>
-</body>
-</html>
- -->

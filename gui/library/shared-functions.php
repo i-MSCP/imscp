@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
@@ -409,172 +409,216 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
 }
 
 /**
- * Delete domain with all sub items (usage in admin and reseller).
+ * Deletes a domain account with all its sub items.
  *
- * @param integer $domain_id Domain unique identifier
- * @param string $goto users.php or manage_users.php
- * @param boolean $breseller double check by reseller=current user
+ * @param integer $domainId Domain unique identifier
+ * @param boolean $checkCreator Tell whether or not domain must have been created by
+ *                           logged-in user
+ * @return bool TRUE on success, FALSE otherwise
  */
-function delete_domain($domain_id, $goto, $breseller = false)
+function delete_domain($domainId, $checkCreator = false)
 {
+    $domainId = (int)$domainId;
+
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    // Get uid and gid of domain user
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+
+    // Get username, uid and gid of domain user
     $query = "
 		SELECT
-			`domain_uid`, `domain_gid`, `domain_admin_id`, `domain_name`,
-			`domain_created_id`
+			`a`.`domain_uid`, `a`.`domain_gid`, `a`.`domain_admin_id`,
+			`a`.`domain_name`, `a`.`domain_created_id`, `b`.admin_name
 		FROM
-			`domain`
+			`domain` `a`
+	    JOIN
+	        `admin` `b` ON (`b`.`admin_id` = `a`.`domain_admin_id`)
 		WHERE
 			`domain_id` = ?
 	";
 
-    if ($breseller) {
-        $reseller_id = $_SESSION['user_id'];
-        $query .= " AND `domain_created_id` = ?";
-        $res = exec_query($query, array($domain_id, $reseller_id));
+    if ($checkCreator) {
+        $query .= "AND `domain_created_id` = ?";
+        $stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
     } else {
-        $res = exec_query($query, $domain_id);
+        $stmt = exec_query($query, $domainId);
     }
 
-    $data = $res->fetchRow();
-
-    if (empty($data['domain_uid']) || empty($data['domain_admin_id'])) {
-        set_page_message(tr('Wrong domain ID!'));
-        redirectTo($goto);
+    if($stmt->rowCount() == 0) {
+        set_page_message(tr('Wrong domain Id.'), 'error');
+        return false;
     }
 
-    $domain_admin_id = $data['domain_admin_id'];
-    $domain_name = $data['domain_name'];
-    $domain_uid = $data['domain_uid'];
-    $domain_gid = $data['domain_gid'];
+    $domainAdminId = $stmt->fields['domain_admin_id'];
+    $domainAdminUsername = $stmt->fields['admin_name'];
+    $domainName = $stmt->fields['domain_name'];
+    $domainUid = $stmt->fields['domain_uid'];
+    $domainGid = $stmt->fields['domain_gid'];
+    $resellerId = $stmt->fields['domain_created_id'];
 
-    if (!$breseller) {
-        $reseller_id = $data['domain_created_id'];
-    }
+    try {
+        $db->beginTransaction();
 
-    // Mail users:
-    $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?";
-    exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+        // First, remove domain user sessions to prevent any problems
+        $query = 'DELETE FROM `login` WHERE `user_name` = ?';
+        exec_query($query, $domainAdminUsername);
 
-    // Delete all protected areas related data (areas, groups and users)
-    $query = "
-		DELETE
-			`areas`, `users`, `groups`
-		FROM
-			`domain` AS `dmn`
-		LEFT JOIN
-			`htaccess` AS `areas` ON `areas`.`dmn_id` = `dmn`.`domain_id`
-		LEFT JOIN
-			`htaccess_users` AS `users` ON `users`.`dmn_id` = `dmn`.`domain_id`
-		LEFT JOIN
-			`htaccess_groups` AS `groups` ON `groups`.`dmn_id` = `dmn`.`domain_id`
-		WHERE
-			`dmn`.`domain_id` = ?
-	";
-    exec_query($query, $domain_id);
+        // Deletes all protected areas related data (areas, groups and users)
 
-    // Delete subdomain aliases:
-    $alias_a = array();
-
-    $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?";
-    $res = exec_query($query, $domain_id);
-
-    while (!$res->EOF) {
-        $alias_a[] = $res->fields['alias_id'];
-        $res->moveNext();
-    }
-
-    if (count($alias_a) > 0) {
         $query = "
-            UPDATE
-                `subdomain_alias`
-            SET
-                `subdomain_alias_status` = ?
-            WHERE
-                `alias_id` IN (";
-        $query .= implode(',', $alias_a);
-        $query .= ")";
-        exec_query($query, $cfg->ITEM_DELETE_STATUS);
+		    DELETE
+			    `areas`, `users`, `groups`
+		    FROM
+			    `domain` AS `dmn`
+		    LEFT JOIN
+			    `htaccess` AS `areas` ON `areas`.`dmn_id` = `dmn`.`domain_id`
+		    LEFT JOIN
+			    `htaccess_users` AS `users` ON `users`.`dmn_id` = `dmn`.`domain_id`
+		    LEFT JOIN
+			    `htaccess_groups` AS `groups` ON `groups`.`dmn_id` = `dmn`.`domain_id`
+		    WHERE
+			    `dmn`.`domain_id` = ?
+	    ";
+        exec_query($query, $domainId);
+
+        // Deletes SQL databases and users
+
+        $query = 'SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?';
+        $stmt = exec_query($query, $domainId);
+
+        while (!$stmt->EOF) {
+            delete_sql_database($domainId, $stmt->fields['sqld_id']);
+            $stmt->moveNext();
+        }
+
+        // Deletes traffic entries
+        $query = 'DELETE FROM `domain_traffic` WHERE`domain_id` = ?';
+        exec_query($query, $domainId);
+
+        // Deletes custom DNS records
+        $query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ?';
+        exec_query($query, $domainId);
+
+        // Deletes FTP accounts (users and groups)
+
+        $query = 'DELETE FROM `ftp_users` WHERE `uid` = ?';
+        exec_query($query, $domainUid);
+
+        $query = 'DELETE FROM `ftp_group` WHERE `gid` = ?';
+        exec_query($query, $domainGid);
+
+        // Deletes account login data and personal data:
+
+        $query = 'DELETE FROM `admin` WHERE `admin_id` = ?';
+        exec_query($query, $domainAdminId);
+
+        // Deletes quota entries
+
+        $query = 'DELETE FROM `quotalimits` WHERE `name` = ?';
+        exec_query($query, $domainName);
+
+        $query = 'DELETE FROM `quotatallies` WHERE `name` = ?';
+        exec_query($query, $domainName);
+
+        // Deletes support tickets
+
+        $query = 'DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?';
+        exec_query($query, array($domainAdminId, $domainAdminId));
+
+        // Deletes user gui properties
+
+        $query = 'DELETE FROM `user_gui_props` WHERE `user_id` = ?';
+        exec_query($query, $domainAdminId);
+
+        // Delegated tasks to the engine - begin
+
+        // Deletes Mail accounts
+        $query = 'UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?';
+        exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+        // Deletes subdomain's aliasses (Delegated to the engine)
+        $query = 'SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?';
+        $stmt = exec_query($query, $domainId);
+
+        if ($stmt->recordCount() != 0) {
+            $aliasesIds = array();
+
+            // TODO Not better to use PDO::FETCH_COLUMN ?
+            while (!$stmt->EOF) {
+                $aliasesIds[] = $stmt->fields['alias_id'];
+                $stmt->moveNext();
+            }
+
+            $aliasesIds = implode(',', $aliasesIds);
+
+            $query = "
+                UPDATE
+                    `subdomain_alias`
+                SET
+                    `subdomain_alias_status` = ?
+                WHERE
+                    `alias_id` IN ({$aliasesIds})
+            ";
+            exec_query($query, $cfg->ITEM_DELETE_STATUS);
+        }
+
+        // Delete Domain aliases
+
+        $query = 'UPDATE `domain_aliasses` SET `alias_status` =  ? WHERE `domain_id` = ?';
+        exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+        // Deletes domain's subdomains
+
+        $query = 'UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?';
+        exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+        // Delete domain
+
+        $query = 'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?';
+        exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+        // Delegated tasks to the engine - end
+
+        // Updates resellers properties
+        update_reseller_c_props($resellerId);
+
+        // Commit all changes to database server
+        $db->commit();
+
+        write_log($_SESSION['user_logged'] . ': deleted domain ' . $domainName, E_USER_NOTICE);
+
+    } catch (iMSCP_Exception_Database $e) {
+        $db->rollBack();
+
+        if(!$cfg->DEBUG) {
+            if ($checkCreator) {
+                set_page_message(tr('Unable to delete the domain. A message has been sent to the administrator.'), 'error');
+            } else {
+                set_page_message(tr('Unable to delete the domain. Please, consult admin logs or your mail for more information.'), 'error');
+            }
+
+            write_log(sprintf("System was unable to delete domain '%s' for the following reason: %s",
+                              $domainName, $e->getMessage()), E_USER_ERROR);
+        } else {
+            throw new iMSCP_Exception_Database($e->getMessage());
+        }
+
+        return false;
     }
 
-    // Delete SQL databases and users
-    $query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?";
-    $res = exec_query($query, $domain_id);
-
-    while (!$res->EOF) {
-        delete_sql_database($domain_id, $res->fields['sqld_id']);
-        $res->moveNext();
-    }
-
-    // Domain aliases:
-    $query = "
-        UPDATE
-            `domain_aliasses`
-        SET
-            `alias_status` =  ?
-        WHERE
-            `domain_id` = ?
-    ";
-    exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
-
-    // Remove domain traffic
-    $query = "DELETE FROM `domain_traffic` WHERE`domain_id` = ?";
-    exec_query($query, $domain_id);
-
-    // Delete domain DNS entries
-    $query = "DELETE FROM `domain_dns` WHERE `domain_id` = ?";
-    exec_query($query, $domain_id);
-
-    // Set domain deletion status
-    $query = "UPDATE `domain` SET `domain_status` = 'delete' WHERE `domain_id` = ?";
-    exec_query($query, $domain_id);
-
-    // Set domain subdomains deletion status
-    $query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
-    exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
-
-    // --- Send request to the daemon
+    // We are now ready to send a request to the daemon for delegated tasks.
+    // Note: We are safe here. If the daemon doesn't answer, the entities will not be
+    // removed but it's not really a problem because they are no longer viewable
+    // through the panel. To finish the deletion process, the administrator must send
+    // a request to the daemon manually via the panel, or run the imscp-rqst-mngr
+    // script manually.
     send_request();
 
-    // Delete FTP users:
-    $query = "DELETE FROM `ftp_users` WHERE `uid` = ?";
-    exec_query($query, $domain_uid);
-
-    // Delete FTP groups:
-    $query = "DELETE FROM `ftp_group` WHERE `gid` = ?";
-    exec_query($query, $domain_gid);
-
-    // Delete i-MSCP login:
-    $query = "DELETE FROM `admin` WHERE `admin_id` = ?";
-    exec_query($query, $domain_admin_id);
-
-    // Delete the quota section:
-    $query = "DELETE FROM `quotalimits` WHERE `name` = ?";
-    exec_query($query, $domain_name);
-
-    // Delete the quota section:
-    $query = "DELETE FROM `quotatallies` WHERE `name` = ?";
-    exec_query($query, $domain_name);
-
-    // Remove support tickets:
-    $query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?";
-    exec_query($query, array($domain_admin_id, $domain_admin_id));
-
-    // Delete user gui properties
-    $query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?";
-
-    exec_query($query, $domain_admin_id);
-    write_log($_SESSION['user_logged'] . ': deletes domain ' . $domain_name, E_USER_NOTICE);
-
-    if(isset($reseller_id)) {
-        update_reseller_c_props($reseller_id);
-    }
-
     $_SESSION['ddel'] = '_yes_';
-    redirectTo($goto);
+
+    return true;
 }
 
 /**
@@ -859,35 +903,33 @@ function array_encode_idna($array, $asPath = false)
 /**
  * Convert domain name to IDNA ASCII form.
  *
+ * @throws iMSCP_Exception When PHP intl extension is not loaded
  * @param  $domain Domain to convert.
  * @return string Domain name encoded in ASCII-compatible form
  */
 function encode_idna($domain)
 {
-    if (function_exists('idn_to_ascii')) {
+    if (extension_loaded('intl')) {
         return idn_to_ascii($domain);
+    } else {
+        throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
     }
-
-    $idn = new idna_convert();
-    return $idn->encode($domain);
 }
 
 /**
  * Convert domain name from IDNA ASCII to Unicode.
  *
+ * @throws iMSCP_Exception When PHP intl extension is not loaded
  * @param  string $domain Domain to convert in IDNA ASCII-compatible format.
  * @return string Domain name in Unicode.
  */
 function decode_idna($domain)
 {
-    if (function_exists('idn_to_unicode')) {
+    if (extension_loaded('intl')) {
         return idn_to_utf8($domain, IDNA_USE_STD3_RULES);
+    } else {
+        throw new iMSCP_Exception("PHP 'intl' extension is not loaded.");
     }
-
-    $idn = new idna_convert();
-    $result = $idn->decode($domain);
-
-    return ($result == false) ? $domain : $result;
 }
 
 
@@ -952,6 +994,27 @@ function utils_uploadFile($inputFieldName, $destPath)
 
 		return false;
 	}
+}
+
+/**
+ * Generates a random string.
+ *
+ * @param int $length random string length
+ * @return array|string
+ */
+function utils_randomString($length = 10)
+{
+    $base = 'ABCDEFGHKLMNOPQRSTWXYZabcdefghjkmnpqrstwxyz123456789';
+    $max = strlen($base) - 1;
+    $string = '';
+
+    mt_srand((double) microtime() * 1000000);
+
+    while (strlen($string) < $length + 1) {
+        $string .= $base{mt_rand(0, $max)};
+    }
+
+    return $string;
 }
 
 /************************************************************************************
@@ -1027,7 +1090,6 @@ function is_serialized($data)
     if (preg_match("/^[aOs]:[0-9]+:.*[;}]\$/s", $data) ||
         preg_match("/^[bid]:[0-9.E-]+;\$/", $data)
     ) {
-
         return true;
     }
 
@@ -1035,7 +1097,7 @@ function is_serialized($data)
 }
 
 /**
- * Must be documented
+ * Checks for feature permissions.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
@@ -1045,30 +1107,37 @@ function check_permissions($tpl)
     if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == 'no') {
         $tpl->assign('SQL_SUPPORT', '');
     }
+
     if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
         $tpl->assign('ADD_EMAIL', '');
     }
+
     if (isset($_SESSION['subdomain_support'])
         && $_SESSION['subdomain_support'] == 'no'
     ) {
         $tpl->assign('SUBDOMAIN_SUPPORT', '');
     }
+
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
         $tpl->assign('DOMAINALIAS_SUPPORT', '');
     }
+
     if (isset($_SESSION['subdomain_support'])
         && $_SESSION['subdomain_support'] == 'no') {
         $tpl->assign('SUBDOMAIN_SUPPORT_CONTENT', '');
     }
+
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
         $tpl->assign('DOMAINALIAS_SUPPORT_CONTENT', '');
     }
+
     if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no'
         && isset($_SESSION['subdomain_support'])
         && $_SESSION['subdomain_support'] == 'no'
     ) {
         $tpl->assign('DMN_MNGMNT', '');
     }
+
     if (isset($_SESSION['software_support'])
         && $_SESSION['software_support'] == 'no'
     ) {
@@ -1102,14 +1171,15 @@ function make_usage_vals($current, $max)
 }
 
 /**
- * Generate user traffic.
+ * Generates user traffic.
  *
  * @param  int $domainId Domain unique identifier
  * @return array An array that contains traffic usage information
  */
 function generate_user_traffic($domainId)
 {
-    global $crnt_month, $crnt_year;
+    $crnt_month = date('m');
+    $crnt_year = date('Y');
 
     $from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
@@ -1291,7 +1361,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
     $cfg = iMSCP_Registry::get('config');
 
     $admin_login = $_SESSION['user_logged'];
-    $data = get_welcome_email($admin_id, 'user');
+    $data = get_welcome_email($admin_id, $_SESSION['user_type']);
     $from_name = $data['sender_name'];
     $from_email = $data['sender_email'];
     $message = $data['message'];
@@ -1901,17 +1971,11 @@ function execute_query($query, $parameters = null)
 /**
  * Convenience method to prepare and execute a query.
  *
- * <b>Note:</b> On failure, and if the $failDie parameter is set to TRUE, this
- * function sends a mail to the administrator with some relevant information
- * such as the debug information if the
- * {@link iMSCP_Exception_Writer_Mail writer} is active.
- *
  * @throws iMSCP_Exception_Database
  * @param string $query             SQL statement
  * @param string|int|array $bind    Data to bind to the placeholders
  * @return iMSCP_Database_ResultSet A iMSCP_Database_ResultSet object that represents
- *                                  a result set or FALSE on failure if $failDie is
- *                                  set to FALSE
+ *                                  a result set
  */
 function exec_query($query, $bind = null)
 {

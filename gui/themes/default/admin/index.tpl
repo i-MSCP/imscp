@@ -28,7 +28,8 @@
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+                <li>
+                    <a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
                 </li>
             </ul>
             <ul class="path">
@@ -40,25 +41,27 @@
         </div>
         <div class="body">
             <h2 class="general"><span>{TR_GENERAL_INFORMATION}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <!-- BDP: msg_entry -->
-            <div class="warning">{TR_NEW_MSGS}</div>
-            <!-- EDP: msg_entry -->
-
-            <!-- BDP: update_message -->
+            <!-- BDP: imscp_update_message -->
             <div class="info">{UPDATE}</div>
-            <!-- EDP: update_message -->
+            <!-- EDP: imscp_update_message -->
 
-            <!-- BDP: database_update_message -->
+            <!-- BDP: imscp_database_update_message -->
             <div class="info">
-				{TR_DATABASE_UPDATE}
-				<a href="database_update.php" class="link">{TR_DATABASE_UPDATE_LINK}</a>
-			</div>
-            <!-- EDP: database_update_message -->
+                {TR_DATABASE_UPDATE}
+                <a href="database_update.php" class="link">{TR_DATABASE_UPDATE_LINK}</a>
+            </div>
+            <!-- EDP: imscp_database_update_message -->
+
             <table>
+                <tr>
+                    <th>{TR_PROPERTIES}</th>
+                    <th>{TR_VALUES}</th>
+                </tr>
                 <tr>
                     <td style="width:300px;">{TR_ACCOUNT_NAME}</td>
                     <td>{ACCOUNT_NAME}</td>
@@ -106,17 +109,18 @@
             </table>
 
             <h2 class="traffic"><span>{TR_SERVER_TRAFFIC}</span></h2>
-            <!-- BDP: traff_warn -->
-            <div class="warning">{TR_TRAFFIC_WARNING}</div>
-            <!-- EDP: traff_warn -->
-        {TRAFFIC_WARNING}
-            <div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
-            </div>
 
+            <!-- BDP: traffic_warning_message -->
+            <div class="warning">{TR_TRAFFIC_WARNING}</div>
+            <!-- EDP: traffic_warning_message -->
+
+            <p>{TRAFFIC_WARNING}</p>
+            <div class="graph">
+                <span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
+            </div>
         </div>
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
-
     </body>
 </html>

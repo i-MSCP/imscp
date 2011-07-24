@@ -40,8 +40,10 @@
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
- * @param mixed $substitution Prevent the returned string from being replaced
- *                            with html entities
+ * @param mixed $substitution,... If second parameter is bool (true), prevent the
+ *                                returned string from being replaced with html
+ *                                entities. If not considere the parameter(s) as
+ *                                simple substitution value(s)
  * @return Translated or original string
  */
 function tr($msgid, $substitution = false)
@@ -344,7 +346,7 @@ function i18n_changeDefaultLanguage()
         $cfg = iMSCP_Registry::get('config');
 
         /** @var $dbConfig iMSCP_Config_Handler_Db */
-        $defaultLanguage = clean_input($_POST['default_language']);
+        $defaultLanguage = clean_input($_POST['defaultLanguage']);
 
         /** @var $dbConfig iMSCP_Config_Handler_Db */
         $dbConfig = iMSCP_Registry::get('dbConfig');

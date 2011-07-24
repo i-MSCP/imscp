@@ -481,27 +481,6 @@ sub updateDb {
 }
 
 ################################################################################
-# Creating default language table
-#
-# @return int 0 on success, other on failure
-# @depracted since r4792
-#
-#sub setup_default_language_table {
-#
-#	debug((caller(0))[3].': Starting...');
-#
-#	use iMSCP::Database;
-#
-#	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-#
-#	my $error = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/languages.sql");
-#	return $error if ($error);
-#
-#	debug((caller(0))[3].': Ending...');
-#	0;
-#}
-
-################################################################################
 # create all directories required by i-MSCP and the managed services
 #
 # @return int 0 on success, other on failure
@@ -610,10 +589,10 @@ sub setup_base_server_IP{
 	use Data::Validate::IP qw/is_ipv4/;
 
 	while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select your external ip:", keys %{$ips->{ips}}, 'none'))){}
-	if(! (is_ipv4($out))){
+	if(! ($ips->isValidIp($out))){
 		do{
 			while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter your ip:", (keys %{$ips->{ips}})[0]))){}
-		} while(! (is_ipv4($out) && $out ne '127.0.0.1') );
+		} while(! ($ips->isValidIp($out) && $out ne '127.0.0.1') );
 		unless(exists $ips->{ips}->{$out}){
 			while (! ($card = iMSCP::Dialog->factory()->radiolist("Please enter your ip:", keys %{$ips->{cards}}))){}
 			$ips->{ips}->{$out}->{card} = $card;
@@ -1551,111 +1530,14 @@ sub setup_po {
 
 	debug((caller(0))[3].': Starting...');
 
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'CMD_AUTHD'} =~ /^no$/i);
+	use Servers::po;
 
-	use iMSCP::File;
-	use iMSCP::Execute;
-
-	my ($rs, $rdata, $err, $file);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/courier";
-	my $bkpDir ="$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	# Saving all system configuration files if they exists
-	for (qw/authdaemonrc userdb/) {
-		if(-f "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_" && !-f "$bkpDir/$_.system") {
-			iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_")->copyFile("$bkpDir/$_.system") and return 1;
-		}
-	}
-
-	my $timestamp = time;
-
-	# Saving all current production files if they exist
-	for (qw/authdaemonrc userdb/) {
-		next if(!-f "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_");
-		iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_")->copyFile("$bkpDir/$_.$timestamp") and return 1;
-	}
-
-	## Building, storage and installation of new file
-
-	# Saving all current production files if they exist
-	for (($main::imscpConfig{'COURIER_IMAP_SSL'}, $main::imscpConfig{'COURIER_POP_SSL'})) {
-		$file = iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_");
-		next if(!-f "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_");
-		if(!-f "$bkpDir/$_.system"){
-			$file->copyFile("$bkpDir/$_.system") and return 1;
-		} else {
-			$file->copyFile("$bkpDir/$_.$timestamp") and return 1;
-		}
-		$rdata = $file->get();
-		return 1 if (!$rdata);
-		if($rdata =~ m/^TLS_CERTFILE=/msg){
-			$rdata =~ s!^TLS_CERTFILE=.*$!TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem!mg;
-		} else {
-			$rdata .= "TLS_CERTFILE=$main::imscpConfig{'GUI_CERT_DIR'}/$main::imscpConfig{'SERVER_HOSTNAME'}.pem";
-		}
-		$file = iMSCP::File->new(filename => "$wrkDir/$_");
-		$file->set($rdata) and return 1;
-		$file->save() and return 1;
-		$file->mode(0644) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-		# Installing the new file in the production directory
-		$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}/") and return 1;
-	}
-
-	# authdaemonrc file
-
-	# Loading the system file from /etc/imscp/backup
-	$file = iMSCP::File->new(filename => "$bkpDir/authdaemonrc.system");
-	$rdata = $file->get();
-	return 1 if (!$rdata);
-
-	# Building the new file (Adding the authuserdb module if needed)
-	if($rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
-		$rdata =~ s/(authmodulelist=")/$1authuserdb /gm;
-	}
-
-	# Storing the new file in the working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/authdaemonrc");
-	$file->set($rdata) and return 1;
-	$file->save() and return 1;
-	$file->mode(0660) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file in the production directory
-	$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}/") and return 1;
-
-	# userdb file
-
-	# Storing the new file in the working directory
-	iMSCP::File->new(filename => "$cfgDir/userdb")->copyFile("$wrkDir/") and return 1;
-
-	# After build this file is world readable which is is bad
-	# Permissions are inherited by production file
-	$file = iMSCP::File->new(filename => "$wrkDir/userdb");
-	$file->mode(0600) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file in the production directory
-	$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}/") and return 1;
-
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/userdb");
-	$file->mode(0600) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Creating/Updating userdb.dat file from the contents of the userdb file
-	my ($stdout, $stderr);
-	$rs = execute($main::imscpConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if ($stdout);
-	error((caller(0))[3].": $stderr") if ($stderr && $rs);
-	return $rs if $rs;
+	my $po = Servers::po->factory($main::imscpConfig{PO_SERVER});
+	my $rs = $po->can('install') ? $po->install() : 0;
 
 	debug((caller(0))[3].': Ending...');
 
-	0;
+	$rs;
 }
 
 ################################################################################
@@ -2023,12 +1905,7 @@ sub restart_services {
 		['CMD_POSTGREY',		'reload',	1],
 		['CMD_POLICYD_WEIGHT',	'reload',	0],
 		['CMD_AMAVIS',			'reload',	1],
-		['CMD_MTA',				'reload',	1],
-		['CMD_AUTHD',			'restart',	1],
-		['CMD_POP',				'restart',	1],
-		['CMD_POP_SSL',			'restart',	1],
-		['CMD_IMAP',			'restart',	1],
-		['CMD_IMAP_SSL',		'restart',	1],
+		['CMD_MTA',				'reload',	1]
 	);
 
 	my ($rs, $stdout, $stderr);

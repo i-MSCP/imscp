@@ -1,14 +1,14 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,62 +26,45 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+/************************************************************************************
+ * Main script
+ */
+
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ticket_create.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-
-// common page data
-
-$tpl->assign(
-	array(
-		'TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('i-MSCP - Support System - New ticket'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
-
-// dynamic page data
-
-$reseller_id = $_SESSION['user_created_by'];
-
-if (!hasTicketSystem($reseller_id)) {
+// Checks if support ticket system is activated, and if the client's reseller can
+// access to it
+if (!hasTicketSystem($_SESSION['user_created_by'])) {
 	redirectTo('index.php');
 }
 
 if (isset($_POST['uaction'])) {
-	if (empty($_POST['subj'])) {
-		set_page_message(tr('Please specify message subject!'), 'error');
-	} else if (empty($_POST['user_message'])) {
-		set_page_message(tr('Please type your message!'), 'error');
+	if (empty($_POST['subject'])) {
+		set_page_message(tr('Please specify message subject.'), 'error');
+	} elseif (empty($_POST['user_message'])) {
+		set_page_message(tr('Please type your message.'), 'error');
 	} else {
 		createTicket($_SESSION['user_id'], $_SESSION['user_created_by'],
-				$_POST['urgency'], $_POST['subj'], $_POST['user_message'], 1);
+				$_POST['urgency'], $_POST['subject'], $_POST['user_message'], 1);
 		redirectTo('ticket_system.php');
 	}
 }
-
-// static page messages
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
-
-gen_logged_from($tpl);
 
 $userdata = array(
 	'OPT_URGENCY_1' => '',
@@ -111,34 +94,45 @@ switch ($userdata['URGENCY']) {
 }
 
 $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';
-$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? 
+$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ?
 	clean_input($_POST['user_message'], true) : '';
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(array(
+                          'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_create.tpl',
+                          'page_message' => 'page',
+                          'logged_from' => 'page'));
+
+$tpl->assign(array(
+                  'THEME_CHARSET' => tr('encoding'),
+                  'TR_TICKET_PAGE_TITLE' => tr('i-MSCP - Client / Support Ticket System / New Ticket'),
+                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                  'ISP_LOGO' => layout_getUserLogo(),
+                  'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
+                  'TR_NEW_TICKET' => tr('New ticket'),
+                  'TR_LOW' => tr('Low'),
+                  'TR_MEDIUM' => tr('Medium'),
+                  'TR_HIGH' => tr('High'),
+                  'TR_VERY_HIGH' => tr('Very high'),
+                  'TR_URGENCY' => tr('Priority'),
+                  'TR_EMAIL' => tr('Email'),
+                  'TR_SUBJECT' => tr('Subject'),
+                  'TR_YOUR_MESSAGE' => tr('Your message'),
+                  'TR_SEND_MESSAGE' => tr('Send message'),
+                  'TR_OPEN_TICKETS' => tr('Open tickets'),
+                  'TR_CLOSED_TICKETS' => tr('Closed tickets')));
+
 $tpl->assign($userdata);
 
-$tpl->assign(
-	array(
-		'TR_NEW_TICKET' => tr('New ticket'),
-		'TR_LOW' => tr('Low'),
-		'TR_MEDIUM' => tr('Medium'),
-		'TR_HIGH' => tr('High'),
-		'TR_VERI_HIGH' => tr('Very high'),
-		'TR_URGENCY' => tr('Priority'),
-		'TR_EMAIL' => tr('Email'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_YOUR_MESSAGE' => tr('Your message'),
-		'TR_SEND_MESSAGE' => tr('Send message'),
-		'TR_OPEN_TICKETS' => tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets')
-	)
-);
-
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
+gen_logged_from($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
+                                              new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
-
 unsetMessages();

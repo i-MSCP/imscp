@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008.
+#   <tango-net@freenet.de>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-04 18:06+0200\n"
-"PO-Revision-Date: 2011-07-04 16:05+0000\n"
-"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,6 +20,23 @@ msgstr ""
 
 msgid "_: Localised language"
 msgstr "Türkçe - Turkish"
+
+msgid "File is not readable."
+msgstr ""
+
+msgid "Only gettext Machine Object files (MO files) are accepted."
+msgstr ""
+
+#, php-format
+msgid "%s is not a valid i-MSCP language file."
+msgstr ""
+
+#, php-format
+msgid "Unable to create '%s' directory for language file."
+msgstr ""
+
+msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr ""
 
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
@@ -38,25 +56,25 @@ msgid "Day"
 msgstr "Gün"
 
 msgid "Days"
-msgstr ""
+msgstr "Gün"
 
 msgid "Hour"
 msgstr "Saat"
 
 msgid "Hours"
-msgstr ""
+msgstr "Saat"
 
 msgid "Minute"
-msgstr ""
+msgstr "Dakika"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Dakika"
 
 msgid "An error occured! Please, contact your administrator!"
-msgstr ""
+msgstr "Bir hata oluştu! Lütfen Admine başvurun!"
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr ""
+msgstr "Güncellemeler kontrol edilemedi. Web sitesi erişilebilir değil."
 
 msgid "General information"
 msgstr "Genel bilgi"
@@ -173,67 +191,25 @@ msgid "Rootkit Log"
 msgstr "Rootkit Log"
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Uluslararasılaşma"
 
 msgid "Services status"
-msgstr ""
+msgstr "Servis statüsü"
 
 msgid "Services ports"
-msgstr ""
+msgstr "Servis portarı"
 
 msgid "IP usage"
-msgstr ""
+msgstr "IP kullanımı"
 
 msgid "Application management"
-msgstr ""
+msgstr "Uygulama yönetimi"
 
 msgid "Application options"
+msgstr "Uygulama seçenekleri"
+
+msgid "No administrator account found."
 msgstr ""
-
-msgid "Account name"
-msgstr "Hesap adı"
-
-msgid "Admin users"
-msgstr "Yönetici kullanıcılar"
-
-msgid "Reseller users"
-msgstr "Bayi kullanıcıları"
-
-msgid "Normal users"
-msgstr "Normal kullanıcı"
-
-msgid "Domains"
-msgstr "Domain"
-
-msgid "Subdomains"
-msgstr "Subdomain"
-
-msgid "Domain aliases"
-msgstr "Domain alias"
-
-msgid "Mail accounts"
-msgstr "Eposta hesapları"
-
-msgid "FTP accounts"
-msgstr "FTP hesapları"
-
-msgid "SQL databases"
-msgstr "SQL veritabanları"
-
-msgid "SQL users"
-msgstr "SQL kullanıcıları"
-
-msgid "System messages"
-msgstr "Sistem mesajları"
-
-msgid "No new messages"
-msgstr "Yeni mesaj yok"
-
-msgid "Server traffic"
-msgstr "Server trafik"
-
-msgid "Administrators list is empty!"
-msgstr "Yönetici listesi boş!"
 
 msgid "Username"
 msgstr "Kullanıcı adı"
@@ -253,8 +229,8 @@ msgstr "Sil"
 msgid "System"
 msgstr "Sistem"
 
-msgid "Resellers list is empty!"
-msgstr "Bayi Listesi boş!"
+msgid "No reseller account found."
+msgstr ""
 
 msgid "Switch to user interface"
 msgstr "Kullanıcı arayüzüne geç"
@@ -262,14 +238,14 @@ msgstr "Kullanıcı arayüzüne geç"
 msgid "Switch"
 msgstr "Geç"
 
-msgid "Not found user records matching the search criteria!"
-msgstr "Arama kıstaslarına uygun kullanıcı kaydı bulunamadı!"
+msgid "Not found user records matching the search criteria."
+msgstr ""
 
 msgid "view aliases"
 msgstr "aliasları göster"
 
-msgid "Users list is empty!"
-msgstr "Kullanıcı listesi boş!"
+msgid "No user account found."
+msgstr ""
 
 msgid "Status"
 msgstr "Durum"
@@ -284,13 +260,13 @@ msgid "Edit user"
 msgstr "Kullanıcı düzenle"
 
 msgid "Ok"
-msgstr ""
+msgstr "Tamam"
 
 msgid "Disabled"
 msgstr "Kapalı"
 
 msgid "Reload"
-msgstr ""
+msgstr "Güncelle"
 
 msgid "Error"
 msgstr "Hata"
@@ -298,8 +274,9 @@ msgstr "Hata"
 msgid "Not Set"
 msgstr ""
 
-msgid "Are you sure you want to change the status of domain account?"
-msgstr "Domain hesabının durumunu değiştirmek istediğinize emin misiniz?"
+#, php-format
+msgid "Are you sure you want to change the status of %s domain account?"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
@@ -353,6 +330,9 @@ msgstr "Tamam"
 msgid "Suspended"
 msgstr "Şüpheli"
 
+msgid "View aliases"
+msgstr "Aliasları göster"
+
 msgid "hide aliases"
 msgstr "aliasları gizle"
 
@@ -363,11 +343,8 @@ msgstr "%1$s , şu anda %2$s olarak giriş yaptınız"
 msgid "Go back"
 msgstr "Geri dön"
 
-msgid "No language found."
+msgid "No languages found."
 msgstr ""
-
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - Sipariş Paneli"
 
 msgid "Add user"
 msgstr "Kullanıcı ekle"
@@ -377,6 +354,9 @@ msgstr "Domainleri düzenle"
 
 msgid "Domain alias"
 msgstr "Domain alias"
+
+msgid "Subdomains"
+msgstr "Subdomain"
 
 msgid "Domain statistics"
 msgstr "Domain İstatistikleri"
@@ -486,29 +466,29 @@ msgid "Manage SSL certificate"
 msgstr "SSL sertıfıka yönetimi"
 
 msgid "i-MSCP application installer"
-msgstr ""
+msgstr "i-MSCP uygulama yükleyicisi"
 
 msgid "All fields are required!"
-msgstr ""
+msgstr "Tüm alanları doldurmak zorunludur!"
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "İnternet Multi Server Kontrol Paneli"
 
 msgid "© 2010-2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2011 i-MSCP Takım <br/> Tüm Hakları Saklıdır"
 
 #. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr ""
+msgstr "i-MSCP - Multi Server Kontrol Paneli"
 
 msgid "Administrator login"
 msgstr "Yönetici Girişi"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Server Denetim Masası / Giriş"
 
 msgid "Login"
 msgstr "Giriş"
@@ -520,7 +500,7 @@ msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "FileManager"
-msgstr ""
+msgstr "Dosya yöneticisi"
 
 msgid "Secure Connection"
 msgstr "Güvenli Bağlantı"
@@ -535,10 +515,10 @@ msgid "PHP GD extension not loaded."
 msgstr ""
 
 msgid "Captcha fontfile not found."
-msgstr ""
+msgstr "Captcha yazıtipi bulunamadı."
 
 msgid "i-MSCP - Multi Server Control Panel - Lost password"
-msgstr ""
+msgstr "i-MSCP - Multi Server Kontrol Paneli - Şifremi unuttum"
 
 msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
@@ -553,10 +533,10 @@ msgid "Cancel"
 msgstr "İptal"
 
 msgid "Your new password has been sent. Check your mail."
-msgstr ""
+msgstr "Yeni şifreniz gönderildi. Postanızı kontrol edin."
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "Yeni şifre gönderilemedi. Yöneticinize sorun."
 
 msgid "Wrong security code"
 msgstr ""
@@ -570,7 +550,7 @@ msgid ""
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Tüm alanlar gereklidir."
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Yönet/Kullanıcı Ekle"
@@ -578,14 +558,22 @@ msgstr "i-MSCP - Yönetici/Kullanıcıları Yönet/Kullanıcı Ekle"
 msgid "Administrator"
 msgstr "Yönetici"
 
-msgid "Incorrect username length or syntax!"
-msgstr "Kullanıcı adı uzun veya yazım hatası var"
+msgid "Incorrect username length or syntax."
+msgstr ""
 
-msgid "Entered passwords do not match!"
-msgstr "Girilen şifreler eşleşmiyor"
+#, php-format
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs."
+msgstr ""
+
+msgid "Entered passwords do not match."
+msgstr ""
+
+msgid "Incorrect email length or syntax."
+msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Bu kullanıcı adı kullanılmakta."
 
 msgid "Empty data or wrong field!"
 msgstr "Boş veri veya hatalı alan"
@@ -635,6 +623,9 @@ msgstr "Faks"
 msgid "Add"
 msgstr "Ekle"
 
+msgid "Entered passwords do not match!"
+msgstr "Girilen şifreler eşleşmiyor"
+
 msgid "User session was killed!"
 msgstr "Kullanıcı sessionı sonlandırıldı"
 
@@ -663,13 +654,13 @@ msgid "Generate password"
 msgstr "Şifre oluştur"
 
 msgid "Password change is disabled!"
-msgstr ""
+msgstr "Şifre değiştirme devre dışıdır!"
 
 msgid "Demo Version!"
-msgstr ""
+msgstr "Demo Sürümü!"
 
 msgid "iMSCP - Admin/Admin Log"
-msgstr ""
+msgstr "iMSCP - Yönetici / Yönetici Logları"
 
 msgid "Log is empty!"
 msgstr "Kayıtlar boş!"
@@ -846,7 +837,7 @@ msgid "Edit button"
 msgstr "Button düzenle"
 
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr ""
+msgstr "i-MSCP - Yönetici / Sistem Araçları / Veritabanı Güncellemesi"
 
 msgid "Database updates"
 msgstr "Hazır i-MSCP güncellemeleri"
@@ -861,7 +852,7 @@ msgid "New Database update is now available"
 msgstr "Yeni i-MSCP güncellemesi var"
 
 msgid "No provided"
-msgstr ""
+msgstr "Verilmedi"
 
 msgid "Execute updates"
 msgstr "Güncellemeleri çalıştır"
@@ -885,7 +876,7 @@ msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr "MySQL desteği (DENEYSEL)"
 
 msgid "Backup support"
-msgstr ""
+msgstr "Yedekleme desteği"
 
 msgid "MySQL support"
 msgstr "MySQL desteği"
@@ -904,6 +895,21 @@ msgstr "Kullanılan"
 
 msgid "Limit"
 msgstr "Limit"
+
+msgid "Mail accounts"
+msgstr "Eposta hesapları"
+
+msgid "FTP accounts"
+msgstr "FTP hesapları"
+
+msgid "SQL databases"
+msgstr "SQL veritabanları"
+
+msgid "SQL users"
+msgstr "SQL kullanıcıları"
+
+msgid "Domain aliases"
+msgstr "Domain alias"
 
 msgid "Submit changes"
 msgstr "Değişiklikleri onayla"
@@ -1016,7 +1022,7 @@ msgid "Incorrect disk quota limit!"
 msgstr "Hatalı disk kota limiti!"
 
 msgid "The i-MSCP application installer needs PHP to enable it!"
-msgstr ""
+msgstr "I-MSCP uygulama yükleyicisi, bunu sağlamak için PHP ihtiyacı var!"
 
 msgid "Subdomain"
 msgstr "Subdomain"
@@ -1058,7 +1064,7 @@ msgstr "Sisteminizde <em>%s</em> adet kayıt var!"
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled!"
-msgstr ""
+msgstr "<em>%s</em> devre dışı bırakılabilir!"
 
 #, php-format
 msgid "The admin has <em>%s</em> disabled on this system!"
@@ -1234,15 +1240,17 @@ msgid "(e.g. EUR)"
 msgstr "(örn. EUR)"
 
 msgid "Term Of Service"
-msgstr ""
+msgstr "Hizmet Şartları"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
 msgstr ""
+"<b>Opsyonel:</b> Alanı boş bırakın eğer hosting planı için servis süresi "
+"istemiyorsanız."
 
 msgid "Text Only"
-msgstr ""
+msgstr "Sadece Metin"
 
 msgid "Add plan"
 msgstr "Plan ekle"
@@ -1269,7 +1277,7 @@ msgid "Price Style"
 msgstr "Ücret tipi"
 
 msgid "Text"
-msgstr ""
+msgstr "Metin"
 
 msgid "Update plan"
 msgstr "Planı güncelle"
@@ -1302,19 +1310,19 @@ msgid "No email account system errors"
 msgstr "Eposta hesabı sistem hatası yok"
 
 msgid "missing domain"
-msgstr ""
+msgstr "Domain eksik"
 
 msgid "missing alias"
-msgstr ""
+msgstr "eksik alias"
 
 msgid "orphan entry"
-msgstr ""
+msgstr "yetim giriş"
 
 msgid "No htaccess related system errors"
-msgstr ""
+msgstr "htaccess ile ilgili sistem hataları yok"
 
 msgid "Missing domain"
-msgstr ""
+msgstr "Domain bulunamadı"
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1345,7 +1353,7 @@ msgid "Mail account errors"
 msgstr "Posta hesabı hataları"
 
 msgid ".htaccess related errors"
-msgstr ""
+msgstr ".htaccess ile ilgili hatalar"
 
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP Daemon araçları"
@@ -1358,7 +1366,7 @@ msgstr "Durumu \"değiştir\" olarak ayarla"
 
 #, php-format
 msgid "%s Errors in database"
-msgstr ""
+msgstr "%s Veritabanı hataları"
 
 msgid "Update checking is disabled!"
 msgstr "Güncelleme takibi pasif"
@@ -1379,11 +1387,8 @@ msgid "No new i-MSCP updates available"
 msgstr "Yeni i-MSCP güncellemesi yok"
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
-msgstr "<b>%d</b> yeni destek talebiniz var"
-
-msgid "View"
-msgstr "Görünüm"
+msgid "You have received <b>%d</b> new support questions."
+msgstr ""
 
 msgid "Database update is available."
 msgstr ""
@@ -1391,8 +1396,11 @@ msgstr ""
 msgid "New i-MSCP update is available"
 msgstr ""
 
-msgid "You are exceeding your traffic limit!"
-msgstr "Trafik limitini aştınız!"
+msgid "Update checking is disabled."
+msgstr ""
+
+msgid "You are exceeding your traffic limit."
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of unlimited]"
@@ -1402,8 +1410,32 @@ msgstr "%1$d%% [%2$s / limitsiz]"
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s / %3$s]"
 
-msgid "i-MSCP - Admin/Main Index"
-msgstr "i-MSCP - Yönetici/Anamenü"
+msgid "i-MSCP - Admin / General information"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Values"
+msgstr ""
+
+msgid "Account name"
+msgstr "Hesap adı"
+
+msgid "Admin users"
+msgstr "Yönetici kullanıcılar"
+
+msgid "Reseller users"
+msgstr "Bayi kullanıcıları"
+
+msgid "Normal users"
+msgstr "Normal kullanıcı"
+
+msgid "Domains"
+msgstr "Domain"
+
+msgid "Server traffic"
+msgstr "Server trafik"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Son aktif IP adresini silemezsiniz!"
@@ -1424,7 +1456,7 @@ msgid "Remove IP"
 msgstr "IP kaldır"
 
 msgid "No IP's available"
-msgstr ""
+msgstr "Herhangi bir IP mevcut değil"
 
 msgid "New IP was added!"
 msgstr "Yeni IP eklendi!"
@@ -1461,22 +1493,22 @@ msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Bu IPyi silmek istediğinize emin misiniz: %s ?"
 
 msgid "i-MSCP - Admin/IP Usage"
-msgstr ""
+msgstr "i-MSCP - Yönetici / IP Kullanımı"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Toplam Alanlar"
 
 msgid "No records found"
-msgstr ""
+msgstr "Hiçbir kayıt bulunamadı"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Yönetici / IP kullanım istatistikleri"
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Alan Adı"
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Bayi Adı"
 
 msgid "User language successfully updated."
 msgstr ""
@@ -1488,16 +1520,16 @@ msgid "Choose your default language"
 msgstr "Varsayılan dili seçiniz"
 
 msgid "You can't delete system language."
-msgstr ""
+msgstr "Sistem dilini silemezsiniz."
 
 msgid "Wrong language table name."
-msgstr ""
+msgstr "Yanlış dil tablo adı."
 
 msgid "This language is used by one or more users."
-msgstr ""
+msgstr "Bu dil, bir veya daha fazla kullanıcı tarafından kullanılmaktadır."
 
 msgid "Language was successfully removed."
-msgstr ""
+msgstr "Dil başarıyla kaldırıldı."
 
 msgid "Reseller list is empty!"
 msgstr "Bayi listesi boş!"
@@ -1583,69 +1615,37 @@ msgstr "Bayiye"
 msgid "i-MSCP - Admin/Manage Users"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Düzenle"
 
-msgid "User added"
-msgstr "Kullanıcı eklendi"
-
-msgid "Reseller added"
-msgstr "Bayi eklendi"
-
-msgid "User updated"
-msgstr "Kullanıcı güncellendi"
-
-msgid "User deleted"
-msgstr "Kullanıcı silindi"
-
-msgid "Email Updated"
-msgstr "Eposta güncellendi"
-
-msgid "This user has a domain!<br>To delete the user first delete the domain!"
+msgid "User scheduled for addition."
 msgstr ""
-"Bu kullanıcıya ait domain var!<br>Kullanıcıyı silmek için önce domaini "
-"silin!"
 
-msgid "User was disabled"
-msgstr "Kullanıcı devre dışı bırakıldı"
+msgid "Reseller successfully added."
+msgstr ""
+
+msgid "User updated."
+msgstr ""
+
+msgid "User scheduled for deletion."
+msgstr ""
+
+msgid "Email Updated."
+msgstr ""
+
+msgid ""
+"This reseller has one or more domain accounts.<br /> To remove this "
+"reseller, please first remove these domain accounts"
+msgstr ""
+
+msgid "Domain account scheduled for deactivation."
+msgstr ""
 
 #, php-format
 msgid "%d strings translated"
 msgstr ""
 
-msgid "Language file no readable."
+msgid "Language file successfully installed/updated."
 msgstr ""
 
-msgid "The file does not contain all the necessary information."
-msgstr ""
-
-#, php-format
-msgid "%s added new language: %s"
-msgstr ""
-
-msgid "Language was successfully installed."
-msgstr ""
-
-#, php-format
-msgid "%s updated language: %s"
-msgstr ""
-
-msgid "Language was successfully updated."
-msgstr ""
-
-msgid "Unable to read the language file."
-msgstr ""
-
-msgid "The file doesn't contains any content"
-msgstr ""
-
-msgid "The 'Language' header doesn't contains the required value"
-msgstr ""
-
-msgid "The language file doesn't contains the required 'Language' header."
-msgstr ""
-
-msgid "No headers found in language file."
-msgstr ""
-
-msgid "Default language was successfully changed."
+msgid "Default language successfully updated."
 msgstr ""
 
 msgid "Languages index was successfully re-built."
@@ -1670,13 +1670,13 @@ msgid "Default language"
 msgstr ""
 
 msgid "Install / Update language"
-msgstr ""
+msgstr "Yükleme / Dil Güncelleme"
 
 msgid "Language file"
 msgstr "Dil dosyası"
 
 msgid "Install / Update"
-msgstr ""
+msgstr "Yükleme / Güncelleme"
 
 msgid "Export"
 msgstr "Dışarı aktar"
@@ -1712,7 +1712,7 @@ msgid "Current password"
 msgstr "Mevcut şifre"
 
 msgid "Password change is deactivated!"
-msgstr ""
+msgstr "Şifre değiştirme devre dışı!"
 
 msgid "i-MSCP - Admin/Change Personal Data"
 msgstr "i-MSCP - Yönetici/Kişisel Bilgileri Değiştir"
@@ -1726,9 +1726,6 @@ msgstr "Kişisel bilgi"
 msgid "Update data"
 msgstr "Veri güncelle"
 
-msgid "i-MSCP - Admin/Manage users/Add reseller"
-msgstr "i-MSCP - Yönetici/Kullanıcıları yönet/Bayi ekle"
-
 msgid "Reseller IP list is empty!"
 msgstr "Bayi IP listesi boş"
 
@@ -1741,23 +1738,47 @@ msgstr "Etiket"
 msgid "Number"
 msgstr "Adet"
 
-msgid "This user name already exist!"
-msgstr "Bu kullanıcı adı zaten kullanılıyor"
-
-msgid "Incorrect email syntax!"
-msgstr "Geçersiz eposta yazımı!"
-
-msgid "Incorrect domains limit!"
-msgstr "Geçersiz domain limiti!"
-
-msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgid "Incorrect email syntax."
 msgstr ""
 
-msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgid "Incorrect domains limit."
 msgstr ""
 
-msgid "You must assign at least one IP number for a reseller!"
-msgstr "Bayi için en az bir adet IP ataması yapmalısınız!"
+msgid "Incorrect subdomains limit."
+msgstr ""
+
+msgid "Incorrect aliases limit."
+msgstr ""
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not."
+msgstr ""
+
+msgid "Incorrect SQL users limit."
+msgstr ""
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not."
+msgstr ""
+
+msgid "Incorrect traffic limit."
+msgstr ""
+
+msgid "Incorrect disk quota limit."
+msgstr ""
+
+msgid "You must assign at least one IP number for a reseller."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr "i-MSCP - Yönetici/Kullanıcıları yönet/Bayi ekle"
 
 msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr "Domain limiti<br><i>(0 limitsiz)</i>"
@@ -1789,20 +1810,39 @@ msgstr "Klasör listeleme"
 msgid "Logo upload"
 msgstr "Logo yükleme"
 
-msgid "Can use software depot"
+msgid "Application installer"
 msgstr ""
 
-msgid "Can use websoftware depot"
+msgid "Can use software repository"
+msgstr ""
+
+msgid "Can use Web software repository"
 msgstr ""
 
 msgid "Reseller IPs"
 msgstr "Bayi IPleri"
 
+msgid "Incorrect email syntax!"
+msgstr "Geçersiz eposta yazımı!"
+
+msgid "Incorrect domains limit!"
+msgstr "Geçersiz domain limiti!"
+
 msgid "Aliases"
 msgstr "Aliaslar"
 
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgstr ""
+"SQL veritabanları sınırı <i>devre dışı</i> ancak SQL kullanıcı sınırı "
+"vardır!"
+
 msgid "SQL Databases"
 msgstr "SQL veritabanları"
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgstr ""
+"SQL kullanıcı sınırı <i>devre dışı</i> ancak SQL veritabanları sınırı "
+"yoktur!"
 
 msgid "SQL Users"
 msgstr "SQL kullanıcıları"
@@ -1812,6 +1852,9 @@ msgstr "Web Trafiği"
 
 msgid "Disk storage"
 msgstr "Disk alanı"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Bayi için en az bir adet IP ataması yapmalısınız!"
 
 #, php-format
 msgid ""
@@ -1867,11 +1910,17 @@ msgstr "E-posta"
 msgid "unlimited"
 msgstr "limitsiz"
 
+msgid "Can use software depot"
+msgstr "Yazılım deposunu kullanabilir miyim"
+
+msgid "Can use websoftware depot"
+msgstr "Websoftware deposunu kullanabilir miyim"
+
 msgid "Reset"
 msgstr "Reset"
 
 msgid "Generated password:"
-msgstr ""
+msgstr "Oluşturulan parola:"
 
 msgid "Type `CTRL+C` to copy the generated password in the clipboard."
 msgstr ""
@@ -1886,7 +1935,7 @@ msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Bayi istatistikleri"
 
 msgid "No reseller is registered in your system!"
-msgstr ""
+msgstr "Hiçbir bayi sistemde kayıtlı değil!"
 
 #, php-format
 msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
@@ -2022,7 +2071,7 @@ msgid "Day:"
 msgstr "Gün:"
 
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr ""
+msgstr "Genel / i-MSCP Yönetici  Genel Bilgi / Sunucu Durumu"
 
 msgid "Host"
 msgstr "Host"
@@ -2063,9 +2112,6 @@ msgstr "Son erişim"
 msgid "Kill session"
 msgstr "Session sonlandır"
 
-msgid "i-MSCP - Admin/Settings"
-msgstr "i-MSCP - Yönetici/Ayarlar"
-
 msgid "Only positive numbers are allowed."
 msgstr ""
 
@@ -2078,7 +2124,10 @@ msgid "%d configuration parameter(s) have/has been created."
 msgstr ""
 
 msgid "Nothing's been changed."
-msgstr ""
+msgstr "Hiçbir şey değişmedi."
+
+msgid "i-MSCP - Admin/Settings"
+msgstr "i-MSCP - Yönetici/Ayarlar"
 
 msgid "Activation link expire time (minutes)"
 msgstr "Aktivasyon linki geçersiz olma süresi(dakika)"
@@ -2155,10 +2204,10 @@ msgstr "Hatalar"
 msgid "Check for update"
 msgstr "Güncelleme için bak"
 
-msgid "Compress output"
+msgid "Compress HTML output"
 msgstr ""
 
-msgid "Show compression size comment"
+msgid "Show HTML output compression size comment"
 msgstr ""
 
 msgid "Prevent external login for admins"
@@ -2170,8 +2219,8 @@ msgstr "Lütfen bayi giriş bilgilerinizi giriniz"
 msgid "Prevent external login for clients"
 msgstr "Lütfen kullanıcı giriş bilgilerinizi giriniz"
 
-msgid "Custom orderpanel ID"
-msgstr "Müşteri ID"
+msgid "Custom orderpanel Id"
+msgstr ""
 
 msgid "Domain names validation"
 msgstr "Domain adı doğrulaması"
@@ -2196,32 +2245,31 @@ msgstr ""
 "verilmez. Bazı istisnalar mevcuttur, örneğin (TLD) .de."
 
 msgid ""
-"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr "Domain oluşturmak için maximum Subdomain sayısı"
-
-msgid "Maximal number of labels for subdomains"
-msgstr "Maximum subdomain sayısı subdomain için"
-
-msgid "Upload file error!"
-msgstr "Dosya gönderim hatası"
-
-msgid "You can only upload images!"
-msgstr "Sadece resim dosyası gönderebilirsiniz!"
-
-msgid "Images have to be smaller than 500 x 90 pixels!"
+"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"TLD</small>)"
 msgstr ""
 
-msgid "Your logo was successful uploaded!"
-msgstr "Logo yüklendi!"
+msgid "Maximum number of labels for subdomains"
+msgstr ""
 
-msgid "Installed layouts"
-msgstr "Yüklü yerleşimler"
+msgid "Orders settings"
+msgstr ""
 
-msgid "Layout name"
-msgstr "Yerleşim adı"
+msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
+msgstr ""
 
-msgid "default"
-msgstr "Varsayılan"
+msgid "Logo successfully updated."
+msgstr ""
+
+msgid "Logo successfully removed."
+msgstr ""
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr ""
+
+msgid "i-MSCP - Admin / Layout"
+msgstr ""
 
 msgid "Upload logo"
 msgstr "Logo yükle"
@@ -2234,9 +2282,6 @@ msgstr "Gönder"
 
 msgid "Remove"
 msgstr "Kaldır"
-
-msgid "Choose default layout"
-msgstr "Varsayılan yerleşim seç"
 
 msgid "Please specify a subject!"
 msgstr "Lütfen bir konu belirtiniz"
@@ -2305,32 +2350,32 @@ msgid "Error: Service port with same name already exists!"
 msgstr ""
 
 msgid "Error: Unallowed protocol!"
-msgstr ""
+msgstr "Hata: İzinsiz protokol!"
 
 msgid "Error: Wrong value for show entry!"
-msgstr ""
+msgstr "Hata: Yanlış bilgi gösterilemez"
 
 msgid "Service port was successfully added"
-msgstr ""
+msgstr "Servis portu başarıyla eklendi"
 
 #, php-format
 msgid "%d Service(s) port was successfully updated"
-msgstr ""
+msgstr "%d Servis (ler) portları başarıyla güncellendi"
 
 msgid "Nothing's been changed"
-msgstr ""
+msgstr "Hiçbir şey değiştirilmedi"
 
 msgid "You have no custom service ports defined"
-msgstr ""
+msgstr "Hiçbir özel servis portları tanımlamadınız"
 
 msgid "Service port was successfully removed!"
-msgstr ""
+msgstr "Servis portu başarıyla kaldırıldı!"
 
 msgid "Error: You are not allowed to remove this service port entry!"
-msgstr ""
+msgstr "Hata: Bu servis portunu kaldırmazsınız!"
 
 msgid "i-MSCP - Admin / Settings"
-msgstr ""
+msgstr "İ-MSCP - Yönetici / Ayarlar"
 
 msgid "udp"
 msgstr "udp"
@@ -2346,13 +2391,13 @@ msgstr "Protokol"
 
 #, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr ""
+msgstr "%s servis portunu silmek istediğinize emin misiniz?"
 
 msgid "View / Update service(s) port"
-msgstr ""
+msgstr "Görünüm / Update hizmet (ler) bağlantı noktası"
 
 msgid "Add new service port"
-msgstr ""
+msgstr "Yeni bir servis portu ekle"
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - Yönetici/Server Trafik Ayarları"
@@ -2388,126 +2433,126 @@ msgid "User type (admin, reseller, user)"
 msgstr "Kullanıcı tipi (yönetici, bayi, kullanıcı)"
 
 msgid "Wrong software id."
-msgstr ""
+msgstr "Yanlış yazılım kimliği."
 
 msgid "Software was activated."
-msgstr ""
+msgstr "Yazılım aktive edildi."
 
 msgid "No Resellers found."
-msgstr ""
+msgstr "Bayiler bulunamadı."
 
 msgid "Rights succesfully added."
-msgstr ""
+msgstr "Erişim hakları başarıyla eklendi."
 
 msgid "Rights succesfully removed."
-msgstr ""
+msgstr "Hakları başarıyla kaldırıldı."
 
 #, php-format
 msgid "%1$s (%2$s)"
 msgstr ""
 
 msgid "Software was deleted."
-msgstr ""
+msgstr "Yazılım silindi."
 
 msgid "Fill out a message text!"
-msgstr ""
+msgstr "Mesaj alanını doldurun!"
 
 msgid "i-MSCP - Application Management"
-msgstr ""
+msgstr "i-MSCP - Uygulama Yönetimi"
 
 msgid "Message to reseller before deleting the software"
-msgstr ""
+msgstr "Yazılımı silmeden önce bayiye mesaj gönderin"
 
 msgid "Delete reseller software"
-msgstr ""
+msgstr "Bayi yazılımı sil"
 
 msgid "Reseller data"
-msgstr ""
+msgstr "Bayi verileri"
 
 msgid "Delete software and send message"
-msgstr ""
+msgstr "Yazılımı sil ve mesaj gönder"
 
 #, php-format
 msgid "File does not exist. %1$s.tar.gz"
 msgstr ""
 
 msgid "Software was imported successfully."
+msgstr "Yazılım başarıyla ithal edildi."
+
+msgid "Unable to read xml file for Web softwares."
 msgstr ""
 
-msgid "Unable to read xml file for web softwares!"
+msgid "i-MSCP application installer Web softwares repository"
 msgstr ""
 
-msgid "i-MSCP application installer web software depot"
+msgid "Update from Web software repository"
 msgstr ""
 
-msgid "Update from web depot"
-msgstr ""
-
-msgid "Package title"
+msgid "Package name"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Paket yükleme tipi"
 
 msgid "Package version"
-msgstr ""
+msgstr "Paket sürümü"
 
 msgid "Package language"
-msgstr ""
+msgstr "Paket dili"
 
 msgid "Package type"
-msgstr ""
+msgstr "Paket türü"
 
 msgid "Package vendor HP"
-msgstr ""
+msgstr "Paket satıcı Sayfası"
 
 msgid "Package actions"
-msgstr ""
+msgstr "Paket eylemleri"
 
-msgid "Web software depot packages total"
+msgid "Total packages in Web softwares repository"
 msgstr ""
 
 msgid "You have to choose between file-upload and wget-function."
-msgstr ""
+msgstr "Dosya-upload veya wget-fonksiyon arasında seçim yapmak zorundasınız."
 
 msgid "You must select a file to upload/download."
-msgstr ""
+msgstr "Upload / download için bir dosya seçmelisiniz."
 
-msgid "File needs to be a .tar.gz-archive"
-msgstr ""
-
-#, php-format
-msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgid "File needs to be a 'tar.gz' archive."
 msgstr ""
 
 #, php-format
-msgid ""
-"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your"
-" URL!"
+msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
 #, php-format
 msgid ""
-"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d "
-"MB"
+"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
+msgstr ""
+
+#, php-format
+msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
 msgstr ""
 
 msgid "Error: Remote File not found!"
 msgstr ""
 
-msgid "Error: Could not upload the file. File not found!"
+msgid "Could not upload the file. File not found."
 msgstr ""
 
 msgid "File was successfully uploaded."
 msgstr ""
 
-msgid "Software depot"
+msgid "i-MSCP / Software Installer / Management"
 msgstr ""
 
-msgid "Softwarerights"
+msgid "Softwares in repository"
 msgstr ""
 
-msgid "Software depot total"
+msgid "Permissions"
+msgstr ""
+
+msgid "Total Web softwares repositories"
 msgstr ""
 
 msgid "Software depot upload"
@@ -2530,55 +2575,68 @@ msgstr ""
 msgid "Reseller software list"
 msgstr ""
 
-msgid "Application"
+msgid "Software name"
 msgstr ""
 
-msgid "App-Version"
+msgid "Version"
 msgstr ""
 
 msgid "Type"
 msgstr "Tip"
 
-msgid "Depot import"
+msgid "Import in local repository"
 msgstr ""
 
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 msgid "Activate"
 msgstr "Etkinleştir"
 
-msgid "Software total"
+msgid "Total softwares"
 msgstr ""
 
-msgid "Reseller total"
+msgid "Total reseller"
 msgstr ""
 
-msgid "Waiting for activation"
+msgid "Software in repository"
 msgstr ""
 
-msgid "Activated software"
+msgid "Awaiting activation"
+msgstr ""
+
+msgid "Activated softwares"
 msgstr ""
 
 msgid "Total installations"
 msgstr ""
 
 msgid "Are you sure you want to activate this package?"
-msgstr ""
+msgstr "Bu paketi etkinleştirmek istediğinize emin misiniz?"
 
-msgid "Are you sure you want to import this package into the software depot?"
+msgid ""
+"Are you sure you want to import this package into the local software "
+"repository?"
 msgstr ""
 
 msgid "Are you sure you want to delete this package?"
 msgstr ""
 
-msgid "Are you sure to install this package from the webdepot?"
+msgid ""
+"Are you sure you want to install this package from the Web software "
+"repository?"
+msgstr ""
+
+msgid "i-MSCP / Softwares Installer / Management"
 msgstr ""
 
 msgid "i-MSCP - Application management options"
 msgstr ""
 
-msgid "Main application installer options updated!"
+msgid "Unable to read xml file for web softwares."
+msgstr ""
+
+msgid "Main application installer options updated."
 msgstr ""
 
 msgid "Application management options"
@@ -2587,13 +2645,13 @@ msgstr ""
 msgid "Main application installer options"
 msgstr ""
 
-msgid "Using i-MSCP application installer websoftware depot"
+msgid "Using i-MSCP application installer Web software repository"
 msgstr ""
 
-msgid "i-MSCP websoftware depot XML-File URL"
+msgid "XML file URL for the i-MSCP Web software repository"
 msgstr ""
 
-msgid "Last i-MSCP websoftware depot update"
+msgid "Last Web software repository update"
 msgstr ""
 
 msgid "not available"
@@ -2605,13 +2663,25 @@ msgstr ""
 msgid "Installed on"
 msgstr ""
 
+msgid "Total Softwares"
+msgstr ""
+
 msgid "Reseller list"
 msgstr ""
 
-msgid "Softwaredepot"
+msgid "Reseller total"
+msgstr "Bayi toplam"
+
+msgid "Software repository"
+msgstr ""
+
+msgid "i-MSCP - Software Installer Management"
 msgstr ""
 
 msgid "i-MSCP - Application Management (Permissions)"
+msgstr ""
+
+msgid "Softwaredepot"
 msgstr ""
 
 #, php-format
@@ -2696,20 +2766,11 @@ msgstr "Toplam"
 msgid "Up time"
 msgstr "Çalışma süresi"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "i-MSCP - Müşteri/Sorular & Yorumlar"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "Destek talepleri"
-
-msgid "Priority"
-msgstr "Öncelik"
-
-msgid "Last reply"
-msgstr "Son cevap"
-
-msgid "Delete all"
-msgstr "Hepsini sil"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "Açık talepler"
@@ -2720,82 +2781,149 @@ msgstr "Kapalı talepler"
 msgid "From"
 msgstr "Gönderen"
 
-msgid "Support ticket deleted successfully!"
-msgstr "Destek talebi başarıyla silindi!"
+msgid "Priority"
+msgstr "Öncelik"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "Tüm açık destek talepleri silindi!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "Tüm kapalı destek talepleri silindi! "
+msgid "Actions"
+msgstr "Eylem"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "i-MSCP - Müşteri/Eposta Otoyanıt Aktif Et"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "i-MSCP - Müşteri : Destek Sistemi: Talepleri görüntüle"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "Lütfen, mesajınızı yazınız"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "Talep bulunamadı!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "i-MSCP - Yönetici : Destek Sistemi: Talepleri Görüntüle"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "Destek taleplerini göster"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "Mesajı cevapla"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Mesajlar"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "Yanıtla"
 
-msgid "i-MSCP - Delete Domain"
-msgstr "i-MSCP - Müşteri/Domain Yönetimi"
-
-msgid "Wrong domain ID!"
-msgstr "Yanlış domain IDsi!"
-
-msgid "Invalid user id!"
-msgstr "Geçersiz hesap idsi!"
-
-msgid "Logo could not be deleted:"
+msgid "Invalid user Id."
 msgstr ""
 
-msgid "There are active domains of reseller/admin!"
-msgstr "Bayi/Admin'e ayit aktif Domainler"
+#, php-format
+msgid "%s account successfully deleted."
+msgstr ""
+
+#, php-format
+msgid "Unable to delete user with Id: %d"
+msgstr ""
+
+msgid ""
+"You can't delete a reseller that has domain accounts. Please, remove them "
+"before."
+msgstr ""
+
+msgid "Wrong domain Id."
+msgstr ""
+
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "Delete domain"
 msgstr "Gerçek domain"
 
-msgid "Domain summary:"
-msgstr "Domain postası"
+msgid "Domain account summary"
+msgstr ""
 
-msgid "Domain e-mails:"
-msgstr "Domain postaları"
+msgid "Domain e-mails"
+msgstr ""
 
-msgid "Domain FTP accounts:"
-msgstr "Domain hesabı"
+msgid "Domain FTP accounts"
+msgstr ""
 
-msgid "Domain aliases:"
-msgstr "Domain alias"
+msgid "Domain subdomains"
+msgstr ""
 
-msgid "Domain subdomains:"
-msgstr "Ana domaine"
+msgid "Domain databases"
+msgstr ""
 
-msgid "Domain databases:"
-msgstr "Domain alias"
-
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone!"
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "%s tüm yönetici loglarını sildi"
+
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
+
+msgid "Wrong domain ID."
+msgstr ""
+
+msgid "You must confirm domain deletion."
+msgstr ""
 
 msgid "Domain alias limit reached!"
 msgstr "Azami domain alias sayısına ulaşıldı!"
@@ -3140,9 +3268,6 @@ msgstr "Monte noktası"
 msgid "Forward"
 msgstr "Yönlendir"
 
-msgid "Actions"
-msgstr "Eylem"
-
 msgid "Record data"
 msgstr "Core verisi"
 
@@ -3176,6 +3301,9 @@ msgstr "500 Hatası(sunucu hatası)"
 msgid "Error 503 (service unavailable)"
 msgstr "503 Hatası (servis kullanılamaz)"
 
+msgid "View"
+msgstr "Görünüm"
+
 msgid "FTP list is empty!"
 msgstr "FTP listesi boş!"
 
@@ -3202,6 +3330,9 @@ msgstr "Boş liste"
 
 msgid "FTP account already exists!"
 msgstr "Bu FTP hesabı mevcut!"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Kullanıcı adı uzun veya yazım hatası var"
 
 msgid "Unknown domain type"
 msgstr "Bilinmeyen domain tipi!"
@@ -3433,6 +3564,9 @@ msgstr "kapalı"
 msgid "You have <b>%d</b> new answer to your support questions"
 msgstr "Destek sorularınıza  <b>%d</b> yeni cevap var!"
 
+msgid "You are exceeding your traffic limit!"
+msgstr "Trafik limitini aştınız!"
+
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
 msgstr "%1$s%% [%2$s / %3$s]"
@@ -3446,6 +3580,10 @@ msgstr "Disk limitini aştınız!"
 
 msgid "You have no new support questions!"
 msgstr "Yeni bir yardım talebi yok!"
+
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr "<b>%d</b> yeni destek talebiniz var"
 
 msgid "This Domain is expired"
 msgstr ""
@@ -3464,6 +3602,9 @@ msgstr "SQL desteği"
 
 msgid "Choose default language"
 msgstr "Varsayılan dili seçiniz"
+
+msgid "Choose default layout"
+msgstr "Varsayılan yerleşim seç"
 
 msgid "Traffic usage"
 msgstr "Trafik kullanımı"
@@ -3650,6 +3791,9 @@ msgstr "Posta hesabı düzenle"
 msgid "i-MSCP - Client/Change Password"
 msgstr "i-MSCP - Müşteri/Şifre Değiştir"
 
+msgid "Password successfully updated."
+msgstr ""
+
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Müşteri/Kişisel Bilgileri Değiştir"
 
@@ -3798,9 +3942,6 @@ msgid "Install software"
 msgstr ""
 
 msgid "Software"
-msgstr ""
-
-msgid "Version"
 msgstr ""
 
 msgid "Database"
@@ -3980,11 +4121,12 @@ msgstr "phpMyAdmin aç"
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"Bu veritabanı geri dönüşümü olmayarak silinecektir. Bu veritabanına ayit "
-"bütün veritabanı kullanıcıları da silinecektirBaşka bir veri tabanı. size% "
-"silmek istediğinizden emin misiniz?"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "Azami SQL kullanıcı sayısına ulaşıldı!"
@@ -4072,11 +4214,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Yönlendirme URLsi 'http://' ile başlamak zorunda"
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "Lütfen bir mesaj konusu belirtiniz!"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "Düşük"
@@ -4089,6 +4237,12 @@ msgstr "Yüksek"
 
 msgid "Very high"
 msgstr "Çok yüksek"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "Domaininiz için hata sayfalarını güncelleyiniz"
@@ -4111,817 +4265,51 @@ msgstr "Koruma alanlarını, kullanıcıları ve grupları düzenleyin"
 msgid "Install various software with a few *clicks*"
 msgstr ""
 
-#, php-format
-msgid "%.2f PB"
-msgstr "%.2f PB"
-
-#, php-format
-msgid "%.2f TB"
-msgstr "%.2f TB"
-
-#, php-format
-msgid "%.2f GB"
-msgstr "%.2f GB"
-
-#, php-format
-msgid "%.2f MB"
-msgstr "%.2f MB"
-
-#, php-format
-msgid "%.2f KB"
-msgstr "%.2f KB"
-
-#, php-format
-msgid "%d B"
-msgstr "%d B"
-
-msgid "Domain mail"
-msgstr "Domain postası"
-
-msgid "Email forward"
-msgstr "Eposta yönlendirme"
-
-msgid "Alias mail"
-msgstr "Alias postası"
-
-msgid "Alias forward"
-msgstr "Alias yönlendirme"
-
-msgid "Subdomain mail"
-msgstr "Subdomain postası"
-
-msgid "Subdomain forward"
-msgstr "Subdomain yönlendirme"
-
-msgid "Alias subdomain mail"
-msgstr "Subdomain postası"
-
-msgid "Alias subdomain forward"
-msgstr "Subdomain yönlendirme"
-
-msgid "Unknown type"
-msgstr "Bilinmeyen tip"
-
-msgid "Welcome {USERNAME} to i-MSCP!"
-msgstr "i-MSCP'ye Hoşgeldiniz {USERNAME}"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME}!\n"
-"\n"
-"A new i-MSCP account has been created for you.\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Best wishes with i-MSCP!\n"
-"The i-MSCP Team.\n"
-"\n"
+msgid "i-MSCP - Service Mailer - You have a new order"
 msgstr ""
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME}!\n"
-"\n"
-"A new i-MSCP account has been created for you.\n"
-"Your account information:\n"
-"\n"
-"User type: {USERTYPE}\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Remember to change your password often and the first time you login.\n"
-"\n"
-"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"User name: {USERNAME}\n"
-"Password: {PASSWORD}\n"
-"\n"
-"Best wishes with i-MSCP!\n"
-"The i-MSCP Team.\n"
-"\n"
-msgstr ""
-
-msgid "Please activate your new i-MSCP password!"
-msgstr "Lütfen, yeni i-MSCP şifrenizi aktif ediniz!"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME}!\n"
-"Use this link to activate your new i-MSCP password:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"Good Luck with the i-MSCP System\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Merhaba {NAME}!\n"
-"Bu linki kullanarak i-MSCP şifrenizi aktif ediniz:\n"
-"\n"
-"{LINK}\n"
-"\n"
-"i-MSCP Sisteminde iyi şanslar dileriz!\n"
-"i-MSCP Takımı\n"
-"\n"
-
-msgid "Your new i-MSCP login!"
-msgstr "Yeni i-MSCP giriş bilgileriniz!"
-
-msgid ""
-"\n"
-"\n"
-"Hello {NAME}!\n"
-"\n"
-"Your user name is: {USERNAME}\n"
-"Your password is: {PASSWORD}\n"
-"\n"
-"You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
-"\n"
-"Best wishes with i-MSCP!\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Merhaba {NAME}!\n"
-"\n"
-"Kullanıcı adınız: {USERNAME}\n"
-"Şifreniz: {PASSWORD}\n"
-"\n"
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST} adresinden giriş yapabilirsiniz\n"
-"\n"
-"i-MSCP'yi güle güle kullanınız!\n"
-"i-MSCP Takımı\n"
-"\n"
-
-msgid "Confirmation for domain order {DOMAIN}!"
-msgstr "{DOMAIN} domain sipariş onayı!"
-
-msgid ""
-"\n"
-"\n"
-"Dear {NAME},\n"
-"This is an automatic confirmation for the order of the domain:\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"You have to click the following link to continue the domain creation process.\n"
-"\n"
-"{ACTIVATE_LINK}\n"
-"\n"
-"Thank you for using i-MSCP services.\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Sayın {NAME},\n"
-"Bu şu domain siparişiniz için otomatik onaydır :\n"
-"\n"
-"{DOMAIN}\n"
-"\n"
-"i-MSCP servisini kullandığınız için teşekkür ederiz.\n"
-"i-MSCP Takımı\n"
-"\n"
-
-msgid "New alias order for {CUSTOMER}!"
-msgstr "{CUSTOMER} müşterisi için yeni alias siparişi"
 
 msgid ""
 "\n"
 "\n"
 "Dear {RESELLER},\n"
-"Your customer {CUSTOMER} is awaiting for the approval of his new alias:\n"
 "\n"
-"{ALIAS}\n"
-"\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
-"\n"
-"Thank you for using i-MSCP services.\n"
-"The i-MSCP Team\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Sayın {RESELLER},\n"
-"Mşteriniz {CUSTOMER} yeni aliası için onayınızı beklemekte:\n"
-"\n"
-"{ALIAS}\n"
-"\n"
-"Giriş yaptıktan sonra, linkten yeni aliasını aktif edebilirsiniz\n"
-"{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
-"\n"
-"i-MSCP servisini kullandığınız için teşekkür ederiz.\n"
-"i-MSCP Takımı\n"
-"\n"
-
-msgid "Your message has been sent."
-msgstr ""
-
-msgid "Your message has been sent"
-msgstr ""
-
-msgid "Ticket was closed!"
-msgstr "Talep kapatıldı!"
-
-msgid "Ticket was reopened!"
-msgstr "Talep tekrar açıldı!"
-
-msgid "Never"
-msgstr "Seviye"
-
-msgid "You don't have support tickets."
-msgstr ""
-
-msgid "[New]"
-msgstr "[Yeni]"
-
-msgid "[Re]"
-msgstr "[Cvp]"
-
-msgid "Open ticket"
-msgstr "Talep aç"
-
-msgid "Close ticket"
-msgstr "Talep kapa"
-
-msgid "[Ticket]"
-msgstr "[Talep]"
-
-#, php-format
-msgid ""
-"Hello %s!\n"
-"\n"
-"You have a new ticket:\n"
-msgstr ""
-"Merhaba %s!\n"
-"\n"
-"Yeni bir destek talebiniz var:\n"
-
-#, php-format
-msgid ""
-"Hello %s!\n"
-"\n"
-"You have an answer for this ticket:\n"
-msgstr ""
-"Merhaba %s!\n"
-"\n"
-"Bu destek talebiniz için yeni bir cevap var:\n"
-
-#, php-format
-msgid "Priority: %s\n"
-msgstr "Öncelik: %s\n"
-
-msgid "Log in to answer"
-msgstr "Cevaba bak."
-
-msgid "Wrong domain name syntax or number of labels"
-msgstr "Hatalı domain adı yazımı yada başlık sayısı!"
-
-msgid "Wrong domain name lenght!"
-msgstr ""
-
-msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Hatalı subdomain uzunluğu yada başlık sayısı!"
-
-msgid "Wrong subdomain lenght!"
-msgstr "Hatalı subdomain uzunluğu!"
-
-#, php-format
-msgid "Label not allowed: <b>%s</b>"
-msgstr "Başlığa izin verilmiyor: <b>%s</b>"
-
-#, php-format
-msgid "Wrong label syntax: <b>%s</b>"
-msgstr "Hatalı başlık dizimi <b>%s</b>"
-
-#, php-format
-msgid "Wrong label lenght: <b>%s</b>"
-msgstr "Hatalı başlık uzunluğu <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr "Hatalı Top Level Domain dizimi <b>%s</b>"
-
-#, php-format
-msgid "Wrong Top Level Domain lenght: <b>%s</b>"
-msgstr "Hatalı Top Level Domain uzunluğu <b>%s</b>"
-
-#, php-format
-msgid "Wrong Second Level Domain lenght: <b>%s</b>"
-msgstr "Hatalı Second Level Domain uzunluğu <b>%s</b>"
-
-#, php-format
-msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr "Hatalı domain adı: <b>%s</b> reserve edilmiş!"
-
-#, php-format
-msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr "Hatalı Second Level Domain dizimi <b>%s</b>"
-
-msgid ""
-"ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
-"/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
-"instead</small>."
-msgstr ""
-
-#, php-format
-msgid "You have to wait %d seconds."
-msgstr "%d saniye beklemeniz gerekiyor"
-
-#, php-format
-msgid "You have been blocked for %d minutes."
-msgstr "%d dakikalığına engellendiniz"
-
-#, php-format
-msgid "Login error, <b><i>%s</i></b> unknown username"
-msgstr ""
-
-msgid "You entered an incorrect username!"
-msgstr ""
-
-#, php-format
-msgid "Login error, <b><i>%s</i></b> system currently in maintenance mode"
-msgstr ""
-
-msgid "System is currently under maintenance! Only administrators can login."
-msgstr "Sistem bakımda! Sadece yöneticiler giriş yapabilir."
-
-#, php-format
-msgid "%s user already logged or session sharing problem! Aborting..."
-msgstr ""
-"%s kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
-"ediliyor..."
-
-msgid "User already logged or session sharing problem! Aborting..."
-msgstr ""
-"Kullanıcısı giriş yapmış veya oturum paylaşma problemi var! İşlem iptal "
-"ediliyor..."
-
-#, php-format
-msgid "%s's account status is not ok!"
-msgstr "%s hesabının durumu OK değil!"
-
-#, php-format
-msgid "%s's domain expired!"
-msgstr "%s Domain süresi bitmiştir"
-
-#, php-format
-msgid "%s logged in."
-msgstr ""
-
-#, php-format
-msgid "%s entered incorrect password."
-msgstr ""
-
-msgid "Request from foreign host was blocked."
-msgstr ""
-
-msgid "You do not have permission to access this interface!"
-msgstr "Bü arayüze erişim izniniz yok!"
-
-msgid "Addition in progress"
-msgstr "Eklenme işleme alındı"
-
-msgid "Modification in progress"
-msgstr "Düzenleme işleme alındı"
-
-msgid "Deletion in progress"
-msgstr "Silme işleme alındı"
-
-msgid "Being enabled"
-msgstr "Aktif ediliyor"
-
-msgid "Being suspended"
-msgstr "Şüpheli duruma getiriliyor"
-
-msgid "Awaiting approval"
-msgstr ""
-
-msgid "Unknown error"
-msgstr "Bilinmeyen hata"
-
-msgid "You have reached your domains limit.<br />You cannot add more domains!"
-msgstr ""
-
-msgid ""
-"You have a subdomains limit!<br />You cannot add an user with unlimited "
-"subdomains!"
-msgstr ""
-
-msgid "You are exceeding your subdomains limit!"
-msgstr "Subdomain limitinizi aşıyorsunuz!"
-
-msgid ""
-"You have an aliases limit!<br />You cannot add an user with unlimited "
-"aliases!"
-msgstr ""
-
-msgid "You Are Exceeding Your Alias Limit!"
-msgstr "Alias limitini aştınız!"
-
-msgid ""
-"You have a mail accounts limit!<br />You cannot add an user with unlimited "
-"mail accounts!"
-msgstr ""
-
-msgid "You are exceeding your mail accounts limit!"
-msgstr "Posta hesabı limitiniz aşıyorsunuz!"
-
-msgid ""
-"You have a FTP accounts limit!<br />You cannot add an user with unlimited "
-"FTP accounts!"
-msgstr ""
-
-msgid "You are exceeding your FTP accounts limit!"
-msgstr "FTP hesabı limitiniz aşıyorsunuz!"
-
-msgid ""
-"You have a SQL databases limit!<br />You cannot add an user with unlimited "
-"SQL databases!"
-msgstr ""
-
-msgid "You are exceeding your SQL databases limit!"
-msgstr "SQL veritabanı limitinizi aşıyorsunuz!"
-
-msgid ""
-"You have an SQL users limit!<br />You cannot add an user with unlimited SQL "
-"users!"
-msgstr ""
-
-msgid ""
-"You have disabled SQL databases for this user!<br />You cannot have SQL "
-"users here!"
-msgstr ""
-
-msgid "You are exceeding your SQL database limit!"
-msgstr "SQL veritabanı limitinizi aşıyorsunuz!"
-
-msgid ""
-"You have a traffic limit!<br />You cannot add an user with unlimited "
-"traffic!"
-msgstr ""
-
-msgid ""
-"You have a disk limit!<br />You cannot add an user with unlimited disk!"
-msgstr ""
-
-msgid "Installation details"
-msgstr ""
-
-msgid ""
-"Please set now the Username and Password for the later Login in the "
-"Application. (Required fiels!)"
-msgstr ""
-
-msgid "Login username"
-msgstr ""
-
-msgid "Login password"
-msgstr ""
-
-msgid "Emailadress"
-msgstr ""
-
-msgid "enabled"
-msgstr ""
-
-msgid "Application Description"
-msgstr ""
-
-msgid "You do not have permissions to install application yet"
-msgstr ""
-
-msgid "Software installer"
-msgstr ""
-
-msgid "Vendor hompage"
-msgstr ""
-
-msgid "Installed in software depot"
-msgstr ""
-
-msgid "Installed in reseller depot"
-msgstr ""
-
-msgid "Start installation"
-msgstr ""
-
-msgid "No software in webdepot found!"
-msgstr ""
-
-msgid "Websoftware depot list was updated"
-msgstr ""
-
-msgid "No update for the websoftware depot list available"
-msgstr ""
-
-msgid "{ADMIN} activated your software package"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
-msgid " was deleted by {ADMIN}!"
-msgstr ""
-
-msgid ""
-"Dear {RESELLER},\n"
-"\t\tYour uploaded software was deleted by {ADMIN}.\n"
-"\n"
-"\tDetails:\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tMessage from {ADMIN}:\n"
-"\t"
-msgstr ""
-
-msgid "Import"
-msgstr ""
-
-msgid "No software is waiting for activation"
-msgstr ""
-
-msgid "Package installed successfully!"
-msgstr ""
-
-msgid "Rights"
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh this site."
-msgstr ""
-
-msgid ""
-"The package will be installed automaticly to your system after upload.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "installing"
-msgstr ""
-
-msgid "Failure in the package. Deleting!"
-msgstr ""
-
-msgid ""
-"There is an Error inside your package. Please check it!<br />Refresh your "
-"site to see the new status!"
-msgstr ""
-
-msgid "deleting"
-msgstr ""
-
-msgid "Your package is corrupt. Please correct it!"
-msgstr ""
-
-msgid "Package already exist in the software depot!"
-msgstr ""
-
-msgid ""
-"Check your software depot uploads!<br />It is not allowed to upload this "
-"package two times.<br />Refresh your site to see the new status!"
-msgstr ""
-
-msgid "This package already exist in the software depot!"
-msgstr ""
-
-msgid "Package already exist in the reseller depot!"
-msgstr ""
-
-msgid ""
-"Check the reseller uploads!<br />It is not allowed to upload this package "
-"two times.<br />Refresh your site to see the new status!"
-msgstr ""
-
-#, php-format
-msgid "This package already exist in the depot of the reseller \"%1$s\"!"
-msgstr ""
-
-msgid "No software in software depot available!"
-msgstr ""
-
-msgid "This package is installed on following domain(s):"
-msgstr ""
-
-msgid "This package is not installed"
-msgstr ""
-
-#, php-format
-msgid "%1$s - (Softwaredepot)"
-msgstr ""
-
-#, php-format
-msgid "%1$s`s - Software"
-msgstr ""
-
-msgid "No software available!"
-msgstr ""
-
-msgid "No reseller with activated software installer found!"
-msgstr ""
-
-msgid "Admin not available"
-msgstr ""
-
-msgid "Are you sure to remove the permissions ?"
-msgstr ""
-
-msgid "No Reseller with permissions for this software found"
-msgstr ""
-
-msgid "All reseller"
-msgstr ""
-
-msgid "No Reseller available to add the permissions"
-msgstr ""
-
-msgid "{RESELLER} uploaded a new software package"
-msgstr ""
-
-msgid ""
-"Dear {ADMIN},\n"
-"\t{RESELLER} has uploaded a new software package.\n"
-"\n"
-"\tDetails:\n"
-"\tReseller ID: {RESELLER_ID}\n"
-"\tPackage Name: {SOFTWARE}\n"
-"\tPackage ID: {SOFTWARE_ID}\n"
-"\n"
-"\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
-
-msgid "Package installed successfully... Awaiting release from Admin!"
-msgstr ""
-
-msgid "This software is installed on following domain(s):"
-msgstr ""
-
-msgid "This package is not installed yet"
-msgstr ""
-
-msgid "waiting for activation"
-msgstr ""
-
-msgid "activated (Softwaredepot)"
-msgstr ""
-
-msgid "activated"
-msgstr ""
-
-msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
-
-msgid ""
-"After your upload the package it will be installed on your systems.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "Failure in package. Deleting!"
-msgstr ""
-
-msgid ""
-"Check your package. There is an error inside!<br />Refresh your site to see "
-"the new status!"
-msgstr ""
-
-msgid "The package is corrupt. Please correct it."
-msgstr ""
-
-msgid ""
-"Please contact the administrator!<br />Ask him for the permissions to use "
-"this package.<br />It is not allowed to upload this packet two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "This package already exist in the administrator software depot."
-msgstr ""
-
-msgid "Package already exist in your software depot!"
-msgstr ""
-
-msgid ""
-"Check your own uploads!<br />Ask the administrator if you don't find the "
-"package.<br />It is not allowed to upload this packages two times.<br "
-"/>Refresh your site to see the new status!"
-msgstr ""
-
-msgid "This package already exist in your software depot."
-msgstr ""
-
-msgid "You do not have any software uploaded yet"
-msgstr ""
-
-msgid "You do not have permissions to upload software"
-msgstr ""
-
-msgid "Install in progress..."
-msgstr ""
-
-msgid "Deletion in progress..."
-msgstr ""
-
-msgid "Uninstall"
-msgstr ""
-
-msgid "Are you sure to install this package?"
-msgstr ""
-
-#, php-format
-msgid ""
-"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
-"this package!<br />Please delete the files and database for this package "
-"manually!"
-msgstr ""
-
-msgid "Installed Package which was deleted by your reseller!"
-msgstr ""
-
-msgid "No software available"
-msgstr ""
-
-msgid "required"
-msgstr ""
-
-msgid "not required"
-msgstr ""
-
-msgid "You do not have permissions to install software"
-msgstr ""
-
-msgid "installed"
-msgstr ""
-
-msgid "Installation infos"
-msgstr ""
-
-msgid "Software status:"
-msgstr ""
-
-msgid "Installation path:"
-msgstr ""
-
-msgid "Used database:"
-msgstr ""
-
-msgid "You need a Database for this software"
-msgstr ""
-
-msgid "At first you must create a database!"
-msgstr ""
-
-msgid "Add new database"
-msgstr ""
-
-msgid "You have a new order"
-msgstr "Yeni bir siparişiniz var"
-
-msgid ""
-"\n"
-"\n"
-"Dear {RESELLER},\n"
-"you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
+"You have received a new order from {NAME} <{MAIL}> for the domain {DOMAIN}.\n"
 "\n"
 "Please login into your i-MSCP control panel for more details.\n"
 "\n"
+"______________________\n"
+"i-MSCP Service Mailer\n"
+"\n"
 msgstr ""
 
-msgid "Your order has been successfully created."
-msgstr "SQL kullanıcı şifresi değiştirildi! "
+msgid "reseller"
+msgstr ""
 
-msgid "Error creating order! Perhaps already activated?"
-msgstr "Hata oluşturma düzeni! Belki de zaten aktif?"
+msgid "You do not have permission to access this interface."
+msgstr ""
+
+msgid ""
+"Your order has been confirmed and is being processed... You will receive a "
+"mail after verifying."
+msgstr ""
+
+msgid ""
+"Your order has not been found in our database. Perhaps already confirmed?"
+msgstr ""
+
+msgid "Order Panel / Order confirmation"
+msgstr ""
 
 msgid "Order confirmation"
 msgstr "Genel bilgi"
 
-msgid "Domain already exists on the system!"
+msgid "Domain already registered in our database."
 msgstr ""
 
-msgid "This hosting plan is not available for purchase"
+msgid "This hosting plan is not available for purchase."
+msgstr ""
+
+msgid "Order Panel / Choosing a domain name"
 msgstr ""
 
 msgid "Add On A Domain"
@@ -4933,11 +4321,14 @@ msgstr "Devam"
 msgid "(e.g. domain-of-your-choice.com)"
 msgstr "(örn. alan-adı.com)"
 
-msgid "Please fill out all needed fields!"
-msgstr "Lütfen, tüm gerekli alanları doldurunuz!"
+msgid "You must fill out all required fields."
+msgstr ""
 
-msgid "Enter Address"
-msgstr "Adres giriniz"
+msgid "Order Panel / Personal Data"
+msgstr ""
+
+msgid "Personal Data"
+msgstr "Kişisel Bilgi"
 
 msgid "* denotes mandatory field."
 msgstr "* zorunlu alanları gösterir."
@@ -4948,40 +4339,43 @@ msgstr ""
 msgid "I Accept The Term of Service"
 msgstr ""
 
+msgid "Order Panel / Chart"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Grafiğiniz"
 
 msgid "Costs"
 msgstr "Maliyetler"
 
-msgid "Personal Data"
-msgstr "Kişisel Bilgi"
-
 msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above"
-" picture into the field \"Security code\")"
+"To avoid abuse, we ask you to write the combination of letters on the above "
+"picture."
 msgstr ""
-"(Güvenlik için yukarıdaki harfleri \"Güvenlik kodu\" alanınayazmanız "
-"gerekiyor)"
 
-msgid "Security code was incorrect!"
-msgstr "HATA: Güvenlik kodu doğru değil!"
+msgid "Security code is incorrect."
+msgstr ""
 
-msgid "You have to accept the Term of Service!"
+msgid "You have to accept the Term of Service."
+msgstr ""
+
+msgid "Order Panel / Checkout"
 msgstr ""
 
 msgid "Check Out"
 msgstr "Ödeme"
 
 msgid ""
-"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
-"with more details and information."
+"<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
+" to your email address for confirmation. Do not forget to click on the link "
+"in email to validate your order."
 msgstr ""
-"<b>Ödeme için teşekkür ederiz</b><br>Ayrıntılı bilgi içeren bir posta, "
-"adresinize gönderilmiştir"
 
-msgid "No available hosting packages"
-msgstr "Kullanılabilir hosting pakedi yok"
+msgid "No available hosting packages."
+msgstr ""
+
+msgid "Order Panel / Choosing an hosting package"
+msgstr ""
 
 msgid "Webspace"
 msgstr "Web alanı"
@@ -5080,10 +4474,25 @@ msgstr "Alias düzenle"
 msgid "Real domain"
 msgstr "Gerçek domain"
 
-msgid "Previous"
+msgid "Domain with that name already exists on the system."
 msgstr ""
 
-msgid "Next"
+msgid "Incorrect mount point syntax."
+msgstr ""
+
+msgid "Master domain cannot be used."
+msgstr ""
+
+msgid "Wrong address in forward URL."
+msgstr ""
+
+msgid "Wrong domain part in forward URL."
+msgstr ""
+
+msgid "Domain already registered on the system."
+msgstr ""
+
+msgid "There is a subdomain with the same mount point."
 msgstr ""
 
 msgid "There is no user records for this reseller to add an alias for."
@@ -5097,6 +4506,18 @@ msgstr "i-MSCP - Döngüsel"
 
 msgid "Circular"
 msgstr "Döngüsel"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
+
+msgid "You are not allowed to access this interface."
+msgstr ""
+
+msgid "Domain account scheduled for suspension."
+msgstr ""
+
+msgid "Domain account scheduled for activation."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Main Index"
 msgstr "i-MSCP - Bayi/Anamenü"
@@ -5125,22 +4546,14 @@ msgstr "i-MSCP - Bayi/Hosting planı düzenle"
 msgid "View hosting plan"
 msgstr "Hosting planlarını göster"
 
+msgid "You are exceeding your disk limit."
+msgstr ""
+
 msgid "User accounts"
 msgstr "Kullanıcı hesapları"
 
 msgid "Mail account"
 msgstr "Posta hesabı"
-
-msgid "Extras"
-msgstr "Ekstralar"
-
-#, php-format
-msgid "%1$s / %2$s of <b>%3$s</b>"
-msgstr "%1$s / %2$s toplam <b>%3$s</b>"
-
-#, php-format
-msgid "%1$s / %2$s of <b>unlimited</b>"
-msgstr "%1$s / %2$s toplam <b>limitsiz</b>"
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -5150,8 +4563,8 @@ msgstr "%1$d / %2$d toplam <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d toplam <b>limitsiz</b>"
 
-msgid "Messages"
-msgstr "Mesajlar"
+msgid "i-MSCP - Reseller / General information"
+msgstr ""
 
 msgid "No Ip statistics to be show."
 msgstr ""
@@ -5189,17 +4602,17 @@ msgstr "İmplementasyon URL"
 msgid "Footer"
 msgstr "Sayfasonu"
 
-msgid "i-MSCP - Reseller/Order management"
-msgstr "i-MSCP - Bayi/Sipariş yönetimi"
-
-msgid "You do not have new orders!"
-msgstr "Yeni sipariş yok!"
+msgid "You do not have new orders."
+msgstr ""
 
 msgid "New order"
 msgstr "Yeni sipariş"
 
 msgid "Update order"
 msgstr "Sipariş güncelle"
+
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Bayi/Sipariş yönetimi"
 
 msgid "ID"
 msgstr "ID"
@@ -5261,8 +4674,8 @@ msgstr "i-MSCP - Bayi/Şifre Değiştir"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Bayi/Kişisel Bilgileri Değiştir"
 
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Resim dosyası 195 x 195 pixel ebatından küçük olmalıdır"
+msgid "i-MSCP - Reseller / Layout"
+msgstr ""
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - BAyi/Kayıp şifre eposta kurulumu"
@@ -5282,7 +4695,19 @@ msgstr ""
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Bayi/Kullanıcıları Düzenle/Eposta Kurulumu"
 
-msgid "Unable to read xml file for web softwares."
+msgid "i-MSCP application installer web software depot"
+msgstr "i-MSCP uygulama yükleyicisi web yazılım deposu"
+
+msgid "Update from web depot"
+msgstr "Web depodan güncelleme"
+
+msgid "Package title"
+msgstr "Paket başlığı"
+
+msgid "Web software depot packages total"
+msgstr "Web yazılım depo paketleri toplamı"
+
+msgid "File needs to be a .tar.gz-archive"
 msgstr ""
 
 #, php-format
@@ -5317,6 +4742,9 @@ msgstr ""
 msgid "Software status"
 msgstr ""
 
+msgid "Software total"
+msgstr "Yazılım toplam"
+
 msgid "Software upload"
 msgstr ""
 
@@ -5329,22 +4757,25 @@ msgstr ""
 msgid "Link to authors homepage"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "i-MSCP - Destek Sistemi - Yeni destek talebi"
+msgid "Are you sure to install this package from the webdepot?"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "i-MSCP - Bayi : Destek Sistemi: Talepleri Görüntüle"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
 
 msgid "Domain expiration date must be filled."
-msgstr ""
-
-msgid "Domain already registered on the system."
-msgstr ""
-
-msgid "Master domain cannot be used."
 msgstr ""
 
 msgid "Hosting plan values exceed reseller maximum values."
@@ -5368,31 +4799,7 @@ msgstr "Görünümü kişiselleştir"
 msgid "Next step"
 msgstr "Sonraki adım"
 
-msgid "Incorrect subdomains limit."
-msgstr ""
-
-msgid "Incorrect aliases limit."
-msgstr ""
-
-msgid "Incorrect mail accounts limit."
-msgstr ""
-
-msgid "Incorrect FTP accounts limit."
-msgstr ""
-
-msgid "Incorrect SQL databases limit."
-msgstr ""
-
-msgid "Incorrect SQL users limit."
-msgstr ""
-
 msgid "SQL databases limit is not <i>disabled</i>."
-msgstr ""
-
-msgid "Incorrect traffic limit."
-msgstr ""
-
-msgid "Incorrect disk quota limit."
 msgstr ""
 
 msgid "The i-MSCP application installer needs PHP to enable it."
@@ -5453,8 +4860,8 @@ msgstr "Kullanıcı listesi"
 msgid "This reseller has no domains yet."
 msgstr "Bu bayinin henüz domaini yok."
 
-msgid "View aliases"
-msgstr "Aliasları göster"
+msgid "Not found user records matching the search criteria!"
+msgstr "Arama kıstaslarına uygun kullanıcı kaydı bulunamadı!"
 
 msgid "You do not have customers."
 msgstr ""
@@ -5467,7 +4874,7 @@ msgstr ""
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."
@@ -5478,9 +4885,6 @@ msgstr ""
 
 msgid ""
 "This user has domain record !<br>First remove the domain from the system."
-msgstr ""
-
-msgid "User scheduled for deletion."
 msgstr ""
 
 msgid "User was not deleted."

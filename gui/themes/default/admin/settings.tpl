@@ -234,7 +234,7 @@
 							<td>
 								<select name="def_language" id="def_language">
 								<!-- BDP: def_language -->
-									<option value="{LANG_VALUE}" {LANG_SELECTED}>{LANG_NAME}</option>
+									<option value="{LANG_VALUE}"{LANG_SELECTED}>{LANG_NAME}</option>
 								<!-- EDP: def_language -->
 								</select>
 							</td>
@@ -324,7 +324,6 @@
 					<input type="hidden" name="uaction" value="apply" />
 				</div>
 			</form>
-            <br />
 		</div>
 		<div class="footer">i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</div>
     </body>

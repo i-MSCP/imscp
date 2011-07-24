@@ -2,20 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ADMIN_SOFTWARE_PAGE_TITLE}</title>
-        <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-        <!--[if IE 6]>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-        <script type="text/javascript">
-            DD_belatedPNG.fix('*');
-        </script>
-        <![endif]-->
-        <script language="JavaScript" type="text/JavaScript">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<title>{TR_ADMIN_SOFTWARE_PAGE_TITLE}</title>
+		<meta name="robots" content="nofollow, noindex" />
+		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<!--[if IE 6]>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+		<script type="text/javascript">
+			DD_belatedPNG.fix('*');
+		</script>
+		<![endif]-->
+		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			function action_remove_right() {
 				if (!confirm("{TR_MESSAGE_REMOVE}"))
@@ -23,45 +23,45 @@
 			}
 		/*]]>*/
 		</script>
-    </head>
+	</head>
 
-    <body>
+	<body>
 
-        <div class="header">
-            {MAIN_MENU}
+		<div class="header">
+			{MAIN_MENU}
 
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
+			<div class="logo">
+				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
+			</div>
+		</div>
 
-        <div class="location">
-            <div class="location-area icons-left">
-                <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-            </div>
-            <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-            	<li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
-                <li><a href="software_rights.php?id={SOFTWARE_RIGHTS_ID}">{TR_SOFTWARE_RIGHTS}</a></li>
-            </ul>
-        </div>
+		<div class="location">
+			<div class="location-area icons-left">
+				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
+			</div>
+			<ul class="location-menu">
+				<!-- <li><a class="help" href="#">Help</a></li> -->
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+			</ul>
+			<ul class="path">
+				<li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
+				<li><a href="software_rights.php?id={SOFTWARE_RIGHTS_ID}">{TR_SOFTWARE_RIGHTS}</a></li>
+			</ul>
+		</div>
 
-        <div class="left_menu">
-            {MENU}
-        </div>
+		<div class="left_menu">
+			{MENU}
+		</div>
 
-        <div class="body">
-            <h2 class="apps_installer"><span>{TR_ADD_RIGHTS} {TR_SOFTWARE_NAME}</span></h2>
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
-            
+		<div class="body">
+			<h2 class="apps_installer"><span>{TR_ADD_RIGHTS} {TR_SOFTWARE_NAME}</span></h2>
+			<!-- BDP: page_message -->
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+			<!-- EDP: page_message -->
 
-            <table>
-            	<!-- BDP: no_select_reseller -->
+
+			<table>
+				<!-- BDP: no_select_reseller -->
 				<tr>
 					<td colspan="3"><div class="info">{NO_RESELLER_AVAILABLE}</div></td>
 				</tr>
@@ -78,7 +78,7 @@
 											<!-- BDP: reseller_item -->
 											<option value="{RESELLER_ID}">{RESELLER_NAME}</option>
 											<!-- EDP: reseller_item -->
-										</select> 
+										</select>
 									</td>
 								</tr>
 								<tr>
@@ -115,12 +115,15 @@
 				<tr>
 					<th colspan="3">{TR_RESELLER_COUNT}:&nbsp;{TR_RESELLER_NUM}</th>
 				</tr>
-            </table>
-            <div class="paginator">
-                
-            </div>
+			</table>
+			<div class="paginator">
 
-        </div>
+			</div>
 
-    </body>
+		</div>
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+		</div>
+
+	</body>
 </html>

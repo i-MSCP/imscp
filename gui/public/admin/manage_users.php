@@ -100,7 +100,7 @@ if (isset($_SESSION['user_added'])) {
 	set_page_message(tr('User scheduled for addition.'), 'success');
 } elseif (isset($_SESSION['reseller_added'])) {
 	unset($_SESSION['reseller_added']);
-	set_page_message(tr('Reseller scheduled for addition.'), 'success');
+	set_page_message(tr('Reseller successfully added.'), 'success');
 } elseif (isset($_SESSION['user_updated'])) {
 	unset($_SESSION['user_updated']);
 	set_page_message(tr('User updated.'), 'success');

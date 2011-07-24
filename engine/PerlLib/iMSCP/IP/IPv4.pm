@@ -205,5 +205,17 @@ sub isCardUp{
 	return (exists $self->{cards}->{$card}->{up});
 }
 
+sub isValidIp{
+	my $self	= shift;
+	my $ip	= shift;
+
+	debug((caller(0))[3].': Starting...');
+	use Data::Validate::IP qw/is_ipv4/;
+
+	debug((caller(0))[3].': Ending...');
+
+	return (is_ipv4($ip));
+}
+
 1;
 __END__

@@ -340,12 +340,12 @@ function create_catchall_mail_account($id) {
 
 				$query = "
 					INSERT INTO `mail_users` (
-					    `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`,
+						`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`,
 						`mail_type`, `sub_id`, `status`, `mail_auto_respond`, `quota`,
 						`mail_addr`
 					) VALUES (
-					    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                    )
+						?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					)
 				";
 				exec_query($query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
@@ -423,13 +423,13 @@ function create_catchall_mail_account($id) {
 
 			$query = "
 				INSERT INTO `mail_users` (
-				    `mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
+					`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
 					`sub_id`, `status`, `mail_auto_respond`, `quota`, `mail_addr`
 				) VALUES (
-				    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                )
+					?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+				)
 			";
-            exec_query($query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
+			exec_query($query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
 			write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
@@ -473,7 +473,8 @@ $tpl->assign(
 		'TR_MAIL_LIST'						=> tr('Mail accounts list'),
 		'TR_CREATE_CATCHALL'				=> tr('Create catch all'),
 		'TR_FORWARD_MAIL'					=> tr('Forward mail'),
-		'TR_FORWARD_TO'						=> tr('Forward to')
+		'TR_FORWARD_TO'						=> tr('Forward to'),
+		'TR_FWD_HELP'						=> tr('Separate multiple email addresses with a line-break.')
 	)
 );
 
@@ -482,7 +483,7 @@ generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+	iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

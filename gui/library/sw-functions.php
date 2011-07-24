@@ -423,7 +423,7 @@ function get_avail_softwaredepot($tpl)
 								  'SOFTWARE_ICON' => 'edit',
 								  'SOFTWARE_RIGHTS_LINK' => $rights_url,
 								  'RIGHTS_LINK' => tr('Rights'),
-								  'TR_SOFTWARE_RIGHTS' => tr('Softwarerights')));
+								  'TR_SOFTWARE_RIGHTS' => tr('Permissions')));
 			} else {
 				if ($rs->fields['swstatus'] == 'toadd') {
 					$del_url = 'software_delete.php?id=' . $rs->fields['id'];

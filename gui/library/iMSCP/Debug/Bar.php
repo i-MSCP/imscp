@@ -182,7 +182,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
             return;
         }
 
-        $xhtml = '';
+        $xhtml = '<div>';
 
         /** @var $plugin iMSCP_Debug_Bar_Plugin_Interface */
         foreach ($this->_plugins as $plugin)
@@ -194,7 +194,9 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
             }
 
             $xhtml .= '<div id="iMSCPdebug_' . $plugin->getIdentifier()
-                   . '" class="iMSCPdebug_panel">' . $panel . '</div>';
+                   . '" class="iMSCPdebug_panel">'
+                   . $panel
+                   . '</div>';
         }
 
         foreach ($this->_plugins as $plugin) {

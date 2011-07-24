@@ -247,72 +247,6 @@ function gen_admin_menu($tpl, $menu_file)
 }
 
 /**
- * Helper function to generate admin general information template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @return void
- */
-function getAdminGeneralInfo($tpl)
-{
-    /** @var $cfg  iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $tpl->assign(array(
-                      'TR_GENERAL_INFORMATION' => tr('General information'),
-                      'TR_ACCOUNT_NAME' => tr('Account name'),
-                      'TR_ADMIN_USERS' => tr('Admin users'),
-                      'TR_RESELLER_USERS' => tr('Reseller users'),
-                      'TR_NORMAL_USERS' => tr('Normal users'),
-                      'TR_DOMAINS' => tr('Domains'),
-                      'TR_SUBDOMAINS' => tr('Subdomains'),
-                      'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
-                      'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-                      'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-                      'TR_SQL_DATABASES' => tr('SQL databases'),
-                      'TR_SQL_USERS' => tr('SQL users'),
-                      'TR_SYSTEM_MESSAGES' => tr('System messages'),
-                      'TR_NO_NEW_MESSAGES' => tr('No new messages'),
-                      'TR_SERVER_TRAFFIC' => tr('Server traffic')));
-
-    // If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show
-    // [total - default_emails]/[total_emails]
-    $retrieve_total_emails = records_count(
-        'mail_users', 'mail_type NOT RLIKE \'_catchall\'', ''
-    );
-
-    if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
-        $show_total_emails = $retrieve_total_emails;
-    } else {
-        $retrieve_total_default_emails = records_count('mail_users', 'mail_acc',
-                                                       'abuse');
-
-        $retrieve_total_default_emails += records_count('mail_users', 'mail_acc',
-                                                        'webmaster');
-
-        $retrieve_total_default_emails += records_count('mail_users', 'mail_acc',
-                                                        'postmaster');
-
-        $show_total_emails = ($retrieve_total_emails - $retrieve_total_default_emails)
-                             . '/' . $retrieve_total_emails;
-    }
-
-    $tpl->assign(array(
-                      'ACCOUNT_NAME' => $_SESSION['user_logged'],
-                      'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
-                      'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
-                      'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
-                      'DOMAINS' => records_count('domain', '', ''),
-                      'SUBDOMAINS' => records_count('subdomain', '', '') +
-                                      records_count('subdomain_alias',
-                                                    'subdomain_alias_id', '', ''),
-                      'DOMAINS_ALIASES' => records_count('domain_aliasses', '', ''),
-                      'MAIL_ACCOUNTS' => $show_total_emails,
-                      'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
-                      'SQL_DATABASES' => records_count('sql_database', '', ''),
-                      'SQL_USERS' => get_sql_user_count()));
-}
-
-/**
  * Helper function to generate admin list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
@@ -340,7 +274,7 @@ function gen_admin_list($tpl)
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
-                          'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
+                          'ADMIN_MESSAGE' => tr('No administrator account found.'),
                           'ADMIN_LIST' => ''));
 
         $tpl->parse('ADMIN_MESSAGE', 'admin_message');
@@ -428,7 +362,7 @@ function gen_reseller_list($tpl)
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
-                          'RSL_MESSAGE' => tr('Resellers list is empty!'),
+                          'RSL_MESSAGE' => tr('No reseller account found.'),
                           'RSL_LIST' => ''));
 
         $tpl->parse('RSL_MESSAGE', 'rsl_message');
@@ -438,11 +372,7 @@ function gen_reseller_list($tpl)
                           'TR_RSL_CREATED_BY' => tr('Created by'),
                           'TR_RSL_OPTIONS' => tr('Options')));
 
-        $i = 0;
         while (!$rs->EOF) {
-            // @todo Not longer needed with the new theme
-            $tpl->assign('RSL_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-
             if ($rs->fields['created_by'] == '') {
                 $tpl->assign(array(
                                   'TR_DELETE' => tr('Delete'),
@@ -483,7 +413,6 @@ function gen_reseller_list($tpl)
 
             $tpl->parse('RSL_ITEM', '.rsl_item');
             $rs->moveNext();
-            $i++;
         }
 
         $tpl->parse('RSL_LIST', 'rsl_list');
@@ -561,7 +490,7 @@ function gen_user_list($tpl)
             unset($_SESSION['search_status']);
         } else {
             $tpl->assign(array(
-                              'USR_MESSAGE' => tr('Users list is empty!'),
+                              'USR_MESSAGE' => tr('No user account found.'),
                               'USR_LIST' => '',
                               'SCROLL_PREV' => '',
                               'SCROLL_NEXT' => '',

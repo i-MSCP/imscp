@@ -9,7 +9,7 @@
 					<li><a class="purchasing" href="orders.php">{TR_MENU_ORDERS}</a></li>
 					<li><a class="statistics" href="user_statistics.php">{TR_MENU_DOMAIN_STATISTICS}</a></li>
 					<!-- BDP: isactive_support -->
-					<li><a class="settings" href="ticket_system.php">{TR_MENU_QUESTIONS_AND_COMMENTS}</a></li>
+					<li><a class="support" href="ticket_system.php">{TR_MENU_QUESTIONS_AND_COMMENTS}</a></li>
 					<!-- EDP: isactive_support -->
 					<!-- BDP: custom_buttons -->
 					<li><a class="custom_link" href="{BUTTON_LINK}" {BUTTON_TARGET}>{BUTTON_NAME}</a></li>

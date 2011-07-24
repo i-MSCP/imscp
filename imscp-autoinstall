@@ -84,10 +84,10 @@ my @steps = (
 	[\&processSpecificConfFile,	'Process distribution specific configuration files'],
 	[\&builddaemon,				'Daemon build'],
 	[\&engine,					'Install engine'],
-	[\&gui,						'GUI install'],
-	[\&maintainer,				'Maintainer scripts'],
-	[\&finishBuild,				'Process post build operations'],
-	[\&cleanUp,					'Perform cleanup']
+#	[\&gui,						'GUI install'],
+#	[\&maintainer,				'Maintainer scripts'],
+#	[\&finishBuild,				'Process post build operations'],
+#	[\&cleanUp,					'Perform cleanup']
 );
 my $step = 1;
 for (@steps){
@@ -135,8 +135,8 @@ unless(iMSCP::Dialog->factory()->yesno($msg)){
 
 iMSCP::Dialog->factory()->infobox("Cleaning temporary files");
 
-$rs = cleanTMP();
-exit $rs;
+#$rs = cleanTMP();
+#exit $rs;
 
 END{
 	execute('clear');

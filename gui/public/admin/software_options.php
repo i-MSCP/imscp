@@ -85,9 +85,9 @@ $tpl->assign(
 	array(
 		'TR_OPTIONS_SOFTWARE'           => tr('Application management options'),
         'TR_MAIN_OPTIONS'               => tr('Main application installer options'),
-        'TR_USE_WEBDEPOT'               => tr('Using i-MSCP application installer websoftware depot'),
-        'TR_WEBDEPOT_XML_URL'           => tr('i-MSCP websoftware depot XML-File URL'),
-        'TR_WEBDEPOT_LAST_UPDATE'       => tr('Last i-MSCP websoftware depot update'),
+        'TR_USE_WEBDEPOT'               => tr('Using i-MSCP application installer Web software repository'),
+        'TR_WEBDEPOT_XML_URL'           => tr('XML file URL for the i-MSCP Web software repository'),
+        'TR_WEBDEPOT_LAST_UPDATE'       => tr('Last Web software repository update'),
         'USE_WEBDEPOT_SELECTED_OFF'     => (($rs->fields['use_webdepot'] == "0") ? $cfg->HTML_SELECTED : ''),
         'USE_WEBDEPOT_SELECTED_ON'      => (($rs->fields['use_webdepot'] == "1") ? $cfg->HTML_SELECTED : ''),
         'WEBDEPOT_XML_URL_VALUE'        => $rs->fields['webdepot_xml_url'],
