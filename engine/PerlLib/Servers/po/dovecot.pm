@@ -43,6 +43,10 @@ sub _init{
 	$self->{bkpDir}	= "$self->{cfgDir}/backup";
 	$self->{wrkDir}	= "$self->{cfgDir}/working";
 
+	my $conf		= "$self->{cfgDir}/dovecot.data";
+
+	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
+
 	debug((caller(0))[3].': Ending...');
 	0;
 }
@@ -65,6 +69,14 @@ sub restart{
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
+
+	use iMSCP::Execute;
+
+	# Reload config
+	$rs = execute("$main::imscpConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
 	0;
