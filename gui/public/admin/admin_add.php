@@ -111,8 +111,8 @@ function add_user($tpl)
 
             write_log("$user_logged: add admin: $username", E_USER_WARNING);
 
-            $user_def_lang = $_SESSION['user_def_lang'];
-            $user_theme_color = $_SESSION['user_theme'];
+            $user_def_lang = $cfg->USER_INITIAL_LANG;
+            $user_theme_color = $cfg->USER_INITIAL_THEME;
 
             $query = "
 				REPLACE INTO

@@ -34,14 +34,6 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) &&
-    !isset($_SESSION['logged_from_id'])
-) {
-    list($user_def_lang, $user_def_layout) = get_user_gui_props($_SESSION['user_id']);
-    $_SESSION['user_theme'] = $user_def_layout;
-    $_SESSION['user_def_lang'] = $user_def_lang;
-}
-
 /**
  * Must be documented.
  *
