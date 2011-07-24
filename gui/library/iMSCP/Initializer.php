@@ -168,6 +168,9 @@ class iMSCP_Initializer
         // Create or restore the session
         $this->_initializeSession();
 
+        // Initialize user's GUI properties
+        $this->_initializeUserGuiProperties();
+
         // Initialize internationalization libraries
         $this->_initializeLocalization();
 
@@ -282,6 +285,37 @@ class iMSCP_Initializer
 
         if (!isset($_SESSION)) {
             session_start();
+        }
+    }
+
+    /**
+     * Load user's GUI properties in session.
+     *
+     * @return void
+     * @todo quick fix that will be improved later (see #156 on i-MSCP)
+     */
+    protected function _initializeUserGuiProperties()
+    {
+        if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) &&
+            !isset($_SESSION['logged_from_id'])
+        ) {
+            $query = "SELECT `lang`, `layout` FROM `user_gui_props` WHERE `user_id` = ?";
+            $stmt = exec_query($query, $_SESSION['user_id']);
+
+            if ($stmt->recordCount() == 0 ||
+                (empty($stmt->fields['lang']) && empty($stmt->fields['layout']))
+            ) {
+                $properties = array($this->_config->USER_INITIAL_LANG, $this->_config->USER_INITIAL_THEME);
+            } elseif (empty($stmt->fields['lang'])) {
+                $properties = array ($this->config->USER_INITIAL_LANG, $stmt->fields['layout']);
+            } elseif (empty($stmt->fields['layout'])) {
+                $properties = array ($stmt->fields['lang'], $this->_config->USER_INITIAL_THEME);
+            } else {
+                $properties = array ($stmt->fields['lang'], $stmt->fields['layout']);
+            }
+
+            $_SESSION['user_def_lang'] = $properties[0];
+            $_SESSION['user_theme'] = $properties[1];
         }
     }
 
