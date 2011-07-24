@@ -21,7 +21,7 @@
 		/*<![CDATA[*/
 			$(document).ready(function(){
 				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-				
+
 				// Request for encode_idna request
 				$('input[name=ndomain_name]').bind('blur', function(){
 					dmnName = $('#ndomain_name').val();
@@ -39,7 +39,7 @@
                     }
 				});
 			});
-			
+
 			function setForwardReadonly(obj){
 				if(obj.value == 1) {
 					document.forms[0].elements['forward'].readOnly = false;
@@ -148,5 +148,10 @@
 				<input type="hidden" name="uaction" value="add_alias" />
 			</form>
 		</div>
+
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+		</div>
+
 	</body>
 </html>

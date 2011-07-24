@@ -2,23 +2,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ADMIN_SOFTWARE_PAGE_TITLE}</title>
-        <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<title>{TR_ADMIN_SOFTWARE_PAGE_TITLE}</title>
+		<meta name="robots" content="nofollow, noindex" />
+		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
-        <!--[if IE 6]>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-        <script type="text/javascript">
-            DD_belatedPNG.fix('*');
-        </script>
-         <![endif]-->
-        <script language="JavaScript" type="text/JavaScript">
-        /*<![CDATA[*/
+		<!--[if IE 6]>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+		<script type="text/javascript">
+			DD_belatedPNG.fix('*');
+		</script>
+		 <![endif]-->
+		<script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
 			$(document).ready(function(){
 				//Tooltips - begin
 				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
@@ -40,48 +40,48 @@
 				if (!confirm("{TR_MESSAGE_INSTALL}"))
 				return false;
 				document.getElementById('sw_wget').value = url;
-                document.getElementById('sw_upload_form').submit();
+				document.getElementById('sw_upload_form').submit();
 			}
 		/*]]>*/
 		</script>
 	</head>
 
-    <body>
+	<body>
 
-        <div class="header">
-            {MAIN_MENU}
+		<div class="header">
+			{MAIN_MENU}
 
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
+			<div class="logo">
+				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
+			</div>
+		</div>
 
-        <div class="location">
-            <div class="location-area icons-left">
+		<div class="location">
+			<div class="location-area icons-left">
 			<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 		</div>
 		<ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-                <li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
-            </ul>
-        </div>
+				<!-- <li><a class="help" href="#">Help</a></li> -->
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+			</ul>
+			<ul class="path">
+				<li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
+			</ul>
+		</div>
 
-        <div class="left_menu">
-            {MENU}
-        </div>
+		<div class="left_menu">
+			{MENU}
+		</div>
 
-        <div class="body">
-            <h2 class="apps_installer"><span>{TR_UPLOAD_SOFTWARE}</span></h2>
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
-            
+		<div class="body">
+			<h2 class="apps_installer"><span>{TR_UPLOAD_SOFTWARE}</span></h2>
+			<!-- BDP: page_message -->
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+			<!-- EDP: page_message -->
 
-            <table>
-            	<tr>
+
+			<table>
+				<tr>
 					<td>
 						<form action="software_manage.php" name="sw_upload_form" id="sw_upload_form" method="post" enctype="multipart/form-data">
 							<table>
@@ -174,15 +174,15 @@
 				</tr>
 				<!-- EDP: list_webdepotsoftware -->
 				<tr>
-                    <td colspan="7">
-                        <form action="software_manage.php" method="post" name="update_webdepot" id="update_webdepot">
-                            <div class="buttons">
-                                <input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
-                                <input type="hidden" name="uaction" value="updatewebdepot" />
-                            </div>
-                        </form>
-                    </td>
-                </tr>
+					<td colspan="7">
+						<form action="software_manage.php" method="post" name="update_webdepot" id="update_webdepot">
+							<div class="buttons">
+								<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
+								<input type="hidden" name="uaction" value="updatewebdepot" />
+							</div>
+						</form>
+					</td>
+				</tr>
 				<tr>
 					<th colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</th>
 				</tr>
@@ -252,11 +252,13 @@
 					<th colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</th>
 				</tr>
 			</table>
-        	<div class="paginator">
-                
-            </div>
+			<div class="paginator">
+			</div>
+		</div>
 
-        </div>
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+		</div>
 
-    </body>
+	</body>
 </html>
