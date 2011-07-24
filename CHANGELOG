@@ -20,7 +20,7 @@ Features / Enhancements:
 				- Importing languages files for install/update is still supported but
 				  only for Machine Object files
 		Tools:
-			- Updated PhpMyAdmin to version 3.4.3.1
+			- Updated PhpMyAdmin to version 3.4.3.2
 
 Other:
 	Gui:
