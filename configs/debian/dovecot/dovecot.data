@@ -22,4 +22,8 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-DOVECOT_CONF_DIR = /etc/dovecot
+DOVECOT_CONF_DIR	= /etc/dovecot
+
+DATABASE_USER = dovecot_user
+
+DATABASE_PASSWORD = ]2Wbkm7_

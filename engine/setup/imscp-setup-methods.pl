@@ -1661,9 +1661,9 @@ sub setup_ftpd {
 		do{
 			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name (default vftp)", $dbUser);
 		} while (!$dbUser || $main::imscpConfig{'DATABASE_USER'} eq $dbUser);
-		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 
 		# Ask for proftpd SQL user password
+		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 		$dbPass = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", $dbPass);
 		if(!$dbPass){
 			$dbPass = iMSCP::Crypt::randomString(8);
@@ -1687,7 +1687,7 @@ sub setup_ftpd {
 					`Db` = ?
 				AND
 					`User` = ?;
-			", $main::imscpConfig{'SERVER_HOSTNAME'}, $main::imscpConfig{'DATABASE_NAME'}, $dbUser
+			", $main::imscpConfig{'DATABASE_HOST'}, $main::imscpConfig{'DATABASE_NAME'}, $dbUser
 		);
 		return $err if (ref $err ne 'HASH');
 
@@ -1700,7 +1700,7 @@ sub setup_ftpd {
 					`Host` = ?
 				AND
 					`User` = ?;
-			", $main::imscpConfig{'SERVER_HOSTNAME'}, $dbUser
+			", $main::imscpConfig{'DATABASE_HOST'}, $dbUser
 		);
 		return $err if (ref $err ne 'HASH');
 
