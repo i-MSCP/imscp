@@ -1,0 +1,88 @@
+<chapter>
+   <title>
+      Vyhľadávanie
+   </title>
+   <summary>
+      Vyhľadávanie na základe zadaných kritérií.
+   </summary>
+   <description>
+      <p>
+      S týmto užitočným nástrojom, môžete v špecifikovanom priečinku vyhľadávať
+      na základe zadaných kritérií, ktoré sa zhodujú s hlavičkami správ.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Všeobecný prehľad
+   </title>
+   <description>
+      <p>
+      Môžte si jednoducho zvoliť priečinok, v ktorom chcete vyhľadávať, napíšte
+      vyhľadávacie kritéria, a potom zvoľťe časť správy, kde sa má vyhľadávať.
+      Keď odošlete vyhľadávaný text, pod týmto políčkom na vyľadávanie sa zobrazí
+      výpis nájdených správ. Môžte si zvoliť správu, ktorú si želáte prečítať, tak
+      ako normálnu správu.
+      </p>
+      <p>
+      Treba poznamenať,že keď čítate správy a potom pôjdete do sekcie vyľadávanie,
+      nastaví sa ako priečinok na vyhľadávanie váš aktuálny priečinok. Napríklad,
+      ak ste v priečinku "Priatelia" a ptom kliknete na "Vyhľadávanie", priečinok"
+      Priatelia" sa nastaví na vyhľadávanie.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Cez čo vyhľadávať
+   </title>
+   <description>
+      <p>
+      Na ľavo od textového poľa, vidíte rolovacií zoznam miest, v ktorých je
+      možné vyhľadávať. To zahŕňa: Telo správy, Všade, Predmet, Od, Kópia, Komu.
+      </p>
+      <p>
+      <b>Telo</b> - Vyhľadáva v tele správy. Toto je hlavná časť správy, kde je
+      umiestnená dôležitá časť správy.
+      </p>
+      <p>
+      <b>Všade</b> - Toto vyhľádava všade, zahrňujúc aj hlavičku správy. Pokiaľ
+      si nieste istý, či toto chcete, pravdepodobne to nieje to čo potrebujete.
+      Toto vyhľadávanie by vám v tomto prípade prinieslo výsledky, ktoré by ste
+      normálne neočakával.
+      </p>
+      <p>
+      <b>Predmet</b> - Vyhľadávanie len v predmetoch správ.
+      </p>
+      <p>
+      <b>Od</b> - Kto poslal správu. Treba poznamenať, že toto vyľadávanie môže
+      obsahovať viac dát ako je zobrazených vo výpise priečinka. V normálnom
+      poli "Od" sa zvyčajne nachádza meno A e-mailová adresa, ale SquirrelMail
+      zvyčajne zobrazuje len mená. Ak do vyhľadávania zadáte e-mailovú adresu,
+      a táto nieje zobrazená, správa sa aj tak nájde.
+      </p>
+      <p>
+      <b>Komu</b> - Komu bola poslaná správa. Tu može byť viac adries, nielen jedna
+      e-mailová adresa.
+      </p>
+      <p>
+      <b>Kópia</b> - To isté ako "Komu", s výnimkou správ poslaných ako slepé kópie.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Posledné vyhľadávania
+   </title>
+   <description>
+   Ak povolíte túto možnosť, stránka vyhľadávania tiež zobrazí prehľad do max. 9
+   posledných hľadaní za účelom rýchleho prístupu. Kliknite na "Hľadať ďalší" na
+   znovu-vyhľadanie podľa rovnakých kritérií. Pomocou odkazu uložiť môžte aktuálne
+   hľadanie uložiť ako Uložené vyhľadávania. Ostatanú uložené pokiaľ explicitne
+   neprikážete vymazať vyhľadanie. Kliknite na Zabudni pre odstránenie vyhľadávania
+   z výpisu posledne hľadaných.
+   </description>
+</section>

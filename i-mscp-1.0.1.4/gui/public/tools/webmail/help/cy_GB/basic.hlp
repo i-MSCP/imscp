@@ -1,0 +1,58 @@
+<chapter>
+   <title>
+      Introduction to SquirrelMail
+   </title>
+   <summary>
+      Mae SquirrelMail yn fodd o archwilio eich E-Bost dros y We Fyd Eang.
+   </summary>
+   <description>
+      <p>
+      Felly beth yn union yw 
+      <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>
+      Rhyngwyneb gwe i e-bost sydd wedi ei ysgrifenny yn PHP4 
+      <A HREF="http://www.php.net">PHP4</A>.  Cafodd ei gynllunio er 
+      mwyn eich galluogi chi i gael mynediad at e-bost trwy eich gweinyddwr 
+      o unrhyw le yn y byd trwy gyfrwng y We. Gallwch gael mwy o 
+      wybodaeth yngln â sut yn union y maen gwneud hyn ar  protocol IMAP
+      <A HREF="http://imap.org">yma</A>.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      The Basics
+   </title>
+   <description>
+      <p>
+      Os mai dim ond cwestiwn byr sydd gennych chi, efallai yr hoffech 
+      chi edrych ar y cwestiynau syn cael eu gofyn yn aml (FAQ).
+      </p>
+      <p>
+      Mae SquirrelMail wedi ei osod mewn dwy brif ran a elwir yn 
+      fframiau. Maer ffrâm ar y chwith yn rhestrur ffolderi sydd wedi 
+      cael eu tanysgrifio ar hyn o bryd. Gallwch ddod o hyd i ragor o 
+      wybodaeth am y ffrâm chwith o dan yr adran "Folders" yn y
+      ddogfennaeth gymorth yma.
+      </p>
+      <p>
+      Ar y dde y bydd y rhan fwyaf o bethaun digwydd. Mae bar 
+      dewislen ar frig y dudalen. Bydd Sign out yn eich allgofnodi or
+      rhaglen yn ddiogel pan fyddwch chi wedi gorffen. Maer Current 
+      Folder yn dangos pa un or ffolderi a restrwyd yn y ffrâm chwith 
+      yr ydych chi ynddo ar hyn o bryd. Yn union wedi i chi logio i 
+      mewn, bydd eich INBOX yn cael ei ddangos wedi ei osod ymlaen llaw.
+      </p>
+      <p>
+      O dan y bar uchaf mae rhes o ddewisiadau dewislen:
+         <ul>
+            <li><b>Compose</b> - Llunio ac anfon e-bost all gynnwys atodiadau.
+            <li><b>Addresses</b> - Maen cynnwys rhestr o gyfeiriadau sydd yn eich llyfr cyfeiriadau personol chi.
+            <li><b>Folders</b> - e popeth syn ymwneud â thrin ffolderin digwydd yma. Gallwch ddileu, creu, ailenwi, tanysgrifio neu ddad-danysgrifio ffolderi
+            <li><b>Options</b> - Newid gosodiadau o ran sut y mae SquirrelMail yn ymateb ac yn edrych.
+            <li><b>Search</b> - Gyda chymorth yr offer yma, gallwch chwilio trwy flwch post am feini prawf penodol.
+            <li><b>Help</b> - Dyma lle rydych chin barod!
+         </ul>
+      </p>
+   </description>
+</section>   

@@ -1,0 +1,105 @@
+# Khmer (km) mark_read Translation
+# piseth <piseth_dv@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: mark_read\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-26 06:57+0200\n"
+"PO-Revision-Date: 2009-04-24 09:27+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:60 functions.php:162 functions.php:341
+msgid "read"
+msgstr "បានអាន"
+
+#: functions.php:61 functions.php:164 functions.php:342
+msgid "unread"
+msgstr "មិនបាន​អាន"
+
+#: functions.php:111
+msgid "mark all messages in this folder as read"
+msgstr "សម្គាល់​សារ​ទាំងអស់​នៅ​ក្នុង​ថត​នេះ ថា​បាន​អាន"
+
+#: functions.php:113
+msgid "mark all messages in this folder as unread"
+msgstr "សម្គាល់​សារ​ទាំងអស់​នៅ​ក្នុង​ថត​នេះ ថា​មិន​បាន​អាន"
+
+#: functions.php:162
+msgid "mark all messages in the above folders as read"
+msgstr "សម្គាល់​សារ​ទាំងអស់​នៅ​ក្នុង​ថត​ខាងលើ​ថា​បាន​អាន"
+
+#: functions.php:164
+msgid "mark all messages in the above folders as unread"
+msgstr "សម្គាល់​សារ​ទាំងអស់​នៅ​ក្នុង​ថត​ខាងលើ​ថា​មិនបាន​អាន"
+
+#: functions.php:165
+msgid "mark all folders"
+msgstr "សម្គាល់​ថត​ទាំងអស់"
+
+#: functions.php:294
+msgid "Mark Read Link"
+msgstr "សម្គាល់​តំណ​ដែល​បាន​អាន"
+
+#: functions.php:297
+msgid ""
+"Select all Folders, which you want to appear with a mark as read-/unread-"
+"link:"
+msgstr "ជ្រើស​ថត​ទាំងអស់ ដែល​អ្នក​ចង់​បង្ហាញ​ជាមួយ​សញ្ញា​សម្គាល់​ជា​តំណ​បាន​អាន/​មិន​បាន​អាន ៖"
+
+#: functions.php:336
+msgid "Toggle Special Folders"
+msgstr "បិទ​បើក​ថត​ពិសេស"
+
+#: functions.php:337
+msgid "Toggle All"
+msgstr "បិទបើក​ទាំងអស់"
+
+#: functions.php:339
+msgid "Display links"
+msgstr "បង្ហាញ​តំណ"
+
+#: functions.php:340 functions.php:355 functions.php:364
+msgid "none"
+msgstr "គ្មាន"
+
+#: functions.php:343
+msgid "read/unread"
+msgstr "អាន​/​មិនបាន​អាន"
+
+#: functions.php:347
+msgid "upper"
+msgstr "លើ"
+
+#: functions.php:349
+msgid "lower"
+msgstr "ក្រោម"
+
+#: functions.php:352
+msgid "shortened"
+msgstr "បង្រួញ​ខ្លី"
+
+#: functions.php:354
+msgid "brackets"
+msgstr "វង់​ដង្កៀប"
+
+#: functions.php:363
+msgid "seperator"
+msgstr "អក្សរ​បំបែក"
+
+#: functions.php:380
+msgid "Display 'mark all folders' link below the folder list"
+msgstr "បង្ហាញ​តំណ 'សម្គាល់​ថត​ទាំងអស់' នៅក្រោម​បញ្ជី​ថត"
+
+#: functions.php:384
+msgid "Save"
+msgstr "រក្សាទុក"
+

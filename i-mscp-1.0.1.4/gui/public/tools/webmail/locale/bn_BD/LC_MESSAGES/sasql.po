@@ -1,0 +1,1128 @@
+# Bengali (bn_BD) sasql Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: sasql.pot 12147 2007-01-19 13:36:59Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: sasql 3.2.0\n"
+"Report-Msgid-Bugs-To: Randy Smith <perlstalker@vuser.org>\n"
+"POT-Creation-Date: 2007-01-19 13:40+0100\n"
+"PO-Revision-Date: 2008-12-30 12:14+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bayes_stats.inc.php:31
+msgid "Bayes Filter Statistics"
+msgstr "বায়েস ফিল্টার পরিসংখ্যান"
+
+#: bayes_stats.inc.php:37
+msgid ""
+"Below are the number of messages that have been learned as spam and ham (non-"
+"spam) by the Bayesian filter. The Bayesian filter does not activate until "
+"enough messages have been learned as spam or ham."
+msgstr ""
+"এর নিচে বার্তার সংখ্যা যে স্প্যাম এবং হ্যাম হিসেবে শেখা হয়েছে (স্প্যাম নয়) "
+"বায়েসীয়ান ফিল্টারের দ্বারা। বায়েসীয়ান ফিল্টার স্প্যাম অথবা হ্যাম হিসেবে যথেষ্ট "
+"বার্তা পর্যন্ত সক্রিয় করা হয় শেখা হয় না।"
+
+#: bayes_stats.inc.php:41
+msgid "Spam Count"
+msgstr "স্প্যাপ গননা"
+
+#: bayes_stats.inc.php:47
+msgid "Ham Count"
+msgstr "হ্যাম গনণা"
+
+#: dspam.inc.php:82
+msgid "DSPAM Settings"
+msgstr "DSPAM মানসমূহ"
+
+#: dspam.inc.php:89
+msgid "Warning"
+msgstr "সতর্কবানী"
+
+#: dspam.inc.php:91
+msgid "Enabling DSPAM will disable SpamAssassin scanning of your email."
+msgstr "DSPAM সক্রিয়করণ আপনার ই-মেইলের  SpamAssassin স্ক্যান করা নিষ্ক্রিয় করবে।"
+
+#: dspam.inc.php:94
+msgid "SpamAssassin settings and white/blacklists will not be used by dspam."
+msgstr ""
+"SpamAssassin মানসমূহ এবং সাদাকালো তালিকাভূক্ত ডিস্প্যাম দ্বারা ব্যবহার করা হবে না।"
+
+#. *
+#. * To translators: %s's will be replaced with <a ..> and </a>
+#.
+#: dspam.inc.php:102
+#, php-format
+msgid ""
+"This %sFAQ%s from the DSPAM web site explains the differences between "
+"SpamAssassin and DSPAM and why you might want to use dspam instead of "
+"SpamAssassin."
+msgstr ""
+"DSPAM ওয়েব সাইট থেকে এই %sFAQ%sটি SpamAssassin এবং DSPAMএর মধ্যে পার্থক্য "
+"ব্যাখ্যা করে এবং জন্য আপনি SpamAssassinএর পরিবর্তে dspam ব্যবহার করতে চাইতে পারেন।"
+
+#: dspam.inc.php:113
+msgid ""
+"DSPAM is a learning system that filters spam based on what <i>you</i> tell "
+"it is spam and what isn't. Messages are analyzed as they are delivered and "
+"are assigned a spam probability between 0 and 1. The more messages you "
+"receive, both spam and innocent, the better DSPAM learns what <i>you</i> "
+"think is spam and what is not."
+msgstr ""
+"DSPAM একটি শিক্ষণ সিস্টেম যা <i> আপনি</i> কোনটি স্প্যাম বলছেন এবং কোনটি নয় তার "
+"উপর ভিত্তি করে স্প্যাম ফিল্টার করে। বার্তাসমূহ প্রেরিত হিসেবে বিশ্লেষণ করা হয় এবং ০ "
+"এবং ১এর মধ্যে একটি স্প্যাম সম্ভাব্য বরাদ্দ করা হয়। আরও যতো বেশি বার্তা আপনি গ্রহন "
+"করবেন, স্প্যাম এবং নিস্পাপ উভয়ই, DSPAM ততো ভাল ভাবে শিখে যে<i> আপনি</i> কোনটি "
+"স্প্যাম হিসেবে ভাবছেন এবং কোনটি নয়।"
+
+#: dspam.inc.php:117
+msgid "Reporting Spam"
+msgstr "স্প্যাম প্রতিবেদন করছে"
+
+#: dspam.inc.php:120
+msgid ""
+"If you receive a spam message in your Inbox, forward the message to "
+"<nobr>username-spam@domain</nobr> and it will be learned as spam. For "
+"example, if your address is joe@example.com, you would forward the message "
+"to <nobr>joe-spam@example.com</nobr>."
+msgstr ""
+"যদি আপনি আপনার ইনবক্সে একটি বার্তা পেয়ে থাকেন, বার্তা <nobr> username-"
+"spam@domain</nobr> এ ফরওয়ার্ড করেন এবং এইটি স্প্যাম হিসেবে শেখা হবে। "
+"উদাহরণস্বরুপ, যদি আপনার ঠিকানা  joe@example.com, আপনাকে বার্তা ফরওয়ার্ড করবেন "
+"<nobr> joe-spam@example.com</nobr> এইভাবে।"
+
+#: dspam.inc.php:126
+#, php-format
+msgid ""
+"You can also move your spam messages to the <i>%s</i> folder. This folder is "
+"periodically checked for messages which are then learned as spam and "
+"deleted. You do not need to move messages from your %s folder here because "
+"they have already been learned as spam."
+msgstr ""
+"আপনি <i> %s</i> ফোল্ডারে আপনার স্প্যাম বার্তা সরিয়ে নিতে পারেন। এই ফোল্ডারটি "
+"বার্তার জন্য পর্যায়ক্রমে পরীক্ষা করা হয় যেটি তারপর স্প্যাম হিসেবে শেখা হয় এবং মুছে "
+"ফেলা হয়েছিল। আপনার %s ফোল্ডার থেকে বার্তা সরিয়ে নেওয়ার প্রয়োজন নেই কারণ তাদেরকে "
+"স্প্যাম হিসেবে ইতিমধ্যে শেখা হয়েছে।"
+
+#: dspam.inc.php:131
+msgid "Reporting False Positives"
+msgstr "ভূল ধনাত্মক প্রতিবেদন করছে"
+
+#: dspam.inc.php:134
+msgid ""
+"From time to time, DSPAM will catch an innocent messages as spam. These "
+"messages are called \"false positives\". There is no way to prevent false "
+"positives entirely. If you find a false positive, forward the message to "
+"<nobr>username-fp@domain</nobr> and it will be learned as an innocent "
+"message. For example, if your email address is joe@example.com, you would "
+"forward the message to <nobr>joe-fp@example.com</nobr>."
+msgstr ""
+"সময় সময়ে, DSPAM স্প্যাম হিসেবে একটি নিস্পাপ বার্তা ধরবে। এই বার্তাসমূহকে \" মিথ্যা "
+"ধনাত্মক \"বল হয়। মিথ্যা ধনাত্মক সমগ্রভাবে প্রতিরোধ করতে কোনও রাস্তা নেই। যদি আপনি "
+"এতে একটি মিথ্যা ধনাত্মক বার্তা খুঁজে পান, বার্তাটি <nobr> username-fp@domain</"
+"nobr>  তে ফরওয়ার্ড করে দিন এবং এটি একটি নিস্পাপ বার্তা হিসেবে শেখা হবে। "
+"উদাহরণের জন্য, যদি আপনার ই-মেইল ঠিকানা joe@example.com হয়, আপনাকে বার্তা "
+"<nobr> joe-fp@example.com</nobr> তে ফরওয়ার্ড করতে হবে।"
+
+#: dspam.inc.php:140
+#, php-format
+msgid ""
+"You can also move your false positives to the <i>%s</i> folder from the %s "
+"folder. This folder is periodically checked for messages which are then "
+"learned as false positives and deleted."
+msgstr ""
+" %s ফোল্ডার থেকে <i> %s</i> ফোল্ডারে আপনি আপনার মিথ্যা ধনাত্মক সরিয়ে নিতে পারেন। "
+"এই ফোল্ডারটি বার্তার জন্য পর্যায়ক্রমে পরীক্ষা করা হয় যেটি তারপর মিথ্যা ধনাত্মক "
+"হিসেবে শেখা হয় এবং মুছে ফেলা হয়।"
+
+#: dspam.inc.php:145
+msgid "Disclaimer"
+msgstr "দাবি ত্যাগ "
+
+#: dspam.inc.php:148
+msgid ""
+"DSPAM is a learning system. It only knows what is spam based on what you "
+"teach it is spam and what is not. Due to DSPAM's nature, you are more likely "
+"to see errors in spam detection until it is trained on your email. If you do "
+"not report a message as spam within ten days, the message will be "
+"permanently learned as innocent and you will be more likely to receive more "
+"spam."
+msgstr ""
+"DSPAM একটি শিক্ষণ সিস্টেম। এইটি কেবল জানে কোনটি স্প্যাম ভিত্তিক কোনটি আপনাকে এটি "
+"স্প্যাম হিসেবে চিহ্নীত করতে শিক্ষা প্রদান করছে এবং কোনটি নয়। DSPAMএর প্রকৃতির দরুন, "
+"আপনাকে আপনার ই-মেইলে প্রশিক্ষন দেওযা না পর্যন্ত স্প্যাম শনাক্তকরণে আপনি আরো ত্রুটি "
+"দেখতে পাবেন। যদি আপনি দশ দিনের মধ্যে স্প্যাম হিসেবে একটি বার্তা প্রতিবেদন না "
+"করেন, বার্তা নিস্পাপ হিসেবে স্থায়ীভাবে শেখা হবে এবং আপনি আরও বেশি স্প্যাম গ্রহন "
+"করতে সম্ভাব্য হবেন।"
+
+#. *
+#. * To translators: %s's will be replaced by <a ..> and </a>
+#.
+#: dspam.inc.php:162
+#, php-format
+msgid "Please read the %sDSPAM Primer%s before enabling DSPAM."
+msgstr "অনুগ্রহ করে DSPAM সক্রিয় করার পূর্বে %sDSPAM.Primer%s পড়ুন।"
+
+#: dspam.inc.php:183
+msgid "Use DSPAM"
+msgstr "DSPAM ব্যবহার করুন"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:198
+#, php-format
+msgid "Clean out your %s folder on opt-in?"
+msgstr "আপনার %s ফোল্ডার পছ-ন্দ পরিষ্কার করুন?"
+
+#: dspam.inc.php:200 purge.inc.php:37
+msgid "Note"
+msgstr "নোট"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+#: dspam.inc.php:205 purge.inc.php:38
+#, php-format
+msgid ""
+"Your %s folder may be unavailable during the purge. It will become available "
+"again when the purge is complete."
+msgstr ""
+"আপনার %s ফোল্ডার বিশোধনের সময় পাওয়া যাচ্ছে না। যখন বিশোধন সম্পূর্ণ তখন এটি পুনরায় "
+"প্রাপ্তিসাধ্য হবে।"
+
+#: dspam.inc.php:214
+msgid "Update"
+msgstr "হালনাগাদ করুন"
+
+#: move_to.php:98
+msgid "No messages were selected."
+msgstr "কোন বার্তা নির্বাচিত নেই।"
+
+#: policyd_docs.inc.php:8 policyd.inc.php:186
+msgid "Greylisting"
+msgstr "গ্রেলিস্টিং"
+
+#: policyd_docs.inc.php:9
+msgid "What is Greylisting?"
+msgstr "গ্রেলিস্টিং কি?"
+
+#: policyd_docs.inc.php:12
+msgid ""
+"Greylisting is a method of filtering spam that relies on the fact that most "
+"spammers use software that does not behave like a regular email program. "
+"Instead of retrying when it receives a \"temporary error\" from a mail "
+"server, the spammer's software will give up on the message and keep going "
+"through their list. Because legitimate servers will attempt to resend the "
+"message after a temporary error, no legitimate mail is blocked."
+msgstr ""
+"গ্রেতালিকা স্প্যাম ফিল্টার করার একটি পন্থা যে ঘটনা ভরসা করে যে স্প্যামার সর্বাপেক্ষা "
+"সফটওয়্যার ব্যবহার করে যে একটি নিয়মিত ই-মেইল প্রোগ্রামের মতো আচরণ করে না। পুনরায় "
+"চেষ্টা করার পরিবর্তে যখন  একটি মেইল সার্ভার থেকে এটি একটি \"অস্থায়ী ত্রুটি \" গ্রহন "
+"করে, স্প্যামারের সফটওয়্যার বার্তা ত্যাগ করবে এবং তাদের তালিকার মধ্য দিয়ে যাওয়া "
+"অব্যাহত রাখেন। কারণ আইনসঙ্গত সার্ভার একটি অস্থায়ী ত্রুটির পরে বার্তা পুনরায় পেতে "
+"চেষ্টা করবে, কোনও আইনসঙ্গত মেইল বাধা দেওয়া হয় না।"
+
+#: policyd_docs.inc.php:15
+msgid "Email Delays"
+msgstr "ইমেইল বিরতি"
+
+#: policyd_docs.inc.php:18
+msgid ""
+"Greylisting tells the sending server to retry before the message is allowed "
+"in. Most servers will retry within five minutes but may take longer "
+"depending on the amount of mail to be sent. It is not surprising to see mail "
+"delayed for as much as an hour, though such delays are uncommon."
+msgstr ""
+"গ্রেতালিকা বার্তা অনুমোদন করার পূর্বে পাঠানো সার্ভারকে পুনরায় চেষ্টা করতে বলছে। "
+"বেশীরভাগ সার্ভার পাঁচ মিনিটের মধ্যে পুনরায় চেষ্টা করবে কিন্তু মেইলের পরিমাণের উপর "
+"নির্ভর করে পাঠাতে দীর্ঘ সময় নিতে পারে। এক ঘন্টার মতো মেইল বিলম্ব হওয়া বিস্ময়কর "
+"নয়, যদিও এমন বিলম্ব বিরল।"
+
+#: policyd_docs.inc.php:22 policyd.inc.php:195
+#, php-format
+msgid "Warning: "
+msgstr "সতর্কবানী:"
+
+#: policyd_docs.inc.php:23
+msgid "Do not enable greylisting if you require immediate delivery of email."
+msgstr ""
+"গ্রেতালিকা সক্রিয় করবেন না যদি আপনি ই-মেইলের অবিলম্বে বিলি করা প্রয়োজন বোধ করেন।"
+
+#. To translators: %s's are the function name and PEAR generated errors.
+#.
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: policyd.inc.php:50 policyd.inc.php:90 policyd.inc.php:122
+#: policyd.inc.php:140 sasql_db.php:43 sasql_db.php:79 sasql_db.php:223
+#: sasql_db.php:280 sasql_db.php:336 sasql_db.php:393 sasql_db.php:419
+#: sasql_db.php:466 sasql_db.php:505 sasql_db.php:536
+#, php-format
+msgid "Database error in %s: %s"
+msgstr "%s উপাত্ত ভান্ডারে ত্রুটি: %s"
+
+#: policyd.inc.php:176
+msgid "Policy Settings"
+msgstr "কৌশল মানসমূহ"
+
+#. To translators: %s's are <a ..> and </a>
+#: policyd.inc.php:191
+#, php-format
+msgid "Enable greylisting. See %sthis page%s for more details."
+msgstr "গ্রেতালিকা সক্রিয় করুন। আরও বেশি বিশদ বর্ণনার জন্য %sthis page%s দেখুন।"
+
+#: policyd.inc.php:196
+msgid "Greylisting may delay the delivery of email."
+msgstr "গ্রেতালিকা ই-মেইলের বিলি করা বিলম্বিত করছে।"
+
+#: policyd.inc.php:204 sa_settings.inc.php:173
+msgid "Save Settings"
+msgstr "মানসমূহ সংরক্ষন করুন"
+
+#: purge.inc.php:22
+#, php-format
+msgid "Purge %s Folder"
+msgstr "%s ফোল্ডারে বিশোধিত করুন "
+
+#: purge.inc.php:30
+msgid "Purge"
+msgstr "বিশোধিত করা"
+
+#: purge.inc.php:33
+#, php-format
+msgid "Delete all messages from your %s folder."
+msgstr "আপনার %s ফোল্ডার থেকে সব বার্তা মুছে ফেলুন।"
+
+#: sa_abooksync.inc.php:20
+msgid "Allow Senders from Address Book"
+msgstr "ঠিকানাবই হতে প্রেরক অনুমোদন করুন"
+
+#: sa_abooksync.inc.php:26
+msgid "Allow"
+msgstr "অনুমোদন করুন"
+
+#: sa_abooksync.inc.php:27
+msgid "Allow all address in the address book."
+msgstr "ঠিকানাবইয়ে সব ঠিকানা অনুমোদন করুন।"
+
+#. required_hists
+#: sa_opts-dist.php:19 sasql_hooks.php:450
+msgid "Spam Score"
+msgstr "স্প্যাম স্কোর"
+
+#: sa_opts-dist.php:20
+msgid ""
+"Once all SpamAssassin tests have been run, the resulting score is matched "
+"against this value, and if greater than this value, the e-mail message is "
+"marked as spam. We recommend a value of '5'."
+msgstr ""
+"সমস্ত SpamAssassin পরীক্ষা একবার চালিয়েছে, উদ্ভূত স্কোর এই মূল্যটির বিরুদ্ধে মিলানো "
+"হয়, এবং যদি এই মূল্যের চেয়ে বৃহত্তর হয়, ই-মেইল বার্তা স্প্যাম হিসেবে চিহ্নিত করা হয়। "
+"আমরা '৫'এর একটি মূল্য সুপারিশ করি।"
+
+#: sa_opts-dist.php:22
+msgid "0 - Very Aggressive"
+msgstr "০ - খুব উগ্র"
+
+#: sa_opts-dist.php:23
+msgid "1"
+msgstr "১"
+
+#: sa_opts-dist.php:24
+msgid "2 - Aggressive"
+msgstr "২ - খুব উগ্র"
+
+#: sa_opts-dist.php:25
+msgid "3"
+msgstr "৩"
+
+#: sa_opts-dist.php:26
+msgid "4"
+msgstr "৪"
+
+#: sa_opts-dist.php:27
+msgid "5 - Recommended"
+msgstr "৫- সুপারিশকৃত"
+
+#: sa_opts-dist.php:28
+msgid "6"
+msgstr "৬"
+
+#: sa_opts-dist.php:29
+msgid "7"
+msgstr "৭"
+
+#: sa_opts-dist.php:30
+msgid "8 - Lenient"
+msgstr "৮- কোমল"
+
+#: sa_opts-dist.php:31
+msgid "9"
+msgstr "৯"
+
+#: sa_opts-dist.php:32
+msgid "10 - Very Lenient"
+msgstr "১০ - খুব কোমল"
+
+#: sa_opts-dist.php:33
+msgid "Don't Filter"
+msgstr "ফিল্টার করবেন না"
+
+#. NOTE: The ordering here is a little odd to allow some inclusion of
+#. other option names.
+#. subject_tag
+#: sa_opts-dist.php:43
+msgid "Spam Subject Tag"
+msgstr "স্প্যাম বিষয় ট্যাগ"
+
+#: sa_opts-dist.php:45
+msgid "*****SPAM*****"
+msgstr "*****স্প্যাম*****"
+
+#. rewrite_subject
+#. 'rewrite_header subject'
+#: sa_opts-dist.php:48 sa_opts-dist.php:63
+msgid "Rewrite Subject Line"
+msgstr "বিষয় লাইন আবার লিখুন"
+
+#. To translators: %s is the default from subject_tag
+#: sa_opts-dist.php:50
+#, php-format
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with: %s.  To turn "
+"on this feature, select this option."
+msgstr ""
+"SpamAssassin ই-মেইলের বিষয় লাইন পুনরায় লিখতে পারে যা প্রকৃত বিষয় কে %s দ্বারা "
+"পূর্ব নির্ধারিত করে স্প্যাম হিসেবে নির্ধারণ করা হবে। এই বৈশিষ্ট্যেটি চালু করতে, এই "
+"পছন্দটি নির্বাচন করুন।"
+
+#. This is here to allow me to include the rewrite_subject title
+#. *
+#. * To Translators: %s is the title from rewrite_subject
+#.
+#: sa_opts-dist.php:60
+#, php-format
+msgid ""
+"The text to prefix to the subject of messages determined to be spam. %s must "
+"be turned on."
+msgstr ""
+"বার্তার বিষয়ে উপপদতে পাঠ্য স্প্যান হতে নির্ধারণ করেছিল। %s এর চালু হওয়া উচিত।"
+
+#: sa_opts-dist.php:64
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with this value."
+msgstr ""
+"SpamAssassin ই-মেইলের বিষয় লাইন পুনরায় লিখতে পারে যে এই মূল্যটির সঙ্গে মূল বিষয় "
+"পূর্বশব্দ মধ্যে স্প্যাম হতে নির্ধারণ করা হয়েছে।"
+
+#. use_terse_report
+#: sa_opts-dist.php:70
+msgid "Short Report"
+msgstr "সংক্ষিপ্ত প্রতিবেদন"
+
+#: sa_opts-dist.php:71
+msgid ""
+"This option will tell SpamAssassin to use a shorter spam report once the "
+"message has been found to be spam."
+msgstr ""
+"একবার বার্তা স্প্যাম হিসেবে খুঁজে পাওযা গেলে এই পছন্দটি SpamAssassin কে একটি "
+"অপেক্ষাকৃত ছোট স্প্যাম প্রতিবেদন ব্যবহার করতে বলবে।"
+
+#. use_dcc
+#: sa_opts-dist.php:77
+msgid "Use DCC"
+msgstr "DCC ব্যবহার করুন"
+
+#: sa_opts-dist.php:78
+msgid ""
+"Checks messages against the DCC (Distrubuted Checksum Clearinghouse) to see "
+"if a message matches a known spam message."
+msgstr ""
+"একটি বার্তা একটি পরিচিত স্প্যাম বার্তার সাথে মিলে কি না সেটি দেখতে ডিসিসির "
+"বিরুদ্ধে (বিতরণকৃত যোগফল Clearinghouse) বার্তা পরীক্ষা করুন।"
+
+#. use_razor1
+#: sa_opts-dist.php:84
+msgid "Use SpamNet (version 1)"
+msgstr "SpamNet (সংকলন ১) ব্যবহার করুন"
+
+#: sa_opts-dist.php:85 sa_opts-dist.php:92
+msgid ""
+"Checks messages against SpamNet to see if a message is a known spam message."
+msgstr ""
+"একটি বার্তা একটি পরিচিত স্প্যাম বার্তার সাথে মিলে কি না সেটি দেখতে SpamNetএর "
+"বিরুদ্ধে বার্তা পরীক্ষা করুন।"
+
+#. use_razor2
+#: sa_opts-dist.php:91
+msgid "Use SpamNet (version 2)"
+msgstr "SpamNet (সংকলন ২) ব্যবহার করুন"
+
+#. always_add_headers
+#: sa_opts-dist.php:98
+msgid "Always Add Headers"
+msgstr "সবসময় শিরক যোগ করুন"
+
+#: sa_opts-dist.php:99
+msgid "Uncheck if you do not want to add the headers to non-spam."
+msgstr "যদি আপনি নন-স্প্যামে শিরকগুলো যোগ করতে না চান তবে অপরীক্ষীত রাখুন।"
+
+#. ok_languages
+#: sa_opts-dist.php:105
+msgid "Acceptable Languages"
+msgstr "গ্রহনযোগ্য ভাষাগুলো"
+
+#: sa_opts-dist.php:106
+msgid "Select all the languages you expect to receive e-mail in."
+msgstr "আপনি যে ভাষায় ইমেইল পেতে চান তা নির্বাচন করুন।"
+
+#: sa_opts-dist.php:112
+msgid "All"
+msgstr "সব"
+
+#: sa_opts-dist.php:113
+msgid "Afrikaans"
+msgstr "আফ্রিকানস"
+
+#: sa_opts-dist.php:114
+msgid "Albanian"
+msgstr "আলবেনিয়ান"
+
+#: sa_opts-dist.php:115
+msgid "Amharic"
+msgstr "অ্যামহারিক"
+
+#: sa_opts-dist.php:116
+msgid "Arabic"
+msgstr "অ্যারাবিক"
+
+#: sa_opts-dist.php:117
+msgid "Armenian"
+msgstr "আর্মেনিয়ান"
+
+#: sa_opts-dist.php:118
+msgid "Basque"
+msgstr "বস্কো"
+
+#: sa_opts-dist.php:119
+msgid "Bosnian"
+msgstr "বসনিয়ান"
+
+#: sa_opts-dist.php:120
+msgid "Bulgarian"
+msgstr "বুলগেরিয়ান"
+
+#: sa_opts-dist.php:121
+msgid "Byelorussian"
+msgstr "বাইলোরুসিয়ান"
+
+#: sa_opts-dist.php:122
+msgid "Catalan"
+msgstr "কাটালান"
+
+#: sa_opts-dist.php:123
+msgid "Chinese"
+msgstr "চাইনীজ"
+
+#: sa_opts-dist.php:124
+msgid "Croatian"
+msgstr "ক্রোসিয়ান"
+
+#: sa_opts-dist.php:125
+msgid "Czech"
+msgstr "চেক"
+
+#: sa_opts-dist.php:126
+msgid "Danish"
+msgstr "ড্যানিস"
+
+#: sa_opts-dist.php:127
+msgid "Dutch"
+msgstr "ডাচ"
+
+#: sa_opts-dist.php:128
+msgid "English"
+msgstr "ইংলিশ"
+
+#: sa_opts-dist.php:129
+msgid "Esperanto"
+msgstr "ইসপারেনতো"
+
+#: sa_opts-dist.php:130
+msgid "Estonian"
+msgstr "ইসটোনিয়ান"
+
+#: sa_opts-dist.php:131
+msgid "Finnish"
+msgstr "ফিনিস"
+
+#: sa_opts-dist.php:132
+msgid "French"
+msgstr "ফ্রেন্চ"
+
+#: sa_opts-dist.php:133
+msgid "Frisian"
+msgstr "ফ্রিসিয়ান"
+
+#: sa_opts-dist.php:134
+msgid "Georgian"
+msgstr "জর্গিয়ান"
+
+#: sa_opts-dist.php:135
+msgid "German"
+msgstr "জার্মান"
+
+#: sa_opts-dist.php:136
+msgid "Greek"
+msgstr "গ্রীক"
+
+#: sa_opts-dist.php:137
+msgid "Hebrew"
+msgstr "হিব্রু"
+
+#: sa_opts-dist.php:138
+msgid "Hindi"
+msgstr "হিন্দি"
+
+#: sa_opts-dist.php:139
+msgid "Hungarian"
+msgstr "হ্যাঙ্গেরিয়ান"
+
+#: sa_opts-dist.php:140
+msgid "Icelandic"
+msgstr "আইসল্যান্ডিক"
+
+#: sa_opts-dist.php:141
+msgid "Indonesian"
+msgstr "ইন্দোনেশিয়ান"
+
+#: sa_opts-dist.php:142
+msgid "Irish Gaelic"
+msgstr "আইরিশ গ্যালিক"
+
+#: sa_opts-dist.php:143
+msgid "Italian"
+msgstr "ইটালিয়ান"
+
+#: sa_opts-dist.php:144
+msgid "Japanese"
+msgstr "জাপানীজ"
+
+#: sa_opts-dist.php:145
+msgid "Korean"
+msgstr "কোরিয়ান"
+
+#: sa_opts-dist.php:146
+msgid "Latin"
+msgstr "ল্যাটিন"
+
+#: sa_opts-dist.php:147
+msgid "Latvian"
+msgstr "লাটভিয়ান"
+
+#: sa_opts-dist.php:148
+msgid "Lithuanian"
+msgstr "লিথুননিয়ান"
+
+#: sa_opts-dist.php:149
+msgid "Malay"
+msgstr "মালয়"
+
+#: sa_opts-dist.php:150
+msgid "Marathi"
+msgstr "মারাঠি"
+
+#: sa_opts-dist.php:151
+msgid "Nepali"
+msgstr "নেপালি"
+
+#: sa_opts-dist.php:152
+msgid "Norwegian"
+msgstr "নরওয়েজিয়ান"
+
+#: sa_opts-dist.php:153
+msgid "Persian"
+msgstr "পার্সিয়ান"
+
+#: sa_opts-dist.php:154
+msgid "Polish"
+msgstr "পোলিশ"
+
+#: sa_opts-dist.php:155
+msgid "Portuguese"
+msgstr "পর্তূগীজ"
+
+#: sa_opts-dist.php:156
+msgid "Quechua"
+msgstr "Quechua"
+
+#: sa_opts-dist.php:157
+msgid "Rhaeto-Romance"
+msgstr "হেটো-রোমান্স"
+
+#: sa_opts-dist.php:158
+msgid "Romanian"
+msgstr "রোমানিয়ান"
+
+#: sa_opts-dist.php:159
+msgid "Russian"
+msgstr "রাশিয়ান"
+
+#: sa_opts-dist.php:160
+msgid "Sanskrit"
+msgstr "সংস্কৃতি"
+
+#: sa_opts-dist.php:161
+msgid "Scots"
+msgstr "স্কটস"
+
+#: sa_opts-dist.php:162
+msgid "Scottish Gaelic"
+msgstr "স্কটিশ গ্যালিক"
+
+#: sa_opts-dist.php:163
+msgid "Serbian"
+msgstr "সার্বেয়ান"
+
+#: sa_opts-dist.php:164
+msgid "Slovak"
+msgstr "স্লোভাক"
+
+#: sa_opts-dist.php:165
+msgid "Slovenian"
+msgstr "স্লোভেনিয়ান"
+
+#: sa_opts-dist.php:166
+msgid "Spanish"
+msgstr "স্প্যানিস"
+
+#: sa_opts-dist.php:167
+msgid "Swahili"
+msgstr "সোয়াহিলি"
+
+#: sa_opts-dist.php:168
+msgid "Swedish"
+msgstr "সুইডিশ"
+
+#: sa_opts-dist.php:169
+msgid "Tagalog"
+msgstr "তাগালগ"
+
+#: sa_opts-dist.php:170
+msgid "Tamil"
+msgstr "তামিল"
+
+#: sa_opts-dist.php:171
+msgid "Thai"
+msgstr "থাই"
+
+#: sa_opts-dist.php:172
+msgid "Turkish"
+msgstr "তার্কিশ"
+
+#: sa_opts-dist.php:173
+msgid "Ukrainian"
+msgstr "ইউক্রেনীয়ান"
+
+#: sa_opts-dist.php:174
+msgid "Vietnamese"
+msgstr "ভিয়েতনামী"
+
+#: sa_opts-dist.php:175
+msgid "Welsh"
+msgstr "ওয়েলশ"
+
+#: sa_opts-dist.php:176
+msgid "Yiddish"
+msgstr "ইদ্দিশ"
+
+#. use_bayes
+#: sa_opts-dist.php:179
+msgid "Use Bayesian Filter"
+msgstr "বায়েসিয়ান ফিল্টার ব্যবহার করুন"
+
+#: sa_opts-dist.php:180
+msgid ""
+"The Baysian Filter will learn what is spam and what isn't to become a better "
+"filter."
+msgstr ""
+"একটি ভাল ফিল্টার হতে কোনটি স্প্যাম এবং কোনটি নয় সেটি Baysian ফিল্টার শিখবে।"
+
+#. use_bayes_rules
+#: sa_opts-dist.php:186
+msgid "Use Bayesian Filter Rules"
+msgstr "বায়েসীয় ফিল্টার নিয়মসমূহ ব্যবহার করুন"
+
+#: sa_opts-dist.php:187
+msgid ""
+"Turning this off allows you do disable the Baysian Filter rules while still "
+"training the filter."
+msgstr ""
+"এটিকে বন্ধ করলে সেটি আপনাকে Baysian ফিল্টার নিষ্ক্রিয় করতে অনুমোদন করবে যদিও এটি "
+"ফিল্টারকে প্রশিক্ষন দিতে থাকে।"
+
+#. auto_learn
+#: sa_opts-dist.php:193
+msgid "Auto-learn"
+msgstr "স্বয়ং-শেখা"
+
+#: sa_opts-dist.php:194
+msgid ""
+"Automatically feed high and low scoring mails into SpamAssassin's learning "
+"systems. (Currently, only Bayesian filtering is supported.)"
+msgstr ""
+"SpamAssassin শিক্ষণ সিস্টেমের দিকে উচ্চ এবং অল্প স্কোরের বার্তা সয়ংক্রিয়ভাবে জোগান "
+"দেয়। (বর্তমানে, বায়েসীয়ান ফিল্টার কেবল সমর্থিত।)"
+
+#. report_safe
+#: sa_opts-dist.php:200
+msgid "Spam Encapsulation"
+msgstr "ছোট আধারে আবদ্ধ করা স্প্যাম"
+
+#: sa_opts-dist.php:201
+msgid ""
+"Encapsulate spam messages into a MIME or plain-text attachment, or you can "
+"disable it altogether."
+msgstr ""
+"স্প্যাম বার্তাসমূহকে একটি মাইম অথবা সাধারণ পাঠ্য সংযুক্তি বার্তায় আবদ্ধ করুন, অথবা "
+"আপনি এটি একসাথে নিষ্ক্রিয় করতে পারেন।"
+
+#: sa_opts-dist.php:203
+msgid "Disabled"
+msgstr "অক্ষম"
+
+#: sa_opts-dist.php:204
+msgid "MIME Attachment"
+msgstr "MIME সংযুক্তি"
+
+#: sa_opts-dist.php:205
+msgid "Text Attachment"
+msgstr "পাঠ্য সংযুক্তি"
+
+#. These options were removed as of SpamAssassin 2.50-ish
+#. They are here for those running older versions of SA.
+#. report_header
+#: sa_opts-dist.php:212
+msgid "Report in Header"
+msgstr "শিরকে প্রতিবেদন করুন"
+
+#: sa_opts-dist.php:213
+msgid ""
+"SpamAssassin will create a report when it determines an e-mail message to be "
+"spam.  This report is normally prepended to the e-mail message.  To have the "
+"report written as part of the e-mail header, select this option."
+msgstr ""
+"যখন এটি একটি ই-মেইল বার্তা স্প্যাম হিসেবে নির্ধারণ করে তখন SpamAssassin একটি "
+"প্রতিবেদন তৈরি করবে। এই প্রতিবেদনটি সাধারণভাবে ই-মেইল বার্তা হিসেবে প্রিপেন্ড করা "
+"হয়। মেইল শিরকের অংশ হিসেবে প্রতিবেদন লিখিত পেতে, এই পছন্দটি নির্বাচন করুন।"
+
+#. defang_mime
+#: sa_opts-dist.php:219
+msgid "Reformat HTML Spam"
+msgstr "HTML স্প্যাম পুনর্বিন্যাস করুন"
+
+#: sa_opts-dist.php:220
+msgid ""
+"When an e-mail in HTML format is determined to be spam, SpamAssassin can "
+"convert the message to text. To allow this, select this option."
+msgstr ""
+"যখন এইচটিএমএল বিন্যাসের একটি ই-মেইল স্প্যাম হিসেবে নির্ধারণ করা হয়, SpamAssassin "
+"লেখা বার্তা তে রূপান্তর করতে পারে। এটি অনুমোদন করতে, এই পছন্দটি নির্বাচন করুন।"
+
+#. White/black list info
+#: sa_opts-dist.php:250
+msgid "Whitelist From"
+msgstr "সাদাতালিকা হতে"
+
+#: sa_opts-dist.php:251
+msgid ""
+"E-mail from these addresses will not be marked as spam. You may use '*' as a "
+"wildcard to allow a large number of addresses at one time. E.g. Whitelist "
+"From '*@aol.com' will not mark any message that claims to be from aol.com as "
+"spam."
+msgstr ""
+"এই ঠিকানার ই-মেইল স্প্যাম হিসেবে চিহ্নিত করা হবে না। আপনি এক সময়ে একটি বড় সংখ্যক "
+"ঠিকানা সম্মতি দিতে ওয়্যাল্ডকার্ড হিসেবে '*' ব্যবহার করতে পারেন। উদাঃ aol.com থেকে "
+"স্প্যাম হিসেবে বিবেচিত কোনো বার্তাকে সাদাতালিকা হতে '*@aol.com' চিহ্নিত করবে না।"
+
+#: sa_opts-dist.php:253
+msgid "Don't Whitelist From"
+msgstr "সাদা তালিকা করবেননা"
+
+#: sa_opts-dist.php:254
+msgid ""
+"This address will be excluded from a previous whitelist and will be treated "
+"as a normal address, i.e. it will not be automatically allowed."
+msgstr ""
+"এই ঠিকানাটি একটি পূর্ববর্তী সাদা তালিকা থেকে বাদ দেওয়া হবে এবং একটি স্বাভাবিক "
+"ঠিকানা হিসেবে বিবেচনা করা হবে, অর্থাৎ এটি সয়ংক্রিয়ভাবে স্বীকার করা হবে না।"
+
+#: sa_opts-dist.php:256
+msgid "Blacklist From"
+msgstr "কালোতালিকা হতে "
+
+#: sa_opts-dist.php:257
+msgid ""
+"E-mail from these addresses will always be marked as spam. You may use '*' "
+"as a wildcard to block a large number of addresses at one time. E.g. "
+"Blacklist From '*@aol.com' will mark all messages that claims to be from aol."
+"com as spam."
+msgstr ""
+"এই ঠিকানার ই-মেইল সবসময় স্প্যাম হিসেবে চিহ্নিত করা হবে। আপনি এক সময়ে ঠিকানার "
+"একটি বড় সংখ্যা বাতিল করতে '*' ওয়্যাল্ডকার্ড হিসেবে ব্যবহার করতে পারেন। উদাঃ aol."
+"com থেকে স্প্যাম হিসেবে বিবেচিত কোনো বার্তাকে সাদাতালিকা হতে '*@aol.com' চিহ্নিত "
+"করবে না।"
+
+#: sa_opts-dist.php:259
+msgid "Don't Blacklist From"
+msgstr "কালোতালিকা হতে করবেন না"
+
+#: sa_opts-dist.php:260
+msgid ""
+"This address will be excluded from a previous blacklist and will be treated "
+"as a normal address, i.e. it will not be automatically denied."
+msgstr ""
+"এই ঠিকানাটি একটি পূর্ববর্তী কালো তালিকা থেকে বাদ দেওয়া হবে এবং একটি স্বাভাবিক "
+"ঠিকানা কি হিসেবে বিবেচনা করা হবে, অর্থাৎ এইটি সয়ংক্রিয়ভাবে অস্বীকার করা হবে না।"
+
+#: sa_opts-dist.php:262
+msgid "Whitelist To"
+msgstr "এর প্রতি সাদা তালিকা"
+
+#: sa_opts-dist.php:263
+msgid ""
+"E-mail to these addresses will not be marked as spam. This is useful for "
+"allowing e-mail lists. For example, you can allow all messages from an e-"
+"mail list that sends to 'Tofu-Support-List@beeflovers.com'. You may use '*' "
+"as a wildcard to allow a large number of addresses at one time. E.g. "
+"Whitelist To '*@aol.com' will not mark any message that claims to be to aol."
+"com as spam."
+msgstr ""
+"এই ঠিকানাসমূহে ই-মেইল স্প্যাম হিসেবে চিহ্নিত করা হবে না। এইটি ই-মেইল তালিকা "
+"অনুমোদন করার জন্য কার্যকর। উদাহরণের জন্য, আপনি একটি ই-মেইল তালিকা থেকে সমস্ত "
+"বার্তা অনুমোদন করতে পারেন যা 'tofu-support-list@beeflovers com' তে পাঠানো হয়। "
+"আপনি এক সময়ে একটি বড় সংখ্যক ঠিকানা অনুমোদন করতে  '*' ওয়্যাল্ডকার্ড হিসেবে ব্যবহার "
+"করতে পারেন। উদাঃ। '*@aol.com' will থেকে  Whitelist এ যেকোন বার্তা চিহ্নিত করে "
+"না যে aol.com তে স্প্যাম হিসেবে দাবী করে।"
+
+#: sa_opts-dist.php:265
+msgid "Blacklist To"
+msgstr "এর প্রতি কালোতালিকা"
+
+#: sa_opts-dist.php:266
+msgid ""
+"E-mail to these addresses will be marked as spam. You may use '*' as a "
+"wildcard to reject a large number of addresses at one time. E.g. Blacklist "
+"To '*@aol.com' will mark all messages that claims to be to aol.com as spam."
+msgstr ""
+"এই ঠিকানাসমূহে ই-মেইল স্প্যাম হিসেবে চিহ্নিত করা হবে। আপনি এক সময়ে একটি বড় "
+"সংখ্যক  ঠিকানা বাতিল করতে '*' ওয়্যাল্ডকার্ড হিসেবে ব্যবহার করতে পারেন। উদাঃ। "
+"'*@aol.com'  কালো তালিকাভুক্ত করা সমস্ত বার্তা চিহ্নিত করবে যা হতে aol.com তে "
+"স্প্যাম হিসেবে দাবী করে।"
+
+#: sa_settings.inc.php:114
+msgid "General Settings"
+msgstr "সাধারণ মানসমূহ"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:308
+#, php-format
+msgid "Database error: %s"
+msgstr "উপাত্ত ভান্ডার ত্রুটি: %s"
+
+#: sasql_db.php:366
+#, php-format
+msgid "sasql_AddPref_multiple Database error: %s"
+msgstr "sasql_AddPref_multiple উপাত্ত ভান্ডার ত্রুটি: %s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+#: sasql_db.php:443
+#, php-format
+msgid "Database error %s: %s"
+msgstr "উপাত্ত ভান্ডার ত্রুটি %s: %s"
+
+#: sasql_hooks.php:111 sasql_options.php:62
+msgid "Spam Filters"
+msgstr "স্প্যাম ফিল্টার"
+
+#: sasql_hooks.php:113
+msgid "Configure the behavior of your spam filters."
+msgstr "আপনার স্প্যাম ফিল্টারের আচরণ বিন্যাস করুন।"
+
+#: sasql_hooks.php:209
+msgid "Add Email to Whitelist"
+msgstr "সাদাতালিকায় ইমেইল যোগ করুন"
+
+#: sasql_hooks.php:210 sasql_hooks.php:280
+msgid "Allow Sender"
+msgstr "প্রেরক অনুমোদন"
+
+#: sasql_hooks.php:211
+msgid "Add Domain to Whitelist"
+msgstr "সাদাতালিকায় ডোমেইন যোগ করুন"
+
+#: sasql_hooks.php:212
+msgid "Allow Domain"
+msgstr "ডোমেইন অনুমোদন"
+
+#: sasql_hooks.php:213
+msgid "Remove Email from Whitelist"
+msgstr "সাদাতালিকা হতে ইমেইল সরিয়ে ফেলুন"
+
+#: sasql_hooks.php:214 sasql_hooks.php:216 sasql_hooks.php:223
+#: sasql_hooks.php:225
+msgid "remove"
+msgstr "সরিয়ে ফেলুন"
+
+#: sasql_hooks.php:215
+msgid "Remove Domain from Whitelist"
+msgstr "সাদা তালিকা হতে ডোমেইন সরিয়ে ফেলুন"
+
+#: sasql_hooks.php:218
+msgid "Add Email to Blacklist"
+msgstr "কালোতালিকায় ইমেইল যোগ করুন"
+
+#: sasql_hooks.php:219
+msgid "Block Sender"
+msgstr "প্রেরক ব্লক করুন"
+
+#: sasql_hooks.php:220
+msgid "Add Domain to Blacklist"
+msgstr "কালোতালিকায় ডোমেইন যোগ করুন"
+
+#: sasql_hooks.php:221
+msgid "Block Domain"
+msgstr "ব্লক ডোমেইন"
+
+#: sasql_hooks.php:222
+msgid "Remove Email from Blacklist"
+msgstr "কালোতালিকা হতে ইমেইল সরিয়ে ফেলুন"
+
+#: sasql_hooks.php:224
+msgid "Remove Domain from Blacklist"
+msgstr "কালোতালিকা হতে ডোমেইন সরিয়ে ফেলুন"
+
+#: sasql_hooks.php:231
+msgid "Address is already in your whitelist"
+msgstr "ঠিকানাটি ইতোমধ্যে আপনার সাদা তালিকায়"
+
+#: sasql_hooks.php:232 sasql_hooks.php:240
+msgid "Whitelisted"
+msgstr "সাদাতালিকাণুক্ত"
+
+#: sasql_hooks.php:239
+msgid "Domain is already in your whitelist"
+msgstr "ডোমেইনটি ইতোমধ্যে আপনার সাদাতালিকায়"
+
+#: sasql_hooks.php:253
+msgid "Address is already in your blacklist"
+msgstr "ঠিকানাটি ইতোমধ্যে আপনার কালোতালিকায়"
+
+#: sasql_hooks.php:254 sasql_hooks.php:262
+msgid "Blacklisted"
+msgstr "কালোতালিকাভুক্ত"
+
+#: sasql_hooks.php:261
+msgid "Domain is already in your blacklist"
+msgstr "ডোমেইন ইতোমধ্যে আপনার কালোতালিকায় আছে"
+
+#: sasql_hooks.php:311 sasql_hooks.php:369
+msgid "Learn as False Positive"
+msgstr "ভূল ধনাত্মক হিসেবে শিখুন"
+
+#: sasql_hooks.php:315 sasql_hooks.php:373
+msgid "Learn as Spam"
+msgstr "স্প্যাম হিসেবে শিখুন"
+
+#: sasql_options.php:62
+msgid "Options"
+msgstr "পছন্দসমূহ"
+
+#: sasql_wblist.php:41 sa_whitelist.inc.php:43
+msgid "Error: You must include an e-mail address."
+msgstr "ত্রুটি: আপনাকে অবশ্যই একটি ইমেইল ঠিকানা দিতে হবে।"
+
+#: sasql_wblist.php:48 sa_whitelist.inc.php:49
+msgid "Error: You have entered an invalid e-mail address."
+msgstr "ত্রুটি: আপনি একটি অবৈধ ইমেইল ঠিকানা প্রবেশ করেছেন।"
+
+#: sasql_wblist.php:53
+msgid "Error: Missing option."
+msgstr "ত্রুটি: হারিয়ে যাওয়া পছন্দ।"
+
+#: sa_whitelist.inc.php:53
+msgid "Error: You must select Allow or Deny."
+msgstr "ত্রুটি: আপনাকে অবশ্যই অনুমোদন বা অস্বীকার নির্বাচন করতে হবে।"
+
+#: sa_whitelist.inc.php:76
+msgid "Global Allow / Deny Address List"
+msgstr "পৃথিবীব্যাপী অনুমতি / ঠিকানা তালিকা অস্বীকার করা"
+
+#: sa_whitelist.inc.php:83 sa_whitelist.inc.php:125
+msgid "Address"
+msgstr "ঠিকানা"
+
+#: sa_whitelist.inc.php:84 sa_whitelist.inc.php:126
+msgid "Type"
+msgstr "ধরণ"
+
+#: sa_whitelist.inc.php:118
+msgid "Personal Allow / Deny Address List"
+msgstr "ব্যক্তিগত অনুমতি / ঠিকানা তালিকা অস্বীকার করা"
+
+#: sa_whitelist.inc.php:127
+msgid "Action"
+msgstr "ক্রিয়া"
+
+#: sa_whitelist.inc.php:134
+msgid "Address Removed"
+msgstr "ঠিকানা সরিয়ে ফেলা হয়েছে"
+
+#: sa_whitelist.inc.php:160
+#, php-format
+msgid "Unknown option: %s"
+msgstr "অজানা অপশন: %s"
+
+#: sa_whitelist.inc.php:168
+msgid "Delete"
+msgstr "মুছে ফেলুন"
+
+#: sa_whitelist.inc.php:174
+msgid "Edit"
+msgstr "সম্পাদনা করুন"
+
+#. echo $edit;
+#: sa_whitelist.inc.php:188
+msgid "Edit Address"
+msgstr "ঠিকানা সম্পাদনা করুন"
+
+#: sa_whitelist.inc.php:194
+msgid "Add New Address"
+msgstr "নতুন ঠিকানা যোগ করুন"
+
+#: sa_whitelist.inc.php:220
+msgid "Address:"
+msgstr "ঠিকানা:"
+
+#: sa_whitelist.inc.php:224
+msgid "Type:"
+msgstr "ধরণ:"
+
+#. End Form
+#. Help
+#: sa_whitelist.inc.php:245
+msgid "Legend"
+msgstr "উপাখ্যান"

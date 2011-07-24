@@ -1,0 +1,50 @@
+# Vietnamese (vi) naguser Translation (SquirrelMail plugin)
+# Copyright © 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: naguser.pot 10886 2006-03-05 09:15:30Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: naguser 1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-05-12 21:10+0300\n"
+"PO-Revision-Date: 2008-03-10 19:29+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
+
+msgid "Rules of engagement"
+msgstr "Điều kiện Sử dụng"
+
+msgid "You have to read and understand program usage rules:"
+msgstr "Bạn cần phải đọc và hiểu các điều kiện sử dụng chương trình này:"
+
+msgid ""
+"Your browser does not support inline frames. Please read related document by "
+"checking usage instructions."
+msgstr "Trình duyệt Web của bạn không hỗ trợ khung trực tiếp. Hãy đọc tài liệu liên quan bằng cách kiểm tra hướng dẫn sử dụng."
+
+msgid "Usage instructions"
+msgstr "Hướng dẫn Sử dụng"
+
+msgid "Yes, I understand"
+msgstr "Có, tôi hiểu"
+
+msgid "Terms of service"
+msgstr "Điều kiện Dịch vụ"
+
+msgid ""
+"URL to usage rules is not available. Please contact your system "
+"administrator."
+msgstr "Không có sẵn địa chỉ URL tới các điều kiện sử dụng. Hãy liên lạc với quản trị hệ thống."
+
+msgid "You can find interface usage rules by following the link."
+msgstr "Bạn có thể tìm các điều kiện sử dụng bằng cách theo liên kết."
+
+msgid "Usage rules"
+msgstr "Điều kiện sử dụng"

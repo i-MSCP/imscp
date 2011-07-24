@@ -1,0 +1,264 @@
+#!/usr/bin/perl
+
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/..";
+use lib "$FindBin::Bin/../PerlLib";
+use lib "$FindBin::Bin/../PerlVendor";
+
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Dialog;
+
+iMSCP::Debug->newDebug('imscp-net-interfaces-mngr.log');
+
+my $rs = undef;
+our $proceed = $ARGV[0];
+
+sub net_interfaces_mngr_start_up {
+
+	debug((caller(0))[3].': Starting...');
+
+	umask(027);
+	iMSCP::Boot->new()->init({nolock => 'yes'});
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+sub virtual_netcard_add{
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::IP;
+	use iMSCP::Mail;
+	use iMSCP::Database;
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+
+	my $ips = iMSCP::IP->factory();
+
+	$rs = $database->doQuery(
+		'ip_id',
+		'SELECT
+			`ip_id`,
+			`ip_number`,
+			`ip_card`
+		FROM
+			`server_ips`
+		'
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs");
+		iMSCP::Mail->new()->errmsg($rs);
+	} else {
+		foreach(values %$rs){
+			#if ip is attached to a network card?
+			if($ips->getCardByIP($_->{ip_number})){
+				#if is a virtual interface?
+				my $vcard = $ips->addedToVCard($_->{ip_number});
+				if( $vcard ){
+					my $msg =
+						"$_->{ip_number} is already attached to $vcard\n".
+						"Consider remove from network configuration ".
+						"and let i-MSCP handle it"
+					;
+					error((caller(0))[3].": $msg");
+					iMSCP::Mail->new()->errmsg($msg);
+				}
+			} else {
+				#ip is not attached so we will attached to virtual card
+				#check if phisical card exits
+				if($ips->existsNetCard($_->{ip_card})){
+					my $slot = $ips->getFirstFreeSlotOnCard($_->{ip_card}, 'reserve');
+					$rs = execute(
+						"ifconfig ".
+						"$_->{ip_card}:$slot ".
+						"$_->{ip_number} ".
+						"netmask 255.255.255.255 ".
+						"up",
+						\$stdout,
+						\$stderr
+					);
+					debug((caller(0))[3].": $stdout")if $stdout;
+					error((caller(0))[3].": $stderr")if $stderr;
+					iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+				} else {
+					my $msg =
+						"Card $_->{ip_card} do not exists. Please fix this in ".
+						"$main::imscpConfig{BASE_SERVER_VHOST_PREFIX}".
+						"$main::imscpConfig{BASE_SERVER_VHOST}/admin/ip_manage.php"
+					;
+					error((caller(0))[3].": $msg");
+					iMSCP::Mail->new()->errmsg($msg);
+				}
+			}
+		}
+
+		my @cards = $ips->getNetworkCards();
+		foreach(@cards){
+			if(!$ips->isCardUp($_)){
+				#net card is not up so we try put that up
+				$rs = execute("ifconfig $_ up", \$stdout, \$stderr);
+				debug((caller(0))[3].": $stdout")if $stdout;
+				error((caller(0))[3].": $stderr")if $stderr;
+				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+			}
+
+		}
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub virtual_netcard_remove{
+
+	my $ref = undef;
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::IP;
+	use iMSCP::Mail;
+	use iMSCP::Database;
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+
+	my $ips = iMSCP::IP->factory();
+	$ips->loadIpConfiguredIps();
+
+	$rs = $database->doQuery(
+		'ip_id',
+		"SELECT
+			`ip_id`,
+			`ip_number`,
+			`ip_card`
+		FROM
+			`server_ips`
+		WHERE
+			`ip_number` != '$main::imscpConfig{'BASE_SERVER_IP'}'
+		"
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs");
+		iMSCP::Mail->new()->errmsg($rs);
+	} else {
+		foreach(values %$rs){
+			my $vcard = $ips->addedToVCard($_->{ip_number});
+			if($vcard){
+				#We bring down only virtual network cards
+				$rs = execute("ifconfig $vcard down", \$stdout, \$stderr);
+				debug((caller(0))[3].": $stdout")if $stdout;
+				error((caller(0))[3].": $stderr")if $stderr;
+				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+			}
+		}
+	}
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+sub net_interfaces_mngr_engine {
+
+	debug((caller(0))[3].': Starting...');
+
+	if ($proceed eq 'start') {
+		$rs = virtual_netcard_add();
+		return $rs if ($rs != 0);
+	}
+	if ($proceed eq 'stop') {
+		$rs = virtual_netcard_remove();
+		return $rs if ($rs != 0);
+	}
+
+	my $rs;
+	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
+	$rs = $database->doQuery(
+		'dummy',
+		"
+		DELETE FROM
+			`server_ips`
+		WHERE
+			`ip_status` = 'delete'
+		"
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs")if $rs;
+		iMSCP::Mail->new()->errmsg($rs)if $rs;
+	}
+
+	$rs = $database->doQuery(
+		'dummy',
+		"
+		UPDATE
+			`server_ips`
+		SET
+			`ip_status` = 'ok'
+		"
+	);
+	if (ref $rs ne 'HASH'){
+		error((caller(0))[3].": $rs")if $rs;
+		iMSCP::Mail->new()->errmsg($rs)if $rs;
+	}
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+sub net_interfaces_mngr_shut_down {
+	debug((caller(0))[3].': Starting...');
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+
+exit 1 if net_interfaces_mngr_start_up();
+
+exit 1 if net_interfaces_mngr_engine();
+
+exit 1 if net_interfaces_mngr_shut_down();
+
+exit 0;
+
+END{
+	my $message = getMessage();
+	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
+		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-net-interfaces-mngr.log' for writing: $!");
+		print F $message;
+		close F;
+	}
+}

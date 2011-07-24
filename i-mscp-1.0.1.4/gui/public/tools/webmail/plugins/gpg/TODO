@@ -1,0 +1,87 @@
+/****************************************************/
+/* $Id$ */
+/****************************************************/
+
+The current TODO list of the GPG development team is maintained in two places:
+
+    - In the code, where @todo tags are parsed daily and placed here:
+    
+      http://www.braverock.com/gpg/phpdoc/
+
+    - The official repository for enhancements to the GPG Plugin is at:
+
+      http://www.braverock.com/bugzilla/
+
+If you want to sign up to take care of something, please contact the development 
+team at gpg@braverock.com.
+
+There is also a Known Problems Section below, update this as necessary.
+
+If you want to add something to the TODO list, please feel free to do so by 
+adding an enhancement request to the GPG Plugin Bugzilla.
+
+/***************************************************/
+/*
+ * $Log: TODO,v $
+ * Revision 1.20  2004/01/06 19:21:11  brian
+ * - took out everything that should be covered elsewhere
+ * - pointed interested parties at phpdoc and bugzilla
+ *
+ * Revision 1.19  2003/06/16 23:46:21  brian
+ * - update to reflect current
+ * - add bugzilla items for all TODO items that didn't have them.
+ *
+ * Revision 1.18  2003/05/02 15:40:02  brian
+ * added links to bugzilla enhancement requests where available
+ *
+ * Revision 1.17  2003/04/14 16:11:31  brian
+ * changed popen section to proc_open
+ * Bug 29
+ *
+ * Revision 1.16  2003/04/10 01:02:45  brian
+ * updated to include links to all enhancement requests on bugzilla.
+ *
+ * Revision 1.15  2003/04/02 15:36:55  brian
+ * - update to reflect current
+ * - Spell Check
+ *
+ * Revision 1.14  2003/03/17 18:39:54  Brian
+ * Updated to reflect current.
+ *
+ * Revision 1.13  2003/03/13 19:30:26  Brian
+ * updated TODO
+ *
+ * Revision 1.12  2003/03/12 16:25:15  Brian
+ * - updated to reflect current status.
+ * - removed completed items
+ * - updated known problems with Netscape 4 dynamic HTML issue
+ *
+ * Revision 1.11  2003/03/07 18:23:54  Brian
+ * Updated to reflect current status
+ *
+ * Revision 1.10  2003/02/22 20:21:15  Brian
+ * Updated to reflect current status, moved incomplete short term options to top of list, complete to middle, and long term incomplete to bottom, for readability.
+ *
+ * Revision 1.9  2003/01/27 16:38:52  Brian
+ * Updated to reflect current progress on preferences and add security-related items about extract _post
+ * 
+ * Revision 1.8  2003/01/22 23:07:10  Brian
+ * Added details on trusted_key_id, list_keys, and default_key
+ * 
+ * Revision 1.7  2003/01/14 17:36:59  Brian
+ * Updated items with complete, added decryption and keyring management items, spell check
+ * 
+ * Revision 1.6  2002/12/09 04:13:28  Brian
+ * updated to reflect 8 Dec progress
+ * 
+ * Revision 1.5  2002/12/06 20:01:50  Vinay
+ * test CVS
+ * 
+ * Revision 1.4  2002/12/06 02:41:08  Brian
+ * updated to reflect 5 Dec 2002 progress
+ * 
+ * Revision 1.3  2002/12/05 19:14:55  Brian
+ * added ID and Log tags 
+ */
+/***************************************************/
+

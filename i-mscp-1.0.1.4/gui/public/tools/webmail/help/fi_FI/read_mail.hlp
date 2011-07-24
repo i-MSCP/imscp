@@ -1,0 +1,160 @@
+<chapter>
+   <title>
+      Viestin lukeminen
+   </title>
+   <summary>
+      Viestin lukeminen on sähköpostiohjelmien perustoiminto. SquirrelMaililla
+      on kuitenkin monia lisätoimintoja viestien lukemisessa. Tämä selvittää
+      mitä nämä kaikki tekevät.
+   </summary>
+   <description>
+      <p>
+      Klikkaa minkä tahansa viestin (listalta) aihetta ja viesti tulee
+      näyttöön. Yksi asia jonka huomaat on se että www- ja sähköpostiosoitteet
+      ovat klikattavuia linkkejä, voit näitä klikkaamalla voit avata
+      sivun selaimessasi tai kirjoittaa uuden viestin.
+      Toinen kätevä ominaisuus on se että viestien teksteissä käytetään eri
+      värejä. Vastausviesti on tavallisesti ilmaistu ">" merkein.
+      SquirrelMail ymmärtää tämän ja näyttää alkuperäisen viestin eri värillä.
+      Tämä toiminto pystyy erottamaan kaksi jatkettua vastausta toisistaan.
+      Lisämenussa (tallisten menujen alla) on kolme kenttää. Vasemmalla
+      olevasta voi poistaa viestin tai palata listalle. Keskellä on linkit
+      edelliseen ja seuraavaan viestiin. Oikealla postitoimintoja.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Viestilista
+   </title>
+   <description>
+      <p>
+      Klikkaa tätä palataksesi viestilistalle.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Poista
+   </title>
+   <description>
+      <p>
+      Klikkaa tätä jos haluat poistaa viestin. Viestin mukana poistetaan
+      myös mahdolliset liitteet. Talleta liitteet ennen viestin poistamista
+      jos haluat säilyttää ne (selvitetään edempänä).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Liikuminen
+   </title>
+   <description>
+      <p>
+      Keskellä on linkit edelliseen ja seuraavaan viestiin tässä kansiossa.
+      Näitä käyttäen sinun ei tarvitse palata listalle lukeaksesi
+      edellistä tai seuraavaa viestiä.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Seuraava
+   </title>
+   <description>
+      <p>
+      Klikkaa tätä lukeaksesi listan järjestyksessä seuraavan viestin.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Edelleenlähetys
+   </title>
+   <description>
+      <p>
+      Oikealla. Klikkaa edelleenlähetyslinkkiä ja pääset muokkaamaan
+      viestiä, lukemasi viesti on valmiina --Alkuperäinen viesti--
+      merkinnän alla. Aiheriville tulee aikaisemman eteen "Fwd:"
+      Voit kirjoittaa kommenttisi, valita vastaanottajat ja muut aivan
+      kuten uutta viestiä kirjoittaessasi.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vastaus
+   </title>
+   <description>
+      <p>
+      Klikkaa tätä linkkiä ja pääset muokkaamaan vastausviestiä lukemasi
+      viestin lähettäjälle. "Re:" liite lisätään aiheeseen.
+      Alkuperäinen viesti on merkitty ">" merkein.
+      Alkuperäisten rivien pituuden vuoksi voi olla että kaikki rivit eivät
+      ala ">" merkillä. Tätä ei valitettavasti aina voida välttää. Voit
+      yrittää muuttaa <i>Näytettävien kirjaimien määrä riviä kohti</i>
+      valintaa asetuksista, suurempi arvo tälle saattaa auttaa.
+      Voit kirjoittaa kommentteja mihin tahansa viestin osaan, voit
+      myös lisätä liitteitä viestiin.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vastaus kaikille
+   </title>
+   <description>
+      <p>
+      Kuten edellinen, mutta vastaanottajiksi laitetaan viestin lähettäjän
+      lisäksi myös kaikki sen vastaanottajat.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Näytä kaikki otsaketiedot
+   </title>
+   <description>
+      <p>
+      Tämä tuo näyttöön kaikki viestin ostikkotiedot. Näihin kuuluu myös
+      koko se reitti jonka viesti on kulkenut sekä paljon muutä tietoa
+      itse viestin sisällöstä.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Lataa tämä tiedostona
+   </title>
+   <description>
+      <p>
+      Aivan sivun alalaidassa. Klikkaamalla tätä voit ladata näytössäolevan
+      viestin tekstitiedostona kovalevyllesi. Osa otsikkotiedoista tulee
+      myös mukaan.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Liitteet
+   </title>
+   <description>
+      <p>
+      Viestin liitteet löydät viestin alalaidasta värjätystä palkista.
+      Klikkaamalla viestin nimeä se joko näytetään selaimessa tai talletetaan,
+      tämä riippuu liitteen tiedostotyypistä. Jos haluat tallettaa liitteen
+      sen tiedostotyypistä riippumatta klikkaa "download"
+      linkkiä rivin oikeassa laidassa.
+      </p>
+   </description>
+</section>

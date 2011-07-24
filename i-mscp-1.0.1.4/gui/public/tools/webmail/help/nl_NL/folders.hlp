@@ -1,0 +1,101 @@
+<chapter>
+   <title>   
+      Mappen
+   </title>   
+   <summary>
+      Berichten kunnen worden opgeslagen in verschillende mappen.
+      Dit is met name handig als u veel e-mailberichten ontvangt en dit geordend
+      wilt houden. De optie Mappen stelt u in staat bewerkingen uit
+      te voeren op uw mappen.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Aangemelde mappen en het linkerframe
+   </title>
+   <description>
+      <p>
+      Mappen waarop u zich momenteel heeft aangemeld worden in het
+      in het linkerframe weergegeven. Dit
+      frame kan automatisch ververst worden door dit in te
+      stellen via de Opties-pagina. Bij wijzigingen 
+met betrekking tot de mappen kunt u het linkerframe handmatig
+verversen met de link die vlak onder de grote, dikgedrukte kop bovenin dit 
+frame staat.
+      </p><p>
+      De eerste map die weergegeven wordt bevat binnengekomen
+      berichten. Erachter staat een nummer tussen haakjes dat
+      het aantal <I>ongelezen</I> berichten in die map weergeeft.
+      Dit nummer kan verschillen van het totaal aantal berichten
+      in die map. Onder de hoofdmap staan waarschijnlijk nog
+      andere mappen of submappen. De kleur van deze folders
+      verschilt afhankelijk van de stijl die u kunt kiezen in
+      het Opties-menu.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Verwijderen
+   </title>
+   <description>
+      <p>
+      U kunt een map verwijderen door deze te selecteren uit de selectielijst
+      en vervolgens op de verwijderknop te drukken. De lijst bevat niet alle mappen:
+      speciale mappen zoals Verzonden/Sent, Prullenbak/Trash en uiteraard INBOX kunnen
+      niet verwijderd worden.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Aanmaken
+   </title>
+   <description>
+      <p>
+      U kunt nieuwe mappen toevoegen door een naam voor de map
+      in het tekstveld in te voeren en op de Aanmaken knop te klikken.
+      Als u wilt dat deze map een submap wordt van een andere, kunt u
+      die selecteren in de selectielijst met mappen. 
+      Alle mappen dienen sowieso een submap van de map Inbox te zijn.
+      </p>
+      </description>
+</section>
+
+<section>
+   <title>
+      Hernoemen
+   </title>
+   <description>
+      <p>
+      U kunt bestaande mappen een andere naam geven door deze uit de selectielijst
+      te kiezen en op de knop ernaast te klikken. Op het volgende scherm kunt u de
+      nieuwe naam opgeven. Wederom kunt u niet de speciale mappen Verzonden/Sent,
+      Prullenbak/Trash en INBOX hernoemen.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Aan- en afmelden
+   </title>
+   <description>
+      Aan- en afmelden is als volgt gedefinieerd:<BR>
+      <i>Aanmelden</i>: Een map opgeven bij de mailserver zodat u de inhoud
+                        kunt bekijken.<br>
+      <i>Afmelden</i>:  Het tegenovergestelde. Hiermee meldt u een map af
+                        bij de mailserver waardoor u deze niet meer kunt
+                        inzien.<br>
+      <br><p>
+      U kunt zoveel mappen als u wilt tegelijk aanmelden of afmelden. Klik
+      op de knop onder de lijst om de opdracht te verwerken. Het zal u
+      opvallen dat de mappen verplaatst worden naar de andere lijst. U kunt
+      ze dan weer aan- of afmelden.
+      </p>
+   </description>
+</section>

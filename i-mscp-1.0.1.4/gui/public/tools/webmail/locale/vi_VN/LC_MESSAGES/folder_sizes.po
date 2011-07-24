@@ -1,0 +1,69 @@
+# Vietnamese (vi) folder_sizes Translation (SquirrelMail plugin)
+# Copyright © 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: folder_sizes.pot 11163 2006-05-28 08:48:13Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_sizes 1.5\n"
+"Report-Msgid-Bugs-To: The SquirrelMail Internationalization List "
+"<squirrelmail-i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2006-05-01 10:34+0300\n"
+"PO-Revision-Date: 2008-03-09 23:05+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
+
+#: functions.php:43
+#: functions.php:46
+#: functions.php:349
+msgid "Folder Sizes"
+msgstr "Kích cỡ Thư mục"
+
+#: functions.php:96
+msgid "Folder Sizes Options"
+msgstr "Tùy chọn Kích cỡ Thư mục"
+
+#: functions.php:101
+msgid "Show link under folder list"
+msgstr "Hiển thị liên kết bên dưới danh sách thư mục"
+
+#: functions.php:107
+msgid "Show button instead of link"
+msgstr "Hiển thị cái nút thay cho liên kết"
+
+#: functions.php:113
+msgid "Show block on folders page"
+msgstr "Hiển thị khối trên trang thư mục"
+
+#: functions.php:118
+msgid "Show subtotals"
+msgstr "Hiển thị tổng phụ"
+
+#: functions.php:238
+#, php-format
+msgid "%d Folder"
+msgid_plural "%d Folders"
+msgstr[0] "%d thư mục"
+
+#: functions.php:356
+msgid "Folder"
+msgstr "Thư mục"
+
+#: functions.php:357
+msgid "Count"
+msgstr ""
+"Đếm"
+
+#: functions.php:357
+msgid "Unread"
+msgstr "Chưa đọc"
+
+#: functions.php:358
+msgid "Size"
+msgstr "Kích cỡ"

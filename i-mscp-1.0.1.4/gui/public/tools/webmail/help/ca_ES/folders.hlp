@@ -1,0 +1,96 @@
+<chapter>
+   <title>   
+      Carpetes
+   </title>   
+   <summary>
+      Vostè pot desar missatges a diferents carpetes. Això es especialment
+      útil si te molts missatges i desitja tenir-los ordenats. La opció de
+      carpetes permet modificar les preferències de les seves carpetes.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Carpetes donades d'alta i la part de l'esquerra de la pantalla
+   </title>
+   <description>
+      <p>
+      Les carpetes donades d'alta estan llistades a la part de l'esquerra de
+      la pantalla. Aquesta part es pot actualitzar automàticament cada cert 
+      temps (mirar a opcions -> pantalla). A la part de l'esquerra, a dalt 
+      hi ha el títol i a sota hi ha un link que permet refrescar la llista
+      de carpetes.
+      </p><p>
+      La primera carpeta mostrada conte el correu rebut. Al costat d'aquesta
+      carpeta s'indiquen els missatges no llegits. Es pot canviar per que 
+      també indiqui els missatges que hi ha en total a la carpeta (mirar 
+      opcions -> pantalla).
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Suprimir carpeta
+   </title>
+   <description>
+      <p>
+      Vostè pot suprimir qualsevol carpeta mostrada al menú deslligable.
+      Aquesta llista <B>no</B> inclou totes les carpetes mostrades.
+      Les carpetes especials com la INBOX, Sent o Trash no poden ser 
+      suprimides.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Crear carpeta
+   </title>
+   <description>
+      <p>
+      Pot crear carpetes només escrivint el nom i fent clic al botó crear.
+      Si vol que la carpeta sigui creada dins d'una altra, seleccioni 
+      la carpeta que contindrà la nova carpeta al menú deslligable.
+      </p>
+      <p>
+      A alguns servidors, hi han dos tipus de carpetes. Una que conté 
+      missatges i una altra que només conté carpetes. Si vostè fa que una 
+      carpeta contingui missatges, aquesta no podrà contenir carpetes, o 
+      al inrevés
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Canviar nom d'una carpeta
+   </title>
+   <description>
+      <p>
+      Vostè pot canviar el nom d'una carpeta mostrada a el menú deslligable.
+      Una vegada seleccionat només cal fer clic al boto Canviar nom.
+      <B>No</B> es pot canviar el nom de les carpetes INBOX, Sent i Trash.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Donar-se d'alta i baixa
+   </title>
+   <description>
+      Definicions:<br>
+      <I>Donar-se d'alta</I>: per donar d'alta una carpeta i veure-la a la
+                              llista de carpetes.<br>
+      <I>Donar-se de baixa</I>: per donar de baixa una carpeta i no veure-la
+                                a la llista de carpetes.<br>
+      <br><p>
+      Vostè pot seleccionar les carpetes que desitgi per donar-les d'alta o 
+      de baixa, desprès fa clic al botó corresponent de l'acció que vol
+      realitzar. Notarà que les carpetes es mouen d'una llista a l'altra.
+      Això ho pot fer tantes vegades com desitgi.
+      </p>
+   </description>
+</section>

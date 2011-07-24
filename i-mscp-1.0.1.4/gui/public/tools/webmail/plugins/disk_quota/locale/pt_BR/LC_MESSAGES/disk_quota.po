@@ -1,0 +1,153 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 3.0.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-04 11:02+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Your Disk Usage"
+msgstr "Seu uso de Disco"
+
+msgid "Click on graph for details"
+msgstr "Clique no gráfico para detalhes"
+
+msgid "Click on one of the graphs for details"
+msgstr "Clique em um dos gráficos para detalhes"
+
+msgid "Your Disk Usage on The Server"
+msgstr "Seu uso de Disco no Servidor"
+
+msgid "Percent"
+msgstr "Por cento"
+
+msgid "Details"
+msgstr "Detalhes"
+
+msgid "Filesystem"
+msgstr "Sistema de Arquivos"
+
+msgid "Data Amount You Use on The Server"
+msgstr "Quantidade de dados que você usa no Servidor"
+
+msgid "Your Quota"
+msgstr "Sua Quota"
+
+msgid "Your Limit"
+msgstr "Seu Limite"
+
+msgid "Grace Time"
+msgstr "Período de Tolerância"
+
+msgid "* Hover your mouse on the texts and graph to get more information..."
+msgstr "* Coloque seu mouse sobre os textos e gráficos para ter mais informações..."
+
+msgid "Days"
+msgstr "Dias"
+
+msgid "Day"
+msgstr "Dia"
+
+msgid "Hours"
+msgstr "Horas"
+
+msgid "Hour"
+msgstr "Hora"
+
+msgid "Minutes"
+msgstr "Minutos"
+
+msgid "Minute"
+msgstr "Minuto"
+
+msgid "Time Expired!"
+msgstr "Tempo Expirado!"
+
+msgid "This is the bar graph of your status. The green bar shows the amount of disk space you use."
+msgstr "Essa é a barra do seu status. A barra verde mostra a quantidade de espaço em disco que você usa."
+
+msgid " The red line shows your quota and the area after the red line shows your limit, which you cannot exceed."
+msgstr " A linha vermelha mostra sua quota e a área depois da linha vermelha mostra seu limite, que você não pode exceder."
+
+msgid " At this time, you are not over quota."
+msgstr "No momento, você não excedeu sua quota."
+
+msgid " YOU ARE OVER QUOTA NOW!"
+msgstr " VOCÊ EXCEDEU SUA QUOTA!"
+
+msgid "This shows your percent usage compared to your limit."
+msgstr "Isso mostra sua porcentagem de uso, comparada ao seu limite."
+
+msgid "This is the name of the filesystem on which your data is kept."
+msgstr "Esse é o nome do sistema de arquivos onde seus dados são mantidos."
+
+msgid " Your server did not show the filesystem name. So you see a hyphen for the name."
+msgstr " Seu servidor não mostra o nome do sistema de arquivos. Portanto você vê um hífen como nome."
+
+msgid "This is the total amount of data you are using on your server."
+msgstr "Essa é a quantidade total de dados que você está usando no servidor."
+
+msgid "This is the maximum amount of data you can keep on your server."
+msgstr "Essa é quantidade máxima de dados que você pode manter no seu servidor."
+
+msgid "This is the maximum amount of data you can keep on the server when you are over quota in your grace time."
+msgstr "Essa é a máxima quantidade de dados que você pode manter no servidor quando você tiver sua quota excedida, durante seu período de tolerância."
+
+msgid "This shows the time left in which you must delete some of your data in order to get under your quota."
+msgstr "Isso mostra seu tempo disponível para apagar alguns dados seus, para voltar à sua quota."
+
+msgid " You are not over quota so you see a hyphen for the grace time."
+msgstr "Você não está com sua quota excedida, por isso você vê um hífen para seu período de tolerância."
+
+msgid " After this time,if you are still over quota, you will not be able to get any e-mails."
+msgstr "Depois desse período, se você ainda estiver com sua quota excedida, você não poderá receber nenhum e-mail."
+
+msgid "Detailed Information"
+msgstr "Informação Detalhada"
+
+msgid "There is no problem as you are now using "
+msgstr "Não há nenhum problema, porque agora você está usando "
+
+msgid "KB on the server which is under your quota. Be sure to always keep the data you use under your "
+msgstr "KB no servidor, que é abaixo de sua quota. Esteja certo de manter seus dados sempre abaixo de seus"
+
+msgid "KB quota to ensure that you can always receive e-mails."
+msgstr "KB de quota, para ter certeza de que você sempre poderá receber e-mails."
+
+msgid "WARNING:"
+msgstr "CUIDADO:"
+
+msgid "You are using "
+msgstr "Você está usando "
+
+msgid "KB on the server which is over your quota. "
+msgstr "KB no servidor, o que é acima de sua quota. "
+
+msgid "If you don't delete some e-mails from the server in "
+msgstr "Se você não apagar alguns e-mail do servidor em "
+
+msgid "and get your data under your "
+msgstr "e colocar seus dados abaixo de seus "
+
+msgid "KB quota, you WILL NOT be able to get any more e-mails."
+msgstr "KB de quota, você NÃO PODERÁ receber nenhum e-mail."
+
+msgid "You CANNOT get any e-mails now and all e-mails sent to you are bouncing back to their senders. "
+msgstr "Você NÂO PODE receber nenhum e-mail agora, e todos os e-mails enviados para você estão retornando para seus remetentes. "
+
+msgid "You must delete some e-mails from the server and get your usage under your "
+msgstr "Voc precisa apagar alguns e-mail do servidor e colocar seu uso abaixo de seus "
+
+msgid "KB quota in order to be able to get new e-mails."
+msgstr "KB de quota, para poder receber novos e-mails."
+

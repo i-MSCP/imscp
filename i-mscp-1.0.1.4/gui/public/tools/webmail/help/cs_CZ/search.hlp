@@ -1,0 +1,62 @@
+<chapter>
+   <title>
+      Hledání
+   </title>
+   <summary>
+      
+   </summary>
+   <description>
+      <p>
+      Pomocí této funkce můžete hledat ve složkách zadáním příslušného kritéria. 
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Obecné informace
+   </title>
+   <description>
+      <p>
+      Vyberete složku, ve které chcete hledat, vepíšete, co chcete hledat, a zvolíte 
+      část zprávy, kterou chcete prohledávat. Po zadání "Hledat" se Vám zobrazí seznam 
+      zpráv, kde si můžete zvolit, kterou zprávu chcete zobrazit a přečíst ji normálně 
+      jako zprávu.
+      </p>
+      <p>
+      
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kde hledat
+   </title>
+   <description>
+      <p>
+      Můžete hledat v kategoriích: Tělo zprávy, Všude, Předmět, Od, Komu, Kopie.
+      </p>
+      <p>
+      <b>Tělo zprávy</b> - hledání v textu zprávy.
+      </p>
+      <p>
+      <b>Všude</b> - hledání v celé zprávě, včetně hlavičky. 
+      </p>
+      <p>
+      <b>Předmět</b> - hledání ve všech předmětech zpráv.
+      </p>
+      <p>
+      <b>Od</b> - hledání podle odesílatele zpráv. SquirrelMail v poli Od zobrazuje 
+      pouze jméno. Systém vyhledá požadavek, jestliže se Vámi zadaný dotaz shoduje 
+      s e-mailovou adresou.
+      </p>
+      <p>
+      <b>Komu </b> - hledání podle příjemce zpráv. 
+      </p>
+      <p>
+      <b>Kopie </b> - stejně jako v přecházejícím případě, s výjimkou, že hledání 
+      proběhne podle toho, komu byla adresována kopie. 
+      </p>
+   </description>
+</section>

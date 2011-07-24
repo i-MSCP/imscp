@@ -1,0 +1,4926 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR iMSCP Team - All rights reserved
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Danel Ibañez <laborategia@gmail.com>, 2008.
+msgid ""
+msgstr ""
+"Project-Id-Version: i-MSCP\n"
+"Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"Last-Translator: gOOvER <goover0976@yahoo.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: eu_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+msgid "_: Localised language"
+msgstr "Euskara - Basque"
+
+msgid "File is not readable."
+msgstr ""
+
+msgid "Only gettext Machine Object files (MO files) are accepted."
+msgstr ""
+
+#, php-format
+msgid "%s is not a valid i-MSCP language file."
+msgstr ""
+
+#, php-format
+msgid "Unable to create '%s' directory for language file."
+msgstr ""
+
+msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr ""
+
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr "%s fitxategia ez dago edo ezin izan da aurkitu!"
+
+msgid "Error while trying to obtain list of network cards."
+msgstr ""
+
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr "IP helbide hau (%s) ez dago inongo sare txartelari ezarria!"
+
+msgid "N/A"
+msgstr "D/E"
+
+msgid "Day"
+msgstr "Eguna"
+
+msgid "Days"
+msgstr ""
+
+msgid "Hour"
+msgstr "Ordua"
+
+msgid "Hours"
+msgstr ""
+
+msgid "Minute"
+msgstr ""
+
+msgid "Minutes"
+msgstr ""
+
+msgid "An error occured! Please, contact your administrator!"
+msgstr ""
+
+msgid "Couldn't check for updates. Website not reachable."
+msgstr ""
+
+msgid "General information"
+msgstr "Infomazio orokorra"
+
+msgid "Manage hosting plans"
+msgstr "Kudeatu hostatze planak"
+
+msgid "System tools"
+msgstr "Sistema tresnak"
+
+msgid "Manage users"
+msgstr "Erabiltzaile kudeaketa"
+
+msgid "Statistics"
+msgstr "Estatistikak"
+
+msgid "Support system"
+msgstr "Euskarri sistema"
+
+msgid "Settings"
+msgstr "Ezarpenak"
+
+msgid "Change password"
+msgstr "Pasahitza aldatu"
+
+msgid "Change personal data"
+msgstr "Aldatu datu pertsonalak"
+
+msgid "Add admin"
+msgstr "Administratzailea gehitu"
+
+msgid "Add reseller"
+msgstr "Gehitu bersaltzailea"
+
+msgid "Reseller assignment"
+msgstr "Bersaltzailea ezarri"
+
+msgid "User assignment"
+msgstr "Erabiltzailearen ezarpenak"
+
+msgid "Email setup"
+msgstr "Posta elektronikoaren ezarpena"
+
+msgid "Email marketing"
+msgstr "Posta elektroniko bidezko marketinga"
+
+msgid "Add hosting plan"
+msgstr "Gehitu hostatze plana"
+
+msgid "Reseller statistics"
+msgstr "Bersaltzailearen estatistikak"
+
+msgid "Server statistics"
+msgstr "Zerbitzariaren estatistikak"
+
+msgid "Admin log"
+msgstr "Administrariaren log-a"
+
+msgid "Manage IPs"
+msgstr "IP-ak kudeatu"
+
+msgid "System info"
+msgstr "Sistemaren informazioa"
+
+msgid "Internationalisation"
+msgstr "Internazionalizazioa"
+
+msgid "Language"
+msgstr "Hizkuntza"
+
+msgid "Layout"
+msgstr "Txantiloia"
+
+msgid "Logout"
+msgstr "Irten"
+
+msgid "Server traffic settings"
+msgstr "Zerbitzariaren trafiko ezarpenak"
+
+msgid "Server status"
+msgstr "Zerbitzariaren egoera"
+
+msgid "i-MSCP updates"
+msgstr "ispCp eguneraketak"
+
+msgid "i-MSCP database updates"
+msgstr "i-MSCP datubasearen eguneraketak"
+
+msgid "i-MSCP debugger"
+msgstr "i-MSCP debugger"
+
+msgid "Custom menus"
+msgstr "Menu pertsonalizatuak"
+
+msgid "Overview"
+msgstr "Orokorra"
+
+msgid "User sessions"
+msgstr "Erabiltzaile saioak"
+
+msgid "Lostpw email setup"
+msgstr "Ahaztutako postaren ezarpenak"
+
+msgid "Maintenance mode"
+msgstr "Mantenu modua"
+
+msgid "General settings"
+msgstr "Ezarpen orokorrak"
+
+msgid "Server ports"
+msgstr "Zerbitzari portuak"
+
+msgid "Rootkit Log"
+msgstr "Rootkit-aren Log-a"
+
+msgid "Internationalization"
+msgstr ""
+
+msgid "Services status"
+msgstr ""
+
+msgid "Services ports"
+msgstr ""
+
+msgid "IP usage"
+msgstr ""
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "No administrator account found."
+msgstr ""
+
+msgid "Username"
+msgstr "Erabiltzaile izena"
+
+msgid "Creation date"
+msgstr "Sortze data"
+
+msgid "Created by"
+msgstr "Nork sortua"
+
+msgid "Options"
+msgstr "Aukerak"
+
+msgid "Delete"
+msgstr "Ezabatu"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "No reseller account found."
+msgstr ""
+
+msgid "Switch to user interface"
+msgstr "Aldatu erabiltzaile interfazera"
+
+msgid "Switch"
+msgstr "Aldatu"
+
+msgid "Not found user records matching the search criteria."
+msgstr ""
+
+msgid "view aliases"
+msgstr "ikusi ezizenak"
+
+msgid "No user account found."
+msgstr ""
+
+msgid "Status"
+msgstr "Egoera"
+
+msgid "Details"
+msgstr "Xehetasunak"
+
+msgid "Edit domain"
+msgstr "Aldatu Domeinua"
+
+msgid "Edit user"
+msgstr "Aldatu erabiltzailea"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "Ez gaitua"
+
+msgid "Reload"
+msgstr ""
+
+msgid "Error"
+msgstr "Akatsa"
+
+msgid "Not Set"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to change the status of %s domain account?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Ziur zaude %s ezabatu nahi duzula"
+
+msgid "Administrators"
+msgstr "Administrariak"
+
+msgid "Resellers"
+msgstr "Bersaltzaileak"
+
+msgid "Users"
+msgstr "Erabiltzaileak"
+
+msgid "Search"
+msgstr "Bilatu"
+
+msgid "Expire date"
+msgstr "Iraungitze data"
+
+msgid "Edit"
+msgstr "Aldatu"
+
+msgid "Domain name"
+msgstr "Domeinuaren izena"
+
+msgid "Customer ID"
+msgstr "Erabiltzaile ID-a"
+
+msgid "Last name"
+msgstr "Abizena"
+
+msgid "Company"
+msgstr "Lantokia"
+
+msgid "City"
+msgstr "Hiria"
+
+msgid "State/Province"
+msgstr "Estatua/Probintzia"
+
+msgid "Country"
+msgstr "Herria"
+
+msgid "All"
+msgstr "Guztira"
+
+msgid "OK"
+msgstr "Ados"
+
+msgid "Suspended"
+msgstr "Etendua"
+
+msgid "View aliases"
+msgstr "Ikusi ezizenal"
+
+msgid "hide aliases"
+msgstr "ezkutatu ezizenak"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s orain %2$s gisa zaude izen emanda"
+
+msgid "Go back"
+msgstr "Jo atzera"
+
+msgid "No languages found."
+msgstr ""
+
+msgid "Add user"
+msgstr "Gehitu erabiltzailea"
+
+msgid "Manage domains"
+msgstr "Domeinuak kudeatu"
+
+msgid "Domain alias"
+msgstr "Domainu ezizenak"
+
+msgid "Subdomains"
+msgstr "Azpidomeinuak"
+
+msgid "Domain statistics"
+msgstr "Domeinuaren estatistikak"
+
+msgid "New ticket"
+msgstr "Txartel berria"
+
+msgid "Layout settings"
+msgstr "Txantiloi aukerak"
+
+msgid "Manage Orders"
+msgstr "Kudeatu Eskaerak"
+
+msgid "Order settings"
+msgstr "Eskaera aukerak"
+
+msgid "Order email setup"
+msgstr "Eskera posta aukerak"
+
+msgid "yes"
+msgstr "bai"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Mesedez bete bi datu kanpuak pasahitzarentzat!"
+
+msgid "Passwords don't match!"
+msgstr "Pasahitzak ez datoz bat!"
+
+#, php-format
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
+msgstr ""
+"Pasahitzak gutxienez %s -ko luzeera eta hizkiak eta zenbakiak eduki behar "
+"ditu onargarria izan dadin."
+
+#, php-format
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs!"
+msgstr ""
+"Pasahitzaren luzeera %s baino txikiagoa da edo onartzen ez diren zeinuak "
+"ditu!"
+
+msgid "Incorrect email length or syntax!"
+msgstr "Posta elektronikoan luzera edo sintaxi okerra"
+
+msgid "Add subdomain"
+msgstr "Gehitu azpidomeinua"
+
+msgid "Email and FTP accounts"
+msgstr "Posta elektroniko eta FTP kontuak"
+
+msgid "Add mail user"
+msgstr "Gehitu posta elektroniko erabiltzailea"
+
+msgid "Add FTP user"
+msgstr "Gehitu FTP erabiltzailea"
+
+msgid "Manage SQL"
+msgstr "SQL kudeatu"
+
+msgid "Error pages"
+msgstr "Akats orriak"
+
+msgid "Add SQL database"
+msgstr "Gehitu SQL datubasea"
+
+msgid "Daily backup"
+msgstr "Eguneroko segurtasun kopia"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin-a"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Filemanager"
+msgstr "Artxibo kudeaketa"
+
+msgid "Webtools"
+msgstr "Web tresnak"
+
+msgid "Protected areas"
+msgstr "Babestutako guneak"
+
+msgid "Web statistics"
+msgstr "Web estatistikak"
+
+msgid "Group/User management"
+msgstr "Taldea/Erabiltzaile Kudeaketa"
+
+msgid "Email Accounts"
+msgstr "Posta elektroniko kontuak"
+
+msgid "FTP Accounts"
+msgstr "FTP kontuak"
+
+msgid "Catch all"
+msgstr "Catch all"
+
+msgid "Add alias"
+msgstr "Gehitu ezizena"
+
+msgid "Update Hosting Package"
+msgstr "Eguneratu Hostatze Paketea"
+
+msgid "Add DNS zone's record"
+msgstr "Gehitu DNS gune erregistroa"
+
+msgid "Manage SSL certificate"
+msgstr "Kudeatu SSL egiaztagiriak"
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+msgid "internet Multi Server Control Panel"
+msgstr ""
+
+msgid "© 2010-2011 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#. Please ignore this entry
+msgid "encoding"
+msgstr "UTF-8"
+
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr ""
+
+msgid "Administrator login"
+msgstr "Hasi saioa administrari gisa"
+
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr ""
+
+msgid "Login"
+msgstr "Saioa hasi"
+
+msgid "Password"
+msgstr "Pasahitza"
+
+msgid "phpMyAdmin"
+msgstr "phpMyAdmin-a"
+
+msgid "FileManager"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr "Konexio segurua"
+
+msgid "Normal Connection"
+msgstr "Konexio arrunta"
+
+msgid "Lost password"
+msgstr "Ez dut pasahitza gogoratzen"
+
+msgid "PHP GD extension not loaded."
+msgstr ""
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr ""
+
+msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+msgid "Security code"
+msgstr "Segurtasun kodea"
+
+msgid "Send"
+msgstr ""
+
+msgid "Cancel"
+msgstr "Ezeztatu"
+
+msgid "Your new password has been sent. Check your mail."
+msgstr ""
+
+msgid "New password has not been sent. Ask your administrator."
+msgstr ""
+
+msgid "Wrong security code"
+msgstr ""
+
+msgid "Wrong username"
+msgstr ""
+
+msgid ""
+"Your request for new password was registered. You will receive an email with"
+" instructions to complete the process."
+msgstr ""
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Admin/Erabiltzaileak kudeatu/Erabiltzailea gehitu"
+
+msgid "Administrator"
+msgstr "Administraria"
+
+msgid "Incorrect username length or syntax."
+msgstr ""
+
+#, php-format
+msgid ""
+"Password data is shorter than %s signs or includes not permitted signs."
+msgstr ""
+
+msgid "Entered passwords do not match."
+msgstr ""
+
+msgid "Incorrect email length or syntax."
+msgstr ""
+
+msgid "This user name already exist."
+msgstr ""
+
+msgid "Empty data or wrong field!"
+msgstr "Datua zurian edo okerreko atala!"
+
+msgid "Core data"
+msgstr "Datu nagusiak"
+
+msgid "Repeat password"
+msgstr "Pasahitza errepikatu"
+
+msgid "Email"
+msgstr "Posta elektronikoa"
+
+msgid "Additional data"
+msgstr "Datu gehigarriak"
+
+msgid "First name"
+msgstr "Izena"
+
+msgid "Gender"
+msgstr "Sexua"
+
+msgid "Male"
+msgstr "Gizonezkoa"
+
+msgid "Female"
+msgstr "Emakumezkoa"
+
+msgid "Unknown"
+msgstr "Ezezaguna"
+
+msgid "Zip/Postal code"
+msgstr "Posta kodea"
+
+msgid "Street 1"
+msgstr "Kalea 1"
+
+msgid "Street 2"
+msgstr "Kalea 2"
+
+msgid "Phone"
+msgstr "Telefonoa"
+
+msgid "Fax"
+msgstr "Faxa"
+
+msgid "Add"
+msgstr "Gehitu"
+
+msgid "Entered passwords do not match!"
+msgstr "Sartutako pasahitzak ez dira berdinak!"
+
+msgid "User session was killed!"
+msgstr "Erabiltzaile sesioa ezabatua izan da!"
+
+msgid "Reseller"
+msgstr "Bersaltzailea"
+
+msgid "Domain account"
+msgstr "Domeinu kontua"
+
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
+msgstr "i-MSCP - Admin/Erabiltzaile kudeaketa/Administraria aldatu"
+
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Admin/Erabiltzaileak kudeatu/Erabiltzailea Aldatu"
+
+msgid "Edit admin"
+msgstr "Aldatu administratzailea"
+
+msgid "Update"
+msgstr "Eguneratu"
+
+msgid "Send new login data"
+msgstr "Bidali sarrera datu berriak"
+
+msgid "Generate password"
+msgstr "Pasahitza sortu"
+
+msgid "Password change is disabled!"
+msgstr ""
+
+msgid "Demo Version!"
+msgstr ""
+
+msgid "iMSCP - Admin/Admin Log"
+msgstr ""
+
+msgid "Log is empty!"
+msgstr "Log-a hutsik dago!"
+
+#, php-format
+msgid "%s deleted the full admin log!"
+msgstr "%s ezabatuak administrazioen log osoa!"
+
+#, php-format
+msgid "%s deleted the admin log older than two weeks!"
+msgstr "%s ezabatuak bi aste baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than one month!"
+msgstr "%s ezabatuak hilabete baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than three months!"
+msgstr ""
+"%s ezabatuak hiru hilabete baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than six months!"
+msgstr ""
+"%s ezabatuak sei hilabete baino zaharragoak diren administrazioen log-ak!"
+
+#, php-format
+msgid "%s deleted the admin log older than one year!"
+msgstr ""
+"%s ezabatuak urte bete baino zaharragoak diren administrazioen log-ak!"
+
+msgid "Invalid time period!"
+msgstr "Denbora tarte okerra!"
+
+msgid "Admin Log"
+msgstr "Admin Log-a"
+
+msgid "Clear log"
+msgstr "Log-a garbitu"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Message"
+msgstr "Mezua"
+
+msgid "Delete from log:"
+msgstr "Ezabatua log-etik:"
+
+msgid "everything"
+msgstr "dena"
+
+msgid "older than 2 weeks"
+msgstr "bi aste baino zaharragoak"
+
+msgid "older than 1 month"
+msgstr "hilabete baino zaharragoak"
+
+msgid "older than 3 months"
+msgstr "hiru hilabete baino zaharragoak"
+
+msgid "older than 6 months"
+msgstr "sei hilabete baino zaharragoak"
+
+msgid "older than 12 months"
+msgstr "hamabi hilabete baino zaharragoak"
+
+msgid "i-MSCP - Admin - Email Marketing"
+msgstr "i-MSCP - Amin - Posta elektroniko bidezko marketinga"
+
+msgid "Please specify a message subject!"
+msgstr "Mesedez jar ezazu mezuaren gaia!"
+
+msgid "Please specify a message content!"
+msgstr "Mesedez jar ezazu mezuaren edukina!"
+
+msgid "Please specify a sender name!"
+msgstr "Mesedez jar ezazu bidaltzailearen izena!"
+
+msgid "Please specify a sender email!"
+msgstr "Mesedez jar ezazu bidaltzailearen posta elektronikoa!"
+
+msgid "You send email to your users successfully!"
+msgstr "Erabiltzaileei posta elektronikoak zuzen bidali dira!"
+
+msgid "Send message to"
+msgstr "Nori bidali mezua"
+
+msgid "All users"
+msgstr "Erabiltzaile guztiak"
+
+msgid "All resellers"
+msgstr "Bersaltzaile guztiei"
+
+msgid "All users & resellers"
+msgstr "Erabiltzaile eta bersaltaile guztiei"
+
+msgid "Message subject"
+msgstr "Mezuaren gaia"
+
+msgid "Senders email"
+msgstr "Bidaltzailearen posta elektronikoa"
+
+msgid "Senders name"
+msgstr "Bidaltzailearen izena"
+
+msgid "Send message"
+msgstr "Mezua bidali"
+
+msgid "You have no custom menus."
+msgstr "Ez dauzkazu menu pertsonalizatuak"
+
+msgid "User"
+msgstr "Erabiltzailea"
+
+msgid "Missing or incorrect data input!"
+msgstr "Sarrera datu okerrak edo galduak!"
+
+msgid "Invalid URL!"
+msgstr "URL okerra!"
+
+msgid "Invalid target!"
+msgstr "Helburu okerra!"
+
+msgid "Custom menu data updated successful!"
+msgstr "Menu pertsonalizatuen datuak zuzen eguneratuak!"
+
+msgid "Custom menu deleted successful!"
+msgstr "Menu pertsonalizatua zuzen ezabatua!"
+
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Admin - Kudeatu menu pertsonalizatuak"
+
+msgid "Manage custom menus"
+msgstr "Kudeatu menu pertsonalizatuak"
+
+msgid "Add new button"
+msgstr "Gehitu botoi berria"
+
+msgid "Button name"
+msgstr "Botoiaren izena"
+
+msgid "Button link"
+msgstr "Botoiaren esteka"
+
+msgid "Button target"
+msgstr "Botoriaren helburua"
+
+msgid "Show in"
+msgstr "Non ikusi"
+
+msgid "Administrator level"
+msgstr "Administrari maila"
+
+msgid "Reseller level"
+msgstr "Bersaltzaile maila"
+
+msgid "Enduser level"
+msgstr "Azken erabiltzaile maila"
+
+msgid "Reseller and enduser level"
+msgstr "Bersaltzaile eta azken erabiltzaile maila"
+
+msgid "Menu button"
+msgstr "Menu botoia"
+
+msgid "Action"
+msgstr "Akzioa"
+
+msgid "Level"
+msgstr "Maila"
+
+msgid "Save"
+msgstr "Gorde"
+
+msgid "Edit button"
+msgstr "Aldatu botoia"
+
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr ""
+
+msgid "Database updates"
+msgstr "Datubasearen eguneraketa"
+
+msgid "Available database updates"
+msgstr "Datubasearen eguneraketa eskuragarri"
+
+msgid "Update details"
+msgstr "Eguneraketaren xehetasunak"
+
+msgid "New Database update is now available"
+msgstr "Datubasearen eguneraketa berria dago eskuragarri"
+
+msgid "No provided"
+msgstr ""
+
+msgid "Execute updates"
+msgstr "Exekutatu eguneraketak"
+
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - Domeinua/Xehetasunak"
+
+msgid "Domain details"
+msgstr "Domeinuaren xehetasunak"
+
+msgid "Domain IP"
+msgstr "Domeinuaren IP-a"
+
+msgid "PHP support"
+msgstr "PHP euskarria"
+
+msgid "CGI support"
+msgstr "CGI euskarria"
+
+msgid "Manual DNS support (EXPERIMENTAL)"
+msgstr "Eskuzko DNS euskarria (EXPERIMENTALA)"
+
+msgid "Backup support"
+msgstr ""
+
+msgid "MySQL support"
+msgstr "MySQL euskarria"
+
+msgid "Traffic in MB"
+msgstr "Trafikoa MB-etan"
+
+msgid "Disk in MB"
+msgstr "Diskoa MB-etan"
+
+msgid "Feature"
+msgstr "Aukerak"
+
+msgid "Used"
+msgstr "Erabilia"
+
+msgid "Limit"
+msgstr "Muga"
+
+msgid "Mail accounts"
+msgstr "Posta elektroniko kontuak"
+
+msgid "FTP accounts"
+msgstr "FTP kontuak"
+
+msgid "SQL databases"
+msgstr "SQL datubaseak"
+
+msgid "SQL users"
+msgstr "SQL erabiltzaileak"
+
+msgid "Domain aliases"
+msgstr "Domeinu ezizenak"
+
+msgid "Submit changes"
+msgstr "Bidali aldaketak"
+
+msgid "Back"
+msgstr "Atzera"
+
+msgid "Full"
+msgstr "Osoa"
+
+msgid "SQL"
+msgstr "SQL"
+
+msgid "Domain"
+msgstr "Domeinua"
+
+msgid "No"
+msgstr "Ez"
+
+msgid "Enabled"
+msgstr "Gaitua"
+
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Domeinua/Aldatu"
+
+msgid "Edit Domain"
+msgstr "Aldatu Domeinua"
+
+msgid "Domain properties"
+msgstr "Domeinu aukerak"
+
+msgid "Domain expire"
+msgstr "Domeinuaren igaungitzea"
+
+msgid "New expire date"
+msgstr "Iraungitze data berria"
+
+msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko azpidomeinuak<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko ezizenak<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Posta elektronikoen muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "FTP kontuen muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL datubase muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL erabiltzaile muga<br /><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Trafiko muga<br /><i>(0 mugagabea)</i>"
+
+msgid "Disk limit [MB] <br /><i>(0 unlimited)</i>"
+msgstr "Disko tamaina<br /><i>(0 mugagabea)</i>"
+
+msgid "Backup"
+msgstr "Segurtasun kopia"
+
+msgid "Yes"
+msgstr "Bai"
+
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
+msgid ""
+"In case 'Domain expire' is 'N/A', the expiration date will be set from "
+"today."
+msgstr ""
+"'Domeinu iraungitzea' kasu 'N/A' bada, iraungitze data gaurtik hasita izango"
+" da."
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Erabiltzailea ez da existitzen edo ez daukazu baimenik interfaze honetera "
+"sartzeko!"
+
+msgid "Incorrect subdomains limit!"
+msgstr "Azpidomeinu muga okerra!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Ezizenen muga okerra!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Posta elektroniko kontuen muga okerra!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "FTP kontuen muga okerra!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "SQL erabiltzaileen muga okerra!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "SQL datubaseen muga <i>ezgaitua</i> dago!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "SQL datubaseen muga okerra!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQL erabiltzaile muga <i>ezgaitua</i> dago!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Trafikoaren muga okerra!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Diskoaren kuota muga okerra!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Azpidomeinua"
+
+msgid "Alias"
+msgstr "Ezizena"
+
+msgid "Mail"
+msgstr "Posta elektronikoa"
+
+msgid "FTP"
+msgstr "FTP-a"
+
+msgid "SQL Database"
+msgstr "SQL Datubasea"
+
+msgid "SQL User"
+msgstr "SQL Erabiltzailea"
+
+msgid "Traffic"
+msgstr "Trafikoa"
+
+msgid "Disk"
+msgstr "Diskoa"
+
+msgid "Domain properties could not be updated!"
+msgstr "Domeinuaren aukerak ezin izan dira eguneratu!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domeinuaren aukerak zuzen eguneratu dira!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "<em>%s</em> zerbitzua ezin izan da gelditu!"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "<em>%s</em> erregistro daude sisteman!"
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled!"
+msgstr ""
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system!"
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited!"
+msgstr "<em>%s</em> zerbitzua ezin daiteke mugatu!"
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"Emandako zenbakia sisteman dauden <em>%s</em> erregistro kopurua baino "
+"baxuagoa da!"
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "<em>%s</em> erregistro daude sisteman!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited!"
+msgstr "<em>%s</em> zerbitzua ezin daiteke mugagabea izan!"
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Bersaltzailearen mugak daude <em>%s</em> zerbitzuarentzat!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "<em>%s</em> zerbitzurako bersaltzailearen muga gainditzen ari zara!"
+
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - Domeinuaren Estatistika Datuak"
+
+msgid "Reseller users table"
+msgstr "Bersaltzailearen erabiltzaile taula"
+
+msgid "Month"
+msgstr "Hilabetea"
+
+msgid "Year"
+msgstr "Urtea"
+
+msgid "Show"
+msgstr "Ikusi"
+
+msgid "Web traffic"
+msgstr "Web trafikoa"
+
+msgid "FTP traffic"
+msgstr "FTP trafikoa"
+
+msgid "SMTP traffic"
+msgstr "SMTP trafikoa"
+
+msgid "POP3/IMAP traffic"
+msgstr "POP3/IMAP trafikoa"
+
+msgid "All traffic"
+msgstr "Trafiko guztia"
+
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administraria/Hostatze Planen Kudeaketa"
+
+msgid "Hosting plans"
+msgstr "Hostatze planak"
+
+msgid "Purchasing"
+msgstr "Erosketak"
+
+msgid "Add new user hosting plan"
+msgstr "Gehitu erabiltzaile hostatze plan berria"
+
+msgid "Return to previous menu"
+msgstr "Itzuli aurreko menura"
+
+msgid "Hosting plan added!"
+msgstr "Hostatze plana gehitua!"
+
+msgid "Hosting plan deleted!"
+msgstr "Hostatze plana ezabatua!"
+
+msgid "Hosting plan updated!"
+msgstr "Hostatze plana eguneratua!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hostatze plana ezin da ezabati, eskaerak daude!"
+
+msgid "Hosting plans not found!"
+msgstr "Hostatze plana ez da aurkitu!"
+
+msgid "No."
+msgstr "Zbk."
+
+msgid "Name"
+msgstr "Izena"
+
+msgid "Show hosting plan"
+msgstr "Ikusi hostatze plana"
+
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Administraria/Gehitu hostatze plana"
+
+msgid "Hosting plan properties"
+msgstr "Hostatze planaren aukerak"
+
+msgid "Template name"
+msgstr "Txantiloi izena"
+
+msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko azpidomeinuak<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Gehienezko ezizenak<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Posta elektroniko kontuen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "FTP kontuen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL datubaseen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "SQL erabiltzaile muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Trafiko muga [MB]<br><i>(0 mugagabea)</i>"
+
+msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
+msgstr "Disko muga [MB]<br><i>(0 mugagabea)</i>"
+
+msgid "PHP"
+msgstr "PHP"
+
+msgid "CGI / Perl"
+msgstr "CGI / Perl"
+
+msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
+msgstr "Onartu DNS ingurunera erregistroak gehitzea ( EXPERIMENTALA)"
+
+msgid "Apache logfiles"
+msgstr "Apacheren log fitxategiak"
+
+msgid "AwStats"
+msgstr "AwStats"
+
+msgid "no"
+msgstr "ez"
+
+msgid "Billing Settings"
+msgstr "Fakturazio aukerak"
+
+msgid "Price"
+msgstr "Salneurri"
+
+msgid "Setup fee"
+msgstr "Instalazio tasa"
+
+msgid "Currency"
+msgstr "Moneta"
+
+msgid "Payment period"
+msgstr "Ordaintze denbora tartea"
+
+msgid "Available for purchasing"
+msgstr "Erosteko aukera"
+
+msgid "Description"
+msgstr "Deskribapena"
+
+msgid "(e.g. EUR)"
+msgstr "(adib. EUR)"
+
+msgid "Term Of Service"
+msgstr ""
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
+msgid "Add plan"
+msgstr "Gehitu plana"
+
+msgid "Incorrect template name length!"
+msgstr "Txantiloi izen luzera okerra!"
+
+msgid "Incorrect template description length!"
+msgstr "Txantiloi deskribapen luzera okerra!"
+
+msgid "Incorrect price syntax!"
+msgstr "Salneurri sintaxi okerra!"
+
+msgid "Incorrect setup fee syntax!"
+msgstr "Instalazio tasaren sintaxi okerra!"
+
+msgid "Hosting plan with entered name already exists!"
+msgstr "Lehenik badago izen bera duen hostatze plana!"
+
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Administraria/Aldatu hostatze plana"
+
+msgid "Price Style"
+msgstr "Salneurri mota"
+
+msgid "Text"
+msgstr ""
+
+msgid "Update plan"
+msgstr "Eguneratu plana"
+
+msgid "Edit hosting plan"
+msgstr "Aldatu hostatze plana"
+
+msgid "Undefined reference to data!"
+msgstr "Erreferentzi ezezaguna datura!"
+
+msgid "Incorrect price. Example: 9.99"
+msgstr "Salneurri okerra. Adibidez: 9.99"
+
+msgid "Incorrect setup fee. Example: 19.99"
+msgstr "Instalazio tasa okerra. Adibidez: 19.99"
+
+msgid "No domain system errors"
+msgstr "Akatsik ez domeinu sisteman"
+
+msgid "No domain alias system errors"
+msgstr "Akatsik ez domeinu ezizenen sisteman"
+
+msgid "No subdomain system errors"
+msgstr "Akatsik ez azpidomeinuen sisteman"
+
+msgid "No alias subdomain system errors"
+msgstr "Akatsik ez azpidomeinuen ezizen sisteman"
+
+msgid "No email account system errors"
+msgstr "Akatsik ez posta elektroniko kontuen sisteman"
+
+msgid "missing domain"
+msgstr ""
+
+msgid "missing alias"
+msgstr ""
+
+msgid "orphan entry"
+msgstr ""
+
+msgid "No htaccess related system errors"
+msgstr ""
+
+msgid "Missing domain"
+msgstr ""
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "Deabruak %d egoera kodea itzuli du"
+
+msgid "Unknown type!"
+msgstr "Mota ezezaguna!"
+
+msgid "Done"
+msgstr "Egina"
+
+msgid "Unknown Error"
+msgstr "Akats ezezaguna"
+
+msgid "Domain errors"
+msgstr "Domeinu akatsak"
+
+msgid "Domain alias errors"
+msgstr "Domeinu ezizenen akatsak"
+
+msgid "Subdomain errors"
+msgstr "Azpidomeinuen akatsak"
+
+msgid "Alias subdomain errors"
+msgstr "Azpidomeinuen ezizen akatsa"
+
+msgid "Mail account errors"
+msgstr "Posta elektroniko kontuen akatsak"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Deabruen tresnak"
+
+msgid "Execute requests"
+msgstr "Exekuzio eskaerak"
+
+msgid "Set status to 'change'"
+msgstr "Ezarri egoera \"aldatura\""
+
+#, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr "Eguneraketen egiaztapena ez dago gaituta!"
+
+msgid "Enable update at"
+msgstr "Gaitu eguneraketak"
+
+msgid "New i-MSCP update is now available"
+msgstr "i-MSCP eguneraketa berria eskuragarri dago orain"
+
+msgid "Get it at"
+msgstr "Eskuratu"
+
+msgid "Available i-MSCP updates"
+msgstr "Eskuragarri dauden i-MSCP eguneraketak"
+
+msgid "No new i-MSCP updates available"
+msgstr "Ez dago i-MSCP eguneraketarik eskuragarri"
+
+#, php-format
+msgid "You have received <b>%d</b> new support questions."
+msgstr ""
+
+msgid "Database update is available."
+msgstr ""
+
+msgid "New i-MSCP update is available"
+msgstr ""
+
+msgid "Update checking is disabled."
+msgstr ""
+
+msgid "You are exceeding your traffic limit."
+msgstr ""
+
+#, php-format
+msgid "%1$d%% [%2$s of unlimited]"
+msgstr "%1$d%% [%2$s mugagabetik]"
+
+#, php-format
+msgid "%1$d%% [%2$s of %3$s]"
+msgstr "%1$d%% [%2$s - %3$stik]"
+
+msgid "i-MSCP - Admin / General information"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Values"
+msgstr ""
+
+msgid "Account name"
+msgstr "Kontu izena"
+
+msgid "Admin users"
+msgstr "Adminsitrari erabiltzaileak"
+
+msgid "Reseller users"
+msgstr "Bersaltzailearen erabiltzaileak"
+
+msgid "Normal users"
+msgstr "Erabiltzaile arruntak"
+
+msgid "Domains"
+msgstr "Domeinuak"
+
+msgid "Server traffic"
+msgstr "Zerbitzariaren trafikoa"
+
+msgid "You cannot delete the last active IP address!"
+msgstr "Ezin duzu azken IP helbide aktiboa ezabatu!"
+
+msgid "Error: we have a domain using this IP!"
+msgstr "Errorea: dagoeneko badaukagu domeinu bat IP hau erabiltzen!"
+
+msgid "Error: we have a reseller using this IP!"
+msgstr "Errorea: dagoeneko badaukagu bersaltzaile bat IP hau erabiltzen!"
+
+msgid "IP was deleted!"
+msgstr "IP-a ezabatua izan da!"
+
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Admin/IP kudeaketa"
+
+msgid "Remove IP"
+msgstr "Ezabatu IP-a"
+
+msgid "No IP's available"
+msgstr ""
+
+msgid "New IP was added!"
+msgstr "IP berria gehitua izan da!"
+
+msgid "Wrong IP number!"
+msgstr "IP zenbaki okerra!"
+
+msgid "Please specify domain!"
+msgstr "Mesedez jar ezazu domeinua!"
+
+msgid "Please specify alias!"
+msgstr "Mesedez jar ezazu ezizena!"
+
+msgid "This IP already exist!"
+msgstr "IP hau dagoeneko badago!"
+
+msgid "Please select nework interface!"
+msgstr "Mesedez aukeratu sare interfazea!"
+
+msgid "Available IPs"
+msgstr "Dauden IP-ak"
+
+msgid "IP"
+msgstr "IP-a"
+
+msgid "Network interface"
+msgstr "Sare interfazea"
+
+msgid "Add new IP"
+msgstr "Gehitu IP berria"
+
+#, php-format
+msgid "Are you sure you want to delete this IP: %s?"
+msgstr "Ziur zaude ezabatu nahi duzula IP hau: %s?"
+
+msgid "i-MSCP - Admin/IP Usage"
+msgstr ""
+
+msgid "Total Domains"
+msgstr ""
+
+msgid "No records found"
+msgstr ""
+
+msgid "Admin/IP usage statistics"
+msgstr ""
+
+msgid "Domain Name"
+msgstr ""
+
+msgid "Reseller Name"
+msgstr ""
+
+msgid "User language successfully updated."
+msgstr ""
+
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Admin/Hizkuntza aldatu"
+
+msgid "Choose your default language"
+msgstr "Aukeratu zure berezko hizkuntza"
+
+msgid "You can't delete system language."
+msgstr ""
+
+msgid "Wrong language table name."
+msgstr ""
+
+msgid "This language is used by one or more users."
+msgstr ""
+
+msgid "Language was successfully removed."
+msgstr ""
+
+msgid "Reseller list is empty!"
+msgstr "Bersaltzaile zerrenda hutsik dago!"
+
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
+msgstr "i-MSCP - Admin/Erabiltzaile kudeaketa/Bersaltzailea ezarri"
+
+msgid "Mark"
+msgstr "Marka"
+
+msgid "Reseller name"
+msgstr "Bersaltzailearen izena"
+
+msgid "Owner"
+msgstr "Jabea"
+
+msgid "To Admin"
+msgstr "Administrariari"
+
+msgid "Move"
+msgstr "Mugitu"
+
+msgid "Reseller or user list is empty!"
+msgstr "Bersaltzaile edo erabiltzaile zerrenda hutsik!"
+
+msgid "User list is empty!"
+msgstr "Erabiltzaile zerrenda hutsik dago!"
+
+msgid "User was moved"
+msgstr "Erabiltzailea mugitu da"
+
+msgid "Please select some user(s)!"
+msgstr "Mesedez aukeratu erabiltzailea(k)!"
+
+msgid "Source and destination reseller are the same!"
+msgstr "Jatorriko eta helburuko bersaltzaileak berak dira!"
+
+#, php-format
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgstr "<b>%1$s</b> baimen mugagabeak ditu <b>%2$s</b> zerbitzurako!<br>"
+
+#, php-format
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
+msgstr ""
+"Ezin duzu mugitu <b>%1$s</b> birsaltzaile atalean, <br>non mugak dituen "
+"<b>%2$s</b> zerbitzurako!"
+
+#, php-format
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
+msgstr ""
+"<b>%1$s</b> muga gainditzen ari da <b>%2$s</b>rako<br>zerbitzaria "
+"bersaltzaile atalean<br>"
+
+msgid "Moving aborted!"
+msgstr "Mugitzea abortatua!"
+
+#, php-format
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
+msgstr ""
+"<b>%s</b>-rek daukan IP helbidea ezin da kudeatu bersaltzaile "
+"ataletik!<br>Erabiltzaile hau ezin da mugitu!"
+
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Admin/Erabiltzaile kudeatzailea/Erabiltzailearen ezarpenak"
+
+msgid "User name"
+msgstr "Erabiltzaile izena"
+
+msgid "From reseller"
+msgstr "Bersaltzailetik"
+
+msgid "To reseller"
+msgstr "Bersaltzailera"
+
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Admin/Erabiltzaileak Kudeatu"
+
+msgid "User scheduled for addition."
+msgstr ""
+
+msgid "Reseller successfully added."
+msgstr ""
+
+msgid "User updated."
+msgstr ""
+
+msgid "User scheduled for deletion."
+msgstr ""
+
+msgid "Email Updated."
+msgstr ""
+
+msgid ""
+"This reseller has one or more domain accounts.<br /> To remove this "
+"reseller, please first remove these domain accounts"
+msgstr ""
+
+msgid "Domain account scheduled for deactivation."
+msgstr ""
+
+#, php-format
+msgid "%d strings translated"
+msgstr ""
+
+msgid "Language file successfully installed/updated."
+msgstr ""
+
+msgid "Default language successfully updated."
+msgstr ""
+
+msgid "Languages index was successfully re-built."
+msgstr ""
+
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Admin/Internazionalizazioa"
+
+msgid "Available languages"
+msgstr ""
+
+msgid "Translated strings"
+msgstr ""
+
+msgid "Revision Date"
+msgstr ""
+
+msgid "Last translator"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
+
+msgid "Install / Update language"
+msgstr ""
+
+msgid "Language file"
+msgstr "Hizkuntza fitxategia"
+
+msgid "Install / Update"
+msgstr ""
+
+msgid "Export"
+msgstr "Exportatu"
+
+msgid "Rebuild languages index"
+msgstr ""
+
+msgid "Incorrect data input!"
+msgstr "Datu sarrera okerra!"
+
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Admin/Pasahitza aldatu"
+
+msgid "Please fill up all data fields!"
+msgstr "Mesedez bete datu guztiak!"
+
+msgid "Passwords do not match!"
+msgstr "Pasahitzak ez datoz bat!"
+
+msgid "The current password is wrong!"
+msgstr "Oraingo pasahitza oker dago!"
+
+msgid "User password updated successfully!"
+msgstr "Erabiltzaileren pasahitza zuzen eguneratua!"
+
+msgid "Password data"
+msgstr "Pasahitz datua"
+
+msgid "Update password"
+msgstr "Pasahitza eguneratu"
+
+msgid "Current password"
+msgstr "Oraingo pasahitza"
+
+msgid "Password change is deactivated!"
+msgstr ""
+
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Admin/Aldatu datu pertsonalak"
+
+msgid "Personal data updated successfully!"
+msgstr "Datu pertsonalak zuzen eguneratu dira!"
+
+msgid "Personal data"
+msgstr "Datu pertsonalak"
+
+msgid "Update data"
+msgstr "Datuak eguneratu"
+
+msgid "Reseller IP list is empty!"
+msgstr "Bersaltzailearen IP zerrenda hutsik dago!"
+
+msgid "Assign"
+msgstr "Ezarri"
+
+msgid "Label"
+msgstr "Etiketa"
+
+msgid "Number"
+msgstr "Zenbakia"
+
+msgid "Incorrect email syntax."
+msgstr ""
+
+msgid "Incorrect domains limit."
+msgstr ""
+
+msgid "Incorrect subdomains limit."
+msgstr ""
+
+msgid "Incorrect aliases limit."
+msgstr ""
+
+msgid "Incorrect FTP accounts limit."
+msgstr ""
+
+msgid "Incorrect mail accounts limit."
+msgstr ""
+
+msgid "Incorrect SQL databases limit."
+msgstr ""
+
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not."
+msgstr ""
+
+msgid "Incorrect SQL users limit."
+msgstr ""
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not."
+msgstr ""
+
+msgid "Incorrect traffic limit."
+msgstr ""
+
+msgid "Incorrect disk quota limit."
+msgstr ""
+
+msgid "You must assign at least one IP number for a reseller."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr "i-MSCP - Admin/Erabiltzaileak kudeatu/Gehitu bersaltzailea"
+
+msgid "Domains limit<br><i>(0 unlimited)</i>"
+msgstr "Domeinu muga<br><i>(0 mugagabea)</i>"
+
+msgid "Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Azpidomeinu muga<br><i>(-1 ezgaitua, 0 mugagabea(</i>"
+
+msgid "Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Ezizen muga<br><i>(-1 ezgaitua, 0 mugagabea)</i>"
+
+msgid "JSP"
+msgstr "JSP"
+
+msgid "SSI"
+msgstr "SSI"
+
+msgid "Frontpage extensions"
+msgstr "Frontpage gehigarriak"
+
+msgid "Backup and restore"
+msgstr "Segurtasun kopia eta berezartzea"
+
+msgid "Custom error pages"
+msgstr "Akats orri pertsonalizatuak"
+
+msgid "Directory listing"
+msgstr "Direktorio zerrendatzea"
+
+msgid "Logo upload"
+msgstr "Logoa igo"
+
+msgid "Application installer"
+msgstr ""
+
+msgid "Can use software repository"
+msgstr ""
+
+msgid "Can use Web software repository"
+msgstr ""
+
+msgid "Reseller IPs"
+msgstr "Bersaltzailearen IPAK"
+
+msgid "Incorrect email syntax!"
+msgstr "Posta elektronikoan sintaxi okerra!"
+
+msgid "Incorrect domains limit!"
+msgstr "Domeinu muga okerra!"
+
+msgid "Aliases"
+msgstr "Ezizenak"
+
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgstr ""
+
+msgid "SQL Databases"
+msgstr "SQL Datubaseak"
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgstr ""
+
+msgid "SQL Users"
+msgstr "SQL Erabiltzaileak"
+
+msgid "Web Traffic"
+msgstr "Web trafikoa"
+
+msgid "Disk storage"
+msgstr "Disko almazenamendua"
+
+msgid "You must assign at least one IP number for a reseller!"
+msgstr "Gutxienez IP zenbaki bat ezarri behar diozu bersaltzaileari!"
+
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> "
+"accounts/limits than the new limit you entered."
+msgstr ""
+"Bersaltzaile honen erabiltzaileek ezarririk daukate <b>%s</b> kontuetan muga"
+" altuagoak jarritako muga berria baino."
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+"Dagoneneko bersaltzaile honek ezarririk ditu <b>%s</b> kontuetan muga "
+"altuagoak jarritako muga berria baino."
+
+#, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!"
+msgstr ""
+
+msgid "If you want to limit the reseller, you must first limit its customers!"
+msgstr ""
+
+#, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!"
+msgstr ""
+
+msgid "The reseller account you trying to edit does not exist."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Admin/Erabiltzaile kudeaketa/Bersaltzailea aldatu"
+
+msgid ""
+"ERROR: One or more errors was found! Please, correct them and try again!"
+msgstr ""
+
+msgid "Reseller data inconsistency!"
+msgstr "Bersaltzaile datu akatsdunak!"
+
+msgid "Please, read the message(s) above and trying to correct!"
+msgstr ""
+
+msgid "Edit reseller"
+msgstr "Aldatu bersaltzailea"
+
+msgid "E-mail"
+msgstr "Posta elektronikoa"
+
+msgid "unlimited"
+msgstr "mugagabea"
+
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
+
+msgid "Reset"
+msgstr "Berhasi"
+
+msgid "Generated password:"
+msgstr ""
+
+msgid "Type `CTRL+C` to copy the generated password in the clipboard."
+msgstr ""
+
+#, php-format
+msgid ""
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance "
+"reasons!\\nInstead, use the %s button to update the data."
+msgstr ""
+
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - Bersaltzailearen estatistikak"
+
+msgid "No reseller is registered in your system!"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgstr "%1$s / %2$s <br/>-tik<br/> <b>%3$s</b>"
+
+#, php-format
+msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$s / %2$s <br/>-tik<br/> <b>mugagabea</b>"
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
+msgstr "%1$d / %2$d <br/>-tik<br/> <b>%3$d</b>"
+
+#, php-format
+msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgstr "%1$d / %2$d <br/>-tik<br/> <b>mugagabea</b>"
+
+msgid "<b>disabled</b>"
+msgstr "<b>ezgaitua</b>"
+
+msgid "Reseller statistics table"
+msgstr "Bersaltzailearen estatistika taula"
+
+msgid "SQL database"
+msgstr "SQL datubasea"
+
+msgid "SQL user"
+msgstr "SQL erabiltzailea"
+
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Admin/Bersaltzailearen Erabiltzaile Estatistikak"
+
+#, php-format
+msgid "%1$s <br/>of<br/> <b>%2$s</b>"
+msgstr "%1$s <br/>-tik<br/> <b>%2$s</b>"
+
+#, php-format
+msgid "%s <br/>of<br/> <b>unlimited</b>"
+msgstr "%s <br/>-tik<br/> <b>mugagabea</b>"
+
+#, php-format
+msgid "%1$d <br/>of<br/> <b>%2$d</b>"
+msgstr "%1$d <br/>-tik<br/> <b>%2$d</b>"
+
+#, php-format
+msgid "%d <br/>of<br/> <b>unlimited</b>"
+msgstr "%d <br/>-tik<br/> <b>mugagabea</b>"
+
+msgid "This reseller has no domains."
+msgstr "Bersaltzaile honek ez dauka domeinurik"
+
+msgid "Traffic<br>usage"
+msgstr "Erabilitako<br>trafikoa"
+
+msgid "Disk<br>usage"
+msgstr "Disko<br>erabilera"
+
+msgid "Web<br>traffic"
+msgstr "Web<br>trafikoa"
+
+msgid "FTP<br>traffic"
+msgstr "FTP<br>trafikoa"
+
+msgid "SMTP<br>traffic"
+msgstr "SMTP<br>trafikoa"
+
+msgid "POP3/IMAP<br>traffic"
+msgstr "POP3/IMAP<br>trafikoa"
+
+msgid "SQL<br>database"
+msgstr "SQL<br>datubasea"
+
+msgid "SQL<br>user"
+msgstr "SQL<br>erabiltzailea"
+
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr ""
+"i-MSCP Admin / Sistema Tresnak / Rootkit-en aurkako tresnaren log "
+"arakatzailea"
+
+#, php-format
+msgid "%s doesn't exist or is empty"
+msgstr "%s ez da existitzen edo hutsik dago"
+
+msgid "Anti-Rootkits Tools Log Checker"
+msgstr "Rootkit-en aurkako tresnaren log arakatzailea"
+
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Admin/Zerbitzariaren estatistikak"
+
+msgid "Web in"
+msgstr "Web sarrera"
+
+msgid "Web out"
+msgstr "Web irteera"
+
+msgid "SMTP in"
+msgstr "SMTP sarrera"
+
+msgid "SMTP out"
+msgstr "SMTP irteera"
+
+msgid "POP3/IMAP in"
+msgstr "POP3/IMAP sarrera"
+
+msgid "POP3/IMAP out"
+msgstr "POP3/IMAP irteera"
+
+msgid "Other in"
+msgstr "Beste sarrerak"
+
+msgid "Other out"
+msgstr "Beste irteerak"
+
+msgid "All in"
+msgstr "Sarrera guztiak"
+
+msgid "All out"
+msgstr "Irteera guztiak"
+
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Admin/Zerbitzariaren eguneko estatistikak"
+
+msgid "Server day statistics"
+msgstr "Zerbitzariaren eguneko estatistikak"
+
+msgid "Month:"
+msgstr "Hilabetea:"
+
+msgid "Year:"
+msgstr "Urtea;"
+
+msgid "Day:"
+msgstr "Eguna:"
+
+msgid "i-MSCP Admin / General Information / Server Status"
+msgstr ""
+
+msgid "Host"
+msgstr "Host-a"
+
+msgid "Service"
+msgstr "Zerbitzua"
+
+msgid "UP"
+msgstr "MARTXAN"
+
+msgid "DOWN"
+msgstr "ERORIA"
+
+msgid "User session was killed."
+msgstr ""
+
+msgid "Session not found in login table."
+msgstr ""
+
+msgid "You can't remove your own session."
+msgstr ""
+
+msgid "from other browser"
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Admin/Kudeatu Saioak"
+
+msgid "Manage user sessions"
+msgstr "Kudeatu erabiltzaile saioak"
+
+msgid "User type"
+msgstr "Erabiltzaile mota"
+
+msgid "Last access"
+msgstr "Azken sarrera"
+
+msgid "Kill session"
+msgstr "Amaitu saioa"
+
+msgid "Only positive numbers are allowed."
+msgstr ""
+
+#, php-format
+msgid "%d configuration parameter(s) have/has been updated."
+msgstr ""
+
+#, php-format
+msgid "%d configuration parameter(s) have/has been created."
+msgstr ""
+
+msgid "Nothing's been changed."
+msgstr ""
+
+msgid "i-MSCP - Admin/Settings"
+msgstr "i-MSCP - Admin/Ezarpenak"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Aktibazio estekaren amaiera denbora (minutuak)"
+
+msgid "Password settings"
+msgstr "Pasahitzaren ezarpenak"
+
+msgid "Use strong Passwords"
+msgstr "Erabili pasahitz sendoa"
+
+msgid "Password length"
+msgstr "Pasahitzaren luzeera"
+
+msgid "Bruteforce detection"
+msgstr "Bruteforce detekzioa"
+
+msgid "Block time between logins"
+msgstr "Izen emateen arteko blokeatze denbora"
+
+msgid "Max number of login attempts"
+msgstr "Gehienezko izen emate saiakerak"
+
+msgid "Blocktime (minutes)"
+msgstr "Blokeo denbora (minutuak)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Izen emateen arteko blokeatze denbora (segunduak)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Gehienezko CAPTCHA onartze saiakerak"
+
+msgid "Other settings"
+msgstr "Beste aukerak"
+
+msgid "E-Mail settings"
+msgstr "Posta elektronikoaren ezarpenak"
+
+msgid "Create default E-Mail addresses"
+msgstr "Sortu berezkoa Posta elektronikoak"
+
+msgid "Count default E-Mail addresses"
+msgstr "Zenbatu berezkoa Posta elektroniko helbideak"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "Posta elektroniko kontuak gogor ezgaituak"
+
+msgid "Panel default language"
+msgstr "Panelaren berezko hizkuntza"
+
+msgid "Apply changes"
+msgstr "Aldaketak ezarri"
+
+msgid "Hosting plans available for"
+msgstr "Hostatzen planak aukeran daude"
+
+msgid "Admin"
+msgstr "Administraria"
+
+msgid "Domains per page"
+msgstr "Domeinuak orriko"
+
+msgid "Log Level"
+msgstr "Log Maila"
+
+msgid "Notices, Warnings and Errors"
+msgstr "Mezuak, Abisuak eta Akatsak"
+
+msgid "Warnings and Errors"
+msgstr "Abisuak eta Akatsak"
+
+msgid "Errors"
+msgstr "Akatsak"
+
+msgid "Check for update"
+msgstr "Eguneratua berriak aurkitu"
+
+msgid "Compress HTML output"
+msgstr ""
+
+msgid "Show HTML output compression size comment"
+msgstr ""
+
+msgid "Prevent external login for admins"
+msgstr "Ukatu kanpo sarbidea adminei"
+
+msgid "Prevent external login for resellers"
+msgstr "Aurrezaindu kanpo sarrera birsaltzaileei"
+
+msgid "Prevent external login for clients"
+msgstr "Aurrezaindu kanpo sarrera bezeroei"
+
+msgid "Custom orderpanel Id"
+msgstr ""
+
+msgid "Domain names validation"
+msgstr "Domeinuen izen egiaztatzea"
+
+msgid "Top Level Domain name strict validation"
+msgstr "Goi Mailako Domeinu izenen baioztatze zorrotza"
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+"IANA sustrai guneko datu basean zerrendatutako Goi Mailako Domeinuak (TLD)  "
+"soilik erabili daitezke."
+
+msgid "Second Level Domain name strict validation"
+msgstr "Bigarren mailako domeinuen izen egiaztatze zorrotza"
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+"Hizki bakarreko Bigarren Mailako Domeinu izena (SLD) ez dira onartzen Goi "
+"Mailako Domeinu izenen (TLD) gehiengoen artean. Salbuespen zerrenda txiki "
+"bat badago, adib: .de. TLD-a"
+
+msgid ""
+"Maximal number of labels for domain names<br />(<small>Excluding SLD & "
+"TLD</small>)"
+msgstr ""
+
+msgid "Maximum number of labels for subdomains"
+msgstr ""
+
+msgid "Orders settings"
+msgstr ""
+
+msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
+msgstr ""
+
+msgid "Logo successfully updated."
+msgstr ""
+
+msgid "Logo successfully removed."
+msgstr ""
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr ""
+
+msgid "i-MSCP - Admin / Layout"
+msgstr ""
+
+msgid "Upload logo"
+msgstr "Logoa igo"
+
+msgid "Logo file"
+msgstr "Logo fitxategia"
+
+msgid "Upload"
+msgstr "Igo"
+
+msgid "Remove"
+msgstr "Ezabatu"
+
+msgid "Please specify a subject!"
+msgstr "Mesedez jar ezazu gaia!"
+
+msgid "Please specify message!"
+msgstr "Mesedez jar ezazu mezua!"
+
+msgid "Auto email template data updated!"
+msgstr "Posta elektroniko automatikoen txantiloia eguneratua!"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Admin/Ahaztutako posta elektronikoaren aukerak"
+
+msgid "Lost password e-mail"
+msgstr "Ahaztutako pasahitzaren posta elektronikoa"
+
+msgid "Message template info"
+msgstr "Mezu txantiloiaren informazioa"
+
+msgid "Message template"
+msgstr "Mezuren txantiloia"
+
+msgid "Activation E-Mail"
+msgstr "Aktibazio posta elektronikoa"
+
+msgid "Password E-Mail"
+msgstr "Pasahitzaren posta elektronikoa"
+
+msgid "User login (system) name"
+msgstr "Erabiltzaileren sarrera (sistema) izena"
+
+msgid "User password"
+msgstr "Erabiltzaileren pasahitza"
+
+msgid "User (first and last) name"
+msgstr "Erabiltzaile izena (izen eta abizena)"
+
+msgid "Lost password link"
+msgstr "Ahaztutako pasahitzaren esteka"
+
+msgid "Subject"
+msgstr "Gaia"
+
+msgid "URL to this admin panel"
+msgstr "Administrazio panel honetara URL-a"
+
+msgid "URL protocol"
+msgstr "URL protokoloa"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Admin/Mantune modua"
+
+msgid "Settings saved !"
+msgstr "Aukerak gordeak!"
+
+msgid "Under this mode only administrators can login"
+msgstr "Modu honetak soilik administrariek izena eman dezakete"
+
+msgid "Error: Wrong Ip number!"
+msgstr ""
+
+msgid "Error: Only positive numbers are allowed for services ports!"
+msgstr ""
+
+msgid "Error: Service port with same name already exists!"
+msgstr ""
+
+msgid "Error: Unallowed protocol!"
+msgstr ""
+
+msgid "Error: Wrong value for show entry!"
+msgstr ""
+
+msgid "Service port was successfully added"
+msgstr ""
+
+#, php-format
+msgid "%d Service(s) port was successfully updated"
+msgstr ""
+
+msgid "Nothing's been changed"
+msgstr ""
+
+msgid "You have no custom service ports defined"
+msgstr ""
+
+msgid "Service port was successfully removed!"
+msgstr ""
+
+msgid "Error: You are not allowed to remove this service port entry!"
+msgstr ""
+
+msgid "i-MSCP - Admin / Settings"
+msgstr ""
+
+msgid "udp"
+msgstr "udp"
+
+msgid "tcp"
+msgstr "tcp"
+
+msgid "Port"
+msgstr "Portua"
+
+msgid "Protocol"
+msgstr "Protokoloa"
+
+#, php-format
+msgid "Are you sure you want to delete %s service port ?"
+msgstr ""
+
+msgid "View / Update service(s) port"
+msgstr ""
+
+msgid "Add new service port"
+msgstr ""
+
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Admin/Zerbitzariaren Trafiko Ezarpenak"
+
+msgid "Wrong data input!"
+msgstr "Sarrera datu okerrak!"
+
+msgid "Warning traffic is bigger than max traffic!"
+msgstr "Kontuz trafikoa handiagoa da onartutako  gehienezko trafikoa baino!"
+
+msgid "Server traffic settings updated successfully!"
+msgstr "Zerbitzariaren trafiko ezarpenen eguneraketa zuzena!"
+
+msgid "Modify"
+msgstr "Aldatu"
+
+msgid "Set server traffic settings"
+msgstr "Ezarri zerbitzariaren trafiko ezarpenak"
+
+msgid "Max traffic [MB]"
+msgstr "Gehienezko trafikoa [MB]"
+
+msgid "Warning traffic [MB]"
+msgstr "Trafiko larrialdi abisua [MB]"
+
+msgid "i-MSCP - Admin/Manage users/Email setup"
+msgstr "i-MSCP - Admin/Erabiltzaile kudeaketa/Posta elektronikoaren ezarpena"
+
+msgid "User real (first and last) name"
+msgstr "Erabiltzailearen benetako izena (izen eta abizenak)"
+
+msgid "User type (admin, reseller, user)"
+msgstr "Erabiltzaile mota (administratzailea, bersaltzailea, erabiltzailea)"
+
+msgid "Wrong software id."
+msgstr ""
+
+msgid "Software was activated."
+msgstr ""
+
+msgid "No Resellers found."
+msgstr ""
+
+msgid "Rights succesfully added."
+msgstr ""
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+msgid "Software was deleted."
+msgstr ""
+
+msgid "Fill out a message text!"
+msgstr ""
+
+msgid "i-MSCP - Application Management"
+msgstr ""
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+msgid "Delete reseller software"
+msgstr ""
+
+msgid "Reseller data"
+msgstr ""
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr ""
+
+msgid "Software was imported successfully."
+msgstr ""
+
+msgid "Unable to read xml file for Web softwares."
+msgstr ""
+
+msgid "i-MSCP application installer Web softwares repository"
+msgstr ""
+
+msgid "Update from Web software repository"
+msgstr ""
+
+msgid "Package name"
+msgstr ""
+
+msgid "Package install type"
+msgstr ""
+
+msgid "Package version"
+msgstr ""
+
+msgid "Package language"
+msgstr ""
+
+msgid "Package type"
+msgstr ""
+
+msgid "Package vendor HP"
+msgstr ""
+
+msgid "Package actions"
+msgstr ""
+
+msgid "Total packages in Web softwares repository"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a 'tar.gz' archive."
+msgstr ""
+
+#, php-format
+msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
+msgstr ""
+
+#, php-format
+msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+msgid "Error: Remote File not found!"
+msgstr ""
+
+msgid "Could not upload the file. File not found."
+msgstr ""
+
+msgid "File was successfully uploaded."
+msgstr ""
+
+msgid "i-MSCP / Software Installer / Management"
+msgstr ""
+
+msgid "Softwares in repository"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Total Web softwares repositories"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+msgid "Upload now"
+msgstr ""
+
+msgid "Awaiting Activation"
+msgstr ""
+
+msgid "Reseller software list"
+msgstr ""
+
+msgid "Software name"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Mota"
+
+msgid "Import in local repository"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "Aktibatu"
+
+msgid "Total softwares"
+msgstr ""
+
+msgid "Total reseller"
+msgstr ""
+
+msgid "Software in repository"
+msgstr ""
+
+msgid "Awaiting activation"
+msgstr ""
+
+msgid "Activated softwares"
+msgstr ""
+
+msgid "Total installations"
+msgstr ""
+
+msgid "Are you sure you want to activate this package?"
+msgstr ""
+
+msgid ""
+"Are you sure you want to import this package into the local software "
+"repository?"
+msgstr ""
+
+msgid "Are you sure you want to delete this package?"
+msgstr ""
+
+msgid ""
+"Are you sure you want to install this package from the Web software "
+"repository?"
+msgstr ""
+
+msgid "i-MSCP / Softwares Installer / Management"
+msgstr ""
+
+msgid "i-MSCP - Application management options"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares."
+msgstr ""
+
+msgid "Main application installer options updated."
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer Web software repository"
+msgstr ""
+
+msgid "XML file URL for the i-MSCP Web software repository"
+msgstr ""
+
+msgid "Last Web software repository update"
+msgstr ""
+
+msgid "not available"
+msgstr ""
+
+msgid "Wrong reseller id."
+msgstr ""
+
+msgid "Installed on"
+msgstr ""
+
+msgid "Total Softwares"
+msgstr ""
+
+msgid "Reseller list"
+msgstr ""
+
+msgid "Reseller total"
+msgstr ""
+
+msgid "Software repository"
+msgstr ""
+
+msgid "i-MSCP - Software Installer Management"
+msgstr ""
+
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr ""
+
+msgid "Softwaredepot"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+msgid "Remove permissions"
+msgstr ""
+
+msgid "Reseller with permissions total"
+msgstr ""
+
+msgid "Added by"
+msgstr ""
+
+msgid "Add permissions"
+msgstr ""
+
+msgid "Software permissions"
+msgstr ""
+
+msgid "CPU bogomips"
+msgstr "CPU bogomips-ak"
+
+msgid "CPU cache"
+msgstr "CPU cache-a"
+
+msgid "Number of CPU Cores"
+msgstr "PUZaren Nukleo kopurua"
+
+msgid "CPU MHz"
+msgstr "CPU MHz"
+
+msgid "CPU model"
+msgstr "CPU mota"
+
+msgid "CPU system Info"
+msgstr "CPU sistema informazioa"
+
+msgid "Filesystem system Info"
+msgstr "Sistema fitxategiaren sistema informazioa"
+
+msgid "Free"
+msgstr "Askea"
+
+msgid "Kernel Version"
+msgstr ""
+
+msgid "Load (1 Min, 5 Min, 15 Min)"
+msgstr ""
+
+msgid "Memory system info"
+msgstr "Memoria sistemaren informazioa"
+
+msgid "Mount"
+msgstr "Montatzea"
+
+msgid "RAM"
+msgstr "RAM"
+
+msgid "Partition"
+msgstr "Partizioa"
+
+msgid "Percent"
+msgstr "Portzentaia"
+
+msgid "Size"
+msgstr "Tamaina"
+
+msgid "Swap"
+msgstr "Elkartrukaketa"
+
+msgid "Vital system info"
+msgstr "Oinarrizko sistema informazioa"
+
+msgid "Total"
+msgstr "Guztira"
+
+msgid "Up time"
+msgstr "Piztutako denbora"
+
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
+
+msgid "Support Ticket System"
+msgstr ""
+
+msgid "Open tickets"
+msgstr "Irekitako txartelak"
+
+msgid "Closed tickets"
+msgstr "Itxitako txartelak"
+
+msgid "From"
+msgstr "Norengandik"
+
+msgid "Priority"
+msgstr "Lehentasuna"
+
+msgid "Last reply date"
+msgstr ""
+
+msgid "Actions"
+msgstr "Akzioak"
+
+msgid "Read the ticket"
+msgstr ""
+
+msgid "Delete the ticket"
+msgstr ""
+
+msgid "Reopen"
+msgstr ""
+
+msgid "Reopen the ticket"
+msgstr ""
+
+msgid "Delete all tickets"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
+
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Mezuak"
+
+msgid "Send new reply"
+msgstr ""
+
+msgid "Send reply"
+msgstr "Bidali erantzuna"
+
+msgid "Invalid user Id."
+msgstr ""
+
+#, php-format
+msgid "%s account successfully deleted."
+msgstr ""
+
+#, php-format
+msgid "Unable to delete user with Id: %d"
+msgstr ""
+
+msgid ""
+"You can't delete a reseller that has domain accounts. Please, remove them "
+"before."
+msgstr ""
+
+msgid "Wrong domain Id."
+msgstr ""
+
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
+msgid "Delete domain"
+msgstr "Ezabatu domeinua"
+
+msgid "Domain account summary"
+msgstr ""
+
+msgid "Domain e-mails"
+msgstr ""
+
+msgid "Domain FTP accounts"
+msgstr ""
+
+msgid "Domain subdomains"
+msgstr ""
+
+msgid "Domain databases"
+msgstr ""
+
+#, php-format
+msgid ""
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
+msgstr ""
+
+msgid "Yes, delete the domain."
+msgstr "Bai, ezabatu domeinua."
+
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
+
+msgid "Wrong domain ID."
+msgstr ""
+
+msgid "You must confirm domain deletion."
+msgstr ""
+
+msgid "Domain alias limit reached!"
+msgstr "Domeinu ezizenen mugara iritxia!"
+
+msgid "Domain with that name already exists on the system!"
+msgstr "Izen bera daukan domeinua iada badago sisteman!"
+
+msgid "Incorrect mount point syntax"
+msgstr "Montatzen puntuaren sistaxi okerra"
+
+msgid "Master domain cannot be used!"
+msgstr "Domeinu nagusia ezin da erabili!"
+
+msgid "Wrong address in forward URL!"
+msgstr ""
+
+msgid "Wrong domain part in forward URL!"
+msgstr ""
+
+msgid "Domain with this name already exist"
+msgstr "Izen honekin iada domeinua badago"
+
+msgid "There is a subdomain with the same mount point!"
+msgstr "Azpidomeinu bat dago muntatze puntu berarekin!"
+
+msgid "Alias scheduled for activation!"
+msgstr "Ezizena aktibazio zain!"
+
+msgid "Alias scheduled for addition!"
+msgstr "Ezizena gehitzeko zain!"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "isp - Client : Gehitu ezizena"
+
+msgid "Manage domain alias"
+msgstr "Kudeatu domeinu ezizenak"
+
+msgid "Add domain alias"
+msgstr "Gehitu domeinu ezizena"
+
+msgid "User account"
+msgstr "Erabiltzaile kontua"
+
+msgid "Directory mount point"
+msgstr "Montatze direktorio piuntua"
+
+msgid "Forward to URL"
+msgstr "Aurrera jarraitu URL-a"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Ez duzu 'www' ipini beharrik i-MSCP-ek bere kabuz jarriko du."
+
+msgid "Wrong domain name!"
+msgstr "Domeinu izenen okerra!"
+
+msgid "Please write mount point!"
+msgstr "Mesedez idatzi muntatze puntua!"
+
+msgid "Enable Forward"
+msgstr "Gaitu aurrera jarraitzea"
+
+msgid "Enable"
+msgstr "Gaitua"
+
+msgid "Disable"
+msgstr "Ezgaitua"
+
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Ezabatzen saiatzen ari zaren domeinu ezizenak azpidomeinuak ditu!<br>Ezabatu"
+" hauek lehenik!"
+
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Ezabatzen saiatzen ari zaren domeinu ezizena k posta kontuak "
+"ditu!<br>Ezabatu hauek lehenik!"
+
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove "
+"them!"
+msgstr ""
+"Ezabatzen saiatzen ari zaren domeinu ezizena k FTP kontuak ditu!<br>Ezabatu "
+"hauek lehenik!"
+
+msgid "Alias scheduled for deletion!"
+msgstr "Ezizena ezabatzeko zain!"
+
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
+msgstr "i-MSCP - Domeinu Ezizen Kudeaketa/Aldatu Ezizena"
+
+msgid "Edit domain alias"
+msgstr "Aldatu domeinu ezizenak"
+
+msgid "Alias name"
+msgstr "Ezizena"
+
+msgid "Mount Point"
+msgstr "Montatze puntua"
+
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Ezabatzen saiatzen ari zaren azpidomeinuak posta kontuak ditu !<br>Ezabatu "
+"hauek lehenik!"
+
+msgid "Subdomain scheduled for deletion!"
+msgstr "Azpidomeinua ezabatzeko zain!"
+
+msgid "Backup archive scheduled for restoring!"
+msgstr "Segurtasun kopia berrezartzeko zain!"
+
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Erabiltzailea/Eguneroko Seguratsun Kopia"
+
+msgid "Instructions to download today's backup"
+msgstr "Gaurko segurtasun kopia eskuratzeko azalpenak"
+
+msgid "Login with your FTP account"
+msgstr "Saioa hasi zure FTP kontuarekin"
+
+msgid "Switch to backups/ directory"
+msgstr "Aldatu backups/ direktoriora"
+
+msgid "Download the files stored in this directory"
+msgstr "Eskuratu direktorio honetan daudek fitxategiak"
+
+msgid "(usually named"
+msgstr "(normalean izenez deitua"
+
+msgid "Restore backup"
+msgstr "Berreskuratu segurtasun kopia"
+
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
+msgstr ""
+"Sakatu Berreskuratu botoia eta sistema azken eguneko segurtasun kopiara "
+"berreskuratuko du"
+
+msgid "Restore"
+msgstr "Berreskuratu"
+
+msgid "Are you sure you want to restore the backup?"
+msgstr "Ziur zaude segurtasun kopia berreskuratu nahi duzuna?"
+
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP - Erabiltzailea/Cron Lanen Kudeatzailea"
+
+msgid "Cronjob Manager"
+msgstr "Cron Lanen Kudeatzailea"
+
+msgid "Add Cronjob"
+msgstr "Gehitu Cron lana"
+
+msgid "Active"
+msgstr "Martxan"
+
+msgid "Cronjob"
+msgstr "Cron lana"
+
+msgid "Command to run:"
+msgstr "Exekutatzeko komandoa:"
+
+msgid "Minute(s):"
+msgstr "Minutua(k);"
+
+msgid "Hour(s):"
+msgstr "Ordua(k):"
+
+msgid "Day(s):"
+msgstr "Eguna(k):"
+
+msgid "Month(s):"
+msgstr "Hilabetea(k):"
+
+msgid "Weekday(s):"
+msgstr "Asteeguna(k);"
+
+msgid "Edit Cronjob"
+msgstr "Cron lana aldatu"
+
+msgid "Cronjobs"
+msgstr "Cron lanak"
+
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
+msgid "Custom DNS record scheduled for deletion!"
+msgstr ""
+
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "i-MSCP - Domeinu Ezizen Kudeaketa/Gehitu DNS gune erregistroa"
+
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "i-MSCP - Domeinu Ezizen Kudeaketa/Aldatu DNS gune erregistroa"
+
+msgid "Add DNS zone's record (EXPERIMENTAL)"
+msgstr "Gehitu DNS gune erregistroak (EXPERIMENTALA)"
+
+msgid "Edit DNS zone's record (EXPERIMENTAL)"
+msgstr "Aldatu DNS gune erregistroak (EXPERIMENTALA)"
+
+msgid "DNS zone's records"
+msgstr "DNS gune erregistroak"
+
+msgid "Class"
+msgstr "Mailak"
+
+msgid "Service name"
+msgstr "Zerbitzu izena"
+
+msgid "IP address"
+msgstr "IP helbideak"
+
+msgid "IPv6 address"
+msgstr "IPv6 helbideak"
+
+msgid "Service protocol"
+msgstr "Zerbitzari protokoloa"
+
+msgid "TTL"
+msgstr "TTL"
+
+msgid "Relative weight for records with the same priority"
+msgstr "Lehentasun berdineko erregistroen zama erlatiboa"
+
+msgid "Target host"
+msgstr "Helburu hosta"
+
+msgid "Target port"
+msgstr "Helburu portua"
+
+msgid "Canonical name"
+msgstr "Izen kanonikoa"
+
+msgid "Plain record data"
+msgstr "Erregistro data laua"
+
+msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr "DNS gune erregistroak (EXPERIMENTALA)"
+
+msgid "You are not allowed to edit this DNS record!"
+msgstr ""
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in CNAME"
+msgstr "Onartzen ez den hizkia(\"%s\") CNAME-n"
+
+msgid "Name must be filled."
+msgstr "Izena idatzi behar da."
+
+#, php-format
+msgid "Wrong IPv4 address (\"%s\")."
+msgstr "IPv4 helbide okerra (\"%s\")."
+
+#, php-format
+msgid "Wrong IPv6 address (\"%s\")."
+msgstr "IPv6 helbide okerra (\"%s\")."
+
+msgid "Port must be a number!"
+msgstr "Portuak zenbaki bat izan behar du!"
+
+msgid "TTL must be a number!"
+msgstr "TTL-k zenbaki bat izan behar du!"
+
+msgid "Priority must be a number!"
+msgstr "Lehentasuna zenbaki bat izan behar du!"
+
+msgid "Relative weight must be a number!"
+msgstr "Luzera erlatiboak zenbaki bat izan behar du!"
+
+msgid "Service must be filled."
+msgstr "Zerbitzua bete behar da."
+
+msgid "Host must be filled."
+msgstr "Hosta idatzi behar da."
+
+msgid "conflict with CNAME record"
+msgstr "arazoak CNAME erregistroarekin"
+
+#, php-format
+msgid "Use of disallowed char(\"%s\") in NAME"
+msgstr "Onartzen ez den hizkia(\"%s\") NAME-n"
+
+#, php-format
+msgid "Record \"%s\" is not part of domain \"%s\"."
+msgstr "\"%s\" erregistroa ez da  \"%s\" domeinuaren zati."
+
+#, php-format
+msgid "Cannot validate %s record. Reason '%s'."
+msgstr "Ezin izan da egiaztatu  %s erregistroa. Arrazoia '%s'."
+
+#, php-format
+msgid "Unknown zone type %s!"
+msgstr "Gune mota ezezaguna %s!"
+
+msgid "Error: DNS record already exist!"
+msgstr ""
+
+msgid "i-MSCP - Client/Domain Statistics"
+msgstr "i-MSCP - Erabitlzailea/Domeinu Estatistikak"
+
+msgid "Web Stats"
+msgstr "Web Estatistikak"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "Sum"
+
+msgid "Manual zone's records list is empty!"
+msgstr "Eskuzko guneen erregistro zerrenda hutsik dago!"
+
+#, php-format
+msgid "%s record"
+msgstr "%s erregistroa"
+
+msgid "Subdomain list is empty!"
+msgstr "Azpidomeinu zerrenda hustik dago!"
+
+msgid "Delete order"
+msgstr "Ezabatu eskaera"
+
+msgid "Alias list is empty!"
+msgstr "Ezizen zerrenda hutsik dago!"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Erabiltzailea/Domeinuak Kudeatu"
+
+msgid "Mount point"
+msgstr "Muntatze puntua"
+
+msgid "Forward"
+msgstr "Aurrera jarraitu"
+
+msgid "Record data"
+msgstr "Erregistro data"
+
+msgid "i-MSCP - Client/Manage Error Custom Pages"
+msgstr "i-MSCP - Erabiltzailea/Kudeatu Akats Orri Pertsonalizatuak"
+
+msgid "Server error - please choose error page"
+msgstr "Zerbitzari akatsa - mesedez aukeratu akats orria"
+
+msgid "Edit error page"
+msgstr "Aldatu akats orria"
+
+msgid "Custom error page was updated!"
+msgstr "Akats orri pertsonalizatua eguneratua izan da!"
+
+msgid "System error - custom error page was not updated!"
+msgstr ""
+
+msgid "Error 401 (unauthorised)"
+msgstr "401 Akatsa (baimenik ez)"
+
+msgid "Error 403 (forbidden)"
+msgstr "403 Akatsa (debekatua)"
+
+msgid "Error 404 (not found)"
+msgstr "404 Akatsa (ez da aurkitu)"
+
+msgid "Error 500 (internal server error)"
+msgstr "500 Akatsa (zerbitzari barruko akatsa)"
+
+msgid "Error 503 (service unavailable)"
+msgstr "503 Akatsa (zerbitzua ez dago eskuragarri)"
+
+msgid "View"
+msgstr "Ikusi"
+
+msgid "FTP list is empty!"
+msgstr "FTP zerrenda hutsik dago!"
+
+msgid "i-MSCP - Client/Manage Users"
+msgstr "i-MSCP - Erabiltzailea/Erabiltzaile kudeaketa"
+
+msgid "FTPs total"
+msgstr "FTP-ak guztira"
+
+msgid "FTP users"
+msgstr "FTP erabiltzaileak"
+
+msgid "FTP account"
+msgstr "FTP kontua"
+
+msgid "Login As"
+msgstr ""
+
+msgid "Empty List"
+msgstr "Zerrenda Hutsa"
+
+msgid "Empty list"
+msgstr "Zerrenda hutsa"
+
+msgid "FTP account already exists!"
+msgstr "FTP kontua iada badago!"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Erabiltzaile izenean luzera edo sintaxi okerra"
+
+msgid "Unknown domain type"
+msgstr "Domeinu mota ezezaguna"
+
+msgid "Incorrect mount point length or syntax"
+msgstr "Montatze puntuaren tamaina edo sistaxi okerra"
+
+#, php-format
+msgid "%s does not exist"
+msgstr "%s ez da existitzen"
+
+msgid "FTP account added!"
+msgstr "FTP kontua gehitua!"
+
+msgid "Please enter FTP account username!"
+msgstr "Mesedez sar ezazu FTP kontuaren erabiltzaile izena!"
+
+msgid "Password is missing!"
+msgstr ""
+
+msgid "Subdomain list is empty! You cannot add FTP accounts there!"
+msgstr "Azpidomeinu zerrenda hutsik dago! Ezin duzu FTP konturik gehitu hona!"
+
+msgid "Alias list is empty! You cannot add FTP accounts there!"
+msgstr "Ezizen zerrenda hutsik dago! Ezin duzu FTP konturik gehitu hona!"
+
+msgid "Please specify other FTP account directory!"
+msgstr ""
+
+msgid "FTP accounts limit reached!"
+msgstr "FTP kontuaen mugara iritxia!"
+
+msgid "i-MSCP - Client/Add FTP User"
+msgstr "i-MSCP - Erabiltzailea/Gehitu FTP erabiltzailea"
+
+msgid "To main domain"
+msgstr "Domeinu nagusira"
+
+msgid "To domain alias"
+msgstr "Domeinu ezizenera"
+
+msgid "To subdomain"
+msgstr "Azpidomeinura"
+
+msgid "Use other dir"
+msgstr "Erabili beste direkorio bat"
+
+msgid "Choose dir"
+msgstr "Aukeratu direktorioa"
+
+msgid "Unknown FTP user id!"
+msgstr ""
+
+msgid "Cannot open directory! Please contact your administrator!"
+msgstr ""
+
+msgid "Parent Directory"
+msgstr "Aurreko Direktorioa"
+
+msgid "i-MSCP - Client/Webtools"
+msgstr "i-MSCP - Erabiltzailea/Web Tresnak"
+
+msgid "Directory tree"
+msgstr "Direktorio zuhaitza"
+
+msgid "Directories"
+msgstr "Direktorioak"
+
+msgid "Choose"
+msgstr "Aukeratu"
+
+msgid "FTP account deleted successfully!"
+msgstr "FTP kontua zuzen ezabatua!"
+
+msgid "FTP account data updated!"
+msgstr "FTP kontuaren datuak eguneratuak!"
+
+msgid "i-MSCP - Client/Edit FTP Account"
+msgstr "i-MSCP - Erabiltzailea/Aldatu FTP Kontua"
+
+msgid "Edit FTP user"
+msgstr "Aldatu FTP erabiltzailea"
+
+msgid "Save changes"
+msgstr "Gorde aldaketak"
+
+msgid "Hosting plans available for update"
+msgstr "Hostatzen planak eguneratzeko"
+
+msgid "Cancel order"
+msgstr "Ezeztatu eskaera"
+
+msgid "Your order"
+msgstr "Zure eskaera"
+
+msgid "Purchase"
+msgstr "Erosi"
+
+msgid "There are no available updates"
+msgstr "Ez dago eguneraketarik"
+
+msgid "PHP Support: enabled"
+msgstr "PHP euskarria gaiturik"
+
+msgid "PHP Support: disabled"
+msgstr "PHP euskarria gaitu gabe"
+
+msgid ""
+"You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+"PHP-a gaituta daukazu, baina ostatze plan berriak ez du berezitasun hau."
+
+msgid "CGI Support: enabled"
+msgstr "CGI euskrria gaitua"
+
+msgid "CGI Support: disabled"
+msgstr "CGI euskarria gaitu gabe"
+
+msgid ""
+"You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+"CGI-a gaituta daukazu, baina ostatze plan berriak ez du berezitasun hau."
+
+msgid "DNS Support: enabled"
+msgstr "DNS euskarria: gaitua"
+
+msgid "DNS Support: disabled"
+msgstr "DNS euskarria: ez gaitua"
+
+msgid ""
+"You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+"DNS-a gaituta daukazu, baina ostatze plan berriak ez du berezitasun hau."
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
+msgstr ""
+
+msgid "You have more disk space in use than the new hosting plan limits."
+msgstr "Disko zama handiagoa darabilzu ostatze plan berriaren mugaz gain."
+
+msgid "Disk limit"
+msgstr "Disko muga"
+
+msgid "You did have more traffic than the new hosting plan limits."
+msgstr ""
+
+msgid "Traffic limit"
+msgstr "Trafiko muga"
+
+msgid "You have more aliases in use than the new hosting plan limits."
+msgstr "Ezizen gehiago darabilzu ostatze plan berriaren mugaz gain."
+
+msgid "You have more subdomains in use than the new hosting plan limits."
+msgstr "Azpi domeinu gehiago darabilzu ostatze plan berriaren mugaz gain."
+
+msgid "You have more Email addresses in use than the new hosting plan limits."
+msgstr "Email helbide gehiago darabilzu ostatze plan berriaren mugaz gain."
+
+msgid "Emails"
+msgstr "Posta elektronikoak"
+
+msgid "You have more FTP accounts in use than the new hosting plan limits."
+msgstr "FTP kontu gehiago darabilzu ostatze plan berriaren mugaz gain."
+
+msgid "FTPs"
+msgstr "FTP-ak"
+
+msgid "You have more SQL databases in use than the new hosting plan limits."
+msgstr "SQL datu base gehiago darabilzu ostatze plan berriaren mugaz gain."
+
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits."
+msgstr ""
+"SQL datu base erabiltzaile gehiago darabilzu ostatze plan berriaren mugaz "
+"gain."
+
+msgid "free of charge"
+msgstr "doain"
+
+msgid "You cannot update to this hosting plan, see notices in text."
+msgstr ""
+
+msgid "Warning:"
+msgstr "Erne:"
+
+msgid "Caution:"
+msgstr ""
+
+msgid "I understand the warnings - Purchase!"
+msgstr ""
+
+msgid "There are no available hosting plans for update"
+msgstr "Ez dago hostatze planen eguneraketarik"
+
+msgid "i-MSCP - Update hosting plan"
+msgstr "i-MSCP - Eguneratu hostatze plana"
+
+msgid ""
+"You have more e-mail addresses in use than the new hosting plan limits."
+msgstr ""
+
+msgid "Your request for hosting pack update was added successfully"
+msgstr ""
+"Zure eskaera hostatze multzoaren eguneraketarentzat zuzen gehitua izan da"
+
+msgid "[i-MSCP OrderPanel] - You have an update order"
+msgstr "[i-MSCP-EskaeraPanela] - Eguneraketa eskaera bat daukazu"
+
+#, php-format
+msgid ""
+"You have an update order for the account %s\n"
+"\n"
+"Please login into your i-MSCP control panel at %s for more details"
+msgstr ""
+"Eguneraketa eskaera bat daukazu %s kontuarentzat\n"
+"\n"
+"Mesedez izena eman zure i-MSCP kontrol panelera %s -en xehetasun gehiagorako"
+
+msgid "Your request for hosting pack update was removed successfully"
+msgstr "Zure eskaera hostatze multzoaren eguneraketarentzat zuzen ezabatu da"
+
+msgid "disabled"
+msgstr "ez gaitua"
+
+#, php-format
+msgid "You have <b>%d</b> new answer to your support questions"
+msgstr "<b>%d</b> erantzun berri dauzkazu zure euskarri galderetan"
+
+msgid "You are exceeding your traffic limit!"
+msgstr "Ezarritako trafikoaren muga gainditzen ari zara!"
+
+#, php-format
+msgid "%1$s%% [%2$s of %3$s]"
+msgstr "%1$s%% [%2$s - %3$stik]"
+
+#, php-format
+msgid "%1$s%% [%2$s of unlimited]"
+msgstr "%1$s%% [%2$s mugagabetik]"
+
+msgid "You are exceeding your disk limit!"
+msgstr "Ezarritako disko tamainaren muga gainditzen ari zara!"
+
+msgid "You have no new support questions!"
+msgstr "Ez daukazu euskarri galdera berririk!"
+
+#, php-format
+msgid "You have <b>%d</b> new support questions"
+msgstr "<b>%d</b> euskarri txartel berri dauzkazu"
+
+msgid "This Domain is expired"
+msgstr ""
+
+msgid "i-MSCP - Client/Main Index"
+msgstr "i-MSCP - Erabiltzailea/Aurkibide Nagusia"
+
+msgid "Main domain"
+msgstr "Domeinu nagusia"
+
+msgid "Manual DNS support"
+msgstr "Eskuzko DNS euskarria"
+
+msgid "SQL support"
+msgstr "SQL euskarria"
+
+msgid "Choose default language"
+msgstr "Aukeratu berezko hizkuntza"
+
+msgid "Choose default layout"
+msgstr "Aukeratu berezko txantiloia"
+
+msgid "Traffic usage"
+msgstr "Trafiko erabilera"
+
+msgid "Disk usage"
+msgstr "Disko erabilera"
+
+msgid "Alternative URL to reach your website"
+msgstr ""
+
+msgid "Language updated successfully."
+msgstr ""
+
+msgid "i-MSCP - Client/Change Language"
+msgstr "i-MSCP - Erabiltzailea/Aldatu Hizkuntza"
+
+msgid "Please wait for update"
+msgstr "Mesedez itxaron eguneratu bitartean"
+
+msgid "Mail accounts list is empty!"
+msgstr "Posta elektroniko kontuen zerrenda hutsik dago!"
+
+msgid "Mail users"
+msgstr "Posta erabiltzaileak"
+
+msgid "Auto respond"
+msgstr "Erantzun automatikoa"
+
+msgid "Domain mails"
+msgstr "Domeinuaren postak"
+
+msgid "Subdomain mails"
+msgstr "Azpidomeinuaren postak"
+
+msgid "Alias mails"
+msgstr "Ezizenen postak"
+
+msgid "Mails total"
+msgstr "Postak guztira"
+
+msgid "Show default E-Mail addresses"
+msgstr "Erakutsi berezko E-Mail helbideak"
+
+msgid "Hide default E-Mail Addresses"
+msgstr ""
+
+msgid "Mailformat of an address in your forward list is incorrect!"
+msgstr "Posten helbide formatu okerra zure aurrera jarraitze zerrenda!"
+
+msgid "Mail forward list empty!"
+msgstr "Aurrera jarraitze posta zerrenda hutsik!"
+
+msgid "Forward to same address is not allowed!"
+msgstr "Helbide berdinera bideratzea ez da onartzen!"
+
+msgid "Mail account already exists!"
+msgstr "Posta kontua iada badago!"
+
+msgid "Mail account scheduled for addition!"
+msgstr "Posta kontua gehitzeko zain!"
+
+msgid "Please select at least one mail type!"
+msgstr "Mesedez aukeratu ezazu posta elektroniko mota bat!"
+
+msgid "Please enter mail account username!"
+msgstr "Mesedez sar ezazu posta kontuko erabiltzaile izena!"
+
+msgid "Invalid Mail Localpart Format used!"
+msgstr "Posta okerra Localpart formatua erabilia!"
+
+msgid "Password data is missing!"
+msgstr "Pasahitzaren datuak galduta daude!"
+
+msgid "Entered passwords differ!"
+msgstr "Sartutako pasahitzak ez datoz bat!"
+
+msgid "Subdomain alias"
+msgstr "Azpidomeinuen ezizenak"
+
+#, php-format
+msgid "%s list is empty! You cannot add mail accounts!"
+msgstr "%s zerrenda hutsik dago! Ezin duzu posta konturik gehitu!"
+
+#, php-format
+msgid "%s id is invalid! You cannot add mail accounts!"
+msgstr "%s id-a ez da zuzena! Zuk ezin duzu posta konturik gehitu!"
+
+msgid "Forward list is empty!"
+msgstr "Aurrera jarraitze  zerrenda hutsik dago!"
+
+msgid "Mail accounts limit reached!"
+msgstr "Posta kontuen mugara iritxia!"
+
+msgid "i-MSCP - Client/Add Mail User"
+msgstr "i-MSCP - Erabiltzailea/Gehitu porta elektroniko erabiltzailea"
+
+msgid "Add mail users"
+msgstr "Gehitu posta elektroniko erabiltzailea"
+
+msgid "To alias subdomain"
+msgstr "Azpidomeinu ezizenera"
+
+msgid "Normal mail"
+msgstr "Posta arrunta"
+
+msgid "Forward mail"
+msgstr "Aurrera jarraitze posta"
+
+msgid "Forward to"
+msgstr "Nora aurrera jarraitu"
+
+msgid "Separate multiple email addresses with a line-break."
+msgstr "Banandu email helbide multzoa lerro-jauziekin."
+
+msgid "You did not fill all required fields"
+msgstr "Ez dituzu beharrezko eremu guztiak bete"
+
+msgid "Mail account scheduled for modification!"
+msgstr "Posta elektroniko kontua aldatzeko zain!"
+
+msgid "Please type your mail autorespond message!"
+msgstr "Mesedez idatz ezazu zure postako erantzun automatikoaren mezua!"
+
+msgid "Mail account scheduler for modification!"
+msgstr "Posta elektroniko kontua aldatzeko zain!"
+
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
+msgstr ""
+"i-MSCP - Erabiltzailea/Gaitua Posta elektronikoaren Erantzun Automatikoa"
+
+msgid "Edit mail auto responder"
+msgstr "Aldatu auto erantzun posta"
+
+msgid "Your message"
+msgstr "Zure mezua"
+
+msgid "Enable mail auto responder"
+msgstr "Gaitua posta elektronikoaren erantzun automatikoa"
+
+msgid "Delete CatchAll"
+msgstr "Ezabatu CatchAll"
+
+msgid "None"
+msgstr "Ezer ere ez"
+
+msgid "Create catch all"
+msgstr "Sortu catch all-a"
+
+msgid "Catch all account"
+msgstr "Catch all kontua"
+
+msgid "Catch all account scheduled for creation!"
+msgstr "Catch all kontua sortzeko zain!"
+
+msgid "Mail forward list error!"
+msgstr "Posta aurrera jarraitze zerrendan akatsa!"
+
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Erabiltzailea/Sortu CatchAll Posta Kontua"
+
+msgid "Create catch all mail account"
+msgstr "Sortu catch all posta kontua"
+
+msgid "Mail accounts list"
+msgstr "Posta kontuen zerrenda"
+
+msgid "Catch all account scheduled for deletion!"
+msgstr "Catch all kontua ezabatzeko zain!"
+
+msgid "Please delete first CatchAll account for this email!"
+msgstr "Mesedez ezabatu lehenik CatchAll kontua posta elektroniko honentzat!"
+
+msgid "Email account not found!"
+msgstr "Posta elektroniko kontua ez da aurkitu!"
+
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
+msgstr "i-MSCP - Kudeatu Posta elektronikoa eta FTP-a/Aldatu posta kontua"
+
+msgid "Mail were updated successfully!"
+msgstr "Posta elektronikoak zuzen eguneratu dira!"
+
+msgid "Edit email account"
+msgstr "Aldatu posta kontua"
+
+msgid "i-MSCP - Client/Change Password"
+msgstr "i-MSCP - Erabiltzailea/Pasahitza aldatu"
+
+msgid "Password successfully updated."
+msgstr ""
+
+msgid "i-MSCP - Client/Change Personal Data"
+msgstr "i-MSCP - Erabiltzailea/Aldatu Datu Pertsonalak"
+
+msgid "Unknown SQL user id."
+msgstr ""
+
+msgid "Error: An error occurred while authentication."
+msgstr ""
+
+msgid "You do not have protected areas"
+msgstr "Ez daukazu babesturiko gunerik"
+
+msgid "Manage users and groups"
+msgstr "Kudeatu erabiltzaile eta taldeak"
+
+msgid "Group name"
+msgstr "Taldearen izena"
+
+msgid "Group members"
+msgstr "Taldekideak"
+
+msgid "Add group"
+msgstr "Gehitu taldea"
+
+msgid "Group"
+msgstr "Taldea"
+
+msgid "Add new protected area"
+msgstr "Gehitu babestutako gune berria"
+
+msgid "Please choose user or group"
+msgstr "Mesedez aukeratu erabiltzailea edo taldea"
+
+msgid "Please enter area name"
+msgstr "Mesedez sartu gunearen izena"
+
+msgid "Please enter area path"
+msgstr "Mesedez sartu gunearen helbidea"
+
+#, php-format
+msgid "%s doesn't exist"
+msgstr "%s ez da existitzen"
+
+msgid "You cannot protect area without selected user(s)!"
+msgstr "Ezin duzu gunea babestu erabiltzailerik aukeratu gabe"
+
+msgid "You cannot protect area without selected group(s)"
+msgstr "Ezin duzu gunea babestu talderik aukeratu gabe"
+
+msgid "Protected area updated successfully!"
+msgstr "Babestutako gunea zuzen eguneratua!"
+
+msgid "Protected area created successfully!"
+msgstr "Babestutako gunea zuzen sortua!"
+
+msgid "Protected area status should be OK if you want to edit it!"
+msgstr "Babestutako gunea egoera ONEAN dago aldatu nahi baduzu!"
+
+msgid "You have no users !"
+msgstr "Ez daukazu erabiltzailerik !"
+
+msgid "You have no groups!"
+msgstr "Ez daukazu talderik!"
+
+msgid "Protect this area"
+msgstr "Babestu gune hau"
+
+msgid "Path"
+msgstr "Helbidea"
+
+msgid "Groups"
+msgstr "Taldeak"
+
+msgid "Protect it"
+msgstr "Babestu"
+
+msgid "User auth"
+msgstr "Erabiltzaile autentifikazioa"
+
+msgid "Group auth"
+msgstr "Talde autentifikazioa"
+
+msgid "Area name"
+msgstr "Gunearen izena"
+
+msgid "Unprotect it"
+msgstr "Babesa kendu"
+
+msgid "Protected area status should be OK if you want to delete it!"
+msgstr "Babestutako gunea egoera ONEAN dago ezabatu nahi baduzu!"
+
+msgid "Protected area deleted successfully!"
+msgstr "Babestutako gunea zuzen ezabatua!"
+
+msgid "Permission deny!"
+msgstr "Baimena debekatua!"
+
+msgid "Protected area was deleted successful!"
+msgstr "Babestutako gunea zuzen ezabatu da!"
+
+msgid "Invalid group name!"
+msgstr "Talde izen okerra!"
+
+msgid "Group already exists!"
+msgstr "Taldea iada badago!"
+
+msgid "Manage user"
+msgstr "Erabitlzaielak kudeatu"
+
+msgid "Wrong username!"
+msgstr "Erabiltzaile izen okerra!"
+
+msgid "User already exist !"
+msgstr "Erabiltzailea iada badago !"
+
+#, php-format
+msgid "User was assigned to the %s group"
+msgstr "Erabiltzailea %s taldera atxikitu da"
+
+#, php-format
+msgid "User was deleted from the %s group "
+msgstr "Erabiltzailea ezabatua izan da %s taldetik"
+
+msgid "User assign"
+msgstr "Erabiltzailea atxikitua"
+
+msgid "Already in:"
+msgstr "Dagoeneko hemen:"
+
+msgid "Member of group:"
+msgstr "Taldeetako partaide:"
+
+msgid "Select group:"
+msgstr "Aukeratu taldea:"
+
+msgid "Update user"
+msgstr "Eguneratu erabiltzailea"
+
+msgid "You have no users!"
+msgstr "Ez daukazu erabiltzailerik!"
+
+msgid "i-MSCP - application installer"
+msgstr ""
+
+msgid "Install software"
+msgstr ""
+
+msgid "Software"
+msgstr ""
+
+msgid "Database"
+msgstr ""
+
+msgid "Apps available"
+msgstr ""
+
+msgid "Software installation"
+msgstr ""
+
+msgid "Software deleted successful."
+msgstr ""
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Software not found!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+msgid "Please select the correct user for your database!"
+msgstr ""
+
+msgid "You have to fill out inputs!"
+msgstr ""
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+msgid "Install Software"
+msgstr ""
+
+msgid "Database required"
+msgstr ""
+
+msgid "Select Domain"
+msgstr ""
+
+msgid "back"
+msgstr ""
+
+msgid "install"
+msgstr ""
+
+msgid "Install path"
+msgstr ""
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+msgid "Select database"
+msgstr ""
+
+msgid "SQL-User"
+msgstr ""
+
+msgid "i-MSCP - Software details"
+msgstr ""
+
+msgid "Software details"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Install"
+msgstr "instalatu"
+
+msgid "Please type user password!"
+msgstr "Mesedez idatzi erabiltzailearen pasahitza!"
+
+msgid "Too long user password!"
+msgstr "Erabiltzailearen pasahitza luzeegia!"
+
+msgid "Don't use special chars like \"@, $, %...\" in the password!"
+msgstr ""
+
+msgid "SQL user password was successfully changed!"
+msgstr "SQL erabiltzailearen pasahitza zuzen aldatu da!"
+
+msgid "i-MSCP - Client/Change SQL User Password"
+msgstr "i-MSCP - Erabiltzailea/Aldatu SQL Erabiltzailearen Pasahitza"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr ""
+
+msgid "Change SQL user password"
+msgstr "Aldatu SQL erabiltzailearen pasahitza"
+
+msgid "Change"
+msgstr "Aldatu"
+
+msgid "Please type database name!"
+msgstr "Mesedez sar ezazu datubaseren izena!"
+
+msgid "Database name is too long!"
+msgstr "Datubasearen izena luzeegia da!"
+
+msgid "Specified database name already exists!"
+msgstr "Sartu duzun datubasearen izena iada badago!"
+
+#, php-format
+msgid "Wildcards such as %% and ? are not allowed!"
+msgstr "Ordezkatzaileak ala nola %% eta ? ez dira onartzen!"
+
+msgid "SQL database created successfully!"
+msgstr "SQL datubasea zuzen sortua!"
+
+msgid "SQL accounts limit reached!"
+msgstr "SQL kontuen mugara iritxia!"
+
+msgid "i-MSCP - Client/Add SQL Database"
+msgstr "i-MSCP - Erabiltzailea/Gehitu SQL datubasea"
+
+msgid "Database name"
+msgstr "Datubasearen izena"
+
+msgid "Use numeric ID"
+msgstr "Erabili zenbakizko ID-a"
+
+msgid "Before the name"
+msgstr "Izenare aurretik"
+
+msgid "After the name"
+msgstr "Izenaren atzetik"
+
+msgid "SQL database was removed successfully!"
+msgstr "SQL datubasea zuzen ezabatu da!"
+
+msgid "SQL user was removed successfully!"
+msgstr "SQL erabiltzailea zuzen ezabatu da!"
+
+msgid "Database user list is empty!"
+msgstr "Datubaseko erabiltzaile zerrenda hutsik dago!"
+
+msgid "Database list is empty!"
+msgstr "Datubase zerrenda hutsik dago!"
+
+msgid "i-MSCP - Client/Manage SQL"
+msgstr "ispCp - Erabitlzailea/SQL Kudeatu"
+
+msgid "Database Name and Users"
+msgstr "Datubaseen Izen eta Erabiltzaileak"
+
+msgid "Database users"
+msgstr "Datubase erabiltzaileak"
+
+msgid "Add SQL user"
+msgstr "Gehitu SQL erabiltzailea"
+
+msgid "Execute query"
+msgstr "Exekutatu kontsulta"
+
+msgid "Login phpMyAdmin"
+msgstr "Saioa hasi phpMyAdmin-en"
+
+#, php-format
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered."
+" All users linked to this database will also be deleted if not linked to "
+"another database. Are you sure you want to delete the '%s' database?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
+
+msgid "SQL users limit reached!"
+msgstr "SQL erabiltzaileen mugara iritxi da!"
+
+msgid "Please type user name!"
+msgstr "Mesedez idatzi erabiltzailearen izena!"
+
+msgid "Too user long password!"
+msgstr "Erabiltzailearen pasahitza luzeegia!"
+
+msgid "SQL-user not found! Maybe it was deleted by another user!"
+msgstr ""
+"SQL erabiltzailea ez da aurkitu! Agian beste erabiltzaile batek ezabatua "
+"izan da!"
+
+msgid "User name too long!"
+msgstr "Erabiltzaile izena luzeegia!"
+
+msgid "Specified SQL username name already exists!"
+msgstr "Sartutako SQL erabiltzailea iadanik badago!"
+
+msgid "SQL user successfully added!"
+msgstr "SQL erabiltzailea zuzen gehitua!"
+
+msgid "i-MSCP - Client/Add SQL User"
+msgstr "i-MSCP - Erabiltzailea/Gehitu SQL erabiltzailea"
+
+msgid "SQL user name"
+msgstr "SQL erabiltzaile izena"
+
+msgid "In front the name"
+msgstr "Izenaren aurrekarean"
+
+msgid "Behind the name"
+msgstr "Izenaren atzekaldean"
+
+msgid "Add existing user"
+msgstr "Gehitu lehendik dagoen erabiltzailea"
+
+msgid "Existing SQL users"
+msgstr "Dauden SQL erabiltzaileak"
+
+msgid "Subdomains limit reached!"
+msgstr "Azpidomeinuen mugara iritxia!"
+
+msgid "Please specify subdomain name!"
+msgstr "Mesedez sar ezazu azpidomeinuaren izena!"
+
+msgid "No valid alias domain selected!"
+msgstr "Ez da baliozko domeinu ezizenik aukeratu!"
+
+msgid "Subdomain already exists or is not allowed!"
+msgstr "Azpidomeinua iada badago edo ez da onartzen!"
+
+msgid "Mount point already in use!"
+msgstr "Muntatze puntua dagoeneko erabiltzen!"
+
+msgid "Incorrect mount point syntax!"
+msgstr "Muntatze puntuaren sintaxi okerra!"
+
+msgid "Subdomain scheduled for addition!"
+msgstr "Azpidomeinua gehitzeko zain!"
+
+msgid "i-MSCP - Client/Add Subdomain"
+msgstr "i-MSCP - Erabiltzailea/Gehitu azpidomeinua"
+
+msgid "Subdomain data"
+msgstr "Azpidomeinu datuak"
+
+msgid "Subdomain name"
+msgstr "Azpidomeinu izena"
+
+msgid "Directory tree mount point"
+msgstr "Direktorio zuhaitzan muntatze puntua"
+
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr ""
+
+msgid "Manage subdomain"
+msgstr ""
+
+msgid "Edit subdomain"
+msgstr ""
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "Aurrera jarraitze URL-a 'http://'-az hasi behar du"
+
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
+msgstr ""
+
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "Low"
+msgstr "Baxua"
+
+msgid "Medium"
+msgstr "Ertaina"
+
+msgid "High"
+msgstr "Altua"
+
+msgid "Very high"
+msgstr "Oso altua"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "Customize error pages for your domain"
+msgstr "Akats orri pertsonalizatuak zure domeinurako"
+
+msgid "Backup and restore settings"
+msgstr "Segurtasun kopia eta berreskuratze aukerak"
+
+msgid "Access your mail through the web interface"
+msgstr "Satu zure posta elektronikora web interfaze bidez"
+
+msgid "Access your files through the web interface"
+msgstr "Satu zure fitxategietaera web interfaze bidez"
+
+msgid "Access your Awstats statistics"
+msgstr "Sartu zure Awstas estatistiketara"
+
+msgid "Manage protected areas, users and groups"
+msgstr "Kudeatu zure babestutako guneak, erabiltzailea eta taldeak"
+
+msgid "Install various software with a few *clicks*"
+msgstr ""
+
+msgid "i-MSCP - Service Mailer - You have a new order"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Dear {RESELLER},\n"
+"\n"
+"You have received a new order from {NAME} <{MAIL}> for the domain {DOMAIN}.\n"
+"\n"
+"Please login into your i-MSCP control panel for more details.\n"
+"\n"
+"______________________\n"
+"i-MSCP Service Mailer\n"
+"\n"
+msgstr ""
+
+msgid "reseller"
+msgstr ""
+
+msgid "You do not have permission to access this interface."
+msgstr ""
+
+msgid ""
+"Your order has been confirmed and is being processed... You will receive a "
+"mail after verifying."
+msgstr ""
+
+msgid ""
+"Your order has not been found in our database. Perhaps already confirmed?"
+msgstr ""
+
+msgid "Order Panel / Order confirmation"
+msgstr ""
+
+msgid "Order confirmation"
+msgstr "Eskaeraren baieztapena"
+
+msgid "Domain already registered in our database."
+msgstr ""
+
+msgid "This hosting plan is not available for purchase."
+msgstr ""
+
+msgid "Order Panel / Choosing a domain name"
+msgstr ""
+
+msgid "Add On A Domain"
+msgstr "Gehitu domeinuan"
+
+msgid "Continue"
+msgstr "Jarraitu"
+
+msgid "(e.g. domain-of-your-choice.com)"
+msgstr "(adib. zure-aukerako-domeinua.com)"
+
+msgid "You must fill out all required fields."
+msgstr ""
+
+msgid "Order Panel / Personal Data"
+msgstr ""
+
+msgid "Personal Data"
+msgstr "Datu Pertsonalak"
+
+msgid "* denotes mandatory field."
+msgstr "* beharrezkoa esan nahi du."
+
+msgid "Term of Service"
+msgstr ""
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
+msgid "Order Panel / Chart"
+msgstr ""
+
+msgid "Your Chart"
+msgstr "Zure grafikoa"
+
+msgid "Costs"
+msgstr "Kostuak"
+
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the above "
+"picture."
+msgstr ""
+
+msgid "Security code is incorrect."
+msgstr ""
+
+msgid "You have to accept the Term of Service."
+msgstr ""
+
+msgid "Order Panel / Checkout"
+msgstr ""
+
+msgid "Check Out"
+msgstr "Atera"
+
+msgid ""
+"<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
+" to your email address for confirmation. Do not forget to click on the link "
+"in email to validate your order."
+msgstr ""
+
+msgid "No available hosting packages."
+msgstr ""
+
+msgid "Order Panel / Choosing an hosting package"
+msgstr ""
+
+msgid "Webspace"
+msgstr "Webgunea"
+
+msgid "Domain Features"
+msgstr "Domeinuaren Aukerak"
+
+msgid "Package Features"
+msgstr "Paketearen Aukerak"
+
+msgid "Backup and Restore"
+msgstr "Segurtasun kopia eta Berreskuratzea"
+
+msgid "Custom Error Pages"
+msgstr "Akats Orri Pertsonalizatuak"
+
+msgid "Protected Areas"
+msgstr "Babestutako Guneak"
+
+msgid "Custom Apache Logs"
+msgstr "Apache.ren Log pertsonalizatua"
+
+msgid "Web & E-Mail Support"
+msgstr "Web bidezko eta Posta elektroniko bidezko euskarria"
+
+msgid "Your Own Domain"
+msgstr "Zure Domeinua"
+
+msgid "i-MSCP Control Panel"
+msgstr "i-MSCP - Kontrol Panela"
+
+msgid "Automatic Updates"
+msgstr "Eguneraketa Automatikoak"
+
+msgid "Package Price"
+msgstr "Paketearen Salneurria"
+
+msgid "Setup Fee"
+msgstr "Instalazio tasa"
+
+msgid "Performance"
+msgstr "Errendimendua"
+
+msgid "Not found user records matching the search criteria"
+msgstr ""
+
+msgid "Domain aliases limit reached."
+msgstr ""
+
+msgid "You do not have domain aliases."
+msgstr ""
+
+msgid ""
+"Domain alias you are trying to remove has email accounts.<br>First remove "
+"them."
+msgstr ""
+
+msgid ""
+"Domain alias you are trying to remove has FTP accounts.<br>First remove "
+"them."
+msgstr ""
+
+msgid "Domain alias successfully scheduled for deletion."
+msgstr ""
+
+msgid "Domain alias not scheduled for deletion."
+msgstr ""
+
+msgid "Domain alias successfully scheduled for addition"
+msgstr ""
+
+msgid "Domain alias not scheduled for addition."
+msgstr ""
+
+msgid "Domain alias successfully modified"
+msgstr ""
+
+msgid "Domain alias not modified."
+msgstr ""
+
+msgid "Order for domain alias not deleted."
+msgstr ""
+
+msgid "Domain alias successfully scheduled for addition."
+msgstr ""
+
+msgid "Domain alias limit reached."
+msgstr ""
+
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Kudeatu Domeinua/Ezizenak"
+
+msgid "Manage alias"
+msgstr "Kudeatu ezizenak"
+
+msgid "Real domain"
+msgstr "Benetako domeinua"
+
+msgid "Domain with that name already exists on the system."
+msgstr ""
+
+msgid "Incorrect mount point syntax."
+msgstr ""
+
+msgid "Master domain cannot be used."
+msgstr ""
+
+msgid "Wrong address in forward URL."
+msgstr ""
+
+msgid "Wrong domain part in forward URL."
+msgstr ""
+
+msgid "Domain already registered on the system."
+msgstr ""
+
+msgid "There is a subdomain with the same mount point."
+msgstr ""
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+"Ez dago erabiltzaile erregistrorik bersaltzaile  honentzat non ezizenak "
+"gehitu."
+
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP Birsaltzailea : Gehitu Ezizena"
+
+msgid "i-MSCP - Circular"
+msgstr "i-MSCP - Zirkularra"
+
+msgid "Circular"
+msgstr "Zirkularra"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
+
+msgid "You are not allowed to access this interface."
+msgstr ""
+
+msgid "Domain account scheduled for suspension."
+msgstr ""
+
+msgid "Domain account scheduled for activation."
+msgstr ""
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Bersaltzailea/aurkibide nagusia"
+
+msgid "View details"
+msgstr "Ikusi xehetasunak"
+
+msgid "i-MSCP - Reseller/Add hosting plan"
+msgstr "i-MSCP - Bersaltzailea/Gehitu hostatze plana"
+
+msgid "Price must be a number!"
+msgstr "Salneurria zenbaki bat izan behar du!"
+
+msgid "Setup fee must be a number!"
+msgstr "Instalazio tasak zenbaki bat izan behar du!"
+
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "SQL datubaseen muga ez dago <i>ezgaitua</i>!"
+
+msgid "Hosting plan values exceed reseller maximum values!"
+msgstr "Hostatze planak bersaltzailearen mugak gainditzen ditu!"
+
+msgid "i-MSCP - Reseller/Edit hosting plan"
+msgstr "i-MSCP - Bersaltzailea/Aldatu hostatze plana"
+
+msgid "View hosting plan"
+msgstr "Ikusi hostatze plana"
+
+msgid "You are exceeding your disk limit."
+msgstr ""
+
+msgid "User accounts"
+msgstr "Erabiltzaile kontuak"
+
+msgid "Mail account"
+msgstr "Posta elektroniko kontua"
+
+#, php-format
+msgid "%1$d / %2$d of <b>%3$d</b>"
+msgstr "%1$d / %2$d <b>%3$d</b>-tik"
+
+#, php-format
+msgid "%1$d / %2$d of <b>unlimited</b>"
+msgstr "%1$d / %2$d <b> mugagabetik</b>"
+
+msgid "i-MSCP - Reseller / General information"
+msgstr ""
+
+msgid "No Ip statistics to be show."
+msgstr ""
+
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr ""
+
+msgid "Reseller/IP usage statistics"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Change Language"
+msgstr "i-MSCP - Bersaltzailea/Aldatu hizkuntza"
+
+msgid "i-MSCP - Reseller/Order email setup"
+msgstr "i-MSCP - Bersaltzailea/Eskaera Posta Ezarpenak"
+
+msgid "Manage orders"
+msgstr "Kudeatu eskaerak"
+
+msgid "Activation Link"
+msgstr "Aktibazio Esteka"
+
+msgid "i-MSCP - Reseller/Order settings"
+msgstr "i-MSCP - Bersaltzailea/Eskaera Ezarpenak"
+
+msgid "Header"
+msgstr "Burua"
+
+msgid "Preview"
+msgstr "Aurreikisu"
+
+msgid "Implementation URL"
+msgstr "Inplementazio URL-a"
+
+msgid "Footer"
+msgstr "Oina"
+
+msgid "You do not have new orders."
+msgstr ""
+
+msgid "New order"
+msgstr "Eskaera berria"
+
+msgid "Update order"
+msgstr "Eguneratu eskaera"
+
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Bersaltzailea/Eskaera kudeatzailea"
+
+msgid "ID"
+msgstr "ID-a"
+
+msgid "Customer data"
+msgstr "Eroslearen datuak"
+
+msgid "Order"
+msgstr "Eskaera"
+
+msgid "Hosting plan"
+msgstr "Hostatze plana"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Ziur zaude eskaera hau ezabatu nahi duzula?"
+
+msgid "Add/Details"
+msgstr "Gehitu/Xehetasunak"
+
+msgid "Wrong order ID!"
+msgstr "Eskaera ID okerra!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "Wrong domain name syntax!"
+msgstr "Okerreko sintaxia domeinu izenenean!"
+
+msgid "User added!"
+msgstr "Erabiltzailea gehitua!"
+
+msgid "Customer order was removed successful!"
+msgstr "Eroslearen eskaera zuzen ezabatu da!"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Bersaltzailea/Eskaera xehetasunak"
+
+msgid "Order data updated successfully!"
+msgstr "Eskaera datuak zuzen eguneratuak!"
+
+msgid "Order date"
+msgstr "Eskaera data"
+
+msgid "Hosting details"
+msgstr "Hostatze xehetasunak"
+
+msgid "Order details"
+msgstr "Eskaera xehetasunak"
+
+msgid "Add to the system"
+msgstr "Gehitu sistemara"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr "Eskaera ezeztatua: bersaltzailea mugara iritsi da!"
+
+msgid "i-MSCP - Reseller/Change Password"
+msgstr "i-MSCP - Bersaltzailea/Pasahitza aldatu"
+
+msgid "i-MSCP - Reseller/Change Personal Data"
+msgstr "i-MSCP - Bersaltzailea/Aldatu datu pertsonalak"
+
+msgid "i-MSCP - Reseller / Layout"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Lostpw email setup"
+msgstr "i-MSCP - Bersaltzailea/Ahaztutako posta elek.-aren ezarpenak"
+
+msgid "Lostpw email"
+msgstr "Ahaztutako pasahitza posta"
+
+msgid "Lostpw link"
+msgstr "Ahaztutako pasahitz esteka"
+
+msgid "Please specify a subject."
+msgstr ""
+
+msgid "Auto email template data updated."
+msgstr ""
+
+msgid "i-MSCP - Reseller/Manage users/Email setup"
+msgstr ""
+"i-MSCP - Bersaltzailea/Erabiltzaile kudeatzaileak/Posta elektronikoaren "
+"ezarpena"
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+msgid "Update from web depot"
+msgstr ""
+
+msgid "Package title"
+msgstr ""
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
+msgstr ""
+
+#, php-format
+msgid ""
+"Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
+msgstr ""
+
+msgid "Remote File not found!"
+msgstr ""
+
+msgid "Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+msgid "Software-Version"
+msgstr ""
+
+msgid "Software status"
+msgstr ""
+
+msgid "Software total"
+msgstr ""
+
+msgid "Software upload"
+msgstr ""
+
+msgid "Requires Database?"
+msgstr ""
+
+msgid "Database prefix"
+msgstr ""
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "Are you sure to install this package from the webdepot?"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "Invalide domain expiration date."
+msgstr ""
+
+msgid "Domain expiration date must be filled."
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values."
+msgstr ""
+
+msgid "You have no hosting plans. Please contact your system administrator."
+msgstr ""
+"Ez daukazu hostatze planik. Mesedez jar zaitez kontaktuan sistemaren "
+"administrariarekin."
+
+msgid "i-MSCP - Users/Add domain account - step 1"
+msgstr ""
+
+msgid "Domain expire date"
+msgstr ""
+
+msgid "Choose hosting plan"
+msgstr "Aukeratu hostatze plana"
+
+msgid "Personalise template"
+msgstr "Pertsonalizatu txantiloia"
+
+msgid "Next step"
+msgstr "Hurrengo pausua"
+
+msgid "SQL databases limit is not <i>disabled</i>."
+msgstr ""
+
+msgid "The i-MSCP application installer needs PHP to enable it."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain account - step 2"
+msgstr ""
+
+msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
+msgstr "Domeinu muga<br><i>(-1 ez gaitua, 0 mugagabea)</i>"
+
+msgid "Custom DNS support"
+msgstr ""
+
+msgid "Apache logs"
+msgstr "Apache log-ak"
+
+msgid "Awstats"
+msgstr "Awstats"
+
+msgid "Domain data were been altered. Please try again."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain account - step 3"
+msgstr ""
+
+msgid "Add other domains to this account"
+msgstr "Gehitu beste domeinuak kontu honetara"
+
+msgid "Domain already regiostered on the system."
+msgstr ""
+
+msgid "Wrong syntax in forward URL."
+msgstr ""
+
+msgid "Wrong hostname in forward URL."
+msgstr ""
+
+msgid "Mount point already in use."
+msgstr ""
+
+msgid "i-MSCP - User/Add domain alias"
+msgstr ""
+
+#, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
+
+msgid "Domain alias scheduled for creation."
+msgstr ""
+
+msgid "i-MSCP - Users/Edit"
+msgstr "i-MSCP - Erabiltzaileak/Aldatu"
+
+msgid "Users list"
+msgstr "Erabiltzaile zerrenda"
+
+msgid "This reseller has no domains yet."
+msgstr "Bersaltzaileak ez dauka domeinurik oraindik."
+
+msgid "Not found user records matching the search criteria!"
+msgstr "Ez da aurkitu erabiltzaile sarrerarik bilaketaren datuekin!"
+
+msgid "You do not have customers."
+msgstr ""
+
+#, php-format
+msgid "%1$s of %2$s MB"
+msgstr ""
+
+#, php-format
+msgid "%1$s of <b>unlimited</b> MB"
+msgstr ""
+
+msgid "Domain account successfully scheduled for creation."
+msgstr ""
+
+msgid "User data were succefully updated."
+msgstr ""
+
+msgid "User data were not updated."
+msgstr ""
+
+msgid ""
+"This user has domain record !<br>First remove the domain from the system."
+msgstr ""
+
+msgid "User was not deleted."
+msgstr ""
+
+msgid "i-MSCP - Users"
+msgstr "i-MSCP - Erabiltzaileak"
+
+#, php-format
+msgid "Are you sure you want to change the status of %s?"
+msgstr "Ziur zaude %s -ren egoera aldatu nahi duzula?"
+
+msgid "Stats"
+msgstr "Estatistikak"
+
+msgid "Edit User"
+msgstr "Aldatu Erabiltzailea"
+
+msgid "Bandwidth"
+msgstr "Banda-zabalera"
+
+

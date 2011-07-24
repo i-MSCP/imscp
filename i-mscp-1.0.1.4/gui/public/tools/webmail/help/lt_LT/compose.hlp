@@ -1,0 +1,128 @@
+<chapter>
+   <title>
+      Rašyti
+   </title>
+   <summary>
+      Šis punktas leidžia rašyti ir siųsti laiškus naudojant SquirrelMail.
+   </summary>
+   <description>
+      <p>
+      Pasirinkę "Rašyti" meniu punktą jūs atsidursite naujame puslapyje.
+      Čia jūs rasite kelis laukus ir mygtukus. Priklausomai nuo to, kaip
+      jūs patekote į šį puslapį, dalis laukų jau gali būti užpildyti.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Kam
+   </title>
+   <description>
+      <p>
+      Pirmiausia <B>Kam:</B> laukas. Jame reikia rašyti asmens ar asmenų, 
+      kuriems siunčiate laišką adresą. Vedant kelis adresus, jie yra 
+      atskiriami kableliais. Galima pasinauti mygtuku "Adresai" ir užpildyti 
+      laukus adresais iš adresų knygos. Laukas turi nustatytą ilgį ir 
+      surašius daugiau adresų, jūs jų nebematysite. Adresus galima pamatyti
+      judant tame lauke su klaviatūros judėjimo klavišais. Bet kuriuo atveju 
+      visi adresai, kuriuos ten surašysite bus panaudoti siunčiant laišką.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Cc
+   </title>
+   <description>
+      <p>
+      Toliau eina <B>CC:</B> laukas.  CC yra angliškų žodžių <B>Carbon 
+      Copy</B> sutrumpinimas. Jei norite nusiųsti laiško kopiją dar kam nors, 
+      jūs galite įvesti to asmens adresą šiame lauke. Tai yra savotiškas būdas 
+      supažindinti trečią asmenį su vykstančiu susirašinėjimu. Laukelis savo 
+      talpa nesiskiria nuo <B>Kam:</B> ir <B>BCC:</B> laukų. <B>Kam:</B> lauke
+      rašomi asmenys, kuriems tas laiskas adresuotas. <B>CC:</B> ir <B>BCC:</B> 
+      laukai yra informacinio pobūdžio.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bcc
+   </title>
+   <description>
+      <p>
+      BCC yra angliškų žodžių <B>Blind Carbon Copy</B> sutrumpinimas, reiškiantis
+      slaptą kopiją. Laukas yra naudojamas nusiųsti kam nors laiško kopiją taip, 
+      kad iš <B>Kam:</B> or <B>CC:</B> adresatų <I>nežinotų</I>, kad tokia kopija 
+      buvo nusiųsta.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Tema
+   </title>
+   <description>
+      <p>
+      Trumpas aprašymas apie tai, ką rašote laiške. Atminkite, kad tikslus laiško 
+      temos gali padėti gavėjui įvertinti laišką.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Mygtukas Adresai
+   </title>
+   <description>
+      <p>
+      Šis mygtu atidaro adresų knygą ir leidžia pasirinkti adresus iš jos.
+      Norėdami apriboti išvedamus adresus, turite ką nors įvesti į paieškos
+      lauką ir paspausti mygtuką "Ieškoti". Adresų knygą už savo funkcionalumą
+      užsitarnavo atskirą pagalbos sistemos skyrių. Apie ją daugiau informacijos 
+      rasite skyriuje "Adresai". 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Žinutės tekstas
+   </title>
+   <description>
+      <p>
+      Didelis tusčias laukas yra skirtas suvesti jūsų laiško tekstui. Jei 
+      yra nustatytas koks nors parašas, jis irgi ten pasirodys. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prikabinti
+   </title>
+   <description>
+      <p>
+      Čia jūs galite pridėti failą prie laiško. Failas turėtų būti kur nors 
+      jūsų kompiuteryje ar lokaliame tinkle. Browse mygtukas (jo pavadinimas
+      priklauso nuo jūsų naudojamos naršyklės) atidaro dialogo langą, 
+      leidžiantį surasti failą, kurį norite prikabinti. Taip pat jūs galite 
+      suvesti pilną kelią iki failo prie mygtuko esančiame lauke. Paspaudus 
+      mygtuką "Pridėti" failas turėtų pasirodyti sąraše žemiau žinutės teksto.
+      </p>
+      <p>
+      Prikabinus bent vieną failą turėtų atsirasti dar vienas mygtukas. Jis
+      leidžia ištrinti vieną ar kelis prikabintus failus.
+      </p>
+      <p>
+      Pats failų prikabinimo procesas gali užtrukti priklausomai nuo prikabinamo
+      failo dydžio ir jūsų susijungimo greičio. Gali būti, kad didesnio failo 
+      jums tiesiog nepavyks prikabinti arba serveris atsisakys priimti didesnį 
+      laišką.
+      <p>
+   </description>
+</section>

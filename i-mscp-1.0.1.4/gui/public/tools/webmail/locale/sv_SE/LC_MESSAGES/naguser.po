@@ -1,0 +1,50 @@
+# Swedish (sv_SE) naguser Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2004-2009.
+# $Id: naguser.po 13541 2009-04-15 12:42:12Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: naguser\n"
+"POT-Creation-Date: 2004-05-12 21:10+0300\n"
+"PO-Revision-Date: 2004-09-08 01:58+0200\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Rules of engagement"
+msgstr "Regler för användning"
+
+msgid "You have to read and understand program usage rules:"
+msgstr "Du måste läsa och förstå användarvillkoren:"
+
+msgid ""
+"Your browser does not support inline frames. Please read related document by "
+"checking usage instructions."
+msgstr ""
+"Din webbläsare stödjer inte inbäddade ramar. Vänligen läs reglerna i "
+"användarvillkoren."
+
+msgid "Usage instructions"
+msgstr "Användarvillkor"
+
+msgid "Yes, I understand"
+msgstr "Ja, jag har förstått"
+
+msgid "Terms of service"
+msgstr "Användarvillkor"
+
+msgid ""
+"URL to usage rules is not available. Please contact your system "
+"administrator."
+msgstr ""
+"Det finns inte någon webbadress till användarvillkoren. Meddela "
+"systemadministratören."
+
+msgid "You can find interface usage rules by following the link."
+msgstr "Du hittar användarvillkoren genom att följa länken."
+
+msgid "Usage rules"
+msgstr "Annvändarvillkor"

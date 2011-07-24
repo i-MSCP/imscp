@@ -1,0 +1,172 @@
+# Bengali (bn_BD) forum Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: compatibility.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: forum 1.1\n"
+"Report-Msgid-Bugs-To: Sebastian Dolmen <sdolmen %AT% gmail %DOT% com>\n"
+"POT-Creation-Date: 2007-01-19 13:10+0100\n"
+"PO-Revision-Date: 2008-12-25 16:32+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forum.php:52
+msgid "&nbsp;Forums"
+msgstr "&nbsp;ফোরামগুলো"
+
+#: forum.php:53
+msgid "Threads"
+msgstr "থ্রেডগুলো"
+
+#: forum.php:54
+msgid "Last thread"
+msgstr "শেষ থ্রেড"
+
+#: hooks.php:23
+msgid "Forum"
+msgstr "ফোরাম"
+
+#: hooks.php:47
+msgid "Discussion board"
+msgstr "আলোচনা সভা"
+
+#: hooks.php:49
+msgid "A browser-based administrative interface."
+msgstr "একটি ব্রাউজার ভিত্তিক প্রশাসনিক ইন্টারফেস।"
+
+#: list.php:66 post.php:88 read.php:75
+msgid "Forum list"
+msgstr "ফোরাম তালিকা"
+
+#: list.php:66
+msgid "New thread"
+msgstr "নতুন থ্রেড"
+
+#: list.php:72
+msgid "Current Page:"
+msgstr "বর্তমান পৃষ্ঠা:"
+
+#: list.php:72
+msgid "of"
+msgstr "তে"
+
+#: list.php:75 list.php:77
+msgid "Previous"
+msgstr "আগের"
+
+#: list.php:80 list.php:82
+msgid "Next"
+msgstr "পরবর্তী"
+
+#: list.php:88
+msgid "&nbsp;Subject"
+msgstr "&nbsp;বিষয়"
+
+#: list.php:89
+msgid "Views"
+msgstr "প্রদর্শনগুলো"
+
+#: list.php:90
+msgid "Posts"
+msgstr "পাঠানোর স্থান"
+
+#: list.php:91
+msgid "Last post"
+msgstr "শেষ যেখানে পাঠানো হয়েছে"
+
+#: list.php:97 list.php:100
+msgid "by"
+msgstr "দ্বারা"
+
+#: options.php:66 options.php:80
+msgid "Please fill in the name and the description."
+msgstr "অনুগ্রহ করে নাম এবং বর্ণনা পূরণ করুন।"
+
+#: options.php:110
+msgid "Options - Discussion board"
+msgstr "পছন্দগুলো - আলোচনা সভা"
+
+#: options.php:136 options.php:154 options.php:161 options.php:198
+msgid "Modify forum"
+msgstr "ফোরাম পরিবর্তন"
+
+#: options.php:142 options.php:179
+msgid "Name:"
+msgstr "নাম:"
+
+#: options.php:146 options.php:183
+msgid "Description:"
+msgstr "বর্ণনা:"
+
+#: options.php:151 options.php:188
+msgid "Forum will be visible"
+msgstr "ফোরামটি দেখা যাবে"
+
+#: options.php:164
+msgid "Selected forum:"
+msgstr "নির্বাচিত ফোরাম:"
+
+#: options.php:164
+msgid "Confirm delete of selected forum?"
+msgstr "নির্বাচিত ফোল্ডারটি মুছে দিতে কি নিশ্চিত?"
+
+#: options.php:164
+msgid "Confirm delete"
+msgstr "মুছে ফেলা নিশ্চিত করুন"
+
+#: options.php:173
+msgid "Create forum"
+msgstr "ফোরাম তৈরী করুন"
+
+#: options.php:191
+msgid "Add this forum"
+msgstr "এই ফোরামটি যোগ করুন"
+
+#: options.php:203
+msgid "Forum name"
+msgstr "ফোরাম নাম"
+
+#: options.php:207
+msgid "Modify"
+msgstr "পরীক্ষা করুন"
+
+#: options.php:207
+msgid "Delete"
+msgstr "মুছে ফেলুন"
+
+#: options.php:209
+msgid "No forum found."
+msgstr "কোন ফোরাম পাওয়া যায়নি।"
+
+#: post.php:72
+msgid "Please fill in the subject and the body."
+msgstr "অনুগ্রহ করে বিষয় এবং মূল অংশ পূরণ করুন।"
+
+#: post.php:88 read.php:75
+msgid "Thread list"
+msgstr "থ্রেড তালিকা"
+
+#: post.php:101
+msgid "Subject"
+msgstr "বিষয়"
+
+#: post.php:107
+msgid "Post new topic"
+msgstr "নতুন প্রসঙ্গ পোষ্ট করুন"
+
+#: read.php:63
+msgid "Please fill in the body of your reply."
+msgstr "অনুগ্রহ করে আপনার জবাবের মূল অংশ পূরণ করুন।"
+
+#: read.php:108
+msgid "Reply"
+msgstr "জবাব"
+
+#: read.php:114
+msgid "Post message"
+msgstr "বার্তা পোষ্ট করুন"

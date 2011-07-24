@@ -1,0 +1,111 @@
+Revision history - see bottom
+
+This plugin will provide the functionaliy necessary to allow a user
+to manage their favorites list, or "bookmarks", within the Squirrelmail
+interface.  I've found myself using Squirrelmail all day every day, from
+several different machines, and decided it would be nice to have my
+bookmarks available as well.
+
+To install the plugin:
+
+  1.  Change to the plugins directory.
+
+        $ cd plugins/
+
+  2.  Unarchive the plugin.
+
+        $ tar -xzf /your/path/to/bookmarks-x.x.tgz
+
+  3.  This should create a bookmarks/ directory under plugins.
+
+	4.  You must decide what storage method (database or text file) you want
+	    to use for your bookmarks:
+			
+			To store bookmarks in a text file, copy 'bookmarks_data_text.php'
+			to 'bookmarks_data.php'.  Users' bookmarks will be stored in the
+			Squirrelmail data directory, in TAB-delimited text files named
+			<username>.bookmarks.
+			
+			To store bookmarks in a database, copy 'bookmarks_data_db.php' to
+			'bookmarks_data.php'.  Edit the 'bookmarks_data.php' file, and change
+			the database DSN to fit your configuration.  You also must create the
+			bookmarks table (remember to grant your DSN username access to this
+			table), with the following structure:
+			
+			Fieldname           Type     Size
+			==================  =======  ===========
+			username            varchar  255
+			folder              text
+			title               text
+			url                 text
+			visit_count         int      11
+			last_visit          bigint   20
+			
+  4.  Go to the config directory and run conf.pl
+
+        $ cd ../../config/
+        $ ./conf.pl
+
+  5.  Choose option 8 and proceed to add the new plugin following
+      the instructions there.  Save and exit, and your plugin should
+      be in place.
+
+
+Any questions or problems, feel free to contact me:
+
+Tracy McKibben
+tracy@mckibben.d2g.com
+
+
+=======================
+Future Enhancements
+=======================
+
+- notification of "fresh" bookmarks
+- other stuff as I think of it
+- requests welcome!
+
+
+=======================
+Revision history
+=======================
+
+08/12/2003 - ver 2.0.3
+- added import function
+- fix bug with special characters in folder names (i.e. '&')
+- added option to store bookmarks in MySQL database
+- added "Most Visited" & "Last Visited" views
+
+05/02/2003 - ver 2.0.2
+-fix bug allowing duplicate folder names
+-fix minor bug with subfolder creation
+-attempt to fix reported problem with trailing slash in URLs
+
+04/29/2003 - ver 2.0.1
+-minor bug fixes
+-minor code cleanup
+
+04/27/2003 - ver 2.0.0
+-complete rewrite
+-made compatible with "register_globals=off" PHP setting
+-made compatible with Squirrelmail 1.4x release series
+-altered storage format to use single bookmarks file
+
+ver 0.3
+-corrected unlink bug when creating new folder
+
+05/09/2002 - ver 0.2
+-workaround for PHP <= 4.0.6 fopen bug, attempts to fetch the title
+ from a URL with no trailing '/' character would cause Apache to hang
+
+-allow additional URL prefixes of 'ftp://', 'nntp://', and 'https://'
+
+-provision for a global bookmarks folder.  This folder, named
+ 'global.bookmarks' in the data directory, must be manually edited.  It
+ is read-only through the plugin interface.  No subfolders are allowed
+ in this global folder.
+ 
+ 
+04/29/2002 - ver 0.1
+-Initial release
+

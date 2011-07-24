@@ -1,0 +1,70 @@
+<chapter>
+   <title>
+      Rechercher
+   </title>
+   <summary>
+      Rechercher dans un dossier un crit&egrave;re pr&eacute;cis.
+   </summary>
+   <description>
+      <p>
+      Avec cet outil, vous pouvez effectuer des requ&ecirc;tes dans un dossier sp&eacute;cifique, sur un crit&egrave;re donn&eacute;, 
+      recherch&eacute; parmi les diff&eacute;rents champs de l'en-t&ecirc;te.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Vue d'Ensemble
+   </title>
+   <description>
+      <p>
+      Vous s&eacute;lectionnez simplement le dossier que vous voulez auditer, saisissez 
+      la s&eacute;quence recherch&eacute;e, et choisissez la partie de l'en-t&ecirc;te dans laquelle sera recherch&eacute;e la s&eacute;quence. 
+      Une fois votre requ&ecirc;te valid&eacute;e, une liste des messages correspondant aux crit&egrave;res apparaitra sous le formulaire de recherche. 
+      Vous pouvez s&eacute;lectionner n'importe quel message pour le visualiser ou le traiter comme un courrier normal.
+       </p>
+      <p>
+      Notez que lorsque vous consultez un message et que vous passez dans la section Rechercher, 
+      le dossier dans lequel vous vous trouviez sera le dossier de recherche par d&eacute;faut. 
+      Par exemple si vous consultiez votre dossier "Amis" et que vous passiez en mode requ&ecirc;te, 
+      le dossier explor&eacute; par d&eacute;faut sera alors le dossier "Amis".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Recherchez O&ugrave;
+   </title>
+   <description>
+      <p>
+      A gauche du champ de saisie, vous voyez une liste des choix possibles o&ugrave; effectuer votre recherche. 
+      Cela comprend les champs Corps du Message, Sujet, De, Cc, A.
+      </p>
+      <p>
+      <b>Corps</b> - Recherche dans le corps du message. C'est la partie principale du message, 
+      l&agrave; o&ugrave; sont stock&eacute;es les infos les plus importantes.
+      </p>
+      <p>
+      <b>Partout</b> - La recherche est faite dans tous les champs. 
+      Sauf si vous &ecirc;tes s&ucirc;r de ce que vous faites, cela n'est probablement p
+      as ce que vous voulez faire. Cela peut vous retourner des informations inatendues. 
+      </p>
+      <p>
+      <b>Sujet</b> - Recherche dans le champ Sujet dans tous les messages.
+      </p>
+      <p>
+      <b>De</b> - De qui est le message. Notez que cela peut inclure plus d'informations que celles pr&eacute;sent&eacute;es &agrave; 
+      l'&eacute;cran. Un champs "De" normal comprend un nom ET une adresse, mais par d&eacute;faut SquirrelMail n'affiche que le nom. 
+      Si votre recherche se fait sur les adresses et qu'elles ne sont pas affich&eacute;es, la r&eacute;ponse vous fournira quand m&ecirc;me les adresses.
+      </p>
+      <p>
+      <b>A</b> - A qui a &eacute;t&eacute; envoy&eacute; le message. 
+      Cela peut &ecirc;tre beaucoup d'adresses et pas forc&eacute;ment une seule.
+      </p>
+      <p>
+      <b>Cc</b> - Idem que "De", cela concerne les Copies Carbones.
+      </p>
+   </description>
+</section>

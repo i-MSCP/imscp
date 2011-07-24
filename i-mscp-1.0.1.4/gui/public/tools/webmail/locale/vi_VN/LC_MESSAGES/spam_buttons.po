@@ -1,0 +1,258 @@
+# Vietnamese (vi) spam_buttons Translation (SquirrelMail plugin)
+# Copyright © 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: spam_buttons.pot 12911 2008-02-01 08:40:18Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: spam_buttons 2.1\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2008-02-01 09:12+0100\n"
+"PO-Revision-Date: 2008-03-11 21:08+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
+
+#: bounce_send.php:81
+msgid "No resend destination specified"
+msgstr "Chưa xác định đích đến gửi lại"
+
+#: bounce_send.php:210
+msgid "Could not establish connection to outgoing mail server"
+msgstr "Không thể thiết lập sự kết nối tới máy phục vụ thư gửi đi"
+
+#: bounce_send.php:312
+#: report.php:1521
+#, php-format
+msgid "Could not find requested message: %s"
+msgstr ""
+"Không tìm thấy thư đã yêu cầu : %s"
+
+#: bounce_send.php:347
+msgid ""
+"Could not send report: \n"
+"%1\n"
+"%2 %3"
+msgstr "Không thể gửi báo cáo :\n"
+"%1\n"
+"%2 %3"
+
+#: bounce_send.php:349
+msgid "Could not send report: <blockquote>%1<br />%2 %3</blockquote>"
+msgstr "Không thể gửi báo cáo : <blockquote>%1<br />%2 %3</blockquote>"
+
+#: compose_functions-1.4.10.php:481
+#: compose_functions-1.4.11.php:521
+#: compose_functions-1.4.14.php:522
+#: compose_functions-1.5.2.php:480
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr ""
+"Lỗi: thư mục Nháp %s không tồn tại."
+
+#: compose_functions-1.4.10.php:493
+msgid "Server replied: "
+msgstr "Máy phục vụ đã đáp ứng: "
+
+#: compose_functions-1.4.11.php:272
+#: compose_functions-1.4.11.php:289
+#: compose_functions-1.4.14.php:269
+#: compose_functions-1.4.14.php:286
+msgid "Subject"
+msgstr "Chủ đề"
+
+#: compose_functions-1.4.11.php:273
+#: compose_functions-1.4.11.php:290
+#: compose_functions-1.4.14.php:270
+#: compose_functions-1.4.14.php:287
+msgid "From"
+msgstr "Từ"
+
+#: compose_functions-1.4.11.php:274
+#: compose_functions-1.4.11.php:291
+#: compose_functions-1.4.14.php:271
+#: compose_functions-1.4.14.php:288
+msgid "Date"
+msgstr "Ngày"
+
+#: compose_functions-1.4.11.php:275
+#: compose_functions-1.4.11.php:292
+#: compose_functions-1.4.14.php:272
+#: compose_functions-1.4.14.php:289
+msgid "To"
+msgstr "Cho"
+
+#: compose_functions-1.4.11.php:276
+#: compose_functions-1.4.11.php:296
+#: compose_functions-1.4.14.php:273
+#: compose_functions-1.4.14.php:293
+msgid "Cc"
+msgstr "Cc"
+
+#: compose_functions-1.4.11.php:288
+#: compose_functions-1.4.14.php:285
+msgid "Original Message"
+msgstr "Thư gốc"
+
+#: compose_functions-1.4.11.php:533
+#: compose_functions-1.4.14.php:534
+#: compose_functions-1.5.2.php:492
+msgid "Message not sent."
+msgstr "Chưa gửi thư."
+
+#: compose_functions-1.4.11.php:533
+#: compose_functions-1.4.14.php:534
+#: compose_functions-1.5.2.php:498
+msgid "Server replied:"
+msgstr "Máy phục vụ đã đáp ứng:"
+
+#: options.php:60
+msgid "Reselect Messages After Reporting"
+msgstr "Chọn lại các thư sau khi báo cáo"
+
+#: options.php:75
+msgid "Delete Spam After Reporting"
+msgstr "Xoá thư rác sau khi báo cáo"
+
+#: options.php:98
+#: options.php:99
+#: options.php:196
+#: options.php:197
+msgid "[Do not move]"
+msgstr "[Dùng di chuyển]"
+
+#: options.php:112
+msgid "Copy Spam After Reporting To"
+msgstr "Sao chép thư rác sau khi báo cáo cho"
+
+#: options.php:114
+msgid "Move Spam After Reporting To"
+msgstr "Di chuyển thư rác sau khi báo cáo cho"
+
+#: options.php:135
+#: options.php:234
+msgid "Copy Instead of Moving"
+msgstr "Sao chép thay vào di chuyển"
+
+#: options.php:169
+msgid "Move To Next Message After Reporting"
+msgstr "Tiến tới thư kế tiếp sau khi báo cáo"
+
+#: options.php:172
+msgid "Return to Message List"
+msgstr "Trở về danh sách thư"
+
+#: options.php:173
+msgid "Next"
+msgstr "Kế"
+
+#: options.php:174
+msgid "Previous"
+msgstr "Lùi"
+
+#: options.php:211
+msgid "Copy Non-Spam After Reporting To"
+msgstr "Sao chép thư không rác sau khi báo cáo cho"
+
+#: options.php:213
+msgid "Move Non-Spam After Reporting To"
+msgstr "Di chuyển thư không rác sau khi báo cáo cho"
+
+#: options.php:259
+#: options.php:260
+#: options.php:271
+#: options.php:272
+#: options.php:348
+#: options.php:349
+#: options.php:362
+#: options.php:363
+#: options.php:438
+#: options.php:439
+#: options.php:453
+#: options.php:454
+#: options.php:529
+#: options.php:530
+#: options.php:545
+#: options.php:546
+msgid "[Always Display]"
+msgstr "[Luôn luôn hiển thị]"
+
+#: options.php:305
+msgid "Display Spam Button in Folders"
+msgstr "Hiển thị cái nút Thư Rác trong các thư mục"
+
+#: options.php:322
+msgid "Display Spam Button in Folder"
+msgstr "Hiển thị cái nút Thư Rác trong thư mục"
+
+#: options.php:395
+msgid "Display Non-Spam Button in Folders"
+msgstr "Hiển thị cái nút Không Thư Rác trong các thư mục"
+
+#: options.php:412
+msgid "Display Non-Spam Button in Folder"
+msgstr "Hiển thị cái nút Không Thư Rác trong thư mục"
+
+#: options.php:486
+msgid "Don't Display Spam Button in Folders"
+msgstr "Đừng hiển thị cái nút Thư Rác trong các thư mục"
+
+#: options.php:503
+msgid "Don't Display Spam Button in Folder"
+msgstr "Đừng hiển thị cái nút Thư Rác trong thư mục"
+
+#: options.php:579
+msgid "Don't Display Non-Spam Button in Folders"
+msgstr "Đừng hiển thị cái nút Không Thư Rác trong các thư mục"
+
+#: options.php:596
+msgid "Don't Display Non-Spam Button in Folder"
+msgstr "Đừng hiển thị cái nút Không Thư Rác trong thư mục"
+
+#: options.php:609
+msgid "Spam Reporting"
+msgstr "Thông báo thư rác"
+
+#: report.php:1198
+msgid "The reported message is no longer available in this folder"
+msgstr ""
+"Thư đã báo cáo không còn sẵn sàng lại trong thư mục này"
+
+#: report.php:1422
+msgid "ERROR: Report could not be delivered"
+msgstr "LỖI: không thể phát bái cáo"
+
+#: report.php:1587
+msgid ""
+"ERROR: Could not open temp file; check attachments directory permissions"
+msgstr ""
+"LỖI: không thể mở tập tin tạm thời; hãy kiểm tra quyền truy cập thư mục chứa các đồ đính kèm"
+
+#: report.php:1599
+msgid "ERROR %1: Problem reporting message ID %2: %3"
+msgstr "LỖI %1: gặp lỗi khi báo cáo thư có mã số %2: %3"
+
+#: report.php:1603
+msgid "ERROR %1: Problem reporting message ID %2 (entity %4): %3"
+msgstr "LỖI %1: gặp lỗi khi báo cáo thư có mã số %2 (thực thể %4): %3"
+
+#: setup.php:112
+msgid "Spam"
+msgstr "Thư rác"
+
+#: setup.php:113
+msgid "Not Spam"
+msgstr "Không thư rác"
+
+#: setup.php:114
+msgid "Successfully reported as spam"
+msgstr "Đã báo cáo là thư rác"
+
+#: setup.php:115
+msgid "Successfully reported as non-spam"
+msgstr "Đã báo cáo không phải là thư rác"

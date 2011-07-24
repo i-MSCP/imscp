@@ -1,0 +1,75 @@
+SquirrelMail 1.4.18 locales
+
+This is the first SquirrelMail 1.4.18 translation release.
+
+The current translation status is:
+------------------------------------------
+Czech (cs_CZ)                       100.00
+Danish (da_DK)                      100.00
+Dutch (nl_NL)                       100.00
+Hungarian (hu_HU)                   100.00
+Italian (it_IT)                     100.00
+Latvian (lv_LV)                     100.00
+Swedish (sv_SE)                     100.00
+Spanish (es_ES)                      99.91
+Khmer (km)                           99.73
+Bangladeshi Bengali (bn_BD)          99.73
+Vietnamese (vi_VN)                   99.30
+Romanian (ro_RO)                     98.86
+Persian (fa_IR)                      98.60
+Chinese (Simplified) (zh_CN)         98.60
+Frisian (fy)                         98.52
+Basque (eu_ES)                       98.52
+Faroese (fo_FO)                      98.43
+Russian (ru_RU)                      98.34
+Turkish (tr_TR)                      98.17
+Lithuanian (lt_LT)                   97.73
+Polish (pl_PL)                       97.04
+Indonesian (id_ID)                   97.04
+Norwegian Bokmål (nb_NO)             96.17
+Norwegian Nynorsk (nn_NO)            95.64
+French (fr_FR)                       95.21
+Ukrainian (uk_UA)                    94.77
+Portuguese (Portugal) (pt_PT)        94.77
+German (de_DE)                       93.90
+Portuguese (Brazil) (pt_BR)          93.55
+Greek (el_GR)                        93.21
+Serbian (sr_YU)                      93.12
+Georgian (ka)                        92.95
+Finnish (fi_FI)                      89.73
+Tamil (ta_LK)                        88.94
+Japanese (ja_JP)                     83.11
+Slovak (sk_SK)                       82.94
+Chinese (Traditional) (zh_TW)        81.20
+Indian Bengali (bn_IN)               77.89
+Slovenian (sl_SI)                    73.71
+Estonian (et_EE)                     73.54
+Malay Language (Malaysia) (ms_MY)    72.75
+Icelandic (is_IS)                    72.14
+Bulgarian (bg_BG)                    70.84
+Korean (ko_KR)                       70.40
+Croatian (hr_HR)                     68.92
+Arabic (ar)                          68.66
+Uighur (ug)                          65.70
+Catalan (ca_ES)                      63.01
+Welsh (cy_GB)                        62.83
+Macedonian (mk)                      58.22
+Hebrew (he_IL)                       57.96
+------------------------------------------
+
+The main changes in this release are:
+
+2009-05-07
+ - Added Khmer (km).
+
+2009-04-28
+ - Converted Hungarian (hu_HU) to UTF-8.
+
+2009-04-23
+ - Converted Czech (cs_CZ) to UTF-8.
+
+2009-04-22
+ - Converted Italian (it_IT) to UTF-8.
+
+2009-04-18 (branch point)
+ - Branched from HEAD.

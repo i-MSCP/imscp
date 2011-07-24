@@ -1,0 +1,42 @@
+# translation of restrict_senders.po to Nynorsk
+# This file is distributed under the same license as the restrict_senders plugin.
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004,2005
+# $Id: restrict_senders.po 13696 2009-05-14 06:27:08Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: restrict_senders\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-06-07 15:40+0300\n"
+"PO-Revision-Date: 2005-08-05 11:20+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "Too many outgoing recipients. Please limit number of recipients to %d."
+msgstr "For mange utgåande mottakarar. Avgrens talet på mottakarar til %d."
+
+msgid ""
+"Daily e-mail limit has been reached. Please limit number of emails per day "
+"to %d."
+msgstr ""
+"Dagleg grense på mengde e-post er nådd. Avgrens talet på e-postar per dag "
+"til %d."
+
+msgid "All recipients in the To: field are illegal destinations."
+msgstr "Alle mottakarane i Til feltet har feil adresse."
+
+msgid "\"%s\" plugin is not configured correctly."
+msgstr "\"%s\" programmtillegg har feil i oppsettet."
+
+msgid "Error on data/send_restrictions.dat line number %d."
+msgstr "Feil på data/send_restrictions.dat line nummer  %d."
+
+msgid "Message not sent."
+msgstr "Melding ikkje sendt"
+
+msgid "\"%s\" plugin could not open its restriction table."
+msgstr "\"%s\" programmtillegget kunne ikkje opne restriksjonstabellen"

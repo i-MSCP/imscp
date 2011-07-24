@@ -1,0 +1,105 @@
+<chapter>
+  <title>
+    Frequently Asked Questions
+  </title>   
+  <summary>
+    人々は何度も同じ問題を持っていて同じ質問をします。
+    これはその質疑応答のリストです。
+  </summary>
+</chapter>
+
+<section>
+  <title>
+    アドレス帳で複数の名前を使うことが出来ますか？
+  </title>
+   <description>
+    <p>
+      はい。
+      アドレス帳検索は、検索ボックスで入力した条件にマッチしたすべての人を表示します。
+      １０人の人が表示されたら、それを<B>To:</B>か<B>CC:</B>フィールドに選んで入れることが出来ます。
+      Use Addressボタンが押されると選択された複数のアドレスが挿入されます。
+      </p>
+  </description>
+</section>   
+
+<section>
+   <title>
+    電子メールから直接名前をアドレス帳に加えることが出来ますか？
+   </title>
+  <description>
+      <p>
+      いいえ。
+      受信された電子メールからアドレス帳に直接名前を加えることは出来ません。
+      しかし、クリップボード使ってアドレス帳にペーストすることが出来ます。
+      失望しないでください。
+      SquirrelMailは開発中のプログラムです。
+      この機能は将来組み込まれるかもしれません。
+      (訳注：プラグインはあります。)
+    </p>
+   </description>
+</section>
+
+<section>
+  <title>
+    SquirrelMailは誰が作っているのですか？
+  </title>
+   <description>
+    <p>
+	沢山の人々の協力で作られています。
+      それらの人々のリストはこちらのサイト、<a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>で見ることが出来ます。
+    </p>
+   </description>
+</section>
+
+<section>
+  <title>
+    ウェブメールとは何ですか？
+  </title>
+  <description>
+    <p>
+      SquirrelMailの場合、IMAPプロトコルを使ってあなたの電子メールアカウントにアクセスします。
+      これは他の人の設定のためのセットアップにどうやってメールをチェックするべきか、特に考えることはありません。
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      このウェブメールをどこで使うことが出来ますか？
+   </title>
+   <description>
+      <p>
+      ブラウザでアクセスできるところならどこでも使うことが出来ます。
+      Wireless access (WAP/WML) is not on the drawing board at this time though.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+    普通の電子メールクライアントを使わずにウェブメールを使うのはなぜか？
+   </title>
+   <description>
+      <p>
+      ウェブメールはこれまでの電子メールクライアントの完全な置換ではありません。
+      
+      友人の家や旅先など、あなたの家や仕事場を離れて、あなたのコンピュータの無いところでで電子メールをチェックしたくなることがあります。
+      しかし、他のコンピュータに電子メールクライアントにあなたのメール環境をセットアップし、あとでそれを削除することは非常に面倒です。
+      SquirrelMail はそんな場合のために設計されています。
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+    どの様に動いているのですか？
+   </title>
+   <description>
+      <p>
+      SquirrelMail は IMAPプロトコルを使います。
+      IMAPプロトコルについては、<A HREF="http://imap.org"/>ここ</A>に情報があります。
+      このプログラムはPHP4に組み込まれた機能ではなく、独自のIMAP機能を実装しています。
+      これはインストール時以外には特に重要ではありません。
+      </p>
+   </description>
+</section>

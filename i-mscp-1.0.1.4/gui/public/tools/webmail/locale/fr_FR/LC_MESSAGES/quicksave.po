@@ -1,0 +1,116 @@
+# French (fr_FR) quicksave Translation (SquirrelMail plugin)
+# Copyright (c) 2008-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Gauthier Douchet <gauthier.douchet@gmail.com>, 2008.
+# $Id: quicksave.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: quicksave 2.4.2\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-23 23:57+0200\n"
+"PO-Revision-Date: 2008-03-08 20:06+0100\n"
+"Last-Translator: Gauthier Douchet <gauthier.douchet@gmail.com>\n"
+"Language-Team: French <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Message Save Frequency"
+msgstr "Fréquence de sauvegarde du message"
+
+msgid "(set to zero to turn off)"
+msgstr "(mettre zéro pour le désactiver"
+
+msgid "Message Save Units"
+msgstr "Unités de sauvegarde du message"
+
+msgid "Seconds"
+msgstr "Secondes"
+
+msgid "Miliseconds"
+msgstr "Millisecondes"
+
+msgid "Cookie Encryption Level"
+msgstr "Niveau d'encryptage du cookie"
+
+msgid "None"
+msgstr "Aucun"
+
+msgid "Low"
+msgstr "Bas"
+
+msgid "Medium"
+msgstr "Moyen"
+
+msgid "Moderate"
+msgstr "Modéré"
+
+msgid "Auto Message Save and Recovery"
+msgstr "Sauvegarde et récupération automatique du message"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid ""
+"QuickSave Error - No encryption password given.  Please contact your system "
+"administrator."
+msgstr ""
+"Erreur du plugin - aucun mot de passe d'encryptage spécifié. Contactez votre "
+"administrateur système"
+
+msgid ""
+"QuickSave Error - Algorithm cannot find a suitable hash; bad password."
+"\\nPlease contact your system administrator."
+msgstr ""
+"Erreur du plugin - l'algorithme ne peut pas trouver un hachage acceptable: "
+"mauvais mot de passe \\nContactez votre administrateur système"
+
+msgid ""
+"QuickSave Error - A salt value could not be extracted from the encrypted "
+"message\\nbecause its length is too short.  The message cannot be decrypted."
+"\\nPlease contact your system administrator."
+msgstr ""
+"Erreur du plugin - Une valeur ne peut pas &ecirc;tre extraite du message "
+"encrypté\\ncar sa taille est trop petite. Le message ne peut pas &ecirc;tre "
+"décrypté. \\nContactez votre administrateur système"
+
+msgid ""
+"QuickSave Error - No decryption password given.  Please contact your system "
+"administrator."
+msgstr ""
+"Erreur du plugin - aucun mot de passe de décryptage spécifié. Contactez "
+"votre administrateur système"
+
+msgid "<none>"
+msgstr "<aucun>"
+
+msgid "WARNING: The following email was interrupted and was never sent!"
+msgstr ""
+"ATTENTION: Le message suivant a été interrompu et n\\'a pas été envoyé!"
+
+msgid "To:"
+msgstr "A :"
+
+msgid "Subject:"
+msgstr "Sujet :"
+
+msgid "Do you wish to resume it?  (Press cancel to discard message)"
+msgstr ""
+"Voulez-vous le restaurer? (Appuyez sur Annuler pour rejeter le message)"
+
+msgid "Email restored!"
+msgstr "Message restauré"
+
+msgid "Please remember to press Send when finished typing your message."
+msgstr ""
+"N'oubliez pas d'appuyer sur Envoyer quand vous avez fini d'écrire votre "
+"message"
+
+msgid "Click here to resume it."
+msgstr "Cliquez ici pour le restaurer."
+
+msgid "NOTE: The following email was interrupted and was never sent:"
+msgstr "Remarque: le message suivant a été interrompu et n'a pas été envoyé"
+
+msgid "NOTE: You have an unsent message that was interrupted."
+msgstr "Remarque: vous avez un message non envoyé qui a été interrompu."

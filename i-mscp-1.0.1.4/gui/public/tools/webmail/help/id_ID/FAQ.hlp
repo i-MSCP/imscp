@@ -1,0 +1,109 @@
+<chapter>
+   <title>
+   Pertanyaan yang Sering Diajukan (PSD)
+   </title>   
+   <summary>
+   Seringkali seseorang menanyakan hal yang sama dengan orang lain. 
+   Berikut ini adalah daftar pertanyaan serupa serta jawabannya.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+   Bisakah saya menggunakan banyak nama dari buku alamat?
+   </title>
+   <description>
+      <p>
+	YA. Penelusur buku alamat akan menampilkan semua kriteria 
+	pencarian yang cocok dengan yang diketikkan di kotak telusur. Jika 10   
+	nama ditampilkan, sembarang kombinasi baik untuk  kolom <B>Untuk:</B> 
+	maupun <B>Tembusan:</B> bisa dipilih.  Semua alamat terpilih akan 
+	dimasukkan ke kolom yang sesuai saat tombol "Gunakan Alamat" diklik.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+   Bisakan saya menambahkan nama dari suatu surate langsung ke buku alamat ?
+   </title>
+   <description>
+      <p>
+	Tidak. Saat ini Anda tidak dapat menambahkan suatu nama dari suatu 
+	surate langsung ke buku alamat. Akan tetapi, Anda dapat 
+	menggunakan klik kanan pada suatu alamat, kemudian meletakkannya ke 
+	buku alamat. Mencoba bukanlah suatu yang jelek. SquirrelMail sedang 
+	dikembangkan terus dan mungkin suatu ketika hal ini dapat dilakukan..
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Siapakah pembuat SquirrelMail
+   </title>
+   <description>
+      <p>
+	Banyak orang yang terlibat. Untuk mengetahui siapa mereka, Anda 
+	dapat mengunjungi situs kami <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Apa itu Webmail?
+   </title>
+   <description>
+      <p>
+	Dalam kasus SquirrelMail, ia memungkinkan Anda mengakses surate 
+	Anda melalui protocol IMAP. Artinya, Anda tidak perlu mengetahui cara 
+	men-setup hal lain hanya untuk melihat surate.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Di manakah saya dapat menggunakan webmail?
+   </title>
+   <description>
+      <p>
+	Di mana saja asalkan tersedia penjelajah web. Akses tanpa kabel
+	( WAP/WML ) tidak dimungkinkan untuk saat ini.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Mengapa menggunakan webmail bukannya klien surate biasa?
+   </title>
+   <description>
+      <p>
+	Masih diperdebatkan bila webmail dapat menggantikan sepenuhnya 
+	suatu klien surate biasa. Akan tetapi, siapa tahu ? Namun demikian, 
+	andaikan Anda berada di rumah teman, di perjalanan , atau di 
+	rumah/kantor dan jauh dari komputer Anda dan ingin melihat surate Anda, 
+	maka Anda tahu mengapa butuh webmail. Oleh karena, suatu kerja besar 
+	bila Anda harus men-setup surate Anda di komputer mereka lalu menghapus 
+	semua surate setelah Anda selesai. SquirrelMail dirancang sebagai 
+	pelengkap bagi klien surate Anda.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Bagaimana hal ini bekerja?
+   </title>
+   <description>
+      <p>
+	SquirrelMail menggunakan protocol IMAP. Keterangan tentang hal 
+	ini bisa ditemukan di <A HREF="http://imap.org"/>di sini</A>. 
+	Program ini juga menggunakan fungsi IMAP sendiri, bukan yang ada di PHP4. 
+	Hal ini tidak masalah bagi siapapun kecuali mereka yang bertanggung jawab 
+	untuk memasangnya. Akan tetapi, percayalah mereka sangat menghargai hal ini.
+      </p>
+   </description>
+</section>

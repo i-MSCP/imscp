@@ -1,0 +1,589 @@
+# German translation of SquirrelMail ldapquery plugin.
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Ferdie Ferdsen <ferdie@despam.de>, 2004.
+# Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
+# $Id: ldapquery.po 13696 2009-05-14 06:27:08Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: ldapquery 2.0\n"
+"POT-Creation-Date: 2005-03-17 19:32+0200\n"
+"PO-Revision-Date: 2005-09-06 23:05+0200\n"
+"Last-Translator: Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>\n"
+"Language-Team: German <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "Dublicate ldap attribute definition: %s."
+msgstr "Doppelte LDAP-Attribut Definition: %s"
+
+#, php-format
+msgid "Dublicate ldap object definition: %s."
+msgstr "Doppelte LDAP-Objekt Definition: %s."
+
+msgid "Any"
+msgstr "Beliebig"
+
+msgid "Directory"
+msgstr "Verzeichnis"
+
+msgid "Directory Preferences"
+msgstr "Verzeichnis Einstellungen"
+
+msgid ""
+"These settings control what type of output you will see when you use the "
+"Directory link to search Directory Services."
+msgstr ""
+"Diese Einstellungen bestimmen welche Art von Ausgabe Sie sehen, wenn Sie den "
+"\"Verzeichnis\" Link benutzen um den Verzeichnisdienst zu durchsuchen."
+
+msgid "No records found"
+msgstr "Keine Einträge gefunden"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Add to address book"
+msgstr "Zum Adressbuch hinzufügen"
+
+msgid "User DN:"
+msgstr "User DN:"
+
+msgid "Password:"
+msgstr "Passwort:"
+
+msgid "Search For:"
+msgstr "Suche nach:"
+
+msgid "Where:"
+msgstr "wobei: "
+
+msgid "Contains"
+msgstr "Enthält"
+
+msgid "Is"
+msgstr "ist"
+
+msgid "Sort By:"
+msgstr "Sortiere nach:"
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Search Results"
+msgstr "Suchergebnisse"
+
+#, php-format
+msgid "Comparetype is %s"
+msgstr "Vergleichsart ist %s"
+
+#, php-format
+msgid "QUERY is %s"
+msgstr "Abfrage ist %s"
+
+#, php-format
+msgid "Querying: %s on port %d with base %s"
+msgstr "Frage %s auf Port %d mit Basis %s ab"
+
+#, php-format
+msgid "Could not connect to LDAP server %s"
+msgstr "Konnte keine Verbindung zum LDAP Server %s herstellen"
+
+msgid "Unable to bind to LDAP server"
+msgstr "Konnte kein bin() mit dem LDAP Server herstellen"
+
+msgid "Nothing found!"
+msgstr "Keine Einträge gefunden!"
+
+#, php-format
+msgid "output type is %s"
+msgstr "Ausgabetyp ist %s"
+
+#, php-format
+msgid "output sorted by %s"
+msgstr "Ausgabe sortiert nach %s"
+
+msgid "Options - Directory Preferences"
+msgstr "Optionen - Verzeichnis Voreinstellungen"
+
+msgid "Output types can be:"
+msgstr "Ausgabetypen können sein:"
+
+msgid "One Table"
+msgstr "Eine Tabelle"
+
+msgid ""
+"One big table with one row per record found and each selected attribute as a "
+"separate column."
+msgstr ""
+"Eine große Tabelle mit einer Zeile pro gefundenem Eintrag und jedem "
+"gewählten Attribut als eine separate Spalte."
+
+msgid "Multiple Tables"
+msgstr "Mehrere Tabellen"
+
+msgid ""
+"One table per record found with 2 columns for each table. One column "
+"contains attribute names and the 2nd column shows values for each "
+"attribute.  This format is best if you have many attributes selected or if "
+"the values for some of the attributes you have selected can be very long "
+"with no spaces (like labeledurl)."
+msgstr ""
+"Eine Tabelle pro gefundenem Eintag mit 2 Spalten für jede Tabelle. Eine "
+"Spalte enthät die Attributnamen und die 2. Spalte zeigt die Werte für jedes "
+"Attribut. Dieses Format ist am besten geeignet, wenn Sie viele Attribute "
+"gewählt haben oder wenn die Werte für einige der Attribute sehr lang sind "
+"und keine Leerzeichen enthalten (wie z.B. labeledurl)."
+
+msgid "Select Output Type:"
+msgstr "Wählen Sie den Ausgabetyp:"
+
+msgid "Select Displayed Fields"
+msgstr "Wählen Sie die angezeigten Felder"
+
+msgid "Submit"
+msgstr "Absenden"
+
+msgid "Common Name"
+msgstr "Allgemeiner Name"
+
+msgid "Knowledge Information"
+msgstr "Wissensinformation"
+
+msgid "Surname"
+msgstr "Nachname"
+
+msgid "Serial Number"
+msgstr "Seriennummer"
+
+msgid "Country Name"
+msgstr "Land"
+
+msgid "Locality Name"
+msgstr "Ort"
+
+msgid "State or Province Name"
+msgstr "Bundesland"
+
+msgid "Street Address"
+msgstr "Straße"
+
+msgid "Organisation Name"
+msgstr "Organisationsname"
+
+msgid "Organisational Unit Name"
+msgstr "Organistationseinheit"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Search Guide"
+msgstr "Suchhilfe"
+
+msgid "Business Category"
+msgstr "Geschäftsbereich"
+
+msgid "Postal Address"
+msgstr "Postalische Adresse"
+
+msgid "Postal Code"
+msgstr "Postleitzahl"
+
+msgid "Post Office Box"
+msgstr "Postfach"
+
+msgid "Physical Delivery Office Name"
+msgstr ""
+
+msgid "Telephone Number"
+msgstr "Telefonnummer"
+
+msgid "Telex Number"
+msgstr "Telexnummer "
+
+msgid "Teletex Terminal Identifier"
+msgstr "Telex Terminal Identifikation "
+
+msgid "Facsimile (Fax) Telephone Number"
+msgstr "Faxnummer "
+
+msgid "X.121 Address"
+msgstr "X.121 Adresse "
+
+msgid "International ISDN Number"
+msgstr "ISDN Nummer"
+
+msgid "Registered Postal Address"
+msgstr "Postadresse "
+
+msgid "Destination Indicator"
+msgstr ""
+
+msgid "Preferred Delivery Method"
+msgstr "Bevorzugte Zustellmethode "
+
+msgid "Presentation Address"
+msgstr ""
+
+msgid "Supported Application Context"
+msgstr ""
+
+msgid "Member of a group"
+msgstr "Gruppenmitglied"
+
+msgid "Owner"
+msgstr "Besitzer"
+
+msgid "Occupant of role"
+msgstr ""
+
+msgid "See also"
+msgstr "Siehe auch"
+
+msgid "User Certificate"
+msgstr "Benutzer Zertifikat"
+
+msgid "CA Certificate"
+msgstr "CA Zertifikat"
+
+msgid "Authority Revocation List"
+msgstr ""
+
+msgid "Certificate Revocation List"
+msgstr ""
+
+msgid "Cross Certificate Pair"
+msgstr ""
+
+msgid "First Name"
+msgstr "Vorname"
+
+msgid "Initials"
+msgstr "Initialen"
+
+msgid "Generation Qualifier"
+msgstr ""
+
+msgid "X.500 unique identifier"
+msgstr ""
+
+msgid "DN qualifier"
+msgstr ""
+
+msgid "Enhanced Search Guide"
+msgstr ""
+
+msgid "Protocol Information"
+msgstr ""
+
+msgid "unique member of a group"
+msgstr ""
+
+msgid "House Identifier"
+msgstr ""
+
+msgid "Supported Algorithms"
+msgstr ""
+
+msgid "Delta Revocation List"
+msgstr ""
+
+msgid "Name of DMD"
+msgstr ""
+
+msgid "Labelled URI"
+msgstr ""
+
+#, fuzzy
+msgid "User ID"
+msgstr "User DN:"
+
+msgid "Mail"
+msgstr ""
+
+msgid "Domain Component"
+msgstr ""
+
+msgid "Associated Domain"
+msgstr ""
+
+msgid "Email Address"
+msgstr "E-Mail-Adresse"
+
+msgid "Country"
+msgstr ""
+
+msgid "Locality"
+msgstr ""
+
+msgid "Organisation"
+msgstr ""
+
+msgid "Organisational Unit"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+msgid "Organisational Person"
+msgstr ""
+
+msgid "Organisational Role"
+msgstr ""
+
+msgid "Group of Names"
+msgstr ""
+
+msgid "Residential Person"
+msgstr ""
+
+msgid "Application Process"
+msgstr ""
+
+msgid "Application Entity"
+msgstr ""
+
+msgid "DSA"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Strong Authentication User"
+msgstr ""
+
+msgid "Certificate Authority"
+msgstr ""
+
+msgid "Group of Unique Names"
+msgstr ""
+
+msgid "User Security Information"
+msgstr ""
+
+msgid "Certificate Authority V2"
+msgstr ""
+
+msgid "CRL Distribution Point"
+msgstr ""
+
+msgid "dmd"
+msgstr ""
+
+msgid "PKI User"
+msgstr ""
+
+msgid "PKI CA"
+msgstr ""
+
+msgid "Delta CRL"
+msgstr ""
+
+msgid "Labeled URI Object"
+msgstr ""
+
+msgid "Simple Security Object"
+msgstr ""
+
+msgid "DC Object"
+msgstr ""
+
+msgid "UID Object"
+msgstr ""
+
+msgid "Encoded Text or Address"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Drink"
+msgstr ""
+
+msgid "Room Number"
+msgstr ""
+
+#, fuzzy
+msgid "Photo"
+msgstr "Telefon"
+
+msgid "Category of user"
+msgstr ""
+
+msgid "Host"
+msgstr ""
+
+msgid "Manager"
+msgstr ""
+
+msgid "Document identifier"
+msgstr ""
+
+msgid "Document Title"
+msgstr ""
+
+msgid "Document version"
+msgstr ""
+
+msgid "Document author"
+msgstr ""
+
+msgid "Location of document"
+msgstr ""
+
+msgid "Home Phone"
+msgstr "Telefon (privat)"
+
+msgid "Secretary"
+msgstr ""
+
+msgid "Other Mailbox"
+msgstr ""
+
+msgid "A Record"
+msgstr ""
+
+msgid "MD Record"
+msgstr ""
+
+msgid "MX Record"
+msgstr ""
+
+msgid "NS Record"
+msgstr ""
+
+msgid "SOA Record"
+msgstr ""
+
+msgid "CNAME Record"
+msgstr ""
+
+msgid "Associated Name"
+msgstr ""
+
+#, fuzzy
+msgid "Home Postal Address"
+msgstr "Privatadresse"
+
+msgid "Personal Title"
+msgstr ""
+
+msgid "Mobile Phone Number"
+msgstr ""
+
+msgid "Pager"
+msgstr ""
+
+msgid "Unique Identifier"
+msgstr ""
+
+msgid "Organizational status"
+msgstr ""
+
+msgid "Janet mailbox"
+msgstr ""
+
+msgid "Mail Preference Option"
+msgstr ""
+
+msgid "Name of building"
+msgstr ""
+
+msgid "DSA Quality"
+msgstr ""
+
+msgid "Single Level Quality"
+msgstr ""
+
+msgid "Subtree Minimum Quality"
+msgstr ""
+
+msgid "Subtree Maximum Quality"
+msgstr ""
+
+msgid "Personal Signature"
+msgstr ""
+
+msgid "DIT Redirect"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Publisher of document"
+msgstr ""
+
+msgid "Pilot Person"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Document"
+msgstr ""
+
+msgid "Room"
+msgstr ""
+
+msgid "Document Series"
+msgstr ""
+
+msgid "Domain"
+msgstr ""
+
+msgid "RFC822 Local Part"
+msgstr ""
+
+msgid "DNS Domain"
+msgstr ""
+
+msgid "Object related to domain"
+msgstr ""
+
+msgid "Friendly Country"
+msgstr ""
+
+msgid "Pilot Organisation"
+msgstr ""
+
+msgid "Pilot DSA"
+msgstr ""
+
+msgid "Quality Labelled Data"
+msgstr ""
+
+msgid "Car License"
+msgstr ""
+
+#, fuzzy
+msgid "Department Number"
+msgstr "Abteilung"
+
+msgid "Displayed Name"
+msgstr ""
+
+msgid "Employee Number"
+msgstr ""
+
+msgid "Employee Type"
+msgstr ""
+
+msgid "JPEG Photo"
+msgstr ""
+
+msgid "Preferred Language"
+msgstr ""
+
+msgid "User SMIME Certificate"
+msgstr ""
+
+msgid "User PKCS12"
+msgstr ""
+
+msgid "Internet Organizational Person"
+msgstr ""

@@ -1,0 +1,465 @@
+# Khmer (km) rootly_news Translation
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009.
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: rootly_news\n"
+"POT-Creation-Date: 2007-10-27 12:37+0200\n"
+"PO-Revision-Date: 2009-04-24 09:30+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:55
+msgid "Rootly News"
+msgstr "Rootly News"
+
+#: functions.php:57
+msgid "Here you can add news by keyword search, set news update options and more."
+msgstr "នៅទីនេះ អ្នកអាច​បន្ថែម​ព័ត៌មាន​តាម​ការ​ស្វែងរក​ពាក្យ​គន្លឹះ កំណត់​ជម្រើស​ភាព​ទាន់សម័យ​របស់​ព័ត៌មាន និង​ច្រើន​ជាង​នេះ​ទៀត ។"
+
+#: options.php:27
+msgid "Sports"
+msgstr "កីឡា"
+
+#: options.php:27
+msgid "Technology"
+msgstr "បច្ចេកវិទ្យា"
+
+#: options.php:27
+msgid "Science"
+msgstr "វិទ្យាសាស្ដ្រ"
+
+#: options.php:27
+msgid "Business"
+msgstr "ពាណិជ្ជកម្ម"
+
+#: options.php:27
+msgid "World"
+msgstr "ពិភពលោក"
+
+#: options.php:27
+msgid "Entertainment"
+msgstr "ការ​កំសាន្ដ"
+
+#: options.php:28
+msgid "Africa"
+msgstr "អាហ្វ្រិក"
+
+#: options.php:28
+msgid "Asia-Pacific"
+msgstr "អាស៊ីប៉ាស៊ីហ្វិក"
+
+#: options.php:28
+msgid "Canada"
+msgstr "កាណាដា"
+
+#: options.php:28
+msgid "Europe"
+msgstr "អឺរ៉ុប"
+
+#: options.php:28
+msgid "Middle East"
+msgstr "មជ្ឈឹមបូព៌ា"
+
+#: options.php:28
+msgid "South Asia"
+msgstr "អាស៊ី​ខាង​ត្បូង"
+
+#: options.php:28
+msgid "UK"
+msgstr "ចក្រភព​អង់គ្លេស"
+
+#: options.php:28
+msgid "US"
+msgstr "សហរដ្ឋ​អាមេរិក"
+
+#: options.php:29
+msgid "American Football"
+msgstr "បាត់ទាត់​អាមេរិក"
+
+#: options.php:29
+msgid "Athletics"
+msgstr "អត្តពលកម្ម"
+
+#: options.php:29
+msgid "Badminton"
+msgstr "វាយ​សី"
+
+#: options.php:29
+msgid "Baseball"
+msgstr "វាយ​កូនបាល់"
+
+#: options.php:29
+msgid "Basketball"
+msgstr "បាល់​បោះ"
+
+#: options.php:29
+msgid "Boxing"
+msgstr "ប្រដាល់"
+
+#: options.php:30
+msgid "College basketball"
+msgstr "បាល់បោះ​សិស្ស​វិទ្យាល័យ​"
+
+#: options.php:30
+msgid "Cricket"
+msgstr "វាយ​កូនបាល់"
+
+#: options.php:30
+msgid "Cycling"
+msgstr "ជិះកង់"
+
+#: options.php:30
+msgid "Football"
+msgstr "បាល់ទាត់"
+
+#: options.php:30
+msgid "Golf"
+msgstr "វាយ​កូនហ្គោល"
+
+#: options.php:30
+msgid "Horse Racing"
+msgstr "ប្រណាំងសិស្ស"
+
+#: options.php:31
+msgid "Ice Hockey"
+msgstr "វាយ​កូនបាល់​លើ​ទឹកកក"
+
+#: options.php:31
+msgid "Motorsport"
+msgstr "ប្រណាំង​ម៉ូតូ"
+
+#: options.php:31
+msgid "Olympics"
+msgstr "អូឡាំពិក"
+
+#: options.php:31
+msgid "Rugby"
+msgstr "បាល់​ឱប"
+
+#: options.php:31
+msgid "Tennis"
+msgstr "វាយ​តីន្នីស"
+
+#: options.php:31
+msgid "Winter sports"
+msgstr "កីឡា​រដូវ​រងារ"
+
+#: options.php:32
+msgid "Apple"
+msgstr "ផ្លែប៉ោម"
+
+#: options.php:32
+msgid "Automobiles"
+msgstr "រថយន្ដ"
+
+#: options.php:32
+msgid "Design"
+msgstr "រចនា"
+
+#: options.php:32
+msgid "Digital Music"
+msgstr "តន្ដ្រី​ឌីជីថល"
+
+#: options.php:32
+msgid "Gadgets"
+msgstr "គ្រឿង​ម៉ាស៊ីន"
+
+#: options.php:32
+msgid "Gaming"
+msgstr "លេង​ល្បែង"
+
+#: options.php:33
+msgid "Hardware"
+msgstr "ផ្នែក​រឹង"
+
+#: options.php:33
+msgid "Linux/Unix"
+msgstr "លីនុច/យូនីក"
+
+#: options.php:33
+msgid "Microsoft"
+msgstr "ម៉ៃក្រូសូហ្វ"
+
+#: options.php:33
+msgid "Nanotechnology"
+msgstr "បច្ចេកវិទ្យា​ណាណូ"
+
+#: options.php:33
+msgid "Programming"
+msgstr "សរសេរ​កម្មវិធី"
+
+#: options.php:33
+msgid "SearchEngines"
+msgstr "កម្មវិធី​ស្វែងរក"
+
+#: options.php:34
+msgid "Security"
+msgstr "សុវត្ថិភាព"
+
+#: options.php:34
+msgid "Software"
+msgstr "កម្មវិធី"
+
+#: options.php:34
+msgid "Web2.0"
+msgstr "Web2.0"
+
+#: options.php:35
+msgid "Arts"
+msgstr "សិល្បៈ"
+
+#: options.php:35
+msgid "Celebrities"
+msgstr "ភាព​ល្បីល្បាញ"
+
+#: options.php:35
+msgid "Fun"
+msgstr "កំប្លែង"
+
+#: options.php:35
+msgid "Gossip"
+msgstr "ពាក្យ​ចចាម​អារាម"
+
+#: options.php:35
+msgid "Movies"
+msgstr "ភាពយន្ដ"
+
+#: options.php:35
+msgid "Music"
+msgstr "តន្ដ្រី"
+
+#: options.php:35
+msgid "Opinion"
+msgstr "គំនិត​យោបល់"
+
+#: options.php:35
+msgid "TV"
+msgstr "ទូរទស្សន៍"
+
+#: options.php:35
+msgid "Weird"
+msgstr "ប្លែកៗ"
+
+#: options.php:36
+msgid "Agriculture"
+msgstr "កសិកម្ម"
+
+#: options.php:36
+msgid "Animals"
+msgstr "សត្វ"
+
+#: options.php:36
+msgid "Archaeology"
+msgstr "បុរាណវិទ្យា"
+
+#: options.php:36
+msgid "AtmosphericScience"
+msgstr "វិទ្យាសាស្ដ្រ​សិក្សាពី​បរិយាកាស"
+
+#: options.php:36
+msgid "Biology"
+msgstr "ជីវសាស្ដ្រ"
+
+#: options.php:36
+msgid "Biotechnology"
+msgstr "ជីវ​បច្ចេកវិទ្យា"
+
+#: options.php:37
+msgid "Chemistry"
+msgstr "គីមីវិទ្យា"
+
+#: options.php:37
+msgid "EarthScience"
+msgstr "ផែនដីវិទ្យា"
+
+#: options.php:37
+msgid "Education"
+msgstr "ការ​អប់រំ"
+
+#: options.php:37
+msgid "Mathematics"
+msgstr "គណិតវិទ្យា"
+
+#: options.php:37
+msgid "MedicineandHealth"
+msgstr "វេជ្ជសាស្ដ្រ និង​សុខភាព"
+
+#: options.php:37
+msgid "Nature"
+msgstr "ធម្មជាតិ"
+
+#: options.php:38
+msgid "Physics"
+msgstr "រូបសាស្ដ្រ"
+
+#: options.php:38
+msgid "PolicyandEthics"
+msgstr "គោលការណ៍ និង​ចរិយាមាយាទ"
+
+#: options.php:38
+msgid "SocialandBehavior"
+msgstr "សង្គម និង​ឥរិយាបទ"
+
+#: options.php:38
+msgid "Space &amp; Astronomy"
+msgstr "លំហ &amp; តារាសាស្ដ្រ"
+
+#: options.php:39
+msgid "Bonds"
+msgstr "ចំណង"
+
+#: options.php:39
+msgid "Careers"
+msgstr "អាជីព"
+
+#: options.php:39
+msgid "CIO"
+msgstr "CIO"
+
+#: options.php:39
+msgid "Commerce"
+msgstr "ពាណិជ្ជកម្ម"
+
+#: options.php:39
+msgid "Currencies"
+msgstr "រូបិយប័ណ្ណ"
+
+#: options.php:39
+msgid "E-business"
+msgstr "ពាណិជ្ជកម្ម​អេឡិចត្រូនិក"
+
+#: options.php:39
+msgid "Economy"
+msgstr "សេដ្ឋកិច្ច"
+
+#: options.php:40
+msgid "EmergingMarkets"
+msgstr "ការ​កើតឡើង​ក្នុង​ទីផ្សារ"
+
+#: options.php:40
+msgid "Energy"
+msgstr "ថាមពល"
+
+#: options.php:40
+msgid "Enterprise"
+msgstr "សហគ្រាស"
+
+#: options.php:40
+msgid "Finance"
+msgstr "ហិរញ្ញវត្ថុ"
+
+#: options.php:40
+msgid "HealthCare"
+msgstr "តំហែទាំ​សុខភាព"
+
+#: options.php:40
+msgid "Infoimaging"
+msgstr "រូបភាព​ព័ត៌មាន"
+
+#: options.php:41
+msgid "LawandTaxation"
+msgstr "LawandTaxation"
+
+#: options.php:41
+msgid "Logistics"
+msgstr "វិជ្ជា​ដឹកនាំ"
+
+#: options.php:41
+msgid "Management"
+msgstr "ការ​គ្រប់គ្រង"
+
+#: options.php:41
+msgid "Manufacturing"
+msgstr "ឧស្សាហកម្ម"
+
+#: options.php:41
+msgid "PersonalFinance"
+msgstr "ហិរញ្ញវត្ថុ​ផ្ទាល់ខ្លួន"
+
+#: options.php:41
+msgid "RealEstate"
+msgstr "អចលនទ្រព្យ"
+
+#: options.php:42
+msgid "SalesandMarketing"
+msgstr "ការ​លក់ដូ និង​ទីផ្សារ"
+
+#: options.php:42
+msgid "Services"
+msgstr "សេវា"
+
+#: options.php:42
+msgid "Tech"
+msgstr "បច្ចេកវិទ្យា"
+
+#: options.php:42
+msgid "Wireless"
+msgstr "គ្មាន​ខ្សែ"
+
+#: options.php:100
+msgid "Settings Updated"
+msgstr "បាន​ធ្វើ​ឲ្យ​ការ​កំណត់​ទាន់សម័យ"
+
+#: templates/default/options.tpl:14
+msgid "Refresh Folder List"
+msgstr "ធ្វើ​ឲ្យ​បញ្ជី​ថត​ស្រស់"
+
+#: templates/default/options.tpl:17
+msgid "Show me news about..."
+msgstr "បង្ហាញ​ព័ត៌មាន​ដល់​ខ្ញុំ​អំពី..."
+
+#: templates/default/options.tpl:19
+msgid ""
+"Enter keywords of the news content that you want to see.  Each field's "
+"entries will show news that matches the entire field, with a total of three "
+"searches across  Rootly news."
+msgstr "បញ្ចូល​ពាក្យ​គន្លឹះ​នៃ​មាតិកា​ព័ត៌មាន​ដែល​អ្នក​ចង់​មើល ។ ធាតុ​របស់​វាល​នីមួយៗ​នឹង​បង្ហាញ​ព័ត៌មាន​ដែល​ផ្គូផ្គង​នឹង​វាល​ទាំងស្រុង រួម​ទាំង​ការ​ស្វែង​រក​ទាំង​បី​តាម​ព័ត៌មាន Rootly ។"
+
+#: templates/default/options.tpl:24
+msgid "Keywords"
+msgstr "ពាក្យ​គន្លឹះ"
+
+#: templates/default/options.tpl:25 templates/default/options.tpl:29
+msgid "or"
+msgstr "ឬ"
+
+#: templates/default/options.tpl:40
+msgid "Display Settings"
+msgstr "ការ​កំណត់​ការ​បង្ហាញ"
+
+#: templates/default/options.tpl:44
+msgid "News List Location"
+msgstr "ទីតាំង​បញ្ជី​ព័ត៌មាន"
+
+#: templates/default/options.tpl:59
+msgid "Update frequency"
+msgstr "ប្រេកង់​នៃ​ការ​ភាព​ទាន់សម័យ"
+
+#: templates/default/options.tpl:75
+msgid "News updates"
+msgstr "ភាព​ទាន់សម័យ​ព័ត៌មាន"
+
+#: templates/default/options.tpl:92
+msgid "News Categories &amp; Topics"
+msgstr "ប្រភេទ​ព័ត៌មាន &amp; ប្រធានបទ"
+
+#: templates/default/options.tpl:94
+msgid ""
+"Select a top-level category, such as Science, to see news relavent to all "
+"that category's topics"
+msgstr "ជ្រើស​ប្រភេទ​កម្រិត​កំពូល ដូចជា​វិទ្យាសាស្ដ្រ ដើម្បី​មើល​ព័ត៌មាន​ដែល​ទាក់ទង​នឹង​ប្រធានបទ​ប្រភេទ​នោះ"
+
+#: templates/default/options.tpl:95
+msgid ""
+"or select as many of the news topics individually that you want to see in "
+"your Rootly news list for Squiremail."
+msgstr "ឬ​ជ្រើស​ប្រធានបទ​ព័ត៌មាន​ជាច្រើន​ដាច់​ពី​គ្នា ដែល​អ្នក​ចង់​មើល​នៅ​ក្នុង​បញ្ជី​ព័ត៌មាន Rootly របស់​អ្នក​សម្រាប់ Squiremail ។"
+

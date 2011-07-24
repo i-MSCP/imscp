@@ -1,0 +1,857 @@
+# Frisian (fy) ldapquery Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: ldapquery.pot 11068 2006-04-20 23:31:04Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: ldapquery\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2006-03-26 17:23+0300\n"
+"PO-Revision-Date: 2007-04-14 11:54+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Frisian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: addressbook.php:64
+msgid "Personal address book is not available."
+msgstr "Persoanlik adresboek is net beskikber."
+
+#. checked email field
+#: addressbook.php:71
+msgid "Email address is not set or empty."
+msgstr "E-mailadres is net opjûn of leech."
+
+#. checked both name fields
+#: addressbook.php:74
+msgid "Name is not set or empty."
+msgstr "Namme is net opjûn of leech."
+
+#: addressbook.php:80
+#, php-format
+msgid "Nickname %s is already in use."
+msgstr "Bynamme %s wurdt al brûkt."
+
+#: addressbook.php:82
+msgid "Can't create address book entry."
+msgstr "Kin gjin adresboek-item oanmeitsje."
+
+#: addressbook.php:94
+msgid "Nickname: "
+msgstr "Bynamme: "
+
+#: addressbook.php:97
+msgid "First name: "
+msgstr "Foarnamme: "
+
+#: addressbook.php:100
+msgid "Last name: "
+msgstr "Efternamme: "
+
+#: addressbook.php:103
+msgid "E-mail: "
+msgstr "E-mail: "
+
+#: addressbook.php:106
+msgid "Info: "
+msgstr "Ynfo: "
+
+#: addressbook.php:109
+msgid "Add address"
+msgstr "Adres taheakje"
+
+#: addressbook.php:113
+msgid "Address book entry is saved."
+msgstr "Adresboek-item is opslein"
+
+#: addressbook.php:120
+msgid "Return to search results"
+msgstr "Tebek nei sykresultaten"
+
+#: class.schema.php:43
+#, php-format
+msgid "Dublicate ldap attribute definition: %s."
+msgstr "ldap-attribútdefinysje duplisearje: %s"
+
+#: class.schema.php:77
+#, php-format
+msgid "Dublicate ldap object definition: %s."
+msgstr "ldap-objektdefinysje duplisearje: %s"
+
+#: class.schema.php:92
+msgid "Any"
+msgstr "Alles"
+
+#: functions.php:97
+msgid "Directory"
+msgstr "Triemtafel"
+
+#: functions.php:116
+#: functions.php:161
+msgid "Directory Preferences"
+msgstr "Triemtafel-foarkarren"
+
+#: functions.php:118
+msgid "These settings control what type of output you will see when you use the Directory link to search Directory Services."
+msgstr "Dizze ynstellingen bepale hokker type útfier jo sjen sille as jo de triemtafel-link brûke om triemtafel-services te trochsykjen."
+
+# records=? koe neat fine Inkeld "opnimme", mar dit lykje my mear skiven of sa ta...
+#: functions.php:281
+#: functions.php:350
+msgid "No records found"
+msgstr "Gjin records fûn"
+
+#: functions.php:553
+msgid "Save"
+msgstr "Opslaan"
+
+#: functions.php:555
+msgid "Add to address book"
+msgstr "Oan adresboek taheakje"
+
+#: functions.php:577
+msgid "Plugin requires PHP with LDAP support."
+msgstr "Plugin fereasket PHP mei LDAP-stipe."
+
+#: functions.php:579
+msgid "LDAP address books are not configured in SquirrelMail configuration."
+msgstr "De LDAP-adresboeken binne net ynsteld yn de konfiguraasje fan SquirrelMail."
+
+#. Get the userdn to authenticate with
+#: ldapquery.php:59
+msgid "User DN:"
+msgstr "Brûker-DN:"
+
+#. Get the user password
+#: ldapquery.php:63
+msgid "Password:"
+msgstr "Wachtwurd:"
+
+#. Get the objectclass the user wants to search for
+#: ldapquery.php:69
+msgid "Search For:"
+msgstr "Sykje nei:"
+
+#. Get the attribute the user wants to search by
+#: ldapquery.php:81
+msgid "Where:"
+msgstr "Wêr:"
+
+#: ldapquery.php:106
+#: ldapquery.php:108
+msgid "Contains"
+msgstr "Befet"
+
+#: ldapquery.php:110
+#: ldapquery.php:112
+msgid "Is"
+msgstr "is itselde as"
+
+#. Sort By menu
+#: ldapquery.php:121
+msgid "Sort By:"
+msgstr "Sortearje op:"
+
+#: ldapquery.php:136
+msgid "Search in:"
+msgstr "Sykje yn:"
+
+#: ldapquery.php:141
+msgid "All LDAP address books"
+msgstr "Alle LDAP-adresboeken"
+
+#: ldapquery.php:158
+msgid "Search"
+msgstr "Sykje"
+
+#: ldapquery.php:165
+msgid "Search Results"
+msgstr "Sykresultaten"
+
+#: ldapquery.php:169
+#, php-format
+msgid "Comparetype is %s"
+msgstr "Fergelyktype is %s"
+
+#: ldapquery.php:189
+#, php-format
+msgid "QUERY is %s"
+msgstr "QUERY is %s"
+
+#.
+#. * Used in debug mode
+#. * Example output "Querying: ldap-server-address on port some-port with base ldap-base-dn"
+#. * See http://www.php.net/sprintf if you want to rearrange order of arguments
+#.
+#: ldapquery.php:227
+#, php-format
+msgid "Querying: %s on port %d with base %s"
+msgstr "Query: %s op poarte %d mei basis %s"
+
+#: ldapquery.php:234
+#, php-format
+msgid "Could not connect to LDAP server %s"
+msgstr "Koe gjin ferbining meitsje mei LDAP-tsjinner %s"
+
+#: ldapquery.php:244
+#: ldapquery.php:249
+#: ldapquery.php:254
+msgid "Unable to bind to LDAP server"
+msgstr "Koe net bine mei LDAP-tsjinner"
+
+#: ldapquery.php:266
+msgid "Nothing found!"
+msgstr "Neat fûn!"
+
+#: ldapquery.php:274
+#, php-format
+msgid "output type is %s"
+msgstr "útfiertype is %s"
+
+#: ldapquery.php:275
+#, php-format
+msgid "output sorted by %s"
+msgstr "útfier sortearre op %s"
+
+#: options.php:43
+msgid "Options - Directory Preferences"
+msgstr "Opsjes - Triemtafel-foarkarren"
+
+#: options.php:49
+msgid "Output types can be:"
+msgstr "Utfiertypes kinne wêze:"
+
+#: options.php:52
+#: options.php:62
+msgid "One Table"
+msgstr "Ien tabel"
+
+#: options.php:53
+msgid "One big table with one row per record found and each selected attribute as a separate column."
+msgstr "Ien grutte tabel mei ien rige per fûne record en elke selektearre attribút hat in aparte kolom."
+
+#: options.php:54
+#: options.php:63
+msgid "Multiple Tables"
+msgstr "Meardere tabellen"
+
+#: options.php:55
+msgid "One table per record found with 2 columns for each table. One column contains attribute names and the 2nd column shows values for each attribute.  This format is best if you have many attributes selected or if the values for some of the attributes you have selected can be very long with no spaces (like labeledurl)."
+msgstr "Ien tabel per fûne record  mei 2 kolommen foar elke tabel. Yn in kolom stean attribútnammen en de twadde kolom toant de wearden foar elk attribút. Dit formaat is it beste as jo meardere attributen selektearre hawwe geselecteerd of als de waarden voor enkele van de attributen die u geselecteerd hebt er lang kunnen zijn sûnder spaasjes (lykas labeledurl)."
+
+#: options.php:60
+msgid "Select Output Type:"
+msgstr "Utfiertype selektearje:"
+
+#: options.php:68
+msgid "Select Displayed Fields"
+msgstr "Werjûne fjilden selektearje"
+
+#: options.php:76
+msgid "Submit"
+msgstr "Yntsjinje"
+
+#. openldap system schemas
+#: schema/core.php:20
+msgid "Common Name"
+msgstr "Algemiene namme"
+
+#: schema/core.php:23
+msgid "Knowledge Information"
+msgstr "Kennisynformaasje"
+
+#: schema/core.php:25
+msgid "Surname"
+msgstr "Efternamme"
+
+#: schema/core.php:27
+msgid "Serial Number"
+msgstr "Searjenûmer"
+
+#: schema/core.php:29
+msgid "Country Name"
+msgstr "Lân"
+
+#: schema/core.php:31
+msgid "Locality Name"
+msgstr "Taalregio"
+
+#: schema/core.php:33
+msgid "State or Province Name"
+msgstr "Steat of provinsje"
+
+#: schema/core.php:35
+msgid "Street Address"
+msgstr "Strjitte"
+
+#: schema/core.php:37
+msgid "Organisation Name"
+msgstr "Organisaasje"
+
+#: schema/core.php:39
+msgid "Organisational Unit Name"
+msgstr "Organisaasje-ienheid"
+
+#: schema/core.php:41
+msgid "Title"
+msgstr "Titel"
+
+#: schema/core.php:43
+msgid "Description"
+msgstr "Beskriuwing"
+
+#: schema/core.php:45
+msgid "Search Guide"
+msgstr "Opsykgids"
+
+#: schema/core.php:47
+msgid "Business Category"
+msgstr "Saaklike kategory"
+
+#: schema/core.php:49
+msgid "Postal Address"
+msgstr "Postadres"
+
+#: schema/core.php:51
+msgid "Postal Code"
+msgstr "Postkoade"
+
+#: schema/core.php:53
+msgid "Post Office Box"
+msgstr "Postbus"
+
+#: schema/core.php:55
+msgid "Physical Delivery Office Name"
+msgstr "Namme fan fysyk kantoar"
+
+#: schema/core.php:57
+msgid "Telephone Number"
+msgstr "Telefoannûmer"
+
+#: schema/core.php:59
+msgid "Telex Number"
+msgstr "Teleks"
+
+#: schema/core.php:61
+msgid "Teletex Terminal Identifier"
+msgstr "Identifikaasje teleks-terminal"
+
+#: schema/core.php:63
+msgid "Facsimile (Fax) Telephone Number"
+msgstr "Faksnûmer"
+
+#: schema/core.php:66
+msgid "X.121 Address"
+msgstr "X.121-adres"
+
+#: schema/core.php:68
+msgid "International ISDN Number"
+msgstr "Ynternasjonaal ISDN-nûmer"
+
+#: schema/core.php:70
+msgid "Registered Postal Address"
+msgstr "Registrearre postadres"
+
+#: schema/core.php:72
+msgid "Destination Indicator"
+msgstr "Bestimmings-yndikaasje"
+
+#: schema/core.php:74
+msgid "Preferred Delivery Method"
+msgstr "Foarkar ôflevermetoade"
+
+#: schema/core.php:76
+msgid "Presentation Address"
+msgstr "Presintaasje-adres"
+
+#: schema/core.php:78
+msgid "Supported Application Context"
+msgstr "Stypjende applikaasjekontekst"
+
+#: schema/core.php:80
+msgid "Member of a group"
+msgstr "Lid fan in groep"
+
+#: schema/core.php:82
+msgid "Owner"
+msgstr "Eigener"
+
+#: schema/core.php:84
+msgid "Occupant of role"
+msgstr "Berop of taak"
+
+#: schema/core.php:86
+msgid "See also"
+msgstr "Sjoch ek"
+
+#: schema/core.php:88
+msgid "User Certificate"
+msgstr "Brûkers-sertifikaat"
+
+#: schema/core.php:90
+msgid "CA Certificate"
+msgstr "CA-sertifikaat"
+
+#: schema/core.php:92
+msgid "Authority Revocation List"
+msgstr "Autoriteit-werrop-list"
+
+#: schema/core.php:94
+msgid "Certificate Revocation List"
+msgstr "Sertifikaat-werrop-list"
+
+#: schema/core.php:96
+msgid "Cross Certificate Pair"
+msgstr "Krússertifikaat-pear"
+
+#: schema/core.php:98
+msgid "First Name"
+msgstr "Foarnamme"
+
+#: schema/core.php:101
+msgid "Initials"
+msgstr "Inisjalen"
+
+#: schema/core.php:103
+msgid "Generation Qualifier"
+msgstr "Generaasjekwalifikaasje"
+
+#: schema/core.php:105
+msgid "X.500 unique identifier"
+msgstr "X.500 unike identifikaasje"
+
+#: schema/core.php:107
+msgid "DN qualifier"
+msgstr "DN-kwalifikaasje"
+
+#: schema/core.php:109
+msgid "Enhanced Search Guide"
+msgstr "Ferbettere-sykje-gids"
+
+#: schema/core.php:111
+msgid "Protocol Information"
+msgstr "Protokolynformaasje"
+
+#: schema/core.php:113
+msgid "unique member of a group"
+msgstr "unyk lid fan in groep"
+
+#: schema/core.php:115
+msgid "House Identifier"
+msgstr "Hûsidentifikaasje"
+
+#: schema/core.php:117
+msgid "Supported Algorithms"
+msgstr "Stypjende algoritmes"
+
+#: schema/core.php:119
+msgid "Delta Revocation List"
+msgstr "Delta-werrop-list"
+
+#. Attribute specifies a directory management domain (DMD),
+#. the administrative authority which operates the directory server.
+#: schema/core.php:123
+msgid "Name of DMD"
+msgstr "Namme fan DMD"
+
+#: schema/core.php:125
+msgid "Labelled URI"
+msgstr "Labele URI-adres"
+
+#: schema/core.php:127
+msgid "User ID"
+msgstr "Brûkers-id"
+
+#: schema/core.php:130
+msgid "Mail"
+msgstr "E-mail"
+
+#: schema/core.php:133
+msgid "Domain Component"
+msgstr "Domeinkomponint"
+
+#: schema/core.php:136
+msgid "Associated Domain"
+msgstr "Assosearre domein"
+
+#: schema/core.php:138
+msgid "Email Address"
+msgstr "E-mailadres"
+
+#. * Object Classes
+#: schema/core.php:143
+#: schema/cosine.php:84
+msgid "Country"
+msgstr "Lân"
+
+#: schema/core.php:145
+msgid "Locality"
+msgstr "Taalregio"
+
+#: schema/core.php:147
+msgid "Organisation"
+msgstr "Organisaasje"
+
+#: schema/core.php:149
+msgid "Organisational Unit"
+msgstr "Organisaasje-ienheid"
+
+#: schema/core.php:151
+msgid "Person"
+msgstr "Persoan"
+
+#: schema/core.php:153
+msgid "Organisational Person"
+msgstr "Organisatoaryske persoan"
+
+#: schema/core.php:155
+msgid "Organisational Role"
+msgstr "Organisatoaryske taak"
+
+#: schema/core.php:157
+msgid "Group of Names"
+msgstr "Groep nammen"
+
+#: schema/core.php:159
+msgid "Residential Person"
+msgstr "Residinsjele persoan"
+
+#: schema/core.php:161
+msgid "Application Process"
+msgstr "Applikaasjeproses"
+
+#: schema/core.php:163
+msgid "Application Entity"
+msgstr "Applikaasje-entiteit"
+
+#. RFC2256: a directory system agent (a server)
+#: schema/core.php:166
+msgid "DSA"
+msgstr "DSA"
+
+#: schema/core.php:168
+msgid "Device"
+msgstr "Apparaat"
+
+#: schema/core.php:170
+msgid "Strong Authentication User"
+msgstr "Sterke autentikaasje brûker"
+
+#: schema/core.php:172
+msgid "Certificate Authority"
+msgstr "Sertifikaat-autoriteit"
+
+#: schema/core.php:174
+msgid "Group of Unique Names"
+msgstr "Groep unike nammen"
+
+#: schema/core.php:176
+msgid "User Security Information"
+msgstr "Ynformaasje oer feiligens brûker"
+
+#: schema/core.php:178
+msgid "Certificate Authority V2"
+msgstr "Sertifikaatautoriteit V2"
+
+#: schema/core.php:180
+msgid "CRL Distribution Point"
+msgstr "CLR-distribúsjepunt"
+
+#. a directory management domain object
+#: schema/core.php:183
+msgid "dmd"
+msgstr "dmd"
+
+#: schema/core.php:185
+msgid "PKI User"
+msgstr "PKI-brûker"
+
+#: schema/core.php:187
+msgid "PKI CA"
+msgstr "PKI-CA"
+
+#: schema/core.php:189
+msgid "Delta CRL"
+msgstr "Delta-CRL"
+
+#: schema/core.php:191
+msgid "Labeled URI Object"
+msgstr "Labele URI-objekt"
+
+#: schema/core.php:193
+msgid "Simple Security Object"
+msgstr "Simple Security-objekt"
+
+#: schema/core.php:195
+msgid "DC Object"
+msgstr "DC-objekt"
+
+#: schema/core.php:197
+msgid "UID Object"
+msgstr "UID-objekt"
+
+#: schema/cosine.php:19
+msgid "Encoded Text or Address"
+msgstr "Kodearre tekst of kodearre adres"
+
+#: schema/cosine.php:21
+msgid "Info"
+msgstr "Ynfo"
+
+#. Favorite drink (noun)
+#: schema/cosine.php:24
+msgid "Drink"
+msgstr "Drankje"
+
+#: schema/cosine.php:27
+msgid "Room Number"
+msgstr "Keamernûmer"
+
+#: schema/cosine.php:29
+msgid "Photo"
+msgstr "Foto"
+
+#: schema/cosine.php:31
+msgid "Category of user"
+msgstr "Kategory fan brûker"
+
+#: schema/cosine.php:33
+msgid "Host"
+msgstr "Host"
+
+#: schema/cosine.php:35
+msgid "Manager"
+msgstr "Behearder"
+
+#: schema/cosine.php:37
+msgid "Document identifier"
+msgstr "Dokumint-identifikaasje"
+
+#: schema/cosine.php:39
+msgid "Document Title"
+msgstr "Dokuminttitel"
+
+#: schema/cosine.php:41
+msgid "Document version"
+msgstr "Dokumintferzje"
+
+#: schema/cosine.php:43
+msgid "Document author"
+msgstr "Dokumint-auteur"
+
+#: schema/cosine.php:45
+msgid "Location of document"
+msgstr "Lokaasje fan dokumint"
+
+#: schema/cosine.php:47
+msgid "Home Phone"
+msgstr "Telefoan privee"
+
+#: schema/cosine.php:50
+msgid "Secretary"
+msgstr "Siktariaat"
+
+#: schema/cosine.php:52
+msgid "Other Mailbox"
+msgstr "Oare postbus"
+
+#. DNS A record entries
+#: schema/cosine.php:55
+msgid "A Record"
+msgstr "In record"
+
+#. DNS MD record entries
+#: schema/cosine.php:58
+msgid "MD Record"
+msgstr "MD-record"
+
+#. DNS MX record entries
+#: schema/cosine.php:61
+msgid "MX Record"
+msgstr "MX-record"
+
+#. DNS NS record entries
+#: schema/cosine.php:64
+msgid "NS Record"
+msgstr "NS-record"
+
+#. DNS SOA record entries
+#: schema/cosine.php:67
+msgid "SOA Record"
+msgstr "SOA-record"
+
+#. DNS CNAME record entries
+#: schema/cosine.php:70
+msgid "CNAME Record"
+msgstr "CNAME-record"
+
+#: schema/cosine.php:72
+msgid "Associated Name"
+msgstr "Assosiearre namme"
+
+#: schema/cosine.php:74
+msgid "Home Postal Address"
+msgstr "Postadres privee"
+
+#: schema/cosine.php:76
+msgid "Personal Title"
+msgstr "Persoanlike titel"
+
+#: schema/cosine.php:78
+msgid "Mobile Phone Number"
+msgstr "Mobile telefoannûmer"
+
+#: schema/cosine.php:81
+msgid "Pager"
+msgstr "Semafoan"
+
+#: schema/cosine.php:87
+msgid "Unique Identifier"
+msgstr "Unike identifikator"
+
+#: schema/cosine.php:89
+msgid "Organizational status"
+msgstr "Organisaasjestatus"
+
+#. Mail address in rfc733 format
+#: schema/cosine.php:92
+msgid "Janet mailbox"
+msgstr "Janet-postbus"
+
+#: schema/cosine.php:94
+msgid "Mail Preference Option"
+msgstr "E-mail foarkaropsje"
+
+#: schema/cosine.php:96
+msgid "Name of building"
+msgstr "Namme fan gebou"
+
+#: schema/cosine.php:98
+msgid "DSA Quality"
+msgstr "DSA-kwaliteit"
+
+#: schema/cosine.php:100
+msgid "Single Level Quality"
+msgstr "Single Level-kwaliteit"
+
+#: schema/cosine.php:102
+msgid "Subtree Minimum Quality"
+msgstr "Subtree Minimum-kwaliteit"
+
+#: schema/cosine.php:104
+msgid "Subtree Maximum Quality"
+msgstr "Subtree Maksimum-kwaliteit"
+
+#: schema/cosine.php:106
+msgid "Personal Signature"
+msgstr "Persoanlike ûndertekening"
+
+#. Redirection to other entry in directory
+#: schema/cosine.php:109
+msgid "DIT Redirect"
+msgstr "DIT-omlieding"
+
+#: schema/cosine.php:111
+msgid "Audio"
+msgstr "Audio"
+
+#: schema/cosine.php:113
+msgid "Publisher of document"
+msgstr "Utjouwer fan dokumint"
+
+#: schema/cosine.php:116
+msgid "Pilot Person"
+msgstr "Pilot-persoan"
+
+#: schema/cosine.php:119
+msgid "Account"
+msgstr "Akkount"
+
+#: schema/cosine.php:121
+msgid "Document"
+msgstr "Dokumint"
+
+#: schema/cosine.php:123
+msgid "Room"
+msgstr "Keamer"
+
+#: schema/cosine.php:125
+msgid "Document Series"
+msgstr "Dokumint-searjes"
+
+#. can represent dns and nrs domain objects
+#: schema/cosine.php:128
+msgid "Domain"
+msgstr "Domein"
+
+#: schema/cosine.php:130
+msgid "RFC822 Local Part"
+msgstr "RFC822 Local Part"
+
+#: schema/cosine.php:132
+msgid "DNS Domain"
+msgstr "DNS-domein"
+
+#: schema/cosine.php:134
+msgid "Object related to domain"
+msgstr "Objekt relatearre oan domein"
+
+#: schema/cosine.php:136
+msgid "Friendly Country"
+msgstr "Freonlik lân"
+
+#: schema/cosine.php:138
+msgid "Pilot Organisation"
+msgstr "Pilot-organisaasje"
+
+#: schema/cosine.php:140
+msgid "Pilot DSA"
+msgstr "Pilot DSA"
+
+#: schema/cosine.php:142
+msgid "Quality Labelled Data"
+msgstr "Kwaliteit-labele gegevens"
+
+#: schema/inetorgperson.php:20
+msgid "Car License"
+msgstr "Autopapieren"
+
+#: schema/inetorgperson.php:22
+msgid "Department Number"
+msgstr "Nûmer departemint"
+
+#: schema/inetorgperson.php:24
+msgid "Displayed Name"
+msgstr "Werjûne namme"
+
+#: schema/inetorgperson.php:26
+msgid "Employee Number"
+msgstr "Wurknimmersnûmer"
+
+#: schema/inetorgperson.php:28
+msgid "Employee Type"
+msgstr "Wurknimmerstype"
+
+#: schema/inetorgperson.php:30
+msgid "JPEG Photo"
+msgstr "JPEG-foto"
+
+#: schema/inetorgperson.php:32
+msgid "Preferred Language"
+msgstr "Foarkartaal"
+
+#: schema/inetorgperson.php:34
+msgid "User SMIME Certificate"
+msgstr "SMIME-sertifikaat foar brûker"
+
+#: schema/inetorgperson.php:36
+msgid "User PKCS12"
+msgstr "PKCS12 foar brûker"
+
+#: schema/inetorgperson.php:38
+msgid "Internet Organizational Person"
+msgstr "Ynternet-organisaasje-persoan"
+

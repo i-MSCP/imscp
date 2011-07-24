@@ -1,0 +1,110 @@
+# Bengali (bn_BD) expire Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: expire.pot 11128 2006-05-13 09:22:15Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: expire 1.3.1\n"
+"Report-Msgid-Bugs-To: Florian Daeumling <jam@qv90.de>\n"
+"POT-Creation-Date: 2006-05-13 11:09+0200\n"
+"PO-Revision-Date: 2008-12-25 12:20+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:28
+#, php-format
+msgid "ERROR (%s): Can't load config file"
+msgstr "ত্রুটি (%s): কনফিগার ফাইল লোড করতে পারেনি"
+
+#: functions.php:49
+msgid "Cannot create option directory!"
+msgstr "পছন্দ নির্দেশিকা তৈরী করতে পারেনি!"
+
+#: functions.php:50 functions.php:57 functions.php:63 functions.php:181
+#: functions.php:187 functions.php:230
+msgid "Please contact system administrator."
+msgstr "অনুগ্রহ করে সিস্টেম প্রশাসকের সাথে যোগাযোগ করুন।"
+
+#: functions.php:56
+msgid "Cannot create option file!"
+msgstr "পছন্দ ফাইল তৈরী করতে পারেনা!"
+
+#: functions.php:62 functions.php:186
+msgid "Cannot create temporary file!"
+msgstr "অস্থায়ী ফাইল তৈরী করতে পারেনা!"
+
+#: functions.php:100
+msgid "Expiration"
+msgstr "মেয়াদোত্তীর্ন"
+
+#: functions.php:106 functions.php:125
+msgid "Expire emails in folder"
+msgstr "ফোল্ডারে ইমেইলের মেয়াদ শেষ"
+
+#: functions.php:108 functions.php:127
+msgid "Select a folder"
+msgstr "একটি ফোল্ডার নির্বাচন করুন"
+
+#: functions.php:112
+msgid "after"
+msgstr "পরে"
+
+#: functions.php:114
+msgid "days"
+msgstr "দিনগুলো"
+
+#: functions.php:118
+msgid "Define"
+msgstr "ব্যাখ্যা করুন"
+
+#: functions.php:130
+#, php-format
+msgid "%s after %s days"
+msgstr "%1$s পরে %2$s দিনগুলো"
+
+#: functions.php:135
+msgid "Delete"
+msgstr "মুছে ফেলুন"
+
+#: functions.php:143
+msgid "Error"
+msgstr "ত্রুটি"
+
+#: functions.php:168
+msgid "This folder definition cannot be modified"
+msgstr "এই ফোল্ডারের ব্যাখ্যাটি পরিবর্তন করা যায়না"
+
+#: functions.php:180
+msgid "Cannot read option file!"
+msgstr "পছন্দ ফাইল পড়তে পারেনা!"
+
+#: functions.php:198
+#, php-format
+msgid "Expiration modified successfully for folder %s."
+msgstr "%s ফোল্ডারের জন্য সফলভাবে মেয়াদ পরিবর্তন করা হয়েছে।"
+
+#: functions.php:211
+#, php-format
+msgid "Expiration deleted successfully for folder %s."
+msgstr "%s ফোল্ডারের জন্য সফলভাবে মেয়াদ মুছে ফেলা হয়েছে।"
+
+#: functions.php:220
+#, php-format
+msgid "Expiration set successfully for folder %s."
+msgstr "%s ফোল্ডারের জন্য সফলভাবে মেয়াদ নিযুক্ত করা হয়েছে।"
+
+#: functions.php:229
+msgid "Cannot replace option file!"
+msgstr "পছন্দ ফাইল প্রতিস্থাপন করতে পারেনি!"
+
+#: options.php:27
+msgid "You have not selected a folder."
+msgstr "আপনি একটি ফোল্ডার নির্বাচন করেননি।"
+
+#: options.php:38
+msgid "You have not entered a valid number of days."
+msgstr "আপনি দিনের একটি বৈধ সংখ্যা প্রবেশ করাননি।"

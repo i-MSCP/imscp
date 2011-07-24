@@ -1,0 +1,177 @@
+# HTMLArea Integration
+# ====================
+cd htmlarea_cvs
+update
+# just hit enter for pwd
+cd ..
+rm -rf htmlarea
+mv htmlarea_cvs/htmlarea htmlarea
+rm -rf htmlarea/examples
+rm -rf htmlarea/tests
+cp index.php htmlarea
+rm -f htmlarea/index.html
+
+
+
+# Xinha:  http://xinha.gogo.co.nz
+#
+# - is the continuation of htmlarea
+# - should be a drop-in replacement
+# - is under heavy development
+# - we'll wait for a stable release
+
+
+
+
+
+
+# FCKeditor Integration
+# =====================
+cd fckeditor_orig
+wget <current release>
+# wget http://unc.dl.sourceforge.net/sourceforge/fckeditor/FCKeditor_2.1.tar.gz
+tar xzvf <current release>
+# tar xzvf FCKeditor_2.0fc.tar.gz
+cd ..
+rm -rf fckeditor
+mkdir fckeditor
+cp -rP fckeditor_orig/fckeditor.js fckeditor
+cp -rP fckeditor_orig/fckconfig.js fckeditor
+cp -rP fckeditor_orig/fckstyles.xml fckeditor
+cp -rP fckeditor_orig/fcktemplates.xml fckeditor
+cp -rP fckeditor_orig/license.txt fckeditor
+cp -rP fckeditor_orig/editor/ fckeditor
+chmod -R u+w fckeditor/*
+
+
+
+# apply this patch
+#
+--- fckeditor_orig/fckconfig.js 2005-10-06 14:52:18.000000000 -0700
++++ fckeditor/fckconfig.js      2005-10-15 21:05:30.000000000 -0700
+@@ -66,26 +66,38 @@
+ FCKConfig.ForceSimpleAmpersand = false ;
+ FCKConfig.TabSpaces            = 0 ;
+ FCKConfig.ShowBorders  = true ;
+-FCKConfig.UseBROnCarriageReturn        = false ;
++FCKConfig.UseBROnCarriageReturn        = true ;
+ FCKConfig.ToolbarStartExpanded = true ;
+ FCKConfig.ToolbarCanCollapse   = true ;
+ FCKConfig.IEForceVScroll = false ;
+ FCKConfig.IgnoreEmptyParagraphValue = true ;
+ 
++//FCKConfig.ToolbarSets["Default"] = [
++//     ['Source','DocProps','-','Save','NewPage','Preview','-','Templates'],
++//     ['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
++//     ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
++//     ['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
++//     ['OrderedList','UnorderedList','-','Outdent','Indent'],
++//     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
++//     ['Link','Unlink','Anchor'],
++//     ['Image','Flash','Table','Rule','Smiley','SpecialChar','UniversalKey'],
++//     ['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
++//     '/',
++//     ['Style','FontFormat','FontName','FontSize'],
++//     ['TextColor','BGColor'],
++//     ['About']
++//] ;
++
+ FCKConfig.ToolbarSets["Default"] = [
+-       ['Source','DocProps','-','Save','NewPage','Preview','-','Templates'],
+-       ['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
+-       ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+-       ['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+-       ['OrderedList','UnorderedList','-','Outdent','Indent'],
+-       ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+-       ['Link','Unlink','Anchor'],
+-       ['Image','Flash','Table','Rule','Smiley','SpecialChar','UniversalKey'],
+-       ['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
+-       '/',
+-       ['Style','FontFormat','FontName','FontSize'],
+-       ['TextColor','BGColor'],
+-       ['About']
++       ['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
++       ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
++       ['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
++       ['OrderedList','UnorderedList','-','Outdent','Indent'],
++       ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
++       ['Link','Unlink','Anchor'],
++       ['Image','Table','Rule','Smiley','SpecialChar','UniversalKey'],
++       ['TextColor','BGColor','-','Source','-','About'],
++       ['Style','FontFormat','FontName','FontSize']
+ ] ;
+ 
+ FCKConfig.ToolbarSets["Basic"] = [
+@@ -119,52 +131,52 @@
+ 
+ FCKConfig.FlashDlgHideAdvanced = false ;
+ 
+-FCKConfig.LinkBrowser = true ;
+-FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/asp/connector.asp' ;
++FCKConfig.LinkBrowser = false ;
+ //FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/asp/connector.asp&ServerPath=/CustomFiles/' ;
+ // ASP.Net             // FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/aspx/connector.aspx' ;
+ // ColdFusion  // FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/cfm/connector.cfm' ;
+ // Perl                        // FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/perl/connector.cgi' ;
+ // PHP                 // FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/php/connector.php' ;
++FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/php/connector.php' ;
+ // PHP - mcpuk // FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/mcpuk/browser.html?Connector=connectors/php/connector.php' ;
+ FCKConfig.LinkBrowserWindowWidth       = FCKConfig.ScreenWidth * 0.7 ; // 70%
+ FCKConfig.LinkBrowserWindowHeight      = FCKConfig.ScreenHeight * 0.7 ;// 70%
+ 
+-FCKConfig.ImageBrowser = true ;
+-FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/asp/connector.asp' ;
++FCKConfig.ImageBrowser = false ;
+ // ASP.Net             // FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/aspx/connector.aspx' ;
+ // ColdFusion  // FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/cfm/connector.cfm' ;
+ // Perl                        // FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/perl/connector.cgi' ;
+ // PHP                 // FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/php/connector.php' ;
++FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&Connector=connectors/php/connector.php' ;
+ // PHP - mcpuk // FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/mcpuk/browser.html?Type=Image&Connector=connectors/php/connector.php' ;
+ FCKConfig.ImageBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;     // 70% ;
+ FCKConfig.ImageBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;    // 70% ;
+ 
+-FCKConfig.FlashBrowser = true ;
+-FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/asp/connector.asp' ;
++FCKConfig.FlashBrowser = false ;
+ // ASP.Net             // FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/aspx/connector.aspx' ;
+ // ColdFusion  // FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/cfm/connector.cfm' ;
+ // Perl                        // FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/perl/connector.cgi' ;
+ // PHP                 // FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/php/connector.php' ;
++FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&Connector=connectors/php/connector.php' ;
+ // PHP - mcpuk // FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/mcpuk/browser.html?Type=Flash&Connector=connectors/php/connector.php' ;
+ FCKConfig.FlashBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;     //70% ;
+ FCKConfig.FlashBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;    //70% ;
+ 
+-FCKConfig.LinkUpload = true ;
+-FCKConfig.LinkUploadURL = FCKConfig.BasePath + 'filemanager/upload/asp/upload.asp' ;
++FCKConfig.LinkUpload = false ;
+ // PHP // FCKConfig.LinkUploadURL = FCKConfig.BasePath + 'filemanager/upload/php/upload.php' ;
++FCKConfig.LinkUploadURL = FCKConfig.BasePath + 'filemanager/upload/php/upload.php' ;
+ FCKConfig.LinkUploadAllowedExtensions  = "" ;                  // empty for all
+ FCKConfig.LinkUploadDeniedExtensions   = ".(php|php3|php5|phtml|asp|aspx|ascx|jsp|cfm|cfc|pl|bat|exe|dll|reg|cgi)$" ;      // empty for no one
+ 
+-FCKConfig.ImageUpload = true ;
+-FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/upload/asp/upload.asp?Type=Image' ;
++FCKConfig.ImageUpload = false ;
+ // PHP // FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/upload/php/upload.php?Type=Image' ;
++FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/upload/php/upload.php?Type=Image' ;
+ FCKConfig.ImageUploadAllowedExtensions = ".(jpg|gif|jpeg|png)$" ;              // empty for all
+ FCKConfig.ImageUploadDeniedExtensions  = "" ;// empty for no one
+ 
+-FCKConfig.FlashUpload = true ;
+-FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/upload/asp/upload.asp?Type=Flash' ;
++FCKConfig.FlashUpload = false ;
+ // PHP // FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/upload/php/upload.php?Type=Flash' ;
++FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/upload/php/upload.php?Type=Flash' ;
+ FCKConfig.FlashUploadAllowedExtensions = ".(swf|fla)$" ;               // empty for all
+ FCKConfig.FlashUploadDeniedExtensions  = "" ;                                  // empty for no one
+ 
+@@ -174,4 +186,4 @@
+ FCKConfig.SmileyWindowWidth            = 320 ;
+ FCKConfig.SmileyWindowHeight   = 240 ;
+ 
+-if( window.console ) window.console.log( 'Config is loaded!' ) ;       // @Packager.Compactor.RemoveLine
+\ No newline at end of file
++if( window.console ) window.console.log( 'Config is loaded!' ) ;       // @Packager.Compactor.RemoveLine
+

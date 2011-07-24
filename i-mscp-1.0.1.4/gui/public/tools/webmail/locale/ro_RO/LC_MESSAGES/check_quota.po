@@ -1,0 +1,470 @@
+# Romanian (ro_RO) check_quota Translation (SquirrelMail plugin)
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Cristian Klein <cristiklein@gmail.com>, 2008.
+# $Id: check_quota.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: check_quota 2.2\n"
+"Report-Msgid-Bugs-To: Kerem Erkan <kerem@keremerkan.net>\n"
+"POT-Creation-Date: 2007-10-24 00:22+0200\n"
+"PO-Revision-Date: 2008-05-17 08:16+0200\n"
+"Last-Translator: Cristian Klein <cristiklein@gmail.com>\n"
+"Language-Team: Romanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:185
+msgid "\"Check Quota\" Troubleshooting"
+msgstr "Depanare „Verifică cota”"
+
+#: functions.php:187
+msgid "This page can aid you in troubleshooting the \"Check Quota\" plugin."
+msgstr "Această pagină vă poate ajuta în a depana modulul „Verifică cota”."
+
+#: functions.php:292
+msgid "Quota Binary Output:"
+msgstr "Ieșirea executabilului „quota”:"
+
+#: functions.php:294 functions.php:401 functions.php:551 functions.php:626
+#: functions.php:654 functions.php:668 functions.php:689 functions.php:729
+msgid "Warning:"
+msgstr "Atenție:"
+
+#: functions.php:294
+msgid "Quota binary did not give any output. Quotas may not be enabled."
+msgstr "Executabilul „quota” nu a returna nicio ieșire. S-ar putea ca cotele să nu fie activate."
+
+#: functions.php:401 functions.php:689
+msgid ""
+"You do not have quotas enabled for your username, you will not see any "
+"informative graphs."
+msgstr "Nu s-a activat cota pentru utilizatorul dvs. Nu o să vedeți grafice informative."
+
+#: functions.php:486
+msgid "IMAP Command Sent:"
+msgstr "Comanda IMAP trimisă:"
+
+#: functions.php:487
+msgid "IMAP Response Received:"
+msgstr "Răspunsul IMAP primit:"
+
+#: functions.php:551
+msgid "Your IMAP server does not have IMAP4 QUOTA extension. Quotas not enabled."
+msgstr "Serverul IMAP nu are extensia „IMAP4 QUOTA”. Cotele nu sunt activate."
+
+#: functions.php:626
+msgid ""
+"Your username is not in user@domain format. cPanel quotas only work with "
+"that type of usernames for now."
+msgstr "Numele utilizatorului dvs. nu este în formatul utilizator@domeniu. Momentan, cotele cPanel nu funcționează decât cu acel forma de nume utilizator."
+
+#: functions.php:654
+msgid "Reseller information for your domain cannot be obtained."
+msgstr "Nu se pot obține informații despre revânzătorul domeniului dvs."
+
+#: functions.php:661
+msgid "Quota File:"
+msgstr "Fișier de cote:"
+
+#: functions.php:668
+msgid "Quota file for your domain does not exist or not readable."
+msgstr "Fișierul de cote nu există sau nu poate fi citit."
+
+#: functions.php:695
+msgid "Your cPanel Quota:"
+msgstr "Cota dvs. cPanel:"
+
+#: functions.php:700
+msgid "Mail Files Location:"
+msgstr "Locația fișierelor cu mesaje:"
+
+#: functions.php:708
+msgid "&quot;du&quot; Binary Output:"
+msgstr "Ieșirea executabilului „du”:"
+
+#: functions.php:729
+msgid ""
+"&quot;du&quot; binary did not give any output. There may be some problem "
+"with that binary."
+msgstr "Executabilul „du” nu a returnat nici un fel de ieșire. S-ar putea să existe probleme cu acel executabil."
+
+#: functions.php:805 functions.php:816 functions.php:823
+msgid "Quota Usage:"
+msgstr "Cota utilizată:"
+
+#: functions.php:807 functions.php:816 functions.php:823
+msgid "File Usage:"
+msgstr "Fișiere utilizate:"
+
+#: functions.php:994
+msgid "OVER QUOTA!"
+msgstr "PESTE COTĂ!"
+
+#: functions.php:1174 functions.php:1193 functions.php:1221
+#: troubleshoot.php:308 troubleshoot.php:710
+msgid "WARNING:"
+msgstr "ATENȚIE:"
+
+#: functions.php:1175
+#, php-format
+msgid "Your quota usage is currently <b>%s%%</b>."
+msgstr "Utilizarea cotei dvs. este <b>%s%%</b>."
+
+#: functions.php:1194 functions.php:1222
+#, php-format
+msgid "Your quota usage is currently %s%%."
+msgstr "Utilizarea cotei dvs. este %s%%."
+
+#: functions.php:1195
+msgid ""
+"To avoid losing any email, you should immediately empty out your \"Trash\" "
+"and \"Sent\" folders and delete emails with large attachments."
+msgstr "Pentru a evita pierderea mesajelor ar fi bine să vă goliți imediat gunoiul, și dosarul mesajelor trimise și să ștergeți mesaje cu atașamente mari."
+
+#: functions.php:1205
+msgid ""
+"To avoid losing any email, you should immediately empty out your &quot;"
+"Trash&quot; and &quot;Sent&quot; folders and delete emails with large "
+"attachments."
+msgstr "Pentru a evita pierderea oricărui mesaj, ar fi bine să goliți imediat gunoiul și dosarul mesajelor trimise și să ștergeți mesaje cu atașamente mari."
+
+#: functions.php:1223
+msgid ""
+"You may want to make sure you empty out your \"Trash\" and clean your \"Sent"
+"\" folder."
+msgstr "Ar fi bine să vă asigurați că v-ați golit gunoiul și v-ați curățat mesajele trimise."
+
+#: functions.php:1233
+msgid ""
+"You may want to make sure you empty out your &quot;Trash&quot; and clean "
+"your &quot;Sent&quot; folder."
+msgstr "E recomandabil să vă goliți „Gunoiul” și să curățați dosarul „Mesaje trimise”."
+
+#: functions.php:1366
+msgid "%1 of %2"
+msgstr "%1 din %2"
+
+#: functions.php:1368
+msgid "%1% of %2"
+msgstr "%1% din %2"
+
+#: troubleshoot.php:64
+msgid "Mandatory Settings"
+msgstr "Setări obligatorii"
+
+#: troubleshoot.php:68
+msgid "Quota Type:"
+msgstr "Tipul cotei:"
+
+#: troubleshoot.php:83 troubleshoot.php:104 troubleshoot.php:117
+#: troubleshoot.php:130 troubleshoot.php:149 troubleshoot.php:161
+#: troubleshoot.php:178 troubleshoot.php:185 troubleshoot.php:204
+#: troubleshoot.php:216 troubleshoot.php:233 troubleshoot.php:240
+#: troubleshoot.php:257 troubleshoot.php:264 troubleshoot.php:286
+#: troubleshoot.php:319 troubleshoot.php:338 troubleshoot.php:352
+#: troubleshoot.php:374 troubleshoot.php:393 troubleshoot.php:412
+#: troubleshoot.php:431 troubleshoot.php:450 troubleshoot.php:464
+#: troubleshoot.php:478 troubleshoot.php:497 troubleshoot.php:516
+#: troubleshoot.php:535 troubleshoot.php:556 troubleshoot.php:620
+#: troubleshoot.php:640 troubleshoot.php:664
+msgid "INVALID!"
+msgstr "NEVALID!"
+
+#: troubleshoot.php:83 troubleshoot.php:104 troubleshoot.php:286
+#: troubleshoot.php:319 troubleshoot.php:338 troubleshoot.php:352
+#: troubleshoot.php:374 troubleshoot.php:393 troubleshoot.php:412
+#: troubleshoot.php:431 troubleshoot.php:450 troubleshoot.php:464
+#: troubleshoot.php:478 troubleshoot.php:497 troubleshoot.php:516
+#: troubleshoot.php:535 troubleshoot.php:556 troubleshoot.php:620
+#: troubleshoot.php:640 troubleshoot.php:664
+msgid "Please read config.php file for possible values."
+msgstr "Citiți fișierul „config.php” pentru valori posibile."
+
+#: troubleshoot.php:92
+msgid "Check UNIX Quotas:"
+msgstr "Verifică cotele UNIX:"
+
+#: troubleshoot.php:97
+msgid "On local server"
+msgstr "pe serverul local"
+
+#: troubleshoot.php:100
+msgid "On remote server"
+msgstr "pe serverul de la distanță"
+
+#: troubleshoot.php:110
+msgid "Remote Username:"
+msgstr "Numele utilizatorului de la distanță:"
+
+#: troubleshoot.php:117 troubleshoot.php:130 troubleshoot.php:150
+#: troubleshoot.php:161 troubleshoot.php:179 troubleshoot.php:185
+#: troubleshoot.php:205 troubleshoot.php:216 troubleshoot.php:234
+#: troubleshoot.php:240 troubleshoot.php:258 troubleshoot.php:264
+msgid "Please read INSTALL for details on setting this variable."
+msgstr "Citiți „INSTALL” pentru detalii despre configurarea acestei variabile."
+
+#: troubleshoot.php:123
+msgid "Remote Server:"
+msgstr "Serverul de la distanță:"
+
+#: troubleshoot.php:138
+msgid "SUDO Binary:"
+msgstr "Executabilul SUDO:"
+
+#: troubleshoot.php:149 troubleshoot.php:178 troubleshoot.php:204
+#: troubleshoot.php:233
+msgid "file does not exist or not executable."
+msgstr "fișierul nu există sau nu este executabil."
+
+#: troubleshoot.php:155 troubleshoot.php:210
+msgid "INFO:"
+msgstr "Informații:"
+
+#: troubleshoot.php:155 troubleshoot.php:210
+msgid "Remote checking is enabled, cannot check validity of this variable."
+msgstr "Verificarea la distanță este activată, nu pot verifica corectitudinea acestei variabile."
+
+#: troubleshoot.php:169
+msgid "SSH Binary:"
+msgstr "Executabilul SSH:"
+
+#: troubleshoot.php:193
+msgid "QUOTA Binary:"
+msgstr "Executabilul QUOTA:"
+
+#: troubleshoot.php:224
+msgid "DU Binary:"
+msgstr "Executabilul DU:"
+
+#: troubleshoot.php:248
+msgid "cPanel Root Folder:"
+msgstr "Dosarul rădăcină din cPanel:"
+
+#: troubleshoot.php:257
+msgid "directory does not exist or not readable."
+msgstr "dosarul nu există sau este ilizibil."
+
+#: troubleshoot.php:274
+msgid "Use Separate IMAP Connection:"
+msgstr "Utilizează conexiune IMAP separată:"
+
+#: troubleshoot.php:279 troubleshoot.php:386 troubleshoot.php:405
+#: troubleshoot.php:490 troubleshoot.php:509 troubleshoot.php:549
+#: troubleshoot.php:657
+msgid "No"
+msgstr "nu"
+
+#: troubleshoot.php:282 troubleshoot.php:389 troubleshoot.php:408
+#: troubleshoot.php:493 troubleshoot.php:512 troubleshoot.php:552
+#: troubleshoot.php:660
+msgid "Yes"
+msgstr "da"
+
+#: troubleshoot.php:292
+msgid "Display Settings"
+msgstr "Setări de afișare"
+
+#: troubleshoot.php:296
+msgid "Graph Type:"
+msgstr "Tipul graficului:"
+
+#: troubleshoot.php:301
+msgid "Standard HTML tables"
+msgstr "tabel HTML standard"
+
+#: troubleshoot.php:304
+msgid "GD images"
+msgstr "imagine GD"
+
+#: troubleshoot.php:308
+msgid "Your server does not have GD support."
+msgstr "Serverul dvs. nu are suport pentru GD."
+
+#: troubleshoot.php:309
+msgid "Graph type will revert to standard HTML tables."
+msgstr "Graficele vor reveni la tabele HTML standard."
+
+#: troubleshoot.php:326
+msgid "Graph Location:"
+msgstr "Locația graficului:"
+
+#: troubleshoot.php:331
+msgid "Below folders list"
+msgstr "sub lista de dosare"
+
+#: troubleshoot.php:334
+msgid "Above folders list"
+msgstr "deasupra listei de dosare"
+
+#: troubleshoot.php:345
+msgid "Font Size:"
+msgstr "Dimensiunea fontului:"
+
+#: troubleshoot.php:359
+msgid "Graph Alignment:"
+msgstr "Alinierea graficului:"
+
+#: troubleshoot.php:364
+msgid "Left"
+msgstr "stânga"
+
+#: troubleshoot.php:367
+msgid "Right"
+msgstr "dreapta"
+
+#: troubleshoot.php:370
+msgid "Center"
+msgstr "centru"
+
+#: troubleshoot.php:381
+msgid "Use Horizontal Rules:"
+msgstr "Utilizează riglă orizontală:"
+
+#: troubleshoot.php:400
+msgid "Show Intro Texts:"
+msgstr "Afișează textele de introducere:"
+
+#: troubleshoot.php:419
+msgid "Quota Details Location:"
+msgstr "Locația detaliilor despre cotă:"
+
+#: troubleshoot.php:424
+msgid "Below quota graph"
+msgstr "sub graficul cotei"
+
+#: troubleshoot.php:427
+msgid "Above quota graph"
+msgstr "deasupra graficului cotei"
+
+#: troubleshoot.php:438
+msgid "Show Quantity or Percent:"
+msgstr "Indicare cantitate sau procent:"
+
+#: troubleshoot.php:443
+msgid "Show percent"
+msgstr "afișează procent"
+
+#: troubleshoot.php:446
+msgid "Show quantity (size or count)"
+msgstr "afișează cantitate (dimensiune sau număr)"
+
+#: troubleshoot.php:457
+msgid "Yellow Alert Threshold:"
+msgstr "Pragul alertei galbene:"
+
+#: troubleshoot.php:460 troubleshoot.php:474
+#, php-format
+msgid "%s%%"
+msgstr "%s%%"
+
+#: troubleshoot.php:471
+msgid "Red Alert Threshold:"
+msgstr "Pragul alertei roșii:"
+
+#: troubleshoot.php:485
+msgid "Show Yellow Alert Warning:"
+msgstr "Afișează avertismenul alertei galbene:"
+
+#: troubleshoot.php:504
+msgid "Show Red Alert Warning:"
+msgstr "Afișează avertismentul alertei roșii:"
+
+#: troubleshoot.php:523
+msgid "KB/MB Conversion:"
+msgstr "Conversie KB/MB:"
+
+#: troubleshoot.php:544
+msgid "Show Filesystems:"
+msgstr "Afișează sistemul de fișiere:"
+
+#: troubleshoot.php:563
+msgid "Override Settings"
+msgstr "Suprascrie setări"
+
+#: troubleshoot.php:569
+msgid "Filesystem Aliases:"
+msgstr "Aliasul sistemului de fișiere:"
+
+#: troubleshoot.php:572
+msgid "No aliases set"
+msgstr "nici un alias"
+
+#: troubleshoot.php:578
+msgid "will be shown as"
+msgstr "va fi afișat ca"
+
+#: troubleshoot.php:590
+msgid "Excluded Filesystems:"
+msgstr "Sisteme de fișiere excluse:"
+
+#: troubleshoot.php:593
+msgid "All filesystems with quota enabled will be shown."
+msgstr "Toate sistemele de fișiere cu cotă activată for fi afișate."
+
+#: troubleshoot.php:600
+msgid "will be excluded from quota information."
+msgstr "vor fi excluse din informațiile despre cotă."
+
+#: troubleshoot.php:612
+msgid "Override IMAP Size Quota:"
+msgstr "Suprascrie cota dimensiunii IMAP:"
+
+#: troubleshoot.php:623 troubleshoot.php:643
+msgid "No override set"
+msgstr "nicio suprascriere"
+
+#: troubleshoot.php:632
+msgid "Override IMAP Count Quota:"
+msgstr "Suprascrie cota numărului din IMAP:"
+
+#: troubleshoot.php:636
+msgid "Files"
+msgstr "Fișiere"
+
+#: troubleshoot.php:652
+msgid "Always Refresh cPanel:"
+msgstr "Întotdeauna reîmprospătează cPanel:"
+
+#: troubleshoot.php:673 troubleshoot.php:676 troubleshoot.php:679
+msgid "Quota Output"
+msgstr "Ieșirea cotei"
+
+#: troubleshoot.php:711
+msgid "You have"
+msgstr "Aveți"
+
+#: troubleshoot.php:713
+msgid "error or warning"
+msgstr "eroare sau avertisment"
+
+#: troubleshoot.php:713
+msgid "errors or warnings"
+msgstr "erori sau avertismente"
+
+#: troubleshoot.php:713
+msgid "in your configuration. You can find the details below."
+msgstr "în configurațiile dvs. Puteți găsi detaliile mai jos."
+
+#: troubleshoot.php:714
+msgid "Please correct"
+msgstr "Corectați"
+
+#: troubleshoot.php:714
+msgid "this error or warning"
+msgstr "eroarea sau avertismentul"
+
+#: troubleshoot.php:714
+msgid "these errors or warnings"
+msgstr "erorile sau avertismentele"
+
+#: troubleshoot.php:715
+msgid "in order to have &quot;Check Quota&quot; work properly."
+msgstr "pentru ca „Verificare cotă” să funcționeze corect."
+
+#: troubleshoot.php:720
+msgid ""
+"Your configuration seems to be correct. &quot;Check Quota&quot; should work "
+"properly."
+msgstr "Configurările cotei dvs. par să fie corecte. „Verificare cotă” ar trebui să funcționeze corect."

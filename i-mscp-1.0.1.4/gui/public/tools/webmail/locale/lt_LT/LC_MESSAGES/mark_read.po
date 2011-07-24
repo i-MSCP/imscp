@@ -1,0 +1,79 @@
+# Lithuanian translation of 
+# SquirrelMail's mark_read plugin.
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
+# $Id: mark_read.po 13696 2009-05-14 06:27:08Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: mark_read 1.3\n"
+"POT-Creation-Date: 2004-08-10 08:09+0200\n"
+"PO-Revision-Date: 2004-09-03 15:39+0200\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "read"
+msgstr "skaityta"
+
+msgid "unread"
+msgstr "neskaityta"
+
+msgid "mark all messages in this folder as read"
+msgstr "pažymėti visas žinutes tarp šio aplanko kaip skaitytas"
+
+msgid "mark all messages in this folder as unread"
+msgstr "pažymėti visas žinutes tarp šio aplanko kaip neskaitytas"
+
+msgid "mark all messages in the above folders as read"
+msgstr "pažymėti visas žinutes tarp aukščiau esančių aplankų kaip skaitytas"
+
+msgid "mark all messages in the above folders as unread"
+msgstr "pažymėti visas žinutes tarp aukščiau esančių aplankų kaip neskaitytas"
+
+msgid "mark all folders"
+msgstr "pažymėti visus aplankus"
+
+msgid "Mark Read Link"
+msgstr "Pažymėjimo Kaip Skaityta Nuoroda"
+
+msgid "Select all Folders, which you want to appear with a mark as read-/unread-link:"
+msgstr "Pasirinkite aplankus, kuriuose turi būti išvedama pažymėjimo kaip skaityta/neskaityta nuoroda:"
+
+msgid "Toggle Special Folders"
+msgstr "Perjungti Specialius Aplankus"
+
+msgid "Toggle All"
+msgstr "Perjungti visus"
+
+msgid "Display links"
+msgstr "Rodyti nuorodas"
+
+msgid "none"
+msgstr "joks"
+
+msgid "read/unread"
+msgstr "skaityta/neskaityta"
+
+msgid "upper"
+msgstr "didžiosios"
+
+msgid "lower"
+msgstr "mažosios"
+
+msgid "shortened Display"
+msgstr "trumpas atvaizdavimas"
+
+msgid "brackets"
+msgstr "skliaustai"
+
+msgid "seperator"
+msgstr "skirtukas"
+
+msgid "Display 'mark all folders' link below the folder list"
+msgstr "Rodyti 'pažymėti visus aplankus' nuorodą žemiau aplankų sąrašo"
+
+msgid "Save"
+msgstr "Išsaugoti"
+

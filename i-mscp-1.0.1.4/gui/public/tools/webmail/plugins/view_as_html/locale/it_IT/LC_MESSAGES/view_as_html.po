@@ -1,0 +1,20 @@
+# Italian (it_IT) view_as_html plugin translation.
+# Copyright (C) 2003 The SquirrelMail Development Team.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: view_as_html.po,v 1.1 2004/01/14 15:50:01 indiri69 Exp $\n"
+"POT-Creation-Date: 2002-11-01 12:33-0700\n"
+"PO-Revision-Date: 2004-01-14 09:27+0100\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:81
+msgid "View as HTML"
+msgstr "Mostra come HTML"
+
+#: setup.php:76
+msgid "View as plain text"
+msgstr "Mostra come testo"

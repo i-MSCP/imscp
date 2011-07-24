@@ -1,0 +1,76 @@
+# Hungarian (hu_HU) change_pass Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Tamás Németh <nice@titanic.nyme.hu>, 2009.
+# $Id: change_pass.po 13719 2009-05-18 12:02:52Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: change_pass 3.0\n"
+"Report-Msgid-Bugs-To: Seth Randall <indiri69@users.sourceforge.net>\n"
+"POT-Creation-Date: 2009-05-09 11:25-0600\n"
+"PO-Revision-Date: 2009-05-14 09:10+0200\n"
+"Last-Translator: Tamás Németh <nice@titanic.nyme.hu>\n"
+"Language-Team: Hungarian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: functions.php:13 options.php:86
+msgid "Change Password"
+msgstr "Jelszóváltoztatás"
+
+#: functions.php:35
+#, php-format
+msgid "Connection error: %s"
+msgstr "Kapcsolódás közben a következő hiba történt: %s"
+
+#: options.php:108
+msgid "Current Password:"
+msgstr "Jelenlegi jelszó:"
+
+#: options.php:112
+msgid "New Password:"
+msgstr "Új jelszó:"
+
+#: functions.php:56
+msgid "Password change was not successful!"
+msgstr "A jelszóváltoztatás nem sikerült."
+
+#: functions.php:15
+msgid "Use this to change your email password."
+msgstr "Itt lehet megváltoztatni az ön levelezéshez használt jelszavát."
+
+#: functions.php:138
+msgid "User's Password"
+msgstr "Felhasználói jelszó"
+
+#: options.php:116
+msgid "Verify New Password:"
+msgstr "Új jelszó még egyszer:"
+
+#: options.php:52
+msgid "You must also type in your new password in the verify box."
+msgstr "Az \"Új jelszó még egyszer\" mezőt ki kell tölteni!"
+
+#: options.php:48
+msgid "You must type in a new password."
+msgstr "Az \"Új jelszó\" mezőt ki kell tölteni!"
+
+#: options.php:44
+msgid "You must type in your current password."
+msgstr "A \"Jelenlegi jelszó\" mezőt ki kell tölteni!"
+
+#: options.php:69
+msgid "Your current password is not correct."
+msgstr "Rosszul adta meg a jelenlegi jelszót!"
+
+#: options.php:57
+msgid "Your new password does not match the verify password."
+msgstr "Az új jelszó két példánya nem egyezik!"
+
+#: options.php:61
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr "Az új jelszónak legalább %s, legfeljebb %s karakteresnek kell lennie!"
+

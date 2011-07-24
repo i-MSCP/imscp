@@ -1,0 +1,10 @@
+--- ../../functions/strings.php.orig	2005-11-11 16:02:13.000000000 -0800
++++ ../../functions/strings.php	2005-11-11 16:02:20.000000000 -0800
+@@ -31,6 +31,7 @@
+ global $SQM_INTERNAL_VERSION;
+ $SQM_INTERNAL_VERSION = array(1,4,0);
+
++include_once(SM_PATH . 'plugins/compatibility/functions.php');
+ 
+ /**
+  * Wraps text at $wrap characters

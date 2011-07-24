@@ -1,0 +1,2 @@
+function checkIndexName(){if(typeof document.forms.index_frm=="undefined")return false;var a=document.forms.index_frm.elements.index,b=document.forms.index_frm.elements.index_type;if(b.options[0].value=="PRIMARY"&&b.options[0].selected){document.forms.index_frm.elements.index.value="PRIMARY";if(typeof a.disabled!="undefined")document.forms.index_frm.elements.index.disabled=true}else{if(a.value=="PRIMARY")document.forms.index_frm.elements.index.value="";if(typeof a.disabled!="undefined")document.forms.index_frm.elements.index.disabled=
+false}return true}onload=checkIndexName;

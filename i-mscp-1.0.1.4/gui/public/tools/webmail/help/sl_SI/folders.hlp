@@ -1,0 +1,98 @@
+<chapter>
+   <title>   
+      Mape
+   </title>   
+   <summary>
+      Sporoèila si lahko shranite v razliène mape.  To je ¹e posebej uporabno èe imaste 
+	  veliko sporoèil in ¾elite imeti ve lepo organizirano.  Mo¾nost mape vam omogoèa manipulirati
+	  z va¹imi mapami.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Naroèene Mape in Levi Okvir
+   </title>
+   <description>
+      <p>
+      Trenutno naroèene mape so na seznamu v barvnem polju na levi.  
+	  Ta okvir se lahko nastavi na avtomatsko osve¾evanje v nastavitvah.
+      Na vrhu v levem okvirju je velik krepek naslov.  Èe so se naredile 
+	  spremembe v kateri od naroèenih map, potem osve¾ite seznam z klikom
+	  na link "osve¾i seznam map" pod naslovom.
+      </p><p>
+      Prva mapa vsebuje seznam prejetih sporoèil.  Na desni 
+      zraven prve mape je ¹tevilka v oklepaju
+      "( )" ki ¹teje <I>neprebrana</I> sporoèila.
+      Ta ¹tevilka lahko vara od ¹tevila skupnih sporoèil v desnem okvirju.  Pod glavno mapo 
+      so lahko druge mape ali podmape.
+      Barve za te mape se bodo premenile z Temo ki ste si jo izbrali v nastavitvah.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Izbri¹i
+   </title>
+   <description>
+      <p>
+      Izbri¹ete lahko katerokoli mapo ki je na voljo v padajocem seznamu
+	  na levis zraven Izbri¹i gumba.  Ne pozabite da se lahko zgodi da ta seznam <B>ne</B> 
+      prika¾e vse mape.  Posebne mape kot so va¹e poslane ali ko¹ mape
+	  ne morej biti izbrisane, in seveda INBOX tudi ne more biti izbrisan.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Izdelaj
+   </title>
+   <description>
+      <p>
+      Mape se lahko izdelajo z enostavnim vpisom imena v polje in klikom na 
+	  Izdelaj gumb.  Èe ¾elite da je ta mapa podmapa, lahko izberete iz padajoèega seznama mapo.
+      </p>
+      <p>
+      Na nekaterih po¹tnih stre¾nikih, obstajo dve vrsti map.
+      Ena ki vsebuje sproèila, in ena ki vsebuje mape.  Vidite lahko mo¾nost
+	  ki se imenuje "Naj ta mapa vsebuje podpamape."  Èe izberete to mo¾nost, potem ta mapa
+	  ki ste jo izdelali bo lahko vsebovala mape in ne sporoèila.  V drugem primeriu
+	  boste lahko shranjevali samo sporoèila in ne map.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Preimenuj
+   </title>
+   <description>
+      <p>
+      Preimenujete lahko vsako mapo ki je prikazan v padajoèem seznamu na levi 
+	  strani od gumba Preimenuj.  Opozorilo, ta seznam se lahko zgodi da  <B>ne</B> 
+      vsebuje vseh prikazanih map na levem okvirju.  Za jasne razloge, ne morete preimenovati
+	  sent, trash in INBOX map.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Prijavi in Odjavi
+   </title>
+   <description>
+      Definicije:<br>
+      <i>Prijavi</i>: Za registracijo mape z po¹tnim stre¾nikom, vam omogoèa ogled 
+                        v mapo in njegovo vsebino.<br>
+      <i>Odjavi</i>: Nasprotje od Prijave.  S tem odregistrirate mapo
+	  					z po¹tnim stre¾nikom.<br>
+      <br><p>
+      Izberete lahko map koliko ¾elite iz Prijavi ali Odjavi polja, nato kliknite
+	  gumb pod poljem za izvedbo naloge.  Videli boste da se bo mapa preselila
+	  v drugo polje.  Potem jih lahko Odjavite in ¹e enkrat Prijavite po va¹i ¾elji.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,215 @@
+# Swedish (sv_SE) show_user_and_ip Translation (SquirrelMail plugin)
+# Copyright (C) 1999-2005 The Squirrelmail Development Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Per Eric Rosén <per@rosnix.nu>, 2004.
+# Fredrik Jervfors <sqm_admin@fimbul.net>, 2004-2005.
+# $Id: show_user_and_ip.po,v 1.2 2005/03/05 09:58:33 jervfors Exp $
+msgid ""
+msgstr ""
+"Project-Id-Version: show_user_and_ip\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-04 15:11+0200\n"
+"PO-Revision-Date: 2005-03-05 10:56+0100\n"
+"Last-Translator: Fredrik Jervfors <sqm_admin@fimbul.net>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:41
+msgid "Your username:"
+msgstr "Ditt användarnamn:"
+
+#: functions.php:48
+msgid "Your IP address:"
+msgstr "Din IP-adress:"
+
+#: functions.php:58
+msgid "Your Hostname:"
+msgstr "Din värd:"
+
+#: functions.php:77 functions.php:78
+msgid "D, F j, Y G:i"
+msgstr "D, Y-m-d, H:i"
+
+#: functions.php:82
+msgid "January"
+msgstr "Januari"
+
+#: functions.php:83
+msgid "February"
+msgstr "Februari"
+
+#: functions.php:84
+msgid "March"
+msgstr "Mars"
+
+#: functions.php:85
+msgid "April"
+msgstr "April"
+
+#: functions.php:86 functions.php:101
+msgid "May"
+msgstr "Maj"
+
+#: functions.php:87
+msgid "June"
+msgstr "Juni"
+
+#: functions.php:88
+msgid "July"
+msgstr "Juli"
+
+#: functions.php:89
+msgid "August"
+msgstr "Augusti"
+
+#: functions.php:90
+msgid "September"
+msgstr "September"
+
+#: functions.php:91
+msgid "October"
+msgstr "Oktober"
+
+#: functions.php:92
+msgid "November"
+msgstr "November"
+
+#: functions.php:93
+msgid "December"
+msgstr "December"
+
+#: functions.php:97
+msgid "Jan"
+msgstr "Jan"
+
+#: functions.php:98
+msgid "Feb"
+msgstr "Feb"
+
+#: functions.php:99
+msgid "Mar"
+msgstr "Mar"
+
+#: functions.php:100
+msgid "Apr"
+msgstr "Apr"
+
+#: functions.php:102
+msgid "Jun"
+msgstr "Jun"
+
+#: functions.php:103
+msgid "Jul"
+msgstr "Jul"
+
+#: functions.php:104
+msgid "Aug"
+msgstr "Aug"
+
+#: functions.php:105
+msgid "Sep"
+msgstr "Sep"
+
+#: functions.php:106
+msgid "Oct"
+msgstr "Okt"
+
+#: functions.php:107
+msgid "Nov"
+msgstr "Nov"
+
+#: functions.php:108
+msgid "Dec"
+msgstr "Dec"
+
+#: functions.php:113
+msgid "Monday"
+msgstr "Måndag"
+
+#: functions.php:114
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: functions.php:115
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: functions.php:116
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: functions.php:117
+msgid "Friday"
+msgstr "Fredag"
+
+#: functions.php:118
+msgid "Saturday"
+msgstr "Lördag"
+
+#: functions.php:119
+msgid "Sunday"
+msgstr "Söndag"
+
+#: functions.php:123
+msgid "Mon"
+msgstr "Må"
+
+#: functions.php:124
+msgid "Tue"
+msgstr "Ti"
+
+#: functions.php:125
+msgid "Wed"
+msgstr "On"
+
+#: functions.php:126
+msgid "Thu"
+msgstr "To"
+
+#: functions.php:127
+msgid "Fri"
+msgstr "Fr"
+
+#: functions.php:128
+msgid "Sat"
+msgstr "Lö"
+
+#: functions.php:129
+msgid "Sun"
+msgstr "Sö"
+
+#: functions.php:146
+msgid "Welcome,"
+msgstr "Välkommen,"
+
+#: functions.php:148
+msgid "INFO:"
+msgstr "Information:"
+
+#: functions.php:150
+#, c-format
+msgid ""
+"your last connection was from <strong>%s%s</strong> on <strong>%s</strong>."
+msgstr "du var senast inloggad från <strong>%s%s</strong> vid tiden <strong>%s</strong>."
+
+#: functions.php:166
+msgid "Show username under folders list:"
+msgstr "Visa användarnamn under mapplistan:"
+
+#: functions.php:172 functions.php:185 functions.php:198
+msgid "Yes"
+msgstr "Ja"
+
+#: functions.php:177 functions.php:190 functions.php:203
+msgid "No"
+msgstr "Nej"
+
+#: functions.php:179
+msgid "Show IP address under folders list:"
+msgstr "Visa IP-adress under mapplistan:"
+
+#: functions.php:192
+msgid "Show hostname under folders list:"
+msgstr "Visa värden under mapplistan:"

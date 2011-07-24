@@ -1,0 +1,106 @@
+# Japanese (ja_JP) smallcal translation (SquirrelMail plugin)
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+# $Id: smallcal.po 13693 2009-05-14 00:26:43Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: smallcal\n"
+"POT-Creation-Date: 2003-10-20 16:27+0300\n"
+"PO-Revision-Date: 2005-09-24 01:16+0500\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese  <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "S M T W T F S"
+msgstr "日　月　火　水　木　金　土"
+
+msgid "Today"
+msgstr "今日"
+
+msgid "Color Picker"
+msgstr "色ピッカ"
+
+msgid ""
+"Click a box and the hexadecimal color will be shown <br>below. Use these hex "
+"values for color box settings."
+msgstr ""
+"ボックスをクリックして、この 16 進色を下に示されます。<br>カラーボックスの設"
+"定でこれらの 16 進値を使います。"
+
+msgid "Hex Value"
+msgstr "16 進値"
+
+msgid "Small Calendar Options"
+msgstr "小カレンダーのオプション"
+
+msgid "Small Calendar:"
+msgstr "小カレンダー"
+
+msgid "Show small calendar in left bar"
+msgstr "左バールに小カレンダーを示します"
+
+msgid "Use Default Theme:"
+msgstr "デフォルトテーマを使用："
+
+msgid "This will override values below"
+msgstr "これにより、値を下に示すを無効にします"
+
+msgid "Header Color:"
+msgstr "ヘッダーの色："
+
+msgid "Day Color:"
+msgstr "日の色："
+
+msgid "Today Color:"
+msgstr "今日の色："
+
+msgid "Event Color:"
+msgstr "エベントの色："
+
+msgid "Calendar separator:"
+msgstr "カレンダー分離："
+
+# None what? The subject matter this is referring to will change the
+# translation. Used なし which refers to absolutely nothing.
+msgid "None"
+msgstr "なし"
+
+msgid "Horizontal rule"
+msgstr "水平方向の線"
+
+msgid "Box"
+msgstr "ボックス"
+
+msgid "Calendar size:"
+msgstr "カレンダー大きさ"
+
+msgid "Default size"
+msgstr "デフォルト大きさ"
+
+msgid "10 px"
+msgstr "10 ピクセル"
+
+msgid "12 px"
+msgstr "12 ピクセル"
+
+msgid "14 px"
+msgstr "14 ピクセル"
+
+msgid "16 px"
+msgstr "16 ピクセル"
+
+msgid "Use Shared Calendar:"
+msgstr "共用カレンダーを使う："
+
+msgid ""
+"Use the shared calendar selected below as your<br>small calendar (default is "
+"Personal calendar)"
+msgstr ""
+"下に選択した共用カレンダーを小カレンダーとして使うことができます<br>（初期設"
+"定は個人用カレンダー）"
+
+msgid "Shared Calendar:"
+msgstr "共用カレンダー"

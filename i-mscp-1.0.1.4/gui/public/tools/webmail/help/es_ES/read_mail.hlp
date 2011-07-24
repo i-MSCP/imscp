@@ -1,0 +1,166 @@
+<chapter>
+   <title>
+      Leer un correo electrónico
+   </title>
+   <summary>
+      Una de las habilidades más básicas de un cliente de correo consiste
+      en la posibilidad de leer los correos electrónicos. Sin embargo
+      SquirrelMail dispone de una serie de características para
+      la lectura de los mensajes que describimos a continuación.
+   </summary>
+   <description>
+      <p>
+      Haga click en el tema de un mensaje en concreto para mostrarlo.
+      Comprobará que las direcciones web y de correo aparecen como
+      enlaces, por lo que puede pulsarlos para abrir una página
+      o escribir un correo. También resulta útil la codificación de
+      colores que se emplea para diferenciar las contestaciones de
+      los fragmentos del mensaje original, destacados por un ">". Asimismo
+      se presenta una nueva barra de opciones separada en tres secciones,
+      la primera a la izquierda para volver a la lista o borrar el mensaje,
+      la del medio para avanzar o retroceder en la lista, y la de la
+      derecha para reenviar o responder al correo.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Lista de Mensajes
+   </title>
+   <description>
+      <p>
+      Pulse este enlace para volver a la lista de mensajes a la que
+      pertenece el mensaje presentado.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Borrar
+   </title>
+   <description>
+      <p>
+      Pulse este enlace para borrar el mensaje en curso. También se borrarán
+      todos los ficheros adjuntos que pudiera tener el e-mail. Si no quiere
+      perder estos ficheros descárguelos previamente.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navegación
+   </title>
+   <description>
+      <p>
+      Los botones de navegación se encuentran en el medio del menú. Tanto
+      Anterior como Siguiente solo aparecerán subrayados si es posible
+      moverse en la dirección indicada.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Siguiente
+   </title>
+   <description>
+      <p>
+      Pulse este enlace para pasar al correo siguiente. Si el enlace no
+      estuviera activo significa que no hay más mensajes a continuación.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Reenviar
+   </title>
+   <description>
+      <p>
+      A la derecha, el enlace de "Reenviar" abre la página para componer
+      mensajes con el mensaje previamente visualizado en el texto del 
+      mensaje precedido por el texto: -------- Mensaje Original --------
+      y los datos de cabecera del mensaje. El asunto contiene el asunto
+      original precedido por las letras Fwd. También se respetarán los
+      ficheros adjuntos si los tuviera.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Responder
+   </title>
+   <description>
+      <p>
+      Pulse este enlace para contestar al remitente del mensaje que está
+      visualizando. El asunto original se precederá de las letras Re: y
+      el texto original se precederá por el símbolo ">" para poder respetar
+      el contexto del mensaje a la hora de responder. Si ve líneas del
+      mensaje original que no estuvieran precedidas por el mencionado
+      símbolo esto se debe a que la longitud de corte de línea es superior
+      al ancho de edición y el texto ha sobresalido por la derecha. Esto
+      puede ajustarse mediante la opción de visualización: "Acomodar 
+      textos entrantes a".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Responder a todos
+   </title>
+   <description>
+      <p>
+      Hace básicamente lo mismo que "Responder", solo que todas las 
+      direcciones que aparecen en la cabecera del mensaje recibirán una
+      copia de la respuesta.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ver encabezado completo 
+   </title>
+   <description>
+      <p>
+      Permite visualizar la cabecera completa del mensaje. Incluye el
+      camino recorrido por el mensaje así como múltiple información
+      sobre el mensaje.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bajar este mensaje como un archivo
+   </title>
+   <description>
+      <p>
+      En la parte de abajo, justo por encima de la barra inferior se
+      encuentra este enlace, que permite almacenar una copia del mensaje
+      en formato de texto en el disco duro de su ordenador.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ficheros adjuntos
+   </title>
+   <description>
+      <p>
+      Todos los ficheros que hayan sido adjuntados al mensaje se mostrarán
+      al final del mismo mediante una serie de enlaces con el nombre de
+      los ficheros. A la derecha del enlace puede verse el tamaño, el tipo
+      del fichero y un nuevo enlace llamado "descargar". Mientras que el
+      enlace de la izquierda se destina más bien a la visualización del
+      contenido del fichero, el de la derecha sirve para guardar una copia
+      del archivo en su disco duro.
+      </p>
+   </description>
+</section>

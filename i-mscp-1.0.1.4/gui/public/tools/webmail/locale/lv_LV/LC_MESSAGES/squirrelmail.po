@@ -1,0 +1,4089 @@
+# Latvian (lv_LV) SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Kaspars Namnieks <kasparsn@rozalinde.lv>, 2006.
+# Ivars Strazdiņš <ivars.strazdins@gmail.com>, 2008-2009.
+# $Id: squirrelmail.pot 13560 2009-04-17 14:16:04Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: SquirrelMail 1.4.18\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
+"i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2009-04-17 14:35+0200\n"
+"PO-Revision-Date: 2009-04-27 11:49+0300\n"
+"Last-Translator: Ivars Strazdiņš <ivars.strazdins@gmail.com>\n"
+"Language-Team: Latvian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Address Book"
+msgstr "Adrešu grāmata"
+
+msgid "All"
+msgstr "Visi"
+
+msgid "To"
+msgstr "Kam"
+
+msgid "Cc"
+msgstr "Kopija"
+
+msgid "Name"
+msgstr "Vārds"
+
+msgid "E-mail"
+msgstr "E-pasts"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Source"
+msgstr "Ieraksts"
+
+msgid "Bcc"
+msgstr "Diskrētā kopija"
+
+msgid "Use Addresses"
+msgstr "Lietot adreses"
+
+msgid "Cancel"
+msgstr "Atcelt"
+
+msgid "Address Book Search"
+msgstr "Meklēt adrešu grāmatā"
+
+msgid "Search for"
+msgstr "Meklēt pēc"
+
+msgid "in"
+msgstr "iekš"
+
+msgid "All address books"
+msgstr "Visas adrešu grāmatas"
+
+msgid "Search"
+msgstr "Meklēt"
+
+msgid "List all"
+msgstr "Rādīt visus"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "Nevar parādīt adreses no %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "Meklēšana beidzās ar sekojošu kļūdu(-ām)"
+
+msgid "No persons matching your search were found"
+msgstr "Pēc izvēlētajiem meklēšanas kritērijiem neviens netika atrasts"
+
+msgid "Return"
+msgstr "Atpakaļ"
+
+msgid "Close"
+msgstr "Aizvērt"
+
+msgid "Nickname"
+msgstr "Aizstājvārds"
+
+msgid "Must be unique"
+msgstr "Jābūt unikālam"
+
+msgid "E-mail address"
+msgstr "E-pasta adrese"
+
+msgid "Last name"
+msgstr "Uzvārds"
+
+msgid "First name"
+msgstr "Vārds"
+
+msgid "Additional info"
+msgstr "Papildinformācija"
+
+msgid "Add to:"
+msgstr "Pievienot:"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Nav definēta personālā adrešu grāmata. Jautājiet administratoram."
+
+msgid "You can only edit one address at the time"
+msgstr "Vienlaicīgi iespējams labot tikai vienu adresi"
+
+msgid "Update address"
+msgstr "Labot adresi"
+
+msgid "ERROR"
+msgstr "KĻŪDA"
+
+msgid "Please select address that you want to edit"
+msgstr "Lūdzu izvēlieties adresi labošanai"
+
+msgid "Add address"
+msgstr "Pievienot adresi"
+
+msgid "Edit selected"
+msgstr "Labot izvēlēto"
+
+msgid "Delete selected"
+msgstr "Nodzēst izvēlēto"
+
+msgid "Compose to selected"
+msgstr "Jauns ziņojums izvēlētajam"
+
+msgid "sort by nickname"
+msgstr "kārtot pēc aizstājvārda"
+
+msgid "sort by name"
+msgstr "kārtot pēc vārda"
+
+msgid "sort by email"
+msgstr "kārtot pēc e-pasta adreses"
+
+msgid "sort by info"
+msgstr "kārtot pēc papildinformācijas"
+
+#, php-format
+msgid "Add to %s"
+msgstr "Pievienot %s"
+
+#, php-format
+msgid "%s wrote:"
+msgstr "%s rakstīja:"
+
+msgid "quote"
+msgstr "citāts"
+
+msgid "who"
+msgstr "kurš"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr "%s, %s rakstīja:"
+
+msgid "Subject"
+msgstr "Tēma"
+
+msgid "From"
+msgstr "No"
+
+msgid "Date"
+msgstr "Saņemts"
+
+msgid "Original Message"
+msgstr "Oriģināls"
+
+msgid "Draft Email Saved"
+msgstr "Ziņojuma melnraksts saglabāts"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "Nevarēju pārvietot/kopēt datni. Datne nav pievienota"
+
+msgid "Your draft has been saved."
+msgstr "Jūsu melnraksts ir saglabāts"
+
+msgid "Your mail has been sent."
+msgstr "Jūsu ziņojums ir nosūtīts."
+
+msgid "From:"
+msgstr "No:"
+
+msgid "To:"
+msgstr "Kam:"
+
+msgid "Cc:"
+msgstr "Kopija:"
+
+msgid "Bcc:"
+msgstr "Diskrētā kopija:"
+
+msgid "Subject:"
+msgstr "Tēma:"
+
+msgid "Send"
+msgstr "Nosūtīt"
+
+msgid "Attach:"
+msgstr "Pielikumi:"
+
+msgid "Add"
+msgstr "Pievienot"
+
+msgid "Delete selected attachments"
+msgstr "Nodzēst izvēlētos pielikumus"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+"Nevar pievienot pielikumu, jo nav ieslēgta PHP datņu augšupielāde. "
+"Aprunājieties ar sistēmas administratoru."
+
+msgid "Priority"
+msgstr "Prioritāte"
+
+msgid "High"
+msgstr "Augsta"
+
+msgid "Normal"
+msgstr "Normāla"
+
+msgid "Low"
+msgstr "Zema"
+
+msgid "Receipt"
+msgstr "Sekošana"
+
+msgid "On Read"
+msgstr "Pēc izlasīšanas"
+
+msgid "On Delivery"
+msgstr "Pēc piegādāšanas"
+
+msgid "Signature"
+msgstr "Paraksts"
+
+msgid "Addresses"
+msgstr "Adreses"
+
+msgid "Save Draft"
+msgstr "Saglabāt melnrakstu"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "Nav aizpildīts \"Kam:\" lauks."
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Nav melnrakstu mapes %s."
+
+msgid "Message not sent."
+msgstr "Ziņojums nav nosūtīts."
+
+msgid "Server replied:"
+msgstr "Servera atbilde:"
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "Neatļauts mapes vārds. Lūdzu izvēlieties citu vārdu."
+
+msgid "Click here to go back"
+msgstr "Klikšķiniet šeit lai atgrieztos"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Nav izvēlēta mape dzēšanai. Lūdzu, izvēlieties mapi."
+
+msgid "Delete Folder"
+msgstr "Nodzēst mapi"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Vai tiešām dzēst %s?"
+
+msgid "Yes"
+msgstr "Jā"
+
+msgid "No"
+msgstr "Nē"
+
+msgid "Folders"
+msgstr "Mapes"
+
+msgid "Subscribed successfully."
+msgstr "Veiksmīgi abonēts"
+
+msgid "Unsubscribed successfully."
+msgstr "Veiksmīgi atteikta abonēšana"
+
+msgid "Deleted folder successfully."
+msgstr "Mape veiksmīgi nodzēsta"
+
+msgid "Created folder successfully."
+msgstr "Mape veiksmīgi izveidota"
+
+msgid "Renamed successfully."
+msgstr "Veiksmīgi pārsaukts."
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "Abonēšana neveiksmīga - mape neeksistē"
+
+msgid "refresh folder list"
+msgstr "atjaunot mapju sarakstu"
+
+msgid "Create Folder"
+msgstr "Izveidot mapi"
+
+msgid "as a subfolder of"
+msgstr "kā mapes apakšmapi"
+
+msgid "None"
+msgstr "Nevienu"
+
+msgid "Let this folder contain subfolders"
+msgstr "Šai mapei var būt apakšmapes"
+
+msgid "Create"
+msgstr "Izveidot"
+
+msgid "Rename a Folder"
+msgstr "Pārsaukt mapi"
+
+msgid "Select a folder"
+msgstr "Izvēlēties mapi"
+
+msgid "Rename"
+msgstr "Pārsaukt"
+
+msgid "No folders found"
+msgstr "Nav atrasta neviena mape"
+
+msgid "Delete"
+msgstr "Nodzēst"
+
+msgid "Unsubscribe"
+msgstr "Atteikt abonēšanu"
+
+msgid "Subscribe"
+msgstr "Abonēt"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "Nevar atteikt abonēšanu - nav atrasta neviena mape!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "Nevar abonēt - nav atrasta neviena mape!"
+
+msgid "Subscribe to:"
+msgstr "Abonēt:"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "Nav izvēlēta mape pārsaukšanai. Lūdzu, izvēlieties mapi."
+
+msgid "Rename a folder"
+msgstr "Pārsaukt mapi"
+
+msgid "New name:"
+msgstr "Jaunā skata nosaukums:"
+
+msgid "Submit"
+msgstr "Saglabāt iestatījumus"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "KĻŪDA: palīdzības datnes nav pareizā formātā!"
+
+msgid "Help"
+msgstr "Palīdzība"
+
+msgid ""
+"Help is not available in the selected language. It will be displayed in "
+"English instead."
+msgstr ""
+"Paskaidrojumi nav pārtulkoti izvēlētajā valodā. Paskaidrojumi tiks parādīti "
+"angļu valodā."
+
+msgid ""
+"Help is not available. Please contact your system administrator for "
+"assistance."
+msgstr ""
+"Paskaidrojumi nav pieejami. Lūdzu, par šo kļūdu ziņojiet sistēmas "
+"administratoram."
+
+msgid ""
+"This chapter is not available in the selected language. It will be displayed "
+"in English instead."
+msgstr ""
+"Izvēlētajā valodā nodaļa nav pieejama. Paskaidrojumi tiks parādīti angļu "
+"valodā."
+
+msgid "This chapter is missing"
+msgstr "Trūkst nodaļas"
+
+#, php-format
+msgid "For some reason, chapter %s is not available."
+msgstr "Kaut kāda iemesla dēļ nodaļa %s nav pieejama"
+
+msgid "Table of Contents"
+msgstr "Saturs"
+
+msgid "Previous"
+msgstr "Iepriekšējā"
+
+msgid "Next"
+msgstr "Nākamā"
+
+msgid "Top"
+msgstr "Augša"
+
+msgid "Viewing an image attachment"
+msgstr "Aplūkot pielikuma attēlu."
+
+msgid "View message"
+msgstr "Rādīt ziņojumu"
+
+msgid "Download this as a file"
+msgstr "lejupielādēt kā datni?"
+
+msgid "INBOX"
+msgstr "Iesūtne"
+
+msgid "Purge"
+msgstr "Iztīrīt dzēstos ziņojumus"
+
+msgid "Last Refresh"
+msgstr "Pēdējā atjaunināšana"
+
+msgid "Check mail"
+msgstr "Pārbaudīt ziņojumus"
+
+msgid "Login"
+msgstr "Pieteikšanās"
+
+#, php-format
+msgid "%s Logo"
+msgstr "%s Logo"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail versija %s"
+
+msgid "By the SquirrelMail Project Team"
+msgstr "SquirrelMail projekta komanda"
+
+#, php-format
+msgid "%s Login"
+msgstr "Pieteikšanās %s"
+
+msgid "Name:"
+msgstr "Lietotāja vārds:"
+
+msgid "Password:"
+msgstr "Parole:"
+
+msgid "No messages were selected."
+msgstr "Neviens ziņojums nav izvēlēts."
+
+msgid "Options"
+msgstr "Iestatījumi"
+
+msgid "Message Highlighting"
+msgstr "Ziņojuma iekrāsošana"
+
+msgid "New"
+msgstr "Jauns"
+
+msgid "Done"
+msgstr "Pabeigts"
+
+msgid "To or Cc"
+msgstr "Kam vai Kopija"
+
+msgid "subject"
+msgstr "tēma"
+
+msgid "Edit"
+msgstr "Rediģēt"
+
+msgid "Up"
+msgstr "Augšup"
+
+msgid "Down"
+msgstr "Lejup"
+
+msgid "No highlighting is defined"
+msgstr "Iekrāsošana nav definēta."
+
+msgid "Identifying name"
+msgstr "Nosaka vārdu"
+
+msgid "Color"
+msgstr "Krāsa"
+
+msgid "Dark Blue"
+msgstr "Tumši zils"
+
+msgid "Dark Green"
+msgstr "Tumši zaļš"
+
+msgid "Dark Yellow"
+msgstr "Tumši dzeltens"
+
+msgid "Dark Cyan"
+msgstr "Tumši ciāna"
+
+msgid "Dark Magenta"
+msgstr "Tumši fuksīna"
+
+msgid "Light Blue"
+msgstr "Gaiši zils"
+
+msgid "Light Green"
+msgstr "Gaiži zaļš"
+
+msgid "Light Yellow"
+msgstr "Gaiši dzeltens"
+
+msgid "Light Cyan"
+msgstr "Gaiši ciāna"
+
+msgid "Light Magenta"
+msgstr "Gaiši fuksīna"
+
+msgid "Dark Gray"
+msgstr "Ļoti tumši pelēks"
+
+msgid "Medium Gray"
+msgstr "Vidēji pelēks"
+
+msgid "Light Gray"
+msgstr "Gaiši pelēks"
+
+msgid "White"
+msgstr "Balts"
+
+msgid "Other:"
+msgstr "Cita:"
+
+msgid "Ex: 63aa7f"
+msgstr "Ex: 63aa7f"
+
+msgid "Matches"
+msgstr "Atbilstības"
+
+msgid "Editing identities is disabled."
+msgstr "Identitāšu labošana ir atstatīta."
+
+msgid "Default Identity"
+msgstr "Noklusētā identitāte"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Alternatīvā identitāte %d"
+
+msgid "Add a New Identity"
+msgstr "Pievienot jaunu identitāti"
+
+msgid "Advanced Identities"
+msgstr "Paplašinātās identitātes"
+
+msgid "Full Name"
+msgstr "Pilnais vārds"
+
+msgid "E-Mail Address"
+msgstr "E-pasta adrese"
+
+msgid "Reply To"
+msgstr "Atbildēt-Uz"
+
+msgid "Save / Update"
+msgstr "Saglabāt / Atjaunināt"
+
+msgid "Make Default"
+msgstr "Padarīt par noklusēto"
+
+msgid "Move Up"
+msgstr "Pārvietot uz augšu"
+
+msgid "Index Order"
+msgstr "Indeksa secība"
+
+msgid "Checkbox"
+msgstr "Izvēles rūtiņa"
+
+msgid "Flags"
+msgstr "Karodziņi"
+
+msgid "Size"
+msgstr "Lielums"
+
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"Indeksa secība ir kolonnu secība ziņojumu sarakstā. Jūs variet pievienot, "
+"aizvākt un dzēst kolonnas, lai piekārtotu tās jūsu vajadzībām."
+
+msgid "up"
+msgstr "augšup"
+
+msgid "down"
+msgstr "lejup"
+
+msgid "remove"
+msgstr "noņemt"
+
+msgid "Return to options page"
+msgstr "Atpakaļ uz iestatījumu lapu"
+
+msgid "Personal Information"
+msgstr "Personiskā informācija"
+
+msgid "Display Preferences"
+msgstr "Izskata iestatījumi"
+
+msgid "Folder Preferences"
+msgstr "Mapes iestatījumi"
+
+msgid "Error(s) occurred while saving your options"
+msgstr "Saglabājot personālos iestatījumus, notika kļūda(s)"
+
+msgid "Some of your preference changes were not applied."
+msgstr "Daži personiskie iestatījumi netika iestatīti."
+
+msgid "Successfully Saved Options"
+msgstr "Iestatījumi sekmīgi saglabāti"
+
+msgid "Refresh Folder List"
+msgstr "Atjaunināt mapju sarakstu"
+
+msgid "Refresh Page"
+msgstr "Atjaunināt lapu"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "Te glabājas informācija par jums, tāda kā vārds, e-pasta adrese utt."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr ""
+"Mainiet SquirrelMail izskatu un veidu, kā jums tiks parādīta tāda "
+"informācija kā krāsas, saskarnes valoda un citi uzstādījumi"
+
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"Sekojot izvēlētajiem kritērijiem, ienākošie ziņojumi sarakstā varēs būt "
+"dažādās krāsās. Tas palīdz viegli izcelt sūtītāju, īpaši no adresātu "
+"sarakstiem."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr ""
+"Šie iestatījumi izmaina veidu kā jūsu mapes tiek parādītas un izmainītas."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"Ziņojumu indeksu var izmainīt un pārkārtot lai ziņojumi būtu jūsu izvēlētajā "
+"kārtībā."
+
+msgid "Message not printable"
+msgstr "Ziņojums nav drukājams"
+
+msgid "Attachments:"
+msgstr "Pielikumi:"
+
+msgid "Unknown sender"
+msgstr "Nezināms nosūtītājs"
+
+msgid "Info:"
+msgstr "Info:"
+
+msgid "Size:"
+msgstr "Lielums:"
+
+msgid "Type:"
+msgstr "Tips:"
+
+msgid "Invalid URL"
+msgstr "Nepareiza saite"
+
+msgid "Printer Friendly"
+msgstr "Drukas formāts"
+
+msgid "Print"
+msgstr "Drukāt"
+
+msgid "View Printable Version"
+msgstr "Aplūkot drukājamo versiju"
+
+msgid "Read:"
+msgstr "Lasīt:"
+
+msgid "Your message"
+msgstr "Jūsu ziņojums"
+
+msgid "Sent"
+msgstr "Nosūtne"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "Tika parādīta %s"
+
+msgid "less"
+msgstr "mazāk"
+
+msgid "more"
+msgstr "vairāk"
+
+msgid "Mailer"
+msgstr "Programmatūra"
+
+msgid "Read receipt"
+msgstr "Ziņojuma lasīšanas apstiprinājums"
+
+msgid "sent"
+msgstr "nosūtīts"
+
+msgid "requested"
+msgstr "pieprasīts"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"Šī ziņojuma sūtītājs vēlas saņemt lasīšanas apstiprinājumu. Vai jūs vēlaties "
+"nosūtīt lasīšanas apstiprinājumu?"
+
+msgid "Send read receipt now"
+msgstr "Nosūtīt ziņojuma lasīšanas apstiprinājumu"
+
+msgid "Search Results"
+msgstr "Meklēšanas rezultāti"
+
+msgid "Message List"
+msgstr "Ziņojumu saraksts"
+
+msgid "Resume Draft"
+msgstr "Turpināt melnrakstu"
+
+msgid "Edit Message as New"
+msgstr "Rediģēt kā jaunu ziņojumu"
+
+msgid "View Message"
+msgstr "Skatīt ziņojumu"
+
+msgid "Forward"
+msgstr "Pārsūtīt"
+
+msgid "Forward as Attachment"
+msgstr "Pārsūtīt kā pielikumu"
+
+msgid "Reply"
+msgstr "Atbildēt"
+
+msgid "Reply All"
+msgstr "Atbildēt visiem"
+
+msgid "View Full Header"
+msgstr "Skatīt visu ziņojuma iesākumu"
+
+msgid "Attachments"
+msgstr "Pielikumi"
+
+msgid "You must be logged in to access this page."
+msgstr "Jāpiesakās, lai lietotu šo lapu."
+
+msgid "Folder:"
+msgstr "Mape:"
+
+msgid "Saved Searches"
+msgstr "Saglabātie meklējumi"
+
+msgid "edit"
+msgstr "rediģēt"
+
+msgid "search"
+msgstr "meklēt"
+
+msgid "delete"
+msgstr "dzēst"
+
+msgid "Recent Searches"
+msgstr "Nesenie meklējumi"
+
+msgid "save"
+msgstr "saglabāt"
+
+msgid "forget"
+msgstr "aizmirst"
+
+msgid "Current Search"
+msgstr "Tekošā meklēšana"
+
+msgid "All Folders"
+msgstr "Visas mapes"
+
+msgid "Body"
+msgstr "Ziņojumā"
+
+msgid "Everywhere"
+msgstr "Jebkur"
+
+msgid "No Messages Found"
+msgstr "Ziņojumi nav atrasti"
+
+msgid "Please enter something to search for"
+msgstr "Lūdzu, ievadiet meklējamo tekstu"
+
+msgid "Signout"
+msgstr "Atteikties"
+
+msgid "Sign Out"
+msgstr "Atteikties"
+
+msgid "You have been successfully signed out."
+msgstr "Jūs esat veiksmīgi atteicies."
+
+msgid "Click here to log back in."
+msgstr "Klikšķiniet te, lai atkal pieteiktos sistēmā."
+
+msgid "Viewing a Business Card"
+msgstr "Aplūkot vizītkarti"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+"vCard versija %s nav atbalstīta. Daļa no informācijas var nebūt pareizi "
+"konvertēta."
+
+msgid "Title"
+msgstr "Nosaukums"
+
+msgid "Web Page"
+msgstr "Tīmekļa lappuse"
+
+msgid "Organization / Department"
+msgstr "Organizācija / Nodaļa"
+
+msgid "Address"
+msgstr "Adrese"
+
+msgid "Work Phone"
+msgstr "Darbavietas telefons"
+
+msgid "Home Phone"
+msgstr "Mājas telefons"
+
+msgid "Cellular Phone"
+msgstr "Mobilais telefons"
+
+msgid "Fax"
+msgstr "Fakss"
+
+msgid "Note"
+msgstr "Piezīme"
+
+msgid "Add to address book"
+msgstr "Pievienot adrešu grāmatai"
+
+msgid "Title &amp; Org. / Dept."
+msgstr "Amats un organizācija / nodaļa"
+
+msgid "Viewing Full Header"
+msgstr "Aplūkot visu ziņojuma iesākumu"
+
+msgid "Viewing a text attachment"
+msgstr "Aplūkot teksta pielikumu"
+
+msgid "View Unsafe Images"
+msgstr "Rādīt nedrošos attēlus"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr "Nevarēja iekļaut servera daļas datubāzes pieprasītās PEAR  funkcijas."
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+"Vai ir uzstādīts PEAR un vai iekļaušanas ceļš ir pareizi iestatīts lai "
+"atrastu %s?"
+
+msgid "Please contact your system administrator and report this error."
+msgstr "Lūdzu, par šo kļūdu ziņojiet sistēmas administratoram."
+
+msgid "Personal address book"
+msgstr "personiskajai adrešu grāmatai"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "Datu bāzes kļūda: %s"
+
+msgid "Address book is read-only"
+msgstr "Adrešu grāmata ir tikai lasīšanas režīmā"
+
+#. i18n: don't use html formating in translation
+#, php-format
+msgid "User \"%s\" already exists"
+msgstr "Lietotājs \"%s\" jau eksistē."
+
+#. i18n: don't use html formating in translation
+#, php-format
+msgid "User \"%s\" does not exist"
+msgstr "Lietotājs \"%s\" neeksistē."
+
+#, php-format
+msgid "User '%s' already exist."
+msgstr "Lietotājs \"%s\" jau eksistē."
+
+msgid "Not a file name"
+msgstr "Neatļauts datnes vārds"
+
+msgid "No such file or directory"
+msgstr "Norādītās datnes vai direktorijas nav"
+
+msgid "Open failed"
+msgstr "Nevarēja atvērt"
+
+msgid "Write failed"
+msgstr "Neizdevās ierakstīt"
+
+msgid "Unable to update"
+msgstr "Neizdevās atjaunināt"
+
+msgid "Address book is corrupted. Required fields are missing."
+msgstr "Adrešu grāmata ir bojāta. Trūkst obligāto lauku."
+
+msgid "Address book entry is too big"
+msgstr "Adrešu grāmatas ieraksts ir pārāk liels"
+
+msgid "Could not lock datafile"
+msgstr "Nevarēju nobloķēt datni"
+
+msgid "Write to address book failed"
+msgstr "Neizdevās ierakstīt adrešu grāmatā"
+
+msgid "Error initializing address book database."
+msgstr "Kļūda, inicializējot adrešu grāmatas datubāzi."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "Kļūda atverot datni %s"
+
+msgid "Global address book"
+msgstr "Globālā adrešu grāmata"
+
+msgid "Error initializing global address book."
+msgstr "Kļūda, inicializējot globālo adrešu grāmatu."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Kļūda, inicializējot LDAP serveri: %s"
+
+msgid "Click here to change the sorting of the address list"
+msgstr "Klikšķiniet šeit, lai mainītu adresātu saraksta kārtošanu"
+
+msgid "Invalid input data"
+msgstr "Nederīgi ievadītie dati"
+
+msgid "Name is missing"
+msgstr "Trūkst vārda"
+
+msgid "E-mail address is missing"
+msgstr "Trūkst e-pasta adreses"
+
+msgid "Nickname contains illegal characters"
+msgstr "Vārdā ir neatļauti simboli"
+
+msgid "View"
+msgstr "Skats"
+
+msgid "View Business Card"
+msgstr "Apskatīt vizītkarti"
+
+msgid "Your session has expired, but will be resumed after logging in again."
+msgstr ""
+"Jūsu sesija ir beigusies, bet tā tiks turpināta pēc jaunas pieteikšanās "
+"sistēmā."
+
+msgid "Sunday"
+msgstr "svētdiena"
+
+msgid "Monday"
+msgstr "pirmdiena"
+
+msgid "Tuesday"
+msgstr "otrdiena"
+
+msgid "Wednesday"
+msgstr "trešdiena"
+
+msgid "Thursday"
+msgstr "ceturtdiena"
+
+msgid "Friday"
+msgstr "piektdiena"
+
+msgid "Saturday"
+msgstr "sestdiena"
+
+msgid "Sun"
+msgstr "Svē"
+
+msgid "Mon"
+msgstr "Pir"
+
+msgid "Tue"
+msgstr "Otr"
+
+msgid "Wed"
+msgstr "Tre"
+
+msgid "Thu"
+msgstr "Cet"
+
+msgid "Fri"
+msgstr "Pie"
+
+msgid "Sat"
+msgstr "Ses"
+
+msgid "January"
+msgstr "janvāris"
+
+msgid "February"
+msgstr "februāris"
+
+msgid "March"
+msgstr "marts"
+
+msgid "April"
+msgstr "aprīlis"
+
+msgid "May"
+msgstr "maijs"
+
+msgid "June"
+msgstr "jūnijs"
+
+msgid "July"
+msgstr "jūlijs"
+
+msgid "August"
+msgstr "augusts"
+
+msgid "September"
+msgstr "septembris"
+
+msgid "October"
+msgstr "oktobris"
+
+msgid "November"
+msgstr "novembris"
+
+msgid "December"
+msgstr "decembris"
+
+msgid "Jan"
+msgstr "Jan"
+
+msgid "Feb"
+msgstr "Feb"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Apr"
+
+msgid "Ma&#121;"
+msgstr "Mai"
+
+msgid "Jun"
+msgstr "Jūn"
+
+msgid "Jul"
+msgstr "Jūl"
+
+msgid "Aug"
+msgstr "Aug"
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Oct"
+msgstr "Okt"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Dec"
+
+msgid "D, F j, Y g:i a"
+msgstr "D, j F, Y g:i a"
+
+msgid "D, F j, Y H:i"
+msgstr "D, F j, Y H:i"
+
+msgid "M j, Y"
+msgstr "M j, Y"
+
+msgid "g:i a"
+msgstr "g:i a"
+
+msgid "H:i"
+msgstr "H:i"
+
+msgid "D, g:i a"
+msgstr "D, g:i a"
+
+msgid "D, H:i"
+msgstr "D, H:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "Iestatījumu datubāzes kļūda (%s). Nenormālas beigas."
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "Klikšķiniet šeit, lai atgrieztos uz %s"
+
+msgid "Go to the login page"
+msgstr "Iet uz sākumlapu"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"Iestatījumu datne %s nav atrasta. Lai izveidotu noklusēto iestatījumu datni, "
+"atsakieties un piesakieties sistēmā no jauna."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Nevar atvērt iestatījumu datni %s. Lai atrisinātu šo problēmu, lūdzu, "
+"ziņojiet sistēmas administratoram."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Nevar saglabāt iestatījumu datni %s. Lai atrisinātu šo problēmu, ziņojiet "
+"sistēmas administratoram."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Nevar nokopēt iestatījumu datni %s no pagaidu datnes %s. Lai atrisinātu šo "
+"problēmu, ziņojiet sistēmas administratoram."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "Kļūda atverot %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "Nevar atrast vai nolasīt noklusēto iestatījumu datni!"
+
+msgid "Could not create initial preference file!"
+msgstr "Nevarēja izveidot sākotnējo iestatījumu datni!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s jābūt rakstīšanas tiesībām lietotājam %s"
+
+msgid "Signature is too big."
+msgstr "Paraksts ir pārāk liels."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Nevar atvērt paraksta datni %s. Lai atrisinātu šo problēmu, ziņojiet "
+"sistēmas administratoram."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Nevar ierakstīt paraksta datni %s. Lai atrisinātu šo problēmu, ziņojiet "
+"sistēmas administratoram."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Nevar nokopēt paraksta datni %s no pagaidu datnes %s. Lai atrisinātu šo "
+"problēmu, ziņojiet sistēmas administratoram."
+
+msgid ""
+"You need to have PHP installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+"Jābūt uzstādītam PHP ar ieslēgtu multibaitu virknes funkciju (lietojot "
+"'configure' opciju --enable-mbstring)."
+
+msgid "ERROR: No available IMAP stream."
+msgstr "KĻŪDA: nav IMAP straumes."
+
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "KĻŪDA: IMAP serveris pārtrauca sesiju."
+
+msgid "ERROR: Could not complete request."
+msgstr "KĻŪDA: nevarēju pabeigt pieprasījumu."
+
+msgid "Query:"
+msgstr "Pieprasījums:"
+
+msgid "Reason Given:"
+msgstr "Atbilde:"
+
+msgid "ERROR: Bad or malformed request."
+msgstr "KĻŪDA: nepareizs vai kļūdains pieprasījums."
+
+msgid "Server responded:"
+msgstr "Serveris atbildēja:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr "KĻŪDA: IMAP serveris ir aizvēris sesiju."
+
+msgid "ERROR: Unknown IMAP response."
+msgstr "KĻŪDA: nezināma IMAP atbilde."
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Neiespējami pieslēgties IMAP serverim: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+"IMAP serveris ziņo, ka parasta (nešifrēta) teksta pieteikšanās ir atslēgta."
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr "CRAM-MD5 vai DIGEST-MD5 autentifikācijas lietošana varētu strādāt."
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr "Un arī TLS lietošana varētu ļaut pieteikties SquirrelMail."
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "Nederīgs pieprasījums: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "Nezināma kļūda: %s"
+
+msgid "Read data:"
+msgstr "Lasīt datus:"
+
+msgid "Unknown user or password incorrect."
+msgstr "Nezināms lietotāja vārds vai nepareiza parole."
+
+msgid "ERROR: Could not append message to"
+msgstr "KĻŪDA: Nevar pievienot ziņojumu"
+
+msgid "Solution:"
+msgstr "Risinājums:"
+
+msgid ""
+"Remove unneccessary messages from your folders. Start with your Trash folder."
+msgstr "Izdzēsiet nevajadzīgos ziņojumus no mapēm. Sāciet ar miskasti."
+
+#, php-format
+msgid "Invalid mailbox name: %s"
+msgstr "Neatļauts pastkastes nosaukums: %s"
+
+msgid "(no subject)"
+msgstr "(bez tēmas)"
+
+msgid "Unknown Sender"
+msgstr "Nezināms nosūtītājs"
+
+msgid "Unknown response from IMAP server:"
+msgstr "Negaidīta atbilde no IMAP servera:"
+
+msgid "The server couldn't find the message you requested."
+msgstr "Serveris nevarēja atrast pieprasīto ziņojumu."
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+"Visdrīzāk jūsu ziņojumu saraksts ir novecojis un ziņojums ir pārvietots vai "
+"izdzēsts (iespējams, cita programma ir pieslēgusies tai pašai pastkastei)."
+
+msgid "Unknown date"
+msgstr "Nezināms datums"
+
+msgid "A"
+msgstr "A"
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr "IMAP serveris neatbalsta ziņojumu pavedienu kārtošanu."
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr "IMAP serveris neatbalsta ziņojumu kārtošanu uz servera."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "ŠĪ MAPE IR TUKŠA"
+
+msgid "Move Selected To"
+msgstr "Pārvietot iezīmēto uz"
+
+msgid "Transform Selected Messages"
+msgstr "Apstrādāt iezīmētos ziņojumus"
+
+msgid "Move"
+msgstr "Pārvietot"
+
+msgid "Expunge"
+msgstr "Iztīrīt"
+
+msgid "Read"
+msgstr "Lasīts"
+
+msgid "Unread"
+msgstr "Nelasīts"
+
+msgid "Unthread View"
+msgstr "Dokumenta skats"
+
+msgid "Thread View"
+msgstr "Pavediena skats"
+
+msgid "Toggle All"
+msgstr "Iezīmēt visus"
+
+msgid "Unselect All"
+msgstr "Neiezīmēt nevienu"
+
+msgid "Select All"
+msgstr "Iezīmēt visu"
+
+#, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "Rādu ziņojumus no %s līdz %s (%s kopā)"
+
+#, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "Rādu ziņojumu: %s (%s kopā)"
+
+msgid "Paginate"
+msgstr "Numurēt lappuses"
+
+msgid "Show All"
+msgstr "Rādīt visus"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "SquirrelMail nevarēja atkodēt ziņojuma satura struktūru"
+
+msgid "The bodystructure provided by your IMAP server:"
+msgstr "IMAP servera sniegtā ziņojuma satura struktūra:"
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"Kļūda, savācot ziņojuma saturu. Visticamāk, ka iemesls ir nepareizi "
+"izveidots ziņojums."
+
+msgid "Command:"
+msgstr "Komanda:"
+
+msgid "Response:"
+msgstr "Atbilde:"
+
+msgid "Message:"
+msgstr "Ziņojums:"
+
+msgid "FETCH line:"
+msgstr "Savākšanas rinda:"
+
+msgid "Hide Unsafe Images"
+msgstr "Nerādīt nedrošos attēlus"
+
+msgid "Download"
+msgstr "Lejupielādēt"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_eng.png"
+
+msgid "This external link will open in a new window"
+msgstr "Atvērt iezīmēto saiti jaunā logā"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "Iestatījuma tips '%s' nav atrasts"
+
+msgid "Delete Selected"
+msgstr "Nodzēst izvēlēto"
+
+#, php-format
+msgid "Edit List Layout Type '%s' Not Found"
+msgstr "Saraksta izkārtojuma iestatījuma tips '%s' nav atrasts"
+
+msgid "Current Folder"
+msgstr "Tekošā mape"
+
+msgid "Compose"
+msgstr "Rakstīt jaunu"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "Kļūda, veidojot direktoriju %s."
+
+msgid "Could not create hashed directory structure!"
+msgstr "Nevarēja izveidot jauktu direktoriju struktūru!"
+
+msgid "Email delivery error"
+msgstr "E-pasta piegādes kļūda"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr "Nevar palaist komandu '%s'."
+
+msgid "Can't open SMTP stream."
+msgstr "Nevar atvērt SMTP straumi."
+
+msgid "Service not available, closing channel"
+msgstr "Serviss nav pieejams, aizveram pārraides kanālu"
+
+msgid "A password transition is needed"
+msgstr "Nepieciešama paroles šifrēšanas maiņa"
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "Pieprasītā pasta darbība nav veikta: pastkaste nepieejama"
+
+msgid "Requested action aborted: error in processing"
+msgstr "Pieprasītā darbība pārtraukta: kļūda izpildē"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "Pieprasītā darbība nav notikusi: sistēmā pietrūkst vietas"
+
+msgid "Temporary authentication failure"
+msgstr "Pagaidu autentifikācijas problēma"
+
+msgid "Syntax error; command not recognized"
+msgstr "Sintakses kļūda; nezināma komanda"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "Sintakses kļūda parametros vai argumentos"
+
+msgid "Command not implemented"
+msgstr "Komanda nav ieviesta"
+
+msgid "Bad sequence of commands"
+msgstr "Nepareiza komandu kārtība"
+
+msgid "Command parameter not implemented"
+msgstr "Komandas parametri nav ieviesti"
+
+msgid "Authentication required"
+msgstr "Obligāta autentifikācija"
+
+msgid "Authentication mechanism is too weak"
+msgstr "Autentifikācijas mehānisms ir par vāju"
+
+msgid "Authentication failed"
+msgstr "Autentifikācija neveiksmīga"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "Izvēlētajam autentifikācijas mehānismam pieprasīta šifrēšana"
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "Izvēlētā darbība nav notikusi: pastkaste nepieejama"
+
+msgid "User not local; please try forwarding"
+msgstr "Lietotājs nav lokāls; lūdzu mēģiniet pārsūtīt"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr ""
+"Pieprasītā pasta darbība pārtraukta: pārsniegta pieejamā brīvā vieta datu "
+"glabātuvē"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "Pieprasītā darbība nav notikusi: neatļauts pastkastes nosaukums"
+
+msgid "Transaction failed"
+msgstr "Transakcija nav notikusi"
+
+msgid "Unknown response"
+msgstr "Nezināma atbilde"
+
+msgid "General Display Options"
+msgstr "Vispārīgie ekrāna iestatījumi"
+
+msgid "Theme"
+msgstr "Tēma"
+
+msgid "Default"
+msgstr "Noklusētais"
+
+msgid "Custom Stylesheet"
+msgstr "Pielāgotu stila lapa"
+
+msgid "Language"
+msgstr "Valoda"
+
+msgid "Use Javascript"
+msgstr "Lietot JavaScript"
+
+msgid "Autodetect"
+msgstr "Automātiski noteikts"
+
+msgid "Always"
+msgstr "Vienmēr"
+
+msgid "Never"
+msgstr "Nekad"
+
+msgid "Mailbox Display Options"
+msgstr "Pastkastes rādīšanas iestatījumi"
+
+msgid "Number of Messages per Page"
+msgstr "Ziņojumu skaits lappusē"
+
+msgid "Enable Alternating Row Colors"
+msgstr "Iestatīt mainīgas rindiņu krāsas"
+
+msgid "Enable Page Selector"
+msgstr "Iestatīt lappušu izvēli"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "Maksimālais parādīto lapu skaits"
+
+msgid "Always Show Full Date"
+msgstr "Vienmēr rādīt pilnu datumu"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr "No/Kam lauka garums (0 pilnam garumam)"
+
+msgid "Length of Subject Field (0 for full)"
+msgstr "Tēmas lauka garums (0 pilnam garumam)"
+
+msgid "Message Display and Composition"
+msgstr "Ziņojuma parādīšana un sastādīšana"
+
+msgid "Wrap Incoming Text At"
+msgstr "Pie kura simbola aplauzt tekstu"
+
+msgid "Width of Editor Window"
+msgstr "Ziņojuma redaktora loga platums"
+
+msgid "Height of Editor Window"
+msgstr "Ziņojuma redaktora loga augstums"
+
+msgid "Location of Buttons when Composing"
+msgstr "Pogu atrašanās vieta ziņojuma rakstīšanas laikā"
+
+msgid "Before headers"
+msgstr "Pirms ziņojuma sākuma"
+
+msgid "Between headers and message body"
+msgstr "Starp ziņojuma sākumu un saturu"
+
+msgid "After message body"
+msgstr "Pēc ziņojuma satura"
+
+msgid "Address Book Display Format"
+msgstr "Adrešu grāmatas formāts"
+
+msgid "Javascript"
+msgstr "JavaScript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Format of Addresses Added From Address Book"
+msgstr "No adrešu grāmatas pievienoto adrešu formāts"
+
+msgid "No prefix/Address only"
+msgstr "Bez prefiksa/tikai adrese"
+
+msgid "Nickname and address"
+msgstr "Aizstājvārds un adrese"
+
+msgid "Full name and address"
+msgstr "Pilnais vārds un adrese"
+
+msgid "Show HTML Version by Default"
+msgstr "Sūtīt ziņojumu HTML formātā pēc noklusējuma"
+
+msgid "Enable Forward as Attachment"
+msgstr "Iespējot \"Pārsūtīt kā pielikumu\""
+
+msgid "Include Me in CC when I Reply All"
+msgstr "Atbildot visiem, nosūtīt kopiju man"
+
+msgid "Enable Mailer Display"
+msgstr "Iestatīt e-pasta programmatūras uzrādīšanu"
+
+msgid "Display Attached Images with Message"
+msgstr "Parādīt pievienotos attēlus kopā ar ziņojumu"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "Iestatīt tīru ekrānu drukas formātam"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "Ieslēgt ziņojuma piegādes apstiprinājumu"
+
+msgid "Compose Messages in New Window"
+msgstr "Rakstīt ziņojumus jaunā logā"
+
+msgid "Width of Compose Window"
+msgstr "Ziņojuma rakstīšanas loga platums"
+
+msgid "Height of Compose Window"
+msgstr "Ziņojuma rakstīšanas loga augstums"
+
+msgid "Prepend Signature before Reply/Forward Text"
+msgstr "Pievienot parakstu pirms atbildes/pārsūtītā teksta"
+
+msgid "Prefix for Original Message when Replying"
+msgstr "Sākotnējā ziņojuma prefikss atbildot"
+
+msgid "Cursor Position when Replying"
+msgstr "Kursora pozīcija atbildot"
+
+msgid "To: field"
+msgstr "Kam: lauks"
+
+msgid "Focus in body"
+msgstr "Nostāties ziņojumā"
+
+msgid "Select body"
+msgstr "Iezīmēt ziņojuma saturu"
+
+msgid "No focus"
+msgstr "Bez fokusa"
+
+msgid "Sort by Received Date"
+msgstr "Kārtot sarakstu pēc datuma"
+
+msgid "Enable Thread Sort by References Header"
+msgstr "Iestatīt pavedienu kārtošanu pēc atsauces sākuma"
+
+msgid "Special Folder Options"
+msgstr "Īpašo mapju iestatījumi"
+
+msgid "Folder Path"
+msgstr "Mapes ceļš"
+
+msgid "Do not use Trash"
+msgstr "Nelietot miskasti"
+
+msgid "Trash Folder"
+msgstr "Miskastes mape"
+
+msgid "Do not use Drafts"
+msgstr "Nelietot melnrakstu mapi"
+
+msgid "Draft Folder"
+msgstr "Melnrakstu mape"
+
+msgid "Do not use Sent"
+msgstr "Nelietot nosūtni"
+
+msgid "Sent Folder"
+msgstr "Nosūtnes mape"
+
+msgid "Folder List Options"
+msgstr "Rādīt mapju saraksta iestatījumus"
+
+msgid "Location of Folder List"
+msgstr "Mapju saraksta novietojums"
+
+msgid "Left"
+msgstr "Pa kreisi"
+
+msgid "Right"
+msgstr "Pa labi"
+
+msgid "pixels"
+msgstr "pikseļi"
+
+msgid "Width of Folder List"
+msgstr "Mapju saraksta platums"
+
+msgid "Minutes"
+msgstr "Minūtes"
+
+msgid "Seconds"
+msgstr "Sekundes"
+
+msgid "Minute"
+msgstr "Minūte"
+
+msgid "Auto Refresh Folder List"
+msgstr "Automātiski atjaunot mapju sarakstu"
+
+msgid "Enable Unread Message Notification"
+msgstr "iestatīt nelasīto ziņojumu apstiprinājumu saņemšanu"
+
+msgid "No Notification"
+msgstr "Bez paziņojuma"
+
+msgid "Only INBOX"
+msgstr "Tikai IESŪTNE"
+
+msgid "Unread Message Notification Type"
+msgstr "Nelasīto ziņojumu apstiprinājuma tips"
+
+msgid "Only Unseen"
+msgstr "Tikai nelasītos"
+
+msgid "Unseen and Total"
+msgstr "Nelasītos un visus"
+
+msgid "Enable Collapsable Folders"
+msgstr "Iestatīt saspiežamas mapes"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "Iestatīt kopējo nelasīto ziņojumu apstiprinājumu"
+
+msgid "Show Clock on Folders Panel"
+msgstr "Rādīt laiku mapju sarakstā"
+
+msgid "International date and time"
+msgstr "Datums un laiks starptautiskā formātā"
+
+msgid "American date and time"
+msgstr "Datums un laiks Amerikas formātā"
+
+msgid "European date and time"
+msgstr "Datums un laiks Eiropas formātā"
+
+msgid "Show weekday and time"
+msgstr "Rādīt nedēļas dienu un laiku"
+
+msgid "Show time with seconds"
+msgstr "Parādīt laiku ar sekundēm"
+
+msgid "Show time"
+msgstr "Parādīt laiku"
+
+msgid "No Clock"
+msgstr "Nerādīt laiku"
+
+msgid "Hour Format"
+msgstr "Stundu formāts"
+
+msgid "12-hour clock"
+msgstr "Izmantot 12 stundu laika formātu"
+
+msgid "24-hour clock"
+msgstr "Izmantot 24 stundu laika formātu"
+
+msgid "Memory Search"
+msgstr "Meklēšana atmiņā"
+
+msgid "Disabled"
+msgstr "Atstatīts"
+
+msgid "Folder Selection Options"
+msgstr "Mapes izvēles iestatījumi"
+
+msgid "Selection List Style"
+msgstr "Izvēles stila iestādījums"
+
+msgid "Long:"
+msgstr "Garš:"
+
+msgid "Folder"
+msgstr "Mape"
+
+msgid "Subfolder"
+msgstr "Apakšmape"
+
+msgid "Indented:"
+msgstr "Ar atkāpi:"
+
+msgid "Delimited:"
+msgstr "Atdalīts:"
+
+msgid "You can't select INBOX as Trash folder."
+msgstr "Nevar izvēlēties IESŪTNI kā miskastes mapi."
+
+msgid "You can't select INBOX as Sent folder."
+msgstr "Nevar izvēlēties IESŪTNI kā nosūtni."
+
+msgid "You can't select INBOX as Draft folder."
+msgstr "Nevar izvēlēties IESŪTNI kā melnrakstu mapi."
+
+msgid "Name and Address Options"
+msgstr "Vārda un adreses iestatījumi"
+
+msgid "E-mail Address"
+msgstr "E-pasta adrese"
+
+msgid "Edit Advanced Identities"
+msgstr "Labot paplašinātās identitātes"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(atceļ visas pagaidām veiktās izmaiņas šajā formā)"
+
+msgid "Multiple Identities"
+msgstr "Vairākas identitātes"
+
+msgid "Same as server"
+msgstr "Tāpat kā serverim"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr "Kļūda, atverot laika joslas konfigurāciju, ziņojiet administratoram"
+
+msgid "Timezone Options"
+msgstr "Laika joslas iestatījumi"
+
+msgid "Your current timezone"
+msgstr "Iestatītā laika josla"
+
+msgid "Reply Citation Options"
+msgstr "Atbildes citēšanas iestatījumi"
+
+msgid "Reply Citation Style"
+msgstr "Atbildes citēšanas stils"
+
+msgid "No Citation"
+msgstr "Bez citēšanas"
+
+msgid "AUTHOR Wrote"
+msgstr "AUTORS rakstīja"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr "Šajā datumā, AUTORS rakstīja"
+
+msgid "Quote Who XML"
+msgstr "XML citēšana"
+
+msgid "User-Defined"
+msgstr "Lietotāja noteikts"
+
+msgid "User-Defined Citation Start"
+msgstr "Lietotāja noteiktā citāta sākums"
+
+msgid "User-Defined Citation End"
+msgstr "Lietotāja noteiktā citāta beigas"
+
+msgid "Signature Options"
+msgstr "Paraksta iestatījumi"
+
+msgid "Use Signature"
+msgstr "Lietot parakstu"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Sākt parakstu ar '--' atdalošo līniju"
+
+msgid "Config File Version"
+msgstr "Konfigurācijas datnes versija"
+
+msgid "SquirrelMail Version"
+msgstr "SquirrelMail versija"
+
+msgid "PHP Version"
+msgstr "PHP versija"
+
+msgid "Organization Preferences"
+msgstr "Organizācijas iestatījumi"
+
+msgid "Organization Name"
+msgstr "Organizācijas vārds"
+
+msgid "Organization Logo"
+msgstr "Organizācijas logo"
+
+msgid "Organization Logo Width"
+msgstr "Organizācijas logo platums"
+
+msgid "Organization Logo Height"
+msgstr "Organizācijas logo augstums"
+
+msgid "Organization Title"
+msgstr "Organizācijas nosaukums"
+
+msgid "Signout Page"
+msgstr "Lappuse pēc atteikšanās no sistēmas"
+
+msgid "Provider Link URI"
+msgstr "Piegādātāja saites URI"
+
+msgid "Provider Name"
+msgstr "Piegādātāja nosaukums"
+
+msgid "Top Frame"
+msgstr "Augšējais rāmis"
+
+msgid "Server Settings"
+msgstr "Servera iestatījumi"
+
+msgid "Mail Domain"
+msgstr "Pasta domēns"
+
+msgid "IMAP Server Address"
+msgstr "IMAP servera adrese"
+
+msgid "IMAP Server Port"
+msgstr "IMAP servera ports"
+
+msgid "IMAP Server Type"
+msgstr "IMAP servera tips"
+
+msgid "Cyrus IMAP server"
+msgstr "Cyrus IMAP serveris"
+
+msgid "University of Washington's IMAP server"
+msgstr "University of Washington IMAP serveris"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "Microsoft Exchange IMAP serveris"
+
+msgid "Courier IMAP server"
+msgstr "Courier IMAP serveris"
+
+msgid "Mac OS X Mailserver"
+msgstr "Mac OS X pasta serveris"
+
+msgid "hMailServer IMAP server"
+msgstr "hMailServer IMAP serveris"
+
+msgid "Mercury/32 IMAP server"
+msgstr "Mercury IMAP serveris"
+
+msgid "Binc IMAP server"
+msgstr "Binc IMAP serveris"
+
+msgid "Dovecot IMAP server"
+msgstr "Dovecot IMAP serveris"
+
+msgid "Not one of the above servers"
+msgstr "Neviens no iepriekšminētajiem serveriem"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAP mapju atdalītājs"
+
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Lietot &quot;atklāt&quot; auto atklāt."
+
+msgid "Use TLS for IMAP Connections"
+msgstr "Izmantot TLS drošiem IMAP savienojumiem"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "Pieprasa PHP 4.3.x! Eksperimentāli."
+
+msgid "IMAP Authentication Type"
+msgstr "IMAP autentifikācijas tips"
+
+msgid "IMAP login"
+msgstr "IMAP autentifikācijas lietotājvārds"
+
+msgid "Use Sendmail Binary"
+msgstr "Lietot sendmail izpildāmo datni (binary file)"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr "Izvēlēties &quot;ne&quot; priekš SMTP"
+
+msgid "Sendmail Path"
+msgstr "Sendmail ceļš"
+
+msgid "Sendmail Arguments"
+msgstr "Sendmail argumenti"
+
+msgid "SMTP Server Address"
+msgstr "SMTP servera adrese"
+
+msgid "SMTP Server Port"
+msgstr "SMTP servera ports"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "Izmantot TLS drošiem SMTP savienojumiem"
+
+msgid "SMTP Authentication Type"
+msgstr "SMTP autentifikācijas tips"
+
+msgid "No SMTP auth"
+msgstr "Bez SMTP autentifikācijas"
+
+msgid "Login (plain text)"
+msgstr "Pieteikšanās (nešifrēta teksta režīms)"
+
+msgid "Custom SMTP AUTH username"
+msgstr "Pielāgots SMTP AUTH lietotāja vārds"
+
+msgid "Custom SMTP AUTH password"
+msgstr "Pielāgota SMTP AUTH parole"
+
+msgid "POP3 Before SMTP?"
+msgstr "POP3 pirms SMTP?"
+
+msgid "Header Encryption Key"
+msgstr "Ziņojuma sākuma šifrēšanas atslēga"
+
+msgid "Invert Time"
+msgstr "Pārstatīt laiku"
+
+msgid "Folders Defaults"
+msgstr "Mapju noklusētie iestatījumi"
+
+msgid "Default Folder Prefix"
+msgstr "Noklusētais mapes prefikss"
+
+msgid "Show Folder Prefix Option"
+msgstr "Rādīt mapes prefiksa iestatījumu"
+
+msgid "By default, move to trash"
+msgstr "Pēc noklusējuma pārvietot uz miskasti"
+
+msgid "By default, move to sent"
+msgstr "Pēc noklusējuma pārvietot uz nosūtni"
+
+msgid "By default, save as draft"
+msgstr "Pēc noklusējuma saglabāt kā melnrakstu"
+
+msgid "List Special Folders First"
+msgstr "Vispirms rādīt īpašās mapes"
+
+msgid "Show Special Folders Color"
+msgstr "Rādīt īpašās mapes krāsā"
+
+msgid "Auto Expunge"
+msgstr "Dzēst automātiski"
+
+msgid "Default Sub. of INBOX"
+msgstr "Iesūtnes noklusētā apakšmape"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Rādīt 'Satur apakšmapes' iestatījumu"
+
+msgid "Default Unseen Notify"
+msgstr "Noklusētais nelasīto ziņojumu paziņojums"
+
+msgid "Default Unseen Type"
+msgstr "Noklusētais nelasīto ziņojumu paziņojuma tips"
+
+msgid "Auto Create Special Folders"
+msgstr "Automātiski izveidot īpašās mapes"
+
+msgid "Auto delete folders"
+msgstr "Automātiski dzēst mapes"
+
+msgid "Enable /NoSelect folder fix"
+msgstr "Iespējot /Neiezīmēt mapes nostiprināšanu"
+
+msgid "General Options"
+msgstr "Vispārīgie iestatījumi"
+
+msgid "Data Directory"
+msgstr "Datu direktorija"
+
+msgid "Temp Directory"
+msgstr "Pagaidu datņu direktorija"
+
+msgid "Hash Level"
+msgstr "Sajaukuma līmenis"
+
+msgid "Hash Disabled"
+msgstr "Sajaukums atslēgts"
+
+msgid "Moderate"
+msgstr "Mērens"
+
+msgid "Medium"
+msgstr "Vidējs"
+
+msgid "Default Left Size"
+msgstr "Noklusētais platums kreisajā pusē"
+
+msgid "Usernames in Lowercase"
+msgstr "Lietotājvārdi ar mazajiem burtiem"
+
+msgid "Allow use of priority"
+msgstr "Atļaut prioritāšu izmantošanu"
+
+msgid "Hide SM attributions"
+msgstr "Slēpt SM piedēvējumus"
+
+msgid "Enable use of delivery receipts"
+msgstr "Ieslēgt ziņojuma piegādes apstiprinājumu"
+
+msgid "Allow editing of identities"
+msgstr "Atļaut labot identitātes"
+
+msgid "Allow editing of full name"
+msgstr "Atļaut pilnā vārda labošanu"
+
+msgid "Remove username from headers"
+msgstr "Aizvākt lietotāja vārdu no ziņojuma sākuma"
+
+msgid "Used only when identities can't be modified"
+msgstr "Lieto tikai, kad identitātes nav labojamas"
+
+msgid "Use server-side sorting"
+msgstr "Lietot servera kārtošanu"
+
+msgid "Use server-side thread sorting"
+msgstr "Lietot servera puses pavedienu kārtošanu"
+
+msgid "Allow server charset search"
+msgstr "Atļaut servera rakstzīmju kopas meklēšanu"
+
+msgid "UID support"
+msgstr "UID atbalsts"
+
+msgid "PHP session name"
+msgstr "PHP sesijas nosaukums"
+
+msgid "Location base"
+msgstr "Novietojuma pamatne"
+
+msgid "Message of the Day"
+msgstr "Dienas ziņojums"
+
+msgid "Database"
+msgstr "Datubāze"
+
+msgid "Address book DSN"
+msgstr "Adrešu grāmatas DSN"
+
+msgid "Address book table"
+msgstr "Adrešu grāmatas tabula"
+
+msgid "Preferences DSN"
+msgstr "Iestatījumu DSN"
+
+msgid "Preferences table"
+msgstr "Iestatījumu tabula"
+
+msgid "Preferences username field"
+msgstr "Iestatījumu lietotājvārda lauks"
+
+msgid "Preferences key field"
+msgstr "Iestatījumu atslēgas lauks"
+
+msgid "Preferences value field"
+msgstr "Iestatījumu vērtības lauks"
+
+msgid "Global address book DSN"
+msgstr "Globālās adrešu grāmatas DSN"
+
+msgid "Global address book table"
+msgstr "Globālās adrešu grāmatas tabula"
+
+msgid "Allow writing into global address book"
+msgstr "Atļaut rakstīt globālajā adrešu grāmatā"
+
+msgid "Allow listing of global address book"
+msgstr "Atļaut skatīt globālo adrešu grāmatu"
+
+msgid "Language settings"
+msgstr "Valodas iestatījumi"
+
+msgid "Default Language"
+msgstr "Noklusētā valoda"
+
+msgid "Default Charset"
+msgstr "Noklusētais rakstzīmju kopums"
+
+msgid "Enable lossy encoding"
+msgstr "Iestatīt zudumradošu kodējumu"
+
+msgid "Address Books"
+msgstr "Adrešu grāmatas"
+
+msgid "Default Javascript Addressbook"
+msgstr "Noklusētā JavaScript adrešu grāmata"
+
+msgid "Global address book file"
+msgstr "Globālās adrešu grāmatas datne"
+
+msgid "Allow writing into global address book file"
+msgstr "Atļaut rakstīt globālajā adrešu grāmatas datnē"
+
+msgid "Themes"
+msgstr "Tēmas"
+
+msgid "Style Sheet URL (css)"
+msgstr "Stilu lapas URL (css)"
+
+msgid "Default theme"
+msgstr "Noklusētā tēma"
+
+msgid "Use index number of theme"
+msgstr "Lietot tēmas indeksa skaitli"
+
+msgid "Configuration Administrator"
+msgstr "Konfigurācijas vednis"
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+"Piezīme: ieteiktais sistēmas konfigurācijas paņēmiens ir, lietojot conf.pl, "
+"nevis šo spraudni. conf.pl satur papildinformāciju par mainīgo pielietojumu "
+"un to vērtībām, kā arī papildus pārbaudes."
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+"Ja rodas grūtības ar šo konfigurāciju, izpildiet vai apskatiet conf.pl datni."
+
+msgid "Theme Name"
+msgstr "Tēmas nosaukums"
+
+msgid "Theme Path"
+msgstr "Tēmas ceļš"
+
+msgid "Plugins"
+msgstr "Spraudņi"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr "Spraudņu direktorija netika atrasta: %s"
+
+msgid "Change Settings"
+msgstr "Izmainīt iestatījumus"
+
+msgid "Test Configuration"
+msgstr "Testa konfigurācija"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr "Nevar atvērt konfigurācijas datni. Lūdzu, pārbaudiet config.php datni."
+
+msgid "Administration"
+msgstr "Administrēšana"
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+"Šis modulis ļauj administratoriem mainīt SquirrelMail konfigurāciju "
+"attālināti."
+
+msgid "Plugin is not enabled"
+msgstr "Spraudnis ir atstatīts"
+
+msgid "Submit a Bug Report"
+msgstr "Iesniegt kļūdas ziņojumu"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+"Pirms nosūtīt kļūdu ziņojumu, pārliecinieties, ka esat pārbaudījis šo "
+"sarakstu ar tipiskajām konfigurācijas problēmām."
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+"Pārliecinieties, ka darbiniet visjaunāko %s versiju. Pašlaik tiek darbināta "
+"versija %s."
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+"Pārbaudiet, vai šī kļūda jau ir %sBug List%s sarakstā SourceForge portālā. "
+"Ja tā tur ir, mēs par šo kļūdu zinām un cenšamies to izlabot."
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+"Pārliecinieties, ka jūs to variet atkārtot. Ja kļūda nav atkārtojama "
+"vienmēr, centieties pierakstīt, kas ir darīts, kad kļūda notiek. Ja kļūda "
+"atkārtojas, skatot noteiktu ziņojumu, paturiet šo ziņojumu lai varbūt arī "
+"mēs varam to aplūkot."
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+"Ja iepriekš ir redzami brīdinājumi, centieties tos atrisināt pats. Lasiet "
+"dokumentāciju %s direktorijā kur instalēts SquirrelMail."
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+"Nospiežot šo pogu, SquirrelMail izstrādātājiem tiks nosūtīts ziņojums, kurš "
+"saturēs daudz informācijas par jūsu sistēmu, pārlūkprogrammu, SquirrelMail "
+"konfigurāciju un jūsu IMAP serveri. Jums arī tiks jautāta papildinformācija. "
+"Ir tikai jāaizpilda lauki augšpusē. Ja vēlaties, variet ritināt loga saturu "
+"līdz lejai lai uzzinātu, kas vēl tiks nosūtīts izstrādātājiem."
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+"Pārliecinieties, ka esat sniedzis iespējami daudz informācijas lai dotu "
+"citiem iespēju atrast un izlabot kļūdu. Kļūdas iesniegšana šādā veidā to "
+"automātiski nepievienos kļūdu sarakstam SoureForge portālā, bet, kāds cits, "
+"saņemot šo ziņojumu, var pievienot to jūsu vietā."
+
+msgid "This bug involves:"
+msgstr "Šī kļūda iesaista:"
+
+msgid "the general program"
+msgstr "vispārīgā programma"
+
+msgid "a specific plugin"
+msgstr "īpašs spraudnis"
+
+msgid "Start Bug Report Form"
+msgstr "Atvērt kļūdas paziņojuma formu"
+
+msgid "Bug"
+msgstr "Programmatūras kļūda"
+
+msgid "Bug Reports"
+msgstr "Kļūdu atskaites:"
+
+msgid "Show button in toolbar"
+msgstr "Rādīt ikonu rīkjoslā"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "Nevarēja ierakstīt kalendāra datnē %s"
+
+msgid "TODAY"
+msgstr "ŠODIEN"
+
+msgid "Go"
+msgstr "Iet uz"
+
+msgid "l, F j Y"
+msgstr "l, j F Y"
+
+msgid "ADD"
+msgstr "PIEVIENOT"
+
+msgid "EDIT"
+msgstr "LABOT"
+
+msgid "DEL"
+msgstr "DZĒST"
+
+msgid "Start time:"
+msgstr "Sākuma laiks:"
+
+msgid "Length:"
+msgstr "Garums:"
+
+msgid "Priority:"
+msgstr "Prioritāte:"
+
+msgid "Title:"
+msgstr "Nosaukums:"
+
+msgid "Set Event"
+msgstr "Uzstādīt notikumu"
+
+msgid "Event Has been added!"
+msgstr "Notikums tika pievienots!"
+
+msgid "Date:"
+msgstr "Datums:"
+
+msgid "m/d/Y"
+msgstr "m/d/g"
+
+msgid "Time:"
+msgstr "Laiks:"
+
+msgid "Day View"
+msgstr "Dienas skats"
+
+msgid "Do you really want to delete this event?"
+msgstr "Vai Jūs tiešām vēlaties aizvākt šo notikumu?"
+
+msgid "Event deleted!"
+msgstr "Notikums izdzēsts!"
+
+msgid "Nothing to delete!"
+msgstr "Nav nekā ko dzēst!"
+
+msgid "Update Event"
+msgstr "Notikuma atjaunošana"
+
+msgid "Do you really want to change this event from:"
+msgstr "Vai tiešām jūs vēlaties izmainīt šo notikumu no:"
+
+msgid "to:"
+msgstr "kam:"
+
+msgid "Event updated!"
+msgstr "Notikums atjaunināts!"
+
+msgid "Month View"
+msgstr "Mēneša skats"
+
+msgid "0 min."
+msgstr "0 min."
+
+msgid "15 min."
+msgstr "15 min."
+
+msgid "30 min."
+msgstr "30 min."
+
+msgid "45 min."
+msgstr "45 min."
+
+msgid "1 hr."
+msgstr "1 st."
+
+msgid "1.5 hr."
+msgstr "1,5 st."
+
+msgid "2 hr."
+msgstr "2 st."
+
+msgid "2.5 hr."
+msgstr "2,5 st."
+
+msgid "3 hr."
+msgstr "3 st."
+
+msgid "3.5 hr."
+msgstr "3,5 st."
+
+msgid "4 hr."
+msgstr "4 st."
+
+msgid "5 hr."
+msgstr "5 st."
+
+msgid "6 hr."
+msgstr "6 st."
+
+msgid "Calendar"
+msgstr "Kalendārs"
+
+msgid "Delete &amp; Prev"
+msgstr "Nodzēst &amp; iepr."
+
+msgid "Delete &amp; Next"
+msgstr "Nodzēst &amp; nāk."
+
+msgid "Move to:"
+msgstr "Pārvietot uz:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "Dzēst/Pārvietot/Nākamais pogas:"
+
+msgid "Display at top"
+msgstr "Ekrāns augšpusē"
+
+msgid "with move option"
+msgstr "ar pārvietošanas iestatījumu"
+
+msgid "Display at bottom"
+msgstr "ekrāns apakšā"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"PAR MAKSU - šis saraksts satur serverus, kuri ir reģistrēti kā mēstuļu "
+"izsūtītāji. Ļoti uzticams saraksts ar ko skenēt mēstules."
+
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"PAR MAKSU - serveri, kuri ir konfigurēti (vai nepareizi konfigurēti) atļaut "
+"mēstuļu caursūtīšanu tiks aizliegti. Vēl viens labs iemesls izmantošanai."
+
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"PAR MAKSU - iezvanpieejas lietotāji bieži tiek atfiltrēti, jo viņiem jālieto "
+"savu interneta piegādātāju pasta serveri ziņojumu nosūtīšanai. Mēstuļu "
+"izsūtītāji parasti saņem iezvanpieejas kontu un sūta mēstules tieši no tā."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "PAR MAKSU - RBL+ blackhole saraksts."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "PAR MAKSU - RBL+ atvērto retranslēšanas serveru saraksts"
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "PAR MAKSU - RBL+ iezvanpieejas saraksts."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "BEZ MAKSAS - Five-Ten-sg.com - tiešie mēstuļu avoti."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr ""
+"BEZ MAKSAS - Five-Ten-sg.com - iezvanpieejas saraksti - iekļauj dažas DSL IP "
+"adreses."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+"BEZ MAKSAS - Five-Ten-sg.com - liela apjoma pasta nosūtītājserveri, kuri "
+"nelieto pārbaudītas adreses."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "BEZ MAKSAS - Five-Ten-sg.com - dažādi citi serveri."
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "BEZ MAKSAS - Five-Ten-sg.com - vienlīmeņa serveri."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "BEZ MAKSAS - Five-Ten-sg.com - mēstuļu palīgserveri."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "BEZ MAKSAS - Five-Ten-sg.com - tīmekļa formu IP adreses."
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"BEZ MAKSAS - Dorkslayers kā rādās, iekļauj tikai patiešām vissliktākos "
+"atvērtos pasta pārsūtīšanas serverus ārpus ASV lai izvairītos no "
+"iesūdzēšanas tiesā. Interesanti, ka Dorkslayers portāls NErekomendē lietot "
+"viņu servisu."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "BEZ MAKSAS - SPAMhaus - labi zināmu mēstuļu avotu saraksts."
+
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"BEZ MAKSAS, vismaz pagaidām - interesants risinājums, kurš uzrāda serverus, "
+"kuriem ir ļoti augsta mēstuļu/parastu ziņojumu attiecība (85 procenti un "
+"vairāk)."
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr ""
+"BEZ MAKSAS - dev.null.dk - man nav nekādas papildinformācijas par šo "
+"sarakstu."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr ""
+"BEZ MAKSAS - visi.com - retranslēšanas stop saraksts. Ļoti konservatīvs "
+"atvērto retranslēšanas serveru saraksts."
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr ""
+"BEZ MAKSAS - ahbl.org atvērto retranslēšanas serveru saraksts - vēl viens "
+"saraksts ar atvērtajiem retranslēšanas serveriem"
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr ""
+"BEZ MAKSAS - ahbl.org mēstuļu saraksts - saraksts ar tiešajiem mēstuļu "
+"izsūtītājiem."
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+"BEZ MAKSAS - ahbl.org mēstuļu ISP - saraksts ar mēstuļdraudzīgiem interneta "
+"servisa piegādātājiem."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"BEZ MAKSAS - Leadmon DUL - vēl viens saraksts ar iezvanpieejas vai citām "
+"dinamiskajām IP adresēm."
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"BEZ MAKSAS - Leadmon mēstuļu saraksts - saraksts ar visām IP adresēm, no "
+"kurām Leadmon.net tieši ir saņēmis mēstules."
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"BEZ MAKSAS - Leadmon liela apjoma pasta nosūtītāji - liela apjoma pasta "
+"nosūtītājserveri, kuri nepieprasa pārbaudīt e-pasta adresi vai ir atļāvuši "
+"jau zināmiem mēstuļu izsūtītājiem kļūt par klientiem un ļaunprātīgi izmantot "
+"to servisus."
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"BEZ MAKSAS - Leadmon atvērto retranslēšanas serveru saraksts - vienpakāpes "
+"atvērto retranslēšanas serveru saraksts kuri nav citos aktīvajos melnajos "
+"sarakstos."
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"BEZ MAKSAS - Leadmon Multi-stage - daudzpakāpju atvērto retranslēšanas "
+"serveru saraksts, kuri nav citos melnajos sarakstos bet kuri ir piesutijuši "
+"mēstules uz Leadmon.net."
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"BEZ MAKSAS - Leadmon SpamBlock - vietnes šajā sarakstā ir izsūtījušas uz "
+"Leadmon.net tiešās mēstules no IP adresēm, kurās veseliem blokiem nav "
+"atbilstošu DNS vārdu. Tas ir saraksts ar IP adrešu BLOKIEM, kurus lieto "
+"cilvēki, kas izsūtījuši mēstules uz Leadmon.net."
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"BEZ MAKSAS, vismaz pagaidām - Not Just Another Blacklist - gan atvērtie "
+"caursūtīšanas serveri gan tiešie mēstuļu serveri."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr ""
+"BEZ MAKSAS, vismaz pagaidām - Not Just Another Blacklist - iezvanpieejas IP "
+"adreses."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr ""
+"BEZ MAKSAS - Distributed Sender Boycott List - pārbaudītie atvērtie "
+"caursūtīšanas serveri."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+"BEZ MAKSAS - istributed Sender Boycott List - pārbaudītie daudzpakāpju "
+"caursūtīšanas serveri "
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+"BEZ MAKSAS - stributed Sender Boycott List - nepārbaudītie caursūtīšanas "
+"serveri "
+
+msgid "WARNING! You must enter something to search for."
+msgstr "UZMANĪBU! Lūdzu, ievadiet meklējamo tekstu."
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+"UZMANĪBU! Ziņojuma sākuma filtriem jābūt formātā &quot;Header: value&quot;"
+
+msgid "Saved Scan type"
+msgstr "Saglabātais skenēšanas tips"
+
+msgid "Message Filtering"
+msgstr "Ziņojumu filtrēšana"
+
+msgid "What to Scan:"
+msgstr "Ko skenēt:"
+
+msgid "All messages"
+msgstr "Visus ziņojumus"
+
+msgid "Only unread messages"
+msgstr "Tikai nelasītos ziņojumus"
+
+msgid "Save"
+msgstr "Saglabāt"
+
+msgid "Match:"
+msgstr "Sakrīt:"
+
+msgid "Header"
+msgstr "Sākums"
+
+msgid "Contains:"
+msgstr "Satur:"
+
+#, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "Ja %s satur %s, tad pārvietot uz %s"
+
+msgid "Message Filters"
+msgstr "Ziņojumu filtri"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"Filtrēšana ļauj automātiski pēc dažādiem kritērijiem pārvietot ziņojumus no "
+"Iesūtnes uz citām mapēm, atvieglojot pārskatāmību."
+
+msgid "SPAM Filters"
+msgstr "Mēstuļu filtri"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"Mēstuļu filtri ļauj jums izvēlēties no vairākiem DNS tipa melnajiem "
+"sarakstiem lai atrastu mēstules jūsu IESŪTNĒ un pārvietotu tās uz citu mapi "
+"(piemēram Miskasti)."
+
+msgid "You must select a spam folder."
+msgstr "Jums jāizvēlas mēstuļu mape"
+
+msgid "You must select a scan type."
+msgstr "Jums jāizvēlas skenēšanas veids."
+
+msgid "Spam Filtering"
+msgstr "Mēstuļu filtrēšana"
+
+#, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "UZMANĪBU! Lūdziet administratoram uzstādīt %s mainīgā vērtību."
+
+msgid "Move spam to:"
+msgstr "Pārvietot mēstules uz:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"Pārvietot mēstules uzreiz uz miskasti iesākumā var nebūt labākais "
+"risinājums, jo arī ziņojumi no draugiem un adresātu sarakstiem var tikt "
+"nejauši iezīmēti kā mēstules. Lai arī kādu mapi jūs norādītu, "
+"pārliecinieties, ka tā tiek regulāri iztīrīta, lai pastkaste nekļūtu "
+"pārlieku liela."
+
+msgid "Unread messages only"
+msgstr "Tikai nelasītos ziņojumus"
+
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"Jo vairāk ziņojumus skenē, jo vairāk laika nepieciešams. Iesakām skenēt "
+"tikai nelasītos ziņojumus. Ja filtros veic izmaiņas, iesakām iestatīt visu "
+"ziņojumu skenēšanu, apskatīt IESŪTNI, tad atgriezties šeit un iestatīt tikai "
+"nelasīto ziņojumu skenēšanu. Šādi rīkojoties, tiks uzlikti jaunie mēstuļu "
+"filtri un tiks atrastas mēstules, kuras nevarēja noteikt ar vecajiem "
+"filtriem."
+
+#, php-format
+msgid "Spam is sent to %s."
+msgstr "Mēstule ir nosūtīta uz %s."
+
+msgid "not set yet"
+msgstr "vēl nav uzstādīts"
+
+#, php-format
+msgid "Spam scan is limited to %s."
+msgstr "Mēstuļu skenēšana ierobežota uz %s."
+
+msgid "ON"
+msgstr "ieslēgts"
+
+msgid "OFF"
+msgstr "izslēgts"
+
+#, php-format
+msgid "%s is not found."
+msgstr "%s nav atrasts."
+
+msgid "Today's Fortune"
+msgstr "Šodienas veiksme"
+
+msgid "Fortunes"
+msgstr "Veiksmes:"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "Rādīt veiksmes virs pastkastes."
+
+msgid "Plugin is disabled."
+msgstr "Spraudnis ir atstatīts."
+
+msgid "IMAP server information"
+msgstr "IMAP servera informācija"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+"Izpilda dažas IMAP komandas, parādot gan komandu, gan rezultātu. Šie testi "
+"lieto SquirrelMail IMAP komandas un tekošo SquirrelMail konfigurāciju. "
+"Iespējams izmantot pielāgotas komandas."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"Tiks nosūtīts ziņojums %s ar pieprasījumu palīdzēt šim adresātu sarakstam. "
+"Jūs saņemsiet e-pasta atbildi uz zemāk minēto adresi."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"Tiks nosūtīts ziņojums %s ar pieprasījumu parakstīties uz šo adresātu "
+"sarakstu. Jūs tiksiet pierakstīts ar zemāk minēto adresi."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"Tiks nosūtīts ziņojums %s ar pieprasījumu atrakstīties no šī adresātu "
+"saraksta. Tiks mēģināts atrakstīties ar zemāk minēto adresi."
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Nezināma darbība: %s"
+
+msgid "Mailinglist"
+msgstr "Adresātu saraksts"
+
+msgid "Send Mail"
+msgstr "Nosūtīt e-pastu"
+
+msgid "Post to List"
+msgstr "Sūtīt ziņojumu adresātu sarakstam"
+
+msgid "Reply to List"
+msgstr "Atbildēt adresātu sarakstam"
+
+msgid "List Archives"
+msgstr "Rādīt arhīvus"
+
+msgid "Contact Listowner"
+msgstr "Ziņot adresātu saraksta administratoram"
+
+msgid "Mailing List"
+msgstr "Adresātu saraksts"
+
+msgid "No server specified"
+msgstr "Nav norādīts serveris"
+
+msgid "Error "
+msgstr "Kļūda"
+
+msgid "no login ID submitted"
+msgstr "lietotāja vārds nav iesniegts"
+
+msgid "connection not established"
+msgstr "Nevarēja savienoties"
+
+msgid "No password submitted"
+msgstr "Nav norādīta parole"
+
+msgid "No connection to server"
+msgstr "Nav savienojuma ar serveri"
+
+msgid "No login ID submitted"
+msgstr "Lietotāja vārds nav iesniegts"
+
+msgid "No server banner"
+msgstr "No servera nav saņemta nekāda atbilde"
+
+msgid "abort"
+msgstr "pārtraukt"
+
+msgid "apop authentication failed"
+msgstr "apop autentifikācija neveiksmīga"
+
+msgid "Premature end of list"
+msgstr "Priekšlaicīgas saraksta beigas"
+
+msgid "Empty command string"
+msgstr "Ievada komanda nevar būt tukša"
+
+msgid "connection does not exist"
+msgstr "savienojums neeksistē"
+
+msgid "No msg number submitted"
+msgstr "Nav norādīts ziņojuma numurs."
+
+msgid "Command failed "
+msgstr "Neveiksmīga komandas izpilde "
+
+msgid "Remote POP server Fetching Mail"
+msgstr "Attālinātais POP pasta serveris pasta savākšanai"
+
+msgid "Select Server:"
+msgstr "Izvēlieties serveri:"
+
+msgid "Password for"
+msgstr "Parole"
+
+msgid "Fetch Mail"
+msgstr "Savākt pastu"
+
+msgid "Fetching from "
+msgstr "Savākt no"
+
+msgid "Oops, "
+msgstr "Opā,"
+
+msgid "Opening IMAP server"
+msgstr "Atveru IMAP serveri"
+
+msgid "Opening POP server"
+msgstr "Atveru POP serveri"
+
+msgid "Login Failed:"
+msgstr "Pieteikšanās neizdevās:"
+
+msgid "Login OK: No new messages"
+msgstr "Pieteikšanās veiksmīga: jaunu ziņojumu nav"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "Pieteikšanās veiksmīga: Iesūtne tukša"
+
+#, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "Pieteikšanās veiksmīga: Iesūtnē %s jauni ziņojumi"
+
+msgid "Fetching UIDL..."
+msgstr "Savācu UIDL...."
+
+msgid "Server does not support UIDL."
+msgstr "Serveris neatbalsta IUDL."
+
+msgid "Leaving messages on server..."
+msgstr "Atstāju ziņojumus uz servera..."
+
+msgid "Deleting messages from server..."
+msgstr "Dzēš ziņojumus no servera..."
+
+msgid "Fetching message "
+msgstr "Savācu ziņojumu"
+
+msgid "Server error. Disconnect"
+msgstr "Servera kļūda. Atslēdzos."
+
+msgid "Reconnect from dead connection"
+msgstr "Atjaunot izbeigtu savienojumu"
+
+msgid "Saving UIDL"
+msgstr "Saglabāju IUDL"
+
+msgid "Refetching message "
+msgstr "Atkārtoju ziņojuma savākšanu"
+
+msgid "Error Appending Message!"
+msgstr "Kļūda, pievienojot ziņojumu!"
+
+msgid "Closing POP"
+msgstr "Aizveru POP savienojumu"
+
+msgid "Logging out from IMAP"
+msgstr "Atteikšanās no IMAP servera"
+
+msgid "Message appended to mailbox"
+msgstr "Ziņojums pievienots pastkastei"
+
+#, php-format
+msgid "Message %d deleted from remote server!"
+msgstr "Ziņojums %d nodzēsts no attālinātā servera!"
+
+msgid "Delete failed:"
+msgstr "Neizdevās izdzēst:"
+
+msgid "Remote POP server settings"
+msgstr "Attālinātā POP servera uzstādījumi"
+
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"Jums ir jāzina, ka jūsu paroles šifrēšanas metode nav perfekta. Tomēr, "
+"lietojot pop, vispār nenotiek nekāda šifrēšana. Pie tam, mūsu nošifrētā "
+"parole, saglabāta uz servera, var tikt atšifrēta, izlasot šīs datnes "
+"pirmkodu."
+
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr ""
+"Ja atstāsiet paroles lauku tukšu, parole tiks pajautāta, savācot jaunos "
+"ziņojumus."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "Šifrēt paroles (tikai informatīvi)"
+
+msgid "Add Server"
+msgstr "Pievienot serveri"
+
+msgid "Server:"
+msgstr "Serveris:"
+
+msgid "Port:"
+msgstr "Ports:"
+
+msgid "Alias:"
+msgstr "Aizstājvārdi:"
+
+msgid "Username:"
+msgstr "Lietotājs:"
+
+msgid "Store in Folder:"
+msgstr "Saglabāt mapē:"
+
+msgid "Leave mail on server"
+msgstr "Atstāt ziņojumus uz servera"
+
+msgid "Check mail at login"
+msgstr "Pārbaudīt ziņojumus piesakoties"
+
+msgid "Check mail at folder refresh"
+msgstr "Atjaunojot mapju saturu, pārbaudīt jaunos ziņojumus."
+
+msgid "Modify Server"
+msgstr "Izmainīt servera konfigurāciju"
+
+msgid "Server Name:"
+msgstr "Servera vārds:"
+
+msgid "Modify"
+msgstr "Mainīt"
+
+msgid "No servers known."
+msgstr "Nav definētu serveru."
+
+msgid "Fetching Servers"
+msgstr "Savākšanas serveri"
+
+msgid "Confirm Deletion of a Server"
+msgstr "Apstiprināt servera dzēšanu"
+
+msgid "Selected Server:"
+msgstr "Iezīmētais serveris:"
+
+msgid "Confirm delete of selected server?"
+msgstr "Apstiprināt iezīmētā servera dzēšanu?"
+
+msgid "Confirm Delete"
+msgstr "Apstiprināt dzēšanu"
+
+msgid "Leave Mail on Server"
+msgstr "Atstāt ziņojumus uz servera"
+
+msgid "Undefined Function"
+msgstr "Nedefinēta funkcija"
+
+msgid "The function you requested is unknown."
+msgstr "Pieprasītā funkcija nav zināma."
+
+msgid "Fetch"
+msgstr "Savākt"
+
+msgid "Warning, "
+msgstr "Brīdinājums,"
+
+msgid "Mail Fetch Result:"
+msgstr "Pasta savākšanas rezultāts"
+
+msgid "POP3 Fetch Mail"
+msgstr "POP3 e-pasta savākšana"
+
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"Te var konfigurēt iestatījumus ziņojumu lejupielādei no attālinātas POP "
+"pastkastes uz šo serveri."
+
+msgid "Message Details"
+msgstr "Ziņojuma detaļas"
+
+msgid "Bodystructure"
+msgstr "Ziņojuma struktūra"
+
+msgid "Entity"
+msgstr "Entītija"
+
+msgid "Content-Type"
+msgstr "Satura tips"
+
+msgid "Encoding"
+msgstr "Kodējums"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 ziņojuma saturs"
+
+msgid "Close Window"
+msgstr "Aizvērt logu"
+
+msgid "Save Message"
+msgstr "Saglabāt ziņojumu"
+
+msgid "View Message details"
+msgstr "Rādīt ziņojuma detaļas"
+
+msgid "New Mail Notification"
+msgstr "Jauna ziņojuma paziņojums"
+
+#, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"Ar %s iestatījumu nelasītie ziņojumi tiks pārbaudīts VISĀS mapēs, ne tikai "
+"iesūtnē."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "Pārbaudīt visas mapes, ne tikai IESŪTNI"
+
+#, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"Ja jūsu mapēs būs nelasīti ziņojumi, Izvēloties %s uzstādījumu, parādīsies "
+"uznirstošs logs (pieprasa JavaScript)."
+
+msgid "Show popup window on new mail"
+msgstr "Jaunam ziņojumam rādīt uznirstošo logu"
+
+#, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"Lietojiet %s iestatījumu lai pārbaudītu tikai nesenos ziņojumus. Nesenie "
+"ziņojumi ir tie, kas tikai nesen ir parādījušies un vēl nav tikuši "
+"\"apskatīti\" vai iezīmēti. Tas var pasargāt no pārāk biežiem un "
+"apgrūtinošiem jaunu ziņojumu paziņojumu logiem vai skaņām."
+
+msgid "Count only messages that are RECENT"
+msgstr "Skaitīt tikai NESENOS ziņojumus"
+
+#, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript). This will always tell you "
+"if you have new mail, even if you have %s enabled."
+msgstr ""
+"Iestatījot %s, dažas pārlūkprogrammas mainīs virsrakstu, ļaujot jums "
+"pamanīt, ka pienācis jauns ziņojums (pieprasa Javascript). Tas vienmēr "
+"parādīs, ka pienācis jauns ziņojums, pat ja %s būs iestatīts."
+
+msgid "Change title on supported browsers"
+msgstr "Mainīt virsrakstu atbalstītajām pārlūkprogrammām?"
+
+#, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"Iestatīt %s lai nospēlētu multivides datni, ja mapēs ir vēl neskatīti "
+"ziņojumi. Pēc iestatīšanas jūs variet izvēlēties multimediju failu "
+"piedāvātajā datņu izvēlnē."
+
+msgid "Enable Media Playing"
+msgstr "Iespējot atskaņošanu"
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+"Izvēlieties no %s saraksta multivides datni, kuru atskaņot pie jauna "
+"ziņojuma saņemšanas. Ja tiks norādīts %s, datni neatskaņos."
+
+msgid "Select server file"
+msgstr "Izvēlēties servera datni"
+
+msgid "(none)"
+msgstr "(neviens)"
+
+msgid "requires JavaScript to work"
+msgstr "nepieciešams JavaScript"
+
+msgid "Width of popup window:"
+msgstr "Uznirstošā loga platums:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "0 vērtības ierakstīšana atgriezīs noklusēto vērtību"
+
+msgid "Height of popup window:"
+msgstr "Uznirstošā loga augstums:"
+
+msgid "Try"
+msgstr "Mēģināt"
+
+msgid "Current File:"
+msgstr "Tekošā datne:"
+
+msgid "New Mail"
+msgstr "Jauns ziņojums"
+
+msgid "SquirrelMail Notice:"
+msgstr "SquirrelMail paziņojums:"
+
+#, php-format
+msgid "You have %s new message"
+msgstr "Jums ir %s jauns ziņojums"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "Jums ir %s jauni ziņojumi"
+
+msgid "NewMail Options"
+msgstr "Jauna ziņojuma iestatījumi"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"Te var iestatīt skaņas atskaņošanu un/vai uznirstošā loga parādīšanos, "
+"pienākot jaunam ziņojumam."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s jauni ziņojumi"
+
+#, php-format
+msgid "%s New Message"
+msgstr "%s jauns ziņojums"
+
+msgid "Test Sound"
+msgstr "Izmēģināt skaņu"
+
+msgid "No sound specified"
+msgstr "Nav norādīta skaņa"
+
+msgid "Loading the sound..."
+msgstr "Ielādēju skaņu..."
+
+msgid "Sent Subfolders Options"
+msgstr "Nosūtnes apakšmapes iestatījumi"
+
+msgid "Use Sent Subfolders"
+msgstr "Lietot nosūtnes apakšmapes"
+
+msgid "Monthly"
+msgstr "Ik mēnesi"
+
+msgid "Quarterly"
+msgstr "Reizi ceturksnī"
+
+msgid "Yearly"
+msgstr "Reizi gadā"
+
+msgid "Base Sent Folder"
+msgstr "Nosūtnes pamatmape"
+
+msgid "Enabled"
+msgstr "Iespējots"
+
+msgid "Disable it"
+msgstr "Atstatīt to"
+
+msgid "Enable it"
+msgstr "Iespējot to"
+
+msgid "Spam reporting"
+msgstr "Mēstuļu atskaites"
+
+msgid "SpamCop link is:"
+msgstr "SpamCop saite ir:"
+
+msgid "Delete spam when reported:"
+msgstr "Nodzēst iezīmēto mēstuli"
+
+msgid "Only works with email-based reporting"
+msgstr "Darbojas tikai ar e-pasta formāta atskaitēm"
+
+msgid "Spam Reporting Method:"
+msgstr "Mēstuļu atskaites veids:"
+
+msgid "Quick email-based reporting"
+msgstr "Ātrās e-pasta formāta atskaites"
+
+msgid "Thorough email-based reporting"
+msgstr "Pilnās e-pasta formāta atskaites"
+
+msgid "Web-based form"
+msgstr "HTML formāta forma"
+
+msgid "Save Method"
+msgstr "Saglabāt metodi"
+
+msgid "Your SpamCop authorization code:"
+msgstr "Jūsu SpamCop autorizācijas kods:"
+
+msgid "see below"
+msgstr "skatīt zemāk"
+
+msgid "Save ID"
+msgstr "Saglabāt ID"
+
+msgid "About SpamCop"
+msgstr "Par SpamCop"
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+"SpamCop ir bezmaksas serviss, kurš tiešām palīdz atrast īsto mēstules "
+"nosūtītāju un palīdz pareizajiem cilvēkiem uzzināt par ļaunprātīgu rīcību."
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+"Lai lietotu, jums jādabū SpamCop autorizācijas kods. Lai lietotu SpamCop, ir "
+"bezmaksas %sparakstīšanās lapa%s."
+
+msgid "Before you sign up, be warned"
+msgstr "Jūs esat brīdināts pirms parakstīšanās"
+
+#, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+"Daži lietotāji ziņo, ka uz SpamCop nosūtītās e-pasta adreses parādās mēstuļu "
+"sarakstos. Lai nodrošinātos, izveidojiet pārsūtīšanas e-pasta kontu un "
+"konfigurējiet, lai  SpamCop sūta atskaites uz to. Ja arī šis konts tiks "
+"pārpildīts ar mēstulēm, jūs variet to vienkārši nodzēst, un nezaudēt jūsu "
+"īsto e-pasta adresi. Izveidojiet e-pasta pārsūtīšanas kontu jebkur (%s ir %"
+"svietu saraksts%s) tā, ka ziņojumi no sistēmas administratoriem u.c. tiks "
+"pārsūtītas jums."
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+"Tikko būsiet abonējis SpamCop servisu un saņēmis autorizācijas kodu, jums "
+"vajadzēs iespējot šo spraudni, noklikšķinot uz saites augšpusē. Pēc "
+"iestatīšanas turpiniet strādāt kā parasti. Ja saņemsiet mēstuli, caurskatiet "
+"to. Labajā pusē, tuvu augšpusei kur tiek parādīts ziņojums, jūs redzēsiet "
+"saiti, kas ļauj paziņot par mēstuli. Noklikšķinot uz tās, parādīsies "
+"apstiprināšanas logs. Apstiprināšana, ka vēlaties nosūtīt mēstules atskaiti, "
+"iedarbinās dažādus mēstuļu ziņojumu rīkus."
+
+msgid "Email-based reporting"
+msgstr "E-pasta formāta atskaite"
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+"Nospiežot pogu, ziņojums tiks nosūtīts SpamCop servisam un (pēc izvēles) "
+"nodzēsīs ziņojumu. No šejienes jums jādodas uz Iesūtni un drīz jāparādās "
+"ziņojumam no SpamCop. (Tā tiks nosūtīta uz jūsu reģistrēto kontu, tādēļ "
+"pārliecinieties, ka strādā ziņojumu pārsūtīšana!) Atveriet ziņojumu, "
+"klikšķiniet uz attiecīgās saites augšpusē un parādīsies jauns "
+"pārlūkprogrammas logs."
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+"Pagaidām ātrā atskaite tikai pārsuta pieprasījumu pilnajai atskaitei. Un "
+"liekas, ka tā ir tikai abonentiem(par maksu). Cerams, tas drīz tiks mainīts."
+
+msgid "Web-based reporting"
+msgstr "HTML formāta atskaite"
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+"Nospiežot pogu apstiprināšanas lapā, parādīsies jauns pārlūkprogrammas logs "
+"un tajā SpamCop serviss. Ziņojums netiks nodzēsts (pie tiek strādāts), bet "
+"jums nebūs jāgaida uz atbildes ziņojumu lai sāktu mēstules atskaiti."
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+"SpamCop serviss parādīt informāciju, tikko to būs atradis, tādēļ ritiniet uz "
+"leju līdz ieraugiet \"formas\" pogu. Meklējot tas var viegli iebremzēt, "
+"esiet pacietīgi. Lasiet uzrakstīto un ziņojiet par mēstuli. Aizveriet "
+"pārlūkprogrammas logu. Nospiediet Pārtraukt vai klikšķiniet uz vēlamās mapes "
+"lai aplūkotu ziņojumus un/vai nodzēstu mēstules."
+
+msgid "SpamCop service type"
+msgstr "SpamCop servisa tips"
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+"Servisa tipa iestatījums ļauj izvēlēties, kurus SpamCop servisus lietot. "
+"Maksas servisi izmanto citas tīmekļa atskaišu formas un nerāda "
+"atgādinājumus, kas regulāri pieprasa, lai lietotājs reģistrētos. Jūs variet "
+"arī iegādāties SpamCop maksas servisus lai atbalstītu SpamCop."
+
+msgid "More information"
+msgstr "Papildinformācija"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+"Ja vēlaties uzzināt vairāk par SpamCop, tā servisiem, vispārīgu informāciju "
+"par mēstulēm un daudzām citām tēmām, pamēģiniet lasīt SpamCop %spalīdzības "
+"un atbilžu%s sadaļu."
+
+msgid "Report as Spam"
+msgstr "Ziņot par mēstuli"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "SpamCop - mēstuļu atskaites"
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+"Palīdziet cīņā ar nevēlamiem ziņojumiem (mēstulēm). SpamCop nolasa mēstuli "
+"un nosaka pareizo adresi, kurai nosūtīt sūdzību. Ātrs, atjautīgs un viegli "
+"lietojams serviss."
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+"Nosūtot šo mēstuļu atskaiti, jūs saņemsiet atpakaļ hipersaites, uz kuram "
+"klikšķinot varēs pareizi paziņot par mēstuli kompetentajai organizācijai. "
+"Tas ir bezmaksas serviss. Nospiežot \"Nosūtīt mēstuļu atskaiti\" pogu, jūs "
+"piekrītiet SpamCop servisa noteikumiem."
+
+msgid "Cancel / Done"
+msgstr "Atcelt / Izpildīt"
+
+msgid "Send Spam Report"
+msgstr "Nosūtīt mēstuļu atskaiti"
+
+msgid "SpellChecker Options"
+msgstr "Pareizrakstības uzstādījumi"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"Te var iestatīt, kur tiks glabāta jūsu personiskā vārdnīca, labot to vai "
+"izvēlēties, kādas svešvalodas būs pieejamas, pārbaudot pareizrakstību."
+
+msgid "Check Spelling"
+msgstr "Pārbaudīt Pareizrakstību"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "Atpakaļ uz &quot;Pareizrakstības iestatījumi&quot; lapu"
+
+msgid "ATTENTION:"
+msgstr "UZMANĪBU:"
+
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"SquirrelSpell nevarēja atšifrēt jūsu personisko vārdnīcu. Ļoti iespējams, ka "
+"jūs esat nomainījis pastkastes paroli. Lai SquirrelSpell varētu atšifrēt "
+"personisko vārdnīcu, jums vajadzēs ievadīt iepriekšējo paroli . Personiskā "
+"vārdnīca pēc tam tiks pāršifrēta ar jauno paroli. Ja personiskā vārdnīca nav "
+"šifrēta, tad tā ir bojāta un vairs nav lietojama. Jums tā būs jānodzēš un "
+"jāizveido no jauna. Arī gadījumā, ja neatcerieties veco paroli, personiskā "
+"vārdnīca vairs nav lietojama, bez vecās paroles šifrētie dati vairs nav "
+"atšifrējami."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "Dzēst manu vārdnīcu un sākt jaunu"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "Atšifrēt manu vārdnīcu ar manu veco paroli:"
+
+msgid "Proceed"
+msgstr "Rīkoties"
+
+msgid "You must make a choice"
+msgstr "Jums jāizdara izvēle"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr ""
+"Jūs variet nodzēst vārdnīcu vai arī ievadīt veco paroli. Bet tikai vienu no "
+"abām darbībām."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "Personiskā vārdnīca tiks dzēsta. Turpināt?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "Kļūda, atšifrējot vārdnīcu"
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr "Nevarēja izpildīt pareizrakstības pārbaudes komandu (%s)."
+
+msgid "Error while writing to pipe."
+msgstr "Kļūda rakstot programmkanālā."
+
+#, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "Nevar atvērt pagaidu datni '%s'."
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr "Kļūda, rakstot pagaidu datnē '%s'."
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "Centos palaist '%s', bet tika atgriezts:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell ir konfigurēts kļūdaini."
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "Pareizrakstības pārbaude pabeigta. Pielietot izmaiņas?"
+
+msgid "No changes were made."
+msgstr "Izmaiņas netika izdarītas."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "Saglabāju personisko vārdnīcu... Lūdzu, uzgaidiet."
+
+msgid "SquirrelSpell Results"
+msgstr "SquirrelSpell rezultāti"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "Atrastas %s kļūdas"
+
+msgid "Line with an error:"
+msgstr "Rindiņa ar kļūdu:"
+
+msgid "Error:"
+msgstr "Kļūda:"
+
+msgid "Suggestions:"
+msgstr "Ieteikumi:"
+
+msgid "Suggestions"
+msgstr "Ieteikumi"
+
+msgid "Change to:"
+msgstr "Mainīt uz:"
+
+msgid "Occurs times:"
+msgstr "Notiks laikos:"
+
+msgid "Change this word"
+msgstr "Mainīt šo vārdu"
+
+msgid "Change"
+msgstr "Mainīt"
+
+msgid "Change ALL occurances of this word"
+msgstr "Aizvietot šo vārdu VISUR"
+
+msgid "Change All"
+msgstr "Aizvietot visus"
+
+msgid "Ignore this word"
+msgstr "Ignorēt šo vārdu"
+
+msgid "Ignore"
+msgstr "Ignorēt"
+
+msgid "Ignore ALL occurances this word"
+msgstr "Ignorēt šo vārdu VISUR"
+
+msgid "Ignore All"
+msgstr "Ignorēt visus"
+
+msgid "Add this word to your personal dictionary"
+msgstr "Pievienot vārdu personiskajai vārdnīcai"
+
+msgid "Add to Dic"
+msgstr "Pievienot vārdnīcai"
+
+msgid "Close and Commit"
+msgstr "Aizvērt un saglabāt"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr ""
+"Pareizrakstības pārbaude nav pabeigta. Tiešām aizvērt un saglabāt izmaiņas?"
+
+msgid "Close and Cancel"
+msgstr "Aizvērt un nesaglabāt"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr ""
+"Pareizrakstības pārbaude nav pabeigta. Tiešām aizvērt un atcelt izmaiņas?"
+
+msgid "No errors found"
+msgstr "Kļūdas nav atrastas"
+
+msgid "Your personal dictionary was erased."
+msgstr "Jūsu personiskā vārdnīca tika nodzēsta"
+
+msgid "Dictionary Erased"
+msgstr "Vārdnīca nodzēsta"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"Jūsu personiskā vārdnīca tika nodzēsta. Lūdzu, aizveriet šo logu un "
+"klikšķiniet uz \"Pārbaudīt pareizrakstību\" vēlreiz lai sāktu "
+"pareizrakstības pārbaudi no jauna."
+
+msgid "Close this Window"
+msgstr "Aizvērt šo logu"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"Jūsu personiskā vārdnīca veiksmīgi rešifrēta. Tagad atgriezieties uz &quot;"
+"Pareizrakstības iestatījumi&quot; izvēlni un izvēlieties vēlreiz."
+
+msgid "Successful re-encryption"
+msgstr "Pāršifrēšana sekmīga"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"Jūsu personiskā vārdnīca veiksmīgi pāršifrēta. Lūdzu, aizveriet šo logu un "
+"klikšķiniet uz \"Pārbaudīt pareizrakstību\" vēlreiz lai sāktu "
+"pareizrakstības pārbaudi no jauna."
+
+msgid "Dictionary re-encrypted"
+msgstr "Vārdnīca pāršifrēta"
+
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr "Jūsu personiskā vārdnīca tika nošifrēta un noglabāta šifrētā formātā."
+
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"Jūsu personiskā vārdnīca tika atšifrēta un noglabāta parasta teksta formātā."
+
+msgid "No action requested."
+msgstr "Nekādas darbības nav pieprasītas."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Personiskās vārdnīcas šifrēšanas iestatījumi"
+
+msgid "Personal Dictionary"
+msgstr "Personiskā vārdnīca"
+
+msgid "No words in your personal dictionary."
+msgstr "Personiskajā vārdnīcā nav neviena vārda."
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "Lūdzu, iezīmējiet vārdus, kurus vēlaties dzēst no vārdnīcas."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "%s vārdnīca"
+
+msgid "Delete checked words"
+msgstr "Izdzēst atzīmētos vārdus"
+
+msgid "Edit your Personal Dictionary"
+msgstr "Labot personisko vārdnīcu"
+
+msgid "Please make your selection first."
+msgstr "Lūdzu, vispirms izvēlieties."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+"Jūsu personiskā vārdnīca tiks šifrēta un glabāta šifrētā formātā. Turpināt?"
+
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr ""
+"Jūsu personiskā vārdnīca tiks atšifrēta un glabāta parasta teksta formātā. "
+"Turpināt?"
+
+msgid "Your personal dictionary is currently encrypted."
+msgstr "Jūsu personiskā vārdnīca pašlaik ir šifrēta."
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+"Tas palīdz aizsargāt jūsu privātos datus gadījumiem, ja webpasta sistēmas "
+"drošības sistēma ir uzlauzta un jūsu personiskā vārdnīca ir nozagta. Pašlaik "
+"tā ir šifrēta ar jūsu pastkastes paroli, tāpēc neviens nevar redzēt, ko jūs "
+"noglabājiet personiskajā vārdnīcā."
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+"Ja aizmirsīsiet pastkastes paroli, jūsu personiskā vārdnīca nebūs pieejama, "
+"jo to nevarēs atšifrēt. SquirrelMail spēs atklāt, ka pastkastes paroli tiek "
+"mainīta, un pajautās veco paroli, lai pāršifrētu vārdnīcu ar jauno paroli."
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr ""
+"Lūdzu, atšifrējiet manu personisko vārdnīcu un glabājiet parasta teksta "
+"formātā."
+
+msgid "Change crypto settings"
+msgstr "Izmainīt šifrēšanas iestatījumus"
+
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "Jūsu personiskā vārdnīca šobrīd nav šifrēta."
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+"Jūs variet šifrēt personisko vārdnīcu, lai pasargātu savus privātos datus "
+"gadījumam, ja webpasta sistēmas drošības sistēma tiek uzlauzta un vārdnīcu "
+"nozog. Šifrētas vārdnīcas saturs nav izlasāms un to ir grūti atšifrēt, "
+"nezinot pareizo atslēgu (jūsu pastkastes paroli)."
+
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"Ja jūs nolemsiet šifrēt jūsu personisko vārdnīcu, atcerieties, tā tiks "
+"sajaukta (hashed) ar jūsu pastkastes paroli. Ja aizmirsīsiet pastkastes "
+"paroli un sistēmas administrators to nomainīs, jūsu personīgā vārdnīca kļūs "
+"nelietojama un būs jāveido jauna. Tomēr, ja parole ir nomainīta, bet jūs "
+"joprojām zināt iepriekšējo paroli, tad varēs ievadīt veco atslēgu, lai "
+"pāršifrētu vārdnīcu ar jauno paroli."
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "Lūdzu, šifrēt manu personisko vārdnīcu un glabāt šifrētā formātā."
+
+#, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "Nodzēšu no %s vārdnīcas sekojošus ierakstus:"
+
+msgid "All done!"
+msgstr "Veiksmīgi pabeigts!"
+
+msgid "Personal Dictionary Updated"
+msgstr "Personiskā vārdnīca izmainīta"
+
+msgid "No changes requested."
+msgstr "Izmaiņas nav pieprasītas"
+
+msgid "Please wait, communicating with the server..."
+msgstr "Nododu pieprasījumu serverim, lūdzu gaidiet..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr ""
+"Lūdzu, izvēlieties, kuru svešvalodu vārdnīcu lietot šī ziņojuma "
+"pareizrakstības pārbaudei:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "Sāknē SquirrelSpell"
+
+msgid ", "
+msgstr ","
+
+#, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr "Iestatījumi izlaboti uz: %s ar %s kā neklusēto vārdnīcu."
+
+#, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "Pareizrakstības pārbaudei lietoju %s vārdnīcu (sistēmas noklusētā)."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "Svešvalodu vārdnīcu iestatījumi iestatīti"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr ""
+"Lūdzu, iezīmējiet svešvalodu vārdnīcas, kuras vēlaties lietot "
+"pareizrakstības pārbaudei:"
+
+msgid "Make this dictionary my default selection:"
+msgstr "Izvēlēties šo vārdnīcu par noklusēto:"
+
+msgid "Make these changes"
+msgstr "Saglabāt šīs izmaiņas"
+
+msgid "Add International Dictionaries"
+msgstr "Pievienot svešvalodu vārdnīcas"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "Lūdzu, izvēlieties, kurus iestatījumus vēlaties uzstādīt:"
+
+msgid "Edit your personal dictionary"
+msgstr "Labot personisko vārdnīcu"
+
+msgid "Set up international dictionaries"
+msgstr "Uzstādīt svešvalodu vārdnīcas"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "Šifrēt vai atšifrēt jūsu personisko vārdnīcu"
+
+msgid "Personal dictionary encryption options are not available"
+msgstr "Personiskās vārdnīcas šifrēšanas iestatījumi nav pieejami"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "SquirrelSpell iestatījumu izvēlne"
+
+msgid "Translator"
+msgstr "Tulkotājs"
+
+msgid "Saved Translation Options"
+msgstr "Tulkošanas iestatījumi saglabāti"
+
+msgid "Your server options are as follows:"
+msgstr "Jūsu servera iestatījumi ir sekojoši:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "Iespējams iztulkot maksimums 150 rakstu zīmes, darbina Systran"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "Atbalstīto valodu pāru skaits: %s"
+
+msgid "No known limits, powered by Systran"
+msgstr "Nav zināmi nekādi ierobežojumi, darbina Systran"
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr "Nav zināmi nekādi ierobežojumi, darbina Translation Experts Intertran"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "Atbalstīto valodu skaits %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "Grieķu tulkojumi, nav zināmi nekādi ierobežojumi, darbina Systran"
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr ""
+"Krievu valodas tulkojumi, iespējams iztulkot maksimums 500 rakstu zīmes"
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr "Jūs arī nolemiet vai rādīt tulkojumu logu un kur to novietot."
+
+msgid "Select your translator:"
+msgstr "Izvēlieties jūsu tulkotāju:"
+
+msgid "When reading:"
+msgstr "Lasot:"
+
+msgid "Show translation box"
+msgstr "Rādīt tulkotāja logu"
+
+msgid "to the left"
+msgstr "uz kreiso"
+
+msgid "in the center"
+msgstr "centrā"
+
+msgid "to the right"
+msgstr "uz labo"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "Tulkot SquirrelMail rāmja iekšpusē."
+
+msgid "Translation Options"
+msgstr "Tulkošanas iestatījumi"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "Kuru tulkotāju izvēlēties, saņemot ziņojumu svešvalodā?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s uz %s"
+
+msgid "Chinese, Simplified"
+msgstr "Ķīniešu vienkāršotā"
+
+msgid "English"
+msgstr "Angļu (Amerikāņu)"
+
+msgid "Chinese, Traditional"
+msgstr "Ķīniešu tradicionālā"
+
+msgid "Dutch"
+msgstr "Holandiešu"
+
+msgid "French"
+msgstr "Franču"
+
+msgid "German"
+msgstr "Vācu"
+
+msgid "Greek"
+msgstr "Grieķu"
+
+msgid "Italian"
+msgstr "Itāļu"
+
+msgid "Japanese"
+msgstr "Japāņu"
+
+msgid "Korean"
+msgstr "Korejiešu"
+
+msgid "Portuguese"
+msgstr "Portugāļu"
+
+msgid "Russian"
+msgstr "Krievu"
+
+msgid "Spanish"
+msgstr "Spāņu"
+
+msgid "Translate"
+msgstr "Tulkot"
+
+msgid "Brazilian Portuguese"
+msgstr "Brazīliešu portugāļu"
+
+msgid "Bulgarian"
+msgstr "Bulgāru"
+
+msgid "Croatian"
+msgstr "Horvātu"
+
+msgid "Czech"
+msgstr "Čehu"
+
+msgid "Danish"
+msgstr "Dāņu"
+
+msgid "Filipino (Tagalog)"
+msgstr "Filipīniešu (Tagalogu)"
+
+msgid "Finnish"
+msgstr "Somu"
+
+msgid "Hungarian"
+msgstr "Ungāru"
+
+msgid "Icelandic"
+msgstr "Islandiešu"
+
+msgid "Latin"
+msgstr "Latīņamerikas"
+
+msgid "Latin American Spanish"
+msgstr "Latīņamerikas spāņu"
+
+msgid "Norwegian"
+msgstr "Norvēģu"
+
+msgid "Polish"
+msgstr "Poļu"
+
+msgid "Romanian"
+msgstr "Rumāņu"
+
+msgid "Serbian"
+msgstr "Serbu"
+
+msgid "Slovenian"
+msgstr "Slovēņu"
+
+msgid "Swedish"
+msgstr "Zviedru"
+
+msgid "Turkish"
+msgstr "Turku"
+
+msgid "Welsh"
+msgstr "Velsiešu"
+
+msgid "Indonesian"
+msgstr "Indonēziešu"
+
+msgid "to English"
+msgstr "uz Angļu (Amerikāņu)"
+
+msgid "from English"
+msgstr "no Angļu (Amerikāņu)"
+
+msgid "Interface language"
+msgstr "Saskarnes valoda"
+
+msgid "Translation direction"
+msgstr "Tulkošanas virziens"
+
+msgid "Arabic"
+msgstr "Arābu"
+
+msgid "Delivery error report"
+msgstr "Piegādes kļūdu atskaite"
+
+msgid "Undelivered Message Headers"
+msgstr "Nepiegādāto ziņojumu sākumi"
+
+msgid "This image has been removed for security reasons"
+msgstr "Drošības dēļ attēls tika aizvākts "

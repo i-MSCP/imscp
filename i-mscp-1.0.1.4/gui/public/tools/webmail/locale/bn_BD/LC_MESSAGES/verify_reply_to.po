@@ -1,0 +1,23 @@
+# Bengali (bn_BD) verify_reply_to Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: verify_reply_to.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: verify_reply_to 1.0\n"
+"POT-Creation-Date: 2005-04-10 12:50-0700\n"
+"PO-Revision-Date: 2009-01-01 10:15+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Reply To field must contain a full email address. Reply To has been reset."
+msgstr "জবাব দেয়ার ক্ষেত্রটিতে অবশ্যই একটি পূর্ণ ইমেইল ঠিকানা থাকতে হবে। জবাব পাঠানোর জায়গাটিকে পুনরায় স্থাপন করতে হবে।"
+
+#, php-format
+msgid "Reply To field must contain a full email address. Reply To has been reset to %s."
+msgstr "জবাব দেয়ার ক্ষেত্রটিতে অবশ্যই একটি পূর্ণ ইমেইল ঠিকানা থাকতে হবে। জবাব পাঠানোর জায়গাটিকে পুনরায় স্থাপন করতে হবে %s তে।"
+

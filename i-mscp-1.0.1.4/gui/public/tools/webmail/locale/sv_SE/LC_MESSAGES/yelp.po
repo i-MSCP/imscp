@@ -1,0 +1,87 @@
+# Swedish (sv_SE) yelp Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Fredrik Jervfors <jervfors@squirrelmail.org>, 2005-2009.
+# $Id: yelp.po 13541 2009-04-15 12:42:12Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: yelp\n"
+"POT-Creation-Date: 2004-04-01 10:20+0100\n"
+"PO-Revision-Date: 2005-01-12 04:45+0100\n"
+"Last-Translator: Fredrik Jervfors <jervfors@squirrelmail.org>\n"
+"Language-Team: Swedish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Annoyance level"
+msgstr "Besvärsgrad"
+
+msgid "Arrrgh, nothing works, fix it now!"
+msgstr "Ingenting fungerar! Lös problemet nu!"
+
+msgid "Description:"
+msgstr "Beskrivning:"
+
+msgid "High"
+msgstr "Hög"
+
+msgid "I'll do my best to fix it."
+msgstr "Vi ska göra vad vi kan för att lösa problemet."
+
+msgid "I'm not really fussed"
+msgstr "Det spelar ingen roll"
+
+msgid "It's really rubbing me the wrong way"
+msgstr "Det är verkligen irriterande"
+
+msgid "It's stopping me from enjoying squirrelmail"
+msgstr "Det hindrar mig från att njuta av SquirrelMail"
+
+msgid "Low"
+msgstr "Låg"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Please Select"
+msgstr "Välj ett alternativ"
+
+msgid "Send"
+msgstr "Skicka"
+
+msgid ""
+"Please press <b>only once</b>! It may take a few seconds to go through..."
+msgstr ""
+"Tryck bara en gång på \"Skicka\". Det kan ta några sekunder innan anmälan "
+"skickas."
+
+msgid "Priority:"
+msgstr "Prioritet:"
+
+msgid "Subject"
+msgstr "Ärende"
+
+msgid ""
+"Thanks for the yelp! I'll have a look at it as soon as possible and try and "
+"fix whatever is wrong. If you don't hear from me soon, check that the "
+"problem hasn't been fixed. If it hasn't, bug me some more."
+msgstr ""
+"Tack för din anmälan. Vi kommer att läsa den så snart som möjligt och "
+"försöka att rätta till problemet. Om du inte har fått något gensvar inom "
+"kort, kontrollera om problemet är åtgärdat. Om det inte är det, går det bra "
+"att skicka en ny anmälan."
+
+msgid "This is mildly annoying"
+msgstr "Det är aningen irriterande"
+
+msgid "Use this form to yelp about a problem you are having with squirrelmail."
+msgstr ""
+"Använd detta formulär för att anmäla problem med den här installationen av "
+"SquirrelMail."
+
+msgid "Yelp!"
+msgstr "Yelp!"
+
+msgid "this doesnt work"
+msgstr "Detta fungerar inte."

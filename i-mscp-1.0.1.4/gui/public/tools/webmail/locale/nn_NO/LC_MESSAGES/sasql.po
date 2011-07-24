@@ -1,0 +1,828 @@
+# translation of sasql.po to Nynorsk
+# This file is distributed under the same license as the sasql plugin.
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004,2005
+# $Id: sasql.po 13696 2009-05-14 06:27:08Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: sasql\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-29 08:36-0700\n"
+"PO-Revision-Date: 2005-08-05 13:18+0200\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0.1\n"
+
+msgid "DSPAM Settings"
+msgstr "DSPAM innstillingar"
+
+msgid "Warning"
+msgstr "Åtvaring"
+
+msgid "Enabling DSPAM will disable SpamAssassin scanning of your email."
+msgstr "Ved å slå på DSAPM vil ein slå av SpamAssassin sitt søk av e-posten."
+
+msgid "SpamAssassin settings and white/blacklists will not be used by dspam."
+msgstr ""
+"SpamAssissin innstillingar og kvit/svarteliste er ikkje brukt av dspam."
+
+#. *
+#. * To translators: %s's will be replaced with <a ..> and </a>
+#.
+msgid ""
+"This %sFAQ%s from the DSPAM web site explains the differences between "
+"SpamAssassin and DSPAM and why you might want to use dspam instead of "
+"SpamAssassin."
+msgstr ""
+"Denne %s OSS %s  frå DSPAM si vevside forklare forskjellen mellom "
+"SpamAssissin og DSAPM og kvifor ein kanskje skal bruke DSAPM i staden for "
+"SpamAssissin."
+
+msgid ""
+"DSPAM is a learning system that filters spam based on what <i>you</i> tell "
+"it is spam and what isn't. Messages are analyzed as they are delivered and "
+"are assigned a spam probability between 0 and 1. The more messages you "
+"receive, both spam and innocent, the better DSPAM learns what <i>you</i> "
+"think is spam and what is not."
+msgstr ""
+"DSPAM er eit leiande system som filtrerer reklame/søppel basert på kva <i> "
+"ein </i> seier er søppel eller ikkje. Meldingane vert analysert som dei er "
+"leverte og merka med eit tal mellom 0 og 1 etter kor sannsynleg det er "
+"søppel. Til fleire meldingar ein mottar, både søppel og ikkje søppel, til "
+"betre lærer DSPAM kva <i> ein</i> trur er søppel eller ikkje."
+
+msgid "Reporting Spam"
+msgstr "Raportering av søppel"
+
+msgid ""
+"If you receive a spam message in your Inbox, forward the message to "
+"<nobr>username-spam@domain</nobr> and it will be learned as spam. For "
+"example, if your address is joe@example.com, you would forward the message "
+"to <nobr>joe-spam@example.com</nobr>."
+msgstr ""
+"Viss ein mottar ei søppel melding i innboksen, vidaresend meldinga "
+"til<nobr>brukarnamn-spam@domain</nobr> og lært som søppel. For eksempel viss "
+"adressa di er ola@eksempel.no, vidaresend meldinga til <nobr>ola-"
+"spam@eksempel.no</nobr>."
+
+msgid ""
+"You can also move your spam messages to the <i>%s</i> folder. This folder is "
+"periodically checked for messages which are then learned as spam and "
+"deleted. You do not need to move messages from your %s folder here because "
+"they have already been learned as spam."
+msgstr ""
+"Ein kan  også flytta søppelmeldingar til <i>%s</i> mappa. Denne mappa "
+"vertperiodisk sjekka for meldingar som da vert lært som søppel og sletta. "
+"Ein treng ikkje flytta meldingar frå %s mappa fordi dei allereie er lært som "
+"søppel."
+
+msgid "Reporting False Positives"
+msgstr "Raportering av falske posetive"
+
+msgid ""
+"From time to time, DSPAM will catch an innocent messages as spam. These "
+"messages are called \"false positives\". There is no way to prevent false "
+"positives entirely. If you find a false positive, forward the message to "
+"<nobr>username-fp@domain</nobr> and it will be learned as an innocent "
+"message. For example, if your email address is joe@example.com, you would "
+"forward the message to <nobr>joe-fp@example.com</nobr>."
+msgstr ""
+"Av og til vil DSPAM merka ei vanleg melding som søppel. Desse meldingane "
+"vert kalla \"falske posetive\". Det er inga måte å hindra falske posetive "
+"heilt. Viss ein finn falske posetive vidaresend til <nobr>brukarnamn-"
+"fp@domain</nobr> og den vert lært som ei harmlaus melding. For eksempel viss "
+"adressa di er ola@eksempel.no, vidaresend meldinga til <nobr>ola-fp@eksempel."
+"no</nobr>."
+
+msgid ""
+"You can also move your false positives to the <i>%s</i> folder from the %s "
+"folder. This folder is periodically checked for messages which are then "
+"learned as false positives and deleted."
+msgstr ""
+"Kan også flytta falke posetive til mappa <i>%s</I> frå mappa %s. Denne mappa "
+"vert periodisk sjekka for meldingar som då vert lært som falske posetive og "
+"sletta."
+
+msgid "Disclaimer"
+msgstr "Dementi"
+
+msgid ""
+"DSPAM is a learning system. It only knows what is spam based on what you "
+"teach it is spam and what is not. Due to DSPAM's nature, you are more likely "
+"to see errors in spam detection until it is trained on your email. If you do "
+"not report a message as spam within ten days, the message will be "
+"permanently learned as innocent and you will be more likely to receive more "
+"spam."
+msgstr ""
+"DSPAM er eit lærande system. Det veit bare kva som er søppel basert på kva "
+"ein lærer det er søppel og kva som ikkje er søppel.  på grunn av DSPAM sin "
+"vikremåte, vil ein truleg sjå feil i søppel detekteringa til programmet er "
+"trena opp. Viss ein ikkje raporterer ei melding som søppel innafor ti dagar, "
+"vil meldinga verta lært som vanleg melding og ein vil truleg motta meir "
+"søppel."
+
+#. *
+#. * To translators: %s's will be replaced by <a ..> and </a>
+#.
+msgid "Please read the %sDSPAM Primer%s before enabling DSPAM."
+msgstr "Les %sDSAPM hjelp%s før ein slår på DSAPM."
+
+msgid "Use DSPAM"
+msgstr "Bruk DSAPM"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+msgid "Clean out your %s folder on opt-in?"
+msgstr "Rensk opp i %s mappa på opt-in?"
+
+msgid "Note"
+msgstr "Merk"
+
+#. *
+#. * To translators: %s is the name of the spam folder.
+#.
+msgid ""
+"Your %s folder may be unavailable during the purge. It will become available "
+"again when the purge is complete."
+msgstr ""
+"Mappa %s er kanskje ikkje tilgjenngeleg under ryddinga. Den er tilgjenngeleg "
+"når ryddinga er ferdig."
+
+msgid "Update"
+msgstr "Oppdater"
+
+msgid "No messages were selected."
+msgstr "Inga melding var valgt."
+
+msgid "Purge"
+msgstr "Rydd opp"
+
+msgid "Delete all messages from your %s folder."
+msgstr "Slett all meldingar frå mappa %s."
+
+msgid "Allow Senders from Address Book"
+msgstr "Tillat mottakarar frå adresseboka"
+
+msgid "Allow"
+msgstr "Tillat"
+
+msgid "Allow all address in the address book."
+msgstr "Tillet alle adresser i adresseboka."
+
+#. required_hists
+msgid "Spam Score"
+msgstr "Søppel poeng"
+
+msgid ""
+"Once all SpamAssassin tests have been run, the resulting score is matched "
+"against this value, and if greater than this value, the e-mail message is "
+"marked as spam. We recommend a value of '5'."
+msgstr ""
+"Når alle SpamAssassin tester er ferdig kjørt, resultatet er målt mot denne "
+"verdien, og viss den er større enn denne verdien, vert e-posten merka som "
+"søppel. Føreslår å setja verdien til '5'."
+
+msgid "0 - Very Aggressive"
+msgstr "0 - Svært aggresivt"
+
+msgid "1"
+msgstr "1"
+
+msgid "2 - Aggressive"
+msgstr "2 - Aggresivt"
+
+msgid "3"
+msgstr "3"
+
+msgid "4"
+msgstr "4"
+
+msgid "5 - Recommended"
+msgstr "5 - Føreslått"
+
+msgid "6"
+msgstr "6"
+
+msgid "7"
+msgstr "7"
+
+msgid "8 - Lenient"
+msgstr "8 - Mild"
+
+msgid "9"
+msgstr "9"
+
+msgid "10 - Very Lenient"
+msgstr "10 - Svært mild"
+
+msgid "Don't Filter"
+msgstr "Ikkje filtrer"
+
+#. NOTE: The ordering here is a little odd to allow some inclusion of
+#. other option names.
+#. subject_tag
+msgid "Spam Subject Tag"
+msgstr "Søppel emne merke"
+
+msgid "*****SPAM*****"
+msgstr "*****SPAM*****"
+
+#. rewrite_subject
+msgid "Rewrite Subject Line"
+msgstr "Omskriv emnelinja"
+
+#. To translators: %s is the default from subject_tag
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with: %s.  To turn "
+"on this feature, select this option."
+msgstr ""
+"SpamAssassin kan omskrive emnelinja til e-postar som er fastslått som søppel "
+"ved å skriva %s føre orginal emnelinje. For å skru på denne eigenskapen, "
+"velg denne opsjonen."
+
+#. This is here to allow me to include the rewrite_subject title
+#. *
+#. * To Translators: %s is the title from rewrite_subject
+#.
+msgid ""
+"The text to prefix to the subject of messages determined to be spam. %s must "
+"be turned on."
+msgstr ""
+"Teksten som skal skrivast fremst i emne til søppelmeldinga  %s må vera slått "
+"på."
+
+msgid ""
+"SpamAssassin can re-write the subject line of e-mail that has been "
+"determined to be spam by prefixing the original subject with this value."
+msgstr ""
+"SpaAssassin kan skrive om emnelinja til e-postar som er fastslått som søppel "
+"ved å skrive denne verdien først i orginal emnelinje"
+
+#. use_terse_report
+msgid "Short Report"
+msgstr "Kort rapport"
+
+msgid ""
+"This option will tell SpamAssassin to use a shorter spam report once the "
+"message has been found to be spam."
+msgstr ""
+"Dette valet vil gjer at SpamAssassin brukar ein kortare rapport når meldinga "
+"syner seg å vera søppel."
+
+#. use_dcc
+msgid "Use DCC"
+msgstr "Bruk DCC"
+
+msgid ""
+"Checks messages against the DCC (Distrubuted Checksum Clearinghouse) to see "
+"if a message matches a known spam message."
+msgstr ""
+"Sjekk melding mpt DCC(Distributet Checksum Clearinghouse) for å sjå om "
+"meldinga er lik kjente søppelmeldingar."
+
+#. use_razor1
+msgid "Use SpamNet (version 1)"
+msgstr "Bruk SpamNet(versjon1)"
+
+msgid ""
+"Checks messages against SpamNet to see if a message is a known spam message."
+msgstr ""
+"Sjekk meldinga mot SpamNet for å sjå om meldinga er kjent som søppelmelding."
+
+#. use_razor2
+msgid "Use SpamNet (version 2)"
+msgstr "Bruk SpamNet (versjon 2)"
+
+#. always_add_headers
+msgid "Always Add Headers"
+msgstr "Legg alltid til topptekst"
+
+msgid "Uncheck if you do not want to add the headers to non-spam."
+msgstr ""
+"Fjern merke viss ein ikkje vil leggja til topptekst til normale meldingar."
+
+#. ok_languages
+msgid "Acceptable Languages"
+msgstr "Akksepterte språk"
+
+msgid "Select all the languages you expect to receive e-mail in."
+msgstr "Vel alle språka ein forventa å få e-post frå."
+
+msgid "All"
+msgstr "All"
+
+msgid "Afrikaans"
+msgstr "Afrikansk"
+
+msgid "Albanian"
+msgstr "Albansk"
+
+msgid "Amharic"
+msgstr "Amharic"
+
+msgid "Arabic"
+msgstr "Arabisk"
+
+msgid "Armenian"
+msgstr "Armensk"
+
+msgid "Basque"
+msgstr "Baskisk"
+
+msgid "Bosnian"
+msgstr "Bosnisk"
+
+msgid "Bulgarian"
+msgstr "Bulgarsk"
+
+msgid "Byelorussian"
+msgstr "Kviterussisk"
+
+msgid "Catalan"
+msgstr "Katalansk"
+
+msgid "Chinese"
+msgstr "Kinesisk"
+
+msgid "Croatian"
+msgstr "Kroatisk"
+
+msgid "Czech"
+msgstr "Tjekkisk"
+
+msgid "Danish"
+msgstr "Dansk"
+
+msgid "Dutch"
+msgstr "Nederlansk"
+
+msgid "English"
+msgstr "Engelsk"
+
+msgid "Esperanto"
+msgstr "Esperanto"
+
+msgid "Estonian"
+msgstr "Estisk"
+
+msgid "Finnish"
+msgstr "Finsk"
+
+msgid "French"
+msgstr "Fransk"
+
+msgid "Frisian"
+msgstr "Frisisk"
+
+msgid "Georgian"
+msgstr "Georgisk"
+
+msgid "German"
+msgstr "Tysk"
+
+msgid "Greek"
+msgstr "Gresk"
+
+msgid "Hebrew"
+msgstr "Hebraisk"
+
+msgid "Hindi"
+msgstr "Hindisk"
+
+msgid "Hungarian"
+msgstr "Ungarsk"
+
+msgid "Icelandic"
+msgstr "Islandsk"
+
+msgid "Indonesian"
+msgstr "Indonesisk"
+
+msgid "Irish Gaelic"
+msgstr "Irsk galisk"
+
+msgid "Italian"
+msgstr "Italiensk"
+
+msgid "Japanese"
+msgstr "Japansk"
+
+msgid "Korean"
+msgstr "Koreansk"
+
+msgid "Latin"
+msgstr "Latinsk"
+
+msgid "Latvian"
+msgstr "Latvisk"
+
+msgid "Lithuanian"
+msgstr "Litauisk"
+
+msgid "Malay"
+msgstr "Malayisk"
+
+msgid "Marathi"
+msgstr "Maratisk"
+
+msgid "Nepali"
+msgstr "Nepalsk"
+
+msgid "Norwegian"
+msgstr "Norsk"
+
+msgid "Persian"
+msgstr "Persisk"
+
+msgid "Polish"
+msgstr "Polsk"
+
+msgid "Portuguese"
+msgstr "Portugisisk"
+
+msgid "Quechua"
+msgstr "Quechisk"
+
+msgid "Rhaeto-Romance"
+msgstr "Raeto-romansk"
+
+msgid "Romanian"
+msgstr "Romansk"
+
+msgid "Russian"
+msgstr "Russisk"
+
+msgid "Sanskrit"
+msgstr "Sanskrit"
+
+msgid "Scots"
+msgstr "Skotsk"
+
+msgid "Scottish Gaelic"
+msgstr "Skotsk galisk"
+
+msgid "Serbian"
+msgstr "Serbisk"
+
+msgid "Slovak"
+msgstr "Slovakisk"
+
+msgid "Slovenian"
+msgstr "Slovensk"
+
+msgid "Spanish"
+msgstr "Spansk"
+
+msgid "Swahili"
+msgstr "Swahilisk"
+
+msgid "Swedish"
+msgstr "Svensk"
+
+msgid "Tagalog"
+msgstr "Tagalogisk"
+
+msgid "Tamil"
+msgstr "Tamilsk"
+
+msgid "Thai"
+msgstr "Thai"
+
+msgid "Turkish"
+msgstr "Tyrkisk"
+
+msgid "Ukrainian"
+msgstr "Ukrainsk"
+
+msgid "Vietnamese"
+msgstr "Vietamesisk"
+
+msgid "Welsh"
+msgstr "Walisisk"
+
+msgid "Yiddish"
+msgstr "Jødisk"
+
+#. use_bayes
+msgid "Use Bayesian Filter"
+msgstr "Bruk bayesisk filter"
+
+msgid ""
+"The Baysian Filter will learn what is spam and what isn't to become a better "
+"filter."
+msgstr ""
+"Bayesisk filter vil læra kva som er søppel og kva som ikkje er for å verta "
+"eit betre filter."
+
+#. auto_learn
+msgid "Auto-learn"
+msgstr "Auto-lær"
+
+msgid ""
+"Automatically feed high and low scoring mails into SpamAssassin's learning "
+"systems. (Currently, only Bayesian filtering is supported.)"
+msgstr ""
+"Automatisk mate høge og låge poeng e-postar inni SpamAssassin læresystem. "
+"(Til nå, er det bare Bayesisk filter som er støtta.)"
+
+#. report_safe
+msgid "Spam Encapsulation"
+msgstr "Søppelinnkapsling"
+
+msgid ""
+"Encapsulate spam messages into a MIME or plain-text attachment, or you can "
+"disable it altogether."
+msgstr ""
+"Innkapls søppelmeldinger inn ei MIME eller rein tekst vedlegg, eller ein kan "
+"slå av alt saman."
+
+msgid "Disabled"
+msgstr "Slå av"
+
+msgid "MIME Attachment"
+msgstr "MIME vedlegg"
+
+msgid "Text Attachment"
+msgstr "Teskt vedlegg"
+
+#. These options were removed as of SpamAssassin 2.50-ish
+#. They are here for those running older versions of SA.
+#. report_header
+msgid "Report in Header"
+msgstr "Raport i topptekst"
+
+msgid ""
+"SpamAssassin will create a report when it determines an e-mail message to be "
+"spam.  This report is normally prepended to the e-mail message.  To have the "
+"report written as part of the e-mail header, select this option."
+msgstr ""
+"SpamAssassin vil lage ein rapport når den finn ein e-post som er "
+"søppelmelding. Dette vert normalt lagt til e-postmeldinga. For å la "
+"rapporten vera ein del av toppteksten, slå på dette valet."
+
+#. defang_mime
+msgid "Reformat HTML Spam"
+msgstr "Omformater HTML søppel"
+
+msgid ""
+"When an e-mail in HTML format is determined to be spam, SpamAssassin can "
+"convert the message to text. To allow this, select this option."
+msgstr ""
+"Når ein e-post i HTML format er søppel, SpamAssassin kan omforme meldinga "
+"til tekst . For å tillate dette slå på valet."
+
+#. White/black list info
+msgid "Whitelist From"
+msgstr "Kviteliste frå"
+
+msgid ""
+"E-mail from these addresses will not be marked as spam. You may use '*' as a "
+"wildcard to allow a large number of addresses at one time. E.g. Whitelist "
+"From '*@aol.com' will not mark any message that claims to be from aol.com as "
+"spam."
+msgstr ""
+"E-post frå desse adressane vil ikkje verta merka som søppel. Ein kan bruka "
+"'*' som jokerteiken for å godkjenne mange adresser på ein gang. F. eks "
+"Kviteliste frå '@online.no' vil ikkje merka nokon adresse frå 'online.no' "
+"som søppel"
+
+msgid "Don't Whitelist From"
+msgstr "Ikkje kviteliste frå"
+
+msgid ""
+"This address will be excluded from a previous whitelist and will be treated "
+"as a normal address, i.e. it will not be automatically allowed."
+msgstr ""
+"Denne adressa vert ekskludert får førre kvitelist og vil verta handsama som "
+"ei normal adesse, dvs vil ikkje automatisk verta godkjent."
+
+msgid "Blacklist From"
+msgstr "Svarteliste frå"
+
+msgid ""
+"E-mail from these addresses will always be marked as spam. You may use '*' "
+"as a wildcard to block a large number of addresses at one time. E.g. "
+"Blacklist From '*@aol.com' will mark all messages that claims to be from aol."
+"com as spam."
+msgstr ""
+"E-post frå desse adressene vil alltid verta markert som søppel. Ein kan "
+"bruka '*' jokerteiken til å blokera fleire adreser samtidig. F. eks  "
+"svarteliste Frå '*online.no' vil merka alle meldingar frå 'online.no' som "
+"søppel."
+
+msgid "Don't Blacklist From"
+msgstr "Ikkje svarteliste frå"
+
+msgid ""
+"This address will be excluded from a previous blacklist and will be treated "
+"as a normal address, i.e. it will not be automatically denied."
+msgstr ""
+"Desse adressene vil verta ekskluderte frå tidlegare svarteliste og handsama "
+"som normale adresser. dvs ikkje atomatisk verta blokert."
+
+msgid "Whitelist To"
+msgstr "Kviteliste til"
+
+msgid ""
+"E-mail to these addresses will not be marked as spam. This is useful for "
+"allowing e-mail lists. For example, you can allow all messages from an e-"
+"mail list that sends to 'Tofu-Support-List@beeflovers.com'. You may use '*' "
+"as a wildcard to allow a large number of addresses at one time. E.g. "
+"Whitelist To '*@aol.com' will not mark any message that claims to be to aol."
+"com as spam."
+msgstr ""
+"E-post til desse adressene ver ikkje markert som søppel. Dette er nyttig for "
+"å tillate e-postliste. F. eks ein kan tillate meldingar frå ei e-postliste "
+"som sender til 'Til_støtte-list@bi-blomster.com'. F. eks Kviteliste Til "
+"'@online.no' vil ikkje merka nokon adresse frå 'online.no' som søppel. "
+
+msgid "Blacklist To"
+msgstr "Svarteliste Til"
+
+msgid ""
+"E-mail to these addresses will be marked as spam. You may use '*' as a "
+"wildcard to reject a large number of addresses at one time. E.g. Blacklist "
+"To '*@aol.com' will mark all messages that claims to be to aol.com as spam."
+msgstr ""
+"E-post frå desse adressene vil verta markert som søppel. Ein kan bruka '*' "
+"jokerteiken til å blokera fleire adreser samtidig. F. eks  svarteliste Frå "
+"'*online.no' vil merka alle meldingar frå 'online.no' som søppel."
+
+msgid "General Settings"
+msgstr "Innstillingar"
+
+msgid "Save Settings"
+msgstr "Lagre innstillingar"
+
+msgid "Error: You must include an e-mail address."
+msgstr "Feil. Må inkludera ei e-postadresse."
+
+msgid "Error: You have entered an invalid e-mail address."
+msgstr "Feil. Oppgitt ugyldig e-postadresse."
+
+msgid "Error: You must select Allow or Deny."
+msgstr "Feil Må velja tillat eller nekt."
+
+msgid "Global Allow / Deny Address List"
+msgstr "Global tillat/nekt adresseliste"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Personal Allow / Deny Address List"
+msgstr "Personleg tillat/nekt adresseliste"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Address Removed"
+msgstr "Adresse fjerna"
+
+msgid "Unknown option: %s"
+msgstr "Ukjent val: %s"
+
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Edit"
+msgstr "Rediger"
+
+#. echo $edit;
+msgid "Edit Address"
+msgstr "Rediger adresse"
+
+msgid "Add New Address"
+msgstr "Legg til ny adresse"
+
+msgid "Address:"
+msgstr "Adresse:"
+
+msgid "Type:"
+msgstr "Type"
+
+#. End Form
+#. Help
+msgid "Legend"
+msgstr "Teiken"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+msgid "Database error in %s: %s"
+msgstr "Database feil: i %s: %s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+msgid "Database error: %s"
+msgstr "Database feil: %s"
+
+msgid "sasql_AddPref_multiple Database error: %s"
+msgstr "sasql_AddPref_multiple database feil: %s"
+
+#. To translators: %s's are the function name
+#. and PEAR generated error message.
+#.
+msgid "Database error %s: %s"
+msgstr "Database feil: %s: %s"
+
+msgid "Spam Filters"
+msgstr "Søppelfilter"
+
+msgid "Configure the behavior of your spam filters."
+msgstr "Innstillinger av eigenskapane til søppelfilteret"
+
+msgid "Add Email to Whitelist"
+msgstr "Legg til e-post til Kvitelista"
+
+msgid "Allow Sender"
+msgstr "Tillat avsendar"
+
+msgid "Remove Email from Whitelist"
+msgstr "Fjern e-post frå Kvitelista"
+
+msgid "remove"
+msgstr "fjern"
+
+msgid "Remove Domain from Whitelist"
+msgstr "Fjern domene frå Kvitelista"
+
+msgid "Add Email to Blacklist"
+msgstr "Legg il e-post til Svartelista"
+
+msgid "Block Sender"
+msgstr "Blokker avsendar"
+
+msgid "Remove Email from Blacklist"
+msgstr "Fjern e-post frå Svartelista"
+
+msgid "Remove Domain from Blacklist"
+msgstr "Fjern domene frå Svartelista"
+
+msgid "Address is already in your whitelist"
+msgstr "Adressa er allereie på Kvitelista"
+
+msgid "Whitelisted"
+msgstr "Kvitelista"
+
+msgid "Domain is already in your whitelist"
+msgstr "Domene er allereie i Kvitelista"
+
+msgid "Address is already in your blacklist"
+msgstr "Adressa er allereie på Svartelista"
+
+msgid "Blacklisted"
+msgstr "Svartelista"
+
+msgid "Domain is already in your blacklist"
+msgstr "Domene er allereiepå Svartelista"
+
+msgid "Learn as False Positive"
+msgstr "Lær som falske posetive"
+
+msgid "Learn as Spam"
+msgstr "Lær som søppel"
+
+msgid "Options"
+msgstr "Val"
+
+msgid "Error: Missing option."
+msgstr "Feil: Instilling manglar."
+
+#~ msgid "Use dspam"
+#~ msgstr "Bruk dspam"
+
+#~ msgid "Purge $spam_folder Folder"
+#~ msgstr "Rydd opp i $spam_folder mappa"
+
+#~ msgid "sasql_DBConnect Database error: %s"
+#~ msgstr "sasql_DBConnect database fei:l %s"
+
+#~ msgid "sasql_ReadWBList Database error: $s"
+#~ msgstr "sasql_ReadWBList database feil: $s"
+
+#~ msgid "sasql_ReadPrefs Database error: %s"
+#~ msgstr "sasql_ReadPrefs database feil: %s"
+
+#~ msgid "sasql_UpdatePref Database error: %s"
+#~ msgstr "sasql_UpdatePref database feil: %s"
+
+#~ msgid "sasql_UpdatePref_multiple Database error: %s"
+#~ msgstr "sasql_UpdatePref_multiple database feil: %s"
+
+#~ msgid "sasql_GetPref Database error: $s"
+#~ msgstr "sasql_GetPref database feil: $s"
+
+#~ msgid "Spam Filter Configuration"
+#~ msgstr "Søppelfilte innstillingar"
+
+#~ msgid "Description"
+#~ msgstr "Skildring"

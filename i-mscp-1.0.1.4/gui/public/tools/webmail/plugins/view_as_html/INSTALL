@@ -1,0 +1,27 @@
+Installing View as HTML
+=======================
+
+1) Start with untaring the file into the plugins directory.
+Here is a example for the 3.8 version of the view_as_html plugin.
+
+  $ cd plugins
+  $ tar -xzvf view_as_html-3.8-1.4.10.tar.gz
+
+2) Then go to your config directory and run conf.pl.  Choose
+   option 8 and move the plugin from the "Available Plugins"
+   category to the "Installed Plugins" category.  Save and exit.
+
+  $ cd ../../config/
+  $ ./conf.pl
+
+3) Translations are not included in this package.  To get a
+   translation, download the language pack needed from:
+
+       http://www.squirrelmail.org/download.php
+
+
+
+Upgrading View as HTML
+======================
+
+1) Follow the instructions under Installing View as HTML 

@@ -1,0 +1,46 @@
+<chapter>
+   <title>
+      Llista de missatges
+   </title>
+   <summary>
+      El nom pot ser complex, però això es exactament la llista de correu
+      que hi ha dins d'una carpeta en particular.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      La llista de missatges
+   </title>
+   <description>
+      <p>
+      Desprès de fer clic dins d'una carpeta, apareixerà (a la part de la 
+      dreta) la llista de missatges que aquesta conté. A la part de dalt del
+      menú apareix un text que informa dels missatges que es mostren en 
+      aquesta llista i del total de la carpeta.
+      </p><p>
+      Per exemple: Mirant missatges <B>20</B> a <B>30</B> (45 total).
+      </p><p>
+      S'ha de tenir en conte que el total de missatges serà diferent del total
+      de missatges sense llegir que pot aparèixer al menú de l'esquerra.
+      </p><p>
+      La barra que conte els dos botons i el menú deslligable serveix per
+      seleccionar on volem moure o suprimir els missatges. Els missatges
+      es seleccionaran amb les caixes de selecció que hi ha al costat de
+      cada missatge. Diversos missatges poden ser moguts a l'hora.
+      </p><p>
+      La barra que conte les tres etiquetes (De, Data i Assumpte) es per 
+      separar els camps amb els que es llisten els missatges. De indica d'on
+      ve el missatge, Data indica quan va ser enviat el missatge i Assumpte
+      conte el motiu d'aquest.  <B>Nota:</B> Entre la columna de la Data i la
+      del Assumpte, hi ha una altre columna petita que serveix per indicar
+      si el missatge ha sigut respost (Answered) "A" o si es urgent "!".
+      </p><p>
+      Els missatges que no s'han llegit es remarquen amb la <B>negreta</B>. Els 
+      demés missatges es veuen sense negreta. La columna de mes a l'esquerra
+      conté una casella per seleccionar el missatge. Quan es selecciona un 
+      missatge, aquest es pot moure o eliminar (tal com es deia abans). Per
+      veure un missatge, només cal fer clic al damunt del Assumpte.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,343 @@
+# French (fr_FR) check_quota Translation (SquirrelMail plugin)
+# Copyright (c) 2008-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Ben Voui <intrigeri@boum.org>, 2008.
+# $Id: check_quota.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: check_quota 2.2\n"
+"Report-Msgid-Bugs-To: Kerem Erkan <kerem@keremerkan.net>\n"
+"POT-Creation-Date: 2007-08-06 14:50+0300\n"
+"PO-Revision-Date: 2008-01-17 17:18+0100\n"
+"Last-Translator: Ben Voui <intrigeri@boum.org>\n"
+"Language-Team: French <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "\"Check Quota\" Troubleshooting"
+msgstr "Résolution des problèmes de \"Check Quota\""
+
+msgid "This page can aid you in troubleshooting the \"Check Quota\" plugin."
+msgstr "Si besoin, cette page peut vous aider à résoudre les problèmes du plugin \"Check Quota\"."
+
+msgid "Quota Binary Output:"
+msgstr "Résultat de la commande quota&nbsp;:"
+
+msgid "Warning:"
+msgstr "Attention&nbsp;:"
+
+msgid "Quota binary did not give any output. Quotas may not be enabled."
+msgstr "La commande quota n'a produit aucun résultat. Les quotas sont peut-être désactivés."
+
+msgid ""
+"You do not have quotas enabled for your username, you will not see any "
+"informative graphs."
+msgstr "Les quotas ne sont pas activés pour votre utilisateur ou utilisatrice&nbsp;; vous n'obtiendrez pas un graphique utile."
+
+msgid "IMAP Command Sent:"
+msgstr "Commande IMAP envoyée&nbsp;:"
+
+msgid "IMAP Response Received:"
+msgstr "Réponse IMAP reçue&nbsp;:"
+
+msgid ""
+"Your IMAP server does not have IMAP4 QUOTA extension. Quotas not enabled."
+msgstr "Le serveur IMAP ne supporte pas l'extension IMAP4 QUOTA. Les quotas ne sont pas activés."
+
+msgid ""
+"Your username is not in user@domain format. cPanel quotas only work with "
+"that type of usernames for now."
+msgstr "Votre nom d'utilisateur n'est pas au format utilisatrice@domaine, qui est le seul supporté actuellement, pour les quotas cPanel."
+
+msgid "Reseller information for your domain cannot be obtained."
+msgstr "Les informations de revendeur ne sont pas disponibles pour votre domaine."
+
+msgid "Quota File:"
+msgstr "Fichier de quotas&nbsp;:"
+
+msgid "Quota file for your domain does not exist or not readable."
+msgstr "Le fichier de quotas pour votre domaine n'existe pas, ou n'est pas lisible."
+
+msgid "Your cPanel Quota:"
+msgstr "Votre quota cPanel&nbsp;:"
+
+msgid "Mail Files Location:"
+msgstr "Emplacement des fichiers de courrier électronique&nbsp;:"
+
+msgid "&quot;du&quot; Binary Output:"
+msgstr "Résultat de la commande &quot;du&quot;&nbsp;:"
+
+msgid ""
+"&quot;du&quot; binary did not give any output. There may be some problem "
+"with that binary."
+msgstr "La commande &quot;du&quot; n'a produit aucun résultat. Il y a peut-être un problème avec cette commande."
+
+msgid "Quota Usage:"
+msgstr "Quota d'espace disque&nbsp;:"
+
+msgid "File Usage:"
+msgstr "Quota de fichiers&nbsp;:"
+
+msgid "OVER QUOTA!"
+msgstr "HORS QUOTA&nbsp;!"
+
+msgid "WARNING:"
+msgstr "attention&nbsp;:"
+
+#, c-format
+msgid "Your quota usage is currently <b>%s%%</b>."
+msgstr "Vous utilisez actuellement <b>%s%%</b> de votre quota."
+
+#, c-format
+msgid "Your quota usage is currently %s%%."
+msgstr "Vous utilisez actuellement %s%% de votre quota."
+
+msgid ""
+"To avoid losing any email, you should immediately empty out your \"Trash\" "
+"and \"Sent\" folders and delete emails with large attachments."
+msgstr "Pour éviter de perdre des messages, vous devriez immédiatement vider les dossiers \"Trash\" et \"Sent\", et effacer les messages qui contiennet de grosses pièces-jointes."
+
+msgid ""
+"To avoid losing any email, you should immediately empty out your &quot;"
+"Trash&quot; and &quot;Sent&quot; folders and delete emails with large "
+"attachments."
+msgstr "Pour éviter de perdre des messages, vous devriez immédiatement vider les dossiers &quot;Trash&quot; et &quot;Sent&quot;, et effacer les messages qui contiennet de grosses pièces-jointes."
+
+msgid ""
+"You may want to make sure you empty out your \"Trash\" and clean your \"Sent"
+"\" folder."
+msgstr "Vous voulez peut-être vider votre dossier \"Trash\", et nettoyer le dossier \"Sent\"."
+
+msgid ""
+"You may want to make sure you empty out your &quot;Trash&quot; and clean "
+"your &quot;Sent&quot; folder."
+msgstr "Vous voulez peut-être vider votre dossier &quot;Trash&quot;, et nettoyer le dossier &quot;Sent&quot;."
+
+msgid "%1 of %2"
+msgstr "%1 sur %2"
+
+msgid "%1% of %2"
+msgstr "%1% sur %2"
+
+msgid "Mandatory Settings"
+msgstr "Paramètres obligatoires"
+
+msgid "Quota Type:"
+msgstr "Type de quota&nbsp;:"
+
+msgid "INVALID!"
+msgstr "INVALIDE&nbsp;!"
+
+msgid "Please read config.php file for possible values."
+msgstr "Veuillez regarder la liste des valeur possibles, dans le fichier config.php."
+
+msgid "Check UNIX Quotas:"
+msgstr "Vérifier les Quotas UNIX&nbsp;:"
+
+msgid "On local server"
+msgstr "Sur le serveur local"
+
+msgid "On remote server"
+msgstr "Sur un serveur distant"
+
+msgid "Remote Username:"
+msgstr "Utilisateur distant&nbsp;:"
+
+msgid "Please read INSTALL for details on setting this variable."
+msgstr "Veuillez lire le fichier INSTALL, afin d'obtenir des détails sur la configuration de cette variable."
+
+msgid "Remote Server:"
+msgstr "Serveur distant&nbsp;:"
+
+msgid "SUDO Binary:"
+msgstr "Commande SUDO&nbsp;:"
+
+msgid "file does not exist or not executable."
+msgstr "fichier inexistant ou non exécutable."
+
+msgid "INFO:"
+msgstr "INFORMATION&nbsp;:"
+
+msgid "Remote checking is enabled, cannot check validity of this variable."
+msgstr "L'interrogation distante des quotas est activée, il est donc impossible de vérifier la validité de cette variable."
+
+msgid "SSH Binary:"
+msgstr "Commande SSH&nbsp;:"
+
+msgid "QUOTA Binary:"
+msgstr "Commande QUOTA&nbsp:;"
+
+msgid "DU Binary:"
+msgstr "Commande DU&nbsp;:"
+
+msgid "cPanel Root Folder:"
+msgstr "Répertoire racine de cPanel&nbsp;:"
+
+msgid "directory does not exist or not readable."
+msgstr "répertoire inexistant, ou illisible."
+
+msgid "Use Separate IMAP Connection:"
+msgstr "Utiliser une connexion IMAP dédiée&nbsp;:"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "Display Settings"
+msgstr "Paramètres d'affichage"
+
+msgid "Graph Type:"
+msgstr "Type de graphique&nbsp;:"
+
+msgid "Standard HTML tables"
+msgstr "Tables HTML standard"
+
+msgid "GD images"
+msgstr "Images GD"
+
+msgid "Your server does not have GD support."
+msgstr "Le serveur ne supporte pas GD."
+
+msgid "Graph type will revert to standard HTML tables."
+msgstr "Les graphiques utiliseront des tables HTML standard."
+
+msgid "Graph Location:"
+msgstr "Emplacement du graphique&nbsp;:"
+
+msgid "Below folders list"
+msgstr "En-dessous de la liste des dossiers"
+
+msgid "Above folders list"
+msgstr "Au-dessus de la liste des dossiers"
+
+msgid "Font Size:"
+msgstr "Taille de la police&nbsp;:"
+
+msgid "Graph Alignment:"
+msgstr "Alignement du graphique&nbsp;:"
+
+msgid "Left"
+msgstr "Gauche"
+
+msgid "Right"
+msgstr "Droite"
+
+msgid "Center"
+msgstr "Centré"
+
+msgid "Use Horizontal Rules:"
+msgstr "Utiliser des traits horizontaux&nbsp;:"
+
+msgid "Show Intro Texts:"
+msgstr "Afficher le texte d'introduction&nbsp;:"
+
+msgid "Quota Details Location:"
+msgstr "Emplacement des informations détaillées de quota&nbsp;:"
+
+msgid "Below quota graph"
+msgstr "En-dessous du graphique de quota"
+
+msgid "Above quota graph"
+msgstr "Au-dessus du graphique de quota"
+
+msgid "Show Quantity or Percent:"
+msgstr "Afficher la Quantité, ou le Pourcentage&nbsp;:"
+
+msgid "Show percent"
+msgstr "Afficher le pourcentage"
+
+msgid "Show quantity (size or count)"
+msgstr "Afficher la quantité (taille ou nombre)"
+
+msgid "Yellow Alert Threshold:"
+msgstr "Seuil d'alerte jaune&nbsp;:"
+
+#, c-format
+msgid "%s%%"
+msgstr "%s%%"
+
+msgid "Red Alert Threshold:"
+msgstr "Seuil d'alerte rouge&nbsp;:"
+
+msgid "Show Yellow Alert Warning:"
+msgstr "Afficher l'alerte jaune&nbsp;:"
+
+msgid "Show Red Alert Warning:"
+msgstr "Afficher l'alerte rouge&nbsp;:"
+
+msgid "KB/MB Conversion:"
+msgstr "Convertir en KB/MB&nbsp;:"
+
+msgid "Show Filesystems:"
+msgstr "Afficher les systèmes de fichiers&nbsp;:"
+
+msgid "Override Settings"
+msgstr "Écraser les paramètres"
+
+msgid "Filesystem Aliases:"
+msgstr "Aliases pour les systèmes de fichiers&nbsp;:"
+
+msgid "No aliases set"
+msgstr "Aucun alias n'est défini"
+
+msgid "will be shown as"
+msgstr "sera affiché en tant que"
+
+msgid "Excluded Filesystems:"
+msgstr "Systèmes de fichiers exclus&nbsp;:"
+
+msgid "All filesystems with quota enabled will be shown."
+msgstr "Tous les systèmes de fichiers supportant des quotas seront affichés."
+
+msgid "will be excluded from quota information."
+msgstr "sera exclu des informations de quota."
+
+msgid "Override IMAP Size Quota:"
+msgstr "Passer outre le quota IMAP pour la taille de la boîte&nbsp;:"
+
+msgid "No override set"
+msgstr "Ne pas passer outre"
+
+msgid "Override IMAP Count Quota:"
+msgstr "Passer outre le quota IMAP pour le nombre de messages&nbsp;:"
+
+msgid "Files"
+msgstr "Fichiers"
+
+msgid "Always Refresh cPanel:"
+msgstr "Mettre à jour cPanel systématiquement&nbsp;:"
+
+msgid "Quota Output"
+msgstr "Résultat de la requête de quota"
+
+msgid "You have"
+msgstr "Vous avez"
+
+msgid "error or warning"
+msgstr "erreur ou avertissement"
+
+msgid "errors or warnings"
+msgstr "erreurs ou avertissements"
+
+msgid "in your configuration. You can find the details below."
+msgstr "dans votre configuration. Les détails sont ci-dessous."
+
+msgid "Please correct"
+msgstr "Veuillez corriger"
+
+msgid "this error or warning"
+msgstr "cette erreur ou avertissement"
+
+msgid "these errors or warnings"
+msgstr "ces erreurs ou avertissements"
+
+msgid "in order to have &quot;Check Quota&quot; work properly."
+msgstr "afin que &quot;Check Quota&quot; fonctionne correctement."
+
+msgid ""
+"Your configuration seems to be correct. &quot;Check Quota&quot; should work "
+"properly."
+msgstr "Votre configuration semble correcte. &quot;Check Quota&quot; devrait fonctionner correctement."

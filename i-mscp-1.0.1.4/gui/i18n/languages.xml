@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languages>
+  <language lc="ar_AE">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>23d228f29778351d81ba7987ab13676d</md5>
+  </language>
+  <language lc="az_AZ">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>38352558744eda22e326a3d60dfdd727</md5>
+  </language>
+  <language lc="bg_BG">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>f9c17eec854e2ef1535b5b284e8b4df8</md5>
+  </language>
+  <language lc="ca_ES">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>464ff32aa71a0f0ff28ac3ba3daeb4c4</md5>
+  </language>
+  <language lc="cs_CZ">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>691c6f302e6034727e475183be09aea7</md5>
+  </language>
+  <language lc="da_DK">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>fe120780e6b3b212af7235fc17a16570</md5>
+  </language>
+  <language lc="de_DE">
+    <revision>2011-06-27 15:34+0000</revision>
+    <md5>c7baf64fbb5818978fe5d8ba720d6e54</md5>
+  </language>
+  <language lc="en_GB">
+    <revision>2011-06-27 15:11+0000</revision>
+    <md5>b2f889a3d9953ffcc4ecc9f391a4090f</md5>
+  </language>
+  <language lc="es_AR">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>118754cc637ac461303a877ea9db1362</md5>
+  </language>
+  <language lc="es_ES">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>4b1eeb5cd79d6e966f26fa7218a82d17</md5>
+  </language>
+  <language lc="eu_ES">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>782ce4933ea04dc748c08e4c83993e34</md5>
+  </language>
+  <language lc="fa_IR">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>62714547377a5eef22a3f714255970ea</md5>
+  </language>
+  <language lc="fi_FI">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>f98199b578955af58616ac237639f5b0</md5>
+  </language>
+  <language lc="fr_FR">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>48e5d36c85c453a7d017ece5fe065d95</md5>
+  </language>
+  <language lc="gl_ES">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>109e1d576c1b658a5f71d8d9faed88bc</md5>
+  </language>
+  <language lc="hu_HU">
+    <revision>2011-06-26 20:06+0000</revision>
+    <md5>321a924fc09b097a621ff9d5356d68d8</md5>
+  </language>
+  <language lc="it_IT">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>cb26a325f2f2c4908e3d3a633c14201f</md5>
+  </language>
+  <language lc="ja_JP">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>f0f5697915a5cbaef807785e73a09168</md5>
+  </language>
+  <language lc="lt_LT">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>f7b9388dcd130c3cc4735e7284e9eedf</md5>
+  </language>
+  <language lc="nb_NO">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>baceeed126894fc52d8ed092f2e638ea</md5>
+  </language>
+  <language lc="nl_NL">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>dcad8320674211d8e9ba7141ca6260be</md5>
+  </language>
+  <language lc="pl_PL">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>d5c4bfed7ed13bc3437eb96288202337</md5>
+  </language>
+  <language lc="pt_BR">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>56b067e0c932e6edd978c91a3b6bea09</md5>
+  </language>
+  <language lc="pt_PT">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>b9abeafdf1ea5444038aebc839018397</md5>
+  </language>
+  <language lc="ro_RO">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>04e8b52dc202b67671530310d2461dcc</md5>
+  </language>
+  <language lc="ru_RU">
+    <revision>2011-06-24 16:50+0000</revision>
+    <md5>c37387d15da5b2b391a5fb4198a15c18</md5>
+  </language>
+  <language lc="sk_SK">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>73729a08e0f8046166fc8c9c9fc8f126</md5>
+  </language>
+  <language lc="sv_SE">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>9fd8f2d7112030fbc4d2f55824a6da46</md5>
+  </language>
+  <language lc="th_TH">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>3d4b60aa1c9d19de054ebc1478a3f7ac</md5>
+  </language>
+  <language lc="tr_TR">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>3fe3207a6ddf0da23580af8cad60200f</md5>
+  </language>
+  <language lc="uk_UA">
+    <revision>2011-06-24 16:48+0000</revision>
+    <md5>200252bfe2966a3115725c2819bed6a3</md5>
+  </language>
+  <language lc="zh_CN">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>1df967cca0f962a52a39588067265b02</md5>
+  </language>
+  <language lc="zh_HK">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>98578d041dc17aeb3b44d52f7c0a2d1b</md5>
+  </language>
+  <language lc="zh_TW">
+    <revision>2011-06-23 22:50+0000</revision>
+    <md5>d1b58d48b812329602acb8139806c808</md5>
+  </language>
+</languages>

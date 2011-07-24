@@ -1,0 +1,30 @@
+# GPG Plugin for Squirrelmail local config file
+#
+# Make changes to this file to change the plugin defaults.
+#
+# $Id$
+#
+path_to_gpg=/usr/bin/gpg 
+allowprivatekeys=true 
+allowkeygeneration=true
+systemkeyring=false
+requirepassphraseonkeydelete=true
+systemkeyringfile=gpgsystemkeys/pubring.gpg
+systemtrustedkey=
+systemadk=
+systemrevoker=
+maxfilesize=100000
+
+# Passphrase caching has known issue when used while decrypting
+# Only re-enable if you know what you are doing, and only use one key per user
+allowpassphrasecaching=false
+
+insecure_mem_warning=1
+default_keystrength=1024
+default_keyexpires=1y
+use_proc_open=true
+expose_compose_buttons=true
+expose_options_link=true
+debug=0
+systemparse_openpgp_header=true
+systemgenerate_openpgp_header=true

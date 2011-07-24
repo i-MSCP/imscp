@@ -1,0 +1,54 @@
+# Norwegian Bokmål (nb_NO) qmailadmin_login Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Hans Fredrik Nordhaug <hans@nordhaug.priv.no>, 2007.
+# $Id: qmailadmin_login.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: qmailadmin_login 1.1\n"
+"POT-Creation-Date: 2005-07-27 07:55+0300\n"
+"PO-Revision-Date: 2007-11-27 08:10+0100\n"
+"Last-Translator: Hans Fredrik Nordhaug <hans@nordhaug.priv.no>\n"
+"Language-Team: Norwegian Bokmal <i18n-nb@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:58 qmlogin.php:57
+msgid "Account Administration"
+msgstr "Kontoadministrasjon"
+
+#: functions.php:60
+msgid "This option provides access to account management interface."
+msgstr "Dette valget gir tilgang til kontoadministrasjonsidene."
+
+#: functions.php:74
+msgid ""
+"Please confirm your password in order to access account management pages."
+msgstr "Bekreft passorder ditt for å få tilgang til kontoadministrasjonsidene."
+
+#: functions.php:81
+msgid "Your password: "
+msgstr "Ditt passord: "
+
+#: functions.php:82 qmlogin_iframe.php:74
+msgid "Login"
+msgstr "Logg inn"
+
+#: qmlogin_iframe.php:64
+msgid "Redirecting to QmailAdmin"
+msgstr "Videresender til QmailAdmin"
+
+#: qmlogin_iframe.php:68
+msgid ""
+"Your are being redirected to the administration page. If your browser does "
+"not automatically redirect you, please click on login button."
+msgstr ""
+"Du blir videresendt til administrasjonsiden. Hvis din nettleser ikke "
+"automatisk sender deg videre, klikke på logginn-knappen."
+
+#: qmlogin.php:61
+msgid ""
+"WARNING: You will have to relogin into SquirrelMail, if you change your "
+"password."
+msgstr "ADVARSEL: Du må logge inn igjen i SquirrelMail hvis du skifter passordet ditt."
