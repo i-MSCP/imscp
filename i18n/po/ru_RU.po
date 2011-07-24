@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-22 10:07+0200\n"
-"PO-Revision-Date: 2011-07-22 08:08+0000\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2779,20 +2779,11 @@ msgstr "Всего"
 msgid "Up time"
 msgstr "Аптайм"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "i-MSCP - Клиент / Вопросы и комментарии"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "Тикеты"
-
-msgid "Priority"
-msgstr "Приоритет"
-
-msgid "Last reply"
-msgstr "Последний ответ"
-
-msgid "Delete all"
-msgstr "Удалить всё"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "Открытые тикеты"
@@ -2803,35 +2794,88 @@ msgstr "Закрытые тикеты"
 msgid "From"
 msgstr "От"
 
-msgid "Support ticket deleted successfully!"
-msgstr "Тикет успешно удален!"
+msgid "Priority"
+msgstr "Приоритет"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "Все открытые тикеты успешно удалены!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "Все закрытые тикеты успешно удалены!"
+msgid "Actions"
+msgstr "Действия"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "i-MSCP - Клиент / Активировать email-рассылку"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "i-MSCP - Клиент / Служба поддержки / Просмотр тикетов"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "Пожалуйста, введите Ваше сообщение!"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "Тикет не найден!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "i-MSCP - Администратор / Служба поддержки / Просмотр тикетов"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "Просмотр тикетов"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "Отправить ответ на сообщение"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Сообщения"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "Отправить ответ"
@@ -2855,6 +2899,9 @@ msgstr ""
 msgid "Wrong domain Id."
 msgstr ""
 
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
 msgid "Delete domain"
 msgstr "Удалить домен"
 
@@ -2873,16 +2920,17 @@ msgstr ""
 msgid "Domain databases"
 msgstr ""
 
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone."
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "Да, удалить домен."
 
-msgid "i-MSCP - Delete Domain"
-msgstr "i-MSCP - Клиент / Удаление домена"
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -3232,9 +3280,6 @@ msgstr "Точка монтирования"
 
 msgid "Forward"
 msgstr "Перенаправление"
-
-msgid "Actions"
-msgstr "Действия"
 
 msgid "Record data"
 msgstr "Данные записи"
@@ -4109,11 +4154,12 @@ msgstr "Вход в phpMyAdmin"
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"Эта база данных будет удалена. Этот процесс нельзя отменить. Все "
-"пользователи этой базы данных будут также удалены если они не являются "
-"пользователями другой базы. Вы уверены что хотите удалить %s?"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "Лимит пользователей SQL достигнут!"
@@ -4200,11 +4246,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr "URL переадресации должен начинаться с 'http://'"
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "Пожалуйста, введите тему сообщения!"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "Низкий"
@@ -4217,6 +4269,12 @@ msgstr "Высокий"
 
 msgid "Very high"
 msgstr "Очень высокий"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "Выбрать страницы ошибок для вашего домена"
@@ -4448,12 +4506,6 @@ msgstr "Управление алиасами"
 msgid "Real domain"
 msgstr "Реальный домен"
 
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
 msgid "Domain with that name already exists on the system."
 msgstr ""
 
@@ -4487,6 +4539,9 @@ msgstr "i-MSCP - Почтовая рассылка"
 
 msgid "Circular"
 msgstr "Почтовая рассылка"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "You are not allowed to access this interface."
 msgstr ""
@@ -4738,11 +4793,17 @@ msgstr ""
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "i-MSCP - Техподдержка / Новый тикет"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "i-MSCP - Реселлер / Служба Поддержки / Просмотр тикетов"
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
@@ -4847,7 +4908,7 @@ msgstr "%1$s из %2$s Мб"
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr "%1$s из <b>неограниченно</b> Мб"
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-22 10:07+0200\n"
-"PO-Revision-Date: 2011-07-22 08:08+0000\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2770,20 +2770,11 @@ msgstr "Totaal"
 msgid "Up time"
 msgstr "Uptime"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "i-MSCP - Klant/Vragen & Opmerkingen"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "Ondersteuning tickets"
-
-msgid "Priority"
-msgstr "Prioriteit"
-
-msgid "Last reply"
-msgstr "Laatste antwoord"
-
-msgid "Delete all"
-msgstr "Verwijder alles"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "Open tickets"
@@ -2794,35 +2785,88 @@ msgstr "Gesloten tickets"
 msgid "From"
 msgstr "Van"
 
-msgid "Support ticket deleted successfully!"
-msgstr "Ondersteuning ticket succesvol verwijderd"
+msgid "Priority"
+msgstr "Prioriteit"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "Alle open support tickets succesvol verwijderd!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "Alle gesloten support tickets succesvol verwijderd!"
+msgid "Actions"
+msgstr "Acties"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "i-MSCP - Klant/E-Mail Auto-Antwoord Aanzetten"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "i-MSCP - Klant : Ondersteuning Systeem: Bekijk Tickets"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "Gelieve uw bericht te typen"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "Ticket niet gevonden!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "i-MSCP - Beheer : Ondersteuning Systeem: Bekijk Tickets"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "Bekijk ondersteuning ticket"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "Verstuur bericht antwoord"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Berichten"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "Verstuur antwoord"
@@ -2846,6 +2890,9 @@ msgstr ""
 msgid "Wrong domain Id."
 msgstr ""
 
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
 msgid "Delete domain"
 msgstr "Verwijder domein"
 
@@ -2864,16 +2911,17 @@ msgstr ""
 msgid "Domain databases"
 msgstr ""
 
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone."
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "Ja, verwijder het domein."
 
-msgid "i-MSCP - Delete Domain"
-msgstr "i-MSCP - Verwijder Domein"
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -3224,9 +3272,6 @@ msgstr "Aanhechtings Punt"
 
 msgid "Forward"
 msgstr "Doorsturen"
-
-msgid "Actions"
-msgstr "Acties"
 
 msgid "Record data"
 msgstr "Record gegevens"
@@ -4082,12 +4127,12 @@ msgstr "Login PhpMyAdmin"
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"Deze databank word voor goed verwijderd. Dit kan niet terug gezet worden. "
-"Alle gebruikers die aan deze databank verbonden zijn zullen mee verwijderd "
-"worden tenzij ze ook op andere databanken rechten hebben . Bent u zeker %s "
-"te willen verwijderen?"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "SQL gebruikers limiet bereikt!"
@@ -4175,11 +4220,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Een Doorstuur URL moet met 'http://' beginnen"
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "Gelieve een bericht onderwerp te specificeren"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "Laag"
@@ -4192,6 +4243,12 @@ msgstr "Hoog"
 
 msgid "Very high"
 msgstr "Zeer hoog"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "Pas fout paginas voor uw domein aan"
@@ -4423,12 +4480,6 @@ msgstr "Beheer alias"
 msgid "Real domain"
 msgstr "Echt domein"
 
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
 msgid "Domain with that name already exists on the system."
 msgstr ""
 
@@ -4463,6 +4514,9 @@ msgstr "i-MSCP - cirkelvormig"
 
 msgid "Circular"
 msgstr "E-mail marketing"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "You are not allowed to access this interface."
 msgstr ""
@@ -4714,11 +4768,17 @@ msgstr ""
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "i-MSCP - Ondersteunings systeem - Nieuwe ticket"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "i-MSCP - Reseller : Ondersteunings Systeem : Bekijk Tickets"
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
@@ -4824,7 +4884,7 @@ msgstr "%1$s of %2$s MB"
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr "%1$s of <b>ongelimiteerd</b> MB"
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."

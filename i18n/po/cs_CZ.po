@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-22 10:07+0200\n"
-"PO-Revision-Date: 2011-07-22 08:08+0000\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2750,20 +2750,11 @@ msgstr "Celkem"
 msgid "Up time"
 msgstr "Doba provozu"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "i-MSCP - Klient/Otázky a připomínky"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "Požadavky podpory"
-
-msgid "Priority"
-msgstr "Priorita"
-
-msgid "Last reply"
-msgstr "Poslední odpověď"
-
-msgid "Delete all"
-msgstr "Odstranit vše"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "Otevřené požadavky"
@@ -2774,35 +2765,88 @@ msgstr "Uzavřené požadavky"
 msgid "From"
 msgstr "Od"
 
-msgid "Support ticket deleted successfully!"
-msgstr "Požadavek podpory byl úspěšně smazán!"
+msgid "Priority"
+msgstr "Priorita"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "Všechny otevřené požadavky podpory smazány úspěšně!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "Všechny uzavřené požadavky podpory smazány úspěšně!"
+msgid "Actions"
+msgstr "Akce"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "i-MSCP - Klient/Povolit automatické odpovědi"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "i-MSCP - Klient : Systém podpory: Zobrazit požadavky"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "Prosím zadejte zprávu!"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "Požadavek nenalezen!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "i-MSCP - Admin : Systém podpory: Zobrazit požadavky"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "Zobrazit požadavky podpory"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "Zaslat odpověď"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Zprávy"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "Odpovědět"
@@ -2826,6 +2870,9 @@ msgstr ""
 msgid "Wrong domain Id."
 msgstr ""
 
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
 msgid "Delete domain"
 msgstr "Smazat doménu"
 
@@ -2844,16 +2891,17 @@ msgstr ""
 msgid "Domain databases"
 msgstr ""
 
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone."
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "Ano, smazat doménu."
 
-msgid "i-MSCP - Delete Domain"
-msgstr "i-MSCP - Smazat doménu"
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -3201,9 +3249,6 @@ msgstr "Bod připojení"
 
 msgid "Forward"
 msgstr "Přesměruj"
-
-msgid "Actions"
-msgstr "Akce"
 
 msgid "Record data"
 msgstr ""
@@ -4064,11 +4109,12 @@ msgstr "PhpMyAdmin"
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"Databáze bude vymazána. Tento proces je nevratný. Všichni uživatelé "
-"směřující do této databáze budou vymazáni pokud nesměřují do jiné databáze. "
-"Jste si jisti vymazáním %s?"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "Dosažen limit SQL uživatelů!"
@@ -4154,11 +4200,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Adresa pro přesměrování má začínat 'http://'"
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "Prosím zadejte předmět zprávy!"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "Nízká"
@@ -4171,6 +4223,12 @@ msgstr "Vysoká"
 
 msgid "Very high"
 msgstr "Velmi vysoká"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "Upravit chybové stránky pro doménu"
@@ -4402,12 +4460,6 @@ msgstr "Sprava aliasu"
 msgid "Real domain"
 msgstr "Reálná doména"
 
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
 msgid "Domain with that name already exists on the system."
 msgstr ""
 
@@ -4440,6 +4492,9 @@ msgstr "i-MSCP - Oběžník"
 
 msgid "Circular"
 msgstr "Oběžník"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "You are not allowed to access this interface."
 msgstr ""
@@ -4691,11 +4746,17 @@ msgstr ""
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "i-MSCP - Systém podpory - Nový požadavek"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "i-MSCP - Partner : Systém podpory: Zobrazit oznámení"
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
@@ -4799,7 +4860,7 @@ msgstr "%1$s z %2$s MB"
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr "%1$s z <b>neomezených</b> MB"
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."
