@@ -5,6 +5,9 @@ i-MSCP ChangeLog
 i-MSCP 1.0.1.4 (beta 4)
 -------------------------------------------------------------------------------------
 
+2011-07-24: Torsten Widmann
+	- RELEASE i-MSCP 1.0.1.4 beta 4
+
 Distributions:
 	- Removed 'configs' directories for distributions that are no longer supported:
 	  CentOS, Fedora, FreeBSD, Gentoo, OpenBSD, OpenSuse
@@ -59,7 +62,6 @@ Tickets:
 	- Fixed #154: Update - phpMyAdmin 3.4.3.2 available
 	- Fixed #156: Bug - Users's properties must be loaded in session before i18n
 	initialization
-
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
