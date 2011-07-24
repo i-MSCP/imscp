@@ -56,6 +56,8 @@ Tickets:
 	- Fixed #145: Defect - Some items are not deleted on user deletion
 	- Fixed #150: Bug - Tickets feature is broken
 	- Fixed #153: BUG - Some pages lack footer
+	- Fixed #154: Update - phpMyAdmin 3.4.3.2 available
+
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
