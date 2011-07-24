@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-22 10:07+0200\n"
-"PO-Revision-Date: 2011-07-22 08:08+0000\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2770,20 +2770,11 @@ msgstr "Guztira"
 msgid "Up time"
 msgstr "Piztutako denbora"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "i-MSCP - Erabiltzailea/Galderak eta Iradokizunak"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "Euskarri txartelak"
-
-msgid "Priority"
-msgstr "Lehentasuna"
-
-msgid "Last reply"
-msgstr "Azken erantzuna"
-
-msgid "Delete all"
-msgstr "Ezabatu guztia"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "Irekitako txartelak"
@@ -2794,35 +2785,88 @@ msgstr "Itxitako txartelak"
 msgid "From"
 msgstr "Norengandik"
 
-msgid "Support ticket deleted successfully!"
-msgstr "Euskarri txartela zuzen ezabatu da!"
+msgid "Priority"
+msgstr "Lehentasuna"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "Irekitako euskarri txartel guztiak zuzen ezabatu dira!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "Itxitako euskarri txartel guztiak zuzen ezabatu dira!"
+msgid "Actions"
+msgstr "Akzioak"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "i-MSCP - Erabiltzailea/Gaitu Posta Erantzun Automatikoa"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "i-MSCP - Erabiltzailea : Euskarri Sistema: Ikusi Txartelak"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "Mesedez idatzi zure mesua!"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "Txartela ez da aurkitu!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "i-MSCP - Admin : Euskarri Sistema: Ikusi Txartelak"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "Ikusi euskarri txartelak"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "Bidali erantzun mezua"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Mezuak"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "Bidali erantzuna"
@@ -2846,6 +2890,9 @@ msgstr ""
 msgid "Wrong domain Id."
 msgstr ""
 
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
 msgid "Delete domain"
 msgstr "Ezabatu domeinua"
 
@@ -2864,16 +2911,17 @@ msgstr ""
 msgid "Domain databases"
 msgstr ""
 
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone."
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "Bai, ezabatu domeinua."
 
-msgid "i-MSCP - Delete Domain"
-msgstr "i-MSCP - Ezabatu Domeinua"
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -3224,9 +3272,6 @@ msgstr "Muntatze puntua"
 
 msgid "Forward"
 msgstr "Aurrera jarraitu"
-
-msgid "Actions"
-msgstr "Akzioak"
 
 msgid "Record data"
 msgstr "Erregistro data"
@@ -4087,11 +4132,12 @@ msgstr "Saioa hasi phpMyAdmin-en"
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"Datu basea betirako ezabatua izango da. Pausu hau ezin da alderanztu. Datu "
-"basera estekatutako erabiltzaileak guztiak ezabatuko dira ez badira beste "
-"datu basera estekatuak izan. Ziur zaude %s ezabatu nahi duzula?"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "SQL erabiltzaileen mugara iritxi da!"
@@ -4179,11 +4225,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Aurrera jarraitze URL-a 'http://'-az hasi behar du"
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "Mesedez jar ezazu mezuaren gaia!"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "Baxua"
@@ -4196,6 +4248,12 @@ msgstr "Altua"
 
 msgid "Very high"
 msgstr "Oso altua"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "Akats orri pertsonalizatuak zure domeinurako"
@@ -4427,12 +4485,6 @@ msgstr "Kudeatu ezizenak"
 msgid "Real domain"
 msgstr "Benetako domeinua"
 
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
 msgid "Domain with that name already exists on the system."
 msgstr ""
 
@@ -4467,6 +4519,9 @@ msgstr "i-MSCP - Zirkularra"
 
 msgid "Circular"
 msgstr "Zirkularra"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "You are not allowed to access this interface."
 msgstr ""
@@ -4720,11 +4775,17 @@ msgstr ""
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "ispCp - Euskarri sistema - Txartel berria"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "i-mscp - Bersaltzailea : Euskarri Sistema: Ikusi Txartela"
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
@@ -4830,7 +4891,7 @@ msgstr ""
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-22 10:07+0200\n"
-"PO-Revision-Date: 2011-07-22 08:08+0000\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2764,20 +2764,11 @@ msgstr "کل"
 msgid "Up time"
 msgstr "مدت روشن بودن"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "آی اس پی سی پی - مشتری/پرسش ها و نظرات"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "تیکت های پشتیبانی"
-
-msgid "Priority"
-msgstr "اولویت"
-
-msgid "Last reply"
-msgstr "آخرین پاسخ"
-
-msgid "Delete all"
-msgstr "حذف همگی"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "تیک های گشوده"
@@ -2788,35 +2779,88 @@ msgstr "تیکت های بسته"
 msgid "From"
 msgstr "از"
 
-msgid "Support ticket deleted successfully!"
-msgstr "تیکت پشتیبانی باموفقیت پاک شد!"
+msgid "Priority"
+msgstr "اولویت"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "همه ی تیکت های پشتیبانی گشوده باموفقیت پاک شد!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "همه ی تیکت های بسته باموفقیت پاک شد!"
+msgid "Actions"
+msgstr "کنش ها"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "آی اس پی سی پی - مشتری/فعال کردن پاسخ اتوماتیک ایمیل"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "آی اس پی سی پی: سیستم پشتیبانی: دیدن تیکت"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "لطفا پیام خود را تایپ کنید!"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "تیکت یافت نشد!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "آی اس پی سی پی - مدیر: سیستم پشتیبانی: دیدن تیکت"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "دیدن تیکت پشتیبانی"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "فرستادن پاسخ پیام"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "پیام ها"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "فرستادن پاسخ"
@@ -2840,6 +2884,9 @@ msgstr ""
 msgid "Wrong domain Id."
 msgstr ""
 
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
 msgid "Delete domain"
 msgstr "حذف دامنه"
 
@@ -2858,16 +2905,17 @@ msgstr ""
 msgid "Domain databases"
 msgstr ""
 
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone."
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "بله، دامنه را پاک کن."
 
-msgid "i-MSCP - Delete Domain"
-msgstr "آی اس پی سی پی - حذف دامنه"
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -3216,9 +3264,6 @@ msgstr "نقطه ی مونت"
 
 msgid "Forward"
 msgstr "فوروارد"
-
-msgid "Actions"
-msgstr "کنش ها"
 
 msgid "Record data"
 msgstr "اطلاعات رکورد"
@@ -4079,11 +4124,12 @@ msgstr " phpMyAdmin ورود به "
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"این بانک داده برای همیشه حذف می شود. این فرآیند را نمی توان بازگرداند. همه ی"
-" کاربران مربوط به این بانک داده نیز پاک خواهند شد اگر به بانک داده ی دیگری "
-"مربوط نباشند. آیا مطمئن اید که می خواهید %s را حذف کنید؟"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "شما به حد کاربران اس کیو ال رسیده اید!"
@@ -4169,11 +4215,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "لطفا موضوع پیام را مشخص کنید!"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "کم"
@@ -4186,6 +4238,12 @@ msgstr "زیاد"
 
 msgid "Very high"
 msgstr "خیلی زیاد"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "شخصی کردن صفحه خطای دامنه شما"
@@ -4417,12 +4475,6 @@ msgstr "مدیریت دامنه الحاقی"
 msgid "Real domain"
 msgstr "دامنه واقعی"
 
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
 msgid "Domain with that name already exists on the system."
 msgstr ""
 
@@ -4455,6 +4507,9 @@ msgstr "آی اس پی سی پی - دوری"
 
 msgid "Circular"
 msgstr "دوری"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "You are not allowed to access this interface."
 msgstr ""
@@ -4706,11 +4761,17 @@ msgstr ""
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "آی اس پی سی پی - سیستم پشتیبانی - تیکت جدید"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "آی اس پی سی پی - ریسلر: سیستم پشتیبانی: دیدن تیکت"
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
@@ -4814,7 +4875,7 @@ msgstr "%1$s از %2$s MB"
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr "%1$s از <b>نامحدود</b> MB"
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."

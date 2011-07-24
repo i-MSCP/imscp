@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-22 10:07+0200\n"
-"PO-Revision-Date: 2011-07-22 08:08+0000\n"
+"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"PO-Revision-Date: 2011-07-24 08:21+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2781,20 +2781,11 @@ msgstr "Total"
 msgid "Up time"
 msgstr "Uptime"
 
-msgid "i-MSCP - Client/Questions & Comments"
-msgstr "i-MSCP - Client/Preguntes i Comentaris"
+msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "Support tickets"
-msgstr "Tiquets de suport"
-
-msgid "Priority"
-msgstr "Prioritat"
-
-msgid "Last reply"
-msgstr "Última resposta"
-
-msgid "Delete all"
-msgstr "Esborrar-los tots"
+msgid "Support Ticket System"
+msgstr ""
 
 msgid "Open tickets"
 msgstr "Tiquets oberts"
@@ -2805,35 +2796,88 @@ msgstr "Tiquets tancats"
 msgid "From"
 msgstr "De"
 
-msgid "Support ticket deleted successfully!"
-msgstr "El tiquet de suport s'ha eliminat correctament!"
+msgid "Priority"
+msgstr "Prioritat"
 
-msgid "All open support tickets deleted successfully!"
-msgstr "Tots els tiquets de suport oberts s'han eliminat correctament!"
+msgid "Last reply date"
+msgstr ""
 
-msgid "All closed support tickets deleted successfully!"
-msgstr "Tots els tiquets de suport tancats s'han eliminat correctament!"
+msgid "Actions"
+msgstr "Accions"
 
-msgid "i-MSCP - Client/Enable Mail Autoresponder"
-msgstr "i-MSCP - Client/Activar Autoresposta de correu"
+msgid "Read the ticket"
+msgstr ""
 
-msgid "i-MSCP - Client: Support System: View Ticket"
-msgstr "i-MSCP - Client: Sistema de Suport: Veure Tiquets"
+msgid "Delete the ticket"
+msgstr ""
 
-msgid "Please type your message!"
-msgstr "Si us plau escriviu el vostre missatge!"
+msgid "Reopen"
+msgstr ""
 
-msgid "Ticket not found!"
-msgstr "Tiquet no trobat!"
+msgid "Reopen the ticket"
+msgstr ""
 
-msgid "i-MSCP - Admin: Support System: View Ticket"
-msgstr "i-MSCP - Admin : Sistema de suport: Veure Tiquets"
+msgid "Delete all tickets"
+msgstr ""
 
-msgid "View support ticket"
-msgstr "Veure tiquet de suport"
+#, php-format
+msgid "Are you sure you want to delete the '%s' ticket?"
+msgstr ""
 
-msgid "Send message reply"
-msgstr "Enviar missatge de resposta"
+msgid "Are you sure you want to delete all tickets?"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+#, php-format
+msgid "Ticket with Id: '%d' no found."
+msgstr ""
+
+msgid "Ticket successfully deleted."
+msgstr ""
+
+msgid "All open tickets were successfully deleted."
+msgstr ""
+
+msgid "All closed tickets were successfully deleted."
+msgstr ""
+
+msgid "Unknown action requested."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close the ticket"
+msgstr ""
+
+msgid "Please type your message."
+msgstr ""
+
+msgid "Ticket not found."
+msgstr ""
+
+msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "View Support Ticket"
+msgstr ""
+
+msgid "Ticket information"
+msgstr ""
+
+msgid "Messages"
+msgstr "Missatges"
+
+msgid "Send new reply"
+msgstr ""
 
 msgid "Send reply"
 msgstr "Enviar resposta"
@@ -2857,6 +2901,9 @@ msgstr ""
 msgid "Wrong domain Id."
 msgstr ""
 
+msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
 msgid "Delete domain"
 msgstr "Esborrar domini"
 
@@ -2875,16 +2922,17 @@ msgstr ""
 msgid "Domain databases"
 msgstr ""
 
+#, php-format
 msgid ""
-"Do you really want to delete the entire domain? This operation cannot be "
-"undone."
+"Do you really want to delete the entire <strong>'%s'</strong> domain? This "
+"operation cannot be undone."
 msgstr ""
 
 msgid "Yes, delete the domain."
 msgstr "Si, esborra el domini."
 
-msgid "i-MSCP - Delete Domain"
-msgstr "i-MSCP - Esborrar domini"
+msgid "Domain account successfully scheduled for deletion."
+msgstr ""
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -3234,9 +3282,6 @@ msgstr "Punt de muntatge"
 
 msgid "Forward"
 msgstr "Reenviar"
-
-msgid "Actions"
-msgstr "Accions"
 
 msgid "Record data"
 msgstr "Dades de l'entrada"
@@ -4114,12 +4159,12 @@ msgstr "Entrar a phpMyAdmin"
 msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
-"another database. Are you sure you want to delete %s?"
+"another database. Are you sure you want to delete the '%s' database?"
 msgstr ""
-"Aquesta base de dades s'esborrarà de forma permanent. Aquest procés no es "
-"pot desfer. Tots els usuaris associats a aquesta base de dades també "
-"s'esborraran a no se que tinguin accés a una altra base de dades. Esteu "
-"segurs que voleu esborrar %s?"
+
+#, php-format
+msgid "Are you sure you want delete the '%s' SQL user?"
+msgstr ""
 
 msgid "SQL users limit reached!"
 msgstr "S'ha arribat al límit d'usuaris SQL!"
@@ -4206,11 +4251,17 @@ msgstr ""
 msgid "A Forward URL has to start with 'http://'"
 msgstr ""
 
-msgid "i-MSCP - Support System - New ticket"
+msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
-msgid "Please specify message subject!"
-msgstr "Si us plau especifiqueu l'assumpte del missatge"
+msgid "Are you sure you want to delete all closed tickets?"
+msgstr ""
+
+msgid "Please specify message subject."
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / New Ticket"
+msgstr ""
 
 msgid "Low"
 msgstr "Baixa"
@@ -4223,6 +4274,12 @@ msgstr "Alta"
 
 msgid "Very high"
 msgstr "Molt alta"
+
+msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Customize error pages for your domain"
 msgstr "Personalitzar pàgines d'error pel vostre domini"
@@ -4454,12 +4511,6 @@ msgstr "Administrar àlies"
 msgid "Real domain"
 msgstr "Domini real"
 
-msgid "Previous"
-msgstr ""
-
-msgid "Next"
-msgstr ""
-
 msgid "Domain with that name already exists on the system."
 msgstr ""
 
@@ -4492,6 +4543,9 @@ msgstr "i-MSCP - Circular"
 
 msgid "Circular"
 msgstr "Circular"
+
+msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
 
 msgid "You are not allowed to access this interface."
 msgstr ""
@@ -4744,11 +4798,17 @@ msgstr ""
 msgid "Are you sure to install this package from the webdepot?"
 msgstr ""
 
-msgid "i-MSCP - Support system - New ticket"
-msgstr "isCP - Sistema de suport - Nou tiquet"
+msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
+msgstr ""
 
-msgid "i-MSCP - Reseller: Support System: View Ticket"
-msgstr "i-MSCP-Distribuïdor : Sistema de Suport: Veure Tiquets"
+msgid "i-MSCP - Reseller / Support Ticket System / New Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
 
 msgid "Invalide domain expiration date."
 msgstr ""
@@ -4854,7 +4914,7 @@ msgstr "%1$s de %2$s MB"
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr "%1$s de <b>il·limitat</b> MB"
 
-msgid "Domain account scheduled for creation."
+msgid "Domain account successfully scheduled for creation."
 msgstr ""
 
 msgid "User data were succefully updated."
