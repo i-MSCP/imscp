@@ -55,6 +55,7 @@
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
+            <!-- BDP: tickets_list -->
             <table>
                 <tr>
                     <th colspan="2">{TR_TICKET_INFO}</th>
@@ -115,6 +116,7 @@
                 <input name="subject" type="hidden" value="{TICKET_SUBJECT_VAL}" />
                 <input name="urgency" type="hidden" value="{TICKET_URGENCY_ID_VAL}" />
             </form>
+            <!-- EDP: tickets_list -->
         </div>
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}

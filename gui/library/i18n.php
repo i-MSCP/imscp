@@ -190,7 +190,7 @@ function i18n_getAvailableLanguages()
 }
 
 /**
- * Return name of domain being used.
+ * Returns name of domain being used.
  *
  * Note: See #130 for further explaination.
  *
@@ -243,11 +243,11 @@ function i18n_domainsGarbageCollector($domainDirectory, $skipDomain)
 	$domainsFiles = glob($domainDirectory . '/*_*_*.mo');
 
 	foreach($domainsFiles as $file) {
-		if($file !=  $currentDomainFilepath) {
+		if($file != $currentDomainFilepath) {
 			if(@unlink($file)) {
 				write_log("i18n: Removed $file machine object production file.", E_USER_NOTICE);
 			} else {
-				write_log("i18n: Unable to removed $file machine object production file.", E_USER_ERROR);
+				write_log("i18n: Unable to remove $file machine object production file.", E_USER_ERROR);
 			}
 		}
 	}

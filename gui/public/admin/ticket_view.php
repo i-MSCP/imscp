@@ -53,7 +53,7 @@ if (!hasTicketSystem()) {
     redirectTo('index.php');
 }
 
-if (isset($_GET['ticket_id'])) {
+if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
     $userId = $_SESSION['user_id'];
     $ticketId = (int) $_GET['ticket_id'];
 
@@ -88,7 +88,8 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
                           'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ticket_view.tpl',
                           'page_message' => 'page',
-                          'tickets_item' => 'page'));
+                          'tickets_list' => 'page',
+                          'tickets_item' => 'tickets_list'));
 
 $tpl->assign(array(
                   'THEME_CHARSET' => tr('encoding'),

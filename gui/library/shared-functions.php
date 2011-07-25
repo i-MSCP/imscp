@@ -952,7 +952,9 @@ function utils_uploadFile($inputFieldName, $destPath)
 {
     $inputFieldName = (string) $inputFieldName;
 
-    if ($_FILES[$inputFieldName]['error'] == UPLOAD_ERR_OK) {
+    if (isset($_FILES[$inputFieldName]) &&
+        $_FILES[$inputFieldName]['error'] == UPLOAD_ERR_OK
+    ) {
 		$tmpFilePath = $_FILES[$inputFieldName]['tmp_name'];
 
 		if (!is_readable($tmpFilePath)) {
@@ -970,8 +972,6 @@ function utils_uploadFile($inputFieldName, $destPath)
 			set_page_message(tr('Unable to move file.'), 'error');
 			return false;
 		}
-
-        return $destPath;
     } else {
 		switch ($_FILES[$inputFieldName]['error']) {
 			case UPLOAD_ERR_INI_SIZE:
@@ -994,6 +994,8 @@ function utils_uploadFile($inputFieldName, $destPath)
 
 		return false;
 	}
+
+    return $destPath;
 }
 
 /**
