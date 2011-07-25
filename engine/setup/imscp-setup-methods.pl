@@ -3456,8 +3456,8 @@ sub sslDialog{
 		if( Modules::openssl->new()->{cert_selfsigned}){
 			Modules::openssl->new()->{intermediate_cert_path} = '';
 			ask_certificate_key_path();
-			ask_certificate_path();
 			ask_intermediate_certificate_path();
+			ask_certificate_path();
 		}
 		$rs = Modules::openssl->new()->ssl_export_all();
 		return $rs if $rs;
