@@ -58,7 +58,7 @@ sub install{
 
 	my $self		= shift;
 	my $rs			= Servers::po::dovecot::installer->new()->install();
-	$self->restart();
+	$rs |= $self->restart();
 
 	debug((caller(0))[3].': Ending...');
 	$rs;
@@ -73,7 +73,7 @@ sub restart{
 	use iMSCP::Execute;
 
 	# Reload config
-	$rs = execute("$main::imscpConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
+	$rs = execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
 	return $rs if $rs;

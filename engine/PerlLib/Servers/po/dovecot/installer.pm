@@ -117,8 +117,11 @@ sub setupConf{
 		GUI_CERT_DIR		=> $main::imscpConfig{GUI_CERT_DIR},
 		HOST_NAME			=> $main::imscpConfig{SERVER_HOSTNAME},
 		DOVECOT_SSL			=> $main::imscpConfig{SSL_ENABLED} ? '' : '#',
+		MAIL_USER			=> $main::imscpConfig{'MTA_MAILBOX_UID_NAME'},
+		MAIL_GROUP			=> $main::imscpConfig{'MTA_MAILBOX_GID_NAME'},
 		vmailUID			=> scalar getpwnam($main::imscpConfig{'MTA_MAILBOX_UID_NAME'}),
-		mailGID				=> scalar getgrnam($main::imscpConfig{'MTA_MAILBOX_GID_NAME'})
+		mailGID				=> scalar getgrnam($main::imscpConfig{'MTA_MAILBOX_GID_NAME'}),
+		DOVECOT_CONF_DIR	=> $self::dovecotConfig{DOVECOT_CONF_DIR}
 	};
 
 	for ((
