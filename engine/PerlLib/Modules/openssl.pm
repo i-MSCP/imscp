@@ -245,10 +245,10 @@ sub ssl_export_all{
 		$rs = $self->ssl_export_key();
 		return $rs if $rs;
 
-		$rs = $self->ssl_export_intermediate_cert();
+		$rs = $self->ssl_export_cert();
 		return $rs if $rs;
 
-		$rs = $self->ssl_export_cert();
+		$rs = $self->ssl_export_intermediate_cert();
 		return $rs if $rs;
 
 	}
