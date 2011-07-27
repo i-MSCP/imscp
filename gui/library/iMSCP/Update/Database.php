@@ -17,15 +17,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Update
+ * @category	iMSCP
+ * @package	 iMSCP_Update
  * @subpackage  Database
  * @copyright   2010-2011 by i-MSCP team
- * @author      Daniel Andreca <sci2tech@gmail.com>
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @author	  Daniel Andreca <sci2tech@gmail.com>
+ * @author	  Laurent Declercq <l.declercq@nuxwin.com>
+ * @version	 SVN: $Id$
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license	 http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Update */
@@ -277,15 +277,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 			BEGIN
 				if not exists(
 					SELECT
-					    *
+						*
 					FROM
-					    information_schema.COLUMNS
+						information_schema.COLUMNS
 					WHERE
-					    column_name='$column'
+						column_name='$column'
 					AND
-					    table_name='$table'
+						table_name='$table'
 					AND
-					    table_schema='$dbName'
+						table_schema='$dbName'
 				) THEN
 					$query;
 				END IF;
@@ -396,31 +396,31 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd[] = self::secureAddColumnTable(
 			'domain', 'domain_software_allowed',
 			"
-                ALTER TABLE
-                    `domain`
-                ADD
-                    `domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
-            "
+				ALTER TABLE
+					`domain`
+				ADD
+					`domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
+			"
 		);
 
 		$sqlUpd[] = self::secureAddColumnTable(
 			'reseller_props', 'software_allowed',
 			"
-                ALTER TABLE
-                    `reseller_props`
-                ADD
-                    `software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
-            "
+				ALTER TABLE
+					`reseller_props`
+				ADD
+					`software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
+			"
 		);
 
 		$sqlUpd[] = self::secureAddColumnTable(
 			'reseller_props', 'softwaredepot_allowed',
 			"
-                ALTER TABLE
-                    `reseller_props`
-                ADD
-                    `softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'
-            "
+				ALTER TABLE
+					`reseller_props`
+				ADD
+					`softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'
+			"
 		);
 
 		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
@@ -528,11 +528,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'reseller_props',
 			'websoftwaredepot_allowed',
 			"
-                ALTER IGNORE TABLE
-                    `reseller_props`
-                ADD
-                    `websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
-            "
+				ALTER IGNORE TABLE
+					`reseller_props`
+				ADD
+					`websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
+			"
 		);
 
 		return $sqlUpd;
@@ -611,7 +611,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					SET
 						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['rawpasswd'])) . "
 					WHERE
-					    `userid` = '" . $stmt->fields['userid'] . "'
+						`userid` = '" . $stmt->fields['userid'] . "'
 					;
 				";
 
@@ -645,73 +645,73 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return $sqlUpd;
 	}
 
-    /**
-     * Adds unique index on user_gui_props.user_id column.
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @since r4592
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_56()
-    {
-        $sqlUpd = array();
+	/**
+	 * Adds unique index on user_gui_props.user_id column.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4592
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_56()
+	{
+		$sqlUpd = array();
 
-        $sqlUpd[] = "
-            DROP PROCEDURE IF EXISTS schema_change;
-                CREATE PROCEDURE schema_change()
-                BEGIN
-                    IF EXISTS (
-		                SELECT
-			                CONSTRAINT_NAME
-		                FROM
-			                `information_schema`.`KEY_COLUMN_USAGE`
-		                WHERE
-			                TABLE_NAME = 'user_gui_props'
-			            AND
-			                CONSTRAINT_NAME = 'user_id'
-	                ) THEN
-		                ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
-                    END IF;
-                END;
-                CALL schema_change();
-            DROP PROCEDURE IF EXITST schema_change;
-        ";
+		$sqlUpd[] = "
+			DROP PROCEDURE IF EXISTS schema_change;
+				CREATE PROCEDURE schema_change()
+				BEGIN
+					IF EXISTS (
+						SELECT
+							CONSTRAINT_NAME
+						FROM
+							`information_schema`.`KEY_COLUMN_USAGE`
+						WHERE
+							TABLE_NAME = 'user_gui_props'
+						AND
+							CONSTRAINT_NAME = 'user_id'
+					) THEN
+						ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
+					END IF;
+				END;
+				CALL schema_change();
+			DROP PROCEDURE IF EXITST schema_change;
+		";
 
-        $sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
+		$sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
 
-        return $sqlUpd;
-    }
+		return $sqlUpd;
+	}
 
-    /**
-     * Drop useless column in user_gui_props table.
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @since r4644
-     * @return string SQL Statement
-     */
-    protected function _databaseUpdate_59()
-    {
-        return "
-            DROP PROCEDURE IF EXISTS schema_change;
-                CREATE PROCEDURE schema_change()
-                BEGIN
-                    IF EXISTS (
-		                SELECT
-			                COLUMN_NAME
-		                FROM
-			                information_schema.COLUMNS
-		                WHERE
-			                TABLE_NAME = 'user_gui_props'
-		                AND
-			                COLUMN_NAME = 'id'
-	                ) THEN
-		                ALTER TABLE `user_gui_props` DROP column `id`;
-                    END IF;
-                END;
-                CALL schema_change();
-            DROP PROCEDURE IF EXITST schema_change;
-        ";
-    }
+	/**
+	 * Drop useless column in user_gui_props table.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4644
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_59()
+	{
+		return "
+			DROP PROCEDURE IF EXISTS schema_change;
+				CREATE PROCEDURE schema_change()
+				BEGIN
+					IF EXISTS (
+						SELECT
+							COLUMN_NAME
+						FROM
+							information_schema.COLUMNS
+						WHERE
+							TABLE_NAME = 'user_gui_props'
+						AND
+							COLUMN_NAME = 'id'
+					) THEN
+						ALTER TABLE `user_gui_props` DROP column `id`;
+					END IF;
+				END;
+				CALL schema_change();
+			DROP PROCEDURE IF EXITST schema_change;
+		";
+	}
 
 	/**
 	 * Convert tables to InnoDB.
@@ -775,31 +775,31 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// third step: Update users language property
 
-        $languagesMap = array(
-            'Arabic' => 'ar_AE', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
-            'Bulgarian' => 'bg_BG', 'Catalan' => 'ca_ES', 'ChineseChina' => 'zh_CN',
-            'ChineseHongKong' => 'zh_HK', 'ChineseTaiwan' => 'zh_TW', 'Czech' => 'cs_CZ',
-            'Danish' => 'da_DK', 'Dutch' => 'nl_NL', 'EnglishBritain' => 'en_GB',
-            'FarsiIran' => 'fa_IR', 'Finnish' => 'fi_FI', 'FrenchFrance' => 'fr_FR',
-            'Galego' => 'gl_ES', 'GermanGermany' => 'de_DE', 'GreekGreece' => 'el_GR',
-            'Hungarian' => 'hu_HU', 'ItalianItaly' => 'it_IT', 'Japanese' => 'ja_JP',
-            'Lithuanian' => 'lt_LT', 'NorwegianNorway' => 'nb_NO', 'Polish' => 'pl_PL',
-            'PortugueseBrazil' => 'pt_BR', 'Portuguese' => 'pt_PT', 'Romanian' => 'ro_RO',
-            'Russian' => 'ru_RU', 'Slovak' => 'sk_SK', 'SpanishArgentina' => 'es_AR',
-            'SpanishSpain' => 'es_ES', 'Swedish' => 'sv_SE', 'Thai' => 'th_TH',
-            'Turkish' => 'tr_TR', 'Ukrainian' => 'uk_UA');
+		$languagesMap = array(
+			'Arabic' => 'ar_AE', 'Azerbaijani' => 'az_AZ', 'BasqueSpain' => 'eu_ES',
+			'Bulgarian' => 'bg_BG', 'Catalan' => 'ca_ES', 'ChineseChina' => 'zh_CN',
+			'ChineseHongKong' => 'zh_HK', 'ChineseTaiwan' => 'zh_TW', 'Czech' => 'cs_CZ',
+			'Danish' => 'da_DK', 'Dutch' => 'nl_NL', 'EnglishBritain' => 'en_GB',
+			'FarsiIran' => 'fa_IR', 'Finnish' => 'fi_FI', 'FrenchFrance' => 'fr_FR',
+			'Galego' => 'gl_ES', 'GermanGermany' => 'de_DE', 'GreekGreece' => 'el_GR',
+			'Hungarian' => 'hu_HU', 'ItalianItaly' => 'it_IT', 'Japanese' => 'ja_JP',
+			'Lithuanian' => 'lt_LT', 'NorwegianNorway' => 'nb_NO', 'Polish' => 'pl_PL',
+			'PortugueseBrazil' => 'pt_BR', 'Portuguese' => 'pt_PT', 'Romanian' => 'ro_RO',
+			'Russian' => 'ru_RU', 'Slovak' => 'sk_SK', 'SpanishArgentina' => 'es_AR',
+			'SpanishSpain' => 'es_ES', 'Swedish' => 'sv_SE', 'Thai' => 'th_TH',
+			'Turkish' => 'tr_TR', 'Ukrainian' => 'uk_UA');
 
 		// Updates language property of each users by using new naming convention
-        // Thanks to Marc Pujol for idea
-        foreach($languagesMap as $language => $locale) {
-            $sqlUpd[] = "
-                UPDATE
-                    `user_gui_props`
-                SET
-                    `lang` = '$locale'
-                WHERE
-                    `lang` = 'lang_{$language}'";
-        }
+		// Thanks to Marc Pujol for idea
+		foreach($languagesMap as $language => $locale) {
+			$sqlUpd[] = "
+				UPDATE
+					`user_gui_props`
+				SET
+					`lang` = '$locale'
+				WHERE
+					`lang` = 'lang_{$language}'";
+		}
 
 		return $sqlUpd;
 	}
@@ -812,7 +812,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_68()
-    {
+	{
 		$sqlUpd = array();
 
 		/** @var $db iMSCP_Database */
@@ -848,59 +848,69 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_69()
-    {
+	{
 		return array(
-            "ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` INT( 10 ) UNSIGNED NOT NULL",
-            "ALTER TABLE `user_gui_props` CHANGE `layout` `layout`
-                VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
-            "ALTER TABLE `user_gui_props` CHANGE `logo` `logo`
-                VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''",
-            "ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
-                VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
-            "UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
+			"ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` INT( 10 ) UNSIGNED NOT NULL",
+			"ALTER TABLE `user_gui_props` CHANGE `layout` `layout`
+				VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
+			"ALTER TABLE `user_gui_props` CHANGE `logo` `logo`
+				VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT ''",
+			"ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
+				VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
+			"UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
 	}
 
-    /**
-     * Deletes possible orphan items.
-     *
-     * See #145 on i-MSCP issue tracker for more information.
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @since r4961
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_70()
-    {
-        $sqlUpd = array();
+	/**
+	 * Deletes possible orphan items.
+	 *
+	 * See #145 on i-MSCP issue tracker for more information.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4961
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_70()
+	{
+		$sqlUpd = array();
 
-        $tablesToForeignKey = array(
-            'email_tpls' => 'owner_id', 'hosting_plans' => 'reseller_id',
-            'orders' => 'user_id', 'orders_settings' => 'user_id',
-            'reseller_props' => 'reseller_id', 'tickets' => 'ticket_to',
-            'tickets' => 'ticket_from', 'user_gui_props' => 'user_id',
-            'web_software' => 'reseller_id');
+		$tablesToForeignKey = array(
+			'email_tpls' => 'owner_id', 'hosting_plans' => 'reseller_id',
+			'orders' => 'user_id', 'orders_settings' => 'user_id',
+			'reseller_props' => 'reseller_id', 'tickets' => 'ticket_to',
+			'tickets' => 'ticket_from', 'user_gui_props' => 'user_id',
+			'web_software' => 'reseller_id');
 
-        $stmt = execute_query('SELECT `admin_id` FROM `admin`');
-        $usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
+		$stmt = execute_query('SELECT `admin_id` FROM `admin`');
+		$usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
 
-        foreach ($tablesToForeignKey as $table => $foreignKey) {
-            $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
-        }
+		foreach ($tablesToForeignKey as $table => $foreignKey) {
+			$sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
+		}
 
-        return $sqlUpd;
-    }
+		return $sqlUpd;
+	}
 
-    /**
-     * Changes log table schema to allow storage of large messages.
-     *
-     * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @since r5002
-     * @return string SQL statement to be executed
-     */
-    protected function _databaseUpdate_71()
-    {
-        return '
-            ALTER TABLE `log` CHANGE `log_message` `log_message`
-            TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL';
-    }
+	/**
+	 * Changes log table schema to allow storage of large messages.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r5002
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_71()
+	{
+		return '
+			ALTER TABLE `log` CHANGE `log_message` `log_message`
+			TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL';
+	}
+
+	/**
+	 * Changes log table schema to allow storage of large messages.
+	 *
+	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_72() {
+		return 'ALTER IGNORE TABLE `web_software_options` ADD UNIQUE (`use_webdepot`)';
+	}
 }
