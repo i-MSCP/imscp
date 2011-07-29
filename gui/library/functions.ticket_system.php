@@ -38,6 +38,7 @@
  * Creates a ticket and informs the recipient.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $userId User unique identifier
  * @param int $adminId Creator unique identifier
  * @param int $urgency The ticket's urgency
@@ -46,9 +47,10 @@
  * @param int $userLevel User's level (client = 1; reseller = 2)
  * @return bool TRUE on success, FALSE otherwise
  */
-function createTicket($userId, $adminId, $urgency, $subject, $message, $userLevel) {
+function createTicket($userId, $adminId, $urgency, $subject, $message, $userLevel)
+{
     if ($userLevel < 1 || $userLevel > 2) {
-        set_page_message(tr("Wrong user level provided."));
+        set_page_message(tr('Wrong user level provided.'), 'error');
         return false;
     }
 
@@ -82,9 +84,11 @@ function createTicket($userId, $adminId, $urgency, $subject, $message, $userLeve
  * Gets the content of the selected ticket and generates its output.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $ticketId Id of the ticket to display
  * @param int $userId Id of the user
+ * @return bool TRUE if ticket is found, FALSE otherwise
  */
 function showTicketContent($tpl, $ticketId, $userId)
 {
@@ -104,44 +108,48 @@ function showTicketContent($tpl, $ticketId, $userId)
     ";
     $stmt = exec_query($query, array($ticketId, $userId, $userId));
 
-    if (!$stmt->recordCount()) {
+    if ($stmt->recordCount() == 0) {
         $tpl->assign('TICKETS_LIST', '');
-        set_page_message(tr('Ticket not found.'));
-    } else {
-        $ticketUrgency = $stmt->fields['ticket_urgency'];
-        $ticketSubject = $stmt->fields['ticket_subject'];
-        $ticketStatus = $stmt->fields['ticket_status'];
-
-        if ($ticketStatus == 0) {
-            $trAction = tr('Open ticket');
-            $action = 'open';
-        } else {
-            $trAction = tr('Close ticket');
-            $action = 'close';
-        }
-
-        $from = _getTicketSender($ticketId);
-
-        $tpl->assign(array(
-                          'TR_TICKET_ACTION' => $trAction,
-                          'TICKET_ACTION_VAL' => $action,
-                          'TICKET_DATE_VAL' => date($cfg->DATE_FORMAT, $stmt->fields['ticket_date']),
-                          'TICKET_SUBJECT_VAL' => tohtml($ticketSubject),
-                          'TICKET_CONTENT_VAL' => nl2br(tohtml($stmt->fields['ticket_message'])),
-                          'TICKET_ID_VAL' => $stmt->fields['ticket_id'],
-                          'TICKET_URGENCY_VAL' => getTicketUrgency($ticketUrgency),
-                          'TICKET_URGENCY_ID_VAL' => $ticketUrgency,
-                          'TICKET_FROM_VAL' => tohtml($from)));
-
-        $tpl->parse('TICKETS_ITEM', 'tickets_item');
-        _showTicketReplies($tpl, $ticketId);
+        set_page_message(tr("Ticket with Id '%d' was not found.", $ticketId), 'error');
+        return false;
     }
+
+    $ticketUrgency = $stmt->fields['ticket_urgency'];
+    $ticketSubject = $stmt->fields['ticket_subject'];
+    $ticketStatus = $stmt->fields['ticket_status'];
+
+    if ($ticketStatus == 0) {
+        $trAction = tr('Open ticket');
+        $action = 'open';
+    } else {
+        $trAction = tr('Close ticket');
+        $action = 'close';
+    }
+
+    $from = _getTicketSender($ticketId);
+
+    $tpl->assign(array(
+                      'TR_TICKET_ACTION' => $trAction,
+                      'TICKET_ACTION_VAL' => $action,
+                      'TICKET_DATE_VAL' => date($cfg->DATE_FORMAT, $stmt->fields['ticket_date']),
+                      'TICKET_SUBJECT_VAL' => tohtml($ticketSubject),
+                      'TICKET_CONTENT_VAL' => nl2br(tohtml($stmt->fields['ticket_message'])),
+                      'TICKET_ID_VAL' => $stmt->fields['ticket_id'],
+                      'TICKET_URGENCY_VAL' => getTicketUrgency($ticketUrgency),
+                      'TICKET_URGENCY_ID_VAL' => $ticketUrgency,
+                      'TICKET_FROM_VAL' => tohtml($from)));
+
+    $tpl->parse('TICKETS_ITEM', 'tickets_item');
+    _showTicketReplies($tpl, $ticketId);
+
+    return true;
 }
 
 /**
  * Updates a ticket with a new answer and informs the recipient.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId id of the ticket's parent ticket
  * @param int $userId User unique identifier
  * @param int $urgency The parent ticket's urgency
@@ -151,10 +159,9 @@ function showTicketContent($tpl, $ticketId, $userId)
  * @param int $userLevel The user's level (1 = client; 2 = reseller; 3 = admin)
  * @return bool TRUE on success, FALSE otherwise
  */
-function updateTicket($ticketId, $userId, $urgency, $subject, $message,
-    $ticketLevel, $userLevel)
+function updateTicket($ticketId, $userId, $urgency, $subject, $message, $ticketLevel,
+    $userLevel)
 {
-
     /** @var $db iMSCP_Database */
     $db = iMSCP_Registry::get('db');
 
@@ -162,7 +169,6 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message,
     $subject = clean_input($subject);
     $userMessage = clean_input($message);
 
-    //$query = "SELECT `ticket_from`, `ticket_to` FROM `tickets` WHERE `ticket_id` = ?";
     $query = "
         SELECT
             `ticket_from`, `ticket_to`, `ticket_status`
@@ -204,7 +210,6 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message,
             exec_query($query, array($ticketFrom, $ticketTo, null, $ticketId, $urgency,
                                     $ticketDate, $subject, $userMessage));
 
-            //$ticketStatus = getTicketStatus($ticketId);
             $ticketStatus = $stmt->fields['ticket_status'];
 
             if ($userLevel != 2) {
@@ -247,7 +252,9 @@ function updateTicket($ticketId, $userId, $urgency, $subject, $message,
 /**
  * Deletes a ticket.
  *
- * @param int $ticketId Ticket ID
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @param int $ticketId Ticket unique identifier
  * @return void
  */
 function deleteTicket($ticketId)
@@ -259,27 +266,34 @@ function deleteTicket($ticketId)
 /**
  * Deletes all open/closed tickets that are belong to an user.
  *
- * @param string $status Status of the action 'open' or 'closed' allowed
- * @param int $user_id The user's ID
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @param string $status Ticket status ('open' or 'closed')
+ * @param int $userId The user's ID
  * @return void
  */
-function deleteTickets($status, $user_id)
+function deleteTickets($status, $userId)
 {
-    $query = "DELETE FROM `tickets` WHERE (`ticket_from` = ? OR `ticket_to` = ?) AND";
+    $userId = (int) $userId;
+    $condition = ($status == 'open') ? "`ticket_status` != 0" : '`ticket_status` = 0';
 
-    if ($status == 'open') {
-        $query .= ' `ticket_status` != 0';
-    } else {
-        $query .= ' `ticket_status` = 0';
-    }
+    $query = "
+        DELETE FROM
+            `tickets`
+        WHERE
+            (`ticket_from` = ? OR `ticket_to` = ?)
+        AND
+            {$condition}
+    ";
 
-    exec_query($query, array($user_id, $user_id));
+    exec_query($query, array($userId, $userId));
 }
 
 /**
  * Generates a ticket list.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $userId User unique identifier
  * @param int $start First ticket to show (pagination)
@@ -399,6 +413,7 @@ function generateTicketList($tpl, $userId, $start, $count, $userLevel, $status)
  * Closes the given ticket.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket id
  * @return bool TRUE on success, FALSE otherwise
  */
@@ -418,6 +433,7 @@ function closeTicket($ticketId)
  * Reopens the given ticket.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket id
  * @return bool TRUE on success, FALSE otherwise
  */
@@ -444,6 +460,7 @@ function reopenTicket($ticketId)
  *    4 - answered by client
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket unique identifier
  * @return int ticket status identifier
  */
@@ -478,6 +495,7 @@ function getTicketStatus($ticketId)
  *    4 - answered by client
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket unique identifier
  * @param int $ticketStatus New status identifier
  * @return bool TRUE if ticket status was changed, FALSE otherwise (eg. if ticket was
@@ -512,6 +530,8 @@ function changeTicketStatus($ticketId, $ticketStatus)
 /**
  * Reads the user's level from ticket info.
  *
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketId Ticket id
  * @return int User's level (1 = user, 2 = super) or FALSE if ticket is not found
  */
@@ -533,6 +553,7 @@ function getUserLevel($ticketId)
  * Returns translated ticket priority.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $ticketUrgency Values from 1 to 4
  * @return string Translated priority string
  */
@@ -555,6 +576,7 @@ function getTicketUrgency($ticketUrgency)
  * Returns ticket'ssender of a ticket answer.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby showTicketContent
  * @usedby generateTicketList
@@ -599,6 +621,7 @@ function _getTicketSender($ticketId)
  * Returns the last modification date of a ticket.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby generateTicketList
  * @param int $ticketId Ticket to get last date for
@@ -638,6 +661,7 @@ function _ticketGetLastDate($ticketId)
  * all his customers have not access to it too.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param int $userId OPTIONAL Id of the user created the current user or null if admin
  * @return bool TRUE if support ticket system is available, FALSE otherwise
  * @Todo: Allows to provides support ticket system as hosting plan option for clients
@@ -665,6 +689,7 @@ function hasTicketSystem($userId = null)
  * Gets the answers of the selected ticket and generates its output.
  *
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby showTicketContent()
  * @param iMSCP_pTemplate $tpl The Template object
@@ -687,7 +712,7 @@ function _showTicketReplies($tpl, $ticketId)
     ";
     $stmt = exec_query($query, $ticketId);
 
-    if ($stmt->recordCount()) {
+    if ($stmt->recordCount() != 0) {
         while (!$stmt->EOF) {
             $ticketId = $stmt->fields['ticket_id'];
             $ticketDate = $stmt->fields['ticket_date'];
@@ -706,6 +731,8 @@ function _showTicketReplies($tpl, $ticketId)
 /**
  * Informs an user about a ticket creation/update and writes a line to the log.
  *
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @usedby updateTicket()
  * @usedby createTicket()

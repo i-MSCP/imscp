@@ -52,7 +52,7 @@ function generatePage($tpl)
 
 	$default_language = $cfg->USER_INITIAL_LANG;
 	$availableLanguages = i18n_getAvailableLanguages();
-	$perPage = 10;
+	$ItemPerPage = 10;
 
 	if (!empty($_GET['psi'])) {
 		$page = intval($_GET['psi']);
@@ -60,14 +60,14 @@ function generatePage($tpl)
 		$page = 1;
 	}
 
-	$pages = ceil(count($availableLanguages) / $perPage);
+	$pages = ceil(count($availableLanguages) / $ItemPerPage);
 
 	if ($page > $pages) {
 		$page = $pages;
 	}
 
-	$start = ceil(($page - 1) * $perPage);
-	$availableLanguages = array_slice($availableLanguages, $start, $perPage);
+	$start = ceil(($page - 1) * $ItemPerPage);
+	$availableLanguages = array_slice($availableLanguages, $start, $ItemPerPage);
 
 	if ($page < $pages) {
 		$tpl->assign('NEXT_PSI', $page + 1);

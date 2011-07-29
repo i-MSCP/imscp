@@ -1899,7 +1899,7 @@ sub restart_services {
 		['CMD_IMSCPN',			'restart',	1],
 		['CMD_IMSCPD',			'restart',	1],
 		['CMD_NAMED',			'reload',	1],
-		['CMD_HTTPD',			'reload',	1],
+		['CMD_HTTPD',			'restart',	1],
 		['CMD_FTPD',			'restart',	1],			# must be restarted
 		['CMD_CLAMD',			'reload',	1],
 		['CMD_POSTGREY',		'reload',	1],
@@ -3334,8 +3334,8 @@ sub sslDialog{
 		if( Modules::openssl->new()->{cert_selfsigned}){
 			Modules::openssl->new()->{intermediate_cert_path} = '';
 			ask_certificate_key_path();
-			ask_certificate_path();
 			ask_intermediate_certificate_path();
+			ask_certificate_path();
 		}
 		$rs = Modules::openssl->new()->ssl_export_all();
 		return $rs if $rs;

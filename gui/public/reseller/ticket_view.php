@@ -88,9 +88,10 @@ if (isset($_GET['ticket_id'])) {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
                           'page' => $cfg->RESELLER_TEMPLATE_PATH . '/ticket_view.tpl',
-                         'logged_from' => 'page',
+                          'logged_from' => 'page',
                           'page_message' => 'page',
-                          'tickets_item' => 'page'));
+                          'tickets_list' => 'page',
+                          'tickets_item' => 'tickets_list'));
 
 $tpl->assign(array(
                   'THEME_CHARSET' => tr('encoding'),
