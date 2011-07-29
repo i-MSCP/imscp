@@ -32,17 +32,26 @@
 auth_mechanisms = plain login digest-md5
 base_dir = /var/run/dovecot/
 
-#dict {
-#	quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
-#}
+dict {
+	quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
+}
 
 disable_plaintext_auth = no
+
 mail_location = maildir:%h
+
 mail_privileged_group = mail
 
-namespace private {
+namespace {
 	inbox = yes
+	location =
 	prefix = INBOX.
+	type = private
+}
+
+passdb {
+	args = /etc/dovecot/dovecot-sql.conf
+	driver = sql
 }
 
 plugin {
@@ -52,55 +61,47 @@ plugin {
 }
 
 protocols = imap pop3
-{DOVECOT_SSL}protocols = imap pop3 imaps pop3s
 
-auth default {
+service auth {
 
-	passdb sql {
-		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
+	unix_listener /var/spool/postfix/private/auth {
+		group = postfix
+		mode = 0660
+		user = postfix
 	}
 
-	userdb prefetch {
-	}
-
-	userdb sql {
-		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
-	}
-
-	socket listen {
-		client {
-			path = /var/spool/postfix/private/auth
-			mode = 0660
-			user = postfix
-			group = postfix
-		}
-
-		master {
-			path = /var/run/dovecot/auth-master
-			mode = 0660
-			user = {MAIL_USER}
-			group = {MAIL_GROUP}
-		}
+	unix_listener auth-master {
+		group = mail
+		mode = 0660
+		user = vmail
 	}
 
 	user = root
 }
 
-{DOVECOT_SSL}ssl = yes
-{DOVECOT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
-{DOVECOT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+{DOVECOT_SSL}ssl_cert = <{GUI_CERT_DIR}/{HOST_NAME}.pem
+{DOVECOT_SSL}ssl_key = {GUI_CERT_DIR}/{HOST_NAME}.pem
+
+userdb {
+	driver = prefetch
+}
+
+userdb {
+	args = /etc/dovecot/dovecot-sql.conf
+	driver = sql
+}
 
 protocol imap {
 	mail_plugins = quota imap_quota
 }
 
 protocol pop3 {
-	  mail_plugins = quota
-	  pop3_uidl_format = %u-%v
+	mail_plugins = quota
+	pop3_uidl_format = %u-%v
 }
 
 protocol lda {
-	  auth_socket_path = /var/run/dovecot/auth-master
-	  mail_plugins = quota sieve
-	  postmaster_address = postmaster@{HOST_NAME}
+	auth_socket_path = /var/run/dovecot/auth-master
+	mail_plugins = quota sieve
+	postmaster_address = postmaster@{HOST_NAME}
 }

@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2010 - 2011 by internet Multi Server Control Panel - http://i-mscp.net
@@ -29,26 +27,80 @@
 # @version		SVN: $Id: install 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
--->
 
-<install>
 
-	<folders>${ROOT_CONF}/dovecot</folders>
+auth_mechanisms = plain login digest-md5
+base_dir = /var/run/dovecot/
 
-	<folders>${SYSTEM_CONF}/dovecot</folders>
-	<folders>${SYSTEM_CONF}/dovecot/backup</folders>
-	<folders>${SYSTEM_CONF}/dovecot/working</folders>
+dict {
+	quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
+}
 
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot.data</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot.conf.1</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot.conf.2</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot-dict-sql.conf</copy_config>
-	<copy_config mode = "0640" user="root" group="root">${SYSTEM_CONF}/dovecot/dovecot-sql.conf</copy_config>
+disable_plaintext_auth = no
+mail_location = maildir:%h
+mail_privileged_group = mail
 
-	<create_file />
+namespace private {
+	inbox = yes
+	prefix = INBOX.
+}
 
-	<chown_file />
+plugin {
+	global_script_path = /etc/dovecot/sieve/dovecot.sieve
+	quota = dict:user::proxy::quotadict
+	quota_rule = *:bytes=1G
+}
 
-	<chmod_file />
+protocols = imap pop3
+{DOVECOT_SSL}protocols = imap pop3 imaps pop3s
 
-</install>
+auth default {
+
+	passdb sql {
+		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
+	}
+
+	userdb prefetch {
+	}
+
+	userdb sql {
+		args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
+	}
+
+	socket listen {
+		client {
+			path = /var/spool/postfix/private/auth
+			mode = 0660
+			user = postfix
+			group = postfix
+		}
+
+		master {
+			path = /var/run/dovecot/auth-master
+			mode = 0660
+			user = {MAIL_USER}
+			group = {MAIL_GROUP}
+		}
+	}
+
+	user = root
+}
+
+{DOVECOT_SSL}ssl = yes
+{DOVECOT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+{DOVECOT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+
+protocol imap {
+	mail_plugins = quota imap_quota
+}
+
+protocol pop3 {
+	  mail_plugins = quota
+	  pop3_uidl_format = %u-%v
+}
+
+protocol lda {
+	  auth_socket_path = /var/run/dovecot/auth-master
+	  mail_plugins = quota sieve
+	  postmaster_address = postmaster@{HOST_NAME}
+}
