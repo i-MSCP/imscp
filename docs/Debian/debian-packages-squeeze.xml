@@ -17,6 +17,7 @@
 			<courier>courier-pop-ssl</courier>
 			<dovecot>dovecot-imapd</dovecot>
 			<dovecot>dovecot-pop3d</dovecot>
+			<dovecot>dovecot-sieve</dovecot>
 		</alternative>
 	</po>
 	<mta>
