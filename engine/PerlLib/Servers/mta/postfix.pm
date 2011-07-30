@@ -36,94 +36,89 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
+	my $self	= shift;
+
 	debug((caller(0))[3].': Starting...');
 
-	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
 	$self->{wrkDir} = "$self->{cfgDir}/working";
 
-	$self->{$_} = $main::imscpConfig{$_} foreach(keys %main::imscpConfig);
+	#$self->{$_} = $main::imscpConfig{$_} foreach(keys %main::imscpConfig);
 
 	debug((caller(0))[3].': Ending...');
 	0;
 }
 
-sub buildConfFile{
-
+sub preinstall{
 	debug((caller(0))[3].': Starting...');
 
-	my $self			= shift;
-	my $fileName		= shift;
+	use Servers::mta::postfix::installer;
 
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use iMSCP::Execute;
+	my $self	= shift;
+	my $rs		= 0;
 
-	my ($rs, $cfgTpl, $file);
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
 
+sub install{
+	debug((caller(0))[3].': Starting...');
 
-	if(-f "$main::imscpConfig{'APACHE_SITES_DIR'}/$fileName") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_SITES_DIR'}/$fileName")->copyFile("$self->{bkpDir}/$fileName." . time()) and return 1;
-	}
+	use Servers::mta::postfix::installer;
 
-	$cfgTpl = iMSCP::File->new(filename => "$self->{cfgDir}/$fileName")->get();
-	return 1 if(!$cfgTpl);
+	my $self	= shift;
+	my $rs		= Servers::mta::postfix::installer->new()->install();
 
-	my $tplValues = {};
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
 
-	foreach(keys %{$self}){
-		$tplValues->{$_} = $self->{$_};
-	}
+sub postinst{
+	debug((caller(0))[3].': Starting...');
 
-	foreach(@{$self->{preCalls}}){
-		eval {$rs = &$_(\$cfgTpl);};
-		error((caller(0))[3]."$@");
-		return $rs if $rs;
-	}
+	my $self	= shift;
+	my $rs		= $self->restart();
 
-	$cfgTpl = process($tplValues, $cfgTpl);
-	return 1 if (!$cfgTpl);
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
 
-	foreach(@{$self->{postCalls}}){
-		eval {$rs = &$_(\$cfgTpl);};
-		error((caller(0))[3]."$@");
-		return $rs if $rs;
-	}
+sub registerPreHook{
+	debug((caller(0))[3].': Starting...');
 
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/$fileName");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	my $self		= shift;
+	my $fname		= shift;
+	my $callback	= shift;
 
-	# Installing the new file
-	$file->copyFile("$main::imscpConfig{'APACHE_SITES_DIR'}/") and return 1;
+	my $installer	= Servers::mta::postfix::installer->new();
+
+	push (@{$installer->{preCalls}->{fname}}, $callback)
+		if (ref $callback eq 'CODE' && $installer->can($fname));
+
+	push (@{$self->{preCalls}->{fname}}, $callback)
+		if (ref $callback eq 'CODE' && $self->can($fname));
 
 	debug((caller(0))[3].': Ending...');
 	0;
 }
 
-sub registerPreCall{
-
+sub registerPostHook{
 	debug((caller(0))[3].': Starting...');
 
-	my $self			= shift;
-	my $callback		= shift;
+	my $self		= shift;
+	my $fname		= shift;
+	my $callback	= shift;
 
-	push (@{$self->{preCalls}}, $callback) if (ref $callback eq 'CODE');
+	debug((caller(0))[3].": Attaching to $fname...");
 
-	debug((caller(0))[3].': Ending...');
-	0;
-}
+	my $installer	= Servers::mta::postfix::installer->new();
 
-sub registerPostCall{
+	push (@{$installer->{postCalls}->{$fname}}, $callback)
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 
-	debug((caller(0))[3].': Starting...');
-
-	my $self			= shift;
-	my $callback		= shift;
-
-	push (@{$self->{postCalls}}, $callback) if (ref $callback eq 'CODE');
+	push (@{$self->{postCalls}->{$fname}}, $callback)
+		if (ref $callback eq 'CODE' && $self->can($fname));
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -138,22 +133,7 @@ sub restart{
 	use iMSCP::Execute;
 
 	# Reload apache config
-	$rs = execute("$main::imscpConfig{'CMD_POP'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
-
-	$rs = execute("$main::imscpConfig{'CMD_IMAP'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
-
-	$rs = execute("$main::imscpConfig{'CMD_POP_SSL'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
-
-	$rs = execute("$main::imscpConfig{'CMD_IMAP_SSL'} restart", \$stdout, \$stderr);
+	$rs = execute("$main::imscpConfig{'CMD_MTA'} restart", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
 	return $rs if $rs;

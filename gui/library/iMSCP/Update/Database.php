@@ -913,4 +913,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_72() {
 		return 'ALTER IGNORE TABLE `web_software_options` ADD UNIQUE (`use_webdepot`)';
 	}
+
+	/**
+	 * Add dovecot quota table.
+	 *
+	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_73() {
+		return "
+			CREATE TABLE IF NOT EXISTS `quota_dovecot` (
+			`username` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+			`bytes` bigint(20) NOT NULL DEFAULT '0',
+			`messages` int(11) NOT NULL DEFAULT '0',
+			PRIMARY KEY (`username`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+		";
+	}
 }

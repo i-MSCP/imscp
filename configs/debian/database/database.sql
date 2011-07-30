@@ -129,7 +129,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '69');
+('DATABASE_REVISION', '73');
 
 -- --------------------------------------------------------
 
@@ -500,6 +500,19 @@ CREATE TABLE IF NOT EXISTS `quotatallies` (
   `files_xfer_used` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quota_dovecot`
+--
+
+CREATE TABLE IF NOT EXISTS `quota_dovecot` (
+  `username` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `bytes` bigint(20) NOT NULL DEFAULT '0',
+  `messages` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

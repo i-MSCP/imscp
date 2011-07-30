@@ -51,14 +51,26 @@ sub _init{
 	0;
 }
 
+sub preinstall{
+	debug((caller(0))[3].': Starting...');
+
+	use Servers::po::dovecot::installer;
+
+	my $self	= shift;
+	my $rs		= Servers::po::dovecot::installer->new()->registerHooks();
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
 sub install{
 	debug((caller(0))[3].': Starting...');
 
 	use Servers::po::dovecot::installer;
 
-	my $self		= shift;
-	my $rs			= Servers::po::dovecot::installer->new()->install();
-	$rs |= $self->restart();
+	my $self	= shift;
+	my $rs		= Servers::po::dovecot::installer->new()->install();
+	$rs			|= $self->restart();
 
 	debug((caller(0))[3].': Ending...');
 	$rs;

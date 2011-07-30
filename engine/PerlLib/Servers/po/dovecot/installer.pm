@@ -60,6 +60,8 @@ sub install{
 
 	my $self = shift;
 
+	$self->getVersion() and return 1;
+
 	# Saving all system configuration files if they exists
 	for ((
 		'dovecot.conf',
@@ -69,11 +71,53 @@ sub install{
 	}
 
 	$self->setupDB() and return 1;
-	$self->setupConf() and return 1;
+	$self->buildConf() and return 1;
+	$self->saveConf() and return 1;
 
 	debug((caller(0))[3].': Ending...');
 	0;
 }
+
+sub getVersion{
+	debug((caller(0))[3].': Starting...');
+
+	my $self = shift;
+	my ($rs, $stdout, $stderr);
+
+	$rs = execute('dovecot --version', \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	error((caller(0))[3].": Can't read dovecot version") if !$stderr and $rs;
+	return $rs if $rs;
+
+	chomp($stdout);
+	$self->{version} = $stdout;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub saveConf{
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::File;
+
+	my $self		= shift;
+	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.data");
+	my $cfg = $file->get() or return 1;
+
+	$file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.old.data");
+	$file->set($cfg) and return 1;
+	$file->save and return 1;
+	$file->mode(0640) and return 1;
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
 
 sub bkpConfFile{
 	debug((caller(0))[3].': Starting...');
@@ -97,7 +141,7 @@ sub bkpConfFile{
 	0;
 }
 
-sub setupConf{
+sub buildConf{
 	debug((caller(0))[3].': Starting...');
 
 	my $self		= shift;
@@ -124,11 +168,21 @@ sub setupConf{
 		DOVECOT_CONF_DIR	=> $self::dovecotConfig{DOVECOT_CONF_DIR}
 	};
 
-	for ((
-		'dovecot.conf',
-		'dovecot-sql.conf'
-	)) {
-		my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/$_");
+	use version;
+	my $cfgFiles = {
+		'dovecot.conf'		=>(
+								version->new($self->{version}) < version->new('2.0.0')
+								?
+								'dovecot.conf.1'
+								:
+								'dovecot.conf.2'
+		),
+		'dovecot-sql.conf'	=> 'dovecot-sql.conf',
+		'dovecot-dict-sql.conf'	=> 'dovecot-dict-sql.conf'
+	};
+
+	for (keys %{$cfgFiles}) {
+		my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/$cfgFiles->{$_}");
 		my $cfgTpl	= $file->get();
 		return 1 if (!$cfgTpl);
 		$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
@@ -137,9 +191,10 @@ sub setupConf{
 		$file->set($cfgTpl) and return 1;
 		$file->save() and return 1;
 		$file->mode(0640) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
 		$file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'}) and return 1;
 	}
+
 	my $file	= iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
 	$file->mode(0644) and return 1;
 
@@ -250,7 +305,7 @@ sub setupDB{
 		$err = $database->doQuery(
 			'dummy',
 			"
-				GRANT SELECT,INSERT,UPDATE ON `$main::imscpConfig{DATABASE_NAME}`.`quota_dovecot`
+				GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::imscpConfig{DATABASE_NAME}`.`quota_dovecot`
 				TO ?@?
 			", $self::dovecotConfig{DATABASE_USER}, $main::imscpConfig{DATABASE_HOST}
 		);
@@ -276,5 +331,44 @@ sub check_sql_connection{
 	return $database->connect();
 }
 
+sub registerHooks{
+	debug((caller(0))[3].': Starting...');
+	my $self = shift;
 
+	use Servers::mta;
+
+	my $mta = Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+
+	$mta->registerPostHook('buildConf', sub { return $self->mtaConf(@_); } );
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub mtaConf{
+	debug((caller(0))[3].': Starting...');
+	my $self	= shift;
+	my $content	= shift || '';
+
+	use iMSCP::Templator;
+	my $poBloc = getBloc(
+		'# dovecot begin',
+		'# dovecot end',
+		$content
+	);
+
+	$content = replaceBloc(
+		'# po setup begin',
+		'# po setup end',
+		$poBloc,
+		$content,
+		undef
+	);
+
+	use Data::Dumper;
+	error('a'.Dumper($content));
+
+	debug((caller(0))[3].': Ending...');
+	$content;
+}
 1;

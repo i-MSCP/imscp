@@ -30,16 +30,14 @@
 
 
 auth_mechanisms = plain login digest-md5
-base_dir = /var/run/dovecot/
+base_dir = /var/run/dovecot
 
 dict {
 	quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
 }
 
 disable_plaintext_auth = no
-
 mail_location = maildir:%h
-
 mail_privileged_group = mail
 
 namespace {
@@ -54,6 +52,15 @@ passdb {
 	driver = sql
 }
 
+userdb {
+	driver = prefetch
+}
+
+userdb {
+	args = /etc/dovecot/dovecot-sql.conf
+	driver = sql
+}
+
 plugin {
 	global_script_path = /etc/dovecot/sieve/dovecot.sieve
 	quota = dict:user::proxy::quotadict
@@ -63,33 +70,29 @@ plugin {
 protocols = imap pop3
 
 service auth {
-
 	unix_listener /var/spool/postfix/private/auth {
 		group = postfix
 		mode = 0660
 		user = postfix
 	}
-
 	unix_listener auth-master {
-		group = mail
+		group = {MAIL_GROUP}
 		mode = 0660
-		user = vmail
+		user = {MAIL_USER}
 	}
-
 	user = root
 }
 
-{DOVECOT_SSL}ssl_cert = <{GUI_CERT_DIR}/{HOST_NAME}.pem
-{DOVECOT_SSL}ssl_key = {GUI_CERT_DIR}/{HOST_NAME}.pem
-
-userdb {
-	driver = prefetch
+service dict {
+	extra_groups = {MAIL_GROUP}
+	unix_listener dict {
+		group = {MAIL_GROUP}
+		mode = 0660
+	}
 }
 
-userdb {
-	args = /etc/dovecot/dovecot-sql.conf
-	driver = sql
-}
+{DOVECOT_SSL}ssl_cert =<{GUI_CERT_DIR}/{HOST_NAME}.pem
+{DOVECOT_SSL}ssl_key =<{GUI_CERT_DIR}/{HOST_NAME}.pem
 
 protocol imap {
 	mail_plugins = quota imap_quota

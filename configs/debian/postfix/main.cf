@@ -53,7 +53,6 @@ mydestination                = $myhostname, $mydomain
 append_dot_mydomain          = no
 append_at_myorigin           = yes
 local_transport              = local
-virtual_transport            = virtual
 transport_maps               = hash:{MTA_TRANSPORT_HASH}
 alias_maps                   = hash:{MTA_LOCAL_ALIAS_HASH}
 alias_database               = hash:{MTA_LOCAL_ALIAS_HASH}
@@ -97,7 +96,6 @@ virtual_gid_maps             = static:{MTA_MAILBOX_GID}
 # SASL paramters
 smtpd_sasl_auth_enable       = yes
 smtpd_sasl_security_options  = noanonymous
-smtpd_sasl_local_domain      =
 broken_sasl_auth_clients     = yes
 
 smtpd_helo_required          = yes
@@ -143,3 +141,21 @@ smtpd_data_restrictions      = reject_multi_recipient_bounce,
 #virtual_mailbox_limit_override = yes
 #virtual_maildir_limit_message  = "The user you're trying to reach is over mailbox quota."
 #virtual_overquota_bounce       = yes
+
+# po setup begin
+
+# dovecot begin
+
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+virtual_transport = dovecot
+dovecot_destination_recipient_limit = 1
+
+# dovecot end
+
+# courier begin
+smtpd_sasl_local_domain      =
+virtual_transport            = virtual
+# courier end
+
+# po setup end

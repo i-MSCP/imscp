@@ -117,14 +117,14 @@ sub _replaceStatic{
 }
 
 sub replaceBloc($ $ $ $ $){
+	debug((caller(0))[3].': Starting...');
+
 	my $self		= iMSCP::Templator->new();
 	my $startTag	= shift;
 	my $endTag		= shift;
 	my $replacement = shift;
 	my $content		= shift;
 	my $preserve	= shift;
-
-	debug((caller(0))[3].': Starting...');
 
 	my $meta = "\\\|\(\)\[\{\^\$\*\+\?\.";
 
@@ -140,18 +140,16 @@ sub replaceBloc($ $ $ $ $){
 	}
 
 	debug((caller(0))[3].': Ending...');
-
 	return $content;
-
 }
 
 sub getBloc($ $ $){
+	debug((caller(0))[3].': Starting...');
+
 	my $self		= iMSCP::Templator->new();
 	my $startTag	= shift;
 	my $endTag		= shift;
 	my $content		= shift;
-
-	debug((caller(0))[3].': Starting...');
 
 	my $meta = "\\\|\(\)\[\{\^\$\*\+\?\.";
 
@@ -163,9 +161,7 @@ sub getBloc($ $ $){
 	$content =~ m/$regexp/smig;
 
 	debug((caller(0))[3].': Ending...');
-
 	return $1;
-
 }
 
 1;

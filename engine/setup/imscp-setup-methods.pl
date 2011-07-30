@@ -1344,201 +1344,6 @@ sub setup_awstats_vhost {
 	0;
 }
 
-################################################################################
-# i-MSCP Postfix - (Setup / Update)
-#
-# This subroutine built, store and install Postfix configuration files:
-# - main.cf
-# - master.cf
-# - aliases, domains, mailboxes, transport, sender-access lookup tables
-# - ARPL messenger
-#
-# @return int 0 on success, other on failure
-#
-sub setup_mta {
-
-	debug((caller(0))[3].': Starting...');
-
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'CMD_MTA'} =~ /^no$/i);
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use iMSCP::Execute;
-
-	my ($rs, $cfgTpl, $path, $file, $err);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/postfix";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-	my $vrlDir = "$cfgDir/imscp";
-
-	# Saving all system configuration files if they exists
-	for (
-		map {/(.*\/)([^\/]*)$/ && $1.':'.$2}
-		$main::imscpConfig{'POSTFIX_CONF_FILE'},
-		$main::imscpConfig{'POSTFIX_MASTER_CONF_FILE'}
-	) {
-		($path, $file) = split /:/;
-
-		next if (!-f $path.$file || -f "$bkpDir/$file.system");
-
-		iMSCP::File->new(filename => "$path$file")->copyFile("$bkpDir/$file.system") and return 1;
-	}
-
-	my $timestamp = time;
-
-	# Saving all current production files
-	for (
-		map {/(.*\/)([^\/]*)$/ && $1.':'.$2}
-		$main::imscpConfig{'POSTFIX_CONF_FILE'},
-		$main::imscpConfig{'POSTFIX_MASTER_CONF_FILE'},
-		$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}.'/aliases',
-		$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}.'/domains',
-		$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}.'/mailboxes',
-		$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}.'/transport',
-		$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}.'/sender-access'
-	) {
-		($path, $file) = split /:/;
-
-		next if(!-f $path.$file);
-
-		iMSCP::File->new(filename => "$path$file")->copyFile("$bkpDir/$file.$timestamp") and return 1;
-	}
-
-	## Building, storage and installation of new file
-
-	# main.cf
-
-	# Loading the template from /etc/imscp/postfix/
-	$file	= iMSCP::File->new(filename => "$cfgDir/main.cf");
-	$cfgTpl	= $file->get();
-	return 1 if (!$cfgTpl);
-
-	# Building the file
-	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
-	my $gid	= getgrnam($main::imscpConfig{'MTA_MAILBOX_GID_NAME'});
-	my $uid	= getpwnam($main::imscpConfig{'MTA_MAILBOX_UID_NAME'});
-
-	$main::imscpConfig{'MTA_MAILBOX_MIN_UID'} = $uid if $main::imscpConfig{'MTA_MAILBOX_MIN_UID'} != $uid;
-	$main::imscpConfig{'MTA_MAILBOX_UID'} = $uid if $main::imscpConfig{'MTA_MAILBOX_UID'} != $uid;
-	$main::imscpConfig{'MTA_MAILBOX_GID'} = $gid if $main::imscpConfig{'MTA_MAILBOX_GID'} != $gid;
-
-	$cfgTpl = iMSCP::Templator::process(
-		{
-			MTA_HOSTNAME				=> $hostname,
-			MTA_LOCAL_DOMAIN			=> "$hostname.local",
-			MTA_VERSION					=> $main::imscpConfig{'Version'},
-			MTA_TRANSPORT_HASH			=> $main::imscpConfig{'MTA_TRANSPORT_HASH'},
-			MTA_LOCAL_MAIL_DIR			=> $main::imscpConfig{'MTA_LOCAL_MAIL_DIR'},
-			MTA_LOCAL_ALIAS_HASH		=> $main::imscpConfig{'MTA_LOCAL_ALIAS_HASH'},
-			MTA_VIRTUAL_MAIL_DIR		=> $main::imscpConfig{'MTA_VIRTUAL_MAIL_DIR'},
-			MTA_VIRTUAL_DMN_HASH		=> $main::imscpConfig{'MTA_VIRTUAL_DMN_HASH'},
-			MTA_VIRTUAL_MAILBOX_HASH	=> $main::imscpConfig{'MTA_VIRTUAL_MAILBOX_HASH'},
-			MTA_VIRTUAL_ALIAS_HASH		=> $main::imscpConfig{'MTA_VIRTUAL_ALIAS_HASH'},
-			MTA_MAILBOX_MIN_UID			=> $uid,
-			MTA_MAILBOX_UID				=> $uid,
-			MTA_MAILBOX_GID				=> $gid,
-			PORT_POSTGREY				=> $main::imscpConfig{'PORT_POSTGREY'},
-			GUI_CERT_DIR				=> $main::imscpConfig{'GUI_CERT_DIR'},
-			SSL							=> ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Storing the new file in working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/main.cf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file in production directory
-	$file->copyFile($main::imscpConfig{'POSTFIX_CONF_FILE'}) and return 1;
-
-	# master.cf
-
-	# Storing the new file in the working directory
-	$file = iMSCP::File->new(filename => "$cfgDir/master.cf");
-	$cfgTpl	= $file->get();
-	return 1 if (!$cfgTpl);
-	$cfgTpl = iMSCP::Templator::process(
-		{
-			ARPL_USER					=> $main::imscpConfig{'MTA_MAILBOX_UID_NAME'},
-			ARPL_GROUP					=> $main::imscpConfig{'MASTER_GROUP'},
-			ARPL_PATH					=> $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	$file = iMSCP::File->new(filename => "$wrkDir/master.cf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file in the production dir
-	$file->copyFile($main::imscpConfig{'POSTFIX_MASTER_CONF_FILE'}) and return 1;
-
-	## Lookup tables files
-	my ($stdout, $stderr);
-
-	for (qw/aliases domains mailboxes transport sender-access/) {
-		# Storing the new files in the working directory
-		$file = iMSCP::File->new(filename => "$vrlDir/$_");
-		$file->copyFile("$wrkDir/") and return 1;
-
-		# Install the files in the production directory
-		$file->copyFile("$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}/") and return 1;
-
-		# Creating/updating Btree databases for all lookup tables
-		$rs = execute("$main::imscpConfig{'CMD_POSTMAP'} $main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr") if($rs);
-		return $rs if ($rs);
-	}
-
-	# Rebuilding the database for the mail aliases file - Begin
-	$rs = execute("$main::imscpConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout");
-	error((caller(0))[3].": $stderr") if($rs);
-	return $rs if ($rs);
-
-	## Setting ARPL messenger owner, group and permissions
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
-	$file->mode(0755) and return 1;
-	$file->owner($main::imscpConfig{'MTA_MAILBOX_UID_NAME'}, $main::imscpConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP Courier - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Built, store and install Courier, related configuration files
-#  - Creates userdb.dat file from the contents of the userdb file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_po {
-
-	debug((caller(0))[3].': Starting...');
-
-	use Servers::po;
-
-	my $po = Servers::po->factory($main::imscpConfig{PO_SERVER});
-	my $rs = $po->can('install') ? $po->install() : 0;
-
-	debug((caller(0))[3].': Ending...');
-
-	$rs;
-}
 
 ################################################################################
 # i-MSCP Proftpd - (Setup / Update)
@@ -1661,9 +1466,9 @@ sub setup_ftpd {
 		do{
 			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name (default vftp)", $dbUser);
 		} while (!$dbUser || $main::imscpConfig{'DATABASE_USER'} eq $dbUser);
+		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 
 		# Ask for proftpd SQL user password
-		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 		$dbPass = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", $dbPass);
 		if(!$dbPass){
 			$dbPass = iMSCP::Crypt::randomString(8);
@@ -1687,7 +1492,7 @@ sub setup_ftpd {
 					`Db` = ?
 				AND
 					`User` = ?;
-			", $main::imscpConfig{'DATABASE_HOST'}, $main::imscpConfig{'DATABASE_NAME'}, $dbUser
+			", $main::imscpConfig{'SERVER_HOSTNAME'}, $main::imscpConfig{'DATABASE_NAME'}, $dbUser
 		);
 		return $err if (ref $err ne 'HASH');
 
@@ -1700,7 +1505,7 @@ sub setup_ftpd {
 					`Host` = ?
 				AND
 					`User` = ?;
-			", $main::imscpConfig{'DATABASE_HOST'}, $dbUser
+			", $main::imscpConfig{'SERVER_HOSTNAME'}, $dbUser
 		);
 		return $err if (ref $err ne 'HASH');
 
@@ -3349,4 +3154,108 @@ sub sslDialog{
 	0;
 }
 
+################################################################################
+# i-MSCP Postfix - (Setup / Update)
+#
+# This subroutine built, store and install Postfix configuration files:
+# - main.cf
+# - master.cf
+# - aliases, domains, mailboxes, transport, sender-access lookup tables
+# - ARPL messenger
+#
+# @return int 0 on success, other on failure
+#
+sub setup_mta {
+
+	debug((caller(0))[3].': Starting...');
+
+	# Do not generate configuration files if the service is disabled
+	return 0 if($main::imscpConfig{'CMD_MTA'} =~ /^no$/i);
+
+	use iMSCP::File;
+	use iMSCP::Templator;
+	use iMSCP::Execute;
+
+	my ($rs, $cfgTpl, $path, $file, $err);
+
+	# Directories paths
+	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/postfix";
+	my $bkpDir = "$cfgDir/backup";
+	my $wrkDir = "$cfgDir/working";
+	my $vrlDir = "$cfgDir/imscp";
+
+	## Building, storage and installation of new file
+
+	# main.cf
+
+
+	# master.cf
+
+
+	## Lookup tables files
+	my ($stdout, $stderr);
+
+	for (qw/aliases domains mailboxes transport sender-access/) {
+		# Storing the new files in the working directory
+		$file = iMSCP::File->new(filename => "$vrlDir/$_");
+		$file->copyFile("$wrkDir/") and return 1;
+
+		# Install the files in the production directory
+		$file->copyFile("$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}/") and return 1;
+
+		# Creating/updating Btree databases for all lookup tables
+		$rs = execute("$main::imscpConfig{'CMD_POSTMAP'} $main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout");
+		error((caller(0))[3].": $stderr") if($rs);
+		return $rs if ($rs);
+	}
+
+	# Rebuilding the database for the mail aliases file - Begin
+	$rs = execute("$main::imscpConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout");
+	error((caller(0))[3].": $stderr") if($rs);
+	return $rs if ($rs);
+
+	## Setting ARPL messenger owner, group and permissions
+	$file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
+	$file->mode(0755) and return 1;
+	$file->owner($main::imscpConfig{'MTA_MAILBOX_UID_NAME'}, $main::imscpConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+sub setup_mail{
+	debug((caller(0))[3].': Starting...');
+
+	my ($rs, $mta, $po);
+
+	use Servers::mta;
+	use Servers::po;
+
+	$mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+	$po		= Servers::po->factory($main::imscpConfig{PO_SERVER});
+
+	$rs = $mta->can('preinstall') ? $mta->preinstall() : 0;
+	return $rs if $rs;
+
+	$rs = $po->can('preinstall') ? $po->preinstall() : 0;
+	return $rs if $rs;
+
+	$rs = $mta->can('install') ? $mta->install() : 0;
+	return $rs if $rs;
+#
+	$rs = $po->can('install') ? $po->install() : 0;
+	return $rs if $rs;
+#
+	#$rs = $mta->can('postinstall') ? $mta->postinstall() : 0;
+	#return $rs if $rs;
+#
+	#$rs = $po->can('postinstall') ? $po->postinstall() : 0;
+	#return $rs if $rs;
+
+	debug((caller(0))[3].': Ending...'."\n\n\n");
+	0;
+}
 1;

@@ -116,3 +116,12 @@ scalemail-backend unix	-	n	n	-	2	pipe
 mailman   unix  -       n       n       -       -       pipe
   flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
   ${nexthop} ${user}
+
+# po setup begin
+# dovecot begin
+dovecot   unix  -       n       n       -       -       pipe
+  flags=DRhu user={ARPL_USER} argv=/usr/lib/dovecot/deliver -d ${recipient}
+# dovecot end
+# courier begin
+# courier end
+# po setup end
