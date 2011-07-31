@@ -33,7 +33,6 @@ use FileHandle;
 use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
 use Exporter;
-use Term::ReadKey;
 
 use vars qw/@ISA @EXPORT/;
 @ISA = ('Common::SingletonClass', 'iMSCP::Dialog::Dialog');
