@@ -48,7 +48,7 @@ namespace {
 }
 
 passdb {
-	args = /etc/dovecot/dovecot-sql.conf
+	args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
 	driver = sql
 }
 
@@ -57,12 +57,12 @@ userdb {
 }
 
 userdb {
-	args = /etc/dovecot/dovecot-sql.conf
+	args = {DOVECOT_CONF_DIR}/dovecot-sql.conf
 	driver = sql
 }
 
 plugin {
-	global_script_path = /etc/dovecot/sieve/dovecot.sieve
+	global_script_path = {DOVECOT_CONF_DIR}/sieve/dovecot.sieve
 	quota = dict:user::proxy::quotadict
 	quota_rule = *:bytes=1G
 }

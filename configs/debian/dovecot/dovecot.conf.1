@@ -30,10 +30,10 @@
 
 
 auth_mechanisms = plain login digest-md5
-base_dir = /var/run/dovecot/
+base_dir = /var/run/dovecot
 
 dict {
-	quotadict = mysql:/etc/dovecot/dovecot-dict-sql.conf
+	quotadict = mysql:{DOVECOT_CONF_DIR}/dovecot-dict-sql.conf
 }
 
 disable_plaintext_auth = no
@@ -95,12 +95,12 @@ protocol imap {
 }
 
 protocol pop3 {
-	  mail_plugins = quota
-	  pop3_uidl_format = %u-%v
+	mail_plugins = quota
+	pop3_uidl_format = %u-%v
 }
 
 protocol lda {
-	  auth_socket_path = /var/run/dovecot/auth-master
-	  mail_plugins = quota sieve
-	  postmaster_address = postmaster@{HOST_NAME}
+	auth_socket_path = /var/run/dovecot/auth-master
+	mail_plugins = quota sieve
+	postmaster_address = postmaster@{HOST_NAME}
 }
