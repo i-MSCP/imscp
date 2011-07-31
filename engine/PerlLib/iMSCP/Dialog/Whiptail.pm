@@ -72,8 +72,8 @@ sub _init{
 sub _getConsoleSize{
 	my $self = shift;
 	debug((caller(0))[3].': Starting...');
-	$self->{'lines'}	= 39;
-	$self->{'columns'}	= 80;
+	$self->{'lines'}	= 23;
+	$self->{'columns'}	= 79;
 	debug((caller(0))[3].": Lines->$self->{'lines'}");
 	debug((caller(0))[3].": Columns->$self->{'columns'}");
 	debug((caller(0))[3].': Ending...');
