@@ -434,6 +434,14 @@ function gen_user_list($tpl){
 	$start_index = 0;
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
+    if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
+        if (isset($_SESSION['search_page'])) {
+            $_GET['psi'] = $_SESSION['search_page'];
+        } else {
+            unset($_GET['psi']);
+        }
+    }
+
 	if (isset($_GET['psi'])) {
 		$start_index = $_GET['psi'];
 	}

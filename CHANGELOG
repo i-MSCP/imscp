@@ -72,6 +72,9 @@ Tickets:
 	- Fixed #154: Update - phpMyAdmin 3.4.3.2 available
 	- Fixed #156: Bug - Users's properties must be loaded in session before i18n
 	initialization
+	- Fixed #159: 404 after update a customer (Hosting plans available for admin)
+	- Fixed #160: Variable {YOU_ARE_LOGGED_AS} on edit domain (Hosting plans
+	available for admin)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
