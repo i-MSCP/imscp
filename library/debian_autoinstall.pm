@@ -56,7 +56,7 @@ sub preRequish{
 	use iMSCP::Execute;
 	use iMSCP::Dialog;
 
-	iMSCP::Dialog->factory()->infobox("Installing Dialog");
+	iMSCP::Dialog->factory()->infobox("Installing pre-requiered packages");
 
 	my($rs, $stderr);
 
@@ -78,7 +78,7 @@ sub preBuild{
 	my $self = shift;
 	my $rs;
 
-	$rs = $self->installDialog();
+	$rs = $self->preRequish();
 	return $rs if $rs;
 
 	$rs = $self->load_old_imscp_cfg();
