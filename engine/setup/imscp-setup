@@ -41,6 +41,39 @@ iMSCP::Debug->newDebug('imscp-setup.log');
 require "$FindBin::Bin/imscp-setup-methods.pl";
 
 ################################################################################
+# Starting update process
+#
+# @return void
+#
+sub setup_start_up {
+
+	debug((caller(0))[3].': Starting...');
+
+	# Fixing umask for logfiles permissions on creation (0640)
+	umask(027);
+
+	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
+
+	#enter silent mode
+	silent(1);
+
+	if(-e '/tmp/imscp-backup-all.lock') {
+		iMSCP::Dialog->factory()->msgbox(
+					"\n
+					\\Z4[NOTICE]\\Zn
+
+					Backup engine is currently running. Aborting...
+					");
+		exit 1;
+	}
+
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+################################################################################
 # Shutting down setup process
 #
 # @return int 0 on success, other on failure
@@ -57,34 +90,6 @@ sub setup_shut_down {
 
 					Please type $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} in your browser and log in with your Administrator Account to use i-MSCP."
 	);
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# Starting update process
-#
-# @return void
-#
-sub setup_start_up {
-
-	debug((caller(0))[3].': Starting...');
-
-	# Fixing umask for logfiles permissions on creation (0640)
-	umask(027);
-
-	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
-	if(-e '/tmp/imscp-backup-all.lock') {
-		iMSCP::Dialog->factory()->msgbox(
-					"\n
-					\\Z4[NOTICE]\\Zn
-
-					Backup engine is currently running. Aborting...
-					");
-		exit 1;
-	}
 
 	debug((caller(0))[3].': Ending...');
 

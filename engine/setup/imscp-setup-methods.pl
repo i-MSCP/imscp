@@ -3098,15 +3098,15 @@ sub setup_mail{
 
 	$rs = $mta->can('install') ? $mta->install() : 0;
 	return $rs if $rs;
-#
+
 	$rs = $po->can('install') ? $po->install() : 0;
 	return $rs if $rs;
-#
-	#$rs = $mta->can('postinstall') ? $mta->postinstall() : 0;
-	#return $rs if $rs;
-#
-	#$rs = $po->can('postinstall') ? $po->postinstall() : 0;
-	#return $rs if $rs;
+
+	$rs = $mta->can('postinstall') ? $mta->postinstall() : 0;
+	return $rs if $rs;
+
+	$rs = $po->can('postinstall') ? $po->postinstall() : 0;
+	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...'."\n\n\n");
 	0;
