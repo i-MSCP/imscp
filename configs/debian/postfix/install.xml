@@ -37,12 +37,13 @@
 	<folders>${SYSTEM_CONF}/postfix</folders>
 	<folders>${ROOT_POSTFIX_CONF}/imscp</folders>
 	<folders>${SYSTEM_LOG}/imscp-arpl-msgr</folders>
+	<folders>${SYSTEM_CONF}/postfix/backup</folders>
+	<folders>${SYSTEM_CONF}/postfix/parts</folders>
+	<folders>${SYSTEM_CONF}/postfix/working</folders>
 
 	<copy_config>${SYSTEM_CONF}/postfix/main.cf</copy_config>
+	<copy_config>${SYSTEM_CONF}/postfix/postfix.data</copy_config>
 	<copy_config>${SYSTEM_CONF}/postfix/master.cf</copy_config>
-	<copy_config>${SYSTEM_CONF}/postfix/backup</copy_config>
-	<copy_config>${SYSTEM_CONF}/postfix/parts</copy_config>
-	<copy_config>${SYSTEM_CONF}/postfix/working</copy_config>
 	<copy_config>${SYSTEM_CONF}/postfix/imscp</copy_config>
 
 	<copy />
