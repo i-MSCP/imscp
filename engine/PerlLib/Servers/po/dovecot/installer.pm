@@ -73,6 +73,29 @@ sub install{
 	$self->setupDB() and return 1;
 	$self->buildConf() and return 1;
 	$self->saveConf() and return 1;
+	$self->oldEngineCompatibility() and return 1;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub oldEngineCompatibility{
+	debug((caller(0))[3].': Starting...');
+
+	$main::imscpConfig{CMD_MAKEUSERDB}	= '/bin/true';
+	$main::imscpConfig{CMD_AUTHD}		= '/bin/true';
+	$main::imscpConfig{CMD_IMAP}		= '/bin/true';
+	$main::imscpConfig{CMD_IMAP_SSL}	= '/bin/true';
+	$main::imscpConfig{CMD_POP}			= '/bin/true';
+	$main::imscpConfig{CMD_POP_SSL}		= '/bin/true';
+
+	use iMSCP::Dir;
+	iMSCP::Dir->new(dirname => $main::imscpConfig{AUTHLIB_CONF_DIR})->make() and return 1;
+
+	use iMSCP::File;
+	my $file = iMSCP::File->new(filename => "$main::imscpConfig{AUTHLIB_CONF_DIR}/userdb");
+	$file->set('#');
+	$file->save() and return 1;
 
 	debug((caller(0))[3].': Ending...');
 	0;
