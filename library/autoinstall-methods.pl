@@ -467,6 +467,7 @@ sub installDepends{
 		my $rs = $main::autoInstallClass->preBuild() if $main::autoInstallClass->can('preBuild');
 		return $rs if $rs;
 	}
+
 	debug((caller(0))[3].': Ending...');
 	0;
 }

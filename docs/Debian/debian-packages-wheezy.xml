@@ -86,6 +86,7 @@
 		<library>libhtml-parser-perl</library>
 		<library>libtimedate-perl</library>
 		<library>libxml-parser-perl</library>
+		<library>libxml-simple-perl</library>
 	</perl>
 	<other>bash</other>
 	<other>bzip2</other>

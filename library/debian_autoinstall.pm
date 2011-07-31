@@ -48,7 +48,7 @@ sub _init{
 	0;
 }
 
-sub installDialog{
+sub preRequish{
 	debug((caller(0))[3].': Starting...');
 
 	my $self = shift;
@@ -60,7 +60,7 @@ sub installDialog{
 
 	my($rs, $stderr);
 
-	$rs = execute("apt-get -y install dialog", undef, \$stderr);
+	$rs = execute("apt-get -y install dialog libxml-simple-perl", undef, \$stderr);
 	error((caller(0))[3]. ": $stderr") if $stderr;
 	error((caller(0))[3].": Can not install packages.") if $rs && ! $stderr;
 	return $rs if $rs;
