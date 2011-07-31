@@ -69,6 +69,15 @@ sub _init{
 	0;
 }
 
+sub _getConsoleSize{
+	my $self = shift;
+	debug((caller(0))[3].': Starting...');
+	$self->{'lines'}	= 39;
+	$self->{'columns'}	= 80;
+	debug((caller(0))[3].": Lines->$self->{'lines'}");
+	debug((caller(0))[3].": Columns->$self->{'columns'}");
+	debug((caller(0))[3].': Ending...');
+}
 sub _find_bin {
 	debug((caller(0))[3].': Starting...');
 
