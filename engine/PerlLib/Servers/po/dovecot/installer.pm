@@ -93,10 +93,9 @@ sub oldEngineCompatibility{
 	iMSCP::Dir->new(dirname => $main::imscpConfig{AUTHLIB_CONF_DIR})->make() and return 1;
 
 	use iMSCP::File;
-	my $file = iMSCP::File->new(filename => "$main::imscpConfig{AUTHLIB_CONF_DIR}/userdb");
-	$file->set('#');
-	$file->save() and return 1;
-	$file->copy("$main::imscpConfig{'CONF_DIR'}/courier/working");
+	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/courier/userdb");
+	$file->copyFile("$main::imscpConfig{AUTHLIB_CONF_DIR}/userdb") and return 1;
+	$file->copyFile("$main::imscpConfig{'CONF_DIR'}/courier/working") and return 1;
 
 	debug((caller(0))[3].': Ending...');
 	0;
