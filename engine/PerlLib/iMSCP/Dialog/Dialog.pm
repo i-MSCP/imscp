@@ -120,9 +120,12 @@ sub _determine_dialog_variant {
 sub _getConsoleSize{
 	my $self = shift;
 	debug((caller(0))[3].': Starting...');
-	my ($columns, $lines, undef, undef) = GetTerminalSize();
-	$self->{'lines'} = $lines - 3;
-	$self->{'columns'} = $columns - 2;
+	my ($output, $error);
+	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
+	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
+	$self->{'lines'}	= (defined($1) && $1 != 0) ? $1-3 : 39;
+	$self->{'columns'}	= (defined($2) && $2 != 0) ? $2-2 : 80;
+	error((caller(0))[3].": $error") unless (!$?);
 	debug((caller(0))[3].": Lines->$self->{'lines'}");
 	debug((caller(0))[3].": Columns->$self->{'columns'}");
 	debug((caller(0))[3].': Ending...');
