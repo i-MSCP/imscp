@@ -495,8 +495,6 @@ sub setup_system_dirs {
 		[$main::imscpConfig{'APACHE_WWW_DIR'},			$main::imscpConfig{'APACHE_USER'},	$main::imscpConfig{'APACHE_GROUP'}],
 		[$main::imscpConfig{'APACHE_USERS_LOG_DIR'},	$main::imscpConfig{'APACHE_USER'},	$main::imscpConfig{'APACHE_GROUP'}],
 		[$main::imscpConfig{'APACHE_BACKUP_LOG_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
-		[$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
-		[$main::imscpConfig{'MTA_VIRTUAL_MAIL_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
 		[$main::imscpConfig{'LOG_DIR'},					$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
 		[$main::imscpConfig{'BACKUP_FILE_DIR'},			$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
 		[$main::imscpConfig{'PHP_STARTER_DIR'},
@@ -1709,8 +1707,7 @@ sub restart_services {
 		['CMD_CLAMD',			'reload',	1],
 		['CMD_POSTGREY',		'reload',	1],
 		['CMD_POLICYD_WEIGHT',	'reload',	0],
-		['CMD_AMAVIS',			'reload',	1],
-		['CMD_MTA',				'reload',	1]
+		['CMD_AMAVIS',			'reload',	1]
 	);
 
 	my ($rs, $stdout, $stderr);
@@ -2663,11 +2660,6 @@ sub update_imscp_cfg {
 		APACHE_SUEXEC_MAX_UID
 		APACHE_USER
 		APACHE_GROUP
-		MTA_MAILBOX_MIN_UID
-		MTA_MAILBOX_UID
-		MTA_MAILBOX_UID_NAME
-		MTA_MAILBOX_GID
-		MTA_MAILBOX_GID_NAME
 		BACKUP_HOUR
 		BACKUP_MINUTE
 		USER_INITIAL_THEME
@@ -2738,92 +2730,25 @@ sub setup_system_users{
 
 
 	debug((caller(0))[3].': Starting...');
-	my (@errors, $stdout, $stderr, $rs, $cmd);
 
-	## SYSTEM USER
-	my $panelGrName = $main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}.$main::imscpConfig{'APACHE_SUEXEC_MIN_GID'};
-	my $panelUName = $main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}.$main::imscpConfig{'APACHE_SUEXEC_MIN_UID'};
-	if(!getgrnam($panelGrName)){
-		debug ((caller(0))[3].": Create group $panelGrName:");
-		$rs = execute("$main::imscpConfig{'CMD_GROUPADD'} $panelGrName", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-		return $rs if $rs;
-	}
-	if(!getpwnam($panelUName)){
-		debug ((caller(0))[3].": Create user $panelUName");
-		##TODO CHECK FROR BSD
-		$cmd = ($main::imscpConfig{'ROOT_GROUP'} eq 'wheel') ?
-			"$main::imscpConfig{'CMD_USERADD'} $panelUName".
-			" -d $main::imscpConfig{'PHP_STARTER_DIR'}/master -m -c vu-master".
-			" -g $panelGrName -s /bin/false"
-		:
-			"$main::imscpConfig{'CMD_USERADD'} -d $main::imscpConfig{'PHP_STARTER_DIR'}/master".
-			" -m -c vu-master -g $panelGrName -s /bin/false $panelUName"
-		;
-		$rs = execute($cmd, \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-		return $rs if $rs;
-	}
+	use Modules::SystemGroup;
+	use Modules::SystemUser;
 
-	## MAIL USERS
-	my $mailGrName	= $main::imscpConfig{'MTA_MAILBOX_GID_NAME'};
-	my $mailUName	= $main::imscpConfig{'MTA_MAILBOX_UID_NAME'};
-	if(!getgrnam($mailGrName)){
-		debug ((caller(0))[3].": Create group $mailGrName:");
-		$rs = execute("$main::imscpConfig{'CMD_GROUPADD'} $mailGrName", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-		return $rs if $rs;
-	}
-	if(!getpwnam($mailUName)){
-		debug ((caller(0))[3].": Create user $mailGrName:");
-		$cmd = ($main::imscpConfig{'ROOT_GROUP'} eq 'wheel') ?
-			"$main::imscpConfig{'CMD_USERADD'} $mailUName -c vmail-user -s /bin/false"
-		:
-			"$main::imscpConfig{'CMD_USERADD'} -c vmail-user -g $mailGrName -s /bin/false -r $mailUName"
-		;
-		$rs = execute($cmd, \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-		return $rs if $rs;
-	}
+	my $group = Modules::SystemGroup->new();
+	$group->{system}	= 'yes';
+	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
 
-	##MASTER GROUP
-	my $masterGrName = $main::imscpConfig{'MASTER_GROUP'};
-	if(!getgrnam($masterGrName)){
-		debug ((caller(0))[3].": Create group $masterGrName:");
-		$rs = execute("$main::imscpConfig{'CMD_GROUPADD'} $masterGrName", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-		return $rs if $rs;
-	}
+	$group = Modules::SystemGroup->new();
+	$group->addSystemGroup("$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}") and return 1;
 
-	(undef, undef, undef, my $gUsers) = getgrnam($masterGrName);
-	$gUsers =~ s/\s/,/g;
+	my $user = Modules::SystemUser->new();
 
-	debug((caller(0))[3].": Users in $masterGrName |$gUsers|");
+	$user->{comment}	= 'vu-master';
+	$user->{home}		= "$main::imscpConfig{'PHP_STARTER_DIR'}/master";
+	$user->{group}		= "$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}";
 
-	for($mailUName, $panelUName){
-		if(!$gUsers || $_ !~ m/$gUsers/){
-			$cmd = ($main::imscpConfig{'ROOT_GROUP'} eq 'wheel') ?
-				"$main::imscpConfig{'CMD_USERGROUP'} $_ -G $masterGrName"
-			:
-				"$main::imscpConfig{'CMD_USERGROUP'} -G $masterGrName $_"
-			;
-			$rs = execute($cmd, \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout") if $stdout;
-			error((caller(0))[3].": $stderr") if ($stderr && $rs);
-			warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-			return $rs if $rs;
-		}
-	}
+	$user->addSystemUser("$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_UID'}") and return 1;
+	$user->addToGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
 
 	debug((caller(0))[3].': Ending...');
 
@@ -3151,78 +3076,6 @@ sub sslDialog{
 	}
 
 	debug((caller(0))[3].': Ending...');
-	0;
-}
-
-################################################################################
-# i-MSCP Postfix - (Setup / Update)
-#
-# This subroutine built, store and install Postfix configuration files:
-# - main.cf
-# - master.cf
-# - aliases, domains, mailboxes, transport, sender-access lookup tables
-# - ARPL messenger
-#
-# @return int 0 on success, other on failure
-#
-sub setup_mta {
-
-	debug((caller(0))[3].': Starting...');
-
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'CMD_MTA'} =~ /^no$/i);
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use iMSCP::Execute;
-
-	my ($rs, $cfgTpl, $path, $file, $err);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/postfix";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-	my $vrlDir = "$cfgDir/imscp";
-
-	## Building, storage and installation of new file
-
-	# main.cf
-
-
-	# master.cf
-
-
-	## Lookup tables files
-	my ($stdout, $stderr);
-
-	for (qw/aliases domains mailboxes transport sender-access/) {
-		# Storing the new files in the working directory
-		$file = iMSCP::File->new(filename => "$vrlDir/$_");
-		$file->copyFile("$wrkDir/") and return 1;
-
-		# Install the files in the production directory
-		$file->copyFile("$main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}/") and return 1;
-
-		# Creating/updating Btree databases for all lookup tables
-		$rs = execute("$main::imscpConfig{'CMD_POSTMAP'} $main::imscpConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr") if($rs);
-		return $rs if ($rs);
-	}
-
-	# Rebuilding the database for the mail aliases file - Begin
-	$rs = execute("$main::imscpConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout");
-	error((caller(0))[3].": $stderr") if($rs);
-	return $rs if ($rs);
-
-	## Setting ARPL messenger owner, group and permissions
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
-	$file->mode(0755) and return 1;
-	$file->owner($main::imscpConfig{'MTA_MAILBOX_UID_NAME'}, $main::imscpConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
 	0;
 }
 

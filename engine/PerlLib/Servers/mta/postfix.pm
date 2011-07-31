@@ -44,7 +44,12 @@ sub _init{
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
 	$self->{wrkDir} = "$self->{cfgDir}/working";
 
+	$self->{commentChar} = '#';
+
 	#$self->{$_} = $main::imscpConfig{$_} foreach(keys %main::imscpConfig);
+
+	tie %self::postfixConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/postfix.data";
+	$self->{$_} = $self::postfixConfig{$_} foreach(keys %self::postfixConfig);
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -133,7 +138,7 @@ sub restart{
 	use iMSCP::Execute;
 
 	# Reload apache config
-	$rs = execute("$main::imscpConfig{'CMD_MTA'} restart", \$stdout, \$stderr);
+	$rs = execute("$self->{CMD_MTA} restart", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
 	return $rs if $rs;

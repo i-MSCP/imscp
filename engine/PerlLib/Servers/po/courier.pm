@@ -47,6 +47,18 @@ sub _init{
 	0;
 }
 
+sub preinstall{
+	debug((caller(0))[3].': Starting...');
+
+	use Servers::po::courier::installer;
+
+	my $self	= shift;
+	my $rs		= Servers::po::courier::installer->new()->registerHooks();
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
 sub install{
 	debug((caller(0))[3].': Starting...');
 
@@ -58,16 +70,6 @@ sub install{
 
 	debug((caller(0))[3].': Ending...');
 	$rs;
-}
-
-sub buildConfFile{
-
-	debug((caller(0))[3].': Starting...');
-
-	my $self = shift;
-
-	debug((caller(0))[3].': Ending...');
-	0;
 }
 
 sub restart{

@@ -32,11 +32,6 @@ MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
 
 CMD_MTA = /etc/init.d/postfix
 
-
-
-
-
-
 MTA_LOCAL_MAIL_DIR = /var/mail
 
 MTA_VIRTUAL_MAIL_DIR = /var/mail/virtual
@@ -53,13 +48,7 @@ MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
 
 MTA_SENDER_ACCESS_HASH = /etc/postfix/imscp/sender-access
 
-MTA_MAILBOX_MIN_UID = 999
-
-MTA_MAILBOX_UID = 999
-
 MTA_MAILBOX_UID_NAME = vmail
-
-MTA_MAILBOX_GID = 8
 
 MTA_MAILBOX_GID_NAME = mail
 
@@ -74,5 +63,3 @@ CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
 CMD_POSTMAP = /usr/sbin/postmap
 
 CMD_NEWALIASES = /usr/bin/newaliases
-
-

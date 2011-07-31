@@ -144,7 +144,10 @@ sub bkpConfFile{
 sub buildConf{
 	debug((caller(0))[3].': Starting...');
 
+	use Servers::mta;
+
 	my $self		= shift;
+	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
 
 	my $cfg = {
 		DATABASE_TYPE		=> $main::imscpConfig{DATABASE_TYPE},
@@ -161,10 +164,10 @@ sub buildConf{
 		GUI_CERT_DIR		=> $main::imscpConfig{GUI_CERT_DIR},
 		HOST_NAME			=> $main::imscpConfig{SERVER_HOSTNAME},
 		DOVECOT_SSL			=> $main::imscpConfig{SSL_ENABLED} ? '' : '#',
-		MAIL_USER			=> $main::imscpConfig{'MTA_MAILBOX_UID_NAME'},
-		MAIL_GROUP			=> $main::imscpConfig{'MTA_MAILBOX_GID_NAME'},
-		vmailUID			=> scalar getpwnam($main::imscpConfig{'MTA_MAILBOX_UID_NAME'}),
-		mailGID				=> scalar getgrnam($main::imscpConfig{'MTA_MAILBOX_GID_NAME'}),
+		MAIL_USER			=> $mta->{'MTA_MAILBOX_UID_NAME'},
+		MAIL_GROUP			=> $mta->{'MTA_MAILBOX_GID_NAME'},
+		vmailUID			=> scalar getpwnam($mta->{'MTA_MAILBOX_UID_NAME'}),
+		mailGID				=> scalar getgrnam($mta->{'MTA_MAILBOX_GID_NAME'}),
 		DOVECOT_CONF_DIR	=> $self::dovecotConfig{DOVECOT_CONF_DIR}
 	};
 
@@ -191,7 +194,7 @@ sub buildConf{
 		$file->set($cfgTpl) and return 1;
 		$file->save() and return 1;
 		$file->mode(0640) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
+		$file->owner($main::imscpConfig{'ROOT_USER'}, $mta->{'MTA_MAILBOX_GID_NAME'}) and return 1;
 		$file->copyFile($self::dovecotConfig{'DOVECOT_CONF_DIR'}) and return 1;
 	}
 
@@ -351,22 +354,23 @@ sub mtaConf{
 	my $content	= shift || '';
 
 	use iMSCP::Templator;
+	use Servers::mta;
+
+	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+
 	my $poBloc = getBloc(
-		'# dovecot begin',
-		'# dovecot end',
+		"$mta->{commentChar} dovecot begin",
+		"$mta->{commentChar} dovecot end",
 		$content
 	);
 
 	$content = replaceBloc(
-		'# po setup begin',
-		'# po setup end',
+		"$mta->{commentChar} po setup begin",
+		"$mta->{commentChar} po setup end",
 		$poBloc,
 		$content,
 		undef
 	);
-
-	use Data::Dumper;
-	error('a'.Dumper($content));
 
 	debug((caller(0))[3].': Ending...');
 	$content;

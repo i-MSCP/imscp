@@ -199,4 +199,47 @@ sub sslConf{
 	debug((caller(0))[3].': Ending...');
 	0;
 }
+
+sub registerHooks{
+	debug((caller(0))[3].': Starting...');
+	my $self = shift;
+
+	use Servers::mta;
+
+	my $mta = Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+
+	$mta->registerPostHook('buildConf', sub { return $self->mtaConf(@_); } );
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub mtaConf{
+	debug((caller(0))[3].': Starting...');
+	my $self	= shift;
+	my $content	= shift || '';
+
+	use iMSCP::Templator;
+	use Servers::mta;
+
+	my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+
+	my $poBloc = getBloc(
+		"$mta->{commentChar} courier begin",
+		"$mta->{commentChar} courier end",
+		$content
+	);
+
+	$content = replaceBloc(
+		"$mta->{commentChar} po setup begin",
+		"$mta->{commentChar} po setup end",
+		$poBloc,
+		$content,
+		undef
+	);
+
+	debug((caller(0))[3].': Ending...');
+	$content;
+}
+
 1;

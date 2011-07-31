@@ -30,6 +30,9 @@ package Servers::mta::postfix::installer;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Execute;
+use iMSCP::File;
+use iMSCP::Templator;
 
 use vars qw/@ISA/;
 
@@ -44,6 +47,7 @@ sub _init{
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{bkpDir}	= "$self->{cfgDir}/backup";
 	$self->{wrkDir}	= "$self->{cfgDir}/working";
+	$self->{vrlDir} = "$self->{cfgDir}/imscp";
 
 	my $conf		= "$self->{cfgDir}/postfix.data";
 	my $oldConf		= "$self->{cfgDir}/postfix.old.data";
@@ -73,17 +77,136 @@ sub install{
 		$self->bkpConfFile($_) and return 1;
 	}
 
-	$self->buildConf();
+	$self->addUsers() and return 1;
+	$self->makeDirs() and return 1;
 
+	$self->buildConf() and return 1;
+	$self->buildLookup() and return 1;
+	$self->buildAliasses() and return 1;
+	$self->arplSetup() and return 1;
 
 	$self->saveConf() and return 1;
+
+	$self->oldEngineCompatibility() and return 1;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub oldEngineCompatibility{
+	debug((caller(0))[3].': Starting...');
+
+	$main::imscpConfig{$_} = $self::postfixConfig{$_} foreach(keys %self::postfixConfig);
+
+	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
+	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
+
+	$main::imscpConfig{'MTA_MAILBOX_MIN_UID'}	= $uid if $main::imscpConfig{'MTA_MAILBOX_MIN_UID'} != $uid;
+	$main::imscpConfig{'MTA_MAILBOX_UID'}		= $uid if $main::imscpConfig{'MTA_MAILBOX_UID'} != $uid;
+	$main::imscpConfig{'MTA_MAILBOX_GID'}		= $gid if $main::imscpConfig{'MTA_MAILBOX_GID'} != $gid;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub makeDirs{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Dir;
+
+	for (
+		[$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
+		[$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
+	) {
+		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755}) and return 1;
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub addUsers{
+	debug((caller(0))[3].': Starting...');
+
+	use Modules::SystemGroup;
+
+	my $group = Modules::SystemGroup->new();
+
+	$group->{system}	= 'yes';
+	$group->addSystemGroup($self::postfixConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
+
+	use Modules::SystemUser;
+	my $user = Modules::SystemUser->new();
+
+	$user->{comment}	= 'vmail-user';
+	$user->{home}		= $self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'};
+	$user->{group}		= $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
+	$user->{system}		= 'yes';
+
+	$user->addSystemUser($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}) and return 1;
+	$user->addToGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub buildAliasses{
+	debug((caller(0))[3].': Starting...');
+
+	my ($rs, $stdout, $stderr);
+
+	# Rebuilding the database for the mail aliases file - Begin
+	$rs = execute("$self::postfixConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout");
+	error((caller(0))[3].": $stderr") if($stderr);
+	error((caller(0))[3].": Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if(!$stderr && $rs);
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
+sub arplSetup{
+	debug((caller(0))[3].': Starting...');
+
+	my $file;
+
+	$file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
+	$file->mode(0755) and return 1;
+	$file->owner($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}, $self::postfixConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub buildLookup{
+	debug((caller(0))[3].': Starting...');
+
+	my $self = shift;
+	my ($rs, $stdout, $stderr, $file);
+
+	use iMSCP::File;
+	use iMSCP::Execute;
+
+	for (qw/aliases domains mailboxes transport sender-access/) {
+		# Storing the new files in the working directory
+		$file = iMSCP::File->new(filename => "$self->{vrlDir}/$_");
+		$file->copyFile("$self->{wrkDir}") and return 1;
+
+		# Install the files in the production directory
+		$file->copyFile("$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}") and return 1;
+
+		# Creating/updating databases for all lookup tables
+		$rs = execute("$self::postfixConfig{'CMD_POSTMAP'} $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout");
+		error((caller(0))[3].": $stderr") if($rs);
+		return $rs if ($rs);
+	}
 
 	debug((caller(0))[3].': Ending...');
 	0;
 }
 
 sub bkpConfFile{
-	debug((caller(0))[3].': Starting...');
 
 	use File::Basename;
 
@@ -198,14 +321,16 @@ sub buildMain{
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
+	foreach(@{$self->{preCalls}->{buildConf}}){
+		eval {$cfgTpl = &$_($cfgTpl);};
+		error((caller(0))[3].": $@") if ($@);
+		return 1 if $@;
+	}
+
 	# Building the file
 	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
-
-	$self::postfixConfig{'MTA_MAILBOX_MIN_UID'} = $uid if $self::postfixConfig{'MTA_MAILBOX_MIN_UID'} != $uid;
-	$self::postfixConfig{'MTA_MAILBOX_UID'} = $uid if $self::postfixConfig{'MTA_MAILBOX_UID'} != $uid;
-	$self::postfixConfig{'MTA_MAILBOX_GID'} = $gid if $self::postfixConfig{'MTA_MAILBOX_GID'} != $gid;
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
