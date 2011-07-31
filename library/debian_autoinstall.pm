@@ -192,7 +192,9 @@ sub readPackages{
 
 	fatal("Debian $SO->{CodeName} is not supported!") if (! -f  $confile);
 
-	use autouse XML::Simple;
+	eval "use XML::Simple";
+	fatal((caller(0))[3].': Can not load perl module XML::Simple...') if($@);
+
 	my $xml = XML::Simple->new(NoEscape => 1);
 
 	my $data = eval { $xml->XMLin($confile, KeyAttr => 'name') };
