@@ -37,6 +37,8 @@
 
 	<folders>${INST_PREF}/var/log/apache2/backup</folders>
 	<folders>${SYSTEM_CONF}/apache</folders>
+	<folders>${SYSTEM_CONF}/apache/backup</folders>
+	<folders>${SYSTEM_CONF}/apache/working</folders>
 	<folders>${ROOT_APACHE_CONF}</folders>
 	<folders>${ROOT_APACHE_CONF}/sites-available</folders>
 	<folders>${ROOT_APACHE_CONF}/mods-available</folders>
@@ -47,9 +49,7 @@
 	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/01_awstats.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/backup</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/working</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/parts/imscp_base.tpl/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fcgid_imscp.conf</copy_config>

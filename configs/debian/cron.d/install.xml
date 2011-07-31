@@ -34,11 +34,11 @@
 <install>
 
 	<folders>${SYSTEM_CONF}/cron.d</folders>
+	<folders>${SYSTEM_CONF}/cron.d/backup</folders>
+	<folders>${SYSTEM_CONF}/cron.d/working</folders>
 
 	<copy_config>${SYSTEM_CONF}/cron.d/imscp</copy_config>
-	<copy_config>${SYSTEM_CONF}/cron.d/backup</copy_config>
 	<copy_config>${SYSTEM_CONF}/cron.d/parts</copy_config>
-	<copy_config>${SYSTEM_CONF}/cron.d/working</copy_config>
 
 	<copy />
 

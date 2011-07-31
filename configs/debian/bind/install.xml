@@ -34,11 +34,11 @@
 <install>
 
 	<folders>${SYSTEM_CONF}/bind</folders>
+	<folders>${SYSTEM_CONF}/bind/backup</folders>
+	<folders>${SYSTEM_CONF}/bind/working</folders>
 
 	<copy_config>${SYSTEM_CONF}/bind/named.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/bind/backup</copy_config>
 	<copy_config>${SYSTEM_CONF}/bind/parts</copy_config>
-	<copy_config>${SYSTEM_CONF}/bind/working</copy_config>
 
 	<copy />
 
