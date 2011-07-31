@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `htaccess_users` (
 CREATE TABLE IF NOT EXISTS `log` (
   `log_id` int(10) unsigned NOT NULL auto_increment,
   `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `log_message` varchar(250) collate utf8_unicode_ci default NULL,
+  `log_message` text collate utf8_unicode_ci,
   PRIMARY KEY  (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -786,7 +786,8 @@ CREATE TABLE IF NOT EXISTS `web_software_depot` (
 CREATE TABLE IF NOT EXISTS `web_software_options` (
   `use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `webdepot_last_update` datetime NOT NULL
+  `webdepot_last_update` datetime NOT NULL,
+  UNIQUE KEY `use_webdepot` (`use_webdepot`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
