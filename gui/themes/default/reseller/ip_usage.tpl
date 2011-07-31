@@ -37,7 +37,7 @@
                 </li>
             </ul>
             <ul class="path">
-                <li><a href="server_statistic.php">{TR_DOMAIN_STATISTICS}</a></li>
+                <li><a href="user_statistics.php">{TR_DOMAIN_STATISTICS}</a></li>
                 <li><a href="ip_usage.php">{TR_IP_RESELLER_USAGE_STATISTICS}</a></li>
 
             </ul>
