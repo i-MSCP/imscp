@@ -20,43 +20,25 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @version		SVN: $Id: httpd.pm 4856 2011-07-11 08:48:54Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd;
+package Servers::noserver;
 
 use strict;
 use warnings;
 use iMSCP::Debug;
 
-use FindBin;
+use vars qw/@ISA $AUTOLOAD/;
+@ISA = ('Common::SingletonClass');
+use Common::SingletonClass;
 
-
-use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
-use Common::SimpleClass;
-
-sub factory{
-	my $self	= shift;
-	my $server	= shift;
-	my ($file, $class);
-
-	if(lc($server) =~ /^no$/ ){
-		$file	= 'Servers/noserver.pm';
-		$class	= 'Servers::noserver';
-	} else {
-		$file	= "Servers/httpd/$server.pm";
-		$class	= "Servers::httpd::$server";
-	}
-
+sub AUTOLOAD {
+	my $self = shift;
 	debug((caller(0))[3].': Starting...');
-
-	require $file;
-
 	debug((caller(0))[3].': Ending...');
-
-	return $class->new();
+	return 0;
 }
 
 1;

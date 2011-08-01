@@ -229,7 +229,7 @@ sub readPackages{
 						'Not Used'
 					);
 				}while (!$rs);
-				$self->{userSelection}->{$server} = $rs;
+				$self->{userSelection}->{$server} = lc($rs) eq 'not used' ? 'no' : $rs;
 				foreach(@alternative){
 					delete($data->{$server}->{alternative}->{$_}) if($_ ne $rs);
 				}

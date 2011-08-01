@@ -37,8 +37,14 @@ use Common::SimpleClass;
 sub factory{
 	my $self	= shift;
 	my $server	= shift;
-	my $file	= "Servers/po/$server.pm";
-	my $class	= "Servers::po::$server";
+	my ($file, $class);
+	if(lc($server) =~ /^no$/ ){
+		$file	= "Servers/noserver.pm";
+		$class	= "Servers::noserver";
+	} else {
+		$file	= "Servers/po/$server.pm";
+		$class	= "Servers::po::$server";
+	}
 
 	debug((caller(0))[3].': Starting...');
 
