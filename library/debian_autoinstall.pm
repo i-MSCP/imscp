@@ -226,7 +226,8 @@ sub readPackages{
 					$rs = iMSCP::Dialog->factory()->radiolist(
 						"Choose server $server",
 						@alternative,
-						'Not Used'
+						#once all servers are rewritten to classes remove comment
+						#'Not Used'
 					);
 				}while (!$rs);
 				$self->{userSelection}->{$server} = lc($rs) eq 'not used' ? 'no' : $rs;
