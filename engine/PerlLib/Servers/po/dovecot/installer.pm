@@ -75,6 +75,35 @@ sub install{
 	$self->saveConf() and return 1;
 	$self->oldEngineCompatibility() and return 1;
 
+	$self->migrateMailboxes() and return 1;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub migrateMailboxes{
+	debug((caller(0))[3].': Starting...');
+
+	if(
+		$main::imscpConfigOld{PO_SERVER} eq 'courier'
+		&&
+		$main::imscpConfig{PO_SERVER}  eq 'dovecot'
+	){
+		use iMSCP::Execute;
+		use FindBin;
+		use Servers::mta;
+
+		my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+		my ($rs, $stdout, $stderr);
+		my $binPath = "$FindBin::Bin/../PerlVendor/courier-dovecot-migrate.pl";
+		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
+
+		$rs = execute("$binPath --to-dovecot --convert --recursive $mailPath", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout...") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		error((caller(0))[3].": Error while converting mails") if !$stderr && $rs;
+	}
+
 	debug((caller(0))[3].': Ending...');
 	0;
 }

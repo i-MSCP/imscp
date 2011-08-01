@@ -94,7 +94,7 @@ sub engine {
 
 	foreach(@configs){
 		if($_ eq '.svn'){
-			warning("You should remove .svn folders");
+			warning("You should remove .svn folders (you can ignore this, we will take care for this)");
 			next;
 		}
 		if (-f "$FindBin::Bin/engine/$_/install.xml"){
@@ -197,7 +197,7 @@ sub processSpecificConfFile{
 
 	foreach(@configs){
 		if($_ eq '.svn'){
-			warning("You should remove .svn folders");
+			warning("You should remove .svn folders (you can ignore this, we will take care for this)");
 			next;
 		}
 		$path = -d "$specificPath/$_" ? "$specificPath/$_" : "$commonPath/$_";

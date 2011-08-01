@@ -18,6 +18,7 @@
 			<dovecot>dovecot-imapd</dovecot>
 			<dovecot>dovecot-pop3d</dovecot>
 			<dovecot>dovecot-sieve</dovecot>
+			<dovecot>dovecot-mysql</dovecot>
 		</alternative>
 	</po>
 	<mta>
