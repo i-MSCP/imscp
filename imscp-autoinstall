@@ -89,6 +89,7 @@ my @steps = (
 	[\&finishBuild,				'Process post build operations'],
 	[\&cleanUp,					'Perform cleanup']
 );
+
 my $step = 1;
 for (@steps){
 	step($_->[0], $_->[1], scalar @steps, $step);
@@ -126,17 +127,37 @@ unless(iMSCP::Dialog->factory()->yesno($msg)){
 	}
 	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 	iMSCP::Dialog->factory()->msgbox("Enjoy i-MSCP $main::defaultConf{Version}");
+
+	iMSCP::Dialog->factory()->infobox("Cleaning temporary files");
+
+	$rs = cleanTMP();
+	exit $rs;
+
 } else {
 	iMSCP::Dialog->factory()->msgbox(
 		"To continue setup run from console\n\n".
-		"\\Zu$main::defaultConf{ROOT_DIR}/engine/setup/imscp-setup"
+		"1.  Purge all GUI sessions files\n\n".
+		"\t# rm -Rf /var/www/imscp/gui/data/sessions\n\n".
+		"2.  Backup needed files\n\n".
+		"\t# cp -Rfv /var/www/imscp/gui/data /tmp/imscp/var/www/imscp/gui\n".
+		"\t# cp -Rfv /var/www/imscp/gui/public/tools/webmail/data ".
+		"/tmp/imscp/var/www/imscp/gui/public/tools/webmail\n\n".
+		"3.  Delete old directories:\n\n".
+		"\t# rm -Rf /var/www/imscp/{daemon,engine,gui}\n\n".
+		"4.  Copy directories into your system (you may make backups)\n\n".
+		"\t# cp -R /tmp/imscp/* / \n\n".
+		"5.  Now it's time to update your installation.".
+		"Change into the engine directory\n\n".
+		"\t# cd /var/www/imscp/engine/setup\n\n".
+		"6. Start the engine update\n\n".
+		"\t# perl imscp-setup\n\n".
+		"11. Update i-MSCP step-by-step\n\n".
+		"If you get no error, all went good; if you get one, look at ".
+		"http://forum.i-mscp.net to solve the problem."
 	);
 }
 
-iMSCP::Dialog->factory()->infobox("Cleaning temporary files");
-
-$rs = cleanTMP();
-exit $rs;
+0;
 
 END{
 	execute('clear');
