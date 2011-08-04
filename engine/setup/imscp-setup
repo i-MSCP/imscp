@@ -41,29 +41,6 @@ iMSCP::Debug->newDebug('imscp-setup.log');
 require "$FindBin::Bin/imscp-setup-methods.pl";
 
 ################################################################################
-# Shutting down setup process
-#
-# @return int 0 on success, other on failure
-#
-sub setup_shut_down {
-
-	debug((caller(0))[3].': Starting...');
-
-	iMSCP::Dialog->new()->msgbox(
-					"\n
-					\\Z1Congratulations!!!\\Zn
-
-					You installed i-MSCP '$main::imscpConfig{'Version'}' successfully!\n\n
-
-					Please type $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} in your browser and log in with your Administrator Account to use i-MSCP."
-	);
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
 # Starting update process
 #
 # @return void
@@ -76,12 +53,12 @@ sub setup_start_up {
 	umask(027);
 
 	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
-	iMSCP::Dialog->new(
-		'title'		=> 'i-MSCP Setup',
-		'backtitle'	=> "i-MSCP internet Multi Server Control Panel",
-	);
+
+	#enter silent mode
+	silent(1);
+
 	if(-e '/tmp/imscp-backup-all.lock') {
-		iMSCP::Dialog->new()->msgbox(
+		iMSCP::Dialog->factory()->msgbox(
 					"\n
 					\\Z4[NOTICE]\\Zn
 
@@ -89,6 +66,30 @@ sub setup_start_up {
 					");
 		exit 1;
 	}
+
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+################################################################################
+# Shutting down setup process
+#
+# @return int 0 on success, other on failure
+#
+sub setup_shut_down {
+
+	debug((caller(0))[3].': Starting...');
+
+	iMSCP::Dialog->factory()->msgbox(
+					"\n
+					\\Z1Congratulations!!!\\Zn
+
+					You installed i-MSCP '$main::imscpConfig{'Version'}' successfully!\n\n
+
+					Please type $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} in your browser and log in with your Administrator Account to use i-MSCP."
+	);
 
 	debug((caller(0))[3].': Ending...');
 
@@ -132,8 +133,7 @@ sub setup_engine {
 		[\&setup_gui_php, 'i-MSCP GUI fastCGI/PHP configuration: '],
 		[\&setup_gui_httpd, 'i-MSCP GUI vhost file: '],
 		[\&setup_gui_pma, 'i-MSCP PMA configuration file: '],
-		[\&setup_mta, 'i-MSCP Postfix configuration files: '],
-		[\&setup_po, 'i-MSCP Courier-Authentication: '],
+		[\&setup_mail, 'i-MSCP mail server setup: '],
 		[\&setup_ftpd, 'i-MSCP ProFTPd configuration file: '],
 		[\&askBackup, 'Setting backup: '],
 		[\&rebuild_customers_cfg, 'Rebuilding all customers configuration files: '],
@@ -148,7 +148,7 @@ sub setup_engine {
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 	debug((caller(0))[3].': Ending...');
 	0;
 }

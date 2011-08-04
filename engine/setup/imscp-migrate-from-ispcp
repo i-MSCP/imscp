@@ -73,7 +73,7 @@ sub setup_engine {
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
 	systemSetup();
 
@@ -137,8 +137,8 @@ sub checkISPCPVersion{
 	$main::ispcpConfig{'Version'} =~ m!([\d.]+)!;
 	if(version->new($1) < version->new('1.0.7')){
 		error((caller(0))[3].': Only migration from ispCP 1.0.7 or later is supported');
-		iMSCP::Dialog->new()->set('defaultno', '');
-		exit 1 if iMSCP::Dialog->new()->yesno("
+		iMSCP::Dialog->factory()->set('defaultno', '');
+		exit 1 if iMSCP::Dialog->factory()->yesno("
 
 
 						\\Z1\\ZuispCP $1 is not supported!\\Zn
@@ -191,7 +191,7 @@ sub checkDbPass{
 		}
 	}
 
-	iMSCP::Dialog->new()->msgbox("
+	iMSCP::Dialog->factory()->msgbox("
 
 
 							\\Z1\\ZuispCP database keys are corrupt!\\Zn
@@ -352,7 +352,7 @@ sub databaseIntegrityTest{
 		}
 	}
 	if (@errors){
-		iMSCP::Dialog->new()->msgbox("
+		iMSCP::Dialog->factory()->msgbox("
 							\\Z1\\ZuispCP database records are corrupt!\\Zn\n
 							Please fix folowing:\n\n".
 							join("\n\n", @errors)
@@ -400,7 +400,7 @@ sub userTest{
 	}
 
 	if (@errors){
-		iMSCP::Dialog->new()->msgbox("
+		iMSCP::Dialog->factory()->msgbox("
 							\\Z1\\ZuispCP users records are missing or corrupt!\\Zn\n
 							Please fix folowing:\n\n".
 							join("\n\n", @errors)
@@ -465,7 +465,7 @@ sub systemConfigTest{
 
 	$rv = 0;
 	if (@errors){
-		if(iMSCP::Dialog->new()->msgbox("
+		if(iMSCP::Dialog->factory()->msgbox("
 							\\Z1\\ZuErrors while saving system files!\\Zn:\n\n
 							".join("\n", @errors)."\n
 							Fix this and after that try again"
@@ -597,7 +597,7 @@ sub dbUpgrade{
 
 	if (@errors){
 		error((caller(0))[3].": \n".join("\n", @errors));
-		exit 0 if iMSCP::Dialog->new()->msgbox("
+		exit 0 if iMSCP::Dialog->factory()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n\n".
 								join("\n\n", @errors)
@@ -703,7 +703,7 @@ sub otherMessCleanup{
 
 	if (@errors){
 		warning((caller(0))[3].": \n".join("\n", @errors));
-		exit 0 if iMSCP::Dialog->new()->msgbox("
+		exit 0 if iMSCP::Dialog->factory()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n".
 								join("\n\n", @errors)
@@ -741,7 +741,7 @@ sub daemonRemove{
 
 	if (@errors){
 		warning((caller(0))[3].": \n".join("\n", @errors));
-		exit 0 if iMSCP::Dialog->new()->msgbox("
+		exit 0 if iMSCP::Dialog->factory()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n".
 								join("\n\n", @errors)
@@ -775,7 +775,7 @@ sub removeDirs{
 	}
 
 	 if ($errors) {
-		iMSCP::Dialog->new()->msgbox("
+		iMSCP::Dialog->factory()->msgbox("
 									\\Z1\\ZuWARNING\\Zn\n
 									Please fix folowing:\n".
 									$errors
@@ -807,7 +807,7 @@ sub removeFile{
 	}
 
 	if ($errors) {
-		iMSCP::Dialog->new()->msgbox("
+		iMSCP::Dialog->factory()->msgbox("
 									\\Z1\\ZuWARNING\\Zn\n
 									Please fix folowing:\n".
 									$errors
@@ -825,7 +825,7 @@ sub systemSetup{
 
 	debug((caller(0))[3].': Starting...');
 
-	iMSCP::Dialog->new()->msgbox("
+	iMSCP::Dialog->factory()->msgbox("
 								\\Z1SUCCESS\\Zn\n\n
 								You can now install iMSCP. Type \\Z4./imscp-setup\\Zn
 	");

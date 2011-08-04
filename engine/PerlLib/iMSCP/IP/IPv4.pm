@@ -20,7 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @version		SVN: $Id: IPv4.pm 4854 2011-07-10 13:23:58Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -203,6 +203,18 @@ sub isCardUp{
 	debug((caller(0))[3].': Ending...');
 
 	return (exists $self->{cards}->{$card}->{up});
+}
+
+sub isValidIp{
+	my $self	= shift;
+	my $ip	= shift;
+
+	debug((caller(0))[3].': Starting...');
+	use Data::Validate::IP qw/is_ipv4/;
+
+	debug((caller(0))[3].': Ending...');
+
+	return (is_ipv4($ip));
 }
 
 1;

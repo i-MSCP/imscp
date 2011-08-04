@@ -40,8 +40,15 @@ use Common::SimpleClass;
 sub factory{
 	my $self	= shift;
 	my $server	= shift;
-	my $file	= "Servers/httpd/$server.pm";
-	my $class	= "Servers::httpd::$server";
+	my ($file, $class);
+
+	if(lc($server) =~ /^no$/ ){
+		$file	= 'Servers/noserver.pm';
+		$class	= 'Servers::noserver';
+	} else {
+		$file	= "Servers/httpd/$server.pm";
+		$class	= "Servers::httpd::$server";
+	}
 
 	debug((caller(0))[3].': Starting...');
 
@@ -49,7 +56,7 @@ sub factory{
 
 	debug((caller(0))[3].': Ending...');
 
-	return $class->new();;
+	return $class->new();
 }
 
 1;

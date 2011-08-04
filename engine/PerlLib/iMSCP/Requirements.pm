@@ -56,7 +56,7 @@ sub _init{
 		#'File::Temp'				=> 'qw(tempdir)',
 		#'File::Copy::Recursive'	=> 'qw(rcopy)',
 		'Net::LibIDN'				=> 'qw/idn_to_ascii idn_to_unicode/',
-		#'XML::Simple'				=> '',
+		'XML::Simple'				=> '',
 		'DateTime'					=> '',
 		'Data::Validate::Domain'	=> 'qw(is_domain)',
 		'Data::Validate::IP'		=> 'qw(is_ipv4 is_ipv6)',

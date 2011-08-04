@@ -35,9 +35,8 @@ use Common::SingletonClass;
 use Log::Message;
 use Carp;
 
-@ISA = ("Common::SingletonClass", 'Exporter');
-@EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastError/;
-
+@ISA = ('Common::SingletonClass', 'Exporter');
+@EXPORT = qw/debug warning error fatal newDebug endDebug getMessage getLastError getMessageByType silent/;
 
 BEGIN{
 
@@ -54,17 +53,18 @@ BEGIN{
 }
 
 sub _init{
-	my $self	= shift;
-	$self->{log}		= {};
-	$self->{logLevels}	= ();
-	$self->{lastLog}	= Log::Message->new( private => 1);
-	$self->{log}->{'default'} = $self->{lastLog};
+	my $self					= shift;
+	$self->{log}				= {};
+	$self->{logLevels}			= ();
+	$self->{lastLog}			= Log::Message->new( private => 1);
+	$self->{log}->{'default'}	= $self->{lastLog};
+	$self->{silent}				= 0;
 }
 
 sub newDebug{
 	my $debug	= shift || '';
 	push(@{iMSCP::Debug->new()->{logLevels}}, iMSCP::Debug->new()->{lastLog});
-	iMSCP::Debug->new()->{lastLog} = Log::Message->new( private => 1);
+	iMSCP::Debug->new()->{lastLog} = Log::Message->new( private => 1 );
 	iMSCP::Debug->new()->{log}->{$debug} = iMSCP::Debug->new()->{lastLog};
 }
 
@@ -77,6 +77,10 @@ sub endDebug{
 	1;
 }
 
+sub silent{
+	iMSCP::Debug->new()->{silent} = shift || 0;
+}
+
 sub debug{
 	my $message		= shift || '';
 	iMSCP::Debug->new()->{lastLog}->store(message => $message, tag => 'DEBUG', level => 'log');
@@ -87,7 +91,7 @@ sub warning{
 	my $verbosity	= shift or 1;
 	my $self = iMSCP::Debug->new();
 	$self->{lastLog}->store(message => $message, tag => 'WARNING', level => $verbosity ? 'cluck' : 'log');
-	print STDERR "[WARNING] $message\n";
+	print STDERR output("$message", {mode=>'warning'}) unless $self->{silent};
 }
 
 sub error{
@@ -95,7 +99,7 @@ sub error{
 	my $verbosity	= shift or 1;
 	my $self = iMSCP::Debug->new();
 	$self->{lastLog}->store(message => $message, tag => 'ERROR', level => $verbosity ? 'cluck' : 'log');
-	print STDERR "[ERROR] $message\n";
+	print STDERR output("$message", {mode=>'error'}) unless $self->{silent};
 }
 
 sub fatal{
@@ -104,23 +108,39 @@ sub fatal{
 	my $self = iMSCP::Debug->new();
 	$self->{lastLog}->store(message => $message, tag => 'FATAL ERROR', level => $verbosity ? 'cluck' : 'log');
 	while(!$self->endDebug()){};
-	print STDERR "[FATAL ERROR] $message\n";
+	print STDERR output("$message", {mode=>'fatal'});
 	exit 1;
 }
 
 sub getLastError{
 	my $self = iMSCP::Debug->new();
-	my $log = scalar ($self->{lastLog}->retrieve(
-		chrono	=> 0,
-		tag		=> qr/ERROR$/i,
-		remove	=> 0,
-		amount	=> 1,
-	));
-	if ( $log ) {
-		return  "[".$log->tag."] ".$log->message;
-	} else {
-		return "Check logs for details";
-	}
+	my $last = getMessageByType('ERROR', {amount => 1, chrono => 0});
+	#error("\$last:$last");
+	return $last;
+}
+
+sub getMessageByType{
+	my $self	= iMSCP::Debug->new();
+	my $mode	= uc(shift);
+	my $opts	= shift;
+	$opts = {} unless ref $opts eq 'HASH';
+
+	$mode = 'ERROR' unless( defined($mode) && $mode =~ 'DEBUG|WARNING|ERROR');
+
+	$opts->{amount}	= 0 unless (defined($opts->{amount}) && $opts->{amount} =~ /\d+/);
+	$opts->{chrono}	= 1 unless (defined($opts->{chrono}) && $opts->{chrono} =~ /0|1/);
+	$opts->{remove}	= 0 unless (defined($opts->{remove}) && $opts->{remove} =~ /0|1/);
+
+	my $amount	= shift || 1;
+	my @log		= $self->{lastLog}->retrieve(
+		tag		=> qr/^$mode$/i,
+		amount	=> $opts->{amount},
+		chrono	=> $opts->{chrono},
+		remove	=> $opts->{remove}
+	);
+	my @result = ();
+	push @result, $_->message foreach(@log);
+	return (wantarray ? @result : join "\n", @result);
 }
 
 sub getMessage{
@@ -159,5 +179,26 @@ sub _getMessageLevel{
 
 	return  $line;
 }
+
+sub output{
+
+	my $text	= shift;
+	my $options	= shift;
+
+	$options = {} if ref $options ne 'HASH';
+
+	if ($options->{mode} && lc($options->{mode}) eq 'fatal') {
+		return "[ \033[0;31m".($options->{text} ? uc($options->{text}) : 'FATAL ERROR')."\033[0m ] ${text}\n";
+	} elsif ($options->{mode} && lc($options->{mode}) eq 'error') {
+		return "[ \033[0;31m".($options->{text} ? uc($options->{text}) : 'ERROR')."\033[0m ] ${text}\n";
+	} elsif ($options->{mode} && lc($options->{mode}) eq 'warning'){
+		return "[ \033[0;33m".($options->{text} ? uc($options->{text}) : 'WARNING')."\033[0m ] ${text}\n";
+	} elsif ($options->{mode} && lc($options->{mode}) eq 'ok'){
+		return "[ \033[0;32m".($options->{text} ? uc($options->{text}) : 'OK')."\033[0m ] ${text}\n";
+	} else {
+		return "$text\n";
+	}
+}
+
 1;
 

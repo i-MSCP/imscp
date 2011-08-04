@@ -33,9 +33,8 @@ use iMSCP::Execute;
 
 use vars qw/@ISA/;
 
-@ISA = ('Common::SimpleClass', 'Common::SetterClass');
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
-use Common::SetterClass;
 
 sub addSystemUser{
 
@@ -55,14 +54,14 @@ sub addSystemUser{
 
 	if(!getpwnam($userName)){
 		my ($rs, $stdout, $stderr);
-		my $comment			= $self->{usercomment} ? "\"$self->{usercomment}\"" : '"iMSCPuser"';
+		my $comment			= $self->{comment} ? "\"$self->{comment}\"" : '"iMSCPuser"';
 		my $home			= $self->{home} ? '"'.$self->{home}.'"' : "\"$main::imscpConfig{'USER_HOME_DIR'}/$userName\"";
-		my $skipGroup		= $self->{skipGroup} || $self->{userGroup} ? '' : '-U';
-		my $group			= $self->{userGroup} ? "-g $self->{userGroup}" : '';
+		my $skipGroup		= $self->{skipGroup} || $self->{group} ? '' : '-U';
+		my $group			= $self->{group} ? "-g $self->{group}" : '';
 		my $createHome		= $self->{skipCreateHome} ? '' : '-m';
 		my $systemUser		= $self->{system} ? '-r' : '';
-		my $copySkeleton	= $self->{system} ||$self->{skipCreateHome} ? '' : '-k';
-		my $skeletonPath	= $self->{system} ||$self->{skipCreateHome} ? '' : "\"$main::imscpConfig{'GUI_ROOT_DIR'}/userHome\"";
+		my $copySkeleton	= $self->{system} || $self->{skipCreateHome} ? '' : '-k';
+		my $skeletonPath	= $self->{system} || $self->{skipCreateHome} ? '' : "\"$main::imscpConfig{'GUI_ROOT_DIR'}/userHome\"";
 		my $shell			= $self->{shell} ? $self->{shell} : '/bin/false';
 
 		my  @cmd = (
@@ -71,6 +70,7 @@ sub addSystemUser{
 			"-c", $comment,									#comment
 			'-d', $home,									#homedir
 			$skipGroup,										#create group with same name and add user to group
+			$group,
 			$createHome,									#create home dir
 			$copySkeleton, $skeletonPath,					#copy skeleton dir
 			$systemUser,									#system account

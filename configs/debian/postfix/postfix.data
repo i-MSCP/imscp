@@ -1,0 +1,65 @@
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id: installer.pm 4856 2011-07-11 08:48:54Z sci2tech $
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+POSTFIX_CONF_DIR = /etc/postfix
+
+POSTFIX_CONF_FILE = /etc/postfix/main.cf
+
+POSTFIX_MASTER_CONF_FILE = /etc/postfix/master.cf
+
+MTA_VIRTUAL_CONF_DIR = /etc/postfix/imscp
+
+CMD_MTA = /etc/init.d/postfix
+
+MTA_LOCAL_MAIL_DIR = /var/mail
+
+MTA_VIRTUAL_MAIL_DIR = /var/mail/virtual
+
+MTA_LOCAL_ALIAS_HASH = /etc/aliases
+
+MTA_VIRTUAL_ALIAS_HASH = /etc/postfix/imscp/aliases
+
+MTA_VIRTUAL_DMN_HASH = /etc/postfix/imscp/domains
+
+MTA_VIRTUAL_MAILBOX_HASH = /etc/postfix/imscp/mailboxes
+
+MTA_TRANSPORT_HASH = /etc/postfix/imscp/transport
+
+MTA_SENDER_ACCESS_HASH = /etc/postfix/imscp/sender-access
+
+MTA_MAILBOX_UID_NAME = vmail
+
+MTA_MAILBOX_GID_NAME = mail
+
+MTA_SASLDB_FILE = /var/spool/postfix/etc/sasldb2
+
+ETC_SASLDB_FILE = /etc/sasldb2
+
+CMD_SASLDB_LISTUSERS2 = /usr/sbin/sasldblistusers2
+
+CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
+
+CMD_POSTMAP = /usr/sbin/postmap
+
+CMD_NEWALIASES = /usr/bin/newaliases

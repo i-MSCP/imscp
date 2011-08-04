@@ -32,7 +32,7 @@ use Tie::File;
 use iMSCP::Debug;
 
 use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
 
 sub TIEHASH {
@@ -96,7 +96,7 @@ sub FETCH {
 
 	debug((caller(0))[3].": Fetching ${config}..." );
 
-	if (!exists($self->{configValues}->{$config})){
+	if (!exists($self->{configValues}->{$config}) && !$self->{args}->{noerrors}){
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
 

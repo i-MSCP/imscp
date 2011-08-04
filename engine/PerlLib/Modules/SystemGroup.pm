@@ -59,7 +59,7 @@ sub addSystemGroup{
 
 		my  @cmd = (
 			"$main::imscpConfig{'CMD_GROUPADD'}",
-			($^O !~ /bsd$/ ? "\"$systemGroup\"" : ''),	#system group
+			($^O !~ /bsd$/ ? "$systemGroup" : ''),	#system group
 			"\"$groupName\""							#group name
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
