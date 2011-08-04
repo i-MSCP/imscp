@@ -930,4 +930,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 	}
+
+	/**
+	 * Increase quota value.
+	 *
+	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @return string SQL statement to be executed
+	 */
+	protected function _databaseUpdate_74() {
+		return "
+			UPDATE `imscp`.`mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760';
+		";
+	}
 }

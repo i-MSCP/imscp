@@ -129,7 +129,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '73');
+('DATABASE_REVISION', '74');
 
 -- --------------------------------------------------------
 
@@ -414,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   `mail_auto_respond` tinyint(1) NOT NULL default '0',
   `mail_auto_respond_text` text collate utf8_unicode_ci,
-  `quota` int(10) default '10485760',
+  `quota` int(10) default '104857600',
   `mail_addr` varchar(200) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`mail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
