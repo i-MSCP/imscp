@@ -161,11 +161,25 @@ setup_shut_down() and exit 1;
 exit 0;
 
 END{
+	execute('clear');
+
+	my @warnings	= getMessageByType('WARNING');
+	my @errors		= getMessageByType('ERROR');
+	my @fatals		= getMessageByType('FATAL ERROR');
+
+	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
+	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
+	$msg	.= "\nFATAL ERRORS:\n"	. join("\n", @fatals)	. "\n" if @fatals > 0;
+
 	my $message = getMessage();
+
+	iMSCP::Debug->newDebug('discard');
+
 	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
 		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-setup.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-setup.log' for writing: $!");
 		print F $message;
 		close F;
 		print STDOUT "\n\nA log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
 	}
+	print STDERR $msg if $msg;
 }
