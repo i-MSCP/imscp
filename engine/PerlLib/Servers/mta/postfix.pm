@@ -137,7 +137,7 @@ sub restart{
 
 	use iMSCP::Execute;
 
-	# Reload apache config
+	# Reload config
 	$rs = execute("$self->{CMD_MTA} restart", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;

@@ -101,9 +101,9 @@ sub oldEngineCompatibility{
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
 
-	$main::imscpConfig{'MTA_MAILBOX_MIN_UID'}	= $uid if !$main::imscpConfig{'MTA_MAILBOX_MIN_UID'} || $main::imscpConfig{'MTA_MAILBOX_MIN_UID'} != $uid;
-	$main::imscpConfig{'MTA_MAILBOX_UID'}		= $uid if !$main::imscpConfig{'MTA_MAILBOX_UID'} || $main::imscpConfig{'MTA_MAILBOX_UID'} != $uid;
-	$main::imscpConfig{'MTA_MAILBOX_GID'}		= $gid if !$main::imscpConfig{'MTA_MAILBOX_GID'} || $main::imscpConfig{'MTA_MAILBOX_GID'} != $gid;
+	$main::imscpConfig{'MTA_MAILBOX_MIN_UID'}	= $uid if !$main::imscpConfig{'MTA_MAILBOX_MIN_UID'} || $main::imscpConfig{'MTA_MAILBOX_MIN_UID'} ne $uid;
+	$main::imscpConfig{'MTA_MAILBOX_UID'}		= $uid if !$main::imscpConfig{'MTA_MAILBOX_UID'} || $main::imscpConfig{'MTA_MAILBOX_UID'} ne $uid;
+	$main::imscpConfig{'MTA_MAILBOX_GID'}		= $gid if !$main::imscpConfig{'MTA_MAILBOX_GID'} || $main::imscpConfig{'MTA_MAILBOX_GID'} ne $gid;
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -207,10 +207,9 @@ sub buildLookup{
 }
 
 sub bkpConfFile{
+	debug((caller(0))[3].': Starting...');
 
 	use File::Basename;
-
-	use Data::Dumper;
 
 	my $self		= shift;
 	my $cfgFile		= shift;

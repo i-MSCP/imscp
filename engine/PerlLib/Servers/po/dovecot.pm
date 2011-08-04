@@ -70,7 +70,16 @@ sub install{
 
 	my $self	= shift;
 	my $rs		= Servers::po::dovecot::installer->new()->install();
-	$rs			|= $self->restart();
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
+sub postinst{
+	debug((caller(0))[3].': Starting...');
+
+	my $self	= shift;
+	my $rs		= $self->restart();
 
 	debug((caller(0))[3].': Ending...');
 	$rs;

@@ -158,6 +158,8 @@ sub saveConf{
 	my $self		= shift;
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.data");
 	my $cfg = $file->get() or return 1;
+	$file->mode(0640) and return 1;
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/dovecot.old.data");
 	$file->set($cfg) and return 1;

@@ -42,6 +42,7 @@
 	<copy_config>${SYSTEM_CONF}/proftpd/parts</copy_config>
 	<copy_config>${ROOT_CONF}/proftpd/imscp/root_domain.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/proftpd/proftpd.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/proftpd/proftpd.data</copy_config>
 
 	<copy />
 

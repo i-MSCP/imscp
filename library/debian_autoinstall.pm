@@ -78,6 +78,9 @@ sub preBuild{
 	my $self = shift;
 	my $rs;
 
+	$rs = $self->updatePackages();
+	return $rs if $rs;
+
 	$rs = $self->preRequish();
 	return $rs if $rs;
 
@@ -96,6 +99,22 @@ sub preBuild{
 	0;
 }
 
+sub updatePackages{
+	debug((caller(0))[3].': Starting...');
+
+	iMSCP::Dialog->factory()->infobox("Update packages");
+
+	my ($rs, $stdout, $stderr);
+
+	$rs = execute('apt-get update', \$stdout, \$stderr);
+	debug((caller(0))[3].": $stdout") if $stdout;
+	error((caller(0))[3].": $stderr") if $stderr;
+	error((caller(0))[3].": Can not get update from repository") if $rs && !$stderr;
+	return $rs if $rs;
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
 ################################################################################
 # Load old i-MSCP main configuration file
 #
@@ -140,7 +159,7 @@ sub processAptList{
 		return 1;
 	}
 
-	my ($foundNonFree, $rs, $stdout, $stderr);
+	my ($foundNonFree, $needUpdate, $rs, $stdout, $stderr);
 
 	while($content =~ /^deb\s+(?<uri>(?:https?|ftp)[^\s]+)\s+(?<distrib>[^\s]+)\s+(?<components>.+)$/mg){
 
@@ -152,9 +171,10 @@ sub processAptList{
 			debug((caller(0))[3].": $stdout") if $stdout;
 			debug((caller(0))[3].": $stderr") if $stderr;
 			unless ($rs){
-				$foundNonFree	= 1;
+				$foundNonFree = 1;
 				debug((caller(0))[3].": Enable non free on $repos{uri}");
 				$content =~ s/^($&)$/$1 $self->{nonfree}/mg;
+				$needUpdate = 1;
 			}
 		} else {
 			debug((caller(0))[3].": Non free already enabled on $repos{uri}");
@@ -168,16 +188,13 @@ sub processAptList{
 		return 1;
 	}
 
-	$file->set($content);
-	$file->save() and return 1;
+	if($needUpdate){
+		$file->set($content);
+		$file->save() and return 1;
 
-	iMSCP::Dialog->factory()->infobox("Update apt sources");
-
-	$rs = execute('apt-get update', \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	error((caller(0))[3].": Can not get update from repository") if $rs && !$stderr;
-	return $rs if $rs;
+		$rs = $self->updatePackages();
+		return $rs if $rs;
+	}
 
 	debug((caller(0))[3].': Ending...');
 	0;

@@ -36,94 +36,91 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
+	my $self	= shift;
+
 	debug((caller(0))[3].': Starting...');
 
-	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/courier";
+	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
 	$self->{wrkDir} = "$self->{cfgDir}/working";
 
-	$self->{$_} = $main::imscpConfig{$_} foreach(keys %main::imscpConfig);
+	$self->{commentChar} = '#';
+
+	#$self->{$_} = $main::imscpConfig{$_} foreach(keys %main::imscpConfig);
+
+	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/proftpd.data";
+	$self->{$_} = $self::proftpdConfig{$_} foreach(keys %self::proftpdConfig);
+}
+
+sub preinstall{
+	debug((caller(0))[3].': Starting...');
+
+	use Servers::ftp::proftpd::installer;
+
+	my $self	= shift;
+	my $rs		= 0;
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
+sub install{
+	debug((caller(0))[3].': Starting...');
+
+	use Servers::ftp::proftpd::installer;
+
+	my $self	= shift;
+	my $rs		= Servers::ftp::proftpd::installer->new()->install();
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
+sub postinst{
+	debug((caller(0))[3].': Starting...');
+
+	my $self	= shift;
+	my $rs		= $self->restart();
+
+	debug((caller(0))[3].': Ending...');
+	$rs;
+}
+
+sub registerPreHook{
+	debug((caller(0))[3].': Starting...');
+
+	my $self		= shift;
+	my $fname		= shift;
+	my $callback	= shift;
+
+	my $installer	= Servers::ftp::proftpd::installer->new();
+
+	push (@{$installer->{preCalls}->{fname}}, $callback)
+		if (ref $callback eq 'CODE' && $installer->can($fname));
+
+	push (@{$self->{preCalls}->{fname}}, $callback)
+		if (ref $callback eq 'CODE' && $self->can($fname));
 
 	debug((caller(0))[3].': Ending...');
 	0;
 }
 
-sub buildConfFile{
-
+sub registerPostHook{
 	debug((caller(0))[3].': Starting...');
 
-	my $self			= shift;
-	my $fileName		= shift;
+	my $self		= shift;
+	my $fname		= shift;
+	my $callback	= shift;
 
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use iMSCP::Execute;
+	debug((caller(0))[3].": Attaching to $fname...");
 
-	my ($rs, $cfgTpl, $file);
+	my $installer	= Servers::ftp::proftpd::installer->new();
 
+	push (@{$installer->{postCalls}->{$fname}}, $callback)
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 
-	if(-f "$main::imscpConfig{'APACHE_SITES_DIR'}/$fileName") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_SITES_DIR'}/$fileName")->copyFile("$self->{bkpDir}/$fileName." . time()) and return 1;
-	}
-
-	$cfgTpl = iMSCP::File->new(filename => "$self->{cfgDir}/$fileName")->get();
-	return 1 if(!$cfgTpl);
-
-	my $tplValues = {};
-
-	foreach(keys %{$self}){
-		$tplValues->{$_} = $self->{$_};
-	}
-
-	foreach(@{$self->{preCalls}}){
-		eval {$rs = &$_(\$cfgTpl);};
-		error((caller(0))[3]."$@");
-		return $rs if $rs;
-	}
-
-	$cfgTpl = process($tplValues, $cfgTpl);
-	return 1 if (!$cfgTpl);
-
-	foreach(@{$self->{postCalls}}){
-		eval {$rs = &$_(\$cfgTpl);};
-		error((caller(0))[3]."$@");
-		return $rs if $rs;
-	}
-
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/$fileName");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file
-	$file->copyFile("$main::imscpConfig{'APACHE_SITES_DIR'}/") and return 1;
-
-	debug((caller(0))[3].': Ending...');
-	0;
-}
-
-sub registerPreCall{
-
-	debug((caller(0))[3].': Starting...');
-
-	my $self			= shift;
-	my $callback		= shift;
-
-	push (@{$self->{preCalls}}, $callback) if (ref $callback eq 'CODE');
-
-	debug((caller(0))[3].': Ending...');
-	0;
-}
-
-sub registerPostCall{
-
-	debug((caller(0))[3].': Starting...');
-
-	my $self			= shift;
-	my $callback		= shift;
-
-	push (@{$self->{postCalls}}, $callback) if (ref $callback eq 'CODE');
+	push (@{$self->{postCalls}->{$fname}}, $callback)
+		if (ref $callback eq 'CODE' && $self->can($fname));
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -137,23 +134,8 @@ sub restart{
 
 	use iMSCP::Execute;
 
-	# Reload apache config
-	$rs = execute("$main::imscpConfig{'CMD_POP'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
-
-	$rs = execute("$main::imscpConfig{'CMD_IMAP'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
-
-	$rs = execute("$main::imscpConfig{'CMD_POP_SSL'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	return $rs if $rs;
-
-	$rs = execute("$main::imscpConfig{'CMD_IMAP_SSL'} restart", \$stdout, \$stderr);
+	# Reload config
+	$rs = execute("$self->{CMD_FTPD} restart", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
 	return $rs if $rs;

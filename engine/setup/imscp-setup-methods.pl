@@ -1342,239 +1342,30 @@ sub setup_awstats_vhost {
 	0;
 }
 
-
 ################################################################################
-# i-MSCP Proftpd - (Setup / Update)
+# i-MSCP FTPD - (Setup / Update)
 #
-# This subroutine do the following tasks:
-#  - Built, store and install Proftpd main configuration files
-#  - Create Ftpd SQL account if needed
+# This subroutine install or update the i-MSCP ftpd server
 #
 # @return int 0 on success, other on failure
 #
 sub setup_ftpd {
 
 	debug((caller(0))[3].': Starting...');
+	my ($rs, $ftpd);
 
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'CMD_FTPD'} =~ /^no$/i);
+	use Servers::ftp;
 
-	use iMSCP::File;
-	use iMSCP::Execute;
-	use iMSCP::Templator;
-	use iMSCP::Dir;
-	use iMSCP::Dialog;
-	use iMSCP::Crypt;
+	$ftpd	= Servers::ftp->factory($main::imscpConfig{FTPD_SERVER});
 
-	my ($rs, $rdata, $cfgTpl, $file, $err);
+	$rs = $ftpd->can('preinstall') ? $ftpd->preinstall() : 0;
+	return $rs if $rs;
 
-	my $wrkFile;
-	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass);
-	my $connData;
+	$rs = $ftpd->can('install') ? $ftpd->install() : 0;
+	return $rs if $rs;
 
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/proftpd";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	## Sets the path to the configuration file
-
-	$main::imscpConfig{'FTPD_CONF_FILE'} = '/etc/proftpd/proftpd.conf' if (!-f $main::imscpConfig{'FTPD_CONF_FILE'});
-
-	my $timestamp = time;
-
-	# Saving the system configuration file if it exist
-	if(-f $main::imscpConfig{'FTPD_CONF_FILE'} && !-f "$bkpDir/proftpd.conf.system") {
-		iMSCP::File->new(filename => $main::imscpConfig{'FTPD_CONF_FILE'})->copyFile("$bkpDir/proftpd.conf.system") and return 1;
-	}elsif(-f $main::imscpConfig{'FTPD_CONF_FILE'}) {
-		iMSCP::File->new(filename => $main::imscpConfig{'FTPD_CONF_FILE'})->copyFile("$bkpDir/proftpd.conf.$timestamp") and return 1;
-	}
-
-	## Get the current user and password for SQL connection and check it
-
-	if(-f "$wrkDir/proftpd.conf" ) {
-		$wrkFile = "$wrkDir/proftpd.conf";
-	} elsif(-f "$main::imscpConfig{'CONF_DIR'}/proftpd/backup/proftpd.conf.imscp") {
-		$wrkFile = "$main::imscpConfig{'CONF_DIR'}/proftpd/backup/proftpd.conf.imscp";
-	} elsif(-f '/etc/proftpd.conf.bak') {
-		$wrkFile = '/etc/proftpd.conf.bak';
-	}
-
-	if($wrkFile && -f $wrkFile) {
-
-		# Loading working configuration file from /etc/imscp/working/
-		$file = iMSCP::File->new(filename => $wrkFile);
-		$rdata = $file->get();
-		return 1 if(!$rdata);
-
-		if($rdata =~ /SQLBackend(?:[ \t])+?([^ \t\n]+)(?:.{0,})SQLConnectInfo(?: |\t)+(.*?)(?:@([^:]+?))?(?:\:([\d]+?))?(?: |\t)+(.*?)(?:(?: |\t)+(.*?))?\n/ims) {
-			# Check the database connection with current ids
-			$err = check_sql_connection($1 || '', $2 || '', $3 || '', $4 || '', $5 || '', $6 || '');
-
-			# If the connection is successful, we can use these identifiers
-			if(!$err) {
-				$connData = 'yes';
-				$dbUser = $5;
-				$dbPass = $6
-			} else {
-				iMSCP::Dialog->factory()->msgbox(
-					"\n
-					\\Z1[WARNING]\\Zn
-
-					Unable to connect to the database with authentication information found in your proftpd.conf file!
-
-					We will create a new Ftpd Sql account.
-					");
-			}
-			#restore defaul connection
-			my $crypt = iMSCP::Crypt->new();
-
-			$err = check_sql_connection(
-				$main::imscpConfig{'DATABASE_TYPE'},
-				$main::imscpConfig{'DATABASE_NAME'},
-				$main::imscpConfig{'DATABASE_HOST'},
-				$main::imscpConfig{'DATABASE_PORT'},
-				$main::imscpConfig{'DATABASE_USER'},
-				$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
-			);
-			if ($err){
-				error((caller(0))[3].": $err");
-				return 1;
-			}
-
-		}
-	} else {
-		iMSCP::Dialog->factory()->msgbox("
-					\n
-					\\Z1[WARNING]\\Zn
-
-					Unable to find the Proftpd configuration file!
-
-					The program will create a new."
-		);
-	}
-
-
-	# We ask the database ftp user and password, and we create new SQL ftp
-	# user account if needed
-	if(!$connData) {
-
-		# Ask for proftpd SQL username
-		$dbUser = 'vftp';
-		do{
-			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name (default vftp)", $dbUser);
-		} while (!$dbUser || $main::imscpConfig{'DATABASE_USER'} eq $dbUser);
-		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
-
-		# Ask for proftpd SQL user password
-		$dbPass = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", $dbPass);
-		if(!$dbPass){
-			$dbPass = iMSCP::Crypt::randomString(8);
-		}
-		$dbPass =~ s/('|"|`|#|;|\s)/_/g;
-		iMSCP::Dialog->factory()->msgbox("Your password is '".$dbPass."' (we have stripped not allowed chars)");
-		iMSCP::Dialog->factory()->set('cancel-label');
-
-		## Setup of new SQL ftp user
-		my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
-
-		## We ensure that new data doesn't exist in database
-		$err = $database->doQuery(
-			'dummy',
-			"
-				DELETE FROM
-					`mysql`.`tables_priv`
-				WHERE
-					`Host` = ?
-				AND
-					`Db` = ?
-				AND
-					`User` = ?;
-			", $main::imscpConfig{'SERVER_HOSTNAME'}, $main::imscpConfig{'DATABASE_NAME'}, $dbUser
-		);
-		return $err if (ref $err ne 'HASH');
-
-		$err = $database->doQuery(
-			'dummy',
-			"
-				DELETE FROM
-					`mysql`.`user`
-				WHERE
-					`Host` = ?
-				AND
-					`User` = ?;
-			", $main::imscpConfig{'SERVER_HOSTNAME'}, $dbUser
-		);
-		return $err if (ref $err ne 'HASH');
-
-
-		$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
-		return $err if (ref $err ne 'HASH');
-
-		## Inserting new data into the database
-
-		for (qw/ftp_group ftp_users quotalimits quotatallies/) {
-			$err = $database->doQuery(
-				'dummy',
-				"
-					GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::imscpConfig{'DATABASE_NAME'}`.`$_`
-					TO ?@?
-					IDENTIFIED BY ?;
-				", $dbUser, $main::imscpConfig{'DATABASE_HOST'}, $dbPass
-			);
-			return $err if (ref $err ne 'HASH');
-		}
-	}
-
-	## Building, storage and installation of new file
-
-	# Loading the template from /etc/imscp/proftpd/
-	$file = iMSCP::File->new(filename => "$cfgDir/proftpd.conf");
-	$cfgTpl = $file->get();
-	return 1 if (!$cfgTpl);
-
-	# Building the new file
-	$cfgTpl = iMSCP::Templator::process(
-		{
-		HOST_NAME		=> $main::imscpConfig{'SERVER_HOSTNAME'},
-		DATABASE_NAME	=> $main::imscpConfig{'DATABASE_NAME'},
-		DATABASE_HOST	=> $main::imscpConfig{'DATABASE_HOST'},
-		DATABASE_PORT	=> $main::imscpConfig{'DATABASE_PORT'},
-		DATABASE_USER	=> $dbUser,
-		DATABASE_PASS	=> $dbPass,
-		FTPD_MIN_UID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'},
-		FTPD_MIN_GID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'},
-		GUI_CERT_DIR	=> $main::imscpConfig{'GUI_CERT_DIR'},
-		SSL				=> ($main::imscpConfig{'SSL_ENABLED'} eq 'yes' ? '' : '#')
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Store the new file in working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/proftpd.conf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0600) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Install the new file in production directory
-	$file->copyFile($main::imscpConfig{'FTPD_CONF_FILE'}) and return 1;
-
-	## To fill ftp_traff.log file with something
-	if (! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
-		debug((caller(0))[3].": Create dir $main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd");
-		my $dir = iMSCP::Dir->new(dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd");
-		$dir->make({ user => $main::imscpConfig{'ROOT_USER'}, group => $main::imscpConfig{'ROOT_GROUP'}, mode => 0755}) and return 1;
-	}
-
-	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$main::imscpConfig{'FTP_TRAFF_LOG'}") {
-		$file = iMSCP::File->new(filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}$main::imscpConfig{'FTP_TRAFF_LOG'}");
-		$file->set("\n") and return 1;
-		$file->save() and return 1;
-		$file->mode(0644) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-	}
+	$rs = $ftpd->can('postinstall') ? $ftpd->postinstall() : 0;
+	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
 
