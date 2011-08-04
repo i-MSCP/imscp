@@ -20,7 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id: apache2.pm 4856 2011-07-11 08:48:54Z sci2tech $
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 

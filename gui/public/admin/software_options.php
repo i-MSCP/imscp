@@ -21,7 +21,7 @@
  * @category i-MSCP
  * @copyright 2010 by ispCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id: software_manage.php 4030 2010-12-07 20:08:39Z nuxwin $
+ * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
