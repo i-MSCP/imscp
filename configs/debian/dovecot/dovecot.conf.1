@@ -52,7 +52,7 @@ plugin {
 }
 
 protocols = imap pop3
-{DOVECOT_SSL}protocols = imap pop3 imaps pop3s
+{COMMENT_SSL}protocols = imap pop3 imaps pop3s
 
 auth default {
 
@@ -86,9 +86,9 @@ auth default {
 	user = root
 }
 
-{DOVECOT_SSL}ssl = yes
-{DOVECOT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
-{DOVECOT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+ssl = {DOVECOT_SSL}
+{COMMENT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+{COMMENT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
 
 protocol imap {
 	mail_plugins = quota imap_quota
