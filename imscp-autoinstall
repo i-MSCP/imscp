@@ -83,9 +83,9 @@ my @steps = (
 	[\&processConfFile,			"Loading $SO->{Distribution} specific variable"],
 	[\&processSpecificConfFile,	'Process distribution specific configuration files'],
 	[\&builddaemon,				'Daemon build'],
-	[\&engine,					'Install engine'],
-	[\&gui,						'GUI install'],
-	[\&maintainer,				'Maintainer scripts'],
+	[\&engine,					'Install engine files'],
+	[\&gui,						'Install GUI files'],
+	[\&maintainer,				'Install Maintainer scripts files'],
 	[\&finishBuild,				'Process post build operations'],
 	[\&cleanUp,					'Perform cleanup']
 );
@@ -146,12 +146,14 @@ unless(iMSCP::Dialog->factory()->yesno($msg)){
 		"\t# rm -Rf /var/www/imscp/{daemon,engine,gui}\n\n".
 		"4.  Copy directories into your system (you may make backups)\n\n".
 		"\t# cp -R /tmp/imscp/* / \n\n".
-		"5.  Now it's time to update your installation.".
+		"5. Clean tmp\n\n".
+		"\t# rm -R /tmp/imscp\n\n".
+		"6.  Now it's time to update your installation.".
 		"Change into the engine directory\n\n".
 		"\t# cd /var/www/imscp/engine/setup\n\n".
-		"6. Start the engine update\n\n".
+		"7. Start the engine update\n\n".
 		"\t# perl imscp-setup\n\n".
-		"11. Update i-MSCP step-by-step\n\n".
+		"8. Update i-MSCP step-by-step\n\n".
 		"If you get no error, all went good; if you get one, look at ".
 		"http://forum.i-mscp.net to solve the problem."
 	);

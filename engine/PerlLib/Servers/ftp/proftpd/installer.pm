@@ -51,7 +51,7 @@ sub _init{
 	my $oldConf		= "$self->{cfgDir}/proftpd.old.data";
 
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+	tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -83,7 +83,6 @@ sub install{
 
 
 sub saveConf{
-
 	debug((caller(0))[3].': Starting...');
 
 	use iMSCP::File;
@@ -101,7 +100,6 @@ sub saveConf{
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	debug((caller(0))[3].': Ending...');
-
 	0;
 }
 

@@ -515,7 +515,7 @@ sub backup{
 
 	my ($rs, $stdout, $stderr);
 
-	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp"){
+	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp noreport"){
 		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp", \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
 		warning((caller(0))[3].": $stderr") if $stderr;
@@ -579,17 +579,17 @@ sub saveCustom{
 		error((caller(0))[3].": $stderr") if $stderr;
 		return $rs if $rs;
 	} elsif(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos"){
-		$rs = execute("cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos", \$stdout, \$stderr);
+		$rs = execute("cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/ispLogos", \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
 		error((caller(0))[3].": $stderr") if $stderr;
 		return $rs if $rs;
 
-		$rs = execute("cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data", \$stdout, \$stderr);
+		$rs = execute("cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data", \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
 		error((caller(0))[3].": $stderr") if $stderr;
 		return $rs if $rs;
 
-		$rs = execute("cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/domain_default_page", \$stdout, \$stderr);
+		$rs = execute("cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_default_page", \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
 		error((caller(0))[3].": $stderr") if $stderr;
 		return $rs if $rs;
