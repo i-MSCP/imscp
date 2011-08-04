@@ -195,13 +195,17 @@ sub net_interfaces_mngr_engine {
 
 	debug((caller(0))[3].': Starting...');
 
-	if ($proceed eq 'start') {
+	if ($proceed && $proceed eq 'start') {
 		$rs = virtual_netcard_add();
 		return $rs if ($rs != 0);
-	}
-	if ($proceed eq 'stop') {
+	}elsif ($proceed && $proceed eq 'stop') {
 		$rs = virtual_netcard_remove();
 		return $rs if ($rs != 0);
+	} else {
+		my $msg = "Must be called with 'Start' or 'Stop' argument";
+		error((caller(0))[3].": $msg");
+		iMSCP::Mail->new()->errmsg($msg);
+		exit 1;
 	}
 
 	my $rs;
@@ -235,7 +239,6 @@ sub net_interfaces_mngr_engine {
 	}
 
 	debug((caller(0))[3].': Ending...');
-
 	0;
 }
 
