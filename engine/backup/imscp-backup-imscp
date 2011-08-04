@@ -60,6 +60,15 @@ sub backup_imscp_start_up {
 sub backup_imscp_shut_down {
 
 	debug((caller(0))[3].': Starting...');
+	use iMSCP::Mail;
+
+	my @warnings	= getMessageByType('WARNING');
+	my @errors		= getMessageByType('ERROR');
+
+	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
+	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
+	iMSCP::Mail->new()->errmsg($msg) if ($msg);
+
 	debug((caller(0))[3].': Ending...');
 	0;
 }
