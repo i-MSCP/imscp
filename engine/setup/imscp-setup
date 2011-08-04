@@ -113,9 +113,6 @@ sub setup_engine {
 		[\&setup_imscp_database_connection, 'i-MSCP database connection: '],
 		[\&setup_imscp_database, 'i-MSCP database: '],
 		[\&disableGUI, 'Disable access to panel during update: '],
-
-		# Deprecated since r7492
-		#[\&setup_default_language_table, 'i-MSCP default language table: '],
 		[\&setup_system_dirs, 'i-MSCP directories: '],
 		[\&setup_base_server_IP, 'i-MSCP system IP: '],
 		[\&setup_hosts, 'i-MSCP system hosts file: '],

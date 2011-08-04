@@ -12,6 +12,7 @@ Features / Enhancements:
 			- Merged imscp-build and imscp-setup
 
 Tickets:
+	- Fixed #16: Feature - Mail Quota Support
 	- Fixed #57: Enhancement - Adapt the postfix master.cf to be compatible with dovecot
 	- Fixed #77: Task - Setup - Empty files must be removed
 	- Fixed #165: Wrong level for Pagemessage
