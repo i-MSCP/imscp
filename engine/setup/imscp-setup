@@ -166,6 +166,6 @@ END{
 		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-setup.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-setup.log' for writing: $!");
 		print F $message;
 		close F;
-		print STDOUT "A log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
+		print STDOUT "\n\nA log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log";
 	}
 }
