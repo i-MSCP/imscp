@@ -937,9 +937,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca<sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_74() {
+	protected function _databaseUpdate_75() {
 		return "
-			UPDATE `imscp`.`mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760';
+			UPDATE `mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760';
 		";
 	}
 }
