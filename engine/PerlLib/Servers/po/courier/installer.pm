@@ -53,6 +53,8 @@ sub migrateMailboxes{
 	debug((caller(0))[3].': Starting...');
 
 	if(
+		$main::imscpConfigOld{PO_SERVER}
+		&&
 		$main::imscpConfigOld{PO_SERVER} eq 'dovecot'
 		&&
 		$main::imscpConfig{PO_SERVER}  eq 'courier'

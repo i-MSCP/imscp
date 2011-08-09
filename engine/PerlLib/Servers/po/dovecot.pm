@@ -75,7 +75,7 @@ sub install{
 	$rs;
 }
 
-sub postinst{
+sub postinstall{
 	debug((caller(0))[3].': Starting...');
 
 	my $self	= shift;
