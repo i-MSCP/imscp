@@ -37,9 +37,14 @@ use iMSCP::Dialog;
 use iMSCP::SO;
 use iMSCP::Config;
 
-iMSCP::Debug->newDebug('imscp-build.log');
+newDebug('imscp-build.log');
 
 require "$FindBin::Bin/library/autoinstall-methods.pl";
+
+if(preload()){
+	error("Can not do prebuild task");
+	exit 1;
+}
 
 #enter silent mode
 silent(1);
@@ -175,6 +180,8 @@ END{
 	my $message = getMessage();
 	iMSCP::Debug->newDebug('discard');
 
+	my $logDir = $main::defaultConf{LOG_DIR} ? $main::defaultConf{LOG_DIR} : '/tmp';
+
 	if($main::defaultConf{LOG_DIR}){
 		use iMSCP::Dir;
 		my $dir = iMSCP::Dir->new(dirname => $main::defaultConf{LOG_DIR});
@@ -188,13 +195,14 @@ END{
 		) unless( -d $main::defaultConf{LOG_DIR});
 
 		fatal("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
+		}
 
-		open(F, '>:utf8', "$main::defaultConf{LOG_DIR}/imscp-build.log")
-		or
-		fatal("Error: Can't open file '$main::defaultConf{LOG_DIR}/imscp-build.log' for writing: $!");
-		print F $message;
-		close F;
-		print STDOUT "A log file with details can be found at: $main::defaultConf{'LOG_DIR'}/imscp-build.log";
-	}
+	open(F, '>', "$logDir/imscp-build.log")
+	or
+	fatal("Error: Can't open file '$logDir/imscp-build.log' for writing: $!");
+	print F $message;
+	close F;
+	print STDOUT "A log file with details can be found at: $logDir/imscp-build.log";
+
 	print STDERR $msg if $msg;
 }

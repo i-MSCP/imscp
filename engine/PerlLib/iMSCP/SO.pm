@@ -42,15 +42,6 @@ sub getSO{
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
-	fatal((caller(0))[3].': Not a Debian like system') if(execute('which apt-get', \$stdout, \$stderr));
-
-	if(execute("which lsb_release", \$stdout, \$stderr)){
-		$rs = execute('apt-get -y install lsb-release', \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": a. $stderr") if $stderr;
-		return $rs if $rs;
-	}
-
 	$rs = execute("lsb_release -si", \$stdout, \$stderr);
 	debug((caller(0))[3].": Distribution is $stdout") if $stdout;
 	error((caller(0))[3].": Can not guess operating system = $stderr") if $stderr;

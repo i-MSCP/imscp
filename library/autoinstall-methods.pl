@@ -625,4 +625,43 @@ sub cleanTMP{
 	debug((caller(0))[3].': Ending...');
 	0;
 }
+
+sub get_pkg_manager{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+
+	debug((caller(0))[3].': Ending...');
+	return execute('which apt-get', \$stdout, \$stderr);
+}
+
+sub preload{
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Execute;
+
+	my ($rs, $stdout, $stderr);
+
+	fatal((caller(0))[3].': Not a Debian like system')
+		if(get_pkg_manager());
+
+	my @command = ();
+	push @command, 'lsb_release' if(execute("which lsb_release", \$stdout, \$stderr));
+	push @command, 'dialog' if(execute("which dialog", \$stdout, \$stderr));
+
+
+	if(scalar @command){
+		$rs = execute("apt-get -y install @command", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if $stderr;
+		error((caller(0))[3].": Can not install @command") if $rs && !$stderr;
+		return $rs if $rs;
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
 1;
