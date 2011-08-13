@@ -18,14 +18,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package	 iMSCP_Update
- * @subpackage  Database
- * @copyright   2010-2011 by i-MSCP team
- * @author	  Daniel Andreca <sci2tech@gmail.com>
- * @author	  Laurent Declercq <l.declercq@nuxwin.com>
- * @version	 SVN: $Id$
+ * @package		iMSCP_Update
+ * @subpackage	Database
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Daniel Andreca <sci2tech@gmail.com>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		SVN: $Id$
  * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license	 http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Update */
@@ -37,11 +37,11 @@ require_once 'iMSCP/Update.php';
  * Checks if an update is available for i-MSCP.
  *
  * @category	iMSCP
- * @package	 iMSCP_Update
- * @subpackage  Database
- * @author	  Daniel Andreca <sci2tech@gmail.com>
- * @author	  Laurent Declercq <l.declercq@nuxwin.com>
- * @version	 0.0.1
+ * @package		iMSCP_Update
+ * @subpackage	Database
+ * @author		Daniel Andreca <sci2tech@gmail.com>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.2
  */
 class iMSCP_Update_Database extends iMSCP_Update
 {
@@ -79,7 +79,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Implements Singleton design pattern.
 	 *
-	 * @return iMSCP_Update
+	 * @return iMSCP_Update_Database
 	 */
 	public static function getInstance()
 	{
@@ -123,73 +123,85 @@ class iMSCP_Update_Database extends iMSCP_Update
 			// Get the database update method name
 			$databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
 
-			// Gets the querie(s) from the databse update method
-			// A database update can return void, an array or a string
+			// Gets the querie(s) from the database update method
+			// A database update method can return void, an array (stack of SQL statements)
+			// or a string (SQL statement)
 			$queryStack = $this->$databaseUpdateMethod();
 
 			if (!empty($queryStack)) {
-				// Checks if the current database update was already executed with a
-				// failed status
-				if (isset($dbConfig->FAILED_UPDATE)) {
-					list($failedUpdate, $failedQueryIndex) = $dbConfig->FAILED_UPDATE;
-				} else {
-					$failedUpdate = '';
-					$failedQueryIndex = -1;
-				}
+				try {
+					$pdo->beginTransaction();
 
-				// Execute all queries from the queries stack returned by the database
-				// update method
-				foreach ((array)$queryStack as $index => $query)
-				{
-					// Query was already applied with success ?
-					if ($databaseUpdateMethod == $failedUpdate &&
-						$index < $failedQueryIndex
-					) {
-						continue;
-					}
-
-					try {
-						// Execute query
+					foreach ((array)$queryStack as $query) {
 						$pdo->query($query);
-					} catch (PDOException $e) {
-						// Store the query index that failed and the database update
-						// method that wrap it
-						$dbConfig->FAILED_UPDATE = "$databaseUpdateMethod;$index";
-
-						// Prepare error message
-						$errorMessage = sprintf(
-							'Database update %s failed', $databaseUpdateRevision);
-
-						// Extended error message
-						if (PHP_SAPI != 'cli') {
-							$errorMessage .= ':<br /><br />' . $e->getMessage() .
-											 '<br /><br />Query: ' . trim($query);
-						} else {
-							$errorMessage .= ":\n\n" . $e->getMessage() .
-											 "\nQuery: " . trim($query);
-						}
-
-						$this->_lastError = $errorMessage;
-
-						return false;
 					}
-				}
-			}
 
-			// Database update was successfully applied - updating revision number
-			// in the database and do some cleanup if needed
-			$dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
-			if ($dbConfig->exists('FAILED_UPDATE')) {
-				$dbConfig->del('FAILED_UPDATE');
+					$dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
+
+					$pdo->commit();
+				} catch (Exception $e) {
+					$pdo->rollBack();
+
+					// Prepare error message
+					$errorMessage = sprintf(
+						'Database update %s failed.', $databaseUpdateRevision);
+
+					// Extended error message
+					$errorMessage .=
+						'<br /><br /><strong>Exception message was:</strong><br />' .
+						$e->getMessage() . (isset($query)
+							? "<br /><strong>Query was:</strong><br />$query" : '');
+
+					if (PHP_SAPI == 'cli') {
+						$errorMessage = str_replace(
+							array('<br />', '<strong>', '</strong>'),
+							array("\n", '', ''), $errorMessage);
+					}
+
+					$this->_lastError = $errorMessage;
+
+					return false;
+				}
+			} else {
+				$dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
 			}
 		}
 
-		// We should never run the backend scripts from the CLI update script
+		// We must never run the backend scripts from the CLI update script
 		if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
 			send_request();
 		}
 
 		return true;
+	}
+
+	/**
+	 * Returns database update(s) details.
+	 * 
+	 * @return array
+	 */
+	public function getDatabaseUpdateDetail()
+	{
+		$reflectionStart = $this->getNextUpdate();
+
+		$reflection = new ReflectionClass(__CLASS__);
+		$databaseUpdateDetail = array();
+
+		/** @var $method ReflectionMethod */
+		foreach ($reflection->getMethods() as $method) {
+			$methodName = $method->name;
+
+			if (strpos($methodName, '_databaseUpdate_') !== false) {
+				$revision = (int)substr($methodName, strrpos($methodName, '_') + 1);
+
+				if($revision >= $reflectionStart) {
+					$detail = explode("\n", $method->getDocComment());
+					$databaseUpdateDetail[$revision] = str_replace("\t * ", '', $detail[1]);
+				}
+			}
+		}
+
+		return $databaseUpdateDetail;
 	}
 
 	/**
@@ -214,7 +226,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: For performances reasons, the revision is retrieved once.
 	 *
-	 * @return int The  revision of the last available database update
+	 * @return int The revision of the last available database update
 	 */
 	protected function getLastAvailableUpdateRevision()
 	{
@@ -327,11 +339,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_47()
 	{
-		return 'DROP TABLE IF EXISTS `suexec_props`;';
+		return 'DROP TABLE IF EXISTS `suexec_props`';
 	}
 
 	/**
-	 * Adds table for software installer (ticket #14).
+	 * #14: Adds table for software installer.
 	 *
 	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @since  r3695
@@ -362,7 +374,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`software_depot` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
 	  				PRIMARY KEY  (`software_id`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-			;
 		";
 
 		$sqlUpd[] = "
@@ -429,7 +440,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds i-MSCP daemon service properties.
+	 * Adds i-MSCP daemon service properties in config table.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4004
@@ -443,7 +454,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds field for on-click-logon from the ftp-user site(such as PMA).
+	 * Adds required field for on-click-logon from the ftp-user site.
 	 *
 	 * @author William Lightning <kassah@gmail.com>
 	 * @return string SQL Statement
@@ -463,7 +474,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds new options for applications instller.
+	 * Adds new options for applications installer.
 	 *
 	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @since  r4036
@@ -539,7 +550,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Decrypt email, ftp and sql users password in database.
+	 * Decrypts email, ftp and SQL users passwords in database.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
@@ -553,6 +564,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		/** @var $db iMSCP_Database */
 		$db = iMSCP_Registry::get('db');
+
+		// Mail accounts passwords
 
 		$query = "
 			SELECT
@@ -569,7 +582,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$stmt = execute_query($query);
 
-		if ($stmt->recordCount() != 0) {
+		if ($stmt->rowCount() != 0) {
 			while (!$stmt->EOF) {
 				$sqlUpd[] = "
 					UPDATE
@@ -577,33 +590,36 @@ class iMSCP_Update_Database extends iMSCP_Update
 					SET
 						`mail_pass`= " . $db->quote(decrypt_db_password($stmt->fields['mail_pass'])) . ",
 						`status` = '$status' WHERE `mail_id` = '" . $stmt->fields['mail_id'] . "'
-					;
 				";
 
 				$stmt->moveNext();
 			}
 		}
 
+		// SQL users passwords
+
 		$stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`");
 
-		if ($stmt->recordCount() != 0) {
+		if ($stmt->rowCount() != 0) {
 			while (!$stmt->EOF) {
 				$sqlUpd[] = "
 					UPDATE
 						`sql_user`
 					SET
 						`sqlu_pass` = " . $db->quote(decrypt_db_password($stmt->fields['sqlu_pass'])) . "
-					WHERE `sqlu_id` = '" . $stmt->fields['sqlu_id'] . "'
-					;
+					WHERE
+						`sqlu_id` = '" . $stmt->fields['sqlu_id'] . "'
 				";
 
 				$stmt->moveNext();
 			}
 		}
 
+		// Ftp users passwords
+
 		$stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`");
 
-		if ($stmt->recordCount() != 0) {
+		if ($stmt->rowCount() != 0) {
 			while (!$stmt->EOF) {
 				$sqlUpd[] = "
 					UPDATE
@@ -612,7 +628,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 						`rawpasswd` = " . $db->quote(decrypt_db_password($stmt->fields['rawpasswd'])) . "
 					WHERE
 						`userid` = '" . $stmt->fields['userid'] . "'
-					;
 				";
 
 				$stmt->moveNext();
@@ -623,7 +638,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Convert tables to InnoDB.
+	 * Converts all tables to InnoDB engine.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
@@ -683,7 +698,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Drop useless column in user_gui_props table.
+	 * Drops useless column in user_gui_props table.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4644
@@ -714,7 +729,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Convert tables to InnoDB.
+	 * Converts the autoreplies_log table to InnoDB engine.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4650
@@ -726,7 +741,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Deletes old parameters from config table.
+	 * Deletes old DUMP_GUI_DEBUG parameter from the config table.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4779
@@ -791,7 +806,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// Updates language property of each users by using new naming convention
 		// Thanks to Marc Pujol for idea
-		foreach($languagesMap as $language => $locale) {
+		foreach ($languagesMap as $language => $locale) {
 			$sqlUpd[] = "
 				UPDATE
 					`user_gui_props`
@@ -820,7 +835,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$stmt = exec_query("SELECT `ip_id`, `ip_card` FROM `server_ips`");
 
-		if ($stmt->recordCount() != 0) {
+		if ($stmt->rowCount() != 0) {
 			while (!$stmt->EOF) {
 				$cardname = explode(':', $stmt->fields['ip_card']);
 				$cardname = $cardname[0];
@@ -841,7 +856,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Some fixes for user_gui_props table.
+	 * Some fixes for the user_gui_props table.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4961
@@ -861,7 +876,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Deletes possible orphan items.
+	 * Deletes possible orphan items in many tables.
 	 *
 	 * See #145 on i-MSCP issue tracker for more information.
 	 *
@@ -891,7 +906,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Changes log table schema to allow storage of large messages.
+	 * Changes the log table schema to allow storage of large messages.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r5002
@@ -899,28 +914,29 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_71()
 	{
-		return '
-			ALTER TABLE `log` CHANGE `log_message` `log_message`
+		return 'ALTER TABLE `log` CHANGE `log_message` `log_message`
 			TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL';
 	}
 
 	/**
-	 * Changes log table schema to allow storage of large messages.
+	 * Adds unique index on the web_software_options.use_webdepot column.
 	 *
-	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_72() {
+	protected function _databaseUpdate_72()
+	{
 		return 'ALTER IGNORE TABLE `web_software_options` ADD UNIQUE (`use_webdepot`)';
 	}
 
 	/**
-	 * Add dovecot quota table.
+	 * #166: Adds dovecot quota table.
 	 *
-	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_73() {
+	protected function _databaseUpdate_73()
+	{
 		return "
 			CREATE TABLE IF NOT EXISTS `quota_dovecot` (
 			`username` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -932,12 +948,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Increase quota value.
+	 * #58: Increases mail quota value from 10 Mio to 100 Mio.
 	 *
-	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_75() {
+	protected function _databaseUpdate_75()
+	{
 		return "
 			UPDATE `mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760';
 		";

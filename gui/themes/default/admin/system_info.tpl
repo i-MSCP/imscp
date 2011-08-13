@@ -43,6 +43,11 @@
 
         <div class="body">
             <h2 class="tools"><span>{TR_SYSTEM_INFO}</span></h2>
+
+			<!-- BDP: page_message -->
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+			<!-- EDP: page_message -->
+
             <!-- BDP: props_list -->
             <table class="description">
                 <tr>
