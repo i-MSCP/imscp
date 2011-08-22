@@ -167,7 +167,7 @@ unless(iMSCP::Dialog->factory()->yesno($msg)){
 0;
 
 END{
-	execute('clear');
+	#execute('clear');
 
 	my @warnings	= getMessageByType('WARNING');
 	my @errors		= getMessageByType('ERROR');

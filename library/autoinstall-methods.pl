@@ -459,7 +459,7 @@ sub installDepends{
 	debug((caller(0))[3].': Starting...');
 
 	my $autoinstallFile = "$FindBin::Bin/library/".lc(iMSCP::SO->new()->{Distribution}).'_autoinstall.pm';
-	my $class = 'iMSCP::'.lc(iMSCP::SO->new()->{Distribution}).'_autoinstall';
+	my $class = 'library::'.lc(iMSCP::SO->new()->{Distribution}).'_autoinstall';
 
 	if(-f $autoinstallFile){
 		require $autoinstallFile ;

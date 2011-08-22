@@ -24,7 +24,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::debian_autoinstall;
+package library::debian_autoinstall;
 
 use strict;
 use warnings;
@@ -205,9 +205,9 @@ sub readPackages{
 	debug((caller(0))[3].': Starting...');
 	my $self = shift;
 	my $SO = iMSCP::SO->new();
-	my $confile = "$FindBin::Bin/docs/Debian/debian-packages-".lc($SO->{CodeName}).".xml";
+	my $confile = "$FindBin::Bin/docs/".ucfirst($SO->{Distribution})."/".lc($SO->{Distribution})."-packages-".lc($SO->{CodeName}).".xml";
 
-	fatal("Debian $SO->{CodeName} is not supported!") if (! -f  $confile);
+	fatal(ucfirst($SO->{Distribution})." $SO->{CodeName} is not supported!") if (! -f  $confile);
 
 	eval "use XML::Simple";
 	fatal((caller(0))[3].': Can not load perl module XML::Simple...') if($@);

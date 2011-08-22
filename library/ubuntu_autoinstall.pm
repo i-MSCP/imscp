@@ -24,7 +24,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::ubuntu_autoinstall;
+package library::ubuntu_autoinstall;
 
 use strict;
 use warnings;
@@ -33,9 +33,9 @@ use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
 
 use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass', 'iMSCP::debian_autoinstal');
+@ISA = ('Common::SingletonClass', 'library::debian_autoinstall');
 use Common::SingletonClass;
-use iMSCP::debian_autoinstal;
+use library::debian_autoinstall;
 
 sub _init{
 
