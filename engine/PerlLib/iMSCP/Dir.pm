@@ -234,7 +234,6 @@ sub remove{
 
 	if ( -d  $self->{dirname}) {
 
-		use File::Path;
 		remove_tree( $self->{dirname}, {error => \$err});
 
 		if (@$err) {

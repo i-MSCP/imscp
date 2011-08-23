@@ -107,7 +107,7 @@ sub fatal{
 	my $verbosity	= shift or 1;
 	my $self = iMSCP::Debug->new();
 	$self->{lastLog}->store(message => $message, tag => 'FATAL ERROR', level => $verbosity ? 'cluck' : 'log');
-	while(!$self->endDebug()){};
+	#while(!$self->endDebug()){};
 	print STDERR output("$message", {mode=>'fatal'});
 	exit 1;
 }

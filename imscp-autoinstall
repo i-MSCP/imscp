@@ -41,6 +41,9 @@ newDebug('imscp-build.log');
 
 require "$FindBin::Bin/library/autoinstall-methods.pl";
 
+use iMSCP::Requirements;
+iMSCP::Requirements->new()->user();
+
 if(preload()){
 	error("Can not do prebuild task");
 	exit 1;
@@ -53,12 +56,6 @@ iMSCP::Dialog->factory()->infobox("\\ZuDetecting Debian variant\\Zn");
 my $SO = iMSCP::SO->new();
 my $rs = $SO->getSO();
 exit $rs if $rs;
-
-
-#test if script run as root
-iMSCP::Dialog->factory()->infobox("\\Z1Check if runned as root\\Zn");
-use iMSCP::Requirements;
-iMSCP::Requirements->new()->user();
 
 #Display a marketing message
 use iMSCP::File;
@@ -194,15 +191,15 @@ END{
 			}
 		) unless( -d $main::defaultConf{LOG_DIR});
 
-		fatal("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
-		}
+		error("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
+	}
 
-	open(F, '>', "$logDir/imscp-build.log")
-	or
-	fatal("Error: Can't open file '$logDir/imscp-build.log' for writing: $!");
-	print F $message;
-	close F;
-	print STDOUT "A log file with details can be found at: $logDir/imscp-build.log";
-
+	if(open(F, '>', "$logDir/imscp-build.log")){
+		print F $message;
+		close F;
+		print STDOUT "A log file with details can be found at: $logDir/imscp-build.log";
+	} else {
+		error("Error: Can't open file '$logDir/imscp-build.log' for writing: $!");
+	}
 	print STDERR $msg if $msg;
 }
