@@ -8,13 +8,14 @@ i-MSCP 1.0.1.5 (beta 5)
 Features / Enhancements:
 	Engine:
 		Core:
-			- Added suport for Dovecot
+			- Added support for Dovecot
 			- Merged imscp-build and imscp-setup
 
 Tickets:
 	- Fixed #16: Feature - Mail Quota Support
-	- Fixed #58: Enhancement - Default mail quota should be increased up to 100MB (tx: asesque)
-	- Fixed #57: Enhancement - Adapt the postfix master.cf to be compatible with dovecot
+	- Fixed #57: Enhancement - Adapt the postfix master.cf to be compatible with
+	dovecot
+	- Fixed #58: Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77: Task - Setup - Empty files must be removed
 	- Fixed #165: Wrong level for Page message
 	- Fixed #166: Enhancement - Add Dovecot support
@@ -158,15 +159,15 @@ Features / Enhancements:
 			- Added migration script for ispCP version >= 1.0.7
 		Setup/Update:
 			- New i-mscp tree builder
-			- New installer (Dialog ; merged setup and update scripts)
+			- New installer (Dialog - merged setup and update scripts)
 	Gui:
 		Core:
 			- Added DebugBar component
 			- Added Events system component
 			- Added on-click-logon ftp-user - Thanks to William Lightning
-			- Added Software installer - Thanks to Sascha Bay
+			- Added Software installer
 			- Dropped password encryption for Ftp, Mail accounts...
-			- New theme (XHTML strict) - Thanks to Henrik Schytte and Marc Pujol
+			- New theme (XHTML strict)
 			- Rewritten Update component
 			- Removed support for importation of languages from text files
 		Tools:
