@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,6 +24,16 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
+#####################################################################################
+# Script description:
+#
+# This script is responsible to build the i-MSCP tree into a temporary folder from
+# the upstream archive. This script can optionnaly installing all i-MSCP dependencies
+# and launch the i-MSCP setup/update script. It attemp to detect the target
+# distribution, process backup taskq and save the current GUI working data in update
+# mode before doing any changes on the files system. In case the target distribution
+# cannot be detected, the script exit with a specific error message.
+
 use strict;
 use warnings;
 
@@ -44,98 +54,109 @@ require "$FindBin::Bin/library/autoinstall-methods.pl";
 use iMSCP::Requirements;
 iMSCP::Requirements->new()->user();
 
-if(preload()){
-	error("Can not do prebuild task");
+if(preInstall() != 0){
+	error("Unable to install pre-required packages");
 	exit 1;
 }
 
-#enter silent mode
+# Entering in silent mode
 silent(1);
 
-iMSCP::Dialog->factory()->infobox("\\ZuDetecting Debian variant\\Zn");
+iMSCP::Dialog->factory()->infobox("\\ZuDetecting the target distribution\\Zn");
 my $SO = iMSCP::SO->new();
 my $rs = $SO->getSO();
 exit $rs if $rs;
 
-#Display a marketing message
+# Display the i-MSCP README file
 use iMSCP::File;
 my $file = iMSCP::File->new(filename => $FindBin::Bin.'/README');
-my $content = $file->get() or fatal("Can not find  $FindBin::Bin/README!");
+my $content = $file->get() or fatal("Unable to find the $FindBin::Bin/README file.");
+
 iMSCP::Dialog->factory()->msgbox($content);
 
-if(
-	iMSCP::Dialog->factory()->yesno(
-		"\nWe have detected $SO->{Distribution} $SO->{CodeName}. Is this ok?"
-	)
-){
-	error( "Fail detecting distribution ...");
+if(iMSCP::Dialog->factory()->yesno(
+	"\nThe Installer detected that you are using $SO->{Distribution} $SO->{CodeName}. Is this ok?")
+) {
+	error(
+		"Sorry, the installer failing to detect your distribution.\n\n" .
+		"Note: For now, only Debian like operating systems are supported."
+	);
+
 	exit 1;
 }
 
-my $defaultConf = "$FindBin::Bin/configs/".lc($SO->{Distribution})."/imscp.conf";
+my $defaultConf = "$FindBin::Bin/configs/" . lc($SO->{Distribution}) . "/imscp.conf";
 tie %main::defaultConf, 'iMSCP::Config','fileName' => $defaultConf;
 
-#we have an OS / Distribution selected
+# A supported distribution was detected
 
 use iMSCP::Stepper;
 
 my @steps = (
-	[\&installDepends,			"Installing $SO->{Distribution} required packages"],
-	[\&testRequirements,		'Test if all requirements are meet'],
-	[\&processConfFile,			"Loading $SO->{Distribution} specific variable"],
-	[\&processSpecificConfFile,	'Process distribution specific configuration files'],
-	[\&builddaemon,				'Daemon build'],
-	[\&engine,					'Install engine files'],
-	[\&gui,						'Install GUI files'],
-	[\&maintainer,				'Install Maintainer scripts files'],
-	[\&finishBuild,				'Process post build operations'],
-	[\&cleanUp,					'Perform cleanup']
+	[\&installDependencies,				"Installing all required $SO->{Distribution} packages for i-MSCP"],
+	[\&testRequirements,				'Testing i-MSCP requirements'],
+	[\&processConfFile,					"Loading $SO->{Distribution} specific variables"],
+	[\&processSpecificConfFile,			'Processing distribution specific configuration files'],
+	[\&buildImscpDaemon,				'Building i-MSCP daemon'],
+	[\&installEngine,					'Installing engine files'],
+	[\&installGui,						'Installing GUI files'],
+	[\&InstallDistMaintainerScripts,	'Installing distribution maintainer scripts'],
+	[\&finishBuild,						'Processing post-build tasks'],
+	[\&cleanUpTmp,						'Processing cleanup tasks']
 );
 
 my $step = 1;
-for (@steps){
+
+for (@steps) {
 	step($_->[0], $_->[1], scalar @steps, $step);
 	$step++;
 }
-iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
+iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-my @warnings	= getMessageByType('WARNING');
-my @errors		= getMessageByType('ERROR');
+my @warnings = getMessageByType('WARNING');
+my @errors = getMessageByType('ERROR');
 my $msg;
 
 if (@errors > 0  || @warnings > 0) {
-	$msg  =	"\n\\Z".(@errors > 0 ? 1 : 3 )."Build section finished but with ".
-			(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
+	$msg  =	"\n\\Z".(@errors > 0 ? 1 : 3 )."Build step finished but with ".
+		(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
 	$msg .= "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
 	iMSCP::Dialog->factory()->set('defaultno', '');
 } else {
-	$msg  =	"\n\\Z2 -> Build section finished without errors\n";
+	$msg  =	"\n\\Z2 -> Build step finished without errors\n";
 }
 
-$msg .= "\nDo you want continue to setup section?";
+$msg .= "\nDo you want to continue the i-MSCP installation?";
 
-unless(iMSCP::Dialog->factory()->yesno($msg)){
+unless(iMSCP::Dialog->factory()->yesno($msg)) {
 	@steps = (
-		[\&backup,		'Backup existing instalation'],
-		[\&saveCustom,	'Save custom data'],
-		[\&setup,		'Copy i-MSCP Data to default location']
+		[\&doImscpBackup,		'Backup existing installation'],
+		[\&saveGuiWorkingData,	'Saving GUI working data'],
+		[\&installTmp,			'Installing new i-MSCP files in final destination'],
+		[\&setup,				'processing i-MSCP setup/update']
 	);
+
 	$step = 1;
+
 	for (@steps){
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
-	iMSCP::Dialog->factory()->msgbox("Enjoy i-MSCP $main::defaultConf{Version}");
 
-	iMSCP::Dialog->factory()->infobox("Cleaning temporary files");
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+	iMSCP::Dialog->factory()->msgbox("i-MSCP $main::defaultConf{Version} was successfully installed on your system.");
+	iMSCP::Dialog->factory()->infobox("Removing temporary files...");
 
-	$rs = cleanTMP();
+	$rs = removeTmp();
 	exit $rs;
-
 } else {
+	# Nuxwin review recommendation:
+	# I think this part must be because in future, we  will support another
+	# distributions such as openSUSE where the install process can be different.
+	# I think the better is to provide link to our wiki based on the distro name
+	# when a howto (for manual install/update) is available.
 	iMSCP::Dialog->factory()->msgbox(
 		"To continue setup run from console\n\n".
 		"1.  Purge all GUI sessions files\n\n".
@@ -163,43 +184,43 @@ unless(iMSCP::Dialog->factory()->yesno($msg)){
 
 0;
 
-END{
-	execute('clear');
+END {
+	execute('clear'); # clean screen
 
-	my @warnings	= getMessageByType('WARNING');
-	my @errors		= getMessageByType('ERROR');
-	my @fatals		= getMessageByType('FATAL ERROR');
+	my @warnings = getMessageByType('WARNING');
+	my @errors = getMessageByType('ERROR');
+	my @fatals = getMessageByType('FATAL ERROR');
 
-	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
-	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
-	$msg	.= "\nFATAL ERRORS:\n"	. join("\n", @fatals)	. "\n" if @fatals > 0;
+	my $msg	 = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
+	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
+	$msg .= "\nFATAL ERRORS:\n"	. join("\n", @fatals) . "\n" if @fatals > 0;
 
 	my $message = getMessage();
 	iMSCP::Debug->newDebug('discard');
 
 	my $logDir = $main::defaultConf{LOG_DIR} ? $main::defaultConf{LOG_DIR} : '/tmp';
 
-	if($main::defaultConf{LOG_DIR}){
+	if($main::defaultConf{LOG_DIR}) {
 		use iMSCP::Dir;
 		my $dir = iMSCP::Dir->new(dirname => $main::defaultConf{LOG_DIR});
 
 		my $rs = $dir->make(
 			{
-					mode	=> 0755,
-					user	=> $main::defaultConf{ROOT_USER},
-					group	=> $main::defaultConf{ROOT_GROUP}
+				mode => 0755,
+				user => $main::defaultConf{ROOT_USER},
+				group => $main::defaultConf{ROOT_GROUP}
 			}
 		) unless( -d $main::defaultConf{LOG_DIR});
-
-		error("Can not create log directory: $main::defaultConf{LOG_DIR}") if $rs;
+		error("Error: Unable to create the log directory: $main::defaultConf{LOG_DIR}") if $rs;
 	}
 
-	if(open(F, '>', "$logDir/imscp-build.log")){
+	if(open(F, '>', "$logDir/imscp-build.log")) {
 		print F $message;
 		close F;
 		print STDOUT "A log file with details can be found at: $logDir/imscp-build.log";
 	} else {
-		error("Error: Can't open file '$logDir/imscp-build.log' for writing: $!");
+		error("Error: Can't open file '$logDir/imscp-build.log' for writing: $!")
 	}
+
 	print STDERR $msg if $msg;
 }
