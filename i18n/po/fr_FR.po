@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-24 10:21+0200\n"
-"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"POT-Creation-Date: 2011-08-23 19:07+0200\n"
+"PO-Revision-Date: 2011-08-23 17:05+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -851,26 +851,26 @@ msgstr "Sauver"
 msgid "Edit button"
 msgstr "Édition du bouton"
 
+msgid "More Details"
+msgstr ""
+
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - Admin / Outils système / Mise à jour de base de donnée"
 
 msgid "Database updates"
 msgstr "Mises à jour de la base de données"
 
-msgid "Available database updates"
-msgstr "Une mise à jour est disponible pour la base de données"
+msgid "One or more database updates are now available. See the details below."
+msgstr ""
 
-msgid "Update details"
-msgstr "Détails de la mise à jour"
+msgid "Database Updates Revision"
+msgstr ""
 
-msgid "New Database update is now available"
-msgstr "Une nouvelle mise à jour est disponible pour la base de données"
+msgid "Process updates"
+msgstr ""
 
-msgid "No provided"
-msgstr "Non fournit"
-
-msgid "Execute updates"
-msgstr "appliquer les mises à jour"
+msgid "No database updates available."
+msgstr ""
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Domaine/Détails"
@@ -1409,6 +1409,9 @@ msgstr "Mises à jour i-MSCP disponibles"
 
 msgid "No new i-MSCP updates available"
 msgstr "Aucune mise à jour i-MSCP disponible"
+
+msgid "Update details"
+msgstr "Détails de la mise à jour"
 
 #, php-format
 msgid "You have received <b>%d</b> new support questions."

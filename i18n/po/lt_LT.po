@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-24 10:21+0200\n"
-"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"POT-Creation-Date: 2011-08-23 19:07+0200\n"
+"PO-Revision-Date: 2011-08-23 17:05+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -839,26 +839,26 @@ msgstr "Saugoti"
 msgid "Edit button"
 msgstr "Keisti mygtukà"
 
+msgid "More Details"
+msgstr ""
+
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr ""
 
 msgid "Database updates"
 msgstr "Duombazës atnaujinimai"
 
-msgid "Available database updates"
-msgstr "Galimi duombazës atnaujinimai"
-
-msgid "Update details"
-msgstr "Atnaujinti detales"
-
-msgid "New Database update is now available"
-msgstr "Yra naujas duombazës atnaujinimas"
-
-msgid "No provided"
+msgid "One or more database updates are now available. See the details below."
 msgstr ""
 
-msgid "Execute updates"
-msgstr "Paleisti atnaujinimus"
+msgid "Database Updates Revision"
+msgstr ""
+
+msgid "Process updates"
+msgstr ""
+
+msgid "No database updates available."
+msgstr ""
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Domenas/Detalës"
@@ -1386,6 +1386,9 @@ msgstr "Galimi i-MSCP atnaujinimai"
 
 msgid "No new i-MSCP updates available"
 msgstr "Nëra naujø i-MSCP atnaujinimø"
+
+msgid "Update details"
+msgstr "Atnaujinti detales"
 
 #, php-format
 msgid "You have received <b>%d</b> new support questions."

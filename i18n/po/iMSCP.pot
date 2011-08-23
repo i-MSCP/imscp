@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.4\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2011-07-24 10:21+0200\n"
+"POT-Creation-Date: 2011-08-23 19:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -833,25 +833,25 @@ msgstr ""
 msgid "Edit button"
 msgstr ""
 
+msgid "More Details"
+msgstr ""
+
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr ""
 
 msgid "Database updates"
 msgstr ""
 
-msgid "Available database updates"
+msgid "One or more database updates are now available. See the details below."
 msgstr ""
 
-msgid "Update details"
+msgid "Database Updates Revision"
 msgstr ""
 
-msgid "New Database update is now available"
+msgid "Process updates"
 msgstr ""
 
-msgid "No provided"
-msgstr ""
-
-msgid "Execute updates"
+msgid "No database updates available."
 msgstr ""
 
 msgid "i-MSCP - Domain/Details"
@@ -1376,6 +1376,9 @@ msgid "Available i-MSCP updates"
 msgstr ""
 
 msgid "No new i-MSCP updates available"
+msgstr ""
+
+msgid "Update details"
 msgstr ""
 
 #, php-format

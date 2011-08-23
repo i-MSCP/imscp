@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-24 10:21+0200\n"
-"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"POT-Creation-Date: 2011-08-23 19:07+0200\n"
+"PO-Revision-Date: 2011-08-23 17:05+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -842,26 +842,26 @@ msgstr "Save"
 msgid "Edit button"
 msgstr "Edit button"
 
+msgid "More Details"
+msgstr ""
+
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - Admin / System tools / Database Update"
 
 msgid "Database updates"
 msgstr "Database updates"
 
-msgid "Available database updates"
-msgstr "Available database updates"
+msgid "One or more database updates are now available. See the details below."
+msgstr ""
 
-msgid "Update details"
-msgstr "Update details"
+msgid "Database Updates Revision"
+msgstr ""
 
-msgid "New Database update is now available"
-msgstr "New Database update is now available"
+msgid "Process updates"
+msgstr ""
 
-msgid "No provided"
-msgstr "No provided"
-
-msgid "Execute updates"
-msgstr "Execute updates"
+msgid "No database updates available."
+msgstr ""
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Domain/Details"
@@ -1393,6 +1393,9 @@ msgstr "Available i-MSCP updates"
 
 msgid "No new i-MSCP updates available"
 msgstr "No new i-MSCP updates available"
+
+msgid "Update details"
+msgstr "Update details"
 
 #, php-format
 msgid "You have received <b>%d</b> new support questions."

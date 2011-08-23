@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-24 10:21+0200\n"
-"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"POT-Creation-Date: 2011-08-23 19:07+0200\n"
+"PO-Revision-Date: 2011-08-23 17:05+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -836,26 +836,26 @@ msgstr "Kaydet"
 msgid "Edit button"
 msgstr "Button düzenle"
 
+msgid "More Details"
+msgstr ""
+
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - Yönetici / Sistem Araçları / Veritabanı Güncellemesi"
 
 msgid "Database updates"
 msgstr "Hazır i-MSCP güncellemeleri"
 
-msgid "Available database updates"
-msgstr "Hazır i-MSCP güncellemeleri"
+msgid "One or more database updates are now available. See the details below."
+msgstr ""
 
-msgid "Update details"
-msgstr "Güncelleme ayrıntıları"
+msgid "Database Updates Revision"
+msgstr ""
 
-msgid "New Database update is now available"
-msgstr "Yeni i-MSCP güncellemesi var"
+msgid "Process updates"
+msgstr ""
 
-msgid "No provided"
-msgstr "Verilmedi"
-
-msgid "Execute updates"
-msgstr "Güncellemeleri çalıştır"
+msgid "No database updates available."
+msgstr ""
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Domain/Ayrıntılar"
@@ -1385,6 +1385,9 @@ msgstr "Hazır i-MSCP güncellemeleri"
 
 msgid "No new i-MSCP updates available"
 msgstr "Yeni i-MSCP güncellemesi yok"
+
+msgid "Update details"
+msgstr "Güncelleme ayrıntıları"
 
 #, php-format
 msgid "You have received <b>%d</b> new support questions."
@@ -2560,20 +2563,20 @@ msgstr ""
 
 #, php-format
 msgid "Choose file (Max: %1$d MB)"
-msgstr ""
+msgstr "Dosyayı seçin (max: %1$d MB)"
 
 #, php-format
 msgid "or remote file (Max: %1$d MB)"
 msgstr ""
 
 msgid "Upload now"
-msgstr ""
+msgstr "Şimdi yükleyin"
 
 msgid "Awaiting Activation"
-msgstr ""
+msgstr "Etkinleştirme Bekleniyor"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "Bayi yazılım listesi"
 
 msgid "Software name"
 msgstr ""
@@ -2609,7 +2612,7 @@ msgid "Activated softwares"
 msgstr ""
 
 msgid "Total installations"
-msgstr ""
+msgstr "Toplam yüklü yazılımlar"
 
 msgid "Are you sure you want to activate this package?"
 msgstr "Bu paketi etkinleştirmek istediğinize emin misiniz?"
@@ -2620,7 +2623,7 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure you want to delete this package?"
-msgstr ""
+msgstr "Bu paketi silmek istediğinizden eminmisiniz?"
 
 msgid ""
 "Are you sure you want to install this package from the Web software "
@@ -2655,7 +2658,7 @@ msgid "Last Web software repository update"
 msgstr ""
 
 msgid "not available"
-msgstr ""
+msgstr "mevcut değil"
 
 msgid "Wrong reseller id."
 msgstr ""
@@ -2667,7 +2670,7 @@ msgid "Total Softwares"
 msgstr ""
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Bayi listesi"
 
 msgid "Reseller total"
 msgstr "Bayi toplam"
@@ -2682,7 +2685,7 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr ""
 
 msgid "Softwaredepot"
-msgstr ""
+msgstr "Yazılım Deposu"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -2847,7 +2850,7 @@ msgid "Please type your message."
 msgstr ""
 
 msgid "Ticket not found."
-msgstr ""
+msgstr "."
 
 msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
 msgstr ""
@@ -2862,7 +2865,7 @@ msgid "Messages"
 msgstr "Mesajlar"
 
 msgid "Send new reply"
-msgstr ""
+msgstr "Yeni cevap gönderebilmesi"
 
 msgid "Send reply"
 msgstr "Yanıtla"
@@ -2887,7 +2890,7 @@ msgid "Wrong domain Id."
 msgstr ""
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
-msgstr ""
+msgstr "i-MSCP - Yönetici / Alan Hesabı Silme Doğrulama"
 
 msgid "Delete domain"
 msgstr "Gerçek domain"
@@ -2912,12 +2915,14 @@ msgid ""
 "Do you really want to delete the entire <strong>'%s'</strong> domain? This "
 "operation cannot be undone."
 msgstr ""
+"Gerçekten tüm <strong>'%s'</strong> domaini silmek istiyormusunuz? Bu işlem "
+"geri alınamaz."
 
 msgid "Yes, delete the domain."
 msgstr "%s tüm yönetici loglarını sildi"
 
 msgid "Domain account successfully scheduled for deletion."
-msgstr ""
+msgstr "Domain hesabı başarıyla silinmek üzere planlanıyor."
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -4221,7 +4226,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr ""
 
 msgid "Please specify message subject."
-msgstr ""
+msgstr "Mesaj konusu belirtiniz."
 
 msgid "i-MSCP - Client / Support Ticket System / New Ticket"
 msgstr ""

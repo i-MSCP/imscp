@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-07-24 10:21+0200\n"
-"PO-Revision-Date: 2011-07-24 08:21+0000\n"
+"POT-Creation-Date: 2011-08-23 19:07+0200\n"
+"PO-Revision-Date: 2011-08-23 17:05+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -834,26 +834,26 @@ msgstr "保存"
 msgid "Edit button"
 msgstr "ボタンの編集"
 
+msgid "More Details"
+msgstr ""
+
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr ""
 
 msgid "Database updates"
 msgstr "データベースアップデート"
 
-msgid "Available database updates"
-msgstr "利用可能なデータベースアップデート"
-
-msgid "Update details"
-msgstr "更新情報詳細"
-
-msgid "New Database update is now available"
-msgstr "データベースアップデートが見つかりました"
-
-msgid "No provided"
+msgid "One or more database updates are now available. See the details below."
 msgstr ""
 
-msgid "Execute updates"
-msgstr "アップデートを実行"
+msgid "Database Updates Revision"
+msgstr ""
+
+msgid "Process updates"
+msgstr ""
+
+msgid "No database updates available."
+msgstr ""
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - ドメイン/詳細"
@@ -1379,6 +1379,9 @@ msgstr "利用可能なi-MSCPアップデート"
 
 msgid "No new i-MSCP updates available"
 msgstr "i-MSCPのアップデートは有りません"
+
+msgid "Update details"
+msgstr "更新情報詳細"
 
 #, php-format
 msgid "You have received <b>%d</b> new support questions."
