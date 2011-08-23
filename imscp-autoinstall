@@ -54,7 +54,7 @@ require "$FindBin::Bin/library/autoinstall-methods.pl";
 use iMSCP::Requirements;
 iMSCP::Requirements->new()->user();
 
-if(preInstall() != 0){
+if(preInstall()){
 	error("Unable to install pre-required packages");
 	exit 1;
 }
@@ -74,8 +74,10 @@ my $content = $file->get() or fatal("Unable to find the $FindBin::Bin/README fil
 
 iMSCP::Dialog->factory()->msgbox($content);
 
-if(iMSCP::Dialog->factory()->yesno(
-	"\nThe Installer detected that you are using $SO->{Distribution} $SO->{CodeName}. Is this ok?")
+if(
+	iMSCP::Dialog->factory()->yesno(
+		"\nThe Installer detected that you are using $SO->{Distribution} $SO->{CodeName}. Is this ok?"
+	)
 ) {
 	error(
 		"Sorry, the installer failing to detect your distribution.\n\n" .
@@ -114,13 +116,13 @@ for (@steps) {
 
 iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-my @warnings = getMessageByType('WARNING');
-my @errors = getMessageByType('ERROR');
+my @warnings	= getMessageByType('WARNING');
+my @errors		= getMessageByType('ERROR');
 my $msg;
 
 if (@errors > 0  || @warnings > 0) {
 	$msg  =	"\n\\Z".(@errors > 0 ? 1 : 3 )."Build step finished but with ".
-		(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
+			(@errors > 0 ? 'errors' : 'warnings') . ":\\Zn\n";
 	$msg .= "\nWARNINGS:\n".join("\n", @warnings)."\n" if @warnings > 0;
 	$msg .= "\nERRORS:\n".join("\n", @errors)."\n" if @errors > 0;
 	iMSCP::Dialog->factory()->set('defaultno', '');
@@ -187,16 +189,16 @@ unless(iMSCP::Dialog->factory()->yesno($msg)) {
 END {
 	execute('clear'); # clean screen
 
-	my @warnings = getMessageByType('WARNING');
-	my @errors = getMessageByType('ERROR');
-	my @fatals = getMessageByType('FATAL ERROR');
+	my @warnings	= getMessageByType('WARNING');
+	my @errors		= getMessageByType('ERROR');
+	my @fatals		= getMessageByType('FATAL ERROR');
 
-	my $msg	 = "\nWARNINGS:\n" . join("\n", @warnings) . "\n" if @warnings > 0;
-	$msg .= "\nERRORS:\n" . join("\n", @errors) . "\n" if @errors > 0;
-	$msg .= "\nFATAL ERRORS:\n"	. join("\n", @fatals) . "\n" if @fatals > 0;
+	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
+	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
+	$msg	.= "\nFATAL ERRORS:\n"	. join("\n", @fatals)	. "\n" if @fatals > 0;
 
 	my $message = getMessage();
-	iMSCP::Debug->newDebug('discard');
+	newDebug('discard');
 
 	my $logDir = $main::defaultConf{LOG_DIR} ? $main::defaultConf{LOG_DIR} : '/tmp';
 
@@ -217,7 +219,7 @@ END {
 	if(open(F, '>', "$logDir/imscp-build.log")) {
 		print F $message;
 		close F;
-		print STDOUT "A log file with details can be found at: $logDir/imscp-build.log";
+		print STDOUT "\nA log file with details can be found at: $logDir/imscp-build.log\n";
 	} else {
 		error("Error: Can't open file '$logDir/imscp-build.log' for writing: $!")
 	}

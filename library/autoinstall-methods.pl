@@ -49,7 +49,7 @@ sub preInstall {
 
 	my ($rs, $stdout, $stderr);
 
-	fatal((caller(0))[3] . ': Not a Debian like system') if(_checkPkgManager() != 0);
+	fatal((caller(0))[3] . ': Not a Debian like system') if(_checkPkgManager());
 
 	my @pkg = ();
 	push @pkg, 'lsb_release' if(execute("which lsb_release", \$stdout, \$stderr));
@@ -132,7 +132,7 @@ sub processConfFile {
 		'-variable.xml' unless $confFile;
 
 	unless(-f $confFile) {
-		error((caller(0))[3] . ": Error $conffile not found");
+		error((caller(0))[3] . ": Error $confFile not found");
 		return 1;
 	}
 
@@ -151,7 +151,7 @@ sub processConfFile {
 
 	# Process xml 'folders' nodes
 	foreach(@{$data->{folders}}) {
-		$_->{content} = expandVars($_->{content}) if($_->{content});
+		$_->{content} = _expandVars($_->{content}) if($_->{content});
 		eval("our \$" . $_->{export} . " = \"" . $_->{content} . "\";") if($_->{export});
 		fatal((caller(0))[3] . ": $@") if($@);
 		return $rs if $rs;
@@ -185,6 +185,12 @@ sub processConfFile {
 	foreach(@{$data->{chmod_file}}) {
 		$_->{content} = _expandVars($_->{content}) if($_->{content});
 		$rs = _chmodFile($_) if($_->{content});
+		return $rs if $rs;
+	}
+
+	foreach(@{$data->{chown_file}}) {
+		$_->{content} = _expandVars($_->{content}) if($_->{content});
+		$rs = _chownFile($_) if($_->{content});
 		return $rs if $rs;
 	}
 
@@ -228,13 +234,7 @@ sub processSpecificConfFile {
 	my @configs = $dir->getDirs();
 
 	foreach(@configs){
-		if($_ eq '.svn'){
-			# Review recommendations by nuxwin:
-			# If the system is able to manage this without any problems, I recommends
-			# to remove the warning that become useless and can disturb some users...
-			warning("You should remove .svn folders (you can ignore this, we will take care for this)");
-			next;
-		}
+		next if($_ eq '.svn');
 
 		$path = -d "$specificPath/$_" ? "$specificPath/$_" : "$commonPath/$_";
 
@@ -322,15 +322,11 @@ sub installEngine {
 	my @configs = $dir->getDirs();
 
 	foreach(@configs){
-		# Review recommendations by nuxwin:
-		# If the system is able to manage this without any problems, I recommend to
-		# remove the warning that become useless and can disturb some users...
-		if($_ eq '.svn'){
-			warning("You should remove .svn folders (you can ignore this, the program will take care of this.)");
-			next;
-		}
+
+		next if($_ eq '.svn');
 
 		if (-f "$FindBin::Bin/engine/$_/install.xml"){
+
 			unless(chdir "$FindBin::Bin/engine/$_"){
 				error((caller(0))[3].": Can not change path to $FindBin::Bin/engine/$_");
 				return 1;
@@ -409,9 +405,12 @@ sub InstallDistMaintainerScripts {
 sub finishBuild {
 	debug((caller(0))[3] . ': Starting...');
 
-	my $rs = 0;
-	$rs = $main::autoInstallClass->postBuild() if( defined $main::autoInstallClass &&
-		$main::autoInstallClass->can('postBuild'));
+	my $rs = $main::autoInstallClass->postBuild()
+		if(
+			defined $main::autoInstallClass
+			&&
+			$main::autoInstallClass->can('postBuild')
+		);
 
 	return $rs if $rs;
 
@@ -547,6 +546,8 @@ sub saveGuiWorkingData {
 # @return int 0 on success, other on failure
 sub installTmp {
 	debug((caller(0))[3] . ': Starting...');
+
+	use iMSCP::Execute;
 
 	my ($rs, $stdout, $stderr);
 	my $tmp = qualify_to_ref('INST_PREF', 'main');
@@ -686,8 +687,8 @@ sub _processFolder {
 	my $options = {};
 
 	$options->{mode} = oct($data->{mode}) if($data->{mode});
-	$options->{user} = expandVars($data->{owner}) if($data->{owner});
-	$options->{group} = expandVars($data->{group}) if($data->{group});
+	$options->{user} = _expandVars($data->{owner}) if($data->{owner});
+	$options->{group} = _expandVars($data->{group}) if($data->{group});
 	debug $options->{group} if $options->{group};
 
 	my $rs = $dir->make($options);
@@ -719,7 +720,7 @@ sub _copyConfig {
 
 	my $distro = lc($SO->{Distribution});
 
-	my $alternativeFolder = my $currentFolder = getcwd(); /upstream
+	my $alternativeFolder = my $currentFolder = getcwd(); #upstream
 	$alternativeFolder =~ s!\/$distro!\/debian!;
 
 	my $source = -e $name ? $name : "$alternativeFolder/$name";
@@ -797,12 +798,14 @@ sub _copy {
 sub _createFile {
 	debug((caller(0))[3] . ': Starting...');
 
+	use iMSCP::File;
+
 	my $data = shift;
-	use Data::Dumper;
-	fatal('a'.Dumper($data));
+
+	my $rs = iMSCP::File->new(filename => $data->{content})->save();
+	return $rs if $rs;
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -815,9 +818,9 @@ sub _chownFile {
 
 	my $data = shift;
 
-	if($data->{owner} || $data->{group}){
+	if($data->{owner} && $data->{group}){
 		my ($rs, $stdout, $stderr);
-		$rs = execute("chmod -R $data->{mode} $data->{content}", \$stdout, \$stderr);
+		$rs = execute("chown -R $data->{owner}:$data->{group} $data->{content}", \$stdout, \$stderr);
 		debug((caller(0))[3] . ": $stdout") if $stdout;
 		error((caller(0))[3] . ": $stderr") if $stderr;
 		return $rs if $rs;

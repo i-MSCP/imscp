@@ -19,6 +19,7 @@ Tickets:
 	- Fixed #77: Task - Setup - Empty files must be removed
 	- Fixed #165: Wrong level for Page message
 	- Fixed #166: Enhancement - Add Dovecot support
+	- Fixed #171: Error on Install
 
 
 -------------------------------------------------------------------------------------

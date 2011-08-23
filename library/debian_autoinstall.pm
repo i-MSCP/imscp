@@ -57,7 +57,6 @@ sub _init {
 	$self->{nonfree} = 'non-free';
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -89,7 +88,6 @@ sub preBuild {
 	return $rs if $rs;
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -110,7 +108,6 @@ sub updateSystemPackagesIndex {
 	return $rs if $rs;
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -122,9 +119,6 @@ sub preRequish {
 	debug((caller(0))[3] . ': Starting...');
 
 	my $self = shift;
-
-	#use iMSCP::Execute;
-	use iMSCP::Dialog;
 
 	iMSCP::Dialog->factory()->infobox('Installing pre-required packages');
 
@@ -139,7 +133,6 @@ sub preRequish {
 	iMSCP::Dialog->reset();
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -159,7 +152,6 @@ sub loadOldImscpConfigFile {
 	tie %main::imscpConfigOld, 'iMSCP::Config', 'fileName' => $oldConf, noerrors => 1 if (-f $oldConf);
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -177,7 +169,6 @@ sub UpdateAptSourceList {
 	my $self = shift;
 
 	use iMSCP::File;
-	use iMSCP::Dialog;
 
 	iMSCP::Dialog->factory()->infobox('Processing apt sources list');
 
@@ -230,7 +221,6 @@ sub UpdateAptSourceList {
 	}
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -302,7 +292,6 @@ sub readPackagesList {
 	};
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -315,9 +304,6 @@ sub installPackagesList {
 
 	my $self = shift;
 
-	use iMSCP::Execute;
-	use iMSCP::Dialog;
-
 	iMSCP::Dialog->factory()->infobox('Installing needed packages');
 
 	my($rs, $stderr);
@@ -328,7 +314,6 @@ sub installPackagesList {
 	return $rs if $rs;
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -349,7 +334,6 @@ sub postBuild {
 	$main::nextConf{uc($_) . "_SERVER"} = lc($self->{userSelection}->{$_}) foreach(keys %{$self->{userSelection}});
 
 	debug((caller(0))[3] . ': Ending...');
-
 	0;
 }
 
@@ -362,7 +346,6 @@ sub _trim {
 	my $var = shift;
 	$var =~ s/^\s+//;
 	$var =~ s/\s+$//;
-
 	$var;
 }
 
