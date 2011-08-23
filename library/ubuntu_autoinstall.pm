@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 by internet Multi Server Control Panel
+# Copyright 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,6 +24,13 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
+#####################################################################################
+# Package description:
+#
+# This package provides a class that is responsible to install all dependencies
+# (libraries, tools and softwares) required by i-MSCP on Ubuntu operating systems.
+#
+
 package library::ubuntu_autoinstall;
 
 use strict;
@@ -37,16 +44,20 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 use library::debian_autoinstall;
 
-sub _init{
+# Initializer.
+#
+# @param self $self iMSCP::debian_autoinstall instance
+# return int 0
+sub _init {
+	debug((caller(0))[3] . ': Starting...');
 
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
 
 	$self->{nonfree} = 'multiverse';
 
-	debug((caller(0))[3].': Ending...');
+	debug((caller(0))[3] . ': Ending...');
+
 	0;
 }
-
 
 1;
