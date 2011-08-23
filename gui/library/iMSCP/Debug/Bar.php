@@ -36,7 +36,7 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  * This component is a development helper that provides some debug information. The
  * component comes with a bunch of plugins where each of them provides a particular
  * set of debug information. A plugin can be or not an event listener that listens on
- * one or more events that are thrown in the application work flow.ow.
+ * one or more events that are thrown in the application work flow.
  *
  * For now, the DebugBar component come with the followings plugins:
  *

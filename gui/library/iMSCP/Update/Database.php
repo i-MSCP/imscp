@@ -32,9 +32,9 @@
 require_once 'iMSCP/Update.php';
 
 /**
- * Update version class.
+ * Update Database class.
  *
- * Checks if an update is available for i-MSCP.
+ * Class to handled database update for i-MSCP.
  *
  * @category	iMSCP
  * @package		iMSCP_Update
@@ -107,7 +107,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Apply all available database updates.
 	 *
-	 * @return bool TRUE on success, FALSE othewise
+	 * @return bool TRUE on success, FALSE otherwise
 	 */
 	public function applyUpdates()
 	{
@@ -124,8 +124,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
 
 			// Gets the querie(s) from the database update method
-			// A database update method can return void, an array (stack of SQL statements)
-			// or a string (SQL statement)
+			// A database update method can return void, an array (stack of SQL
+			// statements) or a string (SQL statement)
 			$queryStack = $this->$databaseUpdateMethod();
 
 			if (!empty($queryStack)) {
@@ -185,7 +185,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$reflectionStart = $this->getNextUpdate();
 
 		$reflection = new ReflectionClass(__CLASS__);
-		$databaseUpdateDetail = array();
+		$databaseUpdatesDetail = array();
 
 		/** @var $method ReflectionMethod */
 		foreach ($reflection->getMethods() as $method) {
@@ -194,14 +194,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 			if (strpos($methodName, '_databaseUpdate_') !== false) {
 				$revision = (int)substr($methodName, strrpos($methodName, '_') + 1);
 
-				if($revision >= $reflectionStart) {
+				if ($revision >= $reflectionStart) {
 					$detail = explode("\n", $method->getDocComment());
-					$databaseUpdateDetail[$revision] = str_replace("\t * ", '', $detail[1]);
+					$databaseUpdatesDetail[$revision] = str_replace("\t * ", '', $detail[1]);
 				}
 			}
 		}
 
-		return $databaseUpdateDetail;
+		return $databaseUpdatesDetail;
 	}
 
 	/**
@@ -222,7 +222,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Returns the revision of the last available datababse update.
+	 * Returns the revision of the last available database update.
 	 *
 	 * Note: For performances reasons, the revision is retrieved once.
 	 *
@@ -316,6 +316,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	public function __call($updateMethod, $param)
 	{
+
 	}
 
 	/**

@@ -24,7 +24,7 @@
  * @category    i-MSCP
  * @package     iMSCP_Config
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
  * @version     SVN: $Id$
@@ -76,12 +76,12 @@ class iMSCP_Config
      * iMSCP_Config_Handler class name
      */
     const
-    ARR = 'iMSCP_Config_Handler',
-    DB = 'iMSCP_Config_Handler_Db',
-    FILE = 'iMSCP_Config_Handler_File',
-    INI = false,
-    XML = false,
-    YAML = false;
+        ARR = 'iMSCP_Config_Handler',
+        DB = 'iMSCP_Config_Handler_Db',
+        FILE = 'iMSCP_Config_Handler_File',
+        INI = false,
+        XML = false,
+        YAML = false;
     /**#@-*/
 
     /**

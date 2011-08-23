@@ -18,7 +18,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
@@ -43,21 +43,21 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  *
  * <b>Note:</b> Will be improved later
  *
- * @package		iMSCP_Bootstrap
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @since		1.0.7 (ispCP)
- * @version		1.0.4
+ * @package iMSCP_Bootstrap
+ * @author  Laurent Declercq <l.declercq@nuxwin.com>
+ * @since   1.0.7 (ispCP)
+ * @version 1.0.4
  */
-class iMSCP_Bootstrap {
-
+class iMSCP_Bootstrap
+{
 	/**
 	 * Boot i-MSCP environment and, configuration
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
 	 */
-	public static function boot() {
-
+	public static function boot()
+    {
 		if(!self::_isBooted()) {
 			$boot = new self;
 			$boot->_run();
@@ -68,8 +68,6 @@ class iMSCP_Bootstrap {
 
 	/**
 	 * This class implements the Singleton Design Pattern
-	 *
-	 * @return void
 	 */
 	private function __construct() {}
 
@@ -85,8 +83,8 @@ class iMSCP_Bootstrap {
 	 *
 	 * @return boolean TRUE if booted, FALSE otherwise
 	 */
-	protected static function _isBooted() {
-
+	protected static function _isBooted()
+    {
 		return class_exists('iMSCP_Initializer', false);
 	}
 
@@ -95,8 +93,8 @@ class iMSCP_Bootstrap {
 	 *
 	 * @return void
 	 */
-	protected function _run() {
-
+	protected function _run()
+    {
 		$this->_loadInitializer();
 		iMSCP_Initializer::run('_setIncludePath');
 	}
@@ -106,8 +104,8 @@ class iMSCP_Bootstrap {
 	 *
 	 * @return void
 	 */
-	protected function _loadInitializer() {
-
-      require INCLUDEPATH . '/iMSCP/Initializer.php';
+	protected function _loadInitializer()
+    {
+        require INCLUDEPATH . '/iMSCP/Initializer.php';
 	}
 }

@@ -18,7 +18,7 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 - 2011 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
@@ -42,26 +42,28 @@
 class iMSCP_Registry
 {
     /**
-     * Instance of this class that provides storage for shared data
+     * Instance of this class.
      *
      * @var iMSCP_Registry
      */
     protected static $_instance = null;
 
     /**
-     * This class implements the Singleton design pattern
+     * Singleton object - Make new unavailable.
      */
     protected function __construct()
     {
+
     }
 
     /**
-     * This class implements the Singleton design pattern
+     * ingleton object - Make clone unavailable.
      *
      * @return void
      */
     private function __clone()
     {
+
     }
 
     /**
@@ -70,7 +72,7 @@ class iMSCP_Registry
      * Returns an {@link iMSCP_Registry} instance, only creating it if it doesn't
      * already exist.
      *
-     * @return iMSCP_Registry An iMSCP_Registry instance
+     * @return iMSCP_Registry
      */
     public static function getInstance()
     {
