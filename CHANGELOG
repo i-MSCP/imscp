@@ -11,6 +11,10 @@ Features / Enhancements:
 			- Added support for Dovecot
 			- Merged imscp-build and imscp-setup
 
+	GUI:
+	    Tools:
+	   		- Updated phpMyAdmin to 3.4.4.0
+
 Tickets:
 	- Fixed #16: Feature - Mail Quota Support
 	- Fixed #57: Enhancement - Adapt the postfix master.cf to be compatible with
