@@ -41,7 +41,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_autoresponder_enable.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_autoresponder_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -189,7 +189,7 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ENABLE_MAIL_AUTORESPONDER'	=> tr('Edit mail auto responder'),
+		'TR_EDIT_MAIL_AUTORESPONDER'	=> tr('Edit mail auto responder'),
 		'TR_ARSP_MESSAGE'				=> tr('Your message'),
 		'TR_ENABLE'						=> tr('Save'),
 		'TR_CANCEL'						=> tr('Cancel'),

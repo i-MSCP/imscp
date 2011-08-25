@@ -14,12 +14,13 @@ Features / Enhancements:
 Tickets:
 	- Fixed #16: Feature - Mail Quota Support
 	- Fixed #57: Enhancement - Adapt the postfix master.cf to be compatible with
-	dovecot
+	  dovecot
 	- Fixed #58: Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77: Task - Setup - Empty files must be removed
 	- Fixed #165: Wrong level for Page message
 	- Fixed #166: Enhancement - Add Dovecot support
 	- Fixed #171: Error on Install
+	- Fixed #172: Litte Bug found in Autoresponser Edit
 
 
 -------------------------------------------------------------------------------------
