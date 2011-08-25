@@ -12,8 +12,8 @@ Features / Enhancements:
 			- Merged imscp-build and imscp-setup
 
 	GUI:
-	    Tools:
-	   		- Updated phpMyAdmin to 3.4.4.0
+		Tools:
+			- Updated phpMyAdmin to 3.4.4
 
 Tickets:
 	- Fixed #16: Feature - Mail Quota Support
@@ -25,6 +25,8 @@ Tickets:
 	- Fixed #166: Enhancement - Add Dovecot support
 	- Fixed #171: Error on Install
 	- Fixed #172: Litte Bug found in Autoresponser Edit
+	- Fixed #173: phpMyAdmin 3.4.4 released
+	- Fixed #174: no session directory
 
 
 -------------------------------------------------------------------------------------

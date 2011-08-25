@@ -562,7 +562,7 @@ sub installTmp {
 
 	# Session files must not be saved to prevent any troubles after upate.
 	$rs = execute(
-		"rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/sessions",
+		"rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/sessions/*",
 		\$stdout, \$stderr
 	);
 
@@ -572,7 +572,7 @@ sub installTmp {
 
 	# Process cleanup to avoid any security risks and conflicts
 	$rs = execute(
-		"rm -fr $main::defaultConf{'ROOT_DIR'}/{daemon,engine,gui}",
+		"rm -fvr $main::defaultConf{'ROOT_DIR'}/daemon $main::defaultConf{'ROOT_DIR'}/engine $main::defaultConf{'ROOT_DIR'}/gui ",
 		\$stdout, \$stderr
 	);
 
