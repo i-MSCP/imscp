@@ -572,7 +572,7 @@ sub installTmp {
 
 	# Process cleanup to avoid any security risks and conflicts
 	$rs = execute(
-		"rm -fvr $main::defaultConf{'ROOT_DIR'}/daemon $main::defaultConf{'ROOT_DIR'}/engine $main::defaultConf{'ROOT_DIR'}/gui ",
+		"rm -fr $main::defaultConf{'ROOT_DIR'}/daemon $main::defaultConf{'ROOT_DIR'}/engine $main::defaultConf{'ROOT_DIR'}/gui ",
 		\$stdout, \$stderr
 	);
 
