@@ -64,15 +64,15 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
 		$tpl->assign(
 			array(
-				'USERNAME'				=> "",
+				'USERNAME'				=> '',
 				'DOMAIN_NAME'			=> tohtml($dmn_name),
 				'MAIL_DMN_CHECKED'		=> $cfg->HTML_CHECKED,
-				'MAIL_ALS_CHECKED'		=> "",
-				'MAIL_SUB_CHECKED'		=> "",
-				'MAIL_ALS_SUB_CHECKED'	=> "",
+				'MAIL_ALS_CHECKED'		=> '',
+				'MAIL_SUB_CHECKED'		=> '',
+				'MAIL_ALS_SUB_CHECKED'	=> '',
 				'NORMAL_MAIL_CHECKED'	=> $cfg->HTML_CHECKED,
-				'FORWARD_MAIL_CHECKED'	=> "",
-				'FORWARD_LIST'			=> ""
+				'FORWARD_MAIL_CHECKED'	=> '',
+				'FORWARD_LIST'			=> ''
 			)
 		);
 
@@ -87,12 +87,12 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME'				=> clean_input($_POST['username'], true),
 				'DOMAIN_NAME'			=> tohtml($dmn_name),
-				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : "",
-				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : "",
-				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : "",
-				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? $cfg->HTML_CHECKED : "",
-				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? $cfg->HTML_CHECKED : "",
-				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? $cfg->HTML_CHECKED : "",
+				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : '',
+				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
+				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
+				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? $cfg->HTML_CHECKED : '',
+				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? $cfg->HTML_CHECKED : '',
+				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? $cfg->HTML_CHECKED : '',
 				'FORWARD_LIST'			=> $f_list
 			)
 		);
@@ -105,7 +105,7 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
-	$query = "
+	$query = '
 		SELECT
 			`alias_id`, `alias_name`
 		FROM
@@ -116,7 +116,7 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 			`alias_status` = ?
 		ORDER BY
 			`alias_name`
-	";
+	';
 
 	$rs = exec_query($query, array($dmn_id, $ok_status));
 	if ($rs->recordCount() == 0) {
@@ -175,7 +175,7 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
-	$query = "
+	$query = '
 		SELECT
 			`subdomain_id` AS sub_id, `subdomain_name` AS sub_name
 		FROM
@@ -186,7 +186,7 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 			`subdomain_status` = ?
 		ORDER BY
 			`subdomain_name`
-    ";
+    ';
 
 	$rs = exec_query($query, array($dmn_id, $ok_status));
 
@@ -248,7 +248,7 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
-	$query = "
+	$query = '
 		SELECT
 			t1.`subdomain_alias_id` AS als_sub_id,
 			t1.`subdomain_alias_name` AS als_sub_name, t2.`alias_name` AS als_name
@@ -261,7 +261,7 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 			t1.`subdomain_alias_status` = ?
 		ORDER BY
 			t1.`subdomain_alias_name`
-	";
+	';
 
 	$rs = exec_query($query, array($dmn_id, $ok_status));
 
@@ -323,7 +323,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 
 	$mail_auto_respond = false;
 	$mail_auto_respond_text = '';
-	$mail_addr = '';
+	$mail_addr = $mail_acc.'@'.decode_idna($dmn_name);
 
 	if (array_key_exists('mail_type_normal',$_POST)) {
 		$mail_pass = $_POST['pass'];
@@ -331,19 +331,15 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 		if ($_POST['dmn_type'] === 'dmn') {
 			$mail_type[] = MT_NORMAL_MAIL;
 			$sub_id = '0';
-			$mail_addr = $mail_acc.'@'.$dmn_name; // the complete address
 		} else if ($_POST['dmn_type'] === 'sub') {
 			$mail_type[] = MT_SUBDOM_MAIL;
 			$sub_id = $_POST['sub_id'];
-			$mail_addr = $mail_acc.'@'.decode_idna($dmn_name); // the complete address
 		} else if ($_POST['dmn_type'] === 'als_sub') {
 			$mail_type[] = MT_ALSSUB_MAIL;
 			$sub_id = $_POST['als_sub_id'];
-			$mail_addr = $mail_acc.'@'.decode_idna($dmn_name); // the complete address
 		} else if ($_POST['dmn_type'] === 'als') {
 			$mail_type[] = MT_ALIAS_MAIL;
 			$sub_id = $_POST['als_id'];
-			$mail_addr = $mail_acc.'@'.decode_idna($dmn_name); // the complete address
 		} else {
 			set_page_message(tr('Unknown domain type'), 'error');
 			return false;
@@ -380,13 +376,13 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
 				// @todo ERROR .. strange :) not email in this line - warning
-				set_page_message(tr("Mailformat of an address in your forward list is incorrect!"), 'error');
+				set_page_message(tr('Mailformat of an address in your forward list is incorrect!'), 'error');
 				return false;
 			} else if ($value === '') {
-				set_page_message(tr("Mail forward list empty!"));
+				set_page_message(tr('Mail forward list empty!'));
 				return false;
 			} else if ($mail_acc.'@'.decode_idna($dmn_name) == $value){
-				set_page_message(tr("Forward to same address is not allowed!"), 'error');
+				set_page_message(tr('Forward to same address is not allowed!'), 'error');
 				return false;
 			}
 			$mail_accs[] = $value;
@@ -397,7 +393,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	$mail_type = implode(',', $mail_type);
 	list($dmn_type, $type) = explode('_', $mail_type, 2);
 
-	$check_acc_query = "
+	$check_acc_query = '
 		SELECT
 			COUNT(`mail_id`) AS cnt
 		FROM
@@ -410,7 +406,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			`sub_id` = ?
 		AND
 			LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
-	";
+	';
 
 	$rs = exec_query($check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
 
@@ -419,14 +415,14 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 		return false;
 	}
 
-	$query = "
+	$query = '
 		INSERT INTO `mail_users` (
 			`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
 			`sub_id`, `status`, `mail_auto_respond`, `mail_auto_respond_text`,
 			`mail_addr`
 		) VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-	";
+	';
 
 	exec_query($query, array($mail_acc,
 			$mail_pass,
@@ -441,7 +437,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 
 	update_reseller_c_props(get_reseller_id($domain_id));
 
-	write_log($_SESSION['user_logged'] . ": adds new mail account: " . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
+	write_log($_SESSION['user_logged'] . ': adds new mail account: ' . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
 	set_page_message(tr('Mail account scheduled for addition!'));
 	send_request();
 	redirectTo('mail_accounts.php');
@@ -470,8 +466,8 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 	}
 
 	$mail_acc = strtolower(clean_input($_POST['username']));
-	if (imscp_check_local_part($mail_acc) == "0") {
-		set_page_message(tr("Invalid Mail Localpart Format used!"), 'error');
+	if (imscp_check_local_part($mail_acc) == '0') {
+		set_page_message(tr('Invalid Mail Localpart Format used!'), 'error');
 		return false;
 	}
 
@@ -609,7 +605,7 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 // common page data.
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
-	header("Location: index.php");
+	header('Location: index.php');
 }
 
 $tpl->assign(
@@ -647,7 +643,7 @@ $tpl->assign(
 		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
 		'TR_FORWARD_MAIL'		=> tr('Forward mail'),
 		'TR_FORWARD_TO'			=> tr('Forward to'),
-		'TR_FWD_HELP'			=> tr("Separate multiple email addresses with a line-break."),
+		'TR_FWD_HELP'			=> tr('Separate multiple email addresses with a line-break.'),
 		'TR_ADD'				=> tr('Add'),
 		'TR_EMPTY_DATA'			=> tr('You did not fill all required fields')
 	)
