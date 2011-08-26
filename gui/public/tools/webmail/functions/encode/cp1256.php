@@ -6,13 +6,11 @@
  * takes a string of unicode entities and converts it to a cp1256 encoded string
  * Unsupported characters are replaced with ?.
  *
- * @copyright 2004-2010 The SquirrelMail Project Team
+ * @copyright 2004-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: cp1256.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: cp1256.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage encode
- *
- * @author ispCP Team May 2010 based on a patch of Benny Baumann
  */
 
 /**
@@ -21,10 +19,10 @@
  * @return string cp1256 encoded text
  */
 function charset_encode_cp1256 ($string) {
-    // don't run encoding function, if there is no encoded characters
-    if (! preg_match("'&#[0-9]+;'",$string) ) return $string;
+   // don't run encoding function, if there is no encoded characters
+   if (! preg_match("'&#[0-9]+;'",$string) ) return $string;
 
-    $string=preg_replace_callback("/&#([0-9]+);/","unicodetocp1256",$string);
+    $string=preg_replace("/&#([0-9]+);/e","unicodetocp1256('\\1')",$string);
     // $string=preg_replace("/&#[xX]([0-9A-F]+);/e","unicodetocp1256(hexdec('\\1'))",$string);
 
     return $string;
@@ -42,10 +40,6 @@ function charset_encode_cp1256 ($string) {
  * @return string cp1256 character
  */
 function unicodetocp1256($var) {
-
-    if(is_array($var)) {
-        $var=$var[1];
-    }
 
     $cp1256chars=array('160' => "\xA0",
                        '162' => "\xA2",

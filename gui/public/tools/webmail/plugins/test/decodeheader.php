@@ -5,7 +5,7 @@
  *
  * This page tests the decodeHeader function.
  *
- * @copyright 2006-2010 The SquirrelMail Project Team
+ * @copyright 2006-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins

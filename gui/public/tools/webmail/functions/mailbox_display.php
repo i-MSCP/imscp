@@ -6,9 +6,9 @@
  * This contains functions that display mailbox information, such as the
  * table row that has sender, date, subject, etc...
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailbox_display.php 13932 2010-03-30 05:54:31Z pdontthink $
+ * @version $Id: mailbox_display.php 14114 2011-05-15 22:02:24Z pdontthink $
  * @package squirrelmail
  */
 
@@ -117,6 +117,9 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
         }
     }
     $senderName = str_replace('&nbsp;',' ',$senderName);
+    if (substr($senderName, 0, 6) == '&quot;'
+     && substr($senderName, -6) == '&quot;')
+        $senderName = substr(substr($senderName, 0, -6), 6);
     echo html_tag( 'tr','','','','valign="top"') . "\n";
 
     if (isset($msg['FLAG_FLAGGED']) && ($msg['FLAG_FLAGGED'] == true)) {
@@ -157,6 +160,7 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
     if (is_array($message_highlight_list) && count($message_highlight_list)) {
         $msg['TO'] = parseAddress($msg['TO']);
         $msg['CC'] = parseAddress($msg['CC']);
+        $decoded_addresses = array();
         foreach ($message_highlight_list as $message_highlight_list_part) {
             if (trim($message_highlight_list_part['value']) != '') {
                 $high_val   = strtolower($message_highlight_list_part['value']);
@@ -171,9 +175,12 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
                         case('TO'):
                         case('CC'):
                         case('FROM'):
-                            foreach ($msg[$match_type] as $address) {
-                                $address[0] = decodeHeader($address[0], true, false);
-                                $address[1] = decodeHeader($address[1], true, false);
+                            foreach ($msg[$match_type] as $i => $address) {
+                                if (empty($decoded_addresses[$match_type][$i])) {
+                                    $decoded_addresses[$match_type][$i][0] = decodeHeader($address[0], true, false);
+                                    $decoded_addresses[$match_type][$i][1] = decodeHeader($address[1], true, false);
+                                }
+                                $address = $decoded_addresses[$match_type][$i];
                                 if (strstr('^^' . strtolower($address[0]), $high_val) ||
                                     strstr('^^' . strtolower($address[1]), $high_val)) {
                                     $hlt_color = $message_highlight_list_part['color'];
@@ -848,7 +855,13 @@ function mail_message_listing_end($num_msgs, $paginator_str, $msg_cnt_str, $colo
 }
 
 function printHeader($mailbox, $sort, $color, $showsort=true) {
-    global $index_order, $internal_date_sort;
+
+    global $index_order, $internal_date_sort, $imap_server_type;
+
+    // gmail doesn't support custom sorting, so we always
+    // hide the sort buttons when using gmail
+    if ($imap_server_type == 'gmail') $showsort = false;
+
     echo html_tag( 'tr' ,'' , 'center', $color[5] );
 
     /* calculate the width of the subject column based on the

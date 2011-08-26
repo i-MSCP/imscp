@@ -3,7 +3,7 @@
 /**
  * validate.php
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -75,5 +75,19 @@ $tzChangeAllowed = (!ini_get('safe_mode')) ||
 if ( $timeZone != SMPREF_NONE && ($timeZone != "")
     && $tzChangeAllowed ) {
     putenv("TZ=".$timeZone);
+}
+
+/**
+ * php 5.1.0 added time zone functions. Set time zone with them in order
+ * to prevent E_STRICT notices and allow time zone modifications in safe_mode.
+ */
+if (function_exists('date_default_timezone_set')) {
+    if ($timeZone != SMPREF_NONE && $timeZone != "") {
+        date_default_timezone_set($timeZone);
+    } else {
+        // interface runs on server's time zone. Remove php E_STRICT complains
+        $default_timezone = @date_default_timezone_get();
+        date_default_timezone_set($default_timezone);
+    }
 }
 

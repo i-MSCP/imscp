@@ -6,9 +6,9 @@
  * This contains the functions necessary to detect and decode MIME
  * messages.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 13899 2010-01-30 16:14:53Z pdontthink $
+ * @version $Id: mime.php 14121 2011-07-12 04:53:35Z pdontthink $
  * @package squirrelmail
  */
 
@@ -473,9 +473,9 @@ function formatAttachments($message, $exclude_id, $mailbox, $id) {
                         $name = $header->getParameter('name');
                         if(trim($name) == '') {
                             if (trim( $header->id ) == '') {
-                                $filename = 'untitled-[' . $ent . ']' ;
+                                $filename = 'untitled-[' . $ent . ']' . '.' . strtolower($header->type1);
                             } else {
-                                $filename = 'cid: ' . $header->id;
+                                $filename = 'cid: ' . $header->id . '.' . strtolower($header->type1);
                             }
                         } else {
                             $filename = $name;
@@ -488,9 +488,9 @@ function formatAttachments($message, $exclude_id, $mailbox, $id) {
                 $filename = $header->getParameter('name');
                 if (!trim($filename)) {
                     if (trim( $header->id ) == '') {
-                        $filename = 'untitled-[' . $ent . ']' ;
+                        $filename = 'untitled-[' . $ent . ']' . '.' . strtolower($header->type1) ;
                     } else {
-                        $filename = 'cid: ' . $header->id;
+                        $filename = 'cid: ' . $header->id . '.' . strtolower($header->type1);
                     }
                 }
             }
@@ -526,11 +526,9 @@ function formatAttachments($message, $exclude_id, $mailbox, $id) {
         $hookresults = do_hook("attachment $type0/$type1", $links,
                 $startMessage, $id, $urlMailbox, $ent, $defaultlink,
                 $display_filename, $where, $what);
-        if(count($hookresults[1]) <= 1) {
-            $hookresults = do_hook("attachment $type0/*", $links,
-                    $startMessage, $id, $urlMailbox, $ent, $defaultlink,
-                    $display_filename, $where, $what);
-        }
+        $hookresults = do_hook("attachment $type0/*", $hookresults[1],
+                $startMessage, $id, $urlMailbox, $ent, $hookresults[6],
+                $display_filename, $where, $what);
         $hookresults = do_hook("attachment */*", $hookresults[1],
                 $startMessage, $id, $urlMailbox, $ent, $hookresults[6],
                 $display_filename, $where, $what);
@@ -2161,6 +2159,15 @@ function sq_sanitize($body,
             list($free_content, $curpos) =
                 sq_fixstyle($body, $gt+1, $message, $id, $mailbox);
             if ($free_content != FALSE){
+                $attary = sq_fixatts($tagname,
+                                     $attary,
+                                     $rm_attnames,
+                                     $bad_attvals,
+                                     $add_attr_to_tag,
+                                     $message,
+                                     $id,
+                                     $mailbox
+                                     );
                 $trusted .= sq_tagprint($tagname, $attary, $tagtype);
                 $trusted .= $free_content;
                 $trusted .= sq_tagprint($tagname, false, 2);

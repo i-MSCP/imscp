@@ -1,7 +1,7 @@
 /**************************************
- * Release Notes: SquirrelMail 1.4.21 *
- * The "Wiser Leaders" Release        *
- * 23 Jul 2010                        *
+ * Release Notes: SquirrelMail 1.4.22 *
+ * The "Buried At Sea" Release        *
+ * 12 Jul 2011                        *
  **************************************/
 
 In this edition of SquirrelMail Release Notes:
@@ -14,26 +14,43 @@ In this edition of SquirrelMail Release Notes:
 All about this release
 ======================
 
-This is primarily a maintenance release which addresses a
-smattering of small issues and adds some fine-tuning of
-recent changes.  It also closes two relatively low-risk
-security issues.
+This release contains a large number of performance
+enhancements, stability fixes and a few bug/security fixes.
 
-Before this release, for environments with highly active
-users, the number of security tokens could have bloated
-user session (and preference) files to an unacceptable
-size, hurting overall responsiveness.  This release scales
-back the default validity period of security tokens from
-30 days to two days, which should fix this problem in most
-cases.  The administrator is always free to change this
-value by specifying $max_token_age_days in
-config/config_local.php.
+The most important thing to note when upgrading to version
+1.4.22 is that due to a fix made that standardizes the folder
+list display, administrators who had their configuration file
+set to work around this issue in the past will need to update
+their configuration.  This will commonly affect those using
+Courier IMAP, but could affect others as well.
 
-There are also fixes for minor issues related to header
-folding, faster and more resilient display of encoded
-subjects, quoting of encoded addresses upon reply, provision
-of a subject when using forward-as-attachment, and a few
-other tidbits.
+If you have $default_sub_of_inbox set to FALSE in your main
+configuration (or, using the configuration tool, see
+"3. Folder Defaults" ===> "12. Default Sub. of INBOX"),
+and you find after upgrade that your special folders (e.g.,
+Trash, Drafts, Sent) are no longer listed at the top of your
+folder list, please change that value to TRUE.
+
+Also, if you find that this upgrade prevents users from
+logging in with an error such as "ERROR: Could not complete
+request.  Query: CREATE "Trash" Reason Given: Invalid mailbox
+name.", you will need to correct the user preference values
+for the problem folders.  You can do so with commands such as
+the following for file-based preferences (adjust the data
+directory location as needed):
+
+   find /var/lib/squirrelmail/data/ -name *.pref -exec sed --in-place 's/trash_folder=Trash/trash_folder=INBOX.Trash/g' {} \;
+   find /var/lib/squirrelmail/data/ -name *.pref -exec sed --in-place 's/trash_folder=Drafts/trash_folder=INBOX.Drafts/g' {} \;
+   find /var/lib/squirrelmail/data/ -name *.pref -exec sed --in-place 's/trash_folder=Sent/trash_folder=INBOX.Sent/g' {} \;
+
+Or, for database-based preferences:
+
+   UPDATE userprefs SET prefval = 'INBOX.Trash' WHERE prefkey = 'trash_folder' AND prefval = 'Trash';
+   UPDATE userprefs SET prefval = 'INBOX.Drafts' WHERE prefkey = 'draft_folder' AND prefval = 'Drafts';
+   UPDATE userprefs SET prefval = 'INBOX.Sent' WHERE prefkey = 'sent_folder' AND prefval = 'Sent';
+
+MAKE SURE to back up your user preferences before doing any
+of the above!
 
 For a complete list of changes, please see the file "ChangeLog"
 in the doc/ directory.
@@ -42,15 +59,17 @@ in the doc/ directory.
 Security issues
 ===============
 
-This release also includes fixes for two low-risk
-vulnerabilities.  The first, CVE-2010-1637, allows
-authenticated users to use the Mail Fetch plugin as a
-network/port/DNS scanner.  The second, CVE-2010-2813,
-poses a denial-of-service risk when passwords containing
-8-bit characters are used to log in.  While we
-characterize these issues as fairly low risk, it is
-nevertheless recommended that users of previous versions
-of SquirrelMail upgrade at their earliest convenience.
+This release also addresses several security issues, including
+some harsh but hard to exploit XSS bugs, a general clickjacking
+vulnerability, and a small problem with message santizing.
+
+If only for the clickjacking protection, we recommend that
+users of previous versions of SquirrelMail upgrade at their
+earliest convenience.
+
+For a more detailed discussion of the security fixes in this
+version, please see the listings for CVE-2010-4554, CVE-2010-4555,
+and CVE-2011-2023 at http://squirrelmail.org/security/
 
 
 Locales / Translations / Charsets

@@ -9,7 +9,7 @@
  * and josh@superfork.com (extracted from PHP manual)
  * Adapted for MailFetch by Philippe Mingo <mingo@rotedic.com>
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins

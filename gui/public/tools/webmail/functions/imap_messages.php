@@ -6,9 +6,9 @@
  * This implements functions that manipulate messages
  * NOTE: Quite a few functions in this file are obsolete
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 13932 2010-03-30 05:54:31Z pdontthink $
+ * @version $Id: imap_messages.php 14103 2011-04-18 18:42:49Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -135,7 +135,8 @@ function get_reference_header($imap_stream, $message) {
 function sqimap_get_sort_order($imap_stream, $sort, $mbxresponse) {
     global  $default_charset, $thread_sort_messages,
             $internal_date_sort, $server_sort_array,
-            $sent_folder, $mailbox, $uid_support;
+            $sent_folder, $mailbox, $uid_support,
+            $imap_server_type;
 
     if (sqsession_is_registered('server_sort_array')) {
         sqsession_unregister('server_sort_array');
@@ -147,7 +148,9 @@ function sqimap_get_sort_order($imap_stream, $sort, $mbxresponse) {
     $sort_test = array();
     $sort_query = '';
 
-    if ($sort == 6) {
+    // gmail does not support sorting I guess, so it always should have default sort
+    //
+    if ($sort == 6 || $imap_server_type == 'gmail') {
         if ($uid_support) {
             if (isset($mbxresponse['UIDNEXT']) && $mbxresponse['UIDNEXT']) {
                 $uidnext = $mbxresponse['UIDNEXT']-1;
@@ -268,28 +271,33 @@ function sqimap_get_php_sort_order($imap_stream, $mbxresponse) {
  * Returns an indent array for printMessageinfo()
  * This represents the amount of indent needed (value),
  * for this message number (key)
+ *
+ * @param  resource $imap_stream
+ * @return array message ID to indent level mappings
  */
 function get_parent_level($imap_stream) {
-    global $sort_by_ref, $default_charset, $thread_new;
-        $parent = "";
-        $child = "";
-        $cutoff = 0;
+    global $thread_new;
+    $parent = "";
+    $child = "";
+    $cutoff = 0;
 
-    /* loop through the threads and take unwanted characters out
-       of the thread string then chop it up
-     */
-    for ($i=0;$i<count($thread_new);$i++) {
-        $thread_new[$i] = preg_replace("/\s\(/", "(", $thread_new[$i]);
-        $thread_new[$i] = preg_replace("/(\d+)/", "$1|", $thread_new[$i]);
-        $thread_new[$i] = preg_split("/\|/", $thread_new[$i], -1, PREG_SPLIT_NO_EMPTY);
-    }
     $indent_array = array();
     if (!$thread_new) {
         $thread_new = array();
     }
-    /* looping through the parts of one message thread */
 
-    for ($i=0;$i<count($thread_new);$i++) {
+    /* loop through the threads and take unwanted characters out
+       of the thread string then chop it up
+     */
+    $thread_count = count($thread_new);
+    for ($i = 0; $i < $thread_count; $i++) {
+        $thread_new[$i] = preg_replace("/\s\(/", "(", $thread_new[$i]);
+        $thread_new[$i] = preg_replace("/(\d+)/", "$1|", $thread_new[$i]);
+        $thread_new[$i] = preg_split("/\|/", $thread_new[$i], -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    /* looping through the parts of one message thread */
+    for ($i = 0; $i < $thread_count; $i++) {
         /* first grab the parent, it does not indent */
 
         if (isset($thread_new[$i][0])) {
@@ -309,7 +317,8 @@ function get_parent_level($imap_stream) {
         $spaces_total = 0;
         $indent = 0;
         $fake = FALSE;
-        for ($k=1;$k<(count($thread_new[$i]))-1;$k++) {
+        $thread_length = count($thread_new[$i]);
+        for ($k=1;$k<$thread_length-1;$k++) {
             $chars = count_chars($thread_new[$i][$k], 1);
             if (isset($chars['40'])) {       /* testing for ( */
                 $level += $chars['40'];

@@ -1,15 +1,15 @@
 # LANGUAGE (xx_XX) SquirrelMail Translation
-# Copyright (c) 1999-2010 The SquirrelMail Project Team
+# Copyright (c) 1999-2011 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# $Id: squirrelmail.pot 13941 2010-06-20 16:28:12Z jangliss $
+# $Id: squirrelmail.pot 14084 2011-01-06 02:44:03Z pdontthink $
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: SquirrelMail STABLE\n"
 "Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
 "i18n@lists.sourceforge.net>\n"
-"POT-Creation-Date: 2009-05-29 12:50+0200\n"
+"POT-Creation-Date: 2010-09-13 12:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <squirrelmail-i18n@lists.sourceforge.net>\n"
@@ -730,6 +730,9 @@ msgstr ""
 msgid "Message List"
 msgstr ""
 
+msgid "Unread"
+msgstr ""
+
 msgid "Resume Draft"
 msgstr ""
 
@@ -1042,6 +1045,11 @@ msgid "View Business Card"
 msgstr ""
 
 msgid "Your session has expired, but will be resumed after logging in again."
+msgstr ""
+
+msgid ""
+"The current page request appears to have originated from an unrecognized "
+"source."
 msgstr ""
 
 msgid "Sunday"
@@ -1368,13 +1376,13 @@ msgstr ""
 msgid "Read"
 msgstr ""
 
-msgid "Unread"
-msgstr ""
-
 msgid "Unthread View"
 msgstr ""
 
 msgid "Thread View"
+msgstr ""
+
+msgid "Received"
 msgstr ""
 
 msgid "Toggle All"
@@ -1457,6 +1465,18 @@ msgid "Error creating directory %s."
 msgstr ""
 
 msgid "Could not create hashed directory structure!"
+msgstr ""
+
+msgid ""
+"Fatal token generation error; please contact your system administrator or "
+"the SquirrelMail Team"
+msgstr ""
+
+msgid "This page request could not be verified and appears to have expired."
+msgstr ""
+
+msgid ""
+"The current page request appears to have originated from an untrusted source."
 msgstr ""
 
 msgid "General Display Options"
@@ -1586,6 +1606,9 @@ msgid "Height of Compose Window"
 msgstr ""
 
 msgid "Prepend Signature before Reply/Forward Text"
+msgstr ""
+
+msgid "Strip signature when replying"
 msgstr ""
 
 msgid "Prefix for Original Message when Replying"
@@ -2395,13 +2418,19 @@ msgstr ""
 msgid "Delete &amp; Prev"
 msgstr ""
 
+msgid "Unread &amp; Prev"
+msgstr ""
+
+msgid "Unread &amp; Next"
+msgstr ""
+
 msgid "Delete &amp; Next"
 msgstr ""
 
 msgid "Move to:"
 msgstr ""
 
-msgid "Delete/Move/Next Buttons:"
+msgid "Delete/Unread/Move/Next Buttons:"
 msgstr ""
 
 msgid "Display at top"
@@ -2411,6 +2440,9 @@ msgid "with move option"
 msgstr ""
 
 msgid "Display at bottom"
+msgstr ""
+
+msgid "Show unread options"
 msgstr ""
 
 msgid ""
@@ -2831,6 +2863,12 @@ msgid "Message %d deleted from remote server!"
 msgstr ""
 
 msgid "Delete failed:"
+msgstr ""
+
+msgid "Sorry, that port number is not allowed"
+msgstr ""
+
+msgid "Sorry, that server address is not allowed"
 msgstr ""
 
 msgid "Remote POP server settings"

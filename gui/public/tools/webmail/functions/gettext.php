@@ -8,9 +8,9 @@
  * other PHP scripts? The only SM-specific thing is $sm_language, I think.
  *
  * @link http://www.php.net/gettext Original php gettext manual
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: gettext.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: gettext.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @since 1.1.2
  * @package squirrelmail
  * @subpackage i18n

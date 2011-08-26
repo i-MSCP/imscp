@@ -5,7 +5,7 @@
  *
  * Displays messagelist column order options
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -31,12 +31,16 @@ require_once(SM_PATH . 'functions/html.php');
 require_once(SM_PATH . 'functions/forms.php');
 
 /* get globals */
-sqgetGlobalVar('num',       $num,       SQ_GET);  
+if (sqgetGlobalVar('num', $num, SQ_GET))  
+   $num = (int)$num;
+else
+   $num = 0;
+
 sqgetGlobalVar('add',       $add,       SQ_POST);
 
 sqgetGlobalVar('submit',    $submit);
 sqgetGlobalVar('method',    $method);
-if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_FORM)) {
     $submitted_token = '';
 }
 /* end of get globals */
@@ -61,17 +65,21 @@ displayPageHeader($color, 'None');
     
     if (! isset($method)) { $method = ''; }
  
-    if ($method == 'up' && $num > 1) {
+    if ($method == 'up' && $num > 0 && $num > 1) {
         $prev = $num-1;
         $tmp = $index_order[$prev];
         $index_order[$prev] = $index_order[$num];
         $index_order[$num] = $tmp;
-    } else if ($method == 'down' && $num < count($index_order)) {
+    } else if ($method == 'down' && $num > 0 && $num < count($index_order)) {
         $next = $num++;
         $tmp = $index_order[$next];
         $index_order[$next] = $index_order[$num];
         $index_order[$num] = $tmp;
-    } else if ($method == 'remove' && $num) {
+    } else if ($method == 'remove' && $num > 0) {
+
+        // first do a security check
+        sm_validate_security_token($submitted_token, 3600, TRUE);
+
         for ($i=1; $i < 8; $i++) {
             removePref($data_dir, $username, "order$i"); 
         }
@@ -124,7 +132,7 @@ displayPageHeader($color, 'None');
             echo html_tag( 'td' );
             /* Always show the subject */
             if ($tmp != 4)
-               echo '<small><a href="options_order.php?method=remove&amp;num=' . $i . '">' . _("remove") . '</a></small>';
+               echo '<small><a href="options_order.php?method=remove&amp;num=' . $i . '&smtoken=' . sm_generate_security_token() . '">' . _("remove") . '</a></small>';
             else
                echo '&nbsp;'; 
             echo '</td>';

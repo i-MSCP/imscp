@@ -6,12 +6,10 @@
  * This a simple login screen. Some housekeeping is done to clean
  * cookies and find language.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
- *
- * @modified by ispCP Omega Team http://isp-control.net
  */
 
 /** This is the login page */
@@ -190,33 +188,6 @@ if (isset($org_logo) && $org_logo) {
     }
 }
 
-//
-// @modified by ispCP Omega - http://isp-control.net
-//
-
-echo html_tag ( 'div',
-		html_tag ( 'h1', sprintf (_("%s Webmail Login"), $org_name) ) .
-		html_tag ( 'fieldset',
-			html_tag ( 'p',
-				_("Username:") . addInput($username_form_name, $loginname_value) . '<br />' ."\n" .
-				_("Password:") . addPwField($password_form_name) . '<br />' ."\n" .
-				addHidden('js_autodetect_results', SMPREF_JS_OFF) . $mailtofield . addHidden('just_logged_in', '1'),
-				NULL, NULL, 'class="login"'
-			) .
-			html_tag ( 'p',
-				addSubmit(_("Login")),
-				NULL, NULL, 'class="login"'
-			) .
-			html_tag ( 'p',
-				( (isset($hide_sm_attributions) && $hide_sm_attributions) ? '' :
-            	sprintf(_("SquirrelMail version %s"), $version) . '<br />' . "\n"),
-				NULL, NULL, 'class="login small"'
-			),
-			NULL, NULL, 'class="login"'
-        ),
-		NULL, NULL, 'id="container"' );
-
-/**** Commented out
 echo html_tag( 'table',
     html_tag( 'tr',
         html_tag( 'td',
@@ -269,10 +240,6 @@ echo html_tag( 'table',
         'center' )
     ) ,
 '', $color[4], 'border="0" cellspacing="0" cellpadding="0" width="100%"' );
-* ***/
-//
-// End modification
-//
 do_hook('login_form');
 echo '</form>' . "\n";
 

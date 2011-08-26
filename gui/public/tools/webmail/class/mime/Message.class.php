@@ -5,9 +5,9 @@
  *
  * This file contains functions needed to handle mime messages.
  *
- * @copyright 2003-2010 The SquirrelMail Project Team
+ * @copyright 2003-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php 13926 2010-03-08 09:26:58Z kink $
+ * @version $Id: Message.class.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -161,9 +161,9 @@ class Message {
                       $name = $header->getParameter('name');
                       if(!trim($name)) {
                           if (!trim( $header->id )) {
-                              $filename = 'untitled-[' . $this->entity_id . ']' ;
+                              $filename = 'untitled-[' . $this->entity_id . ']' . '.' . strtolower($header->type1);
                           } else {
-                              $filename = 'cid: ' . $header->id;
+                              $filename = 'cid: ' . $header->id . '.' . strtolower($header->type1);
                           }
                       } else {
                           $filename = $name;
@@ -178,9 +178,9 @@ class Message {
                   $filename = $header->getParameter('name');
                   if (!trim($filename)) {
                       if (!trim( $header->id )) {
-                          $filename = 'untitled-[' . $this->entity_id . ']' ;
+                          $filename = 'untitled-[' . $this->entity_id . ']' . '.' . strtolower($header->type1);
                       } else {
-                          $filename = 'cid: ' . $header->id;
+                          $filename = 'cid: ' . $header->id . '.' . strtolower($header->type1);
                       }
                   }
               }

@@ -6,9 +6,9 @@
  * This code provides various string manipulation functions that are
  * used by the rest of the SquirrelMail code.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: url_parser.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: url_parser.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  */
 

@@ -32,9 +32,9 @@
  * internal or external distribution as long as this notice remains
  * attached.
  *
- * @copyright 2003-2010 The SquirrelMail Project Team
+ * @copyright 2003-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: koi8_r.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: koi8_r.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage decode
  */

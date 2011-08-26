@@ -11,9 +11,9 @@
  * Be sure to rename the file and keep the original, just in case.
  *
  * @author Luke Ehresman
- * @copyright 2000-2010 The SquirrelMail Project Team
+ * @copyright 2000-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: default_theme.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: default_theme.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage themes
  **/

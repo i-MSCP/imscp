@@ -1,12 +1,12 @@
 #!/usr/bin/env perl
 # conf.pl
 #
-# Copyright (c) 1999-2010 The SquirrelMail Project Team
+# Copyright (c) 1999-2011 The SquirrelMail Project Team
 # Licensed under the GNU GPL. For full terms see COPYING.
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 13966 2010-07-21 07:25:48Z pdontthink $
+# $Id: conf.pl 14111 2011-05-03 07:46:46Z pdontthink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -53,7 +53,7 @@ if ( -e "config.php" ) {
         print "The file \"config/config.php\" was found, but you don't\n";
         print "have rights to read it.\n";
         print "\n";
-        print "Press any key to continue";
+        print "Press enter to continue";
         $ctu = <STDIN>;
         exit;
     }
@@ -1295,7 +1295,7 @@ sub command112a {
 
     
 # SMTP authentication type
-# Possible choices: none, plain, cram-md5, digest-md5
+# Possible choices: none, login, plain, cram-md5, digest-md5
 sub command112b {
     if ($use_smtp_tls =~ /^true\b/i) {
         print "Auto-detection of login methods is unavailable when using TLS.\n";
@@ -1347,6 +1347,19 @@ sub command112b {
               } else {
                   print $WHT . "ERROR DETECTING$NRM\n";
               }
+
+            # Try plain
+            print "Testing plain:\t\t";
+            $tmp=detect_auth_support('SMTP',$host,'PLAIN');
+            if (defined($tmp)) {
+                if ($tmp eq 'YES') {
+                    print $WHT . "SUPPORTED$NRM\n";
+                } else {
+                    print $WHT . "NOT SUPPORTED$NRM\n";
+                }
+              } else {
+                  print $WHT . "ERROR DETECTING$NRM\n";
+              }
     
             # Try CRAM-MD5
             print "Testing CRAM-MD5:\t";
@@ -1378,11 +1391,12 @@ sub command112b {
     print "\nWhat authentication mechanism do you want to use for SMTP connections?\n";
     print $WHT . "none" . $NRM . " - Your SMTP server does not require authorization.\n";
     print $WHT . "login" . $NRM . " - Plaintext. If you can do better, you probably should.\n";
+    print $WHT . "plain" . $NRM . " - Plaintext. If you can do better, you probably should.\n";
     print $WHT . "cram-md5" . $NRM . " - Slightly better than plaintext.\n";
     print $WHT . "digest-md5" . $NRM . " - Privacy protection - better than cram-md5.\n";
     print $WHT . "\n*** YOUR SMTP SERVER MUST SUPPORT THE MECHANISM YOU CHOOSE HERE ***\n" . $NRM;
     print "If you don't understand or are unsure, you probably want \"none\"\n\n";
-    print "none, login, cram-md5, or digest-md5 [$WHT$smtp_auth_mech$NRM]: $WHT";
+    print "none, login, plain, cram-md5, or digest-md5 [$WHT$smtp_auth_mech$NRM]: $WHT";
     $inval=<STDIN>;
     chomp($inval);
     if ($inval =~ /^none\b/i) {
@@ -1392,7 +1406,7 @@ sub command112b {
       return "none";
     }
     if ( ($inval =~ /^cram-md5\b/i) || ($inval =~ /^digest-md5\b/i) || 
-    ($inval =~ /^login\b/i)) {
+    ($inval =~ /^login\b/i) || ($inval =~ /^plain\b/i)) {
       command_smtp_sitewide_userpass($inval);
       return lc($inval);
     } elsif (trim($inval) eq '') {
@@ -1452,12 +1466,12 @@ sub command_smtp_sitewide_userpass($) {
             }
         } else {
             print "Invalid input. You must set username used for SMTP authentication.\n";
-            print "Click any key to continue\n";
+            print "Press enter to continue\n";
             $tmp = <STDIN>;
         }
     } else {
         print "Invalid input\n";
-        print "Click any key to continue\n";
+        print "Press enter to continue\n";
         $tmp = <STDIN>;
     }
 }
@@ -1885,7 +1899,7 @@ sub command29 {
 
 # Default sub of inbox 
 sub command210 {
-    print "Some IMAP servers (Cyrus) have all folders as subfolders of INBOX.\n";
+    print "Some IMAP servers have all folders as subfolders of INBOX.\n";
     print "This can cause some confusion in folder creation for users when\n";
     print "they try to create folders and don't put it as a subfolder of INBOX\n";
     print "and get permission errors.  This option asks if you want folders\n";
@@ -1999,7 +2013,7 @@ sub command215 {
         print "be immediately deleted\n\n";
         print "If this is not the correct value for your server,\n";
         print "please use option D on the Main Menu to configure your server correctly.\n\n";
-        print "Press any key to continue...\n";
+        print "Press enter to continue...\n";
         $new_delete = <STDIN>;
         $delete_folder = "true";
     } else { 
@@ -3666,7 +3680,7 @@ sub set_defaults {
             $sent_folder                    = "Sent";
             $draft_folder                   = "Drafts";
             $show_prefix_option             = false;
-            $default_sub_of_inbox           = false;
+            $default_sub_of_inbox           = true;
             $show_contain_subfolders_option = false;
             $optional_delimiter             = ".";
             $disp_default_folder_prefix     = $default_folder_prefix;
@@ -3815,7 +3829,7 @@ sub set_defaults {
 
         print "$message";
     }
-    print "\nPress any key to continue...";
+    print "\nPress enter to continue...";
     $tmp = <STDIN>;
 }
 
@@ -4019,7 +4033,7 @@ sub check_imap_folder($) {
     if ($folder_name =~ /[\x80-\xFFFF]/) {
         print "Folder name contains 8bit characters. Configuration utility requires\n";
         print "UTF7-IMAP encoded folder names.\n";
-        print "Press any key to continue...";
+        print "Press enter to continue...";
         my $tmp = <STDIN>;
         return 0;
     } elsif ($folder_name =~ /[&\*\%]/) {

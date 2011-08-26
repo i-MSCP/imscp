@@ -5,9 +5,9 @@
  *
  * Prints the page header (duh)
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: page_header.php 13904 2010-02-13 16:28:10Z kink $
+ * @version $Id: page_header.php 14117 2011-07-12 03:44:14Z pdontthink $
  * @package squirrelmail
  *
  * @modified by ispCP Omega Team http://isp-control.net
@@ -28,10 +28,29 @@ function displayHtmlHeader( $title = 'SquirrelMail', $xtra = '', $do_hook = TRUE
     }
     global $theme_css, $custom_css, $pageheader_sent;
 
+    // prevent clickjack attempts
+// FIXME: should we use DENY instead?  We can also make this a configurable value, including giving the admin the option of removing this entirely in case they WANT to be framed by an external domain
+    header('X-Frame-Options: SAMEORIGIN');
+
     echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' .
          "\n\n" . html_tag( 'html' ,'' , '', '', '' ) . "\n<head>\n" .
          "<meta name=\"robots\" content=\"noindex,nofollow\">\n" .
          "<meta http-equiv=\"x-dns-prefetch-control\" content=\"off\">\n";
+
+    // prevent clickjack attempts using JavaScript for browsers that
+    // don't support the X-Frame-Options header...
+    // we check to see if we are *not* the top page, and if not, check
+    // whether or not the top page is in the same domain as we are...
+    // if not, log out immediately -- this is an attempt to do the same
+    // thing that the X-Frame-Options does using JavaScript (never a good
+    // idea to rely on JavaScript-based solutions, though)
+    echo '<script type="text/javascript" language="JavaScript">'
+       . "\n<!--\n"
+       . 'if (self != top) { try { if (document.domain != top.document.domain) {'
+       . ' throw "Clickjacking security violation! Please log out immediately!"; /* this code should never execute - exception should already have been thrown since it\'s a security violation in this case to even try to access top.document.domain (but it\'s left here just to be extra safe) */ } } catch (e) { self.location = "'
+       . sqm_baseuri() . 'src/signout.php"; top.location = "'
+       . sqm_baseuri() . 'src/signout.php" } }'
+       . "\n// -->\n</script>\n";
 
     if ( !isset( $custom_css ) || $custom_css == 'none' ) {
         if ($theme_css != '') {

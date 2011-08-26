@@ -5,9 +5,9 @@
  *
  * This file provides the handling of often-used attachment types.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: attachment_common.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: attachment_common.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  */
 
@@ -103,6 +103,11 @@ function register_attachment_common($type, $func) {
 
 
 function attachment_common_link_text(&$Args) {
+
+    global $squirrelmail_attachments_finished_handling;
+    if (!empty($squirrelmail_attachments_finished_handling[$Args[7]])) return;
+    $squirrelmail_attachments_finished_handling[$Args[7]] = TRUE;
+
     /* If there is a text attachment, we would like to create a "View" button
        that links to the text attachment viewer.
 
@@ -135,6 +140,11 @@ function attachment_common_link_text(&$Args) {
 }
 
 function attachment_common_link_message(&$Args) {
+
+    global $squirrelmail_attachments_finished_handling;
+    if (!empty($squirrelmail_attachments_finished_handling[$Args[7]])) return;
+    $squirrelmail_attachments_finished_handling[$Args[7]] = TRUE;
+
     $Args[1]['attachment_common']['href'] = SM_PATH . 'src/read_body.php?startMessage=' .
         $Args[2] . '&amp;passed_id=' . $Args[3] . '&amp;mailbox=' . $Args[4] .
         '&amp;passed_ent_id=' . $Args[5] . '&amp;override_type0=message&amp;override_type1=rfc822';
@@ -146,6 +156,11 @@ function attachment_common_link_message(&$Args) {
 
 
 function attachment_common_link_html(&$Args) {
+
+    global $squirrelmail_attachments_finished_handling;
+    if (!empty($squirrelmail_attachments_finished_handling[$Args[7]])) return;
+    $squirrelmail_attachments_finished_handling[$Args[7]] = TRUE;
+
     sqgetGlobalVar('QUERY_STRING', $QUERY_STRING, SQ_SERVER);
 
     $Args[1]['attachment_common']['href'] = SM_PATH . 'src/view_text.php?'. $QUERY_STRING.
@@ -161,6 +176,11 @@ function attachment_common_link_html(&$Args) {
 }
 
 function attachment_common_link_image(&$Args) {
+
+    global $squirrelmail_attachments_finished_handling;
+    if (!empty($squirrelmail_attachments_finished_handling[$Args[7]])) return;
+    $squirrelmail_attachments_finished_handling[$Args[7]] = TRUE;
+
     global $attachment_common_show_images, $attachment_common_show_images_list;
 
     sqgetGlobalVar('QUERY_STRING', $QUERY_STRING, SQ_SERVER);
@@ -183,6 +203,11 @@ function attachment_common_link_image(&$Args) {
 
 
 function attachment_common_link_vcard(&$Args) {
+
+    global $squirrelmail_attachments_finished_handling;
+    if (!empty($squirrelmail_attachments_finished_handling[$Args[7]])) return;
+    $squirrelmail_attachments_finished_handling[$Args[7]] = TRUE;
+
     sqgetGlobalVar('QUERY_STRING', $QUERY_STRING, SQ_SERVER);
 
     $Args[1]['attachment_common']['href'] = SM_PATH . 'src/vcard.php?'. $QUERY_STRING;

@@ -5,9 +5,9 @@
  *
  * Functions needed to display the options pages.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: options.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: options.php 14119 2011-07-12 04:36:01Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  */
@@ -851,6 +851,21 @@ function save_option($option) {
     if ( !sqgetGlobalVar('username', $username, SQ_SESSION ) ) {
         return;
     }
+
+    // if the widget is a selection list, make sure the new
+    // value is actually in the selection list and is not an
+    // injection attack
+    //
+    if ($option->type == SMOPT_TYPE_STRLIST
+     && !array_key_exists($option->new_value, $option->possible_values))
+        return;
+
+
+    // all other widgets except TEXTAREAs should never be allowed to have newlines
+    //
+    else if ($option->type != SMOPT_TYPE_TEXTAREA)
+        $option->new_value = str_replace(array("\r", "\n"), '', $option->new_value);
+
 
     global $data_dir;
 

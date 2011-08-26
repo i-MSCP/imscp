@@ -7,7 +7,7 @@
  * A SINGLE FREAKING COMMENT IN! Whoever is responsible for this,
  * be very ashamed.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -49,7 +49,14 @@ if ( !sqgetGlobalVar('passed_ent_id', $passed_ent_id, SQ_GET) ) {
 $imapConnection = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 $mbx_response = sqimap_mailbox_select($imapConnection, $mailbox);
 
-$message = &$messages[$mbx_response['UIDVALIDITY']][$passed_id];
+// were we using a reference here just to save memory?
+// problem is that below if $passed_ent_id is given,
+// the message cache now points to that entity and not
+// the original message (corrupts the cache)
+//
+//$message = &$messages[$mbx_response['UIDVALIDITY']][$passed_id];
+//
+$message = $messages[$mbx_response['UIDVALIDITY']][$passed_id];
 $message_ent = $message->getEntity($ent_id);
 if ($passed_ent_id) {
     $message = &$message->getEntity($passed_ent_id);

@@ -3,7 +3,7 @@
 /**
  * options.php
  *
- * Copyright (c) 1999-2010 The SquirrelMail Project Team
+ * Copyright (c) 1999-2011 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * Pick your translator to translate the body of incoming mail messages

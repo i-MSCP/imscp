@@ -7,7 +7,7 @@
  * Simple SquirrelMail WebMail Plugin that displays the output of
  * fortune above the message listing.
  *
- * @copyright (c) 1999-2010 The SquirrelMail Project Team
+ * @copyright (c) 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins

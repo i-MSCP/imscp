@@ -4,7 +4,7 @@
  * ---------
  * Squirrelspell module
  *
- * Copyright (c) 1999-2010 The SquirrelMail Project Team
+ * Copyright (c) 1999-2011 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * Initial loading of the popup window interface.

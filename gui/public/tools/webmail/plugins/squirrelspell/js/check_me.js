@@ -1,7 +1,7 @@
 /**
  * check_me.js
  *
- * Copyright (c) 1999-2010 The SquirrelMail Project Team
+ * Copyright (c) 1999-2011 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This JavaScript app is the driving power of the SquirrelSpell's

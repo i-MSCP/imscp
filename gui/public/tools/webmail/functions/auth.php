@@ -5,9 +5,9 @@
  *
  * Contains functions used to do authentication.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: auth.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  */
 
@@ -293,6 +293,9 @@ function hmac_md5($data, $key='') {
  * @since 1.4.11
  */
 function sqauth_read_password() {
+    global $is_login_verified_hook;
+    if ($is_login_verified_hook) global $key;
+
     sqgetGlobalVar('key',         $key,       SQ_COOKIE);
     sqgetGlobalVar('onetimepad',  $onetimepad,SQ_SESSION);
 

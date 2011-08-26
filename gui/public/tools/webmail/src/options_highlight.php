@@ -5,7 +5,7 @@
  *
  * Displays message highlighting options
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -141,6 +141,7 @@ echo '<center>[<a href="options_highlight.php?action=add">' . _("New") . '</a>]'
 $mhl_count = count($message_highlight_list);
 if ($mhl_count > 0) {
     echo html_tag( 'table', '', 'center', '', 'width="80%" border="0" cellpadding="3" cellspacing="0"' ) . "\n";
+    $token = sm_generate_security_token();
     for ($i=0; $i < $mhl_count; $i++) {
         $match_type = '';
         switch ($message_highlight_list[$i]['match_type'] ) {
@@ -163,13 +164,13 @@ if ($mhl_count > 0) {
 
         $links = '<small>[<a href="options_highlight.php?action=edit&amp;theid=' . $i . '">' .
                  _("Edit") .
-                 '</a>]&nbsp;[<a href="options_highlight.php?action=delete&amp;smtoken=' . sm_generate_security_token() . '&amp;theid='.  $i . '">' .
+                 '</a>]&nbsp;[<a href="options_highlight.php?action=delete&amp;smtoken=' . $token . '&amp;theid='.  $i . '">' .
                  _("Delete");
         if($i > 0) {
-            $links .= '</a>]&nbsp;[<a href="options_highlight.php?action=up&amp;smtoken=' . sm_generate_security_token() . '&amp;theid='.  $i . '">' .  _("Up");
+            $links .= '</a>]&nbsp;[<a href="options_highlight.php?action=up&amp;smtoken=' . $token . '&amp;theid='.  $i . '">' .  _("Up");
         }
         if($i+1 < $mhl_count) {
-            $links .= '</a>]&nbsp;[<a href="options_highlight.php?action=down&amp;smtoken=' . sm_generate_security_token() . '&amp;theid='.  $i . '">' .  _("Down");
+            $links .= '</a>]&nbsp;[<a href="options_highlight.php?action=down&amp;smtoken=' . $token . '&amp;theid='.  $i . '">' .  _("Down");
         }
         $links .= '</a>]</small>';
 

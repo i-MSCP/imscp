@@ -21,9 +21,9 @@
  * Configuration of databasename, username and password is done
  * by using conf.pl or the administrator plugin
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: db_prefs.php 13962 2010-07-21 07:05:29Z pdontthink $
+ * @version $Id: db_prefs.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage prefs
  * @since 1.1.3

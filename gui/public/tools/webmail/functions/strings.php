@@ -6,9 +6,9 @@
  * This code provides various string manipulation functions that are
  * used by the rest of the SquirrelMail code.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 13974 2010-07-23 04:49:46Z pdontthink $
+ * @version $Id: strings.php 14123 2011-07-12 19:10:50Z pdontthink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.21';
+$version = '1.4.22';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,21);
+$SQM_INTERNAL_VERSION = array(1,4,22);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -187,11 +187,20 @@ function sm_truncate_string($string, $max_chars, $elipses='',
    if ($html_entities_as_chars)
    {
 
+      // $loop_count is needed to prevent an endless loop
+      // which is caused by buggy mbstring versions that
+      // return 0 (zero) instead of FALSE in some rare
+      // cases.  Thanks, PHP.
+      // see: http://bugs.php.net/bug.php?id=52731
+      // also: tracker $3053349
+      //
+      $loop_count = 0;
       $entity_pos = $entity_end_pos = -1;
       while ($entity_end_pos + 1 < $actual_strlen
           && ($entity_pos = sq_strpos($string, '&', $entity_end_pos + 1)) !== FALSE
           && ($entity_end_pos = sq_strpos($string, ';', $entity_pos)) !== FALSE
-          && $entity_pos <= $adjusted_max_chars)
+          && $entity_pos <= $adjusted_max_chars
+          && $loop_count++ < $max_chars)
       {
          $adjusted_max_chars += $entity_end_pos - $entity_pos;
       }
@@ -635,6 +644,7 @@ function GenerateRandomString($size, $chars, $flags = 0) {
  * @return string the escaped string
  */
 function quoteimap($str) {
+    // FIXME use this performance improvement (not changing because this is STABLE branch): return str_replace(array('\\', '"'), array('\\\\', '\\"'), $str);
     return preg_replace("/([\"\\\\])/", "\\\\$1", $str);
 }
 

@@ -3,9 +3,9 @@
 /**
  * global.php
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 13896 2010-01-27 23:35:26Z pdontthink $
+ * @version $Id: global.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  */
 
@@ -112,6 +112,26 @@ if (isset($_SERVER['REQUEST_URI'])) {
  */
 require_once(SM_PATH . 'functions/strings.php');
 require_once(SM_PATH . 'config/config.php');
+
+/**
+ * Allow disabling of all plugins or enabling just a select few
+ *
+ * $temporary_plugins can be set in config_local.php, and
+ * must be set as an array of plugin names that will be
+ * the only ones activated (overriding the activation from
+ * the main configuration file).  If the list is empty,
+ * all plugins will be disabled.  Examples follow:
+ *
+ * Enable only Preview Pane and TNEF Decoder plugins:
+ * $temporary_plugins = array('tnef_decoder', 'preview_pane');
+ *
+ * Disable all plugins:
+ * $temporary_plugins = array();
+ */
+global $temporary_plugins;
+if (isset($temporary_plugins)) {
+    $plugins = $temporary_plugins;
+}
 
 /**
  * Detect SSL connections
@@ -252,7 +272,7 @@ function sqstripslashes(&$array) {
  *               executed will be returned.
  * 
  */ 
-function sq_call_function_suppress_errors($function, $args=NULL) {
+function sq_call_function_suppress_errors($function, $args=array()) {
    $display_errors = ini_get('display_errors');
    ini_set('display_errors', '0');
    $ret = call_user_func_array($function, $args);

@@ -6,7 +6,7 @@
  * Does the actual renaming of files on the IMAP server.
  * Called from the folders.php
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail

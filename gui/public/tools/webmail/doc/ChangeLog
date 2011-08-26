@@ -2,16 +2,78 @@
 *** SquirrelMail Stable Series 1.4 ***
 **************************************
 
+Version 1.4.22 - 12 July 2011
+-----------------------------
+  - Backported default timezone fix from version 1.5.2; helps mitigate
+    timezone errors in environments where a default has not been set
+    by the administrator.
+  - Fixed system lock-ups caused by a combination of certain rare,
+    malformed message headers and buggy versions of PHP mbstring
+    (#3053349).
+  - Now allow multiple plugins to handle (add links for) a single
+    attachment MIME type.
+  - Now allow administrators to disable all plugins or enable just
+    a select few plugins (overriding the active plugins in the normal
+    configuration) by setting $temporary_plugins as an empty array
+    (all disabled) or an array with one or more plugin directory names
+    in config_local.php.
+  - Backport fix for call_user_func_array not supporting NULL as empty
+    array in PHP 5.3.3
+  - Fixed sqauth_read_password() for plugins on the login_verified hook.
+  - Added SMTP SASL PLAIN authentication option to configuration tool
+    (core support for such is not new).
+  - Gmail doens't support standard search commands; removed sort buttons.
+  - Forced addition of a file suffix to attachments that lack a filename
+    (helps forwarded messages avoid spam filters) (thanks to Petr
+    Kletecka) (#3139004).
+  - Fixed missing security token in listcommands plugin.
+  - Added smtp_auth hook (thanks to Emmanuel Dreyfus).
+  - Made speed enhancements to threaded message display (thanks to Siim
+    Poder) (#3288123).
+  - Allow administrators to configure subfolders of user INBOXes to be
+    treated as special folders by adding $subfolders_of_inbox_are_special
+    to config_local.php.
+  - Fixed incorrect display of INBOX subfolders under some configurations.
+    IMPORTANT: You may need to update your configuration so that
+    $default_sub_of_inbox is TRUE if it was FALSE (e.g., Courier IMAP users)
+    and after updating to this version, your special folders are no longer
+    listed at the top of your folder list.  Also, if this change prevents
+    users from logging in with an error such as "ERROR: Could not complete
+    request.  Query: CREATE "Trash" Reason Given: Invalid mailbox name.",
+    you will need to correct the user preference values for the problem
+    folders.  You can do so with commands such as the following for file-
+    based preferences (adjust the data directory location as needed):
+        find /var/lib/squirrelmail/data/ -name *.pref -exec sed --in-place 's/trash_folder=Trash/trash_folder=INBOX.Trash/g' {} \;
+        find /var/lib/squirrelmail/data/ -name *.pref -exec sed --in-place 's/trash_folder=Drafts/trash_folder=INBOX.Drafts/g' {} \;
+        find /var/lib/squirrelmail/data/ -name *.pref -exec sed --in-place 's/trash_folder=Sent/trash_folder=INBOX.Sent/g' {} \;
+    Or, for database-based preferences:
+        UPDATE userprefs SET prefval = 'INBOX.Trash' WHERE prefkey = 'trash_folder' AND prefval = 'Trash';
+        UPDATE userprefs SET prefval = 'INBOX.Drafts' WHERE prefkey = 'draft_folder' AND prefval = 'Drafts';
+        UPDATE userprefs SET prefval = 'INBOX.Sent' WHERE prefkey = 'sent_folder' AND prefval = 'Sent';
+    MAKE SURE to back up your user preferences first!
+  - Optimized message highlighting rules; faster message list display
+    and faster highlight rules management (thanks to C. Bensend for
+    extensive effort helping diagnose)
+  - New Mail plugin no longer removes normal organization title when
+    putting the number of new messages in the browser title
+  - Added clickjacking protection (thanks to Asbjorn Thorsen and Geir
+    Hansen for bringing this to our attention). [CVE-2010-4554]
+  - Fixed XSS holes in generic options inputs, XSS hole in the SquirrelSpell
+    plugin, XSS hole in the Index Order page, and added anti-CSRF protection
+    to the empty trash feature and the Index Order page (thanks to Nicholas
+    Carlini for finding all these issues). [CVE-2010-4555]
+  - Fixed XSS problem with unsanitized style tags in messages. [CVE-2011-2023]
+
 Version 1.4.21 - 23 Jul 2010
 ----------------------------
   - Now allow more than one plugin to control the compose form submit action.
   - When sorting by received date, the received date is now shown on the
     message list.
-  - Explicitly disable browser caching for left_main and right_main pages
+  - Explicitly disabled browser caching for left_main and right_main pages
     (#2983134).
-  - Fix error with SpamCop reporting plugin not being able to send report as
-    emails (#1795310).
-  - Fix typo in SpamCop plugin.
+  - Fixed error with SpamCop reporting plugin not being able to send report
+    as emails (#1795310).
+  - Fixed typo in SpamCop plugin.
   - Reduced default time security tokens stay valid from 30 days to 2 days
     (reduces chances of session data growing too large)
   - Several speed enhancements for recent fixes regarding the display of

@@ -4,7 +4,7 @@
  * -------------
  * Squirrelspell module.
  *
- * Copyright (c) 1999-2010 The SquirrelMail Project Team
+ * Copyright (c) 1999-2011 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This module is the main workhorse of SquirrelSpell. It submits
@@ -267,7 +267,7 @@ if ($errors){
   for ($i=0; $i<sizeof($sqspell_lines); $i++){
     // use addcslashes for compatibility with magic_quotes_sybase
     $extrajs.= "sqspell_lines[$i] = \""
-      . chop(addcslashes($sqspell_lines[$i], "'\"\\\x0")) . "\";\n";
+      . chop(addcslashes($sqspell_lines[$i], ">'\"\\\x0")) . "\";\n";
   }
   $extrajs.= "\n\n";
 

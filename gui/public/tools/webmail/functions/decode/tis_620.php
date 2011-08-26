@@ -31,9 +31,9 @@
  *  5. http://charts.unicode.org/Unicode.charts/normal/U0E00.html
  *  6. http://www.unicode.org/
  *
- * @copyright 2003-2010 The SquirrelMail Project Team
+ * @copyright 2003-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: tis_620.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: tis_620.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage decode
  */

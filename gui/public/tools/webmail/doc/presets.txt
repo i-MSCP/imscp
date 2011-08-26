@@ -1,4 +1,4 @@
-$Date: 2010-02-13 15:06:30 -0800 (Sat, 13 Feb 2010) $
+$Date: 2011-05-03 00:46:46 -0700 (Tue, 03 May 2011) $
 
 This file lists the SquirrelMail settings set by option D in conf.pl
 
@@ -7,11 +7,13 @@ change these settings manually.  These settings can be different if
 the IMAP server uses shared folders.
 
 Possible server type values are:
+ other       = Unknown/generic
  bincimap    = Binc IMAP server
  courier     = Courier IMAP server
  cyrus       = Cyrus IMAP server
  dovecot     = Dovecot Secure IMAP server
  exchange    = Microsoft Exchange IMAP server
+ gmail       = Google Mail IMAP server
  hmailserver = hMailServer
  macosx      = Mac OS X Mailserver
  mercury32   = Mercury/32
@@ -87,7 +89,7 @@ show_contain_subfolders_option = false
                    sent_folder = Sent
                   draft_folder = Drafts
             show_prefix_option = false
-          default_sub_of_inbox = false
+          default_sub_of_inbox = true
 show_contain_subfolders_option = false
             optional_delimiter = .
                  delete_folder = true

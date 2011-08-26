@@ -5,9 +5,9 @@
  *
  * This implements all functions that manipulate mailboxes
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_mailbox.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: imap_mailbox.php 14110 2011-05-03 06:41:53Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -98,8 +98,16 @@ function isBoxBelow( $subbox, $parentbox ) {
  * Defines special mailboxes: given a mailbox name, it checks if this is a
  * "special" one: INBOX, Trash, Sent or Draft.
  *
- * Since 1.2.5 function includes special_mailbox hook.<br>
+ * Since 1.2.5 function includes special_mailbox hook.
+ *
  * Since 1.4.3 hook supports more than one plugin.
+ *
+//FIXME: make $subfolders_of_inbox_are_special a configuration setting in conf.pl and config.php
+ * Since 1.4.22/1.5.2, the administrator can add
+ * $subfolders_of_inbox_are_special = TRUE;
+ * to config/config_local.php and all subfolders
+ * of the INBOX will be treated as special.
+ *
  * @param string $box mailbox name
  * @param boolean $include_subs (since 1.5.2 and 1.4.9) if true, subfolders of 
  *  system folders are special. if false, subfolders are not special mailboxes 
@@ -108,7 +116,9 @@ function isBoxBelow( $subbox, $parentbox ) {
  * @since 1.2.3
  */
 function isSpecialMailbox($box,$include_subs=true) {
-    $ret = ( (strtolower($box) == 'inbox') ||
+    global $subfolders_of_inbox_are_special;
+    $ret = ( ($subfolders_of_inbox_are_special && isInboxMailbox($box,$include_subs)) ||
+             (!$subfolders_of_inbox_are_special && strtolower($box) == 'inbox') ||
              isTrashMailbox($box,$include_subs) || 
              isSentMailbox($box,$include_subs) || 
              isDraftMailbox($box,$include_subs) );
@@ -118,6 +128,24 @@ function isSpecialMailbox($box,$include_subs=true) {
     }
     return $ret;
 }
+
+/**
+ * Detects if mailbox is the Inbox folder or subfolder of the Inbox
+ *
+ * @param string $box The mailbox name to test
+ * @param boolean $include_subs If true, subfolders of system folders
+ *                              are special.  If false, subfolders are
+ *                              not special mailboxes.
+ *
+ * @return boolean Whether this is the Inbox or a child thereof.
+ *
+ * @since 1.4.22
+ */
+function isInboxMailbox($box, $include_subs=TRUE) {
+   return ((strtolower($box) == 'inbox')
+        || ($include_subs && isBoxBelow(strtolower($box), 'inbox')));
+}
+
 
 /**
  * Detects if mailbox is a Trash folder or subfolder of Trash
@@ -567,7 +595,7 @@ function mailtree_sort(&$lsub) {
 
 
 function sqimap_mailbox_list($imap_stream, $force=false) {
-    global $default_folder_prefix;
+    global $default_folder_prefix, $default_sub_of_inbox;
 
     if (!sqgetGlobalVar('boxesnew',$boxesnew,SQ_SESSION) || $force) {
         global $data_dir, $username, $list_special_folders_first,
@@ -685,6 +713,22 @@ function sqimap_mailbox_list($imap_stream, $force=false) {
             }
         }
 
+        /* 
+         * For systems where folders might be either under the INBOX or
+         * at the top-level (Dovecot, hMailServer), INBOX subfolders have
+         * to be added before special folders
+         */
+        if (!$default_sub_of_inbox) {
+            for($k = 0; $k < $cnt; ++$k) {
+                if (!$used[$k] && isBoxBelow(strtolower($boxesall[$k]['unformatted']), 'inbox') &&
+                    strtolower($boxesall[$k]['unformatted']) != 'inbox') {
+                    $boxesnew[] = $boxesall[$k];
+                    $used[$k] = true;
+                }
+            }
+        }
+
+
         /* List special folders and their subfolders, if requested. */
         if ($list_special_folders_first) {
             for($k = 0; $k < $cnt; ++$k) {
@@ -696,12 +740,14 @@ function sqimap_mailbox_list($imap_stream, $force=false) {
         }
 
 
-        /* Find INBOX's children */
-        for($k = 0; $k < $cnt; ++$k) {
-            if (!$used[$k] && isBoxBelow(strtolower($boxesall[$k]['unformatted']), 'inbox') &&
-                strtolower($boxesall[$k]['unformatted']) != 'inbox') {
-                $boxesnew[] = $boxesall[$k];
-                $used[$k] = true;
+        /* Find INBOX's children for systems where folders are ONLY under INBOX */
+        if ($default_sub_of_inbox) {
+            for($k = 0; $k < $cnt; ++$k) {
+                if (!$used[$k] && isBoxBelow(strtolower($boxesall[$k]['unformatted']), 'inbox') &&
+                    strtolower($boxesall[$k]['unformatted']) != 'inbox') {
+                    $boxesnew[] = $boxesall[$k];
+                    $used[$k] = true;
+                }
             }
         }
 

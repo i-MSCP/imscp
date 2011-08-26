@@ -9,9 +9,9 @@
  * Internally the output character set is used. Other characters are
  * encoded using Unicode entities according to HTML 4.0.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: i18n.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  * @subpackage i18n
  */

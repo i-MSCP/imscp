@@ -7,9 +7,9 @@
  * a delivery backend.
  *
  * @author Marc Groot Koerkamp
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 13956 2010-06-25 21:31:10Z pdontthink $
+ * @version $Id: Deliver.class.php 14084 2011-01-06 02:44:03Z pdontthink $
  * @package squirrelmail
  */
 

@@ -6,7 +6,7 @@
  * Handles deleting messages from the trash folder without
  * deleting subfolders.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -36,6 +36,11 @@ sqgetGlobalVar('onetimepad', $onetimepad, SQ_SESSION);
 
 /* finished globals */
 
+// first do a security check
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_FORM))
+    $submitted_token = '';
+sm_validate_security_token($submitted_token, 3600, TRUE);
+
 $imap_stream = sqimap_login($username, $key, $imapServerAddress, $imapPort, 0);
 
 sqimap_mailbox_list($imap_stream);
@@ -51,6 +56,7 @@ $boxes = sqimap_mailbox_list($imap_stream);
 
 /** First create the top node in the tree **/
 $numboxes = count($boxes);
+$foldersTree = array();
 for ($i = 0; $i < $numboxes; $i++) {
     if (($boxes[$i]['unformatted'] == $mailbox) && (strlen($boxes[$i]['unformatted']) == strlen($mailbox))) {
         $foldersTree[0]['value'] = $mailbox;

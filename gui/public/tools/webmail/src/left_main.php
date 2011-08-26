@@ -6,7 +6,7 @@
  * This is the code for the left bar. The left bar shows the folders
  * available, and has cookie information.
  *
- * @copyright 1999-2010 The SquirrelMail Project Team
+ * @copyright 1999-2011 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -105,7 +105,7 @@ function formatMailboxName($imapConnection, $box_array) {
         if (($numMessages > 0) or ($box_array['parent'] == 1)) {
             $urlMailbox = urlencode($real_box);
             $line .= "\n<small>\n" .
-                    '&nbsp;&nbsp;(<a href="empty_trash.php" style="text-decoration:none">'._("Purge").'</a>)' .
+                    '&nbsp;&nbsp;(<a href="empty_trash.php?smtoken=' . sm_generate_security_token() . '" style="text-decoration:none">'._("Purge").'</a>)' .
                     '</small>';
         }
     }
