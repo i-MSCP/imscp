@@ -177,7 +177,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Returns database update(s) details.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getDatabaseUpdateDetail()
@@ -308,16 +308,88 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
+	 * Checks if a column exists in a database table and if not, execute a query to
+	 * add that column.
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @since r4509
+	 * @deprecate secureAddColumnTable
+	 * @param string $table Database table name
+	 * @param string $column Column to be added in the database table
+	 * @param string $query Query to create column
+	 * @return string Query to be executed
+	 */
+	protected function addColumn($table, $column, $structure){
+		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+
+		return ("
+			DROP PROCEDURE IF EXISTS test;
+			CREATE PROCEDURE test()
+			BEGIN
+				IF NOT EXISTS (
+					SELECT
+						COLUMN_NAME
+					FROM
+						information_schema.COLUMNS
+					WHERE
+						COLUMN_NAME = '$column'
+					AND
+						TABLE_NAME = '$table'
+					AND
+						TABLE_SCHEMA = '$dbName'
+				) THEN
+					ALTER TABLE `$dbName`.`$table` ADD `$column` $structure;
+				END IF;
+			END;
+			CALL test();
+			DROP PROCEDURE IF EXISTS test;
+		");
+	}
+
+	/**
+	 * Checks if a column exists in a database table and if not, execute a query to
+	 * drop that column.
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @since r4509
+	 * @param string $table Database table name
+	 * @param string $column Column to be added in the database table
+	 * @param string $query Query to create column
+	 * @return string Query to be executed
+	 */
+	protected function dropColumn($table, $column){
+		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+		return "
+			DROP PROCEDURE IF EXISTS test;
+			CREATE PROCEDURE test()
+			BEGIN
+				IF EXISTS (
+					SELECT
+						COLUMN_NAME
+					FROM
+						information_schema.COLUMNS
+					WHERE
+						TABLE_NAME = '$table'
+					AND
+						COLUMN_NAME = '$column'
+					AND
+						table_schema = '$dbName'
+				) THEN
+					ALTER TABLE `$table` DROP column `$column`;
+				END IF;
+			END;
+			CALL test();
+			DROP PROCEDURE IF EXISTS test;
+		";
+	}
+	/**
 	 * Catch any database update that were removed.
 	 *
 	 * @param  string $updateMethod Database method name
 	 * @param  array $param $parameter
 	 * @return void
 	 */
-	public function __call($updateMethod, $param)
-	{
-
-	}
+	public function __call($updateMethod, $param){}
 
 	/**
 	 * Fixes some CSRF issues in admin log.
@@ -326,8 +398,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r3695
 	 * @return array SQL Statement
 	 */
-	protected function _databaseUpdate_46()
-	{
+	protected function _databaseUpdate_46(){
 		return 'TRUNCATE TABLE `log`;';
 	}
 
@@ -338,8 +409,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r3709
 	 * @return array SQL Statement
 	 */
-	protected function _databaseUpdate_47()
-	{
+	protected function _databaseUpdate_47(){
 		return 'DROP TABLE IF EXISTS `suexec_props`';
 	}
 
@@ -350,8 +420,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since  r3695
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_48()
-	{
+	protected function _databaseUpdate_48(){
 		$sqlUpd = array();
 		$sqlUpd[] = "
 	 		CREATE TABLE IF NOT EXISTS
@@ -447,8 +516,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4004
 	 * @return void
 	 */
-	protected function _databaseUpdate_50()
-	{
+	protected function _databaseUpdate_50(){
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1";
@@ -460,8 +528,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author William Lightning <kassah@gmail.com>
 	 * @return string SQL Statement
 	 */
-	protected function _databaseUpdate_51()
-	{
+	protected function _databaseUpdate_51(){
 		$query = "
 			ALTER IGNORE TABLE
 				`ftp_users`
@@ -481,8 +548,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since  r4036
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_52()
-	{
+	protected function _databaseUpdate_52(){
 		$sqlUpd = array();
 
 		$sqlUpd[] = "
@@ -557,8 +623,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4509
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_53()
-	{
+	protected function _databaseUpdate_53(){
 		$sqlUpd = array();
 
 		$status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
@@ -645,8 +710,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4509
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_54()
-	{
+	protected function _databaseUpdate_54(){
 		$sqlUpd = array();
 
 		/** @var $db iMSCP_Database */
@@ -662,82 +726,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds unique index on user_gui_props.user_id column.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4592
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_56()
-	{
-		$sqlUpd = array();
-
-		$sqlUpd[] = "
-			DROP PROCEDURE IF EXISTS schema_change;
-				CREATE PROCEDURE schema_change()
-				BEGIN
-					IF EXISTS (
-						SELECT
-							CONSTRAINT_NAME
-						FROM
-							`information_schema`.`KEY_COLUMN_USAGE`
-						WHERE
-							TABLE_NAME = 'user_gui_props'
-						AND
-							CONSTRAINT_NAME = 'user_id'
-					) THEN
-						ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
-					END IF;
-				END;
-				CALL schema_change();
-			DROP PROCEDURE IF EXITST schema_change;
-		";
-
-		$sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
-
-		return $sqlUpd;
-	}
-
-	/**
-	 * Drops useless column in user_gui_props table.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4644
-	 * @return string SQL Statement
-	 */
-	protected function _databaseUpdate_59()
-	{
-		return "
-			DROP PROCEDURE IF EXISTS schema_change;
-				CREATE PROCEDURE schema_change()
-				BEGIN
-					IF EXISTS (
-						SELECT
-							COLUMN_NAME
-						FROM
-							information_schema.COLUMNS
-						WHERE
-							TABLE_NAME = 'user_gui_props'
-						AND
-							COLUMN_NAME = 'id'
-					) THEN
-						ALTER TABLE `user_gui_props` DROP column `id`;
-					END IF;
-				END;
-				CALL schema_change();
-			DROP PROCEDURE IF EXITST schema_change;
-		";
-	}
-
-	/**
 	 * Converts the autoreplies_log table to InnoDB engine.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4650
 	 * @return string SQL Statement
 	 */
-	protected function _databaseUpdate_60()
-	{
+	protected function _databaseUpdate_60(){
 		return 'ALTER TABLE `autoreplies_log` ENGINE=InnoDB';
 	}
 
@@ -748,8 +743,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4779
 	 * @return void
 	 */
-	protected function _databaseUpdate_66()
-	{
+	protected function _databaseUpdate_66(){
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 
@@ -766,8 +760,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4792
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_67()
-	{
+	protected function _databaseUpdate_67(){
 		$sqlUpd = array();
 
 		// First step: Update default language (new naming convention)
@@ -827,8 +820,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4844
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_68()
-	{
+	protected function _databaseUpdate_68(){
 		$sqlUpd = array();
 
 		/** @var $db iMSCP_Database */
@@ -863,8 +855,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4961
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_69()
-	{
+	protected function _databaseUpdate_69(){
 		return array(
 			"ALTER TABLE `user_gui_props` CHANGE `user_id` `user_id` INT( 10 ) UNSIGNED NOT NULL",
 			"ALTER TABLE `user_gui_props` CHANGE `layout` `layout`
@@ -885,8 +876,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r4961
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_70()
-	{
+	protected function _databaseUpdate_70(){
 		$sqlUpd = array();
 
 		$tablesToForeignKey = array(
@@ -913,8 +903,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r5002
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_71()
-	{
+	protected function _databaseUpdate_71(){
 		return 'ALTER TABLE `log` CHANGE `log_message` `log_message`
 			TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL';
 	}
@@ -925,8 +914,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_72()
-	{
+	protected function _databaseUpdate_72(){
 		return 'ALTER IGNORE TABLE `web_software_options` ADD UNIQUE (`use_webdepot`)';
 	}
 
@@ -936,8 +924,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_73()
-	{
+	protected function _databaseUpdate_73(){
 		return "
 			CREATE TABLE IF NOT EXISTS `quota_dovecot` (
 			`username` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -954,10 +941,150 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
 	 */
-	protected function _databaseUpdate_75()
-	{
+	protected function _databaseUpdate_75(){
 		return "
 			UPDATE `mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760';
 		";
 	}
+
+	/**
+	 * Adds unique index on user_gui_props.user_id column.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4592
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_76(){
+
+		$sqlUpd = array();
+		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+
+		$sqlUpd[] = "
+			DROP PROCEDURE IF EXISTS schema_change;
+				CREATE PROCEDURE schema_change()
+				BEGIN
+					IF EXISTS (
+						SELECT
+							CONSTRAINT_NAME
+						FROM
+							`information_schema`.`KEY_COLUMN_USAGE`
+						WHERE
+							TABLE_NAME = 'user_gui_props'
+						AND
+							CONSTRAINT_NAME = 'user_id'
+						AND
+							TABLE_SCHEMA = '$dbName'
+					) THEN
+						ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
+					END IF;
+				END;
+				CALL schema_change();
+			DROP PROCEDURE IF EXITST schema_change;
+		";
+
+		$sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
+
+		return $sqlUpd;
+	}
+
+	/**
+	 * Drops useless column in user_gui_props table.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @since r4644
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_77(){
+		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+		return "
+			DROP PROCEDURE IF EXISTS schema_change;
+				CREATE PROCEDURE schema_change()
+				BEGIN
+					IF EXISTS (
+						SELECT
+							COLUMN_NAME
+						FROM
+							information_schema.COLUMNS
+						WHERE
+							TABLE_NAME = 'user_gui_props'
+						AND
+							COLUMN_NAME = 'id'
+						AND
+							TABLE_SCHEMA = '$dbName'
+					) THEN
+						ALTER TABLE `user_gui_props` DROP column `id`;
+					END IF;
+				END;
+				CALL schema_change();
+			DROP PROCEDURE IF EXITST schema_change;
+		";
+	}
+
+	/**
+	 * Fix for #175 mail_addr saved in mail_type_forward too
+	 *
+	 * @author Daniel Andreca <lsci2tech@gmail.com>
+	 * @since $Revision:$
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_78(){
+		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+		return array(
+			"
+				REPLACE INTO `mail_users`(`mail_id`, `mail_acc`, `mail_pass`,
+				`mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
+				`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`)
+
+				SELECT `mail_id`, `mail_acc`, `mail_pass`, `mail_forward`,
+				`t1`.`domain_id`, `mail_type`, `sub_id`, `status`, `mail_auto_respond`,
+				`mail_auto_respond_text`, `quota`,
+				CONCAT(`mail_acc`, '@', `domain_name`) AS `mail_addr`
+				FROM `mail_users` AS `t1`
+				LEFT JOIN `domain` AS `t2` ON `t1`.`domain_id` = `t2`.`domain_id`
+				WHERE `t1`.`mail_type` = 'normal_forward' AND `t1`.`mail_addr` = ''
+			",
+			"
+				REPLACE INTO `mail_users`(`mail_id`, `mail_acc`, `mail_pass`,
+				`mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
+				`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`)
+
+				SELECT `mail_id`, `mail_acc`, `mail_pass`, `mail_forward`,
+				`t1`.`domain_id`, `mail_type`, `sub_id`, `status`, `mail_auto_respond`,
+				`mail_auto_respond_text`, `quota`,
+				CONCAT(`mail_acc`, '@', `alias_name`) AS `mail_addr`
+				FROM `mail_users` AS `t1`
+				LEFT JOIN `domain_aliasses` AS `t2` ON `t1`.`sub_id` = `t2`.`alias_id`
+				WHERE `t1`.`mail_type` = 'alias_forward' AND `t1`.`mail_addr` = ''
+			",
+			"
+				REPLACE INTO `mail_users`(`mail_id`, `mail_acc`, `mail_pass`,
+				`mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
+				`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`)
+
+				SELECT `mail_id`, `mail_acc`, `mail_pass`, `mail_forward`,
+				`t1`.`domain_id`, `mail_type`, `sub_id`, `status`,
+				`mail_auto_respond`, `mail_auto_respond_text`, `quota`,
+				CONCAT(`mail_acc`, '@', `subdomain_alias_name`, '.', `alias_name`) AS `mail_addr`
+				FROM `mail_users` AS `t1`
+				LEFT JOIN `subdomain_alias` AS `t2` ON `t1`.`sub_id` = `t2`.`subdomain_alias_id`
+				LEFT JOIN `domain_aliasses` AS `t3` ON `t2`.`alias_id` = `t3`.`alias_id`
+				WHERE `t1`.`mail_type` = 'alssub_forward' AND `t1`.`mail_addr` = ''
+			",
+			"
+				REPLACE INTO `mail_users`(`mail_id`, `mail_acc`, `mail_pass`,
+				`mail_forward`, `domain_id`, `mail_type`, `sub_id`, `status`,
+				`mail_auto_respond`, `mail_auto_respond_text`, `quota`, `mail_addr`)
+
+				SELECT `mail_id`, `mail_acc`, `mail_pass`, `mail_forward`,
+				`t1`.`domain_id`, `mail_type`, `sub_id`, `status`,
+				`mail_auto_respond`, `mail_auto_respond_text`, `quota`,
+				CONCAT(`mail_acc`, '@', `subdomain_name`, '.', `domain_name`) AS `mail_addr`
+				FROM `mail_users` AS `t1`
+				LEFT JOIN `subdomain` AS `t2` ON `t1`.`sub_id` = `t2`.`subdomain_id`
+				LEFT JOIN `domain` AS `t3` ON `t2`.`domain_id` = `t3`.`domain_id`
+				WHERE `t1`.`mail_type` = 'subdom_forward' AND `t1`.`mail_addr` = ''
+			"
+		);
+	}
+
 }
