@@ -393,7 +393,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	$mail_type = implode(',', $mail_type);
 	list($dmn_type, $type) = explode('_', $mail_type, 2);
 
-	$check_acc_query = '
+	$check_acc_query = "
 		SELECT
 			COUNT(`mail_id`) AS cnt
 		FROM
@@ -406,7 +406,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			`sub_id` = ?
 		AND
 			LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
-	';
+	";
 
 	$rs = exec_query($check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
 

@@ -51,8 +51,8 @@ plugin {
 	quota_rule = *:bytes=1G
 }
 
-protocols = imap pop3
-{COMMENT_SSL}protocols = imap pop3 imaps pop3s
+protocols = imap pop3 managesieve
+{COMMENT_SSL}protocols = imap pop3 imaps pop3s managesieve
 
 auth default {
 
@@ -89,6 +89,10 @@ auth default {
 ssl = {DOVECOT_SSL}
 {COMMENT_SSL}ssl_cert_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
 {COMMENT_SSL}ssl_key_file = {GUI_CERT_DIR}/{HOST_NAME}.pem
+
+protocol managesieve {
+	listen = localhost:2000
+}
 
 protocol imap {
 	mail_plugins = quota imap_quota

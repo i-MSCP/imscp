@@ -30,6 +30,9 @@ Tickets:
 	- Fixed #173: phpMyAdmin 3.4.4 released
 	- Fixed #174: no session directory
 	- Fixed #175: mail_addr saved in mail_type forward too (tx nethan)
+	- Fixed #178: dovecot managed sieve missing (tx nethan)
+	- Fixed #179: unexpected T_STRING in /var/www/imscp/gui/public/client/mail_add.php on line 408 (tx paranoids)
+
 
 
 -------------------------------------------------------------------------------------
