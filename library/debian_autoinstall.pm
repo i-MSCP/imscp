@@ -216,7 +216,7 @@ sub UpdateAptSourceList {
 		$file->set($content);
 		$file->save() and return 1;
 
-		$rs = $self->updatePackages();
+		$rs = $self->updateSystemPackagesIndex();
 		return $rs if $rs;
 	}
 
