@@ -1086,5 +1086,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"
 		);
 	}
+	/**
+         * Feature php.ini
+         */
+        protected function _databaseUpdate_79(){
+                $dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+                return array(
+			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'off')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '10')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '10')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_INPUT_TIME', '60')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_EXECUTION_TIME', '30')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL ^ (E_NOTICE | E_WARNING)')",
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')"
+		);
+	}
 
 }

@@ -1568,6 +1568,7 @@ sub dmn_add_httpd_file_data {
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 	my $sys_user = "$suexec_user_pref$sys_uid";
 	my $sys_group = "$suexec_user_pref$sys_gid";
+	my $db_config = get_config_from_db(); #table config from DB as href->href 
 
 	# Starter directory for usual user
 
@@ -1805,7 +1806,17 @@ sub dmn_add_httpd_file_data {
 			'{PEAR_DIR}' => $pear_dir,
 			'{WWW_DIR}'  => $www_dir,
 			'{DMN_NAME}' => $dmn_name,
-			'{PHP_TIMEZONE}' => $timezone
+			'{PHP_TIMEZONE}' => $timezone,
+			'{DISABLE_FUNCTIONS}' => $db_config->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
+			'{MAX_EXECUTION_TIME}' => $db_config->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
+                        '{MAX_INPUT_TIME}' => $db_config->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
+                        '{MEMORY_LIMIT}' => $db_config->{'PHPINI_MEMORY_LIMIT'}->{'value'},
+                        '{ERROR_REPORTING}' => $db_config->{'PHPINI_ERROR_REPORTING'}->{'value'},
+                        '{DISPLAY_ERRORS}' => $db_config->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
+			'{REGISTER_GLOBALS}' => $db_config->{'PHPINI_REGISTER_GLOBALS'}->{'value'},
+			'{POST_MAX_SIZE}' => $db_config->{'PHPINI_POST_MAX_SIZE'}->{'value'},
+			'{UPLOAD_MAX_FILESIZE}' => $db_config->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
+			'{ALLOW_URL_FOPEN}' => $db_config->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'}
 		);
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
