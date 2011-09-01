@@ -143,33 +143,23 @@ sub _modules {
 
 	debug((caller(0))[3].': Starting...');
 
-	my ($mod, $mod_missing) = (undef, undef);
+	my ($mod, @mod_missing) = (undef, ());
 
-	for $mod (keys(%{$self->{needed}})) {
-		ITER: {
-			foreach my $prefix (@INC) {
-				my $realfilename = "$prefix/$mod.pm";
-				$realfilename =~ s!::!/!g;
+	for $mod (keys %{$self->{needed}}) {
 
-				if (-f $realfilename) {
-					$INC{$mod} = $realfilename;
-					eval "use $mod $self->{needed}->{$mod}";
+		if (eval "require $mod") {
 
-					if($@){
-						$mod_missing .= ($mod_missing ? ', ' : '').$mod;
-					}
+			eval "use $mod $self->{needed}->{$mod}";
 
-					last ITER;
-				}
-			}
+		} else {
 
-			$mod_missing .= ($mod_missing ? ', ' : '').$mod;
+			push(@mod_missing, $mod);
+
 		}
 	}
-
 	debug((caller(0))[3].': Ending...');
 
-	fatal("Modules [$mod_missing] was not found on your system.") if ($mod_missing) ;
+	fatal("Modules [@mod_missing] was not found on your system.") if (scalar @mod_missing);
 }
 
 # Checks for external program availability and their versions.
