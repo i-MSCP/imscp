@@ -1101,7 +1101,17 @@ class iMSCP_Update_Database extends iMSCP_Update
                         "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_INPUT_TIME', '60')",
                         "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_EXECUTION_TIME', '30')",
                         "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL ^ (E_NOTICE | E_WARNING)')",
-                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')"
+                        "INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')",
+			"ALTER TABLE `reseller_props` ADD `php_ini_system` VARCHAR(15) NOT NULL DEFAULT 'no'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_al_disable_functions` VARCHAR(15) NOT NULL DEFAULT 'no'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_al_allow_url_fopen` VARCHAR(15) NOT NULL DEFAULT 'no'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_al_register_globals` VARCHAR(15) NOT NULL DEFAULT 'no'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_al_display_errors` VARCHAR(15) NOT NULL DEFAULT 'no'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_post_max_size` VARCHAR(15) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_upload_max_filesize` VARCHAR(15) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_execution_time` VARCHAR(15) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_max_input_time` VARCHAR(15) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_memory_limit` VARCHAR(15) NOT NULL DEFAULT '0'"
 		);
 	}
 

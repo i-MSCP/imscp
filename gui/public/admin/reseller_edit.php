@@ -82,7 +82,17 @@ function get_clean_input_data() {
 			'edit_id' => clean_input($_POST['edit_id']),
 			'software_allowed' => clean_input($_POST['domain_software_allowed']),
 			'softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed']),
-            'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed'])
+            'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed']),
+			'php_ini_system' => clean_input($_POST['phpini_system']),
+                        'php_ini_al_register_globals' => clean_input($_POST['phpini_al_register_globals']),
+                        'php_ini_al_allow_url_fopen' => clean_input($_POST['phpini_al_allow_url_fopen']),
+                        'php_ini_al_display_errors' => clean_input($_POST['phpini_al_display_errors']),
+                        'php_ini_al_disable_functions' => clean_input($_POST['phpini_al_disable_functions']),
+                        'php_ini_max_memory_limit' => clean_input($_POST['phpini_max_memory_limit']),
+                        'php_ini_max_upload_max_filesize' => clean_input($_POST['phpini_max_upload_max_filesize']),
+                        'php_ini_max_post_max_size' => clean_input($_POST['phpini_max_post_max_size']),
+                        'php_ini_max_max_execution_time' => clean_input($_POST['phpini_max_max_execution_time']),
+                        'php_ini_max_max_input_time' => clean_input($_POST['phpini_max_max_input_time'])
 		);
 	}
 
@@ -298,7 +308,32 @@ function check_data(&$errFields) {
 
 	check_user_ip_data($rdata['edit_id'], $rdata['rip_lst'], $rdata['reseller_ips']);
 
+        /**
+        * Check php.ini Values
+        */
+        if (!imscp_limit_check_range($rdata['php_ini_max_memory_limit'], 32, 1024)) {
+                set_page_message(tr('Incorrect max_memory_limit (min 32, max 1024).'), 'error');
+        }
+
+        if (!imscp_limit_check_range($rdata['php_ini_max_upload_max_filesize'], 1, 100)) {
+                set_page_message(tr('Incorrect upload_max_filesize (min 1, max 100).'), 'error');
+        }
+
+        if (!imscp_limit_check_range($rdata['php_ini_max_post_max_size'], 1, 100)) {
+                set_page_message(tr('Incorrect post_max_size (min 1, max 100).'), 'error');
+        }
+
+        if (!imscp_limit_check_range($rdata['php_ini_max_max_execution_time'], 10, 600)) {
+                set_page_message(tr('Incorrect max_execution_time (min 10, max 600).'), 'error');
+        }
+
+        if (!imscp_limit_check_range($rdata['php_ini_max_max_input_time'], 10, 600)) {
+                set_page_message(tr('Incorrect max_input_time (min 10, max 600).'), 'error');
+        }
+
+
 }
+
 
 /**
  * @param  $new_limit
@@ -408,7 +443,11 @@ function get_reseller_prop($reseller_id) {
 			`max_sql_db_cnt`, `max_sql_user_cnt`, `max_traff_amnt`, `max_disk_amnt`,
 			`software_allowed`, `softwaredepot_allowed`, `websoftwaredepot_allowed`,
 			r.`support_system` AS support_system, r.`customer_id` AS customer_id,
-			`reseller_ips` AS rip_lst, `gender`
+			`reseller_ips` AS rip_lst, `gender`, `php_ini_system`, 
+			`php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
+                        `php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
+                        `php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
+                        `php_ini_max_max_input_time`, `php_ini_max_memory_limit`
 		FROM
 			`admin` AS a, `reseller_props` AS r
 		WHERE
@@ -690,6 +729,37 @@ function update_reseller() {
                             $rdata['websoftwaredepot_allowed'],
                             $rdata['edit_id']));
 
+	/* Update reseller's php.ini settings*/
+	$query = "
+                UPDATE
+                        `reseller_props`
+                SET
+			`php_ini_system` = ?,
+			`php_ini_al_disable_functions` = ?,
+			`php_ini_al_allow_url_fopen` = ?,
+			`php_ini_al_register_globals` = ?,
+			`php_ini_al_display_errors` = ?,
+			`php_ini_max_post_max_size` = ?,
+			`php_ini_max_upload_max_filesize` = ?,
+			`php_ini_max_max_execution_time` = ?,
+                        `php_ini_max_max_input_time` = ?,
+			`php_ini_max_memory_limit` = ?
+		WHERE
+			`reseller_id` = ?
+        ";
+	exec_query($query, array(
+        		$rdata['php_ini_system'],
+                        $rdata['php_ini_al_disable_functions'],
+                        $rdata['php_ini_al_allow_url_fopen'],
+			$rdata['php_ini_al_register_globals'],
+			$rdata['php_ini_al_display_errors'],
+                        $rdata['php_ini_max_post_max_size'],
+                        $rdata['php_ini_max_upload_max_filesize'],
+                        $rdata['php_ini_max_max_execution_time'],
+			$rdata['php_ini_max_max_input_time'],
+                        $rdata['php_ini_max_memory_limit'],
+                        $rdata['edit_id']));
+
 }
 
 /**
@@ -934,13 +1004,38 @@ $tpl->assign(
 		'TR_NO' => tr('no'),
 		'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
 		'TR_SOFTWAREDEPOT_SUPP' => tr('Can use software depot'),
-        'TR_WEBSOFTWAREDEPOT_SUPP' => tr('Can use websoftware depot'),
+       	 	'TR_WEBSOFTWAREDEPOT_SUPP' => tr('Can use websoftware depot'),
 		'SOFTWARE_YES' => ($rdata['software_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWARE_NO' => ($rdata['software_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWAREDEPOT_YES'	=> ($rdata['softwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWAREDEPOT_NO' => ($rdata['softwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
-        'WEBSOFTWAREDEPOT_YES'	=> ($rdata['websoftwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
+	        'WEBSOFTWAREDEPOT_YES'	=> ($rdata['websoftwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'WEBSOFTWAREDEPOT_NO' => ($rdata['websoftwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_SYSTEM_YES' => ($rdata['php_ini_system'] == 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_SYSTEM_NO' => ($rdata['php_ini_system'] != 'yes')  ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_REGISTER_GLOBALS_YES' => ($rdata['php_ini_al_register_globals'] == 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_REGISTER_GLOBALS_NO' => ($rdata['php_ini_al_register_globals'] != 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($rdata['php_ini_al_allow_url_fopen'] == 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_ALLOW_URL_FOPEN_NO' => ($rdata['php_ini_al_allow_url_fopen'] != 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_DISPLAY_ERRORS_YES' => ($rdata['php_ini_al_display_errors'] == 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_DISPLAY_ERRORS_NO' => ($rdata['php_ini_al_display_errors'] != 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_DISABLE_FUNCTIONS_YES' => ($rdata['php_ini_al_disable_functions'] == 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($rdata['php_ini_al_disable_functions'] != 'yes') ? $cfg->HTML_CHECKED : '',
+                'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
+                'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
+                'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
+                'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
+                'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time'],
+                'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
+                'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
+                'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
+                'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('MAX allowed in memory_limit [MB]'),
+                'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('MAX allowed in upload_max_filesize [MB]'),
+                'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('MAX allowed in post_max_size [MB]'),
+                'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('allow change Value display_errors'),
+                'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('allow change Value disable_functions'),
+                'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
+                'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),
