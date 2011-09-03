@@ -326,23 +326,13 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 	$payment = $data['payment'];
 	$status = $data['status'];
 	$tos = $data['tos'];
-	if (substr_count($props,';') < 15) { //Prevent Notices of missing vars in old plans without phpini settings
-		list(
-        	        $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-                	$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware
-       		   ) = explode(';', $props);
-		$phpini_system = 'no';
-		$phpini_al_register_globals = 'no';
-		$phpini_al_allow_url_fopen = 'no';
-		$phpini_al_display_errors = 'no';
-		$phpini_al_disable_functions = 'no';
-	} else {
-		list(
-			$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware,
-			$phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions	
-		) = explode(';', $props);
-	}
+	
+
+	list(
+                        $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
+                        $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware,
+                        $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions
+                ) = array_pad(explode(';', $props),18,'no');
 
 	$hp_name = $data['name'];
 
