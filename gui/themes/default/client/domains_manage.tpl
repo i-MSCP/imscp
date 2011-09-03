@@ -56,7 +56,7 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="domains"><span>{TR_DOMAIN_ALIASES}</span></h2>
+						<h2 class="domains"><span>{TR_DOMAIN_ALIASES}</span></h2>
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
@@ -79,18 +79,18 @@
 					<tbody>
 						<!-- BDP: als_item -->
 							<tr>
-                                <!-- BDP: als_status_reload_true -->
+								<!-- BDP: als_status_reload_true -->
 								<td><a href="http://{ALS_NAME}/" class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</a></td>
-                                <!-- EDP: als_status_reload_true -->
-                                <!-- BDP: als_status_reload_false -->
-                                <td><span class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span></td>
-                                <!-- EDP: als_status_reload_false -->
+								<!-- EDP: als_status_reload_true -->
+								<!-- BDP: als_status_reload_false -->
+								<td><span class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span></td>
+								<!-- EDP: als_status_reload_false -->
 								<td>{ALS_MOUNT}</td>
 								<td>{ALS_FORWARD}</td>
 								<td>{ALS_STATUS}</td>
 								<td>
-									<a href="#" class="icon i_delete" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}')" title="{ALS_ACTION}">{ALS_ACTION}</a>
 									<a href="{ALS_EDIT_LINK}" class="icon i_edit" title="{ALS_EDIT}">{ALS_EDIT}</a>
+									<a href="#" class="icon i_delete" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}')" title="{ALS_ACTION}">{ALS_ACTION}</a>
 								</td>
 							</tr>
 						<!-- EDP: als_item -->
@@ -116,15 +116,18 @@
 					<tbody>
 						<!-- BDP: sub_item -->
 							<tr>
-                                <!-- BDP: status_reload_true -->
+								<!-- BDP: status_reload_true -->
 								<td><a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
-                                <!-- EDP: status_reload_true -->
-                                <!-- BDP: status_reload_false -->
-                                <td><span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
-                                <!-- EDP: status_reload_false -->
+								<!-- EDP: status_reload_true -->
+								<!-- BDP: status_reload_false -->
+								<td><span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
+								<!-- EDP: status_reload_false -->
 								<td>{SUB_MOUNT}</td>
 								<td>{SUB_STATUS}</td>
-								<td><a href="#" class="icon i_delete" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>
+								<td>
+									<a href="{SUB_EDIT_LINK}" class="icon i_edit" title="{SUB_EDIT}">{SUB_EDIT}</a>
+									<a href="#" class="icon i_delete" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a>
+								</td>
 							</tr>
 						<!-- EDP: sub_item -->
 					</tbody>

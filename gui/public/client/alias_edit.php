@@ -107,9 +107,12 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	}
 
 	$_SESSION['edit_ID'] = $editid;
-	$tpl->assign('PAGE_MESSAGE', "");
+	$tpl->assign('PAGE_MESSAGE', '');
 }
+
 gen_editalias_page($tpl, $editid);
+
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
@@ -277,11 +280,11 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 		write_log("$admin_login: change domain alias forward: " . $rs->fields['alias_name'], E_USER_NOTICE);
 		unset($_SESSION['edit_ID']);
-		$tpl->assign('MESSAGE', "");
+		$tpl->assign('MESSAGE', '');
 		return true;
+
 	} else {
-		$tpl->assign('MESSAGE', $ed_error);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
+		set_page_message($ed_error,'error');
 		return false;
 	}
 } // End of check_user_data()

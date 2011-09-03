@@ -127,10 +127,12 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 
 gen_editsubdomain_page($tpl, $editid, $dmntype);
 
+generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+	iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
@@ -313,8 +315,7 @@ function check_fwd_data($tpl, $subdomain_id, $dmn_type) {
 		$tpl->assign('MESSAGE', '');
 		return true;
 	} else {
-		$tpl->assign('MESSAGE', $ed_error);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
+		set_page_message($ed_error,'error');
 		return false;
 	}
 }
