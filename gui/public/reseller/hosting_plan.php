@@ -201,6 +201,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 		$i = 1;
 		$orders_count = 0;
 		while ($data = $rs->fetchRow()) {
+			/* this needed or bug ? 
 			list(
 				$hp_php,
 				$hp_cgi,
@@ -218,6 +219,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			) = explode(";", $data['props']);
 			
 			if($hp_allowsoftware == "_no_" || $hp_allowsoftware == "" || $hp_allowsoftware == "_yes_" && get_reseller_sw_installer($reseller_id) == "yes") {
+			*/
 				$orders_count++;
 				$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
 
@@ -238,7 +240,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 				);
 
 				$tpl->parse('HP_ENTRY', '.hp_entry');
-			}
+			//}
 		}
 
 		if ($orders_count == 0) {

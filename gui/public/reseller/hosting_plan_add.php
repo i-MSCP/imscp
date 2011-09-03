@@ -56,6 +56,11 @@ $tpl->define_dynamic('ftp_add', 'page');
 $tpl->define_dynamic('sql_db_add', 'page');
 $tpl->define_dynamic('sql_user_add', 'page');
 $tpl->define_dynamic('t_software_support', 'page');
+$tpl->define_dynamic('t_phpini_system', 'page');
+$tpl->define_dynamic('t_phpini_register_globals', 'page');
+$tpl->define_dynamic('t_phpini_allow_url_fopen', 'page');
+$tpl->define_dynamic('t_phpini_display_errors', 'page');
+$tpl->define_dynamic('t_phpini_disable_functions', 'page');
 
 $tpl->assign(
 	array(
@@ -116,6 +121,14 @@ $tpl->assign(
 		'TR_TOS_NOTE'				=> tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
 		'TR_TOS_DESCRIPTION'		=> tr('Text Only'),
 		// END TOS
+                'TR_PHPINI_SYSTEM' => tr('Allow change PHP.ini'),
+                'TR_USER_EDITABLE_EXEC' => tr('Only "exec" allowed'),
+                'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('Allow change value register_globals'),
+                'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Allow change value allow_url_fopen'),
+                'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Allow change value display_errors'),
+                'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Allow change value disable_functions'),
+                'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
+                'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
 		'TR_ADD_PLAN'				=> tr('Add plan')
 	)
 );
@@ -132,6 +145,41 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 }
 
 get_reseller_software_permission ($tpl, $_SESSION['user_id']);
+
+if ($phpinidata = get_reseller_phpini_permission($tpl, $_SESSION['user_id'])) {
+
+        if ($phpinidata->fields('php_ini_al_register_globals') == 'yes'){
+                $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
+        } else {
+                $tpl->assign(array('T_PHPINI_REGISTER_GLOBALS'=> ''));
+                $tpl->assign(array('PHPINI_AL_REGISTER_GLOBALS_YES' => '', 'PHPINI_AL_REGISTER_GLOBALS_NO' => $cfg->HTML_CHECKED));
+        }
+        if ($phpinidata->fields('php_ini_al_allow_url_fopen') == 'yes'){
+                $tpl->parse('T_PHPINI_ALLOW_URL_FOPEN', 't_phpini_allow_url_fopen');
+        } else {
+                $tpl->assign(array('T_PHPINI_ALLOW_URL_FOPEN'=> ''));
+                $tpl->assign(array('PHPINI_AL_ALLOW_URL_FOPEN_YES' => '', 'PHPINI_AL_ALLOW_URL_FOPEN_NO' => $cfg->HTML_CHECKED));
+        }
+        if ($phpinidata->fields('php_ini_al_display_errors') == 'yes'){
+                $tpl->parse('T_PHPINI_DISPLAY_ERRORS', 't_phpini_display_errors');
+        } else {
+                $tpl->assign(array('T_PHPINI_DISPLAY_ERRORS'=> ''));
+                $tpl->assign(array('PHPINI_AL_DISPLAY_ERRORS_YES' => '', 'PHPINI_AL_DISPLAY_ERRORS_NO' => $cfg->HTML_CHECKED));
+        }
+        if ($phpinidata->fields('php_ini_al_disable_functions') == 'yes'){
+                $tpl->parse('T_PHPINI_DISABLE_FUNCTIONS', 't_phpini_disable_functions');
+        } else {
+                $tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS'=> ''));
+                $tpl->assign(array('PHPINI_AL_DISABLE_FUNCTIONS_YES' => '',
+                                   'PHPINI_AL_DISABLE_FUNCTIONS_NO' => $cfg->HTML_CHECKED,
+                                   'PHPINI_AL_DISABLE_FUNCTIONS_EXEC' => ''));
+        }
+
+} else {
+        $tpl->assign(array('T_PHPINI_SYSTEM' => ''));
+        $tpl->assign(array('PHPINI_SYSTEM_YES' => '', 'PHPINI_SYSTEM_NO' => $cfg->HTML_CHECKED));
+}
+
 generatePageMessage($tpl);
 
 list(
@@ -195,7 +243,18 @@ function gen_empty_ahp_page(&$tpl) {
 			'HP_DISK_VALUE'			=> '',
 			'TR_STATUS_YES'			=> $cfg->HTML_CHECKED,
 			'TR_STATUS_NO'			=> '',
-			'HP_TOS_VALUE'			=> ''
+			'HP_TOS_VALUE'			=> '',
+                        'PHPINI_SYSTEM_YES'              => $cfg->HTML_CHECKED,
+                        'PHPINI_SYSTEM_NO'             => '',
+                        'PHPINI_AL_REGISTER_GLOBALS_YES' => $cfg->HTML_CHECKED,
+                        'PHPINI_AL_REGISTER_GLOBALS_NO' => '',
+                        'PHPINI_AL_ALLOW_URL_FOPEN_YES' => $cfg->HTML_CHECKED,
+                        'PHPINI_AL_ALLOW_URL_FOPEN_NO' => '',
+                        'PHPINI_AL_DISPLAY_ERRORS_YES' => $cfg->HTML_CHECKED,
+                        'PHPINI_AL_DISPLAY_ERRORS_NO' => '',
+                        'PHPINI_AL_DISABLE_FUNCTIONS_YES' => '',
+                        'PHPINI_AL_DISABLE_FUNCTIONS_NO' => '',
+                        'PHPINI_AL_DISABLE_FUNCTIONS_EXEC' => $cfg->HTML_CHECKED
 		)
 	);
 
@@ -215,6 +274,12 @@ function gen_data_ahp_page(&$tpl) {
 	global $tos;
 
 	$cfg = iMSCP_Registry::get('config');
+
+        $phpini_system = (isset($_POST['phpini_system'])) ? clean_input($_POST['phpini_system']) : 'no';
+        $phpini_al_register_globals = (isset($_POST['phpini_al_register_globals'])) ? clean_input($_POST['phpini_al_register_globals']) : 'no';
+        $phpini_al_allow_url_fopen = (isset($_POST['phpini_al_allow_url_fopen'])) ? clean_input($_POST['phpini_al_allow_url_fopen']) : 'no';
+        $phpini_al_display_errors = (isset($_POST['phpini_al_display_errors'])) ? clean_input($_POST['phpini_al_display_errors']) : 'no';
+        $phpini_al_disable_functions = (isset($_POST['phpini_al_disable_functions'])) ? clean_input($_POST['phpini_al_disable_functions']) : 'no';
 
 	$tpl->assign(
 		array(
@@ -251,7 +316,18 @@ function gen_data_ahp_page(&$tpl) {
 			'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? $cfg->HTML_CHECKED : '',
 			'TR_DNS_NO'		=> ($hp_dns == '_no_') ? $cfg->HTML_CHECKED : '',
 			'TR_STATUS_YES'	=> ($status) ? $cfg->HTML_CHECKED : '',
-			'TR_STATUS_NO'	=> (!$status) ? $cfg->HTML_CHECKED : ''
+			'TR_STATUS_NO'	=> (!$status) ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_SYSTEM_YES'             => ($phpini_system == 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_SYSTEM_NO'              => ($phpini_system != 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_REGISTER_GLOBALS_YES'        => ($phpini_al_register_globals == 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_REGISTER_GLOBALS_NO'         => ($phpini_al_register_globals != 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($phpini_al_allow_url_fopen == 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_ALLOW_URL_FOPEN_NO'  => ($phpini_al_allow_url_fopen != 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_DISPLAY_ERRORS_YES'  => ($phpini_al_display_errors == 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_DISPLAY_ERRORS_NO'   => ($phpini_al_display_errors != 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_DISABLE_FUNCTIONS_YES'       => ($phpini_al_disable_functions == 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_DISABLE_FUNCTIONS_NO'        => ($phpini_al_disable_functions == 'no') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_AL_DISABLE_FUNCTIONS_EXEC'      => ($phpini_al_disable_functions == 'exec') ? $cfg->HTML_CHECKED : ''
 		)
 	);
 
@@ -268,6 +344,8 @@ function check_data_correction(&$tpl) {
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
+	global $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions;
+	
 
 	$ahp_error 		= array();
 
@@ -285,6 +363,16 @@ function check_data_correction(&$tpl) {
 	$status			= $_POST['status'];
 	$description	= clean_input($_POST['hp_description']);
 	$tos			= clean_input($_POST['hp_tos']);
+
+	$phpini_system = (isset($_POST['phpini_system'])) ? clean_input($_POST['phpini_system']) : 'no';
+	$phpini_al_register_globals = (isset($_POST['phpini_al_register_globals'])) ? clean_input($_POST['phpini_al_register_globals']) : 'no';
+	$phpini_al_allow_url_fopen = (isset($_POST['phpini_al_allow_url_fopen'])) ? clean_input($_POST['phpini_al_allow_url_fopen']) : 'no';
+	$phpini_al_display_errors = (isset($_POST['phpini_al_display_errors'])) ? clean_input($_POST['phpini_al_display_errors']) : 'no';
+	$phpini_al_disable_functions = (isset($_POST['phpini_al_disable_functions'])) ? clean_input($_POST['phpini_al_disable_functions']) : 'no';
+
+	if (!get_reseller_phpini_permission($tpl, $_SESSION['user_id'])) { //simple check against resseller rights to prevent POST manipulate
+		$phpini_system = 'no';
+        } 
 
 	if (empty($_POST['hp_price'])) {
 		$price = 0;
@@ -408,6 +496,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
+        global $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions;
 
 	$err_msg = '';
 
@@ -419,6 +508,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 		// $tpl->parse('AHP_MESSAGE', 'ahp_message');
 	} else {
 		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
+		$hp_props .= ";$phpini_system;$phpini_al_register_globals;$phpini_al_allow_url_fopen;$phpini_al_display_errors;$phpini_al_disable_functions";
 		// this id is just for fake and is not used in reseller_limits_check.
 		$hpid = 0;
 

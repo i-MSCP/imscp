@@ -136,7 +136,7 @@
             <form name="admin_edit_reseller" method="post" action="reseller_edit.php">
                 <fieldset>
                     <legend>{TR_CORE_DATA}</legend>
-                    <table id='pagetable'>
+                    <table>
                         <tr>
                             <td style="width:300px;">{TR_USERNAME}</td>
                             <td>{USERNAME}</td>

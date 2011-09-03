@@ -15,9 +15,36 @@
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
+	<script type="text/javascript">
+	<!--
+	        function begin_js() {
+	                if (document.getElementById('phpini_system_no').checked == true){
+	                        changeType("php_ini_no");
+	                }
+	        }
+	
+	        function changeType(what) {
+	                if (what == "php_ini_yes") {
+	                        document.getElementById('php_ini_block_register_globals').style.display = '';
+	                        document.getElementById('php_ini_block_allow_url_fopen').style.display = '';
+	                        document.getElementById('php_ini_block_display_errors').style.display = '';
+	                        document.getElementById('php_ini_block_disable_functions').style.display = '';
+	
+	
+	                }
+	                if (what == "php_ini_no") {
+	                        document.getElementById('php_ini_block_register_globals').style.display = 'none';
+	                        document.getElementById('php_ini_block_allow_url_fopen').style.display = 'none';
+	                        document.getElementById('php_ini_block_display_errors').style.display = 'none';
+	                        document.getElementById('php_ini_block_disable_functions').style.display = 'none';
+	                }
+	        }
+	//-->
+	</script>
+
 	</head>
 
-	<body>
+	<body onload="begin_js();">
 		<div class="header">
 			{MAIN_MENU}
 
@@ -131,13 +158,69 @@
 						</tr>
 						<!-- BDP: t_software_support -->
 						<tr>
-								<td>{TR_SOFTWARE_SUPP}</td>
-								<td>
-									<input type="radio" {DISBLED} name="software_allowed" value="_yes_" {TR_SOFTWARE_YES} id="software_allowed_yes" /><label for="software_allowed_yes">{TR_YES}</label>
+							<td>{TR_SOFTWARE_SUPP}</td>
+							<td>
+								<input type="radio" {DISBLED} name="software_allowed" value="_yes_" {TR_SOFTWARE_YES} id="software_allowed_yes" /><label for="software_allowed_yes">{TR_YES}</label>
 								<input type="radio" {DISBLED} name="software_allowed" value="_no_" {TR_SOFTWARE_NO} id="software_allowed_no" /><label for="software_allowed_no">{TR_NO}</label>
 							</td>
-							</tr>
-							<!-- EDP: t_software_support -->
+						</tr>
+						<!-- EDP: t_software_support -->
+			                        <!-- BDP: t_phpini_system -->
+			                        <tr>
+			                           <td>{TR_PHPINI_SYSTEM}</td>
+			                            <td>
+			                                <input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} onclick="changeType('php_ini_yes');" />
+			                                <label for="phpini_system_yes">{TR_YES}</label>
+			                                <input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} onclick="changeType('php_ini_no');" />
+			                                <label for="support_system_no">{TR_NO}</label>
+			                            </td>
+			                        </tr>
+			                        <!-- BDP: t_phpini_register_globals -->
+			                        <tr id='php_ini_block_register_globals'>
+			                           <td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
+			                            <td>
+			                                <input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
+			                                <label for="phpini_al_register_globals_yes">{TR_YES}</label>
+			                                <input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
+			                                <label for="phpini_al_register_globals_no">{TR_NO}</label>
+			                        </tr>
+			                        <!-- EDP: t_phpini_register_globals -->
+			                        <!-- BDP: t_phpini_allow_url_fopen -->
+			                        <tr id='php_ini_block_allow_url_fopen'>
+			                           <td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}</td>
+			                            <td>
+			                                <input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
+			                                <label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
+			                                <input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_no" value="no" {PHPINI_AL_ALLOW_URL_FOPEN_NO} />
+			                                <label for="phpini_al_allow_url_fopen_no">{TR_NO}</label>
+			                            </td>
+			                        </tr>
+			                        <!-- EDP: t_phpini_allow_url_fopen -->
+			                        <!-- BDP: t_phpini_display_errors -->
+			                        <tr id='php_ini_block_display_errors'>
+			                           <td>{TR_PHPINI_AL_DISPLAY_ERRORS}</td>
+			                            <td>
+			                                <input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
+			                                <label for="phpini_al_display_errors_yes">{TR_YES}</label>
+			                                <input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_no" value="no" {PHPINI_AL_DISPLAY_ERRORS_NO} />
+			                                <label for="phpini_al_display_errors_no">{TR_NO}</label>
+			                            </td>
+			                        </tr>
+			                        <!-- EDP: t_phpini_display_errors -->
+			                        <!-- BDP: t_phpini_disable_functions -->
+			                        <tr id='php_ini_block_disable_functions'>
+			                           <td>{TR_PHPINI_AL_DISABLE_FUNCTIONS}</td>
+			                            <td>
+			                                <input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
+			                                <label for="phpini_al_disable_functions_yes">{TR_YES}</label>
+			                                <input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_no" value="no" {PHPINI_AL_DISABLE_FUNCTIONS_NO} />
+			                                <label for="phpini_al_disable_functions_no">{TR_NO}</label>
+			                                <input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_exec" value="exec" {PHPINI_AL_DISABLE_FUNCTIONS_EXEC} />
+			                                <label for="phpini_al_disable_functions_exec">{TR_USER_EDITABLE_EXEC}</label>
+			                            </td>
+			                        </tr>
+			                        <!-- EDP: t_phpini_disable_functions -->
+			                        <!-- EDP: t_phpini_system -->
 					</table>
 				</fieldset>
 				<fieldset>

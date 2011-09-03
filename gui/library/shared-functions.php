@@ -1504,6 +1504,36 @@ function get_reseller_software_permission($tpl, $reseller_id)
 }
 
 /**
+ * Returns reseller php.ini permissions.
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @param  $reseller_id Reseller unique identifier
+ * @return $row if phpini enabled else false
+ */
+function get_reseller_phpini_permission($tpl, $reseller_id)
+{
+    $query = "
+                SELECT
+                        `php_ini_system`,`php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
+                        `php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
+                        `php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
+                        `php_ini_max_max_input_time`, `php_ini_max_memory_limit`
+                FROM
+                        `reseller_props`
+                WHERE
+                        `reseller_id` = ?
+        ";
+    $rs = exec_query($query, array($reseller_id));
+
+    if ($rs->fields('php_ini_system') == 'yes') {
+	return $rs;
+    } 
+   return false;
+
+}
+
+
+/**
  * Get all config data from i-MSCP application installer
  *
  * @since 1.0.0
