@@ -1,4 +1,4 @@
-	<?php
+<?php
 /**
  * i-MSCP - internet Multi Server Control Panel
  *

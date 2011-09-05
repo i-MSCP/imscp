@@ -60,18 +60,6 @@
                 	});
 		/*]]>*/
 		</script>
-	<script type="text/javascript">
-        	$(document).ready(function() {
-			$('#phpini_system_yes').click( function() {
-                		$("#phpinidetail").show();
-				
-			});
-			$('#phpini_system_no').click( function() {
-                                $("#phpinidetail").hide();
-                                
-                        });
-            	});
-        </script>
 
 	</head>
 	<body>
