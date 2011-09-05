@@ -17,19 +17,19 @@ Features / Enhancements:
 			- Updated Squirrelmail to 1.4.22
 
 Tickets:
-	- Fixed #16: Feature - Mail Quota Support
-	- Fixed #57: Enhancement - Adapt the postfix master.cf to be compatible with
+	- Fixed #16:  Feature - Mail Quota Support
+	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with
 	  dovecot
-	- Fixed #58: Enhancement - Default mail quota should be increased up to 100MB
-	- Fixed #77: Task - Setup - Empty files must be removed
+	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
+	- Fixed #77:  Task - Setup - Empty files must be removed
 	- Fixed #147: Squirrelmail 1.4.22 released
-	- Fixed #165: Wrong level for Page message
+	- Fixed #165: Bug - Wrong level for page message
 	- Fixed #166: Enhancement - Add Dovecot support
 	- Fixed #171: Bug - Auto-installer is broken
 	- Fixed #172: Bug - Bad template and variable name
 	- Fixed #173: Update - phpMyAdmin 3.4.4 released
 	- Fixed #174: Bug - no session directory
-	- Fixed #175: mail_addr saved in mail_type forward too
+	- Fixed #175: Nice To Have - mail_addr saved in mail_type_forward too
 	- Fixed #178: Enhancement - dovecot managed sieve missing
 	- Fixed #179: Bug - Unexpected T_STRING
 
