@@ -26,7 +26,7 @@
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      ispCP Team
- * @author      i-MSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
@@ -110,9 +110,8 @@ class iMSCP_Database
         $this->_eventManager = iMSCP_Events_Manager::getInstance();
 
         // The onBeforeConnection event is fired here.
-        $this->_eventManager->dispatch(
-            iMSCP_Database_Events::onBeforeConnection,
-            new iMSCP_Database_Events_Database('', $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeConnection,
+									   new iMSCP_Database_Events_Database('', $this));
 
         $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,
             $pass, $driver_options);

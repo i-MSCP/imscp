@@ -34,6 +34,7 @@
 /**
  * i-MSCP default Exception
  *
+ * @category 	iMSCP
  * @package		iMSCP_Exception
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @since       1.0.7 (ispCP)

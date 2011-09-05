@@ -24,7 +24,7 @@
  * @category	i-MSCP
  * @package		iMSCP_Bootstrap
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
@@ -43,10 +43,11 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  *
  * <b>Note:</b> Will be improved later
  *
- * @package iMSCP_Bootstrap
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @since   1.0.7 (ispCP)
- * @version 1.0.4
+ * @category	iMSCP
+ * @package		iMSCP_Bootstrap
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @since		1.0.7 (ispCP)
+ * @version		1.0.4
  */
 class iMSCP_Bootstrap
 {

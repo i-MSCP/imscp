@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     Core
+ * @package     iMSCP_Core
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
  * @version     SVN: $Id$
@@ -30,7 +30,7 @@
  * Contains all common events thrown in the i-MSCP scripts.
  *
  * @category    iMSCP
- * @package     Core
+ * @package     iMSCP_Core
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */

@@ -39,7 +39,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * A listener can be an object or a callback function. The listeners objects must
  * implement listeners methods named as the events they listens on.
  *
- * A very basic example for a listener that listen on the 'AdminScriptStart':
+ * A very basic example for a listener that listen on the 'AdminScriptStart' event:
  *
  * <code>
  * class HelloWorld
@@ -76,7 +76,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
     protected static $_instance;
 
     /**
-     * @var iMSCP_Events_Listeners_Stack
+     * @var iMSCP_Events_Listeners_Stack[]
      */
     protected $_events = array();
 
