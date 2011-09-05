@@ -146,7 +146,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 
 get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 
-if ($phpinidata = get_reseller_phpini_permission($tpl, $_SESSION['user_id'])) {
+if ($phpinidata = get_reseller_phpini_permission($_SESSION['user_id'])) {
 
         if ($phpinidata->fields('php_ini_al_register_globals') == 'yes'){
                 $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
@@ -370,7 +370,7 @@ function check_data_correction(&$tpl) {
 	$phpini_al_display_errors = (isset($_POST['phpini_al_display_errors'])) ? clean_input($_POST['phpini_al_display_errors']) : 'no';
 	$phpini_al_disable_functions = (isset($_POST['phpini_al_disable_functions'])) ? clean_input($_POST['phpini_al_disable_functions']) : 'no';
 
-	if (!get_reseller_phpini_permission($tpl, $_SESSION['user_id'])) { //simple check against resseller rights to prevent POST manipulate
+	if (!get_reseller_phpini_permission($_SESSION['user_id'])) { //simple check against resseller rights to prevent POST manipulate
 		$phpini_system = 'no';
         } 
 

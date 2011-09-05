@@ -9,6 +9,11 @@
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+                <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+                <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+                <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.core.js"></script>
+                <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.datepicker.js"></script>
+
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
@@ -17,34 +22,23 @@
 		<![endif]-->
 	<script type="text/javascript">
 	<!--
-	        function begin_js() {
-	                if (document.getElementById('phpini_system_no').checked == true){
-	                        changeType("php_ini_no");
-	                }
-	        }
-	
-	        function changeType(what) {
-	                if (what == "php_ini_yes") {
-	                        document.getElementById('php_ini_block_register_globals').style.display = '';
-	                        document.getElementById('php_ini_block_allow_url_fopen').style.display = '';
-	                        document.getElementById('php_ini_block_display_errors').style.display = '';
-	                        document.getElementById('php_ini_block_disable_functions').style.display = '';
-	
-	
-	                }
-	                if (what == "php_ini_no") {
-	                        document.getElementById('php_ini_block_register_globals').style.display = 'none';
-	                        document.getElementById('php_ini_block_allow_url_fopen').style.display = 'none';
-	                        document.getElementById('php_ini_block_display_errors').style.display = 'none';
-	                        document.getElementById('php_ini_block_disable_functions').style.display = 'none';
-	                }
-	        }
+		$(document).ready(function() {
+                        if($('#phpini_system_no').is(':checked')) {
+                                $("#phpinidetail").hide();
+                                }
+                        $('#phpini_system_yes').click( function() {
+                                $("#phpinidetail").show();
+                        });
+                       $('#phpini_system_no').click( function() {
+                		$("#phpinidetail").hide();
+        		});
+        	});
 	//-->
 	</script>
 
 	</head>
 
-	<body onload="begin_js();">
+	<body>
 		<div class="header">
 			{MAIN_MENU}
 
@@ -169,12 +163,13 @@
 			                        <tr>
 			                           <td>{TR_PHPINI_SYSTEM}</td>
 			                            <td>
-			                                <input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} onclick="changeType('php_ini_yes');" />
+			                                <input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
 			                                <label for="phpini_system_yes">{TR_YES}</label>
-			                                <input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} onclick="changeType('php_ini_no');" />
+			                                <input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} />
 			                                <label for="support_system_no">{TR_NO}</label>
 			                            </td>
 			                        </tr>
+					       <tbody id='phpinidetail'>
 			                        <!-- BDP: t_phpini_register_globals -->
 			                        <tr id='php_ini_block_register_globals'>
 			                           <td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
@@ -220,6 +215,7 @@
 			                            </td>
 			                        </tr>
 			                        <!-- EDP: t_phpini_disable_functions -->
+					       </tbody>
 			                        <!-- EDP: t_phpini_system -->
 					</table>
 				</fieldset>

@@ -1107,12 +1107,28 @@ class iMSCP_Update_Database extends iMSCP_Update
                         "ALTER TABLE `reseller_props` ADD `php_ini_al_allow_url_fopen` VARCHAR(15) NOT NULL DEFAULT 'no'",
                         "ALTER TABLE `reseller_props` ADD `php_ini_al_register_globals` VARCHAR(15) NOT NULL DEFAULT 'no'",
                         "ALTER TABLE `reseller_props` ADD `php_ini_al_display_errors` VARCHAR(15) NOT NULL DEFAULT 'no'",
-                        "ALTER TABLE `reseller_props` ADD `php_ini_max_post_max_size` VARCHAR(15) NOT NULL DEFAULT '0'",
-                        "ALTER TABLE `reseller_props` ADD `php_ini_max_upload_max_filesize` VARCHAR(15) NOT NULL DEFAULT '0'",
-                        "ALTER TABLE `reseller_props` ADD `php_ini_max_execution_time` VARCHAR(15) NOT NULL DEFAULT '0'",
-                        "ALTER TABLE `reseller_props` ADD `php_ini_max_max_input_time` VARCHAR(15) NOT NULL DEFAULT '0'",
-                        "ALTER TABLE `reseller_props` ADD `php_ini_max_memory_limit` VARCHAR(15) NOT NULL DEFAULT '0'"
-		);
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_post_max_size` int(11) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_upload_max_filesize` int(11) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_execution_time` int(11) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0'",
+			"CREATE TABLE IF NOT EXISTS `php_ini` (
+			  `ID` int(11) NOT NULL AUTO_INCREMENT,
+			  `domain_id` int(10) NOT NULL,
+			  `status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
+			  `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
+			  `allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+			  `register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+			  `display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+			  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED',
+			  `post_max_size` int(11) NOT NULL DEFAULT '10',
+			  `upload_max_filesize` int(11) NOT NULL DEFAULT '10',
+			  `max_execution_time` int(11) NOT NULL DEFAULT '30',
+			  `max_input_time` int(11) NOT NULL DEFAULT '60',
+			  `memory_limit` int(11) NOT NULL DEFAULT '128',
+			  PRIMARY KEY (`ID`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
+			);
 	}
 
 }

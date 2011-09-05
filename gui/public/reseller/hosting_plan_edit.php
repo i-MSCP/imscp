@@ -157,7 +157,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'reseller'
     get_reseller_software_permission($tpl, $_SESSION['user_id']);
 }
 
-if ($phpinidata = get_reseller_phpini_permission($tpl, $_SESSION['user_id'])) {
+if ($phpinidata = get_reseller_phpini_permission($_SESSION['user_id'])) {
 
         if ($phpinidata->fields('php_ini_al_register_globals') == 'yes'){
                 $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');

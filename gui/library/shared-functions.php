@@ -1510,7 +1510,7 @@ function get_reseller_software_permission($tpl, $reseller_id)
  * @param  $reseller_id Reseller unique identifier
  * @return $row if phpini enabled else false
  */
-function get_reseller_phpini_permission($tpl, $reseller_id)
+function get_reseller_phpini_permission($reseller_id)
 {
     $query = "
                 SELECT
@@ -1532,7 +1532,56 @@ function get_reseller_phpini_permission($tpl, $reseller_id)
 
 }
 
+/**
+ * Returns custom php.ini values if aviable
+ *
+ * @param  $domainID 
+ * @return $row if custom ini aviable else false
+ */
 
+function get_custom_phpini_data($domainId)
+{
+    $query = "
+                SELECT
+                        *
+                FROM
+                        `php_ini`
+                WHERE
+                        `domain_id` = ?
+        ";
+    $rs = exec_query($query, array($domainId));
+
+    if ($rs->recordCount()) {
+        return $rs;
+    }
+   return false;
+
+}
+
+/**
+ * Returns default php.ini values 
+ *
+ *    
+ * @return ref array from config table with the phpini vars
+ */
+
+function get_default_phpini_data()
+{
+	$cfg = iMSCP_Registry::get('config');
+	$phpiniData['phpiniAllowUrlFopen'] = $cfg->PHPINI_ALLOW_URL_FOPEN; 
+        $phpiniData['phpiniRegisterGlobals'] = $cfg->PHPINI_REGISTER_GLOBALS;
+        $phpiniData['phpiniDisplayErrors'] = $cfg->PHPINI_DISPLAY_ERRORS;
+        $phpiniData['phpiniErrorReporting'] = $cfg->PHPINI_ERROR_REPORTING;
+        $phpiniData['phpiniDisableFunctions'] = $cfg->PHPINI_DISABLE_FUNCTIONS;
+        $phpiniData['phpiniPostMaxSize'] = $cfg->PHPINI_POST_MAX_SIZE;
+        $phpiniData['phpiniUploadMaxFilesize'] = $cfg->PHPINI_UPLOAD_MAX_FILESIZE;
+        $phpiniData['phpiniMaxExecutionTime'] = $cfg->PHPINI_MAX_EXECUTION_TIME;
+        $phpiniData['phpiniMaxInputTime'] = $cfg->PHPINI_MAX_INPUT_TIME;
+        $phpiniData['phpiniMemoryLimit'] = $cfg->PHPINI_MEMORY_LIMIT;
+
+	return $phpiniData;
+
+}
 /**
  * Get all config data from i-MSCP application installer
  *

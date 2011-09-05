@@ -8,54 +8,35 @@
         <title>{TR_ADMIN_ADD_RESELLER_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.core.js"></script>
+
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
             DD_belatedPNG.fix('*');
         </script>
         <![endif]-->
-    </head>
-<script type="text/javascript">
-<!--
-        function begin_js() {
-		if (document.getElementById('phpini_system_no').checked == true){
-			changeType("php_ini_no");
-		}
-        }
-
-        function changeType(what) {
-                if (what == "php_ini_yes") {
-                        document.getElementById('php_ini_block_register_globals').style.display = '';
-                        document.getElementById('php_ini_block_allow_url_fopen').style.display = '';
-                        document.getElementById('php_ini_block_display_errors').style.display = '';
-                        document.getElementById('php_ini_block_disable_functions').style.display = '';
-                        document.getElementById('php_ini_block_memory_limit').style.display = '';
-                        document.getElementById('php_ini_block_upload_max_filesize').style.display = '';
-                        document.getElementById('php_ini_block_post_max_size').style.display = '';
-                        document.getElementById('php_ini_block_max_execution_time').style.display = '';
-                        document.getElementById('php_ini_block_max_input_time').style.display = '';
-
-
-                }
-                if (what == "php_ini_no") {
-                        document.getElementById('php_ini_block_register_globals').style.display = 'none';
-                        document.getElementById('php_ini_block_allow_url_fopen').style.display = 'none';
-                        document.getElementById('php_ini_block_display_errors').style.display = 'none';
-                        document.getElementById('php_ini_block_disable_functions').style.display = 'none';
-                        document.getElementById('php_ini_block_memory_limit').style.display = 'none';
-                        document.getElementById('php_ini_block_upload_max_filesize').style.display = 'none';
-                        document.getElementById('php_ini_block_post_max_size').style.display = 'none';
-                        document.getElementById('php_ini_block_max_execution_time').style.display = 'none';
-                        document.getElementById('php_ini_block_max_input_time').style.display = 'none';
-                }
-        }
-//-->
-</script>
+       <script language="JavaScript" type="text/JavaScript">
+        /*<![CDATA[*/
+                $(document).ready(function() {
+                        if($('#phpini_system_no').is(':checked')) {
+                                $("#phpinidetail").hide();
+                                }
+                        $('#phpini_system_yes').click( function() {
+                                $("#phpinidetail").show();
+                        });
+                        $('#phpini_system_no').click( function() {
+                                $("#phpinidetail").hide();
+                        });
+                });
+        /*]]>*/
+        </script>
 
     </head>
-
-    <body onload="begin_js();">
-
+    <body>
         <div class="header">
             {MAIN_MENU}
 
@@ -188,13 +169,14 @@
                         <tr>
                            <td>{TR_PHPINI_SYSTEM}</td>
                             <td>
-                                <input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} onclick="changeType('php_ini_yes');" />
+                                <input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
                                 <label for="phpini_system_yes">{TR_YES}</label>
-                                <input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} onclick="changeType('php_ini_no');" />
+                                <input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} />
                                 <label for="support_system_no">{TR_NO}</label>
                             </td>
                         </tr>
-                        <tr id='php_ini_block_register_globals'>
+		       <tbody id='phpinidetail'>
+                        <tr>
                            <td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
                             <td>
                                 <input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
@@ -251,7 +233,7 @@
                             <td><label for="phpini_max_max_input_time">{TR_PHPINI_MAX_MAX_INPUT_TIME}</label></td>
                             <td><input type="text" name="phpini_max_max_input_time" id="phpini_max_max_input_time" value="{PHPINI_MAX_MAX_INPUT_TIME_VAL}"/></td>
                         </tr>
-
+		       </tbody>
 
                     </table>
                 </fieldset>
