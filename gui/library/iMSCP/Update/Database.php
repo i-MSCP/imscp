@@ -1021,7 +1021,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Fix for #175 mail_addr saved in mail_type_forward too
+	 * #175: Fix for  mail_addr saved in mail_type_forward too.
 	 *
 	 * @author Daniel Andreca <lsci2tech@gmail.com>
 	 * @since $Revision:$
