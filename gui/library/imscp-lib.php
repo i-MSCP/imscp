@@ -137,12 +137,12 @@ require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
 
 /**
- * View helper functions
+ * View helpers functions
  */
 require_once 'iMSCP/View/Helpers/Functions/Common.php';
 
 if(isset($_SESSION['user_type'])) {
     $helperFileName = ucfirst(strtolower($_SESSION['user_type']));
 
-    require_once 'iMSCP/View/Helpers/' . $helperFileName . '.php';
+    require_once 'iMSCP/View/Helpers/Functions' . $helperFileName . '.php';
 }
