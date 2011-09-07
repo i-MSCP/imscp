@@ -48,6 +48,9 @@ check_login(__FILE__);
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+/* iMSCP_PHPini object */
+$phpini = new iMSCP_PHPini();
+
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
     $lostpwd = $_POST['lostpassword'];
@@ -81,26 +84,26 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     $log_level = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
     $ordersExpireTime = clean_input($_POST['ordersExpireTime']);
 
-    $phpini_allow_url_fopen = clean_input($_POST['phpini_allow_url_fopen']);		
-    $phpini_register_globals = clean_input($_POST['phpini_register_globals']);
-    $phpini_display_errors = clean_input($_POST['phpini_display_errors']);
-    $phpini_error_reporting = clean_input($_POST['phpini_error_reporting']);
-    $phpini_post_max_size = $_POST['phpini_post_max_size'];
-    $phpini_upload_max_filesize = $_POST['phpini_upload_max_filesize'];
-    $phpini_max_execution_time = $_POST['phpini_max_execution_time'];
-    $phpini_max_input_time = $_POST['phpini_max_input_time'];
-    $phpini_memory_limit = $_POST['phpini_memory_limit'];
+    $phpini->setData('phpiniRegisterGlobals',clean_input($_POST['phpini_register_globals']));
+    $phpini->setData('phpiniAllowUrlFopen',clean_input($_POST['phpini_allow_url_fopen'])); 
+    $phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
+    $phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
+    $phpini->setData('phpiniPostMaxSize', clean_input($_POST['phpini_post_max_size']));
+    $phpini->setData('phpiniUploadMaxFileSize', clean_input($_POST['phpini_upload_max_filesize']));
+    $phpini->setData('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_execution_time']));
+    $phpini->setData('phpiniMaxInputTime', clean_input($_POST['phpini_max_input_time']));
+    $phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
+		
 
-    //assemble $phpini_disable_functions 
-    $phpini_disable_functions = '';
-    $phpini_disable_functions_tmp = array();
+    //collect all parts of disabled_function from $_POST
+    $mytmp=array(); 
     foreach($_POST as $key =>$value){
 	if (substr($key,0,10) == "phpini_df_") {
-		array_push($phpini_disable_functions_tmp,clean_input($value));
+		array_push($mytmp,clean_input($value));
 		}
     }
-    $phpini_disable_functions = implode(',',$phpini_disable_functions_tmp);
-    
+   $phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($mytmp));
+
     if ((!is_number($lostpwd_timeout))
         || (!is_number($pwd_chars))
         || (!is_number($bruteforce_max_login))
@@ -111,11 +114,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
         || (!is_number($max_dnames_labels))
         || (!is_number($max_subdnames_labels))
         || (!is_number($ordersExpireTime))
-        || (!is_number($phpini_post_max_size))
-        || (!is_number($phpini_upload_max_filesize))
-        || (!is_number($phpini_max_execution_time))
-        || (!is_number($phpini_max_input_time))
-        || (!is_number($phpini_memory_limit))
     ) {
         set_page_message(tr('Only positive numbers are allowed.'), 'error');
     } elseif ($domain_rows_per_page < 1) {
@@ -124,6 +122,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
         $max_dnames_labels = 1;
     } elseif ($max_subdnames_labels < 1) {
         $max_subdnames_labels = 1;
+    } elseif ($phpini->flagValueError) { // if a php value was out of range or simple wrong type 
+	set_page_message(tr('Error in php.ini values.'), 'error');
     } else {
         /** @var $db_cfg iMSCP_Config_Handler_Db */
         $db_cfg = iMSCP_Registry::get('dbConfig');
@@ -158,16 +158,16 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
         $db_cfg->MAX_DNAMES_LABELS = $max_dnames_labels;
         $db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
         $db_cfg->ORDERS_EXPIRE_TIME = $ordersExpireTime * 86400;
-	$db_cfg->PHPINI_ALLOW_URL_FOPEN = $phpini_allow_url_fopen;
-	$db_cfg->PHPINI_REGISTER_GLOBALS = $phpini_register_globals;
-	$db_cfg->PHPINI_DISPLAY_ERRORS = $phpini_display_errors;
-        $db_cfg->PHPINI_ERROR_REPORTING = $phpini_error_reporting;
-        $db_cfg->PHPINI_POST_MAX_SIZE = $phpini_post_max_size;
-        $db_cfg->PHPINI_UPLOAD_MAX_FILESIZE = $phpini_upload_max_filesize;
-        $db_cfg->PHPINI_MAX_EXECUTION_TIME = $phpini_max_execution_time;
-        $db_cfg->PHPINI_MAX_INPUT_TIME = $phpini_max_input_time;
-        $db_cfg->PHPINI_MEMORY_LIMIT = $phpini_memory_limit;
-	$db_cfg->PHPINI_DISABLE_FUNCTIONS = $phpini_disable_functions;
+	$db_cfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
+	$db_cfg->PHPINI_REGISTER_GLOBALS = $phpini->getDataVal('phpiniRegisterGlobals');
+	$db_cfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
+        $db_cfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
+        $db_cfg->PHPINI_POST_MAX_SIZE = $phpini->getDataVal('phpiniPostMaxSize');
+        $db_cfg->PHPINI_UPLOAD_MAX_FILESIZE = $phpini->getDataVal('phpiniUploadMaxFileSize');
+        $db_cfg->PHPINI_MAX_EXECUTION_TIME = $phpini->getDataVal('phpiniMaxExecutionTime');
+        $db_cfg->PHPINI_MAX_INPUT_TIME = $phpini->getDataVal('phpiniMaxInputTime');
+        $db_cfg->PHPINI_MEMORY_LIMIT = $phpini->getDataVal('phpiniMemoryLimit');
+	$db_cfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
         $cfg->replaceWith($db_cfg);
 
         // gets the number of queries that were been executed
@@ -372,8 +372,10 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
                       'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON' => '',
                       'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => $html_selected));
 }
+//start php.ini - doesnt make a difference if i load the data from $cfg or from $phpini->getData()
 
-if ($cfg->PHPINI_ALLOW_URL_FOPEN == 'on') {
+
+if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') {
     $tpl->assign(array(
                       'PHPINI_ALLOW_URL_FOPEN_ON' => $html_selected,
                       'PHPINI_ALLOW_URL_FOPEN_OFF' => ''));
@@ -383,7 +385,7 @@ if ($cfg->PHPINI_ALLOW_URL_FOPEN == 'on') {
                       'PHPINI_ALLOW_URL_FOPEN_OFF' => $html_selected));
 }
 
-if ($cfg->PHPINI_REGISTER_GLOBALS == 'on') {
+if ($phpini->getDataVal('phpiniRegisterGlobals') == 'on') {
     $tpl->assign(array(
                       'PHPINI_REGISTER_GLOBALS_ON' => $html_selected,
                       'PHPINI_REGISTER_GLOBALS_OFF' => ''));
@@ -393,7 +395,7 @@ if ($cfg->PHPINI_REGISTER_GLOBALS == 'on') {
                       'PHPINI_REGISTER_GLOBALS_OFF' => $html_selected));
 }
 
-if ($cfg->PHPINI_DISPLAY_ERRORS == 'on') {
+if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
     $tpl->assign(array(
                       'PHPINI_DISPLAY_ERRORS_ON' => $html_selected,
                       'PHPINI_DISPLAY_ERRORS_OFF' => ''));
@@ -403,7 +405,7 @@ if ($cfg->PHPINI_DISPLAY_ERRORS == 'on') {
                       'PHPINI_DISPLAY_ERRORS_OFF' => $html_selected));
 }
 
-switch ($cfg->PHPINI_ERROR_REPORTING) {
+switch ($phpini->getDataVal('phpiniErrorReporting')) {
     case '0':
 	$tpl->assign(array(
                         'PHPINI_ERROR_REPORTING_0' => $html_selected,
@@ -435,7 +437,8 @@ switch ($cfg->PHPINI_ERROR_REPORTING) {
 			
 }
 
-$phpini_df = explode(',', $cfg->PHPINI_DISABLE_FUNCTIONS);
+//template stuff for disable_function 
+$phpini_df = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
 $phpini_df_all = array(	'PHPINI_DF_SHOW_SOURCE_CHK',
 			'PHPINI_DF_SYSTEM_CHK',
 			'PHPINI_DF_SHELL_EXEC_CHK',
@@ -506,11 +509,11 @@ $tpl->assign(array(
                   'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
                   'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
                   'ORDERS_EXPIRATION_TIME_VALUE' => $cfg->ORDERS_EXPIRE_TIME / 86400,
-		  'PHPINI_POST_MAX_SIZE' => $cfg->PHPINI_POST_MAX_SIZE,
-                  'PHPINI_UPLOAD_MAX_FILESIZE' => $cfg->PHPINI_UPLOAD_MAX_FILESIZE,
-                  'PHPINI_MAX_EXECUTION_TIME' => $cfg->PHPINI_MAX_EXECUTION_TIME,
-                  'PHPINI_MAX_INPUT_TIME' => $cfg->PHPINI_MAX_INPUT_TIME,
-                  'PHPINI_MEMORY_LIMIT' => $cfg->PHPINI_MEMORY_LIMIT,
+		  'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
+                  'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
+                  'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
+                  'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
+                  'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit'),
                   'TR_GENERAL_SETTINGS' => tr('General settings'),
                   'TR_SETTINGS' => tr('Settings'),
                   'TR_MESSAGE' => tr('Message'),
