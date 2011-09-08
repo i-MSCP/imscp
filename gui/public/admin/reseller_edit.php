@@ -82,7 +82,7 @@ function get_clean_input_data() {
 			'edit_id' => clean_input($_POST['edit_id']),
 			'software_allowed' => clean_input($_POST['domain_software_allowed']),
 			'softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed']),
-            'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed']),
+            		'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed']),
 			'php_ini_system' => clean_input($_POST['phpini_system']),
                         'php_ini_al_register_globals' => clean_input($_POST['phpini_al_register_globals']),
                         'php_ini_al_allow_url_fopen' => clean_input($_POST['phpini_al_allow_url_fopen']),
@@ -308,29 +308,37 @@ function check_data(&$errFields) {
 
 	check_user_ip_data($rdata['edit_id'], $rdata['rip_lst'], $rdata['reseller_ips']);
 
+
+	/* iMSCP_PHPini object */
+	$phpini = new iMSCP_PHPini();
+
+
         /**
-        * Check php.ini Values
+        * Check php.ini Values use build in method form iMSCP_PHPini
         */
-        if (!imscp_limit_check_range($rdata['php_ini_max_memory_limit'], 32, 1024)) {
-                set_page_message(tr('Incorrect max_memory_limit (min 32, max 1024).'), 'error');
-        }
+	if (!$phpini->setRePerm('phpiniPostMaxSize', $rdata['php_ini_max_post_max_size'])) {
+        	set_page_message(tr('Value post_max_size out of Range'), 'error');
+    	}
+	
+	if (!$phpini->setRePerm('phpiniUploadMaxFileSize', $rdata['php_ini_max_upload_max_filesize'])) {
+		set_page_message(tr('Value upload_max_filesize out of Range'), 'error');
+        	return false;
+	}
 
-        if (!imscp_limit_check_range($rdata['php_ini_max_upload_max_filesize'], 1, 100)) {
-                set_page_message(tr('Incorrect upload_max_filesize (min 1, max 100).'), 'error');
-        }
+	if (!$phpini->setRePerm('phpiniMaxExecutionTime', $rdata['php_ini_max_max_execution_time'])) {
+	        set_page_message(tr('Value max_execution_time out of Range'), 'error');
+        	return false;
+	}
 
-        if (!imscp_limit_check_range($rdata['php_ini_max_post_max_size'], 1, 100)) {
-                set_page_message(tr('Incorrect post_max_size (min 1, max 100).'), 'error');
-        }
+	if (!$phpini->setRePerm('phpiniMemoryLimit', $rdata['php_ini_max_memory_limit'])) {
+        	set_page_message(tr('Value memory_limit out of Range'), 'error');
+	       	return false;
+	}	
 
-        if (!imscp_limit_check_range($rdata['php_ini_max_max_execution_time'], 10, 600)) {
-                set_page_message(tr('Incorrect max_execution_time (min 10, max 600).'), 'error');
-        }
-
-        if (!imscp_limit_check_range($rdata['php_ini_max_max_input_time'], 10, 600)) {
-                set_page_message(tr('Incorrect max_input_time (min 10, max 600).'), 'error');
-        }
-
+	if (!$phpini->setRePerm('phpiniMaxInputTime', $rdata['php_ini_max_max_input_time'])) {
+	        set_page_message(tr('Value max_input_time out of Range'), 'error');
+        	return false;
+	}
 
 }
 
@@ -712,7 +720,17 @@ function update_reseller() {
 			`max_als_cnt` = ?, `max_mail_cnt` = ?, `max_ftp_cnt` = ?,
 			`max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?,
 			`max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?,
-			`software_allowed` = ?, `softwaredepot_allowed` = ?, `websoftwaredepot_allowed` = ?
+			`software_allowed` = ?, `softwaredepot_allowed` = ?, `websoftwaredepot_allowed` = ?,
+                        `php_ini_system` = ?,
+                        `php_ini_al_disable_functions` = ?,
+                        `php_ini_al_allow_url_fopen` = ?,
+                        `php_ini_al_register_globals` = ?,
+                        `php_ini_al_display_errors` = ?,
+                        `php_ini_max_post_max_size` = ?,
+                        `php_ini_max_upload_max_filesize` = ?,
+                        `php_ini_max_max_execution_time` = ?,
+                        `php_ini_max_max_input_time` = ?,
+                        `php_ini_max_memory_limit` = ?
 		WHERE
 			`reseller_id` = ?
 	";
@@ -727,38 +745,17 @@ function update_reseller() {
                             $rdata['software_allowed'],
                             $rdata['softwaredepot_allowed'],
                             $rdata['websoftwaredepot_allowed'],
+                            $rdata['php_ini_system'],
+                            $rdata['php_ini_al_disable_functions'],
+                            $rdata['php_ini_al_allow_url_fopen'],
+                            $rdata['php_ini_al_register_globals'],
+                            $rdata['php_ini_al_display_errors'],
+                            $rdata['php_ini_max_post_max_size'],
+                            $rdata['php_ini_max_upload_max_filesize'],
+                            $rdata['php_ini_max_max_execution_time'],
+                            $rdata['php_ini_max_max_input_time'],
+		            $rdata['php_ini_max_memory_limit'],
                             $rdata['edit_id']));
-
-	/* Update reseller's php.ini settings*/
-	$query = "
-                UPDATE
-                        `reseller_props`
-                SET
-			`php_ini_system` = ?,
-			`php_ini_al_disable_functions` = ?,
-			`php_ini_al_allow_url_fopen` = ?,
-			`php_ini_al_register_globals` = ?,
-			`php_ini_al_display_errors` = ?,
-			`php_ini_max_post_max_size` = ?,
-			`php_ini_max_upload_max_filesize` = ?,
-			`php_ini_max_max_execution_time` = ?,
-                        `php_ini_max_max_input_time` = ?,
-			`php_ini_max_memory_limit` = ?
-		WHERE
-			`reseller_id` = ?
-        ";
-	exec_query($query, array(
-        		$rdata['php_ini_system'],
-                        $rdata['php_ini_al_disable_functions'],
-                        $rdata['php_ini_al_allow_url_fopen'],
-			$rdata['php_ini_al_register_globals'],
-			$rdata['php_ini_al_display_errors'],
-                        $rdata['php_ini_max_post_max_size'],
-                        $rdata['php_ini_max_upload_max_filesize'],
-                        $rdata['php_ini_max_max_execution_time'],
-			$rdata['php_ini_max_max_input_time'],
-                        $rdata['php_ini_max_memory_limit'],
-                        $rdata['edit_id']));
 
 }
 
@@ -905,7 +902,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
 
 		// Checking for the submitted data
-		check_data($errFields);
+		check_data($errFields, $phpini);
 
 		// If no error was occured during data checking, we can continue
 		if (!isset($_SESSION['user_page_message'])) {

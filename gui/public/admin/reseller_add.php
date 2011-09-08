@@ -38,6 +38,7 @@
  * Script functions
  */
 
+
 /**
  * Returns servers IPs.
  *
@@ -114,7 +115,7 @@ function reseller_getServerIps($tpl)
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function reseller_addReseller($tpl)
+function reseller_addReseller($tpl, &$phpini)
 {
     global $reseller_ips;
 
@@ -125,7 +126,7 @@ function reseller_addReseller($tpl)
     $db = iMSCP_Registry::get('db');
 
     if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_reseller') {
-        if (reseller_checkData()) {
+        if (reseller_checkData($phpini)) {
             $upass = crypt_user_pass($_POST['pass']);
             $user_id = $_SESSION['user_id'];
             $username = clean_input($_POST['username']);
@@ -191,18 +192,7 @@ function reseller_addReseller($tpl)
                 $nreseller_software_allowed = clean_input($_POST['nreseller_software_allowed']);
                 $nreseller_softwaredepot_allowed = clean_input($_POST['nreseller_softwaredepot_allowed']);
                 $nreseller_websoftwaredepot_allowed = clean_input($_POST['nreseller_websoftwaredepot_allowed']);
-		
-		$phpini_system = clean_input($_POST['phpini_system']);
-		$phpini_al_register_globals = clean_input($_POST['phpini_al_register_globals']);
-                $phpini_al_allow_url_fopen = clean_input($_POST['phpini_al_allow_url_fopen']);
-                $phpini_al_display_errors = clean_input($_POST['phpini_al_display_errors']);
-                $phpini_al_disable_functions = clean_input($_POST['phpini_al_display_errors']);
-                $phpini_max_memory_limit = clean_input($_POST['phpini_max_memory_limit']);
-                $phpini_max_upload_max_filesize = clean_input($_POST['phpini_max_upload_max_filesize']);
-                $phpini_max_post_max_size = clean_input($_POST['phpini_max_post_max_size']);
-                $phpini_max_max_execution_time = clean_input($_POST['phpini_max_max_execution_time']);
-                $phpini_max_max_input_time = clean_input($_POST['phpini_max_max_input_time']);
-
+	
                 $customer_id = clean_input($_POST['customer_id']);
                 $support_system = clean_input($_POST['support_system']);
 
@@ -234,10 +224,10 @@ function reseller_addReseller($tpl)
                                 $support_system, $customer_id, $nreseller_software_allowed,
                                 $nreseller_softwaredepot_allowed,
                                 $nreseller_websoftwaredepot_allowed,
-				$phpini_system, $phpini_al_disable_functions, $phpini_al_allow_url_fopen,
-				$phpini_al_register_globals, $phpini_al_display_errors, $phpini_max_post_max_size,
-				$phpini_max_upload_max_filesize, $phpini_max_max_execution_time,
-				$phpini_max_max_input_time, $phpini_max_memory_limit
+				$phpini->getRePermVal('phpiniSystem'), $phpini->getRePermVal('phpiniDisableFunctions'), $phpini->getRePermVal('phpiniAllowUrlFopen'),
+				$phpini->getRePermVal('phpiniRegisterGlobals'), $phpini->getRePermVal('phpiniDisplayErrors'), $phpini->getRePermVal('phpiniPostMaxSize'),
+                                $phpini->getRePermVal('phpiniUploadMaxFileSize'), $phpini->getRePermVal('phpiniMaxExecutionTime'),
+                                $phpini->getRePermVal('phpiniMaxInputTime'), $phpini->getRePermVal('phpiniMemoryLimit')
 				));
 
                 $db->commit();
@@ -369,19 +359,19 @@ function reseller_addReseller($tpl)
                           'SUPPORT_SYSTEM_NO' => '',
                           'PHPINI_SYSTEM_YES' => '',
                           'PHPINI_SYSTEM_NO' => $cfg->HTML_CHECKED,
-                          'PHPINI_AL_REGISTER_GLOBALS_YES' => $cfg->HTML_CHECKED,
-                          'PHPINI_AL_REGISTER_GLOBALS_NO' => '',
-                          'PHPINI_AL_ALLOW_URL_FOPEN_YES' => $cfg->HTML_CHECKED,
-                          'PHPINI_AL_ALLOW_URL_FOPEN_NO' => '',
-                          'PHPINI_AL_DISPLAY_ERRORS_YES' => $cfg->HTML_CHECKED,
-                          'PHPINI_AL_DISPLAY_ERRORS_NO' => '',
-                          'PHPINI_AL_DISABLE_FUNCTIONS_YES' => $cfg->HTML_CHECKED,
-                          'PHPINI_AL_DISABLE_FUNCTIONS_NO' => '',
-                          'PHPINI_MAX_MEMORY_LIMIT_VAL' => '512',
-                          'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => '20',
-                          'PHPINI_MAX_POST_MAX_SIZE_VAL' => '20',
-                          'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => '120',
-                          'PHPINI_MAX_MAX_INPUT_TIME_VAL' => '180'
+                          'PHPINI_AL_REGISTER_GLOBALS_YES' => ($phpini->getRePermVal('phpiniRegisterGlobals') == 'yes') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_REGISTER_GLOBALS_NO' => ($phpini->getRePermVal('phpiniRegisterGlobals') == 'no') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($phpini->getRePermVal('phpiniAllowUrlFopen') == 'yes') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_ALLOW_URL_FOPEN_NO' => ($phpini->getRePermVal('phpiniAllowUrlFopen') == 'no') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_DISPLAY_ERRORS_YES' => ($phpini->getRePermVal('phpiniDisplayErrors') == 'yes') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_DISPLAY_ERRORS_NO' => ($phpini->getRePermVal('phpiniDisplayErrors') == 'no') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_DISABLE_FUNCTIONS_YES' => ($phpini->getRePermVal('phpiniDisableFunctions') == 'yes') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($phpini->getRePermVal('phpiniDisableFunctions') == 'no') ? $cfg->HTML_CHECKED : '',
+                          'PHPINI_MAX_MEMORY_LIMIT_VAL' => $phpini->getRePermVal('phpiniMemoryLimit'),
+                          'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $phpini->getRePermVal('phpiniUploadMaxFileSize'),
+                          'PHPINI_MAX_POST_MAX_SIZE_VAL' => $phpini->getRePermVal('phpiniPostMaxSize'),
+                          'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $phpini->getRePermVal('phpiniMaxExecutionTime'),
+                          'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $phpini->getRePermVal('phpiniMaxInputTime')
 			));
     }
 }
@@ -391,7 +381,7 @@ function reseller_addReseller($tpl)
  *
  * @return bool TRUE on success, FALSE otherwise
  */
-function reseller_checkData()
+function reseller_checkData(&$phpini)
 {
     global $reseller_ips;
 
@@ -467,31 +457,6 @@ function reseller_checkData()
         return false;
     }
 
-    if (!imscp_limit_check_range($_POST['phpini_max_memory_limit'], 32, 1024)) {
-        set_page_message(tr('Incorrect max_memory_limit (min 32, max 1024).'), 'error');
-        return false;
-    }
-
-    if (!imscp_limit_check_range($_POST['phpini_max_upload_max_filesize'], 1, 100)) {
-        set_page_message(tr('Incorrect upload_max_filesize (min 1, max 100).'), 'error');
-        return false;
-    }
-
-    if (!imscp_limit_check_range($_POST['phpini_max_post_max_size'], 1, 100)) {
-        set_page_message(tr('Incorrect post_max_size (min 1, max 100).'), 'error');
-        return false;
-    }
-
-    if (!imscp_limit_check_range($_POST['phpini_max_max_execution_time'], 10, 600)) {
-        set_page_message(tr('Incorrect max_execution_time (min 10, max 600).'), 'error');
-        return false;
-    }
-
-    if (!imscp_limit_check_range($_POST['phpini_max_max_input_time'], 10, 600)) {
-        set_page_message(tr('Incorrect max_input_time (min 10, max 600).'), 'error');
-        return false;
-    }
-
     if (!imscp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
         set_page_message(tr('Incorrect SQL databases limit.'), 'error');
         return false;
@@ -524,6 +489,56 @@ function reseller_checkData()
         return false;
     }
 
+    if (!$phpini->setRePerm('phpiniSystem',clean_input($_POST['phpini_system']))) { //should be impossible to enter a wrong value its a radio button
+	set_page_message(tr('Feature PHP.ini Value Error'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniRegisterGlobals', clean_input($_POST['phpini_al_register_globals']))) { //should be impossible to enter a wrong value its a radio button
+	set_page_message(tr('Error in register_globals Value'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_al_allow_url_fopen']))) { //should be impossible to enter a wrong value its a radio button
+	set_page_message(tr('Error in allow_url_fopen Value'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniDisplayErrors', clean_input($_POST['phpini_al_display_errors']))) { //should be impossible to enter a wrong value its a radio button
+        set_page_message(tr('Error in display_Error Value'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']))) { //should be impossible to enter a wrong value its a radio button
+        set_page_message(tr('Error in disable_functions Value'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniPostMaxSize', clean_input($_POST['phpini_max_post_max_size']))) { 
+        set_page_message(tr('Value post_max_size out of Range'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniUploadMaxFileSize', clean_input($_POST['phpini_max_upload_max_filesize']))) {
+        set_page_message(tr('Value upload_max_filesize out of Range'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_max_execution_time']))) {
+        set_page_message(tr('Value max_execution_time out of Range'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniMemoryLimit', clean_input($_POST['phpini_max_memory_limit']))) {
+        set_page_message(tr('Value memory_limit out of Range'), 'error');
+        return false;
+    }
+
+    if (!$phpini->setRePerm('phpiniMaxInputTime', clean_input($_POST['phpini_max_max_input_time']))) {
+        set_page_message(tr('Value max_input_time out of Range'), 'error');
+        return false;
+    }
+
     return true;
 }
 
@@ -540,6 +555,10 @@ check_login(__FILE__);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
+
+/* iMSCP_PHPini object */
+$phpini = new iMSCP_PHPini();
+
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array('page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_add.tpl',
@@ -559,7 +578,7 @@ $tpl->assign(array(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 $reseller_ips = reseller_getServerIps($tpl);
-reseller_addReseller($tpl);
+reseller_addReseller($tpl, $phpini);
 
 $tpl->assign(array(
                   'TR_ADD_RESELLER' => tr('Add reseller'),

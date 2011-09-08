@@ -160,10 +160,10 @@ class iMSCP_PHPini {
          */
 	public function loadReDefaultPerm(){ // Load Default Reseller Perm. (Data from global config)
 		$this->phpiniRePerm['phpiniSystem'] = self::PHPINIDEFAULTPERM; //Static no as Default
-                $this->phpiniRePerm['phpiniRegisterGlobals'] = $this->cfg->PHPINI_REGISTER_GLOBALS;
-                $this->phpiniRePerm['phpiniAllowUrlFopen'] = $this->cfg->PHPINI_ALLOW_URL_FOPEN;
-                $this->phpiniRePerm['phpiniDisplayErrors'] = $this->cfg->PHPINI_DISPLAY_ERRORS;
-                $this->phpiniRePerm['phpiniDisableFunctions'] = $this->cfg->PHPINI_DISABLE_FUNCTIONS;
+                $this->phpiniRePerm['phpiniRegisterGlobals'] = self::PHPINIDEFAULTPERM; //Static no as Default
+                $this->phpiniRePerm['phpiniAllowUrlFopen'] = self::PHPINIDEFAULTPERM; //Static no as Default 
+                $this->phpiniRePerm['phpiniDisplayErrors'] = self::PHPINIDEFAULTPERM; //Static no as Default
+                $this->phpiniRePerm['phpiniDisableFunctions'] = self::PHPINIDEFAULTPERM; //Static no as Default
                 $this->phpiniRePerm['phpiniPostMaxSize'] = $this->cfg->PHPINI_POST_MAX_SIZE;
                 $this->phpiniRePerm['phpiniUploadMaxFileSize'] = $this->cfg->PHPINI_UPLOAD_MAX_FILESIZE;
                 $this->phpiniRePerm['phpiniMaxExecutionTime'] = $this->cfg->PHPINI_MAX_EXECUTION_TIME;
@@ -184,6 +184,20 @@ class iMSCP_PHPini {
 		$this->flagValueError = true;
 		return false;
 	}
+
+	/**
+         * public bool
+         * set phpiniRePerm values with basic data check
+         * Returns false if a basic check fails or if $key is unknow
+         */
+        public function setRePerm($key, $value){
+                if ($this->rawCheckRePermData($key, $value)) {
+                        $this->phpiniRePerm[$key] = $value;
+                        return true;
+                }
+                $this->flagValueError = true;
+                return false;
+        }
 
         /**
          * public bool
@@ -226,10 +240,10 @@ class iMSCP_PHPini {
 							|| $value == 'E_ALL ^ E_NOTICE '))  { return true ; };
                 if ($key == 'phpiniDisableFunctions' && $this->checkDisableFunctionsSyntax($value)) { return true ; };
                 if ($key == 'phpiniPostMaxSize' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
-                if ($key == 'phpiniUploadMaxFileSize' && $value >= 0 && $value < 10000) { return true ; };
-                if ($key == 'phpiniMaxExecutionTime' && $value >= 0 && $value < 10000) { return true ; };
-                if ($key == 'phpiniMaxInputTime' && $value >= 0 && $value < 10000) { return true ; };
-                if ($key == 'phpiniMemoryLimit' && $value > 0 && $value < 10000) { return true ; };
+                if ($key == 'phpiniUploadMaxFileSize' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniMaxExecutionTime' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniMaxInputTime' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniMemoryLimit' && $value > 0 && $value < 10000 && is_numeric($value)) { return true ; };
 		return false;
 	}
 
@@ -247,6 +261,25 @@ class iMSCP_PHPini {
 		}
 		return true;
 	}
+
+        /**
+         * protected bool
+         * helper method - checks reseller permission data  
+         */
+        protected function rawCheckRePermData($key, $value){ //Basic Check against possible values
+                if ($key == 'phpiniSystem' &&  ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniRegisterGlobals' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniAllowUrlFopen' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniDisplayErrors' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniDisableFunctions' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniPostMaxSize' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniUploadMaxFileSize' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniMaxExecutionTime' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniMaxInputTime' && $value >= 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                if ($key == 'phpiniMemoryLimit' && $value > 0 && $value < 10000 && is_numeric($value)) { return true ; };
+                return false;
+        }
+
 
 	/**
          * public string
@@ -323,6 +356,14 @@ class iMSCP_PHPini {
          */
 	public function getRePerm(){
                 return $this->phpiniRePerm;
+        }
+
+        /**
+         * public string 
+         * return 1 value from phpiniRePerm 
+         */
+        public function getRePermVal($key){
+                return $this->phpiniRePerm[$key];
         }
 
         /**
