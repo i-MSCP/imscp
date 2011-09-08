@@ -902,7 +902,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
 
 		// Checking for the submitted data
-		check_data($errFields, $phpini);
+		check_data($errFields);
 
 		// If no error was occured during data checking, we can continue
 		if (!isset($_SESSION['user_page_message'])) {

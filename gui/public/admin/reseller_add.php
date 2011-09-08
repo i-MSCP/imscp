@@ -115,9 +115,9 @@ function reseller_getServerIps($tpl)
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function reseller_addReseller($tpl, &$phpini)
+function reseller_addReseller($tpl, $phpini)
 {
-    global $reseller_ips;
+    $reseller_ips = iMSCP_Registry::get('RESELLER_IPS');
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -381,9 +381,9 @@ function reseller_addReseller($tpl, &$phpini)
  *
  * @return bool TRUE on success, FALSE otherwise
  */
-function reseller_checkData(&$phpini)
+function reseller_checkData($phpini)
 {
-    global $reseller_ips;
+    $reseller_ips = iMSCP_Registry::get('RESELLER_IPS');
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -577,7 +577,9 @@ $tpl->assign(array(
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
-$reseller_ips = reseller_getServerIps($tpl);
+//$reseller_ips = reseller_getServerIps($tpl);
+iMSCP_Registry::set('RESELLER_IPS', reseller_getServerIps($tpl));
+
 reseller_addReseller($tpl, $phpini);
 
 $tpl->assign(array(

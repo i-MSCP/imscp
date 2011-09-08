@@ -43,6 +43,9 @@ check_login(__FILE__);
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+/* iMSCP_PHPini object */
+$phpini = new iMSCP_PHPini();
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -134,6 +137,8 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl')
 get_reseller_software_permission($tpl, $_SESSION['user_id']);
 gen_logged_from($tpl);
 
+$phpini->loadRePerm($_SESSION['user_id']); //load reseller permission into object
+
 if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 	// Process data
 	if (isset($_SESSION['edit_id'])) {
@@ -145,7 +150,7 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		redirectTo('users.php?psi=last');
 	}
 
-	if (check_user_data($tpl, $_SESSION['user_id'], $editid)) { // Save data to db
+	if (check_user_data($tpl, $_SESSION['user_id'], $editid, $phpini)) { // Save data to db
 		$_SESSION['dedit'] = "_yes_";
 		redirectTo('users.php?psi=last');
 	}
@@ -156,12 +161,12 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 		$editid = $_GET['edit_id'];
 	}
 
-	load_user_data($_SESSION['user_id'], $editid);
+	load_user_data($_SESSION['user_id'], $editid, $phpini);
 
 	$_SESSION['edit_id'] = $editid;
 	$tpl->assign('MESSAGE', "");
 }
-gen_editdomain_page($tpl);
+gen_editdomain_page($tpl, $phpini);
 generatePageMessage($tpl); // Fix - old position was to early to generate erorr message from check_user_data()
 
 // Begin function block
@@ -173,12 +178,9 @@ generatePageMessage($tpl); // Fix - old position was to early to generate erorr 
  * @param  $domain_id
  * @return void
  */
-function load_user_data($user_id, $domain_id) {
+function load_user_data($user_id, $domain_id, $phpini) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $software_supp;
-        global $phpiniSystem, $phpiniRegisterGlobals, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniErrorReporting,
-        $phpiniDisableFunctions, $phpiniPostMaxSize, $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime,
-        $phpMemoryLimit;
 
 	$query = "
 		SELECT
@@ -200,33 +202,8 @@ function load_user_data($user_id, $domain_id) {
 	}
 
 	list(,$sub,,$als,,$mail,,$ftp,,$sql_db,,$sql_user,$traff,$disk) = generate_user_props($domain_id);
-        if ($phpiniData = get_custom_phpini_data($domain_id)) { //Get row from table php_ini - if no row than theres no custom php.ini till now
-                $phpiniSystem = 'yes'; //if row than custom php ini yes
-                $phpiniRegisterGlobals = $phpiniData->fields('register_globals');
-                $phpiniAllowUrlFopen = $phpiniData->fields('allow_url_fopen');
-                $phpiniDisplayErrors = $phpiniData->fields('display_errors');
-                $phpiniErrorReporting = $phpiniData->fields('error_reporting');
-                $phpiniDisableFunctions = $phpiniData->fields('disable_functions');
-                $phpiniPostMaxSize = $phpiniData->fields('post_max_size');
-                $phpiniUploadMaxFileSize = $phpiniData->fields('upload_max_filesize');
-                $phpiniMaxExecutionTime = $phpiniData->fields('max_execution_time');
-                $phpiniMaxInputTime = $phpiniData->fields('max_input_time');
-                $phpMemoryLimit = $phpiniData->fields('memory_limit');
-        } else {
-                $phpiniDefaultData = get_default_phpini_data(); //Get the default php ini values from config table
-                $phpiniSystem = 'no';
-                $phpiniRegisterGlobals = $phpiniDefaultData['phpiniRegisterGlobals'];
-                $phpiniAllowUrlFopen = $phpiniDefaultData['phpiniAllowUrlFopen'];
-                $phpiniDisplayErrors = $phpiniDefaultData['phpiniDisplayErrors'];
-                $phpiniErrorReporting = $phpiniDefaultData['phpiniErrorReporting'];
-                $phpiniDisableFunctions =  $phpiniDefaultData['phpiniDisableFunctions'];
-                $phpiniPostMaxSize = $phpiniDefaultData['phpiniPostMaxSize'];
-                $phpiniUploadMaxFileSize = $phpiniDefaultData['phpiniUploadMaxFilesize'];
-                $phpiniMaxExecutionTime = $phpiniDefaultData['phpiniMaxExecutionTime'];
-                $phpiniMaxInputTime = $phpiniDefaultData['phpiniMaxInputTime'];
-                $phpMemoryLimit = $phpiniDefaultData['phpiniMemoryLimit'];
-        }
 
+	$phpini->loadCustomPHPini($domain_id); //load custom ini if exist  - if not the defaults values are loaded from constructer are still valid
 	load_additional_data($user_id, $domain_id);
 }
 
@@ -324,14 +301,12 @@ function load_additional_data($user_id, $domain_id) {
  * @param  iMSCP_pTemplate $tpl
  * @return void
  */
-function gen_editdomain_page($tpl) {
+function gen_editdomain_page($tpl, $phpini) {
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup, $cgi_supp , $sub, $als, $mail, $ftp,
 		$sql_db,$sql_user, $traff, $disk, $username, $allowbackup, $dns_supp, $domain_expires_date, $software_supp;
-	global $phpiniSystem, $phpiniRegisterGlobals, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniErrorReporting,
-        $phpiniDisableFunctions, $phpiniPostMaxSize, $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime,
-        $phpMemoryLimit;
-    /** @var $cfg iMSCP_Config_Handler_File */
+
+        /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// Fill in the fields
@@ -430,27 +405,27 @@ function gen_editdomain_page($tpl) {
 			'VL_TRAFFIC'			=> $traff,
 			'VL_DOM_DISK'			=> $disk,
 			'VL_USER_NAME'			=> tohtml($username),
-                        'PHPINI_SYSTEM_YES'		=> ($phpiniSystem == 'yes') ? $cfg->HTML_CHECKED : '',
-                        'PHPINI_SYSTEM_NO'		=> ($phpiniSystem == 'no') ? $cfg->HTML_CHECKED : '',
-			'PHPINI_ALLOW_URL_FOPEN_ON' 	=> ($phpiniAllowUrlFopen == 'on') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_ALLOW_URL_FOPEN_OFF'    => ($phpiniAllowUrlFopen != 'on') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_REGISTER_GLOBALS_ON'	=> ($phpiniRegisterGlobals == 'on') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_REGISTER_GLOBALS_OFF'	=> ($phpiniRegisterGlobals != 'on') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_DISPLAY_ERRORS_ON'	=> ($phpiniDisplayErrors == 'on') ? $cfg->HTML_SELECTED : '',
-			'PHPINI_DISPLAY_ERRORS_OFF'	=> ($phpiniDisplayErrors != 'on') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_ERROR_REPORTING_0'	=> ($phpiniErrorReporting == '0') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_ERROR_REPORTING_1'      => ($phpiniErrorReporting == 'E_ALL ^ (E_NOTICE | E_WARNING)') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_ERROR_REPORTING_2'      => ($phpiniErrorReporting == 'E_ALL ^ E_NOTICE') ? $cfg->HTML_SELECTED : '',
-                        'PHPINI_ERROR_REPORTING_3'      => ($phpiniErrorReporting == 'E_ALL') ? $cfg->HTML_SELECTED : '',
-	                'PHPINI_POST_MAX_SIZE' 		=> $phpiniPostMaxSize,
-        	        'PHPINI_UPLOAD_MAX_FILESIZE' 	=> $phpiniUploadMaxFileSize,
-                	'PHPINI_MAX_EXECUTION_TIME' 	=> $phpiniMaxExecutionTime,
-	                'PHPINI_MAX_INPUT_TIME' 	=> $phpiniMaxInputTime,
-        	        'PHPINI_MEMORY_LIMIT' 		=> $phpMemoryLimit,
+                        'PHPINI_SYSTEM_YES'		=> ($phpini->getDataVal('phpiniSystem') == 'yes') ? $cfg->HTML_CHECKED : '',
+                        'PHPINI_SYSTEM_NO'		=> ($phpini->getDataVal('phpiniSystem') == 'no') ? $cfg->HTML_CHECKED : '',
+			'PHPINI_ALLOW_URL_FOPEN_ON' 	=> ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_ALLOW_URL_FOPEN_OFF'    => ($phpini->getDataVal('phpiniAllowUrlFopen') != 'on') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_REGISTER_GLOBALS_ON'	=> ($phpini->getDataVal('phpiniRegisterGlobals') == 'on') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_REGISTER_GLOBALS_OFF'	=> ($phpini->getDataVal('phpiniRegisterGlobals') != 'on') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_DISPLAY_ERRORS_ON'	=> ($phpini->getDataVal('phpiniDisplayErrors') == 'on') ? $cfg->HTML_SELECTED : '',
+			'PHPINI_DISPLAY_ERRORS_OFF'	=> ($phpini->getDataVal('phpiniDisplayErrors') != 'on') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_ERROR_REPORTING_0'	=> ($phpini->getDataVal('phpiniErrorReporting') == '0') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_ERROR_REPORTING_1'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL ^ (E_NOTICE | E_WARNING)') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_ERROR_REPORTING_2'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL ^ E_NOTICE') ? $cfg->HTML_SELECTED : '',
+                        'PHPINI_ERROR_REPORTING_3'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL') ? $cfg->HTML_SELECTED : '',
+	                'PHPINI_POST_MAX_SIZE' 		=> $phpini->getDataVal('phpiniPostMaxSize'),
+        	        'PHPINI_UPLOAD_MAX_FILESIZE' 	=> $phpini->getDataVal('phpiniUploadMaxFileSize'),
+                	'PHPINI_MAX_EXECUTION_TIME' 	=> $phpini->getDataVal('phpiniMaxExecutionTime'),
+	                'PHPINI_MAX_INPUT_TIME' 	=> $phpini->getDataVal('phpiniMaxInputTime'),
+        	        'PHPINI_MEMORY_LIMIT' 		=> $phpini->getDataVal('phpiniMemoryLimit'),
 		)
 	);
 
-	$phpiniDf = explode(',', $phpiniDisableFunctions); //deAssemble the disable_functions
+	$phpiniDf = explode(',', $phpini->getDataVal('phpiniDisableFunctions')); //deAssemble the disable_functions
 	$phpiniDfAll = array( 'PHPINI_DF_SHOW_SOURCE_CHK',
 	                      'PHPINI_DF_SYSTEM_CHK',
                 	      'PHPINI_DF_SHELL_EXEC_CHK',
@@ -459,7 +434,7 @@ function gen_editdomain_page($tpl) {
                 	      'PHPINI_DF_PHPINFO_CHK',
         	              'PHPINI_DF_SHELL_CHK',
 	                      'PHPINI_DF_SYMLINK_CHK' );
-
+	//template stuff
 
 	foreach($phpiniDfAll as $phpiniDfVar){
         	$phpiniDfShortVar = substr($phpiniDfVar,10);
@@ -474,25 +449,24 @@ function gen_editdomain_page($tpl) {
 	        }
 	}
 
-        if ($phpiniPerm = get_reseller_phpini_permission($_SESSION['user_id'])) { //get reseller permission detail on php.ini
+        if ($phpini->checkRePerm('phpiniSystem')) { //if reseller has permission to use php.ini feature 
 		$tpl->parse('T_PHPINI_SYSTEM', 't_phpini_system');
-                if ($phpiniPerm->fields('php_ini_al_register_globals') == 'yes'){
+                if ($phpini->checkRePerm('phpiniRegisterGlobals')) {
                         $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
-
                 } else {
                         $tpl->assign(array('T_PHPINI_REGISTER_GLOBALS'=> ''));
                 }
-                if ($phpiniPerm->fields('php_ini_al_allow_url_fopen') == 'yes'){
+                if ($phpini->checkRePerm('phpiniAllowUrlFopen')) {
                         $tpl->parse('T_PHPINI_ALLOW_URL_FOPEN', 't_phpini_allow_url_fopen');
                 } else {
                         $tpl->assign(array('T_PHPINI_ALLOW_URL_FOPEN'=> ''));
                 }
-                if ($phpiniPerm->fields('php_ini_al_display_errors') == 'yes'){
+                if ($phpini->checkRePerm('phpiniDisplayErrors')) {
                         $tpl->parse('T_PHPINI_DISPLAY_ERRORS', 't_phpini_display_errors');
                 } else {
                         $tpl->assign(array('T_PHPINI_DISPLAY_ERRORS'=> ''));
                 }
-                if ($phpiniPerm->fields('php_ini_al_disable_functions') == 'yes'){
+                if ($phpini->checkRePerm('phpiniDisableFunctions')){
                         $tpl->parse('T_PHPINI_DISABLE_FUNCTIONS', 't_phpini_disable_functions');
                 } else {
                         $tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS'=> ''));
@@ -511,13 +485,10 @@ function gen_editdomain_page($tpl) {
  * @param  $user_id
  * @return bool
  */
-function check_user_data($tpl, $reseller_id, $user_id) {
+function check_user_data($tpl, $reseller_id, $user_id, $phpini) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $domain_php, $domain_cgi, $allowbackup,
 		$domain_dns, $domain_expires, $domain_new_expire, $domain_software_allowed;
-	global $phpiniSystem, $phpiniRegisterGlobals, $phpiniAllowUrlFopen, $phpiniDisplayErrors, $phpiniErrorReporting,
-        $phpiniDisableFunctions, $phpiniPostMaxSize, $phpiniUploadMaxFileSize, $phpiniMaxExecutionTime, $phpiniMaxInputTime,
-        $phpMemoryLimit;
 
 	$datepicker			= (isset($_POST['dmn_expire_date'])) ? clean_input($_POST['dmn_expire_date']):''; //Fix PHP NOTICE display 
 	$domain_new_expire		= (isset($_POST['dmn_expire'])) ? clean_input($_POST['dmn_expire']):''; //Fix PHP NOTICE display 
@@ -641,138 +612,58 @@ function check_user_data($tpl, $reseller_id, $user_id) {
 			$disk, $udisk_current / 1024 / 1024, $udisk_max, $rdisk_current, $rdisk_max, $ed_error, tr('Disk')
 		);
 	}
-	
 	//phpini check and safe into db
-        if ($phpiniPerm = get_reseller_phpini_permission($_SESSION['user_id'])) { //get reseller permission detail on php.ini
-
-                $phpiniDefaultData = get_default_phpini_data(); //Get the default php ini values from config table
-
-                $phpiniSystem = (isset($_POST['phpini_system'])) ? clean_input($_POST['phpini_system']) : 'no';
-                $phpiniRegisterGlobals = (isset($_POST['phpini_register_globals'])) ? clean_input($_POST['phpini_register_globals']) : $phpiniDefaultData['phpiniRegisterGlobals'];
-                $phpiniAllowUrlFopen = (isset($_POST['phpini_allow_url_fopen'])) ? clean_input($_POST['phpini_allow_url_fopen']) : $phpiniDefaultData['phpiniAllowUrlFopen'];
-                $phpiniDisplayErrors = (isset($_POST['phpini_display_errors'])) ? clean_input($_POST['phpini_display_errors']) : $phpiniDefaultData['phpiniDisplayErrors'];
-                $phpiniErrorReporting = (isset($_POST['phpini_error_reporting'])) ? clean_input($_POST['phpini_error_reporting']) : $phpiniDefaultData['phpiniErrorReporting'];
-                $phpiniPostMaxSize = (isset($_POST['phpini_post_max_size'])) ? clean_input($_POST['phpini_post_max_size']) : $phpiniDefaultData['phpiniPostMaxSize'];
-                $phpiniUploadMaxFileSize = (isset($_POST['phpini_upload_max_filesize'])) ? clean_input($_POST['phpini_upload_max_filesize']) : $phpiniDefaultData['phpiniUploadMaxFilesize'];
-                $phpiniMaxExecutionTime = (isset($_POST['phpini_max_execution_time'])) ? clean_input($_POST['phpini_max_execution_time']) : $phpiniDefaultData['phpiniMaxExecutionTime'];
-                $phpiniMaxInputTime = (isset($_POST['phpini_max_input_time'])) ? clean_input($_POST['phpini_max_input_time']) : $phpiniDefaultData['phpiniMaxInputTime'];
-                $phpMemoryLimit = (isset($_POST['phpini_memory_limit'])) ? clean_input($_POST['phpini_memory_limit']) : $phpiniDefaultData['phpiniMemoryLimit'];
-		
-                //assemble $phpini_disable_functions 
-                $phpiniDisableFunctions = '';
-                $phpiniDisableFunctionsTmp = array();
-                foreach($_POST as $key =>$value){
-                        if (substr($key,0,10) == "phpini_df_") {
-                                array_push($phpiniDisableFunctionsTmp,clean_input($value));
-                        }
-                }
-                if (count($phpiniDisableFunctionsTmp) > 0) {
-                        $phpiniDisableFunctions = implode(',',$phpiniDisableFunctionsTmp);
-                } else {
-                        $phpiniDisableFunctions = $phpiniDefaultData['phpiniDisableFunctions'];
-                }
-
-                if ($phpiniPostMaxSize >= $phpiniPerm->fields('php_ini_max_post_max_size')){
-                        $ed_error .= tr('post_max_size out of range');
-                }
-                if ($phpiniUploadMaxFileSize >= $phpiniPerm->fields('php_ini_max_upload_max_filesize')){
-                        $ed_error .= tr('upload_max_filesize out of range');
-                }
-                if ($phpiniMaxExecutionTime >= $phpiniPerm->fields('php_ini_max_max_execution_time') == 'yes'){
+	if ($phpini->checkRePerm('phpiniSystem')) {
+		$phpini->setData('phpiniSystem',$_POST['phpini_system']);
+		if ($phpini->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_register_globals'])) {
+			$phpini->setData('phpiniRegisterGlobals', clean_input($_POST['phpini_register_globals']));
+		}
+		if ($phpini->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_allow_url_fopen'])) {
+			$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['phpini_allow_url_fopen']));
+		}
+                if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_display_errors'])) {
+                        $phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
+		}
+                if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_error_reporting'])) {
+			$phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
+		}
+                if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
+			$ed_error .= tr('post_max_size out of range');
+		}
+                if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
+			$ed_error .= tr('upload_max_filesize out of range');
+		}
+                if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
                         $ed_error .= tr('max_execution_time out of range');
                 }
-                if ($phpiniMaxInputTime >= $phpiniPerm->fields('php_ini_max_max_input_time')){
+                if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
                         $ed_error .= tr('max_input_time out of range');
                 }
-                if ($phpMemoryLimit >= $phpiniPerm->fields('php_ini_max_memory_limit')){
+                if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
                         $ed_error .= tr('memory_limit out of range');
                 }
-		
+
+		//collect all parts of disabled_function from $_POST
+		$mytmp=array();
+		foreach($_POST as $key =>$value){
+			if (substr($key,0,10) == "phpini_df_") {
+                		array_push($mytmp,clean_input($value));
+                	}
+    		}
+		if (!$phpini->setDataWithPermCheck('phpiniDisableFunctions', $phpini->assembleDisableFunctions($mytmp))) {
+			$ed_error .= tr('disable_functions error');
+		}
                 // if all OK Update data in php_ini table
-                //Need to make a query to check if custom php.ini allready exist - rowCount() doenst work because if no data change it give 0 back 
-                if (get_custom_phpini_data($_SESSION['edit_id']) && $phpiniSystem == "yes" && empty($ed_error)) {
-                        $query = "UPDATE 
-                                        `php_ini` 
-                                SET 
-                                        `status` = 'change',
-                                        `disable_functions` = ?,
-                                        `allow_url_fopen` = ?,
-                                        `register_globals` = ?,
-                                        `display_errors` = ?,
-                                        `error_reporting` = ?,
-                                        `post_max_size` = ?,
-                                        `upload_max_filesize` = ?,
-                                        `max_execution_time` = ?,
-                                        `max_input_time` = ?,
-                                        `memory_limit` = ?
-                                WHERE   
-                                        `domain_id` = ?
-                                ";
-                        exec_query($query, array($phpiniDisableFunctions,
-                                        $phpiniAllowUrlFopen,
-                                        $phpiniRegisterGlobals,
-                                        $phpiniDisplayErrors,
-                                        $phpiniErrorReporting,
-                                        $phpiniPostMaxSize,
-	                                $phpiniUploadMaxFileSize,
-                                        $phpiniMaxExecutionTime,
-                                        $phpiniMaxInputTime,
-                                        $phpMemoryLimit,
-                                        $_SESSION['edit_id']));
-
-                } elseif (get_custom_phpini_data($_SESSION['edit_id']) && $phpiniSystem == "no" && empty($ed_error)) { //if custom php.ini exist and reseller choose no than del it
-			$query = "DELETE FROM 
-                                                `php_ini` 
-                                          WHERE   
-                                                `domain_id` = ?
-                                        ";
-			exec_query($query, $_SESSION['edit_id']);
-
-		} elseif ($phpiniSystem == "yes" && empty($ed_error)) {  //if now custom php.ini exist and reseller choose yes than create it
-                        $query = "INSERT INTO
-                                        `php_ini` (
-                                                `status`,
-                                                `disable_functions`,
-                                                `allow_url_fopen`,
-                                                `register_globals`,
-                                                `display_errors`,
-                                                `error_reporting`,
-                                                `post_max_size`,
-                                                `upload_max_filesize`,
-                                                `max_execution_time`,
-                                                `max_input_time`,
-                                                `memory_limit`,
-                                                `domain_id`
-                                        ) VALUES (
-                                                'new', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-                                        )
-                                ";
-                        exec_query($query, array($phpiniDisableFunctions,
-                                        $phpiniAllowUrlFopen,
-                                        $phpiniRegisterGlobals,
-                                        $phpiniDisplayErrors,
-                                        $phpiniErrorReporting,
-                                        $phpiniPostMaxSize,
-                                        $phpiniUploadMaxFileSize,
-                                        $phpiniMaxExecutionTime,
-                                        $phpiniMaxInputTime,
-                                        $phpMemoryLimit,
-                                        $_SESSION['edit_id']));
-                } 
-
+                if (empty($ed_error)) {
+			if ($phpini->getDataVal('phpiniSystem') == 'yes'){
+				$phpini->saveCustomPHPiniIntoDb($_SESSION['edit_id']);
+			} else {
+				$phpini->delCustomPHPiniFromDb($_SESSION['edit_id']);
+			}
+		}		
+			
         } else { //if no permission at all - do nothing with the saved phpini data but load the default vars
-                $phpiniDefaultData = get_default_phpini_data(); //Get the default php ini values from config table
-                $phpiniSystem = 'no';
-                $phpiniRegisterGlobals = $phpiniDefaultData['phpiniRegisterGlobals'];
-                $phpiniAllowUrlFopen = $phpiniDefaultData['phpiniAllowUrlFopen'];
-                $phpiniDisplayErrors = $phpiniDefaultData['phpiniDisplayErrors'];
-                $phpiniErrorReporting = $phpiniDefaultData['phpiniErrorReporting'];
-                $phpiniDisableFunctions =  $phpiniDefaultData['phpiniDisableFunctions'];
-                $phpiniPostMaxSize = $phpiniDefaultData['phpiniPostMaxSize'];
-                $phpiniUploadMaxFileSize = $phpiniDefaultData['phpiniUploadMaxFilesize'];
-                $phpiniMaxExecutionTime = $phpiniDefaultData['phpiniMaxExecutionTime'];
-                $phpiniMaxInputTime = $phpiniDefaultData['phpiniMaxInputTime'];
-                $phpMemoryLimit = $phpiniDefaultData['phpiniMemoryLimit'];		
+		$phpini->loadDefaultData();
         }
 
 	if (empty($ed_error)) {

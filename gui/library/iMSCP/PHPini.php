@@ -71,6 +71,11 @@ class iMSCP_PHPini {
          */
 	public $flagValueError;
 
+        /**
+         *  flag to store the status if a custom php.ini is loaded or the default
+         */
+        public $flagCustomIni;
+
 	/**
          *  Constructer
 	 * Load default php.ini values
@@ -98,6 +103,7 @@ class iMSCP_PHPini {
          * Load default php.ini values
          */
 	public function loadDefaultData(){
+		$this->phpiniData['phpiniSystem'] = 'no';
 		$this->phpiniData['phpiniRegisterGlobals'] = $this->cfg->PHPINI_REGISTER_GLOBALS;
 		$this->phpiniData['phpiniAllowUrlFopen'] = $this->cfg->PHPINI_ALLOW_URL_FOPEN;
                 $this->phpiniData['phpiniDisplayErrors'] = $this->cfg->PHPINI_DISPLAY_ERRORS;
@@ -108,6 +114,7 @@ class iMSCP_PHPini {
                 $this->phpiniData['phpiniMaxExecutionTime'] = $this->cfg->PHPINI_MAX_EXECUTION_TIME;
                 $this->phpiniData['phpiniMaxInputTime'] = $this->cfg->PHPINI_MAX_INPUT_TIME;
                 $this->phpiniData['phpiniMemoryLimit'] = $this->cfg->PHPINI_MEMORY_LIMIT;
+		$this->flagCustomIni = false;
 	}
 
 	/**
@@ -117,6 +124,7 @@ class iMSCP_PHPini {
          */
 	public function loadCustomPHPini($domainId){
 		if($dataset = $this->loadCustomPHPiniFromDb($domainId)){ //if theres a custom php.ini (row in php_ini table with this domain_id)
+			$this->phpiniData['phpiniSystem'] = 'yes'; //if custom ini exist than yes
 			$this->phpiniData['phpiniRegisterGlobals'] = $dataset->fields('register_globals');
                 	$this->phpiniData['phpiniAllowUrlFopen'] = $dataset->fields('allow_url_fopen');
         	        $this->phpiniData['phpiniDisplayErrors'] = $dataset->fields('display_errors');
@@ -127,6 +135,7 @@ class iMSCP_PHPini {
                 	$this->phpiniData['phpiniMaxExecutionTime'] = $dataset->fields('max_execution_time');
         	        $this->phpiniData['phpiniMaxInputTime'] = $dataset->fields('max_input_time');
 	                $this->phpiniData['phpiniMemoryLimit'] = $dataset->fields('memory_limit');
+			$this->flagCustomIni = true;
 			return true;
 		} 
 		return false; // if theres no custom php.ini return false	
@@ -187,6 +196,22 @@ class iMSCP_PHPini {
 
 	/**
          * public bool
+         * set phpiniData values with basic data check and reseller permission check
+         * Returns false if a basic check or/and reseller permission check fail fails or if $key is unknow
+         */
+        public function setDataWithPermCheck($key, $value){
+                if ($this->rawCheckData($key, $value)) {
+			if ($this->checkRePerm($key) || $this->checkRePermMax($key, $value)) { // if permission is ok
+                        	$this->phpiniData[$key] = $value;
+                        	return true;
+			}
+                }
+                $this->flagValueError = true;
+                return false;
+        }
+
+	/**
+         * public bool
          * set phpiniRePerm values with basic data check
          * Returns false if a basic check fails or if $key is unknow
          */
@@ -205,6 +230,7 @@ class iMSCP_PHPini {
          */
 	public function checkRePerm($key) {
 		if ($this->phpiniRePerm['phpiniSystem'] == "no") { return false; }; // if phpiniSystem is no than all is no regardless what asked
+		if ($key == 'phpiniSystem' && $this->phpiniRePerm['phpiniSystem'] == 'yes') { return true ; };
 		if ($key == 'phpiniRegisterGlobals' && $this->phpiniRePerm['phpiniRegisterGlobals'] == 'yes') { return true ; };
 		if ($key == 'phpiniAllowUrlFopen' && $this->phpiniRePerm['phpiniAllowUrlFopen'] == 'yes') { return true ; };
                 if ($key == 'phpiniDisplayErrors' && $this->phpiniRePerm['phpiniDisplayErrors'] == 'yes') { return true ; };
@@ -216,7 +242,7 @@ class iMSCP_PHPini {
          * public bool
          * check reseller MAX permission vor one item mostly for short/fast check in Action script 
          */
-	public function checkRePermMax($key,$value=0) {
+	public function checkRePermMax($key,$value) {
                 if ($this->phpiniRePerm['phpiniSystem'] == "no") { return false; }; // if phpiniSystem is no than all is no regardless what asked
 		if ($key == 'phpiniPostMaxSize' && $value <= $this->phpiniRePerm['phpiniPostMaxSize']) { return true ; };
 		if ($key == 'phpiniUploadMaxFileSize' && $value <= $this->phpiniRePerm['phpiniUploadMaxFileSize']) { return true ; };
@@ -341,15 +367,110 @@ class iMSCP_PHPini {
 		} 
 		return false;
 	}
-
+	
 	/**
+         * public 
+         * save custom php.ini to table php_ini
+         */
+        public function saveCustomPHPiniIntoDb($domainId) {
+		if ($this->checkExistCustomPHPini($domainId)) { //if custom ini exist than only update it
+                       $query = "UPDATE 
+                                        `php_ini` 
+                                SET 
+                                        `status` = 'change',
+                                        `disable_functions` = ?,
+                                        `allow_url_fopen` = ?,
+                                        `register_globals` = ?,
+                                        `display_errors` = ?,
+                                        `error_reporting` = ?,
+                                        `post_max_size` = ?,
+                                        `upload_max_filesize` = ?,
+                                        `max_execution_time` = ?,
+                                        `max_input_time` = ?,
+                                        `memory_limit` = ?
+                                WHERE   
+                                        `domain_id` = ?
+                                ";
+                        exec_query($query, array($this->phpiniData['phpiniDisableFunctions'],
+                                        	$this->phpiniData['phpiniAllowUrlFopen'],
+						$this->phpiniData['phpiniRegisterGlobals'],
+						$this->phpiniData['phpiniDisplayErrors'],
+						$this->phpiniData['phpiniErrorReporting'],
+						$this->phpiniData['phpiniPostMaxSize'],
+						$this->phpiniData['phpiniUploadMaxFileSize'],
+						$this->phpiniData['phpiniMaxExecutionTime'],
+						$this->phpiniData['phpiniMaxInputTime'],
+						$this->phpiniData['phpiniMemoryLimit'],
+						$domainId));
+		} else {
+                        $query = "INSERT INTO
+                                        `php_ini` (
+                                                `status`,
+                                                `disable_functions`,
+                                                `allow_url_fopen`,
+                                                `register_globals`,
+                                                `display_errors`,
+                                                `error_reporting`,
+                                                `post_max_size`,
+                                                `upload_max_filesize`,
+                                                `max_execution_time`,
+                                                `max_input_time`,
+                                                `memory_limit`,
+                                                `domain_id`
+                                        ) VALUES (
+                                                'new', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                                        )
+		               ";
+			exec_query($query, array($this->phpiniData['phpiniDisableFunctions'],
+                                                $this->phpiniData['phpiniAllowUrlFopen'],
+                                                $this->phpiniData['phpiniRegisterGlobals'],
+                                                $this->phpiniData['phpiniDisplayErrors'],
+                                                $this->phpiniData['phpiniErrorReporting'],
+                                                $this->phpiniData['phpiniPostMaxSize'],
+                                                $this->phpiniData['phpiniUploadMaxFileSize'],
+                                                $this->phpiniData['phpiniMaxExecutionTime'],
+                                                $this->phpiniData['phpiniMaxInputTime'],
+                                                $this->phpiniData['phpiniMemoryLimit'],
+                                                $domainId));
+		}
+
+        }
+        /**
+         * public 
+         * delete custom php.ini from table php_ini
+         */
+
+        public function delCustomPHPiniFromDb($domainId) {
+                if ($this->checkExistCustomPHPini($domainId)) { //if custom ini exist
+                        $query = "DELETE FROM 
+                                                `php_ini` 
+                                        WHERE   
+                                                `domain_id` = ?
+                                        ";
+                        exec_query($query, $domainId);
+		}
+	}
+
+        /**
+         * public bool
+         * checks if custom php.ini exist
+         */
+        public function checkExistCustomPHPini($domainId){
+		if ($this->loadCustomPHPiniFromDb($domainId)){
+			return true;
+		}
+		return false;
+        }
+
+
+        /**
          * public array
          * return the phpiniData array
-         */		
+         */
         public function getData(){
-		return $this->phpiniData; 
+                return $this->phpiniData;
         }
-	
+
 	/**
          * public array 
          * return the phpiniData array
