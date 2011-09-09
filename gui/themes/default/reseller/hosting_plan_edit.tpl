@@ -215,6 +215,37 @@
 			                            </td>
 			                        </tr>
 			                        <!-- EDP: t_phpini_disable_functions -->
+			                        <tr>
+			                          <td><label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label></td>
+			                          <td>
+			                                <input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" />
+			                          </td>
+			                        </tr>
+			                        <tr>
+			                          <td><label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label></td>
+			                          <td>
+			                                <input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" />
+			                          </td>
+			                        </tr>
+			                        <tr>
+			                          <td><label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label></td>
+			                          <td>
+			                                <input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" />
+			                          </td>
+			                        </tr>
+			                        <tr>
+			                          <td><label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label></td>
+			                          <td>
+			                                <input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" />
+			                          </td>
+			                        </tr>
+			                        <tr>
+			                          <td><label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label></td>
+			                          <td>
+			                                <input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" />
+			                          </td>
+			                        </tr>
+
 					       </tbody>
 			                        <!-- EDP: t_phpini_system -->
 					</table>

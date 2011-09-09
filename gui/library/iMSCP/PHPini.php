@@ -76,6 +76,12 @@ class iMSCP_PHPini {
          */
         public $flagCustomIni;
 
+        /**
+         *  true if an error occur at setClPerm() used for lazy check in Action Script
+         */
+        public $flagValueClError;
+
+
 	/**
          *  Constructer
 	 * Load default php.ini values
@@ -92,9 +98,13 @@ class iMSCP_PHPini {
 
                 //load $phpiniRePerm with default Data
                 $this->loadReDefaultPerm();
+		
+		// load $phpiniClPerm with default Data
+                $this->loadClDefaultPerm();
 
-		$flagValueError = false;
 
+		$this->flagValueError = false;
+		$this->flagValueClError = false;
 	}
 	
 
@@ -193,6 +203,20 @@ class iMSCP_PHPini {
 		$this->flagValueError = true;
 		return false;
 	}
+
+        /**
+         * public bool
+         * set phpiniClPerm values with basic data check
+         * Returns false if a basic check fails or if $key is unknow
+         */
+        public function setClPerm($key, $value){
+                if ($this->rawCheckClPermData($key, $value)) {
+                        $this->phpiniClPerm[$key] = $value;
+                        return true;
+                }
+                $this->flagValueClError = true;
+                return false;
+        }
 
 	/**
          * public bool
@@ -306,6 +330,18 @@ class iMSCP_PHPini {
                 return false;
         }
 
+        /**
+         * protected bool
+         * helper method - checks client permission data  
+         */
+        protected function rawCheckClPermData($key, $value){ //Basic Check against possible values
+                if ($key == 'phpiniSystem' &&  ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniRegisterGlobals' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniAllowUrlFopen' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniDisplayErrors' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniDisableFunctions' && ($value == 'yes' || $value == 'no')) { return true ; };
+                return false;
+        }
 
 	/**
          * public string
@@ -488,6 +524,14 @@ class iMSCP_PHPini {
         }
 
         /**
+         * public string 
+         * return 1 value from phpiniClPerm 
+         */
+        public function getClPermVal($key){
+                return $this->phpiniClPerm[$key];
+        }
+
+        /**
          * public string
          * get 1 value from $phpiniData for fast/short access in Action Script
          * Returns false if a basic check fails or if $key is unknow
@@ -495,6 +539,55 @@ class iMSCP_PHPini {
         public function getDataVal($key){
 		return $this->phpiniData[$key];
         }
+
+        /**
+         * public bool
+         * Load client permissions 
+         * Returns false if there no Reseller with this id
+         */
+        public function loadClPerm($domainId){
+                if($dataset = $this->loadClPermFromDb($domainId)){ //if the reseller has php.ini permission than load the details of it
+                        $this->phpiniClPerm['phpiniSystem'] = $dataset->fields('phpini_system');
+                        $this->phpiniClPerm['phpiniRegisterGlobals'] = $dataset->fields('phpini_perm_register_globals');
+                        $this->phpiniClPerm['phpiniAllowUrlFopen'] = $dataset->fields('phpini_perm_allow_url_fopen');
+                        $this->phpiniClPerm['phpiniDisplayErrors'] = $dataset->fields('phpini_perm_display_errors');
+                        $this->phpiniClPerm['phpiniDisableFunctions'] = $dataset->fields('phpini_perm_disable_functions');
+                        return true;
+                }
+                return false;
+        }
+
+        /**
+         * protected 
+         * helper method - Load client permission from table domains (later maybe from user_probs if exist)
+         * returns DB object with details 
+         */
+        protected function loadClPermFromDb($domainId){ // Load the default reseller php.ini perm from db
+                $query = "
+                        SELECT
+                                `phpini_perm_system`,`phpini_perm_register_globals`, `phpini_perm_allow_url_fopen`,
+                                `phpini_perm_display_errors`, `phpini_perm_disable_functions`
+                        FROM
+                                `domain`
+                        WHERE
+                                `domain_id` = ?
+                ";
+                $rs = exec_query($query, array($domainId));
+        	return $rs;
+        }
+
+        /**
+         * protected void
+         * fill phpiniClPerm with 'no' as default
+         */
+        protected function loadClDefaultPerm(){
+                $this->phpiniClPerm['phpiniSystem'] = 'no';
+                $this->phpiniClPerm['phpiniRegisterGlobals'] = 'no';
+                $this->phpiniClPerm['phpiniAllowUrlFopen'] = 'no';
+                $this->phpiniClPerm['phpiniDisplayErrors'] = 'no';
+                $this->phpiniClPerm['phpiniDisableFunctions'] = 'no';
+        }
+
 
 } //End iMSCP_PHPini
 
