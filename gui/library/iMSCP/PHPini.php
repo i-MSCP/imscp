@@ -541,12 +541,31 @@ class iMSCP_PHPini {
         }
 
         /**
+         * public string
+         * get 1 value from default php.ini values without load them into phpiniData
+         */
+        public function getDataDefaultVal($key){
+                $phpiniDatatmp['phpiniSystem'] = 'no';
+                $phpiniDatatmp['phpiniRegisterGlobals'] = $this->cfg->PHPINI_REGISTER_GLOBALS;
+                $phpiniDatatmp['phpiniAllowUrlFopen'] = $this->cfg->PHPINI_ALLOW_URL_FOPEN;
+                $phpiniDatatmp['phpiniDisplayErrors'] = $this->cfg->PHPINI_DISPLAY_ERRORS;
+                $phpiniDatatmp['phpiniErrorReporting'] = $this->cfg->PHPINI_ERROR_REPORTING;
+                $phpiniDatatmp['phpiniDisableFunctions'] = $this->cfg->PHPINI_DISABLE_FUNCTIONS;
+                $phpiniDatatmp['phpiniPostMaxSize'] = $this->cfg->PHPINI_POST_MAX_SIZE;
+                $phpiniDatatmp['phpiniUploadMaxFileSize'] = $this->cfg->PHPINI_UPLOAD_MAX_FILESIZE;
+                $phpiniDatatmp['phpiniMaxExecutionTime'] = $this->cfg->PHPINI_MAX_EXECUTION_TIME;
+                $phpiniDatatmp['phpiniMaxInputTime'] = $this->cfg->PHPINI_MAX_INPUT_TIME;
+                $phpiniDatatmp['phpiniMemoryLimit'] = $this->cfg->PHPINI_MEMORY_LIMIT;
+		return $phpiniDatatmp[$key];
+	}
+
+        /**
          * public bool
          * Load client permissions 
-         * Returns false if there no Reseller with this id
+         * Returns false if there no domain with this id
          */
         public function loadClPerm($domainId){
-                if($dataset = $this->loadClPermFromDb($domainId)){ //if the reseller has php.ini permission than load the details of it
+                if($dataset = $this->loadClPermFromDb($domainId)){ //load the perm from domain table
                         $this->phpiniClPerm['phpiniSystem'] = $dataset->fields('phpini_system');
                         $this->phpiniClPerm['phpiniRegisterGlobals'] = $dataset->fields('phpini_perm_register_globals');
                         $this->phpiniClPerm['phpiniAllowUrlFopen'] = $dataset->fields('phpini_perm_allow_url_fopen');
@@ -562,7 +581,7 @@ class iMSCP_PHPini {
          * helper method - Load client permission from table domains (later maybe from user_probs if exist)
          * returns DB object with details 
          */
-        protected function loadClPermFromDb($domainId){ // Load the default reseller php.ini perm from db
+        protected function loadClPermFromDb($domainId){ // Load the client php.ini perm from db
                 $query = "
                         SELECT
                                 `phpini_perm_system`,`phpini_perm_register_globals`, `phpini_perm_allow_url_fopen`,

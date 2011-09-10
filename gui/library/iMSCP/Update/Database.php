@@ -1127,7 +1127,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 			  `max_input_time` int(11) NOT NULL DEFAULT '60',
 			  `memory_limit` int(11) NOT NULL DEFAULT '128',
 			  PRIMARY KEY (`ID`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;"
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
+			"ALTER TABLE `domain` ADD `phpini_perm_system` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+				ADD `phpini_perm_register_globals` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+				ADD `phpini_perm_allow_url_fopen` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+				ADD `phpini_perm_display_errors` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+				ADD `phpini_perm_disable_functions` VARCHAR( 20 ) NOT NULL DEFAULT 'no'"
 			);
 	}
 

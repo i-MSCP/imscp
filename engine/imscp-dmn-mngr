@@ -1569,6 +1569,7 @@ sub dmn_add_httpd_file_data {
 	my $sys_user = "$suexec_user_pref$sys_uid";
 	my $sys_group = "$suexec_user_pref$sys_gid";
 	my $db_config = get_config_from_db(); #table config from DB as href->href 
+	my $custom_phpini = get_custom_php_ini_from_db($dmn_id); #custom php.ini from php_ini as array_ref.array_ref
 
 	# Starter directory for usual user
 
@@ -1798,27 +1799,46 @@ sub dmn_add_httpd_file_data {
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
+		my %tag_hash;		
 
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 		return $rs if ($rs != 0);
 
-		my %tag_hash = (
-			'{PEAR_DIR}' => $pear_dir,
-			'{WWW_DIR}'  => $www_dir,
-			'{DMN_NAME}' => $dmn_name,
-			'{PHP_TIMEZONE}' => $timezone,
-			'{DISABLE_FUNCTIONS}' => $db_config->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
-			'{MAX_EXECUTION_TIME}' => $db_config->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
-                        '{MAX_INPUT_TIME}' => $db_config->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
-                        '{MEMORY_LIMIT}' => $db_config->{'PHPINI_MEMORY_LIMIT'}->{'value'},
-                        '{ERROR_REPORTING}' => $db_config->{'PHPINI_ERROR_REPORTING'}->{'value'},
-                        '{DISPLAY_ERRORS}' => $db_config->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
-			'{REGISTER_GLOBALS}' => $db_config->{'PHPINI_REGISTER_GLOBALS'}->{'value'},
-			'{POST_MAX_SIZE}' => $db_config->{'PHPINI_POST_MAX_SIZE'}->{'value'},
-			'{UPLOAD_MAX_FILESIZE}' => $db_config->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
-			'{ALLOW_URL_FOPEN}' => $db_config->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'}
-		);
-
+	        if ($custom_phpini){
+			 %tag_hash = (
+                       	        '{PEAR_DIR}' => $pear_dir,
+                               	'{WWW_DIR}'  => $www_dir,
+                                '{DMN_NAME}' => $dmn_name,
+       	                        '{PHP_TIMEZONE}' => $timezone,
+               	                '{DISABLE_FUNCTIONS}' => $$custom_phpini[0][3],
+                       	        '{MAX_EXECUTION_TIME}' => $$custom_phpini[0][10],
+                               	'{MAX_INPUT_TIME}' => $$custom_phpini[0][11],
+                                '{MEMORY_LIMIT}' => $$custom_phpini[0][12],
+       	                        '{ERROR_REPORTING}' => $$custom_phpini[0][7],
+                       	        '{DISPLAY_ERRORS}' => $$custom_phpini[0][6],
+               	               	'{REGISTER_GLOBALS}' => $$custom_phpini[0][5],
+                       	        '{POST_MAX_SIZE}' => $$custom_phpini[0][8],
+               	                '{UPLOAD_MAX_FILESIZE}' => $$custom_phpini[0][9],
+       	                        '{ALLOW_URL_FOPEN}' => $$custom_phpini[0][4]
+                	);
+        	} else {
+			 %tag_hash = (
+				'{PEAR_DIR}' => $pear_dir,
+				'{WWW_DIR}'  => $www_dir,
+				'{DMN_NAME}' => $dmn_name,
+				'{PHP_TIMEZONE}' => $timezone,
+				'{DISABLE_FUNCTIONS}' => $db_config->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
+				'{MAX_EXECUTION_TIME}' => $db_config->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
+	                        '{MAX_INPUT_TIME}' => $db_config->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
+        	                '{MEMORY_LIMIT}' => $db_config->{'PHPINI_MEMORY_LIMIT'}->{'value'},
+                	        '{ERROR_REPORTING}' => $db_config->{'PHPINI_ERROR_REPORTING'}->{'value'},
+                        	'{DISPLAY_ERRORS}' => $db_config->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
+				'{REGISTER_GLOBALS}' => $db_config->{'PHPINI_REGISTER_GLOBALS'}->{'value'},
+				'{POST_MAX_SIZE}' => $db_config->{'PHPINI_POST_MAX_SIZE'}->{'value'},
+				'{UPLOAD_MAX_FILESIZE}' => $db_config->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
+				'{ALLOW_URL_FOPEN}' => $db_config->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'}
+			);
+		}
 		($rs, $cfg) = prep_tpl(\%tag_hash, $ini_tpl);
 		return $rs if ($rs != 0);
 
@@ -1894,7 +1914,9 @@ sub dmn_change_httpd_file_data {
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 	my $sys_user = "$suexec_user_pref$sys_uid";
 	my $sys_group = "$suexec_user_pref$sys_gid";
-
+        my $db_config = get_config_from_db(); #table config from DB as href->href
+	my $custom_phpini = get_custom_php_ini_from_db($dmn_id);
+ 
 	# Starter-Scripts for FastCGI
 
 	if(! -d "$starter_dir/$dmn_name") {
@@ -2072,16 +2094,48 @@ sub dmn_change_httpd_file_data {
 
 	($rs, my $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 	return $rs if ($rs != 0);
-
-	($rs, $cfg) = prep_tpl(
-		{
-			'{PEAR_DIR}' => $pear_dir,
-			'{WWW_DIR}'  => $www_dir,
-			'{DMN_NAME}' => $dmn_name,
-			'{PHP_TIMEZONE}' => $timezone
-		},
-			$ini_tpl
-	);
+	
+	if ($custom_phpini){
+                ($rs, $cfg) = prep_tpl(
+                        {
+                                '{PEAR_DIR}' => $pear_dir,
+                                '{WWW_DIR}'  => $www_dir,
+                                '{DMN_NAME}' => $dmn_name,
+                                '{PHP_TIMEZONE}' => $timezone,
+                                '{DISABLE_FUNCTIONS}' => $$custom_phpini[0][3],
+                                '{MAX_EXECUTION_TIME}' => $$custom_phpini[0][10],
+                                '{MAX_INPUT_TIME}' => $$custom_phpini[0][11],
+                                '{MEMORY_LIMIT}' => $$custom_phpini[0][12],
+                                '{ERROR_REPORTING}' => $$custom_phpini[0][7],
+                                '{DISPLAY_ERRORS}' => $$custom_phpini[0][6],
+                                '{REGISTER_GLOBALS}' => $$custom_phpini[0][5],
+                                '{POST_MAX_SIZE}' => $$custom_phpini[0][8],
+                                '{UPLOAD_MAX_FILESIZE}' => $$custom_phpini[0][9],
+                                '{ALLOW_URL_FOPEN}' => $$custom_phpini[0][4]
+                        },
+                                $ini_tpl
+                );
+	} else {
+		($rs, $cfg) = prep_tpl(
+			{
+				'{PEAR_DIR}' => $pear_dir,
+				'{WWW_DIR}'  => $www_dir,
+				'{DMN_NAME}' => $dmn_name,
+				'{PHP_TIMEZONE}' => $timezone,
+                        	'{DISABLE_FUNCTIONS}' => $db_config->{'PHPINI_DISABLE_FUNCTIONS'}->{'value'},
+	                        '{MAX_EXECUTION_TIME}' => $db_config->{'PHPINI_MAX_EXECUTION_TIME'}->{'value'},
+        	                '{MAX_INPUT_TIME}' => $db_config->{'PHPINI_MAX_INPUT_TIME'}->{'value'},
+                	        '{MEMORY_LIMIT}' => $db_config->{'PHPINI_MEMORY_LIMIT'}->{'value'},
+                        	'{ERROR_REPORTING}' => $db_config->{'PHPINI_ERROR_REPORTING'}->{'value'},
+	                        '{DISPLAY_ERRORS}' => $db_config->{'PHPINI_DISPLAY_ERRORS'}->{'value'},
+        	                '{REGISTER_GLOBALS}' => $db_config->{'PHPINI_REGISTER_GLOBALS'}->{'value'},
+                	        '{POST_MAX_SIZE}' => $db_config->{'PHPINI_POST_MAX_SIZE'}->{'value'},
+                        	'{UPLOAD_MAX_FILESIZE}' => $db_config->{'PHPINI_UPLOAD_MAX_FILESIZE'}->{'value'},
+	                        '{ALLOW_URL_FOPEN}' => $db_config->{'PHPINI_ALLOW_URL_FOPEN'}->{'value'}
+			},
+				$ini_tpl
+		);
+	}
 	return $rs if ($rs != 0);
 
 	($rs, $rdata) = store_file(
