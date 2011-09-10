@@ -2890,13 +2890,13 @@ sub get_config_from_db {
 ################################################################################
 ## get_custom_php_ini_from_db
 ##
-## return the $key=$value from table config in the DB
+## return the array_ref.array_ref from table php_ini in the DB
 ## 
 ##
 ## @author hannes@cheat.at
 ## @since   1.0.1.5
 ## @version 1.0.1.5
-## @return [0 on success |error code, list of $key=$value]
+## @return [0 on success |error code, list of array_ref.array_ref]
 sub get_custom_php_ini_from_db {
 
 	$dmn_id = shift;

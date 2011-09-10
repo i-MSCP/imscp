@@ -173,14 +173,11 @@ function add_user_data($reseller_id)
     }
 
     list(
-        	$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-                $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware,
+        	$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk,
+		$backup, $dns, $software_allowed,
                 $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
                 $phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit
-     	) = array_pad(explode(';', $props),24,'no');
-
-    list($php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk,
-        $backup, $dns, $software_allowed) = explode(';', $props);
+     	) = array_pad(explode(';', $props),23,'no');
 
     $php = preg_replace("/\_/", '', $php);
     $cgi = preg_replace("/\_/", '', $cgi);
