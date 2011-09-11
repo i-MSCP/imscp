@@ -566,7 +566,7 @@ class iMSCP_PHPini {
          */
         public function loadClPerm($domainId){
                 if($dataset = $this->loadClPermFromDb($domainId)){ //load the perm from domain table
-                        $this->phpiniClPerm['phpiniSystem'] = $dataset->fields('phpini_system');
+                        $this->phpiniClPerm['phpiniSystem'] = $dataset->fields('phpini_perm_system');
                         $this->phpiniClPerm['phpiniRegisterGlobals'] = $dataset->fields('phpini_perm_register_globals');
                         $this->phpiniClPerm['phpiniAllowUrlFopen'] = $dataset->fields('phpini_perm_allow_url_fopen');
                         $this->phpiniClPerm['phpiniDisplayErrors'] = $dataset->fields('phpini_perm_display_errors');
