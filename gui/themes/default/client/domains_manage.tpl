@@ -56,10 +56,10 @@
 		</div>
 
 		<div class="body">
+                        <!-- BDP: page_message -->
+                                <div class="{MESSAGE_CLS}">{MESSAGE}</div>
+                        <!-- EDP: page_message -->
             			<h2 class="domains"><span>{TR_DOMAIN_ALIASES}</span></h2>
-			<!-- BDP: page_message -->
-				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
 
 
 			<!-- BDP: als_message -->

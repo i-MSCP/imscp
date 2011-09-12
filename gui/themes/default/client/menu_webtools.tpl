@@ -15,7 +15,4 @@
 				<!-- BDP: active_awstats -->
 				<li><a href="{AWSTATS_PATH}" target="_blank">{TR_AWSTATS}</a></li>
 				<!-- EDP: active_awstats -->
-                                <!-- BDP: active_phpini -->
-                                <li><a href="phpini.php">{TR_MENUPHPINI}</a></li>
-                                <!-- EDP: active_phpini -->
 			</ul>

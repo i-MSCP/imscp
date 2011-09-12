@@ -47,7 +47,6 @@ $tpl->define_dynamic('active_awstats', 'page');
 $tpl->define_dynamic('active_email', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('t_software_support', 'page');
-$tpl->define_dynamic('active_phpini', 'page');
 
 $tpl->assign(
 	array(
@@ -106,15 +105,6 @@ gen_logged_from($tpl);
 
 get_client_software_permission ($tpl, $_SESSION['user_id']);
 
-/* iMSCP_PHPini object */
-$phpini = new iMSCP_PHPini();
-
-if ($phpini->loadClPerm($_SESSION['user_id'])){ //load phpini client permission into object (if any else false) 
-	$tpl->parse('ACTIVE_PHPINI', 'active_phpini');
-} else {
-	$tpl->assign('ACTIVE_PHPINI','');
-}
-
 check_permissions($tpl);
 
 $tpl->assign(
@@ -128,9 +118,7 @@ $tpl->assign(
 		'TR_FILEMANAGER_TEXT' => tr('Access your files through the web interface'),
 		'TR_AWSTATS_TEXT' => tr('Access your Awstats statistics'),
 		'TR_HTACCESS_TEXT' => tr('Manage protected areas, users and groups'),
-		'TR_SOFTWARE_SUPPORT' => tr('Install various software with a few *clicks*'),
-		'TR_MENUPHPINI' => tr('php.ini Setting'),
-		'TR_PHPINI_TEXT' => tr('php.ini Settings')
+		'TR_SOFTWARE_SUPPORT' => tr('Install various software with a few *clicks*')
 	)
 );
 

@@ -80,12 +80,6 @@
             <a href="{AWSTATS_PATH}">{TR_AWSTATS}</a>
             <p>{TR_AWSTATS_TEXT}</p>
             <!-- EDP: active_awstats -->
- 
-            <!-- BDP: active_phpini -->
-            <a href="phpini.php">{TR_MENUPHPINI}</a>
-	    <p>{TR_PHPINI_TEXT}</p>
-            <!-- EDP: active_phpini -->
-
         </div>
 
         <div class="footer">

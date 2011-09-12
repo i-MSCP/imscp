@@ -1,14 +1,28 @@
 <?php
-/**
- * i-MSCP a internet Multi Server Control Panel
+/*
+ * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2011 by i-MSCP team
  *
- * @copyright 	2011 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id: webtools.php 4939 2011-07-16 19:41:28Z nuxwin $
- * @link 		http://i-mscp.net
- * @author 		i-MSCP Team
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * @license
-*/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @copyright           2011 by i-MSCP team
+ * @author              Hannes Koschier <hannes@cheat.at>
+ * @Version		$id$
+ * @link                http://www.i-mscp.net i-MSCP Home Site
+ * @license             http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ */
 
 
 include 'imscp-lib.php';
@@ -28,6 +42,7 @@ $tpl->define_dynamic('t_phpini_allow_url_fopen', 'page');
 $tpl->define_dynamic('t_phpini_display_errors', 'page');
 $tpl->define_dynamic('t_phpini_disable_functions', 'page');
 $tpl->define_dynamic('t_phpini_disable_functions_exec', 'page');
+$tpl->define_dynamic('t_update_ok', 'page');
 $tpl->assign(
 	array(
 		'TR_CLIENT_PHPINI_PAGE_TITLE' => tr('i-MSCP - php.ini Settings'),
@@ -69,14 +84,9 @@ $tpl->assign(
 	)
 );
 
-gen_client_mainmenu($tpl,$cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl,$cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 gen_logged_from($tpl);
-
-//get domain_id from user_id - maybe theres allready a shared funciton for it
-$query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
-$stmt = exec_query($query, $_SESSION['user_id']);
-$domainId = $stmt->fields('domain_id');
 
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -84,11 +94,14 @@ $cfg = iMSCP_Registry::get('config');
 
 /* iMSCP_PHPini object */
 $phpini = new iMSCP_PHPini();
+$domainId = $phpini->getDomId($_SESSION['user_id']);
+
 
 $phpini->loadClPerm($domainId); //load phpini client permission
 
 if (isset($_POST['uaction']) && ($_POST['uaction'] == 'phpini_save')) { // if save if called...
 	if ($phpini->getClPermVal('phpiniSystem') == 'yes' ) {
+		$tpl->parse('T_UPDATE_OK', 't_update_ok');
                 $phpini->setData('phpiniSystem','yes');
                 if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes' && isset($_POST['phpini_register_globals'])) {
                         $phpini->setData('phpiniRegisterGlobals', clean_input($_POST['phpini_register_globals']));
@@ -124,11 +137,14 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'phpini_save')) { // if sa
 
 	}
 	$phpini->saveCustomPHPiniIntoDb($domainId); 
-	set_page_message(tr('Setting updated'), 'info');
+	set_page_message(tr('Setting updated'), 'success');
+	$phpini->sendToEngine($domainId);
+	redirectTo('domains_manage.php');
 } //end save call
 
 
-if ($phpini->getClPermVal('phpiniSystem') == 'yes') { //if reseller has permission to use php.ini feature
+if ($phpini->getClPermVal('phpiniSystem') == 'yes' && $phpini->getDomStatus($domainId)) { //if reseller has permission to use php.ini feature
+	$tpl->parse('T_UPDATE_OK', 't_update_ok');
 	$phpini->loadCustomPHPini($domainId); //load custom php.ini
         if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') {
                 $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
@@ -198,8 +214,18 @@ if ($phpini->getClPermVal('phpiniSystem') == 'yes') { //if reseller has permissi
 	$tpl->assign(array('T_PHPINI_REGISTER_GLOBALS'=> ''));
 	$tpl->assign(array('T_PHPINI_ALLOW_URL_FOPEN'=> ''));
 	$tpl->assign(array('T_PHPINI_DISPLAY_ERRORS'=> ''));
-	$tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS'=> ''));	
+	$tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS'=> ''));
+	$tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS_EXEC'=> ''));	
+	if ($phpini->getDomStatus($domainId)) {
+		set_page_message(tr('Permisson failed'), 'error');
+		$tpl->parse('T_UPDATE_OK', 't_update_ok');
+
+	} else {
+	        set_page_message(tr('Domain locked - update running'), 'error');
+		$tpl->assign(array('T_UPDATE_OK'=>''));
+	}
 }
+
 
 
 check_permissions($tpl);

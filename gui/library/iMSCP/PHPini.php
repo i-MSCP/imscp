@@ -23,15 +23,10 @@
  * @author              Hannes Koschier <hannes@cheat.at>
  * @link                http://www.i-mscp.net i-MSCP Home Site
  * @license             http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @license 		http://www.mozilla.org/MPL/MPL-1.1.html
+ * @Version		$id$
  */
 
-/**
- * This class provides the functionality needed for gui management of php.ini
- * 
- *
- * @category    i-MSCP
- * @package     iMSCP_PHPini
- */
 
 class iMSCP_PHPini {
 	
@@ -471,6 +466,17 @@ class iMSCP_PHPini {
 		}
 
         }
+
+	/**
+         * public void
+         * change domain table to update and send_request to engine
+         */
+	public function sendToEngine($domainId){
+		$query = "UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_id` = ?";
+		exec_query($query, $domainId);
+		send_request(); //kick the engine to work
+	}
+	
         /**
          * public 
          * delete custom php.ini from table php_ini
@@ -607,6 +613,31 @@ class iMSCP_PHPini {
                 $this->phpiniClPerm['phpiniDisableFunctions'] = 'no';
         }
 
+	/**
+         * public int
+	 * helper method
+         * return domainid when userid is given
+         */
+	public function getDomId($userId){
+		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
+		$stmt = exec_query($query, $userId);
+		return $stmt->fields('domain_id');
+	}
+
+        /**
+         * public bool
+         * 
+         * return true if domain_status is ok
+         */
+        public function getDomStatus($domainId){
+                $query = "SELECT `domain_status` FROM `domain` WHERE `domain_id` = ?";
+                $stmt = exec_query($query, $domainId);
+                if ($stmt->fields('domain_status') == 'ok'){
+			return true;
+		} else {
+			return false;
+		}
+        }
 
 } //End iMSCP_PHPini
 

@@ -42,7 +42,7 @@
                 </li>
             </ul>
             <ul class="path">
-                <li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
+                <li><a href="webtools.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
                 <li><a href="phpini.php">{TR_MENU_PHPINI}</a></li>
             </ul>
         </div>
@@ -54,10 +54,9 @@
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
+           <!-- BDP: t_update_ok -->
            <form name="client_php_ini_edit_frm" method="post" action="phpini.php">
            <table>
-
            <!-- BDP: t_phpini_allow_url_fopen -->
            <tr>
                            <td style="width:300px;"><label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label></td>
@@ -135,6 +134,7 @@
 	        <input type="hidden" name="uaction" value="phpini_save" />
         </div>
        </form>
+       <!-- EDP: t_update_ok -->
         </div>
 
         <div class="footer">
