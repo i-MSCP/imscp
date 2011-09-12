@@ -18,10 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Listeners
+ * @package     iMSCP_Core
+ * @subpakage	Events_Listeners
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     SVS: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
@@ -31,12 +31,12 @@
 require_once 'iMSCP/Events/Exception.php';
 
 /**
- * Events Listener Exception class.
+ * Exception class for events listeners.
  *
  * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Listeners
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @package     iMSCP_Core
+ * @subpakage	Events_Listeners
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     0.0.1
  */
 class iMSCP_Events_Listener_Exception extends iMSCP_Events_Exception

@@ -19,25 +19,27 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
+ * @subpakage	Events
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
- * Contains all common events thrown in the i-MSCP scripts.
+ * Class that describes all core events fired in the i-MSCP actions scripts.
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @subpakage	Events
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     0.0.1
  */
 class iMSCP_Events
 {
     /**
-     * The onLoginScriptStart event occurs at the very beginning of Login script.
+     * The onLoginScriptStart event is fired at the very beginning of Login script.
      *
      * The event listener method receives a iMSCP_Events_Event instance.
      *
@@ -46,7 +48,7 @@ class iMSCP_Events
     const onLoginScriptStart = 'onLoginScriptStart';
 
     /**
-     * The onLoginScriptEnd event occurs at the end of Login script.
+     * The onLoginScriptEnd event is fired at the end of Login script.
      *
      * The event listener method receives a iMSCP_Events_Response instance.
      *
@@ -55,7 +57,7 @@ class iMSCP_Events
     const onLoginScriptEnd = 'onLoginScriptEnd';
 
     /**
-     * The onLostPasswordScriptStart event occurs at the very beginning of the
+     * The onLostPasswordScriptStart event is fired at the very beginning of the
      * LostPassword script.
      *
      * The event listener method receives a iMSCP_Events_Event instance.
@@ -65,7 +67,7 @@ class iMSCP_Events
     const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
 
     /**
-     * The onLostPasswordScriptEnd event occurs at the end of the LostPassword script.
+     * The onLostPasswordScriptEnd event is fired at the end of the LostPassword script.
      *
      * The event listener method receives a iMSCP_Events_Response instance.
      *
@@ -74,7 +76,7 @@ class iMSCP_Events
     const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
 
     /**
-     * The onAdminScriptStart event occurs at the very beginning of admin scripts.
+     * The onAdminScriptStart event is fired at the very beginning of admin scripts.
      *
      * The event listener method receives a iMSCP_Events_Event instance.
      *
@@ -83,7 +85,7 @@ class iMSCP_Events
     const onAdminScriptStart = 'onAdminScriptStart';
 
     /**
-     * The onAdminScriptEnd event occurs at the end of admin scripts.
+     * The onAdminScriptEnd event is fired at the end of admin scripts.
      *
      * The event listener method receives a iMSCP_Events_Response instance.
      *
@@ -92,7 +94,7 @@ class iMSCP_Events
     const onAdminScriptEnd = 'onAdminScriptEnd';
 
     /**
-     * The onResellerScriptStart event occurs at the very beginning of reseller scripts.
+     * The onResellerScriptStart event is fired at the very beginning of reseller scripts.
      *
      * The event listener method receives a iMSCP_Events_Event instance.
      *
@@ -101,7 +103,7 @@ class iMSCP_Events
     const onResellerScriptStart = 'onResellerScriptStart';
 
     /**
-     * The onResellerScriptEnd event occurs at the end of reseller scripts.
+     * The onResellerScriptEnd event is fired at the end of reseller scripts.
      *
      * The event listener method receives a iMSCP_Events_Response instance.
      *
@@ -110,7 +112,7 @@ class iMSCP_Events
     const onResellerScriptEnd = 'onResellerScriptEnd';
 
     /**
-     * The onClientScriptStart event occurs at the very beginning of client scripts.
+     * The onClientScriptStart event is fired at the very beginning of client scripts.
      *
      * The event listener method receives a iMSCP_Events_Event instance.
      *
@@ -119,7 +121,7 @@ class iMSCP_Events
     const onClientScriptStart = 'onClientScriptStart';
 
     /**
-     * The onClientScriptEnd event occurs at the end of client scripts.
+     * The onClientScriptEnd event is fired at the end of client scripts.
      *
      * The event listener method receives a iMSCP_Events_Response instance.
      *
@@ -128,7 +130,7 @@ class iMSCP_Events
     const onClientScriptEnd = 'onClientScriptEnd';
 
     /**
-     * The onOrderPanelScriptStart event occurs at the very beginning of orderpanel scripts.
+     * The onOrderPanelScriptStart is fired occurs at the very beginning of orderpanel scripts.
      *
      * The event listener method receives a iMSCP_Events_Event instance.
      *
@@ -137,7 +139,7 @@ class iMSCP_Events
     const onOrderPanelScriptStart = 'onOrderPanelScriptStart';
 
     /**
-     * The onOrderPanelScriptEnd event occurs at the end of orderpanel scripts.
+     * The onOrderPanelScriptEnd event is fired at the end of orderpanel scripts.
      *
      * The event listener method receives a iMSCP_Events_Response instance.
      *

@@ -33,7 +33,7 @@
  */
 
 /** @see iMSCP_Exception_Writer */
-require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
+require_once  'iMSCP/Exception/Writer.php';
 
 /**
  * Exception Mail writer

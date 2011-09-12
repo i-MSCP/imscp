@@ -18,9 +18,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Events
+ * @package     iMSCP_Core
+ * @subpakage	Events_Manager
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
@@ -36,7 +37,8 @@
  * to the client browser.
  * 
  * @category    iMSCP
- * @package     iMSCP_Events
+ * @package     iMSCP_Core
+ * @subpakage	Events_Manager
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     0.0.1
  */

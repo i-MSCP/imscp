@@ -18,7 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Events
+ * @package     iMSCP_Core
+ * @subpakage	Events
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
@@ -33,7 +34,8 @@ require_once 'iMSCP/Exception.php';
  * Events Exception class.
  * 
  * @category    iMSCP
- * @package     iMSCP_Events
+ * @package     iMSCP_Core
+ * @subpakage	Events
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */

@@ -40,4 +40,7 @@
  * @since       1.0.7 (ispCP)
  * @version		1.0.0
  */
-class iMSCP_Exception extends Exception {}
+class iMSCP_Exception extends Exception
+{
+
+}
