@@ -32,6 +32,8 @@ Tickets:
 	- Fixed #175: Nice To Have - mail_addr saved in mail_type_forward too
 	- Fixed #178: Enhancement - dovecot managed sieve missing
 	- Fixed #179: Bug - Unexpected T_STRING
+	- Fixed #185: Bug - reseller/ip_usage.php do not work
+
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
