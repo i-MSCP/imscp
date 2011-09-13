@@ -171,7 +171,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'reseller'
 
 
 if ($phpini->checkRePerm('phpiniSystem')) { //if reseller has permission to use php.ini feature
-        $tpl->parse('T_PHPINI_SYSTEM', 't_phpini_system');
+        //$tpl->parse('T_PHPINI_SYSTEM', 't_phpini_system');
         if ($phpini->checkRePerm('phpiniRegisterGlobals')) {
                 $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
         } else {

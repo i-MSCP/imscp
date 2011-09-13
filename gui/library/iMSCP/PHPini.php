@@ -334,7 +334,7 @@ class iMSCP_PHPini {
                 if ($key == 'phpiniRegisterGlobals' && ($value == 'yes' || $value == 'no')) { return true ; };
                 if ($key == 'phpiniAllowUrlFopen' && ($value == 'yes' || $value == 'no')) { return true ; };
                 if ($key == 'phpiniDisplayErrors' && ($value == 'yes' || $value == 'no')) { return true ; };
-                if ($key == 'phpiniDisableFunctions' && ($value == 'yes' || $value == 'no')) { return true ; };
+                if ($key == 'phpiniDisableFunctions' && ($value == 'yes' || $value == 'no' || $value == 'exec')) { return true ; };
                 return false;
         }
 
@@ -491,6 +491,31 @@ class iMSCP_PHPini {
                                         ";
                         exec_query($query, $domainId);
 		}
+	}
+
+	 /**
+         * public 
+         * save client php.ini permisson to table domain
+         */
+        public function saveClPermIntoDb($domainId) {
+		$query = "UPDATE 
+				`domain` 
+			    SET
+				`phpini_perm_system` = ?,
+				`phpini_perm_register_globals` = ?,
+	                        `phpini_perm_allow_url_fopen` = ?,
+				`phpini_perm_display_errors` = ?,
+				`phpini_perm_disable_functions` = ?
+			   WHERE   
+                                `domain_id` = ?
+                                ";
+                 exec_query($query, array(
+				 $this->phpiniClPerm['phpiniSystem'],
+                                 $this->phpiniClPerm['phpiniRegisterGlobals'],
+		                 $this->phpiniClPerm['phpiniAllowUrlFopen'],
+                        	 $this->phpiniClPerm['phpiniDisplayErrors'],
+	                         $this->phpiniClPerm['phpiniDisableFunctions'],
+        	                 $domainId));
 	}
 
         /**

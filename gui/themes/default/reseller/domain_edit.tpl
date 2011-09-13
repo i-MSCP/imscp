@@ -49,14 +49,23 @@
 			});
 			$(document).ready(function() {
 				if($('#phpini_system_no').is(':checked')) {
-					$("#phpinidetail").hide();
+					$("tr.phpinihide").hide();
 					}
                    		$('#phpini_system_yes').click( function() {
-                                	$("#phpinidetail").show();
+                                	$("tr.phpinihide").show();
                         	});
                         	$('#phpini_system_no').click( function() {
-                                	$("#phpinidetail").hide();
+                                	$("tr.phpinihide").hide();
                         	});
+				if($('#phpini_al_system_no').is(':checked')) {
+                                        $("tr.phpinipermhide").hide();
+                                        }
+                                $('#phpini_al_system_yes').click( function() {
+                                        $("tr.phpinipermhide").show();
+                                });
+                                $('#phpini_al_system_no').click( function() {
+                                        $("tr.phpinipermhide").hide();
+                                });
                 	});
 		/*]]>*/
 		</script>
@@ -199,9 +208,76 @@
 						<td><label for="dom_disk">{TR_DISK}</label></td>
 						<td><input type="text" name="dom_disk" id="dom_disk" value="{VL_DOM_DISK}"/></td>
 					</tr>
+				      </table>
+				      <fieldset>
+					
+					<!-- BDP: t_phpini_al_system_perm -->
+				     <fieldset>
+  					<legend>{TR_PHPINI_CLIENT_PERM}</legend>
+					<table>
+                                        <tr> 
+                                           <td style="width:300px;">{TR_PHPINI_AL_SYSTEM}</td>
+                                            <td>
+                                                <input type="radio" name="phpini_al_system" id="phpini_al_system_yes" value="yes" {PHPINI_AL_SYSTEM_YES} />
+                                                <label for="phpini_al_system_yes">{TR_YES}</label>
+                                                <input type="radio" name="phpini_al_system" id="phpini_al_system_no" value="no" {PHPINI_AL_SYSTEM_NO} />
+                                                <label for="phpini_al_system">{TR_NO}</label>
+                                            </td>
+                                        </tr>
+                                        <!-- BDP: t_phpini_register_globals_perm -->
+                                        <tr class='phpinipermhide'>
+                                           <td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
+                                            <td>
+                                                <input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
+                                                <label for="phpini_al_register_globals_yes">{TR_YES}</label>
+                                                <input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
+                                                <label for="phpini_al_register_globals_no">{TR_NO}</label>
+                                        </tr>
+                                        <!-- EDP: t_phpini_register_globals_perm -->
+                                        <!-- BDP: t_phpini_allow_url_fopen_perm -->
+                                        <tr class='phpinipermhide'>
+                                           <td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}</td>
+                                            <td>
+                                                <input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
+                                                <label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
+                                                <input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_no" value="no" {PHPINI_AL_ALLOW_URL_FOPEN_NO} />
+                                                <label for="phpini_al_allow_url_fopen_no">{TR_NO}</label>
+                                            </td>
+                                        </tr>
+                                        <!-- EDP: t_phpini_allow_url_fopen_perm -->
+                                        <!-- BDP: t_phpini_display_errors_perm -->
+                                        <tr class='phpinipermhide'>
+                                           <td>{TR_PHPINI_AL_DISPLAY_ERRORS}</td>
+                                            <td>
+                                                <input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
+                                                <label for="phpini_al_display_errors_yes">{TR_YES}</label>
+                                                <input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_no" value="no" {PHPINI_AL_DISPLAY_ERRORS_NO} />
+                                                <label for="phpini_al_display_errors_no">{TR_NO}</label>
+                                            </td>
+                                        </tr>
+                                        <!-- EDP: t_phpini_display_errors_perm -->
+                                        <!-- BDP: t_phpini_disable_functions_perm -->
+                                        <tr class='phpinipermhide'>
+                                           <td>{TR_PHPINI_AL_DISABLE_FUNCTIONS}</td>
+                                            <td>
+                                                <input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
+                                                <label for="phpini_al_disable_functions_yes">{TR_YES}</label>
+                                                <input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_no" value="no" {PHPINI_AL_DISABLE_FUNCTIONS_NO} />
+                                                <label for="phpini_al_disable_functions_no">{TR_NO}</label>
+                                                <input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_exec" value="exec" {PHPINI_AL_DISABLE_FUNCTIONS_EXEC} />
+                                                <label for="phpini_al_disable_functions_exec">{TR_USER_EDITABLE_EXEC}</label>
+                                            </td>
+                                        </tr>
+                                        <!-- EDP: t_phpini_disable_functions_perm -->
+					<!-- EDP: t_phpini_al_system_perm -->
+				       </table>
+				      </fieldset>
+				      <fieldset>
+				       <legend>{TR_PHPINI_CLIENT_SETTINGS}</legend>
+				       <table>
 					<!-- BDP: t_phpini_system -->
 		                         <tr>
-        	                                <td>{TR_PHPINI_SYSTEM}</td>
+        	                                <td style="width:300px;">{TR_PHPINI_SYSTEM}</td>
                                                     <td>
                                                         <input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
                                                         <label for="phpini_system_yes">{TR_YES}</label>
@@ -210,8 +286,7 @@
 	                                          </td>
                                         </tr>
 					<!-- BDP: t_phpini_allow_url_fopen -->
-				      <tbody id='phpinidetail'>
-					<tr>
+					<tr class='phpinihide'>
                                                         <td style="width:300px;"><label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label></td>
                                                  <td>
                                                          <select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
@@ -222,7 +297,7 @@
                                          </tr>
                                         <!-- EDP: t_phpini_allow_url_fopen -->
                                         <!-- BDP: t_phpini_register_globals -->
-                                        <tr>
+                                        <tr class='phpinihide'>
                                                  <td style="width:300px;"><label for="phpini_register_globals">{TR_PHPINI_REGISTER_GLOBALS}</label></td>
                                                  <td>
                                                          <select name="phpini_register_globals" id="phpini_register_globals">
@@ -233,7 +308,7 @@
                                          </tr>
 					<!-- EDP: t_phpini_register_globals -->
                                         <!-- BDP: t_phpini_display_errors -->
-                                        <tr>
+                                        <tr class='phpinihide'>
                                                  <td style="width:300px;"><label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label></td>
                                                  <td>
                                                          <select name="phpini_display_errors" id="phpini_display_errors">
@@ -242,7 +317,7 @@
                                                          </select>
                                                  </td>
                                          </tr>
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_error_reporting">{TR_PHPINI_ERROR_REPORTING}</label></td>
                                                  <td>
                                                          <select name="phpini_error_reporting" id="phpini_error_reporting">
@@ -254,39 +329,38 @@
                                                  </td>
                                          </tr>
 					<!-- EDP: t_phpini_display_errors -->
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label></td>
                                                  <td>
                                                          <input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" /> 
                                                  </td>
                                          </tr>
-
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label></td>
                                                  <td>
                                                          <input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" /> 
                                                  </td>
                                          </tr>
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label></td>
                                                  <td>
                                                          <input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" /> 
                                                  </td>
                                          </tr>
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label></td>
                                                  <td>
                                                          <input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" /> 
                                                  </td>
                                          </tr>
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label></td>
                                                  <td>
                                                          <input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" /> 
                                                  </td>
                                          </tr>
 					<!-- BDP: t_phpini_disable_functions -->
-                                         <tr>
+                                         <tr class='phpinihide'>
                                                  <td><label for="phpini_disable_functions">{TR_PHPINI_DISABLE_FUNCTIONS}</label></td>
                                                  <td>
                                                          <input name="phpini_df_show_source" id="phpini_df_show_source" type="checkbox" {PHPINI_DF_SHOW_SOURCE_CHK} value="show_source"/> show_source
@@ -300,6 +374,7 @@
                                                  </td>
                                          </tr>
 					</tbody>
+				       </fieldset>
 					<!-- EDP: t_phpini_disable_functions -->
                                         <!-- EDP: t_phpini_system -->
 				</table>
