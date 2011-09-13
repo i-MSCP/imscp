@@ -16,7 +16,10 @@ void daemon_init(const char *pname, int facility) {
 		exit(0);
 	}
 
-	chdir("/");
+	if(!chdir("/")) {
+		exit(0);
+	}
+
 	umask(0);
 
 	for(i = 0; i < 64; i++) {
