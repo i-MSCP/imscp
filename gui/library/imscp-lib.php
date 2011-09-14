@@ -56,8 +56,8 @@ if (version_compare(phpversion(), '5.3.2', '<') === true) {
 	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
 }
 
-// Define path for the i-MSCP include directory
-define('INCLUDEPATH', dirname(__FILE__));
+// Define path for the i-MSCP library directory
+define('LIBRARY_PATH', dirname(__FILE__));
 
 /**
  * Autoloading classes

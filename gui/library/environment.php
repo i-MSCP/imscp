@@ -163,7 +163,7 @@ $fonts = array(
 );
 
 // Set random captcha font file
-$config->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
+$config->LOSTPASSWORD_CAPTCHA_FONT = LIBRARY_PATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection

@@ -34,7 +34,7 @@
 /**
  * Defines include directory path if needed
  */
-defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
+defined('LIBRARY_PATH') or define('LIBRARY_PATH', dirname(dirname(__FILE__)));
 
 /**
  * Bootstrap class for i-MSCP
@@ -63,7 +63,7 @@ class iMSCP_Bootstrap
 			$boot = new self;
 			$boot->_run();
 		} else {
-			throw new iMSCP_Exception('Error: i-MSCP is already booted!');
+			throw new iMSCP_Exception('i-MSCP is already booted.');
 		}
 	}
 
@@ -107,6 +107,6 @@ class iMSCP_Bootstrap
 	 */
 	protected function _loadInitializer()
     {
-        require INCLUDEPATH . '/iMSCP/Initializer.php';
+        require LIBRARY_PATH . '/iMSCP/Initializer.php';
 	}
 }

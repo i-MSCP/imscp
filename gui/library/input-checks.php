@@ -108,15 +108,18 @@ function clean_html($text)
  *
  * @param String $input input data (eg. post-var) to be cleaned
  * @param boolean $htmlencode should return value be html encoded (& -> &amp;)
- * @return String {|} trimmed, stripslashed, eventually htmlencoded input string
+ * @return String space trimmed, {|} trimmed, stripslashed, eventually htmlencoded input string
  */
 function clean_input($input, $htmlencode = false)
 {
-    if ((strpos($input, '{') === 0)
-        && (strpos($input, "}") == strlen($input) - 1)
-    ) {
+	// Trim leading and trealing white spaces
+	$input = trim($input, "\x20");
+
+    //if ((strpos($input, '{') === 0)
+    //    && (strpos($input, "}") == strlen($input) - 1)
+    //) {
         $input = trim($input, '{..}');
-    }
+    //}
 
     if (get_magic_quotes_gpc()) {
         $input = stripslashes($input);
@@ -1052,7 +1055,7 @@ function checkMimeType($pathFile, $mimeTypes)
     static $finfo = null;
 
     if (null == $finfo) {
-        if (!is_readable(INCLUDEPATH . '/resources/magic.mgc')) {
+        if (!is_readable(LIBRARY_PATH . '/resources/magic.mgc')) {
             require_once 'iMSCP/Exception.php';
             throw new iMSCP_Exception('Unable to found a magicfile to use.');
         } elseif (!(class_exists('finfo', false))) {
@@ -1061,7 +1064,7 @@ function checkMimeType($pathFile, $mimeTypes)
         }
 
         $const = defined('FILEINFO_MIME_TYPE') ? FILEINFO_MIME_TYPE : FILEINFO_MIME;
-        $finfo = @finfo_open($const, INCLUDEPATH . '/resources/magic.mgc');
+        $finfo = @finfo_open($const, LIBRARY_PATH . '/resources/magic.mgc');
 
         if (empty($finfo)) {
             require_once 'iMSCP/Exception.php';
