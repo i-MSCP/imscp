@@ -1109,7 +1109,7 @@ class iMSCP_Update_Database extends iMSCP_Update
                         "ALTER TABLE `reseller_props` ADD `php_ini_al_display_errors` VARCHAR(15) NOT NULL DEFAULT 'no'",
                         "ALTER TABLE `reseller_props` ADD `php_ini_max_post_max_size` int(11) NOT NULL DEFAULT '0'",
                         "ALTER TABLE `reseller_props` ADD `php_ini_max_upload_max_filesize` int(11) NOT NULL DEFAULT '0'",
-                        "ALTER TABLE `reseller_props` ADD `php_ini_max_execution_time` int(11) NOT NULL DEFAULT '0'",
+                        "ALTER TABLE `reseller_props` ADD `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0'",
                         "ALTER TABLE `reseller_props` ADD `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0'",
                         "ALTER TABLE `reseller_props` ADD `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0'",
 			"CREATE TABLE IF NOT EXISTS `php_ini` (

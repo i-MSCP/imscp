@@ -126,10 +126,10 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'phpini_save')) { // if sa
 			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($mytmp));
 		}
 		if ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-			if ($_POST['phpini_disable_functions_exec'] == 'yes') {
+			if ($_POST['phpini_disable_functions_exec'] == 'off') {
 				$phpini->setData('phpiniDisableFunctions',$phpini->getDataDefaultVal('phpiniDisableFunctions'));
 			} else {
-				$tmp_arr = array_diff($phpini->getDataDefaultVal('phpiniDisableFunctions'), array('exec'));	//remove exec from default disabled_fun..
+				$tmp_arr = array_diff(explode(',',$phpini->getDataDefaultVal('phpiniDisableFunctions')), array('exec')); //remove exec from default disabled_fun..
 				$phpini->setData('phpiniDisableFunctions',implode(',',$tmp_arr));
 			}
 		
@@ -144,7 +144,6 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'phpini_save')) { // if sa
 
 
 if ($phpini->getClPermVal('phpiniSystem') == 'yes' && $phpini->getDomStatus($domainId)) { //if reseller has permission to use php.ini feature
-	$tpl->parse('T_UPDATE_OK', 't_update_ok');
 	$phpini->loadCustomPHPini($domainId); //load custom php.ini
         if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') {
                 $tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
@@ -163,7 +162,7 @@ if ($phpini->getClPermVal('phpiniSystem') == 'yes' && $phpini->getDomStatus($dom
         }
         if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
                 $tpl->parse('T_PHPINI_DISABLE_FUNCTIONS', 't_phpini_disable_functions');
-		$tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS_EXEC'=> ''));
+	        $tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS_EXEC'=> ''));
         } elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
 		$tpl->assign(array('T_PHPINI_DISABLE_FUNCTIONS'=> ''));
 		$tpl->parse('T_PHPINI_DISABLE_FUNCTIONS_EXEC', 't_phpini_disable_functions_exec');
@@ -207,7 +206,14 @@ if ($phpini->getClPermVal('phpiniSystem') == 'yes' && $phpini->getDomStatus($dom
                                         $phpiniDfVar => ''));
                 }
         }	
-
+	
+        if (in_array('exec', $phpiniDf)){
+                $tpl->assign(array('PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $cfg->HTML_SELECTED,
+                                   'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
+        } else { 
+                $tpl->assign(array('PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $cfg->HTML_SELECTED,
+                                   'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => ''));
+        }
 
 
 } else { //if no permission at all

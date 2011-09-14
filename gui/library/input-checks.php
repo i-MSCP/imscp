@@ -705,20 +705,6 @@ function imscp_limit_check($data, $extra = -1)
 }
 
 /**
- * Function for checking i-MSCP limits range syntax.
- *
- * @param string $data Limit field data (by default valids are numbers greater equal 0)
- * @param $extra single extra permitted value or array of permitted values
- */
-function imscp_limit_check_range($data, $from = 0, $to = 0)
-{
-    if ($data >= $from && $data <= $to){
-	return true;
-    } else {
-	return false;
-    }
-}
-/**
  * Validates a mount point.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
