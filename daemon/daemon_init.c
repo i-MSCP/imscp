@@ -16,7 +16,7 @@ void daemon_init(const char *pname, int facility) {
 		exit(0);
 	}
 
-	if(!chdir("/")) {
+	if(chdir("/")) {
 		exit(0);
 	}
 
