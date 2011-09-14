@@ -19,7 +19,7 @@ Features / Enhancements:
 Tickets:
 	- Fixed #16:  Feature - Mail Quota Support
 	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with
-	  dovecot
+	dovecot
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77:  Task - Setup - Empty files must be removed
 	- Fixed #147: Squirrelmail 1.4.22 released
@@ -32,8 +32,8 @@ Tickets:
 	- Fixed #175: Nice To Have - mail_addr saved in mail_type_forward too
 	- Fixed #178: Enhancement - dovecot managed sieve missing
 	- Fixed #179: Bug - Unexpected T_STRING
-	- Fixed #185: Bug - reseller/ip_usage.php do not work
-
+	- Fixed #183: Bug - client/subdomain_edit.php shows a white page
+	- Fixed #185: Bug - reseller/ip_usage.php doesn't show any statistics
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
