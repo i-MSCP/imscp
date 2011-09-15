@@ -61,6 +61,7 @@ $tpl->define_dynamic('dns_message', 'page');
 $tpl->define_dynamic('dns_list', 'page');
 $tpl->define_dynamic('dns_item', 'dns_list');
 
+
 // page functions.
 
 function gen_user_dns_list($tpl, $user_id) {
@@ -468,7 +469,8 @@ $tpl->assign(
 		'TR_DNS_TYPE'		=> tr('Type'),
 		'TR_DNS_ACTION'		=> tr('Actions'),
 		'TR_DNS_DATA'		=> tr('Record data'),
-		'TR_DOMAIN_NAME'	=> tr('Domain')
+		'TR_DOMAIN_NAME'	=> tr('Domain'),
+		'TR_MENUPHPINI' 	=> tr('php.ini'),
 	)
 );
 

@@ -82,6 +82,7 @@
 								<!-- BDP: als_status_reload_true -->
 								<td><a href="http://{ALS_NAME}/" class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</a></td>
 								<!-- EDP: als_status_reload_true -->
+						
 								<!-- BDP: als_status_reload_false -->
 								<td><span class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span></td>
 								<!-- EDP: als_status_reload_false -->

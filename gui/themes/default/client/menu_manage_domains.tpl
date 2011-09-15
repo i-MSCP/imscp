@@ -6,4 +6,8 @@
 				<!-- BDP: isactive_dns_menu -->
 				<li><a href="dns_add.php">{TR_MENU_ADD_DNS}</a></li>
 				<!-- EDP: isactive_dns_menu -->
+                                <!-- BDP: isactive_phpini -->
+                                <li><a href="phpini.php">{TR_MENUPHPINI}</a></li>
+                                <!-- EDP: isactive_phpini -->
+
 			</ul>

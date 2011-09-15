@@ -64,7 +64,7 @@ function get_pageone_param()
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function get_init_au2_page($tpl)
+function get_init_au2_page($tpl, $phpini)
 {
     global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
         $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns,
@@ -102,7 +102,30 @@ function get_init_au2_page($tpl)
                           ? $cfg->HTML_CHECKED
                           : '',
                       'VL_SOFTWAREN' => ($hp_allowsoftware === '_no_')
-                          ? $cfg->HTML_CHECKED : ''));
+                          ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_SYSTEM_YES'             => ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_SYSTEM_NO'              => ($phpini->getClPermVal('phpiniSystem')!= 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_REGISTER_GLOBALS_YES'        => ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_REGISTER_GLOBALS_NO'         => ($phpini->getClPermVal('phpiniRegisterGlobals') != 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_ALLOW_URL_FOPEN_NO'  => ($phpini->getClPermVal('phpiniAllowUrlFopen') != 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_DISPLAY_ERRORS_YES'  => ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_DISPLAY_ERRORS_NO'   => ($phpini->getClPermVal('phpiniDisplayErrors') != 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_DISABLE_FUNCTIONS_YES'       => ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_DISABLE_FUNCTIONS_NO'        => ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_AL_DISABLE_FUNCTIONS_EXEC'      => ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $cfg->HTML_CHECKED : '',
+                      'PHPINI_POST_MAX_SIZE'          => ($phpini->getDataVal('phpiniPostMaxSize') != 'no') //check only to dont break with old plans without ini values
+			? $phpini->getDataVal('phpiniPostMaxSize') : $phpini->getDataDefaultVal('phpiniPostMaxSize'),
+                      'PHPINI_UPLOAD_MAX_FILESIZE'    => ($phpini->getDataVal('phpiniUploadMaxFileSize') != 'no') 
+			? $phpini->getDataVal('phpiniUploadMaxFileSize') : $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'),
+                      'PHPINI_MAX_EXECUTION_TIME'     => ($phpini->getDataVal('phpiniMaxExecutionTime') != 'no') 
+			? $phpini->getDataVal('phpiniMaxExecutionTime') : $phpini->getDataDefaultVal('phpiniMaxExecutionTime'),
+                      'PHPINI_MAX_INPUT_TIME'         => ($phpini->getDataVal('phpiniMaxInputTime') != 'no') 
+			? $phpini->getDataVal('phpiniMaxInputTime') : $phpini->getDataDefaultVal('phpiniMaxInputTime'),
+                      'PHPINI_MEMORY_LIMIT'           => ($phpini->getDataVal('phpiniMemoryLimit') != 'no') 
+			? $phpini->getDataVal('phpiniMemoryLimit') : $phpini->getDataDefaultVal('phpiniMemoryLimit')
+			));
+			
 }
 
 
@@ -113,7 +136,7 @@ function get_init_au2_page($tpl)
  * @param  $resellerId Reseller unique identifier
  * @return void
  */
-function get_hp_data($hpid, $resellerId)
+function get_hp_data($hpid, $resellerId, $phpini)
 {
     global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
         $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns,
@@ -127,11 +150,25 @@ function get_hp_data($hpid, $resellerId)
         $data = $stmt->fetchRow();
         $props = $data['props'];
         list(
-            $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-            $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware
-        ) = explode(';', $props);
-
+                        $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
+                        $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware,
+                        $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
+                        $phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit
+                ) = array_pad(explode(';', $props),23,'no');
         $hp_name = $data['name'];
+	//write into phpini object
+        $phpini->setClPerm('phpiniSystem', $phpini_system);
+        $phpini->setClPerm('phpiniRegisterGlobals', $phpini_al_register_globals);
+        $phpini->setClPerm('phpiniAllowUrlFopen', $phpini_al_allow_url_fopen);
+        $phpini->setClPerm('phpiniDisplayErrors', $phpini_al_display_errors);
+        $phpini->setClPerm('phpiniDisableFunctions', $phpini_al_disable_functions);
+        //use phpini->phpiniData as datastore for the following values - should be better in something like property class/object later
+        $phpini->setData('phpiniPostMaxSize', $phpini_post_max_size);
+        $phpini->setData('phpiniUploadMaxFileSize', $phpini_upload_max_filesize);
+        $phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
+        $phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
+        $phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
+	
     } else {
         $hp_name = 'Custom';
         $hp_php = $hp_cgi = $hp_backup = $hp_dns = $hp_allowsoftware = '_no_';
@@ -145,7 +182,7 @@ function get_hp_data($hpid, $resellerId)
  *
  * @return bool TRUE if all data are valid, FALSE otherwise
  */
-function check_user_data()
+function check_user_data($phpini)
 {
     global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
         $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_dmn, $hp_backup, $hp_dns,
@@ -210,6 +247,44 @@ function check_user_data()
     if (isset($_POST['software_allowed'])) {
         $hp_allowsoftware = $_POST['software_allowed'];
     }
+
+
+    if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpini_system'])) {
+            $phpini->setClPerm('phpiniSystem', clean_input($_POST['phpini_system']));
+    }
+    if ($phpini->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_al_register_globals'])) {
+            $phpini->setClPerm('phpiniRegisterGlobals', clean_input($_POST['phpini_al_register_globals']));
+    }
+    if ($phpini->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_al_allow_url_fopen'])) {
+            $phpini->setClPerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_al_allow_url_fopen']));
+    }
+    if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_display_errors'])) {
+            $phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_al_display_errors']));
+    }
+    if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_error_reporting'])) {
+            $phpini->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
+    }
+    if ($phpini->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_al_disable_functions'])) {
+            $phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']));
+    }
+    //use phpini->phpiniData as datastore for the following values - 
+    if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
+            set_page_message(tr('post_max_size out of range'), 'error');
+    }
+    if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
+            set_page_message(tr('upload_max_filesize out of range'), 'error');
+    }
+    if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
+            set_page_message(tr('max_execution_time out of range'), 'error');
+    }
+    if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
+            set_page_message(tr('max_input_time out of range'), 'error');
+    }
+    if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
+           set_page_message(tr('memory_limit out of range'), 'error');
+    }
+
+
 
     list(
         $rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max
@@ -308,6 +383,9 @@ check_login(__FILE__);
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+/* iMSCP_PHPini object */
+$phpini = new iMSCP_PHPini();
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
                           'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add2.tpl',
@@ -320,6 +398,13 @@ $tpl->define_dynamic(array(
                           'sql_db_add' => 'page',
                           'sql_user_add' => 'page',
                           't_software_support' => 'page'));
+
+$tpl->define_dynamic('t_phpini_system', 'page');
+$tpl->define_dynamic('t_phpini_register_globals', 'page');
+$tpl->define_dynamic('t_phpini_allow_url_fopen', 'page');
+$tpl->define_dynamic('t_phpini_display_errors', 'page');
+$tpl->define_dynamic('t_phpini_disable_functions', 'page');
+
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
     redirectTo('users.php?psi=last');
@@ -355,7 +440,21 @@ $tpl->assign(array(
                   'TR_NEXT_STEP' => tr('Next step'),
                   'TR_APACHE_LOGS' => tr('Apache logs'),
                   'TR_AWSTATS' => tr('Awstats'),
-                  'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer')));
+                  'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
+                  'TR_PHPINI_SYSTEM'                      => tr('Allow change PHP.ini'),
+                  'TR_USER_EDITABLE_EXEC'                 => tr('Only "exec" allowed'),
+                  'TR_PHPINI_AL_REGISTER_GLOBALS'         => tr('Allow change value register_globals'),
+                  'TR_PHPINI_AL_ALLOW_URL_FOPEN'          => tr('Allow change value allow_url_fopen'),
+                  'TR_PHPINI_AL_DISPLAY_ERRORS'           => tr('Allow change value display_errors'),
+                  'TR_PHPINI_AL_DISABLE_FUNCTIONS'        => tr('Allow change value disable_functions'),
+                  'TR_PHPINI_MAX_MAX_EXECUTION_TIME'      => tr('MAX allowed in max_execution_time [Seconds]'),
+                  'TR_PHPINI_MAX_MAX_INPUT_TIME'          => tr('MAX allowed in max_input_time [Seconds]'),
+                  'TR_PHPINI_POST_MAX_SIZE'               => tr('Set post_max_size [MB]'),
+                  'TR_PHPINI_UPLOAD_MAX_FILESIZE'         => tr('Set upload_max_filesize [MB]'),
+                  'TR_PHPINI_MAX_EXECUTION_TIME'          => tr('Set max_execution_time [sec]'),
+                  'TR_PHPINI_MAX_INPUT_TIME'              => tr('Set max_input_time [sec]'),
+                  'TR_PHPINI_MEMORY_LIMIT'                => tr('Set memory_limit [MB]')
+));
 
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
@@ -368,14 +467,21 @@ if (!get_pageone_param()) {
     redirectTo('user_add1.php');
 }
 
+$phpini->loadRePerm($_SESSION['user_id']); // Load Reseller php.ini Permission
+
 if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) &&
     (!isset($_SESSION['step_one']))
 ) {
-    if (check_user_data()) {
+    if (check_user_data($phpini)) {
         $_SESSION['step_two_data'] = "$dmn_name;0;";
         $_SESSION['ch_hpprops'] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;"  .
                                   "$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;" .
-                                  "$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
+                                  "$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware" .
+				  ";".$phpini->getClPermVal('phpiniSystem').";".$phpini->getClPermVal('phpiniRegisterGlobals').";".$phpini->getClPermVal('phpiniAllowUrlFopen') .
+				  ";".$phpini->getClPermVal('phpiniDisplayErrors').";".$phpini->getClPermVal('phpiniDisableFunctions') .
+				  ";".$phpini->getDataVal('phpiniPostMaxSize').";".$phpini->getDataVal('phpiniUploadMaxFileSize').";".$phpini->getDataVal('phpiniMaxExecutionTime') .
+				  ";".$phpini->getDataVal('phpiniMaxInputTime').";".$phpini->getDataVal('phpiniMemoryLimit');
+
 
         if (reseller_limits_check(
             $ehp_error, $_SESSION['user_id'], 0,$_SESSION['ch_hpprops'])
@@ -386,10 +492,10 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) &&
 } else {
     unset($_SESSION['step_one']);
     global $dmn_chp;
-    get_hp_data($dmn_chp, $_SESSION['user_id']);
+    get_hp_data($dmn_chp, $_SESSION['user_id'], $phpini);
 }
 
-get_init_au2_page($tpl);
+get_init_au2_page($tpl,$phpini);
 get_reseller_software_permission($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 

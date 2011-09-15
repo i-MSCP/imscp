@@ -277,7 +277,7 @@ sub doHashSQL {
 	}
 
 	if (defined $kField && $kField ne '' && $sql =~ /^[\s]*?(select|show)/i) {
-		$qr = $main::db ->selectall_hashref($sql, $kField);
+		$qr = $main::db->selectall_hashref($sql, $kField);
 	} else {
 		$qr = $main::db->do($sql);
 	}
@@ -2855,4 +2855,68 @@ sub move_dir_content{
 	push_el(\@main::el, 'move_dir_content()', 'Ending...');
 
 	0;
+}
+
+################################################################################
+## get_config_from_db
+##
+## return the $key=$value from table config in the DB
+## 
+##
+## @author hannes@cheat.at
+## @since   1.0.1.5
+## @version 1.0.1.5
+## @return [0 on success |error code, list of $key=$value]
+sub get_config_from_db {
+
+        push_el(\@main::el, 'get_config_from_db()', 'Starting...');
+
+        my $sql = "
+                SELECT
+                        `name`,`value`
+                FROM
+                        `config`
+                ;
+        ";
+
+        my ($rs, $rdata) = doHashSQL($sql,'name');
+        return (-1, '') if( $rs != 0 );
+	
+        push_el(\@main::el, 'get_config_from_db()', 'Ending...');
+
+        return ($rdata);
+}
+
+################################################################################
+## get_custom_php_ini_from_db
+##
+## return the array_ref.array_ref from table php_ini in the DB
+## 
+##
+## @author hannes@cheat.at
+## @since   1.0.1.5
+## @version 1.0.1.5
+## @return [0 on success |error code, list of array_ref.array_ref]
+sub get_custom_php_ini_from_db {
+
+	$dmn_id = shift;
+
+        push_el(\@main::el, 'get_custom_php_ini_from_db()', 'Starting...');
+
+        my $sql = "
+                SELECT
+                        *
+                FROM
+                        `php_ini`
+                WHERE
+                        `domain_id` = '$dmn_id'
+                ;
+        ";
+
+        my ($rs, $rdata) = doSQL($sql);
+        return (-1, '') if( $rs != 0 );
+
+        push_el(\@main::el, 'get_custom_php_ini_from_db()', 'Ending...');
+
+        return ($rdata);
 }

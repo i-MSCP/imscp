@@ -48,6 +48,9 @@ check_login(__FILE__);
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+/* iMSCP_PHPini object */
+$phpini = new iMSCP_PHPini();
+
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
     $lostpwd = $_POST['lostpassword'];
@@ -81,6 +84,26 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
     $log_level = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
     $ordersExpireTime = clean_input($_POST['ordersExpireTime']);
 
+    $phpini->setData('phpiniRegisterGlobals',clean_input($_POST['phpini_register_globals']));
+    $phpini->setData('phpiniAllowUrlFopen',clean_input($_POST['phpini_allow_url_fopen'])); 
+    $phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
+    $phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
+    $phpini->setData('phpiniPostMaxSize', clean_input($_POST['phpini_post_max_size']));
+    $phpini->setData('phpiniUploadMaxFileSize', clean_input($_POST['phpini_upload_max_filesize']));
+    $phpini->setData('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_execution_time']));
+    $phpini->setData('phpiniMaxInputTime', clean_input($_POST['phpini_max_input_time']));
+    $phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
+		
+
+    //collect all parts of disabled_function from $_POST
+    $mytmp=array(); 
+    foreach($_POST as $key =>$value){
+	if (substr($key,0,10) == "phpini_df_") {
+		array_push($mytmp,clean_input($value));
+		}
+    }
+   $phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($mytmp));
+
     if ((!is_number($lostpwd_timeout))
         || (!is_number($pwd_chars))
         || (!is_number($bruteforce_max_login))
@@ -99,6 +122,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
         $max_dnames_labels = 1;
     } elseif ($max_subdnames_labels < 1) {
         $max_subdnames_labels = 1;
+    } elseif ($phpini->flagValueError) { // if a php value was out of range or simple wrong type 
+	set_page_message(tr('Error in php.ini values.'), 'error');
     } else {
         /** @var $db_cfg iMSCP_Config_Handler_Db */
         $db_cfg = iMSCP_Registry::get('dbConfig');
@@ -133,7 +158,16 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
         $db_cfg->MAX_DNAMES_LABELS = $max_dnames_labels;
         $db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
         $db_cfg->ORDERS_EXPIRE_TIME = $ordersExpireTime * 86400;
-
+	$db_cfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
+	$db_cfg->PHPINI_REGISTER_GLOBALS = $phpini->getDataVal('phpiniRegisterGlobals');
+	$db_cfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
+        $db_cfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
+        $db_cfg->PHPINI_POST_MAX_SIZE = $phpini->getDataVal('phpiniPostMaxSize');
+        $db_cfg->PHPINI_UPLOAD_MAX_FILESIZE = $phpini->getDataVal('phpiniUploadMaxFileSize');
+        $db_cfg->PHPINI_MAX_EXECUTION_TIME = $phpini->getDataVal('phpiniMaxExecutionTime');
+        $db_cfg->PHPINI_MAX_INPUT_TIME = $phpini->getDataVal('phpiniMaxInputTime');
+        $db_cfg->PHPINI_MEMORY_LIMIT = $phpini->getDataVal('phpiniMemoryLimit');
+	$db_cfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
         $cfg->replaceWith($db_cfg);
 
         // gets the number of queries that were been executed
@@ -338,6 +372,96 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
                       'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON' => '',
                       'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => $html_selected));
 }
+//start php.ini - doesnt make a difference if i load the data from $cfg or from $phpini->getData()
+
+
+if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') {
+    $tpl->assign(array(
+                      'PHPINI_ALLOW_URL_FOPEN_ON' => $html_selected,
+                      'PHPINI_ALLOW_URL_FOPEN_OFF' => ''));
+} else {
+    $tpl->assign(array(
+                      'PHPINI_ALLOW_URL_FOPEN_ON' => '',
+                      'PHPINI_ALLOW_URL_FOPEN_OFF' => $html_selected));
+}
+
+if ($phpini->getDataVal('phpiniRegisterGlobals') == 'on') {
+    $tpl->assign(array(
+                      'PHPINI_REGISTER_GLOBALS_ON' => $html_selected,
+                      'PHPINI_REGISTER_GLOBALS_OFF' => ''));
+} else {
+    $tpl->assign(array(
+                      'PHPINI_REGISTER_GLOBALS_ON' => '',
+                      'PHPINI_REGISTER_GLOBALS_OFF' => $html_selected));
+}
+
+if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
+    $tpl->assign(array(
+                      'PHPINI_DISPLAY_ERRORS_ON' => $html_selected,
+                      'PHPINI_DISPLAY_ERRORS_OFF' => ''));
+} else {
+    $tpl->assign(array(
+                      'PHPINI_DISPLAY_ERRORS_ON' => '',
+                      'PHPINI_DISPLAY_ERRORS_OFF' => $html_selected));
+}
+
+switch ($phpini->getDataVal('phpiniErrorReporting')) {
+    case '0':
+	$tpl->assign(array(
+                        'PHPINI_ERROR_REPORTING_0' => $html_selected,
+			'PHPINI_ERROR_REPORTING_1' => '',
+			'PHPINI_ERROR_REPORTING_2' => '',
+			'PHPINI_ERROR_REPORTING_3' => ''));
+	break;
+    case 'E_ALL ^ (E_NOTICE | E_WARNING)':
+        $tpl->assign(array(
+                        'PHPINI_ERROR_REPORTING_0' => '',
+                        'PHPINI_ERROR_REPORTING_1' => $html_selected,
+                        'PHPINI_ERROR_REPORTING_2' => '',
+                        'PHPINI_ERROR_REPORTING_3' => ''));
+        break;
+    case 'E_ALL ^ E_NOTICE':
+        $tpl->assign(array(
+                        'PHPINI_ERROR_REPORTING_0' => '',
+                        'PHPINI_ERROR_REPORTING_1' => '',
+                        'PHPINI_ERROR_REPORTING_2' => $html_selected,
+                        'PHPINI_ERROR_REPORTING_3' => ''));
+        break;
+    case 'E_ALL':
+        $tpl->assign(array(
+                        'PHPINI_ERROR_REPORTING_0' => '',
+                        'PHPINI_ERROR_REPORTING_1' => '',
+                        'PHPINI_ERROR_REPORTING_2' => '',
+                        'PHPINI_ERROR_REPORTING_3' => $html_selected));
+        break;
+			
+}
+
+//template stuff for disable_function 
+$phpini_df = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
+$phpini_df_all = array(	'PHPINI_DF_SHOW_SOURCE_CHK',
+			'PHPINI_DF_SYSTEM_CHK',
+			'PHPINI_DF_SHELL_EXEC_CHK',
+                        'PHPINI_DF_PASSTHRU_CHK',
+                        'PHPINI_DF_EXEC_CHK',
+                        'PHPINI_DF_PHPINFO_CHK',
+                        'PHPINI_DF_SHELL_CHK',
+                        'PHPINI_DF_SYMLINK_CHK' );
+
+
+foreach($phpini_df_all as $phpini_df_var){
+	$phpini_df_shortvar = substr($phpini_df_var,10);
+	$phpini_df_shortvar = strtolower(substr($phpini_df_shortvar,0,-4));
+	if (in_array($phpini_df_shortvar,$phpini_df)){
+        	$tpl->assign(array(
+                	        $phpini_df_var => 'CHECKED'));
+	} 
+	else {
+		$tpl->assign(array(
+                                $phpini_df_var => ''));
+	}
+}
+
 
 switch ($cfg->LOG_LEVEL) {
     case false:
@@ -385,6 +509,11 @@ $tpl->assign(array(
                   'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
                   'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS,
                   'ORDERS_EXPIRATION_TIME_VALUE' => $cfg->ORDERS_EXPIRE_TIME / 86400,
+		  'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
+                  'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
+                  'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
+                  'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
+                  'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit'),
                   'TR_GENERAL_SETTINGS' => tr('General settings'),
                   'TR_SETTINGS' => tr('Settings'),
                   'TR_MESSAGE' => tr('Message'),
@@ -433,9 +562,23 @@ $tpl->assign(array(
                   'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
                   'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)'),
                   'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
+		  'TR_PHPINI_BASE_SETTINGS' => tr('Global Base php.ini Setting'),
+                  'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value allow_url_fopen'),
+		  'TR_PHPINI_REGISTER_GLOBALS' => tr('Value register_globals'),
+                  'TR_PHPINI_DISPLAY_ERRORS' => tr('Value display_errors'),
+                  'TR_PHPINI_ERROR_REPORTING' => tr('Value error_reporting'),
+		  'TR_PHPINI_ER_OFF' => tr('All off'),
+                  'TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN' => tr('All errors except notices and warnings'),
+                  'TR_PHPINI_ER_EALL_EXCEPT_NOTICE' => tr('All errors except notices'),
+                  'TR_PHPINI_ER_EALL' => tr('All errors'),
+                  'TR_PHPINI_POST_MAX_SIZE' => tr('Value post_max_size'),
+                  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value upload_max_filesize'),
+                  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value max_execution_time'),
+                  'TR_PHPINI_MAX_INPUT_TIME' => tr('Value max_input_time'),
+                  'TR_PHPINI_MEMORY_LIMIT' => tr('Value memory_limit'),
+                  'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value disable_functions'),
                   'TR_ORDERS_SETTINGS' => tr('Orders settings'),
                   'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true)));
-
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');

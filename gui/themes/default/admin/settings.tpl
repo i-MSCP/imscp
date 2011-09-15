@@ -205,6 +205,93 @@
 						</tr>
 					</table>
 				</fieldset>
+                                <fieldset>
+                                        <legend>{TR_PHPINI_BASE_SETTINGS}</legend>
+                                        <table>
+                                                <tr>
+                                                        <td style="width:300px;"><label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label></td>
+                                                        <td>
+                                                                <select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
+                                                                        <option value="off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
+                                                                        <option value="on" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
+                                                                </select>
+                                                        </td>
+                                                </tr>
+                                               <tr>
+                                                        <td style="width:300px;"><label for="phpini_register_globals">{TR_PHPINI_REGISTER_GLOBALS}</label></td>
+                                                        <td>
+                                                                <select name="phpini_register_globals" id="phpini_register_globals">
+                                                                        <option value="off" {PHPINI_REGISTER_GLOBALS_OFF}>{TR_DISABLED}</option>
+                                                                        <option value="on" {PHPINI_REGISTER_GLOBALS_ON}>{TR_ENABLED}</option>
+                                                                </select>
+                                                        </td>
+                                                </tr>
+                                               <tr>
+                                                        <td style="width:300px;"><label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label></td>
+                                                        <td>
+                                                                <select name="phpini_display_errors" id="phpini_display_errors">
+                                                                        <option value="off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
+                                                                        <option value="on" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
+                                                                </select>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><label for="phpini_error_reporting">{TR_PHPINI_ERROR_REPORTING}</label></td>
+                                                        <td>
+                                                                <select name="phpini_error_reporting" id="phpini_error_reporting">
+                                                                        <option value="0" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ER_OFF}</option>
+									<option value='E_ALL ^ (E_NOTICE | E_WARNING)' {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN}</option>
+                                                                        <option value='E_ALL ^ E_NOTICE' {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE}</option>
+									<option value='E_ALL' {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ER_EALL}</option>
+                                                                </select>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label></td>
+                                                        <td>
+                                                                <input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" /> MB
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label></td>
+                                                        <td>
+                                                                <input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" /> MB
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label></td>
+                                                        <td>
+                                                                <input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" /> sec
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label></td>
+                                                        <td>
+                                                                <input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" /> sec 
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td><label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label></td>
+                                                        <td>
+                                                                <input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" /> MB
+                                                        </td>
+                                                </tr>
+						<tr>
+                                                        <td><label for="phpini_disable_functions">{TR_PHPINI_DISABLE_FUNCTIONS}</label></td>
+                                                        <td>
+                                                                <input name="phpini_df_show_source" id="phpini_df_show_source" type="checkbox" {PHPINI_DF_SHOW_SOURCE_CHK} value="show_source"/> show_source
+								<input name="phpini_df_system" id="phpini_df_system" type="checkbox" {PHPINI_DF_SYSTEM_CHK} value="system"/> system
+								<input name="phpini_df_shell_exec" id="phpini_df_shell_exec" type="checkbox" {PHPINI_DF_SHELL_EXEC_CHK} value="shell_exec"/> shell_exec
+								<input name="phpini_df_passthru" id="phpini_df_passthru" type="checkbox" {PHPINI_DF_PASSTHRU_CHK} value="passthru"/> passthru
+                                                                <input name="phpini_df_exec" id="phpini_df_exec" type="checkbox" {PHPINI_DF_EXEC_CHK} value="exec"/> exec
+								<input name="phpini_df_phpinfo" id="phpini_df_phpinfo" type="checkbox" {PHPINI_DF_PHPINFO_CHK} value="phpinfo"/> phpinfo
+                                                                <input name="phpini_df_shell" id="phpini_df_shell" type="checkbox" {PHPINI_DF_SHELL_CHK} value="shell"/> shell
+                                                                <input name="phpini_df_symlink" id="phpini_df_symlink" type="checkbox" {PHPINI_DF_SYMLINK_CHK} value="symlink"/> symlink
+                                                        </td>
+                                                </tr>
+
+                                        </table>
+                                </fieldset>
                 <fieldset>
                     <legend>{TR_ORDERS_SETTINGS}</legend>
                     <table>

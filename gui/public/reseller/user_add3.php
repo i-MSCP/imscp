@@ -172,8 +172,12 @@ function add_user_data($reseller_id)
         $props = $data['props'];
     }
 
-    list($php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk,
-        $backup, $dns, $software_allowed) = explode(';', $props);
+    list(
+        	$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk,
+		$backup, $dns, $software_allowed,
+                $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
+                $phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit
+     	) = array_pad(explode(';', $props),23,'no');
 
     $php = preg_replace("/\_/", '', $php);
     $cgi = preg_replace("/\_/", '', $cgi);
@@ -232,18 +236,38 @@ function add_user_data($reseller_id)
 			    `domain_status`, `domain_subd_limit`, `domain_alias_limit`,
 			    `domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
 			    `domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
-			    `domain_software_allowed`
+			    `domain_software_allowed`, `phpini_perm_system`, `phpini_perm_register_globals`,
+			    `phpini_perm_allow_url_fopen`, `phpini_perm_display_errors`, `phpini_perm_disable_functions`
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
 	";
 
     exec_query($query, array($dmn_name, $record_id, $reseller_id, time(), $dmn_expire,
                             $mail, $ftp, $traff, $sql_db, $sql_user,
                             $cfg->ITEM_ADD_STATUS, $sub, $als, $domain_ip, $disk, 0,
-                            $php, $cgi, $backup, $dns, $software_allowed));
+                            $php, $cgi, $backup, $dns, $software_allowed,
+			    $phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, 
+			    $phpini_al_display_errors, $phpini_al_disable_functions	
+			));
+
 
     $dmn_id = $db->insertId();
+    //save php.ini if exist
+    if ($phpini_system == 'yes'){
+	//new php ini object
+	$phpini = new iMSCP_PHPini();
+	//fill it with the custom values - other thake from default
+	$phpini->setData('phpiniSystem','yes');
+        $phpini->setData('phpiniPostMaxSize', $phpini_post_max_size);
+        $phpini->setData('phpiniUploadMaxFileSize', $phpini_upload_max_filesize);
+        $phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
+        $phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
+        $phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
+	// save it to php_ini table
+	$phpini->saveCustomPHPiniIntoDb($dmn_id);
+
+    }
 
     $query = "
 		INSERT INTO
