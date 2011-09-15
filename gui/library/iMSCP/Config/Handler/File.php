@@ -33,7 +33,7 @@
  */
 
 /** @see iMSCP_Config_Handler */
-require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
+require_once  'iMSCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from a flat file.

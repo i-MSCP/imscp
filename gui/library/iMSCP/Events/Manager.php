@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2011 by Laurent Declercq
+ * Copyright (C) 2010-2011 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Manager
+ * @package     iMSCP_Core
+ * @subpakage	Events_Manager
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
@@ -39,7 +39,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * A listener can be an object or a callback function. The listeners objects must
  * implement listeners methods named as the events they listens on.
  *
- * A very basic example for a listener that listen on the 'AdminScriptStart':
+ * A very basic example for a listener that listen on the 'AdminScriptStart' event:
  *
  * <code>
  * class HelloWorld
@@ -76,7 +76,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
     protected static $_instance;
 
     /**
-     * @var iMSCP_Events_Listeners_Stack
+     * @var iMSCP_Events_Listeners_Stack[]
      */
     protected $_events = array();
 

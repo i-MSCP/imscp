@@ -28,7 +28,7 @@
  */
 
 /**
- * Class that allows to get services properties and their status
+ * Class that allows to get services properties and their status.
  *
  * @category    i-MSCP
  * @package     iMSCP_Services

@@ -163,7 +163,7 @@ $fonts = array(
 );
 
 // Set random captcha font file
-$config->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
+$config->LOSTPASSWORD_CAPTCHA_FONT = LIBRARY_PATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection
@@ -255,10 +255,10 @@ $config->ORDERS_EXPIRE_TIME = 604800;
 iMSCP_Initializer::run($config);
 
 // Please: Don't move this statement before the initialization process
-if( PHP_SAPI != 'cli') {
+if(PHP_SAPI != 'cli') {
     $config->MAINTENANCEMODE_MESSAGE =
         tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
 }
 
-// Remove useless variable
+// Removing useless variable
 unset($config);

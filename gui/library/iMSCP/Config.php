@@ -64,11 +64,11 @@
  * objects where the registered values (that are iMSCP_Config_Handler objects) are
  * indexed by they class name.
  *
- * @category    iMSCP
- * @package     iMSCP_Config
- * @author      ispCP Team
- * @author      iMSCP Team
- * @version     1.0.9
+ * @category	iMSCP
+ * @package		iMSCP_Config
+ * @author		ispCP Team
+ * @author		iMSCP Team
+ * @version		1.0.9
  */
 class iMSCP_Config
 {

@@ -52,15 +52,16 @@ function gen_client_mainmenu($tpl, $menu_file)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $tpl->define_dynamic('menu', $menu_file);
-    $tpl->define_dynamic('isactive_awstats', 'menu');
-    $tpl->define_dynamic('isactive_domain', 'menu');
-    $tpl->define_dynamic('isactive_email', 'menu');
-    $tpl->define_dynamic('isactive_ftp', 'menu');
-    $tpl->define_dynamic('isactive_sql', 'menu');
-    $tpl->define_dynamic('isactive_support', 'menu');
-    $tpl->define_dynamic('custom_buttons', 'menu');
-    $tpl->define_dynamic('isactive_phpini', 'menu');
+    $tpl->define_dynamic(array(
+                              'menu' => $menu_file,
+                              'isactive_awstats' => 'menu',
+                              'isactive_domain' => 'menu',
+                              'isactive_email' => 'menu',
+                              'isactive_ftp' => 'menu',
+                              'isactive_sql' => 'menu',
+                              'isactive_support' => 'menu',
+                              'custom_buttons', 'menu'));
+
     $tpl->assign(array(
                       'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
                       'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -101,9 +102,7 @@ function gen_client_mainmenu($tpl, $menu_file)
                       'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
                       'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
                       'TR_MENU_ADD_DNS' => tr("Add DNS zone's record"),
-                      'TR_MENU_SSL_MANAGE' => tr('Manage SSL certificate'),
-		      'TR_MENUPHPINI'     => tr('php.ini')
-			));
+                      'TR_MENU_SSL_MANAGE' => tr('Manage SSL certificate')));
 
     $query = "
 		SELECT
@@ -201,13 +200,15 @@ function gen_client_menu($tpl, $menu_file)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $tpl->define_dynamic('menu', $menu_file);
-    $tpl->define_dynamic('custom_buttons', 'menu');
-    $tpl->define_dynamic('isactive_update_hp', 'menu');
-    $tpl->define_dynamic('isactive_alias_menu', 'menu');
-    $tpl->define_dynamic('isactive_subdomain_menu', 'menu');
-    $tpl->define_dynamic('isactive_dns_menu', 'menu');
-    $tpl->define_dynamic('t_software_menu', 'menu');
+    $tpl->define_dynamic(array(
+                              'menu' => $menu_file,
+                              'custom_buttons' => 'menu',
+                              'isactive_update_hp' => 'menu',
+                              'isactive_alias_menu' => 'menu',
+                              'isactive_subdomain_menu' => 'menu',
+                              'isactive_dns_menu' => 'menu',
+                              't_software_menu' => 'menu'));
+
     $tpl->assign(array(
                       'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
                       'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -296,17 +297,6 @@ function gen_client_menu($tpl, $menu_file)
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] == 'no') {
         $tpl->assign('SUPPORT_SYSTEM', '');
-    }
-
-    //php.ini
-    /* iMSCP_PHPini object */
-    $phpini = new iMSCP_PHPini();
-    $domainId = $phpini->getDomId($_SESSION['user_id']);
-    $phpini->loadClPerm($domainId);
-    if ($phpini->getClPermVal('phpiniSystem') == 'no'){
-	$tpl->assign('ISACTIVE_PHPINI', '');
-    } else {
-	$tpl->parse('ISACTIVE_PHPINI', 'isactive_phpini');
     }
 
     list($dmn_id,,,,,,,,$dmn_mailacc_limit,,,,,,$dmn_als_limit,$dmn_subd_limit,,,,,,,

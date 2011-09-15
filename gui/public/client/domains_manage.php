@@ -226,7 +226,7 @@ function gen_user_sub_list($tpl, $user_id) {
 			`subdomain`.`domain_id` = ?
 		ORDER BY
 			`subdomain_name`
-    ";
+	";
 
 	$query2 = "
 		SELECT
@@ -259,15 +259,15 @@ function gen_user_sub_list($tpl, $user_id) {
 			list($sub_forward, $sub_edit_link, $sub_edit) = gen_user_sub_forward($rs->fields['subdomain_id'], $rs->fields['subdomain_status'], $rs->fields['subdomain_url_forward'], 'dmn');
 			$sbd_name = decode_idna($rs->fields['subdomain_name']);
 			$sub_forward = decode_idna($sub_forward);
-            if($status_bool == false) { // reload
+			if($status_bool == false) { // reload
 				$tpl->assign('STATUS_RELOAD_TRUE', '');
 				$tpl->assign('SUB_NAME', tohtml($sbd_name));
-                $tpl->assign('SUB_ALIAS_NAME', tohtml($rs->fields['domain_name']));
+				$tpl->assign('SUB_ALIAS_NAME', tohtml($rs->fields['domain_name']));
 				$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
 			} else {
 				$tpl->assign('STATUS_RELOAD_FALSE', '');
 				$tpl->assign('SUB_NAME', tohtml($sbd_name));
-                $tpl->assign('SUB_ALIAS_NAME', tohtml($rs->fields['domain_name']));
+				$tpl->assign('SUB_ALIAS_NAME', tohtml($rs->fields['domain_name']));
 				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 			}
 			$tpl->assign(
@@ -280,7 +280,7 @@ function gen_user_sub_list($tpl, $user_id) {
 					'SUB_EDIT'			=> $sub_edit,
 					'SUB_ACTION'		=> $sub_action,
 					'SUB_ACTION_SCRIPT'	=> $sub_action_script,
-                    'ITEM_CLASS'        => ($counter % 2 == 0) ? 'content' : 'content2'
+					'ITEM_CLASS'		=> ($counter % 2 == 0) ? 'content' : 'content2'
 				)
 			);
 			$tpl->parse('SUB_ITEM', '.sub_item');
@@ -292,15 +292,15 @@ function gen_user_sub_list($tpl, $user_id) {
 			list($sub_forward, $sub_edit_link, $sub_edit) = gen_user_sub_forward($rs2->fields['subdomain_alias_id'], $rs2->fields['subdomain_alias_status'], $rs2->fields['subdomain_alias_url_forward'], 'als');
 			$sbd_name = decode_idna($rs2->fields['subdomain_alias_name']);
 			$sub_forward = decode_idna($sub_forward);
-            if($status_bool == false) { // reload
+			if($status_bool == false) { // reload
 				$tpl->assign('STATUS_RELOAD_TRUE', '');
 				$tpl->assign('SUB_NAME', tohtml($sbd_name));
-                $tpl->assign('SUB_ALIAS_NAME', tohtml($rs2->fields['alias_name']));
+				$tpl->assign('SUB_ALIAS_NAME', tohtml($rs2->fields['alias_name']));
 				$tpl->parse('STATUS_RELOAD_FALSE', 'status_reload_false');
 			} else {
 				$tpl->assign('STATUS_RELOAD_FALSE', '');
 				$tpl->assign('SUB_NAME', tohtml($sbd_name));
-                $tpl->assign('SUB_ALIAS_NAME', tohtml($rs2->fields['alias_name']));
+				$tpl->assign('SUB_ALIAS_NAME', tohtml($rs2->fields['alias_name']));
 				$tpl->parse('STATUS_RELOAD_TRUE', 'status_reload_true');
 			}
 			$tpl->assign(
@@ -313,7 +313,7 @@ function gen_user_sub_list($tpl, $user_id) {
 					'SUB_EDIT'			=> $sub_edit,
 					'SUB_ACTION'		=> $sub_action,
 					'SUB_ACTION_SCRIPT'	=> $sub_action_script,
-                    'ITEM_CLASS'        => ($counter % 2 == 0) ? 'content' : 'content2'
+					'ITEM_CLASS'		=> ($counter % 2 == 0) ? 'content' : 'content2'
 				)
 			);
 			$tpl->parse('SUB_ITEM', '.sub_item');
@@ -392,7 +392,7 @@ function gen_user_als_list($tpl, $user_id) {
 			$alias_name = decode_idna($rs->fields['alias_name']);
 			$als_forward = decode_idna($als_forward);
 
-            if($status_bool == false) { // reload
+			if($status_bool == false) { // reload
 				$tpl->assign('ALS_STATUS_RELOAD_TRUE', '');
 				$tpl->assign('ALS_NAME', tohtml($alias_name));
 				$tpl->parse('ALS_STATUS_RELOAD_FALSE', 'als_status_reload_false');
@@ -479,7 +479,7 @@ generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+	iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

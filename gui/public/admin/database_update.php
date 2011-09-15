@@ -67,9 +67,9 @@ function admin_generateDatabaseUpdateDetail($tpl)
 function _admin_generateIssueTrackerLink($detail)
 {
 	return preg_replace(
-		'/^(#[0-9]+)/',
+		'/^#([0-9]+)/',
 		'<a href="http://sourceforge.net/apps/trac/i-mscp/ticket/\1" target="_blank" title="' .
-			tr('More Details') .'">\1</a>',
+			tr('More Details') .'">#\1</a>',
 		$detail);
 }
 

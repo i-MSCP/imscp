@@ -5,7 +5,7 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
+ * @version     SVN: $Id: Reseller.php 5086 2011-08-04 09:21:37Z sci2tech $
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team

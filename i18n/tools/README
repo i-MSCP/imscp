@@ -5,9 +5,9 @@
 Introduction
 ------------
 
-Since i-MSCP Beta 1, we use the Transifex service to translate our translation files.
-In the past, we used several shell scripts for updating translation files but it was
-tedious.
+Since i-MSCP Beta 1, we are using the Transifex service to translate our translation
+files. In the past, we used several shell scripts for updating translation files but
+it was tedious.
 
 Before the process was as follows:
 

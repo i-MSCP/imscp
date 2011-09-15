@@ -76,7 +76,7 @@ function listIPDomains($tpl)
 
     $rs = execute_query($query);
 
-    if (!$rs->recordCount()) {
+    if ($rs->recordCount()) {
         while (!$rs->EOF) {
 
             $no_domains = false;

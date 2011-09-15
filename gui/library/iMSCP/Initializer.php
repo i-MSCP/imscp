@@ -25,7 +25,7 @@
  * @package     iMSCP_Initializer
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
@@ -256,37 +256,44 @@ class iMSCP_Initializer
      */
     protected function _setIncludePath()
     {
-        /*
-        $ps = PATH_SEPARATOR;
-
-        // Get the current PHP include path string and transform it in array
-        $include_path = explode($ps, str_replace('.' . $ps, '', DEFAULT_INCLUDE_PATH));
-
-        // Adds the i-MSCP gui/include ABSPATH to the PHP include_path
-        array_unshift($include_path, dirname(dirname(__FILE__)));
-
-        // Transform array of path to string and set the new PHP include_path
-        set_include_path('.' . $ps . implode($ps, array_unique($include_path)));
-        */
+		// Ensure library/ and vendor/ are on include_path
+		set_include_path(implode(
+							 PATH_SEPARATOR,
+							 array_unique(array(
+											   LIBRARY_PATH,
+											   LIBRARY_PATH . '/vendor',
+											   DEFAULT_INCLUDE_PATH
+										  ))));
     }
 
     /**
-     * Create/restore the session.
+     * Initialize the session.
      *
      * @return void
      */
-    protected function _initializeSession()
-    {
-        if (!is_writable($this->_config->GUI_ROOT_DIR . '/data/sessions')) {
-            throw new iMSCP_Exception('The GUI `gui/data/sessions` directory must be writable.');
-        }
+	protected function _initializeSession()
+	{
+		if (!is_writable($this->_config->GUI_ROOT_DIR . '/data/sessions')) {
+			throw new iMSCP_Exception('The GUI `gui/data/sessions` directory must be writable.');
+		}
 
-        session_name('i-MSCP');
+		require_once 'Zend/Session.php';
 
-        if (!isset($_SESSION)) {
-            session_start();
-        }
-    }
+		Zend_Session::setOptions(
+			array(
+				 'use_cookies' => 'on',
+				 'use_only_cookies' => 'on',
+				 'use_trans_sid' => 'off',
+				 'strict' => false,
+				 'remember_me_seconds' => 0,
+				 'name' => 'iMSCP_Session',
+				 'gc_divisor' => 100,
+				 'gc_maxlifetime' => 1440,
+				 'gc_probability' => 1,
+				 'save_path' => $this->_config->GUI_ROOT_DIR . '/data/sessions'));
+
+		Zend_Session::start();
+	}
 
     /**
      * Load user's GUI properties in session.

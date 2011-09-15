@@ -41,13 +41,17 @@ use Carp;
 BEGIN{
 
 	$SIG{__DIE__} = sub {
-		debug("Developer dump:");
-		fatal("@_");
+		if(defined $^S && !$^S){
+			debug("Developer dump:");
+			fatal("@_");
+		}
 	};
 
 	$SIG{__WARN__} = sub{
-		debug("Developer dump:");
-		error("@_");
+		if(defined $^S && !$^S){
+			debug("Developer dump:");
+			error("@_");
+		}
 	};
 
 }

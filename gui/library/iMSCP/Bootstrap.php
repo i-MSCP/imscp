@@ -24,7 +24,7 @@
  * @category	i-MSCP
  * @package		iMSCP_Bootstrap
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
@@ -34,7 +34,7 @@
 /**
  * Defines include directory path if needed
  */
-defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
+defined('LIBRARY_PATH') or define('LIBRARY_PATH', dirname(dirname(__FILE__)));
 
 /**
  * Bootstrap class for i-MSCP
@@ -43,10 +43,11 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  *
  * <b>Note:</b> Will be improved later
  *
- * @package iMSCP_Bootstrap
- * @author  Laurent Declercq <l.declercq@nuxwin.com>
- * @since   1.0.7 (ispCP)
- * @version 1.0.4
+ * @category	iMSCP
+ * @package		iMSCP_Bootstrap
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @since		1.0.7 (ispCP)
+ * @version		1.0.4
  */
 class iMSCP_Bootstrap
 {
@@ -62,7 +63,7 @@ class iMSCP_Bootstrap
 			$boot = new self;
 			$boot->_run();
 		} else {
-			throw new iMSCP_Exception('Error: i-MSCP is already booted!');
+			throw new iMSCP_Exception('i-MSCP is already booted.');
 		}
 	}
 
@@ -106,6 +107,6 @@ class iMSCP_Bootstrap
 	 */
 	protected function _loadInitializer()
     {
-        require INCLUDEPATH . '/iMSCP/Initializer.php';
+        require LIBRARY_PATH . '/iMSCP/Initializer.php';
 	}
 }

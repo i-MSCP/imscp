@@ -35,7 +35,7 @@
  */
 
 /**
- * Translates a given string into the selected language, if exists.
+ * Translates a given message into the selected language, if exists.
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
@@ -44,7 +44,7 @@
  *                                returned string from being replaced with html
  *                                entities. If not considere the parameter(s) as
  *                                simple substitution value(s)
- * @return Translated or original string
+ * @return string Translated or original message
  */
 function tr($msgid, $substitution = false)
 {

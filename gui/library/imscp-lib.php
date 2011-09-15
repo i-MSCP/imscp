@@ -56,8 +56,8 @@ if (version_compare(phpversion(), '5.3.2', '<') === true) {
 	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
 }
 
-// Define path for the i-MSCP include directory
-define('INCLUDEPATH', dirname(__FILE__));
+// Define path for the i-MSCP library directory
+define('LIBRARY_PATH', dirname(__FILE__));
 
 /**
  * Autoloading classes
@@ -96,6 +96,8 @@ require_once 'shared-functions.php';
 
 /**
  * Include i-MSCP app installer functions
+ * @Todo move this statement at begin of related action scripts since the sw
+ * functions are not needed in all application.
  */
 require_once 'sw-functions.php';
 
@@ -137,12 +139,12 @@ require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
 
 /**
- * View helper functions
+ * View helpers functions
  */
-require_once 'iMSCP/View/Helpers/Common.php';
+require_once 'iMSCP/View/Helpers/Functions/Common.php';
 
 if(isset($_SESSION['user_type'])) {
     $helperFileName = ucfirst(strtolower($_SESSION['user_type']));
 
-    require_once 'iMSCP/View/Helpers/' . $helperFileName . '.php';
+    require_once 'iMSCP/View/Helpers/Functions/' . $helperFileName . '.php';
 }

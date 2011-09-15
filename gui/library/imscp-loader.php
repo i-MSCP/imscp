@@ -41,7 +41,7 @@ function autoload_class($className)
 {
     $path = str_replace('_', '/', $className);
 
-    if (file_exists(INCLUDEPATH . '/' . $path . '.php')) {
-        require_once INCLUDEPATH . '/' . $path . '.php';
+    if (file_exists(LIBRARY_PATH . '/' . $path . '.php')) {
+        require_once LIBRARY_PATH . '/' . $path . '.php';
     }
 }

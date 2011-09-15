@@ -17,11 +17,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @package     iMSCP
- * @package     iMSCP_Events
- * @subpackage  Listeners
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpakage	Events_Listeners
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
@@ -34,9 +34,9 @@
  * event.
  *
  * @category    iMSCP
- * @package     iMSCP_Events
- * @subpackage  Listeners
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @package     iMSCP_Core
+ * @subpakage	Events_Listeners
+ * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     0.0.1
  */
 class iMSCP_Events_Listeners_Stack implements IteratorAggregate
