@@ -1120,7 +1120,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Feature php.ini
+	 * #15: Feature - Edit php.ini variables via UI
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
 	 * @return Stack of SQL statements to be executed
