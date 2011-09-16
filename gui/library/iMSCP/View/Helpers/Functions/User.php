@@ -102,7 +102,8 @@ function gen_client_mainmenu($tpl, $menu_file)
                       'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
                       'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
                       'TR_MENU_ADD_DNS' => tr("Add DNS zone's record"),
-                      'TR_MENU_SSL_MANAGE' => tr('Manage SSL certificate')));
+                      'TR_MENU_SSL_MANAGE' => tr('Manage SSL certificate'),
+		      'TR_MENUPHPINI'     => tr('PHP Settings')));
 
     $query = "
 		SELECT
@@ -297,6 +298,17 @@ function gen_client_menu($tpl, $menu_file)
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] == 'no') {
         $tpl->assign('SUPPORT_SYSTEM', '');
+    }
+
+    //php.ini
+    /* iMSCP_PHPini object */
+    $phpini = new iMSCP_PHPini();
+    $domainId = $phpini->getDomId($_SESSION['user_id']);
+    $phpini->loadClPerm($domainId);
+    if ($phpini->getClPermVal('phpiniSystem') == 'no'){
+        $tpl->assign('ISACTIVE_PHPINI', '');
+    } else {
+        $tpl->parse('ISACTIVE_PHPINI', 'isactive_phpini');
     }
 
     list($dmn_id,,,,,,,,$dmn_mailacc_limit,,,,,,$dmn_als_limit,$dmn_subd_limit,,,,,,,
