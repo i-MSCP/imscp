@@ -79,7 +79,8 @@ $tpl->assign(
                 'TR_UPDATE_DATA'                => tr('Submit changes'),
                 'TR_CANCEL'                             => tr('Cancel'),
                 'TR_MENU_PHPINI'                             => tr('php.ini Settings'),
-                'TR_PHPINI'                             => tr('php.ini')
+                'TR_PHPINI'                             => tr('php.ini'),
+		'TR_PHP_INI_EXEC_HELP' => tr('if enabled its allow the php function exec(). Needed from convert (imagemagic) and most image galleries')
 
 	)
 );
@@ -208,11 +209,13 @@ if ($phpini->getClPermVal('phpiniSystem') == 'yes' && $phpini->getDomStatus($dom
         }	
 	
         if (in_array('exec', $phpiniDf)){
-                $tpl->assign(array('PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $cfg->HTML_SELECTED,
-                                   'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
+                $tpl->assign(array(
+					'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => '',
+                                   	'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $cfg->HTML_SELECTED));
         } else { 
-                $tpl->assign(array('PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $cfg->HTML_SELECTED,
-                                   'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => ''));
+                $tpl->assign(array(
+					'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $cfg->HTML_SELECTED,
+                                   	'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
         }
 
 

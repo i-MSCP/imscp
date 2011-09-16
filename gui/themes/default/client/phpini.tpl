@@ -19,6 +19,13 @@
             DD_belatedPNG.fix('*');
         </script>
         <![endif]-->
+        <script type="text/javascript">
+                /*<![CDATA[*/
+                        $(document).ready(function() {
+                                jQuery('#exec_help').iMSCPtooltips({msg:"{TR_PHP_INI_EXEC_HELP}"});
+                        });
+                /*]]>*/
+        </script>
     </head>
 
     <body>
@@ -118,7 +125,7 @@
            <!-- EDP: t_phpini_disable_functions -->
            <!-- BDP: t_phpini_disable_functions_exec -->
             <tr>
-                    <td><label for="phpini_disable_functions_exec">{TR_PHPINI_DISABLE_FUNCTIONS_EXEC}</label></td>
+                    <td><label for="phpini_disable_functions_exec">{TR_PHPINI_DISABLE_FUNCTIONS_EXEC}</label><span class="icon i_help" id="exec_help">Help</span></td>
                     <td>
 			    <select name="phpini_disable_functions_exec" id="phpini_disable_functions_exec">
                                     <option value="off" {PHPINI_DISABLE_FUNCTIONS_EXEC_OFF}>{TR_DISABLED}</option>
