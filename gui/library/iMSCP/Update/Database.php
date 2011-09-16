@@ -93,6 +93,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Checks for available database update.
 	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return bool TRUE if an update is available, FALSE otherwise
 	 */
 	public function isAvailableUpdate()
@@ -107,6 +108,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Apply all available database updates.
 	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
 	public function applyUpdates()
@@ -178,6 +180,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Returns database update(s) details.
 	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return array
 	 */
 	public function getDatabaseUpdateDetail()
@@ -207,6 +210,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Return next database update revision.
 	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return int 0 if no update available
 	 */
 	protected function getNextUpdate()
@@ -226,6 +230,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * Note: For performances reasons, the revision is retrieved once.
 	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return int The revision of the last available database update
 	 */
 	protected function getLastAvailableUpdateRevision()
@@ -254,6 +259,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Returns revision of the last applied database update.
 	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return int Revision of the last applied database update
 	 */
 	protected function getLastAppliedUpdate()
@@ -418,7 +424,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Removes useless 'suexec_props' table.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r3709
 	 * @return array SQL Statement
 	 */
@@ -527,7 +533,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Adds i-MSCP daemon service properties in config table.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4004
 	 * @return void
 	 */
@@ -778,7 +784,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #124: Enhancement - Switch to gettext (Machine Object Files)
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4792
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -875,7 +881,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Some fixes for the user_gui_props table.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4961
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -893,11 +899,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Deletes possible orphan items in many tables.
+	 * #145: Deletes possible orphan items in many tables.
 	 *
-	 * See #145 on i-MSCP issue tracker for more information.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4961
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -906,10 +910,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd = array();
 
 		$tablesToForeignKey = array(
-			'email_tpls' => 'owner_id', 'hosting_plans' => 'reseller_id',
-			'orders' => 'user_id', 'orders_settings' => 'user_id',
-			'reseller_props' => 'reseller_id', 'tickets' => 'ticket_to',
-			'tickets' => 'ticket_from', 'user_gui_props' => 'user_id',
+			'email_tpls' => 'owner_id',
+			'hosting_plans' => 'reseller_id',
+			'orders' => 'user_id',
+			'orders_settings' => 'user_id',
+			'reseller_props' => 'reseller_id',
+			'tickets' => 'ticket_to',
+			'tickets' => 'ticket_from',
+			'user_gui_props' => 'user_id',
 			'web_software' => 'reseller_id');
 
 		$stmt = execute_query('SELECT `admin_id` FROM `admin`');
@@ -925,7 +933,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Changes the log table schema to allow storage of large messages.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r5002
 	 * @return string SQL statement to be executed
 	 */
@@ -972,15 +980,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_75()
 	{
-		return "
-			UPDATE `mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760';
-		";
+		return "UPDATE `mail_users` SET `quota` = '104857600' WHERE `quota` = '10485760'";
 	}
 
 	/**
 	 * Adds unique index on user_gui_props.user_id column.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4592
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -1020,7 +1026,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Drops useless column in user_gui_props table.
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4644
 	 * @return string SQL Statement
 	 */
@@ -1120,7 +1126,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #15: Feature - Edit php.ini variables via UI
+	 * #15: Feature - Edit php.ini variables via UI.
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
 	 * @return Stack of SQL statements to be executed
@@ -1173,5 +1179,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 				ADD `phpini_perm_display_errors` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
 				ADD `phpini_perm_disable_functions` VARCHAR( 20 ) NOT NULL DEFAULT 'no'"
 		);
+	}
+
+	/**
+	 * #188: Defect - Table quota_dovecot is still myisam than innoDB.
+	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5227
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_80()
+	{
+		return 'ALTER TABLE `quota_dovecot` ENGINE=InnoDB';
 	}
 }

@@ -37,6 +37,7 @@ Tickets:
 	- Fixed #179: Bug - Unexpected T_STRING
 	- Fixed #183: Bug - client/subdomain_edit.php shows a white page
 	- Fixed #185: Bug - reseller/ip_usage.php doesn't show any statistics
+	- Fixed #188: Defect - Table quota_dovecot is still myisam than innoDB
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
