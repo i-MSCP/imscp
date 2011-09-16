@@ -1568,7 +1568,7 @@ sub dmn_add_httpd_file_data {
 	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 	my $sys_user = "$suexec_user_pref$sys_uid";
 	my $sys_group = "$suexec_user_pref$sys_gid";
-	my $db_config = get_config_from_db(); #table config from DB as href->href 
+	my $db_config = get_config_from_db(); #table config from DB as href->href
 	my $custom_phpini = get_custom_php_ini_from_db($dmn_id); #custom php.ini from php_ini as array_ref.array_ref
 
 	# Starter directory for usual user
@@ -1799,7 +1799,7 @@ sub dmn_add_httpd_file_data {
 	if (!(-e "$starter_dir/$dmn_name/php5/php.ini")) {
 		my $ini_tpl = undef;
 		my $ini_cfg_dir = "$main::cfg{'CONF_DIR'}/fcgi/parts/php5";
-		my %tag_hash;		
+		my %tag_hash;
 
 		($rs, $ini_tpl) = get_tpl($ini_cfg_dir, 'php.ini');
 		return $rs if ($rs != 0);
@@ -1916,7 +1916,7 @@ sub dmn_change_httpd_file_data {
 	my $sys_group = "$suexec_user_pref$sys_gid";
         my $db_config = get_config_from_db(); #table config from DB as href->href
 	my $custom_phpini = get_custom_php_ini_from_db($dmn_id);
- 
+
 	# Starter-Scripts for FastCGI
 
 	if(! -d "$starter_dir/$dmn_name") {
@@ -2094,7 +2094,7 @@ sub dmn_change_httpd_file_data {
 
 	($rs, my $ini_tpl) = get_file("$conf_dir/fcgi/parts/php5/php.ini");
 	return $rs if ($rs != 0);
-	
+
 	if ($custom_phpini){
                 ($rs, $cfg) = prep_tpl(
                         {
@@ -4041,11 +4041,11 @@ sub dmn_restore_data {
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 
-			$cmd = 'find '."$dmn_dir/backups".' -type d -print0 | ${XARGS} -0 '.$main::cfg{'CMD_CHMOD'}.' 0750';
+			$cmd = 'find '."$dmn_dir/backups".' -type d -print0 | xargs -r -0 '.$main::cfg{'CMD_CHMOD'}.' 0750';
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 
-			$cmd = 'find '."$dmn_dir/backups".' -type f -print0 | ${XARGS} -0 '.$main::cfg{'CMD_CHMOD'}.' 0640';
+			$cmd = 'find '."$dmn_dir/backups".' -type f -print0 | xargs -r -0 '.$main::cfg{'CMD_CHMOD'}.' 0640';
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 
@@ -4053,11 +4053,11 @@ sub dmn_restore_data {
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 
-			$cmd = 'find '."$dmn_dir/domain_disable_page".' -type d -print0 | ${XARGS} -0 '.$main::cfg{'CMD_CHMOD'}.' 0755';
+			$cmd = 'find '."$dmn_dir/domain_disable_page".' -type d -print0 | xargs -r -0 '.$main::cfg{'CMD_CHMOD'}.' 0755';
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 
-			$cmd = 'find '."$dmn_dir/domain_disable_page".' -type f -print0 | ${XARGS} -0 '.$main::cfg{'CMD_CHMOD'}.' 0644';
+			$cmd = 'find '."$dmn_dir/domain_disable_page".' -type f -print0 | xargs -r -0 '.$main::cfg{'CMD_CHMOD'}.' 0644';
 			$rs = sys_command($cmd);
 			return $rs if ($rs != 0);
 		}
