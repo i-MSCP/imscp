@@ -507,7 +507,6 @@ function gen_editdomain_page($tpl, $phpini) {
 
         } else { //if no permission at all
                 $tpl->assign(array('T_PHPINI_SYSTEM' => ''));
-                $tpl->assign(array('T_PHPINI_SYSTEM_PERM' => ''));
         }
 
 	

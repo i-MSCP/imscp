@@ -211,7 +211,7 @@
 				      </table>
 				      <fieldset>
 					
-					<!-- BDP: t_phpini_al_system_perm -->
+					<!-- BDP: t_phpini_system -->
 				     <fieldset>
   					<legend>{TR_PHPINI_CLIENT_PERM}</legend>
 					<table>
@@ -269,13 +269,11 @@
                                             </td>
                                         </tr>
                                         <!-- EDP: t_phpini_disable_functions_perm -->
-					<!-- EDP: t_phpini_al_system_perm -->
 				       </table>
 				      </fieldset>
 				      <fieldset>
 				       <legend>{TR_PHPINI_CLIENT_SETTINGS}</legend>
 				       <table>
-					<!-- BDP: t_phpini_system -->
 		                         <tr>
         	                                <td style="width:300px;">{TR_PHPINI_SYSTEM}</td>
                                                     <td>
