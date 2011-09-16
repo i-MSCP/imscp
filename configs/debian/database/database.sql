@@ -129,7 +129,17 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '78');
+('DATABASE_REVISION', '80'),
+('PHPINI_ALLOW_URL_FOPEN', 'off'),
+('PHPINI_DISPLAY_ERRORS', 'off'),
+('PHPINI_REGISTER_GLOBALS', 'off')
+('PHPINI_UPLOAD_MAX_FILESIZE', '10'),
+('PHPINI_POST_MAX_SIZE', '10'),
+('PHPINI_MEMORY_LIMIT', '128'),
+('PHPINI_MAX_INPUT_TIME', '60'),
+('PHPINI_MAX_EXECUTION_TIME', '30'),
+('PHPINI_ERROR_REPORTING', 'E_ALL ^ (E_NOTICE | E_WARNING)'),
+('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink');
 
 -- --------------------------------------------------------
 
@@ -178,6 +188,11 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `allowbackup` varchar(8) collate utf8_unicode_ci NOT NULL default 'full',
   `domain_dns` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
   `domain_software_allowed` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
+  `phpini_perm_system` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+  `phpini_perm_register_globals` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+  `phpini_perm_allow_url_fopen` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+  `phpini_perm_display_errors` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
+  `phpini_perm_disable_functions` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
@@ -466,6 +481,29 @@ CREATE TABLE IF NOT EXISTS `orders_settings` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `php_ini`
+--
+
+CREATE TABLE IF NOT EXISTS `php_ini` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `domain_id` int(10) NOT NULL,
+  `status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
+  `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
+  `allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+  `register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+  `display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED',
+  `post_max_size` int(11) NOT NULL DEFAULT '10',
+  `upload_max_filesize` int(11) NOT NULL DEFAULT '10',
+  `max_execution_time` int(11) NOT NULL DEFAULT '30',
+  `max_input_time` int(11) NOT NULL DEFAULT '60',
+  `memory_limit` int(11) NOT NULL DEFAULT '128',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quotalimits`
 --
 
@@ -547,6 +585,16 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `software_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'no',
   `softwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'yes',
   `websoftwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'yes',
+  `php_ini_system` VARCHAR(15) NOT NULL DEFAULT 'no',
+  `php_ini_al_disable_functions` VARCHAR(15) NOT NULL DEFAULT 'no',
+  `php_ini_al_allow_url_fopen` VARCHAR(15) NOT NULL DEFAULT 'no',
+  `php_ini_al_register_globals` VARCHAR(15) NOT NULL DEFAULT 'no',
+  `php_ini_al_display_errors` VARCHAR(15) NOT NULL DEFAULT 'no',
+  `php_ini_max_post_max_size` int(11) NOT NULL DEFAULT '0',
+  `php_ini_max_upload_max_filesize` int(11) NOT NULL DEFAULT '0',
+  `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0',
+  `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0',
+  `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0',
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
