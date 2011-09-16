@@ -2917,6 +2917,9 @@ sub get_custom_php_ini_from_db {
         return (-1, '') if( $rs != 0 );
 
         push_el(\@main::el, 'get_custom_php_ini_from_db()', 'Ending...');
-
-        return ($rdata);
+	if (!@$rdata[0]){
+		return 0;
+	} else {
+	        return ($rdata);
+	}
 }

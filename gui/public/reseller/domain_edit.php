@@ -708,6 +708,7 @@ function check_user_data($tpl, $reseller_id, $user_id, $phpini) {
 				$phpini->delCustomPHPiniFromDb($_SESSION['edit_id']);
 			}
 			$phpini->saveClPermIntoDb($_SESSION['edit_id']);
+			$phpini->sendToEngine($_SESSION['edit_id']);
 		}
 
         } else { //if no permission at all - do nothing with the saved phpini data but load the default vars
