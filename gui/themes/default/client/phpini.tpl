@@ -130,7 +130,7 @@
 	</table>
         <div class="buttons">
 	        <input name="Submit" type="submit" value="{TR_UPDATE_DATA}" />
-        	<input name="Submit" type="submit" onclick="MM_goToURL('parent','webtools.php');return document.MM_returnValue" value="{TR_CANCEL}" />
+        	<input name="Submit" type="submit" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 	        <input type="hidden" name="uaction" value="phpini_save" />
         </div>
        </form>
