@@ -12,11 +12,14 @@ Features / Enhancements:
 			- Merged imscp-build and imscp-setup
 
 	GUI:
+		Core:
+			- Edit php.ini variables via UI
 		Tools:
 			- Updated phpMyAdmin to 3.4.4
 			- Updated Squirrelmail to 1.4.22
 
 Tickets:
+	- Fixed #15:  Edit php.ini variables via UI
 	- Fixed #16:  Feature - Mail Quota Support
 	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with
 	dovecot
