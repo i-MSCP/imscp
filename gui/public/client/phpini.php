@@ -180,8 +180,8 @@ if ($phpini->getClPermVal('phpiniSystem') == 'yes' && $phpini->getDomStatus($dom
 	        'PHPINI_DISPLAY_ERRORS_ON'      => ($phpini->getDataVal('phpiniDisplayErrors') == 'on') ? $cfg->HTML_SELECTED : '',
         	'PHPINI_DISPLAY_ERRORS_OFF'     => ($phpini->getDataVal('phpiniDisplayErrors') != 'on') ? $cfg->HTML_SELECTED : '',
 	        'PHPINI_ERROR_REPORTING_0'      => ($phpini->getDataVal('phpiniErrorReporting') == '0') ? $cfg->HTML_SELECTED : '',
-        	'PHPINI_ERROR_REPORTING_1'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL ^ (E_NOTICE | E_WARNING)') ? $cfg->HTML_SELECTED : '',
-	        'PHPINI_ERROR_REPORTING_2'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL ^ E_NOTICE') ? $cfg->HTML_SELECTED : '',
+        	'PHPINI_ERROR_REPORTING_1'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE & ~E_WARNING') ? $cfg->HTML_SELECTED : '',
+	        'PHPINI_ERROR_REPORTING_2'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE') ? $cfg->HTML_SELECTED : '',
         	'PHPINI_ERROR_REPORTING_3'      => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL') ? $cfg->HTML_SELECTED : '',
 	        )
 	);	

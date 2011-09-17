@@ -413,14 +413,14 @@ switch ($phpini->getDataVal('phpiniErrorReporting')) {
 			'PHPINI_ERROR_REPORTING_2' => '',
 			'PHPINI_ERROR_REPORTING_3' => ''));
 	break;
-    case 'E_ALL ^ (E_NOTICE | E_WARNING)':
+    case 'E_ALL & ~E_NOTICE & ~E_WARNING':
         $tpl->assign(array(
                         'PHPINI_ERROR_REPORTING_0' => '',
                         'PHPINI_ERROR_REPORTING_1' => $html_selected,
                         'PHPINI_ERROR_REPORTING_2' => '',
                         'PHPINI_ERROR_REPORTING_3' => ''));
         break;
-    case 'E_ALL ^ E_NOTICE':
+    case 'E_ALL & ~E_NOTICE':
         $tpl->assign(array(
                         'PHPINI_ERROR_REPORTING_0' => '',
                         'PHPINI_ERROR_REPORTING_1' => '',

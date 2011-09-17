@@ -129,7 +129,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '80'),
+('DATABASE_REVISION', '81'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_REGISTER_GLOBALS', 'off'),
@@ -138,7 +138,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PHPINI_MEMORY_LIMIT', '128'),
 ('PHPINI_MAX_INPUT_TIME', '60'),
 ('PHPINI_MAX_EXECUTION_TIME', '30'),
-('PHPINI_ERROR_REPORTING', 'E_ALL ^ (E_NOTICE | E_WARNING)'),
+('PHPINI_ERROR_REPORTING', 'E_ALL & ~E_NOTICE & ~E_WARNING'),
 ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink');
 
 -- --------------------------------------------------------

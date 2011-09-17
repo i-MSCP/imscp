@@ -370,8 +370,8 @@
 							<td>
 								<select name="phpini_error_reporting" id="phpini_error_reporting">
 									<option value="0" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ER_OFF}</option>
-									<option value='E_ALL ^ (E_NOTICE | E_WARNING)' {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN}</option>
-									<option value='E_ALL ^ E_NOTICE' {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE}</option>
+									<option value='E_ALL & ~E_NOTICE & ~E_WARNING' {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN}</option>
+									<option value='E_ALL & ~E_NOTICE' {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE}</option>
 									<option value='E_ALL' {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ER_EALL}</option>
 								</select>
 							</td>

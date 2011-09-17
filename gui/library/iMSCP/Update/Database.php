@@ -1192,4 +1192,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return 'ALTER TABLE `quota_dovecot` ENGINE=InnoDB';
 	}
+
+	/**
+         * #195: Bug - Wrong error_reporting syntax (php.ini)
+         *
+         * @author Hannes Koschier <hannes@cheat.at>
+         * @since r5221
+         * @return string SQL Statement
+         */
+        protected function _databaseUpdate_81()
+        {
+                return array(
+			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `value` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
+			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE'  WHERE `value` = 'E_ALL ^ E_NOTICE'",
+			"UPDATE `php_ini` SET `error_reporting` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `error_reporting` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
+			"UPDATE `php_ini` SET `error_reporting` = 'E_ALL & ~E_NOTICE' WHERE `error_reporting` = 'E_ALL ^ E_NOTICE'",
+			"UPDATE `domain`, `php_ini` SET `domain`.`domain_status` = 'change' WHERE `php_ini`.`domain_id` = `domain`.`domain_id`"
+		);
+        }
 }
