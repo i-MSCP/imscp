@@ -96,7 +96,8 @@ sub restart{
 	# Reload config
 	$rs = execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	warning((caller(0))[3].": $stderr") if $stderr && !$rs;
+	error((caller(0))[3].": $stderr") if $stderr && $rs;;
 	return $rs if $rs;
 
 	debug((caller(0))[3].': Ending...');
