@@ -15,14 +15,13 @@ Features / Enhancements:
 		Core:
 			- Edit php.ini variables via UI
 		Tools:
-			- Updated phpMyAdmin to 3.4.4
+			- Updated phpMyAdmin to 3.4.5
 			- Updated Squirrelmail to 1.4.22
 
 Tickets:
 	- Fixed #15:  Edit php.ini variables via UI
 	- Fixed #16:  Feature - Mail Quota Support
-	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with
-	dovecot
+	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with dovecot
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77:  Task - Setup - Empty files must be removed
 	- Fixed #147: Squirrelmail 1.4.22 released
@@ -37,8 +36,9 @@ Tickets:
 	- Fixed #179: Bug - Unexpected T_STRING
 	- Fixed #183: Bug - client/subdomain_edit.php shows a white page
 	- Fixed #185: Bug - reseller/ip_usage.php doesn't show any statistics
+	- Fixed #187: Update - phpMyAdmin 3.4.5 released
 	- Fixed #188: Defect - Table quota_dovecot is still myisam than innoDB
-        - Fixed #189: Bug - Undefined template replacement data in repl_var
+  - Fixed #189: Bug - Undefined template replacement data in repl_var
 	- Fixed #193: Bug - Adding reseller throws exception (phpini... var is missing)
 	- Fixed #194: Bug - client/domain_manage.php doesn't show php.ini menu entries
 
