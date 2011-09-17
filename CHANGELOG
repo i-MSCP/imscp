@@ -41,6 +41,7 @@ Tickets:
   - Fixed #189: Bug - Undefined template replacement data in repl_var
 	- Fixed #193: Bug - Adding reseller throws exception (phpini... var is missing)
 	- Fixed #194: Bug - client/domain_manage.php doesn't show php.ini menu entries
+	- Fixed #195: Bug - wrong error_reporting syntax in php.ini (php syntax instead php.ini file syntax)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
