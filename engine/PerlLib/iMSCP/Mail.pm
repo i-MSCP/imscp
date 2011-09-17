@@ -92,4 +92,60 @@ sub errmsg{
 
 }
 
+
+sub warnMsg{
+
+	my ($self, $msg) = @_;
+
+	debug((caller(0))[3].': Starting...');
+
+	use POSIX;
+	use Net::LibIDN qw/idn_to_ascii/;
+	use MIME::Entity;
+
+	my @parts = split('@', $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'});
+	my $dmn = pop(@parts);
+	$dmn = idn_to_ascii($dmn, 'utf-8');
+	push(@parts, $dmn);
+
+	my $admin_email	= join('@', @parts);
+	my $date		=  strftime "%d.%m.%Y %H:%M:%S", localtime;
+	my $server_name	= $main::imscpConfig{'SERVER_HOSTNAME'};
+	my $server_ip	= $main::imscpConfig{'BASE_SERVER_IP'};
+	my $fname = (caller(1))[3];
+
+	my $msg_data =
+		"Dear admin,\n\n".
+		"I'm an automatic email sent by your $server_name ($server_ip) server.\n\n".
+		"Folowing warning was raised while executing $fname in $0.\n\n".
+		"Warning text:\n\n".
+		"=====================================================================\n".
+		"$msg\n".
+		"====================================================================="
+	;
+
+	$msg_data =~ s/(.{1,79}\S|\S+)\s+/$1\n/mg;
+
+	my $out = new MIME::Entity;
+
+	$out -> build(
+		From		=> "$server_name ($server_ip) <$admin_email>",
+		To			=> $admin_email,
+		Subject		=> "[$date] i-MSCP Error report",
+		Data		=> $msg_data,
+		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
+	);
+
+	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
+		error((caller(0))[3].': Can not send mail...');
+	} else {
+		$out -> print(\*MAIL);
+		close MAIL;
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+
 1;

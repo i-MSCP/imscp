@@ -44,6 +44,7 @@ Tickets:
 	- Fixed #194: Bug - client/domain_manage.php doesn't show php.ini menu entries
 	- Fixed #195: Bug - syntax error, unexpected '('...
 	- Fixed #196: Defect - squirrelmail required for upgrade
+	- Fixed #197: Email benachrichtigung
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

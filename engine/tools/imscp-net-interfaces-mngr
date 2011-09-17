@@ -92,8 +92,8 @@ sub virtual_netcard_add{
 						"Consider remove from network configuration ".
 						"and let i-MSCP handle it"
 					;
-					error((caller(0))[3].": $msg");
-					iMSCP::Mail->new()->errmsg($msg);
+					warning((caller(0))[3].": $msg");
+					iMSCP::Mail->new()->warnMsg($msg);
 				}
 			} else {
 				#ip is not attached so we will attached to virtual card
