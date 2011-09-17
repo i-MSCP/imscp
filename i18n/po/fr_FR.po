@@ -2,14 +2,15 @@
 # Copyright (C) YEAR iMSCP Team - All rights reserved
 # This file is distributed under the same license as the PACKAGE package.
 # 
-#   <l.declercq@nuxwin.com>, 2011.
+# Translators:
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011.
+#   <l.declercq@nuxwin.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-08-23 19:07+0200\n"
-"PO-Revision-Date: 2011-08-23 17:05+0000\n"
+"POT-Creation-Date: 2011-09-17 04:08+0200\n"
+"PO-Revision-Date: 2011-09-17 02:09+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -473,6 +474,9 @@ msgstr "Créer un enregistrement DNS personnalisé"
 
 msgid "Manage SSL certificate"
 msgstr "Gestion du certificat SSL"
+
+msgid "PHP Settings"
+msgstr ""
 
 msgid "i-MSCP application installer"
 msgstr "Installateur d'application"
@@ -1809,6 +1813,36 @@ msgstr "Limite de quota disque incorrecte."
 msgid "You must assign at least one IP number for a reseller."
 msgstr "Vous devez assigner au moins une adresse IP au revendeur."
 
+msgid "Feature PHP.ini Value Error"
+msgstr ""
+
+msgid "Error in register_globals Value"
+msgstr ""
+
+msgid "Error in allow_url_fopen Value"
+msgstr ""
+
+msgid "Error in display_Error Value"
+msgstr ""
+
+msgid "Error in disable_functions Value"
+msgstr ""
+
+msgid "Value post_max_size out of Range"
+msgstr ""
+
+msgid "Value upload_max_filesize out of Range"
+msgstr ""
+
+msgid "Value max_execution_time out of Range"
+msgstr ""
+
+msgid "Value memory_limit out of Range"
+msgstr ""
+
+msgid "Value max_input_time out of Range"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage users/Add reseller"
 msgstr "i-MSCP - Admin / Gestion des utilisateurs/Ajouter un revendeur"
 
@@ -1841,6 +1875,36 @@ msgstr "Liste des répertoires"
 
 msgid "Logo upload"
 msgstr "Envoyer le logo"
+
+msgid "Feature PHP.ini"
+msgstr ""
+
+msgid "allow change Value register_globals"
+msgstr ""
+
+msgid "allow change Value allow_url_fopen"
+msgstr ""
+
+msgid "MAX allowed in memory_limit [MB]"
+msgstr ""
+
+msgid "MAX allowed in upload_max_filesize [MB]"
+msgstr ""
+
+msgid "MAX allowed in post_max_size [MB]"
+msgstr ""
+
+msgid "allow change Value display_errors"
+msgstr ""
+
+msgid "allow change Value disable_functions"
+msgstr ""
+
+msgid "MAX allowed in max_execution_time [Seconds]"
+msgstr ""
+
+msgid "MAX allowed in max_input_time [Seconds]"
+msgstr ""
 
 msgid "Application installer"
 msgstr "Installateur d'applications"
@@ -2154,6 +2218,9 @@ msgstr "Supprimer la session"
 msgid "Only positive numbers are allowed."
 msgstr "Seul les nombre positives sont autorisés."
 
+msgid "Error in php.ini values."
+msgstr ""
+
 #, php-format
 msgid "%d configuration parameter(s) have/has been updated."
 msgstr "%d paramètre(s) de configuration modifié(s)"
@@ -2298,6 +2365,51 @@ msgstr ""
 
 msgid "Maximum number of labels for subdomains"
 msgstr "Nombre maximums de labels pour les sous-domaines"
+
+msgid "Global Base php.ini Setting"
+msgstr ""
+
+msgid "Value allow_url_fopen"
+msgstr ""
+
+msgid "Value register_globals"
+msgstr ""
+
+msgid "Value display_errors"
+msgstr ""
+
+msgid "Value error_reporting"
+msgstr ""
+
+msgid "All off"
+msgstr ""
+
+msgid "All errors except notices and warnings"
+msgstr ""
+
+msgid "All errors except notices"
+msgstr ""
+
+msgid "All errors"
+msgstr ""
+
+msgid "Value post_max_size"
+msgstr ""
+
+msgid "Value upload_max_filesize"
+msgstr ""
+
+msgid "Value max_execution_time"
+msgstr ""
+
+msgid "Value max_input_time"
+msgstr ""
+
+msgid "Value memory_limit"
+msgstr ""
+
+msgid "Value disable_functions"
+msgstr ""
 
 msgid "Orders settings"
 msgstr "Paramètres des commandes"
@@ -3334,6 +3446,9 @@ msgstr "Transfert"
 msgid "Record data"
 msgstr "Données principales"
 
+msgid "php.ini"
+msgstr ""
+
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Client/Gérer les pages d'erreurs personnalisées"
 
@@ -3900,6 +4015,62 @@ msgstr "Mot de passe mise à jour avec succès."
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Client/Modifier Données Personnelles"
 
+msgid "i-MSCP - php.ini Settings"
+msgstr ""
+
+msgid "php.ini Setting"
+msgstr ""
+
+msgid "php.ini Settings"
+msgstr ""
+
+msgid "allow_url_fopen"
+msgstr ""
+
+msgid "register_globals"
+msgstr ""
+
+msgid "display_errors"
+msgstr ""
+
+msgid "error_reporting"
+msgstr ""
+
+msgid "post_max_size [MB]"
+msgstr ""
+
+msgid "upload_max_filesize [MB]"
+msgstr ""
+
+msgid "max_execution_time [sec]"
+msgstr ""
+
+msgid "max_input_time [sec]"
+msgstr ""
+
+msgid "memory_limit [MB]"
+msgstr ""
+
+msgid "disable_functions"
+msgstr ""
+
+msgid "Enable exec (disabled_functions)"
+msgstr ""
+
+msgid ""
+"if enabled its allow the php function exec(). Needed from convert "
+"(imagemagic) and most image galleries"
+msgstr ""
+
+msgid "Setting updated"
+msgstr ""
+
+msgid "Permisson failed"
+msgstr ""
+
+msgid "Domain locked - update running"
+msgstr ""
+
 msgid "Unknown SQL user id."
 msgstr "Identifiant d'utilisateur SQL inconnu."
 
@@ -4318,7 +4489,13 @@ msgstr "Nom du sous-domaine"
 msgid "Directory tree mount point"
 msgstr "Point de montage dans l'arborescence"
 
-msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgid "Nothing been changed."
+msgstr ""
+
+msgid "Subdomain successfully updated."
+msgstr ""
+
+msgid "Wrong forward URL."
 msgstr ""
 
 msgid "Manage subdomain"
@@ -4327,8 +4504,17 @@ msgstr "Gérer les sous-domaines"
 msgid "Edit subdomain"
 msgstr "Editer le sous-domaine"
 
-msgid "A Forward URL has to start with 'http://'"
-msgstr "Une URL de redirection commençant par 'http://'"
+msgid "URL Forwarding"
+msgstr ""
+
+msgid "i-MSCP - Manage domains / Edit Subdomain"
+msgstr ""
+
+msgid "Unknown subdomain type."
+msgstr ""
+
+msgid "No corresponding subdomain found."
+msgstr ""
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-IMSCP - Client - Système de support - Tickets fermés"
@@ -4647,6 +4833,63 @@ msgstr "Circulaire"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
+msgid "Domain main properties"
+msgstr ""
+
+msgid "Domain account limits"
+msgstr ""
+
+msgid "Optional features"
+msgstr ""
+
+msgid "Custom DNS records support"
+msgstr ""
+
+msgid "Never expire"
+msgstr ""
+
+msgid "Custom php.ini"
+msgstr ""
+
+msgid "PHP.INI -  variables editor"
+msgstr ""
+
+msgid "Can edit php.ini variables"
+msgstr ""
+
+msgid "Can change the 'register_globals' variable"
+msgstr ""
+
+msgid "Can change the 'allow_url_open' variable"
+msgstr ""
+
+msgid "Can change the 'display_errors/error_reporting' variables"
+msgstr ""
+
+msgid "Can change the 'disable_functions' variable"
+msgstr ""
+
+msgid "Allow 'exec' only"
+msgstr ""
+
+msgid "post_max_size out of range"
+msgstr ""
+
+msgid "upload_max_filesize out of range"
+msgstr ""
+
+msgid "max_execution_time out of range"
+msgstr ""
+
+msgid "max_input_time out of range"
+msgstr ""
+
+msgid "memory_limit out of range"
+msgstr ""
+
+msgid "disable_functions error"
+msgstr ""
+
 msgid "You are not allowed to access this interface."
 msgstr "Vous n'avez pas la permission d'accéder à cette interface."
 
@@ -4665,6 +4908,39 @@ msgstr "Afficer les détails"
 msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr "i-MSCP - Revendeur/Ajouter un plan d'hébergement"
 
+msgid "Custom PHP.ini"
+msgstr ""
+
+msgid "Only \"exec\" allowed"
+msgstr ""
+
+msgid "Allow change value register_globals"
+msgstr ""
+
+msgid "Allow change value allow_url_fopen"
+msgstr ""
+
+msgid "Allow change value display_errors"
+msgstr ""
+
+msgid "Allow change value disable_functions"
+msgstr ""
+
+msgid "Set post_max_size [MB]"
+msgstr ""
+
+msgid "Set upload_max_filesize [MB]"
+msgstr ""
+
+msgid "Set max_execution_time [sec]"
+msgstr ""
+
+msgid "Set max_input_time [sec]"
+msgstr ""
+
+msgid "Set memory_limit [MB]"
+msgstr ""
+
 msgid "Price must be a number!"
 msgstr "Le prix doit être un nombre!"
 
@@ -4679,6 +4955,12 @@ msgstr "Les valeurs du plan d'hébergement dépassent les droits du revendeur!"
 
 msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr "i-MSCP - Revendeur/Editer plan d'hébergement"
+
+msgid "Allow change PHP.ini"
+msgstr ""
+
+msgid "Only \"exec\" change allowed"
+msgstr ""
 
 msgid "View hosting plan"
 msgstr "Afficher les plans d'hébergement"
