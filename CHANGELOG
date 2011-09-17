@@ -39,10 +39,11 @@ Tickets:
 	- Fixed #185: Bug - reseller/ip_usage.php doesn't show any statistics
 	- Fixed #187: Update - phpMyAdmin 3.4.5 released
 	- Fixed #188: Defect - Table quota_dovecot is still myisam than innoDB
-    - Fixed #189: Bug - Undefined template replacement data in repl_var...
+	- Fixed #189: Bug - Undefined template replacement data in repl_var...
 	- Fixed #193: Bug - Adding reseller throws exception (phpini... var is missing)
 	- Fixed #194: Bug - client/domain_manage.php doesn't show php.ini menu entries
 	- Fixed #195: Bug - syntax error, unexpected '('...
+	- Fixed #196: Defect - squirrelmail required for upgrade
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
