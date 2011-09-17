@@ -208,6 +208,7 @@ function gen_client_menu($tpl, $menu_file)
                               'isactive_alias_menu' => 'menu',
                               'isactive_subdomain_menu' => 'menu',
                               'isactive_dns_menu' => 'menu',
+                              'isactive_phpini' => 'menu',
                               't_software_menu' => 'menu'));
 
     $tpl->assign(array(

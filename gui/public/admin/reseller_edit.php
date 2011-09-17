@@ -82,17 +82,17 @@ function get_clean_input_data() {
 			'edit_id' => clean_input($_POST['edit_id']),
 			'software_allowed' => clean_input($_POST['domain_software_allowed']),
 			'softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed']),
-            		'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed']),
+			'websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed']),
 			'php_ini_system' => clean_input($_POST['phpini_system']),
-                        'php_ini_al_register_globals' => clean_input($_POST['phpini_al_register_globals']),
-                        'php_ini_al_allow_url_fopen' => clean_input($_POST['phpini_al_allow_url_fopen']),
-                        'php_ini_al_display_errors' => clean_input($_POST['phpini_al_display_errors']),
-                        'php_ini_al_disable_functions' => clean_input($_POST['phpini_al_disable_functions']),
-                        'php_ini_max_memory_limit' => clean_input($_POST['phpini_max_memory_limit']),
-                        'php_ini_max_upload_max_filesize' => clean_input($_POST['phpini_max_upload_max_filesize']),
-                        'php_ini_max_post_max_size' => clean_input($_POST['phpini_max_post_max_size']),
-                        'php_ini_max_max_execution_time' => clean_input($_POST['phpini_max_max_execution_time']),
-                        'php_ini_max_max_input_time' => clean_input($_POST['phpini_max_max_input_time'])
+			'php_ini_al_register_globals' => clean_input($_POST['phpini_al_register_globals']),
+			'php_ini_al_allow_url_fopen' => clean_input($_POST['phpini_al_allow_url_fopen']),
+			'php_ini_al_display_errors' => clean_input($_POST['phpini_al_display_errors']),
+			'php_ini_al_disable_functions' => clean_input($_POST['phpini_al_disable_functions']),
+			'php_ini_max_memory_limit' => clean_input($_POST['phpini_max_memory_limit']),
+			'php_ini_max_upload_max_filesize' => clean_input($_POST['phpini_max_upload_max_filesize']),
+			'php_ini_max_post_max_size' => clean_input($_POST['phpini_max_post_max_size']),
+			'php_ini_max_max_execution_time' => clean_input($_POST['phpini_max_max_execution_time']),
+			'php_ini_max_max_input_time' => clean_input($_POST['phpini_max_max_input_time'])
 		);
 	}
 
@@ -116,15 +116,15 @@ function check_data(&$errFields) {
 		if (!chk_password($_POST['pass0'])) {
 			if ($cfg->PASSWD_STRONG) {
 				set_page_message(sprintf(
-                                     tr('The password must be at least %s long and contain letters and numbers to be valid.'),
-                                     $cfg->PASSWD_CHARS),
-                                 'error');
+									 tr('The password must be at least %s long and contain letters and numbers to be valid.'),
+									 $cfg->PASSWD_CHARS),
+								 'error');
 
 			} else {
 				set_page_message(sprintf(
-                                     tr('Password data is shorter than %s signs or includes not permitted signs!'),
-                                     $cfg->PASSWD_CHARS),
-                                 'error');
+									 tr('Password data is shorter than %s signs or includes not permitted signs!'),
+									 $cfg->PASSWD_CHARS),
+								 'error');
 			}
 
 			$errFields[] = 'PWD_ERR';
@@ -146,19 +146,19 @@ function check_data(&$errFields) {
 
 	list(
 		$udmn_current, , $udmn_uf, $usub_current, , $usub_uf, $uals_current, ,
-        $uals_uf, $umail_current, , $umail_uf, $uftp_current, , $uftp_uf,
-        $usql_db_current, , $usql_db_uf, $usql_user_current, , $usql_user_uf,
+		$uals_uf, $umail_current, , $umail_uf, $uftp_current, , $uftp_uf,
+		$usql_db_current, , $usql_db_uf, $usql_user_current, , $usql_user_uf,
 		$utraff_current, , $utraff_uf, $udisk_current, ,$udisk_uf
 	) = generate_reseller_users_props($rdata['edit_id']);
 
 
 	list($rdmn_current, , $rsub_current, , $rals_current,, $rmail_current, ,
-        $rftp_current, ,$rsql_db_current, , $rsql_user_current, ,$rtraff_current, ,
-        $rdisk_current) = generate_reseller_props($rdata['edit_id']);
+		$rftp_current, ,$rsql_db_current, , $rsql_user_current, ,$rtraff_current, ,
+		$rdisk_current) = generate_reseller_props($rdata['edit_id']);
 
 	if (imscp_limit_check($rdata['max_dmn_cnt'], null)) {
 		$rs = _check_new_limit($rdata['max_dmn_cnt'], $rdmn_current,
-                               $udmn_current, $udmn_uf, tr('Domains'));
+								$udmn_current, $udmn_uf, tr('Domains'));
 	} else {
 		set_page_message(tr('Incorrect domains limit!'), 'error');
 		$rs = false;
@@ -174,7 +174,7 @@ function check_data(&$errFields) {
 
 	if (imscp_limit_check($rdata['max_sub_cnt'])) {
 		$rs = _check_new_limit($rdata['max_sub_cnt'], $rsub_current,
-                               $usub_current, $usub_uf, tr('Subdomains'));
+								$usub_current, $usub_uf, tr('Subdomains'));
 	} else {
 		set_page_message(tr('Incorrect subdomains limit!'), 'error');
 		$rs = false;
@@ -190,7 +190,7 @@ function check_data(&$errFields) {
 
 	if (imscp_limit_check($rdata['max_als_cnt'])) {
 		$rs = _check_new_limit($rdata['max_als_cnt'], $rals_current,
-                               $uals_current, $uals_uf, tr('Aliases'));
+								$uals_current, $uals_uf, tr('Aliases'));
 	} else {
 		set_page_message(tr('Incorrect aliases limit!'), 'error');
 		$rs = false;
@@ -206,7 +206,7 @@ function check_data(&$errFields) {
 
 	if (imscp_limit_check($rdata['max_mail_cnt'])) {
 		$rs = _check_new_limit($rdata['max_mail_cnt'], $rmail_current,
-                               $umail_current, $umail_uf, tr('Mail'));
+								$umail_current, $umail_uf, tr('Mail'));
 	} else {
 		set_page_message(tr('Incorrect mail accounts limit!'), 'error');
 		$rs = false;
@@ -222,7 +222,7 @@ function check_data(&$errFields) {
 
 	if (imscp_limit_check($rdata['max_ftp_cnt'])) {
 		$rs = _check_new_limit($rdata['max_ftp_cnt'], $rftp_current,
-                               $uftp_current, $uftp_uf, tr('FTP'));
+								$uftp_current, $uftp_uf, tr('FTP'));
 	} else {
 		set_page_message(tr('Incorrect FTP accounts limit!'), 'error');
 		$rs = false;
@@ -243,7 +243,7 @@ function check_data(&$errFields) {
 		$rs = false;
 	} else {
 		$rs = _check_new_limit($rdata['max_sql_db_cnt'], $rsql_db_current,
-                               $usql_db_current, $usql_db_uf, tr('SQL Databases'));
+								$usql_db_current, $usql_db_uf, tr('SQL Databases'));
 	}
 
 	if (!$rs) {
@@ -261,7 +261,7 @@ function check_data(&$errFields) {
 		$rs = false;
 	} else {
 		$rs = _check_new_limit($rdata['max_sql_user_cnt'], $rsql_user_current,
-                               $usql_user_current, $usql_user_uf, tr('SQL Users'));
+								$usql_user_current, $usql_user_uf, tr('SQL Users'));
 	}
 
 	if (!$rs) {
@@ -270,8 +270,8 @@ function check_data(&$errFields) {
 
 	if (imscp_limit_check($rdata['max_traff_amnt'], null)) {
 		$rs = _check_new_limit($rdata['max_traff_amnt'], $rtraff_current,
-                               $utraff_current / 1024 / 1024, $utraff_uf,
-                               tr('Web Traffic'));
+								$utraff_current / 1024 / 1024, $utraff_uf,
+								tr('Web Traffic'));
 	} else {
 		set_page_message(tr('Incorrect traffic limit!'), 'error');
 		$rs = false;
@@ -287,8 +287,8 @@ function check_data(&$errFields) {
 
 	if (imscp_limit_check($rdata['max_disk_amnt'], null)) {
 		$rs = _check_new_limit($rdata['max_disk_amnt'], $rdisk_current,
-                               $udisk_current / 1024 / 1024, $udisk_uf,
-                               tr('Disk storage'));
+								$udisk_current / 1024 / 1024, $udisk_uf,
+								tr('Disk storage'));
 	} else {
 		set_page_message(tr('Incorrect disk quota limit!'), 'error');
 		$rs = false;
@@ -308,36 +308,43 @@ function check_data(&$errFields) {
 
 	check_user_ip_data($rdata['edit_id'], $rdata['rip_lst'], $rdata['reseller_ips']);
 
+	/*
+	 * We validate data only if php edit is on. Else for existing reseller you will get
+	 * Value memory_limit out of Range error since default value is 0
+	 */
+	if($rdata['php_ini_system'] == 'no'){
+		return;
+	}
 
 	/* iMSCP_PHPini object */
 	$phpini = new iMSCP_PHPini();
 
 
-        /**
-        * Check php.ini Values use build in method form iMSCP_PHPini
-        */
+	/**
+	 * Check php.ini Values use build in method form iMSCP_PHPini
+	 */
 	if (!$phpini->setRePerm('phpiniPostMaxSize', $rdata['php_ini_max_post_max_size'])) {
-        	set_page_message(tr('Value post_max_size out of Range'), 'error');
-    	}
-	
+		set_page_message(tr('Value post_max_size out of Range'), 'error');
+	}
+
 	if (!$phpini->setRePerm('phpiniUploadMaxFileSize', $rdata['php_ini_max_upload_max_filesize'])) {
 		set_page_message(tr('Value upload_max_filesize out of Range'), 'error');
-        	return false;
+		return false;
 	}
 
 	if (!$phpini->setRePerm('phpiniMaxExecutionTime', $rdata['php_ini_max_max_execution_time'])) {
-	        set_page_message(tr('Value max_execution_time out of Range'), 'error');
-        	return false;
+		set_page_message(tr('Value max_execution_time out of Range'), 'error');
+		return false;
 	}
 
 	if (!$phpini->setRePerm('phpiniMemoryLimit', $rdata['php_ini_max_memory_limit'])) {
-        	set_page_message(tr('Value memory_limit out of Range'), 'error');
-	       	return false;
-	}	
+		set_page_message(tr('Value memory_limit out of Range'), 'error');
+		return false;
+	}
 
 	if (!$phpini->setRePerm('phpiniMaxInputTime', $rdata['php_ini_max_max_input_time'])) {
-	        set_page_message(tr('Value max_input_time out of Range'), 'error');
-        	return false;
+		set_page_message(tr('Value max_input_time out of Range'), 'error');
+		return false;
 	}
 
 }
@@ -352,7 +359,7 @@ function check_data(&$errFields) {
  * @return bool
  */
 function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
-    $unlimited, $service_name) {
+	$unlimited, $service_name) {
 
 	// Small Workaround to get the error state
 	$err_state = isset($_SESSION['user_page_message']) ?
@@ -366,29 +373,29 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 			// If the new limit is < to the already used accounts/limits by users
 			if ($new_limit < $used_by_customers && $new_limit != -1) {
 				set_page_message(tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
-                                 'error');
+								 'error');
 
 			// If the new limit is < to the already assigned accounts/limits by reseller
 			} elseif ($new_limit < $assigned_by_reseller && $new_limit != -1) {
 				set_page_message(tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
-                                 'error');
+								 'error');
 
 			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
 			} elseif ($new_limit == -1 && $used_by_customers > 0) {
 				set_page_message(tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
-                                 'error');
+								 'error');
 
 			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
 			} elseif ($new_limit == -1 && $assigned_by_reseller > 0) {
 				set_page_message(tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
-                                 'error');
+								 'error');
 			}
 
 		// One or more reseller's customers have unlimited rights
 		} elseif ($new_limit != 0) {
 			set_page_message(
 				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!',
-                   $service_name),'error');
+					$service_name),'error');
 
 			set_page_message(tr('If you want to limit the reseller, you must first limit its customers!'), 'error');
 		}
@@ -451,11 +458,11 @@ function get_reseller_prop($reseller_id) {
 			`max_sql_db_cnt`, `max_sql_user_cnt`, `max_traff_amnt`, `max_disk_amnt`,
 			`software_allowed`, `softwaredepot_allowed`, `websoftwaredepot_allowed`,
 			r.`support_system` AS support_system, r.`customer_id` AS customer_id,
-			`reseller_ips` AS rip_lst, `gender`, `php_ini_system`, 
+			`reseller_ips` AS rip_lst, `gender`, `php_ini_system`,
 			`php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
-                        `php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
-                        `php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
-                        `php_ini_max_max_input_time`, `php_ini_max_memory_limit`
+			`php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
+			`php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
+			`php_ini_max_max_input_time`, `php_ini_max_memory_limit`
 		FROM
 			`admin` AS a, `reseller_props` AS r
 		WHERE
@@ -474,7 +481,7 @@ function get_reseller_prop($reseller_id) {
 			redirectTo('manage_users.php');
 	}
 
-    $rdata = array();
+	$rdata = array();
 	foreach ($rs->fields as $fname => $value){
 		if (!is_int($fname)) {
 			$rdata[$fname] = $value;
@@ -517,11 +524,11 @@ function get_servers_ips($tpl, $rip_lst) {
 
 		$tpl->parse('RSL_IP_MESSAGE', 'rsl_ip_message');
 	} else {
-        $tpl->assign(array(
-                          'TR_RSL_IP_NUMBER' => tr('No.'),
-                          'TR_RSL_IP_ASSIGN' => tr('Assign'),
-                          'TR_RSL_IP_LABEL' => tr('Label'),
-                          'TR_RSL_IP_IP' => tr('Number')));
+		$tpl->assign(array(
+							'TR_RSL_IP_NUMBER' => tr('No.'),
+							'TR_RSL_IP_ASSIGN' => tr('Assign'),
+							'TR_RSL_IP_LABEL' => tr('Label'),
+							'TR_RSL_IP_IP' => tr('Number')));
 
 		while (!$rs->EOF) {
 			$tpl->assign(
@@ -551,13 +558,13 @@ function get_servers_ips($tpl, $rip_lst) {
 				}
 			}
 
-            $tpl->assign(array(
-                              'RSL_IP_NUMBER' => $i + 1,
-                              'RSL_IP_LABEL' => $rs->fields['ip_domain'],
-                              'RSL_IP_IP' => $rs->fields['ip_number'],
-                              'RSL_IP_CKB_NAME' => $ip_var_name,
-                              'RSL_IP_CKB_VALUE' => 'asgned',
-                              'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned));
+			$tpl->assign(array(
+								'RSL_IP_NUMBER' => $i + 1,
+								'RSL_IP_LABEL' => $rs->fields['ip_domain'],
+								'RSL_IP_IP' => $rs->fields['ip_number'],
+								'RSL_IP_CKB_NAME' => $ip_var_name,
+								'RSL_IP_CKB_VALUE' => 'asgned',
+								'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned));
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
 			$rs->moveNext();
@@ -628,7 +635,7 @@ function update_reseller() {
 	// Get needed data
 	$rdata =& get_data();
 
-    // Updating personal data
+	// Updating personal data
 
 	$query = "
 		UPDATE
@@ -641,11 +648,11 @@ function update_reseller() {
 			`admin_id` = ?
 		";
 
-    $qparams = array($rdata['fname'], $rdata['lname'], $rdata['firm'],
-                     $rdata['zip'], $rdata['city'], $rdata['state'],
-                     $rdata['country'], $rdata['email'], $rdata['phone'],
-                     $rdata['fax'], $rdata['street1'], $rdata['street2'],
-                     $rdata['gender'], $rdata['edit_id']);
+	$qparams = array($rdata['fname'], $rdata['lname'], $rdata['firm'],
+					 $rdata['zip'], $rdata['city'], $rdata['state'],
+					 $rdata['country'], $rdata['email'], $rdata['phone'],
+					 $rdata['fax'], $rdata['street1'], $rdata['street2'],
+					 $rdata['gender'], $rdata['edit_id']);
 
 	if (!empty($_POST['pass0'])) {
 		$query = str_replace( '`fname`', '`admin_pass` = ?, `fname`', $query);
@@ -654,7 +661,7 @@ function update_reseller() {
 
 	exec_query($query, $qparams);
 
-    // Updating software installer proeperties
+	// Updating software installer proeperties
 
 	if($rdata['software_allowed'] == "no") {
  		$query_user = "
@@ -665,9 +672,9 @@ function update_reseller() {
  			WHERE
  				`domain_created_id` = ?
  		";
-         exec_query($query_user, array(
-                                      $rdata['softwaredepot_allowed'],
-                                      $rdata['edit_id']));
+		 exec_query($query_user, array(
+									  $rdata['softwaredepot_allowed'],
+									  $rdata['edit_id']));
  	}
 
  	if ($rdata['websoftwaredepot_allowed'] == 'no') {
@@ -695,7 +702,7 @@ function update_reseller() {
 				";
 				exec_query($update, array($rs->fields['software_id']));
 
-			    $rs->MoveNext();
+				$rs->MoveNext();
 			}
 
 			$delete_rights = "
@@ -710,7 +717,7 @@ function update_reseller() {
 	 	}
 	}
 
-    /** Updating reseller's properties */
+	/** Updating reseller's properties */
 
 	$query = "
 		UPDATE
@@ -721,41 +728,41 @@ function update_reseller() {
 			`max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?,
 			`max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?,
 			`software_allowed` = ?, `softwaredepot_allowed` = ?, `websoftwaredepot_allowed` = ?,
-                        `php_ini_system` = ?,
-                        `php_ini_al_disable_functions` = ?,
-                        `php_ini_al_allow_url_fopen` = ?,
-                        `php_ini_al_register_globals` = ?,
-                        `php_ini_al_display_errors` = ?,
-                        `php_ini_max_post_max_size` = ?,
-                        `php_ini_max_upload_max_filesize` = ?,
-                        `php_ini_max_max_execution_time` = ?,
-                        `php_ini_max_max_input_time` = ?,
-                        `php_ini_max_memory_limit` = ?
+			`php_ini_system` = ?,
+			`php_ini_al_disable_functions` = ?,
+			`php_ini_al_allow_url_fopen` = ?,
+			`php_ini_al_register_globals` = ?,
+			`php_ini_al_display_errors` = ?,
+			`php_ini_max_post_max_size` = ?,
+			`php_ini_max_upload_max_filesize` = ?,
+			`php_ini_max_max_execution_time` = ?,
+			`php_ini_max_max_input_time` = ?,
+			`php_ini_max_memory_limit` = ?
 		WHERE
 			`reseller_id` = ?
 	";
 
-    exec_query($query, array(
-                            $rdata['reseller_ips'], $rdata['max_dmn_cnt'],
-                            $rdata['max_sub_cnt'], $rdata['max_als_cnt'],
-                            $rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
-                            $rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
-                            $rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
-                            $rdata['support_system'], $rdata['customer_id'],
-                            $rdata['software_allowed'],
-                            $rdata['softwaredepot_allowed'],
-                            $rdata['websoftwaredepot_allowed'],
-                            $rdata['php_ini_system'],
-                            $rdata['php_ini_al_disable_functions'],
-                            $rdata['php_ini_al_allow_url_fopen'],
-                            $rdata['php_ini_al_register_globals'],
-                            $rdata['php_ini_al_display_errors'],
-                            $rdata['php_ini_max_post_max_size'],
-                            $rdata['php_ini_max_upload_max_filesize'],
-                            $rdata['php_ini_max_max_execution_time'],
-                            $rdata['php_ini_max_max_input_time'],
-		            $rdata['php_ini_max_memory_limit'],
-                            $rdata['edit_id']));
+	exec_query($query, array(
+							$rdata['reseller_ips'], $rdata['max_dmn_cnt'],
+							$rdata['max_sub_cnt'], $rdata['max_als_cnt'],
+							$rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
+							$rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
+							$rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
+							$rdata['support_system'], $rdata['customer_id'],
+							$rdata['software_allowed'],
+							$rdata['softwaredepot_allowed'],
+							$rdata['websoftwaredepot_allowed'],
+							$rdata['php_ini_system'],
+							$rdata['php_ini_al_disable_functions'],
+							$rdata['php_ini_al_allow_url_fopen'],
+							$rdata['php_ini_al_register_globals'],
+							$rdata['php_ini_al_display_errors'],
+							$rdata['php_ini_max_post_max_size'],
+							$rdata['php_ini_max_upload_max_filesize'],
+							$rdata['php_ini_max_max_execution_time'],
+							$rdata['php_ini_max_max_input_time'],
+							$rdata['php_ini_max_memory_limit'],
+							$rdata['edit_id']));
 
 }
 
@@ -829,9 +836,9 @@ function &get_data($tpl = false) {
  */
 function fields_highlighting($tpl, &$errFields) {
 
-    $fields = array(
-        'PWD_ERR', 'PWDR_ERR', 'EMAIL_ERR', 'DMN_ERR', 'SUB_ERR', 'ALS_ERR',
-        'MAIL_ERR', 'FTP_ERR', 'SQLD_ERR', 'SQLU_ERR', 'TRF_ERR', 'DISK_ERR');
+	$fields = array(
+		'PWD_ERR', 'PWDR_ERR', 'EMAIL_ERR', 'DMN_ERR', 'SUB_ERR', 'ALS_ERR',
+		'MAIL_ERR', 'FTP_ERR', 'SQLD_ERR', 'SQLU_ERR', 'TRF_ERR', 'DISK_ERR');
 
 	$l1 = 'border:1px rgb(233,0,0) solid;';
 
@@ -912,7 +919,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 
 			// Adds admin log entry
 			write_log("{$_SESSION['user_logged']}: changes data/password for reseller: " .
-                      "{$rdata['edit_username']}!", E_USER_NOTICE);
+					  "{$rdata['edit_username']}!", E_USER_NOTICE);
 
 			// Send new authentication data to reseller if needed
 			if (isset($_POST['send_data']) && !empty($_POST['pass0'])) {
@@ -1001,38 +1008,38 @@ $tpl->assign(
 		'TR_NO' => tr('no'),
 		'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
 		'TR_SOFTWAREDEPOT_SUPP' => tr('Can use software depot'),
-       	 	'TR_WEBSOFTWAREDEPOT_SUPP' => tr('Can use websoftware depot'),
+		'TR_WEBSOFTWAREDEPOT_SUPP' => tr('Can use websoftware depot'),
 		'SOFTWARE_YES' => ($rdata['software_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWARE_NO' => ($rdata['software_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWAREDEPOT_YES'	=> ($rdata['softwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWAREDEPOT_NO' => ($rdata['softwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
-	        'WEBSOFTWAREDEPOT_YES'	=> ($rdata['websoftwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'WEBSOFTWAREDEPOT_YES'	=> ($rdata['websoftwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'WEBSOFTWAREDEPOT_NO' => ($rdata['websoftwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_SYSTEM_YES' => ($rdata['php_ini_system'] == 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_SYSTEM_NO' => ($rdata['php_ini_system'] != 'yes')  ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_REGISTER_GLOBALS_YES' => ($rdata['php_ini_al_register_globals'] == 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_REGISTER_GLOBALS_NO' => ($rdata['php_ini_al_register_globals'] != 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($rdata['php_ini_al_allow_url_fopen'] == 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_ALLOW_URL_FOPEN_NO' => ($rdata['php_ini_al_allow_url_fopen'] != 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_DISPLAY_ERRORS_YES' => ($rdata['php_ini_al_display_errors'] == 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_DISPLAY_ERRORS_NO' => ($rdata['php_ini_al_display_errors'] != 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_DISABLE_FUNCTIONS_YES' => ($rdata['php_ini_al_disable_functions'] == 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($rdata['php_ini_al_disable_functions'] != 'yes') ? $cfg->HTML_CHECKED : '',
-                'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
-                'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
-                'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
-                'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
-                'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time'],
-                'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
-                'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
-                'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
-                'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('MAX allowed in memory_limit [MB]'),
-                'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('MAX allowed in upload_max_filesize [MB]'),
-                'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('MAX allowed in post_max_size [MB]'),
-                'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('allow change Value display_errors'),
-                'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('allow change Value disable_functions'),
-                'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
-                'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
+		'PHPINI_SYSTEM_YES' => ($rdata['php_ini_system'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_SYSTEM_NO' => ($rdata['php_ini_system'] != 'yes')  ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_REGISTER_GLOBALS_YES' => ($rdata['php_ini_al_register_globals'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_REGISTER_GLOBALS_NO' => ($rdata['php_ini_al_register_globals'] != 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($rdata['php_ini_al_allow_url_fopen'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_ALLOW_URL_FOPEN_NO' => ($rdata['php_ini_al_allow_url_fopen'] != 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_DISPLAY_ERRORS_YES' => ($rdata['php_ini_al_display_errors'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_DISPLAY_ERRORS_NO' => ($rdata['php_ini_al_display_errors'] != 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_DISABLE_FUNCTIONS_YES' => ($rdata['php_ini_al_disable_functions'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($rdata['php_ini_al_disable_functions'] != 'yes') ? $cfg->HTML_CHECKED : '',
+		'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
+		'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
+		'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
+		'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
+		'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time'],
+		'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
+		'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
+		'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
+		'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('MAX allowed in memory_limit [MB]'),
+		'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('MAX allowed in upload_max_filesize [MB]'),
+		'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('MAX allowed in post_max_size [MB]'),
+		'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('allow change Value display_errors'),
+		'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('allow change Value disable_functions'),
+		'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
+		'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),
@@ -1116,7 +1123,7 @@ generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+	iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
