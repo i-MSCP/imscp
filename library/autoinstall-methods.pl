@@ -496,14 +496,15 @@ sub saveGuiWorkingData {
 		return $rs if $rs;
 
 		# Save webmail data (Squirrel)
-		$rs = execute(
-			"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-			\$stdout, \$stderr
-		);
-
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
-		return $rs if $rs;
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data"){
+			$rs = execute(
+				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
+				\$stdout, \$stderr
+			);
+			debug((caller(0))[3] . ": $stdout") if $stdout;
+			error((caller(0))[3] . ": $stderr") if $stderr;
+			return $rs if $rs;
+		}
 
 	# For i-MSCP versions prior 1.0.4
 	} elsif(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
@@ -518,14 +519,16 @@ sub saveGuiWorkingData {
 		return $rs if $rs;
 
 		# Save webmail data (Squirrel)
-		$rs = execute(
-			"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-			\$stdout, \$stderr
-		);
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data"){
+			$rs = execute(
+				"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
+				\$stdout, \$stderr
+			);
 
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
-		return $rs if $rs;
+			debug((caller(0))[3] . ": $stdout") if $stdout;
+			error((caller(0))[3] . ": $stderr") if $stderr;
+			return $rs if $rs;
+		}
 
 		# Save i-MSCP GUI data (isp domain default index.html page)
 		$rs = execute(
