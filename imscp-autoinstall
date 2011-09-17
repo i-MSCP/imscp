@@ -133,11 +133,15 @@ if (@errors > 0  || @warnings > 0) {
 $msg .= "\nDo you want to continue the i-MSCP installation?";
 
 unless(iMSCP::Dialog->factory()->yesno($msg)) {
+
+	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
+
 	@steps = (
 		[\&doImscpBackup,		'Backup existing installation'],
 		[\&saveGuiWorkingData,	'Saving GUI working data'],
 		[\&installTmp,			'Installing new i-MSCP files in final destination'],
-		[\&setup,				'processing i-MSCP setup/update']
+		[\&setup_start_up,		'Prepare i-MSCP setup/update'],
+		[\&setup_engine,		'Processing i-MSCP setup/update']
 	);
 
 	$step = 1;

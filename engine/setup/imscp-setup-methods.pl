@@ -28,6 +28,94 @@ use strict;
 use warnings;
 
 ################################################################################
+# Starting update process
+#
+# @return void
+#
+sub setup_start_up {
+
+	debug((caller(0))[3].': Starting...');
+
+	# Fixing umask for logfiles permissions on creation (0640)
+	umask(027);
+
+	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
+
+	#enter silent mode
+	silent(1);
+
+	if(-e '/tmp/imscp-backup-all.lock') {
+		iMSCP::Dialog->factory()->msgbox(
+					"\n
+					\\Z4[NOTICE]\\Zn
+
+					Backup engine is currently running. Aborting...
+					");
+		exit 1;
+	}
+
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
+
+sub setup_engine {
+
+	debug((caller(0))[3].': Starting...');
+
+	use iMSCP::Stepper;
+
+	##  Starting user dialog
+	user_dialog();
+
+	my @steps = (
+		[\&load_old_imscp_cfg, 'Loading old i-MSCP configuration file: '],
+		[\&update_imscp_cfg, 'Save old variable if needed: '],
+		[\&preinst, "Pre-installation tasks for $main::imscpConfig{'DistName'}: "],
+		[\&setup_system_users, 'Creating default users: '],
+		[\&setup_imscp_database_connection, 'i-MSCP database connection: '],
+		[\&setup_imscp_database, 'i-MSCP database: '],
+		[\&disableGUI, 'Disable access to panel during update: '],
+		[\&setup_system_dirs, 'i-MSCP directories: '],
+		[\&setup_base_server_IP, 'i-MSCP system IP: '],
+		[\&setup_hosts, 'i-MSCP system hosts file: '],
+		[\&askVHOST, 'i-MSCP virtual hostname'],
+		[\&setup_resolver, 'i-MSCP system resolver: '],
+		[\&setup_crontab, 'i-MSCP crontab file: '],
+		[\&setup_named, 'i-MSCP Bind9 main configuration file: '],
+		[\&setup_fastcgi_modules, 'i-MSCP Apache fastCGI modules configuration: '],
+		[\&setup_httpd_main_vhost, 'i-MSCP Apache main vhost file: '],
+		[\&setup_awstats_vhost, 'i-MSCP Apache AWStats vhost file: '],
+		[\&setup_imscp_daemon_network, 'i-MSCP init scripts: '],
+		[\&setup_default_sql_data, 'i-MSCP default SQL data: '],
+		[\&setup_gui_named, 'i-MSCP GUI Bind9 configuration: '],
+		[\&setup_ssl, 'i-MSCP certificate setup: '],
+		[\&setup_gui_php, 'i-MSCP GUI fastCGI/PHP configuration: '],
+		[\&setup_gui_httpd, 'i-MSCP GUI vhost file: '],
+		[\&setup_gui_pma, 'i-MSCP PMA configuration file: '],
+		[\&setup_mail, 'i-MSCP mail server setup: '],
+		[\&setup_ftpd, 'i-MSCP ProFTPd configuration file: '],
+		[\&askBackup, 'Setting backup: '],
+		[\&rebuild_customers_cfg, 'Rebuilding all customers configuration files: '],
+		[\&postinst, "Post-installation tasks for $main::imscpConfig{'DistName'}: "],
+		[\&set_permissions, 'Permissions setup: '],
+		[\&restart_services, 'Starting all services: '],
+		[\&save_conf, 'Backup conf file: '],
+		[\&additional_tasks, 'Additional tasks: '],
+	);
+	my $step = 1;
+	for (@steps){
+		step($_->[0], $_->[1], scalar @steps, $step);
+		$step++;
+	}
+	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+
+################################################################################
 # User dialog
 #
 # @return void
@@ -2714,7 +2802,7 @@ sub rebuild_customers_cfg {
 	iMSCP::Boot->new()->unlock();
 
 	my ($stdout, $stderr, $rs);
-	$rs = execute("perl $FindBin::Bin/../imscp-rqst-mngr update", \$stdout, \$stderr);
+	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr update", \$stdout, \$stderr);
 	debug((caller(0))[3].": $stdout") if $stdout;
 	error((caller(0))[3].": $stderr") if $stderr;
 	error((caller(0))[3].": Error while rebuilding customers configuration files") if(!$stderr && $rs);

@@ -596,34 +596,6 @@ sub installTmp {
 	0;
 }
 
-# Running i-MSCP setup script.
-#
-# Note: The imscp-setup script is used for both setup and update process.
-#
-# @return int 0 on success, other otherwise
-sub setup {
-	debug((caller(0))[3] . ': Starting...');
-
-	my ($rs, $stdout, $stderr);
-
-	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup"){
-		$rs = execute("$main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup");
-		error(
-			(caller(0))[3] . ': ' .
-			"Error while running $main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup setup script\n\n".
-			"Full log can be found $main::defaultConf{LOG_DIR}/imscp-setup.log"
-		) if $rs;
-		return $rs if $rs;
-	} else {
-		fatal((caller(0))[3] . ": Unable to find the $main::defaultConf{'ROOT_DIR'}/engine/setup/imscp-setup script");
-		return 1;
-	}
-
-	debug((caller(0))[3] . ': Ending...');
-
-	0;
-}
-
 # Removes temporary folder.
 #
 # @return int 0 on success, other on failure
