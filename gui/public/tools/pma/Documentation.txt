@@ -1,4 +1,4 @@
-phpMyAdmin 3.4.4 Documentation
+phpMyAdmin 3.4.5 Documentation
 
   * Top
   * Requirements
@@ -56,9 +56,9 @@ Currently phpMyAdmin can:
   * load text files into tables
   * create^1 and read dumps of tables
   * export^1 data to various formats: CSV, XML, PDF, ISO/IEC 26300 -
-    OpenDocument Text and Spreadsheet, Word, Excel and L^AT[E]X formats
-  * import data and MySQL structures from Microsoft Excel and OpenDocument
-    spreadsheets, as well as XML, CSV, and SQL files
+    OpenDocument Text and Spreadsheet, Word, and L^AT[E]X formats
+  * import data and MySQL structures from OpenDocument spreadsheets, as well as
+    XML, CSV, and SQL files
   * administer multiple servers
   * manage MySQL users and privileges
   * check referential integrity in MyISAM tables
@@ -1404,8 +1404,8 @@ $cfg['SaveDir'] string
 $cfg['TempDir'] string
     The name of the directory where temporary files can be stored.
 
-    This is needed for native MS Excel export, see FAQ 6.23 and to work around
-    limitations of open_basedir for uploaded files, see FAQ 1.11.
+    This is needed to work around limitations of open_basedir for uploaded
+    files, see FAQ 1.11.
 
     If the directory where phpMyAdmin is installed is subject to an
     open_basedir restriction, you need to create a temporary directory in some
@@ -2206,6 +2206,7 @@ scenarios, however you might want to adjust at least following parameters:
   * suhosin.post.max_array_index_length should be increased (eg. 256)
   * suhosin.request.max_totalname_length should be increased (eg. 8192)
   * suhosin.post.max_totalname_length should be increased (eg. 8192)
+  * suhosin.get.max_value_length should be increased (eg. 1024)
   * suhosin.sql.bailout_on_error needs to be disabled (the default)
   * suhosin.log.* should not include SQL, otherwise you get big slowdown
 
@@ -2510,29 +2511,11 @@ of the columns.
 This has been a known limitation of phpMyAdmin since the beginning and it's not
 likely to be solved in the future.
 
-3.15 When I import an Excel spreadsheet, some cells with calculations do not
-display correctly.
+3.15 (withdrawn).
 
-phpMyAdmin uses the PHPExcel library to parse Excel XLS and XLSX spreadsheets.
-Therefore, any limitations that are listed on their page regarding Excel
-calculations will also apply here.
+3.16 (withdrawn).
 
-PHPExcel will be kept up to date so as to make all improvements available to
-phpMyAdmin users.
-
-3.16 When I compress (gzip, bzip2, zip) an Excel workbook and attempt to import
-it, nothing happens.
-
-Since Excel XLSX workbooks are already compressed, there is often times only a
-small benefit from compressing them yet again. Support for compressed Excel
-XLSX and XLS workbooks may be added in the future.
-
-3.17 When I import an Excel spreadsheet, my custom cell types are not
-represented as they are in Excel.
-
-Excel's internal representation of custom cell types is rather muddled
-(especially in Excel 97-2003 binary XLS files). If possible, consider using a
-built-in type. These are almost always guarenteed to import correctly.
+3.17 (withdrawn).
 
 3.18 When I import a CSV file that contains multiple tables, they are lumped
 together into a single table.
@@ -3098,19 +3081,11 @@ Browse mode for a table?
 
 Yes. If a bookmark has the same label as a table name, it will be executed.
 
-6.23 Export: I heard phpMyAdmin can export Microsoft Excel files, how can I
-enable that?
+6.23 Export: I heard phpMyAdmin can export Microsoft Excel files?
 
-You can use CSV for Microsoft Excel, which works out of the box, but phpMyAdmin
-supports direct export to Microsoft Excel version 97 and newer. For this to
-work, you need to set $cfg['TempDir'] to a place where the web server user can
-write (for example './tmp').
-
-To create the temporary directory on a UNIX-based system, you can do:
-
-cd phpMyAdmin
-mkdir tmp
-chmod o+rwx tmp
+You can use CSV for Microsoft Excel, which works out of the box.
+Since phpMyAdmin 3.4.5 support for direct export to Microsoft Excel version 97
+and newer was dropped.
 
 6.24 Now that phpMyAdmin supports native MySQL 4.1.x column comments, what
 happens to my column comments stored in pmadb?

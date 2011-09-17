@@ -65,7 +65,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
 
     echo '<div>' . "\n";
 
-    echo '<h2>' . $table . '</h2>' . "\n";
+    echo '<h2>' . htmlspecialchars($table) . '</h2>' . "\n";
 
     /**
      * Gets table informations
@@ -227,7 +227,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
         } else {
             $row['Default'] = htmlspecialchars($row['Default']);
         }
-        $field_name = htmlspecialchars($row['Field']);
+        $field_name = $row['Field'];
 
         if (PMA_MYSQL_INT_VERSION < 50025
          && ! empty($analyzed_sql[0]['create_table_fields'][$field_name]['type'])
@@ -249,9 +249,9 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
     <td nowrap="nowrap">
         <?php
         if (isset($pk_array[$row['Field']])) {
-            echo '<u>' . $field_name . '</u>';
+            echo '<u>' . htmlspecialchars($field_name) . '</u>';
         } else {
-            echo $field_name;
+            echo htmlspecialchars($field_name);
         }
         ?>
     </td>
