@@ -250,40 +250,39 @@ function check_user_data($phpini)
 
 
     if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpini_system'])) {
-            $phpini->setClPerm('phpiniSystem', clean_input($_POST['phpini_system']));
-    }
-    if ($phpini->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_al_register_globals'])) {
+	$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpini_system']));
+	if ($phpini->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_al_register_globals'])) {
             $phpini->setClPerm('phpiniRegisterGlobals', clean_input($_POST['phpini_al_register_globals']));
-    }
-    if ($phpini->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_al_allow_url_fopen'])) {
+	}
+	if ($phpini->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_al_allow_url_fopen'])) {
             $phpini->setClPerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_al_allow_url_fopen']));
-    }
-    if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_display_errors'])) {
+	}
+	if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_display_errors'])) {
             $phpini->setClPerm('phpiniDisplayErrors', clean_input($_POST['phpini_al_display_errors']));
-    }
-    if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_error_reporting'])) {
+	}
+	if ($phpini->checkRePerm('phpiniDisplayErrors') && isset($_POST['phpini_al_error_reporting'])) {
             $phpini->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
-    }
-    if ($phpini->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_al_disable_functions'])) {
+	}
+	if ($phpini->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_al_disable_functions'])) {
             $phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']));
-    }
-    //use phpini->phpiniData as datastore for the following values - 
-    if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
+	}
+	//use phpini->phpiniData as datastore for the following values - 
+	if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
             set_page_message(tr('post_max_size out of range'), 'error');
-    }
-    if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
+	}
+	if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
             set_page_message(tr('upload_max_filesize out of range'), 'error');
-    }
-    if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
+	}
+	if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
             set_page_message(tr('max_execution_time out of range'), 'error');
-    }
-    if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
+	}
+	if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
             set_page_message(tr('max_input_time out of range'), 'error');
-    }
-    if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
+	}
+	if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
            set_page_message(tr('memory_limit out of range'), 'error');
-    }
-
+	}
+    } 
 
 
     list(
@@ -397,13 +396,12 @@ $tpl->define_dynamic(array(
                           'ftp_add' => 'page',
                           'sql_db_add' => 'page',
                           'sql_user_add' => 'page',
-                          't_software_support' => 'page'));
-
-$tpl->define_dynamic('t_phpini_system', 'page');
-$tpl->define_dynamic('t_phpini_register_globals', 'page');
-$tpl->define_dynamic('t_phpini_allow_url_fopen', 'page');
-$tpl->define_dynamic('t_phpini_display_errors', 'page');
-$tpl->define_dynamic('t_phpini_disable_functions', 'page');
+                          't_software_support' => 'page',
+			  't_phpini_system' => 'page',
+                          't_phpini_register_globals' => 'page',
+                          't_phpini_allow_url_fopen' => 'page',
+                          't_phpini_display_errors' => 'page',
+                          't_phpini_disable_functions' => 'page'));
 
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
@@ -525,6 +523,10 @@ if ($rsql_db_max == '-1') {
 
 if ($rsql_user_max == '-1') {
     $tpl->assign('SQL_USER_ADD', '');
+}
+
+if (!$phpini->checkRePerm('phpiniSystem')) {
+    $tpl->assign('T_PHPINI_SYSTEM', '');
 }
 
 $tpl->parse('PAGE', 'page');

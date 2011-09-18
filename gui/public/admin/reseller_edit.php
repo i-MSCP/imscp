@@ -977,6 +977,31 @@ if ($rdata['support_system'] == 'yes') {
 	$support_yes = '';
 }
 
+
+/* fill values with standard values from config table if php.ini is disabled
+ * if the admin enable it he should get his default values and not 0
+ */
+/* @var $phpini iMSCP_PHPini */
+$phpini = new iMSCP_PHPini();
+
+if ($rdata['php_ini_system'] == 'yes') {
+	$tpl->assign(
+        	array(	
+                'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
+                'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
+                'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
+                'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
+                'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time']));
+} else {
+	$tpl->assign(
+                array(
+                'PHPINI_MAX_MEMORY_LIMIT_VAL' => $phpini->getDataDefaultVal('phpiniMemoryLimit'),
+                'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'),
+                'PHPINI_MAX_POST_MAX_SIZE_VAL' => $phpini->getDataDefaultVal('phpiniPostMaxSize'),
+                'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $phpini->getDataDefaultVal('phpiniMaxExecutionTime'),
+                'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $phpini->getDataDefaultVal('phpiniMemoryLimit')));	
+}
+
 $tpl->assign(
 	array(
 		'TR_EDIT_RESELLER' => tr('Edit reseller'),
@@ -1025,11 +1050,6 @@ $tpl->assign(
 		'PHPINI_AL_DISPLAY_ERRORS_NO' => ($rdata['php_ini_al_display_errors'] != 'yes') ? $cfg->HTML_CHECKED : '',
 		'PHPINI_AL_DISABLE_FUNCTIONS_YES' => ($rdata['php_ini_al_disable_functions'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($rdata['php_ini_al_disable_functions'] != 'yes') ? $cfg->HTML_CHECKED : '',
-		'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
-		'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
-		'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
-		'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
-		'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time'],
 		'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
 		'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
 		'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
