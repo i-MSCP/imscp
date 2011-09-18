@@ -693,24 +693,26 @@ $domain_software_allowed;
 			$phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']));
 		}
 
-		if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
-			$ed_error .= tr('post_max_size out of range');
-		}
+		if ($_POST['phpini_system'] == 'yes') { // Only check if Custom php.ini is on Yes (prevent error message if unlikely paramater match)
+			if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
+				$ed_error .= tr('post_max_size out of range');
+			}
 
-		if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
-			$ed_error .= tr('upload_max_filesize out of range');
-		}
+			if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
+				$ed_error .= tr('upload_max_filesize out of range');
+			}
 
-		if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
-			$ed_error .= tr('max_execution_time out of range');
-		}
+			if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
+				$ed_error .= tr('max_execution_time out of range');
+			}
 
-		if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
-			$ed_error .= tr('max_input_time out of range');
-		}
+			if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
+				$ed_error .= tr('max_input_time out of range');
+			}
 
-		if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
-			$ed_error .= tr('memory_limit out of range');
+			if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
+				$ed_error .= tr('memory_limit out of range');
+			}	
 		}
 
 		// collect all parts of disabled_function from $_POST
