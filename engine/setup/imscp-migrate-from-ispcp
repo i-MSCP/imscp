@@ -104,10 +104,10 @@ sub welcome{
 
 	use iMSCP::Dialog;
 
-	my $dialog = iMSCP::Dialog->new(
-		'title'		=> 'Upgrade to iMSCP',
-		'backtitle'	=> "iMSCP  internet Multi Server Control Panel",
-	);
+	my $dialog = iMSCP::Dialog->factory();
+	$dialog->set('title', 'Upgrade to iMSCP');
+	$dialog->set('backtitle', "iMSCP internet Multi Server Control Panel");
+
 	$dialog->set('yes-label','CONTINUE');
 	$dialog->set('no-label','EXIT');
 	exit 0 if ($dialog->yesno(
