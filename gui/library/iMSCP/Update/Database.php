@@ -280,54 +280,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
-	 * @param string $table Database table name
-	 * @param string $column Column to be added in the database table
-	 * @param string $query Query to create column
-	 * @return string Query to be executed
-	 * @deprecatedBy addColumn()
-	 */
-	protected function secureAddColumnTable($table, $column, $query)
-	{
-		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
-
-		return "
-			DROP PROCEDURE IF EXISTS test;
-			CREATE PROCEDURE test()
-			BEGIN
-				if not exists(
-					SELECT
-						*
-					FROM
-						information_schema.COLUMNS
-					WHERE
-						column_name='$column'
-					AND
-						table_name='$table'
-					AND
-						table_schema='$dbName'
-				) THEN
-					$query;
-				END IF;
-			END;
-			CALL test();
-			DROP PROCEDURE IF EXISTS test;
-		";
-	}
-
-	/**
-	 * Checks if a column exists in a database table and if not, execute a query to
-	 * add that column.
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4509
-	 * @depreciate secureAddColumnTable
 	 * @param $table Database table name to operate on
 	 * @param $column Column to be added in the database table
 	 * @param $structure
 	 * @return string Query to be executed
 	 */
-	protected function addColumn($table, $column, $structure)
-	{
+	protected function addColumn($table, $column, $structure){
 		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
 
 		return ("
@@ -364,8 +322,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param $column $column Column to be added in the database table
 	 * @return string Query to be executed
 	 */
-	protected function dropColumn($table, $column)
-	{
+	protected function dropColumn($table, $column){
 		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
 
 		return "
@@ -398,10 +355,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param  array $param $parameter
 	 * @return void
 	 */
-	public function __call($updateMethod, $param)
-	{
-
-	}
+	public function __call($updateMethod, $param){}
 
 	/**
 	 * Please, add all the database update methods below. Don't forgot to add the doc
@@ -495,34 +449,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::secureAddColumnTable(
-			'domain', 'domain_software_allowed',
-			"
-				ALTER TABLE
-					`domain`
-				ADD
-					`domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
-			"
+		$sqlUpd[] = self::addColumn(
+			'domain',
+			'domain_software_allowed',
+			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'"
 		);
 
-		$sqlUpd[] = self::secureAddColumnTable(
-			'reseller_props', 'software_allowed',
-			"
-				ALTER TABLE
-					`reseller_props`
-				ADD
-					`software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
-			"
+		$sqlUpd[] = self::addColumn(
+			'reseller_props',
+			'software_allowed',
+			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'"
 		);
 
-		$sqlUpd[] = self::secureAddColumnTable(
-			'reseller_props', 'softwaredepot_allowed',
-			"
-				ALTER TABLE
-					`reseller_props`
-				ADD
-					`softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'
-			"
+		$sqlUpd[] = self::addColumn(
+			'reseller_props',
+			'softwaredepot_allowed',
+			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'"
 		);
 
 		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
@@ -552,16 +494,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_51()
 	{
-		$query = "
-			ALTER IGNORE TABLE
-				`ftp_users`
-			ADD
-				`rawpasswd` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-			AFTER
-				`passwd`
-		";
-
-		return self::secureAddColumnTable('ftp_users', 'rawpasswd', $query);
+		return self::addColumn(
+			'ftp_users',
+			'rawpasswd',
+			"varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `passwd`"
+		);
 	}
 
 	/**
@@ -611,30 +548,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::secureAddColumnTable(
+		$sqlUpd[] = self::addColumn(
 			'web_software',
 			'software_installtype',
-			"
-				ALTER IGNORE TABLE
-					`web_software`
-				ADD
-					`software_installtype` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
-				AFTER
-					`reseller_id`
-			"
+			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `reseller_id`"
 		);
 
 		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
 
-		$sqlUpd[] = self::secureAddColumnTable(
+		$sqlUpd[] = self::addColumn(
 			'reseller_props',
 			'websoftwaredepot_allowed',
-			"
-				ALTER IGNORE TABLE
-					`reseller_props`
-				ADD
-					`websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
-			"
+			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'"
 		);
 
 		return $sqlUpd;
@@ -1126,62 +1051,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #15: Feature - Edit php.ini variables via UI.
-	 *
-	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @return Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_79()
-	{
-		return array(
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'off')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '10')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '10')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_INPUT_TIME', '60')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_EXECUTION_TIME', '30')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL ^ (E_NOTICE | E_WARNING)')",
-			"INSERT INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')",
-
-			"ALTER TABLE `reseller_props` ADD `php_ini_system` VARCHAR(15) NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_al_disable_functions` VARCHAR(15) NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_al_allow_url_fopen` VARCHAR(15) NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_al_register_globals` VARCHAR(15) NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_al_display_errors` VARCHAR(15) NOT NULL DEFAULT 'no'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_max_post_max_size` int(11) NOT NULL DEFAULT '0'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_max_upload_max_filesize` int(11) NOT NULL DEFAULT '0'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0'",
-			"ALTER TABLE `reseller_props` ADD `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0'",
-
-			"CREATE TABLE IF NOT EXISTS `php_ini` (
-			  `ID` int(11) NOT NULL AUTO_INCREMENT,
-			  `domain_id` int(10) NOT NULL,
-			  `status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
-			  `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
-			  `allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-			  `register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-			  `display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-			  `error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED',
-			  `post_max_size` int(11) NOT NULL DEFAULT '10',
-			  `upload_max_filesize` int(11) NOT NULL DEFAULT '10',
-			  `max_execution_time` int(11) NOT NULL DEFAULT '30',
-			  `max_input_time` int(11) NOT NULL DEFAULT '60',
-			  `memory_limit` int(11) NOT NULL DEFAULT '128',
-			  PRIMARY KEY (`ID`)
-			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-
-			"ALTER TABLE `domain` ADD `phpini_perm_system` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
-				ADD `phpini_perm_register_globals` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
-				ADD `phpini_perm_allow_url_fopen` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
-				ADD `phpini_perm_display_errors` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
-				ADD `phpini_perm_disable_functions` VARCHAR( 20 ) NOT NULL DEFAULT 'no'"
-		);
-	}
-
-	/**
 	 * #188: Defect - Table quota_dovecot is still myisam than innoDB.
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
@@ -1193,21 +1062,77 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return 'ALTER TABLE `quota_dovecot` ENGINE=InnoDB';
 	}
 
+
 	/**
-         * #195: Bug - Wrong error_reporting syntax (php.ini)
-         *
-         * @author Hannes Koschier <hannes@cheat.at>
-         * @since r5221
-         * @return string SQL Statement
-         */
-        protected function _databaseUpdate_81()
-        {
-                return array(
+	 * #15: Feature - Edit php.ini variables via UI.
+	 *
+	 * @author Hannes Koschier <hannes@cheat.at>
+	 * @return Stack of SQL statements to be executed
+	 */
+
+	protected function _databaseUpdate_82(){
+		return array(
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'off')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '10')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '10')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_INPUT_TIME', '60')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_EXECUTION_TIME', '30')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL & ~E_NOTICE & ~E_WARNING')",
+			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')",
+
+			self::addColumn('reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
+			self::addColumn('reseller_props', 'php_ini_al_disable_functions', "VARCHAR(15) NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink'"),
+			self::addColumn('reseller_props', 'php_ini_al_allow_url_fopen', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			self::addColumn('reseller_props', 'php_ini_al_register_globals', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			self::addColumn('reseller_props', 'php_ini_al_display_errors', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			self::addColumn('reseller_props', 'php_ini_max_post_max_size', "int(11) NOT NULL DEFAULT '10'"),
+			self::addColumn('reseller_props', 'php_ini_max_upload_max_filesize', "int(11) NOT NULL DEFAULT '10'"),
+			self::addColumn('reseller_props', 'php_ini_max_max_execution_time', "int(11) NOT NULL DEFAULT '30'"),
+			self::addColumn('reseller_props', 'php_ini_max_max_input_time', "int(11) NOT NULL DEFAULT '60'"),
+			self::addColumn('reseller_props', 'php_ini_max_memory_limit', "int(11) NOT NULL DEFAULT '128'"),
+
+			"CREATE TABLE IF NOT EXISTS `php_ini` (
+				`ID` int(11) NOT NULL AUTO_INCREMENT,
+				`domain_id` int(10) NOT NULL,
+				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
+				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
+				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
+				`error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED',
+				`post_max_size` int(11) NOT NULL DEFAULT '10',
+				`upload_max_filesize` int(11) NOT NULL DEFAULT '10',
+				`max_execution_time` int(11) NOT NULL DEFAULT '30',
+				`max_input_time` int(11) NOT NULL DEFAULT '60',
+				`memory_limit` int(11) NOT NULL DEFAULT '128',
+				PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
+
+			self::addColumn('domain', 'phpini_perm_system', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
+			self::addColumn('domain', 'phpini_perm_register_globals', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
+			self::addColumn('domain', 'phpini_perm_allow_url_fopen', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
+			self::addColumn('domain', 'phpini_perm_display_errors', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
+			self::addColumn('domain', 'phpini_perm_disable_functions', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'")
+		);
+	}
+
+	/**
+	 * #195: Bug - Wrong error_reporting syntax (php.ini)
+	 *
+	 * @author Hannes Koschier <hannes@cheat.at>
+	 * @since r5221
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_83(){
+		return array(
 			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `value` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
 			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE'  WHERE `value` = 'E_ALL ^ E_NOTICE'",
 			"UPDATE `php_ini` SET `error_reporting` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `error_reporting` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
 			"UPDATE `php_ini` SET `error_reporting` = 'E_ALL & ~E_NOTICE' WHERE `error_reporting` = 'E_ALL ^ E_NOTICE'",
 			"UPDATE `domain`, `php_ini` SET `domain`.`domain_status` = 'change' WHERE `php_ini`.`domain_id` = `domain`.`domain_id`"
 		);
-        }
+	}
 }
