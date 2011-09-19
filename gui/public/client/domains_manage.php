@@ -191,7 +191,7 @@ function gen_user_sub_forward($sub_id, $sub_status, $url_forward, $dmn_type) {
 				'-'
 			:
 				$url_forward,
-			'subdomain_edit.php?edit_id='.$sub_id.'&amp;dmn_type='.$dmn_type, tr('Edit')
+			'subdomain_edit.php?id='.$sub_id.'&amp;type='.$dmn_type, tr('Edit')
 		);
 	} else if ($sub_status === $cfg->ITEM_ORDERED_STATUS) {
 		return array(
