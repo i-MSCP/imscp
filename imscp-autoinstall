@@ -134,6 +134,8 @@ $msg .= "\nDo you want to continue the i-MSCP installation?";
 
 unless(iMSCP::Dialog->factory()->yesno($msg)) {
 
+	iMSCP::Dialog->factory()->set('defaultno', undef);
+
 	require "$FindBin::Bin/engine/setup/imscp-setup-methods.pl";
 
 	@steps = (
