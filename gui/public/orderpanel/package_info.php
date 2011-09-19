@@ -219,6 +219,7 @@ $tpl->assign(array(
                   'TR_PERFORMANCE' => tr('Performance'),
                   'TR_PURCHASE' => tr('Purchase'),
                   'TR_BACK' => tr('Back'),
+		  'TR_ORDER_PANEL_PAGE_TITLE' => tr('i-MSCP - Orderpanel'),
                   'YES' => tr('Yes')));
 
 $tpl->parse('PAGE', 'page');
