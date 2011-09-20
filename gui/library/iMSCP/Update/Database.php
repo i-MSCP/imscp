@@ -51,6 +51,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected static $_instance;
 
 	/**
+	 * Database name being updated.
+	 *
+	 * @var string
+	 */
+	protected $_databaseName;
+
+	/**
 	 * Tells whether or not a request must be send to the i-MSCP daemon after that
 	 * all database updates were applied.
 	 *
@@ -63,7 +70,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function __construct()
 	{
-
+		if(isset(iMSCP_Registry::get('config')->DATABASE_NAME)) {
+			$this->_databaseName = iMSCP_Registry::get('config')->DATABASE_NAME;
+		} else {
+			throw new iMSCP_Update_Exception('Database name not found.');
+		}
 	}
 
 	/**
@@ -98,7 +109,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	public function isAvailableUpdate()
 	{
-		if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
+		if ($this->_getLastAppliedUpdate() < $this->_getNextUpdate()) {
 			return true;
 		}
 
@@ -120,7 +131,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$pdo = iMSCP_Database::getRawInstance();
 
 		while ($this->isAvailableUpdate()) {
-			$databaseUpdateRevision = $this->getNextUpdate();
+			$databaseUpdateRevision = $this->_getNextUpdate();
 
 			// Get the database update method name
 			$databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
@@ -132,6 +143,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			if (!empty($queryStack)) {
 				try {
+
+					// One transaction per database update
+					// If a query from a database update fail, all update is canceled
 					$pdo->beginTransaction();
 
 					foreach ((array)$queryStack as $query) {
@@ -185,7 +199,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	public function getDatabaseUpdateDetail()
 	{
-		$reflectionStart = $this->getNextUpdate();
+		$reflectionStart = $this->_getNextUpdate();
 
 		$reflection = new ReflectionClass(__CLASS__);
 		$databaseUpdatesDetail = array();
@@ -199,6 +213,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 				if ($revision >= $reflectionStart) {
 					$detail = explode("\n", $method->getDocComment());
+
+					// TODO should be be review
 					$databaseUpdatesDetail[$revision] = str_replace("\t * ", '', $detail[1]);
 				}
 			}
@@ -211,12 +227,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Return next database update revision.
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @return int 0 if no update available
+	 * @return int 0 if no update is available
 	 */
-	protected function getNextUpdate()
+	protected function _getNextUpdate()
 	{
-		$lastAvailableUpdateRevision = $this->getLastAvailableUpdateRevision();
-		$nextUpdateRevision = $this->getLastAppliedUpdate();
+		$lastAvailableUpdateRevision = $this->_getLastAvailableUpdateRevision();
+		$nextUpdateRevision = $this->_getLastAppliedUpdate();
 
 		if ($nextUpdateRevision < $lastAvailableUpdateRevision) {
 			return $nextUpdateRevision + 1;
@@ -226,14 +242,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Returns the revision of the last available database update.
+	 * Returns last database update revision number.
 	 *
-	 * Note: For performances reasons, the revision is retrieved once.
+	 * Note: For performances reasons, the revision is retrieved once per process.
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @return int The revision of the last available database update
+	 * @return int Last database update revision number
 	 */
-	protected function getLastAvailableUpdateRevision()
+	protected function _getLastAvailableUpdateRevision()
 	{
 		static $lastAvailableUpdateRevision = null;
 
@@ -257,12 +273,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Returns revision of the last applied database update.
+	 * Returns the revision number of the last applied database update.
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @return int Revision of the last applied database update
+	 * @return int Revision number of the last applied database update
 	 */
-	protected function getLastAppliedUpdate()
+	protected function _getLastAppliedUpdate()
 	{
 		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
@@ -271,7 +287,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->DATABASE_REVISION = 1;
 		}
 
-		return (int)$dbConfig->DATABASE_REVISION;
+		return (int) $dbConfig->DATABASE_REVISION;
 	}
 
 	/**
@@ -280,17 +296,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
-	 * @param $table Database table name to operate on
-	 * @param $column Column to be added in the database table
-	 * @param $structure
+	 * @param string $table Database table name to operate on
+	 * @param string $column Column to be added in the database table
+	 * @param string $columnDefinition Column definition including the optional
+	 * 								   (but recommended) positional statement
+	 * 								   ([FIRST | AFTER col_name ]
 	 * @return string Query to be executed
 	 */
-	protected function addColumn($table, $column, $structure){
-		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
-
+	protected function _addColumn($table, $column, $columnDefinition)
+	{
 		return ("
-			DROP PROCEDURE IF EXISTS test;
-			CREATE PROCEDURE test()
+			DROP PROCEDURE IF EXISTS addColumn;
+			CREATE PROCEDURE addColumn()
 			BEGIN
 				IF NOT EXISTS (
 					SELECT
@@ -302,13 +319,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 					AND
 						TABLE_NAME = '$table'
 					AND
-						TABLE_SCHEMA = '$dbName'
+						TABLE_SCHEMA = '{$this->_databaseName}'
 				) THEN
-					ALTER TABLE `$dbName`.`$table` ADD `$column` $structure;
+					ALTER TABLE `{$this->_databaseName}`.`$table` ADD `$column` $columnDefinition;
 				END IF;
 			END;
-			CALL test();
-			DROP PROCEDURE IF EXISTS test;
+			CALL addColumn();
+			DROP PROCEDURE IF EXISTS addColumn;
 		");
 	}
 
@@ -318,16 +335,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
-	 * @param $table $table Database table name
-	 * @param $column $column Column to be added in the database table
+	 * @param string $table Database table name
+	 * @param string $column Column to be dropped from the database table
 	 * @return string Query to be executed
 	 */
-	protected function dropColumn($table, $column){
-		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
-
+	protected function _dropColumn($table, $column)
+	{
 		return "
-			DROP PROCEDURE IF EXISTS test;
-			CREATE PROCEDURE test()
+			DROP PROCEDURE IF EXISTS dropColumn;
+			CREATE PROCEDURE dropColumn()
 			BEGIN
 				IF EXISTS (
 					SELECT
@@ -339,23 +355,29 @@ class iMSCP_Update_Database extends iMSCP_Update
 					AND
 						COLUMN_NAME = '$column'
 					AND
-						table_schema = '$dbName'
+						table_schema = '{$this->_databaseName}'
 				) THEN
-					ALTER TABLE `$table` DROP column `$column`;
+					ALTER TABLE `{$this->_databaseName}`.`$table` DROP column `$column`;
 				END IF;
 			END;
-			CALL test();
-			DROP PROCEDURE IF EXISTS test;
+			CALL dropColumn();
+			DROP PROCEDURE IF EXISTS dropColumn;
 		";
 	}
 	/**
-	 * Catch any database update that were removed.
+	 * Catch any database updates that were removed.
 	 *
-	 * @param  string $updateMethod Database method name
-	 * @param  array $param $parameter
+	 * @param  string $updateMethod Database update method name
+	 * @param  array $param
 	 * @return void
 	 */
-	public function __call($updateMethod, $param){}
+	public function __call($updateMethod, $param)
+	{
+		if(strpos($updateMethod, '_databaseUpdate') === false) {
+			throw new iMSCP_Update_Exception(
+				sprintf('%s is not a valid database update method', $updateMethod));
+		}
+	}
 
 	/**
 	 * Please, add all the database update methods below. Don't forgot to add the doc
@@ -449,22 +471,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::addColumn(
+		$sqlUpd[] = $this->_addColumn(
 			'domain',
 			'domain_software_allowed',
-			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'"
+			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no' AFTER `domain_dns`"
 		);
 
-		$sqlUpd[] = self::addColumn(
+		$sqlUpd[] = $this->_addColumn(
 			'reseller_props',
 			'software_allowed',
-			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'"
+			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no' AFTER `reseller_ips`"
 		);
 
-		$sqlUpd[] = self::addColumn(
+		$sqlUpd[] = $this->_addColumn(
 			'reseller_props',
 			'softwaredepot_allowed',
-			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'"
+			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes' AFTER `software_allowed`"
 		);
 
 		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
@@ -494,7 +516,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_51()
 	{
-		return self::addColumn(
+		return $this->_addColumn(
 			'ftp_users',
 			'rawpasswd',
 			"varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `passwd`"
@@ -548,7 +570,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::addColumn(
+		$sqlUpd[] = self::_addColumn(
 			'web_software',
 			'software_installtype',
 			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `reseller_id`"
@@ -556,10 +578,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
 
-		$sqlUpd[] = self::addColumn(
+		$sqlUpd[] = $this->_addColumn(
 			'reseller_props',
 			'websoftwaredepot_allowed',
-			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'"
+			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes' AFTER `softwaredepot_allowed`"
 		);
 
 		return $sqlUpd;
@@ -681,7 +703,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4650
-	 * @return string SQL Statement
+	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_60()
 	{
@@ -705,7 +727,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 		}
 	}
 
-
 	/**
 	 * #124: Enhancement - Switch to gettext (Machine Object Files)
 	 *
@@ -720,6 +741,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		// First step: Update default language (new naming convention)
 
 		$dbConfig = iMSCP_Registry::get('dbConfig');
+
 		if (isset($dbConfig->USER_INITIAL_LANG)) {
 			$dbConfig->USER_INITIAL_LANG = str_replace(
 				'lang_', '', $dbConfig->USER_INITIAL_LANG);
@@ -918,7 +940,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_76()
 	{
 		$sqlUpd = array();
-		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
 
 		$sqlUpd[] = "
 			DROP PROCEDURE IF EXISTS schema_change;
@@ -934,7 +955,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						AND
 							CONSTRAINT_NAME = 'user_id'
 						AND
-							TABLE_SCHEMA = '$dbName'
+							TABLE_SCHEMA = '{$this->_databaseName}'
 					) THEN
 						ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
 					END IF;
@@ -953,12 +974,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4644
-	 * @return string SQL Statement
+	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_77()
 	{
-		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
-
 		return "
 			DROP PROCEDURE IF EXISTS schema_change;
 				CREATE PROCEDURE schema_change()
@@ -973,7 +992,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 						AND
 							COLUMN_NAME = 'id'
 						AND
-							TABLE_SCHEMA = '$dbName'
+							TABLE_SCHEMA = '{$this->_databaseName}'
 					) THEN
 						ALTER TABLE `user_gui_props` DROP column `id`;
 					END IF;
@@ -988,7 +1007,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Daniel Andreca <lsci2tech@gmail.com>
 	 * @since r5145
-	 * @return Stack of SQL statements to be executed
+	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_78()
 	{
@@ -1062,15 +1081,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return 'ALTER TABLE `quota_dovecot` ENGINE=InnoDB';
 	}
 
-
 	/**
-	 * #15: Feature - Edit php.ini variables via UI.
+	 * #15: Feature - PHP directives editor.
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @return Stack of SQL statements to be executed
+	 * @return array Stack of SQL statements to be executed
 	 */
-
-	protected function _databaseUpdate_82(){
+	protected function _databaseUpdate_82()
+	{
 		return array(
 			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
 			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
@@ -1083,16 +1101,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL & ~E_NOTICE & ~E_WARNING')",
 			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')",
 
-			self::addColumn('reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
-			self::addColumn('reseller_props', 'php_ini_al_disable_functions', "VARCHAR(15) NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink'"),
-			self::addColumn('reseller_props', 'php_ini_al_allow_url_fopen', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-			self::addColumn('reseller_props', 'php_ini_al_register_globals', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-			self::addColumn('reseller_props', 'php_ini_al_display_errors', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-			self::addColumn('reseller_props', 'php_ini_max_post_max_size', "int(11) NOT NULL DEFAULT '10'"),
-			self::addColumn('reseller_props', 'php_ini_max_upload_max_filesize', "int(11) NOT NULL DEFAULT '10'"),
-			self::addColumn('reseller_props', 'php_ini_max_max_execution_time', "int(11) NOT NULL DEFAULT '30'"),
-			self::addColumn('reseller_props', 'php_ini_max_max_input_time', "int(11) NOT NULL DEFAULT '60'"),
-			self::addColumn('reseller_props', 'php_ini_max_memory_limit', "int(11) NOT NULL DEFAULT '128'"),
+			$this->_addColumn('reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `websoftwaredepot_allowed`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_disable_functions', "VARCHAR(15) NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink' AFTER `php_ini_system`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_allow_url_fopen', "VARCHAR(15) NOT NULL DEFAULT 'off' AFTER `php_ini_al_disable_functions`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_register_globals', "VARCHAR(15) NOT NULL DEFAULT 'off' AFTER `php_ini_al_allow_url_fopen`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_display_errors', "VARCHAR(15) NOT NULL DEFAULT 'off' AFTER `php_ini_al_register_globals`"),
+			$this->_addColumn('reseller_props', 'php_ini_max_post_max_size', "int(11) NOT NULL DEFAULT '10' AFTER `php_ini_al_display_errors`"),
+			$this->_addColumn('reseller_props', 'php_ini_max_upload_max_filesize', "int(11) NOT NULL DEFAULT '10' AFTER `php_ini_max_post_max_size`"),
+			$this->_addColumn('reseller_props', 'php_ini_max_max_execution_time', "int(11) NOT NULL DEFAULT '30' AFTER `php_ini_max_upload_max_filesize`"),
+			$this->_addColumn('reseller_props', 'php_ini_max_max_input_time', "int(11) NOT NULL DEFAULT '60' AFTER `php_ini_max_max_execution_time`"),
+			$this->_addColumn('reseller_props', 'php_ini_max_memory_limit', "int(11) NOT NULL DEFAULT '128' AFTER `php_ini_max_max_input_time`"),
 
 			"CREATE TABLE IF NOT EXISTS `php_ini` (
 				`ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -1111,11 +1129,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 				PRIMARY KEY (`ID`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
 
-			self::addColumn('domain', 'phpini_perm_system', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
-			self::addColumn('domain', 'phpini_perm_register_globals', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
-			self::addColumn('domain', 'phpini_perm_allow_url_fopen', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
-			self::addColumn('domain', 'phpini_perm_display_errors', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'"),
-			self::addColumn('domain', 'phpini_perm_disable_functions', "VARCHAR( 20 ) NOT NULL DEFAULT 'no'")
+			$this->_addColumn('domain', 'phpini_perm_system', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' AFTER `domain_dns`"),
+			$this->_addColumn('domain', 'phpini_perm_register_globals', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_system`"),
+			$this->_addColumn('domain', 'phpini_perm_allow_url_fopen', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_register_globals`"),
+			$this->_addColumn('domain', 'phpini_perm_display_errors', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_allow_url_fopen`"),
+			$this->_addColumn('domain', 'phpini_perm_disable_functions', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_disable_functions`")
 		);
 	}
 
@@ -1123,10 +1141,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * #195: Bug - Wrong error_reporting syntax (php.ini)
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @since r5221
-	 * @return string SQL Statement
+	 * @since r5241
+	 * @return string SQL Statement to be executed
 	 */
-	protected function _databaseUpdate_83(){
+	protected function _databaseUpdate_83()
+	{
 		return array(
 			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `value` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
 			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE'  WHERE `value` = 'E_ALL ^ E_NOTICE'",
