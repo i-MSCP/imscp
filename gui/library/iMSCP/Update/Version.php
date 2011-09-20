@@ -85,7 +85,7 @@ class iMSCP_Update_Version extends iMSCP_Update
      *
      * @return int 0 if not update or server not reachable.
      */
-    protected function getNextUpdate()
+    protected function _getNextUpdate()
     {
         ini_set('user_agent', 'Mozilla/5.0');
 
@@ -114,7 +114,7 @@ class iMSCP_Update_Version extends iMSCP_Update
      */
     public function isAvailableUpdate()
     {
-        if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
+        if ($this->_getLastAppliedUpdate() < $this->_getNextUpdate()) {
             return true;
         }
 
@@ -127,7 +127,7 @@ class iMSCP_Update_Version extends iMSCP_Update
      * @throws iMSCP_Update_Exception When unable to retrieve last applied update
      * @return int
      */
-    protected function getLastAppliedUpdate()
+    protected function _getLastAppliedUpdate()
     {
         /** @var $cfg iMSCP_Config_Handler_File */
         $cfg = iMSCP_Registry::get('config');

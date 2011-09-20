@@ -46,6 +46,16 @@ abstract class iMSCP_Update
     protected $_lastError = '';
 
     /**
+     * Returns last error occured.
+     *
+     * @return string Last error
+     */
+    public function getError()
+    {
+        return $this->_lastError;
+    }
+
+    /**
      * Apply all available update.
      *
      * @abstract
@@ -67,7 +77,7 @@ abstract class iMSCP_Update
      * @abstract
      * @return int
      */
-    abstract protected function getLastAppliedUpdate();
+    abstract protected function _getLastAppliedUpdate();
 
     /**
      * Return next update.
@@ -75,15 +85,5 @@ abstract class iMSCP_Update
      * @abstract
      * @return int
      */
-    abstract protected function getNextUpdate();
-
-    /**
-     * Returns last error occured.
-     *
-     * @return string Last error
-     */
-    public function getError()
-    {
-        return $this->_lastError;
-    }
+    abstract protected function _getNextUpdate();
 }
