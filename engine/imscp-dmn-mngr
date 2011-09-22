@@ -4051,15 +4051,15 @@ sub dmn_restore_data {
 
 			$cmd = "$main::cfg{'CMD_CHOWN'} -R $main::cfg{'ROOT_USER'}:$main::cfg{'APACHE_GROUP'} $dmn_dir/domain_disable_page";
 			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
+			#return $rs if ($rs != 0);
 
 			$cmd = 'find '."$dmn_dir/domain_disable_page".' -type d -print0 | xargs -r -0 '.$main::cfg{'CMD_CHMOD'}.' 0755';
 			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
+			#return $rs if ($rs != 0);
 
 			$cmd = 'find '."$dmn_dir/domain_disable_page".' -type f -print0 | xargs -r -0 '.$main::cfg{'CMD_CHMOD'}.' 0644';
 			$rs = sys_command($cmd);
-			return $rs if ($rs != 0);
+			#return $rs if ($rs != 0);
 		}
 	}
 
