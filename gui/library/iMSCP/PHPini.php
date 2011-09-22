@@ -332,7 +332,7 @@ class iMSCP_PHPini
 	 */
 	public function checkRePermMax($key, $value)
 	{
-		if ($this->_phpiniRePerm['phpiniSystem'] == "no") {
+		if ($this->_phpiniRePerm['phpiniSystem'] == 'no') {
 			return false;
 		}
 
@@ -666,21 +666,21 @@ class iMSCP_PHPini
 			return true;
 		}
 
-		if ($key == 'phpiniRegisterGlobals' && ($value == 'on' || $value == 'off')) {
+		if ($key == 'phpiniRegisterGlobals' && ($value == 'On' || $value == 'Off')) {
 			return true;
 		}
 
-		if ($key == 'phpiniAllowUrlFopen' && ($value == 'on' || $value == 'off')) {
+		if ($key == 'phpiniAllowUrlFopen' && ($value == 'On' || $value == 'Off')) {
 			return true;
 		}
 
-		if ($key == 'phpiniDisplayErrors' && ($value == 'on' || $value == 'off')) {
+		if ($key == 'phpiniDisplayErrors' && ($value == 'On' || $value == 'Off')) {
 			return true;
 		}
 
-		if ($key == 'phpiniErrorReporting' && ($value == '0' || 'E_ALL'
-											   || $value == 'E_ALL ^ (E_NOTICE | E_WARNING)'
-											   || $value == 'E_ALL ^ E_NOTICE ')
+		if ($key == 'phpiniErrorReporting' &&
+			('E_ALL & ~E_NOTICE' || $value == 'E_ALL | E_STRICT' ||
+			$value == 'E_ALL & ~E_DEPRECATED' || $value == '0')
 		) {
 			return true;
 		}

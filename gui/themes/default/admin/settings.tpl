@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ADMIN_SETTINGS_PAGE_TITLE}</title>
-        <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<title>{TR_ADMIN_SETTINGS_PAGE_TITLE}</title>
+		<meta name="robots" content="nofollow, noindex" />
+		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
-        <!--[if IE 6]>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-        <script type="text/javascript">
-            DD_belatedPNG.fix('*');
-        </script>
-        <![endif]-->
-        <script type="text/javascript">
-		/*<![CDATA[*/
+		<!--[if IE 6]>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+		<script type="text/javascript">
+			DD_belatedPNG.fix('*');
+		</script>
+		<![endif]-->
+
+		<script type="text/javascript">
+			/*<![CDATA[*/
 			$(document).ready(function() {
-				jQuery('#tld_help').iMSCPtooltips({msg:"{TR_TLD_STRICT_VALIDATION_HELP}"});
-				jQuery('#sld_help').iMSCPtooltips({msg:"{TR_SLD_STRICT_VALIDATION_HELP}"});
+				$('#tld_help').iMSCPtooltips({msg:"{TR_TLD_STRICT_VALIDATION_HELP}"});
+				$('#sld_help').iMSCPtooltips({msg:"{TR_SLD_STRICT_VALIDATION_HELP}"});
 			});
-		/*]]>*/
-	</script>
-    </head>
+			/*]]>*/
+		</script>
+	</head>
 	<body>
 		<div class="header">
 			{MAIN_MENU}
 			<div class="logo"><img src="{ISP_LOGO}" alt="i-MSCP logo" /></div>
 		</div>
+
 		<div class="location">
-			<div class="location-area icons-left"><h1 class="settings">{TR_MENU_SETTINGS}</h1></div>
+			<div class="location-area icons-left">
+				<h1 class="settings">{TR_MENU_SETTINGS}</h1></div>
 			<ul class="location-menu">
-			<!-- <li><a class="help" href="#">Help</a></li> -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+				<!-- <li><a class="help" href="#">Help</a></li> -->
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+				</li>
 			</ul>
 			<ul class="path">
 				<li><a href="settings.php">{TR_SETTINGS}</a></li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
 			{MENU}
 		</div>
+
 		<div class="body">
-            <h2 class="general"><span>{TR_SETTINGS}</span></h2>
+			<h2 class="general"><span>{TR_SETTINGS}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
@@ -55,7 +61,9 @@
 					<legend>Core data</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="checkforupdate">{TR_CHECK_FOR_UPDATES}</label></td>
+							<td style="width:300px;">
+								<label for="checkforupdate">{TR_CHECK_FOR_UPDATES}</label>
+							</td>
 							<td>
 								<select name="checkforupdate" id="checkforupdate">
 									<option value="0"{CHECK_FOR_UPDATES_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -65,11 +73,14 @@
 						</tr>
 					</table>
 				</fieldset>
+
 				<fieldset>
 					<legend>{TR_LOSTPASSWORD}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="lostpassword">{TR_LOSTPASSWORD}</label></td>
+							<td style="width:300px;">
+								<label for="lostpassword">{TR_LOSTPASSWORD}</label>
+							</td>
 							<td>
 								<select name="lostpassword" id="lostpassword">
 									<option value="0" {LOSTPASSWORD_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -78,16 +89,23 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="lostpassword_timeout">{TR_LOSTPASSWORD_TIMEOUT}</label></td>
-							<td><input type="text" name="lostpassword_timeout" id="lostpassword_timeout" value="{LOSTPASSWORD_TIMEOUT_VALUE}"/></td>
+							<td width="300">
+								<label for="lostpassword_timeout">{TR_LOSTPASSWORD_TIMEOUT}</label>
+							</td>
+							<td>
+								<input type="text" name="lostpassword_timeout" id="lostpassword_timeout" value="{LOSTPASSWORD_TIMEOUT_VALUE}" />
+							</td>
 						</tr>
 					</table>
 				</fieldset>
+
 				<fieldset>
 					<legend>{TR_PASSWORD_SETTINGS}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="passwd_strong">{TR_PASSWD_STRONG}</label></td>
+							<td style="width:300px;">
+								<label for="passwd_strong">{TR_PASSWD_STRONG}</label>
+							</td>
 							<td>
 								<select name="passwd_strong" id="passwd_strong">
 									<option value="0" {PASSWD_STRONG_OFF}>{TR_DISABLED}</option>
@@ -96,16 +114,22 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="passwd_chars">{TR_PASSWD_CHARS}</label></td>
-							<td><input type="text" name="passwd_chars" id="passwd_chars" value="{PASSWD_CHARS}" maxlength="2" /></td>
+							<td width="300">
+								<label for="passwd_chars">{TR_PASSWD_CHARS}</label>
+							</td>
+							<td>
+								<input type="text" name="passwd_chars" id="passwd_chars" value="{PASSWD_CHARS}" maxlength="2" />
+							</td>
 						</tr>
 					</table>
 				</fieldset>
+
 				<fieldset>
 					<legend>{TR_BRUTEFORCE}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="bruteforce">{TR_BRUTEFORCE}</label></td>
+							<td style="width:300px;">
+								<label for="bruteforce">{TR_BRUTEFORCE}</label></td>
 							<td>
 								<select name="bruteforce" id="bruteforce">
 									<option value="0" {BRUTEFORCE_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -114,7 +138,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="width:300px;"><label for="bruteforce_between">{TR_BRUTEFORCE_BETWEEN}</label></td>
+							<td style="width:300px;">
+								<label for="bruteforce_between">{TR_BRUTEFORCE_BETWEEN}</label>
+							</td>
 							<td>
 								<select name="bruteforce_between" id="bruteforce_between">
 									<option value="0" {BRUTEFORCE_BETWEEN_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -123,28 +149,47 @@
 							</td>
 						</tr>
 						<tr>
-							<td style="width:300px;"><label for="bruteforce_max_login">{TR_BRUTEFORCE_MAX_LOGIN}</label></td>
-							<td><input type="text" name="bruteforce_max_login" id="bruteforce_max_login" value="{BRUTEFORCE_MAX_LOGIN_VALUE}" maxlength="3" /></td>
+							<td style="width:300px;">
+								<label for="bruteforce_max_login">{TR_BRUTEFORCE_MAX_LOGIN}</label>
+							</td>
+							<td>
+								<input type="text" name="bruteforce_max_login" id="bruteforce_max_login" value="{BRUTEFORCE_MAX_LOGIN_VALUE}" maxlength="3" />
+							</td>
 						</tr>
 						<tr>
-							<td><label for="bruteforce_block_time">{TR_BRUTEFORCE_BLOCK_TIME}</label></td>
-							<td><input name="bruteforce_block_time" id="bruteforce_block_time" type="text" value="{BRUTEFORCE_BLOCK_TIME_VALUE}" maxlength="3" /></td>
+							<td>
+								<label for="bruteforce_block_time">{TR_BRUTEFORCE_BLOCK_TIME}</label>
+							</td>
+							<td>
+								<input name="bruteforce_block_time" id="bruteforce_block_time" type="text" value="{BRUTEFORCE_BLOCK_TIME_VALUE}" maxlength="3" />
+							</td>
 						</tr>
 						<tr>
-							<td><label for="bruteforce_between_time">{TR_BRUTEFORCE_BETWEEN_TIME}</label></td>
-							<td><input name="bruteforce_between_time" id="bruteforce_between_time" type="text"  value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" /></td>
+							<td>
+								<label for="bruteforce_between_time">{TR_BRUTEFORCE_BETWEEN_TIME}</label>
+							</td>
+							<td>
+								<input name="bruteforce_between_time" id="bruteforce_between_time" type="text" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" />
+							</td>
 						</tr>
 						<tr>
-							<td><label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label></td>
-							<td><input name="bruteforce_max_capcha" id="bruteforce_max_capcha" type="text" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" /></td>
+							<td>
+								<label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label>
+							</td>
+							<td>
+								<input name="bruteforce_max_capcha" id="bruteforce_max_capcha" type="text" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" />
+							</td>
 						</tr>
 					</table>
 				</fieldset>
+
 				<fieldset>
 					<legend>{TR_DNAMES_VALIDATION_SETTINGS}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label><span class="icon i_help" id="tld_help">Help</span></td>
+							<td style="width:300px;">
+								<label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label><span class="icon i_help" id="tld_help">Help</span>
+							</td>
 							<td>
 								<select name="tld_strict_validation" id="tld_strict_validation">
 									<option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
@@ -153,7 +198,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label><span class="icon i_help" id="sld_help">Help</span></td>
+							<td>
+								<label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label><span class="icon i_help" id="sld_help">Help</span>
+							</td>
 							<td>
 								<select name="sld_strict_validation" id="sld_strict_validation">
 									<option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
@@ -162,23 +209,32 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label></td>
+							<td>
+								<label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label>
+							</td>
 							<td>
 								<input name="max_dnames_labels" id="max_dnames_labels" type="text" value="{MAX_DNAMES_LABELS_VALUE}" maxlength="2" />
 							</td>
 						</tr>
 						<tr>
-							<td><label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label></td>
-							<td><input name="max_subdnames_labels" id="max_subdnames_labels" type="text" value="{MAX_SUBDNAMES_LABELS_VALUE}" maxlength="2" /></td>
+							<td>
+								<label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label>
+							</td>
+							<td>
+								<input name="max_subdnames_labels" id="max_subdnames_labels" type="text" value="{MAX_SUBDNAMES_LABELS_VALUE}" maxlength="2" />
+							</td>
 						</tr>
 					</table>
 				</fieldset>
+
 				<fieldset>
 					<legend>{TR_MAIL_SETTINGS}</legend>
-						<table>
+					<table>
 						<tr>
-							<td style="width:300px;"><label for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label></td>
-								<td>
+							<td style="width:300px;">
+								<label for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label>
+							</td>
+							<td>
 								<select name="create_default_email_addresses" id="create_default_email_addresses">
 									<option value="0" {CREATE_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
 									<option value="1" {CREATE_DEFAULT_EMAIL_ADDRESSES_ON}>{TR_ENABLED}</option>
@@ -186,7 +242,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></td>
+							<td>
+								<label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label>
+							</td>
 							<td>
 								<select name="count_default_email_addresses" id="count_default_email_addresses">
 									<option value="0" {COUNT_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
@@ -195,7 +253,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="hard_mail_suspension">{TR_HARD_MAIL_SUSPENSION}</label></td>
+							<td>
+								<label for="hard_mail_suspension">{TR_HARD_MAIL_SUSPENSION}</label>
+							</td>
 							<td>
 								<select name="hard_mail_suspension" id="hard_mail_suspension">
 									<option value="0" {HARD_MAIL_SUSPENSION_OFF}>{TR_DISABLED}</option>
@@ -205,129 +265,168 @@
 						</tr>
 					</table>
 				</fieldset>
-                                <fieldset>
-                                        <legend>{TR_PHPINI_BASE_SETTINGS}</legend>
-                                        <table>
-                                                <tr>
-                                                        <td style="width:300px;"><label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label></td>
-                                                        <td>
-                                                                <select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
-                                                                        <option value="off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
-                                                                        <option value="on" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
-                                                                </select>
-                                                        </td>
-                                                </tr>
-                                               <tr>
-                                                        <td style="width:300px;"><label for="phpini_register_globals">{TR_PHPINI_REGISTER_GLOBALS}</label></td>
-                                                        <td>
-                                                                <select name="phpini_register_globals" id="phpini_register_globals">
-                                                                        <option value="off" {PHPINI_REGISTER_GLOBALS_OFF}>{TR_DISABLED}</option>
-                                                                        <option value="on" {PHPINI_REGISTER_GLOBALS_ON}>{TR_ENABLED}</option>
-                                                                </select>
-                                                        </td>
-                                                </tr>
-                                               <tr>
-                                                        <td style="width:300px;"><label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label></td>
-                                                        <td>
-                                                                <select name="phpini_display_errors" id="phpini_display_errors">
-                                                                        <option value="off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
-                                                                        <option value="on" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
-                                                                </select>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><label for="phpini_error_reporting">{TR_PHPINI_ERROR_REPORTING}</label></td>
-                                                        <td>
-                                                                <select name="phpini_error_reporting" id="phpini_error_reporting">
-                                                                        <option value="0" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ER_OFF}</option>
-									<option value='E_ALL & ~E_NOTICE & ~E_WARNING' {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN}</option>
-                                                                        <option value='E_ALL & ~E_NOTICE' {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE}</option>
-									<option value='E_ALL' {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ER_EALL}</option>
-                                                                </select>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label></td>
-                                                        <td>
-                                                                <input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" /> MB
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label></td>
-                                                        <td>
-                                                                <input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" /> MB
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label></td>
-                                                        <td>
-                                                                <input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" /> sec
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label></td>
-                                                        <td>
-                                                                <input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" /> sec 
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td><label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label></td>
-                                                        <td>
-                                                                <input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" /> MB
-                                                        </td>
-                                                </tr>
-						<tr>
-                                                        <td><label for="phpini_disable_functions">{TR_PHPINI_DISABLE_FUNCTIONS}</label></td>
-                                                        <td>
-                                                                <input name="phpini_df_show_source" id="phpini_df_show_source" type="checkbox" {PHPINI_DF_SHOW_SOURCE_CHK} value="show_source"/> show_source
-								<input name="phpini_df_system" id="phpini_df_system" type="checkbox" {PHPINI_DF_SYSTEM_CHK} value="system"/> system
-								<input name="phpini_df_shell_exec" id="phpini_df_shell_exec" type="checkbox" {PHPINI_DF_SHELL_EXEC_CHK} value="shell_exec"/> shell_exec
-								<input name="phpini_df_passthru" id="phpini_df_passthru" type="checkbox" {PHPINI_DF_PASSTHRU_CHK} value="passthru"/> passthru
-                                                                <input name="phpini_df_exec" id="phpini_df_exec" type="checkbox" {PHPINI_DF_EXEC_CHK} value="exec"/> exec
-								<input name="phpini_df_phpinfo" id="phpini_df_phpinfo" type="checkbox" {PHPINI_DF_PHPINFO_CHK} value="phpinfo"/> phpinfo
-                                                                <input name="phpini_df_shell" id="phpini_df_shell" type="checkbox" {PHPINI_DF_SHELL_CHK} value="shell"/> shell
-                                                                <input name="phpini_df_symlink" id="phpini_df_symlink" type="checkbox" {PHPINI_DF_SYMLINK_CHK} value="symlink"/> symlink
-                                                        </td>
-                                                </tr>
 
-                                        </table>
-                                </fieldset>
-                <fieldset>
-                    <legend>{TR_ORDERS_SETTINGS}</legend>
-                    <table>
-                        <tr>
-                            <td style="width:300px;">
-                                <label for="ordersExpireTime">{TR_ORDERS_EXPIRE_TIME}</label>
-                            </td>
-                            <td>
-                                <input type="text" name="ordersExpireTime" id="ordersExpireTime" value="{ORDERS_EXPIRATION_TIME_VALUE}" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label>
-                            </td>
-                            <td>
-                                <input type="text" name="coid" id="coid" value="{CUSTOM_ORDERPANEL_ID}" />
-                            </td>
-                        </tr>
-                    </table>
-                </fieldset>
 				<fieldset>
-					<legend>{TR_OTHER_SETTINGS}</legend>
+					<legend>{TR_PHPINI_BASE_SETTINGS}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="def_language">{TR_USER_INITIAL_LANG}</label></td>
+							<td style="width:300px;">
+								<label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label>
+							</td>
 							<td>
-								<select name="def_language" id="def_language">
-								<!-- BDP: def_language -->
-									<option value="{LANG_VALUE}"{LANG_SELECTED}>{LANG_NAME}</option>
-								<!-- EDP: def_language -->
+								<select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
+									<option value="Off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
+									<option value="On" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
 						</tr>
 						<tr>
-							<td><label for="support_system">{TR_SUPPORT_SYSTEM}</label></td>
+							<td style="width:300px;">
+								<label for="phpini_register_globals">{TR_PHPINI_REGISTER_GLOBALS}</label>
+							</td>
+							<td>
+								<select name="phpini_register_globals" id="phpini_register_globals">
+									<option value="Off" {PHPINI_REGISTER_GLOBALS_OFF}>{TR_DISABLED}</option>
+									<option value="On" {PHPINI_REGISTER_GLOBALS_ON}>{TR_ENABLED}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td style="width:300px;">
+								<label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label>
+							</td>
+							<td>
+								<select name="phpini_display_errors" id="phpini_display_errors">
+									<option value="Off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
+									<option value="On" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="phpini_error_reporting">{TR_PHPINI_ERROR_REPORTING}</label>
+							</td>
+							<td>
+								<select name="phpini_error_reporting" id="phpini_error_reporting">
+									<option value="E_ALL & ~E_NOTICE" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ERROR_REPORTING_DEFAULT}</option>
+									<option value="E_ALL | E_STRICT" {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT}</option>
+									<option value="E_ALL & ~E_DEPRECATED" {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ERROR_REPORTING_PRODUCTION}</option>
+									<option value="0" {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ERROR_REPORTING_NONE}</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label>
+							</td>
+							<td>
+								<input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" />
+								MB
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label>
+							</td>
+							<td>
+								<input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" />
+								MB
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label>
+							</td>
+							<td>
+								<input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" />
+								sec
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label>
+							</td>
+							<td>
+								<input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" />
+								sec
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label>
+							</td>
+							<td>
+								<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" />
+								MB
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>{TR_PHPINI_DISABLE_FUNCTIONS}</label>
+							</td>
+							<td>
+								<input name="phpini_df_show_source" id="phpini_df_show_source" type="checkbox" {PHPINI_DF_SHOW_SOURCE_CHK} value="show_source" />
+								<label for="phpini_df_show_source">show_source</label>
+								<input name="phpini_df_system" id="phpini_df_system" type="checkbox" {PHPINI_DF_SYSTEM_CHK} value="system" />
+								<label for="phpini_df_system">system</label>
+								<input name="phpini_df_shell_exec" id="phpini_df_shell_exec" type="checkbox" {PHPINI_DF_SHELL_EXEC_CHK} value="shell_exec" />
+								<label for="phpini_df_shell_exec">shell_exec</label>
+								<input name="phpini_df_passthru" id="phpini_df_passthru" type="checkbox" {PHPINI_DF_PASSTHRU_CHK} value="passthru" />
+								<label for="phpini_df_passthru">passthru</label>
+								<input name="phpini_df_exec" id="phpini_df_exec" type="checkbox" {PHPINI_DF_EXEC_CHK} value="exec" />
+								<label for="phpini_df_exec">exec</label>
+								<input name="phpini_df_phpinfo" id="phpini_df_phpinfo" type="checkbox" {PHPINI_DF_PHPINFO_CHK} value="phpinfo" />
+								<label for="phpini_df_phpinfo">phpinfo</label>
+								<input name="phpini_df_shell" id="phpini_df_shell" type="checkbox" {PHPINI_DF_SHELL_CHK} value="shell" />
+								<label for="phpini_df_shell">shell</label>
+								<input name="phpini_df_symlink" id="phpini_df_symlink" type="checkbox" {PHPINI_DF_SYMLINK_CHK} value="symlink" />
+								<label for="phpini_df_symlink">symlink</label>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+
+				<fieldset>
+					<legend>{TR_ORDERS_SETTINGS}</legend>
+					<table>
+						<tr>
+							<td style="width:300px;">
+								<label for="ordersExpireTime">{TR_ORDERS_EXPIRE_TIME}</label>
+							</td>
+							<td>
+								<input type="text" name="ordersExpireTime" id="ordersExpireTime" value="{ORDERS_EXPIRATION_TIME_VALUE}" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label>
+							</td>
+							<td>
+								<input type="text" name="coid" id="coid" value="{CUSTOM_ORDERPANEL_ID}" />
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+
+				<fieldset>
+					<legend>{TR_OTHER_SETTINGS}</legend>
+					<table>
+						<tr>
+							<td style="width:300px;">
+								<label for="def_language">{TR_USER_INITIAL_LANG}</label>
+							</td>
+							<td>
+								<select name="def_language" id="def_language">
+									<!-- BDP: def_language -->
+									<option value="{LANG_VALUE}"{LANG_SELECTED}>{LANG_NAME}</option>
+									<!-- EDP: def_language -->
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="support_system">{TR_SUPPORT_SYSTEM}</label>
+							</td>
 							<td>
 								<select name="support_system" id="support_system">
 									<option value="0" {SUPPORT_SYSTEM_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -336,7 +435,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="compress_output">{TR_COMPRESS_OUTPUT}</label></td>
+							<td>
+								<label for="compress_output">{TR_COMPRESS_OUTPUT}</label>
+							</td>
 							<td>
 								<select name="compress_output" id="compress_output">
 									<option value="0" {COMPRESS_OUTPUT_OFF}>{TR_DISABLED}</option>
@@ -345,7 +446,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label></td>
+							<td>
+								<label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label>
+							</td>
 							<td>
 								<select name="show_compression_size" id="show_compression_size">
 									<option value="0" {SHOW_COMPRESSION_SIZE_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -354,7 +457,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="hosting_plan_level">{TR_HOSTING_PLANS_LEVEL}</label></td>
+							<td>
+								<label for="hosting_plan_level">{TR_HOSTING_PLANS_LEVEL}</label>
+							</td>
 							<td class="content">
 								<select name="hosting_plan_level" id="hosting_plan_level">
 									<option value="admin" {HOSTING_PLANS_LEVEL_ADMIN}>{TR_ADMIN}</option>
@@ -363,8 +468,12 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="domain_rows_per_page">{TR_DOMAIN_ROWS_PER_PAGE}</label></td>
-							<td><input name="domain_rows_per_page" id="domain_rows_per_page" type="text" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" /></td>
+							<td>
+								<label for="domain_rows_per_page">{TR_DOMAIN_ROWS_PER_PAGE}</label>
+							</td>
+							<td>
+								<input name="domain_rows_per_page" id="domain_rows_per_page" type="text" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" />
+							</td>
 						</tr>
 						<tr>
 							<td><label for="log_level">{TR_LOG_LEVEL}</label></td>
@@ -378,7 +487,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label></td>
+							<td>
+								<label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label>
+							</td>
 							<td>
 								<select name="prevent_external_login_admin" id="prevent_external_login_admin">
 									<option value="0" {PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -387,7 +498,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label></td>
+							<td>
+								<label for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label>
+							</td>
 							<td>
 								<select name="prevent_external_login_reseller" id="prevent_external_login_reseller">
 									<option value="0" {PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -396,7 +509,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label></td>
+							<td>
+								<label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label>
+							</td>
 							<td>
 								<select name="prevent_external_login_client" id="prevent_external_login_client">
 									<option value="0" {PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -406,12 +521,17 @@
 						</tr>
 					</table>
 				</fieldset>
+
 				<div class="buttons">
 					<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
 					<input type="hidden" name="uaction" value="apply" />
 				</div>
 			</form>
 		</div>
-		<div class="footer">i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</div>
-    </body>
+
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}
+			<br />Codename: {CODENAME}
+		</div>
+	</body>
 </html>

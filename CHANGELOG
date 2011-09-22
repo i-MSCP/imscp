@@ -21,8 +21,7 @@ Features / Enhancements:
 Tickets:
 	- Fixed #15:  PHP directives editor
 	- Fixed #16:  Feature - Mail Quota Support
-	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with
-	dovecot
+	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with dovecot
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77:  Task - Setup - Empty files must be removed
 	- Fixed #147: Squirrelmail 1.4.22 released
@@ -45,6 +44,7 @@ Tickets:
 	- Fixed #195: Bug - syntax error, unexpected '('...
 	- Fixed #196: Defect - squirrelmail required for upgrade
 	- Fixed #197: Bug - network card management don't work as expected
+	- Fixed #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
@@ -77,8 +77,7 @@ Other:
 
 Tickets:
 	- Fixed #43:  Enhancement - You are blocked for 30 minutes
-	- Fixed #65:  Good practices - Software Installer - All shared functions must be
-	put in specific file
+	- Fixed #65:  Good practices - Software Installer - All shared functions must be put in specific file
 	- Fixed #90:  Defect - Custom logo feature is broken
 	- Fixed #101: Defect - Missing messages in Software Installer
 	- Fixed #103: Enhancement - Admin should have the rights to delete packages
@@ -105,11 +104,9 @@ Tickets:
 	- Fixed #150: Bug - Tickets feature is broken
 	- Fixed #153: BUG - Some pages lack footer
 	- Fixed #154: Update - phpMyAdmin 3.4.3.2 available
-	- Fixed #156: Bug - Users's properties must be loaded in session before i18n
-	initialization
+	- Fixed #156: Bug - Users's properties must be loaded in session before i18n initialization
 	- Fixed #159: 404 after update a customer (Hosting plans available for admin)
-	- Fixed #160: Variable {YOU_ARE_LOGGED_AS} on edit domain (Hosting plans
-	available for admin)
+	- Fixed #160: Variable {YOU_ARE_LOGGED_AS} on edit domain (Hosting plans available for admin)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
@@ -132,13 +129,10 @@ Features / Enhancements:
 Tickets:
 	- Fixed #2:   Feature - SSL support for master vhost
 	- Fixed #93:  Defect - Login page doesn't look good on IE7
-	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default
-	page
-	- Fixed #97:  Good practices - Throw an exception if the phptmp directory is
-	unwritable
+	- Fixed #96:  Bug - Notice raised when clicking on link from the domain' default page
+	- Fixed #97:  Good practices - Throw an exception if the phptmp directory is unwritable
 	- Fixed #98:  Bug - Encoding issue in include/i18n.php
-	- Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on
-	  line 457
+	- Fixed #99:  Bug - Undefined variable: DB in reseller/software_upload.php on line 457
 	- Fixed #100: Bug - Default language overrides user language at admin level
 	- Fixed #102: Bug - Unable to install more than one language file
 	- Fixed #104: Task - autoreplies_log database table still use MYISAM engine)

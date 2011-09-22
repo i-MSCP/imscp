@@ -46,12 +46,12 @@
  */
 function admin_generateDatabaseUpdateDetail($tpl)
 {
-	$dbUpdatesDetail = iMSCP_Update_Database::getInstance()->getDatabaseUpdateDetail();
+	$dbUpdatesDetail = iMSCP_Update_Database::getInstance()->getDatabaseUpdatesDetails();
 
 	foreach ($dbUpdatesDetail as $revision => $detail) {
 		$tpl->assign(array(
 						  'DB_UPDATE_REVISION' => (int)$revision,
-						  'DB_UPDATE_DETAIL' => _admin_generateIssueTrackerLink(tohtml($detail))));
+						  'DB_UPDATE_DETAIL' => _admin_generateIssueTrackerLink($detail)));
 
 		$tpl->parse('DATABASE_UPDATE', '.database_update');
 	}
@@ -67,7 +67,7 @@ function admin_generateDatabaseUpdateDetail($tpl)
 function _admin_generateIssueTrackerLink($detail)
 {
 	return preg_replace(
-		'/^#([0-9]+)/',
+		'/#([0-9]+)/',
 		'<a href="http://sourceforge.net/apps/trac/i-mscp/ticket/\1" target="_blank" title="' .
 			tr('More Details') .'">#\1</a>',
 		$detail);
@@ -103,7 +103,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array('page' => $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl',
+$tpl->define_dynamic(array(
+						  'page' => $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl',
 						  'page_message' => 'page',
 						  'database_updates' => 'page',
 						  'database_update' => 'database_updates'));
@@ -124,7 +125,7 @@ if ($dbUpdate->isAvailableUpdate()) {
 	admin_generateDatabaseUpdateDetail($tpl);
 
 	$tpl->assign(array(
-					  'TR_DATABASE_UPDATES' => tr('Database Updates Revision'),
+					  'TR_DATABASE_UPDATES' => tr('Database Update Revision'),
 					  'TR_DATABASE_UPDATE_DETAIL' => 'Database Update details',
 					  'TR_PROCESS_UPDATES' => tr('Process updates')));
 } else {

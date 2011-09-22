@@ -375,7 +375,7 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 //start php.ini - doesnt make a difference if i load the data from $cfg or from $phpini->getData()
 
 
-if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') {
+if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
     $tpl->assign(array(
                       'PHPINI_ALLOW_URL_FOPEN_ON' => $html_selected,
                       'PHPINI_ALLOW_URL_FOPEN_OFF' => ''));
@@ -385,7 +385,7 @@ if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on') {
                       'PHPINI_ALLOW_URL_FOPEN_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniRegisterGlobals') == 'on') {
+if ($phpini->getDataVal('phpiniRegisterGlobals') == 'On') {
     $tpl->assign(array(
                       'PHPINI_REGISTER_GLOBALS_ON' => $html_selected,
                       'PHPINI_REGISTER_GLOBALS_OFF' => ''));
@@ -395,7 +395,7 @@ if ($phpini->getDataVal('phpiniRegisterGlobals') == 'on') {
                       'PHPINI_REGISTER_GLOBALS_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
+if ($phpini->getDataVal('phpiniDisplayErrors') == 'On') {
     $tpl->assign(array(
                       'PHPINI_DISPLAY_ERRORS_ON' => $html_selected,
                       'PHPINI_DISPLAY_ERRORS_OFF' => ''));
@@ -406,59 +406,58 @@ if ($phpini->getDataVal('phpiniDisplayErrors') == 'on') {
 }
 
 switch ($phpini->getDataVal('phpiniErrorReporting')) {
-    case '0':
-	$tpl->assign(array(
-                        'PHPINI_ERROR_REPORTING_0' => $html_selected,
-			'PHPINI_ERROR_REPORTING_1' => '',
-			'PHPINI_ERROR_REPORTING_2' => '',
-			'PHPINI_ERROR_REPORTING_3' => ''));
-	break;
-    case 'E_ALL & ~E_NOTICE & ~E_WARNING':
-        $tpl->assign(array(
-                        'PHPINI_ERROR_REPORTING_0' => '',
-                        'PHPINI_ERROR_REPORTING_1' => $html_selected,
-                        'PHPINI_ERROR_REPORTING_2' => '',
-                        'PHPINI_ERROR_REPORTING_3' => ''));
-        break;
-    case 'E_ALL & ~E_NOTICE':
-        $tpl->assign(array(
-                        'PHPINI_ERROR_REPORTING_0' => '',
-                        'PHPINI_ERROR_REPORTING_1' => '',
-                        'PHPINI_ERROR_REPORTING_2' => $html_selected,
-                        'PHPINI_ERROR_REPORTING_3' => ''));
-        break;
-    case 'E_ALL':
-        $tpl->assign(array(
-                        'PHPINI_ERROR_REPORTING_0' => '',
-                        'PHPINI_ERROR_REPORTING_1' => '',
-                        'PHPINI_ERROR_REPORTING_2' => '',
-                        'PHPINI_ERROR_REPORTING_3' => $html_selected));
-        break;
-			
+	case 'E_ALL & ~E_NOTICE':
+		$tpl->assign(array(
+						  'PHPINI_ERROR_REPORTING_0' => $html_selected,
+						  'PHPINI_ERROR_REPORTING_1' => '',
+						  'PHPINI_ERROR_REPORTING_2' => '',
+						  'PHPINI_ERROR_REPORTING_3' => ''));
+		break;
+	case 'E_ALL | E_STRICT':
+		$tpl->assign(array(
+						  'PHPINI_ERROR_REPORTING_0' => '',
+						  'PHPINI_ERROR_REPORTING_1' => $html_selected,
+						  'PHPINI_ERROR_REPORTING_2' => '',
+						  'PHPINI_ERROR_REPORTING_3' => ''));
+		break;
+	case 'E_ALL & ~E_DEPRECATED':
+		$tpl->assign(array(
+						  'PHPINI_ERROR_REPORTING_0' => '',
+						  'PHPINI_ERROR_REPORTING_1' => '',
+						  'PHPINI_ERROR_REPORTING_2' => $html_selected,
+						  'PHPINI_ERROR_REPORTING_3' => ''));
+		break;
+	case '0':
+		$tpl->assign(array(
+						  'PHPINI_ERROR_REPORTING_0' => '',
+						  'PHPINI_ERROR_REPORTING_1' => '',
+						  'PHPINI_ERROR_REPORTING_2' => '',
+						  'PHPINI_ERROR_REPORTING_3' => $html_selected));
+		break;
+
 }
 
-//template stuff for disable_function 
+// template stuff for disable_function
 $phpini_df = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-$phpini_df_all = array(	'PHPINI_DF_SHOW_SOURCE_CHK',
-			'PHPINI_DF_SYSTEM_CHK',
-			'PHPINI_DF_SHELL_EXEC_CHK',
-                        'PHPINI_DF_PASSTHRU_CHK',
-                        'PHPINI_DF_EXEC_CHK',
-                        'PHPINI_DF_PHPINFO_CHK',
-                        'PHPINI_DF_SHELL_CHK',
-                        'PHPINI_DF_SYMLINK_CHK' );
+$phpini_df_all = array(
+	'PHPINI_DF_SHOW_SOURCE_CHK',
+	'PHPINI_DF_SYSTEM_CHK',
+	'PHPINI_DF_SHELL_EXEC_CHK',
+	'PHPINI_DF_PASSTHRU_CHK',
+	'PHPINI_DF_EXEC_CHK',
+	'PHPINI_DF_PHPINFO_CHK',
+	'PHPINI_DF_SHELL_CHK',
+	'PHPINI_DF_SYMLINK_CHK');
 
 
 foreach($phpini_df_all as $phpini_df_var){
 	$phpini_df_shortvar = substr($phpini_df_var,10);
 	$phpini_df_shortvar = strtolower(substr($phpini_df_shortvar,0,-4));
+
 	if (in_array($phpini_df_shortvar,$phpini_df)){
-        	$tpl->assign(array(
-                	        $phpini_df_var => 'CHECKED'));
-	} 
-	else {
-		$tpl->assign(array(
-                                $phpini_df_var => ''));
+        	$tpl->assign($phpini_df_var, $cfg->HTML_CHECKED);
+	} else {
+		$tpl->assign($phpini_df_var, '');
 	}
 }
 
@@ -562,21 +561,21 @@ $tpl->assign(array(
                   'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
                   'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)'),
                   'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
-		          'TR_PHPINI_BASE_SETTINGS' => tr('Global Base php.ini Settings'),
-                  'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value allow_url_fopen'),
-		          'TR_PHPINI_REGISTER_GLOBALS' => tr('Value register_globals'),
-                  'TR_PHPINI_DISPLAY_ERRORS' => tr('Value display_errors'),
-                  'TR_PHPINI_ERROR_REPORTING' => tr('Value error_reporting'),
-		          'TR_PHPINI_ER_OFF' => tr('All off'),
-                  'TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN' => tr('All errors except notices and warnings'),
-                  'TR_PHPINI_ER_EALL_EXCEPT_NOTICE' => tr('All errors except notices'),
-                  'TR_PHPINI_ER_EALL' => tr('All errors'),
-                  'TR_PHPINI_POST_MAX_SIZE' => tr('Value post_max_size'),
-                  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value upload_max_filesize'),
-                  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value max_execution_time'),
-                  'TR_PHPINI_MAX_INPUT_TIME' => tr('Value max_input_time'),
-                  'TR_PHPINI_MEMORY_LIMIT' => tr('Value memory_limit'),
-                  'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value disable_functions'),
+		          'TR_PHPINI_BASE_SETTINGS' => tr('System wide values for PHP directives'),
+                  'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the <strong>allow_url_fopen</strong> directive'),
+		          'TR_PHPINI_REGISTER_GLOBALS' => tr('Value for the <strong>register_globals</strong> directive'),
+                  'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the <strong>display_errors</strong> directive'),
+                  'TR_PHPINI_ERROR_REPORTING' => tr('Value for the <strong>error_reporting</strong> directive'),
+				  'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
+				  'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
+				  'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
+				  'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
+                  'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the <strong>post_max_size</strong> directive'),
+                  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value for the <strong>upload_max_filesize</strong> directive'),
+                  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the <strong>max_execution_time</strong> directive'),
+                  'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the <strong>max_input_time</strong> directive'),
+                  'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the <strong>memory_limit</strong> directive'),
+                  'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the <strong>disable_functions</strong> directive'),
                   'TR_ORDERS_SETTINGS' => tr('Orders settings'),
                   'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true)));
 

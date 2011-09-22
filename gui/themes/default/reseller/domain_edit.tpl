@@ -123,16 +123,18 @@
 							<td>{VL_DOMAIN_EXPIRE}</td>
 						</tr>
 						<tr>
-							<td><label for="datepicker">{TR_DOMAIN_NEW_EXPIRE}</label>
+							<td>
+								<label for="datepicker">{TR_DOMAIN_NEW_EXPIRE}</label>
 								<span class="icon i_help" id="dmn_exp_help">Help</span>
 							</td>
 							<td>
 								<div style="float:left;">
 									<input type="text" id="datepicker" name="dmn_expire_date" value="{VL_DOMAIN_EXPIRE_DATE}"{VL_DISABLED} />
-									<p style="color:#535353;font-size: smaller;">(MM/DD/YYYY)</p>
+									<p style="color:#535353;font-size: smaller;">
+										(MM/DD/YYYY)</p>
 								</div>
 
-								<input  style="vertical-align: middle;" type="checkbox" name="neverexpire" id="neverexpire"{VL_NEVEREXPIRE}/>
+								<input style="vertical-align: middle;" type="checkbox" name="neverexpire" id="neverexpire"{VL_NEVEREXPIRE}/>
 								{TR_EXPIRE_CHECKBOX}
 							</td>
 						</tr>
@@ -148,7 +150,8 @@
 					<legend>{TR_DOMAIN_ACCOUNT_LIMITS}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="dom_sub">{TR_SUBDOMAINS}</label></td>
+							<td style="width:300px;">
+								<label for="dom_sub">{TR_SUBDOMAINS}</label></td>
 							<td>
 								<input type="text" name="dom_sub" id="dom_sub" value="{VL_DOM_SUB}" />
 							</td>
@@ -207,7 +210,8 @@
 					<legend>{TR_OPTIONAL_FEATURES}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;"><label for="domain_php">{TR_PHP_SUPP}</label></td>
+							<td style="width:300px;">
+								<label for="domain_php">{TR_PHP_SUPP}</label></td>
 							<td>
 								<select id="domain_php" name="domain_php">
 									<option value="_yes_" {PHP_YES}>{TR_YES}</option>
@@ -226,7 +230,9 @@
 						</tr>
 						<!-- BDP: t_software_support -->
 						<tr>
-							<td><label for="domain_software_allowed">{SW_ALLOWED}</label></td>
+							<td>
+								<label for="domain_software_allowed">{SW_ALLOWED}</label>
+							</td>
 							<td>
 								<select name="domain_software_allowed" id="domain_software_allowed">
 									<option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
@@ -260,7 +266,7 @@
 
 				<!-- BDP: t_phpini_system -->
 				<fieldset>
-					<legend>{TR_PHPINI_VARIABLES_EDITOR}</legend>
+					<legend>{TR_PHP_DIRECTIVES_EDITOR}</legend>
 					<table>
 						<tr>
 							<td style="width:300px;">{TR_PHPINI_AL_SYSTEM}</td>
@@ -332,8 +338,8 @@
 							</td>
 							<td>
 								<select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
-									<option value="off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
-									<option value="on" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
+									<option value="Off" {PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_DISABLED}</option>
+									<option value="On" {PHPINI_ALLOW_URL_FOPEN_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
 						</tr>
@@ -345,8 +351,8 @@
 							</td>
 							<td>
 								<select name="phpini_register_globals" id="phpini_register_globals">
-									<option value="off" {PHPINI_REGISTER_GLOBALS_OFF}>{TR_DISABLED}</option>
-									<option value="on" {PHPINI_REGISTER_GLOBALS_ON}>{TR_ENABLED}</option>
+									<option value="Off" {PHPINI_REGISTER_GLOBALS_OFF}>{TR_DISABLED}</option>
+									<option value="On" {PHPINI_REGISTER_GLOBALS_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
 						</tr>
@@ -358,8 +364,8 @@
 							</td>
 							<td>
 								<select name="phpini_display_errors" id="phpini_display_errors">
-									<option value="off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
-									<option value="on" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
+									<option value="Off" {PHPINI_DISPLAY_ERRORS_OFF}>{TR_DISABLED}</option>
+									<option value="On" {PHPINI_DISPLAY_ERRORS_ON}>{TR_ENABLED}</option>
 								</select>
 							</td>
 						</tr>
@@ -369,10 +375,10 @@
 							</td>
 							<td>
 								<select name="phpini_error_reporting" id="phpini_error_reporting">
-									<option value="0" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ER_OFF}</option>
-									<option value='E_ALL & ~E_NOTICE & ~E_WARNING' {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN}</option>
-									<option value='E_ALL & ~E_NOTICE' {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ER_EALL_EXCEPT_NOTICE}</option>
-									<option value='E_ALL' {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ER_EALL}</option>
+									<option value="E_ALL & ~E_NOTICE" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ERROR_REPORTING_DEFAULT}</option>
+									<option value="E_ALL | E_STRICT" {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT}</option>
+									<option value="E_ALL & ~E_DEPRECATED" {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ERROR_REPORTING_PRODUCTION}</option>
+									<option value="0" {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ERROR_REPORTING_NONE}</option>
 								</select>
 							</td>
 						</tr>

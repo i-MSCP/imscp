@@ -34,14 +34,14 @@ require_once 'iMSCP/Update.php';
 /**
  * Update Database class.
  *
- * Class to handled database update for i-MSCP.
+ * Class to handled database updates for i-MSCP.
  *
  * @category	iMSCP
  * @package		iMSCP_Update
  * @subpackage	Database
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Update_Database extends iMSCP_Update
 {
@@ -105,7 +105,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Checks for available database update.
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @return bool TRUE if an update is available, FALSE otherwise
+	 * @return bool TRUE if a database update is available, FALSE otherwise
 	 */
 	public function isAvailableUpdate()
 	{
@@ -145,17 +145,24 @@ class iMSCP_Update_Database extends iMSCP_Update
 				try {
 
 					// One transaction per database update
-					// If a query from a database update fail, all update is canceled
+					// If a query from a database update fail, all $query is canceled
+					// Note: Valable for database updates that are free of any
+					// statements causing an implicit commit
 					$pdo->beginTransaction();
 
 					foreach ((array)$queryStack as $query) {
-						$pdo->query($query);
+						if(!empty($query))
+						{
+							$pdo->query($query);
+						}
 					}
 
 					$dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
 
 					$pdo->commit();
+
 				} catch (Exception $e) {
+
 					$pdo->rollBack();
 
 					// Prepare error message
@@ -197,12 +204,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @return array
 	 */
-	public function getDatabaseUpdateDetail()
+	public function getDatabaseUpdatesDetails()
 	{
 		$reflectionStart = $this->_getNextUpdate();
 
 		$reflection = new ReflectionClass(__CLASS__);
-		$databaseUpdatesDetail = array();
+		$databaseUpdatesDetails = array();
 
 		/** @var $method ReflectionMethod */
 		foreach ($reflection->getMethods() as $method) {
@@ -212,15 +219,29 @@ class iMSCP_Update_Database extends iMSCP_Update
 				$revision = (int)substr($methodName, strrpos($methodName, '_') + 1);
 
 				if ($revision >= $reflectionStart) {
-					$detail = explode("\n", $method->getDocComment());
+					$details = explode("\n", $method->getDocComment());
 
-					// TODO should be be review
-					$databaseUpdatesDetail[$revision] = str_replace("\t * ", '', $detail[1]);
+					$normalizedDetails = '';
+					array_shift($details);
+
+					foreach($details as $detail) {
+						if(preg_match('/^(?: |\t)*\*(?: |\t)+([^@]*)$/', $detail, $matches)) {
+							if(empty($normalizedDetails)) {
+								$normalizedDetails = $matches[1];
+							} else {
+								$normalizedDetails .= '<br />' . $matches[1];
+							}
+						} else {
+							break;
+						}
+					}
+
+					$databaseUpdatesDetails[$revision] = $normalizedDetails;
 				}
 			}
 		}
 
-		return $databaseUpdatesDetail;
+		return $databaseUpdatesDetails;
 	}
 
 	/**
@@ -291,8 +312,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Checks if a column exists in a database table and if not, execute a query to
-	 * add that column.
+	 * Checks if a column exists in a database table and if not, return query to add it.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
@@ -301,69 +321,63 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $columnDefinition Column definition including the optional
 	 * 								   (but recommended) positional statement
 	 * 								   ([FIRST | AFTER col_name ]
-	 * @return string Query to be executed
+	 * @return string
 	 */
 	protected function _addColumn($table, $column, $columnDefinition)
 	{
-		return ("
-			DROP PROCEDURE IF EXISTS addColumn;
-			CREATE PROCEDURE addColumn()
-			BEGIN
-				IF NOT EXISTS (
-					SELECT
-						COLUMN_NAME
-					FROM
-						information_schema.COLUMNS
-					WHERE
-						COLUMN_NAME = '$column'
-					AND
-						TABLE_NAME = '$table'
-					AND
-						TABLE_SCHEMA = '{$this->_databaseName}'
-				) THEN
-					ALTER TABLE `{$this->_databaseName}`.`$table` ADD `$column` $columnDefinition;
-				END IF;
-			END;
-			CALL addColumn();
-			DROP PROCEDURE IF EXISTS addColumn;
-		");
+		$query = "
+			SELECT
+				COLUMN_NAME
+			FROM
+				`information_schema`.`COLUMNS`
+			WHERE
+				COLUMN_NAME = ?
+			AND
+				TABLE_NAME = ?
+			AND
+				`TABLE_SCHEMA` = ?
+		";
+		$stmt = exec_query($query, array($column, $table, $this->_databaseName));
+
+		if($stmt->rowCount() == 0) {
+			return "ALTER TABLE `$table` ADD `$column` $columnDefinition;";
+		} else {
+			return '';
+		}
 	}
 
 	 /**
-	 * Checks if a column exists in a database table and if not, execute a query to
-	 * drop that column.
+	 * Checks if a column exists in a database table and if yes, return a query to drop it.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
-	 * @param string $table Database table name
-	 * @param string $column Column to be dropped from the database table
+	 * @param string $table Database table from where the column must be dropped
+	 * @param string $column Column to be dropped from $table
 	 * @return string Query to be executed
 	 */
 	protected function _dropColumn($table, $column)
 	{
-		return "
-			DROP PROCEDURE IF EXISTS dropColumn;
-			CREATE PROCEDURE dropColumn()
-			BEGIN
-				IF EXISTS (
-					SELECT
-						COLUMN_NAME
-					FROM
-						information_schema.COLUMNS
-					WHERE
-						TABLE_NAME = '$table'
-					AND
-						COLUMN_NAME = '$column'
-					AND
-						table_schema = '{$this->_databaseName}'
-				) THEN
-					ALTER TABLE `{$this->_databaseName}`.`$table` DROP column `$column`;
-				END IF;
-			END;
-			CALL dropColumn();
-			DROP PROCEDURE IF EXISTS dropColumn;
+		$query = "
+			SELECT
+				`COLUMN_NAME`
+			FROM
+				`information_schema`.`COLUMNS`
+			WHERE
+				`COLUMN_NAME` = ?
+			AND
+				`TABLE_NAME` = ?
+			AND
+				`TABLE_SCHEMA` = ?
 		";
+		$stmt = exec_query($query, array($column, $table, $this->_databaseName));
+
+		if($stmt->rowCount()) {
+			return "ALTER TABLE `$table` DROP column `$column`";
+		} else {
+			return '';
+		}
 	}
+
 	/**
 	 * Catch any database updates that were removed.
 	 *
@@ -381,12 +395,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Please, add all the database update methods below. Don't forgot to add the doc
-	 * and revision (@since rxxx). Also, if you add a ticket reference in the method
-	 * title such as '#150', place it at begin to allow to generate a link from it.
+	 * and revision (@since rxxx).
 	 */
 
 	/**
-	 * Fixes some CSRF issues in admin log.
+	 * Fixes some CSRF issues in admin log
 	 *
 	 * @author Thomas Wacker <thomas.wacker@ispcp.net>
 	 * @since r3695
@@ -398,7 +411,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Removes useless 'suexec_props' table.
+	 * Removes useless 'suexec_props' table
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r3709
@@ -410,7 +423,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #14: Adds table for software installer.
+	 * #14: Adds table for software installer
 	 *
 	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @since  r3695
@@ -419,6 +432,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_48()
 	{
 		$sqlUpd = array();
+
 		$sqlUpd[] = "
 	 		CREATE TABLE IF NOT EXISTS
 	 			`web_software` (
@@ -474,19 +488,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd[] = $this->_addColumn(
 			'domain',
 			'domain_software_allowed',
-			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no' AFTER `domain_dns`"
+			"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `domain_dns`"
 		);
 
 		$sqlUpd[] = $this->_addColumn(
 			'reseller_props',
 			'software_allowed',
-			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no' AFTER `reseller_ips`"
+			"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no' AFTER `reseller_ips`"
 		);
 
 		$sqlUpd[] = $this->_addColumn(
 			'reseller_props',
 			'softwaredepot_allowed',
-			"VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes' AFTER `software_allowed`"
+			"VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'yes' AFTER `software_allowed`"
 		);
 
 		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
@@ -495,7 +509,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds i-MSCP daemon service properties in config table.
+	 * Adds i-MSCP daemon service properties in config table
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4004
@@ -524,7 +538,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds new options for applications installer.
+	 * Adds new options for applications installer
 	 *
 	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @since  r4036
@@ -548,8 +562,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 					`package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 					PRIMARY KEY (`package_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-			;
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 
 		$sqlUpd[] = "
@@ -558,8 +571,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
 					`webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
 					`webdepot_last_update` datetime NOT NULL
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-			;
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 
 		$sqlUpd[] = "
@@ -570,10 +582,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::_addColumn(
+		$sqlUpd[] = $this->_addColumn(
 			'web_software',
 			'software_installtype',
-			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `reseller_id`"
+			"VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL AFTER `reseller_id`"
 		);
 
 		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
@@ -581,14 +593,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd[] = $this->_addColumn(
 			'reseller_props',
 			'websoftwaredepot_allowed',
-			"varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes' AFTER `softwaredepot_allowed`"
+			"VARCHAR(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes' AFTER `softwaredepot_allowed`"
 		);
 
 		return $sqlUpd;
 	}
 
 	/**
-	 * Decrypts email, ftp and SQL users passwords in database.
+	 * Decrypts email, ftp and SQL users passwords in database
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
@@ -676,7 +688,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Converts all tables to InnoDB engine.
+	 * Converts all tables to InnoDB engine
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4509
@@ -699,7 +711,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Converts the autoreplies_log table to InnoDB engine.
+	 * Converts the autoreplies_log table to InnoDB engine
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r4650
@@ -711,7 +723,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Deletes old DUMP_GUI_DEBUG parameter from the config table.
+	 * Deletes old DUMP_GUI_DEBUG parameter from the config table
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4779
@@ -826,7 +838,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Some fixes for the user_gui_props table.
+	 * Some fixes for the user_gui_props table
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4961
@@ -846,7 +858,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #145: Deletes possible orphan items in many tables.
+	 * #145: Deletes possible orphan items in many tables
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4961
@@ -878,7 +890,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Changes the log table schema to allow storage of large messages.
+	 * Changes the log table schema to allow storage of large messages
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r5002
@@ -891,7 +903,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds unique index on the web_software_options.use_webdepot column.
+	 * Adds unique index on the web_software_options.use_webdepot column
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
@@ -902,7 +914,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #166: Adds dovecot quota table.
+	 * #166: Adds dovecot quota table
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
@@ -920,7 +932,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #58: Increases mail quota value from 10 Mio to 100 Mio.
+	 * #58: Increases mail quota value from 10 Mio to 100 Mio
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL statement to be executed
@@ -931,7 +943,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Adds unique index on user_gui_props.user_id column.
+	 * Adds unique index on user_gui_props.user_id column
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4592
@@ -939,73 +951,66 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function _databaseUpdate_76()
 	{
+
 		$sqlUpd = array();
 
-		$sqlUpd[] = "
-			DROP PROCEDURE IF EXISTS schema_change;
-				CREATE PROCEDURE schema_change()
-				BEGIN
-					IF EXISTS (
-						SELECT
-							CONSTRAINT_NAME
-						FROM
-							`information_schema`.`KEY_COLUMN_USAGE`
-						WHERE
-							TABLE_NAME = 'user_gui_props'
-						AND
-							CONSTRAINT_NAME = 'user_id'
-						AND
-							TABLE_SCHEMA = '{$this->_databaseName}'
-					) THEN
-						ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`;
-					END IF;
-				END;
-				CALL schema_change();
-			DROP PROCEDURE IF EXITST schema_change;
+		$query = "
+			SELECT
+				`CONSTRAINT_NAME`
+			FROM
+				`information_schema`.`KEY_COLUMN_USAGE`
+			WHERE
+				`TABLE_NAME` = ?
+			AND
+				`CONSTRAINT_NAME` = ?
+			AND
+				`TABLE_SCHEMA` =?
 		";
+		$stmt = exec_query($query, array('user_gui_props', 'user_id', $this->_databaseName));
 
-		$sqlUpd[] = 'ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)';
+		if ($stmt->rowCount()) {
+			$sqlUpd[] = "ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`";
+		}
+
+		$sqlUpd[] ="ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)";
 
 		return $sqlUpd;
 	}
 
 	/**
-	 * Drops useless column in user_gui_props table.
+	 * Drops useless column 'id' in user_gui_props table
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4644
-	 * @return string SQL Statement to be executed
+	 * @return stirng SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_77()
 	{
-		return "
-			DROP PROCEDURE IF EXISTS schema_change;
-				CREATE PROCEDURE schema_change()
-				BEGIN
-					IF EXISTS (
-						SELECT
-							COLUMN_NAME
-						FROM
-							information_schema.COLUMNS
-						WHERE
-							TABLE_NAME = 'user_gui_props'
-						AND
-							COLUMN_NAME = 'id'
-						AND
-							TABLE_SCHEMA = '{$this->_databaseName}'
-					) THEN
-						ALTER TABLE `user_gui_props` DROP column `id`;
-					END IF;
-				END;
-				CALL schema_change();
-			DROP PROCEDURE IF EXITST schema_change;
+		$query = "
+			SELECT
+				`COLUMN_NAME`
+			FROM
+				information_schema.COLUMNS
+			WHERE
+				`TABLE_NAME` = ?
+			AND
+				`COLUMN_NAME` = ?
+			AND
+				TABLE_SCHEMA = ?
 		";
+		$stmt = exec_query($query, array('user_gui_props', 'id', $this->_databaseName));
+
+		if ($stmt->rowCount()) {
+			return 'ALTER TABLE `user_gui_props` DROP column `id`';
+		}
+
+		return '';
 	}
 
 	/**
-	 * #175: Fix for mail_addr saved in mail_type_forward too.
+	 * #175: Fix for mail_addr saved in mail_type_forward too
 	 *
-	 * @author Daniel Andreca <lsci2tech@gmail.com>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @since r5145
 	 * @return array Stack of SQL statements to be executed
 	 */
@@ -1070,7 +1075,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #188: Defect - Table quota_dovecot is still myisam than innoDB.
+	 * #188: Defect - Table quota_dovecot is still myisam than innoDB
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r5227
@@ -1082,76 +1087,155 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #15: Feature - PHP directives editor.
+	 * #15: Feature - PHP directives editor: Add/Update system wide values for PHP directives.
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5286
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_82()
+	protected function _databaseUpdate_84()
 	{
 		return array(
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'off')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'off')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'off')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '10')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '10')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_INPUT_TIME', '60')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_EXECUTION_TIME', '30')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL & ~E_NOTICE & ~E_WARNING')",
-			"INSERT IGNORE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')",
+			// System wide PHP directives values
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_ALLOW_URL_FOPEN', 'Off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISPLAY_ERRORS', 'On')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_REGISTER_GLOBALS', 'Off')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_UPLOAD_MAX_FILESIZE', '2')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_POST_MAX_SIZE', '8')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_MEMORY_LIMIT', '128')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_INPUT_TIME', '60')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_MAX_EXECUTION_TIME', '30')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_ERROR_REPORTING', 'E_ALL & ~E_NOTICE')",
+			"REPLACE INTO `config` (`name`,`value`) VALUES ('PHPINI_DISABLE_FUNCTIONS', 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink')");
+	}
 
+	/**
+	 * #15: Feature - PHP directives editor: Add columns for PHP directives
+	 * #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
+	 *
+	 * @author Hannes Koschier <hannes@cheat.at>
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5286
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_85()
+	{
+		return array(
+			// Reseller permissions columns for PHP directives
 			$this->_addColumn('reseller_props', 'php_ini_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `websoftwaredepot_allowed`"),
-			$this->_addColumn('reseller_props', 'php_ini_al_disable_functions', "VARCHAR(15) NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink' AFTER `php_ini_system`"),
-			$this->_addColumn('reseller_props', 'php_ini_al_allow_url_fopen', "VARCHAR(15) NOT NULL DEFAULT 'off' AFTER `php_ini_al_disable_functions`"),
-			$this->_addColumn('reseller_props', 'php_ini_al_register_globals', "VARCHAR(15) NOT NULL DEFAULT 'off' AFTER `php_ini_al_allow_url_fopen`"),
-			$this->_addColumn('reseller_props', 'php_ini_al_display_errors', "VARCHAR(15) NOT NULL DEFAULT 'off' AFTER `php_ini_al_register_globals`"),
-			$this->_addColumn('reseller_props', 'php_ini_max_post_max_size', "int(11) NOT NULL DEFAULT '10' AFTER `php_ini_al_display_errors`"),
-			$this->_addColumn('reseller_props', 'php_ini_max_upload_max_filesize', "int(11) NOT NULL DEFAULT '10' AFTER `php_ini_max_post_max_size`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_disable_functions', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_system`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_allow_url_fopen', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_al_disable_functions`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_register_globals', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_al_allow_url_fopen`"),
+			$this->_addColumn('reseller_props', 'php_ini_al_display_errors', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `php_ini_al_register_globals`"),
+
+			// Reseller max. allowed values columns for PHP directives
+			$this->_addColumn('reseller_props', 'php_ini_max_post_max_size', "int(11) NOT NULL DEFAULT '8' AFTER `php_ini_al_display_errors`"),
+			$this->_addColumn('reseller_props', 'php_ini_max_upload_max_filesize', "int(11) NOT NULL DEFAULT '2' AFTER `php_ini_max_post_max_size`"),
 			$this->_addColumn('reseller_props', 'php_ini_max_max_execution_time', "int(11) NOT NULL DEFAULT '30' AFTER `php_ini_max_upload_max_filesize`"),
 			$this->_addColumn('reseller_props', 'php_ini_max_max_input_time', "int(11) NOT NULL DEFAULT '60' AFTER `php_ini_max_max_execution_time`"),
 			$this->_addColumn('reseller_props', 'php_ini_max_memory_limit', "int(11) NOT NULL DEFAULT '128' AFTER `php_ini_max_max_input_time`"),
 
-			"CREATE TABLE IF NOT EXISTS `php_ini` (
-				`ID` int(11) NOT NULL AUTO_INCREMENT,
-				`domain_id` int(10) NOT NULL,
-				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
-				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
-				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'off',
-				`error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_DEPRECATED',
-				`post_max_size` int(11) NOT NULL DEFAULT '10',
-				`upload_max_filesize` int(11) NOT NULL DEFAULT '10',
-				`max_execution_time` int(11) NOT NULL DEFAULT '30',
-				`max_input_time` int(11) NOT NULL DEFAULT '60',
-				`memory_limit` int(11) NOT NULL DEFAULT '128',
-				PRIMARY KEY (`ID`)
-			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
-
-			$this->_addColumn('domain', 'phpini_perm_system', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' AFTER `domain_dns`"),
-			$this->_addColumn('domain', 'phpini_perm_register_globals', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_system`"),
-			$this->_addColumn('domain', 'phpini_perm_allow_url_fopen', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_register_globals`"),
-			$this->_addColumn('domain', 'phpini_perm_display_errors', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_allow_url_fopen`"),
-			$this->_addColumn('domain', 'phpini_perm_disable_functions', "VARCHAR( 20 ) NOT NULL DEFAULT 'no' `phpini_perm_disable_functions`")
+			// Domain permissions columns for PHP directives
+			$this->_addColumn('domain', 'phpini_perm_system', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `domain_software_allowed`"),
+			$this->_addColumn('domain', 'phpini_perm_register_globals', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_system`"),
+			$this->_addColumn('domain', 'phpini_perm_allow_url_fopen', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_register_globals`"),
+			$this->_addColumn('domain', 'phpini_perm_display_errors', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_allow_url_fopen`"),
+			$this->_addColumn('domain', 'phpini_perm_disable_functions', "VARCHAR(15) NOT NULL DEFAULT 'no' AFTER `phpini_perm_allow_url_fopen`")
 		);
 	}
 
 	/**
-	 * #195: Bug - Wrong error_reporting syntax (php.ini)
+	 * #15: Feature - PHP directives editor: Add php_ini table
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
-	 * @since r5241
-	 * @return string SQL Statement to be executed
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5286
+	 * @return string SQL Statement
 	 */
-	protected function _databaseUpdate_83()
+	protected function _databaseUpdate_86() {
+		return
+			// php_ini table for custom PHP directives (per domain)
+			"CREATE TABLE IF NOT EXISTS `php_ini` (
+				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`domain_id` int(10) NOT NULL,
+				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
+				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
+				`allow_url_fopen` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
+				`register_globals` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
+				`display_errors` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Off',
+				`error_reporting` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'E_ALL & ~E_NOTICE',
+				`post_max_size` int(11) NOT NULL DEFAULT '8',
+				`upload_max_filesize` int(11) NOT NULL DEFAULT '2',
+				`max_execution_time` int(11) NOT NULL DEFAULT '30',
+				`max_input_time` int(11) NOT NULL DEFAULT '60',
+				`memory_limit` int(11) NOT NULL DEFAULT '128',
+				PRIMARY KEY (`ID`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+	}
+
+	/**
+	 * Several fixes for the PHP directives editor including issue #195
+	 *
+	 * Note: For consistency reasons, this update will reset the feature values..
+	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5286
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_88()
 	{
-		return array(
-			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `value` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
-			"UPDATE `config` SET `value` = 'E_ALL & ~E_NOTICE'  WHERE `value` = 'E_ALL ^ E_NOTICE'",
-			"UPDATE `php_ini` SET `error_reporting` = 'E_ALL & ~E_NOTICE & ~E_WARNING' WHERE `error_reporting` = 'E_ALL ^ (E_NOTICE | E_WARNING)'",
-			"UPDATE `php_ini` SET `error_reporting` = 'E_ALL & ~E_NOTICE' WHERE `error_reporting` = 'E_ALL ^ E_NOTICE'",
-			"UPDATE `domain`, `php_ini` SET `domain`.`domain_status` = 'change' WHERE `php_ini`.`domain_id` = `domain`.`domain_id`"
-		);
+		$sqlUpd = array();
+
+		// Reset reseller permissions
+		foreach(array(
+			'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen' ,
+			'php_ini_al_register_globals', 'php_ini_al_display_errors') as $permission
+		) {
+			$sqlUpd[] ="UPDATE `reseller_props` SET `$permission` = 'no'";
+		}
+
+		// Reset reseller default values for PHP directives (To default system wide value)
+		foreach(array(
+			'post_max_size' => '8',
+			'upload_max_filesize' => '2',
+			'max_execution_time' => '30',
+			'max_input_time' => '60',
+			'memory_limit' => '128'
+		) as $directive => $defaultValue) {
+			$sqlUpd[] ="UPDATE `reseller_props` SET `php_ini_max_{$directive}` = '$defaultValue'";
+		}
+
+		return $sqlUpd;
+	}
+
+	/**
+	 * Truncate the php_ini table (related to _databaseUpdate_88)
+	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5286
+	 * @return string SQL Statement
+	 */
+	protected  function _databaseUpdate_89()
+	{
+		$sqlupd = 'TRUNCATE TABLE `php_ini`';
+
+		// Schedule backend process in case user do update from frontend
+		$this->_daemonRequest = true;
+
+		return $sqlupd;
+
+	}
+
+	/**
+	 * Rename php_ini.ID column to php_ini.id
+	 *
+	 * @author Laurent Declercq <l.declercq@i-mscp.net>
+	 * @since r5286
+	 * @return string SQL Statement
+	 */
+	protected  function _databaseUpdate_90()
+	{
+		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` int(11) unsigned NOT NULL AUTO_INCREMENT';
 	}
 }

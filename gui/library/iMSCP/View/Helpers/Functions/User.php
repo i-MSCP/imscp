@@ -301,16 +301,19 @@ function gen_client_menu($tpl, $menu_file)
         $tpl->assign('SUPPORT_SYSTEM', '');
     }
 
-    //php.ini
+    // Menu for PHP directive editor - Begin
+
     /* iMSCP_PHPini object */
+	// Todo make it as singleton to avoid too many instance of it for same user
     $phpini = new iMSCP_PHPini();
     $domainId = $phpini->getDomId($_SESSION['user_id']);
     $phpini->loadClPerm($domainId);
+
     if ($phpini->getClPermVal('phpiniSystem') == 'no'){
         $tpl->assign('ISACTIVE_PHPINI', '');
-    } else {
-        $tpl->parse('ISACTIVE_PHPINI', 'isactive_phpini');
     }
+
+    // Menu for PHP directive editor - End
 
     list($dmn_id,,,,,,,,$dmn_mailacc_limit,,,,,,$dmn_als_limit,$dmn_subd_limit,,,,,,,
         $dmn_dns) = get_domain_default_props($_SESSION['user_id']);

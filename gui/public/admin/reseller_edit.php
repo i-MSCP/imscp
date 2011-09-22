@@ -319,10 +319,6 @@ function check_data(&$errFields) {
 	/* iMSCP_PHPini object */
 	$phpini = new iMSCP_PHPini();
 
-
-	/**
-	 * Check php.ini Values use build in method form iMSCP_PHPini
-	 */
 	if (!$phpini->setRePerm('phpiniPostMaxSize', $rdata['php_ini_max_post_max_size'])) {
 		set_page_message(tr('Value post_max_size out of Range'), 'error');
 	}
@@ -348,7 +344,6 @@ function check_data(&$errFields) {
 	}
 
 }
-
 
 /**
  * @param  $new_limit
@@ -813,6 +808,10 @@ function &get_data($tpl = false) {
 			// Get reseller properties
 			$rdata = get_reseller_prop($edit_id);
 
+			//echo '<pre>';
+			//print_r($rdata);
+			//exit;
+
 			$rdata['edit_id'] = $edit_id;
 		}
 
@@ -889,10 +888,8 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	$tpl->define_dynamic('rsl_ip_list', 'page');
 	$tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
-	$tpl->assign(
-		array(
-			'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' =>
-				tr('i-MSCP - Admin/Manage users/Edit Reseller'),
+	$tpl->assign(array(
+			'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Edit Reseller'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo()
@@ -931,18 +928,19 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			}
 
 			// Status indicator for the front page message after update request
-			$_SESSION['user_updated'] = 1;
+			// Todo remove the statement in manage_users.php
+			//$_SESSION['user_updated'] = 1;
 
 			// FIXME: Legacy from old code - Check if realy needed
-			$_SESSION['reseller_ips'] = $rdata['reseller_ips'];
+			// $_SESSION['reseller_ips'] = $rdata['reseller_ips'];
 
-			// Back to the parent page after a successfull updates
+			set_page_message(tr('Reseller account successfully updated.'), 'success');
 			redirectTo('manage_users.php');
 
 		} else { // An error was occured during data checking
 			set_page_message(
 				'<br />' .
-				tr('ERROR: One or more errors was found! Please, correct them and try again!'), 'error'
+				tr('One or more errors was found! Please, correct them and try again.'), 'error'
 			);
 		}
 	} else { // Default action
@@ -953,8 +951,8 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 		if (isset($_SESSION['user_page_message'])) {
 			set_page_message(
 				'<br />' .
-				tr('Reseller data inconsistency!') . ' ' .
-				tr('Please, read the message(s) above and trying to correct!'), 'error'
+				tr('Reseller data inconsistency.') . ' ' .
+				tr('Please, read the message(s) above and trying to correct.'), 'error'
 			);
 		}
 	}
@@ -977,29 +975,25 @@ if ($rdata['support_system'] == 'yes') {
 	$support_yes = '';
 }
 
-
-/* fill values with standard values from config table if php.ini is disabled
- * if the admin enable it he should get his default values and not 0
- */
 /* @var $phpini iMSCP_PHPini */
 $phpini = new iMSCP_PHPini();
 
+// Reseller has php.ini feature enabled ?
 if ($rdata['php_ini_system'] == 'yes') {
-	$tpl->assign(
-        	array(	
-                'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
-                'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
-                'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
-                'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
-                'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time']));
+	// We build form with it own values
+	$tpl->assign(array(
+					  'PHPINI_MAX_MEMORY_LIMIT_VAL' => $rdata['php_ini_max_memory_limit'],
+					  'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $rdata['php_ini_max_upload_max_filesize'],
+					  'PHPINI_MAX_POST_MAX_SIZE_VAL' => $rdata['php_ini_max_post_max_size'],
+					  'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $rdata['php_ini_max_max_execution_time'],
+					  'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $rdata['php_ini_max_max_input_time']));
 } else {
-	$tpl->assign(
-                array(
-                'PHPINI_MAX_MEMORY_LIMIT_VAL' => $phpini->getDataDefaultVal('phpiniMemoryLimit'),
-                'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'),
-                'PHPINI_MAX_POST_MAX_SIZE_VAL' => $phpini->getDataDefaultVal('phpiniPostMaxSize'),
-                'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $phpini->getDataDefaultVal('phpiniMaxExecutionTime'),
-                'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $phpini->getDataDefaultVal('phpiniMemoryLimit')));	
+	$tpl->assign(array(
+					  'PHPINI_MAX_MEMORY_LIMIT_VAL' => $phpini->getDataDefaultVal('phpiniMemoryLimit'),
+					  'PHPINI_MAX_UPLOAD_MAX_FILESIZE_VAL' => $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'),
+					  'PHPINI_MAX_POST_MAX_SIZE_VAL' => $phpini->getDataDefaultVal('phpiniPostMaxSize'),
+					  'PHPINI_MAX_MAX_EXECUTION_TIME_VAL' => $phpini->getDataDefaultVal('phpiniMaxExecutionTime'),
+					  'PHPINI_MAX_MAX_INPUT_TIME_VAL' => $phpini->getDataDefaultVal('phpiniMaxInputTime')));
 }
 
 $tpl->assign(
@@ -1142,8 +1136,8 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
+											  new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

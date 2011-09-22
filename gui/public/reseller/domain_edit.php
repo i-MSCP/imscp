@@ -117,10 +117,12 @@ $tpl->assign(array(
 				  'TR_PHPINI_REGISTER_GLOBALS' => 'register_globals',
 				  'TR_PHPINI_DISPLAY_ERRORS' => 'display_errors',
 				  'TR_PHPINI_ERROR_REPORTING' => 'error_reporting',
-				  'TR_PHPINI_ER_OFF' => tr('All off'),
-				  'TR_PHPINI_ER_EALL_EXCEPT_NOTICE_EXCEPT_WARN' => tr('All errors except notices and warnings'),
-				  'TR_PHPINI_ER_EALL_EXCEPT_NOTICE' => tr('All errors except notices'),
-				  'TR_PHPINI_ER_EALL' => tr('All errors'),
+
+				  'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
+				  'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
+				  'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
+				  'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
+
 				  'TR_PHPINI_POST_MAX_SIZE' => tr('post_max_size [MB]'),
 				  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('upload_max_filesize [MB]'),
 				  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('max_execution_time [sec]'),
@@ -129,13 +131,13 @@ $tpl->assign(array(
 				  'TR_PHPINI_DISABLE_FUNCTIONS' => tr('disable_functions'),
 				  'TR_ENABLED' => tr('Enabled'),
 				  'TR_DISABLED' => tr('Disabled'),
-				  'TR_PHPINI_VARIABLES_EDITOR' => tr('PHP.INI -  variables editor'),
-				  'TR_PHPINI_AL_SYSTEM' => tr('Can edit php.ini variables'),
-				  'TR_PHPINI_AL_REGISTER_GLOBALS' => tr("Can change the 'register_globals' variable"),
-				  'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr("Can change the 'allow_url_open' variable"),
-				  'TR_PHPINI_AL_DISPLAY_ERRORS' => tr("Can change the 'display_errors/error_reporting' variables"),
-				  'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr("Can change the 'disable_functions' variable"),
-				  'TR_USER_EDITABLE_EXEC' => tr("Allow 'exec' only")));
+				  'TR_PHP_DIRECTIVES_EDITOR' => tr('PHP directives editor'),
+				  'TR_PHPINI_AL_SYSTEM' => tr('Can edit PHP directives'),
+				  'TR_PHPINI_AL_REGISTER_GLOBALS' => tr("Can edit the <strong>register_globals</strong> directive"),
+				  'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr("Can edit the <strong>allow_url_open</strong> directive"),
+				  'TR_PHPINI_AL_DISPLAY_ERRORS' => tr("Can edit the <strong>display_errors</strong> and <strong>error_reporting</strong> directives"),
+				  'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr("Can edit the <strong>'disable_functions</strong> directive"),
+				  'TR_USER_EDITABLE_EXEC' => tr("Allows 'exec' only")));
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
@@ -402,25 +404,25 @@ function gen_editdomain_page($tpl, $phpini)
 						  ? $cfg->HTML_CHECKED : '',
 					  'PHPINI_SYSTEM_NO' => ($phpini->getDataVal('phpiniSystem') == 'no')
 						  ? $cfg->HTML_CHECKED : '',
-					  'PHPINI_ALLOW_URL_FOPEN_ON' => ($phpini->getDataVal('phpiniAllowUrlFopen') == 'on')
+					  'PHPINI_ALLOW_URL_FOPEN_ON' => ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_ALLOW_URL_FOPEN_OFF' => ($phpini->getDataVal('phpiniAllowUrlFopen') != 'on')
+					  'PHPINI_ALLOW_URL_FOPEN_OFF' => ($phpini->getDataVal('phpiniAllowUrlFopen') != 'On')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_REGISTER_GLOBALS_ON' => ($phpini->getDataVal('phpiniRegisterGlobals') == 'on')
+					  'PHPINI_REGISTER_GLOBALS_ON' => ($phpini->getDataVal('phpiniRegisterGlobals') == 'On')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_REGISTER_GLOBALS_OFF' => ($phpini->getDataVal('phpiniRegisterGlobals') != 'on')
+					  'PHPINI_REGISTER_GLOBALS_OFF' => ($phpini->getDataVal('phpiniRegisterGlobals') != 'On')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_DISPLAY_ERRORS_ON' => ($phpini->getDataVal('phpiniDisplayErrors') == 'on')
+					  'PHPINI_DISPLAY_ERRORS_ON' => ($phpini->getDataVal('phpiniDisplayErrors') == 'On')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_DISPLAY_ERRORS_OFF' => ($phpini->getDataVal('phpiniDisplayErrors') != 'on')
+					  'PHPINI_DISPLAY_ERRORS_OFF' => ($phpini->getDataVal('phpiniDisplayErrors') != 'On')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_ERROR_REPORTING_0' => ($phpini->getDataVal('phpiniErrorReporting') == '0')
+					  'PHPINI_ERROR_REPORTING_0' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_ERROR_REPORTING_1' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE & ~E_WARNING')
+					  'PHPINI_ERROR_REPORTING_1' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL | E_STRICT')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_ERROR_REPORTING_2' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE')
+					  'PHPINI_ERROR_REPORTING_2' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_DEPRECATED')
 						  ? $cfg->HTML_SELECTED : '',
-					  'PHPINI_ERROR_REPORTING_3' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL')
+					  'PHPINI_ERROR_REPORTING_3' => ($phpini->getDataVal('phpiniErrorReporting') == '0')
 						  ? $cfg->HTML_SELECTED : '',
 					  'PHPINI_POST_MAX_SIZE' => $phpini->getDataVal('phpiniPostMaxSize'),
 					  'PHPINI_UPLOAD_MAX_FILESIZE' => $phpini->getDataVal('phpiniUploadMaxFileSize'),
