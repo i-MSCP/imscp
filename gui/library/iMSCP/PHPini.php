@@ -679,7 +679,7 @@ class iMSCP_PHPini
 		}
 
 		if ($key == 'phpiniErrorReporting' &&
-			('E_ALL & ~E_NOTICE' || $value == 'E_ALL | E_STRICT' ||
+			($value == 'E_ALL & ~E_NOTICE' || $value == 'E_ALL | E_STRICT' ||
 			$value == 'E_ALL & ~E_DEPRECATED' || $value == '0')
 		) {
 			return true;

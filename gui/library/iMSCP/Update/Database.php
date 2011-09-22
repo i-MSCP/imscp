@@ -143,16 +143,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 			if (!empty($queryStack)) {
 				try {
-
 					// One transaction per database update
-					// If a query from a database update fail, all $query is canceled
-					// Note: Valable for database updates that are free of any
-					// statements causing an implicit commit
+					// If a query from a database update fail, all $queries from it
+					// are canceled. It's only valable for database updates that are
+					// free of any statements causing an implicit commit
 					$pdo->beginTransaction();
 
 					foreach ((array)$queryStack as $query) {
-						if(!empty($query))
-						{
+						if(!empty($query)) {
 							$pdo->query($query);
 						}
 					}
@@ -454,7 +452,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`rights_add_by` int(10) unsigned NOT NULL default '0',
 					`software_depot` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
 	  				PRIMARY KEY  (`software_id`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 
 		$sqlUpd[] = "
@@ -481,8 +479,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`software_status` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
 					`software_depot` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
   					KEY `software_id` (`software_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-			;
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 		";
 
 		$sqlUpd[] = $this->_addColumn(
