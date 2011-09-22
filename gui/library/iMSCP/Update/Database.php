@@ -321,7 +321,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $columnDefinition Column definition including the optional
 	 * 								   (but recommended) positional statement
 	 * 								   ([FIRST | AFTER col_name ]
-	 * @return string
+	 * @return string Query to be executed
 	 */
 	protected function _addColumn($table, $column, $columnDefinition)
 	{
@@ -982,7 +982,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r4644
-	 * @return stirng SQL Statement to be executed
+	 * @return string SQL Statement to be executed
 	 */
 	protected function _databaseUpdate_77()
 	{
@@ -1087,7 +1087,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #15: Feature - PHP directives editor: Add/Update system wide values for PHP directives.
+	 * #15: Feature - PHP directives editor: Add/Update system wide values for PHP directives
 	 *
 	 * @author Hannes Koschier <hannes@cheat.at>
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
@@ -1153,11 +1153,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r5286
 	 * @return string SQL Statement
 	 */
-	protected function _databaseUpdate_86() {
+	protected function _databaseUpdate_86()
+	{
 		return
 			// php_ini table for custom PHP directives (per domain)
 			"CREATE TABLE IF NOT EXISTS `php_ini` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`ID` int(11) NOT NULL AUTO_INCREMENT,
 				`domain_id` int(10) NOT NULL,
 				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
 				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
@@ -1181,7 +1182,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r5286
-	 * @return string SQL Statement
+	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_88()
 	{
@@ -1214,7 +1215,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r5286
-	 * @return string SQL Statement
+	 * @return string SQL Statement to be executed
 	 */
 	protected  function _databaseUpdate_89()
 	{
@@ -1224,7 +1225,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$this->_daemonRequest = true;
 
 		return $sqlupd;
-
 	}
 
 	/**
@@ -1232,7 +1232,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 *
 	 * @author Laurent Declercq <l.declercq@i-mscp.net>
 	 * @since r5286
-	 * @return string SQL Statement
+	 * @return string SQL Statement to be executed
 	 */
 	protected  function _databaseUpdate_90()
 	{
