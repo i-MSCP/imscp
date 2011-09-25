@@ -41,17 +41,6 @@ sub setup_start_up {
 	#enter silent mode
 	silent(1);
 
-	if(-e '/tmp/imscp-backup-all.lock') {
-		iMSCP::Dialog->factory()->msgbox(
-					"\n
-					\\Z4[NOTICE]\\Zn
-
-					Backup engine is currently running. Aborting...
-					");
-		return 1;
-	}
-
-
 	debug('Ending...');
 	0;
 }
