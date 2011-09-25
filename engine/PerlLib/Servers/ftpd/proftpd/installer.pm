@@ -94,7 +94,6 @@ sub removeOldFile{
 
 	$rs = execute("rm $self::proftpdConfig{'FTPD_CONF_DIR'}/*", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
-	warning("$stderr") if $stderr;
 
 	debug('Ending...');
 	0;

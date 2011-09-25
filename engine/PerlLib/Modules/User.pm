@@ -29,6 +29,8 @@ package Modules::User;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use iMSCP::Execute;
+use iMSCP::Database;
 use Data::Dumper;
 
 use vars qw/@ISA/;
@@ -217,8 +219,10 @@ sub oldEngineCompatibility{
 
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
+	use Servers::httpd;
 
 	my $self		= shift;
+	my $rs			= 0;
 	my $userName	=
 	my $groupName	=
 			$main::imscpConfig{SYSTEM_USER_PREFIX}.
@@ -251,6 +255,22 @@ sub oldEngineCompatibility{
 	@sql = ("UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?", $uid, $self->{domain_name});
 	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
 	error("$rdata") if(ref $rdata ne 'HASH');
+
+	my $httpdGroup = (
+		Servers::httpd->factory()->can('getRunningGroup')
+		?
+		Servers::httpd->factory()->getRunningGroup()
+		:
+		'-1'
+	);
+
+	my $hDir = "$main::imscpConfig{USER_HOME_DIR}/$self->{domain_name}";
+	my ($stdout, $stderr);
+
+	my $cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $userName:$groupName $hDir";
+	$rs		|= execute($cmd, \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 
 	debug('Ending...');
 	0;

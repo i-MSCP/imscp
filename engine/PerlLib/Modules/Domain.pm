@@ -248,7 +248,7 @@ sub restore{
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
-	$rs = setRights(
+	$rs |= setRights(
 		"$dmn_dir/domain_disable_page",
 		{
 			user		=> $main::imscpConfig{ROOT_USER},
@@ -259,7 +259,7 @@ sub restore{
 		}
 	);
 
-	$rs = setRights(
+	$rs |= setRights(
 		"$dmn_dir/backups",
 		{
 			user		=> $main::imscpConfig{ROOT_USER},
