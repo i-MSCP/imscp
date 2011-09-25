@@ -88,18 +88,16 @@ sub process{
 		$rs = $self->add();
 		@sql = (
 			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
-			($rs ? scalar getMessageByType('ERROR') : 'ok'),
+			scalar getMessageByType('ERROR'),
 			$self->{domain_id}
-		);
+		)if $rs;
 	}elsif($self->{domain_status} =~ /^delete$/){
 		$rs = $self->delete();
-		if($rs){
-			@sql = (
-				"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
-				scalar getMessageByType('ERROR'),
-				$self->{domain_id}
-			);
-		}
+		@sql = (
+			"UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?",
+			scalar getMessageByType('ERROR'),
+			$self->{domain_id}
+		)if $rs;
 	}
 
 	if(scalar @sql){
@@ -231,15 +229,28 @@ sub oldEngineCompatibility{
 
 	my @sql = ("UPDATE `domain` SET `domain_uid` = ?, `domain_gid` = ? WHERE `domain_name` = ?", $uid, $gid, $self->{domain_name});
 	my $rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	error("$rdata") if(ref $rdata ne 'HASH');
 
-	@sql = ("UPDATE `ftp_users` SET `uid` = ?, `gid` = ? WHERE `homedir` LIKE '$main::imscpConfig{USER_HOME_DIR}/$self->{domain_name}/%'", $uid, $gid);
+	@sql = (
+		"UPDATE
+			`ftp_users`
+		SET
+			`uid` = ?,
+			`gid` = ?
+		WHERE
+			`homedir` LIKE '$main::imscpConfig{USER_HOME_DIR}/$self->{domain_name}/%'
+		OR
+			`homedir` = '$main::imscpConfig{USER_HOME_DIR}/$self->{domain_name}'
+		",
+		$uid,
+		$gid
+	);
 	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	error("$rdata") if(ref $rdata ne 'HASH');
 
 	@sql = ("UPDATE `ftp_group` SET `gid` = ? WHERE `groupname` = ?", $uid, $self->{domain_name});
 	$rdata = iMSCP::Database->factory()->doQuery('update', @sql);
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	error("$rdata") if(ref $rdata ne 'HASH');
 
 	debug('Ending...');
 	0;
