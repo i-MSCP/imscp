@@ -49,13 +49,13 @@ use library::debian_autoinstall;
 # @param self $self iMSCP::debian_autoinstall instance
 # return int 0
 sub _init {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
 	$self->{nonfree} = 'multiverse';
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 
 	0;
 }

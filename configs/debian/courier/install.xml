@@ -29,6 +29,7 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders>${SYSTEM_CONF}/courier/backup</folders>
 	<folders>${SYSTEM_CONF}/courier/working</folders>
 
+	<copy_config>${SYSTEM_CONF}/courier/courier.data</copy_config>
 	<copy_config>${SYSTEM_CONF}/courier/userdb</copy_config>
 
 	<copy />

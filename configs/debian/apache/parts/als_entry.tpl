@@ -13,12 +13,12 @@
     </IfModule>
 
     ServerAdmin     webmaster@{ALS_NAME}
-    DocumentRoot    {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs
+    DocumentRoot    {HOME_DIR}{MOUNT_POINT}/htdocs
 
     ServerName      {ALS_NAME}
     ServerAlias     www.{ALS_NAME} {ALS_NAME}
 
-    Alias /errors   {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/errors/
+    Alias /errors   {HOME_DIR}{MOUNT_POINT}/errors/
 
     RedirectMatch permanent ^/ftp[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
     RedirectMatch permanent ^/pma[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
@@ -44,7 +44,7 @@
     # httpd als entry cgi support BEGIN.
     # httpd als entry cgi support END.
 
-    <Directory {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs>
+    <Directory {HOME_DIR}{MOUNT_POINT}/htdocs>
         # httpd als entry PHP support BEGIN.
         # httpd als entry PHP support END.
         Options -Indexes Includes FollowSymLinks MultiViews

@@ -30,6 +30,10 @@ FTPD_CONF_DIR = /etc/proftpd/imscp
 
 FTP_TRAFF_LOG = /proftpd/ftp_traff.log
 
+MIN_UID = 1001
+
+MIN_GID = 1001
+
 DATABASE_USER =
 
 DATABASE_PASSWORD =

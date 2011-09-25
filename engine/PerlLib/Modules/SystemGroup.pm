@@ -33,23 +33,22 @@ use iMSCP::Execute;
 
 use vars qw/@ISA/;
 
-@ISA = ('Common::SimpleClass', 'Common::SetterClass');
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
-use Common::SetterClass;
 
 sub addSystemGroup{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self	= shift;
 
-	fatal((caller(0))[3].': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $groupName	= shift || $self->{groupname} || undef;
 	$self->{groupname} = $groupName;
 
 	if(!$groupName){
-		error((caller(0))[3].': No group name was provided');
+		error('No group name was provided');
 		return 1;
 	}
 
@@ -63,29 +62,29 @@ sub addSystemGroup{
 			"\"$groupName\""							#group name
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
+		debug("$stdout") if $stdout;
+		error("$stderr") if ($stderr && $rs);
+		warning("$stderr") if ($stderr && !$rs);
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub delSystemGroup{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self	= shift;
 
-	fatal((caller(0))[3].': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $groupName	= shift || $self->{groupname} || undef;
 	$self->{groupname} = $groupName;
 
 	if(!$groupName){
-		error((caller(0))[3].': No group name was provided');
+		error('No group name was provided');
 		return 1;
 	}
 
@@ -96,13 +95,13 @@ sub delSystemGroup{
 			"\"$groupName\""
 		);
 		$rs = execute("@cmd", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if ($stderr && $rs);
-		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
+		debug("$stdout") if $stdout;
+		error("$stderr") if ($stderr && $rs);
+		warning("$stderr") if ($stderr && !$rs);
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 

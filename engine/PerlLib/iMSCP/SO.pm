@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
+
 #####################################################################################
 # Package description:
 #
@@ -41,15 +42,18 @@ use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
 
 use vars qw/@ISA/;
-@ISA = ("Common::SingletonClass");
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
 
-# Code review recommendation by nuxwin:
-#
-# I recommends to add initializer method to init attributes by calling the getSO method
-# during object creation. For now, attributes are only available if the getSO method
-# was already called. It's a bad way to process in POO. In any cases, calling again
-# the getSO method is still possible if you want force re-detection.
+
+sub _init{
+	debug('Starting...');
+
+	my $self = shift;
+	fatal('Can not guess operating system') if ($self->getSO);
+
+	debug('Ending...');
+}
 
 # Gets information about distribution.
 #
@@ -61,36 +65,46 @@ use Common::SingletonClass;
 #
 # @param self $self iMSCP::SO instance
 # @return int 0 on success, other on failure
-sub getSO {
-	debug((caller(0))[3] . ': Starting...');
+
+sub getSO{
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
+	fatal(': Not a Debian like system') if(execute('which apt-get', \$stdout, \$stderr));
+
+	if(execute("which lsb_release", \$stdout, \$stderr)){
+		$rs = execute('apt-get -y install lsb-release', \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+		return $rs if $rs;
+	}
+
 	# Retrieves distribution name
 	$rs = execute("lsb_release -si", \$stdout, \$stderr);
-	debug((caller(0))[3] . ": Distribution is $stdout") if $stdout;
-	error((caller(0))[3] . ": Can not guess operating system = $stderr") if $stderr;
+	debug("Distribution is $stdout") if $stdout;
+	error("Can not guess operating system = $stderr") if $stderr;
 	return $rs if $rs;
 	$self->{Distribution} = $stdout;
 
 	# Retrieves distribution code name
-	$rs = execute('lsb_release -sr', \$stdout, \$stderr);
-	debug((caller(0))[3] . ": Version is $stdout") if $stdout;
-	error((caller(0))[3] . ": Can not guess operating system = $stderr") if $stderr;
+	$rs = execute("lsb_release -sr", \$stdout, \$stderr);
+	debug("Version is $stdout") if $stdout;
+	error("Can not guess operating system = $stderr") if $stderr;
 	return $rs if $rs;
 	$self->{Version} = $stdout;
 
 	# Retrieves distribution version
-	$rs = execute('lsb_release -sc', \$stdout, \$stderr);
-	debug((caller(0))[3] . ": Codename is $stdout") if $stdout;
-	error((caller(0))[3] . ": Can not guess operating system = $stderr") if $stderr;
+	$rs = execute("lsb_release -sc", \$stdout, \$stderr);
+	debug("Codename is $stdout") if $stdout;
+	error("Can not guess operating system = $stderr") if $stderr;
 	return $rs if $rs;
 	$self->{CodeName} = $stdout;
 
-	debug ((caller(0))[3] . ": Found $self->{Distribution} $self->{Version} $self->{CodeName}");
-	debug((caller(0))[3] . ': Ending...');
+	debug ("Found $self->{Distribution} $self->{Version} $self->{CodeName}");
 
+	debug('Ending...');
 	0;
 }
 

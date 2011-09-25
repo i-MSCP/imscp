@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright 2010 - 2011 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -38,13 +38,14 @@ use iMSCP::Debug;
 use iMSCP::Execute qw/execute/;
 
 use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
 
 # Initializer.
 #
 # @param self $self iMSCP::Requirements instance
 # @return void
+
 sub _init{
 	my$self = shift;
 
@@ -57,13 +58,14 @@ sub _init{
 		#'DBD::mysql'				=> '',
 		'MIME::Entity'				=> '',
 		#'MIME::Parser'				=> '',
+		'Email::Simple'				=> '',
 		'Crypt::CBC'				=> '',
 		#'Crypt::Blowfish'			=> '',
 		'Crypt::PasswdMD5'			=> '',
 		'MIME::Base64'				=> '',
 		'Term::ReadKey'				=> '',
 		#'Term::ReadPassword'		=> '',
-		#'File::Basename'			=> '',
+		'File::Basename'			=> '',
 		'File::Path'				=> '',
 		#'HTML::Entities'			=> '',
 		#'File::Temp'				=> 'qw(tempdir)',
@@ -77,8 +79,8 @@ sub _init{
 	};
 
 	$self->{programs} = {
-		'php'	=> {version	=> 'php -v', regexp	=> 'PHP ([\d.]+)', minversion => '5.3.2'},
-		'perl'	=> {version	=> 'perl -v', regexp => 'v([\d.]+)', minversion => '5.10.1'}
+		'php'	=> {version	=> 'php -v',	regexp	=> 'PHP ([\d.]+)',	minversion => '5.3.2'},
+		'perl'	=> {version	=> 'perl -v',	regexp	=> 'v([\d.]+)',		minversion => '5.10.1'}
 	};
 }
 
@@ -87,11 +89,11 @@ sub _init{
 # @throws fatal error if a test is not available
 # @param self $self iMSCP::Requirements instance
 # @return void
-sub test {
+sub test{
 	my $self = shift;
 	my $test = shift;
 
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	if($self->can($test)){
 		$self->$test();
@@ -99,23 +101,23 @@ sub test {
 		fatal("The test '$test' is not available.", 1);
 	}
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 }
 
 # Process all tests for requirements.
 #
 # @param self $self iMSCP::Requirements instance
 # @return void
-sub all {
-	my $self = shift;
+sub all{
+	debug('Starting...');
 
-	debug((caller(0))[3] . ': Starting...');
+	my $self = shift;
 
 	$self->user();
 	$self->_modules();
 	$self->_externalProgram();
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 }
 
 # Checks for user that run the imscp-autoinstaller script.
@@ -123,14 +125,12 @@ sub all {
 # @throws fatal error if the script is not run as root user
 # @param self $self iMSCP::Requirements instance
 # @return void
-sub user {
-	my $self = shift;
+sub user{
+	debug('Starting...');
 
-	debug((caller(0))[3].': Starting...');
+	fatal('The script must be run by root user.') if( $< != 0 );
 
-	fatal('The script must be run by root user.') if($< != 0);
-
-	debug((caller(0))[3]  .': Ending...');
+	debug('Ending...');
 }
 
 # Checks for perl module availability.
@@ -139,9 +139,9 @@ sub user {
 # @param self $self iMSCP::Requirements instance
 # @return void
 sub _modules {
-	my $self = shift;
+	debug('Starting...');
 
-	debug((caller(0))[3].': Starting...');
+	my $self = shift;
 
 	my ($mod, @mod_missing) = (undef, ());
 
@@ -157,7 +157,7 @@ sub _modules {
 
 		}
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	fatal("Modules [@mod_missing] was not found on your system.") if (scalar @mod_missing);
 }
@@ -168,11 +168,12 @@ sub _modules {
 # @throws fatal error if a program version is older than required
 # @param self $self iMSCP::Requirements instance
 # @return void
-sub _externalProgram {
+sub _externalProgram{
+	debug('Starting...');
+
 	my $self = shift;
 	my ($rv, $output, $error);
 
-	debug((caller(0))[3].': Starting...');
 	fatal("Unable to find the 'which' program.") if(execute('which which', \$output, \$error));
 
 	for my $program (keys %{$self->{programs}}){
@@ -189,7 +190,7 @@ sub _externalProgram {
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 # Check for program version.
@@ -201,22 +202,20 @@ sub _externalProgram {
 # @param string $regexp regular expression to find the program version
 # @param string $minversion program minimum version required
 # @return void
-sub _programVersions {
+sub _programVersions{
+	debug('Starting...');
+
 	my ($self, $program, $regexp, $minversion) = @_;
 	my ($rv, $output, $error);
 
-	debug((caller(0))[3] . ': Starting...');
-
 	execute("$program", \$output, \$error) && fatal("Unable to find the $program program.");
-
-	if($regexp) {
+	if($regexp){
 		$output =~ m!$regexp!;
 		$output = $1;
 	}
 	my $result = $self->checkVersion($output, $minversion);
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	$result;
 }
 
@@ -227,7 +226,7 @@ sub _programVersions {
 # @param string $minversion minimum accepted version
 # @param string $maxversion OPTIONAL maximum accepted version
 # @return mixed 0 on success, string on failure
-sub checkVersion {
+sub checkVersion{
 	my $self		= shift;
 	my $version		= shift;
 	my $minversion	= shift;

@@ -43,13 +43,13 @@ use warnings;
 #
 # @return int 0 on success, other on failure
 sub preInstall {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Execute;
 
 	my ($rs, $stdout, $stderr);
 
-	fatal((caller(0))[3] . ': Not a Debian like system') if(_checkPkgManager());
+	fatal('Not a Debian like system') if(_checkPkgManager());
 
 	my @pkg = ();
 	push @pkg, 'lsb_release' if(execute("which lsb_release", \$stdout, \$stderr));
@@ -58,15 +58,14 @@ sub preInstall {
 
 	if(scalar @pkg){
 		$rs = execute("apt-get -y install @pkg", \$stdout, \$stderr);
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
-		error((caller(0))[3] . ": Unable to install the @pkg package(s)") if $rs && !$stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+		error("Unable to install the @pkg package(s)") if $rs && !$stderr;
 
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -77,7 +76,7 @@ sub preInstall {
 #
 # @return int 0 on success, other on failure
 sub installDependencies {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $autoinstallFile = "$FindBin::Bin/library/" .
 		lc(iMSCP::SO->new()->{Distribution}) .'_autoinstall.pm';
@@ -91,8 +90,7 @@ sub installDependencies {
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -102,12 +100,11 @@ sub installDependencies {
 # @See Requirements.pm
 # @return int 0
 sub testRequirements {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	iMSCP::Requirements->new()->test('all');
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -121,8 +118,7 @@ sub testRequirements {
 # @return int 0 on success, other on failure
 # @todo The chown nodes are not processed...
 sub processConfFile {
-
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::SO;
 
@@ -132,7 +128,7 @@ sub processConfFile {
 		'-variable.xml' unless $confFile;
 
 	unless(-f $confFile) {
-		error((caller(0))[3] . ": Error $confFile not found");
+		error("Error $confFile not found");
 		return 1;
 	}
 
@@ -143,7 +139,7 @@ sub processConfFile {
 	my $data = eval { $xml->XMLin($confFile, VarAttr => 'export') };
 
 	if ($@) {
-		error((caller(0))[3] . ": $@");
+		error("$@");
 		return 1;
 	}
 
@@ -153,7 +149,7 @@ sub processConfFile {
 	foreach(@{$data->{folders}}) {
 		$_->{content} = _expandVars($_->{content}) if($_->{content});
 		eval("our \$" . $_->{export} . " = \"" . $_->{content} . "\";") if($_->{export});
-		fatal((caller(0))[3] . ": $@") if($@);
+		fatal("$@") if($@);
 		return $rs if $rs;
 
 		$rs = _processFolder($_) if($_->{content});
@@ -194,8 +190,7 @@ sub processConfFile {
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -204,7 +199,7 @@ sub processConfFile {
 # @see processConfFile
 # @return int 0 on success, other on failure
 sub processSpecificConfFile {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dir;
 	use iMSCP::SO;
@@ -215,7 +210,7 @@ sub processSpecificConfFile {
 	my $path = -d $specificPath ? $specificPath : $commonPath;
 
 	unless(chdir($path)){
-		error((caller(0))[3] . ": Unable to change path to $path: $!");
+		error("Unable to change path to $path: $!");
 		return 1;
 	}
 
@@ -231,6 +226,9 @@ sub processSpecificConfFile {
 	$dir->{dirname} = $commonPath;
 
 
+	$rs = $dir->get();
+	return $rs if $rs;
+
 	my @configs = $dir->getDirs();
 
 	foreach(@configs){
@@ -239,7 +237,7 @@ sub processSpecificConfFile {
 		$path = -d "$specificPath/$_" ? "$specificPath/$_" : "$commonPath/$_";
 
 		unless(chdir($path)){
-			error((caller(0))[3] . ": Can not change path to $path: $!");
+			error("Can not change path to $path: $!");
 			return 1;
 		}
 
@@ -252,8 +250,7 @@ sub processSpecificConfFile {
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -261,10 +258,10 @@ sub processSpecificConfFile {
 #
 # @return void
 sub buildImscpDaemon {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	unless(chdir "$FindBin::Bin/daemon"){
-		error((caller(0))[3] . ": Unable to change path to $FindBin::Bin/daemon");
+		error("Unable to change path to $FindBin::Bin/daemon");
 		return 1;
 	}
 
@@ -272,9 +269,9 @@ sub buildImscpDaemon {
 	my $return = 0;
 
 	$rs = execute("make clean imscp_daemon", \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
-	error((caller(0))[3] . ": Can not build daemon") if $rs;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error("Can not build daemon") if $rs;
 	$return |= $rs;
 
 	unless($rs) {
@@ -291,13 +288,12 @@ sub buildImscpDaemon {
 	}
 
 	$rs = execute('make clean', \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
-	error((caller(0))[3] . ': Can not clean daemon artifacts') if $rs;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error('Can not clean daemon artifacts') if $rs;
 	$return |= $rs;
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	$return;
 }
 
@@ -306,10 +302,10 @@ sub buildImscpDaemon {
 # @see processConfFile
 # @return int 0 on success, other on failure
 sub installEngine {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	unless(chdir "$FindBin::Bin/engine"){
-		error((caller(0))[3] . ": Cannot change path to $FindBin::Bin/engine");
+		error("Cannot change path to $FindBin::Bin/engine");
 		return 1;
 	}
 
@@ -319,6 +315,10 @@ sub installEngine {
 	my $dir = iMSCP::Dir->new();
 
 	$dir->{dirname} = "$FindBin::Bin/engine";
+
+	$rs = $dir->get();
+	return $rs if $rs;
+
 	my @configs = $dir->getDirs();
 
 	foreach(@configs){
@@ -328,7 +328,7 @@ sub installEngine {
 		if (-f "$FindBin::Bin/engine/$_/install.xml"){
 
 			unless(chdir "$FindBin::Bin/engine/$_"){
-				error((caller(0))[3].": Can not change path to $FindBin::Bin/engine/$_");
+				error("Can not change path to $FindBin::Bin/engine/$_");
 				return 1;
 			}
 
@@ -337,8 +337,7 @@ sub installEngine {
 		}
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -346,15 +345,15 @@ sub installEngine {
 #
 # @return int
 sub installGui {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 
 	$rs = execute("cp -R $FindBin::Bin/gui $main::SYSTEM_ROOT", \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
-	debug((caller(0))[3] . ': Ending...');
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 
+	debug('Ending...');
 	$rs;
 }
 
@@ -367,7 +366,7 @@ sub installGui {
 #
 # @return void
 sub InstallDistMaintainerScripts {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $SO = iMSCP::SO->new();
 	my $dist = lc($SO->{Distribution});
@@ -394,8 +393,7 @@ sub InstallDistMaintainerScripts {
 		$file->copyFile("$main::SYSTEM_ROOT/engine/setup/") and return 1;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -403,7 +401,7 @@ sub InstallDistMaintainerScripts {
 #
 # @return int 0 on success, other on failure
 sub finishBuild {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $rs = $main::autoInstallClass->postBuild()
 		if(
@@ -411,11 +409,9 @@ sub finishBuild {
 			&&
 			$main::autoInstallClass->can('postBuild')
 		);
-
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -423,7 +419,7 @@ sub finishBuild {
 #
 # @return int 0 on success, other on failure
 sub cleanUpTmp {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $tmp = qualify_to_ref('INST_PREF', 'main');
 	my ($rs, $stdout, $stderr);
@@ -433,13 +429,12 @@ sub cleanUpTmp {
 		\$stdout, \$stderr
 	);
 
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -447,7 +442,7 @@ sub cleanUpTmp {
 #
 # @return int 0 on success, other on failure
 sub doImscpBackup {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 
@@ -457,9 +452,9 @@ sub doImscpBackup {
 			\$stdout, \$stderr
 		);
 
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		warning((caller(0))[3] . ": $stderr") if $stderr;
-		error((caller(0))[3] . ': Could not create backups') if $rs;
+		debug("$stdout") if $stdout;
+		warning("$stderr") if $stderr;
+		error('Could not create backups') if $rs;
 
 		$rs = iMSCP::Dialog->factory()->yesno(
 			"\n\n\\Z1Unable to create backups\\Zn\n\n".
@@ -469,8 +464,7 @@ sub doImscpBackup {
 		) if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	$rs;
 }
 
@@ -478,7 +472,7 @@ sub doImscpBackup {
 #
 # @return int 0 on success, other on failure
 sub saveGuiWorkingData {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 	my $tmp = qualify_to_ref('INST_PREF', 'main');
@@ -491,20 +485,19 @@ sub saveGuiWorkingData {
 			\$stdout, \$stderr
 		);
 
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 
 		# Save webmail data (Squirrel)
-		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data"){
-			$rs = execute(
-				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-				\$stdout, \$stderr
-			);
-			debug((caller(0))[3] . ": $stdout") if $stdout;
-			error((caller(0))[3] . ": $stderr") if $stderr;
-			return $rs if $rs;
-		}
+		$rs = execute(
+			"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
+			\$stdout, \$stderr
+		);
+
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+		return $rs if $rs;
 
 	# For i-MSCP versions prior 1.0.4
 	} elsif(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
@@ -514,21 +507,19 @@ sub saveGuiWorkingData {
 			\$stdout, \$stderr
 		);
 
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 
 		# Save webmail data (Squirrel)
-		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data"){
-			$rs = execute(
-				"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-				\$stdout, \$stderr
-			);
+		$rs = execute(
+			"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
+			\$stdout, \$stderr
+		);
 
-			debug((caller(0))[3] . ": $stdout") if $stdout;
-			error((caller(0))[3] . ": $stderr") if $stderr;
-			return $rs if $rs;
-		}
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+		return $rs if $rs;
 
 		# Save i-MSCP GUI data (isp domain default index.html page)
 		$rs = execute(
@@ -536,11 +527,12 @@ sub saveGuiWorkingData {
 			\$stdout, \$stderr
 		);
 
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 	}
 
+	debug('Ending...');
 	0;
 }
 
@@ -548,7 +540,7 @@ sub saveGuiWorkingData {
 #
 # @return int 0 on success, other on failure
 sub installTmp {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -558,8 +550,8 @@ sub installTmp {
 	# i-MSCP daemon must be stopped before changing any file on the files system
 	if(-f "/etc/init.d/imscp_daemon" && -f "$main::defaultConf{'ROOT_DIR'}/daemon/imscp_daemon") {
 		$rs = execute("/etc/init.d/imscp_daemon stop", \$stdout, \$stderr);
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 	}
 
@@ -569,30 +561,30 @@ sub installTmp {
 		\$stdout, \$stderr
 	);
 
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
 	# Process cleanup to avoid any security risks and conflicts
 	$rs = execute(
-		"rm -fr $main::defaultConf{'ROOT_DIR'}/daemon ".
+		"rm -vfr ".
+		"$main::defaultConf{'ROOT_DIR'}/daemon ".
 		"$main::defaultConf{'ROOT_DIR'}/engine ".
 		"$main::defaultConf{'ROOT_DIR'}/gui ",
 		\$stdout, \$stderr
 	);
 
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
 	# Copy new i-MSCP files on the files system
 	$rs = execute("cp -Rf $$$tmp/* /", \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -600,20 +592,19 @@ sub installTmp {
 #
 # @return int 0 on success, other on failure
 sub removeTmp {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 	my $tmp = qualify_to_ref('INST_PREF', 'main');
 
 	if($$$tmp && -d $$$tmp){
 		$rs = execute("rm -fr $$$tmp", \$stdout, \$stderr);
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -626,22 +617,22 @@ sub removeTmp {
 # @param string $var variable to be expanded
 # @return string expanded variable
 sub _expandVars {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $var = shift;
 
 	use Symbol;
 
-	debug((caller(0))[3] . ": Input... $var");
+	debug("Input... $var");
 
 	if($var =~ m/\$\{([^\}]{1,})\}/g) {
 		my $x = qualify_to_ref("$1");
 		$var =~ s/\$\{$1\}/$$$x/g;
 	}
 
-	debug((caller(0))[3] . ": Expanded... $var");
-	debug((caller(0))[3] . ': Ending...');
+	debug("Expanded... $var");
 
+	debug('Ending...');
 	$var;
 }
 
@@ -651,7 +642,7 @@ sub _expandVars {
 #
 # @return int 0 on success, other on failure
 sub _processFolder {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $data = shift;
 
@@ -659,7 +650,7 @@ sub _processFolder {
 
 	my $dir  = iMSCP::Dir->new();
 	$dir->{dirname} = $data->{content};
-	debug((caller(0))[3] . ": Create $dir->{dirname}");
+	debug("Create $dir->{dirname}");
 
 	my $options = {};
 
@@ -671,8 +662,7 @@ sub _processFolder {
 	my $rs = $dir->make($options);
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -680,7 +670,7 @@ sub _processFolder {
 #
 # @return int 0 on success, other on failure
 sub _copyConfig {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use Cwd;
 	use iMSCP::SO;
@@ -702,12 +692,12 @@ sub _copyConfig {
 
 	my $source = -e $name ? $name : "$alternativeFolder/$name";
 
-	debug((caller(0))[3] . ": Copy recursive $source in $path");
+	debug("Copy recursive $source in $path");
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute("cp -R $source $path", \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 
 	return $rs if $rs;
 
@@ -723,8 +713,7 @@ sub _copyConfig {
 		)  and return 1 if($data->{user} || $data->{group});
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -732,7 +721,7 @@ sub _copyConfig {
 #
 # @return int 0 on success, other on failure
 sub _copy {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Execute;
 	use iMSCP::File;
@@ -742,12 +731,12 @@ sub _copy {
 	my $name = pop(@parts);
 	my $path = join '/', @parts;
 
-	debug((caller(0))[3] . ": Copy recursive $name in $path");
+	debug("Copy recursive $name in $path");
 
 	my ($rs, $stdout, $stderr);
 	$rs = execute("cp -R $name $path", \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
 	if($data->{user} || $data->{group} || $data->{mode}){
@@ -763,8 +752,7 @@ sub _copy {
 
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -773,7 +761,7 @@ sub _copy {
 # @param XML object $data XML create_file node
 # @return int 0 on success, other on failure
 sub _createFile {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -782,7 +770,7 @@ sub _createFile {
 	my $rs = iMSCP::File->new(filename => $data->{content})->save();
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -791,20 +779,19 @@ sub _createFile {
 # @param XML object $data XML chown_file node
 # @return int 0 on success, other on failure
 sub _chownFile {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $data = shift;
 
 	if($data->{owner} && $data->{group}){
 		my ($rs, $stdout, $stderr);
 		$rs = execute("chown -R $data->{owner}:$data->{group} $data->{content}", \$stdout, \$stderr);
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -812,20 +799,19 @@ sub _chownFile {
 #
 # @return int 0 on success, other on failure
 sub _chmodFile {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $data = shift;
 
 	if($data->{mode}) {
 		my ($rs, $stdout, $stderr);
 		$rs = execute("chmod -R $data->{mode} $data->{content}", \$stdout, \$stderr);
-		debug((caller(0))[3] . ": $stdout") if $stdout;
-		error((caller(0))[3] . ": $stderr") if $stderr;
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -834,14 +820,13 @@ sub _chmodFile {
 # @access private
 # @return int 0 on success, other on failure
 sub _checkPkgManager {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Execute;
 
 	my ($rs, $stdout, $stderr);
 
-	debug((caller(0))[3] . ': Ending...');
-
+	debug('Ending...');
 	return execute('which apt-get', \$stdout, \$stderr);
 }
 

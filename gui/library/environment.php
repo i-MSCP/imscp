@@ -199,7 +199,7 @@ $config->PASSWD_STRONG = 1;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
-$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
+#$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
 
 /**
  * Logging Mailer default level (messages sent to DEFAULT_ADMIN_ADDRESS)

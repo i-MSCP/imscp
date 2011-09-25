@@ -40,11 +40,11 @@ sub TIEHASH {
 
 	$self = $self->new(@_);
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].': Tieing ...');
+	debug('Tieing ...');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $self;
 };
@@ -52,11 +52,11 @@ sub TIEHASH {
 sub FIRSTKEY {
 	my $self	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $a = scalar keys %{$self->{args}->{result}};
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	each %{$self->{args}->{result}};
 }
@@ -64,9 +64,9 @@ sub FIRSTKEY {
 sub NEXTKEY {
 	my $self	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	each %{$self->{args}->{result}};
 }
@@ -75,11 +75,11 @@ sub FETCH {
 	my $self = shift;
 	my $key = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].": Fetching $key");
+	debug("Fetching $key");
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
 };
@@ -88,11 +88,11 @@ sub EXISTS {
 	my $self = shift;
 	my $key = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].": Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
+	debug("Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	$self->{args}->{result}->{$key} ? 1 : 0;
 };

@@ -34,9 +34,8 @@ use iMSCP::Execute qw/execute/;
 use Common::SingletonClass;
 
 use vars qw/@ISA/;
-@ISA = ('Common::SingletonClass', 'Common::SetterClass');
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
-use Common::SetterClass;
 
 sub _init  {
 	my $self  = shift;
@@ -55,28 +54,28 @@ sub _init  {
 
 sub ssl_check_intermediate_cert {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
 	if ($self->{intermediate_cert_path} ne '' && ! -e $self->{intermediate_cert_path} ) {
-		error((caller(0))[3].": Intermediate certificate $self->{intermediate_cert_path} do not exists. Exiting...");
+		error("Intermediate certificate $self->{intermediate_cert_path} do not exists. Exiting...");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub ssl_check_cert {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
 	if ( ( $self->{cert_path} eq '' ) || ( !-e "$self->{cert_path}" ) ) {
-		error((caller(0))[3].": Certificate $self->{cert_path} do not exists. Exiting...");
+		error("Certificate $self->{cert_path} do not exists. Exiting...");
 		return 1;
 	}
 
@@ -90,29 +89,29 @@ sub ssl_check_cert {
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	#fatal("|$self->{cert_path}|$stdout|$stderr|");
 	return 1 if($rs || $stderr);
 
 	if ( $stdout !~ m~$self->{cert_path}:.*OK~ms ){
-		error((caller(0))[3].": Certificate $self->{cert_path} is not valid. Exiting...");
+		error("Certificate $self->{cert_path} is not valid. Exiting...");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub ssl_check_key {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
 	if ( ( $self->{key_path} eq '' ) || ( !-e "$self->{key_path}" ) ){
-		error((caller(0))[3].": Key $self->{key_path} do not exists. Exiting...");
+		error("Key $self->{key_path} do not exists. Exiting...");
 		return -1;
 	}
 
@@ -120,19 +119,19 @@ sub ssl_check_key {
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-	error((caller(0))[3].": Key is invalid or wrong password".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	debug("$stdout") if $stdout;
+	warning("$stderr") if ($stderr && !$rs);
+	error("Key is invalid or wrong password".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub ssl_check_all{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -145,14 +144,14 @@ sub ssl_check_all{
 	$rs = $self->ssl_check_cert();
 	return $rs if ($rs);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub ssl_export_key {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -160,18 +159,18 @@ sub ssl_export_key {
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-	error((caller(0))[3].": Can not save certificate key".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	debug("$stdout") if $stdout;
+	warning("$stderr") if ($stderr && !$rs);
+	error("Can not save certificate key".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub ssl_export_cert {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -179,18 +178,18 @@ sub ssl_export_cert {
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-	error((caller(0))[3].": Can not save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	debug("$stdout") if $stdout;
+	warning("$stderr") if ($stderr && !$rs);
+	error("Can not save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub ssl_export_intermediate_cert {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -200,18 +199,18 @@ sub ssl_export_intermediate_cert {
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-	error((caller(0))[3].": Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	debug("$stdout") if $stdout;
+	warning("$stderr") if ($stderr && !$rs);
+	error("Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub ssl_generate_selsigned_cert{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -219,18 +218,18 @@ sub ssl_generate_selsigned_cert{
 
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
-	error((caller(0))[3].": Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
+	debug("$stdout") if $stdout;
+	warning("$stderr") if ($stderr && !$rs);
+	error("Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if($rs);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub ssl_export_all{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $rs;
@@ -253,7 +252,7 @@ sub ssl_export_all{
 
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 

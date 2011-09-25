@@ -1,7 +1,7 @@
     <IfModule mod_php5.c>
-        php_admin_value open_basedir "{WWW_DIR}/{DMN_NAME}/:{WWW_DIR}/{DMN_NAME}/phptmp/:{PEAR_DIR}/"
-        php_admin_value upload_tmp_dir "{WWW_DIR}/{DMN_NAME}/phptmp/"
-        php_admin_value session.save_path "{WWW_DIR}/{DMN_NAME}/phptmp/"
+        php_admin_value open_basedir "{HOME_DIR}/:{HOME_DIR}/phptmp/:{PEAR_DIR}/"
+        php_admin_value upload_tmp_dir "{HOME_DIR}/phptmp/"
+        php_admin_value session.save_path "{HOME_DIR}/phptmp/"
         php_admin_value sendmail_path '/usr/sbin/sendmail -f {SUEXEC_USER} -t -i'
     </IfModule>
     <IfModule mod_fastcgi.c>
@@ -14,7 +14,7 @@
         </Directory>
     </IfModule>
     <IfModule mod_fcgid.c>
-        <Directory {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs>
+        <Directory {HOME_DIR}{MOUNT_POINT}/htdocs>
             FCGIWrapper {STARTER_DIR}/{DMN_NAME}/php{PHP_VERSION}-fcgi-starter .php
             Options +ExecCGI
         </Directory>

@@ -40,7 +40,7 @@ use vars qw/@ISA @EXPORT/;
 
 sub _init{
 	my $self	= shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->{'autosize'}						= undef;
 	$self->{'autoreset'}					= '';
@@ -96,66 +96,66 @@ sub _init{
 	$self->_find_bin($^O	=~ /bsd$/ ? 'cdialog' : 'dialog');
 	$self->_determine_dialog_variant();
 	$self->_getConsoleSize();
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _determine_dialog_variant {
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $str = `$self->{'bin'} --help 2>&1`;
 	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
-		debug((caller(0))[3].': Have colors!');
+		debug('Have colors!');
 	} else {
 		delete $self->{'_opts'}->{'colors'};
-		debug((caller(0))[3].': No colors!');
+		debug('No colors!');
 		if ($str =~ /version\s0\.[34]/m) {
 			$self->{'_opts'}->{'force-no-separate-output'} = '';
-			debug((caller(0))[3].': No separate output!');
+			debug('No separate output!');
 		}
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _getConsoleSize{
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my ($output, $error);
 	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
 	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
 	$self->{'lines'}	= (defined($1) && $1 != 0) ? $1-3 : 23;
 	$self->{'columns'}	= (defined($2) && $2 != 0) ? $2-2 : 79;
-	error((caller(0))[3].": $error") unless (!$?);
-	debug((caller(0))[3].": Lines->$self->{'lines'}");
-	debug((caller(0))[3].": Columns->$self->{'columns'}");
-	debug((caller(0))[3].': Ending...');
+	error("$error") unless (!$?);
+	debug("Lines->$self->{'lines'}");
+	debug("Columns->$self->{'columns'}");
+	debug('Ending...');
 }
 
 sub _find_bin {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my ($self, $variant)	= (shift, shift);
 	my ($rs, $stdout, $stderr);
 	$rs = execute("which $variant", \$stdout, \$stderr);
-	debug((caller(0))[3].": Found $stdout") if $stdout;
-	fatal((caller(0))[3].": Can't find $variant binary $stderr") if $stderr;
+	debug("Found $stdout") if $stdout;
+	fatal(": Can't find $variant binary $stderr") if $stderr;
 
 	$self->{'bin'} = $stdout if $stdout;
-	fatal((caller(0))[3].': Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
+	fatal(': Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _strip_formats {
 	my ($self, $text)	= (shift, shift);
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	$text =~ s!\\Z[0-9bBuUrRn]!!gmi;
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return($text);
 }
 
 sub _buildCommand {
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $command = '';
 	foreach my $prop (keys %{$self->{'_opts'}}){
 		if(
@@ -171,35 +171,35 @@ sub _buildCommand {
 			}
 		}
 	}
-	debug((caller(0))[3].": command parametters -> ".$command);
-	debug((caller(0))[3].': Ending...');
+	debug("command parametters -> ".$command);
+	debug('Ending...');
 	return $command;
 }
 
 sub _clean{
 	my ($self, $text) = (shift, shift);
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	$text =~ s!'!"!g;
 	#$text =~ s!\\!\\\\!g;
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $text;
 }
 
 sub _restoreDefaults{
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	foreach my $prop (keys %{$self->{'_opts'}}){
 		if(!(grep $_ eq $prop, qw/title backtitle colors begin/)){
 			$self->{'_opts'}->{$prop} = undef;
 		}
 	}
 	$self->{'_opts'}->{'begin'} = [1,0];
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _execute{
 	my ($self, $text, $init, $mode, $background) = (shift, shift, shift, shift, shift || 0);
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->endGauge();
 
@@ -215,11 +215,11 @@ sub _execute{
 	my ($return, $rv);
 	$rv = execute("$self->{'bin'} $command --$mode '$text' $height $width $init", undef, \$return);
 
-	debug((caller(0))[3].': Returned text: '.$return) if($return);
+	debug('Returned text: '.$return) if($return);
 
 	$self->_init() if($self->{'autoreset'});
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	wantarray ? return ($rv, $return) : $return;
 }
 
@@ -263,7 +263,7 @@ sub radiolist{
 }
 
 sub checkbox{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $self = shift;
 	my $text = shift;
 	my @init = (@_);
@@ -271,7 +271,7 @@ sub checkbox{
 
 	$opts .= "$_ '' on " foreach(@init);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
 }
 
@@ -297,40 +297,40 @@ sub dselect{
 }
 
 sub msgbox{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $self->_textbox($text, 'msgbox');
 }
 
 sub yesno{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
 
 	my ($rv, undef) = ($self->_textbox($text, 'yesno'));
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $rv;
 }
 
 sub inputbox{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $self->_textbox($text, 'inputbox', $init);
 }
 
 sub infobox{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
@@ -340,12 +340,12 @@ sub infobox{
 	my $rs						= $self->_textbox($text, 'infobox');
 	$self->{'_opts'}->{'clear'}	= $clear;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rs;
 }
 
 sub passwordbox{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
@@ -353,7 +353,7 @@ sub passwordbox{
 
 	$self->{'_opts'}->{'insecure'} = '';
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $self->_textbox($text, 'passwordbox', "'$init'");
 }
 
@@ -362,7 +362,7 @@ sub startGauge{
 	my $text = shift;
 	my $init = shift || 0; #initial value
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->{'gauge'} ||= {};
 	return(0) if (defined $self->{'gauge'}->{'FH'});
@@ -382,24 +382,25 @@ sub startGauge{
 
 	$self->{'_opts'}->{'begin'} = $begin;
 
-	debug((caller(0))[3].": $command");
+	debug("$command");
 
 	$self->{'gauge'}->{'FH'} = new FileHandle;
-	$self->{'gauge'}->{'FH'}->open("| $command") || error((caller(0))[3].": Can`t start gauge!");
+	$self->{'gauge'}->{'FH'}->open("| $command") || error("Can`t start gauge!");
+	debugRegCallBack(\&endGauge);
 	$SIG{PIPE} = \&endGauge;
 	my $rv = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
-	debug((caller(0))[3].": Returned value $rv");
-	debug((caller(0))[3].': Ending...');
+	debug("Returned value $rv");
+	debug('Ending...');
 	$rv;
 }
 
 sub needGauge{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self	= shift;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return 0 if $self->{'gauge'}->{'FH'};
 	1;
@@ -410,7 +411,7 @@ sub setGauge{
 	my $value	= shift;
 	my $text	= shift || undef;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	return 0 unless $self->{'gauge'}->{'FH'};
 
@@ -420,14 +421,14 @@ sub setGauge{
 		$text = "$value\n";
 	}
 
-	debug((caller(0))[3].": $text");
+	debug("$text");
 
 	my $fh = $self->{'gauge'}->{'FH'};
 
 	print $fh $text;
 	$SIG{PIPE} = \&endGauge;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return(((defined $self->{'gauge'}->{'FH'}) ? 1 : 0));
 
@@ -436,13 +437,13 @@ sub setGauge{
 sub endGauge{
 	my $self = iMSCP::Dialog->factory();
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	return 0 unless ref $self->{'gauge'}->{'FH'};
 	$self->{'gauge'}->{'FH'}->close();
 	delete($self->{'gauge'});
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -458,7 +459,4 @@ sub set{
 	$return;
 }
 
-
 1;
-
-__END__

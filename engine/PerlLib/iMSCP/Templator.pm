@@ -41,7 +41,7 @@ sub _init{
 
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->{varStartTag}		= '\{';
 	$self->{varEndTag}			= '\}';
@@ -49,17 +49,17 @@ sub _init{
 	$self->{inclusionTagStart}	= '# [(\{.*\})](.*)START\.';
 	$self->{inclusionTagEnd}	= '# [\1](.)END\.';
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub set($ $){
 	my $prop	= shift;
 	my $value	= shift;
 	my $self	= iMSCP::Templator->new();
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].": Setting $prop.");
+	debug('Starting...');
+	debug("Setting $prop.");
 	$self->{$prop} = $value if(exists $self->{$prop});
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub loadlayout{
@@ -70,7 +70,7 @@ sub process($ $){
 	$self->{vars}		= shift || ref {};
 	$self->{tContent}	= shift || '';
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->{vars} = {} if (ref $self->{vars} ne 'HASH');
 
@@ -80,7 +80,7 @@ sub process($ $){
 	$self->{args} = {};
 	$self->_init();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $self->{tContent};
 }
@@ -88,36 +88,39 @@ sub process($ $){
 sub _getInclusion{
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].': TODO...');
+	debug('TODO...');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _replaceStatic{
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $meta = "\\\|\(\)\[\{\^\$\*\+\?\.";
 
 	for my $key (keys %{$self->{vars}}){
 
+		next unless defined $self->{vars}->{$key};
+
 		my $cleanKey = $key;
 		$cleanKey =~ s/([$meta])/\\$1/g;
 
 		my $regexp = sprintf($self->{varRegexp}, $cleanKey);
+		#debug("Replace $regexp with $self->{vars}->{$key}");
 
 		$self->{tContent} =~ s/$regexp/$self->{vars}->{$key}/mig
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 }
 
 sub replaceBloc($ $ $ $ $){
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= iMSCP::Templator->new();
 	my $startTag	= shift;
@@ -139,12 +142,12 @@ sub replaceBloc($ $ $ $ $){
 		$content =~ s/$regexp/$replacement/smig;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $content;
 }
 
 sub getBloc($ $ $){
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= iMSCP::Templator->new();
 	my $startTag	= shift;
@@ -157,11 +160,16 @@ sub getBloc($ $ $){
 	$endTag =~ s/([$meta])/\\$1/g;
 
 	my $regexp = $startTag."(.*)".$endTag;
+	my $rs;
 
-	$content =~ m/$regexp/smig;
+	if($content =~ m/$regexp/smig){
+		$rs = $1;
+	} else {
+		$rs = '';
+	}
 
-	debug((caller(0))[3].': Ending...');
-	return $1;
+	debug('Ending...');
+	$rs;
 }
 
 1;

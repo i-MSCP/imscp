@@ -36,44 +36,58 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{bkpDir}	= "$self->{cfgDir}/backup";
 	$self->{wrkDir}	= "$self->{cfgDir}/working";
 
-	debug((caller(0))[3].': Ending...');
+	my $conf		= "$self->{cfgDir}/courier.data";
+	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
+
+	$self->{$_} = $self::courierConfig{$_} foreach(keys %self::courierConfig);
+
+	debug('Ending...');
 	0;
 }
 
 sub preinstall{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Servers::po::courier::installer;
 
 	my $self	= shift;
 	my $rs		= Servers::po::courier::installer->new()->registerHooks();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rs;
 }
 
 sub install{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Servers::po::courier::installer;
 
 	my $self		= shift;
 	my $rs			= Servers::po::courier::installer->new()->install();
-	$self->restart();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rs;
 }
 
+sub postinstall{
+	debug('Starting...');
+
+	my $self	= shift;
+	$self->{restart} = 'yes';
+
+	debug('Ending...');
+	0;
+}
+
 sub restart{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
@@ -81,33 +95,190 @@ sub restart{
 	use iMSCP::Execute;
 
 	# Reload config
-	$rs = execute("$main::imscpConfig{'CMD_AUTHD'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	$rs = execute("$self::courierConfig{'CMD_AUTHD'} restart", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	$rs = execute("$main::imscpConfig{'CMD_POP'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	$rs = execute("$self::courierConfig{'CMD_POP'} restart", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	$rs = execute("$main::imscpConfig{'CMD_IMAP'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	$rs = execute("$self::courierConfig{'CMD_IMAP'} restart", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	$rs = execute("$main::imscpConfig{'CMD_POP_SSL'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	$rs = execute("$self::courierConfig{'CMD_POP_SSL'} restart", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	$rs = execute("$main::imscpConfig{'CMD_IMAP_SSL'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
+	$rs = execute("$self::courierConfig{'CMD_IMAP_SSL'} restart", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
+}
+
+sub addMail{
+	debug('Starting...');
+
+	use iMSCP::File;
+	use iMSCP::Execute;
+	use Servers::mta;
+	use Crypt::PasswdMD5;
+
+	my $self = shift;
+	my $data = shift;
+	my $rs = 0;
+	my ($stdout, $stderr);
+
+	my $errmsg = {
+		'MAIL_ADDR'	=> 'You must supply mail address!',
+		'MAIL_PASS'	=> 'You must supply account password!'
+	};
+
+	foreach(keys %{$errmsg}){
+		error("$errmsg->{$_}") unless $data->{$_};
+		return 1 unless $data->{$_};
+	}
+
+	if(-f "$self->{AUTHLIB_CONF_DIR}/userdb"){
+		$rs |=	iMSCP::File->new(
+					filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
+				)->copyFile(
+					"$self->{bkpDir}/userdb.".time
+				)
+		;
+	}
+
+	if($data->{MAIL_TYPE} =~ /_mail/){
+		my $mBoxHashFile	= (
+			-f "$self->{wrkDir}/userdb"
+			?
+			"$self->{wrkDir}/userdb"
+			:
+			"$self->{cfgDir}/userdb"
+		);
+
+		my $wrkFileName	= "$self->{wrkDir}/userdb";
+		my $wrkFileH	= iMSCP::File->new(filename => $mBoxHashFile);
+		my $wrkContent	= $wrkFileH->get();
+		return 1 unless defined $wrkContent;
+
+		my $mailbox		= $data->{MAIL_ADDR};
+		$mailbox		=~ s/\./\\\./g;
+		$wrkContent		=~ s/^$mailbox\t[^\n]*\n//gmi;
+		my @rand_data	= ('A'..'Z', 'a'..'z', '0'..'9', '.', '/');
+		my $rand;
+		$rand			.= $rand_data[rand()*($#rand_data + 1)] for('1'..'8');
+		my $password	= unix_md5_crypt($data->{MAIL_PASS}, $rand);
+		my $mta			= Servers::mta->factory();
+		my $uid			= scalar getpwnam($mta->{'MTA_MAILBOX_UID_NAME'});
+		my $gid			= scalar getgrnam($mta->{'MTA_MAILBOX_GID_NAME'});
+		my $mailDir		= $mta->{'MTA_VIRTUAL_MAIL_DIR'};
+		$wrkContent		.=	"$data->{MAIL_ADDR}\tuid=$uid|gid=$gid|home=$mailDir/".
+							"$data->{DMN_NAME}/$data->{MAIL_ACC}|shell=/bin/false|".
+							"systempw=$password|mail=$mailDir/$data->{DMN_NAME}/$data->{MAIL_ACC}\n";
+		$wrkFileH	= iMSCP::File->new(filename => $wrkFileName);
+		$wrkFileH->set($wrkContent);
+		return 1 if $wrkFileH->save();
+		$rs |=	$wrkFileH->mode(0600);
+		$rs |=	$wrkFileH->owner(
+					$main::imscpConfig{ROOT_USER},
+					$main::imscpConfig{ROOT_GROUP}
+				);
+		$rs |= $wrkFileH->copyFile("$self->{AUTHLIB_CONF_DIR}/userdb");
+
+		$rs |= execute($self->{CMD_MAKEUSERDB}, \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr;
+	}
+
+	debug('Ending...');
+	$rs;
+}
+
+sub delMail{
+	debug('Starting...');
+
+	use iMSCP::File;
+	use iMSCP::Execute;
+
+	my $self = shift;
+	my $data = shift;
+	my $rs = 0;
+	my ($stdout, $stderr);
+
+	my $errmsg = {
+		'MAIL_ADDR'	=> 'You must supply mail address!',
+		'MAIL_PASS'	=> 'You must supply account password!'
+	};
+
+	foreach(keys %{$errmsg}){
+		error("$errmsg->{$_}") unless $data->{$_};
+		return 1 unless $data->{$_};
+	}
+
+	if(-f "$self->{AUTHLIB_CONF_DIR}/userdb"){
+		$rs |=	iMSCP::File->new(
+					filename => "$self->{AUTHLIB_CONF_DIR}/userdb"
+				)->copyFile(
+					"$self->{bkpDir}/userdb.".time
+				)
+		;
+	}
+
+	my $mBoxHashFile	= (
+		-f "$self->{wrkDir}/userdb"
+		?
+		"$self->{wrkDir}/userdb"
+		:
+		"$self->{cfgDir}/userdb"
+	);
+
+	my $wrkFileName	= "$self->{wrkDir}/userdb";
+	my $wrkFileH	= iMSCP::File->new(filename => $mBoxHashFile);
+	my $wrkContent	= $wrkFileH->get();
+	return 1 unless defined $wrkContent;
+
+	my $mailbox		= $data->{MAIL_ADDR};
+	$mailbox		=~ s/\./\\\./g;
+	$wrkContent		=~ s/^$mailbox\t[^\n]*\n//gmi;
+	$wrkFileH	= iMSCP::File->new(filename => $wrkFileName);
+	$wrkFileH->set($wrkContent);
+	return 1 if $wrkFileH->save();
+	$rs |=	$wrkFileH->mode(0600);
+	$rs |=	$wrkFileH->owner(
+				$main::imscpConfig{ROOT_USER},
+				$main::imscpConfig{ROOT_GROUP}
+			);
+	$rs |= $wrkFileH->copyFile("$self->{AUTHLIB_CONF_DIR}/userdb");
+
+	$rs |= execute($self->{CMD_MAKEUSERDB}, \$stdout, \$stderr);
+	debug($stdout) if $stdout;
+	error($stderr) if $stderr;
+
+	debug('Ending...');
+	$rs;
+}
+
+
+
+END{
+	debug('Starting...');
+
+	my $endCode	= $?;
+	my $self	= Servers::po::courier->new();
+	my $rs		= 0;
+	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+
+	debug('Ending...');
+	$? = $endCode || $rs;
 }
 
 1;

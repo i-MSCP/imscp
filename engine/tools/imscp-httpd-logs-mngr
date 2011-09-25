@@ -1,489 +1,116 @@
 #!/usr/bin/perl
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
-# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# Version: $Id$
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
-#
-# The Original Code is "VHCS - Virtual Hosting Control System".
-#
-# The Initial Developer of the Original Code is moleSoftware GmbH.
-# Portions created by Initial Developer are Copyright (C) 2001-2006
-# by moleSoftware GmbH. All Rights Reserved.
-#
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+use strict;
+use warnings;
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'imscp_common_code.pl';
+use lib "$FindBin::Bin/../PerlLib";
 
-use strict;
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Execute;
+use iMSCP::Mail;
+use iMSCP::Database;
+use Servers::httpd;
+use Data::Dumper;
 
-use warnings;
+newDebug('imscp-httpd-logs-mngr.log');
 
-my $rs = undef;
+sub logs_start_up {
+	debug('Starting...');
 
-sub httpd_logs_mngr_start_up {
+	umask(027);
+	iMSCP::Boot->new()->init({nolock => 'yes'});
 
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'httpd_logs_mngr_start_up()', 'Starting...');
-
-    # Let's clear Execution Logs, if any.
-
-    if (-e $main::imscp_httpd_logs_mngr_el) {
-
-        $rs = del_file($main::imscp_httpd_logs_mngr_el);
-
-        return $rs if ($rs != 0);
-
-    }
-
-    # config check;
-
-    $rs = get_conf();
-
-    return $rs if ($rs != 0);
-
-    #
-    # getting initial data also must be done here;
-    #
-
-    my $sql = "select * from domain;";
-
-    ($rs, $rdata) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'httpd_logs_mngr_start_up()', 'Ending...');
-
-    return 0;
-
+	debug('Ending...');
+	0;
 }
 
-sub copy_subdomain_logs {
+sub copy_logs{
+	debug('Starting...');
 
-    my ($rs, $rows) = (undef, undef);
+	my $rs = 0;
+	my $httpd	= Servers::httpd->factory();
 
-    push_el(\@main::el, 'copy_subdomain_logs()', 'Starting...');
+	my $sql = "
+		SELECT `domain_name`, `domain_name`as `mp`, `domain_admin_id` AS `id` FROM `domain` WHERE `domain_status` = 'ok'
+		UNION
+		SELECT `alias_name`, `domain_name`, `domain_admin_id` AS `id` FROM `domain_aliasses`
+		JOIN `domain` using(`domain_id`) WHERE `alias_status` = 'ok'
+		UNION
+		SELECT CONCAT(`subdomain_name`, '.', `domain_name`), `domain_name`, `domain_admin_id` AS `id` FROM `subdomain`
+		JOIN `domain` using(`domain_id`)  WHERE `subdomain_status` = 'ok'
+		UNION
+		SELECT CONCAT(`subdomain_alias_name`, '.', `alias_name`), `domain_name`, `domain_admin_id` AS `id` FROM `subdomain_alias`
+		JOIN `domain_aliasses` using(`alias_id`)
+		JOIN `domain` using(`domain_id`) WHERE `subdomain_alias_status` = 'ok'
+	";
+	my $rdata = iMSCP::Database->new()->factory()->doQuery('domain_name', $sql);
 
-    my $sql = "select t1.subdomain_name, t2.domain_name, t2.domain_uid from subdomain as t1, domain as t2 where t1.domain_id = t2.domain_id and t1.subdomain_status = 'ok' order by t1.subdomain_id;";
+	if (ref $rdata ne 'HASH'){
+		error("$rdata");
+		iMSCP::Mail->new()->errmsg($rdata);
+		$rs = 1;
+	} else {
+		foreach( keys %$rdata){
+			my $groupName	=
+			my $userName	=
+								$main::imscpConfig{SYSTEM_USER_PREFIX}.
+								(
+									$main::imscpConfig{SYSTEM_USER_MIN_UID}
+									+
+									$rdata->{$_}->{id}
+								);
+			my $srcFolder	= "$httpd->{tplValues}->{'APACHE_USERS_LOG_DIR'}";
+			my $destFolder	= "$main::imscpConfig{'USER_HOME_DIR'}/$rdata->{$_}->{mp}/logs/";
+			my $accessSRC	= "$srcFolder/$_-access.log";
+			my $accessDST	= "$destFolder/$_-access.log";
+			my $errorSRC	= "$srcFolder/$_-error.log";
+			my $errorDST	= "$destFolder/$_-error.log";
+			$rs |= iMSCP::Dir->new( dirname => $destFolder)->make({
+				user	=> $userName,
+				group	=> $groupName,
+				mode	=> 0750
+			}) unless -d $destFolder;
+			$rs |= iMSCP::File->new(filename => $accessSRC)->copyFile($accessDST) if (-f $accessSRC);
+			$rs |= iMSCP::File->new(filename => $errorSRC)->copyFile($errorDST) if (-f $errorSRC);
+		}
+	}
 
-    ($rs, $rows) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    if (scalar(@$rows) > 0) {
-
-        foreach (@$rows) {
-
-            my ($sub_pref, $domain_name, $domain_uid) = (@$_[0], @$_[1], @$_[2]);
-
-            my $subdomain_name = "$sub_pref.$domain_name";
-
-            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-access.log";
-
-            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$subdomain_name-access.log";
-
-            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-error.log";
-
-            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$subdomain_name-error.log";
-
-            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs";
-
-            if (! -d $dest_dir)
-            {
-               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_access_file ){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_error_file ){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-        }
-
-    }
-
-    push_el(\@main::el, 'copy_subdomain_logs()', 'Ending...');
-
-    return 0;
-
+	debug('Ending...');
+	$rs;
 }
 
-sub copy_domain_logs {
+my $rs = 0;
 
-    my ($rs, $rows) = (undef, undef);
+exit 1 if logs_start_up();
 
-    push_el(\@main::el, 'copy_domain_logs()', 'Starting...');
+$rs |= copy_logs();
 
-    my $sql = "select domain_name, domain_uid from domain where domain_status = 'ok' order by domain_id";
-
-    ($rs, $rows) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    if (scalar(@$rows) > 0) {
-
-        foreach (@$rows) {
-
-            my ($domain_name, $domain_uid ) = (@$_[0], @$_[1]);
-
-            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$domain_name-access.log";
-
-            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$domain_name-access.log";
-
-            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$domain_name-error.log";
-
-            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs/$domain_name-error.log";
-
-            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name/logs";
-
-            if (! -d $dest_dir)
-            {
-               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if( -e $src_access_file){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_error_file ){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-        }
-
-    }
-
-    push_el(\@main::el, 'copy_domain_logs()', 'Ending...');
-
-    return 0;
-
-}
-
-sub copy_alias_logs {
-
-    my ($rs, $rows) = (undef, undef);
-
-    push_el(\@main::el, 'copy_alias_logs()', 'Starting...');
-
-    my $sql = "select t1.*, t2.* from domain_aliasses as t1, domain as t2 where t1.domain_id = t2.domain_id and t1.alias_status = 'ok'";
-
-    ($rs, $rows) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    if (scalar(@$rows) > 0) {
-
-        foreach (@$rows) {
-
-            my $als_name = @$_[2];
-
-            my $domain_uid = @$_[10];
-
-            my $als_mount = @$_[4];
-
-            my $dmn_name = @$_[8];
-
-            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log";
-
-            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs/$als_name-access.log";
-
-            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log";
-
-            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs/$als_name-error.log";
-
-            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$dmn_name$als_mount/logs";
-
-            if (! -d $dest_dir)
-            {
-               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_access_file){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_error_file ){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-        }
-
-    }
-
-    push_el(\@main::el, 'copy_alias_logs()', 'Ending...');
-
-    return 0;
-
-}
-
-sub copy_subdomain_alias_logs {
-
-    my ($rs, $rows) = (undef, undef);
-
-    push_el(\@main::el, 'copy_subdomain_alias_logs()', 'Starting...');
-
-    my $sql = "
-		select
-			t1.subdomain_alias_name,
-			t2.alias_mount,
-			t2.alias_name,
-			t3.domain_name,
-			t3.domain_uid
-		from
-			subdomain_alias as t1,
-			domain_aliasses as t2,
-			domain as t3
-		where
-			t1.alias_id = t2.alias_id
-		and
-			t2.domain_id = t3.domain_id
-		and
-			t1.subdomain_alias_status = 'ok'
-		order by
-			t1.subdomain_alias_id;
-     ";
-
-    ($rs, $rows) = doSQL($sql);
-
-    return $rs if ($rs != 0);
-
-    if (scalar(@$rows) > 0) {
-
-        foreach (@$rows) {
-
-            my ($sub_pref, $subdomain_alias_mount, $alias_name, $domain_name, $domain_uid) = (@$_[0], @$_[1], @$_[2], @$_[3], @$_[4]);
-
-            my $subdomain_name = "$sub_pref.$alias_name";
-
-            my $src_access_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-access.log";
-
-            my $dest_access_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name$subdomain_alias_mount/logs/$subdomain_name-access.log";
-
-            my $src_error_file = "$main::cfg{'APACHE_USERS_LOG_DIR'}/$subdomain_name-error.log";
-
-            my $dest_error_file = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name$subdomain_alias_mount/logs/$subdomain_name-error.log";
-
-            my $dest_dir = "$main::cfg{'APACHE_WWW_DIR'}/$domain_name$subdomain_alias_mount/logs";
-
-            if (! -d $dest_dir)
-            {
-               $rs = make_dir($dest_dir, $domain_uid, $main::cfg{'APACHE_GROUP'}, 0770);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_access_file ){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_access_file $dest_access_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_access_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-            if ( -e $src_error_file ){
-
-               my $cmd_cp = "$main::cfg{'CMD_CP'} -f $src_error_file $dest_error_file";
-
-               $rs = sys_command($cmd_cp);
-
-               return $rs if ($rs != 0);
-
-               $rs = setfmode($dest_error_file, $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'}, 0666);
-
-               return $rs if ($rs != 0);
-
-            }
-
-        }
-
-    }
-
-    push_el(\@main::el, 'copy_subdomain_alias_logs()', 'Ending...');
-
-    return 0;
-
-}
-
-
-sub httpd_logs_mngr_engine {
-
-    my ($rs, $rdata) = (undef, undef);
-
-    push_el(\@main::el, 'httpd_logs_mngr_engine_up()', 'Starting...');
-
-    $rs = copy_subdomain_logs();
-
-    return $rs if ($rs != 0);
-
-    $rs = copy_domain_logs();
-
-    return $rs if ($rs != 0);
-
-    $rs = copy_subdomain_alias_logs();
-
-    return $rs if ($rs != 0);
-
-    $rs = copy_alias_logs();
-
-    return $rs if ($rs != 0);
-
-    push_el(\@main::el, 'httpd_logs_mngr_engine_up()', 'Ending...');
-
-    return 0;
-
-}
-
-sub httpd_logs_mngr_shut_down {
-
-    my $rs = undef;
-
-    push_el(\@main::el, 'httpd_logs_mngr_shut_down()', 'Starting...');
-
-    push_el(\@main::el, 'httpd_logs_mngr_shut_down()', 'Ending...');
-
-    return 0;
-
-}
-
-$rs = httpd_logs_mngr_start_up();
-
-if ($rs != 0) {
-
-    dump_el(\@main::el, $main::imscp_httpd_logs_mngr_el);
-
-    httpd_logs_mngr_shut_down();
-
-    exit 1;
-
-}
-
-
-$rs = httpd_logs_mngr_engine();
-
-if ($rs != 0) {
-
-    dump_el(\@main::el, $main::imscp_httpd_logs_mngr_el);
-
-    httpd_logs_mngr_shut_down();
-
-    exit 1;
-
-}
-
-
-$rs = httpd_logs_mngr_shut_down();
-
-if ($rs != 0) {
-
-    dump_el(\@main::el, $main::imscp_httpd_logs_mngr_el);
-
-    exit 1;
-
-}
-
-exit 0;
+exit $rs;
 

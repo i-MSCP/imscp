@@ -43,11 +43,11 @@ sub factory{
 	my $file	= "iMSCP/IP/$mode.pm";
 	my $class	= "iMSCP::IP::$mode";
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	require $file;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $class->new();;
 }

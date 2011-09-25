@@ -38,7 +38,7 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/dovecot";
@@ -49,14 +49,14 @@ sub _init{
 	my $oldConf		= "$self->{cfgDir}/dovecot.old.data";
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
-	tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+	tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerror => 1 if -f $oldConf;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -73,16 +73,16 @@ sub install{
 	$self->setupDB() and return 1;
 	$self->buildConf() and return 1;
 	$self->saveConf() and return 1;
-	$self->oldEngineCompatibility() and return 1;
+	#$self->oldEngineCompatibility() and return 1;
 
 	$self->migrateMailboxes() and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub migrateMailboxes{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(
 		$main::imscpConfigOld{PO_SERVER}
@@ -95,23 +95,23 @@ sub migrateMailboxes{
 		use FindBin;
 		use Servers::mta;
 
-		my $mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+		my $mta	= Servers::mta->factory();
 		my ($rs, $stdout, $stderr);
 		my $binPath = "$FindBin::Bin/../PerlVendor/courier-dovecot-migrate.pl";
 		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 		$rs = execute("$binPath --to-dovecot --convert --recursive $mailPath", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout...") if $stdout;
-		error((caller(0))[3].": $stderr") if $stderr;
-		error((caller(0))[3].": Error while converting mails") if !$stderr && $rs;
+		debug("$stdout...") if $stdout;
+		error("$stderr") if $stderr;
+		error("Error while converting mails") if !$stderr && $rs;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub oldEngineCompatibility{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$main::imscpConfig{CMD_MAKEUSERDB}	= '/bin/true';
 	$main::imscpConfig{CMD_AUTHD}		= '/bin/true';
@@ -128,32 +128,32 @@ sub oldEngineCompatibility{
 	$file->copyFile("$main::imscpConfig{AUTHLIB_CONF_DIR}/userdb") and return 1;
 	$file->copyFile("$main::imscpConfig{'CONF_DIR'}/courier/working") and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub getVersion{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
 	$rs = execute('dovecot --version', \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	error((caller(0))[3].": Can't read dovecot version") if !$stderr and $rs;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error("Can't read dovecot version") if !$stderr and $rs;
 	return $rs if $rs;
 
 	chomp($stdout);
 	$self->{version} = $stdout;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub saveConf{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -169,14 +169,14 @@ sub saveConf{
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 
 sub bkpConfFile{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	my $cfgFile		= shift;
@@ -193,12 +193,12 @@ sub bkpConfFile{
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Servers::mta;
 
@@ -259,12 +259,12 @@ sub buildConf{
 	$file->mode(0644) and return 1;
 
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub setupDB{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	my $connData;
@@ -311,7 +311,7 @@ sub setupDB{
 			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
 	);
 	if ($err){
-		error((caller(0))[3].": $err");
+		error("$err");
 		return 1;
 	}
 
@@ -372,13 +372,13 @@ sub setupDB{
 		return $err if (ref $err ne 'HASH');
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub check_sql_connection{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -387,28 +387,32 @@ sub check_sql_connection{
 	$database->set('DATABASE_USER',		$dbUser);
 	$database->set('DATABASE_PASSWORD',	$dbPass);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $database->connect();
 }
 
 sub registerHooks{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $self = shift;
 
 	use Servers::mta;
 
-	my $mta = Servers::mta->factory($main::imscpConfig{MTA_SERVER});
+	my $mta = Servers::mta->factory();
 
-	$mta->registerPostHook('buildConf', sub { return $self->mtaConf(@_); } );
+	$mta->registerPostHook(
+		'buildConf', sub { return $self->mtaConf(@_); }
+	) if $mta->can('registerPostHook');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub mtaConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $self	= shift;
 	my $content	= shift || '';
+
+	debug($content);
 
 	use iMSCP::Templator;
 	use Servers::mta;
@@ -429,7 +433,14 @@ sub mtaConf{
 		undef
 	);
 
-	debug((caller(0))[3].': Ending...');
+	#register again wait next config file
+	$mta->registerPostHook(
+		'buildConf', sub { return $self->mtaConf(@_); }
+	) if $mta->can('registerPostHook');
+
+	debug($content);
+
+	debug('Ending...');
 	$content;
 }
 1;

@@ -1,5 +1,5 @@
-    ScriptAlias /cgi-bin/ {WWW_DIR}/{DMN_NAME}/cgi-bin/
-    <Directory {WWW_DIR}/{DMN_NAME}/cgi-bin>
+    ScriptAlias /cgi-bin/ {HOME_DIR}/cgi-bin/
+    <Directory {HOME_DIR}/cgi-bin>
         AllowOverride AuthConfig
         #Options ExecCGI
         Order allow,deny

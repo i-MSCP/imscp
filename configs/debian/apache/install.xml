@@ -38,7 +38,11 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<copy_config>${SYSTEM_CONF}/apache/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_modcband.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/01_awstats.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/logrotate.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/apache.data</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/parts</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/parts/imscp_base.tpl/httpd.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/fastcgi_imscp.conf</copy_config>

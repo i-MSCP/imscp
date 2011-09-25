@@ -38,13 +38,10 @@
 # Delete old apache logfiles weekly
 @weekly root {TOOLS_ROOT_DIR}/imscp-del-logs.sh >/dev/null 2>&1
 
-# [{DMN_NAME}] backup task START.
-# [{DMN_NAME}] backup task END.
-
 # [{DMN_NAME}]:{CRONJOB_ID} custom task START.
 # [{DMN_NAME}]:{CRONJOB_ID} custom task END.
 
-# [{DMN_NAME}] AWStats static tasks START.
-# [{DMN_NAME}] AWStats static tasks END.
+# [{TASKID}] custom task START.
+# [{TASKID}] custom task END.
 
 # delayed tasks END.

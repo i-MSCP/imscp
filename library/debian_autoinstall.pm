@@ -50,13 +50,13 @@ use Common::SingletonClass;
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0
 sub _init {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
 	$self->{nonfree} = 'non-free';
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -65,7 +65,7 @@ sub _init {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub preBuild {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $rs;
@@ -87,7 +87,7 @@ sub preBuild {
 	$rs = $self->installPackagesList();
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -95,19 +95,19 @@ sub preBuild {
 #
 # @return int 0 on success, other on failure
 sub updateSystemPackagesIndex {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	iMSCP::Dialog->factory()->infobox('Updating system packages index');
 
 	my ($rs, $stdout, $stderr);
 
 	$rs = execute('apt-get update', \$stdout, \$stderr);
-	debug((caller(0))[3] . ": $stdout") if $stdout;
-	error((caller(0))[3] . ": $stderr") if $stderr;
-	error((caller(0))[3] . ': Unable to update package index from remote repository') if $rs && !$stderr;
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error('Unable to update package index from remote repository') if $rs && !$stderr;
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -116,7 +116,7 @@ sub updateSystemPackagesIndex {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub preRequish {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -125,14 +125,14 @@ sub preRequish {
 	my($rs, $stderr);
 
 	$rs = execute('apt-get -y install dialog libxml-simple-perl', undef, \$stderr);
-	error((caller(0))[3] . ": $stderr") if $stderr;
-	error((caller(0))[3] . ': Unable to install pre-required packages.') if $rs && ! $stderr;
+	error("$stderr") if $stderr;
+	error('Unable to install pre-required packages.') if $rs && ! $stderr;
 	return $rs if $rs;
 
 	# Force dialog now
 	iMSCP::Dialog->reset();
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -141,7 +141,7 @@ sub preRequish {
 # @return int 0
 sub loadOldImscpConfigFile {
 
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Config;
 
@@ -151,7 +151,7 @@ sub loadOldImscpConfigFile {
 
 	tie %main::imscpConfigOld, 'iMSCP::Config', 'fileName' => $oldConf, noerrors => 1 if (-f $oldConf);
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -164,7 +164,7 @@ sub loadOldImscpConfigFile {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub UpdateAptSourceList {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -178,7 +178,7 @@ sub UpdateAptSourceList {
 	my $content = $file->get();
 
 	unless ($content){
-		error((caller(0))[3] . ': Unable to read /etc/apt/sources.list file');
+		error('Unable to read /etc/apt/sources.list file');
 		return 1;
 	}
 
@@ -191,24 +191,24 @@ sub UpdateAptSourceList {
 		unless($repos{'components'} =~ /\s?$self->{nonfree}(\s|$)/ ){
 			my $uri = "$repos{uri}/dists/$repos{distrib}/$self->{nonfree}/";
 			$rs = execute("wget --spider $uri", \$stdout, \$stderr);
-			debug((caller(0))[3] . ": $stdout") if $stdout;
-			debug((caller(0))[3] . ": $stderr") if $stderr;
+			debug("$stdout") if $stdout;
+			debug("$stderr") if $stderr;
 
 			unless ($rs){
 				$foundNonFree = 1;
-				debug((caller(0))[3] . ": Enabling non free section on $repos{uri}");
+				debug("Enabling non free section on $repos{uri}");
 				$content =~ s/^($&)$/$1 $self->{nonfree}/mg;
 				$needUpdate = 1;
 			}
 		} else {
-			debug((caller(0))[3] . ": Non free section is already enabled on $repos{uri}");
+			debug("Non free section is already enabled on $repos{uri}");
 			$foundNonFree = 1;
 		}
 
 	}
 
 	unless($foundNonFree){
-		error((caller(0))[3] . ': Unable to found repository that support non-free packages');
+		error('Unable to found repository that support non-free packages');
 		return 1;
 	}
 
@@ -220,7 +220,7 @@ sub UpdateAptSourceList {
 		return $rs if $rs;
 	}
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -229,7 +229,7 @@ sub UpdateAptSourceList {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return int 0 on success, other on failure
 sub readPackagesList {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $SO = iMSCP::SO->new();
@@ -240,7 +240,7 @@ sub readPackagesList {
 
 	eval "use XML::Simple";
 
-	fatal((caller(0))[3] . ': Unable to load perl module XML::Simple...') if($@);
+	fatal('Unable to load perl module XML::Simple...') if($@);
 
 	my $xml = XML::Simple->new(NoEscape => 1);
 	my $data = eval { $xml->XMLin($confile, KeyAttr => 'name') };
@@ -258,7 +258,7 @@ sub readPackagesList {
 					my $oldServer = $main::imscpConfigOld{uc($server) . '_SERVER'};
 
 					if($@){
-						error((caller(0))[3] . " :$@");
+						error("$@");
 						return 1;
 					}
 
@@ -275,8 +275,7 @@ sub readPackagesList {
 					$rs = iMSCP::Dialog->factory()->radiolist(
 						"Choose server $server",
 						@alternative,
-						# once all servers are rewritten to classes remove comment
-						#'Not Used'
+						'Not Used'
 					);
 				} while (!$rs);
 
@@ -291,7 +290,7 @@ sub readPackagesList {
 		}
 	};
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -300,7 +299,7 @@ sub readPackagesList {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return in 0 on success, other on failure
 sub installPackagesList {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -309,11 +308,11 @@ sub installPackagesList {
 	my($rs, $stderr);
 
 	$rs = execute("apt-get -y install $self->{toInstall}", undef, \$stderr);
-	error((caller(0))[3] . ": $stderr") if $stderr;
-	error((caller(0))[3] . ': Can not install packages.') if $rs && ! $stderr;
+	error("$stderr") if $stderr;
+	error('Can not install packages.') if $rs && ! $stderr;
 	return $rs if $rs;
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -322,7 +321,7 @@ sub installPackagesList {
 # @param self $self iMSCP::debian_autoinstall instance
 # @return in 0 on success, other on failure
 sub postBuild {
-	debug((caller(0))[3] . ': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -333,7 +332,7 @@ sub postBuild {
 
 	$main::nextConf{uc($_) . "_SERVER"} = lc($self->{userSelection}->{$_}) foreach(keys %{$self->{userSelection}});
 
-	debug((caller(0))[3] . ': Ending...');
+	debug('Ending...');
 	0;
 }
 

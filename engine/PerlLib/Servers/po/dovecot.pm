@@ -36,7 +36,7 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/dovecot";
@@ -47,46 +47,46 @@ sub _init{
 
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub preinstall{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Servers::po::dovecot::installer;
 
 	my $self	= shift;
 	my $rs		= Servers::po::dovecot::installer->new()->registerHooks();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rs;
 }
 
 sub install{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Servers::po::dovecot::installer;
 
 	my $self	= shift;
 	my $rs		= Servers::po::dovecot::installer->new()->install();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rs;
 }
 
 sub postinstall{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self	= shift;
-	my $rs		= $self->restart();
+	$self->{restart} = 'yes';
 
-	debug((caller(0))[3].': Ending...');
-	$rs;
+	debug('Ending...');
+	0;
 }
 
 sub restart{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
@@ -95,13 +95,25 @@ sub restart{
 
 	# Reload config
 	$rs = execute("$self::dovecotConfig{'CMD_DOVECOT'} restart", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	warning((caller(0))[3].": $stderr") if $stderr && !$rs;
-	error((caller(0))[3].": $stderr") if $stderr && $rs;;
+	debug("$stdout") if $stdout;
+	warning("$stderr") if $stderr && !$rs;
+	error("$stderr") if $stderr && $rs;
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
+}
+
+END{
+	debug('Starting...');
+
+	my $endCode	= $?;
+	my $self	= Servers::po::dovecot->new();
+	my $rs		= 0;
+	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+
+	debug('Ending...');
+	$? = $endCode || $rs;
 }
 
 1;

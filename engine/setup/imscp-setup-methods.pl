@@ -10,12 +10,12 @@
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
@@ -34,10 +34,7 @@ use warnings;
 #
 sub setup_start_up {
 
-	debug((caller(0))[3].': Starting...');
-
-	# Fixing umask for logfiles permissions on creation (0640)
-	umask(027);
+	debug('Starting...');
 
 	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
 
@@ -51,69 +48,65 @@ sub setup_start_up {
 
 					Backup engine is currently running. Aborting...
 					");
-		exit 1;
+		return 1;
 	}
 
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
+
 sub setup_engine {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Stepper;
-
-	##  Starting user dialog
+	## Starting user dialog
 	user_dialog();
 
 	my @steps = (
 		[\&load_old_imscp_cfg, 'Loading old i-MSCP configuration file: '],
 		[\&update_imscp_cfg, 'Save old variable if needed: '],
-		[\&preinst, "Pre-installation tasks for $main::imscpConfig{'DistName'}: "],
 		[\&setup_system_users, 'Creating default users: '],
 		[\&setup_imscp_database_connection, 'i-MSCP database connection: '],
 		[\&setup_imscp_database, 'i-MSCP database: '],
-		[\&disableGUI, 'Disable access to panel during update: '],
 		[\&setup_system_dirs, 'i-MSCP directories: '],
 		[\&setup_base_server_IP, 'i-MSCP system IP: '],
 		[\&setup_hosts, 'i-MSCP system hosts file: '],
 		[\&askVHOST, 'i-MSCP virtual hostname'],
 		[\&setup_resolver, 'i-MSCP system resolver: '],
 		[\&setup_crontab, 'i-MSCP crontab file: '],
-		[\&setup_named, 'i-MSCP Bind9 main configuration file: '],
-		[\&setup_fastcgi_modules, 'i-MSCP Apache fastCGI modules configuration: '],
-		[\&setup_httpd_main_vhost, 'i-MSCP Apache main vhost file: '],
-		[\&setup_awstats_vhost, 'i-MSCP Apache AWStats vhost file: '],
-		[\&setup_imscp_daemon_network, 'i-MSCP init scripts: '],
+		[\&askPHPTimezone, 'PHP timezone: '],
 		[\&setup_default_sql_data, 'i-MSCP default SQL data: '],
-		[\&setup_gui_named, 'i-MSCP GUI Bind9 configuration: '],
 		[\&setup_ssl, 'i-MSCP certificate setup: '],
-		[\&setup_gui_php, 'i-MSCP GUI fastCGI/PHP configuration: '],
-		[\&setup_gui_httpd, 'i-MSCP GUI vhost file: '],
 		[\&setup_gui_pma, 'i-MSCP PMA configuration file: '],
-		[\&setup_mail, 'i-MSCP mail server setup: '],
-		[\&setup_ftpd, 'i-MSCP ProFTPd configuration file: '],
+		[\&preinstallServers, 'i-MSCP server preinstall task: '],
+		[\&preinstallAddons, 'i-MSCP addons preinstall task: '],
+		[\&installServers, 'i-MSCP server install task: '],
+		[\&installAddons, 'i-MSCP addons install task: '],
+		[\&postinstallServers, 'i-MSCP server postinstall task: '],
+		[\&postinstallAddons, 'i-MSCP addons postinstall task: '],
+		[\&setup_imscp_daemon_network, 'i-MSCP init scripts: '],
 		[\&askBackup, 'Setting backup: '],
 		[\&rebuild_customers_cfg, 'Rebuilding all customers configuration files: '],
-		[\&postinst, "Post-installation tasks for $main::imscpConfig{'DistName'}: "],
 		[\&set_permissions, 'Permissions setup: '],
 		[\&restart_services, 'Starting all services: '],
 		[\&save_conf, 'Backup conf file: '],
 		[\&additional_tasks, 'Additional tasks: '],
 	);
+	my $rs;
 	my $step = 1;
 	for (@steps){
-		step($_->[0], $_->[1], scalar @steps, $step);
+		$rs = step($_->[0], $_->[1], scalar @steps, $step);
+		return $rs if $rs;
 		$step++;
 	}
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
-	debug((caller(0))[3].': Ending...');
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
+
+	debug('Ending...');
 	0;
 }
-
 
 ################################################################################
 # User dialog
@@ -124,7 +117,7 @@ sub user_dialog {
 
 	use iMSCP::Dialog;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
 	iMSCP::Dialog->factory()->set('no-label','EXIT');
@@ -153,112 +146,7 @@ sub user_dialog {
 		exit 0;
 	}
 
-	debug((caller(0))[3].': Ending...');
-	0;
-}
-
-################################################################################
-#                             Hooks subroutines                                #
-################################################################################
-
-################################################################################
-# Implements the hook for the maintainers pre-installation scripts
-#
-# Hook that can be used by distribution maintainers to perform any required
-# tasks before that the actions of the main process are executed. This hook
-# allow to add a specific script named `preinst` that will be run before the
-# both setup and update process actions. This hook is automatically called after
-# that all services are shutting down except for the update process where it is
-# called after the i-MSCP configuration file processing (loading, updating...).
-#
-# Note:
-#
-#  The `preinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
-#  and must be copied in the engine/setup directory during the make process. A
-#  shared library for the scripts that are written in SHELL is available in the
-#  engine/setup directory.
-#
-# @param string $context Argument that is passed to the maintainer script
-# @return int 0 on success, other otherwise
-#
-sub preinst {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::Execute;
-
-	if(-f "$main::imscpConfig{'ROOT_DIR'}/engine/setup/preinst") {
-
-		use File::MimeInfo::Magic;
-
-		my $mime_type = mimetype("$main::imscpConfig{'ROOT_DIR'}/engine/setup/preinst");
-
-		if(!($mime_type =~ /(shell|perl|php)/)){
-			error((caller(0))[3].': Unable to determine the mimetype of the `preinst` script!');
-			return 1;
-		}
-
-		my ($stdout, $stderr, $rs);
-
-		$rs = execute("$main::imscpConfig{'ROOT_DIR'}/engine/setup/preinst", \$stdout, \$stderr);
-		debug((caller(0))[3].": Preinstall script returned: $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if $rs;
-		return $rs if($rs);
-
-	}
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# Implements the hook for the maintainers post-installation scripts
-#
-# Hook that can be used by distribution maintainers to perform any required
-# tasks after that the actions of the main process are executed. This hook
-# allow to add a specific script named `postinst` that will be run after the
-# both setup and update process actions. This hook is automatically called
-# before the set_permissions() subroutine call and so, before that all services
-# are restarting.
-#
-# Note:
-#
-#  The `postinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
-#  and must be copied in the engine/setup directory during the make process. A
-#  shared library for the scripts that are written in SHELL is available in the
-#  engine/setup directory.
-#
-# @param string $context Argument that is passed to the maintainer script
-# @return int 0 on success, other otherwise
-#
-sub postinst {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::Execute;
-
-	if(-f "$main::imscpConfig{'ROOT_DIR'}/engine/setup/postinst") {
-
-		use File::MimeInfo::Magic;
-
-		my $mime_type = mimetype("$main::imscpConfig{'ROOT_DIR'}/engine/setup/postinst");
-
-		if(!($mime_type =~ /(shell|perl|php)/)){
-			error((caller(0))[3].': Unable to determine the mimetype of the `postinst` script!');
-			return 1;
-		}
-
-		my ($stdout, $stderr, $rs);
-		$rs = execute("$main::imscpConfig{'ROOT_DIR'}/engine/setup/postinst", \$stdout, \$stderr);
-		debug((caller(0))[3].": Postinstall script returned: $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if $rs;
-		return $rs if($rs);
-
-	}
-
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -269,7 +157,7 @@ sub postinst {
 #
 sub load_old_imscp_cfg {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Config;
 
@@ -279,8 +167,9 @@ sub load_old_imscp_cfg {
 	my $oldConf = "$main::imscpConfig{'CONF_DIR'}/imscp.old.conf";
 
 	tie %main::imscpConfigOld, 'iMSCP::Config','fileName' => $oldConf if (-f $oldConf);
+	verbose($main::imscpConfigOld{'DEBUG'} || $main::imscpConfig{'DEBUG'});
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -292,7 +181,7 @@ sub load_old_imscp_cfg {
 #
 sub setup_imscp_database_connection {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Dialog;
@@ -354,9 +243,9 @@ sub setup_imscp_database_connection {
 				$msg = "\n\n$dbPort is not a valid port number!";
 			} while ($dbPort && $dbPort !~ /^[\d]*$/);
 
-			$dbUser =  iMSCP::Dialog->factory()->inputbox('Please enter database user name (default root)', $dbUser);
+			$dbUser = iMSCP::Dialog->factory()->inputbox('Please enter database user name (default root)', $dbUser);
 
-			$dbPass =  iMSCP::Dialog->factory()->inputbox('Please enter database password','');
+			$dbPass = iMSCP::Dialog->factory()->inputbox('Please enter database password','');
 
 		}
 
@@ -369,7 +258,7 @@ sub setup_imscp_database_connection {
 		if ($main::imscpConfig{'DATABASE_PASSWORD'} ne $crypt->encrypt_db_password($dbPass)) {$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($dbPass);}
 
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -391,7 +280,7 @@ sub check_sql_connection{
 
 	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -402,7 +291,7 @@ sub check_sql_connection{
 	$database->set('DATABASE_USER', $dbUser);
 	$database->set('DATABASE_PASSWORD', $dbPass);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $database->connect();
 }
 
@@ -413,7 +302,7 @@ sub check_sql_connection{
 #
 sub setup_imscp_database {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Dialog;
@@ -447,7 +336,7 @@ sub setup_imscp_database {
 		}while (!$dbName);
 
 		if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
-			error ((caller(0))[3].": $error");
+			error("$error");
 			return 1;
 		}
 
@@ -458,12 +347,12 @@ sub setup_imscp_database {
 		$main::imscpConfig{'DATABASE_NAME'} = $main::imscpConfigOld{'DATABASE_NAME'} if(! $main::imscpConfig{'DATABASE_NAME'});
 
 		if (my $error = updateDb()){
-			error ((caller(0))[3].": $error");
+			error("$error");
 			return 1;
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -476,7 +365,7 @@ sub createDB{
 	my $dbName = shift;
 	my $dbType = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -495,7 +384,7 @@ sub createDB{
 	$error = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/database.sql");
 	return $error if ($error);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -504,7 +393,7 @@ sub importSQLFile{
 	my $database	= shift;
 	my $file		= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -512,7 +401,7 @@ sub importSQLFile{
 
 	my $content = iMSCP::File->new(filename => $file)->get();
 	$content =~ s/^(--[^\n]{0,})?\n//mg;
-	my @queries  = (split /;\n/, $content);
+	my @queries = (split /;\n/, $content);
 
 	my $title = "Executing ".@queries." queries:";
 
@@ -520,16 +409,16 @@ sub importSQLFile{
 
 	my $step = 1;
 	for (@queries){
-		my $error =  $database->doQuery('dummy', $_);
+		my $error = $database->doQuery('dummy', $_);
 		return $error if (ref $error ne 'HASH');
-		my $msg = $queries[$step] ?  "$title\n$queries[$step]" : $title;
+		my $msg = $queries[$step] ? "$title\n$queries[$step]" : $title;
 		step('', $msg, scalar @queries, $step);
 		$step++;
 	}
 
 	endDetail();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 
@@ -542,9 +431,10 @@ sub importSQLFile{
 #
 sub updateDb {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
+	use iMSCP::Execute;
 
 	my ($rs, $stdout, $stderr);
 
@@ -560,10 +450,10 @@ sub updateDb {
 	}
 
 	$rs = execute("$main::imscpConfig{'CMD_PHP'} $main::imscpConfig{'ROOT_DIR'}/engine/setup/updDB.php", \$stdout, \$stderr);
-	error((caller(0))[3].": $stdout $stderr") if $rs;
+	error("$stdout $stderr") if $rs;
 	return ($stdout ? "$stdout " : '' ).$stderr." exitcode: $rs" if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -575,88 +465,40 @@ sub updateDb {
 #
 sub setup_system_dirs {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dir;
+	my $rootUName = $main::imscpConfig{'ROOT_USER'};
+	my $rootGName = $main::imscpConfig{'ROOT_GROUP'};
 
 	for (
-		[$main::imscpConfig{'APACHE_WWW_DIR'},			$main::imscpConfig{'APACHE_USER'},	$main::imscpConfig{'APACHE_GROUP'}],
-		[$main::imscpConfig{'APACHE_USERS_LOG_DIR'},	$main::imscpConfig{'APACHE_USER'},	$main::imscpConfig{'APACHE_GROUP'}],
-		[$main::imscpConfig{'APACHE_BACKUP_LOG_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
-		[$main::imscpConfig{'LOG_DIR'},					$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
-		[$main::imscpConfig{'BACKUP_FILE_DIR'},			$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
-		[$main::imscpConfig{'PHP_STARTER_DIR'},
-														"$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_UID'}",
-																							"$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}"
-		]
+		[$main::imscpConfig{'USER_HOME_DIR'},	$rootUName,	$rootGName,	0555],
+		[$main::imscpConfig{'LOG_DIR'},			$rootUName,	$rootGName,	0555],
+		[$main::imscpConfig{'BACKUP_FILE_DIR'},	$rootUName,	$rootGName,	0750],
 	) {
-		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755}) and return 1;
+		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]}) and return 1;
 	}
 
-	askAwstats();
-
-	if ($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes') {
-		iMSCP::Dir->new(dirname => $main::imscpConfig{'AWSTATS_CACHE_DIR'})->make({ user => $main::imscpConfig{'APACHE_USER'}, group => $main::imscpConfig{'APACHE_GROUP'}, mode => 0755}) and return 1;
-	}
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-sub askAwstats{
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::Dialog;
-
-	my ($rs, $force);
-
-	if(!$main::imscpConfig{'AWSTATS_ACTIVE'}){
-		if($main::imscpConfigOld{'AWSTATS_ACTIVE'} && $main::imscpConfigOld{'AWSTATS_ACTIVE'} =~ /yes|no/){
-			$main::imscpConfig{'AWSTATS_ACTIVE'}	= $main::imscpConfigOld{'AWSTATS_ACTIVE'};
-		} else {
-			while (! ($rs = iMSCP::Dialog->factory()->radiolist("Do you want to enable Awstats?", 'yes', 'no'))){}
-			if($rs ne $main::imscpConfig{'AWSTATS_ACTIVE'}){
-				$main::imscpConfig{'AWSTATS_ACTIVE'} = $rs;
-				$force = 'yes';
-			}
-		}
-	}
-
-	if($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes'){
-		unless(!$force && defined $main::imscpConfig{'AWSTATS_MODE'} && $main::imscpConfig{'AWSTATS_MODE'} =~ /0|1/){
-			if(!$force && defined $main::imscpConfigOld{'AWSTATS_MODE'} && $main::imscpConfigOld{'AWSTATS_MODE'} =~ /0|1/){
-				$main::imscpConfig{'AWSTATS_MODE'}	= $main::imscpConfigOld{'AWSTATS_MODE'};
-			} else {
-				while (! ($rs = iMSCP::Dialog->factory()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
-				$rs = $rs eq 'dynamic' ? 0 : 1;
-				$main::imscpConfig{'AWSTATS_MODE'} = $rs if $rs ne $main::imscpConfig{'AWSTATS_MODE'};
-			}
-		}
-	} else {
-		$main::imscpConfig{'AWSTATS_MODE'} = '' if $main::imscpConfig{'AWSTATS_MODE'} ne '';
-	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub setup_base_server_IP{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use iMSCP::IP;
 
 	if($main::imscpConfig{'BASE_SERVER_IP'} && $main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1'){
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
 	if($main::imscpConfigOld{'BASE_SERVER_IP'} && $main::imscpConfigOld{'BASE_SERVER_IP'} ne '127.0.0.1'){
 		$main::imscpConfig{'BASE_SERVER_IP'} = $main::imscpConfigOld{'BASE_SERVER_IP'};
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
@@ -666,7 +508,7 @@ sub setup_base_server_IP{
 	return $rs if $rs;
 
 	if(keys %{$ips->{ips}} == 0){
-		error((caller(0))[3].': Can not determine servers ips');
+		error('Can not determine servers ips');
 		return 1;
 	}
 
@@ -712,7 +554,7 @@ sub setup_base_server_IP{
 		return $error if (ref $error ne 'HASH');
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -722,8 +564,7 @@ sub setup_base_server_IP{
 # @return int 0 on success, other on failure
 #
 sub setup_hosts {
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -742,7 +583,7 @@ sub setup_hosts {
 		$file->copyFile("/etc/hosts.bkp") and return 1;
 	}
 
-	my $content  = "# 'hosts' file configuration.\n\n";
+	my $content = "# 'hosts' file configuration.\n\n";
 
 	$content .= "127.0.0.1\t$hostname_local\tlocalhost\n";
 	$content .= "$main::imscpConfig{'BASE_SERVER_IP'}\t$main::imscpConfig{'SERVER_HOSTNAME'}\t$host\n";
@@ -759,25 +600,23 @@ sub setup_hosts {
 	$file->mode(0644) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
 
 sub askHostname{
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my ($out, $err, $hostname);
 
 	use iMSCP::Dialog;
 	use Socket;
 
-	$hostname = gethostbyaddr($main::imscpConfig{'BASE_SERVER_IP'}, &AF_INET);
+	#$hostname = gethostbyaddr($main::imscpConfig{'BASE_SERVER_IP'}, &AF_INET);
 	if( !$hostname || $hostname !~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 		if (execute("$main::imscpConfig{'CMD_HOSTNAME'} -f", \$hostname, \$err)){
-			error((caller(0))[3].": Can not find hostname (misconfigured?): $err");
+			error("Can not find hostname (misconfigured?): $err");
 			$hostname = '';
 		}
 	}
@@ -785,12 +624,12 @@ sub askHostname{
 	chomp($hostname);
 
 	if($hostname && $main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 	if($hostname && $main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
 		$main::imscpConfig{'SERVER_HOSTNAME'} = $main::imscpConfigOld{'SERVER_HOSTNAME'};
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
@@ -809,7 +648,7 @@ sub askHostname{
 
 	$main::imscpConfig{'SERVER_HOSTNAME'} = idn_to_ascii($out, 'utf-8');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -819,8 +658,7 @@ sub askHostname{
 # @return int 0 on success, -1 on failure
 #
 sub setup_resolver {
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -833,7 +671,7 @@ sub setup_resolver {
 
 		if (! $content){
 			$err = "Can't read $main::imscpConfig{'RESOLVER_CONF_FILE'}";
-			error((caller(0))[3].": $err");
+			error("$err");
 			return 1;
 		}
 
@@ -866,12 +704,11 @@ sub setup_resolver {
 		$file->mode(0644) and return 1;
 
 	} else {
-		error((caller(0))[3]."Unable to found your resolv.conf file!");
+		error("Unable to found your resolv.conf file!");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -882,7 +719,7 @@ sub setup_resolver {
 #
 sub setup_crontab {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -956,506 +793,7 @@ sub setup_crontab {
 	# Install the new file in production directory
 	$file->copyFile("$prodDir/") and return 1;
 
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP named main configuration - (Setup / Update)
-#
-# This subroutine built, store and install the main named configuration file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_named {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::File;
-
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'CMD_NAMED'} =~ /^no$/i);
-
-	my ($rs, $rdata, $cfgTpl, $cfg, $err);
-
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/bind";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	if(-f $main::imscpConfig{'BIND_CONF_FILE'} && !-e "$bkpDir/named.conf.system") {
-		iMSCP::File->new(filename => $main::imscpConfig{'BIND_CONF_FILE'})->copyFile("$bkpDir/named.conf.system") and return 1;
-	}elsif(-f $main::imscpConfig{'BIND_CONF_FILE'}) {
-		iMSCP::File->new(filename => $main::imscpConfig{'BIND_CONF_FILE'})->copyFile("$bkpDir/named.conf." . time) and return 1;
-	}
-
-	## Building new configuration file
-
-	# Loading the system main configuration file from
-	# /etc/imscp/bind/backup/named.conf.system if it exists
-	if(-f "$bkpDir/named.conf.system") {
-		$cfg = iMSCP::File->new(filename => "$bkpDir/named.conf.system")->get();
-		return 1 if(!$cfg);
-
-		# Adjusting the configuration if needed
-		$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
-		$cfg .= "\n";
-	# eg. Centos, Fedora did not file by default
-	} else {
-		warning((caller(0))[3].": Can't find the parent file for named...");
-		$cfg = '';
-	}
-
-	# Loading the template from /etc/imscp/bind/named.conf
-	$cfgTpl = iMSCP::File->new(filename => "$cfgDir/named.conf")->get();
-	return 1 if(!$cfgTpl);
-
-	# Building new file
-	$cfg .= $cfgTpl;
-
-	## Storage and installation of new file
-
-	# Storing new file in the working directory
-	my $file = iMSCP::File->new(filename => "$wrkDir/named.conf");
-	$file->set($cfg) and return 1;
-	$file->save() and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-	$file->mode(0644) and return 1;
-
-	# Install the new file in the production directory
-	$file->copyFile($main::imscpConfig{'BIND_CONF_FILE'}) and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP Apache fastCGI modules configuration - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Built, store and install all system php related configuration files
-#  - Enable required modules and disable unused
-#
-# @return int 0 on success, other on failure
-#
-sub setup_fastcgi_modules {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::File;
-	use iMSCP::Dialog;
-	use iMSCP::Templator;
-
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'CMD_HTTPD'} =~ /^no$/i);
-
-	my ($rs, $cfgTpl, $err);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/apache";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	# Saving the current production file if they exists
-	for (qw/fastcgi_imscp.conf fastcgi_imscp.load fcgid_imscp.conf fcgid_imscp.load/) {
-		if(-f "$main::imscpConfig{'APACHE_MODS_DIR'}/$_") {
-			iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_MODS_DIR'}/$_")->copyFile("$bkpDir/$_." . time) and return 1;
-		}
-	}
-
-	## Building, storage and installation of new files
-
-	# Tags preparation
-	my %tags_hash = (
-		fastcgi => {
-			APACHE_SUEXEC_MIN_UID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'},
-			APACHE_SUEXEC_MIN_GID	=> $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'},
-			APACHE_SUEXEC_USER_PREF	=> $main::imscpConfig{'APACHE_SUEXEC_USER_PREF'},
-			PHP_STARTER_DIR			=> $main::imscpConfig{'PHP_STARTER_DIR'},
-			PHP_VERSION				=> $main::imscpConfig{'PHP_VERSION'}
-		},
-		fcgid => {
-			PHP_VERSION				=> $main::imscpConfig{'PHP_VERSION'}
-		}
-	);
-
-	# fastcgi_imscp.conf / fcgid_imscp.conf
-	for (qw/fastcgi fcgid/) {
-		# Loading the template from the /etc/imscp/apache directory
-		my $file = iMSCP::File->new(filename => "$cfgDir/${_}_imscp.conf");
-		$cfgTpl = $file->get();
-		return 1 if (!$cfgTpl);
-
-		# Building the new configuration file
-		$cfgTpl = iMSCP::Templator::process($tags_hash{$_}, $cfgTpl);
-		return 1 if (!$cfgTpl);
-
-		# Storing the new file
-		$file = iMSCP::File->new(filename => "$wrkDir/${_}_imscp.conf");
-		$file->set($cfgTpl) and return 1;
-		$file->save() and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-		$file->mode(0644) and return 1;
-
-		# Installing the new file
-		$file->copyFile("$main::imscpConfig{'APACHE_MODS_DIR'}/") and return 1;
-		next if(! -f "$main::imscpConfig{'APACHE_MODS_DIR'}/$_.load");
-
-		# Loading the system configuration file
-		$file = iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_MODS_DIR'}/$_.load");
-		$cfgTpl = $file->get();
-		return 1 if (!$cfgTpl);
-
-		# Building the new configuration file
-		$file = iMSCP::File->new(filename => "$wrkDir/${_}_imscp.load");
-		$cfgTpl = "<IfModule !mod_$_.c>\n" . $cfgTpl . "</IfModule>\n";
-		$file->set($cfgTpl);
-
-		# Store the new file
-		$file->save() and return 1;
-		$file->mode(0644) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-		# Install the new file
-		$file->copyFile("$main::imscpConfig{'APACHE_MODS_DIR'}/") and return 1;
-	}
-
-	## Enable required modules and disable unused
-
-	# Debian like distributions only:
-	# Note for distributions maintainers:
-	# For others distributions, you must use the a post-installation scripts
-	if(! -f '/etc/SuSE-release' && -f '/usr/sbin/a2enmod') {
-		my( $stdout, $stderr);
-		# Disable php4/5 modules if enabled
-		execute("/usr/sbin/a2dismod php4 php5", \$stdout, \$stderr);
-		debug((caller(0))[3].": stdout $stdout");
-		debug((caller(0))[3].": stderr $stderr");
-
-		# Enable actions modules
-		$rs = execute("/usr/sbin/a2enmod actions", \$stdout, \$stderr);
-		debug((caller(0))[3].": stdout $stdout");
-		error((caller(0))[3].": $stderr") if($rs);
-		return $rs if($rs);
-
-		if($main::imscpConfig{'PHP_FASTCGI'} !~ /fcgid|fastcgi/i) {
-			if($main::imscpConfigOld{'PHP_FASTCGI'} && $main::imscpConfigOld{'PHP_FASTCGI'} =~ /fcgid|fastcgi/i){
-				$main::imscpConfig{'PHP_FASTCGI'} = $main::imscpConfigOld{'PHP_FASTCGI'};
-			} else {
-				my $out;
-				while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select a Fast CGI module: fcgid or fastcgi", 'fcgid', 'fastcgi'))){}
-				$main::imscpConfig{'PHP_FASTCGI'} = $out;
-			}
-		}
-
-		# Ensures that the unused i-MSCP fcgid module loader is disabled
-		my $enable	= $main::imscpConfig{'PHP_FASTCGI'} eq 'fastcgi' ? 'fastcgi_imscp' : 'fcgid_imscp';
-		my $disable	= $main::imscpConfig{'PHP_FASTCGI'} eq 'fastcgi' ? 'fcgid_imscp' : 'fastcgi_imscp';
-
-		$rs = execute("/usr/sbin/a2dismod $disable", \$stdout, \$stderr);
-		debug((caller(0))[3].": stdout $stdout");
-		error((caller(0))[3].": $stderr") if($rs);
-		#return only if module exits some morrons do not install fastcgi
-		return $rs if($rs && -f "$main::imscpConfig{'APACHE_MODS_DIR'}/$disable.load");
-
-		# Enable fastcgi module
-		$rs = execute("/usr/sbin/a2enmod $enable", \$stdout, \$stderr);
-		debug((caller(0))[3].": stdout $stdout");
-		error((caller(0))[3].": $stderr") if($rs);
-		return $rs if($rs);
-
-		# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
-		# with i-MSCP loaders
-		for (qw/fastcgi fcgid/) {
-			$rs = execute("/usr/sbin/a2dismod $_", \$stdout, \$stderr);
-			debug((caller(0))[3].": stdout $stdout");
-			error((caller(0))[3].": $stderr") if($rs);
-			return $rs if($rs && -f "$main::imscpConfig{'APACHE_MODS_DIR'}/$_.load");
-		}
-	}
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP httpd main vhost - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Built, store and install i-MSCP main vhost configuration file
-#  - Enable required modules (cgid, rewrite, suexec)
-#
-# @return int 0 on success, other on failure
-#
-sub setup_httpd_main_vhost {
-
-	debug((caller(0))[3].': Starting...');
-
-	# Do not generate configuration files if the service is disabled
-	return 0 if $main::imscpConfig{'CMD_HTTPD'} =~ /^no$/i;
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-
-	my ($rs, $cfgTpl, $err);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/apache";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	# Saving the current production file if it exists
-	if(-f "$main::imscpConfig{'APACHE_SITES_DIR'}/imscp.conf") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'APACHE_SITES_DIR'}/imscp.conf")->copyFile("$bkpDir/imscp.conf.". time) and return 1;
-	}
-
-	## Building, storage and installation of new file
-
-	# Using alternative syntax for piped logs scripts when possible
-	# The alternative syntax does not involve the Shell (from Apache 2.2.12)
-	my $pipeSyntax = '|';
-
-	if(`$main::imscpConfig{'CMD_HTTPD_CTL'} -v` =~ m!Apache/([\d.]+)! &&
-		version->new($1) >= version->new('2.2.12')) {
-		$pipeSyntax .= '|';
-	}
-
-	# Loading the template from /etc/imscp/apache/
-	my $file = iMSCP::File->new(filename => "$cfgDir/httpd.conf");
-	$cfgTpl = $file->get() or return 1;
-
-	# Building the new file
-	$cfgTpl = process(
-		{
-			APACHE_WWW_DIR	=> $main::imscpConfig{'APACHE_WWW_DIR'},
-			ROOT_DIR		=> $main::imscpConfig{'ROOT_DIR'},
-			PIPE			=> $pipeSyntax
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Storing the new file in working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/imscp.conf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Installing the new file in production directory
-	$file->copyFile("$main::imscpConfig{'APACHE_SITES_DIR'}/") and return 1;
-
-	## Enable required modules
-
-	# Debian like distributions only:
-	# Note for distributions maintainers:
-	# For others distributions, you must use the a post-installation scripts
-	if(! -f '/etc/SuSE-release' && -f '/usr/sbin/a2enmod') {
-		my ($stdout, $stderr);
-		$rs = execute("/usr/sbin/a2enmod cgid", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr")if($rs);
-		return $rs if($rs);
-
-		# Enabling mod rewrite
-		$rs = execute("/usr/sbin/a2enmod rewrite", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr")if($rs);
-		return $rs if($rs);
-
-		# Enabling mod suexec
-		$rs = execute("/usr/sbin/a2enmod suexec", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr")if($rs);
-		return $rs if($rs);
-
-		## Enabling main vhost configuration file
-		$rs = execute("/usr/sbin/a2ensite imscp.conf", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr")if($rs);
-		return $rs if($rs);
-	}
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP awstats vhost - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Built, store and install Awstats vhost configuration file (01_awstats.conf)
-#  - Update proxy module configuration file if it exits (proxy.conf)
-#  - Enable proxy module
-#  - Disable default awstats.conf file
-#  - Remove default debian cron task for Awstats
-#
-# @return int 0 on success, other on failure
-#
-sub setup_awstats_vhost {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use Servers::httpd;
-
-	# Do not generate configuration files if the service is disabled
-	return 0 if($main::imscpConfig{'AWSTATS_ACTIVE'} =~ /^no$/i);
-
-	my ($rs, $path, $file, $cfgTpl, $err);
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/apache";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	# Saving some configuration files if they exists
-	for (
-		map {/(.*\/)([^\/]*)$/ && $1.':'.$2}
-		'/etc/logrotate.d/apache',
-		'/etc/logrotate.d/apache2',
-		"$main::imscpConfig{'APACHE_MODS_DIR'}/proxy.conf"
-	) {
-		($path, $file) = split /:/;
-		next if(!-f $path.$file);
-
-		if(!-f "$bkpDir/$file.system") {
-			iMSCP::File->new(filename => "$path$file")->copyFile("$bkpDir/$file.system") and return 1;
-		} else {
-			iMSCP::File->new(filename => "$path$file")->copyFile("$bkpDir/$file.".time) and return 1;
-		}
-	}
-
-	my $httpd = Servers::httpd->new()->factory('apache2');
-
-	$rs = $httpd->buildConfFile('01_awstats.conf');
-	return $rs if $rs;
-
-	$rs = $httpd->enableSite('01_awstats.conf');
-	return $rs if $rs;
-
-	# If Awstats is active and then, dynamic mode is selected
-	if ($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes' && $main::imscpConfig{'AWSTATS_MODE'} eq 0) {
-		## Updating the proxy module configuration file if it exists
-		if(-f "$bkpDir/proxy.conf.system") {
-			$file = iMSCP::File->new(filename => "$bkpDir/proxy.conf.system");
-			$cfgTpl = $file->get();
-			return 1 if(!$cfgTpl);
-
-			# Replacing the allowed hosts in mod_proxy if needed
-			# @todo Squeeze - All is commented / Check if it work like this
-			$cfgTpl =~ s/#Allow from .example.com/Allow from 127.0.0.1/gi;
-
-			# Storing the new file in the working directory
-			$file = iMSCP::File->new(filename => "$wrkDir/proxy.conf");
-			$file->set($cfgTpl) and return 1;
-			$file->save() and return 1;
-			$file->mode(0644) and return 1;
-			$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-			# Installing the new file in the production directory
-			$file->copyFile("$main::imscpConfig{'APACHE_MODS_DIR'}/") and return 1;
-		}
-
-		# Debian like distributions only:
-		# Note for distributions maintainers:
-		# For others distributions, you must use the a post-installation scripts
-		if(! -f '/etc/SuSE-release' && -f '/usr/sbin/a2enmod') {
-			# Enable required modules
-			my ($stdout, $stderr);
-			for (qw/proxy proxy_http/){
-				$rs = execute("/usr/sbin/a2enmod $_", \$stdout, \$stderr);
-				debug((caller(0))[3].": $stdout");
-				error((caller(0))[3].": $stderr") if $rs;
-				return $rs if $rs;
-			}
-
-			# Enable awstats vhost
-			$rs = execute("/usr/sbin/a2ensite 01_awstats.conf", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout");
-			error((caller(0))[3].": $stderr") if $rs;
-			return $rs if $rs;
-		}
-
-		## Update Apache logrotate file
-
-		# If the distribution provides an apache or apache2 log rotation file,
-		# update it with the Awstats information. If not, use the i-MSCP file.
-		# log rotation should be never executed twice. Therefore it is sane to
-		# define it two times in different scopes.
-		for (qw/apache apache2/){
-			next if(! -f "$bkpDir/$_.system");
-
-			$file = iMSCP::File->new(filename => "$bkpDir/$_.system");
-			$cfgTpl = $file->get();
-			return 1 if (!$cfgTpl);
-
-			# Add code if not exists
-			if ($cfgTpl !~ /awstats_updateall\.pl/i) {
-				# Building the new apache logrotate file
-				$cfgTpl =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::imscpConfig{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::imscpConfig{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/gi;
-
-				# Storing the new file in the working directory
-				$file = iMSCP::File->new(filename => "$wrkDir/$_");
-				$file->set($cfgTpl) and return 1;
-				$file->save() and return 1;
-				$file->mode(0644) and return 1;
-				$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-				# Installing the new file in the production directory
-				$file->copyFile($main::imscpConfig{'LOGROTATE_CONF_DIR'}) and return 1;
-			}
-		}
-	}
-
-	# Disabling the default awstats.conf file to avoid error such as:
-	# Error: SiteDomain parameter not defined in your config/domain file
-	# Setup ('/etc/awstats/awstats.conf' file, web server or permissions) may
-	# be wrong...
-	if(-f "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf")->moveFile("$main::imscpConfig{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled") and return 1;
-	}
-
-	# Removing default Debian Package cron task for awstats
-	if(-f "/etc/cron.d/awstats") {
-		iMSCP::File->new(filename => "$main::imscpConfig{'CRON_D_DIR'}/awstats")->moveFile("$main::imscpConfig{'CONF_DIR'}/cron.d/backup/awstats.system") and return 1;
-	}
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP FTPD - (Setup / Update)
-#
-# This subroutine install or update the i-MSCP ftpd server
-#
-# @return int 0 on success, other on failure
-#
-sub setup_ftpd {
-
-	debug((caller(0))[3].': Starting...');
-	my ($rs, $ftpd);
-
-	use Servers::ftp;
-
-	$ftpd	= Servers::ftp->factory($main::imscpConfig{FTPD_SERVER});
-
-	$rs = $ftpd->can('preinstall') ? $ftpd->preinstall() : 0;
-	return $rs if $rs;
-
-	$rs = $ftpd->can('install') ? $ftpd->install() : 0;
-	return $rs if $rs;
-
-	$rs = $ftpd->can('postinstall') ? $ftpd->postinstall() : 0;
-	return $rs if $rs;
-
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -1468,8 +806,7 @@ sub setup_ftpd {
 # @return int 0 on success, other on failure
 #
 sub setup_imscp_daemon_network {
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my ($rs, $rdata, $fileName, $stdout, $stderr);
 
@@ -1489,49 +826,19 @@ sub setup_imscp_daemon_network {
 		$file->mode(0755) and return 1;
 
 		# Services installation / update (Debian, Ubuntu)
+		$rs = execute("/usr/sbin/update-rc.d -f $fileName remove", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $rs;
 
-		if(-x '/usr/sbin/update-rc.d') {
-			$rs = execute("/usr/sbin/update-rc.d -f $fileName remove", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout") if $stdout;
-			error((caller(0))[3].": $stderr") if $rs;
-
-			# Fix for #119: Defect - Error when adding IP's
-			# We are now using dependency based boot sequencing (insserv)
-			# See http://wiki.debian.org/LSBInitScripts ; Must be read carrefully
-			$rs = execute("/usr/sbin/update-rc.d $fileName defaults", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout") if $stdout;
-			error((caller(0))[3].": $stderr") if $rs;
-
-			# imscp_network should be stopped before the MySQL server (due to the
-			# interfaces deletion process)
-			#if($fileName eq 'imscp_network') {
-			#	$rs = execute("/usr/sbin/update-rc.d $fileName defaults 99 20", \$stdout, \$stderr);
-			#	debug((caller(0))[3].": $stdout") if $stdout;
-			#	error((caller(0))[3].": $stderr") if $rs;
-			#} else {
-			#	$rs = execute("/usr/sbin/update-rc.d $fileName defaults 99", \$stdout, \$stderr);
-			#	debug((caller(0))[3].": $stdout") if $stdout;
-			#	error((caller(0))[3].": $stderr") if $rs;
-			#}
-		}
-
-#		# LSB 3.1 Core section 20.4 compatibility (ex. OpenSUSE > 10.1)
-#		} elsif(-x '/usr/lib/lsb/install_initd') {
-#			# Update task
-#			if(-x '/usr/lib/lsb/remove_initd') {
-#				$rs = execute("/usr/lib/lsb/remove_initd $_", \$stdout, \$stderr);
-#				debug((caller(0))[3].": $stdout") if $stdout;
-#				error((caller(0))[3].": $stderr") if $rs;
-#			}
-#
-#			$rs = execute("/usr/lib/lsb/install_initd $_", \$stdout, \$stderr);
-#			debug((caller(0))[3].": $stdout") if $stdout;
-#			error((caller(0))[3].": $stderr") if $rs;
-#		}
+		# Fix for #119: Defect - Error when adding IP's
+		# We are now using dependency based boot sequencing (insserv)
+		# See http://wiki.debian.org/LSBInitScripts ; Must be read carrefully
+		$rs = execute("/usr/sbin/update-rc.d $fileName defaults", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $rs;
 	}
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -1541,22 +848,25 @@ sub setup_imscp_daemon_network {
 # @return int 0 on success, other on failure
 #
 sub set_permissions {
+	debug('Starting...');
 
-	debug((caller(0))[3].': Starting...');
+	use iMSCP::Rights;
 
-	my ($rs, $stdout, $stderr);
+	my $rs;
+	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
+	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
+	my $masterUName	= $main::imscpConfig{'MASTER_GROUP'};
+	my $CONF_DIR	= $main::imscpConfig{'CONF_DIR'};
+	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
+	my $LOG_DIR		= $main::imscpConfig{'LOG_DIR'};
 
-	for (qw/engine gui/) {
+	$rs |= setRights("$CONF_DIR", {user => $rootUName, group => $masterUName, mode => '0770'});
+	$rs |= setRights("$CONF_DIR/imscp.conf", {user => $rootUName, group => $masterUName, mode => '0660'});
+	$rs |= setRights("$CONF_DIR/imscp-db-keys", {user => $rootUName, group => $masterUName, mode => '0640'});
+	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0750', recursive => 'yes'});
+	$rs |= setRights($LOG_DIR, {user => $rootUName, group => $masterUName, mode => '0750'});
 
-		#Use $stderr because this script does not exit on error?!!
-		$rs = execute("$main::imscpConfig{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if $stderr;
-		return $stderr if $stderr;
-	}
-
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -1567,22 +877,17 @@ sub set_permissions {
 #
 sub restart_services {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use iMSCP::Stepper;
 
 	startDetail();
 
-	#iMSCP::Dialog->factory()->startGauge('Restarting service', 0) if iMSCP::Dialog->factory()->needGauge();
-
 	my @services = (
 		#['Variable holding command', 'command to execute', 'ignore error if 0 exit on error if 1']
 		['CMD_IMSCPN',			'restart',	1],
 		['CMD_IMSCPD',			'restart',	1],
-		['CMD_NAMED',			'reload',	1],
-		['CMD_HTTPD',			'restart',	1],
-		['CMD_FTPD',			'restart',	1],			# must be restarted
 		['CMD_CLAMD',			'reload',	1],
 		['CMD_POSTGREY',		'reload',	1],
 		['CMD_POLICYD_WEIGHT',	'reload',	0],
@@ -1598,21 +903,18 @@ sub restart_services {
 				sub { execute("$main::imscpConfig{$_->[0]} $_->[1]", \$stdout, \$stderr)},
 				"Restarting $main::imscpConfig{$_->[0]}",
 				scalar @services,
-				$count,
-				'no'
+				$count
 			);
-			debug((caller(0))[3].": $main::imscpConfig{$_->[0]} $stdout") if $stdout;
-			error((caller(0))[3].": $main::imscpConfig{$_->[0]} $stderr $rs") if ($rs && $_->[2]);
+			debug("$main::imscpConfig{$_->[0]} $stdout") if $stdout;
+			error("$main::imscpConfig{$_->[0]} $stderr $rs") if ($rs && $_->[2]);
 			return $rs if ($rs && $_->[2]);
 		}
 		$count++;
 	}
 
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
-
 	endDetail();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -1628,7 +930,7 @@ sub restart_services {
 #
 sub setup_default_sql_data {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Database;
@@ -1677,7 +979,7 @@ sub setup_default_sql_data {
 
 	## First Ip data - Begin
 
-	debug((caller(0))[3].': Inserting primary Ip data...');
+	debug('Inserting primary Ip data...');
 
 	$error = $database->doQuery(
 		'dummy',
@@ -1686,7 +988,7 @@ sub setup_default_sql_data {
 			`server_ips`
 		SET
 			`ip_domain` = ?
-		 WHERE
+		WHERE
 			`ip_number` = ?
 		", $main::imscpConfig{'SERVER_HOSTNAME'}, $main::imscpConfig{'BASE_SERVER_IP'}
 	);
@@ -1699,24 +1001,26 @@ sub setup_default_sql_data {
 			`server_ips`
 		SET
 			`ip_domain` = NULL
-		 WHERE
+		WHERE
 			`ip_number` != ?
 		AND
 			`ip_domain` = ?
-		 ", $main::imscpConfig{'BASE_SERVER_IP'}, $main::imscpConfig{'SERVER_HOSTNAME'}
+		", $main::imscpConfig{'BASE_SERVER_IP'}, $main::imscpConfig{'SERVER_HOSTNAME'}
 	);
 	return $error if (ref $error ne 'HASH');
 
 	askMYSQLPrefix();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub askMYSQLPrefix{
-	debug((caller(0))[3].': Starting...');
-	my $useprefix	= $main::imscpConfig{'MYSQL_PREFIX'} ?  $main::imscpConfig{'MYSQL_PREFIX'} : ($main::imscpConfigOld{'MYSQL_PREFIX'} ? $main::imscpConfigOld{'MYSQL_PREFIX'} : '');
-	my $prefix		= $main::imscpConfig{'MYSQL_PREFIX_TYPE'} ?  $main::imscpConfig{'MYSQL_PREFIX_TYPE'} : ($main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} : '');
+	debug('Starting...');
+
+	my $useprefix	= $main::imscpConfig{'MYSQL_PREFIX'} ? $main::imscpConfig{'MYSQL_PREFIX'} : ($main::imscpConfigOld{'MYSQL_PREFIX'} ? $main::imscpConfigOld{'MYSQL_PREFIX'} : '');
+	my $prefix		= $main::imscpConfig{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfig{'MYSQL_PREFIX_TYPE'} : ($main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} : '');
+
 	while(!$useprefix || !$prefix){
 		my $prefix = $prefix = iMSCP::Dialog->factory()->radiolist("Use MySQL Prefix? Possible values:", 'do not use', 'infront', 'after');
 		if($prefix eq 'do not use'){
@@ -1726,14 +1030,18 @@ sub askMYSQLPrefix{
 			$useprefix	= 'yes';
 		}
 	}
+
 	$main::imscpConfig{'MYSQL_PREFIX'} = $useprefix if($main::imscpConfig{'MYSQL_PREFIX'} ne $useprefix);
 	$main::imscpConfig{'MYSQL_PREFIX_TYPE'} = $prefix if($main::imscpConfig{'MYSQL_PREFIX_TYPE'} ne $prefix);
-	debug((caller(0))[3].': Ending...');
+
+	debug('Ending...');
+	0;
 }
 
 sub askAdminEmail{
+	debug('Starting...');
 
-	my $admin_email = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ?  $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : ($main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} : '');
+	my $admin_email = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : ($main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} : '');
 	use Email::Valid;
 	my $msg = '';
 	while(!$admin_email){
@@ -1743,6 +1051,7 @@ sub askAdminEmail{
 	}
 	$main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} = $admin_email if($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ne $admin_email);
 
+	debug('Ending...');
 	$admin_email;
 }
 
@@ -1755,7 +1064,7 @@ sub askAdminEmail{
 #
 sub setup_gui_pma {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $cfgDir	= "$main::imscpConfig{'CONF_DIR'}/pma";
 	my $bkpDir	= "$cfgDir/backup";
@@ -1796,7 +1105,7 @@ sub setup_gui_pma {
 			$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
 		);
 		if ($err){
-			error((caller(0))[3].": $err");
+			error("$err");
 			return 1;
 		}
 
@@ -1937,12 +1246,12 @@ sub setup_gui_pma {
 
 	$cfgFile = process(
 		{
-			PMA_USER => $ctrlUser,
-			PMA_PASS => $ctrlUserPwd,
-			HOSTNAME => $dbHost,
-			UPLOADS_DIR  => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
-			TMP_DIR => "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
-			BLOWFISH => $blowfishSecret
+			PMA_USER	=> $ctrlUser,
+			PMA_PASS	=> $ctrlUserPwd,
+			HOSTNAME	=> $dbHost,
+			UPLOADS_DIR	=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/uploads",
+			TMP_DIR		=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
+			BLOWFISH	=> $blowfishSecret
 		},
 		$cfgFile
 	);
@@ -1973,221 +1282,31 @@ sub setup_gui_pma {
 	return $error if ($error);
 
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
-
-################################################################################
-# i-MSCP GUI apache vhost - (Setup / Update)
-#
-# This subroutine built, store and install i-MSCP GUI vhost configuration file.
-#
-# @return int 0 on success, other on failure
-#
-sub setup_gui_httpd {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-	use iMSCP::Execute;
-	use Servers::httpd;
-
-	my ($rs, $cfgTpl, $file);
-
-	my $httpd = Servers::httpd->new()->factory('apache2');
-
-	$rs = $httpd->disableSite('000-default');
-	return $rs if $rs;
-
-	# Disable the default NameVirtualHost directive
-	# (Debian like distributions)
-	if(-f '/etc/apache2/ports.conf') {
-		# Loading the file
-		$file = iMSCP::File->new(filename => '/etc/apache2/ports.conf');
-		my $rdata = $file->get();
-		return $rdata if(!$rdata);
-
-		# Disable the default NameVirtualHost directive
-		$rdata =~ s/^NameVirtualHost \*:80/#NameVirtualHost \*:80/gmi;
-
-		# Saving the modified file
-		$file->set($rdata) and return 1;
-		$file->save() and return 1;
-	}
-
-	my $adminEmailAddress = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'};
-	my ($user, $domain) = split /@/, $adminEmailAddress;
-	use Net::LibIDN qw/idn_to_ascii/;
-	$adminEmailAddress = "$user@".idn_to_ascii($domain, 'utf-8');
-
-	$httpd->{DEFAULT_ADMIN_ADDRESS}	= $adminEmailAddress;
-	$httpd->{WWW_DIR}				= $main::imscpConfig{'ROOT_DIR'};
-	$httpd->{DMN_NAME}				= 'gui';
-
-	$rs = $httpd->buildConfFile($httpd->{masterConf});
-	return $rs if $rs;
-
-	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
-		$rs = $httpd->buildConfFile($httpd->{masterSSLConf});
-		return $rs if $rs;
-	}
-
-	$rs = $httpd->enableSite($httpd->{masterConf});
-	return $rs if $rs;
-
-	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
-		$rs = $httpd->enableSite($httpd->{masterSSLConf});
-		return $rs if $rs;
-		$rs = $httpd->enableMod('ssl');
-		return $rs if $rs;
-	}
-
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-################################################################################
-# i-MSCP GUI PHP configuration files - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Create the master fcgi directory
-#  - Built, store and install gui php related files (starter script, php.ini...)
-#
-# @return int 0 on success, other on failure
-#
-sub setup_gui_php {
-
-	debug((caller(0))[3].': Starting...');
-
-	my ($rs, $cfgTpl, $file);
-
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/fcgi";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-
-	my $timestamp = time;
-
-	# Saving files if they exists
-	for ('php5-fcgi-starter', 'php5/php.ini', 'php5/browscap.ini') {
-		if(-f "$main::imscpConfig{'PHP_STARTER_DIR'}/master/$_") {
-			my (undef, $name) = split('/');
-			$name = $_ if(!defined $name);
-			my $file = iMSCP::File->new(filename => "$main::imscpConfig{'PHP_STARTER_DIR'}/master/$_");
-			$file->copyFile("$bkpDir/master.$name.$timestamp") and return 1;
-		}
-	}
-
-	## Create the fcgi directories tree for the GUI if it doesn't exists
-	my $dir = iMSCP::Dir->new(dirname => "$main::imscpConfig{'PHP_STARTER_DIR'}/master/php5");
-	$dir->make({user=>$main::imscpConfig{'ROOT_USER'}, group =>$main::imscpConfig{'ROOT_GROUP'}, mode => 0755}) and return 1;
-
-	## PHP5 Starter script
-
-	# Loading the template from /etc/imscp/fcgi/parts/master
-	$cfgTpl = iMSCP::File->new(filename => "$cfgDir/parts/master/php5-fcgi-starter.tpl")->get();
-	return 1 if (!$cfgTpl);
-
-	# Building the new file
-	$cfgTpl = process(
-		{
-			PHP_STARTER_DIR		=> $main::imscpConfig{'PHP_STARTER_DIR'},
-			PHP5_FASTCGI_BIN	=> $main::imscpConfig{'PHP5_FASTCGI_BIN'},
-			GUI_ROOT_DIR		=> $main::imscpConfig{'GUI_ROOT_DIR'},
-			DMN_NAME			=> 'master'
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Storing the new file in the working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/master.php5-fcgi-starter");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0755) and return 1;
-	$file->owner($main::imscpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'},$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}) and return 1;
-
-	# Install the new file
-	$file->copyFile("$main::imscpConfig{'PHP_STARTER_DIR'}/master/php5-fcgi-starter") and return 1;
-
-	## PHP5 php.ini file
-
-	# Loading the template from /etc/imscp/fcgi/parts/master/php5
-	$cfgTpl = iMSCP::File->new(filename => "$cfgDir/parts/master/php5/php.ini")->get();
-	return 1 if (!$cfgTpl);
-	askPHPTimezone();
-	# Building the new file
-	$cfgTpl = process(
-		{
-			WWW_DIR				=> $main::imscpConfig{'ROOT_DIR'},
-			DMN_NAME			=> 'gui',
-			MAIL_DMN			=> $main::imscpConfig{'BASE_SERVER_VHOST'},
-			CONF_DIR			=> $main::imscpConfig{'CONF_DIR'},
-			MR_LOCK_FILE		=> $main::imscpConfig{'MR_LOCK_FILE'},
-			PEAR_DIR			=> $main::imscpConfig{'PEAR_DIR'},
-			RKHUNTER_LOG		=> $main::imscpConfig{'RKHUNTER_LOG'},
-			CHKROOTKIT_LOG		=> $main::imscpConfig{'CHKROOTKIT_LOG'},
-			OTHER_ROOTKIT_LOG	=> ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '') ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : '',
-			PHP_STARTER_DIR		=> $main::imscpConfig{'PHP_STARTER_DIR'},
-			PHP_TIMEZONE		=> $main::imscpConfig{'PHP_TIMEZONE'}
-		},
-		$cfgTpl
-	);
-	return 1 if (!$cfgTpl);
-
-	# Store the new file in working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/master.php.ini");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'},$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}) and return 1;
-
-	# Install the new file
-	$file->copyFile("$main::imscpConfig{'PHP_STARTER_DIR'}/master/php5/php.ini") and return 1;
-
-
-	## PHP Browser Capabilities support file
-
-	# Store the new file in working directory
-	iMSCP::File->new(filename => "$cfgDir/parts/master/php5/browscap.ini")->copyFile("$wrkDir/browscap.ini") and return 1;
-
-	$file = iMSCP::File->new(filename => "$wrkDir/browscap.ini");
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::imscpConfig{'APACHE_SUEXEC_MIN_UID'}, $main::imscpConfig{'APACHE_SUEXEC_USER_PREF'} . $main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}) and return 1;
-
-	# Install the new file
-	$file->copyFile("$main::imscpConfig{'PHP_STARTER_DIR'}/master/php5/browscap.ini") and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
 sub askPHPTimezone{
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
+	use DateTime;
+	use DateTime::TimeZone;
+
 	my $dt;
 
 	if($main::imscpConfig{'PHP_TIMEZONE'}){
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
 	if($main::imscpConfigOld{'PHP_TIMEZONE'}){
 		$main::imscpConfig{'PHP_TIMEZONE'} = $main::imscpConfigOld{'PHP_TIMEZONE'};
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
-	use DateTime;
-	use DateTime::TimeZone;
-
-	$dt = DateTime->new(year => 0, time_zone  => 'local')->time_zone->name;
+	$dt = DateTime->new(year => 0, time_zone => 'local')->time_zone->name;
 
 	my $msg = '';
 	do{
@@ -2197,47 +1316,24 @@ sub askPHPTimezone{
 
 	$main::imscpConfig{'PHP_TIMEZONE'} = $dt;
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
-
-################################################################################
-# i-MSCP Gui named configuration - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Add Gui named cfg data in main Bind9 configuration file
-#  - Built GUI named DNS record's file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_gui_named {
-
-	debug((caller(0))[3].': Starting...');
-
-	setup_gui_named_cfg_data() and return 1;
-	setup_gui_named_db_data() and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
 
 sub askVHOST{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
 	if($main::imscpConfig{'BASE_SERVER_VHOST'}){
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
 	if($main::imscpConfigOld{'BASE_SERVER_VHOST'}){
 		$main::imscpConfig{'BASE_SERVER_VHOST'} = $main::imscpConfigOld{'BASE_SERVER_VHOST'};
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
@@ -2249,7 +1345,7 @@ sub askVHOST{
 
 	my ($msg, @labels) = ('', ());
 	do{
-		while (! ($hostname = iMSCP::Dialog->factory()->inputbox( "Please enter the domain name where i-MSCP will be reachable on:  $msg", $hostname))){}
+		while (! ($hostname = iMSCP::Dialog->factory()->inputbox( "Please enter the domain name where i-MSCP will be reachable on: $msg", $hostname))){}
 		$msg = "\n\n$hostname is not a valid fqdn!";
 		@labels = split(/\./, $hostname);
 	} while (! (Data::Validate::Domain->new(%options)->is_domain($hostname) && ( @labels >= 3)));
@@ -2258,241 +1354,7 @@ sub askVHOST{
 
 	$main::imscpConfig{'BASE_SERVER_VHOST'} = idn_to_ascii($hostname, 'utf-8');
 
-	debug((caller(0))[3].': Ending...');
-	0;
-}
-
-################################################################################
-# i-MSCP Gui named cfg file - (Setup / Update)
-#
-# This subroutine do the following tasks:
-#  - Add Gui named cfg data in main configuration file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_gui_named_cfg_data {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::File;
-	use iMSCP::Templator;
-
-	my ($rs, $rdata, $cfg, $file);
-
-	# Named directories paths
-	my $cfgDir	= $main::imscpConfig{'CONF_DIR'};
-	my $tpl_dir	= "$cfgDir/bind/parts";
-	my $bkpDir	= "$cfgDir/bind/backup";
-	my $wrkDir	= "$cfgDir/bind/working";
-	my $dbDir	= $main::imscpConfig{'BIND_DB_DIR'};
-
-	# Saving the current production file if it exists
-	if(-f $main::imscpConfig{'BIND_CONF_FILE'}){
-		$file = iMSCP::File->new(filename => $main::imscpConfig{'BIND_CONF_FILE'});
-		if(! -f "$bkpDir/named.conf.system") {
-			$file->copy("$bkpDir/named.conf.system") and return 1;
-		} else {
-			$file->copy("$bkpDir/named.conf." . time) and return 1;
-		}
-	}
-
-	## Building of new configuration file
-
-	# Loading all needed templates from /etc/imscp/bind/parts
-	my ($entry_b, $entry_e, $entry) = ('', '', '');
-	$entry_b	= iMSCP::File->new(filename => "$tpl_dir/cfg_entry_b.tpl")->get();
-	$entry_e	= iMSCP::File->new(filename => "$tpl_dir/cfg_entry_e.tpl")->get();
-	$entry		= iMSCP::File->new(filename => "$tpl_dir/cfg_entry.tpl")->get();
-	return 1 if(!defined $entry_b ||!defined $entry_e ||!defined $entry);
-
-	# Preparation tags
-	my $tags_hash	= {DMN_NAME => $main::imscpConfig{'BASE_SERVER_VHOST'}, DB_DIR => $dbDir};
-	my $entry_b_val	= process($tags_hash, $entry_b);
-	my $entry_e_val	= process($tags_hash, $entry_e);
-	my $entry_val	= process($tags_hash, $entry);
-
-
-	# Loading working file from /etc/imscp/bind/working/named.conf
-	$file		= iMSCP::File->new(filename => "$wrkDir/named.conf");
-	$cfg		= $file->get();
-	return 1 if (!$cfg);
-
-	# Building the new configuration file
-	my $entry_repl = "$entry_b_val$entry_val$entry_e_val$entry_b$entry_e";
-
-	#delete old if exist
-	$cfg = replaceBloc($entry_b_val, $entry_e_val, '', $cfg, 0);
-	#add new
-	$cfg = replaceBloc($entry_b, $entry_e, $entry_repl, $cfg, 0);
-
-	## Storage and installation of new file - Begin
-
-	# Store the new builded file in the working directory
-	$file = iMSCP::File->new(filename => "$wrkDir/named.conf");
-	$file->set($cfg) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Install the new file in the production directory
-	$file->copyFile($main::imscpConfig{'BIND_CONF_FILE'}) and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-sub askSecondaryDNS{
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::Dialog;
-	my $out;
-
-	if($main::imscpConfig{'SECONDARY_DNS'}){
-		debug((caller(0))[3].': Ending...');
-		return 0;
-	}
-
-	if($main::imscpConfigOld{'SECONDARY_DNS'}){
-		$main::imscpConfig{'SECONDARY_DNS'} = $main::imscpConfigOld{'SECONDARY_DNS'};
-		debug((caller(0))[3].': Ending...');
-		return 0;
-	}
-
-	while (! ($out = iMSCP::Dialog->factory()->radiolist("Enable secondary DNS server address IP?", 'no', 'yes'))){}
-	if($out eq 'no'){
-		$main::imscpConfig{'SECONDARY_DNS'} = 'no';
-		debug((caller(0))[3].': Ending...');
-		return 0;
-	}
-
-	use Data::Validate::IP qw/is_ipv4/;
-
-	do{
-		while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter secondary DNS server address IP"))){}
-	}while(! (is_ipv4($out) && $out ne '127.0.0.1') );
-
-	$main::imscpConfig{'SECONDARY_DNS'} = $out;
-
-	debug((caller(0))[3].': Ending...');
-	0;
-}
-
-################################################################################
-# i-MSCP Gui named dns record's - (Setup / Update)
-#
-# This subroutine does the following tasks:
-#  - Build GUI named dns record's file
-#
-# @return int 0 on success, other on failure
-#
-sub setup_gui_named_db_data {
-
-	debug((caller(0))[3].': Starting...');
-
-	use iMSCP::Dialog;
-	use iMSCP::File;
-	use iMSCP::Templator;
-
-	my ($rs, $wrkFileContent, $entries, $file);
-
-	# Slave DNS  - Address IP
-	askSecondaryDNS();
-
-	my $secDnsIp	= $main::imscpConfig{'SECONDARY_DNS'};
-	my $baseIp		= $main::imscpConfig{'BASE_SERVER_IP'};
-	my $baseVhost	= $main::imscpConfig{'BASE_SERVER_VHOST'};
-
-	# Directories paths
-	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/bind";
-	my $bkpDir = "$cfgDir/backup";
-	my $wrkDir = "$cfgDir/working";
-	my $dbDir = $main::imscpConfig{'BIND_DB_DIR'};
-
-	# Zone file name
-	my $dbFname = "$baseVhost.db";
-
-	# Named zone files paths
-	my $sysCfg = "$dbDir/$dbFname";
-	my $wrkCfg = "$wrkDir/$dbFname";
-	my $bkpCfg = "$bkpDir/$dbFname";
-
-	## Dedicated tasks for Install or Updates process
-
-	#Saving the current production file if it exists
-	if(-f $sysCfg) {
-		iMSCP::File->new(filename => $sysCfg)->copyFile("$bkpCfg." . time) and return 1;
-	}
-
-	# Load the current working db file
-
-	if(!-f $wrkCfg) {
-		iMSCP::Dialog->factory()->msgbox(
-						"\\Z1[WARNING]\\Zn
-
-						$main::imscpConfig{'BASE_SERVER_VHOST'}: Working db file not found!.
-						Re-creation from scratch is needed..."
-		);
-	} else {
-		$wrkFileContent = iMSCP::File->new(filename => $wrkCfg)->get();
-	}
-
-	## Building new configuration file
-
-	# Loading the template from /etc/imscp/bind/parts
-	$entries = iMSCP::File->new(filename => "$cfgDir/parts/db_master_e.tpl")->get();
-	return 1 if (!$entries);
-
-	my $tags = {
-		DMN_NAME			=> $baseVhost,
-		DMN_IP				=> $baseIp,
-		BASE_SERVER_IP		=> $baseIp,
-		SECONDARY_DNS_IP	=> ($secDnsIp ne 'no') ? $secDnsIp : $baseIp
-	};
-
-	# Replacement tags
-	$entries = process($tags, $entries);
-	return 1 if (!$entries);
-
-	# Create or Update serial number according RFC 1912
-	my $bTag = process($tags, iMSCP::File->new(filename => "$cfgDir/parts/db_time_b.tpl")->get());
-	my $eTag = process($tags, iMSCP::File->new(filename =>"$cfgDir/parts/db_time_e.tpl")->get());
-	return 1 if(!$bTag || !$eTag);
-	my $timestamp = getBloc($bTag, $eTag, ($wrkFileContent ? $wrkFileContent : $entries));
-	my $regExp = '[\s](?:(\d{4})(\d{2})(\d{2})(\d{2})|(\{TIMESTAMP\}))';
-	my (undef, undef, undef, $day, $mon, $year) = localtime;
-	if((my $tyear, my $tmon, my $tday, my $nn, my $setup) = ($timestamp =~ /$regExp/)) {
-		if($setup){
-			$timestamp = sprintf '%04d%02d%02d00', $year+1900, $mon+1, $day;
-		} else {
-			$nn++;
-			if($nn >= 99){
-				$nn = 0;
-				$tday++;
-			}
-			$timestamp = ((($year+1900)*10000+($mon+1)*100+$day) > ($tyear*10000 +  $tmon*100 + $tday)) ? (sprintf '%04d%02d%02d00', $year+1900, $mon+1, $day) : (sprintf '%04d%02d%02d%02d', $tyear, $tmon, $tday, $nn);
-		}
-		$entries = process({ TIMESTAMP => $timestamp}, $entries);
-	} else {
-		error((caller(0))[3].': Can not find timestamp for base vhost');
-		return 1;
-	}
-
-	## Store and install
-
-	# Store the file in the working directory
-	$file = iMSCP::File->new(filename => $wrkCfg);
-	$file->set($entries) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-
-	# Install the file in the production directory
-	$file->copyFile("$dbDir/") and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -2504,7 +1366,7 @@ sub setup_gui_named_db_data {
 #
 sub save_conf{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -2517,7 +1379,7 @@ sub save_conf{
 	$file->mode(0644) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -2529,23 +1391,14 @@ sub save_conf{
 #
 sub update_imscp_cfg {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	for(qw/
 		ZIP
-		APACHE_SUEXEC_USER_PREF
-		APACHE_SUEXEC_MIN_GID
-		APACHE_SUEXEC_MAX_GID
-		APACHE_SUEXEC_MIN_UID
-		APACHE_SUEXEC_MAX_UID
-		APACHE_USER
-		APACHE_GROUP
 		BACKUP_HOUR
 		BACKUP_MINUTE
 		USER_INITIAL_THEME
 		FTP_USERNAME_SEPARATOR
 		DATE_FORMAT
-		HTACCESS_USERS_FILE_NAME
-		HTACCESS_GROUPS_FILE_NAME
 		GUI_EXCEPTION_WRITERS
 		DEBUG
 	/){
@@ -2553,51 +1406,9 @@ sub update_imscp_cfg {
 			$main::imscpConfig{$_} = $main::imscpConfigOld{$_};
 		}
 	}
-#??????????????????????????????????????????????
-
-#?????????????????????????????????????????????????????
-
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
-}
-
-################################################################################
-# Disable access to panel during update
-#
-# @return int 0 on success, other on failure
-#
-sub disableGUI{
-
-	debug((caller(0))[3].': Starting...');
-
-	if($main::imscpConfig{'CMD_HTTPD'} !~ /^no$/i){
-
-		my ($rs, $stdout, $stderr);
-
-		# Debian like distributions only:
-		# Note for distributions maintainers:
-		# For others distributions, you must use the a post-installation scripts
-
-		if(! -f '/etc/SuSE-release' && -f '/usr/sbin/a2dissite') {
-
-			## Enabling main vhost configuration file
-			my $rs = execute("/usr/sbin/a2dissite imscp.conf", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout");
-			warning((caller(0))[3].": $stderr") if $stderr;
-
-		}
-
-		# Reload apache config
-		$rs = execute("$main::imscpConfig{'CMD_HTTPD'} reload", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
-		error((caller(0))[3].": $stderr") if $stderr;
-	}
-
-	debug((caller(0))[3].': Ending...');
-
-	0;
-
 }
 
 ################################################################################
@@ -2606,9 +1417,7 @@ sub disableGUI{
 # @return int 0 on success, other on failure
 #
 sub setup_system_users{
-
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
@@ -2617,31 +1426,18 @@ sub setup_system_users{
 	$group->{system}	= 'yes';
 	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
 
-	$group = Modules::SystemGroup->new();
-	$group->addSystemGroup("$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}") and return 1;
-
-	my $user = Modules::SystemUser->new();
-
-	$user->{comment}	= 'vu-master';
-	$user->{home}		= "$main::imscpConfig{'PHP_STARTER_DIR'}/master";
-	$user->{group}		= "$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_GID'}";
-
-	$user->addSystemUser("$main::imscpConfig{'APACHE_SUEXEC_USER_PREF'}$main::imscpConfig{'APACHE_SUEXEC_MIN_UID'}") and return 1;
-	$user->addToGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
-
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
 sub askBackup{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
-	my $BACKUP_IMSCP	= $main::imscpConfig{'BACKUP_IMSCP'} ?  $main::imscpConfig{'BACKUP_IMSCP'} : ($main::imscpConfigOld{'BACKUP_IMSCP'} ? $main::imscpConfigOld{'BACKUP_IMSCP'} : '');
-	my $BACKUP_DOMAINS	= $main::imscpConfig{'BACKUP_DOMAINS'} ?  $main::imscpConfig{'BACKUP_DOMAINS'} : ($main::imscpConfigOld{'BACKUP_DOMAINS'} ? $main::imscpConfigOld{'BACKUP_DOMAINS'} : '');
+	my $BACKUP_IMSCP	= $main::imscpConfig{'BACKUP_IMSCP'} ? $main::imscpConfig{'BACKUP_IMSCP'} : ($main::imscpConfigOld{'BACKUP_IMSCP'} ? $main::imscpConfigOld{'BACKUP_IMSCP'} : '');
+	my $BACKUP_DOMAINS	= $main::imscpConfig{'BACKUP_DOMAINS'} ? $main::imscpConfig{'BACKUP_DOMAINS'} : ($main::imscpConfigOld{'BACKUP_DOMAINS'} ? $main::imscpConfigOld{'BACKUP_DOMAINS'} : '');
 
 	if (!$BACKUP_IMSCP){
 		while (! ($BACKUP_IMSCP = iMSCP::Dialog->factory()->radiolist("Do you want to enable backup for iMSCP configuration?", 'yes', 'no'))){}
@@ -2653,7 +1449,7 @@ sub askBackup{
 	}
 	if($BACKUP_DOMAINS ne $main::imscpConfig{'BACKUP_DOMAINS'}){ $main::imscpConfig{'BACKUP_DOMAINS'} = $BACKUP_DOMAINS; }
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -2665,9 +1461,11 @@ sub askBackup{
 #
 sub additional_tasks{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Stepper;
+
+	startDetail();
 
 	my @steps = (
 		[\&setup_rkhunter, 'i-MSCP Rkhunter configuration:']
@@ -2677,9 +1475,10 @@ sub additional_tasks{
 		step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
-	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 
-	debug((caller(0))[3].': Ending...');
+	endDetail();
+
+	debug('Ending...');
 
 	0;
 }
@@ -2690,15 +1489,15 @@ sub additional_tasks{
 #
 # This subroutine process the following tasks:
 #
-#  - update rkhunter database files (only during setup process)
-#  - Debian specific: Updates the configuration file and cron task, and
-#  remove default unreadable created log file
+# - update rkhunter database files (only during setup process)
+# - Debian specific: Updates the configuration file and cron task, and
+# remove default unreadable created log file
 #
 # @return int 0 on success, other on failure
 #
 sub setup_rkhunter {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my ($rs, $rdata);
 
@@ -2757,7 +1556,7 @@ sub setup_rkhunter {
 		$file->save() and return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -2769,22 +1568,22 @@ sub setup_rkhunter {
 #
 sub rebuild_customers_cfg {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Boot;
 
 	my $tables = {
 		domain => 'domain_status', domain_aliasses => 'alias_status',
 		subdomain => 'subdomain_status', subdomain_alias => 'subdomain_alias_status',
-		mail_users => 'status', htaccess => 'status', htaccess_groups => 'status',
-		htaccess_users => 'status'
+		mail_users => 'status', htaccess => 'status',
+		htaccess_groups => 'status', htaccess_users => 'status'
 	};
 
 	# Set status as 'change'
 	my $error;
 	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 	while (my ($table, $field) = each %$tables) {
-		$error =  $database->doQuery('dummy',
+		$error = $database->doQuery('dummy',
 			"
 				UPDATE
 					$table
@@ -2803,21 +1602,20 @@ sub rebuild_customers_cfg {
 
 	my ($stdout, $stderr, $rs);
 	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr update", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	error((caller(0))[3].": Error while rebuilding customers configuration files") if(!$stderr && $rs);
-	return $rs if $rs;
-
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error("Error while rebuilding customers configuration files") if(!$stderr && $rs);
 	iMSCP::Boot->new()->lock();
+	#return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub setup_ssl{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -2843,17 +1641,15 @@ sub setup_ssl{
 
 	if($main::imscpConfig{'SSL_ENABLED'} ne 'yes'){
 		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "http://";
-		my $httpd = Servers::httpd->new()->factory('apache2');
-		$httpd->disableSite($httpd->{masterSSLConf});
 	};
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub ask_certificate_key_path{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -2874,12 +1670,12 @@ sub ask_certificate_key_path{
 		$rs = Modules::openssl->new()->ssl_check_key();
 	}while($rs);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub ask_intermediate_certificate_path{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -2895,12 +1691,12 @@ sub ask_intermediate_certificate_path{
 	}while ($rs && !-f $rs);
 	Modules::openssl->new()->{intermediate_cert_path} = $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub ask_certificate_path{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -2918,12 +1714,12 @@ sub ask_certificate_path{
 		$rs = Modules::openssl->new()->ssl_check_cert();
 	}while($rs);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub sslDialog{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -2954,40 +1750,217 @@ sub sslDialog{
 		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "$rs://";
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
-sub setup_mail{
-	debug((caller(0))[3].': Starting...');
+sub preinstallServers{
+	debug('Starting...');
 
-	my ($rs, $mta, $po);
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
 
-	use Servers::mta;
-	use Servers::po;
+	my ($rs, $file, $class, $server, $msg);
 
-	$mta	= Servers::mta->factory($main::imscpConfig{MTA_SERVER});
-	$po		= Servers::po->factory($main::imscpConfig{PO_SERVER});
-
-	$rs = $mta->can('preinstall') ? $mta->preinstall() : 0;
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	$rs		= $dir->get();
 	return $rs if $rs;
 
-	$rs = $po->can('preinstall') ? $po->preinstall() : 0;
+	my @servers = $dir->getFiles();
+
+	my $step = 1;
+	startDetail();
+
+	for(@servers){
+		s/\.pm//;
+		$file	= "Servers/$_.pm";
+		$class	= "Servers::$_";
+		require $file;
+		$server	= $class->factory();
+		$msg = "Performing preinstall tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$rs |= step(sub{ $server->preinstall() }, $msg, scalar @servers, $step) if($server->can('preinstall'));
+		$step++;
+	}
+
+	endDetail();
+
+	debug('Ending...');
+	$rs;
+
+}
+sub preinstallAddons{
+	debug('Starting...');
+
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
+
+	my ($rs, $file, $class, $addons, $msg);
+
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	$rs		= $dir->get();
 	return $rs if $rs;
 
-	$rs = $mta->can('install') ? $mta->install() : 0;
+	my @addons = $dir->getFiles();
+
+	my $step = 1;
+	startDetail();
+
+	for(@addons){
+		s/\.pm//;
+		$file	= "Addons/$_.pm";
+		$class	= "Addons::$_";
+		require $file;
+		$addons	= $class->new();
+		$msg = "Performing preinstall tasks for ".uc($_);
+		$rs |= step(sub{ $addons->preinstall() }, $msg, scalar @addons, $step) if($addons->can('preinstall'));
+		$step++;
+	}
+
+	endDetail();
+
+	debug('Ending...');
+	$rs;
+}
+
+sub installServers{
+	debug('Starting...');
+
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
+
+	my ($rs, $file, $class, $server, $msg);
+
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	$rs		= $dir->get();
 	return $rs if $rs;
 
-	$rs = $po->can('install') ? $po->install() : 0;
+	my @servers = $dir->getFiles();
+
+	my $step = 1;
+	startDetail();
+
+	for(@servers){
+		s/\.pm//;
+		$file	= "Servers/$_.pm";
+		$class	= "Servers::$_";
+		require $file;
+		$server	= $class->factory();
+		$msg = "Performing install tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$rs |= step(sub{ $server->install() }, $msg, scalar @servers, $step) if($server->can('install'));
+		$step++;
+	}
+
+	endDetail();
+
+	debug('Ending...');
+	$rs;
+}
+
+sub installAddons{
+	debug('Starting...');
+
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
+
+	my ($rs, $file, $class, $addons, $msg);
+
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	$rs		= $dir->get();
 	return $rs if $rs;
 
-	$rs = $mta->can('postinstall') ? $mta->postinstall() : 0;
+	my @addons = $dir->getFiles();
+
+	my $step = 1;
+	startDetail();
+
+	for(@addons){
+		s/\.pm//;
+		$file	= "Addons/$_.pm";
+		$class	= "Addons::$_";
+		require $file;
+		$addons	= $class->new();
+		$msg = "Performing install tasks for ".uc($_);
+		$rs |= step(sub{ $addons->install() }, $msg, scalar @addons, $step) if($addons->can('install'));
+		$step++;
+	}
+
+	endDetail();
+
+	debug('Ending...');
+	$rs;
+}
+
+sub postinstallServers{
+	debug('Starting...');
+
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
+
+	my ($rs, $file, $class, $server, $msg);
+
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	$rs		= $dir->get();
 	return $rs if $rs;
 
-	$rs = $po->can('postinstall') ? $po->postinstall() : 0;
+	my @servers = $dir->getFiles();
+
+	my $step = 1;
+	startDetail();
+
+	for(@servers){
+		s/\.pm//;
+		$file	= "Servers/$_.pm";
+		$class	= "Servers::$_";
+		require $file;
+		$server	= $class->factory();
+		$msg = "Performing postinstall tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$rs |= step(sub{ $server->postinstall() }, $msg, scalar @servers, $step) if($server->can('postinstall'));
+		$step++;
+	}
+
+	endDetail();
+
+	debug('Ending...');
+	$rs;
+}
+
+sub postinstallAddons{
+	debug('Starting...');
+
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
+
+	my ($rs, $file, $class, $addons, $msg);
+
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
+	$rs		= $dir->get();
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...'."\n\n\n");
-	0;
+	my @addons = $dir->getFiles();
+
+	my $step = 1;
+	startDetail();
+
+	for(@addons){
+		s/\.pm//;
+		$file	= "Addons/$_.pm";
+		$class	= "Addons::$_";
+		require $file;
+		$addons	= $class->new();
+		$msg = "Performing postinstall tasks for ".uc($_);
+		$rs |= step(sub{ $addons->postinstall() }, $msg, scalar @addons, $step) if($addons->can('postinstall'));
+		$step++;
+	}
+
+	endDetail();
+
+	debug('Ending...');
+	$rs;
 }
 1;

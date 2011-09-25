@@ -52,15 +52,15 @@ sub set{
 	my $self		= shift;
 	my $prop		= shift;
 	my $value		= shift;
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].": Setting $prop.");
+	debug('Starting...');
+	debug("Setting $prop.");
 	$self->{cipher}->{$prop} = $value if(exists $self->{cipher}->{$prop});
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub randomString{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift || iMSCP::Crypt->new();
 	my $length = shift;
@@ -78,13 +78,13 @@ sub randomString{
 			length $string < $length ? $string .= chr $_ : last;
 		}
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$string;
 }
 
 sub encrypt_db_password {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self	= shift;
 	my $pass	= shift;
@@ -96,38 +96,38 @@ sub encrypt_db_password {
 	my $encoded	= encode_base64($cipher->encrypt($pass));
 	chop($encoded);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $encoded;
 }
 
 sub decrypt_db_password {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self	= shift;
 	my $pass	= shift;
 
 	if (!defined $pass || $pass eq ''){
-		error((caller(0))[3].': Undefined input data...') ;
+		error('Undefined input data...') ;
 		return undef;
 	}
 	if (length($self->{cipher}->{key}) != $self->{cipher}->{keysize} || length($self->{cipher}->{iv}) != 8) {
-		error((caller(0))[3].': KEY or IV has invalid length');
+		error('KEY or IV has invalid length');
 		return undef;
 	}
 
 	my $cipher		= Crypt::CBC -> new($self->{cipher});
 	my $plaintext	= $cipher->decrypt(decode_base64("$pass\n"));
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $plaintext;
 }
 
 sub crypt_md5_data {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift || iMSCP::Crypt->new();
 	my $data = shift;
@@ -138,17 +138,17 @@ sub crypt_md5_data {
 	}
 
 	if (!$data) {
-		debug((caller(0))[3].": Undefined input data, data: |$data| !");
+		debug("Undefined input data, data: |$data| !");
 		return undef;
 	}
 
-	debug((caller(0))[3].": Crypting |$data|!");
+	debug("Crypting |$data|!");
 
 	use Crypt::PasswdMD5;
 
 	$data = unix_md5_crypt($data, $self->randomString(8));
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	$data;
 }

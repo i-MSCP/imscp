@@ -1,176 +1,129 @@
 #!/usr/bin/perl
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
-# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# Version: $Id$
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
-#
-# The Original Code is "VHCS - Virtual Hosting Control System".
-#
-# The Initial Developer of the Original Code is moleSoftware GmbH.
-# Portions created by Initial Developer are Copyright (C) 2001-2006
-# by moleSoftware GmbH. All Rights Reserved.
-#
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
-
-use FindBin;
-use lib "$FindBin::Bin/";
-require 'imscp_common_code.pl';
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
 
-sub mngr_start_up {
+use FindBin;
+use lib "$FindBin::Bin";
+use lib "$FindBin::Bin/PerlLib";
+use lib "$FindBin::Bin/PerlVendor";
 
-	push_el(\@main::el, 'mngr_start_up()', 'Starting...');
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Execute;
+use Data::Dumper;
+use MIME::Base64;
 
-	my $rs;
+newDebug('imscp-rqst-mngr.log');
 
-	$rs = lock_system();
-	return $rs if ($rs != 0);
+sub start_up {
+	debug('Starting...');
 
-	# Let's clear Execution Logs, if any.
-	if (-e $main::imscp_rqst_mngr_el) {
-		$rs = del_file($main::imscp_rqst_mngr_el);
-		return $rs if ($rs != 0);
-	}
-
-	# Setting umask
-	# Some files contain sensitive data and must not be world readable
-
-	my $umask = umask();
 	umask(027);
 
-	push_el(\@main::el, 'mngr_start_up()', 'Ending...');
+	iMSCP::Boot->new()->init();
 
-	 0;
-}
-
-sub mngr_shut_down {
-
-	push_el(\@main::el, 'mngr_shut_down()', 'Starting...');
-	push_el(\@main::el, 'mngr_shut_down()', 'Ending...');
-
+	debug('Ending...');
 	0;
 }
 
 sub mngr_engine_process{
+	debug('Starting...');
 
-	push_el(\@main::el, 'mngr_engine_process()', 'Starting...');
+	my ($type, $sql, $ipMods) = @_;
+	my $rs = 0;
 
-	my ($type, $sql, $count) = @_;
+	debug("=======================");
+	debug("Processing type $type.");
 
-	if (defined $main::engine_debug) {
-		push_el(
-			\@main::el, 'mngr_engine_process()',
-			"processing type $type."
-		);
+	print("=======================\n");
+	print("Processing type $type.\n");
+
+	my $database = iMSCP::Database->factory();
+	my $rdata = $database->doQuery('id', $sql);
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		return 1;
 	}
 
-	my($rs, $rdata) = doHashSQL($sql, 'id');
-	return $rs if ($rs != 0);
+	my $i = 1;
+	my $total = scalar keys %$rdata;
+	$$ipMods += $total if(ref $ipMods);
 
-	$$count += my @keys = keys(%$rdata);
+	foreach (keys %$rdata) {
+		my $id		= $rdata->{$_}->{id};
+		my $name	= $rdata->{$_}->{name};
+		my $status	= $rdata->{$_}->{status};
 
-	foreach (@keys) {
-		my (
-			$id,
-			$name,
-			$status
-		) = (
-			@$rdata{$_}->{'id'},
-			@$rdata{$_}->{'name'},
-			@$rdata{$_}->{'status'}
-		);
+		debug("processing $id, $name, $status.");
+		print("processing $id, $name, $status. ($i of $total: remaining ".($total -$i).")\n");
+		$i++;
 
-		if ($status eq 'restore') {
-			$$count--;
+		newDebug("${type}_mngr_$name.log");
+
+		my $file	= "Modules/${type}.pm";
+		my $class	= "Modules::$type";
+
+		eval {require $file};
+		if($@){
+			error("Error while processing $id, $name, $status: $@");
+			$rs = 1;
+		} else {
+			$rs |=  $class->new()->process($id);
 		}
 
-		my $mngr	= eval('$main::imscp_'.$type.'_mngr');
-		my $el		= eval('$main::imscp_'.$type.'_mngr_el');
-		my $stdout	= eval('$main::imscp_'.$type.'_mngr_stdout');
-		my $stderr	= eval('$main::imscp_'.$type.'_mngr_stderr');
+		endDebug();
 
-		if (defined $main::engine_debug) {
-			push_el(
-				\@main::el, 'mngr_engine_process()',
-				"processing $id, $name, $status."
-			);
-		}
-
-		my $rs = sys_command("$mngr $id 1>$stdout 2>$stderr");
-
-		if ($rs != 0) {
-			if (-e $el) {
-
-				my $rs;
-
-				# removing 'sys_command()' error message;
-				pop_el(\@main::el);
-
-				($rs, my $rdata) = get_el_error($el);
-				return $rs if ($rs != 0);
-
-				push_el(\@main::el, $mngr, $rdata);
-
-			}
-
-		}
-
-		if (!defined $main::engine_debug) {
-			del_file($stdout);
-			del_file($stderr);
-		}
-
-		return $rs if ($rs != 0 && (!defined($ARGV[0]) || $ARGV[0] ne 'update'));
+		error("Error while processing $id, $name, $status.") if $rs;
+		error("See ${type}_mngr_$name.log for details.") if $rs;
 	}
 
-	push_el(\@main::el, 'mngr_engine_process()', 'Ending...');
-
-	0;
+	debug('Ending...');
+	$rs;
 }
 
-sub mngr_engine {
+sub engine {
+	debug('Starting...');
 
-	## First we add / alter main domain but not delete until all related data are processed
-	## Then we add / alter subdomain for main domain but not delete until all related data are processed
-	## Next we add / alter alias for main domain but not delete until all related data are processed
-	## Next we add / alter subdomain for alias but not delete until all related data are processed
+	my $rs = 0;
+	my $sql;
+
+	## First we add / alter main domain
+	## Then we add / alter subdomain for main domain
+	## Next we add / alter alias for main domai
+	## Next we add / alter subdomain for alias
 	## Next we process mailboxex
 	## Next we process .htaccess related data
-	## Finally we can delete in order alias subdomains
+	## Now we can delete in order alias subdomains
 	## Subdomains
 	## Alias
 	## Main domain
 
-	push_el(\@main::el, 'mngr_engine()', 'Starting...');
-
-	my ($rs, $rdata, $sql);
-
-	my $dmn_count = 0;
+	my $ipsMod = 0;
 
 	$sql = "
 		SELECT
@@ -189,15 +142,9 @@ sub mngr_engine {
 			'toenable',
 			'todisable'
 		)
-		ORDER BY
-			`domain_id`
-		;
 	";
 
-	$rs = mngr_engine_process(
-		'dmn', $sql, \$dmn_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Domain', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
@@ -210,19 +157,13 @@ sub mngr_engine {
 			`subdomain_status`
 		IN (
 			'toadd',
-			'change'
+			'change',
+			'toenable',
+			'todisable'
 		)
-		ORDER BY
-			`subdomain_id`
-		;
 	";
 
-	my $sub_count = 0;
-
-	$rs = mngr_engine_process(
-		'sub', $sql, \$sub_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Subdomain', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
@@ -236,19 +177,13 @@ sub mngr_engine {
 		IN (
 			'toadd',
 			'change',
-			'dnschange'
+			'dnschange',
+			'toenable',
+			'todisable'
 		)
-		ORDER BY
-			`alias_id`
-		;
 	";
 
-	my $als_count = 0;
-
-	$rs = mngr_engine_process(
-		'als', $sql, \$als_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Alias', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
@@ -261,24 +196,18 @@ sub mngr_engine {
 			`subdomain_alias_status`
 		IN (
 			'toadd',
-			'change'
+			'change',
+			'toenable',
+			'todisable'
 		)
-		ORDER BY
-			`subdomain_alias_id`
-		;
 	";
 
-	my $alssub_count = 0;
-
-	$rs = mngr_engine_process(
-		'alssub', $sql, \$alssub_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('SubAlias', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
 			`mail_id` AS 'id',
-			`mail_acc` AS 'name',
+			`mail_addr` AS 'name',
 			`status` as 'status'
 		FROM
 			`mail_users`
@@ -291,17 +220,9 @@ sub mngr_engine {
 			'delete',
 			'todisable'
 		)
-		ORDER BY
-			`mail_id`
-		;
 	";
 
-	my $mail_count = 0;
-
-	$rs = mngr_engine_process(
-		'mbox', $sql, \$mail_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Mail', $sql);
 
 	$sql = "
 		SELECT
@@ -317,21 +238,13 @@ sub mngr_engine {
 			'change',
 			'delete'
 		)
-		ORDER BY
-			`id`
-		;
 	";
-	my $htcount = 0;
-
-	$rs = mngr_engine_process(
-		'htusers', $sql, \$htcount
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Htusers', $sql);
 
 	$sql = "
 		SELECT
-			`id` AS 'name',
-			`dmn_id` AS 'id',
+			`id` AS 'id',
+			`ugroup` AS 'name',
 			`status`
 		FROM
 			`htaccess_groups`
@@ -342,23 +255,13 @@ sub mngr_engine {
 			'change',
 			'delete'
 		)
-		GROUP BY
-			`dmn_id`
-		ORDER BY
-			`dmn_id`
-		;
 	";
-
-	$rs = mngr_engine_process(
-		'htgroups', $sql, \$htcount
-	);
-	return $rs if ($rs != 0);
-
+	$rs |= mngr_engine_process('Htgroup', $sql);
 
 	$sql = "
 		SELECT
 			`id`,
-			`dmn_id` AS 'name',
+			`auth_name` AS 'name',
 			`status`
 		FROM
 			`htaccess`
@@ -369,15 +272,8 @@ sub mngr_engine {
 			'change',
 			'delete'
 		)
-		ORDER BY
-			`id`
-		;
 	";
-
-	$rs = mngr_engine_process(
-		'htaccess', $sql, \$htcount
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Htaccess', $sql);
 
 	$sql = "
 		SELECT
@@ -388,15 +284,9 @@ sub mngr_engine {
 			`subdomain_alias`
 		WHERE
 			`subdomain_alias_status` = 'delete'
-		ORDER BY
-			`subdomain_alias_id`
-		;
 	";
 
-	$rs = mngr_engine_process(
-		'alssub', $sql, \$alssub_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('SubAlias', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
@@ -407,15 +297,9 @@ sub mngr_engine {
 			`subdomain`
 		WHERE
 			`subdomain_status` = 'delete'
-		ORDER BY
-			`subdomain_id`
-		;
 	";
 
-	$rs = mngr_engine_process(
-		'sub', $sql, \$sub_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Subdomain', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
@@ -426,15 +310,9 @@ sub mngr_engine {
 			`domain_aliasses`
 		WHERE
 			`alias_status` = 'delete'
-		ORDER BY
-			`alias_id`
-		;
 	";
 
-	$rs = mngr_engine_process(
-		'als', $sql, \$als_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Alias', $sql, \$ipsMod);
 
 	$sql = "
 		SELECT
@@ -445,111 +323,41 @@ sub mngr_engine {
 			`domain`
 		WHERE
 			`domain_status` = 'delete'
-		ORDER BY
-			`domain_id`
-		;
 	";
 
-	$rs = mngr_engine_process(
-		'dmn', $sql, \$dmn_count
-	);
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('Domain', $sql, \$ipsMod);
 
 	#
 	# Network card management BEGIN.
 	#
+
 	$sql = "
 		SELECT
-			`value`, 'name'
+			`ip_id` AS 'id',
+			`ip_status` AS 'name',
+			`ip_status` AS 'status'
 		FROM
-			`config`
+			`server_ips`
 		WHERE
-			`name` = 'DATABASE_REVISION'
-		;
+			`ip_status` != 'ok'
 	";
-	($rs, $rdata) = doHashSQL($sql, 'name');
-	return $rs if ($rs != 0);
+	$rs |= mngr_engine_process('NetCard', $sql);
 
-	if (keys(%$rdata) > 0 && @$rdata{'name'}->{'value'} >= 33) {
-		$sql = "
-			SELECT
-				`ip_id`
-			FROM
-				`server_ips`
-			WHERE
-				`ip_status` != 'ok'
-			;
-		";
-		($rs, $rdata) = doHashSQL($sql,'ip_id');
-		return $rs if ($rs != 0);
+	#
+	# IP management BEGIN.
+	#
 
-		if (keys(%$rdata) > 0) {
-			$rs = sys_command(
-				"$main::imscp_net_interfaces_mngr stop " .
-				"1>$main::imscp_net_interfaces_mngr_stdout 2>&1"
-			);
-			if (!defined $main::engine_debug) {
-				del_file($main::imscp_net_interfaces_mngr_stdout);
-			}
-			return $rs if($rs != 0);
-			$rs = sys_command(
-				"$main::imscp_net_interfaces_mngr start " .
-				"1>>$main::imscp_net_interfaces_mngr_stdout 2>&1"
-			);
-			if (!defined $main::engine_debug) {
-				del_file($main::imscp_net_interfaces_mngr_stdout);
-			}
-			return $rs if($rs != 0);
-		}
+	if($ipsMod != 0){
+		use Modules::Ips;
+		$rs |= Modules::Ips->new()->process();
 	}
-	#
-	# Network card management END.
-	#
-	push_el(
-		\@main::el,
-		'mngr_engine()',
-		"domain count: $dmn_count || ".
-		"subdomain count: $sub_count || ".
-		"aliasses count: $als_count || ".
-		"email count: $mail_count || ".
-		"subdomain aliasses count: $alssub_count"
-	);
-	if (($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
-		$alssub_count > 0) && (!defined($ARGV[0]) || $ARGV[0] ne 'update')) {
-		$rs = sys_command(
-			"$main::imscp_serv_mngr $dmn_count $sub_count $als_count " .
-			"$mail_count $alssub_count 1>$main::imscp_serv_mngr_stdout " .
-			"2>$main::imscp_serv_mngr_stderr"
-		);
-		if ($rs != 0) {
-			if (-e $main::imscp_serv_mngr_el) {
-				my $rs1;
-				# removing 'sys_command()' error message;
-				pop_el(\@main::el);
-				($rs1, $rdata) = get_el_error($main::imscp_serv_mngr_el);
-				return $rs1 if ($rs1 != 0);
-				push_el(\@main::el, $main::imscp_serv_mngr, $rdata);
-			}
-			if (!defined($main::engine_debug)) {
-				del_file($main::imscp_serv_mngr_stdout);
-				del_file($main::imscp_serv_mngr_stderr);
-			}
-			return $rs;
-		}
-		if (!defined($main::engine_debug)) {
-			del_file($main::imscp_serv_mngr_stdout);
-			del_file($main::imscp_serv_mngr_stderr);
-		}
-	} else {
-		push_el(\@main::el, 'mngr_engine()', 'Not restarting servers...');
-	}
+
 
 	#
 	# software installation BEGIN
 	#
 
-	push_el(\@main::el, 'apps_installer_engine()', 'Starting...');
-
+	debug('apps_installer_engine Starting...');
 	$sql = "
 		SELECT
 			`domain_id`,
@@ -579,43 +387,69 @@ sub mngr_engine {
 		ORDER BY
 			`domain_id`
 	";
-	($rs, $rdata) = doSQL($sql);
-	return $rs if($rs != 0);
 
-	my $sw_count = @$rdata;
-	if ($sw_count > 0) {
-		push_el(\@main::el, 'imscp_sw_mngr_engine()', 'Starting...');
-		foreach (@$rdata) {
-			my $row = $_;
-			my ($sw_domain_id, $sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id, $sw_software_id, $sw_path, $sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email, $sw_software_status, $sw_software_depot, $sw_software_master_id) = (@$row[0], @$row[1], @$row[2], @$row[3], @$row[4], @$row[5], @$row[6], @$row[7], @$row[8], @$row[9], @$row[10], @$row[11], @$row[12], @$row[13], @$row[14], @$row[15]);
-
-			#Encoding data to push to another script
-			my $imscp_sw_mngr_pushstring = encode_base64("$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id");
-
-			push_el(\@main::el, 'mngr_engine()', "processing encoded pushtring: $imscp_sw_mngr_pushstring.")
-				if (defined($main::engine_debug));
-			$rs = sys_command("$main::imscp_sw_mngr \"$imscp_sw_mngr_pushstring\" 1>$main::imscp_sw_mngr_stdout 2>$main::imscp_sw_mngr_stderr");
-
-			if ($rs != 0) {
-				if (-e $main::imscp_sw_mngr_el) {
-					my $rs1 = undef;
-					pop_el(\@main::el); # removing 'sys_command()' error message;
-					($rs1, $rdata) = get_el_error($main::imscp_sw_mngr_el);
-					return $rs1 if ($rs1 != 0);
-					push_el(\@main::el, $main::imscp_sw_mngr, $rdata);
-				}
-			}
-
-			sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_domain_id-$sw_software_id");
-
-			if (!defined($main::engine_debug)) {
-				del_file($main::imscp_sw_mngr_stdout);
-				del_file($main::imscp_sw_mngr_stderr);
-			}
-			return $rs if($rs!=0);
-		}
-		push_el(\@main::el, 'imscp_sw_mngr_engine()', 'Ending...');
+	my $rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		$rdata = {};
+		$rs = 1;
 	}
+
+	newDebug('imscp_sw_mngr_engine');
+	debug('Starting...');
+	foreach (keys %$rdata) {
+		my ($stdout, $stderr);
+		my (
+			$sw_domain_id,
+			$sw_aliasdomain_id,
+			$sw_subdomain_id,
+			$sw_aliassubdomain_id,
+			$sw_software_id,
+			$sw_path,
+			$sw_software_prefix,
+			$sw_database,
+			$sw_database_user,
+			$sw_database_tmp_pwd,
+			$sw_install_username,
+			$sw_install_password,
+			$sw_install_email,
+			$sw_software_status,
+			$sw_software_depot,
+			$sw_software_master_id
+		) = (
+			$rdata->{$_}->{domain_id},
+			$rdata->{$_}->{alias_id},
+			$rdata->{$_}->{subdomain_id},
+			$rdata->{$_}->{subdomain_alias_id},
+			$rdata->{$_}->{software_id},
+			$rdata->{$_}->{path},
+			$rdata->{$_}->{software_prefix},
+			$rdata->{$_}->{db},
+			$rdata->{$_}->{database_user},
+			$rdata->{$_}->{database_tmp_pwd},
+			$rdata->{$_}->{install_username},
+			$rdata->{$_}->{install_password},
+			$rdata->{$_}->{install_email},
+			$rdata->{$_}->{software_status},
+			$rdata->{$_}->{software_depot},
+			$rdata->{$_}->{software_master_id}
+		);
+
+		#Encoding data to push to another script
+		my $imscp_sw_mngr_pushstring = encode_base64("$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id");
+
+		debug("processing encoded pushtring: $imscp_sw_mngr_pushstring.");
+		$rs |= execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-sw-mngr \"$imscp_sw_mngr_pushstring\"", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+
+		$rs |= execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_domain_id-$sw_software_id", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+	}
+	debug('Ending...');
+	endDebug();
+
 
 	$sql = "
 		SELECT
@@ -631,86 +465,52 @@ sub mngr_engine {
 		ORDER BY
 			`reseller_id`
 	";
-	($rs, $rdata) = doSQL($sql);
-	return $rs if($rs != 0);
-
-	$sw_count = @$rdata;
-	if ($sw_count > 0) {
-		push_el(\@main::el, 'imscp_pkt_mngr_engine()', 'Starting...');
-		foreach (@$rdata) {
-			my $row = $_;
-			my ($sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot) = (@$row[0], @$row[1], @$row[2], @$row[3], @$row[4]);
-
-			#Encoding data to push to another script
-			my $imscp_pkt_mngr_pushstring = encode_base64("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
-
-			push_el(\@main::el, 'mngr_engine()', "processing encoded pushtring: $imscp_pkt_mngr_pushstring.")
-				if (defined($main::engine_debug));
-			$rs = sys_command("$main::imscp_pkt_mngr \"$imscp_pkt_mngr_pushstring\" 1>$main::imscp_pkt_mngr_stdout 2>$main::imscp_pkt_mngr_stderr");
-
-			if ($rs != 0) {
-				if (-e $main::imscp_pkt_mngr_el) {
-					my $rs1 = undef;
-					pop_el(\@main::el); # removing 'sys_command()' error message;
-					($rs1, $rdata) = get_el_error($main::imscp_pkt_mngr_el);
-					return $rs1 if ($rs1 != 0);
-					push_el(\@main::el, $main::imscp_pkt_mngr, $rdata);
-				}
-			}
-
-			if (!defined($main::engine_debug)) {
-				del_file($main::imscp_pkt_mngr_stdout);
-				del_file($main::imscp_pkt_mngr_stderr);
-			}
-
-			return $rs if($rs != 0 );
-			sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_software_archive-$sw_software_id");
-		}
-		push_el(\@main::el, 'imscp_pkt_mngr_engine()', 'Ending...');
+	$rdata = iMSCP::Database->factory()->doQuery('software_id', $sql);
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		return 1;
 	}
 
-  	push_el(\@main::el, 'apps_installer_engine()', 'Ending...');
+	newDebug('imscp_pkt_mngr_engine.log');
+	debug('Starting...');
+	foreach (keys %$rdata) {
+		my ($stdout, $stderr);
+		my (
+			$sw_software_id,
+			$sw_reseller_id,
+			$sw_software_archive,
+			$sw_software_status,
+			$sw_software_depot
+		) = (
+			$rdata->{$_}->{software_id},
+			$rdata->{$_}->{reseller_id},
+			$rdata->{$_}->{software_archive},
+			$rdata->{$_}->{software_status},
+			$rdata->{$_}->{software_depot}
+		);
 
-	#
-	# software installation END
-	#
+		#Encoding data to push to another script
+		debug("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
+		my $imscp_pkt_mngr_pushstring = encode_base64("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
 
-	push_el(\@main::el, 'mngr_engine()', 'Ending...');
+		debug("processing encoded pushtring: $imscp_pkt_mngr_pushstring");
+		$rs |= execute("perl $main::imscpConfig{ENGINE_ROOT_DIR}/imscp-pkt-mngr \"$imscp_pkt_mngr_pushstring\"", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
 
-	0;
+		$rs |= execute("$main::imscpConfig{CMD_RM} -rf /tmp/sw-$sw_software_archive-$sw_software_id", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $stderr;
+	}
+	debug('Ending...');
+	endDebug();
+
+
+	debug('Ending...');
+	$rs;
 }
 
-my $rs;
-
-$rs = mngr_start_up();
-
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_rqst_mngr_el);
-
-	mngr_shut_down();
-
-	exit 1;
-}
-
-$rs = mngr_engine();
-
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_rqst_mngr_el);
-
-	mngr_shut_down();
-
-	exit 1;
-}
-
-$rs = mngr_shut_down();
-
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_rqst_mngr_el);
-
-	exit 1;
-}
+start_up() and exit 1;
+engine() and exit 1;
 
 exit 0;

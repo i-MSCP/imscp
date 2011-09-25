@@ -31,7 +31,7 @@ use Symbol qw/gensym qualify qualify_to_ref/;
 use iMSCP::Debug;
 
 sub new {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $proto			= shift;
 	my $class			= ref($proto) || $proto;
@@ -42,7 +42,7 @@ sub new {
 	$STD				= qualify($STD);
 	$self->{STDHandler}	= qualify_to_ref($STD);
 
-	debug ((caller(0))[3].": Capturing ${$self->{STDHandler}}");
+	debug ("Capturing ${$self->{STDHandler}}");
 
 	open $self->{saved}, ">& $STD" or error("Can't redirect <$STD> - $!");
 	(undef, $self->{newSTDFile}) = tempfile;
@@ -50,15 +50,15 @@ sub new {
 	open $self->{STDHandler}, ">& ".fileno($self->{newSTDHandler}) or error("Can't redirect $STD - $!");
 	$self->{pid} = $$;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	bless($self, $class);
 }
 
 sub DESTROY {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $self	= shift;
 	return unless $self->{pid} eq $$;
-	debug ((caller(0))[3].": Finishing capture of ${$self->{STDHandler}}");
+	debug ("Finishing capture of ${$self->{STDHandler}}");
 	select((select ($self->{STDHandler}), $|=1)[0]);
 	open $self->{STDHandler}, ">& ". fileno($self->{saved}) or error("Can't restore ${$self->{STDHandler}} - $!");
 	seek $self->{newSTDHandler}, 0, 0;
@@ -67,7 +67,7 @@ sub DESTROY {
 	chomp($msg);
 	${$self->{capture}}	= $msg;
 	unlink $self->{newSTDFile} or error("Couldn't remove temp file '$self->{newSTDFile}' - $!",1);
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 1;

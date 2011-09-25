@@ -36,7 +36,7 @@ use Common::SimpleClass;
 
 sub factory{
 	my $self	= shift;
-	my $server	= shift;
+	my $server	= shift || $main::imscpConfig{PO_SERVER};
 	my ($file, $class);
 	if(lc($server) =~ /^no$/ ){
 		$file	= "Servers/noserver.pm";
@@ -46,11 +46,11 @@ sub factory{
 		$class	= "Servers::po::$server";
 	}
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	require $file;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $class->new();
 }

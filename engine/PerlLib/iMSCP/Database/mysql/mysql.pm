@@ -52,16 +52,16 @@ sub set{
 	my $self		= shift;
 	my $prop		= shift;
 	my $value		= shift;
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].": Setting $prop as ".($value ? $value :''));
+	debug('Starting...');
+	debug("Setting $prop as ".($value ? $value :''));
 	$self->{db}->{$prop} = $value if(exists $self->{db}->{$prop});
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub connect{
 	my $self		= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $data_source	=
 		'dbi:mysql:'.
@@ -82,7 +82,7 @@ sub connect{
 		return $DBI::errstr;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -93,9 +93,9 @@ sub doQuery{
 	my $query			= shift || error("No query provided");
 	my @subs			= @_;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].": $query with @subs");
+	debug("$query with @subs");
 
 	$self->{sth} = $self->{connection}->prepare($query) || return("Error while preparing query: $DBI::errstr $key|$query");
 
@@ -107,7 +107,7 @@ sub doQuery{
 
 	my $href = $self->{sth}->fetchall_hashref( eval "[ qw/$key/ ]" );
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	tie my %href , 'iMSCP::Database::mysql::Result', result => $href;
 
@@ -118,7 +118,7 @@ sub getDBTables{
 
 	my $self			= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->{sth} = $self->{connection}->prepare("SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';");
 
@@ -126,7 +126,7 @@ sub getDBTables{
 
 	my $href = $self->{sth}->fetchall_hashref("TABLE_NAME");
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	my @tables = keys %$href;
 
@@ -140,20 +140,20 @@ sub dumpdb{
 	my $db			= shift;
 	my $filename	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	unless($self->{connection}){
-		error((caller(0))[3].': Not connected');
+		error('Not connected');
 		return 1;
 	}
 
 	unless($self ne __PACKAGE__){
-		error((caller(0))[3].': Not an instance instances');
+		error('Not an instance instances');
 		return 1;
 	}
 
 	unless($filename){
-		error((caller(0))[3].': No filename provided');
+		error('No filename provided');
 		return 1;
 	}
 
@@ -164,9 +164,9 @@ sub dumpdb{
 	my ($rs, $stdout, $stderr);
 	$rs = execute('which mysqldump', \$stdout, \$stderr);
 	#chomp($stdout);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	error((caller(0))[3].": Can find mysqldump") if (!$stderr && $rs);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error("Can find mysqldump") if (!$stderr && $rs);
 	return $rs if $rs;
 
 	my $dbName = $db;
@@ -195,20 +195,20 @@ sub dumpdb{
 					"'$db' > '$filename'";
 
 	$rs = execute($bkpCmd, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
-	error((caller(0))[3].": $stderr") if $stderr;
-	error((caller(0))[3].": Can not dump $dbName") if (!$stderr && $rs);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error("Can not dump $dbName") if (!$stderr && $rs);
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub quoteIdentifier{
 	my ($self, $identifier)	= (@_);
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	$identifier = join(', ', $identifier) if( ref $identifier eq 'ARRAY');
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $self->{connection}->quote_identifier($identifier)
 }
 1;

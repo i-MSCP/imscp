@@ -40,7 +40,7 @@ use Common::SingletonClass;
 
 sub _init{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = iMSCP::Stepper->new();
 
@@ -48,37 +48,37 @@ sub _init{
 	$self->{all}	= [];
 	$self->{last}	= '';
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub startDetail{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = iMSCP::Stepper->new();
 
 	push (@{$self->{all}}, $self->{last});
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub endDetail{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = iMSCP::Stepper->new();
 
 	$self->{last} = pop (@{$self->{all}});
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
-sub step{
-	debug((caller(0))[3].': Starting...');
+sub step($ $ $ $){
+	debug('Starting...');
 
 	my $self = iMSCP::Stepper->new();
 
@@ -88,14 +88,12 @@ sub step{
 
 	my $msg = join ("\n", @{$self->{all}}) . "\n\n" . $self->{last};
 
-	if(!$exit) { $exit = 'yes';}
-
 	iMSCP::Dialog->factory()->startGauge($msg, int($index*100/$steps)) if iMSCP::Dialog->factory()->needGauge();
 	iMSCP::Dialog->factory()->setGauge(int($index*100/$steps), $msg);
 
 	my $rs = &{$code}() if (ref $code eq 'CODE');
 
-	if($rs && $exit eq 'yes'){
+	if($rs){
 		iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
 		iMSCP::Dialog->factory()->msgbox(
 					"\n
@@ -112,12 +110,10 @@ sub step{
 					To obtain help please use http://i-mscp.net/forum/
 
 					");
-		exit 1;
-	} elsif($rs) {
 		return $rs;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 

@@ -50,7 +50,7 @@ exit 0;
 
 sub setup_engine {
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Stepper;
 
@@ -77,30 +77,30 @@ sub setup_engine {
 
 	systemSetup();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub loadConfigs{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Config;
 
 	my $path = ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/');
 
-	fatal((caller(0))[3].': ispcp.conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
+	fatal(': ispcp.conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
 
 	tie %main::ispcpConfig, 'iMSCP::Config','fileName' => $path.'ispcp/ispcp.conf';
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub welcome{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -124,19 +124,19 @@ sub welcome{
 		)
 	);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub checkISPCPVersion{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
 	$main::ispcpConfig{'Version'} =~ m!([\d.]+)!;
 	if(version->new($1) < version->new('1.0.7')){
-		error((caller(0))[3].': Only migration from ispCP 1.0.7 or later is supported');
+		error('Only migration from ispCP 1.0.7 or later is supported');
 		iMSCP::Dialog->factory()->set('defaultno', '');
 		exit 1 if iMSCP::Dialog->factory()->yesno("
 
@@ -150,13 +150,13 @@ sub checkISPCPVersion{
 						\\Z1WARNING: \\ZuDATA might be corrupt if you proceed forward\\Zn!!
 		");
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub checkDbPass{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -171,7 +171,7 @@ sub checkDbPass{
 	my ($dbkey, $dbiv, $pass);
 	for my $keyfile (@paths){
 
-		debug((caller(0))[3].": \n\n\nTesting $keyfile");
+		debug("\n\n\nTesting $keyfile");
 		next if(! -f $keyfile);
 
 		my $file = iMSCP::File->new(filename => "$keyfile")->get();
@@ -183,10 +183,10 @@ sub checkDbPass{
 				debug($main::ispcpDBiv);
 				my $error = connectispCPDb();
 				if(!$error) {
-					debug((caller(0))[3].': Ending...');
+					debug('Ending...');
 					return 0;
 				}
-				error ((caller(0))[3].": $error");
+				error("$error");
 			}
 		}
 	}
@@ -204,14 +204,14 @@ sub checkDbPass{
 
 							Fix this and restart.
 	");
-	error((caller(0))[3].": ispCP database keys are corrupt! We tryied to use folowing keys\n".join("\n", @paths));
-	debug((caller(0))[3].': Ending...');
+	error("ispCP database keys are corrupt! We tryied to use folowing keys\n".join("\n", @paths));
+	debug('Ending...');
 	1;
 }
 
 sub connectispCPDb{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Crypt;
 
@@ -225,14 +225,14 @@ sub connectispCPDb{
 	$database->set('DATABASE_USER', $main::ispcpConfig{'DATABASE_USER'});
 	$database->set('DATABASE_PASSWORD', $pass);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $database->connect();
 }
 
 sub databaseIntegrityTest{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Database;
@@ -358,21 +358,21 @@ sub databaseIntegrityTest{
 							join("\n\n", @errors)
 							."\nFix this and try again.
 		");
-		error((caller(0))[3].": ".join("\n", @errors));
-		debug((caller(0))[3].': Ending...');
+		error("".join("\n", @errors));
+		debug('Ending...');
 		return 1;
 	}
 
 	connectispCPDb(); # restore conection
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
 
 sub userTest{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Database;
 	use iMSCP::Dialog;
@@ -406,18 +406,18 @@ sub userTest{
 							join("\n\n", @errors)
 							."\n\nFix this and try again.
 		");
-		error((caller(0))[3].": \n".join("\n", @errors));
-		debug((caller(0))[3].': Ending...');
+		error("\n".join("\n", @errors));
+		debug('Ending...');
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub systemConfigTest{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Execute;
 	use iMSCP::Dialog;
@@ -425,7 +425,7 @@ sub systemConfigTest{
 
 	my ($stdout, $stderr, @errors);
 	my $rv		= execute("find $main::ispcpConfig{'CONF_DIR'} -type f -name '*.system'", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if $stdout;
+	debug("$stdout") if $stdout;
 	push (@errors, $stderr) if $rv;
 
 	my @files	= split("\n", $stdout);
@@ -434,7 +434,7 @@ sub systemConfigTest{
 		my $destination = $file;
 		$destination =~ s/$main::ispcpConfig{'CONF_DIR'}/$main::imscpConfig{'CONF_DIR'}/g;
 		$rv = execute("cp -fv $file $destination", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
+		debug("$stdout") if $stdout;
 		push (@errors, $stderr) if $rv;
 	}
 
@@ -451,11 +451,9 @@ sub systemConfigTest{
 		if (keys %{$result}){
 			local $Data::Dumper::Terse = 1;
 			for my $row (values %{$result}){
-				if (! -f "$main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db"){
-					push(@errors, "\nFile name $main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db not found!");
-				} else {
+				if (-f "$main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db"){
 					$rv = execute("cp -fv $main::ispcpConfig{'BIND_DB_DIR'}/$row->{name}.db $main::imscpConfig{'CONF_DIR'}/bind/working/", \$stdout, \$stderr);
-					debug((caller(0))[3].": $stdout") if $stdout;
+					debug("$stdout") if $stdout;
 					push (@errors, $stderr) if $rv;
 				}
 			}
@@ -471,15 +469,15 @@ sub systemConfigTest{
 							Fix this and after that try again"
 		)){
 			$rv = 1;
-			warning((caller(0))[3].": \n".join("\n", @errors));
+			warning("\n".join("\n", @errors));
 		}
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return ( $rv ? join("\n\n", @errors) : $rv);
 }
 
 sub confSave{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Boot;
@@ -520,12 +518,12 @@ sub confSave{
 
 
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub savePass {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $table		= shift;
 	my $field_id	= shift;
 	my $field_pass	= shift;
@@ -552,13 +550,13 @@ sub savePass {
 		push(@{$errors}, "$query produced following error: $error");
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub dbUpgrade{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my @errors;
 
@@ -596,7 +594,7 @@ sub dbUpgrade{
 	}
 
 	if (@errors){
-		error((caller(0))[3].": \n".join("\n", @errors));
+		error("\n".join("\n", @errors));
 		exit 0 if iMSCP::Dialog->factory()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n\n".
@@ -607,13 +605,13 @@ sub dbUpgrade{
 		");
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub otherMessCleanup{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Templator;
 	use iMSCP::File;
@@ -653,7 +651,7 @@ sub otherMessCleanup{
 	#fcgi / fastcgi cleanup
 	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
 		$rs = execute("/usr/sbin/a2dismod fastcgi_ispcp fcgid_ispcp", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
+		debug("$stdout") if $stdout;
 		push(@errors, $stderr) if $stderr;
 	}
 	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
@@ -665,7 +663,7 @@ sub otherMessCleanup{
 	#apache ispcp.conf
 	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2dissite') {
 		$rs = execute("/usr/sbin/a2dissite ispcp.conf", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if $stdout;
+		debug("$stdout") if $stdout;
 		push(@errors, $stderr) if $stderr;
 	}
 	if(-e "$main::ispcpConfig{'APACHE_SITES_DIR'}/ispcp.conf") {
@@ -702,7 +700,7 @@ sub otherMessCleanup{
 	}
 
 	if (@errors){
-		warning((caller(0))[3].": \n".join("\n", @errors));
+		warning("\n".join("\n", @errors));
 		exit 0 if iMSCP::Dialog->factory()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n".
@@ -713,13 +711,13 @@ sub otherMessCleanup{
 		");
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub daemonRemove{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Execute;
 	my ($rs, $stdout, $stderr, @errors);
@@ -727,11 +725,11 @@ sub daemonRemove{
 	for ($main::ispcpConfig{'CMD_ISPCPD'}, $main::ispcpConfig{'CMD_ISPCPN'}) {
 		if(-x '/usr/sbin/update-rc.d') {
 			$rs = execute("/usr/sbin/update-rc.d -f $_ remove", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout") if $stdout;
+			debug("$stdout") if $stdout;
 			push(@errors, $stderr) if $stderr;
 		} elsif(-x '/usr/lib/lsb/install_initd') {
 			$rs = execute("/usr/lib/lsb/remove_initd $_", \$stdout, \$stderr);
-			debug((caller(0))[3].": $stdout") if $stdout;
+			debug("$stdout") if $stdout;
 			push(@errors, $stderr) if $stderr;
 		}
 		if(-e $_) {
@@ -740,7 +738,7 @@ sub daemonRemove{
 	}
 
 	if (@errors){
-		warning((caller(0))[3].": \n".join("\n", @errors));
+		warning("\n".join("\n", @errors));
 		exit 0 if iMSCP::Dialog->factory()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n".
@@ -750,13 +748,13 @@ sub daemonRemove{
 								be aware that we do not guarantee that will succeed
 		");
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub removeDirs{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dir;
 	my $dir;
@@ -783,16 +781,16 @@ sub removeDirs{
 									This are not fatal error so we can proceed forward.
 									be aware that we do not guarantee that will succeed
 		");
-		warning((caller(0))[3].": \n$errors\n");
+		warning("\n$errors\n");
 	};
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub removeFile{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 	my $file;
@@ -815,22 +813,22 @@ sub removeFile{
 									This are not fatal error so we can proceed forward.
 									be aware that we do not guarantee that will succeed
 		");
-		warning((caller(0))[3].": \n$errors\n");
+		warning("\n$errors\n");
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub systemSetup{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	iMSCP::Dialog->factory()->msgbox("
 								\\Z1SUCCESS\\Zn\n\n
 								You can now install iMSCP. Type \\Z4./imscp-setup\\Zn
 	");
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }

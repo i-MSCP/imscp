@@ -39,9 +39,9 @@ sub TIEHASH {
 	my $self = shift;
 	$self = $self->new(@_);
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].': Tieing ...');
+	debug('Tieing ...');
 
 	$self->{confFile} = ();
 
@@ -53,7 +53,7 @@ sub TIEHASH {
 	$self->_loadConfig();
 	$self->_parseConfig();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $self;
 }
@@ -61,19 +61,19 @@ sub TIEHASH {
 sub _loadConfig{
 	my $self	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].': Config file ' . $self->{confFileName});
+	debug('Config file ' . $self->{confFileName});
 
 	tie @{$self->{confFile}}, 'Tie::File', $self->{confFileName} or
 		fatal("Can`t read " . $self->{confFileName}, 1);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _parseConfig{
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $lineNo = 0;
 
@@ -85,22 +85,22 @@ sub _parseConfig{
 		$lineNo++;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub FETCH {
 	my $self	= shift;
 	my $config	= shift;
 
-	debug((caller(0))[3].": Starting...");
+	debug("Starting...");
 
-	debug((caller(0))[3].": Fetching ${config}..." );
+	debug("Fetching ${config}..." );
 
 	if (!exists($self->{configValues}->{$config}) && !$self->{args}->{noerrors}){
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $self->{configValues}->{$config};
 }
@@ -110,9 +110,9 @@ sub STORE {
 	my $config	= shift;
 	my $value	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].": Store ${config} as ${value}..." );
+	debug("Store ${config} as ".($value ? $value : 'empty')."..." );
 
 	if(!exists($self->{configValues}->{$config})){
 		$self->_insertConfig($config, $value);
@@ -120,17 +120,17 @@ sub STORE {
 		$self->_replaceConfig($config, $value);
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub FIRSTKEY {
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->{_list} = [ sort keys %{$self->{configValues}} ];
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $self->NEXTKEY;
 }
@@ -138,9 +138,9 @@ sub FIRSTKEY {
 sub NEXTKEY {
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return shift @{$self->{_list}};
 }
@@ -150,14 +150,14 @@ sub _replaceConfig{
 	my $config	= shift;
 	my $value	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$value = '' unless defined $value;
 
 	@{$self->{confFile}}[$self->{lineMap}->{$config}] = "$config = $value";
 	$self->{configValues}->{$config} = $value;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub _insertConfig{
@@ -165,14 +165,14 @@ sub _insertConfig{
 	my $config	= shift;
 	my $value	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$value = '' unless defined $value;
 
 	push (@{$self->{confFile}}, "$config = $value");
 	$self->{configValues}->{$config} = $value;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 1;

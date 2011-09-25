@@ -37,7 +37,7 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 
@@ -51,12 +51,12 @@ sub _init{
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -74,7 +74,7 @@ sub buildConf{
 		$cfg =~ s/listen-on ((.*) )?{ 127.0.0.1; };/listen-on $1 { any; };/;
 		$cfg .= "\n";
 	} else {
-		warning((caller(0))[3].": Can't find the default distribution file for named...");
+		warning("Can't find the default distribution file for named...");
 		$cfg = '';
 	}
 
@@ -97,12 +97,12 @@ sub buildConf{
 	# Install the new file in the production directory
 	$file->copyFile($self::bindConfig{'BIND_CONF_FILE'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -117,56 +117,98 @@ sub install{
 
 	$self->askMode() and return 1;
 
+	$self->addMasterZone() and return 1;
+
 	$self->saveConf() and return 1;
 
-	$self->oldEngineCompatibility() and return 1;
+	#$self->oldEngineCompatibility() and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
+sub addMasterZone{
+	debug('Starting...');
+
+	use Servers::named;
+
+	my $self = shift;
+
+	my $named	= Servers::named->factory();
+
+	my $rs = $named->addDmn({
+			DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
+			DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+	});
+	return $rs if $rs;
+
+	debug('Ending...');
+	0;
+}
 sub askMode{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
 	my $self = shift;
 
+	my $ip = iMSCP::IP->factory();
+	my @ips = ();
+	@ips = (@ips, split(';', $self::bindConfig{PRIMARY_DNS}))
+		if $self::bindConfig{PRIMARY_DNS};
+	@ips = (@ips, split(';', $self::bindOldConfig{PRIMARY_DNS}))
+		if $self::bindOldConfig{PRIMARY_DNS};
+	@ips = (@ips, split(';', $self::bindConfig{SECONDARY_DNS}))
+		if $self::bindConfig{SECONDARY_DNS} && $self::bindConfig{SECONDARY_DNS} ne 'no';
+	@ips = (@ips, split(';', $self::bindOldConfig{SECONDARY_DNS}))
+		if $self::bindOldConfig{SECONDARY_DNS} && $self::bindOldConfig{SECONDARY_DNS} ne 'no';
+
+	foreach(@ips){
+		if($_ && !$ip->isValidIp($_)){
+			debug(":$_ is invalid ip");
+			for(qw/BIND_MODE PRIMARY_DNS SECONDARY_DNS/){
+				$self::bindConfig{$_}		= undef;
+				$self::bindOldConfig{$_}	= undef;
+			}
+			last;
+		}
+	}
+
 	if($self::bindConfig{'BIND_MODE'}){
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
 	if($self::bindOldConfig{'BIND_MODE'}){
 		$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'};
-		debug((caller(0))[3].': Ending...');
+		debug('Ending...');
 		return 0;
 	}
 
 	my $out;
-	while (! ($out = iMSCP::Dialog->factory()->radiolist("Select bind mode", 'primary', 'secondary'))){}
+	while (! ($out = iMSCP::Dialog->factory()->radiolist("Select bind mode", 'master', 'slave'))){}
 	$self::bindConfig{'BIND_MODE'} = $out;
 
 	$self->askOtherDNS();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub askOtherDNS{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dialog;
 
 	my $self = shift;
 	my $out;
 
-	if($self::bindConfig{'BIND_MODE'} eq 'primary'){
+	if($self::bindConfig{'BIND_MODE'} eq 'master'){
 		while (! ($out = iMSCP::Dialog->factory()->radiolist("Enable secondary DNS server address IP?", 'no', 'yes'))){}
 		if($out eq 'no'){
 			$self::bindConfig{'SECONDARY_DNS'} = 'no';
-			debug((caller(0))[3].': Ending...');
+			debug('Ending...');
 			return 0;
 		}
 	}
@@ -175,24 +217,29 @@ sub askOtherDNS{
 
 	my $mode = $self::bindConfig{'BIND_MODE'} eq 'primary' ? 'secondary' : 'primary';
 
+	my @ips = ();
+
 	do{
-		while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter $mode DNS server address IP"))){}
-	}while(! (is_ipv4($out) && $out ne '127.0.0.1') );
+		$out = iMSCP::Dialog->factory()->inputbox(
+			"Please enter $mode DNS server address IP. Leave blank for end"
+		);
+		push(@ips, $out) if is_ipv4($out) && $out ne '127.0.0.1';
+	}while(scalar @ips == 0 || $out ne '');
 
 	$self::bindConfig{
-			$self::bindConfig{'BIND_MODE'} eq 'primary'
+			$self::bindConfig{'BIND_MODE'} eq 'master'
 			?
 			'SECONDARY_DNS'
 			:
 			'PRIMARY_DNS'
-	} = $out;
+	} = join (';', @ips);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub bkpConfFile{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use File::Basename;
 
@@ -210,12 +257,12 @@ sub bkpConfFile{
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub saveConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -231,24 +278,25 @@ sub saveConf{
 	$file->mode(0644) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub oldEngineCompatibility{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	for((
 		'BIND_MODE',
 		'BIND_CONF_FILE',
 		'BIND_DB_DIR',
 		'CMD_NAMED',
+		'PRIMARY_DNS',
 		'SECONDARY_DNS'
 	)){
 		$main::imscpConfig{$_} = $self::bindConfig{$_} if !$main::imscpConfig{$_} || $main::imscpConfig{$_} ne $self::bindConfig{$_};
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 

@@ -38,15 +38,23 @@ use vars qw/@ISA/;
 use Common::SimpleClass;
 
 sub factory{
-	my $self	= shift;
-	my $file	= "iMSCP/Database/$self->{args}->{db}/$self->{args}->{db}.pm";
-	my $class	= "iMSCP::Database::$self->{args}->{db}::$self->{args}->{db}";
+	debug('Starting...');
 
-	debug((caller(0))[3].': Starting...');
+	my $self	= shift;
+	$self 		= iMSCP::Database->new() if ref $self ne 'iMSCP::Database';
+	my $db		=
+					defined $self->{args}->{db}
+					?
+					$self->{args}->{db}
+					:
+					$main::imscpConfig{'DATABASE_TYPE'}
+				;
+	my $file	= "iMSCP/Database/${db}/${db}.pm";
+	my $class	= "iMSCP::Database::${db}::${db}";
 
 	require $file;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return $class->new();;
 }

@@ -41,23 +41,23 @@ sub AUTOLOAD {
 	my $name = $AUTOLOAD;
 	$name =~ s/.*:://;
 	return if $name eq 'DESTROY';
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	$self->{$name} = shift if @_;
 	unless (exists $self->{$name}) {
-		error((caller(0))[3].": Can't find '$name'.");
+		error("Can't find '$name'.");
 		return undef;
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return $self->{$name};
 }
 
 sub _init{
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	for my $conf (keys %{$self->{args}}){
 		$self->{$conf} = $self->{args}->{$conf};
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 }
 
 sub mode{
@@ -65,20 +65,20 @@ sub mode{
 	my $self		= shift;
 	my $fileMode	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(!$self->{filename}){
-		error((caller(0))[3].": File name not set!");
+		error("File name not set!");
 		return 1;
 	}
 
-	debug((caller(0))[3]. sprintf ": Change mode mode: %o for '$self->{filename}'", $fileMode);
+	debug( sprintf ": Change mode mode: %o for '$self->{filename}'", $fileMode);
 	unless (chmod($fileMode, $self->{filename})){
-		error((caller(0))[3].": Cannot change permissions of file '$self->{filename}': $!");
+		error("Cannot change permissions of file '$self->{filename}': $!");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -88,10 +88,10 @@ sub owner{
 	my $fileOwner	= shift;
 	my $fileGroup	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(!$self->{filename}){
-		error((caller(0))[3].": File name not set!");
+		error("File name not set!");
 		return 1;
 	}
 
@@ -101,14 +101,14 @@ sub owner{
 	my $gid = ($fileGroup =~ /^\d+$/) ? $fileGroup : getgrnam($fileGroup);
 	$gid = -1 unless (defined $gid);
 
-	debug((caller(0))[3].": Change owner uid:$uid, gid:$gid for '$self->{filename}'");
+	debug("Change owner uid:$uid, gid:$gid for '$self->{filename}'");
 
 	unless (chown($uid, $gid, $self->{filename})){
-		error((caller(0))[3].": Cannot change owner of file '$self->{filename}': $!");
+		error("Cannot change owner of file '$self->{filename}': $!");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -116,17 +116,17 @@ sub get{
 	my $self = shift;
 	use FileHandle;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my @lines;
 
 	if(!$self->{filename}){
-		error((caller(0))[3].": File name not set!");
+		error("File name not set!");
 		return undef;
 	}
 
 	if(! $self->{fileHandle}){
 		$self->{fileHandle} = FileHandle->new($self->{filename}, "r") or delete($self->{fileHandle});
-		error((caller(0))[3].": Can`t open $self->{filename}!") if(!$self->{fileHandle});
+		error("Can`t open $self->{filename}!") if(!$self->{fileHandle});
 		return undef if(!$self->{fileHandle});
 	}
 
@@ -135,7 +135,7 @@ sub get{
 		@{$self->{fileContent}} = <$fh>;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return join('', @{$self->{fileContent}});
 }
@@ -147,20 +147,20 @@ sub copyFile{
 
 	$option = {} if(ref $option ne 'HASH');
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use File::Copy;
 	use File::Basename;
 
 	if(!$self->{filename} || !-e $self->{filename}){
-		error((caller(0))[3].": ".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
+		error("".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
 		return 1;
 	}
 
-	debug((caller(0))[3].": Copy $self->{filename} to $dest");
+	debug("Copy $self->{filename} to $dest");
 
 	if(! copy ($self->{filename}, $dest) ) {
-		error((caller(0))[3].": Copy $self->{filename} to $dest failed: $!");
+		error("Copy $self->{filename} to $dest failed: $!");
 		return 1;
 	}
 
@@ -175,19 +175,19 @@ sub copyFile{
 		my $owner		= (stat($self->{filename}))[4];
 		my $group		= (stat($self->{filename}))[5];
 
-		debug((caller(0))[3]. sprintf ": Change mode mode: %o for '$dest'", $fileMode);
+		debug( sprintf ": Change mode mode: %o for '$dest'", $fileMode);
 		unless (chmod($fileMode, $dest)){
-			error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
+			error("Cannot change permissions of file '$dest': $!");
 			return 1;
 		}
-		debug((caller(0))[3]. sprintf ": Change owner: %s:%s for '$dest'", $owner, $group);
+		debug( sprintf ": Change owner: %s:%s for '$dest'", $owner, $group);
 		unless (chown($owner, $group, $dest)){
-			error((caller(0))[3].": Cannot change permissions of file '$dest': $!");
+			error("Cannot change permissions of file '$dest': $!");
 			return 1;
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -196,22 +196,22 @@ sub moveFile{
 	my $self	= shift;
 	my $dest	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(!$self->{filename} || !-e $self->{filename}){
-		error((caller(0))[3].": ".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
+		error("".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
 		return 1;
 	}
 
-	debug((caller(0))[3].": Move $self->{filename} to $dest");
+	debug("Move $self->{filename} to $dest");
 	use File::Copy ;
 
 	if(! move ($self->{filename}, $dest)){
-		error((caller(0))[3].": Move $self->{filename} to $dest failed: $!");
+		error("Move $self->{filename} to $dest failed: $!");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -219,22 +219,22 @@ sub moveFile{
 sub delFile{
 	my $self	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(!$self->{filename}){
-		error((caller(0))[3].": File name not set!");
+		error("File name not set!");
 		return 1;
 	}
 
-	debug((caller(0))[3].": Delete $self->{filename}");
+	debug("Delete $self->{filename}");
 	use File::Copy ;
 
 	if(! unlink ($self->{filename}) && -e $self->{filename}){
-		error((caller(0))[3].": Delete $self->{filename} failed: $!");
+		error("Delete $self->{filename} failed: $!");
 		return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }
@@ -245,10 +245,10 @@ sub save{
 
 	use FileHandle;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(!$self->{filename}){
-		error((caller(0))[3].": File name not set!");
+		error("File name not set!");
 		return 1;
 	}
 
@@ -256,15 +256,17 @@ sub save{
 
 	$self->{fileHandle} = FileHandle->new($self->{filename}, "w");
 	if(! defined $self->{fileHandle}){
-		error((caller(0))[3].": Can`t open $self->{filename}!");
+		error("Can`t open $self->{filename}!");
 		return 1;
 	}
+
+	$self->{fileContent} = '' unless $self->{fileContent};
 
 	print {$self->{fileHandle}} $self->{fileContent};
 
 	$self->{fileHandle}->close();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
@@ -272,13 +274,13 @@ sub set{
 	my $self = shift;
 	my $content = shift || '';
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use FileHandle;
 
 	$self->{fileContent} = $content;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	0;
 }

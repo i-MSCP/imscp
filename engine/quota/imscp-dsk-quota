@@ -1,403 +1,222 @@
 #!/usr/bin/perl
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
-# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# Version: $Id$
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
-#
-# The Original Code is "VHCS - Virtual Hosting Control System".
-#
-# The Initial Developer of the Original Code is moleSoftware GmbH.
-# Portions created by Initial Developer are Copyright (C) 2001-2006
-# by moleSoftware GmbH. All Rights Reserved.
-#
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+use strict;
+use warnings;
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'imscp_common_code.pl';
+use lib "$FindBin::Bin/../PerlLib";
 
-use strict;
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Execute;
+use iMSCP::Mail;
+use Servers::mta;
+use Data::Dumper;
 
-use warnings;
+newDebug('imscp-dsk-quota.log');
 
-sub dsk_quota_start_up {
+sub quota_start_up {
+	debug('Starting...');
 
-	my ($rs) = (undef, undef);
+	umask(027);
+	iMSCP::Boot->new()->init({nolock => 'yes'});
 
-	push_el(\@main::el, 'dsk_quota_start_up()', 'Starting...');
-
-	# Let's clear Execution Logs, if any.
-
-	if (-e $main::imscp_dsk_quota_el) {
-
-		$rs = del_file($main::imscp_dsk_quota_el);
-
-		return $rs if ($rs != 0);
-
-	}
-
-	# config check;
-
-	$rs = get_conf();
-
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'dsk_quota_start_up()', 'Ending...');
-
-	return 0;
-
+	debug('Ending...');
+	0;
 }
 
+sub quota_files {
+	debug('Starting...');
 
-sub dsk_quota_shut_down {
+	my ($rs, $rdata);
 
-	my $rs = undef;
 
-	push_el(\@main::el, 'dsk_quota_shut_down()', 'Starting...');
+	my $sql = "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_status` = ?";
+	$rdata = iMSCP::Database->new()->factory()->doQuery('domain_id', $sql, 'ok');
 
-	push_el(\@main::el, 'dsk_quota_shut_down()', 'Ending...');
+	if (ref $rdata ne 'HASH'){
+		error("$rdata");
+		iMSCP::Mail->new()->errmsg($rdata);
+		$rs = 1;
+	} else {
 
-	return 0;
+		my $mta	= Servers::mta->factory();
 
-}
+		foreach (keys %$rdata) {
 
-sub dsk_quota_engine {
+			my $domain_name	= $rdata->{$_}->{domain_name};
+			my $domain_id	= $rdata->{$_}->{domain_id};
+			my $size = 0;
+			my @cmd;
 
-	my ($rs, $ref, $rdata) = (undef, undef, undef);
-
-	push_el(\@main::el, 'dsk_quota_engine()', 'Starting...');
-
-	my $sql = "SELECT domain_id, domain_name FROM domain WHERE domain_status = 'ok';";
-
-	($rs, $ref) = doSQL($sql);
-
-	return $rs if ($rs != 0);
-
-	my $cmd_du = $main::cfg{'CMD_DU'};
-
-	foreach (@$ref) {
-
-		my $disk_limit  = @$_[2];
-
-		my $domain_name = @$_[1];
-
-		my $domain_id   = @$_[0];
-
-		my $size = 0;
-
-		# BSD/NUX Command
-		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			# @todo Why '-I "*.tar.bz2" -I "*.tar.lzma"' and not '-I "*.bz2" -I "*.lzma"', too?
-			my $s = `$cmd_du -I "*.gz" -I "*.tar.bz2" -I "*.tar.lzma" -d 0 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
-
-			$s =~ /^(\d+)/; $size += $1*1024;
-
-			$s = `$cmd_du -d 0 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
-
-			$s =~ /^(\d+)/; $size += $1*1024;
-
-		} else {
-
-			my $s = `$cmd_du --exclude="backups/$domain_name-*.lzma" --exclude="backups/$domain_name-*.bz2" --exclude="backups/$domain_name-*.gz" --exclude="backups/*.sql.lzma" --exclude="backups/*.sql.bz2" --exclude="backups/*.sql.gz" --exclude="logs/*.log" -s -B1 $main::cfg{APACHE_WWW_DIR}/$domain_name`;
-
-			$s =~ /^(\d+)/; $size += $1;
-
-			$s = `$cmd_du -s -B1 $main::cfg{MTA_VIRTUAL_MAIL_DIR}/$domain_name`;
-
-			$s =~ /^(\d+)/; $size += $1;
-		}
-
-		if ($size > 0) {
-
-			$sql = "UPDATE domain SET domain_disk_usage='$size' WHERE domain_id='$domain_id'";
-
-			($rs, $rdata) = doSQL($sql);
-
-			return $rs if ($rs != 0);
-
-			$sql = "SELECT COUNT(name) AS cnt FROM quotatallies WHERE name = '$domain_name'";
-
-			($rs, $rdata) = doSQL($sql);
-
-			return $rs if ($rs != 0);
-
-			$rdata = @$rdata[0];
-
-			my $quota_ent = @$rdata[0];
-
-			if ($quota_ent > 0) {
-
-				$sql = "UPDATE quotatallies SET bytes_in_used = '$size' WHERE name = '$domain_name'";
-
-				($rs, $rdata) = doSQL($sql);
-
-				return $rs if ($rs != 0);
-
+			if ($^O =~ /bsd$/) {
+				@cmd = (
+					$main::imscpConfig{CMD_DU}.' -I "backups/*" -I "logs/*.log" -d 0 '."$main::imscpConfig{USER_HOME_DIR}/$domain_name",
+					$main::imscpConfig{CMD_DU}.' -d 0 '."$mta->{'MTA_VIRTUAL_MAIL_DIR'}/$domain_name"
+				);
+			} else {
+				@cmd = (
+					"$main::imscpConfig{CMD_DU} --exclude='backups/*' --exclude='logs/*.log' -s -B1 $main::imscpConfig{USER_HOME_DIR}/$domain_name",
+					"$main::imscpConfig{CMD_DU} -s -B1 $mta->{'MTA_VIRTUAL_MAIL_DIR'}/$domain_name"
+				);
 			}
-
-		}
-	}
-
-	push_el(\@main::el, 'dsk_quota_engine()', 'Ending...');
-
-	return 0;
-
-}
-
-
-sub mysqldb_quota_by_mysql_engine {
-
-	my ($rs, $ref, $rdata, $size, $databases) = (undef, undef, undef, undef, undef);
-
-	push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Starting...');
-
-	my $sql = "SHOW DATABASES;";
-
-	($rs, $databases) = doSQL($sql);
-
-	$sql = "SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = 'ok';";
-
-	($rs, $ref) = doSQL($sql);
-
-	return $rs if ($rs != 0);
-
-	my $domain_ids = $ref;
-
-	foreach (@$domain_ids) {
-
-		my $disk_usage  = @$_[2];
-		my $domain_name = @$_[1];
-		my $domain_id   = @$_[0];
-		my $sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = '$domain_id';";
-
-		($rs, $ref) = doSQL($sql);
-
-		my $sqldb_ids = $ref;
-
-		$size = 0;
-
-		foreach (@$sqldb_ids) {
-
-			my $sqldb_name   = @$_[1];
-			my $sqldb_id     = @$_[0];
-			my $sql = "show table status from `$sqldb_name`;";
-
-			if(grep{$$_[0] eq $sqldb_name} @$databases) {
-
-				($rs, $ref) = doSQL($sql);
-				my ($data_length, $index_length) = (0, 0);
-
-				foreach(@$ref) {
-					# Replace unknown values by 0
-					$data_length  = (defined(@$_[6]) && @$_[6] =~ /^\d+$/) ? @$_[6] : 0;
-					$index_length = (defined(@$_[8]) && @$_[8] =~ /^\d+$/) ? @$_[8] : 0;
-
-					$size += $data_length + $index_length;
+			foreach(@cmd){
+				my ($stdout, $stderr);
+				$rs |= execute($_, \$stdout, \$stderr);
+				error("$stderr") if $stderr;
+				if($stdout){
+					debug("$stdout");
+					$stdout =~ /^(\d+)/;
+					$size += $1 if $1 && $^O !~ /bsd$/;
+					$size += $1*1024 if $1 && $^O =~ /bsd$/;
 				}
-			} else {
-
-				send_error_mail('mysqldb_quota_by_mysql_engine()', "Database '$sqldb_name' exists only in table 'sql_database'!!!");
-
-			}
-		}
-
-		if ($size > 0) {
-
-			$size += $disk_usage;
-
-			$sql = "UPDATE domain SET domain_disk_usage='$size' WHERE domain_id='$domain_id'";
-
-			($rs, $rdata) = doSQL($sql);
-			return $rs if ($rs != 0);
-
-			$sql = "SELECT COUNT(name) AS cnt FROM quotatallies WHERE name = '$domain_name'";
-
-			($rs, $rdata) = doSQL($sql);
-			return $rs if ($rs != 0);
-
-			$rdata = @$rdata[0];
-
-			my $quota_ent = @$rdata[0];
-
-			if ($quota_ent > 0) {
-
-				$sql = "UPDATE quotatallies SET bytes_in_used = '$size' WHERE name = '$domain_name'";
-
-				($rs, $rdata) = doSQL($sql);
-				return $rs if ($rs != 0);
-
 			}
 
+			if ($size > 0) {
+				$sql = "UPDATE `domain` SET `domain_disk_usage` = ? WHERE `domain_id` = ?";
+				$rdata = iMSCP::Database->new()->factory()->doQuery('update', $sql, $size, $domain_id);
+				if (ref $rdata ne 'HASH'){
+					error("$rdata");
+					iMSCP::Mail->new()->errmsg($rdata);
+					$rs = 1;
+				}
+
+				$sql = "UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?";
+				$rdata = iMSCP::Database->new()->factory()->doQuery('cnt', $sql, $size, $domain_name);
+				if (ref $rdata ne 'HASH'){
+					error("$rdata");
+					iMSCP::Mail->new()->errmsg($rdata);
+					$rs = 1;
+				}
+			}
 		}
 	}
 
-	push_el(\@main::el, 'mysqldb_quota_by_mysql_engine()', 'Ending...');
-
-	return 0;
-
+	debug('Ending...');
+	$rs;
 }
 
-sub mysqldb_quota_by_dir_engine {
+sub quota_mysql {
+	debug('Starting...');
 
-	my ($rs, $ref, $rdata, $size) = (undef, undef, undef, undef);
+	my ($rs, $size) = (0, 0);
 
-	push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Starting...');
+	my $sql = "SHOW DATABASES";
+	my $databases = iMSCP::Database->new()->factory()->doQuery('Database', $sql);
 
-	my $sql = "SELECT domain_id, domain_name, domain_disk_usage FROM domain WHERE domain_status = 'ok';";
+	if (ref $databases ne 'HASH'){
+		error("$databases");
+		iMSCP::Mail->new()->errmsg($databases);
+		return 1;
+	}
 
-	($rs, $ref) = doSQL($sql);
+	$sql = "SELECT `domain_id`, `domain_name`, `domain_disk_usage` FROM `domain` WHERE `domain_status` = ?";
+	my $rdata = iMSCP::Database->new()->factory()->doQuery('domain_id', $sql, 'ok');
 
-	return $rs if ($rs != 0);
+	if (ref $rdata ne 'HASH'){
+		error("$rdata");
+		iMSCP::Mail->new()->errmsg($rdata);
+		$rs = 1;
+	} else {
 
-	my $cmd_du = $main::cfg{'CMD_DU'};
+		foreach (keys %$rdata) {
 
-	my $domain_ids = $ref;
+			my $domain_id	= $rdata->{$_}->{domain_id};
+			my $domain_name	= $rdata->{$_}->{domain_name};
+			my $disk_usage	= $rdata->{$_}->{domain_disk_usage};
+			$sql			= "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
+			my $userDBs		= iMSCP::Database->new()->factory()->doQuery('sqld_id', $sql, $domain_id);
 
-	foreach (@$domain_ids) {
-
-		my $disk_usage  = @$_[2];
-
-		my $domain_name = @$_[1];
-
-		my $domain_id   = @$_[0];
-
-		my $sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id = '$domain_id';";
-
-		($rs, $ref) = doSQL($sql);
-
-		my $sqldb_ids = $ref;
-
-		$size = 0;
-
-		foreach (@$sqldb_ids) {
-
-			my $sqldb_name   = @$_[1];
-
-			my $sqldb_id     = @$_[0];
-
-			# BSD/NUX Command
-			if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-
-				$size = `$cmd_du -I "*.frm" -I "db.opt" -d 0 $main::cfg{DATABASE_DIR}/$sqldb_name/* | tail -1`;
-
-				$size =~ /^(\d+)/; $size = $1;
-
-			} else {
-
-				$size = `$cmd_du -csb --exclude=*.frm --exclude=db.opt $main::cfg{DATABASE_DIR}/$sqldb_name/* | tail -1`;
-
-				$size =~ /^(\d+)/; $size = $1;
-
+			if (ref $userDBs ne 'HASH'){
+				error("$userDBs");
+				iMSCP::Mail->new()->errmsg($userDBs);
+				$rs = 1;
 			}
 
-		}
+			foreach (keys %$userDBs) {
 
+				my $sqldb_id     = $userDBs->{$_}->{sqld_id};
+				my $sqldb_name   = $userDBs->{$_}->{sqld_name};
 
-		if ($size > 0) {
+				if(grep{$_ eq $sqldb_name} keys %$databases) {
 
-			$size += $disk_usage;
+					$sql = "show table status from `$sqldb_name`";
+					my $tables = iMSCP::Database->new()->factory()->doQuery('Name ', $sql);
 
-			$sql = "UPDATE domain SET domain_disk_usage='$size' WHERE domain_id='$domain_id'";
-
-			($rs, $rdata) = doSQL($sql);
-			return $rs if ($rs != 0);
-
-			$sql = "SELECT COUNT(name) AS cnt FROM quotatallies WHERE name = '$domain_name'";
-
-			($rs, $rdata) = doSQL($sql);
-			return $rs if ($rs != 0);
-
-			$rdata = @$rdata[0];
-
-			my $quota_ent = @$rdata[0];
-
-			if ($quota_ent > 0) {
-
-				$sql = "UPDATE quotatallies SET bytes_in_used = '$size' WHERE name = '$domain_name'";
-
-				($rs, $rdata) = doSQL($sql);
-				return $rs if ($rs != 0);
-
+					if (ref $tables ne 'HASH'){
+						error("tables:$tables");
+						iMSCP::Mail->new()->errmsg($tables);
+						$rs = 1;
+					}
+					foreach(keys %$tables) {
+						$size +=
+								($tables->{$_}->{Data_length} =~ /^\d+$/ ? $tables->{$_}->{Data_length} : 0)
+								+
+								($tables->{$_}->{Index_length} =~ /^\d+$/ ? $tables->{$_}->{Index_length} : 0);
+					}
+				} else {
+					ierror("Database '$sqldb_name' exists only in table 'sql_database'!!!");
+					iMSCP::Mail->new()->errmsg("Database '$sqldb_name' exists only in table 'sql_database'!!!");
+				}
 			}
 
+			if ($size > 0) {
+
+				$size += $disk_usage;
+
+				$sql = "UPDATE `domain` SET `domain_disk_usage` = ? WHERE `domain_id` = ?";
+				my $quota = iMSCP::Database->new()->factory()->doQuery('update ', $sql, $size, $domain_id);
+				if (ref $quota ne 'HASH'){
+					error("$quota");
+					iMSCP::Mail->new()->errmsg($quota);
+					$rs = 1;
+				}
+
+				$sql = "UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?";
+				$quota = iMSCP::Database->new()->factory()->doQuery('cnt', $sql, $size, $domain_name);
+				if (ref $quota ne 'HASH'){
+					error("$quota");
+					iMSCP::Mail->new()->errmsg($quota);
+					$rs = 1;
+				}
+			}
 		}
 	}
 
-	push_el(\@main::el, 'mysqldb_quota_by_dir_engine()', 'Ending...');
-
-	return 0;
-
+	debug('Ending...');
+	$rs;
 }
 
-my $rs = undef;
+my $rs = 0;
 
+exit 1 if quota_start_up();
 
-$rs = dsk_quota_start_up();
+$rs |= quota_files();
+$rs |= quota_mysql();
 
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_dsk_quota_el);
-
-	dsk_quota_shut_down();
-	exit 1;
-
-}
-
-
-$rs = dsk_quota_engine();
-
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_dsk_quota_el);
-
-	dsk_quota_shut_down();
-	exit 1;
-
-}
-
-$rs = mysqldb_quota_by_mysql_engine();
-
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_dsk_quota_el);
-
-	dsk_quota_shut_down();
-	exit 1;
-
-}
-
-
-$rs = dsk_quota_shut_down();
-
-if ($rs != 0) {
-
-	dump_el(\@main::el, $main::imscp_dsk_quota_el);
-	exit 1;
-
-}
-
-exit 0;
-
+exit $rs;

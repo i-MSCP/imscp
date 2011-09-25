@@ -39,7 +39,7 @@ use iMSCP::STDCapture;
 @EXPORT = qw/execute/;
 
 sub execute{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my ($code, $output, $error) = @_;
 	my $rv;
 	if (ref $output && ref $error){
@@ -51,57 +51,57 @@ sub execute{
 	} else {
 		$rv = _execCode($code);
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rv;
 }
 
 sub _execCaptureBoth {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my ($code, $output, $error) = @_;
 	my $out = new iMSCP::STDCapture('STDOUT', $output);
 	my $err = new iMSCP::STDCapture('STDERR', $error);
-	debug((caller(0))[3].": Execute $code");
+	debug("Execute $code");
 	system($code);
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _execCaptureOutput {
 	my ($code, $output) = @_;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $out = new iMSCP::STDCapture('STDOUT', $output);
-	debug((caller(0))[3].": Execute $code");
+	debug("Execute $code");
 	system($code);
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _execCaptureError {
 	my ($code, $error) = @_;
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $err = new iMSCP::STDCapture('STDERR', $error);
-	debug((caller(0))[3].": Execute $code");
+	debug("Execute $code");
 	system($code);
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _execCode {
 	my $code = shift;
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].": Execute $code");
+	debug('Starting...');
+	debug("Execute $code");
 	system($code);
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _getExitCode {
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $exitValue = shift;
 	if ($exitValue == -1) {
-		error((caller(0))[3].": Failed to execute external command: $!");
+		error("Failed to execute external command: $!");
 	} elsif ($exitValue & 127) {
-		error((caller(0))[3].': '.
+		error(''.
 			(
 				sprintf "External command died with signal %d, %s coredump",
 				($exitValue & 127), ($? & 128) ? 'with' : 'without'
@@ -109,9 +109,9 @@ sub _getExitCode {
 		);
 	} else {
 		$exitValue = $exitValue >> 8;
-		debug((caller(0))[3].": External command exited with value $exitValue");
+		debug("External command exited with value $exitValue");
 	}
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$exitValue;
 }
 1;

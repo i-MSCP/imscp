@@ -34,14 +34,13 @@ use iMSCP::Execute;
 
 use vars qw/@ISA/;
 
-@ISA = ('Common::SingletonClass', 'Common::SetterClass');
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
-use Common::SetterClass;
 
 sub loadIpConfiguredIps{
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	unless($self->{loadedIP}){
 
@@ -49,13 +48,13 @@ sub loadIpConfiguredIps{
 		my $ips = {};
 
 		$rs = execute("$main::imscpConfig{'CMD_IFCONFIG'} -a", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if ($stdout);
-		error((caller(0))[3].": $stderr") if ($stderr);
+		debug("$stdout") if ($stdout);
+		error("$stderr") if ($stderr);
 		return $rs if $rs;
 
 		while($stdout =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/mgi){
-			debug((caller(0))[3].": $1") if $1;
-			debug((caller(0))[3].": $2") if $2;
+			debug("$1") if $1;
+			debug("$2") if $2;
 			if($1 ne 'lo'){
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
@@ -72,14 +71,14 @@ sub loadIpConfiguredIps{
 		$self->{loadedIP} = 1
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub loadNetworkCards{
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my ($rs, $stdout, $stderr);
 
 	unless($self->{loadedCards}){
@@ -87,12 +86,12 @@ sub loadNetworkCards{
 		$self->loadIpConfiguredIps();
 
 		$rs = execute("$main::imscpConfig{'CMD_IFCONFIG'}", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout") if ($stdout);
-		error((caller(0))[3].": $stderr") if ($stderr);
+		debug("$stdout") if ($stdout);
+		error("$stderr") if ($stderr);
 		return $rs if $rs;
 
 		while($stdout =~ m/^([^\s]+)\s{1,}[^\n]*\n/mgi){
-			debug((caller(0))[3].": $1") if $1;
+			debug("$1") if $1;
 			if($1 ne 'lo'){
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
@@ -103,18 +102,18 @@ sub loadNetworkCards{
 		$self->{loadedCards} = 1
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub getIPs{
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadIpConfiguredIps();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (wantarray ? keys %{$self->{ips}} : join( ' ', keys %{$self->{ips}} ));
 }
@@ -122,11 +121,11 @@ sub getIPs{
 sub getNetworkCards{
 	my $self = shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadNetworkCards();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (wantarray ? keys %{$self->{cards}} : join( ' ', keys %{$self->{cards}} ));
 }
@@ -136,11 +135,11 @@ sub getCardByIP{
 	my $self	= shift;
 	my $ip		= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadIpConfiguredIps();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (exists $self->{ips}->{$ip} ? $self->{ips}->{$ip} : 0);
 }
@@ -150,11 +149,11 @@ sub addedToVCard{
 	my $self = shift;
 	my $ip		= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadIpConfiguredIps();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (exists $self->{ips}->{$ip}->{vcard} ? $self->{ips}->{$ip}->{vcard} : 0);
 }
@@ -164,11 +163,11 @@ sub existsNetCard{
 	my $self	= shift;
 	my $card	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadNetworkCards();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (exists $self->{cards}->{$card});
 }
@@ -179,7 +178,7 @@ sub getFirstFreeSlotOnCard{
 	my $card	= shift;
 	my $reserve	= shift || 0;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadNetworkCards();
 
@@ -187,7 +186,7 @@ sub getFirstFreeSlotOnCard{
 
 	$self->{cards}->{$card}->{'1Slot'}++ if $reserve;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	$slot;
 }
@@ -196,11 +195,11 @@ sub isCardUp{
 	my $self	= shift;
 	my $card	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$self->loadNetworkCards();
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (exists $self->{cards}->{$card}->{up});
 }
@@ -209,10 +208,10 @@ sub isValidIp{
 	my $self	= shift;
 	my $ip	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	use Data::Validate::IP qw/is_ipv4/;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 
 	return (is_ipv4($ip));
 }

@@ -1,0 +1,76 @@
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+#
+# APACHE data
+#
+
+PHP_FASTCGI = fastcgi
+
+CMD_HTTPD = /etc/init.d/apache2
+
+APACHE_CONF_DIR = /etc/apache2
+
+APACHE_LOG_DIR = /var/log/apache2
+
+APACHE_BACKUP_LOG_DIR = /var/log/apache2/backup
+
+APACHE_USERS_LOG_DIR = /var/log/apache2/users
+
+APACHE_MODS_DIR = /etc/apache2/mods-available
+
+APACHE_SITES_DIR = /etc/apache2/sites-available
+
+APACHE_CUSTOM_SITES_CONFIG_DIR = /etc/apache2/imscp
+
+APACHE_USER = www-data
+
+APACHE_GROUP = www-data
+
+PHP_STARTER_DIR = /var/www/fcgi
+
+PHP5_FASTCGI_BIN = /usr/bin/php5-cgi
+
+HTACCESS_USERS_FILE_NAME = .htpasswd
+
+HTACCESS_GROUPS_FILE_NAME = .htgroup
+
+HTPASSWD_CMD = /usr/bin/htpasswd2
+
+SCOREBOARDS_DIR = /var/www/scoreboards
+
+##### Obsolete
+
+APACHE_WWW_DIR = /var/www/virtual
+CMD_HTTPD_CTL = /usr/sbin/apache2ctl
+APACHE_RESTART_TRY = 3
+APACHE_NAME = apache2
+
+
+###### PHP.INI
+# values accepted: user, domain, subdomain
+# user: each user will have own php.ini
+# domain: each domain / alias will have own php.ini
+# user: each domain / alias /subdomain / subdomain alias will have own php.ini
+INI_LEVEL = user

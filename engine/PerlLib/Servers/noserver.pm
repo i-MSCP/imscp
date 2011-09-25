@@ -36,9 +36,15 @@ use Common::SingletonClass;
 
 sub AUTOLOAD {
 	my $self = shift;
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].': Ending...');
+	debug('Starting...');
+	debug('Ending...');
 	return 0;
 }
 
+sub factory {
+	my $self = shift;
+	debug('Starting...');
+	debug('Ending...');
+	return $self;
+}
 1;

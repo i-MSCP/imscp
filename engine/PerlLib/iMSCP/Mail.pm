@@ -31,9 +31,8 @@ use warnings;
 use iMSCP::Debug;
 
 use vars qw/@ISA/;
-@ISA = ('Common::SimpleClass', 'Common::SetterClass');
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
-use Common::SetterClass;
 
 sub _init{}
 
@@ -41,7 +40,7 @@ sub errmsg{
 
 	my ($self, $errmsg) = @_;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use POSIX;
 	use Net::LibIDN qw/idn_to_ascii/;
@@ -81,13 +80,13 @@ sub errmsg{
 	);
 
 	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
-		error((caller(0))[3].': Can not send mail...');
+		error('Can not send mail...');
 	} else {
 		$out -> print(\*MAIL);
 		close MAIL;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 
 }
@@ -97,7 +96,7 @@ sub warnMsg{
 
 	my ($self, $msg) = @_;
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use POSIX;
 	use Net::LibIDN qw/idn_to_ascii/;
@@ -137,13 +136,13 @@ sub warnMsg{
 	);
 
 	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
-		error((caller(0))[3].': Can not send mail...');
+		error('Can not send mail...');
 	} else {
 		$out -> print(\*MAIL);
 		close MAIL;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 

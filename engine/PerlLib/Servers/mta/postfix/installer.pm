@@ -40,7 +40,7 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 
@@ -55,12 +55,24 @@ sub _init{
 	tie %self::postfixConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::postfixOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
+	0;
+}
+
+sub preinstall{
+	debug('Starting...');
+
+	my $self = shift;
+
+	$self->addUsers() and return 1;
+	$self->makeDirs() and return 1;
+
+	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -77,24 +89,42 @@ sub install{
 		$self->bkpConfFile($_) and return 1;
 	}
 
-	$self->addUsers() and return 1;
-	$self->makeDirs() and return 1;
-
 	$self->buildConf() and return 1;
 	$self->buildLookup() and return 1;
 	$self->buildAliasses() and return 1;
 	$self->arplSetup() and return 1;
 
 	$self->saveConf() and return 1;
+	$self->setEnginePermissions() and return 1;
 
-	$self->oldEngineCompatibility() and return 1;
+	#$self->oldEngineCompatibility() and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
+sub setEnginePermissions{
+
+	debug('Starting...');
+
+	use iMSCP::Rights;
+
+	my $self		= shift;
+	my $rs;
+	my $mtaUName	= $self::postfixConfig{'MTA_MAILBOX_UID_NAME'};
+	my $mtaGName	= $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
+	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
+	my $LOG_DIR		= $main::imscpConfig{'LOG_DIR'};
+
+	$rs |= setRights("$ROOT_DIR/engine/messenger", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0550', recursive => 'yes'});
+	$rs |= setRights("$LOG_DIR/imscp-arpl-msgr", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes'});
+
+	debug('Ending...');
+	$rs;
+}
+
 sub oldEngineCompatibility{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	$main::imscpConfig{$_} = $self::postfixConfig{$_} foreach(keys %self::postfixConfig);
 
@@ -105,12 +135,12 @@ sub oldEngineCompatibility{
 	$main::imscpConfig{'MTA_MAILBOX_UID'}		= $uid if !$main::imscpConfig{'MTA_MAILBOX_UID'} || $main::imscpConfig{'MTA_MAILBOX_UID'} ne $uid;
 	$main::imscpConfig{'MTA_MAILBOX_GID'}		= $gid if !$main::imscpConfig{'MTA_MAILBOX_GID'} || $main::imscpConfig{'MTA_MAILBOX_GID'} ne $gid;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub makeDirs{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use iMSCP::Dir;
 
@@ -121,12 +151,12 @@ sub makeDirs{
 		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755}) and return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub addUsers{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use Modules::SystemGroup;
 
@@ -146,27 +176,27 @@ sub addUsers{
 	$user->addSystemUser($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}) and return 1;
 	$user->addToGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildAliasses{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 
 	# Rebuilding the database for the mail aliases file - Begin
 	$rs = execute("$self::postfixConfig{'CMD_NEWALIASES'}", \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout");
-	error((caller(0))[3].": $stderr") if($stderr);
-	error((caller(0))[3].": Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if(!$stderr && $rs);
+	debug("$stdout");
+	error("$stderr") if($stderr);
+	error("Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if(!$stderr && $rs);
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	$rs;
 }
 
 sub arplSetup{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $file;
 
@@ -174,12 +204,12 @@ sub arplSetup{
 	$file->mode(0755) and return 1;
 	$file->owner($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}, $self::postfixConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildLookup{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr, $file);
@@ -197,17 +227,17 @@ sub buildLookup{
 
 		# Creating/updating databases for all lookup tables
 		$rs = execute("$self::postfixConfig{'CMD_POSTMAP'} $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout");
-		error((caller(0))[3].": $stderr") if($rs);
+		debug("$stdout");
+		error("$stderr") if($rs);
 		return $rs if ($rs);
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub bkpConfFile{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	use File::Basename;
 
@@ -225,13 +255,13 @@ sub bkpConfFile{
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub saveConf{
 
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -246,12 +276,12 @@ sub saveConf{
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my $rs;
@@ -262,12 +292,12 @@ sub buildConf{
 	$rs = $self->buildMaster();
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildMaster{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -278,6 +308,23 @@ sub buildMaster{
 	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/master.cf");
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
+
+	my @calls = exists $self->{preCalls}->{buildConf}
+				?
+				(@{$self->{preCalls}->{buildConf}})
+				:
+				()
+	; # is a reason for this!!! Simplify code and you have infinite loop
+
+	# avoid running same hook again if is not self register again
+	delete $self->{preCalls}->{buildConf};
+
+	foreach(@calls){
+		eval {$cfgTpl = &$_($cfgTpl);};
+		error("$@") if ($@);
+		return 1 if $@;
+	}
+
 	$cfgTpl = iMSCP::Templator::process(
 		{
 			ARPL_USER					=> $self::postfixConfig{'MTA_MAILBOX_UID_NAME'},
@@ -288,9 +335,19 @@ sub buildMaster{
 	);
 	return 1 if (!$cfgTpl);
 
-	foreach(@{$self->{postCalls}->{buildConf}}){
+	@calls = exists $self->{postCalls}->{buildConf}
+				?
+				(@{$self->{postCalls}->{buildConf}})
+				:
+				()
+	; # is a reason for this!!! Simplify code and you have infinite loop
+
+	# avoid running same hook again if is not self register again
+	delete $self->{postCalls}->{buildConf};
+
+	foreach(@calls){
 		eval {$cfgTpl = &$_($cfgTpl);};
-		error((caller(0))[3].": $@") if ($@);
+		error("$@") if ($@);
 		return 1 if $@;
 	}
 
@@ -303,12 +360,12 @@ sub buildMaster{
 	# Installing the new file in the production dir
 	$file->copyFile($self::postfixConfig{'POSTFIX_MASTER_CONF_FILE'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub buildMain{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -320,16 +377,26 @@ sub buildMain{
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
 
-	foreach(@{$self->{preCalls}->{buildConf}}){
-		eval {$cfgTpl = &$_($cfgTpl);};
-		error((caller(0))[3].": $@") if ($@);
-		return 1 if $@;
-	}
-
 	# Building the file
 	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
 	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
+
+	my @calls = exists $self->{preCalls}->{buildConf}
+				?
+				(@{$self->{preCalls}->{buildConf}})
+				:
+				()
+	; # is a reason for this!!! Simplify code and you have infinite loop
+
+	# avoid running same hook again if is not self register again
+	delete $self->{preCalls}->{buildConf};
+
+	foreach(@calls){
+		eval {$cfgTpl = &$_($cfgTpl);};
+		error("$@") if ($@);
+		return 1 if $@;
+	}
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -354,9 +421,19 @@ sub buildMain{
 	);
 	return 1 if (!$cfgTpl);
 
-	foreach(@{$self->{postCalls}->{buildConf}}){
+	@calls = exists $self->{postCalls}->{buildConf}
+				?
+				(@{$self->{postCalls}->{buildConf}})
+				:
+				()
+	; # is a reason for this!!! Simplify code and you have infinite loop
+
+	# avoid running same hook again if is not self register again
+	delete $self->{postCalls}->{buildConf};
+
+	foreach(@calls){
 		eval {$cfgTpl = &$_($cfgTpl);};
-		error((caller(0))[3].": $@") if ($@);
+		error("$@") if ($@);
 		return 1 if $@;
 	}
 
@@ -370,7 +447,7 @@ sub buildMain{
 	# Installing the new file in production directory
 	$file->copyFile($self::postfixConfig{'POSTFIX_CONF_FILE'}) and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 1;

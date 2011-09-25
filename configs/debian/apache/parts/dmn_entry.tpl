@@ -8,12 +8,12 @@
     </IfModule>
 
     ServerAdmin     webmaster@{DMN_NAME}
-    DocumentRoot    {WWW_DIR}/{DMN_NAME}/htdocs
+    DocumentRoot    {HOME_DIR}/htdocs
 
     ServerName      {DMN_NAME}
     ServerAlias     www.{DMN_NAME} {DMN_NAME} {SUEXEC_USER}.{BASE_SERVER_VHOST}
 
-    Alias /errors   {WWW_DIR}/{DMN_NAME}/errors/
+    Alias /errors   {HOME_DIR}/errors/
 
     RedirectMatch permanent ^/ftp[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/ftp/
     RedirectMatch permanent ^/pma[\/]?$		{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/pma/
@@ -36,7 +36,7 @@
     # httpd dmn entry cgi support BEGIN.
     # httpd dmn entry cgi support END.
 
-    <Directory {WWW_DIR}/{DMN_NAME}/htdocs>
+    <Directory {HOME_DIR}/htdocs>
         # httpd dmn entry PHP support BEGIN.
         # httpd dmn entry PHP support END.
         Options -Indexes Includes FollowSymLinks MultiViews

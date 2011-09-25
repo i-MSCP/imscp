@@ -38,19 +38,25 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
 	$self->{bkpDir}	= "$self->{cfgDir}/backup";
 	$self->{wrkDir}	= "$self->{cfgDir}/working";
 
-	debug((caller(0))[3].': Ending...');
+	my $conf		= "$self->{cfgDir}/courier.data";
+	my $oldConf		= "$self->{cfgDir}/courier.old.data";
+
+	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
+	tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
+
+	debug('Ending...');
 	0;
 }
 
 sub migrateMailboxes{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	if(
 		$main::imscpConfigOld{PO_SERVER}
@@ -69,17 +75,17 @@ sub migrateMailboxes{
 		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 		$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
-		debug((caller(0))[3].": $stdout...") if $stdout;
-		error((caller(0))[3].": $stderr") if $stderr;
-		error((caller(0))[3].": Error while converting mails") if !$stderr && $rs;
+		debug("$stdout...") if $stdout;
+		error("$stderr") if $stderr;
+		error("Error while converting mails") if !$stderr && $rs;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 
@@ -87,8 +93,8 @@ sub install{
 	for ((
 		'authdaemonrc',
 		'userdb',
-		"$main::imscpConfig{COURIER_IMAP_SSL}",
-		"$main::imscpConfig{COURIER_POP_SSL}"
+		"$self::courierConfig{COURIER_IMAP_SSL}",
+		"$self::courierConfig{COURIER_POP_SSL}"
 	)) {
 		$self->bkpConfFile($_) and return 1;
 	}
@@ -102,22 +108,43 @@ sub install{
 	# SSL Conf files
 	$self->sslConf() and return 1;
 
+	$self->saveConf() and return 1;
+
 	$self->migrateMailboxes() and return 1;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
+	0;
+}
+
+sub saveConf{
+	debug('Starting...');
+
+	use iMSCP::File;
+
+	my $self = shift;
+	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
+	my $cfg = $file->get() or return 1;
+
+	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
+	$file->set($cfg) and return 1;
+	$file->save and return 1;
+	$file->mode(0640) and return 1;
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+
+	debug('Ending...');
 	0;
 }
 
 sub bkpConfFile{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self		= shift;
 	my $cfgFile		= shift;
 	my $timestamp	= time;
 
-	if(-f "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"){
+	if(-f "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"){
 		my $file	= iMSCP::File->new(
-						filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"
+						filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$cfgFile"
 					);
 		if(!-f "$self->{bkpDir}/$cfgFile.system") {
 			$file->copyFile("$self->{bkpDir}/$cfgFile.system") and return 1;
@@ -126,12 +153,12 @@ sub bkpConfFile{
 		}
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub authDaemon{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rdata, $file);
@@ -154,15 +181,15 @@ sub authDaemon{
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	# Installing the new file in the production directory
-	$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}") and return 1;
+	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
 
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub userDB{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rdata, $file);
@@ -177,36 +204,36 @@ sub userDB{
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	# Installing the new file in the production directory
-	$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}") and return 1;
+	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
 
-	$file = iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/userdb");
+	$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/userdb");
 	$file->mode(0600) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	# Creating/Updating userdb.dat file from the contents of the userdb file
 	my ($rs, $stdout, $stderr);
-	$rs = execute($main::imscpConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
-	debug((caller(0))[3].": $stdout") if ($stdout);
-	error((caller(0))[3].": $stderr") if ($stderr && $rs);
+	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
+	debug("$stdout") if ($stdout);
+	error("$stderr") if ($stderr && $rs);
 	return $rs if $rs;
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub sslConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	my $self = shift;
 	my ($rdata, $file);
 
-	for (($main::imscpConfig{'COURIER_IMAP_SSL'}, $main::imscpConfig{'COURIER_POP_SSL'})) {
+	for (($self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'})) {
 
 		#if ssl is not enabled
 		last if lc($main::imscpConfig{'SSL_ENABLED'}) ne 'yes';
 
 
-		$file = iMSCP::File->new(filename => "$main::imscpConfig{'AUTHLIB_CONF_DIR'}/$_");
+		$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
 		#read file exit if can not read
 		$rdata = $file->get();
 		return 1 if (!$rdata);
@@ -224,29 +251,31 @@ sub sslConf{
 		$file->mode(0644) and return 1;
 		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 		# Installing the new file in the production directory
-		$file->copyFile("$main::imscpConfig{'AUTHLIB_CONF_DIR'}") and return 1;
+		$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
 	}
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub registerHooks{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $self = shift;
 
 	use Servers::mta;
 
 	my $mta = Servers::mta->factory($main::imscpConfig{MTA_SERVER});
 
-	$mta->registerPostHook('buildConf', sub { return $self->mtaConf(@_); } );
+	$mta->registerPostHook(
+		'buildConf', sub { return $self->mtaConf(@_); }
+	) if $mta->can('registerPostHook');
 
-	debug((caller(0))[3].': Ending...');
+	debug('Ending...');
 	0;
 }
 
 sub mtaConf{
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 	my $self	= shift;
 	my $content	= shift || '';
 
@@ -269,7 +298,12 @@ sub mtaConf{
 		undef
 	);
 
-	debug((caller(0))[3].': Ending...');
+	#register again wait next config file
+	$mta->registerPostHook(
+		'buildConf', sub { return $self->mtaConf(@_); }
+	) if $mta->can('registerPostHook');
+
+	debug('Ending...');
 	$content;
 }
 

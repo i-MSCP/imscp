@@ -96,6 +96,7 @@ GetOptions(\%opt, 'loggingType|t=s', 'logDir|l=s');
 
 %main::cfg = ();
 
+
 ################################################################################
 #                                 Subroutines                                  #
 ################################################################################
@@ -124,6 +125,10 @@ sub getConf {
 	%main::cfg = join('', <F>) =~ /^\s*(\w+)\s*=\s*(.*)$/gm;
 	close F;
 
+	$main::cfg{'APACHE_LOG_DIR'} = "/var/log/apache2";
+	$main::cfg{'PHP_STARTER_DIR'} = '/var/www/fcgi';
+	$main::cfg{'APACHE_USERS_LOG_DIR'} = '/var/log/apache2/users';
+
 	%main::cfg ? 0 : 1;
 }
 
@@ -147,7 +152,7 @@ sub ErrorLogHandler {
 
 		# Trying to retrieve the virtual host identity
 		$vhost = $1 if /
-			(?:$main::cfg{'APACHE_WWW_DIR'}|$main::cfg{'PHP_STARTER_DIR'})
+			(?:$main::cfg{'USER_HOME_DIR'}|$main::cfg{'PHP_STARTER_DIR'})
 			\/([\w\d.-]+)
 		/x;
 

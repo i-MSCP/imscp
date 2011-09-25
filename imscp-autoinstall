@@ -42,6 +42,8 @@ use lib "$FindBin::Bin";
 use lib "$FindBin::Bin/engine/PerlLib";
 use lib "$FindBin::Bin/engine/PerlVendor";
 
+umask(027);
+
 use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::SO;
@@ -83,7 +85,6 @@ if(
 		"Sorry, the installer failing to detect your distribution.\n\n" .
 		"Note: For now, only Debian like operating systems are supported."
 	);
-
 	exit 1;
 }
 
@@ -110,7 +111,8 @@ my @steps = (
 my $step = 1;
 
 for (@steps) {
-	step($_->[0], $_->[1], scalar @steps, $step);
+	$rs = step($_->[0], $_->[1], scalar @steps, $step);
+	exit $rs if $rs;
 	$step++;
 }
 
@@ -149,7 +151,8 @@ unless(iMSCP::Dialog->factory()->yesno($msg)) {
 	$step = 1;
 
 	for (@steps){
-		step($_->[0], $_->[1], scalar @steps, $step);
+		$rs = step($_->[0], $_->[1], scalar @steps, $step);
+		exit $rs if $rs;
 		$step++;
 	}
 
@@ -191,44 +194,3 @@ unless(iMSCP::Dialog->factory()->yesno($msg)) {
 }
 
 0;
-
-END {
-	execute('clear'); # clean screen
-
-	my @warnings	= getMessageByType('WARNING');
-	my @errors		= getMessageByType('ERROR');
-	my @fatals		= getMessageByType('FATAL ERROR');
-
-	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
-	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
-	$msg	.= "\nFATAL ERRORS:\n"	. join("\n", @fatals)	. "\n" if @fatals > 0;
-
-	my $message = getMessage();
-	newDebug('discard');
-
-	my $logDir = $main::defaultConf{LOG_DIR} ? $main::defaultConf{LOG_DIR} : '/tmp';
-
-	if($main::defaultConf{LOG_DIR}) {
-		use iMSCP::Dir;
-		my $dir = iMSCP::Dir->new(dirname => $main::defaultConf{LOG_DIR});
-
-		my $rs = $dir->make(
-			{
-				mode => 0755,
-				user => $main::defaultConf{ROOT_USER},
-				group => $main::defaultConf{ROOT_GROUP}
-			}
-		) unless( -d $main::defaultConf{LOG_DIR});
-		error("Error: Unable to create the log directory: $main::defaultConf{LOG_DIR}") if $rs;
-	}
-
-	if(open(F, '>', "$logDir/imscp-build.log")) {
-		print F $message;
-		close F;
-		print STDOUT "\nA log file with details can be found at: $logDir/imscp-build.log\n";
-	} else {
-		error("Error: Can't open file '$logDir/imscp-build.log' for writing: $!")
-	}
-
-	print STDERR $msg if $msg;
-}

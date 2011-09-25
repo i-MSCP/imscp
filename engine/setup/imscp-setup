@@ -32,13 +32,16 @@ use lib "$FindBin::Bin/..";
 use lib "$FindBin::Bin/../PerlLib";
 use lib "$FindBin::Bin/../PerlVendor";
 
+umask(027);
+
 use iMSCP::Debug;
 use iMSCP::Boot;
 use iMSCP::Dialog;
 
-iMSCP::Debug->newDebug('imscp-setup.log');
+newDebug('imscp-setup.log');
 
 require "$FindBin::Bin/imscp-setup-methods.pl";
+
 
 ################################################################################
 # Shutting down setup process
@@ -46,8 +49,7 @@ require "$FindBin::Bin/imscp-setup-methods.pl";
 # @return int 0 on success, other on failure
 #
 sub setup_shut_down {
-
-	debug((caller(0))[3].': Starting...');
+	debug('Starting...');
 
 	iMSCP::Dialog->factory()->msgbox(
 					"\n
@@ -58,8 +60,7 @@ sub setup_shut_down {
 					Please type $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} in your browser and log in with your Administrator Account to use i-MSCP."
 	);
 
-	debug((caller(0))[3].': Ending...');
-
+	debug('Ending...');
 	0;
 }
 
@@ -72,27 +73,3 @@ setup_engine() and exit 1;
 setup_shut_down() and exit 1;
 
 exit 0;
-
-END{
-	execute('clear');
-
-	my @warnings	= getMessageByType('WARNING');
-	my @errors		= getMessageByType('ERROR');
-	my @fatals		= getMessageByType('FATAL ERROR');
-
-	my $msg	 = "\nWARNINGS:\n"		. join("\n", @warnings)	. "\n" if @warnings > 0;
-	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
-	$msg	.= "\nFATAL ERRORS:\n"	. join("\n", @fatals)	. "\n" if @fatals > 0;
-
-	my $message = getMessage();
-
-	iMSCP::Debug->newDebug('discard');
-
-	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
-		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-setup.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-setup.log' for writing: $!");
-		print F $message;
-		close F;
-		print STDOUT "\nA log file with details can be found at: $main::imscpConfig{'LOG_DIR'}/imscp-setup.log\n";
-	}
-	print STDERR $msg if $msg;
-}
