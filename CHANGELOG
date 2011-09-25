@@ -24,6 +24,7 @@ Tickets:
 	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with dovecot
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77:  Task - Setup - Empty files must be removed
+	- Fixed #111: Feature - Add multiple secondary DNS server-wide
 	- Fixed #147: Squirrelmail 1.4.22 released
 	- Fixed #165: Bug - Wrong level for page message
 	- Fixed #166: Enhancement - Add Dovecot support
@@ -32,6 +33,7 @@ Tickets:
 	- Fixed #173: Update - phpMyAdmin 3.4.4 released
 	- Fixed #174: Bug - no session directory
 	- Fixed #175: Nice To Have - mail_addr saved in mail_type_forward too
+	- Fixed #177: Cosmetics - Postfix alias file
 	- Fixed #178: Enhancement - dovecot managed sieve missing
 	- Fixed #179: Bug - Unexpected T_STRING
 	- Fixed #183: Bug - client/subdomain_edit.php shows a white page
@@ -44,7 +46,9 @@ Tickets:
 	- Fixed #195: Bug - syntax error, unexpected '('...
 	- Fixed #196: Defect - squirrelmail required for upgrade
 	- Fixed #197: Bug - network card management don't work as expected
+	- Fixed #200: Malfunction - False error on update - 00_master_ssl.conf does not exist!
 	- Fixed #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
+	- Fixed #203: Bug - Apache needs manual restart after fresh installation
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
