@@ -80,7 +80,7 @@ sub set_permissions {
 
 	$rs |= setRights("$CONF_DIR/imscp.conf", {user => $rootUName, group => $masterUName, mode => '0660'});
 	$rs |= setRights("$CONF_DIR/imscp-db-keys", {user => $rootUName, group => $masterUName, mode => '0640'});
-	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0750', recursive => 'yes'});
+	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'});
 	$rs |= setRights($LOG_DIR, {user => $rootUName, group => $masterUName, mode => '0750'});
 
 	for(qw/named ftpd mta po httpd/){

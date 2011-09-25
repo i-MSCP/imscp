@@ -50,6 +50,7 @@ Tickets:
 	- Fixed #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 	- Fixed #203: Bug - Apache needs manual restart after fresh installation
 	- Fixed #207: Bug in postfix alias file if it a mail copy
+	- Fixed #209: Bug - Autoresponser no permission (filepermission)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

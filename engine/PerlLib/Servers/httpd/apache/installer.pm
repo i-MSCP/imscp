@@ -132,7 +132,7 @@ sub setGuiPermissions{
 		{user => $panelUName, group => $apacheGName, mode => '0550'}
 	);
 	$rs |= setRights("$ROOT_DIR",
-		{user => $panelUName, group => $apacheGName, mode => '0550'}
+		{user => $panelUName, group => $apacheGName, mode => '0555'}
 	);
 	$rs |= setRights($PHP_DIR,
 		{user => $rootUName, group => $rootGName, mode => '0555'}
