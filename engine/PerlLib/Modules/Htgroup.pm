@@ -59,7 +59,17 @@ sub loadData{
 						SELECT group_concat(`uname` SEPARATOR ' ')
 						FROM `htaccess_users`
 						WHERE `id` regexp (
-							SELECT REPLACE((SELECT `members` FROM `htaccess_groups` WHERE `id` = ?), ',', '|' )
+							CONCAT(
+								'^(',
+								(
+									SELECT REPLACE(
+										(SELECT `members` FROM `htaccess_groups` WHERE `id` = ?),
+										',',
+										'|'
+									)
+								),
+								')\$'
+							)
 						) GROUP BY `dmn_id`
 					), '') as `users`
 				) as t1
@@ -68,8 +78,7 @@ sub loadData{
 			`domain` AS `t3`
 		ON
 			`t2`.`dmn_id` = `t3`.`domain_id`
-		WHERE
-			`id` = ?
+		WHERE `id` = ?
 	";
 
 	my $rdata = iMSCP::Database->factory()->doQuery('id', $sql, $self->{htgroupId}, $self->{htgroupId});

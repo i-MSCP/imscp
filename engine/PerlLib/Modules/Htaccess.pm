@@ -60,7 +60,17 @@ sub loadData{
 						SELECT group_concat(`uname` SEPARATOR ' ')
 						FROM `htaccess_users`
 						WHERE `id` regexp (
-							SELECT REPLACE((SELECT `user_id` FROM `htaccess` WHERE `id`= ?), ',', '|' )
+							CONCAT(
+								'^(',
+								(
+									SELECT REPLACE(
+										(SELECT `user_id` FROM `htaccess` WHERE `id` = ?),
+										',',
+										'|'
+									)
+								),
+								')\$'
+							)
 						) GROUP BY `dmn_id`
 					), '') as `users`
 				) as t1,
@@ -70,7 +80,17 @@ sub loadData{
 						SELECT group_concat(`ugroup` SEPARATOR ' ')
 						FROM `htaccess_groups`
 						WHERE `id` regexp (
-							SELECT REPLACE((SELECT `group_id` FROM `htaccess` WHERE `id` = ?), ',', '|' )
+							CONCAT(
+								'^(',
+								(
+									SELECT REPLACE(
+										(SELECT `group_id` FROM `htaccess` WHERE `id` = ?),
+										',',
+										'|'
+									)
+								),
+								')\$'
+							)
 						) GROUP BY `dmn_id`
 					), '') as `groups`
 				) as t2

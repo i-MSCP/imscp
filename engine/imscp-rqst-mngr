@@ -244,7 +244,7 @@ sub engine {
 	$sql = "
 		SELECT
 			`id` AS 'id',
-			`ugroup` AS 'name',
+			CONCAT(`ugroup`,':',`id`) AS 'name',
 			`status`
 		FROM
 			`htaccess_groups`
