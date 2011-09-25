@@ -24,62 +24,47 @@
 		</script>
 	</head>
 
-	<body>
-		<div class="header">
-			{MAIN_MENU}
-
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
+<body>
+	<div class="header">
+		{MAIN_MENU}
+		<div class="logo">
+			<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 		</div>
-
-		<div class="location">
-			<div class="location-area icons-left">
-				<h1 class="support">{TR_MENU_QUESTIONS_AND_COMMENTS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<!-- BDP: logged_from -->
-				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
-				<li><a href="backup.php">{TR_MENU_DAILY_BACKUP}</a></li>
-			</ul>
+	</div>
+	<div class="location">
+		<div class="location-area icons-left">
+			<h1 class="support">{TR_MENU_QUESTIONS_AND_COMMENTS}</h1>
 		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-
-		<div class="body">
-            			<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
-
-			<h2>{TR_DOWNLOAD_DIRECTION}</h2>
-			<ol>
-				<li>{TR_FTP_LOG_ON}</li>
-				<li>{TR_SWITCH_TO_BACKUP}</li>
-				<li>{TR_DOWNLOAD_FILE}<br />{TR_USUALY_NAMED}</li>
-			</ol>
-
-			<h2>{TR_RESTORE_BACKUP}</h2>
-			<p>{TR_RESTORE_DIRECTIONS}</p>
-			<form name="backup_frm" method="post" action="backup.php" onsubmit="return confirm('{TR_CONFIRM_MESSAGE}');">
-				<input name="Submit" type="submit" value=" {TR_RESTORE} " />
+		<ul class="location-menu">
+			<!-- BDP: logged_from -->
+			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
+			<!-- EDP: logged_from -->
+			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+		</ul>
+		<ul class="path">
+			<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
+			<li><a>{TR_MENU_DAILY_BACKUP}</a></li>
+		</ul>
+	</div>
+	<div class="left_menu">{MENU}</div>
+	<div class="body">
+		<!-- BDP: page_message -->
+		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+		<!-- EDP: page_message -->
+		<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
+		<h2>{TR_DOWNLOAD_DIRECTION}</h2>
+		<ol>
+			<li>{TR_FTP_LOG_ON}</li>
+			<li>{TR_SWITCH_TO_BACKUP}</li>
+			<li>{TR_DOWNLOAD_FILE}<br />{TR_USUALY_NAMED}</li>
+		</ol>
+		<h2>{TR_RESTORE_BACKUP}</h2>
+		<p>{TR_RESTORE_DIRECTIONS}</p>
+		<form action="backup.php" method="post" id="backup_frm" onsubmit="return confirm('{TR_CONFIRM_MESSAGE}');">
+			<div class="buttons">
 				<input type="hidden" name="uaction" value="bk_restore" />
-			</form>
-		</div>
-
-		<div class="footer">
-			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
-		</div>
-
-	</body>
-</html>
+				<input type="submit" name="Submit" value="{TR_RESTORE}" />
+			</div>
+		</form>
+	</div>
+<!-- INCLUDE "footer.tpl" -->

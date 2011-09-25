@@ -160,10 +160,4 @@ function changeDom(wath) {
 				<input type="hidden" name="uaction" value="add_user" />
 			</form>
 		</div>
-
-		<div class="footer">
-			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
-		</div>
-
-	</body>
-</html>
+<!-- INCLUDE "footer.tpl" -->
