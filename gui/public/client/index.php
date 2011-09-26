@@ -508,7 +508,7 @@ gen_system_message($tpl);
 check_permissions($tpl);
 
 $tpl->assign(array(
-	'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
+	'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
 	'THEME_COLOR_PATH' => "../themes/$theme_color",
 	'THEME_CHARSET' => tr('encoding'),
 	'ISP_LOGO' => layout_getUserLogo(),

@@ -47,7 +47,7 @@ $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode)
+		'TR_PAGE_TITLE'	=> ($add_mode)
 			? tr("i-MSCP - Manage Domain Alias/Add DNS zone's record")
 			: tr("i-MSCP - Manage Domain Alias/Edit DNS zone's record"),
 		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",

@@ -1,109 +1,87 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_EDIT_DNS_PAGE_TITLE}</title>
-		<meta name="robots" content="nofollow, noindex" />
-		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-		<!--[if IE 6]>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-		<script type="text/javascript">
-			DD_belatedPNG.fix('*');
-		</script>
-		<![endif]-->
-		<script type="text/javascript">
-		/* <![CDATA[ */
-		function action_delete(url, subject) {
-			if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
-				return false;
-			location = url;
+<!-- INCLUDE "header.tpl" -->
+<body>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+	function action_delete(url, subject) {
+		if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
+			return false;
+		location = url;
+	}
+
+	function in_array(needle, haystack) {
+		var n = haystack.length;
+		for (var i = 0; i < n; i++) {
+			if (haystack[i] == needle) return true;
 		}
-		/* ]]> */
-		</script>
-		<script type="text/javascript">
-		/* <![CDATA[ */
+		return false;
+	}
 
-			function in_array(needle, haystack) {
-				var n = haystack.length;
-				for (var i = 0; i < n; i++) {
-					if (haystack[i] == needle) return true;
-				}
-				return false;
-			}
-
-			function dns_show_rows(arr_show) {
-				var arr_possible = new Array('name', 'ip_address', 'ip_address_v6',
-					'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio',
-					'srv_weight', 'srv_host', 'srv_port', 'cname');
-				var n = arr_possible.length;
-				var trname;
-				for (var i = 0; i < n; i++) {
-					trname = 'tr_dns_'+arr_possible[i];
-					o = document.getElementById(trname);
-					if (o) {
-						if (in_array(arr_possible[i], arr_show)) {
-							o.style.display = 'table-row';
-						} else {
-							o.style.display = 'none';
-						}
-					} else {
-						alert('Not found: '+trname);
-					}
-				}
-			}
-
-			function dns_type_changed(value) {
-				if (value == 'A') {
-					dns_show_rows(new Array('name', 'ip_address'));
-				} else if (value == 'AAAA') {
-					dns_show_rows(new Array('name', 'ip_address_v6'));
-				} else if (value == 'SRV') {
-					dns_show_rows(new Array('srv_name', 'srv_protocol', 'srv_ttl',
-						'srv_prio', 'srv_weight', 'srv_host', 'srv_port'));
-				} else if (value == 'CNAME') {
-					dns_show_rows(new Array('name', 'cname'));
-				} else if (value == 'MX') {
-					dns_show_rows(new Array('srv_prio', 'srv_host'));
-				}
-			}
-
-			var IPADDRESS = "[0-9\.]";
-			var IPv6ADDRESS = "[0-9a-f:A-F]";
-			var NUMBERS = "[0-9]";
-
-			function filterChars(e, allowed){
-				var keynum;
-				if (window.event){
-					keynum = window.event.keyCode;
-					e = window.event;
-				} else if (e) {
-					keynum = e.which;
+	function dns_show_rows(arr_show) {
+		var arr_possible = new Array('name', 'ip_address', 'ip_address_v6',
+			'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio',
+			'srv_weight', 'srv_host', 'srv_port', 'cname');
+		var n = arr_possible.length;
+		var trname;
+		for (var i = 0; i < n; i++) {
+			trname = 'tr_dns_'+arr_possible[i];
+			o = document.getElementById(trname);
+			if (o) {
+				if (in_array(arr_possible[i], arr_show)) {
+					o.style.display = 'table-row';
 				} else {
-					return true;
+					o.style.display = 'none';
 				}
-
-				if ((keynum == 8) || (keynum == 0)) {
-					return true;
-				}
-				var keychar = String.fromCharCode(keynum);
-
-				if (e.ctrlKey && ((keychar=="C") || (keychar=="c") || (keychar=="V") || (keychar=="v"))) {
-					return true;
-				}
-				var re = new RegExp(allowed);
-				return re.test(keychar);
+			} else {
+				alert('Not found: '+trname);
 			}
+		}
+	}
 
-		/* ]]> */
-		</script>
-	</head>
-	<body>
-		<div class="header">
-			{MAIN_MENU}
+	function dns_type_changed(value) {
+		if (value == 'A') {
+			dns_show_rows(new Array('name', 'ip_address'));
+		} else if (value == 'AAAA') {
+			dns_show_rows(new Array('name', 'ip_address_v6'));
+		} else if (value == 'SRV') {
+			dns_show_rows(new Array('srv_name', 'srv_protocol', 'srv_ttl',
+				'srv_prio', 'srv_weight', 'srv_host', 'srv_port'));
+		} else if (value == 'CNAME') {
+			dns_show_rows(new Array('name', 'cname'));
+		} else if (value == 'MX') {
+			dns_show_rows(new Array('srv_prio', 'srv_host'));
+		}
+	}
+
+	var IPADDRESS = "[0-9\.]";
+	var IPv6ADDRESS = "[0-9a-f:A-F]";
+	var NUMBERS = "[0-9]";
+
+	function filterChars(e, allowed){
+		var keynum;
+		if (window.event){
+			keynum = window.event.keyCode;
+			e = window.event;
+		} else if (e) {
+			keynum = e.which;
+		} else {
+			return true;
+		}
+
+		if ((keynum == 8) || (keynum == 0)) {
+			return true;
+		}
+		var keychar = String.fromCharCode(keynum);
+
+		if (e.ctrlKey && ((keychar=="C") || (keychar=="c") || (keychar=="V") || (keychar=="v"))) {
+			return true;
+		}
+		var re = new RegExp(allowed);
+		return re.test(keychar);
+	}
+	/* ]]> */
+	</script>
+	<div class="header">
+		{MAIN_MENU}
 
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
@@ -127,11 +105,8 @@
 			</ul>
 		</div>
 
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
+	<div class="left_menu">{MENU}</div>
+	<div class="body">
             			<h2 class="domains"><span>{TR_MANAGE_DOMAIN_DNS}</span></h2>
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
@@ -216,12 +191,10 @@
 				</fieldset>
 			</form>
 		</div>
-		<script type="text/javascript">
-		/* <![CDATA[ */
-
-			dns_type_changed(document.getElementById('dns_type').value);
-
-		/* ]]> */
-		</script>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		dns_type_changed(document.getElementById('dns_type').value);
+	/* ]]> */
+	</script>
 <!-- INCLUDE "footer.tpl" -->
 
