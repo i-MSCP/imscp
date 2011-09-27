@@ -78,8 +78,8 @@
 				</fieldset>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="modify" />
-				<input type="submit" name="Submit" value="{TR_MODIFY}" />
-				<input type="submit" name="Submit" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
+				<input type="submit" name="update" value="{TR_MODIFY}" />
+				<input type="submit" name="cancel" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 			</div>
 		</form>
 	</div>
