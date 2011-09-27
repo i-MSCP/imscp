@@ -39,6 +39,7 @@
  *
  * @param  $user_id
  * @return array
+ * @todo must be removed
  */
 function get_user_gui_props($user_id)
 {
@@ -63,49 +64,67 @@ function get_user_gui_props($user_id)
 }
 
 /**
- * Generate page message (info, warning, error, success).
+ * Generates the page messages to display on client browser.
  *
- * Note: The default message type is set to 'info'.
- * See the set_page_message() function for more information.
+ * Note: The default level for message is sets to 'info'.
+ * See the {@link set_page_message()} function for more information.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
+ * @todo replace by flashMessenger component
  */
 function generatePageMessage($tpl)
 {
-    if (!isset($_SESSION['user_page_message'])) {
-        $tpl->assign('PAGE_MESSAGE', '');
-    } else {
-        $tpl->assign(array(
-                          'MESSAGE_CLS' => $_SESSION['user_page_message_cls'],
-                          'MESSAGE' => $_SESSION['user_page_message']));
+	$namespace = new Zend_Session_Namespace('pageMessages');
 
-        unset($_SESSION['user_page_message'], $_SESSION['user_page_message_cls']);
-    }
+	if (Zend_Session::namespaceIsset('pageMessages')) {
+		foreach (array('info', 'warning', 'error', 'success') as $level) {
+			if (isset($namespace->{$level})) {
+				$tpl->assign(array(
+								  'MESSAGE_CLS' => $level,
+								  'MESSAGE' => $namespace->{$level}));
+
+				$tpl->parse('PAGE_MESSAGE', '.page_message');
+			}
+		}
+
+		Zend_Session::namespaceUnset('pageMessages');
+	} else {
+		$tpl->assign('PAGE_MESSAGE', '');
+	}
 }
 
 /**
- * Sets a message to raise.
+ * Sets a page message to display on client browser.
  *
- * @param string $message $message Message to raise
- * @param string $level Message level
+ * @param string $message $message Message to display
+ * @param string $level Message level (INFO, WARNING, ERROR, SUCCESS)
  * @return void
+ * @todo replace by flashMessenger component
  */
 function set_page_message($message, $level = 'info')
 {
-    if ($level != 'info' && $level != 'warning' && $level != 'error' &&
-        $level != 'success'
+	$level = strtolower($level);
+
+	if(!is_string($message)) {
+		throw new iMSCP_Exception('set_page_message() expects a string for $message');
+	} elseif($level != 'info' && $level != 'warning' && $level != 'error'
+			 && $level != 'success'
     ) {
         throw new iMSCP_Exception('Wrong level for page message.');
     }
 
-    if (isset($_SESSION['user_page_message'])) {
-        $_SESSION['user_page_message'] .= "\n<br />$message";
-    } else {
-        $_SESSION['user_page_message'] = $message;
-    }
+	static $namespace = null;
 
-    $_SESSION['user_page_message_cls'] = $level;
+	if(null === $namespace) {
+		$namespace = new Zend_Session_Namespace('pageMessages');
+	}
+
+	if(isset($namespace->{$level})) {
+		$namespace->{$level} .= "\n<br />$message";
+	} else {
+		$namespace->{$level} = $message;
+	}
 }
 
 /**
@@ -113,6 +132,7 @@ function set_page_message($message, $level = 'info')
  *
  * @param  array $messages Stack of messages to be concatenated
  * @return string Concatenated messages
+ * @todo not longer needed - should be removed
  */
 function format_message($messages)
 {
