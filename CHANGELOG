@@ -10,6 +10,7 @@ Features / Enhancements:
 		Core:
 			- Added support for Dovecot
 			- Merged imscp-build and imscp-setup
+			- Engine rewrite
 
 	GUI:
 		Core:
@@ -49,7 +50,7 @@ Tickets:
 	- Fixed #200: Malfunction - False error on update - 00_master_ssl.conf does not exist!
 	- Fixed #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 	- Fixed #203: Bug - Apache needs manual restart after fresh installation
-	- Fixed #207: Bug in postfix alias file if it a mail copy
+	- Fixed #207: Bug - Bug in postfix alias file if it a mail copy
 	- Fixed #209: Bug - Autoresponser no permission (filepermission)
 
 -------------------------------------------------------------------------------------
