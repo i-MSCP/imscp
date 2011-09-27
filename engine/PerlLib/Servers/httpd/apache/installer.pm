@@ -252,8 +252,6 @@ sub oldEngineCompatibility{
 
 	my $self	= shift;
 	my $httpd	= Servers::httpd::apache->new();
-
-	my $self	= shift;
 	my $rs		= 0;
 
 	#for((

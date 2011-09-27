@@ -177,8 +177,8 @@ sub addDmn{
 		return 1;
 	}
 
-	my $content	= process({PATH => $data->{PATH}}, $content);
-	my $file	= iMSCP::File->new( filename => "$self->{wrkDir}/$data->{FILE_NAME}");
+	$content	= process({PATH => $data->{PATH}}, $content);
+	$file	= iMSCP::File->new( filename => "$self->{wrkDir}/$data->{FILE_NAME}");
 
 	$file->set($content);
 

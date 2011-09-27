@@ -373,7 +373,7 @@ sub addMail{
 	$rs |= $self->delMailForward($data) if $data->{MAIL_TYPE} !~ m/_forward/;
 
 	$rs |= $self->addCatchAll($data) if $data->{MAIL_TYPE} =~ m/_catchall/;
-	$rs |= $self->delCatchAll($data) if $data->{MAIL_TYPE} !~ m/_catchall/;
+	#$rs |= $self->delCatchAll($data) if $data->{MAIL_TYPE} !~ m/_catchall/;
 
 	debug('Ending...');
 	$rs;
