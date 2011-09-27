@@ -41,42 +41,40 @@ require_once 'iMSCP/Debug/Bar/Plugin/Interface.php';
  */
 abstract class iMSCP_Debug_Bar_Plugin implements iMSCP_Debug_Bar_Plugin_Interface
 {
-    /**
-     * Transforms data into human readable format.
-     *
-     * Note: Method that come from the ZFDebug project hosted at:
-     * http://code.google.com/p/zfdebug/
-     *
-     * @param array $values Values to hmanize
-     * @return string
-     */
-    protected function _humanize($values)
-    {
-        if (is_array($values))
-            ksort($values);
+	/**
+	 * Transforms data into human readable format.
+	 *
+	 * Note: Method that come from the ZFDebug project hosted at:
+	 * http://code.google.com/p/zfdebug/
+	 *
+	 * @param array $values Values to humanize
+	 * @return string
+	 */
+	protected function _humanize($values)
+	{
+		if (is_array($values)) {
+			ksort($values);
+		}
 
-        $retVal = '<div class="pre">';
+		$retVal = '<div class="pre">';
 
-        foreach ($values as $key => $value)
-        {
-            $key = htmlspecialchars($key);
-            if (is_numeric($value)) {
-                $retVal .= $key . ' => ' . $value . '<br />';
-            }
-            else if (is_string($value)) {
-                $retVal .= $key . ' => \'' . htmlspecialchars($value) . '\'<br />';
-            }
-            else if (is_array($value)) {
-                $retVal .= $key . ' => ' . self::_humanize($value);
-            }
-            else if (is_object($value)) {
-                $retVal .= $key . ' => ' . get_class($value) . ' Object()<br />';
-            }
-            else if (is_null($value)) {
-                $retVal .= $key . ' => NULL<br />';
-            }
-        }
+		foreach ($values as $key => $value)
+		{
+			$key = htmlspecialchars($key);
 
-        return $retVal . '</div>';
-    }
+			if (is_numeric($value)) {
+				$retVal .= $key . ' => ' . $value . '<br />';
+			} elseif (is_string($value)) {
+				$retVal .= $key . ' => \'' . htmlspecialchars($value) . '\'<br />';
+			} elseif (is_array($value)) {
+				$retVal .= $key . ' => ' . self::_humanize($value);
+			} elseif (is_object($value)) {
+				$retVal .= $key . ' => ' . get_class($value) . ' Object()<br />';
+			} elseif (is_null($value)) {
+				$retVal .= $key . ' => NULL<br />';
+			}
+		}
+
+		return $retVal . '</div>';
+	}
 }
