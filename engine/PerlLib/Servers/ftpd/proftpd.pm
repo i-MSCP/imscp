@@ -232,7 +232,7 @@ sub delSub{
 }
 
 
-END{
+sub DESTROY{
 	debug('Starting...');
 
 	my $endCode	= $?;

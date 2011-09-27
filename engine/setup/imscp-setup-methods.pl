@@ -1590,7 +1590,7 @@ sub rebuild_customers_cfg {
 	iMSCP::Boot->new()->unlock();
 
 	my ($stdout, $stderr, $rs);
-	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr update", \$stdout, \$stderr);
+	$rs = execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 	error("Error while rebuilding customers configuration files") if(!$stderr && $rs);

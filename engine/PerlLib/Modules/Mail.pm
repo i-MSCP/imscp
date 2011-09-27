@@ -47,19 +47,6 @@ sub loadData{
 
 	my $self = shift;
 
-	my $sql = "
-		SELECT
-			if(isnull(`t2`.`mail_addr`), 'no', 'yes') AS 'haveCatchAll',
-			`t1`.*
-		FROM
-			`mail_users`AS `t1`
-		LEFT JOIN
-			(SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE '\@%') AS `t2`
-		ON
-			substr(`t1`.`mail_addr`, locate('@', `t1`.`mail_addr`)) = `t2`.`mail_addr`
-		WHERE
-			`t1`.`mail_id` = ?
-	";
 	my $sql = '
 		SELECT
 			if(isnull(`t2`.`mail_addr`), "no", "yes") AS "haveCatchAll",
@@ -152,7 +139,7 @@ sub buildMTAData{
 		MAIL_AUTO_RSPND_TXT	=> $self->{mail_auto_respond_text},
 		MAIL_HAVE_CATCH_ALL	=> $self->{haveCatchAll},
 		MAIL_STATUS			=> $self->{status},
-		MAIL_ON_CATCHALL	=> ()
+		MAIL_ON_CATCHALL	=> undef
 	};
 
 	if($self->{mail_type} =~ m/_catchall/ && $self->{status} eq 'delete'){

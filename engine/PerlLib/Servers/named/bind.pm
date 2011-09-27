@@ -768,7 +768,7 @@ sub postdelSub{
 	0;
 }
 
-END{
+sub DESTROY{
 	debug('Starting...');
 
 	my $endCode	= $?;

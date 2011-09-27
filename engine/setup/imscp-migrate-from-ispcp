@@ -40,6 +40,8 @@ use Data::Dumper;
 
 umask(027);
 
+newDebug('imscp-migrate-from-ispcp.log');
+
 iMSCP::Boot->new(mode => 'all')->init({nodatabase => 'yes'});
 
 loadConfigs();
@@ -831,13 +833,4 @@ sub systemSetup{
 	debug('Ending...');
 
 	0;
-}
-
-END{
-	my $message = getMessage();
-	if($main::imscpConfig{LOG_DIR} && -d $main::imscpConfig{LOG_DIR}){
-		open(F, '>', "$main::imscpConfig{'LOG_DIR'}/imscp-migrate-from-ispcp.log") or fatal("Error: Can't open file '$main::imscpConfig{'LOG_DIR'}/imscp-migrate-from-ispcp.log' for writing: $!");
-		print F $message;
-		close F;
-	}
 }
