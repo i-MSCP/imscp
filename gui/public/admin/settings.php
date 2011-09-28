@@ -198,6 +198,7 @@ $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
                            'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl',
+						   'page_message' => 'page',
                            'def_language' => 'page'));
 
 // Grab the value only once to improve performances
