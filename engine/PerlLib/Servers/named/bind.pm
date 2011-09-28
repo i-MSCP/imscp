@@ -285,7 +285,7 @@ sub addDmnDb {
 	}
 
 	######################## TIMESTAMP SECTION END ##############################
-	###################### COSTUMERS DATA SECTION START ############################
+	###################### CUSTUMERS DATA SECTION START ############################
 	if( $option->{DMN_ADD} ){
 
 		my $bTag = "; ctm domain als entries BEGIN.\n";
@@ -321,7 +321,7 @@ sub addDmnDb {
 
 		$entries = replaceBloc($bTag, $eTag, $custom, $entries, undef);
 	}
-	####################### COSTUMERS DATA SECTION END #############################
+	####################### CUSTUMERS DATA SECTION END #############################
 	##################### CUSTOM DATA SECTION START ##########################
 	if( keys(%{$option->{DMN_CUSTOM}}) > 0 ){
 
