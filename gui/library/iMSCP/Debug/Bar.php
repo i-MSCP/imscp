@@ -17,18 +17,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar_Plugin
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		SVN: $Id$
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Events_Listeners_Interface */
 require_once 'iMSCP/Events/Listeners/Interface.php';
+
+/** @see iMSCP_Events */
+require_once 'iMSCP/Events.php';
 
 /**
  * i-MSCP DebugBar component.
@@ -43,201 +46,202 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  *  - Version : i-MSCP version, list of all PHP extensions available.
  *
  *  - Variables : Contents of $_GET, $_POST, $_COOKIE, $_FILES and $_SESSION and
- *    $_ENV variables.
+ *	$_ENV variables.
  *
  *  - Timer : Timing information of current request, time spent in level script ;
- *    support custom timers. Also average, min and max time for requests.
+ *	support custom timers. Also average, min and max time for requests.
  *
  *  - Files : Number and size of files included with complete list.
  *
  *  - Memory : Peak memory usage, memory usage of Level scripts and the whole
- *    application ; support for custom memory markers.
+ *	application ; support for custom memory markers.
  *
  *  - Database : Full listing of SQL queries and the time for each.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @package 	iMSCP
+ * @package 	iMSCP_Debug
+ * @subpackage	Bar
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.1
  */
 class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 {
-    /**
-     * Events manager instance.
-     *
-     * @var iMSCP_Events_Manager
-     */
-    protected $_enventsManager;
+	/**
+	 * Events manager instance.
+	 *
+	 * @var iMSCP_Events_Manager
+	 */
+	protected $_enventsManager;
 
-    /**
-     * Event that this listener receives.
-     *
-     * @var iMSCP_Events_Response
-     */
-    protected $_event;
+	/**
+	 * Event that this listener receives.
+	 *
+	 * @var iMSCP_Events_Response
+	 */
+	protected $_event;
 
-    /**
-     * Contains registered plugins for debug bar
-     *
-     * @var iMSCP_Debug_Bar_Plugin_Interface
-     */
-    protected $_plugins = array();
+	/**
+	 * Contains registered plugins for debug bar
+	 *
+	 * @var iMSCP_Debug_Bar_Plugin_Interface
+	 */
+	protected $_plugins = array();
 
-    /**
-     * Events that this component listens on.
-     *
-     * @var array An array that contains list of events.
-     */
-    protected $_listenedEvents = array(
-        iMSCP_Events::onLoginScriptEnd,
-        iMSCP_Events::onLostPasswordScriptEnd,
-        iMSCP_Events::onAdminScriptEnd,
-        iMSCP_Events::onResellerScriptEnd,
-        iMSCP_Events::onClientScriptEnd,
-        iMSCP_Events::onOrderPanelScriptEnd
-    );
+	/**
+	 * Events that this component listens on.
+	 *
+	 * @var array An array that contains list of events.
+	 */
+	protected $_listenedEvents = array(
+		iMSCP_Events::onLoginScriptEnd,
+		iMSCP_Events::onLostPasswordScriptEnd,
+		iMSCP_Events::onAdminScriptEnd,
+		iMSCP_Events::onResellerScriptEnd,
+		iMSCP_Events::onClientScriptEnd,
+		iMSCP_Events::onOrderPanelScriptEnd
+	);
 
-    /**
-     * Constructor.
-     *
-     * @throws iMSCP_Debug_Bar_Exception if a plugin doesn't implement the
-     *                                   iMSCP_Debug_Bar_Plugin_Interface interface
-     * @param iMSCP_Events_Manager $eventsManager Events manager
-     * @param string|array $plugins Plugin(s) instance(s).
-     */
-    public function __construct(iMSCP_Events_Manager $eventsManager, $plugins)
-    {
-        $this->_enventsManager = $eventsManager;
+	/**
+	 * Constructor.
+	 *
+	 * @throws iMSCP_Debug_Bar_Exception if a plugin doesn't implement the
+	 *								   iMSCP_Debug_Bar_Plugin_Interface interface
+	 * @param iMSCP_Events_Manager $eventsManager Events manager
+	 * @param string|array $plugins Plugin(s) instance(s).
+	 */
+	public function __construct(iMSCP_Events_Manager $eventsManager, $plugins)
+	{
+		$this->_enventsManager = $eventsManager;
 
-        // Creating i-MSCP Version Tab always shown
-        $this->_plugins[] = new iMSCP_Debug_Bar_Plugin_Version();
+		// Creating i-MSCP Version Tab always shown
+		$this->_plugins[] = new iMSCP_Debug_Bar_Plugin_Version();
 
-        $stackIndex = 998;
-        foreach ((array)$plugins as $plugin) {
-            if (!$plugin instanceof iMSCP_Debug_Bar_Plugin_Interface) {
-                throw new iMSCP_Debug_Bar_Exception(
-                    'All plugins for the debug bar must implement the ' .
-                    'iMSCP_Debug_Bar_Plugin_Interface interface.');
-            } elseif($plugin instanceof iMSCP_Events_Listeners_Interface) {
-                $this->registerListener($plugin, $stackIndex);
-                $stackIndex--;
-            }
+		$stackIndex = 998;
 
-            $this->_plugins[] = $plugin;
-        }
+		foreach ((array)$plugins as $plugin) {
+			if (!$plugin instanceof iMSCP_Debug_Bar_Plugin_Interface) {
+				throw new iMSCP_Debug_Bar_Exception(
+					'All plugins for the debug bar must implement the ' .
+					'iMSCP_Debug_Bar_Plugin_Interface interface.');
+			} elseif ($plugin instanceof iMSCP_Events_Listeners_Interface) {
+				$this->registerListener($plugin, $stackIndex);
+				$stackIndex--;
+			}
 
-        $eventsManager->registerListener($this->getListenedEvents(), $this, 999);
-    }
+			$this->_plugins[] = $plugin;
+		}
 
-    /**
-     * Register a plugin listener on the events manager.
-     *
-     * @param  iMSCP_Events_Listeners_Interface $plugin Plugin instance.
-     * @param  int $stackIndex Order in which listeners methods will be executed.
-     * @return void
-     */
-    protected function registerListener($plugin, $stackIndex)
-    {
-        $this->_enventsManager->registerListener(
-            $plugin->getListenedEvents(), $plugin, $stackIndex);
-    }
+		$eventsManager->registerListener($this->getListenedEvents(), $this, 999);
+	}
 
-    /**
-     * Catch all calls for listener methods of this class to avoid to declarate them
-     * since they do same job.
-     *
-     * @param string $listenerMethod Listener method
-     * @param iMSCP_Events_Response $event Event object
-     */
-    public function __call($listenerMethod, $event)
-    {
-        if (!in_array($listenerMethod, $this->_listenedEvents)) {
-            throw new iMSCP_Debug_Bar_Exception('Unknown listener method.');
-        }
+	/**
+	 * Register a plugin listener on the events manager.
+	 *
+	 * @param  iMSCP_Events_Listeners_Interface $plugin Plugin instance.
+	 * @param  int $stackIndex Order in which listeners methods will be executed.
+	 * @return void
+	 */
+	protected function registerListener($plugin, $stackIndex)
+	{
+		$this->_enventsManager->registerListener(
+			$plugin->getListenedEvents(), $plugin, $stackIndex);
+	}
 
-        $this->_event = $event[0];
-        $this->buildDebugBar();
-    }
+	/**
+	 * Catch all calls for listener methods of this class to avoid to declarate them
+	 * since they do same job.
+	 *
+	 * @param string $listenerMethod Listener method
+	 * @param iMSCP_Events_Response $event Event object
+	 */
+	public function __call($listenerMethod, $event)
+	{
+		if (!in_array($listenerMethod, $this->_listenedEvents)) {
+			throw new iMSCP_Debug_Bar_Exception('Unknown listener method.');
+		}
 
-    /**
-     * Returns list of listeneds events.
-     *
-     * @return array
-     */
-    public function getListenedEvents()
-    {
-        return $this->_listenedEvents;
-    }
+		$this->_event = $event[0];
+		$this->buildDebugBar();
+	}
 
-    /**
-     * Builds the Debug Bar and adds it to the repsonse.
-     *
-     * @return void
-     */
-    protected function buildDebugBar()
-    {
-        // Doesn't act on AJAX request.
-        if (is_xhr()) {
-            return;
-        }
+	/**
+	 * Returns list of listeneds events.
+	 *
+	 * @return array
+	 */
+	public function getListenedEvents()
+	{
+		return $this->_listenedEvents;
+	}
 
-        $xhtml = '<div>';
+	/**
+	 * Builds the Debug Bar and adds it to the repsonse.
+	 *
+	 * @return void
+	 */
+	protected function buildDebugBar()
+	{
+		// Doesn't act on AJAX request.
+		if (is_xhr()) {
+			return;
+		}
 
-        /** @var $plugin iMSCP_Debug_Bar_Plugin_Interface */
-        foreach ($this->_plugins as $plugin)
-        {
-            $panel = $plugin->getPanel();
+		$xhtml = '<div>';
 
-            if ($panel == '') {
-                continue;
-            }
+		/** @var $plugin iMSCP_Debug_Bar_Plugin_Interface */
+		foreach ($this->_plugins as $plugin)
+		{
+			$panel = $plugin->getPanel();
 
-            $xhtml .= '<div id="iMSCPdebug_' . $plugin->getIdentifier()
-                   . '" class="iMSCPdebug_panel">'
-                   . $panel
-                   . '</div>';
-        }
+			if ($panel == '') {
+				continue;
+			}
 
-        foreach ($this->_plugins as $plugin) {
-            $tab = $plugin->getTab();
+			$xhtml .= '<div id="iMSCPdebug_' . $plugin->getIdentifier()
+					  . '" class="iMSCPdebug_panel">'
+					  . $panel
+					  . '</div>';
+		}
 
-            if ($tab == '') {
-                continue;
-            }
+		foreach ($this->_plugins as $plugin) {
+			$tab = $plugin->getTab();
 
-            $xhtml .= '<span class="iMSCPdebug_span clickable" onclick="iMSCPdebugPanel(\'iMSCPdebug_' .
-                      $plugin->getIdentifier() . '\');">';
-            $xhtml .= '<img src="' . $plugin->getIcon() .
-                      '" style="vertical-align:middle" alt="'
-                      . $plugin->getIdentifier() .
-                      '" title="' . $plugin->getIdentifier() . '" /> ';
-            $xhtml .= $tab . '</span>';
-        }
+			if ($tab == '') {
+				continue;
+			}
 
-        $xhtml .= '<span class="iMSCPdebug_span iMSCPdebug_last clickable" id="iMSCPdebug_toggler" onclick="iMSCPdebugSlideBar()">&#171;</span>';
-        $xhtml .= '</div>';
+			$xhtml .= '<span class="iMSCPdebug_span clickable" onclick="iMSCPdebugPanel(\'iMSCPdebug_' .
+					  $plugin->getIdentifier() . '\');">';
+			$xhtml .= '<img src="' . $plugin->getIcon() .
+					  '" style="vertical-align:middle" alt="'
+					  . $plugin->getIdentifier() .
+					  '" title="' . $plugin->getIdentifier() . '" /> ';
+			$xhtml .= $tab . '</span>';
+		}
 
-        $templateEngine = $this->_event->getTemplateEngine();
-        $response = $templateEngine->getLastParseResult();
-        $response = preg_replace(
-            '@(</head>)@i', $this->_buildHeader() . PHP_EOL . '$1', $response);
-        $response = str_ireplace(
-            '</body>', '<div id="iMSCPdebug_debug">' . $xhtml . '</div></body>', $response);
-        $templateEngine->replaceLastParseResult($response);
-    }
+		$xhtml .= '<span class="iMSCPdebug_span iMSCPdebug_last clickable" id="iMSCPdebug_toggler" onclick="iMSCPdebugSlideBar()">&#171;</span>';
+		$xhtml .= '</div>';
 
-    /**
-     * Returns xhtml header for the Debug Bar.
-     *
-     * @return string
-     */
-    protected function _buildHeader()
-    {
-        $collapsed = isset($_COOKIE['iMSCPdebugCollapsed'])
-            ? $_COOKIE['iMSCPdebugCollapsed'] : 0;
+		$templateEngine = $this->_event->getTemplateEngine();
+		$response = $templateEngine->getLastParseResult();
+		$response = preg_replace(
+			'@(</head>)@i', $this->_buildHeader() . PHP_EOL . '$1', $response);
+		$response = str_ireplace(
+			'</body>', '<div id="iMSCPdebug_debug">' . $xhtml . '</div></body>', $response);
+		$templateEngine->replaceLastParseResult($response);
+	}
 
-        return ('
+	/**
+	 * Returns xhtml header for the Debug Bar.
+	 *
+	 * @return string
+	 */
+	protected function _buildHeader()
+	{
+		$collapsed = isset($_COOKIE['iMSCPdebugCollapsed'])
+			? $_COOKIE['iMSCPdebugCollapsed'] : 0;
+
+		return ('
             <style type="text/css" media="screen">
             	#iMSCPdebug_debug h4 {margin:5px;}
                 #iMSCPdebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:5px; left:0px; color:#000; z-index: 255;}
@@ -316,5 +320,5 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
                     jQuery(name).slideToggle();
                 }
             </script>');
-    }
+	}
 }
