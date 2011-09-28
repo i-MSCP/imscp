@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="en">
 <head>
 	<title>{TR_PAGE_TITLE}</title>
 	<meta http-equiv='Content-Script-Type' content='text/javascript' />

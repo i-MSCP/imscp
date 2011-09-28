@@ -428,10 +428,10 @@ function gen_user_als_list($tpl, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Domains'),
-		'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'							=> tr('encoding'),
-		'ISP_LOGO'								=> layout_getUserLogo()
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Domains'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 

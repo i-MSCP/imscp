@@ -47,13 +47,13 @@ $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => ($add_mode)
-			 ? tr("i-MSCP - Manage Domain Alias/Add DNS zone's record")
-			 : tr("i-MSCP - Manage Domain Alias/Edit DNS zone's record"),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'ACTION_MODE' => ($add_mode) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}'
+		'TR_PAGE_TITLE' => ($add_mode)
+			? tr("i-MSCP - Manage Domain Alias/Add DNS zone's record")
+			: tr("i-MSCP - Manage Domain Alias/Edit DNS zone's record"),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'ACTION_MODE' => ($add_mode) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}'
 	)
 );
 
@@ -62,28 +62,28 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		 'TR_MODIFY' => tr('Modify'),
-		 'TR_CANCEL' => tr('Cancel'),
-		 'TR_ADD' => tr('Add'),
-		 'TR_DOMAIN' => tr('Domain'),
-		 'TR_EDIT_DNS' => ($add_mode) ? tr("Add DNS zone's record (EXPERIMENTAL)") :
-			 tr("Edit DNS zone's record (EXPERIMENTAL)"),
-		 'TR_DNS' => tr("DNS zone's records"),
-		 'TR_DNS_NAME' => tr('Name'),
-		 'TR_DNS_CLASS' => tr('Class'),
-		 'TR_DNS_TYPE' => tr('Type'),
-		 'TR_DNS_SRV_NAME' => tr('Service name'),
-		 'TR_DNS_IP_ADDRESS' => tr('IP address'),
-		 'TR_DNS_IP_ADDRESS_V6' => tr('IPv6 address'),
-		 'TR_DNS_SRV_PROTOCOL' => tr('Service protocol'),
-		 'TR_DNS_SRV_TTL' => tr('TTL'),
-		 'TR_DNS_SRV_PRIO' => tr('Priority'),
-		 'TR_DNS_SRV_WEIGHT' => tr('Relative weight for records with the same priority'),
-		 'TR_DNS_SRV_HOST' => tr('Target host'),
-		 'TR_DNS_SRV_PORT' => tr('Target port'),
-		 'TR_DNS_CNAME' => tr('Canonical name'),
-		 'TR_DNS_PLAIN' => tr('Plain record data'),
-		 'TR_MANAGE_DOMAIN_DNS' => tr("DNS zone's records (EXPERIMENTAL)")
+		'TR_MODIFY' => tr('Modify'),
+		'TR_CANCEL' => tr('Cancel'),
+		'TR_ADD' => tr('Add'),
+		'TR_DOMAIN' => tr('Domain'),
+		'TR_EDIT_DNS' => ($add_mode) ? tr("Add DNS zone's record (EXPERIMENTAL)") :
+			tr("Edit DNS zone's record (EXPERIMENTAL)"),
+		'TR_DNS' => tr("DNS zone's records"),
+		'TR_DNS_NAME' => tr('Name'),
+		'TR_DNS_CLASS' => tr('Class'),
+		'TR_DNS_TYPE' => tr('Type'),
+		'TR_DNS_SRV_NAME' => tr('Service name'),
+		'TR_DNS_IP_ADDRESS' => tr('IP address'),
+		'TR_DNS_IP_ADDRESS_V6' => tr('IPv6 address'),
+		'TR_DNS_SRV_PROTOCOL' => tr('Service protocol'),
+		'TR_DNS_SRV_TTL' => tr('TTL'),
+		'TR_DNS_SRV_PRIO' => tr('Priority'),
+		'TR_DNS_SRV_WEIGHT' => tr('Relative weight for records with the same priority'),
+		'TR_DNS_SRV_HOST' => tr('Target host'),
+		'TR_DNS_SRV_PORT' => tr('Target port'),
+		'TR_DNS_CNAME' => tr('Canonical name'),
+		'TR_DNS_PLAIN' => tr('Plain record data'),
+		'TR_MANAGE_DOMAIN_DNS' => tr("DNS zone's records (EXPERIMENTAL)")
 	)
 );
 
