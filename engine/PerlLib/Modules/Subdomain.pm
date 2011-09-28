@@ -312,10 +312,16 @@ sub buildNAMEDData{
 
 	my $self	= shift;
 
+	my $groupName	=
+	my $userName	=
+			$main::imscpConfig{SYSTEM_USER_PREFIX}.
+			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
+
 	$self->{named} = {
 		DMN_NAME		=> $self->{subdomain_name}.'.'.$self->{user_home},
 		PARENT_DMN_NAME	=> $self->{user_home},
-		DMN_IP			=> $self->{ip_number}
+		DMN_IP			=> $self->{ip_number},
+		USER_NAME		=> $userName.'sub'.$self->{subdomain_id}
 	};
 
 	debug('Ending...');
@@ -342,4 +348,14 @@ sub buildFTPDData{
 	0;
 }
 
+sub buildADDONData{
+	debug('Starting...');
+
+	my $self	= shift;
+
+	$self->{AddonsData} = {};
+
+	debug('Ending...');
+	0;
+}
 1;

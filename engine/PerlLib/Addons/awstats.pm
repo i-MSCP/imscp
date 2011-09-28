@@ -155,8 +155,8 @@ sub awstatsSection{
 			$bTag = "# SECTION awstats static BEGIN.\n";
 			$eTag = "# SECTION awstats static END.\n";
 		} else {
-			$bTag = "# SECTION awstats dinamic BEGIN.\n";
-			$eTag = "# SECTION awstats dinamic END.\n";
+			$bTag = "# SECTION awstats dynamic BEGIN.\n";
+			$eTag = "# SECTION awstats dynamic END.\n";
 		}
 		$data = replaceBloc($bTag, $eTag, '', $data, undef);
 		my $tags = {

@@ -33,7 +33,7 @@
 
 	# SECTION awstats support BEGIN.
 
-	# SECTION awstats dinamic BEGIN.
+	# SECTION awstats dynamic BEGIN.
 		ProxyRequests Off
 		<Proxy *>
 			Order deny,allow
@@ -52,7 +52,7 @@
 			AuthGroupFile {WWW_DIR}/{ROOT_DMN_NAME}/{HTACCESS_GROUPS_FILE_NAME}
 			Require group {AWSTATS_GROUP_AUTH}
 		</Location>
-	# SECTION awstats dinamic END.
+	# SECTION awstats dynamic END.
 
 	# SECTION awstats static BEGIN.
 		Alias /awstatsicons 	"{AWSTATS_WEB_DIR}/icon/"

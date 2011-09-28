@@ -285,7 +285,7 @@ sub addDmnDb {
 	}
 
 	######################## TIMESTAMP SECTION END ##############################
-	###################### COSTOM DATA SECTION START ############################
+	###################### COSTUMERS DATA SECTION START ############################
 	if( $option->{DMN_ADD} ){
 
 		my $bTag = "; ctm domain als entries BEGIN.\n";
@@ -308,8 +308,21 @@ sub addDmnDb {
 
 		$entries = replaceBloc($bTag, $eTag, $custom, $entries, undef);
 	}
-	####################### COSTOM DATA SECTION END #############################
-	##################### COSTUMERS DATA SECTION START ##########################
+	if( $option->{DMN_DEL} ){
+
+		my $bTag = "; ctm domain als entries BEGIN.\n";
+		my $eTag = "; ctm domain als entries END.\n";
+		my $old = iMSCP::File->new(filename => "$self->{wrkDir}/$option->{DMN_NAME}.db")->get() || '';
+
+		my $custom	= getBloc($bTag, $eTag, $old);
+		$custom =~ s/$option->{DMN_DEL}->{MANUAL_DNS_NAME}\s[^\n]*\n//img;
+		$custom = '' unless $custom;
+		$custom = "$bTag$custom$eTag";
+
+		$entries = replaceBloc($bTag, $eTag, $custom, $entries, undef);
+	}
+	####################### COSTUMERS DATA SECTION END #############################
+	##################### CUSTOM DATA SECTION START ##########################
 	if( keys(%{$option->{DMN_CUSTOM}}) > 0 ){
 
 		my $bTag = iMSCP::File->new(filename => "$self->{tplDir}/db_dns_entry_b.tpl")->get();
@@ -337,7 +350,7 @@ sub addDmnDb {
 		$entries = replaceBloc($bTag, $eTag, $custom, $entries, undef);
 
 	}
-	####################### COSTUMERS DATA SECTION END ##########################
+	####################### CUSTOM DATA SECTION END ##########################
 
 	## Store and install
 	# Store the file in the working directory
@@ -598,14 +611,24 @@ sub delDmn{
 
 sub postdelDmn{
 	debug('Starting...');
+
 	my $self	= shift;
 	my $data	= shift;
+	my $rs		= 0;
+
+	$rs |= $self->addDmn({
+		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
+		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		DMN_DEL		=> {
+			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
+		}
+	});
 
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
 	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub addSub{
@@ -682,11 +705,24 @@ sub postaddSub{
 	my $self	= shift;
 	my $data	= shift;
 
+	my $rs		= 0;
+
+	$rs |= $self->addDmn({
+		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
+		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		DMN_ADD		=> {
+			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
+			MANUAL_DNS_CLASS	=> 'IN',
+			MANUAL_DNS_TYPE		=> 'A',
+			MANUAL_DNS_DATA		=> $data->{DMN_IP}
+		}
+	});
+
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
 	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub delSub{
@@ -760,12 +796,21 @@ sub postdelSub{
 	debug('Starting...');
 	my $self	= shift;
 	my $data	= shift;
+	my $rs		= 0;
+
+	$rs |= $self->addDmn({
+		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
+		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		DMN_DEL		=> {
+			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
+		}
+	});
 
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
 	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub DESTROY{
