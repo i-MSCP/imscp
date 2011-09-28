@@ -52,6 +52,7 @@ Tickets:
 	- Fixed #203: Bug - Apache needs manual restart after fresh installation
 	- Fixed #207: Bug - Bug in postfix alias file if it a mail copy
 	- Fixed #209: Bug - Autoresponser no permission (filepermission)
+	- Fixed #211: Bug - Placeholder not parsed for the GUI php5-fcgi-starter file
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
