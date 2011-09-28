@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpakage	Events_Manager
+ * @subpackage	Events_Manager
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$

@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpakage	Events_Listeners
+ * @subpackage	Events_Listeners
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     SVN: $Id$
@@ -32,7 +32,7 @@
  * 
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpakage	Events_Listeners
+ * @subpackage	Events_Listeners
  * @author      Laurent Declercq <l.declercq@i-mscp.net>
  * @version     0.0.1
  */

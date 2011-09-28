@@ -40,6 +40,7 @@ Tickets:
 	- Fixed #183: Bug - client/subdomain_edit.php shows a white page
 	- Fixed #185: Bug - reseller/ip_usage.php doesn't show any statistics
 	- Fixed #187: Update - phpMyAdmin 3.4.5 released
+	- Fixed #186: Typo error
 	- Fixed #188: Defect - Table quota_dovecot is still myisam than innoDB
 	- Fixed #189: Bug - Undefined template replacement data in repl_var...
 	- Fixed #193: Bug - Adding reseller throws exception (phpini... var is missing)

@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpakage	Events
+ * @subpackage	Events
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
@@ -35,7 +35,7 @@ require_once 'iMSCP/Exception.php';
  * 
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpakage	Events
+ * @subpackage	Events
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
