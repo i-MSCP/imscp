@@ -18,6 +18,9 @@ Features / Enhancements:
 		Tools:
 			- Updated phpMyAdmin to 3.4.5
 			- Updated Squirrelmail to 1.4.22
+Other:
+	Gui:
+		- Updated jQuery to version 1.6.4
 
 Tickets:
 	- Fixed #15:  PHP directives editor
