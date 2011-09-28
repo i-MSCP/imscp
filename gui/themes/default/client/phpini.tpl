@@ -41,7 +41,7 @@
 
 		<div class="location">
 			<div class="location-area icons-left">
-				<h1 class="webtools">{TR_PHPINI}</h1>
+				<h1 class="domains">{TR_MENU_PHPINI}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- BDP: logged_from -->
@@ -64,7 +64,7 @@
 		</div>
 
 		<div class="body">
-			<h2 class="tools"><span>{TR_PAGE_TITLE}</span></h2>
+			<h2 class="domains"><span>{TR_PAGE_TITLE}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
