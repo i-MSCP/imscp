@@ -52,7 +52,7 @@ sub preInstall {
 	fatal('Not a Debian like system') if(_checkPkgManager());
 
 	my @pkg = ();
-	push @pkg, 'lsb_release' if(execute("which lsb_release", \$stdout, \$stderr));
+	push @pkg, 'lsb-release' if(execute("which lsb_release", \$stdout, \$stderr));
 	push @pkg, 'dialog' if(execute("which dialog", \$stdout, \$stderr));
 
 
