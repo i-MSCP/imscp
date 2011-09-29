@@ -267,7 +267,7 @@ sub delMail{
 	$rs;
 }
 
-sub DESTROY{
+END{
 	debug('Starting...');
 
 	my $endCode	= $?;

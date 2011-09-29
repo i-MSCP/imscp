@@ -104,7 +104,7 @@ sub restart{
 	0;
 }
 
-sub DESTROY{
+END{
 	debug('Starting...');
 
 	my $endCode	= $?;

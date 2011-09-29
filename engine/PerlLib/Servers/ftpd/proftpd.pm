@@ -79,6 +79,7 @@ sub postinstall{
 	debug('Starting...');
 
 	my $self	= shift;
+
 	$self->{restart} = 'yes';
 
 	debug('Ending...');
@@ -232,12 +233,13 @@ sub delSub{
 }
 
 
-sub DESTROY{
+END{
 	debug('Starting...');
 
 	my $endCode	= $?;
 	my $self	= Servers::ftpd::proftpd->new();
 	my $rs		= 0;
+
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
 
 	debug('Ending...');

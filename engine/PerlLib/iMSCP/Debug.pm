@@ -75,10 +75,14 @@ sub newDebug{
 
 sub endDebug{
 	my $self = iMSCP::Debug->new();
+	#my @warnings	= getMessageByType('WARNING');
+	#my @errors		= getMessageByType('ERROR');
 
 	if($self->{logLevels} && (@{$self->{logLevels}} > 0) ){
 		$self->{lastLog} = pop(@{$self->{logLevels}});
 	}
+	#$self->{lastLog}->store(message => join("\n", @warnings), tag => 'WARNING', level => 'log') if(@warnings > 0);
+	#$self->{lastLog}->store(message => join("\n", @errors), tag => 'ERROR', level => 'log') if(@errors > 0);
 }
 
 sub silent{
@@ -233,8 +237,6 @@ sub debugRegCallBack{
 	push @{$self->{callBacks}}, $code;
 }
 
-1;
-
 END{
 	my $exitCode = $?;
 
@@ -268,3 +270,5 @@ END{
 
 	$? = $exitCode;
 }
+
+1;

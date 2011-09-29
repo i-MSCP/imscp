@@ -30,14 +30,14 @@ use strict;
 use warnings;
 use Symbol;
 
-my $instance = undef;
+my $_instance = undef;
 
 sub new {
 	my $proto	= shift;
 	my $class	= ref($proto) || $proto;
 	my $x= qualify_to_ref('_instance', $class);
 
-	return ${*$x} unless ! ${*$x};
+	return ${*$x} if defined ${*$x};
 
 	my $self = {
 		'errors'	=> [],

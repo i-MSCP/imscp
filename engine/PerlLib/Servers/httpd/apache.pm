@@ -1263,11 +1263,11 @@ sub addIps{
 	$rs;
 }
 
-sub DESTROY{
+END{
 	debug('Starting...');
 
 	my $endCode	= $?;
-	my $self	= shift;
+	my $self	= Servers::httpd::apache->new();
 	my $rs		= 0;
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
 
