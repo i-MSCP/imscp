@@ -30,6 +30,7 @@ Tickets:
 	- Fixed #77:  Task - Setup - Empty files must be removed
 	- Fixed #111: Feature - Add multiple secondary DNS server-wide
 	- Fixed #147: Squirrelmail 1.4.22 released
+	- Fixed #151: Enhancement - Messages system
 	- Fixed #165: Bug - Wrong level for page message
 	- Fixed #166: Enhancement - Add Dovecot support
 	- Fixed #171: Bug - Auto-installer is broken
@@ -41,6 +42,7 @@ Tickets:
 	- Fixed #178: Enhancement - dovecot managed sieve missing
 	- Fixed #179: Bug - Unexpected T_STRING
 	- Fixed #183: Bug - client/subdomain_edit.php shows a white page
+	- Fixed #182: Defect - set_page_message is not fully integrated
 	- Fixed #185: Bug - reseller/ip_usage.php doesn't show any statistics
 	- Fixed #186: Defect - Typo error
 	- Fixed #187: Update - phpMyAdmin 3.4.5 released

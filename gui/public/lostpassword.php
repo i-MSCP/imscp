@@ -64,8 +64,9 @@ isset($_SESSION['user_theme']) ? $theme_color = $_SESSION['user_theme']
 	: $theme_color = $cfg->USER_INITIAL_THEME;
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
+$tpl->define_dynamic('page_message', 'page');
+
 $tpl->assign(
 	array(
 		'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Multi Server Control Panel - Lost password'),
@@ -92,7 +93,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 
 	// Sending new password
 	if (sendPassword($_GET['key'])) {
-		set_page_message(tr('Your new password has been sent. Check your mail.'));
+		set_page_message(tr('Your new password has been sent. Check your mail.'), 'success');
 	} else {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
