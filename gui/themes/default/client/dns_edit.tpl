@@ -82,47 +82,40 @@
 	</script>
 	<div class="header">
 		{MAIN_MENU}
-
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
+		<div class="logo">
+			<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 		</div>
-
-		<div class="location">
-			<div class="location-area icons-left">
-				<h1 class="domains">{TR_MENU_MANAGE_DOMAINS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<!-- BDP: logged_from -->
-				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-				<li>{TR_EDIT_DNS}</li>
-			</ul>
+	</div>
+	<div class="location">
+		<div class="location-area">
+			<h1 class="domains">{TR_MENU_MANAGE_DOMAINS}</h1>
 		</div>
-
+		<ul class="location-menu">
+			<!-- BDP: logged_from -->
+			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
+			<!-- EDP: logged_from -->
+			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+		</ul>
+		<ul class="path">
+			<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
+			<li>{TR_EDIT_DNS}</li>
+		</ul>
+	</div>
 	<div class="left_menu">{MENU}</div>
 	<div class="body">
             <h2 class="domains"><span>{TR_MANAGE_DOMAIN_DNS}</span></h2>
-
-			<!-- BDP: page_message -->
-				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
-
-			<form name="edit_alias_frm" method="post" action="{ACTION_MODE}">
-				<fieldset>
-					<legend>{TR_EDIT_DNS}</legend>
-					<table>
+		<!-- BDP: page_message -->
+		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+		<!-- EDP: page_message -->
+		<form name="edit_alias_frm" method="post" action="{ACTION_MODE}">
+			<fieldset>
+				<legend>{TR_EDIT_DNS}</legend>
+				<table>
 						<!-- BDP: add_record -->
-							<tr>
-								<td>{TR_DOMAIN}</td>
-								<td><select name="alias_id">{SELECT_ALIAS}</select></td>
-							</tr>
+						<tr>
+							<td>{TR_DOMAIN}</td>
+							<td><select name="alias_id">{SELECT_ALIAS}</select></td>
+						</tr>
 						<!-- EDP: add_record -->
 					<tr>
 						<td>{TR_DNS_TYPE}</td>
@@ -198,4 +191,3 @@
 	/* ]]> */
 	</script>
 <!-- INCLUDE "footer.tpl" -->
-

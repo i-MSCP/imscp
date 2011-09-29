@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="location">
-            <div class="location-area icons-left">
+            <div class="location-area">
                 <h1 class="statistics">{TR_MENU_DOMAIN_STATISTICS}</h1>
             </div>
             <ul class="location-menu">

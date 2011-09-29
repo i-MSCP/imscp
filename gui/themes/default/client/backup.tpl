@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="location">
-		<div class="location-area icons-left">
+		<div class="location-area">
 			<h1 class="support">{TR_MENU_QUESTIONS_AND_COMMENTS}</h1>
 		</div>
 		<ul class="location-menu">

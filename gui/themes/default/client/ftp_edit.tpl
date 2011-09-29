@@ -27,7 +27,7 @@
 		</div>
 
 		<div class="location">
-			<div class="location-area icons-left">
+			<div class="location-area">
 				<h1 class="ftp">{TR_MENU_FTP_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">

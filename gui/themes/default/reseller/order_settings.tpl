@@ -27,7 +27,7 @@
 		</div>
 
 		<div class="location">
-			<div class="location-area icons-left">
+			<div class="location-area">
 				<h1 class="purchasing">{TR_MENU_ORDERS}</h1>
 			</div>
 			<ul class="location-menu">

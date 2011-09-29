@@ -25,7 +25,7 @@
         </div>
 
         <div class="location">
-            <div class="location-area icons-left">
+            <div class="location-area">
                 <h1 class="webtools">{TR_MENU_SYSTEM_TOOLS}</h1>
             </div>
             <ul class="location-menu">

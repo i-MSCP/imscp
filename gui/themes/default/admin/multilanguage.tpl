@@ -39,7 +39,7 @@
 			</div>
 		</div>
 		<div class="location">
-			<div class="location-area icons-left">
+			<div class="location-area">
 				<h1 class="settings">{TR_GENERAL_SETTINGS}</h1>
 			</div>
 			<ul class="location-menu">
