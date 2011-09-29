@@ -354,7 +354,7 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
             $username = explode('@', $stmt->fields['userid']);
             $tpl->assign(array(
                               'FTP_USER' => tohtml($username[0] . '@' . decode_idna($username[1])),
-                              'FTP_HOME' => tohtml(substr($stmt->fields['homedir'], strlen($cfg->APACHE_WWW_DIR)))));
+                              'FTP_HOME' => tohtml(substr($stmt->fields['homedir'], strlen($cfg->FTP_HOMEDIR)))));
 
             $tpl->parse('FTP_ITEM', '.ftp_item');
             $stmt->moveNext();
