@@ -310,6 +310,7 @@ if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
 }
 
 generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,

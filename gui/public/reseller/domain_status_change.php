@@ -71,15 +71,15 @@ $stmt = exec_query($query, $domain_id);
 if ($stmt->fields['domain_created_id'] != $_SESSION['user_id'] &&
     $_SESSION['logged_from_id'] != $_SESSION['user_created_by']
 ) {
-    set_page_message(tr('You are not allowed to access this interface.'), 'error');
+    set_page_message(tr('You are not allowed to perform this operation.'), 'error');
     redirectTo('users.php?psi=last');
 }
 
 if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-    set_page_message(tr('Domain account scheduled for suspension.'), 'info');
+    set_page_message(tr('Domain account scheduled for suspension.'), 'success');
     change_domain_status($domain_id, $stmt->fields['domain_name'], 'disable', 'reseller');
 } elseif ($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-    set_page_message(tr('Domain account scheduled for activation.'), 'info');
+    set_page_message(tr('Domain account scheduled for activation.'), 'success');
     change_domain_status($domain_id, $stmt->fields['domain_name'], 'enable', 'reseller');
 } else {
     redirectTo('users.php?psi=last');

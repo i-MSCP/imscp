@@ -45,6 +45,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
+
 // Table with hosting plans
 $tpl->define_dynamic('hp_table', 'page');
 $tpl->define_dynamic('hp_entry', 'hp_table');
@@ -105,25 +106,25 @@ function gen_hp_message(&$tpl) {
 	if (isset($_SESSION["hp_added"])
 		&& $_SESSION["hp_added"] == '_yes_') {
 		$external_event = '_on_';
-		set_page_message(tr('Hosting plan added!'));
+		set_page_message(tr('Hosting plan successfully added.'), 'success');
 		unset($_SESSION["hp_added"]);
 		unset($GLOBALS['hp_added']);
 	} else if (isset($_SESSION["hp_deleted"])
 		&& $_SESSION["hp_deleted"] == '_yes_') {
 		$external_event = '_on_';
-		set_page_message(tr('Hosting plan deleted!'));
+		set_page_message(tr('Hosting plan successfully deleted.'), 'success');
 		unset($_SESSION["hp_deleted"]);
 		unset($GLOBALS['hp_deleted']);
 	} else if (isset($_SESSION["hp_updated"])
 		&& $_SESSION["hp_updated"] == '_yes_') {
 		$external_event = '_on_';
-		set_page_message(tr('Hosting plan updated!'));
+		set_page_message(tr('Hosting plan sucessfully updated.'), 'success');
 		unset($_SESSION["hp_updated"]);
 		unset($GLOBALS['hp_updated']);
 	} else if (isset($_SESSION["hp_deleted_ordererror"])
 		&& $_SESSION["hp_deleted_ordererror"] == '_yes_') {
 		//$external_event = '_on_';
-		set_page_message(tr('Hosting plan can\'t be deleted, there are orders!'));
+		set_page_message(tr("This hosting plan can't be deleted, there are some orders linked to it."), 'error');
 		unset($_SESSION["hp_deleted_ordererror"]);
 	}
 

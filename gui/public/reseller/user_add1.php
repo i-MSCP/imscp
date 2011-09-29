@@ -103,8 +103,7 @@ function check_user_data()
 
         redirectTo('user_add2.php');
     } else {
-        $ehp_error = '';
-        if (reseller_limits_check($ehp_error, $_SESSION['user_id'], $dmn_chp)) {
+        if (reseller_limits_check($_SESSION['user_id'], $dmn_chp)) {
             $_SESSION['dmn_name'] = $dmn_name;
             $_SESSION['dmn_expire'] = $dmn_expire;
             $_SESSION['dmn_tpl'] = $dmn_chp;

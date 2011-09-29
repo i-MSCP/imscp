@@ -64,19 +64,19 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$data_2['message'] = clean_input($_POST['message2'], false);
 
 	if (empty($data_1['subject']) || empty($data_2['subject'])) {
-		$err_message = tr('Please specify a subject!');
-	}
-	if (empty($data_1['message']) || empty($data_2['message'])) {
-		$err_message = tr('Please specify message!');
+		set_page_message(tr('You must specify a subject.'), 'error');
 	}
 
-	if (!empty($err_message)) {
-		set_page_message($err_message);
+	if (empty($data_1['message']) || empty($data_2['message'])) {
+		set_page_message(tr('You must specify a message.'), 'error');
+	}
+
+	if (Zend_Session::namespaceIsset('pageMessages')) {
 		return false;
 	} else {
 		set_lostpassword_activation_email($user_id, $data_1);
 		set_lostpassword_password_email($user_id, $data_2);
-		set_page_message(tr('Auto email template data updated!'));
+		set_page_message(tr('Template for Auto email successfully updated.'), 'success');
 	}
 }
 

@@ -57,9 +57,9 @@ if (!hasTicketSystem($userId)) {
 
 if (isset($_POST['uaction'])) {
     if (empty($_POST['subject'])) {
-        set_page_message(tr('Please specify message subject.'));
+        set_page_message(tr('You must specify a subject.'), 'error');
     } elseif (empty($_POST['user_message'])) {
-        set_page_message(tr('Please type your message.'));
+        set_page_message(tr('You must specify a message.'), 'error');
     } else {
         createTicket($userId, $_SESSION['user_created_by'],
                      $_POST['urgency'], $_POST['subject'], $_POST['user_message'], 2);

@@ -44,8 +44,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/orders_detailst.tpl');
 $tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('ip_entry', 'page');
 $tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('ip_entry', 'page');
 
 $tpl->assign(
 	array(
@@ -75,7 +75,7 @@ function gen_order_details($tpl, $user_id, $order_id) {
 	";
 	$rs = exec_query($query, array($order_id, $user_id));
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('Permission deny!'));
+		set_page_message(tr('Permission deny.'), 'error');
 		redirectTo('orders.php');
 	}
 	$plan_id = $rs->fields['plan_id'];
@@ -212,7 +212,7 @@ function update_order_details($user_id, $order_id) {
 if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
-	set_page_message(tr('Wrong order ID!'));
+	set_page_message(tr('Wrong order ID.'), 'error');
 	redirectTo('orders.php');
 }
 
@@ -220,7 +220,7 @@ if (isset($_POST['uaction'])) {
 	update_order_details($_SESSION['user_id'], $order_id);
 
 	if ($_POST['uaction'] === 'update_data') {
-		set_page_message(tr('Order data updated successfully!'));
+		set_page_message(tr('Order successfully updated.'), 'success');
 	} else if ($_POST['uaction'] === 'add_user') {
 		$_SESSION['domain_ip'] = @$_POST['domain_ip'];
 		redirectTo('orders_add.php?order_id=' . $order_id);

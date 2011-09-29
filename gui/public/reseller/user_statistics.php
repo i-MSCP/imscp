@@ -336,6 +336,7 @@ $tpl->assign(
 
 gen_select_lists($tpl, $month, $year);
 generate_page($tpl, $rid, $name);
+
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

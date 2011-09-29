@@ -104,31 +104,30 @@ function gen_page_data($tpl) {
 function check_user_data(&$tpl) {
 	global $msg_subject, $msg_text, $sender_email, $sender_name;
 
-	$err_message = '';
-
 	$msg_subject = clean_input($_POST['msg_subject'], false);
 	$msg_text = clean_input($_POST['msg_text'], false);
 	$sender_email = clean_input($_POST['sender_email'], false);
 	$sender_name = clean_input($_POST['sender_name'], false);
 
 	if (empty($msg_subject)) {
-		$err_message .= tr('Please specify a message subject!');
-	}
-	if (empty($msg_text)) {
-		$err_message .= tr('Please specify a message content!');
-	}
-	if (empty($sender_name)) {
-		$err_message .= tr('Please specify a sender name!');
-	}
-	if (empty($sender_email)) {
-		$err_message .= tr('Please specify a sender email!');
-	}
-	else if (!chk_email($sender_email)) {
-		$err_message .= tr("Incorrect email length or syntax!");
+		set_page_message(tr('Please specify a message subject.'), 'error');
 	}
 
-	if (!empty($err_message)) {
-		set_page_message($err_message);
+	if (empty($msg_text)) {
+		set_page_message(tr('Please specify a message content.'), 'error');
+	}
+
+	if (empty($sender_name)) {
+		set_page_message(tr('Please specify a sender name.'), 'error');
+	}
+
+	if (empty($sender_email)) {
+		set_page_message(tr('Please specify a sender email.'), 'error');
+	} else if (!chk_email($sender_email)) {
+		set_page_message(tr('Incorrect email length or syntax.'), 'error');
+	}
+
+	if(Zend_Session::namespaceIsset('pageMessages')) {
 		return false;
 	} else {
 		return true;
@@ -174,7 +173,7 @@ function send_reseller_users_message($admin_id) {
 	}
 	
 	$sender_name = tohtml($sender_name);
-	set_page_message(tr('You send email to your users successfully!'));
+	set_page_message(tr('Mail successfully sent to your users.'), 'success');
 	write_log("Mass email was sent from Reseller " . $sender_name . " <" . $sender_email . ">", E_USER_NOTICE);
 }
 
@@ -218,7 +217,7 @@ $tpl->assign(
 );
 
 send_circular($tpl);
-gen_page_data ($tpl);
+gen_page_data($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

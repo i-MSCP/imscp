@@ -43,11 +43,13 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/order_settings.tpl');
 $tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('page_message', 'page');
+
 // Table with orders
 $tpl->define_dynamic('purchase_header', 'page');
 
 $tpl->define_dynamic('purchase_footer', 'page');
-$tpl->define_dynamic('page_message', 'page');
+
 
 $tpl->assign(
 	array(

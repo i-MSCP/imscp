@@ -54,12 +54,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	$data['message'] = clean_input($_POST['auto_message']);
 
 	if ($data['subject'] == '') {
-		set_page_message(tr('Please specify a subject.'), 'error');
-	} else if ($data['message'] == '') {
-		set_page_message(tr('Please specify message!'), 'error');
+		set_page_message(tr('You must specify a subject.'), 'error');
+	} elseif ($data['message'] == '') {
+		set_page_message(tr('You must specify a message.'), 'error');
 	} else {
 		set_welcome_email($user_id, $data);
-		set_page_message (tr('Auto email template data updated.'), 'success');
+		set_page_message (tr('Template for Auto email successfully updated.'), 'success');
 	}
 }
 

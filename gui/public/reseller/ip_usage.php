@@ -164,7 +164,7 @@ function listIPDomains($tpl)
         }
     } else {
         $tpl->assign('IP_USAGE_STATISTICS', '');
-        set_page_message(tr('No Ip statistics to be show.'));
+        set_page_message(tr('No Ip statistics to be show.'), 'info');
     }
 }
 
@@ -181,6 +181,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/ip_usage.tpl');
+$tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('ip_row', 'page');
 $tpl->define_dynamic('domain_row', 'page');
 $tpl->define_dynamic('logged_from', 'page');

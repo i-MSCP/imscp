@@ -2,13 +2,13 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	 2001-2006 by moleSoftware GmbH
+ * @copyright	 2006-2010 by ispCP | http://isp-control.net
+ * @copyright	 2010 by i-msCP | http://i-mscp.net
+ * @version	 SVN: $Id$
+ * @link		 http://i-mscp.net
+ * @author		 ispCP Team
+ * @author		 i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -57,10 +57,10 @@ $tpl->define_dynamic('ip_entry', 'page');
 
 $tpl->assign(
 	array(
-		'TR_EDIT_USER_PAGE_TITLE'	=> tr('i-MSCP - Users/Edit'),
-		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'				=> tr('encoding'),
-		'ISP_LOGO'					=> layout_getUserLogo(),
+		 'TR_EDIT_USER_PAGE_TITLE' => tr('i-MSCP - Users/Edit'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
 	)
 );
 
@@ -71,37 +71,37 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		'TR_EDIT_USER'			=> tr('Edit user'),
-		'TR_CORE_DATA'			=> tr('Core data'),
-		'TR_USERNAME'			=> tr('Username'),
-		'TR_PASSWORD'			=> tr('Password'),
-		'TR_REP_PASSWORD'		=> tr('Repeat password'),
-		'TR_DMN_IP'				=> tr('Domain IP'),
-		'TR_USREMAIL'			=> tr('Email'),
-		'TR_ADDITIONAL_DATA'	=> tr('Additional data'),
-		'TR_CUSTOMER_ID'		=> tr('Customer ID'),
-		'TR_FIRSTNAME'			=> tr('First name'),
-		'TR_LASTNAME'			=> tr('Last name'),
-		'TR_COMPANY'			=> tr('Company'),
-		'TR_POST_CODE'			=> tr('Zip/Postal code'),
-		'TR_CITY'				=> tr('City'),
-		'TR_STATE'				=> tr('State/Province'),
-		'TR_COUNTRY'			=> tr('Country'),
-		'TR_STREET1'			=> tr('Street 1'),
-		'TR_STREET2'			=> tr('Street 2'),
-		'TR_MAIL'				=> tr('Email'),
-		'TR_PHONE'				=> tr('Phone'),
-		'TR_FAX'				=> tr('Fax'),
-		'TR_GENDER'				=> tr('Gender'),
-		'TR_MALE'				=> tr('Male'),
-		'TR_FEMALE'				=> tr('Female'),
-		'TR_UNKNOWN'			=> tr('Unknown'),
-		'EDIT_ID'				=> $edit_id,
-		'TR_BTN_ADD_USER'		=> tr('Submit changes'),
+		 'TR_EDIT_USER' => tr('Edit user'),
+		 'TR_CORE_DATA' => tr('Core data'),
+		 'TR_USERNAME' => tr('Username'),
+		 'TR_PASSWORD' => tr('Password'),
+		 'TR_REP_PASSWORD' => tr('Repeat password'),
+		 'TR_DMN_IP' => tr('Domain IP'),
+		 'TR_USREMAIL' => tr('Email'),
+		 'TR_ADDITIONAL_DATA' => tr('Additional data'),
+		 'TR_CUSTOMER_ID' => tr('Customer ID'),
+		 'TR_FIRSTNAME' => tr('First name'),
+		 'TR_LASTNAME' => tr('Last name'),
+		 'TR_COMPANY' => tr('Company'),
+		 'TR_POST_CODE' => tr('Zip/Postal code'),
+		 'TR_CITY' => tr('City'),
+		 'TR_STATE' => tr('State/Province'),
+		 'TR_COUNTRY' => tr('Country'),
+		 'TR_STREET1' => tr('Street 1'),
+		 'TR_STREET2' => tr('Street 2'),
+		 'TR_MAIL' => tr('Email'),
+		 'TR_PHONE' => tr('Phone'),
+		 'TR_FAX' => tr('Fax'),
+		 'TR_GENDER' => tr('Gender'),
+		 'TR_MALE' => tr('Male'),
+		 'TR_FEMALE' => tr('Female'),
+		 'TR_UNKNOWN' => tr('Unknown'),
+		 'EDIT_ID' => $edit_id,
+		 'TR_BTN_ADD_USER' => tr('Submit changes'),
 
-		// The entries below are for Demo versions only
-		'PASSWORD_DISABLED'		=> tr('Password change is deactivated!'),
-		'DEMO_VERSION'			=> tr('Demo Version!')
+		 // The entries below are for Demo versions only
+		 'PASSWORD_DISABLED' => tr('Password change is deactivated!'),
+		 'DEMO_VERSION' => tr('Demo Version!')
 	)
 );
 
@@ -112,16 +112,16 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_USERS'		=> tr('Manage users'),
-		'TR_USERS'				=> tr('Users'),
-		'TR_NO'					=> tr('No.'),
-		'TR_USERNAME'			=> tr('Username'),
-		'TR_ACTION'				=> tr('Action'),
-		'TR_BACK'				=> tr('Back'),
-		'TR_TITLE_BACK'			=> tr('Return to previous menu'),
-		'TR_TABLE_NAME'			=> tr('Users list'),
-		'TR_SEND_DATA'			=> tr('Send new login data'),
-		'TR_PASSWORD_GENERATE'	=> tr('Generate password')
+		 'TR_MANAGE_USERS' => tr('Manage users'),
+		 'TR_USERS' => tr('Users'),
+		 'TR_NO' => tr('No.'),
+		 'TR_USERNAME' => tr('Username'),
+		 'TR_ACTION' => tr('Action'),
+		 'TR_BACK' => tr('Back'),
+		 'TR_TITLE_BACK' => tr('Return to previous menu'),
+		 'TR_TABLE_NAME' => tr('Users list'),
+		 'TR_SEND_DATA' => tr('Send new login data'),
+		 'TR_PASSWORD_GENERATE' => tr('Generate password')
 	)
 );
 
@@ -131,9 +131,9 @@ if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', '');
 }
 
-if (isset($_POST['Submit'])
-	&& isset($_POST['uaction'])
-	&& ('save_changes' === $_POST['uaction'])) {
+if (isset($_POST['Submit']) && isset($_POST['uaction'])
+	&& ('save_changes' === $_POST['uaction'])
+) {
 	// Process data
 
 	if (isset($_SESSION['edit_ID'])) {
@@ -161,12 +161,15 @@ if (isset($_POST['Submit'])
 	$_SESSION['edit_ID'] = $hpid;
 
 }
+
 gen_edituser_page($tpl);
+
 generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+	iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
@@ -179,7 +182,8 @@ $tpl->prnt();
 /**
  * Load data from sql
  */
-function load_user_data_page($user_id) {
+function load_user_data_page($user_id)
+{
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
@@ -206,28 +210,28 @@ function load_user_data_page($user_id) {
 	$data = $res->fetchRow();
 
 	if ($res->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface'), 'error');
 		redirectTo('users.php?psi=last');
 	} else {
 		// Get data from sql
 		$_SESSION['user_name'] = $data['admin_name'];
 
-		$dmn_user_name	= $data['admin_name'];
-		$user_email		= $data['email'];
-		$customer_id	= $data['customer_id'];
-		$first_name		= $data['fname'];
-		$last_name		= $data['lname'];
-		$gender			= $data['gender'];
-		$firm			= $data['firm'];
-		$zip			= $data['zip'];
-		$city			= $data['city'];
-		$state			= $data['state'];
-		$country		= $data['country'];
-		$street_one		= $data['street1'];
-		$street_two		= $data['street2'];
-		$mail			= $data['email'];
-		$phone			= $data['phone'];
-		$fax			= $data['fax'];
+		$dmn_user_name = $data['admin_name'];
+		$user_email = $data['email'];
+		$customer_id = $data['customer_id'];
+		$first_name = $data['fname'];
+		$last_name = $data['lname'];
+		$gender = $data['gender'];
+		$firm = $data['firm'];
+		$zip = $data['zip'];
+		$city = $data['city'];
+		$state = $data['state'];
+		$country = $data['country'];
+		$street_one = $data['street1'];
+		$street_two = $data['street2'];
+		$mail = $data['email'];
+		$phone = $data['phone'];
+		$fax = $data['fax'];
 	}
 
 }
@@ -236,10 +240,11 @@ function load_user_data_page($user_id) {
 /**
  * Show user data
  */
-function gen_edituser_page(&$tpl) {
+function gen_edituser_page(&$tpl)
+{
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
-		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
-		$phone, $fax;
+$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
+$phone, $fax;
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -250,23 +255,23 @@ function gen_edituser_page(&$tpl) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'VL_USERNAME' => tohtml(decode_idna($dmn_user_name)),
-			'VL_MAIL' => empty($user_email) ? '' : tohtml($user_email),
-			'VL_USR_ID' => empty($customer_id) ? '' : tohtml($customer_id),
-			'VL_USR_NAME' => empty($first_name) ? '' : tohtml($first_name),
-			'VL_LAST_USRNAME' => empty($last_name) ? '' : tohtml($last_name),
-			'VL_USR_FIRM' => empty($firm) ? '' : tohtml($firm),
-			'VL_USR_POSTCODE' => empty($zip) ? '' : tohtml($zip),
-			'VL_USRCITY' => empty($city) ? '' : tohtml($city),
-			'VL_USRSTATE' => empty($state) ? '' : tohtml($state),
-			'VL_COUNTRY' => empty($country) ? '' : tohtml($country),
-			'VL_STREET1' => empty($street_one) ? '' : tohtml($street_one),
-			'VL_STREET2' => empty($street_two) ? '' : tohtml($street_two),
-			'VL_MALE' => ($gender == 'M') ? $cfg->HTML_SELECTED : '',
-			'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
-			'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
-			'VL_PHONE' => empty($phone) ? '' : tohtml($phone),
-			'VL_FAX' => empty($fax) ? '' : tohtml($fax)
+			 'VL_USERNAME' => tohtml(decode_idna($dmn_user_name)),
+			 'VL_MAIL' => empty($user_email) ? '' : tohtml($user_email),
+			 'VL_USR_ID' => empty($customer_id) ? '' : tohtml($customer_id),
+			 'VL_USR_NAME' => empty($first_name) ? '' : tohtml($first_name),
+			 'VL_LAST_USRNAME' => empty($last_name) ? '' : tohtml($last_name),
+			 'VL_USR_FIRM' => empty($firm) ? '' : tohtml($firm),
+			 'VL_USR_POSTCODE' => empty($zip) ? '' : tohtml($zip),
+			 'VL_USRCITY' => empty($city) ? '' : tohtml($city),
+			 'VL_USRSTATE' => empty($state) ? '' : tohtml($state),
+			 'VL_COUNTRY' => empty($country) ? '' : tohtml($country),
+			 'VL_STREET1' => empty($street_one) ? '' : tohtml($street_one),
+			 'VL_STREET2' => empty($street_two) ? '' : tohtml($street_two),
+			 'VL_MALE' => ($gender == 'M') ? $cfg->HTML_SELECTED : '',
+			 'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
+			 'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
+			 'VL_PHONE' => empty($phone) ? '' : tohtml($phone),
+			 'VL_FAX' => empty($fax) ? '' : tohtml($fax)
 		)
 	);
 
@@ -278,28 +283,29 @@ function gen_edituser_page(&$tpl) {
 /**
  * Function to update changes into db
  */
-function update_data_in_db($hpid) {
+function update_data_in_db($hpid)
+{
 
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
-		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
-		$mail, $phone, $fax, $inpass, $admin_login;
+$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
+$mail, $phone, $fax, $inpass, $admin_login;
 
 	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
 
-	$first_name	= clean_input($first_name);
-	$last_name	= clean_input($last_name);
-	$firm		= clean_input($firm);
-	$gender		= clean_input($gender);
-	$zip		= clean_input($zip);
-	$city		= clean_input($city);
-	$state		= clean_input($state);
-	$country	= clean_input($country);
-	$phone		= clean_input($phone);
-	$fax		= clean_input($fax);
-	$street_one	= clean_input($street_one);
-	$street_two	= clean_input($street_two);
+	$first_name = clean_input($first_name);
+	$last_name = clean_input($last_name);
+	$firm = clean_input($firm);
+	$gender = clean_input($gender);
+	$zip = clean_input($zip);
+	$city = clean_input($city);
+	$state = clean_input($state);
+	$country = clean_input($country);
+	$phone = clean_input($phone);
+	$fax = clean_input($fax);
+	$street_one = clean_input($street_one);
+	$street_two = clean_input($street_two);
 
 	if (empty($inpass)) {
 		// Save without password
@@ -327,41 +333,42 @@ function update_data_in_db($hpid) {
 				`created_by` = ?
 		";
 		exec_query($query, array(
-			$first_name,
-			$last_name,
-			$firm,
-			$zip,
-			$city,
-			$state,
-			$country,
-			$mail,
-			$phone,
-			$fax,
-			$street_one,
-			$street_two,
-			$gender,
-			$customer_id,
-			$hpid,
-			$reseller_id)
+								$first_name,
+								$last_name,
+								$firm,
+								$zip,
+								$city,
+								$state,
+								$country,
+								$mail,
+								$phone,
+								$fax,
+								$street_one,
+								$street_two,
+								$gender,
+								$customer_id,
+								$hpid,
+								$reseller_id)
 		);
 	} else {
 		// Change password
 		if (!chk_password($_POST['userpassword'])) {
-			if (isset($cfg->PASSWD_STRONG)){
+			if (isset($cfg->PASSWD_STRONG)) {
 				set_page_message(
 					sprintf(
 						tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS
-					)
+					), 'error'
 				);
 			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 			}
+
 			redirectTo('user_edit.php?edit_id=' . $hpid);
 		}
 
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
 
-			set_page_message(tr("Entered passwords do not match!"));
+			set_page_message(tr("Passwords doesn't not matches."), 'error');
 
 			redirectTo('user_edit.php?edit_id=' . $hpid);
 		}
@@ -394,23 +401,23 @@ function update_data_in_db($hpid) {
 				`created_by` = ?
 		";
 		exec_query($query, array(
-			$inpass,
-			$first_name,
-			$last_name,
-			$firm,
-			$zip,
-			$city,
-			$state,
-			$country,
-			$mail,
-			$phone,
-			$fax,
-			$street_one,
-			$street_two,
-			$gender,
-			$customer_id,
-			$hpid,
-			$reseller_id)
+								$inpass,
+								$first_name,
+								$last_name,
+								$firm,
+								$zip,
+								$city,
+								$state,
+								$country,
+								$mail,
+								$phone,
+								$fax,
+								$street_one,
+								$street_two,
+								$gender,
+								$customer_id,
+								$hpid,
+								$reseller_id)
 		);
 
 		// Kill any existing session of the edited user
@@ -419,9 +426,9 @@ function update_data_in_db($hpid) {
 		$query = "DELETE FROM `login` WHERE `user_name` = ? ";
 		$rs = exec_query($query, $admin_name);
 
-			if ($rs->recordCount() != 0) {
-				set_page_message(tr('User session was killed!'));
-				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change", E_USER_NOTICE);
+		if ($rs->recordCount() != 0) {
+			set_page_message(tr('User session was successfully killed for password change'), 'success');
+			write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change", E_USER_NOTICE);
 		}
 	}
 

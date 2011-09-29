@@ -173,11 +173,10 @@ if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 	load_user_data($_SESSION['user_id'], $editid, $phpini);
 
 	$_SESSION['edit_id'] = $editid;
-	$tpl->assign('MESSAGE', '');
 }
 
 gen_editdomain_page($tpl, $phpini);
-generatePageMessage($tpl); // Fix - old position was to early to generate erorr message from check_user_data()
+generatePageMessage($tpl);
 
 // Begin function block
 
@@ -334,7 +333,7 @@ function gen_editdomain_page($tpl, $phpini)
 						  'BACKUP_SQL' => '',
 						  'BACKUP_FULL' => '',
 						  'BACKUP_NO' => ''));
-	} else if ($allowbackup === 'sql') {
+	} elseif ($allowbackup === 'sql') {
 		$tpl->assign(array(
 						  'BACKUP_DOMAIN' => '',
 						  'BACKUP_SQL' => $cfg->HTML_SELECTED,
@@ -482,7 +481,7 @@ function gen_editdomain_page($tpl, $phpini)
 			$tpl->parse('T_PHPINI_REGISTER_GLOBALS_PERM', 't_phpini_register_globals_perm');
 		} else {
 			$tpl->assign(array(
-							  'T_PHPINI_REGISTER_GLOBALS' => '',
+							 'T_PHPINI_REGISTER_GLOBALS' => '',
 							 'T_PHPINI_REGISTER_GLOBALS_PERM' => ''));
 		}
 
@@ -516,8 +515,6 @@ function gen_editdomain_page($tpl, $phpini)
 	} else { // if no permission at all
 		$tpl->assign('T_PHPINI_SYSTEM', '');
 	}
-
-
 }
 
 /**
@@ -532,7 +529,7 @@ function check_user_data($tpl, $reseller_id, $user_id, $phpini)
 {
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $domain_php,
 		$domain_cgi, $allowbackup, $domain_dns, $domain_expires, $domain_new_expire,
-$domain_software_allowed;
+		$domain_software_allowed;
 
 	$datepicker = (isset($_POST['dmn_expire_date']))
 		? clean_input($_POST['dmn_expire_date']) : ''; //Fix PHP NOTICE display
@@ -553,8 +550,6 @@ $domain_software_allowed;
 	$allowbackup = preg_replace("/\_/", '', $_POST['backup']);
 	$domain_software_allowed = preg_replace("/\_/", '', $_POST['domain_software_allowed']);
 
-	$ed_error = '';
-
 	list($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
 		$_SESSION['user_id'], 'all_permissions'
 	);
@@ -562,51 +557,53 @@ $domain_software_allowed;
 	if ($rsub_max == "-1") {
 		$sub = "-1";
 	} elseif (!imscp_limit_check($sub, -1)) {
-		$ed_error .= tr('Incorrect subdomains limit!');
+		set_page_message(tr('Incorrect subdomains limit.'), 'error');
 	}
 
 	if ($rals_max == "-1") {
 		$als = "-1";
 	} elseif (!imscp_limit_check($als, -1)) {
-		$ed_error .= tr('Incorrect aliases limit!');
+		set_page_message(tr('Incorrect aliases limit.'), 'error');
 	}
 
 	if ($rmail_max == "-1") {
 		$mail = "-1";
 	} elseif (!imscp_limit_check($mail, -1)) {
-		$ed_error .= tr('Incorrect mail accounts limit!');
+		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
 	}
 
 	if ($rftp_max == "-1") {
 		$ftp = "-1";
 	} elseif (!imscp_limit_check($ftp, -1)) {
-		$ed_error .= tr('Incorrect FTP accounts limit!');
+		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
 	}
 
 	if ($rsql_db_max == "-1") {
 		$sql_db = "-1";
 	} elseif (!imscp_limit_check($sql_db, -1)) {
-		$ed_error .= tr('Incorrect SQL users limit!');
-	} else if ($sql_db == -1 && $sql_user != -1) {
-		$ed_error .= tr('SQL databases limit is <i>disabled</i>!');
+		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+	} elseif ($sql_db == -1 && $sql_user != -1) {
+		set_page_message(tr('SQL databases limit is <i>disabled</i>.'), 'error');
 	}
 
 	if ($rsql_user_max == "-1") {
 		$sql_user = "-1";
 	} elseif (!imscp_limit_check($sql_user, -1)) {
-		$ed_error .= tr('Incorrect SQL databases limit!');
-	} else if ($sql_user == -1 && $sql_db != -1) {
-		$ed_error .= tr('SQL users limit is <i>disabled</i>!');
+		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+	} elseif ($sql_user == -1 && $sql_db != -1) {
+		set_page_message(tr('SQL users limit is <i>disabled</i>.'), 'error');
 	}
 
 	if (!imscp_limit_check($traff, null)) {
-		$ed_error .= tr('Incorrect traffic limit!');
+		set_page_message(tr('Incorrect traffic limit.'), 'error');
 	}
+
 	if (!imscp_limit_check($disk, null)) {
-		$ed_error .= tr('Incorrect disk quota limit!');
+		set_page_message(tr('Incorrect disk quota limit.'), 'error');
 	}
+
 	if ($domain_php == "no" && $domain_software_allowed == "yes") {
-		$ed_error .= tr('The i-MSCP application installer needs PHP to enable it!');
+		set_page_message(tr('The i-MSCP application installer needs PHP to enable it.'), 'error');
 	}
 
 	list(
@@ -624,15 +621,15 @@ $domain_software_allowed;
 
 	list(, , , , , , $utraff_current, $udisk_current) = generate_user_traffic($user_id);
 
-	if (empty($ed_error)) {
-		calculate_user_dvals($sub, $usub_current, $usub_max, $rsub_current, $rsub_max, $ed_error, tr('Subdomain'));
-		calculate_user_dvals($als, $uals_current, $uals_max, $rals_current, $rals_max, $ed_error, tr('Alias'));
-		calculate_user_dvals($mail, $umail_current, $umail_max, $rmail_current, $rmail_max, $ed_error, tr('Mail'));
-		calculate_user_dvals($ftp, $uftp_current, $uftp_max, $rftp_current, $rftp_max, $ed_error, tr('FTP'));
-		calculate_user_dvals($sql_db, $usql_db_current, $usql_db_max, $rsql_db_current, $rsql_db_max, $ed_error, tr('SQL Database'));
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
+		calculate_user_dvals($sub, $usub_current, $usub_max, $rsub_current, $rsub_max, tr('Subdomain'));
+		calculate_user_dvals($als, $uals_current, $uals_max, $rals_current, $rals_max, tr('Alias'));
+		calculate_user_dvals($mail, $umail_current, $umail_max, $rmail_current, $rmail_max, tr('Mail'));
+		calculate_user_dvals($ftp, $uftp_current, $uftp_max, $rftp_current, $rftp_max, tr('FTP'));
+		calculate_user_dvals($sql_db, $usql_db_current, $usql_db_max, $rsql_db_current, $rsql_db_max, tr('SQL Database'));
 	}
 
-	if (empty($ed_error)) {
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		$query = "
 			SELECT
 				COUNT(su.`sqlu_id`) AS cnt
@@ -646,16 +643,16 @@ $domain_software_allowed;
 		";
 
 		$rs = exec_query($query, $_SESSION['edit_id']);
-		calculate_user_dvals($sql_user, $rs->fields['cnt'], $usql_user_max, $rsql_user_current, $rsql_user_max, $ed_error, tr('SQL User'));
+		calculate_user_dvals($sql_user, $rs->fields['cnt'], $usql_user_max, $rsql_user_current, $rsql_user_max, tr('SQL User'));
 	}
 
-	if (empty($ed_error)) {
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		calculate_user_dvals(
-			$traff, $utraff_current / 1024 / 1024, $utraff_max, $rtraff_current, $rtraff_max, $ed_error, tr('Traffic')
+			$traff, $utraff_current / 1024 / 1024, $utraff_max, $rtraff_current, $rtraff_max, tr('Traffic')
 		);
 
 		calculate_user_dvals(
-			$disk, $udisk_current / 1024 / 1024, $udisk_max, $rdisk_current, $rdisk_max, $ed_error, tr('Disk')
+			$disk, $udisk_current / 1024 / 1024, $udisk_max, $rdisk_current, $rdisk_max, tr('Disk')
 		);
 	}
 	//phpini check and safe into db
@@ -697,23 +694,23 @@ $domain_software_allowed;
 
 		if ($_POST['phpini_system'] == 'yes') { // Only check if Custom php.ini is on Yes (prevent error message if unlikely paramater match)
 			if (isset($_POST['phpini_post_max_size']) && (!$phpini->setDataWithPermCheck('phpiniPostMaxSize', $_POST['phpini_post_max_size']))) {
-				$ed_error .= tr('post_max_size out of range');
+				set_page_message(tr('post_max_size out of range.'), 'error');
 			}
 
 			if (isset($_POST['phpini_upload_max_filesize']) && (!$phpini->setDataWithPermCheck('phpiniUploadMaxFileSize', $_POST['phpini_upload_max_filesize']))) {
-				$ed_error .= tr('upload_max_filesize out of range');
+				set_page_message(tr('upload_max_filesize out of range.'), 'error');
 			}
 
 			if (isset($_POST['phpini_max_execution_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxExecutionTime', $_POST['phpini_max_execution_time']))) {
-				$ed_error .= tr('max_execution_time out of range');
+				set_page_message(tr('max_execution_time out of range.'), 'error');
 			}
 
 			if (isset($_POST['phpini_max_input_time']) && (!$phpini->setDataWithPermCheck('phpiniMaxInputTime', $_POST['phpini_max_input_time']))) {
-				$ed_error .= tr('max_input_time out of range');
+				set_page_message(tr('max_input_time out of range.'), 'error');
 			}
 
 			if (isset($_POST['phpini_memory_limit']) && (!$phpini->setDataWithPermCheck('phpiniMemoryLimit', $_POST['phpini_memory_limit']))) {
-				$ed_error .= tr('memory_limit out of range');
+				set_page_message(tr('memory_limit out of range.'), 'error');
 			}	
 		}
 
@@ -727,11 +724,11 @@ $domain_software_allowed;
 		}
 
 		if (!$phpini->setDataWithPermCheck('phpiniDisableFunctions', $phpini->assembleDisableFunctions($mytmp))) {
-			$ed_error .= tr('disable_functions error');
+			set_page_message(tr('disable_functions error.'), 'error');
 		}
 
 		// if all OK Update data in php_ini table and client perm in domain table
-		if (empty($ed_error)) {
+		if (!Zend_Session::namespaceIsset('pageMessages')) {
 			if ($phpini->getDataVal('phpiniSystem') == 'yes') {
 				$phpini->saveCustomPHPiniIntoDb($_SESSION['edit_id']);
 			} else {
@@ -746,7 +743,7 @@ $domain_software_allowed;
 		$phpini->loadDefaultData();
 	}
 
-	if (empty($ed_error)) {
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		// Set domains status to 'change' to update mod_cband's limit
 		if ($previous_utraff_max != $utraff_max) {
 			$query = "UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_id` = ?";
@@ -797,7 +794,7 @@ $domain_software_allowed;
 		$reseller_props .= "$rdisk_current;$rdisk_max";
 
 		if (!update_reseller_props($reseller_id, $reseller_props)) {
-			set_page_message(tr('Domain properties could not be updated!'));
+			set_page_message(tr('Domain properties could not be updated.'), 'error');
 
 			return false;
 		}
@@ -826,17 +823,13 @@ $domain_software_allowed;
 			exec_query($query, array($dlim, $temp_dmn_name));
 		}
 
-		set_page_message(tr('Domain properties updated successfully!'), 'success');
+		set_page_message(tr('Domain properties successfully updated.'), 'success');
 
 		return true;
 	} else {
-		//$tpl->assign('MESSAGE', $ed_error);
-		//$tpl->parse('PAGE_MESSAGE', 'page_message');
-		set_page_message(tr($ed_error), 'error');
 		return false;
 	}
 }
-
 
 /**
  * Must be documented.
@@ -847,18 +840,17 @@ $domain_software_allowed;
  * @param  $umax
  * @param  $r
  * @param  $rmax
- * @param  $err
  * @param  $obj
  * @return void
  */
-function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
+function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, $obj)
 {
 	if ($rmax == -1 && $umax >= 0) {
 		if ($u > 0) {
-			$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+			set_page_message(tr('The <em>%s</em> service cannot be disabled.', $obj) . tr('There are <em>%s</em> records on system.', $obj), 'error');
 			return;
 		} else if ($data != -1) {
-			$err .= tr('The <em>%s</em> have to be disabled!', $obj) . tr('The admin has <em>%s</em> disabled on this system!', $obj);
+			set_page_message(tr('The <em>%s</em> have to be disabled.', $obj) . tr('The admin has <em>%s</em> disabled on this system.', $obj), 'error');
 			return;
 		} else {
 			$umax = $data;
@@ -878,7 +870,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 	} else if ($rmax == 0 && $umax == 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be disabled.', $obj) . tr('There are <em>%s</em> records on system.', $obj), 'error');
 			} else {
 				$umax = $data;
 			}
@@ -888,7 +880,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('The <em>%s</em> service cannot be limited!', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be limited.', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system.', $obj), 'error');
 			} else {
 				$umax = $data;
 				$r += $umax;
@@ -898,7 +890,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 	} else if ($rmax == 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be disabled.', $obj) . tr('There are <em>%s</em> records on the system.', $obj), 'error');
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -910,7 +902,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('The <em>%s</em> service cannot be limited!', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be limited.', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system.', $obj), 'error');
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -927,11 +919,11 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {
-			$err .= tr('The <em>%s</em> service cannot be unlimited!', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
+			set_page_message(tr('The <em>%s</em> service cannot be unlimited.', $obj) . tr('There are reseller limits for the <em>%s</em> service.', $obj), 'error');
 			return;
 		} else if ($data > 0) {
 			if ($r + $data > $rmax) {
-				$err .= tr('The <em>%s</em> service cannot be limited!', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be limited.', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service.', $obj), 'error');
 			} else {
 				$r += $data;
 
@@ -945,7 +937,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 	} else if ($rmax > 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {
-				$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on the system!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be disabled.', $obj) . tr('There are <em>%s</em> records on the system.', $obj), 'error');
 			} else {
 				$r -= $umax;
 				$umax = $data;
@@ -953,12 +945,12 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 
 			return;
 		} else if ($data == 0) {
-			$err .= tr('The <em>%s</em> service cannot be unlimited!', $obj) . tr('There are reseller limits for the <em>%s</em> service!', $obj);
+			set_page_message(tr('The <em>%s</em> service cannot be unlimited.', $obj) . tr('There are reseller limits for the <em>%s</em> service.', $obj), 'error');
 
 			return;
 		} else if ($data > 0) {
 			if ($u > $data) {
-				$err .= tr('The <em>%s</em> service cannot be limited!', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system!', $obj);
+				set_page_message(tr('The <em>%s</em> service cannot be limited.', $obj) . tr('Specified number is smaller than <em>%s</em> records, present on the system.', $obj), 'error');
 			} else {
 				if ($umax > $data) {
 					$data_dec = $umax - $data;
@@ -967,7 +959,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj)
 					$data_inc = $data - $umax;
 
 					if ($r + $data_inc > $rmax) {
-						$err .= tr('The <em>%s</em> service cannot be limited!', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service!', $obj);
+						set_page_message(tr('The <em>%s</em> service cannot be limited.', $obj) . tr('You are exceeding reseller limits for the <em>%s</em> service.', $obj), 'error');
 						return;
 					}
 

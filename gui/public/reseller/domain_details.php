@@ -42,6 +42,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_details.tpl');
+$tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('t_software_support', 'page');
 
@@ -100,8 +101,10 @@ get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 gen_logged_from($tpl);
 
 generatePageMessage($tpl);
+
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
+	set_page_message(tr('Domain not found.'), 'error');
 	redirectTo('users.php?psi=last');
 }
 

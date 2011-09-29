@@ -48,21 +48,12 @@ $reseller_id = $_SESSION['user_id'];
 if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	$order_id = $_GET['order_id'];
 } else {
-	set_page_message(tr('Wrong order ID!'));
+	set_page_message(tr('Wrong order ID.'), 'error');
 	redirectTo('orders.php');
 }
 
-if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
-	$query = "
-		SELECT
-			*
-		FROM
-			`orders`
-		WHERE
-			`id` = ?
-	";
-
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+	$query = 'SELECT * FROM `orders` WHERE `id` = ?';
 	$rs = exec_query($query, $order_id);
 } else {
 	$query = "
@@ -75,12 +66,11 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 		AND
 			`user_id` = ?
 	";
-
 	$rs = exec_query($query, array($order_id, $reseller_id));
 }
 
 if ($rs->recordCount() == 0 || !isset($_SESSION['domain_ip'])) {
-	set_page_message(tr('Permission deny!'));
+	set_page_message(tr('Permission deny.'), 'error');
 	redirectTo('orders.php');
 }
 
@@ -100,37 +90,31 @@ $street_one		= $rs->fields['street1'];
 $street_two		= $rs->fields['street2'];
 $customer_id	= $rs->fields['customer_id'];
 $user_email		= $rs->fields['email'];
-// let's check the reseller limits
-$err_msg = '';
 
-if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($query, $hpid);
 } else {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 	$res = exec_query($query, array($reseller_id, $hpid));
 }
+
 $data = $res->fetchRow();
 $props = $data['props'];
 
 $_SESSION["ch_hpprops"] = $props;
 
-if (!reseller_limits_check($err_msg, $reseller_id, $hpid)) {
-	set_page_message(tr('Order Cancelled: resellers maximum exceeded!'));
-	redirectTo('orders.php');
-}
-
-if (!empty($err_msg)) {
-	set_page_message($err_msg);
+if (!reseller_limits_check($reseller_id, $hpid)) {
+	set_page_message(tr('Order Cancelled: resellers limit(s) exceeded.'), 'error');
 	unset($_SESSION['domain_ip']);
 	redirectTo('orders.php');
 }
+
 unset($_SESSION["ch_hpprops"]);
-list($php, $cgi, $sub,
-	$als, $mail, $ftp,
-	$sql_db, $sql_user,
-	$traff, $disk, $backup, $dns) = explode(";", $props);
+
+list(
+	$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $backup,
+	$dns) = explode(";", $props);
 
 $php = preg_replace("/\_/", "", $php);
 $cgi = preg_replace("/\_/", "", $cgi);
@@ -144,13 +128,13 @@ $inpass = crypt_user_pass($password, true);
 $dmn_user_name = decode_idna($dmn_user_name);
 
 if (!validates_dname($dmn_user_name)) {
-	set_page_message(tr('Wrong domain name syntax!'));
+	set_page_message(tr('Wrong domain name syntax.'), 'error');
 	unset($_SESSION['domain_ip']);
 	redirectTo('orders.php');
 }
 
 if (imscp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
-	set_page_message(tr('Domain with that name already exists on the system!'));
+	set_page_message(tr('Domain with same name already exists.'), 'error');
 	unset($_SESSION['domain_ip']);
 	redirectTo('orders.php');
 }
@@ -282,7 +266,8 @@ write_log("$admin_login: add domain: $dmn_user_name", E_USER_NOTICE);
 
 update_reseller_c_props($reseller_id);
 
-set_page_message(tr('User added!'));
+set_page_message(tr('User successfully added.'), 'success');
+
 $query = "
 	UPDATE
 		`orders`

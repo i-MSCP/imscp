@@ -264,6 +264,7 @@ function add_user_data($reseller_id)
         $phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
         $phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
         $phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
+
 	// save it to php_ini table
 	$phpini->saveCustomPHPiniIntoDb($dmn_id);
 
@@ -397,7 +398,7 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl')
 gen_logged_from($tpl);
 
 if (!init_in_values()) {
-    set_page_message(tr('Domain data were been altered. Please try again.'));
+    set_page_message(tr('Domain data were been altered. Please try again.'), 'error');
     unsetMessages();
     redirectTo('user_add1.php');
 }
@@ -408,19 +409,19 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'user_add3_nxt') &&
     if (check_ruser_data($tpl, '_no_')) {
         add_user_data($_SESSION['user_id']);
     }
-    set_page_message($_SESSION['Message']);
-    unset($_SESSION['Message']);
 } else {
     unset($_SESSION['step_two_data']);
     gen_empty_data();
 }
 
 gen_user_add3_page($tpl);
-generatePageMessage($tpl);
+
 
 if (!check_reseller_permissions($_SESSION['user_id'], 'alias')) {
     $tpl->assign('ALIAS_ADD', '');
 }
+
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 

@@ -51,6 +51,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			`reseller_id` = ?
 	";
 	$rs = exec_query($query, array($_GET['id'], $_SESSION['user_id']));
+
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'));
 		redirectTo('software_upload.php');
@@ -59,6 +60,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			$del_path = $cfg->GUI_SOFTWARE_DIR."/".$_SESSION['user_id']."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 			@unlink($del_path);
 		}
+
 		$update = "
 			UPDATE
 				`web_software_inst`
@@ -68,6 +70,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 				`software_id` = ?
 		";
 		$res = exec_query($update, $rs->fields['software_id']);
+
 		$delete="
 			DELETE FROM
 				`web_software`
@@ -77,10 +80,11 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 				`reseller_id` = ?
 		";
 		$res = exec_query($delete, array($_GET['id'], $_SESSION['user_id']));
-		set_page_message(tr('Software was deleted.'));
+
+		set_page_message(tr('Software scheduled for deletion.'), 'success');
 		redirectTo('software_upload.php');
 	}
 } else {
-	set_page_message(tr('Wrong software id.'));
+	set_page_message(tr('Wrong software id.'), 'error');
 	redirectTo('software_upload.php');
 }

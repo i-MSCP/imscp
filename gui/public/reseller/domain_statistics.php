@@ -93,7 +93,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 
 	$rs = exec_query($query, array($domain_id, $reseller_id));
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
 		redirectTo('user_statistics.php');
 	}
 

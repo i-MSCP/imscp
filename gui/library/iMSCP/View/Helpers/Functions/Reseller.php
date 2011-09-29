@@ -303,7 +303,6 @@ function check_ruser_data($tpl, $noPass)
 
     $cfg = iMSCP_Registry::get('config');
 
-    $user_add_error = '_off_';
     $inpass_re = '';
     // Get data for fields from previous page
     if (isset($_POST['userpassword']))
@@ -357,8 +356,7 @@ function check_ruser_data($tpl, $noPass)
     if (isset($_POST['userfax']))
         $fax = $_POST['userfax'];
 
-    if (isset($_POST['gender'])
-        && get_gender_by_code($_POST['gender'], true) !== null
+    if (isset($_POST['gender']) && get_gender_by_code($_POST['gender'], true) !== null
     ) {
         $gender = $_POST['gender'];
     } else {
@@ -369,20 +367,20 @@ function check_ruser_data($tpl, $noPass)
     // Begin checking...
     if ('_no_' == $noPass) {
         if (('' === $inpass_re) || ('' === $inpass)) {
-            $user_add_error = tr('Please fill up both data fields for password!');
+            set_page_message(tr('Please fill up both data fields for password.'), 'error');
         } else if ($inpass_re !== $inpass) {
-            $user_add_error = tr("Passwords don't match!");
+            set_page_message(tr("Passwords doesn't matches"), 'error');
         } else if (!chk_password($inpass)) {
             if ($cfg->PASSWD_STRONG) {
-                $user_add_error = sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS);
+                set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
             } else {
-                $user_add_error = sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS);
+                set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
             }
         }
     }
 
     if ($user_email == NULL) {
-        $user_add_error = tr('Incorrect email length or syntax!');
+        set_page_message(tr('Incorrect email length or syntax.'), 'error');
     }
     /* we don't want to validate Customer ID, First and Second name and also ZIP
 
@@ -399,16 +397,11 @@ function check_ruser_data($tpl, $noPass)
          $user_add_error = tr('Incorrect post code length or syntax!');
      } */
 
-    if ($user_add_error == '_off_') {
-        // send data through session
-        $_SESSION['Message'] = NULL;
-
+    if (!Zend_Session::namespaceIsset('pageMessages')) {
         return true;
-    } else {
-        $_SESSION['Message'] = $user_add_error;
-
-        return false;
     }
+
+    return false;
 }
 
 /**

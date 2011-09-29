@@ -620,7 +620,7 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
  * @param string $newprops
  * @return bool
  */
-function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = '')
+function reseller_limits_check($reseller_id, $hpid, $newprops = '')
 {
     if (empty($newprops)) {
         // this hosting plan exists
@@ -666,16 +666,16 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = '')
 
     if ($dmn_max != 0) {
         if ($dmn_current + 1 > $dmn_max) {
-            set_page_message(tr('You have reached your domains limit.<br />You cannot add more domains!'), 'error');
+            set_page_message(tr('You have reached your domains limit.<br />You cannot add more domains.'), 'error');
         }
     }
 
     if ($sub_max != 0) {
         if ($sub_new != -1) {
             if ($sub_new == 0) {
-                set_page_message(tr('You have a subdomains limit!<br />You cannot add an user with unlimited subdomains!'), 'error');
+                set_page_message(tr('You have a subdomains limit.<br />You cannot add an user with unlimited subdomains.'), 'error');
             } else if ($sub_current + $sub_new > $sub_max) {
-                set_page_message(tr('You are exceeding your subdomains limit!'), 'error');
+                set_page_message(tr('You are exceeding your subdomains limit.'), 'error');
             }
         }
     }
@@ -683,35 +683,35 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = '')
     if ($als_max != 0) {
         if ($als_new != -1) {
             if ($als_new == 0) {
-                set_page_message(tr('You have an aliases limit!<br />You cannot add an user with unlimited aliases!'), 'error');
+                set_page_message(tr('You have an aliases limit.<br />You cannot add an user with unlimited aliases.'), 'error');
             } else if ($als_current + $als_new > $als_max) {
-                set_page_message(tr('You Are Exceeding Your Alias Limit!'));
+                set_page_message(tr('You Are Exceeding Your Alias Limit.'));
             }
         }
     }
 
     if ($mail_max != 0) {
         if ($mail_new == 0) {
-            set_page_message(tr('You have a mail accounts limit!<br />You cannot add an user with unlimited mail accounts!'), 'error');
+            set_page_message(tr('You have a mail accounts limit.<br />You cannot add an user with unlimited mail accounts.'), 'error');
         } else if ($mail_current + $mail_new > $mail_max) {
-            set_page_message(tr('You are exceeding your mail accounts limit!'), 'error');
+            set_page_message(tr('You are exceeding your mail accounts limit.'), 'error');
         }
     }
 
     if ($ftp_max != 0) {
         if ($ftp_new == 0) {
-            set_page_message(tr('You have a FTP accounts limit!<br />You cannot add an user with unlimited FTP accounts!'), 'error');
+            set_page_message(tr('You have a FTP accounts limit!<br />You cannot add an user with unlimited FTP accounts.'), 'error');
         } else if ($ftp_current + $ftp_new > $ftp_max) {
-            set_page_message(tr('You are exceeding your FTP accounts limit!'), 'error');
+            set_page_message(tr('You are exceeding your FTP accounts limit.'), 'error');
         }
     }
 
     if ($sql_db_max != 0) {
         if ($sql_db_new != -1) {
             if ($sql_db_new == 0) {
-                set_page_message(tr('You have a SQL databases limit!<br />You cannot add an user with unlimited SQL databases!'), 'error');
+                set_page_message(tr('You have a SQL databases limit.<br />You cannot add an user with unlimited SQL databases.'), 'error');
             } else if ($sql_db_current + $sql_db_new > $sql_db_max) {
-                set_page_message(tr('You are exceeding your SQL databases limit!'), 'error');
+                set_page_message(tr('You are exceeding your SQL databases limit.'), 'error');
             }
         }
     }
@@ -719,32 +719,32 @@ function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = '')
     if ($sql_user_max != 0) {
         if ($sql_user_new != -1) {
             if ($sql_user_new == 0) {
-                set_page_message(tr('You have an SQL users limit!<br />You cannot add an user with unlimited SQL users!'), 'error');
+                set_page_message(tr('You have an SQL users limit.<br />You cannot add an user with unlimited SQL users.'), 'error');
             } else if ($sql_db_new == -1) {
-                set_page_message(tr('You have disabled SQL databases for this user!<br />You cannot have SQL users here!'), 'error');
+                set_page_message(tr('You have disabled SQL databases for this user.<br />You cannot have SQL users here.'), 'error');
             } else if ($sql_user_current + $sql_user_new > $sql_user_max) {
-                set_page_message(tr('You are exceeding your SQL database limit!'));
+                set_page_message(tr('You are exceeding your SQL database limit.'), 'error');
             }
         }
     }
 
     if ($traff_max != 0) {
         if ($traff_new == 0) {
-            set_page_message(tr('You have a traffic limit!<br />You cannot add an user with unlimited traffic!'), 'error');
+            set_page_message(tr('You have a traffic limit.<br />You cannot add an user with unlimited traffic.'), 'error');
         } else if ($traff_current + $traff_new > $traff_max) {
-            set_page_message(tr('You are exceeding your traffic limit!'));
+            set_page_message(tr('You are exceeding your traffic limit.'), 'error');
         }
     }
 
     if ($disk_max != 0) {
         if ($disk_new == 0) {
-            set_page_message(tr('You have a disk limit!<br />You cannot add an user with unlimited disk!'), 'error');
+            set_page_message(tr('You have a disk limit.<br />You cannot add an user with unlimited disk.'), 'error');
         } else if ($disk_current + $disk_new > $disk_max) {
-            set_page_message(tr('You are exceeding your disk limit!'));
+            set_page_message(tr('You are exceeding your disk limit.'), 'error');
         }
     }
 
-    if (isset($_SESSION['user_page_message'])) {
+    if (Zend_Session::namespaceIsset('pageMessages')) {
         return false;
     }
 

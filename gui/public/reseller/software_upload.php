@@ -50,54 +50,58 @@ $tpl->define_dynamic('no_webdepotsoftware_list', 'page');
 $tpl->define_dynamic('package_install_link', 'page');
 $tpl->define_dynamic('package_info_link', 'page');
 
-if(ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
-    list(
-        $use_webdepot,
-        $webdepot_xml_url,
-        $webdepot_last_update
-    ) = get_application_installer_conf();
-    
-    if($use_webdepot) {
-        $error = "";
-        if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
-            //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
-            $xml_file = @file_get_contents($webdepot_xml_url);
-            if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
-                set_page_message(tr("Unable to read xml file for web softwares."), 'error');
-                $error = 1;
-            }
-            if(!$error) {
-                update_webdepot_software_list($webdepot_xml_url,$webdepot_last_update);
-            }
-        }
-        $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);
+if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
+	list(
+		$use_webdepot,
+		$webdepot_xml_url,
+		$webdepot_last_update
+		) = get_application_installer_conf();
 
-        $tpl->assign(
-            array(
-                'TR_WEBDEPOT'                   => tr('i-MSCP application installer web software depot'),
-                'TR_APPLY_CHANGES'              => tr('Update from web depot'),
-                'TR_PACKAGE_TITLE'              => tr('Package title'),
-                'TR_PACKAGE_INSTALL_TYPE'       => tr('Package install type'),
-                'TR_PACKAGE_VERSION'            => tr('Package version'),
-                'TR_PACKAGE_LANGUAGE'           => tr('Package language'),
-                'TR_PACKAGE_TYPE'               => tr('Package type'),
-                'TR_PACKAGE_VENDOR_HP'          => tr('Package vendor HP'),
-                'TR_PACKAGE_ACTION'             => tr('Package actions'),
-                'TR_WEBDEPOTSOFTWARE_COUNT'     => tr('Web software depot packages total'),
-                'TR_WEBDEPOTSOFTWARE_ACT_NUM'   => $packages_cnt
-            )
-        );
-        $tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
-    } else {
-        $tpl->assign('WEBDEPOT_LIST', '');
-    }
+	if ($use_webdepot) {
+		$error = "";
+		if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
+			$xml_file = @file_get_contents($webdepot_xml_url);
+
+			if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
+				set_page_message(tr("Unable to read xml file for web softwares."), 'error');
+				$error = 1;
+			}
+
+			if (!$error) {
+				update_webdepot_software_list($webdepot_xml_url, $webdepot_last_update);
+			}
+		}
+
+		$packages_cnt = get_webdepot_software_list($tpl, $_SESSION['user_id']);
+
+		$tpl->assign(
+			array(
+				 'TR_WEBDEPOT' => tr('i-MSCP application installer web software depot'),
+				 'TR_APPLY_CHANGES' => tr('Update from web depot'),
+				 'TR_PACKAGE_TITLE' => tr('Package title'),
+				 'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
+				 'TR_PACKAGE_VERSION' => tr('Package version'),
+				 'TR_PACKAGE_LANGUAGE' => tr('Package language'),
+				 'TR_PACKAGE_TYPE' => tr('Package type'),
+				 'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
+				 'TR_PACKAGE_ACTION' => tr('Package actions'),
+				 'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Web software depot packages total'),
+				 'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
+			)
+		);
+
+		$tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
+	} else {
+		$tpl->assign('WEBDEPOT_LIST', '');
+	}
 } else {
-    $tpl->assign('WEBDEPOT_LIST', '');
+	$tpl->assign('WEBDEPOT_LIST', '');
 }
 
 if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
 	$success = 1;
 	unset($_SESSION['software_upload_token']);
+
 	if ($_FILES['sw_file']['name'] != '' AND !empty($_POST['sw_wget'])) {
 		set_page_message(tr('You have to choose between file-upload and wget-function.'), 'error');
 		$success = 0;
@@ -122,14 +126,16 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 	if ($success == 1) {
 		$user_id = $_SESSION['user_id'];
 		$upload = 1;
-		if($file == 0) {
+
+		if ($file == 0) {
 			$fname = $_FILES['sw_file']['name'];
-		} elseif($file == 1) {
-			$fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/')+1));
+		} elseif ($file == 1) {
+			$fname = substr($_POST['sw_wget'], (strrpos($_POST['sw_wget'], '/') + 1));
 		}
+
 		$filename = substr($fname, 0, -7);
 		$extension = substr($fname, -7);
-			$query="
+		$query = "
 				INSERT INTO
 					`web_software`
 						(
@@ -153,28 +159,31 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						)
 			";
 		$rs = exec_query($query, array(
-							$user_id, 
-							"waiting_for_input", 
-							"waiting_for_input", 
-							"waiting_for_input", 
-							"waiting_for_input", 
-							"0", 
-							$filename, 
-							"waiting_for_input", 
-							"waiting_for_input", 
-							"waiting_for_input", 
-							"waiting_for_input", 
-							"toadd"
-							)
-						);
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
+									  $user_id,
+									  "waiting_for_input",
+									  "waiting_for_input",
+									  "waiting_for_input",
+									  "waiting_for_input",
+									  "0",
+									  $filename,
+									  "waiting_for_input",
+									  "waiting_for_input",
+									  "waiting_for_input",
+									  "waiting_for_input",
+									  "toadd"
+								 )
+		);
+		/** @var $db iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
 		$sw_id = $db->insertId();
+
 		if ($file == 0) {
-			$dest_dir = $cfg->GUI_SOFTWARE_DIR.'/'.$user_id.'/'.$filename.'-'.$sw_id.$extension;
-			if (!is_dir($cfg->GUI_SOFTWARE_DIR.'/'.$user_id)) {
-				@mkdir($cfg->GUI_SOFTWARE_DIR.'/'.$user_id,0755,true);
+			$dest_dir = $cfg->GUI_SOFTWARE_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
+
+			if (!is_dir($cfg->GUI_SOFTWARE_DIR . '/' . $user_id)) {
+				@mkdir($cfg->GUI_SOFTWARE_DIR . '/' . $user_id, 0755, true);
 			}
+
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
 				// Delete software entry
 				$query = "
@@ -185,33 +194,36 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				";
 				exec_query($query, $sw_id);
 				$sw_wget = "";
-				set_page_message(tr('Could not upload the file. Max. upload filesize (%1$d MB) reached?', ini_get('upload_max_filesize')), 'error');
+				set_page_message(tr('Could not upload the file. Max. upload filesize (%1$d MB) seem to be reached.', ini_get('upload_max_filesize')), 'error');
 				$upload = 0;
 			}
 		}
 		if ($file == 1) {
 			$sw_wget = $_POST['sw_wget'];
-			$dest_dir = $cfg->GUI_SOFTWARE_DIR.'/'.$user_id.'/'.$filename.'-'.$sw_id.$extension;
+			$dest_dir = $cfg->GUI_SOFTWARE_DIR . '/' . $user_id . '/' . $filename . '-' . $sw_id . $extension;
 			// Reading Filesize
-   			$parts = parse_url($sw_wget);
-   			$connection = fsockopen($parts['host'],80,$errno,$errstr,30);
-   			if($connection) {
-   				fputs($connection,"GET ".$sw_wget." HTTP/1.1\r\nHost: ".$parts['host']."\r\n\r\n");
-   				$size = 0;
-   				while(!isset($length) || ($size <= 500 && !feof($connection))) {
-   					$tstr = fgets($connection,128);
-   					$size += strlen($tstr);
-   					if(substr($tstr,0,14) == 'Content-Length') {
-   						$length = substr($tstr,15);
-   					}
-   				}
-   				if($length) {
+			$parts = parse_url($sw_wget);
+			$connection = fsockopen($parts['host'], 80, $errno, $errstr, 30);
+			if ($connection) {
+				fputs($connection, "GET " . $sw_wget . " HTTP/1.1\r\nHost: " . $parts['host'] . "\r\n\r\n");
+				$size = 0;
+				while (!isset($length) || ($size <= 500 && !feof($connection))) {
+					$tstr = fgets($connection, 128);
+					$size += strlen($tstr);
+					if (substr($tstr, 0, 14) == 'Content-Length') {
+						$length = substr($tstr, 15);
+					}
+				}
+
+				if ($length) {
 					$remote_file_size = $length;
 				} else {
 					$remote_file_size = 0;
 				}
+
 				$show_remote_file_size = formatFilesize($remote_file_size);
-				if($remote_file_size < 1){
+
+				if ($remote_file_size < 1) {
 					// Delete software entry
 					$query = "
 						DELETE FROM
@@ -223,7 +235,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(tr('Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL.', $show_remote_file_size), 'error');
 					$upload = 0;
-				} elseif($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
+				} elseif ($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
 					// Delete software entry
 					$query = "
 						DELETE FROM
@@ -232,14 +244,16 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 							`software_id` = ?
 					";
 					exec_query($query, $sw_id);
+
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(tr('Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB', $show_max_remote_filesize, $show_remote_file_size), 'error');
 					$upload = 0;
 				} else {
 					$remote_file = @file_get_contents($sw_wget);
-					if($remote_file) {
-						$output_file = fopen($dest_dir,'w+');
-						fwrite($output_file,$remote_file);
+
+					if ($remote_file) {
+						$output_file = fopen($dest_dir, 'w+');
+						fwrite($output_file, $remote_file);
 						fclose($output_file);
 					} else {
 						// Delete software entry
@@ -250,11 +264,11 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 								`software_id` = ?
 						";
 						exec_query($query, $sw_id);
-						set_page_message(tr('Remote File not found!'), 'error');
+						set_page_message(tr('Remote File not found.'), 'error');
 						$upload = 0;
 					}
 				}
-   			}else{
+			} else {
 				// Delete software entry
 				$query = "
 					DELETE FROM
@@ -263,19 +277,19 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						`software_id` = ?
 				";
 				exec_query($query, $sw_id);
-				set_page_message(tr('Could not upload the file. File not found!'), 'error');
+				set_page_message(tr('Could not upload file.'), 'error');
 				$upload = 0;
 			}
 		}
 		if ($upload == 1) {
 			$tpl->assign(
-						array(
-							'VAL_WGET'	=> '',
-							'SW_INSTALLED'	=> ''
-						)
-					);
+				array(
+					 'VAL_WGET' => '',
+					 'SW_INSTALLED' => ''
+				)
+			);
 			send_request();
-			set_page_message(tr('File was successfully uploaded.'), 'success');
+			set_page_message(tr('File successfully uploaded.'), 'success');
 		} else {
 			$tpl->assign('VAL_WGET', $sw_wget);
 		}
@@ -289,57 +303,57 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 }
 
 $tpl->assign(
-		array(
-			'TR_MANAGE_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
-			'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-			'THEME_CHARSET'					=> tr('encoding'),
-			'ISP_LOGO'						=> layout_getUserLogo()
-		)
-	);
+	array(
+		 'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
+	)
+);
 
 $sw_cnt = get_avail_software_reseller($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
-		array(
-			"GENERAL_INFO"					=> tr("General information"),
-			'TR_UPLOADED_SOFTWARE' 			=> tr('Software available'),
-			'TR_SOFTWARE_NAME'				=> tr('Software-Synonym'),
-			'TR_SOFTWARE_VERSION' 			=> tr('Software-Version'),
-			'TR_SOFTWARE_LANGUAGE' 			=> tr('Language'),
-			'TR_SOFTWARE_STATUS' 			=> tr('Software status'),
-			'TR_SOFTWARE_TYPE' 				=> tr('Type'),
-			'TR_SOFTWARE_DELETE' 			=> tr('Action'),
-			'TR_SOFTWARE_COUNT' 			=> tr('Software total'),
-			'TR_SOFTWARE_NUM' 				=> $sw_cnt,
-			'TR_UPLOAD_SOFTWARE' 			=> tr('Software upload'),
-			'TR_SOFTWARE_DB' 				=> tr('Requires Database?'),
-			'TR_SOFTWARE_DB_PREFIX' 		=> tr('Database prefix'),
-			'TR_SOFTWARE_HOME' 				=> tr('Link to authors homepage'),
-			'TR_SOFTWARE_DESC' 				=> tr('Description'),
-			'SOFTWARE_UPLOAD_TOKEN' 		=> generate_software_upload_token(),
-			'TR_SOFTWARE_FILE' 				=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-			'TR_SOFTWARE_URL' 				=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
-			'TR_UPLOAD_SOFTWARE_BUTTON' 	=> tr('Upload now'),
-			'TR_UPLOAD_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
-			'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete this package?', true),
-            'TR_MESSAGE_INSTALL' 		    => tr('Are you sure to install this package from the webdepot?', true),
-			'TR_SOFTWARE_NAME_ASC' 			=> 'software_upload.php?sortby=name&order=asc',
-			'TR_SOFTWARE_NAME_DESC' 		=> 'software_upload.php?sortby=name&order=desc',
-			'TR_SOFTWARE_TYPE_ASC' 			=> 'software_upload.php?sortby=type&order=asc',
-			'TR_SOFTWARE_TYPE_DESC' 		=> 'software_upload.php?sortby=type&order=desc',
-			'TR_SOFTWARE_STATUS_ASC' 		=> 'software_upload.php?sortby=status&order=asc',
-			'TR_SOFTWARE_STATUS_DESC' 		=> 'software_upload.php?sortby=status&order=desc',
-			'TR_LANGUAGE_ASC' 				=> 'software_upload.php?sortby=language&order=asc',
-			'TR_LANGUAGE_DESC' 				=> 'software_upload.php?sortby=language&order=desc'
-		)
-	);
+	array(
+		 "GENERAL_INFO" => tr("General information"),
+		 'TR_UPLOADED_SOFTWARE' => tr('Software available'),
+		 'TR_SOFTWARE_NAME' => tr('Software-Synonym'),
+		 'TR_SOFTWARE_VERSION' => tr('Software-Version'),
+		 'TR_SOFTWARE_LANGUAGE' => tr('Language'),
+		 'TR_SOFTWARE_STATUS' => tr('Software status'),
+		 'TR_SOFTWARE_TYPE' => tr('Type'),
+		 'TR_SOFTWARE_DELETE' => tr('Action'),
+		 'TR_SOFTWARE_COUNT' => tr('Software total'),
+		 'TR_SOFTWARE_NUM' => $sw_cnt,
+		 'TR_UPLOAD_SOFTWARE' => tr('Software upload'),
+		 'TR_SOFTWARE_DB' => tr('Requires Database?'),
+		 'TR_SOFTWARE_DB_PREFIX' => tr('Database prefix'),
+		 'TR_SOFTWARE_HOME' => tr('Link to authors homepage'),
+		 'TR_SOFTWARE_DESC' => tr('Description'),
+		 'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
+		 'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
+		 'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+		 'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
+		 'TR_UPLOAD_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
+		 'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package from the webdepot?', true),
+		 'TR_SOFTWARE_NAME_ASC' => 'software_upload.php?sortby=name&order=asc',
+		 'TR_SOFTWARE_NAME_DESC' => 'software_upload.php?sortby=name&order=desc',
+		 'TR_SOFTWARE_TYPE_ASC' => 'software_upload.php?sortby=type&order=asc',
+		 'TR_SOFTWARE_TYPE_DESC' => 'software_upload.php?sortby=type&order=desc',
+		 'TR_SOFTWARE_STATUS_ASC' => 'software_upload.php?sortby=status&order=asc',
+		 'TR_SOFTWARE_STATUS_DESC' => 'software_upload.php?sortby=status&order=desc',
+		 'TR_LANGUAGE_ASC' => 'software_upload.php?sortby=language&order=asc',
+		 'TR_LANGUAGE_DESC' => 'software_upload.php?sortby=language&order=desc'
+	)
+);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
-get_reseller_software_permission ($tpl, $_SESSION['user_id']);
+get_reseller_software_permission($tpl, $_SESSION['user_id']);
 
 generatePageMessage($tpl);
 
@@ -347,7 +361,7 @@ $tpl->assign('LAYOUT', '');
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+	iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

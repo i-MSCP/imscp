@@ -112,6 +112,8 @@ if (isset($_POST['uaction']) && ('modify' === $_POST['uaction'])) {
 
 gen_editalias_page($tpl, $editid);
 
+generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(
@@ -153,7 +155,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	$rs = exec_query($query, array($edit_id, $reseller_id));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
 		redirectTo('alias.php');
 	}
 	// Get data from sql
@@ -226,8 +228,6 @@ function check_fwd_data($tpl, $alias_id) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
-	// unset errors
-	$ed_error = '_off_';
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
@@ -237,7 +237,7 @@ function check_fwd_data($tpl, $alias_id) {
 			$ret = validates_dname($forward_url, true);
 		}
 		if (!$ret) {
-			$ed_error = tr("Wrong domain part in forward URL!");
+			set_page_message(tr("Wrong domain part in forward URL."), 'error');
 		} else {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
 		}
@@ -270,7 +270,7 @@ function check_fwd_data($tpl, $alias_id) {
 		);
 	}
 
-	if ($ed_error === '_off_') {
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		$query = "
 			UPDATE
 				`domain_aliasses`
@@ -295,11 +295,8 @@ function check_fwd_data($tpl, $alias_id) {
 		send_request();
 
 		unset($_SESSION['edit_ID']);
-		$tpl->assign('MESSAGE', "");
 		return true;
 	} else {
-		$tpl->assign('MESSAGE', $ed_error);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
 		return false;
 	}
 } // End of check_user_data()

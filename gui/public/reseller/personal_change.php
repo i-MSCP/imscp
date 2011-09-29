@@ -47,10 +47,10 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('i-MSCP - Reseller/Change Personal Data'),
-		'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'								=> tr('encoding'),
-		'ISP_LOGO'									=> layout_getUserLogo()
+		 'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('i-MSCP - Reseller/Change Personal Data'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 
@@ -89,39 +89,54 @@ function gen_reseller_personal_data($tpl, $user_id) {
 
 	$tpl->assign(
 		array(
-			'FIRST_NAME'	=> (($rs->fields['fname'] == null)		? '' : tohtml($rs->fields['fname'])),
-			'LAST_NAME'		=> (($rs->fields['lname'] == null)		? '' : tohtml($rs->fields['lname'])),
-			'FIRM'			=> (($rs->fields['firm'] == null)		? '' : tohtml($rs->fields['firm'])),
-			'ZIP'			=> (($rs->fields['zip'] == null)		? '' : tohtml($rs->fields['zip'])),
-			'CITY'			=> (($rs->fields['city'] == null)		? '' : tohtml($rs->fields['city'])),
-			'STATE'			=> (($rs->fields['state'] == null)		? '' : tohtml($rs->fields['state'])),
-			'COUNTRY'		=> (($rs->fields['country'] == null)	? '' : tohtml($rs->fields['country'])),
-			'STREET_1'		=> (($rs->fields['street1'] == null)	? '' : tohtml($rs->fields['street1'])),
-			'STREET_2'		=> (($rs->fields['street2'] == null)	? '' : tohtml($rs->fields['street2'])),
-			'EMAIL'			=> (($rs->fields['email'] == null)		? '' : tohtml($rs->fields['email'])),
-			'PHONE'			=> (($rs->fields['phone'] == null)		? '' : tohtml($rs->fields['phone'])),
-			'FAX'			=> (($rs->fields['fax'] == null)		? '' : tohtml($rs->fields['fax'])),
-			'VL_MALE'		=> (($rs->fields['gender'] == 'M')		? $cfg->HTML_SELECTED : ''),
-			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F')		? $cfg->HTML_SELECTED : ''),
-			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')
+			 'FIRST_NAME' => (($rs->fields['fname'] == null) ? ''
+				 : tohtml($rs->fields['fname'])),
+			 'LAST_NAME' => (($rs->fields['lname'] == null) ? ''
+				 : tohtml($rs->fields['lname'])),
+			 'FIRM' => (($rs->fields['firm'] == null) ? ''
+				 : tohtml($rs->fields['firm'])),
+			 'ZIP' => (($rs->fields['zip'] == null) ? ''
+				 : tohtml($rs->fields['zip'])),
+			 'CITY' => (($rs->fields['city'] == null) ? ''
+				 : tohtml($rs->fields['city'])),
+			 'STATE' => (($rs->fields['state'] == null) ? ''
+				 : tohtml($rs->fields['state'])),
+			 'COUNTRY' => (($rs->fields['country'] == null) ? ''
+				 : tohtml($rs->fields['country'])),
+			 'STREET_1' => (($rs->fields['street1'] == null) ? ''
+				 : tohtml($rs->fields['street1'])),
+			 'STREET_2' => (($rs->fields['street2'] == null) ? ''
+				 : tohtml($rs->fields['street2'])),
+			 'EMAIL' => (($rs->fields['email'] == null) ? ''
+				 : tohtml($rs->fields['email'])),
+			 'PHONE' => (($rs->fields['phone'] == null) ? ''
+				 : tohtml($rs->fields['phone'])),
+			 'FAX' => (($rs->fields['fax'] == null) ? ''
+				 : tohtml($rs->fields['fax'])),
+			 'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED
+				 : ''),
+			 'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED
+				 : ''),
+			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender'])))
+				 ? $cfg->HTML_SELECTED : '')
 		)
 	);
 }
 
 function update_reseller_personal_data($user_id) {
-	$fname		= clean_input($_POST['fname']);
-	$lname		= clean_input($_POST['lname']);
-	$gender		= $_POST['gender'];
-	$firm		= clean_input($_POST['firm']);
-	$zip		= clean_input($_POST['zip']);
-	$city		= clean_input($_POST['city']);
-	$state		= clean_input($_POST['state']);
-	$country	= clean_input($_POST['country']);
-	$street1	= clean_input($_POST['street1']);
-	$street2	= clean_input($_POST['street2']);
-	$email		= clean_input($_POST['email']);
-	$phone		= clean_input($_POST['phone']);
-	$fax		= clean_input($_POST['fax']);
+	$fname = clean_input($_POST['fname']);
+	$lname = clean_input($_POST['lname']);
+	$gender = $_POST['gender'];
+	$firm = clean_input($_POST['firm']);
+	$zip = clean_input($_POST['zip']);
+	$city = clean_input($_POST['city']);
+	$state = clean_input($_POST['state']);
+	$country = clean_input($_POST['country']);
+	$street1 = clean_input($_POST['street1']);
+	$street2 = clean_input($_POST['street2']);
+	$email = clean_input($_POST['email']);
+	$phone = clean_input($_POST['phone']);
+	$fax = clean_input($_POST['fax']);
 
 	$query = "
 		UPDATE
@@ -152,7 +167,7 @@ function update_reseller_personal_data($user_id) {
 			)
 	);
 
-	set_page_message(tr('Personal data updated successfully!'));
+	set_page_message(tr('Personal data successfully updated.'), 'success');
 }
 
 /*

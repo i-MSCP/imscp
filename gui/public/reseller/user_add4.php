@@ -176,9 +176,9 @@ function add_domain_alias()
     $alias_name = encode_idna($alias_name);
 
     if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
-        set_page_message(tr('Domain already regiostered on the system.'), 'error');
+        set_page_message(tr('Domain already registered on the system.'), 'error');
     } elseif (!validates_mpoint($mount_point) && $mount_point != '/') {
-        set_page_message(tr("Incorrect mount point syntax"), '');
+        set_page_message(tr('Incorrect mount point syntax'), 'error');
     } elseif ($_POST['status'] == 1) {
         if(($urlElements = @parse_url($forward_prefix . decode_idna($forward))) === false) {
             set_page_message(tr('Wrong syntax in forward URL.'), 'error');
@@ -244,7 +244,7 @@ function add_domain_alias()
         $stmt2 = exec_query($query, $alias_name);
 
         if ($stmt1->rowCount() > 0 || $stmt2->rowCount() > 0) {
-             tr('Domain already registered on the system.');
+             set_page_message(tr('Domain already registered on the system.'), 'error');
         }
 
         if (mount_point_exists($dmn_id, $mount_point)) {
@@ -252,7 +252,7 @@ function add_domain_alias()
         }
     }
 
-    if(isset($_SESSION['user_page_message'])) {
+    if(Zend_Session::namespaceIsset('pageMessages')) {
         return;
     }
 
@@ -388,12 +388,13 @@ if (isset($_POST['uaction'])) {
 } else { // Default page
     init_empty_data();
     if (isset($_SESSION['alias_scheduled_for_creation'])) {
-        set_page_message(tr('Domain alias scheduled for creation.'), 'info');
+        set_page_message(tr('Domain alias scheduled for creation.'), 'success');
         unset($_SESSION['alias_scheduled_for_creation']);
     }
 }
 
 gen_al_page($tpl);
+
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

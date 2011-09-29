@@ -118,7 +118,7 @@ function generate_users_list($tpl, $resellerId)
                               'TR_VIEW_DETAILS' => tr('View aliases'),
                               'SHOW_DETAILS' => tr('Show')));
 
-            set_page_message(tr('Not found user records matching the search criteria!'));
+            set_page_message(tr('Not found user records matching the search criteria.'), 'info');
 
             unset($_SESSION['search_for']);
             unset($_SESSION['search_common']);
@@ -262,7 +262,7 @@ function check_externel_events()
         unset($_SESSION['edit']);
     } elseif (isset($_SESSION['user_has_domain'])) {
         if ($_SESSION['user_has_domain'] == '_yes_') {
-            set_page_message(tr('This user has domain record !<br>First remove the domain from the system.'), 'error');
+            set_page_message(tr('This user has domain record.<br>First remove the domain from the system.'), 'error');
         }
 
         unset($_SESSION['user_has_domain']);
@@ -344,6 +344,7 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl')
 gen_logged_from($tpl);
 generate_users_list($tpl, $_SESSION['user_id']);
 check_externel_events();
+
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
