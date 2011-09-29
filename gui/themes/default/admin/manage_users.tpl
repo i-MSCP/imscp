@@ -60,11 +60,13 @@
 			{MENU}
 		</div>
 		<div class="body">
-			<h2 class="users"><span>{TR_ADMINISTRATORS}</span></h2>
+			<h2 class="users"><span>{TR_MANAGE_USERS}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+
+			<h3 class="user_yellow"><span>{TR_ADMINISTRATORS}</span></h3>
 
 			<!-- BDP: admin_message -->
 			<div class="info">{ADMIN_MESSAGE}</div>
@@ -98,7 +100,7 @@
 			</table>
 			<!-- EDP: admin_list -->
 
-			<h2 class="users"><span>{TR_RESELLERS}</span></h2>
+			<h3 class="user_green"><span>{TR_RESELLERS}</span></h3>
 
 			<!-- BDP: rsl_message -->
 			<div class="info">{RSL_MESSAGE}</div>
@@ -127,7 +129,7 @@
 			</table>
 			<!-- EDP: rsl_list -->
 
-			<h2 class="users"><span>{TR_USERS}</span></h2>
+			<h3 class="user_blue"><span>{TR_CUSTOMERS}</span></h3>
 
 			<!-- BDP: usr_message -->
 			<div class="info">{USR_MESSAGE}</div>

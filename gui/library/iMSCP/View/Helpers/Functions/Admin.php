@@ -664,10 +664,11 @@ function gen_user_list($tpl){
 function get_admin_manage_users($tpl)
 {
 	$tpl->assign(array(
+
 					'TR_MANAGE_USERS' => tr('Manage users'),
 					'TR_ADMINISTRATORS' => tr('Administrators'),
 					'TR_RESELLERS' => tr('Resellers'),
-					'TR_USERS' => tr('Users'),
+					'TR_CUSTOMERS' => tr('Customers'),
 					'TR_SEARCH' => tr('Search'),
 					'TR_CREATED_ON' => tr('Creation date'),
 					'TR_EXPIRES_ON' => tr('Expire date'),

@@ -84,7 +84,7 @@ html {
  * GENERAL INTERFACE STYLES
  ***********************************************************************************/
 
-h2 {
+h2, h3 {
     font-family: Geneva,Arial,Helvetica,sans-serif;
     font-size: 18px;
     font-variant: small-caps;
@@ -98,13 +98,15 @@ h2 {
     margin: 1em 0 0;
 }
 
-h2 span {
+h2 span, h3 span {
     display: block;
     border-bottom: 1px solid #ccc;
     margin-right: -33px;
 }
 
-h3 {}
+h3 {
+	font-size: 14px;
+}
 
 form {
     margin: 0.5em 0;
@@ -561,7 +563,7 @@ fieldset {
     position: relative;
 }
 
-legend, h3 {
+legend {
     padding: 0;
     position: absolute;
     top: 0;
@@ -661,6 +663,9 @@ legend, h3 {
 .body .tools { background-image: url(../images/content/table_icon_tools.png); }
 .body .traffic { background-image: url(../images/content/table_icon_traffic.png); }
 .body .update { background-image: url(../images/content/table_icon_update.png); }
+.body .user_blue { background-image: url(../images/content/table_icon_user_blue.png); }
+.body .user_green { background-image: url(../images/content/table_icon_user_green.png); }
+.body .user_yellow { background-image: url(../images/content/table_icon_user_yellow.png); }
 .body .user { background-image: url(../images/content/table_icon_user.png); }
 .body .users { background-image: url(../images/content/table_icon_users.png); }
 .body .users2 { background-image: url(../images/content/table_icon_users2.png); }
