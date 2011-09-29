@@ -136,7 +136,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 } // End of gen_al_page()
 
-function add_domain_alias(&$err_al) {
+function add_domain_alias() {
 
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
@@ -169,7 +169,7 @@ function add_domain_alias(&$err_al) {
 
 	// First check if input string is a valid domain names
 	if (!validates_dname($alias_name)) {
-		$err_al = $validation_err_msg;
+		set_page_message($validation_err_msg, 'error');
 		return;
 	}
 
@@ -177,15 +177,15 @@ function add_domain_alias(&$err_al) {
 	$alias_name = encode_idna($alias_name);
 
 	if (imscp_domain_exists($alias_name, 0)) {
-	 $err_al = tr('Domain with that name already exists on the system!');
+	 set_page_message(tr('Domain with that name already exists on the system.'), 'error');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
-		$err_al = tr("Incorrect mount point syntax");
+		set_page_message(tr('Incorrect mount point syntax.'), 'error');
 	} else if ($alias_name == $cfg->BASE_SERVER_VHOST) {
-		$err_al = tr('Master domain cannot be used!');
+		set_page_message(tr('Master domain cannot be used.'), 'error');
 	} else if ($_POST['status'] == 1) {
 		$aurl = @parse_url($forward_prefix.decode_idna($forward));
 		if ($aurl === false) {
-			$err_al = tr("Wrong address in forward URL!");
+			set_page_message(tr('Wrong address in forward URL.'), 'error');
 		} else {
 			$domain = $aurl['host'];
 			if (substr_count($domain, '.') <= 2) {
@@ -195,7 +195,7 @@ function add_domain_alias(&$err_al) {
 			}
 			$domain = encode_idna($aurl['host']);
 			if (!$ret) {
-				$err_al = tr("Wrong domain part in forward URL!");
+				set_page_message(tr('Wrong domain part in forward URL.'), 'error');
 			} else {
 				$domain = encode_idna($aurl['host']);
 				$forward = $aurl['scheme'].'://';
@@ -240,7 +240,7 @@ function add_domain_alias(&$err_al) {
 		$res2 = exec_query($query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
-			$err_al = tr("Domain with this name already exist");
+			set_page_message(tr('Domain with this name already exist.'), 'error');
 		}
 
 		$query = "
@@ -270,11 +270,11 @@ function add_domain_alias(&$err_al) {
 		$alssubdomres = exec_query($query, array($cr_user_id, $mount_point));
 		$alssubdomdata = $alssubdomres->fetchRow();
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) {
-			$err_al = tr("There is a subdomain with the same mount point!");
+			set_page_message(tr('There is a subdomain with the same mount point.'), 'error');
 		}
 	}
 
-	if ('_off_' !== $err_al) {
+	if (Zend_Session::namespaceIsset('pageMessages')) {
 		return;
 	}
 
@@ -304,27 +304,16 @@ function add_domain_alias(&$err_al) {
 		send_alias_order_email($alias_name);
 
 		write_log("$admin_login: add domain alias for activation: $alias_name.", E_USER_NOTICE);
-		set_page_message(tr('Alias scheduled for activation!'));
+		set_page_message(tr('Alias scheduled for activation.'), 'success');
 	} else {
 		send_request();
 		write_log("$admin_login: domain alias scheduled for addition: $alias_name.", E_USER_NOTICE);
-		set_page_message(tr('Alias scheduled for addition!'));
+		set_page_message(tr('Alias scheduled for addition.'), 'success');
 	}
 
 	redirectTo('domains_manage.php');
 } // End of add_domain_alias();
 
-
-function gen_page_msg(&$tpl, $error_txt) {
-
-	if ($error_txt != '_off_') {
-		$tpl->assign('MESSAGE', $error_txt);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
-	} else {
-		$tpl->assign('PAGE_MESSAGE', '');
-	}
-
-} // End of gen_page_msg()
 
 /**
  * Main program
@@ -395,8 +384,6 @@ if(!is_xhr()) {
 	check_client_domainalias_counts($_SESSION['user_id']);
 }
 
-$err_txt = '_off_';
-
 /**
  * Dispatches the request
  */
@@ -413,19 +400,17 @@ if(isset($_POST['uaction'])) {
 		echo "/".encode_idna(strtolower($_POST['domain']));
 		exit;
 	} elseif($_POST['uaction'] == 'add_alias') {
-		add_domain_alias($err_txt);
+		add_domain_alias();
 	} else {
-		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
+		set_page_message(tr('Wrong request.'), 'error');
+		redirectTo('domains_manage.php');
 	}
 } else { // Default view
 	init_empty_data();
-	$tpl->assign("PAGE_MESSAGE", '');
 }
 
 gen_al_page($tpl, $_SESSION['user_id']);
-gen_page_msg($tpl, $err_txt);
-
-//gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 

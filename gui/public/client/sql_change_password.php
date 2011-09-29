@@ -63,23 +63,23 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	}
 
 	if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
-		set_page_message(tr('Please type user password!'), 'error');
+		set_page_message(tr('Please type user password.'), 'error');
 		return;
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match!'), 'error');
+		set_page_message(tr('Entered passwords do not match.'), 'error');
 		return;
 	}
 
 	if (strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH) {
-		set_page_message(tr('Too long user password!'), 'error');
+		set_page_message(tr('Too long user password.'), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass'])
 		&& !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
-		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'), 'error');
+		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password.'), 'error');
 		return;
 	}
 
@@ -144,7 +144,7 @@ $db_user_name = gen_page_data($tpl, $db_user_id);
 
 if(!check_user_sql_perms($db_user_id))
 {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface.'));
+    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
     redirectTo('sql_manage.php');
 }
 

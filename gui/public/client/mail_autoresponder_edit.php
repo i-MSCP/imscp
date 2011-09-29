@@ -70,7 +70,7 @@ function check_email_user() {
 	$rs = exec_query($query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
+		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
 		redirectTo('mail_accounts.php');
 	}
 }
@@ -103,7 +103,7 @@ function gen_page_dynamic_data($tpl, $mail_id, $read_from_db) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'enable_arsp') {
 		if (empty($_POST['arsp_message'])) {
 			$tpl->assign('ARSP_MESSAGE', '');
-			set_page_message(tr('Please type your mail autorespond message!'), 'error');
+			set_page_message(tr('Please type your mail autorespond message.'), 'error');
 			return;
 		}
 
@@ -142,7 +142,7 @@ function gen_page_dynamic_data($tpl, $mail_id, $read_from_db) {
 		$rs = exec_query($query, $mail_id);
 		$mail_name = $rs->fields['mailbox'];
 		write_log($_SESSION['user_logged'] . ": changes mail autoresponder: " . $mail_name, E_USER_NOTICE);
-		set_page_message(tr('Mail account scheduler for modification!'));
+		set_page_message(tr('Mail account scheduled for update.'), 'success');
 		redirectTo('mail_accounts.php');
 	} else {
 		$tpl->assign('ARSP_MESSAGE', '');
@@ -196,6 +196,7 @@ $tpl->assign(
 		'ID'							=> $mail_id
 	)
 );
+
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

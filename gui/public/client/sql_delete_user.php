@@ -47,13 +47,13 @@ if (isset($_GET['id'])) {
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 if(!check_user_sql_perms($db_user_id)) {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface.'));
+    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
     redirectTo('sql_manage.php');
 }
 
 sql_delete_user($dmn_id, $db_user_id);
 
 write_log($_SESSION['user_logged'].": deletes SQL user ".$db_user_id."!", E_USER_NOTICE);
-set_page_message(tr('SQL user was removed successfully!'), 'success');
+set_page_message(tr('SQL user successfully removed.'), 'success');
 
 redirectTo('sql_manage.php');

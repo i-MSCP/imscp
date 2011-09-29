@@ -191,7 +191,7 @@ function gen_hp($tpl, $user_id) {
 			)
 		);
 
-		set_page_message(tr('There are no available updates'));
+		set_page_message(tr('There are no available hosting plans for updates'), 'info');
 		return;
 	}
 
@@ -229,7 +229,7 @@ function gen_hp($tpl, $user_id) {
 				$details = tr('PHP Support: disabled') . "<br />";
 				$php = "no";
 				if ($current['domain_php'] == 'yes') {
-					$warning_msgs[] = tr("You have PHP enabled, but the new hosting plan doesn't has this feature.");
+					set_page_message(tr("You have PHP enabled, but the new hosting plan doesn't has this feature."), 'warning');
 				}
 			}
 
@@ -241,7 +241,7 @@ function gen_hp($tpl, $user_id) {
 				$details .= tr('CGI Support: disabled') . "<br />";
 	
 				if ($current['domain_cgi'] == 'yes') {
-					$warning_msgs[] = tr("You have CGI enabled, but the new hosting plan doesn't has this feature.");
+					set_page_message(tr("You have CGI enabled, but the new hosting plan doesn't has this feature."), 'warning');
 				}
 			}
 
@@ -253,7 +253,7 @@ function gen_hp($tpl, $user_id) {
 				$details .= tr('DNS Support: disabled') . "<br />";
 	
 				if ($current['domain_dns'] == 'yes') {
-					$warning_msgs[] = tr("You have DNS enabled, but the new hosting plan doesn't has this feature.");
+					set_page_message(tr("You have DNS enabled, but the new hosting plan doesn't has this feature."), 'warning');
 				}
 			}
 			
@@ -266,7 +266,7 @@ function gen_hp($tpl, $user_id) {
 			}
 			
 			if ($current['domain_software_allowed'] == 'yes') {
-				$warning_msgs[] = tr("You have the i-MSCP application installer enabled, but the new hosting plan doesn't has this feature.");
+				set_page_message(tr("You have the i-MSCP application installer enabled, but the new hosting plan doesn't has this feature."), 'warning');
 			}
 
 			$traffic = get_user_traffic($domain_id);
@@ -274,7 +274,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = $traffic[7] / 1048576; // convert disk usage to MB
 	
 			if (!check_update_current_value($curr_value, $hp_disk)) {
-				$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
+				set_page_message(tr('You have more disk space in use than the new hosting plan limits.'), 'error');
 			}
 	
 			$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
@@ -282,7 +282,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = $traffic[10] / 1048576; // convert max. traffic to MB
 	
 			if (!check_update_current_value($curr_value, $hp_traff)) {
-				$warning_msgs[] = tr("You did have more traffic than the new hosting plan limits.");
+				set_page_message(tr('You did have more traffic than the new hosting plan limits.'), 'error');
 			}
 	
 			$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
@@ -290,7 +290,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = get_domain_running_als_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_als)) {
-				$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
+				set_page_message(tr('You have more aliases in use than the new hosting plan limits'), 'error');
 			}
 	
 			$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br />";
@@ -298,7 +298,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = get_domain_running_sub_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_sub)) {
-				$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
+				set_page_message(tr('You have more subdomains in use than the new hosting plan limits'), 'error');
 			}
 	
 			$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br />";
@@ -306,7 +306,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = get_domain_running_mail_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value[0], $hp_mail)) {
-				$error_msgs[] = tr("You have more Email addresses in use than the new hosting plan limits.");
+				set_page_message(tr('You have more Email addresses in use than the new hosting plan limits.'), 'error');
 			}
 	
 			$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br />";
@@ -314,7 +314,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = get_domain_running_ftp_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value[0], $hp_ftp)) {
-				$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
+				set_page_message(tr('You have more FTP accounts in use than the new hosting plan limits.'), 'error');
 			}
 	
 			$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br />";
@@ -322,7 +322,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = get_domain_running_sqld_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_sql_db)) {
-				$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
+				set_page_message(tr('You have more SQL databases in use than the new hosting plan limits.'), 'error');
 			}
 	
 			$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br />";
@@ -330,7 +330,7 @@ function gen_hp($tpl, $user_id) {
 			$curr_value = get_domain_running_sqlu_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_sql_user)) {
-				$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
+				set_page_message(tr('You have more SQL database users in use than the new hosting plan limits.'), 'error');
 			}
 	
 			$details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br />";
@@ -445,7 +445,7 @@ function gen_hp($tpl, $user_id) {
 			)
 		);
 
-		set_page_message(tr('There are no available hosting plans for update'));
+		set_page_message(tr('There are no available hosting plans for update.'), 'info');
 	}
 }
 
@@ -501,41 +501,40 @@ function add_new_order($tpl,$order_id, $user_id) {
 
 	$curr_value = $traffic[7] / 1048576; // disk usage
 	if (!check_update_current_value($curr_value, $hp_disk)) {
-		$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
+		set_page_message(tr('You have more disk space in use than the new hosting plan limits.'), 'error');
 	}
 
 	$curr_value = get_domain_running_als_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_als)) {
-		$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
+		set_page_message(tr('You have more aliases in use than the new hosting plan limits.'), 'error');
 	}
 
 	$curr_value = get_domain_running_sub_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_sub)) {
-		$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
+		set_page_message(tr('You have more subdomains in use than the new hosting plan limits.'), 'error');
 	}
 
 	$curr_value = get_domain_running_mail_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value[0], $hp_mail)) {
-		$error_msgs[] = tr("You have more e-mail addresses in use than the new hosting plan limits.");
+		set_page_message(tr('You have more e-mail addresses in use than the new hosting plan limits.'), 'error');
 	}
 
 	$curr_value = get_domain_running_ftp_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value[0], $hp_ftp)) {
-		$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
+		set_page_message(tr('You have more FTP accounts in use than the new hosting plan limits.'), 'error');
 	}
 
 	$curr_value = get_domain_running_sqld_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_sql_db)) {
-		$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
+		set_page_message(tr('You have more SQL databases in use than the new hosting plan limits.'), 'error');
 	}
 
 	$curr_value = get_domain_running_sqlu_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_sql_user)) {
-		$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
+		set_page_message(tr('You have more SQL database users in use than the new hosting plan limits.'), 'error');
 	}
 
-	if (count($error_msgs) > 0) {
-		set_page_message(implode('<br />', $error_msgs));
+	if (Zend_Session::namespaceIsset('pageMessages')) {
 		redirectTo('hosting_plan_update.php');
 	}
 
@@ -565,11 +564,14 @@ function add_new_order($tpl,$order_id, $user_id) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
+
+
 	exec_query($query, array(
 		$_SESSION['user_created_by'], $order_id, $date, $_SESSION['user_logged'],
 		$user_id, '', '', '', '', '', '', '', '', '', '', '', '', $status
 	));
-	set_page_message(tr('Your request for hosting pack update was added successfully'), 'success');
+
+	set_page_message(tr('Your request for hosting plan update was successfully registered.'), 'success');
 
 	$query = "
 		SELECT
@@ -595,7 +597,10 @@ function add_new_order($tpl,$order_id, $user_id) {
 
 	$subject = tr("[i-MSCP OrderPanel] - You have an update order", true);
 
-	$message = tr("You have an update order for the account %s\n\nPlease login into your i-MSCP control panel at %s for more details",
+
+
+	$message = tr(
+		"You have an update order for the account %s\n\nPlease login into your i-MSCP control panel at %s for more details",
 		true,
 		$_SESSION['user_logged'],
 		$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);
@@ -608,7 +613,7 @@ function del_order($tpl, $order_id, $user_id)
 	$query = "DELETE FROM `orders` WHERE `user_id` = ? AND `customer_id` = ?";
 
 	exec_query($query, array($_SESSION['user_created_by'], $user_id));
-	set_page_message(tr('Your request for hosting pack update was removed successfully'), 'success');
+	set_page_message(tr('Your request for hosting plan update was successfully removed.'), 'success');
 }
 
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {

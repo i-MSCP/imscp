@@ -60,7 +60,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 					`domain_id` = ?
 			";
 			$res = exec_query($delete, array($_GET['id'], $dmn_id));
-			set_page_message(tr('Software deleted successful.'), 'success');
+			set_page_message(tr('Software successfully deleted.'), 'success');
 		}else{
 			$delete = "
 				UPDATE
@@ -74,7 +74,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			";
 			$res = exec_query($delete, array('delete', $_GET['id'], $dmn_id));
 			send_request();
-			set_page_message(tr('Software will be deleted now.'));
+			set_page_message(tr('Software scheduled for deletion.'), 'success');
 		}
 			redirectTo('software.php');
 	}

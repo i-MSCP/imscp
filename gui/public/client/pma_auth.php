@@ -45,7 +45,7 @@
  * Get database login credentials.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since  1.0.7
+ * @since  1.0.7 (ispCP)
  * @access private
  * @param  int $dbUserId Database user unique identifier
  * @return array Array that contains login credentials or FALSE on failure
@@ -149,7 +149,7 @@ function pmaAuth($dbUserId)
 	$headers = get_headers($pmaUri, true);
 
 	if(!$headers || !isset($headers['Location'])) {
-		set_page_message(tr('Error: An error occurred while authentication.'), 'error');
+		set_page_message(tr('An error occurred while authentication.'), 'error');
 		return false;
 	} else {
 		_pmaCreateCookies($headers['Set-Cookie']);

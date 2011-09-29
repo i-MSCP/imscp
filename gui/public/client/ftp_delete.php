@@ -118,7 +118,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	update_reseller_c_props($domain_props[4]);
 
 	write_log($_SESSION['user_logged'].": deletes FTP account: ".$ftp_name, E_USER_NOTICE);
-	set_page_message(tr('FTP account deleted successfully!'), 'success');
+	set_page_message(tr('FTP account successfully deleted.'), 'success');
 	redirectTo('ftp_accounts.php');
 
 } else {

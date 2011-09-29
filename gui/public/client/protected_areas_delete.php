@@ -58,7 +58,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
 	if ($status !== $ok_status) {
-		set_page_message(tr('Protected area status should be OK if you want to delete it!'), 'error');
+		set_page_message(tr("Protected area status should be 'OK' if you want to delete it."), 'error');
 		redirectTo('protected_areas.php');
 	}
 
@@ -78,9 +78,9 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 
 	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id'], E_USER_NOTICE);
-	set_page_message(tr('Protected area deleted successfully!'), 'success');
+	set_page_message(tr('Protected area successfully deleted.'), 'success');
 	redirectTo('protected_areas.php');
 } else {
-	set_page_message(tr('Permission deny!'), 'error');
+	set_page_message(tr('Permission deny.'), 'error');
 	redirectTo('protected_areas.php');
 }

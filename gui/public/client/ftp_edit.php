@@ -234,7 +234,7 @@ $rs = exec_query($query, $_SESSION['user_id']);
 $dmn_name = $rs->fields['domain_name'];
 
 if(!check_ftp_perms($ftp_acc)) {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
     redirectTo('ftp_accounts.php');
 }
 

@@ -107,7 +107,6 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
 	}
 
 	$_SESSION['edit_ID'] = $editid;
-	$tpl->assign('PAGE_MESSAGE', '');
 }
 
 gen_editalias_page($tpl, $editid);
@@ -204,9 +203,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
-	$status = $_POST['status'];
-	// unset errors
-	$ed_error = '_off_';
+	$status = $_POST['status'];;
 	$admin_login = '';
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
@@ -217,7 +214,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			$ret = validates_dname($forward_url, true);
 		}
 		if (!$ret) {
-			$ed_error = tr("Wrong domain part in forward URL!");
+			set_page_message(tr('Wrong domain part in forward URL.'), 'error');
 		} else {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
 		}
@@ -250,7 +247,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 		);
 	}
 
-	if ($ed_error === '_off_') {
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		$query = "
 			UPDATE
 				`domain_aliasses`
@@ -280,11 +277,9 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 		write_log("$admin_login: change domain alias forward: " . $rs->fields['alias_name'], E_USER_NOTICE);
 		unset($_SESSION['edit_ID']);
-		$tpl->assign('MESSAGE', '');
 		return true;
 
 	} else {
-		set_page_message($ed_error,'error');
 		return false;
 	}
 } // End of check_user_data()

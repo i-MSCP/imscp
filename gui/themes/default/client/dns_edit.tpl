@@ -107,7 +107,8 @@
 
 	<div class="left_menu">{MENU}</div>
 	<div class="body">
-            			<h2 class="domains"><span>{TR_MANAGE_DOMAIN_DNS}</span></h2>
+            <h2 class="domains"><span>{TR_MANAGE_DOMAIN_DNS}</span></h2>
+
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->

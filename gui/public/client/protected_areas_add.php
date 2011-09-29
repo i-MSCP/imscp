@@ -129,7 +129,7 @@ function protect_area($tpl, $dmn_id) {
 			if ($cnt_users == 1 || $cnt_users == $i + 1) {
 				$user_id .= $users[$i];
 				if ($user_id == '-1' || $user_id == '') {
-					set_page_message(tr('You cannot protect area without selected user(s)!'), 'error');
+					set_page_message(tr('You cannot protect area without selected user(s).'), 'error');
 					return;
 				}
 			} else {
@@ -142,7 +142,7 @@ function protect_area($tpl, $dmn_id) {
 			if ($cnt_groups == 1 || $cnt_groups == $i + 1) {
 				$group_id .= $groups[$i];
 				if ($group_id == '-1' || $group_id == '') {
-					set_page_message(tr('You cannot protect area without selected group(s)'), 'error');
+					set_page_message(tr('You cannot protect area without selected group(s).'), 'error');
 					return;
 				}
 			} else {
@@ -196,7 +196,7 @@ function protect_area($tpl, $dmn_id) {
 
 		exec_query($query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
 		send_request();
-		set_page_message(tr('Protected area created successfully!'), 'success');
+		set_page_message(tr('Protected area successfully created.'), 'success');
 	}
 
 	redirectTo('protected_areas.php');
@@ -239,7 +239,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$auth_name = $rs->fields['auth_name'];
 		$ok_status = $cfg->ITEM_OK_STATUS;
 		if ($status !== $ok_status) {
-			set_page_message(tr('Protected area status should be OK if you want to edit it!'), 'error');
+			set_page_message(tr('Protected area status should be OK if you want to edit it.'), 'error');
 			redirectTo('protected_areas.php');
 		}
 
@@ -330,7 +330,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$tpl->assign(
 			array(
 				'GROUP_VALUE' => "-1",
-				'GROUP_LABEL' => tr('You have no groups!'),
+				'GROUP_LABEL' => tr('You have no groups.'),
 				'GROUP_SELECTED' => ''
 			)
 		);

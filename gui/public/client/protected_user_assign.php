@@ -107,7 +107,7 @@ function gen_user_assign($tpl, &$dmn_id) {
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('You have no groups!'), 'error');
+		set_page_message(tr('You have no groups.'), 'error');
 		redirectTo('protected_user_manage.php');
 	} else {
 		$added_in = 0;
@@ -204,7 +204,7 @@ function add_user_to_group($tpl, &$dmn_id) {
 		exec_query($update_query, array($members, $change_status, $group_id, $dmn_id));
 
 		send_request();
-		set_page_message(tr('User was assigned to the %s group', $rs->fields['ugroup']));
+		set_page_message(tr('User was assigned to the %s group', $rs->fields['ugroup']), 'success');
 	} else {
 		return;
 	}

@@ -71,7 +71,7 @@ function gen_db_user_list($tpl, $db_id) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'DB_MSG'	=> tr('Database user list is empty!'),
+				'DB_MSG'	=> tr('Database user list is empty.'),
 				'USER_LIST'	=> ''
 			)
 		);
@@ -119,7 +119,7 @@ function gen_db_list($tpl, $user_id) {
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('Database list is empty!'));
+		set_page_message(tr('Database list is empty.'));
 		$tpl->assign('DB_LIST', '');
 	} else {
 		while (!$rs->EOF) {

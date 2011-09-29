@@ -78,7 +78,7 @@ function padd_user($tpl, $dmn_id) {
 				return;
 			}
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Passwords do not match!'), 'error');
+				set_page_message(tr('Passwords do not match.'), 'error');
 				return;
 			}
 			$status = $cfg->ITEM_ADD_STATUS;

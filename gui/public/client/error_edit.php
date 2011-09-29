@@ -76,7 +76,7 @@ $tpl->assign(
 // dynamic page data.
 
 if (!isset($_GET['eid'])) {
-	set_page_message(tr('Server error - please choose error page'), 'error');
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('error_pages.php');
 } else {
 	$eid = intval($_GET['eid']);
@@ -85,12 +85,8 @@ if (!isset($_GET['eid'])) {
 if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 	gen_error_page_data($tpl, $_SESSION['user_id'], $_GET['eid']);
 } else {
-	$tpl->assign(
-		array(
-			'ERROR' => tr('Server error - please choose error page'),
-			'EID' => '0'
-		)
-	);
+	set_page_message(tr('Error page not found.'), 'error');
+	redirectTo('error_pages.php');
 }
 
 // static page messages.

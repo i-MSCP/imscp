@@ -78,7 +78,7 @@ function edit_mail_account($tpl) {
 	$rs = exec_query($query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
+		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
 		redirectTo('mail_accounts.php');
 	} else {
 		$mail_acc = $rs->fields['mail_acc'];
@@ -217,16 +217,16 @@ function update_email_pass() {
 	$mail_account = clean_input($_POST['mail_account']);
 
 	if (trim($pass) === '' || trim($pass_rep) === '' || $mail_id === '' || !is_numeric($mail_id)) {
-		set_page_message(tr('Password data is missing!'), 'error');
+		set_page_message(tr('Password missing.'), 'error');
 		return false;
 	} else if ($pass !== $pass_rep) {
-		set_page_message(tr('Entered passwords differ!'), 'error');
+		set_page_message(tr("Passwords doesn't matches"), 'error');
 		return false;
 	} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) { // Not permitted chars
 		if ($cfg->PASSWD_STRONG) {
 			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
 		}
 		return false;
 	} else {
@@ -263,10 +263,10 @@ function update_email_forward($tpl) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
 				// @todo ERROR .. strange :) not email in this line - warning
-				set_page_message(tr("Mail forward list error!"), 'error');
+				set_page_message(tr("Mail forward list error."), 'error');
 				return false;
 			} else if ($value === '') {
-				set_page_message(tr("Mail forward list error!"), 'error');
+				set_page_message(tr("Mail forward list error."), 'error');
 				return false;
 			}
 			$mail_accs[] = $value;
@@ -323,7 +323,7 @@ $tpl->assign(
 edit_mail_account($tpl);
 
 if (update_email_pass() && update_email_forward($tpl)) {
-	set_page_message(tr("Mail were updated successfully!"), 'success');
+	set_page_message(tr("Mail were successfully updated."), 'success');
 	send_request();
 	redirectTo('mail_accounts.php');
 }
@@ -351,6 +351,7 @@ $tpl->assign(
 );
 
 generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(

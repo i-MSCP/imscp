@@ -93,7 +93,7 @@ function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 
 	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
 		if (!$sqluser_available) {
-			set_page_message(tr('SQL users limit reached!'), 'error');
+			set_page_message(tr('SQL users limit reached.'), 'error');
 			redirectTo('sql_manage.php');
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
@@ -234,28 +234,28 @@ function add_sql_user($user_id, $db_id) {
 
 	if (empty($_POST['pass']) && empty($_POST['pass_rep'])
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Please type user password!'), 'error');
+		set_page_message(tr('Please type user password.'), 'error');
 		return;
 	}
 
 	if ((isset($_POST['pass']) && isset($_POST['pass_rep']))
 		&& $_POST['pass'] !== $_POST['pass_rep']
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Entered passwords do not match!'), 'error');
+		set_page_message(tr('Entered passwords do not match.'), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass'])
 		&& strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Too user long password!'), 'error');
+		set_page_message(tr('Too user long password.'), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass'])
 		&& !preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'), 'error');
+		set_page_message(tr("Please, don't use special chars like '@, $, %...' in the password."), 'error');
 		return;
 	}
 
@@ -275,7 +275,7 @@ function add_sql_user($user_id, $db_id) {
 		$rs = exec_query($query, $_POST['sqluser_id']);
 
 		if ($rs->recordCount() == 0) {
-			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'), 'warning');
+			set_page_message(tr('SQL-user not found.'), 'error');
 			return;
 		}
 		$user_pass = $rs->fields['sqlu_pass'];
@@ -314,14 +314,14 @@ function add_sql_user($user_id, $db_id) {
 	// are wildcards used?
 
 	if (preg_match("/[%|\?]+/", $db_user)) {
-		set_page_message(tr('Wildcards such as %% and ? are not allowed!'), 'error');
+		set_page_message(tr('Wildcards such as %% and ? are not allowed.'), 'error');
 		return;
 	}
 
 	// have we such sql user in the system?!
 
 	if (check_db_user($db_user) && !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Specified SQL username name already exists!'), 'error');
+		set_page_message(tr('Specified SQL username name already exists.'), 'error');
 		return;
 	}
 
@@ -359,7 +359,7 @@ function add_sql_user($user_id, $db_id) {
 	exec_query($query, array($db_user, "%", $user_pass));
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
-	set_page_message(tr('SQL user successfully added!'), 'success');
+	set_page_message(tr('SQL user successfully added.'), 'success');
 	redirectTo('sql_manage.php');
 }
 

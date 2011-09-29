@@ -105,11 +105,11 @@ function padd_group($tpl, $dmn_id) {
 				write_log("$admin_login: add group (protected areas): $groupname", E_USER_NOTICE);
 				redirectTo('protected_user_manage.php');
 			} else {
-				set_page_message(tr('Group already exists!'), 'error');
+				set_page_message(tr('Group already exists.'), 'error');
 				return;
 			}
 		} else {
-			set_page_message(tr('Invalid group name!'), 'error');
+			set_page_message(tr('Invalid group name.'), 'error');
 			return;
 		}
 	} else {

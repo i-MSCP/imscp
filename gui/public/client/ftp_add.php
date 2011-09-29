@@ -326,7 +326,7 @@ function get_ftp_user_uid($dmn_name, $ftp_user, $ftp_user_gid) {
 
 	$rs = exec_query($query, array($ftp_user, $ftp_user_gid));
 	if ($rs->recordCount() > 0) {
-		set_page_message(tr('FTP account already exists!'), 'error');
+		set_page_message(tr('FTP account already exists.'), 'error');
 		return -1;
 	}
 
@@ -365,7 +365,7 @@ function add_ftp_user($dmn_name) {
 	$username = strtolower(clean_input($_POST['username']));
 
 	if (!validates_username($username)) {
-		set_page_message(tr("Incorrect username length or syntax!"), 'error');
+		set_page_message(tr("Incorrect username length or syntax."), 'error');
 		return;
 	}
 
@@ -390,7 +390,7 @@ function add_ftp_user($dmn_name) {
 			break;
 		// Unknown domain type (?)
 		default:
-			set_page_message(tr('Unknown domain type'), 'error');
+			set_page_message(tr('Unknown domain type.'), 'error');
 			return;
 			break;
 	}
@@ -402,7 +402,7 @@ function add_ftp_user($dmn_name) {
 		// Check for updirs ".."
 		$res = preg_match("/\.\./", $ftp_vhome);
 		if ($res !== 0) {
-			set_page_message(tr('Incorrect mount point length or syntax'), 'error');
+			set_page_message(tr('Incorrect mount point length or syntax.'), 'error');
 			return;
 		}
 		$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $ftp_vhome;
@@ -441,7 +441,7 @@ function add_ftp_user($dmn_name) {
 	update_reseller_c_props($domain_props[4]);
 
 	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user", E_USER_NOTICE);
-	set_page_message(tr('FTP account added!'), 'success');
+	set_page_message(tr('FTP account successfully added.'), 'success');
 	redirectTo('ftp_accounts.php');
 }
 
@@ -450,19 +450,19 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['username']) || $_POST['username'] === '') {
-		set_page_message(tr('Please enter FTP account username!'), 'error');
+		set_page_message(tr('Please enter FTP account username.'), 'error');
 		return;
 	}
 
 	if (!isset($_POST['pass']) || empty($_POST['pass'])
 		|| !isset($_POST['pass_rep'])
 		|| $_POST['pass_rep'] === '') {
-		set_page_message(tr('Password is missing!'), 'error');
+		set_page_message(tr('Password is missing.'), 'error');
 		return;
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match!'), 'error');
+		set_page_message(tr('Entered passwords do not match.'), 'error');
 		return;
 	}
 

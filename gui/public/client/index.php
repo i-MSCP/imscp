@@ -327,7 +327,7 @@ function gen_user_messages_label($tpl, &$user_id){
 
 	if ($num_question == 0) {
 		$tpl->assign(array(
-			'TR_NO_NEW_MESSAGES' => tr('You have no new support questions!'),
+			'TR_NO_NEW_MESSAGES' => tr('You have no new support questions.'),
 			'MSG_ENTRY' => ''
 		));
 	} else {
@@ -385,6 +385,7 @@ $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic(array(
 	'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
+	'page_message' => 'page',
 	'def_language' => 'page',
 	'def_layout' => 'page',
 	'no_messages' => 'page',

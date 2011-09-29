@@ -118,7 +118,7 @@ function net2ftpAuth($userId) {
 			)
 		);
 	} else {
-		set_page_message(tr('Unknown FTP user id!'), 'error');
+		set_page_message(tr('Unknown FTP user id.'), 'error');
 
 		return false;
 	}

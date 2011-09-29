@@ -120,7 +120,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$rs = exec_query($query, $als_id);
 	if ($rs->fields['ftpnum'] > 0) {
-		set_page_message(tr('Domain alias you are trying to remove has FTP accounts!<br>First remove them!'), 'error');
+		set_page_message(tr('Domain alias you are trying to remove has FTP accounts.<br>First remove them first.'), 'error');
 		redirectTo('domains_manage.php');
 	}
 
@@ -139,7 +139,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias ".$alias_name."!", E_USER_NOTICE);
-	set_page_message(tr('Alias scheduled for deletion!'));
+	set_page_message(tr('Alias scheduled for deletion.'), 'success');
 	redirectTo('domains_manage.php');
 } else {
 	redirectTo('domains_manage.php');

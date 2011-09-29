@@ -94,7 +94,7 @@ if (isset($_POST['Submit2'])) {
 	$install_email = clean_input($_POST['install_email'], true);
 	if(isset($_POST['createdir']) && $_POST['createdir'] === '1') {
 		$createdir = clean_input($_POST['createdir'], true);
-		set_page_message(tr('The directory -%1$s- was created!', $other_dir));
+		set_page_message(tr('The directory -%1$s- was created.', $other_dir), 'success');
 	} else {
 		$createdir = '0';
 	}

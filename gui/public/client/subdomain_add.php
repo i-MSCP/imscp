@@ -32,20 +32,6 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/**
- *  Functions
- */
-function gen_page_msg(&$tpl, $erro_txt) {
-
-	if ($erro_txt != '_off_') {
-		$tpl->assign('MESSAGE', $erro_txt);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
-	} else {
-		$tpl->assign('PAGE_MESSAGE', '');
-	}
-
-}
-
 function check_subdomain_permissions($user_id) {
 	$props = get_domain_default_props($user_id, true);
 
@@ -56,7 +42,7 @@ function check_subdomain_permissions($user_id) {
 	$sub_cnt = get_domain_running_sub_cnt($dmn_id);
 
 	if ($dmn_subd_limit != 0 && $sub_cnt >= $dmn_subd_limit) {
-		set_page_message(tr('Subdomains limit reached!'), 'error');
+		set_page_message(tr('Subdomains limit reached.'), 'error');
 		redirectTo('domains_manage.php');
 	}
 
@@ -323,6 +309,7 @@ function subdmn_mnt_pt_exists($user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 				`alias_mount` = ?
 		";
 	}
+
 	$rs = exec_query($query, array($domain_id, $sub_mnt_pt));
 	if (isset($query2))
 		$rs2 = exec_query($query2, array($domain_id, $sub_mnt_pt));
@@ -367,7 +354,7 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 	send_request();
 }
 
-function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
+function check_subdomain_data($tpl, $user_id, $dmn_name) {
 
 	global $validation_err_msg;
 	$dmn_id = $domain_id = get_user_domain_id($user_id);
@@ -375,7 +362,7 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
 
 		if (empty($_POST['subdomain_name'])) {
-			 $err_sub = tr('Please specify subdomain name!');
+			 set_page_message(tr('Please specify subdomain name.'), 'error');
 			return;
 		}
 		$sub_name = strtolower($_POST['subdomain_name']);
@@ -400,7 +387,7 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 		if ($_POST['dmn_type'] === 'als') {
 
 			if (!isset($_POST['als_id'])) {
-				$err_sub = tr('No valid alias domain selected!');
+				set_page_message(tr('No valid alias domain selected.'), 'error');
 				return;
 			}
 
@@ -427,7 +414,7 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 
 		// First check if input string is a valid domain names
 		if (!validates_subdname($sub_name, decode_idna($dmn_name))) {
-			$err_sub = $validation_err_msg;
+			set_page_message($validation_err_msg, 'error');
 			return;
 		}
 
@@ -435,15 +422,15 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 		$sub_name = encode_idna($sub_name);
 
 		if (subdmn_exists($user_id, $domain_id, $sub_name)) {
-			$err_sub = tr('Subdomain already exists or is not allowed!');
+			set_page_message(tr('Subdomain already exists or is not allowed.'), 'error');
 		} elseif (mount_point_exists($dmn_id, array_encode_idna($sub_mnt_pt, true))) {
-			$err_sub = tr('Mount point already in use!');
+			set_page_message(tr('Mount point already in use'), 'error');
 		} elseif (!validates_mpoint($sub_mnt_pt)) {
-			$err_sub = tr('Incorrect mount point syntax!');
+			set_page_message(tr('Incorrect mount point syntax.'), 'error');
 		} elseif ($_POST['status'] == 1) {
 			$surl = @parse_url($forward_prefix.decode_idna($forward));
 			if ($surl === false) {
-				$err_sub = tr('Wrong domain part in forward URL!');
+				set_page_message(tr('Wrong domain part in forward URL.'), 'error');
 			} else {
 				$domain = $surl['host'];
 				if (substr_count($domain, '.') <= 2) {
@@ -453,7 +440,7 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 				}
 				$domain = encode_idna($surl['host']);
 				if (!$ret) {
-					$err_sub = tr('Wrong domain part in forward URL!');
+					set_page_message(tr('Wrong domain part in forward URL.'), 'error');
 				} else {
 					$domain = encode_idna($surl['host']);
 					$forward = $surl['scheme'].'://';
@@ -479,14 +466,16 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 			}
 		} else {
 			// now let's fix the mountpoint
-			$mount_point = array_encode_idna($mount_point, true);
+			//$mount_point = array_encode_idna($mount_point, true);
 			$sub_mnt_pt = array_encode_idna($sub_mnt_pt, true);
 		}
-		if ('_off_' !== $err_sub) {
+
+		if(Zend_Session::namespaceIsset('pageMessages')) {
 			return;
 		}
+
 		subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward);
-		set_page_message(tr('Subdomain scheduled for addition!'));
+		set_page_message(tr('Subdomain scheduled for addition.'));
 		redirectTo('domains_manage.php');
 	}
 }
@@ -558,8 +547,6 @@ if(!is_xhr()) {
 	);
 }
 
-$err_txt = '_off_';
-
 /**
  * Dispatches the request
  */
@@ -578,7 +565,7 @@ if(isset($_POST['uaction'])) {
 	} elseif($_POST['uaction'] == 'add_subd') {
 		$dmn_name = check_subdomain_permissions($_SESSION['user_id']);
 		gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
-		check_subdomain_data($tpl, $err_txt, $_SESSION['user_id'], $dmn_name);
+		check_subdomain_data($tpl, $_SESSION['user_id'], $dmn_name);
 	} else {
 		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
 	}
@@ -586,7 +573,7 @@ if(isset($_POST['uaction'])) {
 	gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
 }
 
-gen_page_msg($tpl, $err_txt);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 

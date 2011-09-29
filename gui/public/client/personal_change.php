@@ -126,7 +126,7 @@ function update_user_personal_data($user_id) {
                             $user_id));
 
 	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
-	set_page_message(tr('Personal data updated successfully!'), 'success');
+	set_page_message(tr('Personal data updated successfully.'), 'success');
 }
 
 /*
@@ -167,6 +167,7 @@ $tpl->assign(
 );
 
 generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(

@@ -295,7 +295,7 @@ function create_catchall_mail_account($id) {
 	list($realId, $type) = explode(';', $id);
 	// Check if user is owner of the domain
 	if (!preg_match('(normal|alias|subdom|alssub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
+		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
 		redirectTo('mail_catchall.php');
 	}
 
@@ -351,7 +351,7 @@ function create_catchall_mail_account($id) {
 
 				send_request();
 				write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
-				set_page_message(tr('Catch all account scheduled for creation!'));
+				set_page_message(tr('Catch all account scheduled for creation.'), 'success');
 				redirectTo('mail_catchall.php');
 			} else {
 				redirectTo('mail_catchall.php');
@@ -433,7 +433,7 @@ function create_catchall_mail_account($id) {
 
 			send_request();
 			write_log($_SESSION['user_logged'] . ": adds new email catch all", E_USER_NOTICE);
-			set_page_message(tr('Catch all account scheduled for creation!'));
+			set_page_message(tr('Catch all account scheduled for creation.'), 'success');
 			redirectTo('mail_catchall.php');
 		} else {
 			redirectTo('mail_catchall.php');

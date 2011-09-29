@@ -95,7 +95,7 @@ function gen_user_dns_list($tpl, $user_id) {
 
 	$rs = exec_query($query, $domain_id);
 	if ($rs->recordCount() == 0) {
-		$tpl->assign(array('DNS_MSG' => tr("Manual zone's records list is empty!"), 'DNS_LIST' => ''));
+		$tpl->assign(array('DNS_MSG' => tr("You have no custom DNS records."), 'DNS_LIST' => ''));
 		$tpl->parse('DNS_MESSAGE', 'dns_message');
 	} else {
 		$counter = 0;
@@ -250,7 +250,7 @@ function gen_user_sub_list($tpl, $user_id) {
 	$rs2 = exec_query($query2, $domain_id);
 
 	if (($rs->recordCount() + $rs2->recordCount()) == 0) {
-		$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty!'), 'SUB_LIST' => ''));
+		$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty.'), 'SUB_LIST' => ''));
 		$tpl->parse('SUB_MESSAGE', 'sub_message');
 	} else {
 		$counter = 0;

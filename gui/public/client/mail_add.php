@@ -341,7 +341,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$mail_type[] = MT_ALIAS_MAIL;
 			$sub_id = $_POST['als_id'];
 		} else {
-			set_page_message(tr('Unknown domain type'), 'error');
+			set_page_message(tr('Unknown domain type.'), 'error');
 			return false;
 		}
 	}
@@ -360,7 +360,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$mail_type[] = MT_ALIAS_FORWARD;
 			$sub_id = $_POST['als_id'];
 		} else {
-			set_page_message(tr('Unknown domain type'), 'error');
+			set_page_message(tr('Unknown domain type.'), 'error');
 			return false;
 		}
 
@@ -376,13 +376,13 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
 				// @todo ERROR .. strange :) not email in this line - warning
-				set_page_message(tr('Mailformat of an address in your forward list is incorrect!'), 'error');
+				set_page_message(tr('Mailformat of an address in your forward list is incorrect.'), 'error');
 				return false;
 			} else if ($value === '') {
-				set_page_message(tr('Mail forward list empty!'));
+				set_page_message(tr('Mail forward list empty.'), 'info');
 				return false;
 			} else if ($mail_acc.'@'.decode_idna($dmn_name) == $value){
-				set_page_message(tr('Forward to same address is not allowed!'), 'error');
+				set_page_message(tr('Forward to same address is not allowed.'), 'error');
 				return false;
 			}
 			$mail_accs[] = $value;
@@ -411,7 +411,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	$rs = exec_query($check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
 
 	if ($rs->fields['cnt'] > 0) {
-		set_page_message(tr('Mail account already exists!'), 'error');
+		set_page_message(tr('Mail account already exists.'), 'error');
 		return false;
 	}
 
@@ -438,7 +438,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	update_reseller_c_props(get_reseller_id($domain_id));
 
 	write_log($_SESSION['user_logged'] . ': adds new mail account: ' . (!empty($mail_addr) ? $mail_addr : $mail_acc), E_USER_NOTICE);
-	set_page_message(tr('Mail account scheduled for addition!'));
+	set_page_message(tr('Mail account scheduled for addition.'), 'success');
 	send_request();
 	redirectTo('mail_accounts.php');
 }
@@ -451,7 +451,7 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 	$mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
 
 	if (($mail_type_normal == false) && ($mail_type_forward == false)) {
-		set_page_message(tr('Please select at least one mail type!'), 'error');
+		set_page_message(tr('Please select at least one mail type.'), 'error');
 		return false;
 	}
 
@@ -461,22 +461,22 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 	}
 
 	if (!isset($_POST['username']) || $_POST['username'] == '') {
-		set_page_message(tr('Please enter mail account username!'), 'error');
+		set_page_message(tr('Please enter mail account username.'), 'error');
 		return false;
 	}
 
 	$mail_acc = strtolower(clean_input($_POST['username']));
 	if (imscp_check_local_part($mail_acc) == '0') {
-		set_page_message(tr('Invalid Mail Localpart Format used!'), 'error');
+		set_page_message(tr('Invalid mail local part.'), 'error');
 		return false;
 	}
 
 	if ($mail_type_normal) {
 		if (trim($pass) === '' || trim($pass_rep) === '') {
-			set_page_message(tr('Password data is missing!'), 'error');
+			set_page_message(tr('Password data is missing.'), 'error');
 			return false;
 		} else if ($pass !== $pass_rep) {
-			set_page_message(tr('Entered passwords differ!'), 'error');
+			set_page_message(tr("Passwords doesn't matches"), 'error');
 			return false;
 		} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			// Not permitted chars
@@ -532,23 +532,23 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 
 	if (in_array($_POST['dmn_type'], array('sub', 'als_sub', 'als'))) {
 		if (!isset($_POST[$id])) {
-			set_page_message(sprintf(tr('%s list is empty! You cannot add mail accounts!'),$type), 'error');
+			set_page_message(sprintf(tr('%s list is empty! You cannot add mail accounts.'), $type), 'error');
 			return false;
 		}
 		if (!is_numeric($_POST[$id])) {
-			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts!'),$type), 'error');
+			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts.'), $type), 'error');
 			return false;
 		}
 		$rs = exec_query($query, array($_POST[$id], $dmn_id));
 		if ($rs->fields['name'] == '') {
-			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts!'),$type), 'error');
+			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts.'), $type), 'error');
 			return false;
 		}
 		$dmn_name=$rs->fields['name'];
 	}
 
 	if ($mail_type_forward && empty($_POST['forward_list'])) {
-		set_page_message(tr('Forward list is empty!'));
+		set_page_message(tr('Forward list is empty.'), 'info');
 		return false;
 	}
 
@@ -588,7 +588,7 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
-		set_page_message(tr('Mail accounts limit reached!'), 'error');
+		set_page_message(tr('Mail accounts limit reached.'), 'error');
 		redirectTo('mail_accounts.php');
 	} else {
 		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
@@ -605,7 +605,7 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 // common page data.
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
-	header('Location: index.php');
+	redirectTo('index.php');
 }
 
 $tpl->assign(
@@ -650,6 +650,7 @@ $tpl->assign(
 );
 
 generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(

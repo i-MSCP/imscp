@@ -101,7 +101,7 @@ function gen_pusres($tpl, &$dmn_id) {
 		$tpl->assign(
 				array(
 					'PUSRES'		=>	'',
-					'USER_MESSAGE'	=>	tr('You have no users!'),
+					'USER_MESSAGE'	=>	tr('You have no users.'),
 					'TABLE_LIST'	=>	''
 				)
 			);
@@ -147,7 +147,7 @@ function gen_pgroups($tpl, &$dmn_id) {
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
-		$tpl->assign('GROUP_MESSAGE', tr('You have no groups!'));
+		$tpl->assign('GROUP_MESSAGE', tr('You have no groups.'));
 		$tpl->parse('GRP_MSG', 'grp_msg');
 		$tpl->assign('PGROUPS', '');
 	} else {

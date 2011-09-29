@@ -66,8 +66,8 @@ $tpl->assign(
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_ADD' => tr('Add'),
 		'TR_DOMAIN' => tr('Domain'),
-		'TR_EDIT_DNS' => ($add_mode) ? tr("Add DNS zone's record (EXPERIMENTAL)") :
-			tr("Edit DNS zone's record (EXPERIMENTAL)"),
+		'TR_EDIT_DNS' => ($add_mode) ? tr("Add DNS zone's record") :
+			tr("Edit DNS zone's record"),
 		'TR_DNS' => tr("DNS zone's records"),
 		'TR_DNS_NAME' => tr('Name'),
 		'TR_DNS_CLASS' => tr('Class'),
@@ -83,7 +83,7 @@ $tpl->assign(
 		'TR_DNS_SRV_PORT' => tr('Target port'),
 		'TR_DNS_CNAME' => tr('Canonical name'),
 		'TR_DNS_PLAIN' => tr('Plain record data'),
-		'TR_MANAGE_DOMAIN_DNS' => tr("DNS zone's records (EXPERIMENTAL)")
+		'TR_MANAGE_DOMAIN_DNS' => tr("DNS zone's records")
 	)
 );
 
@@ -126,6 +126,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 }
 
 gen_editdns_page($tpl, $editid);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
@@ -292,7 +293,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 
 	// Protection against edition (eg. for external mail MX record)
 	if($protected == 'yes') {
-		set_page_message(tr('You are not allowed to edit this DNS record!'), 'error');
+		set_page_message(tr('You are not allowed to edit this DNS record.'), 'error');
 		not_allowed();
 	}
 
@@ -464,8 +465,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 
 	$add_mode = $edit_id === true;
 
-	// unset errors
-	$ed_error = '_off_';
 	$admin_login = '';
 	$err = '';
 
@@ -530,48 +529,48 @@ function check_fwd_data(&$tpl, $edit_id) {
 	}
 
 	if (!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $record_domain), $err)) {
-		$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+		set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 	}
 	switch ($_POST['type']) {
 		case 'CNAME':
 			if (!validate_CNAME($_POST, $err))
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			$_text = $_POST['dns_cname'];
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'A':
 			if (!validate_A($_POST, $err))
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			if (!check_CNAME_conflict($_POST['dns_name'].'.'.$record_domain, $err))
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			$_text = $_POST['dns_A_address'];
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'AAAA':
 			if (!validate_AAAA($_POST, $err))
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			if (!check_CNAME_conflict($_POST['dns_name'].'.'.$record_domain, $err))
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			$_text = $_POST['dns_AAAA_address'];
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'SRV':
 			if (!validate_SRV($_POST, $err, $_dns, $_text))
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			break;
 		case 'MX':
 			$_dns = '';
 			if (!validate_MX($_POST, $err, $_text)) {
-				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
 			} else {
 				$_dns = $record_domain . '.';
 			}
 			break;
 		default :
-			$ed_error = sprintf(tr('Unknown zone type %s!'), $_POST['type']);
+			set_page_message(sprintf(tr('Unknown zone type %s.'), $_POST['type']), 'error');
 	}
 
-	if ($ed_error === '_off_') {
+	if (!Zend_Session::namespaceIsset('pageMessages')) {
 
 		if ($add_mode) {
 			$query = "
@@ -595,11 +594,7 @@ function check_fwd_data(&$tpl, $edit_id) {
                 /** @var $db iMSCP_Database */
                 $db = iMSCP_Registry::get('db');
 				if($db->getLastErrorCode() == 23000) {
-					$tpl->assign(
-						'MESSAGE', tr('Error: DNS record already exist!')
-					);
-					$tpl->parse('PAGE_MESSAGE', 'page_message');
-
+					set_page_message(tr('DNS record already exist.'), 'error');
 					return false;
 				} else { # Another error ? Throw exception
 					throw new iMSCP_Exception_Database(
@@ -609,7 +604,6 @@ function check_fwd_data(&$tpl, $edit_id) {
 			}
 
 		} else {
-
 			$query = "
 				UPDATE
 					`domain_dns`
@@ -665,11 +659,8 @@ function check_fwd_data(&$tpl, $edit_id) {
 		write_log("$admin_login: " . (($add_mode) ? 'add new' : ' modify') . " dns zone record.", E_USER_NOTICE);
 
 		unset($_SESSION['edit_ID']);
-		$tpl->assign('MESSAGE', "");
 		return true;
 	} else {
-		$tpl->assign('MESSAGE', $ed_error);
-		$tpl->parse('PAGE_MESSAGE', 'page_message');
 		return false;
 	}
 } // End of check_user_data()
