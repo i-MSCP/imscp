@@ -97,25 +97,25 @@ if (isset($_POST['details']) && !empty($_POST['details'])) {
 
 if (isset($_SESSION['user_added'])) {
 	unset($_SESSION['user_added']);
-	set_page_message(tr('User scheduled for addition.'), 'success');
+	set_page_message(tr('Customer scheduled for addition.'), 'success');
 } elseif (isset($_SESSION['reseller_added'])) {
 	unset($_SESSION['reseller_added']);
 	set_page_message(tr('Reseller successfully added.'), 'success');
 } elseif (isset($_SESSION['user_updated'])) {
 	unset($_SESSION['user_updated']);
-	set_page_message(tr('User updated.'), 'success');
+	set_page_message(tr('Customer account successfully updated.'), 'success');
 } elseif (isset($_SESSION['user_deleted'])) {
 	unset($_SESSION['user_deleted']);
-	set_page_message(tr('User scheduled for deletion.'), 'success');
+	set_page_message(tr('Customer scheduled for deletion.'), 'success');
 } elseif (isset($_SESSION['email_updated'])) {
 	unset($_SESSION['email_updated']);
 	set_page_message(tr('Email Updated.'), 'success');
 } elseif (isset($_SESSION['hdomain'])) {
 	unset($_SESSION['hdomain']);
-	set_page_message(tr('This reseller has one or more domain accounts.<br /> To remove this reseller, please first remove these domain accounts'), 'error');
+	set_page_message(tr('This reseller has one or more customers accounts.<br /> To remove this reseller, please first remove these customers accounts.'), 'error');
 } elseif (isset($_SESSION['user_disabled'])) {
 	unset($_SESSION['user_disabled']);
-	set_page_message(tr('Domain account scheduled for deactivation.'), 'success');
+	set_page_message(tr('Customer account scheduled for deactivation.'), 'success');
 }
 
 if (!$cfg->exists('HOSTING_PLANS_LEVEL') ||

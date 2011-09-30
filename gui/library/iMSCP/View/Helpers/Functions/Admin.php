@@ -274,7 +274,7 @@ function gen_admin_list($tpl)
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(array(
-						  'ADMIN_MESSAGE' => tr('No administrator account found.'),
+						  'ADMIN_MESSAGE' => tr('No administrator accounts found.'),
 						  'ADMIN_LIST' => ''));
 
 		$tpl->parse('ADMIN_MESSAGE', 'admin_message');
@@ -362,7 +362,7 @@ function gen_reseller_list($tpl)
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(array(
-						  'RSL_MESSAGE' => tr('No reseller account found.'),
+						  'RSL_MESSAGE' => tr('No reseller accounts found.'),
 						  'RSL_LIST' => ''));
 
 		$tpl->parse('RSL_MESSAGE', 'rsl_message');
@@ -486,7 +486,7 @@ function gen_user_list($tpl){
 	if ($rs->recordCount() == 0) {
 		if (isset($_SESSION['search_for'])) {
 			$tpl->assign(array(
-							'USR_MESSAGE' => tr('Not found user records matching the search criteria.'),
+							'USR_MESSAGE' => tr('Not found records matching the search criteria.'),
 							'USR_LIST' => '',
 							'SCROLL_PREV' => '',
 							'SCROLL_NEXT' => '',
@@ -498,7 +498,7 @@ function gen_user_list($tpl){
 			unset($_SESSION['search_status']);
 		} else {
 			$tpl->assign(array(
-							'USR_MESSAGE' => tr('No user account found.'),
+							'USR_MESSAGE' => tr('No customer accounts found.'),
 							'USR_LIST' => '',
 							'SCROLL_PREV' => '',
 							'SCROLL_NEXT' => '',
