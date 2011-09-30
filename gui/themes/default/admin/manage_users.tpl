@@ -78,7 +78,7 @@
 					<th style="width:300px;">{TR_ADMIN_USERNAME}</th>
 					<th>{TR_CREATED_ON}</th>
 					<th>{TR_ADMIN_CREATED_BY}</th>
-					<th>{TR_ADMIN_OPTIONS}</th>
+					<th>{TR_ADMIN_ACTIONS}</th>
 				</tr>
 				<!-- BDP: admin_item -->
 				<tr>
@@ -112,7 +112,7 @@
 					<th style="width:300px;">{TR_RSL_USERNAME}</th>
 					<th>{TR_CREATED_ON}</th>
 					<th>{TR_RSL_CREATED_BY}</th>
-					<th>{TR_RSL_OPTIONS}</th>
+					<th>{TR_RSL_ACTIONS}</th>
 				</tr>
 				<!-- BDP: rsl_item -->
 				<tr>
@@ -166,7 +166,7 @@
 					<th>{TR_USR_USERNAME}</th>
 					<th>{TR_CREATED_ON}</th>
 					<th>{TR_USR_CREATED_BY}</th>
-					<th>{TR_USR_OPTIONS}</th>
+					<th>{TR_USR_ACTIONS}</th>
 				</tr>
 				<!-- BDP: usr_item -->
 				<tr>

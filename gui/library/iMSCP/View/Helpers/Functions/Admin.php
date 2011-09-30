@@ -283,7 +283,7 @@ function gen_admin_list($tpl)
 						  'TR_ADMIN_USERNAME' => tr('Username'),
 						  'TR_ADMIN_CREATED_ON' => tr('Creation date'),
 						  'TR_ADMIN_CREATED_BY' => tr('Created by'),
-						  'TR_ADMIN_OPTIONS' => tr('Options')));
+						  'TR_ADMIN_ACTIONS' => tr('Actions')));
 
 		$i = 0;
 		while (!$rs->EOF) {
@@ -370,7 +370,7 @@ function gen_reseller_list($tpl)
 		$tpl->assign(array(
 						  'TR_RSL_USERNAME' => tr('Username'),
 						  'TR_RSL_CREATED_BY' => tr('Created by'),
-						  'TR_RSL_OPTIONS' => tr('Options')));
+						  'TR_RSL_ACTIONS' => tr('Actions')));
 
 		while (!$rs->EOF) {
 			if ($rs->fields['created_by'] == '') {
@@ -531,7 +531,7 @@ function gen_user_list($tpl){
 		$tpl->assign(array(
 						  'TR_USR_USERNAME' => tr('Username'),
 						  'TR_USR_CREATED_BY' => tr('Created by'),
-						  'TR_USR_OPTIONS' => tr('Options'),
+						  'TR_USR_ACTIONS' => tr('Actions'),
 						  'TR_USER_STATUS' => tr('Status'),
 						  'TR_DETAILS' => tr('Details')));
 
