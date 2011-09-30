@@ -139,7 +139,8 @@ function update_admin_personal_data($user_id) {
 			$gender,
 			$user_id));
 
-	set_page_message(tr('Personal data updated successfully!'), 'success');
+	set_page_message(tr('Personal data successfully updated.'), 'success');
+	redirectTo('manage_users.php');
 }
 
 /*
