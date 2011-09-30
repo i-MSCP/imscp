@@ -7,17 +7,25 @@ i-MSCP 1.0.1.5 (beta 5)
 
 Features / Enhancements:
 	Engine:
+		Components:
+			- Added PHP directives editor
 		Core:
 			- Added support for Dovecot
-			- Merged imscp-build and imscp-setup
-			- Engine rewrite
-
-	GUI:
-		Core:
+			- Engine rewrite including the following new features:
+				- Ability to turn off one or many services/servers such as Apache,
+				  Bind9, Postfix...
+				- Ability to setup DNS service (Bind9) as Master or Slave server
+				- New logger (one file per operation)
+				- php.ini per user account (default), or per domain entity (vhost) 
+	Gui:
+		Components:
 			- Added PHP directives editor
 		Tools:
-			- Updated phpMyAdmin to 3.4.5
-			- Updated Squirrelmail to 1.4.22
+			- Updated phpMyAdmin to version 3.4.5
+			- Updated Squirrelmail to version 1.4.22
+
+	Setup:
+		- Added Auto-installer (including both tree builder and setup based on Dialog)
 Other:
 	Gui:
 		- Updated jQuery to version 1.6.4
