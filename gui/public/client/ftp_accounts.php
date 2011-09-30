@@ -59,7 +59,7 @@ function gen_page_ftp_list($tpl)
 	$stmt = exec_query($query, $dmn_name);
 
 	if ($stmt->recordCount() == 0) {
-		set_page_message(tr('You do not have FTP accounts.'), 'info');
+		set_page_message(tr('You do not have FTP users.'), 'info');
 		$tpl->assign('FTP_ACCOUNTS', '');
 	} else {
 		$ftp_accs = explode(',', $stmt->fields['members']);
@@ -108,7 +108,7 @@ $tpl->assign(array(
 				  'THEME_CHARSET' => tr('encoding'),
 				  'ISP_LOGO' => layout_getUserLogo(),
 				  'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
-				  'TR_FTP_USERS' => tr('FTP users'),
+				  'TR_FTP_USERS' => tr('FTP Users'),
 				  'TR_FTP_ACCOUNT' => tr('FTP account'),
 				  'TR_FTP_ACTION' => tr('Actions'),
 				  'TR_LOGINAS' => tr('Login As'),
