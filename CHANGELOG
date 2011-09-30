@@ -16,7 +16,7 @@ Features / Enhancements:
 				  Bind9, Postfix...
 				- Ability to setup DNS service (Bind9) as Master or Slave server
 				- New logger (one file per operation)
-				- php.ini per user account (default), or per domain entity (vhost) 
+				- php.ini per user account (default), or per domain entity (vhost)
 	Gui:
 		Components:
 			- Added PHP directives editor
@@ -68,6 +68,7 @@ Tickets:
 	- Fixed #209: Bug - Autoresponser no permission (filepermission)
 	- Fixed #210: Bug - Some issues with new engine (Apache vhost files)
 	- Fixed #211: Bug - Placeholder not parsed for the GUI php5-fcgi-starter file
+	- Fixed #212: Bug - Some issues with installer
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

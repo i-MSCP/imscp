@@ -710,7 +710,7 @@ sub addDmn{
 	$self->{data} = $data;
 
 	my $rs	= $self->addCfg($data);
-	$rs		|= $self->addFiles($data) unless $data->{FORWARD} ne 'no';
+	$rs		|= $self->addFiles($data) unless $data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp)://~i;
 
 	$self->{restart}	= 'yes';
 	delete $self->{data};
@@ -730,7 +730,7 @@ sub addCfg{
 
 	$self->{data} = $data;
 
-	unless($data->{FORWARD} ne 'no'){
+	unless($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp)://~i){
 		$self->registerPostHook(
 			'buildConf', sub { return $self->removeSection('cgi support', @_); }
 		) unless ($data->{have_cgi} && $data->{have_cgi} eq 'yes');
@@ -757,7 +757,7 @@ sub addCfg{
 	) if (-f "$self->{cfgDir}/$data->{DMN_NAME}.conf");
 
 	$rs |= $self->buildConfFile(
-		($data->{FORWARD} ne 'no' ? "$self->{tplDir}/domain_redirect.tpl" : "$self->{tplDir}/domain.tpl"),
+		($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp):\/\/~i ? "$self->{tplDir}/domain_redirect.tpl" : "$self->{tplDir}/domain.tpl"),
 		{destination => "$self->{wrkDir}/$data->{DMN_NAME}.conf"}
 	);
 	$rs |= $self->installConfFile("$data->{DMN_NAME}.conf");
