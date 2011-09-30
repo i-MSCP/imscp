@@ -1,14 +1,14 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @version		SVN: $Id$
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,31 +26,28 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+/************************************************************************************
+ * Script functions
+ */
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+/**
+ * Generates FTP accounts list.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function gen_page_ftp_list($tpl)
+{
+	list(,$dmn_name) = get_domain_default_props($_SESSION['user_id']);
 
-check_login(__FILE__);
-
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_accounts.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('ftp_message', 'page');
-$tpl->define_dynamic('ftp_item', 'page');
-$tpl->define_dynamic('table_list', 'page');
-
-// page functions.
-
-function gen_page_ftp_list($tpl, $dmn_id, $dmn_name) {
 	$query = "
 		SELECT
 			`gid`, `members`
@@ -59,38 +56,22 @@ function gen_page_ftp_list($tpl, $dmn_id, $dmn_name) {
 		WHERE
 			`groupname` = ?
 	";
+	$stmt = exec_query($query, $dmn_name);
 
-	$rs = exec_query($query, $dmn_name);
-
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'FTP_MSG' => tr('FTP list is empty!'),
-				'FTP_ITEM' => '',
-				'FTPS_TOTAL' => '',
-				'TABLE_LIST' => ''
-			)
-		);
-
-		$tpl->parse('FTP_MESSAGE', 'ftp_message');
+	if ($stmt->recordCount() == 0) {
+		set_page_message(tr('You do not have FTP accounts.'), 'info');
+		$tpl->assign('FTP_ACCOUNTS', '');
 	} else {
-		$tpl->assign('FTP_MESSAGE', '');
-
-		$ftp_accs = explode(',', $rs->fields['members']);
+		$ftp_accs = explode(',', $stmt->fields['members']);
 		sort($ftp_accs);
 		reset($ftp_accs);
 
 		for ($i = 0, $cnt_ftp_accs = count($ftp_accs); $i < $cnt_ftp_accs; $i++) {
-			$tpl->assign('ITEM_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-
 			$ftp_accs_encode[$i] = decode_idna($ftp_accs[$i]);
 
-			$tpl->assign(
-				array(
-					'FTP_ACCOUNT' => tohtml($ftp_accs_encode[$i]),
-					'UID' => urlencode($ftp_accs[$i])
-				)
-			);
+			$tpl->assign(array(
+							  'FTP_ACCOUNT' => tohtml($ftp_accs_encode[$i]),
+							  'UID' => urlencode($ftp_accs[$i])));
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
 		}
@@ -99,87 +80,54 @@ function gen_page_ftp_list($tpl, $dmn_id, $dmn_name) {
 	}
 }
 
-function gen_page_lists($tpl, $user_id) {
+/************************************************************************************
+ * Main script
+ */
 
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($user_id);
+// Include core library
+require 'imscp-lib.php';
 
-	gen_page_ftp_list($tpl, $dmn_id, $dmn_name);
-	// return $total_mails;
-}
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-// common page data.
+check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
 
-$tpl->assign(
-	array(
-		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
-
-// dynamic page data.
-
-
-gen_page_lists($tpl, $_SESSION['user_id']);
-
-// static page messages.
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(array(
+						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ftp_accounts.tpl',
+						  'logged_from' => 'page',
+						  'page_message' => 'page',
+						  'ftp_message' => 'page',
+						  'ftp_accounts' => 'page',
+						  'ftp_item' => 'ftp_accounts'));
+$tpl->assign(array(
+				  'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+				  'THEME_CHARSET' => tr('encoding'),
+				  'ISP_LOGO' => layout_getUserLogo(),
+				  'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
+				  'TR_FTP_USERS' => tr('FTP users'),
+				  'TR_FTP_ACCOUNT' => tr('FTP account'),
+				  'TR_FTP_ACTION' => tr('Actions'),
+				  'TR_LOGINAS' => tr('Login As'),
+				  'TR_EDIT' => tr('Edit'),
+				  'TR_DELETE' => tr('Delete'),
+				  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP account ?', true, '%s')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
-
 gen_logged_from($tpl);
-
+gen_page_ftp_list($tpl);
 check_permissions($tpl);
-
-$tpl->assign(
-	array(
-		'TR_MANAGE_USERS' => tr('Manage users'),
-		'TR_TYPE' => tr('Type'),
-		'TR_STATUS' => tr('Status'),
-		'TR_ACTION' => tr('Action'),
-		'TR_TOTAL_FTP_ACCOUNTS' => tr('FTPs total'),
-		'TR_DOMAIN' => tr('Domain'),
-		'TR_FTP_USERS' => tr('FTP users'),
-		'TR_FTP_ACCOUNT' => tr('FTP account'),
-		'TR_FTP_ACTION' => tr('Action'),
-		'TR_LOGINAS' => tr('Login As'),
-		'TR_EDIT' => tr('Edit'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-	)
-);
 
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
+											  new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
