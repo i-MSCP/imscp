@@ -69,7 +69,7 @@ function gen_user_table($tpl) {
 	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('Reseller or user list is empty!'), 'error');
+		set_page_message(tr('Reseller list is empty.'), 'error');
 		redirectTo('manage_users.php');
 	}
 
@@ -162,9 +162,8 @@ function gen_user_table($tpl) {
 
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User list is empty!'));
-
-		$tpl->assign('RESELLER_LIST', '');
+		set_page_message(tr('User list is empty.'), 'error');
+		redirectTo('manage_users.php');
 	} else {
 		$i = 0;
 		while (!$rs->EOF) {
