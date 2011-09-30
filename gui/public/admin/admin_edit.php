@@ -117,7 +117,7 @@ function update_data()
                         set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'),
                                                  $cfg->PASSWD_CHARS), 'error');
                     } else {
-                        set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'),
+                        set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'),
                                                  $cfg->PASSWD_CHARS), 'error');
                     }
 
@@ -295,6 +295,7 @@ $tpl->assign(array(
                   'VL_UNKNOWN' => ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender'])))
                       ? $cfg->HTML_SELECTED : ''),
                   'EDIT_ID' => $edit_id,
+				  'USER_ICON_COLOR' => ($rs->fields['admin_type'] == 'admin') ? 'yellow' : 'blue',
                   // The entries below are for Demo versions only
                   'PASSWORD_DISABLED' => tr('Password change is disabled!'),
                   'DEMO_VERSION' => tr('Demo Version!')));

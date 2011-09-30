@@ -123,7 +123,7 @@
 		</div>
 
 		<div class="body">
-			<h2 class="user"><span>{TR_EDIT_RESELLER}</span></h2>
+			<h2 class="user_green"><span>{TR_EDIT_RESELLER}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>

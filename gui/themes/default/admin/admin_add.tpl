@@ -42,7 +42,7 @@
             {MENU}
         </div>
         <div class="body">
-            <h2 class="user"><span>{TR_ADD_ADMIN}</span></h2>
+            <h2 class="user_yellow"><span>{TR_ADD_ADMIN}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
