@@ -58,7 +58,7 @@ function gen_page_ftp_list($tpl)
 	";
 	$stmt = exec_query($query, $dmn_name);
 
-	if ($stmt->recordCount() == 0) {
+	if ($stmt->rowCount() == 0) {
 		set_page_message(tr('You do not have FTP users.'), 'info');
 		$tpl->assign('FTP_ACCOUNTS', '');
 	} else {
@@ -114,7 +114,7 @@ $tpl->assign(array(
 				  'TR_LOGINAS' => tr('Login As'),
 				  'TR_EDIT' => tr('Edit'),
 				  'TR_DELETE' => tr('Delete'),
-				  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP account ?', true, '%s')));
+				  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
