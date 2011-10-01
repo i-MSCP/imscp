@@ -82,8 +82,8 @@
 					<td>{ALS_REDIRECT}</td>
 					<td>{ALS_STATUS}</td>
 					<td>
-						<a class="icon i_edit" href="{ALS_EDIT_LINK}" title="{ALS_EDIT}"></a>
-						<a class="icon i_delete" href="#" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}'); return false;" title="{ALS_ACTION}"></a>
+						<a class="icon i_edit" href="{ALS_EDIT_LINK}" title="{ALS_EDIT}">{ALS_EDIT}</a>
+						<a class="icon i_delete" href="#" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}'); return false;" title="{ALS_ACTION}">{ALS_ACTION}</a>
 					</td>
 				</tr>
 				<!-- EDP: als_item -->
@@ -113,20 +113,18 @@
 				<tr>
 					<!-- BDP: sub_status_reload_true -->
 					<td>
-						<a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}
-							.{SUB_ALIAS_NAME}</a></td>
+						<a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
 					<!-- EDP: sub_status_reload_true -->
 					<!-- BDP: sub_status_reload_false -->
 					<td>
-						<span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}
-							.{SUB_ALIAS_NAME}</span></td>
+						<span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
 					<!-- EDP: sub_status_reload_false -->
 					<td>{SUB_MOUNT}</td>
 					<td>{SUB_REDIRECT}</td>
 					<td>{SUB_STATUS}</td>
 					<td>
-						<a class="icon i_edit" href="{SUB_EDIT_LINK}" title="{SUB_EDIT}"></a>
-						<a class="icon i_delete" href="#" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}.{SUB_ALIAS_NAME}'); return false;"></a>
+						<a class="icon i_edit" href="{SUB_EDIT_LINK}" title="{SUB_EDIT}">{SUB_EDIT}</a>
+						<a class="icon i_delete" href="#" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}.{SUB_ALIAS_NAME}'); return false;">{SUB_ACTION}</a>
 					</td>
 				</tr>
 				<!-- EDP: sub_item -->
@@ -162,8 +160,8 @@
 					<td>{DNS_TYPE}</td>
 					<td>{DNS_DATA}</td>
 					<td>
-						<a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}"></a>
-						<a href="#" class="icon i_delete" onclick="action_delete('{DNS_ACTION_SCRIPT_DELETE}', '{DNS_TYPE_RECORD}'); return false;" title="{DNS_ACTION_DELETE}"></a>
+						<a class="icon i_edit" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a>
+						<a href="#" class="icon i_delete" onclick="action_delete('{DNS_ACTION_SCRIPT_DELETE}', '{DNS_TYPE_RECORD}'); return false;" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
 					</td>
 				</tr>
 				<!-- EDP: dns_item -->

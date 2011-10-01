@@ -260,7 +260,7 @@ function client_generateSubdomainsList($tpl, $userId)
 
 			list(
 				$redirectUrl, $editLink, $edit
-			) = gen_user_sub_redirect($stmt1->fields['subdomain_id'],
+			) = _client_generateSubdomainRedirect($stmt1->fields['subdomain_id'],
 									  $stmt1->fields['subdomain_status'],
 									  $stmt1->fields['subdomain_url_forward'], 'dmn');
 
@@ -305,23 +305,28 @@ function client_generateSubdomainsList($tpl, $userId)
 
 			list(
 				$redirectUrl, $editLink, $edit
-			) = gen_user_sub_redirect($stmt2->fields['subdomain_alias_id'],
+			) = _client_generateSubdomainRedirect($stmt2->fields['subdomain_alias_id'],
 									  $stmt2->fields['subdomain_alias_status'],
 									  $stmt2->fields['subdomain_alias_url_forward'], 'als');
 
 			$name = decode_idna($stmt2->fields['subdomain_alias_name']);
 			$redirectUrl = decode_idna($redirectUrl);
 
-			if ($isStatusOk == false) { // reload
+			if ($isStatusOk) {
 				$tpl->assign(array(
-								  'STATUS_RELOAD_TRUE' => '',
+								  'SUB_STATUS_RELOAD_TRUE' => '',
 								  'SUB_NAME' => tohtml($name),
-								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name'])));
+								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
+								  'SUB_STATUS_RELOAD_FALSE' => ''));
+
+				$tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
 			} else {
 				$tpl->assign(array(
-								  'STATUS_RELOAD_FALSE' => '',
 								  'SUB_NAME' => tohtml($name),
-								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name'])));
+								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
+								  'SUB_STATUS_RELOAD_TRUE' => ''));
+
+				$tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
 			}
 
 			$tpl->assign(array(
@@ -343,7 +348,7 @@ function client_generateSubdomainsList($tpl, $userId)
 }
 
 /**
- * Generates user subdomains redirection list.
+ * Generates user subdomains redirection.
  *
  * @param int $id Subdomain unique identifier
  * @param string $status Subdomain status
@@ -351,7 +356,7 @@ function client_generateSubdomainsList($tpl, $userId)
  * @param string $entityType Subdomain type (dmn|als)
  * @return array
  */
-function gen_user_sub_redirect($id, $status, $redirectUrl, $entityType)
+function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityType)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
