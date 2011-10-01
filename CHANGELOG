@@ -62,6 +62,7 @@ Tickets:
 	- Fixed #195: Bug - syntax error, unexpected '('...
 	- Fixed #196: Defect - squirrelmail required for upgrade
 	- Fixed #197: Bug - network card management don't work as expected
+	- Fixed #198: Defect Zend Uri validation do not obey TLD_STRICT_VALIDATION
 	- Fixed #200: Malfunction - False error on update - 00_master_ssl.conf does not exist!
 	- Fixed #202: Bug - Unknown column php_ini_al_disable_functions in reseller_props table
 	- Fixed #203: Bug - Apache needs manual restart after fresh installation

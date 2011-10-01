@@ -92,12 +92,15 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
 	} else {
 		unset($_SESSION['edit_ID']);
 
-		$_SESSION['aledit'] = '_no_';
+		//$_SESSION['aledit'] = '_no_';
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('domains_manage.php');
 	}
+
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
-		$_SESSION['aledit'] = "_yes_";
+		//$_SESSION['aledit'] = "_yes_";
+		set_page_message(tr('Domain alias successfully scheduled for update.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 } else {

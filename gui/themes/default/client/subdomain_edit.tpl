@@ -52,8 +52,7 @@
 					<a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
 				</li>
 				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-				</li>
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
 				<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
@@ -79,17 +78,17 @@
 						<td>{SUBDOMAIN_NAME}</td>
 					</tr>
 					<tr>
-						<td>{TR_URL_FORWARDING}</td>
+						<td>{TR_REDIRECT}</td>
 						<td>
-							<input type="radio" name="urlForwarding" id="urlForwardingEnabled"{RADIO_ENABLED} value="1" onchange="setForwardReadonly(this);" />
-							<label for="urlForwardingEnabled">{TR_ENABLE}</label>
-							<input type="radio" name="urlForwarding" id="urlForwardingDisabled"{RADIO_DISABLED} value="0" onchange="setForwardReadonly(this);" />
-							<label for="urlForwardingDisabled">{TR_DISABLE}</label>
+							<input type="radio" name="urlRedirect" id="urlRedirectEnabled"{RADIO_ENABLED} value="1" onchange="setForwardReadonly(this);" />
+							<label for="urlRedirectEnabled">{TR_ENABLE}</label>
+							<input type="radio" name="urlRedirect" id="urlRedirectDisabled"{RADIO_DISABLED} value="0" onchange="setForwardReadonly(this);" />
+							<label for="urlRedirectDisabled">{TR_DISABLE}</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label for="scheme">{TR_FORWARD}</label>
+							<label for="scheme">{TR_REDIRECT_URL}</label>
 						</td>
 						<td>
 							<select name="scheme" id="scheme" style="vertical-align:middle"{SELECT_DISABLED}>

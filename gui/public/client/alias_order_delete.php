@@ -1,14 +1,14 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @version		SVN: $Id$
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,30 +26,40 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/**
- * @todo use db prepared statements
- */
-
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
 if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
-	$del_id = $_GET['del_id'];
+	$domainAliasId = (int)$_GET['del_id'];
 } else {
-	$_SESSION['orderaldel'] = '_no_';
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('domains_manage.php');
 }
 
-$query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = '" . $del_id . "'";
-$rs = execute_query($query);
+$domainId = get_user_domain_id($_SESSION['user_id']);
+
+$query = 'DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ? AND `alias_status` = ?';
+$stmt = exec_query($query, array($domainAliasId, $domainId, $cfg->ITEM_ORDERED_STATUS));
+
+if($stmt->rowCount()) {
+	set_page_message(tr('Order for domain alias successfully deleted.'), 'success');
+} else {
+	set_page_message(tr('Order not found. Nothing been deleted.'), 'error');
+}
 
 redirectTo('domains_manage.php');

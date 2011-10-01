@@ -28,6 +28,10 @@
  */
 
 require_once 'imscp-lib.php';
+
+// Temporary fix for all 'Strict Standards' errors that come from the Net_DNS library
+error_reporting(E_ALL);
+
 require_once 'vendor/Net_DNS/DNS.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
@@ -106,12 +110,14 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	}
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
-		$_SESSION['dnsedit'] = "_yes_";
+		//$_SESSION['dnsedit'] = "_yes_";
+		set_page_message(tr('Custom DNS record successfully scheduled for update.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 } elseif (isset($_POST['uaction']) && ($_POST['uaction'] === 'add')) {
 	if (check_fwd_data($tpl, true)) {
-		$_SESSION['dnsedit'] = "_yes_";
+		//$_SESSION['dnsedit'] = "_yes_";
+		set_page_message(tr('Custom DNS record successfully scheduled for addition.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 
@@ -122,7 +128,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	} else
 		$editid = 0;
 	$_SESSION['edit_ID'] = $editid;
-	$tpl->assign('PAGE_MESSAGE', "");
+	//$tpl->assign('PAGE_MESSAGE', "");
 }
 
 gen_editdns_page($tpl, $editid);

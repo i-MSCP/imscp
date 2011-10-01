@@ -90,10 +90,10 @@
 
 		<div class="body">
 			<h2 class="domains"><span>{TR_ADD_SUBDOMAIN}</span></h2>
+
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
 
 			<form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
 				<table>
@@ -121,25 +121,25 @@
 						<td>
 							<label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label>
 						</td>
-						<td colspan=2">
+						<td colspan="2">
 							<input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" />
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<label for="status">{TR_ENABLE_FWD}</label>
-						</td>
-						<td colspan=2">
-							<input type="radio" name="status" {CHECK_EN} value="1" onchange='setForwardReadonly(this);' />{TR_ENABLE}<br />
-							<input type="radio" name="status" {CHECK_DIS} value="0" onchange='setForwardReadonly(this);' />{TR_DISABLE}
+						<td>{TR_ENABLE_FWD}</td>
+						<td colspan="2">
+							<input type="radio" name="status" id="redirectEnabled" {CHECK_EN} value="1" onchange='setForwardReadonly(this);' />
+							<label for="redirectEnabled">{TR_ENABLE}</label>
+							<input type="radio" name="status" id="redirectDisabled" {CHECK_DIS} value="0" onchange='setForwardReadonly(this);' />
+							<label for="redirectDisabled">{TR_DISABLE}</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label for="forward">{TR_FORWARD}</label>
+							<label for="forward_prefix">{TR_FORWARD}</label>
 						</td>
-						<td colspan=2">
-							<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+						<td colspan="2">
+							<select name="forward_prefix" id="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
 								<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
 								<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
 								<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>

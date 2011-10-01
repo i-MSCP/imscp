@@ -427,15 +427,20 @@ function get_domain_running_props_cnt($domain_id)
 /**
  * Return domain unique identifier that belong to a specific user account.
  *
- * @param  in $user_id User unique identifier
- * @return int Unique identifier of a user's domain
+ * @param  int $userId User unique identifier
+ * @return int Unique identifier of user's domain
  */
-function get_user_domain_id($user_id)
+function get_user_domain_id($userId)
 {
-    $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
-    $stmt = exec_query($query, $user_id);
+	static $domainId = null;
 
-    return $stmt->fields['domain_id'];
+	if(null === $domainId) {
+    	$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?';
+    	$stmt = exec_query($query, $userId);
+		$domainId = $stmt->fields['domain_id'];
+	}
+
+    return $domainId;
 }
 
 /**

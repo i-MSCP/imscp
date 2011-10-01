@@ -101,7 +101,7 @@ function gen_client_mainmenu($tpl, $menu_file)
                       'PMA_TARGET' => $cfg->PMA_TARGET,
                       'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
                       'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
-                      'TR_MENU_ADD_DNS' => tr("Add DNS zone's record"),
+                      'TR_MENU_ADD_DNS' => tr('Add custom DNS record'),
                       'TR_MENU_SSL_MANAGE' => tr('Manage SSL certificate'),
 		      'TR_MENUPHPINI'     => tr('PHP Settings')));
 

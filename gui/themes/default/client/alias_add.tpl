@@ -3,9 +3,7 @@
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
-			// Tooltips - begin
 			$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"})
-			// Tooltips - end
 
 			// Request for encode_idna request
 			$('input[name=ndomain_name]').blur(function(){

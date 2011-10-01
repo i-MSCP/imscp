@@ -53,11 +53,11 @@ class client_subdomainEditForm
 	public $subdomainName = '';
 
 	/**
-	 * Contains the 'urlForwarding' form element value.
+	 * Contains the 'urlRedirect' form element value.
 	 *
 	 * @var string
 	 */
-	public $urlForwarding = 0;
+	public $urlRedirect = 0;
 
 	/**
 	 * Contains the 'scheme' form element value.
@@ -95,21 +95,21 @@ class client_subdomainEditForm
 	 */
 	public function isValid()
 	{
-		return $this->validateUrlForwarding()
+		return $this->validateUrlRedirect()
 			and $this->validateScheme()
 			and $this->validateSchemeSpecific();
 	}
 
 	/**
-	 * Validate the 'urlForwarding' form element value.
+	 * Validate the 'urlRedirect' form element value.
 	 *
 	 * @return bool TRUE if valid, FALSE otherwise
 	 */
-	public function validateUrlForwarding()
+	public function validateUrlRedirect()
 	{
-		$urlForwarding = (int) $this->urlForwarding;
+		$urlRedirect = (int) $this->urlRedirect;
 
-		if($urlForwarding !== 0 && $urlForwarding !== 1) {
+		if($urlRedirect !== 0 && $urlRedirect !== 1) {
 			return false;
 		}
 
@@ -135,9 +135,9 @@ class client_subdomainEditForm
 	{
 		$uriValidator = new iMSCP_Validate_Uri();
 
-		if($this->schemeSpecific != '' || $this->urlForwarding) {
+		if($this->schemeSpecific != '' || $this->urlRedirect) {
 			// Scheme is not relevant here (Zend validator only support http(s)
-			if (!$uriValidator->isValid('http://' . $this->schemeSpecific)) {
+			if (!$uriValidator->isValid($this->scheme . $this->schemeSpecific)) {
 				return false;
 			}
 		}
@@ -178,7 +178,7 @@ function client_subdomainEditAction()
 		$form->setFromArray($_POST);
 
 		if($form->isValid()) {
-			if($form->urlForwarding) {
+			if($form->urlRedirect) {
 				$forwardUrl = $form->scheme . $form->schemeSpecific;
 			} else {
 				$forwardUrl = '';
@@ -197,16 +197,16 @@ function client_subdomainEditAction()
 			// Send request to the i-MSCP daemon for backend process
 			send_request();
 
-			set_page_message(tr('Subdomain successfully updated.'), 'success');
+			set_page_message(tr('Subdomain successfully scheduled for update.'), 'success');
 			redirectTo('domains_manage.php');
 		} else {
-			set_page_message(tr('Wrong forward URL.'), 'error');
+			set_page_message(tr('Wrong redirect URL.'), 'error');
 		}
 	} else {
 		// Dealing with data
 
 		if($subdomainData['schemeSpecific'] != 'no') {
-			$subdomainData['urlForwarding'] = 1;
+			$subdomainData['urlRedirect'] = 1;
 			list($subdomainData['scheme'], $subdomainData['schemeSpecific']) = explode(
 				'://', $subdomainData['schemeSpecific']);
 
@@ -228,10 +228,10 @@ function client_subdomainEditAction()
 					  'TR_MANAGE_SUBDOMAIN' => tr('Manage subdomain'),
 					  'TR_EDIT_SUBDOMAIN' => tr('Edit subdomain'),
 					  'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
-					  'TR_FORWARD' => tr('Forward to URL'),
+					  'TR_REDIRECT_URL' => tr('Redirect to URL'),
 					  'TR_UPDATE' => tr('Update'),
 					  'TR_CANCEL' => tr('Cancel'),
-					  'TR_URL_FORWARDING' => tr('URL Forwarding'),
+					  'TR_REDIRECT' => tr('Redirect'),
 					  'TR_ENABLE' => tr('Enable'),
 					  'TR_DISABLE' => tr('Disable'),
 					  'TR_HTTP_SCHEME' => 'http://',
@@ -240,10 +240,10 @@ function client_subdomainEditAction()
 					  'SUBDOMAIN_ID' => $subdomainId,
 					  'SUBDOMAIN_TYPE' => $subdomainType,
 					  'SUBDOMAIN_NAME' => decode_idna($form->subdomainName),
-					  'RADIO_ENABLED' => $form->urlForwarding ? $cfg->HTML_CHECKED : '',
-					  'RADIO_DISABLED' => $form->urlForwarding ? '' : $cfg->HTML_CHECKED,
-					  'INPUT_READONLY' => $form->urlForwarding ? '' : $cfg->HTML_READONLY,
-					  'SELECT_DISABLED' => $form->urlForwarding ? '' : $cfg->HTML_DISABLED,
+					  'RADIO_ENABLED' => $form->urlRedirect ? $cfg->HTML_CHECKED : '',
+					  'RADIO_DISABLED' => $form->urlRedirect ? '' : $cfg->HTML_CHECKED,
+					  'INPUT_READONLY' => $form->urlRedirect ? '' : $cfg->HTML_READONLY,
+					  'SELECT_DISABLED' => $form->urlRedirect ? '' : $cfg->HTML_DISABLED,
 					  'SCHEME_SPECIFIC' => $form->schemeSpecific));
 
 	foreach(array('http://', 'https://', 'ftp://') as $scheme) {

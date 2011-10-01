@@ -441,8 +441,7 @@ class Zend_Uri_Http extends Zend_Uri
 
 
         // Check the host against the allowed values; delegated to Zend_Filter.
-		//$validate = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_ALL);
-        $validate = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_DNS);
+		$validate = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_ALL);
 
         return $validate->isValid($host);
     }
