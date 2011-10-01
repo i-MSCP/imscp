@@ -314,7 +314,7 @@ class iMSCP_Initializer
             ) {
                 $properties = array($this->_config->USER_INITIAL_LANG, $this->_config->USER_INITIAL_THEME);
             } elseif (empty($stmt->fields['lang'])) {
-                $properties = array ($this->config->USER_INITIAL_LANG, $stmt->fields['layout']);
+                $properties = array ($this->_config->USER_INITIAL_LANG, $stmt->fields['layout']);
             } elseif (empty($stmt->fields['layout'])) {
                 $properties = array ($stmt->fields['lang'], $this->_config->USER_INITIAL_THEME);
             } else {

@@ -41,7 +41,7 @@
 /**
  * Generates domain aliases list.
  *
- * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param int $userId User unique identifier
  * @return void
  */
@@ -208,7 +208,7 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
 /**
  * Generates subdomains list.
  *
- * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param int $userId User unique identifier
  * @return void
  */
@@ -262,8 +262,8 @@ function client_generateSubdomainsList($tpl, $userId)
 			list(
 				$redirectUrl, $editLink, $edit
 			) = _client_generateSubdomainRedirect($stmt1->fields['subdomain_id'],
-									  $stmt1->fields['subdomain_status'],
-									  $stmt1->fields['subdomain_url_forward'], 'dmn');
+												  $stmt1->fields['subdomain_status'],
+												  $stmt1->fields['subdomain_url_forward'], 'dmn');
 
 			$name = decode_idna($stmt1->fields['subdomain_name']);
 			$redirectUrl = decode_idna($redirectUrl);
@@ -302,13 +302,13 @@ function client_generateSubdomainsList($tpl, $userId)
 			list(
 				$action, $actionScript, $isStatusOk
 			) = _client_generateSubdomainAliasAction($stmt2->fields['subdomain_alias_id'],
-									   $stmt2->fields['subdomain_alias_status']);
+													 $stmt2->fields['subdomain_alias_status']);
 
 			list(
 				$redirectUrl, $editLink, $edit
 			) = _client_generateSubdomainRedirect($stmt2->fields['subdomain_alias_id'],
-									  $stmt2->fields['subdomain_alias_status'],
-									  $stmt2->fields['subdomain_alias_url_forward'], 'als');
+												  $stmt2->fields['subdomain_alias_status'],
+												  $stmt2->fields['subdomain_alias_url_forward'], 'als');
 
 			$name = decode_idna($stmt2->fields['subdomain_alias_name']);
 			$redirectUrl = decode_idna($redirectUrl);
@@ -348,11 +348,12 @@ function client_generateSubdomainsList($tpl, $userId)
 }
 
 /**
- * Generates user subdomains redirection.
+ * Generates subdomain redirect.
  *
+ * @access private
  * @param int $id Subdomain unique identifier
  * @param string $status Subdomain status
- * @param string $redirectUrl Subdomain redirect URL
+ * @param string $redirectUrl Target URL for redirect request
  * @param string $entityType Subdomain type (dmn|als)
  * @return array
  */
@@ -383,7 +384,7 @@ function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityTy
 }
 
 /**
- * Generates user subdomain action.
+ * Generates subdomain action.
  *
  * @access private
  * @param int $id Subdomain unique identifier
@@ -413,6 +414,7 @@ function _client_generateSubdomainAction($id, $status)
 /**
  * Generates subdomain aliases action.
  *
+ * @access private
  * @param int $id Subdomain Alias unique identifier
  * @param string $status Subdomain alias Status
  * @return array
@@ -453,8 +455,8 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 			`domain_dns`.`domain_dns_id`, `domain_dns`.`domain_id`,
 			`domain_dns`.`domain_dns`, `domain_dns`.`domain_class`,
 			`domain_dns`.`domain_type`, `domain_dns`.`domain_text`,
-			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS 'domain_name',
-			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) AS 'domain_status',
+			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) `domain_name`,
+			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) `domain_status`,
 			`domain_dns`.`protected`
 		FROM
 			`domain_dns`
@@ -477,17 +479,17 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 		while (!$stmt->EOF) {
 			list(
 				$actionDelete, $actionScriptDelete
-			) = _client_generateCustomDnsRecordAction('Delete', $stmt->fields['domain_dns_id'],
-									($stmt->fields['protected'] == 'no')
-										? $stmt->fields['domain_status'] : 'PROTECTED'
-			);
+			) = _client_generateCustomDnsRecordAction('Delete',
+													  $stmt->fields['domain_dns_id'],
+													  ($stmt->fields['protected'] == 'no')
+														  ? $stmt->fields['domain_status'] : 'PROTECTED');
 
 			list(
 				$actionEdit, $actionScriptEdit
-			) = _client_generateCustomDnsRecordAction('Edit', $stmt->fields['domain_dns_id'],
-									($stmt->fields['protected'] == 'no')
-										? $stmt->fields['domain_status'] : 'PROTECTED'
-			);
+			) = _client_generateCustomDnsRecordAction('Edit',
+													  $stmt->fields['domain_dns_id'],
+													  ($stmt->fields['protected'] == 'no')
+														  ? $stmt->fields['domain_status'] : 'PROTECTED');
 
 			$domainName = decode_idna($stmt->fields['domain_name']);
 			$sbd_name = $stmt->fields['domain_dns'];
@@ -530,7 +532,7 @@ function _client_generateCustomDnsRecordAction($action, $id, $status)
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(
-			tr($action),
+			($action == 'Edit') ? tr('Edit') : tr('Delete'),
 			'dns_' . strtolower($action) . '.php?edit_id=' . $id
 		);
 	} elseif ($action != 'Edit' && $status == 'PROTECTED') {
@@ -579,8 +581,8 @@ $tpl->define_dynamic(array(
 						  'sub_status_reload_false' => 'sub_item',
 
 						  'isactive_dns' => 'page',
-						  'dns_message' => 'page',
-						  'dns_list' => 'page',
+						  'dns_message' => 'isactive_dns',
+						  'dns_list' => 'isactive_dns',
 						  'dns_item' => 'dns_list'));
 
 $tpl->assign(array(
@@ -588,6 +590,7 @@ $tpl->assign(array(
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				  'THEME_CHARSET' => tr('encoding'),
 				  'ISP_LOGO' => layout_getUserLogo(),
+
 				  'TR_MANAGE_DOMAINS' => tr('Manage domains'),
 				  'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
 				  'TR_SUBDOMAINS' => tr('Subdomains'),

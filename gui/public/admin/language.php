@@ -55,7 +55,7 @@ $tpl->define_dynamic(array(
                           'def_language' => 'page',
                           'logged_from' => 'page'));
 
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
+if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
     $user_id = $_SESSION['user_id'];
     $user_lang = $_POST['def_language'];
 

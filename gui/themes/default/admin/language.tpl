@@ -46,7 +46,7 @@
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <form name="client_change_language" method="post" action="language.php">
+            <form name="adminChangeLanguage" method="post" action="language.php">
                 <table>
                     <tr>
                         <td style="width:300px;">
@@ -62,8 +62,8 @@
                     </tr>
                 </table>
                 <div class="buttons">
-                    <input name="Submit" type="submit" class="button" value="{TR_SAVE}" />
-                    <input type="hidden" name="uaction" value="save_lang" />
+                    <input name="submit" type="submit" class="button" value="{TR_SAVE}" />
+                    <input type="hidden" name="uaction" value="update" />
                 </div>
             </form>
         </div>
