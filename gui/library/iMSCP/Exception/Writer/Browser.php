@@ -132,35 +132,37 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
         $this->_write();
     }
 
-    /**
-     * Render exception template file.
-     *
-     * @return void
-     */
-    protected function _render()
-    {
-        $tpl = new iMSCP_pTemplate();
+	/**
+	 * Render exception template file.
+	 *
+	 * @return void
+	*/
+	protected function _render()
+	{
+		$tpl = new iMSCP_pTemplate();
 
-        $tpl->define('page', $this->_templateFile);
+		$tpl->define('page', $this->_templateFile);
 
-        if (iMSCP_Registry::isRegistered('backButtonDestination')) {
-            $backButtonDestination = iMSCP_Registry::get('backButtonDestination');
-        } else {
-            $backButtonDestination = 'javascript:history.go(-1)';
-        }
+		if (iMSCP_Registry::isRegistered('backButtonDestination')) {
+			$backButtonDestination = iMSCP_Registry::get('backButtonDestination');
+		} else {
+			$backButtonDestination = 'javascript:history.go(-1)';
+		}
 
-        $tpl->assign(array('THEME_COLOR_PATH' => '/themes/' . 'default',
-                          'BACK_BUTTON_DESTINATION' => $backButtonDestination,
-                          'MESSAGE' => $this->_message,
-                          'productLink' => 'http://www.i-mscp.net',
-                          'TR_EXCEPTION_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
-                          'THEME_CHARSET' => 'UTF-8',
-                          'productLongName' => 'internet Multi Server Control Panel',
-                          'productCopyright' => '© 2010-2011 i-MSCP Team<br/>All Rights Reserved',
-                          'MESSAGE_TITLE' => 'An exception have been thrown',
-                          'TR_BACK' => 'Back'));
+		$tpl->assign(array(
+						'TR_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
+						'THEME_COLOR_PATH' => '/themes/' . 'default',
+						'BACK_BUTTON_DESTINATION' => $backButtonDestination,
+						'MESSAGE' => $this->_message,
+						'productLink' => 'http://www.i-mscp.net',
+						'THEME_CHARSET' => 'UTF-8',
+						'productLongName' => 'internet Multi Server Control Panel',
+						'productCopyright' => '© 2010-2011 i-MSCP Team<br/>All Rights Reserved',
+						'MESSAGE_TITLE' => 'An exception have been thrown',
+						'TR_BACK' => 'Back')
+		);
 
-        $tpl->parse('PAGE', 'page');
-        $this->_tpl = $tpl;
-    }
+		$tpl->parse('PAGE', 'page');
+		$this->_tpl = $tpl;
+	}
 }
