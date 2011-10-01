@@ -72,6 +72,7 @@ function client_generateDomainAliasesList($tpl, $userId)
 				$action, $actionScript, $isStatusOk
 			) = _client_generateDomainAliasAction($stmt->fields['alias_id'],
 												  $stmt->fields['alias_status']);
+
 			list(
 				$redirectUrl, $editLink, $edit
 			) = _client_generateDomainAliasRedirect($stmt->fields['alias_id'],
@@ -89,7 +90,7 @@ function client_generateDomainAliasesList($tpl, $userId)
 				$tpl->parse('ALS_STATUS_RELOAD_TRUE', 'als_status_reload_true');
 			} else {
 				$tpl->assign(array(
-								  'ALS_NAME', tohtml($name),
+								  'ALS_NAME' => tohtml($name),
 								  'ALS_STATUS_RELOAD_TRUE' => ''));
 
 				$tpl->parse('ALS_STATUS_RELOAD_FALSE', 'als_status_reload_false');
