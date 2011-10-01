@@ -33,11 +33,10 @@ use  iMSCP::Dir;
 
 use vars qw/@ISA/;
 
-@ISA = ("Common::SingletonClass");
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
 
 sub load{
-	debug('Starting...');
 	my $self = shift || iMSCP::Servers->new();
 	my $Servers	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
 
@@ -45,17 +44,16 @@ sub load{
 
 	@{$self->{Servers}}	= $Servers->getFiles();
 
-	debug('Ending...');
+	debug("Servers: ". @{$self->{Servers}});
 	0;
 }
 
 sub get{
-	debug('Starting...');
 	my $self = shift || iMSCP::Servers->new();
 
 	$self->load() unless(exists $self->{Servers});
 
-	debug('Ending...');
+	debug('Returning ' . (exists $self->{Servers} ? "@{$self->{Servers}}" : 'no servers found'));
 	return (exists $self->{Servers} ? @{$self->{Servers}} : ());
 }
 

@@ -31,8 +31,6 @@ use Symbol qw/gensym qualify qualify_to_ref/;
 use iMSCP::Debug;
 
 sub new {
-	debug('Starting...');
-
 	my $proto			= shift;
 	my $class			= ref($proto) || $proto;
 	my $self			= {};
@@ -50,12 +48,10 @@ sub new {
 	open $self->{STDHandler}, ">& ".fileno($self->{newSTDHandler}) or error("Can't redirect $STD - $!");
 	$self->{pid} = $$;
 
-	debug('Ending...');
 	bless($self, $class);
 }
 
 sub DESTROY {
-	debug('Starting...');
 	my $self	= shift;
 	return unless $self->{pid} eq $$;
 	debug ("Finishing capture of ${$self->{STDHandler}}");
@@ -67,7 +63,6 @@ sub DESTROY {
 	chomp($msg);
 	${$self->{capture}}	= $msg;
 	unlink $self->{newSTDFile} or error("Couldn't remove temp file '$self->{newSTDFile}' - $!",1);
-	debug('Ending...');
 }
 
 1;

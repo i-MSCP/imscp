@@ -40,11 +40,7 @@ sub TIEHASH {
 
 	$self = $self->new(@_);
 
-	debug('Starting...');
-
 	debug('Tieing ...');
-
-	debug('Ending...');
 
 	return $self;
 };
@@ -52,21 +48,13 @@ sub TIEHASH {
 sub FIRSTKEY {
 	my $self	= shift;
 
-	debug('Starting...');
-
 	my $a = scalar keys %{$self->{args}->{result}};
-
-	debug('Ending...');
 
 	each %{$self->{args}->{result}};
 }
 
 sub NEXTKEY {
 	my $self	= shift;
-
-	debug('Starting...');
-
-	debug('Ending...');
 
 	each %{$self->{args}->{result}};
 }
@@ -75,11 +63,7 @@ sub FETCH {
 	my $self = shift;
 	my $key = shift;
 
-	debug('Starting...');
-
 	debug("Fetching $key");
-
-	debug('Ending...');
 
 	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
 };
@@ -88,11 +72,7 @@ sub EXISTS {
 	my $self = shift;
 	my $key = shift;
 
-	debug('Starting...');
-
 	debug("Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
-
-	debug('Ending...');
 
 	$self->{args}->{result}->{$key} ? 1 : 0;
 };

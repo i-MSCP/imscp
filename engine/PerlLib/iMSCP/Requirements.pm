@@ -93,15 +93,11 @@ sub test{
 	my $self = shift;
 	my $test = shift;
 
-	debug('Starting...');
-
 	if($self->can($test)){
 		$self->$test();
 	} else {
 		fatal("The test '$test' is not available.", 1);
 	}
-
-	debug('Ending...');
 }
 
 # Process all tests for requirements.
@@ -109,15 +105,12 @@ sub test{
 # @param self $self iMSCP::Requirements instance
 # @return void
 sub all{
-	debug('Starting...');
 
 	my $self = shift;
 
 	$self->user();
 	$self->_modules();
 	$self->_externalProgram();
-
-	debug('Ending...');
 }
 
 # Checks for user that run the imscp-autoinstaller script.
@@ -126,11 +119,7 @@ sub all{
 # @param self $self iMSCP::Requirements instance
 # @return void
 sub user{
-	debug('Starting...');
-
 	fatal('The script must be run by root user.') if( $< != 0 );
-
-	debug('Ending...');
 }
 
 # Checks for perl module availability.
@@ -139,7 +128,6 @@ sub user{
 # @param self $self iMSCP::Requirements instance
 # @return void
 sub _modules {
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -157,7 +145,6 @@ sub _modules {
 
 		}
 	}
-	debug('Ending...');
 
 	fatal("Modules [@mod_missing] was not found on your system.") if (scalar @mod_missing);
 }
@@ -169,7 +156,6 @@ sub _modules {
 # @param self $self iMSCP::Requirements instance
 # @return void
 sub _externalProgram{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rv, $output, $error);
@@ -189,8 +175,6 @@ sub _externalProgram{
 			fatal "$program $result" if $result;
 		}
 	}
-
-	debug('Ending...');
 }
 
 # Check for program version.
@@ -203,7 +187,6 @@ sub _externalProgram{
 # @param string $minversion program minimum version required
 # @return void
 sub _programVersions{
-	debug('Starting...');
 
 	my ($self, $program, $regexp, $minversion) = @_;
 	my ($rv, $output, $error);
@@ -215,7 +198,6 @@ sub _programVersions{
 	}
 	my $result = $self->checkVersion($output, $minversion);
 
-	debug('Ending...');
 	$result;
 }
 
@@ -241,10 +223,7 @@ sub checkVersion{
 	if($maxversion && version->new($version) > version->new($maxversion)){
 		return "$version is newer then required version $minversion";
 	}
-
 	0;
 }
 
 1;
-
-__END__

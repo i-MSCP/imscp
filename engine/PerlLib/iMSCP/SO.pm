@@ -47,12 +47,8 @@ use Common::SingletonClass;
 
 
 sub _init{
-	debug('Starting...');
-
 	my $self = shift;
 	fatal('Can not guess operating system') if ($self->getSO);
-
-	debug('Ending...');
 }
 
 # Gets information about distribution.
@@ -67,14 +63,13 @@ sub _init{
 # @return int 0 on success, other on failure
 
 sub getSO{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
 
-	fatal(': Not a Debian like system') if(execute('which apt-get', \$stdout, \$stderr));
+	fatal('Not a Debian like system') if(execute('which apt-get', \$stdout, \$stderr));
 
-	if(execute("which lsb_release", \$stdout, \$stderr)){
+	if(execute('which lsb_release', \$stdout, \$stderr)){
 		$rs = execute('apt-get -y install lsb-release', \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
@@ -82,29 +77,27 @@ sub getSO{
 	}
 
 	# Retrieves distribution name
-	$rs = execute("lsb_release -si", \$stdout, \$stderr);
+	$rs = execute('lsb_release -si', \$stdout, \$stderr);
 	debug("Distribution is $stdout") if $stdout;
-	error("Can not guess operating system = $stderr") if $stderr;
+	error("Can not guess operating system: $stderr") if $stderr;
 	return $rs if $rs;
 	$self->{Distribution} = $stdout;
 
 	# Retrieves distribution code name
-	$rs = execute("lsb_release -sr", \$stdout, \$stderr);
+	$rs = execute('lsb_release -sr', \$stdout, \$stderr);
 	debug("Version is $stdout") if $stdout;
-	error("Can not guess operating system = $stderr") if $stderr;
+	error("Can not guess operating system: $stderr") if $stderr;
 	return $rs if $rs;
 	$self->{Version} = $stdout;
 
 	# Retrieves distribution version
-	$rs = execute("lsb_release -sc", \$stdout, \$stderr);
+	$rs = execute('lsb_release -sc', \$stdout, \$stderr);
 	debug("Codename is $stdout") if $stdout;
-	error("Can not guess operating system = $stderr") if $stderr;
+	error("Can not guess operating system: $stderr") if $stderr;
 	return $rs if $rs;
 	$self->{CodeName} = $stdout;
 
 	debug ("Found $self->{Distribution} $self->{Version} $self->{CodeName}");
-
-	debug('Ending...');
 	0;
 }
 

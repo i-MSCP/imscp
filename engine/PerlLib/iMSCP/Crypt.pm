@@ -34,7 +34,7 @@ use Crypt::CBC;
 use MIME::Base64;
 
 use vars qw/@ISA/;
-@ISA = ("Common::SingletonClass");
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
 
 sub _init{
@@ -52,15 +52,11 @@ sub set{
 	my $self		= shift;
 	my $prop		= shift;
 	my $value		= shift;
-	debug('Starting...');
-	debug("Setting $prop.");
+	debug("Setting $prop as $value") if(exists $self->{cipher}->{$prop});
 	$self->{cipher}->{$prop} = $value if(exists $self->{cipher}->{$prop});
-	debug('Ending...');
 }
 
 sub randomString{
-
-	debug('Starting...');
 
 	my $self = shift || iMSCP::Crypt->new();
 	my $length = shift;
@@ -78,13 +74,11 @@ sub randomString{
 			length $string < $length ? $string .= chr $_ : last;
 		}
 	}
-	debug('Ending...');
+	debug("Returning $string");
 	$string;
 }
 
 sub encrypt_db_password {
-
-	debug('Starting...');
 
 	my $self	= shift;
 	my $pass	= shift;
@@ -96,14 +90,11 @@ sub encrypt_db_password {
 	my $encoded	= encode_base64($cipher->encrypt($pass));
 	chop($encoded);
 
-	debug('Ending...');
-
+	debug("Returning $encoded");
 	return $encoded;
 }
 
 sub decrypt_db_password {
-
-	debug('Starting...');
 
 	my $self	= shift;
 	my $pass	= shift;
@@ -120,14 +111,11 @@ sub decrypt_db_password {
 	my $cipher		= Crypt::CBC -> new($self->{cipher});
 	my $plaintext	= $cipher->decrypt(decode_base64("$pass\n"));
 
-	debug('Ending...');
-
+	debug("Returning $plaintext");
 	return $plaintext;
 }
 
 sub crypt_md5_data {
-
-	debug('Starting...');
 
 	my $self = shift || iMSCP::Crypt->new();
 	my $data = shift;
@@ -148,8 +136,7 @@ sub crypt_md5_data {
 
 	$data = unix_md5_crypt($data, $self->randomString(8));
 
-	debug('Ending...');
-
+	debug("Returning $data");
 	$data;
 }
 

@@ -36,7 +36,7 @@ use iMSCP::Database::mysql::Result;
 use Common::SingletonClass;
 
 use vars qw/@ISA/;
-@ISA = ("Common::SingletonClass");
+@ISA = ('Common::SingletonClass');
 
 sub _init{
 	my $self = shift;
@@ -52,22 +52,20 @@ sub set{
 	my $self		= shift;
 	my $prop		= shift;
 	my $value		= shift;
-	debug('Starting...');
-	debug("Setting $prop as ".($value ? $value :''));
+	debug("Setting $prop as ".($value ? $value : 'undef'));
 	$self->{db}->{$prop} = $value if(exists $self->{db}->{$prop});
-	debug('Ending...');
 }
 
 sub connect{
 	my $self		= shift;
-
-	debug('Starting...');
 
 	my $data_source	=
 		'dbi:mysql:'.
 		'database=' . $self->{db}->{DATABASE_NAME} .
 		($self->{db}->{DATABASE_HOST} ? ';host=' . $self->{db}->{DATABASE_HOST} : '').
 		($self->{db}->{DATABASE_PORT} ? ';port=' . $self->{db}->{DATABASE_PORT} : '');
+
+	debug("Connect with $data_source");
 
 	if($self->{connection}){
 		$self->{connection}->disconnect;
@@ -79,10 +77,10 @@ sub connect{
 		$self->{db}->{DATABASE_PASSWORD},
 		(defined($self->{db}->{DATABASE_SETTINGS}) && ref($self->{db}->{DATABASE_SETTINGS}) eq 'HASH' ? $self->{db}->{DATABASE_SETTINGS} : ())
 	))){
-		return $DBI::errstr;
+		my $err = $DBI::errstr;
+		error($err);
+		return $err;
 	}
-
-	debug('Ending...');
 
 	0;
 }
@@ -92,8 +90,6 @@ sub doQuery{
 	my $key				= shift;
 	my $query			= shift || error("No query provided");
 	my @subs			= @_;
-
-	debug('Starting...');
 
 	debug("$query with @subs");
 
@@ -107,8 +103,6 @@ sub doQuery{
 
 	my $href = $self->{sth}->fetchall_hashref( eval "[ qw/$key/ ]" );
 
-	debug('Ending...');
-
 	tie my %href , 'iMSCP::Database::mysql::Result', result => $href;
 
 	return \%href;
@@ -118,15 +112,11 @@ sub getDBTables{
 
 	my $self			= shift;
 
-	debug('Starting...');
-
 	$self->{sth} = $self->{connection}->prepare("SELECT `TABLE_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = '$self->{db}->{DATABASE_NAME}';");
 
 	return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 
 	my $href = $self->{sth}->fetchall_hashref("TABLE_NAME");
-
-	debug('Ending...');
 
 	my @tables = keys %$href;
 
@@ -139,8 +129,6 @@ sub dumpdb{
 	my $self		= shift;
 	my $db			= shift;
 	my $filename	= shift;
-
-	debug('Starting...');
 
 	unless($self->{connection}){
 		error('Not connected');
@@ -156,6 +144,8 @@ sub dumpdb{
 		error('No filename provided');
 		return 1;
 	}
+
+	debug("Dumping $db as $filename");
 
 	$db = $self->{db}->{DATABASE_NAME} unless $db;
 
@@ -199,17 +189,19 @@ sub dumpdb{
 	error("$stderr") if $stderr;
 	error("Can not dump $dbName") if (!$stderr && $rs);
 	return $rs if $rs;
-
-	debug('Ending...');
 	0;
 }
 
 sub quoteIdentifier{
 	my ($self, $identifier)	= (@_);
-	debug('Starting...');
+
 	$identifier = join(', ', $identifier) if( ref $identifier eq 'ARRAY');
-	debug('Ending...');
-	return $self->{connection}->quote_identifier($identifier)
+
+	my $rv = $self->{connection}->quote_identifier($identifier);
+	debug("Quote identifier: |$rv|");
+
+	return $rv;
 }
+
 1;
 

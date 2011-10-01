@@ -37,21 +37,14 @@ use Common::SimpleClass;
 
 
 sub _init{
-	debug('Starting...');
 	my $self = shift;
 
 	for my $conf (keys %{$self->{args}}){
 		$self->{$conf} = $self->{args}->{$conf};
 	}
-
-	debug('Ending...');
 }
 
-#
-#
-#
 sub getFiles{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -70,13 +63,13 @@ sub getFiles{
 
 	my @files = ($self->{files} ? @{$self->{files}} : ());
 
-	debug('Ending...');
+	debug("Return @files");
+
 	return (wantarray ? @files : join(' ', @files));
 }
 
 
 sub getDirs{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -90,12 +83,12 @@ sub getDirs{
 		}
 	}
 
-	debug('Ending...');
+	debug("Return ".join(' ', @{$self->{dirs}}));
+
 	return (wantarray ? @{$self->{dirs}} : join(' ', @{$self->{dirs}}));
 }
 
 sub get{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -111,32 +104,24 @@ sub get{
 		@{$self->{dirContent}} = readdir(DIRH);
 		closedir(DIRH);
 	}
-
-	debug('Ending...');
 	0;
 }
 
 sub mode{
-	debug('Starting...');
-
 	my $self	= shift;
 	my $mode	= shift;
 	my $dir		= shift;
 
-	debug( sprintf ": Change mode mode: %o for '".( $dir || $self->{dirname}) ."'", $mode);
+	debug( sprintf "Change mode mode: %o for '".( $dir || $self->{dirname}) ."'", $mode);
 
 	unless (chmod($mode, $dir || $self->{dirname})){
 		error("Cannot change permissions of file '".( $dir || $self->{dirname}) ."': $!");
 		return 1;
 	}
-
-	debug('Ending...');
 	0;
 }
 
 sub owner{
-	debug('Starting...');
-
 	my $self	= shift;
 	my $owner	= shift;
 	my $group	= shift;
@@ -154,14 +139,10 @@ sub owner{
 		error("Cannot change owner of file '".( $dir || $self->{dirname}) ."': $!");
 		return 1;
 	}
-
-	debug('Ending...');
 	0;
 }
 
 sub make{
-	debug('Starting...');
-
 	my $self	= shift;
 	my $option	= shift || {};
 
@@ -223,20 +204,16 @@ sub make{
 			);
 		}
 	}
-
-	debug('Ending...');
 	0;
 }
 
 sub remove{
-	debug('Starting...');
-
 	use File::Path 'remove_tree';
 
 	my $self	= shift;
 	my $err;
 
-	debug("$self->{dirname}");
+	debug("Remove $self->{dirname}");
 
 	if ( -d  $self->{dirname}) {
 
@@ -259,14 +236,10 @@ sub remove{
 		}
 
 	}
-
-	debug('Ending...');
 	0;
 }
 
 sub rcopy{
-	debug('Starting...');
-
 	use iMSCP::File;
 
 	my $self	= shift;
@@ -317,10 +290,6 @@ sub rcopy{
 		}
 	}
 	closedir $dh;
-
-	debug('Ending...');
 	0;
 }
 1;
-
-__END__

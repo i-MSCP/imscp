@@ -53,19 +53,15 @@ sub AUTOLOAD {
 
 sub _init{
 	my $self = shift;
-	debug('Starting...');
 	for my $conf (keys %{$self->{args}}){
 		$self->{$conf} = $self->{args}->{$conf};
 	}
-	debug('Ending...');
 }
 
 sub mode{
 
 	my $self		= shift;
 	my $fileMode	= shift;
-
-	debug('Starting...');
 
 	if(!$self->{filename}){
 		error("File name not set!");
@@ -78,7 +74,6 @@ sub mode{
 		return 1;
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -87,8 +82,6 @@ sub owner{
 	my $self		= shift;
 	my $fileOwner	= shift;
 	my $fileGroup	= shift;
-
-	debug('Starting...');
 
 	if(!$self->{filename}){
 		error("File name not set!");
@@ -108,7 +101,6 @@ sub owner{
 		return 1;
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -116,7 +108,6 @@ sub get{
 	my $self = shift;
 	use FileHandle;
 
-	debug('Starting...');
 	my @lines;
 
 	if(!$self->{filename}){
@@ -135,8 +126,6 @@ sub get{
 		@{$self->{fileContent}} = <$fh>;
 	}
 
-	debug('Ending...');
-
 	return join('', @{$self->{fileContent}});
 }
 
@@ -146,8 +135,6 @@ sub copyFile{
 	my $option	= shift;
 
 	$option = {} if(ref $option ne 'HASH');
-
-	debug('Starting...');
 
 	use File::Copy;
 	use File::Basename;
@@ -187,16 +174,12 @@ sub copyFile{
 		}
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 sub moveFile{
 	my $self	= shift;
 	my $dest	= shift;
-
-	debug('Starting...');
 
 	if(!$self->{filename} || !-e $self->{filename}){
 		error("".($self->{filename} ? "File $self->{filename} do not exits" : "File name not set!"));
@@ -211,15 +194,11 @@ sub moveFile{
 		return 1;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 sub delFile{
 	my $self	= shift;
-
-	debug('Starting...');
 
 	if(!$self->{filename}){
 		error("File name not set!");
@@ -234,8 +213,6 @@ sub delFile{
 		return 1;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -245,12 +222,11 @@ sub save{
 
 	use FileHandle;
 
-	debug('Starting...');
-
 	if(!$self->{filename}){
 		error("File name not set!");
 		return 1;
 	}
+	debug("Delete $self->{filename}");
 
 	$self->{fileHandle}->close() if($self->{fileHandle});
 
@@ -266,7 +242,6 @@ sub save{
 
 	$self->{fileHandle}->close();
 
-	debug('Ending...');
 	0;
 }
 
@@ -274,13 +249,9 @@ sub set{
 	my $self = shift;
 	my $content = shift || '';
 
-	debug('Starting...');
-
 	use FileHandle;
 
 	$self->{fileContent} = $content;
-
-	debug('Ending...');
 
 	0;
 }

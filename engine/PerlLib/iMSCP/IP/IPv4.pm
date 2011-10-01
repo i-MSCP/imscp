@@ -40,8 +40,6 @@ use Common::SingletonClass;
 sub loadIpConfiguredIps{
 	my $self = shift;
 
-	debug('Starting...');
-
 	unless($self->{loadedIP}){
 
 		my ($rs, $stdout, $stderr);
@@ -53,8 +51,6 @@ sub loadIpConfiguredIps{
 		return $rs if $rs;
 
 		while($stdout =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/mgi){
-			debug("$1") if $1;
-			debug("$2") if $2;
 			if($1 ne 'lo'){
 				my @cards =split(':', $1);
 				my $card = shift(@cards);
@@ -70,15 +66,12 @@ sub loadIpConfiguredIps{
 
 		$self->{loadedIP} = 1
 	}
-
-	debug('Ending...');
 	0;
 }
 
 sub loadNetworkCards{
 	my $self = shift;
 
-	debug('Starting...');
 	my ($rs, $stdout, $stderr);
 
 	unless($self->{loadedCards}){
@@ -102,18 +95,16 @@ sub loadNetworkCards{
 		$self->{loadedCards} = 1
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub getIPs{
 	my $self = shift;
 
-	debug('Starting...');
 
 	$self->loadIpConfiguredIps();
 
-	debug('Ending...');
+	debug("Ip`s: ". join( ' ', keys %{$self->{ips}} ));
 
 	return (wantarray ? keys %{$self->{ips}} : join( ' ', keys %{$self->{ips}} ));
 }
@@ -121,11 +112,9 @@ sub getIPs{
 sub getNetworkCards{
 	my $self = shift;
 
-	debug('Starting...');
-
 	$self->loadNetworkCards();
 
-	debug('Ending...');
+	debug("Network cards`s: ". join( ' ', keys %{$self->{cards}} ));
 
 	return (wantarray ? keys %{$self->{cards}} : join( ' ', keys %{$self->{cards}} ));
 }
@@ -135,11 +124,9 @@ sub getCardByIP{
 	my $self	= shift;
 	my $ip		= shift;
 
-	debug('Starting...');
-
 	$self->loadIpConfiguredIps();
 
-	debug('Ending...');
+	debug("Network card having ip $ip: ". (exists $self->{ips}->{$ip} ? $self->{ips}->{$ip} : 'not exists'));
 
 	return (exists $self->{ips}->{$ip} ? $self->{ips}->{$ip} : 0);
 }
@@ -149,11 +136,9 @@ sub addedToVCard{
 	my $self = shift;
 	my $ip		= shift;
 
-	debug('Starting...');
-
 	$self->loadIpConfiguredIps();
 
-	debug('Ending...');
+	debug("Virtual network card having ip $ip: ". (exists $self->{ips}->{$ip}->{vcard} ? $self->{ips}->{$ip}->{vcard} : 'not exists'));
 
 	return (exists $self->{ips}->{$ip}->{vcard} ? $self->{ips}->{$ip}->{vcard} : 0);
 }
@@ -163,11 +148,9 @@ sub existsNetCard{
 	my $self	= shift;
 	my $card	= shift;
 
-	debug('Starting...');
-
 	$self->loadNetworkCards();
 
-	debug('Ending...');
+	debug("Network card $card exists? ". (exists $self->{cards}->{$card} ? 'yes' : 'no'));
 
 	return (exists $self->{cards}->{$card});
 }
@@ -178,15 +161,13 @@ sub getFirstFreeSlotOnCard{
 	my $card	= shift;
 	my $reserve	= shift || 0;
 
-	debug('Starting...');
-
 	$self->loadNetworkCards();
 
 	my $slot = $self->{cards}->{$card}->{'1Slot'};
 
 	$self->{cards}->{$card}->{'1Slot'}++ if $reserve;
 
-	debug('Ending...');
+	debug("First slot on network card $card is $slot");
 
 	$slot;
 }
@@ -195,11 +176,9 @@ sub isCardUp{
 	my $self	= shift;
 	my $card	= shift;
 
-	debug('Starting...');
-
 	$self->loadNetworkCards();
 
-	debug('Ending...');
+	debug("Network card $card is up? ". (exists $self->{cards}->{$card}->{up} ? 'yes' : 'no'));
 
 	return (exists $self->{cards}->{$card}->{up});
 }
@@ -208,13 +187,11 @@ sub isValidIp{
 	my $self	= shift;
 	my $ip	= shift;
 
-	debug('Starting...');
 	use Data::Validate::IP qw/is_ipv4/;
 
-	debug('Ending...');
+	debug("Ip is ipv4? ". (is_ipv4($ip) ? 'yes' : 'no'));
 
 	return (is_ipv4($ip));
 }
 
 1;
-__END__

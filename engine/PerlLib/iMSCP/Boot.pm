@@ -35,7 +35,7 @@ use iMSCP::Requirements;
 
 use vars qw/@ISA/;
 
-@ISA = ("Common::SingletonClass");
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
 
 sub init{
@@ -43,8 +43,6 @@ sub init{
 	my $option = shift;
 
 	$option = {} if ref $option ne 'HASH';
-
-	debug('Starting...');
 
 	unless($self->{'loaded'}) {
 		debug('Booting...');
@@ -72,13 +70,11 @@ sub init{
 				$database->set('DATABASE_USER', $main::imscpConfig{'DATABASE_USER'});
 				$database->set('DATABASE_PASSWORD', $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}));
 				my $rs = $database->connect();
-				fatal(": $rs") if $rs;
+				fatal("$rs") if $rs;
 		}
 
 		$self->{'loaded'} = 1;
 	}
-
-	debug('Ending...');
 
 	0;
 }
@@ -87,14 +83,10 @@ sub lock{
 	my $self	= shift;
 	my $lock	= shift || $main::imscpConfig{MR_LOCK_FILE};
 
-	debug('Starting...');
-
 	fatal('Unable to open lock file!') if(!open($self->{lock}, '>', $lock));
 
 	use Fcntl ":flock";
 	fatal('Unable to acquire global lock!') if(!flock($self->{lock}, LOCK_EX));
-
-	debug('Ending...');
 
 	0;
 }
@@ -103,19 +95,13 @@ sub unlock{
 	my $self	= shift;
 	my $lock	= shift;
 
-	debug('Starting...');
-
 	use Fcntl ":flock";
 	fatal('Unable to release global lock!') if(!flock($self->{lock}, LOCK_UN));
-
-	debug('Ending...');
 
 	0;
 }
 
 sub genKey{
-
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -146,7 +132,7 @@ sub genKey{
 	iMSCP::Crypt->new()->set('key', $main::imscpDBKey);
 	iMSCP::Crypt->new()->set('iv', $main::imscpDBiv);
 
-	debug('Ending...');
+	debug("Key: |$main::imscpDBKey|, iv:|$main::imscpDBiv|");
 
 }
 

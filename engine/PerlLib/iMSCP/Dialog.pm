@@ -38,8 +38,6 @@ use vars qw/@ISA/;
 
 sub factory{
 
-	debug('Starting...');
-
 	my $self	= iMSCP::Dialog->new();
 
 	unless($self->{instance}){
@@ -55,25 +53,17 @@ sub factory{
 			require $file;
 			$self->{instance} = $class->new();
 		} else {
-			fatal(': Can not find whiptail or dialog. Please reinstall...');
+			fatal('Can not find whiptail or dialog. Please reinstall...');
 		}
 		$self->{instance}->set('title', 'i-MSCP Setup');
 		$self->{instance}->set('backtitle',	'i-MSCP internet Multi Server Control Panel');
 	}
-
-	debug('Ending...');
 	$self->{instance};
 }
 
 sub reset{
-	debug('Starting...');
-
 	my $self	= iMSCP::Dialog->new();
 	$self->{instance} = undef;
-
-	debug('Ending...');
 	0;
 }
 1;
-
-__END__

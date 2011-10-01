@@ -39,16 +39,14 @@ sub TIEHASH {
 	my $self = shift;
 	$self = $self->new(@_);
 
-	debug('Starting...');
-
-	debug('Tieing ...');
-
 	$self->{confFile} = ();
 
 	$self->{configValues} = {};
 	$self->{lineMap} = {};
 
 	$self->{confFileName} = $self->{args}->{fileName};
+
+	debug("Tieing $self->{confFileName}");
 
 	$self->_loadConfig();
 	$self->_parseConfig();
@@ -61,19 +59,15 @@ sub TIEHASH {
 sub _loadConfig{
 	my $self	= shift;
 
-	debug('Starting...');
-
 	debug('Config file ' . $self->{confFileName});
 
 	tie @{$self->{confFile}}, 'Tie::File', $self->{confFileName} or
 		fatal("Can`t read " . $self->{confFileName}, 1);
 
-	debug('Ending...');
 }
 
 sub _parseConfig{
 	my $self = shift;
-	debug('Starting...');
 
 	my $lineNo = 0;
 
@@ -85,22 +79,17 @@ sub _parseConfig{
 		$lineNo++;
 	}
 
-	debug('Ending...');
 }
 
 sub FETCH {
 	my $self	= shift;
 	my $config	= shift;
 
-	debug("Starting...");
-
 	debug("Fetching ${config}..." );
 
 	if (!exists($self->{configValues}->{$config}) && !$self->{args}->{noerrors}){
 		error(sprintf('Accessing non existing config value %s', $config));
 	}
-
-	debug('Ending...');
 
 	return $self->{configValues}->{$config};
 }
@@ -110,8 +99,6 @@ sub STORE {
 	my $config	= shift;
 	my $value	= shift;
 
-	debug('Starting...');
-
 	debug("Store ${config} as ".($value ? $value : 'empty')."..." );
 
 	if(!exists($self->{configValues}->{$config})){
@@ -120,27 +107,18 @@ sub STORE {
 		$self->_replaceConfig($config, $value);
 	}
 
-	debug('Ending...');
 }
 
 sub FIRSTKEY {
 	my $self = shift;
 
-	debug('Starting...');
-
 	$self->{_list} = [ sort keys %{$self->{configValues}} ];
-
-	debug('Ending...');
 
 	return $self->NEXTKEY;
 }
 
 sub NEXTKEY {
 	my $self = shift;
-
-	debug('Starting...');
-
-	debug('Ending...');
 
 	return shift @{$self->{_list}};
 }
@@ -150,14 +128,12 @@ sub _replaceConfig{
 	my $config	= shift;
 	my $value	= shift;
 
-	debug('Starting...');
-
 	$value = '' unless defined $value;
+
+	debug("Setting $config as $value");
 
 	@{$self->{confFile}}[$self->{lineMap}->{$config}] = "$config = $value";
 	$self->{configValues}->{$config} = $value;
-
-	debug('Ending...');
 }
 
 sub _insertConfig{
@@ -165,14 +141,12 @@ sub _insertConfig{
 	my $config	= shift;
 	my $value	= shift;
 
-	debug('Starting...');
-
 	$value = '' unless defined $value;
+
+	debug("Setting $config as $value");
 
 	push (@{$self->{confFile}}, "$config = $value");
 	$self->{configValues}->{$config} = $value;
-
-	debug('Ending...');
 }
 
 1;

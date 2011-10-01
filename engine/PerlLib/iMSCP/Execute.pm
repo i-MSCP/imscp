@@ -39,7 +39,6 @@ use iMSCP::STDCapture;
 @EXPORT = qw/execute/;
 
 sub execute{
-	debug('Starting...');
 	my ($code, $output, $error) = @_;
 	my $rv;
 	if (ref $output && ref $error){
@@ -51,47 +50,38 @@ sub execute{
 	} else {
 		$rv = _execCode($code);
 	}
-	debug('Ending...');
 	$rv;
 }
 
 sub _execCaptureBoth {
-	debug('Starting...');
 	my ($code, $output, $error) = @_;
 	my $out = new iMSCP::STDCapture('STDOUT', $output);
 	my $err = new iMSCP::STDCapture('STDERR', $error);
 	debug("Execute $code");
 	system($code);
-	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _execCaptureOutput {
 	my ($code, $output) = @_;
-	debug('Starting...');
 	my $out = new iMSCP::STDCapture('STDOUT', $output);
 	debug("Execute $code");
 	system($code);
-	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _execCaptureError {
 	my ($code, $error) = @_;
-	debug('Starting...');
 	my $err = new iMSCP::STDCapture('STDERR', $error);
 	debug("Execute $code");
 	system($code);
-	debug('Ending...');
 	return _getExitCode($?);
 }
 
 sub _execCode {
 	my $code = shift;
-	debug('Starting...');
 	debug("Execute $code");
 	system($code);
-	debug('Ending...');
 	return _getExitCode($?);
 }
 
@@ -111,7 +101,6 @@ sub _getExitCode {
 		$exitValue = $exitValue >> 8;
 		debug("External command exited with value $exitValue");
 	}
-	debug('Ending...');
 	$exitValue;
 }
 1;

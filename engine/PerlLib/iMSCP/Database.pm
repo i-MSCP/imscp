@@ -34,11 +34,10 @@ use FindBin;
 
 
 use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
 
 sub factory{
-	debug('Starting...');
 
 	my $self	= shift;
 	$self 		= iMSCP::Database->new() if ref $self ne 'iMSCP::Database';
@@ -53,8 +52,6 @@ sub factory{
 	my $class	= "iMSCP::Database::${db}::${db}";
 
 	require $file;
-
-	debug('Ending...');
 
 	return $class->new();;
 }

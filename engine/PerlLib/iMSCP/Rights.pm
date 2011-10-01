@@ -38,7 +38,6 @@ use Common::SingletonClass;
 @EXPORT = qw/setRights/;
 
 sub setRights{
-	debug('Starting...');
 
 	my $file	= shift;
 	my $option	= shift;
@@ -83,12 +82,10 @@ sub setRights{
 
 	$rs |= _set(@chown) if($option->{user} && $option->{group});
 
-	debug('Ending...');
 	$rs;
 }
 
 sub _set{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -98,7 +95,6 @@ sub _set{
 	error("$stderr") if $stderr;
 	error("Error while executing @_") if !$stderr && $rs;
 
-	debug('Ending...');
 	$rs;
 }
 1;

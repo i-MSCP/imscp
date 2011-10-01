@@ -33,11 +33,10 @@ use  iMSCP::Dir;
 
 use vars qw/@ISA/;
 
-@ISA = ("Common::SingletonClass");
+@ISA = ('Common::SingletonClass');
 use Common::SingletonClass;
 
 sub load{
-	debug('Starting...');
 	my $self = shift || iMSCP::Addons->new();
 	my $Addons	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Addons");
 
@@ -45,7 +44,7 @@ sub load{
 
 	@{$self->{Addons}}	= $Addons->getFiles();
 
-	debug('Ending...');
+	debug("Returning @{$self->{Addons}}");
 	0;
 }
 

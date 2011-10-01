@@ -40,7 +40,6 @@ use vars qw/@ISA @EXPORT/;
 
 sub _init{
 	my $self	= shift;
-	debug('Starting...');
 
 	$self->{'autosize'}						= undef;
 	$self->{'autoreset'}					= '';
@@ -96,12 +95,10 @@ sub _init{
 	$self->_find_bin($^O	=~ /bsd$/ ? 'cdialog' : 'dialog');
 	$self->_determine_dialog_variant();
 	$self->_getConsoleSize();
-	debug('Ending...');
 }
 
 sub _determine_dialog_variant {
 	my $self = shift;
-	debug('Starting...');
 	my $str = `$self->{'bin'} --help 2>&1`;
 	if ($str =~ /cdialog\s\(ComeOn\sDialog\!\)\sversion\s\d+\.\d+\-(.{4})/ && $1 >= 2003) {
 		debug('Have colors!');
@@ -113,12 +110,10 @@ sub _determine_dialog_variant {
 			debug('No separate output!');
 		}
 	}
-	debug('Ending...');
 }
 
 sub _getConsoleSize{
 	my $self = shift;
-	debug('Starting...');
 	my ($output, $error);
 	execute($self->{'bin'} . ' --print-maxsize', \$output, \$error);
 	$error =~ /MaxSize:\s(\d+),\s(\d+)/;
@@ -127,12 +122,9 @@ sub _getConsoleSize{
 	error("$error") unless (!$?);
 	debug("Lines->$self->{'lines'}");
 	debug("Columns->$self->{'columns'}");
-	debug('Ending...');
 }
 
 sub _find_bin {
-	debug('Starting...');
-
 	my ($self, $variant)	= (shift, shift);
 	my ($rs, $stdout, $stderr);
 	$rs = execute("which $variant", \$stdout, \$stderr);
@@ -140,22 +132,17 @@ sub _find_bin {
 	fatal(": Can't find $variant binary $stderr") if $stderr;
 
 	$self->{'bin'} = $stdout if $stdout;
-	fatal(': Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
-
-	debug('Ending...');
+	fatal('Can`t find dialog binary '.$variant) unless ($self->{'bin'} && -x $self->{'bin'});
 }
 
 sub _strip_formats {
 	my ($self, $text)	= (shift, shift);
-	debug('Starting...');
 	$text =~ s!\\Z[0-9bBuUrRn]!!gmi;
-	debug('Ending...');
 	return($text);
 }
 
 sub _buildCommand {
 	my $self = shift;
-	debug('Starting...');
 	my $command = '';
 	foreach my $prop (keys %{$self->{'_opts'}}){
 		if(
@@ -171,35 +158,28 @@ sub _buildCommand {
 			}
 		}
 	}
-	debug("command parametters -> ".$command);
-	debug('Ending...');
 	return $command;
 }
 
 sub _clean{
 	my ($self, $text) = (shift, shift);
-	debug('Starting...');
 	$text =~ s!'!"!g;
 	#$text =~ s!\\!\\\\!g;
-	debug('Ending...');
 	return $text;
 }
 
 sub _restoreDefaults{
 	my $self = shift;
-	debug('Starting...');
 	foreach my $prop (keys %{$self->{'_opts'}}){
 		if(!(grep $_ eq $prop, qw/title backtitle colors begin/)){
 			$self->{'_opts'}->{$prop} = undef;
 		}
 	}
 	$self->{'_opts'}->{'begin'} = [1,0];
-	debug('Ending...');
 }
 
 sub _execute{
 	my ($self, $text, $init, $mode, $background) = (shift, shift, shift, shift, shift || 0);
-	debug('Starting...');
 
 	$self->endGauge();
 
@@ -219,7 +199,6 @@ sub _execute{
 
 	$self->_init() if($self->{'autoreset'});
 
-	debug('Ending...');
 	wantarray ? return ($rv, $return) : $return;
 }
 
@@ -263,7 +242,6 @@ sub radiolist{
 }
 
 sub checkbox{
-	debug('Starting...');
 	my $self = shift;
 	my $text = shift;
 	my @init = (@_);
@@ -271,7 +249,6 @@ sub checkbox{
 
 	$opts .= "$_ '' on " foreach(@init);
 
-	debug('Ending...');
 	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
 }
 
@@ -297,41 +274,27 @@ sub dselect{
 }
 
 sub msgbox{
-	debug('Starting...');
-
 	my $self = shift;
 	my $text = shift;
-
-	debug('Ending...');
 	return $self->_textbox($text, 'msgbox');
 }
 
 sub yesno{
-	debug('Starting...');
-
 	my $self = shift;
 	my $text = shift;
 
 	my ($rv, undef) = ($self->_textbox($text, 'yesno'));
-
-	debug('Ending...');
 	return $rv;
 }
 
 sub inputbox{
-	debug('Starting...');
-
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
-
-	debug('Ending...');
 	return $self->_textbox($text, 'inputbox', $init);
 }
 
 sub infobox{
-	debug('Starting...');
-
 	my $self = shift;
 	my $text = shift;
 
@@ -339,21 +302,15 @@ sub infobox{
 	$self->{'_opts'}->{'clear'}	= undef;
 	my $rs						= $self->_textbox($text, 'infobox');
 	$self->{'_opts'}->{'clear'}	= $clear;
-
-	debug('Ending...');
 	$rs;
 }
 
 sub passwordbox{
-	debug('Starting...');
-
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
 
 	$self->{'_opts'}->{'insecure'} = '';
-
-	debug('Ending...');
 	return $self->_textbox($text, 'passwordbox', "'$init'");
 }
 
@@ -361,8 +318,6 @@ sub startGauge{
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || 0; #initial value
-
-	debug('Starting...');
 
 	$self->{'gauge'} ||= {};
 	return(0) if (defined $self->{'gauge'}->{'FH'});
@@ -391,16 +346,12 @@ sub startGauge{
 	my $rv = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
 	debug("Returned value $rv");
-	debug('Ending...');
 	$rv;
 }
 
 sub needGauge{
-	debug('Starting...');
 
 	my $self	= shift;
-
-	debug('Ending...');
 
 	return 0 if $self->{'gauge'}->{'FH'};
 	1;
@@ -410,8 +361,6 @@ sub setGauge{
 	my $self	= shift;
 	my $value	= shift;
 	my $text	= shift || undef;
-
-	debug('Starting...');
 
 	return 0 unless $self->{'gauge'}->{'FH'};
 
@@ -428,8 +377,6 @@ sub setGauge{
 	print $fh $text;
 	$SIG{PIPE} = \&endGauge;
 
-	debug('Ending...');
-
 	return(((defined $self->{'gauge'}->{'FH'}) ? 1 : 0));
 
 }
@@ -437,13 +384,10 @@ sub setGauge{
 sub endGauge{
 	my $self = iMSCP::Dialog->factory();
 
-	debug('Starting...');
-
 	return 0 unless ref $self->{'gauge'}->{'FH'};
 	$self->{'gauge'}->{'FH'}->close();
 	delete($self->{'gauge'});
 
-	debug('Ending...');
 	0;
 }
 

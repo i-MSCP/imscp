@@ -40,8 +40,6 @@ sub errmsg{
 
 	my ($self, $errmsg) = @_;
 
-	debug('Starting...');
-
 	use POSIX;
 	use Net::LibIDN qw/idn_to_ascii/;
 	use MIME::Entity;
@@ -71,13 +69,15 @@ sub errmsg{
 
 	my $out = new MIME::Entity;
 
-	$out -> build(
+	$out->build(
 		From		=> "$server_name ($server_ip) <$admin_email>",
 		To			=> $admin_email,
 		Subject		=> "[$date] i-MSCP Error report",
 		Data		=> $msg_data,
 		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
 	);
+
+	debug("Send message to $admin_email: $msg_data");
 
 	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
 		error('Can not send mail...');
@@ -86,17 +86,13 @@ sub errmsg{
 		close MAIL;
 	}
 
-	debug('Ending...');
 	0;
-
 }
 
 
 sub warnMsg{
 
 	my ($self, $msg) = @_;
-
-	debug('Starting...');
 
 	use POSIX;
 	use Net::LibIDN qw/idn_to_ascii/;
@@ -135,6 +131,8 @@ sub warnMsg{
 		'X-Mailer'	=> "i-MSCP $main::imscpConfig{'Version'} Automatic Error Messenger"
 	);
 
+	debug("Send message to $admin_email: $msg_data");
+
 	unless(open MAIL, "| /usr/sbin/sendmail -t -oi"){
 		error('Can not send mail...');
 	} else {
@@ -142,9 +140,7 @@ sub warnMsg{
 		close MAIL;
 	}
 
-	debug('Ending...');
 	0;
 }
-
 
 1;
