@@ -37,6 +37,7 @@ Tickets:
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77:  Task - Setup - Empty files must be removed
 	- Fixed #111: Feature - Add multiple secondary DNS server-wide
+	- Fixed #144: Bug - When disabling an account sub-domains/aliases are still working
 	- Fixed #147: Squirrelmail 1.4.22 released
 	- Fixed #151: Enhancement - Messages system
 	- Fixed #164: Bug - Customer not set to status "change" if update email limit

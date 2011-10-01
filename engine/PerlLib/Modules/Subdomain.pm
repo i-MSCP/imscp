@@ -252,6 +252,7 @@ sub buildHTTPDData{
 
 	$self->{httpd} = {
 		DMN_NAME					=> $self->{subdomain_name}.'.'.$self->{user_home},
+		DOMAIN_NAME					=> $self->{subdomain_name}.'.'.$self->{user_home},
 		ROOT_DMN_NAME				=> $self->{user_home},
 		PARENT_DMN_NAME				=> $self->{user_home},
 		DMN_IP						=> $self->{ip_number},

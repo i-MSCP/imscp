@@ -250,6 +250,7 @@ sub buildHTTPDData{
 
 	$self->{httpd} = {
 		DMN_NAME					=> $self->{alias_name},
+		DOMAIN_NAME					=> $self->{alias_name},
 		ROOT_DMN_NAME				=> $self->{user_home},
 		PARENT_DMN_NAME				=> $self->{user_home},
 		DMN_IP						=> $self->{ip_number},
