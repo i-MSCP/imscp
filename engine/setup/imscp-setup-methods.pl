@@ -322,13 +322,32 @@ sub setup_imscp_database {
 			} else {
 				$msg = '';
 			}
-		}while (!$dbName);
+		} while (!$dbName);
 
-		if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
-			error("$error");
-			return 1;
+		#test if we can connect using user`s suplied database
+		if(check_sql_connection(
+				$main::imscpConfig{'DATABASE_TYPE'},
+				$dbName,
+				$main::imscpConfig{'DATABASE_HOST'},
+				$main::imscpConfig{'DATABASE_PORT'},
+				$main::imscpConfig{'DATABASE_USER'},
+				$main::imscpConfig{'DATABASE_PASSWORD'} ? $crypt->decrypt_db_password($main::imscpConfig{'DATABASE_PASSWORD'}) : ''
+			)
+		){
+			#no, then we create tables in database
+			if (my $error = createDB($dbName, $main::imscpConfig{'DATABASE_TYPE'})){
+				error("$error");
+				return 1;
+			}
+		} else {
+			#yes we make sure we have last db possible
+			if (my $error = updateDb()){
+				error("$error");
+				return 1;
+			}
 		}
 
+		#save new database name
 		if ($main::imscpConfig{'DATABASE_NAME'} ne $dbName) {$main::imscpConfig{'DATABASE_NAME'} = $dbName};
 
 	} else {
