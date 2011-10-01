@@ -1128,9 +1128,11 @@ sub setup_gui_pma {
 		# Ask for proftpd SQL user password
 		$ctrlUserPwd = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", '');
 		if(!$ctrlUserPwd){
-			$ctrlUserPwd = iMSCP::Crypt::randomString(16);
+			$ctrlUserPwd = '';
+			my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+			$ctrlUserPwd .= $allowedChars[rand()*($#allowedChars + 1)]for (1..16);
 		}
-		$ctrlUserPwd =~ s/('|"|`|#|;|\\)/_/g;
+		$ctrlUserPwd =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
 		iMSCP::Dialog->factory()->msgbox("Your password is '".$ctrlUserPwd."'");
 		iMSCP::Dialog->factory()->set('cancel-label');
 

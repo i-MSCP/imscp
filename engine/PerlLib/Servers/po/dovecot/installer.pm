@@ -295,9 +295,11 @@ sub setupDB{
 		my $dbPass;
 		$dbPass = iMSCP::Dialog->factory()->inputbox("Please enter database password (leave blank for autogenerate)", $dbPass);
 		if(!$dbPass){
-			$dbPass = iMSCP::Crypt::randomString(8);
+			$dbPass = '';
+			my @allowedChars = ('A'..'Z', 'a'..'z', '0'..'9', '_');
+			$dbPass .= $allowedChars[rand()*($#allowedChars + 1)] for (1..16);
 		}
-		$dbPass =~ s/('|"|`|#|;|\s)/_/g;
+		$dbPass =~ s/('|"|`|#|;|\/|\s|\||<|\?|\\)/_/g;
 		iMSCP::Dialog->factory()->msgbox("Your password is '".$dbPass."' (we have stripped not allowed chars)");
 		iMSCP::Dialog->factory()->set('cancel-label');
 		$self::dovecotConfig{'DATABASE_USER'}		= $dbUser;
