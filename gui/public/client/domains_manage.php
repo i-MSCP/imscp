@@ -314,7 +314,6 @@ function client_generateSubdomainsList($tpl, $userId)
 
 			if ($isStatusOk) {
 				$tpl->assign(array(
-								  'SUB_STATUS_RELOAD_TRUE' => '',
 								  'SUB_NAME' => tohtml($name),
 								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
 								  'SUB_STATUS_RELOAD_FALSE' => ''));
