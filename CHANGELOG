@@ -40,6 +40,7 @@ Tickets:
 	- Fixed #144: Bug - When disabling an account sub-domains/aliases are still working
 	- Fixed #147: Squirrelmail 1.4.22 released
 	- Fixed #151: Enhancement - Messages system
+	- Fixed #161: Defect - Warnings on Webmail
 	- Fixed #164: Bug - Customer not set to status "change" if update email limit
 	- Fixed #165: Bug - Wrong level for page message
 	- Fixed #166: Enhancement - Add Dovecot support
