@@ -77,9 +77,7 @@ sub connect{
 		$self->{db}->{DATABASE_PASSWORD},
 		(defined($self->{db}->{DATABASE_SETTINGS}) && ref($self->{db}->{DATABASE_SETTINGS}) eq 'HASH' ? $self->{db}->{DATABASE_SETTINGS} : ())
 	))){
-		my $err = $DBI::errstr;
-		error($err);
-		return $err;
+		return $DBI::errstr;
 	}
 
 	0;
