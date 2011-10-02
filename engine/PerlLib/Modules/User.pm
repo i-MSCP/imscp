@@ -211,6 +211,7 @@ sub oldEngineCompatibility{
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
 	use Servers::httpd;
+	use iMSCP::Rights;
 
 	my $self		= shift;
 	my $rs			= 0;
@@ -262,6 +263,28 @@ sub oldEngineCompatibility{
 	$rs		|= execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
+
+	$rs |= setRights(
+		"$hDir/domain_disable_page",
+		{
+			user		=> $main::imscpConfig{ROOT_USER},
+			group		=> $httpdGroup,
+			filemode	=> '0640',
+			dirmode		=> '0750',
+			recursive	=> 'yes'
+		}
+	);
+
+	$rs |= setRights(
+		"$hDir/backups",
+		{
+			user		=> $main::imscpConfig{ROOT_USER},
+			group		=> $main::imscpConfig{ROOT_GROUP},
+			filemode	=> '0640',
+			dirmode		=> '0750',
+			recursive	=> 'yes'
+		}
+	);
 
 	0;
 }

@@ -233,16 +233,6 @@ sub restore{
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
-	$cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $self->{domain_uid}:$httpdGroup $dmn_dir/htdocs";
-	$rs		|= execute($cmd, \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-
-	$cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $self->{domain_uid}:$httpdGroup $dmn_dir/cgi-bin";
-	$rs		|= execute($cmd, \$stdout, \$stderr);
-	debug("$stdout") if $stdout;
-	error("$stderr") if $stderr;
-
 	$rs |= setRights(
 		"$dmn_dir/domain_disable_page",
 		{
