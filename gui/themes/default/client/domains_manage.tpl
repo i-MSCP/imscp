@@ -13,8 +13,8 @@
 
 				location = url;
 			}
-			/* ]]> */
-		</script>
+		/* ]]> */
+	</script>
 	<div class="header">
 		{MAIN_MENU}
 		<div class="logo">

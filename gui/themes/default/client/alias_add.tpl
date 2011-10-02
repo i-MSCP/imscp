@@ -10,7 +10,7 @@
 				dmnName = $('#ndomain_name').val();
 				// Configure the request for encode_idna request
 				$.ajaxSetup({
-				url: $(location).attr('pathname'),
+					url: $(location).attr('pathname'),
 					type:'POST',
 					data: 'domain=' + dmnName + '&uaction=toASCII',
 					datatype: 'text',
@@ -87,7 +87,7 @@
 					</tr>
 					<tr>
 						<td colspan="2">
-							<label for="status">{TR_ENABLE_FWD}</label>
+							{TR_ENABLE_FWD}
 						</td>
 						<td>
 							<input type="radio" name="status" id="status_enable"{CHECK_EN} value="1" onChange="setForwardReadonly(this);" /><label for="status_enable">{TR_ENABLE}</label><br />
@@ -96,10 +96,10 @@
 					</tr>
 					<tr>
                         <td colspan="2">
-                        	<label for="status">{TR_FORWARD}</label>
+                        	<label for="forward_prefix">{TR_FORWARD}</label>
 	                        </td>
 							<td>
-								<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+								<select name="forward_prefix" id="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
 									<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
 									<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
 									<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
@@ -111,7 +111,7 @@
 			</fieldset>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="add_alias" />
-				<input type="submit" name="Submit" value="{TR_ADD}" />
+				<input type="submit" name="add" value="{TR_ADD}" />
 			</div>
 		</form>
 	</div>
