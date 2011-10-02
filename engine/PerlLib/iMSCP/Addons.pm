@@ -49,15 +49,11 @@ sub load{
 }
 
 sub get{
-	debug('Starting...');
 	my $self = shift || iMSCP::Addons->new();
 
 	$self->load() unless(exists $self->{Addons});
 
-	debug('Ending...');
 	return (exists $self->{Addons} ? @{$self->{Addons}} : ());
 }
 
 1;
-
-__END__

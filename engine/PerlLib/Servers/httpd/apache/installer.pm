@@ -29,6 +29,7 @@ package Servers::httpd::apache::installer;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use Data::Dumper;
 
 use vars qw/@ISA/;
 
@@ -36,7 +37,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 
@@ -50,12 +50,10 @@ sub _init{
 	tie %self::apacheConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::apacheOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
 	my $self = shift;
 	my $rs = 0;
@@ -81,12 +79,10 @@ sub install{
 
 	$rs |= $self->oldEngineCompatibility();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub setGuiPermissions{
-	debug('Starting...');
 
 	use iMSCP::Rights;
 
@@ -137,11 +133,10 @@ sub setGuiPermissions{
 	$rs |= setRights($PHP_DIR,
 		{user => $rootUName, group => $rootGName, mode => '0555'}
 	);
-	debug('Ending...');
+
 	$rs;
 }
 sub addUsers{
-	debug('Starting...');
 
 	my $self = shift;
 	my $rs = 0;
@@ -167,12 +162,10 @@ sub addUsers{
 	$rs = $panelUName->addToGroup($main::imscpConfig{'MASTER_GROUP'});
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub makeDirs{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 
@@ -196,12 +189,10 @@ sub makeDirs{
 		$rs |= iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]});
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub bkpConfFile{
-	debug('Starting...');
 
 	use File::Basename;
 
@@ -220,32 +211,29 @@ sub bkpConfFile{
 		}
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub saveConf{
-	debug('Starting...');
 
 	use iMSCP::File;
 
-	my $self = shift;
-	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.data");
-	my $cfg = $file->get() or return 1;
+	my $self	= shift;
+	my $rs		= 0;
+	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/apache.data");
+	my $cfg		= $file->get() or return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/apache.old.data");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 
 sub oldEngineCompatibility{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use Servers::httpd::apache;
@@ -254,38 +242,14 @@ sub oldEngineCompatibility{
 	my $httpd	= Servers::httpd::apache->new();
 	my $rs		= 0;
 
-	#for((
-		#'PHP_FASTCGI',
-		#'CMD_HTTPD',
-		#'APACHE_CONF_DIR',
-		#'APACHE_LOG_DIR',
-		#'APACHE_BACKUP_LOG_DIR',
-		#'APACHE_USERS_LOG_DIR',
-		#'APACHE_MODS_DIR',
-		#'APACHE_SITES_DIR',
-		#'APACHE_CUSTOM_SITES_CONFIG_DIR',
-		#'APACHE_USER',
-		#'APACHE_GROUP',
-		#'PHP_STARTER_DIR',
-		#'PHP5_FASTCGI_BIN',
-		#'APACHE_WWW_DIR',
-		#'CMD_HTTPD_CTL',
-		#'APACHE_RESTART_TRY',
-		#'APACHE_NAME'
-	#)){
-		#$main::imscpConfig{$_} = $self::apacheConfig{$_} if !$main::imscpConfig{$_} || $main::imscpConfig{$_} ne $self::apacheConfig{$_};
-	#}
-
 	if(-f "$self::apacheConfig{APACHE_SITES_DIR}/imscp.conf"){
 		$rs |= $httpd->disableSite("imscp.conf");
 		$rs |= iMSCP::File->new(filename => "$self::apacheConfig{APACHE_SITES_DIR}/imscp.conf")->delFile();
 	}
-	debug('Ending...');
 	$rs;
 }
 
 sub fastcgiConf {
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -294,7 +258,8 @@ sub fastcgiConf {
 
 	my $self	= shift;
 	my $httpd	= Servers::httpd::apache->new();
-	my ($rs, $cfgTpl, $err);
+	my $rs		= 0;
+	my ($cfgTpl, $err);
 
 	# Saving the current production file if they exists
 	for (qw/fastcgi_imscp.conf fastcgi_imscp.load fcgid_imscp.conf fcgid_imscp.load/) {
@@ -363,7 +328,6 @@ sub fastcgiConf {
 	$rs = $httpd->enableMod("actions $enable");
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
@@ -377,7 +341,6 @@ sub fastcgiConf {
 # @return int 0 on success, other on failure
 #
 sub vHostConf {
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -438,7 +401,6 @@ sub vHostConf {
 	$rs = $httpd->enableSite("00_nameserver.conf");
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
@@ -452,7 +414,6 @@ sub vHostConf {
 # @return int 0 on success, other on failure
 #
 sub phpConf {
-	debug('Starting...');
 
 	use Servers::httpd::apache;
 	use iMSCP::File;
@@ -542,8 +503,6 @@ sub phpConf {
 	# Install the new file
 	$file->copyFile("$self::apacheConfig{'PHP_STARTER_DIR'}/master/php5/browscap.ini") and return 1;
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -556,16 +515,14 @@ sub phpConf {
 #
 sub masterHost {
 
-	debug('Starting...');
-
 	use iMSCP::File;
 	use iMSCP::Templator;
 	use iMSCP::Execute;
 	use Servers::httpd;
 
 	my $self	= shift;
-	my $httpd = Servers::httpd::apache->new();
-	my $rs;
+	my $httpd	= Servers::httpd::apache->new();
+	my $rs		= 0;
 
 	$rs = $httpd->disableSite('000-default');
 	return $rs if $rs;
@@ -624,12 +581,10 @@ sub masterHost {
 
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub installLogrotate{
-	debug('Starting...');
 
 	use Servers::httpd;
 
@@ -644,7 +599,7 @@ sub installLogrotate{
 	);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
+
 1;

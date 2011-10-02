@@ -41,17 +41,14 @@ use Data::Dumper;
 newDebug('imscp-dsk-quota.log');
 
 sub quota_start_up {
-	debug('Starting...');
 
 	umask(027);
 	iMSCP::Boot->new()->init({nolock => 'yes'});
 
-	debug('Ending...');
 	0;
 }
 
 sub quota_files {
-	debug('Starting...');
 
 	my ($rs, $rdata);
 
@@ -117,12 +114,10 @@ sub quota_files {
 		}
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub quota_mysql {
-	debug('Starting...');
 
 	my ($rs, $size) = (0, 0);
 
@@ -208,7 +203,6 @@ sub quota_mysql {
 		}
 	}
 
-	debug('Ending...');
 	$rs;
 }
 

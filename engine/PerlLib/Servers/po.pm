@@ -46,12 +46,7 @@ sub factory{
 		$class	= "Servers::po::$server";
 	}
 
-	debug('Starting...');
-
 	require $file;
-
-	debug('Ending...');
-
 	return $class->new();
 }
 

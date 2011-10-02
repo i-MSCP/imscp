@@ -38,7 +38,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
@@ -51,12 +50,10 @@ sub _init{
 	tie %self::courierConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::courierOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
 
-	debug('Ending...');
 	0;
 }
 
 sub migrateMailboxes{
-	debug('Starting...');
 
 	if(
 		$main::imscpConfigOld{PO_SERVER}
@@ -80,14 +77,13 @@ sub migrateMailboxes{
 		error("Error while converting mails") if !$stderr && $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	# Saving all system configuration files if they exists
 	for ((
@@ -96,28 +92,26 @@ sub install{
 		"$self::courierConfig{COURIER_IMAP_SSL}",
 		"$self::courierConfig{COURIER_POP_SSL}"
 	)) {
-		$self->bkpConfFile($_) and return 1;
+		$rs |= $self->bkpConfFile($_);
 	}
 
 	# authdaemonrc file
-	$self->authDaemon() and return 1;
+	$rs |= $self->authDaemon();
 
 	# userdb file
-	$self->userDB() and return 1;
+	$rs |= $self->userDB();
 
 	# SSL Conf files
-	$self->sslConf() and return 1;
+	$rs |= $self->sslConf();
 
-	$self->saveConf() and return 1;
+	$rs |= $self->saveConf();
 
-	$self->migrateMailboxes() and return 1;
+	$rs |= $self->migrateMailboxes();
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub saveConf{
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -126,17 +120,15 @@ sub saveConf{
 	my $cfg = $file->get() or return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub bkpConfFile{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $cfgFile		= shift;
@@ -153,12 +145,10 @@ sub bkpConfFile{
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub authDaemon{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rdata, $file);
@@ -183,13 +173,10 @@ sub authDaemon{
 	# Installing the new file in the production directory
 	$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
 
-
-	debug('Ending...');
 	0;
 }
 
 sub userDB{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rdata, $file);
@@ -217,14 +204,13 @@ sub userDB{
 	error("$stderr") if ($stderr && $rs);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub sslConf{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 	my ($rdata, $file);
 
 	for (($self::courierConfig{'COURIER_IMAP_SSL'}, $self::courierConfig{'COURIER_POP_SSL'})) {
@@ -236,7 +222,10 @@ sub sslConf{
 		$file = iMSCP::File->new(filename => "$self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
 		#read file exit if can not read
 		$rdata = $file->get();
-		return 1 if (!$rdata);
+		if (!$rdata){
+			$rs |=  1 ;
+			next;
+		}
 
 		#if ssl conf not in place we add if
 		if($rdata =~ m/^TLS_CERTFILE=/msg){
@@ -246,20 +235,18 @@ sub sslConf{
 		}
 
 		$file = iMSCP::File->new(filename => "$self->{wrkDir}/$_");
-		$file->set($rdata) and return 1;
-		$file->save() and return 1;
-		$file->mode(0644) and return 1;
-		$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+		$rs |= $file->set($rdata);
+		$rs |= $file->save();
+		$rs |= $file->mode(0644);
+		$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 		# Installing the new file in the production directory
-		$file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}") and return 1;
+		$rs |= $file->copyFile("$self::courierConfig{'AUTHLIB_CONF_DIR'}");
 	}
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub registerHooks{
-	debug('Starting...');
 	my $self = shift;
 
 	use Servers::mta;
@@ -270,12 +257,11 @@ sub registerHooks{
 		'buildConf', sub { return $self->mtaConf(@_); }
 	) if $mta->can('registerPostHook');
 
-	debug('Ending...');
 	0;
 }
 
 sub mtaConf{
-	debug('Starting...');
+
 	my $self	= shift;
 	my $content	= shift || '';
 
@@ -303,7 +289,6 @@ sub mtaConf{
 		'buildConf', sub { return $self->mtaConf(@_); }
 	) if $mta->can('registerPostHook');
 
-	debug('Ending...');
 	$content;
 }
 

@@ -41,7 +41,6 @@ use iMSCP::Dialog::Dialog;
 
 sub _init{
 	my $self	= shift;
-	debug('Starting...');
 
 	$self->{autosize} = undef;
 
@@ -65,21 +64,17 @@ sub _init{
 	$self->_find_bin('whiptail');
 	$self->_getConsoleSize();
 
-	debug('Ending...');
 	0;
 }
 
 sub _getConsoleSize{
 	my $self = shift;
-	debug('Starting...');
 	$self->{'lines'}	= 23;
 	$self->{'columns'}	= 79;
 	debug("Lines->$self->{'lines'}");
 	debug("Columns->$self->{'columns'}");
-	debug('Ending...');
 }
 sub _find_bin {
-	debug('Starting...');
 
 	my ($self, $variant)	= (shift, shift);
 	my ($rs, $stdout, $stderr);
@@ -88,14 +83,11 @@ sub _find_bin {
 	fatal(": Can't find whiptail binary $stderr") if $stderr;
 
 	$self->{'bin'} = $stdout if $stdout;
-	fatal(': Can`t find whiptail binary '.$variant) unless (-x $self->{'bin'});
-
-	debug('Ending...');
+	fatal('Can`t find whiptail binary '.$variant) unless (-x $self->{'bin'});
 }
 
 sub _execute{
 	my ($self, $text, $init, $mode, $background) = (shift, shift, shift, shift, shift || 0);
-	debug('Starting...');
 
 	$self->endGauge();
 
@@ -115,7 +107,6 @@ sub _execute{
 
 	$self->_init() if($self->{'autoreset'});
 
-	debug('Ending...');
 	wantarray ? return ($rv, $return) : $return;
 }
 
@@ -124,7 +115,6 @@ sub _execute{
 
 
 sub radiolist{
-	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
@@ -134,12 +124,10 @@ sub radiolist{
 	my $opts = '';
 	$opts .= "'$_' '' ".($opts ? " off " : "on ") foreach (@init);
 
-	debug('Ending...');
 	return $self->_textbox($text, 'radiolist', (@init +1)." $opts");
 }
 
 sub passwordbox{
-	debug('Starting...');
 
 	my $self = shift;
 	my $text = shift;
@@ -147,7 +135,6 @@ sub passwordbox{
 
 	$self->{'_opts'}->{'insecure'} = undef;
 
-	debug('Ending...');
 	return $self->_textbox($text, 'passwordbox', "'$init'");
 }
 
@@ -155,8 +142,6 @@ sub startGauge{
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || 0; #initial value
-
-	debug('Starting...');
 
 	$self->{'gauge'} ||= {};
 	return(0) if (defined $self->{'gauge'}->{'FH'});
@@ -184,16 +169,12 @@ sub startGauge{
 	my $rv = $? >> 8;
 	$self->{'gauge'}->{'FH'}->autoflush(1);
 	debug("Returned value $rv");
-	debug('Ending...');
 	$rv;
 }
 
 sub needGauge{
-	debug('Starting...');
 
 	my $self	= shift;
-
-	debug('Ending...');
 
 	return 0 if $self->{'gauge'}->{'FH'};
 	1;
@@ -203,8 +184,6 @@ sub setGauge{
 	my $self	= shift;
 	my $value	= shift;
 	my $text	= shift || undef;
-
-	debug('Starting...');
 
 	return 0 unless $self->{'gauge'}->{'FH'};
 
@@ -221,8 +200,6 @@ sub setGauge{
 	print $fh $text;
 	$SIG{PIPE} = \&endGauge;
 
-	debug('Ending...');
-
 	return(((defined $self->{'gauge'}->{'FH'}) ? 1 : 0));
 
 }
@@ -230,24 +207,19 @@ sub setGauge{
 sub endGauge{
 	my $self = iMSCP::Dialog->factory();
 
-	debug('Starting...');
-
 	return 0 unless ref $self->{'gauge'}->{'FH'};
 	$self->{'gauge'}->{'FH'}->close();
 	delete($self->{'gauge'});
 
-	debug('Ending...');
 	0;
 }
 
 #sub textbox <file> <height> <width> # todo
 #sub menu <text> <height> <width> <listheight> [tag item] ... # todo
 
-sub fselect{fatal(': Not supported');}
-sub tailbox{fatal(': Not supported');}
-sub editbox{fatal(': Not supported');}
-sub dselect{fatal(': Not supported');}
+sub fselect{fatal('Not supported');}
+sub tailbox{fatal('Not supported');}
+sub editbox{fatal('Not supported');}
+sub dselect{fatal('Not supported');}
 
 1;
-
-__END__

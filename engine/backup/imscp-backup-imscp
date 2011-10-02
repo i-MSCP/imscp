@@ -46,20 +46,16 @@ our $command = {
 
 sub backup_imscp_start_up {
 
-	debug('Starting...');
-
 	umask(027);
 	iMSCP::Boot->new()->init({nolock => 'yes'});
 
 	iMSCP::Boot->new()->lock('/tmp/imscp-backup-imscp.lock');
 
-	debug('Ending...');
 	0;
 }
 
 sub backup_imscp_shut_down {
 
-	debug('Starting...');
 	use iMSCP::Mail;
 
 	my @warnings	= getMessageByType('WARNING');
@@ -69,13 +65,10 @@ sub backup_imscp_shut_down {
 	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
 	iMSCP::Mail->new()->errmsg($msg) if ($msg);
 
-	debug('Ending...');
 	0;
 }
 
 sub backup_imscp_database {
-
-	debug('Starting...');
 
 	use POSIX;
 	use iMSCP::Execute;
@@ -113,17 +106,13 @@ sub backup_imscp_database {
 		warning("Driver for $main::imscpConfig{DATABASE_TYPE} does not support dump");
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub backup_imscp_engine {
 
-	debug('Starting...');
-
 	if ($main::imscpConfig{'BACKUP_IMSCP'} ne 'yes') {
 		warning('domain backups are disabled');
-		debug('Ending...');
 		return 0;
 	}
 
@@ -161,12 +150,10 @@ sub backup_imscp_engine {
 	error("Can not remove old backups backup") if (!$stderr && $rs);
 	return $rs if $rs;
 
-	debug('Ending...');
 	return 0;
 }
 
 sub backup_imscp_configs{
-	debug('Starting...');
 
 	my $date		= strftime "%d.%m.%Y-%H:%M", localtime;
 	my $tarName	= "$main::imscpConfig{BACKUP_FILE_DIR}/config-backup-$date.tar";
@@ -190,7 +177,6 @@ sub backup_imscp_configs{
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug('Ending...');
 	return 0;
 }
 

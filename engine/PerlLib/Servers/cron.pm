@@ -38,8 +38,6 @@ use Common::SingletonClass;
 sub _init{
 	my $self	= shift;
 
-	debug('Starting...');
-
 	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/cron.d";
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
 	$self->{wrkDir} = "$self->{cfgDir}/working";
@@ -49,16 +47,18 @@ sub _init{
 sub factory{ return Servers::cron->new(); }
 
 sub addTask{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
 
 	my $self	= shift;
 	my $data	= shift;
-	my $rs;
+	my $rs		= 0;
 
 	$data = {} if (ref $data ne 'HASH');
+
+	local $Data::Dumper::Terse = 1;
+	debug("Task data: ". (Dumper $data));
 
 	my $errmsg = {
 		USER	=> 'You must provide running user!',
@@ -112,12 +112,10 @@ sub addTask{
 		$rs |= $file->copyFile("$main::imscpConfig{CRON_D_DIR}/imscp");
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delTask{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -127,6 +125,9 @@ sub delTask{
 	my $rs;
 
 	$data = {} if (ref $data ne 'HASH');
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		TASKID	=> 'You must provide a unique task id!'
@@ -169,7 +170,6 @@ sub delTask{
 		$rs |= $file->copyFile("$main::imscpConfig{CRON_D_DIR}/imscp");
 	}
 
-	debug('Ending...');
 	$rs;
 }
 

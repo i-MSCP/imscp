@@ -39,7 +39,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 
@@ -53,38 +52,31 @@ sub _init{
 	tie %self::proftpdConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::proftpdOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	# Saving all system configuration files if they exists
 	for ((
 		$self::proftpdConfig{'FTPD_CONF_FILE'},
 	)) {
-		$self->bkpConfFile($_) and return 1;
+		$rs |= $self->bkpConfFile($_);
 	}
 
-	$self->setupDB() and return 1;
-	$self->buildConf() and return 1;
-	$self->saveConf() and return 1;
+	$rs |= $self->setupDB();
+	$rs |= $self->buildConf();
+	$rs |= $self->saveConf();
+	$rs |= $self->logFiles();
+	$rs |= $self->removeOldFile();
 
-	$self->logFiles() and return 1;
-
-	$self->removeOldFile() and return 1;
-
-	#$self->oldEngineCompatibility() and return 1;
-
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub removeOldFile{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -95,68 +87,66 @@ sub removeOldFile{
 	$rs = execute("rm $self::proftpdConfig{'FTPD_CONF_DIR'}/*", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 
-	debug('Ending...');
 	0;
 }
 
 sub saveConf{
-	debug('Starting...');
 
 	use iMSCP::File;
 
-	my $self		= shift;
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.data");
-	my $cfg = $file->get() or return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	my $self	= shift;
+	my $rs		= 0;
+	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.data");
+	my $cfg		= $file->get() or return 1;
+
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.old.data");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub logFiles{
-	debug('Starting...');
 
-	my $self		= shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	## To fill ftp_traff.log file with something
 	if (! -d "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd") {
 		debug("Create dir $main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd");
-		iMSCP::Dir->new(
+		$rs |= iMSCP::Dir->new(
 			dirname => "$main::imscpConfig{'TRAFF_LOG_DIR'}/proftpd"
 		)->make({
 			user	=> $main::imscpConfig{'ROOT_USER'},
 			group	=> $main::imscpConfig{'ROOT_GROUP'},
 			mode	=> 0755
-		}) and return 1;
+		});
 	}
 
 	if(! -f "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}") {
 		my $file = iMSCP::File->new(
 			filename => "$main::imscpConfig{'TRAFF_LOG_DIR'}$self::proftpdConfig{'FTP_TRAFF_LOG'}"
 		);
-		$file->set("\n") and return 1;
-		$file->save() and return 1;
-		$file->mode(0644) and return 1;
-		$file->owner(
+		$rs |= $file->save();
+		$rs |= $file->mode(0644);
+		$rs |= $file->owner(
 			$main::imscpConfig{'ROOT_USER'},
 			$main::imscpConfig{'ROOT_GROUP'}
-		) and return 1;
+		);
 	}
-	debug('Ending...');
-	0;
+
+	$rs;
 }
 
 sub buildConf{
-	debug('Starting...');
 
-	my $self		= shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	my $cfg = {
 		HOST_NAME		=> $main::imscpConfig{'SERVER_HOSTNAME'},
@@ -174,23 +164,23 @@ sub buildConf{
 	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/proftpd.conf");
 	my $cfgTpl	= $file->get();
 	return 1 if (!$cfgTpl);
+
 	$cfgTpl = iMSCP::Templator::process($cfg, $cfgTpl);
 	return 1 if (!$cfgTpl);
-	$file = iMSCP::File->new(filename => "$self->{wrkDir}/proftpd.conf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
-	$file->copyFile($self::proftpdConfig{'FTPD_CONF_FILE'}) and return 1;
 
-	debug('Ending...');
-	0;
+	$file = iMSCP::File->new(filename => "$self->{wrkDir}/proftpd.conf");
+	$rs |= $file->set($cfgTpl);
+	$rs |= $file->save();
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+	$rs |= $file->copyFile($self::proftpdConfig{'FTPD_CONF_FILE'});
+
+	$rs;
 }
 
 sub setupDB{
-	debug('Starting...');
 
-	my $self		= shift;
+	my $self	= shift;
 	my $connData;
 
 	if(!$self->check_sql_connection
@@ -294,13 +284,10 @@ sub setupDB{
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub check_sql_connection{
-
-	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -309,12 +296,10 @@ sub check_sql_connection{
 	$database->set('DATABASE_USER',		$dbUser);
 	$database->set('DATABASE_PASSWORD',	$dbPass);
 
-	debug('Ending...');
 	return $database->connect();
 }
 
 sub bkpConfFile{
-	debug('Starting...');
 
 	use File::Basename;
 
@@ -332,23 +317,6 @@ sub bkpConfFile{
 		}
 	}
 
-	debug('Ending...');
-	0;
-}
-
-sub oldEngineCompatibility{
-	debug('Starting...');
-
-	for((
-		'CMD_FTPD',
-		'FTPD_CONF_FILE',
-		'FTPD_CONF_DIR',
-		'FTP_TRAFF_LOG'
-	)){
-		$main::imscpConfig{$_} = $self::proftpdConfig{$_} if !$main::imscpConfig{$_} || $main::imscpConfig{$_} ne $self::proftpdConfig{$_};
-	}
-
-	debug('Ending...');
 	0;
 }
 

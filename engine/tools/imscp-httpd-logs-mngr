@@ -42,17 +42,14 @@ use Data::Dumper;
 newDebug('imscp-httpd-logs-mngr.log');
 
 sub logs_start_up {
-	debug('Starting...');
 
 	umask(027);
 	iMSCP::Boot->new()->init({nolock => 'yes'});
 
-	debug('Ending...');
 	0;
 }
 
 sub copy_logs{
-	debug('Starting...');
 
 	my $rs = 0;
 	my $httpd	= Servers::httpd->factory();
@@ -102,7 +99,6 @@ sub copy_logs{
 		}
 	}
 
-	debug('Ending...');
 	$rs;
 }
 

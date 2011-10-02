@@ -43,7 +43,6 @@ sub _init{
 }
 
 sub loadData{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -100,12 +99,10 @@ sub loadData{
 
 	$self->{$_} = $rdata->{$self->{htgroupId}}->{$_} for keys %{$rdata->{$self->{htgroupId}}};
 
-	debug('Ending...');
 	0;
 }
 
 sub process{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{htgroupId}	= shift;
@@ -138,12 +135,10 @@ sub process{
 	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub buildHTTPDData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -153,9 +148,7 @@ sub buildHTTPDData{
 		HTGROUP_DMN		=> $self->{domain_name},
 	};
 
-	debug('Ending...');
 	0;
 }
-
 
 1;

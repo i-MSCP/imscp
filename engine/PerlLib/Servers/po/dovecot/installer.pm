@@ -38,7 +38,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/dovecot";
@@ -51,14 +50,13 @@ sub _init{
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerror => 1 if -f $oldConf;
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	$self->getVersion() and return 1;
 
@@ -67,22 +65,18 @@ sub install{
 		'dovecot.conf',
 		'dovecot-sql.conf'
 	)) {
-		$self->bkpConfFile($_) and return 1;
+		$rs |= $self->bkpConfFile($_);
 	}
 
-	$self->setupDB() and return 1;
-	$self->buildConf() and return 1;
-	$self->saveConf() and return 1;
-	#$self->oldEngineCompatibility() and return 1;
+	$rs |= $self->setupDB();
+	$rs |= $self->buildConf();
+	$rs |= $self->saveConf();
+	$rs |= $self->migrateMailboxes();
 
-	$self->migrateMailboxes() and return 1;
-
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub migrateMailboxes{
-	debug('Starting...');
 
 	if(
 		$main::imscpConfigOld{PO_SERVER}
@@ -106,34 +100,10 @@ sub migrateMailboxes{
 		error("Error while converting mails") if !$stderr && $rs;
 	}
 
-	debug('Ending...');
-	0;
-}
-
-sub oldEngineCompatibility{
-	debug('Starting...');
-
-	$main::imscpConfig{CMD_MAKEUSERDB}	= '/bin/true';
-	$main::imscpConfig{CMD_AUTHD}		= '/bin/true';
-	$main::imscpConfig{CMD_IMAP}		= '/bin/true';
-	$main::imscpConfig{CMD_IMAP_SSL}	= '/bin/true';
-	$main::imscpConfig{CMD_POP}			= '/bin/true';
-	$main::imscpConfig{CMD_POP_SSL}		= '/bin/true';
-
-	use iMSCP::Dir;
-	iMSCP::Dir->new(dirname => $main::imscpConfig{AUTHLIB_CONF_DIR})->make() and return 1;
-
-	use iMSCP::File;
-	my $file = iMSCP::File->new(filename => "$main::imscpConfig{'CONF_DIR'}/courier/userdb");
-	$file->copyFile("$main::imscpConfig{AUTHLIB_CONF_DIR}/userdb") and return 1;
-	$file->copyFile("$main::imscpConfig{'CONF_DIR'}/courier/working") and return 1;
-
-	debug('Ending...');
 	0;
 }
 
 sub getVersion{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
@@ -147,13 +117,10 @@ sub getVersion{
 	chomp($stdout);
 	$self->{version} = $stdout;
 
-	debug('Ending...');
 	0;
 }
 
 sub saveConf{
-
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -169,14 +136,11 @@ sub saveConf{
 	$file->mode(0640) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug('Ending...');
-
 	0;
 }
 
 
 sub bkpConfFile{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $cfgFile		= shift;
@@ -193,12 +157,10 @@ sub bkpConfFile{
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub buildConf{
-	debug('Starting...');
 
 	use Servers::mta;
 
@@ -258,13 +220,10 @@ sub buildConf{
 	my $file	= iMSCP::File->new(filename => "$self::dovecotConfig{'DOVECOT_CONF_DIR'}/dovecot.conf");
 	$file->mode(0644) and return 1;
 
-
-	debug('Ending...');
 	0;
 }
 
 sub setupDB{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $connData;
@@ -374,13 +333,10 @@ sub setupDB{
 		return $err if (ref $err ne 'HASH');
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub check_sql_connection{
-
-	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -389,12 +345,11 @@ sub check_sql_connection{
 	$database->set('DATABASE_USER',		$dbUser);
 	$database->set('DATABASE_PASSWORD',	$dbPass);
 
-	debug('Ending...');
 	return $database->connect();
 }
 
 sub registerHooks{
-	debug('Starting...');
+
 	my $self = shift;
 
 	use Servers::mta;
@@ -405,12 +360,11 @@ sub registerHooks{
 		'buildConf', sub { return $self->mtaConf(@_); }
 	) if $mta->can('registerPostHook');
 
-	debug('Ending...');
 	0;
 }
 
 sub mtaConf{
-	debug('Starting...');
+
 	my $self	= shift;
 	my $content	= shift || '';
 
@@ -442,7 +396,7 @@ sub mtaConf{
 
 	debug($content);
 
-	debug('Ending...');
 	$content;
 }
+
 1;

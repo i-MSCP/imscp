@@ -43,7 +43,6 @@ sub _init{
 }
 
 sub loadData{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -67,12 +66,10 @@ sub loadData{
 
 	$self->{$_} = $rdata->{$self->{mailId}}->{$_} for keys %{$rdata->{$self->{mailId}}};
 
-	debug('Ending...');
 	0;
 }
 
 sub process{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{mailId}	= shift;
@@ -112,18 +109,14 @@ sub process{
 	my $rdata = iMSCP::Database->factory()->doQuery('misc', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub restore{
-	debug('Starting...');
-	debug('Ending...');
 	0;
 }
 
 sub buildMTAData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -149,12 +142,10 @@ sub buildMTAData{
 		@{$self->{mta}->{MAIL_ON_CATCHALL}} = keys %{$rdata};
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub buildPOData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -166,7 +157,6 @@ sub buildPOData{
 		MAIL_TYPE			=> $self->{mail_type},
 	};
 
-	debug('Ending...');
 	0;
 }
 

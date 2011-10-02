@@ -38,11 +38,10 @@ use Common::SimpleClass;
 
 sub addSystemUser{
 
-	debug('Starting...');
 
 	my $self	= shift;
 
-	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $userName	= shift || $self->{username} || undef;
 	$self->{username} = $userName;
@@ -100,17 +99,14 @@ sub addSystemUser{
 	debug("$stderr") if ($stderr && !$rs);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub delSystemUser{
 
-	debug('Starting...');
-
 	my $self	= shift;
 
-	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $userName	= shift || $self->{username} || undef;
 	$self->{username} = $userName;
@@ -136,17 +132,15 @@ sub delSystemUser{
 		return $rs if ($rs && $rs != 12);
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub addToGroup{
 
-	debug('Starting...');
 
 	my $self	= shift;
 
-	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $groupName	= shift || $self->{groupname} || undef;
 	$self->{groupname} = $groupName;
@@ -182,17 +176,15 @@ sub addToGroup{
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub getUserGroups{
 
-	debug('Starting...');
 
 	my $self	= shift;
 
-	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $userName	= shift || $self->{username} || undef;
 	$self->{username} = $userName;
@@ -205,12 +197,10 @@ sub getUserGroups{
 	return $rs if $rs;
 	%{$self->{userGroups}} = map { $_ => 1 } split ' ', $stdout;
 
-	debug('Ending...');
 	0;
 }
 
 sub removeFromGroup{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -249,7 +239,6 @@ sub removeFromGroup{
 		return $rs if $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
 

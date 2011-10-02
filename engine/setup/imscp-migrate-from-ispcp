@@ -52,8 +52,6 @@ exit 0;
 
 sub setup_engine {
 
-	debug('Starting...');
-
 	use iMSCP::Stepper;
 
 	my @steps = (
@@ -79,30 +77,23 @@ sub setup_engine {
 
 	systemSetup();
 
-	debug('Ending...');
 	0;
 }
 
 sub loadConfigs{
 
-	debug('Starting...');
-
 	use iMSCP::Config;
 
 	my $path = ($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/');
 
-	fatal(': ispcp.conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
+	fatal('ispcp.conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
 
 	tie %main::ispcpConfig, 'iMSCP::Config','fileName' => $path.'ispcp/ispcp.conf';
-
-	debug('Ending...');
 
 	0;
 }
 
 sub welcome{
-
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -126,13 +117,10 @@ sub welcome{
 		)
 	);
 
-	debug('Ending...');
 	0;
 }
 
 sub checkISPCPVersion{
-
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -152,13 +140,11 @@ sub checkISPCPVersion{
 						\\Z1WARNING: \\ZuDATA might be corrupt if you proceed forward\\Zn!!
 		");
 	}
-	debug('Ending...');
+
 	0;
 }
 
 sub checkDbPass{
-
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -185,7 +171,6 @@ sub checkDbPass{
 				debug($main::ispcpDBiv);
 				my $error = connectispCPDb();
 				if(!$error) {
-					debug('Ending...');
 					return 0;
 				}
 				error("$error");
@@ -207,13 +192,10 @@ sub checkDbPass{
 							Fix this and restart.
 	");
 	error("ispCP database keys are corrupt! We tryied to use folowing keys\n".join("\n", @paths));
-	debug('Ending...');
 	1;
 }
 
 sub connectispCPDb{
-
-	debug('Starting...');
 
 	use iMSCP::Crypt;
 
@@ -227,14 +209,10 @@ sub connectispCPDb{
 	$database->set('DATABASE_USER', $main::ispcpConfig{'DATABASE_USER'});
 	$database->set('DATABASE_PASSWORD', $pass);
 
-	debug('Ending...');
-
 	return $database->connect();
 }
 
 sub databaseIntegrityTest{
-
-	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Database;
@@ -361,20 +339,15 @@ sub databaseIntegrityTest{
 							."\nFix this and try again.
 		");
 		error("".join("\n", @errors));
-		debug('Ending...');
 		return 1;
 	}
 
 	connectispCPDb(); # restore conection
 
-	debug('Ending...');
-
 	0;
 }
 
 sub userTest{
-
-	debug('Starting...');
 
 	use iMSCP::Database;
 	use iMSCP::Dialog;
@@ -409,17 +382,13 @@ sub userTest{
 							."\n\nFix this and try again.
 		");
 		error("\n".join("\n", @errors));
-		debug('Ending...');
 		return 1;
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub systemConfigTest{
-
-	debug('Starting...');
 
 	use iMSCP::Execute;
 	use iMSCP::Dialog;
@@ -474,12 +443,10 @@ sub systemConfigTest{
 			warning("\n".join("\n", @errors));
 		}
 	}
-	debug('Ending...');
 	return ( $rv ? join("\n\n", @errors) : $rv);
 }
 
 sub confSave{
-	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Boot;
@@ -507,14 +474,11 @@ sub confSave{
 		$main::imscpConfig{$_} = $main::ispcpConfig{$_};
 	}
 
-
-
-	debug('Ending...');
 	0;
 }
 
 sub savePass {
-	debug('Starting...');
+
 	my $table		= shift;
 	my $field_id	= shift;
 	my $field_pass	= shift;
@@ -541,13 +505,10 @@ sub savePass {
 		push(@{$errors}, "$query produced following error: $error");
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub dbUpgrade{
-
-	debug('Starting...');
 
 	my @errors;
 
@@ -596,13 +557,10 @@ sub dbUpgrade{
 		");
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub otherMessCleanup{
-
-	debug('Starting...');
 
 	use iMSCP::Templator;
 	use iMSCP::File;
@@ -702,13 +660,10 @@ sub otherMessCleanup{
 		");
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub daemonRemove{
-
-	debug('Starting...');
 
 	use iMSCP::Execute;
 	my ($rs, $stdout, $stderr, @errors);
@@ -739,13 +694,11 @@ sub daemonRemove{
 								be aware that we do not guarantee that will succeed
 		");
 	}
-	debug('Ending...');
+
 	0;
 }
 
 sub removeDirs{
-
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	my $dir;
@@ -775,13 +728,10 @@ sub removeDirs{
 		warning("\n$errors\n");
 	};
 
-	debug('Ending...');
 	0;
 }
 
 sub removeFile{
-
-	debug('Starting...');
 
 	use iMSCP::File;
 	my $file;
@@ -806,20 +756,16 @@ sub removeFile{
 		");
 		warning("\n$errors\n");
 	}
-	debug('Ending...');
+
 	0;
 }
 
 sub systemSetup{
 
-	debug('Starting...');
-
 	iMSCP::Dialog->factory()->msgbox("
 								\\Z1SUCCESS\\Zn\n\n
 								You can now install iMSCP. Type \\Z4./imscp-setup\\Zn
 	");
-
-	debug('Ending...');
 
 	0;
 }

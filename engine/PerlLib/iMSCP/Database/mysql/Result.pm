@@ -31,7 +31,7 @@ use warnings;
 use iMSCP::Debug;
 
 use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
 
 sub TIEHASH {

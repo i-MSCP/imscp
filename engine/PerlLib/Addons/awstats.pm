@@ -37,7 +37,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self				= shift;
 
@@ -46,70 +45,65 @@ sub _init{
 	$self->{wrkDir}	= "$self->{cfgDir}/working";
 	$self->{tplDir}	= "$self->{cfgDir}/parts";
 
-	debug('Ending...');
 	0;
 }
 
 sub factory{ return Addons::awstats->new(); }
 
 sub preinstall{
-	debug('Starting...');
 
 	use Addons::awstats::installer;
 
 	my $self	= shift;
-	my $rs		= Addons::awstats::installer->new()->registerHooks();
+	my $rs		= 0;
 
-	debug('Ending...');
+	$rs |= Addons::awstats::installer->new()->registerHooks();
+
 	$rs;
 }
 
 sub install{
-	debug('Starting...');
 
 	use Addons::awstats::installer;
 
-	my $self = shift;
-	my $rs = Addons::awstats::installer->new()->install();
+	my $self	= shift;
+	my $rs		= 0;
+	Addons::awstats::installer->new()->install();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub preaddDmn{
-	debug('Starting...');
 
 	use Servers::httpd;
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 	my $httpd = Servers::httpd->factory();
 
-	my $rs = $httpd->registerPreHook(
+	my $rs |= $httpd->registerPreHook(
 		'buildConf', sub { return $self->awstatsSection(@_); }
 	) if $httpd->can('registerPreHook');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub preaddSub{
-	debug('Starting...');
 
 	use Servers::httpd;
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 	my $httpd = Servers::httpd->factory();
 
-	my $rs = $httpd->registerPreHook(
+	$rs |= $httpd->registerPreHook(
 		'buildConf', sub { return $self->delAwstatsSection(@_); }
 	) if $httpd->can('registerPreHook');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delAwstatsSection{
-	debug('Starting...');
 
 	use iMSCP::Templator;
 	use Servers::httpd;
@@ -132,12 +126,10 @@ sub delAwstatsSection{
 		) if $httpd->can('registerPreHook');
 	}
 
-	debug('Ending...');
 	$data;
 }
 
 sub awstatsSection{
-	debug('Starting...');
 
 	use iMSCP::Templator;
 	use Servers::httpd;
@@ -168,7 +160,6 @@ sub awstatsSection{
 			AWSTATS_GROUP_AUTH	=> $main::imscpConfig{AWSTATS_GROUP_AUTH}
 		};
 		$data = process($tags, $data);
-		debug("$data");
 
 	} else {
 		#register again for next file
@@ -178,16 +169,17 @@ sub awstatsSection{
 		) if $httpd->can('registerPreHook');
 	}
 
-	debug('Ending...');
 	$data;
 }
 
 sub addDmn{
-	debug('Starting...');
 
-	my $self = shift;
-	my $data = shift;
-	my $rs;
+	my $self	= shift;
+	my $data	= shift;
+	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'DMN_NAME'	=> 'You must supply domain name!',
@@ -213,12 +205,10 @@ sub addDmn{
 		$rs |= $self->addAwstatsCfg($data);
 		$rs |= $self->addAwstatsCron($data) if ($main::imscpConfig{AWSTATS_MODE} == 1);
 	}
-	debug('Ending...');
 	$rs;
 }
 
 sub addAwstatsCfg{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -226,7 +216,7 @@ sub addAwstatsCfg{
 
 	my $self	= shift;
 	my $data	= shift;
-	my $rs;
+	my $rs		= 0;
 
 	my $cfgFileName	= "awstats.$data->{DMN_NAME}.conf";
 
@@ -277,12 +267,10 @@ sub addAwstatsCfg{
 	# Install the file in the production directory
 	$rs |= $file->copyFile($main::imscpConfig{AWSTATS_CONFIG_DIR});
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addAwstatsCron{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -290,7 +278,7 @@ sub addAwstatsCron{
 
 	my $self	= shift;
 	my $data	= shift;
-	my $rs;
+	my $rs		= 0;
 
 	my $cron = Servers::cron->factory();
 	$rs = $cron->addTask({
@@ -307,17 +295,17 @@ sub addAwstatsCron{
 		TASKID	=> "AWSTATS:$data->{DMN_NAME}"
 	});
 
-
-	debug('Ending...');
 	$rs;
 }
 
 sub delDmn{
-	debug('Starting...');
 
-	my $self = shift;
-	my $data = shift;
-	my $rs;
+	my $self	= shift;
+	my $data	= shift;
+	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'DMN_NAME'	=> 'You must supply domain name!',
@@ -336,25 +324,22 @@ sub delDmn{
 	$rs |= iMSCP::File->new(filename => $wrkFileName)->delFile() if -f $wrkFileName;
 	$rs |= $self->delAwstatsCron($data);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delAwstatsCron{
-	debug('Starting...');
 
 	use Servers::cron;
 
 	my $self	= shift;
 	my $data	= shift;
-	my $rs;
+	my $rs		= 0;
 
 	my $cron = Servers::cron->factory();
 	$rs = $cron->delTask({
 		TASKID	=> "AWSTATS:$data->{DMN_NAME}"
 	});
 
-	debug('Ending...');
 	$rs;
 }
 

@@ -40,18 +40,15 @@ newDebug('imscp-set-engine-permissions.log');
 
 sub start_up {
 
-	debug('Starting...');
 
 	umask(027);
 	iMSCP::Boot->new()->init({nolock => 'yes', nodatabase => 'yes'});
 
-	debug('Ending...');
 	0;
 }
 
 sub shut_down {
 
-	debug('Starting...');
 	use iMSCP::Mail;
 
 	my @warnings	= getMessageByType('WARNING');
@@ -61,12 +58,10 @@ sub shut_down {
 	$msg	.= "\nERRORS:\n"		. join("\n", @errors)	. "\n" if @errors > 0;
 	iMSCP::Mail->new()->errmsg($msg) if ($msg);
 
-	debug('Ending...');
 	0;
 }
 
 sub set_permissions {
-	debug('Starting...');
 
 	use iMSCP::Rights;
 
@@ -91,7 +86,6 @@ sub set_permissions {
 		$rs |= $server->setEnginePermissions() if($server->can('setEnginePermissions'));
 	}
 
-	debug('Ending...');
 	$rs;
 }
 

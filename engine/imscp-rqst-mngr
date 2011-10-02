@@ -41,18 +41,14 @@ use MIME::Base64;
 newDebug('imscp-rqst-mngr.log');
 
 sub start_up {
-	debug('Starting...');
 
 	umask(027);
 
 	iMSCP::Boot->new()->init();
-
-	debug('Ending...');
 	0;
 }
 
 sub mngr_engine_process{
-	debug('Starting...');
 
 	my ($type, $sql, $ipMods) = @_;
 	my $rs = 0;
@@ -102,12 +98,10 @@ sub mngr_engine_process{
 		error("See ${type}_mngr_$name.log for details.") if $rs;
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub engine {
-	debug('Starting...');
 
 	my $rs = 0;
 	my $sql;
@@ -357,7 +351,6 @@ sub engine {
 	# software installation BEGIN
 	#
 
-	debug('apps_installer_engine Starting...');
 	$sql = "
 		SELECT
 			`domain_id`,
@@ -396,7 +389,6 @@ sub engine {
 	}
 
 	newDebug('imscp_sw_mngr_engine');
-	debug('Starting...');
 	foreach (keys %$rdata) {
 		my ($stdout, $stderr);
 		my (
@@ -447,7 +439,6 @@ sub engine {
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 	}
-	debug('Ending...');
 	endDebug();
 
 
@@ -472,7 +463,6 @@ sub engine {
 	}
 
 	newDebug('imscp_pkt_mngr_engine.log');
-	debug('Starting...');
 	foreach (keys %$rdata) {
 		my ($stdout, $stderr);
 		my (
@@ -502,11 +492,8 @@ sub engine {
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 	}
-	debug('Ending...');
 	endDebug();
 
-
-	debug('Ending...');
 	$rs;
 }
 

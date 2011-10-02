@@ -37,7 +37,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 
@@ -51,12 +50,10 @@ sub _init{
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::bindOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerrors => 1 if -f $oldConf;
 
-	debug('Ending...');
 	0;
 }
 
 sub buildConf{
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -97,63 +94,52 @@ sub buildConf{
 	# Install the new file in the production directory
 	$file->copyFile($self::bindConfig{'BIND_CONF_FILE'}) and return 1;
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	# Saving all system configuration files if they exists
 	for ((
 		$self::bindConfig{'BIND_CONF_FILE'}
 	)) {
-		$self->bkpConfFile($_) and return 1;
+		$rs |= $self->bkpConfFile($_) and return 1;
 	}
 
-	$self->buildConf() and return 1;
+	$rs |= $self->buildConf();
+	$rs |= $self->askMode();
+	$rs |= $self->addMasterZone();
+	$rs |= $self->saveConf();
 
-	$self->askMode() and return 1;
-
-	$self->addMasterZone() and return 1;
-
-	$self->saveConf() and return 1;
-
-	#$self->oldEngineCompatibility() and return 1;
-
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub addMasterZone{
-	debug('Starting...');
 
 	use Servers::named;
 
-	my $self = shift;
-
+	my $self	= shift;
 	my $named	= Servers::named->factory();
 
 	my $rs = $named->addDmn({
-			DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
-			DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
+		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
 	});
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 sub askMode{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
-	my $self = shift;
+	my $self	= shift;
+	my $ip		= iMSCP::IP->factory();
+	my @ips		= ();
 
-	my $ip = iMSCP::IP->factory();
-	my @ips = ();
 	@ips = (@ips, split(';', $self::bindConfig{PRIMARY_DNS}))
 		if $self::bindConfig{PRIMARY_DNS};
 	@ips = (@ips, split(';', $self::bindOldConfig{PRIMARY_DNS}))
@@ -175,13 +161,11 @@ sub askMode{
 	}
 
 	if($self::bindConfig{'BIND_MODE'}){
-		debug('Ending...');
 		return 0;
 	}
 
 	if($self::bindOldConfig{'BIND_MODE'}){
 		$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'};
-		debug('Ending...');
 		return 0;
 	}
 
@@ -191,13 +175,11 @@ sub askMode{
 
 	$self->askOtherDNS();
 
-	debug('Ending...');
 	0;
 }
 
 sub askOtherDNS{
 
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -208,7 +190,6 @@ sub askOtherDNS{
 		while (! ($out = iMSCP::Dialog->factory()->radiolist("Enable secondary DNS server address IP?", 'no', 'yes'))){}
 		if($out eq 'no'){
 			$self::bindConfig{'SECONDARY_DNS'} = 'no';
-			debug('Ending...');
 			return 0;
 		}
 	}
@@ -234,12 +215,10 @@ sub askOtherDNS{
 			'PRIMARY_DNS'
 	} = join (';', @ips);
 
-	debug('Ending...');
 	0;
 }
 
 sub bkpConfFile{
-	debug('Starting...');
 
 	use File::Basename;
 
@@ -257,47 +236,28 @@ sub bkpConfFile{
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub saveConf{
-	debug('Starting...');
 
 	use iMSCP::File;
 
-	my $self		= shift;
-	my $file = iMSCP::File->new(filename => "$self->{cfgDir}/bind.data");
-	my $cfg = $file->get() or return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	my $self	= shift;
+	my $rs		= 0;
+	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/bind.data");
+	my $cfg		= $file->get() or return 1;
+
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/bind.old.data");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	debug('Ending...');
-	0;
-}
-
-sub oldEngineCompatibility{
-	debug('Starting...');
-
-	for((
-		'BIND_MODE',
-		'BIND_CONF_FILE',
-		'BIND_DB_DIR',
-		'CMD_NAMED',
-		'PRIMARY_DNS',
-		'SECONDARY_DNS'
-	)){
-		$main::imscpConfig{$_} = $self::bindConfig{$_} if !$main::imscpConfig{$_} || $main::imscpConfig{$_} ne $self::bindConfig{$_};
-	}
-
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 1;

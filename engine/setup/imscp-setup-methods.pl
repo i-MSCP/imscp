@@ -34,21 +34,16 @@ use warnings;
 #
 sub setup_start_up {
 
-	debug('Starting...');
-
 	iMSCP::Boot->new(mode => 'setup')->init({nodatabase => 'yes'});
 
 	#enter silent mode
 	silent(1);
 
-	debug('Ending...');
 	0;
 }
 
 
 sub setup_engine {
-
-	debug('Starting...');
 
 	use iMSCP::Stepper;
 	## Starting user dialog
@@ -93,7 +88,6 @@ sub setup_engine {
 	}
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-	debug('Ending...');
 	0;
 }
 
@@ -105,8 +99,6 @@ sub setup_engine {
 sub user_dialog {
 
 	use iMSCP::Dialog;
-
-	debug('Starting...');
 
 	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
 	iMSCP::Dialog->factory()->set('no-label','EXIT');
@@ -135,7 +127,6 @@ sub user_dialog {
 		exit 0;
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -145,8 +136,6 @@ sub user_dialog {
 # @return void
 #
 sub load_old_imscp_cfg {
-
-	debug('Starting...');
 
 	use iMSCP::Config;
 
@@ -158,8 +147,6 @@ sub load_old_imscp_cfg {
 	tie %main::imscpConfigOld, 'iMSCP::Config','fileName' => $oldConf if (-f $oldConf);
 	verbose($main::imscpConfigOld{'DEBUG'} || $main::imscpConfig{'DEBUG'});
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -169,8 +156,6 @@ sub load_old_imscp_cfg {
 # @return int 0 on success, other on failure
 #
 sub setup_imscp_database_connection {
-
-	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Dialog;
@@ -247,7 +232,6 @@ sub setup_imscp_database_connection {
 		if ($main::imscpConfig{'DATABASE_PASSWORD'} ne $crypt->encrypt_db_password($dbPass)) {$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($dbPass);}
 
 	}
-	debug('Ending...');
 	0;
 }
 
@@ -269,8 +253,6 @@ sub check_sql_connection{
 
 	my ($dbType, $dbName, $dbHost, $dbPort, $dbUser, $dbPass) = (@_);
 
-	debug('Starting...');
-
 	use iMSCP::Database;
 
 	my $database = iMSCP::Database->new(db => $dbType)->factory();
@@ -280,7 +262,6 @@ sub check_sql_connection{
 	$database->set('DATABASE_USER', $dbUser);
 	$database->set('DATABASE_PASSWORD', $dbPass);
 
-	debug('Ending...');
 	return $database->connect();
 }
 
@@ -290,8 +271,6 @@ sub check_sql_connection{
 # @return int 0 on success, other on failure
 #
 sub setup_imscp_database {
-
-	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Dialog;
@@ -360,7 +339,6 @@ sub setup_imscp_database {
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -372,8 +350,6 @@ sub setup_imscp_database {
 sub createDB{
 	my $dbName = shift;
 	my $dbType = shift;
-
-	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -392,16 +368,12 @@ sub createDB{
 	$error = importSQLFile($database, "$main::imscpConfig{'CONF_DIR'}/database/database.sql");
 	return $error if ($error);
 
-	debug('Ending...');
-
 	0;
 }
 
 sub importSQLFile{
 	my $database	= shift;
 	my $file		= shift;
-
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -425,11 +397,7 @@ sub importSQLFile{
 	}
 
 	endDetail();
-
-	debug('Ending...');
-
 	0;
-
 }
 
 ################################################################################
@@ -438,8 +406,6 @@ sub importSQLFile{
 # @return int 1 on success, other on failure
 #
 sub updateDb {
-
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Execute;
@@ -461,8 +427,6 @@ sub updateDb {
 	error("$stdout $stderr") if $rs;
 	return ($stdout ? "$stdout " : '' ).$stderr." exitcode: $rs" if $rs;
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -472,8 +436,6 @@ sub updateDb {
 # @return int 0 on success, other on failure
 #
 sub setup_system_dirs {
-
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	my $rootUName = $main::imscpConfig{'ROOT_USER'};
@@ -487,26 +449,20 @@ sub setup_system_dirs {
 		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => $_->[3]}) and return 1;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 sub setup_base_server_IP{
 
-	debug('Starting...');
-
 	use iMSCP::Dialog;
 	use iMSCP::IP;
 
 	if($main::imscpConfig{'BASE_SERVER_IP'} && $main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1'){
-		debug('Ending...');
 		return 0;
 	}
 
 	if($main::imscpConfigOld{'BASE_SERVER_IP'} && $main::imscpConfigOld{'BASE_SERVER_IP'} ne '127.0.0.1'){
 		$main::imscpConfig{'BASE_SERVER_IP'} = $main::imscpConfigOld{'BASE_SERVER_IP'};
-		debug('Ending...');
 		return 0;
 	}
 
@@ -562,7 +518,6 @@ sub setup_base_server_IP{
 		return $error if (ref $error ne 'HASH');
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -572,7 +527,6 @@ sub setup_base_server_IP{
 # @return int 0 on success, other on failure
 #
 sub setup_hosts {
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -608,13 +562,11 @@ sub setup_hosts {
 	$file->mode(0644) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug('Ending...');
 	0;
 }
 
 
 sub askHostname{
-	debug('Starting...');
 
 	my ($out, $err, $hostname);
 
@@ -632,12 +584,10 @@ sub askHostname{
 	chomp($hostname);
 
 	if($hostname && $main::imscpConfig{'SERVER_HOSTNAME'} eq $hostname){
-		debug('Ending...');
 		return 0;
 	}
 	if($hostname && $main::imscpConfigOld{'SERVER_HOSTNAME'} && $main::imscpConfigOld{'SERVER_HOSTNAME'} eq $hostname){
 		$main::imscpConfig{'SERVER_HOSTNAME'} = $main::imscpConfigOld{'SERVER_HOSTNAME'};
-		debug('Ending...');
 		return 0;
 	}
 
@@ -656,7 +606,6 @@ sub askHostname{
 
 	$main::imscpConfig{'SERVER_HOSTNAME'} = idn_to_ascii($out, 'utf-8');
 
-	debug('Ending...');
 	0;
 }
 
@@ -666,7 +615,6 @@ sub askHostname{
 # @return int 0 on success, -1 on failure
 #
 sub setup_resolver {
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dialog;
@@ -716,7 +664,6 @@ sub setup_resolver {
 		return 1;
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -726,8 +673,6 @@ sub setup_resolver {
 # This subroutine built, store and install the i-MSCP crontab file
 #
 sub setup_crontab {
-
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -801,8 +746,6 @@ sub setup_crontab {
 	# Install the new file in production directory
 	$file->copyFile("$prodDir/") and return 1;
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -814,7 +757,6 @@ sub setup_crontab {
 # @return int 0 on success, other on failure
 #
 sub setup_imscp_daemon_network {
-	debug('Starting...');
 
 	my ($rs, $rdata, $fileName, $stdout, $stderr);
 
@@ -846,7 +788,6 @@ sub setup_imscp_daemon_network {
 		error("$stderr") if $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
 
@@ -856,7 +797,6 @@ sub setup_imscp_daemon_network {
 # @return int 0 on success, other on failure
 #
 sub set_permissions {
-	debug('Starting...');
 
 	use iMSCP::Rights;
 
@@ -874,7 +814,6 @@ sub set_permissions {
 	$rs |= setRights("$ROOT_DIR/engine", {user => $rootUName, group => $masterUName, mode => '0755', recursive => 'yes'});
 	$rs |= setRights($LOG_DIR, {user => $rootUName, group => $masterUName, mode => '0750'});
 
-	debug('Ending...');
 	0;
 }
 
@@ -884,8 +823,6 @@ sub set_permissions {
 # This subroutines restart all the services managed by i-MSCP.
 #
 sub restart_services {
-
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use iMSCP::Stepper;
@@ -922,7 +859,6 @@ sub restart_services {
 
 	endDetail();
 
-	debug('Ending...');
 	0;
 }
 
@@ -937,8 +873,6 @@ sub restart_services {
 # @return int 0 on success, other on failure
 #
 sub setup_default_sql_data {
-
-	debug('Starting...');
 
 	use iMSCP::Crypt;
 	use iMSCP::Database;
@@ -1019,12 +953,10 @@ sub setup_default_sql_data {
 
 	askMYSQLPrefix();
 
-	debug('Ending...');
 	0;
 }
 
 sub askMYSQLPrefix{
-	debug('Starting...');
 
 	my $useprefix	= $main::imscpConfig{'MYSQL_PREFIX'} ? $main::imscpConfig{'MYSQL_PREFIX'} : ($main::imscpConfigOld{'MYSQL_PREFIX'} ? $main::imscpConfigOld{'MYSQL_PREFIX'} : '');
 	my $prefix		= $main::imscpConfig{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfig{'MYSQL_PREFIX_TYPE'} : ($main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} ? $main::imscpConfigOld{'MYSQL_PREFIX_TYPE'} : '');
@@ -1042,12 +974,10 @@ sub askMYSQLPrefix{
 	$main::imscpConfig{'MYSQL_PREFIX'} = $useprefix if($main::imscpConfig{'MYSQL_PREFIX'} ne $useprefix);
 	$main::imscpConfig{'MYSQL_PREFIX_TYPE'} = $prefix if($main::imscpConfig{'MYSQL_PREFIX_TYPE'} ne $prefix);
 
-	debug('Ending...');
 	0;
 }
 
 sub askAdminEmail{
-	debug('Starting...');
 
 	my $admin_email = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} : ($main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} ? $main::imscpConfigOld{'DEFAULT_ADMIN_ADDRESS'} : '');
 	use Email::Valid;
@@ -1059,7 +989,6 @@ sub askAdminEmail{
 	}
 	$main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} = $admin_email if($main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'} ne $admin_email);
 
-	debug('Ending...');
 	$admin_email;
 }
 
@@ -1071,8 +1000,6 @@ sub askAdminEmail{
 # @return int 0 on success, -1 otherwise
 #
 sub setup_gui_pma {
-
-	debug('Starting...');
 
 	my $cfgDir	= "$main::imscpConfig{'CONF_DIR'}/pma";
 	my $bkpDir	= "$cfgDir/backup";
@@ -1291,13 +1218,10 @@ sub setup_gui_pma {
 	);
 	return $error if ($error);
 
-
-	debug('Ending...');
 	0;
 }
 
 sub askPHPTimezone{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use DateTime;
@@ -1306,13 +1230,11 @@ sub askPHPTimezone{
 	my $dt;
 
 	if($main::imscpConfig{'PHP_TIMEZONE'}){
-		debug('Ending...');
 		return 0;
 	}
 
 	if($main::imscpConfigOld{'PHP_TIMEZONE'}){
 		$main::imscpConfig{'PHP_TIMEZONE'} = $main::imscpConfigOld{'PHP_TIMEZONE'};
-		debug('Ending...');
 		return 0;
 	}
 
@@ -1326,24 +1248,19 @@ sub askPHPTimezone{
 
 	$main::imscpConfig{'PHP_TIMEZONE'} = $dt;
 
-	debug('Ending...');
 	0;
 }
 
 sub askVHOST{
 
-	debug('Starting...');
-
 	use iMSCP::Dialog;
 
 	if($main::imscpConfig{'BASE_SERVER_VHOST'}){
-		debug('Ending...');
 		return 0;
 	}
 
 	if($main::imscpConfigOld{'BASE_SERVER_VHOST'}){
 		$main::imscpConfig{'BASE_SERVER_VHOST'} = $main::imscpConfigOld{'BASE_SERVER_VHOST'};
-		debug('Ending...');
 		return 0;
 	}
 
@@ -1364,7 +1281,6 @@ sub askVHOST{
 
 	$main::imscpConfig{'BASE_SERVER_VHOST'} = idn_to_ascii($hostname, 'utf-8');
 
-	debug('Ending...');
 	0;
 }
 
@@ -1376,7 +1292,6 @@ sub askVHOST{
 #
 sub save_conf{
 
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -1389,8 +1304,6 @@ sub save_conf{
 	$file->mode(0644) and return 1;
 	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -1401,7 +1314,6 @@ sub save_conf{
 #
 sub update_imscp_cfg {
 
-	debug('Starting...');
 	for(qw/
 		ZIP
 		BACKUP_HOUR
@@ -1416,7 +1328,6 @@ sub update_imscp_cfg {
 			$main::imscpConfig{$_} = $main::imscpConfigOld{$_};
 		}
 	}
-	debug('Ending...');
 
 	0;
 }
@@ -1427,7 +1338,6 @@ sub update_imscp_cfg {
 # @return int 0 on success, other on failure
 #
 sub setup_system_users{
-	debug('Starting...');
 
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
@@ -1436,13 +1346,11 @@ sub setup_system_users{
 	$group->{system}	= 'yes';
 	$group->addSystemGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
 
-	debug('Ending...');
 	0;
 }
 
 sub askBackup{
 
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -1459,8 +1367,6 @@ sub askBackup{
 	}
 	if($BACKUP_DOMAINS ne $main::imscpConfig{'BACKUP_DOMAINS'}){ $main::imscpConfig{'BACKUP_DOMAINS'} = $BACKUP_DOMAINS; }
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -1470,8 +1376,6 @@ sub askBackup{
 # @return void
 #
 sub additional_tasks{
-
-	debug('Starting...');
 
 	use iMSCP::Stepper;
 
@@ -1487,8 +1391,6 @@ sub additional_tasks{
 	}
 
 	endDetail();
-
-	debug('Ending...');
 
 	0;
 }
@@ -1506,8 +1408,6 @@ sub additional_tasks{
 # @return int 0 on success, other on failure
 #
 sub setup_rkhunter {
-
-	debug('Starting...');
 
 	my ($rs, $rdata);
 
@@ -1566,8 +1466,6 @@ sub setup_rkhunter {
 		$file->save() and return 1;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
@@ -1577,8 +1475,6 @@ sub setup_rkhunter {
 # @return int 1 on success, other on failure
 #
 sub rebuild_customers_cfg {
-
-	debug('Starting...');
 
 	use iMSCP::Boot;
 
@@ -1616,16 +1512,12 @@ sub rebuild_customers_cfg {
 	error("$stderr") if $stderr;
 	error("Error while rebuilding customers configuration files") if(!$stderr && $rs);
 	iMSCP::Boot->new()->lock();
-	#return $rs if $rs;
-
-	debug('Ending...');
+	return $rs if $rs;
 
 	0;
 }
 
 sub setup_ssl{
-
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -1653,13 +1545,10 @@ sub setup_ssl{
 		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "http://";
 	};
 
-	debug('Ending...');
-
 	0;
 }
 
 sub ask_certificate_key_path{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -1680,12 +1569,10 @@ sub ask_certificate_key_path{
 		$rs = Modules::openssl->new()->ssl_check_key();
 	}while($rs);
 
-	debug('Ending...');
 	0;
 }
 
 sub ask_intermediate_certificate_path{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -1701,12 +1588,10 @@ sub ask_intermediate_certificate_path{
 	}while ($rs && !-f $rs);
 	Modules::openssl->new()->{intermediate_cert_path} = $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub ask_certificate_path{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -1724,12 +1609,10 @@ sub ask_certificate_path{
 		$rs = Modules::openssl->new()->ssl_check_cert();
 	}while($rs);
 
-	debug('Ending...');
 	0;
 }
 
 sub sslDialog{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use Modules::openssl;
@@ -1760,12 +1643,10 @@ sub sslDialog{
 		$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = "$rs://";
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub preinstallServers{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1795,12 +1676,10 @@ sub preinstallServers{
 
 	endDetail();
 
-	debug('Ending...');
 	$rs;
 
 }
 sub preinstallAddons{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1830,12 +1709,10 @@ sub preinstallAddons{
 
 	endDetail();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub installServers{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1865,12 +1742,10 @@ sub installServers{
 
 	endDetail();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub installAddons{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1900,12 +1775,10 @@ sub installAddons{
 
 	endDetail();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstallServers{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1935,12 +1808,10 @@ sub postinstallServers{
 
 	endDetail();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstallAddons{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use FindBin;
@@ -1970,7 +1841,7 @@ sub postinstallAddons{
 
 	endDetail();
 
-	debug('Ending...');
 	$rs;
 }
+
 1;

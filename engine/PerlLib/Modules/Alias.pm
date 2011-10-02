@@ -38,7 +38,6 @@ use Common::SimpleClass;
 use Modules::Domain;
 
 sub loadData{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -79,12 +78,10 @@ sub loadData{
 
 	$self->{$_} = $rdata->{$self->{alsId}}->{$_} for keys %{$rdata->{$self->{alsId}}};
 
-	debug('Ending...');
 	0;
 }
 
 sub process{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{alsId}	= shift;
@@ -131,12 +128,10 @@ sub process{
 	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delete{
-	debug('Starting...');
 
 	use File::Temp;
 	use iMSCP::Database;
@@ -223,13 +218,11 @@ sub delete{
 		return $rs if $rs;
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 
 sub buildHTTPDData{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $groupName	=
@@ -280,12 +273,10 @@ sub buildHTTPDData{
 		ALLOW_URL_FOPEN				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{allow_url_fopen} : $rdata->{PHPINI_ALLOW_URL_FOPEN}->{value})
 	};
 
-	debug('Ending...');
 	0;
 }
 
 sub buildMTAData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -302,12 +293,10 @@ sub buildMTAData{
 		};
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub buildNAMEDData{
-	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -338,12 +327,10 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName.'als'.$self->{alias_id};
 
-	debug('Ending...');
 	0;
 }
 
 sub buildFTPDData{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $rs 		= 0;
@@ -358,12 +345,10 @@ sub buildFTPDData{
 		PATH		=> $hDir
 	};
 
-	debug('Ending...');
 	0;
 }
 
 sub buildADDONData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -383,7 +368,7 @@ sub buildADDONData{
 		HOME_DIR	=> $hDir
 	};
 
-	debug('Ending...');
 	0;
 }
+
 1;

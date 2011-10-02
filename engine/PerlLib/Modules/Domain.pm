@@ -43,7 +43,6 @@ sub _init{
 }
 
 sub loadData{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -82,12 +81,10 @@ sub loadData{
 
 	my $rs = Modules::User->new()->process($self->{domain_admin_id});
 
-	debug('Ending...');
 	0;
 }
 
 sub process{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{dmnId}	= shift;
@@ -134,12 +131,10 @@ sub process{
 	my $rdata = iMSCP::Database->factory()->doQuery('delete', @sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub restore{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 	use iMSCP::Dir;
@@ -238,12 +233,12 @@ sub restore{
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
-	$cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $self->{domain_uid}:$self->{domain_gid} $dmn_dir/htdocs";
+	$cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $self->{domain_uid}:$httpdGroup $dmn_dir/htdocs";
 	$rs		|= execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
-	$cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $self->{domain_uid}:$self->{domain_gid} $dmn_dir/cgi-bin";
+	$cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $self->{domain_uid}:$httpdGroup $dmn_dir/cgi-bin";
 	$rs		|= execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
@@ -270,15 +265,10 @@ sub restore{
 		}
 	);
 
-	#$self->{mode}	= 'restore';
-	#$rs |= $self->runAllSteps();
-
-	debug('Ending...');
 	$rs;
 }
 
 sub buildHTTPDData{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $groupName	=
@@ -329,13 +319,10 @@ sub buildHTTPDData{
 		ALLOW_URL_FOPEN				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{allow_url_fopen} : $rdata->{PHPINI_ALLOW_URL_FOPEN}->{value})
 	};
 
-
-	debug('Ending...');
 	0;
 }
 
 sub buildMTAData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -352,12 +339,10 @@ sub buildMTAData{
 		};
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub buildNAMEDData{
-	debug('Starting...');
 
 	use iMSCP::Database;
 
@@ -389,12 +374,10 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName;
 
-	debug('Ending...');
 	0;
 }
 
 sub buildADDONData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -414,7 +397,6 @@ sub buildADDONData{
 		HOME_DIR	=> $hDir
 	};
 
-	debug('Ending...');
 	0;
 }
 

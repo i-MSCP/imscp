@@ -38,8 +38,6 @@ use Common::SingletonClass;
 sub _init{
 	my $self	= shift;
 
-	debug('Starting...');
-
 	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/bind";
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
 	$self->{wrkDir} = "$self->{cfgDir}/working";
@@ -47,48 +45,30 @@ sub _init{
 
 	$self->{commentChar} = '#';
 
-	#$self->{$_} = $main::imscpConfig{$_} foreach(keys %main::imscpConfig);
-
 	tie %self::bindConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/bind.data", noerrors => 1;
 	$self->{$_} = $self::bindConfig{$_} foreach(keys %self::bindConfig);
 }
 
-sub preinstall{
-	debug('Starting...');
+sub install{
 
 	use Servers::named::bind::installer;
 
 	my $self	= shift;
 	my $rs		= 0;
+	$rs |= Servers::named::bind::installer->new()->install();
 
-	debug('Ending...');
-	$rs;
-}
-
-sub install{
-	debug('Starting...');
-
-	use Servers::named::bind::installer;
-
-	my $self	= shift;
-	my $rs		= Servers::named::bind::installer->new()->install();
-
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstall{
-	debug('Starting...');
 
 	my $self	= shift;
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	0;
 }
 
 sub registerPreHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
@@ -96,39 +76,41 @@ sub registerPreHook{
 
 	my $installer	= Servers::named::bind::installer->new();
 
+	debug("Register pre hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 	push (@{$installer->{preCalls}->{fname}}, $callback)
 		if (ref $callback eq 'CODE' && $installer->can($fname));
 
+	debug("Register pre hook to $fname")
+		if (ref $callback eq 'CODE' && $self->can($fname));
 	push (@{$self->{preCalls}->{fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub registerPostHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
 	my $callback	= shift;
 
-	debug("Attaching to $fname...");
-
 	my $installer	= Servers::named::bind::installer->new();
 
+	debug("Register post hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 	push (@{$installer->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $installer->can($fname));
 
+	debug("Register post hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $self->can($fname));
 	push (@{$self->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub restart{
-	debug('Starting...');
 
 	my $self			= shift;
 	my ($rs, $stdout, $stderr);
@@ -141,12 +123,10 @@ sub restart{
 	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub incTimeStamp{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -195,13 +175,10 @@ sub incTimeStamp{
 	$newZoneFile = replaceBloc($bTag, $eTag, "$bTag$timeStampBlock$eTag", $newZoneFile, undef);
 	########################## TIMESTAMP SECTION END ################################
 
-	debug('Ending...');
 	$newZoneFile;
 }
 
 sub addDmnDb {
-
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use iMSCP::File;
@@ -363,12 +340,10 @@ sub addDmnDb {
 	# Install the file in the production directory
 	$file->copyFile($self::bindConfig{BIND_DB_DIR}) and return 1;
 
-	debug('Ending...');
 	0;
 }
 
 sub addDmnConfig{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -376,7 +351,8 @@ sub addDmnConfig{
 
 	my $self	= shift;
 	my $option	= shift;
-	my ($rs, $rdata, $cfg, $file);
+	my $rs		= 0;
+	my ($rdata, $cfg, $file);
 
 	##backup config file
 	my $timestamp = time();
@@ -428,24 +404,25 @@ sub addDmnConfig{
 
 	# Store the new builded file in the working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/named.conf");
-	$file->set($cfg) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Install the new file in the production directory
-	$file->copyFile($self::bindConfig{BIND_CONF_FILE}) and return 1;
+	$rs |= $file->copyFile($self::bindConfig{BIND_CONF_FILE});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub addDmn{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $option	= shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $option));
 
 	$option = {} if ref $option ne 'HASH';
 
@@ -464,28 +441,31 @@ sub addDmn{
 
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postaddDmn{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $option	= shift;
+	my $rs		= 0;
 
 	$option = {} if ref $option ne 'HASH';
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $option));
 
 	my $errmsg = {
 		'DMN_NAME'	=> 'You must supply domain name!',
 		'DMN_IP'	=> 'You must supply ip for domain!'
 	};
+
 	foreach(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $option->{$_};
 		return 1 unless $option->{$_};
 	}
 
-	$self->addDmn({
+	$rs |= $self->addDmn({
 			DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
 			DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
 			DMN_ADD		=> {
@@ -494,17 +474,15 @@ sub postaddDmn{
 				MANUAL_DNS_TYPE		=> 'A',
 				MANUAL_DNS_DATA		=> $option->{DMN_IP}
 			}
-	}) and return 1;
+	});
 
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub delDmnConfig{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -512,7 +490,8 @@ sub delDmnConfig{
 
 	my $self	= shift;
 	my $option	= shift;
-	my ($rs, $rdata, $cfg, $file);
+	my $rs		= 0;
+	my ($rdata, $cfg, $file);
 
 	##backup config file
 	if(-f "$self->{wrkDir}/named.conf"){
@@ -545,26 +524,27 @@ sub delDmnConfig{
 
 	# Store the new builded file in the working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/named.conf");
-	$file->set($cfg) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Install the new file in the production directory
-	$file->copyFile($self::bindConfig{BIND_CONF_FILE}) and return 1;
+	$rs |= $file->copyFile($self::bindConfig{BIND_CONF_FILE});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub delDmn{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $option	= shift;
 	my $rs = 0;
 
 	$option = {} if ref $option ne 'HASH';
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $option));
 
 	error('You must supply domain name!') unless $option->{DMN_NAME};
 	return 1 unless $option->{DMN_NAME};
@@ -597,24 +577,25 @@ sub delDmn{
 
 	# Store the new builded file in the working directory
 	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/$main::imscpConfig{BASE_SERVER_VHOST}.db");
-	$file->set($zContent) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($zContent);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Install the new file in the production directory
-	$file->copyFile($self::bindConfig{BIND_DB_DIR}) and return 1;
+	$rs |= $file->copyFile($self::bindConfig{BIND_DB_DIR});
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postdelDmn{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	$rs |= $self->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
@@ -627,24 +608,26 @@ sub postdelDmn{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addSub{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
 
 	my $self	= shift;
 	my $data	= shift;
-	my $rs;
+	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'DMN_NAME'	=> 'You must supply domain name!',
 		'DMN_IP'	=> 'You must supply ip for domain!'
 	};
+
 	foreach(keys %{$errmsg}){
 		error("$errmsg->{$_}") unless $data->{$_};
 		return 1 unless $data->{$_};
@@ -696,16 +679,16 @@ sub addSub{
 	# Install the file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{BIND_DB_DIR});
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postaddSub{
-	debug('Starting...');
 	my $self	= shift;
 	my $data	= shift;
-
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	$rs |= $self->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
@@ -721,12 +704,10 @@ sub postaddSub{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delSub{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 	use iMSCP::File;
@@ -734,7 +715,10 @@ sub delSub{
 
 	my $self	= shift;
 	my $data	= shift;
-	my $rs;
+	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'DMN_NAME'			=> 'You must supply domain name!',
@@ -788,15 +772,17 @@ sub delSub{
 	# Install the file in the production directory
 	$rs |= $file->copyFile($self::bindConfig{BIND_DB_DIR});
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postdelSub{
-	debug('Starting...');
+
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	$rs |= $self->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
@@ -809,19 +795,16 @@ sub postdelSub{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 END{
-	debug('Starting...');
 
 	my $endCode	= $?;
 	my $self	= Servers::named::bind->new();
 	my $rs		= 0;
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
 
-	debug('Ending...');
 	$? = $endCode || $rs;
 }
 

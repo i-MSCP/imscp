@@ -54,8 +54,6 @@ sub _init  {
 
 sub ssl_check_intermediate_cert {
 
-	debug('Starting...');
-
 	my $self = shift;
 
 	if ($self->{intermediate_cert_path} ne '' && ! -e $self->{intermediate_cert_path} ) {
@@ -63,14 +61,10 @@ sub ssl_check_intermediate_cert {
 		return 1;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 sub ssl_check_cert {
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -99,14 +93,10 @@ sub ssl_check_cert {
 		return 1;
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 sub ssl_check_key {
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -124,14 +114,10 @@ sub ssl_check_key {
 	error("Key is invalid or wrong password".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug('Ending...');
-
 	0;
 }
 
 sub ssl_check_all{
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -144,14 +130,10 @@ sub ssl_check_all{
 	$rs = $self->ssl_check_cert();
 	return $rs if ($rs);
 
-	debug('Ending...');
-
 	0;
 }
 
 sub ssl_export_key {
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -164,13 +146,10 @@ sub ssl_export_key {
 	error("Can not save certificate key".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub ssl_export_cert {
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -183,13 +162,10 @@ sub ssl_export_cert {
 	error("Can not save certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub ssl_export_intermediate_cert {
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -204,13 +180,10 @@ sub ssl_export_intermediate_cert {
 	error("Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub ssl_generate_selsigned_cert{
-
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -223,16 +196,14 @@ sub ssl_generate_selsigned_cert{
 	error("Can not save intermediate certificate".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if($rs);
 
-	debug('Ending...');
 	0;
 }
 
 sub ssl_export_all{
 
-	debug('Starting...');
 
-	my $self = shift;
-	my $rs;
+	my $self	= shift;
+	my $rs		= 0;
 
 	if( $self->{cert_selfsigned} == 0 ){
 
@@ -252,7 +223,6 @@ sub ssl_export_all{
 
 	}
 
-	debug('Ending...');
 	0;
 }
 

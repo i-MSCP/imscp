@@ -51,8 +51,6 @@ sub TIEHASH {
 	$self->_loadConfig();
 	$self->_parseConfig();
 
-	debug('Ending...');
-
 	return $self;
 }
 
@@ -150,5 +148,3 @@ sub _insertConfig{
 }
 
 1;
-
-__END__

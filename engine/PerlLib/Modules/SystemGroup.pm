@@ -38,11 +38,10 @@ use Common::SimpleClass;
 
 sub addSystemGroup{
 
-	debug('Starting...');
 
 	my $self	= shift;
 
-	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $groupName	= shift || $self->{groupname} || undef;
 	$self->{groupname} = $groupName;
@@ -68,17 +67,14 @@ sub addSystemGroup{
 		return $rs if $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub delSystemGroup{
 
-	debug('Starting...');
-
 	my $self	= shift;
 
-	fatal(': Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
+	fatal('Please use only instance of class not static calls', 1) if(ref $self ne __PACKAGE__);
 
 	my $groupName	= shift || $self->{groupname} || undef;
 	$self->{groupname} = $groupName;
@@ -101,9 +97,7 @@ sub delSystemGroup{
 		return $rs if $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
-
 
 1;

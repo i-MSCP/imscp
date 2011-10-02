@@ -34,7 +34,7 @@ use FindBin;
 
 
 use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
+@ISA = ('Common::SimpleClass');
 use Common::SimpleClass;
 
 sub factory{
@@ -50,12 +50,7 @@ sub factory{
 		$class	= "Servers::httpd::$server";
 	}
 
-	debug('Starting...');
-
 	require $file;
-
-	debug('Ending...');
-
 	return $class->new();
 }
 

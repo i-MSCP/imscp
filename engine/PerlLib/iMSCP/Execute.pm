@@ -86,7 +86,6 @@ sub _execCode {
 }
 
 sub _getExitCode {
-	debug('Starting...');
 	my $exitValue = shift;
 	if ($exitValue == -1) {
 		error("Failed to execute external command: $!");
@@ -103,4 +102,5 @@ sub _getExitCode {
 	}
 	$exitValue;
 }
+
 1;

@@ -49,7 +49,6 @@ require "$FindBin::Bin/imscp-setup-methods.pl";
 # @return int 0 on success, other on failure
 #
 sub setup_shut_down {
-	debug('Starting...');
 
 	iMSCP::Dialog->factory()->msgbox(
 					"\n
@@ -60,7 +59,6 @@ sub setup_shut_down {
 					Please type $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'}$main::imscpConfig{'BASE_SERVER_VHOST'} in your browser and log in with your Administrator Account to use i-MSCP."
 	);
 
-	debug('Ending...');
 	0;
 }
 

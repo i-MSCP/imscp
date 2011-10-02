@@ -35,8 +35,7 @@ use vars qw/@ISA $AUTOLOAD/;
 use Common::SingletonClass;
 
 sub AUTOLOAD {
-	my $self = shift;
-	return 0;
+	0;
 }
 
 sub factory {

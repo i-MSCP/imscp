@@ -49,17 +49,15 @@ our $command = {
 			};
 
 sub backup_start_up {
-	debug('Starting...');
 
 	umask(027);
 	iMSCP::Boot->new()->init({nolock => 'yes'});
 
-	debug('Ending...');
 	0;
 }
 
 sub backup{
-	debug('Starting...');
+
 	my $rs = 0;
 	my ($stdout, $stderr);
 
@@ -180,7 +178,6 @@ sub backup{
 
 	iMSCP::Mail->new()->errmsg("@all") if(scalar @all > 0 );
 
-	debug('Ending...');
 	$rs;
 }
 

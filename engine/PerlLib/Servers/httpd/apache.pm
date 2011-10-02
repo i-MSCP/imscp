@@ -37,7 +37,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self				= shift;
 
@@ -54,46 +53,39 @@ sub _init{
 
 	$self->{tplValues}->{$_} = $self::apacheConfig{$_} foreach(keys %self::apacheConfig);
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
 	use Servers::httpd::apache::installer;
 
 	my $self	= shift;
-	my $rs		= Servers::httpd::apache::installer->new()->install();
+	my $rs		= 0;
+	$rs |= Servers::httpd::apache::installer->new()->install();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstall{
-	debug('Starting...');
 
 	my $self	= shift;
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	0;
 }
 
 sub setGuiPermissions{
-	debug('Starting...');
 
 	use Servers::httpd::apache::installer;
 
 	my $self	= shift;
 	my $rs = Servers::httpd::apache::installer->new()->setGuiPermissions();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub registerPreHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
@@ -101,18 +93,20 @@ sub registerPreHook{
 
 	my $installer	= Servers::httpd::apache::installer->new();
 
+	debug("Register pre hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 	push (@{$installer->{preCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $installer->can($fname));
 
+	debug("Register pre hook to $fname")
+		if (ref $callback eq 'CODE' && $self->can($fname));
 	push (@{$self->{preCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub registerPostHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
@@ -122,18 +116,20 @@ sub registerPostHook{
 
 	my $installer	= Servers::httpd::apache::installer->new();
 
+	debug("Register post hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 	push (@{$installer->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $installer->can($fname));
 
+	debug("Register post hook to $fname")
+		if (ref $callback eq 'CODE' && $self->can($fname));
 	push (@{$self->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub enableSite{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -146,12 +142,10 @@ sub enableSite{
 	error("$stderr") if($stderr);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub disableSite{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -164,12 +158,10 @@ sub disableSite{
 	error("stderr $stderr") if($stderr);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub enableMod{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -182,12 +174,10 @@ sub enableMod{
 	error("$stderr") if($stderr);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub disableMod{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
@@ -200,22 +190,18 @@ sub disableMod{
 	error("$stderr") if($stderr);
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub forceRestart{
-	debug('Starting...');
 
 	my $self				= shift;
 	$self->{forceRestart}	= 'yes';
 
-	debug('Ending...');
 	0;
 }
 
 sub restart{
-	debug('Starting...');
 
 	my $self			= shift;
 	my ($rs, $stdout, $stderr);
@@ -230,12 +216,10 @@ sub restart{
 	error("Error while restating") if $rs && !$stderr;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub buildConf($ $ $){
-	debug('Starting...');
 
 	use iMSCP::Templator;
 
@@ -285,12 +269,10 @@ sub buildConf($ $ $){
 		return undef if $@;
 	};
 
-	debug('Ending...');
 	$cfgTpl;
 }
 
 sub buildConfFile{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -359,12 +341,10 @@ sub buildConfFile{
 			$option->{group}	? $option->{group}	: $main::imscpConfig{'ROOT_GROUP'}
 	) and return 1;
 
-	debug('Ending...');
 	0;
 }
 
 sub installConfFile{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -394,12 +374,10 @@ sub installConfFile{
 					"$self::apacheConfig{APACHE_SITES_DIR}/$filename$suffix"
 	);
 
-	debug('Ending...');
 	0;
 }
 
 sub setData{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $data	= shift;
@@ -407,24 +385,18 @@ sub setData{
 	$data = {} if ref $data ne 'HASH';
 	$self->{data} = $data;
 
-	debug('Ending...');
 	0;
 }
 
 sub getRunningUser{
-	debug('Starting...');
-	debug('Ending...');
 	return $self::apacheConfig{APACHE_USER};
 }
 
 sub getRunningGroup{
-	debug('Starting...');
-	debug('Ending...');
 	return $self::apacheConfig{APACHE_GROUP};
 }
 
 sub removeSection{
-	debug('Starting...');
 
 	use iMSCP::Templator;
 
@@ -437,12 +409,10 @@ sub removeSection{
 
 	$data = replaceBloc($bTag, $eTag, '', $data, undef);
 
-	debug('Ending...');
 	$data;
 }
 
 sub buildPHPini{
-	debug('Starting...');
 
 	use iMSCP::Rights;
 
@@ -474,20 +444,22 @@ sub buildPHPini{
 		}
 	);
 
-	debug('Ending...');
 	$rs;
 }
 
 #####################################################################################
 ##			DOMAIN LEVEL
 sub addUser{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
 
 	my $self		= shift;
 	my $data		= shift;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
+
 	my $hDir		= $data->{HOME_DIR};
 	my $rootUser	= $main::imscpConfig{ROOT_USER};
 	my $rootGroup	= $main::imscpConfig{ROOT_GROUP};
@@ -609,12 +581,10 @@ sub addUser{
 
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delUser{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dir;
@@ -624,6 +594,9 @@ sub delUser{
 	my $data		= shift;
 	my $hDir		= $data->{HOME_DIR};
 	my $rs			= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'USER'	=> 'You must supply user name!'
@@ -687,14 +660,17 @@ sub delUser{
 
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addDmn{
-	debug('Starting...');
+
 	my $self = shift;
 	my $data = shift;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
+
 	$self->{mode} = 'dmn';
 
 	my $errmsg = {
@@ -715,12 +691,10 @@ sub addDmn{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addCfg{
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -770,12 +744,10 @@ sub addCfg{
 
 	$rs |= $self->enableSite("$data->{DMN_NAME}.conf");
 
-	debug('Ending...');
 	$rs;
 }
 
 sub dmnFolders{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $data		= shift;
@@ -807,13 +779,10 @@ sub dmnFolders{
 			$self::apacheConfig{INI_LEVEL} =~ /^domain$/i ||
 			$self::apacheConfig{INI_LEVEL} =~ /^subdomain$/i;
 
-	debug('Ending...');
 	@folders;
-
 }
 
 sub addFiles{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 	use iMSCP::Rights;
@@ -888,15 +857,16 @@ sub addFiles{
 			$self::apacheConfig{INI_LEVEL} =~ /^subdomain$/i
 		);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delDmn{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $data	= shift;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	error('You must supply domain name!') unless $data->{DMN_NAME};
 	return 1 unless $data->{DMN_NAME};
@@ -925,18 +895,19 @@ sub delDmn{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub disableDmn{
-	debug('Starting...');
 
 	use iMSCP::File;
 
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'DMN_NAME'	=> 'You must supply domain name!',
@@ -968,15 +939,16 @@ sub disableDmn{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	0;
 }
 
 sub addSub{
-	debug('Starting...');
 	my $self = shift;
 	my $data = shift;
 	$self->{mode}	= 'sub';
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'DMN_NAME'	=> 'You must supply subdomain name!',
@@ -995,34 +967,29 @@ sub addSub{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delSub{
-	debug('Starting...');
 	my $self	= shift;
-	my $rs		= $self->delDmn(@_);
-	debug('Ending...');
-	$rs;
+	$self->delDmn(@_);
 }
 
 sub disableSub{
-	debug('Starting...');
 	my $self	= shift;
-	my $rs		= $self->disableDmn(@_);
-	debug('Ending...');
-	$rs;
+	$self->disableDmn(@_);
 }
 
 sub addHtuser{
-	debug('Starting...');
 
 	use iMSCP::File;
 
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $fileName	= $self::apacheConfig{HTACCESS_USERS_FILE_NAME};
 	my $filePath	= "$main::imscpConfig{USER_HOME_DIR}/$data->{HTUSER_DMN}/$fileName";
@@ -1040,18 +1007,19 @@ sub addHtuser{
 				$main::imscpConfig{'ROOT_GROUP'}
 			);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delHtuser{
-	debug('Starting...');
 
 	use iMSCP::File;
 
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $fileName	= $self::apacheConfig{HTACCESS_USERS_FILE_NAME};
 	my $filePath	= "$main::imscpConfig{USER_HOME_DIR}/$data->{HTUSER_DMN}/$fileName";
@@ -1068,18 +1036,19 @@ sub delHtuser{
 				$main::imscpConfig{'ROOT_GROUP'}
 			);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addHtgroup{
-	debug('Starting...');
 
 	use iMSCP::File;
 
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $fileName	= $self::apacheConfig{HTACCESS_GROUPS_FILE_NAME};
 	my $filePath	= "$main::imscpConfig{USER_HOME_DIR}/$data->{HTGROUP_DMN}/$fileName";
@@ -1097,18 +1066,19 @@ sub addHtgroup{
 				$main::imscpConfig{'ROOT_GROUP'}
 			);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delHtgroup{
-	debug('Starting...');
 
 	use iMSCP::File;
 
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $fileName	= $self::apacheConfig{HTACCESS_GROUPS_FILE_NAME};
 	my $filePath	= "$main::imscpConfig{USER_HOME_DIR}/$data->{HTGROUP_DMN}/$fileName";
@@ -1125,12 +1095,10 @@ sub delHtgroup{
 				$main::imscpConfig{'ROOT_GROUP'}
 			);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addHtaccess{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -1138,6 +1106,9 @@ sub addHtaccess{
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $fileUser	= "$data->{HOME_PATH}/$self::apacheConfig{HTACCESS_USERS_FILE_NAME}";
 	my $fileGroup	= "$data->{HOME_PATH}/$self::apacheConfig{HTACCESS_GROUPS_FILE_NAME}";
@@ -1168,12 +1139,10 @@ sub addHtaccess{
 				$data->{USER},
 				$data->{GROUP}
 			);
-	debug('Ending...');
 	$rs;
 }
 
 sub delHtaccess{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -1181,6 +1150,9 @@ sub delHtaccess{
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $fileUser	= "$data->{HOME_PATH}/$self::apacheConfig{HTACCESS_USERS_FILE_NAME}";
 	my $fileGroup	= "$data->{HOME_PATH}/$self::apacheConfig{HTACCESS_GROUPS_FILE_NAME}";
@@ -1205,13 +1177,11 @@ sub delHtaccess{
 	} else {
 		$rs |= $fileH->delFile() if -f $filePath;
 	}
-	debug('Ending...');
+
 	$rs;
 }
 
 sub addIps{
-	debug('Starting...');
-
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -1219,6 +1189,9 @@ sub addIps{
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	unless ($data->{IPS} && ref $data->{IPS} eq 'ARRAY'){
 		error("You must provide ip list");
@@ -1259,19 +1232,16 @@ sub addIps{
 	$self->{restart}	= 'yes';
 	delete $self->{data};
 
-	debug('Ending...');
 	$rs;
 }
 
 END{
-	debug('Starting...');
 
 	my $endCode	= $?;
 	my $self	= Servers::httpd::apache->new();
 	my $rs		= 0;
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
 
-	debug('Ending...');
 	$? = $endCode || $rs;
 }
 

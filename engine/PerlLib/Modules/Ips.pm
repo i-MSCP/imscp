@@ -44,10 +44,10 @@ sub _init{
 }
 
 sub process{
-	debug('Starting...');
 
-	my $self		= shift;
-	my $rs;
+	my $self	= shift;
+	my $rs		= 0;
+
 	my $sql = "
 		SELECT `domain_ip_id` AS `ip_id`, `ip_number` FROM `domain`
 		LEFT JOIN `server_ips` ON `domain`.`domain_ip_id` = `server_ips`.`ip_id`
@@ -66,12 +66,10 @@ sub process{
 
 	$rs = $self->add();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub buildHTTPDData{
-	debug('Starting...');
 
 	my $self	= shift;
 
@@ -79,7 +77,6 @@ sub buildHTTPDData{
 		IPS					=> $self->{ips}
 	};
 
-	debug('Ending...');
 	0;
 }
 

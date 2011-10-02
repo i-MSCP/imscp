@@ -165,9 +165,9 @@ sub addDmn{
 	use iMSCP::File;
 	use iMSCP::Dir;
 
-	my $self = shift;
-	my $data = shift;
-	my $rs = 0;
+	my $self	= shift;
+	my $data	= shift;
+	my $rs		= 0;
 
 	local $Data::Dumper::Terse = 1;
 	debug("Data: ". (Dumper $data));
@@ -243,7 +243,6 @@ sub delDmn{
 }
 
 sub disableDmn{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dir;

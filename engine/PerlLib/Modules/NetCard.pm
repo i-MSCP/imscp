@@ -38,7 +38,6 @@ use vars qw/@ISA/;
 use Common::SimpleClass;
 
 sub process{
-	debug('Starting...');
 
 	my $self		= shift;
 	my ($rs, $stdour, $stderr);
@@ -46,7 +45,6 @@ sub process{
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr;
 
-	debug('Ending...');
 	$rs;
 }
 

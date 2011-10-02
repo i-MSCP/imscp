@@ -36,15 +36,7 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 
-sub _init{
-	debug('Starting...');
-	my $self		= shift;
-	debug('Ending...');
-	0;
-}
-
 sub askAwstats{
-	debug('Starting...');
 
 	use iMSCP::Dialog;
 
@@ -75,13 +67,11 @@ sub askAwstats{
 	} else {
 		$main::imscpConfig{'AWSTATS_MODE'} = '' if $main::imscpConfig{'AWSTATS_MODE'} ne '';
 	}
-	debug('Ending...');
 
 	0;
 }
 
 sub registerHooks{
-	debug('Starting...');
 	my $self = shift;
 
 	use Servers::httpd;
@@ -92,15 +82,13 @@ sub registerHooks{
 		'buildConf', sub { return $self->installLogrotate(@_); }
 	);
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
-	my $self = shift;
-	my $rs;
+	my $self	= shift;
+	my $rs		= 0;
 	$self->{httpd} = Servers::httpd->factory() unless $self->{httpd} ;
 
 	$self->{user} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningUser() : $main::imscpConfig{ROOT_USER};
@@ -114,12 +102,10 @@ sub install{
 	$self->disableConf() and return 1;
 	$self->disableCron() and return 1;
 
-	debug('Ending...');
 	$rs;
 }
 
 sub makeDirs{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 
@@ -133,7 +119,6 @@ sub makeDirs{
 		mode => 0755
 	}) and return 1;
 
-	debug('Ending...');
 	0;
 }
 
@@ -150,13 +135,11 @@ sub makeDirs{
 
 sub vhost {
 
-	debug('Starting...');
-
 	use Servers::httpd;
 
-	my $rs;
+	my $rs		= 0;
+	my $httpd	= Servers::httpd->factory();
 
-	my $httpd = Servers::httpd->factory();
 	$httpd->setData({
 		AWSTATS_ENGINE_DIR	=> $main::imscpConfig{'AWSTATS_ENGINE_DIR'},
 		AWSTATS_WEB_DIR		=> $main::imscpConfig{'AWSTATS_WEB_DIR'}
@@ -177,11 +160,9 @@ sub vhost {
 		return $rs if $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
 sub disableConf{
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -195,12 +176,10 @@ sub disableConf{
 		) and return 1;
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub disableCron{
-	debug('Starting...');
 
 	use iMSCP::File;
 
@@ -215,12 +194,10 @@ sub disableCron{
 		) and return 1;
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub installLogrotate{
-	debug('Starting...');
 
 	use iMSCP::Templator;
 
@@ -253,7 +230,7 @@ sub installLogrotate{
 			'buildConf', sub { return $self->installLogrotate(@_); }
 		);
 	}
-	debug('Ending...');
+
 	$content;
 }
 

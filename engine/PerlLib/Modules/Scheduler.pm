@@ -37,12 +37,10 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub add{
-	debug('Starting...');
 	my $self = shift;
 	my $type = shift;
 	my $mode = shift;
 	my $data = shift;
-	debug('Ending...');
 	0;
 }
 

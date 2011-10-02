@@ -41,13 +41,11 @@ sub AUTOLOAD {
 	my $name = $AUTOLOAD;
 	$name =~ s/.*:://;
 	return if $name eq 'DESTROY';
-	debug('Starting...');
 	$self->{$name} = shift if @_;
 	unless (exists $self->{$name}) {
 		error("Can't find '$name'.");
 		return undef;
 	}
-	debug('Ending...');
 	return $self->{$name};
 }
 
@@ -198,6 +196,8 @@ sub moveFile{
 }
 
 sub delFile{
+	use File::Copy ;
+
 	my $self	= shift;
 
 	if(!$self->{filename}){
@@ -206,7 +206,6 @@ sub delFile{
 	}
 
 	debug("Delete $self->{filename}");
-	use File::Copy ;
 
 	if(! unlink ($self->{filename}) && -e $self->{filename}){
 		error("Delete $self->{filename} failed: $!");
@@ -226,7 +225,8 @@ sub save{
 		error("File name not set!");
 		return 1;
 	}
-	debug("Delete $self->{filename}");
+
+	debug("Save $self->{filename}");
 
 	$self->{fileHandle}->close() if($self->{fileHandle});
 
@@ -261,9 +261,7 @@ sub DESTROY  {
 	if($self->{fileHandle}){
 		$self->{fileHandle}->close();
 	}
-
+	0;
 }
 
 1;
-
-__END__

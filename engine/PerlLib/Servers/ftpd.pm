@@ -47,12 +47,7 @@ sub factory{
 		$class	= "Servers::ftpd::$server";
 	}
 
-	debug('Starting...');
-
 	require $file;
-
-	debug('Ending...');
-
 	return $class->new();
 }
 

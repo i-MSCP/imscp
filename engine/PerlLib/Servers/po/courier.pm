@@ -36,7 +36,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{cfgDir}	= "$main::imscpConfig{'CONF_DIR'}/courier";
@@ -48,46 +47,38 @@ sub _init{
 
 	$self->{$_} = $self::courierConfig{$_} foreach(keys %self::courierConfig);
 
-	debug('Ending...');
 	0;
 }
 
 sub preinstall{
-	debug('Starting...');
 
 	use Servers::po::courier::installer;
 
 	my $self	= shift;
 	my $rs		= Servers::po::courier::installer->new()->registerHooks();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub install{
-	debug('Starting...');
 
 	use Servers::po::courier::installer;
 
 	my $self		= shift;
 	my $rs			= Servers::po::courier::installer->new()->install();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstall{
-	debug('Starting...');
 
 	my $self	= shift;
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	0;
 }
 
 sub restart{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
@@ -120,12 +111,10 @@ sub restart{
 	error("$stderr") if $stderr;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub addMail{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Execute;
@@ -136,6 +125,9 @@ sub addMail{
 	my $data = shift;
 	my $rs = 0;
 	my ($stdout, $stderr);
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
@@ -199,12 +191,10 @@ sub addMail{
 		error($stderr) if $stderr;
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delMail{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Execute;
@@ -213,6 +203,9 @@ sub delMail{
 	my $data = shift;
 	my $rs = 0;
 	my ($stdout, $stderr);
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
@@ -263,19 +256,16 @@ sub delMail{
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
 
-	debug('Ending...');
 	$rs;
 }
 
 END{
-	debug('Starting...');
 
 	my $endCode	= $?;
 	my $self	= Servers::po::courier->new();
 	my $rs		= 0;
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
 
-	debug('Ending...');
 	$? = $endCode || $rs;
 }
 

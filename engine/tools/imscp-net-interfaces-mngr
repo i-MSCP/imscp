@@ -42,19 +42,13 @@ our $proceed = $ARGV[0];
 
 sub net_interfaces_mngr_start_up {
 
-	debug('Starting...');
-
 	umask(027);
 	iMSCP::Boot->new()->init({nolock => 'yes'});
-
-	debug('Ending...');
 
 	0;
 }
 
 sub virtual_netcard_add{
-
-	debug('Starting...');
 
 	use iMSCP::IP;
 	use iMSCP::Mail;
@@ -136,15 +130,12 @@ sub virtual_netcard_add{
 		}
 	}
 
-	debug('Ending...');
 	0;
 }
 
 sub virtual_netcard_remove{
 
 	my $ref = undef;
-
-	debug('Starting...');
 
 	use iMSCP::IP;
 	use iMSCP::Mail;
@@ -185,14 +176,10 @@ sub virtual_netcard_remove{
 		}
 	}
 
-	debug('Ending...');
-
 	0;
 }
 
 sub net_interfaces_mngr_engine {
-
-	debug('Starting...');
 
 	my $rs;
 
@@ -243,21 +230,11 @@ sub net_interfaces_mngr_engine {
 		iMSCP::Mail->new()->errmsg($rs)if $rs;
 	}
 
-	debug('Ending...');
 	0;
 }
-
-sub net_interfaces_mngr_shut_down {
-	debug('Starting...');
-	debug('Ending...');
-	0;
-}
-
 
 exit 1 if net_interfaces_mngr_start_up();
 
 exit 1 if net_interfaces_mngr_engine();
-
-exit 1 if net_interfaces_mngr_shut_down();
 
 exit 0;

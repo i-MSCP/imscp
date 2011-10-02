@@ -37,8 +37,6 @@ use vars qw/@ISA/;
 use Common::SimpleClass;
 
 sub _init{
-	#my $self		= shift;
-	#$self->{type}	= 'abstract';
 	fatal('Developer must define own function for module');
 }
 
@@ -51,18 +49,15 @@ sub process{
 }
 
 sub add{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{mode}	= 'add';
 	my $rs = $self->runAllSteps();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delete{
-	debug('Starting...');
 
 	use iMSCP::Servers;
 	use iMSCP::Addons;
@@ -71,18 +66,14 @@ sub delete{
 	$self->{mode}	= 'del';
 	my $rs 			= $self->runAllSteps();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub restore{
-	debug('Starting...');
-	debug('Ending...');
 	0;
 }
 
 sub disable{
-	debug('Starting...');
 
 	use iMSCP::Servers;
 	use iMSCP::Addons;
@@ -91,12 +82,10 @@ sub disable{
 	$self->{mode}	= 'disable';
 	my $rs = $self->runAllSteps();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub runAllSteps{
-	debug('Starting...');
 
 	use iMSCP::Servers;
 	use iMSCP::Addons;
@@ -131,12 +120,10 @@ sub runAllSteps{
 	$rs |= $self->runStep("post$self->{mode}$self->{type}",	'Servers');
 	$rs |= $self->runStep("post$self->{mode}$self->{type}",	'Addons');
 
-	debug('Ending...');
 	$rs;
 }
 
 sub runStep{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $func	= shift;
@@ -152,15 +139,18 @@ sub runStep{
 		require $file;
 		$instance	= $class->factory();
 		if($type eq 'Addons'){
+			debug("Calling addon $_ function $func")
+				if $instance->can($func) && exists $self->{AddonsData};
 			$rs |= $instance->$func($self->{AddonsData})
 					if $instance->can($func) && exists $self->{AddonsData};
 		} else {
+			debug("Calling server $_ function $func")
+				if $instance->can($func) && exists $self->{$_};
 			$rs |= $instance->$func($self->{$_})
 					if $instance->can($func) && exists $self->{$_};
 		}
 	}
 
-	debug('Ending...');
 	$rs;
 }
 

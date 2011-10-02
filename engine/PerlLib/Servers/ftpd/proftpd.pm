@@ -29,6 +29,7 @@ package Servers::ftpd::proftpd;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use Data::Dumper;
 
 use vars qw/@ISA/;
 
@@ -37,8 +38,6 @@ use Common::SingletonClass;
 
 sub _init{
 	my $self	= shift;
-
-	debug('Starting...');
 
 	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/proftpd";
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
@@ -51,43 +50,26 @@ sub _init{
 	$self->{$_} = $self::proftpdConfig{$_} foreach(keys %self::proftpdConfig);
 }
 
-sub preinstall{
-	debug('Starting...');
+sub install{
 
 	use Servers::ftpd::proftpd::installer;
 
 	my $self	= shift;
 	my $rs		= 0;
+	$rs |= Servers::ftpd::proftpd::installer->new()->install();
 
-	debug('Ending...');
-	$rs;
-}
-
-sub install{
-	debug('Starting...');
-
-	use Servers::ftpd::proftpd::installer;
-
-	my $self	= shift;
-	my $rs		= Servers::ftpd::proftpd::installer->new()->install();
-
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstall{
-	debug('Starting...');
 
 	my $self	= shift;
-
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	0;
 }
 
 sub registerPreHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
@@ -95,39 +77,41 @@ sub registerPreHook{
 
 	my $installer	= Servers::ftpd::proftpd::installer->new();
 
+	debug("Register pre hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 	push (@{$installer->{preCalls}->{fname}}, $callback)
 		if (ref $callback eq 'CODE' && $installer->can($fname));
 
+	debug("Register pre hook to $fname")
+		if (ref $callback eq 'CODE' && $self->can($fname));
 	push (@{$self->{preCalls}->{fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub registerPostHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
 	my $callback	= shift;
 
-	debug("Attaching to $fname...");
-
 	my $installer	= Servers::ftpd::proftpd::installer->new();
 
+	debug("Register post hook to $fname on installer")
+		if (ref $callback eq 'CODE' && $installer->can($fname));
 	push (@{$installer->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $installer->can($fname));
 
+	debug("Register post hook to $fname")
+		if (ref $callback eq 'CODE' && $self->can($fname));
 	push (@{$self->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub restart{
-	debug('Starting...');
 
 	my $self = shift;
 	my ($rs, $stdout, $stderr);
@@ -141,12 +125,10 @@ sub restart{
 	error("$stderr") if $stderr && $rs;
 	return $rs if $rs;
 
-	debug('Ending...');
 	0;
 }
 
 sub addDmn{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -154,6 +136,9 @@ sub addDmn{
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'FILE_NAME'	=> 'You must supply a file name!',
@@ -191,12 +176,10 @@ sub addDmn{
 			);
 	$rs |= $file->copyFile("$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}");
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delDmn{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -204,6 +187,9 @@ sub delDmn{
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		=0 ;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'FILE_NAME'	=> 'You must supply a file name!'
@@ -218,7 +204,6 @@ sub delDmn{
 		filename => "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}"
 	)->delFile() and $rs = 1;
 
-	debug('Ending...');
 	$rs;
 }
 
@@ -234,7 +219,6 @@ sub delSub{
 
 
 END{
-	debug('Starting...');
 
 	my $endCode	= $?;
 	my $self	= Servers::ftpd::proftpd->new();
@@ -242,7 +226,6 @@ END{
 
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
 
-	debug('Ending...');
 	$? = $endCode || $rs;
 }
 

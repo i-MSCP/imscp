@@ -252,7 +252,7 @@ sub oldEngineCompatibility{
 		?
 		Servers::httpd->factory()->getRunningGroup()
 		:
-		'-1'
+		$groupName
 	);
 
 	my $hDir = "$main::imscpConfig{USER_HOME_DIR}/$self->{domain_name}";
