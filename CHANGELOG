@@ -74,6 +74,7 @@ Tickets:
 	- Fixed #210: Bug - Some issues with new engine (Apache vhost files)
 	- Fixed #211: Bug - Placeholder not parsed for the GUI php5-fcgi-starter file
 	- Fixed #212: Bug - Some issues with installer
+	- Fixed #215: Subdomains is not accessible to edit phpini
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

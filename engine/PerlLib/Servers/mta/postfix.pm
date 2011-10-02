@@ -39,8 +39,6 @@ use Common::SingletonClass;
 sub _init{
 	my $self	= shift;
 
-	debug('Starting...');
-
 	$self->{cfgDir} = "$main::imscpConfig{'CONF_DIR'}/postfix";
 	$self->{bkpDir} = "$self->{cfgDir}/backup";
 	$self->{wrkDir} = "$self->{cfgDir}/working";
@@ -50,62 +48,54 @@ sub _init{
 	tie %self::postfixConfig, 'iMSCP::Config','fileName' => "$self->{cfgDir}/postfix.data";
 	$self->{$_} = $self::postfixConfig{$_} foreach(keys %self::postfixConfig);
 
-	debug('Ending...');
 	0;
 }
 
 sub preinstall{
-	debug('Starting...');
 
 	use Servers::mta::postfix::installer;
 
 	my $self	= shift;
 	my $rs		= Servers::mta::postfix::installer->preinstall();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub install{
-	debug('Starting...');
 
 	use Servers::mta::postfix::installer;
 
 	my $self	= shift;
 	my $rs		= Servers::mta::postfix::installer->new()->install();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub postinstall{
-	debug('Starting...');
 
 	my $self	= shift;
 	$self->{restart} = 'yes';
 
-	debug('Ending...');
 	0;
 }
 
 sub setEnginePermissions{
-	debug('Starting...');
 
 	use Servers::httpd::apache::installer;
 
 	my $self	= shift;
 	my $rs = Servers::mta::postfix::installer->new()->setEnginePermissions();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub registerPreHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
 	my $callback	= shift;
+
+	debug("Attaching to $fname...");
 
 	my $installer	= Servers::mta::postfix::installer->new();
 
@@ -115,12 +105,10 @@ sub registerPreHook{
 	push (@{$self->{preCalls}->{fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub registerPostHook{
-	debug('Starting...');
 
 	my $self		= shift;
 	my $fname		= shift;
@@ -136,15 +124,14 @@ sub registerPostHook{
 	push (@{$self->{postCalls}->{$fname}}, $callback)
 		if (ref $callback eq 'CODE' && $self->can($fname));
 
-	debug('Ending...');
 	0;
 }
 
 sub restart{
-	debug('Starting...');
 
-	my $self			= shift;
-	my ($rs, $stdout, $stderr);
+	my $self	= shift;
+	my $rs		= 0;
+	my ($stdout, $stderr);
 
 	use iMSCP::Execute;
 
@@ -152,33 +139,28 @@ sub restart{
 	$rs = execute("$self->{CMD_MTA} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub postmap{
-	debug('Starting...');
 
 	use iMSCP::Execute;
 
 	my $self	= shift;
 	my $postmap	= shift;
-	my ($rs, $stdout, $stderr);
+	my $rs		= 0;
+	my ($stdout, $stderr);
 
 	# Reload config
 	$rs = execute("$self->{CMD_POSTMAP} $postmap", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub addDmn{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dir;
@@ -187,9 +169,11 @@ sub addDmn{
 	my $data = shift;
 	my $rs = 0;
 
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
+
 	error('You must supply domain name!') unless $data->{DMN_NAME};
 	return 1 unless $data->{DMN_NAME};
-	#fatal(Dumper($data).'a');
 
 	my $entry = "$data->{DMN_NAME}\t\t\t$data->{TYPE}\n";
 
@@ -231,12 +215,10 @@ sub addDmn{
 				mode	=> 0700
 			});
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delDmn{
-	debug('Starting...');
 
 	use iMSCP::File;
 	use iMSCP::Dir;
@@ -244,6 +226,9 @@ sub delDmn{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	error('You must supply domain name!') unless $data->{DMN_NAME};
 	return 1 unless $data->{DMN_NAME};
@@ -254,7 +239,6 @@ sub delDmn{
 			dirname => "$self->{MTA_VIRTUAL_MAIL_DIR}/$data->{DMN_NAME}"
 		)->remove();
 
-	debug('Ending...');
 	$rs;
 }
 
@@ -267,6 +251,9 @@ sub disableDmn{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	error('You must supply domain name!') unless $data->{DMN_NAME};
 	return 1 unless $data->{DMN_NAME};
@@ -304,7 +291,6 @@ sub disableDmn{
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_DMN_HASH}} = $data->{DMN_NAME};
 
-	debug('Ending...');
 	$rs;
 }
 
@@ -324,7 +310,6 @@ sub disableSub{
 }
 
 sub addMail{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -332,6 +317,9 @@ sub addMail{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
@@ -375,12 +363,10 @@ sub addMail{
 	$rs |= $self->addCatchAll($data) if $data->{MAIL_TYPE} =~ m/_catchall/;
 	#$rs |= $self->delCatchAll($data) if $data->{MAIL_TYPE} !~ m/_catchall/;
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delMail{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -388,6 +374,9 @@ sub delMail{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
@@ -422,12 +411,10 @@ sub delMail{
 	$rs |= $self->delAutoRspnd($data);
 	$rs |= $self->delCatchAll($data);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub disableMail{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -435,6 +422,9 @@ sub disableMail{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+
+	local $Data::Dumper::Terse = 1;
+	debug("Data: ". (Dumper $data));
 
 	my $errmsg = {
 		'MAIL_ADDR'	=> 'You must supply mail address!',
@@ -469,12 +459,10 @@ sub disableMail{
 	$rs |= $self->delAutoRspnd($data);
 	$rs |= $self->delCatchAll($data);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delSaslData{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::Execute;
@@ -505,12 +493,10 @@ sub delSaslData{
 		}
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addSaslData{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::Execute;
@@ -544,12 +530,10 @@ sub addSaslData{
 		error($stderr) if $stderr;
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delAutoRspnd{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -579,12 +563,10 @@ sub delAutoRspnd{
 
 	$self->{postmap}->{$self->{MTA_TRANSPORT_HASH}} = $data->{MAIL_ADDR};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addAutoRspnd{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -615,12 +597,10 @@ sub addAutoRspnd{
 
 	$self->{postmap}->{$self->{MTA_TRANSPORT_HASH}} = $data->{MAIL_ADDR};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delMailForward{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -661,12 +641,10 @@ sub delMailForward{
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_ALIAS_HASH}} = $data->{MAIL_ADDR};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addMailForward{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -705,12 +683,10 @@ sub addMailForward{
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_ALIAS_HASH}} = $data->{MAIL_ADDR};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delMailBox{
-	debug('Starting...');
 
 	use iMSCP::Dir;
 
@@ -724,12 +700,10 @@ sub delMailBox{
 
 	$rs |=	iMSCP::Dir->new(dirname => $mailDir)->remove();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub disableMailBox{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -759,12 +733,10 @@ sub disableMailBox{
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_MAILBOX_HASH}} = $data->{MAIL_ADDR};
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addMailBox{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -812,12 +784,10 @@ sub addMailBox{
 		});
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub addCatchAll{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -854,12 +824,11 @@ sub addCatchAll{
 	$rs |= $wrkFile->copyFile($mFWDHshFile);
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_ALIAS_HASH}} = $data->{MAIL_ADDR};
-	debug('Ending...');
+
 	$rs;
 }
 
 sub delCatchAll{
-	debug('Starting...');
 
 	use File::Basename;
 	use iMSCP::File;
@@ -895,12 +864,10 @@ sub delCatchAll{
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_ALIAS_HASH}} = $data->{MAIL_ADDR};
 
-	debug('Ending...');
 	$rs;
 }
 
 END{
-	debug('Starting...');
 
 	my $endCode	= $?;
 	my $self	= Servers::mta::postfix->new();
@@ -912,7 +879,6 @@ END{
 		$rs |= $self->postmap($_) foreach(keys %{$self->{postmap}});
 	}
 
-	debug('Ending...');
 	$? = $endCode || $rs;
 }
 

@@ -45,7 +45,6 @@ sub _init{
 }
 
 sub loadData{
-	debug('Starting...');
 
 	my $self = shift;
 
@@ -70,12 +69,10 @@ sub loadData{
 
 	$self->{$_} = $rdata->{$self->{usrId}}->{$_} for keys %{$rdata->{$self->{usrId}}};
 
-	debug('Ending...');
 	0;
 }
 
 sub process{
-	debug('Starting...');
 
 	my $self		= shift;
 	$self->{usrId}	= shift;
@@ -107,12 +104,10 @@ sub process{
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 	}
 
-	debug('Ending...');
 	$rs;
 }
 
 sub add{
-	debug('Starting...');
 
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
@@ -181,12 +176,10 @@ sub add{
 	$self->{mode}	= 'add';
 	$rs |= $self->runAllSteps();
 
-	debug('Ending...');
 	$rs;
 }
 
 sub delete{
-	debug('Starting...');
 
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
@@ -210,12 +203,10 @@ sub delete{
 
 	$rs |= $user->delSystemUser($userName);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub oldEngineCompatibility{
-	debug('Starting...');
 
 	use Modules::SystemGroup;
 	use Modules::SystemUser;
@@ -267,17 +258,15 @@ sub oldEngineCompatibility{
 	my $hDir = "$main::imscpConfig{USER_HOME_DIR}/$self->{domain_name}";
 	my ($stdout, $stderr);
 
-	my $cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $userName:$groupName $hDir";
+	my $cmd	= "$main::imscpConfig{'CMD_CHOWN'} -R $userName:$httpdGroup $hDir";
 	$rs		|= execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
-	debug('Ending...');
 	0;
 }
 
 sub buildHTTPDData{
-	debug('Starting...');
 
 	my $self	= shift;
 	my $groupName	=
@@ -297,6 +286,7 @@ sub buildHTTPDData{
 
 	$self->{httpd} = {
 		DMN_NAME					=> $self->{domain_name},
+		DOMAIN_NAME					=> $self->{domain_name},
 		HOME_DIR					=> $hDir,
 		PEAR_DIR					=> $main::imscpConfig{PEAR_DIR},
 		PHP_TIMEZONE				=> $main::imscpConfig{PHP_TIMEZONE},
@@ -317,7 +307,6 @@ sub buildHTTPDData{
 		ALLOW_URL_FOPEN				=> (exists $phpiniData->{$self->{domain_id}} ? $phpiniData->{$self->{domain_id}}->{allow_url_fopen} : $rdata->{PHPINI_ALLOW_URL_FOPEN}->{value})
 	};
 
-	debug('Ending...');
 	0;
 }
 1;

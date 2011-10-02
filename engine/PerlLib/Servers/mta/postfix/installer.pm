@@ -40,7 +40,6 @@ use vars qw/@ISA/;
 use Common::SingletonClass;
 
 sub _init{
-	debug('Starting...');
 
 	my $self		= shift;
 
@@ -55,26 +54,23 @@ sub _init{
 	tie %self::postfixConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::postfixOldConfig, 'iMSCP::Config','fileName' => $oldConf if -f $oldConf;
 
-	debug('Ending...');
 	0;
 }
 
 sub preinstall{
-	debug('Starting...');
 
 	my $self = shift;
 
 	$self->addUsers() and return 1;
 	$self->makeDirs() and return 1;
 
-	debug('Ending...');
 	0;
 }
 
 sub install{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	# Saving all system configuration files if they exists
 	for ((
@@ -86,26 +82,23 @@ sub install{
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/transport',
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/sender-access'
 	)) {
-		$self->bkpConfFile($_) and return 1;
+		$rs |= $self->bkpConfFile($_);
 	}
 
-	$self->buildConf() and return 1;
-	$self->buildLookup() and return 1;
-	$self->buildAliasses() and return 1;
-	$self->arplSetup() and return 1;
+	$rs |= $self->buildConf();
+	$rs |= $self->buildLookup();
+	$rs |= $self->buildAliasses();
+	$rs |= $self->arplSetup();
 
-	$self->saveConf() and return 1;
-	$self->setEnginePermissions() and return 1;
+	$rs |= $self->saveConf();
+	$rs |= $self->setEnginePermissions();
 
-	#$self->oldEngineCompatibility() and return 1;
-
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub setEnginePermissions{
 
-	debug('Starting...');
+	debug('Setting engine permissions');
 
 	use iMSCP::Rights;
 
@@ -119,51 +112,38 @@ sub setEnginePermissions{
 	$rs |= setRights("$ROOT_DIR/engine/messenger", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0550', recursive => 'yes'});
 	$rs |= setRights("$LOG_DIR/imscp-arpl-msgr", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes'});
 
-	debug('Ending...');
 	$rs;
 }
 
-sub oldEngineCompatibility{
-	debug('Starting...');
-
-	$main::imscpConfig{$_} = $self::postfixConfig{$_} foreach(keys %self::postfixConfig);
-
-	my $gid	= getgrnam($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
-	my $uid	= getpwnam($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
-
-	$main::imscpConfig{'MTA_MAILBOX_MIN_UID'}	= $uid if !$main::imscpConfig{'MTA_MAILBOX_MIN_UID'} || $main::imscpConfig{'MTA_MAILBOX_MIN_UID'} ne $uid;
-	$main::imscpConfig{'MTA_MAILBOX_UID'}		= $uid if !$main::imscpConfig{'MTA_MAILBOX_UID'} || $main::imscpConfig{'MTA_MAILBOX_UID'} ne $uid;
-	$main::imscpConfig{'MTA_MAILBOX_GID'}		= $gid if !$main::imscpConfig{'MTA_MAILBOX_GID'} || $main::imscpConfig{'MTA_MAILBOX_GID'} ne $gid;
-
-	debug('Ending...');
-	0;
-}
-
 sub makeDirs{
-	debug('Starting...');
-
 	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $rs		= 0;
+
+	debug('Creating postfix folders');
 
 	for (
 		[$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
 		[$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
 	) {
-		iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755}) and return 1;
+		$rs |= iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755});
 	}
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub addUsers{
-	debug('Starting...');
+	debug('Adding system users...');
 
 	use Modules::SystemGroup;
+
+	my $rs = 0;
 
 	my $group = Modules::SystemGroup->new();
 
 	$group->{system}	= 'yes';
-	$group->addSystemGroup($self::postfixConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
+	$rs |= $group->addSystemGroup($self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 
 	use Modules::SystemUser;
 	my $user = Modules::SystemUser->new();
@@ -173,15 +153,13 @@ sub addUsers{
 	$user->{group}		= $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
 	$user->{system}		= 'yes';
 
-	$user->addSystemUser($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}) and return 1;
-	$user->addToGroup($main::imscpConfig{'MASTER_GROUP'}) and return 1;
+	$rs |= $user->addSystemUser($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
+	$rs |= $user->addToGroup($main::imscpConfig{'MASTER_GROUP'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub buildAliasses{
-	debug('Starting...');
 
 	my ($rs, $stdout, $stderr);
 
@@ -191,28 +169,27 @@ sub buildAliasses{
 	error("$stderr") if($stderr);
 	error("Error while executing $self::postfixConfig{'CMD_NEWALIASES'}") if(!$stderr && $rs);
 
-	debug('Ending...');
 	$rs;
 }
 
 sub arplSetup{
-	debug('Starting...');
+	debug('Autoresponder install...');
 
 	my $file;
+	my $rs = 0;
 
 	$file = iMSCP::File->new(filename => "$main::imscpConfig{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr");
-	$file->mode(0755) and return 1;
-	$file->owner($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}, $self::postfixConfig{'MTA_MAILBOX_GID_NAME'}) and return 1;
+	$rs |= $file->mode(0755);
+	$rs |= $file->owner($self::postfixConfig{'MTA_MAILBOX_UID_NAME'}, $self::postfixConfig{'MTA_MAILBOX_GID_NAME'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub buildLookup{
-	debug('Starting...');
 
-	my $self = shift;
-	my ($rs, $stdout, $stderr, $file);
+	my $self	= shift;
+	my $rs		= 0;
+	my ($stdout, $stderr, $file);
 
 	use iMSCP::File;
 	use iMSCP::Execute;
@@ -220,28 +197,27 @@ sub buildLookup{
 	for (qw/aliases domains mailboxes transport sender-access/) {
 		# Storing the new files in the working directory
 		$file = iMSCP::File->new(filename => "$self->{vrlDir}/$_");
-		$file->copyFile("$self->{wrkDir}") and return 1;
+		$rs |= $file->copyFile("$self->{wrkDir}");
 
 		# Install the files in the production directory
-		$file->copyFile("$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}") and return 1;
+		$rs |= $file->copyFile("$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}");
 
 		# Creating/updating databases for all lookup tables
-		$rs = execute("$self::postfixConfig{'CMD_POSTMAP'} $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
+		my $rv = execute("$self::postfixConfig{'CMD_POSTMAP'} $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}/$_", \$stdout, \$stderr);
 		debug("$stdout");
-		error("$stderr") if($rs);
-		return $rs if ($rs);
+		error("$stderr") if($rv);
+		$rs |= $rv;
 	}
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub bkpConfFile{
-	debug('Starting...');
 
 	use File::Basename;
 
 	my $self		= shift;
+	my $rs			= 0;
 	my $cfgFile		= shift;
 	my $timestamp	= time;
 
@@ -249,21 +225,19 @@ sub bkpConfFile{
 		my $file	= iMSCP::File->new( filename => $cfgFile );
 		my ($filename, $directories, $suffix) = fileparse($cfgFile);
 		if(!-f "$self->{bkpDir}/$filename$suffix.system") {
-			$file->copyFile("$self->{bkpDir}/$filename$suffix.system") and return 1;
+			$rs |= $file->copyFile("$self->{bkpDir}/$filename$suffix.system");
 		} else {
-			$file->copyFile("$self->{bkpDir}/$filename$suffix.$timestamp") and return 1;
+			$rs |= $file->copyFile("$self->{bkpDir}/$filename$suffix.$timestamp");
 		}
 	}
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub saveConf{
 
-	debug('Starting...');
-
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	use iMSCP::File;
 
@@ -271,35 +245,29 @@ sub saveConf{
 	my $cfg = $file->get() or return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/postfix.old.data");
-	$file->set($cfg) and return 1;
-	$file->save and return 1;
-	$file->mode(0640) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfg);
+	$rs |= $file->save;
+	$rs |= $file->mode(0640);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub buildConf{
-	debug('Starting...');
 
-	my $self = shift;
-	my $rs;
+	my $self	= shift;
+	my $rs		= 0;
 
-	$rs = $self->buildMain();
-	return $rs if $rs;
+	$rs |= $self->buildMain();
+	$rs |= $self->buildMaster();
 
-	$rs = $self->buildMaster();
-	return $rs if $rs;
-
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub buildMaster{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -322,7 +290,7 @@ sub buildMaster{
 	foreach(@calls){
 		eval {$cfgTpl = &$_($cfgTpl);};
 		error("$@") if ($@);
-		return 1 if $@;
+		$rs |= 1 if $@;
 	}
 
 	$cfgTpl = iMSCP::Templator::process(
@@ -348,26 +316,25 @@ sub buildMaster{
 	foreach(@calls){
 		eval {$cfgTpl = &$_($cfgTpl);};
 		error("$@") if ($@);
-		return 1 if $@;
+		$rs |= 1 if $@;
 	}
 
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/master.cf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfgTpl);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Installing the new file in the production dir
-	$file->copyFile($self::postfixConfig{'POSTFIX_MASTER_CONF_FILE'}) and return 1;
+	$rs |= $file->copyFile($self::postfixConfig{'POSTFIX_MASTER_CONF_FILE'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
 
 sub buildMain{
-	debug('Starting...');
 
-	my $self = shift;
+	my $self	= shift;
+	my $rs		= 0;
 
 	use iMSCP::File;
 	use iMSCP::Templator;
@@ -395,7 +362,7 @@ sub buildMain{
 	foreach(@calls){
 		eval {$cfgTpl = &$_($cfgTpl);};
 		error("$@") if ($@);
-		return 1 if $@;
+		$rs |= 1 if $@;
 	}
 
 	$cfgTpl = iMSCP::Templator::process(
@@ -434,20 +401,20 @@ sub buildMain{
 	foreach(@calls){
 		eval {$cfgTpl = &$_($cfgTpl);};
 		error("$@") if ($@);
-		return 1 if $@;
+		$rs |= 1 if $@;
 	}
 
 	# Storing the new file in working directory
 	$file = iMSCP::File->new(filename => "$self->{wrkDir}/main.cf");
-	$file->set($cfgTpl) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($cfgTpl);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
 	# Installing the new file in production directory
-	$file->copyFile($self::postfixConfig{'POSTFIX_CONF_FILE'}) and return 1;
+	$rs |= $file->copyFile($self::postfixConfig{'POSTFIX_CONF_FILE'});
 
-	debug('Ending...');
-	0;
+	$rs;
 }
+
 1;
