@@ -29,6 +29,7 @@ Features / Enhancements:
 Other:
 	Gui:
 		- Updated jQuery to version 1.6.4
+		- Updated jQuery UI to version 1.8.16
 
 Tickets:
 	- Fixed #15:  PHP directives editor
