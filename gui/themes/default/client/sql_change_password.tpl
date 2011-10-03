@@ -38,7 +38,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="sql_manage.php">{TR_MENU_OVERVIEW}</a></li>
+				<li><a href="sql_manage.php">{TR_LMENU_OVERVIEW}</a></li>
+				<li><a href="#" onclick="return false;">{TR_CHANGE_SQL_USER_PASSWORD}</a></li>
 			</ul>
 		</div>
 
@@ -49,6 +50,7 @@
 
 		<div class="body">
 			<h2 class="password"><span>{TR_CHANGE_SQL_USER_PASSWORD}</span></h2
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->

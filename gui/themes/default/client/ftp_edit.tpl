@@ -40,7 +40,7 @@
 			<ul class="path">
 				<li><a href="ftp_accounts.php">{TR_MENU_FTP_ACCOUNTS}</a></li>
 				<li><a href="ftp_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
-				<li>{TR_TITLE_EDIT_FTP_USER}</li>
+				<li><a href="#" onclick="return false;">{TR_TITLE_EDIT_FTP_USER}</a></li>
 			</ul>
 		</div>
 

@@ -422,7 +422,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('i-MSCP - Client/Add SQL User'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add SQL User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()
@@ -454,10 +454,12 @@ $tpl->assign(
 		'TR_END_ID_POS' => tr('Behind the name'),
 		'TR_ADD' => tr('Add'),
 		'TR_CANCEL' => tr('Cancel'),
-		'TR_ADD_EXIST' => tr('Add existing user'),
+		'TR_ADD_EXIST' => tr('Assign'),
 		'TR_PASS' => tr('Password'),
 		'TR_PASS_REP' => tr('Repeat password'),
-		'TR_SQL_USER_NAME' => tr('Existing SQL users')
+		'TR_SQL_USER_NAME' => tr('Existing SQL users'),
+		'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
+		'TR_NEW_SQL_USER_DATA' => tr('New Sql user data')
 	)
 );
 
