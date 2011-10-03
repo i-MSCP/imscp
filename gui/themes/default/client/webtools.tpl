@@ -39,7 +39,7 @@
             </ul>
             <ul class="path">
                 <li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
-                <li><a href="webtools.php">{TR_MENU_OVERVIEW}</a></li>
+                <li><a href="webtools.php">{TR_LMENU_OVERVIEW}</a></li>
             </ul>
         </div>
         <div class="left_menu">
@@ -51,7 +51,6 @@
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
 
             <a href="protected_areas.php">{TR_HTACCESS}</a>
             <p>{TR_HTACCESS_TEXT}</p>

@@ -216,7 +216,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE' => tr('i-MSCP - Client/Edit FTP Account'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Edit FTP Account'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()
@@ -258,16 +258,14 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_FTP_USER' 		=> tr('Edit FTP user'),
-		'TR_FTP_ACCOUNT' 		=> tr('FTP account'),
-		'TR_PASSWORD' 			=> tr('Password'),
-		'TR_PASSWORD_REPEAT' 	=> tr('Repeat password'),
-		'TR_USE_OTHER_DIR' 		=> tr('Use other dir'),
-		'TR_EDIT' 				=> tr('Save changes'),
-		'CHOOSE_DIR' 			=> tr('Choose dir'),
-		// The entries below are for Demo versions only
-		'PASSWORD_DISABLED'		=> tr('Password change is deactivated!'),
-		'DEMO_VERSION'			=> tr('Demo Version!')
+		'TR_TITLE_EDIT_FTP_USER' => tr('Edit FTP user'),
+		'TR_FTP_ACCOUNT' => tr('FTP account'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_USE_OTHER_DIR' => tr('Use other dir'),
+		'TR_CHANGE' => tr('Change'),
+		'CHOOSE_DIR' => tr('Choose dir'),
+		'TR_FTP_USER_DATA' => tr('Ftp user data')
 	)
 );
 

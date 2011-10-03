@@ -38,7 +38,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-				<li><a href="personal_change.php">{TR_CHANGE_PERSONAL_DATA}</a></li>
+				<li><a href="personal_change.php">{TR_LMENU_CHANGE_PERSONAL_DATA}</a></li>
 			</ul>
 		</div>
 
@@ -47,17 +47,19 @@
 		</div>
 
 		<div class="body">
-			<h2 class="settings"><span>{TR_CHANGE_PERSONAL_DATA}</span></h2>
+			<h2 class="settings"><span>{TR_TITLE_CHANGE_PERSONAL_DATA}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-
-
 			<form name="client_personal_change_frm" method="post" action="personal_change.php">
 				<table>
 					<tr>
-						<td style="width: 300px;"><label for="fname">{TR_FIRST_NAME}</label></td>
+						<th colspan="2">{TR_PERSONAL_DATA}</th>
+					</tr>
+					<tr>
+						<td style="width:300px;"><label for="fname">{TR_FIRST_NAME}</label></td>
 						<td><input id="fname" name="fname" type="text" value="{FIRST_NAME}"/></td>
 					</tr><tr>
 						<td><label for="lname">{TR_LAST_NAME}</label></td>

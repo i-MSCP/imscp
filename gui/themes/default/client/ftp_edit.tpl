@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE}</title>
+		<title>{TR_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
@@ -39,8 +39,8 @@
 			</ul>
 			<ul class="path">
 				<li><a href="ftp_accounts.php">{TR_MENU_FTP_ACCOUNTS}</a></li>
-				<li><a href="ftp_accounts.php">{TR_MENU_OVERVIEW}</a></li>
-				<li>{TR_EDIT_FTP_USER}</li>
+				<li><a href="ftp_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
+				<li>{TR_TITLE_EDIT_FTP_USER}</li>
 			</ul>
 		</div>
 
@@ -49,14 +49,19 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="ftp"><span>{TR_EDIT_FTP_USER}</span></h2>
+            <h2 class="ftp"><span>{TR_TITLE_EDIT_FTP_USER}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-
 			<form name="edit_ftp_acc_frm" method="post" action="ftp_edit.php">
 				<table>
+					<tr>
+						<th colspan="2">
+							{TR_FTP_USER_DATA}
+						</th>
+					</tr>
 					<tr>
 						<td style="width: 300px;"><label for="ftp_account">{TR_FTP_ACCOUNT}</label></td>
 						<td><input id="ftp_account" type="text" name="username" value="{FTP_ACCOUNT}"  readonly="readonly"/></td>
@@ -74,12 +79,11 @@
 						<td><input type="text" name="other_dir" value="{OTHER_DIR}" /><a href="#" onclick="showFileTree();" class="icon i_bc_folder">{CHOOSE_DIR}</a></td>
 					</tr>
 				</table>
-
 				<div class="buttons">
-					<input name="Submit" type="submit" class="button" value="{TR_EDIT}" />
+					<input type="hidden" name="uaction" value="edit_user" />
+					<input type="hidden" name="id" value="{ID}" />
+					<input name="Submit" type="submit" class="button" value="{TR_CHANGE}" />
 				</div>
-				<input type="hidden" name="uaction" value="edit_user" />
-				<input type="hidden" name="id" value="{ID}" />
 			</form>
 		</div>
 <!-- INCLUDE "footer.tpl" -->

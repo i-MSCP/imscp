@@ -50,7 +50,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="ftp_accounts.php">{TR_MENU_FTP_ACCOUNTS}</a></li>
-				<li><a href="ftp_accounts.php">{TR_MENU_OVERVIEW}</a></li>
+				<li><a href="ftp_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
 			</ul>
 		</div>
 

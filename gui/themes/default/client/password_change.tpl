@@ -38,7 +38,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-				<li><a href="password_change.php">{TR_CHANGE_PASSWORD}</a></li>
+				<li><a href="password_change.php">{TR_LMENU_CHANGE_PASSWORD}</a></li>
 			</ul>
 		</div>
 
@@ -47,15 +47,18 @@
 		</div>
 
 		<div class="body">
-			<h2 class="password"><span>{TR_CHANGE_PASSWORD}</span></h2>
+			<h2 class="password"><span>{TR_TITLE_CHANGE_PASSWORD}</span></h2>
+
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-
-
 			<form name="client_change_pass_frm" method="post" action="password_change.php">
 				<table>
+					<tr>
+						<th colspan="2">{TR_PASSWORD}</th>
+					</tr>
 					<tr>
 						<td style="width: 300px;"><label for="curr_pass">{TR_CURR_PASSWORD}</label></td>
 						<td><input id="curr_pass" name="curr_pass" type="password" value="" /></td>

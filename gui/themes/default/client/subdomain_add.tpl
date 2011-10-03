@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE}</title>
+		<title>{TR_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
@@ -19,44 +19,42 @@
 		<![endif]-->
 		<!-- BDP: subdomain_add_js -->
 		<script language="JavaScript" type="text/JavaScript">
-			/*<![CDATA[*/
-				$(document).ready(function(){
-					$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-					// Tooltips - end
-					
-					// Request for encode_idna request
-					$('input[name=subdomain_name]').blur(function(){
-						subdmnName = $('#subdomain_name').val();
-						// Configure the request for encode_idna request
-						$.ajaxSetup({
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+
+				$('input[name=subdomain_name]').blur(function(){
+					subdmnName = $('#subdomain_name').val();
+
+					$.ajaxSetup({
 						url: $(location).attr('pathname'),
-							type:'POST',
-							data: 'subdomain=' + subdmnName + '&uaction=toASCII',
-							datatype: 'text',
-							beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
-							success: function(r){$('#subdomain_mnt_pt').val(r);},
-							error: iMSCPajxError
-						});
-						$.ajax();
+						type:'POST',
+						data: 'subdomain=' + subdmnName + '&uaction=toASCII',
+						datatype: 'text',
+						beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+						success: function(r){$('#subdomain_mnt_pt').val(r);},
+						error: iMSCPajxError
 					});
+
+					$.ajax();
 				});
+			});
 				
-				function setRatioAlias(){
-					document.forms[0].elements['dmn_type'][1].checked = true;
-				}
+			function setRatioAlias(){
+				document.forms[0].elements['dmn_type'][1].checked = true;
+			}
 
-				function setForwardReadonly(obj){
-					if(obj.value == 1) {
-						document.forms[0].elements['forward'].readOnly = false;
-						document.forms[0].elements['forward_prefix'].disabled = false;
-					} else {
-						document.forms[0].elements['forward'].readOnly = true;
-						document.forms[0].elements['forward'].value = '';
-						document.forms[0].elements['forward_prefix'].disabled = true;
-					}
+			function setForwardReadonly(obj){
+				if(obj.value == 1) {
+					document.forms[0].elements['forward'].readOnly = false;
+					document.forms[0].elements['forward_prefix'].disabled = false;
+				} else {
+					document.forms[0].elements['forward'].readOnly = true;
+					document.forms[0].elements['forward'].value = '';
+					document.forms[0].elements['forward_prefix'].disabled = true;
 				}
-
-			/*]]>*/
+			}
+		/*]]>*/
 		</script>
 		<!-- EDP: subdomain_add_js -->
 	</head>
@@ -82,7 +80,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-				<li><a href="subdomain_add.php">{TR_MENU_ADD_SUBDOMAIN}</a></li>
+				<li><a href="subdomain_add.php">{TR_LMENU_ADD_SUBDOMAIN}</a></li>
 			</ul>
 		</div>
 
@@ -91,7 +89,7 @@
 		</div>
 
 		<div class="body">
-			<h2 class="domains"><span>{TR_ADD_SUBDOMAIN}</span></h2>
+			<h2 class="domains"><span>{TR_TITLE_ADD_SUBDOMAIN}</span></h2>
 
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
@@ -101,10 +99,13 @@
 			<form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
 				<table>
 					<tr>
-						<td style="width: 300px;">
+						<th colspan="3">{TR_SUBDOMAIN_DATA}</th>
+					</tr>
+					<tr>
+						<td style="width:300px;">
 							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
 						</td>
-						<td style="width: 300px;">
+						<td style="width:300px;">
 							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" />
 						</td>
 						<td>
@@ -113,16 +114,16 @@
 								<br />
 								<input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED}" />
 								<select name="als_id">
-									<!-- BDP: als_list -->
-										<option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>
-									<!-- EDP: als_list -->
+								<!-- BDP: als_list -->
+									<option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>
+								<!-- EDP: als_list -->
 								</select>
 							<!-- EDP: to_alias_domain -->
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label>
+							<label for="subdomain_mnt_pt">{TR_MOUNT_POINT}</label>
 						</td>
 						<td colspan="2">
 							<input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" />
@@ -147,16 +148,15 @@
 								<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
 								<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
 							</select>
-							<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}"{READONLY_FORWARD} />
+							<input name="forward" type="text" class="textinput" id="forward" style="vertical-align:middle;" value="{FORWARD}"{READONLY_FORWARD} />
 						</td>
 					</tr>
 				</table>
 
 				<div class="buttons">
+					<input type="hidden" name="uaction" value="add_subd" />
 					<input name="Submit" type="submit" class="button" value="{TR_ADD}" />
 				</div>
-
-				<input type="hidden" name="uaction" value="add_subd" />
 			</form>
 			<!-- EDP: subdomain_add_form -->
 		</div>

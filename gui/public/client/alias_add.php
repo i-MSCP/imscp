@@ -339,7 +339,9 @@ if(!is_xhr()) {
 	$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_add.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('logged_from', 'page');
-	$tpl->define_dynamic('user_entry', 'page');
+	$tpl->define_dynamic('domain_alias_add_js', 'page');
+	$tpl->define_dynamic('domain_alias_add_form', 'page');
+	$tpl->define_dynamic('user_entry', 'domain_alias_add_form');
 	$tpl->define_dynamic('ip_entry', 'page');
 	
 	$tpl->assign(
@@ -358,27 +360,20 @@ if(!is_xhr()) {
 	
 	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-	
 	gen_logged_from($tpl);
-	
-	check_permissions($tpl);
-	
+
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP Client : Add Alias'),
-			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-			'TR_ADD_ALIAS' => tr('Add domain alias'),
-			'TR_DOMAIN_NAME' => tr('Domain name'),
+			'TR_TITLE_ADD_DOMAIN_ALIAS' => tr('Add domain alias'),
+			'TR_DOMAIN_ALIAS_DATA' => tr('Domain alias data'),
+			'TR_DOMAIN_ALIAS_NAME' => tr('Domain alias name'),
 			'TR_DOMAIN_ACCOUNT' => tr('User account'),
-			'TR_MOUNT_POINT' => tr('Directory mount point'),
-			'TR_DOMAIN_IP' => tr('Domain IP'),
-			'TR_FORWARD' => tr('Forward to URL'),
-			'TR_ADD' => tr('Add alias'),
-			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
-			'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
-			'TR_JS_WDNAME' => tr("Wrong domain name!"),
-			'TR_JS_MPOINTERROR' => tr("Please write mount point!"),
-			'TR_ENABLE_FWD' => tr("Enable Forward"),
+			'TR_MOUNT_POINT' => tr('Mount point'),
+			'TR_FORWARD' => tr('Redirect to URL'),
+			'TR_ADD' => tr('Add'),
+			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically."),
+			'TR_ENABLE_FWD' => tr("Redirect"),
 			'TR_ENABLE' => tr("Enable"),
 			'TR_DISABLE' => tr("Disable"),
 			'TR_PREFIX_HTTP' => 'http://',
@@ -386,15 +381,25 @@ if(!is_xhr()) {
 			'TR_PREFIX_FTP' => 'ftp://'
 		)
 	);
-	
-	check_client_domainalias_counts($_SESSION['user_id']);
 }
 
 /**
  * Dispatches the request
  */
+$currentNumberDomainAliases = get_domain_running_als_cnt($domainProperties['domain_id']);
+if ($currentNumberDomainAliases != 0
+	&& $currentNumberDomainAliases == $domainProperties['domain_alias_limit']
+) {
+	if(is_xhr()) {
+		set_page_message(tr('Wrong request.'));
+		redirectTo('domains_manage.php');
+	}
 
-if(isset($_POST['uaction'])) {
+	set_page_message(tr('We are sorry but you reached the maximum number of domain aliases allowed by your subscription. Contact your reseller for more information.'), 'warning');
+	$tpl->assign(array(
+					  'DOMAIN_ALIAS_ADD_JS' => '',
+					  'DOMAIN_ALIAS_ADD_FORM' => ''));
+}elseif(isset($_POST['uaction'])) {
 	if($_POST['uaction'] == 'toASCII') { // Ajax request
 		header('Content-Type: text/plain; charset=utf-8');
 		header('Cache-Control: no-cache, private');

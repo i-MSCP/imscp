@@ -525,22 +525,23 @@ if(!is_xhr()) {
 	gen_logged_from($tpl);
 	
 	check_permissions($tpl);
-	
+
 	$tpl->assign(
 		array(
-			'TR_ADD_SUBDOMAIN'					=> tr('Add subdomain'),
-			'TR_SUBDOMAIN_DATA'					=> tr('Subdomain data'),
-			'TR_SUBDOMAIN_NAME'					=> tr('Subdomain name'),
-			'TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT'	=> tr('Directory tree mount point'),
-			'TR_FORWARD'						=> tr('Redirect to URL'),
-			'TR_ADD'							=> tr('Add'),
-			'TR_DMN_HELP'						=> tr('You do not need \'www.\' i-MSCP will add it on its own.'),
-			'TR_ENABLE_FWD'						=> tr('Redirect'),
-			'TR_ENABLE'							=> tr('Enable'),
-			'TR_DISABLE'						=> tr('Disable'),
-			'TR_PREFIX_HTTP'					=> 'http://',
-			'TR_PREFIX_HTTPS'					=> 'https://',
-			'TR_PREFIX_FTP'						=> 'ftp://'
+			 'TR_TITLE_ADD_SUBDOMAIN' => tr('Add subdomain'),
+			 'TR_PAGE_TITLE' => tr('Add domain alias'),
+			 'TR_SUBDOMAIN_DATA' => tr('Subdomain data'),
+			 'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
+			 'TR_MOUNT_POINT' => tr('Mount point'),
+			 'TR_FORWARD' => tr('Redirect to URL'),
+			 'TR_ADD' => tr('Add'),
+			 'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it automatically."),
+			 'TR_ENABLE_FWD' => tr('Redirect'),
+			 'TR_ENABLE' => tr('Enable'),
+			 'TR_DISABLE' => tr('Disable'),
+			 'TR_PREFIX_HTTP' => 'http://',
+			 'TR_PREFIX_HTTPS' => 'https://',
+			 'TR_PREFIX_FTP' => 'ftp://'
 		)
 	);
 }

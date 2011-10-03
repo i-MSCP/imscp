@@ -1453,15 +1453,15 @@ function get_client_software_permission($tpl, $user_id)
 	if ($rs->fields('domain_software_allowed') == 'yes' && $rs->fields('domain_ftpacc_limit') != "-1") {
 		$tpl->assign(array(
 						  'SOFTWARE_SUPPORT' => tr('yes'),
-						  'TR_SOFTWARE_MENU' => tr('i-MSCP application installer'),
+						  'TR_SOFTWARE_MENU' => tr('Application installer'),
 						  'SOFTWARE_MENU' => tr('yes'),
 						  'TR_INSTALLATION' => tr('Installation details'),
 						  'TR_INSTALLATION_INFORMATION' => tr('Please set now the Username and Password for the later Login in the Application. (Required fiels!)'),
 						  'TR_INSTALL_USER' => tr('Login username'),
 						  'TR_INSTALL_PWD' => tr('Login password'),
 						  'TR_INSTALL_EMAIL' => tr('Emailadress'),
-						  'SW_MSG' => tr('enabled'),
-						  'SW_ALLOWED' => tr('i-MSCP application installer'),
+						  'SW_MSG' => tr('Enabled'),
+						  'SW_ALLOWED' => tr('Application installer'),
 						  'TR_SOFTWARE_DESCRIPTION' => tr('Application Description')));
 
 		$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
@@ -1473,8 +1473,8 @@ function get_client_software_permission($tpl, $user_id)
 						  'SOFTWARE_ITEM' => '',
 						  'TR_INSTALLATION' => tr('You do not have permissions to install application yet'),
 						  'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install application yet'),
-						  'SW_MSG' => tr('disabled'),
-						  'SW_ALLOWED' => tr('i-MSCP application installer')));
+						  'SW_MSG' => tr('Disabled'),
+						  'SW_ALLOWED' => tr('Application installer')));
 	}
 }
 

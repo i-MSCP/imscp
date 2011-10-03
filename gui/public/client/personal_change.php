@@ -144,7 +144,7 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CHANGE_PERSONAL_DATA'	=> tr('Change personal data'),
+		'TR_TITLE_CHANGE_PERSONAL_DATA'	=> tr('Change personal data'),
 		'TR_PERSONAL_DATA'			=> tr('Personal data'),
 		'TR_FIRST_NAME'				=> tr('First name'),
 		'TR_LAST_NAME'				=> tr('Last name'),
@@ -162,7 +162,7 @@ $tpl->assign(
 		'TR_MALE'					=> tr('Male'),
 		'TR_FEMALE'					=> tr('Female'),
 		'TR_UNKNOWN'				=> tr('Unknown'),
-		'TR_UPDATE_DATA'			=> tr('Update data')
+		'TR_UPDATE_DATA'			=> tr('Change')
 	)
 );
 

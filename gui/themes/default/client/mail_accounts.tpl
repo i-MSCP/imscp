@@ -3,9 +3,7 @@
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
-			// TableSorter - begin
 			$('.tablesorter').tablesorter({cssHeader: 'tablesorter'});
-			// TableSorter - end
 		});
 
 		function action_delete(url, subject) {
@@ -23,7 +21,7 @@
 	</div>
 	<div class="location">
 		<div class="location-area">
-			<h1 class="email">{TR_MENU_EMAIL_ACCOUNTS}</h1>
+			<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 		</div>
 		<ul class="location-menu">
 			<!-- BDP: logged_from -->
@@ -32,8 +30,8 @@
 			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 		</ul>
 		<ul class="path">
-			<li><a href="mail_accounts.php">{TR_MENU_EMAIL_ACCOUNTS}</a></li>
-			<li><a href="mail_accounts.php">{TR_MENU_OVERVIEW}</a></li>
+			<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+			<li><a href="mail_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>

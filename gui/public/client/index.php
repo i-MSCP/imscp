@@ -34,10 +34,63 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+
+
+/************************************************************************************
+ * Main script
+ */
 // Include core libraries
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
+
+$tpl = new iMSCP_pTemplate();
+
+$tpl->define_dynamic(array(
+						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
+						  'page_message' => 'page'));
+
+
+$tpl->assign(array(
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
+				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+				  'THEME_CHARSET' => tr('encoding'),
+				  'ISP_LOGO' => layout_getUserLogo(),
+				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')
+			 ));
+
+
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+gen_logged_from($tpl);
+
+generatePageMessage($tpl);
+
+$tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
+											  new iMSCP_Events_Response($tpl));
+
+$tpl->prnt();
+
+
+
+
+
+
+
+
+
+
+
+
+
+return;
 
 /************************************************************************************
  * Script functions
@@ -51,10 +104,10 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
  */
 function gen_num_limit_msg($num, $limit){
 	if ($limit == -1) {
-		return tr('disabled');
+		return tr('Disabled');
 	}
 	if ($limit == 0) {
-		return $num . '&nbsp;/&nbsp;' . tr('unlimited');
+		return $num . '&nbsp;/&nbsp;' . tr('Unlimited');
 	}
 
 	return $num . '&nbsp;/&nbsp;' . $limit;
@@ -145,7 +198,7 @@ function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
 	));
 
 	if ($max_usage != 0 && $usage > $max_usage) {
-		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit!'));
+		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit.'));
 	} else {
 		$tpl->assign('DISK_WARN', '');
 	}
@@ -452,7 +505,7 @@ check_user_permissions(
 $account_name = decode_idna($_SESSION['user_logged']);
 
 if ($dmn_expires == 0) {
-	$dmn_expires_date = tr('Not Set');
+	$dmn_expires_date = tr('No set');
 } else {
 	$date_formt = $cfg->DATE_FORMAT;
 	$dmn_expires_date = '( <strong style="text-decoration:underline;">' .
@@ -468,37 +521,32 @@ if (time() < $dmn_expires) {
 	} else {
 		$tpl->assign(
 			'DMN_EXPIRES', '<span style="color:red">' . $years . ' Years, ' .
-							 $month . ' Month, ' . $days . ' Days</span>'
-		);
+							 $month . ' Month, ' . $days . ' Days</span>');
 	}
 } else if ($dmn_expires != 0) {
-	$tpl->assign(
-		'DMN_EXPIRES', '<span style="color:red">' .  tr('This Domain is expired') . '</span> ');
+	$tpl->assign('DMN_EXPIRES', '<span style="color:red">' .  tr('This Domain is expired') . '</span> ');
 } else {
 	$tpl->assign('DMN_EXPIRES', '');
 }
 
 if($dmn_status == $cfg->ITEM_OK_STATUS) {
-	$tpl->assign(
-		'DOMAIN_ALS_URL',
-		 "http://{$cfg->SYSTEM_USER_PREFIX}".($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']).".{$_SERVER['SERVER_NAME']}"
-	);
+	$tpl->assign('DOMAIN_ALS_URL',
+				 "http://{$cfg->SYSTEM_USER_PREFIX}".($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']).".{$_SERVER['SERVER_NAME']}");
 } else {
 	$tpl->assign('ALTERNATIVE_DOMAIN_URL', '');
 }
 
 $tpl->assign(array(
-	'ACCOUNT_NAME' => tohtml($account_name),
-	'MAIN_DOMAIN' => tohtml($dmn_name),
-	'DMN_EXPIRES_DATE' => $dmn_expires_date,
-	'MYSQL_SUPPORT' => ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1) ? tr('yes') : tr('no'),
-	'SUBDOMAINS' => gen_num_limit_msg($sub_cnt, $dmn_subd_limit),
-	'DOMAIN_ALIASES' => gen_num_limit_msg($als_cnt, $dmn_als_limit),
-	'MAIL_ACCOUNTS' => gen_num_limit_msg($mail_acc_cnt, $dmn_mailacc_limit),
-	'FTP_ACCOUNTS' => gen_num_limit_msg($ftp_acc_cnt, $dmn_ftpacc_limit),
-	'SQL_DATABASES' => gen_num_limit_msg($sqld_acc_cnt, $dmn_sqld_limit),
-	'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)
-));
+				  'ACCOUNT_NAME' => tohtml($account_name),
+				  'MAIN_DOMAIN' => tohtml($dmn_name),
+				  'DMN_EXPIRES_DATE' => $dmn_expires_date,
+				  'DOMAIN_ALIASES' => gen_num_limit_msg($als_cnt, $dmn_als_limit),
+				  'SUBDOMAINS' => gen_num_limit_msg($sub_cnt, $dmn_subd_limit),
+				  'MAIL_ACCOUNTS' => gen_num_limit_msg($mail_acc_cnt, $dmn_mailacc_limit),
+				  'FTP_ACCOUNTS' => gen_num_limit_msg($ftp_acc_cnt, $dmn_ftpacc_limit),
+				  'SQL_DATABASES' => gen_num_limit_msg($sqld_acc_cnt, $dmn_sqld_limit),
+				  'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)
+			 ));
 
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
@@ -506,44 +554,47 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tp
 gen_logged_from($tpl);
 get_client_software_permission($tpl, $_SESSION['user_id']);
 gen_system_message($tpl);
-check_permissions($tpl);
+
+//check_permissions($tpl);
 
 $tpl->assign(array(
-	'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
-	'THEME_COLOR_PATH' => "../themes/$theme_color",
-	'THEME_CHARSET' => tr('encoding'),
-	'ISP_LOGO' => layout_getUserLogo(),
-	'TR_GENERAL_INFORMATION' => tr('General information'),
-	'TR_ACCOUNT_NAME' => tr('Account name'),
-	'TR_DOMAIN_EXPIRE' => tr('Domain expire'),
-	'TR_MAIN_DOMAIN' => tr('Main domain'),
-	'TR_PHP_SUPPORT' => tr('PHP support'),
-	'TR_CGI_SUPPORT' => tr('CGI support'),
-	'TR_DNS_SUPPORT' => tr('Manual DNS support'),
-	'TR_BACKUP_SUPPORT' => tr('Backup support'),
-	'TR_MYSQL_SUPPORT' => tr('SQL support'),
-	'TR_SUBDOMAINS' => tr('Subdomains'),
-	'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-	'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-	'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-	'TR_SQL_DATABASES' => tr('SQL databases'),
-	'TR_SQL_USERS' => tr('SQL users'),
-	'TR_MESSAGES' => tr('Support system'),
-	'TR_LANGUAGE' => tr('Language'),
-	'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-	'TR_SAVE' => tr('Save'),
-	'TR_LAYOUT' => tr('Layout'),
-	'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
-	'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-	'TR_DISK_USAGE' => tr('Disk usage'),
-	'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website')
-));
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
+				  'THEME_COLOR_PATH' => "../themes/$theme_color",
+				  'THEME_CHARSET' => tr('encoding'),
+				  'ISP_LOGO' => layout_getUserLogo(),
+				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information'),
+				  'TR_DOMAIN_DATA' => tr('Domain data'),
+				  'TR_ACCOUNT_NAME' => tr('Account name'),
+				  'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
+				  'TR_DOMAIN_EXPIRE' => tr('Domain expire'),
+				  'TR_MAIN_DOMAIN' => tr('Main domain'),
+				  'TR_FEATURES' => tr('Features'),
+				  'TR_STATUS' => tr('Status'),
+				  'TR_PHP_SUPPORT' => tr('PHP support'),
+				  'TR_CGI_SUPPORT' => tr('CGI support'),
+				  'TR_DNS_SUPPORT' => tr('Manual DNS support'),
+				  'TR_BACKUP_SUPPORT' => tr('Backup support'),
+				  'TR_MYSQL_SUPPORT' => tr('SQL support'),
+				  'TR_SUBDOMAINS' => tr('Subdomains'),
+				  'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
+				  'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+				  'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+				  'TR_SQL_DATABASES' => tr('SQL databases'),
+				  'TR_SQL_USERS' => tr('SQL users'),
+				  'TR_MESSAGES' => tr('Support system'),
+				  'TR_LANGUAGE' => tr('Language'),
+				  //'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
+				  // 'TR_SAVE' => tr('Save'),
+				  //'TR_LAYOUT' => tr('Layout'),
+				  //'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
+				  'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
+				  'TR_DISK_USAGE' => tr('Disk usage') ));
 
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
+											  new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

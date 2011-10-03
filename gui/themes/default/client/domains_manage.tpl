@@ -35,7 +35,7 @@
 		</ul>
 		<ul class="path">
 			<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-			<li><a href="domains_manage.php">{TR_MENU_OVERVIEW}</a></li>
+			<li><a href="domains_manage.php">{TR_LMENU_OVERVIEW}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>

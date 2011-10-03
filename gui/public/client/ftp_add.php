@@ -583,7 +583,7 @@ function gen_page_js(&$tpl) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_FTP_ACC_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP User'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()
@@ -605,7 +605,7 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_FTP_USER' => tr('Add FTP user'),
+		'TR_TITLE_ADD_FTP_USER' => tr('Add FTP user'),
 		'TR_USERNAME' => tr('Username'),
 		'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
 		'TR_TO_DOMAIN_ALIAS' => tr('To domain alias'),
@@ -615,7 +615,8 @@ $tpl->assign(
 		'TR_USE_OTHER_DIR' => tr('Use other dir'),
 		'TR_ADD' => tr('Add'),
 		'CHOOSE_DIR' => tr('Choose dir'),
-		'FTP_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR
+		'FTP_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR,
+		'TR_FTP_USER_DATA' => tr('Ftp user data')
 	)
 );
 

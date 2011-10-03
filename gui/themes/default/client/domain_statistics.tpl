@@ -27,7 +27,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="statistics">{TR_MENU_DOMAIN_STATISTICS}</h1>
+				<h1 class="statistics">{TR_MENU_STATISTICS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -37,8 +37,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="domain_statistics.php">{TR_MENU_DOMAIN_STATISTICS}</a></li>
-				<li><a href="domain_statistics.php">{TR_MENU_OVERVIEW}</a></li>
+				<li><a href="domain_statistics.php">{TR_MENU_STATISTICS}</a></li>
+				<li><a href="domain_statistics.php">{TR_LMENU_OVERVIEW}</a></li>
 			</ul>
 		</div>
 
@@ -47,12 +47,11 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="stats"><span>{TR_DOMAIN_STATISTICS}</span></h2>
+            <h2 class="stats"><span>{TR_DOMAIN_STATISTICS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form name="domain_statistics_frm" method="post" action="domain_statistics.php">
 				<label for="month">{TR_MONTH}</label>

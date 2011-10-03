@@ -256,7 +256,8 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_DATABASE' => tr('Add SQL database'),
+		'TR_TITLE_ADD_DATABASE' => tr('Add SQL database'),
+		'TR_DATABASE' => tr('Database'),
 		'TR_DB_NAME' => tr('Database name'),
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
 		'TR_START_ID_POS' => tr('Before the name'),

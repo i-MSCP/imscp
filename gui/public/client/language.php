@@ -90,13 +90,14 @@ gen_def_language($tpl, $user_def_lang);
 
 $tpl->assign(array(
                   'TR_PAGE_TITLE' => tr('i-MSCP - Client/Change Language'),
+				  'TR_TITLE_CHANGE_LANGUAGE' => tr('Change language'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => layout_getUserLogo(),
                   'TR_GENERAL_INFO' => tr('General information'),
                   'TR_LANGUAGE' => tr('Language'),
                   'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your default language'),
-                  'TR_SAVE' => tr('Save')));
+                  'TR_CHANGE' => tr('Change')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');

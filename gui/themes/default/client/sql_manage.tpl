@@ -55,7 +55,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="sql_manage.php">{TR_MENU_OVERVIEW}</a></li>
+				<li><a href="sql_manage.php">{TR_MENU_MANAGE_SQL}</a></li>
+				<li><a href="sql_manage.php">{TR_LMENU_OVERVIEW}</a></li>
 			</ul>
 		</div>
 

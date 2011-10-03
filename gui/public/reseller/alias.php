@@ -220,11 +220,11 @@ function generate_als_list($tpl, $reseller_id)
 				if ($_SESSION['almax'] === '_yes_') {
                     set_page_message(tr('Domain aliases limit reached.'), 'error');
                 } else {
-                    set_page_message(tr('You do not have domain aliases.'), 'info');
+                    set_page_message(tr('You do not have order for domain aliases.'), 'info');
                 }
 				unset($_SESSION['almax']);
 			} else {
-                set_page_message(tr('You do not have domain aliases.'), 'info');
+                set_page_message(tr('You do not have order for domain aliases.'), 'info');
 			}
 		}
 		return;

@@ -18,19 +18,24 @@
 		</ul>
 		<ul class="path">
 			<li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-			<li><a href="language.php">{TR_LANGUAGE}</a></li>
+			<li><a href="language.php">{TR_LMENU_LANGUAGE}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>
 	<div class="body">
+		<h2 class="multilanguage"><span>{TR_TITLE_CHANGE_LANGUAGE}</span></h2>
+
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-		<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
+
 		<form action="language.php" method="post" id="client_language_frm">
 			<table>
 				<tr>
-					<td style="width: 300px;"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+					<th colspan="2">{TR_LANGUAGE}</th>
+				</tr>
+				<tr>
+					<td style="width:300px;"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
 					<td>
 						<select name="def_language" id="def_language">
 							<!-- BDP: def_language -->
@@ -42,7 +47,7 @@
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="save_lang" />
-				<input type="submit" name="submit" value="{TR_SAVE}" />
+				<input type="submit" name="submit" value="{TR_CHANGE}" />
 			</div>
 		</form>
 	</div>
