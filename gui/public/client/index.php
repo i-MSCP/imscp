@@ -35,89 +35,34 @@
  */
 
 
-
-/************************************************************************************
- * Main script
- */
-// Include core libraries
-require 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
-
-$tpl = new iMSCP_pTemplate();
-
-$tpl->define_dynamic(array(
-						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
-						  'page_message' => 'page'));
-
-
-$tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
-				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')
-			 ));
-
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
-
-generatePageMessage($tpl);
-
-$tpl->parse('PAGE', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
-											  new iMSCP_Events_Response($tpl));
-
-$tpl->prnt();
-
-
-
-
-
-
-
-
-
-
-
-
-
-return;
-
 /************************************************************************************
  * Script functions
  */
 
 /**
  *
- * @param	$num
- * @param	$limit
+ * @param $num
+ * @param $limit
  * @return string|Translated
  */
-function gen_num_limit_msg($num, $limit){
+function gen_num_limit_msg($num, $limit)
+{
 	if ($limit == -1) {
 		return tr('Disabled');
-	}
-	if ($limit == 0) {
+	} elseif($limit == 0) {
 		return $num . '&nbsp;/&nbsp;' . tr('Unlimited');
+	} else {
+		return $num . '&nbsp;/&nbsp;' . $limit;
 	}
-
-	return $num . '&nbsp;/&nbsp;' . $limit;
 }
 
 /**
- * @param	iMSCP_pTemplate $tpl
+ *
+ * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function gen_system_message($tpl){
+function gen_system_message($tpl)
+{
 	$user_id = $_SESSION['user_id'];
 
 	$query = '
@@ -147,25 +92,26 @@ function gen_system_message($tpl){
 }
 
 /**
+ *
  * @param	iMSCP_pTemplate $tpl
  * @param	$usage
  * @param	$max_usage
  * @param	$bars_max
  * @return void
  */
-function gen_traff_usage($tpl, $usage, $max_usage, $bars_max){
+function gen_traff_usage($tpl, $usage, $max_usage, $bars_max)
+{
 	list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
+
 	if ($max_usage != 0) {
 		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
 	} else {
 		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, sizeit($usage));
 	}
 
-	$tpl->assign(array(
-		'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-		'TRAFFIC_BARS' => $bars,
-		'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent
-	));
+	$tpl->assign(array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
+					  'TRAFFIC_BARS' => $bars,
+					  'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
 
 	if ($max_usage != 0 && $usage > $max_usage) {
 		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
@@ -175,10 +121,10 @@ function gen_traff_usage($tpl, $usage, $max_usage, $bars_max){
 }
 
 /**
- * @param	iMSCP_pTemplate $tpl
- * @param	$usage
- * @param	$max_usage
- * @param	$bars_max
+ * @param iMSCP_pTemplate $tpl
+ * @param $usage
+ * @param $max_usage
+ * @param $bars_max
  * @return void
  */
 function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
@@ -192,10 +138,9 @@ function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
 	}
 
 	$tpl->assign(array(
-		'DISK_USAGE_DATA' => $traffic_usage_data,
-		'DISK_BARS' => $bars,
-		'DISK_PERCENT' => $percent > 100 ? 100 : $percent
-	));
+					  'DISK_USAGE_DATA' => $traffic_usage_data,
+					  'DISK_BARS' => $bars,
+					  'DISK_PERCENT' => $percent > 100 ? 100 : $percent));
 
 	if ($max_usage != 0 && $usage > $max_usage) {
 		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit.'));
@@ -220,7 +165,8 @@ function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
  */
 function check_user_permissions($tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php,
 	$dmn_cgi, $backup, $dns, $dmn_subd_limit, $als_cnt, $dmn_mailacc_limit,
-	$dmn_software_allowed){
+	$dmn_software_allowed
+){
 
 	// check if mail accouts available are available for this user
 	if ($dmn_mailacc_limit == -1) {
@@ -359,14 +305,16 @@ function make_traff_usage($domain_id)
 }
 
 /**
- * @param	iMSCP_pTemplate $tpl Template engine
- * @param	$user_id User unique identifier
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param $user_id User unique identifier
  * @return void
  */
-function gen_user_messages_label($tpl, &$user_id){
+function gen_user_messages_label($tpl, &$user_id)
+{
 	$query = '
 		SELECT
-			COUNT(`ticket_id`) AS cnum
+			COUNT(`ticket_id`) AS `cnum`
 		FROM
 			`tickets`
 		WHERE
@@ -374,21 +322,18 @@ function gen_user_messages_label($tpl, &$user_id){
 		AND
 			`ticket_status` = 2
 	';
-
 	$stmt = exec_query($query, $user_id);
 	$num_question = $stmt->fields('cnum');
 
 	if ($num_question == 0) {
 		$tpl->assign(array(
 			'TR_NO_NEW_MESSAGES' => tr('You have no new support questions.'),
-			'MSG_ENTRY' => ''
-		));
+			'MSG_ENTRY' => ''));
 	} else {
 		$tpl->assign(array(
 			'NO_MESSAGES' => '',
 			'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
-			'TR_VIEW' => tr('View')
-		));
+			'TR_VIEW' => tr('View')));
 
 		$tpl->parse('MSG_ENTRY', '.msg_entry');
 	}
@@ -421,13 +366,16 @@ function gen_remain_time($dbtime){
 	$difftime = $difftime % $mi;
 	$seconds = $difftime;
 
-	// put into array and return
 	return array($years, $month, $days, $hours, $minutes, $seconds);
 }
 
 /************************************************************************************
  * Main script
  */
+// Include core libraries
+require 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -437,41 +385,35 @@ check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic(array(
-	'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
-	'page_message' => 'page',
-	'def_language' => 'page',
-	'def_layout' => 'page',
-	'no_messages' => 'page',
-	'msg_entry' => 'page',
-	'sql_support' => 'page',
-	't_sql1_support' => 'page',
-	't_sql2_support' => 'page',
-	't_php_support' => 'page',
-	't_cgi_support' => 'page',
-	't_dns_support' => 'page',
-	't_backup_support' => 'page',
-	't_sdm_support' => 'page',
-	't_alias_support' => 'page',
-	't_mails_support' => 'page',
-	'logged_from' => 'page',
-	'traff_warn' => 'page',
-	'disk_warn' => 'page',
-	'dmn_mngmnt' => 'page',
-	't_software_support' => 'page',
-	'alternative_domain_url' => 'page'
-));
+						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
+						  'page_message' => 'page',
+						  'no_messages' => 'page',
+						  'msg_entry' => 'page',
+						  'sql_support' => 'page',
+						  't_sql1_support' => 'page',
+						  't_sql2_support' => 'page',
+						  't_php_support' => 'page',
+						  't_cgi_support' => 'page',
+						  't_dns_support' => 'page',
+						  't_backup_support' => 'page',
+						  't_sdm_support' => 'page',
+						  't_alias_support' => 'page',
+						  't_mails_support' => 'page',
+						  'logged_from' => 'page',
+						  'traff_warn' => 'page',
+						  'disk_warn' => 'page',
+						  'dmn_mngmnt' => 'page',
+						  't_software_support' => 'page',
+						  'alternative_domain_url' => 'page'));
 
-$theme_color = $cfg->USER_INITIAL_THEME;
 
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
-	$user_id = $_SESSION['user_id'];
-	$user_layout = $_POST['def_layout'];
-
-	$query = 'UPDATE `user_gui_props` SET `layout` = ? WHERE `user_id` = ?';
-	$stmt = exec_query($query, array($user_layout, $user_id));
-
-	$theme_color = $user_layout;
-}
+$tpl->assign(array(
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
+				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+				  'THEME_CHARSET' => tr('encoding'),
+				  'ISP_LOGO' => layout_getUserLogo(),
+				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')
+			 ));
 
 list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
 	$dmn_expires, $dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit,
@@ -545,8 +487,7 @@ $tpl->assign(array(
 				  'MAIL_ACCOUNTS' => gen_num_limit_msg($mail_acc_cnt, $dmn_mailacc_limit),
 				  'FTP_ACCOUNTS' => gen_num_limit_msg($ftp_acc_cnt, $dmn_ftpacc_limit),
 				  'SQL_DATABASES' => gen_num_limit_msg($sqld_acc_cnt, $dmn_sqld_limit),
-				  'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)
-			 ));
+				  'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)));
 
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
@@ -555,13 +496,7 @@ gen_logged_from($tpl);
 get_client_software_permission($tpl, $_SESSION['user_id']);
 gen_system_message($tpl);
 
-//check_permissions($tpl);
-
 $tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
-				  'THEME_COLOR_PATH' => "../themes/$theme_color",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
 				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information'),
 				  'TR_DOMAIN_DATA' => tr('Domain data'),
 				  'TR_ACCOUNT_NAME' => tr('Account name'),
@@ -583,10 +518,6 @@ $tpl->assign(array(
 				  'TR_SQL_USERS' => tr('SQL users'),
 				  'TR_MESSAGES' => tr('Support system'),
 				  'TR_LANGUAGE' => tr('Language'),
-				  //'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-				  // 'TR_SAVE' => tr('Save'),
-				  //'TR_LAYOUT' => tr('Layout'),
-				  //'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
 				  'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 				  'TR_DISK_USAGE' => tr('Disk usage') ));
 
