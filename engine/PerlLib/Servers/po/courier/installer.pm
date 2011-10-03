@@ -115,9 +115,10 @@ sub saveConf{
 
 	use iMSCP::File;
 
-	my $self = shift;
-	my$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
-	my $cfg = $file->get() or return 1;
+	my $self	= shift;
+	my $rs		= 0;
+	my$file		= iMSCP::File->new(filename => "$self->{cfgDir}/courier.data");
+	my $cfg		= $file->get() or return 1;
 
 	$file = iMSCP::File->new(filename => "$self->{cfgDir}/courier.old.data");
 	$rs |= $file->set($cfg);
