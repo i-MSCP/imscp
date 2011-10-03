@@ -116,7 +116,7 @@ function gen_user_mail_auto_respond(
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
 						"mail_autoresponder_enable.php?id=$mail_id",
 
-					'AUTO_RESPOND_EDIT' => '',
+					'AUTO_RESPOND_EDIT' => tr('N/A'),
 					'AUTO_RESPOND_EDIT_SCRIPT' => '',
 					'AUTO_RESPOND_VIS' => 'inline'
 				)

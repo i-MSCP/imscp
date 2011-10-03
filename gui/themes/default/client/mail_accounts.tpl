@@ -73,13 +73,13 @@
 					  			<a href="{AUTO_RESPOND_EDIT_SCRIPT}" class="icon i_edit">{AUTO_RESPOND_EDIT}</a>
 					  		]
 						</div>
-					<!-- EDP: auto_respond -->
+						<!-- EDP: auto_respond -->
 					</td>
 					<td>{MAIL_TYPE}</td>
 					<td>{MAIL_STATUS}</td>
 					<td>
-						<a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit"></a>
-						<a href="#" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')" title="{MAIL_DELETE}" class="icon i_delete"></a>
+						<a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
+						<a href="#" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
 					</td>
 				</tr>
 				<!-- EDP: mail_item -->

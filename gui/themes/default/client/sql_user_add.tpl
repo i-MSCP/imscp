@@ -65,7 +65,7 @@
 						<th colspan="2">{TR_ASSIGN_EXISTING_SQL_USER}</th>
 					</tr>
 					<tr>
-						<td><label for="sqluser_id">{TR_SQL_USER_NAME}</label></td>
+						<td style="width: 300px;"><label for="sqluser_id">{TR_SQL_USER_NAME}</label></td>
 						<td>
 							<select name="sqluser_id" id="sqluser_id">
 								<!-- BDP: sqluser_list -->
@@ -88,7 +88,7 @@
 						<th colspan="2">{TR_NEW_SQL_USER_DATA}</th>
 					</tr>
 					<tr>
-						<td><label for="user_name">{TR_USER_NAME}</label></td>
+						<td style="width: 300px;"><label for="user_name">{TR_USER_NAME}</label></td>
 						<td>
 							<input type="text" id="user_name" name="user_name" value="{USER_NAME}" />
 						</td>

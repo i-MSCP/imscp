@@ -27,7 +27,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="email">{TR_MENU_EMAIL_ACCOUNTS}</h1>
+				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -37,9 +37,9 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="mail_accounts.php">{TR_MENU_EMAIL_ACCOUNTS}</a></li>
-				<li><a href="mail_accounts.php">{TR_MENU_OVERVIEW}</a></li>
-				<li>{TR_ENABLE_MAIL_AUTORESPONDER}</li>
+				<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+				<li><a href="mail_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
+				<li><a href="#" onclick="return false;">{TR_ENABLE_MAIL_AUTORESPONDER}</a></li>
 			</ul>
 		</div>
 

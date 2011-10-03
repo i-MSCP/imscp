@@ -457,7 +457,7 @@ $tpl->assign(
 		'TR_ADD_EXIST' => tr('Assign'),
 		'TR_PASS' => tr('Password'),
 		'TR_PASS_REP' => tr('Repeat password'),
-		'TR_SQL_USER_NAME' => tr('Existing SQL users'),
+		'TR_SQL_USER_NAME' => tr('SQL users'),
 		'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
 		'TR_NEW_SQL_USER_DATA' => tr('New Sql user data')
 	)

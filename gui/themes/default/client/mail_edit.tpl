@@ -17,29 +17,30 @@
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
+
 		<script type="text/javascript">
 		/* <![CDATA[ */
-		$(document).ready(function(){
-			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
-			// Tooltips - end
-		});
-		function begin_js() {
-			if (typeof(document.forms[0].elements['mail_forward']) != 'undefined') {
-				if (document.forms[0].elements['mail_forward'].checked == false) {
-					document.forms[0].elements['forward_list'].disabled = true;
-				}
-			}
-		}
+			$(document).ready(function(){
+				$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
+			});
 
-		function changeType(what) {
-			if (what == "forward") {
-				if (document.forms[0].elements['forward_list'].disabled == true) {
-				 	document.forms[0].elements['forward_list'].disabled = false;
-				} else {
-					document.forms[0].elements['forward_list'].disabled = true;
+			function begin_js() {
+				if (typeof(document.forms[0].elements['mail_forward']) != 'undefined') {
+					if (document.forms[0].elements['mail_forward'].checked == false) {
+						document.forms[0].elements['forward_list'].disabled = true;
+					}
 				}
 			}
-		}
+
+			function changeType(what) {
+				if (what == "forward") {
+					if (document.forms[0].elements['forward_list'].disabled == true) {
+				 		document.forms[0].elements['forward_list'].disabled = false;
+					} else {
+						document.forms[0].elements['forward_list'].disabled = true;
+					}
+				}
+			}
 		/* ]]> */
 		</script>
 	</head>
@@ -55,7 +56,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="email">{TR_MENU_EMAIL_ACCOUNTS}</h1>
+				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -65,9 +66,9 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="mail_accounts.php">{TR_MENU_EMAIL_ACCOUNTS}</a></li>
-				<li><a href="mail_accounts.php">{TR_MENU_OVERVIEW}</a></li>
-				<li>{TR_EDIT_EMAIL_ACCOUNT}</li>
+				<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+				<li><a href="mail_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
+				<li><a href="#" onclick="return false;">{TR_EDIT_EMAIL_ACCOUNT}</a></li>
 			</ul>
 		</div>
 
@@ -77,55 +78,62 @@
 
 		<div class="body">
 			<h2 class="email"><span>{TR_EDIT_EMAIL_ACCOUNT}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-
 			<form name="edit_mail_acc_frm" method="post" action="mail_edit.php?id={MAIL_ID}">
-				<fieldset>
-					<legend>{EMAIL_ACCOUNT}</legend>
-					<!-- BDP: normal_mail -->
-						<table>
-							<tr>
-								<td><label for="pass">{TR_PASSWORD}</label></td>
-								<td><input type="password" name="pass" id="pass" value="" /></td>
-							</tr>
-							<tr>
-								<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-								<td><input type="password" name="pass_rep" id="pass_rep" value="" /></td>
-							</tr>
-							<tr>
-								<td colspan="2"><input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');" /><label for="mail_forward">{TR_FORWARD_MAIL}</label></td>
-							</tr>
-							<tr>
-								<td>
-									<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
-								</td>
-								<td><textarea name="forward_list" id="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea></td>
-							</tr>
-						</table>
-					<!-- EDP: normal_mail -->
-					<!-- BDP: forward_mail -->
-						<table>
-							<tr>
-			   					<td>
-			   						<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
-		   						</td>
-			   					<td><textarea name="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea></td>
-			   				</tr>
-						</table>
-					<!-- EDP: forward_mail -->
-				</fieldset>
-
+				<!-- BDP: normal_mail -->
+				<table>
+					<tr>
+						<th colspan="2">{EMAIL_ACCOUNT}</th>
+					</tr>
+					<tr>
+						<td><label for="pass">{TR_PASSWORD}</label></td>
+						<td><input type="password" name="pass" id="pass" value="" />
+						</td>
+					</tr>
+					<tr>
+						<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
+						<td>
+							<input type="password" name="pass_rep" id="pass_rep" value="" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');" /><label for="mail_forward">{TR_FORWARD_MAIL}</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
+						</td>
+						<td>
+							<textarea name="forward_list" id="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea>
+						</td>
+					</tr>
+				</table>
+				<!-- EDP: normal_mail -->
+				<!-- BDP: forward_mail -->
+				<table>
+					<tr>
+						<td>
+							<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
+						</td>
+						<td>
+							<textarea name="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea>
+						</td>
+					</tr>
+				</table>
+				<!-- EDP: forward_mail -->
 				<div class="buttons">
+					<input type="hidden" name="id" value="{MAIL_ID}" />
+					<input type="hidden" name="mail_type" value="{MAIL_TYPE}" />
+					<input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}" />
+					<input type="hidden" name="uaction" value="{ACTION}" />
 					<input name="Button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0],'{ACTION}');" />
 				</div>
-				<input type="hidden" name="id" value="{MAIL_ID}" />
-				<input type="hidden" name="mail_type" value="{MAIL_TYPE}" />
-				<input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}" />
-				<input type="hidden" name="uaction" value="{ACTION}" />
 			</form>
-
 		</div>
 <!-- INCLUDE "footer.tpl" -->
