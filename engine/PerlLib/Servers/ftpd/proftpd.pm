@@ -121,7 +121,7 @@ sub restart{
 	# Reload config
 	$rs = execute("$self->{CMD_FTPD} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
-	warning("$stderr") if $stderr && !$rs;
+	debug("$stderr") if $stderr && !$rs;
 	error("$stderr") if $stderr && $rs;
 	return $rs if $rs;
 
