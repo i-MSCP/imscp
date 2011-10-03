@@ -636,24 +636,22 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$tpl->assign(
-	array(
-		'TR_ADD_MAIL_USER'		=> tr('Add mail users'),
-		'TR_USERNAME'			=> tr('Username'),
-		'TR_TO_MAIN_DOMAIN'		=> tr('To main domain'),
-		'TR_TO_DMN_ALIAS'		=> tr('To domain alias'),
-		'TR_TO_SUBDOMAIN'		=> tr('To subdomain'),
-		'TR_TO_ALS_SUBDOMAIN'	=> tr('To alias subdomain'),
-		'TR_NORMAL_MAIL'		=> tr('Normal mail'),
-		'TR_PASSWORD'			=> tr('Password'),
-		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
-		'TR_FORWARD_MAIL'		=> tr('Forward mail'),
-		'TR_FORWARD_TO'			=> tr('Forward to'),
-		'TR_FWD_HELP'			=> tr('Separate multiple email addresses with a line-break.'),
-		'TR_ADD'				=> tr('Add'),
-		'TR_EMPTY_DATA'			=> tr('You did not fill all required fields')
-	)
-);
+$tpl->assign(array(
+				  'TR_ADD_MAIL_USER' => tr('Add mail users'),
+				  'TR_USERNAME' => tr('Username'),
+				  'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
+				  'TR_TO_DMN_ALIAS' => tr('To domain alias'),
+				  'TR_TO_SUBDOMAIN' => tr('To subdomain'),
+				  'TR_TO_ALS_SUBDOMAIN' => tr('To alias subdomain'),
+				  'TR_NORMAL_MAIL' => tr('Normal mail'),
+				  'TR_PASSWORD' => tr('Password'),
+				  'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+				  'TR_FORWARD_MAIL' => tr('Forward mail'),
+				  'TR_FORWARD_TO' => tr('Forward to'),
+				  'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
+				  'TR_ADD' => tr('Add'),
+				  'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
+				  'TR_MAIl_ACCOUNT_DATA' => tr('Mail account data')));
 
 generatePageMessage($tpl);
 

@@ -56,7 +56,8 @@
 			</ul>
 			<ul class="path">
 				<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-				<li><a href="subdomain_add.php">{TR_EDIT_SUBDOMAIN}</a></li>
+				<li><a href="domains_manage.php">{TR_LMENU_OVERVIEW}</a></li>
+				<li><a href="#" onclick="return false;">{TR_EDIT_SUBDOMAIN}</a></li>
 			</ul>
 		</div>
 

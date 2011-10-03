@@ -222,7 +222,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 		$tpl->assign(array(
 						 'TR_LMENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
 						 'TR_LMENU_ADD_MAIL_USER' => tr('Add mail user'),
-						 'TR_LMENU_ADD_CATCH_ALL' => tr('Catch all'),
+						 'TR_LMENU_MAIL_CATCH_ALL' => tr('Catch all'),
 						 'TR_LMENU_WEBMAIL' => tr('Webmail'),
 						 'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
 						 'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET));

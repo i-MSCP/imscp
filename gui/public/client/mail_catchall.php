@@ -359,7 +359,7 @@ function gen_page_lists(&$tpl, $user_id)
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Users'),
+		'TR_PAGE_TILTE'	=> tr('i-MSCP - Client/Manage Users'),
 		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> layout_getUserLogo()
@@ -386,10 +386,10 @@ $tpl->assign(
 	array(
 		'TR_STATUS'					=> tr('Status'),
 		'TR_ACTION'					=> tr('Action'),
-		'TR_CATCHALL_MAIL_USERS'	=> tr('Catch all account'),
+		'TR_TITLE_CATCHALL_MAIL_USERS'	=> tr('Catch all'),
 		'TR_DOMAIN'					=> tr('Domain'),
 		'TR_CATCHALL'				=> tr('Catch all'),
-		'TR_MESSAGE_DELETE'			=> tr('Are you sure you want to delete %s?', true, '%s')
+		'TR_MESSAGE_DELETE'			=> tr('Are you sure you want to delete the %s catch all?', true, '%s')
 	)
 );
 

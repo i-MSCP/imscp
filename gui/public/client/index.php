@@ -406,14 +406,12 @@ $tpl->define_dynamic(array(
 						  't_software_support' => 'page',
 						  'alternative_domain_url' => 'page'));
 
-
 $tpl->assign(array(
 				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				  'THEME_CHARSET' => tr('encoding'),
 				  'ISP_LOGO' => layout_getUserLogo(),
-				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')
-			 ));
+				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')));
 
 list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
 	$dmn_expires, $dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit,

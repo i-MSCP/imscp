@@ -56,7 +56,7 @@
 		<table>
 			<tr>
 				<th  style="width: 300px;">{TR_FEATURES}</th>
-				<th  style="width: 300px;">{TR_STATUS}</th>
+				<th>{TR_STATUS}</th>
 			</tr>
 			<!-- BDP: t_alias_support -->
 			<tr>

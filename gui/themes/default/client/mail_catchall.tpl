@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_MANAGE_USERS_PAGE_TITLE}</title>
+		<title>{TR_PAGE_TILTE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
@@ -41,7 +41,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="email">{TR_MENU_EMAIL_ACCOUNTS}</h1>
+				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -51,8 +51,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="mail_accounts.php">{TR_MENU_EMAIL_ACCOUNTS}</a></li>
-				<li><a href="mail_catchall.php">{TR_MENU_CATCH_ALL_MAIL}</a></li>
+				<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+				<li><a href="mail_catchall.php">{TR_LMENU_MAIL_CATCH_ALL}</a></li>
 			</ul>
 		</div>
 
@@ -61,11 +61,11 @@
 		</div>
 
 		<div class="body">
-			<h2 class="email"><span>{TR_CATCHALL_MAIL_USERS}</span></h2>
+			<h2 class="email"><span>{TR_TITLE_CATCHALL_MAIL_USERS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
 
 			<!-- BDP: catchall_message -->
 			<div class="info">{CATCHALL_MSG}</div>

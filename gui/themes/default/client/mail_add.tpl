@@ -3,9 +3,7 @@
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
-			// Tooltips - begin
 			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
-			// Tooltips - end
 		});
 
 		function changeType() {
@@ -85,7 +83,7 @@
 	</div>
 	<div class="location">
 		<div class="location-area">
-			<h1 class="email">{TR_MENU_EMAIL_ACCOUNTS}</h1>
+			<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 		</div>
 		<ul class="location-menu">
 			<!-- BDP: logged_from -->
@@ -94,18 +92,23 @@
 			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 		</ul>
 		<ul class="path">
-			<li><a href="mail_accounts.php">{TR_MENU_EMAIL_ACCOUNTS}</a></li>
-			<li><a href="mail_add.php">{TR_MENU_ADD_MAIL_USER}</a></li>
+			<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+			<li><a href="mail_add.php">{TR_LMENU_ADD_MAIL_USER}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>
 	<div class="body">
+		<h2 class="email"><span>{TR_ADD_MAIL_USER}</span></h2>
+
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-		<h2 class="email"><span>{TR_ADD_MAIL_USER}</span></h2>
+
 		<form action="mail_add.php" method="post" id="client_mail_add">
 			<table>
+				<tr>
+					<th colspan="2">{TR_MAIl_ACCOUNT_DATA}</th>
+				</tr>
 				<tr>
 					<td style="width: 300px;"><label for="username">{TR_USERNAME}</label></td>
 					<td><input type="text" name="username" id="username" value="{USERNAME}" /></td>

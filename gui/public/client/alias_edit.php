@@ -67,8 +67,7 @@ $tpl->assign(
  */
 $tpl->assign(
 	array(
-		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-		'TR_EDIT_ALIAS' => tr('Edit domain alias'),
+		'TR_TITLE_EDIT_ALIAS' => tr('Edit domain alias'),
 		'TR_ALIAS_NAME' => tr('Alias name'),
 		'TR_DOMAIN_IP' => tr('Domain IP'),
 		'TR_FORWARD' => tr('Forward to URL'),
@@ -80,7 +79,8 @@ $tpl->assign(
 		'TR_DISABLE' => tr("Disable"),
 		'TR_PREFIX_HTTP' => 'http://',
 		'TR_PREFIX_HTTPS' => 'https://',
-		'TR_PREFIX_FTP' => 'ftp://'
+		'TR_PREFIX_FTP' => 'ftp://',
+		'TR_DOMAIN_ALIAS_DATA' => tr('Domain alias data')
 	)
 );
 
