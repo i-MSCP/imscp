@@ -78,7 +78,7 @@ function generatePageMessage($tpl)
 	$namespace = new Zend_Session_Namespace('pageMessages');
 
 	if (Zend_Session::namespaceIsset('pageMessages')) {
-		foreach (array('info', 'warning', 'error', 'success') as $level) {
+		foreach (array('success', 'error', 'warning', 'info') as $level) {
 			if (isset($namespace->{$level})) {
 				$tpl->assign(array(
 								  'MESSAGE_CLS' => $level,

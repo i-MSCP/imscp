@@ -37,49 +37,46 @@
 /**
  * Returns domain default properties.
  *
- * @param int $domain_admin_id User unique identifier
+ * Note: For performance reasons, the data are retrieved once per request.
+ *
+ * @param int $domainAdminId User unique identifier
  * @param bool $returnWKeys    Tells whether or not return value should be a
  *                             associative array
- * @return array               If $returnWkeys is true, returns an associative array
+ * @return array               If $returnWkeys is TRUE, returns an associative array
  *                             where each key is a domain propertie name. Otherwise
  *                             returns an indexed array where each value correspond
  *                             to  a propertie value, following the columns order in
  *                             database table.
+ * @todo add all properties
  */
-function get_domain_default_props($domain_admin_id, $returnWKeys = false)
+function get_domain_default_props($domainAdminId, $returnWKeys = false)
 {
-    $query = "
-		SELECT
-			`domain_id`, `domain_name`, `domain_gid`, `domain_uid`,
-			`domain_created_id`, `domain_created`, `domain_expires`,
-			`domain_last_modified`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
-			`domain_traffic_limit`, `domain_sqld_limit`, `domain_sqlu_limit`,
-			`domain_status`, `domain_alias_limit`, `domain_subd_limit`,
-			`domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
-			`domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
-			`domain_software_allowed`
-		FROM
-			`domain`
-		WHERE
-			`domain_admin_id` = ?
-	";
-    $stmt = exec_query($query, $domain_admin_id);
+	static $domainProperties = null;
 
-    if (!$returnWKeys) {
-        return array($stmt->fields['domain_id'], $stmt->fields['domain_name'],
-                     $stmt->fields['domain_gid'], $stmt->fields['domain_uid'],
-                     $stmt->fields['domain_created_id'], $stmt->fields['domain_created'],
-                     $stmt->fields['domain_expires'], $stmt->fields['domain_last_modified'],
-                     $stmt->fields['domain_mailacc_limit'], $stmt->fields['domain_ftpacc_limit'],
-                     $stmt->fields['domain_traffic_limit'], $stmt->fields['domain_sqld_limit'],
-                     $stmt->fields['domain_sqlu_limit'], $stmt->fields['domain_status'],
-                     $stmt->fields['domain_alias_limit'], $stmt->fields['domain_subd_limit'],
-                     $stmt->fields['domain_ip_id'], $stmt->fields['domain_disk_limit'],
-                     $stmt->fields['domain_disk_usage'], $stmt->fields['domain_php'],
-                     $stmt->fields['domain_cgi'], $stmt->fields['allowbackup'],
-                     $stmt->fields['domain_dns'], $stmt->fields['domain_software_allowed']);
+	if (null === $domainProperties) {
+		$query = "
+			SELECT
+				`domain_id`, `domain_name`, `domain_gid`, `domain_uid`,
+				`domain_created_id`, `domain_created`, `domain_expires`,
+				`domain_last_modified`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
+				`domain_traffic_limit`, `domain_sqld_limit`, `domain_sqlu_limit`,
+				`domain_status`, `domain_alias_limit`, `domain_subd_limit`,
+				`domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
+				`domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
+				`domain_software_allowed`, `phpini_perm_system`
+			FROM
+				`domain`
+			WHERE
+				`domain_admin_id` = ?
+		";
+		$stmt = exec_query($query, $domainAdminId);
+		$domainProperties = $stmt->fields;
+	}
+
+    if ($returnWKeys) {
+		return $domainProperties;
     } else {
-        return $stmt->fields;
+        return array_values($domainProperties);
     }
 }
 

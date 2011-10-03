@@ -115,7 +115,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
     {
         if (filter_var($to, FILTER_VALIDATE_EMAIL) === false) {
             throw new iMSCP_Exception(
-                'iMSCP_Exception_Writer_Mail error: Invalid email address!');
+                'iMSCP_Exception_Writer_Mail error: Invalid email address.');
         } else {
             $this->_to = $to;
         }
@@ -192,7 +192,6 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
      * Checks if the mail with same body footprint was already sents.
      *
      * @return bool TRUE if the message was already sent, FALSE otherwise
-
      */
     protected function _isAlreadySent()
     {

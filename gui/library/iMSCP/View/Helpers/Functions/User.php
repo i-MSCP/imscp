@@ -190,17 +190,201 @@ function gen_client_mainmenu($tpl, $menu_file)
 }
 
 /**
- * Helper function to generate left menu from partial template file.
+ * Helper function to generate client left menu from partial template file.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $menu_file Partial template file path
+ * @param  $menuTemplateFile menu partial template file
  * @return void
  */
-function gen_client_menu($tpl, $menu_file)
+function gen_client_menu($tpl, $menuTemplateFile)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
+	$tpl->define_dynamic(array(
+							  'menu' => $menuTemplateFile,
+							  'subdomains_feature' => 'menu',
+							  'domain_aliases_features' => 'menu',
+							  'ftp_feature' => 'menu',
+							  'mail_feature' => 'menu',
+							  'sql_feature' => 'menu',
+							  'php_directives_editor_feature' => 'menu',
+							  'awstats_feature' => 'menu',
+							  'protected_areas_feature' => 'menu',
+							  'aps_feature' => 'menu',
+							  'support_system_feature' => 'menu',
+							  'backup_feature' => 'menu',
+							  'custom_dns_records_feature' => 'menu',
+							  'update_hosting_plan_feature' => 'menu'));
+
+	$tpl->assign(array(
+					  'TR_LMENU_OVERVIEW' => tr('Overview'),
+					  'TR_LMENU_CHANGE_PASSWORD' => tr('Change password'),
+					  'TR_LMENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
+					  'TR_LMENU_LANGUAGE' => tr('Change language'),
+					  'TR_LMENU_UPDATE_HOSTING_PLAN' => tr('Update hosting plan'),
+
+					  // Todo move these entries tha don't really belong to the menu
+					  'VERSION' => $cfg->Version,
+					  'BUILDDATE' => $cfg->BuildDate,
+					  'CODENAME' => $cfg->CodeName
+				 ));
+
+	// Per feature left menu -- begin
+
+	// Getting domain properties
+	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+
+	// Subdomains feature is available?
+	if($domainProperties['domain_subd_limit'] != '-1') {
+		$tpl->assign('TR_LMENU_ADD_SUBDOMAIN', tr('Add subdomain'));
+	} else {
+		$tpl->assign('SUBDOMAINS_FEATURE', '');
+	}
+
+	// Domain aliases feature is available?
+	if($domainProperties['domain_alias_limit'] != '-1') {
+		$tpl->assign('TR_LMENU_ADD_DOMAIN_ALIAS', tr('Add alias'));
+	} else {
+		$tpl->assign('DOMAIN_ALIASES_FEATURE', '');
+	}
+
+	// Ftp feature is available?
+	if($domainProperties['domain_ftpacc_limit'] != '-1') {
+		$tpl->assign(array(
+						  'TR_LMENU_ADD_FTP_USER' => tr('Add FTP user'),
+						  'TR_LMENU_FILEMANAGER' => tr('Filemanager'),
+						  'TR_LMENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
+						  'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
+						  'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET));
+	} else {
+		$tpl->assign('FTP_FEATURE', '');
+	}
+
+	// Mail feature is available?
+	if($domainProperties['domain_mailacc_limit'] != '-1') {
+		$tpl->assign(array(
+						 'TR_LMENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
+						 'TR_LMENU_ADD_MAIL_USER' => tr('Add mail user'),
+						 'TR_LMENU_ADD_CATCH_ALL' => tr('Catch all'),
+						 'TR_LMENU_WEBMAIL' => tr('Webmail'),
+						 'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
+						 'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET));
+	} else {
+		$tpl->assign('MAIL_FEATURE', '');
+	}
+
+	// SQL feature is available?
+	if($domainProperties['domain_sqld_limit'] = '-1'
+	   && $domainProperties['domain_sqlu_limit'] != '-1'
+	){
+		$tpl->assign(array(
+						 'TR_LMENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
+						 'TR_LMENU_PMA' => tr('PhpMyAdmin'),
+                         'PMA_PATH' => $cfg->PMA_PATH,
+                         'PMA_TARGET' => $cfg->PMA_TARGET));
+	} else {
+		$tpl->assign('SQL_FEATURE', '');
+	}
+
+	// Custom DNS records feature is available?
+	if($domainProperties['domain_dns'] != 'no') {
+		$tpl->assign('TR_LMENU_ADD_CUSTOM_DNS_RECORD', tr('Add custom DNS record'));
+	} else {
+		$tpl->assign('CUSTOM_DNS_RECORDS_FEATURE', '');
+	}
+
+	// PHP directives editor feature is available?
+	if($domainProperties['phpini_perm_system'] != 'no') {
+		$tpl->assign('TR_LMENU_PHP_DIRECTIVES_EDITOR', tr('PHP directives editor'));
+	} else {
+		$tpl->assign('PHP_DIRECTIVES_EDITOR_FEATURE', '');
+	}
+
+	// Awstats feature is available
+	if($cfg->AWSTATS_ACTIVE != 'no') {
+		$tpl->assign(array(
+						  'TR_LMENU_AWSTATS' => tr('Web statistics'),
+						  'AWSTATS_PATH' => 'http://' . $domainProperties['domain_name'] . $cfg->AWSTATS_PATH,
+						  'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET));
+	} else {
+		$tpl->assign('AWSTATS_FEATURE', '');
+	}
+
+	// Daily backup feature is available?
+	if($cfg->BACKUP_DOMAINS != 'no' && $domainProperties['allowbackup'] != 'no'){
+		$tpl->assign('TR_LMENU_DAILY_BACKUP', tr('Daily backup'));
+	} else {
+		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	// Protected areas feature is available? (Always yes for now)
+	// TODO add on|off option for protected areas
+	$tpl->assign('TR_LMENU_HTACCESS', tr('Protected areas'));
+
+	// Custom error pages feature is available? (Always yes for now)
+	// TODO add on|off option for custom error pages feature
+	$tpl->assign('TR_LMENU_CUSTOM_ERROR_PAGES', tr('Custom error pages'));
+
+	// Application Software Package feature is available?
+	if($domainProperties['domain_software_allowed'] != 'no') {
+		$tpl->assign('TR_LMENU_APS', tr('Application installer'));
+	} else {
+		$tpl->assign('APS_FEATURE', '');
+	}
+
+	// Support system feature is available?
+	// Todo: must be review for external support system
+    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
+    $stmt = exec_query($query, $_SESSION['user_created_by']);
+
+    if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] != 'no') {
+		$tpl->assign(array(
+						  'TR_LMENU_OPEN_TICKETS' => tr('Open tickets'),
+						  'TR_LMENU_CLOSED_TICKETS' => tr('Closed tickets'),
+						  'TR_LMENU_NEW_TICKET' => tr('New ticket'),
+						  'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+						  'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET));
+    } else {
+		$tpl->assign('SUPPORT_SYSTEM_FEATURE', '');
+	}
+
+	// Update hosting plan is available?
+	// Yes if hosting plan are managed by reseller and a least one hosting plan is
+	// available for update
+	if($cfg->HOSTING_PLANS_LEVEL != 'admin') {
+		$query = "
+			SELECT
+				COUNT(`id`)`cnt`
+			FROM
+				`hosting_plans`
+			WHERE
+				`reseller_id` = ?
+			AND
+				`status` = '1'
+		";
+		$stmt = exec_query($query, $_SESSION['user_created_by']);
+
+		if($stmt->fields['cnt'] > 0) {
+			$tpl->assign('TR_LMENU_UPDATE_HOSTING_PLAN', tr('Update hosting plan'));
+		} else {
+			$tpl->assign('UPDATE_HOSTING_PLAN_FEATURE', '');
+		}
+	} else {
+		$tpl->assign('UPDATE_HOSTING_PLAN_FEATURE', '');
+	}
+
+	// Per feature left menu -- End
+
+	// Custom menus -- begin
+
+	// Custom menus -- end
+
+	$tpl->parse('MENU', 'menu');
+
+	return;
+
+	/*
     $tpl->define_dynamic(array(
                               'menu' => $menu_file,
                               'custom_buttons' => 'menu',
@@ -216,41 +400,41 @@ function gen_client_menu($tpl, $menu_file)
                       'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
                       'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
                       'TR_MENU_MANAGE_DOMAINS' => tr('Manage domains'),
-                      'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
+                      //'TR_MENU_ADD_SUBDOMAIN' => tr('Add subdomain'),
                       'TR_MENU_MANAGE_USERS' => tr('Email and FTP accounts'),
-                      'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
-                      'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
-                      'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
+                      //'TR_MENU_ADD_MAIL_USER' => tr('Add mail user'),
+                      //'TR_MENU_ADD_FTP_USER' => tr('Add FTP user'),
+                      //'TR_MENU_MANAGE_SQL' => tr('Manage SQL'),
                       'TR_MENU_ERROR_PAGES' => tr('Error pages'),
-                      'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
+                      //'TR_MENU_ADD_SQL_DATABASE' => tr('Add SQL database'),
                       'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
                       'TR_MENU_DAILY_BACKUP' => tr('Daily backup'),
                       'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
                       'TR_MENU_NEW_TICKET' => tr('New ticket'),
                       'TR_MENU_LOGOUT' => tr('Logout'),
                       'PHP_MY_ADMIN' => tr('PhpMyAdmin'),
-                      'TR_WEBMAIL' => tr('Webmail'),
-                      'TR_FILEMANAGER' => tr('Filemanager'),
+                      //'TR_WEBMAIL' => tr('Webmail'),
+                      //'TR_FILEMANAGER' => tr('Filemanager'),
                       'TR_MENU_WEBTOOLS' => tr('Webtools'),
                       'TR_HTACCESS' => tr('Protected areas'),
                       'TR_AWSTATS' => tr('Web statistics'),
                       'TR_HTACCESS_USER' => tr('Group/User management'),
                       'TR_MENU_OVERVIEW' => tr('Overview'),
-                      'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
-                      'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
+                      //'TR_MENU_EMAIL_ACCOUNTS' => tr('Email Accounts'),
+                      //'TR_MENU_FTP_ACCOUNTS' => tr('FTP Accounts'),
                       'TR_MENU_LANGUAGE' => tr('Language'),
-                      'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
-                      'TR_MENU_ADD_ALIAS' => tr('Add alias'),
+                      //'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
+                      //'TR_MENU_ADD_ALIAS' => tr('Add alias'),
                       'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
                       'TR_SOFTWARE_MENU' => tr('i-MSCP application installer'),
                       'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
                       'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-                      'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
-                      'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
-                      'PMA_PATH' => $cfg->PMA_PATH,
-                      'PMA_TARGET' => $cfg->PMA_TARGET,
-                      'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
-                      'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
+                      //'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
+                      //'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
+                      //'PMA_PATH' => $cfg->PMA_PATH,
+                      //'PMA_TARGET' => $cfg->PMA_TARGET,
+                      //'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
+                      //'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
                       'VERSION' => $cfg->Version,
                       'BUILDDATE' => $cfg->BuildDate,
                       'CODENAME' => $cfg->CodeName));
@@ -303,7 +487,6 @@ function gen_client_menu($tpl, $menu_file)
 
     // Menu for PHP directive editor - Begin
 
-    /* iMSCP_PHPini object */
 	// Todo make it as singleton to avoid too many instance of it for same user
     $phpini = new iMSCP_PHPini();
     $domainId = $phpini->getDomId($_SESSION['user_id']);
@@ -320,7 +503,12 @@ function gen_client_menu($tpl, $menu_file)
 
     if ($dmn_mailacc_limit == -1) {
         $tpl->assign('ACTIVE_EMAIL', '');
-    }
+    } else {
+		$tpl->assign(array(
+						  'TR_WEBMAIL' => tr('Webmail'),
+						  'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
+						  'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET));
+	}
 
     if ($dmn_als_limit == -1) {
         $tpl->assign(array(
@@ -357,7 +545,8 @@ function gen_client_menu($tpl, $menu_file)
     } else {
         $tpl->assign(array(
                           'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
-                          'AWSTATS_TARGET' => '_blank'));
+                          'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET
+					 ));
     }
 
     // Hide 'Update Hosting Package'-Button, if there are none
@@ -399,4 +588,5 @@ function gen_client_menu($tpl, $menu_file)
     }
 
     $tpl->parse('MENU', 'menu');
+	*/
 }

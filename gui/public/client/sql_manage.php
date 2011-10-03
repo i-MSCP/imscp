@@ -1,14 +1,14 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @version		SVN: $Id$
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,35 +26,28 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+/************************************************************************************
+ * Script functions
+ */
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login(__FILE__);
-
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('db_list', 'page');
-$tpl->define_dynamic('db_message', 'db_list');
-$tpl->define_dynamic('user_list', 'db_list');
-
-$count = -1;
-
-// page functions.
-function gen_db_user_list($tpl, $db_id) {
-
-	global $count;
-
+/**
+ * Generates database sql users list.
+ *
+ * @access private
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $databaseId Database unique identifier
+ * @return void
+ */
+function _client_generateDatabaseSqlUserList($tpl, $databaseId)
+{
 	$query = "
 		SELECT
 			`sqlu_id`, `sqlu_name`
@@ -65,46 +58,37 @@ function gen_db_user_list($tpl, $db_id) {
 		ORDER BY
 			`sqlu_name`
 	";
+	$stmt = exec_query($query, $databaseId);
 
-	$rs = exec_query($query, $db_id);
-
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'DB_MSG'	=> tr('Database user list is empty.'),
-				'USER_LIST'	=> ''
-			)
-		);
-		$tpl->parse('DB_MESSAGE', 'db_message');
+	if ($stmt->recordCount() == 0) {
+		$tpl->assign('SQL_USERS_LIST', '');
 	} else {
-		$tpl->assign(
-			array(
-				'USER_LIST'		=> '',
-				'DB_MESSAGE'	=> ''
-			)
-		);
+		$tpl->assign('SQL_USERS_LIST', '');
 
-		while (!$rs->EOF) {
-			$count++;
-			$user_id = $rs->fields['sqlu_id'];
-			$user_mysql = $rs->fields['sqlu_name'];
-			$tpl->assign(
-				array(
-					'DB_USER'	=> tohtml($user_mysql),
-					'DB_USER_JS'=> tojs($user_mysql),
-					'USER_ID'	=> $user_id
-				)
-			);
-			$tpl->parse('USER_LIST', '.user_list');
-			$rs->moveNext();
+		while (!$stmt->EOF) {
+			$sqlUserId = $stmt->fields['sqlu_id'];
+			$sqlUserName = $stmt->fields['sqlu_name'];
+
+			$tpl->assign(array(
+							  'DB_USER' => tohtml($sqlUserName),
+							  'DB_USER_JS' => tojs($sqlUserName),
+							  'USER_ID' => $sqlUserId));
+
+			$tpl->parse('SQL_USERS_LIST', '.sql_users_list');
+			$stmt->moveNext();
 		}
 	}
 }
 
-function gen_db_list($tpl, $user_id) {
-
-	$dmn_id = get_user_domain_id($user_id);
-
+/**
+ * Generates databases list.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $domainId Domain unique identifier
+ * @return void
+ */
+function client_databasesList($tpl, $domainId)
+{
 	$query = "
 		SELECT
 			`sqld_id`, `sqld_name`
@@ -115,84 +99,91 @@ function gen_db_list($tpl, $user_id) {
 		ORDER BY
 			`sqld_name`
 	";
+	$stmt = exec_query($query, $domainId);
 
-	$rs = exec_query($query, $dmn_id);
-
-	if ($rs->recordCount() == 0) {
-		set_page_message(tr('Database list is empty.'));
-		$tpl->assign('DB_LIST', '');
+	if ($stmt->rowCount() == 0) {
+		set_page_message(tr('You do not have database yet.'));
+		$tpl->assign('SQL_DATABASES_USERS_LIST', '');
 	} else {
-		while (!$rs->EOF) {
-			$db_id = $rs->fields['sqld_id'];
-			$db_name = $rs->fields['sqld_name'];
-			gen_db_user_list($tpl, $db_id);
-			$tpl->assign(
-				array(
-					'DB_ID'		=> $db_id,
-					'DB_NAME'	=> tohtml($db_name),
-					'DB_NAME_JS'=> tojs($db_name)
-				)
-			);
-			$tpl->parse('DB_LIST', '.db_list');
-			$rs->moveNext();
+		while (!$stmt->EOF) {
+			$databaseId = $stmt->fields['sqld_id'];
+			$databaseName = $stmt->fields['sqld_name'];
+
+			$tpl->assign(array(
+							  'DB_ID' => $databaseId,
+							  'DB_NAME' => tohtml($databaseName),
+							  'DB_NAME_JS' => tojs($databaseName)));
+
+			_client_generateDatabaseSqlUserList($tpl, $databaseId);
+
+			$tpl->parse('SQL_DATABASES_LIST', '.sql_databases_list');
+			$stmt->moveNext();
 		}
 	}
 }
 
-// common page data.
+/************************************************************************************
+ * Main script
+ */
 
-// check User sql permission
-if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
+// Include core library
+require 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login(__FILE__);
+
+// If the feature is disabled, redirects the client in silent way
+$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+if ($domainProperties['domain_sqld_limit'] == '-1'
+	|| $domainProperties['domain_sqlu_limit'] == '-1'
+) {
 	redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
 
-$tpl->assign(
-	array(
-		'TR_CLIENT_MANAGE_SQL_PAGE_TITLE' => tr('i-MSCP - Client/Manage SQL'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(array(
+						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl',
+						  'page_message' => 'page',
+						  'logged_from' => 'page',
+						  'sql_databases_users_list' => 'page',
+						  'sql_databases_list' => 'sql_databases_users_list',
+						  'sql_users_list' => 'sql_databases_list'));
 
-// dynamic page data.
-
-gen_db_list($tpl, $_SESSION['user_id']);
-
-// static page messages.
+$tpl->assign(array(
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage SQL'),
+				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+				  'THEME_CHARSET' => tr('encoding'),
+				  'ISP_LOGO' => layout_getUserLogo(),
+				  'TR_MANAGE_SQL' => tr('Manage SQL'),
+				  'TR_DELETE' => tr('Delete'),
+				  'TR_DATABASE' => tr('Database Name and Users'),
+				  'TR_CHANGE_PASSWORD' => tr('Change password'),
+				  'TR_ACTIONS' => tr('Actions'),
+				  'TR_PHPMYADMIN' => tr('phpMyAdmin'),
+				  'TR_DATABASE_USERS' => tr('Database users'),
+				  'TR_ADD_USER' => tr('Add SQL user'),
+				  'TR_CHANGE_PASSWORD' => tr('Change password'),
+				  'TR_LOGIN_PMA' => tr('Login into PhpMyAdmin'),
+				  'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
+				  'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s'),
+				  'PMA_TARGET' => $cfg->PMA_TARGET
+			 ));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
-
-$tpl->assign(
-	array(
-		'TR_MANAGE_SQL'			=> tr('Manage SQL'),
-		'TR_DELETE'				=> tr('Delete'),
-		'TR_DATABASE'			=> tr('Database Name and Users'),
-		'TR_CHANGE_PASSWORD'	=> tr('Change password'),
-		'TR_ACTION'				=> tr('Action'),
-		'TR_PHP_MYADMIN'		=> tr('phpMyAdmin'),
-		'TR_DATABASE_USERS'		=> tr('Database users'),
-		'TR_ADD_USER'			=> tr('Add SQL user'),
-		'TR_EXECUTE_QUERY'		=> tr('Execute query'),
-		'TR_CHANGE_PASSWORD'	=> tr('Change password'),
-		'TR_LOGIN_PMA'			=> tr('Login phpMyAdmin'),
-		'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
-        'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s')
-	)
-);
+client_databasesList($tpl, $domainProperties['domain_id']);
 
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
+											  new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -17,6 +17,7 @@
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
+		<!-- BDP: subdomain_add_js -->
 		<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 				$(document).ready(function(){
@@ -57,6 +58,7 @@
 
 			/*]]>*/
 		</script>
+		<!-- EDP: subdomain_add_js -->
 	</head>
 	<body>
 		<div class="header">
@@ -95,6 +97,7 @@
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
+			<!-- BDP: subdomain_add_form -->
 			<form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
 				<table>
 					<tr>
@@ -155,5 +158,6 @@
 
 				<input type="hidden" name="uaction" value="add_subd" />
 			</form>
+			<!-- EDP: subdomain_add_form -->
 		</div>
 <!-- INCLUDE "footer.tpl" -->

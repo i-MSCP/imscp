@@ -492,24 +492,22 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
+// If the feature is disabled, redirects the client in silent way
+$domainProperties =  get_domain_default_props($_SESSION['user_id'], true);
+if($domainProperties['domain_subd_limit'] == '-1') {
+	redirectTo('domains_manage.php');
+}
+
 // Avoid useless work during Ajax request
 if(!is_xhr()) {
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_add.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('logged_from', 'page');
-	$tpl->define_dynamic('als_list', 'page');
-	
-	// page functions.
-	
-	
-	// common page data.
-	
-	// check user sql permission
-	if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
-		header('Location: index.php');
-	}
-	
+	$tpl->define_dynamic('subdomain_add_js', 'page');
+	$tpl->define_dynamic('subdomain_add_form', 'page');
+	$tpl->define_dynamic('als_list', 'subdomain_add_form');
+
 	$tpl->assign(
 		array(
 			'TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('i-MSCP - Client/Add Subdomain'),
@@ -550,25 +548,35 @@ if(!is_xhr()) {
 /**
  * Dispatches the request
  */
-
-if(isset($_POST['uaction'])) {
-	if($_POST['uaction'] == 'toASCII') { // Ajax request
-		header('Content-Type: text/plain; charset=utf-8');
-		header('Cache-Control: no-cache, private');
-		// backward compatibility for HTTP/1.0
-		header('Pragma: no-cache');
-		header("HTTP/1.0 200 Ok");
-		
-		// Todo check return value here before echo...
-		echo "/".encode_idna(strtolower($_POST['subdomain']));
-		exit;
-	} elseif($_POST['uaction'] == 'add_subd') {
-		$dmn_name = check_subdomain_permissions($_SESSION['user_id']);
-		gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
-		check_subdomain_data($tpl, $_SESSION['user_id'], $dmn_name);
-	} else {
-		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
+$currentNumberSubdomains = get_domain_running_sub_cnt($domainProperties['domain_id']);
+if ($currentNumberSubdomains != 0 && $currentNumberSubdomains == $domainProperties['domain_subd_limit']) {
+	if(is_xhr()) {
+		set_page_message(tr('Wrong request'));
+		redirectTo('domains_manage.php');
 	}
+
+	set_page_message(tr('We are sorry but you reached the maximum number of subdomains allowed by your subscription. Contact your reseller for more information.'), 'warning');
+	$tpl->assign(array(
+					  'SUBDOMAIN_ADD_JS' => '',
+					  'SUBDOMAIN_ADD_FORM' => ''));
+} elseif (isset($_POST['uaction'])) {
+		if ($_POST['uaction'] == 'toASCII') { // Ajax request
+			header('Content-Type: text/plain; charset=utf-8');
+			header('Cache-Control: no-cache, private');
+			// backward compatibility for HTTP/1.0
+			header('Pragma: no-cache');
+			header("HTTP/1.0 200 Ok");
+
+			// Todo check return value here before echo...
+			echo "/" . encode_idna(strtolower($_POST['subdomain']));
+			exit;
+		} elseif ($_POST['uaction'] == 'add_subd') {
+			$dmn_name = check_subdomain_permissions($_SESSION['user_id']);
+			gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
+			check_subdomain_data($tpl, $_SESSION['user_id'], $dmn_name);
+		} else {
+			throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
+		}
 } else { // Default view
 	gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
 }

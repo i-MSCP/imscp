@@ -32,15 +32,17 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-
-/**
- * @todo use DB prepared statements!
- */
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
+
+// If the feature is disabled, redirects the client in silent way
+$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+if ($domainProperties['domain_mailacc_limit'] == '-1') {
+	redirectTo('index.php');
+}
 
 $cfg = iMSCP_Registry::get('config');
 
