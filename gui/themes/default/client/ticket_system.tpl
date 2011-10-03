@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_TICKET_PAGE_TITLE}</title>
+        <title>{TR_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
@@ -42,7 +42,7 @@
         </div>
         <div class="location">
             <div class="location-area">
-                <h1 class="support">{TR_SUPPORT_SYSTEM}</h1>
+                <h1 class="support">{TR_MENU_SUPPORT}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
@@ -56,12 +56,12 @@
                 </li>
             </ul>
             <ul class="path">
-                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_SUPPORT_SYSTEM}</a></li>
+                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_MENU_SUPPORT}</a></li>
                 <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_OPEN_TICKETS}</a></li>
             </ul>
         </div>
         <div class="left_menu">
-        {MENU}
+        	{MENU}
         </div>
         <div class="body">
             <h2 class="support"><span>{TR_OPEN_TICKETS}</span></h2>

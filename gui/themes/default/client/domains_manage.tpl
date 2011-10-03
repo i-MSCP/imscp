@@ -67,13 +67,13 @@
 				<!-- BDP: als_item -->
 				<tr>
 					<!-- BDP: als_status_reload_true -->
-					<td>
+					<td style="width: 300px">
 						<a href="http://{ALS_NAME}/" class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</a>
 					</td>
 					<!-- EDP: als_status_reload_true -->
 
 					<!-- BDP: als_status_reload_false -->
-					<td>
+					<td style="width: 300px">
 						<span class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span>
 					</td>
 					<!-- EDP: als_status_reload_false -->
@@ -112,11 +112,11 @@
 				<!-- BDP: sub_item -->
 				<tr>
 					<!-- BDP: sub_status_reload_true -->
-					<td>
+					<td style="width: 300px">
 						<a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
 					<!-- EDP: sub_status_reload_true -->
 					<!-- BDP: sub_status_reload_false -->
-					<td>
+					<td style="width: 300px">
 						<span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span></td>
 					<!-- EDP: sub_status_reload_false -->
 					<td>{SUB_MOUNT}</td>
@@ -154,7 +154,7 @@
 			<tbody>
 				<!-- BDP: dns_item -->
 				<tr>
-					<td><span class="icon i_domain_icon">{DNS_DOMAIN}</span></td>
+					<td style="width: 300px"><span class="icon i_domain_icon">{DNS_DOMAIN}</span></td>
 					<td>{DNS_NAME}</td>
 					<td>{DNS_CLASS}</td>
 					<td>{DNS_TYPE}</td>

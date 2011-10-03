@@ -52,17 +52,10 @@
 					<th>{TR_ACTION}</th>
 				</tr>
 			</thead>
-			<!-- BDP: mails_total -->
-			<tfoot>
-				<tr>
-					<td colspan="4">{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}</td>
-				</tr>
-			</tfoot>
-			<!-- EDP: mails_total -->
 			<tbody>
 				<!-- BDP: mail_item -->
 				<tr>
-					<td>
+					<td style="width: 300px;">
 						<span class="icon i_mail_icon">{MAIL_ACC}</span>
 						<!-- BDP: auto_respond -->
 						<div style="display: {AUTO_RESPOND_VIS};">
@@ -84,6 +77,13 @@
 				</tr>
 				<!-- EDP: mail_item -->
 			</tbody>
+			<!-- BDP: mails_total -->
+			<tfoot>
+				<tr>
+					<td colspan="4">{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}</td>
+				</tr>
+			</tfoot>
+			<!-- EDP: mails_total -->
 		</table>
 		<!-- BDP: default_mails_form -->
 		<form action="mail_accounts.php" method="post" id="showdefault">

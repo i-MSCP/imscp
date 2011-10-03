@@ -39,7 +39,7 @@
                 </li>
             </ul>
             <ul class="path">
-                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_SUPPORT_SYSTEM}</a></li>
+                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_MENU_SUPPORT}</a></li>
                 <li>
                     <a href="ticket_view.php?ticket_id={TICKET_ID_VAL}">{TR_VIEW_SUPPORT_TICKET}</a>
                 </li>

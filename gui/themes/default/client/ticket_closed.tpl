@@ -42,7 +42,7 @@
         </div>
         <div class="location">
             <div class="location-area">
-                <h1 class="support">{TR_SUPPORT_SYSTEM}</h1>
+                <h1 class="support">{TR_MENU_SUPPORT}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
@@ -56,8 +56,8 @@
                 </li>
             </ul>
             <ul class="path">
-                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_SUPPORT_SYSTEM}</a></li>
-                <li><a href="ticket_closed.php">{TR_CLOSED_TICKETS}</a></li>
+                <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_MENU_SUPPORT}</a></li>
+                <li><a href="ticket_closed.php">{TR_LMENU_CLOSED_TICKETS}</a></li>
             </ul>
         </div>
         <div class="left_menu">
