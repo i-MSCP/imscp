@@ -29,6 +29,7 @@ package Servers::po::courier;
 use strict;
 use warnings;
 use iMSCP::Debug;
+use Data::Dumper;
 
 use vars qw/@ISA/;
 
