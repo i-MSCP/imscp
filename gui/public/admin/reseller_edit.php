@@ -108,6 +108,7 @@ function get_clean_input_data() {
 function check_data(&$errFields) {
 
 	$cfg = iMSCP_Registry::get('config');
+	$rv = true;
 
 	// Get needed data
 	$rdata =& get_data();
@@ -115,19 +116,18 @@ function check_data(&$errFields) {
 	if (!empty($_POST['pass0']) || !empty($_POST['pass1'])) {
 		if (!chk_password($_POST['pass0'])) {
 			if ($cfg->PASSWD_STRONG) {
-				set_page_message(sprintf(
-									 tr('The password must be at least %s long and contain letters and numbers to be valid.'),
-									 $cfg->PASSWD_CHARS),
-								 'error');
-
+				set_page_message(tr(
+					'The password must be at least %s long and contain letters and numbers to be valid.',
+					$cfg->PASSWD_CHARS
+				), 'error');
 			} else {
-				set_page_message(sprintf(
-									 tr('Password data is shorter than %s signs or includes not permitted signs!'),
-									 $cfg->PASSWD_CHARS),
-								 'error');
+				set_page_message(tr(
+					'Password data is shorter than %s signs or includes not permitted signs!',
+					$cfg->PASSWD_CHARS
+				), 'error');
 			}
-
 			$errFields[] = 'PWD_ERR';
+			$rv = false;
 		}
 
 		if ($_POST['pass0'] != $_POST['pass1']) {
@@ -135,6 +135,7 @@ function check_data(&$errFields) {
 
 			$errFields[] = 'PWD_ERR';
 			$errFields[] = 'PWDR_ERR';
+			$rv = false;
 		}
 	}
 
@@ -142,6 +143,7 @@ function check_data(&$errFields) {
 		set_page_message(tr('Incorrect email syntax!'), 'error');
 
 		$errFields[] = 'EMAIL_ERR';
+		$rv = false;
 	}
 
 	list(
@@ -166,6 +168,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'DMN_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -182,6 +185,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'SUB_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -198,6 +202,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'ALS_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -214,6 +219,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'MAIL_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -230,6 +236,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'FTP_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -248,6 +255,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'SQLD_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -266,6 +274,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'SQLU_ERR';
+		$rv = false;
 	}
 
 	if (imscp_limit_check($rdata['max_traff_amnt'], null)) {
@@ -279,6 +288,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'TRF_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -296,6 +306,7 @@ function check_data(&$errFields) {
 
 	if (!$rs) {
 		$errFields[] = 'DISK_ERR';
+		$rv = false;
 	}
 
 	/**
@@ -304,16 +315,17 @@ function check_data(&$errFields) {
 
 	if ($rdata['reseller_ips'] == '') {
 		set_page_message(tr('You must assign at least one IP number for a reseller!'), 'error');
+		$rv = false;
 	}
 
-	check_user_ip_data($rdata['edit_id'], $rdata['rip_lst'], $rdata['reseller_ips']);
+	$rv &= check_user_ip_data($rdata['edit_id'], $rdata['rip_lst'], $rdata['reseller_ips']);
 
 	/*
 	 * We validate data only if php edit is on. Else for existing reseller you will get
 	 * Value memory_limit out of Range error since default value is 0
 	 */
 	if($rdata['php_ini_system'] == 'no'){
-		return;
+		return $rv;
 	}
 
 	/* iMSCP_PHPini object */
@@ -321,6 +333,7 @@ function check_data(&$errFields) {
 
 	if (!$phpini->setRePerm('phpiniPostMaxSize', $rdata['php_ini_max_post_max_size'])) {
 		set_page_message(tr('Value post_max_size out of Range'), 'error');
+		$rv = false;
 	}
 
 	if (!$phpini->setRePerm('phpiniUploadMaxFileSize', $rdata['php_ini_max_upload_max_filesize'])) {
@@ -343,6 +356,7 @@ function check_data(&$errFields) {
 		return false;
 	}
 
+	return $rv;
 }
 
 /**
@@ -353,12 +367,9 @@ function check_data(&$errFields) {
  * @param  $service_name
  * @return bool
  */
-function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
-	$unlimited, $service_name) {
+function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers, $unlimited, $service_name) {
 
-	// Small Workaround to get the error state
-	$err_state = isset($_SESSION['user_page_message']) ?
-		strlen($_SESSION['user_page_message']) : 0;
+	$rv = true;
 
 	if ($new_limit != 0) {
 
@@ -369,38 +380,42 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 			if ($new_limit < $used_by_customers && $new_limit != -1) {
 				set_page_message(tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
 								 'error');
+				$rv = false;
 
 			// If the new limit is < to the already assigned accounts/limits by reseller
 			} elseif ($new_limit < $assigned_by_reseller && $new_limit != -1) {
 				set_page_message(tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
 								 'error');
+				$rv = false;
 
 			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
 			} elseif ($new_limit == -1 && $used_by_customers > 0) {
 				set_page_message(tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
 								 'error');
+				$rv = false;
 
 			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
 			} elseif ($new_limit == -1 && $assigned_by_reseller > 0) {
 				set_page_message(tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
 								 'error');
+				$rv = false;
 			}
 
 		// One or more reseller's customers have unlimited rights
 		} elseif ($new_limit != 0) {
 			set_page_message(
-				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!',
-					$service_name),'error');
-
+				tr(
+					'This reseller has customer(s) with unlimited rights for the <b>%s</b> service!',
+					$service_name
+				),
+				'error'
+			);
 			set_page_message(tr('If you want to limit the reseller, you must first limit its customers!'), 'error');
+			$rv = false;
 		}
 	}
 
-	if (isset($_SESSION['user_page_message']) && $err_state < strlen($_SESSION['user_page_message'])) {
-		return false;
-	}
-
-	return true;
+	return $rv;
 }
 
 /**
@@ -409,9 +424,10 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
  * @param int $reseller_id reselller unique identifier
  * @param string $r_ips reseller Ips
  * @param string $u_ips users Ips
- * @return void
+ * @return bool
  */
 function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
+	$rv = true;
 
 	if ($r_ips != $u_ips) {
 		$rip_array = explode(';', $r_ips);
@@ -424,17 +440,18 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
 				$ip_name = '';
 
 				if (have_reseller_ip_users($reseller_id, $ip, $ip_num, $ip_name)) {
-					$ip_msg = "$ip_num ($ip_name)";
+					$ip_msg = $ip_name ? "$ip_num ($ip_name)" : $ip_num;
 
 					set_page_message(
 						tr('This reseller has domains assigned to the <b>%s</b> address!', $ip_msg), 'error'
 					);
 
-					break;
+					$rv = false;
 				}
 			}
 		}
 	}
+	return $rv;
 }
 
 /**
@@ -520,17 +537,13 @@ function get_servers_ips($tpl, $rip_lst) {
 		$tpl->parse('RSL_IP_MESSAGE', 'rsl_ip_message');
 	} else {
 		$tpl->assign(array(
-							'TR_RSL_IP_NUMBER' => tr('No.'),
-							'TR_RSL_IP_ASSIGN' => tr('Assign'),
-							'TR_RSL_IP_LABEL' => tr('Label'),
-							'TR_RSL_IP_IP' => tr('Number')));
+			'TR_RSL_IP_NUMBER' => tr('No.'),
+			'TR_RSL_IP_ASSIGN' => tr('Assign'),
+			'TR_RSL_IP_LABEL' => tr('Label'),
+			'TR_RSL_IP_IP' => tr('Number')
+		));
 
 		while (!$rs->EOF) {
-			$tpl->assign(
-				array(
-					'RSL_IP_CLASS' => ($i % 2 == 0) ? 'content2' : 'content4',
-				)
-			);
 
 			$ip_id = $rs->fields['ip_id'];
 
@@ -554,12 +567,13 @@ function get_servers_ips($tpl, $rip_lst) {
 			}
 
 			$tpl->assign(array(
-								'RSL_IP_NUMBER' => $i + 1,
-								'RSL_IP_LABEL' => $rs->fields['ip_domain'],
-								'RSL_IP_IP' => $rs->fields['ip_number'],
-								'RSL_IP_CKB_NAME' => $ip_var_name,
-								'RSL_IP_CKB_VALUE' => 'asgned',
-								'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned));
+				'RSL_IP_NUMBER' => $i + 1,
+				'RSL_IP_LABEL' => $rs->fields['ip_domain'] ? $rs->fields['ip_domain'] : '',
+				'RSL_IP_IP' => $rs->fields['ip_number'],
+				'RSL_IP_CKB_NAME' => $ip_var_name,
+				'RSL_IP_CKB_VALUE' => 'asgned',
+				'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned
+			));
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
 			$rs->moveNext();
@@ -906,10 +920,9 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
 
 		// Checking for the submitted data
-		check_data($errFields);
 
 		// If no error was occured during data checking, we can continue
-		if (!isset($_SESSION['user_page_message'])) {
+		if (check_data($errFields)) {
 
 			// Update reseller properties and additional data
 			update_reseller();
