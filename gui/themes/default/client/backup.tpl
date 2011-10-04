@@ -15,7 +15,7 @@
 	</div>
 	<div class="location">
 		<div class="location-area">
-			<h1 class="support">{TR_MENU_QUESTIONS_AND_COMMENTS}</h1>
+			<h1 class="webtools">{TR_MENU_WEBTOOLS}</h1>
 		</div>
 		<ul class="location-menu">
 			<!-- BDP: logged_from -->
@@ -25,15 +25,17 @@
 		</ul>
 		<ul class="path">
 			<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
-			<li><a>{TR_MENU_DAILY_BACKUP}</a></li>
+			<li><a href="#" onclick="return false;">{TR_LMENU_DAILY_BACKUP}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>
 	<div class="body">
+		<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
+
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-		<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
+
 		<h2>{TR_DOWNLOAD_DIRECTION}</h2>
 		<ol>
 			<li>{TR_FTP_LOG_ON}</li>
