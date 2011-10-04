@@ -35,10 +35,6 @@
  */
 
 /************************************************************************************
- * Script functions
- */
-
-/************************************************************************************
  * Main script
  */
 
@@ -58,7 +54,6 @@ $tpl->define_dynamic(array(
 						  'page_message' => 'page',
 						  'logged_from' => 'page'));
 
-
 $tpl->assign(array(
 				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
@@ -68,30 +63,29 @@ $tpl->assign(array(
 				  'TR_TITLE_WEBTOOLS' => tr('Webtools'),
 
 				  'TR_HTACCESS' => tr('Protected areas'),
-				  'TR_HTACCESS_TXT' => tr('Manage  your protected areas, users and groups.'),
+				  'TR_HTACCESS_TXT' => tr('Manage your protected areas, users and groups.'),
 
 				  'TR_ERROR_PAGES' => tr('Error pages'),
 				  'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
 
 				  'TR_BACKUP' => tr('Backup'),
-				  'TR_BACKUP_TXT' => tr('Backup and restore settings'),
+				  'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
 
 				  'TR_WEBMAIL' => tr('Webmail'),
-				  'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface'),
+				  'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
 
 				  'TR_FILEMANAGER' => tr('Filemanager'),
-				  'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface'),
+				  'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
 
 				  'TR_AWSTATS' => tr('Awstats'),
 				  'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
 
 				  'TR_APP_INSTALLER' => 'Application installer',
-				  'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few *clicks*')));
+				  'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 gen_logged_from($tpl);
-get_client_software_permission($tpl, $_SESSION['user_id']);
 
 generatePageMessage($tpl);
 
