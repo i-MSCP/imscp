@@ -18,7 +18,7 @@
 		</ul>
 		<ul class="path">
 			<li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-			<li><a href="language.php">{TR_LMENU_LANGUAGE}</a></li>
+			<li><a href="#" onclick="return false;">{TR_LMENU_LANGUAGE}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>

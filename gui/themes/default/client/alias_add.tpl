@@ -55,7 +55,7 @@
 		</ul>
 		<ul class="path">
 			<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-			<li><a href="alias_add.php">{TR_LMENU_ADD_DOMAIN_ALIAS}</a></li>
+			<li><a href="#" onclick="return false;">{TR_LMENU_ADD_DOMAIN_ALIAS}</a></li>
 		</ul>
 	</div>
 	<div class="left_menu">{MENU}</div>

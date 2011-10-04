@@ -23,7 +23,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
-				<li><a href="error_pages.php">{TR_LMENU_CUSTOM_ERROR_PAGES}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LMENU_CUSTOM_ERROR_PAGES}</a></li>
 			</ul>
 		</div>
 

@@ -38,7 +38,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-				<li><a href="hosting_plan_update.php">{TR_MENU_UPDATE_HP}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LMENU_UPDATE_HOSTING_PLAN}</a></li>
 			</ul>
 		</div>
 
@@ -47,12 +47,11 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="purchasing"><span>{TR_MENU_UPDATE_HP}</span></h2>
+            <h2 class="purchasing"><span>{TR_TITLE_MENU_UPDATE_HP}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<table>
 					<!-- BDP: hosting_plans -->

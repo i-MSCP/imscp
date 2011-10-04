@@ -52,7 +52,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
-				<li><a href="mail_catchall.php">{TR_LMENU_MAIL_CATCH_ALL}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LMENU_MAIL_CATCH_ALL}</a></li>
 			</ul>
 		</div>
 

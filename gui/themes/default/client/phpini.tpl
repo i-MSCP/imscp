@@ -55,7 +55,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-				<li><a href="phpini.php">{TR_LMENU_PHP_DIRECTIVES_EDITOR}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LMENU_PHP_DIRECTIVES_EDITOR}</a></li>
 			</ul>
 		</div>
 

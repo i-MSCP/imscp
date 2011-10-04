@@ -57,7 +57,7 @@
 			<ul class="path">
 				<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
 				<li><a href="protected_areas.php">{TR_HTACCESS}</a></li>
-				<li>{TR_PROTECT_DIR}</li>
+				<li><a href="#" onclick="return false;">{TR_PROTECT_DIR}</a></li>
 			</ul>
 		</div>
 

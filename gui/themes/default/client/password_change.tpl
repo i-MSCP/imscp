@@ -38,7 +38,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-				<li><a href="password_change.php">{TR_LMENU_CHANGE_PASSWORD}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LMENU_CHANGE_PASSWORD}</a></li>
 			</ul>
 		</div>
 

@@ -38,7 +38,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="domain_statistics.php">{TR_MENU_STATISTICS}</a></li>
-				<li><a href="domain_statistics.php">{TR_LMENU_OVERVIEW}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LMENU_OVERVIEW}</a></li>
 			</ul>
 		</div>
 

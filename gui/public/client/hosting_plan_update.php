@@ -191,7 +191,7 @@ function gen_hp($tpl, $user_id) {
 			)
 		);
 
-		set_page_message(tr('There are no available hosting plans for updates'), 'info');
+		set_page_message(tr('There are no available hosting plans for updates.'), 'info');
 		return;
 	}
 
@@ -635,6 +635,7 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
+		'TR_TITLE_MENU_UPDATE_HP' => tr('Update hosting plan'),
 		'TR_LANGUAGE'	=> tr('Language'),
 		'TR_SAVE'		=> tr('Save'),
 	)
