@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_CLIENT_WEBTOOLS_PAGE_TITLE}</title>
+        <title>{TR_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <!--[if IE 6]>
@@ -15,7 +15,6 @@
         </script>
         <![endif]-->
     </head>
-
     <body>
         <div class="header">
             {MAIN_MENU}
@@ -46,38 +45,41 @@
             {MENU}
         </div>
         <div class="body">
-            <h2 class="tools"><span>{TR_MENU_WEBTOOLS}</span></h2>
+            <h2 class="tools"><span>{TR_TITLE_WEBTOOLS}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <a href="protected_areas.php">{TR_HTACCESS}</a>
-            <p>{TR_HTACCESS_TEXT}</p>
-
-            <a href="protected_user_manage.php">{TR_HTACCESS_USER}</a>
-            <p>{TR_HTACCESS_USER}</p>
+            <p>{TR_HTACCESS_TXT}</p>
 
             <a href="error_pages.php">{TR_ERROR_PAGES}</a>
-            <p>{TR_ERROR_PAGES_TEXT}</p>
+            <p>{TR_ERROR_PAGES_TXT}</p>
 
+			<!-- BDP: backup_feature -->
             <a href="backup.php">{TR_BACKUP}</a>
-            <p>{TR_BACKUP_TEXT}</p>
+            <p>{TR_BACKUP_TXT}</p>
+			<!-- EDP: backup_feature -->
 
-            <!-- BDP: active_email -->
-            <a href="{WEBMAIL_PATH}">{TR_WEBMAIL}</a>
-            <p>{TR_WEBMAIL_TEXT}</p>
-            <!-- EDP: active_email -->
+            <!-- BDP: mail_feature -->
+            <a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}">{TR_WEBMAIL}</a>
+            <p>{TR_WEBMAIL_TXT}</p>
+            <!-- EDP: mail_feature -->
 
-            <a href="{FILEMANAGER_PATH}">{TR_FILEMANAGER}</a>
-            <p>{TR_FILEMANAGER_TEXT}</p>
-            <!-- BDP: t_software_support -->
-            <a href="software.php">{TR_SOFTWARE_MENU}</a>
-            <p>{TR_SOFTWARE_SUPPORT}</p>
-            <!-- EDP: t_software_support -->
-            <!-- BDP: active_awstats -->
-            <a href="{AWSTATS_PATH}">{TR_AWSTATS}</a>
-            <p>{TR_AWSTATS_TEXT}</p>
-            <!-- EDP: active_awstats -->
+			<!-- BDP: ftp_feature -->
+            <a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}">{TR_FILEMANAGER}</a>
+            <p>{TR_FILEMANAGER_TXT}</p>
+			<!-- EDP: ftp_feature -->
+
+            <!-- BDP: aps_feature -->
+            <a href="software.php">{TR_APP_INSTALLER}</a>
+            <p>{TR_APP_INSTALLER_TXT}</p>
+            <!-- EDP: aps_feature -->
+
+            <!-- BDP: awstats_feature -->
+            <a href="{AWSTATS_PATH}" target="{AWSTATST_TARGET}">{TR_AWSTATS}</a>
+            <p>{TR_AWSTATS_TXT}</p>
+            <!-- EDP: awstats_feature -->
         </div>
 <!-- INCLUDE "footer.tpl" -->

@@ -1,14 +1,14 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @version		SVN: $Id$
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,108 +26,79 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+/************************************************************************************
+ * Script functions
+ */
+
+/************************************************************************************
+ * Main script
+ */
+
+// Include core library
 include 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('active_awstats', 'page');
-$tpl->define_dynamic('active_email', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
+$tpl->define_dynamic(array(
+						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl',
+						  'page_message' => 'page',
+						  'logged_from' => 'page'));
 
-$tpl->assign(
-	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
 
-// Check, if e-mail is active for this user
-list(
-	$dmn_id,
-	$dmn_name,
-	$dmn_gid,
-	$dmn_uid,
-	$dmn_created_id,
-	$dmn_created,
-	$dmn_expires,
-	$dmn_last_modified,
-	$dmn_mailacc_limit,
-	$dmn_ftpacc_limit,
-	$dmn_traff_limit,
-	$dmn_sqld_limit,
-	$dmn_sqlu_limit,
-	$dmn_status,
-	$dmn_als_limit,
-	$dmn_subd_limit,
-	$dmn_ip_id,
-	$dmn_disk_limit,
-	$dmn_disk_usage,
-	$dmn_php,
-	$dmn_cgi,
-	$backup,
-	$dmn_dns
-) = get_domain_default_props($_SESSION['user_id']);
+$tpl->assign(array(
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
+				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+				  'THEME_CHARSET' => tr('encoding'),
+				  'ISP_LOGO' => layout_getUserLogo(),
 
-if ($dmn_mailacc_limit == -1) {
-	$tpl->assign('ACTIVE_EMAIL', '');
-}
+				  'TR_TITLE_WEBTOOLS' => tr('Webtools'),
 
-if ($backup == 'no') {
-	$tpl->assign('ACTIVE_BACKUP', '');
-}
+				  'TR_HTACCESS' => tr('Protected areas'),
+				  'TR_HTACCESS_TXT' => tr('Manage  your protected areas, users and groups.'),
 
-/*
- *
- * static page messages.
- *
- */
+				  'TR_ERROR_PAGES' => tr('Error pages'),
+				  'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
 
-gen_client_mainmenu($tpl,$cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
+				  'TR_BACKUP' => tr('Backup'),
+				  'TR_BACKUP_TXT' => tr('Backup and restore settings'),
+
+				  'TR_WEBMAIL' => tr('Webmail'),
+				  'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface'),
+
+				  'TR_FILEMANAGER' => tr('Filemanager'),
+				  'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface'),
+
+				  'TR_AWSTATS' => tr('Awstats'),
+				  'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
+
+				  'TR_APP_INSTALLER' => 'Application installer',
+				  'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few *clicks*')));
+
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-
 gen_logged_from($tpl);
-
-get_client_software_permission ($tpl, $_SESSION['user_id']);
-
-check_permissions($tpl);
-
-$tpl->assign(
-	array(
-		'TR_WEBTOOLS' => tr('Webtools'),
-		'TR_BACKUP' => tr('Backup'),
-		'TR_ERROR_PAGES' => tr('Error pages'),
-		'TR_ERROR_PAGES_TEXT' => tr('Customize error pages for your domain'),
-		'TR_BACKUP_TEXT' => tr('Backup and restore settings'),
-		'TR_WEBMAIL_TEXT' => tr('Access your mail through the web interface'),
-		'TR_FILEMANAGER_TEXT' => tr('Access your files through the web interface'),
-		'TR_AWSTATS_TEXT' => tr('Access your Awstats statistics'),
-		'TR_HTACCESS_TEXT' => tr('Manage protected areas, users and groups'),
-		'TR_SOFTWARE_SUPPORT' => tr('Install various software with a few *clicks*')
-	)
-);
+get_client_software_permission($tpl, $_SESSION['user_id']);
 
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
+											  new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

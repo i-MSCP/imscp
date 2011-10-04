@@ -53,13 +53,13 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
     $cfg = iMSCP_Registry::get('config');
 
 	$tpl->define_dynamic(array(
-							 'menu' => $menuTemplateFile,
-							 'http_feature' => 'menu',
-							 'ftp_feature' => 'menu',
-							 'sql_feature' => 'menu',
-							 'mail_feature' => 'menu',
-							 'support' => 'menu',
-							 'custom_buttons_feature' => 'menu'));
+							  'main_menu' => $menuTemplateFile,
+							  'domain_feature' => 'main_menu',
+							  'ftp_feature' => 'main_menu',
+							  'sql_feature' => 'main_menu',
+							  'mail_feature' => 'main_menu',
+							  'support_feature' => 'main_menu',
+							  'custom_buttons_feature' => 'main_menu'));
 
 	$tpl->assign(array(
 					 'TR_MENU_GENERAL_INFORMATION' => tr('General Information'),
@@ -84,7 +84,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 	}
 
 	// ftp_feature feature is available?
-	if ($domainProperties['domain_alias_limit'] != '-1') {
+	if ($domainProperties['domain_ftpacc_limit'] != '-1') {
 		$tpl->assign('TR_MENU_FTP_ACCOUNTS', tr('Ftp Accounts'));
 	} else {
 		$tpl->assign('FTP_FEATURE', '');
@@ -98,7 +98,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 	}
 
 	// mail_feature feature is available?
-	if ($domainProperties['domain_sqld_limit'] != '-1') {
+	if ($domainProperties['domain_mailacc_limit'] != '-1') {
 		$tpl->assign('TR_MENU_MAIL_ACCOUNTS', 'Mail Accounts');
 	} else {
 		$tpl->assign('MAIL_FEATURE', '');
@@ -142,7 +142,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
     }
 	// Custom menus feature - end
 
-    $tpl->parse('MAIN_MENU', 'menu');
+    $tpl->parse('MAIN_MENU', 'main_menu');
 }
 
 /**
