@@ -69,17 +69,17 @@ function protect_area($tpl, $dmn_id) {
 	}
 
 	if (!isset($_POST['users']) && !isset($_POST['groups'])) {
-		set_page_message(tr('Please choose user or group'), 'error');
+		set_page_message(tr('Please choose user or group.'), 'error');
 		return;
 	}
 
 	if (empty($_POST['paname'])) {
-		set_page_message(tr('Please enter area name'), 'error');
+		set_page_message(tr('Please enter a name for protected area.'), 'error');
 		return;
 	}
 
 	if (empty($_POST['other_dir'])) {
-		set_page_message(tr('Please enter area path'), 'error');
+		set_page_message(tr('Please enter protected area path'), 'error');
 		return;
 	}
 
@@ -129,7 +129,7 @@ function protect_area($tpl, $dmn_id) {
 			if ($cnt_users == 1 || $cnt_users == $i + 1) {
 				$user_id .= $users[$i];
 				if ($user_id == '-1' || $user_id == '') {
-					set_page_message(tr('You cannot protect area without selected user(s).'), 'error');
+					set_page_message(tr('You cannot protect an area without selected user(s).'), 'error');
 					return;
 				}
 			} else {
@@ -142,7 +142,7 @@ function protect_area($tpl, $dmn_id) {
 			if ($cnt_groups == 1 || $cnt_groups == $i + 1) {
 				$group_id .= $groups[$i];
 				if ($group_id == '-1' || $group_id == '') {
-					set_page_message(tr('You cannot protect area without selected group(s).'), 'error');
+					set_page_message(tr('You cannot protect an area without selected group(s).'), 'error');
 					return;
 				}
 			} else {
@@ -183,7 +183,7 @@ function protect_area($tpl, $dmn_id) {
 
 		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status));
 		send_request();
-		set_page_message(tr('Protected area updated successfully!'), 'success');
+		set_page_message(tr('Protected area successfully updated.'), 'success');
 	} else {
 		$query = "
 			INSERT INTO `htaccess` (
@@ -196,7 +196,7 @@ function protect_area($tpl, $dmn_id) {
 
 		exec_query($query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
 		send_request();
-		set_page_message(tr('Protected area successfully created.'), 'success');
+		set_page_message(tr('Protected area successfully scheduled for addition.'), 'success');
 	}
 
 	redirectTo('protected_areas.php');
@@ -239,7 +239,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$auth_name = $rs->fields['auth_name'];
 		$ok_status = $cfg->ITEM_OK_STATUS;
 		if ($status !== $ok_status) {
-			set_page_message(tr('Protected area status should be OK if you want to edit it.'), 'error');
+			set_page_message(tr(" Status for protected area must be 'OK' if you want to edit it."), 'error');
 			redirectTo('protected_areas.php');
 		}
 
@@ -380,7 +380,7 @@ gen_protect_it($tpl, $dmn_id);
 $tpl->assign(
 	array(
 		'TR_HTACCESS' => tr('Protected areas'),
-		'TR_PROTECT_DIR' => tr('Protect this area'),
+		'TR_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
 		'TR_PATH' => tr('Path'),
 		'TR_USER' => tr('Users'),
 		'TR_GROUPS' => tr('Groups'),
