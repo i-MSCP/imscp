@@ -43,8 +43,8 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/* iMSCP_PHPini object */
-$phpini = new iMSCP_PHPini();
+/* @var $phpini iMSCP_PHPini */
+$phpini = iMSCP_PHPini::getInstance();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_edit.tpl');

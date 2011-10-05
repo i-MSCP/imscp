@@ -40,8 +40,8 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
-/* iMSCP_PHPini object */
-$phpini = new iMSCP_PHPini();
+/* @var $phpini iMSCP_PHPini */
+$phpini = iMSCP_PHPini::getInstance();
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	redirectTo('hosting_plan.php');

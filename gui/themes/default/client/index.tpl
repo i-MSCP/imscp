@@ -38,8 +38,8 @@
 				<th colspan="2">{TR_DOMAIN_DATA}</th>
 			</tr>
 			<tr>
-				<td style="width: 300px;">{TR_ACCOUNT_NAME} / {TR_MAIN_DOMAIN}</td>
-				<td>{ACCOUNT_NAME}</td>
+				<td style="width: 300px;">{TR_ACCOUNT_NAME} / {TR_DOMAIN_NAME}</td>
+				<td>{DOMAIN_NAME}</td>
 			</tr>
 			<!-- BDP: alternative_domain_url -->
 			<tr>
@@ -52,78 +52,91 @@
 				<td>{DMN_EXPIRES} {DMN_EXPIRES_DATE}</td>
 			</tr>
 		</table>
+
 		<br />
+
 		<table>
 			<tr>
-				<th  style="width: 300px;">{TR_FEATURES}</th>
-				<th>{TR_STATUS}</th>
+				<th  style="width: 300px;">{TR_FEATURE_NAME}</th>
+				<th>{TR_FEATURE_STATUS}</th>
 			</tr>
-			<!-- BDP: t_alias_support -->
-			<tr>
-				<td>{TR_DOMAIN_ALIASES}</td>
-				<td>{DOMAIN_ALIASES}</td>
-			</tr>
-			<!--EDP: t_alias_support -->
-			<!-- BDP: t_sdm_support -->
-			<tr>
-				<td>{TR_SUBDOMAINS}</td>
-				<td>{SUBDOMAINS}</td>
-			</tr>
-			<!--EDP: t_sdm_support -->
-			<!-- BDP: t_mails_support -->
-			<tr>
-				<td>{TR_MAIL_ACCOUNTS}</td>
-				<td>{MAIL_ACCOUNTS}</td>
-			</tr>
-			<!--EDP: t_mails_support -->
-			<tr>
-				<td>{TR_FTP_ACCOUNTS}</td>
-				<td>{FTP_ACCOUNTS}</td>
-			</tr>
-			<!-- BDP: t_sdm_support -->
-			<tr>
-				<td>{TR_SQL_DATABASES}</td>
-				<td>{SQL_DATABASES}</td>
-			</tr>
-			<tr>
-				<td>{TR_SQL_USERS}</td>
-				<td>{SQL_USERS}</td>
-			</tr>
-			<!--EDP: t_sdm_support -->
 
-			<!-- BDP: t_php_support -->
 			<tr>
-				<td>{TR_PHP_SUPPORT}</td>
-				<td>{PHP_SUPPORT}</td>
+				<td>{TR_DOMAIN_ALIASES_FEATURE}</td>
+				<td>{DOMAIN_ALIASES_FEATURE_STATUS}</td>
 			</tr>
-			<!-- EDP: t_php_support -->
-			<!-- BDP: t_cgi_support -->
+
 			<tr>
-				<td>{TR_CGI_SUPPORT}</td>
-				<td>{CGI_SUPPORT}</td>
+				<td>{TR_SUBDOMAINS_FEATURE}</td>
+				<td>{SUBDOMAINS_FEATURE_STATUS}</td>
 			</tr>
-			<!-- EDP: t_cgi_support -->
 
-
-			<!-- BDP: t_software_allowed -->
 			<tr>
-				<td>{SW_ALLOWED}</td>
-				<td>{SW_MSG}</td>
+				<td>{TR_FTP_ACCOUNTS_FEATURE}</td>
+				<td>{FTP_ACCOUNTS_FEATURE_STATUS}</td>
 			</tr>
-			<!-- EDP: t_software_allowed -->
 
+			<tr>
+				<td>{TR_MAIL_ACCOUNTS_FEATURE}</td>
+				<td>{MAIL_ACCOUNTS_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_SQL_DATABASES_FEATURE}</td>
+				<td>{SQL_DATABASE_FEATURE_STATUS}</td>
+			</tr>
+			<tr>
+				<td>{TR_SQL_USERS_FEATURE}</td>
+				<td>{SQL_USERS_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_PHP_SUPPORT_FEATURE}</td>
+				<td>{PHP_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_PHP_DIRECTIVE_EDITOR_SUPPORT_FEATURE}</td>
+				<td>{PHP_DIRECTIVE_EDITOR_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_CGI_SUPPORT_FEATURE}</td>
+				<td>{CGI_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_CUSTOM_DNS_RECORDS_FEATURE}</td>
+				<td>{CUSTOM_DNS_RECORDS_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_APP_INSTALLER_FEATURE}</td>
+				<td>{APP_INSTALLER_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
+				<td>{TR_BACKUP_FEATURE}</td>
+				<td>{BACKUP_FEATURE_STATUS}</td>
+			</tr>
 		</table>
+
 		<h2 class="traffic"><span>{TR_TRAFFIC_USAGE}</span></h2>
-		<!-- BDP: traff_warn -->
+
+		<!-- BDP: traffic_warning -->
 		<div class="warning">{TR_TRAFFIC_WARNING}</div>
-		<!-- EDP: traff_warn -->
-		{TRAFFIC_USAGE_DATA}
+		<!-- EDP: traffic_warning -->
+
 		<div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span></div>
+		<p style="margin-left:5px;font-size: smaller;">{TRAFFIC_USAGE_DATA}</p>
+
 		<h2 class="diskusage"><span>{TR_DISK_USAGE}</span></h2>
-		<!-- BDP: disk_warn -->
+
+		<!-- BDP: disk_warning -->
 		<div class="warning">{TR_DISK_WARNING}</div>
-		<!-- EDP: disk_warn -->
-		{DISK_USAGE_DATA}
+		<!-- EDP: disk_warning -->
+
 		<div class="graph"><span style="width:{DISK_PERCENT}%">&nbsp;</span></div>
+		<p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
 	</div>
 <!-- INCLUDE "footer.tpl" -->

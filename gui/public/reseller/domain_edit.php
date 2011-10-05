@@ -45,7 +45,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 /* @var $phpini iMSCP_PHPini */
-$phpini = new iMSCP_PHPini();
+$phpini = iMSCP_PHPini::getInstance();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(

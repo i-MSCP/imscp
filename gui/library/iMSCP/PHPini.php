@@ -34,10 +34,17 @@
  * @package		iMSCP_Core
  * @subpackage	PHPini
  * @author		Hannes Koschier <hannes@cheat.at>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_PHPini
 {
+	/**
+	 * Instance of this class.
+	 *
+	 * @var iMSCP_PHPini
+	 */
+	static protected $_instance;
+
 	/**
 	 * Associative array that contains php.ini data.
 	 *
@@ -92,9 +99,9 @@ class iMSCP_PHPini
 
 
 	/**
-	 * Constructor.
+	 * Singleton object - Make new unavailable.
 	 */
-	public function __construct()
+	private function __construct()
 	{
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$this->_cfg = iMSCP_Registry::get('config');
@@ -107,6 +114,32 @@ class iMSCP_PHPini
 
 		// Load $phpiniClPerm with default Data
 		$this->_loadClDefaultPerm();
+	}
+
+	/**
+	 * Singleton obect - Make clone unavailable.
+	 *
+	 * @return void
+	 */
+	private function __clone()
+	{
+
+	}
+
+	/**
+	 * Implements singleton design pattern.
+	 * 
+	 * @static
+	 * @return iMSCP_PHPini
+	 */
+	static public function getInstance()
+	{
+		if(null === self::$_instance)
+		{
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
 	}
 
 	/**

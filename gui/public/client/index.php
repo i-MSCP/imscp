@@ -1,11 +1,11 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright	 2001-2006 by moleSoftware GmbH
- * @copyright	 2006-2010 by ispCP | http://isp-control.net
- * @copyright	 2010-2011 by i-MSCP | http://i-mscp.net
- * @version	 SVN: $Id$
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -49,10 +49,10 @@ function gen_num_limit_msg($num, $limit)
 {
 	if ($limit == -1) {
 		return tr('Disabled');
-	} elseif($limit == 0) {
-		return $num . '&nbsp;/&nbsp;' . tr('Unlimited');
+	} elseif ($limit == 0) {
+		return $num . ' / ' . tr('Unlimited');
 	} else {
-		return $num . '&nbsp;/&nbsp;' . $limit;
+		return $num . ' / ' . $limit;
 	}
 }
 
@@ -83,51 +83,57 @@ function gen_system_message($tpl)
 		$tpl->assign(array('MSG_ENTRY' => ''));
 	} else {
 		$tpl->assign(array(
-			'TR_NEW_MSGS' => tr('You have <b>%d</b> new answer to your support questions', $stmt->fields('cnum')),
-			'TR_VIEW' => tr('View')
-		));
+						  'TR_NEW_MSGS' => tr('You have <b>%d</b> new answer to your support questions', $stmt->fields('cnum')),
+						  'TR_VIEW' => tr('View')));
 
 		$tpl->parse('MSG_ENTRY', 'msg_entry');
 	}
 }
 
 /**
+ * Generates traffic usage bar.
  *
- * @param	iMSCP_pTemplate $tpl
- * @param	$usage
- * @param	$max_usage
- * @param	$bars_max
- * @return void
- */
-function gen_traff_usage($tpl, $usage, $max_usage, $bars_max)
-{
-	list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
-
-	if ($max_usage != 0) {
-		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
-	} else {
-		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, sizeit($usage));
-	}
-
-	$tpl->assign(array('TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-					  'TRAFFIC_BARS' => $bars,
-					  'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
-
-	if ($max_usage != 0 && $usage > $max_usage) {
-		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
-	} else {
-		$tpl->assign('TRAFF_WARN', '');
-	}
-}
-
-/**
  * @param iMSCP_pTemplate $tpl
  * @param $usage
  * @param $max_usage
  * @param $bars_max
  * @return void
  */
-function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
+function client_generateTrafficUsageBar($tpl, $usage, $max_usage, $bars_max)
+{
+	list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
+
+	if ($max_usage != 0) {
+		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]',
+								 $percent, sizeit($usage),
+								 sizeit($max_usage));
+	} else {
+		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]',
+								 $percent, sizeit($usage));
+	}
+
+	$tpl->assign(array(
+					  'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
+					  'TRAFFIC_BARS' => $bars,
+					  'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
+
+	if ($max_usage != 0 && $usage > $max_usage) {
+		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit.'));
+	} else {
+		$tpl->assign('TRAFFIC_WARNING', '');
+	}
+}
+
+/**
+ * Generates disk usage bar.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param $usage
+ * @param $max_usage
+ * @param $bars_max
+ * @return void
+ */
+function client_generateDiskUsageBar($tpl, $usage, $max_usage, $bars_max)
 {
 	list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
 
@@ -145,66 +151,20 @@ function gen_disk_usage($tpl, $usage, $max_usage, $bars_max)
 	if ($max_usage != 0 && $usage > $max_usage) {
 		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit.'));
 	} else {
-		$tpl->assign('DISK_WARN', '');
+		$tpl->assign('DISK_WARNING', '');
 	}
 }
 
 /**
- * @param	iMSCP_pTemplate $tpl Template engine
- * @param	$dmn_sqld_limit
- * @param	$dmn_sqlu_limit
- * @param	$dmn_php
- * @param	$dmn_cgi
- * @param	$backup
- * @param	$dns
- * @param	$dmn_subd_limit
- * @param	$als_cnt
- * @param	$dmn_mailacc_limit
- * @param	$dmn_software_allowed
+ * Generates feature status.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function check_user_permissions($tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php,
-	$dmn_cgi, $backup, $dns, $dmn_subd_limit, $als_cnt, $dmn_mailacc_limit,
-	$dmn_software_allowed
-){
-
-	// check if mail accouts available are available for this user
-	if ($dmn_mailacc_limit == -1) {
-		$_SESSION['email_support'] = 'no';
-		$tpl->assign('T_MAILS_SUPPORT', '');
-	} else {
-		$tpl->parse('T_MAILS_SUPPORT', '.t_mails_support');
-	}
-
-	// check if alias are available for this user
-	if ($als_cnt == -1) {
-		$_SESSION['alias_support'] = 'no';
-		$tpl->assign('T_ALIAS_SUPPORT', '');
-	} else {
-		$tpl->parse('T_ALIAS_SUPPORT', '.t_alias_support');
-	}
-
-	// check if subdomains are available for this user
-	if ($dmn_subd_limit == -1) {
-		$_SESSION['subdomain_support'] = 'no';
-		$tpl->assign('T_SDM_SUPPORT', '');
-	} else {
-		$tpl->parse('T_SDM_SUPPORT', '.t_sdm_support');
-	}
-
-	// check if SQL Support is available for this user
-	if ($dmn_sqld_limit == -1 || $dmn_sqlu_limit == -1) {
-		$_SESSION['sql_support'] = 'no';
-		$tpl->assign(array(
-			'SQL_SUPPORT' => '',
-			'T_SQL1_SUPPORT' => '',
-			'T_SQL2_SUPPORT' => ''
-		));
-	} else {
-		$tpl->parse('T_SQL1_SUPPORT', '.t_sql1_support');
-		$tpl->parse('T_SQL2_SUPPORT', '.t_sql2_support');
-	}
-
+function client_generateFeatureStatus($tpl)
+{
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
+	/*
 	// check if PHP Support is available for this user
 	if ($dmn_php == 'no') {
 		$tpl->assign('T_PHP_SUPPORT', '');
@@ -254,23 +214,27 @@ function check_user_permissions($tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php
 		$tpl->assign('DNS_SUPPORT',	tr('yes'));
 		$tpl->parse('T_DNS_SUPPORT', '.t_dns_support');
 	}
+	*/
 }
+
 
 /**
  * Calculate the usage traffic/ return array (persent/value)
  *
- * @param	int $domain_id Domain unique identifier
+ * @param	int $domainId Domain unique identifier
  * @return array An where that contain traffic information
  */
-function make_traff_usage($domain_id)
+function make_traff_usage($domainId)
 {
+	/*
 	$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?';
 	$stmt = exec_query($query, $domain_id);
 
 	$domain_id = $stmt->fields('domain_id');
+	*/
 
 	$query = 'SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?';
-	$stmt = exec_query($query, $domain_id);
+	$stmt = exec_query($query, $domainId);
 
 	$data1 = $stmt->fetchRow();
 
@@ -290,7 +254,7 @@ function make_traff_usage($domain_id)
 		AND
 			`dtraff_time` < ?
 	';
-	$stmt = exec_query($query, array($domain_id, $fdofmnth, $ldofmnth));
+	$stmt = exec_query($query, array($domainId, $fdofmnth, $ldofmnth));
 
 	$traffic = ($stmt->fields['traffic'] / 1024) / 1024;
 
@@ -310,7 +274,7 @@ function make_traff_usage($domain_id)
  * @param $user_id User unique identifier
  * @return void
  */
-function gen_user_messages_label($tpl, &$user_id)
+function gen_user_messages_label($tpl, $user_id)
 {
 	$query = '
 		SELECT
@@ -327,24 +291,26 @@ function gen_user_messages_label($tpl, &$user_id)
 
 	if ($num_question == 0) {
 		$tpl->assign(array(
-			'TR_NO_NEW_MESSAGES' => tr('You have no new support questions.'),
-			'MSG_ENTRY' => ''));
+						  'TR_NO_NEW_MESSAGES' => tr('You have no new support questions.'),
+						  'MSG_ENTRY' => ''));
 	} else {
 		$tpl->assign(array(
-			'NO_MESSAGES' => '',
-			'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
-			'TR_VIEW' => tr('View')));
+						  'NO_MESSAGES' => '',
+						  'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
+						  'TR_VIEW' => tr('View')));
 
 		$tpl->parse('MSG_ENTRY', '.msg_entry');
 	}
 }
 
 /**
- * @param	$dbtime
+ * Returns domain remaining time before expire.
+ *
+ * @param $domainExpireDate
  * @return array
  */
-function gen_remain_time($dbtime){
-
+function client_getDomainRemainingTime($domainExpireDate)
+{
 	// needed for calculation
 	$mi = 60;
 	$h = $mi * $mi;
@@ -353,7 +319,7 @@ function gen_remain_time($dbtime){
 	$y = $d * 365;
 
 	// calculation of: years, month, days, hours, minutes, seconds
-	$difftime = $dbtime - time();
+	$difftime = $domainExpireDate - time();
 	$years = floor($difftime / $y);
 	$difftime = $difftime % $y;
 	$month = floor($difftime / $mo);
@@ -386,25 +352,12 @@ $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic(array(
 						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
-						  'page_message' => 'page',
-						  'no_messages' => 'page',
-						  'msg_entry' => 'page',
-						  'sql_support' => 'page',
-						  't_sql1_support' => 'page',
-						  't_sql2_support' => 'page',
-						  't_php_support' => 'page',
-						  't_cgi_support' => 'page',
-						  't_dns_support' => 'page',
-						  't_backup_support' => 'page',
-						  't_sdm_support' => 'page',
-						  't_alias_support' => 'page',
-						  't_mails_support' => 'page',
 						  'logged_from' => 'page',
-						  'traff_warn' => 'page',
-						  'disk_warn' => 'page',
-						  'dmn_mngmnt' => 'page',
-						  't_software_support' => 'page',
-						  'alternative_domain_url' => 'page'));
+						  'page_message' => 'page',
+						  'msg_entry' => 'page',
+						  'alternative_domain_url' => 'page',
+						  'traffic_warning' => 'page',
+						  'disk_warning' => 'page',));
 
 $tpl->assign(array(
 				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
@@ -413,111 +366,121 @@ $tpl->assign(array(
 				  'ISP_LOGO' => layout_getUserLogo(),
 				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')));
 
+
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+gen_logged_from($tpl);
+gen_system_message($tpl);
+
+
+$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+
+/*
 list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
 	$dmn_expires, $dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit,
 	$dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_status, $dmn_als_limit,
 	$dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage, $dmn_php, $dmn_cgi,
 	$backup, $dns, $dmn_software_allowed
 ) = get_domain_default_props($_SESSION['user_id']);
+*/
 
 list(
 	$sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt, $sqlu_acc_cnt
-) = get_domain_running_props_cnt($dmn_id);
+) = get_domain_running_props_cnt($domainProperties['domain_id']);
 
-$dtraff_pr = 0;
-$dmn_traff_usege = 0;
-$dmn_traff_limit = $dmn_traff_limit * 1024 * 1024;
+//$dtraff_pr = 0;
+//$dmn_traff_usege = 0;
+//$dmn_traff_limit = $dmn_traff_limit * 1024 * 1024;
 
-list($dtraff_pr, $dmn_traff_usege) = make_traff_usage($_SESSION['user_id']);
+//list($dtraff_pr, $dmn_traff_usege) = make_traff_usage($domainProperties['domain_id']);
 
-$dmn_disk_limit = $dmn_disk_limit * 1024 * 1024;
+//$dmn_disk_limit = $dmn_disk_limit * 1024 * 1024;
 
-gen_traff_usage($tpl, $dmn_traff_usege * 1024 * 1024, $dmn_traff_limit, 400);
-gen_disk_usage($tpl, $dmn_disk_usage, $dmn_disk_limit, 400);
-gen_user_messages_label($tpl, $_SESSION['user_id']);
+//client_generateTrafficUsageBar($tpl, $dmn_traff_usege * 1024 * 1024, $dmn_traff_limit, 400);
+//client_generateDiskUsageBar($tpl, $dmn_disk_usage, $dmn_disk_limit, 400);
+//gen_user_messages_label($tpl, $_SESSION['user_id']);
+client_generateFeatureStatus($tpl);
 
+/*
 check_user_permissions(
 	$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php, $dmn_cgi,
 	$backup, $dns, $dmn_subd_limit, $dmn_als_limit,
 	$dmn_mailacc_limit, $dmn_software_allowed
 );
+*/
 
 $account_name = decode_idna($_SESSION['user_logged']);
 
-if ($dmn_expires == 0) {
+if ($domainProperties['domain_expires'] == 0) {
 	$dmn_expires_date = tr('No set');
 } else {
 	$date_formt = $cfg->DATE_FORMAT;
-	$dmn_expires_date = '( <strong style="text-decoration:underline;">' .
-						date($date_formt, $dmn_expires) . '</strong> )';
+	$dmn_expires_date =
+		'( <strong style="text-decoration:underline;">' .
+		date($date_formt, $domainProperties['domain_expires']) . '</strong> )';
 }
 
-list($years, $month, $days, $hours, $minutes, $seconds) = gen_remain_time($dmn_expires);
+list($years, $month, $days, $hours, $minutes, $seconds) = client_getDomainRemainingTime($domainProperties['domain_expires']);
 
-if (time() < $dmn_expires) {
+if (time() < $domainProperties['domain_expires']) {
 	if (($years > 0) && ($month > 0) && ($days <= 14)) {
 		$tpl->assign(
 			'DMN_EXPIRES', $years . ' Years, ' . $month . ' Month, ' . $days . ' Days');
 	} else {
 		$tpl->assign(
 			'DMN_EXPIRES', '<span style="color:red">' . $years . ' Years, ' .
-							 $month . ' Month, ' . $days . ' Days</span>');
+						   $month . ' Month, ' . $days . ' Days</span>');
 	}
-} else if ($dmn_expires != 0) {
-	$tpl->assign('DMN_EXPIRES', '<span style="color:red">' .  tr('This Domain is expired') . '</span> ');
+} elseif ($domainProperties['domain_expires'] != 0) {
+	$tpl->assign('DMN_EXPIRES', '<span style="color:red">' . tr('Domain is expired') . '</span> ');
 } else {
 	$tpl->assign('DMN_EXPIRES', '');
 }
 
-if($dmn_status == $cfg->ITEM_OK_STATUS) {
+if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$tpl->assign('DOMAIN_ALS_URL',
-				 "http://{$cfg->SYSTEM_USER_PREFIX}".($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']).".{$_SERVER['SERVER_NAME']}");
+				 "http://{$cfg->SYSTEM_USER_PREFIX}" . ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) . ".{$_SERVER['SERVER_NAME']}");
 } else {
 	$tpl->assign('ALTERNATIVE_DOMAIN_URL', '');
 }
 
 $tpl->assign(array(
-				  'ACCOUNT_NAME' => tohtml($account_name),
-				  'MAIN_DOMAIN' => tohtml($dmn_name),
+				  'DOMAIN_NAME' => tohtml($domainProperties['domain_name']),
 				  'DMN_EXPIRES_DATE' => $dmn_expires_date,
-				  'DOMAIN_ALIASES' => gen_num_limit_msg($als_cnt, $dmn_als_limit),
-				  'SUBDOMAINS' => gen_num_limit_msg($sub_cnt, $dmn_subd_limit),
-				  'MAIL_ACCOUNTS' => gen_num_limit_msg($mail_acc_cnt, $dmn_mailacc_limit),
-				  'FTP_ACCOUNTS' => gen_num_limit_msg($ftp_acc_cnt, $dmn_ftpacc_limit),
-				  'SQL_DATABASES' => gen_num_limit_msg($sqld_acc_cnt, $dmn_sqld_limit),
-				  'SQL_USERS' => gen_num_limit_msg($sqlu_acc_cnt, $dmn_sqlu_limit)));
 
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
-get_client_software_permission($tpl, $_SESSION['user_id']);
-gen_system_message($tpl);
-
-$tpl->assign(array(
-				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information'),
+				  'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt, 0),
+				  'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, 0),
+				  'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, 0),
+				  'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, 0),
+				  'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, 0),
+				  'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, 0),
 				  'TR_DOMAIN_DATA' => tr('Domain data'),
 				  'TR_ACCOUNT_NAME' => tr('Account name'),
+				  'TR_DOMAIN_NAME' => tr('Domain name'),
 				  'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
-				  'TR_DOMAIN_EXPIRE' => tr('Domain expire'),
-				  'TR_MAIN_DOMAIN' => tr('Main domain'),
-				  'TR_FEATURES' => tr('Features'),
-				  'TR_STATUS' => tr('Status'),
-				  'TR_PHP_SUPPORT' => tr('PHP support'),
-				  'TR_CGI_SUPPORT' => tr('CGI support'),
-				  'TR_DNS_SUPPORT' => tr('Manual DNS support'),
-				  'TR_BACKUP_SUPPORT' => tr('Backup support'),
-				  'TR_MYSQL_SUPPORT' => tr('SQL support'),
-				  'TR_SUBDOMAINS' => tr('Subdomains'),
-				  'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-				  'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-				  'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-				  'TR_SQL_DATABASES' => tr('SQL databases'),
-				  'TR_SQL_USERS' => tr('SQL users'),
+				  'TR_DOMAIN_EXPIRE' => tr('Domain expire date'),
+
+				  'TR_FEATURE_NAME' => tr('Feature name'),
+				  'TR_FEATURE_STATUS' => tr('Status'),
+
+				  'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
+				  'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') . (($domainProperties['domain_alias_limit'] != -1) ? '<br />(<small>' . tr('Including domain aliases subdomains') . '</small>)' : ''),
+				  'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
+				  'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
+				  'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
+				  'TR_SQL_USERS_FEATURE' => tr('SQL users'),
+
+				  'TR_PHP_SUPPORT_FEATURE' => tr('PHP support'),
+				  'TR_PHP_DIRECTIVE_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor'),
+				  'TR_CGI_SUPPORT_FEATURE' => tr('CGI support'),
+				  'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records support'),
+				  'TR_APP_INSTALLER_FEATURE' => tr('Application installer'),
+				  'TR_BACKUP_FEATURE' => tr('Backup support'),
+
+
 				  'TR_MESSAGES' => tr('Support system'),
-				  'TR_LANGUAGE' => tr('Language'),
 				  'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-				  'TR_DISK_USAGE' => tr('Disk usage') ));
+				  'TR_DISK_USAGE' => tr('Disk usage')));
 
 generatePageMessage($tpl);
 

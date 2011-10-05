@@ -40,8 +40,8 @@ if ($domainProperties['phpini_perm_system'] == 'no') {
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-/* iMSCP_PHPini object */
-$phpini = new iMSCP_PHPini();
+/* @var $phpini iMSCP_PHPini */
+$phpini = iMSCP_PHPini::getInstance();
 
 $domainId = $phpini->getDomId($_SESSION['user_id']);
 

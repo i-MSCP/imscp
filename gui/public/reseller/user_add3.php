@@ -254,21 +254,22 @@ function add_user_data($reseller_id)
 
     $dmn_id = $db->insertId();
     //save php.ini if exist
-    if ($phpini_system == 'yes'){
-	//new php ini object
-	$phpini = new iMSCP_PHPini();
-	//fill it with the custom values - other thake from default
-	$phpini->setData('phpiniSystem','yes');
-        $phpini->setData('phpiniPostMaxSize', $phpini_post_max_size);
-        $phpini->setData('phpiniUploadMaxFileSize', $phpini_upload_max_filesize);
-        $phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
-        $phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
-        $phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
+	if ($phpini_system == 'yes') {
+		/* @var $phpini iMSCP_PHPini */
+		$phpini = iMSCP_PHPini::getInstance();
 
-	// save it to php_ini table
-	$phpini->saveCustomPHPiniIntoDb($dmn_id);
+		//fill it with the custom values - other thake from default
+		$phpini->setData('phpiniSystem', 'yes');
+		$phpini->setData('phpiniPostMaxSize', $phpini_post_max_size);
+		$phpini->setData('phpiniUploadMaxFileSize', $phpini_upload_max_filesize);
+		$phpini->setData('phpiniMaxExecutionTime', $phpini_max_execution_time);
+		$phpini->setData('phpiniMaxInputTime', $phpini_max_input_time);
+		$phpini->setData('phpiniMemoryLimit', $phpini_memory_limit);
 
-    }
+		// save it to php_ini table
+		$phpini->saveCustomPHPiniIntoDb($dmn_id);
+
+	}
 
     $query = "
 		INSERT INTO

@@ -105,7 +105,7 @@ $tpl->assign(
 		'TR_ERROR_404' => tr('Error 404 (not found)'),
 		'TR_ERROR_500' => tr('Error 500 (internal server error)'),
 		'TR_ERROR_503' => tr('Error 503 (service unavailable)'),
-		'TR_ERROR_PAGES' => tr('Error pages'),
+		'TR_ERROR_PAGES' => tr('Custom error pages'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_VIEW' => tr('View')
 	)
