@@ -29,10 +29,6 @@
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
 
-		<!-- BDP: msg_entry -->
-		<div class="warning">{TR_NEW_MSGS}</div>
-		<!-- EDP: msg_entry -->
-
 		<table>
 			<tr>
 				<th colspan="2">{TR_DOMAIN_DATA}</th>

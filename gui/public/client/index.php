@@ -57,36 +57,55 @@ function gen_num_limit_msg($num, $limit)
 }
 
 /**
+ * Generates notice for support system.
  *
  * @param iMSCP_pTemplate $tpl
  * @return void
  */
-function gen_system_message($tpl)
+function client_GenerateSupportSystemNotices($tpl)
 {
-	$user_id = $_SESSION['user_id'];
+	$userId = $_SESSION['user_id'];
+
+	// Check for new question
 
 	$query = '
 		SELECT
-			COUNT(`ticket_id`) AS cnum
+			COUNT(`ticket_id`) AS `cnt`
+		FROM
+			`tickets`
+		WHERE
+			`ticket_from` = ?
+		AND
+			`ticket_status` = 2
+	';
+	$stmt = exec_query($query, $userId);
+
+	if ($stmt->fields('cnt')) {
+		set_page_message(
+			tr('You received <b>%d</b> new support question(s).', $stmt->fields('cnt')),
+			'info');
+	}
+
+	// Check for new answers
+
+	$query = "
+		SELECT
+			COUNT(`ticket_id`) AS `cnt`
 		FROM
 			`tickets`
 		WHERE
 			(`ticket_to` = ? OR `ticket_from` = ?)
 		AND
-			`ticket_status` IN (\'2\')
+			`ticket_status` = 2
 		AND
 			`ticket_reply` = 0
-	';
-	$stmt = exec_query($query, array($user_id, $user_id));
+	";
+	$stmt = exec_query($query, array($userId, $userId));
 
-	if ($stmt->fields('cnum') == 0) {
-		$tpl->assign(array('MSG_ENTRY' => ''));
-	} else {
-		$tpl->assign(array(
-						  'TR_NEW_MSGS' => tr('You have <b>%d</b> new answer to your support questions', $stmt->fields('cnum')),
-						  'TR_VIEW' => tr('View')));
-
-		$tpl->parse('MSG_ENTRY', 'msg_entry');
+	if ($stmt->fields('cnt')) {
+		set_page_message(
+			tr('You received <b>%d</b> new answer(s) to your support questions.', $stmt->fields('cnt')),
+			'info');
 	}
 }
 
@@ -206,17 +225,10 @@ function client_generateFeatureStatus($tpl)
  */
 function make_traff_usage($domainId)
 {
-	/*
-	$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?';
-	$stmt = exec_query($query, $domain_id);
-
-	$domain_id = $stmt->fields('domain_id');
-	*/
-
 	$query = 'SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?';
 	$stmt = exec_query($query, $domainId);
 
-	$data1 = $stmt->fetchRow();
+	$data = $stmt->fetchRow();
 
 	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
 	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
@@ -238,10 +250,10 @@ function make_traff_usage($domainId)
 
 	$traffic = ($stmt->fields['traffic'] / 1024) / 1024;
 
-	if ($data1['domain_traffic_limit'] == 0) {
+	if ($data['domain_traffic_limit'] == 0) {
 		$percent = 0;
 	} else {
-		$percent = ($traffic / $data1['domain_traffic_limit']) * 100;
+		$percent = ($traffic / $data['domain_traffic_limit']) * 100;
 		$percent = sprintf('%.2f', $percent);
 	}
 
@@ -334,7 +346,6 @@ $tpl->define_dynamic(array(
 						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
 						  'logged_from' => 'page',
 						  'page_message' => 'page',
-						  'msg_entry' => 'page',
 						  'alternative_domain_url' => 'page',
 						  'traffic_warning' => 'page',
 						  'disk_warning' => 'page'));
@@ -350,19 +361,10 @@ $tpl->assign(array(
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
 gen_logged_from($tpl);
-gen_system_message($tpl);
-
+client_GenerateSupportSystemNotices($tpl);
+client_generateFeatureStatus($tpl);
 
 $domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-
-/*
-list($dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
-	$dmn_expires, $dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit,
-	$dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_status, $dmn_als_limit,
-	$dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage, $dmn_php, $dmn_cgi,
-	$backup, $dns, $dmn_software_allowed
-) = get_domain_default_props($_SESSION['user_id']);
-*/
 
 list(
 	$sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt, $sqlu_acc_cnt
@@ -378,18 +380,13 @@ $domainDiskLimit = $domainProperties['domain_disk_limit'] * 1024 * 1024;
 
 client_generateTrafficUsageBar($tpl, $domainTrafficUsage * 1024 * 1024, $domainTrafficLimit, 400);
 client_generateDiskUsageBar($tpl, $domainProperties['domain_disk_usage'], $domainDiskLimit, 400);
-gen_user_messages_label($tpl, $_SESSION['user_id']);
-client_generateFeatureStatus($tpl);
-
-$account_name = decode_idna($_SESSION['user_logged']);
 
 if ($domainProperties['domain_expires'] == 0) {
-	$dmn_expires_date = tr('No set');
+	$domainExpiresDate = tr('No set');
 } else {
-	$date_formt = $cfg->DATE_FORMAT;
-	$dmn_expires_date =
-		'( <strong style="text-decoration:underline;">' .
-		date($date_formt, $domainProperties['domain_expires']) . '</strong> )';
+	$dateFormat = $cfg->DATE_FORMAT;
+	$domainExpiresDate = '( <strong style="text-decoration:underline;">' .
+		date($dateFormat, $domainProperties['domain_expires']) . '</strong> )';
 }
 
 list(
@@ -423,32 +420,34 @@ if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 $tpl->assign(array(
 				  'TR_DOMAIN_DATA' => tr('Domain data'),
 				  'TR_ACCOUNT_NAME' => tr('Account name'),
-				  'DOMAIN_NAME' => tohtml($domainProperties['domain_name']),
+				  'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
 				  'TR_DOMAIN_NAME' => tr('Domain name'),
 				  'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
 				  'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
-				  'DOMAIN_EXPIRES_DATE' => $dmn_expires_date,
+				  'DOMAIN_EXPIRES_DATE' => $domainExpiresDate,
 
 				  'TR_FEATURE_NAME' => tr('Feature name'),
 				  'TR_FEATURE_STATUS' => tr('Status'),
 
 				  'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
-				  'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt, 0),
+				  'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt,  $domainProperties['domain_alias_limit']),
 
-				  'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, 0),
-				  'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') . (($domainProperties['domain_alias_limit'] != -1) ? '<br />(<small>' . tr('Including domain aliases subdomains') . '</small>)' : ''),
+				  'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, $domainProperties['domain_subd_limit']),
+				  'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') .
+						(($domainProperties['domain_alias_limit'] != -1) ? '<br />(<small>' .
+						tr('Including domain aliases subdomains') . '</small>)' : ''),
 
 				  'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
-				  'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, 0),
+				  'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, $domainProperties['domain_ftpacc_limit']),
 
 				  'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
-				  'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, 0),
+				  'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, $domainProperties['domain_mailacc_limit']),
 
 				  'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
-				  'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, 0),
+				  'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, $domainProperties['domain_sqld_limit']),
 
 				  'TR_SQL_USERS_FEATURE' => tr('SQL users'),
-				  'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, 0),
+				  'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, $domainProperties['domain_sqlu_limit']),
 
 				  'TR_PHP_SUPPORT_FEATURE' => tr('PHP support'),
 				  'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor'),
@@ -457,7 +456,6 @@ $tpl->assign(array(
 				  'TR_APP_INSTALLER_FEATURE' => tr('Application installer'),
 				  'TR_BACKUP_FEATURE' => tr('Backup support'),
 
-				  'TR_MESSAGES' => tr('Support system'),
 				  'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 				  'TR_DISK_USAGE' => tr('Disk usage')));
 
