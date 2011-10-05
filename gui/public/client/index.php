@@ -248,8 +248,6 @@ function client_generateFeatureStatus($tpl)
 						  'AWSTATS_FEATURE_STATUS' => $trYes
 					 ));
 
-	} else {
-
 	}
 }
 
