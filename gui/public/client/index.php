@@ -48,7 +48,7 @@
 function gen_num_limit_msg($num, $limit)
 {
 	if ($limit == -1) {
-		return tr('Disabled');
+		return '<span style="color: red;">' . tr('Disabled') . '</span>';
 	} elseif ($limit == 0) {
 		return $num . ' / ' . tr('Unlimited');
 	} else {
@@ -184,8 +184,8 @@ function client_generateFeatureStatus($tpl)
 {
 	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 
-	$trYes = tr('Enabled');
-	$trNo = tr('Disbled');
+	$trYes = '<span style="color: green;">' . tr('Enabled') . '</span>';
+	$trNo = '<span style="color: red;">' . tr('Disabled') . '</span>';;
 
 	$tpl->assign(
 		array(
@@ -204,13 +204,13 @@ function client_generateFeatureStatus($tpl)
 	// Check if backup support is available
 	switch ($domainProperties['allowbackup']) {
 		case 'full':
-			$tpl->assign('BACKUP_FEATURE_STATUS', tr('Enabled for domain data and databases'));
+			$tpl->assign('BACKUP_FEATURE_STATUS', '<span style="color: green;">' . tr('Enabled for domain data and databases') . '</span>');
 			break;
 		case 'sql':
-			$tpl->assign('BACKUP_FEATURE_STATUS', tr('Enabled for SQL databases'));
+			$tpl->assign('BACKUP_FEATURE_STATUS', '<span style="color: green;">' . tr('Enabled for SQL databases') . '</span>');
 			break;
 		case 'dmn':
-			$tpl->assign('BACKUP_FEATURE_STATUS', tr('Enabled for domain data'));
+			$tpl->assign('BACKUP_FEATURE_STATUS', '<span style="color: green;">' . tr('Enabled for domain data') . '</span>');
 			break;
 		default:
 			$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
@@ -258,41 +258,6 @@ function make_traff_usage($domainId)
 	}
 
 	return array($percent, $traffic);
-}
-
-/**
- *
- * @param iMSCP_pTemplate $tpl Template engine
- * @param $user_id User unique identifier
- * @return void
- */
-function gen_user_messages_label($tpl, $user_id)
-{
-	$query = '
-		SELECT
-			COUNT(`ticket_id`) AS `cnum`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_from` = ?
-		AND
-			`ticket_status` = 2
-	';
-	$stmt = exec_query($query, $user_id);
-	$num_question = $stmt->fields('cnum');
-
-	if ($num_question == 0) {
-		$tpl->assign(array(
-						  'TR_NO_NEW_MESSAGES' => tr('You have no new support questions.'),
-						  'MSG_ENTRY' => ''));
-	} else {
-		$tpl->assign(array(
-						  'NO_MESSAGES' => '',
-						  'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
-						  'TR_VIEW' => tr('View')));
-
-		$tpl->parse('MSG_ENTRY', '.msg_entry');
-	}
 }
 
 /**
@@ -417,47 +382,52 @@ if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$tpl->assign('ALTERNATIVE_DOMAIN_URL', '');
 }
 
-$tpl->assign(array(
-				  'TR_DOMAIN_DATA' => tr('Domain data'),
-				  'TR_ACCOUNT_NAME' => tr('Account name'),
-				  'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
-				  'TR_DOMAIN_NAME' => tr('Domain name'),
-				  'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
-				  'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
-				  'DOMAIN_EXPIRES_DATE' => $domainExpiresDate,
+$tpl->assign(
+	array(
+		 'TR_DOMAIN_DATA' => tr('Domain data'),
+		 'TR_ACCOUNT_NAME' => tr('Account name'),
+		 'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
+		 'TR_DOMAIN_NAME' => tr('Domain name'),
+		 'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
+		 'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
+		 'DOMAIN_EXPIRES_DATE' => $domainExpiresDate,
 
-				  'TR_FEATURE_NAME' => tr('Feature name'),
-				  'TR_FEATURE_STATUS' => tr('Status'),
+		 'TR_FEATURE_NAME' => tr('Feature name'),
+		 'TR_FEATURE_STATUS' => tr('Status'),
 
-				  'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
-				  'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt,  $domainProperties['domain_alias_limit']),
+		 'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
+		 'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt, $domainProperties['domain_alias_limit']),
 
-				  'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, $domainProperties['domain_subd_limit']),
-				  'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') .
-						(($domainProperties['domain_alias_limit'] != -1) ? '<br />(<small>' .
-						tr('Including domain aliases subdomains') . '</small>)' : ''),
+		 'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, $domainProperties['domain_subd_limit']),
+		 'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') .
+									(($domainProperties['domain_alias_limit'] != -1)
+										? '<br />(<small>' .
+										  tr('Including domain aliases subdomains') . '</small>)'
+										: ''),
 
-				  'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
-				  'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, $domainProperties['domain_ftpacc_limit']),
+		 'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
+		 'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, $domainProperties['domain_ftpacc_limit']),
 
-				  'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
-				  'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, $domainProperties['domain_mailacc_limit']),
+		 'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
+		 'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, $domainProperties['domain_mailacc_limit']),
 
-				  'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
-				  'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, $domainProperties['domain_sqld_limit']),
+		 'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
+		 'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, $domainProperties['domain_sqld_limit']),
 
-				  'TR_SQL_USERS_FEATURE' => tr('SQL users'),
-				  'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, $domainProperties['domain_sqlu_limit']),
+		 'TR_SQL_USERS_FEATURE' => tr('SQL users'),
+		 'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, $domainProperties['domain_sqlu_limit']),
 
-				  'TR_PHP_SUPPORT_FEATURE' => tr('PHP support'),
-				  'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor'),
-				  'TR_CGI_SUPPORT_FEATURE' => tr('CGI support'),
-				  'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records support'),
-				  'TR_APP_INSTALLER_FEATURE' => tr('Application installer'),
-				  'TR_BACKUP_FEATURE' => tr('Backup support'),
+		 'TR_PHP_SUPPORT_FEATURE' => tr('PHP support'),
+		 'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor'),
+		 'TR_CGI_SUPPORT_FEATURE' => tr('CGI support'),
+		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records support'),
+		 'TR_APP_INSTALLER_FEATURE' => tr('Application installer'),
+		 'TR_BACKUP_FEATURE' => tr('Backup support'),
 
-				  'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-				  'TR_DISK_USAGE' => tr('Disk usage')));
+		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
+		 'TR_DISK_USAGE' => tr('Disk usage')
+	)
+);
 
 generatePageMessage($tpl);
 
