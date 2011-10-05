@@ -48,8 +48,8 @@
 			</tr>
 			<!-- EDP: alternative_domain_url -->
 			<tr>
-				<td>{TR_DOMAIN_EXPIRE}</td>
-				<td>{DMN_EXPIRES} {DMN_EXPIRES_DATE}</td>
+				<td>{TR_DOMAIN_EXPIRES_DATE}</td>
+				<td>{DMN_EXPIRES} {DOMAIN_EXPIRES_DATE}</td>
 			</tr>
 		</table>
 
@@ -96,8 +96,8 @@
 			</tr>
 
 			<tr>
-				<td>{TR_PHP_DIRECTIVE_EDITOR_SUPPORT_FEATURE}</td>
-				<td>{PHP_DIRECTIVE_EDITOR_STATUS}</td>
+				<td>{TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE}</td>
+				<td>{PHP_DIRECTIVES_EDITOR_STATUS}</td>
 			</tr>
 
 			<tr>

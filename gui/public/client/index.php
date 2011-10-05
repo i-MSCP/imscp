@@ -163,60 +163,40 @@ function client_generateDiskUsageBar($tpl, $usage, $max_usage, $bars_max)
  */
 function client_generateFeatureStatus($tpl)
 {
-	$domainProperties = get_domain_default_props($_SESSION['user_id']);
-	/*
-	// check if PHP Support is available for this user
-	if ($dmn_php == 'no') {
-		$tpl->assign('T_PHP_SUPPORT', '');
-	} else {
-		$tpl->assign('PHP_SUPPORT', tr('yes'));
-		$tpl->parse('T_PHP_SUPPORT', '.t_php_support');
-	}
+	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 
-	// check if CGI Support is available for this user
-	if ($dmn_cgi == 'no') {
-		$tpl->assign('T_CGI_SUPPORT', '');
-	} else {
-		$tpl->assign('CGI_SUPPORT', tr('yes'));
-		$tpl->parse('T_CGI_SUPPORT', '.t_cgi_support');
-	}
+	$trYes = tr('Enabled');
+	$trNo = tr('Disbled');
 
-	// check if apps installer is available for this user
-	if ($dmn_software_allowed == 'no') {
-		$tpl->assign('T_SOFTWARE_SUPPORT', '');
-	} else {
-		$tpl->assign('SOFTWARE_SUPPORT', tr('yes'));
-		$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
-	}
+	$tpl->assign(
+		array(
+			 'PHP_FEATURE_STATUS' => ($domainProperties['domain_php'] == 'yes')
+				 ? $trYes : $trNo,
+			 'PHP_DIRECTIVES_EDITOR_STATUS' => ($domainProperties['phpini_perm_system'] == 'yes')
+				 ? $trYes : $trNo,
+			 'CGI_FEATURE_STATUS' => ($domainProperties['domain_cgi'] != 'no')
+				 ? $trYes : $trNo,
+			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => ($domainProperties['domain_dns'] == 'yes')
+				 ? $trYes : $trNo,
+			 'APP_INSTALLER_FEATURE_STATUS' => ($domainProperties['domain_software_allowed'] == 'yes')
+				 ? $trYes : $trNo,
+		));
 
-	// Check if Backup support is available for this user
-	switch ($backup) {
+	// Check if backup support is available
+	switch ($domainProperties['allowbackup']) {
 		case 'full':
-			$tpl->assign('BACKUP_SUPPORT', tr('Full'));
+			$tpl->assign('BACKUP_FEATURE_STATUS', tr('Enabled for domain data and databases'));
 			break;
 		case 'sql':
-			$tpl->assign('BACKUP_SUPPORT', tr('SQL'));
+			$tpl->assign('BACKUP_FEATURE_STATUS', tr('Enabled for SQL databases'));
 			break;
-		case 'domain':
-			$tpl->assign('BACKUP_SUPPORT', tr('Domain'));
+		case 'dmn':
+			$tpl->assign('BACKUP_FEATURE_STATUS', tr('Enabled for domain data'));
 			break;
 		default:
-			$tpl->assign('T_BACKUP_SUPPORT', '');
+			$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
 	}
-	if ($tpl->is_namespace('BACKUP_SUPPORT')) {
-		$tpl->parse('T_BACKUP_SUPPORT', '.t_backup_support');
-	}
-
-	// Check if Manual DNS support is available for this user
-	if ($dns == 'no') {
-		$tpl->assign('T_DNS_SUPPORT', '');
-	} else {
-		$tpl->assign('DNS_SUPPORT',	tr('yes'));
-		$tpl->parse('T_DNS_SUPPORT', '.t_dns_support');
-	}
-	*/
 }
-
 
 /**
  * Calculate the usage traffic/ return array (persent/value)
@@ -357,7 +337,7 @@ $tpl->define_dynamic(array(
 						  'msg_entry' => 'page',
 						  'alternative_domain_url' => 'page',
 						  'traffic_warning' => 'page',
-						  'disk_warning' => 'page',));
+						  'disk_warning' => 'page'));
 
 $tpl->assign(array(
 				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
@@ -388,26 +368,18 @@ list(
 	$sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt, $sqlu_acc_cnt
 ) = get_domain_running_props_cnt($domainProperties['domain_id']);
 
-//$dtraff_pr = 0;
-//$dmn_traff_usege = 0;
-//$dmn_traff_limit = $dmn_traff_limit * 1024 * 1024;
+$dtraff_pr = 0;
+$domainTrafficUsage = 0;
+$domainTrafficLimit = $domainProperties['domain_traffic_limit'] * 1024 * 1024;
 
-//list($dtraff_pr, $dmn_traff_usege) = make_traff_usage($domainProperties['domain_id']);
+list($dtraff_pr, $domainTrafficUsage) = make_traff_usage($domainProperties['domain_id']);
 
-//$dmn_disk_limit = $dmn_disk_limit * 1024 * 1024;
+$domainDiskLimit = $domainProperties['domain_disk_limit'] * 1024 * 1024;
 
-//client_generateTrafficUsageBar($tpl, $dmn_traff_usege * 1024 * 1024, $dmn_traff_limit, 400);
-//client_generateDiskUsageBar($tpl, $dmn_disk_usage, $dmn_disk_limit, 400);
-//gen_user_messages_label($tpl, $_SESSION['user_id']);
+client_generateTrafficUsageBar($tpl, $domainTrafficUsage * 1024 * 1024, $domainTrafficLimit, 400);
+client_generateDiskUsageBar($tpl, $domainProperties['domain_disk_usage'], $domainDiskLimit, 400);
+gen_user_messages_label($tpl, $_SESSION['user_id']);
 client_generateFeatureStatus($tpl);
-
-/*
-check_user_permissions(
-	$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php, $dmn_cgi,
-	$backup, $dns, $dmn_subd_limit, $dmn_als_limit,
-	$dmn_mailacc_limit, $dmn_software_allowed
-);
-*/
 
 $account_name = decode_idna($_SESSION['user_logged']);
 
@@ -420,7 +392,9 @@ if ($domainProperties['domain_expires'] == 0) {
 		date($date_formt, $domainProperties['domain_expires']) . '</strong> )';
 }
 
-list($years, $month, $days, $hours, $minutes, $seconds) = client_getDomainRemainingTime($domainProperties['domain_expires']);
+list(
+	$years, $month, $days, $hours, $minutes, $seconds
+) = client_getDomainRemainingTime($domainProperties['domain_expires']);
 
 if (time() < $domainProperties['domain_expires']) {
 	if (($years > 0) && ($month > 0) && ($days <= 14)) {
@@ -439,44 +413,49 @@ if (time() < $domainProperties['domain_expires']) {
 
 if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$tpl->assign('DOMAIN_ALS_URL',
-				 "http://{$cfg->SYSTEM_USER_PREFIX}" . ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) . ".{$_SERVER['SERVER_NAME']}");
+				 "http://{$cfg->SYSTEM_USER_PREFIX}" .
+				 ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) .
+				 ".{$_SERVER['SERVER_NAME']}");
 } else {
 	$tpl->assign('ALTERNATIVE_DOMAIN_URL', '');
 }
 
 $tpl->assign(array(
-				  'DOMAIN_NAME' => tohtml($domainProperties['domain_name']),
-				  'DMN_EXPIRES_DATE' => $dmn_expires_date,
-
-				  'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt, 0),
-				  'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, 0),
-				  'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, 0),
-				  'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, 0),
-				  'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, 0),
-				  'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, 0),
 				  'TR_DOMAIN_DATA' => tr('Domain data'),
 				  'TR_ACCOUNT_NAME' => tr('Account name'),
+				  'DOMAIN_NAME' => tohtml($domainProperties['domain_name']),
 				  'TR_DOMAIN_NAME' => tr('Domain name'),
 				  'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
-				  'TR_DOMAIN_EXPIRE' => tr('Domain expire date'),
+				  'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
+				  'DOMAIN_EXPIRES_DATE' => $dmn_expires_date,
 
 				  'TR_FEATURE_NAME' => tr('Feature name'),
 				  'TR_FEATURE_STATUS' => tr('Status'),
 
 				  'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
+				  'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($als_cnt, 0),
+
+				  'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($sub_cnt, 0),
 				  'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') . (($domainProperties['domain_alias_limit'] != -1) ? '<br />(<small>' . tr('Including domain aliases subdomains') . '</small>)' : ''),
+
 				  'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
+				  'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftp_acc_cnt, 0),
+
 				  'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
+				  'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mail_acc_cnt, 0),
+
 				  'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
+				  'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqld_acc_cnt, 0),
+
 				  'TR_SQL_USERS_FEATURE' => tr('SQL users'),
+				  'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlu_acc_cnt, 0),
 
 				  'TR_PHP_SUPPORT_FEATURE' => tr('PHP support'),
-				  'TR_PHP_DIRECTIVE_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor'),
+				  'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor'),
 				  'TR_CGI_SUPPORT_FEATURE' => tr('CGI support'),
 				  'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records support'),
 				  'TR_APP_INSTALLER_FEATURE' => tr('Application installer'),
 				  'TR_BACKUP_FEATURE' => tr('Backup support'),
-
 
 				  'TR_MESSAGES' => tr('Support system'),
 				  'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
