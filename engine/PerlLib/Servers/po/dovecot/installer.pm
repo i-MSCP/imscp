@@ -91,7 +91,7 @@ sub migrateMailboxes{
 
 		my $mta	= Servers::mta->factory();
 		my ($rs, $stdout, $stderr);
-		my $binPath = "$FindBin::Bin/../PerlVendor/courier-dovecot-migrate.pl";
+		my $binPath = "perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlVendor/courier-dovecot-migrate.pl";
 		my $mailPath = "$mta->{'MTA_VIRTUAL_MAIL_DIR'}";
 
 		$rs = execute("$binPath --to-dovecot --convert --recursive $mailPath", \$stdout, \$stderr);
