@@ -39,9 +39,14 @@ use Common::SimpleClass;
 
 sub process{
 
-	my $self		= shift;
-	my ($rs, $stdour, $stderr);
-	$rs = execute("$main::imscpConfig{ENGINE_ROOT_DIR}/tools/imscp-net-interfaces-mngr restart", \$stdour, \$stderr);
+	my $self	= shift;
+	my $rs		= 0;
+	my ($stdour, $stderr);
+	$rs |= execute("$main::imscpConfig{ENGINE_ROOT_DIR}/tools/imscp-net-interfaces-mngr stop", \$stdour, \$stderr);
+	debug($stdour) if $stdour;
+	error($stderr) if $stderr;
+
+	$rs |= execute("$main::imscpConfig{ENGINE_ROOT_DIR}/tools/imscp-net-interfaces-mngr start", \$stdour, \$stderr);
 	debug($stdour) if $stdour;
 	error($stderr) if $stderr;
 

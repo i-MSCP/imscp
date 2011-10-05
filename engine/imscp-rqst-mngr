@@ -387,8 +387,9 @@ sub engine {
 		$rdata = {};
 		$rs = 1;
 	}
+	my $count =  scalar keys %$rdata;
 
-	newDebug('imscp_sw_mngr_engine');
+	newDebug('imscp_sw_mngr_engine') if $count;
 	foreach (keys %$rdata) {
 		my ($stdout, $stderr);
 		my (
@@ -439,7 +440,7 @@ sub engine {
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 	}
-	endDebug();
+	endDebug() if $count;
 
 
 	$sql = "
@@ -462,7 +463,9 @@ sub engine {
 		return 1;
 	}
 
-	newDebug('imscp_pkt_mngr_engine.log');
+	my $count =  scalar keys %$rdata;
+	newDebug('imscp_pkt_mngr_engine.log') if $count;
+
 	foreach (keys %$rdata) {
 		my ($stdout, $stderr);
 		my (
@@ -492,7 +495,7 @@ sub engine {
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 	}
-	endDebug();
+	endDebug() if $count;
 
 	$rs;
 }
