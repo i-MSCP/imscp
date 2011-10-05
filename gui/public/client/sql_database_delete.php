@@ -61,6 +61,6 @@ if(!check_db_sql_perms($db_id)) {
 
 delete_sql_database($dmn_id, $db_id);
 
-set_page_message(tr('SQL database successfully removed.'), 'success');
+set_page_message(tr('SQL database deleted.'), 'success');
 
 redirectTo('sql_manage.php');

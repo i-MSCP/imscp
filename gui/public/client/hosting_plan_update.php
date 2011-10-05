@@ -571,7 +571,7 @@ function add_new_order($tpl,$order_id, $user_id) {
 		$user_id, '', '', '', '', '', '', '', '', '', '', '', '', $status
 	));
 
-	set_page_message(tr('Your request for hosting plan update was successfully registered.'), 'success');
+	set_page_message(tr('Your request for hosting plan update was registered.'), 'success');
 
 	$query = "
 		SELECT
@@ -613,7 +613,7 @@ function del_order($tpl, $order_id, $user_id)
 	$query = "DELETE FROM `orders` WHERE `user_id` = ? AND `customer_id` = ?";
 
 	exec_query($query, array($_SESSION['user_created_by'], $user_id));
-	set_page_message(tr('Your request for hosting plan update was successfully removed.'), 'success');
+	set_page_message(tr('Your request for hosting plan update was removed.'), 'success');
 }
 
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {

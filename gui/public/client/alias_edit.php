@@ -106,7 +106,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		//$_SESSION['aledit'] = "_yes_";
-		set_page_message(tr('Domain alias successfully scheduled for update.'), 'success');
+		set_page_message(tr('Domain alias scheduled for update.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 } else {

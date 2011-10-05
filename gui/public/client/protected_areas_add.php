@@ -183,7 +183,7 @@ function protect_area($tpl, $dmn_id) {
 
 		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status));
 		send_request();
-		set_page_message(tr('Protected area successfully updated.'), 'success');
+		set_page_message(tr('Protected area scheduled for update.'), 'success');
 	} else {
 		$query = "
 			INSERT INTO `htaccess` (
@@ -196,7 +196,7 @@ function protect_area($tpl, $dmn_id) {
 
 		exec_query($query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
 		send_request();
-		set_page_message(tr('Protected area successfully scheduled for addition.'), 'success');
+		set_page_message(tr('Protected area scheduled for addition.'), 'success');
 	}
 
 	redirectTo('protected_areas.php');

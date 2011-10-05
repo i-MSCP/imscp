@@ -63,7 +63,7 @@ $query = 'DELETE FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?
 $stmt = exec_query($query, array($domainAliasId, $domainId, $cfg->ITEM_ORDERED_STATUS));
 
 if($stmt->rowCount()) {
-	set_page_message(tr('Order for domain alias successfully deleted.'), 'success');
+	set_page_message(tr('Order for domain alias deleted.'), 'success');
 } else {
 	set_page_message(tr('Order not found. Nothing been deleted.'), 'error');
 }

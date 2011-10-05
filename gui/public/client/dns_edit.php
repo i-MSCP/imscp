@@ -118,13 +118,13 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	// Save data to db
 	if (check_fwd_data($tpl, $editid)) {
 		//$_SESSION['dnsedit'] = "_yes_";
-		set_page_message(tr('Custom DNS record successfully scheduled for update.'), 'success');
+		set_page_message(tr('Custom DNS record scheduled for update.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 } elseif (isset($_POST['uaction']) && ($_POST['uaction'] === 'add')) {
 	if (check_fwd_data($tpl, true)) {
 		//$_SESSION['dnsedit'] = "_yes_";
-		set_page_message(tr('Custom DNS record successfully scheduled for addition.'), 'success');
+		set_page_message(tr('Custom DNS record scheduled for addition.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 

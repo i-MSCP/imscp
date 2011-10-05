@@ -78,7 +78,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 
 	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id'], E_USER_NOTICE);
-	set_page_message(tr('Protected area successfully deleted.'), 'success');
+	set_page_message(tr('Protected area scheduled for deletion.'), 'success');
 	redirectTo('protected_areas.php');
 } else {
 	set_page_message(tr('Permission deny.'), 'error');

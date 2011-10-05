@@ -183,7 +183,7 @@ function add_sql_database($user_id) {
 	update_reseller_c_props(get_reseller_id($dmn_id));
 
 	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . tohtml($db_name), E_USER_NOTICE);
-	set_page_message(tr('SQL database successfully created.'), 'success');
+	set_page_message(tr('SQL database created.'), 'success');
 	redirectTo('sql_manage.php');
 }
 

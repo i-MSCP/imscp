@@ -79,7 +79,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 		$rs = exec_query($query, array($upass, $user_id));
 		write_log($_SESSION['user_logged'] . ": updated password.", E_USER_NOTICE);
-		set_page_message(tr('Password successfully updated.'), 'success');
+		set_page_message(tr('Password updated.'), 'success');
 	}
 }
 

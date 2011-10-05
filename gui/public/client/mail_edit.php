@@ -329,7 +329,7 @@ $tpl->assign(
 edit_mail_account($tpl);
 
 if (update_email_pass() && update_email_forward($tpl)) {
-	set_page_message(tr("Mail were successfully updated."), 'success');
+	set_page_message(tr("Mail were updated."), 'success');
 	send_request();
 	redirectTo('mail_accounts.php');
 }

@@ -63,7 +63,7 @@ function update_error_page($user_id) {
 
 		if (in_array($eid, array(401, 402, 403, 404, 500, 503))
 			&& write_error_page($_SESSION['user_id'], $eid)) {
-			set_page_message(tr('Custom error page successfully updated.'), 'success');
+			set_page_message(tr('Custom error page updated.'), 'success');
 		} else {
 			set_page_message(tr('System error - custom error page was not updated.'), 'error');
 		}

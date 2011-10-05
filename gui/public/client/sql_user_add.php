@@ -365,7 +365,7 @@ function add_sql_user($user_id, $db_id) {
 	exec_query($query, array($db_user, "%", $user_pass));
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
-	set_page_message(tr('SQL user successfully added.'), 'success');
+	set_page_message(tr('SQL user created.'), 'success');
 	redirectTo('sql_manage.php');
 }
 

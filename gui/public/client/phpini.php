@@ -104,7 +104,7 @@ if ($phpini->getDomStatus($domainId) & $phpini->getClPermVal('phpiniSystem') == 
 		$phpini->saveCustomPHPiniIntoDb($domainId);
 		$phpini->sendToEngine($domainId);
 
-		set_page_message(tr('PHP directives successfully scheduled for update.'), 'success');
+		set_page_message(tr('PHP directives scheduled for update.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 

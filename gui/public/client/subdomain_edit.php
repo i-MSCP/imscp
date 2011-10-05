@@ -197,7 +197,7 @@ function client_subdomainEditAction()
 			// Send request to the i-MSCP daemon for backend process
 			send_request();
 
-			set_page_message(tr('Subdomain successfully scheduled for update.'), 'success');
+			set_page_message(tr('Subdomain scheduled for update.'), 'success');
 			redirectTo('domains_manage.php');
 		} else {
 			set_page_message(tr('Wrong redirect URL.'), 'error');

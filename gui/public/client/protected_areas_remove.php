@@ -51,6 +51,6 @@ $cdir = $_GET['cdir'];
 
 unlink($cfg->FTP_HOMEDIR . '/' . $domain_name . $cdir . '.htaccess');
 
-set_page_message(tr('Protected area successfully deleted.'), 'success');
+set_page_message(tr('Protected area scheduled for deletion.'), 'success');
 
 redirectTo('protected_areas.php?cur_dir=' . $cdir);
