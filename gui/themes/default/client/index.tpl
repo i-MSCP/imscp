@@ -45,7 +45,7 @@
 			<!-- EDP: alternative_domain_url -->
 			<tr>
 				<td>{TR_DOMAIN_EXPIRES_DATE}</td>
-				<td>{DMN_EXPIRES} {DOMAIN_EXPIRES_DATE}</td>
+				<td>{DOMAIN_REMAINING_TIME} {DOMAIN_EXPIRES_DATE}</td>
 			</tr>
 		</table>
 
@@ -53,7 +53,7 @@
 
 		<table>
 			<tr>
-				<th  style="width: 300px;">{TR_FEATURE_NAME}</th>
+				<th  style="width: 300px;">{TR_FEATURE}</th>
 				<th>{TR_FEATURE_STATUS}</th>
 			</tr>
 

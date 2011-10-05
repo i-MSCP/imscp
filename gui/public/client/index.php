@@ -61,7 +61,7 @@ function gen_num_limit_msg($num, $limit)
  *
  * @return void
  */
-function client_GenerateSupportSystemNotices()
+function client_generateSupportSystemNotices()
 {
 	$userId = $_SESSION['user_id'];
 
@@ -234,25 +234,21 @@ function client_generateFeatureStatus($tpl)
 }
 
 /**
- * Calculate the usage traffic/ return array (persent/value)
+ * Calculate traffic usage.
  *
  * @param int $domainId Domain unique identifier
  * @return array An array that contain traffic information
  */
 function client_makeTrafficUsage($domainId)
 {
-	$query = 'SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?';
-	$stmt = exec_query($query, $domainId);
-
-	$data = $stmt->fetchRow();
-
+	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
 	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
 
 	$query = '
 		SELECT
 			IFNULL(SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) +
-			SUM(`dtraff_pop`), 0) AS traffic
+			SUM(`dtraff_pop`), 0) `traffic`
 		FROM
 			`domain_traffic`
 		WHERE
@@ -266,10 +262,10 @@ function client_makeTrafficUsage($domainId)
 
 	$traffic = ($stmt->fields['traffic'] / 1024) / 1024;
 
-	if ($data['domain_traffic_limit'] == 0) {
+	if ($domainProperties['domain_traffic_limit'] == 0) {
 		$percent = 0;
 	} else {
-		$percent = ($traffic / $data['domain_traffic_limit']) * 100;
+		$percent = ($traffic / $domainProperties['domain_traffic_limit']) * 100;
 		$percent = sprintf('%.2f', $percent);
 	}
 
@@ -279,33 +275,74 @@ function client_makeTrafficUsage($domainId)
 /**
  * Returns domain remaining time before expire.
  *
+ * @access private
  * @param $domainExpireDate
  * @return array
  */
-function client_getDomainRemainingTime($domainExpireDate)
+function _client_getDomainRemainingTime($domainExpireDate)
 {
-	// needed for calculation
 	$mi = 60;
 	$h = $mi * $mi;
 	$d = $h * 24;
 	$mo = $d * 30;
 	$y = $d * 365;
 
-	// calculation of: years, month, days, hours, minutes, seconds
 	$difftime = $domainExpireDate - time();
 	$years = floor($difftime / $y);
+
 	$difftime = $difftime % $y;
 	$month = floor($difftime / $mo);
+
 	$difftime = $difftime % $mo;
 	$days = floor($difftime / $d);
-	$difftime = $difftime % $d;
-	$hours = floor($difftime / $h);
-	$difftime = $difftime % $h;
-	$minutes = floor($difftime / $mi);
-	$difftime = $difftime % $mi;
-	$seconds = $difftime;
 
-	return array($years, $month, $days, $hours, $minutes, $seconds);
+	return array($years, $month, $days);
+}
+
+/**
+ * Generates domain expires information.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @return void
+ */
+function client_generateDomainExpiresInformation($tpl)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+
+	if ($domainProperties['domain_expires'] != 0) {
+		$domainRemainingTime = '';
+		$domainExpiresDate = date($cfg->DATE_FORMAT, $domainProperties['domain_expires']);
+
+		if (time() < $domainProperties['domain_expires']) {
+			list($years, $month, $days) = _client_getDomainRemainingTime($domainProperties['domain_expires']);
+
+			if ($years == 0 && $month == 0 && $days <= 14) {
+
+				$domainRemainingTime = '<span style="color:red">' .
+									   tr(
+										   '%d %s remaining until account expiration',
+										   $days, ($days > 1) ? tr('days') : tr('day')
+									   ) . '</span>';
+
+				$domainExpiresDate = '<strong>(' . $domainExpiresDate . ')</strong>';
+			}
+		} else {
+			$domainExpiresDate = '<strong>(' . $domainExpiresDate . ')</strong>';
+			$domainRemainingTime = '<span style="color:red">' . tr('Domain account expired.') . '</span>';
+			set_page_message(tr('Your domain account is expired. Please, contact your reseller to renew your subscription.'), 'warning');
+		}
+
+		$tpl->assign(array(
+						  'DOMAIN_REMAINING_TIME' => $domainRemainingTime,
+						  'DOMAIN_EXPIRES_DATE' => $domainExpiresDate
+					 ));
+	} else {
+		$tpl->assign(array(
+						  'DOMAIN_REMAINING_TIME' => '',
+						  'DOMAIN_EXPIRES_DATE' => tr('No set')));
+	}
 }
 
 /************************************************************************************
@@ -342,7 +379,9 @@ $tpl->assign(array(
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
 gen_logged_from($tpl);
-client_GenerateSupportSystemNotices();
+
+client_generateSupportSystemNotices();
+client_generateDomainExpiresInformation($tpl);
 client_generateFeatureStatus($tpl);
 
 $domainProperties = get_domain_default_props($_SESSION['user_id'], true);
@@ -368,33 +407,6 @@ client_generateTrafficUsageBar($tpl, $domainTrafficUsage * 1024 * 1024,
 client_generateDiskUsageBar($tpl, $domainProperties['domain_disk_usage'],
 							$domainDiskLimit, 400);
 
-if ($domainProperties['domain_expires'] == 0) {
-	$domainExpiresDate = tr('No set');
-} else {
-	$dateFormat = $cfg->DATE_FORMAT;
-	$domainExpiresDate = '( <strong style="text-decoration:underline;">' .
-		date($dateFormat, $domainProperties['domain_expires']) . '</strong> )';
-}
-
-list(
-	$years, $month, $days, $hours, $minutes, $seconds
-) = client_getDomainRemainingTime($domainProperties['domain_expires']);
-
-if (time() < $domainProperties['domain_expires']) {
-	if (($years > 0) && ($month > 0) && ($days <= 14)) {
-		$tpl->assign(
-			'DMN_EXPIRES', $years . ' Years, ' . $month . ' Month, ' . $days . ' Days');
-	} else {
-		$tpl->assign(
-			'DMN_EXPIRES', '<span style="color:red">' . $years . ' Years, ' .
-						   $month . ' Month, ' . $days . ' Days</span>');
-	}
-} elseif ($domainProperties['domain_expires'] != 0) {
-	$tpl->assign('DMN_EXPIRES', '<span style="color:red">' . tr('Domain is expired') .
-								'</span> ');
-} else {
-	$tpl->assign('DMN_EXPIRES', '');
-}
 
 if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$tpl->assign('DOMAIN_ALS_URL',
@@ -407,15 +419,15 @@ if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 
 $tpl->assign(
 	array(
-		 'TR_DOMAIN_DATA' => tr('Domain data'),
+		 'TR_DOMAIN_DATA' => tr('Domain account'),
 		 'TR_ACCOUNT_NAME' => tr('Account name'),
 		 'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
 		 'TR_DOMAIN_NAME' => tr('Domain name'),
 		 'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
 		 'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
-		 'DOMAIN_EXPIRES_DATE' => $domainExpiresDate,
+		 //'DOMAIN_EXPIRES_DATE' => $domainExpiresDate,
 
-		 'TR_FEATURE_NAME' => tr('Feature name'),
+		 'TR_FEATURE' => tr('Feature'),
 		 'TR_FEATURE_STATUS' => tr('Status'),
 
 		 'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
