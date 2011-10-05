@@ -130,18 +130,17 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
 	list($percent, $bars) = calc_bars($usage, $maxUsage, $barMax);
 
 	if ($maxUsage != 0) {
-		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]',
-								 $percent, sizeit($usage),
+		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, sizeit($usage),
 								 sizeit($maxUsage));
 	} else {
-		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]',
-								 $percent, sizeit($usage));
+		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, sizeit($usage));
 	}
 
-	$tpl->assign(array(
-					  'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
-					  'TRAFFIC_BARS' => $bars,
-					  'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
+	$tpl->assign(
+		array(
+			 'TRAFFIC_USAGE_DATA' => $traffic_usage_data,
+			 'TRAFFIC_BARS' => $bars,
+			 'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
 
 	if ($maxUsage != 0 && $usage > $maxUsage) {
 		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit.'));
@@ -171,10 +170,11 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
 			'%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
 	}
 
-	$tpl->assign(array(
-					  'DISK_USAGE_DATA' => $traffic_usage_data,
-					  'DISK_BARS' => $bars,
-					  'DISK_PERCENT' => $percent > 100 ? 100 : $percent));
+	$tpl->assign(
+		array(
+			 'DISK_USAGE_DATA' => $traffic_usage_data,
+			 'DISK_BARS' => $bars,
+			 'DISK_PERCENT' => $percent > 100 ? 100 : $percent));
 
 	if ($maxUsage != 0 && $usage > $maxUsage) {
 		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit.'));
@@ -188,9 +188,13 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
  *
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @todo hide features that are not available for reseller
  */
 function client_generateFeatureStatus($tpl)
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg =iMSCP_Registry::get('config');
+
 	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 
 	$trYes = '<span style="color: green;">' . tr('Enabled') . '</span>';
@@ -207,29 +211,31 @@ function client_generateFeatureStatus($tpl)
 			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => ($domainProperties['domain_dns'] == 'yes')
 				 ? $trYes : $trNo,
 			 'APP_INSTALLER_FEATURE_STATUS' => ($domainProperties['domain_software_allowed'] == 'yes')
-				 ? $trYes : $trNo,
-		));
+				 ? $trYes : $trNo));
 
-	// Check if backup support is available
-	switch ($domainProperties['allowbackup']) {
-		case 'full':
-			$tpl->assign(
-				'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
-										 tr('Enabled for domain data and databases')
-										 . '</span>');
-			break;
-		case 'sql':
-			$tpl->assign(
-				'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
-										 tr('Enabled for SQL databases') . '</span>');
-			break;
-		case 'dmn':
-			$tpl->assign(
-				'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
-										 tr('Enabled for domain data') . '</span>');
-			break;
-		default:
-			$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
+	if ($cfg->BACKUP_DOMAINS == 'yes') {
+		switch ($domainProperties['allowbackup']) {
+			case 'full':
+				$tpl->assign(
+					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
+											 tr('Enabled for domain data and databases')
+											 . '</span>');
+				break;
+			case 'sql':
+				$tpl->assign(
+					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
+											 tr('Enabled for SQL databases') . '</span>');
+				break;
+			case 'dmn':
+				$tpl->assign(
+					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
+											 tr('Enabled for domain data') . '</span>');
+				break;
+			default:
+				$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
+		}
+	} else {
+		$tpl->assign('BACKUP_DOMAIN_FEATURE', '');
 	}
 }
 
@@ -365,6 +371,7 @@ $tpl->define_dynamic(array(
 						  'logged_from' => 'page',
 						  'page_message' => 'page',
 						  'alternative_domain_url' => 'page',
+						  'backup_domain_feature' => 'page',
 						  'traffic_warning' => 'page',
 						  'disk_warning' => 'page'));
 
@@ -387,45 +394,41 @@ client_generateFeatureStatus($tpl);
 $domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 
 list(
+	$domainTrafficPercent, $domainTrafficUsage
+) = client_makeTrafficUsage($domainProperties['domain_id']);
+
+client_generateTrafficUsageBar(
+	$tpl, $domainTrafficUsage * 1024 * 1024,
+	$domainProperties['domain_traffic_limit'] * 1024 * 1024, 400);
+
+
+
+client_generateDiskUsageBar(
+	$tpl, $domainProperties['domain_disk_usage'],
+	$domainProperties['domain_disk_limit'] * 1024 * 1024, 400);
+
+
+if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
+	$tpl->assign(
+		'HREF_DOMAIN_ALTERNATIVE_URL', "http://{$cfg->SYSTEM_USER_PREFIX}" . ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) . ".{$_SERVER['SERVER_NAME']}");
+} else {
+	$tpl->assign('DOMAIN_ALTERNATIVE_URL', '');
+}
+
+list(
 	$subdomainCount, $domainAliasCount, $mailAccountsCount, $ftpAccountsCount,
 	$sqlDatabasesCount, $sqlUsersCount
 ) = get_domain_running_props_cnt($domainProperties['domain_id']);
 
-$domainTrafficPercent = 0;
-$domainTrafficUsage = 0;
-$domainTrafficLimit = $domainProperties['domain_traffic_limit'] * 1024 * 1024;
-
-list(
-	$domainTrafficPercent, $domainTrafficUsage
-) = client_makeTrafficUsage($domainProperties['domain_id']);
-
-$domainDiskLimit = $domainProperties['domain_disk_limit'] * 1024 * 1024;
-
-client_generateTrafficUsageBar($tpl, $domainTrafficUsage * 1024 * 1024,
-							   $domainTrafficLimit, 400);
-
-client_generateDiskUsageBar($tpl, $domainProperties['domain_disk_usage'],
-							$domainDiskLimit, 400);
-
-
-if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
-	$tpl->assign('DOMAIN_ALS_URL',
-				 "http://{$cfg->SYSTEM_USER_PREFIX}" .
-				 ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) .
-				 ".{$_SERVER['SERVER_NAME']}");
-} else {
-	$tpl->assign('ALTERNATIVE_DOMAIN_URL', '');
-}
-
 $tpl->assign(
 	array(
-		 'TR_DOMAIN_DATA' => tr('Domain account'),
+		 'TR_DOMAIN_ACCOUNT' => tr('Domain account'),
 		 'TR_ACCOUNT_NAME' => tr('Account name'),
-		 'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
 		 'TR_DOMAIN_NAME' => tr('Domain name'),
-		 'TR_DMN_TMP_ACCESS' => tr('Alternative URL to reach your website'),
+		 'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
+
+		 'TR_DOMAIN_ALTERNATIVE_URL' => tr('Alternative URL to reach your website'),
 		 'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
-		 //'DOMAIN_EXPIRES_DATE' => $domainExpiresDate,
 
 		 'TR_FEATURE' => tr('Feature'),
 		 'TR_FEATURE_STATUS' => tr('Status'),

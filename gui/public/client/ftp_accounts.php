@@ -120,7 +120,9 @@ $tpl->assign(array(
 				  'TR_LOGINAS' => tr('Login As'),
 				  'TR_EDIT' => tr('Edit'),
 				  'TR_DELETE' => tr('Delete'),
-				  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s')));
+				  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
+				  'FILEMANAFER_TARGET' => $cfg->FILEMANAGER_TARGET,
+			 ));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');

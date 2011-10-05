@@ -31,18 +31,20 @@
 
 		<table>
 			<tr>
-				<th colspan="2">{TR_DOMAIN_DATA}</th>
+				<th colspan="2">{TR_DOMAIN_ACCOUNT}</th>
 			</tr>
 			<tr>
 				<td style="width: 300px;">{TR_ACCOUNT_NAME} / {TR_DOMAIN_NAME}</td>
 				<td>{DOMAIN_NAME}</td>
 			</tr>
-			<!-- BDP: alternative_domain_url -->
+
+			<!-- BDP: domain_alternative_url -->
 			<tr>
-				<td>{TR_DMN_TMP_ACCESS}</td>
-				<td><a id="dmn_tmp_access" href="{DOMAIN_ALS_URL}" target="_blank">{DOMAIN_ALS_URL}</a></td>
+				<td>{TR_DOMAIN_ALTERNATIVE_URL}</td>
+				<td><a id="dmn_tmp_access" href="{HREF_DOMAIN_ALTERNATIVE_URL}" target="_blank">{HREF_DOMAIN_ALTERNATIVE_URL}</a></td>
 			</tr>
-			<!-- EDP: alternative_domain_url -->
+			<!-- EDP: domain_alternative_url -->
+
 			<tr>
 				<td>{TR_DOMAIN_EXPIRES_DATE}</td>
 				<td>{DOMAIN_REMAINING_TIME} {DOMAIN_EXPIRES_DATE}</td>
@@ -111,10 +113,13 @@
 				<td>{APP_INSTALLER_FEATURE_STATUS}</td>
 			</tr>
 
+			<!-- BDP: backup_domain_feature -->
 			<tr>
 				<td>{TR_BACKUP_FEATURE}</td>
 				<td>{BACKUP_FEATURE_STATUS}</td>
 			</tr>
+			<!-- EDP: backup_domain_feature -->
+
 		</table>
 
 		<h2 class="traffic"><span>{TR_TRAFFIC_USAGE}</span></h2>
