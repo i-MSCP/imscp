@@ -75,6 +75,7 @@ Tickets:
 	- Fixed #211: Bug - Placeholder not parsed for the GUI php5-fcgi-starter file
 	- Fixed #212: Bug - Some issues with installer
 	- Fixed #215: Bug - Subdomains is not accessible to edit phpini
+	- Fixed #218: Bug - Update trunk don't work because of dovecot 2.0.15-1
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

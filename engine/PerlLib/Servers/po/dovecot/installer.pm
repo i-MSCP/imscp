@@ -115,7 +115,14 @@ sub getVersion{
 	return $rs if $rs;
 
 	chomp($stdout);
-	$self->{version} = $stdout;
+	$stdout =~ m/^([0-9\.]+)\s*/;
+
+	if($1){
+		$self->{version} = $1;
+	} else {
+		error("Can't read dovecot version");
+		return 1;
+	}
 
 	0;
 }
