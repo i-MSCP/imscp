@@ -332,10 +332,6 @@ function gen_client_menu($tpl, $menuTemplateFile)
 
 	// Per feature left menu -- End
 
-	// Custom menus -- begin
-
-	// Custom menus -- end
-
 	$tpl->parse('MENU', 'menu');
 
 	return;

@@ -213,7 +213,10 @@ function client_generateFeatureStatus($tpl)
 			 'APP_INSTALLER_FEATURE_STATUS' => ($domainProperties['domain_software_allowed'] == 'yes')
 				 ? $trYes : $trNo));
 
+	// Backup feature for customers can be disabled by admin (via imscp.conf)
 	if ($cfg->BACKUP_DOMAINS == 'yes') {
+
+		// Backup feature for customer can also be disabled by reseller via GUI
 		switch ($domainProperties['allowbackup']) {
 			case 'full':
 				$tpl->assign(
@@ -236,6 +239,17 @@ function client_generateFeatureStatus($tpl)
 		}
 	} else {
 		$tpl->assign('BACKUP_DOMAIN_FEATURE', '');
+	}
+
+	// For now, awstats can only be disabled by admin (via imscp.conf file)
+	if ($cfg->AWSTATS_ACTIVE == 'yes') {
+		$tpl->assign(array(
+						  'TR_AWSTATS_FEATURE' => tr('Web statistics'),
+						  'AWSTATS_FEATURE_STATUS' => $trYes
+					 ));
+
+	} else {
+
 	}
 }
 

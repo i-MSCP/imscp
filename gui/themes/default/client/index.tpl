@@ -113,6 +113,13 @@
 				<td>{APP_INSTALLER_FEATURE_STATUS}</td>
 			</tr>
 
+			<!-- BDP: awstats_feature -->
+			<tr>
+				<td>{TR_AWSTATS_FEATURE}</td>
+				<td>{AWSTATS_FEATURE_STATUS}</td>
+			</tr>
+			<!-- EDP: awstats_feature -->
+
 			<!-- BDP: backup_domain_feature -->
 			<tr>
 				<td>{TR_BACKUP_FEATURE}</td>
