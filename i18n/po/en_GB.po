@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-09-17 04:08+0200\n"
-"PO-Revision-Date: 2011-09-17 02:09+0000\n"
+"POT-Creation-Date: 2011-10-06 17:17+0200\n"
+"PO-Revision-Date: 2011-10-06 15:18+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -209,8 +209,8 @@ msgstr "Application management"
 msgid "Application options"
 msgstr "Application options"
 
-msgid "No administrator account found."
-msgstr "No administrator account found."
+msgid "No administrator accounts found."
+msgstr ""
 
 msgid "Username"
 msgstr "Username"
@@ -221,8 +221,8 @@ msgstr "Creation date"
 msgid "Created by"
 msgstr "Created by"
 
-msgid "Options"
-msgstr "Options"
+msgid "Actions"
+msgstr "Actions"
 
 msgid "Delete"
 msgstr "Delete"
@@ -230,8 +230,8 @@ msgstr "Delete"
 msgid "System"
 msgstr "System"
 
-msgid "No reseller account found."
-msgstr "No reseller account found."
+msgid "No reseller accounts found."
+msgstr ""
 
 msgid "Switch to user interface"
 msgstr "Switch to user interface"
@@ -239,14 +239,14 @@ msgstr "Switch to user interface"
 msgid "Switch"
 msgstr "Switch"
 
-msgid "Not found user records matching the search criteria."
-msgstr "Not found user records matching the search criteria."
+msgid "Not found records matching the search criteria."
+msgstr ""
 
 msgid "view aliases"
 msgstr "view aliases"
 
-msgid "No user account found."
-msgstr "No user account found."
+msgid "No customer accounts found."
+msgstr ""
 
 msgid "Status"
 msgstr "Status"
@@ -289,8 +289,8 @@ msgstr "Administrators"
 msgid "Resellers"
 msgstr "Resellers"
 
-msgid "Users"
-msgstr "Users"
+msgid "Customers"
+msgstr ""
 
 msgid "Search"
 msgstr "Search"
@@ -380,11 +380,11 @@ msgstr "Order email setup"
 msgid "yes"
 msgstr "yes"
 
-msgid "Please fill up both data fields for password!"
-msgstr "Please fill up both data fields for password!"
+msgid "Please fill up both data fields for password."
+msgstr ""
 
-msgid "Passwords don't match!"
-msgstr "Passwords don't match!"
+msgid "Passwords doesn't matches"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -400,80 +400,95 @@ msgid ""
 msgstr ""
 "Password data is shorter than %s signs or includes not permitted signs!"
 
-msgid "Incorrect email length or syntax!"
-msgstr "Incorrect email length or syntax!"
+msgid "Incorrect email length or syntax."
+msgstr "Incorrect email length or syntax."
 
-msgid "Add subdomain"
-msgstr "Add subdomain"
-
-msgid "Email and FTP accounts"
-msgstr "Email and FTP accounts"
-
-msgid "Add mail user"
-msgstr "Add mail user"
-
-msgid "Add FTP user"
-msgstr "Add FTP user"
-
-msgid "Manage SQL"
-msgstr "Manage SQL"
-
-msgid "Error pages"
-msgstr "Error pages"
-
-msgid "Add SQL database"
-msgstr "Add SQL database"
-
-msgid "Daily backup"
-msgstr "Daily backup"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Webmail"
-msgstr "Webmail"
-
-msgid "Filemanager"
-msgstr "Filemanager"
+msgid "General Information"
+msgstr ""
 
 msgid "Webtools"
 msgstr "Webtools"
 
-msgid "Protected areas"
-msgstr "Protected areas"
+msgid "Manage Domains"
+msgstr ""
 
-msgid "Web statistics"
-msgstr "Web statistics"
+msgid "Ftp Accounts"
+msgstr ""
 
-msgid "Group/User management"
-msgstr "Group/User management"
+msgid "Manage SQL"
+msgstr "Manage SQL"
 
-msgid "Email Accounts"
-msgstr "Email Accounts"
+msgid "Support"
+msgstr ""
+
+msgid "Personal data"
+msgstr "Personal data"
+
+msgid "Change language"
+msgstr ""
+
+msgid "Update hosting plan"
+msgstr ""
+
+msgid "Add subdomain"
+msgstr "Add subdomain"
+
+msgid "Add domain alias"
+msgstr "Add domain alias"
+
+msgid "Add FTP user"
+msgstr "Add FTP user"
+
+msgid "Filemanager"
+msgstr "Filemanager"
 
 msgid "FTP Accounts"
 msgstr "FTP Accounts"
 
+msgid "Email Accounts"
+msgstr "Email Accounts"
+
+msgid "Add mail user"
+msgstr "Add mail user"
+
 msgid "Catch all"
 msgstr "Catch all"
 
-msgid "Add alias"
-msgstr "Add alias"
+msgid "Webmail"
+msgstr "Webmail"
 
-msgid "Update Hosting Package"
-msgstr "Update Hosting Package"
+msgid "Add SQL database"
+msgstr "Add SQL database"
 
-msgid "Add DNS zone's record"
-msgstr "Add DNS zone's record"
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
 
-msgid "Manage SSL certificate"
-msgstr "Manage SSL certificate"
-
-msgid "PHP Settings"
+msgid "Add custom DNS record"
 msgstr ""
 
-msgid "i-MSCP application installer"
-msgstr "i-MSCP application installer"
+msgid "PHP directives editor"
+msgstr ""
+
+msgid "Web statistics"
+msgstr "Web statistics"
+
+msgid "Daily backup"
+msgstr "Daily backup"
+
+msgid "Protected areas"
+msgstr "Protected areas"
+
+msgid "Custom error pages"
+msgstr "Custom error pages"
+
+msgid "Application installer"
+msgstr "Application installer"
+
+msgid "Open tickets"
+msgstr "Open tickets"
+
+msgid "Closed tickets"
+msgstr "Closed tickets"
 
 msgid "All fields are required!"
 msgstr "All fields are required!"
@@ -579,14 +594,14 @@ msgstr ""
 msgid "Entered passwords do not match."
 msgstr "Entered passwords do not match."
 
-msgid "Incorrect email length or syntax."
-msgstr "Incorrect email length or syntax."
-
 msgid "This user name already exist."
 msgstr "This user name already exist."
 
 msgid "Empty data or wrong field!"
 msgstr "Empty data or wrong field!"
+
+msgid "Passwords don't match!"
+msgstr "Passwords don't match!"
 
 msgid "Core data"
 msgstr "Core data"
@@ -644,6 +659,9 @@ msgstr "Reseller"
 
 msgid "Domain account"
 msgstr "Domain account"
+
+msgid "Incorrect email length or syntax!"
+msgstr "Incorrect email length or syntax!"
 
 msgid "i-MSCP - Admin/Manage users/Edit Administrator"
 msgstr "i-MSCP - Admin/Manage users/Edit Administrator"
@@ -858,7 +876,7 @@ msgstr "Database updates"
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
 
-msgid "Database Updates Revision"
+msgid "Database Update Revision"
 msgstr ""
 
 msgid "Process updates"
@@ -926,6 +944,9 @@ msgstr "Submit changes"
 
 msgid "Back"
 msgstr "Back"
+
+msgid "i-MSCP application installer"
+msgstr "i-MSCP application installer"
 
 msgid "Full"
 msgstr "Full"
@@ -1567,11 +1588,11 @@ msgstr "To Admin"
 msgid "Move"
 msgstr "Move"
 
-msgid "Reseller or user list is empty!"
-msgstr "Reseller or user list is empty!"
+msgid "Reseller list is empty."
+msgstr ""
 
-msgid "User list is empty!"
-msgstr "User list is empty!"
+msgid "User list is empty."
+msgstr ""
 
 msgid "User was moved"
 msgstr "User was moved"
@@ -1616,6 +1637,9 @@ msgstr ""
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Admin/Manage users/User assignment"
 
+msgid "Users"
+msgstr "Users"
+
 msgid "User name"
 msgstr "User name"
 
@@ -1628,30 +1652,28 @@ msgstr "To reseller"
 msgid "i-MSCP - Admin/Manage Users"
 msgstr "i-MSCP - Admin/Manage Users"
 
-msgid "User scheduled for addition."
-msgstr "User scheduled for addition."
+msgid "Customer scheduled for addition."
+msgstr ""
 
 msgid "Reseller successfully added."
 msgstr "Reseller successfully added."
 
-msgid "User updated."
-msgstr "User updated."
+msgid "Customer account successfully updated."
+msgstr ""
 
-msgid "User scheduled for deletion."
-msgstr "User scheduled for deletion."
+msgid "Customer scheduled for deletion."
+msgstr ""
 
 msgid "Email Updated."
 msgstr "Email Updated."
 
 msgid ""
-"This reseller has one or more domain accounts.<br /> To remove this "
-"reseller, please first remove these domain accounts"
+"This reseller has one or more customers accounts.<br /> To remove this "
+"reseller, please first remove these customers accounts."
 msgstr ""
-"This reseller has one or more domain accounts.<br /> To remove this "
-"reseller, please first remove these domain accounts"
 
-msgid "Domain account scheduled for deactivation."
-msgstr "Domain account scheduled for deactivation."
+msgid "Customer account scheduled for deactivation."
+msgstr ""
 
 #, php-format
 msgid "%d strings translated"
@@ -1732,11 +1754,8 @@ msgstr "Password change is deactivated!"
 msgid "i-MSCP - Admin/Change Personal Data"
 msgstr "i-MSCP - Admin/Change Personal Data"
 
-msgid "Personal data updated successfully!"
-msgstr "Personal data updated successfully!"
-
-msgid "Personal data"
-msgstr "Personal data"
+msgid "Personal data successfully updated."
+msgstr ""
 
 msgid "Update data"
 msgstr "Update data"
@@ -1846,9 +1865,6 @@ msgstr "Frontpage extensions"
 msgid "Backup and restore"
 msgstr "Backup and restore"
 
-msgid "Custom error pages"
-msgstr "Custom error pages"
-
 msgid "Directory listing"
 msgstr "Directory listing"
 
@@ -1885,9 +1901,6 @@ msgstr ""
 msgid "MAX allowed in max_input_time [Seconds]"
 msgstr ""
 
-msgid "Application installer"
-msgstr "Application installer"
-
 msgid "Can use software repository"
 msgstr "Can use software repository"
 
@@ -1897,23 +1910,36 @@ msgstr "Can use Web software repository"
 msgid "Reseller IPs"
 msgstr "Reseller IPs"
 
-msgid "Incorrect email syntax!"
-msgstr "Incorrect email syntax!"
+msgid "Passwords do not match."
+msgstr ""
 
-msgid "Incorrect domains limit!"
-msgstr "Incorrect domains limit!"
+msgid "domain"
+msgstr ""
+
+#, php-format
+msgid "Incorrect limit for %s."
+msgstr ""
 
 msgid "Aliases"
 msgstr "Aliases"
 
-msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
-msgstr "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgid "domain aliases"
+msgstr ""
 
-msgid "SQL Databases"
-msgstr "SQL Databases"
+msgid "subdomains"
+msgstr ""
 
-msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
-msgstr "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgid "mail accounts"
+msgstr ""
+
+msgid "Ftp accounts"
+msgstr ""
+
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit is not."
+msgstr ""
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit is not."
+msgstr ""
 
 msgid "SQL Users"
 msgstr "SQL Users"
@@ -1921,11 +1947,21 @@ msgstr "SQL Users"
 msgid "Web Traffic"
 msgstr "Web Traffic"
 
+msgid "traffic"
+msgstr ""
+
 msgid "Disk storage"
 msgstr "Disk storage"
 
-msgid "You must assign at least one IP number for a reseller!"
-msgstr "You must assign at least one IP number for a reseller!"
+msgid "disk space"
+msgstr ""
+
+msgid "You must assign at least one IP per reseller."
+msgstr ""
+
+#, php-format
+msgid "Value for the PHP '%s' directive is out of range."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1946,35 +1982,36 @@ msgstr ""
 #, php-format
 msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!"
+"service."
 msgstr ""
-"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!"
 
-msgid "If you want to limit the reseller, you must first limit its customers!"
+msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
-"If you want to limit the reseller, you must first limit its customers!"
 
 #, php-format
-msgid "This reseller has domains assigned to the <b>%s</b> address!"
-msgstr "This reseller has domains assigned to the <b>%s</b> address!"
+msgid "This reseller has domains assigned to the <b>%s</b> address."
+msgstr ""
 
 msgid "The reseller account you trying to edit does not exist."
 msgstr "The reseller account you trying to edit does not exist."
 
+msgid "Reseller IP list is empty."
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage users/Edit Reseller"
 msgstr "i-MSCP - Admin/Manage users/Edit Reseller"
 
-msgid ""
-"ERROR: One or more errors was found! Please, correct them and try again!"
+msgid "Reseller account successfully updated."
 msgstr ""
-"ERROR: One or more errors was found! Please, correct them and try again!"
 
-msgid "Reseller data inconsistency!"
-msgstr "Reseller data inconsistency!"
+msgid "One or more errors were found. Please, correct them and try again."
+msgstr ""
 
-msgid "Please, read the message(s) above and trying to correct!"
-msgstr "Please, read the message(s) above and trying to correct!"
+msgid "Reseller data inconsistency."
+msgstr ""
+
+msgid "Please, read the message(s) above and trying to correct."
+msgstr ""
 
 msgid "Edit reseller"
 msgstr "Edit reseller"
@@ -2185,6 +2222,9 @@ msgstr "User type"
 msgid "Last access"
 msgstr "Last access"
 
+msgid "Options"
+msgstr "Options"
+
 msgid "Kill session"
 msgstr "Kill session"
 
@@ -2255,6 +2295,9 @@ msgstr "E-Mail accounts are hard suspended"
 
 msgid "Panel default language"
 msgstr "Panel default language"
+
+msgid "Support System"
+msgstr ""
 
 msgid "Apply changes"
 msgstr "Apply changes"
@@ -2332,49 +2375,53 @@ msgstr ""
 msgid "Maximum number of labels for subdomains"
 msgstr "Maximum number of labels for subdomains"
 
-msgid "Global Base php.ini Setting"
+msgid "System wide values for PHP directives"
 msgstr ""
 
-msgid "Value allow_url_fopen"
+msgid "Value for the <strong>allow_url_fopen</strong> directive"
 msgstr ""
 
-msgid "Value register_globals"
+msgid "Value for the <strong>register_globals</strong> directive"
 msgstr ""
 
-msgid "Value display_errors"
+msgid "Value for the <strong>display_errors</strong> directive"
 msgstr ""
 
-msgid "Value error_reporting"
+msgid "Value for the <strong>error_reporting</strong> directive"
 msgstr ""
 
-msgid "All off"
+msgid ""
+"Show all errors, except for notices and coding standards warnings (Default)"
 msgstr ""
 
-msgid "All errors except notices and warnings"
+msgid ""
+"Show all errors, warnings and notices including coding standards "
+"(Development)"
 msgstr ""
 
-msgid "All errors except notices"
+msgid ""
+" Show all errors, except for warnings about deprecated code (Production)"
 msgstr ""
 
-msgid "All errors"
+msgid "Do not show any error"
 msgstr ""
 
-msgid "Value post_max_size"
+msgid "Value for the <strong>post_max_size</strong> directive"
 msgstr ""
 
-msgid "Value upload_max_filesize"
+msgid "Value for the <strong>upload_max_filesize</strong> directive"
 msgstr ""
 
-msgid "Value max_execution_time"
+msgid "Value for the <strong>max_execution_time</strong> directive"
 msgstr ""
 
-msgid "Value max_input_time"
+msgid "Value for the <strong>max_input_time</strong> directive"
 msgstr ""
 
-msgid "Value memory_limit"
+msgid "Value for the <strong>memory_limit</strong> directive"
 msgstr ""
 
-msgid "Value disable_functions"
+msgid "Value for the <strong>disable_functions</strong> directive"
 msgstr ""
 
 msgid "Orders settings"
@@ -2903,12 +2950,6 @@ msgstr "i-MSCP - Admin / Support Ticket System / Closed Tickets"
 msgid "Support Ticket System"
 msgstr "Support Ticket System"
 
-msgid "Open tickets"
-msgstr "Open tickets"
-
-msgid "Closed tickets"
-msgstr "Closed tickets"
-
 msgid "From"
 msgstr "From"
 
@@ -2917,9 +2958,6 @@ msgstr "Priority"
 
 msgid "Last reply date"
 msgstr "Last reply date"
-
-msgid "Actions"
-msgstr "Actions"
 
 msgid "Read the ticket"
 msgstr "Read the ticket"
@@ -3063,62 +3101,56 @@ msgstr "You must confirm domain deletion."
 msgid "Domain alias limit reached!"
 msgstr "Domain alias limit reached!"
 
-msgid "Domain with that name already exists on the system!"
-msgstr "Domain with that name already exists on the system!"
+msgid "Domain with that name already exists on the system."
+msgstr "Domain with that name already exists on the system."
 
-msgid "Incorrect mount point syntax"
-msgstr "Incorrect mount point syntax"
+msgid "Incorrect mount point syntax."
+msgstr "Incorrect mount point syntax."
 
-msgid "Master domain cannot be used!"
-msgstr "Master domain cannot be used!"
+msgid "Master domain cannot be used."
+msgstr "Master domain cannot be used."
 
-msgid "Wrong address in forward URL!"
-msgstr "Wrong address in forward URL!"
+msgid "Wrong address in forward URL."
+msgstr "Wrong address in forward URL."
 
-msgid "Wrong domain part in forward URL!"
-msgstr "Wrong domain part in forward URL!"
+msgid "Wrong domain part in forward URL."
+msgstr "Wrong domain part in forward URL."
 
-msgid "Domain with this name already exist"
-msgstr "Domain with this name already exist"
+msgid "Domain with this name already exist."
+msgstr ""
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "There is a subdomain with the same mount point!"
+msgid "There is a subdomain with the same mount point."
+msgstr "There is a subdomain with the same mount point."
 
-msgid "Alias scheduled for activation!"
-msgstr "Alias scheduled for activation!"
+msgid "Alias awaiting for activation."
+msgstr ""
 
-msgid "Alias scheduled for addition!"
-msgstr "Alias scheduled for addition!"
+msgid "Alias scheduled for addition."
+msgstr ""
 
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP Client : Add Alias"
 
-msgid "Manage domain alias"
-msgstr "Manage domain alias"
+msgid "Domain alias data"
+msgstr ""
 
-msgid "Add domain alias"
-msgstr "Add domain alias"
+msgid "Domain alias name"
+msgstr ""
 
 msgid "User account"
 msgstr "User account"
 
-msgid "Directory mount point"
-msgstr "Directory mount point"
+msgid "Mount point"
+msgstr "Mount point"
 
-msgid "Forward to URL"
-msgstr "Forward to URL"
+msgid "Redirect to URL"
+msgstr ""
 
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "You do not need 'www.' i-MSCP will add it on its own."
+msgid "You do not need 'www.' i-MSCP will add it automatically."
+msgstr ""
 
-msgid "Wrong domain name!"
-msgstr "Wrong domain name!"
-
-msgid "Please write mount point!"
-msgstr "Please write mount point!"
-
-msgid "Enable Forward"
-msgstr "Enable Forward"
+msgid "Redirect"
+msgstr ""
 
 msgid "Enable"
 msgstr "Enable"
@@ -3126,6 +3158,14 @@ msgstr "Enable"
 msgid "Disable"
 msgstr "Disable"
 
+msgid "Wrong request."
+msgstr ""
+
+msgid ""
+"We are sorry but you reached the maximum number of domain aliases allowed by"
+" your subscription. Contact your reseller for more information."
+msgstr ""
+
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
 msgstr ""
@@ -3139,14 +3179,12 @@ msgstr ""
 "them!"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove "
-"them!"
+"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
+" first."
 msgstr ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove "
-"them!"
 
-msgid "Alias scheduled for deletion!"
-msgstr "Alias scheduled for deletion!"
+msgid "Alias scheduled for deletion."
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Manage Domain Alias/Edit Alias"
@@ -3157,8 +3195,23 @@ msgstr "Edit domain alias"
 msgid "Alias name"
 msgstr "Alias name"
 
+msgid "Forward to URL"
+msgstr "Forward to URL"
+
 msgid "Mount Point"
 msgstr "Mount Point"
+
+msgid "Enable Forward"
+msgstr "Enable Forward"
+
+msgid "Domain alias scheduled for update."
+msgstr ""
+
+msgid "Order for domain alias deleted."
+msgstr ""
+
+msgid "Order not found. Nothing been deleted."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
@@ -3167,11 +3220,11 @@ msgstr ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
 "them!"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "Subdomain scheduled for deletion!"
+msgid "Subdomain alias scheduled for deletion."
+msgstr ""
 
-msgid "Backup archive scheduled for restoring!"
-msgstr "Backup archive scheduled for restoring!"
+msgid "Backup archive scheduled for restoring."
+msgstr ""
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Client/Daily Backup"
@@ -3244,11 +3297,11 @@ msgstr "Edit Cronjob"
 msgid "Cronjobs"
 msgstr "Cronjobs"
 
-msgid "You are not allowed to remove this DNS record!"
-msgstr "You are not allowed to remove this DNS record!"
+msgid "You are not allowed to remove this DNS record."
+msgstr ""
 
-msgid "Custom DNS record scheduled for deletion!"
-msgstr "Custom DNS record scheduled for deletion!"
+msgid "Custom DNS record scheduled for deletion."
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "i-MSCP - Manage Domain Alias/Add DNS zone's record"
@@ -3256,14 +3309,11 @@ msgstr "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 
-msgid "Add DNS zone's record (EXPERIMENTAL)"
-msgstr "Add DNS zone's record (EXPERIMENTAL)"
+msgid "Edit custom DNS record"
+msgstr ""
 
-msgid "Edit DNS zone's record (EXPERIMENTAL)"
-msgstr "Edit DNS zone's record (EXPERIMENTAL)"
-
-msgid "DNS zone's records"
-msgstr "DNS zone's records"
+msgid "Custom DNS record"
+msgstr ""
 
 msgid "Class"
 msgstr "Class"
@@ -3298,11 +3348,17 @@ msgstr "Canonical name"
 msgid "Plain record data"
 msgstr "Plain record data"
 
-msgid "DNS zone's records (EXPERIMENTAL)"
-msgstr "DNS zone's records (EXPERIMENTAL)"
+msgid "Custom DNS record data"
+msgstr ""
 
-msgid "You are not allowed to edit this DNS record!"
-msgstr "You are not allowed to edit this DNS record!"
+msgid "Custom DNS record scheduled for update."
+msgstr ""
+
+msgid "Custom DNS record scheduled for addition."
+msgstr ""
+
+msgid "You are not allowed to edit this DNS record."
+msgstr ""
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -3353,11 +3409,11 @@ msgid "Cannot validate %s record. Reason '%s'."
 msgstr "Cannot validate %s record. Reason '%s'."
 
 #, php-format
-msgid "Unknown zone type %s!"
-msgstr "Unknown zone type %s!"
+msgid "Unknown zone type %s."
+msgstr ""
 
-msgid "Error: DNS record already exist!"
-msgstr "Error: DNS record already exist!"
+msgid "DNS record already exist."
+msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Client/Domain Statistics"
@@ -3377,51 +3433,45 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "Sum"
 
-msgid "Manual zone's records list is empty!"
-msgstr "Manual zone's records list is empty!"
+msgid "You do not have domain aliases."
+msgstr "You do not have domain aliases."
+
+msgid "Delete order"
+msgstr "Delete order"
+
+msgid "You do not have subdomains."
+msgstr ""
+
+msgid "You do not have custom DNS records."
+msgstr ""
 
 #, php-format
 msgid "%s record"
 msgstr "%s record"
 
-msgid "Subdomain list is empty!"
-msgstr "Subdomain list is empty!"
-
-msgid "Delete order"
-msgstr "Delete order"
-
-msgid "Alias list is empty!"
-msgstr "Alias list is empty!"
-
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - Client/Manage Domains"
 
-msgid "Mount point"
-msgstr "Mount point"
-
-msgid "Forward"
-msgstr "Forward"
+msgid "Custom DNS records"
+msgstr ""
 
 msgid "Record data"
 msgstr "Record data"
 
-msgid "php.ini"
-msgstr ""
-
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Client/Manage Error Custom Pages"
 
-msgid "Server error - please choose error page"
-msgstr "Server error - please choose error page"
+msgid "Error page not found."
+msgstr ""
 
 msgid "Edit error page"
 msgstr "Edit error page"
 
-msgid "Custom error page was updated!"
-msgstr "Custom error page was updated!"
+msgid "Custom error page updated."
+msgstr ""
 
-msgid "System error - custom error page was not updated!"
-msgstr "System error - custom error page was not updated!"
+msgid "System error - custom error page was not updated."
+msgstr ""
 
 msgid "Error 401 (unauthorised)"
 msgstr "Error 401 (unauthorised)"
@@ -3441,8 +3491,8 @@ msgstr "Error 503 (service unavailable)"
 msgid "View"
 msgstr "View"
 
-msgid "FTP list is empty!"
-msgstr "FTP list is empty!"
+msgid "You do not have FTP users."
+msgstr ""
 
 msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - Client/Manage Users"
@@ -3450,8 +3500,8 @@ msgstr "i-MSCP - Client/Manage Users"
 msgid "FTPs total"
 msgstr "FTPs total"
 
-msgid "FTP users"
-msgstr "FTP users"
+msgid "FTP Users"
+msgstr ""
 
 msgid "FTP account"
 msgstr "FTP account"
@@ -3459,36 +3509,37 @@ msgstr "FTP account"
 msgid "Login As"
 msgstr "Login As"
 
+#, php-format
+msgid "Are you sure you want to delete the %s FTP user?"
+msgstr ""
+
 msgid "Empty List"
 msgstr "Empty List"
 
 msgid "Empty list"
 msgstr "Empty list"
 
-msgid "FTP account already exists!"
-msgstr "FTP account already exists!"
+msgid "FTP account already exists."
+msgstr ""
 
-msgid "Incorrect username length or syntax!"
-msgstr "Incorrect username length or syntax!"
+msgid "Unknown domain type."
+msgstr ""
 
-msgid "Unknown domain type"
-msgstr "Unknown domain type"
-
-msgid "Incorrect mount point length or syntax"
-msgstr "Incorrect mount point length or syntax"
+msgid "Incorrect mount point length or syntax."
+msgstr ""
 
 #, php-format
 msgid "%s does not exist"
 msgstr "%s does not exist"
 
-msgid "FTP account added!"
-msgstr "FTP account added!"
+msgid "FTP account added."
+msgstr ""
 
-msgid "Please enter FTP account username!"
-msgstr "Please enter FTP account username!"
+msgid "Please enter FTP account username."
+msgstr ""
 
-msgid "Password is missing!"
-msgstr "Password is missing!"
+msgid "Password is missing."
+msgstr ""
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Subdomain list is empty! You cannot add FTP accounts there!"
@@ -3520,11 +3571,14 @@ msgstr "Use other dir"
 msgid "Choose dir"
 msgstr "Choose dir"
 
-msgid "Unknown FTP user id!"
-msgstr "Unknown FTP user id!"
+msgid "Ftp user data"
+msgstr ""
 
-msgid "Cannot open directory! Please contact your administrator!"
-msgstr "Cannot open directory! Please contact your administrator!"
+msgid "Unknown FTP user id."
+msgstr ""
+
+msgid "Cannot open directory. Please contact your administrator."
+msgstr ""
 
 msgid "Parent Directory"
 msgstr "Parent Directory"
@@ -3541,20 +3595,28 @@ msgstr "Directories"
 msgid "Choose"
 msgstr "Choose"
 
-msgid "FTP account deleted successfully!"
-msgstr "FTP account deleted successfully!"
+msgid "FTP account deleted."
+msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP account data updated!"
 
+msgid "Incorrect mount point length or syntax"
+msgstr "Incorrect mount point length or syntax"
+
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Client/Edit FTP Account"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr ""
+"User does not exist or you do not have permission to access this interface."
 
 msgid "Edit FTP user"
 msgstr "Edit FTP user"
 
-msgid "Save changes"
-msgstr "Save changes"
+msgid "Change"
+msgstr "Change"
 
 msgid "Hosting plans available for update"
 msgstr "Hosting plans available for update"
@@ -3568,8 +3630,8 @@ msgstr "Your order"
 msgid "Purchase"
 msgstr "Purchase"
 
-msgid "There are no available updates"
-msgstr "There are no available updates"
+msgid "There are no available hosting plans for updates."
+msgstr ""
 
 msgid "PHP Support: enabled"
 msgstr "PHP Support: enabled"
@@ -3629,11 +3691,11 @@ msgstr "You did have more traffic than the new hosting plan limits."
 msgid "Traffic limit"
 msgstr "Traffic limit"
 
-msgid "You have more aliases in use than the new hosting plan limits."
-msgstr "You have more aliases in use than the new hosting plan limits."
+msgid "You have more aliases in use than the new hosting plan limits"
+msgstr ""
 
-msgid "You have more subdomains in use than the new hosting plan limits."
-msgstr "You have more subdomains in use than the new hosting plan limits."
+msgid "You have more subdomains in use than the new hosting plan limits"
+msgstr ""
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
 msgstr ""
@@ -3650,6 +3712,9 @@ msgstr "FTPs"
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr "You have more SQL databases in use than the new hosting plan limits."
+
+msgid "SQL Databases"
+msgstr "SQL Databases"
 
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
@@ -3671,19 +3736,25 @@ msgstr "Caution:"
 msgid "I understand the warnings - Purchase!"
 msgstr "I understand the warnings - Purchase!"
 
-msgid "There are no available hosting plans for update"
-msgstr "There are no available hosting plans for update"
+msgid "There are no available hosting plans for update."
+msgstr ""
 
 msgid "i-MSCP - Update hosting plan"
 msgstr "i-MSCP - Update hosting plan"
+
+msgid "You have more aliases in use than the new hosting plan limits."
+msgstr "You have more aliases in use than the new hosting plan limits."
+
+msgid "You have more subdomains in use than the new hosting plan limits."
+msgstr "You have more subdomains in use than the new hosting plan limits."
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
 "You have more e-mail addresses in use than the new hosting plan limits."
 
-msgid "Your request for hosting pack update was added successfully"
-msgstr "Your request for hosting pack update was added successfully"
+msgid "Your request for hosting plan update was registered."
+msgstr ""
 
 msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr "[i-MSCP OrderPanel] - You have an update order"
@@ -3698,18 +3769,19 @@ msgstr ""
 "\n"
 "Please login into your i-MSCP control panel at %s for more details"
 
-msgid "Your request for hosting pack update was removed successfully"
-msgstr "Your request for hosting pack update was removed successfully"
+msgid "Your request for hosting plan update was removed."
+msgstr ""
 
-msgid "disabled"
-msgstr "disabled"
+msgid "Unlimited"
+msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "You have <b>%d</b> new answer to your support questions"
+msgid "You received <b>%d</b> new support question(s)."
+msgstr ""
 
-msgid "You are exceeding your traffic limit!"
-msgstr "You are exceeding your traffic limit!"
+#, php-format
+msgid "You received <b>%d</b> new answer(s) to your support questions."
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -3719,36 +3791,59 @@ msgstr "%1$s%% [%2$s of %3$s]"
 msgid "%1$s%% [%2$s of unlimited]"
 msgstr "%1$s%% [%2$s of unlimited]"
 
-msgid "You are exceeding your disk limit!"
-msgstr "You are exceeding your disk limit!"
+msgid "You are exceeding your disk limit."
+msgstr "You are exceeding your disk limit."
 
-msgid "You have no new support questions!"
-msgstr "You have no new support questions!"
+msgid "Enabled for domain data and databases"
+msgstr ""
+
+msgid "Enabled for SQL databases"
+msgstr ""
+
+msgid "Enabled for domain data"
+msgstr ""
+
+msgid "days"
+msgstr ""
+
+msgid "day"
+msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
-msgstr "You have <b>%d</b> new support questions"
+msgid "%d %s remaining until account expiration"
+msgstr ""
 
-msgid "This Domain is expired"
-msgstr "This Domain is expired"
+msgid "Domain account expired."
+msgstr ""
+
+msgid ""
+"Your domain account is expired. Please, contact your reseller to renew your "
+"subscription."
+msgstr ""
+
+msgid "No set"
+msgstr ""
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - Client/Main Index"
 
-msgid "Main domain"
-msgstr "Main domain"
+msgid "Alternative URL to reach your website"
+msgstr "Alternative URL to reach your website"
 
-msgid "Manual DNS support"
-msgstr "Manual DNS support"
+msgid "Domain expire date"
+msgstr "Domain expire date"
 
-msgid "SQL support"
-msgstr "SQL support"
+msgid "Including domain aliases subdomains"
+msgstr ""
 
-msgid "Choose default language"
-msgstr "Choose default language"
+msgid "PHP directives editor support"
+msgstr ""
 
-msgid "Choose default layout"
-msgstr "Choose default layout"
+msgid "Custom DNS records support"
+msgstr ""
+
+msgid "Application installer support"
+msgstr ""
 
 msgid "Traffic usage"
 msgstr "Traffic usage"
@@ -3756,11 +3851,8 @@ msgstr "Traffic usage"
 msgid "Disk usage"
 msgstr "Disk usage"
 
-msgid "Alternative URL to reach your website"
-msgstr "Alternative URL to reach your website"
-
-msgid "Language updated successfully."
-msgstr "Language updated successfully."
+msgid "Language updated."
+msgstr ""
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - Client/Change Language"
@@ -3795,52 +3887,49 @@ msgstr "Show default E-Mail addresses"
 msgid "Hide default E-Mail Addresses"
 msgstr "Hide default E-Mail Addresses"
 
-msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr "Mailformat of an address in your forward list is incorrect!"
+msgid "Mailformat of an address in your forward list is incorrect."
+msgstr ""
 
-msgid "Mail forward list empty!"
-msgstr "Mail forward list empty!"
+msgid "Mail forward list empty."
+msgstr ""
 
-msgid "Forward to same address is not allowed!"
-msgstr "Forward to same address is not allowed!"
+msgid "Forward to same address is not allowed."
+msgstr ""
 
-msgid "Mail account already exists!"
-msgstr "Mail account already exists!"
+msgid "Mail account already exists."
+msgstr ""
 
-msgid "Mail account scheduled for addition!"
-msgstr "Mail account scheduled for addition!"
+msgid "Mail account scheduled for addition."
+msgstr ""
 
-msgid "Please select at least one mail type!"
-msgstr "Please select at least one mail type!"
+msgid "Please select at least one mail type."
+msgstr ""
 
-msgid "Please enter mail account username!"
-msgstr "Please enter mail account username!"
+msgid "Please enter mail account username."
+msgstr ""
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "Invalid Mail Localpart Format used!"
+msgid "Invalid mail local part."
+msgstr ""
 
-msgid "Password data is missing!"
-msgstr "Password data is missing!"
-
-msgid "Entered passwords differ!"
-msgstr "Entered passwords differ!"
+msgid "Password data is missing."
+msgstr ""
 
 msgid "Subdomain alias"
 msgstr "Subdomain alias"
 
 #, php-format
-msgid "%s list is empty! You cannot add mail accounts!"
-msgstr "%s list is empty! You cannot add mail accounts!"
+msgid "%s list is empty! You cannot add mail accounts."
+msgstr ""
 
 #, php-format
-msgid "%s id is invalid! You cannot add mail accounts!"
-msgstr "%s id is invalid! You cannot add mail accounts!"
+msgid "%s id is invalid! You cannot add mail accounts."
+msgstr ""
 
-msgid "Forward list is empty!"
-msgstr "Forward list is empty!"
+msgid "Forward list is empty."
+msgstr ""
 
-msgid "Mail accounts limit reached!"
-msgstr "Mail accounts limit reached!"
+msgid "Mail accounts limit reached."
+msgstr ""
 
 msgid "i-MSCP - Client/Add Mail User"
 msgstr "i-MSCP - Client/Add Mail User"
@@ -3866,14 +3955,14 @@ msgstr "Separate multiple email addresses with a line-break."
 msgid "You did not fill all required fields"
 msgstr "You did not fill all required fields"
 
-msgid "Mail account scheduled for modification!"
-msgstr "Mail account scheduled for modification!"
+msgid "Mail account data"
+msgstr ""
 
-msgid "Please type your mail autorespond message!"
-msgstr "Please type your mail autorespond message!"
+msgid "Mail account scheduled for update."
+msgstr ""
 
-msgid "Mail account scheduler for modification!"
-msgstr "Mail account scheduler for modification!"
+msgid "Please type your mail autorespond message."
+msgstr ""
 
 msgid "i-MSCP - Client/Enable Mail Auto Responder"
 msgstr "i-MSCP - Client/Enable Mail Auto Responder"
@@ -3896,11 +3985,15 @@ msgstr "None"
 msgid "Create catch all"
 msgstr "Create catch all"
 
-msgid "Catch all account"
-msgstr "Catch all account"
+#, php-format
+msgid "Are you sure you want to delete the %s catch all?"
+msgstr ""
 
-msgid "Catch all account scheduled for creation!"
-msgstr "Catch all account scheduled for creation!"
+msgid "Mail accounts limit reached!"
+msgstr "Mail accounts limit reached!"
+
+msgid "Catch all account scheduled for creation."
+msgstr ""
 
 msgid "Mail forward list error!"
 msgstr "Mail forward list error!"
@@ -3914,8 +4007,8 @@ msgstr "Create catch all mail account"
 msgid "Mail accounts list"
 msgstr "Mail accounts list"
 
-msgid "Catch all account scheduled for deletion!"
-msgstr "Catch all account scheduled for deletion!"
+msgid "Catch all account scheduled for deletion."
+msgstr ""
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Please delete first CatchAll account for this email!"
@@ -3923,11 +4016,17 @@ msgstr "Please delete first CatchAll account for this email!"
 msgid "Email account not found!"
 msgstr "Email account not found!"
 
+msgid "Password missing."
+msgstr ""
+
+msgid "Mail forward list error."
+msgstr ""
+
 msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
 msgstr "i-MSCP - Manage Mail and FTP / Edit mail account"
 
-msgid "Mail were updated successfully!"
-msgstr "Mail were updated successfully!"
+msgid "Mail were updated."
+msgstr ""
 
 msgid "Edit email account"
 msgstr "Edit email account"
@@ -3935,76 +4034,59 @@ msgstr "Edit email account"
 msgid "i-MSCP - Client/Change Password"
 msgstr "i-MSCP - Client/Change Password"
 
-msgid "Password successfully updated."
-msgstr "Password successfully updated."
+msgid "The current password is wrong."
+msgstr ""
+
+msgid "Password updated."
+msgstr ""
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Client/Change Personal Data"
 
-msgid "i-MSCP - php.ini Settings"
+msgid "Personal data updated."
 msgstr ""
 
-msgid "php.ini Setting"
+msgid "PHP directives scheduled for update."
 msgstr ""
 
-msgid "php.ini Settings"
+msgid "i-MSCP / Client / Manage domains / PHP.ini editor"
 msgstr ""
 
-msgid "allow_url_fopen"
+msgid "PHP directives"
 msgstr ""
 
-msgid "register_globals"
-msgstr ""
-
-msgid "display_errors"
-msgstr ""
-
-msgid "error_reporting"
-msgstr ""
-
-msgid "post_max_size [MB]"
-msgstr ""
-
-msgid "upload_max_filesize [MB]"
-msgstr ""
-
-msgid "max_execution_time [sec]"
-msgstr ""
-
-msgid "max_input_time [sec]"
-msgstr ""
-
-msgid "memory_limit [MB]"
+msgid ""
+"In this page, you can configure some of the aspects of PHP's behavior. You "
+"must note that for now, the directives defined here apply to your entire "
+"domain account (including subdomains and domain aliases). Of course some "
+"values can be modified through the PHP ini_set() function."
 msgstr ""
 
 msgid "disable_functions"
 msgstr ""
 
-msgid "Enable exec (disabled_functions)"
+msgid "Allows the PHP exec() function"
+msgstr ""
+
+msgid "Allows"
+msgstr ""
+
+msgid "Disallows"
 msgstr ""
 
 msgid ""
-"if enabled its allow the php function exec(). Needed from convert "
-"(imagemagic) and most image galleries"
-msgstr ""
-
-msgid "Setting updated"
-msgstr ""
-
-msgid "Permisson failed"
-msgstr ""
-
-msgid "Domain locked - update running"
+"When allowed, scripts can use the PHP exec() function. This function is "
+"needed by many applications but can cause some security issues"
 msgstr ""
 
 msgid "Unknown SQL user id."
 msgstr "Unknown SQL user id."
 
-msgid "Error: An error occurred while authentication."
-msgstr "Error: An error occurred while authentication."
+msgid "An error occurred while authentication."
+msgstr ""
 
-msgid "You do not have protected areas"
-msgstr "You do not have protected areas"
+msgid "You do not have protected areas."
+msgstr ""
 
 msgid "Manage users and groups"
 msgstr "Manage users and groups"
@@ -4024,42 +4106,45 @@ msgstr "Group"
 msgid "Add new protected area"
 msgstr "Add new protected area"
 
-msgid "Please choose user or group"
-msgstr "Please choose user or group"
+msgid "Please choose user or group."
+msgstr ""
 
-msgid "Please enter area name"
-msgstr "Please enter area name"
+msgid "Please enter a name for protected area."
+msgstr ""
 
-msgid "Please enter area path"
-msgstr "Please enter area path"
+msgid "Please enter protected area path"
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist"
 msgstr "%s doesn't exist"
 
-msgid "You cannot protect area without selected user(s)!"
-msgstr "You cannot protect area without selected user(s)!"
+msgid "You cannot protect an area without selected user(s)."
+msgstr ""
 
-msgid "You cannot protect area without selected group(s)"
-msgstr "You cannot protect area without selected group(s)"
+msgid "You cannot protect an area without selected group(s)."
+msgstr ""
 
-msgid "Protected area updated successfully!"
-msgstr "Protected area updated successfully!"
+msgid "Protected area scheduled for update."
+msgstr ""
 
-msgid "Protected area created successfully!"
-msgstr "Protected area created successfully!"
+msgid "Protected area scheduled for addition."
+msgstr ""
 
-msgid "Protected area status should be OK if you want to edit it!"
-msgstr "Protected area status should be OK if you want to edit it!"
+msgid " Status for protected area must be 'OK' if you want to edit it."
+msgstr ""
 
 msgid "You have no users !"
 msgstr "You have no users !"
 
-msgid "You have no groups!"
-msgstr "You have no groups!"
+msgid "You have no groups."
+msgstr ""
 
-msgid "Protect this area"
-msgstr "Protect this area"
+msgid "Edit protected area"
+msgstr ""
+
+msgid "Add protected area"
+msgstr ""
 
 msgid "Path"
 msgstr "Path"
@@ -4082,23 +4167,23 @@ msgstr "Area name"
 msgid "Unprotect it"
 msgstr "Unprotect it"
 
-msgid "Protected area status should be OK if you want to delete it!"
-msgstr "Protected area status should be OK if you want to delete it!"
+msgid "Protected area status should be 'OK' if you want to delete it."
+msgstr ""
 
-msgid "Protected area deleted successfully!"
-msgstr "Protected area deleted successfully!"
+msgid "Protected area scheduled for deletion."
+msgstr ""
 
-msgid "Permission deny!"
-msgstr "Permission deny!"
-
-msgid "Protected area was deleted successful!"
-msgstr "Protected area was deleted successful!"
+msgid "Permission deny."
+msgstr ""
 
 msgid "Invalid group name!"
 msgstr "Invalid group name!"
 
-msgid "Group already exists!"
-msgstr "Group already exists!"
+msgid "Group already exists."
+msgstr ""
+
+msgid "Invalid group name."
+msgstr ""
 
 msgid "Manage user"
 msgstr "Manage user"
@@ -4132,8 +4217,8 @@ msgstr "Select group:"
 msgid "Update user"
 msgstr "Update user"
 
-msgid "You have no users!"
-msgstr "You have no users!"
+msgid "You have no users."
+msgstr ""
 
 msgid "i-MSCP - application installer"
 msgstr "i-MSCP - application installer"
@@ -4153,18 +4238,18 @@ msgstr "Apps available"
 msgid "Software installation"
 msgstr "Software installation"
 
-msgid "Software deleted successful."
-msgstr "Software deleted successful."
+msgid "Software deleted."
+msgstr ""
 
-msgid "Software will be deleted now."
-msgstr "Software will be deleted now."
+msgid "Software scheduled for deletion."
+msgstr ""
 
 msgid "Software not found!"
 msgstr "Software not found!"
 
 #, php-format
-msgid "The directory -%1$s- was created!"
-msgstr "The directory -%1$s- was created!"
+msgid "The directory -%1$s- was created."
+msgstr ""
 
 msgid "Please select the correct user for your database!"
 msgstr "Please select the correct user for your database!"
@@ -4229,50 +4314,42 @@ msgstr "Homepage"
 msgid "Install"
 msgstr "Install"
 
-msgid "Please type user password!"
-msgstr "Please type user password!"
+msgid "Please type user password."
+msgstr ""
 
-msgid "Too long user password!"
-msgstr "Too long user password!"
+msgid "Too long user password."
+msgstr ""
 
-msgid "Don't use special chars like \"@, $, %...\" in the password!"
-msgstr "Don't use special chars like \"@, $, %...\" in the password!"
+msgid "Don't use special chars like \"@, $, %...\" in the password."
+msgstr ""
 
-msgid "SQL user password was successfully changed!"
-msgstr "SQL user password was successfully changed!"
+msgid "SQL user password updated."
+msgstr ""
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Client/Change SQL User Password"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface."
-msgstr ""
-"User does not exist or you do not have permission to access this interface."
-
 msgid "Change SQL user password"
 msgstr "Change SQL user password"
 
-msgid "Change"
-msgstr "Change"
+msgid "Please type database name."
+msgstr ""
 
-msgid "Please type database name!"
-msgstr "Please type database name!"
+msgid "Database name is too long."
+msgstr ""
 
-msgid "Database name is too long!"
-msgstr "Database name is too long!"
-
-msgid "Specified database name already exists!"
-msgstr "Specified database name already exists!"
+msgid "Specified database name already exists."
+msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed!"
-msgstr "Wildcards such as %% and ? are not allowed!"
+msgid "Wildcards such as %% and ? are not allowed."
+msgstr ""
 
-msgid "SQL database created successfully!"
-msgstr "SQL database created successfully!"
+msgid "SQL database created."
+msgstr ""
 
-msgid "SQL accounts limit reached!"
-msgstr "SQL accounts limit reached!"
+msgid "SQL accounts limit reached."
+msgstr ""
 
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Client/Add SQL Database"
@@ -4289,17 +4366,14 @@ msgstr "Before the name"
 msgid "After the name"
 msgstr "After the name"
 
-msgid "SQL database was removed successfully!"
-msgstr "SQL database was removed successfully!"
+msgid "SQL database deleted."
+msgstr ""
 
-msgid "SQL user was removed successfully!"
-msgstr "SQL user was removed successfully!"
+msgid "SQL user deleted."
+msgstr ""
 
-msgid "Database user list is empty!"
-msgstr "Database user list is empty!"
-
-msgid "Database list is empty!"
-msgstr "Database list is empty!"
+msgid "You do not have database."
+msgstr ""
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr "i-MSCP - Client/Manage SQL"
@@ -4313,11 +4387,8 @@ msgstr "Database users"
 msgid "Add SQL user"
 msgstr "Add SQL user"
 
-msgid "Execute query"
-msgstr "Execute query"
-
-msgid "Login phpMyAdmin"
-msgstr "Login phpMyAdmin"
+msgid "Login into PhpMyAdmin"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4333,26 +4404,29 @@ msgstr ""
 msgid "Are you sure you want delete the '%s' SQL user?"
 msgstr "Are you sure you want delete the '%s' SQL user?"
 
-msgid "SQL users limit reached!"
-msgstr "SQL users limit reached!"
+msgid "SQL users limit reached."
+msgstr ""
 
 msgid "Please type user name!"
 msgstr "Please type user name!"
 
-msgid "Too user long password!"
-msgstr "Too user long password!"
+msgid "Too user long password."
+msgstr ""
 
-msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr "SQL-user not found! Maybe it was deleted by another user!"
+msgid "Please, don't use special chars like '@, $, %...' in the password."
+msgstr ""
+
+msgid "SQL-user not found."
+msgstr ""
 
 msgid "User name too long!"
 msgstr "User name too long!"
 
-msgid "Specified SQL username name already exists!"
-msgstr "Specified SQL username name already exists!"
+msgid "Specified SQL username name already exists."
+msgstr ""
 
-msgid "SQL user successfully added!"
-msgstr "SQL user successfully added!"
+msgid "SQL user created."
+msgstr ""
 
 msgid "i-MSCP - Client/Add SQL User"
 msgstr "i-MSCP - Client/Add SQL User"
@@ -4366,32 +4440,29 @@ msgstr "In front the name"
 msgid "Behind the name"
 msgstr "Behind the name"
 
-msgid "Add existing user"
-msgstr "Add existing user"
+msgid "Assign existing SQL user"
+msgstr ""
 
-msgid "Existing SQL users"
-msgstr "Existing SQL users"
+msgid "New Sql user data"
+msgstr ""
 
-msgid "Subdomains limit reached!"
-msgstr "Subdomains limit reached!"
+msgid "Subdomains limit reached."
+msgstr ""
 
-msgid "Please specify subdomain name!"
-msgstr "Please specify subdomain name!"
+msgid "Please specify subdomain name."
+msgstr ""
 
-msgid "No valid alias domain selected!"
-msgstr "No valid alias domain selected!"
+msgid "No valid alias domain selected."
+msgstr ""
 
-msgid "Subdomain already exists or is not allowed!"
-msgstr "Subdomain already exists or is not allowed!"
+msgid "Subdomain already exists or is not allowed."
+msgstr ""
 
-msgid "Mount point already in use!"
-msgstr "Mount point already in use!"
+msgid "Mount point already in use"
+msgstr ""
 
-msgid "Incorrect mount point syntax!"
-msgstr "Incorrect mount point syntax!"
-
-msgid "Subdomain scheduled for addition!"
-msgstr "Subdomain scheduled for addition!"
+msgid "Subdomain scheduled for addition."
+msgstr ""
 
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr "i-MSCP - Client/Add Subdomain"
@@ -4402,16 +4473,28 @@ msgstr "Subdomain data"
 msgid "Subdomain name"
 msgstr "Subdomain name"
 
-msgid "Directory tree mount point"
-msgstr "Directory tree mount point"
+msgid "Wrong request"
+msgstr ""
+
+msgid ""
+"We are sorry but you reached the maximum number of subdomains allowed by "
+"your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
+"Subdomain you are trying to remove has email accounts.<br>First remove them."
+msgstr ""
+
+msgid "Subdomain scheduled for deletion."
+msgstr ""
 
 msgid "Nothing been changed."
 msgstr ""
 
-msgid "Subdomain successfully updated."
+msgid "Subdomain scheduled for update."
 msgstr ""
 
-msgid "Wrong forward URL."
+msgid "Wrong redirect URL."
 msgstr ""
 
 msgid "Manage subdomain"
@@ -4419,9 +4502,6 @@ msgstr "Manage subdomain"
 
 msgid "Edit subdomain"
 msgstr "Edit subdomain"
-
-msgid "URL Forwarding"
-msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr ""
@@ -4456,32 +4536,47 @@ msgstr "High"
 msgid "Very high"
 msgstr "Very high"
 
+msgid "Ticket deleted."
+msgstr ""
+
+msgid "All open tickets were deleted."
+msgstr ""
+
+msgid "All closed tickets were deleted."
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
 msgstr "i-MSCP - Client / Support Ticket System / Open Tickets"
 
 msgid "i-MSCP - Client / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Client / Support Ticket System / View Ticket"
 
-msgid "Customize error pages for your domain"
-msgstr "Customize error pages for your domain"
+msgid "Manage your protected areas, users and groups."
+msgstr ""
 
-msgid "Backup and restore settings"
-msgstr "Backup and restore settings"
+msgid "Error pages"
+msgstr "Error pages"
 
-msgid "Access your mail through the web interface"
-msgstr "Access your mail through the web interface"
+msgid "Customize error pages for your domain."
+msgstr ""
 
-msgid "Access your files through the web interface"
-msgstr "Access your files through the web interface"
+msgid "Backup and restore settings."
+msgstr ""
 
-msgid "Access your Awstats statistics"
-msgstr "Access your Awstats statistics"
+msgid "Access your mail through the web interface."
+msgstr ""
 
-msgid "Manage protected areas, users and groups"
-msgstr "Manage protected areas, users and groups"
+msgid "Access your files through the web interface."
+msgstr ""
 
-msgid "Install various software with a few *clicks*"
-msgstr "Install various software with a few *clicks*"
+msgid "Awstats"
+msgstr "Awstats"
+
+msgid "Access your domain statistics through the Awstats Web interface."
+msgstr ""
+
+msgid "Install various Web applications with a few clicks."
+msgstr ""
 
 msgid "i-MSCP - Service Mailer - You have a new order"
 msgstr "i-MSCP - Service Mailer - You have a new order"
@@ -4632,6 +4727,12 @@ msgstr "Custom Error Pages"
 msgid "Protected Areas"
 msgstr "Protected Areas"
 
+msgid "Manual DNS support"
+msgstr "Manual DNS support"
+
+msgid "SQL support"
+msgstr "SQL support"
+
 msgid "Custom Apache Logs"
 msgstr "Custom Apache Logs"
 
@@ -4656,14 +4757,17 @@ msgstr "Setup Fee"
 msgid "Performance"
 msgstr "Performance"
 
+msgid "i-MSCP - Orderpanel"
+msgstr ""
+
 msgid "Not found user records matching the search criteria"
 msgstr "Not found user records matching the search criteria"
 
 msgid "Domain aliases limit reached."
 msgstr "Domain aliases limit reached."
 
-msgid "You do not have domain aliases."
-msgstr "You do not have domain aliases."
+msgid "You do not have order for domain aliases."
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -4715,26 +4819,14 @@ msgstr "Manage alias"
 msgid "Real domain"
 msgstr "Real domain"
 
-msgid "Domain with that name already exists on the system."
-msgstr "Domain with that name already exists on the system."
+msgid "Forward"
+msgstr "Forward"
 
-msgid "Incorrect mount point syntax."
-msgstr "Incorrect mount point syntax."
-
-msgid "Master domain cannot be used."
-msgstr "Master domain cannot be used."
-
-msgid "Wrong address in forward URL."
-msgstr "Wrong address in forward URL."
-
-msgid "Wrong domain part in forward URL."
-msgstr "Wrong domain part in forward URL."
+msgid "Add alias"
+msgstr "Add alias"
 
 msgid "Domain already registered on the system."
 msgstr "Domain already registered on the system."
-
-msgid "There is a subdomain with the same mount point."
-msgstr "There is a subdomain with the same mount point."
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr "There is no user records for this reseller to add an alias for."
@@ -4742,14 +4834,50 @@ msgstr "There is no user records for this reseller to add an alias for."
 msgid "i-MSCP Reseller: Add Alias"
 msgstr "i-MSCP Reseller: Add Alias"
 
+msgid "Manage domain alias"
+msgstr "Manage domain alias"
+
+msgid "Directory mount point"
+msgstr "Directory mount point"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "You do not need 'www.' i-MSCP will add it on its own."
+
+msgid "Wrong domain name!"
+msgstr "Wrong domain name!"
+
+msgid "Please write mount point!"
+msgstr "Please write mount point!"
+
+msgid "Alias scheduled for activation."
+msgstr ""
+
 msgid "i-MSCP - Circular"
 msgstr "i-MSCP - Circular"
+
+msgid "Please specify a message subject."
+msgstr ""
+
+msgid "Please specify a message content."
+msgstr ""
+
+msgid "Please specify a sender name."
+msgstr ""
+
+msgid "Please specify a sender email."
+msgstr ""
+
+msgid "Mail successfully sent to your users."
+msgstr ""
 
 msgid "Circular"
 msgstr "Circular"
 
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Reseller / Domain Account Deletion Validation"
+
+msgid "Domain not found."
+msgstr ""
 
 msgid "Domain main properties"
 msgstr ""
@@ -4760,56 +4888,123 @@ msgstr ""
 msgid "Optional features"
 msgstr ""
 
-msgid "Custom DNS records support"
-msgstr ""
-
 msgid "Never expire"
 msgstr ""
 
 msgid "Custom php.ini"
 msgstr ""
 
-msgid "PHP.INI -  variables editor"
+msgid "post_max_size [MB]"
 msgstr ""
 
-msgid "Can edit php.ini variables"
+msgid "upload_max_filesize [MB]"
 msgstr ""
 
-msgid "Can change the 'register_globals' variable"
+msgid "max_execution_time [sec]"
 msgstr ""
 
-msgid "Can change the 'allow_url_open' variable"
+msgid "max_input_time [sec]"
 msgstr ""
 
-msgid "Can change the 'display_errors/error_reporting' variables"
+msgid "memory_limit [MB]"
 msgstr ""
 
-msgid "Can change the 'disable_functions' variable"
+msgid "Can edit PHP directives"
 msgstr ""
 
-msgid "Allow 'exec' only"
+msgid "Can edit the <strong>register_globals</strong> directive"
 msgstr ""
 
-msgid "post_max_size out of range"
+msgid "Can edit the <strong>allow_url_open</strong> directive"
 msgstr ""
 
-msgid "upload_max_filesize out of range"
+msgid ""
+"Can edit the <strong>display_errors</strong> and "
+"<strong>error_reporting</strong> directives"
 msgstr ""
 
-msgid "max_execution_time out of range"
+msgid "Can edit the <strong>disable_functions</strong> directive"
 msgstr ""
 
-msgid "max_input_time out of range"
+msgid "Allows 'exec' only"
 msgstr ""
 
-msgid "memory_limit out of range"
+msgid "SQL databases limit is <i>disabled</i>."
 msgstr ""
 
-msgid "disable_functions error"
+msgid "SQL users limit is <i>disabled</i>."
 msgstr ""
 
-msgid "You are not allowed to access this interface."
-msgstr "You are not allowed to access this interface."
+msgid "The i-MSCP application installer needs PHP to enable it."
+msgstr "The i-MSCP application installer needs PHP to enable it."
+
+msgid "post_max_size out of range."
+msgstr ""
+
+msgid "upload_max_filesize out of range."
+msgstr ""
+
+msgid "max_execution_time out of range."
+msgstr ""
+
+msgid "max_input_time out of range."
+msgstr ""
+
+msgid "memory_limit out of range."
+msgstr ""
+
+msgid "disable_functions error."
+msgstr ""
+
+msgid "Domain properties could not be updated."
+msgstr ""
+
+msgid "Domain properties successfully updated."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled."
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled."
+msgstr ""
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited."
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system."
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited."
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service."
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service."
+msgstr ""
+
+msgid "You are not allowed to perform this operation."
+msgstr ""
 
 msgid "Domain account scheduled for suspension."
 msgstr "Domain account scheduled for suspension."
@@ -4819,6 +5014,19 @@ msgstr "Domain account scheduled for activation."
 
 msgid "i-MSCP - Reseller/Main Index"
 msgstr "i-MSCP - Reseller/Main Index"
+
+msgid "Hosting plan successfully added."
+msgstr ""
+
+msgid "Hosting plan successfully deleted."
+msgstr ""
+
+msgid "Hosting plan sucessfully updated."
+msgstr ""
+
+msgid ""
+"This hosting plan can't be deleted, there are some orders linked to it."
+msgstr ""
 
 msgid "View details"
 msgstr "View details"
@@ -4832,16 +5040,16 @@ msgstr ""
 msgid "Only \"exec\" allowed"
 msgstr ""
 
-msgid "Allow change value register_globals"
+msgid "Can modify the <strong>register_globals</strong> diretive"
 msgstr ""
 
-msgid "Allow change value allow_url_fopen"
+msgid "Can modify the <strong>allow_url_fopen</strong> diretive"
 msgstr ""
 
-msgid "Allow change value display_errors"
+msgid "Can modify the <strong>display_errors</strong> diretive"
 msgstr ""
 
-msgid "Allow change value disable_functions"
+msgid "Can modify the <strong>disable_functions</strong> diretive"
 msgstr ""
 
 msgid "Set post_max_size [MB]"
@@ -4859,22 +5067,34 @@ msgstr ""
 msgid "Set memory_limit [MB]"
 msgstr ""
 
-msgid "Price must be a number!"
-msgstr "Price must be a number!"
+msgid "Incorrect template name length."
+msgstr ""
 
-msgid "Setup fee must be a number!"
-msgstr "Setup fee must be a number!"
+msgid "Incorrect template description length."
+msgstr ""
 
-msgid "SQL databases limit is not <i>disabled</i>!"
-msgstr "SQL databases limit is not <i>disabled</i>!"
+msgid "Price must be a number."
+msgstr ""
 
-msgid "Hosting plan values exceed reseller maximum values!"
-msgstr "Hosting plan values exceed reseller maximum values!"
+msgid "Setup fee must be a number."
+msgstr ""
+
+msgid "SQL databases limit is not <i>disabled</i>."
+msgstr "SQL databases limit is not <i>disabled</i>."
+
+msgid "Hosting plan with same name already exists."
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values."
+msgstr "Hosting plan values exceed reseller maximum values."
 
 msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr "i-MSCP - Reseller/Edit hosting plan"
 
 msgid "Allow change PHP.ini"
+msgstr ""
+
+msgid "Can modify the <strong></strong>register_globals</strong> diretive"
 msgstr ""
 
 msgid "Only \"exec\" change allowed"
@@ -4883,8 +5103,8 @@ msgstr ""
 msgid "View hosting plan"
 msgstr "View hosting plan"
 
-msgid "You are exceeding your disk limit."
-msgstr "You are exceeding your disk limit."
+msgid "Undefined reference to data."
+msgstr ""
 
 msgid "User accounts"
 msgstr "User accounts"
@@ -4912,8 +5132,20 @@ msgstr "i-MSCP - Reseller/IP Usage"
 msgid "Reseller/IP usage statistics"
 msgstr "Reseller/IP usage statistics"
 
+msgid "Language updated successfully."
+msgstr "Language updated successfully."
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Reseller/Change Language"
+
+msgid "You must specify a subject."
+msgstr ""
+
+msgid "You must specify a message."
+msgstr ""
+
+msgid "Template for Auto email successfully updated."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Order email setup"
 msgstr "i-MSCP - Reseller/Order email setup"
@@ -4969,26 +5201,29 @@ msgstr "Are you sure you want to delete this order?"
 msgid "Add/Details"
 msgstr "Add/Details"
 
-msgid "Wrong order ID!"
-msgstr "Wrong order ID!"
+msgid "Wrong order ID."
+msgstr ""
 
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr "Order Cancelled: resellers maximum exceeded!"
+msgid "Order Cancelled: resellers limit(s) exceeded."
+msgstr ""
 
-msgid "Wrong domain name syntax!"
-msgstr "Wrong domain name syntax!"
+msgid "Wrong domain name syntax."
+msgstr ""
 
-msgid "User added!"
-msgstr "User added!"
+msgid "Domain with same name already exists."
+msgstr ""
 
-msgid "Customer order was removed successful!"
-msgstr "Customer order was removed successful!"
+msgid "User successfully added."
+msgstr ""
+
+msgid "Customer order sucessfully removed."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Order details"
 msgstr "i-MSCP - Reseller/Order details"
 
-msgid "Order data updated successfully!"
-msgstr "Order data updated successfully!"
+msgid "Order successfully updated."
+msgstr ""
 
 msgid "Order date"
 msgstr "Order date"
@@ -5002,11 +5237,17 @@ msgstr "Order details"
 msgid "Add to the system"
 msgstr "Add to the system"
 
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "Order Canceled: resellers maximum exceeded!"
+msgid "Order Canceled: resellers limit(s) exceeded"
+msgstr ""
+
+msgid "Incorrect subdomains limi."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Password"
 msgstr "i-MSCP - Reseller/Change Password"
+
+msgid "User password successfully updated."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Reseller/Change Personal Data"
@@ -5022,12 +5263,6 @@ msgstr "Lostpw email"
 
 msgid "Lostpw link"
 msgstr "Lostpw link"
-
-msgid "Please specify a subject."
-msgstr "Please specify a subject."
-
-msgid "Auto email template data updated."
-msgstr "Auto email template data updated."
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Reseller/Manage users/Email setup"
@@ -5048,8 +5283,10 @@ msgid "File needs to be a .tar.gz-archive"
 msgstr "File needs to be a .tar.gz-archive"
 
 #, php-format
-msgid "Could not upload the file. Max. upload filesize (%1$d MB) reached?"
-msgstr "Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgid ""
+"Could not upload the file. Max. upload filesize (%1$d MB) seem to be "
+"reached."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5063,11 +5300,14 @@ msgid ""
 msgstr ""
 "Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
 
-msgid "Remote File not found!"
-msgstr "Remote File not found!"
+msgid "Remote File not found."
+msgstr ""
 
-msgid "Could not upload the file. File not found!"
-msgstr "Could not upload the file. File not found!"
+msgid "Could not upload file."
+msgstr ""
+
+msgid "File successfully uploaded."
+msgstr ""
 
 msgid "Software available"
 msgstr "Software available"
@@ -5117,17 +5357,11 @@ msgstr "Invalide domain expiration date."
 msgid "Domain expiration date must be filled."
 msgstr "Domain expiration date must be filled."
 
-msgid "Hosting plan values exceed reseller maximum values."
-msgstr "Hosting plan values exceed reseller maximum values."
-
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr "You have no hosting plans. Please contact your system administrator."
 
 msgid "i-MSCP - Users/Add domain account - step 1"
 msgstr "i-MSCP - Users/Add domain account - step 1"
-
-msgid "Domain expire date"
-msgstr "Domain expire date"
 
 msgid "Choose hosting plan"
 msgstr "Choose hosting plan"
@@ -5137,12 +5371,6 @@ msgstr "Personalise template"
 
 msgid "Next step"
 msgstr "Next step"
-
-msgid "SQL databases limit is not <i>disabled</i>."
-msgstr "SQL databases limit is not <i>disabled</i>."
-
-msgid "The i-MSCP application installer needs PHP to enable it."
-msgstr "The i-MSCP application installer needs PHP to enable it."
 
 msgid "i-MSCP - User/Add domain account - step 2"
 msgstr "i-MSCP - User/Add domain account - step 2"
@@ -5156,8 +5384,17 @@ msgstr "Custom DNS support"
 msgid "Apache logs"
 msgstr "Apache logs"
 
-msgid "Awstats"
-msgstr "Awstats"
+msgid "Allow change value register_globals"
+msgstr ""
+
+msgid "Allow change value allow_url_fopen"
+msgstr ""
+
+msgid "Allow change value display_errors"
+msgstr ""
+
+msgid "Allow change value disable_functions"
+msgstr ""
 
 msgid "Domain data were been altered. Please try again."
 msgstr "Domain data were been altered. Please try again."
@@ -5168,8 +5405,8 @@ msgstr "i-MSCP - User/Add domain account - step 3"
 msgid "Add other domains to this account"
 msgstr "Add other domains to this account"
 
-msgid "Domain already regiostered on the system."
-msgstr "Domain already regiostered on the system."
+msgid "Incorrect mount point syntax"
+msgstr "Incorrect mount point syntax"
 
 msgid "Wrong syntax in forward URL."
 msgstr "Wrong syntax in forward URL."
@@ -5196,11 +5433,21 @@ msgstr "i-MSCP - Users/Edit"
 msgid "Users list"
 msgstr "Users list"
 
+msgid ""
+"User does not exist or you do not have permission to access this interface"
+msgstr ""
+
+msgid "Passwords doesn't not matches."
+msgstr ""
+
+msgid "User session was successfully killed for password change"
+msgstr ""
+
 msgid "This reseller has no domains yet."
 msgstr "This reseller has no domains yet."
 
-msgid "Not found user records matching the search criteria!"
-msgstr "Not found user records matching the search criteria!"
+msgid "Not found user records matching the search criteria."
+msgstr "Not found user records matching the search criteria."
 
 msgid "You do not have customers."
 msgstr "You do not have customers."
@@ -5223,9 +5470,11 @@ msgid "User data were not updated."
 msgstr "User data were not updated."
 
 msgid ""
-"This user has domain record !<br>First remove the domain from the system."
+"This user has domain record.<br>First remove the domain from the system."
 msgstr ""
-"This user has domain record !<br>First remove the domain from the system."
+
+msgid "User scheduled for deletion."
+msgstr "User scheduled for deletion."
 
 msgid "User was not deleted."
 msgstr "User was not deleted."

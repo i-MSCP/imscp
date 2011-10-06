@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-09-17 04:08+0200\n"
-"PO-Revision-Date: 2011-09-17 02:09+0000\n"
+"POT-Creation-Date: 2011-10-06 17:17+0200\n"
+"PO-Revision-Date: 2011-10-06 15:18+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Application options"
 msgstr ""
 
-msgid "No administrator account found."
+msgid "No administrator accounts found."
 msgstr ""
 
 msgid "Username"
@@ -219,8 +219,8 @@ msgstr "创建日期"
 msgid "Created by"
 msgstr "创建者"
 
-msgid "Options"
-msgstr "选项"
+msgid "Actions"
+msgstr "动作"
 
 msgid "Delete"
 msgstr "删除"
@@ -228,7 +228,7 @@ msgstr "删除"
 msgid "System"
 msgstr "系统"
 
-msgid "No reseller account found."
+msgid "No reseller accounts found."
 msgstr ""
 
 msgid "Switch to user interface"
@@ -237,13 +237,13 @@ msgstr "切换用户界面"
 msgid "Switch"
 msgstr "切换"
 
-msgid "Not found user records matching the search criteria."
+msgid "Not found records matching the search criteria."
 msgstr ""
 
 msgid "view aliases"
 msgstr "查看别名"
 
-msgid "No user account found."
+msgid "No customer accounts found."
 msgstr ""
 
 msgid "Status"
@@ -287,8 +287,8 @@ msgstr "管理员"
 msgid "Resellers"
 msgstr "代理商"
 
-msgid "Users"
-msgstr "用户"
+msgid "Customers"
+msgstr ""
 
 msgid "Search"
 msgstr "搜索"
@@ -378,11 +378,11 @@ msgstr "订单邮件设置"
 msgid "yes"
 msgstr "有效"
 
-msgid "Please fill up both data fields for password!"
-msgstr "请填写好两个密码输入框！"
+msgid "Please fill up both data fields for password."
+msgstr ""
 
-msgid "Passwords don't match!"
-msgstr "密码不匹配！"
+msgid "Passwords doesn't matches"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -395,80 +395,95 @@ msgid ""
 "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "密码数据短于%s符号或包含不允许字符！"
 
-msgid "Incorrect email length or syntax!"
-msgstr "电子邮件地址的长度或拼写错误！"
+msgid "Incorrect email length or syntax."
+msgstr ""
 
-msgid "Add subdomain"
-msgstr "添加子域名"
-
-msgid "Email and FTP accounts"
-msgstr "Email 和 FTP 账号"
-
-msgid "Add mail user"
-msgstr "添加邮件用户"
-
-msgid "Add FTP user"
-msgstr "添加 FTP 用户"
-
-msgid "Manage SQL"
-msgstr "管理 SQL"
-
-msgid "Error pages"
-msgstr "错误页面"
-
-msgid "Add SQL database"
-msgstr "添加 SQL 数据库"
-
-msgid "Daily backup"
-msgstr "日常备份"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Webmail"
-msgstr "网页邮件"
-
-msgid "Filemanager"
-msgstr "文件管理器"
+msgid "General Information"
+msgstr ""
 
 msgid "Webtools"
 msgstr "Web工具"
 
-msgid "Protected areas"
-msgstr "保护区域"
+msgid "Manage Domains"
+msgstr ""
 
-msgid "Web statistics"
-msgstr "Web 统计"
+msgid "Ftp Accounts"
+msgstr ""
 
-msgid "Group/User management"
-msgstr "组/用户管理"
+msgid "Manage SQL"
+msgstr "管理 SQL"
 
-msgid "Email Accounts"
-msgstr "邮件账号"
+msgid "Support"
+msgstr ""
+
+msgid "Personal data"
+msgstr "个人资料"
+
+msgid "Change language"
+msgstr ""
+
+msgid "Update hosting plan"
+msgstr ""
+
+msgid "Add subdomain"
+msgstr "添加子域名"
+
+msgid "Add domain alias"
+msgstr "添加域名别名"
+
+msgid "Add FTP user"
+msgstr "添加 FTP 用户"
+
+msgid "Filemanager"
+msgstr "文件管理器"
 
 msgid "FTP Accounts"
 msgstr "FTP 账号"
 
+msgid "Email Accounts"
+msgstr "邮件账号"
+
+msgid "Add mail user"
+msgstr "添加邮件用户"
+
 msgid "Catch all"
 msgstr "CatchAll"
 
-msgid "Add alias"
-msgstr "添加别名"
+msgid "Webmail"
+msgstr "网页邮件"
 
-msgid "Update Hosting Package"
-msgstr "更新主机套餐"
+msgid "Add SQL database"
+msgstr "添加 SQL 数据库"
 
-msgid "Add DNS zone's record"
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Add custom DNS record"
 msgstr ""
 
-msgid "Manage SSL certificate"
+msgid "PHP directives editor"
 msgstr ""
 
-msgid "PHP Settings"
+msgid "Web statistics"
+msgstr "Web 统计"
+
+msgid "Daily backup"
+msgstr "日常备份"
+
+msgid "Protected areas"
+msgstr "保护区域"
+
+msgid "Custom error pages"
+msgstr "自定义错误页"
+
+msgid "Application installer"
 msgstr ""
 
-msgid "i-MSCP application installer"
-msgstr ""
+msgid "Open tickets"
+msgstr "未解疑问"
+
+msgid "Closed tickets"
+msgstr "已解疑问"
 
 msgid "All fields are required!"
 msgstr ""
@@ -571,14 +586,14 @@ msgstr ""
 msgid "Entered passwords do not match."
 msgstr ""
 
-msgid "Incorrect email length or syntax."
-msgstr ""
-
 msgid "This user name already exist."
 msgstr ""
 
 msgid "Empty data or wrong field!"
 msgstr "空白数据或错误的区域！"
+
+msgid "Passwords don't match!"
+msgstr "密码不匹配！"
 
 msgid "Core data"
 msgstr "核心数据"
@@ -636,6 +651,9 @@ msgstr "代理商"
 
 msgid "Domain account"
 msgstr "域名账户"
+
+msgid "Incorrect email length or syntax!"
+msgstr "电子邮件地址的长度或拼写错误！"
 
 msgid "i-MSCP - Admin/Manage users/Edit Administrator"
 msgstr "i-MSCP - 管理员/管理用户/编辑管理员"
@@ -850,7 +868,7 @@ msgstr "数据库更新"
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
 
-msgid "Database Updates Revision"
+msgid "Database Update Revision"
 msgstr ""
 
 msgid "Process updates"
@@ -918,6 +936,9 @@ msgstr "提交更改"
 
 msgid "Back"
 msgstr "返回"
+
+msgid "i-MSCP application installer"
+msgstr ""
 
 msgid "Full"
 msgstr ""
@@ -1553,11 +1574,11 @@ msgstr "To 管理员"
 msgid "Move"
 msgstr "移动"
 
-msgid "Reseller or user list is empty!"
-msgstr "代理商或用户列表为空！"
+msgid "Reseller list is empty."
+msgstr ""
 
-msgid "User list is empty!"
-msgstr "用户列表为空！"
+msgid "User list is empty."
+msgstr ""
 
 msgid "User was moved"
 msgstr "用户已被转移"
@@ -1596,6 +1617,9 @@ msgstr "<b>%s</b> 有IP地址不能被目的代理商所管理！<br>此用户�
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - 管理员/管理用户/用户分配"
 
+msgid "Users"
+msgstr "用户"
+
 msgid "User name"
 msgstr "用户名称"
 
@@ -1608,27 +1632,27 @@ msgstr "到代理商"
 msgid "i-MSCP - Admin/Manage Users"
 msgstr "i-MSCP - 管理员/管理用户"
 
-msgid "User scheduled for addition."
+msgid "Customer scheduled for addition."
 msgstr ""
 
 msgid "Reseller successfully added."
 msgstr ""
 
-msgid "User updated."
+msgid "Customer account successfully updated."
 msgstr ""
 
-msgid "User scheduled for deletion."
+msgid "Customer scheduled for deletion."
 msgstr ""
 
 msgid "Email Updated."
 msgstr ""
 
 msgid ""
-"This reseller has one or more domain accounts.<br /> To remove this "
-"reseller, please first remove these domain accounts"
+"This reseller has one or more customers accounts.<br /> To remove this "
+"reseller, please first remove these customers accounts."
 msgstr ""
 
-msgid "Domain account scheduled for deactivation."
+msgid "Customer account scheduled for deactivation."
 msgstr ""
 
 #, php-format
@@ -1710,11 +1734,8 @@ msgstr ""
 msgid "i-MSCP - Admin/Change Personal Data"
 msgstr "i-MSCP - 管理员/修改个人资料"
 
-msgid "Personal data updated successfully!"
-msgstr "个人资料修改成功！"
-
-msgid "Personal data"
-msgstr "个人资料"
+msgid "Personal data successfully updated."
+msgstr ""
 
 msgid "Update data"
 msgstr "更新资料"
@@ -1824,9 +1845,6 @@ msgstr "Frontpage 扩展"
 msgid "Backup and restore"
 msgstr "备份与恢复"
 
-msgid "Custom error pages"
-msgstr "自定义错误页"
-
 msgid "Directory listing"
 msgstr "目录列表"
 
@@ -1863,9 +1881,6 @@ msgstr ""
 msgid "MAX allowed in max_input_time [Seconds]"
 msgstr ""
 
-msgid "Application installer"
-msgstr ""
-
 msgid "Can use software repository"
 msgstr ""
 
@@ -1875,22 +1890,35 @@ msgstr ""
 msgid "Reseller IPs"
 msgstr "代理商 IPs"
 
-msgid "Incorrect email syntax!"
-msgstr "不正确的邮件地址拼写！"
+msgid "Passwords do not match."
+msgstr ""
 
-msgid "Incorrect domains limit!"
-msgstr "不正确的域名数限制！"
+msgid "domain"
+msgstr ""
+
+#, php-format
+msgid "Incorrect limit for %s."
+msgstr ""
 
 msgid "Aliases"
 msgstr "别名"
 
-msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgid "domain aliases"
 msgstr ""
 
-msgid "SQL Databases"
-msgstr "SQL 数据库"
+msgid "subdomains"
+msgstr ""
 
-msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgid "mail accounts"
+msgstr ""
+
+msgid "Ftp accounts"
+msgstr ""
+
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit is not."
+msgstr ""
+
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit is not."
 msgstr ""
 
 msgid "SQL Users"
@@ -1899,11 +1927,21 @@ msgstr "SQL 用户"
 msgid "Web Traffic"
 msgstr "Web 流量"
 
+msgid "traffic"
+msgstr ""
+
 msgid "Disk storage"
 msgstr "磁盘存储"
 
-msgid "You must assign at least one IP number for a reseller!"
-msgstr "您必须为代理商指派至少一个IP！"
+msgid "disk space"
+msgstr ""
+
+msgid "You must assign at least one IP per reseller."
+msgstr ""
+
+#, php-format
+msgid "Value for the PHP '%s' directive is out of range."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1920,30 +1958,35 @@ msgstr "此代理商已分配有更多/更高<b>%s</b>（账号/限制）于您�
 #, php-format
 msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
-"service!"
+"service."
 msgstr ""
 
-msgid "If you want to limit the reseller, you must first limit its customers!"
+msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
 
 #, php-format
-msgid "This reseller has domains assigned to the <b>%s</b> address!"
+msgid "This reseller has domains assigned to the <b>%s</b> address."
 msgstr ""
 
 msgid "The reseller account you trying to edit does not exist."
 msgstr ""
 
+msgid "Reseller IP list is empty."
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage users/Edit Reseller"
 msgstr "i-MSCP - 管理员/管理用户/编辑代理商"
 
-msgid ""
-"ERROR: One or more errors was found! Please, correct them and try again!"
+msgid "Reseller account successfully updated."
 msgstr ""
 
-msgid "Reseller data inconsistency!"
-msgstr "代理商数据冲突！"
+msgid "One or more errors were found. Please, correct them and try again."
+msgstr ""
 
-msgid "Please, read the message(s) above and trying to correct!"
+msgid "Reseller data inconsistency."
+msgstr ""
+
+msgid "Please, read the message(s) above and trying to correct."
 msgstr ""
 
 msgid "Edit reseller"
@@ -2153,6 +2196,9 @@ msgstr "用户类型"
 msgid "Last access"
 msgstr "最后访问"
 
+msgid "Options"
+msgstr "选项"
+
 msgid "Kill session"
 msgstr "终止会话"
 
@@ -2222,6 +2268,9 @@ msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail 账号是硬挂起状态"
 
 msgid "Panel default language"
+msgstr ""
+
+msgid "Support System"
 msgstr ""
 
 msgid "Apply changes"
@@ -2295,49 +2344,53 @@ msgstr ""
 msgid "Maximum number of labels for subdomains"
 msgstr ""
 
-msgid "Global Base php.ini Setting"
+msgid "System wide values for PHP directives"
 msgstr ""
 
-msgid "Value allow_url_fopen"
+msgid "Value for the <strong>allow_url_fopen</strong> directive"
 msgstr ""
 
-msgid "Value register_globals"
+msgid "Value for the <strong>register_globals</strong> directive"
 msgstr ""
 
-msgid "Value display_errors"
+msgid "Value for the <strong>display_errors</strong> directive"
 msgstr ""
 
-msgid "Value error_reporting"
+msgid "Value for the <strong>error_reporting</strong> directive"
 msgstr ""
 
-msgid "All off"
+msgid ""
+"Show all errors, except for notices and coding standards warnings (Default)"
 msgstr ""
 
-msgid "All errors except notices and warnings"
+msgid ""
+"Show all errors, warnings and notices including coding standards "
+"(Development)"
 msgstr ""
 
-msgid "All errors except notices"
+msgid ""
+" Show all errors, except for warnings about deprecated code (Production)"
 msgstr ""
 
-msgid "All errors"
+msgid "Do not show any error"
 msgstr ""
 
-msgid "Value post_max_size"
+msgid "Value for the <strong>post_max_size</strong> directive"
 msgstr ""
 
-msgid "Value upload_max_filesize"
+msgid "Value for the <strong>upload_max_filesize</strong> directive"
 msgstr ""
 
-msgid "Value max_execution_time"
+msgid "Value for the <strong>max_execution_time</strong> directive"
 msgstr ""
 
-msgid "Value max_input_time"
+msgid "Value for the <strong>max_input_time</strong> directive"
 msgstr ""
 
-msgid "Value memory_limit"
+msgid "Value for the <strong>memory_limit</strong> directive"
 msgstr ""
 
-msgid "Value disable_functions"
+msgid "Value for the <strong>disable_functions</strong> directive"
 msgstr ""
 
 msgid "Orders settings"
@@ -2860,12 +2913,6 @@ msgstr ""
 msgid "Support Ticket System"
 msgstr ""
 
-msgid "Open tickets"
-msgstr "未解疑问"
-
-msgid "Closed tickets"
-msgstr "已解疑问"
-
 msgid "From"
 msgstr "From"
 
@@ -2874,9 +2921,6 @@ msgstr "优先权"
 
 msgid "Last reply date"
 msgstr ""
-
-msgid "Actions"
-msgstr "动作"
 
 msgid "Read the ticket"
 msgstr ""
@@ -3016,68 +3060,70 @@ msgstr ""
 msgid "Domain alias limit reached!"
 msgstr "域名别名限制！"
 
-msgid "Domain with that name already exists on the system!"
-msgstr "此域名在系统中已经存在！"
-
-msgid "Incorrect mount point syntax"
-msgstr "不正确的挂载点拼写"
-
-msgid "Master domain cannot be used!"
-msgstr "主域名不可用！"
-
-msgid "Wrong address in forward URL!"
+msgid "Domain with that name already exists on the system."
 msgstr ""
 
-msgid "Wrong domain part in forward URL!"
+msgid "Incorrect mount point syntax."
 msgstr ""
 
-msgid "Domain with this name already exist"
-msgstr "此域名已经存在"
+msgid "Master domain cannot be used."
+msgstr ""
 
-msgid "There is a subdomain with the same mount point!"
-msgstr "已有一个子域名使用相同的挂载点！"
+msgid "Wrong address in forward URL."
+msgstr ""
 
-msgid "Alias scheduled for activation!"
-msgstr "别名激活已预定！"
+msgid "Wrong domain part in forward URL."
+msgstr ""
 
-msgid "Alias scheduled for addition!"
-msgstr "别名增加已预定！"
+msgid "Domain with this name already exist."
+msgstr ""
+
+msgid "There is a subdomain with the same mount point."
+msgstr ""
+
+msgid "Alias awaiting for activation."
+msgstr ""
+
+msgid "Alias scheduled for addition."
+msgstr ""
 
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP 客户 : 添加别名"
 
-msgid "Manage domain alias"
-msgstr "管理域名别名"
+msgid "Domain alias data"
+msgstr ""
 
-msgid "Add domain alias"
-msgstr "添加域名别名"
+msgid "Domain alias name"
+msgstr ""
 
 msgid "User account"
 msgstr "用户总计"
 
-msgid "Directory mount point"
-msgstr "目录挂载点"
+msgid "Mount point"
+msgstr "挂载点"
 
-msgid "Forward to URL"
-msgstr "转到URL地址"
-
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "您不需要输入“www.”i-MSCP 将自己添加。"
-
-msgid "Wrong domain name!"
+msgid "Redirect to URL"
 msgstr ""
 
-msgid "Please write mount point!"
+msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr ""
 
-msgid "Enable Forward"
-msgstr "转向有效"
+msgid "Redirect"
+msgstr ""
 
 msgid "Enable"
 msgstr "有效"
 
 msgid "Disable"
 msgstr "无效"
+
+msgid "Wrong request."
+msgstr ""
+
+msgid ""
+"We are sorry but you reached the maximum number of domain aliases allowed by"
+" your subscription. Contact your reseller for more information."
+msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
@@ -3089,12 +3135,12 @@ msgid ""
 msgstr "您试图删除的域名别名有邮件账号！<br>请先删除它们！"
 
 msgid ""
-"Domain alias you are trying to remove has FTP accounts!<br>First remove "
-"them!"
-msgstr "您试图删除的域名别名拥FTP账号！<br>请先删除它们！"
+"Domain alias you are trying to remove has FTP accounts.<br>First remove them"
+" first."
+msgstr ""
 
-msgid "Alias scheduled for deletion!"
-msgstr "别名侦测已预定！"
+msgid "Alias scheduled for deletion."
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - 管理域名别名/编辑别名"
@@ -3105,19 +3151,34 @@ msgstr "编辑域名别名"
 msgid "Alias name"
 msgstr "别名名称"
 
+msgid "Forward to URL"
+msgstr "转到URL地址"
+
 msgid "Mount Point"
 msgstr "挂载点"
+
+msgid "Enable Forward"
+msgstr "转向有效"
+
+msgid "Domain alias scheduled for update."
+msgstr ""
+
+msgid "Order for domain alias deleted."
+msgstr ""
+
+msgid "Order not found. Nothing been deleted."
+msgstr ""
 
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
 "them!"
 msgstr "您试图删除的子域名有邮件账号！请先删除它们！"
 
-msgid "Subdomain scheduled for deletion!"
-msgstr "子域名删除已预定！"
+msgid "Subdomain alias scheduled for deletion."
+msgstr ""
 
-msgid "Backup archive scheduled for restoring!"
-msgstr "备份存档恢复已预定！"
+msgid "Backup archive scheduled for restoring."
+msgstr ""
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - 客户/日常备份"
@@ -3189,10 +3250,10 @@ msgstr "编辑定时任务"
 msgid "Cronjobs"
 msgstr "定时任务"
 
-msgid "You are not allowed to remove this DNS record!"
+msgid "You are not allowed to remove this DNS record."
 msgstr ""
 
-msgid "Custom DNS record scheduled for deletion!"
+msgid "Custom DNS record scheduled for deletion."
 msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
@@ -3201,13 +3262,10 @@ msgstr ""
 msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr ""
 
-msgid "Add DNS zone's record (EXPERIMENTAL)"
+msgid "Edit custom DNS record"
 msgstr ""
 
-msgid "Edit DNS zone's record (EXPERIMENTAL)"
-msgstr ""
-
-msgid "DNS zone's records"
+msgid "Custom DNS record"
 msgstr ""
 
 msgid "Class"
@@ -3243,10 +3301,16 @@ msgstr ""
 msgid "Plain record data"
 msgstr ""
 
-msgid "DNS zone's records (EXPERIMENTAL)"
+msgid "Custom DNS record data"
 msgstr ""
 
-msgid "You are not allowed to edit this DNS record!"
+msgid "Custom DNS record scheduled for update."
+msgstr ""
+
+msgid "Custom DNS record scheduled for addition."
+msgstr ""
+
+msgid "You are not allowed to edit this DNS record."
 msgstr ""
 
 #, php-format
@@ -3298,10 +3362,10 @@ msgid "Cannot validate %s record. Reason '%s'."
 msgstr ""
 
 #, php-format
-msgid "Unknown zone type %s!"
+msgid "Unknown zone type %s."
 msgstr ""
 
-msgid "Error: DNS record already exist!"
+msgid "DNS record already exist."
 msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
@@ -3322,50 +3386,44 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "总数"
 
-msgid "Manual zone's records list is empty!"
+msgid "You do not have domain aliases."
+msgstr ""
+
+msgid "Delete order"
+msgstr "删除订单"
+
+msgid "You do not have subdomains."
+msgstr ""
+
+msgid "You do not have custom DNS records."
 msgstr ""
 
 #, php-format
 msgid "%s record"
 msgstr ""
 
-msgid "Subdomain list is empty!"
-msgstr "子域名列表为空！"
-
-msgid "Delete order"
-msgstr "删除订单"
-
-msgid "Alias list is empty!"
-msgstr "别名列表为空！"
-
 msgid "i-MSCP - Client/Manage Domains"
 msgstr "i-MSCP - 客户/域名管理"
 
-msgid "Mount point"
-msgstr "挂载点"
-
-msgid "Forward"
-msgstr "转向"
-
-msgid "Record data"
+msgid "Custom DNS records"
 msgstr ""
 
-msgid "php.ini"
+msgid "Record data"
 msgstr ""
 
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - 客户/管理错误自定义页面"
 
-msgid "Server error - please choose error page"
-msgstr "服务器错误 - 请您选择错误页"
+msgid "Error page not found."
+msgstr ""
 
 msgid "Edit error page"
 msgstr "编辑错误页"
 
-msgid "Custom error page was updated!"
-msgstr "自定义的错误页已更新！"
+msgid "Custom error page updated."
+msgstr ""
 
-msgid "System error - custom error page was not updated!"
+msgid "System error - custom error page was not updated."
 msgstr ""
 
 msgid "Error 401 (unauthorised)"
@@ -3386,8 +3444,8 @@ msgstr "错误 503 (服务不可用)"
 msgid "View"
 msgstr "查阅"
 
-msgid "FTP list is empty!"
-msgstr "FTP 列表为空！"
+msgid "You do not have FTP users."
+msgstr ""
 
 msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - 客户/用户管理"
@@ -3395,13 +3453,17 @@ msgstr "i-MSCP - 客户/用户管理"
 msgid "FTPs total"
 msgstr "FTPs 总数"
 
-msgid "FTP users"
-msgstr "FTP 用户"
+msgid "FTP Users"
+msgstr ""
 
 msgid "FTP account"
 msgstr "FTP 账号"
 
 msgid "Login As"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete the %s FTP user?"
 msgstr ""
 
 msgid "Empty List"
@@ -3410,29 +3472,26 @@ msgstr "空列表"
 msgid "Empty list"
 msgstr "空列表"
 
-msgid "FTP account already exists!"
-msgstr "FTP 列表已存在！"
+msgid "FTP account already exists."
+msgstr ""
 
-msgid "Incorrect username length or syntax!"
-msgstr "用户名长度或拼写错误！"
+msgid "Unknown domain type."
+msgstr ""
 
-msgid "Unknown domain type"
-msgstr "未知域名类型"
-
-msgid "Incorrect mount point length or syntax"
-msgstr "挂载点长度或拼写不正确！"
+msgid "Incorrect mount point length or syntax."
+msgstr ""
 
 #, php-format
 msgid "%s does not exist"
 msgstr "%s 不存在"
 
-msgid "FTP account added!"
-msgstr "FTP 账号添加完成！"
+msgid "FTP account added."
+msgstr ""
 
-msgid "Please enter FTP account username!"
-msgstr "请输入FTP账号的用户名！"
+msgid "Please enter FTP account username."
+msgstr ""
 
-msgid "Password is missing!"
+msgid "Password is missing."
 msgstr ""
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
@@ -3465,10 +3524,13 @@ msgstr "使用其它目录"
 msgid "Choose dir"
 msgstr "选择目录"
 
-msgid "Unknown FTP user id!"
+msgid "Ftp user data"
 msgstr ""
 
-msgid "Cannot open directory! Please contact your administrator!"
+msgid "Unknown FTP user id."
+msgstr ""
+
+msgid "Cannot open directory. Please contact your administrator."
 msgstr ""
 
 msgid "Parent Directory"
@@ -3486,20 +3548,27 @@ msgstr "目录"
 msgid "Choose"
 msgstr "选择"
 
-msgid "FTP account deleted successfully!"
-msgstr "FTP 账目删除成功！"
+msgid "FTP account deleted."
+msgstr ""
 
 msgid "FTP account data updated!"
 msgstr "FTP 账号数据已更新！"
 
+msgid "Incorrect mount point length or syntax"
+msgstr "挂载点长度或拼写不正确！"
+
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - 客户/编辑 FTP 账号"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr ""
 
 msgid "Edit FTP user"
 msgstr "编辑 FTP 用户"
 
-msgid "Save changes"
-msgstr "保存修改"
+msgid "Change"
+msgstr "修改"
 
 msgid "Hosting plans available for update"
 msgstr "主机项目更新可用"
@@ -3513,8 +3582,8 @@ msgstr "您的订单"
 msgid "Purchase"
 msgstr "购买"
 
-msgid "There are no available updates"
-msgstr "没有可用更新"
+msgid "There are no available hosting plans for updates."
+msgstr ""
 
 msgid "PHP Support: enabled"
 msgstr "PHP 支持: 已支持"
@@ -3569,10 +3638,10 @@ msgstr ""
 msgid "Traffic limit"
 msgstr "流量限制"
 
-msgid "You have more aliases in use than the new hosting plan limits."
+msgid "You have more aliases in use than the new hosting plan limits"
 msgstr ""
 
-msgid "You have more subdomains in use than the new hosting plan limits."
+msgid "You have more subdomains in use than the new hosting plan limits"
 msgstr ""
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
@@ -3589,6 +3658,9 @@ msgstr "FTPs"
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr ""
+
+msgid "SQL Databases"
+msgstr "SQL 数据库"
 
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
@@ -3609,18 +3681,24 @@ msgstr ""
 msgid "I understand the warnings - Purchase!"
 msgstr ""
 
-msgid "There are no available hosting plans for update"
-msgstr "没有可用的主机项目更新"
+msgid "There are no available hosting plans for update."
+msgstr ""
 
 msgid "i-MSCP - Update hosting plan"
 msgstr "i-MSCP - 更新主机项目"
+
+msgid "You have more aliases in use than the new hosting plan limits."
+msgstr ""
+
+msgid "You have more subdomains in use than the new hosting plan limits."
+msgstr ""
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
 
-msgid "Your request for hosting pack update was added successfully"
-msgstr "您请求的主机套餐更新已添加成功"
+msgid "Your request for hosting plan update was registered."
+msgstr ""
 
 msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr "[i-MSCP 订单面板] - 您有一个更新订单"
@@ -3632,18 +3710,19 @@ msgid ""
 "Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 
-msgid "Your request for hosting pack update was removed successfully"
-msgstr "您请求的主机套餐更新已被删除成功"
+msgid "Your request for hosting plan update was removed."
+msgstr ""
 
-msgid "disabled"
-msgstr "未支持"
+msgid "Unlimited"
+msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new answer to your support questions"
-msgstr "您有 <b>%d</b> 新的客户支持疑问回复"
+msgid "You received <b>%d</b> new support question(s)."
+msgstr ""
 
-msgid "You are exceeding your traffic limit!"
-msgstr "您的流量已超出限制！"
+#, php-format
+msgid "You received <b>%d</b> new answer(s) to your support questions."
+msgstr ""
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -3653,36 +3732,59 @@ msgstr "%1$s%% [%2$s of %3$s]"
 msgid "%1$s%% [%2$s of unlimited]"
 msgstr "%1$s%% [%2$s of 允许量]"
 
-msgid "You are exceeding your disk limit!"
-msgstr "您已超出磁盘空间限制！"
+msgid "You are exceeding your disk limit."
+msgstr ""
 
-msgid "You have no new support questions!"
-msgstr "您没有新的客户支持疑问！"
+msgid "Enabled for domain data and databases"
+msgstr ""
+
+msgid "Enabled for SQL databases"
+msgstr ""
+
+msgid "Enabled for domain data"
+msgstr ""
+
+msgid "days"
+msgstr ""
+
+msgid "day"
+msgstr ""
 
 #, php-format
-msgid "You have <b>%d</b> new support questions"
-msgstr "您有 <b>%d</b> 新的客户疑问"
+msgid "%d %s remaining until account expiration"
+msgstr ""
 
-msgid "This Domain is expired"
+msgid "Domain account expired."
+msgstr ""
+
+msgid ""
+"Your domain account is expired. Please, contact your reseller to renew your "
+"subscription."
+msgstr ""
+
+msgid "No set"
 msgstr ""
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - 客户/主索引"
 
-msgid "Main domain"
-msgstr "主域名"
-
-msgid "Manual DNS support"
+msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "SQL support"
-msgstr "SQL 支持"
+msgid "Domain expire date"
+msgstr ""
 
-msgid "Choose default language"
-msgstr "选择默认语言"
+msgid "Including domain aliases subdomains"
+msgstr ""
 
-msgid "Choose default layout"
-msgstr "选择默认版面"
+msgid "PHP directives editor support"
+msgstr ""
+
+msgid "Custom DNS records support"
+msgstr ""
+
+msgid "Application installer support"
+msgstr ""
 
 msgid "Traffic usage"
 msgstr "流量使用量"
@@ -3690,10 +3792,7 @@ msgstr "流量使用量"
 msgid "Disk usage"
 msgstr "磁盘使用量"
 
-msgid "Alternative URL to reach your website"
-msgstr ""
-
-msgid "Language updated successfully."
+msgid "Language updated."
 msgstr ""
 
 msgid "i-MSCP - Client/Change Language"
@@ -3729,52 +3828,49 @@ msgstr ""
 msgid "Hide default E-Mail Addresses"
 msgstr ""
 
-msgid "Mailformat of an address in your forward list is incorrect!"
-msgstr "邮件发送地址未从发送列表中找到相一致的地址。"
-
-msgid "Mail forward list empty!"
-msgstr "邮件发送列表为空！"
-
-msgid "Forward to same address is not allowed!"
+msgid "Mailformat of an address in your forward list is incorrect."
 msgstr ""
 
-msgid "Mail account already exists!"
-msgstr "邮件账号已经存在！"
+msgid "Mail forward list empty."
+msgstr ""
 
-msgid "Mail account scheduled for addition!"
-msgstr "邮件账号增加已预定！"
+msgid "Forward to same address is not allowed."
+msgstr ""
 
-msgid "Please select at least one mail type!"
-msgstr "请选择至少一个邮件类型！"
+msgid "Mail account already exists."
+msgstr ""
 
-msgid "Please enter mail account username!"
-msgstr "请输入邮件账号用户名！"
+msgid "Mail account scheduled for addition."
+msgstr ""
 
-msgid "Invalid Mail Localpart Format used!"
-msgstr "使用不完整的邮件正文格式！"
+msgid "Please select at least one mail type."
+msgstr ""
 
-msgid "Password data is missing!"
-msgstr "密码数据丢失！"
+msgid "Please enter mail account username."
+msgstr ""
 
-msgid "Entered passwords differ!"
-msgstr "输入的密码不同！"
+msgid "Invalid mail local part."
+msgstr ""
+
+msgid "Password data is missing."
+msgstr ""
 
 msgid "Subdomain alias"
 msgstr ""
 
 #, php-format
-msgid "%s list is empty! You cannot add mail accounts!"
+msgid "%s list is empty! You cannot add mail accounts."
 msgstr ""
 
 #, php-format
-msgid "%s id is invalid! You cannot add mail accounts!"
+msgid "%s id is invalid! You cannot add mail accounts."
 msgstr ""
 
-msgid "Forward list is empty!"
-msgstr "发送列表为空！"
+msgid "Forward list is empty."
+msgstr ""
 
-msgid "Mail accounts limit reached!"
-msgstr "邮件账号限制！"
+msgid "Mail accounts limit reached."
+msgstr ""
 
 msgid "i-MSCP - Client/Add Mail User"
 msgstr "i-MSCP - 客户/添加邮件用户"
@@ -3800,14 +3896,14 @@ msgstr "用line-break分离多个邮件地址。"
 msgid "You did not fill all required fields"
 msgstr ""
 
-msgid "Mail account scheduled for modification!"
-msgstr "邮件账号更改已预定！"
+msgid "Mail account data"
+msgstr ""
 
-msgid "Please type your mail autorespond message!"
-msgstr "请输入您的邮件自动回复信息！"
+msgid "Mail account scheduled for update."
+msgstr ""
 
-msgid "Mail account scheduler for modification!"
-msgstr "邮件账号更改已预定！"
+msgid "Please type your mail autorespond message."
+msgstr ""
 
 msgid "i-MSCP - Client/Enable Mail Auto Responder"
 msgstr "i-MSCP - 客户/启用邮件自动回复器"
@@ -3830,11 +3926,15 @@ msgstr "空"
 msgid "Create catch all"
 msgstr "创建 CatchAll"
 
-msgid "Catch all account"
-msgstr "CatchAll 账号"
+#, php-format
+msgid "Are you sure you want to delete the %s catch all?"
+msgstr ""
 
-msgid "Catch all account scheduled for creation!"
-msgstr "发觉所有的账号创建已预定！"
+msgid "Mail accounts limit reached!"
+msgstr "邮件账号限制！"
+
+msgid "Catch all account scheduled for creation."
+msgstr ""
 
 msgid "Mail forward list error!"
 msgstr "邮件发送列表错误！"
@@ -3848,8 +3948,8 @@ msgstr "创建 CatchAll 邮件账号"
 msgid "Mail accounts list"
 msgstr "邮件账号列表"
 
-msgid "Catch all account scheduled for deletion!"
-msgstr "CatchAll 账号删除已预定！"
+msgid "Catch all account scheduled for deletion."
+msgstr ""
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "请为此邮件删除第一个 CatchAll 账号！"
@@ -3857,11 +3957,17 @@ msgstr "请为此邮件删除第一个 CatchAll 账号！"
 msgid "Email account not found!"
 msgstr "邮件账号未找到！"
 
+msgid "Password missing."
+msgstr ""
+
+msgid "Mail forward list error."
+msgstr ""
+
 msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
 msgstr "i-MSCP - 管理 Mail 与 FTP / 编辑邮件账号"
 
-msgid "Mail were updated successfully!"
-msgstr "邮件已经更新成功！"
+msgid "Mail were updated."
+msgstr ""
 
 msgid "Edit email account"
 msgstr "编辑邮件账号"
@@ -3869,76 +3975,59 @@ msgstr "编辑邮件账号"
 msgid "i-MSCP - Client/Change Password"
 msgstr "i-MSCP - 客户/修改密码"
 
-msgid "Password successfully updated."
+msgid "The current password is wrong."
+msgstr ""
+
+msgid "Password updated."
 msgstr ""
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - 客户/修改个人资料"
 
-msgid "i-MSCP - php.ini Settings"
+msgid "Personal data updated."
 msgstr ""
 
-msgid "php.ini Setting"
+msgid "PHP directives scheduled for update."
 msgstr ""
 
-msgid "php.ini Settings"
+msgid "i-MSCP / Client / Manage domains / PHP.ini editor"
 msgstr ""
 
-msgid "allow_url_fopen"
+msgid "PHP directives"
 msgstr ""
 
-msgid "register_globals"
-msgstr ""
-
-msgid "display_errors"
-msgstr ""
-
-msgid "error_reporting"
-msgstr ""
-
-msgid "post_max_size [MB]"
-msgstr ""
-
-msgid "upload_max_filesize [MB]"
-msgstr ""
-
-msgid "max_execution_time [sec]"
-msgstr ""
-
-msgid "max_input_time [sec]"
-msgstr ""
-
-msgid "memory_limit [MB]"
+msgid ""
+"In this page, you can configure some of the aspects of PHP's behavior. You "
+"must note that for now, the directives defined here apply to your entire "
+"domain account (including subdomains and domain aliases). Of course some "
+"values can be modified through the PHP ini_set() function."
 msgstr ""
 
 msgid "disable_functions"
 msgstr ""
 
-msgid "Enable exec (disabled_functions)"
+msgid "Allows the PHP exec() function"
+msgstr ""
+
+msgid "Allows"
+msgstr ""
+
+msgid "Disallows"
 msgstr ""
 
 msgid ""
-"if enabled its allow the php function exec(). Needed from convert "
-"(imagemagic) and most image galleries"
-msgstr ""
-
-msgid "Setting updated"
-msgstr ""
-
-msgid "Permisson failed"
-msgstr ""
-
-msgid "Domain locked - update running"
+"When allowed, scripts can use the PHP exec() function. This function is "
+"needed by many applications but can cause some security issues"
 msgstr ""
 
 msgid "Unknown SQL user id."
 msgstr ""
 
-msgid "Error: An error occurred while authentication."
+msgid "An error occurred while authentication."
 msgstr ""
 
-msgid "You do not have protected areas"
-msgstr "你没有受保护区域"
+msgid "You do not have protected areas."
+msgstr ""
 
 msgid "Manage users and groups"
 msgstr "管理用户和组"
@@ -3958,42 +4047,45 @@ msgstr "组"
 msgid "Add new protected area"
 msgstr "添加新的保护区域"
 
-msgid "Please choose user or group"
-msgstr "请选择用户或组"
+msgid "Please choose user or group."
+msgstr ""
 
-msgid "Please enter area name"
-msgstr "请输入区域名"
+msgid "Please enter a name for protected area."
+msgstr ""
 
-msgid "Please enter area path"
-msgstr "请输入区域详细地址"
+msgid "Please enter protected area path"
+msgstr ""
 
 #, php-format
 msgid "%s doesn't exist"
 msgstr "%s 不存在"
 
-msgid "You cannot protect area without selected user(s)!"
-msgstr "您无法在未选择用户（们）情况下保护区域"
+msgid "You cannot protect an area without selected user(s)."
+msgstr ""
 
-msgid "You cannot protect area without selected group(s)"
-msgstr "在未选择“组”情况下，您不能保护区域。"
+msgid "You cannot protect an area without selected group(s)."
+msgstr ""
 
-msgid "Protected area updated successfully!"
-msgstr "保护区域更新成功！"
+msgid "Protected area scheduled for update."
+msgstr ""
 
-msgid "Protected area created successfully!"
-msgstr "保护区域创建成功！"
+msgid "Protected area scheduled for addition."
+msgstr ""
 
-msgid "Protected area status should be OK if you want to edit it!"
-msgstr "如果你想编辑保护区域状态，现在应该可以被编辑！"
+msgid " Status for protected area must be 'OK' if you want to edit it."
+msgstr ""
 
 msgid "You have no users !"
 msgstr "您没有用户！"
 
-msgid "You have no groups!"
-msgstr "您没有组！"
+msgid "You have no groups."
+msgstr ""
 
-msgid "Protect this area"
-msgstr "保护此区域"
+msgid "Edit protected area"
+msgstr ""
+
+msgid "Add protected area"
+msgstr ""
 
 msgid "Path"
 msgstr "路径"
@@ -4016,23 +4108,23 @@ msgstr "区域名"
 msgid "Unprotect it"
 msgstr "解除保护"
 
-msgid "Protected area status should be OK if you want to delete it!"
-msgstr "如果你想删除保护区域状态，现在应该可以被删除！"
+msgid "Protected area status should be 'OK' if you want to delete it."
+msgstr ""
 
-msgid "Protected area deleted successfully!"
-msgstr "保护区域删除成功！"
+msgid "Protected area scheduled for deletion."
+msgstr ""
 
-msgid "Permission deny!"
-msgstr "未受权，拒绝！"
-
-msgid "Protected area was deleted successful!"
-msgstr "新保护区域删除成功！"
+msgid "Permission deny."
+msgstr ""
 
 msgid "Invalid group name!"
 msgstr "不完整的组名！"
 
-msgid "Group already exists!"
-msgstr "此组已存在！"
+msgid "Group already exists."
+msgstr ""
+
+msgid "Invalid group name."
+msgstr ""
 
 msgid "Manage user"
 msgstr "管理用户"
@@ -4066,8 +4158,8 @@ msgstr "选择组:"
 msgid "Update user"
 msgstr "更新用户"
 
-msgid "You have no users!"
-msgstr "您没有用户！"
+msgid "You have no users."
+msgstr ""
 
 msgid "i-MSCP - application installer"
 msgstr ""
@@ -4087,17 +4179,17 @@ msgstr ""
 msgid "Software installation"
 msgstr ""
 
-msgid "Software deleted successful."
+msgid "Software deleted."
 msgstr ""
 
-msgid "Software will be deleted now."
+msgid "Software scheduled for deletion."
 msgstr ""
 
 msgid "Software not found!"
 msgstr ""
 
 #, php-format
-msgid "The directory -%1$s- was created!"
+msgid "The directory -%1$s- was created."
 msgstr ""
 
 msgid "Please select the correct user for your database!"
@@ -4162,49 +4254,42 @@ msgstr ""
 msgid "Install"
 msgstr "安装"
 
-msgid "Please type user password!"
-msgstr "请输入用户密码！"
-
-msgid "Too long user password!"
-msgstr "用户密码太长！"
-
-msgid "Don't use special chars like \"@, $, %...\" in the password!"
+msgid "Please type user password."
 msgstr ""
 
-msgid "SQL user password was successfully changed!"
-msgstr "SQL 用户密码已修改成功！"
+msgid "Too long user password."
+msgstr ""
+
+msgid "Don't use special chars like \"@, $, %...\" in the password."
+msgstr ""
+
+msgid "SQL user password updated."
+msgstr ""
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - 客户/修改 SQL 用户密码"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface."
-msgstr ""
-
 msgid "Change SQL user password"
 msgstr "修改 SQL 用户密码"
 
-msgid "Change"
-msgstr "修改"
+msgid "Please type database name."
+msgstr ""
 
-msgid "Please type database name!"
-msgstr "请输入数据库名！"
+msgid "Database name is too long."
+msgstr ""
 
-msgid "Database name is too long!"
-msgstr "数据库名太长！"
-
-msgid "Specified database name already exists!"
-msgstr "指定的数据库名已存在！"
+msgid "Specified database name already exists."
+msgstr ""
 
 #, php-format
-msgid "Wildcards such as %% and ? are not allowed!"
-msgstr "不允许使用如 %% 和 ? 通配符！"
+msgid "Wildcards such as %% and ? are not allowed."
+msgstr ""
 
-msgid "SQL database created successfully!"
-msgstr "SQL 数据库创建成功！"
+msgid "SQL database created."
+msgstr ""
 
-msgid "SQL accounts limit reached!"
-msgstr "SQL 账号限制！"
+msgid "SQL accounts limit reached."
+msgstr ""
 
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - 客户/添加 SQL 数据库"
@@ -4221,17 +4306,14 @@ msgstr "在名前面"
 msgid "After the name"
 msgstr "在名后面"
 
-msgid "SQL database was removed successfully!"
-msgstr "SQL 数据库已删除成功！"
+msgid "SQL database deleted."
+msgstr ""
 
-msgid "SQL user was removed successfully!"
-msgstr "SQL 用户已删除成功！"
+msgid "SQL user deleted."
+msgstr ""
 
-msgid "Database user list is empty!"
-msgstr "数据库用户列表为空！"
-
-msgid "Database list is empty!"
-msgstr "数据库列表为空！"
+msgid "You do not have database."
+msgstr ""
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr "i-MSCP - 客户/管理 SQL"
@@ -4245,11 +4327,8 @@ msgstr "数据库用户"
 msgid "Add SQL user"
 msgstr "添加 SQL 用户"
 
-msgid "Execute query"
-msgstr "执行查询"
-
-msgid "Login phpMyAdmin"
-msgstr "登录 phpMyAdmin"
+msgid "Login into PhpMyAdmin"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -4262,26 +4341,29 @@ msgstr ""
 msgid "Are you sure you want delete the '%s' SQL user?"
 msgstr ""
 
-msgid "SQL users limit reached!"
-msgstr "SQL 用户限制！"
+msgid "SQL users limit reached."
+msgstr ""
 
 msgid "Please type user name!"
 msgstr "请输入用户名！"
 
-msgid "Too user long password!"
-msgstr "用户密码太长！"
+msgid "Too user long password."
+msgstr ""
 
-msgid "SQL-user not found! Maybe it was deleted by another user!"
-msgstr "SQL-用户未找到！也许已被其他用户删除！"
+msgid "Please, don't use special chars like '@, $, %...' in the password."
+msgstr ""
+
+msgid "SQL-user not found."
+msgstr ""
 
 msgid "User name too long!"
 msgstr "用户名太长！"
 
-msgid "Specified SQL username name already exists!"
-msgstr "指定的 SQL 用户名已经存在！"
+msgid "Specified SQL username name already exists."
+msgstr ""
 
-msgid "SQL user successfully added!"
-msgstr "SQL 用户成功添加！"
+msgid "SQL user created."
+msgstr ""
 
 msgid "i-MSCP - Client/Add SQL User"
 msgstr "i-MSCP - 客户/添加 SQL 用户"
@@ -4295,32 +4377,29 @@ msgstr "在名前面"
 msgid "Behind the name"
 msgstr "在名后面"
 
-msgid "Add existing user"
-msgstr "添加现有用户"
-
-msgid "Existing SQL users"
-msgstr "现有 SQL 用户"
-
-msgid "Subdomains limit reached!"
-msgstr "子域名数上限！"
-
-msgid "Please specify subdomain name!"
-msgstr "请指定子域名名称！"
-
-msgid "No valid alias domain selected!"
+msgid "Assign existing SQL user"
 msgstr ""
 
-msgid "Subdomain already exists or is not allowed!"
-msgstr "子域名已经存在或不被允许！"
-
-msgid "Mount point already in use!"
+msgid "New Sql user data"
 msgstr ""
 
-msgid "Incorrect mount point syntax!"
+msgid "Subdomains limit reached."
 msgstr ""
 
-msgid "Subdomain scheduled for addition!"
-msgstr "子域名添加已预定！"
+msgid "Please specify subdomain name."
+msgstr ""
+
+msgid "No valid alias domain selected."
+msgstr ""
+
+msgid "Subdomain already exists or is not allowed."
+msgstr ""
+
+msgid "Mount point already in use"
+msgstr ""
+
+msgid "Subdomain scheduled for addition."
+msgstr ""
 
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr "i-MSCP - 客户/添加子域名"
@@ -4331,25 +4410,34 @@ msgstr "子域名数据"
 msgid "Subdomain name"
 msgstr "子域名"
 
-msgid "Directory tree mount point"
-msgstr "目录树挂载点"
+msgid "Wrong request"
+msgstr ""
+
+msgid ""
+"We are sorry but you reached the maximum number of subdomains allowed by "
+"your subscription. Contact your reseller for more information."
+msgstr ""
+
+msgid ""
+"Subdomain you are trying to remove has email accounts.<br>First remove them."
+msgstr ""
+
+msgid "Subdomain scheduled for deletion."
+msgstr ""
 
 msgid "Nothing been changed."
 msgstr ""
 
-msgid "Subdomain successfully updated."
+msgid "Subdomain scheduled for update."
 msgstr ""
 
-msgid "Wrong forward URL."
+msgid "Wrong redirect URL."
 msgstr ""
 
 msgid "Manage subdomain"
 msgstr ""
 
 msgid "Edit subdomain"
-msgstr ""
-
-msgid "URL Forwarding"
 msgstr ""
 
 msgid "i-MSCP - Manage domains / Edit Subdomain"
@@ -4385,31 +4473,46 @@ msgstr "高"
 msgid "Very high"
 msgstr "非常高"
 
+msgid "Ticket deleted."
+msgstr ""
+
+msgid "All open tickets were deleted."
+msgstr ""
+
+msgid "All closed tickets were deleted."
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
 msgstr ""
 
 msgid "i-MSCP - Client / Support Ticket System / View Ticket"
 msgstr ""
 
-msgid "Customize error pages for your domain"
-msgstr "为您的域名自定义错误页"
+msgid "Manage your protected areas, users and groups."
+msgstr ""
 
-msgid "Backup and restore settings"
-msgstr "备份和恢复设置"
+msgid "Error pages"
+msgstr "错误页面"
 
-msgid "Access your mail through the web interface"
-msgstr "通过网页浏览您的邮件"
+msgid "Customize error pages for your domain."
+msgstr ""
 
-msgid "Access your files through the web interface"
-msgstr "通过网页浏览您的文件"
+msgid "Backup and restore settings."
+msgstr ""
 
-msgid "Access your Awstats statistics"
-msgstr "查看您的Awstats统计"
+msgid "Access your mail through the web interface."
+msgstr ""
 
-msgid "Manage protected areas, users and groups"
-msgstr "管理保护区域、用户和组"
+msgid "Access your files through the web interface."
+msgstr ""
 
-msgid "Install various software with a few *clicks*"
+msgid "Awstats"
+msgstr "Awstats"
+
+msgid "Access your domain statistics through the Awstats Web interface."
+msgstr ""
+
+msgid "Install various Web applications with a few clicks."
 msgstr ""
 
 msgid "i-MSCP - Service Mailer - You have a new order"
@@ -4542,6 +4645,12 @@ msgstr "自定义错误页"
 msgid "Protected Areas"
 msgstr "保护区域"
 
+msgid "Manual DNS support"
+msgstr ""
+
+msgid "SQL support"
+msgstr "SQL 支持"
+
 msgid "Custom Apache Logs"
 msgstr "自定义 Apache 日志"
 
@@ -4566,13 +4675,16 @@ msgstr "安装费用"
 msgid "Performance"
 msgstr "性能"
 
+msgid "i-MSCP - Orderpanel"
+msgstr ""
+
 msgid "Not found user records matching the search criteria"
 msgstr ""
 
 msgid "Domain aliases limit reached."
 msgstr ""
 
-msgid "You do not have domain aliases."
+msgid "You do not have order for domain aliases."
 msgstr ""
 
 msgid ""
@@ -4621,25 +4733,13 @@ msgstr "管理别名"
 msgid "Real domain"
 msgstr "真实域名"
 
-msgid "Domain with that name already exists on the system."
-msgstr ""
+msgid "Forward"
+msgstr "转向"
 
-msgid "Incorrect mount point syntax."
-msgstr ""
-
-msgid "Master domain cannot be used."
-msgstr ""
-
-msgid "Wrong address in forward URL."
-msgstr ""
-
-msgid "Wrong domain part in forward URL."
-msgstr ""
+msgid "Add alias"
+msgstr "添加别名"
 
 msgid "Domain already registered on the system."
-msgstr ""
-
-msgid "There is a subdomain with the same mount point."
 msgstr ""
 
 msgid "There is no user records for this reseller to add an alias for."
@@ -4648,13 +4748,49 @@ msgstr ""
 msgid "i-MSCP Reseller: Add Alias"
 msgstr ""
 
+msgid "Manage domain alias"
+msgstr "管理域名别名"
+
+msgid "Directory mount point"
+msgstr "目录挂载点"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "您不需要输入“www.”i-MSCP 将自己添加。"
+
+msgid "Wrong domain name!"
+msgstr ""
+
+msgid "Please write mount point!"
+msgstr ""
+
+msgid "Alias scheduled for activation."
+msgstr ""
+
 msgid "i-MSCP - Circular"
 msgstr "i-MSCP - 循环"
+
+msgid "Please specify a message subject."
+msgstr ""
+
+msgid "Please specify a message content."
+msgstr ""
+
+msgid "Please specify a sender name."
+msgstr ""
+
+msgid "Please specify a sender email."
+msgstr ""
+
+msgid "Mail successfully sent to your users."
+msgstr ""
 
 msgid "Circular"
 msgstr "循环"
 
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
+msgstr ""
+
+msgid "Domain not found."
 msgstr ""
 
 msgid "Domain main properties"
@@ -4666,55 +4802,122 @@ msgstr ""
 msgid "Optional features"
 msgstr ""
 
-msgid "Custom DNS records support"
-msgstr ""
-
 msgid "Never expire"
 msgstr ""
 
 msgid "Custom php.ini"
 msgstr ""
 
-msgid "PHP.INI -  variables editor"
+msgid "post_max_size [MB]"
 msgstr ""
 
-msgid "Can edit php.ini variables"
+msgid "upload_max_filesize [MB]"
 msgstr ""
 
-msgid "Can change the 'register_globals' variable"
+msgid "max_execution_time [sec]"
 msgstr ""
 
-msgid "Can change the 'allow_url_open' variable"
+msgid "max_input_time [sec]"
 msgstr ""
 
-msgid "Can change the 'display_errors/error_reporting' variables"
+msgid "memory_limit [MB]"
 msgstr ""
 
-msgid "Can change the 'disable_functions' variable"
+msgid "Can edit PHP directives"
 msgstr ""
 
-msgid "Allow 'exec' only"
+msgid "Can edit the <strong>register_globals</strong> directive"
 msgstr ""
 
-msgid "post_max_size out of range"
+msgid "Can edit the <strong>allow_url_open</strong> directive"
 msgstr ""
 
-msgid "upload_max_filesize out of range"
+msgid ""
+"Can edit the <strong>display_errors</strong> and "
+"<strong>error_reporting</strong> directives"
 msgstr ""
 
-msgid "max_execution_time out of range"
+msgid "Can edit the <strong>disable_functions</strong> directive"
 msgstr ""
 
-msgid "max_input_time out of range"
+msgid "Allows 'exec' only"
 msgstr ""
 
-msgid "memory_limit out of range"
+msgid "SQL databases limit is <i>disabled</i>."
 msgstr ""
 
-msgid "disable_functions error"
+msgid "SQL users limit is <i>disabled</i>."
 msgstr ""
 
-msgid "You are not allowed to access this interface."
+msgid "The i-MSCP application installer needs PHP to enable it."
+msgstr ""
+
+msgid "post_max_size out of range."
+msgstr ""
+
+msgid "upload_max_filesize out of range."
+msgstr ""
+
+msgid "max_execution_time out of range."
+msgstr ""
+
+msgid "max_input_time out of range."
+msgstr ""
+
+msgid "memory_limit out of range."
+msgstr ""
+
+msgid "disable_functions error."
+msgstr ""
+
+msgid "Domain properties could not be updated."
+msgstr ""
+
+msgid "Domain properties successfully updated."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled."
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> have to be disabled."
+msgstr ""
+
+#, php-format
+msgid "The admin has <em>%s</em> disabled on this system."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited."
+msgstr ""
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system."
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on the system."
+msgstr ""
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited."
+msgstr ""
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service."
+msgstr ""
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service."
+msgstr ""
+
+msgid "You are not allowed to perform this operation."
 msgstr ""
 
 msgid "Domain account scheduled for suspension."
@@ -4725,6 +4928,19 @@ msgstr ""
 
 msgid "i-MSCP - Reseller/Main Index"
 msgstr "i-MSCP - 代理商/主索引"
+
+msgid "Hosting plan successfully added."
+msgstr ""
+
+msgid "Hosting plan successfully deleted."
+msgstr ""
+
+msgid "Hosting plan sucessfully updated."
+msgstr ""
+
+msgid ""
+"This hosting plan can't be deleted, there are some orders linked to it."
+msgstr ""
 
 msgid "View details"
 msgstr "查看详细"
@@ -4738,16 +4954,16 @@ msgstr ""
 msgid "Only \"exec\" allowed"
 msgstr ""
 
-msgid "Allow change value register_globals"
+msgid "Can modify the <strong>register_globals</strong> diretive"
 msgstr ""
 
-msgid "Allow change value allow_url_fopen"
+msgid "Can modify the <strong>allow_url_fopen</strong> diretive"
 msgstr ""
 
-msgid "Allow change value display_errors"
+msgid "Can modify the <strong>display_errors</strong> diretive"
 msgstr ""
 
-msgid "Allow change value disable_functions"
+msgid "Can modify the <strong>disable_functions</strong> diretive"
 msgstr ""
 
 msgid "Set post_max_size [MB]"
@@ -4765,22 +4981,34 @@ msgstr ""
 msgid "Set memory_limit [MB]"
 msgstr ""
 
-msgid "Price must be a number!"
-msgstr "价格必须为数字！"
+msgid "Incorrect template name length."
+msgstr ""
 
-msgid "Setup fee must be a number!"
-msgstr "安装费用必须为数字！"
+msgid "Incorrect template description length."
+msgstr ""
 
-msgid "SQL databases limit is not <i>disabled</i>!"
-msgstr "SQL 数据库限制不是 <i>无效</i>!"
+msgid "Price must be a number."
+msgstr ""
 
-msgid "Hosting plan values exceed reseller maximum values!"
-msgstr "主机项目价格超过代理商的最高价格！"
+msgid "Setup fee must be a number."
+msgstr ""
+
+msgid "SQL databases limit is not <i>disabled</i>."
+msgstr ""
+
+msgid "Hosting plan with same name already exists."
+msgstr ""
+
+msgid "Hosting plan values exceed reseller maximum values."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr "i-MSCP - 代理商/编辑主机项目"
 
 msgid "Allow change PHP.ini"
+msgstr ""
+
+msgid "Can modify the <strong></strong>register_globals</strong> diretive"
 msgstr ""
 
 msgid "Only \"exec\" change allowed"
@@ -4789,7 +5017,7 @@ msgstr ""
 msgid "View hosting plan"
 msgstr "查看主机项目"
 
-msgid "You are exceeding your disk limit."
+msgid "Undefined reference to data."
 msgstr ""
 
 msgid "User accounts"
@@ -4818,8 +5046,20 @@ msgstr ""
 msgid "Reseller/IP usage statistics"
 msgstr ""
 
+msgid "Language updated successfully."
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理商/更改语言"
+
+msgid "You must specify a subject."
+msgstr ""
+
+msgid "You must specify a message."
+msgstr ""
+
+msgid "Template for Auto email successfully updated."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Order email setup"
 msgstr "i-MSCP - 代理商/订单邮件设置"
@@ -4875,26 +5115,29 @@ msgstr "您确定想删除此订单吗？"
 msgid "Add/Details"
 msgstr "添加/详细"
 
-msgid "Wrong order ID!"
-msgstr "错误的订单 ID！"
-
-msgid "Order Cancelled: resellers maximum exceeded!"
+msgid "Wrong order ID."
 msgstr ""
 
-msgid "Wrong domain name syntax!"
-msgstr "错误的域名拼写！"
+msgid "Order Cancelled: resellers limit(s) exceeded."
+msgstr ""
 
-msgid "User added!"
-msgstr "用户已添加！"
+msgid "Wrong domain name syntax."
+msgstr ""
 
-msgid "Customer order was removed successful!"
-msgstr "顾客订单已删除成功！"
+msgid "Domain with same name already exists."
+msgstr ""
+
+msgid "User successfully added."
+msgstr ""
+
+msgid "Customer order sucessfully removed."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Order details"
 msgstr "i-MSCP - 代理商/订单详细"
 
-msgid "Order data updated successfully!"
-msgstr "订单数据已更新成功！"
+msgid "Order successfully updated."
+msgstr ""
 
 msgid "Order date"
 msgstr "订单数据"
@@ -4908,11 +5151,17 @@ msgstr "订单详细"
 msgid "Add to the system"
 msgstr "添加到系统里"
 
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr "订单取消: 超过最高代理价格"
+msgid "Order Canceled: resellers limit(s) exceeded"
+msgstr ""
+
+msgid "Incorrect subdomains limi."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Password"
 msgstr "i-MSCP - 代理商/修改密码"
+
+msgid "User password successfully updated."
+msgstr ""
 
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - 代理商/修改个人资料"
@@ -4928,12 +5177,6 @@ msgstr "忘记密码邮件"
 
 msgid "Lostpw link"
 msgstr "忘记密码链接"
-
-msgid "Please specify a subject."
-msgstr ""
-
-msgid "Auto email template data updated."
-msgstr ""
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - 代理商/管理用户/邮件设置"
@@ -4954,7 +5197,9 @@ msgid "File needs to be a .tar.gz-archive"
 msgstr ""
 
 #, php-format
-msgid "Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgid ""
+"Could not upload the file. Max. upload filesize (%1$d MB) seem to be "
+"reached."
 msgstr ""
 
 #, php-format
@@ -4967,10 +5212,13 @@ msgid ""
 "Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB"
 msgstr ""
 
-msgid "Remote File not found!"
+msgid "Remote File not found."
 msgstr ""
 
-msgid "Could not upload the file. File not found!"
+msgid "Could not upload file."
+msgstr ""
+
+msgid "File successfully uploaded."
 msgstr ""
 
 msgid "Software available"
@@ -5021,16 +5269,10 @@ msgstr ""
 msgid "Domain expiration date must be filled."
 msgstr ""
 
-msgid "Hosting plan values exceed reseller maximum values."
-msgstr ""
-
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr "您没有主机项目，请联系您的系统管理员。"
 
 msgid "i-MSCP - Users/Add domain account - step 1"
-msgstr ""
-
-msgid "Domain expire date"
 msgstr ""
 
 msgid "Choose hosting plan"
@@ -5041,12 +5283,6 @@ msgstr "人性化模板"
 
 msgid "Next step"
 msgstr "下一步"
-
-msgid "SQL databases limit is not <i>disabled</i>."
-msgstr ""
-
-msgid "The i-MSCP application installer needs PHP to enable it."
-msgstr ""
 
 msgid "i-MSCP - User/Add domain account - step 2"
 msgstr ""
@@ -5060,8 +5296,17 @@ msgstr ""
 msgid "Apache logs"
 msgstr "Apache 日志"
 
-msgid "Awstats"
-msgstr "Awstats"
+msgid "Allow change value register_globals"
+msgstr ""
+
+msgid "Allow change value allow_url_fopen"
+msgstr ""
+
+msgid "Allow change value display_errors"
+msgstr ""
+
+msgid "Allow change value disable_functions"
+msgstr ""
 
 msgid "Domain data were been altered. Please try again."
 msgstr ""
@@ -5072,8 +5317,8 @@ msgstr ""
 msgid "Add other domains to this account"
 msgstr "添加域名到此账号"
 
-msgid "Domain already regiostered on the system."
-msgstr ""
+msgid "Incorrect mount point syntax"
+msgstr "不正确的挂载点拼写"
 
 msgid "Wrong syntax in forward URL."
 msgstr ""
@@ -5100,11 +5345,21 @@ msgstr "i-MSCP - 用户/编辑"
 msgid "Users list"
 msgstr "用户列表"
 
+msgid ""
+"User does not exist or you do not have permission to access this interface"
+msgstr ""
+
+msgid "Passwords doesn't not matches."
+msgstr ""
+
+msgid "User session was successfully killed for password change"
+msgstr ""
+
 msgid "This reseller has no domains yet."
 msgstr "此代理商还没有域名。"
 
-msgid "Not found user records matching the search criteria!"
-msgstr "没有找到与搜索字段相匹配的用户记录！"
+msgid "Not found user records matching the search criteria."
+msgstr ""
 
 msgid "You do not have customers."
 msgstr ""
@@ -5127,7 +5382,10 @@ msgid "User data were not updated."
 msgstr ""
 
 msgid ""
-"This user has domain record !<br>First remove the domain from the system."
+"This user has domain record.<br>First remove the domain from the system."
+msgstr ""
+
+msgid "User scheduled for deletion."
 msgstr ""
 
 msgid "User was not deleted."
