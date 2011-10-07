@@ -284,7 +284,7 @@ sub oldEngineCompatibility{
 			dirmode		=> '0750',
 			recursive	=> 'yes'
 		}
-	) if -d "$hDir/backups";;
+	) if -d "$hDir/backups";
 
 	0;
 }

@@ -329,10 +329,13 @@ sub buildFTPDData{
 	my $self	= shift;
 	my $rs 		= 0;
 	my ($stdout, $stderr);
-	my $file_name	= "$self->{subdomain_alias_name}.$self->{alias_name}.$self->{subdomain_alias_mount}";
+	return 0 if($self->{subdomain_alias_mount} eq '/');
 	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$self->{subdomain_alias_mount}";
-	$file_name		=~ s~/~~g;
+	my $file_name	= "$self->{user_home}/$self->{subdomain_alias_mount}";
+	$file_name		=~ s~/+~\.~g;
+	$file_name		=~ s~\.$~~g;
 	$hDir			=~ s~/+~/~g;
+	$hDir			=~ s~/$~~g;
 
 	$self->{ftpd} = {
 		FILE_NAME	=> $file_name,

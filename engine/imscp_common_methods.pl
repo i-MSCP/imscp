@@ -2017,7 +2017,7 @@ sub get_el_error {
 	return $rs if ($rs != 0);
 
 	my @frows = split(/\n/, $rdata);
-	my $err_row = "$frows[0]\n";;
+	my $err_row = "$frows[0]\n";
 
 	$err_row =~ /\|\ *([^\n]+)\n$/;
 

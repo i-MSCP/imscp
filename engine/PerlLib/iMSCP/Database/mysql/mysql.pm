@@ -94,7 +94,7 @@ sub doQuery{
 	$self->{sth} = $self->{connection}->prepare($query) || return("Error while preparing query: $DBI::errstr $key|$query");
 
 	if(@subs){
-		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@subs);;
+		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@subs);
 	} else {
 		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();
 	}

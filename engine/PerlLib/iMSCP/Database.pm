@@ -53,7 +53,7 @@ sub factory{
 
 	require $file;
 
-	return $class->new();;
+	return $class->new();
 }
 
 1;
