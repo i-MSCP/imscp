@@ -96,18 +96,18 @@ sub quota_files {
 
 			if ($size > 0) {
 				$sql = "UPDATE `domain` SET `domain_disk_usage` = ? WHERE `domain_id` = ?";
-				$rdata = iMSCP::Database->new()->factory()->doQuery('update', $sql, $size, $domain_id);
-				if (ref $rdata ne 'HASH'){
-					error("$rdata");
-					iMSCP::Mail->new()->errmsg($rdata);
+				my $rsdata = iMSCP::Database->new()->factory()->doQuery('update', $sql, $size, $domain_id);
+				if (ref $rsdata ne 'HASH'){
+					error("$rsdata");
+					iMSCP::Mail->new()->errmsg($rsdata);
 					$rs = 1;
 				}
 
 				$sql = "UPDATE `quotatallies` SET `bytes_in_used` = ? WHERE `name` = ?";
-				$rdata = iMSCP::Database->new()->factory()->doQuery('cnt', $sql, $size, $domain_name);
-				if (ref $rdata ne 'HASH'){
-					error("$rdata");
-					iMSCP::Mail->new()->errmsg($rdata);
+				$rsdata = iMSCP::Database->new()->factory()->doQuery('cnt', $sql, $size, $domain_name);
+				if (ref $rsdata ne 'HASH'){
+					error("$rsdata");
+					iMSCP::Mail->new()->errmsg($rsdata);
 					$rs = 1;
 				}
 			}
