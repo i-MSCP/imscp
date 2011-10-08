@@ -309,7 +309,7 @@ sub installPackagesList {
 	my($rs, $stderr);
 
 	$rs = execute("apt-get -y install $self->{toInstall}", undef, \$stderr);
-	error("$stderr") if $stderr;
+	error("$stderr") if $stderr && $rs;
 	error('Can not install packages.') if $rs && ! $stderr;
 	return $rs if $rs;
 
