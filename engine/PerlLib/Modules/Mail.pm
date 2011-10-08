@@ -119,11 +119,13 @@ sub restore{
 sub buildMTAData{
 
 	my $self	= shift;
+	my $mail	= $self->{mail_addr};
+	$mail		=~ s/^\s+//;
 
 	$self->{mta} = {
-		DMN_NAME			=> (split('@', $self->{mail_addr}))[1],
-		MAIL_ACC			=> (split('@', $self->{mail_addr}))[0],
-		MAIL_ADDR			=> $self->{mail_addr},
+		DMN_NAME			=> (split('@', $mail))[1],
+		MAIL_ACC			=> (split('@', $mail))[0],
+		MAIL_ADDR			=> $mail,
 		MAIL_CATCHALL		=> $self->{mail_acc},
 		MAIL_PASS			=> $self->{mail_pass},
 		MAIL_FORWARD		=> $self->{mail_forward},
@@ -148,11 +150,13 @@ sub buildMTAData{
 sub buildPOData{
 
 	my $self	= shift;
+	my $mail	= $self->{mail_addr};
+	$mail =~ s/^\s+//;
 
 	$self->{po} = {
-		DMN_NAME			=> (split('@', $self->{mail_addr}))[1],
-		MAIL_ACC			=> (split('@', $self->{mail_addr}))[0],
-		MAIL_ADDR			=> $self->{mail_addr},
+		DMN_NAME			=> (split('@', $mail))[1],
+		MAIL_ACC			=> (split('@', $mail))[0],
+		MAIL_ADDR			=> $mail,
 		MAIL_PASS			=> $self->{mail_pass},
 		MAIL_TYPE			=> $self->{mail_type},
 	};
