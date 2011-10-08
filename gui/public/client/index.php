@@ -40,10 +40,11 @@
  */
 
 /**
+ * Generates limit.
  *
  * @param $num
  * @param $limit
- * @return string|Translated
+ * @return string
  */
 function gen_num_limit_msg($num, $limit)
 {
@@ -65,7 +66,7 @@ function client_generateSupportSystemNotices()
 {
 	$userId = $_SESSION['user_id'];
 
-	// Check for new support questions
+	// Check for support question answers
 
 	$query = "
 		SELECT
@@ -76,34 +77,10 @@ function client_generateSupportSystemNotices()
 			`ticket_from` = ?
 		AND
 			`ticket_status` = '2'
-	";
-	$stmt = exec_query($query, $userId);
-
-	if ($stmt->fields('cnt')) {
-		set_page_message(
-			tr(
-				'You received <b>%d</b> new support question(s).',
-				$stmt->fields('cnt')
-			),
-			'info'
-		);
-	}
-
-	// Check for new support question answers
-
-	$query = "
-		SELECT
-			COUNT(`ticket_id`) `cnt`
-		FROM
-			`tickets`
-		WHERE
-			(`ticket_to` = ? OR `ticket_from` = ?)
-		AND
-			`ticket_status` = '2'
 		AND
 			`ticket_reply` = '0'
 	";
-	$stmt = exec_query($query, array($userId, $userId));
+	$stmt = exec_query($query, $userId);
 
 	if ($stmt->fields('cnt')) {
 		set_page_message(
@@ -152,7 +129,7 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
 /**
  * Generates disk usage bar.
  *
- * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param $usage
  * @param $maxUsage
  * @param $barMax
@@ -211,7 +188,9 @@ function client_generateFeatureStatus($tpl)
 			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => ($domainProperties['domain_dns'] == 'yes')
 				 ? $trYes : $trNo,
 			 'APP_INSTALLER_FEATURE_STATUS' => ($domainProperties['domain_software_allowed'] == 'yes')
-				 ? $trYes : $trNo));
+				 ? $trYes : $trNo
+		)
+	);
 
 	// Backup feature for customers can be disabled by admin (via imscp.conf)
 	if ($cfg->BACKUP_DOMAINS == 'yes') {
@@ -243,10 +222,10 @@ function client_generateFeatureStatus($tpl)
 
 	// For now, awstats can only be disabled by admin (via imscp.conf file)
 	if ($cfg->AWSTATS_ACTIVE == 'yes') {
-		$tpl->assign(array(
-						  'TR_AWSTATS_FEATURE' => tr('Web statistics'),
-						  'AWSTATS_FEATURE_STATUS' => $trYes
-					 ));
+		$tpl->assign(
+			array(
+				 'TR_AWSTATS_FEATURE' => tr('Web statistics'),
+				 'AWSTATS_FEATURE_STATUS' => $trYes));
 
 	}
 }
@@ -354,8 +333,7 @@ function client_generateDomainExpiresInformation($tpl)
 
 		$tpl->assign(array(
 						  'DOMAIN_REMAINING_TIME' => $domainRemainingTime,
-						  'DOMAIN_EXPIRES_DATE' => $domainExpiresDate
-					 ));
+						  'DOMAIN_EXPIRES_DATE' => $domainExpiresDate));
 	} else {
 		$tpl->assign(array(
 						  'DOMAIN_REMAINING_TIME' => '',
@@ -378,21 +356,23 @@ check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic(array(
-						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
-						  'logged_from' => 'page',
-						  'page_message' => 'page',
-						  'alternative_domain_url' => 'page',
-						  'backup_domain_feature' => 'page',
-						  'traffic_warning' => 'page',
-						  'disk_warning' => 'page'));
+$tpl->define_dynamic(
+	array(
+		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
+		 'logged_from' => 'page',
+		 'page_message' => 'page',
+		 'alternative_domain_url' => 'page',
+		 'backup_domain_feature' => 'page',
+		 'traffic_warning' => 'page',
+		 'disk_warning' => 'page'));
 
-$tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
-				  'TR_TITLE_GENERAL_INFORMATION' => tr('General information')));
+$tpl->assign(
+	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
+		 'TR_TITLE_GENERAL_INFORMATION' => tr('General information')));
 
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
@@ -413,8 +393,6 @@ client_generateTrafficUsageBar(
 	$tpl, $domainTrafficUsage * 1024 * 1024,
 	$domainProperties['domain_traffic_limit'] * 1024 * 1024, 400);
 
-
-
 client_generateDiskUsageBar(
 	$tpl, $domainProperties['domain_disk_usage'],
 	$domainProperties['domain_disk_limit'] * 1024 * 1024, 400);
@@ -422,7 +400,9 @@ client_generateDiskUsageBar(
 
 if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$tpl->assign(
-		'HREF_DOMAIN_ALTERNATIVE_URL', "http://{$cfg->SYSTEM_USER_PREFIX}" . ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) . ".{$_SERVER['SERVER_NAME']}");
+		'HREF_DOMAIN_ALTERNATIVE_URL', "http://{$cfg->SYSTEM_USER_PREFIX}" .
+									   ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) .
+									   ".{$_SERVER['SERVER_NAME']}");
 } else {
 	$tpl->assign('DOMAIN_ALTERNATIVE_URL', '');
 }
@@ -481,9 +461,7 @@ $tpl->assign(
 		 'TR_BACKUP_FEATURE' => tr('Backup support'),
 
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-		 'TR_DISK_USAGE' => tr('Disk usage')
-	)
-);
+		 'TR_DISK_USAGE' => tr('Disk usage')));
 
 generatePageMessage($tpl);
 
