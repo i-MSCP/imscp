@@ -275,7 +275,8 @@ sub readPackagesList {
 					$rs = iMSCP::Dialog->factory()->radiolist(
 						"Choose server $server",
 						@alternative,
-						'Not Used'
+						#uncoment after dependicies check is implemented
+						#'Not Used'
 					);
 				} while (!$rs);
 

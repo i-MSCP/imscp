@@ -48,6 +48,7 @@ use iMSCP::Debug;
 use iMSCP::Dialog;
 use iMSCP::SO;
 use iMSCP::Config;
+use iMSCP::Dir;
 
 newDebug('imscp-build.log');
 
@@ -194,3 +195,12 @@ unless(iMSCP::Dialog->factory()->yesno($msg)) {
 }
 
 0;
+
+END{
+	my $exitCode = $?;
+
+	my $logdir = $main::defaultConf{LOG_DIR} || '/tmp';
+	iMSCP::Dir->new(dirname => $logdir)->make() unless -d $logdir;
+
+	$? = $exitCode;
+}
