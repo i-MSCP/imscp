@@ -144,6 +144,7 @@ sub _insertConfig{
 	debug("Setting $config as $value");
 
 	push (@{$self->{confFile}}, "$config = $value");
+	$self->{lineMap}->{$config} = $#{$self->{confFile}};
 	$self->{configValues}->{$config} = $value;
 }
 

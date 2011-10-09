@@ -293,4 +293,24 @@ sub rcopy{
 	0;
 }
 
+sub moveDir{
+	my $self	= shift;
+	my $dest	= shift;
+
+	if(!$self->{dirname} || !-d $self->{dirname}){
+		error("".($self->{filename} ? "Directory $self->{dirname} do not exits" : "Directory name not set!"));
+		return 1;
+	}
+
+	debug("Move $self->{dirname} to $dest");
+	use File::Copy ;
+
+	if(! move ($self->{dirname}, $dest)){
+		error("Move $self->{dirname} to $dest failed: $!");
+		return 1;
+	}
+
+	0;
+}
+
 1;
