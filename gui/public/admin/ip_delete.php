@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel.
  *
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
@@ -57,17 +57,17 @@ $deleteIpId = (int) $_GET['delete_id'];
 
 // All in one query
 $query = "
-SELECT
-	`t1`.`ip_number` `ipNumber`, `t3`.`admin_name` `assignedTo`,
-	count(`t4`.`ip_id`) `ipsTotalCount`
-FROM
-	`server_ips` `t1`, `reseller_props` `t2`
-LEFT JOIN
-	`admin` `t3` ON (`t2`.`reseller_id` = `t3`.`admin_id` AND `t2`.`reseller_ips` LIKE CONCAT('%', ?, ';%'))
-LEFT JOIN
-	`server_ips` `t4` ON (`t4`.`ip_id`)
-WHERE
-	`t1`.`ip_id` = ?
+	SELECT
+		`t1`.`ip_number` `ipNumber`, `t3`.`admin_name` `assignedTo`,
+		count(`t4`.`ip_id`) `ipsTotalCount`
+	FROM
+		`server_ips` `t1`, `reseller_props` `t2`
+	LEFT JOIN
+		`admin` `t3` ON (`t2`.`reseller_id` = `t3`.`admin_id` AND `t2`.`reseller_ips` LIKE CONCAT('%', ?, ';%'))
+	LEFT JOIN
+		`server_ips` `t4` ON (`t4`.`ip_id`)
+	WHERE
+		`t1`.`ip_id` = ?
 ";
 $stmt = exec_query($query, array($deleteIpId, $deleteIpId));
 
