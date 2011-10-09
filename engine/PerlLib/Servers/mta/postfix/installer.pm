@@ -106,11 +106,13 @@ sub setEnginePermissions{
 	my $rs;
 	my $mtaUName	= $self::postfixConfig{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName	= $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
+	my $mtaFolder	= $self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'};
 	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
 	my $LOG_DIR		= $main::imscpConfig{'LOG_DIR'};
 
 	$rs |= setRights("$ROOT_DIR/engine/messenger", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0550', recursive => 'yes'});
 	$rs |= setRights("$LOG_DIR/imscp-arpl-msgr", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes'});
+	$rs |= setRights($mtaFolder, {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes'});
 
 	$rs;
 }
@@ -125,7 +127,7 @@ sub makeDirs{
 
 	for (
 		[$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
-		[$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'},	$main::imscpConfig{'ROOT_USER'},	$main::imscpConfig{'ROOT_GROUP'}],
+		[$self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'},	$self::postfixConfig{'MTA_MAILBOX_UID_NAME'},	$self::postfixConfig{'MTA_MAILBOX_GID_NAME'}],
 	) {
 		$rs |= iMSCP::Dir->new(dirname => $_->[0])->make({ user => $_->[1], group => $_->[2], mode => 0755});
 	}

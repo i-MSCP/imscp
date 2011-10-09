@@ -772,7 +772,7 @@ sub addMailBox{
 	$rs |=	iMSCP::Dir->new(dirname => $mailDir)->make({
 				user	=> $self->{MTA_MAILBOX_UID_NAME},
 				group	=> $self->{MTA_MAILBOX_GID_NAME},
-				mode	=> 0755
+				mode	=> 0700
 			});
 
 	for ("$mailDir/cur", "$mailDir/tmp", "$mailDir/new"){
@@ -864,6 +864,24 @@ sub delCatchAll{
 	$self->{postmap}->{$self->{MTA_VIRTUAL_ALIAS_HASH}} = $data->{MAIL_ADDR};
 
 	$rs;
+}
+
+sub getTraffic{
+
+	use iMSCP::Execute;
+	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $who		= shift;
+	my $dbName	= "$self->{wrkDir}/log.db";
+	my $traff	= 0;
+	my ($rv, $rs, $stdout, $stderr);
+
+	unless($self->{logDb}){
+		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName;
+	}
+
+	$traff;
 }
 
 END{
