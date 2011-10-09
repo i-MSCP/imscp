@@ -2,13 +2,13 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @version		SVN: $Id$
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,94 +26,75 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+/************************************************************************************
+ * Main script
+ */
+
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-// Test if we have a proper delete_id.
 if (!isset($_GET['delete_id'])) {
+	set_page_message(tr('Wrong request'));
 	redirectTo('ip_manage.php');
 }
 
-if (!is_numeric($_GET['delete_id'])) {
-	set_page_message(tr('You cannot delete the last active IP address!'), 'error');
+$deleteIpId = (int) $_GET['delete_id'];
+
+// All in one query
+$query = "
+SELECT
+	`t1`.`ip_number` `ipNumber`, `t3`.`admin_name` `assignedTo`,
+	count(`t4`.`ip_id`) `ipsTotalCount`
+FROM
+	`server_ips` `t1`, `reseller_props` `t2`
+LEFT JOIN
+	`admin` `t3` ON (`t2`.`reseller_id` = `t3`.`admin_id` AND `t2`.`reseller_ips` LIKE CONCAT('%', ?, ';%'))
+LEFT JOIN
+	`server_ips` `t4` ON (`t4`.`ip_id`)
+WHERE
+	`t1`.`ip_id` = ?
+";
+$stmt = exec_query($query, array($deleteIpId, $deleteIpId));
+
+if(!$stmt->rowCount()) {
+	set_page_message(tr('Wrong request.'));
+	redirectTo('ip_manage.php');
+} elseif($stmt->fields['ipsTotalCount'] < 2) {
+	set_page_message(tr('You cannot delete the last active IP address.'), 'error');
+	redirectTo('ip_manage.php');
+} elseif($stmt->fields['assignedTo'] != null) {
+	set_page_message(
+		tr(
+			'The IP %s is assigned to the reseller %s. You must unassign it first.',
+			$stmt->fields['ipNumber'],
+			$stmt->fields['assignedTo']
+		), 'error');
+
 	redirectTo('ip_manage.php');
 }
 
-$delete_id = $_GET['delete_id'];
+write_log("{$_SESSION['user_logged']}: deleted IP address {$stmt->fields['ipNumber']}", E_USER_NOTICE);
 
-// check for domains that use this IP
-$query = "
-	SELECT
-		COUNT(`domain_id`) AS dcnt
-	FROM
-		`domain`
-	WHERE
-		`domain_ip_id` = ?
-";
-
-$rs = exec_query($query, $delete_id);
-
-if ($rs->fields['dcnt'] > 0) {
-	// ERROR - we have domain(s) that use this IP
-
-	set_page_message(tr('Error: we have a domain using this IP!'), 'error');
-
-	redirectTo('ip_manage.php');
-}
-// check if the IP is assigned to reseller
-$query = "SELECT `reseller_ips` FROM `reseller_props`";
-$res = execute_query($query);
-
-while (($data = $res->fetchRow())) {
-	if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
-		set_page_message(tr('Error: we have a reseller using this IP!'), 'error');
-		redirectTo('ip_manage.php');
-	}
-}
-
-$query = "
-	SELECT
-		*
-	FROM
-		`server_ips`
-	WHERE
-		`ip_id` = ?
-";
-
-$rs = exec_query($query, $delete_id);
-
-$user_logged = $_SESSION['user_logged'];
-
-$ip_number = $rs->fields['ip_number'];
-
-write_log("$user_logged: deletes IP address $ip_number", E_USER_NOTICE);
-
-// delete it !
-$query = "
-	UPDATE
-		`server_ips`
-	SET
-		`ip_status` = ?
-	WHERE
-		`ip_id` = ?
-	LIMIT 1
-";
-
-$rs = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
+$query = "UPDATE `server_ips` SET `ip_status` = ? WHERE `ip_id` = ?";
+$stmt = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $deleteIpId));
 
 send_request();
 
-set_page_message(tr('IP was deleted!'), 'success');
+set_page_message(tr('IP scheduled for deletion.'), 'success');
 
 redirectTo('ip_manage.php');
