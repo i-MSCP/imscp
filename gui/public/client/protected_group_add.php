@@ -150,6 +150,7 @@ $tpl->assign(
 		'TR_PASSWORD'			=> tr('Password'),
 		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
 		'TR_CANCEL'				=> tr('Cancel'),
+		'TR_HTACCESS_USER' => tr('Manage users and groups')
 	)
 );
 
