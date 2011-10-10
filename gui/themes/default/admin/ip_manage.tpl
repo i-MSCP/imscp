@@ -18,15 +18,18 @@
 		<script type="text/javascript">
 			/* <![CDATA[ */
 			function action_delete(url, subject) {
-				if (url == "#" || !confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
+				if(url == '#') {
+					alert(sprintf('{TR_MESSAGE_DENY_DELETE}', subject));
 					return false;
+				} else if(!confirm(sprintf('{TR_MESSAGE_DELETE}', subject))) {
+					return false;
+				}
 
 				location = url;
 			}
 			/* ]]> */
 		</script>
 	</head>
-
 	<body>
 		<div class="header">
 			{MAIN_MENU}
@@ -46,7 +49,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
-				<li><a href="ip_manage.php">{MANAGE_IPS}</a></li>
+				<li><a href="#" onclick="return false;">{MANAGE_IPS}</a></li>
 			</ul>
 		</div>
 
@@ -55,91 +58,93 @@
 		</div>
 
 		<div class="body">
-			<!-- BDP: tickets_list -->
-			<h2 class="support"><span>{MANAGE_IPS}</span></h2>
-			<!-- BDP: ip_available -->
+			<h2 class="ip"><span>{MANAGE_IPS}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<fieldset>
-				<legend>{TR_AVAILABLE_IPS}</legend>
+			<!-- BDP: ips_list -->
+			<h3>{TR_REGISTERED_IPS}</h3>
+
+			<table>
+				<tr align="center">
+					<th style="width:300px;">{TR_IP}</th>
+					<th>{TR_DOMAIN}</th>
+					<th>{TR_ALIAS}</th>
+					<th>{TR_NETWORK_CARD}</th>
+					<th>{TR_ACTION}</th>
+				</tr>
+
+				<!-- BDP: ip_row -->
+				<tr>
+					<td>{IP}</td>
+					<td>{DOMAIN}</td>
+					<td>{ALIAS}</td>
+					<td>{NETWORK_CARD}</td>
+					<td>
+						<a href="#"
+						   onclick="action_delete('{IP_ACTION_SCRIPT}', '{IP}'); return false;"
+						   title="{IP_ACTION}" class="icon i_delete">{IP_ACTION}</a>
+					</td>
+				</tr>
+				<!-- EDP: ip_row -->
+			</table>
+			<!-- EDP: ips_list -->
+
+			<!-- BDP: add_ip -->
+			<h3>{TR_ADD_NEW_IP}</h3>
+
+			<form name="addNewIpFrm" method="post" action="ip_manage.php">
 				<table>
-					<tr align="center">
-						<th style="width:300px;">{TR_IP}</th>
-						<th>{TR_DOMAIN}</th>
-						<th>{TR_ALIAS}</th>
-						<th>{TR_NETWORK_CARD}</th>
-						<th>{TR_ACTION}</th>
-					</tr>
-					<!-- BDP: ip_row -->
 					<tr>
-						<td>{IP}</td>
-						<td>{DOMAIN}</td>
-						<td>{ALIAS}</td>
-						<td>{NETWORK_CARD}</td>
+						<th colspan="2">{TR_IP_DATA}</th>
+					</tr>
+					<tr>
+						<td style="width:300px;">{TR_IP}</td>
 						<td>
-							<!-- BDP: ip_delete_show -->
-						{IP_ACTION}
-							<!-- EDP: ip_delete_show -->
-							<!-- BDP: ip_delete_link -->
-							<a href="#" onclick="action_delete('{IP_ACTION_SCRIPT}', '{IP}')" title="{IP_ACTION}" class="icon i_delete">{IP_ACTION}</a>
-							<!-- EDP: ip_delete_link -->
+							<input class="ip-segment" name="ip_number_1" type="text" value="{VALUE_IP1}" maxlength="3"/> <strong>.</strong>
+							<input class="ip-segment" name="ip_number_2" type="text" value="{VALUE_IP2}" maxlength="3"/> <strong>.</strong>
+							<input class="ip-segment" name="ip_number_3" type="text" value="{VALUE_IP3}" maxlength="3"/> <strong>.</strong>
+							<input class="ip-segment" name="ip_number_4" type="text" value="{VALUE_IP4}" maxlength="3"/>
 						</td>
 					</tr>
-					<!-- EDP: ip_row -->
+					<tr>
+						<td><label for="domain">{TR_DOMAIN}</label></td>
+						<td>
+							<input type="text" name="domain" id="domain"
+								   value="{VALUE_DOMAIN}"/>
+						</td>
+					</tr>
+					<tr>
+						<td><label for="alias">{TR_ALIAS}</label></td>
+						<td>
+							<input type="text" name="alias" id="alias"
+								   value="{VALUE_ALIAS}"/>
+						</td>
+					</tr>
+					<tr>
+						<td><label for="ip_card">{TR_NETWORK_CARD}</label></td>
+						<td>
+							<select name="ip_card" id="ip_card">
+								<!-- BDP: cards_list -->
+								<option {SELECTED}>{NETWORK_CARD}</option>
+								<!-- EDP: cards_list -->
+							</select>
+						</td>
+					</tr>
 				</table>
-			</fieldset>
-			<!-- EDP: ip_available -->
-			<form name="add_new_ip_frm" method="post" action="ip_manage.php">
-				<fieldset>
-					<legend>{TR_ADD_NEW_IP}</legend>
-
-					<table>
-						<tr>
-							<td style="width:300px;">{TR_IP}</td>
-							<td>
-								<input class="ip-segment" name="ip_number_1" type="text" value="{VALUE_IP1}" maxlength="3" />.
-								<input class="ip-segment" name="ip_number_2" type="text" value="{VALUE_IP2}" maxlength="3" />.
-								<input class="ip-segment" name="ip_number_3" type="text" value="{VALUE_IP3}" maxlength="3" />.
-								<input class="ip-segment" name="ip_number_4" type="text" value="{VALUE_IP4}" maxlength="3" />
-							</td>
-						</tr>
-						<tr>
-							<td><label for="domain">{TR_DOMAIN}</label></td>
-							<td>
-								<input type="text" name="domain" id="domain" value="{VALUE_DOMAIN}" />
-							</td>
-						</tr>
-						<tr>
-							<td><label for="alias">{TR_ALIAS}</label></td>
-							<td>
-								<input type="text" name="alias" id="alias" value="{VALUE_ALIAS}" />
-							</td>
-						</tr>
-						<tr>
-							<td><label for="ip_card">{TR_NETWORK_CARD}</label></td>
-							<td>
-								<select name="ip_card" id="ip_card">
-									<!-- BDP: card_list -->
-									<option>{NETWORK_CARDS}</option>
-									<!-- EDP: card_list -->
-								</select>
-							</td>
-						</tr>
-					</table>
-				</fieldset>
 
 				<div class="buttons">
-					<input name="Submit" type="submit" value="{TR_ADD}" />
-					<input type="hidden" name="uaction" value="add_ip" />
+					<input name="Submit" type="submit" value="{TR_ADD}"/>
+					<input type="hidden" name="uaction" value="addIpAddress"/>
 				</div>
 			</form>
+			<!-- EDP: add_ip -->
 		</div>
 
 		<div class="footer">
-			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+			i-MSCP {VERSION}<br/>build: {BUILDDATE}<br/>Codename: {CODENAME}
 		</div>
 	</body>
 </html>

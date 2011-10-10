@@ -34,7 +34,6 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-
 /************************************************************************************
  * Script functions
  */
@@ -316,7 +315,6 @@ function client_generateDomainExpiresInformation($tpl)
 			list($years, $month, $days) = _client_getDomainRemainingTime($domainProperties['domain_expires']);
 
 			if ($years == 0 && $month == 0 && $days <= 14) {
-
 				$domainRemainingTime = '<span style="color:red">' .
 									   tr(
 										   '%d %s remaining until account expiration',
@@ -328,7 +326,7 @@ function client_generateDomainExpiresInformation($tpl)
 		} else {
 			$domainExpiresDate = '<strong>(' . $domainExpiresDate . ')</strong>';
 			$domainRemainingTime = '<span style="color:red">' . tr('Domain account expired.') . '</span>';
-			set_page_message(tr('Your domain account is expired. Please, contact your reseller to renew your subscription.'), 'warning');
+			set_page_message(tr('Your account has expired. Please renew your subscription.'), 'warning');
 		}
 
 		$tpl->assign(array(
@@ -344,6 +342,7 @@ function client_generateDomainExpiresInformation($tpl)
 /************************************************************************************
  * Main script
  */
+
 // Include core libraries
 require 'imscp-lib.php';
 
