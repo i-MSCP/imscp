@@ -157,7 +157,7 @@ function _client_generateNetcardsList($tpl)
 
 	$networkCards = $networkCardObject->getAvailableInterface();
 
-	if (!empty($networkCards)){
+	if (!empty($networkCards)) {
 		foreach ($networkCards as $networkCard) {
 			$tpl->assign('NETWORK_CARD', $networkCard);
 			$tpl->parse('CARDS_LIST', '.cards_list');
@@ -280,7 +280,6 @@ $cfg = iMSCP_Registry::get('config');
 // Register iMSCP_NetworkCard instance in registry for shared access
 iMSCP_Registry::set('networkCardObject', new iMSCP_NetworkCard());
 
-
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'addIpAddress') {
 	$ipNumber = trim($_POST['ip_number_1'])
 				. '.' . trim($_POST['ip_number_2'])
@@ -291,13 +290,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'addIpAddress') {
 	$alias = clean_input($_POST['alias']);
 	$netcard = clean_input($_POST['ip_card']);
 
-	if(client_checkData($ipNumber, $domain, $alias, $netcard)) {
+	if (client_checkData($ipNumber, $domain, $alias, $netcard)) {
 		client_registerIp($ipNumber, $domain, $alias, $netcard);
 	}
 }
 
 $tpl = new iMSCP_pTemplate();
-
 
 $tpl->define_dynamic(
 	array(
@@ -330,9 +328,7 @@ $tpl->assign(
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
-
 client_generatePage($tpl);
-
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
