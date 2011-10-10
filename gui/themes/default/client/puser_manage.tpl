@@ -46,7 +46,8 @@
 			</ul>
 			<ul class="path">
 				<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
-				<li><a href="protected_user_manage.php">{TR_HTACCESS_USER}</a></li>
+				<li><a href="protected_areas.php">{TR_LMENU_HTACCESS}</a></li>
+				<li><a href="#" onclick="return false;">{TR_HTACCESS_USER}</a></li>
 			</ul>
 		</div>
 

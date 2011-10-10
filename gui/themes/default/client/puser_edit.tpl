@@ -39,8 +39,9 @@
 			</ul>
 			<ul class="path">
 				<li><a href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
+				<li><a href="protected_areas.php">{TR_LMENU_HTACCESS}</a></li>
 				<li><a href="protected_user_manage.php">{TR_HTACCESS_USER}</a></li>
-				<li>{TR_UPDATE_USER}</li>
+				<li><a href="#" onclick="return false;">{TR_EDIT_USER}</a></li>
 			</ul>
 		</div>
 
@@ -50,7 +51,7 @@
 
 
 		<div class="body">
-			<h2 class="users"><span>{TR_UPDATE_USER}</span></h2>
+			<h2 class="users"><span>{TR_EDIT_USER}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>

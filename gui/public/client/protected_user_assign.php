@@ -282,15 +282,16 @@ gen_user_assign($tpl, $dmn_id);
 
 $tpl->assign(
 	array(
-		'TR_HTACCESS'			=> tr('Protected areas'),
-		'TR_DELETE'				=> tr('Delete'),
-		'TR_USER_ASSIGN'		=> tr('User assign'),
-		'TR_ALLREADY'			=> tr('Already in:'),
-		'TR_MEMBER_OF_GROUP'	=> tr('Member of group:'),
-		'TR_BACK'				=> tr('Back'),
-		'TR_REMOVE'				=> tr('Remove'),
-		'TR_ADD'				=> tr('Add'),
-		'TR_SELECT_GROUP'		=> tr('Select group:')
+		 'TR_HTACCESS' => tr('Protected areas'),
+		 'TR_DELETE' => tr('Delete'),
+		 'TR_USER_ASSIGN' => tr('User assign'),
+		 'TR_ALLREADY' => tr('Already in:'),
+		 'TR_MEMBER_OF_GROUP' => tr('Member of group:'),
+		 'TR_BACK' => tr('Back'),
+		 'TR_REMOVE' => tr('Remove'),
+		 'TR_ADD' => tr('Add'),
+		 'TR_SELECT_GROUP' => tr('Select group:'),
+		 'TR_HTACCESS_USER' => tr('Manage users and groups')
 	)
 );
 

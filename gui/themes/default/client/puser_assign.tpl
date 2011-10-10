@@ -38,8 +38,10 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
+				<li><a href="webtools.php.php">{TR_MENU_WEBTOOLS}</a></li>
+				<li><a href="protected_areas.php">{TR_LMENU_HTACCESS}</a></li>
 				<li><a href="protected_user_manage.php">{TR_HTACCESS_USER}</a></li>
-				<li>{TR_USER_ASSIGN}</li>
+				<li><a href="#" onclick="return false;">{TR_USER_ASSIGN}</a></li>
 			</ul>
 		</div>
 
@@ -50,11 +52,10 @@
 
 		<div class="body">
 			<h2 class="users"><span>{TR_USER_ASSIGN}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form name="puser_assign" method="post" action="protected_user_assign.php?uname={UNAME}">
 				<fieldset>

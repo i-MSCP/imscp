@@ -213,21 +213,22 @@ gen_pgroups($tpl, $dmn_id);
 
 $tpl->assign(
 	array(
-		'TR_HTACCESS'			=> tr('Protected areas'),
-		'TR_ACTION'				=> tr('Action'),
-		'TR_USER_MANAGE'		=> tr('Manage user'),
-		'TR_USERS'				=> tr('User'),
-		'TR_USERNAME'			=> tr('Username'),
-		'TR_ADD_USER'			=> tr('Add user'),
-		'TR_GROUPNAME'			=> tr('Group name'),
-		'TR_GROUP_MEMBERS'		=> tr('Group members'),
-		'TR_ADD_GROUP'			=> tr('Add group'),
-		'TR_GROUP'				=> tr('Group'),
-		'TR_GROUPS'				=> tr('Groups'),
-		'TR_PASSWORD'			=> tr('Password'),
-		'TR_STATUS'				=> tr('Status'),
-		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
-		'TR_MESSAGE_DELETE'		=> tr('Are you sure you want to delete %s?', true, '%s')
+		 'TR_HTACCESS' => tr('Protected areas'),
+		 'TR_ACTION' => tr('Action'),
+		 'TR_USER_MANAGE' => tr('Manage user'),
+		 'TR_USERS' => tr('User'),
+		 'TR_USERNAME' => tr('Username'),
+		 'TR_ADD_USER' => tr('Add user'),
+		 'TR_GROUPNAME' => tr('Group name'),
+		 'TR_GROUP_MEMBERS' => tr('Group members'),
+		 'TR_ADD_GROUP' => tr('Add group'),
+		 'TR_GROUP' => tr('Group'),
+		 'TR_GROUPS' => tr('Groups'),
+		 'TR_PASSWORD' => tr('Password'),
+		 'TR_STATUS' => tr('Status'),
+		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		 'TR_HTACCESS_USER' => tr('Manage users and groups')
 	)
 );
 
