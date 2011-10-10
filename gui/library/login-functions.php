@@ -141,10 +141,10 @@ function get_userdata($userName)
 }
 
 /**
- * Checks if an user account is expired
+ * Checks if an user account is expired.
  *
  * @param string $userName User account name
- * @return boolTRUE if the user account is not expired, FALSE otherwise
+ * @return bool TRUE user account is not expired, FALSE otherwise
  */
 function is_userdomain_expired($userName)
 {
@@ -166,6 +166,7 @@ function is_userdomain_expired($userName)
 	if(!empty($row) && $row['domain_expires'] >0 && time() > $row['domain_expires']) {
 		return true;
 	}
+
 	return false;
 }
 
