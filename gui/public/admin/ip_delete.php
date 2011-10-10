@@ -55,36 +55,23 @@ if (!isset($_GET['delete_id'])) {
 
 $deleteIpId = (int) $_GET['delete_id'];
 
-// All in one query
-$query = "
-	SELECT
-		`t1`.`ip_number` `ipNumber`, `t3`.`admin_name` `assignedTo`,
-		count(`t4`.`ip_id`) `ipsTotalCount`
-	FROM
-		`server_ips` `t1`, `reseller_props` `t2`
-	LEFT JOIN
-		`admin` `t3` ON (`t2`.`reseller_id` = `t3`.`admin_id` AND `t2`.`reseller_ips` LIKE CONCAT('%', ?, ';%'))
-	LEFT JOIN
-		`server_ips` `t4` ON (`t4`.`ip_id`)
-	WHERE
-		`t1`.`ip_id` = ?
-";
-$stmt = exec_query($query, array($deleteIpId, $deleteIpId));
+$query = "SELECT `reseller_ips` FROM `reseller_props`";
+$stmt = execute_query($query);
 
-if(!$stmt->rowCount()) {
-	set_page_message(tr('Wrong request.'));
-	redirectTo('ip_manage.php');
-} elseif($stmt->fields['ipsTotalCount'] < 2) {
+while(!$stmt->EOF) {
+	if(in_array($deleteIpId, explode(';', $stmt->fields['reseller_ips']))) {
+		set_page_message(tr('The IP is assigned to a reseller. You must unassign it first.'), 'error');
+        redirectTo('ip_manage.php');
+	}
+
+	$stmt->moveNext();
+}
+
+$query = "SELECT count(`ip_id`) `ipsTotalCount` FROM server_ips";
+$stmt = execute_query($query);
+
+if($stmt->fields['ipsTotalCount'] < 2) {
 	set_page_message(tr('You cannot delete the last active IP address.'), 'error');
-	redirectTo('ip_manage.php');
-} elseif($stmt->fields['assignedTo'] != null) {
-	set_page_message(
-		tr(
-			'The IP %s is assigned to the reseller %s. You must unassign it first.',
-			$stmt->fields['ipNumber'],
-			$stmt->fields['assignedTo']
-		), 'error');
-
 	redirectTo('ip_manage.php');
 }
 
