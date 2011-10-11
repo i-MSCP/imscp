@@ -695,6 +695,8 @@ sub delMailBox{
 
 	$rs |= $self->disableMailBox($data);
 
+	return $rs if !$data->{MAIL_ACC}; #catchall?
+
 	my $mailDir = "$self->{MTA_VIRTUAL_MAIL_DIR}/$data->{DMN_NAME}/$data->{MAIL_ACC}";
 
 	$rs |=	iMSCP::Dir->new(dirname => $mailDir)->remove();
