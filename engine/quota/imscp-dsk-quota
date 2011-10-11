@@ -20,7 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @version		SVN: $Id: imscp-dsk-quota 5308 2011-09-25 15:46:35Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -119,7 +119,7 @@ sub quota_files {
 
 sub quota_mysql {
 
-	my ($rs, $size) = (0, 0);
+	my $rs = 0;
 
 	my $sql = "SHOW DATABASES";
 	my $databases = iMSCP::Database->new()->factory()->doQuery('Database', $sql);
@@ -146,6 +146,7 @@ sub quota_mysql {
 			my $disk_usage	= $rdata->{$_}->{domain_disk_usage};
 			$sql			= "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
 			my $userDBs		= iMSCP::Database->new()->factory()->doQuery('sqld_id', $sql, $domain_id);
+			my $size			= 0;
 
 			if (ref $userDBs ne 'HASH'){
 				error("$userDBs");
