@@ -104,12 +104,15 @@ sub setEnginePermissions{
 
 	my $self		= shift;
 	my $rs;
+	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
+	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
 	my $mtaUName	= $self::postfixConfig{'MTA_MAILBOX_UID_NAME'};
 	my $mtaGName	= $self::postfixConfig{'MTA_MAILBOX_GID_NAME'};
+	my $mtaCfg		= $self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'};
 	my $mtaFolder	= $self::postfixConfig{'MTA_VIRTUAL_MAIL_DIR'};
 	my $ROOT_DIR	= $main::imscpConfig{'ROOT_DIR'};
 	my $LOG_DIR		= $main::imscpConfig{'LOG_DIR'};
-
+	$rs |= setRights($mtaCfg, {user => $rootUName, group => $rootGName, dirmode => '0755', filemode => '0644', recursive => 'yes'});
 	$rs |= setRights("$ROOT_DIR/engine/messenger", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0550', recursive => 'yes'});
 	$rs |= setRights("$LOG_DIR/imscp-arpl-msgr", {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes'});
 	$rs |= setRights($mtaFolder, {user => $mtaUName, group => $mtaGName, dirmode => '0750', filemode => '0640', recursive => 'yes'});
