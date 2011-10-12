@@ -77,6 +77,7 @@ Tickets:
 	- Fixed #215: Bug - Subdomains is not accessible to edit phpini
 	- Fixed #218: Bug - Update trunk don't work because of dovecot 2.0.15-1
 	- Fixed #220: Bug - Webspace Display show's wrong Values
+	- Fixed #220: The script to migrate from ispcp should take care of killing the ispcp-daemon
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
