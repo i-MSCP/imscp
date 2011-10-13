@@ -100,7 +100,7 @@ $cfg['UploadDir']                               = '{UPLOADS_DIR}';
 /**
  * The name of the directory where dumps can be saved. (not used)
  */
-$cfg['SaveDir']                                 = '{TMP_DIR}';
+//$cfg['SaveDir']                                 = '{TMP_DIR}';
 
 /**
  * The name of the directory where temporary files can be stored.
