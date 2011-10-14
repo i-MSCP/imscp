@@ -332,7 +332,7 @@ if(getConf() != 0) {
 # re-spawn the process again and again. Instead, the script will acts as
 # /dev/null. It's really better to act like this to avoid too much processor
 # resources consumption. But the side effect of this is that the administrator
-# will not be able to see the problem unless if he reads the log file.
+# will not be able to see the problem until he reads the log file.
 
 eventLog(
 	'notice', "Acts as /dev/null to avoid too many re-spawn attempts by " .
