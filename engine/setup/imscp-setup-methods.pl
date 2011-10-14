@@ -20,7 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @version		SVN: $Id: imscp-setup-methods.pl 5372 2011-10-01 21:39:16Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -1067,8 +1067,14 @@ sub setup_gui_pma {
 		$ctrlUser = $ctrlUser ? $ctrlUser : ($main::imscpConfig{'PMA_USER'} ? $main::imscpConfig{'PMA_USER'} : ($main::imscpConfigOld{'PMA_USER'} ? $main::imscpConfigOld{'PMA_USER'} : 'pma'));
 
 		do{
-			$ctrlUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name", $ctrlUser);
-		} while (!$ctrlUser || ($main::imscpConfig{'DATABASE_USER'} eq $ctrlUser));
+			$ctrlUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name for the restricted phpmyadmin user (default pma)", $ctrlUser);
+			#we will not allow root user to be used as database user for proftpd since account will be restricted
+			if($ctrlUser eq $main::imscpConfig{DATABASE_USER}){
+				iMSCP::Dialog->factory()->msgbox("You can not use $main::imscpConfig{DATABASE_USER} as restricted user");
+				$ctrlUser = undef;
+			}
+		} while (!$ctrlUser);
+
 		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
 
 		# Ask for proftpd SQL user password
