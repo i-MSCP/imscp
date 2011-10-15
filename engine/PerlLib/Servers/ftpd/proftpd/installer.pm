@@ -201,8 +201,14 @@ sub setupDB{
 		$connData = 'yes';
 	} else {
 		my $dbUser = 'vftp';
+
 		do{
-			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name (default vftp)", $dbUser);
+			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name for the restricted proftpd user (default vftp)", $dbUser);
+			#we will not allow root user to be used as database user for proftpd since account will be restricted
+			if($dbUser eq $main::imscpConfig{DATABASE_USER}){
+				iMSCP::Dialog->factory()->msgbox("You can not use $main::imscpConfig{DATABASE_USER} as restricted user");
+				$dbUser = undef;
+			}
 		} while (!$dbUser);
 
 		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');

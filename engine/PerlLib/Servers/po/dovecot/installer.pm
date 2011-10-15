@@ -20,7 +20,7 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
+# @version		SVN: $Id: installer.pm 5417 2011-10-05 20:17:21Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -253,8 +253,14 @@ sub setupDB{
 		$connData = 'yes';
 	} else {
 		my $dbUser = 'dovecot_user';
+
 		do{
-			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name (default dovecot_user)", $dbUser);
+			$dbUser = iMSCP::Dialog->factory()->inputbox("Please enter database user name for the restricted dovecot user (default dovecot_user)", $dbUser);
+			#we will not allow root user to be used as database user for dovecot since account will be restricted
+			if($dbUser eq $main::imscpConfig{DATABASE_USER}){
+				iMSCP::Dialog->factory()->msgbox("You can not use $main::imscpConfig{DATABASE_USER} as restricted user");
+				$dbUser = undef;
+			}
 		} while (!$dbUser);
 
 		iMSCP::Dialog->factory()->set('cancel-label','Autogenerate');
