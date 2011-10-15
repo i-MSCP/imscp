@@ -886,17 +886,83 @@ sub getTraffic{
 	$traff;
 }
 
+sub getTraffic{
+
+	use iMSCP::Execute;
+	use iMSCP::File;
+	use iMSCP::Config;
+	use Tie::File;
+
+	my $self		= shift;
+	my $who			= shift;
+	my $dbName		= "$self->{wrkDir}/log.db";
+	my $logFile		= "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
+	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.smtp.log";
+	my ($rv, $rs, $stdout, $stderr);
+
+	##only if files was not aleady parsed this session
+	unless($self->{logDb}){
+		#use a small conf file to memorize last line readed and his content
+		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
+		##first use? we zero line and content
+		$self->{logDb}->{line} = 0 unless $self->{logDb}->{line};
+		$self->{logDb}->{content} = '' unless $self->{logDb}->{content};
+		my $lastLineNo	= $self->{logDb}->{line};
+		my $lastLine	= $self->{logDb}->{content};
+		##copy log file
+		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
+		#retunt 0 traffic if we fail
+		return 0 if $rs;
+		#link log file to array
+		tie my @content, 'Tie::File', $wrkLogFile or return 0;
+		##save last line
+		$self->{logDb}->{line} = $#content;
+		$self->{logDb}->{content} = @content[$#content];
+		#test for logratation
+		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
+			## No logratation ocure. We zero already readed files
+			(tied @content)->defer;
+			@content = @content[$lastLineNo + 1 .. $#content];
+			(tied @content)->flush;
+		}
+		$rs = execute("$main::imscpConfig{'CMD_GREP'} 'postfix' $wrkLogFile | $main::imscpConfig{'CMD_PFLOGSUM'} standard", \$stdout, \$stderr);
+		error($stderr) if $stderr;
+		return 0 if $rs;
+		while($stdout =~ m/^[^\s]+\s[^\s]+\s[^\s\@]+\@([^\s]+)\s[^\s\@]+\@([^\s]+)\s([^\s]+)\s([^\s]+)\s[^\s]+\s[^\s]+\s[^\s]+\s(.*)$/mg){
+						 #  date    time    mailfrom @ domain   mailto   @ domain    relay_s   relay_r   SMTP  extinfo  code     size
+						 #                                1                  2         3         4                                 5
+			if($main::imscpConfig{MAIL_LOG_INC_AMAVIS}){
+				if($5 ne '?' &&  !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)){
+					$self->{traff}->{$1} += $5;
+					$self->{traff}->{$2} += $5;
+				}
+			} else {
+				if($5 ne '?' && $4 !~ /virtual/ && !($3 =~ /localhost|127.0.0.1/ && $4 =~ /localhost|127.0.0.1/)){
+					$self->{traff}->{$1} += $5;
+					$self->{traff}->{$2} += $5;
+				}
+			}
+		}
+	}
+	$self->{traff}->{$who} ? $self->{traff}->{$who} : 0;
+}
+
 END{
 
-	my $endCode	= $?;
-	my $self	= Servers::mta::postfix->new();
-	my $rs		= 0;
+	use iMSCP::File;
+
+	my $endCode		= $?;
+	my $self		= Servers::mta::postfix->new();
+	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.smtp.log";
+	my $rs			= 0;
 
 	if($self->{restart} && $self->{restart} eq 'yes'){
 		$rs = $self->restart();
 	} else {
 		$rs |= $self->postmap($_) foreach(keys %{$self->{postmap}});
 	}
+
+	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
 	$? = $endCode || $rs;
 }

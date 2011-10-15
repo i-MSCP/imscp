@@ -260,12 +260,96 @@ sub delMail{
 	$rs;
 }
 
+sub getTraffic{
+
+	use iMSCP::Execute;
+	use iMSCP::File;
+	use iMSCP::Config;
+	use Tie::File;
+
+	my $self		= shift;
+	my $who			= shift;
+	my $dbName		= "$self->{wrkDir}/log.db";
+	my $logFile		= "$main::imscpConfig{TRAFF_LOG_DIR}/mail.log";
+	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my ($rv, $rs, $stdout, $stderr);
+
+	##only if files was not aleady parsed this session
+	unless($self->{logDb}){
+		#use a small conf file to memorize last line readed and his content
+		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName, noerrors => 1;
+		##first use? we zero line and content
+		$self->{logDb}->{line}		= 0 unless $self->{logDb}->{line};
+		$self->{logDb}->{content}	= '' unless $self->{logDb}->{content};
+		my $lastLineNo	= $self->{logDb}->{line};
+		my $lastLine	= $self->{logDb}->{content};
+		##copy log file
+		$rs = iMSCP::File->new(filename => $logFile)->copyFile($wrkLogFile) if -f $logFile;
+		#retunt 0 traffic if we fail
+		return 0 if $rs;
+		#link log file to array
+		tie my @content, 'Tie::File', $wrkLogFile or return 0;
+		#save last line
+		$self->{logDb}->{line}		= $#content;
+		$self->{logDb}->{content}	= @content[$#content];
+		#test for logratation
+		if(@content[$lastLineNo] && @content[$lastLineNo] eq $lastLine){
+			## No logratation ocure. We zero already readed files
+			(tied @content)->defer;
+			@content = @content[$lastLineNo + 1 .. $#content];
+			(tied @content)->flush;
+		}
+
+		# Read log file
+		my $content = iMSCP::File->new(filename => $wrkLogFile)->get() || '';
+
+		#IMAP
+		#Oct 15 12:56:42 daniel imapd: LOGOUT, user=ndmn@test1.eu.bogus, ip=[::ffff:192.168.1.2], headers=0, body=0, rcvd=172, sent=310, time=205
+		# 1   2     3      4      5      6         7                              8                  9         10       11        12        13
+		while($content =~ m/^.*(?:imapd|imapd\-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\],\sheaders=(\d+),\sbody=(\d+),\srcvd=(\d+),\ssent=(\d+),.*$/mg){
+						# date time imap(-ssl)         mailfrom @ domain       ip             headers size      body size  received size   send size      etc
+						#                                             1         2                     3              4         5              6
+			if($2 !~ /localhost|127.0.0.1/){
+					#$self->{traff}->{$1} += $3 + $4 + $5 + $6;
+					#Why we count only headers and body, not all traffic?!! to be checked
+					$self->{traff}->{$1} += $3 + $4
+						if $1 && defined $3 && defined $4 && ($3+$4);
+					debug("Traffic for $1 is $self->{traff}->{$1} (added IMAP traffic: ". ($3 + $4).")")
+						if $1 && defined $3 && defined $4 && ($3+$4);
+			}
+		}
+
+		#POP
+		# courierpop3login is for Debian. pop3d for Fedora.
+		#Oct 15 14:54:06 daniel pop3d:     LOGOUT, user=ndmn@test1.eu.bogus, ip=[::ffff:192.168.1.2], port=[41477], top=0, retr=0, rcvd=32, sent=147, time=0, stls=1
+		#Oct 15 14:51:12 daniel pop3d-ssl: LOGOUT, user=ndmn@test1.eu.bogus, ip=[::ffff:192.168.1.2], port=[41254], top=0, retr=496, rcvd=32, sent=672, time=0, stls=1
+		# 1   2     3      4      5           6         7                              8                  9          10       11        12        13
+		while($content =~ m/^.*(?:courierpop3login|pop3d|pop3d-ssl).*user=[^\@]*\@([^,]*),\sip=\[([^\]]+)\].*\stop=(\d+),\sretr=(\d+),\srcvd=(\d+),\ssent=(\d+),.*$/mg){
+						# date time imap(-ssl)                mailfrom @ domain                  ip           top size    retr size   received size   send size      etc
+						#                                              1                         2                3           4            5              6
+			if($2 !~ /localhost|127.0.0.1/){
+					#$self->{traff}->{$1} += $3 + $4 + $5 + $6;
+					#Why we count some of fields, not all traffic?!! to be checked
+					$self->{traff}->{$1} += $4 + $5 + $6
+						if $1 && defined $4 && defined $5 && defined $6 && ($4+$5+$6);
+					debug("Traffic for $1 is $self->{traff}->{$1} (added POP traffic: ". ($4 + $5 + $6).")")
+						if $1 && defined $4 && defined $5 && defined $6 && ($4+$5+$6);
+			}
+		}
+	}
+	$self->{traff}->{$who} ? $self->{traff}->{$who} : 0;
+}
+
 END{
 
-	my $endCode	= $?;
-	my $self	= Servers::po::courier->new();
-	my $rs		= 0;
-	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+	my $endCode		= $?;
+	my $self		= Servers::po::courier->new();
+	my $wrkLogFile	= "$main::imscpConfig{LOG_DIR}/mail.po.log";
+	my $rs			= 0;
+
+	$rs |= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+
+	$rs |= iMSCP::File->new(filename => $wrkLogFile)->delFile() if -f $wrkLogFile;
 
 	$? = $endCode || $rs;
 }

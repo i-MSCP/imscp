@@ -1235,12 +1235,66 @@ sub addIps{
 	$rs;
 }
 
+sub getTraffic{
+
+	use iMSCP::Execute;
+	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $who		= shift;
+	my $traff	= 0;
+	my $trfDir	= "$self::apacheConfig{APACHE_LOG_DIR}/traff";
+	my ($rv, $rs, $stdout, $stderr);
+
+	unless($self->{logDb}){
+		$self->{logDb} = 1;
+
+		$rs = execute("$main::imscpConfig{CMD_PS} -o pid,args -C 'imscp-apache-logger'", \$stdout, \$stderr);
+		error($stderr) if $stderr;
+
+		my $rv = iMSCP::Dir->new(dirname => $trfDir)->moveDir("$trfDir.old") if -d $trfDir;
+		if($rv){
+			delete $self->{logDb};
+			return 0;
+		}
+
+		if($rs || !$stdout){
+			error('imscp-apache-logger is not running') unless $stderr;
+		} else {
+			while($stdout =~ m/^(\d+)(?!.*error)/mg){
+				$rs = execute("kill -s HUP $1", \$stdout, \$stderr);
+				debug($stdout) if $stdout;
+				error($stderr) if $stderr;
+			}
+		}
+	}
+
+	if(-d "$trfDir.old" && -f "$trfDir.old/$who-traf.log"){
+		use iMSCP::File;
+		my $content = iMSCP::File->new(filename => "$trfDir.old/$who-traf.log")->get();
+		if($content){
+			my @lines = split("\n", $content);
+			$traff += $_ foreach @lines;
+		} else {
+			error("Can not read $trfDir.old/$who-traf.log");
+		}
+	}
+
+	$traff;
+}
+
 END{
+
+	use iMSCP::Dir;
 
 	my $endCode	= $?;
 	my $self	= Servers::httpd::apache->new();
 	my $rs		= 0;
-	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+	my $trfDir	= "$self::apacheConfig{APACHE_LOG_DIR}/traff";
+
+	$rs = $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+
+	$rs |= iMSCP::Dir->new(dirname => "$trfDir.old")->remove() if -d "$trfDir.old";
 
 	$? = $endCode || $rs;
 }

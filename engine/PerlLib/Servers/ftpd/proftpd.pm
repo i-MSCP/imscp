@@ -217,14 +217,45 @@ sub delSub{
 	return $self->delDmn(@_);
 }
 
+sub getTraffic{
+
+	use iMSCP::File;
+
+	my $self	= shift;
+	my $who		= shift;
+	my $trfFile	= "$main::imscpConfig{TRAFF_LOG_DIR}/$self::proftpdConfig{FTP_TRAFF_LOG}";
+
+	unless(exists $self->{logDb}){
+
+		$self->{logDb} = {};
+		my $rs = iMSCP::File->new(filename => $trfFile)->moveFile("$trfFile.old") if -f $trfFile;
+		if($rs){
+			delete $self->{logDb};
+			return 0;
+		}
+		if(-f "$trfFile.old"){
+			my $content = iMSCP::File->new(filename => "$trfFile.old")->get();
+			while($content =~ /^(\d+)\s[^\@]+\@(.*)$/mg){
+				$self->{logDb}->{$2} += $1 if (defined $2 && defined $1);
+			}
+		}
+	}
+
+	$self->{logDb}->{$who} ? $self->{logDb}->{$who} : 0;
+}
 
 END{
+
+	use iMSCP::File;
 
 	my $endCode	= $?;
 	my $self	= Servers::ftpd::proftpd->new();
 	my $rs		= 0;
+	my $trfFile	= "$main::imscpConfig{TRAFF_LOG_DIR}/$self::proftpdConfig{FTP_TRAFF_LOG}";
 
 	$rs			= $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+
+	$rs |= iMSCP::File->new(filename => "$trfFile.old")->delFile() if -f "$trfFile.old";
 
 	$? = $endCode || $rs;
 }
