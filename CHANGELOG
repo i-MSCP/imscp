@@ -19,6 +19,8 @@ Features / Enhancements:
 				- New logger (one file per operation)
 				- php.ini per user account (default), or per domain entity (vhost)
 	Gui:
+		Core:
+			- IPv6 support
 		Components:
 			- Added PHP directives editor
 		Tools:
@@ -33,7 +35,7 @@ Other:
 		- Updated jQuery UI to version 1.8.16
 
 Tickets:
-	- Fixed #15:  PHP directives editor
+	- Fixed #15:  Feature - PHP directives editor
 	- Fixed #16:  Feature - Mail Quota Support
 	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with dovecot
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
@@ -80,9 +82,9 @@ Tickets:
 	- Fixed #215: Bug - Subdomains is not accessible to edit phpini
 	- Fixed #218: Bug - Update trunk don't work because of dovecot 2.0.15-1
 	- Fixed #220: Bug - Webspace Display show's wrong Values
-	- Fixed #222: The script to migrate from ispcp should take care of killing the ispcp-daemon
-	- Fixed #223: Security issue
-	- Fixed #224: There is a confusing message in the imscp-setup
+	- Fixed #222: Defect - The script to migrate from ispcp should take care of killing the ispcp-daemon
+	- Fixed #223: Defect - Security issue
+	- Fixed #224: Enhancement - There is a confusing message in the imscp-setup
 	- Fixed #229: Cosmetics - i18n issue
 
 -------------------------------------------------------------------------------------
