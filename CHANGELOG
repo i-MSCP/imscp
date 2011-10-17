@@ -11,6 +11,7 @@ Features / Enhancements:
 			- Added PHP directives editor
 		Core:
 			- Added support for Dovecot
+			- IPv6 support
 			- Engine rewrite including the following new features:
 				- Ability to turn off one or many services/servers such as Apache,
 				  Bind9, Postfix...
@@ -37,6 +38,7 @@ Tickets:
 	- Fixed #57:  Enhancement - Adapt the postfix master.cf to be compatible with dovecot
 	- Fixed #58:  Enhancement - Default mail quota should be increased up to 100MB
 	- Fixed #77:  Task - Setup - Empty files must be removed
+	- Fixed #79:  Feature - Support for IPv6
 	- Fixed #94:  Enhancement in imscp-vrl-traff
 	- Fixed #111: Feature - Add multiple secondary DNS server-wide
 	- Fixed #144: Bug - When disabling an account sub-domains/aliases are still working

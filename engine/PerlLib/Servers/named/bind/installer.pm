@@ -137,7 +137,7 @@ sub askMode{
 	use iMSCP::Dialog;
 
 	my $self	= shift;
-	my $ip		= iMSCP::IP->factory();
+	my $ip		= iMSCP::IP->new();
 	my @ips		= ();
 
 	@ips = (@ips, split(';', $self::bindConfig{PRIMARY_DNS}))

@@ -15,13 +15,13 @@ $ORIGIN {DMN_NAME}.
 
                 IN              MX      10      mail.{DMN_NAME}.
 
-{DMN_NAME}.     IN              A               {DMN_IP}
-www             IN              A               {DMN_IP}
-{DMN_NAME}.     IN              TXT             "v=spf1 a mx ip4:{DMN_IP} ip4:{BASE_SERVER_IP} ~all"
+{DMN_NAME}.     IN              {IP_TYPE}               {DMN_IP}
+www             IN              {IP_TYPE}               {DMN_IP}
+{DMN_NAME}.     IN              TXT             "v=spf1 a mx {TXT_DMN_IP_TYPE}:{DMN_IP} {TXT_SERVER_IP_TYPE}:{BASE_SERVER_IP} ~all"
 localhost       IN              A               127.0.0.1
-mail            IN              A               {DMN_IP}
+mail            IN              {IP_TYPE}               {DMN_IP}
 ; ns A SECTION BEGIN
-ns{NS_NUMBER}             IN              A               {NS_IP}
+ns{NS_NUMBER}             IN              {NS_IP_TYPE}               {NS_IP}
 ; ns A SECTION END
 
 ; CNAME for mail transfer

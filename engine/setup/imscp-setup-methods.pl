@@ -453,41 +453,48 @@ sub setup_system_dirs {
 }
 
 sub setup_base_server_IP{
-
 	use iMSCP::Dialog;
 	use iMSCP::IP;
+	my $rs;
 
-	if($main::imscpConfig{'BASE_SERVER_IP'} && $main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1'){
-		return 0;
-	}
+	my $ips = iMSCP::IP->new();
+	$rs = $ips->loadIPs();
+	return $rs if $rs;
 
-	if($main::imscpConfigOld{'BASE_SERVER_IP'} && $main::imscpConfigOld{'BASE_SERVER_IP'} ne '127.0.0.1'){
+	return 0 if(
+		$main::imscpConfig{'BASE_SERVER_IP'} &&
+		$main::imscpConfig{'BASE_SERVER_IP'} ne '127.0.0.1' &&
+		$main::imscpConfig{'BASE_SERVER_IP'} ne $ips->normalize('::1')
+	);
+
+	if(
+		$main::imscpConfigOld{'BASE_SERVER_IP'} &&
+		$main::imscpConfigOld{'BASE_SERVER_IP'} ne '127.0.0.1' &&
+		$main::imscpConfig{'BASE_SERVER_IP'} ne $ips->normalize('::1')
+	){
 		$main::imscpConfig{'BASE_SERVER_IP'} = $main::imscpConfigOld{'BASE_SERVER_IP'};
 		return 0;
 	}
 
-	my $ips = iMSCP::IP->factory();
+	my %allIPs = map { $_ => undef } ($ips->getIPs());
 
-	my $rs = $ips->loadIpConfiguredIps();
-	return $rs if $rs;
-
-	if(keys %{$ips->{ips}} == 0){
+	if(keys %allIPs == 0){
 		error('Can not determine servers ips');
 		return 1;
 	}
 
 	my ($out, $card);
 
-	use Data::Validate::IP qw/is_ipv4/;
-
-	while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select your external ip:", keys %{$ips->{ips}}, 'none'))){}
+	while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select your external ip:", keys %allIPs, 'none'))){}
 	if(! ($ips->isValidIp($out))){
 		do{
-			while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter your ip:", (keys %{$ips->{ips}})[0]))){}
-		} while(! ($ips->isValidIp($out) && $out ne '127.0.0.1') );
+			while (! ($out = iMSCP::Dialog->factory()->inputbox("Please enter your ip:", (keys %allIPs)[0]))){}
+		} while(! ($ips->isValidIp($out) && $out ne '127.0.0.1' && $out ne $ips->normalize('::1')) );
 		unless(exists $ips->{ips}->{$out}){
-			while (! ($card = iMSCP::Dialog->factory()->radiolist("Please enter your ip:", keys %{$ips->{cards}}))){}
-			$ips->{ips}->{$out}->{card} = $card;
+			while (! ($card = iMSCP::Dialog->factory()->radiolist("Please select your network card:", ($ips->getNetCards)))){}
+			$ips->attachIpToNetCard($card, $out);
+			$rs = $ips->reset();
+			return $rs if $rs;
 		}
 	}
 
@@ -498,8 +505,8 @@ sub setup_base_server_IP{
 
 	my $database = iMSCP::Database->new(db => $main::imscpConfig{'DATABASE_TYPE'})->factory();
 
-	my %otherIPs	= %{$ips->{ips}};
-	delete($otherIPs{$out}) if ($otherIPs{$out});
+	my %otherIPs = %allIPs;
+	delete($otherIPs{$out}) if exists $otherIPs{$out};
 
 	my $toSave ='';
 	if (scalar(keys %otherIPs) > 0 ){
@@ -513,11 +520,10 @@ sub setup_base_server_IP{
 			'dummy',
 			"INSERT IGNORE INTO `server_ips` (`ip_number`, `ip_card`, `ip_status`, `ip_id`)
 			VALUES(?, ?, 'toadd', (SELECT `ip_id` FROM `server_ips` as t1 WHERE t1.`ip_number` = ?));",
-			$_, $ips->{ips}->{$_}->{card}, $_
+			$_, $ips->getCardByIP($_), $_
 		);
 		return $error if (ref $error ne 'HASH');
 	}
-
 	0;
 }
 

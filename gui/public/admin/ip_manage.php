@@ -44,32 +44,25 @@
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function client_generatePage($tpl)
-{
-	// Generates IPv4 list
+function client_generatePage($tpl) {
+	// Generates IP list
 	_client_generateIpsList($tpl);
 
 	// Generates network cards list
 	_client_generateNetcardsList($tpl);
 
-	if (isset($_POST['ip_number_1'])) {
+	if (isset($_POST['ip_number'])) {
 		$tpl->assign(
 			array(
-				 'VALUE_IP1' => tohtml($_POST['ip_number_1']),
-				 'VALUE_IP2' => tohtml($_POST['ip_number_2']),
-				 'VALUE_IP3' => tohtml($_POST['ip_number_3']),
-				 'VALUE_IP4' => tohtml($_POST['ip_number_4']),
-				 'VALUE_DOMAIN' => clean_input($_POST['domain'], true),
-				 'VALUE_ALIAS' => clean_input($_POST['alias'], true)));
+				'VALUE_IP' => tohtml($_POST['ip_number']),
+				'VALUE_DOMAIN' => clean_input($_POST['domain'], true),
+				'VALUE_ALIAS' => clean_input($_POST['alias'], true)));
 	} else {
 		$tpl->assign(
 			array(
-				 'VALUE_IP1' => '',
-				 'VALUE_IP2' => '',
-				 'VALUE_IP3' => '',
-				 'VALUE_IP4' => '',
-				 'VALUE_DOMAIN' => '',
-				 'VALUE_ALIAS' => ''));
+				'VALUE_IP' => '',
+				'VALUE_DOMAIN' => '',
+				'VALUE_ALIAS' => ''));
 	}
 }
 
@@ -182,19 +175,11 @@ function client_checkData($ipNumber, $domain, $alias, $netcard)
 	/** @var $networkCardObject iMSCP_NetworkCard */
 	$networkCardObject = iMSCP_Registry::get('networkCardObject');
 
-	if (filter_var($ipNumber, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
 		set_page_message(tr('Wrong IPv4 number.'), 'error');
 	}
 
-	if ($domain == '') {
-		set_page_message(tr('You must specify a domain.'), 'error');
-	}
-
-	if ($alias == '') {
-		set_page_message(tr('You must specify an alias.'), 'error');
-	}
-
-	if (!_client_isRegisteredIp($ipNumber)) {
+	if (_client_isRegisteredIp($ipNumber)) {
 		set_page_message(tr('Ip already configured on the system.'), 'error');
 	}
 
@@ -218,7 +203,7 @@ function client_checkData($ipNumber, $domain, $alias, $netcard)
  */
 function _client_isRegisteredIp($ipNumber)
 {
-	$query = "SELECT count(`ip_id`) `cnt` FROM `server_ips` WHERE `ip_number`";
+	$query = "SELECT count(`ip_id`) `cnt` FROM `server_ips` WHERE `ip_number` = ?";
 	$stmt = exec_query($query, $ipNumber);
 
 	if ($stmt->fields['cnt'] == 0) {
@@ -260,7 +245,7 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 
 	send_request();
 	set_page_message(tr('Ip address scheduled for addition.'), 'success');
-	write_log("{$_SESSION['user_logged']}: adds new IPv4 address: {$ipNumber}.", E_USER_NOTICE);
+	write_log("{$_SESSION['user_logged']}: adds new IP address: {$ipNumber}.", E_USER_NOTICE);
 }
 
 /************************************************************************************
@@ -281,11 +266,7 @@ $cfg = iMSCP_Registry::get('config');
 iMSCP_Registry::set('networkCardObject', new iMSCP_NetworkCard());
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'addIpAddress') {
-	$ipNumber = trim($_POST['ip_number_1'])
-				. '.' . trim($_POST['ip_number_2'])
-				. '.' . trim($_POST['ip_number_3'])
-				. '.' . trim($_POST['ip_number_4']);
-
+	$ipNumber = trim($_POST['ip_number']);
 	$domain = clean_input($_POST['domain']);
 	$alias = clean_input($_POST['alias']);
 	$netcard = clean_input($_POST['ip_card']);
@@ -299,32 +280,32 @@ $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl',
-		 'page_message' => 'page',
-		 'ips_list' => 'page',
-		 'ip_row' => 'ips_list',
-		 'add_ip' => 'page',
-		 'cards_list' => 'add_ip'));
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl',
+		'page_message' => 'page',
+		'ips_list' => 'page',
+		'ip_row' => 'ips_list',
+		'add_ip' => 'page',
+		'cards_list' => 'add_ip'));
 
 $tpl->assign(
 	array(
-		 'TR_ADMIN_IP_MANAGE_PAGE_TITLE' => tr('i-MSCP - Admin / General settings / IPs management'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'MANAGE_IPS' => tr('Manage IPs'),
-		 'TR_AVAILABLE_IPS' => tr('Available IPs'),
-		 'TR_IP' => tr('IP'),
-		 'TR_DOMAIN' => tr('Domain'),
-		 'TR_ALIAS' => tr('Alias'),
-		 'TR_ACTION' => tr('Action'),
-		 'TR_NETWORK_CARD' => tr('Network interface'),
-		 'TR_ADD' => tr('Add'),
-		 'TR_REGISTERED_IPS' => tr('Registered IPs'),
-		 'TR_ADD_NEW_IP' => tr('Add new IP'),
-		 'TR_IP_DATA' => tr('IP data'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this IP: %s?', true, '%s'),
-		 'TR_MESSAGE_DENY_DELETE' => tr("You cannot remove the %s IP address.", true, '%s')));
+		'TR_ADMIN_IP_MANAGE_PAGE_TITLE' => tr('i-MSCP - Admin / General settings / IPs management'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'MANAGE_IPS' => tr('Manage IPs'),
+		'TR_AVAILABLE_IPS' => tr('Available IPs'),
+		'TR_IP' => tr('IP'),
+		'TR_DOMAIN' => tr('Domain'),
+		'TR_ALIAS' => tr('Alias'),
+		'TR_ACTION' => tr('Action'),
+		'TR_NETWORK_CARD' => tr('Network interface'),
+		'TR_ADD' => tr('Add'),
+		'TR_REGISTERED_IPS' => tr('Registered IPs'),
+		'TR_ADD_NEW_IP' => tr('Add new IP'),
+		'TR_IP_DATA' => tr('IP data'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this IP: %s?', true, '%s'),
+		'TR_MESSAGE_DENY_DELETE' => tr('You cannot remove the %s IP address.', true, '%s')));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');

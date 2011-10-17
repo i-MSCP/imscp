@@ -84,8 +84,8 @@
 					<td>{NETWORK_CARD}</td>
 					<td>
 						<a href="#"
-						   onclick="action_delete('{IP_ACTION_SCRIPT}', '{IP}'); return false;"
-						   title="{IP_ACTION}" class="icon i_delete">{IP_ACTION}</a>
+							onclick="action_delete('{IP_ACTION_SCRIPT}', '{IP}'); return false;"
+							title="{IP_ACTION}" class="icon i_delete">{IP_ACTION}</a>
 					</td>
 				</tr>
 				<!-- EDP: ip_row -->
@@ -103,24 +103,19 @@
 					<tr>
 						<td style="width:300px;">{TR_IP}</td>
 						<td>
-							<input class="ip-segment" name="ip_number_1" type="text" value="{VALUE_IP1}" maxlength="3"/> <strong>.</strong>
-							<input class="ip-segment" name="ip_number_2" type="text" value="{VALUE_IP2}" maxlength="3"/> <strong>.</strong>
-							<input class="ip-segment" name="ip_number_3" type="text" value="{VALUE_IP3}" maxlength="3"/> <strong>.</strong>
-							<input class="ip-segment" name="ip_number_4" type="text" value="{VALUE_IP4}" maxlength="3"/>
+							<input name="ip_number" type="text" value="{VALUE_IP}" maxlength="39"/>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="domain">{TR_DOMAIN}</label></td>
 						<td>
-							<input type="text" name="domain" id="domain"
-								   value="{VALUE_DOMAIN}"/>
+							<input type="text" name="domain" id="domain" value="{VALUE_DOMAIN}"/>
 						</td>
 					</tr>
 					<tr>
 						<td><label for="alias">{TR_ALIAS}</label></td>
 						<td>
-							<input type="text" name="alias" id="alias"
-								   value="{VALUE_ALIAS}"/>
+							<input type="text" name="alias" id="alias" value="{VALUE_ALIAS}"/>
 						</td>
 					</tr>
 					<tr>

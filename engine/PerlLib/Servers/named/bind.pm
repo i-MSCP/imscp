@@ -183,10 +183,12 @@ sub addDmnDb {
 	use iMSCP::Dialog;
 	use iMSCP::File;
 	use iMSCP::Templator;
+	use iMSCP::IP;
 
 	my $self		= shift;
 	my $option		= shift;
 	my $zoneFile	= "$self::bindConfig{BIND_DB_DIR}/$option->{DMN_NAME}.db";
+	my $ipH			= iMSCP::IP->new();
 
 	#Saving the current production file if it exists
 	if(-f $zoneFile) {
@@ -227,14 +229,16 @@ sub addDmnDb {
 			@nsASection,
 			process({
 				NS_NUMBER	=> $ns,
-				NS_IP		=> $_
+				NS_IP		=> $_,
+				NS_IP_TYPE	=> (lc($ipH->getIpType($_)) eq 'ipv4' ? 'A' : 'AAAA')
 			}, $nsATpl)
 		);
 		push(
 			@nsDeclSection,
 			process({
 				NS_NUMBER	=> $ns,
-				NS_IP		=> $_
+				NS_IP		=> $_,
+				NS_IP_TYPE	=> (lc($ipH->getIpType($_)) eq 'ipv4' ? 'A' : 'AAAA')
 			}, $nsDeclTpl)
 		);
 		$ns++;
@@ -248,6 +252,9 @@ sub addDmnDb {
 	my $tags = {
 		DMN_NAME			=> $option->{DMN_NAME},
 		DMN_IP				=> $option->{DMN_IP},
+		IP_TYPE				=> (lc($ipH->getIpType($option->{DMN_IP})) eq 'ipv4' ? 'A' : 'AAAA'),
+		TXT_DMN_IP_TYPE		=> lc($ipH->getIpType($option->{DMN_IP})),
+		TXT_SERVER_IP_TYPE	=> lc($ipH->getIpType($main::imscpConfig{BASE_SERVER_IP})),
 		BASE_SERVER_IP		=> $main::imscpConfig{BASE_SERVER_IP}
 	};
 
@@ -445,10 +452,12 @@ sub addDmn{
 }
 
 sub postaddDmn{
+	use iMSCP::IP;
 
 	my $self	= shift;
 	my $option	= shift;
 	my $rs		= 0;
+	my $ipH		= iMSCP::IP->new();
 
 	$option = {} if ref $option ne 'HASH';
 
@@ -471,7 +480,7 @@ sub postaddDmn{
 			DMN_ADD		=> {
 				MANUAL_DNS_NAME		=> "$option->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
 				MANUAL_DNS_CLASS	=> 'IN',
-				MANUAL_DNS_TYPE		=> 'A',
+				MANUAL_DNS_TYPE		=> (lc($ipH->getIpType($option->{DMN_IP})) eq 'ipv4' ? 'A' : 'AAAA'),
 				MANUAL_DNS_DATA		=> $option->{DMN_IP}
 			}
 	});
@@ -683,9 +692,11 @@ sub addSub{
 }
 
 sub postaddSub{
+	use iMSCP::IP;
 	my $self	= shift;
 	my $data	= shift;
 	my $rs		= 0;
+	my $ipH		= iMSCP::IP->new();
 
 	local $Data::Dumper::Terse = 1;
 	debug("Data: ". (Dumper $data));
@@ -696,7 +707,7 @@ sub postaddSub{
 		DMN_ADD		=> {
 			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
 			MANUAL_DNS_CLASS	=> 'IN',
-			MANUAL_DNS_TYPE		=> 'A',
+			MANUAL_DNS_TYPE		=> (lc($ipH->getIpType($data->{DMN_IP})) eq 'ipv4' ? 'A' : 'AAAA'),
 			MANUAL_DNS_DATA		=> $data->{DMN_IP}
 		}
 	});

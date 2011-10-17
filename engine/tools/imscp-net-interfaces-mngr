@@ -58,7 +58,7 @@ sub virtual_netcard_add{
 	my ($rs, $stdout, $stderr);
 	my $database = iMSCP::Database->new()->factory();
 
-	my $ips = iMSCP::IP->factory();
+	my $ips = iMSCP::IP->new();
 
 	$rs = $database->doQuery(
 		'ip_id',
@@ -92,19 +92,9 @@ sub virtual_netcard_add{
 				#ip is not attached so we will attached to virtual card
 				#check if phisical card exits
 				if($ips->existsNetCard($_->{ip_card})){
-					my $slot = $ips->getFirstFreeSlotOnCard($_->{ip_card}, 'reserve');
-					$rs = execute(
-						"ifconfig ".
-						"$_->{ip_card}:$slot ".
-						"$_->{ip_number} ".
-						"netmask 255.255.255.255 ".
-						"up",
-						\$stdout,
-						\$stderr
-					);
-					debug("$stdout")if $stdout;
-					error("$stderr")if $stderr;
-					iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+					$rs = $ips->attachIpToNetCard($_->{ip_card}, $_->{ip_number});
+					error("Can not add $_->{ip_number} to $_->{ip_card}") if $rs;
+					#iMSCP::Mail->new()->errmsg($stderr)if $stderr;
 				} else {
 					my $msg =
 						"Card $_->{ip_card} do not exists. Please fix this in ".
@@ -117,7 +107,7 @@ sub virtual_netcard_add{
 			}
 		}
 
-		my @cards = $ips->getNetworkCards();
+		my @cards = $ips->getNetCards();
 		foreach(@cards){
 			if(!$ips->isCardUp($_)){
 				#net card is not up so we try put that up
@@ -126,10 +116,8 @@ sub virtual_netcard_add{
 				error("$stderr")if $stderr;
 				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
 			}
-
 		}
 	}
-
 	0;
 }
 
@@ -145,8 +133,8 @@ sub virtual_netcard_remove{
 	my ($rs, $stdout, $stderr);
 	my $database = iMSCP::Database->new()->factory();
 
-	my $ips = iMSCP::IP->factory();
-	$ips->loadIpConfiguredIps();
+	my $ips = iMSCP::IP->new();
+	$ips->loadIPs();
 
 	$rs = $database->doQuery(
 		'ip_id',
@@ -168,10 +156,9 @@ sub virtual_netcard_remove{
 			my $vcard = $ips->addedToVCard($_->{ip_number});
 			if($vcard){
 				#We bring down only virtual network cards
-				$rs = execute("ifconfig $vcard down", \$stdout, \$stderr);
-				debug("$stdout")if $stdout;
-				error("$stderr")if $stderr;
-				iMSCP::Mail->new()->errmsg($stderr)if $stderr;
+				$rs = $ips->detachIpFromNetCard($_->{ip_number});
+				error("Can not detach $_->{ip_number}") if $rs;
+				#iMSCP::Mail->new()->errmsg($stderr)if $stderr;
 			}
 		}
 	}
