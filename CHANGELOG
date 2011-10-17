@@ -83,6 +83,7 @@ Tickets:
 	- Fixed #222: The script to migrate from ispcp should take care of killing the ispcp-daemon
 	- Fixed #223: Security issue
 	- Fixed #224: There is a confusing message in the imscp-setup
+	- Fixed #229: Cosmetics - i18n issue
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

@@ -164,7 +164,7 @@ function _client_generateNetcardsList($tpl)
 /**
  * Checks data.
  *
- * @param string $ipNumber IPv4 number (dot notation)
+ * @param string $ipNumber IP number (dot notation)
  * @param string $domain Domain
  * @param string $alias Alias
  * @param string $netcard Network card
@@ -176,7 +176,7 @@ function client_checkData($ipNumber, $domain, $alias, $netcard)
 	$networkCardObject = iMSCP_Registry::get('networkCardObject');
 
 	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
-		set_page_message(tr('Wrong IPv4 number.'), 'error');
+		set_page_message(tr('Wrong IP number.'), 'error');
 	}
 
 	if (_client_isRegisteredIp($ipNumber)) {
@@ -198,7 +198,7 @@ function client_checkData($ipNumber, $domain, $alias, $netcard)
  * Is registered IP?.
  *
  * @access private
- * @param string $ipNumber IPv4 addresse (dot notation)
+ * @param string $ipNumber IP addresse (dot notation)
  * @return bool TRUE if $ipNumber is registered, FALSE otherwise
  */
 function _client_isRegisteredIp($ipNumber)
@@ -216,7 +216,7 @@ function _client_isRegisteredIp($ipNumber)
 /**
  * Register new IP.
  *
- * @param string $ipNumber IPv4 number (dot notation)
+ * @param string $ipNumber IP number (dot notation)
  * @param string $domain Domain
  * @param string $alias Alias
  * @param string $netcard Network card
