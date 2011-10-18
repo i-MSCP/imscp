@@ -9,7 +9,7 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>phpMyAdmin 3.4.5 - Documentation</title>
+    <title>phpMyAdmin 3.4.6 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -17,7 +17,7 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
 <div id="header">
     <h1>
         <a href="http://www.phpmyadmin.net/">php<span class="myadmin">MyAdmin</span></a>
-        3.4.5
+        3.4.6
         Documentation
     </h1>
 </div>
@@ -2163,6 +2163,10 @@ setfacl -d -m "g:www-data:rwx" tmp
         that users can't set through user preferences. For possible values, refer
         to <tt>libraries/config/user_preferences.forms.php</tt>.</dd>
 
+    <dt id="cfg_UserprefsDeveloperTab">$cfg['UserprefsDeveloperTab'] boolean</dt>
+    <dd>Activates in the user preferences a tab containing options for 
+        developers of phpMyAdmin.</dd>
+
     <dt id="cfg_TitleTable">$cfg['TitleTable'] string</dt>
     <dt id="cfg_TitleDatabase">$cfg['TitleDatabase'] string</dt>
     <dt id="cfg_TitleServer">$cfg['TitleServer'] string</dt>
@@ -4187,7 +4191,7 @@ INSERT INTO REL_towns VALUES ('M', 'Montr&eacute;al');
     <a href="#faq6_22">6.22 Bookmarks: Can I execute a default bookmark
     automatically when entering Browse mode for a table?</a></h4>
 
-<p> Yes. If a bookmark has the same label as a table name, it will be executed.
+<p> Yes. If a bookmark has the same label as a table name and it's not a public bookmark, it will be executed.
 </p>
 
 <h4 id="faq6_23">

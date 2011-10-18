@@ -24,7 +24,7 @@ Features / Enhancements:
 		Components:
 			- Added PHP directives editor
 		Tools:
-			- Updated phpMyAdmin to version 3.4.5
+			- Updated phpMyAdmin to version 3.4.6
 			- Updated Squirrelmail to version 1.4.22
 
 	Setup:
@@ -85,6 +85,7 @@ Tickets:
 	- Fixed #222: Defect - The script to migrate from ispcp should take care of killing the ispcp-daemon
 	- Fixed #223: Defect - Security issue
 	- Fixed #224: Enhancement - There is a confusing message in the imscp-setup
+	- Fixed #226: Update - PMA 3.4.6 released
 	- Fixed #229: Cosmetics - i18n issue
 
 -------------------------------------------------------------------------------------

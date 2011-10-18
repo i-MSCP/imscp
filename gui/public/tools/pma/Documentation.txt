@@ -1,4 +1,4 @@
-phpMyAdmin 3.4.5 Documentation
+phpMyAdmin 3.4.6 Documentation
 
   * Top
   * Requirements
@@ -1523,6 +1523,9 @@ $cfg['UserprefsDisallow'] array
     Contains names of configuration options (keys in $cfg array) that users
     can't set through user preferences. For possible values, refer to libraries
     /config/user_preferences.forms.php.
+$cfg['UserprefsDeveloperTab'] boolean
+    Activates in the user preferences a tab containing options for developers
+    of phpMyAdmin.
 $cfg['TitleTable'] string
 $cfg['TitleDatabase'] string
 $cfg['TitleServer'] string
@@ -3079,7 +3082,8 @@ values and choose one. To change the default limit of 100, see $cfg
 6.22 Bookmarks: Can I execute a default bookmark automatically when entering
 Browse mode for a table?
 
-Yes. If a bookmark has the same label as a table name, it will be executed.
+Yes. If a bookmark has the same label as a table name and it's not a public
+bookmark, it will be executed.
 
 6.23 Export: I heard phpMyAdmin can export Microsoft Excel files?
 
