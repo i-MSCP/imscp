@@ -238,7 +238,7 @@ sub buildHTTPDData{
 
 	$sql			= "SELECT * FROM `php_ini` WHERE `domain_id` = ?";
 	my $phpiniData	= iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{domain_id});
-	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+	error("$phpiniData") and return 1 if(ref $phpiniData ne 'HASH');
 
 
 	$self->{httpd} = {
