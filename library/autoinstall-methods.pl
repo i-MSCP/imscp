@@ -531,7 +531,7 @@ sub saveGuiWorkingData {
 		error("$stderr") if $stderr;
 		return $rs if $rs;
 
-		# Save i-MSCP GUI data (isp domain default index.html page)
+		# Save i-MSCP GUI data (isp domain default index.html page for disabled domains)
 		$rs = execute(
 			"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_disable_page",
 			\$stdout, \$stderr
