@@ -176,7 +176,7 @@ sub quota_mysql {
 								($tables->{$_}->{Index_length} =~ /^\d+$/ ? $tables->{$_}->{Index_length} : 0);
 					}
 				} else {
-					ierror("Database '$sqldb_name' exists only in table 'sql_database'!!!");
+					error("Database '$sqldb_name' exists only in table 'sql_database'!!!");
 					iMSCP::Mail->new()->errmsg("Database '$sqldb_name' exists only in table 'sql_database'!!!");
 				}
 			}

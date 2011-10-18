@@ -87,6 +87,7 @@ Tickets:
 	- Fixed #224: Enhancement - There is a confusing message in the imscp-setup
 	- Fixed #226: Update - PMA 3.4.6 released
 	- Fixed #229: Cosmetics - i18n issue
+	- Fixed #230: Defect - Build step - Skeleton directory for disabled pages not saved for versions prior 1.0.1.4
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
