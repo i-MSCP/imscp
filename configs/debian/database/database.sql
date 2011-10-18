@@ -82,18 +82,6 @@ CREATE TABLE IF NOT EXISTS `autoreplies_log` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auto_num`
---
-
-CREATE TABLE IF NOT EXISTS `auto_num` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `msg` varchar(255) collate utf8_unicode_ci default NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `config`
 --
 

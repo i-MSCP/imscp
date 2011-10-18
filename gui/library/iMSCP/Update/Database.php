@@ -1235,4 +1235,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` int(11) unsigned NOT NULL AUTO_INCREMENT';
 	}
+
+	/**
+	 * Drop unused table auto_num
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @return string SQL Statement to be executed
+	 */
+	protected  function _databaseUpdate_91()
+	{
+		return 'DROP TABLE IF EXISTS `auto_num`';
+	}
 }
