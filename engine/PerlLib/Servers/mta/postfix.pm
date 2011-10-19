@@ -871,24 +871,6 @@ sub delCatchAll{
 sub getTraffic{
 
 	use iMSCP::Execute;
-	use iMSCP::Dir;
-
-	my $self	= shift;
-	my $who		= shift;
-	my $dbName	= "$self->{wrkDir}/log.db";
-	my $traff	= 0;
-	my ($rv, $rs, $stdout, $stderr);
-
-	unless($self->{logDb}){
-		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName;
-	}
-
-	$traff;
-}
-
-sub getTraffic{
-
-	use iMSCP::Execute;
 	use iMSCP::File;
 	use iMSCP::Config;
 	use Tie::File;
