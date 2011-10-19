@@ -89,6 +89,7 @@ Tickets:
 	- Fixed #226: Update - PMA 3.4.6 released
 	- Fixed #229: Cosmetics - i18n issue
 	- Fixed #230: Defect - Build step - Skeleton directory for disabled pages not saved for versions prior 1.0.1.4
+	- Fixed #233: Defect - Some Words not Translated [German]
 	- Fixed #234: PostGrey misspelled in imscp.conf
 
 -------------------------------------------------------------------------------------
