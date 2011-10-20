@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1470,44 +1470,42 @@ msgstr "Domínios"
 msgid "Server traffic"
 msgstr "Tráfego do servidor"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "Você não pode apagar o último endereço IP ativo!"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "Erro: nós temos um domínio usando este IP"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "Erro: nós temos um revendedor usando este IP"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IP foi apagado!"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "IspCP - Admin / Gerenciar IP"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "Remover IP"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "Novo IP foi adicionado!"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "Número IP errado!"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "Por favor, especifique o domínio!"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "Por favor especifique o alias!"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "Este IP já existe!"
-
-msgid "Please select nework interface!"
-msgstr "Por favor selecione a interface de rede!"
+msgid "i-MSCP - Admin / General settings / IPs management"
+msgstr ""
 
 msgid "Available IPs"
 msgstr "IPs disponíveis"
@@ -1518,12 +1516,22 @@ msgstr "IP"
 msgid "Network interface"
 msgstr "Interface de rede"
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "Adicionar novo IP"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Tem certeza de que deseja excluir este IP: %s?"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3780,10 +3788,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3820,9 +3824,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4218,9 +4220,6 @@ msgstr "Membro do grupo:"
 msgid "Select group:"
 msgstr "Selecionar grupo:"
 
-msgid "Update user"
-msgstr "Atualizar usuário"
-
 msgid "You have no users."
 msgstr ""
 
@@ -4472,9 +4471,6 @@ msgstr "Dados do subdomínio"
 
 msgid "Subdomain name"
 msgstr "Nome do subdomínio"
-
-msgid "Wrong request"
-msgstr ""
 
 msgid ""
 "We are sorry but you reached the maximum number of subdomains allowed by "

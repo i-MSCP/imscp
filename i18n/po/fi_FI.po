@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1465,44 +1465,42 @@ msgstr "Domainit"
 msgid "Server traffic"
 msgstr "Palvelimen liikenne"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "Et voi poistaa viimeistä aktiivista IP-osoitetta!"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "Virhe: Jokin domain käyttää IP:tä!"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "Virhe: Jälleenmyyjä käyttää IP:tä!"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IP-osoite poistettu!"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "i-MSCP - Ylläpito / IP-hallinta"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "Poista IP"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "Uusi IP-osoite lisätty!"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "Virheellinen IP-osoite!"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "Määritä domain!"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "Määritä alias!"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "Tämä IP-osoite on jo olemassa!"
-
-msgid "Please select nework interface!"
-msgstr "Valitse verkkosovitin"
+msgid "i-MSCP - Admin / General settings / IPs management"
+msgstr ""
 
 msgid "Available IPs"
 msgstr "Saatavilla olevat IP-osoitteet"
@@ -1513,12 +1511,22 @@ msgstr "IP"
 msgid "Network interface"
 msgstr "Verkkosovitin"
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "Lisää uusi IP-osoite"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Haluatko varmasti poistaa tämän IP-osoitteen: %s?"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3764,10 +3772,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3804,9 +3808,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4202,9 +4204,6 @@ msgstr "Jäsenenä ryhmässä:"
 msgid "Select group:"
 msgstr "Valitse ryhmä:"
 
-msgid "Update user"
-msgstr "Päivitä käyttäjä"
-
 msgid "You have no users."
 msgstr ""
 
@@ -4456,9 +4455,6 @@ msgstr "Alidomain-tiedot"
 
 msgid "Subdomain name"
 msgstr "Alidomainin nimi"
-
-msgid "Wrong request"
-msgstr ""
 
 msgid ""
 "We are sorry but you reached the maximum number of subdomains allowed by "

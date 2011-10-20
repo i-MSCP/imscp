@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1466,44 +1466,42 @@ msgstr "Domenai"
 msgid "Server traffic"
 msgstr ""
 
-msgid "You cannot delete the last active IP address!"
-msgstr "Jûs negalite paðalinti paskutiniø aktyviø IP adresø!"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "Klaida: mes jau turime domenà naudojanti ðá IP!"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "Klaida: mes jau turime perpardavinëtojà naudojanti ðá IP!"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IP buvo paðalintasÀ"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "i-MSCP - Administratorius/IP tvarkymas"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "Ðalinti IP"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "Naujas IP buvo pridëtas!"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "Netinkamas IP numeris!"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "Praðome nurodyti domenà!"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "Praðome nurodyti pavadinimà!"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "Ðis IP jau naudojamas!"
-
-msgid "Please select nework interface!"
-msgstr "Praðome pasirinkti tinklo sàsajà!"
+msgid "i-MSCP - Admin / General settings / IPs management"
+msgstr ""
 
 msgid "Available IPs"
 msgstr "Esami IP adresai"
@@ -1514,12 +1512,22 @@ msgstr "IP"
 msgid "Network interface"
 msgstr "Tinklo sàsaja"
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "Pridëti naujà IP"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Ar tikrai norite paðalinti ðá IP adresà: %s?"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3745,10 +3753,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3785,9 +3789,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4183,9 +4185,6 @@ msgstr ""
 msgid "Select group:"
 msgstr ""
 
-msgid "Update user"
-msgstr ""
-
 msgid "You have no users."
 msgstr ""
 
@@ -4436,9 +4435,6 @@ msgid "Subdomain data"
 msgstr ""
 
 msgid "Subdomain name"
-msgstr ""
-
-msgid "Wrong request"
 msgstr ""
 
 msgid ""

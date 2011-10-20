@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1459,43 +1459,41 @@ msgstr "域名"
 msgid "Server traffic"
 msgstr "服务器流量"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "您不能删除最后激活的IP地址！"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "错误: 此IP正被一个域名所使用！"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "错误: 此IP正被一个代理商所使用！"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IP 已被删除！"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "i-MSCP - 管理员/IP 管理"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "删除 IP"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "新 IP 添加完成！"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "错误 IP 数！"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "请指定域名！"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "请指定别名！"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "此 IP 已存在！"
-
-msgid "Please select nework interface!"
+msgid "i-MSCP - Admin / General settings / IPs management"
 msgstr ""
 
 msgid "Available IPs"
@@ -1507,12 +1505,22 @@ msgstr "IP"
 msgid "Network interface"
 msgstr ""
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "添加新 IP"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "您确定想删除此 IP？: %s"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3717,10 +3725,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3757,9 +3761,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4155,9 +4157,6 @@ msgstr "组成员:"
 msgid "Select group:"
 msgstr "选择组:"
 
-msgid "Update user"
-msgstr "更新用户"
-
 msgid "You have no users."
 msgstr ""
 
@@ -4409,9 +4408,6 @@ msgstr "子域名数据"
 
 msgid "Subdomain name"
 msgstr "子域名"
-
-msgid "Wrong request"
-msgstr ""
 
 msgid ""
 "We are sorry but you reached the maximum number of subdomains allowed by "

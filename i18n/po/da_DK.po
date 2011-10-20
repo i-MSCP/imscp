@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1466,44 +1466,42 @@ msgstr "Domæner"
 msgid "Server traffic"
 msgstr "Server trafik"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "Du kan ikke slette den sidste aktive IP adresse!"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "Fejl: Der er et domæne der bruger denne IP!"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "Fejl: Der er en forhandler der bruger denne IP!"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IP er slettet"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "i-MSCP - Admin/IP håndtering"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "Fjern IP"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "Ny IP er tilføjet"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "Forkert IP nummer!"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "Indtast et domæne!"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "Indtast et alias!"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "Denne IP eksistere allerede!"
-
-msgid "Please select nework interface!"
-msgstr "Vælg netværks interface"
+msgid "i-MSCP - Admin / General settings / IPs management"
+msgstr ""
 
 msgid "Available IPs"
 msgstr "Tilgænglige IP'er"
@@ -1514,12 +1512,22 @@ msgstr "IP"
 msgid "Network interface"
 msgstr "Netværks interface"
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "Tilføj ny IP"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Er du sikker på at du vil slette denne IP: %s?"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3753,10 +3761,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3793,9 +3797,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4191,9 +4193,6 @@ msgstr "Medlem af gruppe:"
 msgid "Select group:"
 msgstr "Vælg gruppe:"
 
-msgid "Update user"
-msgstr "Opdater bruger"
-
 msgid "You have no users."
 msgstr ""
 
@@ -4445,9 +4444,6 @@ msgstr "Subdomæne data"
 
 msgid "Subdomain name"
 msgstr "Subdomæne navn"
-
-msgid "Wrong request"
-msgstr ""
 
 msgid ""
 "We are sorry but you reached the maximum number of subdomains allowed by "

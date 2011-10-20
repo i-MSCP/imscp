@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1473,44 +1473,42 @@ msgstr "Domeinuak"
 msgid "Server traffic"
 msgstr "Zerbitzariaren trafikoa"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "Ezin duzu azken IP helbide aktiboa ezabatu!"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "Errorea: dagoeneko badaukagu domeinu bat IP hau erabiltzen!"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "Errorea: dagoeneko badaukagu bersaltzaile bat IP hau erabiltzen!"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IP-a ezabatua izan da!"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "i-MSCP - Admin/IP kudeaketa"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "Ezabatu IP-a"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "IP berria gehitua izan da!"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "IP zenbaki okerra!"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "Mesedez jar ezazu domeinua!"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "Mesedez jar ezazu ezizena!"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "IP hau dagoeneko badago!"
-
-msgid "Please select nework interface!"
-msgstr "Mesedez aukeratu sare interfazea!"
+msgid "i-MSCP - Admin / General settings / IPs management"
+msgstr ""
 
 msgid "Available IPs"
 msgstr "Dauden IP-ak"
@@ -1521,12 +1519,22 @@ msgstr "IP-a"
 msgid "Network interface"
 msgstr "Sare interfazea"
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "Gehitu IP berria"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Ziur zaude ezabatu nahi duzula IP hau: %s?"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3764,10 +3772,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3804,9 +3808,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4203,9 +4205,6 @@ msgstr "Taldeetako partaide:"
 msgid "Select group:"
 msgstr "Aukeratu taldea:"
 
-msgid "Update user"
-msgstr "Eguneratu erabiltzailea"
-
 msgid "You have no users."
 msgstr ""
 
@@ -4457,9 +4456,6 @@ msgstr "Azpidomeinu datuak"
 
 msgid "Subdomain name"
 msgstr "Azpidomeinu izena"
-
-msgid "Wrong request"
-msgstr ""
 
 msgid ""
 "We are sorry but you reached the maximum number of subdomains allowed by "

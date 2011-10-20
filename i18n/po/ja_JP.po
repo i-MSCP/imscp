@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-06 17:17+0200\n"
-"PO-Revision-Date: 2011-10-06 15:18+0000\n"
+"POT-Creation-Date: 2011-10-20 08:01+0200\n"
+"PO-Revision-Date: 2011-10-20 06:01+0000\n"
 "Last-Translator: gOOvER <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1459,44 +1459,42 @@ msgstr "ドメイン数"
 msgid "Server traffic"
 msgstr "サーバのトラフィック"
 
-msgid "You cannot delete the last active IP address!"
-msgstr "最後のアクティブなIPアドレスを削除することはできません！"
+msgid "Wrong request"
+msgstr ""
 
-msgid "Error: we have a domain using this IP!"
-msgstr "エラー： このIPアドレスを使用するドメインが既に存在します！"
+msgid "The IP is assigned to a reseller. You must unassign it first."
+msgstr ""
 
-msgid "Error: we have a reseller using this IP!"
-msgstr "エラー： このIPアドレスを使用する代理店が既に存在します！"
+msgid "You cannot delete the last active IP address."
+msgstr ""
 
-msgid "IP was deleted!"
-msgstr "IPアドレスは削除されました！"
+msgid "IP scheduled for deletion."
+msgstr ""
 
-msgid "i-MSCP - Admin/IP manage"
-msgstr "i-MSCP - 管理者/IPアドレス管理"
+msgid "No IP found in database."
+msgstr ""
 
 msgid "Remove IP"
 msgstr "IP削除"
 
-msgid "No IP's available"
+msgid ""
+"Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
 
-msgid "New IP was added!"
-msgstr "新規IPアドレスが追加されました！"
+msgid "Wrong IP number."
+msgstr ""
 
-msgid "Wrong IP number!"
-msgstr "IPアドレスに間違いがあります！"
+msgid "Ip already configured on the system."
+msgstr ""
 
-msgid "Please specify domain!"
-msgstr "ドメインを指定してください！"
+msgid "You must select a network card."
+msgstr ""
 
-msgid "Please specify alias!"
-msgstr "エイリアスを指定してください！"
+msgid "Ip address scheduled for addition."
+msgstr ""
 
-msgid "This IP already exist!"
-msgstr "そのIPアドレスは既に存在しています"
-
-msgid "Please select nework interface!"
-msgstr "ネットワークインターフェイスを選択してください！"
+msgid "i-MSCP - Admin / General settings / IPs management"
+msgstr ""
 
 msgid "Available IPs"
 msgstr "利用可能IP"
@@ -1507,12 +1505,22 @@ msgstr "IPアドレス"
 msgid "Network interface"
 msgstr "ネットワークインターフェイス"
 
+msgid "Registered IPs"
+msgstr ""
+
 msgid "Add new IP"
 msgstr "新しいIP追加"
+
+msgid "IP data"
+msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "このIPをまとめて削除しますか？： %s"
+
+#, php-format
+msgid "You cannot remove the %s IP address."
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr ""
@@ -3723,10 +3731,6 @@ msgid "Unlimited"
 msgstr ""
 
 #, php-format
-msgid "You received <b>%d</b> new support question(s)."
-msgstr ""
-
-#, php-format
 msgid "You received <b>%d</b> new answer(s) to your support questions."
 msgstr ""
 
@@ -3763,9 +3767,7 @@ msgstr ""
 msgid "Domain account expired."
 msgstr ""
 
-msgid ""
-"Your domain account is expired. Please, contact your reseller to renew your "
-"subscription."
+msgid "Your account has expired. Please renew your subscription."
 msgstr ""
 
 msgid "No set"
@@ -4161,9 +4163,6 @@ msgstr "グループのメンバー："
 msgid "Select group:"
 msgstr "選択グループ："
 
-msgid "Update user"
-msgstr "ユーザの更新"
-
 msgid "You have no users."
 msgstr ""
 
@@ -4415,9 +4414,6 @@ msgstr "サブドメイン情報"
 
 msgid "Subdomain name"
 msgstr "サブドメイン名"
-
-msgid "Wrong request"
-msgstr ""
 
 msgid ""
 "We are sorry but you reached the maximum number of subdomains allowed by "
