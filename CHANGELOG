@@ -90,7 +90,7 @@ Tickets:
 	- Fixed #229: Cosmetics - i18n issue
 	- Fixed #230: Defect - Build step - Skeleton directory for disabled pages not saved for versions prior 1.0.1.4
 	- Fixed #233: Defect - Some Words not Translated [German]
-	- Fixed #234: PostGrey misspelled in imscp.conf
+	- Fixed #234: Defect - PostGrey misspelled in imscp.conf
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
