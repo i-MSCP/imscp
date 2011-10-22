@@ -161,6 +161,9 @@ sub addUsers{
 	$rs |= $user->addSystemUser($self::postfixConfig{'MTA_MAILBOX_UID_NAME'});
 	$rs |= $user->addToGroup($main::imscpConfig{'MASTER_GROUP'});
 
+	$user = Modules::SystemUser->new();
+	$rs |= $user->addToGroup($self::postfixConfig{'SASLDB_GROUP'}, $self::postfixConfig{'POSTFIX_USER'});
+
 	$rs;
 }
 

@@ -60,6 +60,14 @@ CMD_SASLDB_LISTUSERS2 = /usr/sbin/sasldblistusers2
 
 CMD_SASLDB_PASSWD2 = /usr/sbin/saslpasswd2
 
+SASLDB_USER = root
+
+SASLDB_GROUP = sasl
+
+POSTFIX_USER = postfix
+
+POSTFIX_GROUP = postfix
+
 CMD_POSTMAP = /usr/sbin/postmap
 
 CMD_NEWALIASES = /usr/bin/newaliases
