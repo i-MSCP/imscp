@@ -513,7 +513,7 @@ sub addSaslData{
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
 
-	if(!$rs && $stdout =~ m/^$mailBox:/){
+	if(!$rs && $stdout =~ m/^$mailBox:/mgi){
 		$rs |= execute("$self->{CMD_SASLDB_PASSWD2} -d -f $self->{ETC_SASLDB_FILE} -u $data->{DMN_NAME} $data->{MAIL_ACC}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr;
