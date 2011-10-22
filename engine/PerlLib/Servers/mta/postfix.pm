@@ -479,7 +479,7 @@ sub delSaslData{
 	debug($stdout) if $stdout;
 	error($stderr) if $stderr;
 
-	if(!$rs && $stdout =~ m/^$mailBox:/){
+	if(!$rs && $stdout =~ m/^$mailBox:/mgi){
 
 		$rs |= execute("$self->{CMD_SASLDB_PASSWD2} -d -f $self->{ETC_SASLDB_FILE} -u $data->{DMN_NAME} $data->{MAIL_ACC}", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
@@ -866,6 +866,24 @@ sub delCatchAll{
 	$self->{postmap}->{$self->{MTA_VIRTUAL_ALIAS_HASH}} = $data->{MAIL_ADDR};
 
 	$rs;
+}
+
+sub getTraffic{
+
+	use iMSCP::Execute;
+	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $who		= shift;
+	my $dbName	= "$self->{wrkDir}/log.db";
+	my $traff	= 0;
+	my ($rv, $rs, $stdout, $stderr);
+
+	unless($self->{logDb}){
+		tie %{$self->{logDb}}, 'iMSCP::Config','fileName' => $dbName;
+	}
+
+	$traff;
 }
 
 sub getTraffic{
