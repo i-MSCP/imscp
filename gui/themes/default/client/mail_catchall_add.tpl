@@ -40,7 +40,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="email">{TR_MENU_EMAIL_ACCOUNTS}</h1>
+				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -50,8 +50,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="mail_accounts.php">{TR_MENU_EMAIL_ACCOUNTS}</a></li>
-				<li><a href="mail_catchall.php">{TR_MENU_CATCH_ALL_MAIL}</a></li>
+				<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+				<li><a href="mail_catchall.php">{TR_LMENU_MAIL_CATCH_ALL}</a></li>
 				<li><a href="#" onclick="return false;">{TR_CREATE_CATCHALL_MAIL_ACCOUNT}</a></li>
 			</ul>
 		</div>
