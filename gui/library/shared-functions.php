@@ -541,6 +541,11 @@ function delete_domain($domainId, $checkCreator = false)
 		$query = 'DELETE FROM `user_gui_props` WHERE `user_id` = ?';
 		exec_query($query, $domainAdminId);
 
+        // Deletes own php.ini entry
+        
+		$query = 'DELETE FROM `php_ini` WHERE `domain_id` = ?';
+		exec_query($query, $domainId);
+
 		// Delegated tasks to the engine - begin
 
 		// Deletes Mail accounts

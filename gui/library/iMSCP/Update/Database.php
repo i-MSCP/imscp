@@ -1246,4 +1246,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return 'DROP TABLE IF EXISTS `auto_num`';
 	}
+
+    /**
+	 * Delete orphan php_ini entries after deleting a customer (issue #238)
+	 *
+	 * @author Sascha Bay <thecry@i-mscp.net>
+	 * @return string SQL Statement to be executed
+	 */
+	protected  function _databaseUpdate_92()
+	{
+		return 'DELETE FROM `php_ini` WHERE `domain_id` NOT IN (SELECT `domain_id` FROM `domain`)';
+	}
 }
