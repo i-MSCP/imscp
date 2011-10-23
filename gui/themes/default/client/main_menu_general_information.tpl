@@ -21,7 +21,7 @@
 
 					<li><a class="statistics" href="domain_statistics.php">{TR_MENU_STATISTICS}</a></li>
 
-					<li><a class="webtools" href="webtools.php">{TR_MENU_WEBTOOLS}</a></li
+					<li><a class="webtools" href="webtools.php">{TR_MENU_WEBTOOLS}</a></li>
 
 					<!-- BDP: support_feature -->
 					<li><a class="support" href="{SUPPORT_SYSTEM_PATH}">{TR_MENU_SUPPORT}</a></li>
