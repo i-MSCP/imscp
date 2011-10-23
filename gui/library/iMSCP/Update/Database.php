@@ -70,7 +70,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	protected function __construct()
 	{
-		if(isset(iMSCP_Registry::get('config')->DATABASE_NAME)) {
+		if (isset(iMSCP_Registry::get('config')->DATABASE_NAME)) {
 			$this->_databaseName = iMSCP_Registry::get('config')->DATABASE_NAME;
 		} else {
 			throw new iMSCP_Update_Exception('Database name not found.');
@@ -150,7 +150,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 					$pdo->beginTransaction();
 
 					foreach ((array)$queryStack as $query) {
-						if(!empty($query)) {
+						if (!empty($query)) {
 							$pdo->query($query);
 						}
 					}
@@ -222,9 +222,9 @@ class iMSCP_Update_Database extends iMSCP_Update
 					$normalizedDetails = '';
 					array_shift($details);
 
-					foreach($details as $detail) {
-						if(preg_match('/^(?: |\t)*\*(?: |\t)+([^@]*)$/', $detail, $matches)) {
-							if(empty($normalizedDetails)) {
+					foreach ($details as $detail) {
+						if (preg_match('/^(?: |\t)*\*(?: |\t)+([^@]*)$/', $detail, $matches)) {
+							if (empty($normalizedDetails)) {
 								$normalizedDetails = $matches[1];
 							} else {
 								$normalizedDetails .= '<br />' . $matches[1];
@@ -306,7 +306,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->DATABASE_REVISION = 1;
 		}
 
-		return (int) $dbConfig->DATABASE_REVISION;
+		return (int)$dbConfig->DATABASE_REVISION;
 	}
 
 	/**
@@ -317,8 +317,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $table Database table name to operate on
 	 * @param string $column Column to be added in the database table
 	 * @param string $columnDefinition Column definition including the optional
-	 * 								   (but recommended) positional statement
-	 * 								   ([FIRST | AFTER col_name ]
+	 *									(but recommended) positional statement
+	 *									([FIRST | AFTER col_name ]
 	 * @return string Query to be executed
 	 */
 	protected function _addColumn($table, $column, $columnDefinition)
@@ -337,14 +337,14 @@ class iMSCP_Update_Database extends iMSCP_Update
 		";
 		$stmt = exec_query($query, array($column, $table, $this->_databaseName));
 
-		if($stmt->rowCount() == 0) {
+		if ($stmt->rowCount() == 0) {
 			return "ALTER TABLE `$table` ADD `$column` $columnDefinition;";
 		} else {
 			return '';
 		}
 	}
 
-	 /**
+	/**
 	 * Checks if a column exists in a database table and if yes, return a query to drop it.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
@@ -369,7 +369,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		";
 		$stmt = exec_query($query, array($column, $table, $this->_databaseName));
 
-		if($stmt->rowCount()) {
+		if ($stmt->rowCount()) {
 			return "ALTER TABLE `$table` DROP column `$column`";
 		} else {
 			return '';
@@ -385,7 +385,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 */
 	public function __call($updateMethod, $param)
 	{
-		if(strpos($updateMethod, '_databaseUpdate') === false) {
+		if (strpos($updateMethod, '_databaseUpdate') === false) {
 			throw new iMSCP_Update_Exception(
 				sprintf('%s is not a valid database update method', $updateMethod));
 		}
@@ -393,7 +393,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 	/**
 	 * Please, add all the database update methods below. Don't forgot to add the doc
-	 * and revision (@since rxxx).
+	 * and revision (@since rxxx). Also, when you add a ticket reference in a
+	 * databaseUpdate_XX method, place it at begin to allow link generation on GUI.
 	 */
 
 	/**
@@ -749,6 +750,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
 		// First step: Update default language (new naming convention)
 
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 
 		if (isset($dbConfig->USER_INITIAL_LANG)) {
@@ -969,7 +971,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$sqlUpd[] = "ALTER IGNORE TABLE `user_gui_props` DROP INDEX `user_id`";
 		}
 
-		$sqlUpd[] ="ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)";
+		$sqlUpd[] = "ALTER TABLE `user_gui_props` ADD UNIQUE (`user_id`)";
 
 		return $sqlUpd;
 	}
@@ -1186,22 +1188,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 		$sqlUpd = array();
 
 		// Reset reseller permissions
-		foreach(array(
-			'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen' ,
+		foreach (array(
+			'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen',
 			'php_ini_al_register_globals', 'php_ini_al_display_errors') as $permission
 		) {
-			$sqlUpd[] ="UPDATE `reseller_props` SET `$permission` = 'no'";
+			$sqlUpd[] = "UPDATE `reseller_props` SET `$permission` = 'no'";
 		}
 
 		// Reset reseller default values for PHP directives (To default system wide value)
-		foreach(array(
+		foreach (array(
 			'post_max_size' => '8',
 			'upload_max_filesize' => '2',
 			'max_execution_time' => '30',
 			'max_input_time' => '60',
 			'memory_limit' => '128'
 		) as $directive => $defaultValue) {
-			$sqlUpd[] ="UPDATE `reseller_props` SET `php_ini_max_{$directive}` = '$defaultValue'";
+			$sqlUpd[] = "UPDATE `reseller_props` SET `php_ini_max_{$directive}` = '$defaultValue'";
 		}
 
 		return $sqlUpd;
@@ -1214,7 +1216,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r5286
 	 * @return string SQL Statement to be executed
 	 */
-	protected  function _databaseUpdate_89()
+	protected function _databaseUpdate_89()
 	{
 		$sqlupd = 'TRUNCATE TABLE `php_ini`';
 
@@ -1231,7 +1233,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @since r5286
 	 * @return string SQL Statement to be executed
 	 */
-	protected  function _databaseUpdate_90()
+	protected function _databaseUpdate_90()
 	{
 		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` int(11) unsigned NOT NULL AUTO_INCREMENT';
 	}
@@ -1242,18 +1244,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return string SQL Statement to be executed
 	 */
-	protected  function _databaseUpdate_91()
+	protected function _databaseUpdate_91()
 	{
 		return 'DROP TABLE IF EXISTS `auto_num`';
 	}
 
-    /**
+	/**
 	 * #238: Delete orphan php_ini entries in the php.ini table
 	 *
 	 * @author Sascha Bay <thecry@i-mscp.net>
 	 * @return string SQL Statement to be executed
 	 */
-	protected  function _databaseUpdate_92()
+	protected function _databaseUpdate_92()
 	{
 		return 'DELETE FROM `php_ini` WHERE `domain_id` NOT IN (SELECT `domain_id` FROM `domain`)';
 	}
