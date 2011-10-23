@@ -91,7 +91,7 @@ Tickets:
 	- Fixed #230: Defect - Build step - Skeleton directory for disabled pages not saved for versions prior 1.0.1.4
 	- Fixed #233: Defect - Some Words not Translated [German]
 	- Fixed #234: Defect - PostGrey misspelled in imscp.conf
-	- Fixed #238: Bug - After deleting customer, own php.ini still exist
+	- Fixed #238: Bug - After deleting a customer, the entries belong to the PHP directives editor still exist
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)

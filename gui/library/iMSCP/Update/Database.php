@@ -1248,7 +1248,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
     /**
-	 * Delete orphan php_ini entries after deleting a customer (issue #238)
+	 * #238: Delete orphan php_ini entries in the php.ini table
 	 *
 	 * @author Sascha Bay <thecry@i-mscp.net>
 	 * @return string SQL Statement to be executed
