@@ -186,8 +186,6 @@ function client_UpdateMailAccount($mailAccountData)
 				}
 			}
 
-			$mailAccountData['mail_forward'] = implode(',', $mailAccountData['mail_forward']);
-
 			// Check if the mail type doesn't contain xxx_forward and append it if needed
 			if (strpos($mailAccountData['mail_type'], '_forward') === false) {
 				if ($mailAccountData['mail_type'] == MT_NORMAL_MAIL) {
@@ -205,14 +203,19 @@ function client_UpdateMailAccount($mailAccountData)
 		}
 
 		$forwardAddressesUpdate = true;
-	} elseif($mailAccountData['mail_forward'] == '_no_' &&
-			 strpos($mailAccountData['mail_type'], '_forward') !== false
-	) {
-		// Check if mail type was a forward type and remove it
-		$mailAccountData['mail_type'] = preg_replace(
-			'/,[a-z]+_forward$/', '', $mailAccountData['mail_type']);
+	}
 
-		$forwardAddressesUpdate = true;
+	if($mailAccountData['mail_forward'] == '_no_') {
+		if(strpos($mailAccountData['mail_type'], '_forward') !== false) {
+			// Check if mail type was a forward type and remove it
+			$mailAccountData['mail_type'] = preg_replace(
+				'/,[a-z]+_forward$/', '', $mailAccountData['mail_type']);
+
+			$forwardAddressesUpdate = true;
+		}
+	} else {
+		// Prepare data for database insertion
+		$mailAccountData['mail_forward'] = implode(',', $mailAccountData['mail_forward']);
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
