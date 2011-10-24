@@ -50,10 +50,10 @@
 /**
  * Normalize forward email addresses list.
  *
- * @param string|array $forwardAddresses string that contain forward email addresses,
- * 										each separated by line break, space or comma
+ * @param string|array $forwardAddresses string that contains forward email addresses,
+ * 										each separated by a line break, space or comma
  * 										or an indexed array where each value is an
- * 										forward email address to convert
+ * 										forward email address
  *
  * @param string $convertTo Tell in which format the forward email addresses must be
  * 							converted (idn_to_utf8|idn_to_ascii)
@@ -119,7 +119,7 @@ function client_getMailAccountData($mailAccountId)
 
 		if (!empty($_POST)) {
 			// Forward addresses data
-			if (isset($_POST['forwardAccount'])) {
+			if (isset($_POST['forwardAccount']) || isset($_POST['forwardList'])) {
 				$mailAccountData['mail_forward_previous'] = _client_normalizeForwardAddresses(
 					$mailAccountData['mail_forward'], 'idn_to_ascii');
 
@@ -324,9 +324,7 @@ $tpl->define_dynamic(
 		 'page_message' => 'page',
 		 'logged_frm' => 'page',
 		 'password_frm' => 'page',
-		 'forward_form' => 'page',
-		 'greylisting_feature_js' => 'page',
-		 'greylisting_feature' => 'page'));
+		 'forward_frm' => 'page'));
 
 $tpl->assign(
 	array(
@@ -343,8 +341,6 @@ $tpl->assign(
 		 'TR_NO' => tr('no'),
 		 'TR_HELP' => tr('help'),
 		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a space, a comma or a line-break.'),
-		 'TR_GREYLISTING_SUPPORT' => tr('Greylisting support'),
-		 'TR_GREYLISTING_HELP' => tr('The greylisting is a little barrier against the spam. If you disable this feature on this mail account, your mail will not be delayed but you will be exposed to more spam.'),
 		 'TR_UPDATE' => tr('Update'),
 		 'TR_CANCEL' => tr('Cancel')));
 

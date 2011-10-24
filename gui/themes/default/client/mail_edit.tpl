@@ -5,7 +5,7 @@
 		$(document).ready(function(){
 			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
 
-			if(!$('#forwardAccount').is(':checked')) {
+			if(!$('#forwardAccount').is(':checked') && $('#forwardList').val() == '') {
 				$('#forwardList').attr('disabled', true);
 			}
 
