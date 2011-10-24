@@ -50,6 +50,7 @@
 /**
  * Normalize forward email addresses list.
  *
+ * @access private
  * @param string|array $forwardAddresses string that contains forward email addresses,
  * 										each separated by a line break, space or comma
  * 										or an indexed array where each value is an
@@ -153,7 +154,7 @@ function client_UpdateMailAccount($mailAccountData)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg =iMSCP_Registry::get('config');
 
-	$passwordUpdate = $forwardAddressesUpdate = $greylistingUpdate = false;
+	$passwordUpdate = $forwardAddressesUpdate = false;
 
 	// Password validation
 	if($mailAccountData['mail_pass'] != '_no_' &&
@@ -215,9 +216,9 @@ function client_UpdateMailAccount($mailAccountData)
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
-		if ($passwordUpdate || $forwardAddressesUpdate || $greylistingUpdate) {
+		if ($passwordUpdate || $forwardAddressesUpdate) {
 
-			$mailAccountData['status'] = ($forwardAddressesUpdate || $greylistingUpdate)
+			$mailAccountData['status'] = ($forwardAddressesUpdate)
 				? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS;
 
 			$query = "
@@ -265,8 +266,6 @@ function client_generateEditForm($tpl, $mailAccountData)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg =iMSCP_Registry::get('config');
-
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 
 	if($mailAccountData['mail_pass'] == '_no_') { // Forward only mail account
 		$tpl->assign('PASSWORD_FRM', '');
@@ -323,8 +322,7 @@ $tpl->define_dynamic(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/mail_edit.tpl',
 		 'page_message' => 'page',
 		 'logged_frm' => 'page',
-		 'password_frm' => 'page',
-		 'forward_frm' => 'page'));
+		 'password_frm' => 'page'));
 
 $tpl->assign(
 	array(

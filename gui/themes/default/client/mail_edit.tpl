@@ -84,7 +84,6 @@
 					</td>
 				</tr>
 				<!-- EDP: password_frm -->
-				<!-- BDP: forward_frm -->
 				<tr>
 					<td style="width:300px">
 						<label for="forwardList">{TR_FORWARD_TO}</label><span style="vertical-align: middle;" class="icon i_help" id="fwd_help">{TR_HELP}</span>
@@ -93,7 +92,6 @@
 						<textarea name="forwardList" id="forwardList" cols="40" rows="5">{FORWARD_LIST_VAL}</textarea>
 					</td>
 				</tr>
-				<!-- EDP: forward_frm -->
 			</table>
 			<div class="buttons">
 				<input name="submit" type="submit" value="{TR_UPDATE}"/>
