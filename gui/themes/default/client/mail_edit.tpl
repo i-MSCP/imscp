@@ -1,139 +1,105 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_EDIT_EMAIL_PAGE_TITLE}</title>
-		<meta name="robots" content="nofollow, noindex" />
-		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
-		<!--[if IE 6]>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-		<script type="text/javascript">
-			DD_belatedPNG.fix('*');
-		</script>
-		<![endif]-->
+<!-- INCLUDE "header.tpl" -->
+<body>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		$(document).ready(function(){
+			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
 
-		<script type="text/javascript">
-		/* <![CDATA[ */
-			$(document).ready(function(){
-				$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
+			if(!$('#forwardAccount').is(':checked')) {
+				$('#forwardList').attr('disabled', true);
+			}
+
+			$('#forwardAccount').change(function(){
+				if($(this).is(':checked')) {
+					$('#forwardList').removeAttr('disabled');
+				} else {
+					$('#forwardList').attr('disabled', true).val('');
+				}
 			});
+		});
+	/* ]]> */
+	</script>
+	<div class="header">
+		{MAIN_MENU}
+		<div class="logo">
+			<img src="{ISP_LOGO}" alt="i-MSCP logo"/>
+		</div>
+	</div>
 
-			function begin_js() {
-				if (typeof(document.forms[0].elements['mail_forward']) != 'undefined') {
-					if (document.forms[0].elements['mail_forward'].checked == false) {
-						document.forms[0].elements['forward_list'].disabled = true;
-					}
-				}
-			}
+	<div class="location">
+		<div class="location-area">
+			<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
+		</div>
+		<ul class="location-menu">
+			<!-- <li><a class="help" href="#">Help</a></li> -->
+			<!-- BDP: logged_from -->
+			<li>
+				<a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
+			</li>
+			<!-- EDP: logged_from -->
+			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+		</ul>
+		<ul class="path">
+			<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
+			<li><a href="mail_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
+			<li><a href="#" onclick="return false;">{TR_EDIT_MAIL_ACCOUNT}</a></li>
+		</ul>
+	</div>
 
-			function changeType(what) {
-				if (what == "forward") {
-					if (document.forms[0].elements['forward_list'].disabled == true) {
-				 		document.forms[0].elements['forward_list'].disabled = false;
-					} else {
-						document.forms[0].elements['forward_list'].disabled = true;
-					}
-				}
-			}
-		/* ]]> */
-		</script>
-	</head>
+	<div class="left_menu">
+	{MENU}
+	</div>
 
-	<body onload="begin_js();">
-		<div class="header">
-			{MAIN_MENU}
+	<div class="body">
+		<h2 class="email"><span>{TR_EDIT_MAIL_ACCOUNT}</span></h2>
 
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
+		<!-- BDP: page_message -->
+		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+		<!-- EDP: page_message -->
+
+		<form name="editFrm" method="post" action="mail_edit.php?id={MAIL_ID_VAL}">
+			<table>
+				<tr>
+					<th colspan="2">
+						<span style="vertical-align: middle">{TR_MAIL_ACCOUNT} : {MAIL_ADDRESS_VAL}</span>
+					</th>
+				</tr>
+				<!-- BDP: password_frm -->
+				<tr>
+					<td><label for="password">{TR_PASSWORD}</label></td>
+					<td><input name="password" id="password" type="password" value=""/></td>
+				</tr>
+				<tr>
+					<td><label for="passwordConfirmation">{TR_PASSWORD_CONFIRMATION}</label></td>
+					<td>
+						<input name="passwordConfirmation" id="passwordConfirmation" type="password" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="forwardAccount">{TR_FORWARD_ACCOUNT}</label>
+					</td>
+					<td>
+						<input name="forwardAccount" id="forwardAccount" type="checkbox"{FORWARD_ACCOUNT_CHECKED}/>
+					</td>
+				</tr>
+				<!-- EDP: password_frm -->
+				<!-- BDP: forward_frm -->
+				<tr>
+					<td style="width:300px">
+						<label for="forwardList">{TR_FORWARD_TO}</label><span style="vertical-align: middle;" class="icon i_help" id="fwd_help">{TR_HELP}</span>
+					</td>
+					<td>
+						<textarea name="forwardList" id="forwardList" cols="40" rows="5">{FORWARD_LIST_VAL}</textarea>
+					</td>
+				</tr>
+				<!-- EDP: forward_frm -->
+			</table>
+			<div class="buttons">
+				<input name="submit" type="submit" value="{TR_UPDATE}"/>
+				<input name="cancel" type="button" onclick="MM_goToURL('parent','mail_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
 			</div>
-		</div>
-
-		<div class="location">
-			<div class="location-area">
-				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<!-- BDP: logged_from -->
-				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="mail_accounts.php">{TR_MENU_MAIL_ACCOUNTS}</a></li>
-				<li><a href="mail_accounts.php">{TR_LMENU_OVERVIEW}</a></li>
-				<li><a href="#" onclick="return false;">{TR_EDIT_EMAIL_ACCOUNT}</a></li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
-			<h2 class="email"><span>{TR_EDIT_EMAIL_ACCOUNT}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
-			<form name="edit_mail_acc_frm" method="post" action="mail_edit.php?id={MAIL_ID}">
-				<!-- BDP: normal_mail -->
-				<table>
-					<tr>
-						<th colspan="2">{EMAIL_ACCOUNT}</th>
-					</tr>
-					<tr>
-						<td><label for="pass">{TR_PASSWORD}</label></td>
-						<td><input type="password" name="pass" id="pass" value="" />
-						</td>
-					</tr>
-					<tr>
-						<td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-						<td>
-							<input type="password" name="pass_rep" id="pass_rep" value="" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');" /><label for="mail_forward">{TR_FORWARD_MAIL}</label>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
-						</td>
-						<td>
-							<textarea name="forward_list" id="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea>
-						</td>
-					</tr>
-				</table>
-				<!-- EDP: normal_mail -->
-				<!-- BDP: forward_mail -->
-				<table>
-					<tr>
-						<td>
-							<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
-						</td>
-						<td>
-							<textarea name="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea>
-						</td>
-					</tr>
-				</table>
-				<!-- EDP: forward_mail -->
-				<div class="buttons">
-					<input type="hidden" name="id" value="{MAIL_ID}" />
-					<input type="hidden" name="mail_type" value="{MAIL_TYPE}" />
-					<input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}" />
-					<input type="hidden" name="uaction" value="{ACTION}" />
-					<input name="Button" type="button" value="{TR_SAVE}" onclick="return sbmt(document.forms[0],'{ACTION}');" />
-				</div>
-			</form>
-		</div>
+		</form>
+	</div>
+</body>
 <!-- INCLUDE "footer.tpl" -->
