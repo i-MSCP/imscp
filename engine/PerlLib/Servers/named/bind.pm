@@ -669,9 +669,18 @@ sub addSub{
 	my $cleanBTag	= iMSCP::File->new(filename => "$self->{tplDir}/db_sub_entry_b.tpl")->get();
 	my $cleanTag	= iMSCP::File->new(filename => "$self->{tplDir}/db_sub_entry.tpl")->get();
 	my $cleanETag	= iMSCP::File->new(filename => "$self->{tplDir}/db_sub_entry_e.tpl")->get();
-	my $bTag 		= process({SUB_NAME => $data->{DMN_NAME}}, $cleanBTag);
-	my $eTag 		= process({SUB_NAME => $data->{DMN_NAME}}, $cleanETag);
-	my $tag			= process({SUB_NAME => $data->{DMN_NAME}, DMN_IP => $data->{DMN_IP}}, $cleanTag);
+
+	my $bTag		= "; sub MX entry BEGIN\n";
+	my $eTag		= "; sub MX entry END\n";
+	$cleanTag		= replaceBloc($bTag, $eTag, '', $cleanTag, undef) unless $data->{MX};
+
+	$bTag 			= process({SUB_NAME => $data->{DMN_NAME}}, $cleanBTag);
+	$eTag 			= process({SUB_NAME => $data->{DMN_NAME}}, $cleanETag);
+	my $tag			= process({
+						SUB_NAME	=> $data->{DMN_NAME},
+						DMN_IP		=> $data->{DMN_IP},
+						PARENT_DMN_NAME 	=> $data->{PARENT_DMN_NAME}
+					}, $cleanTag);
 
 	$wrkFileContent = replaceBloc($bTag, $eTag, '', $wrkFileContent, undef);
 	$wrkFileContent = replaceBloc($cleanBTag, $cleanETag, "$bTag$tag$eTag", $wrkFileContent, 'keep');

@@ -311,7 +311,8 @@ sub buildNAMEDData{
 		DMN_NAME		=> $self->{subdomain_name}.'.'.$self->{user_home},
 		PARENT_DMN_NAME	=> $self->{user_home},
 		DMN_IP			=> $self->{ip_number},
-		USER_NAME		=> $userName.'sub'.$self->{subdomain_id}
+		USER_NAME		=> $userName.'sub'.$self->{subdomain_id},
+		MX				=> $self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0
 	};
 
 	0;
