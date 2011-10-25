@@ -24,7 +24,7 @@ Features / Enhancements:
 		Components:
 			- Added PHP directives editor
 		Tools:
-			- Updated phpMyAdmin to version 3.4.6
+			- Updated phpMyAdmin to version 3.4.7
 			- Updated Squirrelmail to version 1.4.22
 
 	Setup:
@@ -92,6 +92,7 @@ Tickets:
 	- Fixed #233: Defect - Some Words not Translated [German]
 	- Fixed #234: Defect - PostGrey misspelled in imscp.conf
 	- Fixed #238: Bug - After deleting a customer, the entries belong to the PHP directives editor still exist
+	- Fixed #239: Update - PMA 3.4.7 released
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.4 (beta 4)
