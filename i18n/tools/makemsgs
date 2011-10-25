@@ -65,13 +65,14 @@ fi
 -d "i-MSCP" \
 --copyright-holder="iMSCP Team - All rights reserved" \
 --package-name="i-MSCP" \
---package-version="1.0.1.4" \
+--package-version="1.0.1.5" \
 --msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="tr" \
 --no-location \
 ${GUI}/library/i18n.php \
 ${GUI}/library/iMSCP/*.php \
 ${GUI}/library/iMSCP/*/*.php \
+${GUI}/library/resources/i18n/zend.php \
 ${GUI}/library/iMSCP/View/Helpers/Functions/*.php \
 ${GUI}/public/*.php \
 ${GUI}/public/*/*.php \
