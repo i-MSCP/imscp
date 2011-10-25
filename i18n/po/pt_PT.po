@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-20 08:32+0200\n"
-"PO-Revision-Date: 2011-10-20 06:01+0000\n"
-"Last-Translator: gOOvER <goover0976@yahoo.de>\n"
+"POT-Creation-Date: 2011-10-25 05:49+0200\n"
+"PO-Revision-Date: 2011-10-25 03:47+0000\n"
+"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,6 +74,84 @@ msgid "An error occured! Please, contact your administrator!"
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but the given punycode notation "
+"cannot be decoded"
+msgstr ""
+
+msgid "Invalid type given. String expected"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"position"
+msgstr ""
+
+msgid "'%value%' does not match the expected structure for a DNS hostname"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%tld%'"
+msgstr ""
+
+msgid "'%value%' does not appear to be a valid local network name"
+msgstr ""
+
+msgid "'%value%' does not appear to be a valid URI hostname"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be an IP address, but IP addresses are not allowed"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a local network name but local network names are not"
+" allowed"
+msgstr ""
+
+msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"list"
+msgstr ""
+
+msgid ""
+"'%value%' is no valid email address in the basic format local-part@hostname"
+msgstr ""
+
+msgid "'%hostname%' is no valid hostname for email address '%value%'"
+msgstr ""
+
+msgid ""
+"'%hostname%' does not appear to have a valid MX record for the email address"
+" '%value%'"
+msgstr ""
+
+msgid ""
+"'%hostname%' is not in a routable network segment. The email address "
+"'%value%' should not be resolved from public network"
+msgstr ""
+
+#, php-format
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr ""
+
+#, php-format
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr ""
+
+msgid "'%localPart%' is no valid local part for email address '%value%'"
+msgstr ""
+
+msgid "'%value%' exceeds the allowed length"
+msgstr ""
+
+msgid "'%value%' does not appear to be a valid IP address"
 msgstr ""
 
 msgid "General information"
@@ -4015,23 +4093,51 @@ msgstr ""
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Por favor em primeiro remova a conta ApanhaTudo para este correio!"
 
-msgid "Email account not found!"
-msgstr "Conta de correio não encontrada!"
-
-msgid "Password missing."
+msgid "Mail account not found."
 msgstr ""
 
-msgid "Mail forward list error."
+msgid "Password doesn't matches"
 msgstr ""
 
-msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
-msgstr "i-MSCP - Gerir Correio e FTP / Editar conta de correio"
-
-msgid "Mail were updated."
+#, php-format
+msgid "Password is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
-msgid "Edit email account"
-msgstr "Editar conta de correio"
+#, php-format
+msgid "Wrong syntax for the %s forward email address."
+msgstr ""
+
+#, php-format
+msgid "You cannot forward %s on himself."
+msgstr ""
+
+msgid "You must enter a least one forward address."
+msgstr ""
+
+msgid "Password successfully updated."
+msgstr ""
+
+msgid "Mail account"
+msgstr "Contas de correio"
+
+msgid "i-MSCP - Manage Mail / Edit mail account"
+msgstr ""
+
+msgid "Edit mail account"
+msgstr ""
+
+msgid "Password confirmation"
+msgstr ""
+
+msgid "Forward account"
+msgstr ""
+
+msgid "help"
+msgstr ""
+
+msgid ""
+"Separate multiple email addresses with a space, a comma or a line-break."
+msgstr ""
 
 msgid "i-MSCP - Client/Change Password"
 msgstr "i-MSCP - Cliente/Mudar Palavra-chave"
@@ -5079,9 +5185,6 @@ msgstr ""
 
 msgid "User accounts"
 msgstr "Contas de utilizador"
-
-msgid "Mail account"
-msgstr "Contas de correio"
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"

@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://sourceforge.net/apps/trac/i-mscp/timeline\n"
-"POT-Creation-Date: 2011-10-20 08:32+0200\n"
-"PO-Revision-Date: 2011-10-20 06:01+0000\n"
-"Last-Translator: gOOvER <goover0976@yahoo.de>\n"
+"POT-Creation-Date: 2011-10-25 05:49+0200\n"
+"PO-Revision-Date: 2011-10-25 03:47+0000\n"
+"Last-Translator: nuxwin <l.declercq@nuxwin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,6 +76,84 @@ msgstr "Ett fel inträffade. Var god och tar kontakt med administratören!"
 msgid "Couldn't check for updates. Website not reachable."
 msgstr "Kan inte kolla efter uppgraderingar. Websidan är inte tillgängligt."
 
+msgid ""
+"'%value%' appears to be a DNS hostname but the given punycode notation "
+"cannot be decoded"
+msgstr ""
+
+msgid "Invalid type given. String expected"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but contains a dash in an invalid "
+"position"
+msgstr ""
+
+msgid "'%value%' does not match the expected structure for a DNS hostname"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but cannot match against hostname "
+"schema for TLD '%tld%'"
+msgstr ""
+
+msgid "'%value%' does not appear to be a valid local network name"
+msgstr ""
+
+msgid "'%value%' does not appear to be a valid URI hostname"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be an IP address, but IP addresses are not allowed"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a local network name but local network names are not"
+" allowed"
+msgstr ""
+
+msgid "'%value%' appears to be a DNS hostname but cannot extract TLD part"
+msgstr ""
+
+msgid ""
+"'%value%' appears to be a DNS hostname but cannot match TLD against known "
+"list"
+msgstr ""
+
+msgid ""
+"'%value%' is no valid email address in the basic format local-part@hostname"
+msgstr ""
+
+msgid "'%hostname%' is no valid hostname for email address '%value%'"
+msgstr ""
+
+msgid ""
+"'%hostname%' does not appear to have a valid MX record for the email address"
+" '%value%'"
+msgstr ""
+
+msgid ""
+"'%hostname%' is not in a routable network segment. The email address "
+"'%value%' should not be resolved from public network"
+msgstr ""
+
+#, php-format
+msgid "'%localPart%' can not be matched against dot-atom format"
+msgstr ""
+
+#, php-format
+msgid "'%localPart%' can not be matched against quoted-string format"
+msgstr ""
+
+msgid "'%localPart%' is no valid local part for email address '%value%'"
+msgstr ""
+
+msgid "'%value%' exceeds the allowed length"
+msgstr ""
+
+msgid "'%value%' does not appear to be a valid IP address"
+msgstr ""
+
 msgid "General information"
 msgstr "Allmän information"
 
@@ -110,10 +188,10 @@ msgid "Add reseller"
 msgstr "Lägg till återförsäljare"
 
 msgid "Reseller assignment"
-msgstr "Överlåtelse av återförsäljare"
+msgstr "Återförsäljare uppdrag"
 
 msgid "User assignment"
-msgstr "Överlåtelse av användare"
+msgstr "Användare uppdrag"
 
 msgid "Email setup"
 msgstr "E-postinställningar"
@@ -167,7 +245,7 @@ msgid "i-MSCP debugger"
 msgstr "i-MSCP debugger"
 
 msgid "Custom menus"
-msgstr "Anpassade menyer"
+msgstr "Egna menyer"
 
 msgid "Overview"
 msgstr "Översikt"
@@ -390,7 +468,7 @@ msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
 "valid."
 msgstr ""
-"Lösenordet måste vara minst %s tecken och innehålla bokstäver och siffror "
+"Lösenordet måste vara minst %s tecken och innehåller bokstäver och siffror "
 "för att vara giltigt."
 
 #, php-format
@@ -495,7 +573,7 @@ msgid "internet Multi Server Control Panel"
 msgstr "Internet Multi Server Control Panel"
 
 msgid "© 2010-2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010-2011 i-MSCP Team <br/> All Rights Reserved"
+msgstr "© 2010-2011 i-MSCP Team <br /> All Rights Reserved"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -523,10 +601,10 @@ msgid "FileManager"
 msgstr "FileManager"
 
 msgid "Secure Connection"
-msgstr "Säker uppkoppling"
+msgstr "Säker anslutning"
 
 msgid "Normal Connection"
-msgstr "Normal uppkoppling"
+msgstr "Normal anslutning"
 
 msgid "Lost password"
 msgstr "Glömt lösenord"
@@ -647,10 +725,10 @@ msgid "Add"
 msgstr "Lägg till"
 
 msgid "Entered passwords do not match!"
-msgstr "Lösenorden stämmer inte överens!"
+msgstr "Lösenord stämmer inte överens!"
 
 msgid "User session was killed!"
-msgstr "Användarsessionen dödades!"
+msgstr "Användarsession avslutad!"
 
 msgid "Reseller"
 msgstr "Återförsäljare"
@@ -719,7 +797,7 @@ msgid "%s deleted the admin log older than one year!"
 msgstr "%s tog bort allt från administrationsloggen som var äldre än ett år"
 
 msgid "Invalid time period!"
-msgstr "Ogiltig datumperiod"
+msgstr "Ogiltig datumsperiod"
 
 msgid "Admin Log"
 msgstr "Adminstratörslogg"
@@ -1479,16 +1557,16 @@ msgid "Wrong request"
 msgstr "Fel begäran"
 
 msgid "The IP is assigned to a reseller. You must unassign it first."
-msgstr ""
+msgstr "IP tilldelad en återförsäljare. Du måste tar bort det först."
 
 msgid "You cannot delete the last active IP address."
-msgstr ""
+msgstr "Du kan inte ta bort den sista aktiva IP-adress."
 
 msgid "IP scheduled for deletion."
-msgstr ""
+msgstr "IP planeras för radering."
 
 msgid "No IP found in database."
-msgstr ""
+msgstr "Ingen IP hittades i databasen."
 
 msgid "Remove IP"
 msgstr "Ta bort IP-adress"
@@ -1496,21 +1574,23 @@ msgstr "Ta bort IP-adress"
 msgid ""
 "Unable to find network cards. Form to add new IP address has been disabled."
 msgstr ""
+"Kunde inte hitta nätverkskort. Formulär för att lägga till nya IP-adressen "
+"har inaktiverats."
 
 msgid "Wrong IP number."
-msgstr ""
+msgstr "Fel IP-nummer."
 
 msgid "Ip already configured on the system."
-msgstr ""
+msgstr "Ip konfigureras redan på systemet."
 
 msgid "You must select a network card."
-msgstr ""
+msgstr "Du måste välja ett nätverkskort."
 
 msgid "Ip address scheduled for addition."
-msgstr ""
+msgstr "IP-adress planerad till tillägg."
 
 msgid "i-MSCP - Admin / General settings / IPs management"
-msgstr ""
+msgstr "i-MSCP - Admin / Allmänna inställningar / IPS management"
 
 msgid "Available IPs"
 msgstr "Tillgängliga IP-adresser"
@@ -1522,13 +1602,13 @@ msgid "Network interface"
 msgstr "Nätverksgränssnitt"
 
 msgid "Registered IPs"
-msgstr ""
+msgstr "Registrerade IP-adresser"
 
 msgid "Add new IP"
 msgstr "Lägg till ny IP-adress"
 
 msgid "IP data"
-msgstr ""
+msgstr "IP-data"
 
 #, php-format
 msgid "Are you sure you want to delete this IP: %s?"
@@ -1536,7 +1616,7 @@ msgstr "Är du säker på att du vill ta bort denna IP-adress: %s?"
 
 #, php-format
 msgid "You cannot remove the %s IP address."
-msgstr ""
+msgstr "Du kan inte ta bort%s IP-adress."
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - Admin / IP-användning"
@@ -3848,7 +3928,7 @@ msgid "Domain account expired."
 msgstr "Domänkonto löpt ut."
 
 msgid "Your account has expired. Please renew your subscription."
-msgstr ""
+msgstr "Ditt konto har gått ut. Vänligen förnya prenumerationen."
 
 msgid "No set"
 msgstr "Inget bestämt"
@@ -4042,23 +4122,51 @@ msgstr "Fånga alla konto planerad för radering."
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Vänligen ta först bort catch-all-kontot för den här e-posten!"
 
-msgid "Email account not found!"
-msgstr "E-postkontot finns inte!"
+msgid "Mail account not found."
+msgstr ""
 
-msgid "Password missing."
-msgstr "Lösenord saknas."
+msgid "Password doesn't matches"
+msgstr ""
 
-msgid "Mail forward list error."
-msgstr "Mail framåt lista fel."
+#, php-format
+msgid "Password is shorter than %s signs or includes not permitted signs."
+msgstr ""
 
-msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
-msgstr "i-MSCP - Hantera e-post och FTP / Redigera e-postkonto"
+#, php-format
+msgid "Wrong syntax for the %s forward email address."
+msgstr ""
 
-msgid "Mail were updated."
-msgstr "Mail har uppdaterats."
+#, php-format
+msgid "You cannot forward %s on himself."
+msgstr ""
 
-msgid "Edit email account"
-msgstr "Redigera e-postkonto"
+msgid "You must enter a least one forward address."
+msgstr ""
+
+msgid "Password successfully updated."
+msgstr ""
+
+msgid "Mail account"
+msgstr "E-postkonton"
+
+msgid "i-MSCP - Manage Mail / Edit mail account"
+msgstr ""
+
+msgid "Edit mail account"
+msgstr ""
+
+msgid "Password confirmation"
+msgstr ""
+
+msgid "Forward account"
+msgstr ""
+
+msgid "help"
+msgstr ""
+
+msgid ""
+"Separate multiple email addresses with a space, a comma or a line-break."
+msgstr ""
 
 msgid "i-MSCP - Client/Change Password"
 msgstr "i-MSCP - Kund/Ändra lösenord"
@@ -5147,9 +5255,6 @@ msgstr "Odefinierade hänvisning till data."
 
 msgid "User accounts"
 msgstr "Användarkonton"
-
-msgid "Mail account"
-msgstr "E-postkonton"
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
