@@ -475,7 +475,7 @@ function check_subdomain_data($tpl, $user_id, $dmn_name) {
 		}
 
 		subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward);
-		set_page_message(tr('Subdomain scheduled for addition.'));
+		set_page_message(tr('Subdomain scheduled for addition.'), 'success');
 		redirectTo('domains_manage.php');
 	}
 }
