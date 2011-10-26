@@ -104,21 +104,25 @@ function gen_hp_message() {
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 	// global $external_event;
 
+	/*
 	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
 		// $external_event = '_on_';
-		set_page_message(tr('Hosting plan added!'), 'success');
+		set_page_message(tr('Hosting plan added.'), 'success');
 		unset($_SESSION["hp_added"]);
 		if (isset($GLOBALS['hp_added']))
 			unset($GLOBALS['hp_added']);
-	} else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
+	} else
+	*/
+
+	if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
 		// $external_event = '_on_';
-		set_page_message(tr('Hosting plan deleted!'), 'success');
+		set_page_message(tr('Hosting plan deleted.'), 'success');
 		unset($_SESSION["hp_deleted"]);
 		if (isset($GLOBALS['hp_deleted']))
 			unset($GLOBALS['hp_deleted']);
 	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
 		// $external_event = '_on_';
-		set_page_message(tr('Hosting plan updated!'), 'success');
+		set_page_message(tr('Hosting plan updated.'), 'success');
 		unset($_SESSION["hp_updated"]);
 		if (isset($GLOBALS['hp_updated']))
 			unset($GLOBALS['hp_updated']);
