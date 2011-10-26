@@ -17,13 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Validate
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -33,8 +33,8 @@
  *
  * Note: Working in progress...
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Validate
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
@@ -161,18 +161,18 @@ class iMSCP_Validate
 	 * Sets translator for Zend validator.
 	 *
 	 * @static
-	 * @throws iMSCP_Exception When $translator is not an Zend_Translate_Adapter instance
+	 * @throws iMSCP_Exception When $translator is not a Zend_Translate_Adapter instance
 	 * @param Zend_Translate_Adapter $translator Translator adapter
 	 * @return void
 	 */
 	static public function setTranslator($translator = null)
 	{
-		if(null === $translator) {
+		if (null === $translator) {
 			require_once 'iMSCP/I18n/Adapter/Zend.php';
 			$translator = new iMSCP_I18n_Adapter_Zend();
-		} elseif(!$translator instanceof Zend_Translate_Adapter) {
+		} elseif (!$translator instanceof Zend_Translate_Adapter) {
 			require_once 'iMSCP/Exception.php';
-			throw new iMSCP_Exception('$translator must be an instance of Zend_Translate_Adapter');
+			throw new iMSCP_Exception('$translator must be an instance of Zend_Translate_Adapter.');
 		}
 
 		Zend_Validate_Abstract::setDefaultTranslator($translator);
@@ -188,14 +188,14 @@ class iMSCP_Validate
 	 */
 	static public function getZendValidator($validatorName, $options = array())
 	{
-		if(!array_key_exists($validatorName, self::$_validators)) {
-			$validator = 'Zend_Validate_'. $validatorName;
+		if (!array_key_exists($validatorName, self::$_validators)) {
+			$validator = 'Zend_Validate_' . $validatorName;
 
 			require_once "Zend/Validate/$validatorName.php";
 
 			self::$_validators[$validatorName] = new  $validator($options);
 
-			if(empty(self::$_validators) && !Zend_Validate_Abstract::hasDefaultTranslator()) {
+			if (empty(self::$_validators) && !Zend_Validate_Abstract::hasDefaultTranslator()) {
 				self::setTranslator();
 			}
 		}
@@ -212,7 +212,7 @@ class iMSCP_Validate
 	 */
 	static public function getLastValidationMessages()
 	{
-		if(null !== self::$_lastValidator) {
+		if (null !== self::$_lastValidator) {
 			return format_message(self::$_lastValidator->getMessages());
 		} else {
 			require_once 'iMSCP/Exception.php';
