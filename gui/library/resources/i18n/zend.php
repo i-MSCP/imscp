@@ -42,9 +42,13 @@ function tr(){}
 // iMSCP_Validate class. When a developer provides custom errors messages, this file
 // must be updated.
 
+
+// Zend validators - shared strings
+tr("Invalid type given. String expected");
+
 // msgid for Zend_Validate_Hostname
 tr("'%value%' appears to be a DNS hostname but the given punycode notation cannot be decoded");
-tr("Invalid type given. String expected");
+
 tr("'%value%' appears to be a DNS hostname but contains a dash in an invalid position");
 tr("'%value%' does not match the expected structure for a DNS hostname");
 tr("'%value%' appears to be a DNS hostname but cannot match against hostname schema for TLD '%tld%'");
@@ -56,7 +60,6 @@ tr("'%value%' appears to be a DNS hostname but cannot extract TLD part");
 tr("'%value%' appears to be a DNS hostname but cannot match TLD against known list");
 
 // msgid for Zend_Validate_EmailAddress
-tr("Invalid type given. String expected");
 tr("'%value%' is no valid email address in the basic format local-part@hostname");
 tr("'%hostname%' is no valid hostname for email address '%value%'");
 tr("'%hostname%' does not appear to have a valid MX record for the email address '%value%'");
@@ -67,12 +70,10 @@ tr("'%localPart%' is no valid local part for email address '%value%'");
 tr("'%value%' exceeds the allowed length");
 
 // msgid for Zend_Validate_Ip
-tr("Invalid type given. String expected");
 tr("'%value%' does not appear to be a valid IP address");
 
 // msgid for iMSCP_Validate
 tr("'%value%' appears to be a domain name but the given punycode notation cannot be decoded");
-tr("Invalid type given. String expected");
 tr("'%value%' appears to be a domain name but contains a dash in an invalid position");
 tr("'%value%' does not match the expected structure for a domain name");
 tr("'%value%' appears to be a domain name but cannot match against domain name schema for TLD '%tld%'");
@@ -80,7 +81,6 @@ tr("'%value%' appears to be a domain name but cannot extract TLD part");
 tr("'%value%' appears to be a domain name but cannot match TLD against known list");
 
 tr("'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded");
-tr("Invalid type given. String expected");
 tr("'%value%' appears to be a subdomain name but contains a dash in an invalid position");
 tr("'%value%' does not match the expected structure for a subdomain name");
 tr("'%value%' appears to be asubdomain name but cannot match against subdomain schema for TLD '%tld%'");
