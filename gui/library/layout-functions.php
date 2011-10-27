@@ -128,21 +128,26 @@ function set_page_message($message, $level = 'info')
 }
 
 /**
- * Converts a Array of Strings to a single String.
+ * format message(s) to be displayed on client browser as page message.
  *
- * @param  array $messages Stack of messages to be concatenated
+ * @param  string|array $messages Message or stack of messages to be concatenated
  * @return string Concatenated messages
- * @todo not longer needed - should be removed
  */
 function format_message($messages)
 {
-    $string = '';
+	$string = '';
 
-    foreach ((array)$messages as $message) {
-        $string .= $message . "<br />\n";
-    }
+	if (is_array($messages)) {
+		foreach ($messages as $message) {
+			$string .= $message . "<br />\n";
+		}
+	} elseif (is_string($messages)) {
+		$string = $messages;
+	} else {
+		throw new iMSCP_Exception('set_page_message() expects a string or an array for $messages.');
+	}
 
-    return $string;
+	return $string;
 }
 
 /**

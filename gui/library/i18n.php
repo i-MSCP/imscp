@@ -229,7 +229,7 @@ function i18n_getDomain($upstreamDomain)
 /**
  * Garbage collector for domains translation files.
  *
- * Note: See #130 for further explaination.
+ * Note: See #130 for further explanations.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.4
