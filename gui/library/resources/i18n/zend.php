@@ -83,6 +83,6 @@ tr("'%value%' appears to be a domain name but cannot match TLD against known lis
 tr("'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded");
 tr("'%value%' appears to be a subdomain name but contains a dash in an invalid position");
 tr("'%value%' does not match the expected structure for a subdomain name");
-tr("'%value%' appears to be asubdomain name but cannot match against subdomain schema for TLD '%tld%'");
+tr("'%value%' appears to be a subdomain name but cannot match against subdomain schema for TLD '%tld%'");
 tr("'%value%' appears to be a subdomain name but cannot extract TLD part");
 tr("'%value%' appears to be a subdomain name but cannot match TLD against known list");

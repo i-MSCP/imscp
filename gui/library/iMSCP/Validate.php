@@ -37,7 +37,7 @@
  * @package		iMSCP_Core
  * @subpackage	Validate
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @version		0.0.5
  */
 class iMSCP_Validate
 {
@@ -71,6 +71,13 @@ class iMSCP_Validate
 	protected $_overrideMessagesFor = null;
 
 	/**
+	 * Last iMSCP_Validate validation error messages.
+	 * 
+	 * @var array
+	 */
+	protected $_lastValidationErrorMessages = array();
+
+	/**
 	 * Error messages that override those provided by validators in a specific validation context.
 	 *
 	 * @var array
@@ -89,7 +96,7 @@ class iMSCP_Validate
 			'hostnameCannotDecodePunycode' => "'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded",
 			'hostnameDashCharacter' => "'%value%' appears to be a subdomain name but contains a dash in an invalid position",
 			'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a subdomain name",
-			'hostnameInvalidHostnameSchema' => "'%value%' appears to be asubdomain name but cannot match against subdomain schema for TLD '%tld%'",
+			'hostnameInvalidHostnameSchema' => "'%value%' appears to be a subdomain name but cannot match against subdomain schema for TLD '%tld%'",
 			'hostnameUndecipherableTld' => "'%value%' appears to be a subdomain name but cannot extract TLD part",
 			'hostnameUnknownTld' => "'%value%' appears to be a subdomain name but cannot match TLD against known list",
 		)
@@ -100,11 +107,12 @@ class iMSCP_Validate
 	 */
 	private function __construct()
 	{
-
+		$this->_config = iMSCP_Registry::get('config');
 	}
 
 	/**
 	 * Singleton - Make clone unavailable.
+	 *
 	 * @return void
 	 */
 	private function __clone()
@@ -113,7 +121,7 @@ class iMSCP_Validate
 	}
 
 	/**
-	 * Implement singleton design pattern.
+	 * Implements singleton design pattern.
 	 *
 	 * @static
 	 * @return iMSCP_Validate
@@ -192,6 +200,10 @@ class iMSCP_Validate
 	 */
 	public function hostname($hostname, $options = array())
 	{
+		if(!$this->_config->TLD_STRICT_VALIDATION && !array_key_exists('tld', $options)) {
+			$options['tld'] = false;
+		}
+
 		return $this->_processValidation('Hostname', $hostname, $options);
 	}
 
@@ -220,7 +232,7 @@ class iMSCP_Validate
 	public function subdomainName($subdomainName, $options = array())
 	{
 		$this->_overrideMessagesFor = 'subdomain';
-		return self::hostname($subdomainName, $options);
+		return $this->hostname($subdomainName, $options);
 	}
 
 	/**
@@ -231,7 +243,7 @@ class iMSCP_Validate
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if ip address is valid, FALSE otherwise
 	 */
-	public function Ip($ip, $options = array())
+	public function ip($ip, $options = array())
 	{
 		return $this->_processValidation('Ip', $ip, $options);
 	}
@@ -282,6 +294,23 @@ class iMSCP_Validate
 	}
 
 	/**
+	 * Returns error messages for last validation as a single string.
+	 *
+	 * @static
+	 * @return string
+	 */
+	public function getLastValidationMessages()
+	{
+		if (!empty($this->_lastValidationErrorMessages)) {
+			$messages = $this->_lastValidationErrorMessages;
+			$this->_lastValidationErrorMessages = array();
+			return format_message($messages);
+		} else {
+			return '';
+		}
+	}
+
+	/**
 	 * Process validation.
 	 *
 	 * @param string $validatorName $validatorName Zend validator name
@@ -315,31 +344,19 @@ class iMSCP_Validate
 		$validator->setOptions((array)$options);
 
 		// Process validation
-		$retVal = $validator->isValid($input);
+		if(!($retVal = $validator->isValid($input))) {
+			$this->_lastValidationErrorMessages = array_merge(
+				$this->_lastValidationErrorMessages, $this->_lastValidator->getMessages());
+		}
 
 		// Reset default options on validator
 		$validator->setOptions($defaultOptions);
+
 		if (isset($defaultMessages)) {
 			$validator->setMessages($defaultMessages);
 			$this->_overrideMessagesFor = null;
 		}
 
 		return $retVal;
-	}
-
-	/**
-	 * Returns error messages for last validation as a single string.
-	 *
-	 * @static
-	 * @return string
-	 */
-	public function getLastValidationMessages()
-	{
-		if (null !== $this->_lastValidator) {
-			return format_message($this->_lastValidator->getMessages());
-		} else {
-			require_once 'iMSCP/Exception.php';
-			throw new iMSCP_Exception('You must first invoke a validator.');
-		}
 	}
 }
