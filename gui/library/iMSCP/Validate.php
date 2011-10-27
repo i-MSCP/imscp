@@ -61,8 +61,9 @@ class iMSCP_Validate
 	protected static $_lastValidator = null;
 
 	/**
-	 * Tell whether or not the default error message must be overriden for a specific validation method.
-	 * @var string validation method name
+	 * Tell whether or not the default error messages must be overriden for the given validation method.
+	 *
+	 * @var string Validation method name
 	 */
 	protected static $_overrideMessagesFor = null;
 
@@ -87,7 +88,7 @@ class iMSCP_Validate
 			'hostnameInvalid' => "Invalid type given. String expected",
 			'hostnameDashCharacter' => "'%value%' appears to be a subdomain name but contains a dash in an invalid position",
 			'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a subdomain name",
-			'hostnameInvalidHostnameSchema' => "'%value%' appears to be asubdomain name but cannot match against domain name schema for TLD '%tld%'",
+			'hostnameInvalidHostnameSchema' => "'%value%' appears to be asubdomain name but cannot match against subdomain schema for TLD '%tld%'",
 			'hostnameUndecipherableTld' => "'%value%' appears to be a subdomain name but cannot extract TLD part",
 			'hostnameUnknownTld' => "'%value%' appears to be a subdomain name but cannot match TLD against known list",
 		)
@@ -131,8 +132,8 @@ class iMSCP_Validate
      * 'allow'			=> Options for the hostname validator, see Zend_Validate_Hostname::ALLOW_*
      * 'mx'				=> If MX check should be enabled, boolean
      * 'deep'			=> If a deep MX check should be done, boolean
-	 * 'domain'			=> Disable hostname validation but not global pass check
-	 * 'onlyLocalPart'	=> Disable hostname validation and provides dummy value for global pass check
+	 * 'domain'			=> If hostname validation must be disabled but not global pass check must be disabled, boolean
+	 * 'onlyLocalPart'	=> If hostname validation and global pass check must be disabled, boolean
 	 *
 	 * @static
 	 * @param string $email email address to be validated
@@ -237,7 +238,7 @@ class iMSCP_Validate
 	 *
 	 * @static
 	 * @param string $validatorName Zend validator name
-	 * @param array $options Validator options OPTIONAL
+	 * @param array $options Options to pass to the validator OPTIONAL
 	 * @return Zend_Validate_Abstract
 	 */
 	static public function getZendValidator($validatorName, $options = array())
@@ -263,7 +264,7 @@ class iMSCP_Validate
 	 *
 	 * @param string $validatorName $validatorName Zend validator name
 	 * @param mixed $input Input data to be validated
-	 * @param array $options
+	 * @param array $options Options to pass to validator
 	 * @return bool bool TRUE if input data are valid, FALSE otherwise
 	 */
 	static protected function _processValidation($validatorName, $input, $options)
@@ -271,17 +272,24 @@ class iMSCP_Validate
 		/** @var $validator Zend_Validate_Abstract */
 		$validator = self::getZendValidator($validatorName);
 
+		// Override validator default errors message if needed
+		if(null != self::$_overrideMessagesFor) {
+			if(isset(self::$_messages[self::$_overrideMessagesFor])) {
+				$defaultMessages = $validator->getMessageTemplates();
+				$messages = self::$_messages[self::$_overrideMessagesFor];
+				$validator->setMessages($messages);
+			} else {
+				throw new iMSCP_Exception(sprintf(
+						'Custom error messages for the %s validation method are not defined.',
+						__CLASS__ .'::'. self::$_overrideMessagesFor));
+			}
+		}
+
 		// Getting validator default options
 		$defaultOptions = $validator->getOptions();
 
 		// Setup validator options
 		$validator->setOptions((array) $options);
-
-		if(null != self::$_overrideMessagesFor) {
-			$defaultMessages = $validator->getMessageTemplates();
-			$messages = self::$_messages[self::$_overrideMessagesFor];
-			$validator->setMessages($messages);
-		}
 
 		// Process validation
 		$retVal = $validator->isValid($input);
@@ -297,7 +305,7 @@ class iMSCP_Validate
 	}
 
 	/**
-	 * Returns messages from last validation as a single string.
+	 * Returns error messages for last validation as a single string.
 	 *
 	 * @static
 	 * @return string
