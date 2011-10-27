@@ -37,7 +37,7 @@
  * @package		iMSCP_Core
  * @subpackage	Validate
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_Validate
 {
@@ -93,27 +93,43 @@ class iMSCP_Validate
 	/**
 	 * Validates an email address.
 	 *
+     * The following option keys are supported:
+     * 'hostname'		=> A hostname validator, see Zend_Validate_Hostname
+     * 'allow'			=> Options for the hostname validator, see Zend_Validate_Hostname::ALLOW_*
+     * 'mx'				=> If MX check should be enabled, boolean
+     * 'deep'			=> If a deep MX check should be done, boolean
+	 * 'domain'			=> Disable hostname validation but not global pass check
+	 * 'onlyLocalPart'	=> Disable hostname validation and provides dummy value for global pass check
+	 *
 	 * @static
 	 * @param string $email email address to be validated
-	 * @param array $options Validator options OPTIONAL
+	 * @param array $options Validator options OPTIONAL (Zend validator options
 	 * @return bool TRUE if email address is valid, FALSE otherwise
 	 */
 	public static function email($email, $options = array())
 	{
-		return self::getZendValidator('EmailAddress', $options)->isValid($email);
+		if(array_key_exists('onlyLocalPart', $options) && $options['onlyLocalPart']) {
+			// We do not want process hostname part validation on email address so
+			// we disable it and provide dummy value for global check
+			$options['domain'] = false;
+			$email .= '@dummy';
+		}
+
+		return self::_processValidation('EmailAddress', $email, $options);
 	}
 
 	/**
 	 * Validates a hostname.
 	 *
 	 * @static
+	 * @see Zend_Validate_Hostname for available options
 	 * @param string $hostname Hostname to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if email address is valid, FALSE otherwise
 	 */
-	public static function hostname($hostname, $options = array())
+	public static function _hostname($hostname, $options = array())
 	{
-		return self::getZendValidator('Hostname', $options)->isValid($hostname);
+		return self::_processValidation('Hostname', $hostname, $options);
 	}
 
 	/**
@@ -125,9 +141,9 @@ class iMSCP_Validate
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if domain name is valid, FALSE otherwise
 	 */
-	public static function domainName($domainName, $options = array())
+	public static function _domainName($domainName, $options = array())
 	{
-		return self::hostname($domainName, $options);
+		return self::_hostname($domainName, $options);
 	}
 
 	/**
@@ -141,20 +157,21 @@ class iMSCP_Validate
 	 */
 	public static function subdomainName($subdomainName, $options = array())
 	{
-		return self::hostname($subdomainName, $options);
+		return self::_hostname($subdomainName, $options);
 	}
 
 	/**
 	 * Validates an Ip address.
 	 *
 	 * @static
+	 * @see Zend_Validate_Ip for available options
 	 * @param string $ip Ip address to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if ip address is valid, FALSE otherwise
 	 */
 	public static function Ip($ip, $options = array())
 	{
-		return self::getZendValidator('Ip', $options)->isValid($ip);
+		return self::_processValidation('Ip', $ip, $options);
 	}
 
 	/**
@@ -202,6 +219,34 @@ class iMSCP_Validate
 
 		self::$_lastValidator = self::$_validators[$validatorName];
 		return self::$_validators[$validatorName];
+	}
+
+	/**
+	 * Process validation.
+	 *
+	 * @param string $validatorName $validatorName Zend validator name
+	 * @param mixed $input Input data to be validated
+	 * @param array $options
+	 * @return bool bool TRUE if input data are valid, FALSE otherwise
+	 */
+	static protected function _processValidation($validatorName, $input, $options)
+	{
+		/** @var $validator Zend_Validate_Abstract */
+		$validator = self::getZendValidator($validatorName);
+
+		// Getting validator default options
+		$defaultOptions = $validator->getOptions();
+
+		// Setup validator options
+		$validator->setOptions($options);
+
+		// Process validation
+		$retVal = $validator->isValid($input);
+
+		// Reset default options on validator
+		$validator->setOptions($defaultOptions);
+
+		return $retVal;
 	}
 
 	/**
