@@ -26,14 +26,21 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-die('This file must not be loaded.');
+die('The ./gui/library/resources/i18n/zend.php file must not be loaded.');
 
+/**
+ * Dummy function.
+ *
+ * @return void
+ */
 function tr(){}
 
 // Note this file is not intended to be loaded. It will simply parsed by the gettext
 // tools when updating translation files. All translation string were extracted from
 // the set of Zend validation classes currently used by i-MSCP. When adding new Zend
-// validator, the developer must think to update this file.
+// validator, the developer must think to update this file. Same thing for the
+// iMSCP_Validate class. When a developer provides custom errors messages, this file
+// must be updated.
 
 // msgid for Zend_Validate_Hostname
 tr("'%value%' appears to be a DNS hostname but the given punycode notation cannot be decoded");
@@ -62,3 +69,20 @@ tr("'%value%' exceeds the allowed length");
 // msgid for Zend_Validate_Ip
 tr("Invalid type given. String expected");
 tr("'%value%' does not appear to be a valid IP address");
+
+// msgid for iMSCP_Validate
+tr("'%value%' appears to be a domain name but the given punycode notation cannot be decoded");
+tr("Invalid type given. String expected");
+tr("'%value%' appears to be a domain name but contains a dash in an invalid position");
+tr("'%value%' does not match the expected structure for a domain name");
+tr("'%value%' appears to be a domain name but cannot match against domain name schema for TLD '%tld%'");
+tr("'%value%' appears to be a domain name but cannot extract TLD part");
+tr("'%value%' appears to be a domain name but cannot match TLD against known list");
+
+tr("'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded");
+tr("Invalid type given. String expected");
+tr("'%value%' appears to be a subdomain name but contains a dash in an invalid position");
+tr("'%value%' does not match the expected structure for a subdomain name");
+tr("'%value%' appears to be asubdomain name but cannot match against subdomain schema for TLD '%tld%'");
+tr("'%value%' appears to be a subdomain name but cannot extract TLD part");
+tr("'%value%' appears to be a subdomain name but cannot match TLD against known list");
