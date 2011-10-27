@@ -37,45 +37,47 @@
  * @package		iMSCP_Core
  * @subpackage	Validate
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 class iMSCP_Validate
 {
 	/**
-	 * @var Zend_Validate_Abstract[]
+	 * @var iMSCP_Validate
 	 */
-	protected static $_validators = array();
+	protected static $_instance = null;
 
 	/**
-	 * Translator adapter used by Zend validate component.
-	 *
-	 * @var Zend_Translate_Adapter
+	 * @var iMSCP_Config_Handler_File
 	 */
-	protected static $_translator = null;
+	protected $_config = null;
+
+	/**
+	 * @var Zend_Validate_Abstract[]
+	 */
+	protected $_validators = array();
 
 	/**
 	 * Instance of last Validator invoked.
 	 *
 	 * @var Zend_Validate_Abstract
 	 */
-	protected static $_lastValidator = null;
+	protected $_lastValidator = null;
 
 	/**
 	 * Tell whether or not the default error messages must be overriden for the given validation method.
 	 *
 	 * @var string Validation method name
 	 */
-	protected static $_overrideMessagesFor = null;
+	protected $_overrideMessagesFor = null;
 
 	/**
 	 * Error messages that override those provided by validators in a specific validation context.
 	 *
 	 * @var array
 	 */
-	protected static $_messages = array(
+	protected $_messages = array(
 		'domain' => array(
 			'hostnameCannotDecodePunycode' => "'%value%' appears to be a domain name but the given punycode notation cannot be decoded",
-			'hostnameInvalid' => "Invalid type given. String expected",
 			'hostnameDashCharacter' => "'%value%' appears to be a domain name but contains a dash in an invalid position",
 			'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a domain name",
 			'hostnameInvalidHostnameSchema' => "'%value%' appears to be a domain name but cannot match against domain name schema for TLD '%tld%'",
@@ -85,7 +87,6 @@ class iMSCP_Validate
 
 		'subdomain' => array(
 			'hostnameCannotDecodePunycode' => "'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded",
-			'hostnameInvalid' => "Invalid type given. String expected",
 			'hostnameDashCharacter' => "'%value%' appears to be a subdomain name but contains a dash in an invalid position",
 			'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a subdomain name",
 			'hostnameInvalidHostnameSchema' => "'%value%' appears to be asubdomain name but cannot match against subdomain schema for TLD '%tld%'",
@@ -95,14 +96,45 @@ class iMSCP_Validate
 	);
 
 	/**
-	 * Validates an username.
+	 * Singleton - Make new unavailable.
+	 */
+	private function __construct()
+	{
+
+	}
+
+	/**
+	 * Singleton - Make clone unavailable.
+	 * @return void
+	 */
+	private function __clone()
+	{
+
+	}
+
+	/**
+	 * Implement singleton design pattern.
 	 *
 	 * @static
+	 * @return iMSCP_Validate
+	 */
+	static public function getInstance()
+	{
+		if(self::$_instance === null) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	/**
+	 * Validates an username.
+	 *
 	 * @throws iMSCP_Exception Because not implemented yet
 	 * @param $username Username to be validated.
 	 * @return bool TRUE if username is valid, FALSE otherwise
 	 */
-	public static function username($username)
+	public function username($username)
 	{
 		// TODO: Implement username() method.
 		require_once 'iMSCP/Exception.php';
@@ -112,12 +144,11 @@ class iMSCP_Validate
 	/**
 	 * Validates a password.
 	 *
-	 * @static
 	 * @throws iMSCP_Exception Because not implemented yet
 	 * @param $password Password to be validated
 	 * @return void
 	 */
-	public static function password($password)
+	public function password($password)
 	{
 		// TODO: Implement password() method.
 		require_once 'iMSCP/Exception.php';
@@ -127,100 +158,92 @@ class iMSCP_Validate
 	/**
 	 * Validates an email address.
 	 *
-     * The following option keys are supported:
-     * 'hostname'		=> A hostname validator, see Zend_Validate_Hostname
-     * 'allow'			=> Options for the hostname validator, see Zend_Validate_Hostname::ALLOW_*
-     * 'mx'				=> If MX check should be enabled, boolean
-     * 'deep'			=> If a deep MX check should be done, boolean
+	 * The following option keys are supported:
+	 * 'hostname'		=> A hostname validator, see Zend_Validate_Hostname
+	 * 'allow'			=> Options for the hostname validator, see Zend_Validate_Hostname::ALLOW_*
+	 * 'mx'				=> If MX check should be enabled, boolean
+	 * 'deep'			=> If a deep MX check should be done, boolean
 	 * 'domain'			=> If hostname validation must be disabled but not global pass check must be disabled, boolean
 	 * 'onlyLocalPart'	=> If hostname validation and global pass check must be disabled, boolean
 	 *
-	 * @static
 	 * @param string $email email address to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if email address is valid, FALSE otherwise
 	 */
-	public static function email($email, $options = array())
+	public function email($email, $options = array())
 	{
-		if(array_key_exists('onlyLocalPart', $options) && $options['onlyLocalPart']) {
+		if (array_key_exists('onlyLocalPart', $options) && $options['onlyLocalPart']) {
 			// We do not want process hostname part validation on email address so
 			// we disable it and we provides dummy value for global pass check
 			$options['domain'] = false;
 			$email .= '@dummy';
 		}
 
-		return self::_processValidation('EmailAddress', $email, $options);
+		return $this->_processValidation('EmailAddress', $email, $options);
 	}
 
 	/**
 	 * Validates a hostname.
 	 *
-	 * @static
 	 * @see Zend_Validate_Hostname for available options
 	 * @param string $hostname Hostname to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if email address is valid, FALSE otherwise
 	 */
-	public static function hostname($hostname, $options = array())
+	public function hostname($hostname, $options = array())
 	{
-		return self::_processValidation('Hostname', $hostname, $options);
+		return $this->_processValidation('Hostname', $hostname, $options);
 	}
 
 	/**
 	 * Validates a domain name.
 	 *
-	 * @static
 	 * @see iMSCP_Validate::hostname()
 	 * @param string $domainName Domain name to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if domain name is valid, FALSE otherwise
-	 * @todo Customize error messages
 	 */
-	public static function domainName($domainName, $options = array())
+	public function domainName($domainName, $options = array())
 	{
-		self::$_overrideMessagesFor = 'domain';
-		return self::hostname($domainName, $options);
+		$this->_overrideMessagesFor = 'domain';
+		return $this->hostname($domainName, $options);
 	}
 
 	/**
 	 * Validates a subdomain name.
 	 *
-	 * @static
 	 * @see iMSCP_Validate::hostname()
 	 * @param string $subdomainName Subdomain to be validated.
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if subdomain name is valid, FALSE otherwise
-	 * @todo Customize error messages
 	 */
-	public static function subdomainName($subdomainName, $options = array())
+	public function subdomainName($subdomainName, $options = array())
 	{
-		self::$_overrideMessagesFor = 'subdomain';
+		$this->_overrideMessagesFor = 'subdomain';
 		return self::hostname($subdomainName, $options);
 	}
 
 	/**
 	 * Validates an Ip address.
 	 *
-	 * @static
 	 * @see Zend_Validate_Ip for available options
 	 * @param string $ip Ip address to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if ip address is valid, FALSE otherwise
 	 */
-	public static function Ip($ip, $options = array())
+	public function Ip($ip, $options = array())
 	{
-		return self::_processValidation('Ip', $ip, $options);
+		return $this->_processValidation('Ip', $ip, $options);
 	}
 
 	/**
-	 * Sets translator for Zend validator.
+	 * Set default translation object for all Zend validate objects.
 	 *
-	 * @static
 	 * @throws iMSCP_Exception When $translator is not a Zend_Translate_Adapter instance
 	 * @param Zend_Translate_Adapter $translator Translator adapter
 	 * @return void
 	 */
-	static public function setTranslator($translator = null)
+	public function setDefaultTranslator($translator = null)
 	{
 		if (null === $translator) {
 			require_once 'iMSCP/I18n/Adapter/Zend.php';
@@ -236,27 +259,26 @@ class iMSCP_Validate
 	/**
 	 * Returns instance of a specific Zend validator.
 	 *
-	 * @static
 	 * @param string $validatorName Zend validator name
 	 * @param array $options Options to pass to the validator OPTIONAL
 	 * @return Zend_Validate_Abstract
 	 */
-	static public function getZendValidator($validatorName, $options = array())
+	public function getZendValidator($validatorName, $options = array())
 	{
-		if (!array_key_exists($validatorName, self::$_validators)) {
+		if (!array_key_exists($validatorName, $this->_validators)) {
 			$validator = 'Zend_Validate_' . $validatorName;
 
 			require_once "Zend/Validate/$validatorName.php";
 
-			self::$_validators[$validatorName] = new  $validator($options);
+			$this->_validators[$validatorName] = new $validator($options);
 
-			if (empty(self::$_validators) && !Zend_Validate_Abstract::hasDefaultTranslator()) {
-				self::setTranslator();
+			if (empty($this->_validators) && !Zend_Validate_Abstract::hasDefaultTranslator()) {
+				self::setDefaultTranslator();
 			}
 		}
 
-		self::$_lastValidator = self::$_validators[$validatorName];
-		return self::$_validators[$validatorName];
+		$this->_lastValidator = $this->_validators[$validatorName];
+		return $this->_validators[$validatorName];
 	}
 
 	/**
@@ -267,21 +289,22 @@ class iMSCP_Validate
 	 * @param array $options Options to pass to validator
 	 * @return bool bool TRUE if input data are valid, FALSE otherwise
 	 */
-	static protected function _processValidation($validatorName, $input, $options)
+	protected function _processValidation($validatorName, $input, $options)
 	{
 		/** @var $validator Zend_Validate_Abstract */
 		$validator = self::getZendValidator($validatorName);
 
 		// Override validator default errors message if needed
-		if(null != self::$_overrideMessagesFor) {
-			if(isset(self::$_messages[self::$_overrideMessagesFor])) {
+		if (null != $this->_overrideMessagesFor) {
+			if (isset($this->_messages[$this->_overrideMessagesFor])) {
 				$defaultMessages = $validator->getMessageTemplates();
-				$messages = self::$_messages[self::$_overrideMessagesFor];
+				$messages = $this->_messages[$this->_overrideMessagesFor];
 				$validator->setMessages($messages);
 			} else {
-				throw new iMSCP_Exception(sprintf(
+				throw new iMSCP_Exception(
+					sprintf(
 						'Custom error messages for the %s validation method are not defined.',
-						__CLASS__ .'::'. self::$_overrideMessagesFor));
+						__CLASS__ . '::' . $this->_overrideMessagesFor));
 			}
 		}
 
@@ -289,16 +312,16 @@ class iMSCP_Validate
 		$defaultOptions = $validator->getOptions();
 
 		// Setup validator options
-		$validator->setOptions((array) $options);
+		$validator->setOptions((array)$options);
 
 		// Process validation
 		$retVal = $validator->isValid($input);
 
 		// Reset default options on validator
 		$validator->setOptions($defaultOptions);
-		if(isset($defaultMessages)) {
+		if (isset($defaultMessages)) {
 			$validator->setMessages($defaultMessages);
-			self::$_overrideMessagesFor = null;
+			$this->_overrideMessagesFor = null;
 		}
 
 		return $retVal;
@@ -310,10 +333,10 @@ class iMSCP_Validate
 	 * @static
 	 * @return string
 	 */
-	static public function getLastValidationMessages()
+	public function getLastValidationMessages()
 	{
-		if (null !== self::$_lastValidator) {
-			return format_message(self::$_lastValidator->getMessages());
+		if (null !== $this->_lastValidator) {
+			return format_message($this->_lastValidator->getMessages());
 		} else {
 			require_once 'iMSCP/Exception.php';
 			throw new iMSCP_Exception('You must first invoke a validator.');
