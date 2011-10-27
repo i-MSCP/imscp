@@ -61,6 +61,40 @@ class iMSCP_Validate
 	protected static $_lastValidator = null;
 
 	/**
+	 * Tell whether or not the default error message must be overriden for a specific
+	 * validation method.
+	 * @var string validation method name
+	 */
+	protected static $_overrideMessagesFor = null;
+
+	/**
+	 * Error message that override those provided by validators in specific context.
+	 *
+	 * @var array
+	 */
+	protected static $_messages = array(
+		'domain' => array(
+			'hostnameCannotDecodePunycode' => "'%value%' appears to be a domain name but the given punycode notation cannot be decoded",
+			'hostnameInvalid' => "Invalid type given. String expected",
+			'hostnameDashCharacter' => "'%value%' appears to be a domain name but contains a dash in an invalid position",
+			'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a domain name",
+			'hostnameInvalidHostnameSchema' => "'%value%' appears to be a domain name but cannot match against domain name schema for TLD '%tld%'",
+			'hostnameUndecipherableTld' => "'%value%' appears to be a domain name but cannot extract TLD part",
+			'hostnameUnknownTld' => "'%value%' appears to be a domain name but cannot match TLD against known list",
+		),
+
+		'subdomain' => array(
+			'hostnameCannotDecodePunycode' => "'%value%' appears to be a subdomain name but the given punycode notation cannot be decoded",
+			'hostnameInvalid' => "Invalid type given. String expected",
+			'hostnameDashCharacter' => "'%value%' appears to be a subdomain name but contains a dash in an invalid position",
+			'hostnameInvalidHostname' => "'%value%' does not match the expected structure for a subdomain name",
+			'hostnameInvalidHostnameSchema' => "'%value%' appears to be asubdomain name but cannot match against domain name schema for TLD '%tld%'",
+			'hostnameUndecipherableTld' => "'%value%' appears to be a subdomain name but cannot extract TLD part",
+			'hostnameUnknownTld' => "'%value%' appears to be a subdomain name but cannot match TLD against known list",
+		)
+	);
+
+	/**
 	 * Validates an username.
 	 *
 	 * @static
@@ -103,14 +137,14 @@ class iMSCP_Validate
 	 *
 	 * @static
 	 * @param string $email email address to be validated
-	 * @param array $options Validator options OPTIONAL (Zend validator options
+	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if email address is valid, FALSE otherwise
 	 */
 	public static function email($email, $options = array())
 	{
 		if(array_key_exists('onlyLocalPart', $options) && $options['onlyLocalPart']) {
 			// We do not want process hostname part validation on email address so
-			// we disable it and provide dummy value for global check
+			// we disable it and we provides dummy value for global pass check
 			$options['domain'] = false;
 			$email .= '@dummy';
 		}
@@ -127,7 +161,7 @@ class iMSCP_Validate
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if email address is valid, FALSE otherwise
 	 */
-	public static function _hostname($hostname, $options = array())
+	public static function hostname($hostname, $options = array())
 	{
 		return self::_processValidation('Hostname', $hostname, $options);
 	}
@@ -140,10 +174,12 @@ class iMSCP_Validate
 	 * @param string $domainName Domain name to be validated
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if domain name is valid, FALSE otherwise
+	 * @todo Customize error messages
 	 */
-	public static function _domainName($domainName, $options = array())
+	public static function domainName($domainName, $options = array())
 	{
-		return self::_hostname($domainName, $options);
+		self::$_overrideMessagesFor = 'domain';
+		return self::hostname($domainName, $options);
 	}
 
 	/**
@@ -154,10 +190,12 @@ class iMSCP_Validate
 	 * @param string $subdomainName Subdomain to be validated.
 	 * @param array $options Validator options OPTIONAL
 	 * @return bool TRUE if subdomain name is valid, FALSE otherwise
+	 * @todo Customize error messages
 	 */
 	public static function subdomainName($subdomainName, $options = array())
 	{
-		return self::_hostname($subdomainName, $options);
+		self::$_overrideMessagesFor = 'subdomain';
+		return self::hostname($subdomainName, $options);
 	}
 
 	/**
@@ -238,13 +276,23 @@ class iMSCP_Validate
 		$defaultOptions = $validator->getOptions();
 
 		// Setup validator options
-		$validator->setOptions($options);
+		$validator->setOptions((array) $options);
+
+		if(null != self::$_overrideMessagesFor) {
+			$defaultMessages = $validator->getMessageTemplates();
+			$messages = self::$_messages[self::$_overrideMessagesFor];
+			$validator->setMessages($messages);
+		}
 
 		// Process validation
 		$retVal = $validator->isValid($input);
 
 		// Reset default options on validator
 		$validator->setOptions($defaultOptions);
+		if(isset($defaultMessages)) {
+			$validator->setMessages($defaultMessages);
+			self::$_overrideMessagesFor = null;
+		}
 
 		return $retVal;
 	}
