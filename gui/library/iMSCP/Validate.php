@@ -37,7 +37,7 @@
  * @package		iMSCP_Core
  * @subpackage	Validate
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Validate
 {
@@ -61,14 +61,13 @@ class iMSCP_Validate
 	protected static $_lastValidator = null;
 
 	/**
-	 * Tell whether or not the default error message must be overriden for a specific
-	 * validation method.
+	 * Tell whether or not the default error message must be overriden for a specific validation method.
 	 * @var string validation method name
 	 */
 	protected static $_overrideMessagesFor = null;
 
 	/**
-	 * Error message that override those provided by validators in specific context.
+	 * Error messages that override those provided by validators in a specific validation context.
 	 *
 	 * @var array
 	 */
