@@ -2,19 +2,12 @@ i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
 -------------------------------------------------------------------------------------
-i-MSCP 1.0.2.0 (RC 1)
+i-MSCP 1.0.1.6 (Beta6 - bufixe release)
 -------------------------------------------------------------------------------------
 
-Features / Enhancements:
-	Engine:
-
-	Gui:
-
-	Setup:
-
-Other:
-
 Tickets:
+	- #242: Security Faillure - Directories are created with group write permissions
+	- #245: Defect - rkhunter log file is not created
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
