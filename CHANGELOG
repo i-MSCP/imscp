@@ -21,6 +21,7 @@ Other:
 Tickets:
 	- #242: Security Faillure - Directories are created with group write permissions
 	- #245: Defect - rkhunter log file is not created
+	- #246: Defect - Traffic accounting seem to be broken
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

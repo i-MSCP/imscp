@@ -215,7 +215,7 @@ sub CustomLoghandler {
 		print $fh $_;
 
 		# Write the traffic value in the default|domain.tld-traf.log file
-		$fh = cacheout '>>', "$main::cfg{'APACHE_LOG_DIR'}/$vhost-traf.log";
+		$fh = cacheout '>>', "$main::cfg{'APACHE_LOG_DIR'}/traff/$vhost-traf.log";
 		$fh->autoflush(1);
 		print $fh $inBytes + $outBytes, "\n";
 
@@ -271,7 +271,7 @@ sub eventLog {
 # This method is also called by the errorLog handler in condition exposed here:
 # https://issues.apache.org/bugzilla/show_bug.cgi?id=49800
 #
-sub signalHandler() {
+sub signalHandler {
 
 	my $signal =  shift;
 	my $loggingType = ($opt{'loggingType'} eq 'access') ? 'Access' : 'Error';
@@ -303,26 +303,38 @@ if(getConf() != 0) {
 		"Unable to load i-MSCP configuration from the imscp.conf file."
 	);
 
-} elsif (!-d $main::cfg{'APACHE_LOG_DIR'}) {
-	eventLog(
-		'err',
-		"Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist."
-	);
-
-} elsif (!-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
-	eventLog(
-		'err',
-		"Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist."
-	);
-
-} elsif ($opt{'loggingType'} eq 'access') {
-	# Stating Apache access log processing
-	CustomLoghandler();
 } else {
-	# Stating Apache error log processing
-	ErrorLogHandler();
-}
 
+	mkdir $main::cfg{'APACHE_LOG_DIR'} unless -d $main::cfg{'APACHE_LOG_DIR'};
+	mkdir "$main::cfg{'APACHE_LOG_DIR'}/traff" unless -d "$main::cfg{'APACHE_LOG_DIR'}/traff";
+	mkdir $main::cfg{'APACHE_USERS_LOG_DIR'} unless -d $main::cfg{'APACHE_USERS_LOG_DIR'};
+
+	if (!-d $main::cfg{'APACHE_LOG_DIR'}) {
+		eventLog(
+			'err',
+			"Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist."
+		);
+
+	} elsif (!-d "$main::cfg{'APACHE_LOG_DIR'}/traff") {
+		eventLog(
+			'err',
+			"Apache $main::cfg{'APACHE_LOG_DIR'}/traff directory does not exist!"
+		);
+
+	} elsif (!-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
+		eventLog(
+			'err',
+			"Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist."
+		);
+
+	} elsif ($opt{'loggingType'} eq 'access') {
+		# Stating Apache access log processing
+		CustomLoghandler();
+	} else {
+		# Stating Apache error log processing
+		ErrorLogHandler();
+	}
+}
 # This is the rescue part of this script that is run when an error occurs.
 # This allows to not kill the current process and prevents Apache to trying to
 # re-spawn the process again and again. Instead, the script will acts as

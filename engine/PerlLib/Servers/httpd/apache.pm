@@ -1261,7 +1261,7 @@ sub getTraffic{
 		if($rs || !$stdout){
 			error('imscp-apache-logger is not running') unless $stderr;
 		} else {
-			while($stdout =~ m/^(\d+)(?!.*error)/mg){
+			while($stdout =~ m/^\s{0,}(\d+)(?!.*error)/mg){
 				$rs = execute("kill -s HUP $1", \$stdout, \$stderr);
 				debug($stdout) if $stdout;
 				error($stderr) if $stderr;
