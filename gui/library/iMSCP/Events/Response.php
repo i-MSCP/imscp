@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Events_Manager
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@i-mscp.net>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -35,37 +34,37 @@
  * by the iMSCP_pTemplate template engine. A listener method that receives this event
  * can doing some changes on the generated template before the final result is sent
  * to the client browser.
- * 
- * @category    iMSCP
- * @package     iMSCP_Core
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Events_Manager
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     0.0.1
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @version		0.0.1
  */
 class iMSCP_Events_Response extends iMSCP_Events_Event
 {
-    /**
-     * @var iMSCP_pTemplate
-     */
-    protected $_templateEngine;
+	/**
+	 * @var iMSCP_pTemplate
+	 */
+	protected $_templateEngine;
 
-    /**
-     * Constructor.
-     *
-     * @param iMSCP_pTemplate $templateEngine Template engine
-     */
-    public function __construct(iMSCP_pTemplate $templateEngine)
-    {
-        $this->_templateEngine = $templateEngine;
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param iMSCP_pTemplate $templateEngine Template engine
+	 */
+	public function __construct(iMSCP_pTemplate $templateEngine)
+	{
+		$this->_templateEngine = $templateEngine;
+	}
 
-    /**
-     * Returns iMSCP_pTemplate instance.
-     *
-     * @return iMSCP_pTemplate
-     */
-    public function getTemplateEngine()
-    {
-        return $this->_templateEngine;
-    }
+	/**
+	 * Returns iMSCP_pTemplate instance.
+	 *
+	 * @return iMSCP_pTemplate
+	 */
+	public function getTemplateEngine()
+	{
+		return $this->_templateEngine;
+	}
 }

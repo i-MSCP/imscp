@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Events_Manager
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@i-mscp.net>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -33,13 +32,13 @@
  * This class contains no event data. It is used by events that do not pass state
  * information to an event listener when an event is thrown.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Events_Manager
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @version     0.0.1
+ * @author		Laurent Declercq <l.declercq@i-mscp.net>
+ * @version		0.0.1
  */
 class iMSCP_Events_Event
 {
-    
+
 }
