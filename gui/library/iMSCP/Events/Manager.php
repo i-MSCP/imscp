@@ -64,7 +64,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * @package     iMSCP_Events
  * @subpackage  Manager
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @version     0.0.2
  */
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
@@ -131,22 +131,23 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
      *                                  of the event is the name of the method that
      *                                  is invoked on listeners objects. Callbacks
      *                                  functions can have arbitrary names.
-     * @param iMSCP_Events_Event $event OPTIONAL The event to pass to the event
-     *                                  listeners. If not supplied, an empty
-     *                                  iMSCP_Events_Event instance is created.
+     * @param mixed $argument OPTIONAL 	The data to pass to the event listener method.
+	 * 									If not supplied, an empty iMSCP_Events_Event
+	 * 									instance is created.
      * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
+	 * @todo allow to pass multiple arguments to listeners methods
      */
-    public function dispatch($eventName, iMSCP_Events_Event $event = null)
+    public function dispatch($eventName, $argument = null)
     {
         if (isset($this->_events[$eventName])) {
-            if(null === $event) {
+            if(null === $argument) {
                 $event = new iMSCP_Events_Event();
             }
 
             foreach ($this->_events[$eventName]->getIterator() as $listener) {
                 if (is_object($listener)) {
                     if(is_callable(array($listener, $eventName))) {
-                        $listener->$eventName($event);
+                        $listener->$eventName($argument);
                      } else {
                         require_once 'iMSCP/Events/Exception.php';
                         throw new iMSCP_Events_Manager_Exception(
@@ -154,7 +155,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
                             "' object must implement the {$eventName}() listener method.");
                     }
                 } elseif (is_callable($listener)) {
-                    call_user_func_array($listener, array($event));
+                    call_user_func_array($listener, array($argument));
                 } else {
                     require_once 'iMSCP/Events/Exception.php';
                     throw new iMSCP_Events_Manager_Exception(

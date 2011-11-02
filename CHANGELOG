@@ -5,6 +5,19 @@ i-MSCP ChangeLog
 i-MSCP 1.0.1.6 (Beta6 - bugfix release)
 -------------------------------------------------------------------------------------
 
+Features / Enhancements:
+	Engine:
+
+	Gui:
+		Components:
+			- DebugBar - Files plugin: Count and shows the loaded templates files
+			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
+			- Events system: Allows to pass arbitrary data to the events listeners methods
+
+	Setup:
+
+Other:
+
 Tickets:
 	- #242: Security Faillure - Directories are created with group write permissions
 	- #245: Defect - rkhunter log file is not created

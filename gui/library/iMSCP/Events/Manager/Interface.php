@@ -43,7 +43,7 @@
  * @package     iMSCP_Events
  * @subpackage  Manager
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @version     0.0.2
  */
 interface iMSCP_Events_Manager_Interface
 {
@@ -55,12 +55,13 @@ interface iMSCP_Events_Manager_Interface
      *                                  of the event is the name of the method that
      *                                  is invoked on listeners objects. Callbacks
      *                                  functions can have arbitrary names.
-     * @param iMSCP_Events_Event $event OPTIONNAL The event to pass to the event
-     *                                  listeners. If not supplied, an empty
-     *                                  iMSCP_Events_Event instance is created.
+     * @param mixed $argument OPTIONAL 	The data to pass to the event listener method.
+	 * 									If not supplied, an empty iMSCP_Events_Event
+	 * 									instance is created.
      * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
+	 * @todo allow to pass multiple arguments to listeners methods
      */
-    public function dispatch($eventName, iMSCP_Events_Event $event = null);
+    public function dispatch($eventName, $argument = null);
 
     /**
      * Registers an event listener that listens on the specified events.

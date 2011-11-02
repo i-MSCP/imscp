@@ -173,6 +173,13 @@ class iMSCP_pTemplate
         $this->tpl_end_rexpr .= $this->tpl_end_tag_name;
         $this->tpl_end_rexpr .= $this->tpl_name_rexpr;
         $this->tpl_end_rexpr .= $this->tpl_end_tag . '/';
+
+		$this->tpl_include = '~' .
+							 $this->tpl_start_tag .
+							 $this->tpl_include .
+							 $this->tpl_end_tag .
+							 '~m';
+
     }
 
     /**
@@ -507,40 +514,50 @@ class iMSCP_pTemplate
         return in_array($namespace, $this->namespace);
     }
 
-    /**
-     * @param  $fname
-     * @return mixed|null|string
-     */
-    public function get_file($fname)
-    {
-        if (is_array($fname)) {
-            $fname = (!empty($this->__includeRelativePath)
-                ? $this->__includeRelativePath . '/' : '') . $fname[1];
-        }
+	/**
+	 * Load a template file.
+	 *
+	 * @throws iMSCP_Exception If template file is not found
+	 * @param string|array $fname Template file path or an array where the second
+	 *							   item contain the template file path
+	 * @return mixed|string
+	 */
+	public function get_file($fname)
+	{
+		static $parentTplDir = null;
 
-        if ($this->is_safe($fname)) {
-            if (!($fp = fopen($fn = ($this->root_dir) . '/' . $fname, 'r'))) {
-                return '';
-            }
+		if (!is_array($fname)) {
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_pTemplate_Events::onBeforeAssembleTemplateFiles, $fname);
+		} else { // INCLUDED file
+			$fname = ($parentTplDir !== null) ? $parentTplDir . '/' . $fname[1] : $fname[1];
+		}
 
-            $res = fread($fp, filesize(($this->root_dir) . '/' . $fname));
+		if ($this->is_safe($fname)) {
+			$prevParentTplDir = $parentTplDir;
+			$parentTplDir = dirname($fname);
 
-            if (!$res) {
-                return '';
-            }
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_pTemplate_Events::onBeforeLoadTemplateFile, $fname);
 
-            fclose($fp);
+			$fileContent = file_get_contents($this->root_dir . '/' . $fname);
 
-            $this->__includeRelativePath = dirname($fn);
-            $res = preg_replace_callback('~' . $this->tpl_start_tag .
-                                         $this->tpl_include . $this->tpl_end_tag .
-                                         '~m', array($this, 'get_file'), $res);
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_pTemplate_Events::onAfterLoadTemplateFile, $fileContent);
 
-            return $res;
-        }
+			$fileContent = preg_replace_callback(
+				$this->tpl_include,array($this, 'get_file'), $fileContent);
 
-        return null;
-    }
+			$parentTplDir = $prevParentTplDir;
+		} else {
+			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', $fname));
+		}
+
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_pTemplate_Events::onAfterAssembleTemplateFiles, $fileContent);
+
+		return $fileContent;
+	}
 
     /**
      * @param  $tname
