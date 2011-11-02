@@ -294,6 +294,7 @@ sub signalHandler {
 #                              Main program                                    #
 ################################################################################
 
+umask(027);
 eventLog('notice', "Starting i-MSCP Apache logger (pid $$)");
 
 # Get i-MSCP configuration file
