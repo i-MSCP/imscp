@@ -1,11 +1,6 @@
 #!/usr/bin/perl
-
+#
 # i-MSCP a internet Multi Server Control Panel
-#
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
-#
-# Version: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -23,17 +18,20 @@
 # Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # The i-MSCP Home Page is:
 #
 #    http://i-mscp.net
 #
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010-2011 by internet Multi Server Control Panel - http://i-mscp.net
+# Author Laurent Declercq <l.declercq@nuxwin.com>
 
 ################################################################################
 ## Script description:                                                        ##
-##  imscp-apache-logger - i-MSCP apache logfiles handling                      ##
+##  imscp-apache-logger - i-MSCP apache logfiles handling                     ##
 ##                                                                            ##
 ## I. CustomLog handler:                                                      ##
 ##                                                                            ##
@@ -88,14 +86,13 @@ use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
 my %opt = (
 	loggingType => 'access', # Default logging type
-	logDir => '/var/log/imscp' # Default script event log directory
+	logDir => '/var/log/imscp' # Default directory for script events log
 );
 
 Getopt::Long::Configure(qw(no_ignore_case));
 GetOptions(\%opt, 'loggingType|t=s', 'logDir|l=s');
 
 %main::cfg = ();
-
 
 ################################################################################
 #                                 Subroutines                                  #
@@ -109,7 +106,6 @@ GetOptions(\%opt, 'loggingType|t=s', 'logDir|l=s');
 # @return int 0 on success, negative int otherwise
 #
 sub getConf {
-
 	my $file;
 
 	if(-e '/usr/local/etc/imscp/imscp.conf'){
@@ -304,19 +300,19 @@ eventLog('notice', "Starting i-MSCP Apache logger (pid $$)");
 if(getConf() != 0) {
 	eventLog(
 		'err',
-		"Unable to load i-MSCP configuration from the imscp.conf file!"
+		"Unable to load i-MSCP configuration from the imscp.conf file."
 	);
 
 } elsif (!-d $main::cfg{'APACHE_LOG_DIR'}) {
 	eventLog(
 		'err',
-		"Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist!"
+		"Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist."
 	);
 
 } elsif (!-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
 	eventLog(
 		'err',
-		"Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist!"
+		"Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist."
 	);
 
 } elsif ($opt{'loggingType'} eq 'access') {
