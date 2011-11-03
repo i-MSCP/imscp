@@ -282,6 +282,7 @@ gen_user_assign($tpl, $dmn_id);
 
 $tpl->assign(
 	array(
+		 'TR_PAGE_TITLE' => 'i-MSCP client / Webtools / Protected area / User assignment',
 		 'TR_HTACCESS' => tr('Protected areas'),
 		 'TR_DELETE' => tr('Delete'),
 		 'TR_USER_ASSIGN' => tr('User assign'),

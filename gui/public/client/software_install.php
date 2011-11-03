@@ -301,7 +301,7 @@ if (isset($_POST['Submit2'])) {
 
 $tpl -> assign(
 			array(
-				'TR_CLIENT_INSTALL_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Install Software'),
+				'TR_PAGE_TITLE' => tr('i-MSCP - Install Software'),
 				'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 				'THEME_CHARSET' 						=> tr('encoding'),
 				'ISP_LOGO'								=> layout_getUserLogo()

@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 	<body>
 		<div class="header">
 			{MAIN_MENU}
@@ -48,4 +48,4 @@
 				</div>
 			</form>
 		</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

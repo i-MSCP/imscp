@@ -234,7 +234,7 @@ function gen_dmn_traff_list($tpl, $month, $year, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_DOMAIN_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Client/Domain Statistics'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Domain Statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

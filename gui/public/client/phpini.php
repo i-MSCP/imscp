@@ -121,11 +121,11 @@ if ($phpini->getDomStatus($domainId) & $phpini->getClPermVal('phpiniSystem') == 
 							  't_update_ok' => 'page'));
 
 	$tpl->assign(array(
-					  'TR_HEAD_TITLE' => tr('i-MSCP / Client / Manage domains / PHP.ini editor'),
+					  'TR_PAGE_TITLE' => tr('i-MSCP / Client / Manage domains / PHP.ini editor'),
 					  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 					  'THEME_CHARSET' => tr('encoding'),
 					  'ISP_LOGO' => layout_getUserLogo(),
-					  'TR_PAGE_TITLE' => tr('PHP directives'),
+					  'TR_TITLE' => tr('PHP directives'),
 					  'TR_MENU_PHPINI' => tr('PHP directives'),
 					  'TR_PAGE_TEXT' => tr("In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."),
 

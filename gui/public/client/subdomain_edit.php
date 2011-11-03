@@ -274,7 +274,7 @@ function _client_initView()
 						 	  'scheme_options' => 'page'));
 
 	$tpl->assign(array(
-					  'TR_EDIT_SUBDOMAIN_PAGE_TITLE' => tr('i-MSCP - Manage domains / Edit Subdomain'),
+					  'TR_PAGE_TITLE' => tr('i-MSCP - Manage domains / Edit Subdomain'),
 					  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 					  'THEME_CHARSET' => tr('encoding'),
 					  'ISP_LOGO' => layout_getUserLogo()));

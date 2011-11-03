@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<script type="text/javascript">
 		/* <![CDATA[ */
@@ -173,4 +173,4 @@
 		<!-- EDP: dns_list -->
 		<!-- EDP: isactive_dns -->
 	</div>
-	<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

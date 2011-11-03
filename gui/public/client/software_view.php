@@ -77,7 +77,7 @@ $tpl -> define_dynamic('no_software', 'page');
 
 $tpl -> assign(
 	array(
-		'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Software details'),
+		'TR_PAGE_TITLE'	=> tr('i-MSCP - Software details'),
 		'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'							=> tr('encoding'),
 		'ISP_LOGO'								=> layout_getUserLogo()

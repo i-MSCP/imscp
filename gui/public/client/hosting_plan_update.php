@@ -451,7 +451,7 @@ function gen_hp($tpl, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_UPDATE_HP'	=> tr('i-MSCP - Update hosting plan'),
+		'TR_PAGE_TITLE'	=> tr('i-MSCP - Update hosting plan'),
 		'THEME_COLOR_PATH'		=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'			=> tr('encoding'),
 		'ISP_LOGO'				=> layout_getUserLogo()
