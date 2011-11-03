@@ -53,7 +53,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 $tpl->assign(
 	array(
-		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

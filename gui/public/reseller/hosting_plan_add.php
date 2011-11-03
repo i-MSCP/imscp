@@ -66,7 +66,7 @@ $tpl->define_dynamic('t_phpini_disable_functions', 'page');
 
 $tpl->assign(
 	array(
-		 'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Reseller/Add hosting plan'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Add hosting plan'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()

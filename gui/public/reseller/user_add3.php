@@ -361,7 +361,7 @@ $tpl->define_dynamic('alias_add', 'page');
 
 $tpl->assign(
     array(
-         'TR_ADD_USER_PAGE_TITLE' => tr('i-MSCP - User/Add domain account - step 3'),
+         'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain account - step 3'),
          'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
          'THEME_CHARSET' => tr('encoding'),
          'ISP_LOGO' => layout_getUserLogo(),

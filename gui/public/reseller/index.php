@@ -270,7 +270,7 @@ $tpl->define_dynamic(array(
 
 $tpl->assign(array(
                   'THEME_CHARSET' => tr('encoding'),
-                  'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Reseller / General information'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / General information'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'ISP_LOGO' => layout_getUserLogo(),
                   'TR_PROPERTIES' => tr('Properties'),

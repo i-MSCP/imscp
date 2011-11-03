@@ -304,7 +304,7 @@ if (!is_xhr()) {
                       'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                       'THEME_CHARSET' => tr('encoding'),
                       'ISP_LOGO' => layout_getUserLogo(),
-                      'TR_ADD_USER_PAGE_TITLE' => tr('i-MSCP - User/Add domain alias'),
+                      'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain alias'),
                       'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
                       'TR_ADD_ALIAS' => tr('Add domain alias'),
                       'TR_DOMAIN_NAME' => tr('Domain name'),

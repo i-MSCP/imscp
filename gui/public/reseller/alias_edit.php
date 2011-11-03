@@ -47,7 +47,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-		'TR_EDIT_ALIAS_PAGE_TITLE' => tr('i-MSCP - Manage Domain Alias/Edit Alias'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain Alias/Edit Alias'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

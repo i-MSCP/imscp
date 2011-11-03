@@ -424,7 +424,7 @@ $tpl->define_dynamic(array(
                           'als_add_button' => 'page'));
 
 $tpl->assign(array(
-                  'TR_ALIAS_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => layout_getUserLogo()));
