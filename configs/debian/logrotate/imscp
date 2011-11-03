@@ -33,52 +33,6 @@
 #    http://i-mscp.net
 #
 
-# Rotation for user logs for i-MSCP traffic count
-#
-/var/log/apache2/users/*.log {
-  weekly
-  missingok
-  rotate 52
-  compress
-  delaycompress
-  notifempty
-  create 640 root adm
-  sharedscripts
-  prerotate
-    /var/www/imscp/engine/traffic/imscp-vrl-traff >/var/log/imscp/imscp-vrl-traff.log 2>&1
-  endscript
-  postrotate
-    if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
-      /etc/init.d/apache2 reload > /dev/null
-    fi
-  endscript
-}
-
-# Rotation for user traffic prevs
-#
-/var/log/apache2/backup/*.log.prev {
-  size 5M
-  missingok
-  rotate 5
-  compress
-  delaycompress
-  notifempty
-  create 640 root adm
-}
-
-# Rotation for imscp-apache-logger logfiles
-#
-"/var/log/imscp/imscp-apache-logger.stderr" /var/log/imscp/imscp-apache-logger.stdout {
-  weekly
-  rotate 2
-  size 10M
-  missingok
-  compress
-  delaycompress
-  notifempty
-  create 640 root adm
-}
-
 # ProFTPd traffic rotation for i-MSCP traffic count
 #
 /var/log/proftpd/ftp_traff.log {
