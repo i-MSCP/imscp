@@ -1,25 +1,5 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE}</title>
-        <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-        <link href="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.core.js"></script>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.datepicker.js"></script>
-        <!--[if IE 6]>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-        <script type="text/javascript">
-            DD_belatedPNG.fix('*');
-        </script>
-        <![endif]-->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
+    <body>
         <script language="JavaScript" type="text/JavaScript">
             /*<![CDATA[*/
                 $(document).ready(function(){
@@ -49,9 +29,6 @@
                 });
             /*]]>*/
         </script>
-    </head>
-    <body>
-
         <div class="header">
             {MAIN_MENU}
             <div class="logo">
@@ -142,8 +119,4 @@
             </form>
             <!-- EDP: add_form -->
         </div>
-        <div class="footer">
-            i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
-        </div>
-    </body>
-</html>
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

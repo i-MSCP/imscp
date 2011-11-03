@@ -113,7 +113,7 @@ if (layout_isUserLogo($ispLogo)) {
 }
 
 $tpl->assign(array(
-                  'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE' => tr('i-MSCP - Reseller / Layout'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Layout'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'ISP_LOGO' => layout_getUserLogo(),
                   'OWN_LOGO' => $ispLogo,

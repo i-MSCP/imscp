@@ -109,7 +109,7 @@ $tpl->define_dynamic(array(
 						  'ftp_accounts' => 'page',
 						  'ftp_item' => 'ftp_accounts'));
 $tpl->assign(array(
-				  'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				  'THEME_CHARSET' => tr('encoding'),
 				  'ISP_LOGO' => layout_getUserLogo(),

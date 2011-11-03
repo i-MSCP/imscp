@@ -51,7 +51,7 @@ $tpl->define_dynamic('pgroups', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('i-MSCP - Client/Webtools'),
+		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client / Webtools / Protected areas / Add user'),
 		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> layout_getUserLogo()

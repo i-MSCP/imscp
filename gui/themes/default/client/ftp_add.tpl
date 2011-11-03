@@ -1,3 +1,4 @@
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,6 +40,7 @@ function changeDom(wath) {
 <!-- EDP: js_to_all_domain -->
 
 <!-- BDP: js_not_domain -->
+
 function begin_js() {
 	document.forms[0].username.focus();
 }
@@ -163,4 +165,4 @@ function changeDom(wath) {
 				<input type="hidden" name="uaction" value="add_user" />
 			</form>
 		</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

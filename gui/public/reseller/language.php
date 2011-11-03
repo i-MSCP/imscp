@@ -90,7 +90,7 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 gen_def_language($tpl, $user_def_lang);
 
 $tpl->assign(array(
-                  'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => layout_getUserLogo(),

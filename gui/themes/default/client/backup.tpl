@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<script type="text/javascript">
 	/* <![CDATA[ */
@@ -51,4 +51,4 @@
 			</div>
 		</form>
 	</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

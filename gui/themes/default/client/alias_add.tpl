@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<!-- BDP: domain_alias_add_js -->
 	<script type="text/javascript">
@@ -119,4 +119,4 @@
 		</form>
 		<!-- EDP: domain_alias_add_form -->
 	</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

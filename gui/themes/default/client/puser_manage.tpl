@@ -1,30 +1,12 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_HTACCESS_USER}</title>
-		<meta name="robots" content="nofollow, noindex" />
-		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-		<!--[if IE 6]>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-		<script type="text/javascript">
-			DD_belatedPNG.fix('*');
-		</script>
-		<![endif]-->
-		<script type="text/javascript">
+<!-- INCLUDE "../shared/layout/header.tpl" -->
+<body>
+<script type="text/javascript">
 		/* <![CDATA[ */
 		function action_delete(url, subject) {
 			return confirm(sprintf("{TR_MESSAGE_DELETE}", subject));
 		}
 		/* ]]> */
 		</script>
-	</head>
-
-	<body>
 		<div class="header">
 			{MAIN_MENU}
 
@@ -121,7 +103,5 @@
 			<div class="buttons">
 				<input name="Button2" type="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue" />
 			</div>
-
-
 		</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

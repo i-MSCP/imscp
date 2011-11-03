@@ -102,6 +102,5 @@
 				<input type="hidden" name="uaction" value="create_catchall" />
 				<input type="hidden" name="id" value="{ID}" />
 			</form>
-
 		</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

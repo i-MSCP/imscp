@@ -88,7 +88,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 $tpl->assign(
 	array(
-		'TR_LOSTPW_EMAL_SETUP' => tr('i-MSCP - Reseller/Lostpw email setup'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Lostpw email setup'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

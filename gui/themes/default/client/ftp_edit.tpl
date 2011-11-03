@@ -86,4 +86,4 @@
 				</div>
 			</form>
 		</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

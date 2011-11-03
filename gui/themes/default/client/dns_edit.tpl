@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<script type="text/javascript">
 	/* <![CDATA[ */
@@ -230,4 +230,4 @@
 		dns_type_changed(document.getElementById('dns_type').value);
 		/* ]]> */
 	</script>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

@@ -1,25 +1,10 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_INSTALL_SOFTWARE_PAGE_TITLE}</title>
-		<meta name="robots" content="nofollow, noindex" />
-		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
-		<!--[if IE 6]>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-		<script type="text/javascript">
-			DD_belatedPNG.fix('*');
-		</script>
-		<![endif]-->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
+	<body>
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			function OpenTree() {
 				libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
-  
+
 			}
 			function set_installpath() {
 				var inputvars = document.forms[0].elements['selected_domain'].value;
@@ -29,9 +14,6 @@
 			}
 		/*]]>*/
 		</script>
-	</head>
-
-	<body>
 		<div class="header">
 			{MAIN_MENU}
 
@@ -177,4 +159,4 @@
 				</tr>
 			</table>
 		</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<div class="header">
 		{MAIN_MENU}
@@ -147,4 +147,4 @@
 		<div class="graph"><span style="width:{DISK_PERCENT}%">&nbsp;</span></div>
 		<p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
 	</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->

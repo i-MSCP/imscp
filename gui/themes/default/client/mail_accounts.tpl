@@ -1,4 +1,4 @@
-<!-- INCLUDE "header.tpl" -->
+<!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<script type="text/javascript">
 	/* <![CDATA[ */
@@ -95,4 +95,4 @@
 		</form>
 		<!-- EDP: default_mails_form -->
 	</div>
-<!-- INCLUDE "footer.tpl" -->
+<!-- INCLUDE "../shared/layout/footer.tpl" -->
