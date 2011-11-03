@@ -34,11 +34,10 @@
 
 		<div class="body">
 			<h2 class="users"><span>{TR_ADD_GROUP}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form name="add_user_group" method="post" action="protected_group_add.php">
 				<table>
@@ -54,6 +53,5 @@
 
 				<input type="hidden" name="uaction" value="add_group" />
 			</form>
-
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->

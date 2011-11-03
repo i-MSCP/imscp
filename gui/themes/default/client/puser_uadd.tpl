@@ -62,6 +62,5 @@
 
 				<input type="hidden" name="uaction" value="add_user" />
 			</form>
-
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->

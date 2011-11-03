@@ -81,6 +81,5 @@
 				<input type="hidden" name="nadmin_name" value="{UID}" />
 				<input type="hidden" name="uaction" value="" />
 			</form>
-
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->

@@ -29,7 +29,6 @@
 			{MENU}
 		</div>
 
-
 		<div class="body">
 			<h2 class="sql"><span>{TR_TITLE_ADD_DATABASE}</span></h2>
 
@@ -78,6 +77,5 @@
 				</div>
 				<input type="hidden" name="uaction" value="add_db" />
 			</form>
-
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->

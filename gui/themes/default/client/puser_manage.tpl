@@ -103,7 +103,5 @@
 			<div class="buttons">
 				<input name="Button2" type="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue" />
 			</div>
-
-
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->

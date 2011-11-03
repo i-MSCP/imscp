@@ -29,7 +29,6 @@
 			{MENU}
 		</div>
 
-
 		<div class="body">
 			<h2 class="password"><span>{TR_CHANGE_SQL_USER_PASSWORD}</span></h2
 
@@ -59,6 +58,5 @@
 				<input type="hidden" name="uaction" value="change_pass" />
 				<input type="hidden" name="id" value="{ID}" />
 			</form>
-
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->
