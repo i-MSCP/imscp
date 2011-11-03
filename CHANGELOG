@@ -22,6 +22,7 @@ Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
 	- Fixed #245: Defect - rkhunter log file is not created
 	- Fixed #246: Defect - Traffic accounting seem to be broken
+	- Fixed #248: Defect - Bind Slave Mode
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

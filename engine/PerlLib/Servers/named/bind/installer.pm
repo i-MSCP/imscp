@@ -140,6 +140,9 @@ sub askMode{
 	my $ip		= iMSCP::IP->new();
 	my @ips		= ();
 
+	$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'}
+		if $self::bindConfig{'BIND_MODE'} ne $self::bindOldConfig{'BIND_MODE'};
+
 	@ips = (@ips, split(';', $self::bindConfig{PRIMARY_DNS}))
 		if $self::bindConfig{PRIMARY_DNS};
 	@ips = (@ips, split(';', $self::bindOldConfig{PRIMARY_DNS}))
@@ -149,9 +152,13 @@ sub askMode{
 	@ips = (@ips, split(';', $self::bindOldConfig{SECONDARY_DNS}))
 		if $self::bindOldConfig{SECONDARY_DNS} && $self::bindOldConfig{SECONDARY_DNS} ne 'no';
 
+	if($self::bindConfig{'BIND_MODE'} eq 'slave' && !scalar @ips){
+		push(@ips, 'wrongip');
+	}
+
 	foreach(@ips){
 		if($_ && !$ip->isValidIp($_)){
-			debug(":$_ is invalid ip");
+			debug("$_ is invalid ip");
 			for(qw/BIND_MODE PRIMARY_DNS SECONDARY_DNS/){
 				$self::bindConfig{$_}		= undef;
 				$self::bindOldConfig{$_}	= undef;
@@ -161,11 +168,6 @@ sub askMode{
 	}
 
 	if($self::bindConfig{'BIND_MODE'}){
-		return 0;
-	}
-
-	if($self::bindOldConfig{'BIND_MODE'}){
-		$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'};
 		return 0;
 	}
 
@@ -194,7 +196,8 @@ sub askOtherDNS{
 		}
 	}
 
-	use Data::Validate::IP qw/is_ipv4/;
+	use iMSCP::IP;
+	my $ip = iMSCP::IP->new();
 
 	my $mode = $self::bindConfig{'BIND_MODE'} eq 'primary' ? 'secondary' : 'primary';
 
@@ -204,7 +207,7 @@ sub askOtherDNS{
 		$out = iMSCP::Dialog->factory()->inputbox(
 			"Please enter $mode DNS server address IP. Leave blank for end"
 		);
-		push(@ips, $out) if is_ipv4($out) && $out ne '127.0.0.1';
+		push(@ips, $out) if $ip->isValidIp($out) && $out ne '127.0.0.1';
 	}while(scalar @ips == 0 || $out ne '');
 
 	$self::bindConfig{
