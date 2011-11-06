@@ -117,7 +117,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '92'),
+('DATABASE_REVISION', '93'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_REGISTER_GLOBALS', 'off'),
@@ -473,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `orders_settings` (
 --
 
 CREATE TABLE IF NOT EXISTS `php_ini` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain_id` int(10) NOT NULL,
   `status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
   `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
@@ -486,7 +486,7 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `max_execution_time` int(11) NOT NULL DEFAULT '30',
   `max_input_time` int(11) NOT NULL DEFAULT '60',
   `memory_limit` int(11) NOT NULL DEFAULT '128',
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
