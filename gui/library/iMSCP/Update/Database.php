@@ -1258,4 +1258,26 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT ';
 	}
+
+	/**
+	 * Database schema update (UNIQUE KEY to PRIMARY KEY for some fields)
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_94()
+	{
+		return array(
+			'ALTER TABLE `domain` DROP INDEX `domain_id`, ADD PRIMARY KEY ( `domain_id` )',
+			'ALTER TABLE `email_tpls` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `hosting_plans` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `htaccess` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `htaccess_groups` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `htaccess_users` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `reseller_props` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `server_ips` DROP INDEX `ip_id`, ADD PRIMARY KEY ( `ip_id` )',
+			'ALTER TABLE `sql_database` DROP INDEX `sqld_id` , ADD PRIMARY KEY ( `sqld_id` )',
+			'ALTER TABLE `sql_user` DROP INDEX `sqlu_id`, ADD PRIMARY KEY ( `sqlu_id` )'
+		);
+	}
 }
