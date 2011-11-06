@@ -71,7 +71,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 *
 	 * @var iMSCP_Events_Manager
 	 */
-	protected $_enventsManager;
+	protected $_eventsManager;
 
 	/**
 	 * Event that this listener receives.
@@ -111,7 +111,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 */
 	public function __construct(iMSCP_Events_Manager $eventsManager, $plugins)
 	{
-		$this->_enventsManager = $eventsManager;
+		$this->_eventsManager = $eventsManager;
 
 		// Creating i-MSCP Version Tab always shown
 		$this->_plugins[] = new iMSCP_Debug_Bar_Plugin_Version();
@@ -143,7 +143,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 */
 	protected function registerListener($plugin, $stackIndex)
 	{
-		$this->_enventsManager->registerListener(
+		$this->_eventsManager->registerListener(
 			$plugin->getListenedEvents(), $plugin, $stackIndex);
 	}
 
