@@ -67,13 +67,10 @@ function calc_bars($crnt, $max, $bars_max)
  * But if you are a floppy disk manufacturer and want to start counting in units of
  * 1024000 (for your "1.44 MB" disks)? let the default value for $base.
  *
- * If you feel like a purist academic, you can force the use of metric prefixes
- * according to the Dec 1998 standard by the IEC.
- *
- * Never mind the units for base 1000 are:
+ * The units for base 1000 are:
  * ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  *
- * and, even worse, the ones for base 1024 are:
+ * The ones for base 1024 are:
  *
  * ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
  *
@@ -92,7 +89,7 @@ function numberBytesHuman($bytes, $unit = '', $decimals = 2, $base = 1024)
 	if ($base == 1000) {
 		$units = array('B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4,
 					   'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8);
-	} elseif($base == 1024) {
+	} elseif ($base == 1024) {
 		$units = array('B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4,
 					   'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8);
 	} else {
@@ -119,7 +116,7 @@ function numberBytesHuman($bytes, $unit = '', $decimals = 2, $base = 1024)
 	}
 
 	// units Translation
-	switch($unit) {
+	switch ($unit) {
 		case 'B':
 			$unit = tr('B');
 			break;
