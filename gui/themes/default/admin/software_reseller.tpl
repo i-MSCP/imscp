@@ -8,9 +8,11 @@
 		<title>{TR_ADMIN_SOFTWARE_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<link href="{THEME_COLOR_PATH}/css/jquery-ui.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
