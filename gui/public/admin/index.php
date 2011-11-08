@@ -235,7 +235,7 @@ $tpl->define_dynamic(array(
 
 $tpl->assign(array(
                   'THEME_CHARSET' => tr('encoding'),
-                  'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Admin / General information'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General information'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'ISP_LOGO' => layout_getUserLogo(),
                   'TR_GENERAL_INFORMATION' => tr('General information'),

@@ -556,7 +556,7 @@ $tpl->define_dynamic(array('page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_add.
 						  'rsl_ip_item' => 'rsl_ip_list'));
 
 $tpl->assign(array(
-				  'TR_ADMIN_ADD_RESELLER_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add reseller'),
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add reseller'),
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				  'THEME_CHARSET' => tr('encoding'),
 				  'ISP_LOGO' => layout_getUserLogo()));

@@ -49,7 +49,7 @@ $tpl->define_dynamic('ip_row', 'page');
 $tpl->define_dynamic('domain_row', 'page');
 
 $tpl->assign(array(
-                  'TR_ADMIN_IP_USAGE_TITLE' => tr('i-MSCP - Admin/IP Usage'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/IP Usage'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => layout_getUserLogo()));

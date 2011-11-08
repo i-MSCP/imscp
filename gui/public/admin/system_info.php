@@ -95,7 +95,7 @@ $tpl->parse('DISK_LIST', 'disk_list');
  */
 $tpl->assign(
 	array(
-		'TR_ADMIN_SYSTEM_INFO_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

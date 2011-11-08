@@ -44,7 +44,7 @@ $tpl->define_dynamic('page_message', 'page');
 
 $tpl->assign(
 	array(
-		'TR_OPTIONS_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application management options'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Application management options'),
 		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> layout_getUserLogo()

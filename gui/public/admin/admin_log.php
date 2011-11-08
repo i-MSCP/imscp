@@ -53,7 +53,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('clear_log', 'page');
 
 $tpl->assign(array(
-                  'TR_ADMIN_ADMIN_LOG_PAGE_TITLE' => tr('iMSCP - Admin/Admin Log'),
+                  'TR_PAGE_TITLE' => tr('iMSCP - Admin/Admin Log'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => layout_getUserLogo()));

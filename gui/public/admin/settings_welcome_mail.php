@@ -79,7 +79,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MANAGE_EMAIL_SETUP_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Email setup'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Email setup'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

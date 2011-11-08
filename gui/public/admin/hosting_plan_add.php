@@ -331,7 +331,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Administrator/Add hosting plan'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Administrator/Add hosting plan'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),

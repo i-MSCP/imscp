@@ -47,7 +47,7 @@ $tpl->define_dynamic('hour_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('i-MSCP - Admin/Server day stats'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server day stats'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

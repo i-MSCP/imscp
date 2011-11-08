@@ -202,7 +202,7 @@ function update_reseller_owner() {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Reseller assignment'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Reseller assignment'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()
