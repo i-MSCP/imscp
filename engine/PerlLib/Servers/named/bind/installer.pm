@@ -141,7 +141,7 @@ sub askMode{
 	my @ips		= ();
 
 	$self::bindConfig{'BIND_MODE'} = $self::bindOldConfig{'BIND_MODE'}
-		if $self::bindConfig{'BIND_MODE'} ne $self::bindOldConfig{'BIND_MODE'};
+		if $self::bindOldConfig{'BIND_MODE'} && $self::bindConfig{'BIND_MODE'} ne $self::bindOldConfig{'BIND_MODE'};
 
 	@ips = (@ips, split(';', $self::bindConfig{PRIMARY_DNS}))
 		if $self::bindConfig{PRIMARY_DNS};

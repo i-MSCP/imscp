@@ -26,6 +26,7 @@ Tickets:
 	- Fixed #246: Defect - Traffic accounting seem to be broken
 	- Fixed #248: Defect - Bind Slave Mode
 	- Fixed #250: Defect - Wrong units in system tools overview
+	- Fixed #251: OldConfig uninitialised on fresh install
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
