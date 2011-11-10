@@ -50,6 +50,7 @@ sub parseIPs{
 				my @cards = split(':', $1);
 				my $card = shift(@cards);
 				my $slot = shift(@cards) || 0;
+				$slot = 0 if $slot !~ /^\d*$/;
 				$self->{cards}->{$card}->{'1Slot'} = $slot + 1 if (!$self->{cards}->{$card}->{'1Slot'} || $self->{cards}->{$card}->{'1Slot'} <= $slot);
 				if($2){
 					$self->{ips}->{$2} = {} unless $self->{ips}->{$2} || $2;
