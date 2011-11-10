@@ -45,7 +45,7 @@ $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_maintenance_
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('i-MSCP - Admin/Maintenance mode'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Maintenance mode'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

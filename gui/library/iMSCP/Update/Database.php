@@ -1157,7 +1157,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return
 			// php_ini table for custom PHP directives (per domain)
 			"CREATE TABLE IF NOT EXISTS `php_ini` (
-				`ID` int(11) NOT NULL AUTO_INCREMENT,
+				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`domain_id` int(10) NOT NULL,
 				`status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
 				`disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source,system,shell_exec,passthru,exec,phpinfo,shell,symlink',
@@ -1227,18 +1227,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Rename php_ini.ID column to php_ini.id
-	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @since r5286
-	 * @return string SQL Statement to be executed
-	 */
-	protected function _databaseUpdate_90()
-	{
-		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` int(11) unsigned NOT NULL AUTO_INCREMENT';
-	}
-
-	/**
 	 * Drop unused table auto_num
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
@@ -1258,5 +1246,38 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_92()
 	{
 		return 'DELETE FROM `php_ini` WHERE `domain_id` NOT IN (SELECT `domain_id` FROM `domain`)';
+	}
+
+	/**
+	 * Rename php_ini.ID column to php_ini.id
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL Statement to be executed
+	 */
+	protected function _databaseUpdate_93()
+	{
+		return 'ALTER TABLE `php_ini` CHANGE `ID` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT ';
+	}
+
+	/**
+	 * Database schema update (UNIQUE KEY to PRIMARY KEY for some fields)
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_94()
+	{
+		return array(
+			'ALTER TABLE `domain` DROP INDEX `domain_id`, ADD PRIMARY KEY ( `domain_id` )',
+			'ALTER TABLE `email_tpls` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `hosting_plans` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `htaccess` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `htaccess_groups` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `htaccess_users` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `reseller_props` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
+			'ALTER TABLE `server_ips` DROP INDEX `ip_id`, ADD PRIMARY KEY ( `ip_id` )',
+			'ALTER TABLE `sql_database` DROP INDEX `sqld_id` , ADD PRIMARY KEY ( `sqld_id` )',
+			'ALTER TABLE `sql_user` DROP INDEX `sqlu_id`, ADD PRIMARY KEY ( `sqlu_id` )'
+		);
 	}
 }

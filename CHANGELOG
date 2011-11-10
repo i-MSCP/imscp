@@ -17,12 +17,15 @@ Features / Enhancements:
 	Setup:
 
 Other:
+	- Updated jQuery to version 1.7.0
+	- Updated jQuery UI to version 1.8.16 (minified version)
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
 	- Fixed #245: Defect - rkhunter log file is not created
 	- Fixed #246: Defect - Traffic accounting seem to be broken
 	- Fixed #248: Defect - Bind Slave Mode
+	- Fixed #250: Defect - Wrong units in system tools overview
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

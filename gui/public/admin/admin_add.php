@@ -48,7 +48,7 @@ $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
 $tpl->assign(array(
-                  'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'THEME_CHARSET' => tr('encoding'),
                   'ISP_LOGO' => layout_getUserLogo()));

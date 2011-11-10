@@ -61,13 +61,10 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
 
 $tpl->assign(
 		array(
-			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => 
-		tr(
-			'i-MSCP - Administrator/Edit hosting plan'
-			),
-				'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => layout_getUserLogo()
+			'TR_PAGE_TITLE' => tr('i-MSCP - Administrator/Edit hosting plan'),
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo()
 		)
 );
 

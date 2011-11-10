@@ -56,7 +56,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_RESELLER_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Reseller statistics'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

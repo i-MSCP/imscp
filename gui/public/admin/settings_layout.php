@@ -111,7 +111,7 @@ if (layout_isUserLogo($ispLogo)) {
 }
 
 $tpl->assign(array(
-                  'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('i-MSCP - Admin / Layout'),
+                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Layout'),
                   'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
                   'ISP_LOGO' => $ispLogo,
                   'OWN_LOGO' => $ispLogo,

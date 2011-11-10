@@ -61,12 +61,12 @@ $tpl->assign(
 		'LOAD'					=> $sysinfo->load[0] .' '.
 									$sysinfo->load[1] .' '.
 									$sysinfo->load[2],
-		'RAM_TOTAL'				=> sizeit($sysinfo->ram['total'], 'KB'),
-		'RAM_USED'				=> sizeit($sysinfo->ram['used'], 'KB'),
-		'RAM_FREE'				=> sizeit($sysinfo->ram['free'], 'KB'),
-		'SWAP_TOTAL'			=> sizeit($sysinfo->swap['total'], 'KB'),
-		'SWAP_USED'				=> sizeit($sysinfo->swap['used'], 'KB'),
-		'SWAP_FREE'				=> sizeit($sysinfo->swap['free'], 'KB'),
+		'RAM_TOTAL'				=> numberBytesHuman($sysinfo->ram['total'] * 1024),
+		'RAM_USED'				=> numberBytesHuman($sysinfo->ram['used'] * 1024),
+		'RAM_FREE'				=> numberBytesHuman($sysinfo->ram['free'] * 1024),
+		'SWAP_TOTAL'			=> numberBytesHuman($sysinfo->swap['total'] * 1024),
+		'SWAP_USED'				=> numberBytesHuman($sysinfo->swap['used'] * 1024),
+		'SWAP_FREE'				=> numberBytesHuman($sysinfo->swap['free'] * 1024),
 	)
 );
 
@@ -79,9 +79,9 @@ foreach ($mount_points as $mountpoint) {
 				'TYPE'		=> tohtml($mountpoint['fstype']),
 				'PARTITION'	=> tohtml($mountpoint['disk']),
 				'PERCENT'	=> $mountpoint['percent'],
-				'FREE'		=> sizeit($mountpoint['free'], 'KB'),
-				'USED'		=> sizeit($mountpoint['used'], 'KB'),
-				'SIZE'		=> sizeit($mountpoint['size'], 'KB'),
+				'FREE'		=> numberBytesHuman($mountpoint['free'] * 1024),
+				'USED'		=> numberBytesHuman($mountpoint['used'] * 1024),
+				'SIZE'		=> numberBytesHuman($mountpoint['size'] * 1024),
 			)
 		);
 
@@ -95,7 +95,7 @@ $tpl->parse('DISK_LIST', 'disk_list');
  */
 $tpl->assign(
 	array(
-		'TR_ADMIN_SYSTEM_INFO_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

@@ -271,7 +271,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management'),
+		'TR_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management'),
 		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> layout_getUserLogo()

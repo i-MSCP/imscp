@@ -48,7 +48,7 @@ $tpl->define_dynamic('props_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_ROOTKIT_LOG_PAGE_TITLE' => tr('i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker'),
+		'TR_PAGE_TITLE' => tr('i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

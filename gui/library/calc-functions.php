@@ -59,61 +59,132 @@ function calc_bars($crnt, $max, $bars_max)
 }
 
 /**
+ * Turns byte counts to usual readable format.
+ *
+ * If you feel like a hard-drive manufacturer, you can start counting bytes by powers
+ * of 1000 (instead of the generous 1024). Just set $base to 1000.
+ *
+ * But if you are a floppy disk manufacturer and want to start counting in units of
+ * 1024000 (for your "1.44 MB" disks)? let the default value for $base.
+ *
+ * The units for base 1000 are:
+ * ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
+ *
+ * The ones for base 1024 are:
+ *
+ * ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
+ *
+ * with the horrible names: bytes, kibibytes, mebibytes, etc.
+ *
+ * @see http://physics.nist.gov/cuu/Units/binary.html
+ * @throws iMSCP_Exception if $base is wrong
+ * @param int|float $bytes Bytes value to convert
+ * @param string $unit OPTIONAL Unit to format
+ * @param int $decimals OPTIONAL Number of decimal to be show
+ * @param int $base OPTIONAL Base to use for conversion (1024 or 1000)
+ * @return string
+ */
+function numberBytesHuman($bytes, $unit = '', $decimals = 2, $base = 1024)
+{
+	if ($base == 1000) {
+		$units = array('B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4,
+					   'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8);
+	} elseif ($base == 1024) {
+		$units = array('B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4,
+					   'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8);
+	} else {
+		throw new iMSCP_Exception('Wrong value for the $base argument.');
+	}
+
+	$value = 0;
+
+	if ($bytes > 0) {
+		if (!array_key_exists($unit, $units)) {
+			$pow = floor(log($bytes) / log($base));
+			$unit = array_search($pow, $units);
+		}
+
+		$value = ($bytes / pow($base, floor($units[$unit])));
+	} else {
+		$unit = 'B';
+	}
+
+	// If decimals is not numeric or decimals is less than 0
+	// then set default value
+	if (!is_numeric($decimals) || $decimals < 0) {
+		$decimals = 2;
+	}
+
+	// units Translation
+	switch ($unit) {
+		case 'B':
+			$unit = tr('B');
+			break;
+		case 'kB':
+			$unit = tr('kB');
+			break;
+		case 'kiB':
+			$unit = tr('kiB');
+			break;
+		case 'MB':
+			$unit = tr('MB');
+			break;
+		case 'MiB':
+			$unit = tr('MiB');
+			break;
+		case 'GB':
+			$unit = tr('GB');
+			break;
+		case 'GiB':
+			$unit = tr('GiB');
+			break;
+		case 'TB':
+			$unit = tr('TB');
+			break;
+		case 'TiB':
+			$unit = tr('TiB');
+			break;
+		case 'PB':
+			$unit = tr('PB');
+			break;
+		case 'PiB':
+			$unit = tr('PiB');
+			break;
+		case 'EB':
+			$unit = tr('EB');
+			break;
+		case 'EiB':
+			$unit = tr('EiB');
+			break;
+		case 'ZB':
+			$unit = tr('ZB');
+			break;
+		case 'ZiB':
+			$unit = tr('ZiB');
+			break;
+		case 'YB':
+			$unit = tr('YB');
+			break;
+		case 'YiB':
+			$unit = tr('YiB');
+			break;
+	}
+
+	return sprintf('%.' . $decimals . 'f ' . $unit, $value);
+}
+
+/**
+ * Bytes convertion.
  *
  * @throws iMSCP_Exception
- * @param  $bytes
- * @param string $to
+ * @param int|float $bytes Bytes value
+ * @param string $to unit to convert to
  * @return Translated
+ * @deprecated Please use the NumberBytesHuman() instead
  */
-function sizeit($bytes, $to = 'B')
+function sizeit($bytes, $to = '')
 {
-    switch ($to) {
-        case 'PB':
-            $bytes = $bytes * pow(1024, 5);
-            break;
-        case 'TB':
-            $bytes = $bytes * pow(1024, 4);
-            break;
-        case 'GB':
-            $bytes = $bytes * pow(1024, 3);
-            break;
-        case 'MB':
-            $bytes = $bytes * pow(1024, 2);
-            break;
-        case 'KB':
-            $bytes = $bytes * pow(1024, 1);
-            break;
-        case 'B':
-            break;
-        default:
-            write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown byte count %s', __FILE__, __LINE__, $to), E_USER_ERROR);
-            throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__);
-    }
-
-    if ($bytes == '' || $bytes < 0) {
-        $bytes = 0;
-    }
-
-    if ($bytes > pow(1024, 5)) {
-        $bytes = $bytes / pow(1024, 5);
-        $ret = tr('%.2f PB', $bytes);
-    } elseif ($bytes > pow(1024, 4)) {
-        $bytes = $bytes / pow(1024, 4);
-        $ret = tr('%.2f TB', $bytes);
-    } elseif ($bytes > pow(1024, 3)) {
-        $bytes = $bytes / pow(1024, 3);
-        $ret = tr('%.2f GB', $bytes);
-    } elseif ($bytes > pow(1024, 2)) {
-        $bytes = $bytes / pow(1024, 2);
-        $ret = tr('%.2f MB', $bytes);
-    } elseif ($bytes > pow(1024, 1)) {
-        $bytes = $bytes / pow(1024, 1);
-        $ret = tr('%.2f KB', $bytes);
-    } else {
-        $ret = tr('%d B', $bytes);
-    }
-
-    return $ret;
+	return numberBytesHuman($bytes, $to);
 }
 
 //

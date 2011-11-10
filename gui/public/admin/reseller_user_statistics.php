@@ -81,7 +81,7 @@ if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_USER_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Admin/Reseller User Statistics'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Reseller User Statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

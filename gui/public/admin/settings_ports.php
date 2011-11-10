@@ -446,7 +446,7 @@ $tpl->define_dynamic('port_delete_show', 'service_ports');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('i-MSCP - Admin / Settings'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Settings'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

@@ -117,7 +117,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '92'),
+('DATABASE_REVISION', '94'),
 ('PHPINI_ALLOW_URL_FOPEN', 'off'),
 ('PHPINI_DISPLAY_ERRORS', 'off'),
 ('PHPINI_REGISTER_GLOBALS', 'off'),
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `phpini_perm_allow_url_fopen` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
   `phpini_perm_display_errors` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
   `phpini_perm_disable_functions` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
-  UNIQUE KEY `domain_id` (`domain_id`),
+  PRIMARY KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `email_tpls` (
   `name` varchar(200) collate utf8_unicode_ci default NULL,
   `subject` varchar(200) collate utf8_unicode_ci default NULL,
   `message` text collate utf8_unicode_ci,
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `hosting_plans` (
   `payment` varchar(255) collate utf8_unicode_ci default NULL,
   `status` int(10) unsigned NOT NULL default '0',
   `tos`	BLOB NOT NULL,
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -338,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `htaccess` (
   `auth_name` varchar(255) collate utf8_unicode_ci default NULL,
   `path` varchar(255) collate utf8_unicode_ci default NULL,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -353,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `htaccess_groups` (
   `ugroup` varchar(255) collate utf8_unicode_ci default NULL,
   `members` text collate utf8_unicode_ci,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -368,7 +368,7 @@ CREATE TABLE IF NOT EXISTS `htaccess_users` (
   `uname` varchar(255) collate utf8_unicode_ci default NULL,
   `upass` varchar(255) collate utf8_unicode_ci default NULL,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -473,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `orders_settings` (
 --
 
 CREATE TABLE IF NOT EXISTS `php_ini` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `domain_id` int(10) NOT NULL,
   `status` varchar(55) COLLATE utf8_unicode_ci NOT NULL,
   `disable_functions` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'show_source, system, shell_exec, passthru, exec, phpinfo, shell, symlink, popen, proc_open',
@@ -486,7 +486,7 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `max_execution_time` int(11) NOT NULL DEFAULT '30',
   `max_input_time` int(11) NOT NULL DEFAULT '60',
   `memory_limit` int(11) NOT NULL DEFAULT '128',
-  PRIMARY KEY (`ID`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -583,7 +583,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `server_ips` (
   `ip_card` varchar(255) collate utf8_unicode_ci default NULL,
   `ip_ssl_domain_id` int(10) default NULL,
   `ip_status` varchar(255) collate utf8_unicode_ci default NULL,
-  UNIQUE KEY `ip_id` (`ip_id`)
+  PRIMARY KEY `ip_id` (`ip_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -634,7 +634,7 @@ CREATE TABLE IF NOT EXISTS `sql_database` (
   `sqld_id` int(10) unsigned NOT NULL auto_increment,
   `domain_id` int(10) unsigned default '0',
   `sqld_name` varchar(64) character set utf8 collate utf8_bin default 'n/a',
-  UNIQUE KEY `sqld_id` (`sqld_id`)
+  PRIMARY KEY `sqld_id` (`sqld_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -648,7 +648,7 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqld_id` int(10) unsigned default '0',
   `sqlu_name` varchar(64) collate utf8_unicode_ci default 'n/a',
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
-  UNIQUE KEY `sqlu_id` (`sqlu_id`)
+  PRIMARY KEY `sqlu_id` (`sqlu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

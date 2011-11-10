@@ -231,7 +231,7 @@ if (isset($_POST['genpass'])) {
 }
 
 $tpl->assign(array(
-                  'TR_ADMIN_EDIT_USER_PAGE_TITLE' => ($rs->fields['admin_type'] == 'admin'
+                  'TR_PAGE_TITLE' => ($rs->fields['admin_type'] == 'admin'
                       ? tr('i-MSCP - Admin/Manage users/Edit Administrator')
                       : tr('i-MSCP - Admin/Manage users/Edit User')),
                   'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),

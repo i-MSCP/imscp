@@ -289,7 +289,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_IP_MANAGE_PAGE_TITLE' => tr('i-MSCP - Admin / General settings / IPs management'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General settings / IPs management'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),

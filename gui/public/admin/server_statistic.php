@@ -50,7 +50,7 @@ $tpl->define_dynamic('day_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('i-MSCP - Admin/Server statistics'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()

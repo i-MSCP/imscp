@@ -127,7 +127,7 @@ $tpl->define_dynamic(array(
 						  'user_session' => 'page'));
 
 $tpl->assign(array(
-				  'TR_ADMIN_MANAGE_SESSIONS_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
+				  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
 				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				  'THEME_CHARSET' => tr('encoding'),
 				  'ISP_LOGO' => layout_getUserLogo(),
