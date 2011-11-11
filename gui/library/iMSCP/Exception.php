@@ -22,11 +22,11 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
- * @package		iMSCP_Exception
+ * @package		iMSCP_Core
+ * @subpackage	Exception
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -34,22 +34,23 @@
 /**
  * i-MSCP default Exception
  *
- * @category 	iMSCP
- * @package		iMSCP_Exception
+ * @category	i-MSCP
+ * @package		iMSCP_Core
+ * @subpackage	Exception
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.2
  */
 class iMSCP_Exception extends Exception
 {
-    /**
-     * Constructor
-     *
-     * @param  string $msg Message
-     * @param  int $code Code
-     * @param  Exception $previous OPTIONAL Previous exception
-     */
-    public function __construct($msg = '', $code = 0, Exception $previous = null)
-    {
-		parent::__construct($msg, (int) $code, $previous);
-    }
+	/**
+	 * Constructor.
+	 *
+	 * @param string $msg Exception Message
+	 * @param int $code Exception code
+	 * @param Exception $previous OPTIONAL Previous exception
+	 */
+	public function __construct($msg = '', $code = 0, Exception $previous = null)
+	{
+		parent::__construct($msg, (int)$code, $previous);
+	}
 }
