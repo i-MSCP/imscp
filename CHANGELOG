@@ -20,6 +20,9 @@ Other:
 	- Updated jQuery to version 1.7.0
 	- Updated jQuery UI to version 1.8.16 (minified version)
 
+Tools:
+  - Updated PMA to 3.4.7.1
+
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
 	- Fixed #245: Defect - rkhunter log file is not created
