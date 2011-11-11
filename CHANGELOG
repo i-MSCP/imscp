@@ -2,26 +2,22 @@ i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
 -------------------------------------------------------------------------------------
-i-MSCP 1.0.1.6 (Beta6 - bugfix release)
+i-MSCP 1.0.1.6 (Beta6)
 -------------------------------------------------------------------------------------
 
 Features / Enhancements:
-	Engine:
 
-	Gui:
+	GUI:
 		Components:
 			- DebugBar - Files plugin: Count and shows the loaded templates files
+		Core:
 			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
 			- Events system: Allows to pass arbitrary data to the events listeners methods
-
-	Setup:
-
-Other:
-	- Updated jQuery to version 1.7.0
-	- Updated jQuery UI to version 1.8.16 (minified version)
-
-Tools:
-  - Updated PMA to 3.4.7.1
+		Javascript
+			- Updated jQuery to version 1.7.0
+			- Updated jQuery UI to version 1.8.16 (minified version)
+		Tools:
+			- Updated PhpMyAdmin to version 3.4.7.1
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
@@ -29,7 +25,7 @@ Tickets:
 	- Fixed #246: Defect - Traffic accounting seem to be broken
 	- Fixed #248: Defect - Bind Slave Mode
 	- Fixed #250: Defect - Wrong units in system tools overview
-	- Fixed #251: OldConfig uninitialised on fresh install
+	- Fixed #251: Defect - OldConfig uninitialised on fresh install
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
@@ -38,33 +34,30 @@ i-MSCP 1.0.1.5 (beta 5)
 	- RELEASE i-MSCP 1.0.1.5 (Beta 5)
 
 Features / Enhancements:
-	Engine:
-		Components:
-			- Added PHP directives editor
+
+	ENGINE:
 		Core:
+			- Added PHP directives editor
 			- Added support for Dovecot
-			- IPv6 support
+			- Added IPv6 support
 			- Engine rewrite including the following new features:
 				- Ability to turn off one or many services/servers such as Apache,
 				  Bind9, Postfix...
 				- Ability to setup DNS service (Bind9) as Master or Slave server
 				- New logger (one file per operation)
 				- php.ini per user account (default), or per domain entity (vhost)
-	Gui:
+	GUI:
 		Core:
-			- IPv6 support
-		Components:
+			- Added IPv6 support
 			- Added PHP directives editor
+		Javascript:
+			- Updated jQuery to version 1.6.4
+			- Updated jQuery UI to version 1.8.16
 		Tools:
-			- Updated phpMyAdmin to version 3.4.7
+			- Updated PhpMyAdmin to version 3.4.7
 			- Updated Squirrelmail to version 1.4.22
-
-	Setup:
+	SETUP:
 		- Added Auto-installer (including both tree builder and setup based on Dialog)
-Other:
-	Gui:
-		- Updated jQuery to version 1.6.4
-		- Updated jQuery UI to version 1.8.16
 
 Tickets:
 	- Fixed #15:  Feature - PHP directives editor
@@ -138,6 +131,7 @@ Distributions:
 	  CentOS, Fedora, FreeBSD, Gentoo, OpenBSD, OpenSuse
 
 Features / Enhancements:
+
 	Gui:
 		Core:
 			- Improved security by moving some files outside documentRoot
@@ -147,13 +141,11 @@ Features / Enhancements:
 				- It's no longer possible to delete languages
 				- Importing languages files for install/update is still supported but
 				  only for Machine Object files
+		Javascript:
+			- Updated jQuery to version 1.6.2
+			- Updated jQuery UI (core and datepicker) to version 1.8.14
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.3.2
-
-Other:
-	Gui:
-		- Updated jQuery to version 1.6.2
-		- Updated jQuery UI (core and datepicker) to version 1.8.14
 
 Tickets:
 	- Fixed #43:  Enhancement - You are blocked for 30 minutes
@@ -185,8 +177,8 @@ Tickets:
 	- Fixed #153: BUG - Some pages lack footer
 	- Fixed #154: Update - phpMyAdmin 3.4.3.2 available
 	- Fixed #156: Bug - Users's properties must be loaded in session before i18n initialization
-	- Fixed #159: 404 after update a customer (Hosting plans available for admin)
-	- Fixed #160: Variable {YOU_ARE_LOGGED_AS} on edit domain (Hosting plans available for admin)
+	- Fixed #159: Defect - 404 after update a customer (Hosting plans available for admin)
+	- Fixed #160: Defect - Variable {YOU_ARE_LOGGED_AS} on edit domain (Hosting plans available for admin)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.3 (beta 3)
@@ -196,15 +188,17 @@ i-MSCP 1.0.1.3 (beta 3)
 	- RELEASE i-MSCP 1.0.1.3 beta 3
 
 Features / Enhancements:
-	Engine
+
+	ENGINE:
+		Core:
 			- Added SSL support for Postfix, courier (imap/pop)
 			- Added SSL support for Proftpd
-	Gui:
+	GUI:
 		Components:
 			- DebugBar: Added $_SERVER variable (plugin variables)
-			- Update (database): Improved both execution time and memory consumption
 		Core:
 			- Added SSL support for master (panel) vhost
+			- Update (database): Improved both execution time and memory consumption
 
 Tickets:
 	- Fixed #2:   Feature - SSL support for master vhost
@@ -227,8 +221,7 @@ i-MSCP 1.0.0-beta2
 2011-06-20: Laurent Declercq
 	- RELEASE i-MSCP 1.0.0 beta 2
 
-Other:
-	Gui:
+	GUI:
 		- Removed support for PHP version older than 5.3.2
 
 Tickets:
@@ -247,9 +240,10 @@ Distributions:
 		- Removed support for oldstable (lenny) - Perl >= v5.10.1 required
 
 Features / Enhancements:
-	Database:
+
+	DATABASE:
 		- Switched to InnoDB engine
-	Engine:
+	ENGINE:
 		Config:
 			- Moved keys file into /etc
 		Core:
@@ -259,7 +253,7 @@ Features / Enhancements:
 		Setup/Update:
 			- New i-mscp tree builder
 			- New installer (Dialog - merged setup and update scripts)
-	Gui:
+	GUI:
 		Core:
 			- Added DebugBar component
 			- Added Events system component
@@ -276,59 +270,59 @@ Features / Enhancements:
 			- Updated Net_DNS to version 1.0.7
 
 Tickets:
-	- Fixed #3:  Defect - Wrong DNS entry when using multiple IP for alternative
-	- Fixed #5:  Update - jQuery - version 1.4.4 available
-	- Fixed #6:  Update - idna_convert class - version 0.6.9 available
-	- Fixed #7:  Task - Import i-MSCP theme
-	- Fixed #10: Enhancement - IP-Overview for admin and reseller
-	- Fixed #11: Defect - Wrong used variables
-	- Fixed #12: Some CSRF issues in admin log
-	- Fixed #14: Feature - Software Installer
-	- Fixed #23: Merge Config files if not Distribution specific
-	- Fixed #24: Missing Program "Dialog" in package list
-	- Fixed #25: Little Error in INSTALL
-	- Fixed #26: Warnings in build script being installed via serial console
-	- Fixed #27: Add logger to build script
-	- Fixed #28: Defect - [FreeBSD] imscp-build use wrong path
-	- Fixed #29: Wrong link during Setup
-	- Fixed #30: Domainname Error during setup
-	- Fixed #31: [FreeBSD] An error occurred during setup process
-	- Fixed #32: Needed package to install CPAN XML::Parser
-	- Fixed #34: Task - Default and Disabled Headers picture mismatch
-	- Fixed #35: Defect - Missing back stick in SQL
-	- Fixed #36: Deprecated: Call-time pass
-	- Fixed #37: Cosmetics - Hosting plan Header Color
-	- Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
-	- Fixed #39: Cosmetics - Missing background for the datepicker header
-	- Fixed #40: Updated phpMyAdmin to version 3.3.8.1
-	- Fixed #42: Cosmetics - Wrong design in phpMyAdmin
-	- Fixed #44: Update - Net::DNS v1.0.7 is available
-	- Fixed #48: Licence header for create_release.sh
-	- Fixed #49: Some improvements on multilanguage.php
-	- Fixed #50: Patch to fix the exception when switching users
-	- Fixed #51: Enhancement - Change Package actions if software is installed
-	- Fixed #52: Cosmetics - Occurences of ispcp in Sources
-	- Fixed #53: Cosmetics - Wrong link in docs/Ubuntu/INSTALL
-	- Fixed #54: Cosmetics - Wrong header in gui/admin/ip_usage.php
-	- Fixed #56: Cosmetics - Wrong logo path
-	- Fixed #59: Bug - Wrong path in debian and ubuntu config
-	- Fixed #66: Migration script
-	- Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
-	- Fixed #73: Problem with Mail
-	- Fixed #74: Task - Template not yet updated
-	- Fixed #75: Bug - Can't change Admin password
-	- Fixed #76: Bug - Typo in SQL query
-	- Fixed #78: Bug - Typo error in HTML
-	- Fixed #80: Bug - Wrong referenced links
-	- Fixed #81: Bug - reseller can not edit user from view details
-	- Fixed #82: Cosmetics - client/webtools.php lookout lack picture
-	- Fixed #83: Bug - client/ftp_choose_dir.php result in blank page
-	- Fixed #84: Bug - Unable to edit custom errors pages (client)
-	- Fixed #85: Defect - http://app-pkg.i-mscp.net is not reachable
-	- Fixed #86: Bug - Administrator can not change default language for panel
-	- Fixed #87: Bug - Can not delete database
-	- Fixed #88: Bug - Reseller can not delete orders
-	- Fixed #89: Cosmetics - Traffic display in client/index.php
-	- Fixed #95: Bug - Version update check is broken
+	- Fixed #3:   Defect - Wrong DNS entry when using multiple IP for alternative
+	- Fixed #5:   Update - jQuery - version 1.4.4 available
+	- Fixed #6:   Update - idna_convert class - version 0.6.9 available
+	- Fixed #7:   Task - Import i-MSCP theme
+	- Fixed #10:  Enhancement - IP-Overview for admin and reseller
+	- Fixed #11:  Defect - Wrong used variables
+	- Fixed #12:  Security Failure - Some CSRF issues in admin log
+	- Fixed #14:  Feature - Software Installer
+	- Fixed #23:  Merge Config files if not Distribution specific
+	- Fixed #24:  Missing Program "Dialog" in package list
+	- Fixed #25:  Little Error in INSTALL
+	- Fixed #26:  Warnings in build script being installed via serial console
+	- Fixed #27:  Add logger to build script
+	- Fixed #28:  Defect - [FreeBSD] imscp-build use wrong path
+	- Fixed #29:  Wrong link during Setup
+	- Fixed #30:  Domainname Error during setup
+	- Fixed #31:  Malfunction - [FreeBSD] An error occurred during setup process
+	- Fixed #32:  Task - Needed package to install CPAN XML::Parser
+	- Fixed #34:  Task - Default and Disabled Headers picture mismatch
+	- Fixed #35:  Defect - Missing back stick in SQL
+	- Fixed #36:  Deprecated: Call-time pass
+	- Fixed #37:  Cosmetics - Hosting plan Header Color
+	- Fixed #38:  Defect - Missing checkbox for hostingplan Terms of Service
+	- Fixed #39:  Cosmetics - Missing background for the datepicker header
+	- Fixed #40:  Updated phpMyAdmin to version 3.3.8.1
+	- Fixed #42:  Cosmetics - Wrong design in phpMyAdmin
+	- Fixed #44:  Update - Net::DNS v1.0.7 is available
+	- Fixed #48:  Task - Licence header for create_release.sh
+	- Fixed #49:  Cosmetics - Some improvements on multilanguage.php
+	- Fixed #50:  Malfunction - Patch to fix the exception when switching users
+	- Fixed #51:  Enhancement - Change Package actions if software is installed
+	- Fixed #52:  Cosmetics - Occurences of ispcp in Sources
+	- Fixed #53:  Cosmetics - Wrong link in docs/Ubuntu/INSTALL
+	- Fixed #54:  Cosmetics - Wrong header in gui/admin/ip_usage.php
+	- Fixed #56:  Cosmetics - Wrong logo path
+	- Fixed #59:  Bug - Wrong path in debian and ubuntu config
+	- Fixed #66:  Migration script
+	- Fixed #67:  Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
+	- Fixed #73:  Bug - Problem with Mail (No Login possible)
+	- Fixed #74:  Task - Template not yet updated
+	- Fixed #75:  Bug - Can't change Admin password
+	- Fixed #76:  Bug - Typo in SQL query
+	- Fixed #78:  Bug - Typo error in HTML
+	- Fixed #80:  Bug - Wrong referenced links
+	- Fixed #81:  Bug - reseller can not edit user from view details
+	- Fixed #82:  Cosmetics - client/webtools.php lookout lack picture
+	- Fixed #83:  Bug - client/ftp_choose_dir.php result in blank page
+	- Fixed #84:  Bug - Unable to edit custom errors pages (client)
+	- Fixed #85:  Defect - http://app-pkg.i-mscp.net is not reachable
+	- Fixed #86:  Bug - Administrator can not change default language for panel
+	- Fixed #87:  Bug - Can not delete database
+	- Fixed #88:  Bug - Reseller can not delete orders
+	- Fixed #89:  Cosmetics - Traffic display in client/index.php
+	- Fixed #95:  Bug - Version update check is broken
 	- Fixed #104: Task - autoreplies_log database table still use MYISAM engine
 	- Fixed #105: Bug - Database update 58 is faulty
