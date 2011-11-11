@@ -41,7 +41,38 @@ require_once  'iMSCP/Exception.php';
  *
  * @package		iMSCP_Exception
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @since       1.0.7 (ispCP)
- * @version		1.0.0
+ * @version		0.0.2
  */
-class iMSCP_Exception_Database extends iMSCP_Exception {}
+class iMSCP_Exception_Database extends iMSCP_Exception
+{
+	/**
+	 * Query that failed.
+	 *
+	 * @var null
+	 */
+	protected $_query = null;
+
+    /**
+     * Constructor
+     *
+     * @param  string $msg Exception Message
+	 * @param  string $query query Last query executed
+     * @param  int $code Code
+     * @param  Exception $previous OPTIONAL Previous exception
+     */
+    public function __construct($msg = '', $query = null, $code = 0, Exception $previous = null)
+    {
+		parent::__construct($msg, (int) $code, $previous);
+		$this->_query = (string) $query;
+    }
+
+	/**
+	 * Gets query.
+	 *
+	 * @return string
+	 */
+	public function getQuery()
+	{
+		return $this->_query;
+	}
+}

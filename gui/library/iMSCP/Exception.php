@@ -37,10 +37,19 @@
  * @category 	iMSCP
  * @package		iMSCP_Exception
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @since       1.0.7 (ispCP)
- * @version		1.0.0
+ * @version		0.0.2
  */
 class iMSCP_Exception extends Exception
 {
-
+    /**
+     * Constructor
+     *
+     * @param  string $msg Message
+     * @param  int $code Code
+     * @param  Exception $previous OPTIONAL Previous exception
+     */
+    public function __construct($msg = '', $code = 0, Exception $previous = null)
+    {
+		parent::__construct($msg, (int) $code, $previous);
+    }
 }

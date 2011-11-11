@@ -295,6 +295,15 @@ form table tbody td textarea{
 	min-width : 200px;
 }
 
+input {
+	border: 1px solid #cccccc;
+	padding: 3px;
+}
+
+.input_error {
+	border-color: #ca1d11;
+}
+
 /***********************************************************************************
  * LOCATION BAR STYLES
  ***********************************************************************************/
