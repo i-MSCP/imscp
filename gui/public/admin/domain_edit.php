@@ -423,8 +423,6 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 		// Getting domain data
 		$data =& admin_getData($domainId, true, $recoveryMode);
 
-		sleep(5);
-
 		// Check for expires date
 		if ($data['domain_never_expires'] == 'off') {
 			if (!preg_match('%^\d{2}/\d{2}/\d{4}$%', $data['domain_expires']) ||
