@@ -720,7 +720,7 @@ function _admin_isValidServiceLimit($newCustomerLimit, $customerConsumption,
 		set_page_message(tr('The %s limit for this customer cannot be greater than <strong>%d</strong>, the calculated limit for his reseller.', $translatedServiceName, ($resellerLimit - $resellerConsumption) + $customerLimit), 'error');
 		return false;
 	} elseif($newCustomerLimit != -1 && $newCustomerLimit != 0 && $newCustomerLimit < $customerConsumption) {
-		set_page_message(tr('The %s limit for this customer cannot be lower than <strong>%d</strong>, the total of %s already used for him.', $translatedServiceName, round($customerConsumption), $translatedServiceName), 'error');
+		set_page_message(tr('The %s limit for this customer cannot be lower than <strong>%d</strong>, the total of %s already used by him.', $translatedServiceName, round($customerConsumption), $translatedServiceName), 'error');
 		return false;
 	}
 
@@ -820,7 +820,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

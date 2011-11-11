@@ -713,7 +713,7 @@ function _reseller_isValidServiceLimit($newCustomerLimit, $customerConsumption,
 ) {
 	// Please, don't change test order.
 	if(($resellerLimit == -1 || $resellerLimit > 0) && $newCustomerLimit == 0) {
-		set_page_message(tr("The %s limit for this customer cannot be unlimited because your are limited for this service.", $translatedServiceName), 'error');
+		set_page_message(tr('The %s limit for this customer cannot be unlimited because your are limited for this service.', $translatedServiceName), 'error');
 		return false;
 	} elseif($newCustomerLimit == -1 && $customerConsumption > 0) {
 		set_page_message(tr("The %s limit for this customer cannot be set to 'disabled' because he has already <strong>%d</strong> %s.", $translatedServiceName, $customerConsumption, $translatedServiceName), 'error');
@@ -824,7 +824,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
