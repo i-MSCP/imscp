@@ -132,7 +132,7 @@ Distributions:
 
 Features / Enhancements:
 
-	Gui:
+	GUI:
 		Core:
 			- Improved security by moving some files outside documentRoot
 		i18n:
