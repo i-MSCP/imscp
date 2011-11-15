@@ -3,7 +3,6 @@
 		<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 			$(document).ready(function() {
-
 				$('.permission_help').iMSCPtooltips({msg:'{TR_PHPINI_PERMISSION_HELP}'});
 
 				if($('#phpini_system_no').is(':checked')) {
@@ -39,7 +38,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
-				<li><a href="reseller_add.php">{TR_ADD_RESELLER}</a></li>
+				<li><a href="#" onclick="return false;">{TR_ADD_RESELLER}</a></li>
 			</ul>
 		</div>
 

@@ -5,7 +5,6 @@
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -37,6 +36,8 @@
 /*******************************************************************************
  * Script functions
  */
+
+// TODO must be review (all is not correctly checked)
 
 /**
  * Returns clean input data.
@@ -307,23 +308,23 @@ function reseller_checkData(&$errFields)
 	$phpini = iMSCP_PHPini::getInstance();
 
 	if (!$phpini->setRePerm('phpiniPostMaxSize', $rdata['php_ini_max_post_max_size'])) {
-		set_page_message(tr("Value for the PHP '%s' directive is out of range.", 'post_max_size'), 'error');
+		set_page_message(tr("Max value for the PHP %s directive is out of range.", 'post_max_size'), 'error');
 	}
 
 	if (!$phpini->setRePerm('phpiniUploadMaxFileSize', $rdata['php_ini_max_upload_max_filesize'])) {
-		set_page_message(tr("Value for the PHP '%s' directive is out of range.", 'upload_max_filesize'), 'error');
+		set_page_message(tr("Max value for the PHP %s directive is out of range.", 'upload_max_filesize'), 'error');
 	}
 
 	if (!$phpini->setRePerm('phpiniMaxExecutionTime', $rdata['php_ini_max_max_execution_time'])) {
-		set_page_message(tr("Value for the PHP '%s' directive is out of range.", 'max_execution_time'), 'error');
+		set_page_message(tr("Max value for the PHP %s directive is out of range.", 'max_execution_time'), 'error');
 	}
 
 	if (!$phpini->setRePerm('phpiniMemoryLimit', $rdata['php_ini_max_memory_limit'])) {
-		set_page_message(tr("Value for the PHP '%s' directive is out of range.", 'memory_limit'), 'error');
+		set_page_message(tr("Max value for the PHP %s directive is out of range.", 'memory_limit'), 'error');
 	}
 
 	if (!$phpini->setRePerm('phpiniMaxInputTime', $rdata['php_ini_max_max_input_time'])) {
-		set_page_message(tr("Value for the PHP '%s' directive is out of range.", 'memory_limit'), 'error');
+		set_page_message(tr("Max value for the PHP %s directive is out of range.", 'memory_limit'), 'error');
 	}
 
 	// Any error found?
@@ -1037,16 +1038,17 @@ $tpl->assign(
 			 ? $cfg->HTML_CHECKED : '',
 		 'PHPINI_AL_DISABLE_FUNCTIONS_NO' => ($rdata['php_ini_al_disable_functions'] != 'yes')
 			 ? $cfg->HTML_CHECKED : '',
-		 'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
-		 'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
-		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
-		 'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('MAX allowed in memory_limit [MB]'),
-		 'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('MAX allowed in upload_max_filesize [MB]'),
-		 'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('MAX allowed in post_max_size [MB]'),
-		 'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('allow change Value display_errors'),
-		 'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('allow change Value disable_functions'),
-		 'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
-		 'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
+		 'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
+		 'TR_PHPINI_PERMISSION_HELP' => tr('If yes, means that the reseller can allow its customers to edit this directive.'),
+		 'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('Can edit the PHP %s directive', 'register_globals'),
+		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive',  'allow_url_fopen'),
+		 'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', 'display_errors'),
+		 'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', 'disable_functions'),
+		 'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive [MiB]', 'memory_limit'),
+		 'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive [MiB]', 'upload_max_filesize'),
+		 'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive [MiB]', 'post_max_size'),
+		 'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive [Sec.]', 'max_execution_time'),
+		 'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive [Sec.]', 'max_input_time'),
 		 'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		 'TR_RESELLER_IPS' => tr('Reseller IPs'),
 		 'TR_ADDITIONAL_DATA' => tr('Additional data'),
