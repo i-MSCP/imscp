@@ -108,7 +108,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
     $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
     $stmt = exec_query($query, $_SESSION['user_created_by']);
 
-    if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] != 'no') {
+    if ($cfg->IMSCP_SUPPORT_SYSTEM && $stmt->fields['support_system'] == 'yes') {
 		$tpl->assign('TR_MENU_SUPPORT',  tr('Support'));
     } else {
 		$tpl->assign('SUPPORT_FEATURE', '');
