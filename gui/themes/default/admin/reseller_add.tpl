@@ -3,6 +3,9 @@
 		<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 			$(document).ready(function() {
+
+				$('.permission_help').iMSCPtooltips({msg:'{TR_PHPINI_PERMISSION_HELP}'});
+
 				if($('#phpini_system_no').is(':checked')) {
 					$("#phpinidetail").hide();
 				}
@@ -56,7 +59,7 @@
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
 						<tr>
-							<td style="width:300px;">
+							<td style="width:315px;">
 								<label for="username">{TR_USERNAME}</label>
 							</td>
 							<td>
@@ -203,7 +206,7 @@
 						</tr>
 						<tbody id='phpinidetail'>
 							<tr>
-								<td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
+								<td>{TR_PHPINI_AL_REGISTER_GLOBALS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
 									<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
 									<label for="phpini_al_register_globals_yes">{TR_YES}</label>
@@ -212,7 +215,7 @@
 								</td>
 							</tr>
 							<tr id='php_ini_block_allow_url_fopen'>
-								<td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}</td>
+								<td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
 									<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
 									<label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
@@ -221,7 +224,7 @@
 								</td>
 							</tr>
 							<tr id='php_ini_block_display_errors'>
-								<td>{TR_PHPINI_AL_DISPLAY_ERRORS}</td>
+								<td>{TR_PHPINI_AL_DISPLAY_ERRORS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
 									<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
 									<label for="phpini_al_display_errors_yes">{TR_YES}</label>
@@ -230,7 +233,7 @@
 								</td>
 							</tr>
 							<tr id='php_ini_block_disable_functions'>
-								<td>{TR_PHPINI_AL_DISABLE_FUNCTIONS}</td>
+								<td>{TR_PHPINI_AL_DISABLE_FUNCTIONS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
 									<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
 									<label for="phpini_al_disable_functions_yes">{TR_YES}</label>

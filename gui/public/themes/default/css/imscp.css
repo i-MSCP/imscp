@@ -126,6 +126,14 @@ a:hover, a:focus {
     text-decoration: underline;
 }
 
+.bold {
+	font-weight: bold;
+}
+
+.italic {
+	font-style: italic;
+}
+
 dl {
     margin-left: 2em;
 }

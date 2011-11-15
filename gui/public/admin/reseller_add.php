@@ -382,13 +382,11 @@ function reseller_checkData($phpini)
 	$stmt = exec_query($query, $username);
 
 	if ($stmt->recordCount() != 0) {
-		set_page_message(tr('This user name already exist.'), 'warning');
-		return false;
+		set_page_message(tr('This user name already exist.'), 'error');
 	}
 
 	if (!validates_username(clean_input($_POST['username']))) {
 		set_page_message(tr('Incorrect username length or syntax.'), 'error');
-		return false;
 	}
 
 	if (!chk_password($_POST['pass'])) {
@@ -406,124 +404,124 @@ function reseller_checkData($phpini)
 				), 'error'
 			);
 		}
-
-		return false;
 	}
 
 	if ($_POST['pass'] != $_POST['pass_rep']) {
 		set_page_message(tr('Entered passwords do not match.'), 'error');
-		return false;
 	}
 
 	if (!chk_email(clean_input($_POST['email']))) {
 		set_page_message(tr('Incorrect email syntax.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
 		set_page_message(tr('Incorrect domains limit.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_subdomain_cnt'], -1)) {
 		set_page_message(tr('Incorrect subdomains limit.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_alias_cnt'], -1)) {
 		set_page_message(tr('Incorrect aliases limit.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_ftp_cnt'], -1)) {
 		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_mail_cnt'], -1)) {
 		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
-		return false;
-
-	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1 && $_POST['nreseller_max_sql_user_cnt'] != -1) {
+	} elseif ($_POST['nreseller_max_sql_db_cnt'] == -1 && $_POST['nreseller_max_sql_user_cnt'] != -1) {
 		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL users limit.'), 'error');
-		return false;
-	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1 && $_POST['nreseller_max_sql_user_cnt'] == -1) {
+	} elseif ($_POST['nreseller_max_sql_db_cnt'] != -1 && $_POST['nreseller_max_sql_user_cnt'] == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_traffic'], null)) {
 		set_page_message(tr('Incorrect traffic limit.'), 'error');
-		return false;
 	}
 
 	if (!imscp_limit_check($_POST['nreseller_max_disk'], null)) {
 		set_page_message(tr('Incorrect disk quota limit.'), 'error');
-		return false;
 	}
 
 	if ($reseller_ips == '') {
 		set_page_message(tr('You must assign at least one IP number for a reseller.'), 'error');
-		return false;
 	}
 
-	if (!$phpini->setRePerm('phpiniSystem', clean_input($_POST['phpini_system']))) { //should be impossible to enter a wrong value its a radio button
-		set_page_message(tr('Feature PHP.ini Value Error'), 'error');
-		return false;
+	$hakingAttempt = false;
+
+	// We are safe here:
+	// 1. If the PHP Editor feature is disabled for this reseller, default values will be used
+	// 2. If a POST variable for a permission is not defined, default value will be used for it
+	// 3. If a permission check fail, we stop the process (hacking attempt)
+	if(isset($_POST['phpini_system']) && clean_input($_POST['phpini_system']) == 'yes') {
+		$phpini->setRePerm('phpiniSystem', 'yes');
+
+		if (isset($_POST['phpini_al_register_globals']) &&
+			!$phpini->setRePerm('phpiniRegisterGlobals', clean_input($_POST['phpini_al_register_globals']))
+		) {
+			$hakingAttempt = true;
+		} elseif(isset($_POST['phpini_al_allow_url_fopen']) &&
+			!$phpini->setRePerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_al_allow_url_fopen']))
+		) {
+			$hakingAttempt = true;
+		} elseif(isset($_POST['phpini_al_display_errors']) &&
+			!$phpini->setRePerm('phpiniDisplayErrors', clean_input($_POST['phpini_al_display_errors']))
+		) {
+			$hakingAttempt = true;
+		} elseif(isset($_POST['phpini_al_disable_functions']) &&
+			!$phpini->setRePerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']))
+		) {
+			$hakingAttempt = true;
+		}
+
+		if($hakingAttempt) {
+			set_page_message(tr('Wrong request.'), 'error');
+			redirectTo('manage_users.php');
+		}
+
+		if (isset($_POST['phpini_max_post_max_size']) &&
+			!$phpini->setRePerm('phpiniPostMaxSize', clean_input($_POST['phpini_max_post_max_size']))
+		) {
+			set_page_message(tr('Max value for the PHP %s directive is out of range.', 'post_max_size'), 'error');
+		}
+
+		if (isset($_POST['phpini_max_upload_max_filesize']) &&
+			!$phpini->setRePerm('phpiniUploadMaxFileSize', clean_input($_POST['phpini_max_upload_max_filesize']))
+		) {
+			set_page_message(tr('Max value for the PHP %s directive is out of range.', 'upload_max_filesize'), 'error');
+		}
+
+		if (isset($_POST['phpini_max_max_execution_time']) &&
+			!$phpini->setRePerm('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_max_execution_time']))
+		) {
+			set_page_message(tr('Max value for the PHP %s directive is out of range.', 'max_execution_time'), 'error');
+		}
+
+		if (isset($_POST['phpini_max_memory_limit']) &&
+			!$phpini->setRePerm('phpiniMemoryLimit', clean_input($_POST['phpini_max_memory_limit']))
+		) {
+			set_page_message(tr('Max value for the PHP %s directive is out of range.', 'memory_limit'), 'error');
+		}
+
+		if (isset($_POST['phpini_max_max_input_time']) &&
+			!$phpini->setRePerm('phpiniMaxInputTime', clean_input($_POST['phpini_max_max_input_time']))
+		) {
+			set_page_message(tr('Max value for the PHP %s directive is out of range.', 'max_input_time'), 'error');
+		}
 	}
 
-	if (!$phpini->setRePerm('phpiniRegisterGlobals', clean_input($_POST['phpini_al_register_globals']))) { //should be impossible to enter a wrong value its a radio button
-		set_page_message(tr('Error in register_globals Value'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_al_allow_url_fopen']))) { //should be impossible to enter a wrong value its a radio button
-		set_page_message(tr('Error in allow_url_fopen Value'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniDisplayErrors', clean_input($_POST['phpini_al_display_errors']))) { //should be impossible to enter a wrong value its a radio button
-		set_page_message(tr('Error in display_Error Value'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniDisableFunctions', clean_input($_POST['phpini_al_disable_functions']))) { //should be impossible to enter a wrong value its a radio button
-		set_page_message(tr('Error in disable_functions Value'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniPostMaxSize', clean_input($_POST['phpini_max_post_max_size']))) {
-		set_page_message(tr('Value post_max_size out of Range'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniUploadMaxFileSize', clean_input($_POST['phpini_max_upload_max_filesize']))) {
-		set_page_message(tr('Value upload_max_filesize out of Range'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_max_execution_time']))) {
-		set_page_message(tr('Value max_execution_time out of Range'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniMemoryLimit', clean_input($_POST['phpini_max_memory_limit']))) {
-		set_page_message(tr('Value memory_limit out of Range'), 'error');
-		return false;
-	}
-
-	if (!$phpini->setRePerm('phpiniMaxInputTime', clean_input($_POST['phpini_max_max_input_time']))) {
-		set_page_message(tr('Value max_input_time out of Range'), 'error');
+	if(Zend_Session::namespaceIsset('pageMessages')) {
 		return false;
 	}
 
@@ -601,19 +599,20 @@ $tpl->assign(array(
 				  'TR_YES' => tr('yes'),
 				  'TR_NO' => tr('no'),
 				  'TR_SUPPORT_SYSTEM' => tr('Support system'),
-				  'TR_PHPINI_SYSTEM' => tr('Feature PHP.ini'),
-				  'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('allow change Value register_globals'),
-				  'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('allow change Value allow_url_fopen'),
-				  'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('MAX allowed in memory_limit [MB]'),
-				  'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('MAX allowed in upload_max_filesize [MB]'),
-				  'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('MAX allowed in post_max_size [MB]'),
-				  'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('allow change Value display_errors'),
-				  'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('allow change Value disable_functions'),
-				  'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
-				  'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
-				  'TR_SOFTWARE_ALLOWED' => tr('Application installer'),
-				  'TR_SOFTWAREDEPOT_ALLOWED' => tr('Can use software repository'),
-				  'TR_WEBSOFTWAREDEPOT_ALLOWED' => tr('Can use Web software repository'),
+				  'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
+				  'TR_PHPINI_PERMISSION_HELP' => tr('If yes, means that the reseller can allow its customers to edit this directive.'),
+				  'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('Can edit the PHP %s directive', 'register_globals'),
+				  'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive',  'allow_url_fopen'),
+				  'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', 'display_errors'),
+				  'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', 'disable_functions'),
+				  'TR_PHPINI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive [MiB]', 'memory_limit'),
+				  'TR_PHPINI_MAX_UPLOAD_MAX_FILESIZE' => tr('Max value for the %s PHP directive [MiB]', 'upload_max_filesize'),
+				  'TR_PHPINI_MAX_POST_MAX_SIZE' => tr('Max value for the %s PHP directive [MiB]', 'post_max_size'),
+				  'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('Max value for the %s PHP directive [Sec.]', 'max_execution_time'),
+				  'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('Max value for the %s PHP directive [Sec.]', 'max_input_time'),
+				  'TR_SOFTWARE_ALLOWED' => tr('Softwares installer'),
+				  'TR_SOFTWAREDEPOT_ALLOWED' => tr('Can use softwares repository'),
+				  'TR_WEBSOFTWAREDEPOT_ALLOWED' => tr('Can use Web softwares repository'),
 				  'TR_RESELLER_IPS' => tr('Reseller IPs'),
 				  'TR_ADDITIONAL_DATA' => tr('Additional data'),
 				  'TR_CUSTOMER_ID' => tr('Customer ID'),
