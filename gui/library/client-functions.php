@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -744,4 +743,58 @@ function mount_point_exists($domain_id, $mnt_point)
     }
 
     return false;
+}
+
+/**
+ * Tells whether or not the given feature is available for the customer
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @throws iMSCP_Exception When $featureName is not known
+ * @param string $featureName Feature name
+ * @param bool $reload If true for data reload
+ * @return return bool TRUE if feature is available for customer, FALSE otherwise
+ */
+function customerHasFeature($featureName, $reload = false)
+{
+	static $availableFeatures = null;
+	$featureName = strtolower($featureName);
+
+	if (null === $availableFeatures || $reload) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+		$domainProperties = get_domain_default_props((int)$_SESSION['user_id'], true);
+
+		$availableFeatures = array(
+			'domain' => ($domainProperties['domain_alias_limit'] != '-1'
+						 || $domainProperties['domain_subd_limit'] != '-1'
+						 || $domainProperties['domain_dns'] != 'no') ? true : false,
+			'php' => ($domainProperties['domain_php'] == 'yes') ? true : false,
+			'php_editor' => ($domainProperties['phpini_perm_system'] == 'yes') ? true : false,
+			'cgi' => ($domainProperties['domain_cgi'] == 'yes') ? true : false,
+			'ftp' => ($domainProperties['domain_ftpacc_limit'] != '-1') ? true : false,
+			'sql' => ($domainProperties['domain_sqld_limit'] != '-1') ? true : false,
+			'mail' => ($domainProperties['domain_mailacc_limit'] != '-1') ? true : false,
+			'subdomains' => ($domainProperties['domain_subd_limit'] != '-1') ? true : false,
+			'domain_aliasses' => ($domainProperties['domain_alias_limit'] != '-1') ? true : false,
+			'custom_dns_records' => ($domainProperties['domain_dns'] != 'no') ? true : false,
+			'awstats' => ($cfg->AWSTATS_ACTIVE != 'no') ? true : false,
+			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $domainProperties['allowbackup'] != 'no') ? true : false,
+			'protected_areas' => true,
+			'custom_error_pages' => true,
+			'aps' => ($domainProperties['domain_software_allowed'] != 'no') ? true : false);
+
+		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
+			$query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
+			$stmt = exec_query($query, $_SESSION['user_created_by']);
+			$availableFeatures['support'] = ($stmt->fields['support_system'] == 'yes') ? true : false;
+		} else {
+			$availableFeatures['support'] = false;
+		}
+	}
+
+	if (!array_key_exists($featureName, $availableFeatures)) {
+		throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
+	}
+
+	return $availableFeatures[$featureName];
 }
