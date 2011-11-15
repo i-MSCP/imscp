@@ -746,13 +746,13 @@ function mount_point_exists($domain_id, $mnt_point)
 }
 
 /**
- * Tells whether or not the given feature is available for the customer
+ * Tells whether or not the given feature is available for the customer.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
  * @param string $featureName Feature name
- * @param bool $reload If true for data reload
- * @return return bool TRUE if feature is available for customer, FALSE otherwise
+ * @param bool $reload If true force data to be reloaded
+ * @return return bool TRUE if $featureName is available for customer, FALSE otherwise
  */
 function customerHasFeature($featureName, $reload = false)
 {
