@@ -598,6 +598,7 @@ $tpl->assign(array(
 				  'TR_LOGO_UPLOAD' => tr('Logo upload'),
 				  'TR_YES' => tr('yes'),
 				  'TR_NO' => tr('no'),
+				  'TR_HELP' => tr('Help'),
 				  'TR_SUPPORT_SYSTEM' => tr('Support system'),
 				  'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
 				  'TR_PHPINI_PERMISSION_HELP' => tr('If yes, means that the reseller can allow its customers to edit this directive.'),
