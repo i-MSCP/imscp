@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,18 +25,22 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -49,10 +52,15 @@ $tpl->define_dynamic('year_item', 'page');
 $tpl->define_dynamic('traff_list', 'page');
 $tpl->define_dynamic('traff_item', 'traff_list');
 
-// page functions.
+/**
+ * @param $tpl
+ * @param $month
+ * @param $year
+ * @return void
+ */
+function gen_page_date($tpl, $month, $year) {
 
-function gen_page_date(&$tpl, $month, $year) {
-
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	for ($i = 1; $i <= 12; $i++) {
@@ -76,7 +84,13 @@ function gen_page_date(&$tpl, $month, $year) {
 	}
 }
 
-function gen_page_post_data(&$tpl, $current_month, $current_year) {
+/**
+ * @param $tpl
+ * @param $current_month
+ * @param $current_year
+ * @return array
+ */
+function gen_page_post_data($tpl, $current_month, $current_year) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'show_traff') {
 		$current_month = $_POST['month'];
@@ -87,6 +101,12 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 	return array($current_month, $current_year);
 }
 
+/**
+ * @param $from
+ * @param $to
+ * @param $domain_id
+ * @return array
+ */
 function get_domain_trafic($from, $to, $domain_id) {
 
 	$query = "
@@ -127,6 +147,7 @@ function gen_dmn_traff_list($tpl, $month, $year, $user_id) {
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$domain_admin_id = $_SESSION['user_id'];
@@ -229,9 +250,6 @@ function gen_dmn_traff_list($tpl, $month, $year, $user_id) {
 	}
 }
 
-// common page data.
-
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Domain Statistics'),
@@ -241,22 +259,15 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
-
 $current_month = date("m", time());
 $current_year = date("Y", time());
 
 list($current_month, $current_year) = gen_page_post_data($tpl, $current_month, $current_year);
+
 gen_dmn_traff_list($tpl, $current_month, $current_year, $_SESSION['user_id']);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_statistics.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_statistics.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
@@ -280,8 +291,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

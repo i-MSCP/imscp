@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -15,21 +15,25 @@
  * The Original Code is i-MSCP - Multi Server Control Panel.
  *
  * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by Initial Developer are Copyright (C) 2010
+ * Portions created by Initial Developer are Copyright (C) 2010-2011
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category i-MSCP
- * @copyright 2010 by i-MSCP | http://i-mscp.net
+ * @copyright 2010-2011 by i-MSCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/**
+/************************************************************************************
  *  Functions
  */
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @return
+ */
 function gen_page_lists($tpl, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'), 'error');
@@ -43,25 +47,23 @@ function gen_page_lists($tpl, $user_id) {
 	return $software_id;
 }
 
-/**
+/************************************************************************************
  * Main program
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_software_allowed'] == 'no') {
-	redirectTo('domains_manage.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('aps')) {
+    redirectTo('index.php');
 }
 
-/**
- * @var $cfg iMSCP_Config_Handler_File
- */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -85,6 +87,7 @@ if (isset($_POST['Submit2'])) {
 	$id = $_GET['id'];
 	$domain_path = "";
 	$other_dir = clean_input($_POST['other_dir'], true);
+
 	$query = "
 		SELECT
 			`software_master_id`, `software_db`, `software_name`, `software_version`,
@@ -95,6 +98,7 @@ if (isset($_POST['Submit2'])) {
 			`software_id` = ?
 	";
 	$rs = exec_query($query, $_GET['id']);
+
 	$install_username = clean_input($_POST['install_username'], true);
 	$install_password = clean_input($_POST['install_password'], true);
 	$install_email = clean_input($_POST['install_email'], true);
@@ -143,6 +147,7 @@ if (isset($_POST['Submit2'])) {
 			`path` = ?
 	";
 	$rspath = exec_query($querypath, array($dmn_id, $other_dir));
+
 	list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = explode(';', $_POST['selected_domain']);
 	if(($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0){
 		if($posted_aliasdomain_id > 0){
@@ -187,6 +192,7 @@ if (isset($_POST['Submit2'])) {
 	} else {
 		$domain_path = $posted_mountpath;
 	}
+
 	if($rs->fields['software_db'] == "1") {
 		$selected_db = clean_input($_POST['selected_db'], true);
 		$sql_user = clean_input($_POST['sql_user'], true);
@@ -196,6 +202,7 @@ if (isset($_POST['Submit2'])) {
 		$db_connection_ok = check_db_connection($selected_db, $sql_user, $rsdatabase->fields['sqlu_pass']);
 		$sql_pass = $rsdatabase->fields['sqlu_pass'];
 	}
+
 	if($rs->fields['software_db'] == "1" && !$db_connection_ok) {
 		set_page_message(tr('Please select the correct user for your database!'), 'error');
 	} elseif(empty($install_username) || empty($install_password) || empty($install_email)) {
@@ -266,47 +273,50 @@ if (isset($_POST['Submit2'])) {
 		send_request();
 		redirectTo('software.php');
 	}
+
 	if($rs->fields['software_db'] == "1") {
 		$tpl->assign(
-				array(
-					'VAL_OTHER_DIR' 			=> $other_dir,
-					'CHECKED_CREATEDIR' 		=>  ($createdir === '1') ? $cfg->HTML_CHECKED : '',
-					'VAL_INSTALL_USERNAME' 		=> $install_username,
-					'VAL_INSTALL_PASSWORD' 		=> $install_password,
-					'VAL_INSTALL_EMAIL' 		=> $install_email
-				)
-			);
+			array(
+				 'VAL_OTHER_DIR' => $other_dir,
+				 'CHECKED_CREATEDIR' => ($createdir === '1') ? $cfg->HTML_CHECKED
+					 : '',
+				 'VAL_INSTALL_USERNAME' => $install_username,
+				 'VAL_INSTALL_PASSWORD' => $install_password,
+				 'VAL_INSTALL_EMAIL' => $install_email
+			)
+		);
 	} else {
 		$tpl->assign(
-				array(
-					'VAL_OTHER_DIR' 			=> $other_dir,
-					'CHECKED_CREATEDIR' 		=>  ($createdir === '1') ? $cfg->HTML_CHECKED : '',
-					'VAL_INSTALL_USERNAME' 		=> $install_username,
-					'VAL_INSTALL_PASSWORD' 		=> $install_password,
-					'VAL_INSTALL_EMAIL' 		=> $install_email
-				)
-			);
+			array(
+				 'VAL_OTHER_DIR' => $other_dir,
+				 'CHECKED_CREATEDIR' => ($createdir === '1') ? $cfg->HTML_CHECKED
+					 : '',
+				 'VAL_INSTALL_USERNAME' => $install_username,
+				 'VAL_INSTALL_PASSWORD' => $install_password,
+				 'VAL_INSTALL_EMAIL' => $install_email
+			)
+		);
 	}
 } else {
 	$tpl->assign(
-			array(
-				'VAL_OTHER_DIR' 		=> '/htdocs',
-				'CHECKED_CREATEDIR' 	=>  '',
-				'VAL_INSTALL_USERNAME' 	=> '',
-				'VAL_INSTALL_PASSWORD' 	=> '',
-				'VAL_INSTALL_EMAIL' 	=> ''
-			)
-		);
+		array(
+			 'VAL_OTHER_DIR' => '/htdocs',
+			 'CHECKED_CREATEDIR' => '',
+			 'VAL_INSTALL_USERNAME' => '',
+			 'VAL_INSTALL_PASSWORD' => '',
+			 'VAL_INSTALL_EMAIL' => ''
+		)
+	);
 }
 
-$tpl -> assign(
-			array(
-				'TR_PAGE_TITLE' => tr('i-MSCP - Install Software'),
-				'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
-				'THEME_CHARSET' 						=> tr('encoding'),
-				'ISP_LOGO'								=> layout_getUserLogo()
-			)
-		);
+$tpl->assign(
+	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Install Software'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
+	)
+);
 
 
 $software_id = gen_page_lists($tpl, $_SESSION['user_id']);
@@ -315,37 +325,35 @@ gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl'
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 gen_logged_from($tpl);
 get_client_software_permission ($tpl, $_SESSION['user_id']);
-check_permissions($tpl);
 
 $tpl -> assign(
 	array(
-		'TR_SOFTWARE_MENU_PATH'			=> tr('i-MSCP - application installer'),
-		'TR_INSTALL_SOFTWARE'			=> tr('Install Software'),
-		'SOFTWARE_ID'					=> $software_id,
-		'TR_NAME'						=> tr('Software'),
-		'TR_TYPE'						=> tr('Type'),
-		'TR_DB'							=> tr('Database required'),
-		'TR_SELECT_DOMAIN'				=> tr('Select Domain'),
-		'TR_BACK'						=> tr('back'),
-		'TR_INSTALL'					=> tr('install'),
-		'TR_PATH'						=> tr('Install path'),
-		'CHOOSE_DIR'					=> tr('Choose dir'),
-		'CREATEDIR_MESSAGE'				=> tr('Create directory, if not exist!'),
-		'TR_SELECT_DB'					=> tr('Select database'),
-		'TR_SQL_USER'					=> tr('SQL-User'),
-		'TR_SQL_PWD'					=> tr('Password'),
-		'TR_SOFTWARE_MENU'				=> tr('Software installation'),
-		'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')
+		 'TR_SOFTWARE_MENU_PATH' => tr('i-MSCP - application installer'),
+		 'TR_INSTALL_SOFTWARE' => tr('Install Software'),
+		 'SOFTWARE_ID' => $software_id,
+		 'TR_NAME' => tr('Software'),
+		 'TR_TYPE' => tr('Type'),
+		 'TR_DB' => tr('Database required'),
+		 'TR_SELECT_DOMAIN' => tr('Select Domain'),
+		 'TR_BACK' => tr('back'),
+		 'TR_INSTALL' => tr('install'),
+		 'TR_PATH' => tr('Install path'),
+		 'CHOOSE_DIR' => tr('Choose dir'),
+		 'CREATEDIR_MESSAGE' => tr('Create directory, if not exist!'),
+		 'TR_SELECT_DB' => tr('Select database'),
+		 'TR_SQL_USER' => tr('SQL-User'),
+		 'TR_SQL_PWD' => tr('Password'),
+		 'TR_SOFTWARE_MENU' => tr('Software installation'),
+		 'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')
 	)
 );
 
 generatePageMessage($tpl);
 
-$tpl -> parse('PAGE', 'page');
+$tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
-$tpl -> prnt();
+$tpl->prnt();
 
 unsetMessages();

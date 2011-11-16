@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,12 +25,18 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+/**
+ * @param $user_id
+ * @return
+ */
 function check_subdomain_permissions($user_id) {
 	$props = get_domain_default_props($user_id, true);
 
@@ -61,8 +66,14 @@ function check_subdomain_permissions($user_id) {
 	return $dmn_name; // Will be used in subdmn_exists()
 }
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @return void
+ */
 function gen_user_add_subdomain_data($tpl, $user_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$subdomain_name = $subdomain_mnt_pt = $forward = $forward_prefix = '';
@@ -141,8 +152,15 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 	);
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $post_check
+ * @return void
+ */
 function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -200,9 +218,16 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 	}
 }
 
+/**
+ * @param $user_id
+ * @param $domain_id
+ * @param $sub_name
+ * @return bool
+ */
 function subdmn_exists($user_id, $domain_id, $sub_name) {
 	global $dmn_name;
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($_POST['dmn_type'] == 'als') {
@@ -267,6 +292,13 @@ function subdmn_exists($user_id, $domain_id, $sub_name) {
 	return true;
 }
 
+/**
+ * @param $user_id
+ * @param $domain_id
+ * @param $sub_name
+ * @param $sub_mnt_pt
+ * @return bool
+ */
 function subdmn_mnt_pt_exists($user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 
 	if ($_POST['dmn_type'] == 'als') {
@@ -320,8 +352,17 @@ function subdmn_mnt_pt_exists($user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 	return false;
 }
 
+/**
+ * @param $user_id
+ * @param $domain_id
+ * @param $sub_name
+ * @param $sub_mnt_pt
+ * @param $forward
+ * @return void
+ */
 function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$status_add = $cfg->ITEM_ADD_STATUS;
@@ -354,6 +395,12 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 	send_request();
 }
 
+/***
+ * @param $tpl
+ * @param $user_id
+ * @param $dmn_name
+ * @return
+ */
 function check_subdomain_data($tpl, $user_id, $dmn_name) {
 
 	global $validation_err_msg;
@@ -480,23 +527,26 @@ function check_subdomain_data($tpl, $user_id, $dmn_name) {
 	}
 }
 
-/**
+/************************************************************************************
  * Main program
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('subdomains')) {
+    redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-// If the feature is disabled, redirects the client in silent way
 $domainProperties =  get_domain_default_props($_SESSION['user_id'], true);
-if($domainProperties['domain_subd_limit'] == '-1') {
-	redirectTo('domains_manage.php');
-}
 
 // Avoid useless work during Ajax request
 if(!is_xhr()) {
@@ -516,15 +566,10 @@ if(!is_xhr()) {
 			'ISP_LOGO' => layout_getUserLogo()
 		)
 	);
-	
-	// static page messages.
-	
+
 	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-	
 	gen_logged_from($tpl);
-	
-	check_permissions($tpl);
 
 	$tpl->assign(
 		array(
@@ -586,7 +631,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

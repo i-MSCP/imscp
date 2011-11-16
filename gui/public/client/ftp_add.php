@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,24 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_ftpacc_limit'] == '-1') {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('ftp')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -55,14 +57,18 @@ $tpl->define_dynamic('als_list', 'page');
 $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('to_subdomain', 'page');
 $tpl->define_dynamic('to_alias_domain', 'page');
+
 // JavaScript
 $tpl->define_dynamic('js_to_subdomain', 'page');
 $tpl->define_dynamic('js_to_alias_domain', 'page');
 $tpl->define_dynamic('js_to_all_domain', 'page');
 $tpl->define_dynamic('js_not_domain', 'page');
 
-// page functions.
 
+/**
+ * @param $alias_name
+ * @return
+ */
 function get_alias_mount_point($alias_name) {
 	$query = "SELECT `alias_mount` FROM `domain_aliasses` WHERE `alias_name` = ?";
 
@@ -70,8 +76,15 @@ function get_alias_mount_point($alias_name) {
 	return $rs->fields['alias_mount'];
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_name
+ * @param $post_check
+ * @return void
+ */
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_name = decode_idna($dmn_name);
@@ -103,8 +116,15 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $post_check
+ * @return void
+ */
 function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -164,8 +184,16 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $dmn_name
+ * @param $post_check
+ * @return void
+ */
 function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -224,6 +252,11 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 	}
 }
 
+/**
+ * @param $dmn_name
+ * @param $ftp_user
+ * @return
+ */
 function get_ftp_user_gid($dmn_name, $ftp_user) {
 
 	global $last_gid, $max_gid;
@@ -315,6 +348,12 @@ function get_ftp_user_gid($dmn_name, $ftp_user) {
 	}
 }
 
+/**
+ * @param $dmn_name
+ * @param $ftp_user
+ * @param $ftp_user_gid
+ * @return int
+ */
 function get_ftp_user_uid($dmn_name, $ftp_user, $ftp_user_gid) {
 
 	global $max_uid;
@@ -364,8 +403,13 @@ function get_ftp_user_uid($dmn_name, $ftp_user, $ftp_user_gid) {
 	return $temp_dmn_uid;
 }
 
+/**
+ * @param $dmn_name
+ * @return
+ */
 function add_ftp_user($dmn_name) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$username = strtolower(clean_input($_POST['username']));
@@ -451,8 +495,15 @@ function add_ftp_user($dmn_name) {
 	redirectTo('ftp_accounts.php');
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $dmn_name
+ * @return
+ */
 function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['username']) || $_POST['username'] === '') {
@@ -499,6 +550,11 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
 	add_ftp_user($dmn_name);
 }
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @return void
+ */
 function gen_page_ftp_acc_props($tpl, $user_id) {
 	list($dmn_id,
 		$dmn_name,
@@ -545,22 +601,23 @@ function gen_page_ftp_acc_props($tpl, $user_id) {
 	}
 }
 
-function gen_page_js(&$tpl) {
+/**
+ * @param $tpl
+ * @return void
+ */
+function gen_page_js($tpl) {
 
-	if (isset($_SESSION['subdomain_count'])
-		&& isset($_SESSION['alias_count'])) { // no subdomains and no alias
+	if (isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no subdomains and no alias
 		$tpl->parse('JS_NOT_DOMAIN', 'js_not_domain');
 		$tpl->assign('JS_TO_SUBDOMAIN', '');
 		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
 		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else if (isset($_SESSION['subdomain_count'])
-		&& !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
+	} else if (isset($_SESSION['subdomain_count']) && !isset($_SESSION['alias_count'])) { // no subdomains - alaias available
 		$tpl->assign('JS_NOT_DOMAIN', '');
 		$tpl->assign('JS_TO_SUBDOMAIN', '');
 		$tpl->parse('JS_TO_ALIAS_DOMAIN', 'js_to_alias_domain');
 		$tpl->assign('JS_TO_ALL_DOMAIN', '');
-	} else if (!isset($_SESSION['subdomain_count'])
-		&& isset($_SESSION['alias_count'])) { // no alias - subdomain available
+	} else if (!isset($_SESSION['subdomain_count']) && isset($_SESSION['alias_count'])) { // no alias - subdomain available
 		$tpl->assign('JS_NOT_DOMAIN', '');
 		$tpl->parse('JS_TO_SUBDOMAIN', 'js_to_subdomain');
 		$tpl->assign('JS_TO_ALIAS_DOMAIN', '');
@@ -578,9 +635,6 @@ function gen_page_js(&$tpl) {
 	unset($_SESSION['alias_count']);
 }
 
-// common page data.
-
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP User'),
@@ -590,18 +644,10 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
-
 gen_page_ftp_acc_props($tpl, $_SESSION['user_id']);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
@@ -624,7 +670,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

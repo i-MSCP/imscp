@@ -5,7 +5,6 @@
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -28,7 +27,7 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -399,16 +398,15 @@ function _client_updateSubdomainData($subdomainId, $subdomainType, $forwardUrl)
  */
 
 // Include core library
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties =  get_domain_default_props($_SESSION['user_id'], true);
-if($domainProperties['domain_subd_limit'] == '-1') {
-	redirectTo('domains_manage.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('subdomains')) {
+    redirectTo('index.php');
 }
 
 client_subdomainEditAction();
@@ -420,8 +418,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

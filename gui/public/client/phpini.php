@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * i-MSCP - internet Multi Server Control Panel
  * Copyright (C) 2010-2011 by i-MSCP team
  *
@@ -19,22 +19,20 @@
  *
  * @copyright	2010-2011 by i-MSCP team
  * @author		Hannes Koschier <hannes@cheat.at>
- * @Version		SVN: $Id$
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 // Include core library
-include 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['phpini_perm_system'] == 'no') {
-	redirectTo('domains_manage.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('php_editor')) {
+    redirectTo('index.php');
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -233,7 +231,6 @@ if ($phpini->getDomStatus($domainId) & $phpini->getClPermVal('phpiniSystem') == 
 						  'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
 	}
 
-	check_permissions($tpl);
 	generatePageMessage($tpl);
 
 	$tpl->parse('PAGE', 'page');

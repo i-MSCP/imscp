@@ -5,7 +5,6 @@
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -39,7 +38,7 @@
  */
 
 // Include core library
-include 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
@@ -49,50 +48,54 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl',
-						  'page_message' => 'page',
-						  'logged_from' => 'page'));
+$tpl->define_dynamic(
+	array(
+		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl',
+		 'page_message' => 'page',
+		 'logged_from' => 'page'
+	)
+);
 
-$tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
+$tpl->assign(
+	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
 
-				  'TR_TITLE_WEBTOOLS' => tr('Webtools'),
+		 'TR_TITLE_WEBTOOLS' => tr('Webtools'),
 
-				  'TR_HTACCESS' => tr('Protected areas'),
-				  'TR_HTACCESS_TXT' => tr('Manage your protected areas, users and groups.'),
+		 'TR_HTACCESS' => tr('Protected areas'),
+		 'TR_HTACCESS_TXT' => tr('Manage your protected areas, users and groups.'),
 
-				  'TR_ERROR_PAGES' => tr('Error pages'),
-				  'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
+		 'TR_ERROR_PAGES' => tr('Error pages'),
+		 'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
 
-				  'TR_BACKUP' => tr('Backup'),
-				  'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
+		 'TR_BACKUP' => tr('Backup'),
+		 'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
 
-				  'TR_WEBMAIL' => tr('Webmail'),
-				  'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
+		 'TR_WEBMAIL' => tr('Webmail'),
+		 'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
 
-				  'TR_FILEMANAGER' => tr('Filemanager'),
-				  'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
+		 'TR_FILEMANAGER' => tr('Filemanager'),
+		 'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
 
-				  'TR_AWSTATS' => tr('Awstats'),
-				  'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
+		 'TR_AWSTATS' => tr('Awstats'),
+		 'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
 
-				  'TR_APP_INSTALLER' => 'Application installer',
-				  'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
+		 'TR_APP_INSTALLER' => 'Application installer',
+		 'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')
+	)
+);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 gen_logged_from($tpl);
-
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

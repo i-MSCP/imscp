@@ -5,7 +5,6 @@
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -344,7 +343,7 @@ function client_generateDomainExpiresInformation($tpl)
  */
 
 // Include core libraries
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
@@ -466,7 +465,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

@@ -5,7 +5,6 @@
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -553,63 +552,72 @@ function _client_generateCustomDnsRecordAction($action, $id, $status)
  */
 
 // Include core library
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('domain')) {
+    redirectTo('index.php');
+}
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/domains_manage.tpl',
-						  'page_message' => 'page',
-						  'logged_from' => 'page',
+$tpl->define_dynamic(
+	array(
+		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/domains_manage.tpl',
+		 'page_message' => 'page',
+		 'logged_from' => 'page',
 
-						  'als_message' => 'page',
-						  'als_list' => 'page',
-						  'als_item' => 'als_list',
-						  'als_status_reload_true' => 'als_item',
-						  'als_status_reload_false' => 'als_item',
+		 'als_message' => 'page',
+		 'als_list' => 'page',
+		 'als_item' => 'als_list',
+		 'als_status_reload_true' => 'als_item',
+		 'als_status_reload_false' => 'als_item',
 
-						  'sub_message' => 'page',
-						  'sub_list' => 'page',
-						  'sub_item' => 'sub_list',
-						  'sub_status_reload_true' => 'sub_item',
-						  'sub_status_reload_false' => 'sub_item',
+		 'sub_message' => 'page',
+		 'sub_list' => 'page',
+		 'sub_item' => 'sub_list',
+		 'sub_status_reload_true' => 'sub_item',
+		 'sub_status_reload_false' => 'sub_item',
 
-						  'isactive_dns' => 'page',
-						  'dns_message' => 'isactive_dns',
-						  'dns_list' => 'isactive_dns',
-						  'dns_item' => 'dns_list'));
+		 'isactive_dns' => 'page',
+		 'dns_message' => 'isactive_dns',
+		 'dns_list' => 'isactive_dns',
+		 'dns_item' => 'dns_list')
+);
 
-$tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Domains'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
+$tpl->assign(
+	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Domains'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
 
-				  'TR_MANAGE_DOMAINS' => tr('Manage domains'),
-				  'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-				  'TR_SUBDOMAINS' => tr('Subdomains'),
+		 'TR_MANAGE_DOMAINS' => tr('Manage domains'),
+		 'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
+		 'TR_SUBDOMAINS' => tr('Subdomains'),
 
-				  'TR_NAME' => tr('Name'),
-				  'TR_MOUNT' => tr('Mount point'),
-				  'TR_REDIRECT' => tr('Redirect'),
-				  'TR_STATUS' => tr('Status'),
-				  'TR_ACTIONS' => tr('Actions'),
-				  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		 'TR_NAME' => tr('Name'),
+		 'TR_MOUNT' => tr('Mount point'),
+		 'TR_REDIRECT' => tr('Redirect'),
+		 'TR_STATUS' => tr('Status'),
+		 'TR_ACTIONS' => tr('Actions'),
+		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 
-				  'TR_DNS' => tr('Custom DNS records'),
-				  'TR_DNS_NAME' => tr('Name'),
-				  'TR_DNS_CLASS' => tr('Class'),
-				  'TR_DNS_TYPE' => tr('Type'),
-				  'TR_DNS_ACTION' => tr('Actions'),
-				  'TR_DNS_DATA' => tr('Record data'),
-				  'TR_DOMAIN_NAME' => tr('Domain')));
-
+		 'TR_DNS' => tr('Custom DNS records'),
+		 'TR_DNS_NAME' => tr('Name'),
+		 'TR_DNS_CLASS' => tr('Class'),
+		 'TR_DNS_TYPE' => tr('Type'),
+		 'TR_DNS_ACTION' => tr('Actions'),
+		 'TR_DNS_DATA' => tr('Record data'),
+		 'TR_DOMAIN_NAME' => tr('Domain')
+	)
+);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
@@ -619,14 +627,11 @@ client_generateSubdomainsList($tpl, $_SESSION['user_id']);
 client_generateDomainAliasesList($tpl, $_SESSION['user_id']);
 client_generateCustomDnsRecordsList($tpl, $_SESSION['user_id']);
 
-check_permissions($tpl);
-
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

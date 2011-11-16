@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,22 +25,25 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/password_change.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -83,8 +85,12 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 	}
 }
 
+/**
+ * @param $id
+ * @param $pass
+ * @return bool
+ */
 function check_udata($id, $pass) {
-
 	$query = "
 		SELECT
 			`admin_id`, `admin_pass`
@@ -101,28 +107,18 @@ function check_udata($id, $pass) {
 	return (($rs->recordCount()) != 1) ? false : true;
 }
 
-/*
- *
- * static page messages.
- *
- */
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
-
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_TITLE_CHANGE_PASSWORD' 	=> tr('Change password'),
-		'TR_PASSWORD_DATA' 		=> tr('Password data'),
-		'TR_PASSWORD' 			=> tr('Password'),
-		'TR_PASSWORD_REPEAT' 	=> tr('Repeat password'),
-		'TR_CURR_PASSWORD' 		=> tr('Current password'),
-		'TR_UPDATE_PASSWORD' 	=> tr('Change')
+		 'TR_TITLE_CHANGE_PASSWORD' => tr('Change password'),
+		 'TR_PASSWORD_DATA' => tr('Password data'),
+		 'TR_PASSWORD' => tr('Password'),
+		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		 'TR_CURR_PASSWORD' => tr('Current password'),
+		 'TR_UPDATE_PASSWORD' => tr('Change')
 	)
 );
 
@@ -130,8 +126,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

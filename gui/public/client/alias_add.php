@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,9 +25,11 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -74,6 +75,9 @@ function check_client_domainalias_counts($user_id) {
 	}
 }
 
+/**
+ * @return void
+ */
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
@@ -85,10 +89,11 @@ function init_empty_data() {
 /**
  * Show data fields
  */
-function gen_al_page(&$tpl, $reseller_id) {
+function gen_al_page($tpl, $reseller_id) {
 
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
+	/** @var $cfg iMSCP_Config_Handler_FileCP_ */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
@@ -136,11 +141,15 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 } // End of gen_al_page()
 
+/**
+ * @return
+ */
 function add_domain_alias() {
 
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$cr_user_id = $domain_id = get_user_domain_id($_SESSION['user_id']);
@@ -319,18 +328,19 @@ function add_domain_alias() {
  * Main program
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_alias_limit'] == '-1') {
-	redirectTo('domains_manage.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('domain_aliasses')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 // Avoid useless work during Ajax request
@@ -351,13 +361,7 @@ if(!is_xhr()) {
 			'ISP_LOGO' => layout_getUserLogo(),
 		)
 	);
-	
-	/*
-	 *
-	 * static page messages.
-	 *
-	 */
-	
+
 	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 	gen_logged_from($tpl);
@@ -383,10 +387,12 @@ if(!is_xhr()) {
 	);
 }
 
+$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$currentNumberDomainAliases = get_domain_running_als_cnt($domainProperties['domain_id']);
+
 /**
  * Dispatches the request
  */
-$currentNumberDomainAliases = get_domain_running_als_cnt($domainProperties['domain_id']);
 if ($currentNumberDomainAliases != 0
 	&& $currentNumberDomainAliases == $domainProperties['domain_alias_limit']
 ) {
@@ -425,7 +431,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

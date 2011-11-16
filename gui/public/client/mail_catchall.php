@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,24 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_mailacc_limit'] == '-1') {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('mail')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -53,11 +55,14 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('catchall_message', 'page');
 $tpl->define_dynamic('catchall_item', 'page');
 
-
-// page functions.
-
+/**
+ * @param $mail_id
+ * @param $mail_status
+ * @return array
+ */
 function gen_user_mail_action($mail_id, $mail_status) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
@@ -67,8 +72,14 @@ function gen_user_mail_action($mail_id, $mail_status) {
 	}
 }
 
+/**
+ * @param $mail_id
+ * @param $mail_status
+ * @return array|null
+ */
 function gen_user_catchall_action($mail_id, $mail_status) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($mail_status === $cfg->ITEM_ADD_STATUS) {
@@ -84,7 +95,20 @@ function gen_user_catchall_action($mail_id, $mail_status) {
 	}
 }
 
-function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_acc, $mail_status, $ca_type) {
+/**
+ * @param $tpl
+ * @param $action
+ * @param $dmn_id
+ * @param $dmn_name
+ * @param $mail_id
+ * @param $mail_acc
+ * @param $mail_status
+ * @param $ca_type
+ * @return void
+ */
+function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_acc,
+	$mail_status, $ca_type)
+{
 	$show_dmn_name = decode_idna($dmn_name);
 
 	if ($action === 'create') {
@@ -359,37 +383,30 @@ function gen_page_lists(&$tpl, $user_id)
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Users'),
-		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'						=> tr('encoding'),
-		'ISP_LOGO'							=> layout_getUserLogo()
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
 	)
 );
-
-// dynamic page data.
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	$tpl->assign('NO_MAILS', '');
 }
 
 gen_page_lists($tpl, $_SESSION['user_id']);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
-
 gen_logged_from($tpl);
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_STATUS'					=> tr('Status'),
-		'TR_ACTION'					=> tr('Action'),
-		'TR_TITLE_CATCHALL_MAIL_USERS'	=> tr('Catch all'),
-		'TR_DOMAIN'					=> tr('Domain'),
-		'TR_CATCHALL'				=> tr('Catch all'),
-		'TR_MESSAGE_DELETE'			=> tr('Are you sure you want to delete the %s catch all?', true, '%s')
+		 'TR_STATUS' => tr('Status'),
+		 'TR_ACTION' => tr('Action'),
+		 'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
+		 'TR_DOMAIN' => tr('Domain'),
+		 'TR_CATCHALL' => tr('Catch all'),
+		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', true, '%s')
 	)
 );
 
@@ -397,8 +414,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

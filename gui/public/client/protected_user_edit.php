@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,22 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/**
- * @todo use db prepared statements
- */
-
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('protected_areas')) {
+    redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -55,15 +59,22 @@ $tpl->define_dynamic('pgroups', 'page');
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client / Webtools / Protected areas / Edit user'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> layout_getUserLogo()
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Edit user'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $uuser_id
+ * @return
+ */
 function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'modify_user') {
@@ -122,6 +133,10 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 	}
 }
 
+/**
+ * @param $get_input
+ * @return int
+ */
 function check_get(&$get_input) {
 	if (!is_numeric($get_input)) {
 		return 0;
@@ -130,24 +145,14 @@ function check_get(&$get_input) {
 	}
 }
 
-/*
- *
- * static page messages.
- *
- */
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
-if (isset($_GET['uname'])
-	&& $_GET['uname'] !== ''
-	&& is_numeric($_GET['uname'])) {
+if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 
 /**
@@ -176,8 +181,7 @@ if (isset($_GET['uname'])
 			)
 		);
 	}
-} else if (isset($_POST['nadmin_name'])
-	&& !empty($_POST['nadmin_name'])
+} elseif (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name'])
 	&& is_numeric($_POST['nadmin_name'])) {
 	$uuser_id = clean_input($_POST['nadmin_name']);
 
@@ -238,8 +242,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

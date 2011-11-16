@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,24 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties =  get_domain_default_props($_SESSION['user_id'], true);
-if($domainProperties['domain_sqlu_limit'] == '-1') {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('sql')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -67,8 +69,13 @@ if (isset($_GET['id'])) {
 	redirectTo('sql_manage.php');
 }
 
-// page functions.
-
+/**
+ * @param $tpl
+ * @param $user_id
+ * @param $db_id
+ * @param $sqluser_available
+ * @return void
+ */
 function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 	list($dmn_id,
 		$dmn_name,
@@ -131,7 +138,8 @@ function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 }
 
 /**
- * Returns an array with a list of the sqlusers of the current database
+ * @param $db_id
+ * @return array|bool
  */
 function get_sqluser_list_of_current_db($db_id) {
 	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
@@ -150,8 +158,15 @@ function get_sqluser_list_of_current_db($db_id) {
 	return $userlist;
 }
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @param $db_id
+ * @return bool
+ */
 function gen_sql_user_list($tpl, $user_id, $db_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$first_passed = true;
@@ -210,6 +225,10 @@ function gen_sql_user_list($tpl, $user_id, $db_id) {
 	}
 }
 
+/**
+ * @param $db_user
+ * @return
+ */
 function check_db_user($db_user) {
 	$query = "SELECT COUNT(`User`) AS cnt FROM mysql.`user` WHERE `User` = ?";
 
@@ -238,36 +257,30 @@ function add_sql_user($user_id, $db_id) {
 		return;
 	}
 
-	if (empty($_POST['pass']) && empty($_POST['pass_rep'])
-		&& !isset($_POST['Add_Exist'])) {
+	if (empty($_POST['pass']) && empty($_POST['pass_rep']) && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Please type user password.'), 'error');
 		return;
 	}
 
-	if ((isset($_POST['pass']) && isset($_POST['pass_rep']))
-		&& $_POST['pass'] !== $_POST['pass_rep']
+	if ((isset($_POST['pass']) && isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep']
 		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Entered passwords do not match.'), 'error');
 		return;
 	}
 
-	if (isset($_POST['pass'])
-		&& strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH
+	if (isset($_POST['pass']) && strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH
 		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Too user long password.'), 'error');
 		return;
 	}
 
-	if (isset($_POST['pass'])
-		&& !preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])
+	if (isset($_POST['pass']) && !preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr("Please, don't use special chars like '@, $, %...' in the password."), 'error');
 		return;
 	}
 
-	if (isset($_POST['pass'])
-		&& !chk_password($_POST['pass'])
-		&& !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass']) && !chk_password($_POST['pass']) && !isset($_POST['Add_Exist'])) {
 		if ($cfg->PASSWD_STRONG) {
 			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
@@ -294,13 +307,11 @@ function add_sql_user($user_id, $db_id) {
 	if (!isset($_POST['Add_Exist'])) {
 
 		// we'll use domain_id in the name of the database;
-		if (isset($_POST['use_dmn_id'])
-			&& $_POST['use_dmn_id'] === 'on'
+		if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on'
 			&& isset($_POST['id_pos'])
 			&& $_POST['id_pos'] === 'start') {
 			$db_user = $dmn_id . "_" . clean_input($_POST['user_name']);
-		} else if (isset($_POST['use_dmn_id'])
-			&& $_POST['use_dmn_id'] === 'on'
+		} else if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on'
 			&& isset($_POST['id_pos'])
 			&& $_POST['id_pos'] === 'end') {
 			$db_user = clean_input($_POST['user_name']) . "_" . $dmn_id;
@@ -317,8 +328,8 @@ function add_sql_user($user_id, $db_id) {
 		set_page_message(tr('User name too long!'), 'error');
 		return;
 	}
-	// are wildcards used?
 
+	// are wildcards used?
 	if (preg_match("/[%|\?]+/", $db_user)) {
 		set_page_message(tr('Wildcards such as %% and ? are not allowed.'), 'error');
 		return;
@@ -369,8 +380,14 @@ function add_sql_user($user_id, $db_id) {
 	redirectTo('sql_manage.php');
 }
 
-function gen_page_post_data(&$tpl, $db_id) {
+/**
+ * @param $tpl
+ * @param $db_id
+ * @return void
+ */
+function gen_page_post_data($tpl, $db_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($cfg->MYSQL_PREFIX === 'yes') {
@@ -414,8 +431,6 @@ function gen_page_post_data(&$tpl, $db_id) {
 	$tpl->assign('ID', $db_id);
 }
 
-// common page data.
-
 if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	redirectTo('index.php');
 }
@@ -429,21 +444,14 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
 
 $sqluser_available = gen_sql_user_list($tpl, $_SESSION['user_id'], $db_id);
 check_sql_permissions($tpl, $_SESSION['user_id'], $db_id, $sqluser_available);
 gen_page_post_data($tpl, $db_id);
 add_sql_user($_SESSION['user_id'], $db_id);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
@@ -467,8 +475,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

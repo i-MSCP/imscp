@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -39,15 +38,14 @@
  */
 
 // Include core library
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// Checks if support ticket system is activated, and if the client's reseller can
-// access to it
-if (!hasTicketSystem($_SESSION['user_created_by'])) {
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('support')) {
 	redirectTo('index.php');
 }
 
@@ -55,7 +53,6 @@ $userId = $_SESSION['user_id'];
 $previousPage = 'ticket_system';
 
 if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
-
 	$ticketId = (int) $_GET['ticket_id'];
 
 	$query = "

@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -39,7 +38,7 @@
  */
 
 // include core library
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
@@ -50,9 +49,8 @@ $cfg = iMSCP_Registry::get('config');
 
 $userId = $_SESSION['user_id'];
 
-// Checks if support ticket system is activated, and if the client's reseller can
-// access to it
-if (!hasTicketSystem($_SESSION['user_created_by'])) {
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('support')) {
 	redirectTo('index.php');
 }
 
@@ -86,31 +84,37 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_view.tpl',
-                          'logged_from' => 'page',
-                          'page_message' => 'page',
-                          'tickets_list' => 'page',
-                          'tickets_item' => 'tickets_list'));
+$tpl->define_dynamic(
+	array(
+		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_view.tpl',
+		 'logged_from' => 'page',
+		 'page_message' => 'page',
+		 'tickets_list' => 'page',
+		 'tickets_item' => 'tickets_list'
+	)
+);
 
-$tpl->assign(array(
-                  'THEME_CHARSET' => tr('encoding'),
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Client / Support Ticket System / View Ticket'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
-                  'TR_OPEN_TICKETS' => tr('Open tickets'),
-                  'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-                  'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),
-                  'TR_TICKET_INFO' => tr('Ticket information'),
-                  'TR_TICKET_URGENCY' => tr('Priority'),
-                  'TR_TICKET_SUBJECT' => tr('Subject'),
-                  'TR_TICKET_MESSAGES' => tr('Messages'),
-                  'TR_TICKET_FROM' => tr('From'),
-                  'TR_TICKET_DATE' => tr('Date'),
-                  'TR_TICKET_CONTENT' => tr('Message'),
-                  'TR_TICKET_NEW_REPLY' => tr('Send new reply'),
-                  'TR_TICKET_REPLY' => tr('Send reply')));
+$tpl->assign(
+	array(
+		 'THEME_CHARSET' => tr('encoding'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Support Ticket System / View Ticket'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'ISP_LOGO' => layout_getUserLogo(),
+		 'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
+		 'TR_OPEN_TICKETS' => tr('Open tickets'),
+		 'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		 'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),
+		 'TR_TICKET_INFO' => tr('Ticket information'),
+		 'TR_TICKET_URGENCY' => tr('Priority'),
+		 'TR_TICKET_SUBJECT' => tr('Subject'),
+		 'TR_TICKET_MESSAGES' => tr('Messages'),
+		 'TR_TICKET_FROM' => tr('From'),
+		 'TR_TICKET_DATE' => tr('Date'),
+		 'TR_TICKET_CONTENT' => tr('Message'),
+		 'TR_TICKET_NEW_REPLY' => tr('Send new reply'),
+		 'TR_TICKET_REPLY' => tr('Send reply')
+	)
+);
 
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
@@ -121,8 +125,8 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
+
 unsetMessages();

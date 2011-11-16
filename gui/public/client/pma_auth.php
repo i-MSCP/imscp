@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -18,15 +18,14 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
  * @package     i-MSCP
  * @subpackage  client
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -38,14 +37,13 @@
  */
 
 /*******************************************************************************
- * Functions
+ * Script functions
  */
 
 /**
  * Get database login credentials.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since  1.0.7 (ispCP)
  * @access private
  * @param  int $dbUserId Database user unique identifier
  * @return array Array that contains login credentials or FALSE on failure
@@ -84,7 +82,6 @@ function _getLoginCredentials($dbUserId)
  * Creates all cookies for PhpMyAdmin.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since  1.0.7 (ispCP)
  * @access private
  * @param  array $cookies Array that contains cookies definitions for PhpMyadmin
  * @return void
@@ -100,7 +97,6 @@ function _pmaCreateCookies($cookies)
  * PhpMyAdmin authentication.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @since  1.0.7 (ispCP)
  * @param  int $dbUserId Database user unique identifier
  * @return bool TRUE on success, FALSE otherwise
  */
@@ -164,19 +160,16 @@ function pmaAuth($dbUserId)
  */
 
 // Include all needed libraries
-require 'imscp-lib.php';
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 // Check for login
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_sqld_limit'] == '-1'
-	|| $domainProperties['domain_sqlu_limit'] == '-1'
-) {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('sql')) {
+    redirectTo('index.php');
 }
 
 /**

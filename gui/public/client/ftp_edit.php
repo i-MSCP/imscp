@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,24 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_ftpacc_limit'] == '-1') {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('ftp')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 if (isset($_GET['id'])) {
@@ -61,19 +63,17 @@ $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
+/**
+ * @param $tpl
+ * @param $ftp_acc
+ * @return void
+ */
 function gen_page_dynamic_data($tpl, $ftp_acc) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "
-		SELECT
-			`homedir`
-		FROM
-			`ftp_users`
-		WHERE
-			`userid` = ?
-	";
-
+	$query = "SELECT `homedir` FROM `ftp_users` WHERE `userid` = ?";
 	$rs = exec_query($query, $ftp_acc);
 
 	$homedir = $rs->fields['homedir'];
@@ -98,9 +98,16 @@ function gen_page_dynamic_data($tpl, $ftp_acc) {
 	);
 }
 
+/**
+ * @param $ftp_acc
+ * @param $dmn_name
+ * @return
+ */
 function update_ftp_account($ftp_acc, $dmn_name) {
 
 	global $other_dir;
+
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// Create a virtual filesystem (it's important to use =&!)
@@ -152,15 +159,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 
 				exec_query($query, array($pass, $rawpass, $other_dir, $ftp_acc));
 			} else {
-				$query = "
-					UPDATE
-						`ftp_users`
-					SET
-						`passwd` = ?,
-						`rawpasswd` = ?
-					WHERE
-						`userid` = ?
-				";
+				$query = "UPDATE `ftp_users` SET `passwd` = ?, `rawpasswd` = ? WHERE `userid` = ?";
 				exec_query($query, array($pass, $rawpass, $ftp_acc));
 			}
 
@@ -196,14 +195,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged'];
 
 			}
-			$query = "
-				UPDATE
-					`ftp_users`
-				SET
-					`homedir` = ?
-				WHERE
-					`userid` = ?
-			";
+			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
 			exec_query($query, array($other_dir, $ftp_acc));
 
 			set_page_message(tr('FTP account data updated!'), 'success');
@@ -211,8 +203,6 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 		}
 	}
 }
-
-// common page data.
 
 $tpl->assign(
 	array(
@@ -223,18 +213,7 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
-
-
-$query = "
-	SELECT
-		`domain_name`
-	FROM
-		`domain`
-	WHERE
-		`domain_admin_id` = ?
-";
-
+$query = "SELECT `domain_name` FROM `domain` WHERE`domain_admin_id` = ?";
 $rs = exec_query($query, $_SESSION['user_id']);
 
 $dmn_name = $rs->fields['domain_name'];
@@ -246,15 +225,9 @@ if(!check_ftp_perms($ftp_acc)) {
 
 gen_page_dynamic_data($tpl, $ftp_acc);
 update_ftp_account($ftp_acc, $dmn_name);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
@@ -273,8 +246,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

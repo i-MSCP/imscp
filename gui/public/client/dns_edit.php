@@ -1,10 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
+ * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -25,8 +25,12 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require_once 'imscp-lib.php';
 
 // Temporary fix for all 'Strict Standards' errors that come from the Net_DNS library
@@ -38,12 +42,12 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_dns'] == 'no') {
-	redirectTo('domains_manage.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('custom_dns_records')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -67,9 +71,6 @@ $tpl->assign(
 	)
 );
 
-/*
- * static page messages.
- */
 $tpl->assign(
 	array(
 		'TR_MODIFY' => tr('Modify'),
@@ -100,8 +101,8 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-
 gen_logged_from($tpl);
+
 $tpl->assign(($add_mode) ? 'FORM_EDIT_MODE' : 'FORM_ADD_MODE', '');
 
 // "Modify" button has been pressed
@@ -135,7 +136,6 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	} else
 		$editid = 0;
 	$_SESSION['edit_ID'] = $editid;
-	//$tpl->assign('PAGE_MESSAGE', "");
 }
 
 gen_editdns_page($tpl, $editid);
@@ -143,15 +143,17 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
 unsetMessages();
 
-// Begin function block
-
+/**
+ * @param $object
+ * @param null $default
+ * @return array
+ */
 function mysql_get_enum($object, &$default = null) {
 
 	list($table, $col) = explode(".", $object);
@@ -166,10 +168,13 @@ function mysql_get_enum($object, &$default = null) {
 }
 
 /**
- * @todo use template loop instead of this hardcoded HTML
+ * @param $data
+ * @param null $value
+ * @return string
  */
 function create_options($data, $value = null) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$res = '';
@@ -183,12 +188,18 @@ function create_options($data, $value = null) {
 	return $res;
 }
 
-// Show user data
+/**
+ * @return void
+ */
 function not_allowed() {
 	$_SESSION['dnsedit'] = '_no_';
 	redirectTo('domains_manage.php');
 }
 
+/**
+ * @param $data
+ * @return array
+ */
 function decode_zone_data($data) {
 
 	$address = $addressv6 = $srv_name = $srv_proto = $cname = $txt = $name = '';
@@ -238,11 +249,15 @@ function decode_zone_data($data) {
 }
 
 /**
- * @todo use template loop instead of this hardcoded HTML
+ * @param $tpl
+ * @param $edit_id
+ * @return void
  */
 function gen_editdns_page(&$tpl, $edit_id) {
 
 	global $DNS_allowed_types;
+
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	list(
@@ -334,7 +349,11 @@ function gen_editdns_page(&$tpl, $edit_id) {
 	);
 }
 
-// Check input data
+/**
+ * @param $id
+ * @param $data
+ * @return
+ */
 function tryPost($id, $data) {
 
 	if (array_key_exists($id, $_POST)) {
@@ -343,6 +362,11 @@ function tryPost($id, $data) {
 	return $data;
 }
 
+/**
+ * @param $record
+ * @param null $err
+ * @return bool
+ */
 function validate_CNAME($record, &$err = null) {
 
 	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $record['dns_cname'], $e)) {
@@ -356,6 +380,11 @@ function validate_CNAME($record, &$err = null) {
 	return true;
 }
 
+/**
+ * @param $record
+ * @param null $err
+ * @return bool
+ */
 function validate_A($record, &$err = null) {
 
 	if (filter_var($record['dns_A_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
@@ -369,6 +398,11 @@ function validate_A($record, &$err = null) {
 	return true;
 }
 
+/**
+ * @param $record
+ * @param null $err
+ * @return bool
+ */
 function validate_AAAA($record, &$err = null) {
 
 	if (filter_var($record['dns_AAAA_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
@@ -384,6 +418,13 @@ function validate_AAAA($record, &$err = null) {
 	return true;
 }
 
+/**
+ * @param $record
+ * @param $err
+ * @param $dns
+ * @param $text
+ * @return bool
+ */
 function validate_SRV($record, &$err, &$dns, &$text) {
 
 	if (!preg_match('~^([\d]+)$~', $record['dns_srv_port'])) {
@@ -422,6 +463,12 @@ function validate_SRV($record, &$err, &$dns, &$text) {
 	return true;
 }
 
+/**
+ * @param $record
+ * @param $err
+ * @param $text
+ * @return bool
+ */
 function validate_MX($record, &$err, &$text) {
 
 	// Add a dot in the end if not
@@ -444,6 +491,11 @@ function validate_MX($record, &$err, &$text) {
 	return true;
 }
 
+/**
+ * @param $domain
+ * @param $err
+ * @return bool
+ */
 function check_CNAME_conflict($domain,&$err) {
 
 	$resolver = new Net_DNS_resolver();
@@ -458,6 +510,11 @@ function check_CNAME_conflict($domain,&$err) {
 	return false;
 }
 
+/**
+ * @param $domain
+ * @param $err
+ * @return bool
+ */
 function validate_NAME($domain, &$err) {
 	if (preg_match('~([^-a-z,A-Z,0-9.])~u', $domain['name'], $e)) {
 		$err .= sprintf(tr('Use of disallowed char("%s") in NAME'), $e[1]);
@@ -471,9 +528,15 @@ function validate_NAME($domain, &$err) {
 	}
 	return true;
 }
+/**
+ * @throws iMSCP_Exception_Database
+ * @param $tpl
+ * @param $edit_id
+ * @return bool
+ */
+function check_fwd_data($tpl, $edit_id) {
 
-function check_fwd_data(&$tpl, $edit_id) {
-
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$add_mode = $edit_id === true;

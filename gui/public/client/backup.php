@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,18 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('backup')) {
+    redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -45,8 +53,12 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/backup.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-// page functions.
-
+/**
+ * Schedule backup.
+ *
+ * @param int $user_id
+ * @return void
+ */
 function send_backup_restore_request($user_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'bk_restore') {
 
@@ -67,8 +79,6 @@ function send_backup_restore_request($user_id) {
 	}
 }
 
-// common page data.
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Daily Backup'),
@@ -78,18 +88,10 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
-
 send_backup_restore_request($_SESSION['user_id']);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 if ($cfg->ZIP == "gzip") {
 	$name = "backup_YYYY_MM_DD.tar.gz";
@@ -119,8 +121,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

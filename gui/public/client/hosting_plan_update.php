@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,18 +25,22 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -48,15 +51,14 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('hp_order', 'page');
 
-/*
- *
- * page actions.
- *
+/**
+ * @param $curr
+ * @param $new
+ * @return bool
  */
-
 function check_update_current_value($curr, $new) {
-
 	$result = true;
+
 	if ($curr > 0) {
 		if ($new == -1) {
 			$result = false;
@@ -70,8 +72,14 @@ function check_update_current_value($curr, $new) {
 	return $result;
 }
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @return
+ */
 function gen_hp($tpl, $user_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// get domain id
@@ -410,22 +418,22 @@ function gen_hp($tpl, $user_id) {
 					$warning_text = '';
 					$link_purchase .= '{TR_PURCHASE}</a>';
 				}
-	
+
 				$tpl->assign(
 					array(
-						'HP_NAME'			=> tohtml($rs->fields['name']),
-						'HP_DESCRIPTION'	=> tohtml($rs->fields['description']),
-						'HP_DETAILS'		=> $details.$warning_text,
-						'HP_COSTS'			=> tohtml($price),
-						'ID'				=> $rs->fields['id'],
-						'TR_PURCHASE'		=> $purchase_text,
-						'LINK'				=> $purchase_link,
-						'TR_HOSTING_PLANS'	=> $hp_title,
-						'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2',
-						'LINK_PURCHASE'		=> $link_purchase
+						 'HP_NAME' => tohtml($rs->fields['name']),
+						 'HP_DESCRIPTION' => tohtml($rs->fields['description']),
+						 'HP_DETAILS' => $details . $warning_text,
+						 'HP_COSTS' => tohtml($price),
+						 'ID' => $rs->fields['id'],
+						 'TR_PURCHASE' => $purchase_text,
+						 'LINK' => $purchase_link,
+						 'TR_HOSTING_PLANS' => $hp_title,
+						 'ITHEM' => ($i % 2 == 0) ? 'content' : 'content2',
+						 'LINK_PURCHASE' => $link_purchase
 					)
 				);
-	
+
 				$tpl->parse('HOSTING_PLANS', '.hosting_plans');
 				$tpl->parse('HP_ORDER', '.hp_order');
 				$i++;
@@ -438,10 +446,10 @@ function gen_hp($tpl, $user_id) {
 	if ($i == 0) {
 		$tpl->assign(
 			array(
-				'HOSTING_PLANS'		=> '',
-				'HP_ORDER'			=> '',
-				'TR_HOSTING_PLANS'	=> $hp_title,
-				'COLSPAN'			=> '2'
+				 'HOSTING_PLANS' => '',
+				 'HP_ORDER' => '',
+				 'TR_HOSTING_PLANS' => $hp_title,
+				 'COLSPAN' => '2'
 			)
 		);
 
@@ -451,10 +459,10 @@ function gen_hp($tpl, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE'	=> tr('i-MSCP - Update hosting plan'),
-		'THEME_COLOR_PATH'		=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'			=> tr('encoding'),
-		'ISP_LOGO'				=> layout_getUserLogo()
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Update hosting plan'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 
@@ -463,6 +471,7 @@ $tpl->assign(
  */
 function add_new_order($tpl,$order_id, $user_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_FileCP_ */
 	$cfg = iMSCP_Registry::get('config');
 
 	// get domain id
@@ -608,6 +617,12 @@ function add_new_order($tpl,$order_id, $user_id) {
 	$mail_result = mail($to, $subject, $message, $headers);
 }
 
+/**
+ * @param $tpl
+ * @param $order_id
+ * @param $user_id
+ * @return void
+ */
 function del_order($tpl, $order_id, $user_id)
 {
 	$query = "DELETE FROM `orders` WHERE `user_id` = ? AND `customer_id` = ?";
@@ -625,13 +640,9 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 }
 
 gen_hp($tpl, $_SESSION['user_id']);
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
@@ -645,8 +656,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

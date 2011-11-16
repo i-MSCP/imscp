@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,26 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_sqld_limit'] == '-1'
-	|| $domainProperties['domain_sqlu_limit'] == '-1'
-) {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('sql')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -61,9 +61,14 @@ if (isset($_GET['id'])) {
 	redirectTo('sql_manage.php');
 }
 
-// page functions.
+/**
+ * @param $db_user_id
+ * @param $db_user_name
+ * @return
+ */
 function change_sql_user_pass($db_user_id, $db_user_name) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['uaction'])) {
@@ -120,6 +125,11 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	redirectTo('sql_manage.php');
 }
 
+/**
+ * @param $tpl
+ * @param $db_user_id
+ * @return
+ */
 function gen_page_data(&$tpl, $db_user_id)
 {
 
@@ -158,31 +168,27 @@ if(!check_user_sql_perms($db_user_id))
 
 check_user_sql_perms($db_user_id);
 change_sql_user_pass($db_user_id, $db_user_name);
-
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
 gen_logged_from($tpl);
-check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CHANGE_SQL_USER_PASSWORD' 	=> tr('Change SQL user password'),
-		'TR_USER_NAME' 					=> tr('User name'),
-		'TR_PASS' 						=> tr('Password'),
-		'TR_PASS_REP' 					=> tr('Repeat password'),
-		'TR_CHANGE' 					=> tr('Change'),
-		// The entries below are for Demo versions only
-		'PASSWORD_DISABLED'				=> tr('Password change is deactivated!'),
-		'DEMO_VERSION'					=> tr('Demo Version!')
+		 'TR_CHANGE_SQL_USER_PASSWORD' => tr('Change SQL user password'),
+		 'TR_USER_NAME' => tr('User name'),
+		 'TR_PASS' => tr('Password'),
+		 'TR_PASS_REP' => tr('Repeat password'),
+		 'TR_CHANGE' => tr('Change'),
+		 // The entries below are for Demo versions only
+		 'PASSWORD_DISABLED' => tr('Password change is deactivated!'),
+		 'DEMO_VERSION' => tr('Demo Version!')
 	)
 );
 
 generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

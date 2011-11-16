@@ -1,11 +1,9 @@
 <?php
-/**
- * i-MSCP a internet Multi Server Control Panel
+/** i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,24 +24,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
-// If the feature is disabled, redirects the client in silent way
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-if ($domainProperties['domain_mailacc_limit'] == '-1') {
-	redirectTo('index.php');
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('mail')) {
+    redirectTo('index.php');
 }
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -58,10 +59,15 @@ $tpl->define_dynamic('to_alias_domain', 'page');
 $tpl->define_dynamic('to_subdomain', 'page');
 $tpl->define_dynamic('to_alias_subdomain', 'page');
 
-// page functions.
+/**
+ * @param $tpl
+ * @param $dmn_name
+ * @param $post_check
+ * @return void
+ */
+function gen_page_form_data($tpl, $dmn_name, $post_check) {
 
-function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
-
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_name = decode_idna($dmn_name);
@@ -105,8 +111,15 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $post_check
+ * @return void
+ */
 function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -175,8 +188,16 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $dmn_name
+ * @param $post_check
+ * @return void
+ */
 function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -248,8 +269,15 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @param $post_check
+ * @return void
+ */
 function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
@@ -323,8 +351,15 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 	}
 }
 
+/**
+ * @param $domain_id
+ * @param $dmn_name
+ * @param $mail_acc
+ * @return bool
+ */
 function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$mail_auto_respond = false;
@@ -449,8 +484,14 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	redirectTo('mail_accounts.php');
 }
 
+/**
+ * @param $dmn_id
+ * @param $dmn_name
+ * @return bool
+ */
 function check_mail_acc_data($dmn_id, $dmn_name) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
@@ -561,6 +602,11 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 	schedule_mail_account($dmn_id, $dmn_name, $mail_acc);
 }
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @return void
+ */
 function gen_page_mail_acc_props($tpl, $user_id) {
 	list($dmn_id,
 		$dmn_name,
@@ -608,8 +654,6 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 	}
 }
 
-// common page data.
-
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	redirectTo('index.php');
 }
@@ -623,41 +667,35 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
-
 gen_page_mail_acc_props($tpl, $_SESSION['user_id']);
-
-// static page messages.
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
-
 gen_logged_from($tpl);
 
-check_permissions($tpl);
-
-$tpl->assign(array(
-				  'TR_ADD_MAIL_USER' => tr('Add mail users'),
-				  'TR_USERNAME' => tr('Username'),
-				  'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
-				  'TR_TO_DMN_ALIAS' => tr('To domain alias'),
-				  'TR_TO_SUBDOMAIN' => tr('To subdomain'),
-				  'TR_TO_ALS_SUBDOMAIN' => tr('To alias subdomain'),
-				  'TR_NORMAL_MAIL' => tr('Normal mail'),
-				  'TR_PASSWORD' => tr('Password'),
-				  'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-				  'TR_FORWARD_MAIL' => tr('Forward mail'),
-				  'TR_FORWARD_TO' => tr('Forward to'),
-				  'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
-				  'TR_ADD' => tr('Add'),
-				  'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
-				  'TR_MAIl_ACCOUNT_DATA' => tr('Mail account data')));
+$tpl->assign(
+	array(
+		 'TR_ADD_MAIL_USER' => tr('Add mail users'),
+		 'TR_USERNAME' => tr('Username'),
+		 'TR_TO_MAIN_DOMAIN' => tr('To main domain'),
+		 'TR_TO_DMN_ALIAS' => tr('To domain alias'),
+		 'TR_TO_SUBDOMAIN' => tr('To subdomain'),
+		 'TR_TO_ALS_SUBDOMAIN' => tr('To alias subdomain'),
+		 'TR_NORMAL_MAIL' => tr('Normal mail'),
+		 'TR_PASSWORD' => tr('Password'),
+		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		 'TR_FORWARD_MAIL' => tr('Forward mail'),
+		 'TR_FORWARD_TO' => tr('Forward to'),
+		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
+		 'TR_ADD' => tr('Add'),
+		 'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
+		 'TR_MAIl_ACCOUNT_DATA' => tr('Mail account data')
+	)
+);
 
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

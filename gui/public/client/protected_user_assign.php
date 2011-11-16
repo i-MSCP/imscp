@@ -1,11 +1,10 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -26,18 +25,27 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
+// Include core library
+require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('protected_areas')) {
+    redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -53,16 +61,17 @@ $tpl->define_dynamic('not_in_group', 'page');
 
 $tpl->assign(
 	array(
-		'THEME_COLOR_PATH'	=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'		=> tr('encoding'),
-		'ISP_LOGO'			=> layout_getUserLogo()
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()
 	)
 );
 
-/*
- * functions
+/**
+ * @param $uuser_id
+ * @param $dmn_id
+ * @return
  */
-
 function get_htuser_name(&$uuser_id, &$dmn_id) {
 	$query = "
 		SELECT
@@ -74,7 +83,6 @@ function get_htuser_name(&$uuser_id, &$dmn_id) {
 		AND
 			`id` = ?
 	";
-
 	$rs = exec_query($query, array($dmn_id, $uuser_id));
 
 	if ($rs->recordCount() == 0) {
@@ -84,16 +92,18 @@ function get_htuser_name(&$uuser_id, &$dmn_id) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @return void
+ */
 function gen_user_assign($tpl, &$dmn_id) {
-	if (isset($_GET['uname'])
-		&& $_GET['uname'] !== ''
-		&& is_numeric($_GET['uname'])) {
+	if (isset($_GET['uname'])&& $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
 		$uuser_id = $_GET['uname'];
 
 		$tpl->assign('UNAME', tohtml(get_htuser_name($uuser_id, $dmn_id)));
 		$tpl->assign('UID', $uuser_id);
-	} else if (isset($_POST['nadmin_name'])
-		&& !empty($_POST['nadmin_name'])
+	} else if (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name'])
 		&& is_numeric($_POST['nadmin_name'])) {
 		$uuser_id = $_POST['nadmin_name'];
 
@@ -158,8 +168,14 @@ function gen_user_assign($tpl, &$dmn_id) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @return
+ */
 function add_user_to_group($tpl, &$dmn_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add'
@@ -210,8 +226,14 @@ function add_user_to_group($tpl, &$dmn_id) {
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $dmn_id
+ * @return
+ */
 function delete_user_from_group($tpl, &$dmn_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'remove'
@@ -262,22 +284,14 @@ function delete_user_from_group($tpl, &$dmn_id) {
 		return;
 	}
 }
-
-// ** end of funcfions
-
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 add_user_to_group($tpl, $dmn_id);
-
 delete_user_from_group($tpl, $dmn_id);
-
 gen_user_assign($tpl, $dmn_id);
 
 $tpl->assign(
@@ -300,8 +314,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
