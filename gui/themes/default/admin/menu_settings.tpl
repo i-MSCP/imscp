@@ -9,5 +9,6 @@
                 <li><a href="settings_welcome_mail.php">{TR_MENU_EMAIL_SETUP}</a></li>
                 <li><a href="settings_lostpassword.php">{TR_MENU_LOSTPW_EMAIL}</a></li>
                 <li><a href="settings_ports.php">{TR_SERVERPORTS}</a></li>
-				<li><a href="settings_plugins.php">{TR_PLUGINS_SETTINGS}</a></li>
+                <li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
+                <li><a href="software_options.php">{TR_MENU_SOFTWARE_OPTIONS}</a></li>
 			</ul>

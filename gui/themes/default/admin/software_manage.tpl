@@ -3,9 +3,8 @@
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			$(document).ready(function(){
-				//Tooltips - begin
 				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
-				// Tooltips - end
+
 			});
 			function action_delete() {
 				if (!confirm("{TR_MESSAGE_DELETE}"))
@@ -44,7 +43,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
+				<li><a href="settings.php">{TR_MENU_SETTINGS}</a></li>
+				<li><a href="#" onclick="return false;">{TR_MENU_MANAGE_SOFTWARE}</a></li>
 			</ul>
 		</div>
 

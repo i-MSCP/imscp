@@ -7,6 +7,4 @@
                 <li><a href="manage_reseller_users.php">{TR_MENU_USER_ASIGNMENT}</a></li>
                 <li><a href="circular.php">{TR_MENU_CIRCULAR}</a></li>
                 <li><a href="sessions_manage.php">{TR_MENU_MANAGE_SESSIONS}</a></li>
-                <li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
-                <li><a href="software_options.php">{TR_MENU_SOFTWARE_OPTIONS}</a></li>
 			</ul>

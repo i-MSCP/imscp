@@ -17,7 +17,8 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="software_options.php">{TR_MENU_SOFTWARE_OPTIONS}</a></li>
+				<li><a href="settings.php">{TR_MENU_SETTINGS}</a></li>
+				<li><a href="#" onclick="return false;">{TR_MENU_SOFTWARE_OPTIONS}</a></li>
 			</ul>
 		</div>
 
