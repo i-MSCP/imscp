@@ -303,9 +303,30 @@ form table tbody td textarea{
 	min-width : 200px;
 }
 
-input {
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+	background-color: transparent;
 	border: 1px solid #cccccc;
-	padding: 3px;
+	padding: 2px;
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled,
+textarea:disabled{
+	background-color: #cccccc;
+}
+
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+	background: transparent;
+	border-color: #999999;
+	outline: none;
 }
 
 .input_error {
