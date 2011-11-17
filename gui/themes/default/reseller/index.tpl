@@ -17,11 +17,10 @@
                     <a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
                 </li>
                 <!-- EDP: logged_from -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-                </li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
-                <li><a href="index.php">{GENERAL_INFO}</a></li>
+                <li><a href="#" onclick="return false;">{GENERAL_INFO}</a></li>
             </ul>
         </div>
         <div class="left_menu">
@@ -35,16 +34,18 @@
             <!-- EDP: page_message -->
 
             <table>
+				<tr>
+					<th colspan="2">{TR_ACCOUNT_OVERVIEW}</th>
+				</tr>
                 <tr>
-                    <th>{TR_PROPERTIES}</th>
-                    <th>{TR_VALUES}</th>
-                </tr>
-                <tr>
-                    <td style="width:300px;">{ACCOUNT_NAME}</td>
+                    <td>{ACCOUNT_NAME}</td>
                     <td>{RESELLER_NAME}</td>
                 </tr>
                 <tr>
-                    <td>{DOMAINS}</td>
+                    <th colspan="2">{TR_ACCOUNT_LIMITS}</th>
+                </tr>
+                <tr>
+                    <td style="width: 300px;">{DOMAINS}</td>
                     <td>{DMN_MSG}</td>
                 </tr>
                 <tr>
@@ -68,27 +69,26 @@
                     <td>{SQL_DB_MSG}</td>
                 </tr>
                 <tr>
-                    <td>{MAIL_ACCOUNTS}</td>
-                    <td>{MAIL_MSG}</td>
-                </tr>
-                <tr>
-                    <td>{TR_FTP_ACCOUNTS}</td>
-                    <td>{FTP_MSG}</td>
-                </tr>
-                <tr>
-                    <td>{SQL_DATABASES}</td>
-                    <td>{SQL_DB_MSG}</td>
-                </tr>
-                <tr>
                     <td>{SQL_USERS}</td>
                     <td>{SQL_USER_MSG}</td>
                 </tr>
-                <!-- BDP: t_software_support -->
+				<tr>
+					<th colspan="2">
+						{TR_FEATURES}
+					</th>
+				</tr>
+				<tr>
+					<td>{TR_SUPPORT}</td>
+					<td>{SUPPORT_STATUS}</td>
+				</tr>
+				<tr>
+					<td>{TR_PHP_EDITOR}</td>
+					<td>{PHP_EDITOR_STATUS}</td>
+				</tr>
                 <tr>
-                    <td>{SW_ALLOWED}</td>
-                    <td>{SW_MSG}</td>
+                    <td>{TR_APS}</td>
+                    <td>{APS_STATUS}</td>
                 </tr>
-                <!-- EDP: t_software_support -->
             </table>
 
             <h2 class="traffic"><span>{TR_TRAFFIC_USAGE}</span></h2>

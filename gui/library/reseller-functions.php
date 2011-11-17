@@ -53,6 +53,7 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
  *
  * @param  $reseller_id Reseller unique identifier
  * @return array|null
+ * @TODO improve this function
  */
 function get_reseller_default_props($reseller_id)
 {
@@ -72,7 +73,9 @@ function get_reseller_default_props($reseller_id)
                  $stmt->fields['current_sql_user_cnt'], $stmt->fields['max_sql_user_cnt'],
                  $stmt->fields['current_traff_amnt'], $stmt->fields['max_traff_amnt'],
                  $stmt->fields['current_disk_amnt'], $stmt->fields['max_disk_amnt'],
-                 $stmt->fields['software_allowed']);
+                 $stmt->fields['software_allowed'], $stmt->fields['support_system'],
+				 $stmt->fields['php_ini_system']
+	);
 }
 
 /**
