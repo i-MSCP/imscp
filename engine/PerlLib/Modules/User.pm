@@ -191,7 +191,7 @@ sub delete{
 	error('Data not defined') if ! $self->{domain_admin_id};
 	return 1  if ! $self->{domain_admin_id};
 
-	$self->{mode}	= 'delete';
+	$self->{mode}	= 'del';
 	$rs = $self->runAllSteps();
 
 	my $userName	=

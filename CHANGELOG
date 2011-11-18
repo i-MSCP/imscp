@@ -30,6 +30,7 @@ Tickets:
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
 	- Fixed #264: Defect - PHP Editor not available
+	- Fixed #267: Defect - mod_cband configurations are not removed
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
