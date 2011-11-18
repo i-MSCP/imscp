@@ -26,6 +26,7 @@ Tickets:
 	- Fixed #248: Defect - Bind Slave Mode
 	- Fixed #250: Defect - Wrong units in system tools overview
 	- Fixed #251: Defect - OldConfig uninitialised on fresh install
+	- Fixed #253: Defect - When domain backups are disable there should not be warning emails
 	- Fixed #255: Defect - Hide support feature menu item at user level
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
