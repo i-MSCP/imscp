@@ -46,52 +46,52 @@
  */
 function client_generateDomainsList($tpl, $userId)
 {
-	if (customerHasFeature('domain')) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-		$query = "
-			SELECT
-				`domain_name`, `domain_created`,	`domain_expires`, `domain_status`
-			FROM
-				`domain`
-			WHERE
-				`domain_admin_id` = ?
-			ORDER BY
-				`domain_name`
-		";
-		$stmt = exec_query($query, (int)$userId);
+	$query = "
+		SELECT
+			`domain_name`, `domain_created`,	`domain_expires`, `domain_status`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
+		ORDER BY
+			`domain_name`
+	";
+	$stmt = exec_query($query, (int)$userId);
 
-		while (!$stmt->EOF) {
-			$domainName = decode_idna($stmt->fields['domain_name']);
+	while (!$stmt->EOF) {
+		$domainName = decode_idna($stmt->fields['domain_name']);
 
-			if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-				$tpl->assign(
-					array(
-						 'DOMAIN_NAME' => tohtml($domainName),
-						 'DOMAIN_STATUS_RELOAD_FALSE' => ''));
-
-				$tpl->parse('DOMAIN_STATUS_RELOAD_TRUE', 'domain_status_reload_true');
-			} else {
-				$tpl->assign(
-					array(
-						 'DOMAIN_NAME' => tohtml($domainName),
-						 'DOMAIN_STATUS_RELOAD_TRUE' => ''));
-
-				$tpl->parse('DOMAIN_STATUS_RELOAD_FALSE', 'domain_status_reload_false');
-			}
-
+		if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
 			$tpl->assign(
 				array(
 					 'DOMAIN_NAME' => tohtml($domainName),
-					 'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
-					 'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_expires']) : tr('No set')),
-					 'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status'])
-				));
+					 'DOMAIN_STATUS_RELOAD_FALSE' => ''));
 
-			$tpl->parse('DOMAIN_ITEM', '.domain_item');
-			$stmt->moveNext();
+			$tpl->parse('DOMAIN_STATUS_RELOAD_TRUE', 'domain_status_reload_true');
+		} else {
+			$tpl->assign(
+				array(
+					 'DOMAIN_NAME' => tohtml($domainName),
+					 'DOMAIN_STATUS_RELOAD_TRUE' => ''));
+
+			$tpl->parse('DOMAIN_STATUS_RELOAD_FALSE', 'domain_status_reload_false');
 		}
+
+		$tpl->assign(
+			array(
+				 'DOMAIN_NAME' => tohtml($domainName),
+				 'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
+				 'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0)
+													? date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])
+													: tr('No set')),
+				 'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status'])
+			));
+
+		$tpl->parse('DOMAIN_ITEM', '.domain_item');
+		$stmt->moveNext();
 	}
 }
 
