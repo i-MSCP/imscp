@@ -377,6 +377,67 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
+	 * Checks if a database table have an index and if yes, return a query to drop it.
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @since r4509
+	 * @param string $table Database table from where the column must be dropped
+	 * @param string $column Column to be dropped from $table
+	 * @return string Query to be executed
+	 */
+	protected function _dropIndex($table, $indexName = 'PRIMARY'){
+		$query = "
+			SHOW INDEX FROM
+				`$this->_databaseName`.`$table`
+			WHERE
+				`KEY_NAME` = ?
+			AND
+				`COLUMN_NAME` = ?
+		";
+		$stmt = exec_query($query, array($indexName, $columnName));
+
+		if ($stmt->rowCount()) {
+			return "ALTER IGNORE TABLE `$this->_databaseName`.`$table` DROP INDEX `$indexName`";
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Checks if a database table have an index and if no, return a query to add it.
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @since r4509
+	 * @param string $table Database table from where the column must be dropped
+	 * @param string $column Column to be dropped from $table
+	 * @return string Query to be executed
+	 */
+	protected function _addIndex($table, $columnName, $indexType = 'PRIMARY KEY', $indexName = null){
+		if(is_null($indexName)){ $indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : $columnName;}
+		$query = "
+			SHOW INDEX FROM
+				`$this->_databaseName`.`$table`
+			WHERE
+				`KEY_NAME` = ?
+			AND
+				`COLUMN_NAME` = ?
+		";
+
+		$stmt = exec_query($query, array($indexName, $columnName));
+
+		if ($stmt->rowCount()) {
+			return '';
+		} else {
+			return "
+				ALTER IGNORE TABLE
+					`$this->_databaseName`.`$table`
+				ADD
+					$indexType ".($indexType == 'PRIMARY KEY' ? '' : $indexName)." (`$columnName`)
+				";
+		}
+	}
+
+	/**
 	 * Catch any database updates that were removed.
 	 *
 	 * @param  string $updateMethod Database update method name
@@ -1262,22 +1323,40 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Database schema update (UNIQUE KEY to PRIMARY KEY for some fields)
 	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_94()
-	{
-		return array(
-			'ALTER TABLE `domain` DROP INDEX `domain_id`, ADD PRIMARY KEY ( `domain_id` )',
-			'ALTER TABLE `email_tpls` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
-			'ALTER TABLE `hosting_plans` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
-			'ALTER TABLE `htaccess` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
-			'ALTER TABLE `htaccess_groups` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
-			'ALTER TABLE `htaccess_users` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
-			'ALTER TABLE `reseller_props` DROP INDEX `id`, ADD PRIMARY KEY ( `id` )',
-			'ALTER TABLE `server_ips` DROP INDEX `ip_id`, ADD PRIMARY KEY ( `ip_id` )',
-			'ALTER TABLE `sql_database` DROP INDEX `sqld_id` , ADD PRIMARY KEY ( `sqld_id` )',
-			'ALTER TABLE `sql_user` DROP INDEX `sqlu_id`, ADD PRIMARY KEY ( `sqlu_id` )'
+	protected function _databaseUpdate_95(){
+		return  array(
+			$this->_addIndex('domain', 'domain_id'),
+			$this->_dropIndex('domain', 'domain_id'),
+
+			$this->_addIndex('email_tpls', 'id'),
+			$this->_dropIndex('email_tpls', 'id'),
+
+			$this->_addIndex('hosting_plans', 'id'),
+			$this->_dropIndex('hosting_plans', 'id'),
+
+			$this->_addIndex('htaccess', 'id'),
+			$this->_dropIndex('htaccess', 'id'),
+
+			$this->_addIndex('htaccess_groups', 'id'),
+			$this->_dropIndex('htaccess_groups', 'id'),
+
+			$this->_addIndex('htaccess_users', 'id'),
+			$this->_dropIndex('htaccess_users', 'id'),
+
+			$this->_addIndex('reseller_props', 'id'),
+			$this->_dropIndex('reseller_props', 'id'),
+
+			$this->_addIndex('server_ips', 'ip_id'),
+			$this->_dropIndex('server_ips', 'ip_id'),
+
+			$this->_addIndex('sql_database', 'sqld_id'),
+			$this->_dropIndex('sql_database', 'sqld_id'),
+
+			$this->_addIndex('sql_user', 'sqlu_id'),
+			$this->_dropIndex('sql_user', 'sqlu_id')
 		);
 	}
 }
