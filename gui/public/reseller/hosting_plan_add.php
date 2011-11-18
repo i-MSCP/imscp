@@ -38,12 +38,13 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 /* @var $phpini iMSCP_PHPini */
 $phpini = iMSCP_PHPini::getInstance();
 
-if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	redirectTo('hosting_plan.php');
 }
 
@@ -73,12 +74,6 @@ $tpl->assign(
 	)
 );
 
-/*
- *
- * static page messages.
- *
- */
-
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
 gen_logged_from($tpl);
@@ -97,9 +92,9 @@ $tpl->assign(
 		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
 		 'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 		 'TR_PHP' => tr('PHP'),
-		 'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
-		 'TR_CGI' => tr('CGI / Perl'),
-		 'TR_DNS' => tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
+		 'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
+		 'TR_CGI' => tr('CGI'),
+		 'TR_DNS' => tr('Custom DNS records'),
 		 'TR_BACKUP' => tr('Backup'),
 		 'TR_BACKUP_DOMAIN' => tr('Domain'),
 		 'TR_BACKUP_SQL' => tr('SQL'),
@@ -122,19 +117,19 @@ $tpl->assign(
 		 'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
 		 'TR_TOS_DESCRIPTION' => tr('Text Only'),
 		 // END TOS
-		 'TR_PHPINI_SYSTEM' => tr('Custom PHP.ini'),
-		 'TR_USER_EDITABLE_EXEC' => tr('Only "exec" allowed'),
-		 'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('Can modify the <strong>register_globals</strong> diretive'),
-		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Can modify the <strong>allow_url_fopen</strong> diretive'),
-		 'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Can modify the <strong>display_errors</strong> diretive'),
-		 'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Can modify the <strong>disable_functions</strong> diretive'),
-		 'TR_PHPINI_MAX_MAX_EXECUTION_TIME' => tr('MAX allowed in max_execution_time [Seconds]'),
-		 'TR_PHPINI_MAX_MAX_INPUT_TIME' => tr('MAX allowed in max_input_time [Seconds]'),
-		 'TR_PHPINI_POST_MAX_SIZE' => tr('Set post_max_size [MB]'),
-		 'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Set upload_max_filesize [MB]'),
-		 'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Set max_execution_time [sec]'),
-		 'TR_PHPINI_MAX_INPUT_TIME' => tr('Set max_input_time [sec]'),
-		 'TR_PHPINI_MEMORY_LIMIT' => tr('Set memory_limit [MB]'),
+		 'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
+		 'TR_USER_EDITABLE_EXEC' => tr('Only exec'),
+		 'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>'),
+		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>'),
+		 'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<span class="bold">display_errors</span>'),
+		 'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>'),
+		 'TR_PHPINI_POST_MAX_SIZE' => tr('PHP %s directive', true, '<span class="bold">post_max_size</span>'),
+		 'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('PHP %s directive', true, '<span class="bold">upload_max_filezize</span>'),
+		 'TR_PHPINI_MAX_EXECUTION_TIME' => tr('PHP %s directive', true, '<span class="bold">max_execution_time</span>'),
+		 'TR_PHPINI_MAX_INPUT_TIME' => tr('PHP %s directive', true, '<span class="bold">max_input_time</span>'),
+		 'TR_PHPINI_MEMORY_LIMIT' => tr('PHP %s directive', true, '<span class="bold">memory_limit</span>'),
+		 'TR_MIB' => tr('MiB'),
+		 'TR_SEC' => tr('Sec.'),
 		 'TR_ADD_PLAN' => tr('Add plan')
 	)
 );

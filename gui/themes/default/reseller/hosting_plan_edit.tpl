@@ -3,6 +3,8 @@
 		<script type="text/javascript">
 			/*<![CDATA[*/
 			$(document).ready(function() {
+				$('.radio').buttonset();
+
 				if($('#phpini_system_no').is(':checked')) {
 					$("#phpinidetail").hide();
 				}
@@ -130,39 +132,61 @@
 						<tr>
 							<td>{TR_PHP}</td>
 							<td>
-								<input type="radio" name="php" value="_yes_" {TR_PHP_YES} id="php_yes" {DISBLED}/><label for="php_yes">{TR_YES}</label>
-								<input type="radio" name="php" value="_no_" {TR_PHP_NO} id="php_no"  {DISBLED}/><label for="php_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="php" value="_yes_" {TR_PHP_YES} id="php_yes" {DISBLED}/>
+									<label for="php_yes">{TR_YES}</label>
+									<input type="radio" name="php" value="_no_" {TR_PHP_NO} id="php_no"  {DISBLED}/>
+									<label for="php_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_CGI}</td>
 							<td>
-								<input type="radio" name="cgi" value="_yes_" {TR_CGI_YES} id="cgi_yes" {DISBLED}/><label for="cgi_yes">{TR_YES}</label>
-								<input type="radio" name="cgi" value="_no_" {TR_CGI_NO} id="cgi_no"  {DISBLED}/><label for="cgi_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="cgi" value="_yes_" {TR_CGI_YES} id="cgi_yes" {DISBLED}/>
+									<label for="cgi_yes">{TR_YES}</label>
+									<input type="radio" name="cgi" value="_no_" {TR_CGI_NO} id="cgi_no"  {DISBLED}/>
+									<label for="cgi_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_DNS}</td>
 							<td>
-								<input type="radio" name="dns" value="_yes_" {TR_DNS_YES} id="dns_yes" {DISBLED}/><label for="dns_yes">{TR_YES}</label>
-								<input type="radio" name="dns" value="_no_" {TR_DNS_NO} id="dns_no" {DISBLED} /><label for="dns_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="dns" value="_yes_" {TR_DNS_YES} id="dns_yes" {DISBLED}/>
+									<label for="dns_yes">{TR_YES}</label>
+									<input type="radio" name="dns" value="_no_" {TR_DNS_NO} id="dns_no" {DISBLED} />
+									<label for="dns_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_BACKUP}</td>
 							<td>
-								<input type="radio" name="backup" value="_dmn_" {VL_BACKUPD} id="backup_dmn" {DISBLED}/><label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
-								<input type="radio" name="backup" value="_sql_" {VL_BACKUPS} id="backup_sql"  {DISBLED}/><label for="backup_sql">{TR_BACKUP_SQL}</label>
-								<input type="radio" name="backup" value="_full_" {VL_BACKUPF} id="backup_full"  {DISBLED}/><label for="backup_full">{TR_BACKUP_FULL}</label>
-								<input type="radio" name="backup" value="_no_" {VL_BACKUPN} id="backup_none"  {DISBLED}/><label for="backup_none">{TR_BACKUP_NO}</label>
+								<div class="radio">
+									<input type="radio" name="backup" value="_dmn_" {VL_BACKUPD} id="backup_dmn" {DISBLED}/>
+									<label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
+									<input type="radio" name="backup" value="_sql_" {VL_BACKUPS} id="backup_sql"  {DISBLED}/>
+									<label for="backup_sql">{TR_BACKUP_SQL}</label>
+									<input type="radio" name="backup" value="_full_" {VL_BACKUPF} id="backup_full"  {DISBLED}/>
+									<label for="backup_full">{TR_BACKUP_FULL}</label>
+									<input type="radio" name="backup" value="_no_" {VL_BACKUPN} id="backup_none"  {DISBLED}/>
+									<label for="backup_none">{TR_BACKUP_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<!-- BDP: t_software_support -->
 						<tr>
 							<td>{TR_SOFTWARE_SUPP}</td>
 							<td>
-								<input type="radio" {DISBLED} name="software_allowed" value="_yes_" {TR_SOFTWARE_YES} id="software_allowed_yes" /><label for="software_allowed_yes">{TR_YES}</label>
-								<input type="radio" {DISBLED} name="software_allowed" value="_no_" {TR_SOFTWARE_NO} id="software_allowed_no" /><label for="software_allowed_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" {DISBLED} name="software_allowed" value="_yes_" {TR_SOFTWARE_YES} id="software_allowed_yes" />
+									<label for="software_allowed_yes">{TR_YES}</label>
+									<input type="radio" {DISBLED} name="software_allowed" value="_no_" {TR_SOFTWARE_NO} id="software_allowed_no" />
+									<label for="software_allowed_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<!-- EDP: t_software_support -->
@@ -170,10 +194,12 @@
 						<tr>
 							<td>{TR_PHPINI_SYSTEM}</td>
 							<td>
-								<input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
-								<label for="phpini_system_yes">{TR_YES}</label>
-								<input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} />
-								<label for="phpini_system_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
+									<label for="phpini_system_yes">{TR_YES}</label>
+									<input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} />
+									<label for="phpini_system_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tbody id='phpinidetail'>
@@ -181,20 +207,24 @@
 							<tr id='php_ini_block_register_globals'>
 								<td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
 								<td>
-									<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
-									<label for="phpini_al_register_globals_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
-									<label for="phpini_al_register_globals_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
+										<label for="phpini_al_register_globals_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
+										<label for="phpini_al_register_globals_no">{TR_NO}</label>
+									</div>
 							</tr>
 							<!-- EDP: t_phpini_register_globals -->
 							<!-- BDP: t_phpini_allow_url_fopen -->
 							<tr id='php_ini_block_allow_url_fopen'>
 								<td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}</td>
 								<td>
-									<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
-									<label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_no" value="no" {PHPINI_AL_ALLOW_URL_FOPEN_NO} />
-									<label for="phpini_al_allow_url_fopen_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
+										<label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_no" value="no" {PHPINI_AL_ALLOW_URL_FOPEN_NO} />
+										<label for="phpini_al_allow_url_fopen_no">{TR_NO}</label>
+									</div>
 								</td>
 							</tr>
 							<!-- EDP: t_phpini_allow_url_fopen -->
@@ -202,10 +232,12 @@
 							<tr id='php_ini_block_display_errors'>
 								<td>{TR_PHPINI_AL_DISPLAY_ERRORS}</td>
 								<td>
-									<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
-									<label for="phpini_al_display_errors_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_no" value="no" {PHPINI_AL_DISPLAY_ERRORS_NO} />
-									<label for="phpini_al_display_errors_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
+										<label for="phpini_al_display_errors_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_no" value="no" {PHPINI_AL_DISPLAY_ERRORS_NO} />
+										<label for="phpini_al_display_errors_no">{TR_NO}</label>
+									</div>
 								</td>
 							</tr>
 							<!-- EDP: t_phpini_display_errors -->
@@ -213,12 +245,14 @@
 							<tr id='php_ini_block_disable_functions'>
 								<td>{TR_PHPINI_AL_DISABLE_FUNCTIONS}</td>
 								<td>
-									<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
-									<label for="phpini_al_disable_functions_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_no" value="no" {PHPINI_AL_DISABLE_FUNCTIONS_NO} />
-									<label for="phpini_al_disable_functions_no">{TR_NO}</label>
-									<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_exec" value="exec" {PHPINI_AL_DISABLE_FUNCTIONS_EXEC} />
-									<label for="phpini_al_disable_functions_exec">{TR_USER_EDITABLE_EXEC}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
+										<label for="phpini_al_disable_functions_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_no" value="no" {PHPINI_AL_DISABLE_FUNCTIONS_NO} />
+										<label for="phpini_al_disable_functions_no">{TR_NO}</label>
+										<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_exec" value="exec" {PHPINI_AL_DISABLE_FUNCTIONS_EXEC} />
+										<label for="phpini_al_disable_functions_exec">{TR_USER_EDITABLE_EXEC}</label>
+									</div>
 								</td>
 							</tr>
 							<!-- EDP: t_phpini_disable_functions -->
@@ -227,7 +261,7 @@
 									<label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label>
 								</td>
 								<td>
-									<input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" />
+									<input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" /> {TR_MIB}
 								</td>
 							</tr>
 							<tr>
@@ -235,7 +269,7 @@
 									<label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label>
 								</td>
 								<td>
-									<input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" />
+									<input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" /> {TR_MIB}
 								</td>
 							</tr>
 							<tr>
@@ -243,7 +277,7 @@
 									<label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label>
 								</td>
 								<td>
-									<input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" />
+									<input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" /> {TR_SEC}
 								</td>
 							</tr>
 							<tr>
@@ -251,7 +285,7 @@
 									<label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label>
 								</td>
 								<td>
-									<input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" />
+									<input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" /> {TR_SEC}
 								</td>
 							</tr>
 							<tr>
@@ -259,7 +293,7 @@
 									<label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label>
 								</td>
 								<td>
-									<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" />
+									<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" /> {TR_MIB}
 								</td>
 							</tr>
 
@@ -298,8 +332,12 @@
 						<tr>
 							<td>{TR_STATUS}</td>
 							<td>
-								<input type="radio" name="status" value="1" {TR_STATUS_YES} id="status_yes" {DISBLED}/><label for="status_yes">{TR_YES}</label>
-								<input type="radio" name="status" value="0" {TR_STATUS_NO} id="status_no"  {DISBLED}/><label for="status_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="status" value="1" {TR_STATUS_YES} id="status_yes" {DISBLED}/>
+									<label for="status_yes">{TR_YES}</label>
+									<input type="radio" name="status" value="0" {TR_STATUS_NO} id="status_no"  {DISBLED}/>
+									<label for="status_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 					</table>

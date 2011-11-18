@@ -707,9 +707,9 @@ class iMSCP_pTemplate
 	public function prnt($pname = '')
 	{
 		if ($pname) {
-			echo @$this->namespace[$pname];
+			echo preg_replace('/^\n+|^[\t\s]*\n+/m', '', @$this->namespace[$pname]);
 		} else {
-			echo @$this->last_parsed;
+			echo preg_replace('/^\n+|^[\t\s]*\n+/m', '', @$this->last_parsed);
 		}
 	}
 

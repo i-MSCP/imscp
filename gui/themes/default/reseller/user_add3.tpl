@@ -67,7 +67,7 @@
 						</tr>
 						<tr>
 							<td><label for="useremail">{TR_USREMAIL}</label></td>
-							<td><input type="useremail" name="useremail" id="useremail" value="{VL_MAIL}"/></td>
+							<td><input type="text" name="useremail" id="useremail" value="{VL_MAIL}"/></td>
 						</tr>
 						<tr>
 							<td>

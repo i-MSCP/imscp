@@ -3,6 +3,8 @@
 		<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 			$(document).ready(function() {
+				$('.radio').buttonset();
+
 				gpwd = false;
 
 				$(':password').each(function(i) {
@@ -218,83 +220,101 @@
 						<tr>
 							<td>{TR_SOFTWARE_SUPP}</td>
 							<td>
-								<input type="radio" name="domain_software_allowed" id="software_allowed_yes" value="yes" {SOFTWARE_YES} />
-								<label for="software_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="domain_software_allowed" id="software_allowed_no" value="no" {SOFTWARE_NO} />
-								<label for="software_allowed_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="domain_software_allowed" id="software_allowed_yes" value="yes" {SOFTWARE_YES} />
+									<label for="software_allowed_yes">{TR_YES}</label>
+									<input type="radio" name="domain_software_allowed" id="software_allowed_no" value="no" {SOFTWARE_NO} />
+									<label for="software_allowed_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_SOFTWAREDEPOT_SUPP}</td>
 							<td>
-								<input type="radio" name="domain_softwaredepot_allowed" id="softwaredepot_allowed_yes" value="yes" {SOFTWAREDEPOT_YES} />
-								<label for="softwaredepot_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="domain_softwaredepot_allowed" id="softwaredepot_allowed_no" value="no" {SOFTWAREDEPOT_NO} />
-								<label for="softwaredepot_allowed_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="domain_softwaredepot_allowed" id="softwaredepot_allowed_yes" value="yes" {SOFTWAREDEPOT_YES} />
+									<label for="softwaredepot_allowed_yes">{TR_YES}</label>
+									<input type="radio" name="domain_softwaredepot_allowed" id="softwaredepot_allowed_no" value="no" {SOFTWAREDEPOT_NO} />
+									<label for="softwaredepot_allowed_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_WEBSOFTWAREDEPOT_SUPP}</td>
 							<td>
-								<input type="radio" name="domain_websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes" value="yes" {WEBSOFTWAREDEPOT_YES} />
-								<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="domain_websoftwaredepot_allowed" id="websoftwaredepot_allowed_no" value="no" {WEBSOFTWAREDEPOT_NO} />
-								<label for="websoftwaredepot_allowed_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="domain_websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes" value="yes" {WEBSOFTWAREDEPOT_YES} />
+									<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
+									<input type="radio" name="domain_websoftwaredepot_allowed" id="websoftwaredepot_allowed_no" value="no" {WEBSOFTWAREDEPOT_NO} />
+									<label for="websoftwaredepot_allowed_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_SUPPORT_SYSTEM}</td>
 							<td>
-								<input type="radio" name="support_system" id="support_system_yes" value="yes" {SUPPORT_YES} />
-								<label for="support_system_yes">{TR_YES}</label>
-								<input type="radio" name="support_system" id="support_system_no" value="no" {SUPPORT_NO}/>
-								<label for="support_system_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="support_system" id="support_system_yes" value="yes" {SUPPORT_YES} />
+									<label for="support_system_yes">{TR_YES}</label>
+									<input type="radio" name="support_system" id="support_system_no" value="no" {SUPPORT_NO}/>
+									<label for="support_system_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_PHPINI_SYSTEM}</td>
 							<td>
-								<input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
-								<label for="phpini_system_yes">{TR_YES}</label>
-								<input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} />
-								<label for="phpini_system_no">{TR_NO}</label>
+								<div class="radio">
+									<input type="radio" name="phpini_system" id="phpini_system_yes" value="yes" {PHPINI_SYSTEM_YES} />
+									<label for="phpini_system_yes">{TR_YES}</label>
+									<input type="radio" name="phpini_system" id="phpini_system_no" value="no" {PHPINI_SYSTEM_NO} />
+									<label for="phpini_system_no">{TR_NO}</label>
+								</div>
 							</td>
 						</tr>
 						<tbody id='phpinidetail'>
 							<tr id='php_ini_block_register_globals'>
 								<td>{TR_PHPINI_AL_REGISTER_GLOBALS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
-									<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
-									<label for="phpini_al_register_globals_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
-									<label for="phpini_al_register_globals_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
+										<label for="phpini_al_register_globals_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
+										<label for="phpini_al_register_globals_no">{TR_NO}</label>
+									</div>
 								</td>
 							</tr>
 							<tr id='php_ini_block_allow_url_fopen'>
 								<td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
-									<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
-									<label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_no" value="no" {PHPINI_AL_ALLOW_URL_FOPEN_NO} />
-									<label for="phpini_al_allow_url_fopen_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_yes" value="yes" {PHPINI_AL_ALLOW_URL_FOPEN_YES} />
+										<label for="phpini_al_allow_url_fopen_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_allow_url_fopen" id="phpini_al_allow_url_fopen_no" value="no" {PHPINI_AL_ALLOW_URL_FOPEN_NO} />
+										<label for="phpini_al_allow_url_fopen_no">{TR_NO}</label>
+									</div>
 								</td>
 							</tr>
 							<tr id='php_ini_block_display_errors'>
 								<td>{TR_PHPINI_AL_DISPLAY_ERRORS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
-									<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
-									<label for="phpini_al_display_errors_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_no" value="no" {PHPINI_AL_DISPLAY_ERRORS_NO} />
-									<label for="phpini_al_display_errors_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_yes" value="yes" {PHPINI_AL_DISPLAY_ERRORS_YES} />
+										<label for="phpini_al_display_errors_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_display_errors" id="phpini_al_display_errors_no" value="no" {PHPINI_AL_DISPLAY_ERRORS_NO} />
+										<label for="phpini_al_display_errors_no">{TR_NO}</label>
+									</div>
 								</td>
 							</tr>
 							<tr id='php_ini_block_disable_functions'>
 								<td>{TR_PHPINI_AL_DISABLE_FUNCTIONS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
 								<td>
-									<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
-									<label for="phpini_al_disable_functions_yes">{TR_YES}</label>
-									<input type="radio" name="phpini_al_disable_functions" id="disable_functions_no" value="no" {PHPINI_AL_DISABLE_FUNCTIONS_NO} />
-									<label for="disable_functions_no">{TR_NO}</label>
+									<div class="radio">
+										<input type="radio" name="phpini_al_disable_functions" id="phpini_al_disable_functions_yes" value="yes" {PHPINI_AL_DISABLE_FUNCTIONS_YES} />
+										<label for="phpini_al_disable_functions_yes">{TR_YES}</label>
+										<input type="radio" name="phpini_al_disable_functions" id="disable_functions_no" value="no" {PHPINI_AL_DISABLE_FUNCTIONS_NO} />
+										<label for="disable_functions_no">{TR_NO}</label>
+									</div>
 								</td>
 							</tr>
 							<tr id='php_ini_block_memory_limit'>
