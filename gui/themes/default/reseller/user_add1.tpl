@@ -72,7 +72,7 @@
 						</tr>
                         <tr>
                             <td style="width:300px;">
-                            <label for="dmn_name">{TR_DOMAIN_NAME}</label>
+                            <label for="dmn_name" style="vertical-align: middle;">{TR_DOMAIN_NAME}</label>
                                 <span style="vertical-align:middle" class="icon i_help" id="dmn_help">Help</span>
                             </td>
                             <td>
