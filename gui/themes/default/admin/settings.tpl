@@ -301,8 +301,7 @@
 								<label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label>
 							</td>
 							<td>
-								<input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" />
-								MB
+								<input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" /> {TR_MIB}
 							</td>
 						</tr>
 						<tr>
@@ -310,8 +309,7 @@
 								<label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label>
 							</td>
 							<td>
-								<input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" />
-								MB
+								<input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" /> {TR_MIB}
 							</td>
 						</tr>
 						<tr>
@@ -319,8 +317,7 @@
 								<label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label>
 							</td>
 							<td>
-								<input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" />
-								sec
+								<input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" /> {TR_SEC}
 							</td>
 						</tr>
 						<tr>
@@ -328,8 +325,7 @@
 								<label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label>
 							</td>
 							<td>
-								<input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" />
-								sec
+								<input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" /> {TR_SEC}
 							</td>
 						</tr>
 						<tr>
@@ -337,8 +333,7 @@
 								<label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label>
 							</td>
 							<td>
-								<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" />
-								MB
+								<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" /> {TR_MIB}
 							</td>
 						</tr>
 						<tr>

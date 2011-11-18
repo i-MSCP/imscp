@@ -1,14 +1,13 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,18 +25,22 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -47,27 +50,22 @@ $tpl->define_dynamic('hosting_plans', 'page');
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server Traffic Settings'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server Traffic Settings'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @todo What's about the outcommented code?
  */
-function update_server_settings() {
+function update_server_settings()
+{
 
 	if (!isset($_POST['uaction']) && !isset($_POST['uaction'])) {
 		return;
 	}
-	/*global $data;
-	$match = array();
-	preg_match("/^(-1|0|[1-9][0-9]*)$/D", $data, $match);*/
 
 	$max_traffic = clean_input($_POST['max_traffic']);
-
 	$traffic_warning = $_POST['traffic_warning'];
 
 	if (!is_numeric($max_traffic) || !is_numeric($traffic_warning)) {
@@ -83,69 +81,51 @@ function update_server_settings() {
 	if ($max_traffic < 0) {
 		$max_traffic = 0;
 	}
+
 	if ($traffic_warning < 0) {
 		$traffic_warning = 0;
 	}
 
-	$query = "
-		UPDATE
-			`straff_settings`
-		SET
-			`straff_max` = ?,
-			`straff_warn` = ?
-	";
+	$query = "UPDATE `straff_settings` SET `straff_max` = ?, `straff_warn` = ?";
 	exec_query($query, array($max_traffic, $traffic_warning));
 
 	set_page_message(tr('Server traffic settings updated successfully!'), 'success');
 }
 
-function generate_server_data($tpl) {
+/**
+ * @param iMSCP_pTemplate $tpl
+ * @return void
+ */
+function generate_server_data($tpl)
+{
 
-	$query = "
-		SELECT
-			`straff_max`, `straff_warn`
-		FROM
-			`straff_settings`
-	";
-
-	$rs = exec_query($query);
+	$query = "SELECT `straff_max`, `straff_warn` FROM`straff_settings`";
+	$stmt = exec_query($query);
 
 	$tpl->assign(
 		array(
-			'MAX_TRAFFIC' => $rs->fields['straff_max'],
-			'TRAFFIC_WARNING' => $rs->fields['straff_warn'],
-		)
-	);
+			 'MAX_TRAFFIC' => $stmt->fields['straff_max'],
+			 'TRAFFIC_WARNING' => $stmt->fields['straff_warn'],));
 }
 
-/*
- *
- * static page messages.
- *
- */
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 $tpl->assign(
 	array(
-		'TR_MODIFY' => tr('Modify'),
-		'TR_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Set server traffic settings'),
-		'TR_MAX_TRAFFIC' => tr('Max traffic [MB]'),
-		'TR_WARNING' => tr('Warning traffic [MB]'),
-	)
-);
+		 'TR_MODIFY' => tr('Modify'),
+		 'TR_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
+		 'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Set server traffic settings'),
+		 'TR_MAX_TRAFFIC' => tr('Max traffic [MiB]'),
+		 'TR_WARNING' => tr('Warning traffic [MiB]')));
 
 update_server_settings();
-
 generate_server_data($tpl);
-
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

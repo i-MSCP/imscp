@@ -562,23 +562,26 @@ $tpl->assign(array(
                   'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
                   'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)'),
                   'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
-		          'TR_PHPINI_BASE_SETTINGS' => tr('System wide values for PHP directives'),
-                  'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the <strong>allow_url_fopen</strong> directive'),
-		          'TR_PHPINI_REGISTER_GLOBALS' => tr('Value for the <strong>register_globals</strong> directive'),
-                  'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the <strong>display_errors</strong> directive'),
-                  'TR_PHPINI_ERROR_REPORTING' => tr('Value for the <strong>error_reporting</strong> directive'),
+		          'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system wide)'),
+                  'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s< directive', true, '<span class="bold">allow_url_fopen</span>'),
+		          'TR_PHPINI_REGISTER_GLOBALS' => tr('Value for the %s directive', true, '<span class="bold">register_globals</span>'),
+                  'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<span class="bold">display_errors</span>'),
+                  'TR_PHPINI_ERROR_REPORTING' => tr('Value for the %s directive', true, '<span class="bold">error_reporting</span>'),
 				  'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
 				  'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
 				  'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
 				  'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
-                  'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the <strong>post_max_size</strong> directive'),
-                  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value for the <strong>upload_max_filesize</strong> directive'),
-                  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the <strong>max_execution_time</strong> directive'),
-                  'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the <strong>max_input_time</strong> directive'),
-                  'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the <strong>memory_limit</strong> directive'),
-                  'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the <strong>disable_functions</strong> directive'),
+                  'TR_PHPINI_POST_MAX_SIZE' => tr('Value for the %s  directive', true, '<span class="bold">post_max_size</span>'),
+                  'TR_PHPINI_UPLOAD_MAX_FILESIZE' => tr('Value for the %s directive', true, '<span class="bold">upload_max_filesize</span>'),
+                  'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_execution_time</span>'),
+                  'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_input_time</span>'),
+                  'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true , '<span class="bold">memory_limit</span>'),
+                  'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<span class="bold">disable_functions</span>'),
                   'TR_ORDERS_SETTINGS' => tr('Orders settings'),
-                  'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true)));
+                  'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true),
+				  'TR_MIB' => tr('MiB'),
+				  'TR_SEC' => tr('Sec.')
+			 ));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
