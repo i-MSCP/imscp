@@ -18,7 +18,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="domains">{TR_MENU_PHPINI}</h1>
+				<h1 class="domains">{TR_MENU_MANAGE_DOMAINS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- BDP: logged_from -->
@@ -55,8 +55,8 @@
 			<form name="client_php_ini_edit_frm" method="post" action="phpini.php">
 				<table>
 					<tr>
-						<th>PHP directive name</th>
-						<th>PHP directive value</th>
+						<th>{TR_DIRECTIVE_NAME}</th>
+						<th>{TR_DIRECTIVE_VALUE}</th>
 					</tr>
 					<!-- BDP: t_phpini_allow_url_fopen -->
 					<tr>

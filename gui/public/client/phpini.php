@@ -123,9 +123,12 @@ if ($phpini->getDomStatus($domainId) & $phpini->getClPermVal('phpiniSystem') == 
 					  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 					  'THEME_CHARSET' => tr('encoding'),
 					  'ISP_LOGO' => layout_getUserLogo(),
-					  'TR_TITLE' => tr('PHP directives'),
-					  'TR_MENU_PHPINI' => tr('PHP directives'),
+					  'TR_TITLE' => tr('PHP Editor'),
+					  'TR_MENU_PHPINI' => tr('PHP Editor'),
 					  'TR_PAGE_TEXT' => tr("In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."),
+
+					  'TR_DIRECTIVE_NAME' => tr('Directive name'),
+					  'TR_DIRECTIVE_VALUE' => tr('Directive value'),
 
 					  'TR_PHPINI_ALLOW_URL_FOPEN' => 'allow_url_fopen',
 					  'TR_PHPINI_REGISTER_GLOBALS' => 'register_globals',
