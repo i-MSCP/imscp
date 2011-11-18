@@ -66,9 +66,10 @@
 
             <!-- BDP: add_form -->
             <form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
-                <fieldset>
-                    <legend>{TR_CORE_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_CORE_DATA}</th>
+						</tr>
                         <tr>
                             <td style="width:300px;">
                             <label for="dmn_name">{TR_DOMAIN_NAME}</label>
@@ -111,7 +112,6 @@
                         <!-- EDP: personalize -->
                         <!-- EDP: add_user -->
                     </table>
-                </fieldset>
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" />
                 </div>
