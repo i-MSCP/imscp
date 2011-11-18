@@ -65,7 +65,6 @@ function client_generateSupportSystemNotices()
 	$userId = $_SESSION['user_id'];
 
 	// Check for support question answers
-
 	$query = "
 		SELECT
 			COUNT(`ticket_id`) `cnt`
@@ -81,13 +80,7 @@ function client_generateSupportSystemNotices()
 	$stmt = exec_query($query, $userId);
 
 	if ($stmt->fields('cnt')) {
-		set_page_message(
-			tr(
-				'You received <b>%d</b> new answer(s) to your support questions.',
-				$stmt->fields('cnt')
-			),
-			'info'
-		);
+		set_page_message(tr('You received <b>%d</b> new answer(s) to your support questions.',$stmt->fields('cnt')),'info');
 	}
 }
 
@@ -105,10 +98,10 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
 	list($percent, $bars) = calc_bars($usage, $maxUsage, $barMax);
 
 	if ($maxUsage != 0) {
-		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, sizeit($usage),
-								 sizeit($maxUsage));
+		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, numberBytesHuman($usage),
+								 numberBytesHuman($maxUsage));
 	} else {
-		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, sizeit($usage));
+		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, numberBytesHuman($usage));
 	}
 
 	$tpl->assign(
@@ -139,10 +132,10 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
 
 	if ($maxUsage != 0) {
 		$traffic_usage_data = tr(
-			'%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($maxUsage));
+			'%1$s%% [%2$s of %3$s]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
 	} else {
 		$traffic_usage_data = tr(
-			'%1$s%% [%2$s of unlimited]', $percent, sizeit($usage));
+			'%1$s%% [%2$s of unlimited]', $percent, numberBytesHuman($usage));
 	}
 
 	$tpl->assign(
@@ -152,7 +145,7 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
 			 'DISK_PERCENT' => $percent > 100 ? 100 : $percent));
 
 	if ($maxUsage != 0 && $usage > $maxUsage) {
-		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk limit.'));
+		$tpl->assign('TR_DISK_WARNING', tr('You are exceeding your disk space limit.'));
 	} else {
 		$tpl->assign('DISK_WARNING', '');
 	}
@@ -167,49 +160,34 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
  */
 function client_generateFeatureStatus($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg =iMSCP_Registry::get('config');
-
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
-
 	$trYes = '<span style="color: green;">' . tr('Enabled') . '</span>';
 	$trNo = '<span style="color: red;">' . tr('Disabled') . '</span>';;
 
 	$tpl->assign(
 		array(
-			 'PHP_FEATURE_STATUS' => ($domainProperties['domain_php'] == 'yes')
-				 ? $trYes : $trNo,
-			 'PHP_DIRECTIVES_EDITOR_STATUS' => ($domainProperties['phpini_perm_system'] == 'yes')
-				 ? $trYes : $trNo,
-			 'CGI_FEATURE_STATUS' => ($domainProperties['domain_cgi'] != 'no')
-				 ? $trYes : $trNo,
-			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => ($domainProperties['domain_dns'] == 'yes')
-				 ? $trYes : $trNo,
-			 'APP_INSTALLER_FEATURE_STATUS' => ($domainProperties['domain_software_allowed'] == 'yes')
-				 ? $trYes : $trNo
-		)
-	);
+			 'PHP_FEATURE_STATUS' => customerHasFeature('php') ? $trYes : $trNo,
+			 'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
+			 'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
+			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
+			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo
+		));
 
-	// Backup feature for customers can be disabled by admin (via imscp.conf)
-	if ($cfg->BACKUP_DOMAINS == 'yes') {
+	if (customerHasFeature('backup')) {
+		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 
 		// Backup feature for customer can also be disabled by reseller via GUI
 		switch ($domainProperties['allowbackup']) {
 			case 'full':
 				$tpl->assign(
-					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
-											 tr('Enabled for domain data and databases')
-											 . '</span>');
+					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' . tr('Enabled for domain data and databases') . '</span>');
 				break;
 			case 'sql':
 				$tpl->assign(
-					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
-											 tr('Enabled for SQL databases') . '</span>');
+					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' . tr('Enabled for SQL databases') . '</span>');
 				break;
 			case 'dmn':
 				$tpl->assign(
-					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' .
-											 tr('Enabled for domain data') . '</span>');
+					'BACKUP_FEATURE_STATUS', '<span style="color: green;">' . tr('Enabled for domain data') . '</span>');
 				break;
 			default:
 				$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
@@ -218,12 +196,11 @@ function client_generateFeatureStatus($tpl)
 		$tpl->assign('BACKUP_DOMAIN_FEATURE', '');
 	}
 
-	// For now, awstats can only be disabled by admin (via imscp.conf file)
-	if ($cfg->AWSTATS_ACTIVE == 'yes') {
+	if (customerHasFeature('awstats')) {
 		$tpl->assign(
 			array(
 				 'TR_AWSTATS_FEATURE' => tr('Web statistics'),
-				 'AWSTATS_FEATURE_STATUS' => $trYes));
+				  'AWSTATS_FEATURE_STATUS' => $trYes));
 
 	}
 }
@@ -314,12 +291,7 @@ function client_generateDomainExpiresInformation($tpl)
 			list($years, $month, $days) = _client_getDomainRemainingTime($domainProperties['domain_expires']);
 
 			if ($years == 0 && $month == 0 && $days <= 14) {
-				$domainRemainingTime = '<span style="color:red">' .
-									   tr(
-										   '%d %s remaining until account expiration',
-										   $days, ($days > 1) ? tr('days') : tr('day')
-									   ) . '</span>';
-
+				$domainRemainingTime = '<span style="color:red">' . tr('%d %s remaining until account expiration', $days, ($days > 1) ? tr('days') : tr('day')) . '</span>';
 				$domainExpiresDate = '<strong>(' . $domainExpiresDate . ')</strong>';
 			}
 		} else {
@@ -328,13 +300,15 @@ function client_generateDomainExpiresInformation($tpl)
 			set_page_message(tr('Your account has expired. Please renew your subscription.'), 'warning');
 		}
 
-		$tpl->assign(array(
-						  'DOMAIN_REMAINING_TIME' => $domainRemainingTime,
-						  'DOMAIN_EXPIRES_DATE' => $domainExpiresDate));
+		$tpl->assign(
+			array(
+				 'DOMAIN_REMAINING_TIME' => $domainRemainingTime,
+				 'DOMAIN_EXPIRES_DATE' => $domainExpiresDate));
 	} else {
-		$tpl->assign(array(
-						  'DOMAIN_REMAINING_TIME' => '',
-						  'DOMAIN_EXPIRES_DATE' => tr('No set')));
+		$tpl->assign(
+			array(
+				 'DOMAIN_REMAINING_TIME' => '',
+				 'DOMAIN_EXPIRES_DATE' => tr('No set')));
 	}
 }
 
@@ -398,9 +372,7 @@ client_generateDiskUsageBar(
 
 if ($domainProperties['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$tpl->assign(
-		'HREF_DOMAIN_ALTERNATIVE_URL', "http://{$cfg->SYSTEM_USER_PREFIX}" .
-									   ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) .
-									   ".{$cfg->BASE_SERVER_VHOST}");
+		'HREF_DOMAIN_ALTERNATIVE_URL', "http://{$cfg->SYSTEM_USER_PREFIX}" . ($cfg->SYSTEM_USER_MIN_UID + $_SESSION['user_id']) . ".{$cfg->BASE_SERVER_VHOST}");
 } else {
 	$tpl->assign('DOMAIN_ALTERNATIVE_URL', '');
 }
@@ -416,47 +388,28 @@ $tpl->assign(
 		 'TR_ACCOUNT_NAME' => tr('Account name'),
 		 'TR_DOMAIN_NAME' => tr('Domain name'),
 		 'DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
-
 		 'TR_DOMAIN_ALTERNATIVE_URL' => tr('Alternative URL to reach your website'),
 		 'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
-
 		 'TR_FEATURE' => tr('Feature'),
 		 'TR_FEATURE_STATUS' => tr('Status'),
-
 		 'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
-		 'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg(
-			 $domainAliasCount, $domainProperties['domain_alias_limit']),
-
-		 'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg(
-			 $subdomainCount, $domainProperties['domain_subd_limit']),
-		 'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') .
-									(($domainProperties['domain_alias_limit'] != -1)
-										? '<br />(<small>' .
-										  tr('Including domain aliases subdomains') . '</small>)'
-										: ''),
-
-		 'TR_FTP_ACCOUNTS_FEATURE' => tr('FTP accounts'),
-		 'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg(
-			 $ftpAccountsCount, $domainProperties['domain_ftpacc_limit']),
-
+		 'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($domainAliasCount, $domainProperties['domain_alias_limit']),
+		 'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($subdomainCount, $domainProperties['domain_subd_limit']),
+		 'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') . (($domainProperties['domain_alias_limit'] != -1)? '<br />(<small>' .  tr('Including domain aliases subdomains') . '</small>)' : ''),
+		 'TR_FTP_ACCOUNTS_FEATURE' => tr('Ftp accounts'),
+		 'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftpAccountsCount, $domainProperties['domain_ftpacc_limit']),
 		 'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
-		 'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg(
-			 $mailAccountsCount, $domainProperties['domain_mailacc_limit']),
-
-		 'TR_SQL_DATABASES_FEATURE' => tr('SQL databases'),
-		 'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg(
-			 $sqlDatabasesCount, $domainProperties['domain_sqld_limit']),
-
-		 'TR_SQL_USERS_FEATURE' => tr('SQL users'),
-		 'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg(
-			 $sqlUsersCount, $domainProperties['domain_sqlu_limit']),
-
-		 'TR_PHP_SUPPORT_FEATURE' => tr('PHP support'),
-		 'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP directives editor support'),
+		 'MAIL_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($mailAccountsCount, $domainProperties['domain_mailacc_limit']),
+		 'TR_SQL_DATABASES_FEATURE' => tr('Sql databases'),
+		 'SQL_DATABASE_FEATURE_STATUS' => gen_num_limit_msg($sqlDatabasesCount, $domainProperties['domain_sqld_limit']),
+		 'TR_SQL_USERS_FEATURE' => tr('Sql users'),
+		 'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlUsersCount, $domainProperties['domain_sqlu_limit']),
+		 'TR_PHP_SUPPORT_FEATURE' => tr('PHP'),
+		 'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP Editor'),
 		 'TR_CGI_SUPPORT_FEATURE' => tr('CGI support'),
-		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records support'),
-		 'TR_APP_INSTALLER_FEATURE' => tr('Application installer support'),
-		 'TR_BACKUP_FEATURE' => tr('Backup support'),
+		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records'),
+		 'TR_APP_INSTALLER_FEATURE' => tr('Softwares installer'),
+		 'TR_BACKUP_FEATURE' => tr('Backup'),
 
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 		 'TR_DISK_USAGE' => tr('Disk usage')));
