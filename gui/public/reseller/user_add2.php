@@ -485,9 +485,9 @@ $tpl->define_dynamic(
 		 'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
 		 'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		 'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-		 'php_editor_default_values_block' => 'php_directives_support_block'));
+		 'php_editor_default_values_block' => 'php_editor_block'));
 
-if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	redirectTo('users.php?psi=last');
 }
 
