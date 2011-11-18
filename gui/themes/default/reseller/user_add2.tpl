@@ -1,24 +1,18 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 	<script type="text/javascript">
-		/*<![CDATA[*/
+	/*<![CDATA[*/
 		$(document).ready(function() {
+			$('.radio').buttonset();
+
+			<!-- BDP: php_editor_js -->
 			$.fx.speeds._default = 500;
 
 			// PHP Editor settings dialog
 			$('#php_editor_dialog').dialog(
 			{
-				hide:'blind',
-				show:'slide',
-				focus:false,
-				autoOpen:false,
-				width:'auto',
-				modal:true,
-				dialogClass:'body',
-				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function(){
-					$('.radio').buttonset();
-				}
+				hide:'blind',show:'slide',focus:false,autoOpen:false,width:'auto',
+				modal:true,dialogClass:'body',buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}}
 			});
 
 			// Re-add the PHP Editor to the form
@@ -79,9 +73,11 @@
 				});
 				$('#'+k).trigger('keyup');
 			});
+			<!-- EDP: php_editor_js -->
 		});
-		/*]]>*/
+	/*]]>*/
 	</script>
+
 	<div class="header">
 		{MAIN_MENU}
 		<div class="logo">
@@ -197,30 +193,29 @@
 						</div>
 					</td>
 				</tr>
-			<!-- BDP: php_editor_block -->
-			<tr id="php_editor_block">
-				<td><label>{TR_PHP_EDITOR}</label></td>
-				<td colspan="3">
-					<div class="radio">
-						<input type="radio" name="phpiniSystem" id="phpiniSystemYes" value="yes" {PHP_EDITOR_YES}/>
-						<label for="phpiniSystemYes">{TR_YES}</label>
-						<input type="radio" name="phpiniSystem" id="phpiniSystemNo" value="no" {PHP_EDITOR_NO}/>
-						<label for="phpiniSystemNo">{TR_NO}</label>
-						<input type="button" name="php_editor_dialog_open" id="php_editor_dialog_open" value="{TR_SETTINGS}" />
-					</div>
-					<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
-						<div class="php_editor_error success">
+				<!-- BDP: php_editor_block -->
+				<tr id="php_editor_block">
+					<td><label>{TR_PHP_EDITOR}</label></td>
+					<td colspan="2">
+						<div class="radio">
+							<input type="radio" name="phpiniSystem" id="phpiniSystemYes" value="yes" {PHP_EDITOR_YES}/>
+							<label for="phpiniSystemYes">{TR_YES}</label>
+							<input type="radio" name="phpiniSystem" id="phpiniSystemNo" value="no" {PHP_EDITOR_NO}/>
+							<label for="phpiniSystemNo">{TR_NO}</label>
+							<input type="button" name="php_editor_dialog_open" id="php_editor_dialog_open" value="{TR_SETTINGS}" />
+						</div>
+						<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
+							<div class="php_editor_error success">
 							<span id="msg_default">{TR_FIELDS_OK}</span>
 						</div>
 						<table>
 							<!-- BDP: php_editor_permissions_block -->
-
 							<tr class="description">
 								<th colspan="2">{TR_PERMISSIONS}</th>
 							</tr>
 							<!-- BDP: php_editor_register_globals_block -->
 							<tr>
-							   <td>{TR_CAN_EDIT_REGISTER_GLOBALS}</td>
+								<td>{TR_CAN_EDIT_REGISTER_GLOBALS}</td>
 								<td>
 									<div class="radio">
 										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsYes" value="yes" {REGISTER_GLOBALS_YES}/>
@@ -231,10 +226,9 @@
 								</td>
 							</tr>
 							<!-- EDP: php_editor_register_globals_block -->
-
 							<!-- BDP: php_editor_allow_url_fopen_block -->
 							<tr>
-							   <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
+								<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
 								<td>
 									<div class="radio">
 										<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes" value="yes" {ALLOW_URL_FOPEN_YES}/>
@@ -245,10 +239,9 @@
 								</td>
 							</tr>
 							<!-- EDP: php_editor_allow_url_fopen_block -->
-
 							<!-- BDP: php_editor_display_errors_block -->
 							<tr>
-							   <td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
+								<td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
 								<td>
 									<div class="radio">
 										<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes" value="yes" {DISPLAY_ERRORS_YES}/>
@@ -275,45 +268,41 @@
 								</td>
 							</tr>
 							<!-- EDP: php_editor_disable_functions_block -->
-
 							<!-- EDP: php_editor_permissions_block -->
-
 							<!-- BDP: php_editor_default_values_block -->
 							<tr class="description">
 								<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 							</tr>
-
 							<tr>
-							  <td><label for="post_max_size">{TR_PHP_POST_MAX_SIZE_DIRECTIVE}</label></td>
-							  <td>
-								  <input name="post_max_size" id="post_max_size" type="text" value="{POST_MAX_SIZE}" /> <span>{TR_MIB}</span>
-							  </td>
+								<td><label for="post_max_size">{TR_PHP_POST_MAX_SIZE_DIRECTIVE}</label></td>
+								<td>
+									<input name="post_max_size" id="post_max_size" type="text" value="{POST_MAX_SIZE}" /> <span>{TR_MIB}</span>
+								</td>
 							</tr>
 							<tr>
-							  <td><label for="upload_max_filezize">{PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE}</label></td>
-							  <td>
+								<td><label for="upload_max_filezize">{PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE}</label></td>
+								<td>
 									<input name="upload_max_filezize" id="upload_max_filezize" type="text" value="{UPLOAD_MAX_FILESIZE}" /> <span>{TR_MIB}</span>
-							  </td>
+								</td>
 							</tr>
 							<tr>
-							  <td><label for="max_execution_time">{TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE}</label></td>
-							  <td>
+								<td><label for="max_execution_time">{TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE}</label></td>
+								<td>
 									<input name="max_execution_time" id="max_execution_time" type="text" value="{MAX_EXECUTION_TIME}" /> <span>{TR_SEC}</span>
-							  </td>
+								</td>
 							</tr>
 							<tr>
-							  <td><label for="max_input_time">{TR_PHP_MAX_INPUT_TIME_DIRECTIVE}</label></td>
-							  <td>
+								<td><label for="max_input_time">{TR_PHP_MAX_INPUT_TIME_DIRECTIVE}</label></td>
+								<td>
 									<input name="max_input_time" id="max_input_time" type="text" value="{MAX_INPUT_TIME}" /> <span>{TR_SEC}</span>
-							  </td>
+								</td>
 							</tr>
 							<tr>
-							  <td><label for="memory_limit">{TR_PHP_MEMORY_LIMIT_DIRECTIVE}</label></td>
-							  <td>
+								<td><label for="memory_limit">{TR_PHP_MEMORY_LIMIT_DIRECTIVE}</label></td>
+								<td>
 									<input name="memory_limit" id="memory_limit" type="text" value="{MEMORY_LIMIT}" /> <span>{TR_MIB}</span>
-							  </td>
+								</td>
 							</tr>
-
 							<!-- EDP: php_editor_default_values_block -->
 						</table>
 					</div>

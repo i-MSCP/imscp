@@ -75,107 +75,125 @@ function get_init_au2_page($tpl, $phpini)
 
 	$htmlChecked = $cfg->HTML_CHECKED;
 
-	$tpl->assign(
-		array(
-			 'VL_TEMPLATE_NAME' => tohtml($hp_name),
-			 'MAX_DMN_CNT' => '',
-			 'MAX_SUBDMN_CNT' => $hp_sub,
-			 'MAX_DMN_ALIAS_CNT' => $hp_als,
-			 'MAX_MAIL_CNT' => $hp_mail,
-			 'MAX_FTP_CNT' => $hp_ftp,
-			 'MAX_SQL_CNT' => $hp_sql_db,
-			 'VL_MAX_SQL_USERS' => $hp_sql_user,
-			 'VL_MAX_TRAFFIC' => $hp_traff,
-			 'VL_MAX_DISK_USAGE' => $hp_disk,
-			 'VL_PHPY' => ($hp_php === '_yes_') ? $htmlChecked : '',
-			 'VL_PHPN' => ($hp_php === '_no_') ? $htmlChecked : '',
-			 'VL_CGIY' => ($hp_cgi === '_yes_') ? $htmlChecked : '',
-			 'VL_CGIN' => ($hp_cgi === '_no_') ? $htmlChecked : '',
-			 'VL_BACKUPD' => ($hp_backup === '_dmn_') ? $htmlChecked : '',
-			 'VL_BACKUPS' => ($hp_backup === '_sql_') ? $htmlChecked : '',
-			 'VL_BACKUPF' => ($hp_backup === '_full_') ? $htmlChecked : '',
-			 'VL_BACKUPN' => ($hp_backup === '_no_') ? $htmlChecked : '',
-			 'VL_DNSY' => ($hp_dns === '_yes_') ? $htmlChecked : '',
-			 'VL_DNSN' => ($hp_dns === '_no_') ? $htmlChecked : '',
-			 'VL_SOFTWAREY' => ($hp_allowsoftware === '_yes_') ? $htmlChecked : '',
-			 'VL_SOFTWAREN' => ($hp_allowsoftware === '_no_') ? $htmlChecked : '',
-
-			 'PHP_EDITOR_YES' => ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '',
-			 'PHP_EDITOR_NO' => ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $htmlChecked : '',
-
-			 // check only to dont break with old plans without ini values
-			 'POST_MAX_SIZE' => tohtml(($phpini->getDataVal('phpiniPostMaxSize') != 'no')
-				 ? $phpini->getDataVal('phpiniPostMaxSize') : $phpini->getDataDefaultVal('phpiniPostMaxSize')),
-			 'UPLOAD_MAX_FILESIZE' => tohtml(($phpini->getDataVal('phpiniUploadMaxFileSize') != 'no')
-				 ? $phpini->getDataVal('phpiniUploadMaxFileSize') : $phpini->getDataDefaultVal('phpiniUploadMaxFileSize')),
-			 'MAX_EXECUTION_TIME' => tohtml(($phpini->getDataVal('phpiniMaxExecutionTime') != 'no')
-				 ? $phpini->getDataVal('phpiniMaxExecutionTime') : $phpini->getDataDefaultVal('phpiniMaxExecutionTime')),
-			 'MAX_INPUT_TIME' => tohtml(($phpini->getDataVal('phpiniMaxInputTime') != 'no')
-				 ? $phpini->getDataVal('phpiniMaxInputTime') : $phpini->getDataDefaultVal('phpiniMaxInputTime')),
-			 'MEMORY_LIMIT' => tohtml(($phpini->getDataVal('phpiniMemoryLimit') != 'no')
-				 ? $phpini->getDataVal('phpiniMemoryLimit') : $phpini->getDataDefaultVal('phpiniMemoryLimit')),
-
-			 'PHP_DIRECTIVES_RESELLER_MAX_VALUES' => json_encode(
-				 array(
-					  'post_max_size' => $phpini->getRePermVal('phpiniPostMaxSize'),
-					  'upload_max_filezize' => $phpini->getRePermVal('phpiniUploadMaxFileSize'),
-					  'max_execution_time' => $phpini->getRePermVal('phpiniMaxExecutionTime'),
-					  'max_input_time' => $phpini->getRePermVal('phpiniMaxInputTime'),
-					  'memory_limit' => $phpini->getRePermVal('phpiniMemoryLimit')
-				 )
-			)
-		));
-
 	$tplVars = array();
-	$permissionsBlock = false;
 
-	if (!$phpini->checkRePerm('phpiniRegisterGlobals')) { // Reseller has not permission on this PHP directive
-		$tplVars['PHP_EDITOR_REGISTER_GLOBALS_BLOCK'] = '';
+	$tplVars['VL_TEMPLATE_NAME'] = tohtml($hp_name);
+	$tplVars['MAX_DMN_CNT'] = '';
+	$tplVars['MAX_SUBDMN_CNT'] = tohtml($hp_sub);
+	$tplVars['MAX_DMN_ALIAS_CNT'] = tohtml($hp_als);
+	$tplVars['MAX_MAIL_CNT'] = tohtml($hp_mail);
+	$tplVars['MAX_FTP_CNT'] = tohtml($hp_ftp);
+	$tplVars['MAX_SQL_CNT'] = tohtml($hp_sql_db);
+	$tplVars['VL_MAX_SQL_USERS'] = tohtml($hp_sql_user);
+	$tplVars['VL_MAX_TRAFFIC'] = tohtml($hp_traff);
+	$tplVars['VL_MAX_DISK_USAGE'] = tohtml($hp_disk);
+	$tplVars['VL_PHPY'] = ($hp_php == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_PHPN'] = ($hp_php == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_CGIY'] = ($hp_cgi == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_CGIN'] = ($hp_cgi == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPD'] = ($hp_backup == '_dmn_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPS'] = ($hp_backup == '_sql_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPF'] = ($hp_backup == '_full_') ? $htmlChecked : '';
+	$tplVars['VL_BACKUPN'] = ($hp_backup == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_DNSY'] = ($hp_dns == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_DNSN'] = ($hp_dns == '_no_') ? $htmlChecked : '';
+	$tplVars['VL_SOFTWAREY'] = ($hp_allowsoftware == '_yes_') ? $htmlChecked : '';
+	$tplVars['VL_SOFTWAREN'] = ($hp_allowsoftware == '_no_') ? $htmlChecked : '';
+
+	if ($phpini->getRePermVal('phpiniSystem') == 'yes') {
+		$tplVars['PHP_EDITOR_YES'] = ($phpini->getClPermVal('phpiniSystem') == 'yes') ? $htmlChecked : '';
+		$tplVars['PHP_EDITOR_NO'] = ($phpini->getClPermVal('phpiniSystem') != 'yes') ? $htmlChecked : '';
+		$tplVars['TR_PHP_EDITOR'] = tr('PHP Editor');
+		$tplVars['TR_PHP_EDITOR_SETTINGS'] = tr('PHP Editor Settings');
+		$tplVars['TR_SETTINGS'] = tr('Settings');
+		$tplVars['TR_DIRECTIVES_VALUES'] = tr('Directive values');
+		$tplVars['TR_FIELDS_OK'] = tr('All fields seem to be valid.');
+		$tplVars['TR_VALUE_ERROR'] = tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true);
+		$tplVars['TR_CLOSE'] = tr('Close');
+		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">post_max_size</span>');
+		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">upload_max_filezize</span>');
+		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">max_execution_time</span>');
+		$tplVars['TR_PHP_MAX_INPUT_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">max_input_time</span>');
+		$tplVars['TR_PHP_MEMORY_LIMIT_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">memory_limit</span>');
+		$tplVars['TR_MIB'] = tr('MiB');
+		$tplVars['TR_SEC'] = tr('Sec.');
+
+		$permissionsBlock = false;
+
+		if (!$phpini->checkRePerm('phpiniRegisterGlobals')) {
+			$tplVars['PHP_EDITOR_REGISTER_GLOBALS_BLOCK'] = '';
+		} else {
+			$tplVars['TR_CAN_EDIT_REGISTER_GLOBALS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>');
+			$tplVars['REGISTER_GLOBALS_YES'] = ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') ? $htmlChecked : '';
+			$tplVars['REGISTER_GLOBALS_NO'] = ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') ? $htmlChecked : '';
+			$permissionsBlock = true;
+		}
+
+		if (!$phpini->checkRePerm('phpiniAllowUrlFopen')) {
+			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
+		} else {
+			$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>');
+			$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
+			$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
+			$permissionsBlock = true;
+		}
+
+		if (!$phpini->checkRePerm('phpiniDisplayErrors')) {
+			$tplVars['PHP_EDITOR_DISPLAY_ERRORS_BLOCK'] = '';
+		} else {
+			$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">display_errors</span>');
+			$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
+			$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
+			$permissionsBlock = true;
+		}
+
+		if (!$phpini->checkRePerm('phpiniDisableFunctions')) {
+			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
+		} else {
+			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>');
+			$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
+			$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
+			$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
+			$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $htmlChecked : '';
+			$permissionsBlock = true;
+		}
+
+		if (!$permissionsBlock) {
+			$tplVars['PHP_EDITOR_PERMISSIONS_BLOCK'] = '';
+		} else {
+			$tplVars['TR_PERMISSIONS'] = tr('Permissions');
+			$tplVars['TR_ONLY_EXEC'] = tr("Only exec");
+		}
+
+		// check only to dont break old plans without ini values
+		$tplVars['POST_MAX_SIZE'] = tohtml(($phpini->getDataVal('phpiniPostMaxSize') != 'no')
+			? $phpini->getDataVal('phpiniPostMaxSize') : $phpini->getDataDefaultVal('phpiniPostMaxSize'));
+		$tplVars['UPLOAD_MAX_FILESIZE'] = tohtml(($phpini->getDataVal('phpiniUploadMaxFileSize') != 'no')
+			? $phpini->getDataVal('phpiniUploadMaxFileSize') : $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'));
+		$tplVars['MAX_EXECUTION_TIME'] = tohtml(($phpini->getDataVal('phpiniMaxExecutionTime') != 'no')
+			? $phpini->getDataVal('phpiniMaxExecutionTime') : $phpini->getDataDefaultVal('phpiniMaxExecutionTime'));
+		$tplVars['MAX_INPUT_TIME'] = tohtml(($phpini->getDataVal('phpiniMaxInputTime') != 'no')
+			? $phpini->getDataVal('phpiniMaxInputTime') : $phpini->getDataDefaultVal('phpiniMaxInputTime'));
+		$tplVars['MEMORY_LIMIT'] = tohtml(($phpini->getDataVal('phpiniMemoryLimit') != 'no')
+			? $phpini->getDataVal('phpiniMemoryLimit') : $phpini->getDataDefaultVal('phpiniMemoryLimit'));
+
+		$tplVars['PHP_DIRECTIVES_RESELLER_MAX_VALUES'] = json_encode(
+			array(
+				 'post_max_size' => $phpini->getRePermVal('phpiniPostMaxSize'),
+				 'upload_max_filezize' => $phpini->getRePermVal('phpiniUploadMaxFileSize'),
+				 'max_execution_time' => $phpini->getRePermVal('phpiniMaxExecutionTime'),
+				 'max_input_time' => $phpini->getRePermVal('phpiniMaxInputTime'),
+				 'memory_limit' => $phpini->getRePermVal('phpiniMemoryLimit')));
 	} else {
-		$tplVars['TR_CAN_EDIT_REGISTER_GLOBALS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>');
-		$tplVars['REGISTER_GLOBALS_YES'] = ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') ? $htmlChecked : '';
-		$tplVars['REGISTER_GLOBALS_NO'] = ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') ? $htmlChecked : '';
-		$permissionsBlock = true;
-	}
-
-	if (!$phpini->checkRePerm('phpiniAllowUrlFopen')) { // Reseller has not permission on this PHP directive
-		$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
-	} else {
-		$tplVars['TR_CAN_EDIT_ALLOW_URL_FOPEN'] = tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>');
-		$tplVars['ALLOW_URL_FOPEN_YES'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') ? $htmlChecked : '';
-		$tplVars['ALLOW_URL_FOPEN_NO'] = ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') ? $htmlChecked : '';
-		$permissionsBlock = true;
-	}
-
-	if (!$phpini->checkRePerm('phpiniDisplayErrors')) { // Reseller has not permission on this PHP directive
-		$tplVars['PHP_EDITOR_DISPLAY_ERRORS_BLOCK'] = '';
-	} else {
-		$tplVars['TR_CAN_EDIT_DISPLAY_ERRORS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">display_errors</span>');
-		$tplVars['DISPLAY_ERRORS_YES'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'yes') ? $htmlChecked : '';
-		$tplVars['DISPLAY_ERRORS_NO'] = ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') ? $htmlChecked : '';
-		$permissionsBlock = true;
-	}
-
-	if (!$phpini->checkRePerm('phpiniDisableFunctions')) { // Reseller has not permission on this PHP directive
-		$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
-	} else {
-		$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>');
-		$tplVars['DISABLE_FUNCTIONS_YES'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') ? $htmlChecked : '';
-		$tplVars['DISABLE_FUNCTIONS_NO'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') ? $htmlChecked : '';
-		$tplVars['TR_ONLY_EXEC'] = tr('Only exec');
-		$tplVars['DISABLE_FUNCTIONS_EXEC'] = ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') ? $htmlChecked : '';
-		$permissionsBlock = true;
-	}
-
-	if (!$permissionsBlock) {
-		$tplVars['PHP_EDITOR_PERMISSIONS_BLOCK'] = '';
+		$tplVars['PHP_EDITOR_JS'] = '';
+		$tplVars['PHP_EDITOR_BLOCK'] = '';
 	}
 
 	$tpl->assign($tplVars);
 }
 
 /**
- * Get data for hosting plan.
+ * Get hosting plan data.
  *
  * @param int $hpid Hosting plan unique identifier
  * @param int $resellerId Reseller unique identifier
@@ -467,14 +485,7 @@ $tpl->define_dynamic(
 		 'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
 		 'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		 'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-		 'php_editor_default_values_block' => 'php_directives_support_block',
-
-		 't_phpini_system' => 'page',
-		 't_phpini_register_globals' => 'page',
-		 't_phpini_allow_url_fopen' => 'page',
-		 't_phpini_display_errors' => 'page',
-		 't_phpini_disable_functions' => 'page'));
-
+		 'php_editor_default_values_block' => 'php_directives_support_block'));
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	redirectTo('users.php?psi=last');
@@ -511,23 +522,7 @@ $tpl->assign(
 		 'TR_NEXT_STEP' => tr('Next step'),
 		 'TR_FEATURES' => tr('Features'),
 		 'TR_LIMITS' => tr('Limits'),
-		 'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
-		 'TR_PHP_EDITOR' => tr('PHP Editor'),
-		 'TR_PHP_EDITOR_SETTINGS' => tr('PHP Editor Settings'),
-		 'TR_SETTINGS' => tr('Settings'),
-		 'TR_PERMISSIONS' => tr('Permissions'),
-		 'TR_DIRECTIVES_VALUES' => tr('Directive values'),
-		 'TR_FIELDS_OK' => tr('All fields seem to be valid.'),
-		 'TR_VALUE_ERROR' => tr('Value for the PHP <strong>%%s</strong> directive must be between %%d and %%d.', true),
-		 'TR_CLOSE' => tr('Close'),
-		 'TR_ONLY_EXEC' => tr("Only exec"),
-		 'TR_PHP_POST_MAX_SIZE_DIRECTIVE' => tr('PHP %s directive', true, '<span class="bold">post_max_size</span>'),
-		 'PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE' => tr('PHP %s directive', true, '<span class="bold">upload_max_filezize</span>'),
-		 'TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE' => tr('PHP %s directive', true, '<span class="bold">max_execution_time</span>'),
-		 'TR_PHP_MAX_INPUT_TIME_DIRECTIVE' => tr('PHP %s directive', true, '<span class="bold">max_input_time</span>'),
-		 'TR_PHP_MEMORY_LIMIT_DIRECTIVE' => tr('PHP %s directive', true, '<span class="bold">memory_limit</span>'),
-		 'TR_MIB' => tr('MiB'),
-		 'TR_SEC' => tr('Sec.')));
+		 'TR_SOFTWARE_SUPP' => tr('Softwares installer')));
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
@@ -599,15 +594,6 @@ if ($rsql_db_max == '-1') {
 
 if ($rsql_user_max == '-1') {
 	$tpl->assign('SQL_USER_ADD', '');
-}
-
-if (!$phpini->checkRePerm('phpiniSystem')) {
-	$tpl->assign(
-		array(
-			 'PHP_EDITOR_JS' => '',
-			 'PHP_EDITOR_BLOCK' => ''
-		)
-	);
 }
 
 generatePageMessage($tpl);
