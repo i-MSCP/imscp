@@ -165,6 +165,7 @@ function client_generateFeatureStatus($tpl)
 
 	$tpl->assign(
 		array(
+			 'DOMAIN_FEATURE_STATUS' =>  customerHasFeature('domain') ? $trYes : $trNo,
 			 'PHP_FEATURE_STATUS' => customerHasFeature('php') ? $trYes : $trNo,
 			 'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
 			 'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
@@ -392,6 +393,7 @@ $tpl->assign(
 		 'TR_DOMAIN_EXPIRES_DATE' => tr('Domain expire date'),
 		 'TR_FEATURE' => tr('Feature'),
 		 'TR_FEATURE_STATUS' => tr('Status'),
+		 'TR_DOMAIN_FEATURE' => tr('Domain'),
 		 'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
 		 'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($domainAliasCount, $domainProperties['domain_alias_limit']),
 		 'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($subdomainCount, $domainProperties['domain_subd_limit']),

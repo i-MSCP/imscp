@@ -60,6 +60,11 @@
 			</tr>
 
 			<tr>
+				<td>{TR_DOMAIN_FEATURE}</td>
+				<td>{DOMAIN_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
 				<td>{TR_DOMAIN_ALIASES_FEATURE}</td>
 				<td>{DOMAIN_ALIASES_FEATURE_STATUS}</td>
 			</tr>
