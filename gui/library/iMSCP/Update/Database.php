@@ -380,12 +380,15 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Checks if a database table have an index and if yes, return a query to drop it.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4509
 	 * @param string $table Database table from where the column must be dropped
-	 * @param string $column Column to be dropped from $table
+	 * @param string $indexName Index name
+	 * @param string $columnName Column to which index belong to
 	 * @return string Query to be executed
 	 */
-	protected function _dropIndex($table, $indexName = 'PRIMARY'){
+	protected function _dropIndex($table, $indexName = 'PRIMARY', $columnName = null){
+
+		if(is_null($columnName)){ $columnName = $indexName;}
+
 		$query = "
 			SHOW INDEX FROM
 				`$this->_databaseName`.`$table`
@@ -407,9 +410,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Checks if a database table have an index and if no, return a query to add it.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @since r4509
 	 * @param string $table Database table from where the column must be dropped
-	 * @param string $column Column to be dropped from $table
+	 * @param string $columnName Column to which index belong to
+	 * @param string $indexType Index type (Primary Unique)
+	 * @param string $indexName Index name
 	 * @return string Query to be executed
 	 */
 	protected function _addIndex($table, $columnName, $indexType = 'PRIMARY KEY', $indexName = null){
