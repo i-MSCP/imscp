@@ -38,6 +38,64 @@
  */
 
 /**
+ * Generates domains list.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $userId Customer unique identifier
+ * @return void
+ */
+function client_generateDomainsList($tpl, $userId)
+{
+	if (customerHasFeature('domain')) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		$query = "
+			SELECT
+				`domain_name`, `domain_created`,	`domain_expires`, `domain_status`
+			FROM
+				`domain`
+			WHERE
+				`domain_admin_id` = ?
+			ORDER BY
+				`domain_name`
+		";
+		$stmt = exec_query($query, (int)$userId);
+
+		while (!$stmt->EOF) {
+			$domainName = decode_idna($stmt->fields['domain_name']);
+
+			if ($stmt->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
+				$tpl->assign(
+					array(
+						 'DOMAIN_NAME' => tohtml($domainName),
+						 'DOMAIN_STATUS_RELOAD_FALSE' => ''));
+
+				$tpl->parse('DOMAIN_STATUS_RELOAD_TRUE', 'domain_status_reload_true');
+			} else {
+				$tpl->assign(
+					array(
+						 'DOMAIN_NAME' => tohtml($domainName),
+						 'DOMAIN_STATUS_RELOAD_TRUE' => ''));
+
+				$tpl->parse('DOMAIN_STATUS_RELOAD_FALSE', 'domain_status_reload_false');
+			}
+
+			$tpl->assign(
+				array(
+					 'DOMAIN_NAME' => tohtml($domainName),
+					 'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
+					 'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_expires']) : tr('No set')),
+					 'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status'])
+				));
+
+			$tpl->parse('DOMAIN_ITEM', '.domain_item');
+			$stmt->moveNext();
+		}
+	}
+}
+
+/**
  * Generates domain aliases list.
  *
  * @param iMSCP_pTemplate $tpl Template engine
@@ -46,70 +104,78 @@
  */
 function client_generateDomainAliasesList($tpl, $userId)
 {
-	$domainId = get_user_domain_id($userId);
+	if (customerHasFeature('domain_aliases')) {
+		$domainId = get_user_domain_id($userId);
 
-	$query = "
-		SELECT
-			`alias_id`, `alias_name`, `alias_status`, `alias_mount`, `alias_ip_id`,
-			`url_forward`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-		ORDER BY
-			`alias_mount`, `alias_name`
-	";
-	$stmt = exec_query($query, $domainId);
+		$query = "
+			SELECT
+				`alias_id`, `alias_name`, `alias_status`, `alias_mount`, `alias_ip_id`,
+				`url_forward`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`domain_id` = ?
+			ORDER BY
+				`alias_mount`, `alias_name`
+		";
+		$stmt = exec_query($query, $domainId);
 
-	if ($stmt->rowCount() == 0) {
-		$tpl->assign(array(
-						  'ALS_MSG' => tr('You do not have domain aliases.'),
-						  'ALS_LIST' => ''));
-	} else {
-		while (!$stmt->EOF) {
-			list(
-				$action, $actionScript, $isStatusOk
-			) = _client_generateDomainAliasAction($stmt->fields['alias_id'],
-												  $stmt->fields['alias_status']);
+		if ($stmt->rowCount() == 0) {
+			$tpl->assign(
+				array(
+					 'ALS_MSG' => tr('You do not have domain aliases.'),
+					 'ALS_LIST' => ''));
+		} else {
+			while (!$stmt->EOF) {
+				list(
+					$action, $actionScript, $isStatusOk
+					) = _client_generateDomainAliasAction($stmt->fields['alias_id'],
+														  $stmt->fields['alias_status']);
 
-			list(
-				$redirectUrl, $editLink, $edit
-			) = _client_generateDomainAliasRedirect($stmt->fields['alias_id'],
-													$stmt->fields['alias_status'],
-													$stmt->fields['url_forward']);
+				list(
+					$redirectUrl, $editLink, $edit
+					) = _client_generateDomainAliasRedirect($stmt->fields['alias_id'],
+															$stmt->fields['alias_status'],
+															$stmt->fields['url_forward']);
 
-			$name = decode_idna($stmt->fields['alias_name']);
-			$redirectUrl = decode_idna($redirectUrl);
+				$name = decode_idna($stmt->fields['alias_name']);
+				$redirectUrl = decode_idna($redirectUrl);
 
-			if($isStatusOk) {
-				$tpl->assign(array(
-								  'ALS_NAME' => tohtml($name),
-								  'ALS_STATUS_RELOAD_FALSE' => ''));
+				if ($isStatusOk) {
+					$tpl->assign(
+						array(
+							 'ALS_NAME' => tohtml($name),
+							 'ALS_STATUS_RELOAD_FALSE' => ''));
 
-				$tpl->parse('ALS_STATUS_RELOAD_TRUE', 'als_status_reload_true');
-			} else {
-				$tpl->assign(array(
-								  'ALS_NAME' => tohtml($name),
-								  'ALS_STATUS_RELOAD_TRUE' => ''));
+					$tpl->parse('ALS_STATUS_RELOAD_TRUE', 'als_status_reload_true');
+				} else {
+					$tpl->assign(
+						array(
+							 'ALS_NAME' => tohtml($name),
+							 'ALS_STATUS_RELOAD_TRUE' => ''));
 
-				$tpl->parse('ALS_STATUS_RELOAD_FALSE', 'als_status_reload_false');
+					$tpl->parse('ALS_STATUS_RELOAD_FALSE', 'als_status_reload_false');
+				}
+
+				$tpl->assign(
+					array(
+						 'ALS_NAME' => tohtml($name),
+						 'ALS_MOUNT' => tohtml($stmt->fields['alias_mount']),
+						 'ALS_STATUS' => translate_dmn_status($stmt->fields['alias_status']),
+						 'ALS_REDIRECT' => tohtml($redirectUrl),
+						 'ALS_EDIT_LINK' => $editLink,
+						 'ALS_EDIT' => $edit,
+						 'ALS_ACTION' => $action,
+						 'ALS_ACTION_SCRIPT' => $actionScript));
+
+				$tpl->parse('ALS_ITEM', '.als_item');
+				$stmt->moveNext();
 			}
 
-			$tpl->assign(array(
-							  'ALS_NAME' => tohtml($name),
-							  'ALS_MOUNT' => tohtml($stmt->fields['alias_mount']),
-							  'ALS_STATUS' => translate_dmn_status($stmt->fields['alias_status']),
-							  'ALS_REDIRECT' => tohtml($redirectUrl),
-							  'ALS_EDIT_LINK' => $editLink,
-							  'ALS_EDIT' => $edit,
-							  'ALS_ACTION' => $action,
-							  'ALS_ACTION_SCRIPT' => $actionScript));
-
-			$tpl->parse('ALS_ITEM', '.als_item');
-			$stmt->moveNext();
+			$tpl->assign('ALS_MESSAGE', '');
 		}
-
-		$tpl->assign('ALS_MESSAGE', '');
+	} else {
+		$tpl->assign('DOMAIN_ALIASES_BLOCK', '');
 	}
 }
 
@@ -127,23 +193,11 @@ function _client_generateDomainAliasAction($id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(
-			tr('Delete'),
-			'alias_delete.php?id=' . $id,
-			true
-		);
+		return array(tr('Delete'), 'alias_delete.php?id=' . $id, true);
 	} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
-		return array(
-			tr('Delete order'),
-			'alias_order_delete.php?del_id=' . $id,
-			false
-		);
+		return array(tr('Delete order'), 'alias_order_delete.php?del_id=' . $id, false);
 	} else {
-		return array(
-			tr('N/A'),
-			'#',
-			false
-		);
+		return array(tr('N/A'), '#', false);
 	}
 }
 
@@ -163,43 +217,19 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
 
 	if ($redirectUrl == 'no') {
 		if ($status == $cfg->ITEM_OK_STATUS) {
-			return array(
-				'-',
-				'alias_edit.php?edit_id=' . $id,
-				tr('Edit')
-			);
-		} else if ($status == $cfg->ITEM_ORDERED_STATUS) {
-			return array(
-				'-',
-				'#',
-				tr('N/A')
-			);
+			return array('-', 'alias_edit.php?edit_id=' . $id, tr('Edit'));
+		} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
+			return array('-', '#', tr('N/A'));
 		} else {
-			return array(
-				tr('N/A'),
-				'#',
-				tr('N/A')
-			);
+			return array(tr('N/A'), '#', tr('N/A'));
 		}
 	} else {
 		if ($status == $cfg->ITEM_OK_STATUS) {
-			return array(
-				$redirectUrl,
-				'alias_edit.php?edit_id=' . $id,
-				tr('Edit')
-			);
+			return array($redirectUrl, 'alias_edit.php?edit_id=' . $id, tr('Edit'));
 		} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
-			return array(
-				$redirectUrl,
-				'#',
-				tr('N/A')
-			);
+			return array($redirectUrl, '#',tr('N/A'));
 		} else {
-			return array(
-				tr('N/A'),
-				'#',
-				tr('N/A')
-			);
+			return array(tr('N/A'), '#', tr('N/A'));
 		}
 	}
 }
@@ -213,136 +243,146 @@ function _client_generateDomainAliasRedirect($id, $status, $redirectUrl)
  */
 function client_generateSubdomainsList($tpl, $userId)
 {
-	$domainId = get_user_domain_id($userId);
+	if (customerHasFeature('subdomains')) {
+		$domainId = get_user_domain_id($userId);
 
-	// Subdomains
-	$query = "
-		SELECT
-			`subdomain_id`, `subdomain_name`, `subdomain_mount`, `subdomain_status`,
-			`subdomain_url_forward`, `domain_name`
-		FROM
-			`subdomain`
-		JOIN
-			`domain` ON (`subdomain`.`domain_id` = `domain`.`domain_id`)
-		WHERE
-			`subdomain`.`domain_id` = ?
-		ORDER BY
-			`subdomain_name`
-	";
-	$stmt1 = exec_query($query, $domainId);
+		// Subdomains
+		$query = "
+			SELECT
+				`subdomain_id`, `subdomain_name`, `subdomain_mount`, `subdomain_status`,
+				`subdomain_url_forward`, `domain_name`
+			FROM
+				`subdomain`
+			JOIN
+				`domain` ON (`subdomain`.`domain_id` = `domain`.`domain_id`)
+			WHERE
+				`subdomain`.`domain_id` = ?
+			ORDER BY
+				`subdomain_name`
+		";
+		$stmt1 = exec_query($query, $domainId);
 
-	// Domain aliases subdomains
-	$query = "
-		SELECT
-			`subdomain_alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`,
-			`subdomain_alias_url_forward`, `subdomain_alias_status`, `alias_name`
-		FROM
-			`subdomain_alias`
-		JOIN
-			`domain_aliasses` ON `subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
-		WHERE
-			`domain_id` = ?
-		ORDER BY
-			`subdomain_alias_name`
-	";
-	$stmt2 = exec_query($query, $domainId);
+		// Domain aliases subdomains
+		$query = "
+			SELECT
+				`subdomain_alias_id`, `subdomain_alias_name`, `subdomain_alias_mount`,
+				`subdomain_alias_url_forward`, `subdomain_alias_status`, `alias_name`
+			FROM
+				`subdomain_alias`
+			JOIN
+				`domain_aliasses` ON `subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
+			WHERE
+				`domain_id` = ?
+			ORDER BY
+				`subdomain_alias_name`
+		";
+		$stmt2 = exec_query($query, $domainId);
 
-	if (!($stmt1->rowCount() || $stmt2->rowCount())) {
-		$tpl->assign(array(
-						  'SUB_MSG' => tr('You do not have subdomains.'),
-						  'SUB_LIST' => ''));
+		if (!($stmt1->rowCount() || $stmt2->rowCount())) {
+			$tpl->assign(array(
+							  'SUB_MSG' => tr('You do not have subdomains.'),
+							  'SUB_LIST' => ''));
+		} else {
+			while (!$stmt1->EOF) {
+				list(
+					$action, $actionScript, $isStatusOk
+				) = _client_generateSubdomainAction($stmt1->fields['subdomain_id'],
+													$stmt1->fields['subdomain_status']);
+
+				list(
+					$redirectUrl, $editLink, $edit
+				) = _client_generateSubdomainRedirect($stmt1->fields['subdomain_id'],
+													  $stmt1->fields['subdomain_status'],
+													  $stmt1->fields['subdomain_url_forward'], 'dmn');
+
+				$name = decode_idna($stmt1->fields['subdomain_name']);
+				$redirectUrl = decode_idna($redirectUrl);
+
+				if ($isStatusOk) {
+					$tpl->assign(
+						array(
+							 'SUB_NAME' => tohtml($name),
+							 'SUB_ALIAS_NAME' => tohtml($stmt1->fields['domain_name']),
+							 'SUB_STATUS_RELOAD_FALSE' => ''));
+
+					$tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
+				} else {
+					$tpl->assign(
+						array(
+							 'SUB_NAME' => tohtml($name),
+							 'SUB_ALIAS_NAME' => tohtml($stmt1->fields['domain_name']),
+							 'SUB_STATUS_RELOAD_TRUE' => ''));
+
+					$tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
+				}
+
+				$tpl->assign(
+					array(
+						 'SUB_NAME' => tohtml($name),
+						 'SUB_MOUNT' => tohtml($stmt1->fields['subdomain_mount']),
+						 'SUB_REDIRECT' => $redirectUrl,
+						 'SUB_STATUS' => translate_dmn_status($stmt1->fields['subdomain_status']),
+						 'SUB_EDIT_LINK' => $editLink,
+						 'SUB_EDIT' => $edit,
+						 'SUB_ACTION' => $action,
+						 'SUB_ACTION_SCRIPT' => $actionScript));
+
+				$tpl->parse('SUB_ITEM', '.sub_item');
+				$stmt1->moveNext();
+			}
+
+			while (!$stmt2->EOF) {
+				list(
+					$action, $actionScript, $isStatusOk
+					) = _client_generateSubdomainAliasAction($stmt2->fields['subdomain_alias_id'],
+															 $stmt2->fields['subdomain_alias_status']);
+
+				list(
+					$redirectUrl, $editLink, $edit
+					) = _client_generateSubdomainRedirect($stmt2->fields['subdomain_alias_id'],
+														  $stmt2->fields['subdomain_alias_status'],
+														  $stmt2->fields['subdomain_alias_url_forward'], 'als');
+
+				$name = decode_idna($stmt2->fields['subdomain_alias_name']);
+				$redirectUrl = decode_idna($redirectUrl);
+
+				if ($isStatusOk) {
+					$tpl->assign(
+						array(
+							 'SUB_NAME' => tohtml($name),
+							 'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
+							 'SUB_STATUS_RELOAD_FALSE' => ''));
+
+					$tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
+				} else {
+					$tpl->assign(
+						array(
+							 'SUB_NAME' => tohtml($name),
+							 'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
+							 'SUB_STATUS_RELOAD_TRUE' => ''));
+
+					$tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
+				}
+
+				$tpl->assign(
+					array(
+						 'SUB_NAME' => tohtml($name),
+						 'SUB_MOUNT' => tohtml($stmt2->fields['subdomain_alias_mount']),
+						 'SUB_REDIRECT' => $redirectUrl,
+						 'SUB_STATUS' => translate_dmn_status($stmt2->fields['subdomain_alias_status']),
+						 'SUB_EDIT_LINK' => $editLink,
+						 'SUB_EDIT' => $edit,
+						 'SUB_ACTION' => $action,
+						 'SUB_ACTION_SCRIPT' => $actionScript));
+
+				$tpl->parse('SUB_ITEM', '.sub_item');
+				$stmt2->moveNext();
+			}
+
+			$tpl->assign('SUB_MESSAGE', '');
+		}
 	} else {
-		while (!$stmt1->EOF) {
-			list(
-				$action, $actionScript, $isStatusOk
-			) = _client_generateSubdomainAction($stmt1->fields['subdomain_id'],
-												$stmt1->fields['subdomain_status']);
-
-			list(
-				$redirectUrl, $editLink, $edit
-			) = _client_generateSubdomainRedirect($stmt1->fields['subdomain_id'],
-												  $stmt1->fields['subdomain_status'],
-												  $stmt1->fields['subdomain_url_forward'], 'dmn');
-
-			$name = decode_idna($stmt1->fields['subdomain_name']);
-			$redirectUrl = decode_idna($redirectUrl);
-
-			if ($isStatusOk) {
-				$tpl->assign(array(
-								  'SUB_NAME' => tohtml($name),
-								  'SUB_ALIAS_NAME' => tohtml($stmt1->fields['domain_name']),
-								  'SUB_STATUS_RELOAD_FALSE' => ''));
-
-				$tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
-			} else {
-				$tpl->assign(array(
-								  'SUB_NAME' => tohtml($name),
-								  'SUB_ALIAS_NAME' => tohtml($stmt1->fields['domain_name']),
-								  'SUB_STATUS_RELOAD_TRUE' => ''));
-
-				$tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
-			}
-
-			$tpl->assign(array(
-							  'SUB_NAME' => tohtml($name),
-							  'SUB_MOUNT' => tohtml($stmt1->fields['subdomain_mount']),
-							  'SUB_REDIRECT' => $redirectUrl,
-							  'SUB_STATUS' => translate_dmn_status($stmt1->fields['subdomain_status']),
-							  'SUB_EDIT_LINK' => $editLink,
-							  'SUB_EDIT' => $edit,
-							  'SUB_ACTION' => $action,
-							  'SUB_ACTION_SCRIPT' => $actionScript));
-
-			$tpl->parse('SUB_ITEM', '.sub_item');
-			$stmt1->moveNext();
-		}
-
-		while (!$stmt2->EOF) {
-			list(
-				$action, $actionScript, $isStatusOk
-			) = _client_generateSubdomainAliasAction($stmt2->fields['subdomain_alias_id'],
-													 $stmt2->fields['subdomain_alias_status']);
-
-			list(
-				$redirectUrl, $editLink, $edit
-			) = _client_generateSubdomainRedirect($stmt2->fields['subdomain_alias_id'],
-												  $stmt2->fields['subdomain_alias_status'],
-												  $stmt2->fields['subdomain_alias_url_forward'], 'als');
-
-			$name = decode_idna($stmt2->fields['subdomain_alias_name']);
-			$redirectUrl = decode_idna($redirectUrl);
-
-			if ($isStatusOk) {
-				$tpl->assign(array(
-								  'SUB_NAME' => tohtml($name),
-								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
-								  'SUB_STATUS_RELOAD_FALSE' => ''));
-
-				$tpl->parse('SUB_STATUS_RELOAD_TRUE', 'sub_status_reload_true');
-			} else {
-				$tpl->assign(array(
-								  'SUB_NAME' => tohtml($name),
-								  'SUB_ALIAS_NAME' => tohtml($stmt2->fields['alias_name']),
-								  'SUB_STATUS_RELOAD_TRUE' => ''));
-
-				$tpl->parse('SUB_STATUS_RELOAD_FALSE', 'sub_status_reload_false');
-			}
-
-			$tpl->assign(array(
-							  'SUB_NAME' => tohtml($name),
-							  'SUB_MOUNT' => tohtml($stmt2->fields['subdomain_alias_mount']),
-							  'SUB_REDIRECT' => $redirectUrl,
-							  'SUB_STATUS' => translate_dmn_status($stmt2->fields['subdomain_alias_status']),
-							  'SUB_EDIT_LINK' => $editLink,
-							  'SUB_EDIT' => $edit,
-							  'SUB_ACTION' => $action,
-							  'SUB_ACTION_SCRIPT' => $actionScript));
-
-			$tpl->parse('SUB_ITEM', '.sub_item');
-			$stmt2->moveNext();
-		}
-
-		$tpl->assign('SUB_MESSAGE', '');
+		$tpl->assign('SUBDOMAINS_BLOCK', '');
 	}
 }
 
@@ -362,23 +402,11 @@ function _client_generateSubdomainRedirect($id, $status, $redirectUrl, $entityTy
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(
-			($redirectUrl == 'no') ? '-' : $redirectUrl,
-			'subdomain_edit.php?id=' . $id . '&amp;type=' . $entityType,
-			tr('Edit')
-		);
+		return array(($redirectUrl == 'no') ? '-' : $redirectUrl, 'subdomain_edit.php?id=' . $id . '&amp;type=' . $entityType, tr('Edit'));
 	} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
-		return array(
-			($redirectUrl == 'no') ? '-' : $redirectUrl,
-			'#',
-			tr('N/A')
-		);
+		return array(($redirectUrl == 'no') ? '-' : $redirectUrl, '#', tr('N/A'));
 	} else {
-		return array(
-			tr('N/A'),
-			'#',
-			tr('N/A')
-		);
+		return array(tr('N/A'), '#', tr('N/A'));
 	}
 }
 
@@ -396,17 +424,9 @@ function _client_generateSubdomainAction($id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(
-			tr('Delete'),
-			'subdomain_delete.php?id=' . $id,
-			true
-		);
+		return array(tr('Delete'), 'subdomain_delete.php?id=' . $id, true);
 	} else {
-		return array(
-			tr('N/A'),
-			'#',
-			false
-		);
+		return array(tr('N/A'), '#', false);
 	}
 }
 
@@ -424,17 +444,9 @@ function _client_generateSubdomainAliasAction($id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(
-			tr('Delete'),
-			'alssub_delete.php?id=' . $id,
-			true
-		);
+		return array(tr('Delete'), 'alssub_delete.php?id=' . $id, true);
 	} else {
-		return array(
-			tr('N/A'),
-			'#',
-			false
-		);
+		return array(tr('N/A'), '#', false);
 	}
 }
 
@@ -447,71 +459,77 @@ function _client_generateSubdomainAliasAction($id, $status)
  */
 function client_generateCustomDnsRecordsList($tpl, $userId)
 {
-	$domainId = get_user_domain_id($userId);
+	if (customerHasFeature('custom_dns_records')) {
+		$domainId = get_user_domain_id($userId);
 
-	$query = "
-		SELECT
-			`domain_dns`.`domain_dns_id`, `domain_dns`.`domain_id`,
-			`domain_dns`.`domain_dns`, `domain_dns`.`domain_class`,
-			`domain_dns`.`domain_type`, `domain_dns`.`domain_text`,
-			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) `domain_name`,
-			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) `domain_status`,
-			`domain_dns`.`protected`
-		FROM
-			`domain_dns`
-		LEFT JOIN
-			`domain_aliasses` USING (`alias_id`, `domain_id`), `domain`
-		WHERE
-			`domain_dns`.`domain_id` = ?
-		AND
-			`domain`.`domain_id` = `domain_dns`.`domain_id`
-		ORDER BY
-			`domain_id`, `alias_id`, `domain_dns`, `domain_type`
-	";
-	$stmt = exec_query($query, $domainId);
+		$query = "
+			SELECT
+				`domain_dns`.`domain_dns_id`, `domain_dns`.`domain_id`,
+				`domain_dns`.`domain_dns`, `domain_dns`.`domain_class`,
+				`domain_dns`.`domain_type`, `domain_dns`.`domain_text`,
+				IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) `domain_name`,
+				IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) `domain_status`,
+				`domain_dns`.`protected`
+			FROM
+				`domain_dns`
+			LEFT JOIN
+				`domain_aliasses` USING (`alias_id`, `domain_id`), `domain`
+			WHERE
+				`domain_dns`.`domain_id` = ?
+			AND
+				`domain`.`domain_id` = `domain_dns`.`domain_id`
+			ORDER BY
+				`domain_id`, `alias_id`, `domain_dns`, `domain_type`
+		";
+		$stmt = exec_query($query, $domainId);
 
-	if ($stmt->rowCount() == 0) {
-		$tpl->assign(array(
-						  'DNS_MSG' => tr('You do not have custom DNS records.'),
-						  'DNS_LIST' => ''));
-	} else {
-		while (!$stmt->EOF) {
-			list(
-				$actionDelete, $actionScriptDelete
-			) = _client_generateCustomDnsRecordAction('Delete',
-													  $stmt->fields['domain_dns_id'],
-													  ($stmt->fields['protected'] == 'no')
-														  ? $stmt->fields['domain_status'] : 'PROTECTED');
+		if ($stmt->rowCount() == 0) {
+			$tpl->assign(
+				array(
+					 'DNS_MSG' => tr('You do not have custom DNS records.'),
+					 'DNS_LIST' => ''));
+		} else {
+			while (!$stmt->EOF) {
+				list(
+					$actionDelete, $actionScriptDelete
+				) = _client_generateCustomDnsRecordAction(
+					'Delete',
+					$stmt->fields['domain_dns_id'],
+					($stmt->fields['protected'] == 'no')? $stmt->fields['domain_status'] : 'PROTECTED');
 
-			list(
-				$actionEdit, $actionScriptEdit
-			) = _client_generateCustomDnsRecordAction('Edit',
-													  $stmt->fields['domain_dns_id'],
-													  ($stmt->fields['protected'] == 'no')
-														  ? $stmt->fields['domain_status'] : 'PROTECTED');
+				list(
+					$actionEdit, $actionScriptEdit
+					) = _client_generateCustomDnsRecordAction(
+					'Edit',
+					$stmt->fields['domain_dns_id'],
+					($stmt->fields['protected'] == 'no') ? $stmt->fields['domain_status'] : 'PROTECTED');
 
-			$domainName = decode_idna($stmt->fields['domain_name']);
-			$sbd_name = $stmt->fields['domain_dns'];
-			$sbd_data = $stmt->fields['domain_text'];
+				$domainName = decode_idna($stmt->fields['domain_name']);
+				$sbd_name = $stmt->fields['domain_dns'];
+				$sbd_data = $stmt->fields['domain_text'];
 
-			$tpl->assign(array(
-							  'DNS_DOMAIN' => tohtml($domainName),
-							  'DNS_NAME' => tohtml($sbd_name),
-							  'DNS_CLASS' => tohtml($stmt->fields['domain_class']),
-							  'DNS_TYPE' => tohtml($stmt->fields['domain_type']),
-							  'DNS_DATA' => tohtml($sbd_data),
-							  'DNS_ACTION_SCRIPT_DELETE' => tohtml($actionScriptDelete),
-							  'DNS_ACTION_DELETE' => tohtml($actionDelete),
-							  'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
-							  'DNS_ACTION_EDIT' => tohtml($actionEdit),
-							  'DNS_TYPE_RECORD' => tr("%s record", $stmt->fields['domain_type'])));
+				$tpl->assign(
+					array(
+						 'DNS_DOMAIN' => tohtml($domainName),
+						 'DNS_NAME' => tohtml($sbd_name),
+						 'DNS_CLASS' => tohtml($stmt->fields['domain_class']),
+						 'DNS_TYPE' => tohtml($stmt->fields['domain_type']),
+						 'DNS_DATA' => tohtml($sbd_data),
+						 'DNS_ACTION_SCRIPT_DELETE' => tohtml($actionScriptDelete),
+						 'DNS_ACTION_DELETE' => tohtml($actionDelete),
+						 'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
+						 'DNS_ACTION_EDIT' => tohtml($actionEdit),
+						 'DNS_TYPE_RECORD' => tr("%s record", $stmt->fields['domain_type'])));
 
-			$tpl->parse('DNS_ITEM', '.dns_item');
-			$stmt->moveNext();
+				$tpl->parse('DNS_ITEM', '.dns_item');
+				$stmt->moveNext();
+			}
+
+			$tpl->parse('DNS_LIST', 'dns_list');
+			$tpl->assign('DNS_MESSAGE', '');
 		}
-
-		$tpl->parse('DNS_LIST', 'dns_list');
-		$tpl->assign('DNS_MESSAGE', '');
+	} else {
+		$tpl->assign('CUSTOM_DNS_RECORDS_BLOCK', '');
 	}
 }
 
@@ -530,21 +548,12 @@ function _client_generateCustomDnsRecordAction($action, $id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(
-			($action == 'Edit') ? tr('Edit') : tr('Delete'),
-			'dns_' . strtolower($action) . '.php?edit_id=' . $id
-		);
+		return array(($action == 'Edit') ? tr('Edit') : tr('Delete'),'dns_' . strtolower($action) . '.php?edit_id=' . $id);
 	} elseif ($action != 'Edit' && $status == 'PROTECTED') {
-		return array(
-			tr('N/A'),
-			'protected'
-		);
+		return array(tr('N/A'), 'protected');
 	}
 
-	return array(
-		tr('N/A'),
-		'#'
-	);
+	return array(tr('N/A') ,  '#');
 }
 
 /************************************************************************************
@@ -573,21 +582,29 @@ $tpl->define_dynamic(
 		 'page_message' => 'page',
 		 'logged_from' => 'page',
 
-		 'als_message' => 'page',
-		 'als_list' => 'page',
+		 'domain_list' => 'page',
+		 'domain_item' => 'domain_list',
+		 'domain_status_reload_true' => 'domain_item',
+		 'domain_status_reload_false' => 'domain_item',
+
+
+		 'domain_aliases_block' => 'page',
+		 'als_message' => 'domain_aliases_block',
+		 'als_list' => 'domain_aliases_block',
 		 'als_item' => 'als_list',
 		 'als_status_reload_true' => 'als_item',
 		 'als_status_reload_false' => 'als_item',
 
-		 'sub_message' => 'page',
-		 'sub_list' => 'page',
+		 'subdomains_block', 'page',
+		 'sub_message' => 'subdomains_block',
+		 'sub_list' => 'subdomains_block',
 		 'sub_item' => 'sub_list',
 		 'sub_status_reload_true' => 'sub_item',
 		 'sub_status_reload_false' => 'sub_item',
 
-		 'isactive_dns' => 'page',
-		 'dns_message' => 'isactive_dns',
-		 'dns_list' => 'isactive_dns',
+		 'custom_dns_records_block' => 'page',
+		 'dns_message' => 'custom_dns_records_block',
+		 'dns_list' => 'custom_dns_records_block',
 		 'dns_item' => 'dns_list')
 );
 
@@ -599,6 +616,11 @@ $tpl->assign(
 		 'ISP_LOGO' => layout_getUserLogo(),
 
 		 'TR_MANAGE_DOMAINS' => tr('Manage domains'),
+
+		 'TR_DOMAINS' => 'Domains',
+		 'TR_CREATE_DATE' => 'Creation date',
+		 'TR_EXPIRE_DATE' => 'Expire date',
+
 		 'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
 		 'TR_SUBDOMAINS' => tr('Subdomains'),
 
@@ -623,6 +645,7 @@ gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domain
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 gen_logged_from($tpl);
 
+client_generateDomainsList($tpl, $_SESSION['user_id']);
 client_generateSubdomainsList($tpl, $_SESSION['user_id']);
 client_generateDomainAliasesList($tpl, $_SESSION['user_id']);
 client_generateCustomDnsRecordsList($tpl, $_SESSION['user_id']);

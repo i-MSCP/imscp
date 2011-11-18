@@ -336,7 +336,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
-if (!customerHasFeature('domain_aliasses')) {
+if (!customerHasFeature('domain_aliases')) {
     redirectTo('index.php');
 }
 

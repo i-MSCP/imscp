@@ -767,7 +767,8 @@ function customerHasFeature($featureName, $reload = false)
 		$availableFeatures = array(
 			'domain' => ($domainProperties['domain_alias_limit'] != '-1'
 						 || $domainProperties['domain_subd_limit'] != '-1'
-						 || $domainProperties['domain_dns'] != 'no') ? true : false,
+						 || $domainProperties['domain_dns'] == 'yes'
+						 || $domainProperties['phpini_perm_system'] == 'yes') ? true : false,
 			'php' => ($domainProperties['domain_php'] == 'yes') ? true : false,
 			'php_editor' => ($domainProperties['phpini_perm_system'] == 'yes') ? true : false,
 			'cgi' => ($domainProperties['domain_cgi'] == 'yes') ? true : false,
@@ -775,7 +776,7 @@ function customerHasFeature($featureName, $reload = false)
 			'sql' => ($domainProperties['domain_sqld_limit'] != '-1') ? true : false,
 			'mail' => ($domainProperties['domain_mailacc_limit'] != '-1') ? true : false,
 			'subdomains' => ($domainProperties['domain_subd_limit'] != '-1') ? true : false,
-			'domain_aliasses' => ($domainProperties['domain_alias_limit'] != '-1') ? true : false,
+			'domain_aliases' => ($domainProperties['domain_alias_limit'] != '-1') ? true : false,
 			'custom_dns_records' => ($domainProperties['domain_dns'] != 'no') ? true : false,
 			'awstats' => ($cfg->AWSTATS_ACTIVE != 'no') ? true : false,
 			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $domainProperties['allowbackup'] != 'no') ? true : false,

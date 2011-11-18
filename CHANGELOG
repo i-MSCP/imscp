@@ -29,6 +29,7 @@ Tickets:
 	- Fixed #255: Defect - Hide support feature menu item at user level
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
+	- Fixed #264: Defect - PHP Editor not available
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

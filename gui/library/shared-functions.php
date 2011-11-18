@@ -1117,6 +1117,7 @@ function is_serialized($data)
  *
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
+ * @deprecated use customerHasFeature() instead
  */
 function check_permissions($tpl)
 {

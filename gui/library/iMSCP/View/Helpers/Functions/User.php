@@ -181,7 +181,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 		$tpl->assign('SUBDOMAINS_FEATURE', '');
 	}
 
-	if (customerHasFeature('domain_aliasses')) {
+	if (customerHasFeature('domain_aliases')) {
 		$tpl->assign('TR_LMENU_ADD_DOMAIN_ALIAS', tr('Add domain alias'));
 	} else {
 		$tpl->assign('DOMAIN_ALIASES_FEATURE', '');
@@ -229,7 +229,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	}
 
 	if (customerHasFeature('php_editor')) {
-		$tpl->assign('TR_LMENU_PHP_DIRECTIVES_EDITOR', tr('PHP directives editor'));
+		$tpl->assign('TR_LMENU_PHP_DIRECTIVES_EDITOR', tr('PHP Editor'));
 	} else {
 		$tpl->assign('PHP_DIRECTIVES_EDITOR_FEATURE', '');
 	}
