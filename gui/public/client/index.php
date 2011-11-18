@@ -406,7 +406,7 @@ $tpl->assign(
 		 'SQL_USERS_FEATURE_STATUS' => gen_num_limit_msg($sqlUsersCount, $domainProperties['domain_sqlu_limit']),
 		 'TR_PHP_SUPPORT_FEATURE' => tr('PHP'),
 		 'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP Editor'),
-		 'TR_CGI_SUPPORT_FEATURE' => tr('CGI support'),
+		 'TR_CGI_SUPPORT_FEATURE' => tr('CGI'),
 		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records'),
 		 'TR_APP_INSTALLER_FEATURE' => tr('Softwares installer'),
 		 'TR_BACKUP_FEATURE' => tr('Backup'),
