@@ -108,9 +108,9 @@ sub engine {
 
 	## First we add / alter main domain
 	## Then we add / alter subdomain for main domain
-	## Next we add / alter alias for main domai
+	## Next we add / alter alias for main domain
 	## Next we add / alter subdomain for alias
-	## Next we process mailboxex
+	## Next we process mailboxes
 	## Next we process .htaccess related data
 	## Now we can delete in order alias subdomains
 	## Subdomains
