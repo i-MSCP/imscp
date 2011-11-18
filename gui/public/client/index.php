@@ -194,15 +194,13 @@ function client_generateFeatureStatus($tpl)
 				$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
 		}
 	} else {
-		$tpl->assign('BACKUP_DOMAIN_FEATURE', '');
+		$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
 	}
 
 	if (customerHasFeature('awstats')) {
-		$tpl->assign(
-			array(
-				 'TR_AWSTATS_FEATURE' => tr('Web statistics'),
-				  'AWSTATS_FEATURE_STATUS' => $trYes));
-
+		$tpl->assign('AWSTATS_FEATURE_STATUS', $trYes);
+	} else {
+		$tpl->assign('AWSTATS_FEATURE_STATUS', $trNo);
 	}
 }
 
@@ -412,6 +410,7 @@ $tpl->assign(
 		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records'),
 		 'TR_APP_INSTALLER_FEATURE' => tr('Softwares installer'),
 		 'TR_BACKUP_FEATURE' => tr('Backup'),
+		 'TR_AWSTATS_FEATURE' => tr('Web statistics (AWStats)'),
 
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 		 'TR_DISK_USAGE' => tr('Disk usage')));
