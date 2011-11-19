@@ -32,6 +32,7 @@ Tickets:
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
 	- Fixed #264: Defect - PHP Editor not available
 	- Fixed #267: Defect - mod_cband configurations are not removed
+	- Fixed #270: Defect - Users Can´t acces domain overview
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

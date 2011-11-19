@@ -595,7 +595,7 @@ $tpl->define_dynamic(
 		 'als_status_reload_true' => 'als_item',
 		 'als_status_reload_false' => 'als_item',
 
-		 'subdomains_block', 'page',
+		 'subdomains_block' => 'page',
 		 'sub_message' => 'subdomains_block',
 		 'sub_list' => 'subdomains_block',
 		 'sub_item' => 'sub_list',
