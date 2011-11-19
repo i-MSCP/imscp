@@ -46,16 +46,18 @@ sub parseIPs{
 		my $ips = {};
 
 		while($data =~ m/^([^\s]+)\s{1,}[^\n]*\n(?:(?:\s[^\d]+:)?(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[^\n]*\n)?/mgi){
-			if($1 ne 'lo'){
-				my @cards = split(':', $1);
+			my $_card	= $1;
+			my $_ip		= $2;
+			if($_card ne 'lo'){
+				my @cards = split(':', $_card);
 				my $card = shift(@cards);
 				my $slot = shift(@cards) || 0;
 				$slot = 0 if $slot !~ /^\d*$/;
 				$self->{cards}->{$card}->{'1Slot'} = $slot + 1 if (!$self->{cards}->{$card}->{'1Slot'} || $self->{cards}->{$card}->{'1Slot'} <= $slot);
-				if($2){
-					$self->{ips}->{$2} = {} unless $self->{ips}->{$2} || $2;
-					$self->{ips}->{$2}->{card} = $card;
-					$self->{ips}->{$2}->{vcard} = $1 if $1 ne $card;
+				if($_ip){
+					$self->{ips}->{$_ip} = {} unless $self->{ips}->{$_ip} || $_ip;
+					$self->{ips}->{$_ip}->{card} = $card;
+					$self->{ips}->{$_ip}->{vcard} = $_card if $_card ne $card;
 				}
 			}
 		}
