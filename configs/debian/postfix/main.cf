@@ -38,6 +38,7 @@ command_directory            = /usr/sbin
 daemon_directory             = /usr/lib/postfix
 
 # Some common configuration parameters
+inet_protocols               = ipv4, ipv6
 inet_interfaces              = all
 mynetworks_style             = host
 
