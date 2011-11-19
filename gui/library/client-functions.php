@@ -62,7 +62,9 @@ function get_domain_default_props($domainAdminId, $returnWKeys = false)
 				`domain_status`, `domain_alias_limit`, `domain_subd_limit`,
 				`domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
 				`domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
-				`domain_software_allowed`, `phpini_perm_system`
+				`domain_software_allowed`, `phpini_perm_system`,
+				`phpini_perm_register_globals`, `phpini_perm_allow_url_fopen`,
+				`phpini_perm_display_errors`, `phpini_perm_disable_functions`
 			FROM
 				`domain`
 			WHERE
@@ -762,27 +764,31 @@ function customerHasFeature($featureName, $reload = false)
 	if (null === $availableFeatures || $reload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
-		$domainProperties = get_domain_default_props((int)$_SESSION['user_id'], true);
+		$dmnProps = get_domain_default_props((int)$_SESSION['user_id'], true);
 
 		$availableFeatures = array(
-			'domain' => ($domainProperties['domain_alias_limit'] != '-1'
-						 || $domainProperties['domain_subd_limit'] != '-1'
-						 || $domainProperties['domain_dns'] == 'yes'
-						 || $domainProperties['phpini_perm_system'] == 'yes') ? true : false,
-			'php' => ($domainProperties['domain_php'] == 'yes') ? true : false,
-			'php_editor' => ($domainProperties['phpini_perm_system'] == 'yes') ? true : false,
-			'cgi' => ($domainProperties['domain_cgi'] == 'yes') ? true : false,
-			'ftp' => ($domainProperties['domain_ftpacc_limit'] != '-1') ? true : false,
-			'sql' => ($domainProperties['domain_sqld_limit'] != '-1') ? true : false,
-			'mail' => ($domainProperties['domain_mailacc_limit'] != '-1') ? true : false,
-			'subdomains' => ($domainProperties['domain_subd_limit'] != '-1') ? true : false,
-			'domain_aliases' => ($domainProperties['domain_alias_limit'] != '-1') ? true : false,
-			'custom_dns_records' => ($domainProperties['domain_dns'] != 'no') ? true : false,
+			'domain' => ($dmnProps['domain_alias_limit'] != '-1'
+						 || $dmnProps['domain_subd_limit'] != '-1'
+						 || $dmnProps['domain_dns'] == 'yes'
+						 || $dmnProps['phpini_perm_system'] == 'yes') ? true : false,
+			'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
+			'php_editor' => ($dmnProps['phpini_perm_system'] == 'yes' &&
+							 ($dmnProps['phpini_perm_register_globals'] == 'yes'
+							  || $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
+							  || $dmnProps['phpini_perm_display_errors'] == 'yes'
+							  || $dmnProps['phpini_perm_disable_functions'] == 'yes')) ? true : false,
+			'cgi' => ($dmnProps['domain_cgi'] == 'yes') ? true : false,
+			'ftp' => ($dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
+			'sql' => ($dmnProps['domain_sqld_limit'] != '-1') ? true : false,
+			'mail' => ($dmnProps['domain_mailacc_limit'] != '-1') ? true : false,
+			'subdomains' => ($dmnProps['domain_subd_limit'] != '-1') ? true : false,
+			'domain_aliases' => ($dmnProps['domain_alias_limit'] != '-1') ? true : false,
+			'custom_dns_records' => ($dmnProps['domain_dns'] != 'no') ? true : false,
 			'awstats' => ($cfg->AWSTATS_ACTIVE != 'no') ? true : false,
-			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $domainProperties['allowbackup'] != 'no') ? true : false,
+			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,
-			'aps' => ($domainProperties['domain_software_allowed'] != 'no') ? true : false);
+			'aps' => ($dmnProps['domain_software_allowed'] != 'no') ? true : false);
 
 		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
 			$query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
