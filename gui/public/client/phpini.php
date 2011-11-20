@@ -204,6 +204,7 @@ if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
 	$tplVars['TR_STATUS'] = tr('Status');
 	$tplVars['TR_ALLOWED'] = tr('Allowed');
 	$tplVars['TR_DISALLOWED'] = tr('Disallowed');
+	$tplVars['TR_HELP'] = tr('Help');
 	$tplVars['TR_DISABLE_FUNCTIONS_EXEC'] = tr('PHP exec() function');
 	$tplVars['TR_EXEC_HELP'] = tr("When allowed, scripts can use the PHP exec() function. This function is needed by many applications but can cause some security issues");
 	$tplVars['EXEC_ALLOWED'] = ($allowed) ? $htmlChecked : '';
