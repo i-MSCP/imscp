@@ -282,7 +282,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	} else {
 		$tplVars['TR_SUBDOMAINS_LIMIT'] = tr('Subdomains limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['SUBDOMAIN_LIMIT'] = tohtml($data['domain_subd_limit']);
-		$tplVars['TR_CUSTOMER_SUBDOMAINS_COMSUPTION'] = tohtml($data['nbSubdomains']) . ' / ' . (($data['fallback_domain_subd_limit'] != 0) ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited'));
+		$tplVars['TR_CUSTOMER_SUBDOMAINS_COMSUPTION'] =  ($data['fallback_domain_subd_limit'] != -1) ? tohtml($data['nbSubdomains']) . ' / ' . (($data['fallback_domain_subd_limit'] != 0) ? tohtml($data['fallback_domain_subd_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SUBDOMAINS_COMSUPTION'] = tohtml($data['current_sub_cnt']) . ' / ' . (($data['max_sub_cnt'] != 0) ? tohtml($data['max_sub_cnt']) : tr('Unlimited'));
 	}
 
@@ -292,7 +292,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	} else {
 		$tplVars['TR_ALIASSES_LIMIT'] = tr('Domain aliases limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['DOMAIN_ALIASSES_LIMIT'] = tohtml($data['domain_alias_limit']);
-		$tplVars['TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION'] = tohtml($data['nbAliasses']) . ' / ' . (($data['fallback_domain_alias_limit'] != 0) ? tohtml($data['fallback_domain_alias_limit']) : tr('Unlimited'));
+		$tplVars['TR_CUSTOMER_DOMAIN_ALIASSES_COMSUPTION'] = ($data['fallback_domain_alias_limit'] != -1) ? tohtml($data['nbAliasses']) . ' / ' . (($data['fallback_domain_alias_limit'] != 0) ? tohtml($data['fallback_domain_alias_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_DOMAIN_ALIASSES_COMSUPTION'] = tohtml($data['current_als_cnt']) . ' / ' . (($data['max_als_cnt'] != 0) ? tohtml($data['max_als_cnt']) : tr('Unlimited'));
 	}
 
@@ -302,7 +302,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	} else {
 		$tplVars['TR_MAIL_ACCOUNTS_LIMIT'] = tr('Mail accounts limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['MAIL_ACCOUNTS_LIMIT'] = tohtml($data['domain_mailacc_limit']);
-		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited'));
+		$tplVars['TR_CUSTOMER_MAIL_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_mailacc_limit'] != -1) ? tohtml($data['nbMailAccounts']) . ' / ' . (($data['fallback_domain_mailacc_limit'] != 0) ? tohtml($data['fallback_domain_mailacc_limit']) : tr('Unlimited')): tr('Disabled');
 		$tplVars['TR_RESELLER_MAIL_ACCOUNTS_COMSUPTION'] = tohtml($data['current_mail_cnt']) . ' / ' . (($data['max_mail_cnt'] != 0) ? tohtml($data['max_mail_cnt']) : tr('Unlimited'));
 	}
 
@@ -312,7 +312,7 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	} else {
 		$tplVars['TR_FTP_ACCOUNTS_LIMIT'] = tr('FTP accounts limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['FTP_ACCOUNTS_LIMIT'] = tohtml($data['domain_ftpacc_limit']);
-		$tplVars['TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION'] = tohtml($data['nbFtpAccounts']) . ' / ' . (($data['fallback_domain_ftpacc_limit'] != 0) ? tohtml($data['fallback_domain_ftpacc_limit']) : tr('Unlimited'));
+		$tplVars['TR_CUSTOMER_FTP_ACCOUNTS_COMSUPTION'] = ($data['fallback_domain_ftpacc_limit'] != -1) ? tohtml($data['nbFtpAccounts']) . ' / ' . (($data['fallback_domain_ftpacc_limit'] != 0) ? tohtml($data['fallback_domain_ftpacc_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_FTP_ACCOUNTS_COMSUPTION'] = tohtml($data['current_ftp_cnt']) . ' / ' . (($data['max_ftp_cnt'] != 0) ? tohtml($data['max_ftp_cnt']) : tr('Unlimited'));
 	}
 
@@ -322,12 +322,12 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	} else {
 		$tplVars['TR_SQL_DATABASES_LIMIT'] = tr('SQL databases limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['SQL_DATABASES_LIMIT'] = tohtml($data['domain_sqld_limit']);
-		$tplVars['TR_CUSTOMER_SQL_DATABASES_COMSUPTION'] = tohtml($data['nbSqlDatabases']) . ' / ' .(($data['fallback_domain_sqld_limit'] != 0) ? tohtml($data['fallback_domain_sqld_limit']) : tr('Unlimited'));
+		$tplVars['TR_CUSTOMER_SQL_DATABASES_COMSUPTION'] = ($data['fallback_domain_sqld_limit'] != -1) ? tohtml($data['nbSqlDatabases']) . ' / ' .(($data['fallback_domain_sqld_limit'] != 0) ? tohtml($data['fallback_domain_sqld_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SQL_DATABASES_COMSUPTION'] = tohtml($data['current_sql_db_cnt']) . ' / ' . (($data['max_sql_db_cnt'] != 0) ? tohtml($data['max_sql_db_cnt']) : tr('Unlimited'));
 
 		$tplVars['TR_SQL_USERS_LIMIT'] = tr('SQL users limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['SQL_USERS_LIMIT'] = tohtml($data['domain_sqlu_limit']);
-		$tplVars['TR_CUSTOMER_SQL_USERS_COMSUPTION'] = tohtml($data['nbSqlUsers']) . ' / ' . (($data['fallback_domain_sqlu_limit'] != 0) ? tohtml($data['fallback_domain_sqlu_limit']) : tr('Unlimited'));
+		$tplVars['TR_CUSTOMER_SQL_USERS_COMSUPTION'] = ($data['fallback_domain_sqlu_limit'] != -1) ? tohtml($data['nbSqlUsers']) . ' / ' . (($data['fallback_domain_sqlu_limit'] != 0) ? tohtml($data['fallback_domain_sqlu_limit']) : tr('Unlimited')) : tr('Disabled');
 		$tplVars['TR_RESELLER_SQL_USERS_COMSUPTION'] = tohtml($data['current_sql_user_cnt']) . ' / ' . (($data['max_sql_user_cnt'] != 0) ? tohtml($data['max_sql_user_cnt']) : tr('Unlimited'));
 	}
 
