@@ -690,7 +690,10 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 				}
 
 				if ($phpEditor->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
-					$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
+					if($phpEditor->getClPerm('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
+						$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
+						$phpEditor->setData('phpiniDisableFunctions', $phpEditor->getDataDefaultVal('phpiniDisableFunctions'));
+					}
 				}
 
 				if (isset($_POST['post_max_size']) && (!$phpEditor->setDataWithPermCheck('phpiniPostMaxSize', $_POST['post_max_size']))) {

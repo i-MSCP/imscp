@@ -4,7 +4,7 @@
 		<script type="text/javascript">
 			/*<![CDATA[*/
 				$(document).ready(function() {
-					$('#exec_help').iMSCPtooltips({msg:"{TR_PHP_INI_EXEC_HELP}"});
+					$('#exec_help').iMSCPtooltips({msg:"{TR_EXEC_HELP}"});
 					$('.radio').buttonset();
 				});
 			/*]]>*/
@@ -52,111 +52,111 @@
 				{TR_PAGE_TEXT}
 			</p>
 
-			<form name="client_php_ini_edit_frm" method="post" action="phpini.php">
+			<form name="editFrm" method="post" action="phpini.php">
 				<!-- BDP: php_editor_first_block -->
 				<table>
 					<tr>
 						<th>{TR_DIRECTIVE_NAME}</th>
 						<th>{TR_DIRECTIVE_VALUE}</th>
 					</tr>
-					<!-- BDP: t_phpini_allow_url_fopen -->
+					<!-- BDP: allow_url_fopen_block -->
 					<tr>
 						<td style="width:300px;">
-							<label for="phpini_allow_url_fopen">{TR_PHPINI_ALLOW_URL_FOPEN}</label>
+							<label for="allow_url_fopen">{TR_ALLOW_URL_FOPEN}</label>
 						</td>
 						<td>
-							<select name="phpini_allow_url_fopen" id="phpini_allow_url_fopen">
-								<option value="Off"{PHPINI_ALLOW_URL_FOPEN_OFF}>{TR_VALUE_OFF}</option>
-								<option value="On"{PHPINI_ALLOW_URL_FOPEN_ON}>{TR_VALUE_ON}</option>
+							<select name="allow_url_fopen" id="allow_url_fopen">
+								<option value="Off"{ALLOW_URL_FOPEN_OFF}>{TR_VALUE_OFF}</option>
+								<option value="On"{ALLOW_URL_FOPEN_ON}>{TR_VALUE_ON}</option>
 							</select>
 						</td>
 					</tr>
-					<!-- EDP: t_phpini_allow_url_fopen -->
-
-					<!-- BDP: t_phpini_register_globals -->
+					<!-- EDP: allow_url_fopen_block -->
+					<!-- BDP: register_globals_block -->
 					<tr>
 						<td style="width:300px;">
-							<label for="phpini_register_globals">{TR_PHPINI_REGISTER_GLOBALS}</label>
+							<label for="register_globals">{TR_REGISTER_GLOBALS}</label>
 						</td>
 						<td>
-							<select name="phpini_register_globals" id="phpini_register_globals">
-								<option value="Off"{PHPINI_REGISTER_GLOBALS_OFF}>{TR_VALUE_OFF}</option>
-								<option value="On"{PHPINI_REGISTER_GLOBALS_ON}>{TR_VALUE_ON}</option>
+							<select name="register_globals" id="register_globals">
+								<option value="Off"{REGISTER_GLOBALS_OFF}>{TR_VALUE_OFF}</option>
+								<option value="On"{REGISTER_GLOBALS_ON}>{TR_VALUE_ON}</option>
 							</select>
 						</td>
 					</tr>
-					<!-- EDP: t_phpini_register_globals -->
-
-					<!-- BDP: t_phpini_display_errors -->
+					<!-- EDP: register_globals_block -->
+					<!-- BDP: display_errors_block -->
 					<tr>
 						<td style="width:300px;">
-							<label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label>
+							<label for="display_errors">{TR_DISPLAY_ERRORS}</label>
 						</td>
 						<td>
-							<select name="phpini_display_errors" id="phpini_display_errors">
-								<option value="Off"{PHPINI_DISPLAY_ERRORS_OFF}>{TR_VALUE_OFF}</option>
-								<option value="On"{PHPINI_DISPLAY_ERRORS_ON}>{TR_VALUE_ON}</option>
+							<select name="display_errors" id="display_errors">
+								<option value="Off"{DISPLAY_ERRORS_OFF}>{TR_VALUE_OFF}</option>
+								<option value="On"{DISPLAY_ERRORS_ON}>{TR_VALUE_ON}</option>
 							</select>
 						</td>
 					</tr>
+					<!-- EDP: display_errors_block -->
+					<!-- BDP: error_reporting_block -->
 					<tr>
 						<td>
-							<label for="phpini_error_reporting">{TR_PHPINI_ERROR_REPORTING}</label>
+							<label for="error_reporting">{TR_ERROR_REPORTING}</label>
 						</td>
 						<td>
-							<select name="phpini_error_reporting" id="phpini_error_reporting">
-								<option value='E_ALL & ~E_NOTICE'{PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ERROR_REPORTING_DEFAULT}</option>
-								<option value='E_ALL | E_STRICT'{PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT}</option>
-								<option value='E_ALL & ~E_DEPRECATED'{PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ERROR_REPORTING_PRODUCTION}</option>
-								<option value="0"{PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ERROR_REPORTING_NONE}</option>
+							<select name="error_reporting" id="error_reporting">
+								<option value='E_ALL & ~E_NOTICE'{ERROR_REPORTING_0}>{TR_ERROR_REPORTING_DEFAULT}</option>
+								<option value='E_ALL | E_STRICT'{ERROR_REPORTING_1}>{TR_ERROR_REPORTING_DEVELOPEMENT}</option>
+								<option value='E_ALL & ~E_DEPRECATED'{ERROR_REPORTING_2}>{TR_ERROR_REPORTING_PRODUCTION}</option>
+								<option value="0"{ERROR_REPORTING_3}>{TR_ERROR_REPORTING_NONE}</option>
 							</select>
 						</td>
 					</tr>
-					<!-- EDP: t_phpini_display_errors -->
-					<!-- BDP: t_phpini_disable_functions -->
+					<!-- EDP: error_reporting_block -->
+					<!-- BDP: disable_functions_block -->
 					<tr>
 						<td>
-							<label>{TR_PHPINI_DISABLE_FUNCTIONS}</label>
+							<label>{TR_DISABLE_FUNCTIONS}</label>
 						</td>
 						<td>
-							<input name="phpini_df_show_source" id="phpini_df_show_source" type="checkbox" {PHPINI_DF_SHOW_SOURCE_CHK} value="show_source" />
-							<label for="phpini_df_show_source">show_source</label>
-							<input name="phpini_df_system" id="phpini_df_system" type="checkbox"{PHPINI_DF_SYSTEM_CHK} value="system" />
-							<label for="phpini_df_system">system</label>
-							<input name="phpini_df_shell_exec" id="phpini_df_shell_exec" type="checkbox"{PHPINI_DF_SHELL_EXEC_CHK} value="shell_exec" />
-							<label for="phpini_df_shell_exec">shell_exec</label>
-							<input name="phpini_df_passthru" id="phpini_df_passthru" type="checkbox"{PHPINI_DF_PASSTHRU_CHK} value="passthru" />
-							<label for="phpini_df_passthru">passthru</label>
-							<input name="phpini_df_exec" id="phpini_df_exec" type="checkbox"{PHPINI_DF_EXEC_CHK} value="exec" />
-							<label for="phpini_df_exec">exec</label>
-							<input name="phpini_df_phpinfo" id="phpini_df_phpinfo" type="checkbox"{PHPINI_DF_PHPINFO_CHK} value="phpinfo" />
-							<label for="phpini_df_phpinfo">phpinfo</label>
-							<input name="phpini_df_shell" id="phpini_df_shell" type="checkbox"{PHPINI_DF_SHELL_CHK} value="shell" />
-							<label for="phpini_df_shell">shell</label>
-							<input name="phpini_df_symlink" id="phpini_df_symlink" type="checkbox"{PHPINI_DF_SYMLINK_CHK} value="symlink" />
-							<label for="phpini_df_symlink">symlink</label>
+							<input name="show_source" id="show_source" type="checkbox" {SHOW_SOURCE} value="show_source" />
+							<label for="show_source">show_source</label>
+							<input name="system" id="system" type="checkbox"{SYSTEM} value="system" />
+							<label for="system">system</label>
+							<input name="shell_exec" id="shell_exec" type="checkbox"{SHELL_EXEC} value="shell_exec" />
+							<label for="shell_exec">shell_exec</label>
+							<input name="passthru" id="passthru" type="checkbox"{PASSTHRU} value="passthru" />
+							<label for="passthru">passthru</label>
+							<input name="exec" id="exec" type="checkbox"{EXEC} value="exec" />
+							<label for="exec">exec</label>
+							<input name="phpinfo" id="phpinfo" type="checkbox"{PHPINFO} value="phpinfo" />
+							<label for="phpinfo">phpinfo</label>
+							<input name="shell" id="shell" type="checkbox"{SHELL} value="shell" />
+							<label for="shell">shell</label>
+							<input name="symlink" id="symlink" type="checkbox"{SYMLINK} value="symlink" />
+							<label for="symlink">symlink</label>
 						</td>
 					</tr>
-					<!-- EDP: t_phpini_disable_functions -->
+					<!-- EDP: disable_functions_block -->
 				</table>
 				<br /><br />
 				<!-- EDP: php_editor_first_block -->
 				<!-- BDP: php_editor_second_block -->
 				<table>
 					<tr>
-						<th style="width:300px;">Specific parameter name</th>
-						<th>Specific parameter value</th>
+						<th style="width:300px;">{TR_PARAMETER}</th>
+						<th>{TR_STATUS}</th>
 					</tr>
 					<tr>
 						<td>
-							<label>{TR_PHPINI_DISABLE_FUNCTIONS_EXEC}</label><span class="icon i_help" id="exec_help">Help</span>
+							<label>{TR_DISABLE_FUNCTIONS_EXEC}</label><span style="vertical-align: middle;" class="icon i_help" id="exec_help">{TR_HELP}</span>
 						</td>
 						<td>
 							<div class="radio">
-								<input type="radio" name="function_exec" id="function_exec_allowed" value="allows" {PHPINI_DISABLE_FUNCTIONS_EXEC_ON}/>
-								<label for="function_exec_allowed">{TR_ALLOWED}</label>
-								<input type="radio" name="function_exec" value="disallows" id="function_exec_disallowed" {PHPINI_DISABLE_FUNCTIONS_EXEC_OFF}/>
-								<label for="function_exec_disallowed">{TR_DISALLOWED}</label>
+								<input type="radio" name="exec" id="exec_allowed" value="allows" {EXEC_ALLOWED}/>
+								<label for="exec_allowed">{TR_ALLOWED}</label>
+								<input type="radio" name="exec" value="disallows" id="exec_disallowed" {EXEC_DISALLOWED}/>
+								<label for="exec_disallowed">{TR_DISALLOWED}</label>
 							</div>
 						</td>
 					</tr>

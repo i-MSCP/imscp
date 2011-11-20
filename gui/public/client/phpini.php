@@ -50,39 +50,41 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'update')) { // Post reque
 	if ($phpini->getDomStatus($domainId)) {
 		$phpini->setData('phpiniSystem', 'yes');
 
-		if (isset($_POST['phpini_register_globals']) && $phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') {
-			$phpini->setData('phpiniRegisterGlobals', clean_input($_POST['phpini_register_globals']));
+		if (isset($_POST['register_globals']) && $phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') {
+			$phpini->setData('phpiniRegisterGlobals', clean_input($_POST['register_globals']));
 		}
 
-		if (isset($_POST['phpini_allow_url_fopen']) && $phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') {
-			$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['phpini_allow_url_fopen']));
+		if (isset($_POST['allow_url_fopen']) && $phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') {
+			$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['allow_url_fopen']));
 		}
 
-		if (isset($_POST['phpini_display_errors']) && $phpini->getClPermVal('phpiniDisplayErrors') == 'yes') {
-			$phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
+		if (isset($_POST['display_errors']) && $phpini->getClPermVal('phpiniDisplayErrors') == 'yes') {
+			$phpini->setData('phpiniDisplayErrors', clean_input($_POST['display_errors']));
 		}
 
-		if (isset($_POST['phpini_error_reporting']) && $phpini->getClPermVal('phpiniDisplayErrors') == 'yes') {
-			$phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
+		if (isset($_POST['error_reporting']) && $phpini->getClPermVal('phpiniDisplayErrors') == 'yes') {
+			$phpini->setData('phpiniErrorReporting', clean_input($_POST['error_reporting']));
 		}
 
 		// Customer can disable/enable all functions
 		if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
-			// Collect all parts for the PHP disable_functions directives from $_POST
 			$disableFunctions = array();
 
-			foreach ($_POST as $key => $value) {
-				if (substr($key, 0, 10) == 'phpini_df_') {
-					array_push($disableFunctions, clean_input($value));
+			foreach (array(
+				'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
+				'phpinfo', 'shell', 'symlink') as $function
+			) {
+				if (isset($_POST[$function])) { // we are safe here
+					array_push($disableFunctions, $function);
 				}
 			}
-			// Assemble all disabled functions with pre-check for those that are accepted
+
+			// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
 			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disableFunctions));
 		} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
 			$disableFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
 
-			if (isset($_POST['function_exec']) && $_POST['function_exec'] == 'allows'
-			) { // exec function is explicitely allowed by customer
+			if (isset($_POST['exec']) && $_POST['exec'] == 'allows') { // exec function is explicitely allowed by customer
 				$disableFunctions = array_diff($disableFunctions, array('exec'));
 			} else { // exec function is explicitely diallowed by customer (we are safe here)
 				$disableFunctions = in_array('exec', $disableFunctions)
@@ -109,12 +111,13 @@ $tpl->define_dynamic(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
 		 'page_message' => 'page',
 		 'logged_from' => 'page',
-		 'js_for_exec_help' => 'page',
 		 'php_editor_first_block' =>  'page',
-		 't_phpini_register_globals' => 'php_editor_first_block',
-		 't_phpini_allow_url_fopen' => 'php_editor_first_block',
-		 't_phpini_display_errors' => 'php_editor_first_block',
-		 't_phpini_disable_functions' => 'php_editor_first_block',
+		 'register_globals_block' => 'php_editor_first_block',
+		 'allow_url_fopen_block' => 'php_editor_first_block',
+		 'display_errors_block' => 'php_editor_first_block',
+		 'error_reporting_block' => 'php_editor_first_block',
+		 'disable_functions_block' => 'php_editor_first_block',
+		 'js_for_exec_help' => 'page',
 		 'php_editor_second_block' => 'page'));
 
 $tpl->assign(
@@ -126,25 +129,8 @@ $tpl->assign(
 		 'TR_TITLE' => tr('PHP Editor'),
 		 'TR_MENU_PHPINI' => tr('PHP Editor'),
 		 'TR_PAGE_TEXT' => tr("In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."),
-		 'TR_DIRECTIVE_NAME' => tr('Directive name'),
-		 'TR_DIRECTIVE_VALUE' => tr('Directive value'),
-		 'TR_PHPINI_ALLOW_URL_FOPEN' => 'allow_url_fopen',
-		 'TR_PHPINI_REGISTER_GLOBALS' => 'register_globals',
-		 'TR_PHPINI_DISPLAY_ERRORS' => 'display_errors',
-		 'TR_PHPINI_ERROR_REPORTING' => 'error_reporting',
-		 'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
-		 'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
-		 'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
-		 'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
-		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('disable_functions'),
-		 'TR_PHPINI_DISABLE_FUNCTIONS_EXEC' => tr('Allows the PHP exec() function'),
-		 'TR_VALUE_ON' => 'On',
-		 'TR_VALUE_OFF' => 'Off',
-		 'TR_ALLOWED' => tr('Allowed'),
-		 'TR_DISALLOWED' => tr('Disallowed'),
 		 'TR_UPDATE_DATA' => tr('Update'),
-		 'TR_CANCEL' => tr('Cancel'),
-		 'TR_PHP_INI_EXEC_HELP' => tr("When allowed, scripts can use the PHP exec() function. This function is needed by many applications but can cause some security issues")));
+		 'TR_CANCEL' => tr('Cancel')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
@@ -153,98 +139,101 @@ gen_logged_from($tpl);
 // load custom php.ini
 $phpini->loadCustomPHPini($domainId);
 
-$firstBlock = false;
-if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') {
-	$tpl->assign('T_PHPINI_REGISTER_GLOBALS', '');
-} else {
-	$firstBlock = true;
-}
-
-if ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') {
-	$tpl->assign('T_PHPINI_ALLOW_URL_FOPEN', '');
-} else {
-	$firstBlock = true;
-}
-
-if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
-	$tpl->assign('T_PHPINI_DISPLAY_ERRORS', '');
-} else {
-	$firstBlock = true;
-}
-
-if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
-	$tpl->assign(
-		array(
-			 'JS_FOR_EXEC_HELP' => '',
-			 'T_PHPINI_DISABLE_FUNCTIONS' => '',
-
-			 'T_PHPINI_DISABLE_FUNCTIONS_EXEC' => ''));
-} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-	$tpl->assign('T_PHPINI_DISABLE_FUNCTIONS', '');
-} else {
-	$tpl->assign(
-		array(
-			 'JS_FOR_EXEC_HELP' => '',
-			 'PHP_EDITOR_SECOND_BLOCK' => ''));
-
-	$firstBlock = true;
-}
-
-if(!$firstBlock) {
-	$tpl->assign('PHP_EDITOR_FIRST_BLOCK', '');
-}
-
 $htmlSelected = $cfg->HTML_SELECTED;
 $htmlChecked = $cfg->HTML_CHECKED;
 
-$tpl->assign(
-	array(
-		 'PHPINI_ALLOW_URL_FOPEN_ON' => ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') ? $htmlSelected : '',
-		 'PHPINI_ALLOW_URL_FOPEN_OFF' => ($phpini->getDataVal('phpiniAllowUrlFopen') == 'Off') ? $htmlSelected : '',
-		 'PHPINI_REGISTER_GLOBALS_ON' => ($phpini->getDataVal('phpiniRegisterGlobals') == 'On') ? $htmlSelected : '',
-		 'PHPINI_REGISTER_GLOBALS_OFF' => ($phpini->getDataVal('phpiniRegisterGlobals') == 'Off') ? $htmlSelected : '',
-		 'PHPINI_DISPLAY_ERRORS_ON' => ($phpini->getDataVal('phpiniDisplayErrors') == 'On') ? $htmlSelected : '',
-		 'PHPINI_DISPLAY_ERRORS_OFF' => ($phpini->getDataVal('phpiniDisplayErrors') == 'Off') ? $htmlSelected : '',
-		 'PHPINI_ERROR_REPORTING_0' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '',
-		 'PHPINI_ERROR_REPORTING_1' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL | E_STRICT') ? $htmlSelected : '',
-		 'PHPINI_ERROR_REPORTING_2' => ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '',
-		 'PHPINI_ERROR_REPORTING_3' => ($phpini->getDataVal('phpiniErrorReporting') == '0') ? $htmlSelected : ''));
+$firstBlock = false;
+$tplVars = array();
 
-
-// deAssemble the disable_functions
-$phpiniDf = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-
-if (!$phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-	$phpiniDfAll = array(
-		'PHPINI_DF_SHOW_SOURCE_CHK', 'PHPINI_DF_SYSTEM_CHK',
-		'PHPINI_DF_SHELL_EXEC_CHK', 'PHPINI_DF_PASSTHRU_CHK',
-		'PHPINI_DF_EXEC_CHK', 'PHPINI_DF_PHPINFO_CHK',
-		'PHPINI_DF_SHELL_CHK', 'PHPINI_DF_SYMLINK_CHK'
-	);
-
-	foreach ($phpiniDfAll as $phpiniDfVar) {
-		$phpiniDfShortVar = substr($phpiniDfVar, 10);
-		$phpiniDfShortVar = strtolower(substr($phpiniDfShortVar, 0, -4));
-
-		if (in_array($phpiniDfShortVar, $phpiniDf)) {
-			$tpl->assign($phpiniDfVar, $htmlChecked);
-		} else {
-			$tpl->assign($phpiniDfVar, '');
-		}
-	}
+// allows_url_fopen directive
+if ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') {
+	$tplVars['ALLOW_URL_FOPEN_BLOCK'] = '';
 } else {
-	if (in_array('exec', $phpiniDf)) {
-		$tpl->assign(
-			array(
-				 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => '',
-				 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $htmlChecked));
-	} else {
-		$tpl->assign(
-			array(
-				 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $htmlChecked,
-				 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
-	}
+	$tplVars['TR_ALLOW_URL_FOPEN'] = 'allow_url_fopen';
+	$tplVars['ALLOW_URL_FOPEN_ON'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') ? $htmlSelected : '';
+	$tplVars['ALLOW_URL_FOPEN_OFF'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'Off') ? $htmlSelected : '';
+	$firstBlock = true;
 }
+
+// register_global directive
+if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') {
+	$tplVars['REGISTER_GLOBALS_BLOCK'] = '';
+} else {
+	$tplVars['TR_REGISTER_GLOBALS'] = 'register_globals';
+	$tplVars['REGISTER_GLOBALS_ON'] = ($phpini->getDataVal('phpiniRegisterGlobals') == 'On') ? $htmlSelected : '';
+	$tplVars['REGISTER_GLOBALS_OFF'] = ($phpini->getDataVal('phpiniRegisterGlobals') == 'Off') ? $htmlSelected : '';
+	$firstBlock = true;
+}
+
+// display_errors directive
+if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
+	$tplVars['DISPLAY_ERRORS_BLOCK'] = '';
+} else {
+	$tplVars['TR_DISPLAY_ERRORS'] = 'display_errors';
+	$tplVars['DISPLAY_ERRORS_ON'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'On') ? $htmlSelected : '';
+	$tplVars['DISPLAY_ERRORS_OFF'] = ($phpini->getDataVal('phpiniDisplayErrors') == 'Off') ? $htmlSelected : '';
+	$firstBlock = true;
+}
+
+// error_reporting directive
+if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
+	$tplVars['ERROR_REPORTING_BLOCK'] = '';
+} else {
+	$tplVars['TR_ERROR_REPORTING'] = 'error_reporting';
+	$tplVars['TR_ERROR_REPORTING_DEFAULT'] = tr('Show all errors, except for notices and coding standards warnings (Default)');
+	$tplVars['TR_ERROR_REPORTING_DEVELOPEMENT'] = tr('Show all errors, warnings and notices including coding standards (Development)');
+	$tplVars['TR_ERROR_REPORTING_PRODUCTION'] = tr(' Show all errors, except for warnings about deprecated code (Production)');
+	$tplVars['TR_ERROR_REPORTING_NONE'] = tr('Do not show any error');
+	$tplVars['ERROR_REPORTING_0'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_NOTICE') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_1'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL | E_STRICT') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_2'] = ($phpini->getDataVal('phpiniErrorReporting') == 'E_ALL & ~E_DEPRECATED') ? $htmlSelected : '';
+	$tplVars['ERROR_REPORTING_3'] = ($phpini->getDataVal('phpiniErrorReporting') == '0') ? $htmlSelected : '';
+	$firstBlock = true;
+}
+
+// disable_functions directive
+if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
+	$tplVars['JS_FOR_EXEC_HELP'] = '';
+	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
+	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
+} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
+	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
+	$allowed = in_array('exec', $disableFunctions) ? false : true;
+
+	$tplVars['TR_PARAMETER'] = tr('Parameter');
+	$tplVars['TR_STATUS'] = tr('Status');
+	$tplVars['TR_ALLOWED'] = tr('Allowed');
+	$tplVars['TR_DISALLOWED'] = tr('Disallowed');
+	$tplVars['TR_DISABLE_FUNCTIONS_EXEC'] = tr('PHP exec() function');
+	$tplVars['TR_EXEC_HELP'] = tr("When allowed, scripts can use the PHP exec() function. This function is needed by many applications but can cause some security issues");
+	$tplVars['EXEC_ALLOWED'] = ($allowed) ? $htmlChecked : '';
+	$tplVars['EXEC_DISALLOWED'] = ($allowed) ? '' : $htmlChecked;
+	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
+} else {
+	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
+	$disableFunctionsAll = array(
+		'SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK');
+
+	foreach ($disableFunctionsAll as $function) {
+		$tplVars[$function] = in_array(strtolower($function), $disableFunctions) ? $htmlChecked : '';
+	}
+
+	$tplVars['TR_DISABLE_FUNCTIONS'] = 'disable_functions';
+	$tplVars['JS_FOR_EXEC_HELP'] = '';
+	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
+	$firstBlock = true;
+}
+
+if (!$firstBlock) {
+	$tplVars['PHP_EDITOR_FIRST_BLOCK'] = '';
+} else {
+	$tplVars['TR_DIRECTIVE_NAME'] = tr('Directive name');
+	$tplVars['TR_DIRECTIVE_VALUE'] = tr('Directive value');
+	$tplVars['TR_VALUE_ON'] = 'On';
+	$tplVars['TR_VALUE_OFF'] = 'Off';
+}
+
+$tpl->assign($tplVars);
 
 generatePageMessage($tpl);
 
@@ -253,5 +242,3 @@ $tpl->parse('PAGE', 'page');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
-
-unsetMessages();
