@@ -34,6 +34,7 @@ Tickets:
 	- Fixed #267: Defect - mod_cband configurations are not removed
 	- Fixed #270: Defect - Users Can´t acces domain overview
 	- Fixed #271: Enhancement - Do not enforce session reuse for FTP over SSL (Tx Cube)
+	- Fixed #272: Task - Update postfix's master.cf
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

@@ -1,24 +1,34 @@
+# ====================================================================
+# i-MSCP Internet - Multi Server Control Panel
+#
+# @copyright	2010-2011 by i-MSCP | http://www.i-mscp.net
+# @link			http://www.i-mscp.net
+# @author		i-MSCP Team
+# ====================================================================
 #
 # Postfix master process configuration file.  For details on the format
 # of the file, see the master(5) manual page (command: "man 5 master").
+#
+# Do not forget to execute "postfix reload" after editing this file.
 #
 # ==========================================================================
 # service type  private unpriv  chroot  wakeup  maxproc command + args
 #               (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
+# Uncomment the second line below when unsing AMaViS
 smtp      inet  n       -       -       -       -       smtpd
-#	-o receive_override_options=no_address_mappings				# Uncomment this line, when unsing AMaViS
-#submission inet n       -       -       -       -       smtpd
-#  -o smtpd_enforce_tls=yes
-#  -o smtpd_sasl_auth_enable=yes
-#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
-#smtps     inet  n       -       -       -       -       smtpd
-#  -o smtpd_tls_wrappermode=yes
-#  -o smtpd_sasl_auth_enable=yes
-#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
-# For AOL-Accounts
-587       inet  n       -       -       -       -       smtpd
-	-o smtpd_client_restrictions=permit_sasl_authenticated,reject_unauth_destination
+#  -o receive_override_options=no_address_mappings
+submission inet n       -       -       -       -       smtpd
+#  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+#  -o milter_macro_daemon_name=ORIGINATING
+#
+smtps     inet  n       -       -       -       -       smtpd
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o milter_macro_daemon_name=ORIGINATING
 #628      inet  n       -       -       -       -       qmqpd
 pickup    fifo  n       -       -       60      1       pickup
 cleanup   unix  n       -       -       -       0       cleanup
@@ -32,58 +42,21 @@ trace     unix  -       -       -       -       0       bounce
 verify    unix  -       -       -       -       1       verify
 flush     unix  n       -       -       1000?   0       flush
 proxymap  unix  -       -       n       -       -       proxymap
+proxywrite unix -       -       n       -       1       proxymap
 smtp      unix  -       -       -       -       -       smtp
 # When relaying mail as backup MX, disable fallback_relay to avoid MX loops
 relay     unix  -       -       -       -       -       smtp
-	-o fallback_relay=
+	-o smtp_fallback_relay=
 #       -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
 showq     unix  n       -       -       -       -       showq
 error     unix  -       -       -       -       -       error
+retry     unix  -       -       -       -       -       error
 discard   unix  -       -       -       -       -       discard
 local     unix  -       n       n       -       -       local
 virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
-scache	  unix	-	-	-	-	1	scache
-# ====================================================================
-# i-MSCP Internet - Multi Server Control Panel
-#
-# @copyright	2001-2006 by moleSoftware GmbH
-# @copyright	2006-2010 by ispCP | http://isp-control.net
-# @copyright    2010 by i-MSCP | http://www.i-mscp.net
-# @version		SVN: $Id$
-# @link			http://www.i-mscp.net
-# @author		ispCP Team
-# @author		i-MSCP Team
-# ====================================================================
-# for AMaViS and spam filter support
-amavis    unix  -       -       n       -       2       smtp
-   -o smtp_data_done_timeout=1200
-   -o smtp_send_xforward_command=yes
-   -o disable_dns_lookups=yes
-
-localhost:10025 inet  n -       n       -      -        smtpd
-   -o content_filter=
-   -o local_recipient_maps=
-   -o relay_recipient_maps=
-   -o smtpd_restriction_classes=
-   -o smtpd_client_restrictions=
-   -o smtpd_helo_restrictions=
-   -o smtpd_sender_restrictions=
-   -o smtpd_recipient_restrictions=permit_mynetworks,reject
-   -o smtpd_override_options=no_address_mappings
-   -o mynetworks=127.0.0.0/8
-   -o strict_rfc821_envelopes=yes
-
-# i-MSCP autoresponder
-imscp-arpl unix  -      n       n       -       -       pipe
-  flags=O user={ARPL_USER}:{ARPL_GROUP} argv={ARPL_PATH} $recipient
-
-# TLS - Activate, if TLS is avaiable/used
-smtps     inet  n       -       -       -       -       smtpd
-   -o smtpd_tls_wrappermode=yes
-   -o smtpd_sasl_auth_enable=yes
-#   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+scache    unix  -       -       -       -       1       scache
 #
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual
@@ -116,6 +89,29 @@ scalemail-backend unix	-	n	n	-	2	pipe
 mailman   unix  -       n       n       -       -       pipe
   flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
   ${nexthop} ${user}
+
+# for AMaViS and spam filter support
+amavis    unix  -       -       n       -       2       smtp
+  -o smtp_data_done_timeout=1200
+  -o smtp_send_xforward_command=yes
+  -o disable_dns_lookups=yes
+
+localhost:10025 inet  n -       n       -      -        smtpd
+  -o content_filter=
+  -o local_recipient_maps=
+  -o relay_recipient_maps=
+  -o smtpd_restriction_classes=
+  -o smtpd_client_restrictions=
+  -o smtpd_helo_restrictions=
+  -o smtpd_sender_restrictions=
+  -o smtpd_recipient_restrictions=permit_mynetworks,reject
+  -o smtpd_override_options=no_address_mappings
+  -o mynetworks=127.0.0.0/8
+  -o strict_rfc821_envelopes=yes
+
+# i-MSCP autoresponder
+imscp-arpl unix  -      n       n       -       -       pipe
+  flags=O user={ARPL_USER}:{ARPL_GROUP} argv={ARPL_PATH} $recipient
 
 # po setup begin
 # dovecot begin
