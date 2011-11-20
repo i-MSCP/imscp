@@ -21,6 +21,7 @@ Features / Enhancements:
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
+	- Fixed #244: Bug - admin/domain_edit.php can cause several issues and must be rewritten
 	- Fixed #245: Defect - rkhunter log file is not created
 	- Fixed #246: Defect - Traffic accounting seem to be broken
 	- Fixed #248: Defect - Bind Slave Mode
@@ -31,7 +32,9 @@ Tickets:
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
 	- Fixed #264: Defect - PHP Editor not available
+	- Fixed #265: Defect - Disabled feature can not be enabled
 	- Fixed #267: Defect - mod_cband configurations are not removed
+	- Fixed #269: Defect - Reseller can´t edit php.ini settings for costumer
 	- Fixed #270: Defect - Users Can´t acces domain overview
 	- Fixed #271: Enhancement - Do not enforce session reuse for FTP over SSL (Tx Cube)
 	- Fixed #272: Task - Update postfix's master.cf

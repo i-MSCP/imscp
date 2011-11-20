@@ -22,9 +22,9 @@
  * @subpackage	PHPini
  * @copyright	2001-2011 by i-MSCP team
  * @author		Hannes Koschier <hannes@cheat.at>
+ * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
- * @Version		SVN: $Id$
  */
 
 /**
@@ -34,7 +34,8 @@
  * @package		iMSCP_Core
  * @subpackage	PHPini
  * @author		Hannes Koschier <hannes@cheat.at>
- * @version		0.0.3
+ * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.4
  */
 class iMSCP_PHPini
 {
@@ -109,7 +110,7 @@ class iMSCP_PHPini
 		$this->loadReDefaultPerm();
 
 		// Populate $_phpiniClPerm with default customer permissions
-		$this->_loadClDefaultPerm();
+		$this->loadClDefaultPerm();
 	}
 
 	/**
@@ -142,6 +143,7 @@ class iMSCP_PHPini
 	 * Load default PHP directive values (like set at system wide).
 	 *
 	 * @return void
+	 * @TODO do not use system wide value as default value if reseller value is smaller
 	 */
 	public function loadDefaultData()
 	{
@@ -576,6 +578,16 @@ class iMSCP_PHPini
 	}
 
 	/**
+	 * Returns customer permissions like currently set in this object.
+	 *
+	 * @return array
+	 */
+	public function getClPerm()
+	{
+		return $this->_phpiniClPerm;
+	}
+
+	/**
 	 * Returns value for the given customer permission.
 	 *
 	 * @param string $key Permissions key name
@@ -621,6 +633,20 @@ class iMSCP_PHPini
 		$phpiniDatatmp['phpiniMemoryLimit'] = $this->_cfg->PHPINI_MEMORY_LIMIT;
 
 		return $phpiniDatatmp[$key];
+	}
+
+	/**
+	 * Load default permissions for customer.
+	 *
+	 * @return void
+	 */
+	public function loadClDefaultPerm()
+	{
+		$this->_phpiniClPerm['phpiniSystem'] = 'no';
+		$this->_phpiniClPerm['phpiniRegisterGlobals'] = 'no';
+		$this->_phpiniClPerm['phpiniAllowUrlFopen'] = 'no';
+		$this->_phpiniClPerm['phpiniDisplayErrors'] = 'no';
+		$this->_phpiniClPerm['phpiniDisableFunctions'] = 'no';
 	}
 
 	/**
@@ -854,19 +880,5 @@ class iMSCP_PHPini
 		}
 
 		return false;
-	}
-
-	/**
-	 * Load default permissions for customer.
-	 *
-	 * @return void
-	 */
-	protected function _loadClDefaultPerm()
-	{
-		$this->_phpiniClPerm['phpiniSystem'] = 'no';
-		$this->_phpiniClPerm['phpiniRegisterGlobals'] = 'no';
-		$this->_phpiniClPerm['phpiniAllowUrlFopen'] = 'no';
-		$this->_phpiniClPerm['phpiniDisplayErrors'] = 'no';
-		$this->_phpiniClPerm['phpiniDisableFunctions'] = 'no';
 	}
 }
