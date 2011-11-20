@@ -850,7 +850,6 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 							$phpEditor->getClPermVal('phpiniDisableFunctions'),
 							$domainId));
 
-
 			// Update PHP Editor custom values or remove it
 			if($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
 				$phpEditor->saveCustomPHPiniIntoDb($domainId);
@@ -880,7 +879,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 
 		if($e->getCode() == 40001) { // Deadlock error management
 			if(isset($data)) { // $data is tested here only to avoid IDE warning about possible indefined variable
-				if(reseller_checkAndUpdateData($domainId, true)) {
+				if(admin_checkAndUpdateData($domainId, true)) {
 					set_page_message(tr('Domain data were modified by another person before your update. The update process was successfully done but in recovery mode. We recommend you to check the result of it.'), 'warning');
 					return true;
 				} else {
