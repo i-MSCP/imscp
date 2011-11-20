@@ -195,6 +195,7 @@ if(!$firstBlock) {
 }
 
 $htmlSelected = $cfg->HTML_SELECTED;
+$htmlChecked = $cfg->HTML_CHECKED;
 
 $tpl->assign(
 	array(
@@ -212,34 +213,37 @@ $tpl->assign(
 
 // deAssemble the disable_functions
 $phpiniDf = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-$phpiniDfAll = array(
-	'PHPINI_DF_SHOW_SOURCE_CHK', 'PHPINI_DF_SYSTEM_CHK',
-	'PHPINI_DF_SHELL_EXEC_CHK', 'PHPINI_DF_PASSTHRU_CHK',
-	'PHPINI_DF_EXEC_CHK', 'PHPINI_DF_PHPINFO_CHK',
-	'PHPINI_DF_SHELL_CHK', 'PHPINI_DF_SYMLINK_CHK'
-);
 
-foreach ($phpiniDfAll as $phpiniDfVar) {
-	$phpiniDfShortVar = substr($phpiniDfVar, 10);
-	$phpiniDfShortVar = strtolower(substr($phpiniDfShortVar, 0, -4));
+if (!$phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
+	$phpiniDfAll = array(
+		'PHPINI_DF_SHOW_SOURCE_CHK', 'PHPINI_DF_SYSTEM_CHK',
+		'PHPINI_DF_SHELL_EXEC_CHK', 'PHPINI_DF_PASSTHRU_CHK',
+		'PHPINI_DF_EXEC_CHK', 'PHPINI_DF_PHPINFO_CHK',
+		'PHPINI_DF_SHELL_CHK', 'PHPINI_DF_SYMLINK_CHK'
+	);
 
-	if (in_array($phpiniDfShortVar, $phpiniDf)) {
-		$tpl->assign($phpiniDfVar, $cfg->HTML_CHECKED);
-	} else {
-		$tpl->assign($phpiniDfVar, '');
+	foreach ($phpiniDfAll as $phpiniDfVar) {
+		$phpiniDfShortVar = substr($phpiniDfVar, 10);
+		$phpiniDfShortVar = strtolower(substr($phpiniDfShortVar, 0, -4));
+
+		if (in_array($phpiniDfShortVar, $phpiniDf)) {
+			$tpl->assign($phpiniDfVar, $htmlChecked);
+		} else {
+			$tpl->assign($phpiniDfVar, '');
+		}
 	}
-}
-
-if (in_array('exec', $phpiniDf)) {
-	$tpl->assign(
-		array(
-			 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => '',
-			 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $cfg->HTML_CHECKED));
 } else {
-	$tpl->assign(
-		array(
-			 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $cfg->HTML_CHECKED,
-			 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
+	if (in_array('exec', $phpiniDf)) {
+		$tpl->assign(
+			array(
+				 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => '',
+				 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $htmlChecked));
+	} else {
+		$tpl->assign(
+			array(
+				 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $htmlChecked,
+				 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
+	}
 }
 
 generatePageMessage($tpl);
