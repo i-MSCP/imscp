@@ -195,7 +195,7 @@ sub addDmn{
 
 	}
 
-	$content .= $entry unless $content =~ /$entry/mg;
+	$content .= $entry unless $content =~ /^$entry/mg;
 
 	$file->set($content);
 	$rs |=	$file->save();
@@ -277,7 +277,7 @@ sub disableDmn{
 
 	}
 
-	$content =~ s/$entry//mg;
+	$content =~ s/^$entry//mg;
 
 	$file->set($content);
 	$rs |= $file->save();
