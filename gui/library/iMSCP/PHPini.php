@@ -35,7 +35,7 @@
  * @subpackage	PHPini
  * @author		Hannes Koschier <hannes@cheat.at>
  * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @version		0.0.5
  */
 class iMSCP_PHPini
 {
@@ -776,7 +776,7 @@ class iMSCP_PHPini
 	/**
 	 * Checks value for the PHP disable_functions directive.
 	 *
-	 * @param array $disabledFunctions Array that contains PHP function to be disabled
+	 * @param array|string $disabledFunctions PHP function to be disabled
 	 * @return bool True if the $disabledFunctions contains only functions that can be disabled, FALSE otherwise
 	 */
 	protected function _checkDisableFunctionsSyntax($disabledFunctions)
@@ -784,6 +784,10 @@ class iMSCP_PHPini
 		$defaultDisabledFunctions = array(
 			'show_source', 'system', 'shell_exec', 'passthru', 'exec', 'shell',
 			'symlink', 'phpinfo');
+		
+		if(is_string($disabledFunctions)) {
+			$disabledFunctions = explode(',', $disabledFunctions);
+		}
 
 		foreach ($disabledFunctions as $function) {
 			if (!in_array($function, $defaultDisabledFunctions)) {
