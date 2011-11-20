@@ -396,18 +396,18 @@ class iMSCP_PHPini
 	/**
 	 * Assemble disable_functions parameter from its parts.
 	 *
-	 * @param array $arrDfitem
+	 * @param array $disabledFunctions
 	 * @return string
 	 */
-	public function assembleDisableFunctions($arrDfitem)
+	public function assembleDisableFunctions($disabledFunctions)
 	{
-		if (count($arrDfitem)) {
-			$phpiniDisableFunctions = implode(',', $arrDfitem);
+		if (count($disabledFunctions)) {
+			$disabledFunctions = implode(',', array_unique($disabledFunctions));
 		} else {
-			$phpiniDisableFunctions = '';
+			$disabledFunctions = '';
 		}
 
-		return $phpiniDisableFunctions;
+		return $disabledFunctions;
 	}
 
 	/**
@@ -776,16 +776,14 @@ class iMSCP_PHPini
 	/**
 	 * Checks value for the PHP disable_functions directive.
 	 *
-	 * @param string $disableFunction PHP disable_functions directive value
-	 * @return bool TRUE if $disableFunction is valid, FALSE otherwise
+	 * @param array $disabledFunctions Array that contains PHP function to be disabled
+	 * @return bool True if the $disabledFunctions contains only functions that can be disabled, FALSE otherwise
 	 */
-	protected function _checkDisableFunctionsSyntax($disableFunction)
+	protected function _checkDisableFunctionsSyntax($disabledFunctions)
 	{
 		$defaultDisabledFunctions = array(
 			'show_source', 'system', 'shell_exec', 'passthru', 'exec', 'shell',
 			'symlink', 'phpinfo');
-
-		$disabledFunctions = explode(',', $disableFunction);
 
 		foreach ($disabledFunctions as $function) {
 			if (!in_array($function, $defaultDisabledFunctions)) {
