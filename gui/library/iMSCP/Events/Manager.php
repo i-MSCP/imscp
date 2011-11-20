@@ -126,13 +126,15 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param string $eventName		 The name of the event to dispatch. The name
-	 *								  of the event is the name of the method that
-	 *								  is invoked on listeners objects. Callbacks
-	 *								  functions can have arbitrary names.
-	 * @param mixed $argument OPTIONAL	 The data to pass to the event listener method.
-	 *									 If not supplied, an empty iMSCP_Events_Event
-	 *									 instance is created.
+	 * @param string $eventName			The name of the event to dispatch. The name
+	 *									of the event is the name of the method that
+	 *									is invoked on listeners objects. Callbacks
+	 *									functions can have arbitrary names.
+	 *
+	 * @param mixed $argument OPTIONAL	The data to pass to the event listener method.
+	 *									If not supplied, an empty iMSCP_Events_Event
+	 *									instance is created.
+	 *
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 * @todo allow to pass multiple arguments to listeners methods
 	 */
@@ -167,11 +169,22 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Registers an event listener that listens on the specified events.
 	 *
-	 * @param  string|array $eventNames  The event(s) to listen on.
-	 * @param  callback|object $listener Listener callback function orobject.
-	 * @param  int $stackIndex		   OPTIONAL The higher this value, the earlier
-	 *								   an event listener will be triggered in the
-	 *								   chain of the specified events.
+	 * Example:
+	 *
+	 * $eventManager = iMSCP_Events_Manager::getInstance();
+	 *
+	 * $eventManager->registerListener('eventName', $objectInstance)
+	 * $eventManager->registerListener('eventName', 'classname::staticMethodName)
+	 * $eventManager->registerListener('eventName', array($ObjectInstance, 'methodName')
+	 * $eventManager->registerListener('eventName', 'functionName')
+	 * ...
+	 *
+	 * @param  string|array $eventNames		The event(s) to listen on.
+	 * @param  callback|object $listener	Listener callback function or object.
+	 * @param  int $stackIndex				OPTIONAL The higher this value, the earlier
+	 *										an event listener will be triggered in the
+	 *										chain of the specified events.
+	 *
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
 	public function registerListener($eventNames, $listener, $stackIndex = null)
@@ -190,7 +203,6 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Unregister an event listener from the specified events.
 	 *
-	 * @abstract
 	 * @param  string|array $eventNames The event(s) to remove a listener from.
 	 * @param  mixed $listener		  The name of the callback function, classname,
 	 *								  the stack index, or the object of the
@@ -213,9 +225,9 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Returns the listeners of a specific event or all listeners.
 	 *
-	 * @param  string $eventName The name of the event.
+	 * @param string $eventName The name of the event.
 	 * @return array The event listeners for the specified event, or all event
-	 *			   listeners by event name.
+	 *				 listeners by event name.
 	 */
 	public function getListeners($eventName = null)
 	{
@@ -225,7 +237,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Checks whether an event has any registered listeners.
 	 *
-	 * @param  string $eventName The name of the event.
+	 * @param string $eventName The name of the event.
 	 * @param string $listener listener classname or callback name
 	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
 	 */

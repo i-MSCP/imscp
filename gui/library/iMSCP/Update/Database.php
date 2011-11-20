@@ -23,7 +23,6 @@
  * @copyright	2010-2011 by i-MSCP team
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN: $Id$
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
@@ -276,8 +275,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$reflection = new ReflectionClass(__CLASS__);
 			$databaseUpdateMethods = array();
 
-			foreach ($reflection->getMethods() as $method)
-			{
+			foreach ($reflection->getMethods() as $method) {
 				if (strpos($method->name, '_databaseUpdate_') !== false) {
 					$databaseUpdateMethods[] = $method->name;
 				}
@@ -385,9 +383,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $columnName Column to which index belong to
 	 * @return string Query to be executed
 	 */
-	protected function _dropIndex($table, $indexName = 'PRIMARY', $columnName = null){
-
-		if(is_null($columnName)){ $columnName = $indexName;}
+	protected function _dropIndex($table, $indexName = 'PRIMARY', $columnName = null)
+	{
+		if(is_null($columnName)){
+			$columnName = $indexName;
+		}
 
 		$query = "
 			SHOW INDEX FROM
@@ -416,8 +416,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @param string $indexName Index name
 	 * @return string Query to be executed
 	 */
-	protected function _addIndex($table, $columnName, $indexType = 'PRIMARY KEY', $indexName = null){
-		if(is_null($indexName)){ $indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : $columnName;}
+	protected function _addIndex($table, $columnName, $indexType = 'PRIMARY KEY',
+		$indexName = null
+	){
+		if(is_null($indexName)){
+			$indexName = $indexType == 'PRIMARY KEY' ? 'PRIMARY' : $columnName;
+		}
+
 		$query = "
 			SHOW INDEX FROM
 				`$this->_databaseName`.`$table`
@@ -426,7 +431,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 			AND
 				`COLUMN_NAME` = ?
 		";
-
 		$stmt = exec_query($query, array($indexName, $columnName));
 
 		if ($stmt->rowCount()) {
@@ -1330,7 +1334,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_95(){
+	protected function _databaseUpdate_95()
+	{
 		return  array(
 			$this->_addIndex('domain', 'domain_id'),
 			$this->_dropIndex('domain', 'domain_id'),

@@ -173,7 +173,8 @@ function add_user_data($reseller_id)
 		$php, $cgi, $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk,
 		$backup, $dns, $software_allowed, $phpini_system, $phpini_al_register_globals,
 		$phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
-		$phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit
+		$phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time,
+		$phpini_max_input_time, $phpini_memory_limit
 	) = array_pad(explode(';', $props), 23, 'no');
 
 	$php = preg_replace("/\_/", '', $php);
