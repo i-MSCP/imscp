@@ -5,6 +5,7 @@
 			/*<![CDATA[*/
 				$(document).ready(function() {
 					$('#exec_help').iMSCPtooltips({msg:"{TR_PHP_INI_EXEC_HELP}"});
+					$('.radio').buttonset();
 				});
 			/*]]>*/
 		</script>
@@ -51,8 +52,8 @@
 				{TR_PAGE_TEXT}
 			</p>
 
-
 			<form name="client_php_ini_edit_frm" method="post" action="phpini.php">
+				<!-- BDP: php_editor_first_block -->
 				<table>
 					<tr>
 						<th>{TR_DIRECTIVE_NAME}</th>
@@ -139,7 +140,8 @@
 					<!-- EDP: t_phpini_disable_functions -->
 				</table>
 				<br /><br />
-				<!-- BDP: t_phpini_disable_functions_exec -->
+				<!-- EDP: php_editor_first_block -->
+				<!-- BDP: php_editor_second_block -->
 				<table>
 					<tr>
 						<th style="width:300px;">Specific parameter name</th>
@@ -147,17 +149,19 @@
 					</tr>
 					<tr>
 						<td>
-							<label for="phpini_disable_functions_exec">{TR_PHPINI_DISABLE_FUNCTIONS_EXEC}</label><span class="icon i_help" id="exec_help">Help</span>
+							<label>{TR_PHPINI_DISABLE_FUNCTIONS_EXEC}</label><span class="icon i_help" id="exec_help">Help</span>
 						</td>
 						<td>
-							<select name="phpini_disable_functions_exec" id="phpini_disable_functions_exec">
-								<option value="On"{PHPINI_DISABLE_FUNCTIONS_EXEC_ON}>{TR_DISALLOWS}</option>
-								<option value="Off"{PHPINI_DISABLE_FUNCTIONS_EXEC_OFF}>{TR_ALLOWS}</option>
-							</select>
+							<div class="radio">
+								<input type="radio" name="function_exec" id="function_exec_allowed" value="allows" {PHPINI_DISABLE_FUNCTIONS_EXEC_ON}/>
+								<label for="function_exec_allowed">{TR_ALLOWED}</label>
+								<input type="radio" name="function_exec" value="disallows" id="function_exec_disallowed" {PHPINI_DISABLE_FUNCTIONS_EXEC_OFF}/>
+								<label for="function_exec_disallowed">{TR_DISALLOWED}</label>
+							</div>
 						</td>
 					</tr>
 				</table>
-				<!-- EDP: t_phpini_disable_functions_exec -->
+				<!-- EDP: php_editor_second_block -->
 				<div class="buttons">
 					<input name="Submit" type="submit" value="{TR_UPDATE_DATA}" />
 					<input name="Submit" type="submit" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />

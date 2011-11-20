@@ -66,27 +66,30 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'update')) { // Post reque
 			$phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
 		}
 
+		// Customer can disable/enable all functions
 		if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
-			// Collect all parts for the PHP disable_functions directivesfrom $_POST
-			$mytmp = array();
+			// Collect all parts for the PHP disable_functions directives from $_POST
+			$disableFunctions = array();
 
 			foreach ($_POST as $key => $value) {
 				if (substr($key, 0, 10) == 'phpini_df_') {
-					array_push($mytmp, clean_input($value));
+					array_push($disableFunctions, clean_input($value));
 				}
 			}
+			// Assemble all disabled functions with pre-check for those that are accepted
+			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disableFunctions));
+		} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
+			$disableFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
 
-			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($mytmp));
-		}
-
-		if ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-			if ($_POST['phpini_disable_functions_exec'] == 'off') {
-				$phpini->setData('phpiniDisableFunctions', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
-			} else {
-				// Remove exec from default disabled function in the disable_functions PHP directive
-				$tmp_arr = array_diff(explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions')), array('exec'));
-				$phpini->setData('phpiniDisableFunctions', implode(',', $tmp_arr));
+			if (isset($_POST['function_exec']) && $_POST['function_exec'] == 'allows'
+			) { // exec function is explicitely allowed by customer
+				$disableFunctions = array_diff($disableFunctions, array('exec'));
+			} else { // exec function is explicitely diallowed by customer (we are safe here)
+				$disableFunctions = in_array('exec', $disableFunctions)
+					? $disableFunctions : $disableFunctions + array('exec');
 			}
+
+			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disableFunctions));
 		}
 
 		$phpini->saveCustomPHPiniIntoDb($domainId);
@@ -102,16 +105,17 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'update')) { // Post reque
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array('page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
+	array(
+		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
 		 'page_message' => 'page',
 		 'logged_from' => 'page',
 		 'js_for_exec_help' => 'page',
-		 't_phpini_register_globals' => 'page',
-		 't_phpini_allow_url_fopen' => 'page',
-		 't_phpini_display_errors' => 'page',
-		 't_phpini_disable_functions' => 'page',
-		 't_phpini_disable_functions_exec' => 'page',
-		 't_update_ok' => 'page'));
+		 'php_editor_first_block' =>  'page',
+		 't_phpini_register_globals' => 'php_editor_first_block',
+		 't_phpini_allow_url_fopen' => 'php_editor_first_block',
+		 't_phpini_display_errors' => 'php_editor_first_block',
+		 't_phpini_disable_functions' => 'php_editor_first_block',
+		 'php_editor_second_block' => 'page'));
 
 $tpl->assign(
 	array(
@@ -122,28 +126,22 @@ $tpl->assign(
 		 'TR_TITLE' => tr('PHP Editor'),
 		 'TR_MENU_PHPINI' => tr('PHP Editor'),
 		 'TR_PAGE_TEXT' => tr("In this page, you can configure some of the aspects of PHP's behavior. You must note that for now, the directives defined here apply to your entire domain account (including subdomains and domain aliases). Of course some values can be modified through the PHP ini_set() function."),
-
 		 'TR_DIRECTIVE_NAME' => tr('Directive name'),
 		 'TR_DIRECTIVE_VALUE' => tr('Directive value'),
-
 		 'TR_PHPINI_ALLOW_URL_FOPEN' => 'allow_url_fopen',
 		 'TR_PHPINI_REGISTER_GLOBALS' => 'register_globals',
 		 'TR_PHPINI_DISPLAY_ERRORS' => 'display_errors',
 		 'TR_PHPINI_ERROR_REPORTING' => 'error_reporting',
-
 		 'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),
 		 'TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT' => tr('Show all errors, warnings and notices including coding standards (Development)'),
 		 'TR_PHPINI_ERROR_REPORTING_PRODUCTION' => tr(' Show all errors, except for warnings about deprecated code (Production)'),
 		 'TR_PHPINI_ERROR_REPORTING_NONE' => tr('Do not show any error'),
-
 		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('disable_functions'),
 		 'TR_PHPINI_DISABLE_FUNCTIONS_EXEC' => tr('Allows the PHP exec() function'),
-
 		 'TR_VALUE_ON' => 'On',
 		 'TR_VALUE_OFF' => 'Off',
-		 'TR_ALLOWS' => tr('Allows'),
-		 'TR_DISALLOWS' => tr('Disallows'),
-
+		 'TR_ALLOWED' => tr('Allowed'),
+		 'TR_DISALLOWED' => tr('Disallowed'),
 		 'TR_UPDATE_DATA' => tr('Update'),
 		 'TR_CANCEL' => tr('Cancel'),
 		 'TR_PHP_INI_EXEC_HELP' => tr("When allowed, scripts can use the PHP exec() function. This function is needed by many applications but can cause some security issues")));
@@ -155,16 +153,23 @@ gen_logged_from($tpl);
 // load custom php.ini
 $phpini->loadCustomPHPini($domainId);
 
+$firstBlock = false;
 if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') {
 	$tpl->assign('T_PHPINI_REGISTER_GLOBALS', '');
+} else {
+	$firstBlock = true;
 }
 
 if ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') {
 	$tpl->assign('T_PHPINI_ALLOW_URL_FOPEN', '');
+} else {
+	$firstBlock = true;
 }
 
 if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 	$tpl->assign('T_PHPINI_DISPLAY_ERRORS', '');
+} else {
+	$firstBlock = true;
 }
 
 if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
@@ -180,7 +185,13 @@ if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
 	$tpl->assign(
 		array(
 			 'JS_FOR_EXEC_HELP' => '',
-			 'T_PHPINI_DISABLE_FUNCTIONS_EXEC' => ''));
+			 'PHP_EDITOR_SECOND_BLOCK' => ''));
+
+	$firstBlock = true;
+}
+
+if(!$firstBlock) {
+	$tpl->assign('PHP_EDITOR_FIRST_BLOCK', '');
 }
 
 $htmlSelected = $cfg->HTML_SELECTED;
@@ -223,11 +234,11 @@ if (in_array('exec', $phpiniDf)) {
 	$tpl->assign(
 		array(
 			 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => '',
-			 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $htmlSelected));
+			 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => $cfg->HTML_CHECKED));
 } else {
 	$tpl->assign(
 		array(
-			 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $htmlSelected,
+			 'PHPINI_DISABLE_FUNCTIONS_EXEC_ON' => $cfg->HTML_CHECKED,
 			 'PHPINI_DISABLE_FUNCTIONS_EXEC_OFF' => ''));
 }
 

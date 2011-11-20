@@ -776,7 +776,7 @@ function customerHasFeature($featureName, $reload = false)
 							 ($dmnProps['phpini_perm_register_globals'] == 'yes'
 							  || $dmnProps['phpini_perm_allow_url_fopen'] == 'yes'
 							  || $dmnProps['phpini_perm_display_errors'] == 'yes'
-							  || $dmnProps['phpini_perm_disable_functions'] == 'yes')) ? true : false,
+							  || in_array($dmnProps['phpini_perm_disable_functions'], array('yes', 'exec')))) ? true : false,
 			'cgi' => ($dmnProps['domain_cgi'] == 'yes') ? true : false,
 			'ftp' => ($dmnProps['domain_ftpacc_limit'] != '-1') ? true : false,
 			'sql' => ($dmnProps['domain_sqld_limit'] != '-1') ? true : false,
