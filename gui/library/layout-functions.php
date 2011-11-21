@@ -80,9 +80,11 @@ function generatePageMessage($tpl)
 	if (Zend_Session::namespaceIsset('pageMessages')) {
 		foreach (array('success', 'error', 'warning', 'info') as $level) {
 			if (isset($namespace->{$level})) {
-				$tpl->assign(array(
-								  'MESSAGE_CLS' => $level,
-								  'MESSAGE' => $namespace->{$level}));
+				$tpl->assign(
+					array(
+						 'MESSAGE_CLS' => $level .
+							(($level == 'info' || $level == 'success') ? ' timeout' : ''),
+						 'MESSAGE' => $namespace->{$level}));
 
 				$tpl->parse('PAGE_MESSAGE', '.page_message');
 			}
