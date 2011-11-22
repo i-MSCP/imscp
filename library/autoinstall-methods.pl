@@ -445,7 +445,7 @@ sub doImscpBackup {
 
 	my ($rs, $stdout, $stderr);
 
-	if( -x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp noreport") {
+	if(-x "$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp noreport") {
 		$rs = execute(
 			"$main::defaultConf{'ROOT_DIR'}/engine/backup/imscp-backup-imscp",
 			\$stdout, \$stderr
@@ -488,7 +488,7 @@ sub saveGuiWorkingData {
 		error("$stderr") if $stderr;
 		return $rs if $rs;
 
-		# Save webmail data (Squirrel) if needed
+		# Save webmail data (Squirrel)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data") {
 			$rs = execute(
 				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
@@ -501,18 +501,20 @@ sub saveGuiWorkingData {
 		}
 
 	# For i-MSCP versions prior 1.0.4
-	} elsif(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
+	} else {
 		# Save i-MSCP GUI data (isp logos)
-		$rs = execute(
-			"cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/ispLogos",
-			\$stdout, \$stderr
-		);
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
+			$rs = execute(
+				"cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/ispLogos",
+				\$stdout, \$stderr
+			);
 
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		return $rs if $rs;
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
 
-		# Save webmail data (Squirrel) if needed
+		# Save webmail data (Squirrel)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data") {
 			$rs = execute(
 				"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
@@ -525,24 +527,28 @@ sub saveGuiWorkingData {
 		}
 
 		# Save i-MSCP GUI data (isp domain default index.html page)
-		$rs = execute(
-			"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_default_page",
-			\$stdout, \$stderr
-		);
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/domain_default_page") {
+			$rs = execute(
+				"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_default_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_default_page",
+				\$stdout, \$stderr
+			);
 
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		return $rs if $rs;
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
 
 		# Save i-MSCP GUI data (isp domain default index.html page for disabled domains)
-		$rs = execute(
-			"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_disable_page",
-			\$stdout, \$stderr
-		);
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page") {
+			$rs = execute(
+				"cp -TRfv $main::defaultConf{'ROOT_DIR'}/gui/domain_disable_page $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/domain_disable_page",
+				\$stdout, \$stderr
+			);
 
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		return $rs if $rs;
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
 	}
 
 	debug('Ending...');
