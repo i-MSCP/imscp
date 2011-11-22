@@ -41,13 +41,18 @@ $cfg = iMSCP_Registry::get('config');
 /* @var $phpini iMSCP_PHPini */
 $phpini = iMSCP_PHPini::getInstance();
 
+// Getting customer's domain id
 $domainId = $phpini->getDomId($_SESSION['user_id']);
+
+// load custom php.ini
+$phpini->loadCustomPHPini($domainId);
 
 // load phpini client permissions
 $phpini->loadClPerm($domainId);
 
-if (isset($_POST['uaction']) && ($_POST['uaction'] == 'update')) { // Post request
+if (!empty($_POST)) { // Post request
 	if ($phpini->getDomStatus($domainId)) {
+		$oldData = $phpini->getData();
 		$phpini->setData('phpiniSystem', 'yes');
 
 		if (isset($_POST['register_globals']) && $phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') {
@@ -68,36 +73,44 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'update')) { // Post reque
 
 		// Customer can disable/enable all functions
 		if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
-			$disableFunctions = array();
+			$disabledFunctions = array();
 
 			foreach (array(
 				'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
 				'phpinfo', 'shell', 'symlink') as $function
 			) {
 				if (isset($_POST[$function])) { // we are safe here
-					array_push($disableFunctions, $function);
+					array_push($disabledFunctions, $function);
 				}
 			}
 
 			// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
-			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disableFunctions));
+			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
 		} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-			$disableFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
+			$disabledFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
 
 			if (isset($_POST['exec']) && $_POST['exec'] == 'allows') { // exec function is explicitely allowed by customer
-				$disableFunctions = array_diff($disableFunctions, array('exec'));
+				$disabledFunctions = array_diff($disabledFunctions, array('exec'));
 			} else { // exec function is explicitely diallowed by customer (we are safe here)
-				$disableFunctions = in_array('exec', $disableFunctions)
-					? $disableFunctions : $disableFunctions + array('exec');
+				$disabledFunctions = in_array('exec', $disabledFunctions)
+					? $disabledFunctions : $disabledFunctions + array('exec');
 			}
 
-			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disableFunctions));
+			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
+		}
+
+		if($phpini->getData() == $oldData) {
+			set_page_message(tr("Nothing's been changed."), 'info');
+			redirectTo('domains_manage.php');
 		}
 
 		$phpini->saveCustomPHPiniIntoDb($domainId);
 		$phpini->sendToEngine($domainId);
 
 		set_page_message(tr('PHP configuration scheduled for update.'), 'success');
+
+		$userLogged = isset($_SESSION['logged_from']) ? $_SESSION['logged_from'] : $_SESSION['user_logged'];
+		write_log("PHP settings for domain ID <strong>$domainId</strong> were updated by {$_SESSION['user_logged']}", E_USER_NOTICE);
 	} else {
 		set_page_message(tr('Domain status is not ok.'), 'error');
 	}
@@ -111,13 +124,14 @@ $tpl->define_dynamic(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
 		 'page_message' => 'page',
 		 'logged_from' => 'page',
+		 'php_editor_first_block_js' => 'page',
 		 'php_editor_first_block' =>  'page',
 		 'register_globals_block' => 'php_editor_first_block',
 		 'allow_url_fopen_block' => 'php_editor_first_block',
 		 'display_errors_block' => 'php_editor_first_block',
 		 'error_reporting_block' => 'php_editor_first_block',
 		 'disable_functions_block' => 'php_editor_first_block',
-		 'js_for_exec_help' => 'page',
+		 'php_editor_second_block_js' => 'page',
 		 'php_editor_second_block' => 'page'));
 
 $tpl->assign(
@@ -135,9 +149,6 @@ $tpl->assign(
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 gen_logged_from($tpl);
-
-// load custom php.ini
-$phpini->loadCustomPHPini($domainId);
 
 $htmlSelected = $cfg->HTML_SELECTED;
 $htmlChecked = $cfg->HTML_CHECKED;
@@ -193,8 +204,9 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 
 // disable_functions directive
 if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
-	$tplVars['JS_FOR_EXEC_HELP'] = '';
+	$tplVars['PHP_EDITOR_FIRST_BLOCK_JS'] = '';
 	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
+	$tplVars['PHP_EDITOR_SECOND_BLOCK_JS'] = '';
 	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
 } elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
 	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
@@ -206,9 +218,10 @@ if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
 	$tplVars['TR_DISALLOWED'] = tr('Disallowed');
 	$tplVars['TR_HELP'] = tr('Help');
 	$tplVars['TR_DISABLE_FUNCTIONS_EXEC'] = tr('PHP exec() function');
-	$tplVars['TR_EXEC_HELP'] = tr("When allowed, scripts can use the PHP exec() function. This function is needed by many applications but can cause some security issues");
+	$tplVars['TR_EXEC_HELP'] = tr("When allowed, scripts can call the PHP exec() function. This function is needed by many applications but can cause some security issues");
 	$tplVars['EXEC_ALLOWED'] = ($allowed) ? $htmlChecked : '';
 	$tplVars['EXEC_DISALLOWED'] = ($allowed) ? '' : $htmlChecked;
+	$tplVars['PHP_EDITOR_FIRST_BLOCK_JS'] = '';
 	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
 } else {
 	$disableFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
@@ -220,12 +233,13 @@ if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
 	}
 
 	$tplVars['TR_DISABLE_FUNCTIONS'] = 'disable_functions';
-	$tplVars['JS_FOR_EXEC_HELP'] = '';
+	$tplVars['PHP_EDITOR_SECOND_BLOCK_JS'] = '';
 	$tplVars['PHP_EDITOR_SECOND_BLOCK'] = '';
 	$firstBlock = true;
 }
 
 if (!$firstBlock) {
+	$tplVars['PHP_EDITOR_FIRST_BLOCK_JS'] = '';
 	$tplVars['PHP_EDITOR_FIRST_BLOCK'] = '';
 } else {
 	$tplVars['TR_DIRECTIVE_NAME'] = tr('Directive name');
