@@ -39,6 +39,7 @@ Tickets:
 	- Fixed #271: Enhancement - Do not enforce session reuse for FTP over SSL (Tx Cube)
 	- Fixed #272: Task - Update postfix's master.cf
 	- Fixed #278: Defect - Possible corruption of postfix's domain configuration
+	- Fixed #279: Defect - Installer should not fail when we are using another webmail
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

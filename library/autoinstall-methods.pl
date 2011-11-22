@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -489,15 +488,17 @@ sub saveGuiWorkingData {
 		error("$stderr") if $stderr;
 		return $rs if $rs;
 
-		# Save webmail data (Squirrel)
-		$rs = execute(
-			"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-			\$stdout, \$stderr
-		);
+		# Save webmail data (Squirrel) if needed
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data") {
+			$rs = execute(
+				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
+				\$stdout, \$stderr
+			);
 
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		return $rs if $rs;
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
 
 	# For i-MSCP versions prior 1.0.4
 	} elsif(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
@@ -511,15 +512,17 @@ sub saveGuiWorkingData {
 		error("$stderr") if $stderr;
 		return $rs if $rs;
 
-		# Save webmail data (Squirrel)
-		$rs = execute(
-			"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-			\$stdout, \$stderr
-		);
+		# Save webmail data (Squirrel) if needed
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data") {
+			$rs = execute(
+				"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
+				\$stdout, \$stderr
+			);
 
-		debug("$stdout") if $stdout;
-		error("$stderr") if $stderr;
-		return $rs if $rs;
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
 
 		# Save i-MSCP GUI data (isp domain default index.html page)
 		$rs = execute(
