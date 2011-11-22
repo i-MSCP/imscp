@@ -219,10 +219,6 @@ function client_UpdateMailAccount($mailAccountData)
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		if ($passwordUpdate || $forwardAddressesUpdate) {
-
-			$mailAccountData['status'] = ($forwardAddressesUpdate)
-				? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS;
-
 			$query = "
 				UPDATE
 					`mail_users`
@@ -235,17 +231,12 @@ function client_UpdateMailAccount($mailAccountData)
 									$mailAccountData['mail_pass'],
 									$mailAccountData['mail_forward'],
 									$mailAccountData['mail_type'],
-									$mailAccountData['status'],
+									$cfg->ITEM_CHANGE_STATUS,
 									$mailAccountData['mail_id']));
 
-			if($mailAccountData['status'] == $cfg->ITEM_CHANGE_STATUS) {
-				// Sending request to the i-MSCP daemon for backend process
-				send_request();
-				set_page_message(tr('Mail account scheduled for update.'), 'success');
-			} else {
-				set_page_message(tr('Password successfully updated.'), 'success');
-			}
-
+			// Sending request to the i-MSCP daemon for backend process
+			send_request();
+			set_page_message(tr('Mail account scheduled for update.'), 'success');
 			write_log("{$_SESSION['user_logged']}: updated mail account: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		} else {
 			set_page_message(tr("Nothing's been changed."), 'info');
