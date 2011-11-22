@@ -70,7 +70,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300">
+							<td style="width:300px;">
 								<label for="lostpassword_timeout">{TR_LOSTPASSWORD_TIMEOUT}</label>
 							</td>
 							<td>
@@ -95,7 +95,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300">
+							<td style="width:300px;">
 								<label for="passwd_chars">{TR_PASSWD_CHARS}</label>
 							</td>
 							<td>
@@ -289,9 +289,9 @@
 							</td>
 							<td>
 								<select name="phpini_error_reporting" id="phpini_error_reporting">
-									<option value="E_ALL & ~E_NOTICE" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ERROR_REPORTING_DEFAULT}</option>
+									<option value="E_ALL &amp; ~E_NOTICE" {PHPINI_ERROR_REPORTING_0}>{TR_PHPINI_ERROR_REPORTING_DEFAULT}</option>
 									<option value="E_ALL | E_STRICT" {PHPINI_ERROR_REPORTING_1}>{TR_PHPINI_ERROR_REPORTING_DEVELOPEMENT}</option>
-									<option value="E_ALL & ~E_DEPRECATED" {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ERROR_REPORTING_PRODUCTION}</option>
+									<option value="E_ALL &amp; ~E_DEPRECATED" {PHPINI_ERROR_REPORTING_2}>{TR_PHPINI_ERROR_REPORTING_PRODUCTION}</option>
 									<option value="0" {PHPINI_ERROR_REPORTING_3}>{TR_PHPINI_ERROR_REPORTING_NONE}</option>
 								</select>
 							</td>
