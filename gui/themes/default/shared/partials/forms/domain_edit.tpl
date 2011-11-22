@@ -27,7 +27,7 @@
 				dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
 				create: function(){
-					$('.radio').buttonset();
+					$('.ui-buttonset').buttonset();
 				}
 			});
 
@@ -39,8 +39,8 @@
 			$('#domain_php').change(function(){$('#php_editor_block').fadeToggle();});
 
 			$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function(e){
-					$('#php_editor_dialog').dialog('open');
-					return false;
+				$('#php_editor_dialog').dialog('open');
+				return false;
 			});
 
 			// Do not show PHP Editor settings button if disabled
@@ -274,7 +274,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_REGISTER_GLOBALS}</td>
 								<td>
-									<div class="radio">
+									<div class="ui-buttonset">
 										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsYes" value="yes" {REGISTER_GLOBALS_YES}/>
 										<label for="phpiniRegisterGlobalsYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsNo" value="no" {REGISTER_GLOBALS_NO}/>
@@ -288,7 +288,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
 								<td>
-									<div class="radio">
+									<div class="ui-buttonset">
 										<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes" value="yes" {ALLOW_URL_FOPEN_YES}/>
 										<label for="phpiniAllowUrlFopenYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenNo" value="no" {ALLOW_URL_FOPEN_NO}/>
@@ -302,7 +302,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
 								<td>
-									<div class="radio">
+									<div class="ui-buttonset">
 										<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes" value="yes" {DISPLAY_ERRORS_YES}/>
 										<label for="phpiniDisplayErrorsYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsNo" value="no" {DISPLAY_ERRORS_NO}/>
@@ -316,7 +316,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_DISABLE_FUNCTIONS}</td>
 								<td>
-									<div class="radio">
+									<div class="ui-buttonset">
 										<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsYes" value="yes" {DISABLE_FUNCTIONS_YES}/>
 										<label for="phpiniDisableFunctionsYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsNo" value="no" {DISABLE_FUNCTIONS_NO}/>
