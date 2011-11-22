@@ -535,7 +535,7 @@ sub addUser{
 	########################### END MOD CBAND SECTION ###############################
 
 	########################## START PHP.INI for user ###############################
-	if($self::apacheConfig{INI_LEVEL} =~ /^user$/i){
+	if($self::apacheConfig{INI_LEVEL} =~ /^per_user$/i){
 		for (
 			["$php5Dir",		$data->{USER},	$data->{GROUP},	0555],
 			["$php5Dir/php5",	$data->{USER},	$data->{GROUP},	0550]
@@ -719,9 +719,9 @@ sub addCfg{
 	}
 
 	############################ START CONFIG SECTION ###############################
-	$self->{data}->{FCGID_NAME} = $data->{ROOT_DMN_NAME}	if($self::apacheConfig{INI_LEVEL} =~ /^user$/i);
-	$self->{data}->{FCGID_NAME} = $data->{PARENT_DMN_NAME} 	if($self::apacheConfig{INI_LEVEL} =~ /^domain$/i);
-	$self->{data}->{FCGID_NAME} = $data->{DMN_NAME}			if($self::apacheConfig{INI_LEVEL} =~ /^subdomain$/i);
+	$self->{data}->{FCGID_NAME} = $data->{ROOT_DMN_NAME}	if($self::apacheConfig{INI_LEVEL} =~ /^per_user$/i);
+	$self->{data}->{FCGID_NAME} = $data->{PARENT_DMN_NAME} 	if($self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i);
+	$self->{data}->{FCGID_NAME} = $data->{DMN_NAME}			if($self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i);
 
 
 	$rs |= iMSCP::File->new(
@@ -771,13 +771,13 @@ sub dmnFolders{
 	push(@folders, ["$php5Dir",			$data->{USER},	$data->{GROUP},	0555])
 		if
 			$self->{mode} eq 'dmn' &&
-			$self::apacheConfig{INI_LEVEL} =~ /^domain$/i ||
-			$self::apacheConfig{INI_LEVEL} =~ /^subdomain$/i;
+			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i ||
+			$self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i;
 	push(@folders, ["$php5Dir/php5",	$data->{USER},	$data->{GROUP},	0550])
 		if
 			$self->{mode} eq 'dmn' &&
-			$self::apacheConfig{INI_LEVEL} =~ /^domain$/i ||
-			$self::apacheConfig{INI_LEVEL} =~ /^subdomain$/i;
+			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i ||
+			$self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i;
 
 	@folders;
 }
@@ -852,9 +852,9 @@ sub addFiles{
 
 	$rs |= $self->buildPHPini($data)
 		if(
-			$self::apacheConfig{INI_LEVEL} =~ /^domain$/i &&
+			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i &&
 			$self->{mode} eq"dmn" ||
-			$self::apacheConfig{INI_LEVEL} =~ /^subdomain$/i
+			$self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i
 		);
 
 	$rs;

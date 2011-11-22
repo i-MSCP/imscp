@@ -18,7 +18,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -67,10 +66,12 @@ CMD_HTTPD_CTL = /usr/sbin/apache2ctl
 APACHE_RESTART_TRY = 3
 APACHE_NAME = apache2
 
-
-###### PHP.INI
-# values accepted: user, domain, subdomain
-# user: each user will have own php.ini
-# domain: each domain / alias will have own php.ini
-# user: each domain / alias /subdomain / subdomain alias will have own php.ini
-INI_LEVEL = user
+###### LEVEL FOR PHP.INI FILE
+# Accepted values are: per_user, per_domain or per_vhost
+#
+# per_user: each customer will have only one php.ini file
+# per_domain: each domain / domain alias will have its own php.ini file
+# per_vhost: each vhost for domain, domain alias, subdomain and subdomain alias will
+# have its own php.ini file
+#
+INI_LEVEL = per_user
