@@ -22,7 +22,6 @@
  * @package     iMSCP_Services
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -34,8 +33,7 @@
  * @package     iMSCP_Services
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @Since       1.0.0 (i-MSCP)
- * @version     1.0.1
+ * @version     1.0.2
  */
 class iMSCP_Services implements iterator, countable
 {
@@ -65,13 +63,19 @@ class iMSCP_Services implements iterator, countable
         /** @var $dbConfig iMSCP_Config_Handler_Db */
         $dbConfig = iMSCP_Registry::get('dbConfig');
 
+		if (filter_var($cfg->BASE_SERVER_IP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+			$baseServerIp = "[{$cfg->BASE_SERVER_IP}]";
+		} else {
+			$baseServerIp = $cfg->BASE_SERVER_IP;
+		}
+
         // Retrieve all services properties
         foreach ($dbConfig as $service => $serviceProperties) {
             if (substr($service, 0, 5) == 'PORT_') {
                 $this->_services[$service] = explode(';', $serviceProperties);
 
                 if ($this->_services[$service][5] == '') {
-                    $this->_services[$service][5] = $cfg->BASE_SERVER_IP;
+                    $this->_services[$service][5] = $baseServerIp;
                 } elseif ($this->_services[$service][5] == '127.0.0.1') {
                     $this->_services[$service][5] = 'localhost';
                 }

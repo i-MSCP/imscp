@@ -696,24 +696,24 @@ function check_login($fileName = null, $preventExternalLogin = true)
 	if ($preventExternalLogin) {
 
 		// An user try to access the panel from another url ?
-		if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+		if (!empty($_SERVER['HTTP_REFERER'])) {
 
-			// Extracting the URL scheme
-			$info = parse_url($_SERVER['HTTP_REFERER']);
+			// Extracting hostname from referer URL
+			$refererHostname = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
 
 			// The URL does contains the host element ?
-			if (isset($info['host']) && !empty($info['host'])) {
-				$http_host = $_SERVER['HTTP_HOST'];
+			if (!is_null($refererHostname)) {
+				// Note1: We don't care about the scheme, we only want make parse_url() happy
+				// Note2: We remove any braket in hostname (ipv6 issue)
+				$http_host = str_replace(array('[', ']'), '', parse_url("http://{$_SERVER['HTTP_HOST']}", PHP_URL_HOST));
 
 				// The referer doesn't match the panel hostname ?
-				if ($info['host'] != substr($http_host, 0, (int)(strlen($http_host) - strlen(strrchr($http_host, ':'))))
-					|| $info['host'] != $_SERVER['SERVER_NAME']
-				) {
-
-					set_page_message(tr('Request from foreign host was blocked.'));
+				if (in_array($refererHostname, array($http_host, $_SERVER['SERVER_NAME']))) {
+					set_page_message(tr('Request from foreign host was blocked.'), 'info');
 
 					# Quick fix for #96 (will be rewritten ASAP)
 					isset($_SERVER['REDIRECT_URL']) ?: $_SERVER['REDIRECT_URL'] = '';
+
 					if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']),
 								 strlen($_SERVER['REDIRECT_URL'])) == $_SERVER['REDIRECT_URL'])
 					) {
