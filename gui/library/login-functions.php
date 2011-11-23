@@ -708,7 +708,7 @@ function check_login($fileName = null, $preventExternalLogin = true)
 				$http_host = str_replace(array('[', ']'), '', parse_url("http://{$_SERVER['HTTP_HOST']}", PHP_URL_HOST));
 
 				// The referer doesn't match the panel hostname ?
-				if (in_array($refererHostname, array($http_host, $_SERVER['SERVER_NAME']))) {
+				if (!in_array($refererHostname, array($http_host, $_SERVER['SERVER_NAME']))) {
 					set_page_message(tr('Request from foreign host was blocked.'), 'info');
 
 					# Quick fix for #96 (will be rewritten ASAP)
