@@ -18,8 +18,9 @@
  * Portions created by Initial Developer are Copyright (C) 2010-2011
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category    i-MSCP
- * @subpackage  client
+ * @category    iMSCP
+ * @package		iMSCP_Core
+ * @subpackage  Client
  * @copyright   2010-2011 by ispCP | http://i-mscp.net
  * @author      William Lightning <kassah@gmail.com>
  * @link        http://i-mscp.net i-MSCP Home Site

@@ -18,11 +18,14 @@
  * Portions created by Initial Developer are Copyright (C) 2010-2011
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category i-MSCP
- * @copyright 2010-2011 by i-MSCP | http://i-mscp.net
- * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @link http://i-mscp.net i-MSCP Home Site
- * @license http://www.mozilla.org/MPL/ MPL 1.1
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Client
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @author		iMSCP Team
+ * @author		Sacha Bay <sascha.bay@i-mscp.net>
+ * @link		http://i-mscp.net i-MSCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /************************************************************************************

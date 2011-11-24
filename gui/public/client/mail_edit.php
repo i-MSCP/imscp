@@ -2,44 +2,37 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * The contents of this file are subject to the Mozilla Public License Version
- * 1.1 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
+ * The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
  * http://www.mozilla.org/MPL/
  *
- * Software distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- * for the specific language governing rights and limitations under the
- * License.
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations
+ * under the License.
  *
  * The Original Code is "VHCS - Virtual Hosting Control System".
  *
- * The Initial Developer of the Original Code is is moleSoftware GmbH.
- * Portions created by the Initial Developer are Copyright (C) 2001-2006
+ * The Initial Developer of the Original Code is moleSoftware GmbH.
+ * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
  *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * Alternatively, the contents of this file may be used under the terms of
- * the GNU General Public License Version 2 or later (the "GPL"), in which case the
- * provisions of the GPL are applicable instead of those above. If you wish to allow
- * use of your version of this file only under the terms of either the GPL, and not
- * to allow others to use your version of this file under the terms of the MPL,
- * indicate your decision by deleting the provisions above and replace them with the
- * notice and other provisions required by the GPL. If you do not delete
- * the provisions above, a recipient may use your version of this file under
- * the terms of any one of the MPL or the GPL.
- *
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @link		http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Client
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link 		http://i-mscp.net
+ * @author 		ispCP Team
+ * @author 		i-MSCP Team
  */
 
 /************************************************************************************
