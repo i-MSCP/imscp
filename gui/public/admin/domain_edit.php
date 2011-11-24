@@ -19,12 +19,15 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage	Admin
+ * @subpackage	admin
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
+
+// Note to developers: When editing this script, don't forget to also
+// edit the reseller/domain_edit.php script.
 
 /************************************************************************************
  * script functions
@@ -35,8 +38,8 @@
  *
  * @param int $domainId Domain unique identifier
  * @param bool $forUpdate Tell whether or not data are fetched for update
- * @param bool $recoveryMode
- * @return array reference to array of data
+ * @param bool $recoveryMode If set to TRUE, will force data to be fetched from database
+ * @return array Reference to array of data
  */
 function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 {
@@ -48,7 +51,8 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 
 		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS";
 
-		// Until we have not a jobs manager, we must do those checks (status)
+		// Checks for domain existence and status
+
 		$query = "
 			SELECT
 				`t1`.`domain_status`,
@@ -64,18 +68,19 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 		";
 		$stmt = exec_query($query, array($statusOk, $statusOk, $statusOk, $domainId));
 
-		// Check for domain existence and its status
 		if($stmt->fields['domain_status'] == '') {
-			set_page_message(tr('Domain not found.'), 'error');
+			set_page_message(tr("The domain you are trying to edit doesn't exist."), 'error');
 			redirectTo('manage_users.php');
 		} elseif(($stmt->fields['domain_status'] != $cfg->ITEM_OK_STATUS && $stmt->fields['domain_status'] != $cfg->ITEM_DISABLED_STATUS)
 				 || $stmt->fields('statusNotOk') > 0
 		) {
-			set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'error');
+			set_page_message(tr("The domain or at least one of its entities has a different status than 'ok'."), 'warning');
 			redirectTo('manage_users.php');
 		} elseif($stmt->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
 			set_page_message(tr('The domain is currently deactivated. The modification of some of its properties will result by a complete or partial reactivation of it.'), 'warning');
 		}
+
+		// Getting domain data
 
 		$bindParams = array();
 		$notRlikeCondition = '';
@@ -195,12 +200,9 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 
 			if($data['customer_php_ini_system'] == 'yes') {
 				$phpEditor->loadClPerm($data['domain_id']);
-
-				if($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
-					// Try to load the custom PHP directive values for the customer
-					// If they exists, they will replace the default values
-					$phpEditor->loadCustomPHPini($data['domain_id']);
-				}
+				// Try to load the custom PHP directive values for the customer
+				// If they exists, they will replace the default values
+				$phpEditor->loadCustomPHPini($data['domain_id']);
 			}
 		}
 
@@ -562,7 +564,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$errFieldsStack[] = 'domain_subd_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_subd_limit'], $data['nbSubdomains'],
 												  $data["fallback_domain_subd_limit"], $data['current_sub_cnt'],
-												  $data['max_sub_cnt'], tr('subdomains'))
+												  $data['max_sub_cnt'], ($data['nbSubdomains'] > 1) ? tr('subdomains') : tr('subdomain'))
 			) {
 				$errFieldsStack[] = 'domain_subd_limit';
 			}
@@ -575,7 +577,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$errFieldsStack[] = 'domain_alias_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_alias_limit'], $data['nbAliasses'],
 												  $data["fallback_domain_alias_limit"], $data['current_als_cnt'],
-												  $data['max_als_cnt'], tr('domain aliasses'))
+												  $data['max_als_cnt'], ($data['nbAliasses'] > 1) ? tr('domain aliasses') : tr('domain alias'))
 			) {
 				$errFieldsStack[] = 'domain_alias_limit';
 			}
@@ -588,7 +590,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$errFieldsStack[] = 'domain_mailacc_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_mailacc_limit'], $data['nbMailAccounts'],
 												  $data["fallback_domain_mailacc_limit"], $data['current_mail_cnt'],
-												  $data['max_mail_cnt'], tr('mail accounts'))
+												  $data['max_mail_cnt'], ($data["nbMailAccounts"] > 1) ? tr('mail accounts') : tr('mail account'))
 			) {
 				$errFieldsStack[] = 'domain_mailacc_limit';
 			}
@@ -601,7 +603,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$errFieldsStack[] = 'domain_ftpacc_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_ftpacc_limit'], $data['nbFtpAccounts'],
 												  $data["fallback_domain_ftpacc_limit"], $data['current_ftp_cnt'],
-												  $data['max_ftp_cnt'], tr('Ftp accounts'))
+												  $data['max_ftp_cnt'], ($data['nbFtpAccounts'] > 1) ? tr('Ftp accounts') : tr('Ftp account'))
 			) {
 				$errFieldsStack[] = 'domain_ftpacc_limit';
 			}
@@ -614,7 +616,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$errFieldsStack[] = 'domain_sqld_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_sqld_limit'], $data['nbSqlDatabases'],
 												  $data["fallback_domain_sqld_limit"], $data['current_sql_db_cnt'],
-												  $data['max_sql_db_cnt'], tr('Sql databases'))
+												  $data['max_sql_db_cnt'], ($data['nbSqlDatabases'] > 1 ) ? tr('Sql databases'): tr('Sql database'))
 			) {
 				$errFieldsStack[] = 'domain_sqld_limit';
 			}
@@ -627,7 +629,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				$errFieldsStack[] = 'domain_sqlu_limit';
 			} elseif (!_admin_isValidServiceLimit($data['domain_sqlu_limit'], $data['nbSqlUsers'],
 												  $data["fallback_domain_sqlu_limit"], $data['current_sql_user_cnt'],
-												  $data['max_sql_user_cnt'], tr('Sql users'))
+												  $data['max_sql_user_cnt'], ($data['nbSqlUsers'] > 1) ?  tr('Sql users') : tr('Sql user'))
 			) {
 				$errFieldsStack[] = 'domain_sqlu_limit';
 			}
@@ -715,7 +717,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				}
 
 				if($phpEditor->flagValueError) {
-					set_page_message(tr("Please, check the PHP Editor settings"), 'error');
+					set_page_message(tr('Please, check the PHP Editor settings.'), 'error');
 				}
 			} else {
 				// PHP Editor is disabled - back to the default values
@@ -753,72 +755,70 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 
 			foreach ($data as $property => $value) {
 				if (strpos($property, 'fallback_') !== false) {
-					$oldValues[$property] = $value;
 					$property = substr($property, 9);
+					$oldValues[$property] = $value;
 					$newValues[$property] = $data[$property];
 				}
 			}
 
+			// Whether or not we must send backend request
 			$daemonRequest = false;
 
-			// PHP Editor values were changed?
-			if(array_values($phpEditorNew) != array_values($phpEditorOld)) {
-				$daemonRequest = true;
-			}
-
 			// Nothing's been changed?
-			if (!$daemonRequest && array_values($newValues) == array_values($oldValues)) {
+			if ($newValues == $oldValues && $phpEditorNew == $phpEditorOld) {
 				set_page_message(tr("Nothing's been changed."), 'info');
 				return true;
 			}
 
-			// Support for custom DNS records is now disabled - We must delete
-			// any related entries in the database and update the DNS zone file
-			// TODO What about protected entries?
-			if ($data['domain_dns'] != $data['fallback_domain_dns'] && $data['domain_dns'] == 'no') {
-				$query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ?';
-				exec_query($query, $domainId);
+			if ($phpEditorNew != $phpEditorOld) {
+				if ($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
+					$phpEditor->saveCustomPHPiniIntoDb($domainId);
+				} else {
+					$query = "DELETE FROM `php_ini` WHERE `domain_id` = ?";
+					exec_query($query, $domainId);
+				}
+
 				$daemonRequest = true;
 			}
 
-			// Update Ftp quota limit if needed
-			if ($data['domain_disk_limit'] != $data['fallback_domain_disk_limit']) {
-				$query = "
-					REPLACE INTO `quotalimits` (
-						`name`, `quota_type`, `per_session`, `limit_type`,
-						`bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`,
-						`files_in_avail`, `files_out_avail`, `files_xfer_avail`
-					) VALUES (
-						?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-					)
-				";
-				exec_query($query, array(
-										$data['domain_name'], 'group', 'false', 'hard',
-										$data['domain_disk_limit'] * 1048576, 0, 0, 0, 0, 0));
-			}
-
-			// Support for PHP or CGI was either enabled or disabled - We must
-			// update the vhosts files of all domain entities (dmn, sub, als, alssub)
-			if ($data['domain_php'] != $data['fallback_domain_php'] ||
+			// PHP or CGI was either enabled or disabled or PHP Settings were changed
+			// We must update the vhosts files of all domain entities (dmn, sub, als, alssub)
+			if ($daemonRequest || $data['domain_php'] != $data['fallback_domain_php'] ||
 				$data['domain_cgi'] != $data['fallback_domain_cgi']
 			) {
+				if($data['domain_alias_limit'] != '-1') {
+					$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
+					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+				}
+
+				if($data['domain_subd_limit'] != '-1') {
+					$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
+					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+
+					$query = "
+						UPDATE
+							`subdomain_alias`
+						SET
+							`subdomain_alias_status` = ?
+						WHERE
+							`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+					";
+					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+				}
+
 				$daemonRequest = true;
+			}
 
-				$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
-				exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+			// Support for custom DNS records is now disabled - We must delete
+			// any related entries in the database and update the DNS zone file
+			// TODO Check for protected entries
+			if ($data['domain_dns'] != $data['fallback_domain_dns'] &&
+				$data['domain_dns'] == 'no'
+			) {
+				$query = 'DELETE FROM `domain_dns` WHERE `domain_id` = ?';
+				exec_query($query, $domainId);
 
-				$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
-				exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
-
-				$query = "
-					UPDATE
-						`subdomain_alias`
-					SET
-						`subdomain_alias_status` = ?
-					WHERE
-						`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-				";
-				exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+				$daemonRequest= true;
 			}
 
 			// Update domain properties
@@ -837,28 +837,35 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 				WHERE
 					`domain_id` = ?
 			";
-			exec_query($query,
-					   array(
-							$data['domain_expires'], time(), $data['domain_mailacc_limit'],
-							$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
-							$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
-							($daemonRequest) ? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS,
-							$data['domain_alias_limit'], $data['domain_subd_limit'],
-							$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
-							$data['allowbackup'], $data['domain_dns'],
-							$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
-							$phpEditor->getClPermVal('phpiniRegisterGlobals'),
-							$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
-							$phpEditor->getClPermVal('phpiniDisplayErrors'),
-							$phpEditor->getClPermVal('phpiniDisableFunctions'),
-							$domainId));
+			exec_query($query, array(
+									$data['domain_expires'], time(), $data['domain_mailacc_limit'],
+									$data['domain_ftpacc_limit'], $data['domain_traffic_limit'],
+									$data['domain_sqld_limit'], $data['domain_sqlu_limit'],
+									($daemonRequest) ? $cfg->ITEM_CHANGE_STATUS : $cfg->ITEM_OK_STATUS,
+									$data['domain_alias_limit'], $data['domain_subd_limit'],
+									$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
+									$data['allowbackup'], $data['domain_dns'],
+									$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
+									$phpEditor->getClPermVal('phpiniRegisterGlobals'),
+									$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
+									$phpEditor->getClPermVal('phpiniDisplayErrors'),
+									$phpEditor->getClPermVal('phpiniDisableFunctions'),
+									$domainId));
 
-			// Update PHP Editor custom values or remove it
-			if($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
-				$phpEditor->saveCustomPHPiniIntoDb($domainId);
-			} else {
-				$query = "DELETE FROM `php_ini` WHERE `domain_id` = ?";
-				exec_query($query, $domainId);
+			// Update Ftp quota limit if needed
+			if ($data['domain_disk_limit'] != $data['fallback_domain_disk_limit']) {
+				$query = "
+					REPLACE INTO `quotalimits` (
+						`name`, `quota_type`, `per_session`, `limit_type`,
+						`bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`,
+						`files_in_avail`, `files_out_avail`, `files_xfer_avail`
+					) VALUES (
+						?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					)
+				";
+				exec_query($query, array(
+										$data['domain_name'], 'group', 'false', 'hard',
+										$data['domain_disk_limit'] * 1048576, 0, 0, 0, 0, 0));
 			}
 
 			// Update reseller properties
@@ -883,7 +890,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 		if($e->getCode() == 40001) { // Deadlock error management
 			if(isset($data)) { // $data is tested here only to avoid IDE warning about possible indefined variable
 				if(admin_checkAndUpdateData($domainId, true)) {
-					set_page_message(tr('Domain data were modified by another person before your update. The update process was successfully done but in recovery mode. We recommend you to check the result of it.'), 'warning');
+					set_page_message(tr('Domain data were modified by another person before your changes. The update process was successfully done but in recovery mode. We recommend you to check the result of it.'), 'warning');
 					return true;
 				} else {
 					return false;
@@ -895,7 +902,7 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 	}
 
 	if(!empty($errFieldsStack)) {
-	 iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
+		iMSCP_Registry::set('errFieldsStack', $errFieldsStack);
 	}
 
 	return false;
