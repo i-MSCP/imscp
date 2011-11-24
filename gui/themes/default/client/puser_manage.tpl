@@ -65,16 +65,15 @@
 			<td>{UNAME}</td>
 			<td>{USTATUS}</td>
 			<td>
-				<a href="protected_user_assign.php?uname={USER_ID}"
-				   class="icon i_users">{TR_GROUP}</a>
+				<a href="protected_user_assign.php?uname={USER_ID}" class="icon i_users">{TR_GROUP}</a>
 				<a href="{USER_EDIT_SCRIPT}" class="icon i_edit">{USER_EDIT}</a>
-				<a href="#" class="icon i_delete"
-				   onclick="return {USER_DELETE_SCRIPT}">{USER_DELETE}</a>
+				<a href="#" class="icon i_delete" onclick="return {USER_DELETE_SCRIPT}">{USER_DELETE}</a>
 			</td>
 		</tr>
 		<!-- EDP: user_block -->
 	</table>
 	<!-- EDP: users_block -->
+
 	<div class="buttons">
 		<input name="Button" type="button" onclick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue" value="{TR_ADD_USER}"/>
 	</div>
@@ -109,6 +108,7 @@
 		<!-- EDP: group_block -->
 	</table>
 	<!-- EDP: groups_block -->
+
 	<div class="buttons">
 		<input name="Button2" type="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent', 'protected_group_add.php');return document.MM_returnValue"/>
 	</div>
