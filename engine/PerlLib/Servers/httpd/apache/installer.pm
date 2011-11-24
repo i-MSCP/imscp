@@ -303,8 +303,8 @@ sub fastcgiConf {
 	}
 
 	if($self::apacheConfig{'PHP_FASTCGI'} !~ /fcgid|fastcgi/i) {
-		if($self::apacheConfig{'PHP_FASTCGI'} && $main::apacheOldConfig{'PHP_FASTCGI'} =~ /fcgid|fastcgi/i){
-			$self::apacheConfig{'PHP_FASTCGI'} = $main::apacheOldConfig{'PHP_FASTCGI'};
+		if($self::apacheOldConfig{'PHP_FASTCGI'} && $self::apacheOldConfig{'PHP_FASTCGI'} =~ /fcgid|fastcgi/i){
+			$self::apacheConfig{'PHP_FASTCGI'} = $self::apacheOldConfig{'PHP_FASTCGI'};
 		} else {
 			my $out;
 			while (! ($out = iMSCP::Dialog->factory()->radiolist("Please select a Fast CGI module: fcgid or fastcgi", 'fcgid', 'fastcgi'))){}

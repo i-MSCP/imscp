@@ -57,7 +57,7 @@
 	<perl>
 		perl
 		<other>perl-base</other>
-		<library>libperl5.12</library>
+		<library>libperl5.14</library>
 		<library>libberkeleydb-perl</library>
 		<library>libcrypt-blowfish-perl</library>
 		<library>libcrypt-cbc-perl</library>
