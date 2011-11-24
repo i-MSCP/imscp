@@ -329,10 +329,6 @@ textarea:focus {
 	outline: none;
 }
 
-.input_error {
-	border-color: #ca1d11;
-}
-
 /***********************************************************************************
  * LOCATION BAR STYLES
  ***********************************************************************************/
@@ -592,6 +588,7 @@ textarea:focus {
    /* white-space: nowrap;*/
     border-top: 1px solid rgb(223,223,223);
     border-bottom: 1px solid rgb(223,223,223);
+	height: 40px;
 }
 
 fieldset {
