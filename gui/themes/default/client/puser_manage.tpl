@@ -1,7 +1,7 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 <script type="text/javascript">
-	/* <![CDATA[ */
+/* <![CDATA[ */
 	function action_delete(url, subject) {
 		if(confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
 			location.href = url;
@@ -9,7 +9,7 @@
 
 		return false;
 	}
-	/* ]]> */
+/* ]]> */
 </script>
 <div class="header">
 	{MAIN_MENU}
@@ -103,8 +103,7 @@
 			</td>
 			<td>{GSTATUS}</td>
 			<td>
-				<a href="#" class="icon i_delete"
-				   onclick="{GROUP_DELETE_SCRIPT}">{GROUP_DELETE}</a>
+				<a href="#" class="icon i_delete" onclick="{GROUP_DELETE_SCRIPT}">{GROUP_DELETE}</a>
 			</td>
 		</tr>
 		<!-- EDP: group_block -->
