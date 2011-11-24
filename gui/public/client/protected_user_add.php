@@ -126,6 +126,8 @@ function padd_user($tpl, $dmn_id) {
 
 				send_request();
 
+				set_page_message(tr('User scheduled for addition.'), 'success');
+
 				$admin_login = $_SESSION['user_logged'];
 				write_log("$admin_login: add user (protected areas): $uname", E_USER_NOTICE);
 				redirectTo('protected_user_manage.php');

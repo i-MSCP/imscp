@@ -31,6 +31,7 @@ Tickets:
 	- Fixed #255: Defect - Hide support feature menu item at user level
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
+	- Fixed #263: Defect - Unable to delete htusers && htgroups
 	- Fixed #264: Defect - PHP Editor not available
 	- Fixed #265: Defect - Disabled feature can not be enabled
 	- Fixed #267: Defect - mod_cband configurations are not removed

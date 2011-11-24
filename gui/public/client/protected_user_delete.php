@@ -121,6 +121,8 @@ while (!$rs->EOF) {
 	$rs->moveNext();
 }
 
+set_page_message(tr('User scheduled for deletion.'), 'success');
+
 send_request();
 
 $admin_login = $_SESSION['user_logged'];

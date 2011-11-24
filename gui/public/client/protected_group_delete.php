@@ -106,6 +106,8 @@ while (!$rs->EOF) {
 	$rs->moveNext();
 }
 
+set_page_message(tr('Group scheduled for deletion.'), 'success');
+
 send_request();
 
 write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id", E_USER_NOTICE);
