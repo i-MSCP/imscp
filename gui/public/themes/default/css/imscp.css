@@ -316,7 +316,7 @@ input[type="text"]:disabled,
 input[type="password"]:disabled,
 select:disabled,
 textarea:disabled{
-	background-color: #cccccc;
+	background: #cccccc url(../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png) repeat;
 }
 
 
