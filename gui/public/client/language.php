@@ -57,7 +57,7 @@ $tpl->define_dynamic(
 		 'def_language' => 'page',
 		 'logged_from' => 'page'));
 
-// Getting current custommer language
+// Getting current customer language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 	list($customerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
 } else {
