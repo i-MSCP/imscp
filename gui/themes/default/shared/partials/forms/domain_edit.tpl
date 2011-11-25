@@ -6,7 +6,7 @@
 			$('#domain_expires').datepicker();
 			$('#domain_never_expires').change(function(){
 				if($(this).is(':checked')) {
-					$('#domain_expires').removeClass('input_error').attr('disabled', 'disabled')
+					$('#domain_expires').css('border-color', '#cccccc').attr('disabled', 'disabled')
 				} else {
 					$('#domain_expires').removeAttr('disabled');
 				}
