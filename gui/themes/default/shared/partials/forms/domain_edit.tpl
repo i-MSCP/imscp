@@ -26,13 +26,11 @@
 				modal:true,
 				dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function(){
-					$('.ui-buttonset').buttonset();
-				}
+				create: function(){$('.ui-buttonset').buttonset();}
 			});
 
 			// Re-add the PHP Editor container to the form
-			$('#php_editor_dialog').parent().appendTo($('#into'));
+			$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
 
 			// PHP Editor settings button
 			if($('#domain_php').val()=='no'){$('#php_editor_block').hide();}
@@ -254,12 +252,12 @@
 			<!-- BDP: php_editor_block -->
 			<tr id="php_editor_block">
 				<td><label for="phpiniSystem">{TR_PHP_EDITOR}</label></td>
-				<td colspan="3" id="into">
-					<select id="phpiniSystem" name="phpiniSystem">
+				<td colspan="3" id="dialogContainer" style="height: 30px;">
+					<select id="phpiniSystem" name="phpiniSystem" style="vertical-align: middle;">
 						<option value="yes" {PHP_EDITOR_YES}>{TR_YES}</option>
 						<option value="no" {PHP_EDITOR_NO}>{TR_NO}</option>
 					</select>
-					<input type="button" name="php_editor_dialog_open" id="php_editor_dialog_open" value="{TR_SETTINGS}" />
+					<button type="button" id="php_editor_dialog_open" style="vertical-align: middle;">{TR_SETTINGS}</button>
 					<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
 						<div class="php_editor_error success">
 							<span id="msg_default">{TR_FIELDS_OK}</span>
