@@ -72,10 +72,10 @@ if (!empty($_POST)) {
             		?, ?, ?, ?
             	)
     	";
-		exec_query($query, array($_SESSION['user_id'], $resellerNewLanguage, $_SESSION['user_theme'],
+		exec_query($query, array($_SESSION['user_id'], $adminNewLanguage, $_SESSION['user_theme'],
 								basename(layout_getUserLogo(false, false))));
 
-		$_SESSION['user_def_lang'] = $resellerNewLanguage;
+		$_SESSION['user_def_lang'] = $adminNewLanguage;
 
 		set_page_message(tr('Language successfully updated.'), 'success');
 	} else {
