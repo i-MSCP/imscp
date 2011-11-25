@@ -79,23 +79,13 @@ function reseller_generateOrdersMessage()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "
-		SELECT COUNT(`id`) `nbAccountOrders`
-		FROM
-			`orders`
-		WHERE
-			`user_id` = ?
-		AND
-			`status` = ?
-	";
+	$query = "SELECT COUNT(`id`) `nbAccountOrders` FROM `orders` WHERE `user_id` = ? AND `status` = ?";
 	$stmt = exec_query($query, array($_SESSION['user_id'], $cfg->ITEM_ORDER_CONFIRMED_STATUS));
 
 	$nbAccountOrders = $stmt->fields['nbAccountOrders'];
 
 	if ($nbAccountOrders) {
-		set_page_message(tr('You have %d new accounts %s.', $nbAccountOrders, ($nbAccountOrders > 1)
-															  ? tr('orders')
-															  : tr('order')));
+		set_page_message(tr('You have %d new accounts %s.', $nbAccountOrders, ($nbAccountOrders > 1) ? tr('orders') : tr('order')));
 	}
 }
 
@@ -113,13 +103,13 @@ function reseller_generateOrdersAliasesMessage()
 		SELECT
 			COUNT(`alias_id`) `nbOrdersAliases`
 		FROM
-				`domain_aliasses` `t1`
+			`domain_aliasses` `t1`
 		INNER JOIN
 			`domain` `t2` ON(`t2`.`domain_created_id` = ?)
 		WHERE
 			`t1`.`domain_id` = `t2`.`domain_id`
 		AND
-			t1.alias_status = ?
+			`t1`.`alias_status` = ?
 	";
 	$stmt = exec_query($query, array($_SESSION['user_id'], $cfg->ITEM_ORDERED_STATUS));
 
@@ -144,12 +134,10 @@ function reseller_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
 	// Is limited traffic usage for reseller ?
 	if ($maxUsage != 0) {
 		list($percent, $bar) = calc_bars($usage, $maxUsage, $barMax);
-		$trafficUsageData = tr('%1$s%% [%2$s of %3$s]', $percent, numberBytesHuman($usage),
-							   numberBytesHuman($maxUsage));
+		$trafficUsageData = tr('%1$s%% [%2$s of %3$s]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
 	} else {
 		$percent = $bar = 0;
-		$trafficUsageData = tr('%1$s%% [%2$s of unlimited]', $percent, numberBytesHuman($usage),
-							   numberBytesHuman($maxUsage));
+		$trafficUsageData = tr('%1$s%% [%2$s of unlimited]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
 	}
 
 	$tpl->assign(
