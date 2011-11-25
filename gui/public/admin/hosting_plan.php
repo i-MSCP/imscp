@@ -145,7 +145,8 @@ if ($cfg->HOSTING_PLANS_LEVEL != 'admin') {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array('page' => $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan.tpl',
+	array(
+		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan.tpl',
 		 'page_message' => 'page',
 		 'hosting_plans' => 'page',
 		 'hp_table' => 'page',
