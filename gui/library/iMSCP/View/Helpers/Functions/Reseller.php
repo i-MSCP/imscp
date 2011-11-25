@@ -151,8 +151,8 @@ function gen_reseller_menu($tpl, $menu_file)
     $tpl->define_dynamic('alias_menu', 'page');
     $tpl->assign(array(
                       'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-                      'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-                      'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+                      'TR_MENU_CHANGE_PASSWORD' => tr('Password'),
+                      'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
                       'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
                       'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
                       'TR_MENU_MANAGE_USERS' => tr('Manage users'),
@@ -178,7 +178,7 @@ function gen_reseller_menu($tpl, $menu_file)
                       'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
                       'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
                       'TR_MENU_IP_USAGE' => tr('IP usage'),
-                      'TR_SOFTWARE_MENU' => tr('Application management'),
+                      'TR_SOFTWARE_MENU' => tr('Softwares management'),
                       'VERSION' => $cfg->Version,
                       'BUILDDATE' => $cfg->BuildDate,
                       'CODENAME' => $cfg->CodeName));

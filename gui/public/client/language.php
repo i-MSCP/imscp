@@ -57,7 +57,7 @@ $tpl->define_dynamic(
 		 'def_language' => 'page',
 		 'logged_from' => 'page'));
 
-// Getting current user language
+// Getting current custommer language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 	list($customerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
 } else {
@@ -85,13 +85,13 @@ if (!empty($_POST)) {
 			$_SESSION['user_def_lang'] = $customerNewLanguage;
 		}
 
-		set_page_message(tr('Language updated.'), 'success');
+		set_page_message(tr('Language successfully updated.'), 'success');
 	} else {
 		set_page_message(tr("Nothing's been changed."), 'info');
 	}
 
-	// Fix to see change on next load
-	redirectTo('language.php');
+	// Force update on next load
+	redirectTo('index.php');
 }
 
 $tpl->assign(
@@ -103,8 +103,8 @@ $tpl->assign(
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_GENERAL_INFO' => tr('General information'),
 		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your language'),
-		 'TR_CHANGE' => tr('Change')));
+		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
+		 'TR_UPDATE' => tr('Update')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');

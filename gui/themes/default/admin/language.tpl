@@ -17,14 +17,14 @@
             </ul>
             <ul class="path">
                 <li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
-                <li><a href="password_change.php">{TR_CHOOSE_DEFAULT_LANGUAGE}</a></li>
+                <li><a href="#" onclick="return false;">{TR_LANGUAGE}</a></li>
             </ul>
         </div>
         <div class="left_menu">
             {MENU}
         </div>
         <div class="body">
-            <h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
+            <h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
@@ -32,9 +32,12 @@
 
             <form name="adminChangeLanguage" method="post" action="language.php">
                 <table>
+					<tr>
+						<th colspan="2">{TR_LANGUAGE}</th>
+					</tr>
                     <tr>
                         <td style="width:300px;">
-                            <label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label>
+                            <label for="def_language">{TR_CHOOSE_LANGUAGE}</label>
                         </td>
                         <td>
                             <select name="def_language" id="def_language">
@@ -46,8 +49,7 @@
                     </tr>
                 </table>
                 <div class="buttons">
-                    <input name="submit" type="submit" class="button" value="{TR_SAVE}" />
-                    <input type="hidden" name="uaction" value="update" />
+                    <input name="submit" type="submit" class="button" value="{TR_UPDATE}" />
                 </div>
             </form>
         </div>

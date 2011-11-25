@@ -159,8 +159,8 @@ function gen_admin_menu($tpl, $menu_file)
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->assign(array(
 					  'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-					  'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-					  'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+					  'TR_MENU_CHANGE_PASSWORD' => tr('Password'),
+					  'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
 					  'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 					  'TR_MENU_ADD_ADMIN' => tr('Add admin'),
 					  'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
@@ -199,8 +199,8 @@ function gen_admin_menu($tpl, $menu_file)
 					  'TR_GENERAL_SETTINGS' => tr('General settings'),
 					  'TR_SERVERPORTS' => tr('Services ports'),
 					  'TR_MENU_IP_USAGE' => tr('IP usage'),
-					  'TR_MENU_MANAGE_SOFTWARE' => tr('Application management'),
-					  'TR_MENU_SOFTWARE_OPTIONS' => tr('Application options'),
+					  'TR_MENU_MANAGE_SOFTWARE' => tr('Softwares management'),
+					  'TR_MENU_SOFTWARE_OPTIONS' => tr('Softwares options'),
 					  'VERSION' => $cfg->Version,
 					  'BUILDDATE' => $cfg->BuildDate,
 					  'CODENAME' => $cfg->CodeName));

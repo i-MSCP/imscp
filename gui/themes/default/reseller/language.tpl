@@ -19,14 +19,15 @@
 			</ul>
 			<ul class="path">
 				<li><a href="index.php">{TR_GENERAL_INFO}</a></li>
-				<li><a href="password_change.php">{TR_CHOOSE_DEFAULT_LANGUAGE}</a></li>
+				<li><a href="#" onclick="return false;">{TR_LANGUAGE}</a></li>
 			</ul>
 		</div>
 		<div class="left_menu">
 			{MENU}
 		</div>
 		<div class="body">
-			<h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
+			<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
@@ -34,7 +35,10 @@
 			<form name="client_change_language" method="post" action="language.php">
 				<table>
 					<tr>
-						<td style="width:300px;"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+						<th colspan="2">{TR_LANGUAGE}</th>
+					</tr>
+					<tr>
+						<td style="width:300px;"><label for="def_language">{TR_CHOOSE_LANGUAGE}</label></td>
 						<td>
 							<select name="def_language" id="def_language">
 								<!-- BDP: def_language -->
@@ -44,10 +48,8 @@
 						</td>
 					</tr>
 				</table>
-
 				<div class="buttons">
-					<input name="Submit" type="submit" class="button" value="{TR_SAVE}" />
-					<input type="hidden" name="uaction" value="save_lang" />
+					<input name="Submit" type="submit" class="button" value="{TR_UPDATE}" />
 				</div>
 			</form>
             <!-- EDP: languages_available -->

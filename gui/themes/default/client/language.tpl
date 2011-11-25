@@ -23,7 +23,7 @@
 	</div>
 	<div class="left_menu">{MENU}</div>
 	<div class="body">
-		<h2 class="multilanguage"><span>{TR_TITLE_CHANGE_LANGUAGE}</span></h2>
+		<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
 
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
@@ -35,7 +35,7 @@
 					<th colspan="2">{TR_LANGUAGE}</th>
 				</tr>
 				<tr>
-					<td style="width:300px;"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+					<td style="width:300px;"><label for="def_language">{TR_CHOOSE_LANGUAGE}</label></td>
 					<td>
 						<select name="def_language" id="def_language">
 							<!-- BDP: def_language -->
@@ -46,7 +46,7 @@
 				</tr>
 			</table>
 			<div class="buttons">
-				<input type="submit" name="submit" value="{TR_CHANGE}" />
+				<input type="submit" name="submit" value="{TR_UPDATE}" />
 			</div>
 		</form>
 	</div>

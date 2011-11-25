@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,16 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Admin
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link 		http://i-mscp.net
+ * @author 		ispCP Team
+ * @author 		i-MSCP Team
  */
 
 /************************************************************************************
@@ -49,63 +50,61 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->ADMIN_TEMPLATE_PATH . '/language.tpl',
-                          'page_message' => 'page',
-                          'def_language' => 'page',
-                          'logged_from' => 'page'));
+$tpl->define_dynamic(
+	array(
+		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/language.tpl',
+		 'page_message' => 'page',
+		 'def_language' => 'page',
+		 'logged_from' => 'page'));
 
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
-    $user_id = $_SESSION['user_id'];
-    $user_lang = $_POST['def_language'];
+// Getting current admin language
+$adminCurrentLanguage = $_SESSION['user_def_lang'];
 
-    $query = "
-        REPLACE INTO
-            `user_gui_props` (
-                user_id, lang, layout, logo
-            ) VALUES (
-                ?, ?, ?, ?
-            )
-    ";
+if (!empty($_POST)) {
+    $adminNewLanguage = clean_input($_POST['def_language']);
 
-    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme'],
-							basename(layout_getUserLogo(false, false))));
+	if ($adminCurrentLanguage != $adminNewLanguage) {
+		$query = "
+        	REPLACE INTO
+            	`user_gui_props` (
+                	user_id, lang, layout, logo
+            	) VALUES (
+            		?, ?, ?, ?
+            	)
+    	";
+		exec_query($query, array($_SESSION['user_id'], $resellerNewLanguage, $_SESSION['user_theme'],
+								basename(layout_getUserLogo(false, false))));
 
-    $_SESSION['user_def_lang'] = $user_lang;
+		$_SESSION['user_def_lang'] = $resellerNewLanguage;
 
-    set_page_message(tr('User language successfully updated.'), 'success');
+		set_page_message(tr('Language successfully updated.'), 'success');
+	} else {
+		set_page_message(tr("Nothing's been changed."), 'info');
+	}
 
-	// Fix to see change on next load
-	redirectTo('language.php');
+	// Force update on next load
+	redirectTo('index.php');
 }
 
-if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-    list($user_def_lang) = get_user_gui_props($_SESSION['user_id']);
-} else {
-    $user_def_lang = $_SESSION['user_def_lang'];
-}
-
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Change Language'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_LANGUAGE' => tr('Language'),
-                  'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your default language'),
-                  'TR_SAVE' => tr('Save')));
-
+$tpl->assign(
+	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Change Language'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
+		 'TR_LANGUAGE' => tr('Language'),
+		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
+		 'TR_UPDATE' => tr('Update')));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
 gen_logged_from($tpl);
-gen_def_language($tpl, $user_def_lang);
-check_permissions($tpl);
+gen_def_language($tpl, $adminCurrentLanguage);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
