@@ -160,7 +160,7 @@ function pmaAuth($dbUserId)
         redirectTo(_pmaSetLanguage($headers['Location']));
 	}
 
-	set_page_message(tr('An error occurred while authentication.'), 'error');
+	set_page_message(tr('An error occurred while the authentication attempt.'), 'error');
 	return false;
 }
 
