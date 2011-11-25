@@ -26,7 +26,7 @@
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		$(document).ready(function() {
-			setTimeout(function(){$('.timeout').hide('slow');},1500);
+			setTimeout(function(){$('.timeout').hide('slow');},3000);
 		});
 	/*]]>*/
 	</script>
