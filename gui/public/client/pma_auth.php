@@ -199,7 +199,7 @@ function _pmaCreateCookies($cookies)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param  int $dbUserId Database user unique identifier
- * @return bool TRUE on success, FALSE otherwise
+ * @return bool FALSE on faillure
  */
 function pmaAuth($dbUserId)
 {
@@ -209,9 +209,7 @@ function pmaAuth($dbUserId)
 		$data = http_build_query(
 			array(
 				'pma_username' => $credentials[0],
-				'pma_password' => stripcslashes($credentials[1])
-			)
-		);
+				'pma_password' => stripcslashes($credentials[1])));
 	} else {
 		set_page_message(tr('Unknown SQL user id.'), 'error');
 		return false;
@@ -237,27 +235,18 @@ function pmaAuth($dbUserId)
 					"Connection: close\r\n\r\n",
 				'content' => $data,
 				'user_agent' => 'Mozilla/5.0',
-				'max_redirects' => 1
-			)
-		)
-	);
+				'max_redirects' => 1)));
 
 	// Gets the headers from PhpMyAdmin
 	$headers = get_headers($pmaUri, true);
 
-	if(isset($headers['Location'])) {
-		$headers['Location'] = _pmaSetLanguage($headers['Location']);
-	}
-
-	if(!$headers || !isset($headers['Location'])) {
-		set_page_message(tr('An error occurred while authentication.'), 'error');
-		return false;
-	} else {
+	if($headers && isset($headers['Location'])) {
 		_pmaCreateCookies($headers['Set-Cookie']);
-        redirectTo($headers['Location']);
+        redirectTo(_pmaSetLanguage($headers['Location']));
 	}
 
-	return true;
+	set_page_message(tr('An error occurred while authentication.'), 'error');
+	return false;
 }
 
 /**
