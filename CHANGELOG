@@ -11,6 +11,8 @@ Features / Enhancements:
 		Components:
 			- DebugBar - Files plugin: Count and shows the loaded templates files
 		Core:
+			- Reseller level - Added flash message for new orders (Only for confirmed orders)
+			- Reseller level - Added flash message for new domain alias orders
 			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
 			- Events system: Allows to pass arbitrary data to the events listeners methods
 			- PhpMyAdmin on-click logon - Set language according user panel language
