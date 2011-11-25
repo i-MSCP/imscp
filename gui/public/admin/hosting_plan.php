@@ -162,7 +162,6 @@ $tpl->assign(
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_HOSTING_PLANS' => tr('Hosting plans'),
 		 'TR_PURCHASING' => tr('Purchasing'),
-		 'TR_BACK' => tr('Back'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s hosting plan?', true, '%s')));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
