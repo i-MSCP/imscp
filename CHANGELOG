@@ -15,7 +15,7 @@ Features / Enhancements:
 			- Events system: Allows to pass arbitrary data to the events listeners methods
 			- PhpMyAdmin on-click logon - Set language according user panel language
 		Javascript
-			- Updated jQuery to version 1.7.0
+			- Updated jQuery to version 1.7.1
 			- Updated jQuery UI to version 1.8.16 (minified version)
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.7.1
