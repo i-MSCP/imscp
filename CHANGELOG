@@ -13,6 +13,7 @@ Features / Enhancements:
 		Core:
 			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
 			- Events system: Allows to pass arbitrary data to the events listeners methods
+			- PhpMyAdmin on-click logon - Set language according user panel language
 		Javascript
 			- Updated jQuery to version 1.7.0
 			- Updated jQuery UI to version 1.8.16 (minified version)
