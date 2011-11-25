@@ -38,14 +38,14 @@
  */
 
 /**
- * Get database login credentials.
+ * Get PhpMyadmin login credentials.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @param  int $dbUserId Database user unique identifier
  * @return mixed Array that contains login credentials, FALSE otherwise
  */
-function _getLoginCredentials($dbUserId)
+function _client_pmaGetLoginCredentials($dbUserId)
 {
 	$query = "
 		SELECT
@@ -74,7 +74,7 @@ function _getLoginCredentials($dbUserId)
  * @param  array $cookies Array that contains cookies definitions for PhpMyadmin
  * @return void
  */
-function _pmaCreateCookies($cookies)
+function _client_pmaCreateCookies($cookies)
 {
 	foreach ($cookies as $cookie) {
 		header("Set-Cookie: $cookie", false);
@@ -92,7 +92,7 @@ function _pmaCreateCookies($cookies)
  * @param string $location PMA URI location
  * @return string PMA URI location
  */
-function _pmaSetLanguage($location)
+function _client_pmaSetLanguage($location)
 {
 	$uriComponents = parse_url($location);
 	parse_str($uriComponents['query'], $queryParts);
@@ -109,12 +109,12 @@ function _pmaSetLanguage($location)
  * @param  int $dbUserId Database user unique identifier
  * @return bool FALSE on faillure
  */
-function pmaAuth($dbUserId)
+function client_pmaAuth($dbUserId)
 {
-	$credentials = _getLoginCredentials($dbUserId);
+	$credentials = _client_pmaGetLoginCredentials($dbUserId);
 
 	if ($credentials) {
-		$data = http_build_query(
+		$httpQuery = http_build_query(
 			array(
 				 'pma_username' => $credentials[0],
 				 'pma_password' => stripcslashes($credentials[1])));
@@ -133,24 +133,23 @@ function pmaAuth($dbUserId)
 	}
 
 	// Set stream context (http) options
-	stream_context_get_default(
+	stream_context_set_default(
 		array(
 			 'http' => array(
 				 'method' => 'POST',
 				 'header' => "Host: {$_SERVER['SERVER_NAME']}$port\r\n" .
 							 "Content-Type: application/x-www-form-urlencoded\r\n" .
-							 'Content-Length: ' . strlen($data) . "\r\n" .
+							 'Content-Length: ' . strlen($httpQuery) . "\r\n" .
 							 "Connection: close\r\n\r\n",
-				 'content' => $data,
-				 'user_agent' => 'Mozilla/5.0',
+				 'content' => $httpQuery,
 				 'max_redirects' => 1)));
 
 	// Gets the headers from PhpMyAdmin
 	$headers = get_headers($pmaUri, true);
 
 	if ($headers && isset($headers['Location'])) {
-		_pmaCreateCookies($headers['Set-Cookie']);
-		redirectTo(_pmaSetLanguage($headers['Location']));
+		_client_pmaCreateCookies($headers['Set-Cookie']);
+		redirectTo(_client_pmaSetLanguage($headers['Location']));
 	}
 
 	set_page_message(tr('An error occurred while the authentication attempt.'), 'error');
@@ -161,7 +160,7 @@ function pmaAuth($dbUserId)
  * Main program
  */
 
-// Include all needed libraries
+// Include core library
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
@@ -174,6 +173,6 @@ check_login(__FILE__);
  */
 if(!customerHasFeature('sql')) {
    redirectTo('index.php');
-} elseif(!isset($_GET['id']) || !pmaAuth((int)$_GET['id'])) {
+} elseif(!isset($_GET['id']) || !client_pmaAuth((int)$_GET['id'])) {
 	redirectTo('sql_manage.php');
 }
