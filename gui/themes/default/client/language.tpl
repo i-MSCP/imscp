@@ -46,7 +46,6 @@
 				</tr>
 			</table>
 			<div class="buttons">
-				<input type="hidden" name="uaction" value="save_lang" />
 				<input type="submit" name="submit" value="{TR_CHANGE}" />
 			</div>
 		</form>

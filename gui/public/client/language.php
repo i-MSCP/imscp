@@ -55,61 +55,61 @@ $tpl->define_dynamic(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/language.tpl',
 		 'page_message' => 'page',
 		 'def_language' => 'page',
-		 'logged_from' => 'page'
-	)
-);
+		 'logged_from' => 'page'));
 
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'save_lang') {
-	$user_id = $_SESSION['user_id'];
-	$user_lang = clean_input($_POST['def_language']);
+// Getting current user language
+if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
+	list($customerCurrentLanguage) = get_user_gui_props($_SESSION['user_id']);
+} else {
+	$customerCurrentLanguage = $_SESSION['user_def_lang'];
+}
 
-    $query = "
-        REPLACE INTO
-            `user_gui_props` (
-                user_id, lang, layout
-            ) VALUES (
-                ?, ?, ?
-            )
-    ";
+if (!empty($_POST)) {
+	$customerId = $_SESSION['user_id'];
+	$customerNewLanguage = clean_input($_POST['def_language']);
 
-    exec_query($query, array($user_id, $user_lang, $_SESSION['user_theme']));
+	if ($customerCurrentLanguage != $customerNewLanguage) {
 
-    if(!isset($_SESSION['logged_from_id'])) {
-	    unset($_SESSION['user_def_lang']);
-	    $_SESSION['user_def_lang'] = $user_lang;
-    }
+		$query = "
+        	REPLACE INTO
+            	`user_gui_props` (
+                	user_id, lang, layout
+            	) VALUES (
+                	?, ?, ?
+            	)
+    	";
+		exec_query($query, array($customerId, $customerNewLanguage, $_SESSION['user_theme']));
 
-	set_page_message(tr('Language updated.'), 'success');
+		if (!isset($_SESSION['logged_from_id'])) {
+			unset($_SESSION['user_def_lang']);
+			$_SESSION['user_def_lang'] = $customerNewLanguage;
+		}
+
+		set_page_message(tr('Language updated.'), 'success');
+	} else {
+		set_page_message(tr("Nothing's been changed."), 'info');
+	}
 
 	// Fix to see change on next load
 	redirectTo('language.php');
 }
 
-if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-	list($user_def_lang) = get_user_gui_props($_SESSION['user_id']);
-} else {
-	$user_def_lang = $_SESSION['user_def_lang'];
-}
-
-gen_def_language($tpl, $user_def_lang);
-
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Change Language'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Change Language'),
 		 'TR_TITLE_CHANGE_LANGUAGE' => tr('Change language'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_GENERAL_INFO' => tr('General information'),
 		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your default language'),
-		 'TR_CHANGE' => tr('Change')
-	)
-);
+		 'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose your language'),
+		 'TR_CHANGE' => tr('Change')));
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
 gen_logged_from($tpl);
+gen_def_language($tpl, $customerCurrentLanguage);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
