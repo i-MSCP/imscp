@@ -496,7 +496,7 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 	if($data['software_allowed'] == 'no') {
 		$tplVars['APS_BLOCK'] =  '';
 	} else {
-		$tplVars['TR_APS'] = tr('Software installer');
+		$tplVars['TR_APS'] = tr('Softwares installer');
 		$tplVars['APS_YES'] = ($data['domain_software_allowed'] == 'yes') ? $htmlSelected : '';
 		$tplVars['APS_NO'] = ($data['domain_software_allowed'] != 'yes') ? $htmlSelected : '';
 	}
