@@ -277,9 +277,9 @@ function _reseller_generateLimitsForm($tpl, &$data)
 
 	$tplVars['TR_DOMAIN_LIMITS'] = tr('Domain Limit');
 	$tplVars['TR_LIMIT_VALUE'] = tr('Limit value');
-	$tplVars['TR_CUSTOMER_CONSUMPTION'] = tr('Customer current consumption');
+	$tplVars['TR_CUSTOMER_CONSUMPTION'] = tr('Customer consumption');
 	$tplVars['TR_RESELLER_CONSUMPTION'] = isset($_SESSION['logged_from'])
-		? tr('Reseller current consumption') : tr('Your current consumption');
+		? tr('Reseller consumption') : tr('Your consumption');
 
 	// Subdomains limit
 	if ($data['max_sub_cnt'] == -1) { // Reseller has no permissions on this service

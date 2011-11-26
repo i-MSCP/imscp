@@ -275,8 +275,8 @@ function _admin_generateLimitsForm($tpl, &$data)
 
 	$tplVars['TR_DOMAIN_LIMITS'] = tr('Domain Limit');
 	$tplVars['TR_LIMIT_VALUE'] = tr('Limit value');
-	$tplVars['TR_CUSTOMER_CONSUMPTION'] = tr('Customer current consumption');
-	$tplVars['TR_RESELLER_CONSUMPTION'] = tr('Reseller current consumption');
+	$tplVars['TR_CUSTOMER_CONSUMPTION'] = tr('Customer consumption');
+	$tplVars['TR_RESELLER_CONSUMPTION'] = tr('Reseller consumption');
 
 	// Subdomains limit
 	if ($data['max_sub_cnt'] == -1) { // Reseller has no permissions on this service
