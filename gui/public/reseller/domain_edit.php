@@ -49,7 +49,7 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
-		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS";
+		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS|$cfg->ITEM_ORDERED_STATUS";
 
 		// Checks for domain existence and status
 
@@ -85,6 +85,8 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 		// Getting domain data
 
 		$bindParams = array();
+		$bindParams[] = $cfg->ITEM_ORDERED_STATUS;
+
 		$notRlikeCondition = '';
 
 		if(!$cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
@@ -152,7 +154,7 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			INNER JOIN
 				`server_ips` `t3` ON (`t3`.`ip_id` = `t1`.`domain_ip_id`)
 			LEFT JOIN
-				`domain_aliasses` `t4` ON (`t1`.`domain_id` = `t4`.`domain_id`)
+				`domain_aliasses` `t4` ON (`t1`.`domain_id` = `t4`.`domain_id` AND `t4`.`alias_status` != ?)
 			LEFT JOIN
 				`subdomain` `t5` ON (`t1`.`domain_id` = `t5`.`domain_id`)
 			LEFT JOIN
@@ -790,8 +792,17 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 				$data['domain_cgi'] != $data['fallback_domain_cgi']
 			) {
 				if($data['domain_alias_limit'] != '-1') {
-					$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `domain_id` = ?";
-					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId));
+					$query = "
+						UPDATE
+							`domain_aliasses`
+						SET
+							`alias_status` = ?
+						WHERE
+							`domain_id` = ?
+						AND
+							`alias_status` != ?
+					";
+					exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $domainId, $cfg->ITEM_ORDERED_STATUS));
 				}
 
 				if($data['domain_subd_limit'] != '-1') {
