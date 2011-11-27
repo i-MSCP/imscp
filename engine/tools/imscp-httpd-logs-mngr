@@ -95,7 +95,11 @@ sub copy_logs{
 				mode	=> 0750
 			}) unless -d $destFolder;
 			$rs |= iMSCP::File->new(filename => $accessSRC)->copyFile($accessDST) if (-f $accessSRC);
+			$rs |= iMSCP::File->new(filename => $accessDST)->owner($userName, $groupName) if (-f $accessDST);
+			$rs |= iMSCP::File->new(filename => $accessDST)->mode(0640) if (-f $accessDST);
 			$rs |= iMSCP::File->new(filename => $errorSRC)->copyFile($errorDST) if (-f $errorSRC);
+			$rs |= iMSCP::File->new(filename => $errorDST)->owner($userName, $groupName) if (-f $errorDST);
+			$rs |= iMSCP::File->new(filename => $errorDST)->mode(0640) if (-f $errorDST);
 		}
 	}
 
