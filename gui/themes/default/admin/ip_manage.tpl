@@ -2,6 +2,11 @@
 	<body>
 		<script type="text/javascript">
 			/* <![CDATA[ */
+			$(document).ready(function() {
+				errFieldsStack = {ERR_FIELDS_STACK};
+				$.each(errFieldsStack, function(){$('#'+this).css('border-color', '#ca1d11');});
+			});
+
 			function action_delete(url, subject) {
 				if(url == '#') {
 					alert(sprintf('{TR_MESSAGE_DENY_DELETE}', subject));
@@ -84,9 +89,9 @@
 						<th colspan="2">{TR_IP_DATA}</th>
 					</tr>
 					<tr>
-						<td style="width:300px;">{TR_IP}</td>
+						<td style="width:300px;"><label for="ip_number">{TR_IP}</label></td>
 						<td>
-							<input name="ip_number" type="text" value="{VALUE_IP}" maxlength="39"/>
+							<input name="ip_number" id="ip_number" type="text" value="{VALUE_IP}" maxlength="39"/>
 						</td>
 					</tr>
 					<tr>
