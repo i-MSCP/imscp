@@ -226,7 +226,7 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
  * @param string $netcard Network card
  * @return void
  */
-function client_registerIp(&$ipNumber, &$domain, &$alias, $netcard)
+function client_registerIp($ipNumber, $domain, $alias, $netcard)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
