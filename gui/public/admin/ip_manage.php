@@ -226,7 +226,7 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
  * @param string $netcard Network card
  * @return void
  */
-function client_registerIp($ipNumber, $domain, $alias, $netcard)
+function client_registerIp(&$ipNumber, &$domain, &$alias, $netcard)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -251,7 +251,8 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 
 	send_request();
 	set_page_message(tr('IP address scheduled for addition.'), 'success');
-	write_log("{IP address {$ipNumber} was added by {$_SESSION['user_logged']}", E_USER_NOTICE);
+	write_log("IP address {$ipNumber} was added by {$_SESSION['user_logged']}", E_USER_NOTICE);
+	redirectTo('ip_manage.php');
 }
 
 /************************************************************************************
