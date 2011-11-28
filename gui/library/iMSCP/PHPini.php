@@ -35,7 +35,7 @@
  * @subpackage	PHPini
  * @author		Hannes Koschier <hannes@cheat.at>
  * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.5
+ * @version		0.0.6
  */
 class iMSCP_PHPini
 {
@@ -335,12 +335,16 @@ class iMSCP_PHPini
 	 * Sets value for the given reseller permission.
 	 *
 	 * @param string $key Permission key name
-	 * @param string $value Permission value (yes|no)
+	 * @param string $value Permission value
+	 * @param bool $withCheck Tells whether or not the value must be checked
 	 * @return bool FALSE if $value is not valid or $key is unknown, TRUE otherwise.
 	 */
-	public function setRePerm($key, $value)
+	public function setRePerm($key, $value, $withCheck = true)
 	{
-		if ($this->_rawCheckRePermData($key, $value)) {
+		if(!$withCheck) {
+			$this->_phpiniRePerm[$key] = $value;
+			return true;
+		} elseif($this->_rawCheckRePermData($key, $value)) {
 			$this->_phpiniRePerm[$key] = $value;
 			return true;
 		}
