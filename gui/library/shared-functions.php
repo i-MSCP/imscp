@@ -2248,3 +2248,21 @@ if (!function_exists('http_build_url')) {
 			. ((isset($parse_url['fragment'])) ? '#' . $parse_url['fragment'] : '');
 	}
 }
+
+/**
+ * Returns translation for jQuery DataTables plugin.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @return string
+ */
+function getDataTablesPluginTranslations()
+{
+	return json_encode(
+		array(
+			 'sLengthMenu' => tr('Show %s records per page', '_MENU_'),
+			 'sZeroRecords' => tr('Nothing found - sorry'),
+			 'sInfo' => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
+			 'sInfoEmpty' => tr('Showing 0 to 0 of 0 records'),
+			 'sInfoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
+			 'sSearch' => tr('Search')));
+}

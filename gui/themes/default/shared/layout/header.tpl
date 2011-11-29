@@ -15,6 +15,7 @@
 	<link href="{THEME_COLOR_PATH}/css/jquery-ui.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
 	<!--[if IE 6]>

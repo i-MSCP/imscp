@@ -551,7 +551,7 @@ textarea:focus {
     color: #fff;
     font-weight: bold;
     text-align: left;
-    padding: 5px;
+    padding: 4px;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
 }
@@ -767,8 +767,6 @@ legend {
 	height:				16px;
 	margin-left:		5px;
 	vertical-align:		middle;
-	float:				left;
-	margin-top:			5px;
 }
 
 /************************************ ToolTip *********************************/
@@ -785,7 +783,7 @@ legend {
 	border: 			2px outset #fff;
 	width:				250px;
 	width:				auto;
-	z-index:			1;
+	z-index:			5000;
 }
 
 .tooltip span {
@@ -868,3 +866,67 @@ form table td{
 	height:				32px;
 	width:				32px;
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * jQuery DataTables plugin css (for i-MSCP)
+ */
+
+.dataTables_wrapper {
+	position: relative;
+	zoom: 1;
+	margin: 20px auto 45px auto;
+}
+
+.dataTables_length {
+	width: 40%;
+	float: left;
+	margin-bottom: 10px;
+}
+
+.dataTables_filter {
+	width: 50%;
+	float: right;
+	text-align: right;
+	margin-bottom: 10px;
+}
+
+.dataTables_info {
+	width: 60%;
+	float: left;
+	margin-top: 10px;
+}
+
+.dataTables_paginate {
+	width: 46px;
+	*width: 52px;
+	float: right;
+	text-align: right;
+	margin-top: 10px;
+}
+
+.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
+	height: 20px;
+	width: 20px;
+	margin-left: 3px;
+	float: left;
+}
+
+.paginate_disabled_previous {background-image: url('../images/icons/prev_gray.png');}
+.paginate_enabled_previous {background-image: url('../images/icons/prev.png');}
+.paginate_disabled_next {background-image: url('../images/icons/next_gray.png');}
+.paginate_enabled_next {background-image: url('../images/icons/next.png');}
+
+table.display {
+	margin: 0 auto;
+	clear: both;
+	width: 100%;
+}
+
+table.display thead th {
+	cursor: pointer;
+	*cursor: hand;
+}
+
+table thead .sorting_asc {background: url('../images/datatable/asc.png') no-repeat center right;}
+table thead .sorting_desc {background: url('../images/datatable/desc.png') no-repeat center right;}
+table thead .sorting {background: url('../images/datatable/bg.png') no-repeat center right;}

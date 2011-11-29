@@ -17,6 +17,7 @@ Features / Enhancements:
 			- Events system: Allows to pass arbitrary data to the events listeners methods
 			- PhpMyAdmin on-click logon - Set language according user panel language
 		Javascript
+			- Integrated jQuery DataTables plugin (v.1.8.2)
 			- Updated jQuery to version 1.7.1
 			- Updated jQuery UI to version 1.8.16 (minified version)
 		Tools:
