@@ -169,7 +169,7 @@
 		<form name="editFrm" method="post" action="reseller_edit.php?edit_id={EDIT_ID}">
 			<table>
 				<tr>
-					<th colspan="3">{TR_ACCOUNT_OVERVIEW}</th>
+					<th colspan="3">{TR_ACCOUNT_DATA}</th>
 				</tr>
 				<tr>
 					<td style="width: 300px;">{TR_RESELLER_NAME}</td>

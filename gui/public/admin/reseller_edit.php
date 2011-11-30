@@ -242,7 +242,7 @@ function _admin_generateAccountForm($tpl, &$data)
 {
 	$tpl->assign(
 		array(
-			 'TR_ACCOUNT_OVERVIEW' => tr('Account overview'),
+			 'TR_ACCOUNT_DATA' => tr('Account data'),
 			 'TR_RESELLER_NAME' => tr('Name'),
 			 'RESELLER_NAME' => tohtml($data['admin_name']),
 			 'TR_PASSWORD' => tr('Password'),
@@ -542,10 +542,10 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 			}
 		}
 
-		$reseller_ips = array_unique(array_merge($resellerIps, $data['used_ips']));
-		sort($reseller_ips);
+		$resellerIps = array_unique(array_merge($resellerIps, $data['used_ips']));
+		sort($resellerIps);
 
-		if(empty($reseller_ips)) {
+		if(empty($resellerIps)) {
 			set_page_message(tr('You must assign at least one IP per reseller.'), 'error');
 		}
 
@@ -754,7 +754,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 									$data['max_dmn_cnt'], $data['max_sub_cnt'], $data['max_als_cnt'],
 									$data['max_mail_cnt'], $data['max_ftp_cnt'], $data['max_sql_db_cnt'],
 									$data['max_sql_user_cnt'], $data['max_traff_amnt'], $data['max_disk_amnt'],
-									implode(';', $reseller_ips) . ';', $data['customer_id'], $data['software_allowed'],
+									implode(';', $resellerIps) . ';', $data['customer_id'], $data['software_allowed'],
 									$data['softwaredepot_allowed'], $data['websoftwaredepot_allowed'],
 									$data['support_system'],
 									$phpEditor->getRePermVal('phpiniSystem'),
