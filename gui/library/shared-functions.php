@@ -993,8 +993,10 @@ function utils_uploadFile($inputFieldName, $destPath)
 				set_page_message(tr('File exceeds the size limit.'), 'error');
 				break;
 			case UPLOAD_ERR_PARTIAL:
+				set_page_message(tr('The uploaded file was only partially uploaded.'), 'error');
+				break;
 			case UPLOAD_ERR_NO_FILE:
-				set_page_message(tr('Upload failed.'), 'error');
+				set_page_message(tr('No file was uploaded.'), 'error');
 				break;
 			case UPLOAD_ERR_NO_TMP_DIR:
 				set_page_message(tr('Temporary folder not found.'), 'error');
@@ -1002,8 +1004,10 @@ function utils_uploadFile($inputFieldName, $destPath)
 			case UPLOAD_ERR_CANT_WRITE:
 				set_page_message(tr('Failed to write file to disk.'), 'error');
 				break;
-			default:
+			case UPLOAD_ERR_EXTENSION:
 				set_page_message(tr('A PHP extension stopped the file upload.'), 'error');
+			default:
+				set_page_message(tr('An unknown error occured during file upload: %s', $_FILES[$inputFieldName]['error']), 'error');
 		}
 
 		return false;
@@ -2259,10 +2263,11 @@ function getDataTablesPluginTranslations()
 {
 	return json_encode(
 		array(
-			 'sLengthMenu' => tr('Show %s records per page', '_MENU_'),
-			 'sZeroRecords' => tr('Nothing found - sorry'),
-			 'sInfo' => tr('Showing %s to %s of %s records', '_START_', '_END_', '_TOTAL_'),
-			 'sInfoEmpty' => tr('Showing 0 to 0 of 0 records'),
-			 'sInfoFiltered' => tr('(filtered from %s total records)', '_MAX_'),
-			 'sSearch' => tr('Search')));
+			 'sLengthMenu' => tr('Show %s records per page', true, '_MENU_'),
+			 'sZeroRecords' => tr('Nothing found - sorry', true),
+			 'sInfo' => tr('Showing %s to %s of %s records', true, '_START_', '_END_', '_TOTAL_'),
+			 'sInfoEmpty' => tr('Showing 0 to 0 of 0 records', true),
+			 'sInfoFiltered' => tr('(filtered from %s total records)', true, '_MAX_'),
+			 'sSearch' => tr('Search', true),
+			 'oPaginate' => array('sPrevious' => tr('Previous', true), 'sNext' => tr('Next', true))));
 }
