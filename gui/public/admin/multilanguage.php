@@ -16,14 +16,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Admin
- * @copyright	2010-2011 by i-MSCP team
- * @author		iMSCP Team
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Admin
+ * @copyright   2010-2011 by i-MSCP team
+ * @author      iMSCP Team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /*******************************************************************************
@@ -38,11 +38,11 @@
  */
 function admin_generateLanguagesList($tpl)
 {
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
     $htmlChecked = $cfg->HTML_CHECKED;
 
-	$defaultLanguage = $cfg->USER_INITIAL_LANG;
+    $defaultLanguage = $cfg->USER_INITIAL_LANG;
     $availableLanguages = i18n_getAvailableLanguages();
 
     if (!empty($availableLanguages)) {
@@ -80,53 +80,53 @@ $cfg = iMSCP_Registry::get('config');
 
 // Dispatches the request
 if (isset($_POST['uaction'])) {
-    if($_POST['uaction'] == 'uploadLanguage') {
-		if(i18n_importMachineObjectFile()) {
-			set_page_message(tr('Language file successfully installed.'), 'success');
-		}
-    } elseif($_POST['uaction'] == 'changeLanguage') {
-        if(i18n_changeDefaultLanguage()) {
-			set_page_message(tr('Default language successfully updated.'), 'success');
-			// Force change on next load
-        	redirectTo('multilanguage.php');
-		} else {
-			set_page_message(tr('Unknown language name.'), 'error');
-		}
-    } elseif($_POST['uaction'] == 'rebuildIndex') {
-		i18n_buildLanguageIndex();
-		set_page_message(tr('Languages index was successfully re-built.'), 'success');
-	}
+    if ($_POST['uaction'] == 'uploadLanguage') {
+        if (i18n_importMachineObjectFile()) {
+            set_page_message(tr('Language file successfully installed.'), 'success');
+        }
+    } elseif ($_POST['uaction'] == 'changeLanguage') {
+        if (i18n_changeDefaultLanguage()) {
+            set_page_message(tr('Default language successfully updated.'), 'success');
+            // Force change on next load
+            redirectTo('multilanguage.php');
+        } else {
+            set_page_message(tr('Unknown language name.'), 'error');
+        }
+    } elseif ($_POST['uaction'] == 'rebuildIndex') {
+        i18n_buildLanguageIndex();
+        set_page_message(tr('Languages index was successfully re-built.'), 'success');
+    }
 }
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
-	array(
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl',
-		 'page_message' => 'page',
-         'languages_block' => 'page',
-		 'language_block' => 'languages_block'));
+    array(
+        'page' => $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl',
+        'page_message' => 'page',
+        'languages_block' => 'page',
+        'language_block' => 'languages_block'));
 
 $tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Internationalisation'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_MULTILANGUAGE' => tr('Internationalization'),
-		 'TR_LANGUAGE_NAME' => tr('Language'),
-		 'TR_NUMBER_TRANSLATED_STRINGS' => tr('Translated strings'),
-		 'TR_LANGUAGE_REVISION' => tr('Revision date'),
-		 'TR_LAST_TRANSLATOR' => tr('Last translator'),
-		 'TR_DEFAULT_LANGUAGE' => tr('Default language'),
-		 'TR_SAVE' => tr('Save'),
-		 'TR_INSTALL_NEW_LANGUAGE' => tr('Install'),
-		 'TR_LANGUAGE_FILE' => tr('Language file'),
-		 'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
-		 'TR_REBUILD_INDEX' => tr('Rebuild languages index'),
-		 'TR_UPLOAD_HELP' => tr('Only gettext Machine Object files (MO files) are accepted.'),
-		 'TR_HELP' => tr('Help'),
-		 'TR_INSTALL' => tr('Install'),
-		 'TR_CANCEL' => tr('Cancel')));
+    array(
+        'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Internationalisation'),
+        'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+        'THEME_CHARSET' => tr('encoding'),
+        'ISP_LOGO' => layout_getUserLogo(),
+        'TR_MULTILANGUAGE' => tr('Internationalization'),
+        'TR_LANGUAGE_NAME' => tr('Language'),
+        'TR_NUMBER_TRANSLATED_STRINGS' => tr('Translated strings'),
+        'TR_LANGUAGE_REVISION' => tr('Revision date'),
+        'TR_LAST_TRANSLATOR' => tr('Last translator'),
+        'TR_DEFAULT_LANGUAGE' => tr('Default language'),
+        'TR_SAVE' => tr('Save'),
+        'TR_INSTALL_NEW_LANGUAGE' => tr('Install'),
+        'TR_LANGUAGE_FILE' => tr('Language file'),
+        'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
+        'TR_REBUILD_INDEX' => tr('Rebuild languages index'),
+        'TR_UPLOAD_HELP' => tr('Only gettext Machine Object files (MO files) are accepted.'),
+        'TR_HELP' => tr('Help'),
+        'TR_INSTALL' => tr('Install'),
+        'TR_CANCEL' => tr('Cancel')));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
