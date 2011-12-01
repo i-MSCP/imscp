@@ -168,7 +168,7 @@ $tpl->assign(
 		 'TR_LANGUAGE_FILE' => tr('Language file'),
 		 'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		 'TR_REBUILD_INDEX' => tr('Rebuild languages index'),
-		 'TR_UPLOAD_HELP' => tr('Seul les fichier gettext (*.mo) sont acceptés.'),
+		 'TR_UPLOAD_HELP' => tr('Only gettext Machine Object files (MO files) are accepted.'),
 		 'TR_HELP' => tr('Help'),
 		 'TR_INSTALL' => tr('Install'),
 		 'TR_CANCEL' => tr('Cancel')));
