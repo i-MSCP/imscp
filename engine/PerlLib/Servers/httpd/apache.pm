@@ -1283,6 +1283,79 @@ sub getTraffic{
 	$traff;
 }
 
+sub del_old_logs{
+
+	my $rs = 0;
+	my $logDir	= $self::apacheConfig{APACHE_LOG_DIR};
+	my $bLogDir	= $self::apacheConfig{APACHE_BACKUP_LOG_DIR};
+	my $uLogDir	= $self::apacheConfig{APACHE_USERS_LOG_DIR};
+	my ($stdout, $stderr);
+
+	for ($logDir, $bLogDir, $uLogDir){
+		my $cmd = "nice -n 19 find $_ -maxdepth 1 -type f -name '*.log*' -mtime +365 -exec rm -v {} \\;";
+		$rs |= execute($cmd, \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr;
+		error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
+	}
+
+	$rs;
+}
+
+sub del_tmp{
+
+	use iMSCP::Dir;
+	use iMSCP::File;
+	use Math::Round;
+
+	my $rs = 0;
+
+	my ($stdout, $stderr);
+
+	my $hDMN	= iMSCP::Dir->new(dirname => "$main::imscpConfig{USER_HOME_DIR}");
+	return 1 if $hDMN->get();
+
+	my @domains	= $hDMN->getDirs();
+
+	for (@domains){
+		my $dmn = $_;
+		if(-d "$self::apacheConfig{PHP_STARTER_DIR}/$_"){
+			my $hPHPINI	= iMSCP::Dir->new(dirname => "$self::apacheConfig{PHP_STARTER_DIR}/$dmn");
+			if ($hPHPINI->get()){
+				error("Can't read php.ini list for $dmn");
+				$rs |= 1;
+				next;
+			}
+			my @phpInis = $hPHPINI->getDirs();
+			my $max = 0;
+			foreach(@phpInis){
+				unless (-f "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini"){
+					error("File not found $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
+					$rs |= 1;
+					next;
+				}
+				my $hFile	= iMSCP::File->new(filename => "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini");
+				my $file	= $hFile->get();
+				unless ($file){
+					error("Can not read $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
+					$rs |= 1;
+					next;
+				}
+				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
+				$max = round($1/60) if $1 && $max < round($1/60);
+			}
+			$max = 24 unless $max;
+			my $cmd = "nice -n 19 find $main::imscpConfig{USER_HOME_DIR}/$dmn -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
+			$rs |= execute($cmd, \$stdout, \$stderr);
+			debug($stdout) if $stdout;
+			error($stderr) if $stderr;
+			error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
+		}
+	}
+
+	$rs;
+}
+
 END{
 
 	use iMSCP::Dir;

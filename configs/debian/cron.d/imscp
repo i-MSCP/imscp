@@ -33,10 +33,10 @@
 {CR-ENABLED}0 	*/12	*	*	*	root {CHKROOTKIT} &> {CHKROOTKIT_LOG}
 
 # Look for and purge old sessions every 30 minutes
-0,30	*	*	*	*	root	{TOOLS_ROOT_DIR}/imscp-del-phptemp.sh >/dev/null 2>&1
+0,30	*	*	*	*	root	{TOOLS_ROOT_DIR}/imscp-del-tmp >/dev/null 2>&1
 
 # Delete old apache logfiles weekly
-@weekly root {TOOLS_ROOT_DIR}/imscp-del-logs.sh >/dev/null 2>&1
+@weekly root {TOOLS_ROOT_DIR}/imscp-del-logs >/dev/null 2>&1
 
 # [{DMN_NAME}]:{CRONJOB_ID} custom task START.
 # [{DMN_NAME}]:{CRONJOB_ID} custom task END.
