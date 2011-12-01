@@ -47,18 +47,18 @@
 					<th>{TR_MESSAGES}</th>
 					<th>{TR_LANG_REV}</th>
 					<th>{TR_LAST_TRANSLATOR}</th>
-					<th><label for="defaultLanguage">{TR_DEFAULT}</label></th>
+					<th>{TR_DEFAULT}</th>
 				</tr>
 			</thead>
 			<tbody>
 				<!-- BDP: lang_row -->
 				<tr>
-					<td><span class="icon i_locale">{LANGUAGE}</span></td>
+					<td><label for="defaultLanguage_{LANG_VALUE}"><span class="icon i_locale">{LANGUAGE}</span></label></td>
 					<td>{MESSAGES}</td>
 					<td>{LANGUAGE_REVISION}</td>
 					<td>{LAST_TRANSLATOR}</td>
 					<td>
-						<input type="radio" name="defaultLanguage" id="defaultLanguage" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
+						<input type="radio" name="defaultLanguage" id="defaultLanguage_{LANG_VALUE}" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
 					</td>
 				</tr>
 				<!-- EDP: lang_row -->
