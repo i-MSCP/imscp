@@ -21,7 +21,7 @@ Features / Enhancements:
 			- Updated jQuery to version 1.7.1
 			- Updated jQuery UI to version 1.8.16 (minified version)
 		Tools:
-			- Updated PhpMyAdmin to version 3.4.7.1
+			- Updated PhpMyAdmin to version 3.4.8
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
@@ -47,6 +47,7 @@ Tickets:
 	- Fixed #278: Defect - Possible corruption of postfix's domain configuration
 	- Fixed #279: Defect - Installer should not fail when we are using another webmail
 	- Fixed #286: Defect - Error by update
+	- Fixed #287: Update - phpMyAdmin 3.4.8 released
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

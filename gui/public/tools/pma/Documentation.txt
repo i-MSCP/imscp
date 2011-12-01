@@ -1,4 +1,4 @@
-phpMyAdmin 3.4.7.1 Documentation
+phpMyAdmin 3.4.8 Documentation
 
   * Top
   * Requirements
@@ -1014,8 +1014,8 @@ $cfg['LeftFrameLight'] boolean
     tables in the left frame (smaller page). Only in Non-Lightmode you can use
     the feature to display nested folders using $cfg['LeftFrameTableSeparator']
 $cfg['LeftFrameDBTree'] boolean
-    In light mode, defines whether to display the names of databases (in the
-    selector) using a tree, see also $cfg['LeftFrameDBSeparator'].
+    Defines whether to display the names of databases (in the selector) using a
+    tree, see also $cfg['LeftFrameDBSeparator'].
 $cfg['LeftFrameDBSeparator'] string or array
     The string used to separate the parts of the database name when showing
     them in a tree. Alternatively you can specify more strings in an array and
@@ -2565,8 +2565,7 @@ Suggestions:
   * All your phpMyAdmin files should be chown -R phpmy.apache, where phpmy is a
     user whose password is only known to you, and apache is the group under
     which Apache runs.
-  * You should use PHP safe mode, to protect from other users that try to
-    include your config.inc.php in their scripts.
+  * Follow security recommendations for PHP and your webserver.
 
 4.3 I get errors about not being able to include a file in /lang or in /
 libraries.
@@ -3382,7 +3381,7 @@ Credits, in chronological order
       + creator of the phpmyadmin project
       + maintainer from 1998 to summer 2000
   * Marc Delisle <marc_at_infomarc.info>
-      + multi-language version
+      + multi-language version in December 1998
       + various fixes and improvements
       + SQL analyser (most of it)
       + current project maintainer
@@ -3390,7 +3389,6 @@ Credits, in chronological order
       + started SourceForge phpMyAdmin project in March 2001
       + sync'ed different existing CVS trees with new features and bugfixes
       + multi-language improvements, dynamic language selection
-      + current project maintainer
       + many bugfixes and improvements
   * Lo?c Chapeaux <lolo_at_phpheaven.net>
       + rewrote and optimized javascript, DHTML and DOM stuff

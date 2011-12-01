@@ -1,8 +1,35 @@
 phpMyAdmin - ChangeLog
 ======================
 
+3.4.8.0 (2011-12-01)
+- bug #3425230 [interface] enum data split at space char (more space to edit)
+- bug #3426840 [interface] ENUM/SET editor can't handle commas in values
+- bug #3427256 [interface] no links to browse/empty views and tables
+- bug #3430377 [interface] Deleted search results remain visible
+- bug #3428627 [import] ODS import ignores memory limits
+- bug #3426836 [interface] Visual column separation
+- bug #3428065 [parser] TRUE not recognized by parser
++ patch #3433770 [config] Make location of php-gettext configurable
+- patch #3430291 [import] Handle conflicts in some open_basedir situations
+- bug #3431427 [display] Dropdown results - setting NULL does not work
+- patch #3428764 [edit] Inline edit on multi-server configuration
+- patch #3437354 [core] Notice: Array to string conversion in PHP 5.4
+- [interface] When ShowTooltipAliasTB is true, VIEW is wrongly shown as the
+  view name in main panel db Structure page
+- bug #3439292 [core] Fail to synchronize column with name of keyword
+- bug #3425156 [interface] Add column after drop
+- [interface] Avoid showing the password in phpinfo()'s output
+- bug #3441572 [GUI] 'newer version of phpMyAdmin' message not shown in IE8
+- bug #3407235 [interface] Entering the key through a lookup window does not reset NULL
+- [security] Self-XSS on database names (Synchronize), see PMASA-2011-18
+- [security] Self-XSS on database names (Operations/rename), see PMASA-2011-18
+- [security] Self-XSS on column type (Create index), see PMASA-2011-18
+- [security] Self-XSS on column type (table Search), see PMASA-2011-18
+- [security] Self-XSS on invalid query (table overview), see PMASA-2011-18
+
 3.4.7.1 (2011-11-10)
-- [security] Fixed possible local file inclusion in XML import (CVE-2011-4107).
+- [security] Fixed possible local file inclusion in XML import
+(CVE-2011-4107).
 
 3.4.7.0 (2011-10-23)
 - bug #3418610 [interface] Links in navigation when $cfg['MainPageIconic'] = false
