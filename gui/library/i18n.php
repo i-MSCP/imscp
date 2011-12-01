@@ -337,7 +337,7 @@ function i18n_importMachineObjectFile()
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.3
- * @return void
+ * @return bool TRUE if language name is valid, FALSE otherwise
  */
 function i18n_changeDefaultLanguage()
 {
@@ -347,6 +347,17 @@ function i18n_changeDefaultLanguage()
 
         /** @var $dbConfig iMSCP_Config_Handler_Db */
         $defaultLanguage = clean_input($_POST['defaultLanguage']);
+		$availableLanguages = i18n_getAvailableLanguages();
+
+		// Check for language availability
+		$isValidLanguage = false;
+		foreach($availableLanguages as $languageDefinition) {
+			if($languageDefinition['locale'] == $defaultLanguage) {
+				$isValidLanguage = true;
+			}
+		}
+
+		if(!$isValidLanguage) return false;
 
         /** @var $dbConfig iMSCP_Config_Handler_Db */
         $dbConfig = iMSCP_Registry::get('dbConfig');
@@ -356,13 +367,14 @@ function i18n_changeDefaultLanguage()
         // Ensures language change on next load for current user in case he has not yet
         // his gui properties explicitly set (eg. for the first admin user when i-MSCP
         // was just installed
-        $stmt = exec_query('SELECT lang  FROM `user_gui_props` WHERE `user_id` = ?',
-						   $_SESSION['user_id']);
+        $stmt = exec_query('SELECT `lang`  FROM `user_gui_props` WHERE `user_id` = ?', $_SESSION['user_id']);
 
         if ($stmt->fields['lang'] == null) {
             unset($_SESSION['user_def_lang']);
         }
     } else {
-        return;
-    }
+		return false;
+	}
+
+	return true;
 }
