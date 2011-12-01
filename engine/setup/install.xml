@@ -29,7 +29,6 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<copy_config />
 
 	<copy>${SYSTEM_ENGINE_ROOT}/setup/imscp*</copy>
-	<copy>${SYSTEM_ENGINE_ROOT}/setup/reset-setup</copy>
 	<copy>${SYSTEM_ENGINE_ROOT}/setup/set*</copy>
 	<copy>${SYSTEM_ENGINE_ROOT}/setup/updDB.php</copy>
 
