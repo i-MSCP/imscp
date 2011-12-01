@@ -1,13 +1,13 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
 <body>
 <script type="text/javascript">
-	/*<![CDATA[*/
+/*<![CDATA[*/
 	$(document).ready(function() {
 		$('.frm-button').button();
 		$('#languageTable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
 		$('.upload_help').iMSCPtooltips({msg:'{TR_UPLOAD_HELP}'});
 	});
-	/*]]>*/
+/*]]>*/
 </script>
 <div class="header">
 	{MAIN_MENU}
@@ -40,40 +40,40 @@
 	<!-- EDP: page_message -->
 
 	<form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
+        <!-- BDP: languages_block -->
 		<table id="languageTable" class="datatable" cellpadding="0" cellspacing="0" style="vertical-align: top;">
 			<thead>
 				<tr>
-					<th>{TR_LANGUAGE}</th>
-					<th>{TR_MESSAGES}</th>
-					<th>{TR_LANG_REV}</th>
+					<th>{TR_LANGUAGE_NAME}</th>
+					<th>{TR_NUMBER_TRANSLATED_STRINGS}</th>
+					<th>{TR_LANGUAGE_REVISION}</th>
 					<th>{TR_LAST_TRANSLATOR}</th>
-					<th>{TR_DEFAULT}</th>
+					<th>{TR_DEFAULT_LANGUAGE}</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!-- BDP: lang_row -->
+				<!-- BDP: language_block -->
 				<tr>
-					<td><label for="defaultLanguage_{LANG_VALUE}"><span class="icon i_locale">{LANGUAGE}</span></label></td>
-					<td>{MESSAGES}</td>
+					<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
+					<td>{NUMBER_TRANSLATED_STRINGS}</td>
 					<td>{LANGUAGE_REVISION}</td>
 					<td>{LAST_TRANSLATOR}</td>
 					<td>
-						<input type="radio" name="defaultLanguage" id="defaultLanguage_{LANG_VALUE}" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}/>
+						<input type="radio" name="defaultLanguage" id="defaultLanguage_{LOCALE}" value="{LOCALE}" {LOCALE_CHECKED}/>
 					</td>
 				</tr>
-				<!-- EDP: lang_row -->
+				<!-- EDP: language_block -->
 			</tbody>
 			<tfoot>
-			<tr>
-				<td colspan="4" style="background: none;border: none;">
-					<button name="rebuildIndex" type="submit" onclick="return sbmt(document.forms[0], 'rebuildIndex');" class="frm-button">{TR_REBUILD_INDEX}</button>
-				</td>
-				<td  style="background: none;border: none;text-align: right;">
-					<button name="changeLanguage" type="submit" class="frm-button" onclick="return sbmt(document.forms[0], 'changeLanguage');">{TR_SAVE}</button>
-				</td>
-			</tr>
+			    <tr>
+				    <td  colspan="5" style="background: none;border: none;text-align: right;">
+                        <button name="rebuildIndex" type="submit" onclick="$('#uaction').val('rebuildIndex')" class="frm-button">{TR_REBUILD_INDEX}</button>
+					    <button name="changeLanguage" type="submit" class="frm-button" onclick="$('#uaction').val('changeLanguage');">{TR_SAVE}</button>
+				    </td>
+			    </tr>
 			</tfoot>
 		</table>
+        <!-- EDP: languages_block -->
 		<table>
 			<tr>
 				<th colspan="2">{TR_INSTALL_NEW_LANGUAGE}</th>
@@ -82,14 +82,13 @@
 				<td>{TR_LANGUAGE_FILE} <span class="upload_help icon i_help" style="vertical-align: middle;">{TR_HELP}</span></td>
 				<td>
 					<input type="file" name="languageFile" />
-					<button name="uploadLanguage" type="submit" onclick="return sbmt(document.forms[0], 'uploadLanguage');" class="frm-button">{TR_INSTALL}</button>
+                    <button name="uploadLanguage" type="submit" onclick="$('#uaction').val('uploadLanguage')" class="frm-button">{TR_INSTALL}</button>
 				</td>
 			</tr>
-
 		</table>
 		<div class="buttons">
-			<input type="hidden" name="uaction" value="" />
-			<button name="cancel" type="button" onclick="location.href='settings.php';" class="frm-button">{TR_CANCEL}</button>
+			<input type="hidden" name="uaction" id="uaction" value="" />
+			<button name="cancel" type="button" onclick="location.href='settings.php'" class="frm-button">{TR_CANCEL}</button>
 		</div>
 	</form>
 </div>

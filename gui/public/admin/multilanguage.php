@@ -26,7 +26,6 @@
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
-
 /*******************************************************************************
  * Script functions
  */
@@ -37,65 +36,31 @@
  * @param  iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function generatePage($tpl)
+function admin_generateLanguagesList($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
+    $htmlChecked = $cfg->HTML_CHECKED;
 
-	$default_language = $cfg->USER_INITIAL_LANG;
-	$availableLanguages = i18n_getAvailableLanguages();
-	/*
-	$ItemPerPage = 10;
+	$defaultLanguage = $cfg->USER_INITIAL_LANG;
+    $availableLanguages = i18n_getAvailableLanguages();
 
-	if (!empty($_GET['psi'])) {
-		$page = intval($_GET['psi']);
-	} else {
-		$page = 1;
-	}
+    if (!empty($availableLanguages)) {
+        foreach ($availableLanguages as $languageDefinition) {
+            $tpl->assign(
+                array(
+                    'LANGUAGE_NAME' => tohtml($languageDefinition['language']),
+                    'NUMBER_TRANSLATED_STRINGS' => tr('%d strings translated', $languageDefinition['translatedStrings']),
+                    'LANGUAGE_REVISION' => $languageDefinition['revision'],
+                    'LAST_TRANSLATOR' => preg_replace('/\s<.*>/', '', $languageDefinition['lastTranslator']),
+                    'LOCALE_CHECKED' => ($languageDefinition['locale'] == $defaultLanguage) ? $htmlChecked : '',
+                    'LOCALE' => $languageDefinition['locale']));
 
-	$pages = ceil(count($availableLanguages) / $ItemPerPage);
-
-	if ($page > $pages) {
-		$page = $pages;
-	}
-
-	$start = ceil(($page - 1) * $ItemPerPage);
-	$availableLanguages = array_slice($availableLanguages, $start, $ItemPerPage);
-
-	if ($page < $pages) {
-		$tpl->assign('NEXT_PSI', $page + 1);
-		$tpl->assign('SCROLL_NEXT_GRAY', '');
-	} else {
-		$tpl->assign('SCROLL_NEXT', '');
-	}
-
-	if ($page != 1) {
-		$tpl->assign('PREV_PSI', $page - 1);
-		$tpl->assign('SCROLL_PREV_GRAY', '');
-	} else {
-		$tpl->assign('SCROLL_PREV', '');
-	}
-	*/
-
-	foreach ($availableLanguages as $language) {
-			$tpl->assign(array(
-							  'LANGUAGE' => tohtml($language['language']),
-							  'MESSAGES' => tr('%d strings translated', $language['translatedStrings']),
-							  'LANGUAGE_REVISION' => $language['revision'],
-							  'LAST_TRANSLATOR' => preg_replace('/\s<.*>/', '', $language['lastTranslator']),
-							  'LANG_VALUE_CHECKED' => $default_language == $language['locale'] ? $cfg->HTML_CHECKED : '',
-							  'LANG_VALUE' => $language['locale']));
-
-		$tpl->parse('LANG_ROW', '.lang_row');
-	}
-
-	/*
-	if($page != 1) {
-		$tpl->assign('PSI', '?psi=' . $page);
-	} else {
-		$tpl->assign('PSI', '');
-	}
-	*/
+            $tpl->parse('LANGUAGE_BLOCK', '.language_block');
+        }
+    } else {
+        $tpl->assign('LANGUAGES_BLOCK', '');
+    }
 }
 
 /*******************************************************************************
@@ -138,31 +103,21 @@ $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl',
 		 'page_message' => 'page',
-		 'lang_row' => 'page',
-		 'lang_show' => 'lang_row',
-		 'lang_delete_link' => 'lang_row',
-		 'lang_def' => 'lang_row',
-		/*
-		 'scroll_prev_gray' => 'page',
-		 'scroll_prev' => 'page',
-		 'scroll_next_gray' => 'page',
-		 'scroll_next' => 'page'
-		*/
-	));
+         'languages_block' => 'page',
+		 'language_block' => 'languages_block'));
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Internationalisation'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_MULTILANGUAGE' => tr('Internationalization'),
-		 'TR_INSTALLED_LANGUAGES' => tr('Available languages'),
-		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_MESSAGES' => tr('Translated strings'),
-		 'TR_LANG_REV' => tr('Revision Date'),
+		 'TR_LANGUAGE_NAME' => tr('Language'),
+		 'TR_NUMBER_TRANSLATED_STRINGS' => tr('Translated strings'),
+		 'TR_LANGUAGE_REVISION' => tr('Revision date'),
 		 'TR_LAST_TRANSLATOR' => tr('Last translator'),
-		 'TR_DEFAULT' => tr('Default language'),
+		 'TR_DEFAULT_LANGUAGE' => tr('Default language'),
 		 'TR_SAVE' => tr('Save'),
 		 'TR_INSTALL_NEW_LANGUAGE' => tr('Install'),
 		 'TR_LANGUAGE_FILE' => tr('Language file'),
@@ -175,7 +130,7 @@ $tpl->assign(
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
-generatePage($tpl);
+admin_generateLanguagesList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
