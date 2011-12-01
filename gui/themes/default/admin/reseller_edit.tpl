@@ -7,6 +7,9 @@
 			errFieldsStack = {ERR_FIELDS_STACK};
 			$.each(errFieldsStack, function(){$('#' + this).css('border-color', '#ca1d11');});
 			$('.ui-buttonset').buttonset();
+			$('input').blur();
+			$('[type=radio]').trigger('change');
+
 			$('#generate_password, #show_password, #reset_password, .frm-button').button();
 			$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
 
@@ -71,7 +74,8 @@
 			{
 				hide:'blind', show:'slide', focus:false, autoOpen:false, width:'auto', modal:true, dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function(){$('.ui-buttonset').buttonset();}
+				create: function(){$('.ui-buttonset').buttonset();},
+				open: function(){$('input[type=radio]').blur()}
 			});
 
 			// Re-add the PHP Editor container to the form
