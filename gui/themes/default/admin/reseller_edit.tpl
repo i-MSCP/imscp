@@ -7,9 +7,6 @@
 			errFieldsStack = {ERR_FIELDS_STACK};
 			$.each(errFieldsStack, function(){$('#' + this).css('border-color', '#ca1d11');});
 			$('.ui-buttonset').buttonset();
-			$('input').blur();
-			$('[type=radio]').trigger('change');
-
 			$('#generate_password, #show_password, #reset_password, .frm-button').button();
 			$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
 
