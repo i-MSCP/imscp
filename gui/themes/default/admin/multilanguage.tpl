@@ -50,8 +50,16 @@
 					<th>{TR_LAST_TRANSLATOR}</th>
 					<th>{TR_DEFAULT_LANGUAGE}</th>
 				</tr>
-				</thead>
-				<tbody>
+			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="5" style="background: none;border: none;text-align: right;">
+						<button name="rebuildIndex" type="submit" onclick="$('#uaction').val('rebuildIndex')" class="frm-button">{TR_REBUILD_INDEX}</button>
+						<button name="changeLanguage" type="submit" class="frm-button" onclick="$('#uaction').val('changeLanguage');">{TR_SAVE}</button>
+					</td>
+				</tr>
+			</tfoot>
+			<tbody>
 				<!-- BDP: language_block -->
 				<tr>
 					<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
@@ -64,14 +72,6 @@
 				</tr>
 				<!-- EDP: language_block -->
 			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="5" style="background: none;border: none;text-align: right;">
-						<button name="rebuildIndex" type="submit" onclick="$('#uaction').val('rebuildIndex')" class="frm-button">{TR_REBUILD_INDEX}</button>
-						<button name="changeLanguage" type="submit" class="frm-button" onclick="$('#uaction').val('changeLanguage');">{TR_SAVE}</button>
-					</td>
-				</tr>
-			</tfoot>
 		</table>
 		<!-- EDP: languages_block -->
 		<table>

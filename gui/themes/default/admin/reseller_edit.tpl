@@ -71,7 +71,8 @@
 			{
 				hide:'blind', show:'slide', focus:false, autoOpen:false, width:'auto', modal:true, dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function(){$('.ui-buttonset').buttonset();}
+				create: function(){$('.ui-buttonset').buttonset();},
+				open: function(){$('input[type=radio]').blur()}
 			});
 
 			// Re-add the PHP Editor container to the form
