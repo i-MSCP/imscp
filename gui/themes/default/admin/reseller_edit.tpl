@@ -196,7 +196,7 @@
 				</tr>
 			</table>
 			<!-- BDP: ips_block -->
-			<table id="reseller_ips_table" class="display">
+			<table id="reseller_ips_table" class="datatable">
 				<thead>
 					<tr>
 						<th>{TR_IP_ADDRESS}</th>

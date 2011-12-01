@@ -2,36 +2,28 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * @license
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
- *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
- *
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Admin
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		iMSCP Team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 
@@ -52,6 +44,7 @@ function generatePage($tpl)
 
 	$default_language = $cfg->USER_INITIAL_LANG;
 	$availableLanguages = i18n_getAvailableLanguages();
+	/*
 	$ItemPerPage = 10;
 
 	if (!empty($_GET['psi'])) {
@@ -82,6 +75,7 @@ function generatePage($tpl)
 	} else {
 		$tpl->assign('SCROLL_PREV', '');
 	}
+	*/
 
 	foreach ($availableLanguages as $language) {
 			$tpl->assign(array(
@@ -89,18 +83,19 @@ function generatePage($tpl)
 							  'MESSAGES' => tr('%d strings translated', $language['translatedStrings']),
 							  'LANGUAGE_REVISION' => $language['revision'],
 							  'LAST_TRANSLATOR' => preg_replace('/\s<.*>/', '', $language['lastTranslator']),
-							  'LANG_VALUE_CHECKED' => $default_language == $language['locale']
-								  ? $cfg->HTML_CHECKED : '',
+							  'LANG_VALUE_CHECKED' => $default_language == $language['locale'] ? $cfg->HTML_CHECKED : '',
 							  'LANG_VALUE' => $language['locale']));
 
 		$tpl->parse('LANG_ROW', '.lang_row');
 	}
 
+	/*
 	if($page != 1) {
 		$tpl->assign('PSI', '?psi=' . $page);
 	} else {
 		$tpl->assign('PSI', '');
 	}
+	*/
 }
 
 /*******************************************************************************
@@ -122,14 +117,16 @@ $cfg = iMSCP_Registry::get('config');
 if (isset($_POST['uaction'])) {
     if($_POST['uaction'] == 'uploadLanguage') {
 		if(i18n_importMachineObjectFile()) {
-			set_page_message(tr('Language file successfully installed/updated.'), 'success');
+			set_page_message(tr('Language file successfully installed.'), 'success');
 		}
     } elseif($_POST['uaction'] == 'changeLanguage') {
-        i18n_changeDefaultLanguage();
-		set_page_message(tr('Default language successfully updated.'), 'success');
-
-        // Fix to see change on next load
-        redirectTo('multilanguage.php');
+        if(i18n_changeDefaultLanguage()) {
+			set_page_message(tr('Default language successfully updated.'), 'success');
+			// Force change on next load
+        	redirectTo('multilanguage.php');
+		} else {
+			set_page_message(tr('Unknown language name.'), 'error');
+		}
     } elseif($_POST['uaction'] == 'rebuildIndex') {
 		i18n_buildLanguageIndex();
 		set_page_message(tr('Languages index was successfully re-built.'), 'success');
@@ -137,39 +134,44 @@ if (isset($_POST['uaction'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-						  'page' => $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl',
-						  'page_message' => 'page',
-						  'lang_row' => 'page',
-						  'lang_show' => 'lang_row',
-						  'lang_delete_link' => 'lang_row',
-						  'lang_def' => 'lang_row',
-						  'scroll_prev_gray' => 'page',
-						  'scroll_prev' => 'page',
-						  'scroll_next_gray' => 'page',
-						  'scroll_next' => 'page'));
+$tpl->define_dynamic(
+	array(
+		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl',
+		 'page_message' => 'page',
+		 'lang_row' => 'page',
+		 'lang_show' => 'lang_row',
+		 'lang_delete_link' => 'lang_row',
+		 'lang_def' => 'lang_row',
+		/*
+		 'scroll_prev_gray' => 'page',
+		 'scroll_prev' => 'page',
+		 'scroll_next_gray' => 'page',
+		 'scroll_next' => 'page'
+		*/
+	));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_MULTILANGUAGE' => tr('Internationalization'),
-                  'TR_INSTALLED_LANGUAGES' => tr('Available languages'),
-                  'TR_LANGUAGE' => tr('Language'),
-                  'TR_MESSAGES' => tr('Translated strings'),
-                  'TR_LANG_REV' => tr('Revision Date'),
-				  'TR_LAST_TRANSLATOR' => tr('Last translator'),
-                  'TR_DEFAULT' => tr('Default language'),
-                  'TR_ACTION' => tr('Action'),
-                  'TR_SAVE' => tr('Save'),
-                  'TR_INSTALL_NEW_LANGUAGE' => tr('Install / Update language'),
-                  'TR_LANGUAGE_FILE' => tr('Language file'),
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_INSTALL' => tr('Install / Update'),
-                  'TR_EXPORT' => tr('Export'),
-				  'TR_REBUILD_INDEX' => tr('Rebuild languages index')
-           ));
+$tpl->assign(
+	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
+		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
+		 'TR_MULTILANGUAGE' => tr('Internationalization'),
+		 'TR_INSTALLED_LANGUAGES' => tr('Available languages'),
+		 'TR_LANGUAGE' => tr('Language'),
+		 'TR_MESSAGES' => tr('Translated strings'),
+		 'TR_LANG_REV' => tr('Revision Date'),
+		 'TR_LAST_TRANSLATOR' => tr('Last translator'),
+		 'TR_DEFAULT' => tr('Default language'),
+		 'TR_SAVE' => tr('Save'),
+		 'TR_INSTALL_NEW_LANGUAGE' => tr('Install'),
+		 'TR_LANGUAGE_FILE' => tr('Language file'),
+		 'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
+		 'TR_REBUILD_INDEX' => tr('Rebuild languages index'),
+		 'TR_UPLOAD_HELP' => tr('Seul les fichier gettext (*.mo) sont acceptés.'),
+		 'TR_HELP' => tr('Help'),
+		 'TR_INSTALL' => tr('Install'),
+		 'TR_CANCEL' => tr('Cancel')));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
@@ -178,8 +180,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

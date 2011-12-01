@@ -154,6 +154,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string Version
  * @property string CodeName
  * @property int ORDERS_EXPIRE_TIME Default expiration time for unconfirmed orders
+ * @property string GUI_SOFTWARE_DIR Directory for software repositories
  *
  * @package     iMSCP_Config
  * @subpackage  Handler
