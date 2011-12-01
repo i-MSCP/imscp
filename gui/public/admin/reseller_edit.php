@@ -360,7 +360,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_CLOSE' => tr('Close'),
 
 			'PHP_INI_SYSTEM_YES' => ($data['php_ini_system'] == 'yes') ? $htmlChecked : '',
-			'PHP_INI_SYSTEM_NO' => ($data['php_ini_system'] == 'no') ? $htmlChecked : '',
+			'PHP_INI_SYSTEM_NO' => ($data['php_ini_system'] != 'yes') ? $htmlChecked : '',
 
 			'TR_PHP_INI_AL_REGISTER_GLOBALS' => tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>'),
 			'PHP_INI_AL_REGISTER_GLOBALS_YES' => ($data['php_ini_al_register_globals'] == 'yes') ? $htmlChecked : '',
@@ -528,7 +528,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 		// Check for email address
 
 		if (!chk_email($data['email'])) {
-			set_page_message(tr('incorrect syntax for email address.'), 'error');
+			set_page_message(tr('Incorrect syntax for email address.'), 'error');
 			$errFieldsStack[] = 'email';
 		}
 
@@ -609,7 +609,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 		if (!$rs = imscp_limit_check($data['max_sql_db_cnt'])) {
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL databases')), 'error');
 		} elseif ($data['max_sql_db_cnt'] == -1 && $data['max_sql_user_cnt'] != -1) {
-			set_page_message(tr('SQL databases limit is <span class="italic">disabled</span> but SQL users limit is not.', true), 'error');
+			set_page_message(tr('SQL databases limit is disabled but SQL users limit is not.'), 'error');
 			$rs = false;
 		} else {
 			$rs = admin_checkResellerLimit($data['max_sql_db_cnt'], $data['current_sql_db_cnt'], $data['nbSqlDatabases'], $data['unlimitedSqlDatabases'], tr('Sql databases'));
@@ -622,7 +622,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 		if (!$rs = imscp_limit_check($data['max_sql_user_cnt'])) {
 			set_page_message(tr('Incorrect limit for %s.', tr('SQL users')), 'error');
 		} elseif ($data['max_sql_db_cnt'] != -1 && $data['max_sql_user_cnt'] == -1) {
-			set_page_message(tr('SQL users limit is <span class="italic">disabled</span> but SQL databases limit is not.', true), 'error');
+			set_page_message(tr('SQL users limit is disabled but SQL databases limit is not.'), 'error');
 			$rs = false;
 		} else {
 			$rs = admin_checkResellerLimit($data['max_sql_user_cnt'], $data['current_sql_user_cnt'], $data['nbSqlUsers'], $data['unlimitedSqlUsers'], tr('Sql Users'));
@@ -801,9 +801,9 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 					$data['email'], $data['fname'], $data['lname'], tr('Reseller'));
 			}
 
-			write_log("Account properties for <span class=\"bold\">{$data['admin_name']}</span> were updated by {$_SESSION['user_logged']}", E_USER_NOTICE);
+			write_log("The reseller account (<span class=\"bold\">{$data['admin_name']}</span>) has been updated by {$_SESSION['user_logged']}", E_USER_NOTICE);
 
-			set_page_message(tr('Reseller properties successfully updated.'), 'success');
+			set_page_message(tr('Reseller account successfully updated.'), 'success');
 
 			return true;
 		}
@@ -813,7 +813,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 		if($e->getCode() == 40001) { // Deadlock error management
 			if(isset($data)) { // $data is tested here only to avoid IDE warning about possible indefined variable
 				if(admin_checkAndUpdateData($resellerId, true)) {
-					set_page_message(tr('Domain data were modified by another person before your changes. The update process was successfully done but in recovery mode. We recommend you to check the result of it.'), 'warning');
+					set_page_message(tr('Account data were modified by another person before your changes. The update process was successfully done but in recovery mode. We recommend you to check the result of it.'), 'warning');
 					return true;
 				} else {
 					return false;
