@@ -1306,7 +1306,7 @@ sub del_tmp{
 
 	use iMSCP::Dir;
 	use iMSCP::File;
-	use Math::Round;
+	use POSIX;
 
 	my $rs = 0;
 
@@ -1342,7 +1342,7 @@ sub del_tmp{
 					next;
 				}
 				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
-				$max = round($1/60) if $1 && $max < round($1/60);
+				$max = floor($1/60) if $1 && $max < floor($1/60);
 			}
 			$max = 24 unless $max;
 			my $cmd = "nice -n 19 find $main::imscpConfig{USER_HOME_DIR}/$dmn -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
