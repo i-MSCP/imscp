@@ -100,9 +100,7 @@ sub parseNetCards{
 }
 
 sub addedToVCard{
-	my $self	= shift;
-	my $ip		= shift;
-	return $self->getCardByIP($ip);
+	0;
 }
 
 sub getCardByIP{
