@@ -64,7 +64,6 @@ blockquote, q {
     quotes: none;
 }
 
-
 blockquote:before, blockquote:after,
 q:before, q:after {
     content: '';
@@ -84,6 +83,10 @@ table {
 /******************************************************************************************
  * Page layout
  */
+
+html, body {
+    min-width: 850px;
+}
 
 html {
     position: relative;
@@ -111,20 +114,20 @@ body {
  */
 
 a {
-	color:rgb(255,255,255);
-	text-decoration:none;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
 }
 
-a:hover {
-    color: rgb(92,186,218);
+a:hover, a:focus {
+    color: rgb(92, 186, 218);
 }
 
 .body a {
-    color:rgb(22,30,115);
+    color: rgb(22, 30, 115);
 }
 
-.body a:hover {
-    color: rgb(92,186,218);
+.body a:hover, .body a:focus {
+    color: rgb(92, 186, 218);
 }
 
 /******************************************************************************************
@@ -134,7 +137,7 @@ a:hover {
 .header {
     position: relative;
     background: url(../images/background/top_bg.jpg) repeat-x top left;
-    width:100%;
+    width: 100%;
     height: 89px;
     overflow: hidden;
 }
@@ -144,9 +147,9 @@ a:hover {
  */
 
 .logo {
-    float:left;
-    width:289px;
-    height:89px;
+    float: left;
+    width: 289px;
+    height: 89px;
 }
 
 /******************************************************************************************
@@ -222,7 +225,7 @@ a:hover {
     height: 24px;
     line-height: 24px;
     padding-left: 197px;
-    overflow: visible;
+    z-index: 4000;
 }
 
 /**
@@ -234,6 +237,7 @@ a:hover {
     left: 0.5em;
     top: 0;
     height: 30px;
+    z-index: 5000;
 }
 
 .location-area h1 {
@@ -646,8 +650,6 @@ table .icon {
     overflow: hidden;
 }
 
-/*table + .dataTables_wrapper {}*/
-
 .dataTables_length {
     float:left;
     width:60%;
@@ -666,14 +668,13 @@ table .icon {
 
 .dataTables_paginate {
     float: right;
-
 }
 
 .paginate_disabled_previous,
 .paginate_enabled_previous,
 .paginate_disabled_next,
 .paginate_enabled_next {
-    float:left;
+    float: left;
     background-repeat: no-repeat;
     background-position: center left;
     height: 20px;
@@ -702,7 +703,6 @@ table.datatable thead th {
 /**
  * Form elements
  */
-
 
 .buttons {
     text-align: right;
