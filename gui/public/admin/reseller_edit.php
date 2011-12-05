@@ -291,7 +291,7 @@ function _admin_generateIpListForm($tpl, &$data)
 			array(
 				 'IP_ID' => tohtml($ipData['ip_id']),
 				 'IP_NUMBER' => tohtml($ipData['ip_number']),
-				 'IP_DOMAIN' => tohtml($ipData['ip_domain']),
+				 'IP_DOMAIN' => tohtml(idn_to_utf8($ipData['ip_domain'])),
 				 'IP_ASSIGNED' => ($resellerHasIp) ? $htmlChecked : '',
 				 'IP_STATUS' => ($isUsedIp) ? $assignedTranslation : $unusedTranslation,
 				 'IP_READONLY' => ($isUsedIp) ? $htmlDisabled : ''));
