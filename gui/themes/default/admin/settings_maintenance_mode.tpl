@@ -1,6 +1,4 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-    <body>
-
         <div class="header">
             {MAIN_MENU}
 

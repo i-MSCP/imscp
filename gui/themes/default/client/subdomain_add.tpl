@@ -1,5 +1,4 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-	<body>
 		<!-- BDP: subdomain_add_js -->
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/

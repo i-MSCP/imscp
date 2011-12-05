@@ -15,659 +15,376 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
- * @author      ispCP Team
  * @author      i-MSCP Team
  */
 
-/***********************************************************************************
- * PAGE LAYOUT
- ***********************************************************************************/
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 
-body, html {
-    min-height: 100%;
-    min-width: 850px;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
     margin: 0;
     padding: 0;
-    font-family: Geneva, Arial, Helvetica, sans-serif;
-    font-size: 12px;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* i-MSCP addon */
+*:focus {
+    outline: 0;
+}
+
+/******************************************************************************************
+ * Page layout
+ */
+
+html {
+    position: relative;
+    height: 100%
 }
 
 body {
     background: url(../images/background/left_bg.jpg) repeat-y top left;
+    height:100%;
+    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-size: 0.75em;
+    color: rgb(26, 26, 26);
+
 }
 
-html {
-    position: relative;
-    /*padding-bottom: 1em;*/
+#wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -6em;
 }
+
+/**
+ * Links
+ */
+
+a {
+	color:rgb(255,255,255);
+	text-decoration:none;
+}
+
+a:hover {
+    color: rgb(92,186,218);
+}
+
+.body a {
+    color:rgb(22,30,115);
+}
+
+.body a:hover {
+    color: rgb(92,186,218);
+}
+
+/******************************************************************************************
+ * Header
+ */
 
 .header {
+    position: relative;
     background: url(../images/background/top_bg.jpg) repeat-x top left;
-    overflow: hidden;
-    white-space: nowrap;
+    width:100%;
     height: 89px;
+    overflow: hidden;
 }
 
-.header .logo {
-    background: url(../images/background/top_left_bg.jpg) no-repeat;
+/******************************************************************************************
+ * Logo
+ */
+
+.logo {
+    float:left;
+    width:289px;
+    height:89px;
 }
+
+/******************************************************************************************
+ * Main menu
+ */
+
+.main_menu {
+    float: right;
+    background: transparent url(../images/background/mainmenu_left.png) no-repeat top left;
+    height: 64px;
+    padding-left: 12px;
+}
+
+.main_menu ul {
+    float: left;
+    background: transparent url(../images/background/mainmenu_bg.png) repeat-x top left;
+    height: 64px;
+}
+
+.main_menu li {
+    display: inline;
+}
+
+.main_menu ul li a {
+    float: left;
+    display: block;
+    padding: 33px 0;
+    background: no-repeat top center;
+    text-align: center;
+    text-decoration: none;
+    margin: 0.5em 0.5em 0 0;
+}
+
+.main_menu ul li a:hover {
+    text-decoration: none;
+}
+
+/* Main menu icons */
+.main_menu .custom_link {background-image: url(../images/menu/custom_link.png);}
+.main_menu .database {background-image: url(../images/menu/database.png);}
+.main_menu .domains { background-image: url(../images/menu/domains.png);}
+.main_menu .email {background-image: url(../images/menu/email.png);}
+.main_menu .ftp {background-image: url(../images/menu/ftp.png);}
+.main_menu .general {background-image: url(../images/menu/general.png);}
+.main_menu .hosting_plans {background-image: url(../images/menu/hosting_plans.png);}
+.main_menu .manage_users {background-image: url(../images/menu/manage_users.png);}
+.main_menu .purchasing {background-image: url(../images/menu/purchasing.png);}
+.main_menu .settings {background-image: url(../images/menu/settings.png);}
+.main_menu .statistics {background-image: url(../images/menu/statistics.png);}
+.main_menu .support {background-image: url(../images/menu/support.png);}
+.main_menu .webtools {background-image: url(../images/menu/webtools.png);}
+.main_menu .custom_link:hover {background-image: url(../images/menu/custom_link_a.png);}
+.main_menu .database:hover { background-image: url(../images/menu/database_a.png);}
+.main_menu .domains:hover { background-image: url(../images/menu/domains_a.png);}
+.main_menu .email:hover {background-image: url(../images/menu/email_a.png);}
+.main_menu .ftp:hover {background-image: url(../images/menu/ftp_a.png);}
+.main_menu .general:hover { background-image: url(../images/menu/general_a.png);}
+.main_menu .hosting_plans:hover {background-image: url(../images/menu/hosting_plans_a.png);}
+.main_menu .manage_users:hover {background-image: url(../images/menu/manage_users_a.png);}
+.main_menu .purchasing:hover {background-image: url(../images/menu/purchasing_a.png);}
+.main_menu .settings:hover {background-image: url(../images/menu/settings_a.png);}
+.main_menu .statistics:hover {background-image: url(../images/menu/statistics_a.png);}
+.main_menu .support:hover {background-image: url(../images/menu/support_a.png);}
+.main_menu .webtools:hover {background-image: url(../images/menu/webtools_a.png);}
+
+/******************************************************************************************
+ * Location
+ */
 
 .location {
-    background: #000 url(../images/background/top_bar_bg.jpg) repeat-x top left;
-    color: #fff;
-    padding-left: 197px;
-    height: 25px;
-    line-height: 25px;
     position: relative;
+    background: rgb(22, 30, 115) url(../images/background/top_bar_bg.jpg) repeat-x top left;
+    height: 24px;
+    line-height: 24px;
+    padding-left: 197px;
     overflow: visible;
 }
 
-.body {
-    margin: 0 20px 0 240px;
-	padding-bottom: 30px;
-}
-
-.footer {
-    position: absolute; 
-    bottom: 10px;
-    text-align: center;
-    color: #fff;
-    width: 197px;
-    left: 0;
-}
-
-/***********************************************************************************
- * GENERAL INTERFACE STYLES
- ***********************************************************************************/
-
-h2, h3 {
-    font-family: Geneva,Arial,Helvetica,sans-serif;
-    font-size: 18px;
-    font-variant: small-caps;
-    font-weight: bold;
-    position: relative;
-    left: -33px;
-    padding-left: 33px;
-    height: 33px;
-    background-repeat: no-repeat;
-    background-position: top left;
-    margin: 1em 0 0;
-}
-
-h2 span, h3 span {
-    display: block;
-    border-bottom: 1px solid #ccc;
-    margin-right: -33px;
-}
-
-h3 {
-	font-size: 14px;
-}
-
-form {
-    margin: 0.5em 0;
-}
-
-p {
-    margin: 0 0 1em;
-}
-
-a {
-    text-decoration: none;
-    color: #009;
-    outline: none;
-}
-
-a:hover, a:focus {
-    text-decoration: underline;
-}
-
-.bold {
-	font-weight: bold;
-}
-
-.italic {
-	font-style: italic;
-}
-
-dl {
-    margin-left: 2em;
-}
-
-dt {
-    font-weight: bold;
-    margin-top: 0.5em;
-}
-dd {
-    margin: 0;
-}
-
-.buttons {
-    text-align: right;
-    margin: 0.5em 0;
-}
-
-.buttons input {
-    background: transparent url(../images/background/button.jpg) center left repeat-x;
-    height: 21px;
-    line-height: 21px;
-    padding: 0 10px;
-    color: #fff;
-    font-size: 12px;
-    border-color:#EEEEEE #000000 #000000 #EEEEEE;
-    border-style:solid;
-    border-width:1px;
-    font-weight: bold;
-}
-
-.buttons input:hover, .buttons input:focus {
-    color: rgb(92,186,218);
-    cursor: pointer;
-}
-
-.buttons input[type="checkbox"] {
-    height: auto;
-}
-
-.app_icon {
-    background-position: top left;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    height: 16px;
-    line-height: 16px;
-    display: -moz-inline-block;
-    display: inline-block;
-    margin: 0 -5px 0 5px;
-    float: right;
-}
-
-.icon {
-    background-position: top left;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    height: 16px;
-    line-height: 16px;
-    display: -moz-inline-block;
-    display: inline-block;
-    margin: 0 5px;
-    float: right;
-}
-
-.icon.big{
-		line-height : 44px;
-		height : 44px;
-		padding-left : 48px;
-}
-
-.icon:first-child {
-    margin-right: 0;
-}
-
-table .icon {
-    float: none;
-}
-
-.paginator {
-    margin: 0.5em 0;
-}
-
-.paginator .icon {
-    width: 0px;
-    overflow: hidden;
-    height: 20px;
-}
-
-.warning, .success, .error, .info {
-    margin: 1em 1em 1em;
-    border: 1px solid;
-    padding: 15px 10px 15px 50px;
-    text-align: left;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-}
-
-.warning {
-    color: rgb(149,74,0);
-    border-color: rgb(149,74,0);
-    background-color: rgb(255,236,156);
-    background-image: url(../images/messages/warning.png);
-}
-
-.success {
-    color: rgb(61,122,21);
-    border-color: rgb(61,122,21);
-    background-color: rgb(214,241,179);
-    background-image: url(../images/messages/success.png);
-}
-
-.error {
-    color: rgb(202,29,17);
-    border-color: rgb(202,29,17);
-    background-color: rgb(253,191,173);
-    background-image: url(../images/messages/error.png);
-}
-
-.info {
-    color: rgb(15,61,135);
-    border-color: rgb(15,61,135);
-    background-color: rgb(176,222,245);
-    background-image: url(../images/messages/info.png);
-}
-
-.up {
-    color: rgb(61,122,21);
-}
-
-.down {
-    color: rgb(202,29,17);
-}
-
-.graph{
-	height : 20px;
-	background-image : url('../images/background/graph_empty.png');
-	background-position : right top;
-	background-repeat : no-repeat;
-	width : 100%;
-	max-width : 1994px;
-	position : relative;
-}
-
-.graph span{
-	display : block;
-	min-width : 3px;
-	height : 20px;
-	background-image : url('../images/background/graph_full.png');
-	background-repeat : no-repeat;
-	width : 0;
-	background-position : left top;
-}
-
-.graph strong{
-	display : block;
-	position : absolute;
-	left: 0;
-	top: 0;
-	color : #000;
-	line-height : 20px;
-	width : 100%;
-	text-align : center;
-}
-
-form table tbody td input[type="text"],
-form table tbody td input[type="password"],
-form table tbody td textarea{
-	min-width : 200px;
-}
-
-input[type="text"],
-input[type="password"],
-select,
-textarea {
-	background-color: transparent;
-	border: 1px solid #cccccc;
-	padding: 2px;
-}
-
-input[type="text"]:disabled,
-input[type="password"]:disabled,
-select:disabled,
-textarea:disabled{
-	background: #cccccc url(../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png) repeat;
-}
-
-
-input[type="text"]:focus,
-input[type="password"]:focus,
-select:focus,
-textarea:focus {
-	background: transparent;
-	border-color: #999999;
-	outline: none;
-}
-
-/***********************************************************************************
- * LOCATION BAR STYLES
- ***********************************************************************************/
+/**
+ * heading
+ */
 
 .location-area {
     position: absolute;
-    left: 0;
+    left: 0.5em;
     top: 0;
-    margin: 0;
-    padding: 0;
-    height: 33px;
-    z-Index: 999;
+    height: 30px;
 }
 
 .location-area h1 {
-    font-size: 13px;
-    padding: 0;
-    line-height: 25px;
-    height: 33px;
-    padding-left: 35px;
-    margin: 0 0 0 10px;
-    background-repeat: no-repeat;
-}
-
-.location-menu {
-    float: right;
-    list-style-type: none;
-    margin: -1px 10px 0;
-    padding: 0;
-    height: 25px;
-    line-height: 25px;
-}
-
-.location-menu li {
-    display: inline;
-    margin: 0;
-    padding: 0;
-}
-
-.location-menu a {
-    color: #f00;
+    background: no-repeat center left;
+    height: 30px;
+    font-size: 1.1em;
     font-weight: bold;
-    background: transparent no-repeat center left;
-    padding: 0 5px 0 22px;
-    height: 25px;
-    line-height: 25px;
-    display: inline-block;
+    padding-left: 35px;
+    color: rgb(255, 255, 255);
 }
 
-.location-menu .help { background-image: url(../images/user/help.png); }
-.location-menu .logout { background-image: url(../images/user/logout.png); }
-.location-menu .backadmin { background-image: url(../images/user/backadmin.png); }
+.location .custom_link {background-image: url(../images/menu/custom_link.png);}
+.location .database {background-image: url(../images/menu/database.png);}
+.location .domains {background-image: url(../images/menu/domains.png);}
+.location .email {background-image: url(../images/menu/email.png);}
+.location .ftp {background-image: url(../images/menu/ftp.png);}
+.location .general {background-image: url(../images/menu/general.png);}
+.location .hosting_plans {background-image: url(../images/menu/hosting_plans.png);}
+.location .manage_users {background-image: url(../images/menu/manage_users.png);}
+.location .purchasing {background-image: url(../images/menu/purchasing.png);}
+.location .settings {background-image: url(../images/menu/settings.png);}
+.location .statistics {background-image: url(../images/menu/statistics.png);}
+.location .support {background-image: url(../images/menu/support.png);}
+.location .webtools {background-image: url(../images/menu/webtools.png);}
+
+/**
+ * Breadcrumbs
+ */
 
 .path {
-    list-style-type: none;
-    display: inline;
-    margin: 0;
-    padding: 14;
-}
-.path a {
-    color: #fff;
-    padding: 0 5px;
-    height: 25px;
-    line-height: 25px;
-    vertical-align: middle;
-    margin: 0;
-    font-size: 11px;
-}
-
-.path a:hover {
-    color: rgb(92,186,218);
+    float: left;
+    color: rgb(255, 255, 255);
+    margin-left: 0.5em;
 }
 
 .path li {
     display: inline;
-    margin: 0;
-    padding: 0;
 }
 
 .path li:before {
     content: "\0020 \0020 \0020 \00BB \0020";
-    color: #fff;
 }
 
 .path li:first-child:before {
     content: "";
 }
 
-/***********************************************************************************
- * MAIN MENU STYLE
- ***********************************************************************************/
-.main_menu {
+/**
+ * Switch, logout links
+ */
+
+.location-menu {
     float: right;
-    background: transparent url(../images/background/mainmenu_left.png) no-repeat top left;
-    height: 64px;
-    text-align: right;
-    /*_width: 3px;*/
 }
 
-.main_menu ul {
-    margin: 0 0 0 11px;
-    padding: 0 10px 0 0;
-    background: transparent url(../images/background/mainmenu_bg.png) repeat-x top left;
-    height: 64px;
-}
-
-.main_menu li {
-    margin: 0;
-    padding: 0;
+.location-menu li {
     display: inline;
 }
 
-.main_menu a {
-    margin: 10px 0 0 5px;
-    display: inline-block;
-    padding: 33px 0 0;
-    color: #fff;
-    background-position: top center;
-    background-repeat: no-repeat;
-    text-align: center;
-}
-
-/* Firefox 1.x/2.x hack because they don't support inline-block! */
-.main_menu a, x:-moz-any-link {
+.location-menu li a {
     float: left;
     display: block;
+    background: transparent no-repeat center left;
+    padding: 0 0.5em 0 1.5em;
+    text-decoration: none;
 }
 
-.main_menu a, x:-moz-any-link, x:default {
-    float: none;
-    display: inline-block;
-}
-/******* end of hack ******/
+.location-menu .help { background-image: url(../images/user/help.png); }
+.location-menu .logout { background-image: url(../images/user/logout.png); }
+.location-menu .backadmin { background-image: url(../images/user/backadmin.png); }
 
-.main_menu a:hover, .mail_menu .active {
-    text-decoration: underline;
-    color: rgb(92,186,218);
-}
+/******************************************************************************************
+ * left menu
+ */
 
-/***********************************************************************************
- * LEFT MENU STYLE
- ***********************************************************************************/
 .left_menu {
-    color: #fff;
+    position: absolute;
+    left: 0;
     width: 197px;
-    float: left;
-    padding-bottom: 60px;
+    color: rgb(255, 255, 255);
     background: transparent url(../images/background/left_top_bg.jpg) no-repeat top;
 }
 
 .left_menu ul {
-    margin: 10px 0;
-    padding: 0;
+    margin: 10px 0 0 0.5em;
     list-style: none;
 }
 
 .left_menu li {
-    margin: 0;
-    padding: 0;
     display: inline;
 }
 
 .left_menu a {
-    color: #fff;
     display: block;
-	padding: 5px 5px 5px 25px;
-    font-weight: bold;
-    background: transparent url(../images/background/bullet.png) no-repeat 3px center;
-    margin: 2px;
+    padding: 0.5em 1.5em;
+    background: transparent url(../images/background/bullet.png) no-repeat center left;
+    text-decoration: none;
 }
 
 .left_menu a:hover {
     background-image: url(../images/background/bullet_hover.png);
-    color: rgb(92,186,218);
 }
 
-.left_menu table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 10px 0;
+/******************************************************************************************
+ * Body
+ */
+
+.body {
+    margin: 0 20px 0 237px;
 }
 
-.left_menu th {
-    background: #000 url(../images/background/top_bar_bg.jpg) repeat-x top left;
-    padding: 5px 0 5px 20px;
-    text-align: left;
-    font-size: 12px;
-}
-
-.left_menu td {
-    padding: 5px 0 5px 20px;
-}
-
-/***********************************************************************************
- * BODY STYLE
- ***********************************************************************************/
-
-.body table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.body tr {
-    border: 1px solid rgb(223,223,223);
-    background: #fff;
-}
-
-.body tr.line_top{
-	border-top : 3px solid #000;
-}
-
-.body tr:nth-child(odd) {
-    background: #eee;
-}
-
-.body tfoot td,
-.body th {
-    background: #161E73 url(../images/background/top_bar_bg.jpg) repeat-x;
-    white-space: nowrap;
-    color: #fff;
-    font-weight: bold;
-    text-align: left;
-    padding: 4px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-}
-
-.body th:first-child {
-    border-left: 1px solid #000;
-}
-
-.body th:last-child {
-    border-right: 1px solid #000;
-}
-
-.description th {
-    background: transparent;
-    color: #000;
-    border-top: 1px solid #dfdfdf;
-    border-bottom: 1px solid #dfdfdf;
-}
-
-.description th:first-child {
-    border-left: 1px solid #dfdfdf;
-}
-
-.description th:last-child {
-    border-right: 1px solid #dfdfdf;
-}
-
-.body th a{
-	color : #fff;
-}
-
-.body td {
-    padding: 5px;
-   /* white-space: nowrap;*/
-    border-top: 1px solid rgb(223,223,223);
-    border-bottom: 1px solid rgb(223,223,223);
-	height: 24px;
-}
-
-fieldset {
-    padding: 2em 0 0;
-    margin: 0 0 1em;
-    border: none;
+h2, h3 {
     position: relative;
-}
-
-legend {
-    padding: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 14px;
-    font-family: arial;
+    left: -33px;
+    clear: both;
+    font-variant: small-caps;
     font-weight: bold;
-    color: #000;
-    margin-bottom: -1em;
+    height: 33px;
+    background: no-repeat top left;
+    margin-top: 0.5em;
+    padding-left: 33px;
 }
 
-/* Hack to fix firefox's bad legend positioning */
-@-moz-document url-prefix() {
-    legend { top: -1.5em; }
+h2 {
+    font-size: 1.5em;
 }
 
-.body .ip-segment {
-    min-width: 0;
-    width: 3em;
+h3 {
+    font-size: 1.1em;
 }
 
-/***********************************************************************************
- * ICONS
- ***********************************************************************************/
+h2 span, h3 span {
+    display: block;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    margin-right: -33px;
+}
 
-/* Main menu icons */
-.main_menu .custom_link { background-image: url(../images/menu/custom_link.png); }
-.main_menu .database { background-image: url(../images/menu/database.png); }
-.main_menu .domains { background-image: url(../images/menu/domains.png); }
-.main_menu .email { background-image: url(../images/menu/email.png); }
-.main_menu .ftp { background-image: url(../images/menu/ftp.png); }
-.main_menu .general { background-image: url(../images/menu/general.png); }
-.main_menu .hosting_plans { background-image: url(../images/menu/hosting_plans.png); }
-.main_menu .manage_users { background-image: url(../images/menu/manage_users.png); }
-.main_menu .purchasing { background-image: url(../images/menu/purchasing.png); }
-.main_menu .settings { background-image: url(../images/menu/settings.png); }
-.main_menu .statistics { background-image: url(../images/menu/statistics.png); }
-.main_menu .support { background-image: url(../images/menu/support.png); }
-.main_menu .webtools { background-image: url(../images/menu/webtools.png); }
-.main_menu .custom_link:hover { background-image: url(../images/menu/custom_link_a.png); }
-.main_menu .database:hover { background-image: url(../images/menu/database_a.png); }
-.main_menu .domains:hover { background-image: url(../images/menu/domains_a.png); }
-.main_menu .email:hover { background-image: url(../images/menu/email_a.png); }
-.main_menu .ftp:hover { background-image: url(../images/menu/ftp_a.png); }
-.main_menu .general:hover { background-image: url(../images/menu/general_a.png); }
-.main_menu .hosting_plans:hover { background-image: url(../images/menu/hosting_plans_a.png); }
-.main_menu .manage_users:hover { background-image: url(../images/menu/manage_users_a.png); }
-.main_menu .purchasing:hover { background-image: url(../images/menu/purchasing_a.png); }
-.main_menu .settings:hover { background-image: url(../images/menu/settings_a.png); }
-.main_menu .statistics:hover { background-image: url(../images/menu/statistics_a.png); }
-.main_menu .support:hover { background-image: url(../images/menu/support_a.png); }
-.main_menu .webtools:hover { background-image: url(../images/menu/webtools_a.png); }
+p {
+    margin: 0.5em 0;
+    font-size: 0.8em;
+}
 
-/* Left menu heading icons */
-.location .custom_link { background-image: url(../images/menu/custom_link.png); }
-.location .database { background-image: url(../images/menu/database.png); }
-.location .domains { background-image: url(../images/menu/domains.png); }
-.location .email { background-image: url(../images/menu/email.png); }
-.location .ftp { background-image: url(../images/menu/ftp.png); }
-.location .general { background-image: url(../images/menu/general.png); }
-.location .hosting_plans { background-image: url(../images/menu/hosting_plans.png); }
-.location .manage_users { background-image: url(../images/menu/manage_users.png); }
-.location .purchasing { background-image: url(../images/menu/purchasing.png); }
-.location .settings { background-image: url(../images/menu/settings.png); }
-.location .statistics { background-image: url(../images/menu/statistics.png); }
-.location .support { background-image: url(../images/menu/support.png); }
-.location .webtools { background-image: url(../images/menu/webtools.png); }
+.bold {
+    font-weight: bold;
+}
 
-/* Content icons (table_icons) */
+.italic {
+    font-style: italic;
+}
+
+/* Title icons */
 .body .adminlog { background-image: url(../images/content/table_icon_adminlog.png); }
 .body .billing { background-image: url(../images/content/table_icon_billing.png); }
 .body .debugger { background-image: url(../images/content/table_icon_debugger.png); }
@@ -706,229 +423,503 @@ legend {
 .body .users2 { background-image: url(../images/content/table_icon_users2.png); }
 .body .apps_installer { background-image: url(../images/content/table_icon_app_installer_cd_big.png); }
 
-/* Content icons (link icons) */
-.i_add_user { background-image: url(../images/icons/add_user.png); }
-.i_awstatsicon { background-image: url(../images/icons/awstatsicon.png); }
-.i_backupicon { background-image: url(../images/icons/backupicon.png); }
-.i_bc_folder { background-image: url(../images/icons/bc_folder.png); }
-.i_bc_locked { background-image: url(../images/icons/bc_locked.png); }
-.i_bc_parent { background-image: url(../images/icons/bc_parent.png); }
-.i_change_password { background-image: url(../images/icons/change_password.png); }
-.i_close_interface { background-image: url(../images/icons/close_interface.png); }
-.i_database_small { background-image: url(../images/icons/database_small.png); }
-.i_db_comit { background-image: url(../images/icons/db_comit.png); }
-.i_delete { background-image: url(../images/icons/delete.png); }
-.i_details { background-image: url(../images/icons/details.png); }
-.i_disabled { background-image: url(../images/icons/disabled.png); }
-.i_document { background-image: url(../images/icons/document.png); }
-.i_domain_icon { background-image: url(../images/icons/domain_icon.png); }
-.i_edit { background-image: url(../images/icons/edit.png); }
-.i_error { background-image: url(../images/icons/error.png); }
-.i_error401 { background-image: url(../images/icons/error401.png); }
-.i_error403 { background-image: url(../images/icons/error403.png); }
-.i_error404 { background-image: url(../images/icons/error404.png); }
-.i_error500 { background-image: url(../images/icons/error500.png); }
-.i_error503 { background-image: url(../images/icons/error503.png); }
-.i_errordocsicon { background-image: url(../images/icons/errordocsicon.png); }
-.i_filemanagericon { background-image: url(../images/icons/filemanagericon.png); }
-.i_ftp_account { background-image: url(../images/icons/ftp_account.png); }
-.i_goto { background-image: url(../images/icons/goto.png); }
-.i_help { background-image: url(../images/icons/help.png); }
-.i_hide_alias { background-image: url(../images/icons/hide_alias.png); }
-.i_htaccessicon { background-image: url(../images/icons/htaccessicon.png); }
-.i_identity { background-image: url(../images/icons/identity.png); }
-.i_locale { background-image: url(../images/icons/locale.png); }
-.i_mail_icon { background-image: url(../images/icons/mail_icon.png); }
-.i_next { background-image: url(../images/icons/next.png); }
-.i_next_gray { background-image: url(../images/icons/next_gray.png); }
-.i_ok { background-image: url(../images/icons/ok.png); }
-.i_filemanager { background-image: url(../images/icons/filemanager.png); }
-.i_pma { background-image: url(../images/icons/pma.png); }
-.i_prev { background-image: url(../images/icons/prev.png); }
-.i_prev_gray { background-image: url(../images/icons/prev_gray.png); }
-.i_reload { background-image: url(../images/icons/reload.png); }
-.i_show_alias { background-image: url(../images/icons/show_alias.png); }
-.i_stats { background-image: url(../images/icons/stats.png); }
-.i_user { background-image: url(../images/icons/user.png); }
-.i_users { background-image: url(../images/icons/users.png); }
-.i_webmailicon { background-image: url(../images/icons/webmailicon.png); }
-.i_app_installer { background-image: url(../images/icons/app_installer_cd.png); }
-.i_app_installed { background-image: url(../images/icons/help.png); }
-.i_app_download { background-image: url(../images/icons/app_installer_download.png); }
-.i_app_asc { background-image: url(../images/icons/app_installer_asc.gif); }
-.i_app_desc { background-image: url(../images/icons/app_installer_desc.gif); }
 
-/*********************************** Ajax Spinner *****************************/
+/**
+ * Flash messages
+ */
 
-/* Used for form input element during ajax request */
-.small-spinner {
-	display:			none;
-	width:				16px;
-	height:				16px;
-	margin-left:		5px;
-	vertical-align:		middle;
+.warning, .success, .error, .info {
+    margin: 0.5em 0;
+    border: 1px solid;
+    padding: 15px 10px 15px 50px;
+    text-align: left;
+    background: no-repeat 10px center;
 }
 
-/************************************ ToolTip *********************************/
-
-.tooltip_bg {
-	background-color:	#1284A8;
-	position:			absolute;
-	z-index:			-1;
+.warning {
+    color: rgb(149, 74, 0);
+    border-color: rgb(149, 74, 0);
+    background-color: rgb(255, 236, 156);
+    background-image: url(../images/messages/warning.png);
 }
 
-.tooltip {
-	display:			none;
-	position:			absolute;
-	border: 			2px outset #fff;
-	width:				250px;
-	width:				auto;
-	z-index:			5000;
+.success {
+    color: rgb(61, 122, 21);
+    border-color: rgb(61, 122, 21);
+    background-color: rgb(214, 241, 179);
+    background-image: url(../images/messages/success.png);
 }
 
-.tooltip span {
-	vertical-align:		middle;
-	display:			inline-block;
-	margin:				3px 0 3px 3px;
-	border:				none;
+.error {
+    color: rgb(202, 29, 17);
+    border-color: rgb(202, 29, 17);
+    background-color: rgb(253, 191, 173);
+    background-image: url(../images/messages/error.png);
 }
 
-.tooltip_txt {
-	width:				208px;
-	font-family:		Verdana, sans-serif;
-	font-size:			7.8pt!important;
-	font-size:			6.5pt; /* ie */
-	font-weight:		bold;
-	color:				#fff;
-	margin-right:		3px!important;
-}
-
-.tooltip_notice {
-	background:			url(../images/tooltips/info.png) no-repeat;
-	height:				32px;
-	width:				32px;
+.info {
+    color: rgb(15, 61, 135);
+    border-color: rgb(15, 61, 135);
+    background-color: rgb(176, 222, 245);
+    background-image: url(../images/messages/info.png);
 }
 
 /**
- * I'm not sure about this
+ * Tables
  */
 
-.icon.i_help{
-	width : 0;
-	overflow : hidden;
+.body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5em 0;
 }
 
-form table td{
-	/*vertical-align: top;*/
+.body tr {
+    border: 1px solid rgb(223, 223, 223);
 }
 
-.isp_logo{
-	margin : 0 auto;
-	text-align : center;
+.body tr:nth-child(odd) {
+    background: rgb(237, 237, 237);
 }
 
-/************************************ SW-Installer ToolTip *********************************/
-
-.sw_tooltip_bg {
-	background-color:	#1284A8;
-	position:			absolute;
-	z-index:			-1;
+.body th,
+.body tfoot td {
+    background: #161E73 url(../images/background/top_bar_bg.jpg) repeat-x;
+    white-space: nowrap;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    text-align: left;
+    line-height: 24px;
+    padding: 0 0.5em;
+    border-top: 1px solid rgb(0, 0, 0);
+    border-bottom: 1px solid rgb(0, 0, 0);
 }
 
-.sw_tooltip {
-	display:			none;
-	position:			absolute;
-	border: 			2px outset #fff;
-	width:				450px;
-	width:				auto;
-	z-index:			1;
+.body th:first-child {
+    border-left: 1px solid rgb(0, 0, 0);
 }
 
-.sw_tooltip span {
-	vertical-align:		middle;
-	display:			inline-block;
-	margin:				3px 0 3px 3px;
-	border:				none;
+.body th:last-child {
+    border-right: 1px solid rgb(0, 0, 0);
 }
 
-.sw_tooltip_txt {
-	width:				408px;
-	font-family:		Verdana, sans-serif;
-	font-size:			7.8pt!important;
-	font-size:			6.5pt; /* ie */
-	font-weight:		bold;
-	color:				#fff;
-	margin-right:		3px!important;
+.description th {
+    background: transparent;
+    border-top: 1px solid rgb(222, 222, 222);
+    border-bottom: 1px solid rgb(222, 222, 222);
+    color: rgb(26, 26, 26);
 }
 
-.sw_tooltip_notice {
-	background:			url(../images/tooltips/info.png) no-repeat;
-	height:				32px;
-	width:				32px;
+.description th:first-child {
+    border-left: 1px solid rgb(222, 222, 222);
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * jQuery DataTables plugin css (for i-MSCP)
+.description th:last-child {
+    border-right: 1px solid rgb(222, 222, 222);
+}
+
+.body td {
+    border-top: 1px solid rgb(223, 223, 223);
+    border-bottom: 1px solid rgb(223, 223, 223);
+    height: 24px;
+    line-height: 14px;
+    vertical-align: middle;
+    padding: 0.5em 0.5em;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+    line-height: 24px;
+
+}
+
+/* Hack to fix firefox's bad legend positioning */
+@-moz-document url-prefix() {
+    legend { top: -1.5em; }
+}
+
+table .icon {
+    float: none;
+}
+
+.app_icon {
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    height: 16px;
+    line-height: 16px;
+    display: -moz-inline-block;
+    display: inline-block;
+    margin: 0 -5px 0 5px;
+    float: right;
+}
+
+.icon {
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    height: 16px;
+    line-height: 16px;
+    display: -moz-inline-block;
+    display: inline-block;
+    margin: 0 5px;
+    float: right;
+}
+
+.icon.big {
+    line-height: 44px;
+    height: 44px;
+    padding-left: 48px;
+}
+
+.icon:first-child {
+    margin-right: 0;
+}
+
+.isp_logo {
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Content icons (link icons) */
+.i_add_user {background-image: url(../images/icons/add_user.png);}
+.i_awstatsicon {background-image: url(../images/icons/awstatsicon.png);}
+.i_backupicon {background-image: url(../images/icons/backupicon.png);}
+.i_bc_folder {background-image: url(../images/icons/bc_folder.png);}
+.i_bc_locked {background-image: url(../images/icons/bc_locked.png);}
+.i_bc_parent {background-image: url(../images/icons/bc_parent.png);}
+.i_change_password {background-image: url(../images/icons/change_password.png);}
+.i_close_interface {background-image: url(../images/icons/close_interface.png);}
+.i_database_small {background-image: url(../images/icons/database_small.png);}
+.i_db_comit {background-image: url(../images/icons/db_comit.png);}
+.i_delete {background-image: url(../images/icons/delete.png);}
+.i_details {background-image: url(../images/icons/details.png);}
+.i_disabled { background-image: url(../images/icons/disabled.png);}
+.i_document { background-image: url(../images/icons/document.png);}
+.i_domain_icon {background-image: url(../images/icons/domain_icon.png);}
+.i_edit { background-image: url(../images/icons/edit.png);}
+.i_error { background-image: url(../images/icons/error.png);}
+.i_error401 {background-image: url(../images/icons/error401.png);}
+.i_error403 {background-image: url(../images/icons/error403.png)}
+.i_error404 {background-image: url(../images/icons/error404.png);}
+.i_error500 {background-image: url(../images/icons/error500.png);}
+.i_error503 {background-image: url(../images/icons/error503.png);}
+.i_errordocsicon {background-image: url(../images/icons/errordocsicon.png);}
+.i_filemanagericon {background-image: url(../images/icons/filemanagericon.png);}
+.i_ftp_account { background-image: url(../images/icons/ftp_account.png);}
+.i_goto {background-image: url(../images/icons/goto.png);}
+.i_help {background-image: url(../images/icons/help.png);}
+.i_hide_alias {background-image: url(../images/icons/hide_alias.png);}
+.i_htaccessicon {background-image: url(../images/icons/htaccessicon.png);}
+.i_identity { background-image: url(../images/icons/identity.png);}
+.i_locale {background-image: url(../images/icons/locale.png);}
+.i_mail_icon {background-image: url(../images/icons/mail_icon.png);}
+.i_next {background-image: url(../images/icons/next.png);}
+.i_next_gray {background-image: url(../images/icons/next_gray.png);}
+.i_ok {background-image: url(../images/icons/ok.png);}
+.i_filemanager { background-image: url(../images/icons/filemanager.png);}
+.i_pma {background-image: url(../images/icons/pma.png);}
+.i_prev { background-image: url(../images/icons/prev.png);}
+.i_prev_gray {background-image: url(../images/icons/prev_gray.png);}
+.i_reload { background-image: url(../images/icons/reload.png);}
+.i_show_alias {background-image: url(../images/icons/show_alias.png);}
+.i_stats {background-image: url(../images/icons/stats.png);}
+.i_user {background-image: url(../images/icons/user.png);}
+.i_users {background-image: url(../images/icons/users.png);}
+.i_webmailicon {background-image: url(../images/icons/webmailicon.png);}
+.i_app_installer {background-image: url(../images/icons/app_installer_cd.png);}
+.i_app_installed {background-image: url(../images/icons/help.png);}
+.i_app_download {background-image: url(../images/icons/app_installer_download.png);}
+.i_app_asc {background-image: url(../images/icons/app_installer_asc.gif);}
+.i_app_desc {background-image: url(../images/icons/app_installer_desc.gif);}
+
+/**
+ * datatable
  */
 
 .dataTables_wrapper {
-	position: relative;
-	border: solid 1px transparent;
+    clear: both;
+    width:100%;
+    margin: 1em 0;
+    overflow: hidden;
 }
 
-table + .dataTables_wrapper  {
-	margin: 20px 0;
-}
+/*table + .dataTables_wrapper {}*/
 
 .dataTables_length {
-	width: 40%;
-	float: left;
-	margin-bottom: 10px;
+    float:left;
+    width:60%;
 }
 
 .dataTables_filter {
-	width: 50%;
-	float: right;
-	text-align: right;
-	margin-bottom: 10px;
+    float:right;
+    width:40%;
+    text-align: right;
 }
 
 .dataTables_info {
-	width: 60%;
-	float: left;
-	margin-bottom: 10px;
+    float:left;
+    width:60%;
 }
 
 .dataTables_paginate {
-	width: 46px;
-	*width: 52px;
-	float: right;
-	text-align: right;
-	margin-bottom: 10px;
+    float: right;
+
 }
 
-.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
-	height: 20px;
-	width: 20px;
-	margin-left: 3px;
-	float: left;
+.paginate_disabled_previous,
+.paginate_enabled_previous,
+.paginate_disabled_next,
+.paginate_enabled_next {
+    float:left;
+    background-repeat: no-repeat;
+    background-position: center left;
+    height: 20px;
+    width: 20px;
+    margin-left: 0.5em;
 }
 
-.paginate_disabled_previous {background-image: url('../images/icons/prev_gray.png');}
-.paginate_enabled_previous {background-image: url('../images/icons/prev.png');}
-.paginate_disabled_next {background-image: url('../images/icons/next_gray.png');}
-.paginate_enabled_next {background-image: url('../images/icons/next.png');}
+.paginate_disabled_previous { background-image: url('../images/icons/prev_gray.png');}
+.paginate_enabled_previous { background-image: url('../images/icons/prev.png'); }
+.paginate_disabled_next { background-image: url('../images/icons/next_gray.png'); }
+.paginate_enabled_next { background-image: url('../images/icons/next.png'); }
 
 table.datatable {
-	width: 100%;
-	margin-bottom: 10px;
+    clear: both;
+    width:100%;
 }
 
 table.datatable thead th {
-	cursor: pointer;
-	*cursor: hand;
+    cursor: pointer;
 }
 
-.datatable .sorting_asc {background: url('../images/datatable/asc.png') no-repeat center right;}
-.datatable .sorting_desc {background: url('../images/datatable/desc.png') no-repeat center right;}
-.datatable .sorting {background: url('../images/datatable/bg.png') no-repeat center right;}
+.datatable .sorting_asc { background: url('../images/datatable/asc.png') no-repeat center right; }
+.datatable .sorting_desc { background: url('../images/datatable/desc.png') no-repeat center right; }
+.datatable .sorting { background: url('../images/datatable/bg.png') no-repeat center right; }
+
+/**
+ * Form elements
+ */
+
+
+.buttons {
+    text-align: right;
+    margin: 0.5em 0;
+}
+
+/* Deprecated since we are using jQuery UI button */
+/*
+.buttons input {
+    background:  rgb(22,30,115) url(../images/background/button.jpg) center left repeat-x;
+    height: 21px;
+    color: rgb(255,255,255);
+    font-size: 12px;
+    vertical-align: middle;
+    border: 1px solid rgb(0,0,0);
+    border-radius: 4px;
+}
+
+.buttons input:hover, .buttons input:focus {
+    color: rgb(92,186,218);
+    cursor: pointer;
+}
+
+.buttons input[type="checkbox"] {
+    height: auto;
+}
+*/
+
+form table tbody td input[type="text"],
+form table tbody td input[type="password"],
+form table tbody td textarea {
+    color: inherit;
+    min-width: 200px;
+}
+
+input[type="text"],
+input[type="password"],
+select,
+textarea {
+    background-color: transparent;
+    border: 1px solid rgb(204, 204, 204);
+    padding: 0.2em;
+    border-radius: 4px;
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled,
+textarea:disabled{
+	background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    background: transparent;
+    border-color: rgb(153, 153, 153);
+}
+
+/**
+ * Graph
+ */
+
+.graph {
+    height: 20px;
+    background-image: url('../images/background/graph_empty.png');
+    background-position: right top;
+    background-repeat: no-repeat;
+    width: 100%;
+    max-width: 1994px;
+    position: relative;
+}
+
+.graph span {
+    display: block;
+    min-width: 3px;
+    height: 20px;
+    background-image: url('../images/background/graph_full.png');
+    background-repeat: no-repeat;
+    width: 0;
+    background-position: left top;
+}
+
+.graph strong {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: rgb(0, 0, 0);
+    line-height: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+/**
+ * services status
+ */
+
+.up { color: rgb(61, 122, 21); }
+.down { color: rgb(202, 29, 17);}
+
+/**
+ * Ajax spinner
+ */
+
+.small-spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    margin-left: 0.5em;
+    vertical-align: middle;
+}
+
+/**
+ * Tooltips
+ */
+
+.tooltip_bg {
+    background-color: rgb(18, 130, 166);
+    background-color: #161E73;
+    position: absolute;
+    z-index: -1;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    border: 1px solid #161E73;
+    width: 250px;
+    width: auto;
+    z-index: 5000;
+    border-radius: 4px;
+}
+
+.tooltip span {
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0.5em;
+    border: none;
+}
+
+.tooltip_txt {
+    width: 208px;
+    font-size: 0.85em;
+    line-height: 1.2em;
+    color: rgb(255, 255, 255);
+}
+
+.tooltip_notice {
+    background: url(../images/tooltips/info.png) no-repeat center left;
+    height: 32px;
+    width: 32px;
+}
+
+.icon.i_help {
+    width: 0;
+    overflow: hidden;
+}
+
+.sw_tooltip_bg {
+    background-color: rgb(18, 130, 166);
+    position: absolute;
+    z-index: -1;
+}
+
+.sw_tooltip {
+    display: none;
+    position: absolute;
+    border: 2px outset rgb(255, 255, 255);
+    width: 450px;
+    width: auto;
+    z-index: 1;
+}
+
+.sw_tooltip span {
+    vertical-align: middle;
+    display: inline-block;
+    margin: 3px 0 3px 3px;
+    border: none;
+}
+
+.sw_tooltip_txt {
+    width: 408px;
+    font-size: 0.85em;
+    line-height: 1.2em;
+    color: rgb(255, 255, 255);
+}
+
+.sw_tooltip_notice {
+    background: url(../images/tooltips/info.png) no-repeat;
+    height: 32px;
+    width: 32px;
+}
+
+/**
+ * pagination (for backward compatibility) - Will be removed ASAP
+ */
+.paginator {
+    margin: 0.5em 0;
+}
+
+.paginator .icon {
+    width: 0px;
+    overflow: hidden;
+    height: 20px;
+}
+
+/******************************************************************************************
+ * Footer
+ */
+
+.footer {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    width: 197px;
+    height: 4em;
+    line-height: 1.2em;
+    padding: 1em 0;
+}

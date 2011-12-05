@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel.
  *
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
- * @link		http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,17 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Admin
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
 /************************************************************************************
@@ -60,14 +62,14 @@ $stmt = execute_query($query);
 
 while(!$stmt->EOF) {
 	if(in_array($deleteIpId, explode(';', $stmt->fields['reseller_ips']))) {
-		set_page_message(tr('The IP is assigned to a reseller. You must unassign it first.'), 'error');
+		set_page_message(tr('The IP address you trying to remove is assigned to a reseller.'), 'error');
         redirectTo('ip_manage.php');
 	}
 
 	$stmt->moveNext();
 }
 
-$query = "SELECT count(`ip_id`) `ipsTotalCount` FROM server_ips";
+$query = "SELECT count(`ip_id`) `ipsTotalCount` FROM `server_ips`";
 $stmt = execute_query($query);
 
 if($stmt->fields['ipsTotalCount'] < 2) {

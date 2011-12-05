@@ -1,5 +1,4 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-    <body>
         <script language="JavaScript" type="text/JavaScript">
         /*<![CDATA[*/
 			$(document).ready(function(){

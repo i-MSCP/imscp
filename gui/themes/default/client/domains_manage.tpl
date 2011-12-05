@@ -1,14 +1,6 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-<body>
 	<script type="text/javascript">
-	/* <![CDATA[ */
-
-
-		//$(	document).ready(function(){
-		//	$('.tablesorter').tablesorter({cssHeader: 'tablesorter'});
-		//});
-
-
+	/*<![CDATA[*/
 		function action_delete(url, subject) {
 			if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
 				return false;
@@ -16,7 +8,7 @@
 
 			location = url;
 		}
-	/* ]]> */
+	/*]]>*/
 	</script>
 
 	<div class="header">

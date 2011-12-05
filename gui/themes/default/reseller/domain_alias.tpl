@@ -1,5 +1,4 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-	<body>
 		<script type="text/javascript">
 			/*<![CDATA[*/
 				function delete_account(url, name) {

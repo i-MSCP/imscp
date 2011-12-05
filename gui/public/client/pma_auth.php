@@ -116,8 +116,8 @@ function client_pmaAuth($dbUserId)
 	if ($credentials) {
 		$httpQuery = http_build_query(
 			array(
-				 'pma_username' => $credentials[0],
-				 'pma_password' => stripcslashes($credentials[1])));
+				'pma_username' => $credentials[0],
+				'pma_password' => stripcslashes($credentials[1])));
 	} else {
 		set_page_message(tr('Wrong SQL user identifier.'), 'error');
 		return false;
@@ -135,14 +135,14 @@ function client_pmaAuth($dbUserId)
 	// Set stream context (http) options
 	stream_context_set_default(
 		array(
-			 'http' => array(
-				 'method' => 'POST',
-				 'header' => "Host: {$_SERVER['SERVER_NAME']}$port\r\n" .
-							 "Content-Type: application/x-www-form-urlencoded\r\n" .
-							 'Content-Length: ' . strlen($httpQuery) . "\r\n" .
-							 "Connection: close\r\n\r\n",
-				 'content' => $httpQuery,
-				 'max_redirects' => 1)));
+			'http' => array(
+				'method' => 'POST',
+				'header' => "Host: {$_SERVER['SERVER_NAME']}$port\r\n" .
+					"Content-Type: application/x-www-form-urlencoded\r\n" .
+					'Content-Length: ' . strlen($httpQuery) . "\r\n" .
+					"Connection: close\r\n\r\n",
+				'content' => $httpQuery,
+				'max_redirects' => 1)));
 
 	// Gets the headers from PhpMyAdmin
 	$headers = get_headers($pmaUri, true);
@@ -171,8 +171,8 @@ check_login(__FILE__);
 /**
  *  Dispatches the request
  */
-if(!customerHasFeature('sql')) {
-   redirectTo('index.php');
-} elseif(!isset($_GET['id']) || !client_pmaAuth((int)$_GET['id'])) {
+if (!customerHasFeature('sql')) {
+	redirectTo('index.php');
+} elseif (!isset($_GET['id']) || !client_pmaAuth((int)$_GET['id'])) {
 	redirectTo('sql_manage.php');
 }

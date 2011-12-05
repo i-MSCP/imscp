@@ -28,7 +28,15 @@
 	/*<![CDATA[*/
 		$(document).ready(function() {
 			setTimeout(function(){$('.timeout').hide('slow');},3000);
+
+			// Set tooltips for all links that have title attribute
+			$('a').iMSCPtooltips();
+
+			// Setup buttons
+			$("input:submit, input:button").button();
 		});
 	/*]]>*/
 	</script>
 </head>
+<body>
+	<div id="wrapper">

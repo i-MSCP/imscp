@@ -1,4 +1,3 @@
-
 			<div class="main_menu">
 				<ul class="icons">
 					<li><a class="general active" href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>

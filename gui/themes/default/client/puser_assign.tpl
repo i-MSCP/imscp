@@ -1,10 +1,6 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-	</head>
-
-	<body>
 		<div class="header">
 			{MAIN_MENU}
-
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>

@@ -1,16 +1,11 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-	<body>
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
-				// Tooltips - end
 			});
 			$(document).ready(function(){
-				// Tooltips - begin
 				$('span.i_help').iMSCPtooltips('span.title');
-				// Tooltips - end
 			});
 			function action_import() {
 				if (!confirm("{TR_MESSAGE_IMPORT}"))

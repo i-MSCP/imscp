@@ -1,5 +1,4 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-<body>
 	<!-- BDP: domain_alias_add_js -->
 	<script type="text/javascript">
 	/* <![CDATA[ */

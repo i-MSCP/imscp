@@ -24,6 +24,9 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Admin
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
@@ -79,31 +82,30 @@ function _client_generateIpsList($tpl)
 	$query = "SELECT * FROM `server_ips`";
 	$stmt = execute_query($query);
 
-	if ($stmt->recordCount() > 0) {
+	if ($stmt->rowCount()) {
 		while (!$stmt->EOF) {
 			list(
-				$ip_action, $ip_action_script
+				$actionName, $actionUrl
 			) = _client_generateIpAction($stmt->fields['ip_id'], $stmt->fields['ip_status']);
 
 			$tpl->assign(
 				array(
 					 'IP' => $stmt->fields['ip_number'],
-					 'DOMAIN' => tohtml($stmt->fields['ip_domain']),
-					 'ALIAS' => tohtml($stmt->fields['ip_alias']),
+					 'DOMAIN' => tohtml(idn_to_utf8($stmt->fields['ip_domain'])),
+					 'ALIAS' => tohtml(idn_to_utf8($stmt->fields['ip_alias'])),
 					 'NETWORK_CARD' => ($stmt->fields['ip_card'] === NULL) ? '' : tohtml($stmt->fields['ip_card'])));
 
 			$tpl->assign(
 				array(
-					 'IP_DELETE_SHOW' => '',
-					 'IP_ACTION' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? tr('N/A') : $ip_action,
-					 'IP_ACTION_SCRIPT' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? '#' : $ip_action_script));
+					 'ACTION_NAME' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? tr('Protected') : $actionName,
+					 'ACTION_URL' => ($cfg->BASE_SERVER_IP == $stmt->fields['ip_number']) ? '#' : $actionUrl));
 
-			$tpl->parse('IP_ROW', '.ip_row');
+			$tpl->parse('IP_ADDRESS_BLOCK', '.ip_address_block');
 			$stmt->moveNext();
 		}
 	} else { // Should never occur but who knows.
-		$tpl->assign('IPS_LIST', '');
-		set_page_message(tr('No IP found in database.'), 'info');
+		$tpl->assign('IP_ADDRESSES_BLOCK', '');
+		set_page_message(tr('No IP address found.'), 'info');
 	}
 }
 
@@ -122,6 +124,12 @@ function _client_generateIpAction($ipId, $status)
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ipId);
+	} elseif($status == $cfg->ITEM_DELETE_STATUS) {
+		return array(tr('Deletion in progress...'), '#');
+	} elseif($status == $cfg->ITEM_ADD_STATUS) {
+		return array(tr('Configuration in progress...'), '#');
+	} elseif(!in_array($status, array($cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS, $cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS))) {
+		return array(tr('Error state...'), '#');
 	} else {
 		return array(tr('N/A'), '#');
 	}
@@ -148,11 +156,11 @@ function _client_generateNetcardsList($tpl)
 	if (!empty($networkCards)) {
 		foreach ($networkCards as $networkCard) {
 			$tpl->assign('NETWORK_CARD', $networkCard);
-			$tpl->parse('CARDS_LIST', '.cards_list');
+			$tpl->parse('NETWORK_CARD_BLOCK', '.network_card_block');
 		}
 	} else { // Should never occur but who knows.
 		set_page_message(tr('Unable to find network cards. Form to add new IP address has been disabled.'), 'error');
-		$tpl->assign('ADD_IP', '');
+		$tpl->assign('IP_ADDRESS_FORM_BLOCK', '');
 	}
 }
 
@@ -172,11 +180,6 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 
 	$errFieldsStack = array();
 
-	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
-		set_page_message(tr('Wrong IP address.'), 'error');
-		$errFieldsStack[] = 'ip_number';
-	}
-
 	$query = "
 		SELECT
 			COUNT(IF(`ip_number` = ?, 1, NULL)) `isRegisteredIp`,
@@ -185,19 +188,29 @@ function client_checkIpData($ipNumber, $domain, $alias, $netcard)
 		FROM
 			`server_ips`
 	";
-	$stmt = exec_query($query, array($ipNumber, $domain, $alias));
+	$stmt = exec_query($query, array($ipNumber, idn_to_ascii($domain), idn_to_ascii($alias)));
 
-	if($stmt->fields['isRegisteredIp']) {
+	if (filter_var($ipNumber, FILTER_VALIDATE_IP) === false) {
+		set_page_message(tr('Wrong IP address.'), 'error');
+		$errFieldsStack[] = 'ip_number';
+	} elseif($stmt->fields['isRegisteredIp']) {
 		set_page_message(tr('IP address already known by the system.'), 'error');
 		$errFieldsStack[] = 'ip_number';
 	}
 
-	if($stmt->fields['isAssignedDomain']) {
+	if(!iMSCP_Validate::getInstance()->domainName($domain)) {
+		set_page_message('Wrong domain syntax.', 'error');
+		$errFieldsStack[] = 'domain';
+	} elseif($stmt->fields['isAssignedDomain']) {
 		set_page_message(tr('Domain already assigned to another IP address.'), 'error');
 		$errFieldsStack[] = 'domain';
 	}
 
-	if($stmt->fields['isAssignedAlias']) {
+	if(!iMSCP_Validate::getInstance()->hostname(idn_to_ascii($alias), array('allow' => Zend_Validate_Hostname::ALLOW_LOCAL)) ||
+		strpos($alias, '.') !== false) {
+		set_page_message('Wrong alias syntax.', 'error');
+		$errFieldsStack[] = 'alias';
+	} elseif($stmt->fields['isAssignedAlias']) {
 		set_page_message(tr('Alias already assigned to another IP address.'), 'error');
 		$errFieldsStack[] = 'alias';
 	}
@@ -239,15 +252,9 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 			?, ?, ?, ?, ?, ?
 		)
 	";
-
-	// Todo: Review the domain and alias (must be compatible with /etc/hosts syntax)
 	exec_query($query, array(
-							$ipNumber,
-							htmlspecialchars($domain, ENT_QUOTES, 'UTF-8'),
-							htmlspecialchars($alias, ENT_QUOTES, 'UTF-8'),
-							htmlspecialchars($netcard, ENT_QUOTES, 'UTF-8'),
-							NULL,
-							$cfg->ITEM_ADD_STATUS));
+		$ipNumber, idn_to_ascii($domain), idn_to_ascii($alias), $netcard, null,
+		$cfg->ITEM_ADD_STATUS));
 
 	send_request();
 	set_page_message(tr('IP address scheduled for addition.'), 'success');
@@ -261,6 +268,11 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 
 // Include core library
 require 'imscp-lib.php';
+/*
+$_SESSION['user_id'] = 1;
+$_SESSION['user_type'] = 'admin';
+$_SESSION['user_theme'] = 'default';
+*/
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
@@ -272,14 +284,14 @@ $cfg = iMSCP_Registry::get('config');
 // Register iMSCP_NetworkCard instance in registry for shared access
 iMSCP_Registry::set('networkCardObject', new iMSCP_NetworkCard());
 
-if (isset($_POST['uaction']) && $_POST['uaction'] == 'addIpAddress') {
-	$ipNumber = trim($_POST['ip_number']);
-	$domain = clean_input($_POST['domain']);
-	$alias = clean_input($_POST['alias']);
-	$netcard = clean_input($_POST['ip_card']);
+if (!empty($_POST)) {
+	$ipNumber = isset($_POST['ip_number']) ? trim($_POST['ip_number']) : '';
+	$domain = isset($_POST['domain']) ? clean_input($_POST['domain']) : '';
+	$alias = isset($_POST['alias']) ? clean_input($_POST['alias']) : '';
+	$netCard = isset($_POST['ip_card']) ? clean_input($_POST['ip_card']) : '';
 
-	if (client_checkIpData($ipNumber, $domain, $alias, $netcard)) {
-		client_registerIp($ipNumber, $domain, $alias, $netcard);
+	if (client_checkIpData($ipNumber, $domain, $alias, $netCard)) {
+		client_registerIp($ipNumber, $domain, $alias, $netCard);
 	}
 }
 
@@ -289,10 +301,10 @@ $tpl->define_dynamic(
 	array(
 		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl',
 		'page_message' => 'page',
-		'ips_list' => 'page',
-		'ip_row' => 'ips_list',
-		'add_ip' => 'page',
-		'cards_list' => 'add_ip'));
+		'ip_addresses_block' => 'page',
+		'ip_address_block' => 'ip_addresses_block',
+		'ip_address_form_block' => 'page',
+		'network_card_block' => 'ip_address_form_block'));
 
 $tpl->assign(
 	array(
@@ -301,18 +313,19 @@ $tpl->assign(
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'MANAGE_IPS' => tr('Manage IPs'),
-		'TR_AVAILABLE_IPS' => tr('Available IPs'),
 		'TR_IP' => tr('IP'),
 		'TR_DOMAIN' => tr('Domain'),
 		'TR_ALIAS' => tr('Alias'),
+		'TR_STATUS' => tr('Status'),
 		'TR_ACTION' => tr('Action'),
 		'TR_NETWORK_CARD' => tr('Network interface'),
 		'TR_ADD' => tr('Add'),
-		'TR_REGISTERED_IPS' => tr('Registered IPs'),
-		'TR_ADD_NEW_IP' => tr('Add new IP'),
-		'TR_IP_DATA' => tr('IP data'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this IP: %s?', true, '%s'),
-		'TR_MESSAGE_DENY_DELETE' => tr('You cannot remove the %s IP address.', true, '%s'),
+        'TR_CANCEL' => tr('Cancel'),
+		'TR_CONFIGURED_IPS' => tr('IP addresses configured'),
+		'TR_ADD_NEW_IP' => tr('Add new IP address'),
+		'TR_IP_DATA' => tr('IP addresse data'),
+		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', true, '%s')),
+		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', true, '%s')),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
 
