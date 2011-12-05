@@ -38,6 +38,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -94,7 +95,8 @@ $tpl->assign(
 		'SELECTED_OFF' => $selected_off,
 		'TR_ENABLED' => tr('Enabled'),
 		'TR_DISABLED' => tr('Disabled'),
-		'TR_APPLY_CHANGES' => tr('Apply changes')
+		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')
 	)
 );
 

@@ -31,11 +31,12 @@
 
             <form name="admin_add_user" method="post" action="admin_add.php">
                 <!-- BDP: props_list -->
-                <fieldset>
-                    <legend>{TR_CORE_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_CORE_DATA}</th>
+						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                                 <label for="username">{TR_USERNAME}</label>
                             </td>
                             <td>
@@ -63,12 +64,12 @@
                             </td>
                         </tr>
                     </table>
-                </fieldset>
-                <fieldset>
-                    <legend>{TR_ADDITIONAL_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_ADDITIONAL_DATA}</th>
+						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                                 <label for="first_name">{TR_FIRST_NAME}</label>
                             </td>
                             <td>

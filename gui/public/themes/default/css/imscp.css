@@ -503,6 +503,10 @@ p {
     border-left: 1px solid rgb(0, 0, 0);
 }
 
+.body td:first-child {
+    width: 250px;
+}
+
 .body th:last-child {
     border-right: 1px solid rgb(0, 0, 0);
 }
@@ -748,6 +752,11 @@ textarea {
     border-radius: 4px;
 }
 
+textarea {
+    width: 400px;
+    height:20em;
+}
+
 input[type="text"]:disabled,
 input[type="password"]:disabled,
 select:disabled,
@@ -759,9 +768,9 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 select:focus,
 textarea:focus {
-    background: transparent;
     border-color: rgb(153, 153, 153);
 }
+
 
 /**
  * Graph

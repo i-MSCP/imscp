@@ -11,4 +11,5 @@
                 <li><a href="settings_ports.php">{TR_SERVERPORTS}</a></li>
                 <li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
                 <li><a href="software_options.php">{TR_MENU_SOFTWARE_OPTIONS}</a></li>
+				<li><a href="settings_plugins.php">{TR_MENU_SETTINGS_PLUGINS}</a></li>
 			</ul>

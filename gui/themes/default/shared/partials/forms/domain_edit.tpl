@@ -93,15 +93,15 @@
 	<form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}">
 		<table>
 			<tr>
-				<th colspan="4">{TR_DOMAIN_OVERVIEW}</th>
+				<th colspan="3">{TR_DOMAIN_OVERVIEW}</th>
 			</tr>
 			<tr>
 				<td>{TR_DOMAIN_NAME}</td>
-				<td colspan="3">{DOMAIN_NAME}</td>
+				<td colspan="2">{DOMAIN_NAME}</td>
 			</tr>
 			<tr>
 				<td>{TR_DOMAIN_EXPIRE_DATE}</td>
-				<td colspan="3">{DOMAIN_EXPIRE_DATE}</td>
+				<td colspan="2">{DOMAIN_EXPIRE_DATE}</td>
 			</tr>
 			<tr>
 				<td>{TR_DOMAIN_NEW_EXPIRE_DATE}</td>
@@ -113,15 +113,17 @@
 						</span>
 					</div>
 				</td>
-				<td colspan="2">
+				<td>
 					<input type="checkbox" name="domain_never_expires" id="domain_never_expires" {DOMAIN_NEVER_EXPIRES_CHECKED} style="vertical-align: middle;"/>
 					<label for="domain_never_expires" style="vertical-align: middle;">{TR_DOMAIN_NEVER_EXPIRES}</label>
 				</td>
 			</tr>
 			<tr>
 				<td>{TR_DOMAIN_IP}</td>
-				<td colspan="3">{DOMAIN_IP} {IP_DOMAIN}</td>
+				<td colspan="2">{DOMAIN_IP} {IP_DOMAIN}</td>
 			</tr>
+		</table>
+		<table>
 			<tr>
 				<th>{TR_DOMAIN_LIMITS}</th>
 				<th>{TR_LIMIT_VALUE}</th>
@@ -235,6 +237,8 @@
 					<span style="font-size: smaller;">{TR_RESELLER_DISKPACE_COMSUPTION}</span>
 				</td>
 			</tr>
+		</table>
+		<table>
 			<tr>
 				<th>{TR_FEATURE}</th>
 				<th colspan="3">{TR_STATUS}</th>

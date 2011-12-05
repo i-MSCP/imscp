@@ -30,11 +30,12 @@
             <!-- EDP: page_message -->
 
             <form name="admin_email_setup" method="post" action="circular.php">
-                <fieldset>
-                    <legend>{TR_CORE_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_CORE_DATA}</th>
+						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                                 <label for="rcpt_to">{TR_SEND_TO}</label>
                             </td>
                             <td><select id="rcpt_to" name="rcpt_to">
@@ -48,22 +49,22 @@
                             <td><label for="msg_subject">{TR_MESSAGE_SUBJECT}</label>
                             </td>
                             <td>
-                                <input type="text" name="msg_subject" id="msg_subject" value="{MESSAGE_SUBJECT}" />
+                                <input style="width: 400px" type="text" name="msg_subject" id="msg_subject" value="{MESSAGE_SUBJECT}" />
                             </td>
                         </tr>
                         <tr>
-                            <td><label for="msg_text">{TR_MESSAGE_TEXT}</label></td>
+                            <td style="vertical-align: top"><label for="msg_text">{TR_MESSAGE_TEXT}</label></td>
                             <td>
-                                <textarea name="msg_text" id="msg_text" cols="80" rows="20">{MESSAGE_TEXT}</textarea>
+                                <textarea name="msg_text" id="msg_text">{MESSAGE_TEXT}</textarea>
                             </td>
                         </tr>
                     </table>
-                </fieldset>
-                <fieldset>
-                    <legend>{TR_ADDITIONAL_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_ADDITIONAL_DATA}</th>
+						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                                 <label for="sender_email">{TR_SENDER_EMAIL}</label>
                             </td>
                             <td>
@@ -78,7 +79,6 @@
                             </td>
                         </tr>
                     </table>
-                </fieldset>
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}" />
                     <input type="hidden" name="uaction" value="send_circular" />

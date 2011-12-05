@@ -115,9 +115,10 @@ $tpl->assign(
 	array(
 		 'TR_MODIFY' => tr('Modify'),
 		 'TR_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-		 'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Set server traffic settings'),
-		 'TR_MAX_TRAFFIC' => tr('Max traffic [MiB]'),
-		 'TR_WARNING' => tr('Warning traffic [MiB]')));
+		 'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
+		 'TR_MAX_TRAFFIC' => tr('Max traffic'),
+		 'TR_WARNING' => tr('Warning traffic'),
+		'TR_MIB' => tr('MiB')));
 
 update_server_settings();
 generate_server_data($tpl);

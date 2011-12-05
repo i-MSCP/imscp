@@ -30,11 +30,12 @@
             <!-- EDP: page_message -->
 
             <form name="admin_edit_user" method="post" action="admin_edit.php">
-                <fieldset>
-                    <legend>{TR_CORE_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_CORE_DATA}</th>
+						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                                 <label for="username">{TR_USERNAME}</label>
                             </td>
                             <td class="content" id="username">{USERNAME}</td>
@@ -60,13 +61,12 @@
                             </td>
                         </tr>
                     </table>
-                </fieldset>
-
-                <fieldset>
-                    <legend>{TR_ADDITIONAL_DATA}</legend>
                     <table>
+						<tr>
+							<th colspan="2">{TR_ADDITIONAL_DATA}</th>
+						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                                 <label for="fname">{TR_FIRST_NAME}</label>
                             </td>
                             <td>
@@ -144,7 +144,6 @@
                             <td><input type="text" name="fax" value="{FAX}" /></td>
                         </tr>
                     </table>
-                </fieldset>
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_UPDATE}" />
                     <input id="send_data" type="checkbox" name="send_data" checked="checked" />
