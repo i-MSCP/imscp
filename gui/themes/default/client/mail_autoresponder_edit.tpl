@@ -21,12 +21,18 @@
 			<li><a href="#" onclick="return false;">{TR_EDIT_MAIL_AUTORESPONDER}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
+		<h2 class="support"><span>{TR_EDIT_MAIL_AUTORESPONDER}</span></h2>
+
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-		<h2 class="support"><span>{TR_EDIT_MAIL_AUTORESPONDER}</span></h2>
+
 		<form action="" method="post" id="client_mail_autoresponder_edit">
 			<fieldset>
 				<legend>{TR_ARSP_MESSAGE}</legend>

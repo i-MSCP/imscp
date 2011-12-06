@@ -96,7 +96,11 @@
 			<li><a href="#" onclick="return false;">{TR_LMENU_ADD_MAIL_USER}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
 		<h2 class="email"><span>{TR_ADD_MAIL_USER}</span></h2>
 

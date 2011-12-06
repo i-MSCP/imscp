@@ -10,11 +10,8 @@
                 <h1 class="general">{GENERAL_INFO}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <!-- BDP: logged_from -->
-                <li>
-                    <a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-                </li>
+                <li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
                 <!-- EDP: logged_from -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
@@ -22,9 +19,11 @@
                 <li><a href="#" onclick="return false;">{GENERAL_INFO}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="general"><span>{GENERAL_INFO}</span></h2>
 

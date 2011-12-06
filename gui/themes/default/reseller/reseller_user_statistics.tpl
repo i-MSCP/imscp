@@ -10,14 +10,10 @@
                 <h1 class="statistics">{TR_MENU_DOMAIN_STATISTICS}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <!-- BDP: logged_from -->
-                <li>
-                    <a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-                </li>
+                <li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
                 <!-- EDP: logged_from -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-                </li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="user_statistics.php">{TR_MENU_DOMAIN_STATISTICS}</a>
@@ -25,14 +21,18 @@
                 <li><a href="user_statistics.php">{TR_MENU_OVERVIEW}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="stats"><span>{TR_RESELLER_USER_STATISTICS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: props_list -->
             <form name="rs_frm" method="post" action="user_statistics.php?psi={POST_PREV_PSI}">
                 <label for="month">{TR_MONTH}</label>

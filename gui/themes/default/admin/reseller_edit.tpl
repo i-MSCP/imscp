@@ -153,9 +153,11 @@
 			<li><a href="#" onclick="return false">{TR_EDIT_RESELLER}</a></li>
 		</ul>
 	</div>
+
 	<div class="left_menu">
 		{MENU}
 	</div>
+
 	<div class="body">
 		<h2 class="user_green"><span>{TR_EDIT_RESELLER}</span></h2>
 

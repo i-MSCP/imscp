@@ -12,7 +12,6 @@
 				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -31,10 +30,10 @@
 
 		<div class="body">
 			<h2 class="support"><span>{TR_ENABLE_MAIL_AUTORESPONDER}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
 
 			<form name="manage_users_common_frm" method="post" action="">
 				<fieldset>

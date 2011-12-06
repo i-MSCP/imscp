@@ -10,20 +10,21 @@
                 <h1 class="general">{TR_MENU_GENERAL_INFORMATION}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-                </li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
                 <li><a href="admin_log.php">{TR_ADMIN_LOG}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="admin_lod"><span>{TR_ADMIN_LOG}</span></h2>
+
             <form name="admin_lod" method="post" action="admin_log.php">
                 <!-- BDP: clear_log -->
                 <label for="uaction_clear">{TR_CLEAR_LOG_MESSAGE}</label>

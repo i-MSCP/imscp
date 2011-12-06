@@ -12,12 +12,10 @@
                 <h1 class="statistics">{TR_SERVER_STATISTICS}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="server_statistic.php">{TR_SERVER_STATISTICS}</a></li>
-
             </ul>
         </div>
 

@@ -11,18 +11,18 @@
 				<h1 class="settings">{TR_GENERAL_SETTINGS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-				</li>
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
 				<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
 				<li><a href="settings_layout.php">{TR_LAYOUT_SETTINGS}</a></li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
-		{MENU}
+			{MENU}
 		</div>
+
 		<div class="body">
 			<h2 class="multilanguage"><span>{TR_LAYOUT_SETTINGS}</span></h2>
 

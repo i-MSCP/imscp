@@ -32,7 +32,11 @@
 			<li><a href="#" onclick="return false;">{TR_LMENU_OVERVIEW}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
 		<h2 class="domains"><span>{TR_MENU_MANAGE_DOMAINS}</span></h2>
 

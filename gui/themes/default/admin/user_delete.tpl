@@ -10,25 +10,25 @@
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-				</li>
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
 				<li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
-				<li>
-					<a href="user_delete.php?edit_id={DOMAIN_ID}">{TR_DELETE_DOMAIN} {DOMAIN_NAME}</a>
-				</li>
+				<li><a href="user_delete.php?edit_id={DOMAIN_ID}">{TR_DELETE_DOMAIN} {DOMAIN_NAME}</a></li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
 			{MENU}
 		</div>
+
 		<div class="body">
 			<h2 class="users"><span>{TR_DOMAIN_SUMMARY}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+
 			<form name="admin_delete_domain_frm" method="post" action="user_delete.php">
 				<table>
 					<tr>
@@ -96,7 +96,6 @@
 					</tr>
 					<!-- EDP: db_item -->
 					<!-- EDP: db_list -->
-
 					<tr>
 						<td colspan="2">&nbsp;</td>
 					</tr>

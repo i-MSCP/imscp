@@ -46,7 +46,6 @@
 			<h1 class="domains">{TR_MENU_MANAGE_DOMAINS}</h1>
 		</div>
 		<ul class="location-menu">
-			<!-- <li><a class="help" href="#">Help</a></li> -->
 			<!-- BDP: logged_from -->
 			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 			<!-- EDP: logged_from -->
@@ -57,7 +56,11 @@
 			<li><a href="#" onclick="return false;">{TR_LMENU_ADD_DOMAIN_ALIAS}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
 		<h2 class="domains"><span>{TR_TITLE_ADD_DOMAIN_ALIAS}</span></h2>
 

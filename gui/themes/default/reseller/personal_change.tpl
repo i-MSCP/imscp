@@ -28,15 +28,15 @@
 
 	   <div class="body">
 			<h2 class="doc"><span>{TR_PERSONAL_DATA}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-
 			<form action="personal_change.php" method="post" name="client_change_personal_frm">
 				<table>
 					<tr>
-					  <td style="width:300px;"><label for="fname">{TR_FIRST_NAME}</label></td>
+					  <td><label for="fname">{TR_FIRST_NAME}</label></td>
 					  <td><input type="text" name="fname" id="fname" value="{FIRST_NAME}"/></td>
 					</tr>
 					<tr>
@@ -45,11 +45,12 @@
 					</tr>
 					<tr>
 					  <td><label for="gender">{TR_GENDER}</label></td>
-                      <td><select id="gender" name="gender">
-                                 <option value="M" {VL_MALE}>{TR_MALE}</option>
-                                 <option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
-                                 <option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
-                      </select>
+                      <td>
+						<select id="gender" name="gender">
+							<option value="M" {VL_MALE}>{TR_MALE}</option>
+							<option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
+							<option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+						</select>
 					  </td>
 					</tr>
 					<tr>
@@ -65,7 +66,7 @@
 					  <td><input type="text" name="street2" id="street2" value="{STREET_2}" /></td>
 					</tr>
 					<tr>
-					  <td><label for="zip_postal_code">{TR_ZIP_POSTAL_CODE}</label></td>
+					  <td><label for="zip">{TR_ZIP_POSTAL_CODE}</label></td>
 					  <td><input type="text" name="zip" id="zip" value="{ZIP}" /></td>
 					</tr>
 					<tr>
@@ -93,7 +94,6 @@
 					  <td><input type="text" name="fax" id="fax" value="{FAX}" /></td>
 					</tr>
 				</table>
-
 				<div class="buttons">
 					<input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}" />
 					<input type="hidden" name="uaction" value="updt_data" />

@@ -12,7 +12,6 @@
 				<h1 class="webtools">{TR_MENU_WEBTOOLS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -30,14 +29,12 @@
 			{MENU}
 		</div>
 
-
 		<div class="body">
 			<h2 class="users"><span>{TR_ADD_USER}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form name="add_user_group" method="post" action="protected_user_add.php">
 				<table>

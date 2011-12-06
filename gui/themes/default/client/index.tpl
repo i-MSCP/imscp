@@ -20,7 +20,11 @@
 			<li><a href="#" onclick="return false;">{TR_LMENU_OVERVIEW}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
 		<h2 class="general"><span>{TR_TITLE_GENERAL_INFORMATION}</span></h2>
 

@@ -5,7 +5,6 @@
 		if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
 			return false;
 		}
-
 		location.href = url;
 	}
 /* ]]> */
@@ -21,7 +20,6 @@
 		<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
 	</div>
 	<ul class="location-menu">
-		<!-- <li><a class="help" href="#">Help</a></li> -->
 		<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 	</ul>
 	<ul class="path">
@@ -29,9 +27,11 @@
 		<li><a href="#" onclick="return false;">{TR_MENU_OVERVIEW}</a></li>
 	</ul>
 </div>
+
 <div class="left_menu">
 	{MENU}
 </div>
+
 <div class="body">
 	<h2 class="hosting_plans"><span>{TR_HOSTING_PLANS}</span></h2>
 

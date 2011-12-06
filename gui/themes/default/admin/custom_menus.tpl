@@ -24,9 +24,11 @@
 		<li><a href="custom_menus.php">{TR_TITLE_CUSTOM_MENUS}</a></li>
 	</ul>
 </div>
+
 <div class="left_menu">
 	{MENU}
 </div>
+
 <div class="body">
 	<h2 class="support"><span>{TR_TITLE_CUSTOM_MENUS}</span></h2>
 

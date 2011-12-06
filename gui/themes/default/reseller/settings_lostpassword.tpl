@@ -12,7 +12,6 @@
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -29,12 +28,11 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="email"><span>{TR_LOSTPW_EMAIL}</span></h2>
+			<h2 class="email"><span>{TR_LOSTPW_EMAIL}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form action="settings_lostpassword.php" method="post" name="frmlostpassword" id="frmlostpassword">
 				<fieldset>

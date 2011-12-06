@@ -10,18 +10,17 @@
                 <h1 class="general">{TR_GENERAL_INFORMATION}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li>
-                    <a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-                </li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="index.php">{TR_GENERAL_INFORMATION}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="general"><span>{TR_GENERAL_INFORMATION}</span></h2>
 

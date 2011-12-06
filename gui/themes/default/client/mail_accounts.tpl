@@ -2,10 +2,6 @@
 	<script type="text/javascript">
 	/* <![CDATA[ */
 
-		//$(document).ready(function(){
-		//	$('.tablesorter').tablesorter({cssHeader: 'tablesorter'});
-		//});
-
 		function action_delete(url, subject) {
 			if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
 				return false;
@@ -34,15 +30,22 @@
 			<li><a href="#" onclick="return false;">{TR_LMENU_OVERVIEW}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
+		<h2 class="email"><span>{TR_MAIL_USERS}</span></h2>
+
 		<!-- BDP: page_message -->
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
-		<h2 class="email"><span>{TR_MAIL_USERS}</span></h2>
+
 		<!-- BDP: mail_message -->
 		<div class="info">{MAIL_MSG}</div>
 		<!-- EDP: mail_message -->
+
 		<table>
 			<thead>
 				<tr>

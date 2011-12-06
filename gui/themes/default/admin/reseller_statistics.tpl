@@ -10,18 +10,18 @@
                 <h1 class="statistics">{TR_MENU_RESELLER_STATISTICS}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-                </li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="server_statistic.php">{TR_MENU_STATISTICS}</a></li>
                 <li><a href="reseller_statistic.php">{TR_RESELLER_STATISTICS}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="general"><span>{TR_RESELLER_STATISTICS}</span></h2>
 

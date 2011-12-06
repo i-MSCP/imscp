@@ -20,7 +20,11 @@
 			<li><a href="#" onclick="return false;">{TR_LMENU_LANGUAGE}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
 		<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
 

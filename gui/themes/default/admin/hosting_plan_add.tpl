@@ -12,7 +12,6 @@
 				<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
@@ -24,7 +23,6 @@
 		<div class="left_menu">
 			{MENU}
 		</div>
-
 
 		<div class="body">
 			<h2 class="hosting_plans"><span>{TR_ADD_HOSTING_PLAN}</span></h2>
@@ -39,7 +37,7 @@
 						<table>
 							<tr>
 								<td><label for="hp_name">{TR_TEMPLATE_NAME}</label></td>
-								<td><input id="" type="text" name="hp_name" value="{HP_NAME_VALUE}"/></td>
+								<td><input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}"/></td>
 							</tr>
 							<tr>
 								<td><label for="hp_description">{TR_TEMPLATE_DESCRIPTON}</label></td>

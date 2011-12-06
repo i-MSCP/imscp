@@ -9,10 +9,9 @@
 
 		<div class="location">
 			<div class="location-area">
-			<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-		</div>
-		<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
+				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
+			</div>
+			<ul class="location-menu">
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">

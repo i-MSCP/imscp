@@ -10,18 +10,18 @@
 				<h1 class="webtools">{TR_MENU_SYSTEM_TOOLS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-				</li>
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
 				<li><a href="system_info.php">{TR_MENU_SYSTEM_TOOLS}</a></li>
 				<li><a href="database_update.php">{TR_SECTION_TITLE}</a></li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
-		{MENU}
+			{MENU}
 		</div>
+
 		<div class="body">
 			<h2 class="update"><span>{TR_SECTION_TITLE}</span></h2>
 

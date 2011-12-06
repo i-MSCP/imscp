@@ -43,7 +43,6 @@
 				<h1 class="email">{TR_MENU_MAIL_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -62,13 +61,12 @@
 
 		<div class="body">
 			<h2 class="email"><span>{TR_CREATE_CATCHALL_MAIL_ACCOUNT}</span></h2>
+
 			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form name="create_catchall_frm" method="post" action="mail_catchall_add.php">
 				<table>

@@ -12,7 +12,6 @@
                 <h1 class="general">{TR_MENU_GENERAL_INFORMATION}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
@@ -26,8 +25,8 @@
         </div>
 
         <div class="body">
-
             <h2 class="password"><span>{TR_CHANGE_PASSWORD}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->

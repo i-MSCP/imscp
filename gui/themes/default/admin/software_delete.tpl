@@ -12,13 +12,11 @@
                 <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
                 <li><a href="software_delete.php?id={SOFTWARE_ID}">{TR_DELETE_RESELLER_SOFTWARE}</a></li>
-
             </ul>
         </div>
 
@@ -28,10 +26,10 @@
 
         <div class="body">
              <h2 class="apps_installer"><span>{TR_DELETE_SOFTWARE}</span></h2>
+
         	<!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-         
 
              <table>
             	<tr>

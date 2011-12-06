@@ -12,7 +12,6 @@
 				<h1 class="general">{TR_MENU_GENERAL_INFORMATION}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="logout" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -30,7 +29,6 @@
 
 		<div class="body">
 			<h2 class="password"><span>{TR_TITLE_CHANGE_PASSWORD}</span></h2>
-
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>

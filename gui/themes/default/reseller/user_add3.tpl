@@ -11,7 +11,6 @@
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
                 <!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
                 <!-- EDP: logged_from -->
@@ -39,8 +38,10 @@
 				<fieldset>
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
-						<td style="width:300px;">{TR_USERNAME}</td>
-						<td>{VL_USERNAME}</td>
+						<tr>
+							<td>{TR_USERNAME}</td>
+							<td>{VL_USERNAME}</td>
+						</tr>
 						<tr>
 							<td><label for="password">{TR_PASSWORD}</label></td>
 							<td>
@@ -55,7 +56,8 @@
 							<td>
 								{TR_DMN_IP}
 							</td>
-							<td><select id="domain_ip"name="domain_ip">
+							<td>
+								<select id="domain_ip"name="domain_ip">
 									<!-- BDP: ip_entry -->
 									<option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM}&nbsp;({IP_NAME})</option>
 									<!-- EDP: ip_entry -->

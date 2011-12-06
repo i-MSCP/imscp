@@ -12,7 +12,6 @@
 				<h1 class="database">{TR_MENU_MANAGE_SQL}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -35,7 +34,6 @@
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
->
 			<form name="sql_change_password_frm" method="post" action="sql_change_password.php">
 				<table>
 					<tr>

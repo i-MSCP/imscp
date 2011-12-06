@@ -10,7 +10,6 @@
                 <h1 class="statistics">{TR_MENU_IP_USAGE}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <!-- BDP: logged_from -->
                 <li>
                     <a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
@@ -25,14 +24,18 @@
 
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="general"><span>{TR_IP_RESELLER_USAGE_STATISTICS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: ip_usage_statistics -->
             <table>
                 <!-- BDP: ip_row -->

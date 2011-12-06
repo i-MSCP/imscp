@@ -10,12 +10,12 @@
                 <h1 class="system_info.php">{TR_MENU_SYSTEM_TOOLS}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>

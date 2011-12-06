@@ -23,7 +23,6 @@
 		</script>
 		<div class="header">
 			{MAIN_MENU}
-
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>
@@ -34,7 +33,6 @@
 				<h1 class="webtools">{TR_MENU_WEBTOOLS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -49,14 +47,12 @@
 			{MENU}
 		</div>
 
-
 		<div class="body">
 			<h2 class="apps_installer"><span>{TR_INSTALL_SOFTWARE}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-			
 
 			<table>
 				<tr>

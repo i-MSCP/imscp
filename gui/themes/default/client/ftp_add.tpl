@@ -86,7 +86,6 @@ function changeDom(wath) {
 	<body onload="begin_js();">
 		<div class="header">
 			{MAIN_MENU}
-
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>
@@ -97,7 +96,6 @@ function changeDom(wath) {
 				<h1 class="ftp">{TR_MENU_FTP_ACCOUNTS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->

@@ -39,12 +39,13 @@
 	</head>
 	<body>
 		<div class="body bodyOverride">
-            			<h2><span>{TR_DIRECTORY_TREE}</span></h2>
+            <h2><span>{TR_DIRECTORY_TREE}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-			<!-- BDP: ftp_chooser -->
 
+			<!-- BDP: ftp_chooser -->
 			<form action="">
 				<table>
 					<tr>

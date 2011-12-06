@@ -10,11 +10,8 @@
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
-				<li>
-					<a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-				</li>
+				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
@@ -24,14 +21,18 @@
 				</li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
 			{MENU}
 		</div>
+
 		<div class="body">
 			<h2 class="email"><span>{TR_EMAIL_SETUP}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+
 			<form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
 				<fieldset>
 					<legend>{TR_MESSAGE_TEMPLATE_INFO}</legend>

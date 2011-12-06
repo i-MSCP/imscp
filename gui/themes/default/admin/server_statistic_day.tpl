@@ -12,7 +12,6 @@
                 <h1 class="manage_users">{TR_SERVER_DAY_STATISTICS}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">

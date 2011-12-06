@@ -27,18 +27,18 @@
                 <h1 class="support">{TR_SUPPORT_SYSTEM}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-                </li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
                 <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_SUPPORT_SYSTEM}</a></li>
                 <li><a href="{SUPPORT_SYSTEM_PATH}">{TR_OPEN_TICKETS}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="support"><span>{TR_OPEN_TICKETS}</span></h2>
 

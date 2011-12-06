@@ -101,19 +101,20 @@
 		</div>
 		<ul class="location-menu">
 			<!-- BDP: logged_from -->
-			<li>
-				<a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-			</li>
+			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 			<!-- EDP: logged_from -->
-			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-			</li>
+			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 		</ul>
 		<ul class="path">
 			<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
 			<li><a href="#" onclick="return false;">{TR_EDIT_DNS}</a></li>
 		</ul>
 	</div>
-	<div class="left_menu">{MENU}</div>
+
+	<div class="left_menu">
+		{MENU}
+	</div>
+
 	<div class="body">
 		<h2 class="domains"><span>{TR_TITLE_CUSTOM_DNS_RECORD}</span></h2>
 

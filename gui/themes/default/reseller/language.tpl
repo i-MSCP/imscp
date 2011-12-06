@@ -10,7 +10,6 @@
 				<h1 class="general">{TR_GENERAL_INFO}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
                 <!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
                 <!-- EDP: logged_from -->
@@ -30,6 +29,7 @@
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+
             <!-- BDP: languages_available -->
 			<form name="client_change_language" method="post" action="language.php">
 				<table>

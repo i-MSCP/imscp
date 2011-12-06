@@ -17,9 +17,11 @@
 		<li><a href="#" onclick="return false;">{TR_DEBUGGER_TITLE}</a></li>
 	</ul>
 </div>
+
 <div class="left_menu">
 	{MENU}
 </div>
+
 <div class="body">
 	<h2 class="debugger"><span>{TR_DEBUGGER_TITLE}</span></h2>
 

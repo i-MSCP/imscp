@@ -20,28 +20,28 @@
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
-				<li>
-					<a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a>
-				</li>
+				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-				</li>
+				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
 				<li><a href="users.php">{TR_MENU_MANAGE_USERS}</a></li>
 				<li><a href="alias.php">{TR_MENU_DOMAIN_ALIAS}</a></li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
-		{MENU}
+			{MENU}
 		</div>
+
 		<div class="body">
 			<h2 class="users"><span>{TR_MANAGE_ALIAS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+
 			<!-- BDP: search_form -->
 			<form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
 				<input name="search_for" type="text" value="{SEARCH_FOR}" />

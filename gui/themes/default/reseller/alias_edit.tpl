@@ -15,7 +15,6 @@
 		</script>
 		<div class="header">
 			{MAIN_MENU}
-
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>
@@ -26,7 +25,6 @@
 				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -44,14 +42,12 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="domains"><span>{TR_MANAGE_DOMAIN_ALIAS}</span></h2>
+            <h2 class="domains"><span>{TR_MANAGE_DOMAIN_ALIAS}</span></h2>
 			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-
 
 			<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 				<fieldset>

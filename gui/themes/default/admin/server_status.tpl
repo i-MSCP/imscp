@@ -17,11 +17,14 @@
 				<li><a href="server_status.php">{TR_SERVER_STATUS}</a></li>
 			</ul>
 		</div>
+
 		<div class="left_menu">
 			{MENU}
 		</div>
+
 		<div class="body">
 			<h2 class="doc"><span>{TR_SERVER_STATUS}</span></h2>
+
 			<!-- BDP: props_list -->
 			<table>
 				<tr>

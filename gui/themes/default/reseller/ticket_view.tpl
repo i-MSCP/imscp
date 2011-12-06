@@ -10,7 +10,6 @@
                 <h1 class="general">{TR_SUPPORT_SYSTEM}</h1>
             </div>
             <ul class="location-menu">
-                <!-- <li><a class="help" href="#">Help</a></li> -->
                 <!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
                 <!-- EDP: logged_from -->
@@ -21,9 +20,11 @@
                 <li><a href="ticket_view.php?ticket_id={TICKET_ID_VAL}">{TR_VIEW_SUPPORT_TICKET}</a></li>
             </ul>
         </div>
+
         <div class="left_menu">
             {MENU}
         </div>
+
         <div class="body">
             <h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
 

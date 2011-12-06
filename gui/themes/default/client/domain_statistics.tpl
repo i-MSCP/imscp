@@ -12,7 +12,6 @@
 				<h1 class="statistics">{TR_MENU_STATISTICS}</h1>
 			</div>
 			<ul class="location-menu">
-				<!-- <li><a class="help" href="#">Help</a></li> -->
 				<!-- BDP: logged_from -->
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<!-- EDP: logged_from -->
@@ -39,7 +38,7 @@
 				<label for="month">{TR_MONTH}</label>
 				<select id="month" name="month">
 					<!-- BDP: month_item -->
-						 <option {MONTH_SELECTED}>{MONTH}</option>
+					<option {MONTH_SELECTED}>{MONTH}</option>
 					<!-- EDP: month_item -->
 				</select>
 
