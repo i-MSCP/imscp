@@ -191,7 +191,7 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel) {
 /**
  * Add menu.
  *
- * @return void
+ * @return bool TRUE on success, FALSE otherwise
  */
 function admin_addMenu()
 {
@@ -212,14 +212,18 @@ function admin_addMenu()
 		exec_query($query, array($menuView, $menuName, $menuLink, $menuTarget));
 
 		set_page_message(tr('Custom menu successfully added.'), 'success');
+
+		return true;
 	}
+
+	return false;
 }
 
 /**
  * Update menu.
  *
  * @param int $menuId menu unique identifier
- * @return void
+ * @return bool TRUE on success, FALSE otherwise
  */
 function admin_updateMenu($menuId)
 {
@@ -240,8 +244,11 @@ function admin_updateMenu($menuId)
 		exec_query($query, array($menuLevel, $menuName, $menuLink, $menuTarget, (int)$menuId));
 
 		set_page_message(tr('Custom menu successfully updated.'), 'success');
-		redirectTo('custom_menus.php');
+
+		return true;
 	}
+
+	return false;
 }
 
 /**
@@ -273,14 +280,16 @@ check_login(__FILE__);
 
 if(isset($_POST['uaction'])) {
 	if($_POST['uaction'] == 'menu_add') {
-		admin_addMenu();
+		if(admin_addMenu()) {
+			redirectTo('custom_menus.php');
+		}
 	} elseif($_POST['uaction'] == 'menu_update' && isset($_POST['edit_id'])) {
-		admin_updateMenu($_POST['edit_id']);
+		if(admin_updateMenu($_POST['edit_id'])) {
+			redirectTo('custom_menus.php');
+		}
 	} else {
 		set_page_message(tr('Wrong request.'), 'error');
 	}
-
-	redirectTo('custom_menus.php');
 } elseif(isset($_GET['delete_id'])) {
 	admin_deleteMenu($_GET['delete_id']);
 }
