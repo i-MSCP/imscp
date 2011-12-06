@@ -316,6 +316,23 @@ sub buildNAMEDData{
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 		$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_} for keys %$rdata;
+
+		if(scalar keys $rdata){
+			my $sql = "
+				UPDATE
+					`subdomain_alias`
+				SET
+					`subdomain_alias_status` = ?
+				WHERE
+					`subdomain_alias_status` = ?
+				AND
+					`alias_id` = ?
+			";
+
+			my $rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{alias_id});
+			error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+		}
+
 	}
 
 	my $groupName	=
