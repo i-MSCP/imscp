@@ -425,6 +425,7 @@ p {
 .body .users { background-image: url(../images/content/table_icon_users.png); }
 .body .users2 { background-image: url(../images/content/table_icon_users2.png); }
 .body .apps_installer { background-image: url(../images/content/table_icon_app_installer_cd_big.png); }
+.body .custom_link { background-image: url(../images/content/table_icon_custom_link.png); }
 
 
 /**

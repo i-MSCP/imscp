@@ -35,7 +35,7 @@
 
 		<div class="location">
 			<div class="location-area">
-				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
+				<h1 class="settings">{TR_MENU_SETTINGS}</h1>
 			</div>
 			<ul class="location-menu">
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>

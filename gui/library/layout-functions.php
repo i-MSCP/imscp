@@ -83,7 +83,7 @@ function generatePageMessage($tpl)
 				$tpl->assign(
 					array(
 						 'MESSAGE_CLS' => $level .
-							(($level == 'info' || $level == 'success') ? ' timeout' : ''),
+							(($level == 'success') ? ' timeout' : ''),
 						 'MESSAGE' => $namespace->{$level}));
 
 				$tpl->parse('PAGE_MESSAGE', '.page_message');

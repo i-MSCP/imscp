@@ -106,7 +106,7 @@ function gen_client_mainmenu($tpl, $menuTemplateFile)
 	$query = "SELECT * FROM `custom_menus` WHERE `menu_level` = ? OR `menu_level` = ?";
 	$stmt = exec_query($query, array('user', 'all'));
 
-	if ($stmt->rowCount() == 0) {
+	if (!$stmt->rowCount()) {
 		$tpl->assign('CUSTOM_BUTTONS_FEATURE', '');
 	} else {
 		while (!$stmt->EOF) {
@@ -168,10 +168,9 @@ function gen_client_menu($tpl, $menuTemplateFile)
 			 'TR_LMENU_UPDATE_HOSTING_PLAN' => tr('Update hosting plan'),
 
 			 // Todo move these entries tha don't really belong to the menu
-			 'VERSION' => $cfg->Version,
-			 'BUILDDATE' => $cfg->BuildDate,
-			 'CODENAME' => $cfg->CodeName
-		));
+			 'VERSION' => tohtml($cfg->Version),
+			 'BUILDDATE' => tohtml($cfg->BuildDate),
+			 'CODENAME' => tohtml($cfg->CodeName)));
 
 	// Per feature left menu -- begin
 
@@ -308,67 +307,4 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	$tpl->parse('MENU', 'menu');
 
 	return;
-
-	/*
-	$sub_cnt = get_domain_running_sub_cnt($dmn_id);
-
-	if ($dmn_subd_limit != 0 && $sub_cnt >= $dmn_subd_limit) {
-		$tpl->assign('ISACTIVE_SUBDOMAIN_MENU', '');
-	}
-
-	$als_cnt = get_domain_running_als_cnt($dmn_id);
-
-	if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
-		$tpl->assign('ISACTIVE_ALIAS_MENU', '');
-	}
-
-	if ($cfg->AWSTATS_ACTIVE != 'yes') {
-		$tpl->assign('ACTIVE_AWSTATS', '');
-	} else {
-		$tpl->assign(array(
-						  'AWSTATS_PATH' => 'http://' . $_SESSION['user_logged'] . '/stats/',
-						  'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET
-					 ));
-	}
-
-	// Hide 'Update Hosting Package'-Button, if there are none
-	$query = "
-		SELECT
-			`id`
-		FROM
-			`hosting_plans`
-		WHERE
-			`reseller_id` = ?
-		AND
-			`status` = '1'
-	";
-	$stmt = exec_query($query, $_SESSION['user_created_by']);
-
-	if (!$stmt->recordCount() ) {
-		if ($cfg->HOSTING_PLANS_LEVEL != 'admin') {
-			$tpl->assign('ISACTIVE_UPDATE_HP', '');
-		}
-	}
-
-	$query = "
-		SELECT
-			`domain_software_allowed`, `domain_ftpacc_limit`
-		FROM
-			`domain`
-		WHERE
-			`domain_admin_id` = ?
-	";
-	$stmt = exec_query($query, $_SESSION['user_id']);
-
-	if ($stmt->fields('domain_software_allowed') == 'yes'
-		&& $stmt->fields('domain_ftpacc_limit') != '-1'
-	) {
-		$tpl->assign(array('SOFTWARE_MENU' => tr('yes')));
-		$tpl->parse('T_SOFTWARE_MENU', '.t_software_menu');
-	} else {
-		$tpl->assign('T_SOFTWARE_MENU', '');
-	}
-
-	$tpl->parse('MENU', 'menu');
-	*/
 }

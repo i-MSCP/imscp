@@ -49,87 +49,87 @@ function gen_admin_mainmenu($tpl, $menu_file)
 	 /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$tpl->define_dynamic('menu', $menu_file);
-	$tpl->define_dynamic('isactive_support', 'menu');
-	$tpl->define_dynamic('custom_buttons', 'menu');
-	$tpl->assign(array(
-					  'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-					  'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-					  'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-					  'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-					  'TR_MENU_STATISTICS' => tr('Statistics'),
-					  'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-					  'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-					  'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-					  'TR_MENU_SETTINGS' => tr('Settings'),
-					  'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-					  'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-					  'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-					  'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-					  'TR_MENU_STATISTICS' => tr('Statistics'),
-					  'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-					  'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-					  'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-					  'TR_MENU_SETTINGS' => tr('Settings'),
-					  'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-					  'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-					  'TR_MENU_ADD_ADMIN' => tr('Add admin'),
-					  'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
-					  'TR_MENU_RESELLER_ASIGNMENT' => tr('Reseller assignment'),
-					  'TR_MENU_USER_ASIGNMENT' => tr('User assignment'),
-					  'TR_MENU_EMAIL_SETUP' => tr('Email setup'),
-					  'TR_MENU_CIRCULAR' => tr('Email marketing'),
-					  'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-					  'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
-					  'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
-					  'TR_MENU_ADMIN_LOG' => tr('Admin log'),
-					  'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
-					  'TR_MENU_SYSTEM_INFO' => tr('System info'),
-					  'TR_MENU_I18N' => tr('Internationalisation'),
-					  'TR_MENU_LANGUAGE' => tr('Language'),
-					  'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
-					  'TR_MENU_LOGOUT' => tr('Logout'),
-					  'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-					  'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-					  'TR_MENU_SERVER_STATUS' => tr('Server status'),
-					  'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
-					  'TR_MENU_IMSCP_DATABASE_UPDATE' => tr('i-MSCP database updates'),
-					  'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
-					  'TR_CUSTOM_MENUS' => tr('Custom menus'),
-					  'TR_MENU_OVERVIEW' => tr('Overview'),
-					  'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-					  'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-					  'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-					  'TR_GENERAL_SETTINGS' => tr('General settings'),
-					  'TR_SERVERPORTS' => tr('Server ports')));
+	$tpl->define_dynamic(
+		array(
+			'menu' => $menu_file,
+			'isactive_support' => 'menu',
+			'custom_buttons' => 'menu'));
 
-	$query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin'";
-	$rs = execute_query($query);
+	$tpl->assign(
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+			'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+			'TR_MENU_STATISTICS' => tr('Statistics'),
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
+			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+			'TR_MENU_SETTINGS' => tr('Settings'),
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+			'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+			'TR_MENU_STATISTICS' => tr('Statistics'),
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
+			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+			'TR_MENU_SETTINGS' => tr('Settings'),
+			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
+			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+			'TR_MENU_ADD_ADMIN' => tr('Add admin'),
+			'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
+			'TR_MENU_RESELLER_ASIGNMENT' => tr('Reseller assignment'),
+			'TR_MENU_USER_ASIGNMENT' => tr('User assignment'),
+			'TR_MENU_EMAIL_SETUP' => tr('Email setup'),
+			'TR_MENU_CIRCULAR' => tr('Email marketing'),
+			'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+			'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
+			'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
+			'TR_MENU_ADMIN_LOG' => tr('Admin log'),
+			'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
+			'TR_MENU_SYSTEM_INFO' => tr('System info'),
+			'TR_MENU_I18N' => tr('Internationalisation'),
+			'TR_MENU_LANGUAGE' => tr('Language'),
+			'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
+			'TR_MENU_LOGOUT' => tr('Logout'),
+			'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+			'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
+			'TR_MENU_SERVER_STATUS' => tr('Server status'),
+			'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
+			'TR_MENU_IMSCP_DATABASE_UPDATE' => tr('i-MSCP database updates'),
+			'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
+			'TR_CUSTOM_MENUS' => tr('Custom menus'),
+			'TR_MENU_OVERVIEW' => tr('Overview'),
+			'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
+			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
+			'TR_GENERAL_SETTINGS' => tr('General settings'),
+			'TR_SERVERPORTS' => tr('Server ports')));
 
-	if ($rs->recordCount() == 0) {
+	$query = 'SELECT * FROM `custom_menus` WHERE `menu_level` = ?';
+	$stmt = exec_query($query, 'admin');
+
+	if (!$stmt->rowCount()) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
-		global $i;
-		$i = 100;
+		foreach($stmt->fetchAll() as $menu) {
+			$menuName = $menu['menu_name'];
+			$menuLink = get_menu_vars($menu['menu_link']);
+			$menuTarget = $menu['menu_target'];
 
-		while (!$rs->EOF) {
-			$menu_name = $rs->fields['menu_name'];
-			$menu_link = get_menu_vars($rs->fields['menu_link']);
-			$menu_target = $rs->fields['menu_target'];
-
-			if ($menu_target !== '') {
-				$menu_target = 'target="' . tohtml($menu_target) . '"';
+			if ($menuTarget != '') {
+				$menuTarget = 'target="' . tohtml($menuTarget) . '"';
 			}
 
-			$tpl->assign(array(
-							  'BUTTON_LINK' => tohtml($menu_link),
-							  'BUTTON_NAME' => tohtml($menu_name),
-							  'BUTTON_TARGET' => $menu_target,
-							  'BUTTON_ID' => $i));
+			$tpl->assign(
+				array(
+					'BUTTON_LINK' => tohtml($menuLink),
+					'BUTTON_NAME' => tohtml($menuName),
+					'BUTTON_TARGET' => $menuTarget));
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->moveNext();
-			$i++;
+
 		}
 	}
 
@@ -155,85 +155,59 @@ function gen_admin_menu($tpl, $menu_file)
 	 /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$tpl->define_dynamic('menu', $menu_file);
-	$tpl->define_dynamic('custom_buttons', 'menu');
-	$tpl->assign(array(
-					  'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-					  'TR_MENU_CHANGE_PASSWORD' => tr('Password'),
-					  'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
-					  'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-					  'TR_MENU_ADD_ADMIN' => tr('Add admin'),
-					  'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
-					  'TR_MENU_RESELLER_ASIGNMENT' => tr('Reseller assignment'),
-					  'TR_MENU_USER_ASIGNMENT' => tr('User assignment'),
-					  'TR_MENU_EMAIL_SETUP' => tr('Email setup'),
-					  'TR_MENU_CIRCULAR' => tr('Email marketing'),
-					  'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-					  'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-					  'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),
-					  'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
-					  'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
-					  'TR_MENU_ADMIN_LOG' => tr('Admin log'),
-					  'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
-					  'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-					  'TR_MENU_SYSTEM_INFO' => tr('System info'),
-					  'TR_MENU_I18N' => tr('Internationalization'),
-					  'TR_MENU_LANGUAGE' => tr('Language'),
-					  'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
-					  'TR_MENU_LOGOUT' => tr('Logout'),
-					  'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-					  'TR_MENU_STATISTICS' => tr('Statistics'),
-					  'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-					  'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-					  'TR_MENU_SERVER_STATUS' => tr('Services status'),
-					  'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
-					  'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
-					  'TR_CUSTOM_MENUS' => tr('Custom menus'),
-					  'TR_MENU_OVERVIEW' => tr('Overview'),
-					  'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-					  'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-					  'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-					  'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-					  'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-					  'TR_MENU_SETTINGS' => tr('Settings'),
-					  'TR_GENERAL_SETTINGS' => tr('General settings'),
-					  'TR_SERVERPORTS' => tr('Services ports'),
-					  'TR_MENU_IP_USAGE' => tr('IP usage'),
-					  'TR_MENU_MANAGE_SOFTWARE' => tr('Softwares management'),
-					  'TR_MENU_SOFTWARE_OPTIONS' => tr('Softwares options'),
-					  'VERSION' => $cfg->Version,
-					  'BUILDDATE' => $cfg->BuildDate,
-					  'CODENAME' => $cfg->CodeName));
+	$tpl->define_dynamic(
+		array(
+			'menu' => $menu_file,
+			'custom_buttons' => 'menu'));
 
-	$query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin'";
-	$rs = execute_query($query);
-
-	if ($rs->recordCount() == 0) {
-		$tpl->assign('CUSTOM_BUTTONS', '');
-	} else {
-		global $i;
-		$i = 100;
-
-		while (!$rs->EOF) {
-			$menu_name = $rs->fields['menu_name'];
-			$menu_link = get_menu_vars($rs->fields['menu_link']);
-			$menu_target = $rs->fields['menu_target'];
-
-			if ($menu_target !== '') {
-				$menu_target = 'target="' . tohtml($menu_target) . '"';
-			}
-
-			$tpl->assign(array(
-							  'BUTTON_LINK' => tohtml($menu_link),
-							  'BUTTON_NAME' => tohtml($menu_name),
-							  'BUTTON_TARGET' => $menu_target,
-							  'BUTTON_ID' => $i));
-
-			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->moveNext();
-			$i++;
-		}
-	}
+	$tpl->assign(
+		array(
+			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
+			'TR_MENU_CHANGE_PASSWORD' => tr('Password'),
+			'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
+			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
+			'TR_MENU_ADD_ADMIN' => tr('Add admin'),
+			'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
+			'TR_MENU_RESELLER_ASIGNMENT' => tr('Reseller assignment'),
+			'TR_MENU_USER_ASIGNMENT' => tr('User assignment'),
+			'TR_MENU_EMAIL_SETUP' => tr('Email setup'),
+			'TR_MENU_CIRCULAR' => tr('Email marketing'),
+			'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
+			'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
+			'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),
+			'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
+			'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
+			'TR_MENU_ADMIN_LOG' => tr('Admin log'),
+			'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
+			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
+			'TR_MENU_SYSTEM_INFO' => tr('System info'),
+			'TR_MENU_I18N' => tr('Internationalization'),
+			'TR_MENU_LANGUAGE' => tr('Language'),
+			'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
+			'TR_MENU_LOGOUT' => tr('Logout'),
+			'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
+			'TR_MENU_STATISTICS' => tr('Statistics'),
+			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
+			'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
+			'TR_MENU_SERVER_STATUS' => tr('Services status'),
+			'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
+			'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
+			'TR_CUSTOM_MENUS' => tr('Custom menus'),
+			'TR_MENU_OVERVIEW' => tr('Overview'),
+			'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
+			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
+			'TR_MENU_SETTINGS' => tr('Settings'),
+			'TR_GENERAL_SETTINGS' => tr('General settings'),
+			'TR_SERVERPORTS' => tr('Services ports'),
+			'TR_MENU_IP_USAGE' => tr('IP usage'),
+			'TR_MENU_MANAGE_SOFTWARE' => tr('Softwares management'),
+			'TR_MENU_SOFTWARE_OPTIONS' => tr('Softwares options'),
+			'VERSION' => tohtml($cfg->Version),
+			'BUILDDATE' => tohtml($cfg->BuildDate),
+			'CODENAME' => tohtml($cfg->CodeName)));
 
 	if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
 		$tpl->assign('SUPPORT_SYSTEM', '');
