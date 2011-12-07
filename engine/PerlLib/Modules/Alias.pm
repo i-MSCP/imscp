@@ -317,7 +317,7 @@ sub buildNAMEDData{
 
 		$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_} for keys %$rdata;
 
-		if(scalar keys $rdata){
+		if(scalar keys %$rdata){
 			my $sql = "
 				UPDATE
 					`subdomain_alias`

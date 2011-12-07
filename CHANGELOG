@@ -48,6 +48,7 @@ Tickets:
 	- Fixed #279: Defect - Installer should not fail when we are using another webmail
 	- Fixed #286: Defect - Error by update
 	- Fixed #287: Update - phpMyAdmin 3.4.8 released
+	- Fixed #289: Defect - Ubuntu update error without end
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
