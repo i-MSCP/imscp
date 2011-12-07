@@ -106,7 +106,7 @@ body {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -6em;
+    margin: 0 auto -8em;
 }
 
 /**
@@ -433,7 +433,7 @@ p {
  */
 
 .warning, .success, .error, .info {
-    margin: 0.5em 0;
+    margin: 0.5em 0 1.5em 0;
     border: 1px solid;
     padding: 15px 10px 15px 50px;
     text-align: left;
@@ -483,12 +483,16 @@ p {
 }
 
 .body tr:nth-child(odd) {
-    background: rgb(237, 237, 237);
+   /* background: rgb(237, 237, 237);*/
+}
+
+.body th {
+    vertical-align: middle;
 }
 
 .body th,
 .body tfoot td {
-    background: #161E73 url(../images/background/top_bar_bg.jpg) repeat-x;
+    background: rgb(22, 30, 115) url(../images/background/top_bar_bg.jpg) repeat-x;
     white-space: nowrap;
     color: rgb(255, 255, 255);
     font-weight: bold;
@@ -501,10 +505,6 @@ p {
 
 .body th:first-child {
     border-left: 1px solid rgb(0, 0, 0);
-}
-
-.body td:first-child {
-    width: 250px;
 }
 
 .body th:last-child {
@@ -572,7 +572,7 @@ table .icon {
     line-height: 16px;
     display: -moz-inline-block;
     display: inline-block;
-    margin: 0 5px;
+    margin: 0 0.5em 0 0;
     float: right;
 }
 
