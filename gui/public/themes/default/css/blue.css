@@ -50,7 +50,7 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 /** Left menu */
 
 .left_menu {
-    background: rgb(30, 40, 138) url(../images/blue/background/left_top_bg.jpg) no-repeat top;
+    background: transparent url(../images/blue/background/left_top_bg.jpg) no-repeat top;
     color: rgb(255, 255, 255);
 }
 
