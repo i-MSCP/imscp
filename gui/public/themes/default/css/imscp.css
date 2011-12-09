@@ -707,6 +707,7 @@ textarea {
     width: 250px;
     width: auto;
     z-index: 5000;
+    border: 1px solid;
     border-radius: 4px;
 }
 
