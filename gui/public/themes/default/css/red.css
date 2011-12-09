@@ -1,0 +1,111 @@
+/**
+ * i-MSCP - internet Multi Server Control Panel
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net
+ * @author      i-MSCP Team
+ */
+
+body {
+    background: transparent url(../images/red/background/left_bg.jpg) repeat-y top left;
+    color: rgb(26, 26, 26);
+}
+
+/** Links */
+a {color: rgb(255, 255, 255);}
+a:hover, a:focus {color: rgb(92, 186, 218);}
+.body a {color: rgb(22, 30, 115);}
+.body a:hover, .body a:focus {color: rgb(92, 186, 218);}
+
+/** Header */
+.header {background: rgb(30, 40, 138) url(../images/red/background/top_bg.jpg) repeat-x top left;}
+
+/** Main menu */
+.main_menu {background: rgb(22, 30, 115) url(../images/red/background/mainmenu_left.png) no-repeat top left;}
+.main_menu ul {background: transparent url(../images/red/background/mainmenu_bg.png) repeat-x top left;}
+
+/** Location */
+.location {background: rgb(22, 30, 115) url(../images/red/background/top_bar_bg.jpg) repeat-x top left;}
+
+/** Heading */
+.location-area h1 {color: rgb(255, 255, 255);}
+
+/** Breadcrumbs */
+.path {color: rgb(255, 255, 255);}
+
+/** Left menu */
+
+.left_menu {
+    background: rgb(30, 40, 138) url(../images/red/background/left_top_bg.jpg) no-repeat top;
+    color: rgb(255, 255, 255);
+}
+
+.left_menu a {background: transparent url(../images/red/background/bullet.png) no-repeat center left;}
+.left_menu a:hover {background-image: url(../images/red/background/bullet_hover.png);}
+
+/** Body */
+h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
+
+/** Tables */
+
+.body tr {border-color: rgb(223, 223, 223);}
+.body tr:nth-child(odd) {background-color: rgb(237, 237, 237);}
+.body th, .body tfoot td {
+    background: rgb(22, 30, 115) url(../images/red/background/top_bar_bg.jpg) repeat-x;
+    color: rgb(255, 255, 255);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+}
+.body th:first-child {border-left-color: rgb(0, 0, 0);}
+.body th:last-child {border-right-color: rgb(0, 0, 0);}
+
+.description th {
+    background: transparent;
+    border-top-color: rgb(222, 222, 222);
+    border-bottom-color:  rgb(222, 222, 222);
+    color: rgb(26, 26, 26);
+}
+
+.description th:first-child {border-left-color: rgb(222, 222, 222);}
+.description th:last-child {border-right-color: rgb(222, 222, 222);}
+
+.body td {
+    border-top-color: rgb(223, 223, 223);
+    border-bottom-color: rgb(223, 223, 223);
+}
+
+/** dataTables */
+.datatable .sorting_asc { background: url('../images/red/datatable/asc.png') no-repeat center right; }
+.datatable .sorting_desc { background: url('../images/red/datatable/desc.png') no-repeat center right; }
+.datatable .sorting { background: url('../images/red/datatable/bg.png') no-repeat center right; }
+
+/** Form elements */
+
+input[type="text"], input[type="password"], select, textarea {
+    background-color: transparent;
+    border-color: rgb(204, 204, 204);
+}
+
+input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {border-color: rgb(153, 153, 153);}
+
+/** Tooltips */
+.tooltip_bg, .sw_tooltip_bg {background-color: rgb(22, 30, 115);}
+.tooltip_txt, .sw_tooltip_txt {color: rgb(255, 255, 255);}
+.tooltip_notice, .sw_tooltip_notice {background: url(../images/tooltips/info.png) no-repeat center left;}
+
+/** Footer */
+.footer {color: rgb(255, 255, 255);}
