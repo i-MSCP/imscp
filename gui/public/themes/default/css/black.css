@@ -35,7 +35,7 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 .header {background: rgb(38, 38, 38) url(../images/black/background/top_bg.jpg) repeat-x top left;}
 
 /** Main menu */
-.main_menu {background: rgb(0, 0, 0) url(../images/black/background/mainmenu_left.png) no-repeat top left;}
+.main_menu {background: transparent url(../images/black/background/mainmenu_left.png) no-repeat top left;}
 .main_menu ul {background: transparent url(../images/black/background/mainmenu_bg.png) repeat-x top left;}
 
 /** Location */

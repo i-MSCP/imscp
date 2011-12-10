@@ -155,7 +155,7 @@ function gen_reseller_menu($tpl, $menu_file)
 			'TR_MENU_DOMAIN_STATISTICS' => tr('Domain statistics'),
 			'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
 			'TR_MENU_NEW_TICKET' => tr('New ticket'),
-			'TR_MENU_LAYOUT_SETTINGS' => tr('Layout settings'),
+			'TR_MENU_LAYOUT_SETTINGS' => tr('Layout'),
 			'TR_MENU_LOGOUT' => tr('Logout'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_LANGUAGE' => tr('Language'),

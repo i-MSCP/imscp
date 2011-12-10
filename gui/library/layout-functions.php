@@ -222,30 +222,109 @@ function get_menu_vars($menu_link)
 }
 
 /**
- * Must be documented.
+ * Returns available color set for current layout.
  *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $user_def_layout
- * @return void
- * @todo currently not being used because there's only one layout/theme
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.6
+ * @return array
  */
-function gen_def_layout($tpl, $user_def_layout)
+function layout_getAvailableColorSet()
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	// TODO parse current layout directory to found available color set.
+	return array('black', 'blue', 'green', 'red', 'yellow');
+}
 
-    $layouts = array('blue', 'green', 'red', 'yellow');
+/**
+ * Returns layout color for given user.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.6
+ * @param int $userId user unique identifier
+ * @return string User layout color
+ */
+function layout_getUserLayoutColor($userId)
+{
+	$allowedColors = layout_getAvailableColorSet();
 
-    foreach ($layouts as $layout) {
-        $selected = ($layout === $user_def_layout) ? $cfg->HTML_SELECTED : '';
+	$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
+	$stmt = exec_query($query, (int) $userId);
 
-        $tpl->assign(array(
-                          'LAYOUT_VALUE' => $layout,
-                          'LAYOUT_SELECTED' => $selected,
-                          'LAYOUT_NAME' => $layout));
+	$color = $stmt->fields['layout_color'];
 
-        $tpl->parse('DEF_LAYOUT', '.def_layout');
-    }
+	if(!$color || !in_array($color, $allowedColors)) {
+		return array_shift($allowedColors);
+	}
+
+	return $color;
+}
+
+/**
+ * Set layout color.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.6
+ * @param iMSCP_Events_Response $event iMSCP_Events_Response instance
+ * @return void
+ */
+function layout_setColor($event)
+{
+	/** @var $tpl iMSCP_pTemplate */
+	$tpl = $event->getTemplateEngine();
+
+	if(isset($_SESSION['user_theme_color'])) {
+		$color = $_SESSION['user_theme_color'];
+	} else {
+		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
+		$color = layout_getUserLayoutColor($userId);
+		$_SESSION['user_theme_color'] = $color;
+	}
+
+	$tpl->assign('THEME_COLOR', $color);
+	$tpl->parse('PAGE', 'page');
+}
+
+/**
+ * Sets given layout color for given user.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.6
+ * @param int $userId User unique identifier
+ * @param string $color Layout color
+ * @return bool TRUE on success false otherwise
+ */
+function layout_setUserLayoutColor($userId, $color)
+{
+	if(in_array($color, layout_getAvailableColorSet())) {
+		$query = 'UPDATE `user_gui_props` SET `layout_color` = ? WHERE `user_id` = ?';
+		exec_query($query, array($color, (int) $userId));
+
+		// Dealing with sessions across multiple browsers for same user identifier - Begin
+
+		$sessionId = session_id();
+
+		$query = "SELECT `session_id` FROM `login` WHERE `user_name` = ?  AND `session_id` <> ?";
+		$stmt = exec_query($query, array($_SESSION['user_logged'], $sessionId));
+
+		if($stmt->rowCount()) {
+			foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $otherSessionId) {
+				session_write_close();
+				session_id($otherSessionId);
+				session_start();
+				$_SESSION['user_theme_color'] = $color; // Updating color
+			}
+
+			// Return back to the previous session
+			session_write_close();
+			session_id($sessionId);
+			session_start();
+		}
+
+		// Dealing with data across multiple sessions - End
+
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -422,7 +501,7 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
 
     if (!$onlyFile) {
         $query = "UPDATE `user_gui_props` SET `logo` = ? WHERE `user_id` = ?";
-        exec_query($query, array('', $userId));
+        exec_query($query, array(null, $userId));
     }
 
     if (strpos($logoFilePath, $cfg->ISP_LOGO_PATH) !== false) {

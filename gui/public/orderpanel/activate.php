@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,16 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	orderpanel
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-msCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
 /************************************************************************************
@@ -47,26 +48,26 @@
  */
 function validateOrderKey($orderId, $key)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    $result = false;
+	$result = false;
 
-    $query = "SELECT * FROM `orders` WHERE `id` = ? AND `status` = ?";
-    $stmt = exec_query($query, array($orderId, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
+	$query = "SELECT * FROM `orders` WHERE `id` = ? AND `status` = ?";
+	$stmt = exec_query($query, array($orderId, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
 
-    if ($stmt->recordCount() == 1) {
-        $domain_name = $stmt->fields['domain_name'];
-        $admin_id = $stmt->fields['user_id'];
-        $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
-        $ckey = sha1($orderId . '-' . $domain_name . '-' . $admin_id . '-' . $coid);
+	if ($stmt->recordCount() == 1) {
+		$domain_name = $stmt->fields['domain_name'];
+		$admin_id = $stmt->fields['user_id'];
+		$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
+		$ckey = sha1($orderId . '-' . $domain_name . '-' . $admin_id . '-' . $coid);
 
-        if ($ckey == $key) {
-            $result = true;
-        }
-    }
+		if ($ckey == $key) {
+			$result = true;
+		}
+	}
 
-    return $result;
+	return $result;
 }
 
 /**
@@ -76,43 +77,43 @@ function validateOrderKey($orderId, $key)
  */
 function confirmOrder($orderId)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT * FROM `orders` WHERE `id` = ?";
-    $stmt = exec_query($query, $orderId);
+	$query = "SELECT * FROM `orders` WHERE `id` = ?";
+	$stmt = exec_query($query, $orderId);
 
-    if ($stmt->recordCount() == 1) {
-        $query = "UPDATE `orders` SET `status` = ? WHERE `id` = ?";
-        exec_query($query, array($cfg->ITEM_ORDER_CONFIRMED_STATUS, $orderId));
+	if ($stmt->recordCount() == 1) {
+		$query = "UPDATE `orders` SET `status` = ? WHERE `id` = ?";
+		exec_query($query, array($cfg->ITEM_ORDER_CONFIRMED_STATUS, $orderId));
 
-        $resellerId = $stmt->fields['user_id'];
-        $domainName = $stmt->fields['domain_name'];
-        $userFirstName = $stmt->fields['fname'];
-        $userLastName = $stmt->fields['lname'];
-        $uemail = $stmt->fields['email'];
-        $name = trim($userFirstName . ' ' . $userLastName);
+		$resellerId = $stmt->fields['user_id'];
+		$domainName = $stmt->fields['domain_name'];
+		$userFirstName = $stmt->fields['fname'];
+		$userLastName = $stmt->fields['lname'];
+		$uemail = $stmt->fields['email'];
+		$name = trim($userFirstName . ' ' . $userLastName);
 
-        $data = get_order_email($resellerId);
+		$data = get_order_email($resellerId);
 
-        $fromName = $data['sender_name'];
-        $fromEmail = $data['sender_email'];
+		$fromName = $data['sender_name'];
+		$fromEmail = $data['sender_email'];
 
-        $search [] = '{DOMAIN}';
-        $replace[] = $domainName;
-        $search [] = '{MAIL}';
-        $replace[] = $uemail;
-        $search [] = '{NAME}';
-        $replace[] = $name;
+		$search [] = '{DOMAIN}';
+		$replace[] = $domainName;
+		$search [] = '{MAIL}';
+		$replace[] = $uemail;
+		$search [] = '{NAME}';
+		$replace[] = $name;
 
-        if ($fromName) {
-            $from = '"' . encode($fromName) . "\" <" . $fromEmail . ">";
-        } else {
-            $from = $fromEmail;
-        }
+		if ($fromName) {
+			$from = '"' . encode($fromName) . "\" <" . $fromEmail . ">";
+		} else {
+			$from = $fromEmail;
+		}
 
-        $subject = encode(tr('i-MSCP - Service Mailer - You have a new order'));
-        $message = tr('
+		$subject = encode(tr('i-MSCP - Service Mailer - You have a new order'));
+		$message = tr('
 
 Dear {RESELLER},
 
@@ -125,18 +126,18 @@ i-MSCP Service Mailer
 
 ', true);
 
-        $search [] = '{RESELLER}';
-        $replace[] = (!empty($fromName)) ? $fromName : tr('reseller');
-        $message = str_replace($search, $replace, $message);
-        $message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
+		$search [] = '{RESELLER}';
+		$replace[] = (!empty($fromName)) ? $fromName : tr('reseller');
+		$message = str_replace($search, $replace, $message);
+		$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
 
-        $headers = "From: " . $from . "\n";
-        $headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" .
-                    "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " .
-                    $cfg->Version . " Service Mailer";
+		$headers = "From: " . $from . "\n";
+		$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" .
+			"Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " .
+			$cfg->Version . " Service Mailer";
 
-        mail($from, $subject, $message, $headers);
-    }
+		mail($from, $subject, $message, $headers);
+	}
 }
 
 /************************************************************************************
@@ -152,42 +153,45 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 $cfg = iMSCP_Registry::get('config');
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
-    throw new iMSCP_Exception_Production(
-        tr('You do not have permission to access this interface.'));
+	throw new iMSCP_Exception_Production(
+		tr('You do not have permission to access this interface.'));
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->PURCHASE_TEMPLATE_PATH . '/activate.tpl',
-                          'page_message' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'page' => '../' . $cfg->LOGIN_TEMPLATE_PATH . '/box.tpl',
+		'page_message' => 'page',
+		'backlink_block' => 'page'));
 
 $theme_color = isset($_SESSION['user_theme'])
-    ? $_SESSION['user_theme'] : $cfg->USER_INITIAL_THEME;
+	? $_SESSION['user_theme'] : $cfg->USER_INITIAL_THEME;
 
-$tpl->assign(array(
-                  'THEME_COLOR_PATH' => '../themes/' . $theme_color,
-                  'THEME_CHARSET' => tr('encoding')));
-
+$tpl->assign(
+	array(
+		'THEME_COLOR_PATH' => '../themes/' . $theme_color,
+		'THEME_CHARSET' => tr('encoding')));
 
 if (validateOrderKey($_GET['id'], $_GET['k'])) {
-    confirmOrder($_GET['id']);
-    $msg = tr('Your order has been confirmed and is being processed... You will receive a mail after verifying.');
+	confirmOrder($_GET['id']);
+	$msg = tr('Your order has been confirmed and is being processed... You will receive a mail after verifying.');
 } else {
-    $msg = tr('Your order has not been found in our database. Perhaps already confirmed?');
-    write_log('An order was not found in database.', E_USER_WARNING);
+	$msg = tr('Your order has not been found in our database. Perhaps already confirmed?');
+	write_log('An order was not found in database.', E_USER_WARNING);
 }
 
-$tpl->assign(array(
-                  'TR_ORDER_PANEL_PAGE_TITLE' => tr('Order Panel / Order confirmation'),
-                  'productLongName' => tr('internet Multi Server Control Panel'),
-                  'productLink' => 'http://www.i-mscp.net',
-                  'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
-                  'ORDER_STATUS_TITLE' => tr('Order confirmation'),
-                  'ORDER_STATUS_MESSAGE' => $msg));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('Order Panel / Order confirmation'),
+		'productLongName' => tr('internet Multi Server Control Panel'),
+		'productLink' => 'http://www.i-mscp.net',
+		'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
+		'MESSAGE_TITLE' => tr('Order confirmation'),
+		'MESSAGE' => $msg,
+		'BACKLINK_BLOCK' => ''));
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

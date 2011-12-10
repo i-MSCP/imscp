@@ -31,7 +31,6 @@
  * @author 		ispCP Team
  * @author		i-MSCP Team
  * @author 	    Laurent Declercq <l.declercq@nuxwin.com>
- * @version 	SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -71,8 +70,9 @@ spl_autoload_register('autoload_class');
  * Sets the exception handler for uncaught exceptions and register it in the
  * registry.
  */
-iMSCP_Registry::setAlias('exceptionHandler',
-                         iMSCP_Exception_Handler::getInstance()->setHandler());
+iMSCP_Registry::setAlias(
+	'exceptionHandler',
+	iMSCP_Exception_Handler::getInstance()->setHandler());
 
 /**
  * Attach the primary exception writer to write uncaught exceptions messages to the
@@ -87,7 +87,7 @@ iMSCP_Registry::setAlias('exceptionHandler',
  * enabled in the application wide configuration file.
  */
 iMSCP_Registry::get('exceptionHandler')->attach(
-    new iMSCP_Exception_Writer_Browser('../themes/default/exception.tpl'));
+    new iMSCP_Exception_Writer_Browser('../themes/default/box.tpl'));
 
 /**
  * Include i-MSCP common functions

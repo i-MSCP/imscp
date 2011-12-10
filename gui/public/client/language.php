@@ -70,15 +70,8 @@ if (!empty($_POST)) {
 
 	if ($customerCurrentLanguage != $customerNewLanguage) {
 
-		$query = "
-        	REPLACE INTO
-            	`user_gui_props` (
-                	user_id, lang, layout
-            	) VALUES (
-                	?, ?, ?
-            	)
-    	";
-		exec_query($query, array($customerId, $customerNewLanguage, $_SESSION['user_theme']));
+		$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
+		exec_query($query, array($customerNewLanguage, $_SESSION['user_id']));
 
 		if (!isset($_SESSION['logged_from_id'])) {
 			unset($_SESSION['user_def_lang']);

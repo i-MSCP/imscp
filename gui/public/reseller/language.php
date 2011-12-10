@@ -68,16 +68,8 @@ if (!empty($_POST)) {
 	$resellerNewLanguage = clean_input($_POST['def_language']);
 
 	if ($resellerCurrentLanguage != $resellerNewLanguage) {
-		$query = "
-        	REPLACE INTO
-            	`user_gui_props` (
-					user_id, lang, layout, logo
-            	) VALUES (
-	                ?, ?, ?, ?
-    	        )
-    	";
-		exec_query($query, array($_SESSION['user_id'], $resellerNewLanguage, $_SESSION['user_theme'],
-								basename(layout_getUserLogo(false, false))));
+		$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
+		exec_query($query, array($resellerNewLanguage, $_SESSION['user_id']));
 
 		if (!isset($_SESSION['logged_from_id'])) {
 			unset($_SESSION['user_def_lang']);

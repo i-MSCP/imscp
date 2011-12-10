@@ -64,16 +64,8 @@ if (!empty($_POST)) {
     $adminNewLanguage = clean_input($_POST['def_language']);
 
 	if ($adminCurrentLanguage != $adminNewLanguage) {
-		$query = "
-        	REPLACE INTO
-            	`user_gui_props` (
-                	user_id, lang, layout, logo
-            	) VALUES (
-            		?, ?, ?, ?
-            	)
-    	";
-		exec_query($query, array($_SESSION['user_id'], $adminNewLanguage, $_SESSION['user_theme'],
-								basename(layout_getUserLogo(false, false))));
+		$query = "UPDATE `user_gui_props` SET `lang` = ? WHERE `user_id` = ?";
+		exec_query($query, array($adminNewLanguage, $_SESSION['user_id']));
 
 		$_SESSION['user_def_lang'] = $adminNewLanguage;
 

@@ -11,6 +11,7 @@ Features / Enhancements:
 		Components:
 			- DebugBar - Files plugin: Count and shows the loaded templates files
 		Core:
+			- Added layout color switcher
 			- Reseller level - Added flash message for new orders (Only for confirmed orders)
 			- Reseller level - Added flash message for new domain alias orders
 			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
@@ -49,6 +50,7 @@ Tickets:
 	- Fixed #286: Defect - Error by update
 	- Fixed #287: Update - phpMyAdmin 3.4.8 released
 	- Fixed #289: Defect - Ubuntu update error without end
+	- Fixed #292 Feature - Layout color chooser
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

@@ -40,7 +40,7 @@
 
             #header {
                 height:                 50px;
-                background:             url('/themes/default/images/background/stripe.png') repeat-x top left;
+                background:             url('/themes/default/images/{THEME_COLOR}/login/stripe.png') repeat-x top left;
                 border-bottom:          2px solid rgb(102, 102, 102);
 				color:					#fff;
             }
@@ -147,7 +147,7 @@
 
             form {
                 float:left;
-                background-image:       url('/themes/default/images/login/logon_blue.png');
+                background-image:       url('/themes/default/images/{THEME_COLOR}/login/form_box.png');
                 background-repeat:      no-repeat;
                 background-position:    center top;
             	min-height:             339px;

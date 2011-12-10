@@ -26,7 +26,6 @@
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -40,7 +39,7 @@
  * @category    i-MSCP
  * @package     iMSCP_Initializer
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.1.3
+ * @version     1.1.4
  */
 class iMSCP_Initializer
 {
@@ -173,6 +172,9 @@ class iMSCP_Initializer
 
         // Initialize internationalization libraries
         $this->_initializeLocalization();
+
+		// Initialize Layout color
+		$this->_initializeLayoutColor();
 
         // Initialize logger
         // $this->_initializeLogger();
@@ -573,15 +575,25 @@ class iMSCP_Initializer
     }
 
     /**
-     * Not yet implemented.
+     * Register callback to set user theme color.
      *
-     * Not used at this moment because we have only one theme.
-     *
+	 * @since i-MSCP 1.0.1.6
      * @return void
      */
-    protected function _initializeLayout()
+    protected function _initializeLayoutColor()
     {
-        throw new iMSCP_Exception('Not Yet Implemented.');
+		iMSCP_Events_Manager::getInstance()->registerListener(
+			array(
+				iMSCP_Events::onLoginScriptEnd,
+				iMSCP_Events::onLostPasswordScriptEnd,
+				iMSCP_Events::onAdminScriptEnd,
+				iMSCP_Events::onResellerScriptEnd,
+				iMSCP_Events::onClientScriptEnd,
+				iMSCP_Events::onOrderPanelScriptEnd,
+				iMSCP_Events::onExceptionToBrowserEnd
+			),
+			'layout_setColor'
+		);
     }
 
     /**

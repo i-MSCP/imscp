@@ -5,7 +5,6 @@
 		<meta name="robots" content="nofollow, noindex">
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 		<meta http-equiv="Content-Style-Type" content="text/css">
-		<link href="{THEME_COLOR_PATH}/css/login-imscp.css" rel="stylesheet" type="text/css">
 		<link href="{THEME_COLOR_PATH}/css/box.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
@@ -25,7 +24,7 @@
 		<div id="box">
 			<div id="boxHeader"></div>
 			<div id="content">
-				<h1>Order confirmation</h1>
+				<h1>{ORDER_STATUS_TITLE}</h1>
 				<p style="text-align: left">{ORDER_STATUS_MESSAGE}</p>
 			</div>
 		</div>

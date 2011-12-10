@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,13 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  */
 
 /************************************************************************************
@@ -39,24 +37,37 @@
  */
 
 /**
+ * Generate layout color form.
+ *
+ * @author Laurent Declercq <l.declerq@nuxwin.com>
+ * @since iMSCP 1.0.1.6
+ * @param $tpl iMSCP_pTemplate Template engine instance
  * @return void
  */
-/* Not used for now
-function save_layout()
+function admin_generateLayoutColorForm($tpl)
 {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
-		$user_id = $_SESSION['user_id'];
-		$user_layout = $_POST['def_layout'];
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-		$query = "UPDATE `user_gui_props` SET `layout` = ? WHERE `user_id` = ?";
-		exec_query($query, array($user_layout, $user_id));
+	$colors = layout_getAvailableColorSet();
 
-		$_SESSION['user_theme_color'] = $user_layout;
-		$theme_color = $user_layout;
-		$user_def_layout = $user_layout;
+	if(!empty($POST) && isset($_POST['layoutColor']) && in_array($_POST['layoutColor'], $colors)) {
+		$selectedColor = $_POST['layoutColor'];
+	} else {
+		$selectedColor = $_SESSION['user_theme_color'];
+	}
+
+	if (!empty($colors)) {
+		foreach ($colors as $color) {
+			$tpl->assign(array(
+				'COLOR' => $color,
+				'SELECTED_COLOR' => ($color == $selectedColor) ? $cfg->HTML_SELECTED : ''));
+			$tpl->parse('LAYOUT_COLOR_BLOCK', '.layout_color_block');
+		}
+	} else {
+		$tpl->assign('LAYOUT_COLORS_BLOCK', '');
 	}
 }
-*/
 
 /************************************************************************************
  * Main script
@@ -73,14 +84,13 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array('page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings_layout.tpl',
-                          'page_message' => 'page',
-                          'hosting_plans' => 'page',
-                          //'def_layout' => 'page',
-                          'logo_remove_button' => 'page'));
-
-// Not used for now
-//save_layout();
+$tpl->define_dynamic(
+	array(
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings_layout.tpl',
+		'page_message' => 'page',
+		'logo_remove_button' => 'page',
+		'layout_colors_block' => 'page',
+		'layout_color_block' => 'layout_colors_block'));
 
 /**
  * Dispatches request
@@ -94,13 +104,19 @@ if(isset($_POST['uaction'])) {
         if(layout_deleteUserLogo()) {
             set_page_message(tr('Logo successfully removed.'), 'success');
         }
+	} elseif($_POST['uaction'] == 'changeLayoutColor' && isset($_POST['layoutColor'])) {
+		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
+
+		if(layout_setUserLayoutColor($userId, $_POST['layoutColor'])) {
+     		$_SESSION['user_theme_color'] = $_POST['layoutColor'];
+			set_page_message(tr('Layout color successfully updated.'), 'success');
+		} else {
+			set_page_message(tr('Unknown layout color.'), 'error');
+		}
     } else {
         set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
     }
 }
-
-// Not used for now
-//gen_def_layout($tpl, $_SESSION['user_theme']);
 
 $ispLogo = layout_getUserLogo();
 
@@ -110,34 +126,30 @@ if (layout_isUserLogo($ispLogo)) {
     $tpl->assign('LOGO_REMOVE_BUTTON', '');
 }
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Layout'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'ISP_LOGO' => $ispLogo,
-                  'OWN_LOGO' => $ispLogo,
-                  'THEME_CHARSET' => tr('encoding'),
-                  'TR_LAYOUT_SETTINGS' => tr('Layout settings'),
-                  //'TR_INSTALLED_LAYOUTS' => tr('Installed layouts'),
-                  //'TR_LAYOUT_NAME' => tr('Layout name'),
-                  //'TR_DEFAULT' => tr('default'),
-                  //'TR_YES' => tr('yes'),
-                  //'TR_SAVE' => tr('Save'),
-                  'TR_UPLOAD_LOGO' => tr('Upload logo'),
-                  'TR_LOGO_FILE' => tr('Logo file'),
-                  'TR_UPLOAD' => tr('Upload'),
-                  'TR_REMOVE' => tr('Remove'),
-                  //'TR_CHOOSE_DEFAULT_LAYOUT' => tr('Choose default layout'),
-                  //'TR_LAYOUT' => tr('Layout')
-             ));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Layout'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'ISP_LOGO' => $ispLogo,
+		'OWN_LOGO' => $ispLogo,
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_UPLOAD_LOGO' => tr('Upload logo'),
+		'TR_LOGO_FILE' => tr('Logo file'),
+		'TR_UPLOAD' => tr('Upload'),
+		'TR_REMOVE' => tr('Remove'),
+		'TR_LAYOUT_COLOR' => tr('Layout color'),
+		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),
+		'TR_CHANGE' => tr('Change')
+	));
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+admin_generateLayoutColorForm($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

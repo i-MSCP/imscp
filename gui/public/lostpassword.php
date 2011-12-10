@@ -2,15 +2,6 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version	 SVN: $Id$
- * @link		http://i-mscp.net
- * @author	  ispCP Team
- * @author	  i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,9 +23,18 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
-// Include needed library
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
@@ -69,20 +69,20 @@ $tpl->define_dynamic('page_message', 'page');
 
 $tpl->assign(
 	array(
-		'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Multi Server Control Panel - Lost password'),
-		'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
-		'THEME_CHARSET'				=> tr('encoding'),
-		'productLongName'			=> tr('internet Multi Server Control Panel'),
-		'productLink'				=> 'http://www.i-mscp.net',
-		'productCopyright'			=> tr('© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),
-		'TR_CAPCODE'				=> tr('Security code'),
-		'TR_IMGCAPCODE'				=> '<img id="captcha" src="imagecode.php" width="' .
-											$cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
-											$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT .
-											' alt="captcha image" />',
-		'TR_USERNAME'				=> tr('Username'),
-		'TR_SEND'					=> tr('Send'),
-		'TR_CANCEL'					=> tr('Cancel')
+		'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel - Lost password'),
+		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
+		'THEME_CHARSET' => tr('encoding'),
+		'productLongName' => tr('internet Multi Server Control Panel'),
+		'productLink' => 'http://www.i-mscp.net',
+		'productCopyright' => tr('© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),
+		'TR_CAPCODE' => tr('Security code'),
+		'TR_IMGCAPCODE' => '<img id="captcha" src="imagecode.php" width="' .
+			$cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
+			$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT .
+			' alt="captcha image" />',
+		'TR_USERNAME' => tr('Username'),
+		'TR_SEND' => tr('Send'),
+		'TR_CANCEL' => tr('Cancel')
 	)
 );
 
@@ -97,7 +97,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	} else {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
-} elseif(isset($_POST['uname'])) { // Request for new password
+} elseif (isset($_POST['uname'])) { // Request for new password
 
 	// Check if we are not blocked (brute force feature)
 	check_ipaddr(getipaddr(), 'captcha');
@@ -106,9 +106,9 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
-		if($_SESSION['image'] != $_POST['capcode']) {
+		if ($_SESSION['image'] != $_POST['capcode']) {
 			set_page_message(tr('Wrong security code'), 'error');
-		} elseif(!requestPassword($_POST['uname'])) {
+		} elseif (!requestPassword($_POST['uname'])) {
 			set_page_message(tr('Wrong username'), 'error');
 		} else {
 			set_page_message(tr('Your request for new password was registered. You will receive an email with instructions to complete the process.'), 'success');
@@ -127,8 +127,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onLostPasswordScriptEnd, new iMSCP_Events_Response($tpl)
-);
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

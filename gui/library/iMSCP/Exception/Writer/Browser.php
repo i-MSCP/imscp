@@ -27,7 +27,6 @@
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -50,6 +49,7 @@ require_once  'iMSCP/Exception/Writer.php';
  * @package     iMSCP_Exception
  * @subpackage  Writer
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.2
  */
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 {
@@ -75,6 +75,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
     public function __construct($templateFile = '')
     {
         $templateFile = (string)$templateFile;
+
         if ($templateFile != '') {
             if (is_readable($templateFile) ||
                 is_readable($templateFile = "../$templateFile")
@@ -92,10 +93,12 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
      */
     protected function _write()
     {
-
         if ($this->_tpl != null) {
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onExceptionToBrowserEnd, new iMSCP_Events_Response($this->_tpl));
             $this->_tpl->prnt();
         } else {
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onExceptionToBrowserEnd);
             echo $this->_message;
         }
     }
@@ -141,7 +144,10 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 	{
 		$tpl = new iMSCP_pTemplate();
 
-		$tpl->define('page', $this->_templateFile);
+		$tpl->define_dynamic(
+			array(
+				'page' => $this->_templateFile,
+				'backlink_block' => 'page'));
 
 		if (iMSCP_Registry::isRegistered('backButtonDestination')) {
 			$backButtonDestination = iMSCP_Registry::get('backButtonDestination');

@@ -1,6 +1,6 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
 		<div class="header">
-		{MAIN_MENU}
+			{MAIN_MENU}
 			<div class="logo">
 				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
 			</div>
@@ -15,7 +15,7 @@
 			</ul>
 			<ul class="path">
 				<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
-				<li><a href="settings_layout.php">{TR_LAYOUT_SETTINGS}</a></li>
+				<li><a href="settings_layout.php">{TR_MENU_LAYOUT}</a></li>
 			</ul>
 		</div>
 
@@ -24,7 +24,7 @@
 		</div>
 
 		<div class="body">
-			<h2 class="multilanguage"><span>{TR_LAYOUT_SETTINGS}</span></h2>
+			<h2 class="layout"><span>{TR_MENU_LAYOUT}</span></h2>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
@@ -41,7 +41,7 @@
 							<img src="{OWN_LOGO}" title="ISP Logo" alt="ISP Logo" />
 							<div class="buttons">
 								<input type="hidden" name="uaction" value="deleteIspLogo" />
-								<input name="Submit" type="submit" class="button" value="{TR_REMOVE}" />
+								<input name="submit" type="submit" value="{TR_REMOVE}" />
 							</div>
 						</form>
 					</td>
@@ -59,5 +59,26 @@
 					</td>
 				</tr>
 			</table>
+			<!-- BDP: layout_colors_block -->
+			<form class="layoutColor" method="post" action="settings_layout.php">
+				<table>
+					<tr>
+						<th colspan="2">{TR_LAYOUT_COLOR}</th>
+					</tr>
+					<tr>
+						<td style="width: 250px;"><label for="layoutColor">{TR_CHOOSE_LAYOUT_COLOR}</label></td>
+						<td>
+							<select name="layoutColor" id="layoutColor">
+								<!-- BDP: layout_color_block -->
+								<option value="{COLOR}" {SELECTED_COLOR}>{COLOR}</option>
+								<!-- EDP: layout_color_block -->
+							</select>
+							<input name="Submit" type="submit" class="button" value="{TR_CHANGE}"/>
+						</td>
+					</tr>
+				</table>
+				<input type="hidden" name="uaction" value="changeLayoutColor"/>
+			</form>
+			<!-- EDP: layout_colors_block -->
 		</div>
 <!-- INCLUDE "../shared/layout/footer.tpl" -->

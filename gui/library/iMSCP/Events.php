@@ -146,4 +146,13 @@ class iMSCP_Events
      * @var string
      */
     const onOrderPanelScriptEnd = 'onOrderPanelScriptEnd';
+
+	/**
+	 * The onExceptionToBrowserEnd event is fired at the end of exception browser write process.
+	 *
+	 * The event listener method can receives a iMSCP_Events_Response instance.
+	 *
+	 * @var string
+	 */
+	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
 }

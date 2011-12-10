@@ -165,6 +165,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 			 'TR_LMENU_CHANGE_PASSWORD' => tr('Password'),
 			 'TR_LMENU_CHANGE_PERSONAL_DATA' => tr('Personal data'),
 			 'TR_LMENU_LANGUAGE' => tr('Language'),
+			 'TR_LMENU_LAYOUT' => tr('Layout'),
 			 'TR_LMENU_UPDATE_HOSTING_PLAN' => tr('Update hosting plan'),
 
 			 // Todo move these entries tha don't really belong to the menu
