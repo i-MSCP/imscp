@@ -249,10 +249,14 @@ function layout_getUserLayoutColor($userId)
 	$query = 'SELECT `layout_color` FROM `user_gui_props` WHERE `user_id` = ?';
 	$stmt = exec_query($query, (int) $userId);
 
-	$color = $stmt->fields['layout_color'];
+	if($stmt->rowCount()) {
+		$color = $stmt->fields['layout_color'];
 
-	if(!$color || !in_array($color, $allowedColors)) {
-		return array_shift($allowedColors);
+		if (!$color || !in_array($color, $allowedColors)) {
+			return array_shift($allowedColors);
+		}
+	} else {
+		$color = array_shift($allowedColors);
 	}
 
 	return $color;
@@ -265,13 +269,14 @@ function layout_getUserLayoutColor($userId)
  * @since i-MSCP 1.0.1.6
  * @param iMSCP_Events_Response $event iMSCP_Events_Response instance
  * @return void
+ * @todo Use cookies to store user UI properties (Remember me implementation?)
  */
 function layout_setColor($event)
 {
 	/** @var $tpl iMSCP_pTemplate */
 	$tpl = $event->getTemplateEngine();
 
-	if(isset($_SESSION['user_theme_color'])) {
+	if(isset($_SESSION['user_logged'], $_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
 	} elseif(isset($_SESSION['user_id'])) {
 		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
@@ -313,7 +318,7 @@ function layout_setUserLayoutColor($userId, $color)
 				session_write_close();
 				session_id($otherSessionId);
 				session_start();
-				$_SESSION['user_theme_color'] = $color; // Updating color
+				$_SESSION['user_theme_color'] = $color; // Update user layout color
 			}
 
 			// Return back to the previous session
