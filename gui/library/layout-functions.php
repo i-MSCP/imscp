@@ -273,10 +273,13 @@ function layout_setColor($event)
 
 	if(isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
-	} else {
+	} elseif(isset($_SESSION['user_id'])) {
 		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
 		$color = layout_getUserLayoutColor($userId);
 		$_SESSION['user_theme_color'] = $color;
+	} else {
+		$colors = layout_getAvailableColorSet();
+		$color = array_shift($colors);
 	}
 
 	$tpl->assign('THEME_COLOR', $color);
