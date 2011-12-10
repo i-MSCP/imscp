@@ -855,7 +855,10 @@ function unset_user_login_data($ignorePreserve = false, $restore = false)
 		exec_query($query, array($sessionId, $adminName));
 	}
 
-	$_SESSION['user_id'] = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
+	if(isset($_SESSION['user_id'])) {
+		$_SESSION['user_id'] = isset($_SESSION['logged_from_id'])
+			? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
+	}
 
 	$preserveList = array(
 		'user_id', 'user_def_lang', 'user_theme', 'user_theme_color',
