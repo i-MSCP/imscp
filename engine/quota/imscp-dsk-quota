@@ -50,7 +50,7 @@ sub quota_start_up {
 
 sub quota_files {
 
-	my ($rs, $rdata);
+	my ($rs, $rdata) = (0, undef);
 
 
 	my $sql = "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_status` = ?";

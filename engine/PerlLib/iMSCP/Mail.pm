@@ -53,7 +53,8 @@ sub errmsg{
 	my $date		=  strftime "%d.%m.%Y %H:%M:%S", localtime;
 	my $server_name	= $main::imscpConfig{'SERVER_HOSTNAME'};
 	my $server_ip	= $main::imscpConfig{'BASE_SERVER_IP'};
-	my $fname = (caller(1))[3];
+	my $fname		= (caller(1))[3];
+	$fname			= 'main' unless $fname;
 
 	my $msg_data =
 		"Dear admin,\n\n".
