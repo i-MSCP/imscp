@@ -22,7 +22,6 @@
  * @subpackage	Events
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -34,7 +33,7 @@
  * @package     iMSCP_Core
  * @subpackage	Events
  * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @version     0.0.1
+ * @version     0.0.4
  */
 class iMSCP_Events
 {
@@ -155,4 +154,22 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
+
+	/**
+	 * The onBeforeRegister event is fired after before an user is registered (logged on).
+	 *
+	 * The event listener method receives a iMSCP_Events_Event instance.
+	 *
+	 * @var string
+	 */
+	const onBeforeRegisterUser = 'onBeforeRegisterUser';
+
+	/**
+	 * The onAfterRegister event is fired after an user is registered (logged on).
+	 *
+	 * The event listener method receives a iMSCP_Events_Event instance.
+	 *
+	 * @var string
+	 */
+	const  onAfterRegisterUser = 'onAfterRegisterUser';
 }

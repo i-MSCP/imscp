@@ -512,6 +512,9 @@ function deny_access()
  */
 function register_user($userName, $userPassword)
 {
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeRegisterUser);
+
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -570,7 +573,10 @@ function register_user($userName, $userPassword)
 		return false;
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterRegisterUser);
+
 	// Redirect the user to his level interface
+
 	redirect_to_level_page();
 }
 
@@ -855,13 +861,8 @@ function unset_user_login_data($ignorePreserve = false, $restore = false)
 		exec_query($query, array($sessionId, $adminName));
 	}
 
-	if(isset($_SESSION['user_id'])) {
-		$_SESSION['user_id'] = isset($_SESSION['logged_from_id'])
-			? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
-	}
-
 	$preserveList = array(
-		'user_id', 'user_def_lang', 'user_theme', 'user_theme_color',
+		'user_def_lang', 'user_theme', 'user_theme_color',
 		'uistack', 'user_page_message', 'user_page_message_cls'
 	);
 

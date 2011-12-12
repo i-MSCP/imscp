@@ -39,7 +39,7 @@
  * @category    i-MSCP
  * @package     iMSCP_Initializer
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.1.4
+ * @version     1.1.5
  */
 class iMSCP_Initializer
 {
@@ -594,6 +594,12 @@ class iMSCP_Initializer
 			),
 			'layout_setColor'
 		);
+
+		if(!isset($_SESSION['user_logged'])) {
+			$callback = function($event) {unset($_SESSION['user_theme_color']);};
+			iMSCP_Events_Manager::getInstance()->registerListener(
+				iMSCP_Events::onAfterRegisterUser, $callback);
+		}
     }
 
     /**

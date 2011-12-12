@@ -276,7 +276,7 @@ function layout_setColor($event)
 	/** @var $tpl iMSCP_pTemplate */
 	$tpl = $event->getTemplateEngine();
 
-	if(isset($_SESSION['user_logged'], $_SESSION['user_theme_color'])) {
+	if(isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
 	} elseif(isset($_SESSION['user_id'])) {
 		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
