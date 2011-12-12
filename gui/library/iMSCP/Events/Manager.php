@@ -63,7 +63,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * @package		iMSCP_Events
  * @subpackage	Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
@@ -146,21 +146,19 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 			}
 
 			foreach ($this->_events[$eventName]->getIterator() as $listener) {
-				if (is_object($listener)) {
+				if (is_callable($listener)) {
+					call_user_func_array($listener, array($argument));
+				} elseif (is_object($listener)) {
 					if (is_callable(array($listener, $eventName))) {
 						$listener->$eventName($argument);
 					} else {
 						require_once 'iMSCP/Events/Exception.php';
 						throw new iMSCP_Events_Manager_Exception(
-							"The '" . get_class($listener) .
-							"' object must implement the {$eventName}() listener method.");
+							"The '" . get_class($listener) . "' object must implement the {$eventName}() listener method.");
 					}
-				} elseif (is_callable($listener)) {
-					call_user_func_array($listener, array($argument));
 				} else {
 					require_once 'iMSCP/Events/Exception.php';
-					throw new iMSCP_Events_Manager_Exception(
-						"Listener must be a valid callback function or an object.");
+					throw new iMSCP_Events_Manager_Exception("Listener must be a valid callback function or an object.");
 				}
 			}
 		}
@@ -173,10 +171,25 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 *
 	 * $eventManager = iMSCP_Events_Manager::getInstance();
 	 *
+	 * 1. Using object that implement event listener method(s)
 	 * $eventManager->registerListener('eventName', $objectInstance)
+	 *
+	 * 2. Using static class method
 	 * $eventManager->registerListener('eventName', 'classname::staticMethodName)
+	 *
+	 * 3. Using class instance method
 	 * $eventManager->registerListener('eventName', array($ObjectInstance, 'methodName')
+	 *
+	 * 4. Using fonction name
 	 * $eventManager->registerListener('eventName', 'functionName')
+	 *
+	 * 5. Using anonymous function,
+	 * $funct = create_function('$event', 'do something here');
+	 * $eventManager->registerListener('eventName', $funct)
+	 *
+	 * 6. Using closure
+	 * $closure = function($event) { do something here };
+	 * $eventManager->registerListener('eventName', $closure)
 	 * ...
 	 *
 	 * @param  string|array $eventNames		The event(s) to listen on.
