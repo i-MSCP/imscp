@@ -102,7 +102,6 @@ function generatePageMessage($tpl)
  * @param string $message $message Message to display
  * @param string $level Message level (INFO, WARNING, ERROR, SUCCESS)
  * @return void
- * @todo replace by flashMessenger component
  */
 function set_page_message($message, $level = 'info')
 {
@@ -110,9 +109,7 @@ function set_page_message($message, $level = 'info')
 
 	if(!is_string($message)) {
 		throw new iMSCP_Exception('set_page_message() expects a string for $message');
-	} elseif($level != 'info' && $level != 'warning' && $level != 'error'
-			 && $level != 'success'
-    ) {
+	} elseif(!in_array($level, array('info', 'warning', 'error', 'success'))) {
         throw new iMSCP_Exception('Wrong level for page message.');
     }
 
