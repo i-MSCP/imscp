@@ -173,7 +173,7 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '') {
  */
 function addUpdateServices($mode) {
 
-	// Gets a reference to the iMSCP_ConfigHandler_Db instance
+	/** @var $dbConfig iMSCP_Config_Handler_Db */
 	$dbConfig = iMSCP_Registry::get('dbConfig');
 
 	// Create a pool for messages on error and gets a reference to him
@@ -286,13 +286,11 @@ function showServices($tpl) {
 
 	if(empty($services)) {
 		$tpl->assign('SERVICE_PORTS', '');
-		set_page_message(tr('You have no custom service ports defined'));
+		set_page_message(tr('You have no custom service ports defined.'));
 	} else {
 		sort($services);
 
 		foreach($services as $index => $service) {
-
-			$tpl->assign('CLASS', ($index % 2 == 0) ? 'content' : 'content2');
 			$v = (count(explode(';', $values->$service)) < 6) ? $values->$service . ';' : $values->$service;
 			list($port, $protocol, $name, $status, $custom, $ip) = explode(';', $v);
 

@@ -1383,4 +1383,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"VARCHAR(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `layout`"
 		);
 	}
+
+	/**
+	 * Allow to change SSH port number.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return void
+	 */
+	protected function _databaseUpdate_97()
+	{
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if(isset($dbConfig->PORT_SSH)) {
+			$dbConfig->PORT_SSH = '22;tcp;SSH;1;1;';
+		}
+	}
 }
