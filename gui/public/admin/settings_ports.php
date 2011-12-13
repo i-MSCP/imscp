@@ -61,7 +61,7 @@ function toSession($mode) {
 	$_SESSION['errorFieldsIds'] = json_encode($errorFieldsIds);
 
 	// Data for error on add
-	if($mode) {
+	if($mode == 'add') {
 		$values = array(
 			'name_new' => $_POST['name_new'],
 			'ip_new' => $_POST['ip_new'],
@@ -350,7 +350,7 @@ function deleteService($serviceName)
 		write_log(get_session('user_logged') . ": Removed port for '$serviceName'.", E_USER_NOTICE);
 		set_page_message(tr('Service port was successfully removed.'), 'success');
 	} else {
-		set_page_message(tr('You are not allowed to remove this service port entry.', 'error'));
+		set_page_message(tr('You are not allowed to remove this service port entry.'), 'error');
 		return false;
 	}
 
