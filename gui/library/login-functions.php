@@ -861,10 +861,7 @@ function unset_user_login_data($ignorePreserve = false, $restore = false)
 		exec_query($query, array($sessionId, $adminName));
 	}
 
-	$preserveList = array(
-		'user_def_lang', 'user_theme', 'user_theme_color',
-		'uistack', 'user_page_message', 'user_page_message_cls'
-	);
+	$preserveList = array('user_def_lang', 'user_theme', 'user_theme_color', 'uistack', 'pageMessages');
 
 	$preserveVals = array();
 
