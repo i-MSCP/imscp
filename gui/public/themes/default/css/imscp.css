@@ -819,7 +819,7 @@ textarea {
 .login #header {
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid;
+    border-bottom: 3px solid;
 }
 
 #logo {
@@ -946,18 +946,11 @@ textarea {
     visibility: hidden;
 }
 
-.clearfix {
-    display: inline-block;
-}
+.clearfix{display: inline-block;}
 
 /* Hides from IE-mac \*/
-* html .clearfix {
-    height: 1%;
-}
-
-.clearfix {
-    display: block;
-}
-/*End hide from IE-mac*/
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+/* End hide from IE-mac */
 
 

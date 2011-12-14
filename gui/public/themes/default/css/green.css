@@ -121,7 +121,7 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
 
 .login	#header {
     background: rgb(0, 0, 0) url('../images/green/login/stripe.png') repeat-x left top;
-    border-bottom-color: rgb(102, 102, 102);
+    border-bottom-color: rgb(5, 84, 12);
 }
 
 #logo span {
