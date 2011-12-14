@@ -1,5 +1,5 @@
 <!-- INCLUDE "../shared/layout/header.tpl" -->
-<body onload="begin_js();">
+<body>
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
@@ -21,58 +21,65 @@
 			}
 		}
 
-	function begin_js() {
-		if (document.getElementsByName('als_id').length !== 0) {
-			if (document.getElementById('dmn_type2').checked) {
-				document.forms[0].als_id.disabled = false;
-			} else {
-				document.forms[0].als_id.disabled = true;
+		function begin_js() {
+			if (document.getElementsByName('als_id').length !== 0) {
+				if (document.getElementById('dmn_type2').checked) {
+					document.forms[0].als_id.disabled = false;
+				} else {
+					document.forms[0].als_id.disabled = true;
+				}
 			}
-		}
-		if (document.getElementsByName('sub_id').length !== 0) {
-			if (document.getElementById('dmn_type3').checked) {
-				document.forms[0].sub_id.disabled = false;
-			} else {
-				document.forms[0].sub_id.disabled = true;
-			}
-		}
-		if (document.getElementsByName('als_sub_id').length !== 0) {
-			if (document.getElementById('dmn_type4').checked) {
-				document.forms[0].als_sub_id.disabled = false;
-			} else {
-				document.forms[0].als_sub_id.disabled = true;
-			}
-		}
-//		document.forms[0].pass.disabled = false;
-//		document.forms[0].pass_rep.disabled = false;
-//		document.forms[0].forward_list.disabled = true;
-		changeType();
-		document.forms[0].username.focus();
-	}
 
-	function changeDom(what) {
-		if (document.getElementsByName('als_id').length !== 0) {
-			if (what == "alias") {
-				document.forms[0].als_id.disabled = false;
-			} else {
-				document.forms[0].als_id.disabled = true;
+			if (document.getElementsByName('sub_id').length !== 0) {
+				if (document.getElementById('dmn_type3').checked) {
+					document.forms[0].sub_id.disabled = false;
+				} else {
+					document.forms[0].sub_id.disabled = true;
+				}
+			}
+
+			if (document.getElementsByName('als_sub_id').length !== 0) {
+				if (document.getElementById('dmn_type4').checked) {
+					document.forms[0].als_sub_id.disabled = false;
+				} else {
+					document.forms[0].als_sub_id.disabled = true;
+				}
+			}
+
+			// document.forms[0].pass.disabled = false;
+			// document.forms[0].pass_rep.disabled = false;
+			// document.forms[0].forward_list.disabled = true;
+			changeType();
+			document.forms[0].username.focus();
+		}
+
+		function changeDom(what) {
+			if (document.getElementsByName('als_id').length !== 0) {
+				if (what == "alias") {
+					document.forms[0].als_id.disabled = false;
+				} else {
+					document.forms[0].als_id.disabled = true;
+				}
+			}
+
+			if (document.getElementsByName('sub_id').length !== 0) {
+				if (what == "subdom") {
+					document.forms[0].sub_id.disabled = false;
+				} else  {
+					document.forms[0].sub_id.disabled = true;
+				}
+			}
+
+			if (document.getElementsByName('als_sub_id').length !== 0) {
+				if (what == "als_subdom") {
+					document.forms[0].als_sub_id.disabled = false;
+				} else {
+					document.forms[0].als_sub_id.disabled = true;
+				}
 			}
 		}
-		if (document.getElementsByName('sub_id').length !== 0) {
-			if (what == "subdom") {
-				document.forms[0].sub_id.disabled = false;
-			} else  {
-				document.forms[0].sub_id.disabled = true;
-			}
-		}
-		if (document.getElementsByName('als_sub_id').length !== 0) {
-			if (what == "als_subdom") {
-				document.forms[0].als_sub_id.disabled = false;
-			} else {
-				document.forms[0].als_sub_id.disabled = true;
-			}
-		}
-	}
+
+		$(window).load(function(){begin_js();});
 	/* ]]> */
 	</script>
 	<div class="header">
@@ -108,13 +115,13 @@
 		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 		<!-- EDP: page_message -->
 
-		<form action="mail_add.php" method="post" id="client_mail_add">
+		<form name="addFrm" action="mail_add.php" method="post" id="client_mail_add">
 			<table>
 				<tr>
 					<th colspan="2">{TR_MAIl_ACCOUNT_DATA}</th>
 				</tr>
 				<tr>
-					<td style="width: 300px;"><label for="username">{TR_USERNAME}</label></td>
+					<td><label for="username">{TR_USERNAME}</label></td>
 					<td><input type="text" name="username" id="username" value="{USERNAME}" /></td>
 				</tr>
 				<tr>

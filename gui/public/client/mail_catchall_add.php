@@ -484,9 +484,8 @@ $tpl->assign(
 		 'TR_CREATE_CATCHALL' => tr('Create catch all'),
 		 'TR_FORWARD_MAIL' => tr('Forward mail'),
 		 'TR_FORWARD_TO' => tr('Forward to'),
-		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.')
-	)
-);
+		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
+		 'TR_HELP' => tr('Help')));
 
 generatePageMessage($tpl);
 

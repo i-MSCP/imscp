@@ -59,14 +59,16 @@ if (isset($_GET['id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_edit.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(
+	array(
+		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ftp_edit.tpl',
+		'page_message' => 'page',
+		'logged_from' => 'page'));
 
 // page functions.
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl Template engine instance
  * @param $ftp_acc
  * @return void
  */
@@ -95,9 +97,7 @@ function gen_page_dynamic_data($tpl, $ftp_acc) {
 			'FTP_ACCOUNT' => $ftp_acc,
 			'ID' => $ftp_acc,
 			'USE_OTHER_DIR_CHECKED' => $odir,
-			'OTHER_DIR' => $oins
-		)
-	);
+			'OTHER_DIR' => $oins));
 }
 
 /**
@@ -118,7 +118,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Entered passwords do not match!'), 'error');
+				set_page_message(tr("Entered passwords doesn't match."), 'error');
 				return;
 			}
 			if (!chk_password($_POST['pass'])) {
@@ -166,7 +166,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 			}
 
 			write_log($_SESSION['user_logged'] . ": updated FTP " . $ftp_acc . " account data", E_USER_NOTICE);
-			set_page_message(tr('FTP account data updated!'), 'success');
+			set_page_message(tr('FTP account successfully updated.'), 'success');
 			redirectTo('ftp_accounts.php');
 		} else {
 			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
@@ -200,7 +200,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
 			exec_query($query, array($other_dir, $ftp_acc));
 
-			set_page_message(tr('FTP account data updated!'), 'success');
+			set_page_message(tr('FTP account successfully updated.'), 'success');
 			redirectTo('ftp_accounts.php');
 		}
 	}
@@ -211,9 +211,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Edit FTP Account'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 $query = "SELECT `domain_name` FROM `domain` WHERE`domain_admin_id` = ?";
 $rs = exec_query($query, $_SESSION['user_id']);
@@ -221,7 +219,7 @@ $rs = exec_query($query, $_SESSION['user_id']);
 $dmn_name = $rs->fields['domain_name'];
 
 if(!check_ftp_perms($ftp_acc)) {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
+    set_page_message(tr('Ftp account not found.'), 'error');
     redirectTo('ftp_accounts.php');
 }
 
@@ -240,9 +238,7 @@ $tpl->assign(
 		'TR_USE_OTHER_DIR' => tr('Use other dir'),
 		'TR_CHANGE' => tr('Change'),
 		'CHOOSE_DIR' => tr('Choose dir'),
-		'TR_FTP_USER_DATA' => tr('Ftp user data')
-	)
-);
+		'TR_FTP_USER_DATA' => tr('Ftp user data')));
 
 generatePageMessage($tpl);
 
