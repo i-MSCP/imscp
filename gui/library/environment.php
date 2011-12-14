@@ -21,12 +21,11 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
- * @package		i-MSCP
+ * @package		i-MSCP_Core
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
- * @version		SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -133,7 +132,7 @@ $config->LOSTPASSWORD = 1;
 $config->LOSTPASSWORD_TIMEOUT = 30;
 
 // Captcha imagewidth
-$config->LOSTPASSWORD_CAPTCHA_WIDTH = 286;
+$config->LOSTPASSWORD_CAPTCHA_WIDTH = 276;
 
 // Captcha imagehigh
 $config->LOSTPASSWORD_CAPTCHA_HEIGHT = 30;

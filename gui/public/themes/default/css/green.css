@@ -57,7 +57,10 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 .left_menu a {background: transparent url(../images/green/background/bullet.png) no-repeat center left;}
 .left_menu a:hover {background-image: url(../images/green/background/bullet_hover.png);}
 
-/** Body */
+/**
+ * Body
+ */
+
 h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 
 /** Tables */
@@ -96,11 +99,12 @@ h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 /** Form elements */
 
 input[type="text"], input[type="password"], select, textarea {
-    background-color: transparent;
     border-color: rgb(204, 204, 204);
 }
 
-input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {border-color: rgb(153, 153, 153);}
+input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
+    border-color: rgb(153, 153, 153);
+}
 
 /** Tooltips */
 .tooltip {border-color: rgb(31, 92, 22);}
@@ -110,3 +114,33 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
 
 /** Footer */
 .footer {color: rgb(255, 255, 255);}
+
+/**
+ * Login page
+ */
+
+.login	#header {
+    background: rgb(0, 0, 0) url('../images/green/login/stripe.png') repeat-x left top;
+    border-bottom-color: rgb(102, 102, 102);
+}
+
+#logo span {
+    color: rgb(255, 255, 255);
+}
+
+.login #copyright span a {
+    color: rgb(255, 255, 255);
+}
+
+.login #copyright span a:hover {
+    color: rgb(92, 186, 218);
+}
+
+.login #loginBox {background: transparent url('../images/green/login/form_box.png') no-repeat left top;}
+
+.login label span {
+    color: rgb(255, 255, 255);
+}
+
+.i_lock {background-image: url('../images/login/i_lock.png');}
+.i_unlock {background-image: url('../images/login/i_unlock.png');}

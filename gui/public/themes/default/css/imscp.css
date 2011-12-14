@@ -84,20 +84,21 @@ table {
  * Page layout
  */
 
-html, body {
-    min-width: 850px;
-}
-
 html {
     position: relative;
     height: 100%
 }
 
 body {
+    min-width: 850px;
     position: relative;
     height:100%;
     font-family: Geneva, Arial, Helvetica, sans-serif;
     font-size: 0.75em;
+}
+
+.no_min_width {
+    min-width: 0;
 }
 
 #wrapper {
@@ -278,6 +279,10 @@ a {text-decoration: none;}
     text-decoration: none;
 }
 
+.no_menu {
+    background-image: none;
+}
+
 /**
  * Body
  */
@@ -406,6 +411,7 @@ p { margin: 0.5em 0;}
     width: 100%;
     border-collapse: collapse;
     margin: 0.5em 0;
+    text-align: left;
 }
 
 .body tr {border: 1px solid;}
@@ -430,8 +436,12 @@ p { margin: 0.5em 0;}
     border-bottom: 1px solid;
 }
 
-.description th:first-child {border-left: 1px solid;}
-.description th:last-child {border-right: 1px solid;}
+.body .description th:first-child {border-left: 1px solid;}
+.body .description th:last-child {border-right: 1px solid;}
+
+.body .firstColFixed td:first-child {
+    width:250px;
+}
 
 .body td {
     height: 24px;
@@ -624,15 +634,11 @@ form table tbody td textarea {
     min-width: 200px;
 }
 
-input[type="text"],
-input[type="password"],
-select,
-textarea {
+input[type="text"], input[type="password"], select, textarea {
     padding: 0.2em;
     border: 1px solid;
     border-radius: 4px;
 }
-
 
 input[type="text"]:disabled,
 input[type="password"]:disabled,
@@ -641,9 +647,13 @@ textarea:disabled{
     background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
 }
 
+.inputTitle {
+    width: 75%;
+}
+
 textarea {
-    width: 400px;
-    height:20em;
+    width: 75%;
+    height:250px;
 }
 
 /** Graph */
@@ -709,6 +719,7 @@ textarea {
     z-index: 5000;
     border: 1px solid;
     border-radius: 4px;
+    text-align: left;
 }
 
 .tooltip span {
@@ -731,9 +742,11 @@ textarea {
 }
 
 .icon.i_help {
-    width: 0;
+    position: relative;
+    width: 0px;
     vertical-align: middle;
     margin-left: 0.5em;
+    overflow: hidden;
 }
 
 .sw_tooltip_bg {
@@ -773,6 +786,7 @@ textarea {
 
 .paginator {
     margin: 0.5em 0;
+    float:right;
 }
 
 .paginator .icon {
@@ -789,3 +803,161 @@ textarea {
     line-height: 1.2em;
     padding: 1em 0;
 }
+
+.no_footer .footer {
+    display:none;
+}
+
+/**
+ * Login page
+ */
+
+.login {
+    text-align: center;
+}
+
+.login #header {
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid;
+}
+
+#logo {
+    background: transparent url('../images/imscp_logo32.png') no-repeat 5px center;
+    float: left;
+    height: 50px;
+    line-height: 50px;
+}
+
+#logo span {
+    margin-left: 100px;
+    font-weight: bold;
+}
+
+.login #copyright {
+    float: right;
+    text-align: right;
+    height: 50px;
+    padding-top: 12.5px;
+}
+
+.login #copyright span {
+    margin-right: 0.5em;
+}
+
+.login #copyright span a {
+    float: left;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login #body {
+    position: relative;
+    width: 316px;
+    text-align: left;
+    margin: 0 auto;
+}
+
+.login #messageContainer {
+    position: relative;
+    height: 50px;
+    text-align: center;
+}
+.login #messageContainer #message {
+    width:400px;
+    border-top: none;
+    margin: 0 auto;
+}
+
+.login #loginBox {
+    height: 339px;
+    margin-top: 90px;
+}
+
+.login form {
+    padding: 150px 20px 10px 20px;
+    text-align: left;
+}
+
+.login label {
+    display: block;
+    clear: left;
+    margin-top: 1em;
+    width:100%;
+}
+
+.login label span {
+    display: block;
+    float: left;
+    width: 130px;
+    margin-right: 10px;
+    line-height: 22px;
+}
+
+.login label input {
+    width: 128px;
+    _width:123px;
+}
+
+.login .button {
+    margin: 20px 0;
+    text-align: right;
+}
+
+.login .button button {
+    margin-left: 0.5em;
+}
+
+.login #toolbox {
+    clear: both;
+    width:316px;
+    margin-top: 2em;
+    text-align: center;
+    overflow: hidden;
+}
+
+.login #toolbox li {
+    display: inline;
+}
+
+.login #toolbox li a {
+    display:block;
+    float:left;
+    width : 33%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: rgb(26, 26, 26);
+    padding-top : 40px;
+}
+
+.login #toolbox li a:hover {
+    color: rgb(92, 186, 218);
+}
+
+.login #toolbox li a.pma{background-image: url('../images/login/phpmyadmin.png');}
+.login #toolbox li a.filemanager{background-image: url('../images/login/filemanager.png');}
+.login #toolbox li a.webmail{background-image: url('../images/login/webmail.png');}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {
+    height: 1%;
+}
+
+.clearfix {
+    display: block;
+}
+/*End hide from IE-mac*/
+
+

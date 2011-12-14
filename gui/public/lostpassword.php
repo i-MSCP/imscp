@@ -64,22 +64,23 @@ isset($_SESSION['user_theme']) ? $theme_color = $_SESSION['user_theme']
 	: $theme_color = $cfg->USER_INITIAL_THEME;
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic(
+	array(
+		'page' => $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
-		'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel - Lost password'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost password'),
 		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
 		'THEME_CHARSET' => tr('encoding'),
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),
 		'TR_CAPCODE' => tr('Security code'),
-		'TR_IMGCAPCODE' => '<img id="captcha" src="imagecode.php" width="' .
-			$cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
-			$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT .
-			' alt="captcha image" />',
+		'GET_NEW_IMAGE' => tr('Get a new image'),
+		'TR_IMGCAPCODE' => '<img id="captcha" src="imagecode.php" width="' . $cfg->LOSTPASSWORD_CAPTCHA_WIDTH .
+			'" height="' . $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" alt="captcha image" />',
 		'TR_USERNAME' => tr('Username'),
 		'TR_SEND' => tr('Send'),
 		'TR_CANCEL' => tr('Cancel')
@@ -97,12 +98,12 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	} else {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
-} elseif (isset($_POST['uname'])) { // Request for new password
+} elseif (!empty($_POST)) { // Request for new password
 
 	// Check if we are not blocked (brute force feature)
 	check_ipaddr(getipaddr(), 'captcha');
 
-	if ($_POST['uname'] != '' && isset($_SESSION['image']) && isset($_POST['capcode'])) {
+	if (!empty($_POST['uname']) && isset($_SESSION['image']) && isset($_POST['capcode'])) {
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
