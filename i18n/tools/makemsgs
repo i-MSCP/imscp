@@ -5,8 +5,6 @@
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # Copyright (C) 2010-2011 by internet Multi Server Control Panel - http://i-mscp.net
 #
-# Version: $Id$
-#
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
 # compliance with the License. You may obtain a copy of the License at
@@ -55,18 +53,14 @@ if [ ! -f ${GUI}/public/index.php ]; then
 fi
 
 if [ ! -f ${GUI}/public/index.php ]; then
-	echo "${GUI} isn't a valid gui/ location!"
+	echo "${GUI} isn't a valid gui/ location."
 	exit 1
 fi
 
+# PHP files
 /usr/bin/xgettext \
---foreign-user \
 --language=PHP \
 -d "i-MSCP" \
---copyright-holder="iMSCP Team - All rights reserved" \
---package-name="i-MSCP" \
---package-version="1.0.1.5" \
---msgid-bugs-address="i18n@i-mscp.net" \
 --keyword="tr" \
 --no-location \
 ${GUI}/library/i18n.php \
@@ -76,9 +70,25 @@ ${GUI}/library/resources/i18n/zend.php \
 ${GUI}/library/iMSCP/View/Helpers/Functions/*.php \
 ${GUI}/public/*.php \
 ${GUI}/public/*/*.php \
+${GUI}/themes/*/*/*.xml \
 --from-code=utf-8 \
 -p ../po \
 -o "iMSCP.pot"
+
+# XML files
+/usr/bin/xgettext \
+--foreign-user \
+--language=Glade \
+-d "i-MSCP" \
+--copyright-holder="iMSCP Team - All rights reserved" \
+--package-name="i-MSCP" \
+--package-version="1.0.1.6" \
+--msgid-bugs-address="i18n@i-mscp.net" \
+--keyword="label" \
+--no-location \
+${GUI}/themes/*/*/*.xml \
+-p ../po \
+-o "iMSCP.pot" -j -s
 
 sed --in-place '/#. Please ignore this entry/d' ../po/iMSCP.pot
 sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ../po/iMSCP.pot
