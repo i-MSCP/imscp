@@ -70,7 +70,6 @@ ${GUI}/library/resources/i18n/zend.php \
 ${GUI}/library/iMSCP/View/Helpers/Functions/*.php \
 ${GUI}/public/*.php \
 ${GUI}/public/*/*.php \
-${GUI}/themes/*/*/*.xml \
 --from-code=utf-8 \
 -p ../po \
 -o "iMSCP.pot"
