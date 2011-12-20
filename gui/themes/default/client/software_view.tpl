@@ -1,31 +1,3 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-		<div class="header">
-			{MAIN_MENU}
-
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
-		</div>
-
-		<div class="location">
-			<div class="location-area">
-				<h1 class="webtools">{TR_MENU_WEBTOOLS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- BDP: logged_from -->
-				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="software.php">{TR_SOFTWARE_MENU_PATH}</a></li>
-				<li><a href="software_view.php?id={SOFTWARE_ID}">{TR_SOFTWARE_VIEW_PATH}</a></li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
 
 		<div class="body">
 			<h2 class="apps_installer"><span>{TR_VIEW_SOFTWARE}</span></h2
@@ -111,4 +83,3 @@
 			</table>
 			<!-- EDP: software_item -->	
 		</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

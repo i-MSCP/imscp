@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,65 +31,25 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
-
-check_login(__FILE__);
-
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/order_settings.tpl');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('page_message', 'page');
-
-// Table with orders
-$tpl->define_dynamic('purchase_header', 'page');
-
-$tpl->define_dynamic('purchase_footer', 'page');
-
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
-
-/*
- * Functions
+/**********************************************************************************
+ * Script functions
  */
 
-function save_haf() {
+/**
+ *
+ */
+function save_haf()
+{
 	$user_id = $_SESSION['user_id'];
 	$header = $_POST['header'];
 	$footer = $_POST['footer'];
 
-	$query = "
-		SELECT
-			`id`
-		FROM
-			`orders_settings`
-		WHERE
-			`user_id` = ?
-	";
-	$rs = exec_query($query, $user_id);
+	$query = "SELECT `id` FROM `orders_settings` WHERE `user_id` = ?";
+	$stmt = exec_query($query, $user_id);
 
-	if ($rs->recordCount() !== 0) {
+	if ($stmt->rowCount()) {
 		// update query
-		$query = "
-			UPDATE
-				`orders_settings`
-			SET
-				`header` = ?,
-				`footer` = ?
-			WHERE
-				`user_id` = ?
-		";
-
+		$query = "UPDATE `orders_settings` SET `header` = ?, `footer` = ? WHERE `user_id` = ?";
 		exec_query($query, array($header, $footer, $user_id));
 	} else {
 		// create query
@@ -105,49 +64,62 @@ function save_haf() {
 	}
 }
 
-// end of functions
-
-/*
- *
- * static page messages.
- *
+/**********************************************************************************
+ * Main script
  */
-if (isset($_POST['header']) && $_POST['header'] !== ''
-    && isset ($_POST['footer']) && $_POST['footer'] !== ''
-) {
+
+// Include core library
+require 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
+check_login(__FILE__);
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/order_settings.tpl',
+		'page_message' => 'page',
+		'purchase_header' => 'page',
+		'purchase_footer' => 'page'));
+
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
+
+if (isset($_POST['header']) && $_POST['header'] !== '' && isset ($_POST['footer']) && $_POST['footer'] !== '') {
 	save_haf();
 }
-gen_purchase_haf($tpl, $_SESSION['user_id'], true);
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_orders.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');
-
-gen_logged_from($tpl);
 
 $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 
 $url = $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST . '/orderpanel/index.php?';
-$url .= 'coid='.$coid;
-$url .= '&amp;user_id=' . $_SESSION['user_id'];
+$url .= "coid=$coid&amp;user_id={$_SESSION['user_id']}";
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_ORDERS' => tr('Manage Orders'),
-		'TR_APPLY_CHANGES' => tr('Apply changes'),
-		'TR_HEADER' => tr('Header'),
-		'TR_PREVIEW' => tr('Preview'),
+		'TR_ORDER_TEMPLATE' => tr('Order template'),
 		'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
+		'TR_HEADER' => tr('Header'),
 		'TR_IMPLEMENT_URL' => $url,
-		'TR_FOOTER' => tr('Footer')
-	)
-);
+		'TR_FOOTER' => tr('Footer'),
+		'TR_PREVIEW' => tr('Preview'),
+		'TR_UPDATE' => tr('Update')));
 
+gen_purchase_haf($tpl, $_SESSION['user_id'], true);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

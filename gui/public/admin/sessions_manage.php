@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -110,6 +109,7 @@ function gen_user_sessions($tpl)
  * Main script
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -120,37 +120,35 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-						  'page' => $cfg->ADMIN_TEMPLATE_PATH . '/sessions_manage.tpl',
-						  'page_message' => 'page',
-						  'hosting_plans' => 'page',
-						  'user_session' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/sessions_manage.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page',
+		'user_session' => 'page'));
 
-$tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
-				  'TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),
-				  'TR_USERNAME' => tr('Username'),
-				  'TR_USERTYPE' => tr('User type'),
-				  'TR_LOGIN_ON' => tr('Last access'),
-				  'TR_OPTIONS' => tr('Options'),
-				  'TR_DELETE' => tr('Kill session')));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_USERTYPE' => tr('User type'),
+		'TR_LOGIN_ON' => tr('Last access'),
+		'TR_OPTIONS' => tr('Options'),
+		'TR_DELETE' => tr('Kill session')));
 
-
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
+generateNavigation($tpl);
 kill_session();
-
 gen_user_sessions($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

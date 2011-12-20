@@ -126,7 +126,6 @@ $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
 		 'page_message' => 'page',
-		 'logged_from' => 'page',
 		 'php_editor_first_block_js' => 'page',
 		 'php_editor_first_block' =>  'page',
 		 'register_globals_block' => 'php_editor_first_block',
@@ -151,7 +150,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-gen_logged_from($tpl);
 
 $htmlSelected = $cfg->HTML_SELECTED;
 $htmlChecked = $cfg->HTML_CHECKED;

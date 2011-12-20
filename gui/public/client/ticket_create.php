@@ -102,7 +102,6 @@ $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_create.tpl',
 		 'page_message' => 'page',
-		 'logged_from' => 'page'
 	)
 );
 
@@ -132,7 +131,6 @@ $tpl->assign($userdata);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
-gen_logged_from($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

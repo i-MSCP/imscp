@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -42,22 +42,22 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_maintenance_mode.tpl');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings_maintenance_mode.tpl'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Maintenance mode'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 $selected_on = '';
 $selected_off = '';
 
 if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
-
 	$maintenancemode = $_POST['maintenancemode'];
 	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
@@ -77,13 +77,7 @@ if ($cfg->MAINTENANCEMODE) {
 	$selected_off = $cfg->HTML_SELECTED;
 }
 
-/*
- *
- * static page messages.
- *
- */
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -96,16 +90,13 @@ $tpl->assign(
 		'TR_ENABLED' => tr('Enabled'),
 		'TR_DISABLED' => tr('Disabled'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
-		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')
-	)
-);
+		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

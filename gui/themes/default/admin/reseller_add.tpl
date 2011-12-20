@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		$(document).ready(function() {
@@ -124,36 +124,6 @@
 		});
 	/*]]>*/
 	</script>
-	<div class="header">
-		{MAIN_MENU}
-		<div class="logo">
-			<img src="{ISP_LOGO}" alt="i-MSCP logo"/>
-		</div>
-	</div>
-	<div class="location">
-		<div class="location-area">
-			<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-		</div>
-		<ul class="location-menu">
-			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-		</ul>
-		<ul class="path">
-			<li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
-			<li><a href="#" onclick="return false">{TR_ADD_RESELLER}</a></li>
-		</ul>
-	</div>
-
-	<div class="left_menu">
-		{MENU}
-	</div>
-
-	<div class="body">
-		<h2 class="user_green"><span>{TR_ADD_RESELLER}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<div id="dialog_box"></div>
 
 		<form name="createFrm" method="post" action="reseller_add.php">
@@ -246,7 +216,7 @@
 					<td><input type="text" name="max_disk_amnt" id="max_disk_amnt" value="{MAX_DISK_AMNT}"/></td>
 				</tr>
 			</table>
-			<table style="margin-top: 20px;">
+			<table>
 				<tr>
 					<th colspan="2">{TR_FEATURES}</th>
 				</tr>
@@ -394,7 +364,7 @@
 					</td>
 				</tr>
 			</table>
-			<table style="margin-top: 20px;">
+			<table>
 				<tr>
 					<th colspan="2">{TR_PERSONAL_DATA}</th>
 				</tr>
@@ -462,5 +432,3 @@
 				<button name="cancel" type="button" class="frm-button" onclick="location.href='manage_users.php'">{TR_CANCEL}</button>
 			</div>
 		</form>
-	</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

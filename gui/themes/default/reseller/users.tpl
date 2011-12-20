@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 		<script type="text/javascript">
 			/* <![CDATA[ */
 			function action_status(dom_id, dmn_name) {
@@ -10,39 +10,6 @@
 			}
 			/* ]]> */
 		</script>
-		<div class="header">
-			{MAIN_MENU}
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
-		</div>
-		<div class="location">
-			<div class="location-area">
-				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- BDP: logged_from -->
-				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
-				</li>
-			</ul>
-			<ul class="path">
-				<li><a href="users.php">{TR_MANAGE_USERS}</a></li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
-			<h2 class="users"><span>{TR_MANAGE_USERS}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<!-- BDP: users_search -->
 			<form action="users.php" method="post" name="search_user" id="search_user">
 				<a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
@@ -134,5 +101,3 @@
 				<a class="icon i_prev_gray" href="#">&nbsp;</a>
 				<!-- EDP: scroll_prev_gray -->
 			</div>
-		</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

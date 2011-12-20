@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -43,20 +42,24 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_log.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('log_row', 'page');
-$tpl->define_dynamic('scroll_prev_gray', 'page');
-$tpl->define_dynamic('scroll_prev', 'page');
-$tpl->define_dynamic('scroll_next_gray', 'page');
-$tpl->define_dynamic('scroll_next', 'page');
-$tpl->define_dynamic('clear_log', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/admin_log.tpl',
+		'page_message' => 'page',
+		'log_row' => 'page',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page',
+		'clear_log' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('iMSCP - Admin/Admin Log'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('iMSCP - Admin/Admin Log'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param  iMSCP_pTemplate $tpl
@@ -232,8 +235,7 @@ function clear_log()
     }
 }
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 clear_log();
 generate_page($tpl);
 
@@ -250,10 +252,9 @@ $tpl->assign(array(
                   'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
                   'TR_CLEAR_LOG_LAST52' => tr('older than 12 months')));
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

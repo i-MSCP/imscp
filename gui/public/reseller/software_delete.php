@@ -21,20 +21,18 @@
  * @category i-MSCP
  * @copyright 2010 by ispCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login(__FILE__);
 
-/**
- * @var $cfg iMSCP_Config_Handler_File
- */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {

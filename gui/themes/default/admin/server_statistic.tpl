@@ -1,34 +1,3 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-        <div class="header">
-            {MAIN_MENU}
-
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
-
-        <div class="location">
-            <div class="location-area">
-                <h1 class="statistics">{TR_SERVER_STATISTICS}</h1>
-            </div>
-            <ul class="location-menu">
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-                <li><a href="server_statistic.php">{TR_SERVER_STATISTICS}</a></li>
-            </ul>
-        </div>
-
-        <div class="left_menu">
-            {MENU}
-        </div>
-
-        <div class="body">
-            <h2 class="general"><span>{TR_SERVER_STATISTICS}</span></h2>
-
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
 
 			<form action="server_statistic.php" method="post" name="reseller_user_statistics" id="reseller_user_statistics">
 				{TR_MONTH}
@@ -100,5 +69,3 @@
                     <!-- EDP: day_list -->
 	                </tbody>
                 </table>
-        </div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

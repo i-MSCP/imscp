@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -41,16 +40,22 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_users.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-$tpl->define_dynamic('reseller_list', 'page');
-$tpl->define_dynamic('reseller_item', 'reseller_list');
-$tpl->define_dynamic('src_reseller', 'page');
-$tpl->define_dynamic('src_reseller_option', 'src_reseller');
-$tpl->define_dynamic('dst_reseller', 'page');
-$tpl->define_dynamic('dst_reseller_option', 'dst_reseller');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_users.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page',
+		'reseller_list' => 'page',
+		'reseller_item' => 'reseller_list',
+		'src_reseller' => 'page',
+		'src_reseller_option' => 'src_reseller',
+		'dst_reseller' => 'page',
+		'dst_reseller_option' => 'dst_reseller'));
 
+/**
+ * @param $tpl
+ */
 function gen_user_table($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
@@ -196,6 +201,9 @@ function gen_user_table($tpl) {
 	}
 }
 
+/**
+ *
+ */
 function update_reseller_user() {
 
 	if (isset($_POST['uaction'])
@@ -205,6 +213,9 @@ function update_reseller_user() {
 	}
 }
 
+/**
+ * @return bool
+ */
 function check_user_data() {
 
 	$query = "
@@ -277,6 +288,13 @@ function check_user_data() {
 	return true;
 }
 
+/**
+ * @param $dest_reseller
+ * @param $src_reseller
+ * @param $users
+ * @param $err
+ * @return bool
+ */
 function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 
 	list($dest_dmn_current, $dest_dmn_max,
@@ -383,6 +401,17 @@ function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 	return true;
 }
 
+/**
+ * @param $dest
+ * @param $dest_max
+ * @param $src
+ * @param $src_max
+ * @param $umax
+ * @param $err
+ * @param $obj
+ * @param $uname
+ * @return mixed
+ */
 function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$err, $obj, $uname) {
 	if ($dest_max == 0 && $src_max == 0 && $umax == -1) {
 		return;
@@ -454,6 +483,12 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 	}
 }
 
+/**
+ * @param $dest
+ * @param $users
+ * @param $err
+ * @return bool
+ */
 function check_ip_sets($dest, $users, &$err) {
 
 	$users_array = explode(";", $users);
@@ -487,26 +522,16 @@ function check_ip_sets($dest, $users, &$err) {
 	return true;
 }
 
-/*
- *
- * static page messages.
- *
- */
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/User assignment'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
+generateNavigation($tpl);
 update_reseller_user();
-
 gen_user_table($tpl);
 
 $tpl->assign(
@@ -518,16 +543,13 @@ $tpl->assign(
 		'TR_USER_NAME' => tr('User name'),
 		'TR_FROM_RESELLER' => tr('From reseller'),
 		'TR_TO_RESELLER' => tr('To reseller'),
-		'TR_MOVE' => tr('Move'),
-	)
-);
+		'TR_MOVE' => tr('Move'),));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -5,7 +5,6 @@
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @version		SVN: $Id$
  * @link		http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
@@ -103,31 +102,33 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-						  'page' => $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl',
-						  'page_message' => 'page',
-						  'database_updates' => 'page',
-						  'database_update' => 'database_updates'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl',
+		'page_message' => 'page',
+		'database_updates' => 'page',
+		'database_update' => 'database_updates'));
 
-$tpl->assign(array(
-				  'THEME_CHARSET' => tr('encoding'),
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Admin / System tools / Database Update'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'ISP_LOGO' => layout_getUserLogo(),
-				  'TR_SECTION_TITLE' => tr('Database updates')));
+$tpl->assign(
+	array(
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / System tools / Database Update'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_SECTION_TITLE' => tr('Database updates')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
-
+generateNavigation($tpl);
 
 if ($dbUpdate->isAvailableUpdate()) {
 	set_page_message(tr('One or more database updates are now available. See the details below.'), 'info');
 	admin_generateDatabaseUpdateDetail($tpl);
 
-	$tpl->assign(array(
-					  'TR_DATABASE_UPDATES' => tr('Database Update Revision'),
-					  'TR_DATABASE_UPDATE_DETAIL' => 'Database Update details',
-					  'TR_PROCESS_UPDATES' => tr('Process updates')));
+	$tpl->assign(
+		array(
+			'TR_DATABASE_UPDATES' => tr('Database Update Revision'),
+			'TR_DATABASE_UPDATE_DETAIL' => 'Database Update details',
+			'TR_PROCESS_UPDATES' => tr('Process updates')));
 } else {
 	$tpl->assign('DATABASE_UPDATES', '');
 	set_page_message(tr('No database updates available.'), 'info');
@@ -135,10 +136,9 @@ if ($dbUpdate->isAvailableUpdate()) {
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

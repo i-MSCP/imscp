@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,30 +31,33 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-$tpl->define_dynamic('month_list', 'page');
-$tpl->define_dynamic('year_list', 'page');
-$tpl->define_dynamic('day_list', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page',
+		'month_list' => 'page',
+		'year_list' => 'page',
+		'day_list' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 global $month, $year;
 
@@ -70,6 +72,11 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = date("Y");
 }
 
+/**
+ * @param $from
+ * @param $to
+ * @return array
+ */
 function get_server_trafic($from, $to) {
 
 	$query = "
@@ -102,6 +109,9 @@ function get_server_trafic($from, $to) {
 	}
 }
 
+/**
+ * @param $tpl
+ */
 function generate_page(&$tpl) {
 
 	global $month, $year;
@@ -211,16 +221,8 @@ function generate_page(&$tpl) {
 	);
 }
 
-/*
- *
- * static page messages.
- *
- */
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
-
+generateNavigation($tpl);
 gen_select_lists($tpl, $month, $year);
-
 generate_page($tpl);
 
 $tpl->assign(
@@ -240,16 +242,13 @@ $tpl->assign(
 		'TR_OTHER_OUT' => tr('Other out'),
 		'TR_ALL_IN' => tr('All in'),
 		'TR_ALL_OUT' => tr('All out'),
-		'TR_ALL' => tr('All')
-	)
-);
+		'TR_ALL' => tr('All')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

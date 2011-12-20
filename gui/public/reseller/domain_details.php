@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -41,65 +40,53 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_details.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_details.tpl',
+		'page_message' => 'page',
+		't_software_support' => 'page'));
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE'	=> tr('i-MSCP - Domain/Details'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> layout_getUserLogo()
-	)
-);
+		'TR_PAGE_TITLE' => tr('i-MSCP - Domain/Details'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
-/*
- *
- * static page messages.
- *
- */
 $tpl->assign(
 	array(
-		'TR_DOMAIN_DETAILS'		=> tr('Domain details'),
-		'TR_DOMAIN_NAME'		=> tr('Domain name'),
-		'TR_DOMAIN_IP'			=> tr('Domain IP'),
-		'TR_STATUS'				=> tr('Status'),
-		'TR_PHP_SUPP'			=> tr('PHP support'),
-		'TR_CGI_SUPP'			=> tr('CGI support'),
-		'TR_BACKUP_SUPPORT'		=> tr('Backup support'),
-		'TR_DNS_SUPP'			=> tr('Manual DNS support (EXPERIMENTAL)'),
-		'TR_MYSQL_SUPP'			=> tr('MySQL support'),
-		'TR_TRAFFIC'			=> tr('Traffic in MB'),
-		'TR_DISK'				=> tr('Disk in MB'),
-		'TR_FEATURE'			=> tr('Feature'),
-		'TR_USED'				=> tr('Used'),
-		'TR_LIMIT'				=> tr('Limit'),
-		'TR_MAIL_ACCOUNTS'		=> tr('Mail accounts'),
-		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts'),
-		'TR_SQL_DB_ACCOUNTS'	=> tr('SQL databases'),
-		'TR_SQL_USER_ACCOUNTS'	=> tr('SQL users'),
-		'TR_SUBDOM_ACCOUNTS'	=> tr('Subdomains'),
-		'TR_DOMALIAS_ACCOUNTS'	=> tr('Domain aliases'),
-		'TR_UPDATE_DATA'		=> tr('Submit changes'),
-		'TR_BACK'				=> tr('Back'),
-		'TR_EDIT'				=> tr('Edit'),
-		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer')
-	)
-);
+		'TR_DOMAIN_DETAILS' => tr('Domain details'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_STATUS' => tr('Status'),
+		'TR_PHP_SUPP' => tr('PHP support'),
+		'TR_CGI_SUPP' => tr('CGI support'),
+		'TR_BACKUP_SUPPORT' => tr('Backup support'),
+		'TR_DNS_SUPP' => tr('Manual DNS support (EXPERIMENTAL)'),
+		'TR_MYSQL_SUPP' => tr('MySQL support'),
+		'TR_TRAFFIC' => tr('Traffic in MB'),
+		'TR_DISK' => tr('Disk in MB'),
+		'TR_FEATURE' => tr('Feature'),
+		'TR_USED' => tr('Used'),
+		'TR_LIMIT' => tr('Limit'),
+		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
+		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
+		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
+		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
+		'TR_UPDATE_DATA' => tr('Submit changes'),
+		'TR_BACK' => tr('Back'),
+		'TR_EDIT' => tr('Edit'),
+		'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer')));
 
-if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
+generateNavigation($tpl);
 get_reseller_software_permission ($tpl, $_SESSION['user_id']);
-
-gen_logged_from($tpl);
-
 generatePageMessage($tpl);
 
 // Get user id that comes for manage domain
@@ -111,10 +98,9 @@ if (!isset($_GET['domain_id'])) {
 $editid = $_GET['domain_id'];
 gen_detaildom_page($tpl, $_SESSION['user_id'], $editid);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
@@ -122,6 +108,11 @@ unsetMessages();
 
 // Begin function block
 
+/**
+ * @param $tpl
+ * @param $user_id
+ * @param $domain_id
+ */
 function gen_detaildom_page($tpl, $user_id, $domain_id) {
 
 	$cfg = iMSCP_Registry::get('config');
@@ -293,33 +284,31 @@ function gen_detaildom_page($tpl, $user_id, $domain_id) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'DOMAIN_ID'					=> $data['domain_id'],
-			'VL_DOMAIN_NAME'			=> tohtml(decode_idna($data['domain_name'])),
-			'VL_DOMAIN_IP'				=> tohtml($ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')'),
-			'VL_STATUS'					=> $dstatus,
-			'VL_PHP_SUPP'				=> ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_CGI_SUPP'				=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_DNS_SUPP'				=> ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_MYSQL_SUPP'				=> ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
-			'VL_TRAFFIC_PERCENT'		=> $traffic_percent > 100 ? 100 : $traffic_percent,
-			'VL_TRAFFIC_USED'			=> sizeit($domain_all_traffic),
-			'VL_TRAFFIC_LIMIT'			=> sizeit($domain_traffic_limit, 'MB'),
-			'VL_DISK_PERCENT'			=> $disk_percent > 100 ? 100 : $disk_percent,
-			'VL_DISK_USED'				=> $domduh,
-			'VL_DISK_LIMIT'				=> sizeit($data['domain_disk_limit'], 'MB'),
-			'VL_MAIL_ACCOUNTS_USED'		=> $dat3['mcnt'],
-			'VL_MAIL_ACCOUNTS_LIIT'		=> $mail_limit,
-			'VL_FTP_ACCOUNTS_USED'		=> $used_ftp_acc,
-			'VL_FTP_ACCOUNTS_LIIT'		=> $ftp_limit,
-			'VL_SQL_DB_ACCOUNTS_USED'	=> $dat5['dnum'],
-			'VL_SQL_DB_ACCOUNTS_LIIT'	=> $sql_db,
-			'VL_SQL_USER_ACCOUNTS_USED'	=> $dat6['ucnt'],
-			'VL_SQL_USER_ACCOUNTS_LIIT'	=> $sql_users,
-			'VL_SUBDOM_ACCOUNTS_USED'	=> $sub_num_data['sub_num'] + $alssub_num_data['sub_num'],
-			'VL_SUBDOM_ACCOUNTS_LIIT'	=> $sub_dom,
-			'VL_DOMALIAS_ACCOUNTS_USED'	=> $alias_num_data['alias_num'],
-			'VL_DOMALIAS_ACCOUNTS_LIIT'	=> $dom_alias,
-			'VL_SOFTWARE_SUPP'			=> ($data['domain_software_allowed'] == 'yes') ? tr('Enabled') : tr('Disabled')
-		)
-	);
+			'DOMAIN_ID' => $data['domain_id'],
+			'VL_DOMAIN_NAME' => tohtml(decode_idna($data['domain_name'])),
+			'VL_DOMAIN_IP' => tohtml($ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')'),
+			'VL_STATUS' => $dstatus,
+			'VL_PHP_SUPP' => ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_CGI_SUPP' => ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_DNS_SUPP' => ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_MYSQL_SUPP' => ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
+			'VL_TRAFFIC_PERCENT' => $traffic_percent > 100 ? 100 : $traffic_percent,
+			'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
+			'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),
+			'VL_DISK_PERCENT' => $disk_percent > 100 ? 100 : $disk_percent,
+			'VL_DISK_USED' => $domduh,
+			'VL_DISK_LIMIT' => sizeit($data['domain_disk_limit'], 'MB'),
+			'VL_MAIL_ACCOUNTS_USED' => $dat3['mcnt'],
+			'VL_MAIL_ACCOUNTS_LIIT' => $mail_limit,
+			'VL_FTP_ACCOUNTS_USED' => $used_ftp_acc,
+			'VL_FTP_ACCOUNTS_LIIT' => $ftp_limit,
+			'VL_SQL_DB_ACCOUNTS_USED' => $dat5['dnum'],
+			'VL_SQL_DB_ACCOUNTS_LIIT' => $sql_db,
+			'VL_SQL_USER_ACCOUNTS_USED' => $dat6['ucnt'],
+			'VL_SQL_USER_ACCOUNTS_LIIT' => $sql_users,
+			'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num'] + $alssub_num_data['sub_num'],
+			'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
+			'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
+			'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias,
+			'VL_SOFTWARE_SUPP' => ($data['domain_software_allowed'] == 'yes') ? tr('Enabled') : tr('Disabled')));
 } // end of load_user_data();

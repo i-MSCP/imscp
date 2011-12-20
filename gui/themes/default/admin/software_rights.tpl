@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			function action_remove_right() {
@@ -7,38 +7,6 @@
 			}
 		/*]]>*/
 		</script>
-		<div class="header">
-			{MAIN_MENU}
-
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
-		</div>
-
-		<div class="location">
-			<div class="location-area">
-				<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-			</div>
-			<ul class="location-menu">
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="software_manage.php">{TR_MENU_MANAGE_SOFTWARE}</a></li>
-				<li><a href="software_rights.php?id={SOFTWARE_RIGHTS_ID}">{TR_SOFTWARE_RIGHTS}</a></li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
-			<h2 class="apps_installer"><span>{TR_ADD_RIGHTS} {TR_SOFTWARE_NAME}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<table>
 				<!-- BDP: no_select_reseller -->
 				<tr>
@@ -95,9 +63,4 @@
 					<th colspan="3">{TR_RESELLER_COUNT}:&nbsp;{TR_RESELLER_NUM}</th>
 				</tr>
 			</table>
-			<div class="paginator">
-
-			</div>
-
-		</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->
+			<div class="paginator"></div>

@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -41,24 +41,19 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/alias_edit.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/alias_edit.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain Alias/Edit Alias'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-/*
- *
- * static page messages.
- *
- */
 $tpl->assign(
 	array(
 		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
@@ -74,14 +69,9 @@ $tpl->assign(
 		'TR_DISABLE' => tr("Disable"),
 		'TR_PREFIX_HTTP' => 'http://',
 		'TR_PREFIX_HTTPS' => 'https://',
-		'TR_PREFIX_FTP' => 'ftp://'
-	)
-);
+		'TR_PREFIX_FTP' => 'ftp://'));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 // "Modify" button has been pressed
 if (isset($_POST['uaction']) && ('modify' === $_POST['uaction'])) {
@@ -114,22 +104,22 @@ gen_editalias_page($tpl, $editid);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
 unsetMessages();
 
-// Begin function block
-
 /**
- * Show user data
+ *
+ * @param  iMSCP_pTemplate $tpl
+ * @param $edit_id
  */
-function gen_editalias_page(&$tpl, $edit_id) {
+function gen_editalias_page($tpl, $edit_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
@@ -182,13 +172,11 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			$url_forward = '';
 			$tpl->assign(
 				array(
-					'READONLY_FORWARD'	=>	$cfg->HTML_READONLY,
-					'DISABLE_FORWARD'	=>	$cfg->HTML_DISABLED,
-					'HTTP_YES'			=>	'',
-					'HTTPS_YES'			=>	'',
-					'FTP_YES'			=>	''
-				)
-			);
+					'READONLY_FORWARD' => $cfg->HTML_READONLY,
+					'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
+					'HTTP_YES' => '',
+					'HTTPS_YES' => '',
+					'FTP_YES' => ''));
 		} else {
 			$check_en = $cfg->HTML_CHECKED;
 			$check_dis = '';
@@ -198,30 +186,29 @@ function gen_editalias_page(&$tpl, $edit_id) {
 					'DISABLE_FORWARD' => '',
 					'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : '',
 					'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : '',
-					'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : ''
-				)
-			);
+					'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : ''));
 		}
 		$tpl->assign(
 				array(
 					'CHECK_EN' => $check_en,
-					'CHECK_DIS' => $check_dis
-				)
-			);
+					'CHECK_DIS' => $check_dis));
 	}
+
 	// Fill in the fields
 	$tpl->assign(
 		array(
 			'ALIAS_NAME' => tohtml(decode_idna($data['alias_name'])),
 			'DOMAIN_IP' => $ip_data,
 			'FORWARD' => tohtml($url_forward),
-			'ID' => $edit_id
-		)
-	);
+			'ID' => $edit_id));
 } // End of gen_editalias_page()
 
 /**
  * Check input data
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param $alias_id
+ * @return bool
  */
 function check_fwd_data($tpl, $alias_id) {
 
@@ -246,16 +233,14 @@ function check_fwd_data($tpl, $alias_id) {
 		$check_dis = '';
 		$tpl->assign(
 			array(
-				'FORWARD'			=> tohtml($forward_url),
-				'HTTP_YES'			=> ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
-				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
-				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : '',
-				'CHECK_EN'			=> $check_en,
-				'CHECK_DIS'			=> $check_dis,
-				'DISABLE_FORWARD'	=>	'',
-				'READONLY_FORWARD'	=>	''
-			)
-		);
+				'FORWARD' => tohtml($forward_url),
+				'HTTP_YES' => ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES' => ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES' => ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : '',
+				'CHECK_EN' => $check_en,
+				'CHECK_DIS' => $check_dis,
+				'DISABLE_FORWARD' => '',
+				'READONLY_FORWARD' => ''));
 	} else {
 		$check_en = $cfg->HTML_CHECKED;
 		$check_dis = '';
@@ -265,9 +250,7 @@ function check_fwd_data($tpl, $alias_id) {
 				'READONLY_FORWARD' => $cfg->HTML_READONLY,
 				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
 				'CHECK_EN' => $check_en,
-				'CHECK_DIS' => $check_dis,
-			)
-		);
+				'CHECK_DIS' => $check_dis,));
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {

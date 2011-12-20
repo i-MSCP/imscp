@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -38,7 +37,7 @@
  * Main script
  */
 
-// include core library
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -86,43 +85,41 @@ if (isset($_GET['ticket_id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/ticket_view.tpl',
-                          'logged_from' => 'page',
-                          'page_message' => 'page',
-                          'tickets_list' => 'page',
-                          'tickets_item' => 'tickets_list'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/ticket_view.tpl',
+		'page_message' => 'page',
+		'tickets_list' => 'page',
+		'tickets_item' => 'tickets_list'));
 
-$tpl->assign(array(
-                  'THEME_CHARSET' => tr('encoding'),
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Support Ticket System / View Ticket'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
-                  'TR_OPEN_TICKETS' => tr('Open tickets'),
-                  'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-                  'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),
-                  'TR_TICKET_INFO' => tr('Ticket information'),
-                  'TR_TICKET_URGENCY' => tr('Priority'),
-                  'TR_TICKET_SUBJECT' => tr('Subject'),
-                  'TR_TICKET_MESSAGES' => tr('Messages'),
-                  'TR_TICKET_FROM' => tr('From'),
-                  'TR_TICKET_DATE' => tr('Date'),
-                  'TR_TICKET_CONTENT' => tr('Message'),
-                  'TR_TICKET_NEW_REPLY' => tr('Send new reply'),
-                  'TR_TICKET_REPLY' => tr('Send reply')));
+$tpl->assign(
+	array(
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Support Ticket System / View Ticket'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
+		'TR_OPEN_TICKETS' => tr('Open tickets'),
+		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		'TR_VIEW_SUPPORT_TICKET' => tr('View Support Ticket'),
+		'TR_TICKET_INFO' => tr('Ticket information'),
+		'TR_TICKET_URGENCY' => tr('Priority'),
+		'TR_TICKET_SUBJECT' => tr('Subject'),
+		'TR_TICKET_MESSAGES' => tr('Messages'),
+		'TR_TICKET_FROM' => tr('From'),
+		'TR_TICKET_DATE' => tr('Date'),
+		'TR_TICKET_CONTENT' => tr('Message'),
+		'TR_TICKET_NEW_REPLY' => tr('Send new reply'),
+		'TR_TICKET_REPLY' => tr('Send reply')));
 
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_ticket_system.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 showTicketContent($tpl, $ticketId, $userId);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 unsetMessages();

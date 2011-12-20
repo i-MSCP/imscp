@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -42,36 +41,33 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 // Check for login
 check_login(__FILE__);
 
-/**
- * @var $cfg iMSCP_Config_Handler_File
- */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_status.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('service_status', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/server_status.tpl',
+		'page_message' => 'page',
+		'service_status' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP Admin / General Information / Server Status'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
+generatePageMessage($tpl);
 
 $tpl->assign(
 	array(
 		'TR_HOST' => tr('Host'),
 		'TR_SERVICE' => tr('Service'),
 		'TR_STATUS' => tr('Status'),
-		'TR_SERVER_STATUS' => tr('Server status'),
-	)
-);
+		'TR_SERVER_STATUS' => tr('Server status')));
 
 // Services status string
 $running = tr('UP');
@@ -80,11 +76,9 @@ $down = tr('DOWN');
 $services = new iMSCP_Services();
 
 foreach($services as $service) {
-
 	$services->setService($services->key($services), false);
 
 	if($services->isVisible()) {
-
 		$serviceState = $services->isRunning();
 
 		$tpl->assign(
@@ -93,17 +87,14 @@ foreach($services as $service) {
 				'PORT' => $services->getPort(),
 				'SERVICE' => $services->getName(),
 				'STATUS' => $serviceState ? "<b>$running</b>" : $down,
-				'CLASS' => $serviceState ? 'up' : 'down'
-			)
-		);
+				'CLASS' => $serviceState ? 'up' : 'down'));
 
 		$tpl->parse('SERVICE_STATUS', '.service_status');
 	}
 }
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

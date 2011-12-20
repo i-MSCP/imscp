@@ -49,7 +49,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/hosting_plan_update.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('hp_order', 'page');
 
@@ -644,7 +643,6 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 gen_hp($tpl, $_SESSION['user_id']);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
 
 $tpl->assign(
 	array(

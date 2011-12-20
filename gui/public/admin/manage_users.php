@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -49,43 +48,41 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array('page' => $cfg->ADMIN_TEMPLATE_PATH . '/manage_users.tpl',
-                          'page_message' => 'page',
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/manage_users.tpl',
+		'page_message' => 'page',
+		'admin_message' => 'page',
+		'admin_list' => 'page',
+		'admin_item' => 'admin_list',
+		'admin_delete_show' => 'admin_item',
+		'admin_delete_link' => 'admin_item',
+		'rsl_message' => 'page',
+		'rsl_list' => 'page',
+		'rsl_item' => 'rsl_list',
+		'rsl_delete_show' => 'rsl_item',
+		'rsl_delete_link' => 'rsl_item',
+		'usr_message' => 'page',
+		'usr_list' => 'page',
+		'usr_item' => 'usr_list',
+		'user_details' => 'usr_list',
+		'usr_status_reload_true' => 'usr_item',
+		'usr_status_reload_false' => 'usr_item',
+		'usr_delete_show' => 'usr_item',
+		'usr_delete_link' => 'usr_item',
+		'icon' => 'usr_item',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page'));
 
-                          'admin_message' => 'page',
-
-                          'admin_list' => 'page',
-                          'admin_item' => 'admin_list',
-                          'admin_delete_show' => 'admin_item',
-                          'admin_delete_link' => 'admin_item',
-
-                          'rsl_message' => 'page',
-                          'rsl_list' => 'page',
-                          'rsl_item' => 'rsl_list',
-                          'rsl_delete_show' => 'rsl_item',
-                          'rsl_delete_link' => 'rsl_item',
-
-                          'usr_message' => 'page',
-                          'usr_list' => 'page',
-                          'usr_item' => 'usr_list',
-                          'user_details' => 'usr_list',
-
-                          'usr_status_reload_true' => 'usr_item',
-                          'usr_status_reload_false' => 'usr_item',
-                          'usr_delete_show' => 'usr_item',
-                          'usr_delete_link' => 'usr_item',
-                          'icon' => 'usr_item',
-
-                          'scroll_prev_gray' => 'page',
-                          'scroll_prev' => 'page',
-                          'scroll_next_gray' => 'page',
-                          'scroll_next' => 'page'));
-
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Users'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Users'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['details']) && !empty($_POST['details'])) {
 	$_SESSION['details'] = $_POST['details'];
@@ -124,15 +121,13 @@ if (!$cfg->exists('HOSTING_PLANS_LEVEL') ||
 	$tpl->assign('EDIT_OPTION', '');
 }
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
+generateNavigation($tpl);
 get_admin_manage_users($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

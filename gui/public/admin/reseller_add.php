@@ -661,10 +661,11 @@ $data =& admin_getData();
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_add.tpl',
-		 'page_message' => 'page',
-		 'ips_block' => 'page',
-		 'ip_block' => 'ips_block'));
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_add.tpl',
+		'page_message' => 'page',
+		'ips_block' => 'page',
+		'ip_block' => 'ips_block'));
 
 $tpl->assign(
 	array(
@@ -680,12 +681,11 @@ $tpl->assign(
 		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
+generateNavigation($tpl);
 admin_generateForm($tpl, $data);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

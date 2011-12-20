@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -15,17 +15,17 @@
  * The Original Code is i-MSCP - Multi Server Control Panel.
  *
  * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by Initial Developer are Copyright (C) 2010
+ * Portions created by Initial Developer are Copyright (C) 2010-2011
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category i-MSCP
- * @copyright 2010 by ispCP | http://i-mscp.net
+ * @copyright 2010-2011 by i-MSCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);

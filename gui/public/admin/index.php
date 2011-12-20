@@ -1,16 +1,7 @@
 <?php
 /**
- * i-MSCP - internet Multi Server Control Panel
+ * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -31,7 +22,17 @@
  * isp Control Panel. All Rights Reserved.
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Admin
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link 		http://i-mscp.net
+ * @author 		ispCP Team
+ * @author 		i-MSCP Team
  */
 
 /************************************************************************************
@@ -130,20 +131,19 @@ function admin_getAdminGeneralInfo($tpl)
         $showTotalMails = ($totalMails - $totalDefaultMails) . '/' . $totalMails;
     }
 
-    $tpl->assign(array(
-                      'ACCOUNT_NAME' => tohtml($_SESSION['user_logged']),
-                      'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
-                      'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
-                      'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
-                      'DOMAINS' => records_count('domain', '', ''),
-                      'SUBDOMAINS' => records_count('subdomain', '', '') +
-                                      records_count('subdomain_alias',
-                                                    'subdomain_alias_id', '', ''),
-                      'DOMAINS_ALIASES' => records_count('domain_aliasses', '', ''),
-                      'MAIL_ACCOUNTS' => $showTotalMails,
-                      'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
-                      'SQL_DATABASES' => records_count('sql_database', '', ''),
-                      'SQL_USERS' => get_sql_user_count()));
+    $tpl->assign(
+		array(
+			'ACCOUNT_NAME' => tohtml($_SESSION['user_logged']),
+			'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
+			'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
+			'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
+			'DOMAINS' => records_count('domain', '', ''),
+			'SUBDOMAINS' => records_count('subdomain', '', '') + records_count('subdomain_alias', 'subdomain_alias_id', '', ''),
+			'DOMAINS_ALIASES' => records_count('domain_aliasses', '', ''),
+			'MAIL_ACCOUNTS' => $showTotalMails,
+			'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
+			'SQL_DATABASES' => records_count('sql_database', '', ''),
+			'SQL_USERS' => get_sql_user_count()));
 }
 
 /**
@@ -205,10 +205,11 @@ function admin_generateServerTrafficBar($tpl)
         $percent = ($traffic / $maxServerTraffic) * 100;
     }
 
-    $tpl->assign(array(
-                      'TRAFFIC_WARNING' => $trafficMessage,
-                      'BAR_VALUE' => $bar_value,
-                      'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
+	$tpl->assign(
+		array(
+			'TRAFFIC_WARNING' => $trafficMessage,
+			'BAR_VALUE' => $bar_value,
+			'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
 }
 
 /************************************************************************************
@@ -226,47 +227,47 @@ $cfg = iMSCP_Registry::get('config');
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl',
-                          'page_message' => 'page',
-                          'imscp_update_message' => 'page',
-                          'imscp_database_update_message' => 'page',
-                          'traffic_warning_message' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl',
+		'page_message' => 'page',
+		'imscp_update_message' => 'page',
+		'imscp_database_update_message' => 'page',
+		'traffic_warning_message' => 'page'));
 
-$tpl->assign(array(
-                  'THEME_CHARSET' => tr('encoding'),
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General information'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_GENERAL_INFORMATION' => tr('General information'),
-                  'TR_PROPERTIES' => tr('Properties'),
-                  'TR_VALUES' => tr('Values'),
-                  'TR_ACCOUNT_NAME' => tr('Account name'),
-                  'TR_ADMIN_USERS' => tr('Admin users'),
-                  'TR_RESELLER_USERS' => tr('Reseller users'),
-                  'TR_NORMAL_USERS' => tr('Normal users'),
-                  'TR_DOMAINS' => tr('Domains'),
-                  'TR_SUBDOMAINS' => tr('Subdomains'),
-                  'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
-                  'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-                  'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-                  'TR_SQL_DATABASES' => tr('SQL databases'),
-                  'TR_SQL_USERS' => tr('SQL users'),
-                  'TR_SERVER_TRAFFIC' => tr('Server traffic')));
+$tpl->assign(
+	array(
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General information'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_GENERAL_INFORMATION' => tr('General information'),
+		'TR_PROPERTIES' => tr('Properties'),
+		'TR_VALUES' => tr('Values'),
+		'TR_ACCOUNT_NAME' => tr('Account name'),
+		'TR_ADMIN_USERS' => tr('Admin users'),
+		'TR_RESELLER_USERS' => tr('Reseller users'),
+		'TR_NORMAL_USERS' => tr('Normal users'),
+		'TR_DOMAINS' => tr('Domains'),
+		'TR_SUBDOMAINS' => tr('Subdomains'),
+		'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
+		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+		'TR_SQL_DATABASES' => tr('SQL databases'),
+		'TR_SQL_USERS' => tr('SQL users'),
+		'TR_SERVER_TRAFFIC' => tr('Server traffic')));
 
-
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 admin_generateSupportQuestionsMessage();
 admin_generateUpdateMessages($tpl);
 admin_getAdminGeneralInfo($tpl);
 admin_generateServerTrafficBar($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -41,16 +41,17 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_welcome_mail.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings_welcome_mail.tpl',
+		'page_message' => 'page'));
 
 $user_id = $_SESSION['user_id'];
 
 $data = get_welcome_email($user_id, 'reseller');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
-
 	$data['subject'] = clean_input($_POST['auto_subject'], false);
 	$data['message'] = clean_input($_POST['auto_message'], false);
 
@@ -59,6 +60,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	if (empty($data['subject'])) {
 		$message .= tr('Please specify a subject!') . '<br />';
 	}
+
 	if (empty($data['message'])) {
 		$message .= tr('Please specify message!');
 	}
@@ -71,23 +73,14 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 	}
 }
 
-/*
- *
- * static page messages.
- *
- */
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Email setup'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -108,16 +101,13 @@ $tpl->assign(
 		'SUBJECT_VALUE' => tohtml($data['subject']),
 		'MESSAGE_VALUE' => tohtml($data['message']),
 		'SENDER_EMAIL_VALUE' => tohtml($data['sender_email']),
-		'SENDER_NAME_VALUE' => tohtml($data['sender_name'])
-	)
-);
+		'SENDER_NAME_VALUE' => tohtml($data['sender_name'])));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

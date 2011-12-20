@@ -24,7 +24,6 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- *
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Admin

@@ -53,7 +53,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
@@ -85,7 +84,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-gen_logged_from($tpl);
 
 // "Modify" button has been pressed
 if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {

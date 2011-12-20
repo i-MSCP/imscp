@@ -5,7 +5,6 @@
  * @copyright	 2001-2006 by moleSoftware GmbH
  * @copyright	 2006-2010 by ispCP | http://isp-control.net
  * @copyright	 2010 by i-msCP | http://i-mscp.net
- * @version	 SVN: $Id$
  * @link		 http://i-mscp.net
  * @author		 ispCP Team
  * @author		 i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -47,42 +47,34 @@ $cfg = iMSCP_Registry::get('config');
 $phpini = iMSCP_PHPini::getInstance();
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_edit.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('subdomain_edit', 'page');
-$tpl->define_dynamic('alias_edit', 'page');
-$tpl->define_dynamic('mail_edit', 'page');
-$tpl->define_dynamic('ftp_edit', 'page');
-$tpl->define_dynamic('sql_db_edit', 'page');
-$tpl->define_dynamic('sql_user_edit', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
-$tpl->define_dynamic('t_phpini_system', 'page');
-$tpl->define_dynamic('t_phpini_register_globals', 'page');
-$tpl->define_dynamic('t_phpini_allow_url_fopen', 'page');
-$tpl->define_dynamic('t_phpini_display_errors', 'page');
-$tpl->define_dynamic('t_phpini_disable_functions', 'page');
-
-/**
- * static page messages.
- */
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_edit.tpl',
+		'page_message' => 'page',
+		'subdomain_edit' => 'page',
+		'alias_edit' => 'page',
+		'mail_edit' => 'page',
+		'ftp_edit' => 'page',
+		'sql_db_edit' => 'page',
+		'sql_user_edit' => 'page',
+		't_software_support' => 'page',
+		't_phpini_system' => 'page',
+		't_phpini_register_globals' => 'page',
+		't_phpini_allow_url_fopen' => 'page',
+		't_phpini_display_errors' => 'page',
+		't_phpini_disable_functions' => 'page'));
 
 global $hpid;
 
-// Show main menu
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Edit hosting plan'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 $tpl->assign(
 	array(
@@ -135,16 +127,10 @@ $tpl->assign(
 		 'TR_PHPINI_MEMORY_LIMIT' => tr('PHP %s directive', true, '<span class="bold">memory_limit</span>'),
 		 'TR_MIB' => tr('MiB'),
 		 'TR_SEC' => tr('Sec.'),
-		 'HOSTING_PLAN_ID' => $hpid
-	)
-);
+		 'HOSTING_PLAN_ID' => $hpid));
 
 
 $phpini->loadRePerm($_SESSION['user_id']); //load Reseller Permission into object
-
-/**
- * Dynamic page process
- */
 
 if (isset($_POST['uaction']) && ('add_plan' == $_POST['uaction'])) {
 	// Process data
@@ -204,16 +190,11 @@ if ($phpini->checkRePerm('phpiniSystem')) { //if reseller has permission to use 
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
-
-/**
- * Function definitions
- */
 
 /**
  * Restore form on any error
@@ -637,9 +618,7 @@ $hp_disk, $hpid, $price, $setup_fee, $hp_backup, $hp_dns, $hp_allowsoftware;
 	}
 } // end of check_data_iscorrect()
 
-/**
- *
- */
+
 /**
  * Store new hosting plan.
  *

@@ -60,14 +60,14 @@ if (!captcha_fontfile_exists()) {
 // Remove old unique keys
 removeOldKeys($cfg->LOSTPASSWORD_TIMEOUT);
 
-isset($_SESSION['user_theme']) ? $theme_color = $_SESSION['user_theme']
-	: $theme_color = $cfg->USER_INITIAL_THEME;
+isset($_SESSION['user_theme']) ? $theme_color = $_SESSION['user_theme'] : $theme_color = $cfg->USER_INITIAL_THEME;
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
+		'layout' => $cfg->LOGIN_TEMPLATE_PATH . '/shared/layouts/login.tpl',
 		'page' => $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl',
-		'page_message' => 'page'));
+		'page_message' => 'layout'));
 
 $tpl->assign(
 	array(
@@ -83,9 +83,7 @@ $tpl->assign(
 			'" height="' . $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" alt="captcha image" />',
 		'TR_USERNAME' => tr('Username'),
 		'TR_SEND' => tr('Send'),
-		'TR_CANCEL' => tr('Cancel')
-	)
-);
+		'TR_CANCEL' => tr('Cancel')));
 
 // A request for new password was validated (User clicked on the link he has received by mail)
 if (isset($_GET['key']) && $_GET['key'] != '') {
@@ -126,7 +124,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 // Generate page messages
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, new iMSCP_Events_Response($tpl));
 

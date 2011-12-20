@@ -53,7 +53,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_change_password.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 
 if (isset($_GET['id'])) {
 	$db_user_id = $_GET['id'];
@@ -172,7 +171,6 @@ check_user_sql_perms($db_user_id);
 change_sql_user_pass($db_user_id, $db_user_name);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
-gen_logged_from($tpl);
 
 $tpl->assign(
 	array(

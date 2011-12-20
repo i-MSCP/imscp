@@ -326,6 +326,7 @@ if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
+		 'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
 		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan_add.tpl',
 		 'page_message' => 'page'));
 
@@ -382,14 +383,11 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	admin_generateEmptyForm($tpl);
 }
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
-
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

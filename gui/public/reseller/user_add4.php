@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -81,12 +80,13 @@ function gen_al_page($tpl)
         while (!$stmt->EOF) {
             $alias_name = decode_idna($stmt->fields['alias_name']);
             $alias_status = translate_dmn_status($stmt->fields['alias_status']);
-            $show_als_fwd = ($stmt->fields['url_forward'] == 'no')
-                ? '-' : $stmt->fields['url_forward'];
-            $tpl->assign(array(
-                              'DOMAIN_ALIAS' => tohtml($alias_name),
-                              'STATUS' => $alias_status,
-                              'FORWARD_URL' => $show_als_fwd));
+            $show_als_fwd = ($stmt->fields['url_forward'] == 'no')? '-' : $stmt->fields['url_forward'];
+
+            $tpl->assign(
+				array(
+					'DOMAIN_ALIAS' => tohtml($alias_name),
+					'STATUS' => $alias_status,
+					'FORWARD_URL' => $show_als_fwd));
 
             $tpl->parse('ALIAS_ENTRY', '.alias_entry');
             $stmt->moveNext();
@@ -102,43 +102,43 @@ function gen_al_page($tpl)
         if ($_POST['status'] == 1) {
             $check_en = $cfg->HTML_CHECKED;
             $forward = encode_idna(strtolower(clean_input($_POST['forward'])));
-            $tpl->assign(array(
-                              'READONLY_FORWARD' => '',
-                              'DISABLE_FORWARD' => ''));
+            $tpl->assign(
+				array(
+					'READONLY_FORWARD' => '',
+					'DISABLE_FORWARD' => ''));
         } else {
             $check_dis = $cfg->HTML_CHECKED;
             $forward = '';
-            $tpl->assign(array(
-                              'READONLY_FORWARD' => $cfg->HTML_READONLY,
-                              'DISABLE_FORWARD' => $cfg->HTML_DISABLED));
+            $tpl->assign(
+				array(
+					'READONLY_FORWARD' => $cfg->HTML_READONLY,
+					'DISABLE_FORWARD' => $cfg->HTML_DISABLED));
         }
 
-        $tpl->assign(array(
-                          'HTTP_YES' => ($forward_prefix === 'http://')
-                              ? $cfg->HTML_SELECTED : '',
-                          'HTTPS_YES' => ($forward_prefix === 'https://')
-                              ? $cfg->HTML_SELECTED : '',
-                          'FTP_YES' => ($forward_prefix === 'ftp://')
-                              ? $cfg->HTML_SELECTED : ''));
+		$tpl->assign(
+			array(
+				'HTTP_YES' => ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES' => ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES' => ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : ''));
     } else {
         $check_dis = $cfg->HTML_CHECKED;
         $forward = '';
-        $tpl->assign(array(
-                          'READONLY_FORWARD' => $cfg->HTML_READONLY,
-                          'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
-                          'HTTP_YES' => '',
-                          'HTTPS_YES' => '',
-                          'FTP_YES' => ''));
+        $tpl->assign(
+			array(
+				'READONLY_FORWARD' => $cfg->HTML_READONLY,
+				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
+				'HTTP_YES' => '',
+				'HTTPS_YES' => '',
+				'FTP_YES' => ''));
     }
 
-    $tpl->assign(array(
-                      'DOMAIN' => !empty($_POST)
-                          ? strtolower(clean_input($_POST['ndomain_name'], true)) : '',
-                      'MP' => !empty($_POST)
-                          ? strtolower(clean_input($_POST['ndomain_mpoint'], true)) : '',
-                      'FORWARD' => tohtml(encode_idna($forward)),
-                      'CHECK_EN' => $check_en,
-                      'CHECK_DIS' => $check_dis));
+	$tpl->assign(
+		array(
+			'DOMAIN' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_name'], true)) : '',
+			'MP' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_mpoint'], true)) : '',
+			'FORWARD' => tohtml(encode_idna($forward)),
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis));
 }
 
 /**
@@ -283,6 +283,7 @@ function add_domain_alias()
  * Main script
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -293,41 +294,41 @@ $cfg = iMSCP_Registry::get('config');
 
 if (!is_xhr()) {
     $tpl = new iMSCP_pTemplate();
-    $tpl->define_dynamic(array(
-                              'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add4.tpl',
-                              'page_message' => 'page',
-                              'logged_from' => 'page',
-                              'alias_list' => 'page',
-                              'alias_entry' => 'alias_list'));
+	$tpl->define_dynamic(
+		array(
+			'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+			'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add4.tpl',
+			'page_message' => 'page',
+			'alias_list' => 'page',
+			'alias_entry' => 'alias_list'));
 
-    $tpl->assign(array(
-                      'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                      'THEME_CHARSET' => tr('encoding'),
-                      'ISP_LOGO' => layout_getUserLogo(),
-                      'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain alias'),
-                      'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-                      'TR_ADD_ALIAS' => tr('Add domain alias'),
-                      'TR_DOMAIN_NAME' => tr('Domain name'),
-                      'TR_DOMAIN_ACCOUNT' => tr('User account'),
-                      'TR_MOUNT_POINT' => tr('Directory mount point'),
-                      'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
-                      'TR_DOMAIN_IP' => tr('Domain IP'),
-                      'TR_FORWARD' => tr('Forward to URL'),
-                      'TR_ADD' => tr('Add alias'),
-                      'TR_DOMAIN_ALIAS' => tr('Domain alias'),
-                      'TR_STATUS' => tr('Status'),
-                      'TR_ADD_USER' => tr('Add user'),
-                      'TR_GO_USERS' => tr('Done'),
-                      'TR_ENABLE_FWD' => tr("Enable Forward"),
-                      'TR_ENABLE' => tr("Enable"),
-                      'TR_DISABLE' => tr("Disable"),
-                      'TR_PREFIX_HTTP' => 'http://',
-                      'TR_PREFIX_HTTPS' => 'https://',
-                      'TR_PREFIX_FTP' => 'ftp://'));
+    $tpl->assign(
+		array(
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain alias'),
+			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+			'TR_ADD_ALIAS' => tr('Add domain alias'),
+			'TR_DOMAIN_NAME' => tr('Domain name'),
+			'TR_DOMAIN_ACCOUNT' => tr('User account'),
+			'TR_MOUNT_POINT' => tr('Directory mount point'),
+			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
+			'TR_DOMAIN_IP' => tr('Domain IP'),
+			'TR_FORWARD' => tr('Forward to URL'),
+			'TR_ADD' => tr('Add alias'),
+			'TR_DOMAIN_ALIAS' => tr('Domain alias'),
+			'TR_STATUS' => tr('Status'),
+			'TR_ADD_USER' => tr('Add user'),
+			'TR_GO_USERS' => tr('Done'),
+			'TR_ENABLE_FWD' => tr("Enable Forward"),
+			'TR_ENABLE' => tr("Enable"),
+			'TR_DISABLE' => tr("Disable"),
+			'TR_PREFIX_HTTP' => 'http://',
+			'TR_PREFIX_HTTPS' => 'https://',
+			'TR_PREFIX_FTP' => 'ftp://'));
 
-    gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-    gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-    gen_logged_from($tpl);
+    generateNavigation($tpl);
 
     if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
         $domain_id = $_SESSION['dmn_id'];
@@ -397,9 +398,8 @@ gen_al_page($tpl);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();

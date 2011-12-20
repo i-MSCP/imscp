@@ -1,232 +1,214 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-	<script type="text/javascript">
+
+<script type="text/javascript">
 	/* <![CDATA[ */
-		function action_delete(url, subject) {
-			if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject))) {
-				return false;
-			}
+	$(document).ready(function(){
 
-			location = url;
-		}
+		$('#dialog_box').dialog({
+			modal: true, width:'700',autoOpen:false, hide:'blind', show:'blind', dialogClass:'body', height:'auto',
+			buttons: {Ok: function(){$(this).dialog('close');}}
+		});
 
-		function in_array(needle, haystack) {
-			var n = haystack.length;
-
-			for (var i = 0; i < n; i++) {
-				if (haystack[i] == needle) return true;
-			}
-
-			return false;
-		}
-
-		function dns_show_rows(arr_show) {
-			var arr_possible = new Array(
-				'name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol',
-				'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port', 'cname'
-			);
-
-			var n = arr_possible.length;
-			var trname;
-			for (var i = 0; i < n; i++) {
-				trname = 'tr_dns_'+arr_possible[i];
-				o = document.getElementById(trname);
-				if (o) {
-					if (in_array(arr_possible[i], arr_show)) {
-						o.style.display = 'table-row';
-					} else {
-						o.style.display = 'none';
-					}
-				} else {
-					alert('Not found: '+trname);
+		var datatable;
+		$('#showZone').click(function() {
+			var zone = $("#zone option[value='"+$('#zone').val()+"']").text();
+			$.getJSON('dns_edit.php', {zone:zone}, function(rr) {
+				if(datatable) {
+					datatable.fnDestroy();
 				}
+				$('#rr_table_body').remove();
+				if($.isArray(rr)) {
+					$.each(rr, function() {
+						var rrItems = [];
+						rrItems.push('<td>' + this.name + '</td>');
+						rrItems.push('<td>' + this.ttl + '</td>');
+						rrItems.push('<td>' + this['class'] + '</td>');
+						rrItems.push('<td>' + this.type + '</td>');
+
+						var rdata = [];
+
+						if(this.type == 'SOA') {
+							rdata.push(this.mname, this.rname, this.serial, this.refresh, this.expire, this.minimum);
+						} else if(this.type == 'MX') {
+							rdata.push(this.preference, this.exchange);
+						} else {
+							rdata.push(this.text || this.cname || this.address || this.nsdname);
+						}
+
+						rrItems.push('<td>' + rdata.join(' ') + '</td>');
+						$('<tbody/>', {'id': 'rr_table_body', html: '<tr>' + rrItems.join(' ') + '</tr>'}).appendTo('#rr_table');
+					});
+
+					datatable = $('#rr_table').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+
+					$('#rr_table').css('width', '100%');
+					$('#dialog_box').dialog("option", "title", 'Zone ' + zone).dialog('open');
+				} else {
+					alert(rr);
+				}
+			}).error(function() {
+				alert({UNEXPECTED_ERROR});
+			});
+		});
+
+		$('#rr').change(function(){
+			var v = $(this).val();
+			if (v == 'A') {
+				$('#tr_protocol, #tr_priority, #tr_weight, #tr_port, #tr_host, #tr_aaaa').hide();
+				$('#tr_a').show();
+			} else if (v == 'AAAA') {
+				$('#tr_protocol, #tr_priority, #tr_weight, #tr_port, #tr_host, #tr_a').hide();
+				$('#tr_aaaa').show();
+			} else if (v == 'SRV') {
+				$('#tr_a, #tr_aaaa').hide();
+				$('#tr_protocol, #tr_priority, #tr_weight, #tr_port').show();
+				$('#tr_host').show().children().first().text({TR_JHOST});
+			} else if (v == 'CNAME') {
+				$('#tr_protocol, #tr_priority, #tr_weight, #tr_port, [id^=tr_a]').hide();
+				$('#tr_host').show().children().first().text({TR_JCNAME});
+			} else if (v == 'MX') {
+				$('#tr_protocol, #tr_weight, #tr_port, [id^=tr_a]').hide();
+				$('#tr_priority').show();
+				$('#tr_host').show().children().first().text({TR_JHOST});
 			}
-		}
 
-		function dns_type_changed(value) {
-			if (value == 'A') {
-				dns_show_rows(new Array('name', 'ip_address'));
-			} else if (value == 'AAAA') {
-				dns_show_rows(new Array('name', 'ip_address_v6'));
-			} else if (value == 'SRV') {
-				dns_show_rows(new Array(
-					'srv_name', 'srv_protocol', 'srv_ttl', 'srv_prio', 'srv_weight',
-					'srv_host', 'srv_port'));
-			} else if (value == 'CNAME') {
-				dns_show_rows(new Array('name', 'cname'));
-			} else if (value == 'MX') {
-				dns_show_rows(new Array('srv_prio', 'srv_host'));
-			}
-		}
+			$('tr').trigger('change');
+		});
 
-		var IPADDRESS = "[0-9\.]";
-		var IPv6ADDRESS = "[0-9a-f:A-F]";
-		var NUMBERS = "[0-9]";
+		$('#rr').trigger('change');
+	});
+	/*]]>*/
+</script>
+<div class="body">
+	<h2 class="domains"><span>{TR_TITLE_CUSTOM_DNS_RECORD}</span></h2>
 
-		function filterChars(e, allowed) {
-			var keynum;
-			if (window.event){
-				keynum = window.event.keyCode;
-				e = window.event;
-			} else if (e) {
-				keynum = e.which;
-			} else {
-			return true;
-			}
+	<!-- BDP: page_message -->
+	<div class="{MESSAGE_CLS}">{MESSAGE}</div>
+	<!-- EDP: page_message -->
 
-			if ((keynum == 8) || (keynum == 0)) {
-				return true;
-			}
+	<form name="dnsFrm" method="post" action="{ACTION_MODE}">
+		<table>
+			<tr>
+				<th colspan="2">
+					{TR_CUSTOM_DNS_RECORD}
+				</th>
+			</tr>
+			<!-- BDP: add_block1 -->
+			<tr>
+				<td><label for="zone">{TR_ZONE}</label></td>
+				<td>
+					<select name="zone" id="zone">
+						<!-- BDP: zone_block -->
+						<option value="{ZONE_TYPE}[{ZONE_ID}]"{SELECTED_ZONE}>{ZONE_NAME}</option>
+						<!-- EDP: zone_block -->
+					</select>
+					<div id="dialog_box" style="margin:0;display: none;">
+						<table id="rr_table" class="datatable">
+							<thead>
+							<tr>
+								<th>{TR_NAME}</th>
+								<th>{TR_TTL}</th>
+								<th>{TR_CLASS}</th>
+								<th>{TR_TYPE}</th>
+								<th>{TR_RECORD_DATA}</th>
+							</tr>
+							</thead>
+						</table>
+						<span class="bold">Note:</span> <span>Only DNS resource records of class IN are showed.</span>
+					</div>
+					<button type="button" id="showZone" title="Show all zone resource records">Show zone</button>
+				</td>
+			</tr>
+			<!-- EDP: add_block1 -->
+			<tr>
+				<td><label for="name">{TR_NAME}</label></td>
+				<td><input type="text" name="name" id="name" value="{NAME}"/></td>
+			</tr>
+			<tr id="tr_protocol">
+				<td><label for="protocol">{TR_PROTOCOL}</label></td>
+				<td>
+					<select name="protocol" id="protocol">
+						<!-- BDP: protocol_block -->
+						<option value="{PROTOCOL}"{SELECTED_PROTOCOL}>{TR_PROTOCOL_VALUE}</option>
+						<!-- EDP: protocol_block -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="ttl">{TR_TTL}</label></td>
+				<td>
+					<input type="text" name="ttl" id="ttl"  value="{TTL}"/>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="class">{TR_CLASS}</label></td>
+				<td>
+					<select name="class" id="class">
+						<!-- BDP: class_block -->
+						<option value="{CLASS}"{SELECTED_CLASS}>{CLASS}</option>
+						<!-- EDP: class_block -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="rr">{TR_TYPE}</label></td>
+				<td>
+					<select name="rr" id="rr">
+						<!-- BDP: rr_block -->
+						<option value="{RR}"{SELECTED_RR}>{RR}</option>
+						<!-- EDP: rr_block -->
+					</select>
+				</td>
+			</tr>
+			<tr id="tr_priority">
+				<td><label for="priority">{TR_PRIORITY}</label></td>
+				<td>
+					<input type="text" name="priority" id="priority" value="{PRIORITY}"/>
+				</td>
+			</tr>
+			<tr id="tr_weight">
+				<td><label for="weight">{TR_WEIGHT}</label></td>
+				<td>
+					<input type="text" name="weight" id="weight"  value="{WEIGHT}"/>
+				</td>
+			</tr>
+			<tr id="tr_port">
+				<td><label for="port">{TR_PORT}</td>
+				<td>
+					<input type="text" name="port" id="port"  value="{PORT}"/>
+				</td>
+			</tr>
+			<tr id="tr_host">
+				<td><label for="host">{TR_HOST}</label></td>
+				<td>
+					<input type="text" name="host" id="host" value="{HOST}"/>
+				</td>
+			</tr>
+			<tr id="tr_a">
+				<td><label for="a">{TR_A}</label></td>
+				<td>
+					<input type="text" name="a" id="a" value="{A}"/>
+				</td>
+			</tr>
+			<tr id="tr_aaaa">
+				<td><label for="aaaa">{TR_AAAA}</td>
+				<td>
+					<input type="text" name="aaaa" id="aaaa" value="{AAAA}"/>
+				</td>
+			</tr>
+		</table>
+		<div class="buttons">
+			<!-- BDP: add_block2 -->
+			<input name="submit" type="submit" value="{TR_ADD}"/>
+			<input type="hidden" name="uaction" value="add"/>
+			<!-- EDP: add_block2 -->
 
-			var keychar = String.fromCharCode(keynum);
+			<!-- BDP: edit_block -->
+			<input name="submit" type="submit" value="{TR_UPDATE}"/>
+			<input type="hidden" name="uaction" value="update"/>
+			<!-- EDP: edit_block -->
 
-			if (e.ctrlKey && ((keychar=="C") || (keychar=="c") || (keychar=="V") || (keychar=="v"))) {
-				return true;
-			}
-
-			var re = new RegExp(allowed);
-			return re.test(keychar);
-		}
-		/* ]]> */
-	</script>
-
-	<div class="header">
-		{MAIN_MENU}
-		<div class="logo">
-			<img src="{ISP_LOGO}" alt="i-MSCP logo" />
+			<input name="submit" type="submit" onclick="MM_goToURL('parent', 'domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
 		</div>
-	</div>
-	<div class="location">
-		<div class="location-area">
-			<h1 class="domains">{TR_MENU_MANAGE_DOMAINS}</h1>
-		</div>
-		<ul class="location-menu">
-			<!-- BDP: logged_from -->
-			<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-			<!-- EDP: logged_from -->
-			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-		</ul>
-		<ul class="path">
-			<li><a href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
-			<li><a href="#" onclick="return false;">{TR_EDIT_DNS}</a></li>
-		</ul>
-	</div>
+	</form>
+</div>
 
-	<div class="left_menu">
-		{MENU}
-	</div>
-
-	<div class="body">
-		<h2 class="domains"><span>{TR_TITLE_CUSTOM_DNS_RECORD}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
-		<form name="edit_dns_frm" method="post" action="{ACTION_MODE}">
-			<table>
-				<tr>
-					<th colspan="2">
-					{TR_CUSTOM_DNS_RECORD_DATA}
-					</th>
-				</tr>
-				<!-- BDP: add_record -->
-				<tr>
-					<td style="width: 300px;">{TR_DOMAIN}</td>
-					<td><select name="alias_id">{SELECT_ALIAS}</select></td>
-				</tr>
-				<!-- EDP: add_record -->
-				<tr>
-					<td>{TR_DNS_TYPE}</td>
-					<td>
-						<select id="dns_type" onchange="dns_type_changed(this.value)" name="type">{SELECT_DNS_TYPE}</select>
-					</td>
-				</tr>
-				<tr>
-					<td>{TR_DNS_CLASS}</td>
-					<td><select name="class">{SELECT_DNS_CLASS}</select></td>
-				</tr>
-				<tr id="tr_dns_name">
-					<td>{TR_DNS_NAME}</td>
-					<td><input type="text" name="dns_name" value="{DNS_NAME}" /></td>
-				</tr>
-				<tr id="tr_dns_srv_name">
-					<td>{TR_DNS_SRV_NAME}</td>
-					<td>
-						<input type="text" name="dns_srv_name" value="{DNS_SRV_NAME}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_ip_address">
-					<td>{TR_DNS_IP_ADDRESS}</td>
-					<td>
-						<input type="text" onkeypress="return filterChars(event, IPADDRESS);" name="dns_A_address" value="{DNS_ADDRESS}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_ip_address_v6">
-					<td>{TR_DNS_IP_ADDRESS_V6}</td>
-					<td>
-						<input type="text" onkeypress="return filterChars(event, IPv6ADDRESS);" name="dns_AAAA_address" value="{DNS_ADDRESS_V6}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_srv_protocol">
-					<td>{TR_DNS_SRV_PROTOCOL}</td>
-					<td>
-						<select name="srv_proto" id="srv_protocol">{SELECT_DNS_SRV_PROTOCOL}</select>
-					</td>
-				</tr>
-				<tr id="tr_dns_srv_ttl">
-					<td>{TR_DNS_SRV_TTL}</td>
-					<td>
-						<input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_ttl" value="{DNS_SRV_TTL}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_srv_prio">
-					<td>{TR_DNS_SRV_PRIO}</td>
-					<td>
-						<input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_prio" value="{DNS_SRV_PRIO}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_srv_weight">
-					<td>{TR_DNS_SRV_WEIGHT}</td>
-					<td>
-						<input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_weight" value="{DNS_SRV_WEIGHT}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_srv_host">
-					<td>{TR_DNS_SRV_HOST}</td>
-					<td>
-						<input type="text" name="dns_srv_host" value="{DNS_SRV_HOST}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_srv_port">
-					<td>{TR_DNS_SRV_PORT}</td>
-					<td>
-						<input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_port" value="{DNS_SRV_PORT}" />
-					</td>
-				</tr>
-				<tr id="tr_dns_cname">
-					<td>{TR_DNS_CNAME}</td>
-					<td><input type="text" name="dns_cname" value="{DNS_CNAME}" />.
-					</td>
-				</tr>
-			</table>
-
-			<div class="buttons">
-				<!-- BDP: form_edit_mode -->
-				<input name="Submit" type="submit" value="{TR_MODIFY}" />
-				<input type="hidden" name="uaction" value="modify" />
-				<!-- EDP: form_edit_mode -->
-				<!-- BDP: form_add_mode -->
-				<input name="Submit" type="submit" value="{TR_ADD}" />
-				<input type="hidden" name="uaction" value="add" />
-				<!-- EDP: form_add_mode -->
-				<input name="Submit" type="submit" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
-			</div>
-		</form>
-	</div>
-
-	<script type="text/javascript">
-		/* <![CDATA[ */
-		dns_type_changed(document.getElementById('dns_type').value);
-		/* ]]> */
-	</script>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

@@ -67,7 +67,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('software_message', 'page');
 $tpl->define_dynamic('software_item', 'page');
 $tpl->define_dynamic('software_action_delete', 'page');
@@ -119,7 +118,6 @@ $tpl->assign(
 gen_page_lists($tpl, $_SESSION['user_id']);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-gen_logged_from($tpl);
 get_client_software_permission($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 

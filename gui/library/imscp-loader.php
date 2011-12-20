@@ -43,5 +43,7 @@ function autoload_class($className)
 
     if (file_exists(LIBRARY_PATH . '/' . $path . '.php')) {
         require_once LIBRARY_PATH . '/' . $path . '.php';
-    }
+    } elseif(file_exists(LIBRARY_PATH . '/vendor/' . $path . '.php')) {
+		require_once LIBRARY_PATH . '/vendor/' . $path . '.php';
+	}
 }

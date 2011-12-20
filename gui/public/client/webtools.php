@@ -53,10 +53,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl',
-		 'page_message' => 'page',
-		 'logged_from' => 'page'
-	)
-);
+		 'page_message' => 'page',));
 
 $tpl->assign(
 	array(
@@ -92,7 +89,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-gen_logged_from($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

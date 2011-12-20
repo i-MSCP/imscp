@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -15,46 +15,44 @@
  * The Original Code is i-MSCP - Multi Server Control Panel.
  *
  * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by Initial Developer are Copyright (C) 2010
+ * Portions created by Initial Developer are Copyright (C) 2010-2011
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category i-MSCP
- * @copyright 2010 by ispCP | http://i-mscp.net
+ * @copyright 2010-2011 by i-MSCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
-/**
- * @var $cfg iMSCP_Config_Handler_File
- */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_delete.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/software_delete.tpl',
+		'page_message', 'page'));
 
+/**
+ * @param $tpl
+ */
 function gen_page_data($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_delmessage') {
-		$tpl->assign(
-			array(
-				'DELETE_MESSAGE_TEXT' => clean_input($_POST['delete_msg_text'], false)
-				)
-			);
+		$tpl->assign('DELETE_MESSAGE_TEXT', clean_input($_POST['delete_msg_text'], false));
 	} else {
 		$tpl->assign(
 			array(
-				'DELETE_MESSAGE_TEXT'	=> '',
-				'MESSAGE' 		=> ''
-				)
-			);
+				'DELETE_MESSAGE_TEXT' => '',
+				'MESSAGE' => ''));
 	}
 }
 if (isset($_GET['id']) || isset($_POST['id'])) {
@@ -97,11 +95,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			`admin_id` = ?
 	";
 	$rs_res = exec_query($query_res, $rs->fields['reseller_id']);
-	$tpl->assign(
-			array(
-				'DELETE_SOFTWARE_RESELLER' => tr('%1$s (%2$s)', $rs_res->fields['admin_name'], $rs_res->fields['email'])
-			)
-		);
+	$tpl->assign('DELETE_SOFTWARE_RESELLER', tr('%1$s (%2$s)', $rs_res->fields['admin_name'], $rs_res->fields['email']));
 	if($rs->fields['software_depot'] == "yes") {
 		$del_path = $cfg->GUI_SOFTWARE_DEPOT_DIR ."/". $rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 		@unlink($del_path);
@@ -153,32 +147,28 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				set_page_message(tr('Fill out a message text!'), 'error');
 			}
 		}
-		
-		$tpl->assign(
-				array(
-					'TR_MANAGE_SOFTWARE_PAGE_TITLE' 	=> tr('i-MSCP - Application Management'),
-					'THEME_COLOR_PATH' 					=> "../themes/{$cfg->USER_INITIAL_THEME}",
-					'THEME_CHARSET' 					=> tr('encoding'),
-					'ISP_LOGO' 							=> layout_getUserLogo(),
-					'TR_DELETE_SEND_TO'					=> tr('Send message to'),
-					'TR_DELETE_MESSAGE_TEXT'			=> tr('Message'),
-					'TR_DELETE_SOFTWARE'				=> tr('Message to reseller before deleting the software'),
-					'TR_DELETE_RESELLER_SOFTWARE'		=> tr('Delete reseller software'),
-					'TR_DELETE_DATA'					=> tr('Reseller data'),
-					'TR_SEND_MESSAGE'					=> tr('Delete software and send message'),
-					'SOFTWARE_ID'						=> $software_id,
-					'RESELLER_ID'						=> $rs->fields['reseller_id']
-					)
-			);
-	}
-	gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-	gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
+		$tpl->assign(
+			array(
+				'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+				'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+				'THEME_CHARSET' => tr('encoding'),
+				'ISP_LOGO' => layout_getUserLogo(),
+				'TR_DELETE_SEND_TO' => tr('Send message to'),
+				'TR_DELETE_MESSAGE_TEXT' => tr('Message'),
+				'TR_DELETE_SOFTWARE' => tr('Message to reseller before deleting the software'),
+				'TR_DELETE_RESELLER_SOFTWARE' => tr('Delete reseller software'),
+				'TR_DELETE_DATA' => tr('Reseller data'),
+				'TR_SEND_MESSAGE' => tr('Delete software and send message'),
+				'SOFTWARE_ID' => $software_id,
+				'RESELLER_ID' => $rs->fields['reseller_id']));
+	}
+
+	generateNavigation($tpl);
 	gen_page_data ($tpl);
-	
 	generatePageMessage($tpl);
 	
-	$tpl->parse('PAGE', 'page');
+	$tpl->parse('LAYOUT_CONTENT', 'page');
 	$tpl->prnt();
     unsetMessages();
 } else {

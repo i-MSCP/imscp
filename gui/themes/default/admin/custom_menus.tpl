@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 <script type="text/javascript">
 /* <![CDATA[ */
 	$(document).ready(function() {
@@ -11,36 +11,6 @@
 	}
 /* ]]> */
 </script>
-<div class="header">
-	{MAIN_MENU}
-	<div class="logo">
-		<img src="{ISP_LOGO}" alt="i-MSCP logo"/>
-	</div>
-</div>
-<div class="location">
-	<div class="location-area">
-		<h1 class="settings">{TR_MENU_SETTINGS}</h1>
-	</div>
-	<ul class="location-menu">
-		<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-	</ul>
-	<ul class="path">
-		<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
-		<li><a href="#" onclick="return false;">{TR_TITLE_CUSTOM_MENUS}</a></li>
-	</ul>
-</div>
-
-<div class="left_menu">
-	{MENU}
-</div>
-
-<div class="body">
-	<h2 class="custom_link"><span>{TR_TITLE_CUSTOM_MENUS}</span></h2>
-
-	<!-- BDP: page_message -->
-	<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-	<!-- EDP: page_message -->
-
 	<!-- BDP: menus_list_block -->
 	<table>
 		<tr>
@@ -101,19 +71,17 @@
 		</table>
 		<!-- BDP: add_menu -->
 		<div class="buttons">
-			<input name="addMenu" type="button" class="button" value="{TR_ADD}" onclick="return sbmt(document.forms[0], 'menu_add');"/>
-			<input name="cancel" type="button" class="button" value="{TR_CANCEL}" onclick="location.href='settings.php'"/>
+			<input name="addMenu" type="button" value="{TR_ADD}" onclick="return sbmt(document.forms[0], 'menu_add');"/>
+			<input name="cancel" type="button" value="{TR_CANCEL}" onclick="location.href='settings.php'"/>
 		</div>
 		<!-- EDP: add_menu -->
 		<!-- BDP: edit_menu -->
 		<div class="buttons">
-			<input name="editMenu" type="button" class="button" value="{TR_UPDATE}" onclick="return sbmt(document.forms[0], 'menu_update');"/>
-			<input name="cancel" type="button" class="button" value="{TR_CANCEL}" onclick="location.href='custom_menus.php'"/>
+			<input name="editMenu" type="button" value="{TR_UPDATE}" onclick="return sbmt(document.forms[0], 'menu_update');"/>
+			<input name="cancel" type="button" value="{TR_CANCEL}" onclick="location.href='custom_menus.php'"/>
 			<input type="hidden" name="edit_id" value="{EDIT_ID}" /">
 		</div>
 		<!-- EDP: edit_menu -->
 
 		<input type="hidden" name="uaction" value=""/>
 	</form>
-</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

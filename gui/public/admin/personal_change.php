@@ -2,15 +2,6 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -30,29 +21,41 @@
  * isp Control Panel. All Rights Reserved.
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Admin
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link 		http://i-mscp.net
+ * @author 		ispCP Team
+ * @author 		i-MSCP Team
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/personal_change.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/personal_change.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Change Personal Data'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Profile /  Personal Data'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_admin_personal_data($_SESSION['user_id']);
@@ -60,6 +63,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 
 gen_admin_personal_data($tpl, $_SESSION['user_id']);
 
+/**
+ * @param iMSCP_pTemplate $tpl
+ * @param $user_id
+ */
 function gen_admin_personal_data(&$tpl, $user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
@@ -92,11 +99,12 @@ function gen_admin_personal_data(&$tpl, $user_id) {
 			'FAX' => empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
 			'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
 			'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
-			'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')
-		)
-	);
+			'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')));
 }
 
+/**
+ * @param $user_id
+ */
 function update_admin_personal_data($user_id) {
 
 	$fname = clean_input($_POST['fname']);
@@ -140,20 +148,13 @@ function update_admin_personal_data($user_id) {
 			$user_id));
 
 	set_page_message(tr('Personal data successfully updated.'), 'success');
-	redirectTo('manage_users.php');
+	redirectTo('profile.php');
 }
 
-/*
- *
- * static page messages.
- *
- */
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
 		'TR_PERSONAL_DATA' => tr('Personal data'),
 		'TR_FIRST_NAME' => tr('First name'),
 		'TR_LAST_NAME' => tr('Last name'),
@@ -171,16 +172,13 @@ $tpl->assign(
 		'TR_MALE' => tr('Male'),
 		'TR_FEMALE' => tr('Female'),
 		'TR_UNKNOWN' => tr('Unknown'),
-		'TR_UPDATE_DATA' => tr('Update data'),
-	)
-);
+		'TR_UPDATE_DATA' => tr('Update data')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

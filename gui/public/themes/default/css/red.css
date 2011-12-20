@@ -27,9 +27,8 @@ body {
 
 /** Links */
 a {color: rgb(255, 255, 255);}
-a:hover, a:focus {color: rgb(92, 186, 218);}
 .body a {color: rgb(89, 4, 5);}
-.body a:hover, .body a:focus {color: rgb(92, 186, 218);}
+a:hover, a.active {color: rgb(92, 186, 218);}
 
 /** Header */
 .header {background: rgb(110, 14, 15) url(../images/red/background/top_bg.jpg) repeat-x top left;}
@@ -37,6 +36,10 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 /** Main menu */
 .main_menu {background: transparent url(../images/red/background/mainmenu_left.png) no-repeat top left;}
 .main_menu ul {background: transparent url(../images/red/background/mainmenu_bg.png) repeat-x top left;}
+.main_menu a:hover, .main_menu a.active{
+    background-color: rgba(255, 255, 255, 0.3);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#dd204362,endColorstr=#dd204362);
+}
 
 /** Location */
 .location {background: rgb(89, 4, 5) url(../images/red/background/top_bar_bg.jpg) repeat-x top left;}
@@ -55,7 +58,7 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 }
 
 .left_menu a {background: transparent url(../images/red/background/bullet.png) no-repeat center left;}
-.left_menu a:hover {background-image: url(../images/red/background/bullet_hover.png);}
+.left_menu a:hover, .left_menu a.active {background-image: url(../images/red/background/bullet_hover.png);}
 
 /**
  * Body

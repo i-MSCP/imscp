@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -34,6 +33,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -44,14 +44,18 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/admin_add.tpl',
+		'page_message' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param  $tpl iMSCP_pTemplate
@@ -133,51 +137,54 @@ function add_user($tpl)
                                    tr('Administrator'),
                                    $gender);
 
-            $_SESSION['user_added'] = 1;
+            //$_SESSION['user_added'] = 1;
+			set_page_message(tr('Admin account successfully created.'), 'success');
 
             redirectTo('manage_users.php');
         } else { // check user data
-            $tpl->assign(array(
-                              'EMAIL' => clean_input($_POST['email'], true),
-                              'USERNAME' => clean_input($_POST['username'], true),
-                              'FIRST_NAME' => clean_input($_POST['fname'], true),
-                              'LAST_NAME' => clean_input($_POST['lname'], true),
-                              'FIRM' => clean_input($_POST['firm'], true),
-                              'ZIP' => clean_input($_POST['zip'], true),
-                              'CITY' => clean_input($_POST['city'], true),
-                              'STATE' => clean_input($_POST['state'], true),
-                              'COUNTRY' => clean_input($_POST['country'], true),
-                              'STREET_1' => clean_input($_POST['street1'], true),
-                              'STREET_2' => clean_input($_POST['street2'], true),
-                              'PHONE' => clean_input($_POST['phone'], true),
-                              'FAX' => clean_input($_POST['fax'], true),
-                              'VL_MALE' => (($_POST['gender'] == 'M')
-                                  ? $cfg->HTML_SELECTED
-                                  : ''),
-                              'VL_FEMALE' => (($_POST['gender'] == 'F')
-                                  ? $cfg->HTML_SELECTED
-                                  : ''),
-                              'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender'])))
-                                  ? $cfg->HTML_SELECTED : '')));
+            $tpl->assign(
+				array(
+					'EMAIL' => clean_input($_POST['email'], true),
+					'USERNAME' => clean_input($_POST['username'], true),
+					'FIRST_NAME' => clean_input($_POST['fname'], true),
+					'LAST_NAME' => clean_input($_POST['lname'], true),
+					'FIRM' => clean_input($_POST['firm'], true),
+					'ZIP' => clean_input($_POST['zip'], true),
+					'CITY' => clean_input($_POST['city'], true),
+					'STATE' => clean_input($_POST['state'], true),
+					'COUNTRY' => clean_input($_POST['country'], true),
+					'STREET_1' => clean_input($_POST['street1'], true),
+					'STREET_2' => clean_input($_POST['street2'], true),
+					'PHONE' => clean_input($_POST['phone'], true),
+					'FAX' => clean_input($_POST['fax'], true),
+					'VL_MALE' => (($_POST['gender'] == 'M')
+						? $cfg->HTML_SELECTED
+						: ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F')
+						? $cfg->HTML_SELECTED
+						: ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender'])))
+						? $cfg->HTML_SELECTED : '')));
         }
     } else {
-        $tpl->assign(array(
-                          'EMAIL' => '',
-                          'USERNAME' => '',
-                          'FIRST_NAME' => '',
-                          'LAST_NAME' => '',
-                          'FIRM' => '',
-                          'ZIP' => '',
-                          'CITY' => '',
-                          'STATE' => '',
-                          'COUNTRY' => '',
-                          'STREET_1' => '',
-                          'STREET_2' => '',
-                          'PHONE' => '',
-                          'FAX' => '',
-                          'VL_MALE' => '',
-                          'VL_FEMALE' => '',
-                          'VL_UNKNOWN' => $cfg->HTML_SELECTED));
+        $tpl->assign(
+			array(
+				'EMAIL' => '',
+				'USERNAME' => '',
+				'FIRST_NAME' => '',
+				'LAST_NAME' => '',
+				'FIRM' => '',
+				'ZIP' => '',
+				'CITY' => '',
+				'STATE' => '',
+				'COUNTRY' => '',
+				'STREET_1' => '',
+				'STREET_2' => '',
+				'PHONE' => '',
+				'FAX' => '',
+				'VL_MALE' => '',
+				'VL_FEMALE' => '',
+				'VL_UNKNOWN' => $cfg->HTML_SELECTED));
     }
 }
 
@@ -235,45 +242,44 @@ function check_user_data()
     return true;
 }
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
+generateNavigation($tpl);
 add_user($tpl);
 
-$tpl->assign(array(
-                  'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
-                  'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
-                  'TR_ADD_ADMIN' => tr('Add admin'),
-                  'TR_CORE_DATA' => tr('Core data'),
-                  'TR_USERNAME' => tr('Username'),
-                  'TR_PASSWORD' => tr('Password'),
-                  'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-                  'TR_EMAIL' => tr('Email'),
-                  'TR_ADDITIONAL_DATA' => tr('Additional data'),
-                  'TR_FIRST_NAME' => tr('First name'),
-                  'TR_LAST_NAME' => tr('Last name'),
-                  'TR_GENDER' => tr('Gender'),
-                  'TR_MALE' => tr('Male'),
-                  'TR_FEMALE' => tr('Female'),
-                  'TR_UNKNOWN' => tr('Unknown'),
-                  'TR_COMPANY' => tr('Company'),
-                  'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
-                  'TR_CITY' => tr('City'),
-                  'TR_STATE' => tr('State/Province'),
-                  'TR_COUNTRY' => tr('Country'),
-                  'TR_STREET_1' => tr('Street 1'),
-                  'TR_STREET_2' => tr('Street 2'),
-                  'TR_PHONE' => tr('Phone'),
-                  'TR_FAX' => tr('Fax'),
-                  'TR_PHONE' => tr('Phone'),
-                  'TR_ADD' => tr('Add'),
-                  'GENPAS' => passgen()));
+$tpl->assign(
+	array(
+		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
+		'TR_ADD_ADMIN' => tr('Add admin'),
+		'TR_CORE_DATA' => tr('Core data'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_EMAIL' => tr('Email'),
+		'TR_ADDITIONAL_DATA' => tr('Additional data'),
+		'TR_FIRST_NAME' => tr('First name'),
+		'TR_LAST_NAME' => tr('Last name'),
+		'TR_GENDER' => tr('Gender'),
+		'TR_MALE' => tr('Male'),
+		'TR_FEMALE' => tr('Female'),
+		'TR_UNKNOWN' => tr('Unknown'),
+		'TR_COMPANY' => tr('Company'),
+		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
+		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
+		'TR_COUNTRY' => tr('Country'),
+		'TR_STREET_1' => tr('Street 1'),
+		'TR_STREET_2' => tr('Street 2'),
+		'TR_PHONE' => tr('Phone'),
+		'TR_FAX' => tr('Fax'),
+		'TR_PHONE' => tr('Phone'),
+		'TR_ADD' => tr('Add'),
+		'GENPAS' => passgen()));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version	 SVN: $Id$
  * @link		http://i-mscp.net
  * @author	  ispCP Team
  * @author	  i-MSCP Team
@@ -467,25 +466,24 @@ $phpini->loadRePerm($_SESSION['user_id']);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add2.tpl',
-		 'page_message' => 'page',
-		 'logged_from' => 'page',
-		 'subdomain_add' => 'page',
-		 'alias_add' => 'page',
-		 'mail_add' => 'page',
-		 'ftp_add' => 'page',
-		 'sql_db_add' => 'page',
-		 'sql_user_add' => 'page',
-		 't_software_support' => 'page',
-
-		 'php_editor_js' => 'page',
-		 'php_editor_block' => 'page',
-		 'php_editor_permissions_block' => 'php_editor_block',
-		 'php_editor_register_globals_block' => 'php_editor_permissions_block',
-		 'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
-		 'php_editor_display_errors_block' => 'php_editor_permissions_block',
-		 'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-		 'php_editor_default_values_block' => 'php_editor_block'));
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add2.tpl',
+		'page_message' => 'page',
+		'subdomain_add' => 'page',
+		'alias_add' => 'page',
+		'mail_add' => 'page',
+		'ftp_add' => 'page',
+		'sql_db_add' => 'page',
+		'sql_user_add' => 'page',
+		't_software_support' => 'page',
+		'php_editor_js' => 'page',
+		'php_editor_block' => 'page',
+		'php_editor_permissions_block' => 'php_editor_block',
+		'php_editor_register_globals_block' => 'php_editor_permissions_block',
+		'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
+		'php_editor_display_errors_block' => 'php_editor_permissions_block',
+		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
+		'php_editor_default_values_block' => 'php_editor_block'));
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	redirectTo('users.php?psi=last');
@@ -524,9 +522,7 @@ $tpl->assign(
 		 'TR_LIMITS' => tr('Limits'),
 		 'TR_SOFTWARE_SUPP' => tr('Softwares installer')));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 if (!get_pageone_param()) {
 	set_page_message(tr('Domain data were been altered. Please try again.'), 'error');
@@ -598,7 +594,7 @@ if ($rsql_user_max == '-1') {
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -582,7 +582,6 @@ $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/domains_manage.tpl',
 		 'page_message' => 'page',
-		 'logged_from' => 'page',
 
 		 'domain_list' => 'page',
 		 'domain_item' => 'domain_list',
@@ -645,7 +644,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-gen_logged_from($tpl);
 
 client_generateDomainsList($tpl, $_SESSION['user_id']);
 client_generateSubdomainsList($tpl, $_SESSION['user_id']);

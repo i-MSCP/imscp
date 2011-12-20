@@ -350,7 +350,6 @@ if(!is_xhr()) {
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_add.tpl');
 	$tpl->define_dynamic('page_message', 'page');
-	$tpl->define_dynamic('logged_from', 'page');
 	$tpl->define_dynamic('domain_alias_add_js', 'page');
 	$tpl->define_dynamic('domain_alias_add_form', 'page');
 	$tpl->define_dynamic('user_entry', 'domain_alias_add_form');
@@ -366,7 +365,6 @@ if(!is_xhr()) {
 
 	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-	gen_logged_from($tpl);
 
 	$tpl->assign(
 		array(

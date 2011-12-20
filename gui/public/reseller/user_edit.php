@@ -5,7 +5,6 @@
  * @copyright	 2001-2006 by moleSoftware GmbH
  * @copyright	 2006-2010 by ispCP | http://isp-control.net
  * @copyright	 2010 by i-msCP | http://i-mscp.net
- * @version	 SVN: $Id$
  * @link		 http://i-mscp.net
  * @author		 ispCP Team
  * @author		 i-MSCP Team
@@ -32,10 +31,12 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 check_login(__FILE__);
@@ -49,26 +50,20 @@ if (isset($_GET['edit_id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_edit.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('ip_entry', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_edit.tpl',
+		'page_message' => 'page',
+		'ip_entry' => 'page'));
 
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Users/Edit'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo(),));
 
-/*
- *
- * static page messages.
- *
- */
 $tpl->assign(
 	array(
 		 'TR_EDIT_USER' => tr('Edit user'),
@@ -97,18 +92,9 @@ $tpl->assign(
 		 'TR_FEMALE' => tr('Female'),
 		 'TR_UNKNOWN' => tr('Unknown'),
 		 'EDIT_ID' => $edit_id,
-		 'TR_BTN_ADD_USER' => tr('Submit changes'),
+		 'TR_BTN_ADD_USER' => tr('Submit changes')));
 
-		 // The entries below are for Demo versions only
-		 'PASSWORD_DISABLED' => tr('Password change is deactivated!'),
-		 'DEMO_VERSION' => tr('Demo Version!')
-	)
-);
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -121,9 +107,7 @@ $tpl->assign(
 		 'TR_TITLE_BACK' => tr('Return to previous menu'),
 		 'TR_TABLE_NAME' => tr('Users list'),
 		 'TR_SEND_DATA' => tr('Send new login data'),
-		 'TR_PASSWORD_GENERATE' => tr('Generate password')
-	)
-);
+		 'TR_PASSWORD_GENERATE' => tr('Generate password')));
 
 if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', passgen());
@@ -131,8 +115,7 @@ if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', '');
 }
 
-if (isset($_POST['Submit']) && isset($_POST['uaction'])
-	&& ('save_changes' === $_POST['uaction'])
+if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $_POST['uaction'])
 ) {
 	// Process data
 
@@ -166,18 +149,11 @@ gen_edituser_page($tpl);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
-
-//unset_messages();
-
-/*
- * Begin function block
- */
 
 /**
  * Load data from sql
@@ -235,7 +211,6 @@ function load_user_data_page($user_id)
 	}
 
 }
-
 
 /**
  * Show user data

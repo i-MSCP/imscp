@@ -52,10 +52,11 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->RESELLER_TEMPLATE_PATH . '/language.tpl',
-		 'page_message' => 'page',
-		 'def_language' => 'page',
-		 'logged_from' => 'page'));
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/language.tpl',
+		'page_message' => 'page',
+		'def_language' => 'page',
+		'logged_from' => 'page'));
 
 // Getting current reseller language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
@@ -98,12 +99,10 @@ $tpl->assign(
 		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
 		 'TR_UPDATE' => tr('Update')));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 

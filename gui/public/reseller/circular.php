@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,28 +31,33 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/circular.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/circular.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP Reseller/Circular'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo(),
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo(),));
 
+/**
+ * @param $tpl
+ */
 function gen_page_data($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
@@ -61,9 +65,7 @@ function gen_page_data($tpl) {
 				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], true),
 				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], true),
 				'SENDER_EMAIL' => clean_input($_POST['sender_email'], true),
-				'SENDER_NAME' => clean_input($_POST['sender_name'], true)
-			)
-		);
+				'SENDER_NAME' => clean_input($_POST['sender_name'], true)));
 	} else {
 		$user_id = $_SESSION['user_id'];
 
@@ -95,13 +97,15 @@ function gen_page_data($tpl) {
 				'MESSAGE_SUBJECT' => '',
 				'MESSAGE_TEXT' => '',
 				'SENDER_EMAIL' => tohtml($rs->fields['email']),
-				'SENDER_NAME' => tohtml($sender_name)
-			)
-		);
+				'SENDER_NAME' => tohtml($sender_name)));
 	}
 }
 
-function check_user_data(&$tpl) {
+/**
+ * @param $tpl
+ * @return bool
+ */
+function check_user_data($tpl) {
 	global $msg_subject, $msg_text, $sender_email, $sender_name;
 
 	$msg_subject = clean_input($_POST['msg_subject'], false);
@@ -134,6 +138,9 @@ function check_user_data(&$tpl) {
 	}
 }
 
+/**
+ * @param $tpl
+ */
 function send_circular($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		if (check_user_data($tpl)) {
@@ -144,6 +151,9 @@ function send_circular($tpl) {
 	}
 }
 
+/**
+ * @param $admin_id
+ */
 function send_reseller_users_message($admin_id) {
 
 	$msg_subject = clean_input($_POST['msg_subject'], false);
@@ -161,7 +171,6 @@ function send_reseller_users_message($admin_id) {
 		GROUP BY
 			`email`
 	";
-
 	$rs = exec_query($query, $admin_id);
 
 	while (!$rs->EOF) {
@@ -177,9 +186,14 @@ function send_reseller_users_message($admin_id) {
 	write_log("Mass email was sent from Reseller " . $sender_name . " <" . $sender_email . ">", E_USER_NOTICE);
 }
 
+/**
+ * @param $to
+ * @param $from
+ * @param $subject
+ * @param $message
+ */
 function send_circular_email($to, $from, $subject, $message) {
 	$subject = encode($subject);
-
 	$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 	$headers .= "From: " . $from . "\n";
 	$headers .= "X-Mailer: i-MSCP marketing mailer";
@@ -187,16 +201,7 @@ function send_circular_email($to, $from, $subject, $message) {
 	mail($to, $subject, $message, $headers);
 }
 
-/*
- *
- * static page messages.
- *
- */
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -212,18 +217,15 @@ $tpl->assign(
 		'TR_SENDER_EMAIL' => tr('Senders email'),
 		'TR_SENDER_NAME' => tr('Senders name'),
 		'TR_SEND_MESSAGE' => tr('Send message'),
-		'TR_SENDER_NAME' => tr('Senders name'),
-	)
-);
+		'TR_SENDER_NAME' => tr('Senders name')));
 
 send_circular($tpl);
 gen_page_data($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

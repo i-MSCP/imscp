@@ -1,35 +1,3 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-		<div class="header">
-            {MAIN_MENU}
-
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
-
-		<div class="location">
-			<div class="location-area">
-				<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
-			</div>
-			<ul class="location-menu">
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="hosting_plan.php">{TR_MENU_HOSTING_PLANS}</a></li>
-				<li><a href="hosting_plan_edit.php?hpid={HOSTING_PLAN_ID}">{TR_EDIT_HOSTING_PLAN}</a></li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
-            <h2 class="hosting_plans"><span>{TR_EDIT_HOSTING_PLAN}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
 
 			<form name="reseller_edit_host_plant_frm" method="post" action="hosting_plan_edit.php">
 				<fieldset>
@@ -167,5 +135,4 @@
 					<input type="hidden" name="uaction" value="add_plan" />
 				<!-- EDP: form -->
 			</form>
-		</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->
+

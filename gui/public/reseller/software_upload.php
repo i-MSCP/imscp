@@ -21,11 +21,11 @@
  * @category i-MSCP
  * @copyright 2010 by ispCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -38,17 +38,19 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/software_upload.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('list_software', 'page');
-$tpl->define_dynamic('no_software_list', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
-$tpl->define_dynamic('webdepot_list', 'page');
-$tpl->define_dynamic('list_webdepotsoftware', 'page');
-$tpl->define_dynamic('no_webdepotsoftware_list', 'page');
-$tpl->define_dynamic('package_install_link', 'page');
-$tpl->define_dynamic('package_info_link', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/software_upload.tpl',
+		'page_message' => 'page',
+		'list_software' => 'page',
+		'no_software_list' => 'page',
+		't_software_support' => 'page',
+		'webdepot_list' => 'page',
+		'list_webdepotsoftware' => 'page',
+		'no_webdepotsoftware_list' => 'page',
+		'package_install_link' => 'page',
+		'package_info_link' => 'page'));
 
 if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 	list(
@@ -86,9 +88,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 				 'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
 				 'TR_PACKAGE_ACTION' => tr('Package actions'),
 				 'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Web software depot packages total'),
-				 'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt
-			)
-		);
+				 'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt));
 
 		$tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
 	} else {
@@ -307,9 +307,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Application Management'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 $sw_cnt = get_avail_software_reseller($tpl, $_SESSION['user_id']);
 
@@ -344,24 +342,15 @@ $tpl->assign(
 		 'TR_SOFTWARE_STATUS_ASC' => 'software_upload.php?sortby=status&order=asc',
 		 'TR_SOFTWARE_STATUS_DESC' => 'software_upload.php?sortby=status&order=desc',
 		 'TR_LANGUAGE_ASC' => 'software_upload.php?sortby=language&order=asc',
-		 'TR_LANGUAGE_DESC' => 'software_upload.php?sortby=language&order=desc'
-	)
-);
+		 'TR_LANGUAGE_DESC' => 'software_upload.php?sortby=language&order=desc'));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-
-gen_logged_from($tpl);
-
+generateNavigation($tpl);
 get_reseller_software_permission($tpl, $_SESSION['user_id']);
-
 generatePageMessage($tpl);
 
-$tpl->assign('LAYOUT', '');
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

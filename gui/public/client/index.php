@@ -332,7 +332,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
-		 'logged_from' => 'page',
 		 'page_message' => 'page',
 		 'alternative_domain_url' => 'page',
 		 'backup_domain_feature' => 'page',
@@ -350,7 +349,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
 
 client_generateSupportSystemNotices();
 client_generateDomainExpiresInformation($tpl);

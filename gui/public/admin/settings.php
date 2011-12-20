@@ -194,9 +194,10 @@ $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl',
-		 'page_message' => 'page',
-		 'def_language' => 'page'));
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl',
+		'page_message' => 'page',
+		'def_language' => 'page'));
 
 // Grab the value only once to improve performances
 $html_selected = $cfg->HTML_SELECTED;
@@ -611,12 +612,11 @@ $tpl->assign(
 		 'TR_MIB' => tr('MiB'),
 		 'TR_SEC' => tr('Sec.')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+generateNavigation($tpl);
 gen_def_language($tpl, $cfg->USER_INITIAL_LANG);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

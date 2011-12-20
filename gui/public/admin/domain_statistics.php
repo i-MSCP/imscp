@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -41,22 +41,23 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_statistics.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-$tpl->define_dynamic('month_list', 'page');
-$tpl->define_dynamic('year_list', 'page');
-$tpl->define_dynamic('traffic_table', 'page');
-$tpl->define_dynamic('traffic_table_item', 'traffic_table');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/domain_statistics.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page',
+		'month_list' => 'page',
+		'year_list' => 'page',
+		'traffic_table' => 'page',
+		'traffic_table_item' => 'traffic_table'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Domain Statistics Data'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['domain_id'])) {
 	$domain_id = $_POST['domain_id'];
@@ -81,6 +82,12 @@ if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 	redirectTo('reseller_statistics.php');
 }
 
+/**
+ * @param $from
+ * @param $to
+ * @param $domain_id
+ * @return array
+ */
 function get_domain_trafic($from, $to, $domain_id) {
 	$query = "
 		SELECT
@@ -103,11 +110,14 @@ function get_domain_trafic($from, $to, $domain_id) {
 			$rs->fields['web_dr'],
 			$rs->fields['ftp_dr'],
 			$rs->fields['pop_dr'],
-			$rs->fields['mail_dr'],
-		);
+			$rs->fields['mail_dr']);
 	}
 }
 
+/**
+ * @param $tpl
+ * @param $domain_id
+ */
 function generate_page($tpl, $domain_id) {
 
 
@@ -217,14 +227,7 @@ function generate_page($tpl, $domain_id) {
 	}
 }
 
-/*
- *
- * static page messages.
- *
- */
-
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -239,20 +242,15 @@ $tpl->assign(
 		'TR_POP3_TRAFFIC' => tr('POP3/IMAP traffic'),
 		'TR_ALL_TRAFFIC' => tr('All traffic'),
 		'TR_ALL' => tr('All'),
-		'TR_DAY' => tr('Day'),
-	)
-);
+		'TR_DAY' => tr('Day')));
 
 gen_select_lists($tpl, $month, $year);
-
 generate_page($tpl, $domain_id);
-
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

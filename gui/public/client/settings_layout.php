@@ -81,7 +81,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/settings_layout.tpl',
-		'logged_from' => 'page',
 		'page_message' => 'page',
 		'layout_colors_block' => 'page',
 		'layout_color_block' => 'layout_colors_block'));
@@ -119,7 +118,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
 client_generateLayoutColorForm($tpl);
 generatePageMessage($tpl);
 

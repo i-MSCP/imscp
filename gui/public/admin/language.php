@@ -52,10 +52,11 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/language.tpl',
-		 'page_message' => 'page',
-		 'def_language' => 'page',
-		 'logged_from' => 'page'));
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/language.tpl',
+		'page_message' => 'page',
+		'def_language' => 'page',
+		'logged_from' => 'page'));
 
 // Getting current admin language
 $adminCurrentLanguage = $_SESSION['user_def_lang'];
@@ -75,12 +76,12 @@ if (!empty($_POST)) {
 	}
 
 	// Force update on next load
-	redirectTo('index.php');
+	redirectTo('profile.php');
 }
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Change Language'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Profile /  Language'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
@@ -88,13 +89,12 @@ $tpl->assign(
 		 'TR_CHOOSE_LANGUAGE' => tr('Choose your language'),
 		 'TR_UPDATE' => tr('Update')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
+generateLoggedFrom($tpl);
 gen_def_language($tpl, $adminCurrentLanguage);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

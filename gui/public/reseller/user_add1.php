@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -131,11 +130,12 @@ function get_empty_au1_page($tpl)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $tpl->assign(array(
-                      'DMN_NAME_VALUE' => '',
-                      'DATEPICKER_VALUE' => '',
-                      'CHTPL1_VAL' => '',
-                      'CHTPL2_VAL' => $cfg->HTML_CHECKED));
+    $tpl->assign(
+		array(
+			'DMN_NAME_VALUE' => '',
+			'DATEPICKER_VALUE' => '',
+			'CHTPL1_VAL' => '',
+			'CHTPL2_VAL' => $cfg->HTML_CHECKED));
 }
 
 /**
@@ -151,12 +151,12 @@ function get_data_au1_page($tpl)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $tpl->assign(array(
-                      'DMN_NAME_VALUE' => tohtml($dmn_name),
-                      'DATEPICKER_VALUE' => isset($_POST['datepicker']) ? tohtml($_POST['datepicker']) : '',
-                      'CHTPL1_VAL' => $dmn_pt === '_yes_' ? $cfg->HTML_CHECKED : '',
-                      'CHTPL2_VAL' => $dmn_pt === '_yes_' ? ''
-                          : $cfg->HTML_CHECKED));
+	$tpl->assign(
+		array(
+			'DMN_NAME_VALUE' => tohtml($dmn_name),
+			'DATEPICKER_VALUE' => isset($_POST['datepicker']) ? tohtml($_POST['datepicker']) : '',
+			'CHTPL1_VAL' => $dmn_pt === '_yes_' ? $cfg->HTML_CHECKED : '',
+			'CHTPL2_VAL' => $dmn_pt === '_yes_' ? '' : $cfg->HTML_CHECKED));
 }
 
 /**
@@ -245,6 +245,8 @@ function get_hp_data_list($tpl, $reseller_id)
 /************************************************************************************
  * Main script
  */
+
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -255,35 +257,34 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl',
-                          'page_message' => 'page',
-                          'logged_from' => 'page',
-                          'add_user' => 'page',
-                          'hp_entry' => 'page',
-                          'personalize' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl',
+		'page_message' => 'page',
+		'add_user' => 'page',
+		'hp_entry' => 'page',
+		'personalize' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Users/Add domain account - step 1'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_ADD_USER' => tr('Add user'),
-                  'TR_CORE_DATA' => tr('Core data'),
-                  'TR_DOMAIN_NAME' => tr('Domain name'),
-                  'TR_DOMAIN_EXPIRE' => tr('Domain expire date'),
-                  'TR_EXPIRE_CHECKBOX' => tr('or Check for <strong>never Expire</strong>'),
-                  'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
-                  'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),
-                  'TR_YES' => tr('yes'),
-                  'TR_NO' => tr('no'),
-                  'TR_NEXT_STEP' => tr('Next step'),
-                  'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own.")));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Users/Add domain account - step 1'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_ADD_USER' => tr('Add user'),
+		'TR_CORE_DATA' => tr('Core data'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_EXPIRE' => tr('Domain expire date'),
+		'TR_EXPIRE_CHECKBOX' => tr('or Check for <strong>never Expire</strong>'),
+		'TR_CHOOSE_HOSTING_PLAN' => tr('Choose hosting plan'),
+		'TR_PERSONALIZE_TEMPLATE' => tr('Personalise template'),
+		'TR_YES' => tr('yes'),
+		'TR_NO' => tr('no'),
+		'TR_NEXT_STEP' => tr('Next step'),
+		'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own.")));
 
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'user_add_nxt') {
     if (!check_user_data()) {
@@ -296,10 +297,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'user_add_nxt') {
 get_hp_data_list($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

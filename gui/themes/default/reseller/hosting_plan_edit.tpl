@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 		<script type="text/javascript">
 			/*<![CDATA[*/
 			$(document).ready(function() {
@@ -18,59 +18,21 @@
 			});
 			/*]]>*/
 		</script>
-		<div class="header">
-			{MAIN_MENU}
-
-			<div class="logo">
-				<img src="{ISP_LOGO}" alt="i-MSCP logo" />
-			</div>
-		</div>
-
-		<div class="location">
-			<div class="location-area">
-				<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
-			</div>
-			<ul class="location-menu">
-				<!-- BDP: logged_from -->
-				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-				<!-- EDP: logged_from -->
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="hosting_plan.php">{TR_MENU_HOSTING_PLANS}</a></li>
-				<li>
-					<a href="hosting_plan_edit.php?hpid={HOSTING_PLAN_ID}">{TR_EDIT_HOSTING_PLAN}</a>
-				</li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
-			<h2 class="hosting_plans"><span>{TR_EDIT_HOSTING_PLAN}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
-			<form name="reseller_edit_host_plant_frm" method="post" action="hosting_plan_edit.php">
-				<fieldset>
-					<legend>{TR_HOSTING PLAN PROPS}</legend>
-					<table>
+			<form name="hostingPlanEditFrm" method="post" action="hosting_plan_edit.php">
+					<table class="firstColFixed">
+						<tr>
+							<th colspan="2">{TR_HOSTING PLAN PROPS}</th>
+						</tr>
 						<tr>
 							<td><label for="hp_name">{TR_TEMPLATE_NAME}</label></td>
 							<td>
-								<input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" {READONLY}/>
+								<input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" {READONLY} class="inputTitle"/>
 							</td>
 						</tr>
 						<tr>
+							<td><label for="hp_description">{TR_TEMPLATE_DESCRIPTON}</label></td>
 							<td>
-								<label for="hp_description">{TR_TEMPLATE_DESCRIPTON}</label>
-							</td>
-							<td>
-								<textarea id="hp_description" name="hp_description" cols="40" rows="8" {READONLY}>{HP_DESCRIPTION_VALUE}</textarea>
+								<textarea id="hp_description" name="hp_description" {READONLY}>{HP_DESCRIPTION_VALUE}</textarea>
 							</td>
 						</tr>
 						<tr>
@@ -207,6 +169,7 @@
 										<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
 										<label for="phpini_al_register_globals_no">{TR_NO}</label>
 									</div>
+								</td>
 							</tr>
 							<!-- EDP: t_phpini_register_globals -->
 							<!-- BDP: t_phpini_allow_url_fopen -->
@@ -251,59 +214,46 @@
 							</tr>
 							<!-- EDP: t_phpini_disable_functions -->
 							<tr>
-								<td>
-									<label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label>
-								</td>
+								<td><label for="phpini_post_max_size">{TR_PHPINI_POST_MAX_SIZE}</label></td>
 								<td>
 									<input name="phpini_post_max_size" id="phpini_post_max_size" type="text" value="{PHPINI_POST_MAX_SIZE}" /> {TR_MIB}
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label>
-								</td>
+								<td><label for="phpini_upload_max_filesize">{TR_PHPINI_UPLOAD_MAX_FILESIZE}</label></td>
 								<td>
 									<input name="phpini_upload_max_filesize" id="phpini_upload_max_filesize" type="text" value="{PHPINI_UPLOAD_MAX_FILESIZE}" /> {TR_MIB}
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label>
-								</td>
+								<td><label for="phpini_max_execution_time">{TR_PHPINI_MAX_EXECUTION_TIME}</label></td>
 								<td>
 									<input name="phpini_max_execution_time" id="phpini_max_execution_time" type="text" value="{PHPINI_MAX_EXECUTION_TIME}" /> {TR_SEC}
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label>
-								</td>
+								<td><label for="phpini_max_input_time">{TR_PHPINI_MAX_INPUT_TIME}</label></td>
 								<td>
 									<input name="phpini_max_input_time" id="phpini_max_input_time" type="text" value="{PHPINI_MAX_INPUT_TIME}" /> {TR_SEC}
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label>
-								</td>
+								<td><label for="phpini_memory_limit">{TR_PHPINI_MEMORY_LIMIT}</label></td>
 								<td>
 									<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}" /> {TR_MIB}
 								</td>
 							</tr>
-
 						</tbody>
 						<!-- EDP: t_phpini_system -->
 					</table>
-				</fieldset>
 
-				<fieldset>
-					<legend>{TR_BILLING_PROPS}</legend>
-					<table>
+					<table class="firstColFixed">
+						<tr>
+							<th colspan="2">{TR_BILLING_PROPS}</th>
+						</tr>
 						<tr>
 							<td><label for="hp_price">{TR_PRICE}</label></td>
-							<td>
-								<input name="hp_price" type="text" id="hp_price" value="{HP_PRICE}" {READONLY} />
-							</td>
+							<td><input name="hp_price" type="text" id="hp_price" value="{HP_PRICE}" {READONLY} /></td>
 						</tr>
 						<tr>
 							<td><label for="hp_setupfee">{TR_SETUP_FEE}</label></td>
@@ -335,29 +285,25 @@
 							</td>
 						</tr>
 					</table>
-				</fieldset>
 
-				<fieldset>
-					<legend>{TR_TOS_PROPS}</legend>
-					<table>
+					<table class="firstColFixed">
+						<tr>
+							<th colspan="2">{TR_TOS_PROPS}</th>
+						</tr>
 						<tr>
 							<td colspan="2">{TR_TOS_NOTE}</td>
 						</tr>
 						<tr>
 							<td><label for="hp_tos">{TR_TOS_DESCRIPTION}</label></td>
-							<td>
-								<textarea name="hp_tos" id="hp_tos" cols="70" rows="8">{HP_TOS_VALUE}</textarea>
-							</td>
+							<td><textarea name="hp_tos" id="hp_tos">{HP_TOS_VALUE}</textarea></td>
 						</tr>
 					</table>
-				</fieldset>
 
 				<!-- BDP: form -->
 				<div class="buttons">
 					<input name="Submit" type="submit" value="{TR_UPDATE_PLAN}" />
+					<input type="hidden" name="uaction" value="add_plan" />
 				</div>
-				<input type="hidden" name="uaction" value="add_plan" />
+
 				<!-- EDP: form -->
 			</form>
-		</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

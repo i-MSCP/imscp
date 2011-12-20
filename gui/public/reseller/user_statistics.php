@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -100,9 +100,10 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 	";
 
     $rs = exec_query($query, $reseller_id);
-    $tpl->assign(array(
-                      'RESELLER_NAME' => tohtml($reseller_name),
-                      'RESELLER_ID' => $reseller_id));
+    $tpl->assign(
+		array(
+			'RESELLER_NAME' => tohtml($reseller_name),
+			'RESELLER_ID' => $reseller_id));
 
     if ($rs->rowCount() == 0) {
         $tpl->assign('PROPS_LIST' , '');
@@ -112,9 +113,10 @@ function generate_page($tpl, $reseller_id, $reseller_name)
         if ($start_index == 0) {
             $tpl->assign('SCROLL_PREV', '');
         } else {
-            $tpl->assign(array(
-                              'SCROLL_PREV_GRAY' => '',
-                              'PREV_PSI' => $prev_si));
+            $tpl->assign(
+				array(
+					'SCROLL_PREV_GRAY' => '',
+                    'PREV_PSI' => $prev_si));
         }
 
         $next_si = $start_index + $rows_per_page;
@@ -122,22 +124,17 @@ function generate_page($tpl, $reseller_id, $reseller_name)
         if ($next_si + 1 > $records_count) {
             $tpl->assign('SCROLL_NEXT', '');
         } else {
-            $tpl->assign(array(
-                              'SCROLL_NEXT_GRAY' => '',
-                              'NEXT_PSI' => $next_si));
+			$tpl->assign(
+				array(
+					'SCROLL_NEXT_GRAY' => '',
+					'NEXT_PSI' => $next_si));
         }
+
         $row = 1;
 
         while (!$rs->EOF) {
             $admin_id = $rs->fields['admin_id'];
-            $query = "
-				SELECT
-					`domain_id`
-				FROM
-					`domain`
-				WHERE
-					`domain_admin_id` = ?
-			";
+            $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?";
 
             $dres = exec_query($query, $admin_id);
             generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
@@ -159,11 +156,13 @@ function generate_domain_entry($tpl, $user_id, $row)
 {
     global $crnt_month, $crnt_year;
 
-    list($domain_name, $domain_id, $web, $ftp, $smtp, $pop3, $utraff_current,
+    list(
+		$domain_name, $domain_id, $web, $ftp, $smtp, $pop3, $utraff_current,
         $udisk_current
     ) = generate_user_traffic($user_id);
 
-    list($usub_current, $usub_max, $uals_current, $uals_max, $umail_current,
+    list(
+		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current,
         $umail_max, $uftp_current, $uftp_max, $usql_db_current, $usql_db_max,
         $usql_user_current, $usql_user_max, $utraff_max, $udisk_max
     ) = generate_user_props($user_id);
@@ -217,44 +216,36 @@ function generate_domain_entry($tpl, $user_id, $row)
              'SMTP' => sizeit($smtp),
              'POP3' => sizeit($pop3),
 
-             'SUB_MSG' => ($usub_max)
-                 ? (($usub_max > 0)
+             'SUB_MSG' => ($usub_max) ? (($usub_max > 0)
                      ? tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($usub_current), $usub_max)
                      : tr('<b>disabled</b>'))
                  : tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($usub_current)),
 
-             'ALS_MSG' => ($uals_max)
-                 ? (($uals_max > 0)
+             'ALS_MSG' => ($uals_max) ? (($uals_max > 0)
                      ? tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($uals_current), $uals_max)
                      : tr('<b>disabled</b>'))
                  : tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($uals_current)),
 
-             'MAIL_MSG' => ($umail_max)
-                 ? (($umail_max > 0)
+             'MAIL_MSG' => ($umail_max) ? (($umail_max > 0)
                      ? tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max)
                      : tr('<b>disabled</b>'))
                  : tr('%d <br/>of<br/> <b>unlimited</b>', $umail_current),
 
-             'FTP_MSG' => ($uftp_max)
-                 ? (($uftp_max > 0)
+             'FTP_MSG' => ($uftp_max) ? (($uftp_max > 0)
                      ? tr('%1$d <br/>of<br/> <b>%2$d</b>', $uftp_current, $uftp_max)
                      : tr('<b>disabled</b>'))
                  : tr('%d <br/>of<br/> <b>unlimited</b>', $uftp_current),
 
 
-             'SQL_DB_MSG' => ($usql_db_max)
-                 ? (($usql_db_max > 0)
+             'SQL_DB_MSG' => ($usql_db_max) ? (($usql_db_max > 0)
                      ? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_db_current, $usql_db_max)
                      : tr('<b>disabled</b>'))
                  : tr('%d <br/>of<br/> <b>unlimited</b>', $usql_db_current),
 
-             'SQL_USER_MSG' => ($usql_user_max)
-                 ? (($usql_user_max > 0)
+             'SQL_USER_MSG' => ($usql_user_max) ? (($usql_user_max > 0)
                      ? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_user_current, $usql_user_max)
                      : tr('<b>disabled</b>'))
-                 : tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)
-        )
-    );
+                 : tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)));
 }
 
 /************************************************************************************
@@ -267,19 +258,19 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/reseller_user_statistics.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('month_list', 'page');
-$tpl->define_dynamic('year_list', 'page');
-$tpl->define_dynamic('domain_list', 'page');
-$tpl->define_dynamic('domain_entry', 'domain_list');
-$tpl->define_dynamic('scroll_prev_gray', 'page');
-$tpl->define_dynamic('scroll_prev', 'page');
-$tpl->define_dynamic('scroll_next_gray', 'page');
-$tpl->define_dynamic('scroll_next', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/reseller_user_statistics.tpl',
+		'page_message' => 'page',
+		'month_list' => 'page',
+		'year_list' => 'page',
+		'domain_list' => 'page',
+		'domain_entry' => 'domain_list',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page'));
 
 $rid = $_SESSION['user_id'];
 $name = $_SESSION['user_logged'];
@@ -306,10 +297,6 @@ $tpl->assign(
          'THEME_CHARSET' => tr('encoding'),
          'ISP_LOGO' => layout_getUserLogo()));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_statistics.tpl');
-gen_logged_from($tpl);
-
 $tpl->assign(
     array(
          'TR_RESELLER_USER_STATISTICS' => tr('Reseller users table'),
@@ -317,32 +304,31 @@ $tpl->assign(
          'TR_YEAR' => tr('Year'),
          'TR_SHOW' => tr('Show'),
          'TR_DOMAIN_NAME' => tr('Domain'),
-         'TR_TRAFF' => tr('Traffic<br>usage'),
-         'TR_DISK' => tr('Disk<br>usage'),
-         'TR_WEB' => tr('Web<br>traffic'),
-         'TR_FTP_TRAFF' => tr('FTP<br>traffic'),
-         'TR_SMTP' => tr('SMTP<br>traffic'),
-         'TR_POP3' => tr('POP3/IMAP<br>traffic'),
+         'TR_TRAFF' => tr('Traffic usage'),
+         'TR_DISK' => tr('Disk usage'),
+         'TR_WEB' => tr('Web traffic'),
+         'TR_FTP_TRAFF' => tr('FTP traffic'),
+         'TR_SMTP' => tr('SMTP traffic'),
+         'TR_POP3' => tr('POP3/IMAP traffic'),
          'TR_SUBDOMAIN' => tr('Subdomain'),
          'TR_ALIAS' => tr('Alias'),
          'TR_MAIL' => tr('Mail'),
          'TR_FTP' => tr('FTP'),
-         'TR_SQL_DB' => tr('SQL<br>database'),
-         'TR_SQL_USER' => tr('SQL<br>user'),
+         'TR_SQL_DB' => tr('SQL database'),
+         'TR_SQL_USER' => tr('SQL user'),
          'VALUE_NAME' => $name,
          'VALUE_RID' => $rid,
          'TR_NEXT' => tr('Next'),
          'TR_PREVIOUS' => tr('Previous')));
 
+generateNavigation($tpl);
 gen_select_lists($tpl, $month, $year);
 generate_page($tpl, $rid, $name);
-
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

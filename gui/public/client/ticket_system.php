@@ -67,7 +67,6 @@ $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_system.tpl',
 		 'page_message' => 'page',
-		 'logged_from' => 'page',
 		 'tickets_list' => 'page',
 		 'tickets_item' => 'tickets_list',
 		 'scroll_prev_gray' => 'page',
@@ -108,7 +107,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
-gen_logged_from($tpl);
 generateTicketList($tpl, $_SESSION['user_id'], $start, $cfg->DOMAIN_ROWS_PER_PAGE, 'client', 'open');
 generatePageMessage($tpl);
 

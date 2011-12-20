@@ -1,33 +1,7 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-        <div class="header">
-            {MAIN_MENU}
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
-        <div class="location">
-            <div class="location-area">
-                <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-            </div>
-            <ul class="location-menu">
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-                <li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
-                <li><a>{TR_DOMAIN_DETAILS}</a></li>
-            </ul>
-        </div>
-
-        <div class="left_menu">
-            {MENU}
-        </div>
-
-        <div class="body">
-            <h2 class="general"><span>{TR_DOMAIN_DETAILS}</span></h2>
 
             <table>
                 <tr>
-                    <td style="width: 300px;">{TR_DOMAIN_NAME}</td>
+                    <td>{TR_DOMAIN_NAME}</td>
                     <td>{VL_DOMAIN_NAME}</td>
                 </tr>
                 <tr>
@@ -77,7 +51,7 @@
             </table>
             <table>
                 <tr>
-                    <th style="width: 300px;">{TR_FEATURE}</th>
+                    <th>{TR_FEATURE}</th>
                     <th>{TR_USED}</th>
                     <th>{TR_LIMIT}</th>
                 </tr>
@@ -112,5 +86,4 @@
                     <td>{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
                 </tr>
             </table>
-        </div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->
+

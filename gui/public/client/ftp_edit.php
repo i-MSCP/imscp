@@ -62,8 +62,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ftp_edit.tpl',
-		'page_message' => 'page',
-		'logged_from' => 'page'));
+		'page_message' => 'page'));
 
 // page functions.
 
@@ -227,7 +226,6 @@ gen_page_dynamic_data($tpl, $ftp_acc);
 update_ftp_account($ftp_acc, $dmn_name);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
-gen_logged_from($tpl);
 
 $tpl->assign(
 	array(

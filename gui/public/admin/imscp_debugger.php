@@ -687,6 +687,7 @@ if (isset($_GET['action'])) {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
 		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/imscp_debugger.tpl',
 		 'page_message' => 'page',
 		 'hosting_plans' => 'page',
@@ -729,12 +730,11 @@ $tpl->assign(
 		 'EXEC_COUNT' => $exec_count,
 		 'TR_ERRORS' => tr('%s Errors in database', $errors)));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
+generateNavigation($tpl);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
 											  new iMSCP_Events_Response($tpl));

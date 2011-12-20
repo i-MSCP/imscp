@@ -53,7 +53,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_database_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
 $tpl->define_dynamic('mysql_prefix_yes', 'page');
 $tpl->define_dynamic('mysql_prefix_infront', 'page');
@@ -256,7 +255,6 @@ gen_page_post_data($tpl);
 add_sql_database($_SESSION['user_id']);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
-gen_logged_from($tpl);
 
 $tpl->assign(
 	array(

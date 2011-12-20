@@ -1,36 +1,7 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-        <div class="header">
-            {MAIN_MENU}
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
-        <div class="location">
-            <div class="location-area">
-                <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-            </div>
-            <ul class="location-menu">
-                <!-- BDP: logged_from -->
-                <li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-                <!-- EDP: logged_from -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-                <li><a href="users.php">{TR_MENU_MANAGE_USERS}</a></li>
-                <li><a>{TR_DOMAIN_DETAILS}</a></li>
-            </ul>
-        </div>
 
-        <div class="left_menu">
-            {MENU}
-        </div>
-
-        <div class="body">
-            <h2 class="general"><span>{TR_DOMAIN_DETAILS}</span></h2>
-
-            <table>
+            <table class="firstColFixed">
                 <tr>
-                    <td style="width: 300px;">{TR_DOMAIN_NAME}</td>
+                    <td>{TR_DOMAIN_NAME}</td>
                     <td>{VL_DOMAIN_NAME}</td>
                 </tr>
                 <tr>
@@ -80,9 +51,9 @@
                     </td>
                 </tr>
             </table>
-            <table>
+            <table class="firstColFixed">
                 <tr>
-                    <th style="width: 300px;">{TR_FEATURE}</th>
+                    <th>{TR_FEATURE}</th>
                     <th>{TR_USED}</th>
                     <th>{TR_LIMIT}</th>
                 </tr>
@@ -119,11 +90,9 @@
             </table>
             <form name="buttons" method="post" action="?">
                 <div class="buttons">
-                    <input name="Submit" type="submit" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="{TR_BACK}" />
+                    <input name="submit" type="submit" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="{TR_BACK}" />
                     <!-- BDP: edit_option -->
-                    <input name="Submit2" type="submit" onclick="MM_goToURL('parent','domain_edit.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="{TR_EDIT}" />
+                    <input name="submit2" type="submit" onclick="MM_goToURL('parent','domain_edit.php?edit_id={DOMAIN_ID}');return document.MM_returnValue" value="{TR_EDIT}" />
                     <!-- EDP: edit_option -->
                 </div>
             </form>
-        </div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

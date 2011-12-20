@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 <script type="text/javascript">
 /* <![CDATA[ */
 	function action_delete(url, subject) {
@@ -9,35 +9,6 @@
 	}
 /* ]]> */
 </script>
-<div class="header">
-	{MAIN_MENU}
-	<div class="logo">
-		<img src="{ISP_LOGO}" alt="i-MSCP logo"/>
-	</div>
-</div>
-<div class="location">
-	<div class="location-area">
-		<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
-	</div>
-	<ul class="location-menu">
-		<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-	</ul>
-	<ul class="path">
-		<li><a href="hosting_plan.php">{TR_MENU_HOSTING_PLANS}</a></li>
-		<li><a href="#" onclick="return false;">{TR_MENU_OVERVIEW}</a></li>
-	</ul>
-</div>
-
-<div class="left_menu">
-	{MENU}
-</div>
-
-<div class="body">
-	<h2 class="hosting_plans"><span>{TR_HOSTING_PLANS}</span></h2>
-
-	<!-- BDP: page_message -->
-	<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-	<!-- EDP: page_message -->
 
 	<!-- BDP: hp_table -->
 	<table>
@@ -64,5 +35,3 @@
 		<!-- EDP: hp_entry -->
 	</table>
 	<!-- EDP: hp_table -->
-</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

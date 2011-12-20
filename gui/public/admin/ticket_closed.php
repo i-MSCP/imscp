@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -62,50 +61,51 @@ if (isset($_GET['psi'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ticket_closed.tpl',
-                          'page_message' => 'page',
-                          'tickets_list' => 'page',
-                          'tickets_item' => 'tickets_list',
-                          'scroll_prev_gray' => 'page',
-                          'scroll_prev' => 'page',
-                          'scroll_next_gray' => 'page',
-                          'scroll_next' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ticket_closed.tpl',
+		'page_message' => 'page',
+		'tickets_list' => 'page',
+		'tickets_item' => 'tickets_list',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page'));
 
-$tpl->assign(array(
-                  'THEME_CHARSET' => tr('encoding'),
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Support Ticket System / Closed Tickets'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
-                  'TR_OPEN_TICKETS' => tr('Open tickets'),
-                  'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-                  'TR_TICKET_STATUS' => tr('Status'),
-                  'TR_TICKET_FROM' => tr('From'),
-                  'TR_TICKET_SUBJECT' => tr('Subject'),
-                  'TR_TICKET_URGENCY' => tr('Priority'),
-                  'TR_TICKET_LAST_ANSWER_DATE' => tr('Last reply date'),
-                  'TR_TICKET_ACTION' => tr('Actions'),
-                  'TR_TICKET_DELETE' => tr('Delete'),
-                  'TR_TICKET_READ_LINK' => tr('Read the ticket'),
-                  'TR_TICKET_DELETE_LINK' => tr('Delete the ticket'),
-                  'TR_TICKET_REOPEN' => tr('Reopen'),
-                  'TR_TICKET_REOPEN_LINK' => tr('Reopen the ticket'),
-                  'TR_TICKET_DELETE_ALL' => tr('Delete all tickets'),
-                  'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
-                  'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
-                  'TR_PREVIOUS' => tr('Previous'),
-                  'TR_NEXT' => tr('Next')));
+$tpl->assign(
+	array(
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Support Ticket System / Closed Tickets'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
+		'TR_OPEN_TICKETS' => tr('Open tickets'),
+		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
+		'TR_TICKET_STATUS' => tr('Status'),
+		'TR_TICKET_FROM' => tr('From'),
+		'TR_TICKET_SUBJECT' => tr('Subject'),
+		'TR_TICKET_URGENCY' => tr('Priority'),
+		'TR_TICKET_LAST_ANSWER_DATE' => tr('Last reply date'),
+		'TR_TICKET_ACTION' => tr('Actions'),
+		'TR_TICKET_DELETE' => tr('Delete'),
+		'TR_TICKET_READ_LINK' => tr('Read the ticket'),
+		'TR_TICKET_DELETE_LINK' => tr('Delete the ticket'),
+		'TR_TICKET_REOPEN' => tr('Reopen'),
+		'TR_TICKET_REOPEN_LINK' => tr('Reopen the ticket'),
+		'TR_TICKET_DELETE_ALL' => tr('Delete all tickets'),
+		'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
+		'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
+		'TR_PREVIOUS' => tr('Previous'),
+		'TR_NEXT' => tr('Next')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_ticket_system.tpl');
+generateNavigation($tpl);
 generateTicketList($tpl, $_SESSION['user_id'], $start, $cfg->DOMAIN_ROWS_PER_PAGE, 'admin', 'closed');
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 unsetMessages();

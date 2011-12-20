@@ -291,11 +291,11 @@ check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->RESELLER_TEMPLATE_PATH . '/index.tpl',
-		 'logged_from' => 'page',
-		 'page_message' => 'page',
-		 'traffic_warning_message' => 'page',
-		 'disk_warning_message' => 'page'));
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/index.tpl',
+		'page_message' => 'page',
+		'traffic_warning_message' => 'page',
+		'disk_warning_message' => 'page'));
 
 $tpl->assign(
 	array(
@@ -307,16 +307,14 @@ $tpl->assign(
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
 		 'TR_DISK_USAGE' => tr('Disk usage')));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 reseller_generateSupportQuestionsMessage();
 reseller_generateOrdersMessage();
 reseller_generateOrdersAliasesMessage();
 reseller_generatePageData($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 

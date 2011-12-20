@@ -53,7 +53,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mail_list', 'page');
 
 if (isset($_GET['id'])) {
@@ -475,7 +474,6 @@ $tpl->assign('ID', $item_id);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
-gen_logged_from($tpl);
 
 $tpl->assign(
 	array(

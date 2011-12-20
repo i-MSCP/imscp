@@ -300,6 +300,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
 		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/custom_menus.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
@@ -333,13 +334,12 @@ $tpl->assign(
 		'ERR_FIELDS_STACK' => iMSCP_Registry::isRegistered('errorFieldsStack')
 			? json_encode(iMSCP_Registry::get('errorFieldsStack')) : '[]'));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+generateNavigation($tpl);
 admin_generateMenusList($tpl);
 admin_generateForm($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

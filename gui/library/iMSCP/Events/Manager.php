@@ -135,7 +135,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 *									If not supplied, an empty iMSCP_Events_Event
 	 *									instance is created.
 	 *
-	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
+	 * @return mixed
 	 * @todo allow to pass multiple arguments to listeners methods
 	 */
 	public function dispatch($eventName, $argument = null)

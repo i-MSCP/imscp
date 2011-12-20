@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -41,18 +41,19 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic_day.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hour_list', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic_day.tpl',
+		'page_message' => 'page',
+		'hour_list' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server day stats'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 global $month, $year, $day;
 
@@ -68,6 +69,9 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
 	redirectTo('server_statistic.php');
 }
 
+/**
+ * @param $tpl
+ */
 function generate_page($tpl) {
 	global $month, $year, $day;
 
@@ -189,13 +193,7 @@ function generate_page($tpl) {
 	);
 }
 
-/*
- *
- * static page messages.
- *
- */
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -216,20 +214,16 @@ $tpl->assign(
 		'TR_ALL_OUT' => tr('All out'),
 		'TR_ALL' => tr('All'),
 		'TR_BACK' => tr('Back'),
-
 		'MONTH' => $month,
 		'YEAR' => $year,
-		'DAY' => $day
-	)
-);
+		'DAY' => $day));
 
 generatePageMessage($tpl);
 generate_page ($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

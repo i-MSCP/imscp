@@ -2,7 +2,7 @@
 		/*<![CDATA[*/
 		$(document).ready(function() {
 			errFieldsStack = {ERR_FIELDS_STACK};
-			$.each(errFieldsStack, function(){$('#' + this).css('border-color', '#ca1d11');});
+			$.each(errFieldsStack, function(){$('#' + this).css('border-color', 'rgb(201, 29, 17');});
 			$('#domain_expires').datepicker();
 			$('#domain_never_expires').change(function(){
 				if($(this).is(':checked')) {
@@ -13,24 +13,17 @@
 			});
 
 			<!-- BDP: php_editor_js -->
-			$.fx.speeds._default = 500;
-
 			// PHP Editor settings dialog
 			$('#php_editor_dialog').dialog(
 			{
-				hide:'blind',
-				show:'slide',
-				focus:false,
-				autoOpen:false,
-				width:'auto',
-				modal:true,
-				dialogClass:'body',
+				bgiframe:true,
+				hide:'blind', show:'slide', focus:false, autoOpen:false, width:'650', modal:true, dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function(){$('.ui-buttonset').buttonset();}
+				open: function(e){$('#php_editor_dialog :radio').blur();}
 			});
 
-			// Re-add the PHP Editor container to the form
-			$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
+			// Re-add the PHP Editor container to the form on submit
+			$('form').submit(function(){$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));});
 
 			// PHP Editor settings button
 			if($('#domain_php').val()=='no'){$('#php_editor_block').hide();}
@@ -91,7 +84,7 @@
 		/*]]>*/
 	</script>
 	<form name="editFrm" id="editFrm" method="post" action="domain_edit.php?edit_id={EDIT_ID}">
-		<table>
+		<table class="firstColFixed">
 			<tr>
 				<th colspan="3">{TR_DOMAIN_OVERVIEW}</th>
 			</tr>
@@ -123,7 +116,7 @@
 				<td colspan="2">{DOMAIN_IP} {IP_DOMAIN}</td>
 			</tr>
 		</table>
-		<table>
+		<table class="firstColFixed">
 			<tr>
 				<th>{TR_DOMAIN_LIMITS}</th>
 				<th>{TR_LIMIT_VALUE}</th>
@@ -238,25 +231,26 @@
 				</td>
 			</tr>
 		</table>
-		<table>
+		<table class="firstColFixed">
 			<tr>
 				<th>{TR_FEATURE}</th>
-				<th colspan="3">{TR_STATUS}</th>
+				<th>{TR_STATUS}</th>
 			</tr>
 			<!-- BDP: php_block -->
 			<tr>
 				<td><label for="domain_php">{TR_PHP}</label></td>
-				<td colspan="3">
+				<td>
 					<select id="domain_php" name="domain_php" style="vertical-align: middle">
 						<option value="yes" {PHP_YES}>{TR_YES}</option>
 						<option value="no" {PHP_NO}>{TR_NO}</option>
 					</select>
 				</td>
 			</tr>
+
 			<!-- BDP: php_editor_block -->
 			<tr id="php_editor_block">
 				<td><label for="phpiniSystem">{TR_PHP_EDITOR}</label></td>
-				<td colspan="3" id="dialogContainer" style="height: 30px;">
+				<td id="dialogContainer" style="height: 30px;">
 					<select id="phpiniSystem" name="phpiniSystem" style="vertical-align: middle;">
 						<option value="yes" {PHP_EDITOR_YES}>{TR_YES}</option>
 						<option value="no" {PHP_EDITOR_NO}>{TR_NO}</option>
@@ -275,7 +269,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_REGISTER_GLOBALS}</td>
 								<td>
-									<div class="ui-buttonset">
+									<div class="radio">
 										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsYes" value="yes" {REGISTER_GLOBALS_YES}/>
 										<label for="phpiniRegisterGlobalsYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsNo" value="no" {REGISTER_GLOBALS_NO}/>
@@ -288,7 +282,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>
 								<td>
-									<div class="ui-buttonset">
+									<div class="radio">
 										<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenYes" value="yes" {ALLOW_URL_FOPEN_YES}/>
 										<label for="phpiniAllowUrlFopenYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_allow_url_fopen" id="phpiniAllowUrlFopenNo" value="no" {ALLOW_URL_FOPEN_NO}/>
@@ -301,7 +295,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_DISPLAY_ERRORS}</td>
 								<td>
-									<div class="ui-buttonset">
+									<div class="radio">
 										<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsYes" value="yes" {DISPLAY_ERRORS_YES}/>
 										<label for="phpiniDisplayErrorsYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_display_errors" id="phpiniDisplayErrorsNo" value="no" {DISPLAY_ERRORS_NO}/>
@@ -314,7 +308,7 @@
 							<tr>
 							   <td>{TR_CAN_EDIT_DISABLE_FUNCTIONS}</td>
 								<td>
-									<div class="ui-buttonset">
+									<div class="radio">
 										<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsYes" value="yes" {DISABLE_FUNCTIONS_YES}/>
 										<label for="phpiniDisableFunctionsYes">{TR_YES}</label>
 										<input type="radio" name="phpini_perm_disable_functions" id="phpiniDisableFunctionsNo" value="no" {DISABLE_FUNCTIONS_NO}/>
@@ -366,11 +360,12 @@
 				</td>
 			</tr>
 			<!-- EDP: php_editor_block -->
+
 			<!-- EDP: php_block -->
 			<!-- BDP: cgi_block -->
 			<tr>
 				<td><label for="domain_cgi">{TR_CGI}</label></td>
-				<td colspan="3">
+				<td>
 					<select id="domain_cgi" name="domain_cgi">
 						<option value="yes" {CGI_YES}>{TR_YES}</option>
 						<option value="no" {CGI_NO}>{TR_NO}</option>
@@ -381,7 +376,7 @@
 			<!-- BDP: dns_block -->
 			<tr>
 				<td><label for="domain_dns">{TR_DNS}</label></td>
-				<td colspan="3">
+				<td>
 					<select id="domain_dns" name="domain_dns">
 						<option value="yes" {DNS_YES}>{TR_YES}</option>
 						<option value="no" {DNS_NO}>{TR_NO}</option>
@@ -392,7 +387,7 @@
 			<!-- BDP: aps_block -->
 			<tr>
 				<td><label for="domain_software_allowed">{TR_APS}</label></td>
-				<td colspan="3">
+				<td>
 					<select name="domain_software_allowed" id="domain_software_allowed">
 						<option value="yes" {APS_YES}>{TR_YES}</option>
 						<option value="no" {APS_NO}>{TR_NO}</option>
@@ -403,7 +398,7 @@
 			<!-- BDP: backup_block -->
 			<tr>
 				<td><label for="allowbackup">{TR_BACKUP}</label></td>
-				<td colspan="3">
+				<td>
 					<select id="allowbackup" name="allowbackup">
 						<option value="dmn" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
 						<option value="sql" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>

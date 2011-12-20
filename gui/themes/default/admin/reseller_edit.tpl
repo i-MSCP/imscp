@@ -1,14 +1,11 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		$(document).ready(function() {
-			$.fx.speeds._default = 500;
 			errFieldsStack = {ERR_FIELDS_STACK};
 			$.each(errFieldsStack, function(){$('#' + this).css('border-color', '#ca1d11');});
-			$('.ui-buttonset').buttonset();
-			$('#generate_password, #show_password, #reset_password, .frm-button').button();
 			$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
-
+			$('#reseller_ips_table').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
 			$.ajaxSetup({
 				url: $(location).attr('pathname'),
 				type:'GET',
@@ -68,14 +65,15 @@
 			// PHP Editor settings dialog
 			$('#php_editor_dialog').dialog(
 			{
-				hide:'blind', show:'slide', focus:false, autoOpen:false, width:'auto', modal:true, dialogClass:'body',
+				bgiframe: true,
+				hide:'blind', show:'slide', focus:false, autoOpen:false, width:700, modal:true, dialogClass:'body',
 				buttons:{'{TR_CLOSE}':function(){$(this).dialog('close');}},
-				create: function(){$('.ui-buttonset').buttonset();},
-				open: function(){$('input[type=radio]').blur()}
+				//create: function(){$('.input').button();},
+				open: function(){$('input[type=radio]').blur();}
 			});
 
 			// Re-add the PHP Editor container to the form
-			$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
+			//$('#php_editor_dialog').parent().appendTo($('#dialogContainer'));
 
 			// PHP Editor settings button
 			$('#php_editor_dialog_open').button({icons:{primary:'ui-icon-gear'}}).click(function(e){
@@ -130,41 +128,9 @@
 				});
 				$('#'+k).trigger('keyup');
 			});
-
-			$('#reseller_ips_table').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
 		});
 	/*]]>*/
 	</script>
-	<div class="header">
-		{MAIN_MENU}
-		<div class="logo">
-			<img src="{ISP_LOGO}" alt="i-MSCP logo"/>
-		</div>
-	</div>
-	<div class="location">
-		<div class="location-area">
-			<h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-		</div>
-		<ul class="location-menu">
-			<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-		</ul>
-		<ul class="path">
-			<li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
-			<li><a href="#" onclick="return false">{TR_EDIT_RESELLER}</a></li>
-		</ul>
-	</div>
-
-	<div class="left_menu">
-		{MENU}
-	</div>
-
-	<div class="body">
-		<h2 class="user_green"><span>{TR_EDIT_RESELLER}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<div id="dialog_box"></div>
 
 		<form name="editFrm" method="post" action="reseller_edit.php?edit_id={EDIT_ID}">
@@ -182,9 +148,9 @@
 						<input type="password" name="password" id="password" value="{PASSWORD}" />
 					</td>
 					<td>
-						<button type="button" id="generate_password">{TR_GENERATE}</button>
-						<button type="button" id="show_password">{TR_SHOW}</button>
-						<button type="button" id="reset_password">{TR_RESET}</button>
+						<input type="button" id="generate_password" value="{TR_GENERATE}" />
+						<input type="button" id="show_password" value="{TR_SHOW}" />
+						<input type="button" id="reset_password" value="{TR_RESET}" />
 					</td>
 				</tr>
 				<tr>
@@ -223,7 +189,7 @@
 					<th colspan="2">{TR_ACCOUNT_LIMITS}</th>
 				</tr>
 				<tr>
-					<td style="width: 300px;"><label for="max_dmn_cnt">{TR_MAX_DMN_CNT}</label></td>
+					<td><label for="max_dmn_cnt">{TR_MAX_DMN_CNT}</label></td>
 					<td><input type="text" name="max_dmn_cnt" id="max_dmn_cnt" value="{MAX_DMN_CNT}"/></td>
 				</tr>
 				<tr>
@@ -259,20 +225,21 @@
 					<td><input type="text" name="max_disk_amnt" id="max_disk_amnt" value="{MAX_DISK_AMNT}"/></td>
 				</tr>
 			</table>
-			<table style="margin-top: 20px;">
+			<table>
 				<tr>
 					<th colspan="2">{TR_FEATURES}</th>
 				</tr>
 				<tr>
 					<td><label>{TR_PHP_EDITOR}</label></td>
-					<td colspan="3" id="dialogContainer" style="height: 30px;">
-						<div class="ui-buttonset">
+					<td id="dialogContainer" style="height: 30px; line-height: 30px;">
+						<div class="radio" style="position:relative;">
 							<input type="radio" name="php_ini_system" id="php_ini_system_yes" value="yes" {PHP_INI_SYSTEM_YES} />
 							<label for="php_ini_system_yes">{TR_YES}</label>
 							<input type="radio" name="php_ini_system" id="php_ini_system_no" value="no" {PHP_INI_SYSTEM_NO} />
 							<label for="php_ini_system_no">{TR_NO}</label>
-							<button type="button" id="php_editor_dialog_open">{TR_SETTINGS}</button>
+							<input type="button" id="php_editor_dialog_open" value="{TR_SETTINGS}" />
 						</div>
+
 						<div style="margin:0" id="php_editor_dialog" title="{TR_PHP_EDITOR_SETTINGS}">
 							<div class="php_editor_error success">
 								<span id="msg_default">{TR_FIELDS_OK}</span>
@@ -283,6 +250,7 @@
 								</tr>
 								<tr>
 									<td>{TR_PHP_INI_AL_REGISTER_GLOBALS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
+
 									<td>
 										<div class="ui-buttonset">
 											<input type="radio" name="php_ini_al_register_globals" id="php_ini_al_register_globals_yes" value="yes" {PHP_INI_AL_REGISTER_GLOBALS_YES}/>
@@ -325,6 +293,8 @@
 										</div>
 									</td>
 								</tr>
+							</table>
+							<table>
 								<tr class="description">
 									<th colspan="2">{TR_DIRECTIVES_VALUES}</th>
 								</tr>
@@ -371,7 +341,7 @@
 				<tr>
 					<td style="width: 300px;">{TR_SOFTWARES_INSTALLER}</td>
 					<td>
-						<div class="ui-buttonset">
+						<div class="radio">
 							<input type="radio" name="software_allowed" id="software_allowed_yes" value="yes" {SOFTWARES_INSTALLER_YES} />
 							<label for="software_allowed_yes">{TR_YES}</label>
 							<input type="radio" name="software_allowed" id="software_allowed_no" value="no" {SOFTWARES_INSTALLER_NO} />
@@ -382,7 +352,7 @@
 				<tr>
 					<td>{TR_SOFTWARES_REPOSITORY}</td>
 					<td>
-						<div class="ui-buttonset">
+						<div class="radio">
 							<input type="radio" name="softwaredepot_allowed" id="softwaredepot_allowed_yes" value="yes" {SOFTWARES_REPOSITORY_YES} />
 							<label for="softwaredepot_allowed_yes">{TR_YES}</label>
 							<input type="radio" name="softwaredepot_allowed" id="softwaredepot_allowed_no" value="no" {SOFTWARES_REPOSITORY_NO} />
@@ -393,7 +363,7 @@
 				<tr>
 					<td>{TR_WEB_SOFTWARES_REPOSITORY}</td>
 					<td>
-						<div class="ui-buttonset">
+						<div class="radio">
 							<input type="radio" name="websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes" value="yes" {WEB_SOFTWARES_REPOSITORY_YES} />
 							<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
 							<input type="radio" name="websoftwaredepot_allowed" id="websoftwaredepot_allowed_no" value="no" {WEB_SOFTWARES_REPOSITORY_NO} />
@@ -404,7 +374,7 @@
 				<tr>
 					<td>{TR_SUPPORT_SYSTEM}</td>
 					<td>
-						<div class="ui-buttonset">
+						<div class="radio">
 							<input type="radio" name="support_system" id="support_system_yes" value="yes" {SUPPORT_SYSTEM_YES} />
 							<label for="support_system_yes">{TR_YES}</label>
 							<input type="radio" name="support_system" id="support_system_no" value="no" {SUPPORT_SYSTEM_NO}/>
@@ -413,7 +383,7 @@
 					</td>
 				</tr>
 			</table>
-			<table style="margin-top: 20px;">
+			<table>
 				<tr>
 					<th colspan="2">{TR_PERSONAL_DATA}</th>
 				</tr>
@@ -477,9 +447,7 @@
 				</tr>
 			</table>
 			<div class="buttons">
-				<button name="submit" type="submit" class="frm-button">{TR_UPDATE}</button>
-				<button name="cancel" type="button" class="frm-button" onclick="location.href='manage_users.php'">{TR_CANCEL}</button>
+				<input name="submit" type="submit" value="{TR_UPDATE}" />
+				<input name="cancel" type="button" onclick="location.href='manage_users.php'" value="{TR_CANCEL}" />
 			</div>
 		</form>
-	</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

@@ -352,11 +352,13 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('ip_entry', 'page');
-$tpl->define_dynamic('alias_add', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl',
+		'page_message' => 'page',
+		'ip_entry' => 'page',
+		'alias_add' => 'page'));
 
 $tpl->assign(
 	array(
@@ -393,9 +395,8 @@ $tpl->assign(
 		 'TR_ADD_ALIASES' => tr('Add other domains to this account'),
 		 'VL_USR_PASS' => passgen()));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
+
+generateNavigation($tpl);
 
 if (!init_in_values()) {
 	set_page_message(tr('Data were been altered. Please try again.'), 'error');
@@ -422,7 +423,7 @@ if (!check_reseller_permissions($_SESSION['user_id'], 'alias')) {
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 

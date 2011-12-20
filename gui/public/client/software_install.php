@@ -74,7 +74,6 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_install.tpl
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('software_item', 'page');
 $tpl->define_dynamic('show_domain_list', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('software_install', 'page');
 $tpl->define_dynamic('no_software', 'page');
 $tpl->define_dynamic('installdb_item', 'page');
@@ -326,7 +325,6 @@ $software_id = gen_page_lists($tpl, $_SESSION['user_id']);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-gen_logged_from($tpl);
 get_client_software_permission ($tpl, $_SESSION['user_id']);
 
 $tpl -> assign(

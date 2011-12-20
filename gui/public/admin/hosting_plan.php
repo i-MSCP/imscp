@@ -146,6 +146,7 @@ if ($cfg->HOSTING_PLANS_LEVEL != 'admin') {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
+		 'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
 		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan.tpl',
 		 'page_message' => 'page',
 		 'hosting_plans' => 'page',
@@ -164,13 +165,12 @@ $tpl->assign(
 		 'TR_PURCHASING' => tr('Purchasing'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s hosting plan?', true, '%s')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
+generateNavigation($tpl);
 admin_generateHostingPlansList($tpl, $_SESSION['user_id']);
 admin_generateHostingPlanMessage();
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

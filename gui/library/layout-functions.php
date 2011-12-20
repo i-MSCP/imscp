@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,13 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  */
 
 /**
@@ -71,7 +69,6 @@ function get_user_gui_props($user_id)
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
- * @todo replace by flashMessenger component
  */
 function generatePageMessage($tpl)
 {
@@ -157,6 +154,10 @@ function format_message($messages)
  */
 function get_menu_vars($menu_link)
 {
+	if(strpos($menu_link, '}') === false || strpos($menu_link, '}') === false) {
+		return $menu_link;
+	}
+
     $query = "
 		SELECT
 			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`, `state`,
@@ -250,7 +251,7 @@ function layout_getUserLayoutColor($userId)
 		$color = $stmt->fields['layout_color'];
 
 		if (!$color || !in_array($color, $allowedColors)) {
-			return array_shift($allowedColors);
+			$color =  array_shift($allowedColors);
 		}
 	} else {
 		$color = array_shift($allowedColors);
@@ -270,6 +271,9 @@ function layout_getUserLayoutColor($userId)
  */
 function layout_setColor($event)
 {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
 	/** @var $tpl iMSCP_pTemplate */
 	$tpl = $event->getTemplateEngine();
 
@@ -285,7 +289,9 @@ function layout_setColor($event)
 	}
 
 	$tpl->assign('THEME_COLOR', $color);
-	$tpl->parse('PAGE', 'page');
+
+	// Todo move this statement
+	$tpl->parse('LAYOUT', 'layout');
 }
 
 /**

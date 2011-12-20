@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,19 +31,23 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/settings_lostpassword.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('custom_buttons', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/settings_lostpassword.tpl',
+		'page_message' => 'page',
+		'custom_buttons' => 'page'));
 
 $user_id = $_SESSION['user_id'];
 
@@ -80,25 +83,14 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	}
 }
 
-/*
- *
- * static page messages.
- *
- */
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Lostpw email setup'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -121,18 +113,15 @@ $tpl->assign(
 		'TR_MESSAGE' => tr('Message'),
 		'TR_SENDER_EMAIL' => tr('Senders email'),
 		'TR_SENDER_NAME' => tr('Senders name'),
-		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_UPDATE' => tr('Update'),
 		'TR_BASE_SERVER_VHOST' => tr('URL to this admin panel'),
-		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol')
-	)
-);
+		'TR_BASE_SERVER_VHOST_PREFIX' => tr('URL protocol')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

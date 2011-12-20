@@ -53,7 +53,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/backup.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 
 /**
  * Schedule backup.
@@ -93,7 +92,6 @@ $tpl->assign(
 send_backup_restore_request($_SESSION['user_id']);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-gen_logged_from($tpl);
 
 if ($cfg->ZIP == "gzip") {
 	$name = "backup_YYYY_MM_DD.tar.gz";

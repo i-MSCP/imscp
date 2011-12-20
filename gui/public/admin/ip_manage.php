@@ -268,11 +268,6 @@ function client_registerIp($ipNumber, $domain, $alias, $netcard)
 
 // Include core library
 require 'imscp-lib.php';
-/*
-$_SESSION['user_id'] = 1;
-$_SESSION['user_type'] = 'admin';
-$_SESSION['user_theme'] = 'default';
-*/
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
@@ -299,6 +294,7 @@ $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic(
 	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
 		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl',
 		'page_message' => 'page',
 		'ip_addresses_block' => 'page',
@@ -329,12 +325,11 @@ $tpl->assign(
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+generateNavigation($tpl);
 client_generatePage($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

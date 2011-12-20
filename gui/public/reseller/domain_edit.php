@@ -991,27 +991,27 @@ $data =& reseller_getData($domainId);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl',
-		 'logged_from' => 'page',
-		 'page_message' => 'page',
-		 'subdomain_limit_block' => 'page',
-		 'domain_aliasses_limit_block' => 'page',
-		 'mail_accounts_limit_block' => 'page',
-		 'ftp_accounts_limit_block' => 'page',
-		 'sql_db_and_users_limit_block' => 'page',
-		 'php_block' => 'page',
-		 'php_editor_js' => 'page',
-		 'php_editor_block' => 'php_block',
-		 'php_editor_permissions_block' => 'php_editor_block',
-		 'php_editor_register_globals_block' => 'php_editor_permissions_block',
-		 'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
-		 'php_editor_display_errors_block' => 'php_editor_permissions_block',
-		 'php_editor_disable_functions_block' => 'php_editor_permissions_block',
-		 'php_editor_default_values_block' => 'php_directives_editor_block',
-		 'cgi_block' => 'page',
-		 'dns_block' => 'page',
-		 'aps_block' => 'page',
-		 'dns_block' => 'page'));
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl',
+		'page_message' => 'page',
+		'subdomain_limit_block' => 'page',
+		'domain_aliasses_limit_block' => 'page',
+		'mail_accounts_limit_block' => 'page',
+		'ftp_accounts_limit_block' => 'page',
+		'sql_db_and_users_limit_block' => 'page',
+		'php_block' => 'page',
+		'php_editor_js' => 'page',
+		'php_editor_block' => 'php_block',
+		'php_editor_permissions_block' => 'php_editor_block',
+		'php_editor_register_globals_block' => 'php_editor_permissions_block',
+		'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
+		'php_editor_display_errors_block' => 'php_editor_permissions_block',
+		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
+		'php_editor_default_values_block' => 'php_directives_editor_block',
+		'cgi_block' => 'page',
+		'dns_block' => 'page',
+		'aps_block' => 'page',
+		'dns_block' => 'page'));
 
 $tpl->assign(
 	array(
@@ -1041,13 +1041,11 @@ $tpl->assign(
 		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
 			? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 reseller_generateForm($tpl, $data);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 

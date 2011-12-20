@@ -5,7 +5,6 @@
  * @copyright	 2001-2006 by moleSoftware GmbH
  * @copyright	 2006-2010 by ispCP | http://isp-control.net
  * @copyright	 2010 by i-msCP | http://i-mscp.net
- * @version	 SVN: $Id$
  * @link		 http://i-mscp.net
  * @author		 ispCP Team
  * @author		 i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -49,34 +49,32 @@ if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('subdomain_add', 'page');
-$tpl->define_dynamic('alias_add', 'page');
-$tpl->define_dynamic('mail_add', 'page');
-$tpl->define_dynamic('ftp_add', 'page');
-$tpl->define_dynamic('sql_db_add', 'page');
-$tpl->define_dynamic('sql_user_add', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
-$tpl->define_dynamic('t_phpini_system', 'page');
-$tpl->define_dynamic('t_phpini_register_globals', 'page');
-$tpl->define_dynamic('t_phpini_allow_url_fopen', 'page');
-$tpl->define_dynamic('t_phpini_display_errors', 'page');
-$tpl->define_dynamic('t_phpini_disable_functions', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_add.tpl',
+		'page_message' => 'page',
+		'subdomain_add' => 'page',
+		'alias_add' => 'page',
+		'mail_add' => 'page',
+		'ftp_add' => 'page',
+		'sql_db_add' => 'page',
+		'sql_user_add' => 'page',
+		't_software_support' => 'page',
+		't_phpini_system' => 'page',
+		't_phpini_register_globals' => 'page',
+		't_phpini_allow_url_fopen' => 'page',
+		't_phpini_display_errors' => 'page',
+		't_phpini_disable_functions' => 'page'));
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Add hosting plan'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Add hosting plan'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -130,9 +128,7 @@ $tpl->assign(
 		 'TR_PHPINI_MEMORY_LIMIT' => tr('PHP %s directive', true, '<span class="bold">memory_limit</span>'),
 		 'TR_MIB' => tr('MiB'),
 		 'TR_SEC' => tr('Sec.'),
-		 'TR_ADD_PLAN' => tr('Add plan')
-	)
-);
+		 'TR_ADD_PLAN' => tr('Add plan')));
 
 $phpini->loadRePerm($_SESSION['user_id']);
 
@@ -199,10 +195,9 @@ if ($rftp_max == "-1") $tpl->assign('FTP_ADD', '');
 if ($rsql_db_max == "-1") $tpl->assign('SQL_DB_ADD', '');
 if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_ADD', '');
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-	iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
@@ -280,8 +275,8 @@ function gen_data_ahp_page($tpl, $phpini)
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
+	/** @var $cfg iMSCP_pTemplate */
 	$cfg = iMSCP_Registry::get('config');
-
 
 	$tpl->assign(
 		array(

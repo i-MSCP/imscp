@@ -148,7 +148,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(array(
 						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl',
 						  'page_message' => 'page',
-						  'logged_from' => 'page',
 						  'sql_databases_users_list' => 'page',
 						  'sql_databases_list' => 'sql_databases_users_list',
 						  'sql_users_list' => 'sql_databases_list'));
@@ -175,7 +174,6 @@ $tpl->assign(array(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
-gen_logged_from($tpl);
 client_databasesList($tpl, $domainProperties['domain_id']);
 
 generatePageMessage($tpl);

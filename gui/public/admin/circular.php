@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -44,15 +43,19 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/circular.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/circular.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Admin - Email Marketing'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin - Email Marketing'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param  iMSCP_pTemplate $tpl
@@ -61,11 +64,12 @@ $tpl->assign(array(
 function gen_page_data($tpl)
 {
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
-        $tpl->assign(array(
-                          'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], true),
-                          'MESSAGE_TEXT' => clean_input($_POST['msg_text'], true),
-                          'SENDER_EMAIL' => clean_input($_POST['sender_email'], true),
-                          'SENDER_NAME' => clean_input($_POST['sender_name'], true)));
+        $tpl->assign(
+			array(
+				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], true),
+				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], true),
+				'SENDER_EMAIL' => clean_input($_POST['sender_email'], true),
+				'SENDER_NAME' => clean_input($_POST['sender_name'], true)));
     } else {
         $user_id = $_SESSION['user_id'];
 
@@ -245,8 +249,8 @@ function send_circular_email($to, $from, $subject, $message)
 
     mail($to, $subject, $message, $headers);
 }
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
+
+generateNavigation($tpl);
 
 $tpl->assign(array(
                   'TR_CIRCULAR' => tr('Email marketing'),
@@ -267,10 +271,9 @@ send_circular($tpl);
 gen_page_data($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

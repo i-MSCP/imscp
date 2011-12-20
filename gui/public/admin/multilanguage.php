@@ -101,6 +101,7 @@ if (isset($_POST['uaction'])) {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
     array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
         'page' => $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl',
         'page_message' => 'page',
         'languages_block' => 'page',
@@ -128,12 +129,11 @@ $tpl->assign(
         'TR_INSTALL' => tr('Install'),
         'TR_CANCEL' => tr('Cancel')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+generateNavigation($tpl);
 admin_generateLanguagesList($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -104,7 +104,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ftp_accounts.tpl',
-		 'logged_from' => 'page',
 		 'page_message' => 'page',
 		 'ftp_message' => 'page',
 		 'ftp_accounts' => 'page',
@@ -131,7 +130,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
-gen_logged_from($tpl);
 gen_page_ftp_list($tpl);
 generatePageMessage($tpl);
 

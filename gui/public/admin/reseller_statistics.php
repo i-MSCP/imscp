@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,36 +31,39 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/reseller_statistics.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-$tpl->define_dynamic('traffic_table', 'page');
-$tpl->define_dynamic('month_list', 'traffic_table');
-$tpl->define_dynamic('year_list', 'traffic_table');
-$tpl->define_dynamic('reseller_entry', 'traffic_table');
-$tpl->define_dynamic('scroll_prev_gray', 'page');
-$tpl->define_dynamic('scroll_prev', 'page');
-$tpl->define_dynamic('scroll_next_gray', 'page');
-$tpl->define_dynamic('scroll_next', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_statistics.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page',
+		'traffic_table' => 'page',
+		'month_list' => 'traffic_table',
+		'year_list' => 'traffic_table',
+		'reseller_entry' => 'traffic_table',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 $year = 0;
 $month = 0;
@@ -76,6 +78,10 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = $_GET['year'];
 }
 
+/**
+ * @param $tpl
+ * @return mixed
+ */
 function generate_page($tpl) {
 
 	global $month, $year;
@@ -185,6 +191,12 @@ function generate_page($tpl) {
 	$tpl->parse('TRAFFIC_TABLE', 'traffic_table');
 }
 
+/**
+ * @param $tpl
+ * @param $reseller_id
+ * @param $reseller_name
+ * @param $row
+ */
 function generate_reseller_entry($tpl, $reseller_id, $reseller_name, $row) {
 	global $crnt_month, $crnt_year;
 
@@ -305,8 +317,7 @@ function generate_reseller_entry($tpl, $reseller_id, $reseller_name, $row) {
 $crnt_month = '';
 $crnt_year = '';
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
+generateNavigation($tpl);
 
 generate_page($tpl);
 
@@ -325,16 +336,13 @@ $tpl->assign(
 		'TR_MAIL' => tr('Mail'),
 		'TR_FTP' => tr('FTP'),
 		'TR_SQL_DB' => tr('SQL database'),
-		'TR_SQL_USER' => tr('SQL user'),
-	)
-);
+		'TR_SQL_USER' => tr('SQL user')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -44,9 +44,12 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_server_traffic.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings_server_traffic.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page'));
 
 $tpl->assign(
 	array(
@@ -60,7 +63,6 @@ $tpl->assign(
  */
 function update_server_settings()
 {
-
 	if (!isset($_POST['uaction']) && !isset($_POST['uaction'])) {
 		return;
 	}
@@ -98,7 +100,6 @@ function update_server_settings()
  */
 function generate_server_data($tpl)
 {
-
 	$query = "SELECT `straff_max`, `straff_warn` FROM`straff_settings`";
 	$stmt = exec_query($query);
 
@@ -108,23 +109,22 @@ function generate_server_data($tpl)
 			 'TRAFFIC_WARNING' => $stmt->fields['straff_warn'],));
 }
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_MODIFY' => tr('Modify'),
-		 'TR_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-		 'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-		 'TR_MAX_TRAFFIC' => tr('Max traffic'),
-		 'TR_WARNING' => tr('Warning traffic'),
+		'TR_MODIFY' => tr('Modify'),
+		'TR_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
+		'TR_SET_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
+		'TR_MAX_TRAFFIC' => tr('Max traffic'),
+		'TR_WARNING' => tr('Warning traffic'),
 		'TR_MIB' => tr('MiB')));
 
 update_server_settings();
 generate_server_data($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 

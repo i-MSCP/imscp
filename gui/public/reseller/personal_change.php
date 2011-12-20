@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -41,18 +41,18 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/personal_change.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/personal_change.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Change Personal Data'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_reseller_personal_data($_SESSION['user_id']);
@@ -60,7 +60,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 
 gen_reseller_personal_data($tpl, $_SESSION['user_id']);
 
-
+/**
+ * @param iMSCP_pTemplate $tpl
+ * @param $user_id
+ */
 function gen_reseller_personal_data($tpl, $user_id) {
 	$cfg = iMSCP_Registry::get('config');
 
@@ -84,45 +87,30 @@ function gen_reseller_personal_data($tpl, $user_id) {
 		WHERE
 			`admin_id` = ?
 	";
-
 	$rs = exec_query($query, $user_id);
 
 	$tpl->assign(
 		array(
-			 'FIRST_NAME' => (($rs->fields['fname'] == null) ? ''
-				 : tohtml($rs->fields['fname'])),
-			 'LAST_NAME' => (($rs->fields['lname'] == null) ? ''
-				 : tohtml($rs->fields['lname'])),
-			 'FIRM' => (($rs->fields['firm'] == null) ? ''
-				 : tohtml($rs->fields['firm'])),
-			 'ZIP' => (($rs->fields['zip'] == null) ? ''
-				 : tohtml($rs->fields['zip'])),
-			 'CITY' => (($rs->fields['city'] == null) ? ''
-				 : tohtml($rs->fields['city'])),
-			 'STATE' => (($rs->fields['state'] == null) ? ''
-				 : tohtml($rs->fields['state'])),
-			 'COUNTRY' => (($rs->fields['country'] == null) ? ''
-				 : tohtml($rs->fields['country'])),
-			 'STREET_1' => (($rs->fields['street1'] == null) ? ''
-				 : tohtml($rs->fields['street1'])),
-			 'STREET_2' => (($rs->fields['street2'] == null) ? ''
-				 : tohtml($rs->fields['street2'])),
-			 'EMAIL' => (($rs->fields['email'] == null) ? ''
-				 : tohtml($rs->fields['email'])),
-			 'PHONE' => (($rs->fields['phone'] == null) ? ''
-				 : tohtml($rs->fields['phone'])),
-			 'FAX' => (($rs->fields['fax'] == null) ? ''
-				 : tohtml($rs->fields['fax'])),
-			 'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED
-				 : ''),
-			 'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED
-				 : ''),
-			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender'])))
-				 ? $cfg->HTML_SELECTED : '')
-		)
-	);
+			 'FIRST_NAME' => (($rs->fields['fname'] == null) ? '' : tohtml($rs->fields['fname'])),
+			 'LAST_NAME' => (($rs->fields['lname'] == null) ? '' : tohtml($rs->fields['lname'])),
+			 'FIRM' => (($rs->fields['firm'] == null) ? '' : tohtml($rs->fields['firm'])),
+			 'ZIP' => (($rs->fields['zip'] == null) ? '' : tohtml($rs->fields['zip'])),
+			 'CITY' => (($rs->fields['city'] == null) ? '' : tohtml($rs->fields['city'])),
+			 'STATE' => (($rs->fields['state'] == null) ? '' : tohtml($rs->fields['state'])),
+			 'COUNTRY' => (($rs->fields['country'] == null) ? '' : tohtml($rs->fields['country'])),
+			 'STREET_1' => (($rs->fields['street1'] == null) ? '' : tohtml($rs->fields['street1'])),
+			 'STREET_2' => (($rs->fields['street2'] == null) ? '' : tohtml($rs->fields['street2'])),
+			 'EMAIL' => (($rs->fields['email'] == null) ? '' : tohtml($rs->fields['email'])),
+			 'PHONE' => (($rs->fields['phone'] == null) ? '' : tohtml($rs->fields['phone'])),
+			 'FAX' => (($rs->fields['fax'] == null) ? '' : tohtml($rs->fields['fax'])),
+			 'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
+			 'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
+			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')));
 }
 
+/**
+ * @param $user_id
+ */
 function update_reseller_personal_data($user_id) {
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
@@ -168,50 +156,39 @@ function update_reseller_personal_data($user_id) {
 	);
 
 	set_page_message(tr('Personal data successfully updated.'), 'success');
+	redirectTo('profile.php');
 }
 
-/*
- *
- * static page messages.
- *
- */
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_GENERAL_INFO'			=> tr('General information'),
-		'TR_CHANGE_PERSONAL_DATA'	=> tr('Change personal data'),
-		'TR_PERSONAL_DATA'			=> tr('Personal data'),
-		'TR_FIRST_NAME'				=> tr('First name'),
-		'TR_LAST_NAME'				=> tr('Last name'),
-		'TR_COMPANY'				=> tr('Company'),
-		'TR_ZIP_POSTAL_CODE'		=> tr('Zip/Postal code'),
-		'TR_CITY'					=> tr('City'),
-		'TR_STATE'					=> tr('State/Province'),
-		'TR_COUNTRY'				=> tr('Country'),
-		'TR_STREET_1'				=> tr('Street 1'),
-		'TR_STREET_2'				=> tr('Street 2'),
-		'TR_EMAIL'					=> tr('Email'),
-		'TR_PHONE'					=> tr('Phone'),
-		'TR_FAX'					=> tr('Fax'),
-		'TR_GENDER'					=> tr('Gender'),
-		'TR_MALE'					=> tr('Male'),
-		'TR_FEMALE'					=> tr('Female'),
-		'TR_UNKNOWN'				=> tr('Unknown'),
-		'TR_UPDATE_DATA'			=> tr('Update data'),
-	)
-);
+		'TR_GENERAL_INFO' => tr('General information'),
+		'TR_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
+		'TR_PERSONAL_DATA' => tr('Personal data'),
+		'TR_FIRST_NAME' => tr('First name'),
+		'TR_LAST_NAME' => tr('Last name'),
+		'TR_COMPANY' => tr('Company'),
+		'TR_ZIP_POSTAL_CODE' => tr('Zip/Postal code'),
+		'TR_CITY' => tr('City'),
+		'TR_STATE' => tr('State/Province'),
+		'TR_COUNTRY' => tr('Country'),
+		'TR_STREET_1' => tr('Street 1'),
+		'TR_STREET_2' => tr('Street 2'),
+		'TR_EMAIL' => tr('Email'),
+		'TR_PHONE' => tr('Phone'),
+		'TR_FAX' => tr('Fax'),
+		'TR_GENDER' => tr('Gender'),
+		'TR_MALE' => tr('Male'),
+		'TR_FEMALE' => tr('Female'),
+		'TR_UNKNOWN' => tr('Unknown'),
+		'TR_UPDATE' => tr('Update')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

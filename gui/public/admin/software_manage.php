@@ -19,9 +19,8 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category i-MSCP
- * @copyright 2010-2011 by ispCP | http://i-mscp.net
+ * @copyright 2010-2011 by i-MSCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
- * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -37,19 +36,22 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_manage.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('list_software', 'page');
-$tpl->define_dynamic('no_software_list', 'page');
-$tpl->define_dynamic('list_softwaredepot', 'page');
-$tpl->define_dynamic('no_softwaredepot_list', 'page');
-$tpl->define_dynamic('no_reseller_list', 'page');
-$tpl->define_dynamic('list_reseller', 'page');
-$tpl->define_dynamic('webdepot_list', 'page');
-$tpl->define_dynamic('list_webdepotsoftware', 'page');
-$tpl->define_dynamic('no_webdepotsoftware_list', 'page');
-$tpl->define_dynamic('package_install_link', 'page');
-$tpl->define_dynamic('package_info_link', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/software_manage.tpl',
+		'page_message' => 'page',
+		'list_software' => 'page',
+		'no_software_list' => 'page',
+		'list_softwaredepot' => 'page',
+		'no_softwaredepot_list' => 'page',
+		'no_reseller_list' => 'page',
+		'list_reseller' => 'page',
+		'webdepot_list' => 'page',
+		'list_webdepotsoftware' => 'page',
+		'no_webdepotsoftware_list' => 'page',
+		'package_install_link' => 'page',
+		'package_info_link' => 'page'));
 
 list(
     $use_webdepot, $webdepot_xml_url, $webdepot_last_update
@@ -70,22 +72,21 @@ if($use_webdepot) {
         }
     }
     $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);
-    
-    $tpl->assign(
-        array(
-            'TR_WEBDEPOT'                   => tr('i-MSCP application installer Web softwares repository'),
-            'TR_APPLY_CHANGES'              => tr('Update from Web software repository'),
-            'TR_PACKAGE_TITLE'              => tr('Package name'),
-            'TR_PACKAGE_INSTALL_TYPE'       => tr('Package install type'),
-            'TR_PACKAGE_VERSION'            => tr('Package version'),
-            'TR_PACKAGE_LANGUAGE'           => tr('Package language'),
-            'TR_PACKAGE_TYPE'               => tr('Package type'),
-            'TR_PACKAGE_VENDOR_HP'          => tr('Package vendor HP'),
-            'TR_PACKAGE_ACTION'             => tr('Package actions'),
-            'TR_WEBDEPOTSOFTWARE_COUNT'     => tr('Total packages in Web softwares repository'),
-            'TR_WEBDEPOTSOFTWARE_ACT_NUM'   => $packages_cnt
-        )
-    );
+
+	$tpl->assign(
+		array(
+			'TR_WEBDEPOT' => tr('i-MSCP application installer Web softwares repository'),
+			'TR_APPLY_CHANGES' => tr('Update from Web software repository'),
+			'TR_PACKAGE_TITLE' => tr('Package name'),
+			'TR_PACKAGE_INSTALL_TYPE' => tr('Package install type'),
+			'TR_PACKAGE_VERSION' => tr('Package version'),
+			'TR_PACKAGE_LANGUAGE' => tr('Package language'),
+			'TR_PACKAGE_TYPE' => tr('Package type'),
+			'TR_PACKAGE_VENDOR_HP' => tr('Package vendor HP'),
+			'TR_PACKAGE_ACTION' => tr('Package actions'),
+			'TR_WEBDEPOTSOFTWARE_COUNT' => tr('Total packages in Web softwares repository'),
+			'TR_WEBDEPOTSOFTWARE_ACT_NUM' => $packages_cnt));
+
     $tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
 } else {
     $tpl->assign('WEBDEPOT_LIST', '');
@@ -272,11 +273,9 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP / Software Installer / Management'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> layout_getUserLogo()
-		)
-);
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
 $sw_cnt = get_avail_software($tpl);
 $swdepot_cnt = get_avail_softwaredepot($tpl);
@@ -284,53 +283,48 @@ $res_cnt = get_reseller_software($tpl);
 
 $tpl->assign(
 	array(
-		'TR_SOFTWARE_DEPOT' 			=> tr('Softwares in repository'),
-		'SOFTWARE_UPLOAD_TOKEN' 		=> generate_software_upload_token(),
-		'TR_SOFTWARE_ADMIN' 			=> tr('Admin'),
-		'TR_SOFTWARE_RIGHTS' 			=> tr('Permissions'),
-		'TR_SOFTWAREDEPOT_COUNT' 		=> tr('Total Web softwares repositories'),
-		'TR_SOFTWAREDEPOT_NUM' 			=> $swdepot_cnt,
-		'TR_UPLOAD_SOFTWARE' 			=> tr('Software depot upload'),
-		'TR_SOFTWARE_FILE' 				=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-		'TR_SOFTWARE_URL' 				=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
-		'TR_UPLOAD_SOFTWARE_BUTTON' 	=> tr('Upload now'),
-		'TR_AWAITING_ACTIVATION' 		=> tr('Awaiting Activation'),
-		'TR_ACTIVATED_SOFTWARE' 		=> tr('Reseller software list'),
-		'TR_SOFTWARE_NAME' 				=> tr('Software name'),
-		'TR_SOFTWARE_VERSION' 			=> tr('Version'),
-		'TR_SOFTWARE_LANGUAGE' 			=> tr('Language'),
-		'TR_SOFTWARE_TYPE' 				=> tr('Type'),
-		'TR_SOFTWARE_RESELLER' 			=> tr('Reseller'),
-		'TR_SOFTWARE_IMPORT' 			=> tr('Import in local repository'),
-		'TR_SOFTWARE_DOWNLOAD' 			=> tr('Download'),
-		'TR_SOFTWARE_ACTIVATION' 		=> tr('Activate'),
-		'TR_SOFTWARE_DELETE' 			=> tr('Delete'),
-		'TR_SOFTWARE_ACT_COUNT'			=> tr('Total softwares'),
-		'TR_SOFTWARE_ACT_NUM' 			=> $sw_cnt,
-		'TR_RESELLER_NAME' 				=> tr('Reseller'),
-		'TR_RESELLER_ACT_COUNT' 		=> tr('Total reseller'),
-		'TR_RESELLER_ACT_NUM' 			=> $res_cnt,
-		'TR_RESELLER_COUNT_SWDEPOT' 	=> tr('Software in repository'),
-		'TR_RESELLER_COUNT_WAITING' 	=> tr('Awaiting activation'),
-		'TR_RESELLER_COUNT_ACTIVATED'	=> tr('Activated softwares'),
-		'TR_RESELLER_SOFTWARE_IN_USE'	=> tr('Total installations'),
-		'TR_MESSAGE_ACTIVATE' 			=> tr('Are you sure you want to activate this package?', true),
-		'TR_MESSAGE_IMPORT' 			=> tr('Are you sure you want to import this package into the local software repository?', true),
-		'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete this package?', true),
-        'TR_MESSAGE_INSTALL' 		    => tr('Are you sure you want to install this package from the Web software repository?', true),
-		'TR_ADMIN_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP / Softwares Installer / Management')
-	)
-);
+		'TR_SOFTWARE_DEPOT' => tr('Softwares in repository'),
+		'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
+		'TR_SOFTWARE_ADMIN' => tr('Admin'),
+		'TR_SOFTWARE_RIGHTS' => tr('Permissions'),
+		'TR_SOFTWAREDEPOT_COUNT' => tr('Total Web softwares repositories'),
+		'TR_SOFTWAREDEPOT_NUM' => $swdepot_cnt,
+		'TR_UPLOAD_SOFTWARE' => tr('Software depot upload'),
+		'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
+		'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+		'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
+		'TR_AWAITING_ACTIVATION' => tr('Awaiting Activation'),
+		'TR_ACTIVATED_SOFTWARE' => tr('Reseller software list'),
+		'TR_SOFTWARE_NAME' => tr('Software name'),
+		'TR_SOFTWARE_VERSION' => tr('Version'),
+		'TR_SOFTWARE_LANGUAGE' => tr('Language'),
+		'TR_SOFTWARE_TYPE' => tr('Type'),
+		'TR_SOFTWARE_RESELLER' => tr('Reseller'),
+		'TR_SOFTWARE_IMPORT' => tr('Import in local repository'),
+		'TR_SOFTWARE_DOWNLOAD' => tr('Download'),
+		'TR_SOFTWARE_ACTIVATION' => tr('Activate'),
+		'TR_SOFTWARE_DELETE' => tr('Delete'),
+		'TR_SOFTWARE_ACT_COUNT' => tr('Total softwares'),
+		'TR_SOFTWARE_ACT_NUM' => $sw_cnt,
+		'TR_RESELLER_NAME' => tr('Reseller'),
+		'TR_RESELLER_ACT_COUNT' => tr('Total reseller'),
+		'TR_RESELLER_ACT_NUM' => $res_cnt,
+		'TR_RESELLER_COUNT_SWDEPOT' => tr('Software in repository'),
+		'TR_RESELLER_COUNT_WAITING' => tr('Awaiting activation'),
+		'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated softwares'),
+		'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
+		'TR_MESSAGE_ACTIVATE' => tr('Are you sure you want to activate this package?', true),
+		'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the local software repository?', true),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
+		'TR_MESSAGE_INSTALL' => tr('Are you sure you want to install this package from the Web software repository?', true),
+		'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP / Softwares Installer / Management')));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
-
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

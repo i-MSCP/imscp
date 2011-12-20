@@ -89,7 +89,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_view.tpl',
-		 'logged_from' => 'page',
 		 'page_message' => 'page',
 		 'tickets_list' => 'page',
 		 'tickets_item' => 'tickets_list'
@@ -121,7 +120,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
-gen_logged_from($tpl);
 showTicketContent($tpl, $ticketId, $userId);
 generatePageMessage($tpl);
 

@@ -53,7 +53,6 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_assign.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('already_in', 'page');
 $tpl->define_dynamic('grp_avlb', 'page');
 $tpl->define_dynamic('add_button', 'page');
@@ -288,7 +287,6 @@ function delete_user_from_group($tpl, &$dmn_id) {
 }
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-gen_logged_from($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 

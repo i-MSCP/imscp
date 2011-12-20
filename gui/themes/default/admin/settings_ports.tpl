@@ -1,4 +1,4 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
+
 		<script type="text/javascript">
 			/*<![CDATA[*/
 			function action_delete(url, service) {
@@ -34,35 +34,6 @@
 			});
 			/*]]>*/
 		</script>
-		<div class="header">
-			{MAIN_MENU}
-			<div class="logo"><img src="{ISP_LOGO}" alt="i-MSCP logo" /></div>
-		</div>
-		<div class="location">
-			<div class="location-area">
-				<h1 class="settings">{TR_MENU_SETTINGS}</h1>
-			</div>
-			<ul class="location-menu">
-				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-			</ul>
-			<ul class="path">
-				<li><a href="index.php">Admin</a></li>
-				<li><a href="settings.php">Settings</a></li>
-				<li><a href="settings_ports.php">Server ports</a></li>
-			</ul>
-		</div>
-
-		<div class="left_menu">
-			{MENU}
-		</div>
-
-		<div class="body">
-			<h2 class="general"><span>{TR_SERVERPORTS}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<!-- start form edit -->
 			<form name="frm_to_updt" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">
 				<fieldset>
@@ -156,5 +127,3 @@
 					<input name="submitForAdd" type="submit" class="button" value="{VAL_FOR_SUBMIT_ON_ADD}" />
 				</div>
 			</form>
-		</div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

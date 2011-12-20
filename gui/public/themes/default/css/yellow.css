@@ -27,9 +27,8 @@ body {
 
 /** Links */
 a {color: rgb(255, 255, 255);}
-a:hover, a:focus {color: rgb(92, 186, 218);}
 .body a {color: rgb(133, 116, 47);}
-.body a:hover, .body a:focus {color: rgb(92, 186, 218);}
+a:hover, a.active {color: rgb(92, 186, 218);}
 
 /** Header */
 .header {background: rgb( 145, 129, 55) url(../images/yellow/background/top_bg.jpg) repeat-x top left;}
@@ -55,7 +54,7 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 }
 
 .left_menu a {background: transparent url(../images/yellow/background/bullet.png) no-repeat center left;}
-.left_menu a:hover {background-image: url(../images/yellow/background/bullet_hover.png);}
+.left_menu a:hover, .left_menu a.active {background-image: url(../images/yellow/background/bullet_hover.png);}
 
 /**
  * Body

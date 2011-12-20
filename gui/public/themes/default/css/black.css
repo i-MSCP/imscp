@@ -27,9 +27,8 @@ body {
 
 /** Links */
 a {color: rgb(255, 255, 255);}
-a:hover, a:focus {color: rgb(92, 186, 218);}
 .body a {color: rgb(0, 0, 0);}
-.body a:hover, .body a:focus {color: rgb(92, 186, 218);}
+a:hover, a.active {color: rgb(92, 186, 218);}
 
 /** Header */
 .header {background: rgb(38, 38, 38) url(../images/black/background/top_bg.jpg) repeat-x top left;}
@@ -37,6 +36,14 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 /** Main menu */
 .main_menu {background: transparent url(../images/black/background/mainmenu_left.png) no-repeat top left;}
 .main_menu ul {background: transparent url(../images/black/background/mainmenu_bg.png) repeat-x top left;}
+.main_menu a:hover, .main_menu a.active{
+    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.3);
+    /*filter: alpha(opacity = 30);*/
+    z-index: 5000;
+
+    /*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#dd204362,endColorstr=#dd204362);*/
+}
 
 /** Location */
 .location {background: rgb(0, 0, 0) url(../images/black/background/top_bar_bg.jpg) repeat-x top left;}
@@ -55,7 +62,7 @@ a:hover, a:focus {color: rgb(92, 186, 218);}
 }
 
 .left_menu a {background: transparent url(../images/black/background/bullet.png) no-repeat center left;}
-.left_menu a:hover {background-image: url(../images/black/background/bullet_hover.png);}
+.left_menu a:hover, .left_menu a.active {background-image: url(../images/black/background/bullet_hover.png);}
 
 /**
  * Body
@@ -70,16 +77,17 @@ h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 .body th, .body tfoot td {
     background: rgb(0, 0, 0) url(../images/black/background/top_bar_bg.jpg) repeat-x;
     color: rgb(255, 255, 255);
-    border-top-color: rgb(0, 0, 0);
-    border-bottom-color: rgb(0, 0, 0);
+    /*border-top-color: rgb(0, 0, 0);*/
+    /*border-bottom-color: rgb(0, 0, 0);*/
 }
-.body th:first-child {border-left-color: rgb(0, 0, 0);}
-.body th:last-child {border-right-color: rgb(0, 0, 0);}
+
+.body th:first-child {border-left-color: rgb(222, 222, 222);}
+.body th:last-child {border-right-color: rgb(222, 222, 222);}
 
 .description th {
     background: transparent;
-    border-top-color: rgb(222, 222, 222);
-    border-bottom-color:  rgb(222, 222, 222);
+    /*border-top-color: rgb(222, 222, 222);*/
+    /*border-bottom-color:  rgb(222, 222, 222);*/
     color: rgb(26, 26, 26);
 }
 
@@ -106,11 +114,22 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
     border-color: rgb(153, 153, 153);
 }
 
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+select:disabled,
+textarea:disabled{
+    background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;
+}
+
 /** Tooltips */
 .tooltip {border-color: rgb(0, 0, 0);}
 .tooltip_bg, .sw_tooltip_bg {background-color: rgb(0, 0, 0);}
 .tooltip_txt, .sw_tooltip_txt {color: rgb(255, 255, 255);}
 .tooltip_notice, .sw_tooltip_notice {background: url(../images/tooltips/info.png) no-repeat center left;}
+
+/** services status */
+.up { color: rgb(61, 122, 21); }
+.down { color: rgb(202, 29, 17);}
 
 /** Footer */
 .footer {color: rgb(255, 255, 255);}
@@ -138,8 +157,16 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
 
 .login #loginBox {background: transparent url('../images/black/login/form_box.png') no-repeat left top;}
 
-.login label span {
+.login label div {
     color: rgb(255, 255, 255);
+}
+
+.login #toolbox li a {
+    color: rgb(26, 26, 26);
+}
+
+.login #toolbox li a:hover {
+    color: rgb(92, 186, 218);
 }
 
 .i_lock {background-image: url('../images/login/i_lock.png');}

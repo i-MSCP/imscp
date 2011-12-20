@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -99,14 +98,15 @@ function admin_deleteUser($userId)
         $resellerLogo = $data['logo'];
 
         // Add specific reseller items to remove
-        $itemsToDelete = array_merge(array(
-                                          'hosting_plans' => 'reseller_id = ?',
-                                          'reseller_props' => 'reseller_id = ?',
-                                          'web_software' => 'reseller_id = ?',
-                                          'orders' => 'user_id = ?',
-                                          'orders_settings' => 'user_id = ?'
-                                     ),
-                                     $itemsToDelete);
+        $itemsToDelete = array_merge(
+			array(
+				'hosting_plans' => 'reseller_id = ?',
+				'reseller_props' => 'reseller_id = ?',
+				'web_software' => 'reseller_id = ?',
+				'orders' => 'user_id = ?',
+				'orders_settings' => 'user_id = ?'
+			),
+			$itemsToDelete);
     }
 
     // We are using transaction to ensure data consistency and prevent any garbage in
@@ -304,8 +304,7 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
                       'DOMAIN_NAME' => $domainName,
                       'DOMAIN_ID' => $domainId));
 
-    gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-    gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
+	generateNavigation($tpl);
 
     // Checks for domain's mail accounts
 
@@ -517,9 +516,9 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
 }
 
 generatePageMessage($tpl);
-$tpl->parse('PAGE', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+$tpl->parse('LAYOUT_CONTENT', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 $tpl->prnt();
 unsetMessages();

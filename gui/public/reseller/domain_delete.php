@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,13 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-msCP | http://i-mscp.net
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  */
 
 /************************************************************************************
@@ -72,42 +70,42 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     $domainName = tohtml(decode_idna($stmt->fields['domain_name']));
 
     $tpl = new iMSCP_pTemplate();
-    $tpl->define_dynamic(array(
-                              'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl',
-                              'logged_from' => 'page',
-                              'page_message' => 'page',
-                              'mail_list' => 'page',
-                              'mail_item' => 'mail_list',
-                              'ftp_list' => 'page',
-                              'ftp_item' => 'ftp_list',
-                              'als_list' => 'page',
-                              'als_item' => 'als_list',
-                              'sub_list' => 'page',
-                              'sub_item' => 'sub_list',
-                              'db_list' => 'page',
-                              'db_item' => 'db_list'));
+	$tpl->define_dynamic(
+		array(
+			'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+			'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl',
+			'page_message' => 'page',
+			'mail_list' => 'page',
+			'mail_item' => 'mail_list',
+			'ftp_list' => 'page',
+			'ftp_item' => 'ftp_list',
+			'als_list' => 'page',
+			'als_item' => 'als_list',
+			'sub_list' => 'page',
+			'sub_item' => 'sub_list',
+			'db_list' => 'page',
+			'db_item' => 'db_list'));
 
-    $tpl->assign(array(
-                      'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Domain Account Deletion Validation'),
-                      'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                      'THEME_CHARSET' => tr('encoding'),
-                      'ISP_LOGO' => layout_getUserLogo(),
-                      'TR_DELETE_DOMAIN' => tr('Delete domain'),
-                      'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
-                      'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
-                      'TR_DOMAIN_FTPS' => tr('Domain FTP accounts'),
-                      'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-                      'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
-                      'TR_DOMAIN_DBS' => tr('Domain databases'),
-                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr("Do you really want to delete the entire <strong>'%s'</strong> domain? This operation cannot be undone.", true, $domainName),
-                      'TR_BUTTON_DELETE' => tr('Delete domain'),
-                      'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
-                      'DOMAIN_NAME' => $domainName,
-                      'DOMAIN_ID' => $domainId));
+    $tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Domain Account Deletion Validation'),
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_DELETE_DOMAIN' => tr('Delete domain'),
+			'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
+			'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
+			'TR_DOMAIN_FTPS' => tr('Domain FTP accounts'),
+			'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
+			'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
+			'TR_DOMAIN_DBS' => tr('Domain databases'),
+			'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr("Do you really want to delete the entire <strong>'%s'</strong> domain? This operation cannot be undone.", true, $domainName),
+			'TR_BUTTON_DELETE' => tr('Delete domain'),
+			'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
+			'DOMAIN_NAME' => $domainName,
+			'DOMAIN_ID' => $domainId));
 
-    gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-    gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-    gen_logged_from($tpl);
+    generateNavigation($tpl);
 
     // Checks for domain's mail accounts
 
@@ -181,9 +179,10 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     if ($stmt->rowCount() != 0) {
         while (!$stmt->EOF) {
             $aliasIds[] = $stmt->fields['alias_id'];
-            $tpl->assign(array(
-                              'ALS_NAME' => tohtml(decode_idna($stmt->fields['alias_name'])),
-                              'ALS_MNT' => tohtml($stmt->fields['alias_mount'])));
+			$tpl->assign(
+				array(
+					'ALS_NAME' => tohtml(decode_idna($stmt->fields['alias_name'])),
+					'ALS_MNT' => tohtml($stmt->fields['alias_mount'])));
 
             $tpl->parse('ALS_ITEM', '.als_item');
             $stmt->moveNext();
@@ -206,9 +205,10 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
 
     if ($stmt->rowCount() != 0) {
         while (!$stmt->EOF) {
-            $tpl->assign(array(
-                              'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_name'])),
-                              'SUB_MNT' => tohtml($stmt->fields['subdomain_mount'])));
+			$tpl->assign(
+				array(
+					'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_name'])),
+					'SUB_MNT' => tohtml($stmt->fields['subdomain_mount'])));
 
             $tpl->parse('SUB_ITEM', '.sub_item');
             $stmt->moveNext();
@@ -234,9 +234,10 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
 
         if ($stmt->rowCount() != 0) {
             while (!$stmt->EOF) {
-                $tpl->assign(array(
-                                  'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_alias_name'])),
-                                  'SUB_MNT' => tohtml($stmt->fields['subdomain_alias_mount'])));
+				$tpl->assign(
+					array(
+						'SUB_NAME' => tohtml(decode_idna($stmt->fields['subdomain_alias_name'])),
+						'SUB_MNT' => tohtml($stmt->fields['subdomain_alias_mount'])));
 
                 $tpl->parse('SUB_ITEM', '.sub_item');
                 $stmt->moveNext();
@@ -263,9 +264,10 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
                 }
             }
 
-            $tpl->assign(array(
-                              'DB_NAME' => tohtml($stmt->fields['sqld_name']),
-                              'DB_USERS' => tohtml(implode(', ', $sqlUsersList))));
+			$tpl->assign(
+				array(
+					'DB_NAME' => tohtml($stmt->fields['sqld_name']),
+					'DB_USERS' => tohtml(implode(', ', $sqlUsersList))));
 
             $tpl->parse('DB_ITEM', '.db_item');
             $stmt->moveNext();
@@ -298,23 +300,25 @@ if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
     }
 
     redirectTo('users.php');
+	exit;
 } else {
     if (isset($_GET['delete'])) {
         set_page_message(tr('Wrong domain Id.'), 'error');
     } else {
         set_page_message(tr('You must confirm domain deletion.'), 'error');
         redirectTo('domain_delete.php?domain_id=' . intval($_POST['domain_id']));
+		exit;
     }
 
     redirectTo('users.php');
+	exit;
 }
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,
-                                              new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd,  new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 unsetMessages();

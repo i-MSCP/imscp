@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,27 +31,29 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/password_change.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/password_change.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Change Password'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
@@ -90,6 +91,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 	}
 }
 
+/**
+ * @param $id
+ * @param $pass
+ * @return bool
+ */
 function check_udata($id, $pass) {
 
 	$query = "
@@ -108,38 +114,23 @@ function check_udata($id, $pass) {
 	return (($rs->recordCount()) != 1) ? false : true;
 }
 
-/*
- *
- * static page messages.
- *
- */
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_GENERAL_INFO'		=> tr('General information'),
-		'TR_CHANGE_PASSWORD' 	=> tr('Change password'),
-		'TR_PASSWORD_DATA' 		=> tr('Password data'),
-		'TR_PASSWORD' 			=> tr('Password'),
-		'TR_PASSWORD_REPEAT' 	=> tr('Repeat password'),
-		'TR_UPDATE_PASSWORD' 	=> tr('Update password'),
-		'TR_CURR_PASSWORD' 		=> tr('Current password'),
-		// The entries below are for Demo versions only
-		'PASSWORD_DISABLED'		=> tr('Password change is deactivated!'),
-		'DEMO_VERSION'			=> tr('Demo Version!')
-	)
-);
+		'TR_GENERAL_INFO' => tr('General information'),
+		'TR_CHANGE_PASSWORD' => tr('Change password'),
+		'TR_PASSWORD_DATA' => tr('Password data'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_UPDATE' => tr('Update'),
+		'TR_CURR_PASSWORD' => tr('Current password')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

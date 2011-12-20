@@ -1,34 +1,3 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-        <div class="header">
-            {MAIN_MENU}
-
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
-        <div class="location">
-            <div class="location-area">
-                <h1 class="settings">{TR_MENU_SETTINGS}</h1>
-            </div>
-            <ul class="location-menu">
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-				<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
-                <li><a href="ip_manage.php">{TR_EMAIL_SETUP}</a></li>
-            </ul>
-        </div>
-
-        <div class="left_menu">
-            {MENU}
-        </div>
-
-        <div class="body">
-            <h2 class="email"><span>{TR_EMAIL_SETUP}</span></h2>
-
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
 
             <!-- BDP: tickets_list -->
 			<form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
@@ -92,5 +61,3 @@
 					<input type="hidden" name="uaction" value="email_setup"/>
 				</div>
 			</form>
-        </div>
-<!-- INCLUDE "../shared/layout/footer.tpl" -->

@@ -707,9 +707,9 @@ class iMSCP_pTemplate
 	public function prnt($pname = '')
 	{
 		if ($pname) {
-			echo preg_replace('/^\n+|^[\t\s]*\n+/m', '', @$this->namespace[$pname]);
+			echo @$this->namespace[$pname];
 		} else {
-			echo preg_replace('/^\n+|^[\t\s]*\n+/m', '', @$this->last_parsed);
+			echo @$this->last_parsed;
 		}
 	}
 
@@ -742,9 +742,12 @@ class iMSCP_pTemplate
 	 * @param string $newContent New content
 	 * @return iMSCP_pTemplate Provides fluent interface, returns self
 	 */
-	public function replaceLastParseResult($newContent)
+	public function replaceLastParseResult($newContent, $namespace = null)
 	{
 		$this->last_parsed = (string)$newContent;
+		if(isset($this->namespace[$namespace])) {
+			$this->namespace[$namespace] = $newContent;
+		}
 
 		return $this;
 	}

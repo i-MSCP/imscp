@@ -26,12 +26,12 @@
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Klaas Tammling <klaas.tammling@st-city.net>
- * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  * @filesource
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -180,37 +180,38 @@ $cfg = iMSCP_Registry::get('config');
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/ip_usage.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('ip_row', 'page');
-$tpl->define_dynamic('domain_row', 'page');
-$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/ip_usage.tpl',
+		'page_message' => 'page',
+		'ip_row' => 'page',
+		'domain_row' => 'page'));
 
 $reseller_id = $_SESSION['user_id'];
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/IP Usage'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/IP Usage'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_statistics.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 listIPDomains($tpl);
 
-$tpl->assign(array(
-                  'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
-                  'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
-                  'TR_DOMAIN_NAME' => tr('Domain Name')));
+$tpl->assign(
+	array(
+		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
+		'TR_IP_RESELLER_USAGE_STATISTICS' => tr('Reseller/IP usage statistics'),
+		'TR_DOMAIN_NAME' => tr('Domain Name')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

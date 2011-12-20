@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -74,22 +74,22 @@ if ($rs->recordCount() == 0 || !isset($_SESSION['domain_ip'])) {
 	redirectTo('orders.php');
 }
 
-$domain_ip		= $_SESSION['domain_ip'];
-$dmn_user_name	= $rs->fields['domain_name'];
-$hpid			= $rs->fields['plan_id'];
-$first_name		= $rs->fields['fname'];
-$last_name		= $rs->fields['lname'];
-$firm			= $rs->fields['firm'];
-$zip			= $rs->fields['zip'];
-$city			= $rs->fields['city'];
-$state			= $rs->fields['state'];
-$country		= $rs->fields['country'];
-$phone			= $rs->fields['phone'];
-$fax			= $rs->fields['fax'];
-$street_one		= $rs->fields['street1'];
-$street_two		= $rs->fields['street2'];
-$customer_id	= $rs->fields['customer_id'];
-$user_email		= $rs->fields['email'];
+$domain_ip = $_SESSION['domain_ip'];
+$dmn_user_name = $rs->fields['domain_name'];
+$hpid = $rs->fields['plan_id'];
+$first_name = $rs->fields['fname'];
+$last_name = $rs->fields['lname'];
+$firm = $rs->fields['firm'];
+$zip = $rs->fields['zip'];
+$city = $rs->fields['city'];
+$state = $rs->fields['state'];
+$country = $rs->fields['country'];
+$phone = $rs->fields['phone'];
+$fax = $rs->fields['fax'];
+$street_one = $rs->fields['street1'];
+$street_two = $rs->fields['street2'];
+$customer_id = $rs->fields['customer_id'];
+$user_email = $rs->fields['email'];
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
@@ -266,7 +266,7 @@ write_log("$admin_login: add domain: $dmn_user_name", E_USER_NOTICE);
 
 update_reseller_c_props($reseller_id);
 
-set_page_message(tr('User successfully added.'), 'success');
+set_page_message(tr('Customer successfully added.'), 'success');
 
 $query = "
 	UPDATE

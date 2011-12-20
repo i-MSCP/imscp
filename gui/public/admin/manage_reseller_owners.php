@@ -26,12 +26,15 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -41,13 +44,16 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_owners.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
-$tpl->define_dynamic('reseller_list', 'page');
-$tpl->define_dynamic('reseller_item', 'reseller_list');
-$tpl->define_dynamic('select_admin', 'page');
-$tpl->define_dynamic('select_admin_option', 'select_admin');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_owners.tpl',
+		'page_message' => 'page',
+		'hosting_plans' => 'page',
+		'reseller_list' => 'page',
+		'reseller_item' => 'reseller_list',
+		'select_admin' => 'page',
+		'select_admin_option' => 'select_admin'));
 
 /**
  * @todo check if it's useful to have the table admin two times in the same query
@@ -153,6 +159,9 @@ function gen_reseller_table($tpl) {
 	$tpl->assign('PAGE_MESSAGE', '');
 }
 
+/**
+ *
+ */
 function update_reseller_owner() {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
@@ -194,26 +203,15 @@ function update_reseller_owner() {
 	}
 }
 
-/*
- *
- * static page messages.
- *
- */
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Reseller assignment'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
+generateNavigation($tpl);
 update_reseller_owner();
-
 gen_reseller_table($tpl);
 
 $tpl->assign(
@@ -225,14 +223,11 @@ $tpl->assign(
 		'TR_RESELLER_NAME' => tr('Reseller name'),
 		'TR_OWNER' => tr('Owner'),
 		'TR_TO_ADMIN' => tr('To Admin'),
-		'TR_MOVE' => tr('Move'),
-	)
-);
+		'TR_MOVE' => tr('Move')));
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

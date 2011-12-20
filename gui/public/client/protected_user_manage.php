@@ -193,7 +193,6 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/puser_manage.tpl',
-		 'logged_from' => 'page',
 		 'page_message' => 'page',
 		 'users_message_block' => 'page',
 		 'users_block' => 'page',
@@ -228,7 +227,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
-gen_logged_from($tpl);
 
 $domainId = get_user_domain_id($_SESSION['user_id']);
 client_generateUsersList($tpl, $domainId);

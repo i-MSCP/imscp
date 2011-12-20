@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,46 +31,35 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Begin page line
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-
-// Table with hosting plans
-$tpl->define_dynamic('hp_table', 'page');
-$tpl->define_dynamic('hp_entry', 'hp_table');
-$tpl->define_dynamic('hp_delete', 'page');
-$tpl->define_dynamic('hp_menu_add', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan.tpl',
+		'page_message' => 'page',
+		'hp_table' => 'page',
+		'hp_entry' => 'hp_table',
+		'hp_delete' => 'page',
+		'hp_menu_add' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Main Index'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
-/*
- *
- * static page messages.
- *
- */
-
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
-
-gen_logged_from($tpl);
-
+generateNavigation($tpl);
 gen_hp_table($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
@@ -83,46 +71,42 @@ $tpl->assign(
 		'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
 		'TR_BACK' => tr('Back'),
 		'TR_TITLE_BACK' => tr('Return to previous menu'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-	)
-);
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
 
 gen_hp_message($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 
 // BEGIN FUNCTION DECLARE PATH
 
-function gen_hp_message(&$tpl) {
+/**
+ * @param $tpl
+ */
+function gen_hp_message($tpl) {
 	// global $externel_event, $hp_added, $hp_deleted, $hp_updated;
 	global $external_event;
 
-	if (isset($_SESSION["hp_added"])
-		&& $_SESSION["hp_added"] == '_yes_') {
+	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan successfully added.'), 'success');
 		unset($_SESSION["hp_added"]);
 		unset($GLOBALS['hp_added']);
-	} else if (isset($_SESSION["hp_deleted"])
-		&& $_SESSION["hp_deleted"] == '_yes_') {
+	} else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan successfully deleted.'), 'success');
 		unset($_SESSION["hp_deleted"]);
 		unset($GLOBALS['hp_deleted']);
-	} else if (isset($_SESSION["hp_updated"])
-		&& $_SESSION["hp_updated"] == '_yes_') {
+	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
 		$external_event = '_on_';
 		set_page_message(tr('Hosting plan sucessfully updated.'), 'success');
 		unset($_SESSION["hp_updated"]);
 		unset($GLOBALS['hp_updated']);
-	} else if (isset($_SESSION["hp_deleted_ordererror"])
-		&& $_SESSION["hp_deleted_ordererror"] == '_yes_') {
+	} else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
 		//$external_event = '_on_';
 		set_page_message(tr("This hosting plan can't be deleted, there are some orders linked to it."), 'error');
 		unset($_SESSION["hp_deleted_ordererror"]);
@@ -133,7 +117,7 @@ function gen_hp_message(&$tpl) {
 /**
  * Extract and show data for hosting plans
  */
-function gen_hp_table(&$tpl, $reseller_id) {
+function gen_hp_table($tpl, $reseller_id) {
 	global $external_event;
 
 	$cfg = iMSCP_Registry::get('config');

@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -188,7 +187,7 @@ function OrdersGarbageCollector()
  * Main script
  */
 
-// Include needed libraries
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -199,47 +198,47 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array('page' => $cfg->RESELLER_TEMPLATE_PATH . '/orders.tpl',
-                          'logged_from' => 'page',
-                          'page_message' => 'page',
-                          'orders_table' => 'page',
-                          'order' => 'orders_table',
-                          'scroll_prev_gray' => 'page',
-                          'scroll_prev' => 'page',
-                          'scroll_next_gray' => 'page',
-                          'scroll_next' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/orders.tpl',
+		'page_message' => 'page',
+		'orders_table' => 'page',
+		'order' => 'orders_table',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order management'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_MANAGE_ORDERS' => tr('Manage Orders'),
-                  'TR_ID' => tr('ID'),
-                  'TR_DOMAIN' => tr('Domain'),
-                  'TR_USER' => tr('Customer data'),
-                  'TR_ACTION' => tr('Action'),
-                  'TR_STATUS' => tr('Order'),
-                  'TR_EDIT' => tr('Edit'),
-                  'TR_DELETE' => tr('Delete'),
-                  'TR_DETAILS' => tr('Details'),
-                  'TR_HP' => tr('Hosting plan'),
-                  'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?'),
-                  'TR_ADD' => tr('Add/Details'),
-                  'TR_PREVIOUS' => tr('Previous'),
-                  'TR_NEXT' => tr('Next')));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order management'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_MANAGE_ORDERS' => tr('Manage Orders'),
+		'TR_ID' => tr('ID'),
+		'TR_DOMAIN' => tr('Domain'),
+		'TR_USER' => tr('Customer data'),
+		'TR_ACTION' => tr('Action'),
+		'TR_STATUS' => tr('Order'),
+		'TR_EDIT' => tr('Edit'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_DETAILS' => tr('Details'),
+		'TR_HP' => tr('Hosting plan'),
+		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete this order?'),
+		'TR_ADD' => tr('Add/Details'),
+		'TR_PREVIOUS' => tr('Previous'),
+		'TR_NEXT' => tr('Next')));
 
 generateOrderPage($tpl, $_SESSION['user_id']);
 OrdersGarbageCollector();
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_orders.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -54,8 +54,7 @@ $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/language.tpl',
 		 'page_message' => 'page',
-		 'def_language' => 'page',
-		 'logged_from' => 'page'));
+		 'def_language' => 'page'));
 
 // Getting current customer language
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
@@ -101,7 +100,6 @@ $tpl->assign(
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
-gen_logged_from($tpl);
 gen_def_language($tpl, $customerCurrentLanguage);
 generatePageMessage($tpl);
 

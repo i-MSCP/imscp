@@ -1,39 +1,3 @@
-<!-- INCLUDE "../shared/layout/header.tpl" -->
-    <body>
-        <div class="header">
-            {MAIN_MENU}
-            <div class="logo">
-                <img src="{ISP_LOGO}" alt="i-MSCP logo" />
-            </div>
-        </div>
-        <div class="location">
-            <div class="location-area">
-                <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
-            </div>
-            <ul class="location-menu">
-                <!-- BDP: logged_from -->
-                <li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
-                <!-- EDP: logged_from -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
-            </ul>
-            <ul class="path">
-                <li><a href="users.php">{TR_MENU_MANAGE_USERS}</a></li>
-                <li>
-                    <a href="domain_delete.php?domain_id={DOMAIN_ID}">{TR_DELETE_DOMAIN} {DOMAIN_NAME}</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="left_menu">
-            {MENU}
-        </div>
-
-        <div class="body">
-            <h2 class="users"><span>{TR_DELETE_DOMAIN} {DOMAIN_NAME}</span></h2>
-
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
 
             <form name="reseller_delete_domain_frm" method="post" action="domain_delete.php">
                 <table>
@@ -117,9 +81,3 @@
                     <input type="submit" value="{TR_BUTTON_DELETE}" />
                 </div>
             </form>
-        </div>
-        <div class="footer">
-            i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
-        </div>
-    </body>
-</html>

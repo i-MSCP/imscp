@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -32,12 +31,14 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $reseller_id = $_SESSION['user_id'];
@@ -257,6 +258,15 @@ if (!Zend_Session::namespaceIsset('pageMessages')) {
 } else {
 	redirectTo('orders.php');
 }
+/**
+ * @param $data
+ * @param $u
+ * @param $umax
+ * @param $r
+ * @param $rmax
+ * @param $obj
+ * @return mixed
+ */
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, $obj) {
 	if ($rmax == -1 && $umax >= 0) {
 		if ($u > 0) {

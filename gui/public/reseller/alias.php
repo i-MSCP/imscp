@@ -5,7 +5,6 @@
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010-2011 by i-msCP | http://i-mscp.net
- * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
  * @author 		i-MSCP Team
@@ -397,6 +396,7 @@ function generate_als_messages()
  * Main script
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
@@ -409,49 +409,49 @@ $cfg = iMSCP_Registry::get('config');
 /** @var $tpl iMSCP_pTemplate */
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic(array(
-                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_alias.tpl',
-                          'page_message' => 'page',
-                          'logged_from' => 'page',
-                          'table_list' => 'page',
-                          'table_header' => 'page',
-                          'table_item' => 'table_list',
-                          'status_reload_true' => 'table_list',
-                          'status_reload_false' => 'table_list',
-                          'scroll_prev' => 'page',
-                          'scroll_next_gray' => 'page',
-                          'scroll_next' => 'page',
-                          'als_add_button' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_alias.tpl',
+		'page_message' => 'page',
+		'table_list' => 'page',
+		'table_header' => 'page',
+		'table_item' => 'table_list',
+		'status_reload_true' => 'table_list',
+		'status_reload_false' => 'table_list',
+		'scroll_prev' => 'page',
+		'scroll_next_gray' => 'page',
+		'scroll_next' => 'page',
+		'als_add_button' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo()));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain/Alias'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 generate_als_list($tpl, $_SESSION['user_id']);
 generate_als_messages();
 generatePageMessage($tpl);
 
-$tpl->assign(array(
-                  'TR_MANAGE_ALIAS' => tr('Manage alias'),
-                  'TR_NAME' => tr('Name'),
-                  'TR_REAL_DOMAIN' => tr('Real domain'),
-                  'TR_FORWARD' => tr('Forward'),
-                  'TR_STATUS' => tr('Status'),
-                  'TR_ACTION' => tr('Action'),
-                  'TR_ADD_ALIAS' => tr('Add alias'),
-                  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-                  'TR_PREVIOUS' => tr('Previous'),
-                  'TR_NEXT' => tr('Next')));
+$tpl->assign(
+	array(
+		'TR_MANAGE_ALIAS' => tr('Manage alias'),
+		'TR_NAME' => tr('Name'),
+		'TR_REAL_DOMAIN' => tr('Real domain'),
+		'TR_FORWARD' => tr('Forward'),
+		'TR_STATUS' => tr('Status'),
+		'TR_ACTION' => tr('Action'),
+		'TR_ADD_ALIAS' => tr('Add alias'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_PREVIOUS' => tr('Previous'),
+		'TR_NEXT' => tr('Next')));
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

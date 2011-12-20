@@ -72,9 +72,12 @@ shall_user_wait();
 $theme_color = isset($_SESSION['user_theme']) ? $_SESSION['user_theme'] : $cfg->USER_INITIAL_THEME;
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('lostpwd_button', 'page');
-$tpl->define_dynamic('ssl_support', 'page');
+$tpl->define_dynamic(
+	array(
+		'page_message' => 'layout',
+		'lostpwd_button' => 'page',
+		'ssl_support' => 'page'));
+
 $tpl->assign(
 	array(
 		'productLongName' => tr('internet Multi Server Control Panel'),
@@ -90,7 +93,11 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableU
 			'TR_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
 			'TR_ADMINLOGIN' => tr('Administrator login')));
 } else {
-	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/index.tpl');
+	$tpl->define_dynamic(
+		array(
+			'layout' => $cfg->LOGIN_TEMPLATE_PATH . '/shared/layouts/login.tpl',
+			'page' => $cfg->LOGIN_TEMPLATE_PATH . '/index.tpl'));
+
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
@@ -125,7 +132,7 @@ if ($cfg->LOSTPASSWORD) {
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, new iMSCP_Events_Response($tpl));
 

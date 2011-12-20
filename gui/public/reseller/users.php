@@ -5,7 +5,6 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team
  * @author      i-MSCP Team
@@ -290,67 +289,66 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-                          'page' => $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl',
-                          'users_list' => 'page',
-                          'user_entry' => 'users_list',
-                          'status_reload_true' => 'users_list',
-                          'status_reload_false' => 'users_list',
-                          'user_details' => 'users_list',
-                          'page_message' => 'page',
-                          'logged_from' => 'page',
-                          'scroll_prev_gray' => 'page',
-                          'scroll_prev' => 'page',
-                          'scroll_next_gray', 'page',
-                          'scroll_next' => 'page',
-                          'edit_option' => 'page'));
+$tpl->define_dynamic(
+	array(
+		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl',
+		'users_list' => 'page',
+		'user_entry' => 'users_list',
+		'status_reload_true' => 'users_list',
+		'status_reload_false' => 'users_list',
+		'user_details' => 'users_list',
+		'page_message' => 'page',
+		'scroll_prev_gray' => 'page',
+		'scroll_prev' => 'page',
+		'scroll_next_gray', 'page',
+		'scroll_next' => 'page',
+		'edit_option' => 'page'));
 
-$tpl->assign(array(
-                  'TR_PAGE_TITLE' => tr('i-MSCP - Users'),
-                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                  'THEME_CHARSET' => tr('encoding'),
-                  'ISP_LOGO' => layout_getUserLogo(),
-                  'TR_MANAGE_USERS' => tr('Manage users'),
-                  'TR_USERS' => tr('Users'),
-                  'TR_USER_STATUS' => tr('Status'),
-                  'TR_DETAILS' => tr('Details'),
-                  'TR_SEARCH' => tr('Search'),
-                  'TR_USERNAME' => tr('Username'),
-                  'TR_ACTION' => tr('Actions'),
-                  'TR_CREATION_DATE' => tr('Creation date'),
-                  'TR_EXPIRE_DATE' => tr('Expire date'),
-                  'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-                  'TR_BACK' => tr('Back'),
-                  'TR_TITLE_BACK' => tr('Return to previous menu'),
-                  'TR_TABLE_NAME' => tr('Users list'),
-                  'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
-                  'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete %s?', true, '%s'),
-                  'TR_STAT' => tr('Stats'),
-                  'VL_MONTH' => date('m'),
-                  'VL_YEAR' =>  date('Y'),
-                  'TR_EDIT_DOMAIN' => tr('Edit Domain'),
-                  'TR_EDIT_USER' => tr('Edit User'),
-                  'TR_BW_USAGE' => tr('Bandwidth'),
-                  'TR_DISK_USAGE' => tr('Disk'),
-                  'TR_PREVIOUS' => tr('Previous'),
-                  'TR_NEXT' => tr('Next')));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Users'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_MANAGE_USERS' => tr('Manage users'),
+		'TR_USERS' => tr('Users'),
+		'TR_USER_STATUS' => tr('Status'),
+		'TR_DETAILS' => tr('Details'),
+		'TR_SEARCH' => tr('Search'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_ACTION' => tr('Actions'),
+		'TR_CREATION_DATE' => tr('Creation date'),
+		'TR_EXPIRE_DATE' => tr('Expire date'),
+		'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
+		'TR_BACK' => tr('Back'),
+		'TR_TITLE_BACK' => tr('Return to previous menu'),
+		'TR_TABLE_NAME' => tr('Users list'),
+		'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of %s?', true, '%s'),
+		'TR_MESSAGE_DELETE_ACCOUNT' => tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_STAT' => tr('Stats'),
+		'VL_MONTH' => date('m'),
+		'VL_YEAR' => date('Y'),
+		'TR_EDIT_DOMAIN' => tr('Edit Domain'),
+		'TR_EDIT_USER' => tr('Edit User'),
+		'TR_BW_USAGE' => tr('Bandwidth'),
+		'TR_DISK_USAGE' => tr('Disk'),
+		'TR_PREVIOUS' => tr('Previous'),
+		'TR_NEXT' => tr('Next')));
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
     $tpl->assign('EDIT_OPTION', '');
 }
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 generate_users_list($tpl, $_SESSION['user_id']);
 check_externel_events();
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

@@ -273,7 +273,6 @@ function _client_initView()
 	$tpl->define_dynamic(array(
 							  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_edit.tpl',
 							  'page_message' => 'page',
-							  'logged_from' => 'page',
 						 	  'scheme_options' => 'page'));
 
 	$tpl->assign(array(
@@ -284,7 +283,6 @@ function _client_initView()
 
 	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-	gen_logged_from($tpl);
 
 	return iMSCP_Registry::set('templateEngine', $tpl);
 }
