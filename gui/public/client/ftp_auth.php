@@ -111,12 +111,9 @@ function net2ftpAuth($userId)
 				'language' => 'en',
 				'ftpmode' => 'automatic',
 				'state' => 'browse',
-				'state2' => 'main'
-			)
-		);
+				'state2' => 'main'));
 	} else {
 		set_page_message(tr('Unknown FTP user id.'), 'error');
-
 		return false;
 	}
 
@@ -140,10 +137,7 @@ function net2ftpAuth($userId)
 					"Connection: close\r\n\r\n",
 				'content' => $data,
 				'user_agent' => $_SERVER["HTTP_USER_AGENT"],
-				'max_redirects' => 1
-			)
-		)
-	);
+				'max_redirects' => 1)));
 
 	// Gets the headers from Net2FTP
 	$headers = get_headers($net2ftpUri, true);

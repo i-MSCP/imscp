@@ -8,13 +8,6 @@
 		}
 	/*]]>*/
 	</script>
-	<div class="body" style="margin:0;padding: 1em;">
-		<h2><span>{TR_DIRECTORY_TREE}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<!-- BDP: ftp_chooser -->
 		<form action="">
 			<table class="firstColFixed">
@@ -38,4 +31,3 @@
 			</table>
 		</form>
 		<!-- EDP: ftp_chooser -->
-	</div>

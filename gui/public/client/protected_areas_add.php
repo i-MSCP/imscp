@@ -51,6 +51,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/protect_it.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('group_item', 'page');
@@ -62,9 +63,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @todo use db prepared statements
@@ -117,6 +116,7 @@ function protect_area($tpl, $dmn_id) {
 	// We need to use the virtual file system
 	$vfs = new iMSCP_VirtualFileSystem($domain);
 	$res = $vfs->exists($path);
+
 	if (!$res) {
 		set_page_message(tr("%s doesn't exist", $path), 'error');
 		return;
@@ -127,13 +127,16 @@ function protect_area($tpl, $dmn_id) {
 	if (isset($_POST['users'])) {
 		$users = $_POST['users'];
 	}
+
 	if (isset($_POST['groups'])) {
 		$groups = $_POST['groups'];
 	}
+
 	$area_name = $_POST['paname'];
 
 	$user_id = '';
 	$group_id = '';
+
 	if ($ptype == 'user') {
 		for ($i = 0, $cnt_users = count($users); $i < $cnt_users; $i++) {
 			if ($cnt_users == 1 || $cnt_users == $i + 1) {
@@ -146,6 +149,7 @@ function protect_area($tpl, $dmn_id) {
 				$user_id .= $users[$i] . ',';
 			}
 		}
+
 		$group_id = 0;
 	} else {
 		for ($i = 0, $cnt_groups = count($groups); $i < $cnt_groups; $i++) {
@@ -159,8 +163,10 @@ function protect_area($tpl, $dmn_id) {
 				$group_id .= $groups[$i] . ',';
 			}
 		}
+
 		$user_id = 0;
 	}
+
 	// let's check if we have to update or to make new enrie
 	$alt_path = $path . "/";
 	$query = "
@@ -231,9 +237,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 			array(
 				'PATH' => '',
 				'AREA_NAME' => '',
-				'UNPROTECT_IT' => '',
-			)
-		);
+				'UNPROTECT_IT' => ''));
 	} else {
 		$edit = 'yes';
 		$ht_id = $_GET['id'];
@@ -262,9 +266,8 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$tpl->assign(
 			array(
 				'PATH' => tohtml($path),
-				'AREA_NAME' => tohtml($auth_name),
-			)
-		);
+				'AREA_NAME' => tohtml($auth_name)));
+
 		// let's get the htaccess management type
 		if ($user_id !== 0 && $group_id == 0) {
 			// we have only user htaccess
@@ -284,10 +287,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 				'USER_CHECKED' => $cfg->HTML_CHECKED,
 				'GROUP_CHECKED' => "",
 				'USER_FORM_ELEMENS' => "false",
-				'GROUP_FORM_ELEMENS' => "true",
-			)
-		);
-	}
+				'GROUP_FORM_ELEMENS' => "true"));}
 
 	if ($type == 'group') {
 		$tpl->assign(
@@ -295,9 +295,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 				'USER_CHECKED' => "",
 				'GROUP_CHECKED' => $cfg->HTML_CHECKED,
 				'USER_FORM_ELEMENS' => "true",
-				'GROUP_FORM_ELEMENS' => "false",
-			)
-		);
+				'GROUP_FORM_ELEMENS' => "false"));
 	}
 
 	$query = "SELECT *  FROM `htaccess_users` WHERE `dmn_id` = ?";
@@ -308,9 +306,8 @@ function gen_protect_it($tpl, &$dmn_id) {
 			array(
 				'USER_VALUE' => "-1",
 				'USER_LABEL' => tr('You have no users !'),
-				'USER_SELECTED' => ''
-			)
-		);
+				'USER_SELECTED' => ''));
+
 		$tpl->parse('USER_ITEM', 'user_item');
 	} else {
 		while (!$rs->EOF) {
@@ -328,9 +325,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 				array(
 					'USER_VALUE' => $rs->fields['id'],
 					'USER_LABEL' => tohtml($rs->fields['uname']),
-					'USER_SELECTED' => $usr_selected,
-				)
-			);
+					'USER_SELECTED' => $usr_selected));
 
 			$tpl->parse('USER_ITEM', '.user_item');
 
@@ -339,7 +334,6 @@ function gen_protect_it($tpl, &$dmn_id) {
 	}
 
 	$query = "SELECT * FROM `htaccess_groups` WHERE `dmn_id` = ?";
-
 	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
@@ -347,9 +341,8 @@ function gen_protect_it($tpl, &$dmn_id) {
 			array(
 				'GROUP_VALUE' => "-1",
 				'GROUP_LABEL' => tr('You have no groups.'),
-				'GROUP_SELECTED' => ''
-			)
-		);
+				'GROUP_SELECTED' => ''));
+
 		$tpl->parse('GROUP_ITEM', 'group_item');
 	} else {
 		while (!$rs->EOF) {
@@ -367,17 +360,15 @@ function gen_protect_it($tpl, &$dmn_id) {
 				array(
 					'GROUP_VALUE' => $rs->fields['id'],
 					'GROUP_LABEL' => tohtml($rs->fields['ugroup']),
-					'GROUP_SELECTED' => $grp_selected,
-				)
-			);
+					'GROUP_SELECTED' => $grp_selected));
+
 			$tpl->parse('GROUP_ITEM', '.group_item');
 			$rs->moveNext();
 		}
 	}
 }
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
@@ -400,13 +391,11 @@ $tpl->assign(
 		'TR_AREA_NAME' => tr('Area name'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_MANAGE_USRES' => tr('Manage users and groups'),
-		'CHOOSE_DIR' => tr('Choose dir'),
-	)
-);
+		'CHOOSE_DIR' => tr('Choose dir')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -1,11 +1,4 @@
 
-	<div class="body">
-		<h2 class="general"><span>{TR_TITLE_GENERAL_INFORMATION}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<table>
 			<tr>
 				<th colspan="2">{TR_DOMAIN_ACCOUNT}</th>
@@ -27,8 +20,6 @@
 				<td>{DOMAIN_REMAINING_TIME} {DOMAIN_EXPIRES_DATE}</td>
 			</tr>
 		</table>
-
-		<br />
 
 		<table>
 			<tr>
@@ -123,4 +114,3 @@
 
 		<div class="graph"><span style="width:{DISK_PERCENT}%">&nbsp;</span></div>
 		<p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
-	</div>

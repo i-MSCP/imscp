@@ -1,11 +1,4 @@
 
-	<div class="body">
-		<h2 class="support"><span>{TR_EDIT_MAIL_AUTORESPONDER}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<form action="" method="post" id="client_mail_autoresponder_edit">
 			<fieldset>
 				<legend>{TR_ARSP_MESSAGE}</legend>
@@ -18,4 +11,3 @@
 				<input type="button" name="Submit2" value="{TR_CANCEL}" onclick="location = 'mail_accounts.php'" />
 			</div>
 		</form>
-	</div>

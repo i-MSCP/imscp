@@ -35,13 +35,6 @@
 	/* ]]> */
 	</script>
 	<!-- EDP: domain_alias_add_js -->
-	<div class="body">
-		<h2 class="domains"><span>{TR_TITLE_ADD_DOMAIN_ALIAS}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<!-- BDP: domain_alias_add_form -->
 		<form name="add_alias_frm" method="post" action="alias_add.php">
 			<table>
@@ -94,5 +87,4 @@
 			</div>
 		</form>
 		<!-- EDP: domain_alias_add_form -->
-	</div>
 

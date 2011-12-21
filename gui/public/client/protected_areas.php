@@ -51,6 +51,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/protected_areas.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('dir_item', 'page');
@@ -62,9 +63,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param $tpl
@@ -107,8 +106,7 @@ function gen_htaccess_entries($tpl, &$dmn_id)
 	}
 }
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
@@ -132,13 +130,11 @@ $tpl->assign(
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 		'TR_STATUS' => tr('Status'),
-		'TR_ADD_AREA' => tr('Add new protected area')
-	)
-);
+		'TR_ADD_AREA' => tr('Add new protected area')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

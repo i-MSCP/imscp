@@ -51,6 +51,7 @@ if (!customerHasFeature('custom_error_pages')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/error_pages.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -97,14 +98,10 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'DOMAIN' => $domain
-	)
-);
+		'DOMAIN' => $domain));
 
 update_error_page($_SESSION['user_id']);
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -115,13 +112,11 @@ $tpl->assign(
 		'TR_ERROR_503' => tr('Error 503 (service unavailable)'),
 		'TR_ERROR_PAGES' => tr('Custom error pages'),
 		'TR_EDIT' => tr('Edit'),
-		'TR_VIEW' => tr('View')
-	)
-);
+		'TR_VIEW' => tr('View')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

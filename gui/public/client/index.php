@@ -82,7 +82,7 @@ function client_generateSupportSystemNotices()
 	$stmt = exec_query($query, $userId);
 
 	if ($stmt->fields('cnt')) {
-		set_page_message(tr('You received <b>%d</b> new answer(s) to your support questions.',$stmt->fields('cnt')),'info');
+		set_page_message(tr('You received %d new answer(s) to your support questions.', '<span class="bold">' . $stmt->fields('cnt') . '</span>'), 'info');
 	}
 }
 
@@ -172,8 +172,7 @@ function client_generateFeatureStatus($tpl)
 			 'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
 			 'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
 			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
-			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo
-		));
+			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo));
 
 	if (customerHasFeature('backup')) {
 		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
@@ -328,7 +327,7 @@ $cfg = iMSCP_Registry::get('config');
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new iMSCP_pTemplate();
-
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl',
@@ -340,15 +339,13 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Main Index'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP Client / General Information'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_TITLE_GENERAL_INFORMATION' => tr('General information')));
 
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 
 client_generateSupportSystemNotices();
 client_generateDomainExpiresInformation($tpl);
@@ -417,7 +414,7 @@ $tpl->assign(
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

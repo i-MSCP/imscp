@@ -1,5 +1,4 @@
 
-<body>
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
@@ -82,13 +81,6 @@
 		$(window).load(function(){begin_js();});
 	/* ]]> */
 	</script>
-	<div class="body">
-		<h2 class="email"><span>{TR_ADD_MAIL_USER}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<form name="addFrm" action="mail_add.php" method="post" id="client_mail_add">
 			<table>
 				<tr>
@@ -176,4 +168,3 @@
 				<input type="submit" name="submit" value="{TR_ADD}" />
 			</div>
 		</form>
-	</div>

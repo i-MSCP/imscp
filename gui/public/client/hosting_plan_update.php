@@ -46,6 +46,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/hosting_plan_update.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
@@ -193,12 +194,10 @@ function gen_hp($tpl, $user_id) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'TR_HOSTING_PLANS'	=> $hp_title,
-				'HOSTING_PLANS'		=> '',
-				'HP_ORDER'			=> '',
-				'COLSPAN'			=> 2
-			)
-		);
+				'TR_HOSTING_PLANS' => $hp_title,
+				'HOSTING_PLANS' => '',
+				'HP_ORDER' => '',
+				'COLSPAN' => 2));
 
 		set_page_message(tr('There are no available hosting plans for updates.'), 'info');
 		return;
@@ -450,9 +449,7 @@ function gen_hp($tpl, $user_id) {
 				 'HOSTING_PLANS' => '',
 				 'HP_ORDER' => '',
 				 'TR_HOSTING_PLANS' => $hp_title,
-				 'COLSPAN' => '2'
-			)
-		);
+				 'COLSPAN' => '2'));
 
 		set_page_message(tr('There are no available hosting plans for update.'), 'info');
 	}
@@ -463,9 +460,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Update hosting plan'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @todo the 2nd query has 2 identical tables in FROM-clause, is this OK?
@@ -574,8 +569,6 @@ function add_new_order($tpl,$order_id, $user_id) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-
-
 	exec_query($query, array(
 		$_SESSION['user_created_by'], $order_id, $date, $_SESSION['user_logged'],
 		$user_id, '', '', '', '', '', '', '', '', '', '', '', '', $status
@@ -641,20 +634,17 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 }
 
 gen_hp($tpl, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
 		'TR_TITLE_MENU_UPDATE_HP' => tr('Update hosting plan'),
-		'TR_LANGUAGE'	=> tr('Language'),
-		'TR_SAVE'		=> tr('Save'),
-	)
-);
+		'TR_LANGUAGE' => tr('Language'),
+		'TR_SAVE' => tr('Save')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

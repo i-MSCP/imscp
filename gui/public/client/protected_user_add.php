@@ -51,6 +51,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_uadd.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
@@ -63,9 +64,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Add user'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param $tpl
@@ -142,35 +141,32 @@ function padd_user($tpl, $dmn_id) {
 	}
 }
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 padd_user($tpl, get_user_domain_id($_SESSION['user_id']));
 
 $tpl->assign(
 	array(
-		'TR_HTACCESS'			=> tr('Protected areas'),
-		'TR_ACTION'				=> tr('Action'),
-		'TR_USER_MANAGE'		=> tr('Manage user'),
-		'TR_USERS'				=> tr('User'),
-		'TR_USERNAME'			=> tr('Username'),
-		'TR_ADD_USER'			=> tr('Add user'),
-		'TR_GROUPNAME'			=> tr('Group name'),
-		'TR_GROUP_MEMBERS'		=> tr('Group members'),
-		'TR_ADD_GROUP'			=> tr('Add group'),
-		'TR_EDIT'				=> tr('Edit'),
-		'TR_GROUP'				=> tr('Group'),
-		'TR_DELETE'				=> tr('Delete'),
-		'TR_GROUPS'				=> tr('Groups'),
-		'TR_PASSWORD'			=> tr('Password'),
-		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
-		'TR_CANCEL'				=> tr('Cancel'),
-		'TR_HTACCESS_USER' => tr('Manage users and groups')
-	)
-);
+		'TR_HTACCESS' => tr('Protected areas'),
+		'TR_ACTION' => tr('Action'),
+		'TR_USER_MANAGE' => tr('Manage user'),
+		'TR_USERS' => tr('User'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_ADD_USER' => tr('Add user'),
+		'TR_GROUPNAME' => tr('Group name'),
+		'TR_GROUP_MEMBERS' => tr('Group members'),
+		'TR_ADD_GROUP' => tr('Add group'),
+		'TR_EDIT' => tr('Edit'),
+		'TR_GROUP' => tr('Group'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_GROUPS' => tr('Groups'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_CANCEL' => tr('Cancel'),
+		'TR_HTACCESS_USER' => tr('Manage users and groups')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

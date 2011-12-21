@@ -51,7 +51,7 @@ if (!customerHasFeature('mail')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('als_list', 'page');
@@ -78,17 +78,15 @@ function gen_page_form_data($tpl, $dmn_name, $post_check) {
 
 		$tpl->assign(
 			array(
-				'USERNAME'				=> '',
-				'DOMAIN_NAME'			=> tohtml($dmn_name),
-				'MAIL_DMN_CHECKED'		=> $cfg->HTML_CHECKED,
-				'MAIL_ALS_CHECKED'		=> '',
-				'MAIL_SUB_CHECKED'		=> '',
-				'MAIL_ALS_SUB_CHECKED'	=> '',
-				'NORMAL_MAIL_CHECKED'	=> $cfg->HTML_CHECKED,
-				'FORWARD_MAIL_CHECKED'	=> '',
-				'FORWARD_LIST'			=> ''
-			)
-		);
+				'USERNAME' => '',
+				'DOMAIN_NAME' => tohtml($dmn_name),
+				'MAIL_DMN_CHECKED' => $cfg->HTML_CHECKED,
+				'MAIL_ALS_CHECKED' => '',
+				'MAIL_SUB_CHECKED' => '',
+				'MAIL_ALS_SUB_CHECKED' => '',
+				'NORMAL_MAIL_CHECKED' => $cfg->HTML_CHECKED,
+				'FORWARD_MAIL_CHECKED' => '',
+				'FORWARD_LIST' => ''));
 
 	} else {
 		if (!isset($_POST['forward_list'])) {
@@ -99,17 +97,15 @@ function gen_page_form_data($tpl, $dmn_name, $post_check) {
 
 		$tpl->assign(
 			array(
-				'USERNAME'				=> clean_input($_POST['username'], true),
-				'DOMAIN_NAME'			=> tohtml($dmn_name),
-				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : '',
-				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
-				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
-				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? $cfg->HTML_CHECKED : '',
-				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? $cfg->HTML_CHECKED : '',
-				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? $cfg->HTML_CHECKED : '',
-				'FORWARD_LIST'			=> $f_list
-			)
-		);
+				'USERNAME' => clean_input($_POST['username'], true),
+				'DOMAIN_NAME' => tohtml($dmn_name),
+				'MAIL_DMN_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : '',
+				'MAIL_ALS_CHECKED' => ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
+				'MAIL_SUB_CHECKED' => ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
+				'MAIL_ALS_SUB_CHECKED' => ($_POST['dmn_type'] === 'als_sub') ? $cfg->HTML_CHECKED : '',
+				'NORMAL_MAIL_CHECKED' => (isset($_POST['mail_type_normal'])) ? $cfg->HTML_CHECKED : '',
+				'FORWARD_MAIL_CHECKED' => (isset($_POST['mail_type_forward'])) ? $cfg->HTML_CHECKED : '',
+				'FORWARD_LIST' => $f_list));
 	}
 }
 
@@ -143,11 +139,10 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'ALS_ID'		=> '0',
-				'ALS_SELECTED'	=> $cfg->HTML_SELECTED,
-				'ALS_NAME'		=> tr('Empty list')
-			)
-		);
+				'ALS_ID' => '0',
+				'ALS_SELECTED' => $cfg->HTML_SELECTED,
+				'ALS_NAME' => tr('Empty list')));
+
 		$tpl->parse('ALS_LIST', 'als_list');
 		$tpl->assign('TO_ALIAS_DOMAIN', '');
 	} else {
@@ -176,11 +171,10 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 			$alias_name = decode_idna($rs->fields['alias_name']);
 			$tpl->assign(
 				array(
-					'ALS_ID'		=> $rs->fields['alias_id'],
-					'ALS_SELECTED'	=> $als_selected,
-					'ALS_NAME'		=> tohtml($alias_name)
-				)
-			);
+					'ALS_ID' => $rs->fields['alias_id'],
+					'ALS_SELECTED' => $als_selected,
+					'ALS_NAME' => tohtml($alias_name)));
+
 			$tpl->parse('ALS_LIST', '.als_list');
 			$rs->moveNext();
 
@@ -222,11 +216,10 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'SUB_ID'		=> '0',
-				'SUB_SELECTED'	=> $cfg->HTML_SELECTED,
-				'SUB_NAME'		=> tr('Empty list')
-			)
-		);
+				'SUB_ID' => '0',
+				'SUB_SELECTED' => $cfg->HTML_SELECTED,
+				'SUB_NAME' => tr('Empty list')));
+
 		$tpl->parse('SUB_LIST', 'sub_list');
 		$tpl->assign('TO_SUBDOMAIN', '');
 	} else {
@@ -257,16 +250,16 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 			$dmn_name = decode_idna($dmn_name);
 			$tpl->assign(
 				array(
-					'SUB_ID'		=> $rs->fields['sub_id'],
-					'SUB_SELECTED'	=> $sub_selected,
-					'SUB_NAME'		=> tohtml($sub_name . '.' . $dmn_name)
-				)
-			);
+					'SUB_ID' => $rs->fields['sub_id'],
+					'SUB_SELECTED' => $sub_selected,
+					'SUB_NAME' => tohtml($sub_name . '.' . $dmn_name)));
+
 			$tpl->parse('SUB_LIST', '.sub_list');
 			$rs->moveNext();
 
-			if (!$first_passed)
+			if (!$first_passed) {
 				$first_passed = true;
+			}
 		}
 	}
 }
@@ -304,11 +297,10 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'ALS_SUB_ID'		=> '0',
-				'ALS_SUB_SELECTED'	=> $cfg->HTML_SELECTED,
-				'ALS_SUB_NAME'		=> tr('Empty list')
-			)
-		);
+				'ALS_SUB_ID' => '0',
+				'ALS_SUB_SELECTED' => $cfg->HTML_SELECTED,
+				'ALS_SUB_NAME' => tr('Empty list')));
+
 		$tpl->parse('ALS_SUB_LIST', 'sub_list');
 		$tpl->assign('TO_ALIAS_SUBDOMAIN', '');
 	} else {
@@ -339,11 +331,10 @@ function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 			$als_name = decode_idna($rs->fields['als_name']);
 			$tpl->assign(
 				array(
-					'ALS_SUB_ID'		=> $rs->fields['als_sub_id'],
-					'ALS_SUB_SELECTED'	=> $als_sub_selected,
-					'ALS_SUB_NAME'		=> tohtml($als_sub_name . '.' . $als_name)
-				)
-			);
+					'ALS_SUB_ID' => $rs->fields['als_sub_id'],
+					'ALS_SUB_SELECTED' => $als_sub_selected,
+					'ALS_SUB_NAME' => tohtml($als_sub_name . '.' . $als_name)));
+
 			$tpl->parse('ALS_SUB_LIST', '.als_sub_list');
 			$rs->moveNext();
 
@@ -538,7 +529,6 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
 		}
 	}
 
-
 	if ($_POST['dmn_type'] === 'sub') {
 		$id = 'sub_id';
 		$query = '
@@ -650,6 +640,7 @@ function gen_page_mail_acc_props($tpl, $user_id) {
 		gen_dmn_als_list($tpl, $dmn_id, $post_check);
 		gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check);
 		gen_dmn_als_sub_list($tpl, $dmn_id, $post_check);
+
 		if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 			check_mail_acc_data($dmn_id, $dmn_name);
 		}
@@ -665,13 +656,10 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add Mail User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 gen_page_mail_acc_props($tpl, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -689,13 +677,11 @@ $tpl->assign(
 		 'TR_FWD_HELP' => tr('Separate multiple email addresses with a line-break.'),
 		 'TR_ADD' => tr('Add'),
 		 'TR_EMPTY_DATA' => tr('You did not fill all required fields'),
-		 'TR_MAIl_ACCOUNT_DATA' => tr('Mail account data')
-	)
-);
+		 'TR_MAIl_ACCOUNT_DATA' => tr('Mail account data')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

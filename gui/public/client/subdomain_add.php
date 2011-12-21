@@ -93,11 +93,9 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 	$domainname = decode_idna($rs->fields['domain_name']);
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME'		=> '.' . tohtml($domainname),
-			'SUB_DMN_CHECKED'	=> $cfg->HTML_CHECKED,
-			'SUB_ALS_CHECKED'	=> ''
-		)
-	);
+			'DOMAIN_NAME' => '.' . tohtml($domainname),
+			'SUB_DMN_CHECKED' => $cfg->HTML_CHECKED,
+			'SUB_ALS_CHECKED' => ''));
 	gen_dmn_als_list($tpl, $rs->fields['domain_id'], 'no');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
@@ -109,9 +107,7 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 			$tpl->assign(
 				array(
 					'READONLY_FORWARD' => '',
-					'DISABLE_FORWARD' => '',
-				)
-			);
+					'DISABLE_FORWARD' => ''));
 		} else {
 			$check_en = '';
 			$check_dis = 'checked="checked"';
@@ -119,17 +115,14 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 			$tpl->assign(
 				array(
 					'READONLY_FORWARD' => ' readonly',
-					'DISABLE_FORWARD' => ' disabled="disabled"',
-				)
-			);
+					'DISABLE_FORWARD' => ' disabled="disabled"'));
 		}
 		$tpl->assign(
 			array(
 				'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
 				'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
-				'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
-			)
-		);
+				'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''));
+
 		$subdomain_name = clean_input($_POST['subdomain_name']);
 		$subdomain_mnt_pt = array_encode_idna(clean_input($_POST['subdomain_mnt_pt']), true);
 	} else {
@@ -139,9 +132,7 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 		$tpl->assign(
 			array(
 				'READONLY_FORWARD' => ' readonly',
-				'DISABLE_FORWARD' => ' disabled="disabled"'
-			)
-		);
+				'DISABLE_FORWARD' => ' disabled="disabled"'));
 	}
 	$tpl->assign(
 		array(
@@ -149,9 +140,7 @@ function gen_user_add_subdomain_data($tpl, $user_id) {
 			'SUBDOMAIN_MOUNT_POINT' => $subdomain_mnt_pt,
 			'FORWARD'	=> $forward,
 			'CHECK_EN'	=> $check_en,
-			'CHECK_DIS' => $check_dis
-		)
-	);
+			'CHECK_DIS' => $check_dis));
 }
 
 /**
@@ -179,16 +168,15 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 		ORDER BY
 			`alias_name`
 	";
-
 	$rs = exec_query($query, array($dmn_id, $ok_status));
+
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => '0',
 				'ALS_SELECTED' => $cfg->HTML_SELECTED,
-				'ALS_NAME' => tr('Empty list')
-			)
-		);
+				'ALS_NAME' => tr('Empty list')));
+
 		$tpl->parse('ALS_LIST', 'als_list');
 		$tpl->assign('TO_ALIAS_DOMAIN', '');
 		$_SESSION['alias_count'] = "no";
@@ -207,9 +195,8 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 				array(
 					'ALS_ID' => $rs->fields['alias_id'],
 					'ALS_SELECTED' => $als_selected,
-					'ALS_NAME' => tohtml($alias_name)
-				)
-			);
+					'ALS_NAME' => tohtml($alias_name)));
+
 			$tpl->parse('ALS_LIST', '.als_list');
 			$rs->moveNext();
 
@@ -280,8 +267,7 @@ function subdmn_exists($user_id, $domain_id, $sub_name) {
 
 	$std_subs = array(
 		'www', 'mail', 'webmail', 'pop', 'pop3', 'imap', 'smtp', 'pma', 'relay',
-		'ftp', 'ns1', 'ns2', 'localhost'
-	);
+		'ftp', 'ns1', 'ns2', 'localhost');
 
 	if ($rs_subdomain->fields['cnt'] == 0
 		&& $rs_domain->fields['cnt'] == 0
@@ -409,11 +395,11 @@ function check_subdomain_data($tpl, $user_id, $dmn_name) {
 	$dmn_id = $domain_id = get_user_domain_id($user_id);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
-
 		if (empty($_POST['subdomain_name'])) {
 			 set_page_message(tr('Please specify subdomain name.'), 'error');
 			return;
 		}
+
 		$sub_name = strtolower($_POST['subdomain_name']);
 
 		if ($_POST['status'] == 1) {
@@ -434,7 +420,6 @@ function check_subdomain_data($tpl, $user_id, $dmn_name) {
 		}
 
 		if ($_POST['dmn_type'] === 'als') {
-
 			if (!isset($_POST['als_id'])) {
 				set_page_message(tr('No valid alias domain selected.'), 'error');
 				return;
@@ -448,7 +433,6 @@ function check_subdomain_data($tpl, $user_id, $dmn_name) {
 				WHERE
 					`alias_id` = ?
 			";
-
 			$rs = exec_query($query_alias, $_POST['als_id']);
 
 			$als_mnt = $rs->fields['alias_mount'];
@@ -553,6 +537,7 @@ $domainProperties =  get_domain_default_props($_SESSION['user_id'], true);
 // Avoid useless work during Ajax request
 if(!is_xhr()) {
 	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 	$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_add.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('subdomain_add_js', 'page');
@@ -564,12 +549,9 @@ if(!is_xhr()) {
 			'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add Subdomain'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => layout_getUserLogo()
-		)
-	);
+			'ISP_LOGO' => layout_getUserLogo()));
 
-	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+	generateNavigation($tpl);
 
 	$tpl->assign(
 		array(
@@ -586,9 +568,7 @@ if(!is_xhr()) {
 			 'TR_DISABLE' => tr('Disable'),
 			 'TR_PREFIX_HTTP' => 'http://',
 			 'TR_PREFIX_HTTPS' => 'https://',
-			 'TR_PREFIX_FTP' => 'ftp://'
-		)
-	);
+			 'TR_PREFIX_FTP' => 'ftp://'));
 }
 
 /**
@@ -629,7 +609,7 @@ if ($currentNumberSubdomains != 0 && $currentNumberSubdomains == $domainProperti
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

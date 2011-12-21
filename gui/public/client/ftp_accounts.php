@@ -101,14 +101,14 @@ if (!customerHasFeature('ftp')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ftp_accounts.tpl',
 		 'page_message' => 'page',
 		 'ftp_message' => 'page',
 		 'ftp_accounts' => 'page',
-		 'ftp_item' => 'ftp_accounts')
-);
+		 'ftp_item' => 'ftp_accounts'));
 
 $tpl->assign(
 	array(
@@ -124,16 +124,13 @@ $tpl->assign(
 		 'TR_EDIT' => tr('Edit'),
 		 'TR_DELETE' => tr('Delete'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
-		 'FILEMANAFER_TARGET' => $cfg->FILEMANAGER_TARGET,
-	)
-);
+		 'FILEMANAFER_TARGET' => $cfg->FILEMANAGER_TARGET));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
+generateNavigation($tpl);
 gen_page_ftp_list($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -6,13 +6,6 @@
 			}
 		/* ]]> */
 		</script>
-		<div class="body">
-			<h2 class="htaccess"><span>{TR_HTACCESS}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<!-- BDP: protected_areas -->
 			<table>
 				<thead>
@@ -42,4 +35,3 @@
 				<input name="Button" type="button" onclick="MM_goToURL('parent','protected_areas_add.php');return document.MM_returnValue" value="{TR_ADD_AREA}" />
 				<input name="Button2" type="button" onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" value="{TR_MANAGE_USRES}" />
 			</div>
-		</div>

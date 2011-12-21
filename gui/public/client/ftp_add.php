@@ -51,15 +51,13 @@ if (!customerHasFeature('ftp')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('als_list', 'page');
 $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('to_subdomain', 'page');
 $tpl->define_dynamic('to_alias_domain', 'page');
-
-// JavaScript
 $tpl->define_dynamic('js_to_subdomain', 'page');
 $tpl->define_dynamic('js_to_alias_domain', 'page');
 $tpl->define_dynamic('js_to_all_domain', 'page');
@@ -83,7 +81,7 @@ function get_alias_mount_point($alias_name) {
  * @param $post_check
  * @return void
  */
-function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
+function gen_page_form_data($tpl, $dmn_name, $post_check) {
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -111,9 +109,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 				'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
 				'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
 				'OTHER_DIR' => clean_input($_POST['other_dir'], true),
-				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? $cfg->HTML_CHECKED : ''
-			)
-		);
+				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? $cfg->HTML_CHECKED : ''));
 	}
 }
 
@@ -149,9 +145,8 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 			array(
 				'ALS_ID' => 'n/a',
 				'ALS_SELECTED' => $cfg->HTML_SELECTED,
-				'ALS_NAME' => tr('Empty List')
-			)
-		);
+				'ALS_NAME' => tr('Empty List')));
+
 		$tpl->parse('ALS_LIST', 'als_list');
 		$tpl->assign('TO_ALIAS_DOMAIN', '');
 		$_SESSION['alias_count'] = "no";
@@ -173,9 +168,7 @@ function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 				array(
 					'ALS_ID' => tohtml($rs->fields['alias_name']),
 					'ALS_SELECTED' => $als_selected,
-					'ALS_NAME' => tohtml($als_menu_name)
-				)
-			);
+					'ALS_NAME' => tohtml($als_menu_name)));
 
 			$tpl->parse('ALS_LIST', '.als_list');
 			$rs->moveNext();
@@ -218,9 +211,7 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 			array(
 				'SUB_ID' => 'n/a',
 				'SUB_SELECTED' => $cfg->HTML_SELECTED,
-				'SUB_NAME' => tr('Empty list')
-			)
-		);
+				'SUB_NAME' => tr('Empty list')));
 
 		$tpl->parse('SUB_LIST', 'sub_list');
 		$tpl->assign('TO_SUBDOMAIN', '');
@@ -243,9 +234,8 @@ function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 				array(
 					'SUB_ID' => tohtml($rs->fields['sub_name']),
 					'SUB_SELECTED' => $sub_selected,
-					'SUB_NAME' => tohtml($sub_menu_name . '.' . $dmn_menu_name)
-				)
-			);
+					'SUB_NAME' => tohtml($sub_menu_name . '.' . $dmn_menu_name)));
+
 			$tpl->parse('SUB_LIST', '.sub_list');
 			$rs->moveNext();
 			if (!$first_passed) $first_passed = true;
@@ -641,13 +631,10 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 gen_page_ftp_acc_props($tpl, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -662,13 +649,11 @@ $tpl->assign(
 		'TR_ADD' => tr('Add'),
 		'CHOOSE_DIR' => tr('Choose dir'),
 		'FTP_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR,
-		'TR_FTP_USER_DATA' => tr('Ftp user data')
-	)
-);
+		'TR_FTP_USER_DATA' => tr('Ftp user data')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

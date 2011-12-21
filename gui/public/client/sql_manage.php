@@ -70,10 +70,11 @@ function _client_generateDatabaseSqlUserList($tpl, $databaseId)
 			$sqlUserId = $stmt->fields['sqlu_id'];
 			$sqlUserName = $stmt->fields['sqlu_name'];
 
-			$tpl->assign(array(
-							  'DB_USER' => tohtml($sqlUserName),
-							  'DB_USER_JS' => tojs($sqlUserName),
-							  'USER_ID' => $sqlUserId));
+			$tpl->assign(
+				array(
+					'DB_USER' => tohtml($sqlUserName),
+					'DB_USER_JS' => tojs($sqlUserName),
+					'USER_ID' => $sqlUserId));
 
 			$tpl->parse('SQL_USERS_LIST', '.sql_users_list');
 			$stmt->moveNext();
@@ -110,10 +111,11 @@ function client_databasesList($tpl, $domainId)
 			$databaseId = $stmt->fields['sqld_id'];
 			$databaseName = $stmt->fields['sqld_name'];
 
-			$tpl->assign(array(
-							  'DB_ID' => $databaseId,
-							  'DB_NAME' => tohtml($databaseName),
-							  'DB_NAME_JS' => tojs($databaseName)));
+			$tpl->assign(
+				array(
+					'DB_ID' => $databaseId,
+					'DB_NAME' => tohtml($databaseName),
+					'DB_NAME_JS' => tojs($databaseName)));
 
 			_client_generateDatabaseSqlUserList($tpl, $databaseId);
 
@@ -145,40 +147,41 @@ $domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array(
-						  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl',
-						  'page_message' => 'page',
-						  'sql_databases_users_list' => 'page',
-						  'sql_databases_list' => 'sql_databases_users_list',
-						  'sql_users_list' => 'sql_databases_list'));
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+$tpl->define_dynamic(
+	array(
+		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl',
+		'page_message' => 'page',
+		'sql_databases_users_list' => 'page',
+		'sql_databases_list' => 'sql_databases_users_list',
+		'sql_users_list' => 'sql_databases_list'));
 
-$tpl->assign(array(
-				  'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage SQL'),
-				  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-				  'THEME_CHARSET' => tr('encoding'),
-				  'ISP_LOGO' => layout_getUserLogo(),
-				  'TR_MANAGE_SQL' => tr('Manage SQL'),
-				  'TR_DELETE' => tr('Delete'),
-				  'TR_DATABASE' => tr('Database Name and Users'),
-				  'TR_CHANGE_PASSWORD' => tr('Change password'),
-				  'TR_ACTIONS' => tr('Actions'),
-				  'TR_PHPMYADMIN' => tr('phpMyAdmin'),
-				  'TR_DATABASE_USERS' => tr('Database users'),
-				  'TR_ADD_USER' => tr('Add SQL user'),
-				  'TR_CHANGE_PASSWORD' => tr('Change password'),
-				  'TR_LOGIN_PMA' => tr('Login into PhpMyAdmin'),
-				  'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
-				  'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s'),
-				  'PMA_TARGET' => $cfg->PMA_TARGET
-			 ));
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage SQL'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_MANAGE_SQL' => tr('Manage SQL'),
+		'TR_DELETE' => tr('Delete'),
+		'TR_DATABASE' => tr('Database Name and Users'),
+		'TR_CHANGE_PASSWORD' => tr('Change password'),
+		'TR_ACTIONS' => tr('Actions'),
+		'TR_PHPMYADMIN' => tr('phpMyAdmin'),
+		'TR_DATABASE_USERS' => tr('Database users'),
+		'TR_ADD_USER' => tr('Add SQL user'),
+		'TR_CHANGE_PASSWORD' => tr('Change password'),
+		'TR_LOGIN_PMA' => tr('Login into PhpMyAdmin'),
+		'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
+		'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s'),
+		'PMA_TARGET' => $cfg->PMA_TARGET));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
+generateNavigation($tpl);
 client_databasesList($tpl, $domainProperties['domain_id']);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

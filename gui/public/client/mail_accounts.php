@@ -51,6 +51,7 @@ if (!customerHasFeature('mail')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page',$cfg->CLIENT_TEMPLATE_PATH . '/mail_accounts.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('mail_message', 'page');
@@ -66,9 +67,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Users'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  *
@@ -86,8 +85,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 			tr('Delete'),
 			"mail_delete.php?id=$mail_id",
 			tr('Edit'),
-			"mail_edit.php?id=$mail_id"
-		);
+			"mail_edit.php?id=$mail_id");
 	} else {
 		return array(tr('N/A'), '#', tr('N/A'), '#');
 	}
@@ -113,31 +111,21 @@ function gen_user_mail_auto_respond(
 			$tpl->assign(
 				array(
 					'AUTO_RESPOND_DISABLE' => tr('Enable'),
-
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
 						"mail_autoresponder_enable.php?id=$mail_id",
-
 					'AUTO_RESPOND_EDIT' => tr('N/A'),
 					'AUTO_RESPOND_EDIT_SCRIPT' => '',
-					'AUTO_RESPOND_VIS' => 'inline'
-				)
-			);
+					'AUTO_RESPOND_VIS' => 'inline'));
 		} else {
 			$tpl->assign(
 				array(
 					'AUTO_RESPOND_DISABLE' => tr('Disable'),
-
 					'AUTO_RESPOND_DISABLE_SCRIPT' =>
 						"mail_autoresponder_disable.php?id=$mail_id",
-
 					'AUTO_RESPOND_EDIT' => tr('Edit'),
-
 					'AUTO_RESPOND_EDIT_SCRIPT' =>
 						"mail_autoresponder_edit.php?id=$mail_id",
-
-					'AUTO_RESPOND_VIS' => 'inline'
-				)
-			);
+					'AUTO_RESPOND_VIS' => 'inline'));
 		}
 	} else {
 		$tpl->assign(
@@ -146,9 +134,7 @@ function gen_user_mail_auto_respond(
 				'AUTO_RESPOND_DISABLE_SCRIPT' => '',
 				'AUTO_RESPOND_EDIT' => '',
 				'AUTO_RESPOND_EDIT_SCRIPT' => '',
-				'AUTO_RESPOND_VIS' => 'inline'
-			)
-		);
+				'AUTO_RESPOND_VIS' => 'inline'));
 	}
 }
 
@@ -200,14 +186,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
-		global $counter;
-
 		while (!$rs->EOF) {
-
-			$tpl->assign(
-				'ITEM_CLASS',
-				($counter % 2 == 0) ? 'content' : 'content2'
-			);
 
 			list(
 				$mail_delete,
@@ -258,7 +237,6 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
 			$rs->moveNext();
-			$counter++;
 		}
 
 		return $rs->recordCount();
@@ -322,14 +300,7 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
-		global $counter;
-
 		while (!$rs->EOF) {
-			$tpl->assign(
-				'ITEM_CLASS',
-				($counter % 2 == 0) ? 'content' : 'content2'
-			);
-
 			list(
 				$mail_delete, $mail_delete_script,
 				$mail_edit, $mail_edit_script
@@ -363,25 +334,20 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 				array(
 					'MAIL_ACC' =>
 						tohtml($mail_acc.'@'.$show_sub_name.'.'.$show_dmn_name),
-
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_DELETE' => $mail_delete,
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script
-				)
-			);
+					'MAIL_EDIT_SCRIPT' => $mail_edit_script));
 
 			gen_user_mail_auto_respond(
 				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']
-			);
+				$rs->fields['status'], $rs->fields['mail_auto_respond']);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
 			$rs->moveNext();
-			$counter++;
 		}
 
 		return $rs->recordCount();
@@ -448,14 +414,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
-		global $counter;
-
 		while (!$rs->EOF) {
-			$tpl->assign(
-				'ITEM_CLASS',
-				($counter % 2 == 0) ? 'content' : 'content2'
-			);
-
 			list(
 				$mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script
 			) = gen_user_mail_action(
@@ -499,7 +458,6 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 			$rs->moveNext();
-			$counter++;
 		}
 
 		return $rs->recordCount();
@@ -558,13 +516,7 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
-		global $counter;
-
 		while (!$rs->EOF) {
-			$tpl->assign(
-				'ITEM_CLASS',
-				($counter % 2 == 0) ? 'content' : 'content2'
-			);
 
 			list(
 				$mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script
@@ -601,18 +553,14 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE' => $mail_delete,
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script
-				)
-			);
+					'MAIL_EDIT_SCRIPT' => $mail_edit_script));
 
 			gen_user_mail_auto_respond(
 				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
-				$rs->fields['status'], $rs->fields['mail_auto_respond']
-			);
+				$rs->fields['status'], $rs->fields['mail_auto_respond']);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 			$rs->moveNext();
-			$counter++;
 		}
 
 		return $rs->recordCount();
@@ -739,8 +687,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
 }
 
 gen_page_lists($tpl, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -756,10 +703,7 @@ $tpl->assign(
 		'TR_ALS_MAILS' => tr('Alias mails'),
 		'TR_TOTAL_MAIL_ACCOUNTS' => tr('Mails total'),
 		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' =>
-			tr('Are you sure you want to delete %s?', true, '%s'),
-	)
-);
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
 
 // Displays the "show/hide" button for default emails
 // only if default mail address exists
@@ -768,15 +712,8 @@ if (count_default_mails($dmn_id) > 0) {
 	$tpl->assign(
 		array(
 			'TR_DEFAULT_EMAILS_BUTTON' =>
-			(!isset($_POST['uaction']) || $_POST['uaction'] != 'show') ?
-				tr('Show default E-Mail addresses') :
-				tr('Hide default E-Mail Addresses'),
-
-			'VL_DEFAULT_EMAILS_BUTTON' =>
-			(isset($_POST['uaction']) && $_POST['uaction'] == 'show') ?
-				'hide' :'show'
-		)
-	);
+			(!isset($_POST['uaction']) || $_POST['uaction'] != 'show') ? tr('Show default E-Mail addresses') : tr('Hide default E-Mail Addresses'),
+			'VL_DEFAULT_EMAILS_BUTTON' => (isset($_POST['uaction']) && $_POST['uaction'] == 'show') ? 'hide' :'show'));
 
 } else {
 	$tpl->assign(array('DEFAULT_MAILS_FORM' => ''));
@@ -784,7 +721,7 @@ if (count_default_mails($dmn_id) > 0) {
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

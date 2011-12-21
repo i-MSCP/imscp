@@ -51,6 +51,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
@@ -63,9 +64,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Edit user'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param $tpl
@@ -87,8 +86,10 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 				} else {
 					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 				}
+
 				return;
 			}
+
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
 				set_page_message(tr('Passwords do not match.'), 'error');
 				return;
@@ -146,9 +147,7 @@ function check_get(&$get_input) {
 	}
 }
 
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
@@ -168,7 +167,6 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 		AND
 			`id` = '$uuser_id'
 	";
-
 	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
@@ -177,9 +175,7 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 		$tpl->assign(
 			array(
 				'UNAME'	=> tohtml($rs->fields['uname']),
-				'UID'	=> $uuser_id,
-			)
-		);
+				'UID'	=> $uuser_id));
 	}
 } elseif (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name'])
 	&& is_numeric($_POST['nadmin_name'])) {
@@ -198,7 +194,6 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 		AND
 			`id` = '$uuser_id'
 	";
-
 	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
@@ -207,9 +202,8 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 		$tpl->assign(
 			array(
 				'UNAME'	=> tohtml($rs->fields['uname']),
-				'UID'	=> $uuser_id,
-			)
-		);
+				'UID'	=> $uuser_id));
+
 		pedit_user($tpl, $dmn_id, $uuser_id);
 	}
 } else {
@@ -234,13 +228,11 @@ $tpl->assign(
 		 'TR_PASSWORD' => tr('Password'),
 		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		 'TR_HTACCESS_USER' => tr('Manage users and groups'),
-		 'TR_CANCEL' => tr('Cancel'),
-	)
-);
+		 'TR_CANCEL' => tr('Cancel')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

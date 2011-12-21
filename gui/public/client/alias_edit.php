@@ -51,6 +51,7 @@ if (!customerHasFeature('domain_aliases')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -59,9 +60,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Manage Domain Alias/Edit Alias'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 $tpl->assign(
 	array(
@@ -78,12 +77,9 @@ $tpl->assign(
 		'TR_PREFIX_HTTP' => 'http://',
 		'TR_PREFIX_HTTPS' => 'https://',
 		'TR_PREFIX_FTP' => 'ftp://',
-		'TR_DOMAIN_ALIAS_DATA' => tr('Domain alias data')
-	)
-);
+		'TR_DOMAIN_ALIAS_DATA' => tr('Domain alias data')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+generateNavigation($tpl);
 
 // "Modify" button has been pressed
 if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
@@ -117,7 +113,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
 gen_editalias_page($tpl, $editid);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

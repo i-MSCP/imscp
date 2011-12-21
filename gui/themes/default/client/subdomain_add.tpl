@@ -39,12 +39,6 @@
 		/*]]>*/
 		</script>
 		<!-- EDP: subdomain_add_js -->
-		<div class="body">
-			<h2 class="domains"><span>{TR_TITLE_ADD_SUBDOMAIN}</span></h2>
-
-			<!-- BDP: page_message -->
-				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
 
 			<!-- BDP: subdomain_add_form -->
 			<form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
@@ -109,4 +103,3 @@
 				</div>
 			</form>
 			<!-- EDP: subdomain_add_form -->
-		</div>

@@ -1,11 +1,4 @@
 
-        <div class="body">
-            <h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
-
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
-
             <!-- BDP: tickets_list -->
             <table>
                 <tr>
@@ -68,4 +61,3 @@
                 <input name="urgency" type="hidden" value="{TICKET_URGENCY_ID_VAL}" />
             </form>
             <!-- EDP: tickets_list -->
-        </div>

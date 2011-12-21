@@ -59,12 +59,12 @@ if (isset($_GET['id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ftp_edit.tpl',
 		'page_message' => 'page'));
 
-// page functions.
 
 /**
  * @param iMSCP_pTemplate $tpl Template engine instance
@@ -224,8 +224,7 @@ if(!check_ftp_perms($ftp_acc)) {
 
 gen_page_dynamic_data($tpl, $ftp_acc);
 update_ftp_account($ftp_acc, $dmn_name);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -240,7 +239,7 @@ $tpl->assign(
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

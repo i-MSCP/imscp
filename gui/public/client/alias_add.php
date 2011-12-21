@@ -85,8 +85,7 @@ function init_empty_data() {
 
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
 
-} // End of init_empty_data()
-
+}
 
 /**
  * Show data fields
@@ -108,13 +107,11 @@ function gen_al_page($tpl, $reseller_id) {
 
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD'	=> '',
-				'DISABLE_FORWARD'	=> '',
-				'HTTP_YES'			=> ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
-				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
-				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : ''
-			)
-		);
+				'READONLY_FORWARD' => '',
+				'DISABLE_FORWARD' => '',
+				'HTTP_YES' => ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES' => ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES' => ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : ''));
 	} else {
 		$check_en = '';
 		$check_dis = $cfg->HTML_CHECKED;
@@ -122,24 +119,20 @@ function gen_al_page($tpl, $reseller_id) {
 
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD'	=> $cfg->HTML_READONLY,
-				'DISABLE_FORWARD'	=> $cfg->HTML_DISABLED,
-				'HTTP_YES'			=> '',
-				'HTTPS_YES'			=> '',
-				'FTP_YES'			=> ''
-				)
-			);
+				'READONLY_FORWARD' => $cfg->HTML_READONLY,
+				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
+				'HTTP_YES' => '',
+				'HTTPS_YES' => '',
+				'FTP_YES' => ''));
 	}
 
 	$tpl->assign(
 		array(
-			'DOMAIN'	=> tohtml(decode_idna($alias_name)),
-			'MP'		=> tohtml($mount_point),
-			'FORWARD'	=> tohtml($forward),
-			'CHECK_EN'	=> $check_en,
-			'CHECK_DIS' => $check_dis,
-		)
-	);
+			'DOMAIN' => tohtml(decode_idna($alias_name)),
+			'MP' => tohtml($mount_point),
+			'FORWARD' => tohtml($forward),
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis));
 
 } // End of gen_al_page()
 
@@ -348,6 +341,7 @@ $cfg = iMSCP_Registry::get('config');
 // Avoid useless work during Ajax request
 if(!is_xhr()) {
 	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 	$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_add.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('domain_alias_add_js', 'page');
@@ -359,12 +353,9 @@ if(!is_xhr()) {
 		array(
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => layout_getUserLogo(),
-		)
-	);
+			'ISP_LOGO' => layout_getUserLogo(),));
 
-	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+	generateNavigation($tpl);
 
 	$tpl->assign(
 		array(
@@ -382,9 +373,7 @@ if(!is_xhr()) {
 			'TR_DISABLE' => tr("Disable"),
 			'TR_PREFIX_HTTP' => 'http://',
 			'TR_PREFIX_HTTPS' => 'https://',
-			'TR_PREFIX_FTP' => 'ftp://'
-		)
-	);
+			'TR_PREFIX_FTP' => 'ftp://'));
 }
 
 $domainProperties = get_domain_default_props($_SESSION['user_id'], true);
@@ -393,9 +382,7 @@ $currentNumberDomainAliases = get_domain_running_als_cnt($domainProperties['doma
 /**
  * Dispatches the request
  */
-if ($currentNumberDomainAliases != 0
-	&& $currentNumberDomainAliases == $domainProperties['domain_alias_limit']
-) {
+if ($currentNumberDomainAliases != 0 && $currentNumberDomainAliases == $domainProperties['domain_alias_limit']) {
 	if(is_xhr()) {
 		set_page_message(tr('Wrong request.'));
 		redirectTo('domains_manage.php');
@@ -429,7 +416,7 @@ if ($currentNumberDomainAliases != 0
 gen_al_page($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP - internet Multi Server Control Panel
+ * i-MSCP a internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -35,55 +35,69 @@
  * @author 		i-MSCP Team
  */
 
-/************************************************************************************
+/*******************************************************************************
+ * Script functions
+ */
+
+/**
+ * Generates page.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ */
+function client_generatePage($tpl)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	$query = "SELECT domain_created from admin where admin_id = ?";
+	$stmt = exec_query($query, (int)$_SESSION['user_id']);
+
+	$tpl->assign(
+		array(
+			'TR_ACCOUNT_SUMMARY' => tr('Account summary'),
+			'TR_USERNAME' => tr('Username'),
+			'USERNAME' => tohtml($_SESSION['user_logged']),
+			'TR_ACCOUNT_TYPE' => tr('Account type'),
+			'ACCOUNT_TYPE' => $_SESSION['user_type'],
+			'TR_REGISTRATION_DATE' => tr('Registration date'),
+			'REGISTRATION_DATE' => ($stmt->fields['domain_created'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_created']) : tr('Unknown')));
+}
+
+/*******************************************************************************
  * Main script
  */
 
 // Include core library
-require_once 'imscp-lib.php';
+require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login(__FILE__);
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+check_login(__FILE__);
+
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl',
-		 'page_message' => 'page'));
+		'layout' => $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
+		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/profile.tpl',
+		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / My Profile'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_TITLE_WEBTOOLS' => tr('Webtools'),
-		 'TR_HTACCESS' => tr('Protected areas'),
-		 'TR_HTACCESS_TXT' => tr('Manage your protected areas, users and groups.'),
-		 'TR_ERROR_PAGES' => tr('Error pages'),
-		 'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
-		 'TR_BACKUP' => tr('Backup'),
-		 'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
-		 'TR_WEBMAIL' => tr('Webmail'),
-		 'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
-		 'TR_FILEMANAGER' => tr('Filemanager'),
-		 'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
-		 'TR_AWSTATS' => tr('Awstats'),
-		 'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
-		 'TR_APP_INSTALLER' => 'Application installer',
-		 'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 generateNavigation($tpl);
+client_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

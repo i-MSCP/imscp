@@ -46,6 +46,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/password_change.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -54,9 +55,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Change Password'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
@@ -73,14 +72,11 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		set_page_message(tr('The current password is wrong.'), 'error');
 	} else {
 		$upass = crypt_user_pass($_POST['pass']);
-
 		$_SESSION['user_pass'] = $upass;
-
 		$user_id = $_SESSION['user_id'];
-
 		$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?";
-
 		$rs = exec_query($query, array($upass, $user_id));
+
 		write_log($_SESSION['user_logged'] . ": updated password.", E_USER_NOTICE);
 		set_page_message(tr('Password updated.'), 'success');
 	}
@@ -102,14 +98,12 @@ function check_udata($id, $pass) {
 		AND
 			`admin_pass` = ?
 	";
-
 	$rs = exec_query($query, array($id, md5($pass)));
 
 	return (($rs->recordCount()) != 1) ? false : true;
 }
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -118,13 +112,11 @@ $tpl->assign(
 		 'TR_PASSWORD' => tr('Password'),
 		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		 'TR_CURR_PASSWORD' => tr('Current password'),
-		 'TR_UPDATE_PASSWORD' => tr('Change')
-	)
-);
+		 'TR_UPDATE_PASSWORD' => tr('Change')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

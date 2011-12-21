@@ -6,7 +6,6 @@
 	}
 	/* ]]> */
 	</script>
-	<div class="body">
 		<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
 
 		<!-- BDP: page_message -->
@@ -27,5 +26,4 @@
 				<input type="submit" name="Submit" value="{TR_RESTORE}" />
 			</div>
 		</form>
-	</div>
 

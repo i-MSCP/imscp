@@ -89,8 +89,7 @@ function client_generateDomainsList($tpl, $userId)
 				 'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0)
 													? date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])
 													: tr('No set')),
-				 'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status'])
-			));
+				 'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status'])));
 
 		$tpl->parse('DOMAIN_ITEM', '.domain_item');
 		$stmt->moveNext();
@@ -578,17 +577,15 @@ if (!customerHasFeature('domain')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/domains_manage.tpl',
 		 'page_message' => 'page',
-
 		 'domain_list' => 'page',
 		 'domain_item' => 'domain_list',
 		 'domain_status_reload_true' => 'domain_item',
 		 'domain_status_reload_false' => 'domain_item',
-
-
 		 'domain_aliases_block' => 'page',
 		 'als_message' => 'domain_aliases_block',
 		 'als_list' => 'domain_aliases_block',
@@ -606,8 +603,7 @@ $tpl->define_dynamic(
 		 'custom_dns_records_block' => 'page',
 		 'dns_message' => 'custom_dns_records_block',
 		 'dns_list' => 'custom_dns_records_block',
-		 'dns_item' => 'dns_list')
-);
+		 'dns_item' => 'dns_list'));
 
 $tpl->assign(
 	array(
@@ -638,12 +634,9 @@ $tpl->assign(
 		 'TR_DNS_TYPE' => tr('Type'),
 		 'TR_DNS_ACTION' => tr('Actions'),
 		 'TR_DNS_DATA' => tr('Record data'),
-		 'TR_DOMAIN_NAME' => tr('Domain')
-	)
-);
+		 'TR_DOMAIN_NAME' => tr('Domain')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+generateNavigation($tpl);
 
 client_generateDomainsList($tpl, $_SESSION['user_id']);
 client_generateSubdomainsList($tpl, $_SESSION['user_id']);
@@ -652,7 +645,7 @@ client_generateCustomDnsRecordsList($tpl, $_SESSION['user_id']);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -51,6 +51,7 @@ if (!customerHasFeature('backup')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/backup.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -85,13 +86,10 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Daily Backup'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 send_backup_restore_request($_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 if ($cfg->ZIP == "gzip") {
 	$name = "backup_YYYY_MM_DD.tar.gz";
@@ -113,13 +111,11 @@ $tpl->assign(
 		'TR_RESTORE_BACKUP' => tr('Restore backup'),
 		'TR_RESTORE_DIRECTIONS' => tr('Click the Restore button and the system will restore the last daily backup'),
 		'TR_RESTORE' => tr('Restore'),
-		'TR_CONFIRM_MESSAGE' => tr('Are you sure you want to restore the backup?')
-	)
-);
+		'TR_CONFIRM_MESSAGE' => tr('Are you sure you want to restore the backup?')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -190,6 +190,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/puser_manage.tpl',
@@ -225,15 +226,14 @@ $tpl->assign(
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 		 'TR_HTACCESS_USER' => tr('Manage users and groups')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 $domainId = get_user_domain_id($_SESSION['user_id']);
 client_generateUsersList($tpl, $domainId);
 client_genetateGroupsList($tpl, $domainId);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

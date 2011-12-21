@@ -59,6 +59,7 @@ fi
 
 # PHP files
 /usr/bin/xgettext \
+--foreign-user \
 --language=PHP \
 -d "i-MSCP" \
 --keyword="tr" \

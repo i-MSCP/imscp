@@ -1,11 +1,4 @@
 
-		<div class="body">
-			<h2 class="settings"><span>{TR_TITLE_CHANGE_PERSONAL_DATA}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="client_personal_change_frm" method="post" action="personal_change.php">
 				<table>
 					<tr>
@@ -71,5 +64,3 @@
 					<input type="hidden" name="uaction" value="updt_data" />
 				</div>
 			</form>
-		</div>
-

@@ -46,6 +46,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('month_item', 'page');
@@ -68,9 +69,8 @@ function gen_page_date($tpl, $month, $year) {
 		$tpl->assign(
 			array(
 				'MONTH_SELECTED' => ($i == $month) ? $cfg->HTML_SELECTED : '',
-				'MONTH' => $i
-			)
-		);
+				'MONTH' => $i));
+
 		$tpl->parse('MONTH_ITEM', '.month_item');
 	}
 
@@ -78,9 +78,8 @@ function gen_page_date($tpl, $month, $year) {
 		$tpl->assign(
 			array(
 				'YEAR_SELECTED' => ($i == $year) ? $cfg->HTML_SELECTED : '',
-				'YEAR' => $i
-			)
-		);
+				'YEAR' => $i));
+
 		$tpl->parse('YEAR_ITEM', '.year_item');
 	}
 }
@@ -230,10 +229,8 @@ function gen_dmn_traff_list($tpl, $month, $year, $user_id) {
 				'FTP_TRAFF' => sizeit($ftp_trf),
 				'SMTP_TRAFF' => sizeit($smtp_trf),
 				'POP_TRAFF' => sizeit($pop_trf),
-				'SUM_TRAFF' => sizeit($web_trf + $ftp_trf + $smtp_trf + $pop_trf),
-				'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2'
-			)
-		);
+				'SUM_TRAFF' => sizeit($web_trf + $ftp_trf + $smtp_trf + $pop_trf)));
+
 		$tpl->assign(
 			array(
 				'MONTH' => $month,
@@ -243,9 +240,8 @@ function gen_dmn_traff_list($tpl, $month, $year, $user_id) {
 				'FTP_ALL' => sizeit($sum_ftp),
 				'SMTP_ALL' => sizeit($sum_mail),
 				'POP_ALL' => sizeit($sum_pop),
-				'SUM_ALL' => sizeit($sum_web + $sum_ftp + $sum_mail + $sum_pop)
-			)
-		);
+				'SUM_ALL' => sizeit($sum_web + $sum_ftp + $sum_mail + $sum_pop)));
+
 		$tpl->parse('TRAFF_ITEM', '.traff_item');
 		$counter++;
 	}
@@ -256,9 +252,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Domain Statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 $current_month = date("m", time());
 $current_year = date("Y", time());
@@ -266,8 +260,7 @@ $current_year = date("Y", time());
 list($current_month, $current_year) = gen_page_post_data($tpl, $current_month, $current_year);
 
 gen_dmn_traff_list($tpl, $current_month, $current_year, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_statistics.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_statistics.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -283,13 +276,11 @@ $tpl->assign(
 		'TR_SMTP_TRAFF' => tr('SMTP'),
 		'TR_POP_TRAFF' => tr('POP3/IMAP'),
 		'TR_SUM' => tr('Sum'),
-		'TR_ALL' => tr('Total')
-	)
-);
+		'TR_ALL' => tr('Total')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

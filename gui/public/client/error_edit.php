@@ -51,6 +51,7 @@ if (!customerHasFeature('custom_error_pages')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/error_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -83,9 +84,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Error Custom Pages'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (!isset($_GET['eid'])) {
 	set_page_message(tr('Wrong request.'), 'error');
@@ -101,21 +100,18 @@ if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
 	redirectTo('error_pages.php');
 }
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
 		'TR_ERROR_EDIT_PAGE' => tr('Edit error page'),
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),
-		'EID' => $eid
-	)
-);
+		'EID' => $eid));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

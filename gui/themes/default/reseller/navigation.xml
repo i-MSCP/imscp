@@ -36,7 +36,7 @@
             <class>general</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>Account overview</label>
                     <uri>/reseller/index.php</uri>
                     <title_class>general</title_class>
                 </overview>
@@ -54,9 +54,35 @@
             <class>manage_users</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>Customers</label>
                     <uri>/reseller/users.php</uri>
                     <title_class>users</title_class>
+                    <pages>
+                        <domain_detail_link>
+                            <label>Domain detail</label>
+                            <uri>/reseller/domain_details.php</uri>
+                            <visible>0</visible>
+                            <title_class>domains</title_class>
+                        </domain_detail_link>
+                        <domain_edit_link>
+                            <label>Edit domain</label>
+                            <uri>/reseller/domain_edit.php</uri>
+                            <visible>0</visible>
+                            <title_class>domains</title_class>
+                        </domain_edit_link>
+                        <customer_edit_link>
+                            <label>Edit Customer</label>
+                            <uri>/reseller/user_edit.php</uri>
+                            <visible>0</visible>
+                            <title_class>user_blue</title_class>
+                        </customer_edit_link>
+                        <domain_delete_link>
+                            <label>Delete domain - {DOMAIN_NAME}</label>
+                            <uri>/reseller/domain_delete.php</uri>
+                            <visible>0</visible>
+                            <title_class>domains</title_class>
+                        </domain_delete_link>
+                    </pages>
                 </overview>
                 <add_customer>
                     <label>Add customer</label>
@@ -126,7 +152,7 @@
             <class>hosting_plans</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>Hosting plans</label>
                     <uri>/reseller/hosting_plan.php</uri>
                     <title_class>hosting_plans</title_class>
                     <pages>
@@ -152,7 +178,7 @@
             <class>purchasing</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>Orders</label>
                     <uri>/reseller/orders.php</uri>
                     <title_class>purchasing</title_class>
                 </overview>
@@ -180,7 +206,7 @@
                     <title_class>stats</title_class>
                     <pages>
                         <domain_statistics>
-                            <label>Domain statistics</label>
+                            <label>Domain statistics - {DOMAIN_NAME}</label>
                             <uri>/reseller/domain_statistics.php</uri>
                             <visible>0</visible>
                             <title_class>stats</title_class>
@@ -188,7 +214,7 @@
                     </pages>
                 </customer_statistics>
                 <ip_usage>
-                    <label>IP usage</label>
+                    <label>IPs usage</label>
                     <uri>/reseller/ip_usage.php</uri>
                     <title_class>stats</title_class>
                 </ip_usage>
@@ -196,8 +222,9 @@
         </statistics>
 
         <supports>
-            <label>Support System</label>
-            <uri>/reseller/ticket_system.php</uri>
+            <label>Support</label>
+            <uri>{SUPPORT_SYSTEM_PATH}</uri>
+            <target>{SUPPORT_SYSTEM_TARGET}</target>
             <class>support</class>
             <pages>
                 <tickets_open>
@@ -238,16 +265,16 @@
                     <uri>/reseller/layout.php</uri>
                     <title_class>layout</title_class>
                 </layout>
-                <passsword_change>
+                <passsword>
                     <label>Password</label>
                     <uri>/reseller/password_change.php</uri>
                     <title_class>password</title_class>
-                </passsword_change>
-                <personal_change>
+                </passsword>
+                <personal_data>
                     <label>Personal data</label>
                     <uri>/reseller/personal_change.php</uri>
                     <title_class>doc</title_class>
-                </personal_change>
+                </personal_data>
             </pages>
         </profile>
     </navigation>

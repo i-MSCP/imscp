@@ -273,6 +273,27 @@ function generateNavigation($tpl)
 
 	generateLoggedFrom($tpl);
 
+	// Dynamic links
+	if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
+
+		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+
+		$tpl->assign(array(
+			'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,
+			'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET,
+			'PMA_PATH' => $cfg->PMA_PATH,
+			'PMA_TARGET' => $cfg->PMA_TARGET,
+			'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
+			'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
+			'AWSTATS_PATH' => 'http://' . decode_idna($domainProperties['domain_name']) . $cfg->AWSTATS_PATH,
+			'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET));
+	}
+
+	$tpl->assign(array(
+		'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+		'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET
+	));
+
 	/** @var $navigation Zend_Navigation */
 	$navigation = iMSCP_Registry::get('navigation');
 
@@ -316,7 +337,11 @@ function generateNavigation($tpl)
 
 	// Build section title, menus, breadcrumbs and page title
 	foreach ($navigation as $page) {
-		if ($page->isVisible()) {
+		if(null !== ($callback = $page->get('privilege_callback')) &&
+			!call_user_func($callback['name'], $callback['param'])
+		) {
+			continue;
+		} elseif($page->isVisible()) {
 			$tpl->assign(
 				array(
 					'HREF' => $page->getHref(),
@@ -341,30 +366,36 @@ function generateNavigation($tpl)
 
 					/** @var $subpage Zend_Navigation_Page_Uri */
 					foreach ($iterator as $subpage) {
-						$tpl->assign(
-							array(
-								'HREF' => $subpage->getHref(),
-								'CLASS' => $subpage->getClass() . ($subpage->isActive(true) ? ' active' : 'dummy'),
-								'LABEL' => tr($subpage->getLabel()),
-								'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'));
-
-						if($subpage->isVisible()) {
-							// Add subpage to left menu
-							$tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
-						}
-
-						if ($subpage->isActive(true)) {
+						if(null !== ($callback = $subpage->get('privilege_callback')) &&
+							!call_user_func($callback['name'], $callback['param'])
+						) {
+							continue;
+						} else {
 							$tpl->assign(
 								array(
-									'TR_TITLE' => tr($subpage->getLabel()),
-									'TITLE_CLASS' => $subpage->get('title_class')));
+									'HREF' => $subpage->getHref(),
+									'CLASS' => $subpage->getClass() . ($subpage->isActive(true) ? ' active' : 'dummy'),
+									'LABEL' => tr($subpage->getLabel()),
+									'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'));
 
-							if(!$subpage->hasPages()) {
-								$tpl->assign('HREF', $subpage->getHref() . "?$query");
+							if ($subpage->isVisible()) {
+								// Add subpage to left menu
+								$tpl->parse('LEFT_MENU_BLOCK', '.left_menu_block');
 							}
 
-							// ad subpage to breadcrumbs
-							$tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+							if ($subpage->isActive(true)) {
+								$tpl->assign(
+									array(
+										'TR_TITLE' => tr($subpage->getLabel()),
+										'TITLE_CLASS' => $subpage->get('title_class')));
+
+								if (!$subpage->hasPages()) {
+									$tpl->assign('HREF', $subpage->getHref() . "?$query");
+								}
+
+								// ad subpage to breadcrumbs
+								$tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
+							}
 						}
 					}
 

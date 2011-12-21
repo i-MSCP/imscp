@@ -1,11 +1,4 @@
 
-		<div class="body">
-			<h2 class="password"><span>{TR_CHANGE_SQL_USER_PASSWORD}</span></h2
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="sql_change_password_frm" method="post" action="sql_change_password.php">
 				<table>
 					<tr>
@@ -27,4 +20,3 @@
 				<input type="hidden" name="uaction" value="change_pass" />
 				<input type="hidden" name="id" value="{ID}" />
 			</form>
-		</div>

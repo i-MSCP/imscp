@@ -18,13 +18,6 @@
 		});
 	/* ]]> */
 	</script>
-	<div class="body">
-		<h2 class="email"><span>{TR_EDIT_MAIL_ACCOUNT}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<form name="editFrm" method="post" action="mail_edit.php?id={MAIL_ID_VAL}">
 			<table>
 				<tr>
@@ -66,4 +59,3 @@
 				<input name="cancel" type="button" onclick="MM_goToURL('parent','mail_accounts.php');return document.MM_returnValue" value="{TR_CANCEL}"/>
 			</div>
 		</form>
-	</div>

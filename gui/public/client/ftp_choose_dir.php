@@ -51,7 +51,7 @@ if (!customerHasFeature('ftp')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_choose_dir.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('ftp_chooser', 'page');
@@ -92,9 +92,7 @@ function gen_directories($tpl) {
 			 'ACTION' => '',
 			 'ICON' => 'parent',
 			 'DIR_NAME' => tr('Parent Directory'),
-			 'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,
-		)
-	);
+			 'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,));
 
 	$tpl->parse('DIR_ITEM', '.dir_item');
 
@@ -118,9 +116,7 @@ function gen_directories($tpl) {
 			array(
 				 'DIR_NAME' => tohtml($entry['file']),
 				 'CHOOSE_IT' => $dr,
-				 'LINK' => 'ftp_choose_dir.php?cur_dir=' . $dr,
-			)
-		);
+				 'LINK' => 'ftp_choose_dir.php?cur_dir=' . $dr));
 
 		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp/i');
 		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
@@ -135,9 +131,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Ftp / Choose directory'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 gen_directories($tpl);
 
@@ -146,13 +140,11 @@ $tpl->assign(
 		 'TR_DIRECTORY_TREE' => tr('Directory tree'),
 		 'TR_DIRS' => tr('Directories'),
 		 'TR_ACTION' => tr('Action'),
-		 'CHOOSE' => tr('Choose')
-	)
-);
+		 'CHOOSE' => tr('Choose')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

@@ -51,6 +51,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_assign.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('already_in', 'page');
@@ -64,9 +65,7 @@ $tpl->assign(
 	array(
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param $uuser_id
@@ -150,9 +149,8 @@ function gen_user_assign($tpl, &$dmn_id) {
 				$tpl->assign(
 					array(
 						'GRP_NAME' => tohtml($group_name),
-						'GRP_ID' => $group_id,
-					)
-				);
+						'GRP_ID' => $group_id));
+
 				$tpl->parse('GRP_AVLB', '.grp_avlb');
 				$not_added_in++;
 			}
@@ -285,8 +283,8 @@ function delete_user_from_group($tpl, &$dmn_id) {
 		return;
 	}
 }
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+
+generateNavigation($tpl);
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
@@ -306,13 +304,11 @@ $tpl->assign(
 		 'TR_REMOVE' => tr('Remove'),
 		 'TR_ADD' => tr('Add'),
 		 'TR_SELECT_GROUP' => tr('Select group:'),
-		 'TR_HTACCESS_USER' => tr('Manage users and groups')
-	)
-);
+		 'TR_HTACCESS_USER' => tr('Manage users and groups')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

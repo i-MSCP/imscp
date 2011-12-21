@@ -1,11 +1,4 @@
 
-        <div class="body">
-            <h2 class="tools"><span>{TR_TITLE_WEBTOOLS}</span></h2>
-
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
-
             <a href="protected_areas.php">{TR_HTACCESS}</a>
             <p>{TR_HTACCESS_TXT}</p>
 
@@ -36,4 +29,3 @@
             <a href="{AWSTATS_PATH}" target="{AWSTATST_TARGET}">{TR_AWSTATS}</a>
             <p>{TR_AWSTATS_TXT}</p>
             <!-- EDP: awstats_feature -->
-        </div>

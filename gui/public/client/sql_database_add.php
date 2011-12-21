@@ -51,6 +51,7 @@ if (!customerHasFeature('sql')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_database_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -64,8 +65,8 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
  * @param $tpl
  * @return void
  */
-function gen_page_post_data(&$tpl) {
-
+function gen_page_post_data($tpl)
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -94,18 +95,14 @@ function gen_page_post_data(&$tpl) {
 				'DB_NAME' => clean_input($_POST['db_name'], true),
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''
-			)
-		);
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''));
 	} else {
 		$tpl->assign(
 			array(
 				'DB_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => $cfg->HTML_CHECKED,
-				'END_ID_POS_CHECKED' => ''
-			)
-		);
+				'END_ID_POS_CHECKED' => ''));
 	}
 }
 
@@ -246,15 +243,12 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add SQL Database'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 check_sql_permissions($_SESSION['user_id']);
 gen_page_post_data($tpl);
 add_sql_database($_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -264,13 +258,11 @@ $tpl->assign(
 		'TR_USE_DMN_ID' => tr('Use numeric ID'),
 		'TR_START_ID_POS' => tr('Before the name'),
 		'TR_END_ID_POS' => tr('After the name'),
-		'TR_ADD' => tr('Add')
-	)
-);
+		'TR_ADD' => tr('Add')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

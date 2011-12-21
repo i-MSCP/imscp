@@ -50,6 +50,7 @@ if (!customerHasFeature('custom_dns_records')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -66,9 +67,7 @@ $tpl->assign(
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'ACTION_MODE' => ($add_mode) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}'
-	)
-);
+		'ACTION_MODE' => ($add_mode) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}'));
 
 $tpl->assign(
 	array(
@@ -94,13 +93,9 @@ $tpl->assign(
 		'TR_DNS_CNAME' => tr('Canonical name'),
 		'TR_DNS_PLAIN' => tr('Plain record data'),
 		'TR_TITLE_CUSTOM_DNS_RECORD' => ($add_mode) ? tr("Add custom DNS record") : tr("Edit custom DNS record"),
-		'TR_CUSTOM_DNS_RECORD_DATA' => tr('Custom DNS record data')
-	)
-);
+		'TR_CUSTOM_DNS_RECORD_DATA' => tr('Custom DNS record data')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-gen_logged_from($tpl);
+generateNavigation($tpl);
 
 $tpl->assign(($add_mode) ? 'FORM_EDIT_MODE' : 'FORM_ADD_MODE', '');
 
@@ -140,7 +135,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 gen_editdns_page($tpl, $editid);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

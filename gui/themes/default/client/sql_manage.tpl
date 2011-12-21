@@ -16,13 +16,6 @@
 			}
 		/* ]]> */
 		</script>
-		<div class="body">
-			<h2 class="sql"><span>{TR_MANAGE_SQL}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<!-- BDP: sql_databases_users_list -->
 			<table>
 				<tr>
@@ -56,4 +49,3 @@
 				<!-- EDP: sql_databases_list -->
 			</table>
 			<!-- EDP: sql_databases_users_list -->
-		</div>

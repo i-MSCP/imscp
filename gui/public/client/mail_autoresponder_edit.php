@@ -51,6 +51,7 @@ if (!customerHasFeature('mail')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_autoresponder_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -76,7 +77,6 @@ function check_email_user() {
 		AND
 			t2.`domain_name` = ?
 	";
-
 	$rs = exec_query($query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
@@ -183,28 +183,23 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Enable Mail Auto Responder'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 check_email_user();
 gen_page_dynamic_data($tpl, $mail_id, !isset($_POST['uaction']));
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_MAIL_AUTORESPONDER'	=> tr('Edit mail auto responder'),
-		'TR_ARSP_MESSAGE'				=> tr('Your message'),
-		'TR_ENABLE'						=> tr('Save'),
-		'TR_CANCEL'						=> tr('Cancel'),
-		'ID'							=> $mail_id
-	)
-);
+		'TR_EDIT_MAIL_AUTORESPONDER' => tr('Edit mail auto responder'),
+		'TR_ARSP_MESSAGE' => tr('Your message'),
+		'TR_ENABLE' => tr('Save'),
+		'TR_CANCEL' => tr('Cancel'),
+		'ID' => $mail_id));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

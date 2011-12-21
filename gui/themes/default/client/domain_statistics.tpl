@@ -1,11 +1,4 @@
 
-		<div class="body">
-            <h2 class="stats"><span>{TR_DOMAIN_STATISTICS}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="domain_statistics_frm" method="post" action="domain_statistics.php">
 				<label for="month">{TR_MONTH}</label>
 				<select id="month" name="month">
@@ -61,5 +54,4 @@
 					</tbody>
 				<!-- EDP: traff_list -->
 			</table>
-		</div>
 

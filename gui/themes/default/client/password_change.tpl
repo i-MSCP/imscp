@@ -1,11 +1,4 @@
 
-		<div class="body">
-			<h2 class="password"><span>{TR_TITLE_CHANGE_PASSWORD}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="client_change_pass_frm" method="post" action="password_change.php">
 				<table>
 					<tr>
@@ -27,5 +20,3 @@
 					<input type="submit" name="Submit" value="{TR_UPDATE_PASSWORD}" />
 				</div>
 			</form>
-		</div>
-

@@ -19,12 +19,6 @@
 				});
 			/*]]>*/
 		</script>
-		<div class="body">
-			<h2 class="domains"><span>{TR_TITLE}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
 
 			<p class="hint" style="font-variant: small-caps;font-size: small;">
 				{TR_PAGE_TEXT}
@@ -147,4 +141,3 @@
 					<input name="Submit" type="submit" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 				</div>
 			</form>
-		</div>

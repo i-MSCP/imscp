@@ -63,6 +63,7 @@ if (isset($_GET['psi'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_system.tpl',
@@ -72,9 +73,7 @@ $tpl->define_dynamic(
 		 'scroll_prev_gray' => 'page',
 		 'scroll_prev' => 'page',
 		 'scroll_next_gray' => 'page',
-		 'scroll_next' => 'page'
-	)
-);
+		 'scroll_next' => 'page'));
 
 $tpl->assign(
 	array(
@@ -100,17 +99,14 @@ $tpl->assign(
 		 'TR_TICKETS_DELETE_MESSAGE' => tr("Are you sure you want to delete the '%s' ticket?", '%s'),
 		 'TR_TICKETS_DELETE_ALL_MESSAGE' => tr('Are you sure you want to delete all tickets?'),
 		 'TR_PREVIOUS' => tr('Previous'),
-		 'TR_NEXT' => tr('Next')
-	)
-);
+		 'TR_NEXT' => tr('Next')));
 
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
+generateNavigation($tpl);
 generateTicketList($tpl, $_SESSION['user_id'], $start, $cfg->DOMAIN_ROWS_PER_PAGE, 'client', 'open');
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

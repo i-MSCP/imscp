@@ -16,13 +16,6 @@
 		}
 		/* ]]> */
 		</script>
-		<div class="body">
-			<h2 class="htaccess"><span>{TR_TITLE}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="edit_ftp_acc_frm" method="post" action="protected_areas_add.php">
 				<table>
 					<tr>
@@ -90,4 +83,3 @@
 					<input name="Button" type="button" onclick="MM_goToURL('parent','protected_areas.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 				</div>
 			</form>
-		</div>

@@ -1,11 +1,4 @@
 
-		<div class="body">
-			<h2 class="sql"><span>{TR_TITLE_ADD_DATABASE}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="sql_add_database_frm" method="post" action="sql_database_add.php">
 				<table>
 					<tr>
@@ -46,4 +39,3 @@
 				</div>
 				<input type="hidden" name="uaction" value="add_db" />
 			</form>
-		</div>

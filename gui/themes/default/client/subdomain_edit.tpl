@@ -13,12 +13,6 @@
 			}
 			/* ]]> */
 		</script>
-		<div class="body">
-			<h2 class="domains"><span>{TR_EDIT_SUBDOMAIN}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
 
 			<form action="subdomain_edit.php?id={SUBDOMAIN_ID}&type={SUBDOMAIN_TYPE}" method="post" id="editFrm">
 				<table>

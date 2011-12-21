@@ -1,5 +1,4 @@
 
-		<div class="body">
 			<h2 class="users"><span>{TR_USER_ASSIGN}</span></h2>
 
 			<!-- BDP: page_message -->
@@ -46,4 +45,3 @@
 				<input type="hidden" name="nadmin_name" value="{UID}" />
 				<input type="hidden" name="uaction" value="" />
 			</form>
-		</div>

@@ -51,6 +51,7 @@ if (!customerHasFeature('sql')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_user_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -190,7 +191,6 @@ function gen_sql_user_list($tpl, $user_id, $db_id) {
 		ORDER BY
 			t1.`sqlu_name`
 	";
-
 	$rs = exec_query($query, array($dmn_id, $db_id));
 
 	while (!$rs->EOF) {
@@ -269,8 +269,7 @@ function add_sql_user($user_id, $db_id) {
 		return;
 	}
 
-	if (isset($_POST['pass']) && strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH
-		&& !isset($_POST['Add_Exist'])) {
+	if (isset($_POST['pass']) && strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Too user long password.'), 'error');
 		return;
 	}
@@ -415,18 +414,14 @@ function gen_page_post_data($tpl, $db_id) {
 				'USER_NAME' => (isset($_POST['user_name'])) ? clean_html($_POST['user_name'], true) : '',
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''
-			)
-		);
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''));
 	} else {
 		$tpl->assign(
 			array(
 				'USER_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => '',
-				'END_ID_POS_CHECKED' => $cfg->HTML_CHECKED
-			)
-		);
+				'END_ID_POS_CHECKED' => $cfg->HTML_CHECKED));
 	}
 
 	$tpl->assign('ID', $db_id);
@@ -441,17 +436,14 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Add SQL User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 
 $sqluser_available = gen_sql_user_list($tpl, $_SESSION['user_id'], $db_id);
 check_sql_permissions($tpl, $_SESSION['user_id'], $db_id, $sqluser_available);
 gen_page_post_data($tpl, $db_id);
 add_sql_user($_SESSION['user_id'], $db_id);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -467,13 +459,11 @@ $tpl->assign(
 		'TR_PASS_REP' => tr('Repeat password'),
 		'TR_SQL_USER_NAME' => tr('SQL users'),
 		'TR_ASSIGN_EXISTING_SQL_USER' => tr('Assign existing SQL user'),
-		'TR_NEW_SQL_USER_DATA' => tr('New Sql user data')
-	)
-);
+		'TR_NEW_SQL_USER_DATA' => tr('New Sql user data')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

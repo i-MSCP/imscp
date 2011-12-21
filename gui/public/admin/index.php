@@ -84,9 +84,10 @@ function admin_generateUpdateMessages($tpl)
     $cfg = iMSCP_Registry::get('config');
 
     if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-        $tpl->assign(array(
-                          'TR_DATABASE_UPDATE' => tr('Database update is available.'),
-                          'TR_DATABASE_UPDATE_LINK' => 'Click here to process update.'));
+		$tpl->assign(
+			array(
+				'TR_DATABASE_UPDATE' => tr('Database update is available.'),
+				'TR_DATABASE_UPDATE_LINK' => 'Click here to process update.'));
     } else {
         $tpl->assign('IMSCP_DATABASE_UPDATE_MESSAGE', '');
     }

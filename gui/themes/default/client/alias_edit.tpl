@@ -13,13 +13,6 @@
 		}
 	/* ]]> */
 	</script>
-	<div class="body">
-		<h2 class="domains"><span>{TR_TITLE_EDIT_ALIAS}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 			<table>
 				<tr>
@@ -60,5 +53,4 @@
 				<input type="submit" name="cancel" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 			</div>
 		</form>
-	</div>
 

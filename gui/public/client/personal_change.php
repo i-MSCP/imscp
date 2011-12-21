@@ -46,6 +46,7 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/personal_change.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -54,9 +55,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Change Personal Data'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 	update_user_personal_data($_SESSION['user_id']);
@@ -101,9 +100,7 @@ function gen_user_personal_data($tpl, $user_id) {
 			 'FAX' => empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
 			 'VL_MALE' => (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
 			 'VL_FEMALE' => (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
-			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')
-		)
-	);
+			 'VL_UNKNOWN' => ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')));
 }
 
 /**
@@ -143,9 +140,7 @@ function update_user_personal_data($user_id) {
 	set_page_message(tr('Personal data updated.'), 'success');
 }
 
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -167,13 +162,11 @@ $tpl->assign(
 		 'TR_MALE' => tr('Male'),
 		 'TR_FEMALE' => tr('Female'),
 		 'TR_UNKNOWN' => tr('Unknown'),
-		 'TR_UPDATE_DATA' => tr('Change')
-	)
-);
+		 'TR_UPDATE_DATA' => tr('Change')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

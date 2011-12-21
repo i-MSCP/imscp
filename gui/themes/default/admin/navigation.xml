@@ -60,14 +60,14 @@
             <class>manage_users</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>Users</label>
                     <uri>/admin/manage_users.php</uri>
                     <title_class>users</title_class>
                     <pages>
                         <reseller_edit_link>
-                            <label>Edit</label>
+                            <label>Edit reseller</label>
                             <uri>/admin/reseller_edit.php</uri>
-                            <title_class> </title_class>
+                            <title_class>user_green</title_class>
                             <visible>0</visible>
                         </reseller_edit_link>
                         <domain_detail_link>
@@ -77,15 +77,15 @@
                             <visible>0</visible>
                         </domain_detail_link>
                         <customer_edit_link>
-                            <label>Edit</label>
+                            <label>Edit customer</label>
                             <uri>/admin/admin_edit.php</uri>
-                            <title_class> </title_class>
+                            <title_class>user_blue</title_class>
                             <visible>0</visible>
                         </customer_edit_link>
                         <domain_edit_link>
-                            <label>Edit</label>
+                            <label>Edit domain</label>
                             <uri>/admin/domain_edit.php</uri>
-                            <title_class> </title_class>
+                            <title_class>domains</title_class>
                             <visible>0</visible>
                         </domain_edit_link>
                     </pages>
@@ -156,7 +156,7 @@
             <class>webtools</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>System information</label>
                     <uri>/admin/system_info.php</uri>
                     <title_class>tools</title_class>
                 </overview>
@@ -203,6 +203,22 @@
                     <label>Reseller's statistics</label>
                     <uri>/admin/reseller_statistics.php</uri>
                     <title_class>stats</title_class>
+                    <pages>
+                        <reseller_user_statistics_link>
+                            <label>Customer statistics</label>
+                            <uri>/admin/reseller_user_statistics.php</uri>
+                            <visible>0</visible>
+                            <title_class>statistics</title_class>
+                            <pages>
+                                <domain_statistics_link>
+                                    <label>Domain_statistics</label>
+                                    <uri>/admin/domain_statistics.php</uri>
+                                    <visible>0</visible>
+                                    <title_class>statistics</title_class>
+                                </domain_statistics_link>
+                            </pages>
+                        </reseller_user_statistics_link>
+                    </pages>
                 </resellers_statistics>
                 <ip_usage>
                     <label>Ip usage</label>
@@ -286,12 +302,6 @@
                     <uri>/admin/software_options.php</uri>
                     <title_class>apps_installer</title_class>
                 </softwares_options>
-                <!--
-                <plugins>
-                    <label>PLugins management</label>
-                    <uri>settings_plugins.php</uri>
-                </plugins>
-                -->
             </pages>
         </settings>
 
@@ -301,7 +311,7 @@
             <class>profile</class>
             <pages>
                 <overview>
-                    <label>Overview</label>
+                    <label>Account summary</label>
                     <uri>/admin/profile.php</uri>
                     <title_class>profile</title_class>
                 </overview>

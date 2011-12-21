@@ -10,13 +10,6 @@
 			}
 			/*]]>*/
 		</script>
-		<div class="body">
-			<h2 class="ftp"><span>{TR_FTP_USERS}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<!-- BDP: ftp_accounts -->
 			<table>
 				<thead>
@@ -47,4 +40,3 @@
 				<!-- EDP: ftps_total -->
 			</table>
 			<!-- EDP: ftp_accounts -->
-		</div>

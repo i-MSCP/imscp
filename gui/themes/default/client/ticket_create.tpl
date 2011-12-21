@@ -1,11 +1,4 @@
 
-        <div class="body">
-            <h2 class="support"><span>{TR_NEW_TICKET}</span></h2>
-
-            <!-- BDP: page_message -->
-            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
-            <!-- EDP: page_message -->
-
             <form style="margin:0" name="ticketFrm" method="post" action="ticket_create.php">
                 <table>
                     <tr>
@@ -46,4 +39,3 @@
                     <input name="uaction" type="hidden" value="send_msg" />
                 </div>
             </form>
-        </div>

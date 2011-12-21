@@ -78,9 +78,10 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/settings_layout.tpl',
+		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/layout.tpl',
 		'page_message' => 'page',
 		'layout_colors_block' => 'page',
 		'layout_color_block' => 'layout_colors_block'));
@@ -116,12 +117,11 @@ $tpl->assign(
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),
 		'TR_CHANGE' => tr('Change')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
+generateNavigation($tpl);
 client_generateLayoutColorForm($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

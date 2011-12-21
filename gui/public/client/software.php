@@ -65,6 +65,7 @@ if (!customerHasFeature('aps')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('software_message', 'page');
@@ -111,17 +112,14 @@ $tpl->assign(
 		 'TR_STATUS_ASC' => 'software.php?sortby=status&order=asc',
 		 'TR_STATUS_DESC' => 'software.php?sortby=status&order=desc',
 		 'TR_LANGUAGE_ASC' => 'software.php?sortby=language&order=asc',
-		 'TR_LANGUAGE_DESC' => 'software.php?sortby=language&order=desc'
-	)
-);
+		 'TR_LANGUAGE_DESC' => 'software.php?sortby=language&order=desc'));
 
 gen_page_lists($tpl, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 get_client_software_permission($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

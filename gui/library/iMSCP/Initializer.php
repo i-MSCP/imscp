@@ -612,7 +612,6 @@ class iMSCP_Initializer
 					$menuPath = "{$this->_config->RESELLER_TEMPLATE_PATH}/navigation.xml";
 					break;
 				default:
-					return; // no implemented yet
 					$menuPath = "{$this->_config->CLIENT_TEMPLATE_PATH}/navigation.xml";
 			}
 

@@ -51,6 +51,7 @@ if (!customerHasFeature('mail')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('catchall_message', 'page');
@@ -115,13 +116,11 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 	if ($action === 'create') {
 		$tpl->assign(
 			array(
-				'CATCHALL_DOMAIN'			=> tohtml($show_dmn_name),
-				'CATCHALL_ACC'				=> tr('None'),
-				'CATCHALL_STATUS'			=> tr('N/A'),
-				'CATCHALL_ACTION'			=> tr('Create catch all'),
-				'CATCHALL_ACTION_SCRIPT'	=> "mail_catchall_add.php?id=$dmn_id;$ca_type"
-			)
-		);
+				'CATCHALL_DOMAIN' => tohtml($show_dmn_name),
+				'CATCHALL_ACC' => tr('None'),
+				'CATCHALL_STATUS' => tr('N/A'),
+				'CATCHALL_ACTION' => tr('Create catch all'),
+				'CATCHALL_ACTION_SCRIPT' => "mail_catchall_add.php?id=$dmn_id;$ca_type"));
 	} else {
 		list($catchall_action, $catchall_action_script) = gen_user_catchall_action($mail_id, $mail_status);
 
@@ -134,17 +133,16 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 				'CATCHALL_ACC' => tohtml($show_mail_acc),
 				'CATCHALL_STATUS' => translate_dmn_status($mail_status),
 				'CATCHALL_ACTION' => $catchall_action,
-				'CATCHALL_ACTION_SCRIPT' => $catchall_action_script
-			)
-		);
+				'CATCHALL_ACTION_SCRIPT' => $catchall_action_script));
 	}
 }
 
 /**
- * @todo use db prepared statements
+ * @param $tpl
+ * @param $dmn_id
+ * @param $dmn_name
  */
 function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
-	global $counter;
 
 	$tpl->assign('CATCHALL_MESSAGE', '');
 
@@ -166,7 +164,8 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 		if ($rs->recordCount() == 0) {
 			gen_catchall_item($tpl, 'create', $dmn_id, $dmn_name, '', '', '', 'normal');
 		} else {
-			gen_catchall_item($tpl,
+			gen_catchall_item(
+				$tpl,
 				'delete',
 				$dmn_id,
 				$dmn_name,
@@ -174,11 +173,6 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 				$rs->fields['mail_acc'],
 				$rs->fields['status'], 'normal');
 		}
-		$tpl->assign(
-			array(
-				'ITEM_CLASS' => 'content',
-			)
-		);
 
 		$tpl->parse('CATCHALL_ITEM', 'catchall_item');
 
@@ -196,10 +190,7 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
-			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
-
 			$als_id = $rs->fields['alias_id'];
-
 			$als_name = $rs->fields['alias_name'];
 
 			$query = "
@@ -234,7 +225,6 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
 			$rs->moveNext();
-			$counter++;
 		}
 
 		$query = "
@@ -253,10 +243,7 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
-			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
-
 			$als_id = $rs->fields['subdomain_alias_id'];
-
 			$als_name = $rs->fields['subdomain_name'];
 
 			$query = "
@@ -291,7 +278,6 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
 			$rs->moveNext();
-			$counter++;
 		}
 
 		$query = "
@@ -306,14 +292,10 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 			AND
 				a.`subdomain_status` = 'ok'
 		";
-
 		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
-			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
-
 			$als_id = $rs->fields['subdomain_id'];
-
 			$als_name = $rs->fields['subdomain_name'];
 
 			$query = "
@@ -346,11 +328,14 @@ function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
 			$rs->moveNext();
-			$counter++;
 		}
 }
 
-function gen_page_lists(&$tpl, $user_id)
+/**
+ * @param $tpl
+ * @param $user_id
+ */
+function gen_page_lists($tpl, $user_id)
 {
 	list($dmn_id,
 		$dmn_name,
@@ -387,17 +372,14 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	$tpl->assign('NO_MAILS', '');
 }
 
 gen_page_lists($tpl, $_SESSION['user_id']);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -406,13 +388,11 @@ $tpl->assign(
 		 'TR_TITLE_CATCHALL_MAIL_USERS' => tr('Catch all'),
 		 'TR_DOMAIN' => tr('Domain'),
 		 'TR_CATCHALL' => tr('Catch all'),
-		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', true, '%s')
-	)
-);
+		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s catch all?', true, '%s')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

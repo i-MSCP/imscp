@@ -227,33 +227,36 @@ function client_subdomainEditAction()
 	$cfg = iMSCP_Registry::get('config');
 
 	$tpl = _client_initView();
-	$tpl->assign(array(
-					  'TR_MANAGE_SUBDOMAIN' => tr('Manage subdomain'),
-					  'TR_EDIT_SUBDOMAIN' => tr('Edit subdomain'),
-					  'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
-					  'TR_REDIRECT_URL' => tr('Redirect to URL'),
-					  'TR_UPDATE' => tr('Update'),
-					  'TR_CANCEL' => tr('Cancel'),
-					  'TR_REDIRECT' => tr('Redirect'),
-					  'TR_ENABLE' => tr('Enable'),
-					  'TR_DISABLE' => tr('Disable'),
-					  'TR_HTTP_SCHEME' => 'http://',
-					  'TR_HTTPS_SCHEME' => 'https://',
-					  'TR_FTP_SCHEME' => 'ftp://',
-					  'SUBDOMAIN_ID' => $subdomainId,
-					  'SUBDOMAIN_TYPE' => $subdomainType,
-					  'SUBDOMAIN_NAME' => decode_idna($form->subdomainName),
-					  'RADIO_ENABLED' => $form->urlRedirect ? $cfg->HTML_CHECKED : '',
-					  'RADIO_DISABLED' => $form->urlRedirect ? '' : $cfg->HTML_CHECKED,
-					  'INPUT_READONLY' => $form->urlRedirect ? '' : $cfg->HTML_READONLY,
-					  'SELECT_DISABLED' => $form->urlRedirect ? '' : $cfg->HTML_DISABLED,
-					  'SCHEME_SPECIFIC' => $form->schemeSpecific));
+	$tpl->assign(
+		array(
+			'TR_MANAGE_SUBDOMAIN' => tr('Manage subdomain'),
+			'TR_EDIT_SUBDOMAIN' => tr('Edit subdomain'),
+			'TR_SUBDOMAIN_NAME' => tr('Subdomain name'),
+			'TR_REDIRECT_URL' => tr('Redirect to URL'),
+			'TR_UPDATE' => tr('Update'),
+			'TR_CANCEL' => tr('Cancel'),
+			'TR_REDIRECT' => tr('Redirect'),
+			'TR_ENABLE' => tr('Enable'),
+			'TR_DISABLE' => tr('Disable'),
+			'TR_HTTP_SCHEME' => 'http://',
+			'TR_HTTPS_SCHEME' => 'https://',
+			'TR_FTP_SCHEME' => 'ftp://',
+			'SUBDOMAIN_ID' => $subdomainId,
+			'SUBDOMAIN_TYPE' => $subdomainType,
+			'SUBDOMAIN_NAME' => decode_idna($form->subdomainName),
+			'RADIO_ENABLED' => $form->urlRedirect ? $cfg->HTML_CHECKED : '',
+			'RADIO_DISABLED' => $form->urlRedirect ? '' : $cfg->HTML_CHECKED,
+			'INPUT_READONLY' => $form->urlRedirect ? '' : $cfg->HTML_READONLY,
+			'SELECT_DISABLED' => $form->urlRedirect ? '' : $cfg->HTML_DISABLED,
+			'SCHEME_SPECIFIC' => $form->schemeSpecific));
 
 	foreach(array('http://', 'https://', 'ftp://') as $scheme) {
-		$tpl->assign(array(
-						  'SCHEME' => $scheme,
-						  'SELECTED' => ($form->scheme == $scheme)
-							  ? $cfg->HTML_SELECTED : ''));
+		$tpl->assign(
+			array(
+				'SCHEME' => $scheme,
+				'SELECTED' => ($form->scheme == $scheme)
+					? $cfg->HTML_SELECTED : ''));
+
 		$tpl->parse('SCHEME_OPTIONS', '.scheme_options');
 	}
 }
@@ -270,19 +273,21 @@ function _client_initView()
 	$cfg = iMSCP_Registry::get('config');
 
 	$tpl = new iMSCP_pTemplate();
-	$tpl->define_dynamic(array(
-							  'page' => $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_edit.tpl',
-							  'page_message' => 'page',
-						 	  'scheme_options' => 'page'));
+	$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+	$tpl->define_dynamic(
+		array(
+			'page' => $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_edit.tpl',
+			'page_message' => 'page',
+			'scheme_options' => 'page'));
 
-	$tpl->assign(array(
-					  'TR_PAGE_TITLE' => tr('i-MSCP - Manage domains / Edit Subdomain'),
-					  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-					  'THEME_CHARSET' => tr('encoding'),
-					  'ISP_LOGO' => layout_getUserLogo()));
+	$tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('i-MSCP - Manage domains / Edit Subdomain'),
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo()));
 
-	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+	generateNavigation($tpl);
 
 	return iMSCP_Registry::set('templateEngine', $tpl);
 }
@@ -418,7 +423,7 @@ $tpl = iMSCP_Registry::get('templateEngine');
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

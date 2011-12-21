@@ -67,13 +67,6 @@
 	});
 	/*]]>*/
 	</script>
-	<div class="body">
-		<h2 class="ftp"><span>{TR_TITLE_ADD_FTP_USER}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<form name="addFrm" method="post" action="ftp_add.php">
 			<table>
 				<tr>
@@ -122,4 +115,3 @@
 				<input name="submit" type="submit" value="{TR_ADD}"/>
 			</div>
 		</form>
-	</div>

@@ -86,14 +86,13 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_view.tpl',
 		 'page_message' => 'page',
 		 'tickets_list' => 'page',
-		 'tickets_item' => 'tickets_list'
-	)
-);
+		 'tickets_item' => 'tickets_list'));
 
 $tpl->assign(
 	array(
@@ -113,17 +112,14 @@ $tpl->assign(
 		 'TR_TICKET_DATE' => tr('Date'),
 		 'TR_TICKET_CONTENT' => tr('Message'),
 		 'TR_TICKET_NEW_REPLY' => tr('Send new reply'),
-		 'TR_TICKET_REPLY' => tr('Send reply')
-	)
-);
+		 'TR_TICKET_REPLY' => tr('Send reply')));
 
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
+generateNavigation($tpl);
 showTicketContent($tpl, $ticketId, $userId);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

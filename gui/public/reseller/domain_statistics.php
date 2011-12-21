@@ -94,6 +94,11 @@ function generate_page($tpl, $domain_id)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
+
+	$domainProperties = get_domain_default_props(who_owns_this($domain_id), true);
+	$tpl->assign('DOMAIN_NAME', $domainProperties['domain_name']);
+
+
 	if ($month == date('m') && $year == date('Y')) {
 		$curday = date('j');
 	} else {

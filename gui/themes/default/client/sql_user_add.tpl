@@ -1,11 +1,4 @@
 
-		<div class="body">
-			<h2 class="sql"><span>{TR_ADD_SQL_USER}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<form name="sql_add_user_frm" method="post" action="sql_user_add.php">
 				<!-- BDP: show_sqluser_list -->
 				<table>
@@ -86,4 +79,3 @@
 				</div>
 				<!-- EDP: create_sqluser -->
 			</form>
-		</div>

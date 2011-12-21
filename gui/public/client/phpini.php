@@ -122,6 +122,7 @@ if (!empty($_POST)) { // Post request
 }
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
@@ -148,8 +149,7 @@ $tpl->assign(
 		 'TR_UPDATE_DATA' => tr('Update'),
 		 'TR_CANCEL' => tr('Cancel')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+generateNavigation($tpl);
 
 $htmlSelected = $cfg->HTML_SELECTED;
 $htmlChecked = $cfg->HTML_CHECKED;
@@ -253,7 +253,7 @@ $tpl->assign($tplVars);
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

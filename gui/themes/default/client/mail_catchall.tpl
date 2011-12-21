@@ -12,13 +12,6 @@
 		}
 		/* ]]> */
 		</script>
-		<div class="body">
-			<h2 class="email"><span>{TR_TITLE_CATCHALL_MAIL_USERS}</span></h2>
-
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<!-- BDP: catchall_message -->
 			<div class="info">{CATCHALL_MSG}</div>
 			<!-- EDP: catchall_message -->
@@ -45,4 +38,3 @@
 					<!-- EDP: catchall_item -->
 				</tbody>
 			</table>
-		</div>

@@ -264,11 +264,9 @@ function client_generateEditForm($tpl, $mailAccountData)
 			 'MAIL_ID_VAL' => $mailAccountData['mail_id'],
 			 'MAIL_ADDRESS_VAL' => tohtml($mailAccountData['mail_addr']),
 			 'TR_MAIL_ACCOUNT' => tr('Mail account'),
-			 'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_')
-				 ? $htmlChecked : '',
+			 'FORWARD_ACCOUNT_CHECKED' => ($mailAccountData['mail_forward'] != '_no_') ? $htmlChecked : '',
 			 'FORWARD_LIST_VAL' => ($mailAccountData['mail_forward'] != '_no_' && $mailAccountData['mail_forward'] != '')
-				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'idn_to_utf8'))) : ''
-		));
+				 ? tohtml(implode("\n", _client_normalizeForwardAddresses($mailAccountData['mail_forward'], 'idn_to_utf8'))) : ''));
 }
 
 /************************************************************************************
@@ -302,6 +300,7 @@ if(!empty($_POST) && client_updateMailAccount($mailAccountData)) {
 }
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/mail_edit.tpl',
@@ -327,14 +326,11 @@ $tpl->assign(
 		 'TR_UPDATE' => tr('Update'),
 		 'TR_CANCEL' => tr('Cancel')));
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
-
+generateNavigation($tpl);
 client_generateEditForm($tpl, $mailAccountData);
-
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

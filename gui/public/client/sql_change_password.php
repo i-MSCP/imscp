@@ -51,6 +51,7 @@ if (!customerHasFeature('sql')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_change_password.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -91,8 +92,7 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 		return;
 	}
 
-	if (isset($_POST['pass'])
-		&& !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
+	if (isset($_POST['pass']) && !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
 		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password.'), 'error');
 		return;
 	}
@@ -131,18 +131,16 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
  * @param $db_user_id
  * @return
  */
-function gen_page_data(&$tpl, $db_user_id)
+function gen_page_data($tpl, $db_user_id)
 {
-
 	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
 	$rs = exec_query($query, $db_user_id);
 
 	$tpl->assign(
 		array(
 			'USER_NAME' => tohtml($rs->fields['sqlu_name']),
-			'ID' => $db_user_id
-		)
-	);
+			'ID' => $db_user_id));
+
 	return $rs->fields['sqlu_name'];
 }
 
@@ -155,9 +153,7 @@ $tpl->assign(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Change SQL User Password'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		'ISP_LOGO' => layout_getUserLogo()));
 
 $db_user_name = gen_page_data($tpl, $db_user_id);
 
@@ -169,8 +165,7 @@ if(!check_user_sql_perms($db_user_id))
 
 check_user_sql_perms($db_user_id);
 change_sql_user_pass($db_user_id, $db_user_name);
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -181,12 +176,10 @@ $tpl->assign(
 		 'TR_CHANGE' => tr('Change'),
 		 // The entries below are for Demo versions only
 		 'PASSWORD_DISABLED' => tr('Password change is deactivated!'),
-		 'DEMO_VERSION' => tr('Demo Version!')
-	)
-);
+		 'DEMO_VERSION' => tr('Demo Version!')));
 
 generatePageMessage($tpl);
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

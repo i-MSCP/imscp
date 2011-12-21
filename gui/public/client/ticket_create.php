@@ -98,12 +98,11 @@ $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ?
 	clean_input($_POST['user_message'], true) : '';
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_create.tpl',
-		 'page_message' => 'page',
-	)
-);
+		 'page_message' => 'page'));
 
 $tpl->assign(
 	array(
@@ -123,17 +122,14 @@ $tpl->assign(
 		 'TR_YOUR_MESSAGE' => tr('Your message'),
 		 'TR_SEND_MESSAGE' => tr('Send message'),
 		 'TR_OPEN_TICKETS' => tr('Open tickets'),
-		 'TR_CLOSED_TICKETS' => tr('Closed tickets')
-	)
-);
+		 'TR_CLOSED_TICKETS' => tr('Closed tickets')));
 
 $tpl->assign($userdata);
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

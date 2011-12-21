@@ -51,6 +51,7 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_gadd.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
@@ -58,15 +59,12 @@ $tpl->define_dynamic('grp_msg', 'page');
 $tpl->define_dynamic('pusres', 'page');
 $tpl->define_dynamic('pgroups', 'page');
 
-
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client / Webtools Protected areas / Add group'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> layout_getUserLogo()
-	)
-);
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools Protected areas / Add group'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
  * @param $tpl
@@ -98,7 +96,6 @@ function padd_group($tpl, $dmn_id) {
 				AND
 					`dmn_id` = ?
 			";
-
 			$rs = exec_query($query, array($groupname, $dmn_id));
 
 			if ($rs->recordCount() == 0) {
@@ -134,8 +131,7 @@ function padd_group($tpl, $dmn_id) {
 	}
 }
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 padd_group($tpl, get_user_domain_id($_SESSION['user_id']));
 
 $tpl->assign(
@@ -156,13 +152,11 @@ $tpl->assign(
 		'TR_PASSWORD'			=> tr('Password'),
 		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
 		'TR_CANCEL'				=> tr('Cancel'),
-		'TR_HTACCESS_USER' => tr('Manage users and groups')
-	)
-);
+		'TR_HTACCESS_USER' => tr('Manage users and groups')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

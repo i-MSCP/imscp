@@ -13,13 +13,6 @@
 			}
 		/*]]>*/
 		</script>
-		<div class="body">
-			<h2 class="apps_installer"><span>{TR_INSTALL_SOFTWARE}</span></h2>
-		
-			<!-- BDP: page_message -->
-			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-			<!-- EDP: page_message -->
-
 			<table>
 				<tr>
 					<td>
@@ -126,4 +119,3 @@
 					</td>
 				</tr>
 			</table>
-		</div>

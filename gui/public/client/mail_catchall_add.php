@@ -51,6 +51,7 @@ if (!customerHasFeature('mail')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('mail_list', 'page');
@@ -190,13 +191,12 @@ function gen_dynamic_page_data($tpl, $id) {
 					$show_alias_name = decode_idna($rs->fields['alias_name']);
 					$mail_acc = $rs->fields['mail_acc'];
 					$alias_name = $rs->fields['alias_name'];
+
 					$tpl->assign(
 						array(
 							 'MAIL_ID' => $rs->fields['mail_id'],
-							 'MAIL_ACCOUNT' => tohtml($show_mail_acc . "@" . $show_alias_name), // this will be shown in the templates
-							 'MAIL_ACCOUNT_PUNNY' => tohtml($mail_acc . "@" . $alias_name) // this will be updated if we create catch all
-						)
-					);
+							 'MAIL_ACCOUNT' => tohtml($show_mail_acc . "@" . $show_alias_name),
+							 'MAIL_ACCOUNT_PUNNY' => tohtml($mail_acc . "@" . $alias_name)));
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
 					$rs->moveNext();
@@ -236,13 +236,12 @@ function gen_dynamic_page_data($tpl, $id) {
 					$show_alias_name = decode_idna($rs->fields['subdomain_name']);
 					$mail_acc = $rs->fields['mail_acc'];
 					$alias_name = $rs->fields['subdomain_name'];
+
 					$tpl->assign(
 						array(
 							 'MAIL_ID' => $rs->fields['mail_id'],
-							 'MAIL_ACCOUNT' => tohtml($show_mail_acc . "@" . $show_alias_name), // this will be shown in the templates
-							 'MAIL_ACCOUNT_PUNNY' => tohtml($mail_acc . "@" . $alias_name) // this will be updated if we create catch all
-						)
-					);
+							 'MAIL_ACCOUNT' => tohtml($show_mail_acc . "@" . $show_alias_name),
+							 'MAIL_ACCOUNT_PUNNY' => tohtml($mail_acc . "@" . $alias_name)));
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
 					$rs->moveNext();
@@ -269,7 +268,6 @@ function gen_dynamic_page_data($tpl, $id) {
 				ORDER BY
 					t1.`mail_type` DESC, t1.`mail_acc`
 			";
-
 			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
@@ -282,13 +280,12 @@ function gen_dynamic_page_data($tpl, $id) {
 					$show_alias_name = decode_idna($rs->fields['subdomain_name']);
 					$mail_acc = $rs->fields['mail_acc'];
 					$alias_name = $rs->fields['subdomain_name'];
+
 					$tpl->assign(
 						array(
 							 'MAIL_ID' => $rs->fields['mail_id'],
-							 'MAIL_ACCOUNT' => tohtml($show_mail_acc . "@" . $show_alias_name), // this will be shown in the templates
-							 'MAIL_ACCOUNT_PUNNY' => tohtml($mail_acc . "@" . $alias_name) // this will be updated if we create catch all
-						)
-					);
+							 'MAIL_ACCOUNT' => tohtml($show_mail_acc . "@" . $show_alias_name),
+							 'MAIL_ACCOUNT_PUNNY' => tohtml($mail_acc . "@" . $alias_name)));
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
 					$rs->moveNext();
@@ -433,6 +430,7 @@ function create_catchall_mail_account($id) {
 					set_page_message(tr("Mail forward list error!"), 'error');
 					return;
 				}
+
 				$mail_acc[] = $value;
 			}
 
@@ -464,16 +462,13 @@ $tpl->assign(
 		 'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE' => tr('i-MSCP - Client/Create CatchAll Mail Account'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 gen_dynamic_page_data($tpl, $item_id);
 create_catchall_mail_account($item_id);
 $tpl->assign('ID', $item_id);
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
+generateNavigation($tpl);
 
 $tpl->assign(
 	array(
@@ -487,7 +482,7 @@ $tpl->assign(
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

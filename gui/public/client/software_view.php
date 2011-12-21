@@ -70,6 +70,7 @@ if (!customerHasFeature('aps')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_view.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('software_message', 'page');
@@ -78,15 +79,12 @@ $tpl->define_dynamic('installed_software_info', 'page');
 $tpl->define_dynamic('software_item', 'page');
 $tpl->define_dynamic('no_software', 'page');
 
-
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Software details'),
 		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()
-	)
-);
+		 'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no") {
 	$tpl -> assign('NO_SOFTWARE', '');
@@ -94,8 +92,7 @@ if (isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no
 
 $software_id = gen_page_lists($tpl, $_SESSION['user_id']);
 
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
+generateNavigation($tpl);
 get_client_software_permission ($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
@@ -114,13 +111,11 @@ $tpl->assign(
 		 'TR_DESC' => tr('Description'),
 		 'TR_BACK' => tr('Back'),
 		 'TR_INSTALL' => tr('Install'),
-		 'TR_SOFTWARE_MENU' => tr('Software installation')
-	)
-);
+		 'TR_SOFTWARE_MENU' => tr('Software installation')));
 
 generatePageMessage($tpl);
 
-$tpl->parse('PAGE', 'page');
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
 

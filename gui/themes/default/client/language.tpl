@@ -1,11 +1,4 @@
 
-	<div class="body">
-		<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
-
-		<!-- BDP: page_message -->
-		<div class="{MESSAGE_CLS}">{MESSAGE}</div>
-		<!-- EDP: page_message -->
-
 		<form action="language.php" method="post" id="client_language_frm">
 			<table>
 				<tr>
@@ -26,4 +19,3 @@
 				<input type="submit" name="submit" value="{TR_UPDATE}" />
 			</div>
 		</form>
-	</div>

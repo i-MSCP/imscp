@@ -10,7 +10,6 @@
 	}
 /* ]]> */
 </script>
-<div class="body">
 	<h2 class="users"><span>{TR_USERS_GROUPS_MANAGE}</span></h2>
 
 	<!-- BDP: page_message -->
@@ -82,4 +81,3 @@
 	<div class="buttons">
 		<input name="Button2" type="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent', 'protected_group_add.php');return document.MM_returnValue"/>
 	</div>
-</div>

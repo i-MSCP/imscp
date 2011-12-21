@@ -1,5 +1,4 @@
 
-		<div class="body">
 			<h2 class="users"><span>{TR_ADD_GROUP}</span></h2>
 
 			<!-- BDP: page_message -->
@@ -20,4 +19,3 @@
 
 				<input type="hidden" name="uaction" value="add_group" />
 			</form>
-		</div>
