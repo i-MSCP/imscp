@@ -175,8 +175,8 @@ function PMA_DBI_try_query($query, $link = null, $options = 0, $cache_affected_r
         $r = mysql_query($query, $link);
     }
 
-    if ($cache_affected_rows) { 
-       $GLOBALS['cached_affected_rows'] = PMA_DBI_affected_rows($link, $get_from_cache = false); 
+    if ($cache_affected_rows) {
+       $GLOBALS['cached_affected_rows'] = PMA_DBI_affected_rows($link, $get_from_cache = false);
     }
 
     if ($GLOBALS['cfg']['DBG']['sql']) {
@@ -406,7 +406,7 @@ function PMA_DBI_insert_id($link = null)
  * @uses    $GLOBALS['userlink']
  * @uses    mysql_affected_rows()
  * @param   object mysql   $link   the mysql object
- * @param   boolean        $get_from_cache 
+ * @param   boolean        $get_from_cache
  * @return  string integer
  */
 function PMA_DBI_affected_rows($link = null, $get_from_cache = true)
@@ -427,14 +427,18 @@ function PMA_DBI_affected_rows($link = null, $get_from_cache = true)
 }
 
 /**
- * @todo add missing keys like in from mysqli_query (orgname, orgtable, flags, decimals)
+ * @todo add missing keys like in from mysqli_query (decimals)
  */
 function PMA_DBI_get_fields_meta($result)
 {
     $fields       = array();
     $num_fields   = mysql_num_fields($result);
     for ($i = 0; $i < $num_fields; $i++) {
-        $fields[] = mysql_fetch_field($result, $i);
+        $field = mysql_fetch_field($result, $i);
+        $field->flags = mysql_field_flags($result, $i);
+        $field->orgtable = mysql_field_table($result, $i);
+        $field->orgname = mysql_field_name($result, $i);
+        $fields[] = $field;
     }
     return $fields;
 }

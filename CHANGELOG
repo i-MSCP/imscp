@@ -22,7 +22,7 @@ Features / Enhancements:
 			- Updated jQuery to version 1.7.1
 			- Updated jQuery UI to version 1.8.16 (minified version)
 		Tools:
-			- Updated PhpMyAdmin to version 3.4.8
+			- Updated PhpMyAdmin to version 3.4.9
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
