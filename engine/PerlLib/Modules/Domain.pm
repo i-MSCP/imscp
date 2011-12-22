@@ -267,6 +267,7 @@ sub buildHTTPDData{
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
 	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{domain_name}";
 	$hDir			=~ s~/+~/~g;
+	my $pDir 		= $hDir;
 
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
@@ -284,6 +285,7 @@ sub buildHTTPDData{
 		DMN_IP						=> $self->{ip_number},
 		WWW_DIR						=> $main::imscpConfig{'USER_HOME_DIR'},
 		HOME_DIR					=> $hDir,
+		PARENT_DIR					=> $pDir,
 		PEAR_DIR					=> $main::imscpConfig{'PEAR_DIR'},
 		PHP_TIMEZONE				=> $main::imscpConfig{'PHP_TIMEZONE'},
 		PHP_VERSION					=> $main::imscpConfig{'PHP_VERSION'},

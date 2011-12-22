@@ -1,7 +1,7 @@
 <VirtualHost {DMN_IP}:80>
 
 	ServerAdmin	webmaster@{DMN_NAME}
-	DocumentRoot	{HOME_DIR}/domain_disable_page
+	DocumentRoot	{PARENT_DIR}/domain_disable_page
 
 	ServerName	{DMN_NAME}
 	ServerAlias	*.{DMN_NAME} {DMN_NAME} {ALIAS}.{BASE_SERVER_VHOST}
@@ -17,7 +17,7 @@
 		CBandUser {USER}
 	</IfModule>
 
-	<Directory {HOME_DIR}/domain_disable_page>
+	<Directory {PARENT_DIR}/domain_disable_page>
 		Options -Indexes Includes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
