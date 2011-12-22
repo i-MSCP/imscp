@@ -45,6 +45,7 @@ Tickets:
 	- Fixed #271: Enhancement - Do not enforce session reuse for FTP over SSL (Tx Cube)
 	- Fixed #272: Task - Update postfix's master.cf
 	- Fixed #275: Defect - Service status always down when using ipv6 as base ip
+	- Fixed #276: Defect - proftpd can´t resolv hostname when using ipv6 as base ip
 	- Fixed #278: Defect - Possible corruption of postfix's domain configuration
 	- Fixed #279: Defect - Installer should not fail when we are using another webmail
 	- Fixed #286: Defect - Error by update
