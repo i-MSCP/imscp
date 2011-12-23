@@ -63,9 +63,9 @@ function gen_al_page($tpl, $reseller_id)
 
     list(, , , , , , $uals_current) = generate_reseller_user_props($reseller_id);
 
-    list(, , , , , $rals_max) = get_reseller_default_props($reseller_id);
+	$resellerProperties = get_reseller_default_props($reseller_id);
 
-    if ($uals_current >= $rals_max && $rals_max != "0") {
+    if ($uals_current >= $resellerProperties['max_als_cnt'] && $resellerProperties['max_als_cnt'] != '0') {
         $_SESSION['almax'] = '_yes_';
         redirectTo('alias.php');
     }
@@ -145,9 +145,9 @@ function add_domain_alias()
     }
 
     $query = "SELECT `domain_ip_id` FROM `domain` WHERE `domain_id` = ?";
-    $rs = exec_query($query, $cr_user_id);
+    $stmt = exec_query($query, $cr_user_id);
 
-    $domain_ip = $rs->fields['domain_ip_id'];
+    $domain_ip = $stmt->fields['domain_ip_id'];
 
     // First check if input string is a valid domain names
     if (!validates_dname($alias_name)) {
@@ -283,8 +283,8 @@ function add_domain_alias()
     update_reseller_c_props(get_reseller_id($cr_user_id));
 
     $query = "SELECT `email` FROM `admin` WHERE `admin_id` = ? LIMIT 1";
-    $rs = exec_query($query, who_owns_this($cr_user_id, 'dmn_id'));
-    $user_email = $rs->fields['email'];
+    $stmt = exec_query($query, who_owns_this($cr_user_id, 'dmn_id'));
+    $user_email = $stmt->fields['email'];
 
     // Create the 3 default addresses if wanted
     if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
@@ -348,7 +348,6 @@ function gen_users_list($tpl, $reseller_id)
 			WHERE
 				`domain_admin_id` = ?
 		";
-
         $dr = exec_query($query, $admin_id);
         $dd = $dr->fetchRow();
 
@@ -401,14 +400,7 @@ if (!is_xhr()) {
 		array(
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => layout_getUserLogo()));
-
-    $reseller_id = $_SESSION['user_id'];
-
-    generateNavigation($tpl);
-
-    $tpl->assign(
-		array(
+			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_PAGE_TITLE' => tr('i-MSCP Reseller/Add Alias'),
 			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 			'TR_ADD_ALIAS' => tr('Add domain alias'),
@@ -429,19 +421,19 @@ if (!is_xhr()) {
 			'TR_PREFIX_HTTPS' => 'https://',
 			'TR_PREFIX_FTP' => 'ftp://'));
 
-    list(
-        $rdmn_current, $rdmn_max, $rsub_current, $rsub_max, $rals_current, $rals_max,
-        $rmail_current, $rmail_max, $rftp_current, $rftp_max, $rsql_db_current, $rsql_db_max,
-        $rsql_user_current, $rsql_user_max, $rtraff_current, $rtraff_max, $rdisk_current, $rdisk_max
-        ) = get_reseller_default_props($_SESSION['user_id']);
+    $reseller_id = $_SESSION['user_id'];
 
-    if ($rals_max != 0 && $rals_current >= $rals_max) {
+    generateNavigation($tpl);
+
+	$resellerProperties = get_reseller_default_props($reseller_id);
+
+    if ($resellerProperties['max_als_cnt'] != 0 &&
+		$resellerProperties['current_als_cnt'] >= $resellerProperties['max_als_cnt']
+	) {
         $_SESSION['almax'] = '_yes_';
     }
 
-    if (!check_reseller_permissions($reseller_id, 'alias') ||
-        isset($_SESSION['almax'])
-    ) {
+    if (!check_reseller_permissions($reseller_id, 'alias') || isset($_SESSION['almax'])) {
         redirectTo('alias.php');
     }
 }
@@ -453,7 +445,6 @@ if (isset($_POST['uaction'])) {
     if ($_POST['uaction'] == 'toASCII') { // Ajax request
         header('Content-Type: text/plain; charset=utf-8');
         header('Cache-Control: no-cache, private');
-        // backward compatibility for HTTP/1.0
         header('Pragma: no-cache');
         header("HTTP/1.0 200 Ok");
 

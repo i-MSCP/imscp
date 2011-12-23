@@ -250,12 +250,13 @@ RIC;
 }
 
 /**
- * Helper function to generate menus.
+ * Helper function to generate navigation.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since iMSCP 1.0.1.6
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
+ * @todo review all this... Using view helper sound really better.
  */
 function generateNavigation($tpl)
 {
@@ -273,7 +274,7 @@ function generateNavigation($tpl)
 
 	generateLoggedFrom($tpl);
 
-	// Dynamic links
+	// Dynamic links (only at customer level)
 	if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
 
 		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
@@ -289,17 +290,18 @@ function generateNavigation($tpl)
 			'AWSTATS_TARGET' => $cfg->AWSTATS_TARGET));
 	}
 
-	$tpl->assign(array(
-		'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-		'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET
-	));
+	// Dynamic links (All levels)
+	$tpl->assign(
+		array(
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET));
 
 	/** @var $navigation Zend_Navigation */
 	$navigation = iMSCP_Registry::get('navigation');
 
-	// Remove support system page if feature is disabled
+	// Remove support system page if feature is globally disabled
 	if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
-		$navigation->findOneBy('class', 'support')->setVisible(false);
+		$navigation->removePage($navigation->findOneBy('class', 'support'));
 	}
 
 	// Hide hosting plan pages if management is delegated to reseller level
@@ -310,17 +312,15 @@ function generateNavigation($tpl)
 	}
 
 	// Custom menus
-	$query = 'SELECT * FROM `custom_menus` WHERE `menu_level` = ?';
-	$stmt = exec_query($query, 'admin');
-
-	if ($stmt->rowCount()) {
-		foreach ($stmt->fetchAll() as $menu) {
-			$page = new Zend_Navigation_Page_Uri();
-			$page->setUri(get_menu_vars($menu['menu_link']));
-			$page->setTarget((!empty($menu['menu_target']) ? tohtml($menu['menu_target']) : '_self'));
-			$page->setClass('custom_link');
-			$page->setLabel(tohtml($menu['menu_name']));
-			$navigation->addPage($page);
+	if(null != ($customMenus = getCustomMenus($_SESSION['user_type']))) {
+		foreach ($customMenus as $customMenu) {
+			$navigation->addPage(
+				array(
+					'order' => $customMenu['menu_order'],
+					'label' => tohtml($customMenu['menu_name']),
+					'uri' => get_menu_vars($customMenu['menu_link']),
+					'target' => (!empty($customMenu['menu_target']) ? tohtml($customMenu['menu_target']) : '_self'),
+					'class' => 'custom_link'));
 		}
 	}
 
@@ -335,7 +335,7 @@ function generateNavigation($tpl)
 		$query = '';
 	}
 
-	// Build section title, menus, breadcrumbs and page title
+	/** @var $page Zend_Navigation_Page */
 	foreach ($navigation as $page) {
 		if(null !== ($callback = $page->get('privilege_callback')) &&
 			!call_user_func($callback['name'], $callback['param'])
@@ -374,7 +374,7 @@ function generateNavigation($tpl)
 							$tpl->assign(
 								array(
 									'HREF' => $subpage->getHref(),
-									'CLASS' => $subpage->getClass() . ($subpage->isActive(true) ? ' active' : 'dummy'),
+									'CLASS' => $subpage->getClass() . ($subpage->isActive(true) ? 'active' : 'dummy'),
 									'LABEL' => tr($subpage->getLabel()),
 									'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'));
 
@@ -386,7 +386,7 @@ function generateNavigation($tpl)
 							if ($subpage->isActive(true)) {
 								$tpl->assign(
 									array(
-										'TR_TITLE' => tr($subpage->getLabel()),
+										'TR_TITLE' => ($subpage->get('dynamic_title')) ? $subpage->get('dynamic_title') : tr($subpage->getLabel()),
 										'TITLE_CLASS' => $subpage->get('title_class')));
 
 								if (!$subpage->hasPages()) {
@@ -418,4 +418,34 @@ function generateNavigation($tpl)
 			'VERSION' => $cfg->Version,
 			'BUILDDATE' => $cfg->BuildDate,
 			'CODENAME' => $cfg->CodeName));
+}
+
+/**
+ * Returns custom menus for given user.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since iMSCP 1.0.1.6
+ * @param $userLevel User type (admin, reseller or user)
+ * @return null|array Array that contain custom menus description or NULL
+ */
+function getCustomMenus($userLevel)
+{
+	if($userLevel == 'admin') {
+		$params = 'A';
+	} elseif($userLevel == 'reseller') {
+		$params = 'R';
+	} elseif($userLevel == 'user') {
+		$params = 'C';
+	} else {
+		throw new iMSCP_Exception('Unknown $userLevel for getCustomMenus() function.');
+	}
+
+	$query = "SELECT * FROM `custom_menus` WHERE `menu_level` LIKE ?";
+	$stmt = exec_query($query, "%$params%");
+
+	if ($stmt->rowCount()) {
+		return $stmt->fetchAll();
+	} else {
+		return null;
+	}
 }

@@ -184,12 +184,7 @@ function reseller_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
  */
 function reseller_generatePageData($tpl, $resellerId, $resellerName)
 {
-	list(
-		$rdmnCurrent, $rdmnMax, $rsubCurrent, $rsubMax, $ralsCurrent, $ralsMax,
-		$rmailCurrent, $rmailMax, $rftpCurrent, $rftpMax, $rsqlDbCurrent, $rsqlDbMax,
-		$rsqlUserCurrent, $rsqlUserMax, , $rtraffMax, , $rdiskMax, $aps, $support,
-		$phpEditor
-	) = get_reseller_default_props($resellerId);
+	$resellerProperties = get_reseller_default_props($resellerId);
 
 	list(
 		$udmnCurrent, , , $usubCurrent, , , $ualsCurrent, , , $umailCurrent, , ,
@@ -198,8 +193,8 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 		) = generate_reseller_user_props($resellerId);
 
 	// Convert into Mib values
-	$rtraffMax = $rtraffMax * 1024 * 1024;
-	$rdiskMax = $rdiskMax * 1024 * 1024;
+	$rtraffMax = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
+	$rdiskMax = $resellerProperties['max_disk_amnt'] * 1024 * 1024;
 
 	reseller_generateTrafficUsageBar($tpl, $utraffCurrent, $rtraffMax, 400);
 	reseller_generateDiskUsageBar($tpl, $udiskCurrent, $rdiskMax, 400);
@@ -233,43 +228,43 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 			 'TRAFFIC' => tr("Traffic"),
 			 'DISK' => tr('Disk'),
 			 'RESELLER_NAME' => tohtml($resellerName),
-			 'DMN_MSG' => ($rdmnMax)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $udmnCurrent, $rdmnCurrent, $rdmnMax)
-				 : tr('%1$d / %2$d of <b>unlimited</b>', $udmnCurrent, $rdmnCurrent),
-			 'SUB_MSG' => ($rsubMax > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usubCurrent, $rsubCurrent, $rsubMax)
-				 : (($rsubMax === "-1") ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $usubCurrent, $rsubCurrent)),
-			 'ALS_MSG' => ($ralsMax > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $ualsCurrent, $ralsCurrent, $ralsMax)
-				 : (($ralsMax === "-1") ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $ualsCurrent, $ralsCurrent)),
-			 'MAIL_MSG' => ($rmailMax > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $umailCurrent, $rmailCurrent, $rmailMax)
-				 : (($rmailMax === "-1") ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $umailCurrent, $rmailCurrent)),
-			 'FTP_MSG' => ($rftpMax > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $uftpCurrent, $rftpCurrent, $rftpMax)
-				 : (($rftpMax === "-1") ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $uftpCurrent, $rftpCurrent)),
-			 'SQL_DB_MSG' => ($rsqlDbMax > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usqlDbCurrent, $rsqlDbCurrent, $rsqlDbMax)
-				 : (($rsqlDbMax === "-1") ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $usqlDbCurrent, $rsqlDbCurrent)),
-			 'SQL_USER_MSG' => ($rsqlUserMax > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usqlUserCurrent, $rsqlUserCurrent, $rsqlUserMax)
-				 : (($rsqlUserMax === "-1") ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $usqlUserCurrent, $rsqlUserCurrent)),
+			 'DMN_MSG' => ($resellerProperties['max_dmn_cnt'])
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $udmnCurrent, $resellerProperties['current_dmn_cnt'], $resellerProperties['max_dmn_cnt'])
+				 : tr('%1$d / %2$d of <b>unlimited</b>', $udmnCurrent, $resellerProperties['current_dmn_cnt']),
+			 'SUB_MSG' => ($resellerProperties['max_sub_cnt'] > 0)
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usubCurrent, $resellerProperties['current_sub_cnt'], $resellerProperties['max_sub_cnt'])
+				 : (($resellerProperties['max_sub_cnt'] === '-1') ? tr('<b>disabled</b>')
+					 : tr('%1$d / %2$d of <b>unlimited</b>', $usubCurrent, $resellerProperties['current_sub_cnt'])),
+			 'ALS_MSG' => ($resellerProperties['max_als_cnt'] > 0)
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $ualsCurrent, $resellerProperties['current_als_cnt'], $resellerProperties['max_als_cnt'])
+				 : (($resellerProperties['max_als_cnt'] === '-1') ? tr('<b>disabled</b>')
+					 : tr('%1$d / %2$d of <b>unlimited</b>', $ualsCurrent, $resellerProperties['current_als_cnt'])),
+			 'MAIL_MSG' => ($resellerProperties['max_mail_cnt'] > 0)
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $umailCurrent, $resellerProperties['current_mail_cnt'], $resellerProperties['max_mail_cnt'])
+				 : (($resellerProperties['max_mail_cnt'] === '-1') ? tr('<b>disabled</b>')
+					 : tr('%1$d / %2$d of <b>unlimited</b>', $umailCurrent, $resellerProperties['current_mail_cnt'])),
+			 'FTP_MSG' => ($resellerProperties['max_ftp_cnt'] > 0)
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $uftpCurrent, $resellerProperties['current_ftp_cnt'], $resellerProperties['max_ftp_cnt'])
+				 : (($resellerProperties['max_ftp_cnt'] === '-1') ? tr('<b>disabled</b>')
+					 : tr('%1$d / %2$d of <b>unlimited</b>', $uftpCurrent, $resellerProperties['current_ftp_cnt'])),
+			 'SQL_DB_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'], $resellerProperties['max_sql_db_cnt'])
+				 : (($resellerProperties['max_sql_db_cnt'] === '-1') ? tr('<b>disabled</b>')
+					 : tr('%1$d / %2$d of <b>unlimited</b>', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'])),
+			 'SQL_USER_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
+				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'], $resellerProperties['max_sql_user_cnt'])
+				 : (($resellerProperties['max_sql_user_cnt'] === '-1') ? tr('<b>disabled</b>')
+					 : tr('%1$d / %2$d of <b>unlimited</b>', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'])),
 			 'TR_SUPPORT' => tr('Support system'),
-			 'SUPPORT_STATUS' => ($support == 'yes')
+			 'SUPPORT_STATUS' => ($resellerProperties['support_system'] == 'yes')
 				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
 				 : '<span style="color:red;">' . tr('Disabled') . '</span>',
 			 'TR_PHP_EDITOR' => tr('PHP Editor'),
-			 'PHP_EDITOR_STATUS' => ($phpEditor == 'yes')
+			 'PHP_EDITOR_STATUS' => ($resellerProperties['php_ini_system'] == 'yes')
 				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
 				 : '<span style="color:red;">' . tr('Disabled') . '</span>',
 			 'TR_APS' => tr('Softwares installer'),
-			 'APS_STATUS' => ($aps == 'yes')
+			 'APS_STATUS' => ($resellerProperties['software_allowed'] == 'yes')
 				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
 				 : '<span style="color:red;">' . tr('Disabled') . '</span>'));
 }

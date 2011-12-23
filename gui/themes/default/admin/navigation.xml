@@ -55,7 +55,6 @@
 
         <manage_users>
             <label>Manage Users</label>
-			<script>manage_users.php</script>
             <uri>/admin/manage_users.php</uri>
             <class>manage_users</class>
             <pages>
@@ -151,7 +150,6 @@
 
         <system_tools>
             <label>System tools</label>
-			<script>system_info.php</script>
             <uri>/admin/system_info.php</uri>
             <class>webtools</class>
             <pages>
@@ -190,7 +188,6 @@
 
         <statistics>
             <label>Statistics</label>
-			<script>server_statistic.php</script>
             <uri>/admin/server_statistic.php</uri>
             <class>statistics</class>
             <pages>
@@ -248,7 +245,6 @@
 
         <settings>
             <label>Settings</label>
-			<script>settings.php</script>
             <uri>/admin/settings.php</uri>
             <class>settings</class>
             <pages>
@@ -264,6 +260,7 @@
                 </language>
                 <custom_menus>
                     <label>Custom menus</label>
+                    <dynamic_title>{TR_FORM_NAME}</dynamic_title>
                     <uri>/admin/custom_menus.php</uri>
                     <title_class>custom_link</title_class>
                 </custom_menus>

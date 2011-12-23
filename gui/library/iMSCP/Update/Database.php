@@ -1398,4 +1398,33 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->PORT_SSH = '22;tcp;SSH;1;1;';
 		}
 	}
+
+	/**
+	 * Update level propertie for custom menus.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_98()
+	{
+		return array(
+			"UPDATE `custom_menus` SET `menu_level` = 'a' WHERE `menu_level` = 'admin'",
+			"UPDATE `custom_menus` SET `menu_level` = 'r' WHERE `menu_level` = 'reseller'",
+			"UPDATE `custom_menus` SET `menu_level` = 'c' WHERE `menu_level` = 'user'",
+			"UPDATE `custom_menus` SET `menu_level` = 'rc' WHERE `menu_level` = 'all'" // rc for backward compatibility
+		);
+	}
+
+	/**
+	 * Add order option for custom menus.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL Statement to be executed
+	 */
+	protected function _databaseUpdate_99()
+	{
+		return $this->_addColumn(
+			'custom_menus',
+			'menu_order', 'INT UNSIGNED NULL AFTER  `menu_level`, ADD INDEX (`menu_order`)');
+	}
 }

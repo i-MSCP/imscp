@@ -46,7 +46,7 @@
  *                             returns an indexed array where each value correspond
  *                             to  a propertie value, following the columns order in
  *                             database table.
- * @todo add all properties
+ * @todo Remove indexed array option to avoid using PHP list() function
  */
 function get_domain_default_props($domainAdminId, $returnWKeys = false)
 {

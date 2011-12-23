@@ -49,33 +49,29 @@ define('MT_ALIAS_CATCHALL', 'alias_catchall');
 define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 /**
- * Returns reseller's default properties.
+ * Returns reseller's properties.
  *
- * @param  $reseller_id Reseller unique identifier
- * @return array|null
- * @TODO improve this function
+ * @throws iMSCP_Exception if reseller properties are not found in database
+ * @param int $resellerId Reseller unique identifier
+ * @param bool $forceReload If TRUE, force data to be reloaded from database
+ * @return mixed
  */
-function get_reseller_default_props($reseller_id)
+function get_reseller_default_props($resellerId, $forceReload = false)
 {
-    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
-    $stmt = exec_query($query, $reseller_id);
+	static $resellerProperties = null;
 
-    if (!$stmt->rowCount()) {
-        return NULL;
-    }
+	if(null === $resellerProperties || $forceReload) {
+		$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
+		$stmt = exec_query($query, $resellerId);
 
-    return array($stmt->fields['current_dmn_cnt'], $stmt->fields['max_dmn_cnt'],
-                 $stmt->fields['current_sub_cnt'], $stmt->fields['max_sub_cnt'],
-                 $stmt->fields['current_als_cnt'], $stmt->fields['max_als_cnt'],
-                 $stmt->fields['current_mail_cnt'], $stmt->fields['max_mail_cnt'],
-                 $stmt->fields['current_ftp_cnt'], $stmt->fields['max_ftp_cnt'],
-                 $stmt->fields['current_sql_db_cnt'], $stmt->fields['max_sql_db_cnt'],
-                 $stmt->fields['current_sql_user_cnt'], $stmt->fields['max_sql_user_cnt'],
-                 $stmt->fields['current_traff_amnt'], $stmt->fields['max_traff_amnt'],
-                 $stmt->fields['current_disk_amnt'], $stmt->fields['max_disk_amnt'],
-                 $stmt->fields['software_allowed'], $stmt->fields['support_system'],
-				 $stmt->fields['php_ini_system']
-	);
+		if ($stmt->rowCount()) {
+			$resellerProperties = $stmt->fields;
+		} else {
+			throw new iMSCP_Exception('Reseller properties were not found.');
+		}
+	}
+
+	return $resellerProperties;
 }
 
 /**
@@ -1059,33 +1055,34 @@ function get_reseller_id($domain_id)
 /**
  * Checks if a reseller has the rights to an option.
  *
- * @param  int $reseller_id Reseller unique identifier
+ * @param  int $resellerId Reseller unique identifier
  * @param  string $permission Permission to check
  * @return bool|array boolean option permissions or array with all options
  */
-function check_reseller_permissions($reseller_id, $permission)
+function check_reseller_permissions($resellerId, $permission)
 {
-    list(, , , $rsub_max, , $rals_max, , $rmail_max, , $rftp_max, , $rsql_db_max, ,
-        $rsql_user_max) = get_reseller_default_props($reseller_id);
+	$resellerProperties = get_reseller_default_props($resellerId);
 
-    if ($permission == 'all_permissions') {
-        return array($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max,
-                     $rsql_user_max);
-    } elseif ($permission == 'subdomain' && $rsub_max == '-1') {
-        return false;
-    } elseif ($permission == 'alias' && $rals_max == '-1') {
-        return false;
-    } elseif ($permission == 'mail' && $rmail_max == '-1') {
-        return false;
-    } elseif ($permission == 'ftp' && $rftp_max == '-1') {
-        return false;
-    } elseif ($permission == 'sql_db' && $rsql_db_max == '-1') {
-        return false;
-    } elseif ($permission == 'sql_user' && $rsql_user_max == '-1') {
-        return false;
-    }
+	if ($permission == 'all_permissions') {
+		return array(
+			$resellerProperties['max_sub_cnt'], $resellerProperties['max_als_cnt'],
+			$resellerProperties['max_mail_cnt'], $resellerProperties['max_ftp_cnt'],
+			$resellerProperties['max_sql_db_cnt'], $resellerProperties['max_sql_user_cnt']);
+	} elseif ($permission == 'subdomain' && $resellerProperties['max_sub_cnt'] == '-1') {
+		return false;
+	} elseif ($permission == 'alias' && $resellerProperties['max_als_cnt'] == '-1') {
+		return false;
+	} elseif ($permission == 'mail' && $resellerProperties['max_mail_cnt'] == '-1') {
+		return false;
+	} elseif ($permission == 'ftp' && $resellerProperties['max_ftp_cnt'] == '-1') {
+		return false;
+	} elseif ($permission == 'sql_db' && $resellerProperties['max_sql_db_cnt'] == '-1') {
+		return false;
+	} elseif ($permission == 'sql_user' && $resellerProperties['max_sql_user_cnt'] == '-1') {
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 /**
