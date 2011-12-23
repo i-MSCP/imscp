@@ -61,19 +61,19 @@ function admin_generateMenusList($tpl)
 			$menuName = $stmt->fields['menu_name'];
 			$menuLink = $stmt->fields['menu_link'];
 
-			if ($menuLevel == 'a') {
+			if ($menuLevel == 'A') {
 				$menuLevel = tr('Administrator');
-			} elseif ($menuLevel == 'r') {
+			} elseif ($menuLevel == 'R') {
 				$menuLevel = tr('Reseller');
-			} elseif ($menuLevel == 'c') {
+			} elseif ($menuLevel == 'C') {
 				$menuLevel = tr('Customer');
-			} elseif($menuLevel == 'ar') {
+			} elseif($menuLevel == 'AR') {
 				$menuLevel = tr('Administrator and reseller');
-			} elseif($menuLevel == 'ac') {
+			} elseif($menuLevel == 'AC') {
 				$menuLevel = tr('Administrator and customer');
-			} elseif($menuLevel == 'rc') {
+			} elseif($menuLevel == 'RC') {
 				$menuLevel = tr('Reseller and customer');
-			} elseif ($menuLevel == 'all') {
+			} elseif ($menuLevel == 'ARC') {
 				$menuLevel = tr('All');
 			}
 
@@ -146,9 +146,9 @@ function admin_generateForm($tpl)
 	}
 
 	foreach (array(
-				 'a' => tr('Administrator level'), 'r' => tr('Reseller level'), 'c' => tr('Customer level'),
-				 'ar' => 'Admininistrator and Reseller levels', 'ac' => 'Administrator and customer levels',
-				 'rc' => 'Reselller and customer levels', 'all' => tr('All levels')) as $level => $trLevel
+				 'A' => tr('Administrator level'), 'R' => tr('Reseller level'), 'C' => tr('Customer level'),
+				 'AR' => 'Admininistrator and Reseller levels', 'AC' => 'Administrator and customer levels',
+				 'RC' => 'Reselller and customer levels', 'ARC' => tr('All levels')) as $level => $trLevel
 	) {
 		$tpl->assign(
 			array(
@@ -195,7 +195,7 @@ function admin_isValidMenu($menuName, $menuLink, $menuTarget, $menuLevel, $menuO
 		$errorFieldsStack[] = 'menu_target';
 	}
 
-	if(!in_array($menuLevel, array('a', 'r', 'c', 'ar', 'ac', 'rc', 'all'))) {
+	if(!in_array($menuLevel, array('A', 'R', 'C', 'AR', 'AC', 'RC', 'ARC'))) {
 		set_page_message(tr('Wrong request.'), 'error');
 	}
 

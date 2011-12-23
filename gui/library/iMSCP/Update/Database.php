@@ -1408,10 +1408,10 @@ class iMSCP_Update_Database extends iMSCP_Update
 	protected function _databaseUpdate_98()
 	{
 		return array(
-			"UPDATE `custom_menus` SET `menu_level` = 'a' WHERE `menu_level` = 'admin'",
-			"UPDATE `custom_menus` SET `menu_level` = 'r' WHERE `menu_level` = 'reseller'",
-			"UPDATE `custom_menus` SET `menu_level` = 'c' WHERE `menu_level` = 'user'",
-			"UPDATE `custom_menus` SET `menu_level` = 'rc' WHERE `menu_level` = 'all'" // rc for backward compatibility
+			"UPDATE `custom_menus` SET `menu_level` = 'A' WHERE `menu_level` = 'admin'",
+			"UPDATE `custom_menus` SET `menu_level` = 'R' WHERE `menu_level` = 'reseller'",
+			"UPDATE `custom_menus` SET `menu_level` = 'C' WHERE `menu_level` = 'user'",
+			"UPDATE `custom_menus` SET `menu_level` = 'RC' WHERE `menu_level` = 'all'" // rc for backward compatibility
 		);
 	}
 
@@ -1425,6 +1425,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	{
 		return $this->_addColumn(
 			'custom_menus',
-			'menu_order', 'INT UNSIGNED NULL AFTER  `menu_level`, ADD INDEX (`menu_order`)');
+			'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)');
 	}
 }
