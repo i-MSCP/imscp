@@ -232,6 +232,9 @@ sub buildHTTPDData{
 	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}/$self->{alias_mount}";
 	$hDir			=~ s~/+~/~g;
 
+	my $pDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{user_home}";
+	$pDir			=~ s~/+~/~g;
+
 	my $sql = "SELECT * FROM `config` WHERE `name` LIKE 'PHPINI%'";
 	my $rdata = iMSCP::Database->factory()->doQuery('name', $sql);
 	error("$rdata") and return 1 if(ref $rdata ne 'HASH');
@@ -249,6 +252,7 @@ sub buildHTTPDData{
 		DMN_IP						=> $self->{ip_number},
 		WWW_DIR						=> $main::imscpConfig{USER_HOME_DIR},
 		HOME_DIR					=> $hDir,
+		PARENT_DIR					=> $pDir,
 		PEAR_DIR					=> $main::imscpConfig{PEAR_DIR},
 		PHP_TIMEZONE				=> $main::imscpConfig{PHP_TIMEZONE},
 		PHP_VERSION					=> $main::imscpConfig{PHP_VERSION},

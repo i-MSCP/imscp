@@ -270,7 +270,7 @@ sub oldEngineCompatibility{
 			user		=> $main::imscpConfig{ROOT_USER},
 			group		=> $httpdGroup,
 			filemode	=> '0640',
-			dirmode		=> '0750',
+			dirmode		=> '0710',
 			recursive	=> 'yes'
 		}
 	) if -d "$hDir/domain_disable_page";

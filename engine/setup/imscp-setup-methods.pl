@@ -535,6 +535,7 @@ sub setup_base_server_IP{
 sub setup_hosts {
 
 	use iMSCP::File;
+	use iMSCP::IP;
 
 	my $err = askHostname();
 	return 1 if($err);
@@ -555,8 +556,8 @@ sub setup_hosts {
 
 	$content .= "127.0.0.1\t$hostname_local\tlocalhost\n";
 	$content .= "$main::imscpConfig{'BASE_SERVER_IP'}\t$main::imscpConfig{'SERVER_HOSTNAME'}\t$host\n";
-	$content .= "::ffff:$main::imscpConfig{'BASE_SERVER_IP'}\t$main::imscpConfig{'SERVER_HOSTNAME'}\t$host\n";
-	$content .= "::1\tip6-localhost ip6-loopback\n";
+	$content .= "::ffff:$main::imscpConfig{'BASE_SERVER_IP'}\t$main::imscpConfig{'SERVER_HOSTNAME'}\t$host\n" if iMSCP::IP->new()->getIpType($main::imscpConfig{BASE_SERVER_IP}) eq 'ipv4';
+	$content .= "::1\tip6-localhost\tip6-loopback\t$host\n";
 	$content .= "fe00::0\tip6-localnet\n";
 	$content .= "ff00::0\tip6-mcastprefix\n";
 	$content .= "ff02::1\tip6-allnodes\n";

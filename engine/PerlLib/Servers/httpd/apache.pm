@@ -563,7 +563,7 @@ sub addUser{
 			user		=> $data->{USER},
 			group		=> $apacheGroup,
 			filemode	=> '0640',
-			dirmode		=> '0755',
+			dirmode		=> '0750',
 			recursive	=> 'yes'
 		}
 	);
@@ -574,7 +574,7 @@ sub addUser{
 	){
 		my $fileH	=	iMSCP::File->new(filename => $_);
 		$rs		|=	$fileH->save() unless( -f $_);
-		$rs		|=	$fileH->mode(0644);
+		$rs		|=	$fileH->mode(0640);
 	}
 
 	###################### END COMMON FILES IN USER FOLDER ##########################
@@ -760,15 +760,15 @@ sub dmnFolders{
 	my ($rs, $stdout, $stderr);
 
 	my @folders = (
-		["$hDir",			$data->{USER},	$apacheGroup,	0770],
-		["$hDir/htdocs",	$data->{USER},	$data->{GROUP},	0755],
-		["$hDir/cgi-bin",	$data->{USER},	$data->{GROUP},	0755],
-		["$hDir/phptmp",	$data->{USER},	$apacheGroup,	0770]
+		["$hDir",			$data->{USER},	$apacheGroup,	0710],
+		["$hDir/htdocs",	$data->{USER},	$apacheGroup,	0750],
+		["$hDir/cgi-bin",	$data->{USER},	$data->{GROUP},	0751],
+		["$hDir/phptmp",	$data->{USER},	$data->{GROUP},	0770]
 	);
 
-	push(@folders, ["$hDir/errors",		$data->{USER},	$data->{GROUP},	0775])
+	push(@folders, ["$hDir/errors",		$data->{USER},	$apacheGroup,	0710])
 		if $self->{mode} eq 'dmn';
-	push(@folders, ["$php5Dir",			$data->{USER},	$data->{GROUP},	0555])
+	push(@folders, ["$php5Dir",			$data->{USER},	$data->{GROUP},	0550])
 		if
 			$self->{mode} eq 'dmn' &&
 			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i ||
@@ -822,7 +822,7 @@ sub addFiles{
 				user		=> $data->{USER},
 				group		=> $apacheGroup,
 				filemode	=> '0640',
-				dirmode		=> '0755',
+				dirmode		=> '0750',
 				recursive	=> 'yes'
 			}
 		);
@@ -833,19 +833,28 @@ sub addFiles{
 	my $fileSource =
 	my $destFile	= "$hDir/domain_disable_page/index.html";
 
-	$rs = execute("cp -vnRT $sourceDir $dstDir", \$stdout, \$stderr);
+	$rs |= execute("cp -vnRT $sourceDir $dstDir", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
 
-	$rs = $self->buildConfFile($fileSource, {destination => $destFile});
+	$rs |= $self->buildConfFile($fileSource, {destination => $destFile});
 
-	$rs = setRights(
+	$rs |= setRights(
+		"$hDir/cgi-bin",
+		{
+			user		=> $data->{USER},
+			group		=> $data->{GROUP},
+			recursive	=> 'yes'
+		}
+	);
+
+	$rs |= setRights(
 		"$hDir/domain_disable_page",
 		{
 			user		=> $rootUser,
 			group		=> $apacheGroup,
 			filemode	=> '0640',
-			dirmode		=> '0750',
+			dirmode		=> '0710',
 			recursive	=> 'yes'
 		}
 	);
