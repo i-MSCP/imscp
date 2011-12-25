@@ -22,7 +22,6 @@
  * @subpackage	Bar_Plugin
  * @copyright	2010-2011 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN: $Id$
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
@@ -58,11 +57,11 @@ require_once 'iMSCP/Events.php';
  *
  *  - Database : Full listing of SQL queries and the time for each.
  *
- * @package 	iMSCP
- * @package 	iMSCP_Debug
+ * @package		iMSCP
+ * @package		iMSCP_Debug
  * @subpackage	Bar
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 {
@@ -98,14 +97,14 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 		iMSCP_Events::onAdminScriptEnd,
 		iMSCP_Events::onResellerScriptEnd,
 		iMSCP_Events::onClientScriptEnd,
-		iMSCP_Events::onOrderPanelScriptEnd
+		iMSCP_Events::onOrderPanelScriptEnd,
+		iMSCP_Events::onExceptionToBrowserEnd
 	);
 
 	/**
 	 * Constructor.
 	 *
-	 * @throws iMSCP_Debug_Bar_Exception if a plugin doesn't implement the
-	 *								   iMSCP_Debug_Bar_Plugin_Interface interface
+	 * @throws iMSCP_Debug_Bar_Exception if a plugin doesn't implement the iMSCP_Debug_Bar_Plugin_Interface interface
 	 * @param iMSCP_Events_Manager $eventsManager Events manager
 	 * @param string|array $plugins Plugin(s) instance(s).
 	 */
@@ -121,8 +120,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 		foreach ((array)$plugins as $plugin) {
 			if (!$plugin instanceof iMSCP_Debug_Bar_Plugin_Interface) {
 				throw new iMSCP_Debug_Bar_Exception(
-					'All plugins for the debug bar must implement the ' .
-					'iMSCP_Debug_Bar_Plugin_Interface interface.');
+					'All plugins for the debug bar must implement the iMSCP_Debug_Bar_Plugin_Interface interface.');
 			} elseif ($plugin instanceof iMSCP_Events_Listeners_Interface) {
 				$this->registerListener($plugin, $stackIndex);
 				$stackIndex--;
@@ -191,32 +189,15 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 		/** @var $plugin iMSCP_Debug_Bar_Plugin_Interface */
 		foreach ($this->_plugins as $plugin)
 		{
-			$panel = $plugin->getPanel();
-
-			if ($panel == '') {
-				continue;
+			if (($tab = $plugin->getTab()) != '') {
+				$xhtml .= '<span class="iMSCPdebug_span clickable" onclick="iMSCPdebugPanel(\'iMSCPdebug_' . $plugin->getIdentifier() . '\');">';
+				$xhtml .= '<img src="' . $plugin->getIcon() . '" style="vertical-align:middle" alt="' . $plugin->getIdentifier() . '" title="' . $plugin->getIdentifier() . '" /> ';
+				$xhtml .= $tab . '</span>';
 			}
 
-			$xhtml .= '<div id="iMSCPdebug_' . $plugin->getIdentifier()
-					  . '" class="iMSCPdebug_panel">'
-					  . $panel
-					  . '</div>';
-		}
-
-		foreach ($this->_plugins as $plugin) {
-			$tab = $plugin->getTab();
-
-			if ($tab == '') {
-				continue;
+			if (($panel = $plugin->getPanel()) != '') {
+				$xhtml .= '<div id="iMSCPdebug_' . $plugin->getIdentifier() . '" class="iMSCPdebug_panel">' . $panel . '</div>';
 			}
-
-			$xhtml .= '<span class="iMSCPdebug_span clickable" onclick="iMSCPdebugPanel(\'iMSCPdebug_' .
-					  $plugin->getIdentifier() . '\');">';
-			$xhtml .= '<img src="' . $plugin->getIcon() .
-					  '" style="vertical-align:middle" alt="'
-					  . $plugin->getIdentifier() .
-					  '" title="' . $plugin->getIdentifier() . '" /> ';
-			$xhtml .= $tab . '</span>';
 		}
 
 		$xhtml .= '<span class="iMSCPdebug_span iMSCPdebug_last clickable" id="iMSCPdebug_toggler" onclick="iMSCPdebugSlideBar()">&#171;</span>';
@@ -224,10 +205,8 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 
 		$templateEngine = $this->_event->getTemplateEngine();
 		$response = $templateEngine->getLastParseResult();
-		$response = preg_replace(
-			'@(</head>)@i', $this->_buildHeader() . PHP_EOL . '$1', $response);
-		$response = str_ireplace(
-			'</body>', '<div id="iMSCPdebug_debug">' . $xhtml . '</div></body>', $response);
+		$response = preg_replace('@(</head>)@i', $this->_buildHeader() . PHP_EOL . '$1', $response);
+		$response = str_ireplace('</body>', '<div id="iMSCPdebug_debug">' . $xhtml . '</div></body>', $response);
 		$templateEngine->replaceLastParseResult($response);
 	}
 
@@ -238,25 +217,25 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 */
 	protected function _buildHeader()
 	{
-		$collapsed = isset($_COOKIE['iMSCPdebugCollapsed'])
-			? $_COOKIE['iMSCPdebugCollapsed'] : 0;
+		$collapsed = isset($_COOKIE['iMSCPdebugCollapsed']) ? $_COOKIE['iMSCPdebugCollapsed'] : 0;
 
 		return ('
             <style type="text/css" media="screen">
-            	#iMSCPdebug_debug h4 {margin:5px;}
-                #iMSCPdebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:5px; left:0px; color:#000; z-index: 255;}
-                #iMSCPdebug_debug a {color:blue;}
-                #iMSCPdebug_debug span {color:black;}
+            	#iMSCPdebug_debug h4 {margin:0.5em;font-weight:bold;}
+            	#iMSCPdebug_debug strong {font-weight:bold;}
+                #iMSCPdebug_debug { font: 1em Geneva, Arial, Helvetica, sans-serif; position:fixed; bottom:5px; left:0px; color:#fff; z-index: 255;}
+                #iMSCPdebug_debug a {color:red;}
+                #iMSCPdebug_debug span {color:#fff;}
                 #iMSCPdebug_debug p {margin:0;}
                 #iMSCPdebug_debug ol {margin:10px 0px; padding:0 25px}
                 #iMSCPdebug_debug li {margin:0 0 10px 0;}
                 #iMSCPdebug_debug .clickable { cursor:pointer }
-                #iMSCPdebug_toggler { font-weight:bold; background:#BFBFBF; }
-                .iMSCPdebug_span { border: 1px solid #999; border-right:0px; background:#DFDFDF; padding: 6px 5px; }
-                .iMSCPdebug_last { border: 1px solid #999; }
-                .iMSCPdebug_panel { text-align:left; position:absolute;bottom:21px;width:600px; max-height:400px; overflow:auto; display:none; background:#E8E8E8; padding:5px; border: 1px solid #999; }
-                .iMSCPdebug_panel .pre {font: 11px/1.4em Monaco, Lucida Console, monospace; margin:0 0 0 22px}
-                #iMSCPdebug_exception { border:1px solid #CD0A0A;display: block; }
+                #iMSCPdebug_toggler { font-weight:bold; background:#000; }
+                .iMSCPdebug_span { border: 1px solid #ccc; border-right:0px; background:#000; padding: 6px 5px; }
+                .iMSCPdebug_last { border: 1px solid #ccc; }
+                .iMSCPdebug_panel { text-align:left; position:absolute;bottom:21px;width:600px; max-height:400px; overflow:auto; display:none; background:#000; padding:0.5em; border: 1px solid #ccc; }
+                .iMSCPdebug_panel .pre {font: 1em Geneva, Arial, Helvetica, sans-serif; margin:0 0 0 22px}
+                #iMSCPdebug_exception { border:1px solid #000;display: block; }
             </style>
             <script type="text/javascript">
                 if (typeof jQuery == "undefined") {

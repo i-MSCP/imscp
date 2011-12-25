@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar_Plugin
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @See iMSCP_Debug_Bar_Plugin_Interface */
@@ -33,11 +32,11 @@ require_once 'iMSCP/Debug/Bar/Plugin/Interface.php';
 /**
  * Base class for Debug Bar component's plugins.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.2
  */
 abstract class iMSCP_Debug_Bar_Plugin implements iMSCP_Debug_Bar_Plugin_Interface
 {
@@ -58,8 +57,7 @@ abstract class iMSCP_Debug_Bar_Plugin implements iMSCP_Debug_Bar_Plugin_Interfac
 
 		$retVal = '<div class="pre">';
 
-		foreach ($values as $key => $value)
-		{
+		foreach ($values as $key => $value) {
 			$key = htmlspecialchars($key);
 
 			if (is_numeric($value)) {
@@ -67,7 +65,7 @@ abstract class iMSCP_Debug_Bar_Plugin implements iMSCP_Debug_Bar_Plugin_Interfac
 			} elseif (is_string($value)) {
 				$retVal .= $key . ' => \'' . htmlspecialchars($value) . '\'<br />';
 			} elseif (is_array($value)) {
-				$retVal .= $key . ' => ' . self::_humanize($value);
+				$retVal .= $key . ' => ' . $this->_humanize($value);
 			} elseif (is_object($value)) {
 				$retVal .= $key . ' => ' . get_class($value) . ' Object()<br />';
 			} elseif (is_null($value)) {

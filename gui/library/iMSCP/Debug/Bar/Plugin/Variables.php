@@ -17,14 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar_Plugin
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @See iMSCP_Debug_Bar_Plugin */
@@ -35,91 +34,91 @@ require_once 'iMSCP/Debug/Bar/Plugin.php';
  *
  * Provides debug information about variables such as $_GET, $_POST...
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar_Plugin
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.1
  */
 class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
 {
-    /**
-     * Plugin unique identifier.
-     *
-     * @var string
-     */
-    const IDENTIFIER = 'Variables';
+	/**
+	 * Plugin unique identifier.
+	 *
+	 * @var string
+	 */
+	const IDENTIFIER = 'Variables';
 
-    /**
-     * Returns plugin unique identifier.
-     *
-     * @return string Plugin unique identifier.
-     */
-    public function getIdentifier()
-    {
-        return self::IDENTIFIER;
-    }
+	/**
+	 * Returns plugin unique identifier.
+	 *
+	 * @return string Plugin unique identifier.
+	 */
+	public function getIdentifier()
+	{
+		return self::IDENTIFIER;
+	}
 
-    /**
-     * Returns list of events that this plugin listens on.
-     *
-     * @return array
-     */
-    public function getListenedEvents()
-    {
-        return array();
-    }
+	/**
+	 * Returns list of events that this plugin listens on.
+	 *
+	 * @return array
+	 */
+	public function getListenedEvents()
+	{
+		return array();
+	}
 
-    /**
-     * Returns plugin tab.
-     *
-     * @return string
-     */
-    public function getTab()
-    {
-        return $this->getIdentifier();
-    }
+	/**
+	 * Returns plugin tab.
+	 *
+	 * @return string
+	 */
+	public function getTab()
+	{
+		return $this->getIdentifier();
+	}
 
-    /**
-     * Returns the plugin panel.
-     *
-     * @return string
-     */
-    public function getPanel()
-    {
-        $vars = '<h4>Variables</h4>';
+	/**
+	 * Returns the plugin panel.
+	 *
+	 * @return string
+	 */
+	public function getPanel()
+	{
+		$vars = '<h4>Variables</h4>';
 
-        $vars .= '<h4>$_GET:</h4>'
-                 . '<div id="iMSCPdebug_get">' . $this->_humanize($_GET) . '</div>';
+		$vars .= '<h4>$_GET:</h4>'
+			. '<div id="iMSCPdebug_get">' . $this->_humanize($_GET) . '</div>';
 
-        $vars .= '<h4>$_POST:</h4>'
-                 . '<div id="iMSCPdebug_post">' . $this->_humanize($_POST) . '</div>';
+		$vars .= '<h4>$_POST:</h4>'
+			. '<div id="iMSCPdebug_post">' . $this->_humanize($_POST) . '</div>';
 
-        $vars .= '<h4>$_COOKIE:</h4>'
-                 . '<div id="iMSCPdebug_cookie">' . $this->_humanize($_COOKIE) . '</div>';
+		$vars .= '<h4>$_COOKIE:</h4>'
+			. '<div id="iMSCPdebug_cookie">' . $this->_humanize($_COOKIE) . '</div>';
 
-        $vars .= '<h4>$_FILES:</h4>'
-                 . '<div id="iMSCPdebug_file">' . $this->_humanize($_FILES) . '</div>';
+		$vars .= '<h4>$_FILES:</h4>'
+			. '<div id="iMSCPdebug_file">' . $this->_humanize($_FILES) . '</div>';
 
-        $vars .= '<h4>$_SESSION:</h4>'
-                 . '<div id="iMSCPdebug_session">' . $this->_humanize($_SESSION) . '</div>';
+		$vars .= '<h4>$_SESSION:</h4>'
+			. '<div id="iMSCPdebug_session">' . $this->_humanize($_SESSION) . '</div>';
 
-        $vars .= '<h4>$_SERVER:</h4>'
-                 . '<div id="iMSCPdebug_server">' . $this->_humanize($_SERVER) . '</div>';
+		$vars .= '<h4>$_SERVER:</h4>'
+			. '<div id="iMSCPdebug_server">' . $this->_humanize($_SERVER) . '</div>';
 
-        $vars .= '<h4>$_ENV:</h4>'
-                 . '<div id="iMSCPdebug_env">' . $this->_humanize($_ENV) . '</div>';
+		$vars .= '<h4>$_ENV:</h4>'
+			. '<div id="iMSCPdebug_env">' . $this->_humanize($_ENV) . '</div>';
 
-        return $vars;
-    }
+		return $vars;
+	}
 
-    /**
-     * Returns plugin icon.
-     *
-     * @return string
-     */
-    public function getIcon()
-    {
-        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFWSURBVBgZBcE/SFQBAAfg792dppJeEhjZn80MChpqdQ2iscmlscGi1nBPaGkviKKhONSpvSGHcCrBiDDjEhOC0I68sjvf+/V9RQCsLHRu7k0yvtN8MTMPICJieaLVS5IkafVeTkZEFLGy0JndO6vWNGVafPJVh2p8q/lqZl60DpIkaWcpa1nLYtpJkqR1EPVLz+pX4rj47FDbD2NKJ1U+6jTeTRdL/YuNrkLdhhuAZVP6ukqbh7V0TzmtadSEDZXKhhMG7ekZl24jGDLgtwEd6+jbdWAAEY0gKsPO+KPy01+jGgqlUjTK4ZroK/UVKoeOgJ5CpRyq5e2qjhF1laAS8c+Ymk1ZrVXXt2+9+fJBYUwDpZ4RR7Wtf9u9m2tF8Hwi9zJ3/tg5pW2FHVv7eZJHd75TBPD0QuYze7n4Zdv+ch7cfg8UAcDjq7mfwTycew1AEQAAAMB/0x+5JQ3zQMYAAAAASUVORK5CYII=';
-    }
+	/**
+	 * Returns plugin icon.
+	 *
+	 * @return string
+	 */
+	public function getIcon()
+	{
+		return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFWSURBVBgZBcE/SFQBAAfg792dppJeEhjZn80MChpqdQ2iscmlscGi1nBPaGkviKKhONSpvSGHcCrBiDDjEhOC0I68sjvf+/V9RQCsLHRu7k0yvtN8MTMPICJieaLVS5IkafVeTkZEFLGy0JndO6vWNGVafPJVh2p8q/lqZl60DpIkaWcpa1nLYtpJkqR1EPVLz+pX4rj47FDbD2NKJ1U+6jTeTRdL/YuNrkLdhhuAZVP6ukqbh7V0TzmtadSEDZXKhhMG7ekZl24jGDLgtwEd6+jbdWAAEY0gKsPO+KPy01+jGgqlUjTK4ZroK/UVKoeOgJ5CpRyq5e2qjhF1laAS8c+Ymk1ZrVXXt2+9+fJBYUwDpZ4RR7Wtf9u9m2tF8Hwi9zJ3/tg5pW2FHVv7eZJHd75TBPD0QuYze7n4Zdv+ch7cfg8UAcDjq7mfwTycew1AEQAAAMB/0x+5JQ3zQMYAAAAASUVORK5CYII=';
+	}
 }

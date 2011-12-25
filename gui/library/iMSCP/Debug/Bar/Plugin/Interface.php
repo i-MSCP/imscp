@@ -17,56 +17,55 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar_Plugin
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
  * Interface for i-MSCP Debug Bar component's plugins.
  *
- * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @package		iMSCP
+ * @package		iMSCP_Debug
+ * @subpackage	Bar_Plugin
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.1
  */
 interface iMSCP_Debug_Bar_Plugin_Interface
 {
-    /**
-     * Returns plugin unique identifier.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getIdentifier();
+	/**
+	 * Returns plugin unique identifier.
+	 *
+	 * @abstract
+	 * @return string
+	 */
+	public function getIdentifier();
 
-    /**
-     * Returns plugin tab.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getTab();
+	/**
+	 * Returns plugin tab.
+	 *
+	 * @abstract
+	 * @return string
+	 */
+	public function getTab();
 
-    /**
-     * Returns the plugin panel.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getPanel();
+	/**
+	 * Returns the plugin panel.
+	 *
+	 * @abstract
+	 * @return string
+	 */
+	public function getPanel();
 
-    /**
-     * Returns plugin icon.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getIcon();
+	/**
+	 * Returns plugin icon.
+	 *
+	 * @abstract
+	 * @return string
+	 */
+	public function getIcon();
 }

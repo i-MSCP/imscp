@@ -22,7 +22,6 @@
  * @subpackage	Bar_Plugin
  * @copyright	2010-2011 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN: $Id$
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
@@ -43,10 +42,10 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
+ * @Todo Replace the markers to see the parameters in queries strings
  */
-class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
-	iMSCP_Events_Listeners_Interface
+class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements iMSCP_Events_Listeners_Interface
 {
 	/**
 	 * Plugin unique identifier.
@@ -68,13 +67,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	);
 
 	/**
-	 * Total number of executed queries.
-	 *
-	 * @var int
-	 */
-	protected $_totalQueries = 0;
-
-	/**
+	 * Total time elapsed.
 	 *
 	 * @var int
 	 */
@@ -102,7 +95,8 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function onBeforeConnection($event)
 	{
-		$this->_queries['connection'] = microtime(true) * 1000;
+		$this->_queries[$this->_queryIndex]['time'] = microtime(true);
+		$this->_queries[$this->_queryIndex]['queryString'] = 'connection';
 	}
 
 	/**
@@ -113,13 +107,10 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function onAfterConnection($event)
 	{
-		$this->_queries['connection'] =
-			(microtime(true) * 1000) - $this->_queries['connection'];
-
-		$this->_totalTimeElapsed =
-			$this->_totalTimeElapsed + $this->_queries['connection'];
-
-		$this->_totalQueries++;
+		$time = microtime(true) - $this->_queries[$this->_queryIndex]['time'];
+		$this->_queries[$this->_queryIndex]['time'] = $time;
+		$this->_totalTimeElapsed += $time;
+		$this->_queryIndex++;
 	}
 
 	/**
@@ -128,8 +119,8 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function onBeforeExecute($event)
 	{
+		$this->_queries[$this->_queryIndex]['time'] = microtime(true);
 		$this->_queries[$this->_queryIndex]['queryString'] = $event->getQueryString();
-		$this->_queries[$this->_queryIndex]['time'] = microtime(true) * 1000;
 	}
 
 	/**
@@ -138,12 +129,8 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function onAfterExecute($event)
 	{
-		$this->_queries[$this->_queryIndex]['time'] =
-			((microtime(true) * 1000) - $this->_queries[$this->_queryIndex]['time']);
-
-		$this->_totalQueries++;
-		$this->_totalTimeElapsed = $this->_totalTimeElapsed +
-								   $this->_queries[$this->_queryIndex]['time'];
+		$this->_queries[$this->_queryIndex]['time'] = ((microtime(true)) - $this->_queries[$this->_queryIndex]['time']);
+		$this->_totalTimeElapsed += $this->_queries[$this->_queryIndex]['time'];
 		$this->_queryIndex++;
 	}
 
@@ -164,7 +151,6 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function getListenedEvents()
 	{
-
 		return $this->_listenedEvents;
 	}
 
@@ -175,8 +161,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function getTab()
 	{
-		return $this->_totalQueries . ' queries in ' .
-			   round($this->_totalTimeElapsed, 2) . ' ms';
+		return (count($this->_queries)) . ' queries in ' . round($this->_totalTimeElapsed * 1000, 2) . ' ms';
 	}
 
 	/**
@@ -188,19 +173,12 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 	{
 		$xhtml = '<h4>Database queries and their execution time</h4><ol>';
 
-		$xhtml .= '<li><strong>[' . round($this->_queries['connection'], 2) .
-				  ' ms]</strong> connection' . '</li>';
-
-		unset($this->_queries['connection']);
-
 		foreach ($this->_queries as $query) {
-			$xhtml .= '<li><strong>[' . round($query['time'], 2) . ' ms]</strong> '
-					  . htmlspecialchars($query['queryString']) . '</li>';
+			$xhtml .= '<li><strong>[' . round($query['time'] * 1000, 2) . ' ms]</strong> '
+				. htmlspecialchars($query['queryString']) . '</li>';
 		}
 
-		$xhtml .= '</ol>';
-
-		return $xhtml;
+		return $xhtml . '</ol>';
 	}
 
 	/**

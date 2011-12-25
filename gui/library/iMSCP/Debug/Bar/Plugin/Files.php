@@ -38,10 +38,9 @@ require_once 'iMSCP/Debug/Bar/Plugin.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
-class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements
-	iMSCP_Events_Listeners_Interface
+class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements iMSCP_Events_Listeners_Interface
 {
 	/**
 	 * Plugin unique identifier.
@@ -58,7 +57,7 @@ class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements
 	protected $_listenedEvents = iMSCP_pTemplate_Events::onBeforeLoadTemplateFile;
 
 	/**
-	 * Implements onLoadTemplateFile hook.
+	 * Implements onLoadTemplateFile listener method.
 	 *
 	 * @param $templatePath Loaded template path
 	 * @return void
@@ -109,8 +108,7 @@ class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements
 	 */
 	public function getTab()
 	{
-		return count($this->_getIncludedFiles()) +
-			   count($this->_loadedTemplateFiles) . ' ' . $this->getIdentifier();
+		return count($this->_getIncludedFiles()) + count($this->_loadedTemplateFiles) . ' ' . $this->getIdentifier();
 	}
 
 	/**
@@ -122,26 +120,14 @@ class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements
 	{
 		$includedPhpFiles = $this->_getIncludedFiles();
 		$loadedTemplateFiles = $this->_getLoadedTemplateFiles();
-		$xhtml = '<h4>File Information</h4>';
-		$xhtml .= count($includedPhpFiles) + count($loadedTemplateFiles) . ' Files Included/loaded<br />';
-		$size = 0;
 
-		foreach ($includedPhpFiles as $file) {
-			$size += filesize($file);
-		}
+		$xhtml = "<h4>General Information</h4><pre>\t";
+		$xhtml .= count($includedPhpFiles) + count($loadedTemplateFiles) . ' Files Included/loaded' . PHP_EOL;
+		$size = numberBytesHuman(array_sum(array_map('filesize', array_merge($includedPhpFiles, $loadedTemplateFiles))));
+		$xhtml .= "\tTotal Size: $size</pre>";
 
-		$xhtml .= 'Total Size: ' . round($size / 1024, 1) . 'K<br />';
-		$xhtml .= '<h4>PHP Files</h4>';
-
-		foreach ($includedPhpFiles as $file) {
-			$xhtml .= $file . '<br />';
-		}
-
-		$xhtml .= '<h4>Templates Files</h4>';
-
-		foreach ($loadedTemplateFiles as $file) {
-			$xhtml .= $file . '<br />';
-		}
+		$xhtml .= "<h4>PHP Files</h4><pre>\t" . implode(PHP_EOL . "\t", $includedPhpFiles) . '</<pre>';
+		$xhtml .= "<h4>Templates Files</h4><pre>\t" . implode(PHP_EOL . "\t", $loadedTemplateFiles) . '</<pre>';
 
 		return $xhtml;
 	}
