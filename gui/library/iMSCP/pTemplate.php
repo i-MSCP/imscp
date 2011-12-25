@@ -740,6 +740,7 @@ class iMSCP_pTemplate
 	 * Replaces last parse result with given content.
 	 *
 	 * @param string $newContent New content
+	 * @param string $namespace Namespace
 	 * @return iMSCP_pTemplate Provides fluent interface, returns self
 	 */
 	public function replaceLastParseResult($newContent, $namespace = null)
