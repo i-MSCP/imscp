@@ -22,7 +22,6 @@
  * @subpackage  Events
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <ldeclercq@l.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -75,7 +74,7 @@ final class iMSCP_Database_Events
     const onAfterPrepare = 'onAfterPrepare';
 
     /**
-     * The onBeforeExecute event occurs before a prepared SQL statement was executed.
+     * The onBeforeExecute event occurs before a prepared SQL statement is executed.
      *
      * The event listener method receives an iMSCP_Database_Events_Statement instance.
      *
