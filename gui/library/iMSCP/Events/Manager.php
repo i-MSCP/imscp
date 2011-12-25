@@ -33,7 +33,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * Events Manager class.
  *
  * The events manager is the central point of i-MSCP's event listener system.
- * Listeners are registered on the manager and events are fired through the manager.
+ * Listeners are registered on the manager and events are dispatched through the manager.
  *
  * A listener can be an object or a callback function. The listeners objects must
  * implement listeners methods named as the events they listens on.
@@ -50,8 +50,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  *	  }
  * }
  *
- * $eventsManager = iMSCP_Events_Manager::getInstance();
- * $eventsManager->registerListener('AdminScriptStart', new HelloWorld());
+ * $eventsManager = iMSCP_Events_Manager::getInstance()->registerListener('onAdminScriptStart', new HelloWorld());
  *
  * // Later in the code
  * iMSCP_Events_Manager::getInstance()->dispatch('AdminScriptStart');
@@ -63,7 +62,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * @package		iMSCP_Events
  * @subpackage	Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
@@ -75,6 +74,8 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	protected static $_instance;
 
 	/**
+	 * Array that contains events listeners stacks.
+	 *
 	 * @var iMSCP_Events_Listeners_Stack[]
 	 */
 	protected $_events = array();
@@ -153,8 +154,9 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 						$listener->$eventName($argument);
 					} else {
 						require_once 'iMSCP/Events/Exception.php';
-						throw new iMSCP_Events_Manager_Exception(
-							"The '" . get_class($listener) . "' object must implement the {$eventName}() listener method.");
+						throw new iMSCP_Events_Manager_Exception(sprintf(
+							'The %s object must implement the %s() listener method.', get_class($listener), $eventName));
+
 					}
 				} else {
 					require_once 'iMSCP/Events/Exception.php';
@@ -175,7 +177,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 * $eventManager->registerListener('eventName', $objectInstance)
 	 *
 	 * 2. Using static class method
-	 * $eventManager->registerListener('eventName', 'classname::staticMethodName)
+	 * $eventManager->registerListener('eventName', 'classname::staticMethodName')
 	 *
 	 * 3. Using class instance method
 	 * $eventManager->registerListener('eventName', array($ObjectInstance, 'methodName')
@@ -216,10 +218,10 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Unregister an event listener from the specified events.
 	 *
-	 * @param  string|array $eventNames The event(s) to remove a listener from.
-	 * @param  mixed $listener		  The name of the callback function, classname,
-	 *								  the stack index, or the object of the
-	 *								  listener to remove.
+	 * Note: For now, it's only possible to remove a listener implemented as object.
+	 *
+	 * @param  string|array $eventNames	The event(s) to remove a listener from.
+	 * @param  object $listener			The listener object to remove.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
 	public function unregisterListener($eventNames, $listener)
@@ -244,7 +246,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 */
 	public function getListeners($eventName = null)
 	{
-		// Todo
+		throw new iMSCP_Events_Manager_Exception('iMSCP_Events_Manager::getListeners() is not implemented yet');
 	}
 
 	/**
@@ -256,6 +258,6 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 */
 	public function hasListener($eventName, $listener = null)
 	{
-		// Todo
+		throw new iMSCP_Events_Manager_Exception('iMSCP_Events_Manager::hasListener() is not implemented yet');
 	}
 }

@@ -30,13 +30,12 @@
  * Events Manager interface.
  *
  * The Events Manager interface is the central point of i-MSCP's event listener
- * system. The listeners are registered on the manager, and events are fired through
+ * system. The listeners are registered on the manager, and events are dispatched through
  * the manager.
  *
- * A listener is a callback function or object that listen on a particular event. The
- * events are defined in many places in the core code or components. When a event is
- * fired, the listener methods of all the listeners that listens this event are
- * executed.
+ * A listener is an object or a callback function that listen on a particular event. The events are defined in many
+ * places in the core code or components. When a event is dispatched, the listener methods of all the listeners that
+ * listens this event are executed.
  *
  * @category	iMSCP
  * @package		iMSCP_Events
@@ -69,7 +68,7 @@ interface iMSCP_Events_Manager_Interface
 	 * @param  string|array $eventName		The event(s) to listen on.
 	 * @param  callback|object $listener	Listener callback or listener object.
 	 * @param  int $stackIndex OPTIONAL		The higher this value, the earlier an event
-	 *								  		listener will be triggered in the chain.
+	 * 										listener will be triggered in the chain.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
 	public function registerListener($eventName, $listener, $stackIndex = null);
@@ -89,8 +88,7 @@ interface iMSCP_Events_Manager_Interface
 	 *
 	 * @abstract
 	 * @param  string $eventName The name of the event.
-	 * @return array The event listeners for the specified event, or all event
-	 *			   listeners by event name.
+	 * @return array The event listeners for the specified event, or all event listeners by event name.
 	 */
 	public function getListeners($eventName);
 
