@@ -37,12 +37,7 @@ a:hover, a.active {color: rgb(92, 186, 218);}
 .main_menu {background: transparent url(../images/black/background/mainmenu_left.png) no-repeat top left;}
 .main_menu ul {background: transparent url(../images/black/background/mainmenu_bg.png) repeat-x top left;}
 .main_menu a:hover, .main_menu a.active{
-    background-color: rgb(255, 255, 255);
     background-color: rgba(255, 255, 255, 0.3);
-    /*filter: alpha(opacity = 30);*/
-    z-index: 5000;
-
-    /*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#dd204362,endColorstr=#dd204362);*/
 }
 
 /** Location */

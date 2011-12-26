@@ -36,6 +36,9 @@ a:hover, a.active {color: rgb(92, 186, 218);}
 /** Main menu */
 .main_menu {background: transparent url(../images/green/background/mainmenu_left.png) no-repeat top left;}
 .main_menu ul {background: transparent url(../images/green/background/mainmenu_bg.png) repeat-x top left;}
+.main_menu a:hover, .main_menu a.active{
+    background-color: rgba(255, 255, 255, 0.3);
+}
 
 /** Location */
 .location {background: rgb(31, 92, 22) url(../images/green/background/top_bar_bg.jpg) repeat-x top left;}
