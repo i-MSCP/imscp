@@ -6,6 +6,10 @@
 			<apache>apache2-suexec</apache>
 			<apache>libapache2-mod-fastcgi</apache>
 			<apache>libapache2-mod-fcgid</apache>
+			<apache_itk>apache2</apache_itk>
+			<apache_itk>apache2-mpm-itk</apache_itk>
+			<apache_itk>apache2-suexec</apache_itk>
+			<apache_itk>libapache2-mod-php5</apache_itk>
 		</alternative>
 	</httpd>
 	<po>

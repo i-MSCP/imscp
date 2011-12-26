@@ -157,7 +157,10 @@ sub authDaemon{
 	# Loading the system file from /etc/imscp/backup
 	$file = iMSCP::File->new(filename => "$self->{bkpDir}/authdaemonrc.system");
 	$rdata = $file->get();
-	return 1 if (!$rdata);
+	if (!$rdata){
+		error("Error while reading $self->{bkpDir}/authdaemonrc.system");
+		return 1 ;
+	}
 
 	# Building the new file (Adding the authuserdb module if needed)
 	if($rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
@@ -202,8 +205,11 @@ sub userDB{
 	my ($rs, $stdout, $stderr);
 	$rs = execute($self::courierConfig{'CMD_MAKEUSERDB'}, \$stdout, \$stderr);
 	debug("$stdout") if ($stdout);
-	error("$stderr") if ($stderr && $rs);
-	return $rs if $rs;
+	if($rs){
+		error("$stderr") if $stderr;
+		error("Error while executing $self::courierConfig{CMD_MAKEUSERDB} returned status $rs") unless $stderr;
+		return $rs;
+	}
 
 	0;
 }
@@ -224,7 +230,8 @@ sub sslConf{
 		#read file exit if can not read
 		$rdata = $file->get();
 		if (!$rdata){
-			$rs |=  1 ;
+			$rs |= 1;
+			error("Error while reading $self::courierConfig{'AUTHLIB_CONF_DIR'}/$_");
 			next;
 		}
 

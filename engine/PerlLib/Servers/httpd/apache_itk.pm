@@ -24,7 +24,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd::apache;
+package Servers::httpd::apache_itk;
 
 use strict;
 use warnings;
@@ -58,11 +58,11 @@ sub _init{
 
 sub install{
 
-	use Servers::httpd::apache::installer;
+	use Servers::httpd::apache_itk::installer;
 
 	my $self	= shift;
 	my $rs		= 0;
-	$rs |= Servers::httpd::apache::installer->new()->install();
+	$rs |= Servers::httpd::apache_itk::installer->new()->install();
 
 	$rs;
 }
@@ -77,10 +77,10 @@ sub postinstall{
 
 sub setGuiPermissions{
 
-	use Servers::httpd::apache::installer;
+	use Servers::httpd::apache_itk::installer;
 
 	my $self	= shift;
-	my $rs = Servers::httpd::apache::installer->new()->setGuiPermissions();
+	my $rs = Servers::httpd::apache_itk::installer->new()->setGuiPermissions();
 
 	$rs;
 }
@@ -91,7 +91,7 @@ sub registerPreHook{
 	my $fname		= shift;
 	my $callback	= shift;
 
-	my $installer	= Servers::httpd::apache::installer->new();
+	my $installer	= Servers::httpd::apache_itk::installer->new();
 
 	debug("Register pre hook to $fname on installer")
 		if (ref $callback eq 'CODE' && $installer->can($fname));
@@ -114,7 +114,7 @@ sub registerPostHook{
 
 	debug("Attaching to $fname... $callback");
 
-	my $installer	= Servers::httpd::apache::installer->new();
+	my $installer	= Servers::httpd::apache_itk::installer->new();
 
 	debug("Register post hook to $fname on installer")
 		if (ref $callback eq 'CODE' && $installer->can($fname));
@@ -412,41 +412,6 @@ sub removeSection{
 	$data;
 }
 
-sub buildPHPini{
-
-	use iMSCP::Rights;
-
-	my $self		= shift;
-	my $data		= shift;
-	my $rs			= 0;
-	my $php5Dir		= "$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}";
-	my $fileSource	= "$main::imscpConfig{CONF_DIR}/fcgi/parts/php5-fcgi-starter.tpl";
-	my $destFile	= "$php5Dir/php5-fcgi-starter";
-
-	$rs |= $self->buildConfFile($fileSource, {destination => $destFile});
-	$rs |= setRights($destFile,
-		{
-			user	=> $data->{USER},
-			group	=> $data->{GROUP},
-			mode	=> '0550',
-		}
-	);
-
-	$fileSource	= "$main::imscpConfig{CONF_DIR}/fcgi/parts/php5/php.ini";
-	$destFile	= "$php5Dir/php5/php.ini";
-
-	$rs |= $self->buildConfFile($fileSource, {destination => $destFile});
-	$rs |= setRights($destFile,
-		{
-			user	=> $data->{USER},
-			group	=> $data->{GROUP},
-			mode	=> '0440',
-		}
-	);
-
-	$rs;
-}
-
 #####################################################################################
 ##			DOMAIN LEVEL
 sub addUser{
@@ -464,7 +429,6 @@ sub addUser{
 	my $rootUser	= $main::imscpConfig{ROOT_USER};
 	my $rootGroup	= $main::imscpConfig{ROOT_GROUP};
 	my $apacheGroup	= $self::apacheConfig{APACHE_GROUP};
-	my $php5Dir		= "$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}";
 	my ($rs, $stdout, $stderr);
 
 	my $errmsg = {
@@ -533,22 +497,6 @@ sub addUser{
 		}
 	}
 	########################### END MOD CBAND SECTION ###############################
-
-	########################## START PHP.INI for user ###############################
-	if($self::apacheConfig{INI_LEVEL} =~ /^per_user$/i){
-		for (
-			["$php5Dir",		$data->{USER},	$data->{GROUP},	0555],
-			["$php5Dir/php5",	$data->{USER},	$data->{GROUP},	0550]
-		){
-			$rs |= iMSCP::Dir->new( dirname => $_->[0])->make({
-				user	=> $_->[1],
-				group	=> $_->[2],
-				mode	=> $_->[3]
-			});
-		}
-		$rs |= $self->buildPHPini($data);
-	}
-	########################### END PHP.INI for user ################################
 
 	##################### START COMMON FILES IN USER FOLDER #########################
 
@@ -651,13 +599,6 @@ sub delUser{
 	}
 	########################### END MOD CBAND SECTION ###############################
 
-	for(
-		"$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}",
-		$hDir,
-	){
-		$rs |= iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
-	}
-
 	$self->{restart} = 'yes';
 
 	$rs;
@@ -731,7 +672,7 @@ sub addCfg{
 	) if (-f "$self->{cfgDir}/$data->{DMN_NAME}.conf");
 
 	$rs |= $self->buildConfFile(
-		($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp):\/\/~i ? "$self->{tplDir}/domain_redirect.tpl" : "$self->{tplDir}/domain-fcgi.tpl"),
+		($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp):\/\/~i ? "$self->{tplDir}/domain_redirect.tpl" : "$self->{tplDir}/domain-itk.tpl"),
 		{destination => "$self->{wrkDir}/$data->{DMN_NAME}.conf"}
 	);
 	$rs |= $self->installConfFile("$data->{DMN_NAME}.conf");
@@ -756,7 +697,6 @@ sub dmnFolders{
 	my $rootGroup	= $main::imscpConfig{ROOT_GROUP};
 	my $apacheGroup	= $self::apacheConfig{APACHE_GROUP};
 	my $newHtdocs	= -d "$hDir/htdocs";
-	my $php5Dir	= "$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}";
 	my ($rs, $stdout, $stderr);
 
 	my @folders = (
@@ -768,16 +708,6 @@ sub dmnFolders{
 
 	push(@folders, ["$hDir/errors",		$data->{USER},	$apacheGroup,	0710])
 		if $self->{mode} eq 'dmn';
-	push(@folders, ["$php5Dir",			$data->{USER},	$data->{GROUP},	0550])
-		if
-			$self->{mode} eq 'dmn' &&
-			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i ||
-			$self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i;
-	push(@folders, ["$php5Dir/php5",	$data->{USER},	$data->{GROUP},	0550])
-		if
-			$self->{mode} eq 'dmn' &&
-			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i ||
-			$self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i;
 
 	@folders;
 }
@@ -859,13 +789,6 @@ sub addFiles{
 		}
 	);
 
-	$rs |= $self->buildPHPini($data)
-		if(
-			$self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i &&
-			$self->{mode} eq"dmn" ||
-			$self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i
-		);
-
 	$rs;
 }
 
@@ -893,13 +816,6 @@ sub delDmn{
 	}
 
 	my $hDir		= $data->{HOME_DIR};
-
-	for(
-		"$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}",
-		"$hDir",
-	){
-		$rs |= iMSCP::Dir->new(dirname => $_)->remove() if -d $_;
-	}
 
 	$self->{restart}	= 'yes';
 	delete $self->{data};
@@ -1370,7 +1286,7 @@ END{
 	use iMSCP::Dir;
 
 	my $endCode	= $?;
-	my $self	= Servers::httpd::apache->new();
+	my $self	= Servers::httpd::apache_itk->new();
 	my $rs		= 0;
 	my $trfDir	= "$self::apacheConfig{APACHE_LOG_DIR}/traff";
 
