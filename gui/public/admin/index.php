@@ -66,7 +66,7 @@ function admin_generateSupportQuestionsMessage()
 
     if ($nbQuestions != 0) {
         set_page_message(
-            tr('You have received <b>%d</b> new support questions.', $nbQuestions), 'info');
+            tr('You have received %d new support questions.', '<span class="bold">' . $nbQuestions . '</span>'), 'info');
     }
 }
 

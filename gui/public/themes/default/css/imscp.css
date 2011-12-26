@@ -820,50 +820,50 @@ textarea {
 }
 
 /**
- * Login and exception pages
+ * Login, lostpassword and box messages pages
  */
 
-.login, .exception {
+.login, .box_message {
     text-align: center;
 }
 
-.login #header, .exception #header {
+.login #header, .box_message #header {
     width: 100%;
     height: 50px;
     border-bottom: 3px solid;
     overflow: hidden;
 }
 
-.login #logo, .exception #logo {
+.login #logo, .box_message #logo {
     background: transparent url('../images/imscp_logo32.png') no-repeat 5px center;
     float: left;
     height: 50px;
     line-height: 50px;
 }
 
-.login #logo span, .exception #logo span {
+.login #logo span, .box_message #logo span {
     margin-left: 100px;
     font-weight: bold;
 }
 
-.login #copyright, .exception #copyright {
+.login #copyright, .box_message #copyright {
     float: right;
     text-align: right;
     height: 50px;
     padding-top: 12.5px;
 }
 
-.login #copyright span, .exception #copyright span  {
+.login #copyright span, .box_message #copyright span  {
     margin-right: 0.5em;
 }
 
-.login #copyright span a, .exception #copyright span a {
+.login #copyright span a, .box_message #copyright span a {
     float: left;
     text-decoration: none;
     font-weight: bold;
 }
 
-.login #body, .exception #body {
+.login #body, .box_message #body {
     position: relative;
     width: 316px;
     text-align: left;
@@ -885,7 +885,7 @@ textarea {
 .clearfix{display: block;}
 /* End hide from IE-mac */
 
-/* Specific to the login page */
+/* Specific to the login and lostpassword pages */
 
 .login #messageContainer {
     position: relative;
@@ -970,27 +970,29 @@ textarea {
 .login #toolbox li a.filemanager{background-image: url('../images/login/filemanager.png');}
 .login #toolbox li a.webmail{background-image: url('../images/login/webmail.png');}
 
-/** specific to exception page */
-.exception #body {
-    width: 454px;
+/** specific to box message pages */
+.box_message #body {
+    width: 453px;
 }
 
-.exception #box {
+.box_message #box {
     margin-top:100px;
     padding:80px 10px 10px 10px;
-    border: 1px solid #ccc;
-    border-top: 0px;
-    border-radius: 8px;
+    border: 1px solid;
+    border-top-width: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     overflow: hidden;
 }
 
-.exception h1 {
+.box_message h1 {
     text-align: center;
     font-size: 1.5em;
     letter-spacing: 5px;
 }
 
-.exception pre {
+.box_message pre {
     margin-top: 1em;
     white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
     white-space: -pre-wrap; /* Opera */
@@ -1010,5 +1012,4 @@ textarea {
 
 #box a:hover {
     text-decoration: underline;
-    color: rgb(92, 186, 218);
 }

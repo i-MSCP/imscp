@@ -115,25 +115,27 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
 .footer {color: rgb(255, 255, 255);}
 
 /**
- * Login page
+ * Login, lostpassword and box messages pages
  */
 
-.login	#header {
+.login	#header, .box_message #header {
     background: rgb(0, 0, 0) url('../images/yellow/login/stripe.png') repeat-x left top;
     border-bottom-color: rgb(122, 106, 43);
 }
 
-#logo span {
+.login #logo span, .box_message #logo span {
     color: rgb(255, 255, 255);
 }
 
-.login #copyright span a {
+.login #copyright span a, .box_message #copyright span a {
     color: rgb(255, 255, 255);
 }
 
-.login #copyright span a:hover {
+.login #copyright span a:hover, .box_message #copyright span a:hover {
     color: rgb(92, 186, 218);
 }
+
+/** Specific to login and lostpassword pages */
 
 .login #loginBox {background: transparent url('../images/yellow/login/form_box.png') no-repeat left top;}
 
@@ -141,5 +143,25 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
     color: rgb(255, 255, 255);
 }
 
+.login #toolbox li a {
+    color: rgb(26, 26, 26);
+}
+
+.login #toolbox li a:hover {
+    color: rgb(92, 186, 218);
+}
+
 .i_lock {background-image: url('../images/login/i_lock.png');}
 .i_unlock {background-image: url('../images/login/i_unlock.png');}
+
+
+/**Specific to exception page */
+
+.box_message #box {
+    background: transparent url('../images/yellow/box/message_top.jpg') no-repeat top left;
+    border-color: rgb(204, 204, 204);
+}
+
+#box a:hover {
+    color: rgb(92, 186, 218);
+}

@@ -90,12 +90,11 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 				'
 					<html>
 						<head>
-						<title>
 							<title>i-MSCP - internet Multi Server Control Panel - Exception</title>
-						</title>
 						</head>
 						<body>
-							{EXCEPTION_MESSAGE}
+							<h1>{BOX_MESSAGE_TITLE}</h1>
+							<p>{BOX_MESSAGE}</p>
 						</body>
 					</html>
 				');
@@ -156,7 +155,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 		$tpl = new iMSCP_pTemplate();
 		$tpl->define_dynamic(
 			array(
-				'layout' => 'shared/layouts/simlple.tpl',
+				'layout' => 'shared/layouts/simple.tpl',
 				'page' => $this->_templateFile,
 				'page_message' => 'layout',
 				'backlink_block' => 'page'));
