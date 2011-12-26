@@ -190,10 +190,10 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/puser_manage.tpl',
+		 'page' => 'client/puser_manage.tpl',
 		 'page_message' => 'page',
 		 'users_message_block' => 'page',
 		 'users_block' => 'page',
@@ -206,7 +206,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Manage users and groups'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_HTACCESS' => tr('Protected areas'),

@@ -51,8 +51,8 @@ if (!customerHasFeature('custom_error_pages')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/error_pages.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
+$tpl->define_dynamic('page', 'client/error_pages.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
 // page functions.
@@ -95,7 +95,6 @@ $domain = "http://www." . $domain;
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Error Custom Pages'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'DOMAIN' => $domain));

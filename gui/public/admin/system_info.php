@@ -44,8 +44,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/system_info.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/system_info.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'disk_list' => 'page',
@@ -93,7 +93,6 @@ $tpl->parse('DISK_LIST', 'disk_list');
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

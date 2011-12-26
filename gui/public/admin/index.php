@@ -230,8 +230,8 @@ check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/index.tpl',
 		'page_message' => 'page',
 		'imscp_update_message' => 'page',
 		'imscp_database_update_message' => 'page',
@@ -241,7 +241,6 @@ $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / General information'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_GENERAL_INFORMATION' => tr('General information'),
 		'TR_PROPERTIES' => tr('Properties'),

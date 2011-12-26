@@ -820,55 +820,72 @@ textarea {
 }
 
 /**
- * Login page
+ * Login and exception pages
  */
 
-.login {
+.login, .exception {
     text-align: center;
 }
 
-.login #header {
+.login #header, .exception #header {
     width: 100%;
     height: 50px;
     border-bottom: 3px solid;
     overflow: hidden;
 }
 
-#logo {
+.login #logo, .exception #logo {
     background: transparent url('../images/imscp_logo32.png') no-repeat 5px center;
     float: left;
     height: 50px;
     line-height: 50px;
 }
 
-#logo span {
+.login #logo span, .exception #logo span {
     margin-left: 100px;
     font-weight: bold;
 }
 
-.login #copyright {
+.login #copyright, .exception #copyright {
     float: right;
     text-align: right;
     height: 50px;
     padding-top: 12.5px;
 }
 
-.login #copyright span {
+.login #copyright span, .exception #copyright span  {
     margin-right: 0.5em;
 }
 
-.login #copyright span a {
+.login #copyright span a, .exception #copyright span a {
     float: left;
     text-decoration: none;
     font-weight: bold;
 }
 
-.login #body {
+.login #body, .exception #body {
     position: relative;
     width: 316px;
     text-align: left;
     margin: 0 auto;
 }
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix{display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix{height: 1%;}
+.clearfix{display: block;}
+/* End hide from IE-mac */
+
+/* Specific to the login page */
 
 .login #messageContainer {
     position: relative;
@@ -876,6 +893,7 @@ textarea {
     margin-top: 25px;
     text-align: center;
 }
+
 .login #messageContainer #message {
     width: 400px;
     margin: 0 auto;
@@ -902,7 +920,7 @@ textarea {
     height: 20px;
 }
 
-.login label div {
+.login label span {
     position: relative;
     float: left;
     width: 132px;
@@ -952,19 +970,45 @@ textarea {
 .login #toolbox li a.filemanager{background-image: url('../images/login/filemanager.png');}
 .login #toolbox li a.webmail{background-image: url('../images/login/webmail.png');}
 
-.clearfix:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
+/** specific to exception page */
+.exception #body {
+    width: 454px;
 }
 
-.clearfix{display: inline-block;}
+.exception #box {
+    margin-top:100px;
+    padding:80px 10px 10px 10px;
+    border: 1px solid #ccc;
+    border-top: 0px;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-/* Hides from IE-mac \*/
-* html .clearfix{height: 1%;}
-.clearfix{display: block;}
-/* End hide from IE-mac */
+.exception h1 {
+    text-align: center;
+    font-size: 1.5em;
+    letter-spacing: 5px;
+}
 
+.exception pre {
+    margin-top: 1em;
+    white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+    white-space: -pre-wrap; /* Opera */
+    white-space: -o-pre-wrap; /* Opera */
+    white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+    word-wrap: break-word; /* IE 5.5+ */
 
+}
+
+#box a {
+    display: block;
+    float: right;
+    margin-right: 10px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+#box a:hover {
+    text-decoration: underline;
+    color: rgb(92, 186, 218);
+}

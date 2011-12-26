@@ -661,8 +661,8 @@ $data =& admin_getData();
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_add.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/reseller_add.tpl',
 		'page_message' => 'page',
 		'ips_block' => 'page',
 		'ip_block' => 'ips_block'));
@@ -670,7 +670,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Manage users / Add Reseller'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_ADD_RESELLER' => tr('Add reseller'),

@@ -87,8 +87,8 @@ if (isset($_GET['ticket_id']) && !empty($_GET['ticket_id'])) {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/ticket_view.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/ticket_view.tpl',
 		'page_message' => 'page',
 		'tickets_list' => 'page',
 		'tickets_item' => 'tickets_list'));
@@ -97,7 +97,6 @@ $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Support Ticket System / View Ticket'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
 		'TR_OPEN_TICKETS' => tr('Open tickets'),

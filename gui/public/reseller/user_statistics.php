@@ -260,8 +260,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/reseller_user_statistics.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/reseller_user_statistics.tpl',
 		'page_message' => 'page',
 		'month_list' => 'page',
 		'year_list' => 'page',
@@ -293,7 +293,6 @@ if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 $tpl->assign(
     array(
          'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Reseller User Statistics'),
-         'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
          'THEME_CHARSET' => tr('encoding'),
          'ISP_LOGO' => layout_getUserLogo()));
 

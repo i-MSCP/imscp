@@ -160,17 +160,12 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'page' => '../' . $cfg->LOGIN_TEMPLATE_PATH . '/box.tpl',
+		'layout' => 'shared/layouts/simple.tpl',
+		'page' =>  '/box.tpl',
 		'page_message' => 'page',
 		'backlink_block' => 'page'));
 
-$theme_color = isset($_SESSION['user_theme'])
-	? $_SESSION['user_theme'] : $cfg->USER_INITIAL_THEME;
-
-$tpl->assign(
-	array(
-		'THEME_COLOR_PATH' => '../themes/' . $theme_color,
-		'THEME_CHARSET' => tr('encoding')));
+$tpl->assign('THEME_CHARSET', tr('encoding'));
 
 if (validateOrderKey($_GET['id'], $_GET['k'])) {
 	confirmOrder($_GET['id']);
@@ -183,6 +178,7 @@ if (validateOrderKey($_GET['id'], $_GET['k'])) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('Order Panel / Order confirmation'),
+		'CONTEXT_CLASS' => 'box_message',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),

@@ -17,17 +17,16 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Exception
  * @subpackage	Writer
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  * @filesource
@@ -36,13 +35,14 @@
 /**
  * Abstract class for exception writers
  *
- * @category	i-MSCP
- * @package		iMSCP_Exception
- * @subpackage	Writer
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Exception_Writer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		1.0.1
+ * @version		0.0.1
  */
-abstract class iMSCP_Exception_Writer implements SplObserver {
+abstract class iMSCP_Exception_Writer implements SplObserver
+{
 
 	/**
 	 * Exception message to be written

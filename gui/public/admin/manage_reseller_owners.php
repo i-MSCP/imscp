@@ -46,8 +46,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_owners.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/manage_reseller_owners.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'reseller_list' => 'page',
@@ -131,9 +131,9 @@ function gen_reseller_table($tpl) {
 
 	while (!$rs->EOF) {
 
-		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner')
-			&& (isset($_POST['dest_admin'])
-				&& $_POST['dest_admin'] == $rs->fields['admin_id'])) {
+		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') && (isset($_POST['dest_admin']) &&
+			$_POST['dest_admin'] == $rs->fields['admin_id'])
+		) {
 			$selected = $cfg->HTML_SELECTED;
 		} else {
 			$selected = '';
@@ -143,9 +143,7 @@ function gen_reseller_table($tpl) {
 			array(
 				'OPTION' => tohtml($rs->fields['admin_name']),
 				'VALUE' => $rs->fields['admin_id'],
-				'SELECTED' => $selected,
-			)
-		);
+				'SELECTED' => $selected));
 
 		$tpl->parse('SELECT_ADMIN_OPTION', '.select_admin_option');
 
@@ -175,7 +173,6 @@ function update_reseller_owner() {
 			ORDER BY
 				`admin_name`
 		";
-
 		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
@@ -206,7 +203,6 @@ function update_reseller_owner() {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Reseller assignment'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

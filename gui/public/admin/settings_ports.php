@@ -386,8 +386,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings_ports.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/settings_ports.tpl',
 		'page_message' => 'page',
 		'service_ports' => 'page',
 		'port_delete_link' => 'service_ports',
@@ -396,7 +396,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Settings / Service ports'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ACTION' => tr('Action'),

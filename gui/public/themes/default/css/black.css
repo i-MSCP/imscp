@@ -135,29 +135,31 @@ textarea:disabled{
 .footer {color: rgb(255, 255, 255);}
 
 /**
- * Login page
+ * Login adn exception page
  */
 
-.login	#header {
+.login	#header, .exception #header {
     background: rgb(0, 0, 0) url('../images/black/login/stripe.png') repeat-x left top;
     border-bottom-color: rgb(102, 102, 102);
 }
 
-#logo span {
+.login #logo span, .exception #logo span {
     color: rgb(255, 255, 255);
 }
 
-.login #copyright span a {
+.login #copyright span a, .exception #copyright span a {
     color: rgb(255, 255, 255);
 }
 
-.login #copyright span a:hover {
+.login #copyright span a:hover, .exception #copyright span a:hover {
     color: rgb(92, 186, 218);
 }
 
+/** Specific to login page */
+
 .login #loginBox {background: transparent url('../images/black/login/form_box.png') no-repeat left top;}
 
-.login label div {
+.login label span {
     color: rgb(255, 255, 255);
 }
 
@@ -171,3 +173,10 @@ textarea:disabled{
 
 .i_lock {background-image: url('../images/login/i_lock.png');}
 .i_unlock {background-image: url('../images/login/i_unlock.png');}
+
+
+/**Specific to exception page */
+
+.exception #box {
+    background: transparent url('../images/black/box/message_top.jpg') no-repeat top left;
+}

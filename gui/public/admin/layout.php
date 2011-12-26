@@ -89,8 +89,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/layout.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/layout.tpl',
 		'page_message' => 'page',
 		'logo_remove_button' => 'page',
 		'layout_colors_block' => 'page',
@@ -133,7 +133,6 @@ if (layout_isUserLogo($ispLogo)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Profile / Layout'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => $ispLogo,
 		'OWN_LOGO' => $ispLogo,
 		'THEME_CHARSET' => tr('encoding'),

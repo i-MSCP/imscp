@@ -391,14 +391,13 @@ if (!is_xhr()) {
     $tpl = new iMSCP_pTemplate();
     $tpl->define_dynamic(
 		array(
-			'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-			'page' => $cfg->RESELLER_TEMPLATE_PATH . '/alias_add.tpl',
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'reseller/alias_add.tpl',
 			'page_message' => 'page',
 			'user_entry' => 'page'));
 
     $tpl->assign(
 		array(
-			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_PAGE_TITLE' => tr('i-MSCP Reseller/Add Alias'),

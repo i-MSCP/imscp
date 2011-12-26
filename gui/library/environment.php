@@ -23,7 +23,7 @@
  * @category	i-MSCP
  * @package		i-MSCP_Core
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author		ispCP Team
  * @author		i-MSCP Team
  * @link        http://i-mscp.net i-MSCP Home Site
@@ -33,30 +33,15 @@
 // Boot i-MSCP
 iMSCP_Bootstrap::boot();
 
-// Creating new iMSCP_Config_Handler_File instance
-$config = new iMSCP_Config_Handler_File();
-
 // Configuration parameters
 
-// Template paths
-$config->ROOT_TEMPLATE_PATH = '../themes/';
+$config = new iMSCP_Config_Handler_File();
 
-// Get template path
-$tpl_path = $config->ROOT_TEMPLATE_PATH . $config->USER_INITIAL_THEME;
-
-// Set the login templates path
-$config->LOGIN_TEMPLATE_PATH = $tpl_path;
-
-// Set the users level templates path
-$config->ADMIN_TEMPLATE_PATH =  "../$tpl_path/admin";
-$config->RESELLER_TEMPLATE_PATH = "../$tpl_path/reseller";
-$config->CLIENT_TEMPLATE_PATH = "../$tpl_path/client";
+// Template root directory
+$config->ROOT_TEMPLATE_PATH = dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME;
 
 // Set the isp logos path
 $config->ISP_LOGO_PATH = '/ispLogos';
-
-// Set the order panel templates path
-$config->PURCHASE_TEMPLATE_PATH = "../$tpl_path/orderpanel";
 
 $config->HTML_CHECKED = ' checked="checked"';
 $config->HTML_DISABLED = ' disabled="disabled"';
@@ -162,8 +147,7 @@ $fonts = array(
 );
 
 // Set random captcha font file
-$config->LOSTPASSWORD_CAPTCHA_FONT = LIBRARY_PATH . '/fonts/' .
-	$fonts[mt_rand(0, count($fonts)-1)];
+$config->LOSTPASSWORD_CAPTCHA_FONT = LIBRARY_PATH . '/fonts/' . $fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection
 $config->BRUTEFORCE = 1;

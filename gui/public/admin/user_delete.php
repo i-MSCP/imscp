@@ -272,37 +272,39 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
     $domainName = tohtml(decode_idna($stmt->fields['domain_name']));
 
     $tpl = new iMSCP_pTemplate();
-    $tpl->define_dynamic(array(
-                              'page' => $cfg->ADMIN_TEMPLATE_PATH . '/user_delete.tpl',
-                              'page_message' => 'page',
-                              'mail_list' => 'page',
-                              'mail_item' => 'mail_list',
-                              'ftp_list' => 'page',
-                              'ftp_item' => 'ftp_list',
-                              'als_list' => 'page',
-                              'als_item' => 'als_list',
-                              'sub_list' => 'page',
-                              'sub_item' => 'sub_list',
-                              'db_list' => 'page',
-                              'db_item' => 'db_list'));
+    $tpl->define_dynamic(
+		array(
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'admin/user_delete.tpl',
+			'page_message' => 'page',
+			'mail_list' => 'page',
+			'mail_item' => 'mail_list',
+			'ftp_list' => 'page',
+			'ftp_item' => 'ftp_list',
+			'als_list' => 'page',
+			'als_item' => 'als_list',
+			'sub_list' => 'page',
+			'sub_item' => 'sub_list',
+			'db_list' => 'page',
+			'db_item' => 'db_list'));
 
-    $tpl->assign(array(
-                      'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Domain Account Deletion Validation'),
-                      'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-                      'THEME_CHARSET' => tr('encoding'),
-                      'ISP_LOGO' => layout_getUserLogo(),
-                      'TR_DELETE_DOMAIN' => tr('Delete domain'),
-                      'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
-                      'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
-                      'TR_DOMAIN_FTPS' => tr('Domain FTP accounts'),
-                      'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
-                      'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
-                      'TR_DOMAIN_DBS' => tr('Domain databases'),
-                      'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr("Do you really want to delete the entire <strong>'%s'</strong> domain? This operation cannot be undone.", true, $domainName),
-                      'TR_BUTTON_DELETE' => tr('Delete domain'),
-                      'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
-                      'DOMAIN_NAME' => $domainName,
-                      'DOMAIN_ID' => $domainId));
+    $tpl->assign(
+		array(
+			'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Domain Account Deletion Validation'),
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => layout_getUserLogo(),
+			'TR_DELETE_DOMAIN' => tr('Delete domain'),
+			'TR_DOMAIN_SUMMARY' => tr('Domain account summary'),
+			'TR_DOMAIN_EMAILS' => tr('Domain e-mails'),
+			'TR_DOMAIN_FTPS' => tr('Domain FTP accounts'),
+			'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
+			'TR_DOMAIN_SUBS' => tr('Domain subdomains'),
+			'TR_DOMAIN_DBS' => tr('Domain databases'),
+			'TR_REALLY_WANT_TO_DELETE_DOMAIN' => tr("Do you really want to delete the entire <strong>'%s'</strong> domain? This operation cannot be undone.", true, $domainName),
+			'TR_BUTTON_DELETE' => tr('Delete domain'),
+			'TR_YES_DELETE_DOMAIN' => tr('Yes, delete the domain.'),
+			'DOMAIN_NAME' => $domainName,
+			'DOMAIN_ID' => $domainId));
 
 	generateNavigation($tpl);
 

@@ -58,8 +58,7 @@ function admin_generatePage($tpl)
 			'TR_ACCOUNT_TYPE' => tr('Account type'),
 			'ACCOUNT_TYPE' => $_SESSION['user_type'],
 			'TR_REGISTRATION_DATE' => tr('Registration date'),
-			'REGISTRATION_DATE' => ($stmt->fields['domain_created'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_created']) : tr('Unknown')
-		));
+			'REGISTRATION_DATE' => ($stmt->fields['domain_created'] != 0) ? date($cfg->DATE_FORMAT, $stmt->fields['domain_created']) : tr('Unknown')));
 }
 
 /*******************************************************************************
@@ -79,14 +78,13 @@ check_login(__FILE__);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/profile.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/profile.tpl',
 		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / My Profile'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 

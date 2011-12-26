@@ -194,8 +194,8 @@ $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/settings.tpl',
 		'page_message' => 'page',
 		'def_language' => 'page'));
 
@@ -526,7 +526,6 @@ $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Settings'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,
 		 'PASSWD_CHARS' => $cfg->PASSWD_CHARS,

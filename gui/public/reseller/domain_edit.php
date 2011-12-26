@@ -991,8 +991,8 @@ $data =& reseller_getData($domainId);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/domain_edit.tpl',
 		'page_message' => 'page',
 		'subdomain_limit_block' => 'page',
 		'domain_aliasses_limit_block' => 'page',
@@ -1016,7 +1016,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Domain/Edit'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_EDIT_DOMAIN' => tr('Edit domain'),

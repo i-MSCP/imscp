@@ -38,8 +38,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/software_delete.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/software_delete.tpl',
 		'page_message', 'page'));
 
 /**
@@ -144,14 +144,13 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 				set_page_message(tr('Software was deleted.'), 'success');
 				redirectTo('software_manage.php');
 			} else {
-				set_page_message(tr('Fill out a message text!'), 'error');
+				set_page_message(tr('Fill out a message text.'), 'error');
 			}
 		}
 
 		$tpl->assign(
 			array(
 				'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
-				'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 				'THEME_CHARSET' => tr('encoding'),
 				'ISP_LOGO' => layout_getUserLogo(),
 				'TR_DELETE_SEND_TO' => tr('Send message to'),

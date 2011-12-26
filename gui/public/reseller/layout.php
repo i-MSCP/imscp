@@ -91,8 +91,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/layout.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/layout.tpl',
 		'page_message' => 'page',
 		'logo_remove_button' => 'page',
 		'layout_colors_block' => 'page',
@@ -134,7 +134,6 @@ if (layout_isUserLogo($ispLogo)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Layout'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => layout_getUserLogo(),
 		'OWN_LOGO' => $ispLogo,
 		'THEME_CHARSET' => tr('encoding'),

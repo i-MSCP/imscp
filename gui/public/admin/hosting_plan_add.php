@@ -326,14 +326,13 @@ if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan_add.tpl',
+		 'layout' => 'shared/layouts/ui.tpl',
+		 'page' => 'admin/hosting_plan_add.tpl',
 		 'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Administrator/Add hosting plan'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),

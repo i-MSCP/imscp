@@ -70,8 +70,8 @@ if (!customerHasFeature('aps')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_install.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
+$tpl->define_dynamic('page', 'client/software_install.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('software_item', 'page');
 $tpl->define_dynamic('show_domain_list', 'page');
@@ -307,7 +307,6 @@ if (isset($_POST['Submit2'])) {
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Install Software'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 

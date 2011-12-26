@@ -41,7 +41,7 @@
  * @package		iMSCP_Core
  * @subpackage	Initializer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		1.1.6
+ * @version		0.1.7
  */
 class iMSCP_Initializer
 {
@@ -76,9 +76,9 @@ class iMSCP_Initializer
 	 * incurring the overhead of completely loading the entire environment.
 	 *
 	 * @throws iMSCP_Exception
-	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be
-	 *												  executed or an iMSCP_Config_Handler_File object
-	 * @param iMSCP_Config_Handler_File $config		 OPTIONAL iMSCP_Config_Handler_File object
+	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be executed or an iMSCP_Config_Handler_File
+	 * 													object
+	 * @param iMSCP_Config_Handler_File $config			OPTIONAL iMSCP_Config_Handler_File object
 	 * @return iMSCP_Initializer The iMSCP_Initializer instance
 	 */
 	public static function run($command = '_processAll', iMSCP_Config_Handler_File $config = null)
@@ -232,8 +232,7 @@ class iMSCP_Initializer
 	 */
 	protected function _setExceptionWriters()
 	{
-		/** @var $exceptionHandler iMSCP_Exception_Handler */
-		$exceptionHandler = iMSCP_Registry::get('exceptionHandler');
+		$exceptionHandler = iMSCP_Exception_Handler::getInstance();
 
 		$writerObservers = explode(',', $this->_config->GUI_EXCEPTION_WRITERS);
 		$writerObservers = array_map('trim', $writerObservers);
@@ -374,7 +373,7 @@ class iMSCP_Initializer
 
 		} catch (PDOException $e) {
 			throw new iMSCP_Exception_Database('Unable to establish connection to the database. ' .
-					'SQL returned: ' . $e->getMessage());
+				'SQL returned: ' . $e->getMessage());
 		}
 
 		// Register Database instance in registry for further usage.
@@ -399,16 +398,13 @@ class iMSCP_Initializer
 		ini_set('default_charset', 'UTF-8');
 
 		// Switch optionally to utf8 based communication with the database
-		if (isset($this->_config->DATABASE_UTF8) &&
-			$this->_config->DATABASE_UTF8 == 'yes'
-		) {
+		if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Registry::get('db');
 
 			if (!$db->execute('SET NAMES `utf8`;')) {
 				throw new iMSCP_Exception(
-					'Error: Unable to set charset for database communication. ' .
-						'SQL returned: ' . $db->errorMsg());
+					'Error: Unable to set charset for database communication. SQL returned: ' . $db->errorMsg());
 			}
 		}
 	}
@@ -562,17 +558,20 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeLogger()
 	{
-		throw new iMSCP_Exception('Not Yet Implemented.');
+		throw new iMSCP_Exception('Not implemented yet.');
 	}
 
 	/**
-	 * Register callback to set user theme color.
+	 * Initialize layout.
 	 *
 	 * @since i-MSCP 1.0.1.6
 	 * @return void
 	 */
 	protected function _initializeLayout()
 	{
+		// Set template root directory
+		iMSCP_pTemplate::setRootDir($this->_config->ROOT_TEMPLATE_PATH);
+
 		$eventManager = iMSCP_Events_Manager::getInstance();
 
 		// Layout color
@@ -590,33 +589,29 @@ class iMSCP_Initializer
 		);
 
 		if (!isset($_SESSION['user_logged'])) {
-			$callback = function($event) { unset($_SESSION['user_theme_color']);};
+			$callback = function($event)
+			{
+				unset($_SESSION['user_theme_color']);
+			};
 			$eventManager->registerListener(iMSCP_Events::onAfterRegisterUser, $callback);
 		}
 	}
 
 	/**
-	 * Initilize navigation.
+	 * Register callback to load navigation file.
 	 *
 	 * @return void
 	 */
 	protected function _initializeNavigation()
 	{
-		// TODO review this part
-		if (isset($_SESSION['user_type']) && !isset($_REQUEST['logout'])) {
-			switch ($_SESSION['user_type']) {
-				case 'admin':
-					$menuPath = "{$this->_config->ADMIN_TEMPLATE_PATH}/navigation.xml";
-					break;
-				case 'reseller':
-					$menuPath = "{$this->_config->RESELLER_TEMPLATE_PATH}/navigation.xml";
-					break;
-				default:
-					$menuPath = "{$this->_config->CLIENT_TEMPLATE_PATH}/navigation.xml";
-			}
-
-			iMSCP_Registry::set('navigation', new Zend_Navigation(new Zend_Config_Xml($menuPath, 'navigation')));
-		}
+		iMSCP_Events_Manager::getInstance()->registerListener(
+			array(
+				iMSCP_Events::onAdminScriptStart,
+				iMSCP_Events::onResellerScriptStart,
+				iMSCP_Events::onClientScriptStart,
+			),
+			'layout_loadNavigation'
+		);
 	}
 
 	/**
@@ -630,23 +625,19 @@ class iMSCP_Initializer
 	public function initializeDebugBar()
 	{
 		if (isset($this->_config->DEBUG) && intval($this->_config->DEBUG)) {
-			new iMSCP_Debug_Bar(iMSCP_Events_Manager::getInstance(),
+			iMSCP_Registry::set('debugBar', new iMSCP_Debug_Bar(iMSCP_Events_Manager::getInstance(),
 				array(
 					// Debug information about variables such as $_GET, $_POST...
 					new iMSCP_Debug_Bar_Plugin_Variables(),
-
 					// Debug information about script execution time
 					new iMSCP_Debug_Bar_Plugin_Timer(),
-
 					// Debug information about memory consumption
 					new iMSCP_Debug_Bar_Plugin_Memory(),
-
 					// Debug information about all included files
 					new iMSCP_Debug_Bar_Plugin_Files(),
-
 					// Debug information about all queries made during a script exection
 					// and their execution time.
-					new iMSCP_Debug_Bar_Plugin_Database()));
+					new iMSCP_Debug_Bar_Plugin_Database())));
 		}
 	}
 
@@ -654,6 +645,7 @@ class iMSCP_Initializer
 	 * Fires the afterInitialize callbacks.
 	 *
 	 * @return void
+	 * @todo To be replaced by a specific event
 	 */
 	protected function _afterInitialize()
 	{

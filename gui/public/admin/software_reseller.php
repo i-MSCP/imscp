@@ -38,7 +38,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/software_reseller.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/software_reseller.tpl',
 		'page_message' => 'page',
 		'list_software' => 'page',
 		'no_software_list' => 'page',
@@ -65,7 +66,6 @@ if (isset($_GET['id'])){
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Application Management'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

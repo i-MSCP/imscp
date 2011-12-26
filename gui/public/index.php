@@ -38,7 +38,7 @@
 // Include core library
 require 'imscp-lib.php';
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -69,8 +69,6 @@ if (check_user_login() && !redirect_to_level_page()) {
 
 shall_user_wait();
 
-$theme_color = isset($_SESSION['user_theme']) ? $_SESSION['user_theme'] : $cfg->USER_INITIAL_THEME;
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
@@ -83,11 +81,10 @@ $tpl->assign(
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
-		'THEME_CHARSET' => tr('encoding'),
-		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH));
+		'THEME_CHARSET' => tr('encoding')));
 
 if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableUpdate()) && !isset($_GET['admin'])) {
-	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
+	$tpl->define_dynamic('page', 'maintenancemode.tpl');
 	$tpl->assign(
 		array(
 			'TR_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
@@ -95,12 +92,13 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableU
 } else {
 	$tpl->define_dynamic(
 		array(
-			'layout' => $cfg->LOGIN_TEMPLATE_PATH . '/shared/layouts/login.tpl',
-			'page' => $cfg->LOGIN_TEMPLATE_PATH . '/index.tpl'));
+			'layout' => 'shared/layouts/simple.tpl',
+			'page' => 'index.tpl'));
 
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Login'),
+			'CONTEXT_CLASS' => 'login',
 			'TR_LOGIN' => tr('Login'),
 			'TR_USERNAME' => tr('Username'),
 			'TR_PASSWORD' => tr('Password'),

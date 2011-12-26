@@ -47,8 +47,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/order_email.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/order_email.tpl',
 		'page_message' => 'page'));
 
 $user_id = $_SESSION['user_id'];
@@ -71,7 +71,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'order_email') {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order email setup'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

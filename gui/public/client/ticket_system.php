@@ -63,10 +63,10 @@ if (isset($_GET['psi'])) {
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_system.tpl',
+		 'page' => 'client/ticket_system.tpl',
 		 'page_message' => 'page',
 		 'tickets_list' => 'page',
 		 'tickets_item' => 'tickets_list',
@@ -79,7 +79,6 @@ $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Support Ticket System / Open Tickets'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
 		 'TR_OPEN_TICKETS' => tr('Open tickets'),

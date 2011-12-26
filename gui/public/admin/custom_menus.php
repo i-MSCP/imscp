@@ -326,8 +326,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/custom_menus.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/custom_menus.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'menus_list_block' => 'page',
@@ -340,7 +340,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin - Manage custom menus'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MENU_NAME' => tr('Name'),

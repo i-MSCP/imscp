@@ -17,7 +17,7 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
@@ -26,12 +26,12 @@
  *
  * @category	i-MSCP
  * @package		i-MSCP
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @author 		ispCP Team
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
  * @author		i-MSCP Team
- * @author 	    Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://i-mscp.net i-MSCP Home Site
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
@@ -41,7 +41,7 @@
  */
 
 // Set default error reporting level
-error_reporting(E_ALL|E_STRICT);
+error_reporting(E_ALL | E_STRICT);
 
 // Sets to TRUE here to ensure displaying of the base core errors
 // Will be overwritten during initialization process
@@ -65,16 +65,6 @@ require_once 'imscp-loader.php';
 spl_autoload_register('autoload_class');
 
 /**
- * Exception Handler for uncaught exceptions
- *
- * Sets the exception handler for uncaught exceptions and register it in the
- * registry.
- */
-iMSCP_Registry::setAlias(
-	'exceptionHandler',
-	iMSCP_Exception_Handler::getInstance()->setHandler());
-
-/**
  * Attach the primary exception writer to write uncaught exceptions messages to the
  * client browser.
  *
@@ -86,8 +76,7 @@ iMSCP_Registry::setAlias(
  * Another writers will be attached to this object during initialization process if
  * enabled in the application wide configuration file.
  */
-iMSCP_Registry::get('exceptionHandler')->attach(
-    new iMSCP_Exception_Writer_Browser('../themes/default/box.tpl'));
+iMSCP_Exception_Handler::getInstance()->attach(new iMSCP_Exception_Writer_Browser('box.tpl'));
 
 /**
  * Include i-MSCP common functions
@@ -105,14 +94,6 @@ require_once 'sw-functions.php';
  * Internationalization functions
  */
 require_once 'i18n.php';
-
-/**
- * Bootstrap the i-MSCP environment, and default configuration
- *
- * @see {@link iMSCP_Bootstrap} class
- * @see {@link iMSCP_Initializer} class
- */
-require_once 'environment.php';
 
 /**
  * Authentication functions
@@ -139,12 +120,20 @@ require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
 
 /**
+ * Bootstrap the i-MSCP environment, and default configuration
+ *
+ * @see {@link iMSCP_Bootstrap} class
+ * @see {@link iMSCP_Initializer} class
+ */
+require_once 'environment.php';
+
+/**
  * View helpers functions
  */
 require_once 'iMSCP/View/Helpers/Functions/Common.php';
 
-if(isset($_SESSION['user_type'])) {
-    $helperFileName = ucfirst(strtolower($_SESSION['user_type']));
+if (isset($_SESSION['user_type'])) {
+	$helperFileName = ucfirst(strtolower($_SESSION['user_type']));
 
-    require_once 'iMSCP/View/Helpers/Functions/' . $helperFileName . '.php';
+	require_once 'iMSCP/View/Helpers/Functions/' . $helperFileName . '.php';
 }

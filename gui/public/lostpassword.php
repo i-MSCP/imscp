@@ -60,20 +60,18 @@ if (!captcha_fontfile_exists()) {
 // Remove old unique keys
 removeOldKeys($cfg->LOSTPASSWORD_TIMEOUT);
 
-isset($_SESSION['user_theme']) ? $theme_color = $_SESSION['user_theme'] : $theme_color = $cfg->USER_INITIAL_THEME;
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->LOGIN_TEMPLATE_PATH . '/shared/layouts/login.tpl',
-		'page' => $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl',
+		'layout' => 'shared/layouts/simple.tpl',
+		'page' => 'lostpassword.tpl',
 		'page_message' => 'layout'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Lost password'),
-		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
 		'THEME_CHARSET' => tr('encoding'),
+		'CONTEXT_CLASS' => 'login',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),

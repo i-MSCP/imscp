@@ -45,8 +45,8 @@ $tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_statistics.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/reseller_statistics.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'traffic_table' => 'page',
@@ -61,7 +61,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller statistics'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -98,11 +97,7 @@ function generate_page($tpl) {
 		$start_index = $_POST['psi'];
 	}
 
-	$tpl->assign(
-		array(
-			'POST_PREV_PSI' => $start_index
-		)
-	);
+	$tpl->assign('POST_PREV_PSI', $start_index);
 
 	// count query
 	$count_query = "
@@ -138,11 +133,10 @@ function generate_page($tpl) {
 			array(
 				'TRAFFIC_TABLE' => '',
 				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => ''
-			)
-		);
+				'SCROLL_NEXT' => ''));
 
-		set_page_message(tr('No reseller is registered in your system!'), 'warning');
+		set_page_message(tr('No reseller is registered in your system.'), 'warning');
+
         $tpl->assign('STATISTICS_FORM', '');
 		return;
 	} else {
@@ -154,9 +148,7 @@ function generate_page($tpl) {
 			$tpl->assign(
 				array(
 					'SCROLL_PREV_GRAY' => '',
-					'PREV_PSI' => $prev_si
-				)
-			);
+					'PREV_PSI' => $prev_si));
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -167,16 +159,12 @@ function generate_page($tpl) {
 			$tpl->assign(
 				array(
 					'SCROLL_NEXT_GRAY' => '',
-					'NEXT_PSI' => $next_si
-				)
-			);
+					'NEXT_PSI' => $next_si));
 		}
 
 		$tpl->assign(
 			array(
-				'PAGE_MESSAGE' => ''
-			)
-		);
+				'PAGE_MESSAGE' => ''));
 
 		gen_select_lists($tpl, @$month, @$year);
 
@@ -253,10 +241,6 @@ function generate_reseller_entry($tpl, $reseller_id, $reseller_name, $row) {
 	}
 
 	$tpl->assign(
-		array('ITEM_CLASS' => ($row % 2 == 0) ? 'content' : 'content2')
-	);
-
-	$tpl->assign(
 		array(
 			'RESELLER_NAME' => tohtml($reseller_name),
 			'RESELLER_ID' => $reseller_id,
@@ -303,16 +287,10 @@ function generate_reseller_entry($tpl, $reseller_id, $reseller_name, $row) {
 
 			'SQL_USER_MSG' => ($rsql_user_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max)
-				: (($rsql_user_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_user_current, $rsql_user_current))
-		)
-	);
+				: (($rsql_user_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_user_current, $rsql_user_current))));
 
 	$tpl->parse('RESELLER_ENTRY', '.reseller_entry');
 }
-
-/*
- * static page messages.
- */
 
 $crnt_month = '';
 $crnt_year = '';

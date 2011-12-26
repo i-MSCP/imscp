@@ -44,8 +44,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_user_statistics.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/reseller_user_statistics.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'page_message' => 'page',
@@ -86,10 +86,14 @@ if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Reseller User Statistics'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
+/**
+ * @param $tpl
+ * @param $reseller_id
+ * @param $reseller_name
+ */
 function generate_page($tpl, $reseller_id, $reseller_name) {
 
 	global $rid;
@@ -105,11 +109,7 @@ function generate_page($tpl, $reseller_id, $reseller_name) {
 		$start_index = $_POST['psi'];
 	}
 
-	$tpl->assign(
-		array(
-			'POST_PREV_PSI' => $start_index
-		)
-	);
+	$tpl->assign('POST_PREV_PSI', $start_index);
 
 	// count query
 	$count_query = "
@@ -146,18 +146,14 @@ function generate_page($tpl, $reseller_id, $reseller_name) {
 	$tpl->assign(
 		array(
 			'RESELLER_NAME' => tohtml($reseller_name),
-			'RESELLER_ID' => $reseller_id
-		)
-	);
+			'RESELLER_ID' => $reseller_id));
 
 	if ($rs->rowCount() == 0) {
 		$tpl->assign(
 			array(
 				'DOMAIN_LIST' => '',
 				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => '',
-			)
-		);
+				'SCROLL_NEXT' => ''));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
 
@@ -168,9 +164,7 @@ function generate_page($tpl, $reseller_id, $reseller_name) {
 				array(
 					'SCROLL_PREV_GRAY' => '',
 					'PREV_PSI' => $prev_si,
-					'RID' => $rid
-				)
-			);
+					'RID' => $rid));
 		}
 
 		$next_si = $start_index + $rows_per_page;
@@ -182,17 +176,13 @@ function generate_page($tpl, $reseller_id, $reseller_name) {
 				array(
 					'SCROLL_NEXT_GRAY' => '',
 					'NEXT_PSI' => $next_si,
-					'RID' => $rid
-				)
-			);
+					'RID' => $rid));
 		}
 
 		$tpl->assign(
 			array(
 				'PAGE_MESSAGE'	=> '',
-				'NO_DOMAINS'	=> ''
-			)
-		);
+				'NO_DOMAINS'	=> ''));
 
 		$row = 1;
 
@@ -207,7 +197,6 @@ function generate_page($tpl, $reseller_id, $reseller_name) {
 				WHERE
 					`domain_admin_id` = ?
 			";
-
 			$dres = exec_query($query, $admin_id);
 
 			generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
@@ -220,6 +209,7 @@ function generate_page($tpl, $reseller_id, $reseller_name) {
 }
 
 /**
+ *
  * @param $tpl
  * @param $user_id
  * @param $row
@@ -268,13 +258,6 @@ function generate_domain_entry($tpl, $user_id, $row) {
 	if ($disk_percent > 100) {
 		$disk_percent = 100;
 	}
-
-
-	$tpl->assign(
-		array(
-			'ITEM_CLASS' => ($row % 2 == 0) ? 'content' : 'content2',
-		)
-	);
 
 	$domain_name = decode_idna($domain_name);
 
@@ -344,9 +327,7 @@ function generate_domain_entry($tpl, $user_id, $row) {
 				? (($usql_user_max > 0)
 					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_user_current, $usql_user_max)
 					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)
-		)
-	);
+				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)));
 }
 
 generateNavigation($tpl);

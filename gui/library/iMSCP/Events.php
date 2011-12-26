@@ -17,148 +17,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Events
- * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @copyright	2010-2011 by i-MSCP team
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
  * Class that describes all core events fired in the i-MSCP actions scripts.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package		iMSCP_Core
  * @subpackage	Events
- * @author      Laurent Declercq <l.declercq@i-mscp.net>
- * @version     0.0.4
+ * @author		Laurent Declercq <l.declercq@i-mscp.net>
+ * @version		0.0.5
  */
 class iMSCP_Events
 {
-    /**
-     * The onLoginScriptStart event is fired at the very beginning of Login script.
-     *
-     * The event listener method receives a iMSCP_Events_Event instance.
-     *
-     * @var string
-     */
-    const onLoginScriptStart = 'onLoginScriptStart';
-
-    /**
-     * The onLoginScriptEnd event is fired at the end of Login script.
-     *
-     * The event listener method receives a iMSCP_Events_Response instance.
-     *
-     * @var string
-     */
-    const onLoginScriptEnd = 'onLoginScriptEnd';
-
-    /**
-     * The onLostPasswordScriptStart event is fired at the very beginning of the
-     * LostPassword script.
-     *
-     * The event listener method receives a iMSCP_Events_Event instance.
-     *
-     * @var string
-     */
-    const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
-
-    /**
-     * The onLostPasswordScriptEnd event is fired at the end of the LostPassword script.
-     *
-     * The event listener method receives a iMSCP_Events_Response instance.
-     *
-     * @var string
-     */
-    const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
-
-    /**
-     * The onAdminScriptStart event is fired at the very beginning of admin scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Event instance.
-     *
-     * @var string
-     */
-    const onAdminScriptStart = 'onAdminScriptStart';
-
-    /**
-     * The onAdminScriptEnd event is fired at the end of admin scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Response instance.
-     *
-     * @var string
-     */
-    const onAdminScriptEnd = 'onAdminScriptEnd';
-
-    /**
-     * The onResellerScriptStart event is fired at the very beginning of reseller scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Event instance.
-     *
-     * @var string
-     */
-    const onResellerScriptStart = 'onResellerScriptStart';
-
-    /**
-     * The onResellerScriptEnd event is fired at the end of reseller scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Response instance.
-     *
-     * @var string
-     */
-    const onResellerScriptEnd = 'onResellerScriptEnd';
-
-    /**
-     * The onClientScriptStart event is fired at the very beginning of client scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Event instance.
-     *
-     * @var string
-     */
-    const onClientScriptStart = 'onClientScriptStart';
-
-    /**
-     * The onClientScriptEnd event is fired at the end of client scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Response instance.
-     *
-     * @var string
-     */
-    const onClientScriptEnd = 'onClientScriptEnd';
-
-    /**
-     * The onOrderPanelScriptStart is fired occurs at the very beginning of orderpanel scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Event instance.
-     *
-     * @var string
-     */
-    const onOrderPanelScriptStart = 'onOrderPanelScriptStart';
-
-    /**
-     * The onOrderPanelScriptEnd event is fired at the end of orderpanel scripts.
-     *
-     * The event listener method receives a iMSCP_Events_Response instance.
-     *
-     * @var string
-     */
-    const onOrderPanelScriptEnd = 'onOrderPanelScriptEnd';
-
 	/**
-	 * The onExceptionToBrowserEnd event is fired at the end of exception browser write process.
+	 * The onLoginScriptStart event is fired at the very beginning of Login script.
 	 *
-	 * The event listener method can receives a iMSCP_Events_Response instance.
+	 * The event listener method receives an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
-	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
+	const onLoginScriptStart = 'onLoginScriptStart';
 
 	/**
-	 * The onBeforeRegister event is fired after before an user is registered (logged on).
+	 * The onLoginScriptEnd event is fired at the end of Login script.
 	 *
-	 * The event listener method receives a iMSCP_Events_Event instance.
+	 * The event listener method receives an iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onLoginScriptEnd = 'onLoginScriptEnd';
+
+	/**
+	 * The onBeforeRegister event is fired before an user is registered (logged on).
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
@@ -167,9 +67,116 @@ class iMSCP_Events
 	/**
 	 * The onAfterRegister event is fired after an user is registered (logged on).
 	 *
-	 * The event listener method receives a iMSCP_Events_Event instance.
+	 * The event listener method receives an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const  onAfterRegisterUser = 'onAfterRegisterUser';
+
+	/**
+	 * The onLostPasswordScriptStart event is fired at the very beginning of the
+	 * LostPassword script.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 *
+	 * @var string
+	 */
+	const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
+
+	/**
+	 * The onLostPasswordScriptEnd event is fired at the end of the LostPassword script.
+	 *
+	 * The event listener method receives an iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
+
+	/**
+	 * The onAdminScriptStart event is fired at the very beginning of admin scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 *
+	 * @var string
+	 */
+	const onAdminScriptStart = 'onAdminScriptStart';
+
+	/**
+	 * The onAdminScriptEnd event is fired at the end of admin scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onAdminScriptEnd = 'onAdminScriptEnd';
+
+	/**
+	 * The onResellerScriptStart event is fired at the very beginning of reseller scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 *
+	 * @var string
+	 */
+	const onResellerScriptStart = 'onResellerScriptStart';
+
+	/**
+	 * The onResellerScriptEnd event is fired at the end of reseller scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onResellerScriptEnd = 'onResellerScriptEnd';
+
+	/**
+	 * The onClientScriptStart event is fired at the very beginning of client scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 *
+	 * @var string
+	 */
+	const onClientScriptStart = 'onClientScriptStart';
+
+	/**
+	 * The onClientScriptEnd event is fired at the end of client scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onClientScriptEnd = 'onClientScriptEnd';
+
+	/**
+	 * The onOrderPanelScriptStart is fired occurs at the very beginning of orderpanel scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 *
+	 * @var string
+	 */
+	const onOrderPanelScriptStart = 'onOrderPanelScriptStart';
+
+	/**
+	 * The onOrderPanelScriptEnd event is fired at the end of orderpanel scripts.
+	 *
+	 * The event listener method receives an iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onOrderPanelScriptEnd = 'onOrderPanelScriptEnd';
+
+	/**
+	 * The onExceptioToBrowserStart event is fired before of exception browser write processs.
+	 *
+	 * The event listener method receives a iMSCP_Envents_Event object.
+	 */
+	const onExceptionToBrowserStart = 'onExceptionToBrowserStart';
+
+	/**
+	 * The onExceptionToBrowserEnd event is fired at the end of exception browser write process.
+	 *
+	 * The event listener method receives a iMSCP_Events_Response object.
+	 *
+	 * @var string
+	 */
+	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
 }

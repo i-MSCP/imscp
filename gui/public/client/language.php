@@ -50,10 +50,10 @@ check_login(__FILE__);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/language.tpl',
+		 'page' => 'client/language.tpl',
 		 'page_message' => 'page',
 		 'def_language' => 'page'));
 
@@ -91,7 +91,6 @@ $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Change Language'),
 		 'TR_TITLE_CHANGE_LANGUAGE' => tr('Change language'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_GENERAL_INFO' => tr('General information'),

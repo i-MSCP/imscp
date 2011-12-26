@@ -72,8 +72,8 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     $tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
 		array(
-			'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-			'page' => $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl',
+			'layout' => 'shared/layouts/ui.tpl',
+			'page' => 'reseller/domain_delete.tpl',
 			'page_message' => 'page',
 			'mail_list' => 'page',
 			'mail_item' => 'mail_list',
@@ -89,7 +89,6 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     $tpl->assign(
 		array(
 			'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Domain Account Deletion Validation'),
-			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => layout_getUserLogo(),
 			'TR_DELETE_DOMAIN' => tr('Delete domain'),

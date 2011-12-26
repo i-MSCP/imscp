@@ -2,8 +2,8 @@
 		<div class="clearfix">
 			<div id="loginBox">
 				<form name="loginFrm" action="index.php" method="post">
-					<label for="uname"><div>{TR_USERNAME}</div><input type="text" name="uname" id="uname" tabindex="1"/></label>
-					<label for="upass"><div>{TR_PASSWORD}</div><input type="password" name="upass" id="upass" tabindex="2"/></label>
+					<label for="uname"><span>{TR_USERNAME}</span><input type="text" name="uname" id="uname" tabindex="1"/></label>
+					<label for="upass"><span>{TR_PASSWORD}</span><input type="password" name="upass" id="upass" tabindex="2"/></label>
 					<div class="button">
 						<!-- BDP: lostpwd_button -->
 						<button name="lostpwd" type="button" tabindex="4" onclick="location.href='lostpassword.php'">{TR_LOSTPW}</button>

@@ -147,10 +147,10 @@ $domainProperties = get_domain_default_props($_SESSION['user_id'], true);
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		'page' => $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl',
+		'page' => 'client/sql_manage.tpl',
 		'page_message' => 'page',
 		'sql_databases_users_list' => 'page',
 		'sql_databases_list' => 'sql_databases_users_list',
@@ -159,7 +159,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage SQL'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MANAGE_SQL' => tr('Manage SQL'),

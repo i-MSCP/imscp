@@ -251,7 +251,7 @@ function layout_getUserLayoutColor($userId)
 		$color = $stmt->fields['layout_color'];
 
 		if (!$color || !in_array($color, $allowedColors)) {
-			$color =  array_shift($allowedColors);
+			$color = array_shift($allowedColors);
 		}
 	} else {
 		$color = array_shift($allowedColors);
@@ -274,9 +274,6 @@ function layout_setColor($event)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	/** @var $tpl iMSCP_pTemplate */
-	$tpl = $event->getTemplateEngine();
-
 	if(isset($_SESSION['user_theme_color'])) {
 		$color = $_SESSION['user_theme_color'];
 	} elseif(isset($_SESSION['user_id'])) {
@@ -288,9 +285,12 @@ function layout_setColor($event)
 		$color = array_shift($colors);
 	}
 
-	$tpl->assign('THEME_COLOR', $color);
+	$tpl = $event->getTemplateEngine();
 
-	// Todo move this statement
+	$tpl->assign(array(
+		'THEME_COLOR_PATH' => '/themes/' . $cfg->USER_INITIAL_THEME, // @TODO Move this statement
+		'THEME_COLOR' => $color));
+
 	$tpl->parse('LAYOUT', 'layout');
 }
 
@@ -549,4 +549,33 @@ function layout_isUserLogo($logoPath)
     }
 
     return true;
+}
+
+/**
+ * Load navigation file for current UI level.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @since i-MSCP 1.0.1.6
+ * @param iMSCP_Events_Response $event iMSCP_Events_Response instance
+ * @return void
+ */
+function layout_LoadNavigation($event)
+{
+	if (isset($_SESSION['user_type'])) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		switch ($_SESSION['user_type']) {
+			case 'admin':
+				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/admin/navigation.xml";
+				break;
+			case 'reseller':
+				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/reseller/navigation.xml";
+				break;
+			default:
+				$menuPath = "{$cfg->ROOT_TEMPLATE_PATH}/client/navigation.xml";
+		}
+
+		iMSCP_Registry::set('navigation', new Zend_Navigation(new Zend_Config_Xml($menuPath, 'navigation')));
+	}
 }

@@ -178,14 +178,7 @@ function get_error_aliases($tpl)
 
 		$tpl->parse('ALIAS_MESSAGE', 'alias_message');
 	} else {
-		$i = 1;
 		while (!$stmt->EOF) {
-			$tpl->assign(
-				array(
-					 'CONTENT' => ($i % 2 == 0) ? 'content' : 'content2',
-				)
-			);
-
 			$tpl->assign(
 				array(
 					 'ALIAS_MESSAGE' => '',
@@ -197,8 +190,6 @@ function get_error_aliases($tpl)
 			);
 
 			$tpl->parse('ALIAS_LIST', '.alias_list');
-
-			$i++;
 			$stmt->moveNext();
 		}
 	}
@@ -598,9 +589,7 @@ if (isset($_GET['action'])) {
 	if ($_GET['action'] == 'run_engine' && $exec_count > 0) {
 		$code = send_request();
 		set_page_message(tr('Daemon returned %d as status code', $code));
-	} elseif ($_GET['action'] == 'change_status' &&
-			 (isset($_GET['id']) && isset($_GET['type']))
-	) {
+	} elseif ($_GET['action'] == 'change_status' && (isset($_GET['id']) && isset($_GET['type']))) {
 
 		switch ($_GET['type']) {
 			case 'domain':
@@ -687,8 +676,8 @@ if (isset($_GET['action'])) {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		 'page' => $cfg->ADMIN_TEMPLATE_PATH . '/imscp_debugger.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		 'page' => 'admin/imscp_debugger.tpl',
 		 'page_message' => 'page',
 		 'hosting_plans' => 'page',
 		 'domain_message' => 'page',
@@ -714,7 +703,6 @@ $errors += get_error_htaccess($tpl);
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_DEBUGGER_TITLE' => tr('i-MSCP debugger'),
@@ -731,13 +719,11 @@ $tpl->assign(
 		 'TR_ERRORS' => tr('%s Errors in database', $errors)));
 
 generateNavigation($tpl);
-
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd,
-											  new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

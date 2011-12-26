@@ -122,10 +122,10 @@ if (!empty($_POST)) { // Post request
 }
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/phpini.tpl',
+		 'layout' => 'shared/layouts/ui.tpl',
+		 'page' => 'client/phpini.tpl',
 		 'page_message' => 'page',
 		 'php_editor_first_block_js' => 'page',
 		 'php_editor_first_block' =>  'page',
@@ -140,7 +140,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP / Client / Manage domains / PHP Editor'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_TITLE' => tr('PHP Editor'),

@@ -924,8 +924,8 @@ $data =& admin_getData($resellerId);
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/reseller_edit.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/reseller_edit.tpl',
 		'page_message' => 'page',
 		'ips_block' => 'page',
 		'ip_block' => 'ips_block'));
@@ -933,7 +933,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Manage users / Edit Reseller'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'EDIT_ID' => $resellerId,

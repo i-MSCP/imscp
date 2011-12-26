@@ -71,6 +71,7 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin implements
 		iMSCP_Events::onClientScriptEnd,
 		iMSCP_Events::onOrderPanelScriptStart,
 		iMSCP_Events::onOrderPanelScriptEnd,
+		iMSCP_Events::onExceptionToBrowserStart,
 		iMSCP_Events::onExceptionToBrowserEnd
 	);
 

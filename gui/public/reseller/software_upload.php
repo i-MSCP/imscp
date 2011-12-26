@@ -40,8 +40,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/software_upload.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/software_upload.tpl',
 		'page_message' => 'page',
 		'list_software' => 'page',
 		'no_software_list' => 'page',
@@ -305,7 +305,6 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Application Management'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 

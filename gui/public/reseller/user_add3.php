@@ -354,8 +354,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->RESELLER_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'reseller/user_add3.tpl',
 		'page_message' => 'page',
 		'ip_entry' => 'page',
 		'alias_add' => 'page'));
@@ -363,7 +363,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - User/Add domain account - step 3'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_ADD_USER' => tr('Add user'),

@@ -31,6 +31,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -42,8 +43,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_users.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/manage_reseller_users.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'reseller_list' => 'page',
@@ -70,7 +71,6 @@ function gen_user_table($tpl) {
 		ORDER BY
 			`admin_name`
 	";
-
 	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
@@ -83,12 +83,14 @@ function gen_user_table($tpl) {
 
 	while (!$rs->EOF) {
 
-		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'change_src')
-			&& (isset($_POST['src_reseller']) && $_POST['src_reseller'] == $rs->fields['admin_id'])) {
+		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'change_src') && (isset($_POST['src_reseller']) &&
+			$_POST['src_reseller'] == $rs->fields['admin_id'])
+		) {
 			$selected = $cfg->HTML_SELECTED;
 			$reseller_id = $_POST['src_reseller'];
-		} else if ((isset($_POST['uaction']) && $_POST['uaction'] === 'move_user')
-			&& (isset($_POST['dst_reseller']) && $_POST['dst_reseller'] == $rs->fields['admin_id'])) {
+		} elseif ((isset($_POST['uaction']) && $_POST['uaction'] === 'move_user') && (isset($_POST['dst_reseller']) &&
+			$_POST['dst_reseller'] == $rs->fields['admin_id'])
+		) {
 			$selected = $cfg->HTML_SELECTED;
 			$reseller_id = $_POST['dst_reseller'];
 		} else {
@@ -99,19 +101,15 @@ function gen_user_table($tpl) {
 
 		$tpl->assign(
 			array(
-				'SRC_RSL_OPTION'	=> tohtml($rs->fields['admin_name']),
-				'SRC_RSL_VALUE'		=> $rs->fields['admin_id'],
-				'SRC_RSL_SELECTED'	=> $selected,
-			)
-		);
+				'SRC_RSL_OPTION' => tohtml($rs->fields['admin_name']),
+				'SRC_RSL_VALUE' => $rs->fields['admin_id'],
+				'SRC_RSL_SELECTED' => $selected));
 
 		$tpl->assign(
 			array(
-				'DST_RSL_OPTION'	=> tohtml($rs->fields['admin_name']),
-				'DST_RSL_VALUE'		=> $rs->fields['admin_id'],
-				'DST_RSL_SELECTED'	=> ''
-			)
-		);
+				'DST_RSL_OPTION' => tohtml($rs->fields['admin_name']),
+				'DST_RSL_VALUE' => $rs->fields['admin_id'],
+				'DST_RSL_SELECTED' => ''));
 
 		$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
 		$tpl->parse('DST_RESELLER_OPTION', '.dst_reseller_option');
@@ -127,11 +125,10 @@ function gen_user_table($tpl) {
 
 	$tpl->assign(
 		array(
-			'SRC_RSL_OPTION'	=> tr("N/A"),
-			'SRC_RSL_VALUE'		=> 0,
-			'SRC_RSL_SELECTED'	=> $selected,
-		)
-	);
+			'SRC_RSL_OPTION' => tr("N/A"),
+			'SRC_RSL_VALUE' => 0,
+			'SRC_RSL_SELECTED' => $selected));
+
 	$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
 
 	if ($reseller_id === 0) {
@@ -172,31 +169,22 @@ function gen_user_table($tpl) {
 	} else {
 		$i = 0;
 		while (!$rs->EOF) {
-			$tpl->assign(
-				array(
-					'RSL_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
-				)
-			);
-
 			$admin_id = $rs->fields['admin_id'];
-
 			$admin_id_var_name = 'admin_id_' . $admin_id;
-
 			$show_admin_name = decode_idna($rs->fields['admin_name']);
 
 			$tpl->assign(
 				array(
 					'NUMBER' => $i + 1,
 					'USER_NAME' => tohtml($show_admin_name),
-					'CKB_NAME' => $admin_id_var_name,
-				)
-			);
+					'CKB_NAME' => $admin_id_var_name));
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
 			$rs->moveNext();
 
 			$i++;
 		}
+
 		$tpl->parse('RESELLER_LIST', 'reseller_list');
 	}
 }
@@ -206,9 +194,7 @@ function gen_user_table($tpl) {
  */
 function update_reseller_user() {
 
-	if (isset($_POST['uaction'])
-		&& $_POST['uaction'] === 'move_user'
-		&& check_user_data()) {
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'move_user' && check_user_data()) {
 		set_page_message(tr('User was moved'), 'success');
 	}
 }
@@ -228,7 +214,6 @@ function check_user_data() {
 		ORDER BY
 			`admin_name`
 	";
-
 	$rs = execute_query($query);
 
 	$selected_users = '';
@@ -266,7 +251,6 @@ function check_user_data() {
 		WHERE
 			`reseller_id` = ?
 	";
-
 	$rs = exec_query($query, $dst_reseller);
 
 	$mru_error = '_off_';
@@ -526,7 +510,6 @@ function check_ip_sets($dest, $users, &$err) {
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/User assignment'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

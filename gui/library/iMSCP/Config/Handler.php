@@ -104,7 +104,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     public function get($key)
     {
         if (!$this->exists($key)) {
-            throw new iMSCP_Exception("Configuration variable `$key` is missing!");
+            throw new iMSCP_Exception("Configuration variable `$key` is missing.");
         }
 
         return $this->$key;

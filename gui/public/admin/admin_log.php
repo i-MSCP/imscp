@@ -44,8 +44,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/admin_log.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/admin_log.tpl',
 		'page_message' => 'page',
 		'log_row' => 'page',
 		'scroll_prev_gray' => 'page',
@@ -57,7 +57,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('iMSCP - Admin/Admin Log'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 

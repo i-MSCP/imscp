@@ -43,23 +43,22 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic_day.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page', 'admin/server_statistic_day.tpl',
 		'page_message' => 'page',
 		'hour_list' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server day stats'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
 global $month, $year, $day;
 
-if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
-	&& is_numeric($_GET['month']) && is_numeric($_GET['year'])
-	&& is_numeric($_GET['day'])) {
+if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day']) && is_numeric($_GET['month']) &&
+	is_numeric($_GET['year']) && is_numeric($_GET['day'])
+) {
 	$year = $_GET['year'];
 
 	$month = $_GET['month'];
@@ -137,12 +136,6 @@ function generate_page($tpl) {
 
 			$tpl->assign(
 				array(
-					'ITEM_CLASS' => ($row++ % 2 == 0) ? 'content' : 'content2',
-				)
-			);
-
-			$tpl->assign(
-				array(
 					'HOUR' => $ttime,
 					'WEB_IN' => sizeit($rs1->fields['swbin']),
 					'WEB_OUT' => sizeit($rs1->fields['swbout']),
@@ -188,9 +181,7 @@ function generate_page($tpl) {
 			'OTHER_OUT_ALL' => sizeit($all_other_out),
 			'ALL_IN_ALL' => sizeit($all[6]),
 			'ALL_OUT_ALL' => sizeit($all[7]),
-			'ALL_ALL' => sizeit($all[6] + $all[7]),
-		)
-	);
+			'ALL_ALL' => sizeit($all[6] + $all[7])));
 }
 
 generateNavigation($tpl);

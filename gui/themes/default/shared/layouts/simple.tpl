@@ -29,7 +29,7 @@
 	/*]]>*/
 	</script>
 </head>
-<body class="login no_menu no_footer">
+<body class="{CONTEXT_CLASS} no_menu">
 	<div id="header">
 		<div id="logo"><span>{productLongName}</span></div>
 		<div id="copyright"><span><a href="{productLink}" target="blank">{productCopyright}</a></span></div>

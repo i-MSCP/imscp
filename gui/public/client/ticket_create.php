@@ -98,17 +98,16 @@ $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ?
 	clean_input($_POST['user_message'], true) : '';
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', $cfg->CLIENT_TEMPLATE_PATH . '/../shared/layouts/ui.tpl');
+$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => $cfg->CLIENT_TEMPLATE_PATH . '/ticket_create.tpl',
+		 'page' => 'client/ticket_create.tpl',
 		 'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		 'THEME_CHARSET' => tr('encoding'),
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Support Ticket System / New Ticket'),
-		 'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_SUPPORT_SYSTEM' => tr('Support Ticket System'),
 		 'TR_NEW_TICKET' => tr('New ticket'),

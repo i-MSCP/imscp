@@ -44,8 +44,8 @@
  */
 function kill_session()
 {
-	if (isset($_GET['kill']) && $_GET['kill'] !== ''
-		&& isset($_GET['username']) &&  $_GET['username'] == $_SESSION['user_logged']
+	if (isset($_GET['kill']) && $_GET['kill'] !== '' && isset($_GET['username']) &&
+		$_GET['username'] == $_SESSION['user_logged']
 	) {
 		$username = clean_input($_GET['username']);
 		$sessionId = clean_input($_GET['kill']);
@@ -82,16 +82,17 @@ function gen_user_sessions($tpl)
 		$sessionId = $stmt->fields['session_id'];
 
 		if ($username === null) {
-			$tpl->assign(array(
-							  'ADMIN_USERNAME' => tr('Unknown'),
-							  'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])));
+			$tpl->assign(
+				array(
+					'ADMIN_USERNAME' => tr('Unknown'),
+					'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])));
 		} else {
-			$tpl->assign(array(
-							  'ADMIN_USERNAME' =>
-									$username . (($username == $_SESSION['user_logged'] &&
-												  $currentUserSessionId !== $sessionId)
-										? ' ('. tr('from other browser') . ')' : ''),
-							  'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])));
+			$tpl->assign(
+				array(
+					'ADMIN_USERNAME' =>
+					$username . (($username == $_SESSION['user_logged'] && $currentUserSessionId !== $sessionId)
+						? ' (' . tr('from other browser') . ')' : ''),
+					'LOGIN_TIME' => date('G:i:s', $stmt->fields['lastaccess'])));
 		}
 
 		if ($currentUserSessionId === $sessionId) { // Deletion of our own session is not allowed
@@ -122,8 +123,8 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/sessions_manage.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/sessions_manage.tpl',
 		'page_message' => 'page',
 		'hosting_plans' => 'page',
 		'user_session' => 'page'));
@@ -131,7 +132,6 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage Sessions'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MANAGE_USER_SESSIONS' => tr('Manage user sessions'),

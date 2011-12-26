@@ -104,8 +104,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/database_update.tpl',
 		'page_message' => 'page',
 		'database_updates' => 'page',
 		'database_update' => 'database_updates'));
@@ -114,7 +114,6 @@ $tpl->assign(
 	array(
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / System tools / Database Update'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SECTION_TITLE' => tr('Database updates')));
 

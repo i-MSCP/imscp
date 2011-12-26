@@ -110,16 +110,13 @@ class iMSCP_Database
         $this->_eventManager = iMSCP_Events_Manager::getInstance();
 
         // The onBeforeConnection event is fired here.
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeConnection,
-									   new iMSCP_Database_Events_Database('', $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeConnection, new iMSCP_Database_Events_Database('', $this));
 
         $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,
             $pass, $driver_options);
 
         // The onAfterConnection event is fired here.
-        $this->_eventManager->dispatch(
-            iMSCP_Database_Events::onAfterConnection,
-            new iMSCP_Database_Events_Database('', $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterConnection, new iMSCP_Database_Events_Database('', $this));
 
         // Set Errorhandling to Exception
         $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -178,16 +175,14 @@ class iMSCP_Database
      * The default identifier, if not one is provided, is 'default'.
      *
      * @throws iMSCP_Exception_Database
-     * @param string $connection    Connection key name
-     * @return iMSCP_Database       A Database instance that represents the
-     *                              connection to the database
+     * @param string $connection Connection key name
+     * @return iMSCP_Database A Database instance that represents the connection to the database
      * @todo Rename the method name to 'getConnection' (Sounds better)
      */
     public static function getInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new iMSCP_Exception_Database(
-                "The Database connection $connection doesn't exists.");
+            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exists.", $connection));
         }
 
         return self::$_instances[$connection];
@@ -196,17 +191,15 @@ class iMSCP_Database
     /**
      * Returns the PDO object linked to the current database connection object
      *
-     * @since 1.0.7
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @throws iMSCP_Exception
-     * @param string $connection    Connection unique identifier
-     * @return PDO                  A PDO instance
+     * @param string $connection Connection unique identifier
+     * @return PDO A PDO instance
      */
     public static function getRawInstance($connection = 'default')
     {
         if (!isset(self::$_instances[$connection])) {
-            throw new iMSCP_Exception_Database(
-                "The Database connection $connection doesn't exists.");
+            throw new iMSCP_Exception_Database(sprintf("The Database connection %s doesn't exists.", $connection));
         }
 
         return self::$_instances[$connection]->_db;
@@ -215,24 +208,19 @@ class iMSCP_Database
     /**
      * Prepares an SQL statement.
      *
-     * The SQL statement can contains zero or more named or question mark parameters
-     * markers for which real values will be substituted when the statement will be
-     * executed.
+     * The SQL statement can contains zero or more named or question mark parameters markers for which real values will
+	 * be substituted when the statement will be executed.
      *
      * See {@link http://www.php.net/manual/en/pdo.prepare.php}
      *
-     * @param string $sql           Sql statement to be prepared
-     * @param array $driver_options OPTIONAL Attribute values for the PDOStatement
-     *                              object
-     * @return PDOStatement         A PDOStatement instance or FALSE on failure. If
-     *                              prepared statements are emulated by PDO, FALSE
-     *                              is never returned.
+     * @param string $sql Sql statement to prepare
+     * @param array $driver_options OPTIONAL Attribute values for the PDOStatement object
+     * @return PDOStatement A PDOStatement instance or FALSE on failure. If prepared statements are emulated by PDO,
+	 * 						FALSE is never returned.
      */
     public function prepare($sql, $driver_options = null)
     {
-        // The onBeforePrepare event is fired here.
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforePrepare,
-                                       new iMSCP_Database_Events_Database($sql, $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforePrepare, new iMSCP_Database_Events_Database($sql, $this));
 
         if (is_array($driver_options)) {
             $stmt = $this->_db->prepare($sql, $driver_options);
@@ -240,9 +228,7 @@ class iMSCP_Database
             $stmt = $this->_db->prepare($sql);
         }
 
-        // The onAfterPrepare event is fired here.
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterPrepare,
-                                       new iMSCP_Database_Events_Statement($stmt, $this));
+        $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterPrepare, new iMSCP_Database_Events_Statement($stmt, $this));
 
         if (!$stmt) {
             $errorInfo = $this->errorInfo();
@@ -304,28 +290,22 @@ class iMSCP_Database
      * );
      * </code>
      *
-     * @param  string|PDOStatement $stmt    A PDOStatement objet or a string that
-     *                                      represents an SQL statement.
-     * @param null|string|array $parameters OPTIONAL data to bind to the placeholders,
-     *                                      or an integer that represents the Fetch
-     *                                      mode for SQL statement. The fetch mode
-     *                                      must be one of the PDO::FETCH_* constants.
-     * @internal param mixed $colno         OPTIONAL parameter for SQL statement only.
-     *                                      Can be a colum number, an object, a class
-     *                                      name (depending of the Fetch mode used).
+     * @param  string|PDOStatement $stmt	A PDOStatement objet or a string that represents an SQL statement.
+     * @param null|string|array $parameters OPTIONAL data to bind to the placeholders, or an integer that represents the
+	 * 										Fetch mode for SQL statement. The fetch mode must be one of the PDO::FETCH_*
+	 * 										constants.
+	 *
+     * @internal param mixed $colno         OPTIONAL parameter for SQL statement only. Can be a colum number, an object,
+	 * 										a classname (depending of the Fetch mode used).
      *
-     * @internal param array $object        OPTIONAL parameter for SQL statements only.
-     *                                      Can be an array that contains constructor
-     *                                      arguments. (See PDO::FETCH_CLASS)
+     * @internal param array $object        OPTIONAL parameter for SQL statements only. Can be an array that contains
+	 * 										constructor arguments. (See PDO::FETCH_CLASS)
      * @return false|iMSCP_Database_ResultSet
      */
     public function execute($stmt, $parameters = null)
     {
         if ($stmt instanceof PDOStatement) {
-
-            // The onBeforeExecute event is fired here
-            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute,
-                                           new iMSCP_Database_Events_Statement($stmt, $this));
+            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute, new iMSCP_Database_Events_Statement($stmt, $this));
 
             if (null === $parameters) {
                 $rs = $stmt->execute();
@@ -333,10 +313,7 @@ class iMSCP_Database
                 $rs = $stmt->execute((array)$parameters);
             }
         } elseif (null == $parameters) {
-
-            // The onBeforeExecute event is fired here
-            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute,
-                                           new iMSCP_Database_Events_Database($stmt, $this));
+            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute, new iMSCP_Database_Events_Database($stmt, $this));
 
             $rs = $this->_db->query($stmt);
         } else {
@@ -345,11 +322,9 @@ class iMSCP_Database
         }
 
         if ($rs) {
-            $stmt = $rs === true ? $stmt : $rs;
+            $stmt = ($rs === true) ? $stmt : $rs;
 
-            // The onAfterExecute event is fired here
-            $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterExecute,
-                                           new iMSCP_Database_Events_Statement($stmt, $this));
+            $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterExecute, new iMSCP_Database_Events_Statement($stmt, $this));
 
             return new iMSCP_Database_ResultSet($stmt);
         } else {
@@ -378,9 +353,7 @@ class iMSCP_Database
 
         $result = $this->_db->query('SHOW TABLES');
 
-        while ($result instanceof PDOStatement &&
-               ($row = $result->fetch(PDO::FETCH_NUM))
-        ) {
+        while ($result instanceof PDOStatement && ($row = $result->fetch(PDO::FETCH_NUM))) {
             $tables[] = $row[0];
         }
 
@@ -404,10 +377,8 @@ class iMSCP_Database
      * @since 1.0.0 (iMSCP)
      * @link i-mscp.net
      * @param $string                   The string to be quoted
-     * @param null|int $parameterType   Provides a data type hint for drivers that
-     *                                  have alternate quoting styles.
-     * @return string                   A quoted string that is theoretically safe to
-     *                                  pass into an SQL statement
+     * @param null|int $parameterType   Provides a data type hint for drivers that have alternate quoting styles.
+     * @return string                   A quoted string that is theoretically safe to pass into an SQL statement
      */
     public function quote($string, $parameterType = null)
     {
@@ -417,10 +388,8 @@ class iMSCP_Database
     /**
      * Sets an attribute on the database handle.
      *
-     * See @link http://www.php.net/manual/en/book.pdo.php} PDO guideline for more
-     * information about this.
+     * See @link http://www.php.net/manual/en/book.pdo.php} PDO guideline for more information about this.
      *
-     * @since r2013
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @param int $attribute Attribute identifier
      * @param mixed $value Attribute value
@@ -479,7 +448,6 @@ class iMSCP_Database
     /**
      * Gets the last SQLSTATE error code.
      *
-     * @since 1.0.7
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @return mixed  The last SQLSTATE error code
      */
@@ -495,8 +463,7 @@ class iMSCP_Database
      * {@link prepare()} methods.
      *
      * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return string Last error message set by the {@link execute()} or
-     *                {@link prepare()} methods.
+     * @return string Last error message set by the {@link execute()} or {@link prepare()} methods.
      */
     public function getLastErrorMessage()
     {
@@ -527,7 +494,6 @@ class iMSCP_Database
      */
     public function errorInfo()
     {
-
         return $this->_db->errorInfo();
     }
 

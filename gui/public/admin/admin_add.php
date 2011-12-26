@@ -46,14 +46,13 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		'layout' => $cfg->ADMIN_TEMPLATE_PATH . '/../shared/layouts/ui.tpl',
-		'page' => $cfg->ADMIN_TEMPLATE_PATH . '/admin_add.tpl',
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/admin_add.tpl',
 		'page_message' => 'page'));
 
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -247,8 +246,8 @@ add_user($tpl);
 
 $tpl->assign(
 	array(
-		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
-		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
+		'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field.'),
+		'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match."),
 		'TR_ADD_ADMIN' => tr('Add admin'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
