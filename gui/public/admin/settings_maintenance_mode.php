@@ -48,21 +48,11 @@ $tpl->define_dynamic(
 		'page' => 'admin/settings_maintenance_mode.tpl',
 		'page_message' => 'layout'));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Maintenance mode'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-$selected_on = '';
-$selected_off = '';
-
-if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
+if (isset($_POST['uaction']) and $_POST['uaction'] == 'apply') {
 	$maintenancemode = $_POST['maintenancemode'];
 	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
 	$db_cfg = iMSCP_Registry::get('dbConfig');
-
 	$db_cfg->MAINTENANCEMODE = $maintenancemode;
 	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
 
@@ -70,6 +60,9 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 
 	set_page_message(tr('Settings saved.'), 'success');
 }
+
+$selected_on = '';
+$selected_off = '';
 
 if ($cfg->MAINTENANCEMODE) {
 	$selected_on = $cfg->HTML_SELECTED;
@@ -79,10 +72,11 @@ if ($cfg->MAINTENANCEMODE) {
 	set_page_message(tr('Under maintenance mode, only administrators can login.', 'info'));
 }
 
-generateNavigation($tpl);
-
 $tpl->assign(
 	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Maintenance mode'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE' => tr('Message'),
 		'MESSAGE_VALUE' => $cfg->MAINTENANCEMODE_MESSAGE,
@@ -90,9 +84,10 @@ $tpl->assign(
 		'SELECTED_OFF' => $selected_off,
 		'TR_ENABLED' => tr('Enabled'),
 		'TR_DISABLED' => tr('Disabled'),
-		'TR_APPLY_CHANGES' => tr('Apply changes'),
+		'TR_CHANGES' => tr('Changes'),
 		'TR_MAINTENANCE_MESSAGE' => tr('Maintenance message')));
 
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
