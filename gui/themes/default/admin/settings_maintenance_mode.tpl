@@ -25,4 +25,3 @@
                     <input type="hidden" name="uaction" value="apply" />
                 </div>
             </form>
-            <div class="info">{TR_MESSAGE_TEMPLATE_INFO}</div>

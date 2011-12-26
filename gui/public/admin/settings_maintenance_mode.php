@@ -45,7 +45,8 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/settings_maintenance_mode.tpl'));
+		'page' => 'admin/settings_maintenance_mode.tpl',
+		'page_message' => 'layout'));
 
 $tpl->assign(
 	array(
@@ -67,13 +68,15 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 
 	$cfg->replaceWith($db_cfg);
 
-	set_page_message(tr('Settings saved !'), 'success');
+	set_page_message(tr('Settings saved.'), 'success');
 }
 
 if ($cfg->MAINTENANCEMODE) {
 	$selected_on = $cfg->HTML_SELECTED;
+	set_page_message(tr('Maintenance mode is activated. Under this mode, only administrators can login.', 'info'));
 } else {
 	$selected_off = $cfg->HTML_SELECTED;
+	set_page_message(tr('Under maintenance mode, only administrators can login.', 'info'));
 }
 
 generateNavigation($tpl);
@@ -81,7 +84,6 @@ generateNavigation($tpl);
 $tpl->assign(
 	array(
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-		'TR_MESSAGE_TEMPLATE_INFO' => tr('Under this mode only administrators can login'),
 		'TR_MESSAGE' => tr('Message'),
 		'MESSAGE_VALUE' => $cfg->MAINTENANCEMODE_MESSAGE,
 		'SELECTED_ON' => $selected_on,
