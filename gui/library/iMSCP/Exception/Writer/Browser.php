@@ -149,9 +149,6 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 	 */
 	protected function _render()
 	{
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
-
 		$tpl = new iMSCP_pTemplate();
 		$tpl->define_dynamic(
 			array(
