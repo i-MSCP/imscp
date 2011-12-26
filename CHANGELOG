@@ -23,6 +23,8 @@ Features / Enhancements:
 			- Updated jQuery UI to version 1.8.16 (minified version)
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.9
+	Engine:
+		- Add support for Apache2 MPM ITK
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
