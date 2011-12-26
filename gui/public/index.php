@@ -72,9 +72,9 @@ shall_user_wait();
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
+		'layout' => 'shared/layouts/simple.tpl',
 		'page_message' => 'layout',
-		'lostpwd_button' => 'page',
-		'ssl_support' => 'page'));
+		'lostpwd_button' => 'page',));
 
 $tpl->assign(
 	array(
@@ -84,16 +84,20 @@ $tpl->assign(
 		'THEME_CHARSET' => tr('encoding')));
 
 if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableUpdate()) && !isset($_GET['admin'])) {
-	$tpl->define_dynamic('page', 'maintenancemode.tpl');
+	$tpl->define_dynamic('page', 'box.tpl');
 	$tpl->assign(
 		array(
-			'TR_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
-			'TR_ADMINLOGIN' => tr('Administrator login')));
+			'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel / Maintenance'),
+			'CONTEXT_CLASS' => 'box_message',
+			'BOX_MESSAGE_TITLE' => tr('System under maintenance'),
+			'BOX_MESSAGE' => nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
+			'TR_BACK' => tr('Administrator login'),
+			'BACK_BUTTON_DESTINATION' => '/index.php?admin=1'));
 } else {
 	$tpl->define_dynamic(
 		array(
-			'layout' => 'shared/layouts/simple.tpl',
-			'page' => 'index.tpl'));
+			'page' => 'index.tpl',
+			'ssl_support' => 'page'));
 
 	$tpl->assign(
 		array(
@@ -108,25 +112,26 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableU
 			'TR_WEBMAIL_LINK' => '/webmail',
 			'TR_FTP_LINK' => '/ftp',
 			'TR_PMA_LINK' => '/pma'));
-}
 
-if ($cfg->exists('SSL_ENABLED') && $cfg->SSL_ENABLED == 'yes') {
-	$tpl->assign(array(
-		'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
-		'SSL_IMAGE_CLASS' => isset($_SERVER['HTTPS']) ? 'i_unlock' : 'i_lock',
-		'TR_SSL' => !isset($_SERVER['HTTPS']) ? tr('Secure connection') : tr('Normal connection'),
-		'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Use secure connection (SSL)') : tr('Use normal connection (No SSL)')
-	));
-} else {
-	$tpl->assign('SSL_SUPPORT', '');
-}
+	if ($cfg->exists('SSL_ENABLED') && $cfg->SSL_ENABLED == 'yes') {
+		$tpl->assign(array(
+			'SSL_LINK' => isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
+			'SSL_IMAGE_CLASS' => isset($_SERVER['HTTPS']) ? 'i_unlock' : 'i_lock',
+			'TR_SSL' => !isset($_SERVER['HTTPS']) ? tr('Secure connection') : tr('Normal connection'),
+			'TR_SSL_DESCRIPTION' => !isset($_SERVER['HTTPS']) ? tr('Use secure connection (SSL)') : tr('Use normal connection (No SSL)')));
+	} else {
+		$tpl->assign('SSL_SUPPORT', '');
+	}
 
 
-if ($cfg->LOSTPASSWORD) {
-	$tpl->assign('TR_LOSTPW', tr('Lost password'));
-} else {
-	$tpl->assign('LOSTPWD_BUTTON', '');
+	if ($cfg->LOSTPASSWORD) {
+		$tpl->assign('TR_LOSTPW', tr('Lost password'));
+	} else {
+		$tpl->assign('LOSTPWD_BUTTON', '');
+	}
 }
+
+
 
 generatePageMessage($tpl);
 
