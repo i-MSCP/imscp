@@ -12,11 +12,13 @@ Features / Enhancements:
 			- DebugBar - Files plugin: Count and shows the loaded templates files
 		Core:
 			- Added layout color switcher
+			- Events system: Allow to pass arbitrary data to the events listeners methods
+			- Events system: Allow to use closure
+			- Integrated Zend_Navigation component (without view helper)
 			- Reseller level - Added flash message for new orders (Only for confirmed orders)
 			- Reseller level - Added flash message for new domain alias orders
-			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
-			- Events system: Allows to pass arbitrary data to the events listeners methods
 			- PhpMyAdmin on-click logon - Set language according user panel language
+			- pTemplate: Added a set of events (see the iMSCP_pTemplate_Events class)
 		Javascript
 			- Integrated jQuery DataTables plugin (v.1.8.2)
 			- Updated jQuery to version 1.7.1
@@ -24,7 +26,7 @@ Features / Enhancements:
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.9
 	Engine:
-		- Add support for Apache2 MPM ITK
+		- Added support for Apache2 MPM ITK
 
 Tickets:
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
