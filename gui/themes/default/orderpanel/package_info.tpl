@@ -8,9 +8,7 @@
         </th>
     </tr>
     <tr>
-        <td>
-            {DESCRIPTION}
-        </td>
+        <td>{DESCRIPTION}</td>
     </tr>
     <tr>
         <td colspan="2"><strong>{TR_DOMAINS}</strong></td>
@@ -23,7 +21,7 @@
         <td>{ALIAS}</td>
     </tr>
     <tr>
-        <td style="width:400px;">{TR_SUBDOMAINS}</td>
+        <td>{TR_SUBDOMAINS}</td>
         <td>{SUBDOMAIN}</td>
     </tr>
     <tr>
@@ -58,7 +56,7 @@
     </tr>
     <tr>
         <td>{TR_DNS_SUPPORT}</td>
-        <td nowrap="nowrap">{DNS}</td>
+        <td>{DNS}</td>
     </tr>
     <tr>
         <td>{TR_MAIL_ACCOUNTS}</td>
@@ -136,8 +134,6 @@
         <td>{SETUP}</td>
     </tr>
 </table>
-<div style="width:550px;margin-top:25px;text-align:right;">
+<div style="width:550px;text-align:right;">
     <a href="addon.php?coid={CUSTOM_ORDERPANEL_ID}&amp;id={PACK_ID}&amp;user_id={USER_ID}"><strong>{TR_PURCHASE}</strong></a>
 </div>
-<!-- BDP: purchase_footer -->
-<!-- EDP: purchase_footer -->

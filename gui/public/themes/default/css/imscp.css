@@ -340,6 +340,10 @@ p { margin: 0.5em 0;}
 .bold {font-weight: bold;}
 .italic {font-style: italic;}
 
+strong {
+    font-weight: bold;
+}
+
 /* Title icons */
 
 .body .adminlog { background-image: url(../images/content/table_icon_adminlog.png); }

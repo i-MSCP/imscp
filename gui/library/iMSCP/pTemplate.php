@@ -487,7 +487,7 @@ class iMSCP_pTemplate
 	 */
 	public function is_namespace($namespace)
 	{
-		return in_array($namespace, $this->namespace);
+		return array_key_exists($namespace, $this->namespace);
 	}
 
 	/**

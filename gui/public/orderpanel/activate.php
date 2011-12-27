@@ -26,7 +26,7 @@
  *
  * @category	iMSCP
  * @package		iMSCP_Core
- * @subpackage	orderpanel
+ * @subpackage	Orderpanel
  * @copyright	2001-2006 by moleSoftware GmbH
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @copyright	2010-2011 by i-msCP | http://i-mscp.net
@@ -152,17 +152,18 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
-	throw new iMSCP_Exception_Production(
-		tr('You do not have permission to access this interface.'));
+	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }
+
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/simple.tpl',
-		'page' =>  '/box.tpl',
-		'page_message' => 'page',
+		'page' => '/box.tpl',
+		'page_message' => 'layout',
 		'backlink_block' => 'page'));
 
 $tpl->assign('THEME_CHARSET', tr('encoding'));
@@ -182,11 +183,13 @@ $tpl->assign(
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
 		'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
-		'MESSAGE_TITLE' => tr('Order confirmation'),
-		'MESSAGE' => $msg,
+		'BOX_MESSAGE_TITLE' => tr('Order confirmation'),
+		'BOX_MESSAGE' => $msg,
 		'BACKLINK_BLOCK' => ''));
 
-$tpl->parse('PAGE', 'page');
+generatePageMessage($tpl);
+
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
 

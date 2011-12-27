@@ -182,54 +182,45 @@ function gen_select_lists($tpl, $user_month, $user_year)
 /**
  * Helper function to generates header and footer for order panel pages.
  *
- * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param int $userId User unique identifier
  * @param bool $encode Tell whether or not htmlentities() must applied on template
- * @return void
+ * @return array Array that contains Order panel layout
  */
-function gen_purchase_haf($tpl, $userId, $encode = false)
+function gen_purchase_haf($userId, $encode = false)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    if (isset($_SESSION['user_theme'])) {
-        $theme = $_SESSION['user_theme'];
-    } else {
-        $theme = $cfg->USER_INITIAL_THEME;
-    }
-
-    $tpl->assign('THEME_COLOR_PATH', "../themes/$theme");
-
     $query = "SELECT `header`, `footer` FROM `orders_settings` WHERE `user_id` = ?";
     $stmt = exec_query($query, $userId);
 
-    if ($stmt->rowCount()) {
+    if (!$stmt->rowCount()) {
         $header = <<<RIC
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-        <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ORDER_PANEL_PAGE_TITLE}</title>
-        <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-        <link href="{THEME_COLOR_PATH}/css/{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
-        <!--[if IE 6]>
-        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
-        <script type="text/javascript">
-            DD_belatedPNG.fix('*');
-        </script>
-        <![endif]-->
-    </head>
-    <body style="background-image:none;">
-        <div class="body" align="center" style="margin:20px 0 0 0;">
+<head>
+	<title>{TR_PAGE_TITLE}</title>
+	<meta name="robots" content="nofollow, noindex" />
+	<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+	<link href="{THEME_COLOR_PATH}/css/{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
+	<link href="{THEME_COLOR_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+	<!--[if IE 6]>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+	<script type="text/javascript">
+		DD_belatedPNG.fix('.error');
+	</script>
+	<![endif]-->
+</head>
+<body class="no_menu">
+	<div class="body" align="center" style="margin:0;">
+		{LAYOUT_CONTENT}
 RIC;
-
         $footer = <<<RIC
-        </div>
-    </body>
+	</div>
+</body>
 </html>
 RIC;
     } else {
@@ -240,13 +231,11 @@ RIC;
     }
 
     if ($encode) {
-        $header = htmlentities($header, ENT_COMPAT, 'UTF-8');
-        $footer = htmlentities($footer, ENT_COMPAT, 'UTF-8');
+        $header = str_replace(array('{', '}'), array('&#123', '&#125;'),htmlentities($header, ENT_COMPAT, 'UTF-8'));
+        $footer = str_replace(array('{', '}'), array('&#123', '&#125;'),htmlentities($footer, ENT_COMPAT, 'UTF-8'));
     }
 
-    $tpl->assign(array(
-                      'PURCHASE_HEADER' => $header,
-                      'PURCHASE_FOOTER' => $footer));
+	return array($header, $footer);
 }
 
 /**

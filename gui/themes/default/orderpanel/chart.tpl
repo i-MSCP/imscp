@@ -1,5 +1,3 @@
-<!-- BDP: purchase_header -->
-<!-- EDP: purchase_header -->
 
 <!-- BDP: page_message -->
 <div class="{MESSAGE_CLS}" style="width:550px;">{MESSAGE}</div>
@@ -17,7 +15,7 @@
             <td><a href="address.php?edit=yes" class="link">{TR_CHANGE}</a></td>
         </tr>
         <tr>
-            <td style="width:200px;">{TR_FIRSTNAME}</td>
+            <td>{TR_FIRSTNAME}</td>
             <td>{VL_USR_NAME}</td>
         </tr>
         <tr>
@@ -26,10 +24,10 @@
         </tr>
         <tr>
             <td>{TR_EMAIL}</td>
-            <td class="content">{VL_EMAIL}</td>
+            <td>{VL_EMAIL}</td>
         </tr>
         <tr>
-            <td class="content">{TR_COMPANY}</td>
+            <td>{TR_COMPANY}</td>
             <td>{VL_USR_FIRM}</td>
         </tr>
         <tr>
@@ -68,9 +66,8 @@
             <td>{TR_FAX}</td>
             <td>{VL_FAX}</td>
         </tr>
-        <tr style="background:none;border: none;">
-            <td colspan="2">&nbsp;</td>
-        </tr>
+	</table>
+	<table style="width:550px;">
         <tr>
             <th colspan="2"><strong>{TR_COSTS}</strong></th>
         </tr>
@@ -83,23 +80,21 @@
             </td>
         </tr>
         <tr>
-            <td style="width:200px;">{TR_PACKAGE_PRICE}</td>
+            <td>{TR_PACKAGE_PRICE}</td>
             <td>{PRICE}</td>
         </tr>
         <tr>
             <td>{TR_PACKAGE_SETUPFEE}</td>
-            <td class="content2">{SETUP}</td>
+            <td>{SETUP}</td>
         </tr>
-        <tr style="background:none;border: none;">
-            <td colspan="2">&nbsp;</td>
-        </tr>
+	</table>
+	<table style="width:550px;">
         <tr>
             <td><strong>{TR_TOTAL}</strong></td>
             <td align="right"><strong>{TOTAL}</strong></td>
         </tr>
-        <tr style="background:none;border: none;">
-            <td colspan="2">&nbsp;</td>
-        </tr>
+	</table>
+	<table style="width:550px;">
         <!-- BDP: tos_field -->
         <tr>
             <th colspan="2">
@@ -117,7 +112,7 @@
                 <label for="tosAccept">{TR_TOS_ACCEPT}</label>
             </td>
         </tr>
-        <tr style="background:none;border: none;">
+        <tr>
             <td colspan="2">&nbsp;</td>
         </tr>
         <!-- EDP: tos_field -->
@@ -126,19 +121,20 @@
                 <label for="capcode"><strong>{TR_CAPCODE}</strong></label>
             </th>
         </tr>
-        <tr style="background:none;">
+        <tr>
             <td colspan="2" style="text-align: center;">{TR_IMGCAPCODE}</td>
         </tr>
         <tr>
             <td colspan="2" style="text-align:center;">
-                <input name="capcode" type="text" id="capcode" value="" /></td>
+                <input name="capcode" type="text" id="capcode" value="" />
+			</td>
         </tr>
         <tr>
             <td colspan="2">{TR_IMGCAPCODE_DESCRIPTION}</td>
         </tr>
     </table>
-    <div class="buttons" style="width:550px;margin-top:25px;">
-        <input name="Submit" type="submit" class="button" value="{TR_CONTINUE}" />
+    <div class="buttons" style="width:550px;">
+        <input name="submit" type="submit" value="{TR_CONTINUE}" />
     </div>
 </form>
 <!-- BDP: purchase_footer -->

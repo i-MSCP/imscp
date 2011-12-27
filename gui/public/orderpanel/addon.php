@@ -2,15 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-msCP | http://i-mscp.net
- * @version     SVN: $Id$
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -32,6 +23,16 @@
  *
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Orderpanel
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-msCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
 /************************************************************************************
@@ -44,24 +45,24 @@
  */
 function addon_domain($dmn_name)
 {
-    if (!validates_dname($dmn_name)) {
-        global $validation_err_msg;
-        set_page_message(tr($validation_err_msg), 'error');
-        return;
-    }
+	if (!validates_dname($dmn_name)) {
+		global $validation_err_msg;
+		set_page_message(tr($validation_err_msg), 'error');
+		return;
+	}
 
-    // Should be done after domain name validation
-    $dmn_name = encode_idna(strtolower($dmn_name));
+	// Should be done after domain name validation
+	$dmn_name = encode_idna(strtolower($dmn_name));
 
-    if (imscp_domain_exists($dmn_name, 0) ||
-        $dmn_name == iMSCP_Registry::get('config')->BASE_SERVER_VHOST
-    ) {
-        set_page_message(tr('Domain already registered in our database.'));
-        return;
-    }
+	if (imscp_domain_exists($dmn_name, 0) ||
+		$dmn_name == iMSCP_Registry::get('config')->BASE_SERVER_VHOST
+	) {
+		set_page_message(tr('Domain already registered in our database.'));
+		return;
+	}
 
-    $_SESSION['domainname'] = $dmn_name;
-    redirectTo('address.php');
+	$_SESSION['domainname'] = $dmn_name;
+	redirectTo('address.php');
 }
 
 /**
@@ -73,17 +74,17 @@ function addon_domain($dmn_name)
  */
 function is_plan_available($plan_id, $user_id)
 {
-    $cfg = iMSCP_Registry::get('config');
+	$cfg = iMSCP_Registry::get('config');
 
-    if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
-        $query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
-        $stmt = exec_query($query, $plan_id);
-    } else {
-        $query = "SELECT * FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-        $stmt = exec_query($query, array($user_id, $plan_id));
-    }
+	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
+		$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
+		$stmt = exec_query($query, $plan_id);
+	} else {
+		$query = "SELECT * FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
+		$stmt = exec_query($query, array($user_id, $plan_id));
+	}
 
-    return $stmt->recordCount() > 0 && $stmt->fields['status'] != 0;
+	return $stmt->recordCount() > 0 && $stmt->fields['status'] != 0;
 }
 
 /************************************************************************************
@@ -98,57 +99,57 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(array('page' => $cfg->PURCHASE_TEMPLATE_PATH . '/addon.tpl',
-                          'page_message' => 'page',
-                          'purchase_header' => 'page',
-                          'purchase_footer' => 'page'));
-
 if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
+	$user_id = $_SESSION['user_id'];
 
-    if (isset($_SESSION['plan_id'])) {
-        $plan_id = $_SESSION['plan_id'];
-    } else if (isset($_GET['id'])) {
-        $plan_id = $_GET['id'];
-        if (is_plan_available($plan_id, $user_id)) {
-            $_SESSION['plan_id'] = $plan_id;
-        } else {
-            throw new iMSCP_Exception_Production(
-                tr('This hosting plan is not available for purchase.'));
-        }
-    } else {
-        throw new iMSCP_Exception_Production(
-            tr('You do not have permission to access this interface.'));
-    }
+	if (isset($_SESSION['plan_id'])) {
+		$plan_id = $_SESSION['plan_id'];
+	} else if (isset($_GET['id'])) {
+		$plan_id = $_GET['id'];
+		if (is_plan_available($plan_id, $user_id)) {
+			$_SESSION['plan_id'] = $plan_id;
+		} else {
+			throw new iMSCP_Exception_Production(
+				tr('This hosting plan is not available for purchase.'));
+		}
+	} else {
+		throw new iMSCP_Exception_Production(
+			tr('You do not have permission to access this interface.'));
+	}
 } else {
-    throw new iMSCP_Exception_Production(
-        tr('You do not have permission to access this interface.'));
+	throw new iMSCP_Exception_Production(
+		tr('You do not have permission to access this interface.'));
 }
 
 if (isset($_SESSION['domainname'])) {
-    redirectTo('address.php');
+	redirectTo('address.php');
 }
 
 if (isset($_POST['domainname']) && $_POST['domainname'] != '') {
-    addon_domain($_POST['domainname']);
+	addon_domain($_POST['domainname']);
 }
 
-gen_purchase_haf($tpl, $user_id);
+$tpl = new iMSCP_pTemplate();
+$tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
+$tpl->define_dynamic(
+	array(
+		'page' => 'orderpanel/addon.tpl',
+		'page_message' => 'page'));
+
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('Order Panel / Choosing a domain name'),
+		'DOMAIN_ADDON' => tr('Add On A Domain'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_CONTINUE' => tr('Continue'),
+		'TR_EXAMPLE' => tr('(e.g. domain-of-your-choice.com)'),
+		'THEME_CHARSET' => tr('encoding')));
+
 generatePageMessage($tpl);
 
-$tpl->assign(array(
-                  'TR_ORDER_PANEL_PAGE_TITLE' => tr('Order Panel / Choosing a domain name'),
-                  'DOMAIN_ADDON' => tr('Add On A Domain'),
-                  'TR_DOMAIN_NAME' => tr('Domain name'),
-                  'TR_CONTINUE' => tr('Continue'),
-                  'TR_EXAMPLE' => tr('(e.g. domain-of-your-choice.com)'),
-                  'THEME_CHARSET' => tr('encoding')));
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
-$tpl->parse('PAGE', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(
-    iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
 
 $tpl->prnt();
 

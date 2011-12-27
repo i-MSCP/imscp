@@ -2,14 +2,6 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-msCP | http://i-mscp.net
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -25,20 +17,35 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Reseller
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-msCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
+
+// TODO describe available PLACEHOLDERS
 
 /**********************************************************************************
  * Script functions
  */
 
 /**
- *
+ * Save custom order template.
+ * @return void
  */
-function save_haf()
+function reseller_updateOrderTemplate()
 {
 	$user_id = $_SESSION['user_id'];
 	$header = $_POST['header'];
@@ -64,6 +71,15 @@ function save_haf()
 	}
 }
 
+/**
+ * Reset order template.
+ */
+function reseller_resetOrderTemplate()
+{
+	$query = "DELETE FROM `orders_settings` WHERE `user_id` = ?";
+	exec_query($query, $_SESSION['user_id']);
+}
+
 /**********************************************************************************
  * Main script
  */
@@ -87,14 +103,15 @@ $tpl->define_dynamic(
 		'purchase_header' => 'page',
 		'purchase_footer' => 'page'));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
 
-if (isset($_POST['header']) && $_POST['header'] !== '' && isset ($_POST['footer']) && $_POST['footer'] !== '') {
-	save_haf();
+if (isset($_POST['update']) && isset($_POST['header']) && $_POST['header'] !== '' && isset ($_POST['footer'])
+	&& $_POST['footer'] !== ''
+) {
+	reseller_updateOrderTemplate();
+	set_page_message(tr('Template successfully updated.'), 'success');
+} elseif (isset($_POST['reset'])) {
+	reseller_resetOrderTemplate();
+	set_page_message(tr('Template successfully reseted.'), 'success');
 }
 
 $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
@@ -104,15 +121,27 @@ $url .= "coid=$coid&amp;user_id={$_SESSION['user_id']}";
 
 $tpl->assign(
 	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order settings'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ORDER_TEMPLATE' => tr('Order template'),
 		'TR_IMPLEMENT_INFO' => tr('Implementation URL'),
 		'TR_HEADER' => tr('Header'),
 		'TR_IMPLEMENT_URL' => $url,
 		'TR_FOOTER' => tr('Footer'),
 		'TR_PREVIEW' => tr('Preview'),
-		'TR_UPDATE' => tr('Update')));
+		'TR_UPDATE' => tr('Update'),
+		'TR_RESET' => tr('Reset')));
 
-gen_purchase_haf($tpl, $_SESSION['user_id'], true);
+list($header, $footer) = gen_purchase_haf($_SESSION['user_id'], true);
+
+$tpl->assign(
+	array(
+		'PURCHASE_HEADER' => $header,
+		'PURCHASE_FOOTER' => $footer));
+
+set_page_message(tr('You must first update the template to preview your changes.'), 'info');
+
 generateNavigation($tpl);
 generatePageMessage($tpl);
 

@@ -26,9 +26,9 @@ body {
 }
 
 /** Links */
-a {color: rgb(255, 255, 255);}
+a, .body th a {color: rgb(255, 255, 255);}
 .body a {color: rgb(89, 4, 5);}
-a:hover, a.active {color: rgb(92, 186, 218);}
+a:hover, a.active, .body th a:hover {color: rgb(92, 186, 218);}
 
 /** Header */
 .header {background: rgb(110, 14, 15) url(../images/red/background/top_bg.jpg) repeat-x top left;}
