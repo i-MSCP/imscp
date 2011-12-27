@@ -1,1 +1,0 @@
-   # httpd awstats support END.
