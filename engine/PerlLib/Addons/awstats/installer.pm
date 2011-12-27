@@ -55,13 +55,18 @@ sub askAwstats{
 	}
 
 	if($main::imscpConfig{'AWSTATS_ACTIVE'} eq 'yes'){
-		unless(!$force && defined $main::imscpConfig{'AWSTATS_MODE'} && $main::imscpConfig{'AWSTATS_MODE'} =~ /0|1/){
-			if(!$force && defined $main::imscpConfigOld{'AWSTATS_MODE'} && $main::imscpConfigOld{'AWSTATS_MODE'} =~ /0|1/){
+		if($force){
+			while (! ($rs = iMSCP::Dialog->factory()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
+			$rs = $rs eq 'dynamic' ? 0 : 1;
+			$main::imscpConfig{'AWSTATS_MODE'} = $rs;
+		}
+		if(!defined $main::imscpConfig{'AWSTATS_MODE'} || $main::imscpConfig{'AWSTATS_MODE'} !~ /0|1/){
+			if(defined $main::imscpConfigOld{'AWSTATS_MODE'} && $main::imscpConfigOld{'AWSTATS_MODE'} =~ /0|1/){
 				$main::imscpConfig{'AWSTATS_MODE'}	= $main::imscpConfigOld{'AWSTATS_MODE'};
 			} else {
 				while (! ($rs = iMSCP::Dialog->factory()->radiolist("Select Awstats mode?", 'dynamic', 'static'))){}
 				$rs = $rs eq 'dynamic' ? 0 : 1;
-				$main::imscpConfig{'AWSTATS_MODE'} = $rs if $rs ne $main::imscpConfig{'AWSTATS_MODE'};
+				$main::imscpConfig{'AWSTATS_MODE'} = $rs;
 			}
 		}
 	} else {

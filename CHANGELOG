@@ -38,6 +38,7 @@ Tickets:
 	- Fixed #255: Defect - Hide support feature menu item at user level
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
+	- Fixed #262: Defect - AWStats not included in apache logrotate config
 	- Fixed #263: Defect - Unable to delete htusers && htgroups
 	- Fixed #264: Defect - PHP Editor not available
 	- Fixed #265: Defect - Disabled feature can not be enabled
@@ -55,6 +56,7 @@ Tickets:
 	- Fixed #289: Defect - Ubuntu update error without end
 	- Fixed #292: Feature - Layout color chooser
 	- Fixed #294: Defect - Notice: Undefined index: user_id...
+	- Fixed #297: Defect - Wrong data type in PerlLib/Addons/awstats.pm line 196
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

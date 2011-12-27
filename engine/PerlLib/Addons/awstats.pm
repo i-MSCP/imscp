@@ -199,11 +199,11 @@ sub addDmn{
 			mode	=> 0755,
 			user	=> $data->{USER},
 			group	=> $data->{GROUP}
-	}) if ($main::imscpConfig{AWSTATS_MODE} == 1);
+	}) if $main::imscpConfig{AWSTATS_MODE};
 
 	if($main::imscpConfig{AWSTATS_ACTIVE} =~ m/yes/i){
 		$rs |= $self->addAwstatsCfg($data);
-		$rs |= $self->addAwstatsCron($data) if ($main::imscpConfig{AWSTATS_MODE} == 1);
+		$rs |= $self->addAwstatsCron($data) if $main::imscpConfig{AWSTATS_MODE};
 	}
 	$rs;
 }
