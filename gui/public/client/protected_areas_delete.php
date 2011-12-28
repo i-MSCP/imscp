@@ -91,6 +91,6 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	set_page_message(tr('Protected area successfully scheduled for deletion.'), 'success');
 	redirectTo('protected_areas.php');
 } else {
-	set_page_message(tr('You do not sufficient permissions to perform this operation.'), 'error');
+	set_page_message(tr('You do not have sufficient permissions to perform this operation.'), 'error');
 	redirectTo('protected_areas.php');
 }
