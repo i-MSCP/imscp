@@ -59,6 +59,7 @@ Tickets:
 	- Fixed #292: Feature - Layout color chooser
 	- Fixed #294: Defect - Notice: Undefined index: user_id...
 	- Fixed #297: Defect - Wrong data type in PerlLib/Addons/awstats.pm line 196
+	- Fixed #298: Defect - Configuration variable `CLIENT_TEMPLATE_PATH` is missing.
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
