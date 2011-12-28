@@ -27,46 +27,30 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
-// Include core library
-require_once 'imscp-lib.php';
+// TODO: Replace popup by modal dialog (jQuery)
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login(__FILE__);
-
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('ftp')) {
-    redirectTo('index.php');
-}
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/ftp_choose_dir.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('ftp_chooser', 'page');
-$tpl->define_dynamic('dir_item', 'ftp_chooser');
-$tpl->define_dynamic('list_item', 'dir_item');
-$tpl->define_dynamic('action_link', 'list_item');
+/********************************************************************
+ * Function
+ */
 
 /**
- * @param $tpl
+ * Generates directories list.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
  * @return
  */
-function gen_directories($tpl) {
-
+function client_generateDirectoriesList($tpl)
+{
 	// Initialize variables
-	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
+	$path = isset($_GET['cur_dir']) ? clean_input($_GET['cur_dir']) : '';
 	$domain = $_SESSION['user_logged'];
 
 	// Create the virtual file system and open it so it can be used
@@ -76,7 +60,7 @@ function gen_directories($tpl) {
 	$list = $vfs->ls($path);
 
 	if (!$list) {
-		set_page_message(tr('Cannot open directory. Please contact your administrator.'), 'error');
+		set_page_message(tr('Unable to retrieve directories list for your domain. Please contact your reseller.'), 'error');
 		$tpl->assign('FTP_CHOOSER', '');
 		return;
 	}
@@ -85,14 +69,13 @@ function gen_directories($tpl) {
 	array_pop($parent);
 	$parent = implode('/', $parent);
 
-	$tpl->assign('ACTION_LINK', '');
-
 	$tpl->assign(
 		array(
-			 'ACTION' => '',
-			 'ICON' => 'parent',
-			 'DIR_NAME' => tr('Parent Directory'),
-			 'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,));
+			'ACTION_LINK' => '',
+			'ACTION' => '',
+			'ICON' => 'parent',
+			'DIR_NAME' => tr('Parent Directory'),
+			'LINK' => "ftp_choose_dir.php?cur_dir=$parent"));
 
 	$tpl->parse('DIR_ITEM', '.dir_item');
 
@@ -114,33 +97,61 @@ function gen_directories($tpl) {
 		// Create the directory link
 		$tpl->assign(
 			array(
-				 'DIR_NAME' => tohtml($entry['file']),
-				 'CHOOSE_IT' => $dr,
-				 'LINK' => 'ftp_choose_dir.php?cur_dir=' . $dr));
+				'DIR_NAME' => tohtml($entry['file']),
+				'CHOOSE_IT' => $dr,
+				'LINK' => 'ftp_choose_dir.php?cur_dir=' . $dr));
 
 		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp/i');
 		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
 		($forbidden == 1) ? $tpl->assign('ACTION_LINK', '') : $tpl->parse('ACTION_LINK', 'action_link');
 
-		$tpl->parse('DIR_ITEM' , '.dir_item');
+		$tpl->parse('DIR_ITEM', '.dir_item');
 	}
 }
 
+/********************************************************************
+ * Main script
+ */
+// Include core library
+require_once 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login(__FILE__);
+
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('ftp') && !customerHasFeature('protected_areas')) {
+	redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/simple.tpl',
+		'page' => 'client/ftp_choose_dir.tpl',
+		'page_message' => 'layout',
+		'ftp_chooser' => 'page',
+		'dir_item' => 'ftp_chooser',
+		'list_item' => 'dir_item',
+		'action_link' => 'list_item'));
+
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Ftp / Choose directory'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Ftp / Choose directory'),
+		'CONTEXT_CLASS' => 'box_message ftp_choose_dir',
+		'THEME_CHARSET' => tr('encoding'),
+		'productLongName' => tr('internet Multi Server Control Panel'),
+		'productLink' => 'http://www.i-mscp.net',
+		'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
+		'TR_DIRECTORY_TREE' => tr('Directory tree'),
+		'TR_DIRS' => tr('Directories'),
+		'TR_ACTION' => tr('Action'),
+		'CHOOSE' => tr('Choose')));
 
-gen_directories($tpl);
-
-$tpl->assign(
-	array(
-		 'TR_DIRECTORY_TREE' => tr('Directory tree'),
-		 'TR_DIRS' => tr('Directories'),
-		 'TR_ACTION' => tr('Action'),
-		 'CHOOSE' => tr('Choose')));
-
+client_generateDirectoriesList($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

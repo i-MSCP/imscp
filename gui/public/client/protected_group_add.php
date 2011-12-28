@@ -27,51 +27,26 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
-// Include core library
-require_once 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login(__FILE__);
-
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('protected_areas')) {
-    redirectTo('index.php');
-}
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/puser_gadd.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('usr_msg', 'page');
-$tpl->define_dynamic('grp_msg', 'page');
-$tpl->define_dynamic('pusres', 'page');
-$tpl->define_dynamic('pgroups', 'page');
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools Protected areas / Add group'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
+/******************************************************************
+ * Script functions
+ */
 
 /**
- * @param $tpl
- * @param $dmn_id
+ * Adds Htaccess group.
+ *
+ * @param int $domainId Domain unique identifier
  * @return
  */
-function padd_group($tpl, $dmn_id) {
-
+function client_addHtaccessGroup($domainId)
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -95,9 +70,9 @@ function padd_group($tpl, $dmn_id) {
 				AND
 					`dmn_id` = ?
 			";
-			$rs = exec_query($query, array($groupname, $dmn_id));
+			$rs = exec_query($query, array($groupname, $domainId));
 
-			if ($rs->recordCount() == 0) {
+			if ($rs->rowCount() == 0) {
 				$change_status = $cfg->ITEM_ADD_STATUS;
 
 				$query = "
@@ -107,22 +82,20 @@ function padd_group($tpl, $dmn_id) {
 					    ?, ?, ?
 					)
 				";
-
-				exec_query($query, array($dmn_id, $groupname, $change_status));
+				exec_query($query, array($domainId, $groupname, $change_status));
 
 				send_request();
-
-				set_page_message(tr('Group scheduled for addition.'), 'success');
+				set_page_message(tr('Htaccess group successfully scheduled for addition.'), 'success');
 
 				$admin_login = $_SESSION['user_logged'];
-				write_log("$admin_login: add group (protected areas): $groupname", E_USER_NOTICE);
+				write_log("$admin_login: added htaccess group: $groupname", E_USER_NOTICE);
 				redirectTo('protected_user_manage.php');
 			} else {
-				set_page_message(tr('Group already exists.'), 'error');
+				set_page_message(tr('This htaccess group already exists.'), 'error');
 				return;
 			}
 		} else {
-			set_page_message(tr('Invalid group name.'), 'error');
+			set_page_message(tr('Invalid htaccess group name.'), 'error');
 			return;
 		}
 	} else {
@@ -130,29 +103,48 @@ function padd_group($tpl, $dmn_id) {
 	}
 }
 
-generateNavigation($tpl);
-padd_group($tpl, get_user_domain_id($_SESSION['user_id']));
+/************************************************************************
+ * Main script
+ */
+
+// Include core library
+require_once 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login(__FILE__);
+
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('protected_areas')) {
+	redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/puser_gadd.tpl',
+		'page_message' => 'page',
+		'usr_msg' => 'page',
+		'grp_msg' => 'page',
+		'pusres' => 'page',
+		'pgroups' => 'page'));
 
 $tpl->assign(
 	array(
-		'TR_HTACCESS'			=> tr('Protected areas'),
-		'TR_ACTION'				=> tr('Action'),
-		'TR_USER_MANAGE'		=> tr('Manage user'),
-		'TR_USERS'				=> tr('User'),
-		'TR_USERNAME'			=> tr('Username'),
-		'TR_ADD_USER'			=> tr('Add user'),
-		'TR_GROUPNAME'			=> tr('Group name'),
-		'TR_GROUP_MEMBERS'		=> tr('Group members'),
-		'TR_ADD_GROUP'			=> tr('Add group'),
-		'TR_EDIT'				=> tr('Edit'),
-		'TR_GROUP'				=> tr('Group'),
-		'TR_DELETE'				=> tr('Delete'),
-		'TR_GROUPS'				=> tr('Groups'),
-		'TR_PASSWORD'			=> tr('Password'),
-		'TR_PASSWORD_REPEAT'	=> tr('Repeat password'),
-		'TR_CANCEL'				=> tr('Cancel'),
-		'TR_HTACCESS_USER' => tr('Manage users and groups')));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools Protected areas / Add Htaccess group'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_HTACCESS_GROUP' => tr('Htaccess group'),
+		'TR_GROUPNAME' => tr('Group name'),
+		'TR_ADD_GROUP' => tr('Add'),
+		'TR_CANCEL' => tr('Cancel')));
 
+generateNavigation($tpl);
+client_addHtaccessGroup(get_user_domain_id($_SESSION['user_id']));
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

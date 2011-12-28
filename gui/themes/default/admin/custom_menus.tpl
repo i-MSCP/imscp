@@ -44,7 +44,7 @@
 			<form name="menuFrm" method="post" action="custom_menus.php">
 				<table class="firstColFixed">
 					<tr>
-						<th colspan="2">{TR_FORM_NAME}</th>
+						<th colspan="2">{TR_DYNAMIC_TITLE}</th>
 					</tr>
 					<tr>
 						<td><label for="menu_name">{TR_MENU_NAME}</label></td>

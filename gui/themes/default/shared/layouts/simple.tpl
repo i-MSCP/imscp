@@ -39,7 +39,7 @@
 		<div id="message" class="{MESSAGE_CLS}">{MESSAGE}</div>
 	<!-- EDP: page_message -->
 	</div>
-	<div id="body">
+	<div class="body">
 		{LAYOUT_CONTENT}
 	</div>
 </body>

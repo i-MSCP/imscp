@@ -231,8 +231,8 @@ RIC;
     }
 
     if ($encode) {
-        $header = str_replace(array('{', '}'), array('&#123', '&#125;'),htmlentities($header, ENT_COMPAT, 'UTF-8'));
-        $footer = str_replace(array('{', '}'), array('&#123', '&#125;'),htmlentities($footer, ENT_COMPAT, 'UTF-8'));
+        $header = str_replace(array('{', '}'), array('&#123', '&#125;'), htmlentities($header, ENT_COMPAT, 'UTF-8'));
+        $footer = str_replace(array('{', '}'), array('&#123', '&#125;'), htmlentities($footer, ENT_COMPAT, 'UTF-8'));
     }
 
 	return array($header, $footer);
@@ -383,6 +383,10 @@ function generateNavigation($tpl)
 								}
 
 								// ad subpage to breadcrumbs
+								if(null != ($label = $subpage->get('dynamic_title'))) {
+									$tpl->assign('LABEL', $label);
+								}
+
 								$tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
 							}
 						}

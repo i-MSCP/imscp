@@ -575,25 +575,25 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
  */
 function gen_page_lists($tpl, $user_id) {
 
-	global $dmn_id;
+	global $domainId;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list($dmn_id,$dmn_name,,,,,,,$dmn_mailacc_limit
+	list($domainId,$dmn_name,,,,,,,$dmn_mailacc_limit
 	) = get_domain_default_props($user_id);
 
-	$dmn_mails = gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name);
-	$sub_mails = gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name);
-	$alssub_mails = gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name);
-	$als_mails = gen_page_als_mail_list($tpl, $dmn_id, $dmn_name);
+	$dmn_mails = gen_page_dmn_mail_list($tpl, $domainId, $dmn_name);
+	$sub_mails = gen_page_sub_mail_list($tpl, $domainId, $dmn_name);
+	$alssub_mails = gen_page_als_sub_mail_list($tpl, $domainId, $dmn_name);
+	$als_mails = gen_page_als_mail_list($tpl, $domainId, $dmn_name);
 
 	// If 'uaction' is set and own value is != 'hide', the total includes
 	// the number of email by default
 	$counted_mails = $total_mails =
 		$dmn_mails + $sub_mails + $als_mails + $alssub_mails;
 
-	$default_mails = count_default_mails($dmn_id);
+	$default_mails = count_default_mails($domainId);
 
 	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'show') {
@@ -706,7 +706,7 @@ $tpl->assign(
 
 // Displays the "show/hide" button for default emails
 // only if default mail address exists
-if (count_default_mails($dmn_id) > 0) {
+if (count_default_mails($domainId) > 0) {
 
 	$tpl->assign(
 		array(

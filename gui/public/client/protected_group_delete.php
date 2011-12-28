@@ -108,9 +108,9 @@ while (!$rs->EOF) {
 	$rs->moveNext();
 }
 
-set_page_message(tr('Group scheduled for deletion.'), 'success');
+set_page_message(tr('Htaccess group successfully scheduled for deletion.'), 'success');
 
 send_request();
 
-write_log($_SESSION['user_logged'].": deletes group ID (protected areas): $group_id", E_USER_NOTICE);
+write_log($_SESSION['user_logged'].": deleted Htaccess group ID: $group_id", E_USER_NOTICE);
 redirectTo('protected_user_manage.php');

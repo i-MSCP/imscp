@@ -280,7 +280,7 @@ function showHideBlocks(id) {
  * @return boolean prevent loading of new page on main page
  */
 function showFileTree() {
-	libwindow = window.open("ftp_choose_dir.php", "FileTreeDialogPage", "menubar=no,width=470,height=350,scrollbars=yes");
+	libwindow = window.open("ftp_choose_dir.php", "FileTreeDialogPage", "menubar=no,width=550,height=400,scrollbars=yes");
 	return false; // return false to prevent loading of new main page
 }
 

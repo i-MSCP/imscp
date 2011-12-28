@@ -29,310 +29,310 @@
  -->
 
 <config>
-    <navigation>
-        <general_information>
-            <label>General Information</label>
-            <uri>/admin/index.php</uri>
-            <class>general</class>
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/admin/index.php</uri>
-                    <title_class>general</title_class>
-                </overview>
-                <server_status>
-                    <label>Services status</label>
-                    <uri>/admin/server_status.php</uri>
-                    <title_class>serverstatus</title_class>
-                </server_status>
-                <admin_log>
-                    <label>Admin log</label>
-                    <uri>/admin/admin_log.php</uri>
-                    <title_class>adminlog</title_class>
-                </admin_log>
-            </pages>
-        </general_information>
+	<navigation>
+		<general_information>
+			<label>General Information</label>
+			<uri>/admin/index.php</uri>
+			<class>general</class>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/admin/index.php</uri>
+					<title_class>general</title_class>
+				</overview>
+				<server_status>
+					<label>Services status</label>
+					<uri>/admin/server_status.php</uri>
+					<title_class>serverstatus</title_class>
+				</server_status>
+				<admin_log>
+					<label>Admin log</label>
+					<uri>/admin/admin_log.php</uri>
+					<title_class>adminlog</title_class>
+				</admin_log>
+			</pages>
+		</general_information>
 
-        <manage_users>
-            <label>Manage Users</label>
-            <uri>/admin/manage_users.php</uri>
-            <class>manage_users</class>
-            <pages>
-                <overview>
-                    <label>Users</label>
-                    <uri>/admin/manage_users.php</uri>
-                    <title_class>users</title_class>
-                    <pages>
-                        <reseller_edit_link>
-                            <label>Edit reseller</label>
-                            <uri>/admin/reseller_edit.php</uri>
-                            <title_class>user_green</title_class>
-                            <visible>0</visible>
-                        </reseller_edit_link>
-                        <domain_detail_link>
-                            <label>Domain detail</label>
-                            <uri>/admin/domain_details.php</uri>
-                            <title_class>general</title_class>
-                            <visible>0</visible>
-                        </domain_detail_link>
-                        <customer_edit_link>
-                            <label>Edit customer</label>
-                            <uri>/admin/admin_edit.php</uri>
-                            <title_class>user_blue</title_class>
-                            <visible>0</visible>
-                        </customer_edit_link>
-                        <domain_edit_link>
-                            <label>Edit domain</label>
-                            <uri>/admin/domain_edit.php</uri>
-                            <title_class>domains</title_class>
-                            <visible>0</visible>
-                        </domain_edit_link>
-                    </pages>
-                </overview>
-                <add_admin>
-                    <label>Add admin</label>
-                    <uri>/admin/admin_add.php</uri>
-                    <title_class>user_yellow</title_class>
-                </add_admin>
-                <add_reseller>
-                    <label>Add reseller</label>
-                    <uri>/admin/reseller_add.php</uri>
-                    <title_class>user_green</title_class>
-                </add_reseller>
-                <resellers_assignment>
-                    <label>Resellers assignment</label>
-                    <uri>/admin/manage_reseller_owners.php</uri>
-                    <title_class>users2</title_class>
-                </resellers_assignment>
-                <customers_assignment>
-                    <label>Customers assignment</label>
-                    <uri>/admin/manage_reseller_users.php</uri>
-                    <title_class>users2</title_class>
-                </customers_assignment>
-                <circular>
-                    <label>Circular</label>
-                    <uri>/admin/circular.php</uri>
-                    <title_class>email</title_class>
-                </circular>
-                <sessions_management>
-                    <label>Sessions</label>
-                    <uri>/admin/sessions_manage.php</uri>
-                    <title_class>users2</title_class>
-                </sessions_management>
-            </pages>
-        </manage_users>
+		<manage_users>
+			<label>Manage Users</label>
+			<uri>/admin/manage_users.php</uri>
+			<class>manage_users</class>
+			<pages>
+				<overview>
+					<label>Users</label>
+					<uri>/admin/manage_users.php</uri>
+					<title_class>users</title_class>
+					<pages>
+						<reseller_edit_link>
+							<label>Edit reseller</label>
+							<uri>/admin/reseller_edit.php</uri>
+							<title_class>user_green</title_class>
+							<visible>0</visible>
+						</reseller_edit_link>
+						<domain_detail_link>
+							<label>Domain detail</label>
+							<uri>/admin/domain_details.php</uri>
+							<title_class>general</title_class>
+							<visible>0</visible>
+						</domain_detail_link>
+						<customer_edit_link>
+							<label>Edit customer</label>
+							<uri>/admin/admin_edit.php</uri>
+							<title_class>user_blue</title_class>
+							<visible>0</visible>
+						</customer_edit_link>
+						<domain_edit_link>
+							<label>Edit domain</label>
+							<uri>/admin/domain_edit.php</uri>
+							<title_class>domains</title_class>
+							<visible>0</visible>
+						</domain_edit_link>
+					</pages>
+				</overview>
+				<add_admin>
+					<label>Add admin</label>
+					<uri>/admin/admin_add.php</uri>
+					<title_class>user_yellow</title_class>
+				</add_admin>
+				<add_reseller>
+					<label>Add reseller</label>
+					<uri>/admin/reseller_add.php</uri>
+					<title_class>user_green</title_class>
+				</add_reseller>
+				<resellers_assignment>
+					<label>Resellers assignment</label>
+					<uri>/admin/manage_reseller_owners.php</uri>
+					<title_class>users2</title_class>
+				</resellers_assignment>
+				<customers_assignment>
+					<label>Customers assignment</label>
+					<uri>/admin/manage_reseller_users.php</uri>
+					<title_class>users2</title_class>
+				</customers_assignment>
+				<circular>
+					<label>Circular</label>
+					<uri>/admin/circular.php</uri>
+					<title_class>email</title_class>
+				</circular>
+				<sessions_management>
+					<label>Sessions</label>
+					<uri>/admin/sessions_manage.php</uri>
+					<title_class>users2</title_class>
+				</sessions_management>
+			</pages>
+		</manage_users>
 
-        <hosting_plans>
-            <label>Hosting plans</label>
-            <uri>/admin/hosting_plan.php</uri>
-            <class>hosting_plans</class>
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/admin/hosting_plan.php</uri>
-                    <title_class>hosting_plans</title_class>
-                    <pages>
-                        <hosting_plan_edit_link>
-                            <label>Edit hosting plan</label>
-                            <uri>/admin/hosting_plan_edit.php</uri>
-                            <title_class>hosting_plans</title_class>
-                            <visible>0</visible>
-                        </hosting_plan_edit_link>
-                    </pages>
-                </overview>
-                <add_hosting_plan>
-                    <label>Add hosting plan</label>
-                    <uri>/admin/hosting_plan_add.php</uri>
-                    <title_class>hosting_plans</title_class>
-                </add_hosting_plan>
-            </pages>
-        </hosting_plans>
+		<hosting_plans>
+			<label>Hosting plans</label>
+			<uri>/admin/hosting_plan.php</uri>
+			<class>hosting_plans</class>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/admin/hosting_plan.php</uri>
+					<title_class>hosting_plans</title_class>
+					<pages>
+						<hosting_plan_edit_link>
+							<label>Edit hosting plan</label>
+							<uri>/admin/hosting_plan_edit.php</uri>
+							<title_class>hosting_plans</title_class>
+							<visible>0</visible>
+						</hosting_plan_edit_link>
+					</pages>
+				</overview>
+				<add_hosting_plan>
+					<label>Add hosting plan</label>
+					<uri>/admin/hosting_plan_add.php</uri>
+					<title_class>hosting_plans</title_class>
+				</add_hosting_plan>
+			</pages>
+		</hosting_plans>
 
-        <system_tools>
-            <label>System tools</label>
-            <uri>/admin/system_info.php</uri>
-            <class>webtools</class>
-            <pages>
-                <overview>
-                    <label>System information</label>
-                    <uri>/admin/system_info.php</uri>
-                    <title_class>tools</title_class>
-                </overview>
-                <maintenance_mode>
-                    <label>Maintenance mode</label>
-                    <uri>/admin/settings_maintenance_mode.php</uri>
-                    <title_class>maintenancemode</title_class>
-                </maintenance_mode>
-                <updates>
-                    <label>Updates</label>
-                    <uri>/admin/imscp_updates.php</uri>
-                    <title_class>update</title_class>
-                </updates>
-                <database_updates>
-                    <label>Database updates</label>
-                    <uri>/admin/database_update.php</uri>
-                    <title_class>update</title_class>
-                </database_updates>
-                <debugger>
-                    <label>Debugger</label>
-                    <uri>/admin/imscp_debugger.php</uri>
-                    <title_class>debugger</title_class>
-                </debugger>
-                <rootkits_log>
-                    <label>Rootkit logs</label>
-                    <uri>/admin/rootkit_log.php</uri>
-                    <title_class>general</title_class>
-                </rootkits_log>
-            </pages>
-        </system_tools>
+		<system_tools>
+			<label>System tools</label>
+			<uri>/admin/system_info.php</uri>
+			<class>webtools</class>
+			<pages>
+				<overview>
+					<label>System information</label>
+					<uri>/admin/system_info.php</uri>
+					<title_class>tools</title_class>
+				</overview>
+				<maintenance_mode>
+					<label>Maintenance mode</label>
+					<uri>/admin/settings_maintenance_mode.php</uri>
+					<title_class>maintenancemode</title_class>
+				</maintenance_mode>
+				<updates>
+					<label>Updates</label>
+					<uri>/admin/imscp_updates.php</uri>
+					<title_class>update</title_class>
+				</updates>
+				<database_updates>
+					<label>Database updates</label>
+					<uri>/admin/database_update.php</uri>
+					<title_class>update</title_class>
+				</database_updates>
+				<debugger>
+					<label>Debugger</label>
+					<uri>/admin/imscp_debugger.php</uri>
+					<title_class>debugger</title_class>
+				</debugger>
+				<rootkits_log>
+					<label>Rootkit logs</label>
+					<uri>/admin/rootkit_log.php</uri>
+					<title_class>general</title_class>
+				</rootkits_log>
+			</pages>
+		</system_tools>
 
-        <statistics>
-            <label>Statistics</label>
-            <uri>/admin/server_statistic.php</uri>
-            <class>statistics</class>
-            <pages>
-                <server_statistic>
-                    <label>Server statistics</label>
-                    <uri>/admin/server_statistic.php</uri>
-                    <title_class>stats</title_class>
-                </server_statistic>
-                <resellers_statistics>
-                    <label>Reseller's statistics</label>
-                    <uri>/admin/reseller_statistics.php</uri>
-                    <title_class>stats</title_class>
-                    <pages>
-                        <reseller_user_statistics_link>
-                            <label>Customer statistics</label>
-                            <uri>/admin/reseller_user_statistics.php</uri>
-                            <visible>0</visible>
-                            <title_class>statistics</title_class>
-                            <pages>
-                                <domain_statistics_link>
-                                    <label>Domain_statistics</label>
-                                    <uri>/admin/domain_statistics.php</uri>
-                                    <visible>0</visible>
-                                    <title_class>statistics</title_class>
-                                </domain_statistics_link>
-                            </pages>
-                        </reseller_user_statistics_link>
-                    </pages>
-                </resellers_statistics>
-                <ip_usage>
-                    <label>Ip usage</label>
-                    <uri>/admin/ip_usage.php</uri>
-                    <title_class>ip</title_class>
-                </ip_usage>
-            </pages>
-        </statistics>
+		<statistics>
+			<label>Statistics</label>
+			<uri>/admin/server_statistic.php</uri>
+			<class>statistics</class>
+			<pages>
+				<server_statistic>
+					<label>Server statistics</label>
+					<uri>/admin/server_statistic.php</uri>
+					<title_class>stats</title_class>
+				</server_statistic>
+				<resellers_statistics>
+					<label>Reseller's statistics</label>
+					<uri>/admin/reseller_statistics.php</uri>
+					<title_class>stats</title_class>
+					<pages>
+						<reseller_user_statistics_link>
+							<label>Customer statistics</label>
+							<uri>/admin/reseller_user_statistics.php</uri>
+							<visible>0</visible>
+							<title_class>statistics</title_class>
+							<pages>
+								<domain_statistics_link>
+									<label>Domain_statistics</label>
+									<uri>/admin/domain_statistics.php</uri>
+									<visible>0</visible>
+									<title_class>statistics</title_class>
+								</domain_statistics_link>
+							</pages>
+						</reseller_user_statistics_link>
+					</pages>
+				</resellers_statistics>
+				<ip_usage>
+					<label>Ip usage</label>
+					<uri>/admin/ip_usage.php</uri>
+					<title_class>ip</title_class>
+				</ip_usage>
+			</pages>
+		</statistics>
 
-        <support_system>
-            <label>Support system</label>
-            <uri>/admin/ticket_system.php</uri>
-            <class>support</class>
-            <pages>
-                <open_tickets>
-                    <label>Open tickets</label>
-                    <uri>/admin/ticket_system.php</uri>
-                    <title_class>support</title_class>
-                </open_tickets>
-                <closed_tickets>
-                    <label>Closes tickets</label>
-                    <uri>/admin/ticket_closed.php</uri>
-                    <title_class>support</title_class>
-                </closed_tickets>
-            </pages>
-        </support_system>
+		<support_system>
+			<label>Support system</label>
+			<uri>/admin/ticket_system.php</uri>
+			<class>support</class>
+			<pages>
+				<open_tickets>
+					<label>Open tickets</label>
+					<uri>/admin/ticket_system.php</uri>
+					<title_class>support</title_class>
+				</open_tickets>
+				<closed_tickets>
+					<label>Closes tickets</label>
+					<uri>/admin/ticket_closed.php</uri>
+					<title_class>support</title_class>
+				</closed_tickets>
+			</pages>
+		</support_system>
 
-        <settings>
-            <label>Settings</label>
-            <uri>/admin/settings.php</uri>
-            <class>settings</class>
-            <pages>
-                <general>
-                    <label>General settings</label>
-                    <uri>/admin/settings.php</uri>
-                    <title_class>general</title_class>
-                </general>
-                <language>
-                    <label>Languages</label>
-                    <uri>/admin/multilanguage.php</uri>
-                    <title_class>multilanguage</title_class>
-                </language>
-                <custom_menus>
-                    <label>Custom menus</label>
-                    <dynamic_title>{TR_FORM_NAME}</dynamic_title>
-                    <uri>/admin/custom_menus.php</uri>
-                    <title_class>custom_link</title_class>
-                </custom_menus>
-                <ip_management>
-                    <label>Ip mangement</label>
-                    <uri>/admin/ip_manage.php</uri>
-                    <title_class>ip</title_class>
-                </ip_management>
-                <server_traffic>
-                    <label>Server traffic</label>
-                    <uri>/admin/settings_server_traffic.php</uri>
-                    <title_class>traffic</title_class>
-                </server_traffic>
-                <welcome_mail>
-                    <label>Welcome mail</label>
-                    <uri>/admin/settings_welcome_mail.php</uri>
-                    <title_class>email</title_class>
-                </welcome_mail>
-                <lostpassword_mail>
-                    <label>Lost password mail</label>
-                    <uri>/admin/settings_lostpassword.php</uri>
-                    <title_class>email</title_class>
-                </lostpassword_mail>
-                <service_ports>
-                    <label>Service ports</label>
-                    <uri>/admin/settings_ports.php</uri>
-                    <title_class>general</title_class>
-                </service_ports>
-                <softwares_management>
-                    <label>Softwares management</label>
-                    <uri>/admin/software_manage.php</uri>
-                    <title_class>apps_installer</title_class>
-                </softwares_management>
-                <softwares_options>
-                    <label>Software options</label>
-                    <uri>/admin/software_options.php</uri>
-                    <title_class>apps_installer</title_class>
-                </softwares_options>
-            </pages>
-        </settings>
+		<settings>
+			<label>Settings</label>
+			<uri>/admin/settings.php</uri>
+			<class>settings</class>
+			<pages>
+				<general>
+					<label>General settings</label>
+					<uri>/admin/settings.php</uri>
+					<title_class>general</title_class>
+				</general>
+				<language>
+					<label>Languages</label>
+					<uri>/admin/multilanguage.php</uri>
+					<title_class>multilanguage</title_class>
+				</language>
+				<custom_menus>
+					<label>Custom menus</label>
+					<dynamic_title>{TR_DYNAMIC_TITLE}</dynamic_title>
+					<uri>/admin/custom_menus.php</uri>
+					<title_class>custom_link</title_class>
+				</custom_menus>
+				<ip_management>
+					<label>Ip mangement</label>
+					<uri>/admin/ip_manage.php</uri>
+					<title_class>ip</title_class>
+				</ip_management>
+				<server_traffic>
+					<label>Server traffic</label>
+					<uri>/admin/settings_server_traffic.php</uri>
+					<title_class>traffic</title_class>
+				</server_traffic>
+				<welcome_mail>
+					<label>Welcome mail</label>
+					<uri>/admin/settings_welcome_mail.php</uri>
+					<title_class>email</title_class>
+				</welcome_mail>
+				<lostpassword_mail>
+					<label>Lost password mail</label>
+					<uri>/admin/settings_lostpassword.php</uri>
+					<title_class>email</title_class>
+				</lostpassword_mail>
+				<service_ports>
+					<label>Service ports</label>
+					<uri>/admin/settings_ports.php</uri>
+					<title_class>general</title_class>
+				</service_ports>
+				<softwares_management>
+					<label>Softwares management</label>
+					<uri>/admin/software_manage.php</uri>
+					<title_class>apps_installer</title_class>
+				</softwares_management>
+				<softwares_options>
+					<label>Software options</label>
+					<uri>/admin/software_options.php</uri>
+					<title_class>apps_installer</title_class>
+				</softwares_options>
+			</pages>
+		</settings>
 
-        <profile>
-            <label>Profile</label>
-            <uri>/admin/profile.php</uri>
-            <class>profile</class>
-            <pages>
-                <overview>
-                    <label>Account summary</label>
-                    <uri>/admin/profile.php</uri>
-                    <title_class>profile</title_class>
-                </overview>
-                <language>
-                    <label>Language</label>
-                    <uri>/admin/language.php</uri>
-                    <title_class>multilanguage</title_class>
-                </language>
-                <layout>
-                    <Label>Layout</Label>
-                    <uri>/admin/layout.php</uri>
-                    <title_class>layout</title_class>
-                </layout>
-                <passsword_change>
-                    <label>Password</label>
-                    <uri>/admin/password_change.php</uri>
-                    <title_class>password</title_class>
-                </passsword_change>
-                <personal_change>
-                    <label>Personal data</label>
-                    <uri>/admin/personal_change.php</uri>
-                    <title_class>doc</title_class>
-                </personal_change>
-            </pages>
-        </profile>
-    </navigation>
+		<profile>
+			<label>Profile</label>
+			<uri>/admin/profile.php</uri>
+			<class>profile</class>
+			<pages>
+				<overview>
+					<label>Account summary</label>
+					<uri>/admin/profile.php</uri>
+					<title_class>profile</title_class>
+				</overview>
+				<language>
+					<label>Language</label>
+					<uri>/admin/language.php</uri>
+					<title_class>multilanguage</title_class>
+				</language>
+				<layout>
+					<Label>Layout</Label>
+					<uri>/admin/layout.php</uri>
+					<title_class>layout</title_class>
+				</layout>
+				<passsword_change>
+					<label>Password</label>
+					<uri>/admin/password_change.php</uri>
+					<title_class>password</title_class>
+				</passsword_change>
+				<personal_change>
+					<label>Personal data</label>
+					<uri>/admin/personal_change.php</uri>
+					<title_class>doc</title_class>
+				</personal_change>
+			</pages>
+		</profile>
+	</navigation>
 </config>

@@ -123,14 +123,14 @@ function admin_generateForm($tpl)
 	if(isset($_REQUEST['edit_id'])) {
 		$tpl->assign(
 			array(
-				'TR_FORM_NAME' => tr('Edit custom menu'),
+				'TR_DYNAMIC_TITLE' => tr('Edit custom menu'),
 				'TR_UPDATE' => tr('Update'),
 				'EDIT_ID' => tohtml($_REQUEST['edit_id']),
 				'ADD_MENU' => ''));
 	} else {
 		$tpl->assign(
 			array(
-				'TR_FORM_NAME' => tr('Add custom menu'),
+				'TR_DYNAMIC_TITLE' => tr('Add custom menu'),
 				'TR_ADD' => 'Add',
 				'EDIT_MENU' => ''));
 	}

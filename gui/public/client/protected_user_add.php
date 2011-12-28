@@ -35,6 +35,89 @@
  * @author 		i-MSCP Team
  */
 
+/*************************************************************
+ * Script functions
+ */
+
+/**
+ * Add Htaccess user.
+ *
+ * @param int $domainId Domain unique identifier
+ * @return
+ */
+function client_addHtaccessUser($domainId)
+{
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
+		// we have to add the user
+		if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {
+			if (!validates_username($_POST['username'])) {
+				set_page_message(tr('Wrong username.'), 'error');
+				return;
+			}
+			if (!chk_password($_POST['pass'])) {
+				if ($cfg->PASSWD_STRONG) {
+					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
+				} else {
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
+				}
+				return;
+			}
+
+			if ($_POST['pass'] !== $_POST['pass_rep']) {
+				set_page_message(tr("Passwords doesn't matches."), 'error');
+				return;
+			}
+
+			$status = $cfg->ITEM_ADD_STATUS;
+			$uname = clean_input($_POST['username']);
+			$upass = crypt_user_pass_with_salt($_POST['pass']);
+
+			$query = "
+				SELECT
+					`id`
+				FROM
+					`htaccess_users`
+				WHERE
+					`uname` = ?
+				AND
+					`dmn_id` = ?
+			";
+			$rs = exec_query($query, array($uname, $domainId));
+
+			if ($rs->rowCount() == 0) {
+				$query = "
+					INSERT INTO `htaccess_users` (
+					    `dmn_id`, `uname`, `upass`, `status`
+					) VALUES (
+					    ?, ?, ?, ?
+					)
+				";
+				exec_query($query, array($domainId, $uname, $upass, $status));
+
+				send_request();
+
+				set_page_message(tr('Htaccess user successfully scheduled for addition.'), 'success');
+
+				$admin_login = $_SESSION['user_logged'];
+				write_log("$admin_login: added new htaccess user: $uname", E_USER_NOTICE);
+				redirectTo('protected_user_manage.php');
+			} else {
+				set_page_message(tr('This htaccess user already exist.'), 'error');
+				return;
+			}
+		}
+	} else {
+		return;
+	}
+}
+
+/******************************************************************************
+ * Main script
+ */
+
 // Include core library
 require_once 'imscp-lib.php';
 
@@ -51,118 +134,31 @@ if (!customerHasFeature('protected_areas')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/puser_uadd.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('usr_msg', 'page');
-$tpl->define_dynamic('grp_msg', 'page');
-$tpl->define_dynamic('pusres', 'page');
-$tpl->define_dynamic('pgroups', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/puser_uadd.tpl',
+		'page_message' => 'page',
+		'usr_msg' => 'page',
+		'grp_msg' => 'page',
+		'pusres' => 'page',
+		'pgroups' => 'page'));
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Add user'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
-
-/**
- * @param $tpl
- * @param $dmn_id
- * @return
- */
-function padd_user($tpl, $dmn_id) {
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
-		// we have to add the user
-		if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {
-			if (!validates_username($_POST['username'])) {
-				set_page_message(tr('Wrong username!'), 'error');
-				return;
-			}
-			if (!chk_password($_POST['pass'])) {
-				if ($cfg->PASSWD_STRONG) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
-				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
-				}
-				return;
-			}
-			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Passwords do not match.'), 'error');
-				return;
-			}
-			$status = $cfg->ITEM_ADD_STATUS;
-
-			$uname = clean_input($_POST['username']);
-
-			$upass = crypt_user_pass_with_salt($_POST['pass']);
-
-			$query = "
-				SELECT
-					`id`
-				FROM
-					`htaccess_users`
-				WHERE
-					`uname` = ?
-				AND
-					`dmn_id` = ?
-			";
-			$rs = exec_query($query, array($uname, $dmn_id));
-
-			if ($rs->recordCount() == 0) {
-
-				$query = "
-					INSERT INTO `htaccess_users` (
-					    `dmn_id`, `uname`, `upass`, `status`
-					) VALUES (
-					    ?, ?, ?, ?
-					)
-				";
-				exec_query($query, array($dmn_id, $uname, $upass, $status));
-
-				send_request();
-
-				set_page_message(tr('User scheduled for addition.'), 'success');
-
-				$admin_login = $_SESSION['user_logged'];
-				write_log("$admin_login: add user (protected areas): $uname", E_USER_NOTICE);
-				redirectTo('protected_user_manage.php');
-			} else {
-				set_page_message(tr('User already exist !'), 'error');
-				return;
-			}
-		}
-	} else {
-		return;
-	}
-}
-
-generateNavigation($tpl);
-padd_user($tpl, get_user_domain_id($_SESSION['user_id']));
-
-$tpl->assign(
-	array(
-		'TR_HTACCESS' => tr('Protected areas'),
-		'TR_ACTION' => tr('Action'),
-		'TR_USER_MANAGE' => tr('Manage user'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Add htaccess user'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_HTACCESS_USER' => tr('Htaccess user'),
 		'TR_USERS' => tr('User'),
 		'TR_USERNAME' => tr('Username'),
-		'TR_ADD_USER' => tr('Add user'),
-		'TR_GROUPNAME' => tr('Group name'),
-		'TR_GROUP_MEMBERS' => tr('Group members'),
-		'TR_ADD_GROUP' => tr('Add group'),
-		'TR_EDIT' => tr('Edit'),
-		'TR_GROUP' => tr('Group'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_GROUPS' => tr('Groups'),
 		'TR_PASSWORD' => tr('Password'),
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_HTACCESS_USER' => tr('Manage users and groups')));
+		'TR_ADD_USER' => tr('Add'),
+		'TR_CANCEL' => tr('Cancel')));
 
+generateNavigation($tpl);
+client_addHtaccessUser(get_user_domain_id($_SESSION['user_id']));
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

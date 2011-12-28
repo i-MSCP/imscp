@@ -867,11 +867,12 @@ textarea {
     font-weight: bold;
 }
 
-.login #body, .box_message #body {
+.login .body, .box_message .body {
     position: relative;
     width: 316px;
     text-align: left;
     margin: 0 auto;
+    padding: 0;
 }
 
 .clearfix:after {
@@ -889,19 +890,19 @@ textarea {
 .clearfix{display: block;}
 /* End hide from IE-mac */
 
-/* Specific to the login and lostpassword pages */
-
-.login #messageContainer {
+.login #messageContainer, .box_message #messageContainer {
     position: relative;
     height: 50px;
     margin-top: 25px;
     text-align: center;
 }
 
-.login #messageContainer #message {
+.login #messageContainer #message, .box_message #message {
     width: 400px;
     margin: 0 auto;
 }
+
+/* Specific to the login and lostpassword pages */
 
 .login #loginBox {
     height: 339px;
@@ -975,7 +976,7 @@ textarea {
 .login #toolbox li a.webmail{background-image: url('../images/login/webmail.png');}
 
 /** specific to box message pages */
-.box_message #body {
+.box_message .body {
     width: 453px;
 }
 
@@ -1016,4 +1017,15 @@ textarea {
 
 #box a:hover {
     text-decoration: underline;
+}
+
+/* ftp choose directory page*/
+
+.ftp_choose_dir {
+    min-width: 0;
+}
+
+.ftp_choose_dir #messageContainer {
+   margin-top: 0.5em;
+   height: auto;
 }

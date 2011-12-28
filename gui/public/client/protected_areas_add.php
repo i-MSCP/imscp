@@ -27,48 +27,25 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	 2001-2006 by moleSoftware GmbH
+ * @copyright	 2006-2010 by ispCP | http://isp-control.net
+ * @copyright	 2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		 http://i-mscp.net
+ * @author		 ispCP Team
+ * @author		 i-MSCP Team
  */
 
-// Include core library
-require_once 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login(__FILE__);
-
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('protected_areas')) {
-    redirectTo('index.php');
-}
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/protect_it.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('group_item', 'page');
-$tpl->define_dynamic('user_item', 'page');
-$tpl->define_dynamic('unprotect_it', 'page');
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
+/***********************************************************************
+ * Script functions
+ */
 
 /**
- * @todo use db prepared statements
+ *
+ * @param int $domainId Domain unique identifier
+ * @return mixed
  */
-function protect_area($tpl, $dmn_id) {
-
+function protect_area($domainId)
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -77,12 +54,12 @@ function protect_area($tpl, $dmn_id) {
 	}
 
 	if (!isset($_POST['users']) && !isset($_POST['groups'])) {
-		set_page_message(tr('Please choose user or group.'), 'error');
+		set_page_message(tr('Please choose htaccess user or htaccess group.'), 'error');
 		return;
 	}
 
 	if (empty($_POST['paname'])) {
-		set_page_message(tr('Please enter a name for protected area.'), 'error');
+		set_page_message(tr('Please enter a name for the protected area.'), 'error');
 		return;
 	}
 
@@ -141,7 +118,7 @@ function protect_area($tpl, $dmn_id) {
 			if ($cnt_users == 1 || $cnt_users == $i + 1) {
 				$user_id .= $users[$i];
 				if ($user_id == '-1' || $user_id == '') {
-					set_page_message(tr('You cannot protect an area without selected user(s).'), 'error');
+					set_page_message(tr('You cannot protect an area without selected htaccess user(s).'), 'error');
 					return;
 				}
 			} else {
@@ -155,7 +132,7 @@ function protect_area($tpl, $dmn_id) {
 			if ($cnt_groups == 1 || $cnt_groups == $i + 1) {
 				$group_id .= $groups[$i];
 				if ($group_id == '-1' || $group_id == '') {
-					set_page_message(tr('You cannot protect an area without selected group(s).'), 'error');
+					set_page_message(tr('You cannot protect an area without selected htaccess group(s).'), 'error');
 					return;
 				}
 			} else {
@@ -179,13 +156,12 @@ function protect_area($tpl, $dmn_id) {
 			(`path` = ? OR `path` = ?)
 	";
 
-	$rs = exec_query($query, array($dmn_id, $path, $alt_path));
+	$rs = exec_query($query, array($domainId, $path, $alt_path));
 	$toadd_status = $cfg->ITEM_ADD_STATUS;
 	$tochange_status = $cfg->ITEM_CHANGE_STATUS;
 
-	if ($rs->recordCount() !== 0) {
+	if ($rs->rowCount() !== 0) {
 		$update_id = $rs->fields['id'];
-		// @todo Can we move $update_id to the prepared statement variables?
 		$query = "
 			UPDATE
 				`htaccess`
@@ -193,12 +169,11 @@ function protect_area($tpl, $dmn_id) {
 				`user_id` = ?, `group_id` = ?, `auth_name` = ?, `path` = ?,
 				`status` = ?
 			WHERE
-				`id` = '$update_id';
+				`id` = ?;
         ";
-
-		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status));
+		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status, $update_id));
 		send_request();
-		set_page_message(tr('Protected area scheduled for update.'), 'success');
+		set_page_message(tr('Protected area successfully scheduled for update.'), 'success');
 	} else {
 		$query = "
 			INSERT INTO `htaccess` (
@@ -209,21 +184,23 @@ function protect_area($tpl, $dmn_id) {
 			)
 		";
 
-		exec_query($query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
+		exec_query($query, array($domainId, $user_id, $group_id, 'Basic', $area_name, $path, $toadd_status));
 		send_request();
-		set_page_message(tr('Protected area scheduled for addition.'), 'success');
+		set_page_message(tr('Protected area successfully scheduled for addition.'), 'success');
 	}
 
 	redirectTo('protected_areas.php');
 }
 
 /**
- * @param $tpl
- * @param $dmn_id
+ * Generates page.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param $domainId Domain unique identifier
  * @return void
  */
-function gen_protect_it($tpl, &$dmn_id) {
-
+function gen_protect_it($tpl, $domainId)
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -245,10 +222,11 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
 
 		$query = "SELECT * FROM `htaccess` WHERE `dmn_id` = ? AND `id` = ?";
-		$rs = exec_query($query, array($dmn_id, $ht_id));
+		$rs = exec_query($query, array($domainId, $ht_id));
 
-		if ($rs->recordCount() == 0) {
+		if ($rs->rowCount() == 0) {
 			redirectTo('protected_areas_add.php');
+			exit;
 		}
 
 		$user_id = $rs->fields['user_id'];
@@ -257,9 +235,11 @@ function gen_protect_it($tpl, &$dmn_id) {
 		$path = $rs->fields['path'];
 		$auth_name = $rs->fields['auth_name'];
 		$ok_status = $cfg->ITEM_OK_STATUS;
+
 		if ($status !== $ok_status) {
-			set_page_message(tr(" Status for protected area must be 'OK' if you want to edit it."), 'error');
+			set_page_message(tr("Status for protected area must be 'OK' if you want to edit it."), 'error');
 			redirectTo('protected_areas.php');
+			exit;
 		}
 
 		$tpl->assign(
@@ -271,22 +251,23 @@ function gen_protect_it($tpl, &$dmn_id) {
 		if ($user_id !== 0 && $group_id == 0) {
 			// we have only user htaccess
 			$type = 'user';
-		} else if ($group_id !== 0 && $user_id == 0) {
+		} elseif ($group_id !== 0 && $user_id == 0) {
 			// we have only groups htaccess
 			$type = 'group';
-		} else if ($group_id == 0 && $user_id == 0) {
+		} elseif ($group_id == 0 && $user_id == 0) {
 			// we have unsr and groups htaccess
 			$type = 'both';
 		}
 	}
 	// this area is not secured by htaccess
-	if ($edit == 'no' || $rs->recordCount() == 0 || $type == 'user') {
+	if ($edit == 'no' || $rs->rowCount() == 0 || $type == 'user') {
 		$tpl->assign(
 			array(
 				'USER_CHECKED' => $cfg->HTML_CHECKED,
 				'GROUP_CHECKED' => "",
 				'USER_FORM_ELEMENS' => "false",
-				'GROUP_FORM_ELEMENS' => "true"));}
+				'GROUP_FORM_ELEMENS' => "true"));
+	}
 
 	if ($type == 'group') {
 		$tpl->assign(
@@ -298,7 +279,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 	}
 
 	$query = "SELECT *  FROM `htaccess_users` WHERE `dmn_id` = ?";
-	$rs = exec_query($query, $dmn_id);
+	$rs = exec_query($query, $domainId);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -333,7 +314,7 @@ function gen_protect_it($tpl, &$dmn_id) {
 	}
 
 	$query = "SELECT * FROM `htaccess_groups` WHERE `dmn_id` = ?";
-	$rs = exec_query($query, $dmn_id);
+	$rs = exec_query($query, $domainId);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -367,31 +348,58 @@ function gen_protect_it($tpl, &$dmn_id) {
 	}
 }
 
-generateNavigation($tpl);
+/*************************************************************************
+ * Main script
+ */
 
-$dmn_id = get_user_domain_id($_SESSION['user_id']);
+// Include core library
+require_once 'imscp-lib.php';
 
-protect_area($tpl, $dmn_id);
-gen_protect_it($tpl, $dmn_id);
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login(__FILE__);
+
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('protected_areas')) {
+	redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/protect_it.tpl',
+		'page_message' => 'page',
+		'group_item' => 'page',
+		'user_item' => 'page',
+		'unprotect_it' => 'page'));
 
 $tpl->assign(
 	array(
-		'TR_HTACCESS' => tr('Protected areas'),
-		'TR_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_DYNAMIC_TITLE' => isset($_GET['id']) ? tr('Edit protected area') : tr('Add protected area'),
+		'TR_PROTECTED_AREA' => tr('Protected areas'),
+		'TR_AREA_NAME' => tr('Area name'),
 		'TR_PATH' => tr('Path'),
+		'CHOOSE_DIR' => tr('Choose dir'),
 		'TR_USER' => tr('Users'),
 		'TR_GROUPS' => tr('Groups'),
-		'TR_PROTECT_IT' => tr('Protect it'),
 		'TR_USER_AUTH' => tr('User auth'),
 		'TR_GROUP_AUTH' => tr('Group auth'),
-		'TR_AREA_NAME' => tr('Area name'),
 		'TR_PROTECT_IT' => tr('Protect it'),
 		'TR_UNPROTECT_IT' => tr('Unprotect it'),
-		'TR_AREA_NAME' => tr('Area name'),
 		'TR_CANCEL' => tr('Cancel'),
-		'TR_MANAGE_USRES' => tr('Manage users and groups'),
-		'CHOOSE_DIR' => tr('Choose dir')));
+		'TR_MANAGE_USERS_AND_GROUPS' => tr('Users and groups')));
 
+generateNavigation($tpl);
+$domainId = get_user_domain_id($_SESSION['user_id']);
+protect_area($domainId);
+gen_protect_it($tpl, get_user_domain_id($domainId));
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

@@ -87,10 +87,10 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($query, array($id, $dmn_id));
 	send_request();
 
-	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id'], E_USER_NOTICE);
-	set_page_message(tr('Protected area scheduled for deletion.'), 'success');
+	write_log($_SESSION['user_logged'].": deleted protected area with ID: ".$_GET['id'], E_USER_NOTICE);
+	set_page_message(tr('Protected area successfully scheduled for deletion.'), 'success');
 	redirectTo('protected_areas.php');
 } else {
-	set_page_message(tr('Permission deny.'), 'error');
+	set_page_message(tr('You do not sufficient permissions to perform this operation.'), 'error');
 	redirectTo('protected_areas.php');
 }

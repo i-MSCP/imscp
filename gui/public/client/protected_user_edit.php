@@ -27,52 +27,28 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @link		http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  */
 
-// Include core library
-require_once 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
-check_login(__FILE__);
-
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('protected_areas')) {
-    redirectTo('index.php');
-}
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/puser_edit.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('usr_msg', 'page');
-$tpl->define_dynamic('grp_msg', 'page');
-$tpl->define_dynamic('pusres', 'page');
-$tpl->define_dynamic('pgroups', 'page');
-
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Edit user'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+/**********************************************************************
+ * Script functions
+ *
+ */
 
 /**
- * @param $tpl
- * @param $dmn_id
- * @param $uuser_id
+ * Updates htaccess user.
+ *
+ * @param int $dmn_id Domain unique identifier
+ * @param int $uuser_id Htaccess user unique identifier
  * @return
  */
-function pedit_user($tpl, &$dmn_id, &$uuser_id) {
-
+function client_updateHtaccessUser(&$dmn_id, &$uuser_id)
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -83,14 +59,14 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 				if ($cfg->PASSWD_STRONG) {
 					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs.'), $cfg->PASSWD_CHARS), 'error');
 				}
 
 				return;
 			}
 
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Passwords do not match.'), 'error');
+				set_page_message(tr("Passwords doesn't matches."), 'error');
 				return;
 			}
 
@@ -126,7 +102,7 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 			$uname = $rs->fields['uname'];
 
 			$admin_login = $_SESSION['user_logged'];
-			write_log("$admin_login: modify user ID (protected areas): $uname", E_USER_NOTICE);
+			write_log("$admin_login: updated htaccess user ID: $uname", E_USER_NOTICE);
 			redirectTo('protected_user_manage.php');
 		}
 	} else {
@@ -138,7 +114,8 @@ function pedit_user($tpl, &$dmn_id, &$uuser_id) {
  * @param $get_input
  * @return int
  */
-function check_get(&$get_input) {
+function check_get(&$get_input)
+{
 	if (!is_numeric($get_input)) {
 		return 0;
 	} else {
@@ -146,64 +123,85 @@ function check_get(&$get_input) {
 	}
 }
 
-generateNavigation($tpl);
+/*************************************************************
+ * Main script
+ */
+
+// Include core library
+require_once 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
+check_login(__FILE__);
+
+// If the feature is disabled, redirects in silent way
+if (!customerHasFeature('protected_areas')) {
+	redirectTo('index.php');
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/puser_edit.tpl',
+		'page_message' => 'page',
+		'usr_msg' => 'page',
+		'grp_msg' => 'page',
+		'pusres' => 'page',
+		'pgroups' => 'page'));
 
 $dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])) {
 	$uuser_id = $_GET['uname'];
 
-/**
- * @todo use DB prepared statements
- */
 	$query = "
 		SELECT
 			`uname`
 		FROM
 			`htaccess_users`
 		WHERE
-			`dmn_id` = '$dmn_id'
+			`dmn_id` = ?
 		AND
-			`id` = '$uuser_id'
+			`id` = ?
 	";
-	$rs = execute_query($query);
+	$rs = exec_query($query, array((int)$dmn_id, (int)$uuser_id));
 
-	if ($rs->recordCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		redirectTo('protected_user_manage.php');
 	} else {
 		$tpl->assign(
 			array(
-				'UNAME'	=> tohtml($rs->fields['uname']),
-				'UID'	=> $uuser_id));
+				'UNAME' => tohtml($rs->fields['uname']),
+				'UID' => $uuser_id));
 	}
-} elseif (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name'])
-	&& is_numeric($_POST['nadmin_name'])) {
+} elseif (isset($_POST['nadmin_name']) && !empty($_POST['nadmin_name']) && is_numeric($_POST['nadmin_name'])) {
 	$uuser_id = clean_input($_POST['nadmin_name']);
 
-/**
- * @todo use DB prepared statements
- */
 	$query = "
 		SELECT
 			`uname`
 		FROM
 			`htaccess_users`
 		WHERE
-			`dmn_id` = '$dmn_id'
+			`dmn_id` = ?
 		AND
-			`id` = '$uuser_id'
+			`id` = ?
 	";
-	$rs = execute_query($query);
+	$rs = exec_query($query, array((int)$dmn_id, (int)$uuser_id));
 
-	if ($rs->recordCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		redirectTo('protected_user_manage.php');
 	} else {
 		$tpl->assign(
 			array(
-				'UNAME'	=> tohtml($rs->fields['uname']),
-				'UID'	=> $uuser_id));
+				'UNAME' => tohtml($rs->fields['uname']),
+				'UID' => $uuser_id));
 
-		pedit_user($tpl, $dmn_id, $uuser_id);
+		client_updateHtaccessUser($dmn_id, $uuser_id);
 	}
 } else {
 	redirectTo('protected_user_manage.php');
@@ -211,24 +209,18 @@ if (isset($_GET['uname']) && $_GET['uname'] !== '' && is_numeric($_GET['uname'])
 
 $tpl->assign(
 	array(
-		 'TR_HTACCESS' => tr('Protected areas'),
-		 'TR_ACTION' => tr('Action'),
-		 'TR_EDIT_USER' => tr('Edit user'),
-		 'TR_USERS' => tr('User'),
-		 'TR_USERNAME' => tr('Username'),
-		 'TR_ADD_USER' => tr('Add user'),
-		 'TR_GROUPNAME' => tr('Group name'),
-		 'TR_GROUP_MEMBERS' => tr('Group members'),
-		 'TR_ADD_GROUP' => tr('Add group'),
-		 'TR_EDIT' => tr('Edit'),
-		 'TR_GROUP' => tr('Group'),
-		 'TR_DELETE' => tr('Delete'),
-		 'TR_UPDATE' => tr('Modify'),
-		 'TR_PASSWORD' => tr('Password'),
-		 'TR_PASSWORD_REPEAT' => tr('Repeat password'),
-		 'TR_HTACCESS_USER' => tr('Manage users and groups'),
-		 'TR_CANCEL' => tr('Cancel')));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_HTACCESS_USER' => tr('Htaccess user'),
+		'TR_USERS' => tr('User'),
+		'TR_USERNAME' => tr('Username'),
+		'TR_PASSWORD' => tr('Password'),
+		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
+		'TR_UPDATE' => tr('Update'),
+		'TR_CANCEL' => tr('Cancel')));
 
+generateNavigation($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

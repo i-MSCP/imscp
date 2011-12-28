@@ -29,363 +29,393 @@
  -->
 
 <config>
-    <navigation>
-        <general_information>
-            <label>General Information</label>
-            <uri>/client/index.php</uri>
-            <class>general</class>
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/index.php</uri>
-                    <title_class>general</title_class>
-                </overview>
-                <hosting_plan_update>
-                    <label>Hosting plan update</label>
-                    <uri>/client/hosting_plan_update.php</uri>
-                    <title_class>hosting_plans</title_class>
-                </hosting_plan_update>
-            </pages>
-        </general_information>
+	<navigation>
+		<general_information>
+			<label>General Information</label>
+			<uri>/client/index.php</uri>
+			<class>general</class>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/index.php</uri>
+					<title_class>general</title_class>
+				</overview>
+				<hosting_plan_update>
+					<label>Hosting plan update</label>
+					<uri>/client/hosting_plan_update.php</uri>
+					<title_class>hosting_plans</title_class>
+				</hosting_plan_update>
+			</pages>
+		</general_information>
 
-        <manage_domains>
-            <label>Manage domains</label>
-            <uri>/client/domains_manage.php</uri>
-            <class>domains</class>
-            <privilege_callback name="customerHasFeature" param="domain" />
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/domains_manage.php</uri>
-                    <title_class>domains</title_class>
-                    <pages>
-                        <domain_alias_edit_link>
-                            <label>Edit domain alias</label>
-                            <uri>/client/alias_edit.php</uri>
-                            <title_class>domains</title_class>
-                            <visible>0</visible>
-                        </domain_alias_edit_link>
-                        <subdomain_edit_link>
-                            <label>Edit subdomain</label>
-                            <uri>/client/subdomain_edit.php</uri>
-                            <title_class>domains</title_class>
-                            <visible>0</visible>
-                        </subdomain_edit_link>
-                        <custom_dns_record_edit_link>
-                            <label>Edit custom DNS record</label>
-                            <uri>/client/dns_edit.php</uri>
-                            <title_class>domains</title_class>
-                            <visible>0</visible>
-                        </custom_dns_record_edit_link>
-                    </pages>
-                </overview>
-                <add_domain_alias>
-                    <label>Add domain alias</label>
-                    <uri>/client/alias_add.php</uri>
-                    <title_class>domains</title_class>
-                    <privilege_callback name="customerHasFeature" param="domain_aliases" />
-                </add_domain_alias>
-                <add_subdomain>
-                    <label>Add subdomain</label>
-                    <uri>/client/subdomain_add.php</uri>
-                    <title_class>domains</title_class>
-                    <privilege_callback name="customerHasFeature" param="subdomains" />
-                </add_subdomain>
-                <add_custom_dns_record>
-                    <label>Add custom DNS record</label>
-                    <uri>/client/dns_add.php"</uri>
-                    <title_class>domains</title_class>
-                    <privilege_callback name="customerHasFeature" param="custom_dns_records" />
-                </add_custom_dns_record>
-                <php_settings>
-                    <label>PHP settings</label>
-                    <uri>/client/phpini.php</uri>
-                    <title_class>domains</title_class>
-                    <privilege_callback name="customerHasFeature" param="php_editor" />
-                </php_settings>
-            </pages>
-        </manage_domains>
+		<manage_domains>
+			<label>Manage domains</label>
+			<uri>/client/domains_manage.php</uri>
+			<class>domains</class>
+			<privilege_callback name="customerHasFeature" param="domain"/>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/domains_manage.php</uri>
+					<title_class>domains</title_class>
+					<pages>
+						<domain_alias_edit_link>
+							<label>Edit domain alias</label>
+							<uri>/client/alias_edit.php</uri>
+							<title_class>domains</title_class>
+							<visible>0</visible>
+						</domain_alias_edit_link>
+						<subdomain_edit_link>
+							<label>Edit subdomain</label>
+							<uri>/client/subdomain_edit.php</uri>
+							<title_class>domains</title_class>
+							<visible>0</visible>
+						</subdomain_edit_link>
+						<custom_dns_record_edit_link>
+							<label>Edit custom DNS record</label>
+							<uri>/client/dns_edit.php</uri>
+							<title_class>domains</title_class>
+							<visible>0</visible>
+						</custom_dns_record_edit_link>
+					</pages>
+				</overview>
+				<add_domain_alias>
+					<label>Add domain alias</label>
+					<uri>/client/alias_add.php</uri>
+					<title_class>domains</title_class>
+					<privilege_callback name="customerHasFeature" param="domain_aliases"/>
+				</add_domain_alias>
+				<add_subdomain>
+					<label>Add subdomain</label>
+					<uri>/client/subdomain_add.php</uri>
+					<title_class>domains</title_class>
+					<privilege_callback name="customerHasFeature" param="subdomains"/>
+				</add_subdomain>
+				<add_custom_dns_record>
+					<label>Add custom DNS record</label>
+					<uri>/client/dns_add.php"</uri>
+					<title_class>domains</title_class>
+					<privilege_callback name="customerHasFeature" param="custom_dns_records"/>
+				</add_custom_dns_record>
+				<php_settings>
+					<label>PHP settings</label>
+					<uri>/client/phpini.php</uri>
+					<title_class>domains</title_class>
+					<privilege_callback name="customerHasFeature" param="php_editor"/>
+				</php_settings>
+			</pages>
+		</manage_domains>
 
-        <ftp_accounts>
-            <label>Ftp accounts</label>
-            <uri>/client/ftp_accounts.php</uri>
-            <class>ftp</class>
-            <privilege_callback name="customerHasFeature" param="ftp" />
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/ftp_accounts.php</uri>
-                    <title_class>ftp</title_class>
-                    <pages>
-                        <ftp_account_edit_link>
-                            <label>Edit Ftp account</label>
-                            <uri>/client/ftp_edit.php</uri>
-                            <visible>0</visible>
-                            <title_class>ftp</title_class>
-                        </ftp_account_edit_link>
-                    </pages>
-                </overview>
-                <add_ftp_account>
-                    <label>Add Ftp account</label>
-                    <uri>/client/ftp_add.php</uri>
-                    <class>ftp</class>
-                </add_ftp_account>
-                <file_manager>
-                    <label>Filemanager</label>
-                    <uri>{FILEMANAGER_PATH}</uri>
-                    <target>{FILEMANAGER_TARGET}</target>
-                </file_manager>
-            </pages>
-        </ftp_accounts>
+		<ftp_accounts>
+			<label>Ftp accounts</label>
+			<uri>/client/ftp_accounts.php</uri>
+			<class>ftp</class>
+			<privilege_callback name="customerHasFeature" param="ftp"/>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/ftp_accounts.php</uri>
+					<title_class>ftp</title_class>
+					<pages>
+						<ftp_account_edit_link>
+							<label>Edit Ftp account</label>
+							<uri>/client/ftp_edit.php</uri>
+							<visible>0</visible>
+							<title_class>ftp</title_class>
+						</ftp_account_edit_link>
+					</pages>
+				</overview>
+				<add_ftp_account>
+					<label>Add Ftp account</label>
+					<uri>/client/ftp_add.php</uri>
+					<class>ftp</class>
+				</add_ftp_account>
+				<file_manager>
+					<label>Filemanager</label>
+					<uri>{FILEMANAGER_PATH}</uri>
+					<target>{FILEMANAGER_TARGET}</target>
+				</file_manager>
+			</pages>
+		</ftp_accounts>
 
-        <databases>
-            <label>Databases</label>
-            <uri>/client/sql_manage.php</uri>
-            <class>database</class>
-            <privilege_callback name="customerHasFeature" param="sql" />
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/sql_manage.php</uri>
-                    <title_class>sql</title_class>
-                    <pages>
-                        <add_sql_user_link>
-                            <label>Add SQL user</label>
-                            <uri>/client/sql_user_add.php</uri>
-                            <visible>0</visible>
-                            <title_class>user</title_class>
-                        </add_sql_user_link>
-                        <update_sql_user_password_link>
-                            <label>Update SQL user password</label>
-                            <uri>/client/sql_change_password.php</uri>
-                            <visible>0</visible>
-                            <title_class>password</title_class>
-                        </update_sql_user_password_link>
-                    </pages>
-                </overview>
-                <add_sql_database>
-                    <label>Add SQL database</label>
-                    <uri>/client/sql_database_add.php</uri>
-                    <title_class>sql</title_class>
-                </add_sql_database>
-                <phpmyadmin>
-                    <label>PhpMyAdmin</label>
-                    <uri>{PMA_PATH}</uri>
-                    <target>{PMA_TARGET}</target>
-                </phpmyadmin>
-            </pages>
-        </databases>
+		<databases>
+			<label>Databases</label>
+			<uri>/client/sql_manage.php</uri>
+			<class>database</class>
+			<privilege_callback name="customerHasFeature" param="sql"/>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/sql_manage.php</uri>
+					<title_class>sql</title_class>
+					<pages>
+						<add_sql_user_link>
+							<label>Add SQL user</label>
+							<uri>/client/sql_user_add.php</uri>
+							<visible>0</visible>
+							<title_class>user</title_class>
+						</add_sql_user_link>
+						<update_sql_user_password_link>
+							<label>Update SQL user password</label>
+							<uri>/client/sql_change_password.php</uri>
+							<visible>0</visible>
+							<title_class>password</title_class>
+						</update_sql_user_password_link>
+					</pages>
+				</overview>
+				<add_sql_database>
+					<label>Add SQL database</label>
+					<uri>/client/sql_database_add.php</uri>
+					<title_class>sql</title_class>
+				</add_sql_database>
+				<phpmyadmin>
+					<label>PhpMyAdmin</label>
+					<uri>{PMA_PATH}</uri>
+					<target>{PMA_TARGET}</target>
+				</phpmyadmin>
+			</pages>
+		</databases>
 
-        <mail_account>
-            <label>Mail Accounts</label>
-            <uri>/client/mail_accounts.php</uri>
-            <class>email</class>
-            <privilege_callback name="customerHasFeature" param="mail" />
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/mail_accounts.php</uri>
-                    <title_class>email</title_class>
-                    <pages>
-                        <mail_account_edit_link>
-                            <label>Edit mail account</label>
-                            <uri>/client/mail_edit.php</uri>
-                            <visible>0</visible>
-                            <title_class>email</title_class>
-                        </mail_account_edit_link>
-                        <enable_autoresponder_link>
-                            <label>Enable auto responder</label>
-                            <uri>/client/mail_autoresponder_enable.php</uri>
-                            <visible>0</visible>
-                            <title_class>email</title_class>
-                        </enable_autoresponder_link>
-                        <edit_autoresponder_link>
-                            <label>Edit auto responder</label>
-                            <uri>/client/mail_autoresponder_edit.php</uri>
-                            <visible>0</visible>
-                            <title_class>email</title_class>
-                        </edit_autoresponder_link>
-                    </pages>
-                </overview>
-                <add_email_account>
-                    <label>Add email account</label>
-                    <uri>/client/mail_add.php</uri>
-                    <title_class>email</title_class>
-                </add_email_account>
-                <catchall>
-                    <label>Catchall</label>
-                    <uri>/client/mail_catchall.php</uri>
-                    <title_class>email</title_class>
-                    <pages>
-                        <add_catchall>
-                            <label>Add catchall</label>
-                            <uri>/client/mail_catchall_add.php</uri>
-                            <visible>0</visible>
-                            <title_clas>email</title_clas>
-                        </add_catchall>
-                    </pages>
-                </catchall>
-                <webmail>
-                    <label>Webmail</label>
-                    <uri>{WEBMAIL_PATH}</uri>
-                    <target>{WEBMAIL_TARGET}</target>
-                </webmail>
-            </pages>
-        </mail_account>
+		<mail_account>
+			<label>Mail Accounts</label>
+			<uri>/client/mail_accounts.php</uri>
+			<class>email</class>
+			<privilege_callback name="customerHasFeature" param="mail"/>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/mail_accounts.php</uri>
+					<title_class>email</title_class>
+					<pages>
+						<mail_account_edit_link>
+							<label>Edit mail account</label>
+							<uri>/client/mail_edit.php</uri>
+							<visible>0</visible>
+							<title_class>email</title_class>
+						</mail_account_edit_link>
+						<enable_autoresponder_link>
+							<label>Enable auto responder</label>
+							<uri>/client/mail_autoresponder_enable.php</uri>
+							<visible>0</visible>
+							<title_class>email</title_class>
+						</enable_autoresponder_link>
+						<edit_autoresponder_link>
+							<label>Edit auto responder</label>
+							<uri>/client/mail_autoresponder_edit.php</uri>
+							<visible>0</visible>
+							<title_class>email</title_class>
+						</edit_autoresponder_link>
+					</pages>
+				</overview>
+				<add_email_account>
+					<label>Add email account</label>
+					<uri>/client/mail_add.php</uri>
+					<title_class>email</title_class>
+				</add_email_account>
+				<catchall>
+					<label>Catchall</label>
+					<uri>/client/mail_catchall.php</uri>
+					<title_class>email</title_class>
+					<pages>
+						<add_catchall>
+							<label>Add catchall</label>
+							<uri>/client/mail_catchall_add.php</uri>
+							<visible>0</visible>
+							<title_clas>email</title_clas>
+						</add_catchall>
+					</pages>
+				</catchall>
+				<webmail>
+					<label>Webmail</label>
+					<uri>{WEBMAIL_PATH}</uri>
+					<target>{WEBMAIL_TARGET}</target>
+				</webmail>
+			</pages>
+		</mail_account>
 
-        <statistics>
-            <label>Statistics</label>
-            <uri>/client/domain_statistics.php</uri>
-            <class>statistics</class>
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/domain_statistics.php</uri>
-                    <title_class>stats</title_class>
-                </overview>
-                <awstats>
-                    <label>Web statistics</label>
-                    <uri>{AWSTATS_PATH}</uri>
-                    <target>{AWSTATS_TARGET}</target>
-                    <privilege_callback name="customerHasFeature" param="awstats" />
-                </awstats>
-            </pages>
-        </statistics>
+		<statistics>
+			<label>Statistics</label>
+			<uri>/client/domain_statistics.php</uri>
+			<class>statistics</class>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/domain_statistics.php</uri>
+					<title_class>stats</title_class>
+				</overview>
+				<awstats>
+					<label>Web statistics</label>
+					<uri>{AWSTATS_PATH}</uri>
+					<target>{AWSTATS_TARGET}</target>
+					<privilege_callback name="customerHasFeature" param="awstats"/>
+				</awstats>
+			</pages>
+		</statistics>
 
-        <webtools>
-            <label>Webtools</label>
-            <uri>/client/webtools.php</uri>
-            <class>webtools</class>
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/webtools.php</uri>
-                    <title_class>tools</title_class>
-                </overview>
-                <protected_areas>
-                    <label>Protected areas</label>
-                    <uri>/client/protected_areas.php</uri>
-                    <title_class>htaccess</title_class>
-                    <pages>
-                        <add_protected_area_link>
-                            <label>Add protected area</label>
-                            <uri>/client/protected_areas_add.php</uri>
-                            <visible>0</visible>
-                        </add_protected_area_link>
-                        <manage_users_and_groups>
-                            <label>Manage users and groups</label>
-                            <uri>/client/protected_user_manage.php</uri>
-                            <visible>0</visible>
-                        </manage_users_and_groups>
-                    </pages>
-                </protected_areas>
-                <custom_error_pages>
-                    <label>Custom error pages</label>
-                    <uri>/client/error_pages.php</uri>
-                    <title_class>errors</title_class>
-                    <pages>
-                        <custom_error_page_edit_link>
-                            <label>Edit custom error page</label>
-                            <uri>/client/error_edit.php</uri>
-                            <visible>0</visible>
-                            <title_class>errors</title_class>
-                        </custom_error_page_edit_link>
-                    </pages>
-                </custom_error_pages>
-                <softwares>
-                    <label>Softwares</label>
-                    <uri>/client/software.php</uri>
-                    <title_class>app_installer</title_class>
-                    <privilege_callback name="customerHasFeature" param="aps" />
-                </softwares>
-                <daily_backup>
-                    <label>Daily backup</label>
-                    <uri>/client/backup.php</uri>
-                    <title_class>backup</title_class>
-                    <privilege_callback name="customerHasFeature" param="backup" />
-                </daily_backup>
-                <webmail>
-                    <label>Webmail</label>
-                    <uri>{WEBMAIL_PATH}</uri>
-                    <target>{WEBMAIL_TARGET}</target>
-                    <privilege_callback name="customerHasFeature" param="mail" />
-                </webmail>
-                <file_manager>
-                    <label>Filemanager</label>
-                    <uri>{FILEMANAGER_PATH}</uri>
-                    <privilege_callback name="customerHasFeature" param="ftp" />
-                </file_manager>
-                <phpmyadmin>
-                    <label>PhpMyAdmin</label>
-                    <uri>{PMA_PATH}</uri>
-                    <target>{PMA_TARGET}</target>
-                    <privilege_callback name="customerHasFeature" param="sql" />
-                </phpmyadmin>
-                <awstats>
-                    <label>Web statistics</label>
-                    <uri>{AWSTATS_PATH}</uri>
-                    <target>{AWSTATS_TARGET}</target>
-                    <privilege_callback name="customerHasFeature" param="awstats" />
-                </awstats>
-            </pages>
-        </webtools>
+		<webtools>
+			<label>Webtools</label>
+			<uri>/client/webtools.php</uri>
+			<class>webtools</class>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/webtools.php</uri>
+					<title_class>tools</title_class>
+				</overview>
+				<protected_areas>
+					<label>Protected areas</label>
+					<uri>/client/protected_areas.php</uri>
+					<title_class>htaccess</title_class>
+					<privilege_callback name="customerHasFeature" param="protected_areas"/>
+					<pages>
+						<add_protected_area_link>
+							<dynamic_title>{TR_DYNAMIC_TITLE}</dynamic_title>
+							<uri>/client/protected_areas_add.php</uri>
+							<title_class>htaccess</title_class>
+							<visible>0</visible>
+						</add_protected_area_link>
+						<manage_htaccess_users_and_groups_link>
+							<label>Manage htaccess users and groups</label>
+							<uri>/client/protected_user_manage.php</uri>
+							<title_class>users</title_class>
+							<visible>0</visible>
+							<pages>
+								<assign_htaccess_group_link>
+									<label>Assign group</label>
+									<uri>/client/protected_user_assign.php</uri>
+									<title_class>users</title_class>
+									<visible>0</visible>
+								</assign_htaccess_group_link>
+								<edit_htaccess_user_link>
+									<label>Edit htaccess user</label>
+									<uri>/client/protected_user_edit.php</uri>
+									<title_class>users</title_class>
+									<visible>0</visible>
+								</edit_htaccess_user_link>
+								<add_htaccess_user_link>
+									<label>Add Htaccess user</label>
+									<uri>/client/protected_user_add.php</uri>
+									<title_class>users</title_class>
+									<visible>0</visible>
+								</add_htaccess_user_link>
+								<add_htaccess_group_link>
+									<label>Add Htaccess group</label>
+									<uri>/client/protected_group_add.php</uri>
+									<title_class>users</title_class>
+									<visible>0</visible>
+								</add_htaccess_group_link>
+							</pages>
+						</manage_htaccess_users_and_groups_link>
+					</pages>
+				</protected_areas>
+				<custom_error_pages>
+					<label>Custom error pages</label>
+					<uri>/client/error_pages.php</uri>
+					<title_class>errors</title_class>
+					<privilege_callback name="customerHasFeature" param="custom_error_pages"/>
+					<pages>
+						<custom_error_page_edit_link>
+							<label>Edit custom error page</label>
+							<uri>/client/error_edit.php</uri>
+							<visible>0</visible>
+							<title_class>errors</title_class>
+						</custom_error_page_edit_link>
+					</pages>
+				</custom_error_pages>
+				<softwares>
+					<label>Softwares</label>
+					<uri>/client/software.php</uri>
+					<title_class>app_installer</title_class>
+					<privilege_callback name="customerHasFeature" param="aps"/>
+				</softwares>
+				<daily_backup>
+					<label>Daily backup</label>
+					<uri>/client/backup.php</uri>
+					<title_class>backup</title_class>
+					<privilege_callback name="customerHasFeature" param="backup"/>
+				</daily_backup>
+				<webmail>
+					<label>Webmail</label>
+					<uri>{WEBMAIL_PATH}</uri>
+					<target>{WEBMAIL_TARGET}</target>
+					<privilege_callback name="customerHasFeature" param="mail"/>
+				</webmail>
+				<file_manager>
+					<label>Filemanager</label>
+					<uri>{FILEMANAGER_PATH}</uri>
+					<privilege_callback name="customerHasFeature" param="ftp"/>
+				</file_manager>
+				<phpmyadmin>
+					<label>PhpMyAdmin</label>
+					<uri>{PMA_PATH}</uri>
+					<target>{PMA_TARGET}</target>
+					<privilege_callback name="customerHasFeature" param="sql"/>
+				</phpmyadmin>
+				<awstats>
+					<label>Web statistics</label>
+					<uri>{AWSTATS_PATH}</uri>
+					<target>{AWSTATS_TARGET}</target>
+					<privilege_callback name="customerHasFeature" param="awstats"/>
+				</awstats>
+			</pages>
+		</webtools>
 
-        <support>
-            <label>Support</label>
-            <uri>{SUPPORT_SYSTEM_PATH}</uri>
-            <target>{SUPPORT_SYSTEM_TARGET}</target>
-            <class>support</class>
-            <privilege_callback name="customerHasFeature" param="support" />
-            <pages>
-                <tickets_open>
-                    <label>Tickets open</label>
-                    <uri>/client/ticket_system.php</uri>
-                    <title_class>support</title_class>
-                </tickets_open>
-                <tickets_closed>
-                    <label>Tickets closed</label>
-                    <uri>/client/ticket_closed.php</uri>
-                    <title_class>support</title_class>
-                </tickets_closed>
-                <new_ticket>
-                    <label>New ticket</label>
-                    <uri>/client/ticket_create.php</uri>
-                    <title_class>support</title_class>
-                </new_ticket>
-            </pages>
-        </support>
+		<support>
+			<label>Support</label>
+			<uri>{SUPPORT_SYSTEM_PATH}</uri>
+			<target>{SUPPORT_SYSTEM_TARGET}</target>
+			<class>support</class>
+			<privilege_callback name="customerHasFeature" param="support"/>
+			<pages>
+				<tickets_open>
+					<label>Tickets open</label>
+					<uri>/client/ticket_system.php</uri>
+					<title_class>support</title_class>
+				</tickets_open>
+				<tickets_closed>
+					<label>Tickets closed</label>
+					<uri>/client/ticket_closed.php</uri>
+					<title_class>support</title_class>
+				</tickets_closed>
+				<new_ticket>
+					<label>New ticket</label>
+					<uri>/client/ticket_create.php</uri>
+					<title_class>support</title_class>
+				</new_ticket>
+			</pages>
+		</support>
 
-        <profile>
-            <label>Profile</label>
-            <uri>/client/profile.php</uri>
-            <class>profile</class>
-            <pages>
-                <overview>
-                    <label>Overview</label>
-                    <uri>/client/profile.php</uri>
-                    <title_class>profile</title_class>
-                </overview>
-                <language>
-                    <label>Language</label>
-                    <uri>/client/language.php</uri>
-                    <title_class>multilanguage</title_class>
-                </language>
-                <layout>
-                    <Label>Layout</Label>
-                    <uri>/client/layout.php</uri>
-                    <title_class>layout</title_class>
-                </layout>
-                <passsword>
-                    <label>Password</label>
-                    <uri>/client/password_change.php</uri>
-                    <title_class>password</title_class>
-                </passsword>
-                <personal_data>
-                    <label>Personal data</label>
-                    <uri>/client/personal_change.php</uri>
-                    <title_class>doc</title_class>
-                </personal_data>
-            </pages>
-        </profile>
-    </navigation>
+		<profile>
+			<label>Profile</label>
+			<uri>/client/profile.php</uri>
+			<class>profile</class>
+			<pages>
+				<overview>
+					<label>Overview</label>
+					<uri>/client/profile.php</uri>
+					<title_class>profile</title_class>
+				</overview>
+				<language>
+					<label>Language</label>
+					<uri>/client/language.php</uri>
+					<title_class>multilanguage</title_class>
+				</language>
+				<layout>
+					<Label>Layout</Label>
+					<uri>/client/layout.php</uri>
+					<title_class>layout</title_class>
+				</layout>
+				<passsword>
+					<label>Password</label>
+					<uri>/client/password_change.php</uri>
+					<title_class>password</title_class>
+				</passsword>
+				<personal_data>
+					<label>Personal data</label>
+					<uri>/client/personal_change.php</uri>
+					<title_class>doc</title_class>
+				</personal_data>
+			</pages>
+		</profile>
+	</navigation>
 </config>

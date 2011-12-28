@@ -753,15 +753,15 @@ function mount_point_exists($domain_id, $mnt_point)
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
  * @param string $featureName Feature name
- * @param bool $reload If true force data to be reloaded
- * @return return bool TRUE if $featureName is available for customer, FALSE otherwise
+ * @param bool $forceReload If true force data to be reloaded
+ * @return bool TRUE if $featureName is available for customer, FALSE otherwise
  */
-function customerHasFeature($featureName, $reload = false)
+function customerHasFeature($featureName, $forceReload = false)
 {
 	static $availableFeatures = null;
 	$featureName = strtolower($featureName);
 
-	if (null === $availableFeatures || $reload) {
+	if (null === $availableFeatures || $forceReload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 		$dmnProps = get_domain_default_props((int)$_SESSION['user_id'], true);
