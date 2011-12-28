@@ -179,20 +179,20 @@ a {text-decoration: none;}
 .main_menu .support {background-image: url(../images/menu/support.png);}
 .main_menu .webtools {background-image: url(../images/menu/webtools.png);}
 .main_menu .profile {background-image: url(../images/menu/profile.png);}
-.main_menu .custom_link:hover {background-image: url(../images/menu/custom_link_a.png);}
-.main_menu .database:hover { background-image: url(../images/menu/database_a.png);}
-.main_menu .domains:hover { background-image: url(../images/menu/domains_a.png);}
-.main_menu .email:hover {background-image: url(../images/menu/email_a.png);}
-.main_menu .ftp:hover {background-image: url(../images/menu/ftp_a.png);}
+.main_menu .custom_link:hover, .main_menu .custom_link.active {background-image: url(../images/menu/custom_link_a.png);}
+.main_menu .database:hover, .main_menu .database.active { background-image: url(../images/menu/database_a.png);}
+.main_menu .domains:hover, .main_menu .domains.active { background-image: url(../images/menu/domains_a.png);}
+.main_menu .email:hover, .main_menu .email.active {background-image: url(../images/menu/email_a.png);}
+.main_menu .ftp:hover, .main_menu .ftp.active {background-image: url(../images/menu/ftp_a.png);}
 .main_menu .general:hover, .main_menu .general.active { background-image: url(../images/menu/general_a.png);}
-.main_menu .hosting_plans:hover, .main_menu .hosting_plans .active {background-image: url(../images/menu/hosting_plans_a.png);}
+.main_menu .hosting_plans:hover, .main_menu .hosting_plans.active {background-image: url(../images/menu/hosting_plans_a.png);}
 .main_menu .manage_users:hover, .main_menu .manage_users.active {background-image: url(../images/menu/manage_users_a.png);}
-.main_menu .purchasing:hover, main_menu .purchasing.active {background-image: url(../images/menu/purchasing_a.png);}
+.main_menu .purchasing:hover, .main_menu .purchasing.active {background-image: url(../images/menu/purchasing_a.png);}
 .main_menu .settings:hover, .main_menu .settings.active {background-image: url(../images/menu/settings_a.png);}
 .main_menu .statistics:hover, .main_menu .statistics.active {background-image: url(../images/menu/statistics_a.png);}
 .main_menu .support:hover, .main_menu .support.active {background-image: url(../images/menu/support_a.png);}
 .main_menu .webtools:hover, .main_menu .webtools.active {background-image: url(../images/menu/webtools_a.png);}
-.main_menu .profile:hover, .main_menu .profil.active {background-image: url(../images/menu/profile_a.png);}
+.main_menu .profile:hover, .main_menu .profile.active {background-image: url(../images/menu/profile_a.png);}
 
 /**
  * Location
