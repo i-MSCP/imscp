@@ -124,9 +124,10 @@ a {text-decoration: none;}
 /** Logo */
 
 .logo {
-    float: left;
-    width: 289px;
+    /*float: left;
+    width:100%;
     height: 89px;
+    */
 }
 
 /** Main menu */
@@ -165,34 +166,34 @@ a {text-decoration: none;}
 }
 
 /* Main menu icons */
-.main_menu .custom_link {background-image: url(../images/menu/custom_link.png);}
-.main_menu .database {background-image: url(../images/menu/database.png);}
-.main_menu .domains { background-image: url(../images/menu/domains.png);}
-.main_menu .email {background-image: url(../images/menu/email.png);}
-.main_menu .ftp {background-image: url(../images/menu/ftp.png);}
 .main_menu .general {background-image: url(../images/menu/general.png);}
-.main_menu .hosting_plans {background-image: url(../images/menu/hosting_plans.png);}
+.main_menu .general:hover, .main_menu .active .general { background-image: url(../images/menu/general_a.png);}
 .main_menu .manage_users {background-image: url(../images/menu/manage_users.png);}
-.main_menu .purchasing {background-image: url(../images/menu/purchasing.png);}
-.main_menu .settings {background-image: url(../images/menu/settings.png);}
-.main_menu .statistics {background-image: url(../images/menu/statistics.png);}
-.main_menu .support {background-image: url(../images/menu/support.png);}
+.main_menu .manage_users:hover, .main_menu .active .manage_users { background-image: url(../images/menu/manage_users_a.png);}
+.main_menu .domains { background-image: url(../images/menu/domains.png);}
+.main_menu .domains:hover, .main_menu .active .domains { background-image: url(../images/menu/domains_a.png);}
 .main_menu .webtools {background-image: url(../images/menu/webtools.png);}
+.main_menu .webtools:hover, .main_menu .active .webtools { background-image: url(../images/menu/webtools_a.png);}
+.main_menu .hosting_plans {background-image: url(../images/menu/hosting_plans.png);}
+.main_menu .hosting_plans:hover, .main_menu .active .hosting_plans { background-image: url(../images/menu/hosting_plans_a.png);}
+.main_menu .support {background-image: url(../images/menu/support.png);}
+.main_menu .support:hover, .main_menu .active .support { background-image: url(../images/menu/support_a.png);}
+.main_menu .settings {background-image: url(../images/menu/settings.png);}
+.main_menu .settings:hover, .main_menu .active .settings { background-image: url(../images/menu/settings_a.png);}
+.main_menu .custom_link {background-image: url(../images/menu/custom_link.png);}
+.main_menu .custom_link:hover, .main_menu .active .custom_link { background-image: url(../images/menu/custom_link_a.png);}
+.main_menu .database {background-image: url(../images/menu/database.png);}
+.main_menu .database:hover, .main_menu .active .database { background-image: url(../images/menu/database_a.png);}
+.main_menu .email {background-image: url(../images/menu/email.png);}
+.main_menu .email:hover, .main_menu .active .email { background-image: url(../images/menu/email_a.png);}
+.main_menu .ftp {background-image: url(../images/menu/ftp.png);}
+.main_menu .ftp:hover, .main_menu .active .ftp { background-image: url(../images/menu/ftp_a.png);}
+.main_menu .purchasing {background-image: url(../images/menu/purchasing.png);}
+.main_menu .purchasing:hover, .main_menu .active .purchasing { background-image: url(../images/menu/purchasing_a.png);}
+.main_menu .statistics {background-image: url(../images/menu/statistics.png);}
+.main_menu .statistics:hover, .main_menu .active .statistics { background-image: url(../images/menu/statistics_a.png);}
 .main_menu .profile {background-image: url(../images/menu/profile.png);}
-.main_menu .custom_link:hover, .main_menu .custom_link.active {background-image: url(../images/menu/custom_link_a.png);}
-.main_menu .database:hover, .main_menu .database.active { background-image: url(../images/menu/database_a.png);}
-.main_menu .domains:hover, .main_menu .domains.active { background-image: url(../images/menu/domains_a.png);}
-.main_menu .email:hover, .main_menu .email.active {background-image: url(../images/menu/email_a.png);}
-.main_menu .ftp:hover, .main_menu .ftp.active {background-image: url(../images/menu/ftp_a.png);}
-.main_menu .general:hover, .main_menu .general.active { background-image: url(../images/menu/general_a.png);}
-.main_menu .hosting_plans:hover, .main_menu .hosting_plans.active {background-image: url(../images/menu/hosting_plans_a.png);}
-.main_menu .manage_users:hover, .main_menu .manage_users.active {background-image: url(../images/menu/manage_users_a.png);}
-.main_menu .purchasing:hover, .main_menu .purchasing.active {background-image: url(../images/menu/purchasing_a.png);}
-.main_menu .settings:hover, .main_menu .settings.active {background-image: url(../images/menu/settings_a.png);}
-.main_menu .statistics:hover, .main_menu .statistics.active {background-image: url(../images/menu/statistics_a.png);}
-.main_menu .support:hover, .main_menu .support.active {background-image: url(../images/menu/support_a.png);}
-.main_menu .webtools:hover, .main_menu .webtools.active {background-image: url(../images/menu/webtools_a.png);}
-.main_menu .profile:hover, .main_menu .profile.active {background-image: url(../images/menu/profile_a.png);}
+.main_menu .profile:hover, .main_menu .active .profile { background-image: url(../images/menu/profile_a.png);}
 
 /**
  * Location
@@ -306,6 +307,7 @@ a {text-decoration: none;}
     position: relative;
     margin-left: 197px;
     padding: 0.5em 23px 20px 43px;
+    overflow: hidden;
 }
 
 h2, h3 {
@@ -317,7 +319,6 @@ h2, h3 {
     font-weight: bold;
     height: 33px;
     background: no-repeat top left;
-    /*margin-top: 0.5em;*/
     padding-left: 33px;
     margin-right: -33px;
 }
@@ -433,45 +434,32 @@ strong {
 .body table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0.5em 0;
+    margin: 1em 0;
     text-align: left;
+    overflow: visible;
 }
-
-.body tr {border: 1px solid;}
-.body th {vertical-align: middle;}
 
 .body th,
 .body tfoot td {
+    vertical-align: middle;
+    padding: 0.5em;
     white-space: nowrap;
-    font-weight: bold;
     text-align: left;
-    line-height: 24px;
-    padding: 0 0.5em;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
+    font-weight: bold;
 }
 
-.body th:first-child {border-left: 1px solid;}
-.body th:last-child {border-right: 1px solid;}
+.body th, .body tfoot td {border-top: 1px solid;}
+.body th:first-child, .body tfoot td:first-child {border-left: 1px solid;}
+.body th:last-child, .body tfoot td:last-child {border-right: 1px solid;}
+.body td:first-child {border-left: 1px solid;}
+.body td:last-child {border-right: 1px solid;}
+.body tr:last-child {border-bottom: 1px solid;}
 
-.description th {
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-}
-
-.body .description th:first-child {border-left: 1px solid;}
-.body .description th:last-child {border-right: 1px solid;}
-
-.body .firstColFixed td:first-child {
-    width:300px;
-}
+.body .firstColFixed td:first-child {width:300px;}
 
 .body td {
-    height: 24px;
-    line-height: 14px;
+    padding: 0.5em;
     vertical-align: middle;
-    padding: 0.5em 0.5em;
-    border-top: 1px solid;
     border-bottom: 1px solid;
 }
 
@@ -1004,7 +992,6 @@ textarea {
     white-space: -o-pre-wrap; /* Opera */
     white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
     word-wrap: break-word; /* IE 5.5+ */
-
 }
 
 #box a {

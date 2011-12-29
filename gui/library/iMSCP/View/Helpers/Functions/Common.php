@@ -334,7 +334,8 @@ function generateNavigation($tpl)
 			$tpl->assign(
 				array(
 					'HREF' => $page->getHref(),
-					'CLASS' => $page->getClass() . ($page->isActive(true) ? ' active' : ''),
+					'CLASS' => $page->getClass(),
+					'IS_ACTIVE_CLASS' => ($page->isActive(true)) ? 'active' : 'dummy',
 					'LABEL' => tr($page->getLabel()),
 					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self'));
 
@@ -363,7 +364,7 @@ function generateNavigation($tpl)
 							$tpl->assign(
 								array(
 									'HREF' => $subpage->getHref(),
-									'CLASS' => $subpage->getClass() . ($subpage->isActive(true) ? 'active' : 'dummy'),
+									'IS_ACTIVE_CLASS' => ($subpage->isActive(true)) ? 'active' : 'dummy',
 									'LABEL' => tr($subpage->getLabel()),
 									'TARGET' => ($subpage->getTarget()) ? $subpage->getTarget() : '_self'));
 

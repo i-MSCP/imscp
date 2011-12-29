@@ -26,7 +26,7 @@
 		DD_belatedPNG.fix(
 			'.logo img, .custom_link, .database, .domains, .email, .ftp, .general, .hosting_plans, .manage_users,' +
 			'.purchasing, .settings, .statistics, .support, .webtools, .custom_link,' +
-			'.support, .webtools, .help, .logout, .backadmin, .adminlog, .billing, .debugger,.diskusage, .doc,' +
+			'.support, .profile, .webtools, .help, .logout, .backadmin, .adminlog, .billing, .debugger,.diskusage, .doc,' +
 			'.error, .flash, .hdd, .htaccess, .ip, .layout, .maintenancemode, .multilanguage, .no, .password,' +
 			'.serverstatus, .sql, .stats, .systeminfo, .tools, .traffic, .update,' +
 			'.user_blue, .user_green, .user_yellow, .user, .users, .users2, .apps_installer, .custom_link,' +
@@ -44,8 +44,8 @@
 	<!--[if IE]>
 	<script type="text/javascript">
 	/*<![CDATA[*/
-		// odd/even fix for IE browsers
-		$(window).load(function(){
+		// css adjustement for IE browsers
+		$(document).ready(function(){
 			$('tr:visible').each(function(index) {
 				if(index % 2) {
 					$(this).css('background-color', 'rgb(255, 255, 255)');
@@ -53,6 +53,11 @@
 					$(this).css('background-color', 'rgb(237, 237, 237)');
 				}
 			});
+			$(".body th, .body tfoot td").css({'border-top':'1px solid rgb(0, 0, 0)', 'border-bottom':'1px solid rgb(0, 0, 0)'});
+			$(".body th:first-child, .body tfoot td:first-child").css('border-left','1px solid rgb(0, 0, 0)');
+			$(".body th:last-child, .body tfoot td:last-child").css('border-right','1px solid rgb(0, 0, 0)');
+			$(".body td:first-child").css('border-left','1px solid rgb(223, 223, 223)');
+			$(".body td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
 		});
 	/*]]>*/
 	</script>

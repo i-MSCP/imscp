@@ -28,20 +28,21 @@ body {
 /** Links */
 a, .body th a, .body #loginBox a {color: rgb(255, 255, 255);}
 .body a {color: rgb(133, 116, 47);}
-a:hover, a.active, .body th a:hover, .body #loginBox a:hover, #box a:hover {color: rgb(92, 186, 218);}
+a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #toolbox li a:hover {color: rgb(92, 186, 218);}
 
 /** Header */
-.header {background: rgb( 145, 129, 55) url(../images/yellow/background/top_bg.jpg) repeat-x top left;}
+.header {background: rgb(145, 129, 55) url(../images/yellow/background/top_bg.jpg) repeat-x top left;}
+
+/** logo */
+.header .logo {background: transparent url(../images/yellow/background/top_left_bg.jpg) no-repeat;}
 
 /** Main menu */
 .main_menu {background: transparent url(../images/yellow/background/mainmenu_left.png) no-repeat top left;}
 .main_menu ul {background: transparent url(../images/yellow/background/mainmenu_bg.png) repeat-x top left;}
-.main_menu a:hover, .main_menu a.active{
-    background-color: rgba(255, 255, 255, 0.3);
-}
+.main_menu a:hover, .main_menu .active a{background-color: rgba(255, 255, 255, 0.3);}
 
 /** Location */
-.location {background: rgb(133, 116, 47) url(../images/yellow/background/top_bar_bg.jpg) repeat-x top left;}
+.location {background: rgb(133, 116, 47) url(../images/yellow/jquery-ui/ui-bg_glass_40_85742f_1x400.png) repeat-x 50% 50%;}
 
 /** Heading */
 .location-area h1 {color: rgb(255, 255, 255);}
@@ -67,31 +68,26 @@ h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 
 /** Tables */
 
-.body tr {border-color: rgb(223, 223, 223);}
 .body tr:nth-child(odd) {background-color: rgb(237, 237, 237);}
 .body th, .body tfoot td {
-    background: rgb(133, 116, 47) url(../images/yellow/background/top_bar_bg.jpg) repeat-x;
-    color: rgb(255, 255, 255);
-    border-top-color: rgb(0, 0, 0);
-    border-bottom-color: rgb(0, 0, 0);
+   background: rgb(133, 116, 47) url(../images/yellow/jquery-ui/ui-bg_glass_40_85742f_1x400.png) repeat-x 50% 50%;
+   color: rgb(255, 255, 255);
 }
-.body th:first-child {border-left-color: rgb(0, 0, 0);}
-.body th:last-child {border-right-color: rgb(0, 0, 0);}
+.body th, .body tfoot td {border-top-color: rgb(0, 0, 0);}
+.body th:first-child, .body tfoot td:first-child {border-left-color: rgb(0, 0, 0);}
+.body th:last-child, .body tfoot td:last-child {border-right-color: rgb(0, 0, 0);}
+.body td {border-bottom-color: rgb(223,223,223);}
+.body td:first-child {border-left-color: rgb(223, 223, 223);}
+.body td:last-child {border-right-color: rgb(223, 223, 223);}
 
 .description th {
     background: transparent;
-    border-top-color: rgb(222, 222, 222);
-    border-bottom-color:  rgb(222, 222, 222);
     color: rgb(26, 26, 26);
-}
-
-.description th:first-child {border-left-color: rgb(222, 222, 222);}
-.description th:last-child {border-right-color: rgb(222, 222, 222);}
-
-.body td {
     border-top-color: rgb(223, 223, 223);
-    border-bottom-color: rgb(223, 223, 223);
 }
+
+.description th:first-child {border-left-color: rgb(223, 223, 223);}
+.description th:last-child {border-right-color: rgb(223, 223, 223);}
 
 /** dataTables */
 .datatable .sorting_asc { background: url('../images/yellow/datatable/asc.png') no-repeat center right; }
@@ -100,19 +96,19 @@ h2 span, h3 span {border-bottom-color: rgb(204, 204, 204);}
 
 /** Form elements */
 
-input[type="text"], input[type="password"], select, textarea {
-    border-color: rgb(204, 204, 204);
-}
-
-input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {
-    border-color: rgb(153, 153, 153);
-}
+input[type="text"], input[type="password"], select, textarea {border-color: rgb(204, 204, 204);}
+input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:focus {border-color: rgb(153, 153, 153);}
+input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, textarea:disabled{background: rgb(204,204,204) url('../images/background/stripe_0582bcfb31aaf8571dba1adb85ffc318.png') repeat;}
 
 /** Tooltips */
 .tooltip {border-color: rgb(133, 116, 47);}
 .tooltip_bg, .sw_tooltip_bg {background-color: rgb(133, 116, 47);}
 .tooltip_txt, .sw_tooltip_txt {color: rgb(255, 255, 255);}
 .tooltip_notice, .sw_tooltip_notice {background: url(../images/tooltips/info.png) no-repeat center left;}
+
+/** services status */
+.up { color: rgb(61, 122, 21); }
+.down { color: rgb(202, 29, 17);}
 
 /** Footer */
 .footer {color: rgb(255, 255, 255);}
@@ -122,41 +118,23 @@ input[type="text"]:focus, input[type="password"]:focus, select:focus, textarea:f
  */
 
 .login	#header, .box_message #header {
-    background: rgb(0, 0, 0) url('../images/yellow/login/stripe.png') repeat-x left top;
+    background: rgb(145, 129, 55) url('../images/yellow/login/stripe.png') repeat-x left top;
     border-bottom-color: rgb(122, 106, 43);
 }
 
-.login #logo span, .box_message #logo span {
-    color: rgb(255, 255, 255);
-}
-
-.login #copyright span a, .box_message #copyright span a {
-    color: rgb(255, 255, 255);
-}
-
-.login #copyright span a:hover, .box_message #copyright span a:hover {
-    color: rgb(92, 186, 218);
-}
+.login #logo span, .box_message #logo span {color: rgb(255, 255, 255);}
+.login #copyright span a, .box_message #copyright span a {color: rgb(255, 255, 255);}
+.login #copyright span a:hover, .box_message #copyright span a:hover {color: rgb(92, 186, 218);}
 
 /** Specific to login and lostpassword pages */
 
 .login #loginBox {background: transparent url('../images/yellow/login/form_box.png') no-repeat left top;}
-
-.login label span {
-    color: rgb(255, 255, 255);
-}
-
-.login #toolbox li a {
-    color: rgb(26, 26, 26);
-}
-
-.login #toolbox li a:hover {
-    color: rgb(92, 186, 218);
-}
+.login label span {color: rgb(255, 255, 255);}
+.login #toolbox li a {color: rgb(26, 26, 26);}
+.login #toolbox li a:hover {color: rgb(92, 186, 218);}
 
 .i_lock {background-image: url('../images/login/i_lock.png');}
 .i_unlock {background-image: url('../images/login/i_unlock.png');}
-
 
 /**Specific to exception page */
 

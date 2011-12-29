@@ -12,8 +12,9 @@ Features / Enhancements:
 			- DebugBar - Files plugin: Count and shows the loaded templates files
 		Core:
 			- Added layout color switcher
-			- Events system: Allow to pass arbitrary data to the events listeners methods
-			- Events system: Allow to use closure
+			- Events system:
+				- Allow to pass arbitrary data to the events listeners methods
+				- Allow to use closures
 			- Integrated Zend_Navigation component (without view helper)
 			- Reseller level - Added flash message for new orders (Only for confirmed orders)
 			- Reseller level - Added flash message for new domain alias orders
