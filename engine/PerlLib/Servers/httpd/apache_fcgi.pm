@@ -56,6 +56,15 @@ sub _init{
 	0;
 }
 
+sub preinstall{
+
+	my $self	= shift;
+	my $rs		= 0;
+	$rs			= $self->stop();
+
+	$rs;
+}
+
 sub install{
 
 	use Servers::httpd::apache_fcgi::installer;
@@ -70,7 +79,8 @@ sub install{
 sub postinstall{
 
 	my $self	= shift;
-	$self->{restart} = 'yes';
+
+	$self->{start}	= 'yes';
 
 	0;
 }
@@ -197,6 +207,42 @@ sub forceRestart{
 
 	my $self				= shift;
 	$self->{forceRestart}	= 'yes';
+
+	0;
+}
+
+sub start{
+
+	my $self			= shift;
+	my ($rs, $stdout, $stderr);
+
+	use iMSCP::Execute;
+
+	# Reload apache config
+	$rs = execute("$self->{tplValues}->{CMD_HTTPD} start", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	warning("$stderr") if $stderr && !$rs;
+	error("$stderr") if $stderr && $rs;
+	error("Error while stating") if $rs && !$stderr;
+	return $rs if $rs;
+
+	0;
+}
+
+sub stop{
+
+	my $self			= shift;
+	my ($rs, $stdout, $stderr);
+
+	use iMSCP::Execute;
+
+	# Reload apache config
+	$rs = execute("$self->{tplValues}->{CMD_HTTPD} stop", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	warning("$stderr") if $stderr && !$rs;
+	error("$stderr") if $stderr && $rs;
+	error("Error while stoping") if $rs && !$stderr;
+	return $rs if $rs;
 
 	0;
 }
@@ -1374,7 +1420,15 @@ END{
 	my $rs		= 0;
 	my $trfDir	= "$self::apacheConfig{APACHE_LOG_DIR}/traff";
 
-	$rs = $self->restart() if $self->{restart} && $self->{restart} eq 'yes';
+	if($self->{start} && $self->{start} eq 'yes'){
+
+		$rs = $self->start();
+
+	} elsif($self->{restart} && $self->{restart} eq 'yes') {
+
+		$rs = $self->restart();
+
+	}
 
 	$rs |= iMSCP::Dir->new(dirname => "$trfDir.old")->remove() if -d "$trfDir.old";
 

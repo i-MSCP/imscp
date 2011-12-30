@@ -56,7 +56,10 @@ sub preinstall{
 	use Servers::po::courier::installer;
 
 	my $self	= shift;
-	my $rs		= Servers::po::courier::installer->new()->registerHooks();
+	my $rs		= 0;
+
+	$rs		|= $self->stop();
+	my $rs	|= Servers::po::courier::installer->new()->registerHooks();
 
 	$rs;
 }
@@ -74,7 +77,81 @@ sub install{
 sub postinstall{
 
 	my $self	= shift;
-	$self->{restart} = 'yes';
+	my $rs		= 0;
+
+	$rs = $self->start();
+
+	$rs;
+}
+
+sub start{
+
+	my $self = shift;
+	my ($rs, $stdout, $stderr);
+
+	use iMSCP::Execute;
+
+	# Reload config
+	$rs = execute("$self::courierConfig{'CMD_AUTHD'} start", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_POP'} start", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_IMAP'} start", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_POP_SSL'} start", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_IMAP_SSL'} start", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	0;
+}
+
+sub stop{
+
+	my $self = shift;
+	my ($rs, $stdout, $stderr);
+
+	use iMSCP::Execute;
+
+	# Reload config
+	$rs = execute("$self::courierConfig{'CMD_AUTHD'} stop", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_POP'} stop", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_IMAP'} stop", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_POP_SSL'} stop", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	$rs = execute("$self::courierConfig{'CMD_IMAP_SSL'} stop", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
 
 	0;
 }

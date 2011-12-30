@@ -572,7 +572,6 @@ sub masterHost {
 		return $rs if $rs;
 		$rs = $httpd->enableMod('ssl');
 		return $rs if $rs;
-		$httpd->forceRestart();
 
 	} else {
 
