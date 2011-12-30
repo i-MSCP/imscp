@@ -1,11 +1,11 @@
 <packages>
 	<httpd>
 		<alternative>
-			<apache>apache2</apache>
-			<apache>apache2-mpm-worker</apache>
-			<apache>apache2-suexec</apache>
-			<apache>libapache2-mod-fastcgi</apache>
-			<apache>libapache2-mod-fcgid</apache>
+			<apache_fcgi>apache2</apache_fcgi>
+			<apache_fcgi>apache2-mpm-worker</apache_fcgi>
+			<apache_fcgi>apache2-suexec</apache_fcgi>
+			<apache_fcgi>libapache2-mod-fastcgi</apache_fcgi>
+			<apache_fcgi>libapache2-mod-fcgid</apache_fcgi>
 			<apache_itk>apache2</apache_itk>
 			<apache_itk>apache2-mpm-itk</apache_itk>
 			<apache_itk>apache2-suexec</apache_itk>

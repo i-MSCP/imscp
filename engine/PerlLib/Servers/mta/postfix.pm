@@ -81,7 +81,7 @@ sub postinstall{
 
 sub setEnginePermissions{
 
-	use Servers::httpd::apache::installer;
+	use Servers::mta::postfix::installer;
 
 	my $self	= shift;
 	my $rs = Servers::mta::postfix::installer->new()->setEnginePermissions();

@@ -24,7 +24,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd::apache::installer;
+package Servers::httpd::apache_fcgi::installer;
 
 use strict;
 use warnings;
@@ -236,10 +236,10 @@ sub saveConf{
 sub oldEngineCompatibility{
 
 	use iMSCP::File;
-	use Servers::httpd::apache;
+	use Servers::httpd::apache_fcgi;
 
 	my $self	= shift;
-	my $httpd	= Servers::httpd::apache->new();
+	my $httpd	= Servers::httpd::apache_fcgi->new();
 	my $rs		= 0;
 
 	if(-f "$self::apacheConfig{APACHE_SITES_DIR}/imscp.conf"){
@@ -254,10 +254,10 @@ sub fastcgiConf {
 	use iMSCP::File;
 	use iMSCP::Dialog;
 	use iMSCP::Templator;
-	use Servers::httpd::apache;
+	use Servers::httpd::apache_fcgi;
 
 	my $self	= shift;
-	my $httpd	= Servers::httpd::apache->new();
+	my $httpd	= Servers::httpd::apache_fcgi->new();
 	my $rs		= 0;
 	my ($cfgTpl, $err);
 
@@ -345,10 +345,10 @@ sub vHostConf {
 	use iMSCP::File;
 	use iMSCP::Templator;
 	use version;
-	use Servers::httpd::apache;
+	use Servers::httpd::apache_fcgi;
 
 	my $self	= shift;
-	my $httpd	= Servers::httpd::apache->new();
+	my $httpd	= Servers::httpd::apache_fcgi->new();
 	my ($rs, $cfgTpl, $err);
 
 	if(-f "$self::apacheConfig{'APACHE_SITES_DIR'}/00_nameserver.conf") {
@@ -415,11 +415,11 @@ sub vHostConf {
 #
 sub phpConf {
 
-	use Servers::httpd::apache;
+	use Servers::httpd::apache_fcgi;
 	use iMSCP::File;
 
 	my $self = shift;
-	my $httpd	= Servers::httpd::apache->new();
+	my $httpd	= Servers::httpd::apache_fcgi->new();
 	my ($rs, $cfgTpl, $file);
 	my $cfgDir = "$main::imscpConfig{'CONF_DIR'}/fcgi";
 	my $bkpDir = "$cfgDir/backup";
@@ -521,7 +521,7 @@ sub masterHost {
 	use Servers::httpd;
 
 	my $self	= shift;
-	my $httpd	= Servers::httpd::apache->new();
+	my $httpd	= Servers::httpd::apache_fcgi->new();
 	my $rs		= 0;
 
 	$rs = $httpd->disableSite('000-default');
@@ -589,7 +589,7 @@ sub installLogrotate{
 	use Servers::httpd;
 
 	my $self	= shift;
-	my $httpd = Servers::httpd::apache->new();
+	my $httpd = Servers::httpd::apache_fcgi->new();
 
 	my $rs = $httpd->buildConfFile("logrotate.conf");
 	return $rs if $rs;

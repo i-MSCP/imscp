@@ -24,7 +24,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package Servers::httpd::apache;
+package Servers::httpd::apache_fcgi;
 
 use strict;
 use warnings;
@@ -58,11 +58,11 @@ sub _init{
 
 sub install{
 
-	use Servers::httpd::apache::installer;
+	use Servers::httpd::apache_fcgi::installer;
 
 	my $self	= shift;
 	my $rs		= 0;
-	$rs |= Servers::httpd::apache::installer->new()->install();
+	$rs |= Servers::httpd::apache_fcgi::installer->new()->install();
 
 	$rs;
 }
@@ -77,10 +77,10 @@ sub postinstall{
 
 sub setGuiPermissions{
 
-	use Servers::httpd::apache::installer;
+	use Servers::httpd::apache_fcgi::installer;
 
 	my $self	= shift;
-	my $rs = Servers::httpd::apache::installer->new()->setGuiPermissions();
+	my $rs = Servers::httpd::apache_fcgi::installer->new()->setGuiPermissions();
 
 	$rs;
 }
@@ -91,7 +91,7 @@ sub registerPreHook{
 	my $fname		= shift;
 	my $callback	= shift;
 
-	my $installer	= Servers::httpd::apache::installer->new();
+	my $installer	= Servers::httpd::apache_fcgi::installer->new();
 
 	debug("Register pre hook to $fname on installer")
 		if (ref $callback eq 'CODE' && $installer->can($fname));
@@ -114,7 +114,7 @@ sub registerPostHook{
 
 	debug("Attaching to $fname... $callback");
 
-	my $installer	= Servers::httpd::apache::installer->new();
+	my $installer	= Servers::httpd::apache_fcgi::installer->new();
 
 	debug("Register post hook to $fname on installer")
 		if (ref $callback eq 'CODE' && $installer->can($fname));
@@ -1370,7 +1370,7 @@ END{
 	use iMSCP::Dir;
 
 	my $endCode	= $?;
-	my $self	= Servers::httpd::apache->new();
+	my $self	= Servers::httpd::apache_fcgi->new();
 	my $rs		= 0;
 	my $trfDir	= "$self::apacheConfig{APACHE_LOG_DIR}/traff";
 
