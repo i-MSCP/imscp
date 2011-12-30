@@ -70,6 +70,17 @@ sub install{
 	$rs;
 }
 
+sub uninstall{
+
+	use Servers::po::dovecot::uninstaller;
+
+	my $self	= shift;
+	my $rs		= Servers::po::dovecot::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
+
+	$rs;
+}
+
 sub postinstall{
 
 	my $self	= shift;

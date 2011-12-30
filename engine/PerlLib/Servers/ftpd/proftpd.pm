@@ -61,6 +61,18 @@ sub install{
 	$rs;
 }
 
+sub uninstall{
+
+	use Servers::ftpd::proftpd::uninstaller;
+
+	my $self	= shift;
+	my $rs		= 0;
+	$rs |= Servers::ftpd::proftpd::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
+
+	$rs;
+}
+
 sub postinstall{
 
 	my $self	= shift;

@@ -39,6 +39,7 @@ Tickets:
 	- Fixed #251: Defect - OldConfig uninitialised on fresh install
 	- Fixed #253: Defect - When domain backups are disable there should not be warning emails
 	- Fixed #255: Defect - Hide support feature menu item at user level
+	- Fixed #257: Defect - Uninstall error
 	- Fixed #259: Cosmetics - Different style for input and select elements
 	- Fixed #260: Cosmetics - Move app installer menu items to different section
 	- Fixed #262: Defect - AWStats not included in apache logrotate config

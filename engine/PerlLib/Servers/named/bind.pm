@@ -60,6 +60,18 @@ sub install{
 	$rs;
 }
 
+sub uninstall{
+
+	use Servers::named::bind::uninstaller;
+
+	my $self	= shift;
+	my $rs		= 0;
+	$rs |= Servers::named::bind::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
+
+	$rs;
+}
+
 sub postinstall{
 
 	my $self	= shift;

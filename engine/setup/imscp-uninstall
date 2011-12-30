@@ -1,1039 +1,344 @@
 #!/usr/bin/perl
 
-# i-MSCP a internet Multi Server Control Panel
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
 #
-# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
 #
-# Version: $Id$
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
-#
-# The Original Code is "VHCS - Virtual Hosting Control System".
-#
-# The Initial Developer of the Original Code is moleSoftware GmbH.
-# Portions created by Initial Developer are Copyright (C) 2001-2006
-# by moleSoftware GmbH. All Rights Reserved.
-#
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
-# internet Multi Server Control Panel. All Rights Reserved.
-#
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
-
-use FindBin;
-use lib "$FindBin::Bin/..";
-use Term::ANSIColor qw(:constants colored);
-require 'imscp_common_code.pl';
+# @category		i-MSCP
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
 
-sub welcome_note {
+use FindBin;
+use lib "$FindBin::Bin/..";
+use lib "$FindBin::Bin/../PerlLib";
 
-	my $rdata = undef;
+umask(027);
 
-	push_el(\@main::el, 'welcome_note()', 'Starting...');
+use iMSCP::Debug;
+use iMSCP::Boot;
+use iMSCP::Dialog;
 
-	my $welcome = colored(['bold underline'],
-		"\n\tWelcome to i-MSCP '$main::cfg{'Version'}' Un-Install Dialog.\n\n"
-	);
+newDebug('imscp-uninstall.log');
 
-	my $welcome_message =
-		"\tThis program will uninstall i-MSCP system from your server.\n";
+################################################################################
+# Starting update process
+#
+# @return void
+#
+sub uninstall_start_up {
 
-	my $welcome_warning = colored(['bold red'],
-		"\t/!\\ WARNING: All domain users and their accounts will be removed.  /!\\\n"
-	);
+	iMSCP::Boot->new()->init();
 
-	print STDOUT $welcome, $welcome_message, $welcome_warning;
+	#enter silent mode
+	silent(1);
 
-	do {
-		print STDOUT "\n\tDo you really want to continue [Y/n]: ";
-		chomp($rdata = readline \*STDIN);
-
-	} while($rdata !~ /^(|y|n)$/i);
-
-	exit 0 if($rdata =~ /^n$/i);
-
-	push_el(\@main::el, 'welcome_note()', 'Ending...');
+	user_dialog();
 
 	0;
 }
 
-sub ask_remove_user_data {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'ask_remove_user_data()', 'Starting...');
-
-	do {
-		print STDOUT "\tRemove user data? [y/N]: ";
-		chomp($rdata = readline \*STDIN);
-	} while($rdata !~ /^(|y|n)$/i);
-
-	if ($rdata =~ /^y$/i) {
-		$main::rm{'rm_u_data'} = 'yes';
-	} else {
-		$main::rm{'rm_u_data'} = 'no';
-	}
-
-	push_el(\@main::el, 'ask_remove_user_data()', 'Ending...');
-
-	0;
-}
-
+################################################################################
+# User dialog
+#
+# @return void
+#
 sub user_dialog {
 
-	my $rs = undef;
+	use iMSCP::Dialog;
 
-	push_el(\@main::el, 'user_dialog()', 'Starting...');
+	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
+	iMSCP::Dialog->factory()->set('no-label','EXIT');
+	iMSCP::Dialog->factory()->set('defaultno', '');
+	if (iMSCP::Dialog->factory()->yesno(
+					"\n
+						Welcome to \\Z1i-MSCP version $main::imscpConfig{'Version'}\\Zn Un-Install Dialog.
 
-	welcome_note();
-	ask_remove_user_data();
+						This program will uninstall i-MSCP system from your server.
 
-	push_el(\@main::el, 'user_dialog()', 'Ending...');
+						\\Zu\\Z1[WARNING]\\Zn
+						All domain users and their accounts will be removed.
 
-	0;
-}
+						\\Zu\\Z4[NOTE]\\Zn
+						During the migration process some or all services might require to be shut down or restarted.
 
-# Startup uninstall process
-sub uninstall_startup {
-	push_el(\@main::el, 'uninstall_start_up()', 'Starting...');
+						You can stop this process by pushing \\Z1EXIT\\Z0 button
+						To continue select \\Z1CONTINUE\\Z0 button"
 
-	my $rs = undef;
+					)
+	){
+		iMSCP::Dialog->factory()->msgbox(
+					"\n
+					\\Z1[NOTICE]\\Zn
 
-	umask(027);
-
-	# config check;
-	$rs = get_conf();
-	return $rs if ($rs != 0);
-
-	if (-e "/tmp/imscp-uninstall-services.log"){
-		$rs = del_file("/tmp/imscp-uninstall-services.log");
-		return $rs if ($rs != 0);
+					The update process was aborted by user..."
+		);
+		exit 0;
 	}
 
-	push_el(\@main::el, 'uninstall_start_up()', 'Ending...');
-
 	0;
 }
+################################################################################
+# Shutting down setup process
+#
+# @return int 0 on success, other on failure
+#
+sub uninstall_shut_down {
 
-# Shutdown uninstall process
-sub uninstall_shutdown {
+	iMSCP::Dialog->factory()->msgbox(
+					"\n
+					\\Z1Congratulations!!!\\Zn
 
-	push_el(\@main::el, 'uninstall_shut_down()', 'Starting...');
+					You have uninstall i-MSCP successfully!\n\n
 
-	my $shutdown_message = colored(
-		['bold underline'],
-		"\n\n\tCongratulations, you removed i-MSCP" .
-		"'$main::cfg{'Version'}' successfully!\n\n"
+					"
 	);
 
-	print STDOUT $shutdown_message;
-
-	push_el(\@main::el, 'uninstall_shut_down()', 'Ending...');
-
 	0;
 }
 
-sub remove_sql_users{
-	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, 'remove_sql_users()', 'Starting...');
+sub uninstall_engine {
 
-	my $sql = "select distinct(sqlu_name) from sql_user";
+	use iMSCP::Stepper;
+	## Starting user dialog
 
-	($rs, $rdata) = doSQL($sql);
-	if ($rs != 0) {
-		print "cannot obtain sql user list!\n\n";
-		send_error_mail('remove_sql_db()', "cannot obtain sql user list!");
+	my @steps = (
+
+		[\&uninstall_customers, 'Remove customers: '],
+		[\&uninstallServers, 'i-MSCP server uninstall task: '],
+		[\&uninstall_imscpd, 'i-MSCP daemons uninstall task: '],
+		[\&uninstall_crontab, 'i-MSCP crontab uninstall task: '],
+		[\&uninstall_logrotate, 'i-MSCP logrotate uninstall task: '],
+		[\&uninstall_sql, 'i-MSCP sql uninstall task: '],
+		[\&uninstall_system_users, 'i-MSCP system user uninstall task: '],
+		[\&uninstall_system_dirs, 'i-MSCP system directory uninstall task: '],
+	);
+	my $rs = 0;
+	my $step = 1;
+	for (@steps){
+		$rs |= step($_->[0], $_->[1], scalar @steps, $step);
+		$step++;
 	}
+	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-	my $sql_count = @$rdata;
-
-	if ($sql_count > 0) {
-
-		foreach (@$rdata) {
-
-			my $row = $_;
-			my $sqlu_name = @$row[0];
-
-			$sql = "DROP USER '$sqlu_name'\@'localhost'";
-			($rs, $rdata) = doSQL($sql);
-			if ($rs != 0) {
-				print "cannot remove sql user '$sqlu_name'\@localhost!\n\n";
-				send_error_mail('remove_sql_db()', "cannot remove sql user '$sqlu_name'\@localhost!");
-			}
-
-
-			$sql = "DROP USER '$sqlu_name'\@'%'";
-			($rs, $rdata) = doSQL($sql);
-			if ($rs != 0) {
-				print "cannot remove sql user '$sqlu_name'\@%!\n\n";
-				send_error_mail('remove_sql_db()', "cannot remove sql user '$sqlu_name'\@%!");
-			}
-
-		}
-
-	}
-
-	push_el(\@main::el, 'remove_sql_users()', 'Ending...');
-
-	return 0;
+	$rs;
 }
 
-sub remove_sql_db{
-	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, 'remove_sql_db()', 'Starting...');
+sub uninstall_customers {
 
-	my $sql = "select distinct(sqld_name) from sql_database";
+	use iMSCP::Boot;
 
-	($rs, $rdata) = doSQL($sql);
+	my $tables = {
+		domain => 'domain_status', domain_aliasses => 'alias_status',
+		subdomain => 'subdomain_status', subdomain_alias => 'subdomain_alias_status',
+		mail_users => 'status'
+	};
 
-	my $sql_count = @$rdata;
+	# Set status as 'change'
+	my $rs		= 0;
+	my $error;
+	my $database = iMSCP::Database->new()->factory();
 
-	if ($sql_count > 0) {
-
-		foreach (@$rdata) {
-
-			my $row = $_;
-			my $sqld_name = @$row[0];
-
-			$sql = "DROP DATABASE IF EXISTS $sqld_name;";
-			($rs, $rdata) = doSQL($sql);
-			if ($rs != 0) {
-				print "cannot remove database $sqld_name!!\n\n";
-				send_error_mail('remove_sql_db()', "cannot remove database $sqld_name!");
-			}
-		}
-
+	while (my ($table, $field) = each %$tables) {
+		$error = $database->doQuery('dummy',
+			"
+				UPDATE
+					$table
+				SET
+					$field = 'delete'
+				;
+			"
+		);
+		$rs = 1 if (ref $error ne 'HASH');
 	}
 
-	push_el(\@main::el, 'remove_sql_db()', 'Ending...');
+	iMSCP::Boot->new()->unlock();
 
-	return 0;
+	my ($stdout, $stderr);
+	$rs |= execute("perl $main::imscpConfig{'ENGINE_ROOT_DIR'}/imscp-rqst-mngr", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	error("Error while rebuilding customers configuration files") if(!$stderr && $rs);
+	iMSCP::Boot->new()->lock();
+
+	$rs;
 }
 
-sub uninstall_system_users {
+sub uninstallServers{
 
-	my ($rs, $rdata, $rows, $sql) = (undef, undef, undef, undef);
+	use iMSCP::Dir;
+	use FindBin;
+	use iMSCP::Stepper;
 
-	push_el(\@main::el, 'uninstall_system_users()', 'Starting...');
+	my ($rs, $file, $class, $server, $msg);
 
-	my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
-	my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
-	my ($upref) = ($main::cfg{'APACHE_SUEXEC_USER_PREF'});
-	my ($uid, $gid) = (undef, undef);
+	my $dir	= iMSCP::Dir->new(dirname => "$main::imscpConfig{'ENGINE_ROOT_DIR'}/PerlLib/Servers");
+	$rs		= $dir->get();
+	return $rs if $rs;
 
-	my @udata = ();
-	my @gdata = ();
+	my @servers = $dir->getFiles();
 
-	# MTA Mailbox User
-	@udata = getpwnam($fuid);
-	@gdata = getgrnam($fgid);
+	my $step = 1;
+	startDetail();
 
-	if (scalar(@udata) != 0) { # we have not this one user data;
-		my $cmd = "$main::cfg{'CMD_USERDEL'} $fuid";
-
-		$rs = sys_command($cmd);
-		if ($rs != 0) {
-			print "cannot remove  user '$fuid'!\n\n";
-			send_error_mail('uninstall_system_users()', "cannot remove  user '$fuid'!");
-		}
+	for(@servers){
+		s/\.pm//;
+		$file	= "Servers/$_.pm";
+		$class	= "Servers::$_";
+		require $file;
+		$server	= $class->factory();
+		$msg = "Performing uninstall tasks for ".uc($_)." server". ($main::imscpConfig{uc($_)."_SERVER"} ? ": ".$main::imscpConfig{uc($_)."_SERVER"} : '');
+		$rs |= step(sub{ $server->uninstall() }, $msg, scalar @servers, $step) if($server->can('uninstall'));
+		$step++;
 	}
 
-	# PHP Master
-	@udata = getpwnam("$upref$muid");
+	endDetail();
 
-	if (scalar(@udata) != 0) { # we have not this one user data;
-		my $cmd = "$main::cfg{'CMD_USERDEL'} $upref$muid";
+	$rs;
+}
 
-		$rs = sys_command($cmd);
-		if ($rs != 0) {
-			print "cannot remove  user '$fuid'!\n\n";
-			send_error_mail('uninstall_system_users()', "cannot remove  user '$fuid'!");
-		}
-	}
+sub uninstall_system_users{
 
-	@gdata = getgrnam("$upref$mgid");
-
-	if (scalar(@gdata) != 0) { # we have not this one group data;
-		my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref$mgid";
-
-		$rs = sys_command($cmd);
-		if ($rs != 0) {;
-			print "cannot remove  group '$upref$mgid'!\n\n";
-			send_error_mail('uninstall_system_users()', "cannot remove  group '$upref$mgid'!");
-		}
-	}
-
-	# Virtual User
-	$sql = "select domain_uid,domain_gid from domain";
-
-	($rs, $rows) = doSQL($sql);
-	if ($rs != 0){
-		print "cannot obtain user list!\n\n";
-		send_error_mail('uninstall_system_users()', "cannot obtain user list!");
-		return 0;
-	}
-
-	if (scalar(@$rows) != 0) {
-		foreach (@$rows) {
-			my $query_user = $_;
-			@udata = getpwnam("$upref@$query_user[0]");
-
-			if (scalar(@udata) != 0) { # we have not this one user data;
-				my $cmd = "$main::cfg{'CMD_USERDEL'} $upref@$query_user[0]";
-
-				$rs = sys_command($cmd);
-				if ($rs != 0) {
-					print "cannot remove  user '{$upref@$query_user[0]}'!\n\n";
-					send_error_mail('uninstall_system_users()', "cannot remove  user '{$upref@$query_user[0]}'!");
-				}
-			}
-
-			@gdata = getgrnam("$upref@$query_user[1]");
-
-			if (scalar(@gdata) != 0) { # we have not this one group data;
-				my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref@$query_user[0]";
-
-				$rs = sys_command($cmd);
-				if ($rs != 0) {
-					print "cannot remove  group '{upref@$query_user[0]}'!\nYou must remove it manually\n";
-					send_error_mail('uninstall_system_users()', "cannot remove  group '{$upref@$query_user[0]}'!");
-				}
-			}
-		}
-	}
-
-	push_el(\@main::el, 'uninstall_system_users()', 'Ending...');
-	return 0;
+	use Modules::SystemGroup;
+	Modules::SystemGroup->new()->delSystemGroup($main::imscpConfig{MASTER_GROUP});
 
 }
 
-sub uninstall_system_dirs {
+sub uninstall_system_dirs{
 
-	my ($rs, $rdata) = (undef, undef);
+	my $rs = 0;
 
-	push_el(\@main::el, 'uninstall_system_dirs()', 'Starting...');
+	use iMSCP::Dir;
 
-	if ($main::rm{'rm_u_data'} eq 'yes') {
-		$rs = del_dir($main::cfg{'APACHE_WWW_DIR'});
-		if ($rs != 0){
-			print "cannot delete folder ".$main::cfg{'APACHE_WWW_DIR'}."!\n\n";
-			send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'APACHE_WWW_DIR'}."!");
-		}
+	chdir("/");
+
+	for (
+		$main::imscpConfig{'CONF_DIR'},
+		$main::imscpConfig{'USER_HOME_DIR'},
+		$main::imscpConfig{'LOG_DIR'},
+		$main::imscpConfig{'ROOT_DIR'}
+	) {
+		$rs |= iMSCP::Dir->new(dirname => $_)->remove();
 	}
 
-	$rs = del_dir($main::cfg{'APACHE_USERS_LOG_DIR'});
-	if ($rs != 0){
-		print "cannot delete folder ".$main::cfg{'APACHE_USERS_LOG_DIR'}."!\n\n";
-		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'APACHE_USERS_LOG_DIR'}."!");
-	}
-
-	$rs = del_dir($main::cfg{'APACHE_BACKUP_LOG_DIR'});
-	if ($rs != 0){
-		print "cannot delete folder ".$main::cfg{'APACHE_BACKUP_LOG_DIR'}."!\n\n";
-		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'APACHE_BACKUP_LOG_DIR'}."!");
-	}
-
-	$rs = del_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'});
-	if ($rs != 0){
-		print "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_CONF_DIR'}."!\n\n";
-		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_CONF_DIR'}."!");
-	}
-
-	if ($main::rm{'rm_u_data'} eq 'yes') {
-		$rs = del_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'});
-		if ($rs != 0){
-			print "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."!\n\n";
-			send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."!");
-		}
-	}
-
-	$rs = del_dir($main::cfg{'LOG_DIR'});
-	if ($rs != 0){
-		print "cannot delete folder ".$main::cfg{'LOG_DIR'}."!\n\n";
-		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'LOG_DIR'}."!");
-	}
-
-	$rs = del_dir($main::cfg{'PHP_STARTER_DIR'});
-	if ($rs != 0){
-		print "cannot delete folder ".$main::cfg{'PHP_STARTER_DIR'}."!\n\n";
-		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'PHP_STARTER_DIR'}."!");
-	}
-
-	push_el(\@main::el, 'uninstall_system_dirs()', 'Ending...');
-
-	return 0;
-}
-
-sub uninstall_sql {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_sql()', 'Starting...');
-
-	$rs = remove_sql_users();
-	$rs = remove_sql_db();
-
-	#
-	# check for existing database;
-	#
-
-	my $sql = "show tables;";
-
-	($rs, $rdata) = doSQL($sql);
-
-	if ($rs == 0) { # Yes, we have one ! Let's drop it;
-
-		my $store_db_name = $main::db_name;
-
-
-		# Let's reset data;
-
-
-		$main::db = undef;
-
-		$main::db_name = '';
-
-		@main::db_connect = (
-							 "DBI:mysql:$main::db_name:$main::db_host",
-							 $main::db_user,
-							 $main::db_pwd
-							);
-
-		$sql = "drop database `$store_db_name`;";
-
-		($rs, $rdata) = doSQL($sql);
-		if ($rs != 0){
-			print "cannot delete database $store_db_name!\n\n";
-			send_error_mail('uninstall_sql()', "cannot delete database $store_db_name!");
-		}
-
-
-		# Let's reset data;
-
-
-		$main::db = undef;
-
-		$main::db_name = $store_db_name;
-
-		@main::db_connect = (
-							 "DBI:mysql:$main::db_name:$main::db_host",
-							 $main::db_user,
-							 $main::db_pwd
-							);
-
-	}
-
-	push_el(\@main::el, 'uninstall_sql()', 'Ending...');
-
-	return 0;
+	$rs;
 
 }
 
-sub uninstall_crontab {
+sub uninstall_sql{
 
-	my $rs = undef;
+	my $database = iMSCP::Database->factory();
+	my $rs = 0;
+	my $err;
 
-	push_el(\@main::el, 'uninstall_crontab()', 'Starting...');
+	my $rdata = $database->doQuery('sqlu_name', 'SELECT DISTINCT(`sqlu_name`) FROM `sql_user`');
 
-	if ( -e "/etc/cron.d/imscp") {
-		$rs = del_file("/etc/cron.d/imscp");
-		if ($rs != 0){;
-			print "cannot delete file /etc/cron.d/imscp!\n\n";
-			send_error_mail('uninstall_crontab()', "cannot delete file /etc/cron.d/imscp!");
-		}
-	} else {
-		print "File /etc/cron.d/imscp do not exists!";
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		$rs = 1;
 	}
 
-	push_el(\@main::el, 'uninstall_crontab()', 'Ending...');
+	foreach (keys %$rdata) {
 
-	return 0;
+		$database->doQuery( 'delete', "DROP USER ?@?", $rdata->{$_}->{sqlu_name}, 'localhost');
+		$database->doQuery( 'delete', "DROP USER ?@?", $rdata->{$_}->{sqlu_name}, '%');
+
+	}
+
+	$rdata = $database->doQuery('sqld_name', 'SELECT `sqld_name` FROM `sql_database`');
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		$rs = 1;
+	}
+
+	$database->doQuery('delete', "DROP DATABASE $rdata->{$_}->{sqld_name}") foreach (keys %$rdata);
+
+	$database->doQuery('delete', "DROP USER ?@?", 'pma', 'localhost');
+	$database->doQuery('delete', "DROP USER ?@?", 'pma', '%');
+
+	$err = $database->doQuery('dummy', 'FLUSH PRIVILEGES');
+	if (ref $err ne 'HASH'){
+		error($err);
+		$rs = 1;
+	}
+
+	$rs;
+}
+
+sub uninstall_crontab{
+
+	my $rs = 0;
+
+	use iMSCP::File;
+
+	$rs |= iMSCP::File->new(filename =>'/etc/cron.d/imscp')->delFile() if -f '/etc/cron.d/imscp';
+
+	$rs;
+}
+
+sub uninstall_logrotate{
+
+	my $rs = 0;
+
+	use iMSCP::File;
+
+	$rs |= iMSCP::File->new(filename =>'/etc/logrotate.d/imscp')->delFile() if -f '/etc/logrotate.d/imscp';
+
+	$rs;
 
 }
 
-sub uninstall_resolver {
+sub uninstall_imscpd{
 
-	push_el(\@main::el, 'uninstall_resolver()', 'Starting...');
+	my $rs = 0;
+	my ($stdout, $stderr);
 
-	my $resolv_file = "/etc/resolv.conf";
+	use iMSCP::File;
+	use iMSCP::Execute;
 
-	my ($rs, $cmd) = (undef, undef);
+	for ($main::imscpConfig{'CMD_IMSCPN'}, $main::imscpConfig{'CMD_IMSCPD'}) {
+		# Do not process if the service is disabled
+		next if(/^no$/i);
 
-	if ( -e "$resolv_file.bkp" ) {
+		my $filename		= $_;
+		my ($serviceName)	= /.*\/([^\/]*)$/;
 
-		$cmd = "$main::cfg{'CMD_MV'} $resolv_file.bkp $resolv_file";
+		# Services remove (Debian, Ubuntu)
+		$rs = execute("/usr/sbin/update-rc.d -f $serviceName remove", \$stdout, \$stderr);
+		debug("$stdout") if $stdout;
+		error("$stderr") if $rs;
 
-		$rs = sys_command_rs($cmd);
-		if ($rs != 0){
-			print "cannot move file $resolv_file.bkp into $resolv_file!\n\n";
-			send_error_mail('uninstall_resolver()', "cannot move file $resolv_file.bkp into $resolv_file!");
-		}
-	} else {
-		print "File $resolv_file.bkp do not exits. File is not restored!\n\n";
+		$rs |= iMSCP::File->new(filename => $filename)->delFile();
 	}
 
-	push_el(\@main::el, 'uninstall_resolver()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_logrotate {
-
-	push_el(\@main::el, 'uninstall_logrotate()', 'Starting...');
-
-	my ($rs, $cmd) = (undef, undef);
-
-	my $logrotate_d = "/etc/logrotate.d";
-
-	if ( -e "$logrotate_d/imscp" ) {
-
-		$rs = del_file("$logrotate_d/imscp");
-		if ($rs != 0){
-			print "cannot delete $logrotate_d/imscp!\n\n";
-			send_error_mail('uninstall_resolver()', "cannot delete $logrotate_d/imscp!");
-		}
-	} else {
-		print "File $logrotate_d/imscp do not exits!\n\n";
-	}
-
-	push_el(\@main::el, 'uninstall_logrotate()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_named {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_named()', 'Starting...');
-
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
-
-	my $bk_dir = "$cfg_dir/backup";
-
-	my $wrk_dir = "$cfg_dir/working";
-
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-	sys_command_rs("$main::cfg{'CMD_NAMED'} stop >> /tmp/imscp-uninstall-services.log");
-
-	if (-e "$bk_dir/named.conf.system") {
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/named.conf.system $main::cfg{'BIND_CONF_FILE'}";
-
-		$rs = sys_command($cmd);
-		if ($rs != 0){
-			print "File $bk_dir/named.conf.system cannot be restored\n\n";
-			send_error_mail('uninstall_named()', "File $bk_dir/named.conf.system cannot be restored");
-		}
-
-	} else {
-		print "Backup files $bk_dir/named.conf.system cannot be founded\n";
-		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/named.conf.system cannot be founded!");
-	}
-
-	sys_command_rs("$main::cfg{'CMD_NAMED'} start >> /tmp/imscp-uninstall-services.log");
-
-	push_el(\@main::el, 'uninstall_named()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_httpd {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_httpd()', 'Starting...');
-
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
-
-	my $bk_dir = "$cfg_dir/backup";
-
-	my $wrk_dir = "$cfg_dir/working";
-
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-	sys_command_rs("$main::cfg{'CMD_HTTPD'} stop >> /tmp/imscp-uninstall-services.log");
-
-	sys_command_rs("a2dissite imscp.conf >> /tmp/imscp-uninstall-services.log");
-
-	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/imscp.conf");
-	if ($rs != 0){
-		print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/imscp.conf!\n\n";
-		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/imscp.conf!");
-	}
-
-	sys_command_rs("a2dissite 00_master.conf >> /tmp/imscp-uninstall-services.log");
-
-	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf");
-	if ($rs != 0){
-		print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!\n\n";
-		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!");
-	}
-
-	sys_command_rs("a2dismod fastcgi_imscp >> /tmp/imscp-uninstall-services.log");
-
-	$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.conf");
-	if ($rs != 0){
-		print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.conf!\n\n";
-		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.conf!");
-	}
-
-	sys_command_rs("a2dismod fcgid_imscp >> /tmp/imscp-uninstall-services.log");
-
-	$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.conf");
-	if ($rs != 0){
-		print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.conf!\n\n";
-		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.conf!");
-	}
-
-	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.load") {
-		$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.load");
-		if ($rs != 0){
-			print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.load!\n\n";
-			send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.load!");
-		}
-	} else {
-		print "File $main::cfg{'APACHE_MODS_DIR'}/fastcgi_imscp.load do not exits!\n\n";
-	}
-
-	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.load") {
-		$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.load");
-		if ($rs != 0){
-			print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.load!\n\n";
-			send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.load!");
-		}
-	} else {
-		print "File $main::cfg{'APACHE_MODS_DIR'}/fcgid_imscp.load do not exits!\n\n";
-	}
-
-	sys_command_rs("a2dissite 01_awstats.conf >> /tmp/imscp-uninstall-services.log");
-
-	if ( -e "$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf") {
-		$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf");
-		if ($rs != 0){
-			print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf!\n\n";
-			send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/01_awstats.conf!");
-		}
-	} elsif($main::cfg{'APACHE_SITES_DIR'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} == 0) {
-		print "File $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf do not exits!\n\n";
-	}
-
-	$rs = del_dir($main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'});
-	if ($rs != 0){
-		print "Folder $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'} cannot be deleted\n\n";
-		send_error_mail('uninstall_httpd()', "Folder $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'} cannot be deleted");
-	}
-
-	sleep(5);
-
-	sys_command_rs("$main::cfg{'CMD_HTTPD'} start >> /tmp/imscp-uninstall-services.log");
-
-	push_el(\@main::el, 'uninstall_httpd()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_mta {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_mta()', 'Starting...');
-
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/postfix";
-
-	my $bk_dir = "$cfg_dir/backup";
-
-	my $wrk_dir = "$cfg_dir/working";
-
-	my $vrl_dir = "$cfg_dir/imscp";
-
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-	sys_command_rs("$main::cfg{'CMD_MTA'} stop >> /tmp/imscp-uninstall-services.log");
-
-	if (-e "$bk_dir/main.cf.system") {
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/main.cf.system $main::cfg{'POSTFIX_CONF_FILE'}";
-
-		$rs = sys_command($cmd);
-		if ($rs != 0){
-			print "cannot move $bk_dir/main.cf.system into $main::cfg{'POSTFIX_CONF_FILE'}!\n\n";
-			send_error_mail('uninstall_mta()', "cannot move $bk_dir/main.cf.system into $main::cfg{'POSTFIX_CONF_FILE'}!");
-		}
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/master.cf.system $main::cfg{'POSTFIX_MASTER_CONF_FILE'}";
-
-		$rs = sys_command($cmd);
-		if ($rs != 0){
-			print "cannot move $bk_dir/master.cf.system into $main::cfg{'POSTFIX_MASTER_CONF_FILE'}!\n\n";
-			send_error_mail('uninstall_mta()', "cannot move $bk_dir/master.cf.system into $main::cfg{'POSTFIX_MASTER_CONF_FILE'}!");
-		}
-
-	} else {
-		print "Backup files for MTA cannot be founded\n";
-		send_error_mail('uninstall_mta()', "Backup files for MTA cannot be founded!");
-	}
-
-	if ( -e "/var/spool/postfix/private/imscp-arpl" ) {
-		$rs = del_file("/var/spool/postfix/private/imscp-arpl");
-		if ($rs != 0){
-			print "cannot delete /var/spool/postfix/private/imscp-arpl!\n\n";
-			send_error_mail('uninstall_mta()', "cannot delete /var/spool/postfix/private/imscp-arpl!");
-		}
-	}
-
-	if ( -e "/usr/sbin/maillogconvert.pl" ) {
-		$rs = del_file("/usr/sbin/maillogconvert.pl");
-		if ($rs != 0){
-			print "cannot delete /usr/sbin/maillogconvert.pl!\n\n";
-			send_error_mail('uninstall_mta()', "cannot delete /usr/sbin/maillogconvert.pl!");
-		}
-	}
-
-	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} >> /tmp/imscp-uninstall-services.log");
-	if ($rs != 0){
-		print "Command $main::cfg{'CMD_NEWALIASES'} failed! Check MTA config file\n\n";
-		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_NEWALIASES'} failed! Check MTA config file!");
-	}
-
-	sys_command_rs("$main::cfg{'CMD_MTA'} start >> /tmp/imscp-uninstall-services.log");
-
-	push_el(\@main::el, 'uninstall_mta()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_po {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_po()', 'Starting...');
-
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/courier";
-
-	my $bk_dir = "$cfg_dir/backup";
-
-	my $wrk_dir = "$cfg_dir/working";
-
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-	sys_command_rs("$main::cfg{'CMD_AUTHD'} stop >> /tmp/imscp-uninstall-services.log");
-
-	sys_command_rs("$main::cfg{'CMD_IMAP'} stop >> /tmp/imscp-uninstall-services.log");
-
-	sys_command_rs("$main::cfg{'CMD_POP'} stop >> /tmp/imscp-uninstall-services.log");
-
-	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authdaemonrc.system $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
-	$rs = sys_command($cmd);
-	if ($rs != 0){
-		print "File $bk_dir/authdaemonrc.system do not exist! cannot be restored\n\n";
-		send_error_mail('uninstall_po()', "File $bk_dir/authdaemonrc.system do not exist! cannot be restored");
-	}
-
-	if (-e "$bk_dir/authmodulelist.system") {
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authmodulelist.system $main::cfg{'AUTHLIB_CONF_DIR'}/authmodulelist";
-		$rs = sys_command($cmd);
-		if ($rs != 0){
-			print "File $bk_dir/authmodulelist.system do not exist! cannot be restored\n\n";
-			send_error_mail('uninstall_po()', "File $bk_dir/authmodulelist.system do not exist! cannot be restored");
-		}
-	}
-
-	if (-e "$bk_dir/userdb.system") {
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/userdb.system $main::cfg{'AUTHLIB_CONF_DIR'}/userdb";
-		$rs = sys_command($cmd);
-	}
-
-	if ($rs != 0){
-		print "File $bk_dir/userdb.system do not exist! cannot be restored\n\n";
-		send_error_mail('uninstall_po()', "File $bk_dir/userdb.system do not exist! cannot be restored");
-	}
-
-	$rs = sys_command($main::cfg{'CMD_MAKEUSERDB'});
-	if ($rs != 0){
-		print "Command $main::cfg{'CMD_MAKEUSERDB'} failed! Check config file\n\n";
-		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_MAKEUSERDB'} failed! Check config file!");
-	}
-
-	sys_command_rs("$main::cfg{'CMD_AUTHD'} start >> /tmp/imscp-uninstall-services.log");
-
-	sys_command_rs("$main::cfg{'CMD_IMAP'} start >> /tmp/imscp-uninstall-services.log");
-
-	sys_command_rs("$main::cfg{'CMD_POP'} start >> /tmp/imscp-uninstall-services.log");
-
-	push_el(\@main::el, 'uninstall_po()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_ftpd {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_ftpd()', 'Starting...');
-
-	my $cfg_dir = "$main::cfg{'CONF_DIR'}/proftpd";
-
-	my $bk_dir = "$cfg_dir/backup";
-
-	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
-
-	sys_command_rs("$main::cfg{'CMD_FTPD'} stop >> /tmp/imscp-uninstall-services.log");
-
-	if (-e "$bk_dir/proftpd.conf.system") {
-
-		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/proftpd.conf.system $main::cfg{'FTPD_CONF_FILE'}";
-		$rs = sys_command($cmd);
-		if ($rs != 0){
-			print "File $bk_dir/proftpd.conf.system cannot be copied\n\n";
-			send_error_mail('uninstall_ftpd()', "File $bk_dir/proftpd.conf.system cannot be copied");
-		}
-
-		$rs = del_dir($main::cfg{'FTPD_CONF_DIR'});
-		if ($rs != 0){
-			print "Folder $main::cfg{'FTPD_CONF_DIR'} cannot be deleted\n\n";
-			send_error_mail('uninstall_ftpd()', "Folder $main::cfg{'FTPD_CONF_DIR'} cannot be deleted");
-		}
-
-	} else {
-		print "Backup files $bk_dir/proftpd.conf.system cannot be founded\n";
-		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/proftpd.conf.system cannot be founded!");
-	}
-
-	sys_command_rs("$main::cfg{'CMD_FTPD'} start >> /tmp/imscp-uninstall-services.log");
-
-	push_el(\@main::el, 'uninstall_ftpd()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_imscpd {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_imscpd()', 'Starting...');
-
-	sys_command_rs("$main::cfg{'CMD_IMSCPD'} stop >> /tmp/imscp-uninstall-services.log");
-
-	sys_command_rs("$main::cfg{'CMD_IMSCPN'} stop >> /tmp/imscp-uninstall-services.log");
-
-	if ( -x "/usr/lib/lsb/install_initd" ) { #LSB 3.1 Core section 20.4 compatibility
-
-		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_IMSCPD'} >> /tmp/imscp-uninstall-services.log");
-		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_IMSCPN'} >> /tmp/imscp-uninstall-services.log");
-
-	}
-
-	$rs = del_file("$main::cfg{'CMD_IMSCPD'}");
-	if ($rs != 0){
-		print "File $main::cfg{'CMD_IMSCPD'} cannot be deleted\n\n";
-		send_error_mail('uninstall_imscpd()', "File $main::cfg{'CMD_IMSCPD'} cannot be deleted");
-	}
-
-	$rs = del_file("$main::cfg{'CMD_IMSCPN'}");
-	if ($rs != 0){
-		print "File $main::cfg{'CMD_IMSCPN'} cannot be deleted\n\n";
-		send_error_mail('uninstall_imscpd()', "File $main::cfg{'CMD_IMSCPN'} cannot be deleted");
-	}
-
-	if ( ! -x "/usr/lib/lsb/install_initd" && -x "/usr/sbin/update-rc.d" ) {
-
-		sys_command_rs("/usr/sbin/update-rc.d imscp_daemon remove >> /tmp/imscp-uninstall-services.log");
-		sys_command_rs("/usr/sbin/update-rc.d imscp_network remove >> /tmp/imscp-uninstall-services.log");
-
-	}
-
-	push_el(\@main::el, 'uninstall_imscpd()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_imscp {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_imscp()', 'Starting...');
-
-	$rs = del_dir($main::cfg{'CONF_DIR'});
-	if ($rs != 0){
-		print "Folder $main::cfg{'CONF_DIR'} cannot be deleted\n\n";
-		send_error_mail('uninstall_imscp()', "Folder $main::cfg{'CONF_DIR'} cannot be deleted");
-	}
-
-	$rs = del_dir($main::cfg{'SCOREBOARDS_DIR'});
-	if ($rs != 0){
-		print "Folder $main::cfg{'SCOREBOARDS_DIR'} cannot be deleted\n\n";
-		send_error_mail('uninstall_imscp()', "Folder $main::cfg{'SCOREBOARDS_DIR'} cannot be deleted");
-	}
-
-	$rs = del_dir($main::cfg{'ROOT_DIR'});
-	if ($rs != 0){
-		print "Folder $main::cfg{'ROOT_DIR'} cannot be deleted\n\n";
-		send_error_mail('uninstall_imscp()', "Folder $main::cfg{'ROOT_DIR'} cannot be deleted");
-	}
-
-
-	push_el(\@main::el, 'uninstall_imscp()', 'Ending...');
-
-	return 0;
-
-}
-
-sub uninstall_host_system {
-
-	my ($rs, $rdata) = (undef, undef);
-
-	push_el(\@main::el, 'uninstall_host_system()', 'Starting...');
-
-	$rs = uninstall_httpd();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_system_users();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_system_dirs();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_sql();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_crontab();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_logrotate();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_mta();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_po();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_ftpd();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_named();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_imscpd();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_imscp();
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'uninstall_host_system()', 'Ending...');
-
-	return 0;
-
+	$rs;
 }
 
 ################################################################################
-##                                  MAIN                                      ##
+#                                Main program                                  #
 ################################################################################
 
-# Clear screen
-system('clear');
+uninstall_start_up() and exit 1;
+uninstall_engine();
+uninstall_shut_down();
 
-my $rs = undef;
-
-$rs = uninstall_startup();
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
-$rs = user_dialog();
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
-$rs = uninstall_host_system();
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
-$rs = uninstall_shutdown();
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-
-	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
-=pod
- Documentation of the uninstaller's program flow:
-
- uninstall_startup()
-	get_conf() .> imscp-setup-methods.pl
-	del_file() -> imscp-setup-methods.pl
- user_dialog()
-	welcome_note()
-	ask_remove_user_data()
- uninstall_host_system()
-	uninstall_system_users()
-	uninstall_system_dirs()
-	uninstall_sql()
-	uninstall_crontab()
-	uninstall_logrotate()
-	uninstall_httpd()
-	uninstall_mta()
-	uninstall_po()
-	uninstall_ftpd()
-	uninstall_named()
-	uninstall_imscpd()
-	uninstall_imscp()
- uninstall_shutdown()
- =cut
+exit 0;

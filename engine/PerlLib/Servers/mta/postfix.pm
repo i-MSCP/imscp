@@ -71,6 +71,17 @@ sub install{
 	$rs;
 }
 
+sub uninstall{
+
+	use Servers::mta::postfix::uninstaller;
+
+	my $self	= shift;
+	my $rs		= Servers::mta::postfix::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
+
+	$rs;
+}
+
 sub postinstall{
 
 	my $self	= shift;

@@ -76,6 +76,20 @@ sub install{
 	$rs;
 }
 
+sub uninstall{
+
+	use Servers::httpd::apache_itk::uninstaller;
+
+	my $self	= shift;
+	my $rs		= 0;
+
+	$rs |= $self->stop();
+	$rs |= Servers::httpd::apache_itk::uninstaller->new()->uninstall();
+	$rs |= $self->start();
+
+	$rs;
+}
+
 sub postinstall{
 
 	my $self	= shift;

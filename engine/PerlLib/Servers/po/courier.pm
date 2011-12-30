@@ -74,6 +74,17 @@ sub install{
 	$rs;
 }
 
+sub uninstall{
+
+	use Servers::po::courier::uninstaller;
+
+	my $self	= shift;
+	my $rs		= Servers::po::courier::uninstaller->new()->uninstall();
+	$rs |= $self->restart();
+
+	$rs;
+}
+
 sub postinstall{
 
 	my $self	= shift;
@@ -158,38 +169,34 @@ sub stop{
 
 sub restart{
 
-	my $self = shift;
-	my ($rs, $stdout, $stderr);
+	my $self	= shift;
+	my $rs		= 0;
+	my ($stdout, $stderr);
 
 	use iMSCP::Execute;
 
 	# Reload config
-	$rs = execute("$self::courierConfig{'CMD_AUTHD'} restart", \$stdout, \$stderr);
+	$rs |= execute("$self::courierConfig{'CMD_AUTHD'} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	$rs = execute("$self::courierConfig{'CMD_POP'} restart", \$stdout, \$stderr);
+	$rs |= execute("$self::courierConfig{'CMD_POP'} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	$rs = execute("$self::courierConfig{'CMD_IMAP'} restart", \$stdout, \$stderr);
+	$rs |= execute("$self::courierConfig{'CMD_IMAP'} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	$rs = execute("$self::courierConfig{'CMD_POP_SSL'} restart", \$stdout, \$stderr);
+	$rs |= execute("$self::courierConfig{'CMD_POP_SSL'} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	$rs = execute("$self::courierConfig{'CMD_IMAP_SSL'} restart", \$stdout, \$stderr);
+	$rs |= execute("$self::courierConfig{'CMD_IMAP_SSL'} restart", \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
 	error("$stderr") if $stderr;
-	return $rs if $rs;
 
-	0;
+	$rs;
 }
 
 sub addMail{
