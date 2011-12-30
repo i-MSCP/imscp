@@ -81,6 +81,12 @@
 							<title_class>user_blue</title_class>
 							<visible>0</visible>
 						</customer_edit_link>
+						<customer_delete_link>
+							<label>Delete customer</label>
+							<uri>/admin/user_delete.php</uri>
+							<title_class>user_blue</title_class>
+							<visible>0</visible>
+						</customer_delete_link>
 						<domain_edit_link>
 							<label>Edit domain</label>
 							<uri>/admin/domain_edit.php</uri>
