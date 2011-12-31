@@ -63,6 +63,7 @@ Tickets:
 	- Fixed #297: Defect - Wrong data type in PerlLib/Addons/awstats.pm line 196
 	- Fixed #298: Defect - Configuration variable `CLIENT_TEMPLATE_PATH` is missing.
 	- Fixed #299: Defect - Error while installing apache itk
+	- Fixed #300: Defect - Can't locate Servers/ftpd/proftpd/uninstaller.pm
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
