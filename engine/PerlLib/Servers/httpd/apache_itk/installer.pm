@@ -250,9 +250,9 @@ sub phpConf {
 	my $httpd	= Servers::httpd::apache_itk->new();
 	my $rs		= 0;
 
-	$rs |= $httpd->disableMod("fastcgi fcgid fastcgi_imscp fcgid_imscp");
-
-	$rs |= $httpd->disableMod("php4") if( -e "$self::apacheConfig{'APACHE_MODS_DIR'}/php4.load");
+	for("fastcgi", "fcgid", "fastcgi_imscp", "fcgid_imscp", "php4"){
+		$rs |= $httpd->disableMod($_) if( -e "$self::apacheConfig{'APACHE_MODS_DIR'}/$_.load");
+	}
 
 	$rs |= $httpd->enableMod("actions php5");
 
