@@ -281,7 +281,7 @@ sub uninstall_sql{
 		$rs = 1;
 	}
 
-	$database->doQuery('delete', "DROP DATABASE $main::imscpConfig{DATABASE_NAME}")
+	$database->doQuery('delete', "DROP DATABASE $main::imscpConfig{DATABASE_NAME}");
 
 	$rs;
 }

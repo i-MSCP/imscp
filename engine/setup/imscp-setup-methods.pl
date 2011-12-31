@@ -1058,8 +1058,9 @@ sub setup_gui_pma {
 
 	# Getting blowfish secret
 	if(!defined $blowfishSecret) {
-		$blowfishSecret = iMSCP::Crypt::randomString(31);
-		$blowfishSecret =~ s/'/\\'/gi;
+		$blowfishSecret		= '';
+		my @allowedChars	= ('A'..'Z', 'a'..'z', '0'..'9', '_');
+		$blowfishSecret		.= $allowedChars[rand()*($#allowedChars + 1)] for (1..31);
 	}
 
 	if($rebuild){
