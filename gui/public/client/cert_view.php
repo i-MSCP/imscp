@@ -105,23 +105,13 @@ function gen_page_data($tpl, $id, $type) {
 		if(!is_resource(@openssl_x509_read($_POST['cert_cert']))){
 			set_page_message(tr('Invalid certificate.'), 'error');
 		}
-		if(@openssl_x509_check_private_key($_POST['cert_cert'] , $_POST['key_cert'])!== true){
-			set_page_message(tr('Certificate do not match key.'), 'error');
-		}
+		//if(@openssl_x509_check_private_key($_POST['cert_cert'] , $_POST['key_cert'])!== true){
+			//set_page_message(tr('Certificate do not match key.'), 'error');
+		//}
 		if(!empty($_POST['ca_cert']) && !is_resource(@openssl_x509_read($_POST['ca_cert']))){
 			set_page_message(tr('Invalid intermediate certificate.'), 'error');
 		}
-		if(Zend_Session::namespaceIsset('pageMessages')) {
-			$tpl->assign(
-				array(
-					'DOMAIN_NAME' => $name,
-					'KEY_CERT' => $_POST['key_cert'],
-					'CERT' => $_POST['cert_cert'],
-					'CA_CERT' => $_POST['ca_cert'],
-					'STATUS' => tr('Changed')
-				)
-			);
-		} else {
+		if(!Zend_Session::namespaceIsset('pageMessages')) {
 			$query = "DELETE FROM `ssl_certs` WHERE `type` = ? AND `id` = ?";
 			exec_query($query, array($type, $id));
 			$query = "
@@ -152,6 +142,8 @@ function gen_page_data($tpl, $id, $type) {
 				)
 			);
 			updateStatus($type, $id);
+
+			set_page_message(tr('Certificate was saved.'), 'info');
 			write_log($_SESSION['user_logged'] . ": adds new certificate for: " . $name, E_USER_NOTICE);
 			send_request();
 		}
@@ -159,6 +151,8 @@ function gen_page_data($tpl, $id, $type) {
 		$query = " UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ? ";
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $type, $id));
 		updateStatus($type, $id);
+
+		set_page_message(tr('Certificate was deleted.'), 'info');
 		write_log($_SESSION['user_logged'] . ": delete certificate for: " . $name, E_USER_NOTICE);
 		send_request();
 	}
@@ -190,9 +184,9 @@ function gen_page_data($tpl, $id, $type) {
 	$tpl->assign(
 		array(
 			'DOMAIN_NAME' => $name,
-			'KEY_CERT' => $stmt->fields['key'] ? $stmt->fields['key'] : '',
-			'CERT' => $stmt->fields['cert'] ? $stmt->fields['cert'] : '',
-			'CA_CERT' => $stmt->fields['ca_cert'] ? $stmt->fields['ca_cert'] : '',
+			'KEY_CERT' => isset($_POST['Send']) && isset($_POST['key_cert']) ? $_POST['key_cert'] : ($stmt->fields['key'] ? $stmt->fields['key'] : ''),
+			'CERT' => isset($_POST['Send']) && isset($_POST['cert_cert']) ? $_POST['cert_cert'] : ($stmt->fields['cert'] ? $stmt->fields['cert'] : ''),
+			'CA_CERT' => isset($_POST['Send']) && isset($_POST['ca_cert']) ? $_POST['ca_cert'] : ($stmt->fields['ca_cert'] ? $stmt->fields['ca_cert'] : ''),
 			'STATUS' => $status
 		)
 	);
