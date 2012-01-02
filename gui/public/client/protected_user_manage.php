@@ -194,7 +194,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => 'client/puser_manage.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'users_message_block' => 'page',
 		 'users_block' => 'page',
 		 'user_block' => 'users_block',

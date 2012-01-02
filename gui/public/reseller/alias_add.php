@@ -393,7 +393,7 @@ if (!is_xhr()) {
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'reseller/alias_add.tpl',
-			'page_message' => 'page',
+			'page_message' => 'layout',
 			'user_entry' => 'page'));
 
     $tpl->assign(

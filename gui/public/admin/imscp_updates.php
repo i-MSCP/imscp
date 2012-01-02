@@ -46,7 +46,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/imscp_updates.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'update_message' => 'page',
 		'update_infos' => 'page',
 		'table_header' => 'page'));

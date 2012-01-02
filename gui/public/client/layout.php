@@ -82,7 +82,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		'page' => 'client/layout.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'layout_colors_block' => 'page',
 		'layout_color_block' => 'layout_colors_block'));
 

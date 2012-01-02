@@ -49,7 +49,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/hosting_plan_edit.tpl',
-		'page_message' => 'page'));
+		'page_message' => 'layout'));
 
 global $hpid;
 

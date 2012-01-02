@@ -105,7 +105,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => 'client/ftp_accounts.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'ftp_message' => 'page',
 		 'ftp_accounts' => 'page',
 		 'ftp_item' => 'ftp_accounts'));

@@ -53,7 +53,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/mail_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('als_list', 'page');
 $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('als_sub_list', 'page');

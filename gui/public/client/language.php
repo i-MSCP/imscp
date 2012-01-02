@@ -54,7 +54,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => 'client/language.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'def_language' => 'page'));
 
 // Getting current customer language

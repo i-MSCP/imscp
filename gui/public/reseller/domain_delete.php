@@ -74,7 +74,7 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'reseller/domain_delete.tpl',
-			'page_message' => 'page',
+			'page_message' => 'layout',
 			'mail_list' => 'page',
 			'mail_item' => 'mail_list',
 			'ftp_list' => 'page',

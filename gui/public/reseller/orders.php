@@ -202,7 +202,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/orders.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'orders_table' => 'page',
 		'order' => 'orders_table',
 		'scroll_prev_gray' => 'page',

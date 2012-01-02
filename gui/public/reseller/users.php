@@ -298,7 +298,7 @@ $tpl->define_dynamic(
 		'status_reload_true' => 'users_list',
 		'status_reload_false' => 'users_list',
 		'user_details' => 'users_list',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'scroll_prev_gray' => 'page',
 		'scroll_prev' => 'page',
 		'scroll_next_gray', 'page',

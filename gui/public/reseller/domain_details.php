@@ -44,7 +44,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/domain_details.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		't_software_support' => 'page'));
 
 $tpl->assign(

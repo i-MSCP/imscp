@@ -296,7 +296,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/ip_manage.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'ip_addresses_block' => 'page',
 		'ip_address_block' => 'ip_addresses_block',
 		'ip_address_form_block' => 'page',

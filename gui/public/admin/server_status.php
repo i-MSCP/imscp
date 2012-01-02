@@ -49,7 +49,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/server_status.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'service_status' => 'page'));
 
 $tpl->assign(

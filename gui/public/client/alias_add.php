@@ -343,7 +343,7 @@ if(!is_xhr()) {
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 	$tpl->define_dynamic('page', 'client/alias_add.tpl');
-	$tpl->define_dynamic('page_message', 'page');
+	$tpl->define_dynamic('page_message', 'layout');
 	$tpl->define_dynamic('domain_alias_add_js', 'page');
 	$tpl->define_dynamic('domain_alias_add_form', 'page');
 	$tpl->define_dynamic('user_entry', 'domain_alias_add_form');

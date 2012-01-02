@@ -99,7 +99,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/order_settings.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'purchase_header' => 'page',
 		'purchase_footer' => 'page'));
 

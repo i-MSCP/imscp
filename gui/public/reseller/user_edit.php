@@ -54,7 +54,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/user_edit.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'ip_entry' => 'page'));
 
 $tpl->assign(

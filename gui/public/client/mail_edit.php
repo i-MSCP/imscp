@@ -304,7 +304,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => 'client/mail_edit.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'logged_frm' => 'page',
 		 'password_frm' => 'page'));
 

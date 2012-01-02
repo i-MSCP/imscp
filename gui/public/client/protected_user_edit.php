@@ -147,7 +147,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/puser_edit.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'usr_msg' => 'page',
 		'grp_msg' => 'page',
 		'pusres' => 'page',

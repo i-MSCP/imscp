@@ -45,7 +45,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/manage_reseller_users.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'hosting_plans' => 'page',
 		'reseller_list' => 'page',
 		'reseller_item' => 'reseller_list',

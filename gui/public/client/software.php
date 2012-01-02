@@ -67,7 +67,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/software.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('software_message', 'page');
 $tpl->define_dynamic('software_item', 'page');
 $tpl->define_dynamic('software_action_delete', 'page');

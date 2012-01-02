@@ -40,7 +40,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/software_rights.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'list_reseller' => 'page',
 		'no_reseller_list' => 'page',
 		'no_select_reseller' => 'page',

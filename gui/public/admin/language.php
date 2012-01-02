@@ -54,7 +54,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/language.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'def_language' => 'page',
 		'logged_from' => 'page'));
 

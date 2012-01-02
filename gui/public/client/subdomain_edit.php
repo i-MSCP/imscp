@@ -277,7 +277,7 @@ function _client_initView()
 	$tpl->define_dynamic(
 		array(
 			'page' => 'client/subdomain_edit.tpl',
-			'page_message' => 'page',
+			'page_message' => 'layout',
 			'scheme_options' => 'page'));
 
 	$tpl->assign(

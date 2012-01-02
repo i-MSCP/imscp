@@ -151,7 +151,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		'page' => 'client/sql_manage.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'sql_databases_users_list' => 'page',
 		'sql_databases_list' => 'sql_databases_users_list',
 		'sql_users_list' => 'sql_databases_list'));

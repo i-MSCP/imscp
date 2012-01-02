@@ -48,7 +48,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/hosting_plan_update.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('hp_order', 'page');

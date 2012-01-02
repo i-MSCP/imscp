@@ -46,7 +46,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/settings_lostpassword.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'custom_buttons' => 'page'));
 
 $user_id = $_SESSION['user_id'];

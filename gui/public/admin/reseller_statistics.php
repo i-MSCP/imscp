@@ -47,7 +47,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/reseller_statistics.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'hosting_plans' => 'page',
 		'traffic_table' => 'page',
 		'month_list' => 'traffic_table',

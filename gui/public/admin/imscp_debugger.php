@@ -678,7 +678,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		 'page' => 'admin/imscp_debugger.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'hosting_plans' => 'page',
 		 'domain_message' => 'page',
 		 'alias_message' => 'page',

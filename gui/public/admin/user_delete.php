@@ -276,7 +276,7 @@ function admin_generateDomainAcountDeletionValidationPage($domainId)
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'admin/user_delete.tpl',
-			'page_message' => 'page',
+			'page_message' => 'layout',
 			'mail_list' => 'page',
 			'mail_item' => 'mail_list',
 			'ftp_list' => 'page',

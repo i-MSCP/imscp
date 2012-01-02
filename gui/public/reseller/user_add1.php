@@ -261,7 +261,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/user_add1.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'add_user' => 'page',
 		'hp_entry' => 'page',
 		'personalize' => 'page'));

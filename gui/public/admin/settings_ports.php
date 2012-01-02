@@ -388,7 +388,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/settings_ports.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'service_ports' => 'page',
 		'port_delete_link' => 'service_ports',
 		'port_delete_show' => 'service_ports'));

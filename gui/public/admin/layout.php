@@ -91,7 +91,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/layout.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'logo_remove_button' => 'page',
 		'layout_colors_block' => 'page',
 		'layout_color_block' => 'layout_colors_block'));

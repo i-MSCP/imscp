@@ -125,7 +125,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/sessions_manage.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'hosting_plans' => 'page',
 		'user_session' => 'page'));
 

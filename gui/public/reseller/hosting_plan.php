@@ -46,7 +46,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/hosting_plan.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'hp_table' => 'page',
 		'hp_entry' => 'hp_table',
 		'hp_delete' => 'page',

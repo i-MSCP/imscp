@@ -46,7 +46,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/settings_lostpassword.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'logged_from' => 'page',
 		'custom_buttons' => 'page'));
 

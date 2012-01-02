@@ -581,7 +581,7 @@ $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
 		 'page' => 'client/domains_manage.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'domain_list' => 'page',
 		 'domain_item' => 'domain_list',
 		 'domain_status_reload_true' => 'domain_item',

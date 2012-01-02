@@ -174,7 +174,7 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($userId)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/chart.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'tos_field' => 'page'));
 
 $tpl->assign(

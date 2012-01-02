@@ -89,7 +89,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/ticket_view.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'tickets_list' => 'page',
 		'tickets_item' => 'tickets_list'));
 

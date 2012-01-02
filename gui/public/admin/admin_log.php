@@ -46,7 +46,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/admin_log.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'log_row' => 'page',
 		'scroll_prev_gray' => 'page',
 		'scroll_prev' => 'page',

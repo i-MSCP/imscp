@@ -53,7 +53,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/sql_change_password.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('page_message', 'layout');
 
 if (isset($_GET['id'])) {
 	$db_user_id = $_GET['id'];

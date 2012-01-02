@@ -49,7 +49,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/order_email.tpl',
-		'page_message' => 'page'));
+		'page_message' => 'layout'));
 
 $user_id = $_SESSION['user_id'];
 $data = get_order_email($user_id);

@@ -372,7 +372,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/protect_it.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'group_item' => 'page',
 		'user_item' => 'page',
 		'unprotect_it' => 'page'));

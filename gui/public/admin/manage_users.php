@@ -52,7 +52,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/manage_users.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'admin_message' => 'page',
 		'admin_list' => 'page',
 		'admin_item' => 'admin_list',

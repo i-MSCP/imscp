@@ -413,7 +413,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/domain_alias.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'table_list' => 'page',
 		'table_header' => 'page',
 		'table_item' => 'table_list',

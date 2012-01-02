@@ -40,7 +40,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/software_options.tpl',
-		'page_message' => 'page'));
+		'page_message' => 'layout'));
 
 $tpl->assign(
 	array(

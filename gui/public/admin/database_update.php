@@ -106,7 +106,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/database_update.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'database_updates' => 'page',
 		'database_update' => 'database_updates'));
 

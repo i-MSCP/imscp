@@ -126,7 +126,7 @@ $tpl->define_dynamic(
 	array(
 		 'layout' => 'shared/layouts/ui.tpl',
 		 'page' => 'client/phpini.tpl',
-		 'page_message' => 'page',
+		 'page_message' => 'layout',
 		 'php_editor_first_block_js' => 'page',
 		 'php_editor_first_block' =>  'page',
 		 'register_globals_block' => 'php_editor_first_block',

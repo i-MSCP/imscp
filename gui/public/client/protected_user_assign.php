@@ -279,7 +279,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/puser_assign.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'already_in' => 'page',
 		'grp_avlb' => 'page',
 		'add_button' => 'page',

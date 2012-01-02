@@ -53,7 +53,7 @@ $cfg = iMSCP_Registry::get('config');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/sql_user_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
 $tpl->define_dynamic('mysql_prefix_yes', 'page');
 $tpl->define_dynamic('mysql_prefix_infront', 'page');

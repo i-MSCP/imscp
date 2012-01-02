@@ -468,7 +468,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/user_add2.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'subdomain_add' => 'page',
 		'alias_add' => 'page',
 		'mail_add' => 'page',

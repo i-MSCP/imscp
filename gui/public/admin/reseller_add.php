@@ -663,7 +663,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/reseller_add.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'ips_block' => 'page',
 		'ip_block' => 'ips_block'));
 

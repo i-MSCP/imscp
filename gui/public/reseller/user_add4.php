@@ -298,7 +298,7 @@ if (!is_xhr()) {
 		array(
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'reseller/user_add4.tpl',
-			'page_message' => 'page',
+			'page_message' => 'layout',
 			'alias_list' => 'page',
 			'alias_entry' => 'alias_list'));
 

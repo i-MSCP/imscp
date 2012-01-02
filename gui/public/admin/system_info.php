@@ -46,7 +46,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/system_info.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'hosting_plans' => 'page',
 		'disk_list' => 'page',
 		'disk_list_item' => 'disk_list'));

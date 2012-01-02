@@ -993,7 +993,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/domain_edit.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'subdomain_limit_block' => 'page',
 		'domain_aliasses_limit_block' => 'page',
 		'mail_accounts_limit_block' => 'page',

@@ -196,7 +196,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/settings.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'def_language' => 'page'));
 
 // Grab the value only once to improve performances

@@ -67,7 +67,7 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/ticket_closed.tpl',
-		'page_message' => 'page',
+		'page_message' => 'layout',
 		'tickets_list' => 'page',
 		'tickets_item' => 'tickets_list',
 		'scroll_prev_gray' => 'page',
