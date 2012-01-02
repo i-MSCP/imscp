@@ -1,6 +1,6 @@
 
 			<form name="admin_edit_user" method="post" action="admin_edit.php">
-				<table>
+				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_CORE_DATA}</th>
 					</tr>
@@ -24,7 +24,7 @@
 						<td><input type="text" name="email" id="email" value="{EMAIL}"/></td>
 					</tr>
 				</table>
-				<table>
+				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_ADDITIONAL_DATA}</th>
 					</tr>
