@@ -603,6 +603,7 @@ textarea {
 	width: 100%;
 	max-width: 1994px;
 	position: relative;
+	margin-bottom: 1em;
 }
 .graph span {
 	display: block;
