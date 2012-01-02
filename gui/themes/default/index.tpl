@@ -18,8 +18,8 @@
 		</div>
 		<div id="toolbox">
 			<ul>
-				<li><a class="icon_big pma" href="{TR_PMA_LINK}" target="blank" title="Login into PhpMyAdmin">{TR_PHPMYADMIN}</a></li>
-				<li><a class="icon_big filemanager" href="{TR_FTP_LINK}" target="blank" title="Login into the File manager">FileManager</a></li>
-				<li><a class="icon_big webmail" href="{TR_WEBMAIL_LINK}" target="blank" title="Login into the Webmail">{TR_WEBMAIL}</a></li>
+				<li><a class="icon_big pma" href="{TR_PMA_LINK}" target="blank" title="{TR_LOGIN_INTO_PMA}">{TR_PHPMYADMIN}</a></li>
+				<li><a class="icon_big filemanager" href="{TR_FTP_LINK}" target="blank" title="{TR_LOGIN_INTO_FMANAGER}">FileManager</a></li>
+				<li><a class="icon_big webmail" href="{TR_WEBMAIL_LINK}" target="blank" title="{TR_LOGIN_INTO_WEBMAIL}">{TR_WEBMAIL}</a></li>
 			</ul>
 		</div>
