@@ -112,19 +112,18 @@ sub delAwstatsSection{
 	my $data = shift;
 	my $filename = shift;
 
-	if($filename eq 'domain.tpl'){
+	if($filename =~ /domain-.*.tpl/){
 		my $bTag = "# SECTION awstats support BEGIN.\n";
 		my $eTag = "# SECTION awstats support END.\n";
 		$data = replaceBloc($bTag, $eTag, '', $data, undef);
 
-	} else {
-
-		#register again for next file
-		my $httpd = Servers::httpd->factory();
-		my $rs = $httpd->registerPreHook(
-			'buildConf', sub { return $self->delAwstatsSection(@_); }
-		) if $httpd->can('registerPreHook');
 	}
+
+	#register again for next file
+	my $httpd = Servers::httpd->factory();
+	my $rs = $httpd->registerPreHook(
+		'buildConf', sub { return $self->delAwstatsSection(@_); }
+	) if $httpd->can('registerPreHook');
 
 	$data;
 }
@@ -138,7 +137,8 @@ sub awstatsSection{
 	my $data = shift;
 	my $filename = shift;
 
-	if($filename eq 'domain.tpl'){
+
+	if($filename =~ /domain-.*.tpl/){
 		my ($bTag, $eTag);
 		if($main::imscpConfig{AWSTATS_ACTIVE} ne 'yes'){
 			$bTag = "# SECTION awstats support BEGIN.\n";
@@ -161,13 +161,11 @@ sub awstatsSection{
 		};
 		$data = process($tags, $data);
 
-	} else {
-		#register again for next file
-		my $httpd = Servers::httpd->factory();
-		my $rs = $httpd->registerPreHook(
-			'buildConf', sub { return $self->awstatsSection(@_); }
-		) if $httpd->can('registerPreHook');
 	}
+	my $httpd = Servers::httpd->factory();
+	my $rs = $httpd->registerPreHook(
+		'buildConf', sub { return $self->awstatsSection(@_); }
+	) if $httpd->can('registerPreHook');
 
 	$data;
 }

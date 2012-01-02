@@ -542,7 +542,7 @@ function delete_domain($domainId, $checkCreator = false)
 		exec_query($query, $domainAdminId);
 
         // Deletes own php.ini entry
-        
+
 		$query = 'DELETE FROM `php_ini` WHERE `domain_id` = ?';
 		exec_query($query, $domainId);
 
@@ -591,6 +591,27 @@ function delete_domain($domainId, $checkCreator = false)
 		// Delete domain
 
 		$query = 'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?';
+		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+		//certificates
+		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'dmn\' AND `id` = ?';
+		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'als\' AND `id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)';
+		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'sub\' AND `id` IN (SELECT `subdomain_id` FROM `subdomain` WHERE `domain_id` = ?)';
+		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
+
+		$query = '
+			UPDATE `ssl_certs` SET `status` = ?
+			WHERE `type` = \'alssub\'
+			AND `id` IN (
+				SELECT `subdomain_alias_id` FROM `subdomain_alias`
+				WHERE `alias_id` IN (
+					SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?
+				)
+			)';
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
 		// Delegated tasks to the engine - end

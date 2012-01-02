@@ -699,51 +699,91 @@ sub addCfg{
 
 	use iMSCP::File;
 
-	my $self = shift;
-	my $data = shift;
-	my $rs = 0;
+	my $self		= shift;
+	my $data		= shift;
+	my $rs			= 0;
+	my $certPath	= "$main::imscpConfig{GUI_ROOT_DIR}/data/certs";
+	my $certFile	= "$certPath/$data->{DMN_NAME}.pem";
 
 	$self->{data} = $data;
 
-	unless($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp)://~i){
-		$self->registerPostHook(
-			'buildConf', sub { return $self->removeSection('cgi support', @_); }
-		) unless ($data->{have_cgi} && $data->{have_cgi} eq 'yes');
-
-		$self->registerPostHook(
-			'buildConf', sub { return $self->removeSection('php enabled', @_); }
-		) unless ($data->{have_php} && $data->{have_php} eq 'yes');
-
-		$self->registerPostHook(
-			'buildConf', sub { return $self->removeSection('php disabled', @_); }
-		) if ($data->{have_php} && $data->{have_php} eq 'yes');
+	for(
+		"$data->{DMN_NAME}.conf",
+		"$data->{DMN_NAME}_ssl.conf"
+	){
+		$rs |= $self->disableSite($_) if -f "$self::apacheConfig{APACHE_SITES_DIR}/$_";
 	}
 
-	############################ START CONFIG SECTION ###############################
-	$self->{data}->{FCGID_NAME} = $data->{ROOT_DMN_NAME}	if($self::apacheConfig{INI_LEVEL} =~ /^per_user$/i);
-	$self->{data}->{FCGID_NAME} = $data->{PARENT_DMN_NAME} 	if($self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i);
-	$self->{data}->{FCGID_NAME} = $data->{DMN_NAME}			if($self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i);
+	for(
+		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf",
+		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}_ssl.conf",
+		"$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf",
+		"$self->{wrkDir}/$data->{DMN_NAME}.conf",
+		"$self->{wrkDir}/$data->{DMN_NAME}_ssl.conf"
+	){
+		$rs |= iMSCP::File->new(filename => $_)->delFile() if -f $_;
+	}
+
+	my %configs;
+	$configs{"$data->{DMN_NAME}.conf"}	=	{
+												redirect => 'domain_redirect.tpl',
+												normal => 'domain-itk.tpl'
+											};
+	if($data->{have_cert}){
+		$configs{"$data->{DMN_NAME}_ssl.conf"}	=	{
+													redirect => 'domain_redirect_ssl.tpl',
+													normal => 'domain-itk_ssl.tpl'
+												} ;
+		$self->{data}->{CERT} = $certFile;
+	}
+
+	foreach(keys %configs){
+		unless($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp)://~i){
+			$self->registerPostHook(
+				'buildConf', sub { return $self->removeSection('cgi support', @_); }
+			) unless ($data->{have_cgi} && $data->{have_cgi} eq 'yes');
+
+			$self->registerPostHook(
+				'buildConf', sub { return $self->removeSection('php enabled', @_); }
+			) unless ($data->{have_php} && $data->{have_php} eq 'yes');
+
+			$self->registerPostHook(
+				'buildConf', sub { return $self->removeSection('php disabled', @_); }
+			) if ($data->{have_php} && $data->{have_php} eq 'yes');
+		}
+
+		############################ START CONFIG SECTION ###############################
+		$self->{data}->{FCGID_NAME} = $data->{ROOT_DMN_NAME}	if($self::apacheConfig{INI_LEVEL} =~ /^per_user$/i);
+		$self->{data}->{FCGID_NAME} = $data->{PARENT_DMN_NAME} 	if($self::apacheConfig{INI_LEVEL} =~ /^per_domain$/i);
+		$self->{data}->{FCGID_NAME} = $data->{DMN_NAME}			if($self::apacheConfig{INI_LEVEL} =~ /^per_vhost$/i);
 
 
-	$rs |= iMSCP::File->new(
-		filename => "$self->{cfgDir}/$data->{DMN_NAME}.conf"
-	)->copyFile(
-		"$self->{bkpDir}/$data->{DMN_NAME}.conf.". time
-	) if (-f "$self->{cfgDir}/$data->{DMN_NAME}.conf");
+		$rs |= iMSCP::File->new(
+			filename => "$self->{cfgDir}/$_"
+		)->copyFile(
+			"$self->{bkpDir}/$_.". time
+		) if (-f "$self->{cfgDir}/$_");
 
-	$rs |= $self->buildConfFile(
-		($data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp):\/\/~i ? "$self->{tplDir}/domain_redirect.tpl" : "$self->{tplDir}/domain-itk.tpl"),
-		{destination => "$self->{wrkDir}/$data->{DMN_NAME}.conf"}
-	);
-	$rs |= $self->installConfFile("$data->{DMN_NAME}.conf");
-	############################ END CONFIG SECTION ###############################
+		$rs |= $self->buildConfFile(
+			(
+				$data->{FORWARD} && $data->{FORWARD} =~ m~(http|htpps|ftp):\/\/~i
+				?
+				"$self->{tplDir}/" . $configs{$_}->{redirect}
+				:
+				"$self->{tplDir}/" . $configs{$_}->{normal}
+			),
+			{destination => "$self->{wrkDir}/$_"}
+		);
+		$rs |= $self->installConfFile($_);
+		############################ END CONFIG SECTION ###############################
+	}
 
 	$rs |=	$self->buildConfFile(
 				"$self->{tplDir}/custom.conf.tpl",
 				{destination => "$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf"}
 			) unless (-f "$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf");
 
-	$rs |= $self->enableSite("$data->{DMN_NAME}.conf");
+	$rs |= $self->enableSite($_) foreach(keys %configs);
 
 	$rs;
 }
@@ -865,12 +905,21 @@ sub delDmn{
 
 	my $rs = 0;
 
-	$rs |= $self->disableSite("$data->{DMN_NAME}.conf");
+	$rs |= $self->disableSite("$data->{DMN_NAME}.conf") if -f "$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf";
+
+	for(
+		"$data->{DMN_NAME}.conf",
+		"$data->{DMN_NAME}_ssl.conf",
+	){
+		$rs |= $self->disableSite($_) if -f "$self::apacheConfig{APACHE_SITES_DIR}/$_";
+	}
 
 	for(
 		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf",
+		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}_ssl.conf",
 		"$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf",
 		"$self->{wrkDir}/$data->{DMN_NAME}.conf",
+		"$self->{wrkDir}/$data->{DMN_NAME}_ssl.conf",
 	){
 		$rs |= iMSCP::File->new(filename => $_)->delFile() if -f $_;
 	}
@@ -1200,6 +1249,10 @@ sub addIps{
 	my $file = iMSCP::File->new(filename => $filename);
 	my $content = $file->get();
 	$content =~ s/NameVirtualHost[^\n]+\n//gi;
+
+	foreach (@{$data->{SSLIPS}}){
+		$content.= "NameVirtualHost $_:443\n"
+	}
 
 	foreach (@{$data->{IPS}}){
 		$content.= "NameVirtualHost $_:80\n"

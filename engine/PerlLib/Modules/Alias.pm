@@ -243,6 +243,11 @@ sub buildHTTPDData{
 	my $phpiniData	= iMSCP::Database->factory()->doQuery('domain_id', $sql, $self->{domain_id});
 	error("$phpiniData") and return 1 if(ref $phpiniData ne 'HASH');
 
+	$sql			= "SELECT * FROM `ssl_certs` WHERE `id` = ? AND `type` = ? AND `status` = ?";
+	my $certData	= iMSCP::Database->factory()->doQuery('id', $sql, $self->{alias_id}, 'als', 'ok');
+	error("$certData") and return 1 if(ref $certData ne 'HASH');
+
+	my $haveCert = exists $certData->{$self->{alias_id}} && !$self->testCert($self->{alias_name});
 
 	$self->{httpd} = {
 		DMN_NAME					=> $self->{alias_name},
@@ -262,6 +267,7 @@ sub buildHTTPDData{
 		GROUP						=> $groupName,
 		have_php					=> $self->{domain_php},
 		have_cgi					=> $self->{domain_cgi},
+		have_cert					=> $haveCert,
 		BWLIMIT						=> $self->{domain_traffic_limit},
 		ALIAS						=> $userName.'als'.$self->{alias_id},
 		FORWARD						=> $self->{url_forward},

@@ -87,6 +87,18 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	";
 	$rs = exec_query($query, $sub_id);
 
+	$query = "
+		UPDATE
+			`ssl_certs`
+		SET
+			`status` = 'delete'
+		WHERE
+			`id` = ?
+		AND
+			`type` = 'sub'
+	";
+	$rs = exec_query($query, $sub_id);
+
 	update_reseller_c_props(get_reseller_id($dmn_id));
 	send_request();
 

@@ -92,6 +92,19 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	";
 
 	$rs = exec_query($query, $sub_id);
+
+	$query = "
+		UPDATE
+			`ssl_certs`
+		SET
+			`status` = 'delete'
+		WHERE
+			`id` = ?
+		AND
+			`type` = 'alssub'
+	";
+
+	$rs = exec_query($query, $sub_id);
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias subdomain: ".$sub_name, E_USER_NOTICE);
 	set_page_message(tr('Subdomain alias scheduled for deletion.'), 'success');

@@ -77,6 +77,12 @@
 							<title_class>domains</title_class>
 							<visible>0</visible>
 						</custom_dns_record_edit_link>
+						<cert_view>
+							<label>Certificate edit</label>
+							<uri>/client/cert_view.php</uri>
+							<title_class>domains</title_class>
+							<visible>0</visible>
+						</cert_view>
 					</pages>
 				</overview>
 				<add_domain_alias>

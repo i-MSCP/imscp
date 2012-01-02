@@ -19,6 +19,7 @@
 				<th>{TR_CREATE_DATE}</th>
 				<th>{TR_EXPIRE_DATE}</th>
 				<th>{TR_STATUS}</th>
+				<th>{TR_CERT}</th>
 			</tr>
 			<!-- BDP: domain_item -->
 			<tr>
@@ -35,6 +36,7 @@
 				<td>{DOMAIN_CREATE_DATE}</td>
 				<td>{DOMAIN_EXPIRE_DATE}</td>
 				<td>{DOMAIN_STATUS}</td>
+				<td><a href="{CERT_SCRIPT}">{VIEW_CERT}</a></td>
 			</tr>
 			<!-- EDP: domain_item -->
 		</table>
@@ -54,6 +56,7 @@
 				<th>{TR_MOUNT}</th>
 				<th>{TR_REDIRECT}</th>
 				<th>{TR_STATUS}</th>
+				<th>{TR_CERT}</th>
 				<th>{TR_ACTIONS}</th>
 			</tr>
 			<!-- BDP: als_item -->
@@ -71,6 +74,9 @@
 				<td>{ALS_MOUNT}</td>
 				<td>{ALS_REDIRECT}</td>
 				<td>{ALS_STATUS}</td>
+				<td>
+					<a href="{CERT_SCRIPT}">{VIEW_CERT}</a>
+				</td>
 				<td>
 					<a class="icon i_edit" href="{ALS_EDIT_LINK}" title="{ALS_EDIT}">{ALS_EDIT}</a>
 					<a class="icon i_delete" href="#" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}'); return false;" title="{ALS_ACTION}">{ALS_ACTION}</a>
@@ -95,6 +101,7 @@
 				<th>{TR_MOUNT}</th>
 				<th>{TR_REDIRECT}</th>
 				<th>{TR_STATUS}</th>
+				<th>{TR_CERT}</th>
 				<th>{TR_ACTIONS}</th>
 			</tr>
 			<!-- BDP: sub_item -->
@@ -112,6 +119,9 @@
 				<td>{SUB_MOUNT}</td>
 				<td>{SUB_REDIRECT}</td>
 				<td>{SUB_STATUS}</td>
+				<td>
+					<a href="{CERT_SCRIPT}">{VIEW_CERT}</a>
+				</td>
 				<td>
 					<a class="icon i_edit" href="{SUB_EDIT_LINK}" title="{SUB_EDIT}">{SUB_EDIT}</a>
 					<a class="icon i_delete" href="#"  onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}.{SUB_ALIAS_NAME}'); return false;">{SUB_ACTION}</a>

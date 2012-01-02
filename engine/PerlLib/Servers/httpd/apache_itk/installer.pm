@@ -323,7 +323,7 @@ sub vHostConf {
 	$file->copyFile($self::apacheConfig{'APACHE_SITES_DIR'}) and return 1;
 
 	## Enable required modules
-	$rs = $httpd->enableMod("cgid rewrite suexec proxy proxy_http");
+	$rs = $httpd->enableMod("cgid rewrite suexec proxy proxy_http ssl");
 	return $rs if $rs;
 
 	$rs = $httpd->enableSite("00_nameserver.conf");
@@ -395,8 +395,6 @@ sub masterHost {
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
 
 		$rs = $httpd->enableSite('00_master_ssl.conf');
-		return $rs if $rs;
-		$rs = $httpd->enableMod('ssl');
 		return $rs if $rs;
 
 	} else {

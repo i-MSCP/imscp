@@ -1427,4 +1427,27 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'custom_menus',
 			'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)');
 	}
+
+	/**
+	 * #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
+	 *
+	 * @author Daniel Andreca<sci2tech@gmail.com>
+	 * @return string SQL Statement
+	 */
+	protected function _databaseUpdate_100(){
+		return
+			"CREATE TABLE IF NOT EXISTS `ssl_certs` (
+				`cert_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+				`id` int(10) NOT NULL,
+				`type` enum('dmn','als','sub','alssub') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn',
+				`password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				`key` text COLLATE utf8_unicode_ci NOT NULL,
+				`cert` text COLLATE utf8_unicode_ci NOT NULL,
+				`ca_cert` text COLLATE utf8_unicode_ci,
+				`status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+				PRIMARY KEY (`cert_id`),
+				KEY `id` (`id`)
+			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+		";
+	}
 }

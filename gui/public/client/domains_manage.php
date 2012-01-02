@@ -53,7 +53,7 @@ function client_generateDomainsList($tpl, $userId)
 
 	$query = "
 		SELECT
-			`domain_name`, `domain_created`,	`domain_expires`, `domain_status`
+			`domain_id`, `domain_name`, `domain_created`, `domain_expires`, `domain_status`
 		FROM
 			`domain`
 		WHERE
@@ -84,12 +84,16 @@ function client_generateDomainsList($tpl, $userId)
 
 		$tpl->assign(
 			array(
-				 'DOMAIN_NAME' => tohtml($domainName),
-				 'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
-				 'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0)
+				'DOMAIN_NAME' => tohtml($domainName),
+				'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
+				'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0)
 													? date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])
 													: tr('No set')),
-				 'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status'])));
+				'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status']),
+				'CERT_SCRIPT' => 'cert_view.php?id=' . $stmt->fields['domain_id'] . '&type=dmn',
+				'VIEW_CERT' => tr('View certificates')
+			)
+		);
 
 		$tpl->parse('DOMAIN_ITEM', '.domain_item');
 		$stmt->moveNext();
@@ -129,7 +133,7 @@ function client_generateDomainAliasesList($tpl, $userId)
 		} else {
 			while (!$stmt->EOF) {
 				list(
-					$action, $actionScript, $isStatusOk
+					$action, $actionScript, $isStatusOk, $certText, $certScript
 					) = _client_generateDomainAliasAction($stmt->fields['alias_id'],
 														  $stmt->fields['alias_status']);
 
@@ -160,14 +164,16 @@ function client_generateDomainAliasesList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						 'ALS_NAME' => tohtml($name),
-						 'ALS_MOUNT' => tohtml($stmt->fields['alias_mount']),
-						 'ALS_STATUS' => translate_dmn_status($stmt->fields['alias_status']),
-						 'ALS_REDIRECT' => tohtml($redirectUrl),
-						 'ALS_EDIT_LINK' => $editLink,
-						 'ALS_EDIT' => $edit,
-						 'ALS_ACTION' => $action,
-						 'ALS_ACTION_SCRIPT' => $actionScript));
+						'ALS_NAME' => tohtml($name),
+						'ALS_MOUNT' => tohtml($stmt->fields['alias_mount']),
+						'ALS_STATUS' => translate_dmn_status($stmt->fields['alias_status']),
+						'ALS_REDIRECT' => tohtml($redirectUrl),
+						'ALS_EDIT_LINK' => $editLink,
+						'ALS_EDIT' => $edit,
+						'ALS_ACTION' => $action,
+						'CERT_SCRIPT' => $certScript,
+						'VIEW_CERT' => $certText,
+						'ALS_ACTION_SCRIPT' => $actionScript));
 
 				$tpl->parse('ALS_ITEM', '.als_item');
 				$stmt->moveNext();
@@ -194,11 +200,29 @@ function _client_generateDomainAliasAction($id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(tr('Delete'), 'alias_delete.php?id=' . $id, true);
+		return array(
+			tr('Delete'),
+			'alias_delete.php?id=' . $id,
+			true,
+			tr('View certificates'),
+			'cert_view.php?id=' . $id.'&type=als',
+		);
 	} elseif ($status == $cfg->ITEM_ORDERED_STATUS) {
-		return array(tr('Delete order'), 'alias_order_delete.php?del_id=' . $id, false);
+		return array(
+			tr('Delete order'),
+			'alias_order_delete.php?del_id=' . $id,
+			false,
+			'-',
+			'#'
+		);
 	} else {
-		return array(tr('N/A'), '#', false);
+		return array(
+			tr('N/A'),
+			'#',
+			false,
+			tr('N/A'),
+			'#'
+		);
 	}
 }
 
@@ -286,7 +310,7 @@ function client_generateSubdomainsList($tpl, $userId)
 		} else {
 			while (!$stmt1->EOF) {
 				list(
-					$action, $actionScript, $isStatusOk
+					$action, $actionScript, $isStatusOk, $certText, $certScript
 				) = _client_generateSubdomainAction($stmt1->fields['subdomain_id'],
 													$stmt1->fields['subdomain_status']);
 
@@ -319,14 +343,16 @@ function client_generateSubdomainsList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						 'SUB_NAME' => tohtml($name),
-						 'SUB_MOUNT' => tohtml($stmt1->fields['subdomain_mount']),
-						 'SUB_REDIRECT' => $redirectUrl,
-						 'SUB_STATUS' => translate_dmn_status($stmt1->fields['subdomain_status']),
-						 'SUB_EDIT_LINK' => $editLink,
-						 'SUB_EDIT' => $edit,
-						 'SUB_ACTION' => $action,
-						 'SUB_ACTION_SCRIPT' => $actionScript));
+						'SUB_NAME' => tohtml($name),
+						'SUB_MOUNT' => tohtml($stmt1->fields['subdomain_mount']),
+						'SUB_REDIRECT' => $redirectUrl,
+						'SUB_STATUS' => translate_dmn_status($stmt1->fields['subdomain_status']),
+						'SUB_EDIT_LINK' => $editLink,
+						'SUB_EDIT' => $edit,
+						'CERT_SCRIPT' => $certScript,
+						'VIEW_CERT' => $certText,
+						'SUB_ACTION' => $action,
+						'SUB_ACTION_SCRIPT' => $actionScript));
 
 				$tpl->parse('SUB_ITEM', '.sub_item');
 				$stmt1->moveNext();
@@ -334,7 +360,7 @@ function client_generateSubdomainsList($tpl, $userId)
 
 			while (!$stmt2->EOF) {
 				list(
-					$action, $actionScript, $isStatusOk
+					$action, $actionScript, $isStatusOk, $certText, $certScript
 					) = _client_generateSubdomainAliasAction($stmt2->fields['subdomain_alias_id'],
 															 $stmt2->fields['subdomain_alias_status']);
 
@@ -367,14 +393,16 @@ function client_generateSubdomainsList($tpl, $userId)
 
 				$tpl->assign(
 					array(
-						 'SUB_NAME' => tohtml($name),
-						 'SUB_MOUNT' => tohtml($stmt2->fields['subdomain_alias_mount']),
-						 'SUB_REDIRECT' => $redirectUrl,
-						 'SUB_STATUS' => translate_dmn_status($stmt2->fields['subdomain_alias_status']),
-						 'SUB_EDIT_LINK' => $editLink,
-						 'SUB_EDIT' => $edit,
-						 'SUB_ACTION' => $action,
-						 'SUB_ACTION_SCRIPT' => $actionScript));
+						'SUB_NAME' => tohtml($name),
+						'SUB_MOUNT' => tohtml($stmt2->fields['subdomain_alias_mount']),
+						'SUB_REDIRECT' => $redirectUrl,
+						'SUB_STATUS' => translate_dmn_status($stmt2->fields['subdomain_alias_status']),
+						'SUB_EDIT_LINK' => $editLink,
+						'SUB_EDIT' => $edit,
+						'CERT_SCRIPT' => $certScript,
+						'VIEW_CERT' => $certText,
+						'SUB_ACTION' => $action,
+						'SUB_ACTION_SCRIPT' => $actionScript));
 
 				$tpl->parse('SUB_ITEM', '.sub_item');
 				$stmt2->moveNext();
@@ -425,9 +453,21 @@ function _client_generateSubdomainAction($id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(tr('Delete'), 'subdomain_delete.php?id=' . $id, true);
+		return array(
+			tr('Delete'),
+			'subdomain_delete.php?id=' . $id,
+			true,
+			tr('View certificates'),
+			'cert_view.php?id=' . $id.'&type=sub',
+			);
 	} else {
-		return array(tr('N/A'), '#', false);
+		return array(
+			tr('N/A'),
+			'#',
+			false,
+			tr('N/A'),
+			'#'
+		);
 	}
 }
 
@@ -445,9 +485,21 @@ function _client_generateSubdomainAliasAction($id, $status)
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
-		return array(tr('Delete'), 'alssub_delete.php?id=' . $id, true);
+		return array(
+			tr('Delete'),
+			'alssub_delete.php?id=' . $id,
+			true,
+			tr('View certificates'),
+			'cert_view.php?id=' . $id.'&type=alssub',
+		);
 	} else {
-		return array(tr('N/A'), '#', false);
+		return array(
+			tr('N/A'),
+			'#',
+			false,
+			tr('N/A'),
+			'#'
+		);
 	}
 }
 
@@ -624,6 +676,7 @@ $tpl->assign(
 		 'TR_MOUNT' => tr('Mount point'),
 		 'TR_REDIRECT' => tr('Redirect'),
 		 'TR_STATUS' => tr('Status'),
+		 'TR_CERT' => tr('SSL Certificates'),
 		 'TR_ACTIONS' => tr('Actions'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
 

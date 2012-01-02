@@ -154,6 +154,24 @@ sub runStep{
 	$rs;
 }
 
+
+sub testCert{
+	use iMSCP::File;
+	use Modules::openssl;
+
+	my $self		= shift;
+	my $dmn_name	= shift;
+	my $rs			= 0;
+	my $certPath	= "$main::imscpConfig{GUI_ROOT_DIR}/data/certs";
+	my $certFile	= "$certPath/$dmn_name.pem";
+
+	Modules::openssl->new()->{openssl_path}				= $main::imscpConfig{'CMD_OPENSSL'};
+	Modules::openssl->new()->{cert_path}				= $certFile;
+	Modules::openssl->new()->{intermediate_cert_path}	= $certFile;
+	Modules::openssl->new()->{key_path}					= $certFile;
+	Modules::openssl->new()->ssl_check_all();
+}
+
 sub buildHTTPDData{ 0; }
 
 sub buildMTAData{ 0; }

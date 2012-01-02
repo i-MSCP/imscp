@@ -64,6 +64,36 @@ sub process{
 
 	@{$self->{ips}} = keys %{$rdata};
 
+	my $sql = "
+		SELECT `ip_number` FROM `ssl_certs`
+		LEFT JOIN `domain` on `ssl_certs`.`id` = `domain`.`domain_id`
+		LEFT JOIN `server_ips` ON `domain`.`domain_ip_id` = `server_ips`.`ip_id`
+		WHERE `ssl_certs`.`type` = 'dmn'
+		UNION
+		SELECT `ip_number` FROM `ssl_certs`
+		LEFT JOIN `domain_aliasses` on `ssl_certs`.`id` = `domain_aliasses`.`alias_id`
+		LEFT JOIN `server_ips` ON `domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`
+		WHERE `type` = 'als'
+		UNION
+		SELECT `ip_number` FROM `ssl_certs`
+		LEFT JOIN `subdomain_alias` on `ssl_certs`.`id` = `subdomain_alias`.`subdomain_alias_id`
+		LEFT JOIN `domain_aliasses` on `subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
+		LEFT JOIN `server_ips` ON `domain_aliasses`.`alias_ip_id` = `server_ips`.`ip_id`
+		WHERE `type` = 'alssub'
+		UNION
+		SELECT `ip_number` FROM `ssl_certs`
+		LEFT JOIN `subdomain` on `ssl_certs`.`id` = `subdomain`.`subdomain_id`
+		LEFT JOIN `domain` on `subdomain`.`domain_id` = `domain`.`domain_id`
+		LEFT JOIN `server_ips` ON `domain`.`domain_ip_id` = `server_ips`.`ip_id`
+		WHERE `type` = 'sub'
+	";
+
+	my $sslIPData = iMSCP::Database->factory()->doQuery('ip_number', $sql);
+
+	error("$sslIPData") and return 1 if(ref $sslIPData ne 'HASH');
+
+	@{$self->{sslIPs}} = keys %{$sslIPData};
+
 	$rs = $self->add();
 
 	$rs;
@@ -74,7 +104,8 @@ sub buildHTTPDData{
 	my $self	= shift;
 
 	$self->{httpd} = {
-		IPS					=> $self->{ips}
+		IPS					=> $self->{ips},
+		SSLIPS				=> $self->{sslIPs}
 	};
 
 	0;

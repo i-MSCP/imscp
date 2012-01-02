@@ -142,7 +142,6 @@ sub ssl_export_key {
 	my ($stdout, $stderr);
 	my $rs = execute($cmd, \$stdout, \$stderr);
 	debug("$stdout") if $stdout;
-	warning("$stderr") if ($stderr && !$rs);
 	error("Can not save certificate key".($stderr ? ": $stderr" : '').". Exiting...") if $rs;
 	return $rs if $rs;
 

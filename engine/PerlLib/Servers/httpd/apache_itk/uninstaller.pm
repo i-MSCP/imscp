@@ -129,10 +129,10 @@ sub restoreConf{
 sub vHostConf {
 
 	use iMSCP::File;
-	use Servers::httpd::apache_fcgi;
+	use Servers::httpd::apache_itk;
 
 	my $self	= shift;
-	my $httpd	= Servers::httpd::apache_fcgi->new();
+	my $httpd	= Servers::httpd::apache_itk->new();
 	my $rs		= 0;
 
 	for("00_nameserver.conf", "00_master_ssl.conf", "00_master.conf", "00_modcband.conf", "01_awstats.conf"){

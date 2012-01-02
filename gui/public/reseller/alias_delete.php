@@ -93,9 +93,16 @@ $res = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` =
 $dat = $res->fetchRow();
 
 // TODO Use prepared statements
-exec_query("UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", $del_id);
+$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = 'alssub' AND `id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ? )";
+exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
+$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` = ?";
+exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
+
 // TODO Use prepared statements
-exec_query("UPDATE `domain_aliasses` SET `alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", $del_id);
+$query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = 'als' AND `id` = ?";
+exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
+$query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
+exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
 
 update_reseller_c_props($reseller_id);
 

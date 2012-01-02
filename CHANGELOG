@@ -31,6 +31,7 @@ Features / Enhancements:
 		- Added support for Apache2 MPM ITK
 
 Tickets:
+	- Fixed #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
 	- Fixed #244: Bug - admin/domain_edit.php can cause several issues and must be rewritten
 	- Fixed #245: Defect - rkhunter log file is not created

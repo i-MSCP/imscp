@@ -117,7 +117,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '99'),
+('DATABASE_REVISION', '100'),
 ('PHPINI_ALLOW_URL_FOPEN', 'Off'),
 ('PHPINI_DISPLAY_ERRORS', 'Off'),
 ('PHPINI_REGISTER_GLOBALS', 'Off'),
@@ -650,6 +650,25 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
   PRIMARY KEY `sqlu_id` (`sqlu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ssl_certs`
+--
+
+CREATE TABLE IF NOT EXISTS `ssl_certs` (
+  `cert_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL,
+  `type` enum('dmn','als','sub','alssub') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'dmn',
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `key` text COLLATE utf8_unicode_ci NOT NULL,
+  `cert` text COLLATE utf8_unicode_ci NOT NULL,
+  `ca_cert` text COLLATE utf8_unicode_ci,
+  `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`cert_id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

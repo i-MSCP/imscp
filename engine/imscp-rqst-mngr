@@ -106,6 +106,7 @@ sub engine {
 	my $rs = 0;
 	my $sql;
 
+	## First we add / delete certificates
 	## First we add / alter main domain
 	## Then we add / alter subdomain for main domain
 	## Next we add / alter alias for main domain
@@ -116,6 +117,24 @@ sub engine {
 	## Subdomains
 	## Alias
 	## Main domain
+
+	$sql = "
+		SELECT
+			`cert_id` AS 'id',
+			`type` AS 'name',
+			`status` AS 'status'
+		FROM
+			`ssl_certs`
+		WHERE
+			`status`
+		IN (
+			'toadd',
+			'change',
+			'delete'
+		)
+	";
+
+	$rs |= mngr_engine_process('Certificates', $sql);
 
 	my $ipsMod = 0;
 
