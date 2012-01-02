@@ -65,7 +65,7 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
 	color: rgb(255, 255, 255);
 }
 .left_menu a {background: transparent url(../images/blue/background/bullet.png) no-repeat center left;}
-.left_menu a:hover, .left_menu a.active {background-image: url(../images/blue/background/bullet_hover.png);}
+.left_menu a:hover, .left_menu .active a {background-image: url(../images/blue/background/bullet_hover.png);}
 
 /**
  * Body
