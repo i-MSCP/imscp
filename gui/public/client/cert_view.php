@@ -164,7 +164,7 @@ function gen_page_data($tpl, $id, $type) {
 	$stmt = exec_query($query, array($type, $id));
 
 	if (!$stmt->fields['status']) {
-		$status = tr('New');
+		$status = tr('Certificate do not exists');
 	} elseif (
 		in_array(
 			$stmt->fields['status'],
