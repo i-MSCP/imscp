@@ -12,6 +12,7 @@ Features / Enhancements:
 			- DebugBar - Files plugin: Count and shows the loaded templates files
 		Core:
 			- Added layout color switcher
+			- Added layout colors (black, green, red, yellow)
 			- Events system:
 				- Allow to pass arbitrary data to the events listeners methods
 				- Allow to use closures

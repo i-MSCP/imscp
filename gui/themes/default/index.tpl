@@ -4,7 +4,7 @@
 				<form name="loginFrm" action="index.php" method="post">
 					<label for="uname"><span>{TR_USERNAME}</span><input type="text" name="uname" id="uname" tabindex="1"/></label>
 					<label for="upass"><span>{TR_PASSWORD}</span><input type="password" name="upass" id="upass" tabindex="2"/></label>
-					<div class="button">
+					<div class="buttons">
 						<!-- BDP: lostpwd_button -->
 						<button name="lostpwd" type="button" tabindex="4" onclick="location.href='lostpassword.php'">{TR_LOSTPW}</button>
 						<!-- EDP: lostpwd_button -->
