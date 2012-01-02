@@ -48,7 +48,7 @@ a:hover, .active a, .body th a:hover, .body #loginBox a:hover, #box a:hover, #to
 .main_menu a:hover, .main_menu .active a{background-color: rgba(255, 255, 255, 0.3);}
 
 /* Location */
-.location {background: rgb(89, 4, 5) url(../images/red/jquery-ui/ui-bg_glass_40_5a0505_1x400.png) repeat-x 50% 50%;}
+.location {background: rgb(89, 4, 5) url(../images/red/background/ui-bg_glass_40_5a0505_1x400.png) repeat-x 50% 50%;}
 
 /* Section */
 .location-area h1 {color: rgb(255, 255, 255);}
@@ -85,7 +85,7 @@ td {
 td:first-child {border-left-color: rgb(223, 223, 223);}
 td:last-child {border-right-color: rgb(223, 223, 223);}
 th, tfoot td {
-	background: rgb(89, 4, 5) url(../images/red/jquery-ui/ui-bg_glass_40_5a0505_1x400.png) repeat-x 50% 50%;
+	background: rgb(89, 4, 5) url(../images/red/background/ui-bg_glass_40_5a0505_1x400.png) repeat-x 50% 50%;
 	color: rgb(255, 255, 255);
 	border-top-color: rgb(0, 0, 0);
 	border-bottom-color: rgb(0, 0, 0);
