@@ -69,6 +69,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$hosting_plan_level = $_POST['hosting_plan_level'];
 	$domain_rows_per_page = clean_input($_POST['domain_rows_per_page']);
 	$checkforupdate = $_POST['checkforupdate'];
+	$enableSSL = $_POST['enableSSL'];
 	$compress_output = intval($_POST['compress_output']);
 	$show_compression_size = intval($_POST['show_compression_size']);
 	$prev_ext_login_admin = $_POST['prevent_external_login_admin'];
@@ -144,6 +145,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->DOMAIN_ROWS_PER_PAGE = $domain_rows_per_page;
 		$db_cfg->LOG_LEVEL = $log_level;
 		$db_cfg->CHECK_FOR_UPDATES = $checkforupdate;
+		$db_cfg->ENABLE_SSL = $enableSSL;
 		$db_cfg->COMPRESS_OUTPUT = $compress_output;
 		$db_cfg->SHOW_COMPRESSION_SIZE = $show_compression_size;
 		$db_cfg->PREVENT_EXTERNAL_LOGIN_ADMIN = $prev_ext_login_admin;
@@ -344,6 +346,18 @@ if ($cfg->CHECK_FOR_UPDATES) {
 		array(
 			 'CHECK_FOR_UPDATES_SELECTED_ON' => '',
 			 'CHECK_FOR_UPDATES_SELECTED_OFF' => $html_selected));
+}
+
+if ($cfg->ENABLE_SSL) {
+	$tpl->assign(
+		array(
+			 'ENABLE_SSL_ON' => $html_selected,
+			 'ENABLE_SSL_OFF' => ''));
+} else {
+	$tpl->assign(
+		array(
+			 'ENABLE_SSL_ON' => '',
+			 'ENABLE_SSL_OFF' => $html_selected));
 }
 
 if ($cfg->COMPRESS_OUTPUT) {
@@ -578,6 +592,7 @@ $tpl->assign(
 		 'TR_E_USER_WARNING' => tr('Warnings and Errors'),
 		 'TR_E_USER_ERROR' => tr('Errors'),
 		 'TR_CHECK_FOR_UPDATES' => tr('Check for update'),
+		 'TR_ENABLE_SSL' => tr('Enable SSL'),
 		 'TR_COMPRESS_OUTPUT' => tr('Compress HTML output'),
 		 'TR_SHOW_COMPRESSION_SIZE' => tr('Show HTML output compression size comment'),
 		 'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' => tr('Prevent external login for admins'),

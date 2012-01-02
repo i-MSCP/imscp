@@ -220,6 +220,7 @@ $config->PREVENT_EXTERNAL_LOGIN_CLIENT = 1;
 
 // Automatic search for new version
 $config->CHECK_FOR_UPDATES = true;
+$config->ENABLE_SSL = false;
 
 if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
 	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';

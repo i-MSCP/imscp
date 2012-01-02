@@ -47,7 +47,9 @@
 					</tr>
 				</table>
 				<div class="buttons">
+					<!-- BDP: cert_enable -->
 					<input name="Send" type="submit" value="{TR_SAVE}" />
+					<!-- EDP: cert_enable -->
 					<input name="Delete" type="submit" value="{TR_DELETE}" />
 					<input name="Button" type="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value="{TR_CANCEL}" />
 				</div>

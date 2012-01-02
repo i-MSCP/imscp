@@ -40,6 +40,13 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic('page', 'client/cert_view.tpl');
 $tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('cert_enable', 'page');
+
+if(!$cfg->ENABLE_SSL){
+	$tpl->assign(array('CERT_ENABLE' => ''));
+	set_page_message(tr('SSL is disabled. You can not add / change certificate'), 'info');
+}
+
 
 function getFullName($type, $id){
 	switch($type){
@@ -98,16 +105,19 @@ function gen_page_data($tpl, $id, $type) {
 		redirectTo('domains_manage.php');
 	}
 
-	if(isset($_POST['Send'])){
+	if(isset($_POST['Send']) && $cfg->ENABLE_SSL){
 		if($_POST['pass'] != $_POST['pass_rep']){
 			set_page_message(tr('Passwords do not match.'), 'error');
 		}
 		if(!is_resource(@openssl_x509_read($_POST['cert_cert']))){
 			set_page_message(tr('Invalid certificate.'), 'error');
 		}
-		//if(@openssl_x509_check_private_key($_POST['cert_cert'] , $_POST['key_cert'])!== true){
-			//set_page_message(tr('Certificate do not match key.'), 'error');
-		//}
+		if($k = @openssl_pkey_get_private(array($_POST['key_cert'] , $_POST['pass'])) === false){
+			set_page_message(tr('Invalid key or password.'), 'error');
+		}
+		if($k && @openssl_x509_check_private_key($_POST['cert_cert'] , $k)!== true){
+			set_page_message(tr('Certificate do not match key.'), 'error');
+		}
 		if(!empty($_POST['ca_cert']) && !is_resource(@openssl_x509_read($_POST['ca_cert']))){
 			set_page_message(tr('Invalid intermediate certificate.'), 'error');
 		}

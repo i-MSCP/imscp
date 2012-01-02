@@ -465,6 +465,17 @@
 								</select>
 							</td>
 						</tr>
+						<tr>
+							<td style="width:300px;">
+								<label for="enableSSL">{TR_ENABLE_SSL}</label>
+							</td>
+							<td>
+								<select name="enableSSL" id="enableSSL">
+									<option value="0"{ENABLE_SSL_OFF}>{TR_DISABLED}</option>
+									<option value="1"{ENABLE_SSL_ON}>{TR_ENABLED}</option>
+								</select>
+							</td>
+						</tr>
 					</table>
 				</fieldset>
 
