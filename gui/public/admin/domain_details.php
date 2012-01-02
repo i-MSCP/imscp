@@ -31,140 +31,74 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-// Include core library
-require 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
-check_login(__FILE__);
-
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/domain_details.tpl',
-		'logged_from' => 'page',
-		'custom_buttons' => 'page'));
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Domain/Details'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-$tpl->assign(
-	array(
-		'TR_DOMAIN_DETAILS' => tr('Domain details'),
-		'TR_DOMAIN_NAME' => tr('Domain name'),
-		'TR_DOMAIN_IP' => tr('Domain IP'),
-		'TR_STATUS' => tr('Status'),
-		'TR_PHP_SUPP' => tr('PHP support'),
-		'TR_CGI_SUPP' => tr('CGI support'),
-		'TR_DNS_SUPP' => tr('Manual DNS support (EXPERIMENTAL)'),
-		'TR_BACKUP_SUPPORT' => tr('Backup support'),
-		'TR_MYSQL_SUPP' => tr('MySQL support'),
-		'TR_TRAFFIC' => tr('Traffic in MB'),
-		'TR_DISK' => tr('Disk in MB'),
-		'TR_FEATURE' => tr('Feature'),
-		'TR_USED' => tr('Used'),
-		'TR_LIMIT' => tr('Limit'),
-		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
-		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
-		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
-		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
-		'TR_UPDATE_DATA' => tr('Submit changes'),
-		'TR_BACK' => tr('Back'),
-		'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer')));
-
-generateNavigation($tpl);
-generatePageMessage($tpl);
-
-// Get user id that comes for manage domain
-if (!isset($_GET['domain_id'])) {
-	redirectTo('manage_users.php');
-}
-
-$editid = $_GET['domain_id'];
-gen_detaildom_page($tpl, $_SESSION['user_id'], $editid);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
-
-$tpl->prnt();
-
-unsetMessages();
-
-// Begin function block
+/*****************************************************************
+ * Script functions
+ */
 
 /**
- * @param $tpl
+ * Generates page.
+ *
+ * @param iMSCP_pTemplate $tpl
  * @param $user_id
  * @param $domain_id
  */
-function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
+function gen_detaildom_page($tpl, $user_id, $domain_id) {
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// Get domain data
 	$query = "
 		SELECT
-			*,
-			IFNULL(`domain_disk_usage`, 0) AS domain_disk_usage
+			*, IFNULL(`domain_disk_usage`, 0) `domain_disk_usage`
 		FROM
 			`domain`
 		WHERE
 			`domain_id` = ?;
 	";
+	$stmt = exec_query($query, $domain_id);
+	$data = $stmt->fetchRow();
 
-	$res = exec_query($query, $domain_id);
-	$data = $res->fetchRow();
-
-
-	if ($res->recordCount() <= 0) {
+	if (!$stmt->rowCount()) {
 		redirectTo('manage_users.php');
 	}
 
 	// Get admin data
 	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
-	$res1 = exec_query($query, $data['domain_admin_id']);
-	$data1 = $res1->fetchRow();
-	if ($res1->recordCount() <= 0) {
+	$stmt = exec_query($query, $data['domain_admin_id']);
+	$data1 = $stmt->fetchRow();
+
+	if (!$stmt->rowCount()) {
 		redirectTo('manage_users.php');
 	}
+
 	// Get IP info
-	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
-	$ipres = exec_query($query, $data['domain_ip_id']);
-	$ipdat = $ipres->fetchRow();
+	//$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
+	//$stmt = exec_query($query, $data['domain_ip_id']);
+	//$ipdat = $stmt->fetchRow();
+
 	// Get status name
 	$dstatus = $data['domain_status'];
 
-	if ($dstatus == $cfg->ITEM_OK_STATUS
-		|| $dstatus == $cfg->ITEM_DISABLED_STATUS
-		|| $dstatus == $cfg->ITEM_DELETE_STATUS
-		|| $dstatus == $cfg->ITEM_ADD_STATUS
-		|| $dstatus == $cfg->ITEM_RESTORE_STATUS
-		|| $dstatus == $cfg->ITEM_CHANGE_STATUS
-		|| $dstatus == $cfg->ITEM_TOENABLE_STATUS
-		|| $dstatus == $cfg->ITEM_TODISABLED_STATUS) {
+	if ($dstatus == $cfg->ITEM_OK_STATUS || $dstatus == $cfg->ITEM_DISABLED_STATUS || $dstatus == $cfg->ITEM_DELETE_STATUS
+		|| $dstatus == $cfg->ITEM_ADD_STATUS || $dstatus == $cfg->ITEM_RESTORE_STATUS || $dstatus == $cfg->ITEM_CHANGE_STATUS
+		|| $dstatus == $cfg->ITEM_TOENABLE_STATUS || $dstatus == $cfg->ITEM_TODISABLED_STATUS
+	) {
 		$dstatus = translate_dmn_status($data['domain_status']);
 	} else {
 		$dstatus = "<b><font size=\"3\" color=\"red\">" . $data['domain_status'] . "</font></b>";
 	}
 
 	// Traffic diagram
-	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
-	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
+	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
+
 	$query = "
 		SELECT
-			IFNULL(SUM(`dtraff_web`), 0) AS dtraff_web,
-			IFNULL(SUM(`dtraff_ftp`), 0) AS dtraff_ftp,
-			IFNULL(SUM(`dtraff_mail`), 0) AS dtraff_mail,
-			IFNULL(SUM(`dtraff_pop`), 0) AS dtraff_pop
+			IFNULL(SUM(`dtraff_web`), 0) `dtraff_web`,
+			IFNULL(SUM(`dtraff_ftp`), 0) `dtraff_ftp`,
+			IFNULL(SUM(`dtraff_mail`), 0) `dtraff_mail`,
+			IFNULL(SUM(`dtraff_pop`), 0) `dtraff_pop`
 		FROM
 			`domain_traffic`
 		WHERE
@@ -223,18 +157,25 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 
 	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
 	// Get current mail count
-	$query = "SELECT COUNT(`mail_id`) AS mcnt
-		FROM `mail_users`
-		WHERE `domain_id` = ?
-		AND `mail_type` NOT RLIKE '_catchall'";
+	$query = "
+		SELECT
+			COUNT(`mail_id`) `mcnt`
+		FROM
+			`mail_users`
+		WHERE
+			`domain_id` = ?
+		AND
+			`mail_type` NOT RLIKE '_catchall'
+	";
+
 	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
-		$query .= " AND `mail_acc` != 'abuse'
-			AND `mail_acc` != 'postmaster'
-			AND `mail_acc` != 'webmaster'";
+		$query .= " AND `mail_acc` != 'abuse' AND `mail_acc` != 'postmaster' AND `mail_acc` != 'webmaster'";
 	}
+
 	$res6 = exec_query($query, $data['domain_id']);
 	$dat3 = $res6->fetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
+
 	// FTP stat
 	$query = "SELECT `gid` FROM `ftp_group` WHERE `groupname` = ?";
 	$res4 = exec_query($query, $data['domain_name']);
@@ -243,35 +184,59 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 		$used_ftp_acc = 0;
 	} else {
 		$dat1 = $res4->fetchRow();
-		$query = "SELECT COUNT(*) AS ftp_cnt FROM `ftp_users` WHERE `gid` = ?";
+		$query = "SELECT COUNT(*) `ftp_cnt` FROM `ftp_users` WHERE `gid` = ?";
 		$res5 = exec_query($query, $dat1['gid']);
 		$dat2 = $res5->fetchRow();
 
 		$used_ftp_acc = $dat2['ftp_cnt'];
 	}
 	$ftp_limit = translate_limit_value($data['domain_ftpacc_limit']);
+
 	// Get sql database count
-	$query = "SELECT COUNT(*) AS dnum FROM `sql_database` WHERE `domain_id` = ?";
-	$res = exec_query($query, $data['domain_id']);
-	$dat5 = $res->fetchRow();
+	$query = "SELECT COUNT(*) `dnum` FROM `sql_database` WHERE `domain_id` = ?";
+	$stmt = exec_query($query, $data['domain_id']);
+	$dat5 = $stmt->fetchRow();
 	$sql_db = translate_limit_value($data['domain_sqld_limit']);
+
 	// Get sql users count
-	$query = "SELECT COUNT(u.`sqlu_id`) AS ucnt FROM `sql_user` u, `sql_database` d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?";
-	$res = exec_query($query, $data['domain_id']);
-	$dat6 = $res->fetchRow();
+	$query = "
+		SELECT
+			COUNT(`u`.`sqlu_id`) `ucnt`
+		FROM
+			`sql_user` `u`, `sql_database` `d`
+		WHERE
+			`u`.`sqld_id` = `d`.`sqld_id`
+		AND
+			`d`.`domain_id` = ?
+	";
+	$stmt = exec_query($query, $data['domain_id']);
+
+	$dat6 = $stmt->fetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
+
 	// Get subdomain
-	$query = "SELECT COUNT(`subdomain_id`) AS sub_num FROM `subdomain` WHERE `domain_id` = ?";
-	$res1 = exec_query($query, $data['domain_id']);
-	$sub_num_data = $res1->fetchRow();
-	$query = "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
-	$res1 = exec_query($query, $domain_id);
-	$alssub_num_data = $res1->fetchRow();
+	$query = "SELECT COUNT(`subdomain_id`) `sub_num` FROM `subdomain` WHERE `domain_id` = ?";
+	$stmt = exec_query($query, $data['domain_id']);
+
+	$sub_num_data = $stmt->fetchRow();
+
+	$query = "
+		SELECT
+			COUNT(`subdomain_alias_id`) `sub_num`
+		FROM
+			`subdomain_alias`
+		WHERE
+			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+	";
+	$stmt = exec_query($query, $domain_id);
+
+	$alssub_num_data = $stmt->fetchRow();
 	$sub_dom = translate_limit_value($data['domain_subd_limit']);
+
 	// Get domain aliases
 	$query = "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?";
-	$res1 = exec_query($query, $data['domain_id']);
-	$alias_num_data = $res1->fetchRow();
+	$stmt = exec_query($query, $data['domain_id']);
+	$alias_num_data = $stmt->fetchRow();
 
 	// Check if Backup support is available for this user
 	switch($data['allowbackup']){
@@ -319,4 +284,74 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 			'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
 			'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
 			'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias));
-} // End of load_user_data();
+}
+
+/*******************************************************************************
+ * Main script
+ */
+
+// Include core library
+require 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
+check_login(__FILE__);
+
+// Get user id that comes for manage domain
+if (!isset($_GET['domain_id'])) {
+	redirectTo('manage_users.php');
+}
+
+$editid = $_GET['domain_id'];
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/domain_details.tpl',
+		'logged_from' => 'page',
+		'custom_buttons' => 'page'));
+
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Domain Details'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_DOMAIN_DETAILS' => tr('Domain details'),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_DOMAIN_IP' => tr('Domain IP'),
+		'TR_STATUS' => tr('Status'),
+		'TR_PHP_SUPP' => tr('PHP support'),
+		'TR_CGI_SUPP' => tr('CGI support'),
+		'TR_DNS_SUPP' => tr('Custom DNS records'),
+		'TR_BACKUP_SUPPORT' => tr('Backup support'),
+		'TR_MYSQL_SUPP' => tr('MySQL support'),
+		'TR_TRAFFIC' => tr('Traffic'),
+		'TR_DISK' => tr('Disk'),
+		'TR_FEATURE' => tr('Feature'),
+		'TR_USED' => tr('Used'),
+		'TR_LIMIT' => tr('Limit'),
+		'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
+		'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
+		'TR_SQL_DB_ACCOUNTS' => tr('SQL databases'),
+		'TR_SQL_USER_ACCOUNTS' => tr('SQL users'),
+		'TR_SUBDOM_ACCOUNTS' => tr('Subdomains'),
+		'TR_DOMALIAS_ACCOUNTS' => tr('Domain aliases'),
+		'TR_UPDATE_DATA' => tr('Submit changes'),
+		'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
+		'TR_BACK' => tr('Back')));
+
+generateNavigation($tpl);
+generatePageMessage($tpl);
+gen_detaildom_page($tpl, $_SESSION['user_id'], $editid);
+
+$tpl->parse('LAYOUT_CONTENT', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+
+$tpl->prnt();
+
+unsetMessages();
