@@ -77,12 +77,12 @@
 							<title_class>domains</title_class>
 							<visible>0</visible>
 						</custom_dns_record_edit_link>
-						<cert_view>
-							<label>Certificate edit</label>
+						<cert_view_link>
+							<dynamic_title>{TR_DYNAMIC_TITLE}</dynamic_title>
 							<uri>/client/cert_view.php</uri>
 							<title_class>domains</title_class>
 							<visible>0</visible>
-						</cert_view>
+						</cert_view_link>
 					</pages>
 				</overview>
 				<add_domain_alias>

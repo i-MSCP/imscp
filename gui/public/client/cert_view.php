@@ -157,16 +157,22 @@ function client_generatePage($tpl, $id, $type)
 	$stmt = exec_query($query, array($type, $id));
 
 	if (!$stmt->rowCount()) {
+		$tpl->assign('TR_DYNAMIC_TITLE', tr('Add SSL certificate'));
+
 		if ($cfg->ENABLE_SSL) {
 			$status = tr('No certificate found.');
 		} else {
 			$tpl->assign('CERT_ENABLE', '');
 			set_page_message(tr('SSL feature is disabled. You cannot add / change certificate'), 'warning');
 		}
-	} elseif (in_array($stmt->fields['status'], array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS))) {
-		$status = translate_dmn_status($stmt->fields['status']);
 	} else {
-		$status = tr('Error') . ': ' . $stmt->fields['status'];
+		$tpl->assign('TR_DYNAMIC_TITLE', tr('Edit SSL certificate'));
+
+		if (in_array($stmt->fields['status'], array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS))) {
+			$status = translate_dmn_status($stmt->fields['status']);
+		} else {
+			$status = tr('Error') . ': ' . $stmt->fields['status'];
+		}
 	}
 
 	if (isset($status)) {
