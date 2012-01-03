@@ -3,10 +3,9 @@
 # i-MSCP a internet Multi Server Control Panel
 #
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2012 by internet Multi Server Control Panel - http://i-mscp.net
 #
 # Author: Laurent Declercq <laurent.declercq@i-mscp.net>
-# Version: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
