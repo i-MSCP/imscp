@@ -24,9 +24,8 @@
  * @category    i-MSCP
  * @package     iMSCP_Registry
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -36,8 +35,7 @@
  *
  * @package     iMSCP_Registry
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @since       1.0.7 (ispCP)
- * @version     1.0.7
+ * @version     0.0.7
  */
 class iMSCP_Registry
 {

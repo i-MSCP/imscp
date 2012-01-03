@@ -2,30 +2,28 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is i-MSCP - Multi Server Control Panel.
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by Initial Developer are Copyright (C) 2010-2011
- * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @author		iMSCP Team
- * @author		Sacha Bay <sascha.bay@i-mscp.net>
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
+ * @copyright   2010-2012 by i-MSCP team
+ * @author      Sacha Bay <sascha.bay@i-mscp.net>
+ * @author      iMSCP Team
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 // Include core library

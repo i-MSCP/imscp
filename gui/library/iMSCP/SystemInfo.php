@@ -18,15 +18,14 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_SystemInfo
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright 	2010-2012 by i-MSCP | http://i-mscp.net
  * @author 		Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @version 	SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -37,9 +36,7 @@
  *
  * @category    i-MSCP
  * @package		iMSCP_SystemInfo
- * @since       1.0.7 (ispCP)
- * @version     1.0.2
- * @todo This class must be rewritten since Benedikt Heintel from the ispCP project was used some code from another GPL
+ * @version     0.0.2
  * project without mention any source... 
  */
 class iMSCP_SystemInfo {

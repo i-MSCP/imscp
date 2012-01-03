@@ -2,14 +2,6 @@
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @link        http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -29,8 +21,14 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  */
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP - internet Multi Server Control Panel
+ * i-MSCP a internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -16,23 +16,22 @@
  *
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
- *
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	iMSCP
+ * @category	i-MSCP
  * @package		iMSCP_Core
- * @subpackage	Login
- * @copyright	2001-2006 by moleSoftware GmbH
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
- * @link		http://i-mscp.net
- * @author		ispCP Team
- * @author		i-MSCP Team
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @link        http://i-mscp.net
  */
 
 // Include core library
@@ -80,7 +79,7 @@ $tpl->assign(
 	array(
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010-2011 i-MSCP Team<br/>All Rights Reserved'),
+		'productCopyright' => tr('© 2010-2012 i-MSCP Team<br/>All Rights Reserved'),
 		'THEME_CHARSET' => tr('encoding')));
 
 if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableUpdate()) && !isset($_GET['admin'])) {

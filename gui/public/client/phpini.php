@@ -16,14 +16,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Client
- * @copyright	2010-2011 by i-MSCP team
- * @author		iMSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Client
+ * @copyright   2010-2012 by i-MSCP team
+ * @author      iMSCP Team
  * @author		Hannes Koschier <hannes@cheat.at>
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 // Include core library
