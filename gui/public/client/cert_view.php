@@ -32,7 +32,7 @@
  */
 
 /**
- * Get full name for given domain entity.
+ * Get full name and owner id for the given domain entity.
  *
  * @param string $type Domain entity type to update (dmn, als,sub, alssub)
  * @param int $id Domain entity unique identifier
@@ -60,7 +60,7 @@ function client_getFullName($type, $id)
 }
 
 /**
- * Udate status for given domain entity.
+ * Update status for the given domain entity.
  *
  * @param string $type Domain entity type to update (dmn, als,sub, alssub)
  * @param int $id Domain entity unique identifier
