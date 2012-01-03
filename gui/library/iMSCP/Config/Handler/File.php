@@ -21,15 +21,15 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category    i-MSCP
- * @package     iMSCP_Config
- * @subpackage  Handler
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     SVN: $Id$
- * @link        http://i-mscp.net i-MSCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * @category	i-MSCP
+ * @package		iMSCP_Core
+ * @subpackage  Config_Handler
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://i-mscp.net i-MSCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /** @see iMSCP_Config_Handler */
@@ -38,9 +38,8 @@ require_once  'iMSCP/Config/Handler.php';
 /**
  * Class to handle configuration parameters from a flat file.
  *
- * iMSCP_Config_Handler adapter class to handle configuration parameters that
- * are stored in a flat file where each pair of key-values are separated by the
- * equal sign.
+ * iMSCP_Config_Handler adapter class to handle configuration parameters that are stored in a flat file where each pair
+ * of key-values are separated by the equal sign.
  *
  * @property string MR_LOCK_FILE Path to lock file
  * @property string ROOT_TEMPLATE_PATH Root templates path
@@ -77,10 +76,8 @@ require_once  'iMSCP/Config/Handler.php';
  * @property int MAX_SQL_PASS_LENGTH Max. length for Sql password
  * @property int DOMAIN_ROWS_PER_PAGE Number for domain displayed per page
  * @property string HOSTING_PLANS_LEVEL Hosting plan level (admin|reseller)
- * @property bool TLD_STRICT_VALIDATION If TRUE, Only TLD from iana database are
- * usable
- * @property bool SLD_STRICT_VALIDATION If TRUE, only restricted tld list can
- * have sld with a single character
+ * @property bool TLD_STRICT_VALIDATION If TRUE, Only TLD from iana database are usable
+ * @property bool SLD_STRICT_VALIDATION If TRUE, only restricted tld list can have sld with a single character
  * @property int MAX_DNAMES_LABELS Maximum number of labels for a domain name
  * @property int MAX_SUBDNAMES_LABELS Maximum number of labels for a subdomain
  * @property bool IMSCP_SUPPORT_SYSTEM If TRUE, support system is available
@@ -93,29 +90,22 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string LOSTPASSWORD_CAPTCHA_FONT Captcha font
  * @property bool BRUTEFORCE If TRUE, brute force detection is enabled
  * @property int BRUTEFORCE_BLOCK_TIME Blocktime after brute force detection,
- * @property int BRUTEFORCE_MAX_LOGIN Max. number of login attemps before
- * brute force block time
- * @property int BRUTEFORCE_MAX_CAPTCHA Max. number of captcha attemps before
- * blocktime
+ * @property int BRUTEFORCE_MAX_LOGIN Max. number of login attemps before brute force block time
+ * @property int BRUTEFORCE_MAX_CAPTCHA Max. number of captcha attemps before blocktime
  * @property bool BRUTEFORCE_BETWEEN If true, block time between login is active
  * @property int BRUTEFORCE_BETWEEN_TIME Block time bettwen each login attemps
  * @property bool MAINTENANCEMODE If TRUE, maintenance mode is enabled
- * @property string MAINTENANCEMODE_MESSAGE Message to display during
- * maintenance
+ * @property string MAINTENANCEMODE_MESSAGE Message to display during maintenance
  * @property int PASSWD_CHARS Allowed number of chararacterd for passwords
  * @property bool PASSWD_STRONG If TRUE, only strong password are allowed
  * @property string SERVER_VHOST_FILE Server virtualHost file
  * @property string APACHE_SITES_DIR Apache sites directory
  * @property int LOG_LEVEL Log level (only for user errors)
- * @property bool CREATE_DEFAULT_EMAIL_ADDRESSES If TRUE, create default email
- * addresse (abuse, postmaster, webmaster)
- * @property bool COUNT_DEFAULT_EMAIL_ADDRESSES If TRUE, count the default mail
- * addresses
+ * @property bool CREATE_DEFAULT_EMAIL_ADDRESSES If TRUE, create default email addresse (abuse, postmaster, webmaster)
+ * @property bool COUNT_DEFAULT_EMAIL_ADDRESSES If TRUE, count the default mail addresses
  * @property bool HARD_MAIL_SUSPENSION
- * @property bool PREVENT_EXTERNAL_LOGIN_ADMIN If TRUE, login from external
- * site is prevented for administrators
- * @property bool PREVENT_EXTERNAL_LOGIN_RESELLER If TRUE, login from external
- * site is prevented for resellers
+ * @property bool PREVENT_EXTERNAL_LOGIN_ADMIN If TRUE, login from external site is prevented for administrators
+ * @property bool PREVENT_EXTERNAL_LOGIN_RESELLER If TRUE, login from external site is prevented for resellers
  * @property bool PREVENT_EXTERNAL_LOGIN_CLIENT
  * @property bool CHECK_FOR_UPDATES If TRUE, update cheching is enabled
  * @property string IMSCP_SUPPORT_SYSTEM_TARGET
@@ -155,77 +145,73 @@ require_once  'iMSCP/Config/Handler.php';
  * @property string CodeName
  * @property int ORDERS_EXPIRE_TIME Default expiration time for unconfirmed orders
  * @property string GUI_SOFTWARE_DIR Directory for software repositories
+ * @property int COMPRESS_OUTPUT Tells whether or not output must be compressed
+ * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  *
- * @package     iMSCP_Config
- * @subpackage  Handler
- * @author      Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.6
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage  Config_Handler
+ * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.7
  */
 class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
 {
-    /**
-     * Configuration file path
-     *
-     * @var string
-     */
-    protected $_pathFile;
+	/**
+	 * Configuration file path
+	 *
+	 * @var string
+	 */
+	protected $_pathFile;
 
-    /**
-     * Loads all configuration parameters from a flat file
-     *
-     * <b>Note:</b> Default file path is set to:
-     * {/usr/local}/etc/imscp/imscp.conf depending of distribution.
-     *
-     * @param string $pathFile Configuration file path
-     */
-    public function __construct($pathFile = null)
-    {
-        if (is_null($pathFile)) {
-            if (getenv('IMSCP_CONF')) {
-                $pathFile = getEnv('IMSCP_CONF');
-            } else {
-                switch (PHP_OS) {
-                    case 'FreeBSD':
-                    case 'OpenBSD':
-                    case 'NetBSD':
-                        $pathFile = '/usr/local/etc/imscp/imscp.conf';
-                        break;
-                    default:
-                        $pathFile = '/etc/imscp/imscp.conf';
-                }
-            }
-        }
+	/**
+	 * Loads all configuration parameters from a flat file
+	 *
+	 * <b>Note:</b> Default file path is set to:
+	 * {/usr/local}/etc/imscp/imscp.conf depending of distribution.
+	 *
+	 * @param string $pathFile Configuration file path
+	 */
+	public function __construct($pathFile = null)
+	{
+		if (is_null($pathFile)) {
+			if (getenv('IMSCP_CONF')) {
+				$pathFile = getEnv('IMSCP_CONF');
+			} else {
+				switch (PHP_OS) {
+					case 'FreeBSD':
+					case 'OpenBSD':
+					case 'NetBSD':
+						$pathFile = '/usr/local/etc/imscp/imscp.conf';
+						break;
+					default:
+						$pathFile = '/etc/imscp/imscp.conf';
+				}
+			}
+		}
 
-        $this->_pathFile = $pathFile;
-        $this->_parseFile();
-    }
+		$this->_pathFile = $pathFile;
+		$this->_parseFile();
+	}
 
-    /**
-     * Opens a configuration file and parses its Key = Value pairs into the
-     * {@link iMSCP_Config_Hangler::parameters} array.
-     *
-     * @throws iMSCP_Exception
-     * @return void
-     * @todo Don't use error operator
-     */
-    protected function _parseFile()
-    {
+	/**
+	 * Opens a configuration file and parses its Key = Value pairs into the
+	 * {@link iMSCP_Config_Hangler::parameters} array.
+	 *
+	 * @throws iMSCP_Exception
+	 * @return void
+	 */
+	protected function _parseFile()
+	{
+		if (($fd = @file_get_contents($this->_pathFile)) == false) {
+			throw new iMSCP_Exception(sprintf('Unable to open the configuration file `%s`', $this->_pathFile));
+		}
 
-        $fd = @file_get_contents($this->_pathFile);
-
-        if ($fd === false) {
-            throw new iMSCP_Exception(
-                "Unable to open the configuration file `{$this->_pathFile}`.");
-        }
-
-        $lines = explode(PHP_EOL, $fd);
-
-        foreach ($lines as $line) {
-            if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
-                list($key, $value) = explode('=', $line, 2);
-                $this[trim($key)] = trim($value);
-            }
-        }
-    }
+		foreach (explode(PHP_EOL, $fd) as $line) {
+			if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
+				list($key, $value) = explode('=', $line, 2);
+				$this[trim($key)] = trim($value);
+			}
+		}
+	}
 }

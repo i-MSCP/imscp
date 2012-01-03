@@ -25,7 +25,7 @@
  * @package		iMSCP_Exception
  * @subpackage	Writer
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -37,10 +37,9 @@ require_once  'iMSCP/Exception/Writer.php';
 /**
  * Browser writer class
  *
- * This writer writes an exception messages to the client browser. This writer acts
- * also as a formatter that will use a specific template for the message formatting.
- * If no template path is given, or if the template file is not reachable, a string
- * that represent the message is write to the client browser.
+ * This writer writes an exception messages to the client browser. This writer acts also as a formatter that will use a
+ * specific template for the message formatting. If no template path is given, or if the template file is not reachable,
+ * a string that represent the message is write to the client browser.
  *
  * The given template should be a template file that can be treated by a
  * pTemplate object.
@@ -86,7 +85,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 	{
 		if (!($tpl = $this->_tpl)) {
 			$tpl = new iMSCP_pTemplate();
-			$tpl->define_no_file('layout',
+			$tpl->define_no_file(
+				'layout',
 				'
 					<html>
 						<head>
@@ -98,7 +98,11 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 						</body>
 					</html>
 				');
-			$tpl->assign('BOX_MESSAGE', $this->_message);
+
+			$tpl->assign(
+				array(
+					'BOX_MESSAGE_TITLE' => 'An exception has been thrown.',
+					'BOX_MESSAGE' => $this->_message));
 		}
 
 		$tpl->parse('LAYOUT', 'layout');

@@ -25,7 +25,7 @@
  * @package		iMSCP_Exception
  * @subpackage	Writer
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @copyright	2010-2011 by i-MSCP | http://i-mscp.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
