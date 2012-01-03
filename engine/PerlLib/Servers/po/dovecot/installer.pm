@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
 # @version		SVN: $Id: installer.pm 5417 2011-10-05 20:17:21Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site

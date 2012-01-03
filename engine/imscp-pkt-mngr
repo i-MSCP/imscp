@@ -20,9 +20,8 @@
 # i-MSCP a internet Multi Server Control Panel. All Rights Reserved
 #
 # @category i-MSCP
-# @copyright 2006-2010 by ispCP | http://i-mscp.net
+# @copyright 2010-2012 by iMSCP | http://i-mscp.net
 # @author Sacha Bay <sascha.bay@i-mscp.net>
-# @version SVN: $Id$
 # @link http://i-mscp.net i-MSCP Home Site
 # @license http://www.mozilla.org/MPL/ MPL 1.1
 #
@@ -102,13 +101,13 @@ sub pkt_mngr_shut_down {
 
 sub pkt_add_data {
 	push_el(\@main::el, 'pkt_add_data()', 'Starting add software package...');
-	
+
 	my ($sw_software_id, $sw_software_archive, $sw_src_path, $sw_tmp_path, $sw_install_xml_file, $sw_uninstall_xml_file, $sw_reseller_id) = @_;
-	
+
 	my ($rs, $rdata, $rdata2, $userdata, $sql, $sw_count_swdepot, $sw_count_res, $existing_swdepotid, $existing_swrestid) = undef;
-	
+
 	our @allowed_languages = split(',',$main::cfg{'SOFTWARE_ALLOWED_LANGUAGE'});
-	
+
 	our ($tag, $data) = "";
 	$rs = sys_command_rs("$main::cfg{'CMD_MKDIR'} -p $sw_tmp_path/");
 	chdir ("$sw_tmp_path");
@@ -134,7 +133,7 @@ sub pkt_add_data {
 							Char    => \&characterData
 							);
 		$parser->parsefile ($sw_install_xml_file);
-		
+
 		sub startElement {
 			my ($parseinst, $element, %attrs) = @_;
 			SWITCH: {
@@ -214,7 +213,7 @@ sub pkt_add_data {
 				WHERE
 					`admin_id` = $sw_reseller_id
 			";
-					
+
 			($rs, $userdata) = doSQL($sql);
 			my $userstatus = @$userdata[0];
 			if (@$userstatus[0] eq "admin") {
@@ -229,7 +228,7 @@ sub pkt_add_data {
 						`software_name`         = '".$INSTALL_DATA{software_name}."'
 					AND
 						`software_version`      = '".$INSTALL_DATA{software_version}."'
-					AND 
+					AND
 						`software_language`     = '".$INSTALL_DATA{software_language}."'
 					AND
 						`software_depot`        = 'no'
@@ -360,7 +359,7 @@ sub pkt_mngr_engine {
 	my $sql;
 	my $query;
 	my $sw_src_path = "";
-	
+
 	my $gui_software_dir        = $main::cfg{'GUI_SOFTWARE_DIR'};
 	my $gui_softwaredepot_dir   = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
 	my $software_tmp_dir        = $main::cfg{'SOFTWARE_TMP_DIR'};
@@ -387,11 +386,11 @@ $rs = pkt_mngr_start_up();
 if ($rs != 0) {
 
     dump_el(\@main::el, $main::imscp_pkt_mngr_el);
-    
+
     pkt_mngr_shut_down();
-    
+
     exit 1;
-    
+
 }
 
 $rs = pkt_mngr_engine();
@@ -399,11 +398,11 @@ $rs = pkt_mngr_engine();
 if ($rs != 0) {
 
     dump_el(\@main::el, $main::imscp_pkt_mngr_el);
-    
+
     pkt_mngr_shut_down();
-    
+
     exit 1;
-    
+
 }
 
 $rs = pkt_mngr_shut_down();
@@ -411,7 +410,7 @@ $rs = pkt_mngr_shut_down();
 if ($rs != 0) {
 
     dump_el(\@main::el, $main::imscp_pkt_mngr_el);
-    
+
     exit 1;
 }
 

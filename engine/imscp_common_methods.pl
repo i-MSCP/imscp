@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+# Copyright (C) 2010-2012 by internet Multi Server Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -27,7 +27,7 @@
 # Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# Portions created by the i-MSCP Team are Copyright (C) 2010-2012 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
 # The i-MSCP Home Page is:
@@ -2861,7 +2861,7 @@ sub move_dir_content{
 ## get_config_from_db
 ##
 ## return the $key=$value from table config in the DB
-## 
+##
 ##
 ## @author hannes@cheat.at
 ## @since   1.0.1.5
@@ -2881,7 +2881,7 @@ sub get_config_from_db {
 
         my ($rs, $rdata) = doHashSQL($sql,'name');
         return (-1, '') if( $rs != 0 );
-	
+
         push_el(\@main::el, 'get_config_from_db()', 'Ending...');
 
         return ($rdata);
@@ -2891,7 +2891,7 @@ sub get_config_from_db {
 ## get_custom_php_ini_from_db
 ##
 ## return the array_ref.array_ref from table php_ini in the DB
-## 
+##
 ##
 ## @author hannes@cheat.at
 ## @since   1.0.1.5

@@ -9,7 +9,7 @@
  *
  * @version     $Id$
  * @package     phpMyAdmin
- * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      i-MSCP Team
  */
