@@ -158,11 +158,15 @@ function client_generatePage($tpl, $id, $type) {
 		if ($cfg->ENABLE_SSL) {
 			$status = tr('No certificate found.');
 		} else {
-			$tpl->assign('CERT_ENABLE', '');
 			set_page_message(tr('SSL feature is disabled. You cannot add / change certificate'), 'warning');
 		}
 	} else {
-		$tpl->assign('TR_DYNAMIC_TITLE', tr('Edit SSL certificate'));
+		if ($cfg->ENABLE_SSL) {
+			$tpl->assign('TR_DYNAMIC_TITLE', tr('Edit SSL certificate'));
+		} else {
+			$tpl->assign('TR_DYNAMIC_TITLE', tr('View SSL certificate'));
+			$tpl->assign('CERT_ENABLE', '');
+		}
 
 		if (in_array($stmt->fields['status'], array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DELETE_STATUS, $cfg->ITEM_ADD_STATUS, $cfg->ITEM_CHANGE_STATUS))) {
 			$status = translate_dmn_status($stmt->fields['status']);
@@ -174,14 +178,19 @@ function client_generatePage($tpl, $id, $type) {
 	if (isset($status)) {
 		$tpl->assign(
 			array(
-				'DOMAIN_NAME' => $name,
-				'KEY_CERT' => isset($_POST['send']) && isset($_POST['key_cert'])
-					? $_POST['key_cert'] : ($stmt->fields['key'] ? $stmt->fields['key'] : ''),
-				'CERT' => isset($_POST['send']) && isset($_POST['cert_cert'])
-					? $_POST['cert_cert'] : ($stmt->fields['cert'] ? $stmt->fields['cert'] : ''),
-				'CA_CERT' => isset($_POST['send']) && isset($_POST['ca_cert'])
-					? $_POST['ca_cert'] : ($stmt->fields['ca_cert'] ? $stmt->fields['ca_cert'] : ''),
-				'STATUS' => $status));
+				'DOMAIN_NAME'	=>	$name,
+				'KEY_CERT'		=>	isset($_POST['send']) && isset($_POST['key_cert'])
+										? $_POST['key_cert']
+										: ($stmt->fields['key'] ? $stmt->fields['key'] : ''),
+				'CERT'			=>	isset($_POST['send']) && isset($_POST['cert_cert'])
+										? $_POST['cert_cert']
+										: ($stmt->fields['cert'] ? $stmt->fields['cert'] : ''),
+				'CA_CERT'		=>	isset($_POST['send']) && isset($_POST['ca_cert'])
+										? $_POST['ca_cert']
+										: ($stmt->fields['ca_cert'] ? $stmt->fields['ca_cert'] : ''),
+				'STATUS'		=>	$status
+			)
+		);
 	} else {
 		redirectTo('domains_manage.php');
 	}
@@ -207,7 +216,9 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'client/cert_view.tpl',
 		'page_message' => 'layout',
-		'cert_enable' => 'page'));
+		'cert_enable' => 'page'
+	)
+);
 
 if (!isset($_GET['id']) || !isset($_GET['type']) || !in_array($_GET['type'], array('dmn', 'als', 'sub', 'alssub'))) {
 	set_page_message(tr('Wrong request.'), 'error');
