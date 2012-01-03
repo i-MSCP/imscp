@@ -67,6 +67,7 @@ Tickets:
 	- Fixed #298: Defect - Configuration variable `CLIENT_TEMPLATE_PATH` is missing.
 	- Fixed #299: Defect - Error while installing apache itk
 	- Fixed #300: Defect - Can't locate Servers/ftpd/proftpd/uninstaller.pm
+	- Fixed #301: Bug - Error while Inserting a SSL-Certificate
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

@@ -37,8 +37,7 @@
  * @param int $id Domain entity unique identifier
  * @return array
  */
-function client_getFullName($type, $id)
-{
+function client_getFullName($type, $id) {
 	switch ($type) {
 		case 'dmn':
 			$query = 'SELECT `domain_name` `name`, `domain_admin_id` FROM `domain` WHERE `domain_id` = ?';
@@ -64,8 +63,7 @@ function client_getFullName($type, $id)
  * @param string $type Domain entity type to update (dmn, als,sub, alssub)
  * @param int $id Domain entity unique identifier
  */
-function client_updateEntityStatus($type, $id)
-{
+function client_updateEntityStatus($type, $id) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -93,8 +91,7 @@ function client_updateEntityStatus($type, $id)
  * @param int $id Domain entity unique identifier
  * @param string $type Domain entity type
  */
-function client_generatePage($tpl, $id, $type)
-{
+function client_generatePage($tpl, $id, $type) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -107,7 +104,7 @@ function client_generatePage($tpl, $id, $type)
 
 	if (isset($_POST['send']) && $cfg->ENABLE_SSL) {
 		if ($_POST['pass'] != $_POST['pass_rep']) {
-			set_page_message(tr("Passwords doesn't not matches."), 'error');
+			set_page_message(tr('Passwords doesn\'t not matches.'), 'error');
 		}
 
 		if (!is_resource(@openssl_x509_read($_POST['cert_cert']))) {
@@ -119,7 +116,7 @@ function client_generatePage($tpl, $id, $type)
 		}
 
 		if ($k && @openssl_x509_check_private_key($_POST['cert_cert'], $k) !== true) {
-			set_page_message(tr("Certificate doesn't match key."), 'error');
+			set_page_message(tr('Certificate doesn\'t match key.'), 'error');
 		}
 
 		if (!empty($_POST['ca_cert']) && !is_resource(@openssl_x509_read($_POST['ca_cert']))) {
@@ -127,32 +124,32 @@ function client_generatePage($tpl, $id, $type)
 		}
 
 		if (!Zend_Session::namespaceIsset('pageMessages')) {
-			$query = "DELETE FROM `ssl_certs` WHERE `type` = ? AND `id` = ?";
+			$query = 'DELETE FROM `ssl_certs` WHERE `type` = ? AND `id` = ?';
 			exec_query($query, array($type, $id));
 
-			$query = "
+			$query = '
 				INSERT INTO `ssl_certs` (
-					id`, `type`, `password`, `key`, `cert`, `ca_cert`, `status`
+					`id`, `type`, `password`, `key`, `cert`, `ca_cert`, `status`
 				) VALUES (
 					?, ?, ?, ?, ?, ?, ?
 				)
-			";
+			';
 			exec_query($query, array($id, $type, $_POST['pass'], $_POST['key_cert'], $_POST['cert_cert'], $_POST['ca_cert'], $cfg->ITEM_ADD_STATUS));
 			client_updateEntityStatus($type, $id);
 			set_page_message(tr('Certificate successfully scheduled for addition or modification.'), 'success');
-			write_log($_SESSION['user_logged'] . ": added new certificate for: " . $name, E_USER_NOTICE);
+			write_log($_SESSION['user_logged'] . ': added new certificate for: ' . $name, E_USER_NOTICE);
 			send_request();
 		}
 	} elseif (isset($_POST['delete'])) {
-		$query = " UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ? ";
+		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = ? AND `id` = ? ';
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $type, $id));
 		client_updateEntityStatus($type, $id);
 		set_page_message(tr('Certificate sucessfully scheduled for deletion.'), 'success');
-		write_log($_SESSION['user_logged'] . ": deleted certificate for: " . $name, E_USER_NOTICE);
+		write_log($_SESSION['user_logged'] . ': deleted certificate for: ' . $name, E_USER_NOTICE);
 		send_request();
 	}
 
-	$query = "SELECT * FROM `ssl_certs` WHERE `type` = ? AND `id` = ?";
+	$query = 'SELECT * FROM `ssl_certs` WHERE `type` = ? AND `id` = ?';
 	$stmt = exec_query($query, array($type, $id));
 
 	if (!$stmt->rowCount()) {
@@ -237,7 +234,9 @@ $tpl->assign(
 		'TR_SAVE' => tr('Save'),
 		'TR_CANCEL' => tr('Cancel'),
 		'ID' => $id,
-		'TYPE' => $type));
+		'TYPE' => $type
+	)
+);
 
 generateNavigation($tpl);
 client_generatePage($tpl, $id, $type);
