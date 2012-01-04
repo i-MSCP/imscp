@@ -155,7 +155,7 @@ sub backup_imscp_engine {
 
 sub backup_imscp_configs{
 
-	my $date		= strftime "%d.%m.%Y-%H:%M", localtime;
+	my $date		= strftime "%Y.%m.%d-%H:%M", localtime;
 	my $tarName	= "$main::imscpConfig{BACKUP_FILE_DIR}/config-backup-$date.tar";
 	my $fName	= "$tarName.$command->{$main::imscpConfig{ZIP}}->{extension}";
 	my $bkpCmd	= "$main::imscpConfig{CMD_TAR} ".
