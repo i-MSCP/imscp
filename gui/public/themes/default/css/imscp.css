@@ -145,13 +145,17 @@ a {text-decoration: none;}
 	text-align: center;
 	text-decoration: none;
 	margin: 6px 0.3em 0 0.3em;
-	width:35px;
+	min-width:35px;
 	border: 1px solid transparent;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
 .main_menu ul li a:hover {text-decoration: none;}
+.main_menu ul li .show_labels {
+	background-position: center top;
+	line-height: 70px;
+}
 
 /* Main menu icons */
 .main_menu .general {background-image: url(../images/menu/general.png);}

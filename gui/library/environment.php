@@ -236,6 +236,9 @@ $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 // Default expiration time for unconfirmed orders  - defaulted to one week
 $config->ORDERS_EXPIRE_TIME = 604800;
 
+// Tells wheter or not text must be show for main menu links
+$config->MAIN_MENU_SHOW_LABELS = true;
+
 // Initialize the application
 iMSCP_Initializer::run($config);
 

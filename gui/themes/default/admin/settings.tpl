@@ -398,6 +398,16 @@
 								</select>
 							</td>
 						</tr>
+						<tr>
+
+							<td><label for="mainMenuShowLabels">{TR_MAIN_MENU_SHOW_LABELS}</label></td>
+							<td>
+								<select name="mainMenuShowLabels" id="mainMenuShowLabels">
+									<option value="0"{MAIN_MENU_SHOW_LABELS_OFF}>{TR_DISABLED}</option>
+									<option value="1"{MAIN_MENU_SHOW_LABELS_ON}>{TR_ENABLED}</option>
+								</select>
+							</td>
+						</tr>
 					</table>
 				</fieldset>
 

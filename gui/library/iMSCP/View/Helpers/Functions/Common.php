@@ -334,10 +334,12 @@ function generateNavigation($tpl)
 			$tpl->assign(
 				array(
 					'HREF' => $page->getHref(),
-					'CLASS' => $page->getClass(),
+					'CLASS' => $page->getClass() . (($cfg->MAIN_MENU_SHOW_LABELS) ? ' show_labels' : ''),
 					'IS_ACTIVE_CLASS' => ($page->isActive(true)) ? 'active' : 'dummy',
 					'LABEL' => tr($page->getLabel()),
-					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self'));
+					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self',
+					'LINK_LABEL' => ($cfg->MAIN_MENU_SHOW_LABELS) ? tr($page->getLabel()) : '')
+			);
 
 			// Add page to main menu
 			$tpl->parse('MAIN_MENU_BLOCK', '.main_menu_block');
