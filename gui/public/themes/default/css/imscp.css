@@ -153,6 +153,7 @@ a {text-decoration: none;}
 }
 .main_menu ul li a:hover {text-decoration: none;}
 .main_menu ul li .show_labels {
+	background-color: transparent;
 	background-position: center top;
 	line-height: 70px;
 }
