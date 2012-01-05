@@ -45,19 +45,18 @@
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		// css adjustement for IE browsers
-		$(document).ready(function(){
-			$('tr:visible').each(function(index) {
+		$(window).load(function(){
+			$('tr').each(function(index) {
 				if(index % 2) {
 					$(this).css('background-color', 'rgb(255, 255, 255)');
 				} else {
 					$(this).css('background-color', 'rgb(237, 237, 237)');
 				}
 			});
-			$(".body th, .body tfoot td").css({'border-top':'1px solid rgb(0, 0, 0)', 'border-bottom':'1px solid rgb(0, 0, 0)'});
-			$(".body th:first-child, .body tfoot td:first-child").css('border-left','1px solid rgb(0, 0, 0)');
-			$(".body th:last-child, .body tfoot td:last-child").css('border-right','1px solid rgb(0, 0, 0)');
-			$(".body td:first-child").css('border-left','1px solid rgb(223, 223, 223)');
-			$(".body td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
+
+			$("td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
+			$("th:last-child, tfoot td:last-child").css('border-right','1px solid rgb(0, 0, 0)');
+			$(".datatable tfoot td:last-child").css('border-right','1px solid rgb(223, 223, 223)');
 		});
 	/*]]>*/
 	</script>
@@ -66,9 +65,9 @@
 	/*<![CDATA[*/
 		$(document).ready(function() {
 			setTimeout(function(){$('.timeout').fadeOut(1000);},3000);
-			$('span').iMSCPtooltips();
+			$('a, span').iMSCPtooltips();
 			// Setup buttons
-			$("input:submit, input:button").button();
+			$("input:submit, input:button, button").button();
 			$(".radio").buttonset();
 			$(":radio, :checkbox").change(function(){$(this).blur();});
 		});
