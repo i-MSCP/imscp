@@ -331,8 +331,16 @@
 				<softwares>
 					<label>Softwares</label>
 					<uri>/client/software.php</uri>
-					<title_class>app_installer</title_class>
+					<title_class>apps_installer</title_class>
 					<privilege_callback name="customerHasFeature" param="aps"/>
+					<pages>
+						<software_view_link>
+							<label>Software details</label>
+							<uri>/client/software_view.php</uri>
+							<title_class>apps_installer</title_class>
+							<visible>0</visible>
+						</software_view_link>
+					</pages>
 				</softwares>
 				<daily_backup>
 					<label>Daily backup</label>

@@ -1494,7 +1494,6 @@ function get_client_software_permission($tpl, $user_id)
 						  'TR_SOFTWARE_DESCRIPTION' => tr('Application Description')));
 
 		$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
-		$tpl->parse('T_SOFTWARE_MENU', '.t_software_menu');
 	} else {
 		$tpl->assign(array(
 						  'T_SOFTWARE_SUPPORT' => '',

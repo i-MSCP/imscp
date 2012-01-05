@@ -27,24 +27,25 @@
  */
 
 /************************************************************************************
- *  Functions
+ *  Script functions
  */
 
 /**
- * @param $tpl
- * @param $user_id
+ * client_generatePageLists.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param int $customerId Customer unique identifier
  * @return void
  */
-function gen_page_lists($tpl, $user_id) {
-
-    list($dmn_id,$dmn_name,,,$dmn_created_id,) = get_domain_default_props($user_id);
-    $software_poss = gen_software_list($tpl, $dmn_id, $dmn_name, $dmn_created_id, $_SESSION['user_id']);
+function client_generatePageLists($tpl, $customerId)
+{
+    $domainProperties = get_domain_default_props($customerId, true);
+    $software_poss = gen_software_list($tpl, $domainProperties['domain_id'], $domainProperties['domain_created_id']);
     $tpl->assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
-	$tpl->parse('SOFTWARE_MESSAGE', 'software_message');
 }
 
 /************************************************************************************
- * Main program
+ * Main script
  */
 
 // Include core library
@@ -63,32 +64,28 @@ if (!customerHasFeature('aps')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/software.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('software_message', 'page');
-$tpl->define_dynamic('software_item', 'page');
-$tpl->define_dynamic('software_action_delete', 'page');
-$tpl->define_dynamic('software_action_install', 'page');
-$tpl->define_dynamic('software_total', 'page');
-$tpl->define_dynamic('no_software', 'page');
-$tpl->define_dynamic('no_software_support', 'page');
-$tpl->define_dynamic('del_software_support', 'page');
-$tpl->define_dynamic('del_software_item', 'page');
-$tpl->define_dynamic('t_software_support', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/software.tpl',
+		'page_message' => 'layout',
+		'software_message' => 'page',
+		'software_item' => 'page',
+		'software_action_delete' => 'page',
+		'software_action_install' => 'page',
+		'software_total' => 'page',
+		'no_software' => 'page',
+		'no_software_support' => 'page',
+		'del_software_support' => 'page',
+		'del_software_item' => 'page',
+		't_software_support' => 'page'));
 
-if(isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no") {
-	$tpl->assign('NO_SOFTWARE', '');
-}
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools / Softwares'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_SOFTWARE_MENU_PATH' => tr('i-MSCP - application installer'),
-		 'TR_MANAGE_USERS' => tr('Manage users'),
-		 'TR_INSTALL_SOFTWARE' => tr('Install software'),
 		 'TR_SOFTWARE' => tr('Software'),
 		 'TR_VERSION' => tr('Version'),
 		 'TR_LANGUAGE' => tr('Language'),
@@ -96,10 +93,7 @@ $tpl->assign(
 		 'TR_NEED_DATABASE' => tr('Database'),
 		 'TR_STATUS' => tr('Status'),
 		 'TR_ACTION' => tr('Action'),
-		 'TR_SOFTWARE_AVAILABLE' => tr('Apps available'),
-		 'TR_DELETE' => tr('Delete'),
-		 'TR_SOFTWARE_MENU' => tr('Software installation'),
-		 'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+		 'TR_SOFTWARE_AVAILABLE' => tr('Available softwares'),
 		 'TR_SOFTWARE_ASC' => 'software.php?sortby=name&order=asc',
 		 'TR_SOFTWARE_DESC' => 'software.php?sortby=name&order=desc',
 		 'TR_TYPE_ASC' => 'software.php?sortby=type&order=asc',
@@ -111,9 +105,8 @@ $tpl->assign(
 		 'TR_LANGUAGE_ASC' => 'software.php?sortby=language&order=asc',
 		 'TR_LANGUAGE_DESC' => 'software.php?sortby=language&order=desc'));
 
-gen_page_lists($tpl, $_SESSION['user_id']);
 generateNavigation($tpl);
-get_client_software_permission($tpl, $_SESSION['user_id']);
+client_generatePageLists($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

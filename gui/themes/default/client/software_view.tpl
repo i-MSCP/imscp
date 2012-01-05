@@ -1,25 +1,28 @@
 
 			<!-- BDP: software_item -->
-			<table>
+			<table class="firstColFixed">
 				<tr>
-					<td width="150">{TR_NAME}:</td>
+					<th colspan="2">{TR_TITLE}</th>
+				</tr>
+				<tr>
+					<td>{TR_NAME}</td>
 					<td>{SOFTWARE_NAME}</td>
 				</tr>
 				<tr>
-					<td>{TR_VERSION}:</td>
+					<td>{TR_VERSION}</td>
 					<td>{SOFTWARE_VERSION}</td>
 				</tr>
 				<tr>
-					<td>{TR_LANGUAGE}:</td>
+					<td>{TR_LANGUAGE}</td>
 					<td>{SOFTWARE_LANGUAGE}</td>
 				</tr>
 				<tr>
-					<td>{TR_TYPE}:</td>
+					<td>{TR_TYPE}</td>
 					<td>{SOFTWARE_TYPE}</td>
 				</tr>
 				<tr>
-					<td>{TR_DB}:</td>
-					<td><font color="{STATUS_COLOR}">{SOFTWARE_DB}</font></td>
+					<td>{TR_DB}</td>
+					<td><span style="color:{STATUS_COLOR}">{SOFTWARE_DB}</span></td>
 				</tr>
 				<!-- BDP: software_message -->
 				<tr>
@@ -27,12 +30,10 @@
 				</tr>
 				<!-- EDP: software_message -->
 				<tr>
-					<td colspan="2">{TR_DESC}:<br /><br />
+					<td colspan="2">{TR_DESC}<br/><br/>
 						<table>
 							<tr>
-								<td style="word-break:break-all;word-wrap:break-word;text-align: justify">
-									{SOFTWARE_DESC}
-								</td>
+								<td style="text-align: justify">{SOFTWARE_DESC}</td>
 							</tr>
 						</table>
 					</td>
@@ -44,12 +45,12 @@
 				<!-- BDP: installed_software_info -->
 				<tr>
 					<td colspan="2">&nbsp;</td>
-                </tr>
+				</tr>
 				<tr>
 					<th colspan="2">{TR_SOFTWARE_INFO}</th>
-                </tr>
+				</tr>
 				<tr>
-					<td width="150">{TR_SOFTWARE_STATUS}</td>
+					<td>{TR_SOFTWARE_STATUS}</td>
 					<td>{SOFTWARE_STATUS}</td>
 				</tr>
 				<tr>
@@ -63,14 +64,14 @@
 				<!-- EDP: installed_software_info -->
 				<tr>
 					<td colspan="2">
-					<form name="buttons" method="post" action="#">
-						<div class="buttons">
-							<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}" />
-							<!-- BDP: software_install -->
-							<input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','{SOFTWARE_INSTALL_BUTTON}');return document.MM_returnValue" value="{TR_INSTALL}" />
-	                   		<!-- EDP: software_install -->
-                   		</div>
-					</form>
+						<form name="scriptActions" method="post" action="#">
+							<div class="buttons">
+								<input name="Submit" type="submit" onclick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}"/>
+								<!-- BDP: software_install -->
+								<input name="Submit2" type="submit" onclick="MM_goToURL('parent','{SOFTWARE_INSTALL_BUTTON}');return document.MM_returnValue" value="{TR_INSTALL}"/>
+								<!-- EDP: software_install -->
+							</div>
+						</form>
 					</td>
 				</tr>
 			</table>

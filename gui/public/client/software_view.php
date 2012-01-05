@@ -27,24 +27,32 @@
  */
 
 /************************************************************************************
- *  Functions
+ *  Script functions
  */
 
 /**
- * @param $tpl
- * @param $user_id
- * @return
+ * Generate page and return software unique identifier.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param int $customerId Customer unique identifier
+ * @return int software unique identifier
  */
-function gen_page_lists($tpl, $user_id) {
+function client_generatePage($tpl, $customerId)
+{
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-		set_page_message(tr('Software not found!'), 'error');
+		set_page_message(tr('Wrong request'), 'error');
 		redirectTo('software.php');
-		exit;
+		exit; // Useless but avoid IDE warning about possible undefined variable
 	} else {
-		$software_id = $_GET['id'];
+		$software_id = intval($_GET['id']);
 	}
-    list($dmn_id, $dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit,) = get_domain_default_props($user_id);
-	get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
+
+	$domainProperties = get_domain_default_props($customerId, true);
+
+	get_software_props (
+		$tpl, $domainProperties['domain_id'], $software_id, $domainProperties['domain_created_id'],
+		$domainProperties['domain_sqld_limit']);
+
 	return $software_id;
 }
 
@@ -68,48 +76,38 @@ if (!customerHasFeature('aps')) {
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/software_view.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('software_message', 'page');
-$tpl->define_dynamic('software_install', 'page');
-$tpl->define_dynamic('installed_software_info', 'page');
-$tpl->define_dynamic('software_item', 'page');
-$tpl->define_dynamic('no_software', 'page');
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'client/software_view.tpl',
+		'page_message' => 'layout',
+		'software_message' => 'page',
+		'software_install' => 'page',
+		'installed_software_info' => 'page',
+		'software_item' => 'page',
+		'no_software' => 'page'));
+
+$software_id = client_generatePage($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Software details'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
-
-if (isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no") {
-	$tpl -> assign('NO_SOFTWARE', '');
-}
-
-$software_id = gen_page_lists($tpl, $_SESSION['user_id']);
+		'TR_PAGE_TITLE' => tr('i-MSCP - Software details'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'SOFTWARE_ID' => $software_id,
+		'TR_VIEW_SOFTWARE' => tr('Software details'),
+		'TR_NAME' => tr('Software'),
+		'TR_VERSION' => tr('Version'),
+		'TR_LANGUAGE' => tr('Language'),
+		'TR_TYPE' => tr('Type'),
+		'TR_DB' => tr('Database required'),
+		'TR_LINK' => tr('Homepage'),
+		'TR_DESC' => tr('Description'),
+		'TR_BACK' => tr('Back'),
+		'TR_INSTALL' => tr('Install'),
+		'TR_SOFTWARE_MENU' => tr('Software installation')));
 
 generateNavigation($tpl);
-get_client_software_permission ($tpl, $_SESSION['user_id']);
-
-$tpl->assign(
-	array(
-		 'TR_SOFTWARE_MENU_PATH' => tr('i-MSCP - application installer'),
-		 'TR_SOFTWARE_VIEW_PATH' => tr('Software details'),
-		 'SOFTWARE_ID' => $software_id,
-		 'TR_MANAGE_USERS' => tr('Manage users'),
-		 'TR_VIEW_SOFTWARE' => tr('Software details'),
-		 'TR_NAME' => tr('Software'),
-		 'TR_VERSION' => tr('Version'),
-		 'TR_LANGUAGE' => tr('Language'),
-		 'TR_TYPE' => tr('Type'),
-		 'TR_DB' => tr('Database required'),
-		 'TR_LINK' => tr('Homepage'),
-		 'TR_DESC' => tr('Description'),
-		 'TR_BACK' => tr('Back'),
-		 'TR_INSTALL' => tr('Install'),
-		 'TR_SOFTWARE_MENU' => tr('Software installation')));
-
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

@@ -1277,38 +1277,29 @@ function get_avail_software_reseller($tpl, $user_id)
  */
 
 /**
- * Must be documented.
+ * Generate user actions for a specific software.
  *
- * @param  $software_id
- * @param $dmn_id
- * @param iMSCP_pTemplate $tpl
+ * @param int $software_id Software unique identifier
+ * @param int $dmn_id Domain unique identifier
+ * @param iMSCP_pTemplate $tpl Template engine instance
  * @return array
  */
 function gen_user_software_action($software_id, $dmn_id, $tpl)
 {
-	$find_software = "
-		SELECT
-			`software_status`
-		FROM
-			`web_software_inst`
-		WHERE
-			`software_id` = ?
-		AND
-			`domain_id` = ?
-	";
-	$sw = exec_query($find_software, array($software_id, $dmn_id));
+	$query = "SELECT `software_status` FROM `web_software_inst` WHERE `software_id` = ? AND `domain_id` = ?";
+	$stmt = exec_query($query, array($software_id, $dmn_id));
 
-	if ($sw->recordCount() == 0) {
+	if (!$stmt->rowCount()) {
 		$software_status = 'not installed';
 		$software_icon = 'edit';
 	} else {
-		if ($sw->fields['software_status'] == 'ok') {
+		if ($stmt->fields['software_status'] == 'ok') {
 			$software_status = 'installed';
 			$software_icon = 'delete';
-		} elseif ($sw->fields['software_status'] == 'toadd') {
+		} elseif ($stmt->fields['software_status'] == 'toadd') {
 			$software_status = 'installing';
 			$software_icon = 'disabled';
-		} elseif ($sw->fields['software_status'] == 'delete') {
+		} elseif ($stmt->fields['software_status'] == 'delete') {
 			$software_status = 'deleting';
 			$software_icon = 'delete';
 		} else {
@@ -1317,224 +1308,197 @@ function gen_user_software_action($software_id, $dmn_id, $tpl)
 		}
 	}
 	if ($software_status == 'installing') {
-		$tpl->assign(array(
-						  'TR_MESSAGE_DELETE' => '',
-						  'TR_MESSAGE_INSTALL' => ''));
+		$tpl->assign(
+			array(
+				'TR_MESSAGE_DELETE' => '',
+				'TR_MESSAGE_INSTALL' => ''));
 
 		$tpl->parse('SOFTWARE_ACTION_DELETE', '');
 		return array(tr('Install in progress...'), '', '', $software_status, $software_icon);
 	} elseif ($software_status == 'deleting') {
-		$tpl->assign(array(
-						  'TR_MESSAGE_DELETE' => '',
-						  'TR_MESSAGE_INSTALL' => ''));
+		$tpl->assign(
+			array(
+				'TR_MESSAGE_DELETE' => '',
+				'TR_MESSAGE_INSTALL' => ''));
 
 		$tpl->parse('SOFTWARE_ACTION_DELETE', '');
 
-		return array(tr('Deletion in progress...'), "", "", $software_status, $software_icon);
+		return array(tr('Deletion in progress...'), '', '', $software_status, $software_icon);
 	} elseif ($software_status == 'installed') {
-		$tpl->assign(array(
-						  'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
-						  'SOFTWARE_ACTION_INSTALL' => ''));
+		$tpl->assign(
+			array(
+				'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
+				'SOFTWARE_ACTION_INSTALL' => ''));
 
 		return array(tr('Uninstall'), 'software_delete.php?id=' . $software_id, 'software_view.php?id=' . $software_id, $software_status, $software_icon);
 	} else {
-		$tpl->assign(array(
-						  'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package?', true),
-						  'SOFTWARE_ACTION_DELETE' => ''));
+		$tpl->assign(
+			array(
+				'TR_MESSAGE_INSTALL' => tr('Are you sure to install this package?', true),
+				'SOFTWARE_ACTION_DELETE' => ''));
 
 		return array(tr('Install'), 'software_install.php?id=' . $software_id, 'software_view.php?id=' . $software_id, $software_status, $software_icon);
 	}
 }
 
 /**
- * Must be documented.
+ * Generate available softwares list for a specific customer.
  *
- * @param iMSCP_pTemplate $tpl
- * @param $dmn_id
- * @param $dmn_name
- * @param $reseller_id
- * @param $admin_id
- * @return int
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param int $domainId Domain unique identifier
+ * @param int $resellerId Reseller unique identifier
+ * @return int Total number of available softwares
  */
-function gen_software_list($tpl, $dmn_id, $dmn_name, $reseller_id, $admin_id)
+function gen_software_list($tpl, $domainId, $resellerId)
 {
-	global $counter, $delcounter;
 
 	$query = "
 		SELECT
-			`domain_software_allowed`, `domain_ftpacc_limit`
+			`software_id`, `software_status`, `software_res_del`, `software_name`, `software_version`
 		FROM
-			`domain`
+			`web_software_inst`
 		WHERE
-			`domain_admin_id` = ?
+			`domain_id` = ?
+		AND
+			software_res_del = ?
 	";
-	$rs = exec_query($query, $admin_id);
+	$stmt = exec_query($query, array($domainId, 1));
 
-	if ($rs->fields('domain_software_allowed') == 'yes' && $rs->fields('domain_ftpacc_limit') != "-1") {
-		$find_deleted_software = "
-			SELECT
-				`software_id`, `software_status`, `software_res_del`,
-				`software_name`, `software_version`
-			FROM
-				`web_software_inst`
-			WHERE
-				`domain_id` = ?
-			AND
-				software_res_del = '1'
-		";
-		$deleted_sw = exec_query($find_deleted_software, $dmn_id);
+	if (!$stmt->rowCount()) {
+		$tpl->assign('SOFTWARE_DEL_ITEM', '');
+		$tpl->assign('DEL_SOFTWARE_SUPPORT', '');
+	} else {
+		while (!$stmt->EOF) {
+			if ($stmt->fields['software_status'] == 'ok') {
+				$delsoftware_status = 'installed';
+				$del_software_action_script = "software_delete.php?id=" . $stmt->fields['software_id'];
+				$tpl->assign(
+					array(
+						'DEL_SOFTWARE_ACTION' => tr('Uninstall'),
+						'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true)));
+			} elseif ($stmt->fields['software_status'] == 'toadd') {
+				$delsoftware_status = 'installing';
+				$del_software_action_script = "software_delete.php?id=" . $stmt->fields['software_id'];
+				$tpl->assign('DEL_SOFTWARE_ACTION', tr('Uninstall'));
+				$tpl->assign('TR_RES_MESSAGE_DELETE', tr('Are you sure you want to delete this package?', true));
+			} elseif ($stmt->fields['software_status'] == 'delete') {
+				$delsoftware_status = 'deleting';
+				$del_software_action_script = '';
 
-		if ($deleted_sw->recordCount() == 0) {
-			$tpl->assign('SOFTWARE_DEL_ITEM', '');
-			$tpl->assign('DEL_SOFTWARE_SUPPORT', '');
-		} else {
-			while (!$deleted_sw->EOF) {
-				if ($delcounter % 2 == 0) {
-					$tpl->assign('DEL_ITEM_CLASS', 'content');
-				} else {
-					$tpl->assign('DEL_ITEM_CLASS', 'content2');
-				}
-				if ($deleted_sw->fields['software_status'] == 'ok') {
-					$delsoftware_status = 'installed';
-					$del_software_action_script = "software_delete.php?id=" . $deleted_sw->fields['software_id'];
-					$tpl->assign(
-						array(
-							 'DEL_SOFTWARE_ACTION' => tr('Uninstall'),
-							 'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true)
-						)
-					);
-				} elseif ($deleted_sw->fields['software_status'] == 'toadd') {
-					$delsoftware_status = 'installing';
-					$del_software_action_script = "software_delete.php?id=" . $deleted_sw->fields['software_id'];
-					$tpl->assign('DEL_SOFTWARE_ACTION', tr('Uninstall'));
-					$tpl->assign('TR_RES_MESSAGE_DELETE', tr('Are you sure you want to delete this package?', true));
-				} elseif ($deleted_sw->fields['software_status'] == 'delete') {
-					$delsoftware_status = 'deleting';
-					$del_software_action_script = "";
-
-					$tpl->assign(array(
-									  'DEL_SOFTWARE_ACTION' => '',
-									  'TR_RES_MESSAGE_DELETE' => ''));
-				} else {
-					$delsoftware_status = 'n/a';
-				}
-
-				$software_name = $deleted_sw->fields['software_name'];
-				$software_version = $deleted_sw->fields['software_version'];
-				$tpl->assign(array(
-								  'SOFTWARE_DEL_RES_MESSAGE' => tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br />Please delete the files and database for this package manually!', $software_name, $software_version),
-								  'DEL_SOFTWARE_STATUS' => $delsoftware_status,
-								  'DEL_SOFTWARE_ACTION_SCRIPT' => $del_software_action_script));
-
-				$tpl->parse('DEL_SOFTWARE_ITEM', '.del_software_item');
-				$deleted_sw->moveNext();
-				$delcounter++;
+				$tpl->assign(
+					array(
+						'DEL_SOFTWARE_ACTION' => '',
+						'TR_RES_MESSAGE_DELETE' => ''));
+			} else {
+				$delsoftware_status = 'n/a';
+				$del_software_action_script = '';
 			}
 
-			$tpl->assign(array(
-							  'TR_DEL_SOFTWARE' => tr('Installed Package which was deleted by your reseller!'),
-							  'TR_DEL_STATUS' => tr('Status'),
-							  'TR_DEL_ACTION' => tr('Action')));
+			$software_name = $stmt->fields['software_name'];
+			$software_version = $stmt->fields['software_version'];
 
-			$tpl->parse('DEL_SOFTWARE_SUPPORT', '.del_software_support');
+			$tpl->assign(
+				array(
+					'SOFTWARE_DEL_RES_MESSAGE' => tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br />Please delete the files and database for this package manually!', $software_name, $software_version),
+					'DEL_SOFTWARE_STATUS' => $delsoftware_status,
+					'DEL_SOFTWARE_ACTION_SCRIPT' => $del_software_action_script));
+
+			$tpl->parse('DEL_SOFTWARE_ITEM', '.del_software_item');
+			$stmt->moveNext();
 		}
 
-		if (isset($_GET['sortby']) && isset($_GET['order'])) {
-			if ($_GET['order'] === "asc" || $_GET['order'] === "desc") {
-				if ($_GET['sortby'] === "name") {
-					$ordertype = "`software_name` " . $_GET['order'];
-				} elseif ($_GET['sortby'] === "database") {
-					$ordertype = "`software_db` " . $_GET['order'];
-				} elseif ($_GET['sortby'] === "type") {
-					$ordertype = "`software_type` " . $_GET['order'];
-				} elseif ($_GET['sortby'] === "language") {
-					$ordertype = "`software_language` " . $_GET['order'];
-				} else {
-					$ordertype = "`software_active` ASC, `software_type` ASC";
-				}
+		$tpl->assign(
+			array(
+				'TR_DEL_SOFTWARE' => tr('Installed Package which was deleted by your reseller.'),
+				'TR_DEL_STATUS' => tr('Status'),
+				'TR_DEL_ACTION' => tr('Action')));
+
+		$tpl->parse('DEL_SOFTWARE_SUPPORT', '.del_software_support');
+	}
+
+	if (isset($_GET['sortby']) && isset($_GET['order'])) {
+		if ($_GET['order'] === "asc" || $_GET['order'] === "desc") {
+			if ($_GET['sortby'] === "name") {
+				$ordertype = "`software_name` " . $_GET['order'];
+			} elseif ($_GET['sortby'] === "database") {
+				$ordertype = "`software_db` " . $_GET['order'];
+			} elseif ($_GET['sortby'] === "type") {
+				$ordertype = "`software_type` " . $_GET['order'];
+			} elseif ($_GET['sortby'] === "language") {
+				$ordertype = "`software_language` " . $_GET['order'];
 			} else {
-				$ordertype = "`software_name` ASC, `software_type` ASC";
+				$ordertype = "`software_active` ASC, `software_type` ASC";
 			}
 		} else {
 			$ordertype = "`software_name` ASC, `software_type` ASC";
 		}
+	} else {
+		$ordertype = "`software_name` ASC, `software_type` ASC";
+	}
 
-		$list_query = "
+	$query = "
 			SELECT
-				`software_id`, `software_name`, `software_version`,
-				`software_language`, `software_type`, `software_db`,
-				`software_desc`
+				`software_id`, `software_name`, `software_version`, `software_language`, `software_type`,
+				`software_db`, `software_desc`
 			FROM
 				`web_software`
 			WHERE
 				`reseller_id` = ?
 			AND
-				`software_active` = '1'
+				`software_active` = ?
 			ORDER BY
 				$ordertype
 		";
-		$rs = exec_query($list_query, $reseller_id);
+	$stmt = exec_query($query, array($resellerId, 1));
 
-		if ($rs->recordCount() == 0) {
-			$tpl->assign('SOFTWARE_ITEM', '');
-			$tpl->assign(array(
-							  'NO_SOFTWARE_AVAIL' => tr('No software available'),
-							  'ASC_DESC_BUTTON' => ''));
+	if (!$stmt->rowCount()) {
+		$tpl->assign('SOFTWARE_ITEM', '');
+		$tpl->assign(
+			array(
+				'NO_SOFTWARE_AVAIL' => tr('No software available'),
+				'ASC_DESC_BUTTON' => ''));
 
-			$tpl->parse('NO_SOFTWARE_SUPPORT', '.no_software_support');
-			return 0;
-		} else {
-			$tpl->assign('NO_SOFTWARE_SUPPORT', '');
+		$tpl->parse('NO_SOFTWARE_SUPPORT', '.no_software_support');
+		return 0;
+	} else {
+		$tpl->assign('NO_SOFTWARE_SUPPORT', '');
 
-			while (!$rs->EOF) {
-				if ($counter % 2 == 0) {
-					$tpl->assign('ITEM_CLASS', 'content');
-				} else {
-					$tpl->assign('ITEM_CLASS', 'content2');
-				}
+		while (!$stmt->EOF) {
+			list(
+				$software_action, $software_action_script, $view_software_script,
+				$software_status, $software_icon
+			) = gen_user_software_action($stmt->fields['software_id'], $domainId, $tpl);
 
-				list(
-					$software_action, $software_action_script, $view_software_script,
-					$software_status, $software_icon
-				) = gen_user_software_action($rs->fields['software_id'], $dmn_id, $tpl);
+			$tpl->assign(
+				array(
+					'SOFTWARE_NAME' => $stmt->fields['software_name'],
+					'SOFTWARE_DESCRIPTION' => $stmt->fields['software_desc'],
+					'SOFTWARE_VERSION' => $stmt->fields['software_version'],
+					'SOFTWARE_LANGUAGE' => $stmt->fields['software_language'],
+					'SOFTWARE_TYPE' => $stmt->fields['software_type'],
+					'SOFTWARE_STATUS' => $software_status,
+					'SOFTWARE_ACTION' => $software_action,
+					'SOFTWARE_ACTION_SCRIPT' => $software_action_script,
+					'VIEW_SOFTWARE_SCRIPT' => $view_software_script,
+					'SOFTWARE_ICON' => $software_icon));
 
-				$tpl->assign(array(
-								  'SOFTWARE_NAME' => $rs->fields['software_name'],
-								  'SOFTWARE_DESCRIPTION' => $rs->fields['software_desc'],
-								  'SOFTWARE_VERSION' => $rs->fields['software_version'],
-								  'SOFTWARE_LANGUAGE' => $rs->fields['software_language'],
-								  'SOFTWARE_TYPE' => $rs->fields['software_type'],
-								  'SOFTWARE_STATUS' => $software_status,
-								  'SOFTWARE_ACTION' => $software_action,
-								  'SOFTWARE_ACTION_SCRIPT' => $software_action_script,
-								  'VIEW_SOFTWARE_SCRIPT' => $view_software_script,
-								  'SOFTWARE_ICON' => $software_icon));
-
-				if ($rs->fields['software_db'] == '1') {
-					$tpl->assign('SOFTWARE_NEED_DATABASE', tr('required'));
-				} else {
-					$tpl->assign('SOFTWARE_NEED_DATABASE', tr('not required'));
-				}
-
-				if ($software_status == "installed") {
-					$tpl->parse('SOFTWARE_ACTION_DELETE', 'software_action_delete');
-				} elseif ($software_status == "not installed") {
-					$tpl->parse('SOFTWARE_ACTION_INSTALL', 'software_action_install');
-				}
-
-				$tpl->parse('SOFTWARE_ITEM', '.software_item');
-				$rs->moveNext();
-				$counter++;
+			if ($stmt->fields['software_db'] == '1') {
+				$tpl->assign('SOFTWARE_NEED_DATABASE', tr('required'));
+			} else {
+				$tpl->assign('SOFTWARE_NEED_DATABASE', tr('not required'));
 			}
 
-			return $rs->recordCount();
-		}
-	} else {
-		$tpl->assign(array(
-						  'NO_SOFTWARE_AVAIL' => tr('You do not have permissions to install software'),
-						  'DEL_SOFTWARE_SUPPORT' => ''));
+			if ($software_status == 'installed') {
+				$tpl->parse('SOFTWARE_ACTION_DELETE', 'software_action_delete');
+			} elseif ($software_status == "not installed") {
+				$tpl->parse('SOFTWARE_ACTION_INSTALL', 'software_action_install');
+			}
 
-		return 0;
+			$tpl->parse('SOFTWARE_ITEM', '.software_item');
+			$stmt->moveNext();
+		}
+
+		return $stmt->recordCount();
 	}
 }
 
@@ -1627,10 +1591,10 @@ function get_software_props($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_s
 		redirectTo('software.php');
 		exit;
 	} else {
-		$software_props = "
+		$query = "
 			SELECT
-				`software_name`, `software_version`, `software_language`,
-				`software_type`, `software_db`, `software_link`, `software_desc`
+				`software_name`, `software_version`, `software_language`, `software_type`, `software_db`,
+				`software_link`, `software_desc`
 			FROM
 				`web_software`
 			WHERE
@@ -1638,43 +1602,47 @@ function get_software_props($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_s
 			AND
 				`reseller_id` = ?
 		";
-		$rs = exec_query($software_props, array($software_id, $dmn_created_id));
+		$stmt = exec_query($query, array($software_id, $dmn_created_id));
 
-		if ($rs->fields['software_db'] == 1) {
+		if ($stmt->fields['software_db'] == 1) {
 			$tpl->assign('SOFTWARE_DB', tr('yes'));
 
 			if ($dmn_sqld_limit == '-1') {
-				$tpl->assign(array(
-								  'STATUS_COLOR' => 'red',
-								  'STATUS_MESSAGE' => tr('You need a Database for this software')));
+				$tpl->assign(
+					array(
+						'STATUS_COLOR' => 'red',
+						'STATUS_MESSAGE' => tr('You need a Database for this software')));
 
 				$tpl->parse('SOFTWARE_MESSAGE', '.software_message');
 			} else {
-				$tpl->assign(array(
-								  'STATUS_COLOR' => 'green',
-								  'STATUS_MESSAGE' => '',
-								  'SOFTWARE_MESSAGE' => ''));
+				$tpl->assign(
+					array(
+						'STATUS_COLOR' => 'green',
+						'STATUS_MESSAGE' => '',
+						'SOFTWARE_MESSAGE' => ''));
 			}
 		} else {
-			$tpl->assign(array(
-							  'SOFTWARE_DB' => tr('no'),
-							  'SOFTWARE_MESSAGE' => '',
-							  'STATUS_MESSAGE' => ''));
+			$tpl->assign(
+				array(
+					'SOFTWARE_DB' => tr('no'),
+					'SOFTWARE_MESSAGE' => '',
+					'STATUS_MESSAGE' => ''));
 		}
 
-		$sw_link = $rs->fields['software_link'];
+		$sw_link = $stmt->fields['software_link'];
 
 		if (!preg_match("/http:/", $sw_link) && !preg_match("/https:/", $sw_link)) {
 			$sw_link = "http://" . $sw_link;
 		}
 
-		$tpl->assign(array(
-						  'SOFTWARE_NAME' => $rs->fields['software_name'],
-						  'SOFTWARE_VERSION' => $rs->fields['software_version'],
-						  'SOFTWARE_LANGUAGE' => $rs->fields['software_language'],
-						  'SOFTWARE_TYPE' => $rs->fields['software_type'],
-						  'SOFTWARE_LINK' => $sw_link,
-						  'SOFTWARE_DESC' => nl2br(wordwrap($rs->fields['software_desc'], 200, "\n", true))));
+		$tpl->assign(
+			array(
+				'SOFTWARE_NAME' => $stmt->fields['software_name'],
+				'SOFTWARE_VERSION' => $stmt->fields['software_version'],
+				'SOFTWARE_LANGUAGE' => $stmt->fields['software_language'],
+				'SOFTWARE_TYPE' => $stmt->fields['software_type'],
+				'SOFTWARE_LINK' => $sw_link,
+				'SOFTWARE_DESC' => tohtml($stmt->fields['software_desc'])));
 
 		check_is_installed($tpl, $dmn_id, $software_id);
 		$tpl->parse('SOFTWARE_ITEM', 'software_item');
@@ -1693,13 +1661,12 @@ function get_software_props($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_s
  */
 function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit)
 {
-
 	if (!check_software_avail($software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
 		redirectTo('software.php');
 	} else {
 		gen_user_domain_list($tpl, $_SESSION['user_id']);
-		$software_props = "
+		$query = "
 			SELECT
 				`software_name`, `software_type`, `software_db`
 			FROM
@@ -1709,25 +1676,29 @@ function get_software_props_install($tpl, $dmn_id, $software_id, $dmn_created_id
 			AND
 				`reseller_id` = ?
 		";
-		$rs = exec_query($software_props, array($software_id, $dmn_created_id));
+		$stmt = exec_query($query, array($software_id, $dmn_created_id));
 
 		check_is_installed($tpl, $dmn_id, $software_id);
 
-		if ($rs->fields['software_db'] == 1) {
+		if ($stmt->fields['software_db'] == 1) {
 			$tpl->assign('SOFTWARE_DB', tr('yes'));
+
 			if ($dmn_sqld_limit == '-1') {
 				$tpl->parse('REQUIRE_INSTALLDB', '.require_installdb');
 			}
+
 			check_db_avail($tpl, $dmn_id, $dmn_sqld_limit);
 		} else {
-			$tpl->assign(array(
-							  'SOFTWARE_DB' => tr('no'),
-							  'REQUIRE_INSTALLDB' => ''));
+			$tpl->assign(
+				array(
+					'SOFTWARE_DB' => tr('no'),
+					'REQUIRE_INSTALLDB' => ''));
 		}
 
-		$tpl->assign(array(
-						  'TR_SOFTWARE_NAME' => $rs->fields['software_name'],
-						  'SOFTWARE_TYPE' => $rs->fields['software_type']));
+		$tpl->assign(
+			array(
+				'TR_SOFTWARE_NAME' => $stmt->fields['software_name'],
+				'SOFTWARE_TYPE' => $stmt->fields['software_type']));
 
 		$tpl->parse('SOFTWARE_ITEM', '.software_item');
 	}
@@ -1748,16 +1719,7 @@ function gen_user_domain_list($tpl, $user_id)
 	$domain_id = get_user_domain_id($user_id);
 
 	//Get Domain Data
-	$querydomain = "
-		SELECT
-			`domain_name`
-		FROM
-			`domain`
-		WHERE
-			`domain_status` = 'ok'
-		AND
-			`domain_id` = ?
-	";
+	$querydomain = "SELECT `domain_name` FROM `domain` WHERE `domain_status` = 'ok' AND `domain_id` = ?";
 	$rsdomain = exec_query($querydomain, $domain_id);
 
 	//Get Aliase

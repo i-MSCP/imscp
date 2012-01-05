@@ -786,7 +786,7 @@ function customerHasFeature($featureName, $forceReload = false)
 			'backup' => ($cfg->BACKUP_DOMAINS != 'no' && $dmnProps['allowbackup'] != 'no') ? true : false,
 			'protected_areas' => true,
 			'custom_error_pages' => true,
-			'aps' => ($dmnProps['domain_software_allowed'] != 'no') ? true : false);
+			'aps' => ($dmnProps['domain_software_allowed'] != 'no' && $dmnProps['domain_ftpacc_limit'] != '-1') ? true : false);
 
 		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
 			$query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?";
