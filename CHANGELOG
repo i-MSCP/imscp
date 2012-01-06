@@ -75,6 +75,7 @@ Tickets:
 	- Fixed #301: Bug - Error while Inserting a SSL-Certificate
 	- Fixed #302: Defect - Notice: Undefined index: t_software_menu
 	- Fixed #303: Defect - Double tooltip for software description on admin and reseller level
+	- Fixed #304: Enhancement - Postfix configuration should log user authentication
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

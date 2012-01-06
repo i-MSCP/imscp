@@ -70,6 +70,7 @@ virtual_gid_maps             = static:{MTA_MAILBOX_GID}
 smtpd_sasl_auth_enable       = yes
 smtpd_sasl_security_options  = noanonymous
 broken_sasl_auth_clients     = yes
+smtpd_sasl_authenticated_header = yes
 
 smtpd_helo_required          = yes
 
