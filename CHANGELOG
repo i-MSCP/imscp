@@ -94,9 +94,11 @@ Features / Enhancements:
 		Core:
 			- Added IPv6 support
 			- Added PHP directives editor
+			- Added admin setting to allow to show/hide main menu labels
 		Javascript:
 			- Updated jQuery to version 1.6.4
 			- Updated jQuery UI to version 1.8.16
+			- Rewritten iMSCP jQuery tooltip plugin
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.7
 			- Updated Squirrelmail to version 1.4.22
