@@ -1,19 +1,15 @@
 
         <script language="JavaScript" type="text/JavaScript">
         /*<![CDATA[*/
-			$(document).ready(function(){
-				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
-			});
-			$(document).ready(function(){
-				$('span.i_app_installed').iMSCPtooltips('span.title');
-			});
 			function action_delete() {
-				if (!confirm("{TR_MESSAGE_DELETE}"))
-				return false;
+				if (!confirm("{TR_MESSAGE_DELETE}")) {
+					return false;
+				}
 			}
 			function action_install(url) {
-				if (!confirm("{TR_MESSAGE_INSTALL}"))
-				return false;
+				if (!confirm("{TR_MESSAGE_INSTALL}")) {
+					return false;
+				}
 				document.getElementById('sw_wget').value = url;
                 document.getElementById('sw_upload_form').submit();
 			}

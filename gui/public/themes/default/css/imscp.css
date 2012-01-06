@@ -640,70 +640,32 @@ textarea {
 }
 
 /* Tooltips */
-.tooltip_bg {
+#imscpTooltip {
 	position: absolute;
-	z-index: -1;
-}
-.tooltip {
-	display: none;
-	position: absolute;
-	width: 250px;
-	width: auto;
-	z-index: 5000;
+	z-index: 3000;
 	border: 1px solid;
+	opacity: 0.85;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+}
+
+#imscpTooltip .tooltipBody {
+	width:250px;
+	font-size: 0.90em;
+	font-weight: bold;
+	padding: 15px 0;
+	margin-left: 45px;
+	margin-right: 5px;
 	text-align: left;
 }
-.tooltip span {
-	vertical-align: middle;
-	display: inline-block;
-	margin: 0.5em;
-	border: none;
-}
-.tooltip_txt {
-	width: 208px;
-	font-size: 0.85em;
-	font-weight: bolder;
-	line-height: 1.2em;
-}
-.tooltip_notice {
-	height: 32px;
-	width: 32px;
-}
+
 .icon.i_help {
 	position: relative;
 	width: 0px;
 	vertical-align: middle;
 	margin-left: 0.5em;
 	overflow: hidden;
-}
-.sw_tooltip_bg {
-	position: absolute;
-	z-index: -1;
-}
-.sw_tooltip {
-	display: none;
-	position: absolute;
-	width: 450px;
-	width: auto;
-	z-index: 1;
-}
-.sw_tooltip span {
-	vertical-align: middle;
-	display: inline-block;
-	margin: 3px 0 3px 3px;
-	border: none;
-}
-.sw_tooltip_txt {
-	width: 408px;
-	font-size: 0.85em;
-	line-height: 1.2em;
-}
-.sw_tooltip_notice {
-	height: 32px;
-	width: 32px;
 }
 
 /* Pagination (for backward compatibility) - Will be removed ASAP */

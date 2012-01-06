@@ -1,10 +1,6 @@
 
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
-			$(document).ready(function(){
-				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
-
-			});
 			function action_delete() {
 				if (!confirm("{TR_MESSAGE_DELETE}"))
 				return false;
@@ -29,13 +25,13 @@
 				<tr>
 					<td>
 						<form action="software_manage.php" name="sw_upload_form" id="sw_upload_form" method="post" enctype="multipart/form-data">
-							<table>
+							<table class="firstColFixed">
 								<tr>
-									<td width="200">{TR_SOFTWARE_FILE}</td>
+									<td>{TR_SOFTWARE_FILE}</td>
 									<td><input type="file" name="sw_file" id="sw_file" size="60" /></td>
 								</tr>
 								<tr>
-									<td width="200">{TR_SOFTWARE_URL}</td>
+									<td>{TR_SOFTWARE_URL}</td>
 									<td><input type="text" name="sw_wget" id="sw_wget" value="{VAL_WGET}" size="60" /></td>
 								</tr>
 								<tr>
@@ -52,6 +48,7 @@
 					</td>
 				</tr>
 				</table>
+
 				<table>
 				<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
@@ -85,8 +82,9 @@
 				</tr>
 			</table>
 			<!-- BDP: webdepot_list -->
-			<br />
+
 			<h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
+
 			<table>
 				<tr>
 					<th>{TR_PACKAGE_TITLE}</th>
@@ -133,8 +131,9 @@
 				</tr>
 			</table>
 			<!-- EDP: webdepot_list -->
-			<br />
+
 			<h2 class="apps_installer"><span>{TR_AWAITING_ACTIVATION}</span></h2>
+
 			<table>
 				<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
@@ -169,8 +168,9 @@
 					<th colspan="9">{TR_SOFTWARE_ACT_COUNT}:&nbsp;{TR_SOFTWARE_ACT_NUM}</th>
 				</tr>
 			</table>
-			<br />
+
 			<h2 class="apps_installer"><span>{TR_ACTIVATED_SOFTWARE}</span></h2>
+
 			<table>
 				<tr>
 					<th>{TR_RESELLER_NAME}</th>
@@ -197,4 +197,5 @@
 					<th colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</th>
 				</tr>
 			</table>
+
 			<div class="paginator"></div>

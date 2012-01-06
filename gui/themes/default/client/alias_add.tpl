@@ -3,8 +3,6 @@
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
-			$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"})
-
 			$('input[name=ndomain_name]').blur(function(){
 				dmnName = $('#ndomain_name').val();
 
@@ -37,13 +35,13 @@
 	<!-- EDP: domain_alias_add_js -->
 		<!-- BDP: domain_alias_add_form -->
 		<form name="add_alias_frm" method="post" action="alias_add.php">
-			<table>
+			<table class="firstColFixed">
 				<tr>
 					<th colspan="3">{TR_DOMAIN_ALIAS_DATA}</th>
 				</tr>
 				<tr>
-					<td style="width:300px;">
-						<label for="ndomain_name">{TR_DOMAIN_ALIAS_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
+					<td>
+						<label for="ndomain_name">{TR_DOMAIN_ALIAS_NAME}</label><span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
 					</td>
 					<td>
 						<input name="ndomain_name" id="ndomain_name" type="text" value="{DOMAIN}" />

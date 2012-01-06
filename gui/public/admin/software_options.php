@@ -45,7 +45,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Application management options'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Software installer options'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -57,7 +57,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
     if(strlen($webdepot_xml_url) > 0 && $use_webdepot === '1') {
         $xml_file = @file_get_contents($webdepot_xml_url);
-        if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
+        if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
             set_page_message(tr("Unable to read xml file for web softwares."), 'error');
             $error = 1;
         }
@@ -71,7 +71,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
                 `webdepot_xml_url` = '".$webdepot_xml_url."'
         ";
         execute_query($query);
-        set_page_message(tr("Main application installer options updated."), 'info');
+        set_page_message(tr("Software installer options successfully updated."), 'info');
     }
 }
 
@@ -80,10 +80,10 @@ $rs = execute_query($query);
 
 $tpl->assign(
 	array(
-		'TR_OPTIONS_SOFTWARE' => tr('Application management options'),
-		'TR_MAIN_OPTIONS' => tr('Main application installer options'),
-		'TR_USE_WEBDEPOT' => tr('Using i-MSCP application installer Web software repository'),
-		'TR_WEBDEPOT_XML_URL' => tr('XML file URL for the i-MSCP Web software repository'),
+		'TR_OPTIONS_SOFTWARE' => tr('Software installer options'),
+		'TR_MAIN_OPTIONS' => tr('Software installer options'),
+		'TR_USE_WEBDEPOT' => tr('Remote Web software repository'),
+		'TR_WEBDEPOT_XML_URL' => tr('XML file URL for the Web software repository'),
 		'TR_WEBDEPOT_LAST_UPDATE' => tr('Last Web software repository update'),
 		'USE_WEBDEPOT_SELECTED_OFF' => (($rs->fields['use_webdepot'] == "0") ? $cfg->HTML_SELECTED : ''),
 		'USE_WEBDEPOT_SELECTED_ON' => (($rs->fields['use_webdepot'] == "1") ? $cfg->HTML_SELECTED : ''),

@@ -1,11 +1,11 @@
 
-            <!-- BDP: props_list -->
-            <table>
-                <tr>
-                    <th>{FILENAME}:</th>
-                </tr>
-                <tr>
-                    <td>{LOG}</td>
-                </tr>
-            </table>
-            <!-- EDP: props_list -->
+			<!-- BDP: props_list -->
+			<table class="firstColFixed">
+				<tr>
+					<th>{FILENAME}</th>
+				</tr>
+				<tr>
+					<td>{LOG}</td>
+				</tr>
+			</table>
+			<!-- EDP: props_list -->

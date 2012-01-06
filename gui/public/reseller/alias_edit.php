@@ -59,7 +59,6 @@ $tpl->assign(
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 		'TR_EDIT_ALIAS' => tr('Edit domain alias'),
 		'TR_ALIAS_NAME' => tr('Alias name'),
 		'TR_DOMAIN_IP' => tr('Domain IP'),
@@ -148,7 +147,7 @@ function gen_editalias_page($tpl, $edit_id) {
 	$rs = exec_query($query, array($edit_id, $reseller_id));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
+		set_page_message(tr('User does not exist.'), 'error');
 		redirectTo('alias.php');
 	}
 	// Get data from sql

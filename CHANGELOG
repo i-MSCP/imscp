@@ -69,6 +69,7 @@ Tickets:
 	- Fixed #300: Defect - Can't locate Servers/ftpd/proftpd/uninstaller.pm
 	- Fixed #301: Bug - Error while Inserting a SSL-Certificate
 	- Fixed #302: Defect - Notice: Undefined index: t_software_menu
+	- Fixed #303: Defect - Double tooltip for software description on admin and reseller level
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

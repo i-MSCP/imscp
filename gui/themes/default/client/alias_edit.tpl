@@ -19,7 +19,7 @@
 					<th colspan="2">{TR_DOMAIN_ALIAS_DATA}</th>
 				</tr>
 				<tr>
-					<td>{TR_DOMAIN_IP}</td>
+					<td>{TR_ALIAS_NAME}</td>
 					<td>{ALIAS_NAME}</td>
 				</tr>
 				<tr>

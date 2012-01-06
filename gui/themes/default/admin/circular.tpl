@@ -1,6 +1,6 @@
 
 			<form name="admin_email_setup" method="post" action="circular.php">
-				<table>
+				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_CORE_DATA}</th>
 					</tr>
@@ -25,7 +25,7 @@
 						<td><textarea name="msg_text" id="msg_text">{MESSAGE_TEXT}</textarea></td>
 					</tr>
 				</table>
-				<table>
+				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_ADDITIONAL_DATA}</th>
 					</tr>

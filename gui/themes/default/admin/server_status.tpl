@@ -1,8 +1,8 @@
 
 			<!-- BDP: props_list -->
-			<table>
+			<table class="firstColFixed">
 				<tr>
-					<th style="width:300px;">{TR_HOST}</th>
+					<th>{TR_HOST}</th>
 					<th>{TR_SERVICE}</th>
 					<th>{TR_STATUS}</th>
 				</tr>

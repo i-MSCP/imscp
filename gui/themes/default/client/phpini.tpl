@@ -1,39 +1,30 @@
-
+		<!-- BDP: php_editor_first_block_js -->
 		<script type="text/javascript">
 			/*<![CDATA[*/
 				$(document).ready(function() {
-					$('.ui-buttonset').buttonset();
-
-					<!-- BDP: php_editor_first_block_js -->
 					// Fix for http://bugs.jqueryui.com/ticket/7856
 					$('[type=checkbox]').change(function() {
 						if(!$(this).is(':checked')) {
 							$(this).blur();
 						}
 					});
-					<!-- EDP: php_editor_first_block_js -->
-
-					<!-- BDP: php_editor_second_block_js -->
-					$('#exec_help').iMSCPtooltips({msg:"{TR_EXEC_HELP}"});
-					<!-- EDP: php_editor_second_block_js -->
 				});
 			/*]]>*/
 		</script>
+		<!-- EDP: php_editor_first_block_js -->
 
-			<p class="hint" style="font-variant: small-caps;font-size: small;">
-				{TR_PAGE_TEXT}
-			</p>
+			<p class="hint" style="font-variant: small-caps;font-size: small;">{TR_PAGE_TEXT}</p>
 
 			<form name="editFrm" method="post" action="phpini.php">
 				<!-- BDP: php_editor_first_block -->
-				<table>
+				<table class="firstColFixed">
 					<tr>
 						<th>{TR_DIRECTIVE_NAME}</th>
 						<th>{TR_DIRECTIVE_VALUE}</th>
 					</tr>
 					<!-- BDP: allow_url_fopen_block -->
 					<tr>
-						<td style="width:200px;">
+						<td>
 							<label for="allow_url_fopen">{TR_ALLOW_URL_FOPEN}</label>
 						</td>
 						<td>
@@ -46,7 +37,7 @@
 					<!-- EDP: allow_url_fopen_block -->
 					<!-- BDP: register_globals_block -->
 					<tr>
-						<td style="width:200px;">
+						<td>
 							<label for="register_globals">{TR_REGISTER_GLOBALS}</label>
 						</td>
 						<td>
@@ -59,7 +50,7 @@
 					<!-- EDP: register_globals_block -->
 					<!-- BDP: display_errors_block -->
 					<tr>
-						<td style="width:200px;">
+						<td>
 							<label for="display_errors">{TR_DISPLAY_ERRORS}</label>
 						</td>
 						<td>
@@ -87,11 +78,11 @@
 					<!-- EDP: error_reporting_block -->
 					<!-- BDP: disable_functions_block -->
 					<tr>
-						<td style="width: 200px;">
+						<td>
 							<label>{TR_DISABLE_FUNCTIONS}</label>
 						</td>
 						<td>
-							<div class="ui-buttonset">
+							<div class="checkbox">
 								<input name="show_source" id="show_source" type="checkbox" {SHOW_SOURCE} value="show_source" />
 								<label for="show_source">show_source</label>
 								<input name="system" id="system" type="checkbox"{SYSTEM} value="system" />
@@ -113,17 +104,16 @@
 					</tr>
 					<!-- EDP: disable_functions_block -->
 				</table>
-				<p style="height: 20px;"></p>
 				<!-- EDP: php_editor_first_block -->
 				<!-- BDP: php_editor_second_block -->
-				<table>
+				<table class="firstColFixed">
 					<tr>
-						<th style="width: 200px;">{TR_PARAMETER}</th>
+						<th>{TR_PARAMETER}</th>
 						<th>{TR_STATUS}</th>
 					</tr>
 					<tr>
 						<td>
-							<label>{TR_DISABLE_FUNCTIONS_EXEC}</label><span style="vertical-align: middle;" class="icon i_help" id="exec_help">{TR_HELP}</span>
+							<label>{TR_DISABLE_FUNCTIONS_EXEC}</label><span style="vertical-align: middle;" class="icon i_help" id="exec_help" title="{TR_EXEC_HELP}">{TR_HELP}</span>
 						</td>
 						<td>
 							<div class="ui-buttonset">

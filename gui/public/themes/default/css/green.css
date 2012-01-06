@@ -114,10 +114,11 @@ input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, t
 .buttons {background:transparent;}
 
 /** Tooltips */
-.tooltip {border-color: rgb(31, 92, 22);}
-.tooltip_bg, .sw_tooltip_bg {background-color: rgb(31, 92, 22);}
-.tooltip_txt, .sw_tooltip_txt {color: rgb(255, 255, 255);}
-.tooltip_notice, .sw_tooltip_notice {background: url(../images/tooltips/info.png) no-repeat center left;}
+#imscpTooltip {
+	background: rgb(31, 92, 22) url(../images/tooltips/info.png) no-repeat 5px 50%;
+	border-color: rgb(31, 92, 22);
+}
+#imscpTooltip .tooltipBody {color: rgb(255, 255, 255);}
 
 /* services status */
 .up { color: rgb(61, 122, 21); }

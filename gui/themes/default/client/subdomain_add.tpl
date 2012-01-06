@@ -3,8 +3,6 @@
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
 			$(document).ready(function(){
-				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-
 				$('input[name=subdomain_name]').blur(function(){
 					subdmnName = $('#subdomain_name').val();
 
@@ -48,7 +46,7 @@
 					</tr>
 					<tr>
 						<td style="width:300px;">
-							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
+							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label><span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
 						</td>
 						<td style="width:300px;">
 							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" />

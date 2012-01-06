@@ -1,10 +1,6 @@
 
 	<script type="text/javascript">
 	/* <![CDATA[ */
-		$(document).ready(function(){
-			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
-		});
-
 		function changeType() {
 			if (document.forms[0].elements['mail_type_normal'].checked == true) {
 				document.forms[0].pass.disabled = false;
@@ -158,9 +154,9 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
+						<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help" title="{TR_FWD_HELP}">Help</span>
 					</td>
-					<td><textarea name="forward_list" id="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea></td>
+					<td><textarea name="forward_list" id="forward_list">{FORWARD_LIST}</textarea></td>
 				</tr>
 			</table>
 			<div class="buttons">

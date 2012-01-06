@@ -2,8 +2,6 @@
         <script language="JavaScript" type="text/JavaScript">
             /*<![CDATA[*/
                 $(document).ready(function(){
-                    $('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-
                     if($('#datepicker').val() == '') {
                         $('#datepicker').attr('disabled', 'disabled');
                         $('#never_expire').removeAttr('disabled');
@@ -30,14 +28,14 @@
         </script>
             <!-- BDP: add_form -->
             <form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
-                    <table>
+                    <table class="firstColFixed">
 						<tr>
 							<th colspan="2">{TR_CORE_DATA}</th>
 						</tr>
                         <tr>
-                            <td style="width:300px;">
+                            <td>
                             <label for="dmn_name" style="vertical-align: middle;">{TR_DOMAIN_NAME}</label>
-                                <span style="vertical-align:middle" class="icon i_help" id="dmn_help">Help</span>
+                                <span style="vertical-align:middle" class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span>
                             </td>
                             <td>
                                 <input type="text" name="dmn_name" id="dmn_name" value="{DMN_NAME_VALUE}" />

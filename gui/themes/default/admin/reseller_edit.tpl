@@ -5,7 +5,7 @@
 			errFieldsStack = {ERR_FIELDS_STACK};
 			$.each(errFieldsStack, function(){$('#' + this).css('border-color', '#ca1d11');});
 			$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).addClass('small-spinner').insertAfter($('#password, #password_confirmation'));
-			$('#reseller_ips_table').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
+			$('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
 			$.ajaxSetup({
 				url: $(location).attr('pathname'),
 				type:'GET',
@@ -48,9 +48,6 @@
 					$('#dialog_box').dialog("open");
 				}
 			});
-
-			$('.permission_help').iMSCPtooltips({msg:'{TR_PHP_INI_PERMISSION_HELP}'});
-			$('input').iMSCPtooltips();
 
 			// Workaround to prevent click event on readonly input (and their labels)
 			$('input, label').click(function(e){
@@ -134,12 +131,12 @@
 		<div id="dialog_box"></div>
 
 		<form name="editFrm" method="post" action="reseller_edit.php?edit_id={EDIT_ID}">
-			<table>
+			<table class="firstColFixed">
 				<tr>
 					<th colspan="3">{TR_ACCOUNT_DATA}</th>
 				</tr>
 				<tr>
-					<td style="width: 300px;">{TR_RESELLER_NAME}</td>
+					<td>{TR_RESELLER_NAME}</td>
 					<td colspan="2">{RESELLER_NAME}</td>
 				</tr>
 				<tr>
@@ -163,7 +160,7 @@
 				</tr>
 			</table>
 			<!-- BDP: ips_block -->
-			<table id="reseller_ips_table" class="datatable">
+			<table class="datatable">
 				<thead>
 					<tr>
 						<th>{TR_IP_ADDRESS}</th>
@@ -184,7 +181,7 @@
 				</tbody>
 			</table>
 			<!-- EDP: ips_block -->
-			<table>
+			<table class="firstColFixed">
 				<tr>
 					<th colspan="2">{TR_ACCOUNT_LIMITS}</th>
 				</tr>
@@ -225,7 +222,7 @@
 					<td><input type="text" name="max_disk_amnt" id="max_disk_amnt" value="{MAX_DISK_AMNT}"/></td>
 				</tr>
 			</table>
-			<table>
+			<table class="firstColFixed">
 				<tr>
 					<th colspan="2">{TR_FEATURES}</th>
 				</tr>
@@ -249,7 +246,7 @@
 									<th colspan="2">{TR_PERMISSIONS}</th>
 								</tr>
 								<tr>
-									<td>{TR_PHP_INI_AL_REGISTER_GLOBALS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
+									<td>{TR_PHP_INI_AL_REGISTER_GLOBALS}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 
 									<td>
 										<div class="ui-buttonset">
@@ -261,7 +258,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>{TR_PHP_INI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help">{TR_HELP}</span></td>
+									<td>{TR_PHP_INI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
 										<div class="ui-buttonset">
 											<input type="radio" name="php_ini_al_allow_url_fopen" id="php_ini_al_allow_url_fopen_yes" value="yes" {PHP_INI_AL_ALLOW_URL_FOPEN_YES}/>
@@ -272,7 +269,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>{TR_PHP_INI_AL_DISPLAY_ERRORS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
+									<td>{TR_PHP_INI_AL_DISPLAY_ERRORS}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
 										<div class="ui-buttonset">
 											<input type="radio" name="php_ini_al_display_errors" id="php_ini_al_display_errors_yes" value="yes" {PHP_INI_AL_DISPLAY_ERRORS_YES}/>
@@ -283,7 +280,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td>{TR_PHP_INI_AL_DISABLE_FUNCTIONS}<span class="permission_help icon i_help">{TR_HELP}</span></td>
+									<td>{TR_PHP_INI_AL_DISABLE_FUNCTIONS}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
 										<div class="ui-buttonset">
 											<input type="radio" name="php_ini_al_disable_functions" id="php_ini_al_disable_functions_yes" value="yes" {PHP_INI_AL_DISABLE_FUNCTIONS_YES}/>
@@ -339,7 +336,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td style="width: 300px;">{TR_SOFTWARES_INSTALLER}</td>
+					<td>{TR_SOFTWARES_INSTALLER}</td>
 					<td>
 						<div class="radio">
 							<input type="radio" name="software_allowed" id="software_allowed_yes" value="yes" {SOFTWARES_INSTALLER_YES} />
@@ -383,12 +380,12 @@
 					</td>
 				</tr>
 			</table>
-			<table>
+			<table class="firstColFixed">
 				<tr>
 					<th colspan="2">{TR_PERSONAL_DATA}</th>
 				</tr>
 				<tr>
-					<td style="width: 300px;"><label for="customer_id">{TR_CUSTOMER_ID}</label></td>
+					<td><label for="customer_id">{TR_CUSTOMER_ID}</label></td>
 					<td><input type="text" name="customer_id" id="customer_id" value="{CUSTOMER_ID}"/></td>
 				</tr>
 				<tr>

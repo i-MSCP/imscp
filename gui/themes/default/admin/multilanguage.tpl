@@ -3,13 +3,12 @@
 				/*<![CDATA[*/
 				$(document).ready(function () {
 					$('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
-					$('.upload_help').iMSCPtooltips({msg:'{TR_UPLOAD_HELP}'});
 				});
 				/*]]>*/
 			</script>
 			<form name="i18nFrm" action="multilanguage.php" method="post" enctype="multipart/form-data">
 				<!-- BDP: languages_block -->
-				<table class="datatable firstColFixed ui-corner-all">
+				<table class="datatable firstColFixed">
 					<thead>
 					<tr>
 						<th>{TR_LANGUAGE_NAME}</th>
@@ -30,7 +29,7 @@
 					<tbody>
 					<!-- BDP: language_block -->
 					<tr>
-						<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
+						<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale" title="{TR_UPLOAD_HELP}">{LANGUAGE_NAME}</span></label></td>
 						<td>{NUMBER_TRANSLATED_STRINGS}</td>
 						<td>{LANGUAGE_REVISION}</td>
 						<td>{LAST_TRANSLATOR}</td>

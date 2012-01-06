@@ -11,7 +11,7 @@
 	<link href="{THEME_COLOR_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
 	<!--[if IE 6]>
 	<script type="text/javascript" src="/themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
 	<script type="text/javascript">
@@ -22,7 +22,7 @@
 	/*<![CDATA[*/
 		$(document).ready(function() {
 			setTimeout(function(){$('.error').fadeOut(2000);},2000);
-			$('a').iMSCPtooltips();
+			$('a').imscpTooltip();
 			$('button').button({icons: {secondary: "ui-icon-triangle-1-e"}});
 			$('input').first().focus();
 		});

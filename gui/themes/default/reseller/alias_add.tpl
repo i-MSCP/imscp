@@ -2,19 +2,16 @@
 			<script language="JavaScript" type="text/JavaScript">
 			/*<![CDATA[*/
 				$(document).ready(function (){
-					$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-
-					// Request for encode_idna request
-					$('input[name=ndomain_name]').bind('blur', function(){
-						dmnName = $('#ndomain_name').val();
-						if(dmnName != '') {
+					$("input[name=ndomain_name]").bind("blur", function(){
+						dmnName = $("#ndomain_name").val();
+						if(dmnName != "") {
 							$.ajaxSetup({
-								url: $(location).attr('pathname'),
-								type:'POST',
-								data: 'domain=' + dmnName + '&uaction=toASCII',
+								url: $(location).attr("pathname"),
+								type:"POST",
+								data: "domain=" + dmnName + "&uaction=toASCII",
 								datatype: 'text',
-								beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
-								success: function(r){$('#ndomain_mpoint').val(r);},
+								beforeSend: function(xhr){xhr.setRequestHeader("Accept","text/plain");},
+								success: function(r){$("#ndomain_mpoint").val(r);},
 								error: iMSCPajxError
 							});
 						$.ajax();
@@ -50,7 +47,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td><label for="ndomain_name">{TR_DOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span></td>
+						<td><label for="ndomain_name">{TR_DOMAIN_NAME}</label><span class="icon i_help" id="dmn_help" title="{TR_DMN_HELP}">Help</span></td>
 						<td>
 							<input id="ndomain_name" name="ndomain_name" type="text" value="{DOMAIN}"/>
 						</td>

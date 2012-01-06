@@ -14,9 +14,9 @@
 				<input name="submit" type="submit" value="{TR_CLEAR_LOG}"/>
 				<input type="hidden" name="uaction" value="clear_log"/>
 			</form>
-			<table>
+			<table class="firstColFixed">
 				<tr>
-					<th style="width:150px;">{TR_DATE}</th>
+					<th>{TR_DATE}</th>
 					<th>{TR_MESSAGE}</th>
 				</tr>
 				<!-- BDP: log_row -->

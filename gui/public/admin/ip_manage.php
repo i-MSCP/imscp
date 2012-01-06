@@ -322,7 +322,8 @@ $tpl->assign(
 		'TR_MESSAGE_DELETE' => json_encode(tr('Are you sure you want to delete this IP: %s?', true, '%s')),
 		'TR_MESSAGE_DENY_DELETE' => json_encode(tr('You cannot remove the %s IP address.', true, '%s')),
 		'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
-			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
+			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]',
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
 
 generateNavigation($tpl);
 client_generatePage($tpl);

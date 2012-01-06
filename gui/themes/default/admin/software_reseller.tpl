@@ -1,12 +1,6 @@
 
 		<script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
-			$(document).ready(function(){
-				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
-			});
-			$(document).ready(function(){
-				$('span.i_help').iMSCPtooltips('span.title');
-			});
 			function action_import() {
 				if (!confirm("{TR_MESSAGE_IMPORT}"))
 				return false;

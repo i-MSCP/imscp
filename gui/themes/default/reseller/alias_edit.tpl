@@ -14,8 +14,6 @@
 			/*]]>*/
 			</script>
 
-			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
-
 			<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 				<table class="firstColFixed">
 					<tr>

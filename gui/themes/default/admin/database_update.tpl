@@ -1,9 +1,9 @@
 
 			<!-- BDP: database_updates -->
 			<form name='database_update' action='database_update.php' method='post'>
-				<table class="descriptions">
+				<table class="descriptions firstColFixed">
 					<tr>
-						<th style="width:200px">{TR_DATABASE_UPDATES}</th>
+						<th>{TR_DATABASE_UPDATES}</th>
 						<th>{TR_DATABASE_UPDATE_DETAIL}</th>
 					</tr>
 					<!-- BDP: database_update -->

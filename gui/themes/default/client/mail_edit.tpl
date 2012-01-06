@@ -2,8 +2,6 @@
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		$(document).ready(function(){
-			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
-
 			if(!$('#forwardAccount').is(':checked') && $('#forwardList').val() == '') {
 				$('#forwardList').attr('disabled', true);
 			}
@@ -19,7 +17,7 @@
 	/* ]]> */
 	</script>
 		<form name="editFrm" method="post" action="mail_edit.php?id={MAIL_ID_VAL}">
-			<table>
+			<table class="firstColFixed">
 				<tr>
 					<th colspan="2">
 						<span style="vertical-align: middle">{TR_MAIL_ACCOUNT} : {MAIL_ADDRESS_VAL}</span>
@@ -46,11 +44,11 @@
 				</tr>
 				<!-- EDP: password_frm -->
 				<tr>
-					<td style="width:300px">
-						<label for="forwardList">{TR_FORWARD_TO}</label><span style="vertical-align: middle;" class="icon i_help" id="fwd_help">{TR_HELP}</span>
+					<td>
+						<label for="forwardList">{TR_FORWARD_TO}</label><span style="vertical-align: middle;" class="icon i_help" id="fwd_help" title="{TR_FWD_HELP}">{TR_HELP}</span>
 					</td>
 					<td>
-						<textarea name="forwardList" id="forwardList" cols="40" rows="5">{FORWARD_LIST_VAL}</textarea>
+						<textarea name="forwardList" id="forwardList">{FORWARD_LIST_VAL}</textarea>
 					</td>
 				</tr>
 			</table>

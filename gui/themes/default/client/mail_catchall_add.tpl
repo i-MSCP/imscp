@@ -14,9 +14,6 @@
 		$(window).load(function() {changeType('{DEFAULT}');});
 	/* ]]> */
 	</script>
-
-		<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
-
 		<form name="create_catchall_frm" method="post" action="mail_catchall_add.php">
 			<table>
 				<tr>
@@ -34,12 +31,11 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL}
-							   onclick="changeType('forward');"/>
+						<input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onclick="changeType('forward');"/>
 						<label for="mail_type2">{TR_FORWARD_MAIL}</label>
 						<span class="icon i_help" title="{TR_FWD_HELP}">{TR_HELP}</span>
 					</td>
-					<td><textarea name="forward_list" id="forward_list" cols="35" rows="5"></textarea></td>
+					<td><textarea name="forward_list" id="forward_list"></textarea></td>
 				</tr>
 			</table>
 

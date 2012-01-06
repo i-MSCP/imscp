@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
 	<!--[if IE 6]>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.bgiframe-2.1.2.js"></script>
@@ -64,11 +64,12 @@
 	<script type="text/javascript">
 	/*<![CDATA[*/
 		$(document).ready(function() {
+			$.fx.speeds._default = 500;
 			setTimeout(function(){$('.timeout').fadeOut(1000);},3000);
-			$('a, span').iMSCPtooltips();
+			$('a, span, input').imscpTooltip();
 			// Setup buttons
 			$("input:submit, input:button, button").button();
-			$(".radio").buttonset();
+			$(".radio, .checkbox").buttonset();
 			$(":radio, :checkbox").change(function(){$(this).blur();});
 		});
 	/*]]>*/
