@@ -489,7 +489,7 @@ sub saveGuiWorkingData {
 		return $rs if $rs;
 
 		# Save webmail data (Squirrel)
-		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data") {
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data") {
 			$rs = execute(
 				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
 				\$stdout, \$stderr
