@@ -7,12 +7,19 @@ i-MSCP 1.0.1.6 (beta 6)
 
 Features / Enhancements:
 
+	ENGINE:
+		Core:
+			- Added support for Apache2 MPM ITK
+			- Added SSL support for customers
 	GUI:
 		Components:
-			- DebugBar - Files plugin: Count and shows the loaded templates files
+			- DebugBar:
+				- Updated layout
+				- Files plugin: Count and shows the loaded templates files
 		Core:
 			- Added layout color switcher
 			- Added layout colors (black, green, red, yellow)
+			- Added admin setting to allow to show/hide main menu labels
 			- Events system:
 				- Allow to pass arbitrary data to the events listeners methods
 				- Allow to use closures
@@ -25,11 +32,9 @@ Features / Enhancements:
 			- Integrated jQuery DataTables plugin (v.1.8.2)
 			- Updated jQuery to version 1.7.1
 			- Updated jQuery UI to version 1.8.16 (minified version)
+			- Rewritten iMSCP jQuery tooltip plugin
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.9
-	Engine:
-		- Added support for Apache2 MPM ITK
-		- Added SSL support for clients
 
 Tickets:
 	- Fixed #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
@@ -94,11 +99,9 @@ Features / Enhancements:
 		Core:
 			- Added IPv6 support
 			- Added PHP directives editor
-			- Added admin setting to allow to show/hide main menu labels
 		Javascript:
 			- Updated jQuery to version 1.6.4
 			- Updated jQuery UI to version 1.8.16
-			- Rewritten iMSCP jQuery tooltip plugin
 		Tools:
 			- Updated PhpMyAdmin to version 3.4.7
 			- Updated Squirrelmail to version 1.4.22
