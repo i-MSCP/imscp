@@ -311,27 +311,31 @@ $tpl->assign(
 $software_id = gen_page_lists($tpl, $_SESSION['user_id']);
 
 generateNavigation($tpl);
-get_client_software_permission ($tpl, $_SESSION['user_id']);
+
+//get_client_software_permission ($tpl, $_SESSION['user_id']);
 
 $tpl -> assign(
 	array(
-		 'TR_SOFTWARE_MENU_PATH' => tr('i-MSCP - application installer'),
-		 'TR_INSTALL_SOFTWARE' => tr('Install Software'),
-		 'SOFTWARE_ID' => $software_id,
-		 'TR_NAME' => tr('Software'),
-		 'TR_TYPE' => tr('Type'),
-		 'TR_DB' => tr('Database required'),
-		 'TR_SELECT_DOMAIN' => tr('Select Domain'),
-		 'TR_BACK' => tr('back'),
-		 'TR_INSTALL' => tr('install'),
-		 'TR_PATH' => tr('Install path'),
-		 'CHOOSE_DIR' => tr('Choose dir'),
-		 'CREATEDIR_MESSAGE' => tr('Create directory, if not exist!'),
-		 'TR_SELECT_DB' => tr('Select database'),
-		 'TR_SQL_USER' => tr('SQL-User'),
-		 'TR_SQL_PWD' => tr('Password'),
-		 'TR_SOFTWARE_MENU' => tr('Software installation'),
-		 'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')));
+		'TR_INSTALL_SOFTWARE' => tr('Install Software'),
+		'SOFTWARE_ID' => $software_id,
+		'TR_NAME' => tr('Software'),
+		'TR_TYPE' => tr('Type'),
+		'TR_DB' => tr('Database required'),
+		'TR_SELECT_DOMAIN' => tr('Select Domain'),
+		'TR_BACK' => tr('back'),
+		'TR_INSTALL' => tr('install'),
+		'TR_PATH' => tr('Install path'),
+		'CHOOSE_DIR' => tr('Choose dir'),
+		'CREATEDIR_MESSAGE' => tr('Create directory, if not exist!'),
+		'TR_SELECT_DB' => tr('Select database'),
+		'TR_SQL_USER' => tr('SQL-User'),
+		'TR_SQL_PWD' => tr('Password'),
+		'TR_SOFTWARE_MENU' => tr('Software installation'),
+		'TR_INSTALLATION' => tr('Installation details'),
+		'TR_INSTALLATION_INFORMATION' => tr('Username and password for application login'),
+		'TR_INSTALL_USER' => tr('Login username'),
+		'TR_INSTALL_PWD' => tr('Login password'),
+		'TR_INSTALL_EMAIL' => tr('Email address')));
 
 generatePageMessage($tpl);
 

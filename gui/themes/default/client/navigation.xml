@@ -340,6 +340,12 @@
 							<title_class>apps_installer</title_class>
 							<visible>0</visible>
 						</software_view_link>
+						<software_install_link>
+							<label>Install software</label>
+							<uri>/client/software_install.php</uri>
+							<visible>0</visible>
+							<title_class>apps_installer</title_class>
+						</software_install_link>
 					</pages>
 				</softwares>
 				<daily_backup>

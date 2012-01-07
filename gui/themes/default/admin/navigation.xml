@@ -299,6 +299,14 @@
 					<label>Softwares management</label>
 					<uri>/admin/software_manage.php</uri>
 					<title_class>apps_installer</title_class>
+					<pages>
+						<softwares_permissions_link>
+							<label>Softwares permissions</label>
+							<uri>/admin/software_rights.php</uri>
+							<visible>0</visible>
+							<title_class>apps_installer</title_class>
+						</softwares_permissions_link>
+					</pages>
 				</softwares_management>
 				<softwares_options>
 					<label>Software options</label>

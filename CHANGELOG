@@ -37,6 +37,7 @@ Features / Enhancements:
 			- Updated PhpMyAdmin to version 3.4.9
 
 Tickets:
+	- Fixed #47:  Feature - Theme color chooser
 	- Fixed #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
 	- Fixed #244: Bug - admin/domain_edit.php can cause several issues and must be rewritten
@@ -76,6 +77,7 @@ Tickets:
 	- Fixed #302: Defect - Notice: Undefined index: t_software_menu
 	- Fixed #303: Defect - Double tooltip for software description on admin and reseller level
 	- Fixed #304: Enhancement - Postfix configuration should log user authentication
+	- Fixed #307: Defect - Software installer - Many pages are missing in xml menu files
 	- Fixed #311: Defect - autoinstaller cleans squirrel data folder
 
 -------------------------------------------------------------------------------------
