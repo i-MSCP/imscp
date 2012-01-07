@@ -254,22 +254,24 @@
 						<tr>
 							<td><label>{TR_PHPINI_DISABLE_FUNCTIONS}</label></td>
 							<td>
-								<input name="show_source" id="show_source" type="checkbox" {SHOW_SOURCE} value="show_source"/>
-								<label for="show_source">show_source</label>
-								<input name="system" id="system" type="checkbox" {SYSTEM} value="system"/>
-								<label for="system">system</label>
-								<input name="shell_exec" id="shell_exec" type="checkbox" {SHELL_EXEC} value="shell_exec"/>
-								<label for="shell_exec">shell_exec</label>
-								<input name="passthru" id="passthru" type="checkbox" {PASSTHRU} value="passthru"/>
-								<label for="passthru">passthru</label>
-								<input name="exec" id="exec" type="checkbox" {EXEC} value="exec"/>
-								<label for="exec">exec</label>
-								<input name="phpinfo" id="phpinfo" type="checkbox" {PHPINFO} value="phpinfo"/>
-								<label for="phpinfo">phpinfo</label>
-								<input name="shell" id="shell" type="checkbox" {SHELL} value="shell"/>
-								<label for="shell">shell</label>
-								<input name="symlink" id="symlink" type="checkbox" {SYMLINK} value="symlink"/>
-								<label for="symlink">symlink</label>
+								<div class="radio">
+									<input name="show_source" id="show_source" type="checkbox" {SHOW_SOURCE} value="show_source"/>
+									<label for="show_source">show_source</label>
+									<input name="system" id="system" type="checkbox" {SYSTEM} value="system"/>
+									<label for="system">system</label>
+									<input name="shell_exec" id="shell_exec" type="checkbox" {SHELL_EXEC} value="shell_exec"/>
+									<label for="shell_exec">shell_exec</label>
+									<input name="passthru" id="passthru" type="checkbox" {PASSTHRU} value="passthru"/>
+									<label for="passthru">passthru</label>
+									<input name="exec" id="exec" type="checkbox" {EXEC} value="exec"/>
+									<label for="exec">exec</label>
+									<input name="phpinfo" id="phpinfo" type="checkbox" {PHPINFO} value="phpinfo"/>
+									<label for="phpinfo">phpinfo</label>
+									<input name="shell" id="shell" type="checkbox" {SHELL} value="shell"/>
+									<label for="shell">shell</label>
+									<input name="symlink" id="symlink" type="checkbox" {SYMLINK} value="symlink"/>
+									<label for="symlink">symlink</label>
+								</div>
 							</td>
 						</tr>
 					</table>

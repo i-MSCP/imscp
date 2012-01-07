@@ -13,6 +13,7 @@
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
 	<!--[if IE 6]>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.bgiframe-2.1.2.js"></script>
 	<script type="text/javascript" src="/themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
 	<script type="text/javascript">
 		DD_belatedPNG.fix('.login #logo, #loginBox, .webmail, .pma, .filemanager, .i_lock, .i_unlock, .error');
