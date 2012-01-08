@@ -46,6 +46,29 @@
  */
 
 /**
+ * get Protocol data fro $_POST array.
+ * @param integer $index
+ * @return protocol
+ */
+function getProtocol($index) {
+
+	/** @var $dbConfig iMSCP_Config_Handler_Db */
+	$dbConfig = iMSCP_Registry::get('dbConfig');
+
+	if(isset($_POST['port_type'][$index])){
+		$protocol = $_POST['port_type'][$index];
+	} else {
+		try{
+			$sData = $dbConfig->{$_POST['var_name'][$index]};
+			$sData = explode(';', $sData);
+			$protocol = $sData[1];
+		} catch(Exception $e){
+			$protocol = 'notexistingone';
+		}
+	}
+	return $protocol;
+}
+/**
  * Prepare and put data in session on error(s).
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
@@ -53,6 +76,9 @@
  * @return void
  */
 function toSession($mode) {
+
+	/** @var $dbConfig iMSCP_Config_Handler_Db */
+	$dbConfig = iMSCP_Registry::get('dbConfig');
 
 	// Get a reference to the array that contain all error fields ids
 	$errorFieldsIds = &iMSCP_Registry::get('errorFieldsIds');
@@ -76,7 +102,7 @@ function toSession($mode) {
 	} else {
 		foreach($_POST['var_name'] as $index => $service) {
 			$port = $_POST['port'][$index];
-			$protocol = $_POST['port_type'][$index];
+			$protocol = getProtocol($index);
 			$name = $_POST['name'][$index];
 			$show = $_POST['show_val'][$index];
 			$custom = $_POST['custom'][$index];
@@ -187,7 +213,7 @@ function admin_addUpdateServices($mode = 'add')
 
 		foreach($_POST['name'] as $index => $name) {
 			$port = $_POST['port'][$index];
-			$protocol = $_POST['port_type'][$index];
+			$protocol = getProtocol($index);
 			$name = strtoupper($name);
 			$show = $_POST['show_val'][$index];
 			$custom = $_POST['custom'][$index];
@@ -263,7 +289,7 @@ function admin_showServices($tpl)
 
 			$htmlSelected = $cfg->HTML_SELECTED;
 
-			$selectedUdp = $protocol == 'udp' ? $$htmlSelected : '';
+			$selectedUdp = $protocol == 'udp' ? $htmlSelected : '';
 			$selectedTcp = $protocol == 'udp' ? '' : $htmlSelected;
 			$selectedOn = $status == '1' ? $htmlSelected : '';
 			$selectedOff = $status == '1' ? '' : $htmlSelected;
