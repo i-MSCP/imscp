@@ -170,7 +170,7 @@ sub add{
 		);
 
 		$file = iMSCP::File->new(filename => $caFH->filename);
-		$file->set($self->{key});
+		$file->set($self->{ca_cert});
 		$rs |= $file->save();
 		Modules::openssl->new()->{intermediate_cert_path} = $caFH->filename;
 	} else {
