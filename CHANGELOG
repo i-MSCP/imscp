@@ -80,6 +80,7 @@ Tickets:
 	- Fixed #307: Defect - Software installer - Many pages are missing in xml menu files
 	- Fixed #310: Defect - Error after inserting a SSL-certificate
 	- Fixed #311: Defect - autoinstaller cleans squirrel data folder
+	- Fixed #313: Some improvements on postfix's master.cf (tx aseques)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
