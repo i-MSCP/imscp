@@ -91,6 +91,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	// Sending new password
 	if (sendPassword($_GET['key'])) {
 		set_page_message(tr('Your new password has been sent. Check your mail.'), 'success');
+		redirectTo('index.php');
 	} else {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}

@@ -77,10 +77,12 @@ Tickets:
 	- Fixed #302: Defect - Notice: Undefined index: t_software_menu
 	- Fixed #303: Defect - Double tooltip for software description on admin and reseller level
 	- Fixed #304: Enhancement - Postfix configuration should log user authentication
+	- Fixed #305: Enhancement - lostpw-login screen
 	- Fixed #307: Defect - Software installer - Many pages are missing in xml menu files
 	- Fixed #310: Defect - Error after inserting a SSL-certificate
 	- Fixed #311: Defect - autoinstaller cleans squirrel data folder
 	- Fixed #313: Enhancement - Some improvements on postfix's master.cf (tx aseques)
+
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)
