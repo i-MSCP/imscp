@@ -40,25 +40,6 @@
  */
 
 /**
- * Generates hosting plan message.
- *
- * @return void
- */
-function admin_generateHostingPlanMessage()
-{
-	if (isset($_SESSION['hp_deleted']) && $_SESSION['hp_deleted'] == '_yes_') {
-		set_page_message(tr('Hosting plan deleted.'), 'success');
-		unset($_SESSION['hp_deleted'], $GLOBALS['hp_deleted']);
-	} elseif (isset($_SESSION['hp_updated']) && $_SESSION['hp_updated'] == '_yes_') {
-		set_page_message(tr('Hosting plan updated.'), 'success');
-		unset($_SESSION['hp_updated'], $GLOBALS['hp_updated']);
-	} else if (isset($_SESSION['hp_deleted_ordererror']) && $_SESSION['hp_deleted_ordererror'] == '_yes_') {
-		set_page_message(tr("Hosting plan can't be deleted, there are active orders."), 'error');
-		unset($_SESSION["hp_deleted_ordererror"]);
-	}
-}
-
-/**
  * Generates hosting plans list.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
@@ -166,7 +147,6 @@ $tpl->assign(
 
 generateNavigation($tpl);
 admin_generateHostingPlansList($tpl, $_SESSION['user_id']);
-admin_generateHostingPlanMessage();
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

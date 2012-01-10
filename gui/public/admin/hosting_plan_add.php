@@ -27,253 +27,205 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
-/************************************************************************************
+/*******************************************************************************
  * Script functions
  */
 
 /**
- * Generates empty form.
+ * Generate load data from sql for requested hosting plan.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @return void
  */
-function admin_generateEmptyForm($tpl)
+function admin_generatePage($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$htmlChecked = $cfg->HTML_CHECKED;
-
-	$tpl->assign(
-		array(
-			 'HP_NAME_VALUE' => '',
-			 'TR_MAX_SUB_LIMITS' => '',
-			 'TR_MAX_ALS_VALUES' => '',
-			 'HP_MAIL_VALUE' => '',
-			 'HP_FTP_VALUE' => '',
-			 'HP_SQL_DB_VALUE' => '',
-			 'HP_SQL_USER_VALUE' => '',
-			 'HP_TRAFF_VALUE' => '',
-			 'HP_PRICE' => '',
-			 'HP_SETUPFEE' => '',
-			 'HP_VELUE' => '',
-			 'HP_PAYMENT' => '',
-			 'HP_DESCRIPTION_VALUE' => '',
-			 'HP_DISK_VALUE' => '',
-			 'TR_PHP_YES' => '',
-			 'TR_PHP_NO' => $htmlChecked,
-			 'TR_CGI_YES' => '',
-			 'TR_CGI_NO' => $htmlChecked,
-			 'VL_SOFTWAREY' => '',
-			 'VL_SOFTWAREN' => $htmlChecked,
-			 'VL_BACKUPD' => '',
-			 'VL_BACKUPS' => '',
-			 'VL_BACKUPF' => '',
-			 'VL_BACKUPN' => $htmlChecked,
-			 'TR_DNS_YES' => '',
-			 'TR_DNS_NO' => $htmlChecked,
-			 'TR_STATUS_YES' => $htmlChecked,
-			 'TR_STATUS_NO' => '',
-			 'HP_TOS_VALUE' => ''));
+	if(empty($_POST)) {
+		$tpl->assign(
+			array(
+				'HP_NAME_VALUE' => '',
+				'TR_MAX_SUB_LIMITS' => '',
+				'TR_MAX_ALS_VALUES' => '',
+				'HP_MAIL_VALUE' => '',
+				'HP_FTP_VALUE' => '',
+				'HP_SQL_DB_VALUE' => '',
+				'HP_SQL_USER_VALUE' => '',
+				'HP_TRAFF_VALUE' => '',
+				'HP_DISK_VALUE' => '',
+				'HP_DESCRIPTION_VALUE' => '',
+				'HP_PRICE' => '',
+				'HP_SETUPFEE' =>'',
+				'HP_CURRENCY' => '',
+				'HP_PAYMENT' => '',
+				'HP_TOS_VALUE' => '',
+				'TR_PHP_YES' => '',
+				'TR_PHP_NO' => $cfg->HTML_CHECKED ,
+				'TR_CGI_YES' => '',
+				'TR_CGI_NO' => $cfg->HTML_CHECKED,
+				'VL_BACKUPD' => '',
+				'VL_BACKUPS' => '',
+				'VL_BACKUPF' => '',
+				'VL_BACKUPN' => $cfg->HTML_CHECKED ,
+				'TR_DNS_YES' => '',
+				'TR_DNS_NO' => $cfg->HTML_CHECKED ,
+				'TR_SOFTWARE_YES' => '',
+				'TR_SOFTWARE_NO' => $cfg->HTML_CHECKED ,
+				'TR_STATUS_YES' => $cfg->HTML_CHECKED,
+				'TR_STATUS_NO' => ''));
+	} else { // Restore form on error
+		$tpl->assign(
+			array(
+				'HP_NAME_VALUE' => clean_input($_POST['hp_name'], true),
+				'HP_DESCRIPTION_VALUE' => clean_input($_POST['hp_description'], true),
+				'TR_MAX_SUB_LIMITS' => clean_input($_POST['hp_sub'], true),
+				'TR_MAX_ALS_VALUES' => clean_input($_POST['hp_als'], true),
+				'HP_MAIL_VALUE' => clean_input($_POST['hp_mail'], true),
+				'HP_FTP_VALUE' => clean_input($_POST['hp_ftp'], true),
+				'HP_SQL_DB_VALUE' => clean_input($_POST['hp_sql_db'], true),
+				'HP_SQL_USER_VALUE' => clean_input($_POST['hp_sql_user'], true),
+				'HP_TRAFF_VALUE' => clean_input($_POST['hp_traff'], true),
+				'HP_TRAFF' => clean_input($_POST['hp_traff'], true),
+				'HP_DISK_VALUE' => clean_input($_POST['hp_disk'], true),
+				'HP_PRICE' => clean_input($_POST['hp_price'], true),
+				'HP_SETUPFEE' => clean_input($_POST['hp_setupfee'], true),
+				'HP_CURRENCY' => clean_input($_POST['hp_currency'], true),
+				'HP_PAYMENT' => clean_input($_POST['hp_payment'], true),
+				'HP_TOS_VALUE' => clean_input($_POST['hp_tos'], true),
+				'TR_PHP_YES' => ($_POST['php'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+				'TR_PHP_NO' => ($_POST['php'] == '_no_') ? $cfg->HTML_CHECKED : '',
+				'TR_CGI_YES' => ($_POST['cgi'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+				'TR_CGI_NO' => ($_POST['cgi'] == '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPD' => ($_POST['backup'] == '_dmn_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPS' => ($_POST['backup'] == '_sql_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPF' => ($_POST['backup'] == '_full_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPN' => ($_POST['backup'] == '_no_') ? $cfg->HTML_CHECKED : '',
+				'TR_DNS_YES' => ($_POST['dns'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+				'TR_DNS_NO' => ($_POST['dns'] == '_no_') ? $cfg->HTML_CHECKED : '',
+				'TR_SOFTWARE_YES' => ($_POST['software_allowed'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+				'TR_SOFTWARE_NO' => ($_POST['software_allowed'] == '_no_') ? $cfg->HTML_CHECKED : '',
+				'TR_STATUS_YES' => ($_POST['status']) ? $cfg->HTML_CHECKED : '',
+				'TR_STATUS_NO' => (!$_POST['status']) ? $cfg->HTML_CHECKED : ''));
+	}
 }
 
 /**
- * Generates form on error.
+ * Check hosting plan data.
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @return void
+ * @return bool TRUE if hosting plan data are valid, FALSE otherwise
  */
-function admin_generateOnErrorForm($tpl)
+function admin_checkHostingPlanData()
 {
-	global $hpName, $description, $hpPhp, $hpCgi, $hpSub, $hpAls, $hpMail, $hpFtp,
-		$hpSqlDb, $hpSqlUser, $hpTraff, $hp_disk, $price, $setupFee, $value, $payment,
-		$status, $hp_backup, $hpDns, $hpAllowSoftware, $tos;
+	global $name, $php, $cgi, $subdomains, $aliases, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
+		   $customDns, $softwareInstaller;
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$tpl->assign(
-		array(
-			 'HP_NAME_VALUE' => tohtml($hpName),
-			 'TR_MAX_SUB_LIMITS' => tohtml($hpSub),
-			 'TR_MAX_ALS_VALUES' => tohtml($hpAls),
-			 'HP_MAIL_VALUE' => tohtml($hpMail),
-			 'HP_FTP_VALUE' => tohtml($hpFtp),
-			 'HP_SQL_DB_VALUE' => tohtml($hpSqlDb),
-			 'HP_SQL_USER_VALUE' => tohtml($hpSqlUser),
-			 'HP_TRAFF_VALUE' => tohtml($hpTraff),
-			 'HP_DISK_VALUE' => tohtml($hp_disk),
-			 'HP_DESCRIPTION_VALUE' => tohtml($description),
-			 'HP_PRICE' => tohtml($price),
-			 'HP_SETUPFEE' => tohtml($setupFee),
-			 'HP_VELUE' => tohtml($value),
-			 'HP_PAYMENT' => tohtml($payment),
-			 'HP_TOS_VALUE' => tohtml($tos)));
-
-	$htmlChecked = $cfg->HTML_CHECKED;
-
-	$tpl->assign(
-		array(
-			 'TR_PHP_YES' => ($hpPhp == '_yes_') ? $htmlChecked : '',
-			 'TR_PHP_NO' => ($hpPhp == '_no_') ? $htmlChecked : '',
-			 'VL_SOFTWAREY' => ($hpAllowSoftware == '_yes_') ? $htmlChecked : '',
-			 'VL_SOFTWAREN' => ($hpAllowSoftware == '_no_') ? $htmlChecked : '',
-			 'TR_CGI_YES' => ($hpCgi == '_yes_') ? $htmlChecked : '',
-			 'TR_CGI_NO' => ($hpCgi == '_no_') ? $htmlChecked : '',
-			 'VL_BACKUPD' => ($hp_backup == '_dmn_') ? $htmlChecked : '',
-			 'VL_BACKUPS' => ($hp_backup == '_sql_') ? $htmlChecked : '',
-			 'VL_BACKUPF' => ($hp_backup == '_full_') ? $htmlChecked : '',
-			 'VL_BACKUPN' => ($hp_backup == '_no_') ? $htmlChecked : '',
-			 'TR_DNS_YES' => ($hpDns == '_yes_') ? $htmlChecked : '',
-			 'TR_DNS_NO' => ($hpDns == '_no_') ? $htmlChecked : '',
-			 'TR_STATUS_YES' => ($status) ? $htmlChecked : '',
-			 'TR_STATUS_NO' => (!$status) ? $htmlChecked : ''));
-}
-
-/**
- * Validates input data.
- *
- * @return bool TRUE if data are valid, FALSE otherwise
- */
-function admin_validateInputData()
-{
-	global $hpName, $description, $hpPhp, $hpCgi, $hpSub, $hpAls, $hpMail, $hpFtp,
-		$hpSqlDb, $hpSqlUser, $hpTraff, $hpDisk, $price, $setupFee, $value, $payment,
-		$status, $hpBackup, $hpDns, $hpAllowSoftware, $tos;
-
-	$hpName = clean_input($_POST['hp_name']);
-	$hpSub = clean_input($_POST['hp_sub']);
-	$hpAls = clean_input($_POST['hp_als']);
-	$hpMail = clean_input($_POST['hp_mail']);
-	$hpFtp = clean_input($_POST['hp_ftp']);
-	$hpSqlDb = clean_input($_POST['hp_sql_db']);
-	$hpSqlUser = clean_input($_POST['hp_sql_user']);
-	$hpTraff = clean_input($_POST['hp_traff']);
-	$hpDisk = clean_input($_POST['hp_disk']);
-	$description = clean_input($_POST['hp_description']);
-	$value = clean_input($_POST['hp_value']);
-	$payment = clean_input($_POST['hp_payment']);
-	$status = $_POST['status'];
-	$tos = clean_input($_POST['hp_tos']);
-
-	if (empty($_POST['hp_price'])) {
-		$price = 0;
-	} else {
-		$price = clean_input($_POST['hp_price']);
-	}
-
-	if (empty($_POST['hp_setupfee'])) {
-		$setupFee = 0;
-	} else {
-		$setupFee = clean_input($_POST['hp_setupfee']);
-	}
+	$name = clean_input($_POST['hp_name']);
+	$subdomains = clean_input($_POST['hp_sub']);
+	$aliases = clean_input($_POST['hp_als']);
+	$mail = clean_input($_POST['hp_mail']);
+	$ftp = clean_input($_POST['hp_ftp']);
+	$sqlDb = clean_input($_POST['hp_sql_db']);
+	$sqlUser = clean_input($_POST['hp_sql_user']);
+	$traffic = clean_input($_POST['hp_traff']);
+	$diskSpace = clean_input($_POST['hp_disk']);
 
 	if (isset($_POST['php'])) {
-		$hpPhp = $_POST['php'];
+		$php = $_POST['php'];
 	}
 
 	if (isset($_POST['cgi'])) {
-		$hpCgi = $_POST['cgi'];
-	}
-
-	if (isset($_POST['dns'])) {
-		$hpDns = $_POST['dns'];
-	}
-
-	if (isset($_POST['software_allowed'])) {
-		$hpAllowSoftware = $_POST['software_allowed'];
+		$cgi = $_POST['cgi'];
 	}
 
 	if (isset($_POST['backup'])) {
-		$hpBackup = $_POST['backup'];
+		$backup = $_POST['backup'];
 	}
 
-	if ($hpName == '') {
-		set_page_message(tr('Incorrect length for hosting plan name .'), 'error');
+	if (isset($_POST['dns'])) {
+		$customDns = $_POST['dns'];
 	}
 
-	if ($description == '') {
-		set_page_message(tr('Incorrect description length .'), 'error');
+	if (isset($_POST['software_allowed'])) {
+		$softwareInstaller = $_POST['software_allowed'];
+	} else {
+		$softwareInstaller = '_no_';
 	}
 
-	if (!is_numeric($price)) {
-		set_page_message(tr('Incorrect price syntax.'), 'error');
+	if ($php == '_no_' && $softwareInstaller == '_yes_') {
+		set_page_message(tr('Software installer require PHP feature.'), 'error');
 	}
 
-	if (!is_numeric($setupFee)) {
-		set_page_message(tr('Incorrect setup fee syntax.'), 'error');
+	if (!is_numeric($_POST['hp_price'])) {
+		set_page_message(tr('Incorrect price. Example: 9.99'), 'error');
 	}
 
-	if (!imscp_limit_check($hpSub, -1)) {
+	if (!is_numeric($_POST['hp_setupfee'])) {
+		set_page_message(tr('Incorrect setup fee. Example: 19.99'), 'error');
+	}
+
+	if (!imscp_limit_check($subdomains, -1)) {
 		set_page_message(tr('Incorrect subdomains limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpAls, -1)) {
+	if (!imscp_limit_check($aliases, -1)) {
 		set_page_message(tr('Incorrect aliases limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpMail, -1)) {
+	if (!imscp_limit_check($mail, -1)) {
 		set_page_message(tr('Incorrect mail accounts limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpFtp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit.'), 'error');
+	if (!imscp_limit_check($ftp, -1)) {
+		set_page_message(tr('Incorrect Ftp accounts limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpSqlUser, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit.'), 'error');
+	if (!imscp_limit_check($sqlUser, -1)) {
+		set_page_message(tr('Incorrect Sql databases limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpSqlDb, -1)) {
-		set_page_message(tr('Incorrect SQL users limit.'), 'error');
+	if (!imscp_limit_check($sqlDb, -1)) {
+		set_page_message(tr('Incorrect Sql users limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpTraff, null)) {
+	if (!imscp_limit_check($traffic, null)) {
 		set_page_message(tr('Incorrect traffic limit.'), 'error');
 	}
 
-	if (!imscp_limit_check($hpDisk, null)) {
-		set_page_message(tr('Incorrect disk quota limit.'), 'error');
+	if (!imscp_limit_check($diskSpace, null)) {
+		set_page_message(tr('Incorrect disk space limit.'), 'error');
 	}
 
-	if ($hpPhp == '_no_' && $hpAllowSoftware == '_yes_') {
-		set_page_message(tr('The i-MSCP application installer needs the PHP feature.'), 'error');
-	}
-
-	if (!Zend_Session::namespaceIsset('pageMessages')) {
-		return true;
-	} else {
+	if (Zend_Session::namespaceIsset('pageMessages')) {
 		return false;
 	}
+
+	return true;
 }
 
 /**
- * Add new hosting plan to database.
+ * Adds hosting plan.
  *
- * @param int $adminId Administrator unique identifier
- * @return void
+ * @return bool TRUE on success FALSE otherwise
  */
-function admin_saveDataToDatabase($adminId)
+function admin_addHostingPlan()
 {
-	global $hpName, $description, $hpPhp, $hpCgi, $hpSub, $hpAls, $hpMail, $hpFtp,
-		$hpSqlDb, $hpSqlUser, $hpTraff, $hpDisk, $price, $setupFee, $value, $payment,
-		$status, $hpBackup, $hpDns, $hpAllowSoftware, $tos;
+	global $name, $php, $cgi, $subdomains, $aliases, $mail, $ftp, $sqlDb, $sqlUser, $traffic, $diskSpace, $backup,
+		   $customDns, $softwareInstaller;
 
 	$query = "
 		SELECT
-			`t1`.`id`, `t1`.`name`, `t1`.`reseller_id`, `t1`.`name`, `t1`.`props`,
-			`t1`.`status`, `t2`.`admin_id`, `t2`.`admin_type`
+			COUNT(`id`) `cnt`
 		FROM
-			`hosting_plans` `t1`,
-			`admin` `t2`
+			`hosting_plans` `t1`, `admin` `t2`
 		WHERE
 			`t2`.`admin_type` = ?
 		AND
@@ -281,38 +233,41 @@ function admin_saveDataToDatabase($adminId)
 		AND
 			`t1`.`name` = ?
 	";
-	$stmt = exec_query($query, array('admin', $hpName));
+	$stmt = exec_query($query, array('admin', $name));
 
-	if ($stmt->rowCount()) {
+	if ($stmt->fields['cnt'] > 0) {
 		set_page_message(tr('Hosting plan with same name already exists.'), 'error');
+		return false;
 	} else {
-		$hp_props = "$hpPhp;$hpCgi;$hpSub;$hpAls;$hpMail;$hpFtp;$hpSqlDb;";
-		$hp_props .= "$hpSqlUser;$hpTraff;$hpDisk;$hpBackup;$hpDns;$hpAllowSoftware";
+		$description = clean_input($_POST['hp_description']);
+		$price = clean_input($_POST['hp_price']);
+		$setup_fee = clean_input($_POST['hp_setupfee']);
+		$value = clean_input($_POST['hp_currency']);
+		$payment = clean_input($_POST['hp_payment']);
+		$status = clean_input($_POST['status']);
+		$tos = clean_input($_POST['hp_tos']);
+
+		$hp_props = "$php;$cgi;$subdomains;$aliases;$mail;$ftp;$sqlDb;$sqlUser;$traffic;$diskSpace;$backup;";
+		$hp_props .= "$customDns;$softwareInstaller";
 
 		$query = "
-			INSERT INTO
-				hosting_plans(
-					`reseller_id`, `name`, `description`, `props`, `price`, `setup_fee`,
-					`value`, `payment`, `status`, `tos`
-				) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?
-				)
+			INSERT INTO `hosting_plans` (
+				`reseller_id`, `name`, `description`, `props`, `price`, `setup_fee`, `value`, `payment`, `status`, `tos`
+			) VALUES (
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+			)
 		";
-
-		exec_query($query, array(
-								$adminId, $hpName, $description, $hp_props, $price,
-								$setupFee, $value, $payment, $status, $tos));
-
-		set_page_message(tr('Hosting plan created.'), 'success');
-		redirectTo('hosting_plan.php');
+		exec_query($query, array((int) $_SESSION['user_id'],  $name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status, $tos));
 	}
+
+	return true;
 }
 
-/************************************************************************************
+/*******************************************************************************
  * Main script
  */
 
-// Incude core library
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
@@ -326,66 +281,62 @@ if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	redirectTo('index.php');
 }
 
+// Dispatches request
+if (!empty($_POST) && admin_checkHostingPlanData() && admin_addHostingPlan()) {
+	set_page_message(tr('Hosting plan successfully created.'), 'success');
+	redirectTo('hosting_plan.php');
+}
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
-		 'layout' => 'shared/layouts/ui.tpl',
-		 'page' => 'admin/hosting_plan_add.tpl',
-		 'page_message' => 'layout'));
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/hosting_plan_add.tpl',
+		'page_message' => 'layout'));
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Administrator/Add hosting plan'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-		 'TR_HOSTING PLAN PROPS' => tr('Hosting plan properties'),
-		 'TR_TEMPLATE_NAME' => tr('Hosting plan name'),
-		 'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_ALIASES' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_MAILACCOUNTS' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_FTP' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_SQL' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-		 'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
-		 'TR_PHP' => tr('PHP'),
-		 'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
-		 'TR_CGI' => tr('CGI / Perl'),
-		 'TR_DNS' => tr('Custom DNS records support'),
-		 'TR_BACKUP' => tr('Backup'),
-		 'TR_BACKUP_DOMAIN' => tr('Domain'),
-		 'TR_BACKUP_SQL' => tr('SQL'),
-		 'TR_BACKUP_FULL' => tr('Full'),
-		 'TR_BACKUP_NO' => tr('No'),
-		 'TR_APACHE_LOGS' => tr('Apache logfiles'),
-		 'TR_AWSTATS' => tr('AwStats'),
-		 'TR_YES' => tr('yes'),
-		 'TR_NO' => tr('no'),
-		 'TR_BILLING_PROPS' => tr('Billing Settings'),
-		 'TR_PRICE' => tr('Price'),
-		 'TR_SETUP_FEE' => tr('Setup fee'),
-		 'TR_VALUE' => tr('Currency'),
-		 'TR_PAYMENT' => tr('Payment period'),
-		 'TR_STATUS' => tr('Available for purchasing'),
-		 'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
-		 'TR_EXAMPLE' => tr('(e.g. EUR)'),
-		 'TR_TOS_PROPS' => tr('Term Of Service'),
-		 'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
-		 'TR_TOS_DESCRIPTION' => tr('Text Only'),
-		 'TR_ADD_PLAN' => tr('Add plan')));
-
-if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
-	if (admin_validateInputData()) {
-		admin_saveDataToDatabase($_SESSION['user_id']);
-	}
-
-	admin_generateOnErrorForm($tpl);
-} else {
-	admin_generateEmptyForm($tpl);
-}
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Add hosting plan'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),
+		'TR_TEMPLATE_NAME' => tr('Template name'),
+		'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_ALIASES' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_MAILACCOUNTS' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_FTP' => tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SQL' => tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_TRAFFIC' => tr('Traffic limit [MiB]<br><i>(0 unlimited)</i>'),
+		'TR_DISK_LIMIT' => tr('Disk limit [MiB]<br><i>(0 unlimited)</i>'),
+		'TR_PHP' => tr('PHP'),
+		'TR_SOFTWARE_SUPP' => tr('Software installer'),
+		'TR_CGI' => tr('CGI'),
+		'TR_DNS' => tr('Custom DNS records'),
+		'TR_BACKUP' => tr('Backup'),
+		'TR_BACKUP_DOMAIN' => tr('Domain'),
+		'TR_BACKUP_SQL' => tr('Sql'),
+		'TR_BACKUP_FULL' => tr('Full'),
+		'TR_BACKUP_NO' => tr('No'),
+		'TR_APACHE_LOGS' => tr('Apache logfiles'),
+		'TR_AWSTATS' => tr('AwStats'),
+		'TR_YES' => tr('yes'),
+		'TR_NO' => tr('no'),
+		'TR_BILLING_PROPS' => tr('Billing Settings'),
+		'TR_PRICE_STYLE' => tr('Price style'),
+		'TR_PRICE' => tr('Price'),
+		'TR_SETUP_FEE' => tr('Setup fee'),
+		'TR_VALUE' => tr('Currency'),
+		'TR_PAYMENT' => tr('Payment period'),
+		'TR_STATUS' => tr('Available for purchasing'),
+		'TR_TEMPLATE_DESCRIPTON' => tr('Description'),
+		'TR_EXAMPLE' => tr('(e.g. EUR)'),
+		'TR_TOS_PROPS' => tr('Term of service'),
+		'TR_TOS_NOTE' => tr('Leave this field empty if you do not want term of service for this hosting plan.'),
+		'TR_TOS_DESCRIPTION' => tr('Text'),
+		'TR_ADD' => tr('Add')));
 
 generateNavigation($tpl);
+admin_generatePage($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

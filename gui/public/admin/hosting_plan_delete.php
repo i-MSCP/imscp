@@ -35,6 +35,10 @@
  * @link        http://i-mscp.net
  */
 
+/********************************************************************************
+ * Main script
+ */
+
 // Include core library
 require 'imscp-lib.php';
 
@@ -42,33 +46,32 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	redirectTo('index.php');
 }
 
-
-if (isset($_GET['hpid']) && is_numeric($_GET['hpid'])) {
-	$hpid = $_GET['hpid'];
+if (isset($_GET['hpid'])) {
+	$hostingPlanId = intval($_GET['hpid']);
 } else {
-	$_SESSION['hp_deleted'] = '_no_';
+	set_page_message(tr('Wrong request'), 'error');
 	redirectTo('hosting_plan.php');
+	exit; // Useless but avoid IDE warning about possible undefined variable
 }
 
 // Check if there is no order for this plan
-$res = exec_query("SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ? AND `status` = 'new'", $hpid);
-$data = $res->fetchRow();
+$stmt = exec_query("SELECT COUNT(`id`) `cnt` FROM `orders` WHERE `plan_id` = ? AND `status` = 'new'", $hostingPlanId);
 
-if ($data['0'] > 0) {
-	$_SESSION['hp_deleted_ordererror'] = '_yes_';
+if ($stmt->fields['cnt'] > 0) {
+	set_page_message(tr("Hosting plan can't be deleted, there are active orders."), 'error');
 	redirectTo('hosting_plan.php');
 }
 
 // Try to delete hosting plan from db
 $query = 'DELETE FROM `hosting_plans` WHERE `id` = ?';
-exec_query($query, $hpid);
+exec_query($query, $hostingPlanId);
 
-$_SESSION['hp_deleted'] = '_yes_';
-
+set_page_message(tr('Hosting plan successfully deleted.'), 'success');
 redirectTo('hosting_plan.php');
