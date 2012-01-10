@@ -99,7 +99,7 @@
 				</add_subdomain>
 				<add_custom_dns_record>
 					<label>Add custom DNS record</label>
-					<uri>/client/dns_add.php"</uri>
+					<uri>/client/dns_add.php</uri>
 					<title_class>domains</title_class>
 					<privilege_callback name="customerHasFeature" param="custom_dns_records"/>
 				</add_custom_dns_record>
@@ -341,7 +341,7 @@
 							<visible>0</visible>
 						</software_view_link>
 						<software_install_link>
-							<label>Install software</label>
+							<label>Software installation</label>
 							<uri>/client/software_install.php</uri>
 							<visible>0</visible>
 							<title_class>apps_installer</title_class>
