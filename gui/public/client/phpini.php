@@ -74,32 +74,34 @@ if (!empty($_POST)) { // Post request
 			$phpini->setData('phpiniErrorReporting', clean_input($_POST['error_reporting']));
 		}
 
-		// Customer can disable/enable all functions
-		if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
-			$disabledFunctions = array();
+		if (PHP_SAPI != 'apache2handler') {
+			// Customer can disable/enable all functions
+			if ($phpini->getClPermVal('phpiniDisableFunctions') == 'yes') {
+				$disabledFunctions = array();
 
-			foreach (array(
-				'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
-				'phpinfo', 'shell', 'symlink') as $function
-			) {
-				if (isset($_POST[$function])) { // we are safe here
-					array_push($disabledFunctions, $function);
+				foreach (array(
+							 'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
+							 'phpinfo', 'shell', 'symlink') as $function
+				) {
+					if (isset($_POST[$function])) { // we are safe here
+						array_push($disabledFunctions, $function);
+					}
 				}
+
+				// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
+				$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
+			} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
+				$disabledFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
+
+				if (isset($_POST['exec']) && $_POST['exec'] == 'allows') { // exec function is explicitely allowed by customer
+					$disabledFunctions = array_diff($disabledFunctions, array('exec'));
+				} else { // exec function is explicitely diallowed by customer (we are safe here)
+					$disabledFunctions = in_array('exec', $disabledFunctions)
+						? $disabledFunctions : $disabledFunctions + array('exec');
+				}
+
+				$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
 			}
-
-			// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
-			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
-		} elseif ($phpini->getClPermVal('phpiniDisableFunctions') == 'exec') {
-			$disabledFunctions = explode(',', $phpini->getDataDefaultVal('phpiniDisableFunctions'));
-
-			if (isset($_POST['exec']) && $_POST['exec'] == 'allows') { // exec function is explicitely allowed by customer
-				$disabledFunctions = array_diff($disabledFunctions, array('exec'));
-			} else { // exec function is explicitely diallowed by customer (we are safe here)
-				$disabledFunctions = in_array('exec', $disabledFunctions)
-					? $disabledFunctions : $disabledFunctions + array('exec');
-			}
-
-			$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
 		}
 
 		if($phpini->getData() == $oldData) {
@@ -203,7 +205,7 @@ if ($phpini->getClPermVal('phpiniDisplayErrors') == 'no') {
 }
 
 // disable_functions directive
-if ($phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
+if (PHP_SAPI ==  'apache2handler' || $phpini->getClPermVal('phpiniDisableFunctions') == 'no') {
 	$tplVars['PHP_EDITOR_FIRST_BLOCK_JS'] = '';
 	$tplVars['DISABLE_FUNCTIONS_BLOCK'] = '';
 	$tplVars['PHP_EDITOR_SECOND_BLOCK_JS'] = '';

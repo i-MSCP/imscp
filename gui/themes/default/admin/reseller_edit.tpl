@@ -279,6 +279,7 @@
 										</div>
 									</td>
 								</tr>
+								<!-- BDP: php_editor_disable_functions_block -->
 								<tr>
 									<td>{TR_PHP_INI_AL_DISABLE_FUNCTIONS}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
@@ -290,6 +291,7 @@
 										</div>
 									</td>
 								</tr>
+								<!-- EDP: php_editor_disable_functions_block -->
 							</table>
 							<table>
 								<tr class="description">

@@ -262,10 +262,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'PHP_INI_AL_DISPLAY_ERRORS_YES' => ($data['php_ini_al_display_errors'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_AL_DISPLAY_ERRORS_NO' => ($data['php_ini_al_display_errors'] != 'yes') ? $htmlChecked : '',
 
-			'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>'),
-			'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
-			'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : '',
-
 			'TR_PHP_INI_MAX_MEMORY_LIMIT' => tr('Max value for the %s PHP directive', true, '<span class="bold">memory_limit</span>'),
 			'PHP_INI_MAX_MEMORY_LIMIT' => tohtml($data['php_ini_max_memory_limit']),
 
@@ -303,6 +299,16 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_NO' => tr('No'),
 			'TR_MIB' => tr('MiB'),
 			'TR_SEC' => tr('Sec.')));
+
+		if(PHP_SAPI != 'apache2handler') {
+			$tpl->assign(
+				array(
+					'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>'),
+					'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
+					'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : ''));
+		} else {
+			$tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
+		}
 }
 
 /**
@@ -668,7 +674,9 @@ $tpl->define_dynamic(
 		'page' => 'admin/reseller_add.tpl',
 		'page_message' => 'layout',
 		'ips_block' => 'page',
-		'ip_block' => 'ips_block'));
+		'ip_block' => 'ips_block',
+		'php_editor_disable_functions_block' => 'page'
+	));
 
 $tpl->assign(
 	array(
@@ -680,8 +688,7 @@ $tpl->assign(
 		 'TR_EVENT_NOTICE' => tr('The `Enter` key is disabled for performance reasons.'),
 		 'TR_CREATE' => tr('Create'),
 		 'TR_CANCEL' => tr('Cancel'),
-		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack'))
-			 ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
+		 'ERR_FIELDS_STACK' => (iMSCP_Registry::isRegistered('errFieldsStack')) ? json_encode(iMSCP_Registry::get('errFieldsStack')) : '[]'));
 
 generateNavigation($tpl);
 admin_generateForm($tpl, $data);

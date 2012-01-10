@@ -418,6 +418,17 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			'TR_NO' => tr('No'),
 			'TR_MIB' => tr('MiB'),
 			'TR_SEC' => tr('Sec.')));
+
+	if(PHP_SAPI != 'apache2handler') {
+		$tpl->assign(
+			array(
+				'TR_PHP_INI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>'),
+				'PHP_INI_AL_DISABLE_FUNCTIONS_YES' => ($data['php_ini_al_disable_functions'] == 'yes') ? $htmlChecked : '',
+				'PHP_INI_AL_DISABLE_FUNCTIONS_NO' => ($data['php_ini_al_disable_functions'] != 'yes') ? $htmlChecked : ''
+			));
+	} else {
+		$tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
+	}
 }
 
 /**
@@ -931,7 +942,9 @@ $tpl->define_dynamic(
 		'page' => 'admin/reseller_edit.tpl',
 		'page_message' => 'layout',
 		'ips_block' => 'page',
-		'ip_block' => 'ips_block'));
+		'ip_block' => 'ips_block',
+		'php_editor_disable_functions_block' => 'page'
+	));
 
 $tpl->assign(
 	array(

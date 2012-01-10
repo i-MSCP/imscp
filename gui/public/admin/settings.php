@@ -95,19 +95,24 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
 	$mainMenuShowLabels = (intval($_POST['mainMenuShowLabels'])) ? true : false;
 
-	$disabledFunctions = array();
 
-	foreach (array(
-		'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
-		'phpinfo', 'shell', 'symlink') as $function
-	) {
-		if (isset($_POST[$function])) { // we are safe here
-			array_push($disabledFunctions, $function);
+	if (PHP_SAPI != 'apache2handler') {
+		$disabledFunctions = array();
+
+		foreach (array(
+					 'show_source', 'system', 'shell_exec', 'shell_exec', 'passthru', 'exec',
+					 'phpinfo', 'shell', 'symlink') as $function
+		) {
+			if (isset($_POST[$function])) { // we are safe here
+				array_push($disabledFunctions, $function);
+			}
 		}
-	}
 
-	// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
-	$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
+		// Builds the PHP disable_function directive with a pre-check on functions that can be disabled
+		$phpini->setData('phpiniDisableFunctions', $phpini->assembleDisableFunctions($disabledFunctions));
+	} else {
+		$phpini->setData('phpiniDisableFunctions', $cfg->PHPINI_DISABLE_FUNCTIONS);
+	}
 
 	if ((!is_number($lostpwd_timeout))
 		|| (!is_number($pwd_chars)) || (!is_number($bruteforce_max_login))
@@ -203,7 +208,9 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/settings.tpl',
 		'page_message' => 'layout',
-		'def_language' => 'page'));
+		'def_language' => 'page',
+		'php_editor_disable_functions_block' => 'page'
+	));
 
 // Grab the value only once to improve performances
 $html_selected = $cfg->HTML_SELECTED;
@@ -436,8 +443,6 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 			 'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON' => '',
 			 'PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF' => $html_selected));
 }
-//start php.ini - doesnt make a difference if i load the data from $cfg or from $phpini->getData()
-
 
 if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
 	$tpl->assign(
@@ -512,11 +517,15 @@ switch ($phpini->getDataVal('phpiniErrorReporting')) {
 
 $htmlChecked = $cfg->HTML_CHECKED;
 
-$disabledFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
-$disabledFunctionsAll = array('SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK');
+if (PHP_SAPI != 'apache2handler') {
+	$disabledFunctions = explode(',', $phpini->getDataVal('phpiniDisableFunctions'));
+	$disabledFunctionsAll = array('SHOW_SOURCE', 'SYSTEM', 'SHELL_EXEC', 'PASSTHRU', 'EXEC', 'PHPINFO', 'SHELL', 'SYMLINK');
 
-foreach ($disabledFunctionsAll as $function) {
-	$tpl->assign($function, in_array(strtolower($function), $disabledFunctions) ? $htmlChecked : '');
+	foreach ($disabledFunctionsAll as $function) {
+		$tpl->assign($function, in_array(strtolower($function), $disabledFunctions) ? $htmlChecked : '');
+	}
+} else {
+	$tpl->assign('PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK', '');
 }
 
 switch ($cfg->LOG_LEVEL) {

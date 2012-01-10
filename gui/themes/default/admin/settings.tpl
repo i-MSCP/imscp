@@ -251,6 +251,7 @@
 								<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}"/> {TR_MIB}
 							</td>
 						</tr>
+						<!-- BDP: php_editor_disable_functions_block -->
 						<tr>
 							<td><label>{TR_PHPINI_DISABLE_FUNCTIONS}</label></td>
 							<td>
@@ -274,6 +275,7 @@
 								</div>
 							</td>
 						</tr>
+						<!-- EDP: php_editor_disable_functions_block -->
 					</table>
 				</fieldset>
 
