@@ -299,6 +299,7 @@ sub pkt_add_data {
 				}
 				$rs = doSQL($sql);
 			} else {
+			    $INSTALL_DATA{software_desc} =~ s/(["'*])/\\$1/g;
 				$sql = "
 					UPDATE
 						`web_software`
