@@ -23,7 +23,7 @@
 	/*<![CDATA[*/
 		$(document).ready(function() {
 			setTimeout(function(){$('.error, .success').fadeOut(2000);},2000);
-			$('a').imscpTooltip();
+			$('.body a').imscpTooltip();
 			$('button').button({icons: {secondary: "ui-icon-triangle-1-e"}});
 			$('input').first().focus();
 		});

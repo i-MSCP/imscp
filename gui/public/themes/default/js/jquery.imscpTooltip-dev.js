@@ -21,15 +21,15 @@
  * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version 0.0.1
+ * @version 0.0.2
  */
 (function ($) {
 
 	var tooltipElement = {},
 		// the current tooltipped element
-		current,
+		currentTooltip,
 		// the text of the current element, used for restoring
-		text,
+		tooltipText,
 		// timeout id for delayed tooltips
 		tooltipId,
 		// flag for mouse tracking
@@ -38,12 +38,12 @@
 		IE = $.browser.msie && /MSIE\s(5\.5|6\.)/.test(navigator.userAgent);
 
 	$.imscpTooltip = {
-		defaultsSettings:{ // Default settings
-			msg:'',
+		defaultsSettings:{ // Default getSettings
+			msg:"",
 			opacity:0.85,
 			top:10,
 			left:10,
-			delay:500,
+			delay:200,
 			fade:true,
 			extraClass:"",
 			id:"imscpTooltip"
@@ -51,34 +51,42 @@
 	};
 
 	$.fn.extend({
-		imscpTooltip:function (settings) { // Main
-			settings = $.extend({}, $.imscpTooltip.defaultsSettings, settings);
+		imscpTooltip:function (parameters) { // Main
+			settings = $.extend({}, $.imscpTooltip.defaultsSettings, parameters);
 			createTooltipElement(settings);
 
 			return this.each(
 				function () {
-					// Store current tooltip settings
-					$.data(this, "imscpTooltip", settings);
+					if(settings.msg || this.title) {
+						// Store settings for current tooltip
+						$.data(this, "imscpTooltip", settings);
 
-					this.tOpacity = tooltipElement.parent.css("opacity");
+						// get tooltip opacity
+						this.tOpacity = tooltipElement.parent.css("opacity");
 
-					// Set tooltip text
-					this.tooltipText = settings.msg || this.title || '';
-					$(this).removeAttr("title");
+						// set tooltip text
+						this.tooltipText = settings.msg || this.title;
+						$(this).removeAttr("title");
 
-					// Remove alt attribute to prevent default tooltip in IE
-					this.alt = "";
-				}).mouseover(save).mouseout(hide).click(hide);
+						// Remove alt attribute to prevent default tooltip in IE
+						this.alt = "";
+
+						$(this).mouseover(save).mouseout(hide).click(hide);
+					}
+				}
+			);
 		}
 	});
 
-	// Return settings for given element
-	function settings(element) {
+	// Return getSettings for given element
+	function getSettings(element)
+	{
 		return $.data(element, "imscpTooltip");
 	}
 
 	// Create tooltip element and add it to the document
-	function createTooltipElement(settings) {
+	function createTooltipElement(settings)
+	{
 		if (tooltipElement.parent) {
 			return;
 		}
@@ -94,16 +102,17 @@
 	}
 
 	// main event handler to start showing tooltips
-	function handle(event) {
-		// show helper, either with timeout or on instant
-		if (settings(this).delay) {
-			tooltipId = setTimeout(show, settings(this).delay);
+	function handle(event)
+	{
+		// show tooltip, either with timeout or on instant
+		if (getSettings(this).delay) {
+			tooltipId = setTimeout(show, getSettings(this).delay);
 		} else {
 			show();
 		}
 
 		// if selected, update the helper position when the mouse moves
-		followCursor = !settings(this).followCursor;
+		followCursor = !getSettings(this).followCursor;
 		$(document.body).bind('mousemove', update);
 
 		// update at least once
@@ -111,34 +120,37 @@
 	}
 
 	// save elements title before the tooltip is displayed
-	function save() {
-		if (this == current || !this.tooltipText) {
+	function save()
+	{
+		if (this == currentTooltip || !this.tooltipText) {
 			return;
 		}
 
 		// save current tooltip
-		current = this;
+		currentTooltip = this;
 
-		// Get tooltip text
-		text = this.tooltipText;
+		// get tooltip text
+		tooltipText = this.tooltipText;
 
-		tooltipElement.body.html(text).show();
+		tooltipElement.body.html(tooltipText).show();
 
-		// add an optional class for this tip
-		tooltipElement.parent.addClass(settings(this).extraClass);
+		// add an optional class for this tooltip
+		//alert(getSettings(this).extraClass)
+		tooltipElement.parent.addClass(getSettings(this).extraClass);
 
 		handle.apply(this, arguments);
 	}
 
 	// delete timeout and show helper
-	function show() {
+	function show()
+	{
 		tooltipId = null;
 
-		if ((!IE || !$.fn.bgiframe) && settings(current).fade) {
+		if ((!IE || !$.fn.bgiframe) && getSettings(currentTooltip).fade) {
 			if (tooltipElement.parent.is(":animated")) {
-				tooltipElement.parent.stop().show().fadeTo(settings(current).fade, current.tOpacity);
+				tooltipElement.parent.stop().show().fadeTo(getSettings(currentTooltip).fade, currentTooltip.tOpacity);
 			} else {
-				tooltipElement.parent.is(':visible') ? tooltipElement.parent.fadeTo(settings(current).fade, current.tOpacity) : tooltipElement.parent.fadeIn(settings(current).fade);
+				tooltipElement.parent.is(':visible') ? tooltipElement.parent.fadeTo(getSettings(currentTooltip).fade, currentTooltip.tOpacity) : tooltipElement.parent.fadeIn(getSettings(currentTooltip).fade);
 			}
 		} else {
 			tooltipElement.parent.show();
@@ -149,10 +161,11 @@
 
 	/**
 	 * callback for mousemove
-	 * updates the helper position
+	 * updates the tooltip position
 	 * removes itself when no current element
 	 */
-	function update(event) {
+	function update(event)
+	{
 		if (event && event.target.tagName == "OPTION") {
 			return;
 		}
@@ -163,7 +176,7 @@
 		}
 
 		// if no current element is available, remove this listener
-		if (current == null) {
+		if (currentTooltip == null) {
 			$(document.body).unbind('mousemove', update);
 			return;
 		}
@@ -176,11 +189,11 @@
 
 		if (event) {
 			// position the helper 15 pixel to bottom right, starting from mouse position
-			left = event.pageX + settings(current).left;
-			top = event.pageY + settings(current).top;
+			left = event.pageX + getSettings(currentTooltip).left;
+			top = event.pageY + getSettings(currentTooltip).top;
 			var right = 'auto';
 
-			if (settings(current).positionLeft) {
+			if (getSettings(currentTooltip).positionLeft) {
 				right = $(window).width() - left;
 				left = 'auto';
 			}
@@ -192,18 +205,19 @@
 
 		// check horizontal position
 		if (v.x + v.cx < h.offsetLeft + h.offsetWidth) {
-			left -= h.offsetWidth + 20 + settings(current).left;
+			left -= h.offsetWidth + 20 + getSettings(currentTooltip).left;
 			tooltipElement.parent.css({left:left + 'px'}).addClass("viewport-right");
 		}
 
 		// check vertical position
 		if (v.y + v.cy < h.offsetTop + h.offsetHeight) {
-			top -= h.offsetHeight + 20 + settings(current).top;
+			top -= h.offsetHeight + 20 + getSettings(currentTooltip).top;
 			tooltipElement.parent.css({top:top + 'px'}).addClass("viewport-bottom");
 		}
 	}
 
-	function viewport() {
+	function viewport()
+	{
 		return {
 			x:$(window).scrollLeft(),
 			y:$(window).scrollTop(),
@@ -213,17 +227,17 @@
 	}
 
 	// hide helper and restore added classes and the title
-	function hide(event) {
-
+	function hide(event)
+	{
 		// clear timeout if possible
 		if (tooltipId) {
 			clearTimeout(tooltipId);
 		}
 
 		// no more current element
-		current = null;
+		currentTooltip = null;
 
-		var tsettings = settings(this);
+		var tsettings = getSettings(this);
 
 		function complete() {
 			tooltipElement.parent.removeClass(tsettings.extraClass).hide().css("opacity", "");

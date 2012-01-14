@@ -115,10 +115,11 @@ input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, t
 
 /** Tooltips */
 #imscpTooltip {
-	background: rgb(0, 0, 0) url(../images/tooltips/info.png) no-repeat 5px 50%;
+	background-color: rgb(0, 0, 0);
 	border-color: rgb(0, 0, 0);
 }
 #imscpTooltip .tooltipBody {color: rgb(255, 255, 255);}
+.tooltip_notice {background: url(../images/tooltips/info.png) no-repeat 5px 50%;}
 
 /* services status */
 .up { color: rgb(61, 122, 21); }
