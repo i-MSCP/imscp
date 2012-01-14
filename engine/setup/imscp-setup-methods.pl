@@ -1541,7 +1541,7 @@ sub setup_ssl{
 	$main::imscpConfig{'SSL_ENABLED'} = $main::imscpConfigOld{'SSL_ENABLED'}
 		if(!$main::imscpConfig{'SSL_ENABLED'} && $main::imscpConfigOld{'SSL_ENABLED'});
 	$main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} = $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'}
-		if $main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} ne $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'};
+		if $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'} && ($main::imscpConfig{'BASE_SERVER_VHOST_PREFIX'} ne $main::imscpConfigOld{'BASE_SERVER_VHOST_PREFIX'});
 
 	if(!$main::imscpConfig{'SSL_ENABLED'}){
 		Modules::openssl->new()->{openssl_path} = $main::imscpConfig{'CMD_OPENSSL'};
