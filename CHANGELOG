@@ -60,6 +60,7 @@ Tickets:
 	- Fixed #270: Defect - Users Can´t acces domain overview
 	- Fixed #271: Enhancement - Do not enforce session reuse for FTP over SSL (Tx Cube)
 	- Fixed #272: Task - Update postfix's master.cf
+	- Fixed #274: Defect - proftpd limits do not work
 	- Fixed #275: Defect - Service status always down when using ipv6 as base ip
 	- Fixed #276: Defect - proftpd can´t resolv hostname when using ipv6 as base ip
 	- Fixed #278: Defect - Possible corruption of postfix's domain configuration
