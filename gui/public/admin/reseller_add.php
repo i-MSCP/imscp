@@ -341,7 +341,7 @@ function  _admin_generatePersonalDataFrom($tpl, &$data)
 			 'FEMALE' => ($data['gender'] == 'F') ? $htmlSelected : '',
 			 'TR_UNKNOWN' => tr('Unknown'),
 			 'UNKNOWN' => ($data['gender'] != 'M' && $data['gender'] != 'F') ? $htmlSelected : '',
-			 'TR_FIRM' => tr('Compagny'),
+			 'TR_FIRM' => tr('Company'),
 			 'FIRM' => tohtml($data['firm']),
 			 'TR_STREET1' => tr('Street 1'),
 			 'STREET1' => tohtml($data['street1']),
