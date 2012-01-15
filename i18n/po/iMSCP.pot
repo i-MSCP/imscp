@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-01-15 09:28+0100\n"
+"POT-Creation-Date: 2012-01-16 00:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -985,9 +985,6 @@ msgid "Closed tickets"
 msgstr ""
 
 msgid "Closes tickets"
-msgstr ""
-
-msgid "Compagny"
 msgstr ""
 
 msgid "Company"
@@ -5862,9 +5859,6 @@ msgid "wrong request."
 msgstr ""
 
 msgid "yes"
-msgstr ""
-
-msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"

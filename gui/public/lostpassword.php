@@ -74,7 +74,7 @@ $tpl->assign(
 		'CONTEXT_CLASS' => 'login',
 		'productLongName' => tr('internet Multi Server Control Panel'),
 		'productLink' => 'http://www.i-mscp.net',
-		'productCopyright' => tr('© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved'),
+		'productCopyright' => tr('© 2010-2012 i-MSCP Team<br/>All Rights Reserved'),
 		'TR_CAPCODE' => tr('Security code'),
 		'GET_NEW_IMAGE' => tr('Get a new image'),
 		'TR_IMGCAPCODE' => '<img id="captcha" src="imagecode.php" width="' . $cfg->LOSTPASSWORD_CAPTCHA_WIDTH .
