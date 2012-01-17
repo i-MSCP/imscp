@@ -512,7 +512,6 @@ function deny_access()
  */
 function register_user($userName, $userPassword)
 {
-
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeRegisterUser);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
@@ -555,8 +554,15 @@ function register_user($userName, $userPassword)
 		}
 
 		$sessionId = session_id();
-		$query = 'UPDATE `login` SET `user_name` = ?, `lastaccess` = ? WHERE `session_id` = ?';
-		exec_query($query, array($userName, time(), $sessionId));
+		$query = '
+			UPDATE
+				`login`
+			SET
+				`lastaccess` = UNIX_TIMESTAMP(), login_count = 1, `user_name` = ?
+			WHERE
+				`session_id` = ?
+		';
+		exec_query($query, array($userName, $sessionId));
 
 		$_SESSION['user_logged'] = $userData['admin_name'];
 		$_SESSION['user_pass'] = $userData['admin_pass'];

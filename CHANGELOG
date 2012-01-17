@@ -84,8 +84,8 @@ Tickets:
 	- Fixed #311: Defect - autoinstaller cleans squirrel data folder
 	- Fixed #313: Enhancement - Some improvements on postfix's master.cf (tx aseques)
 	- Fixed #314: Defect: Software package installation failed
+	- Fixed #317: Malfunction - Bruteforce detects successful connections as attacks
 	- Fixed #318: Malfunction - Changes in imscp.conf are lost after upgrading
-
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.5 (beta 5)

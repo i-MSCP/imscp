@@ -62,7 +62,7 @@ if(!empty($_POST)) {
 	}
 }
 
-if (check_user_login() && !redirect_to_level_page()) {
+if (!redirect_to_level_page()) {
 	unset_user_login_data();
 }
 
@@ -132,8 +132,6 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableU
 		$tpl->assign('LOSTPWD_BUTTON', '');
 	}
 }
-
-
 
 generatePageMessage($tpl);
 
