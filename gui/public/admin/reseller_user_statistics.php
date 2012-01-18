@@ -176,11 +176,11 @@ $tpl->define_dynamic(
 		'page' => 'admin/reseller_user_statistics.tpl',
 		'page_message' => 'layout',
 		'domain_statistics_entries_block' => 'page',
-		'domain_statistics_entry_block' => 'domain_statistics_entries_block',));
+		'domain_statistics_entry_block' => 'domain_statistics_entries_block'));
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Reseller customer Statistics'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Reseller customer statistics'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
 		'TR_TRAFF' => tr('Traffic usage'),

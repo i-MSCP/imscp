@@ -175,7 +175,7 @@ $tpl->assign(
 		'TR_FTP' => tr('FTP accounts'),
 		'TR_SQL_DB' => tr('SQL databases'),
 		'TR_SQL_USER' => tr('SQL users'),
-		'TR_RESELLER_TOOLTIP' => 'Show detailed statistics for this reseller',
+		'TR_RESELLER_TOOLTIP' => tr('Show detailed statistics for this reseller'),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
 
 generateNavigation($tpl);
