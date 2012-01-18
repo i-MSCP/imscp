@@ -410,7 +410,7 @@ table {
 th, tfoot td {
 	vertical-align: middle;
 	padding: 0.5em;
-	white-space: nowrap;*
+	white-space: nowrap;
 	text-align: left;
 	font-weight: bold;
 }

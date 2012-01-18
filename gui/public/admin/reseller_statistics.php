@@ -47,7 +47,7 @@
  */
 function admin_generatePage($tpl)
 {
-	$query = "SELECT `admin_id`, `admin_name` FROM admin WHERE `admin_type` = 'reseller'";
+	$query = "SELECT `admin_id`, `admin_name` FROM `admin` WHERE `admin_type` = 'reseller'";
 	$stmt = execute_query($query);
 
 	if ($stmt->rowCount()) {
@@ -57,7 +57,7 @@ function admin_generatePage($tpl)
 		}
 	} else {
 		$tpl->assign('RESELLER_STATISTICS_ENTRIES_BLOCK', '');
-		set_page_message('No statistics to display. You must first create a reseller account.');
+		set_page_message('No reseller statistics to display.');
 	}
 }
 
@@ -153,7 +153,6 @@ $cfg = iMSCP_Registry::get('config');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 $tpl = new iMSCP_pTemplate();
-
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',

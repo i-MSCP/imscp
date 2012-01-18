@@ -117,14 +117,14 @@ function _reseller_GenerateDomainStatisticsEntry($tpl, $domainId)
 			'SUB_MSG' => ($usub_max)
 				? (
 					($usub_max > 0)
-					? tr('%1$d of %2$d', numberBytesHuman($usub_current), $usub_max)
-					: tr('disabled')
+						? tr('%1$d of %2$d', numberBytesHuman($usub_current), $usub_max)
+						: tr('disabled')
 				) : tr('%d of unlimited', numberBytesHuman($usub_current)),
 			'ALS_MSG' => ($uals_max)
 				? (
-				($uals_max > 0)
-					? tr('%1$d of %2$d', numberBytesHuman($uals_current), $uals_max)
-					: tr('disabled')
+					($uals_max > 0)
+						? tr('%1$d of %2$d', numberBytesHuman($uals_current), $uals_max)
+						: tr('disabled')
 				) : tr('%d of unlimited', numberBytesHuman($uals_current)),
 			'MAIL_MSG' => ($umail_max)
 				? (

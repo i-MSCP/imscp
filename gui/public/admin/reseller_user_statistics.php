@@ -43,7 +43,8 @@
  * Generates page.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param $resellerId Reseller unique identifier
+ * @param int $resellerId Reseller unique identifier
+ * @return void
  */
 function admin_generatePage($tpl, $resellerId)
 {
@@ -67,6 +68,7 @@ function admin_generatePage($tpl, $resellerId)
  * @access private
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @param int $domainId Domain unique identifier
+ * @return void
  */
 function _admin_generateDomainStatisticsEntry($tpl, $domainId)
 {
