@@ -406,12 +406,11 @@ table {
 	border-collapse: collapse;
 	margin: 1em 0;
 	text-align: left;
-	/*overflow: visible;*/
 }
 th, tfoot td {
 	vertical-align: middle;
 	padding: 0.5em;
-	white-space: nowrap;
+	white-space: nowrap;*
 	text-align: left;
 	font-weight: bold;
 }
@@ -532,8 +531,11 @@ table .icon {float: none;}
 	position: relative;
 	width:100%;
 	clear: both;
+	white-space: nowrap;
 	margin: 0.5em 0;
-	overflow: hidden;
+	overflow-y:hidden;
+	overflow-x: auto;
+	padding-bottom: 10px;
 }
 .dataTables_length {
 	float:left;
@@ -569,11 +571,9 @@ table .icon {float: none;}
 .paginate_disabled_next { background-image: url('../images/icons/next_gray.png'); }
 .paginate_enabled_next { background-image: url('../images/icons/next.png'); }
 
-/*table.datatable {width:100%;}*/
-
 .datatable thead th {
 	cursor: pointer;
-	min-width: 5em;
+	padding-right:18px;
 }
 
 /* Form elements */
@@ -602,22 +602,19 @@ textarea {
 /* Graph */
 .graph {
 	height: 20px;
-	background-image: url('../images/background/graph_empty.png');
-	background-position: right top;
-	background-repeat: no-repeat;
+	background: url('../images/background/graph_empty.png') no-repeat right top;
 	width: 100%;
 	max-width: 1994px;
 	position: relative;
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
+	padding-right: 3px;
 }
 .graph span {
 	display: block;
 	min-width: 3px;
 	height: 20px;
-	background-image: url('../images/background/graph_full.png');
-	background-repeat: no-repeat;
+	background: url('../images/background/graph_full.png') no-repeat left top;
 	width: 0;
-	background-position: left top;
 }
 .graph strong {
 	display: block;

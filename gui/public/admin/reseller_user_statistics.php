@@ -27,233 +27,63 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
-// Include core library
-require 'imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
-check_login(__FILE__);
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/reseller_user_statistics.tpl',
-		'page_message' => 'layout',
-		'hosting_plans' => 'page',
-		'page_message' => 'layout',
-		'hosting_plans' => 'page',
-		'month_list' => 'page',
-		'year_list' => 'page',
-		'no_domains' => 'page',
-		'domain_list' => 'page',
-		'domain_entry' => 'domain_list',
-		'scroll_prev_gray' => 'page',
-		'scroll_prev' => 'page',
-		'scroll_next_gray' => 'page',
-		'scroll_next' => 'page'));
-
-if (isset($_POST['rid']) && isset($_POST['name'])) {
-	$rid = $_POST['rid'];
-	$name = $_POST['name'];
-} else if (isset($_GET['rid']) && isset($_GET['name'])) {
-	$rid = $_GET['rid'];
-	$name = $_GET['name'];
-}
-
-$year = 0;
-$month = 0;
-
-if (isset($_POST['month']) && isset($_POST['year'])) {
-	$year = $_POST['year'];
-	$month = $_POST['month'];
-} else if (isset($_GET['month']) && isset($_GET['year'])) {
-	$month = $_GET['month'];
-	$year = $_GET['year'];
-}
-
-if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
-	redirectTo('reseller_statistics.php');
-}
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Reseller User Statistics'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-/**
- * @param $tpl
- * @param $reseller_id
- * @param $reseller_name
+/*******************************************************************************
+ * Script functions
  */
-function generate_page($tpl, $reseller_id, $reseller_name) {
-
-	global $rid;
-	$cfg = iMSCP_Registry::get('config');
-
-	$start_index = 0;
-
-	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
-
-	if (isset($_GET['psi'])) {
-		$start_index = $_GET['psi'];
-	} else if (isset($_POST['psi'])) {
-		$start_index = $_POST['psi'];
-	}
-
-	$tpl->assign('POST_PREV_PSI', $start_index);
-
-	// count query
-	$count_query = "
-		SELECT
-			COUNT(`admin_id`) AS cnt
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = 'user'
-		AND
-			`created_by` = ?
-	";
-
-	$query = "
-		SELECT
-			`admin_id`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = 'user'
-		AND
-			`created_by` = ?
-		ORDER BY
-			`admin_name` DESC
-		LIMIT
-			$start_index, $rows_per_page
-	";
-
-	$rs = exec_query($count_query, $reseller_id);
-	$records_count = $rs->fields['cnt'];
-
-	$rs = exec_query($query, $reseller_id);
-
-	$tpl->assign(
-		array(
-			'RESELLER_NAME' => tohtml($reseller_name),
-			'RESELLER_ID' => $reseller_id));
-
-	if ($rs->rowCount() == 0) {
-		$tpl->assign(
-			array(
-				'DOMAIN_LIST' => '',
-				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => ''));
-	} else {
-		$prev_si = $start_index - $rows_per_page;
-
-		if ($start_index == 0) {
-			$tpl->assign('SCROLL_PREV', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_PREV_GRAY' => '',
-					'PREV_PSI' => $prev_si,
-					'RID' => $rid));
-		}
-
-		$next_si = $start_index + $rows_per_page;
-
-		if ($next_si + 1 > $records_count) {
-			$tpl->assign('SCROLL_NEXT', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_NEXT_GRAY' => '',
-					'NEXT_PSI' => $next_si,
-					'RID' => $rid));
-		}
-
-		$tpl->assign(
-			array(
-				'PAGE_MESSAGE'	=> '',
-				'NO_DOMAINS'	=> ''));
-
-		$row = 1;
-
-		while (!$rs->EOF) {
-			$admin_id = $rs->fields['admin_id'];
-
-			$query = "
-				SELECT
-					`domain_id`
-				FROM
-					`domain`
-				WHERE
-					`domain_admin_id` = ?
-			";
-			$dres = exec_query($query, $admin_id);
-
-			generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
-
-			$tpl->parse('DOMAIN_ENTRY', '.domain_entry');
-
-			$rs->moveNext();
-		}
-	}
-}
 
 /**
+ * Generates page.
  *
- * @param $tpl
- * @param $user_id
- * @param $row
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param $resellerId Reseller unique identifier
  */
-function generate_domain_entry($tpl, $user_id, $row) {
+function admin_generatePage($tpl, $resellerId)
+{
+	$query = "SELECT `domain_id` FROM `domain` WHERE `domain_created_id` = ?";
+	$stmt = exec_query($query, $resellerId);
 
-	global $crnt_month, $crnt_year;
+	if($stmt->rowCount()) {
+		foreach($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
+			_admin_generateDomainStatisticsEntry($tpl, $domainId);
+			$tpl->parse('DOMAIN_STATISTICS_ENTRY_BLOCK', 'domain_statistics_entry_block');
+		}
+	} else {
+		$tpl->assign('DOMAIN_STATISTICS_ENTRIES_BLOCK', '');
+		set_page_message('No domain statistics to display for this reseller.');
+	}
+}
 
-	list($domain_name,
-		$domain_id,
-		$web,
-		$ftp,
-		$smtp,
-		$pop3,
-		$utraff_current,
-		$udisk_current,
-		$i,
-		$j
-	) = generate_user_traffic($user_id);
+/**
+ * Genrate statistics entry for the given domain.
+ *
+ * @access private
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param int $domainId Domain unique identifier
+ */
+function _admin_generateDomainStatisticsEntry($tpl, $domainId)
+{
+	list(
+		$domain_name, $domainId, $web, $ftp, $smtp, $pop3, $utraff_current, $udisk_current
+	) = generate_user_traffic($domainId);
 
-	list($usub_current, $usub_max,
-		$uals_current, $uals_max,
-		$umail_current, $umail_max,
-		$uftp_current, $uftp_max,
-		$usql_db_current, $usql_db_max,
-		$usql_user_current, $usql_user_max,
-		$utraff_max, $udisk_max
-	) = generate_user_props($user_id);
+	list(
+		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
+		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $utraff_max, $udisk_max
+	) = generate_user_props($domainId);
 
 	$utraff_max = $utraff_max * 1024 * 1024;
-
 	$udisk_max = $udisk_max * 1024 * 1024;
 
-	list($traff_percent, $traff_red, $traff_green) = make_usage_vals($utraff_current, $utraff_max);
-
-	list($disk_percent, $disk_red, $disk_green) = make_usage_vals($udisk_current, $udisk_max);
-
-	$traff_show_percent = $traff_percent;
-
-	$disk_show_percent = $disk_percent;
+	list($traff_percent) = make_usage_vals($utraff_current, $utraff_max);
+	list($disk_percent) = make_usage_vals($udisk_current, $udisk_max);
 
 	if ($traff_percent > 100) {
 		$traff_percent = 100;
@@ -268,99 +98,107 @@ function generate_domain_entry($tpl, $user_id, $row) {
 	$tpl->assign(
 		array(
 			'DOMAIN_NAME' => tohtml($domain_name),
-
-			'MONTH' => $crnt_month,
-			'YEAR' => $crnt_year,
-			'DOMAIN_ID' => $domain_id,
-
-			'TRAFF_SHOW_PERCENT' => $traff_show_percent,
+			'MONTH' => date('m'),
+			'YEAR' => date('y'),
+			'DOMAIN_ID' => $domainId,
 			'TRAFF_PERCENT' => $traff_percent,
-			'TRAFF_RED' => $traff_red,
-			'TRAFF_GREEN' => $traff_green,
-
 			'TRAFF_MSG' => ($utraff_max)
-				? tr('%1$s <br/>of<br/> <b>%2$s</b>', sizeit($utraff_current), sizeit($utraff_max))
-				: tr('%s <br/>of<br/> <b>unlimited</b>', sizeit($utraff_current)),
-
-
-			'DISK_SHOW_PERCENT' => $disk_show_percent,
+				? tr('%1$s of %2$s</b>', numberBytesHuman($utraff_current), numberBytesHuman($utraff_max))
+				: tr('%s of unlimited</b>', numberBytesHuman($utraff_current)),
 			'DISK_PERCENT' => $disk_percent,
-			'DISK_RED' => $disk_red,
-			'DISK_GREEN' => $disk_green,
-
 			'DISK_MSG' => ($udisk_max)
-				? tr('%1$s <br/>of<br/> <b>%2$s</b>', sizeit($udisk_current), sizeit($udisk_max))
-				: tr('%s <br/>of<br/> <b>unlimited</b>', sizeit($udisk_current)),
-
-
-			'WEB' => sizeit($web),
-			'FTP' => sizeit($ftp),
-			'SMTP' => sizeit($smtp),
-			'POP3' => sizeit($pop3),
-
+				? tr('%1$s of %2$s</b>', numberBytesHuman($udisk_current), numberBytesHuman($udisk_max))
+				: tr('%s of unlimited</b>', numberBytesHuman($udisk_current)),
+			'WEB' => numberBytesHuman($web),
+			'FTP' => numberBytesHuman($ftp),
+			'SMTP' => numberBytesHuman($smtp),
+			'POP3' => numberBytesHuman($pop3),
 			'SUB_MSG' => ($usub_max)
 				? (($usub_max > 0)
-					? tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($usub_current), $usub_max)
-					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($usub_current)),
-
+					? tr('%1$d of %2$d</b>', numberBytesHuman($usub_current), $usub_max)
+					: tr('disabled</b>'))
+				: tr('%d of unlimited</b>', numberBytesHuman($usub_current)),
 			'ALS_MSG' => ($uals_max)
 				? (($uals_max > 0)
-					? tr('%1$d <br/>of<br/> <b>%2$d</b>', sizeit($uals_current), $uals_max)
-					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($uals_current)),
-
+					? tr('%1$d of %2$d</b>', numberBytesHuman($uals_current), $uals_max)
+					: tr('disabled</b>'))
+				: tr('%d of unlimited</b>', numberBytesHuman($uals_current)),
 			'MAIL_MSG' => ($umail_max)
 				? (($umail_max > 0)
-					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max)
-					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', $umail_current),
-
+					? tr('%1$d of %2$d</b>', $umail_current, $umail_max)
+					: tr('disabled</b>'))
+				: tr('%d of unlimited</b>', $umail_current),
 			'FTP_MSG' => ($uftp_max)
 				? (($uftp_max > 0)
-					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $uftp_current, $uftp_max)
-					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', $uftp_current),
-
+					? tr('%1$d of %2$d</b>', $uftp_current, $uftp_max)
+					: tr('disabled</b>'))
+				: tr('%d of unlimited', $uftp_current),
 			'SQL_DB_MSG' => ($usql_db_max)
 				? (($usql_db_max > 0)
-					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_db_current, $usql_db_max)
-					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_db_current),
+					? tr('%1$d of %2$d', $usql_db_current, $usql_db_max)
+					: tr('disabled</b>'))
+				: tr('%d of unlimited', $usql_db_current),
 			'SQL_USER_MSG' => ($usql_user_max)
 				? (($usql_user_max > 0)
-					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $usql_user_current, $usql_user_max)
-					: tr('<b>disabled</b>'))
-				: tr('%d <br/>of<br/> <b>unlimited</b>', $usql_user_current)));
+					? tr('%1$d of %2$d', $usql_user_current, $usql_user_max)
+					: tr('disabled'))
+				: tr('%d of unlimited', $usql_user_current)));
 }
 
-generateNavigation($tpl);
+/*******************************************************************************
+ * Main script
+ */
+
+// Include core library
+require 'imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
+check_login(__FILE__);
+
+if (!isset($_GET['rid'])) {
+	set_page_message(tr('Wrong request.'), 'error');
+	redirectTo('reseller_statistics.php');
+	exit; // Useless but avoid IDE warning about possible undefined variable
+} else {
+	$resellerId = intval($_GET['rid']);
+}
+
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/reseller_user_statistics.tpl',
+		'page_message' => 'layout',
+		'domain_statistics_entries_block' => 'page',
+		'domain_statistics_entry_block' => 'domain_statistics_entries_block',));
 
 $tpl->assign(
 	array(
-		'TR_RESELLER_USER_STATISTICS' => tr('Reseller users table'),
-		'TR_MONTH' => tr('Month'),
-		'TR_YEAR' => tr('Year'),
-		'TR_SHOW' => tr('Show'),
-		'TR_NO_DOMAINS' => tr('This reseller has no domains.'),
-		'TR_DOMAIN_NAME' => tr('Domain'),
-		'TR_TRAFF' => tr('Traffic<br>usage'),
-		'TR_DISK' => tr('Disk<br>usage'),
-		'TR_WEB' => tr('Web<br>traffic'),
-		'TR_FTP_TRAFF' => tr('FTP<br>traffic'),
-		'TR_SMTP' => tr('SMTP<br>traffic'),
-		'TR_POP3' => tr('POP3/IMAP<br>traffic'),
-		'TR_SUBDOMAIN' => tr('Subdomain'),
-		'TR_ALIAS' => tr('Alias'),
-		'TR_MAIL' => tr('Mail'),
-		'TR_FTP' => tr('FTP'),
-		'TR_SQL_DB' => tr('SQL<br>database'),
-		'TR_SQL_USER' => tr('SQL<br>user'),
-		'VALUE_NAME' => tohtml($name),
-		'VALUE_RID' => $rid));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Reseller customer Statistics'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_DOMAIN_NAME' => tr('Domain name'),
+		'TR_TRAFF' => tr('Traffic usage'),
+		'TR_DISK' => tr('Disk usage'),
+		'TR_WEB' => tr('Http traffic'),
+		'TR_FTP_TRAFF' => tr('FTP traffic'),
+		'TR_SMTP' => tr('SMTP traffic'),
+		'TR_POP3' => tr('POP3/IMAP traffic'),
+		'TR_SUBDOMAIN' => tr('Subdomains'),
+		'TR_ALIAS' => tr('Aliases'),
+		'TR_MAIL' => tr('Mail accounts'),
+		'TR_FTP' => tr('FTP accounts'),
+		'TR_SQL_DB' => tr('SQL databases'),
+		'TR_SQL_USER' => tr('SQL users'),
+		'VALUE_RID' => $resellerId,
+		'TR_DOMAIN_TOOLTIP' => tr('Show detailed statistics for this domain'),
+		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations()));
 
-gen_select_lists($tpl, $month, $year);
-generate_page($tpl, $rid, $name);
+generateNavigation($tpl);
+admin_generatePage($tpl, $resellerId);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

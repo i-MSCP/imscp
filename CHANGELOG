@@ -39,6 +39,7 @@ Features / Enhancements:
 Tickets:
 	- Fixed #47:  Feature - Theme color chooser
 	- Fixed #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
+	- Fixed #240: Defect - Next page function on reseller statistics page doesn't work
 	- Fixed #242: Security Faillure - Directories are created with group write permissions
 	- Fixed #244: Bug - admin/domain_edit.php can cause several issues and must be rewritten
 	- Fixed #245: Defect - rkhunter log file is not created
