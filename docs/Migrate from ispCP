@@ -3,7 +3,7 @@ Migration from ispCP to i-MSCP
 This intends to be a guide for those interested into migrate your control panel from
 ispcp to imscp. Luckily there's a standard migration path ready for us.
 
-Currently you can go from ispCP 1.0.7 to i-MSCP 1.0.1.5 or newer.
+Currently you can go from ispCP 1.0.7 to i-MSCP 1.0.1.6 or newer.
 
 IMPORTANT: Test it before with a clone of your system, there could be problems and
 it's important to find them on the test phase
@@ -11,7 +11,7 @@ it's important to find them on the test phase
 1.  Download the current version of i-mscp from http://i-mscp.net/download
 2.  Untar the downloaded file
 
-    # tar -xzf i-mscp-1.0.1.5.tar.gz
+    # tar -xzf i-mscp-1.0.1.6.tar.gz
 
 3.  Start the installation of the system (as you would for a new install), but
     IMPORTANT, when you see the i-mscp setup screen. SAY NO, because you've to

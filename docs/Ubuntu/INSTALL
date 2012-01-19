@@ -18,7 +18,7 @@ Table of Content
 1)  Version Info
 ----------------
 
-i-MSCP Version:		1.0.1.5
+i-MSCP Version:		1.0.1.6
 Maintainer:         i-MSCP Team
 Homepage:			http://i-mscp.net
 Linux Distros:		Ubuntu >= Lucid Lynx
@@ -59,11 +59,11 @@ Make sure you as logged as root
 1.  Untar or unzip the distribution files to a secure directory
 
     # cd /usr/local/src
-    # tar xjvf imscp-1.0.1.5.tar.bz2
+    # tar xjvf imscp-1.0.1.6.tar.bz2
 
 2. Change to the newly created directory
 
-    # cd ./imscp-1.0.1.5
+    # cd ./imscp-1.0.1.6
 
 3.  (optional) Check the imscp.conf and adapt it to your requirements.
 
@@ -90,11 +90,11 @@ Make sure you are logged in as root and MySQL is running.
 1. Untar or unzip the distribution files to a secure directory
 
     # cd /usr/local/src
-    # tar xjvf imscp-1.0.1.5.tar.bz2
+    # tar xjvf imscp-1.0.1.6.tar.bz2
 
 2.  Change to the newly created directory
 
-    # cd ./imscp-1.0.1.5
+    # cd ./imscp-1.0.1.6
 
 3.  Update by running the imscp-autoinstall script
 
