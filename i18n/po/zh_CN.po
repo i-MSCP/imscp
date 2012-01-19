@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-14 11:27+0100\n"
-"PO-Revision-Date: 2012-01-14 10:23+0000\n"
+"POT-Creation-Date: 2012-01-19 09:06+0100\n"
+"PO-Revision-Date: 2012-01-18 07:26+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -36,12 +36,8 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-msgstr "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$d / %2$d <br/>of<br/> <b>允许量</b>"
+msgid "%1$d / %2$d of %3$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -52,8 +48,16 @@ msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d of <b>允许量</b>"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$d / %2$d of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -72,19 +76,23 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr ""
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
-msgstr "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgid "%1$s / %2$s of %3$s"
+msgstr ""
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$s / %2$s <br/>of<br/> <b>允许量</b>"
+msgid "%1$s / %2$s of unlimited"
+msgstr ""
 
 #, php-format
-msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>of<br/> <b>%2$s</b>"
+msgid "%1$s of %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
+msgstr ""
+
+#, php-format
+msgid "%1$s of %2$s</b>"
 msgstr ""
 
 #, php-format
@@ -108,10 +116,6 @@ msgid "%d %s remaining until account expiration"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br/>of<br/> <b>允许量</b>"
-
-#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
@@ -124,12 +128,16 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d strings translated"
+msgid "%d of unlimited"
 msgstr ""
 
 #, php-format
-msgid "%s <br/>of<br/> <b>unlimited</b>"
-msgstr "%s <br/>of<br/> <b>允许量</b>"
+msgid "%d of unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%d strings translated"
+msgstr ""
 
 #, php-format
 msgid "%s Errors in database"
@@ -185,6 +193,14 @@ msgstr ""
 
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts."
+msgstr ""
+
+#, php-format
+msgid "%s of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%s of unlimited</b>"
 msgstr ""
 
 #, php-format
@@ -989,9 +1005,6 @@ msgstr "已解疑问"
 msgid "Closes tickets"
 msgstr ""
 
-msgid "Compagny"
-msgstr ""
-
 msgid "Company"
 msgstr "公司名称"
 
@@ -1322,9 +1335,6 @@ msgstr ""
 
 msgid "Disk usage"
 msgstr "磁盘使用量"
-
-msgid "Disk<br>usage"
-msgstr "磁盘<br>使用量"
 
 msgid "Do not show any error"
 msgstr ""
@@ -1835,9 +1845,6 @@ msgstr "FTP 账号限制<br><i>(-1 无效, 0 无限制)</i>"
 msgid "FTP traffic"
 msgstr "FTP 流量"
 
-msgid "FTP<br>traffic"
-msgstr "FTP<br>流量"
-
 msgid "FTPs"
 msgstr "FTPs"
 
@@ -2099,6 +2106,9 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
+msgstr ""
+
+msgid "Http traffic"
 msgstr ""
 
 msgid "I Accept The Term of Service"
@@ -2823,6 +2833,9 @@ msgstr ""
 msgid "No domain alias system errors"
 msgstr "没有域名别名系统错误"
 
+msgid "No domain statistics to display."
+msgstr ""
+
 msgid "No domain system errors"
 msgstr "没有域名系统错误"
 
@@ -2845,9 +2858,6 @@ msgid "No records found"
 msgstr ""
 
 msgid "No reseller accounts found."
-msgstr ""
-
-msgid "No reseller is registered in your system."
 msgstr ""
 
 msgid "No set"
@@ -3073,9 +3083,6 @@ msgstr ""
 
 msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP 流量"
-
-msgid "POP3/IMAP<br>traffic"
-msgstr "POP3/IMAP<br>流量"
 
 msgid "Package actions"
 msgstr ""
@@ -3525,9 +3532,6 @@ msgstr "代理商名称"
 msgid "Reseller software list"
 msgstr ""
 
-msgid "Reseller statistics table"
-msgstr "代理商统计表"
-
 msgid "Reseller successfully added."
 msgstr ""
 
@@ -3594,9 +3598,6 @@ msgstr "SMTP 发送"
 msgid "SMTP traffic"
 msgstr "SMTP 流量"
 
-msgid "SMTP<br>traffic"
-msgstr "SMTP<br>流量"
-
 msgid "SQL"
 msgstr "SQL"
 
@@ -3614,9 +3615,6 @@ msgstr "SQL 用户"
 
 msgid "SQL accounts limit reached."
 msgstr ""
-
-msgid "SQL database"
-msgstr "SQL 数据库"
 
 msgid "SQL database created."
 msgstr ""
@@ -3654,9 +3652,6 @@ msgstr "SQL 数据库限制<br><i>(-1 无效, 0 无限制)</i>"
 
 msgid "SQL support"
 msgstr "SQL 支持"
-
-msgid "SQL user"
-msgstr "SQL 用户"
 
 msgid "SQL user created."
 msgstr ""
@@ -3705,12 +3700,6 @@ msgstr ""
 
 msgid "SQL-user not found."
 msgstr ""
-
-msgid "SQL<br>database"
-msgstr "SQL<br>数据库"
-
-msgid "SQL<br>user"
-msgstr "SQL<br>用户"
 
 msgid "SSL Certificates"
 msgstr ""
@@ -3861,6 +3850,12 @@ msgid ""
 msgstr ""
 
 msgid "Show default E-Mail addresses"
+msgstr ""
+
+msgid "Show detailed statistics for this domain"
+msgstr ""
+
+msgid "Show detailed statistics for this reseller"
 msgstr ""
 
 msgid "Show hosting plan"
@@ -4375,12 +4370,6 @@ msgid ""
 "new limit you entered."
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr "此代理商还没有域名。"
-
-msgid "This reseller has no domains."
-msgstr "此代理商没有域名。"
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
@@ -4500,9 +4489,6 @@ msgstr ""
 
 msgid "Traffic usage"
 msgstr "流量使用量"
-
-msgid "Traffic<br>usage"
-msgstr "流量<br>使用量"
 
 msgid "Translated strings"
 msgstr ""
@@ -4877,9 +4863,6 @@ msgstr ""
 
 msgid "Web traffic"
 msgstr "Web 流量"
-
-msgid "Web<br>traffic"
-msgstr "Web<br>流量"
 
 msgid "Webmail"
 msgstr "网页邮件"
@@ -5316,6 +5299,12 @@ msgstr ""
 msgid "days"
 msgstr ""
 
+msgid "disabled"
+msgstr ""
+
+msgid "disabled</b>"
+msgstr ""
+
 msgid "disk space"
 msgstr ""
 
@@ -5398,6 +5387,12 @@ msgstr ""
 msgid "i-MSCP - Admin / Profile / Layout"
 msgstr ""
 
+msgid "i-MSCP - Admin / Reseller customer statistics"
+msgstr ""
+
+msgid "i-MSCP - Admin / Reseller statistics"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr ""
 
@@ -5445,9 +5440,6 @@ msgstr "i-MSCP - 管理员/管理用户/代理商分配"
 
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - 管理员/管理用户/用户分配"
-
-msgid "i-MSCP - Admin/Reseller User Statistics"
-msgstr "i-MSCP - 管理员/代理商用户统计"
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - 管理员/服务器流量设置"
@@ -5608,6 +5600,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Customers statistics"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
@@ -5631,9 +5626,6 @@ msgstr ""
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr ""
-
-msgid "i-MSCP - Reseller statistics"
-msgstr "i-MSCP - 代理商统计"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理商/更改语言"
@@ -5875,9 +5867,6 @@ msgstr ""
 
 msgid "yes"
 msgstr "有效"
-
-msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

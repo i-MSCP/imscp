@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <barni@telia.com>, 2011.
+#   <barni@telia.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-14 11:27+0100\n"
-"PO-Revision-Date: 2012-01-14 10:23+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
+"POT-Creation-Date: 2012-01-19 09:06+0100\n"
+"PO-Revision-Date: 2012-01-18 11:13+0000\n"
+"Last-Translator: Cool <barni@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,12 +48,8 @@ msgid ""
 msgstr "Visa alla fel, förutom varningar om föråldrat kod (Production)"
 
 #, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-msgstr "%1$d / %2$d <br/>av<br/> <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$d / %2$d <br/>av<br/> <b>obegränsat</b>"
+msgid "%1$d / %2$d of %3$d"
+msgstr "%1$d / %2$d of %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -64,8 +60,16 @@ msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d av <b>obegränsat</b>"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$d <br/>av<br/> <b>%2$d</b>"
+msgid "%1$d / %2$d of unlimited"
+msgstr "%1$d / %2$d of unlimited"
+
+#, php-format
+msgid "%1$d of %2$d"
+msgstr "%1$d of %2$d"
+
+#, php-format
+msgid "%1$d of %2$d</b>"
+msgstr "%1$d of %2$d</b>"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -84,20 +88,24 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Version:%2$s, Språk:%3$s)"
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
-msgstr "%1$s / %2$s <br/>av<br/> <b>%3$s</b>"
+msgid "%1$s / %2$s of %3$s"
+msgstr "%1$s / %2$s of %3$s"
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$s / %2$s <br/>av<br/> <b>obegränsat</b>"
+msgid "%1$s / %2$s of unlimited"
+msgstr "%1$s / %2$s of unlimited"
 
 #, php-format
-msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>av<br/> <b>%2$s</b>"
+msgid "%1$s of %2$s"
+msgstr "%1$s of %2$s"
 
 #, php-format
 msgid "%1$s of %2$s MB"
 msgstr "%1$s av %2$s MB"
+
+#, php-format
+msgid "%1$s of %2$s</b>"
+msgstr "%1$s of %2$s</b>"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b> MB"
@@ -120,10 +128,6 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s återstår till kontot utgångsdatum"
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br/>av<br/> <b>obegränsat</b>"
-
-#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr "%d Service(s)-porten har uppdaterats"
 
@@ -136,12 +140,16 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr "%d konfiguration parameter(s) har / har uppdaterats."
 
 #, php-format
-msgid "%d strings translated"
-msgstr "%d strängar översatt"
+msgid "%d of unlimited"
+msgstr "%d of unlimited"
 
 #, php-format
-msgid "%s <br/>of<br/> <b>unlimited</b>"
-msgstr "%s <br/>av<br/> <b>obegränsat</b>"
+msgid "%d of unlimited</b>"
+msgstr "%d of unlimited</b>"
+
+#, php-format
+msgid "%d strings translated"
+msgstr "%d strängar översatt"
 
 #, php-format
 msgid "%s Errors in database"
@@ -203,8 +211,16 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr "%s lista är tom! Du kan inte lägga på postkonton."
 
 #, php-format
+msgid "%s of unlimited"
+msgstr "%s of unlimited"
+
+#, php-format
+msgid "%s of unlimited</b>"
+msgstr "%s of unlimited</b>"
+
+#, php-format
 msgid "%s page"
-msgstr ""
+msgstr "%s sida"
 
 #, php-format
 msgid "%s record"
@@ -270,27 +286,35 @@ msgstr ""
 "inte avkodas"
 
 msgid "'%value%' appears to be a domain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%value%' appears to be a domain name but cannot extract TLD part"
 
 msgid ""
 "'%value%' appears to be a domain name but cannot match TLD against known "
 "list"
 msgstr ""
+"'%value%' appears to be a domain name but cannot match TLD against known "
+"list"
 
 msgid ""
 "'%value%' appears to be a domain name but cannot match against domain name "
 "schema for TLD '%tld%'"
 msgstr ""
+"'%value%' appears to be a domain name but cannot match against domain name "
+"schema for TLD '%tld%'"
 
 msgid ""
 "'%value%' appears to be a domain name but contains a dash in an invalid "
 "position"
 msgstr ""
+"'%value%' appears to be a domain name but contains a dash in an invalid "
+"position"
 
 msgid ""
 "'%value%' appears to be a domain name but the given punycode notation cannot"
 " be decoded"
 msgstr ""
+"'%value%' appears to be a domain name but the given punycode notation cannot"
+" be decoded"
 
 msgid ""
 "'%value%' appears to be a local network name but local network names are not"
@@ -300,27 +324,35 @@ msgstr ""
 "inte tillåtna"
 
 msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%value%' appears to be a subdomain name but cannot extract TLD part"
 
 msgid ""
 "'%value%' appears to be a subdomain name but cannot match TLD against known "
 "list"
 msgstr ""
+"'%value%' appears to be a subdomain name but cannot match TLD against known "
+"list"
 
 msgid ""
 "'%value%' appears to be a subdomain name but cannot match against subdomain "
 "schema for TLD '%tld%'"
 msgstr ""
+"'%value%' appears to be a subdomain name but cannot match against subdomain "
+"schema for TLD '%tld%'"
 
 msgid ""
 "'%value%' appears to be a subdomain name but contains a dash in an invalid "
 "position"
 msgstr ""
+"'%value%' appears to be a subdomain name but contains a dash in an invalid "
+"position"
 
 msgid ""
 "'%value%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
 msgstr ""
+"'%value%' appears to be a subdomain name but the given punycode notation "
+"cannot be decoded"
 
 msgid ""
 "'%value%' appears to be an IP address, but IP addresses are not allowed"
@@ -339,10 +371,10 @@ msgid "'%value%' does not match the expected structure for a DNS hostname"
 msgstr "'%value%'matchar inte den förväntade strukturen för en DNS-värdnamn"
 
 msgid "'%value%' does not match the expected structure for a domain name"
-msgstr ""
+msgstr "'%value%' does not match the expected structure for a domain name"
 
 msgid "'%value%' does not match the expected structure for a subdomain name"
-msgstr ""
+msgstr "'%value%' does not match the expected structure for a subdomain name"
 
 msgid "'%value%' exceeds the allowed length"
 msgstr "'%value%' överskrider den tillåtna längden"
@@ -415,28 +447,31 @@ msgid "Access your mail through the web interface."
 msgstr "Få åtkomst till din post via webbgränssnittet."
 
 msgid "Account data"
-msgstr ""
+msgstr "Konto data"
 
 msgid ""
 "Account data were modified by another person before your changes. The update"
 " process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
 msgstr ""
+"Account data were modified by another person before your changes. The update"
+" process was successfully done but in recovery mode. We recommend you to "
+"check the result of it."
 
 msgid "Account limits"
-msgstr ""
+msgstr "Konto limitationer"
 
 msgid "Account name"
 msgstr "Kontonamn"
 
 msgid "Account overview"
-msgstr ""
+msgstr "Konto översikt"
 
 msgid "Account summary"
-msgstr ""
+msgstr "Kontot"
 
 msgid "Account type"
-msgstr ""
+msgstr "Konto typ"
 
 msgid "Action"
 msgstr "Process"
@@ -466,13 +501,13 @@ msgid "Add FTP user"
 msgstr "Lägg till FTP-användare"
 
 msgid "Add Ftp account"
-msgstr ""
+msgstr "Lägg till ett ftp konto"
 
 msgid "Add Htaccess group"
-msgstr ""
+msgstr "Lägg till ett Htaccess grupp"
 
 msgid "Add Htaccess user"
-msgstr ""
+msgstr "Lägg till en Htaccess användare"
 
 msgid "Add On A Domain"
 msgstr "Lägg i en domän"
@@ -484,7 +519,7 @@ msgid "Add SQL user"
 msgstr "Lägg till SQL-användare"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Lägg till ett SSL certifikat"
 
 msgid "Add admin"
 msgstr "Lägg till administratör"
@@ -493,25 +528,25 @@ msgid "Add alias"
 msgstr "Lägg till alias"
 
 msgid "Add catchall"
-msgstr ""
+msgstr "Lägg till catchall"
 
 msgid "Add custom DNS record"
 msgstr "Lägg till anpassade DNS-post"
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Lägg till ett eget meny"
 
 msgid "Add customer"
-msgstr ""
+msgstr "Lägg till en kund"
 
 msgid "Add customer - Next step"
-msgstr ""
+msgstr "Lägg till en kund - nästa steg"
 
 msgid "Add domain alias"
 msgstr "Lägg till domänalias"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Lägg till ett mail konto"
 
 msgid "Add group"
 msgstr "Lägg till grupp"
@@ -526,7 +561,7 @@ msgid "Add mail users"
 msgstr "Lägg till e-postanvändare"
 
 msgid "Add new IP address"
-msgstr ""
+msgstr "Lägg till ett ip address"
 
 msgid "Add new protected area"
 msgstr "Lägg till nytt skyddat område"
@@ -580,7 +615,7 @@ msgid "Admin Log"
 msgstr "Adminstratörslogg"
 
 msgid "Admin account successfully created."
-msgstr ""
+msgstr "Ett admin konto har lagds till."
 
 msgid "Admin log"
 msgstr "Administratörslogg"
@@ -595,10 +630,10 @@ msgid "Administrator"
 msgstr "Administratör"
 
 msgid "Administrator and customer"
-msgstr ""
+msgstr "Administratör och kund"
 
 msgid "Administrator and reseller"
-msgstr ""
+msgstr "Administratör och återförsäljare"
 
 msgid "Administrator level"
 msgstr "Administratörsnivå"
@@ -616,7 +651,7 @@ msgid "Alias"
 msgstr "Alias"
 
 msgid "Alias already assigned to another IP address."
-msgstr ""
+msgstr "Aliasen redan aktivt med en annan IP address"
 
 msgid "Alias awaiting for activation."
 msgstr "Alias ​​väntar för aktivering."
@@ -658,13 +693,13 @@ msgid "All fields are required."
 msgstr "Alla fält är obligatoriska."
 
 msgid "All fields seem to be valid."
-msgstr ""
+msgstr "Alle fält verka vara ok"
 
 msgid "All in"
 msgstr "Allt inåt"
 
 msgid "All levels"
-msgstr ""
+msgstr "Alla nivåer"
 
 msgid "All open tickets were deleted."
 msgstr "Alla öppna tickets togs bort."
@@ -688,19 +723,19 @@ msgid "All users & resellers"
 msgstr "Alla användare och återförsäljare"
 
 msgid "Allowed"
-msgstr ""
+msgstr "Tilllåten"
 
 msgid "Already in use"
-msgstr ""
+msgstr "Redan i bruk"
 
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
 
 msgid "An error occured! Please, contact your administrator."
-msgstr ""
+msgstr "Ett fel inträffade, var god och kontaktar administratören-"
 
 msgid "An error occurred while the authentication attempt."
-msgstr ""
+msgstr "An error occurred while the authentication attempt."
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Loggvisare för anti-rootkitverktyg"
@@ -756,11 +791,11 @@ msgstr "Är du säker på att du vill ta bort%s fånga alla?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
-msgstr ""
+msgstr "Är du säker att du vill raderar %s webhotells-plan"
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
-msgstr ""
+msgstr "Är du säker att du vill raderar %s meny?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -801,7 +836,7 @@ msgid "Assign existing SQL user"
 msgstr "Tilldela befintlig SQL användare"
 
 msgid "Assign group"
-msgstr ""
+msgstr "Tilldela grupp"
 
 msgid "Auto email template data updated!"
 msgstr "Automatisk e-postmall uppdaterad!"
@@ -810,7 +845,7 @@ msgid "Auto respond"
 msgstr "Automatiskt svar"
 
 msgid "Automatic updates"
-msgstr ""
+msgstr "Auto. uppdateringar"
 
 msgid "Available for purchasing"
 msgstr "Tillgängligt för köp"
@@ -819,7 +854,7 @@ msgid "Available i-MSCP updates"
 msgstr "Tillgängliga i-MSCP-uppdateringar"
 
 msgid "Available softwares"
-msgstr ""
+msgstr "Tillgängliga program"
 
 msgid "AwStats"
 msgstr "AwStats"
@@ -876,7 +911,7 @@ msgid "Bruteforce detection"
 msgstr "Bruteforcedetektering"
 
 msgid "CGI"
-msgstr ""
+msgstr "CGI"
 
 msgid "CGI Support: disabled"
 msgstr "CGI-stöd: inaktiverad"
@@ -904,7 +939,7 @@ msgstr "CPU-systeminfo"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
-msgstr ""
+msgstr "Kan redigerar PHP %s direktiver"
 
 msgid "Cancel"
 msgstr "Avbryt"
@@ -932,31 +967,31 @@ msgid "Catch all account scheduled for deletion."
 msgstr "Fånga alla konto planerad för radering."
 
 msgid "Catchall"
-msgstr ""
+msgstr "Catchall"
 
 msgid "Caution:"
 msgstr "OBS:"
 
 msgid "Certificate"
-msgstr ""
+msgstr "Certifikat"
 
 msgid "Certificate data"
-msgstr ""
+msgstr "Certifikats data"
 
 msgid "Certificate doesn't match key."
-msgstr ""
+msgstr "Certifikatet matchaer inte med nyckeln"
 
 msgid "Certificate for"
-msgstr ""
+msgstr "Certifikat för"
 
 msgid "Certificate key"
-msgstr ""
+msgstr "Certifikat nyckel"
 
 msgid "Certificate successfully scheduled for addition or modification."
-msgstr ""
+msgstr "Certificate successfully scheduled for addition or modification."
 
 msgid "Certificate sucessfully scheduled for deletion."
-msgstr ""
+msgstr "Certificate sucessfully scheduled for deletion."
 
 msgid "Change"
 msgstr "Ändra"
@@ -974,7 +1009,7 @@ msgid "Change personal data"
 msgstr "Ändra personlig information"
 
 msgid "Changes"
-msgstr ""
+msgstr "Ändringar"
 
 msgid "Check Out"
 msgstr "Kassa"
@@ -996,10 +1031,10 @@ msgid "Choose hosting plan"
 msgstr "Välj webbhotell"
 
 msgid "Choose layout color"
-msgstr ""
+msgstr "Välj layoutens färg"
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Välj språk"
 
 msgid "Circular"
 msgstr "Cirkulär"
@@ -1029,10 +1064,7 @@ msgid "Closed tickets"
 msgstr "Stängda supportärenden"
 
 msgid "Closes tickets"
-msgstr ""
-
-msgid "Compagny"
-msgstr ""
+msgstr "Closes tickets"
 
 msgid "Company"
 msgstr "Företag"
@@ -1041,7 +1073,7 @@ msgid "Compress HTML output"
 msgstr "Komprimera HTML-utdata"
 
 msgid "Configuration in progress..."
-msgstr ""
+msgstr "Configuration in progress..."
 
 msgid "Continue"
 msgstr "Fortsätt"
@@ -1076,7 +1108,7 @@ msgid "Country"
 msgstr "Land"
 
 msgid "Create"
-msgstr ""
+msgstr "Create"
 
 msgid "Create catch all"
 msgstr "Skapa catch-all"
@@ -1121,7 +1153,7 @@ msgid "Custom DNS records"
 msgstr "Custom DNS-poster"
 
 msgid "Custom apache logs"
-msgstr ""
+msgstr "Custom apache logs"
 
 msgid "Custom error page updated."
 msgstr "Egen felsida uppdaterad."
@@ -1130,16 +1162,16 @@ msgid "Custom error pages"
 msgstr "Anpassade felsidor"
 
 msgid "Custom menu name and link"
-msgstr ""
+msgstr "Custom menu name and link"
 
 msgid "Custom menu successfully added."
-msgstr ""
+msgstr "Custom menu successfully added."
 
 msgid "Custom menu successfully deleted."
-msgstr ""
+msgstr "Custom menu successfully deleted."
 
 msgid "Custom menu successfully updated."
-msgstr ""
+msgstr "Custom menu successfully updated."
 
 msgid "Custom menus"
 msgstr "Egna menyer"
@@ -1148,7 +1180,7 @@ msgid "Custom orderpanel Id"
 msgstr "Anpassad orderpanel Id"
 
 msgid "Customer"
-msgstr ""
+msgstr "Kund"
 
 msgid "Customer ID"
 msgstr "Kund ID"
@@ -1160,13 +1192,13 @@ msgid "Customer account successfully updated."
 msgstr "Kundkonto uppdaterats."
 
 msgid "Customer consumption"
-msgstr ""
+msgstr "Customer consumption"
 
 msgid "Customer data"
 msgstr "Kunddata"
 
 msgid "Customer level"
-msgstr ""
+msgstr "Customer level"
 
 msgid "Customer order sucessfully removed."
 msgstr "Kundorder har tagits bort."
@@ -1178,19 +1210,19 @@ msgid "Customer scheduled for deletion."
 msgstr "Kunden planerad för radering."
 
 msgid "Customer statistics"
-msgstr ""
+msgstr "Customer statistics"
 
 msgid "Customer successfully added."
-msgstr ""
+msgstr "Customer successfully added."
 
 msgid "Customer's layout color successfully updated."
-msgstr ""
+msgstr "Customer's layout color successfully updated."
 
 msgid "Customers"
 msgstr "Kunder"
 
 msgid "Customers assignment"
-msgstr ""
+msgstr "Customers assignment"
 
 msgid "Customize error pages for your domain."
 msgstr "Anpassa fel sidor för din domän."
@@ -1215,7 +1247,7 @@ msgid "Daily backup"
 msgstr "Daglig backup"
 
 msgid "Data were been altered. Please try again."
-msgstr ""
+msgstr "Data were been altered. Please try again."
 
 msgid "Database"
 msgstr "Databas"
@@ -1248,7 +1280,7 @@ msgid "Database users"
 msgstr "Databasanvändare"
 
 msgid "Databases"
-msgstr ""
+msgstr "Databaser"
 
 msgid "Date"
 msgstr "Datum"
@@ -1263,7 +1295,7 @@ msgid "Days"
 msgstr "Dagar"
 
 msgid "Debugger"
-msgstr ""
+msgstr "Debugger"
 
 msgid "Default language"
 msgstr "Standardspråk"
@@ -1281,13 +1313,13 @@ msgid "Delete all tickets"
 msgstr "Ta bort alla tickets"
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Raderar kund"
 
 msgid "Delete domain"
 msgstr "Ta bort domän"
 
 msgid "Delete domain - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Delete domain - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Ta bort från logg:"
@@ -1305,7 +1337,7 @@ msgid "Delete the ticket"
 msgstr "Ta bort ticket"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Deletion in progress..."
 
 msgid "Demo Version!"
 msgstr "Demoversion!"
@@ -1317,13 +1349,13 @@ msgid "Details"
 msgstr "Detaljer"
 
 msgid "Directive name"
-msgstr ""
+msgstr "Directive name"
 
 msgid "Directive value"
-msgstr ""
+msgstr "Directive value"
 
 msgid "Directive values"
-msgstr ""
+msgstr "Directive values"
 
 msgid "Directories"
 msgstr "Kataloger"
@@ -1341,7 +1373,7 @@ msgid "Disabled"
 msgstr "Inaktiv"
 
 msgid "Disallowed"
-msgstr ""
+msgstr "Inte tillåten"
 
 msgid "Disk"
 msgstr "Diskutrymme"
@@ -1356,19 +1388,16 @@ msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
 msgstr "Diskgräns <br><i>(0 obegränsat)</i>"
 
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Disk limit [MiB]<br><i>(0 unlimited)</i>"
 
 msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Disk usage"
 msgstr "Diskanvändning"
-
-msgid "Disk<br>usage"
-msgstr "Disk<br>användning"
 
 msgid "Do not show any error"
 msgstr "Visa inte fel"
@@ -1394,7 +1423,7 @@ msgid "Domain IP"
 msgstr "Domän-IP"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "Domain Limit"
 
 msgid "Domain Name"
 msgstr "Domännamn"
@@ -1421,7 +1450,7 @@ msgid "Domain account summary"
 msgstr "Domänkonto sammandrag"
 
 msgid "Domain accounts"
-msgstr ""
+msgstr "Domain accounts"
 
 msgid "Domain alias"
 msgstr "Domänalias"
@@ -1509,14 +1538,18 @@ msgid ""
 "Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid ""
 "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "Domain already assigned to another IP address."
-msgstr ""
+msgstr "Domain already assigned to another IP address."
 
 msgid "Domain already registered in our database."
 msgstr "Domän som redan är registrerade i vår databas."
@@ -1532,12 +1565,15 @@ msgid ""
 "process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
 msgstr ""
+"Domain data were modified by another person before your changes. The update "
+"process was successfully done but in recovery mode. We recommend you to "
+"check the result of it."
 
 msgid "Domain databases"
 msgstr "Domain databaser"
 
 msgid "Domain detail"
-msgstr ""
+msgstr "Domain detail"
 
 msgid "Domain details"
 msgstr "Domändetaljer"
@@ -1555,7 +1591,7 @@ msgid "Domain expire date"
 msgstr "Domain utgångsdatum"
 
 msgid "Domain expires date"
-msgstr ""
+msgstr "Domain expires date"
 
 msgid "Domain mails"
 msgstr "E-poster för domän"
@@ -1567,34 +1603,34 @@ msgid "Domain names validation"
 msgstr "Domännamnsvalidering"
 
 msgid "Domain new expires date"
-msgstr ""
+msgstr "Domain new expires date"
 
 msgid "Domain not found."
 msgstr "Domain hittades inte."
 
 msgid "Domain overview"
-msgstr ""
+msgstr "Domain overview"
 
 msgid "Domain properties successfully updated."
 msgstr "Domain egenskaper har uppdaterats."
 
 msgid "Domain scheduled for update."
-msgstr ""
+msgstr "Domain scheduled for update."
 
 msgid "Domain statistics"
 msgstr "Domänstatistik"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Domain statistics - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
-msgstr ""
+msgstr "Domain status is not ok."
 
 msgid "Domain subdomains"
 msgstr "Domain underdomäner"
 
 msgid "Domain successfully updated."
-msgstr ""
+msgstr "Domain successfully updated."
 
 msgid "Domain with same name already exists."
 msgstr "Domän med samma namn finns redan."
@@ -1606,13 +1642,13 @@ msgid "Domain with this name already exist."
 msgstr "Domän med det namnet finns redan."
 
 msgid "Domain_statistics"
-msgstr ""
+msgstr "Domain_statistics"
 
 msgid "Domains"
 msgstr "Domäner"
 
 msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Domains per page"
 msgstr "Domäner per sida"
@@ -1639,7 +1675,7 @@ msgid "Edit"
 msgstr "Redigera"
 
 msgid "Edit Customer"
-msgstr ""
+msgstr "Ändra kund"
 
 msgid "Edit Domain"
 msgstr "Ändra domän"
@@ -1648,10 +1684,10 @@ msgid "Edit FTP user"
 msgstr "Redigera FTP-användare"
 
 msgid "Edit Ftp account"
-msgstr ""
+msgstr "Ändra Ftp konto"
 
 msgid "Edit SSL certificate"
-msgstr ""
+msgstr "Ändra SSL cert."
 
 msgid "Edit User"
 msgstr "Redigera användare"
@@ -1660,22 +1696,22 @@ msgid "Edit admin"
 msgstr "Ändra administratör"
 
 msgid "Edit alias"
-msgstr ""
+msgstr "Ändra alias"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "Ändra auto. svar"
 
 msgid "Edit custom DNS record"
 msgstr "Redigera anpassade DNS-post"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "Ändra eget fel sida"
 
 msgid "Edit custom menu"
-msgstr ""
+msgstr "Ändra eget meny"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "Ändra kund"
 
 msgid "Edit domain"
 msgstr "Redigera domän"
@@ -1690,7 +1726,7 @@ msgid "Edit hosting plan"
 msgstr "Ändra webbhotellsplan"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "Ändra Htaccess användare"
 
 msgid "Edit mail account"
 msgstr "Redigera e-postkonto"
@@ -1720,7 +1756,7 @@ msgid "Email Updated."
 msgstr "E-mail Uppdaterat."
 
 msgid "Email address"
-msgstr ""
+msgstr "E-mail adr."
 
 msgid "Email marketing"
 msgstr "E-postmarknadsföring"
@@ -1738,7 +1774,7 @@ msgid "Empty data or wrong field!"
 msgstr "Tom data eller fel fält!"
 
 msgid "Empty data or wrong field."
-msgstr ""
+msgstr "Tomt data eller fält"
 
 msgid "Empty list"
 msgstr "Tom lista"
@@ -1750,10 +1786,10 @@ msgid "Enable Forward"
 msgstr "Aktivera vidarebefordring"
 
 msgid "Enable SSL"
-msgstr ""
+msgstr "Aktiverar SSL"
 
 msgid "Enable auto responder"
-msgstr ""
+msgstr "Aktiverar auto. svar"
 
 msgid "Enable mail auto responder"
 msgstr "Aktivera e-postautosvar"
@@ -1780,7 +1816,7 @@ msgid "Entered passwords do not match."
 msgstr "Lösenord stämmer inte överens."
 
 msgid "Entered passwords doesn't match."
-msgstr ""
+msgstr "Lösenord matchar inte varandrar."
 
 msgid "Error"
 msgstr "Fel"
@@ -1810,7 +1846,7 @@ msgid "Error pages"
 msgstr "Felsidor"
 
 msgid "Error state..."
-msgstr ""
+msgstr "Fel status..."
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Fel när man försöker få fram listan över nätverkskort."
@@ -1819,16 +1855,16 @@ msgid "Error: Remote File not found!"
 msgstr "Fel: Remote File not found!"
 
 msgid "Error: Service port with same name already exists."
-msgstr ""
+msgstr "Fel: en service port med samma namn existerar redan."
 
 msgid "Error: Unallowed protocol."
-msgstr ""
+msgstr "Fel: otillåtet protokoll."
 
 msgid "Error: Wrong Ip number."
-msgstr ""
+msgstr "Fel: fel Ip nummer."
 
 msgid "Error: Wrong value for show entry."
-msgstr ""
+msgstr "Fel: fel värde för visa rubrik."
 
 msgid "Errors"
 msgstr "Fel"
@@ -1864,7 +1900,7 @@ msgid "FTP account deleted."
 msgstr "FTP-konto raderas."
 
 msgid "FTP account successfully updated."
-msgstr ""
+msgstr "FTP konto uppdaterades."
 
 msgid "FTP accounts"
 msgstr "FTP-konton"
@@ -1873,6 +1909,8 @@ msgid ""
 "FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"FTP konto limit <br /><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "FTP accounts limit reached!"
 msgstr "Gränsen över antalet FTP-konton är nådd!"
@@ -1881,15 +1919,13 @@ msgid ""
 "FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"FTP konto limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP-kontogräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
 
 msgid "FTP traffic"
 msgstr "FTP trafik"
-
-msgid "FTP<br>traffic"
-msgstr "FTP<br>trafik"
 
 msgid "FTPs"
 msgstr "FTPs"
@@ -1904,7 +1940,7 @@ msgid "Feature"
 msgstr "Funktion"
 
 msgid "Features"
-msgstr ""
+msgstr "Features"
 
 msgid "Female"
 msgstr "Kvinna"
@@ -1942,13 +1978,13 @@ msgid "Filesystem system Info"
 msgstr "Systeminfo för filsystemet"
 
 msgid "Fill out a message text."
-msgstr ""
+msgstr "Fyll i text-meddelande"
 
 msgid "First name"
 msgstr "Förnamn"
 
 msgid "Firstname"
-msgstr ""
+msgstr "Förnamn"
 
 msgid "Footer"
 msgstr "Footer"
@@ -1984,22 +2020,22 @@ msgid "From reseller"
 msgstr "Från återförsäljare"
 
 msgid "Ftp"
-msgstr ""
+msgstr "Ftp"
 
 msgid "Ftp Accounts"
 msgstr "Ftp-konton"
 
 msgid "Ftp account"
-msgstr ""
+msgstr "Ftp konto"
 
 msgid "Ftp account not found."
-msgstr ""
+msgstr "Ftp konto kunde inte hittas"
 
 msgid "Ftp accounts"
 msgstr "Ftp-konton"
 
 msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Ftp konto limit<br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "Ftp user data"
 msgstr "Ftp användardata"
@@ -2020,13 +2056,13 @@ msgid "General settings"
 msgstr "Allmänna inställningar"
 
 msgid "Generate"
-msgstr ""
+msgstr "Generera"
 
 msgid "Generate password"
 msgstr "Generera lösenord"
 
 msgid "Get a new image"
-msgstr ""
+msgstr "Tar fram ett nytt bild"
 
 msgid "Get it at"
 msgstr "Hämta det på"
@@ -2053,7 +2089,7 @@ msgid "Header"
 msgstr "Rubrik"
 
 msgid "Help"
-msgstr ""
+msgstr "Hjälp"
 
 msgid "Hide default E-Mail Addresses"
 msgstr "Göm standard e-postadresser"
@@ -2077,7 +2113,7 @@ msgid "Hosting plan"
 msgstr "Webbhotellsplan"
 
 msgid "Hosting plan can't be deleted, there are active orders."
-msgstr ""
+msgstr "Denna webbhotells plan kan inte raderas p g a av aktiva order."
 
 msgid "Hosting plan properties"
 msgstr "Egenskaper för webbhotellsplan"
@@ -2086,26 +2122,26 @@ msgid "Hosting plan successfully added."
 msgstr "Hosting plan lagts till."
 
 msgid "Hosting plan successfully created."
-msgstr ""
+msgstr "Hosting plan successfully created."
 
 msgid "Hosting plan successfully deleted."
 msgstr "Hosting plan tagits bort."
 
 msgid "Hosting plan successfully updated."
-msgstr ""
+msgstr "Hosting plan successfully updated."
 
 msgid "Hosting plan sucessfully updated."
 msgstr "Hosting plan uppdaterats."
 
 msgid "Hosting plan update"
-msgstr ""
+msgstr "Hosting plan update"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Hosting plan värden överstiger återförsäljarens maximala värden."
 
 #, php-format
 msgid "Hosting plan with Id %d doesn't exist."
-msgstr ""
+msgstr "Hosting plan with Id %d doesn't exist."
 
 msgid "Hosting plan with same name already exists."
 msgstr "Hosting plan med samma namn finns redan."
@@ -2123,7 +2159,7 @@ msgid "Hosting plans not found!"
 msgstr "Det finns inga webbhotellsplaner"
 
 msgid "Hosting plans not found."
-msgstr ""
+msgstr "Hosting plans not found."
 
 msgid "Hour"
 msgstr "Timme"
@@ -2132,27 +2168,30 @@ msgid "Hours"
 msgstr "Timmar"
 
 msgid "Htaccess group"
-msgstr ""
+msgstr "Htaccess grupp"
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr ""
+msgstr "Htaccess group successfully scheduled for addition."
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr ""
+msgstr "Htaccess group successfully scheduled for deletion."
 
 msgid "Htaccess user"
-msgstr ""
+msgstr "Htaccess användare"
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
-msgstr ""
+msgstr "Htaccess user successfully assigned to the %s htaccess group"
 
 #, php-format
 msgid "Htaccess user successfully deleted from the %s htaccess group "
-msgstr ""
+msgstr "Htaccess user successfully deleted from the %s htaccess group "
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr ""
+msgstr "Htaccess user successfully scheduled for addition."
+
+msgid "Http traffic"
+msgstr "Http traffic"
 
 msgid "I Accept The Term of Service"
 msgstr "Jag accepterar användarvillkoren"
@@ -2170,16 +2209,16 @@ msgid "IP address"
 msgstr "IP-adress"
 
 msgid "IP address already known by the system."
-msgstr ""
+msgstr "Denna IP adr. finns redan i systemet-"
 
 msgid "IP address scheduled for addition."
-msgstr ""
+msgstr "IP adr. kommer att läggs till."
 
 msgid "IP addresse data"
-msgstr ""
+msgstr "IP adr. data"
 
 msgid "IP addresses configured"
-msgstr ""
+msgstr "IP adr. konfigurerat."
 
 msgid "IP scheduled for deletion."
 msgstr "IP planeras för radering."
@@ -2188,7 +2227,7 @@ msgid "IP usage"
 msgstr "IP-användning"
 
 msgid "IPs usage"
-msgstr ""
+msgstr "IPs användning"
 
 msgid "IPv6 address"
 msgstr "IPv6-adress"
@@ -2197,6 +2236,8 @@ msgid ""
 "If yes, means that the reseller can allow its customers to edit this "
 "directive"
 msgstr ""
+"If yes, means that the reseller can allow its customers to edit this "
+"directive"
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
@@ -2212,6 +2253,8 @@ msgid ""
 "In case domain expires date is 'N/A', the expiration date will be set from "
 "today."
 msgstr ""
+"In case domain expires date is 'N/A', the expiration date will be set from "
+"today."
 
 msgid "In front the name"
 msgstr "Framför namnet"
@@ -2234,7 +2277,7 @@ msgid "Incorrect FTP accounts limit."
 msgstr "Felaktig FTP konton gräns."
 
 msgid "Incorrect Ftp accounts limit."
-msgstr ""
+msgstr "Incorrect Ftp accounts limit."
 
 msgid "Incorrect SQL databases limit."
 msgstr "Felaktig SQL-databaser gräns."
@@ -2243,10 +2286,10 @@ msgid "Incorrect SQL users limit."
 msgstr "Felaktig SQL-användare gräns."
 
 msgid "Incorrect Sql databases limit."
-msgstr ""
+msgstr "Incorrect Sql databases limit."
 
 msgid "Incorrect Sql users limit."
-msgstr ""
+msgstr "Incorrect Sql users limit."
 
 msgid "Incorrect aliases limit."
 msgstr "Felaktigt alias gränsen."
@@ -2255,7 +2298,7 @@ msgid "Incorrect disk quota limit."
 msgstr "Felaktig diskkvot gräns."
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "Incorrect disk space limit."
 
 msgid "Incorrect email length or syntax!"
 msgstr "Felaktig e-postlängd eller syntax"
@@ -2292,7 +2335,7 @@ msgid "Incorrect subdomains limit."
 msgstr "Felaktig underdomäner gränsen."
 
 msgid "Incorrect syntax for email address."
-msgstr ""
+msgstr "Incorrect syntax for email address."
 
 msgid "Incorrect template description length."
 msgstr "Felaktig mall beskrivning längd."
@@ -2319,7 +2362,7 @@ msgid "Install various Web applications with a few clicks."
 msgstr "Installera olika webbapplikationer med ett par klick."
 
 msgid "Installation details"
-msgstr ""
+msgstr "Installation details"
 
 msgid "Installed on"
 msgstr "Installerad på"
@@ -2328,40 +2371,40 @@ msgid "Instructions to download today's backup"
 msgstr "Instruktioner för att hämta dagens backup"
 
 msgid "Intermediar certificate"
-msgstr ""
+msgstr "Intermediar certificate"
 
 msgid "Internationalization"
 msgstr "Internationalisering"
 
 msgid "Invalid URL."
-msgstr ""
+msgstr "Invalid URL."
 
 msgid "Invalid certificate."
-msgstr ""
+msgstr "Invalid certificate."
 
 msgid "Invalid group name!"
 msgstr "Ogiltigt gruppnamn!"
 
 msgid "Invalid htaccess group name."
-msgstr ""
+msgstr "Invalid htaccess group name."
 
 msgid "Invalid intermediate certificate."
-msgstr ""
+msgstr "Invalid intermediate certificate."
 
 msgid "Invalid key or password."
-msgstr ""
+msgstr "Invalid key or password."
 
 msgid "Invalid mail local part."
 msgstr "Ogiltig post lokal del."
 
 msgid "Invalid menu order."
-msgstr ""
+msgstr "Invalid menu order."
 
 msgid "Invalid name."
-msgstr ""
+msgstr "Invalid name."
 
 msgid "Invalid target."
-msgstr ""
+msgstr "Invalid target."
 
 msgid "Invalid time period!"
 msgstr "Ogiltig datumsperiod"
@@ -2376,10 +2419,10 @@ msgid "Invalide domain expiration date."
 msgstr "Ogiltig domänen utgångsdatum."
 
 msgid "Ip management"
-msgstr ""
+msgstr "Ip management"
 
 msgid "Ip usage"
-msgstr ""
+msgstr "Ip usage"
 
 msgid "Kernel Version"
 msgstr "Kernel Version"
@@ -2397,13 +2440,13 @@ msgid "Language file"
 msgstr "Språkfil"
 
 msgid "Language file successfully installed."
-msgstr ""
+msgstr "Language file successfully installed."
 
 msgid "Language successfully updated."
-msgstr ""
+msgstr "Language successfully updated."
 
 msgid "Languages"
-msgstr ""
+msgstr "Languages"
 
 msgid "Languages index was successfully re-built."
 msgstr "Nytt språk index."
@@ -2424,16 +2467,16 @@ msgid "Last translator"
 msgstr "Senast översättare"
 
 msgid "Lastname"
-msgstr ""
+msgstr "Efternamn"
 
 msgid "Layout"
 msgstr "Utseende"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Layout color"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "Layout color successfully updated."
 
 msgid "Layout settings"
 msgstr "Layoutinställningar"
@@ -2442,6 +2485,8 @@ msgid ""
 "Leave this field empty if you do not want term of service for this hosting "
 "plan."
 msgstr ""
+"Leave this field empty if you do not want term of service for this hosting "
+"plan."
 
 msgid "Level"
 msgstr "Nivå"
@@ -2450,13 +2495,13 @@ msgid "Limit"
 msgstr "Gräns"
 
 msgid "Limit value"
-msgstr ""
+msgstr "Limit value"
 
 msgid "Limits"
-msgstr ""
+msgstr "Limits"
 
 msgid "Link"
-msgstr ""
+msgstr "Link"
 
 msgid "Link to authors homepage"
 msgstr "Länk till författarens hemsida"
@@ -2480,19 +2525,19 @@ msgid "Login into PhpMyAdmin"
 msgstr "Logga in till PhpMyAdmin"
 
 msgid "Login into PḧpMyAdmin"
-msgstr ""
+msgstr "Login into PḧpMyAdmin"
 
 msgid "Login into the filemanager"
-msgstr ""
+msgstr "Login into the filemanager"
 
 msgid "Login into the webmail"
-msgstr ""
+msgstr "Login into the webmail"
 
 msgid "Login password"
-msgstr ""
+msgstr "Login password"
 
 msgid "Login username"
-msgstr ""
+msgstr "Login username"
 
 msgid "Login with your FTP account"
 msgstr "Logga in med ditt FTP-konto"
@@ -2519,7 +2564,7 @@ msgid "Lost password link"
 msgstr "Glömt lösenord länk"
 
 msgid "Lost password mail"
-msgstr ""
+msgstr "Lost password mail"
 
 msgid "Lostpw email"
 msgstr "E-postinställningar för förlorat lösenord"
@@ -2537,7 +2582,7 @@ msgid "Mail"
 msgstr "E-post"
 
 msgid "Mail Accounts"
-msgstr ""
+msgstr "Mail Accounts"
 
 msgid "Mail account"
 msgstr "E-postkonton"
@@ -2567,6 +2612,8 @@ msgid ""
 "Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "Mail accounts limit reached!"
 msgstr "Gränsen för antalet e-postkonton är uppnådd!"
@@ -2578,6 +2625,8 @@ msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Mail-konton gräns <br> <i>(-1 inaktiv, 0 obegränsad)</i>"
@@ -2607,7 +2656,7 @@ msgid "Mails total"
 msgstr "E-post totalt"
 
 msgid "Maintenance message"
-msgstr ""
+msgstr "Maintenance message"
 
 msgid "Maintenance mode"
 msgstr "Underhållsläge"
@@ -2616,18 +2665,20 @@ msgid ""
 "Maintenance mode is activated. Under this mode, only administrators can "
 "login."
 msgstr ""
+"Maintenance mode is activated. Under this mode, only administrators can "
+"login."
 
 msgid "Male"
 msgstr "Man"
 
 msgid "Manage Customers"
-msgstr ""
+msgstr "Manage Customers"
 
 msgid "Manage Domains"
 msgstr "Hantera domäner"
 
 msgid "Manage Hosting Plans"
-msgstr ""
+msgstr "Manage Hosting Plans"
 
 msgid "Manage IPs"
 msgstr "Hantera IP-adresser"
@@ -2639,13 +2690,13 @@ msgid "Manage SQL"
 msgstr "Hantera SQL"
 
 msgid "Manage Users"
-msgstr ""
+msgstr "Manage Users"
 
 msgid "Manage alias"
 msgstr "Hantera alias"
 
 msgid "Manage aliasses"
-msgstr ""
+msgstr "Manage aliasses"
 
 msgid "Manage domain alias"
 msgstr "Hantera domänalias"
@@ -2657,7 +2708,7 @@ msgid "Manage hosting plans"
 msgstr "Hantera webbhotellsplan"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Manage htaccess users and groups"
 
 msgid "Manage orders"
 msgstr "Hantera beställningar"
@@ -2702,11 +2753,11 @@ msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max subdomäner <br><i>(-1 inaktiv, 0 obegränsat)</i>"
 
 msgid "Max traffic"
-msgstr ""
+msgstr "Max traffic"
 
 #, php-format
 msgid "Max value for the %s PHP directive"
-msgstr ""
+msgstr "Max value for the %s PHP directive"
 
 #, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
@@ -2756,7 +2807,7 @@ msgid "Messages"
 msgstr "Meddelanden"
 
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 msgid "Minute"
 msgstr "Minut"
@@ -2816,7 +2867,7 @@ msgid "Network interface"
 msgstr "Nätverksgränssnitt"
 
 msgid "Never expires"
-msgstr ""
+msgstr "Never expires"
 
 msgid "New Sql user data"
 msgstr "Ny Sql användardata"
@@ -2834,7 +2885,7 @@ msgid "New password has not been sent. Ask your administrator."
 msgstr "Nytt lösenord har inte skickats. Fråga din administratör."
 
 msgid "New password is"
-msgstr ""
+msgstr "New password is"
 
 msgid "New ticket"
 msgstr "Skapa supportärende"
@@ -2849,7 +2900,7 @@ msgid "No"
 msgstr "Nej"
 
 msgid "No IP address found."
-msgstr ""
+msgstr "No IP address found."
 
 msgid "No Ip statistics to be show."
 msgstr "Ingen IP-statistik att visa."
@@ -2867,13 +2918,13 @@ msgid "No available hosting packages."
 msgstr "Inga lediga hosting paket."
 
 msgid "No certificate found."
-msgstr ""
+msgstr "Inget cert. hittades."
 
 msgid "No corresponding subdomain found."
 msgstr "Ingen motsvarande underdomän hittats."
 
 msgid "No custom menu found."
-msgstr ""
+msgstr "Inget eget meny hittades."
 
 msgid "No customer accounts found."
 msgstr "Ingen kundkonto hittats."
@@ -2884,6 +2935,9 @@ msgstr "Ingen databas uppdateringar tillgängliga."
 msgid "No domain alias system errors"
 msgstr "Inga domänalias systemfel"
 
+msgid "No domain statistics to display."
+msgstr "Inga domain statistik att visa."
+
 msgid "No domain system errors"
 msgstr "Inga domänsystemfel"
 
@@ -2891,7 +2945,7 @@ msgid "No email account system errors"
 msgstr "Inget systemfel för e-postkonton"
 
 msgid "No group found."
-msgstr ""
+msgstr "Ingen grupp hittades."
 
 msgid "No htaccess related system errors"
 msgstr "Inga htaccess relaterade systemfel"
@@ -2908,9 +2962,6 @@ msgstr "Inga poster hittades"
 msgid "No reseller accounts found."
 msgstr "Inga återförsäljare konton hittats."
 
-msgid "No reseller is registered in your system."
-msgstr ""
-
 msgid "No set"
 msgstr "Inget bestämt"
 
@@ -2918,7 +2969,7 @@ msgid "No subdomain system errors"
 msgstr "Inga systemfel för subdomäner"
 
 msgid "No user found."
-msgstr ""
+msgstr "Ingen användare hittades."
 
 msgid "No valid alias domain selected."
 msgstr "Ingen giltig alias valt."
@@ -2930,7 +2981,7 @@ msgid "None"
 msgstr "Inget"
 
 msgid "Normal connection"
-msgstr ""
+msgstr "Normalt förbindelse."
 
 msgid "Normal mail"
 msgstr "Normal e-post"
@@ -2951,7 +3002,7 @@ msgid "Not found user records matching the search criteria."
 msgstr "Hittades inte användarens poster som matchar sökkriteriet."
 
 msgid "Not used"
-msgstr ""
+msgstr "Inte i bruk."
 
 msgid "Nothing been changed."
 msgstr "Ingenting har ändrats."
@@ -2985,13 +3036,13 @@ msgstr ""
 "Bara toppnivådomäner (TLD) som finns i IANA's rotzondatabas kan användas."
 
 msgid "Only exec"
-msgstr ""
+msgstr "Bara exec"
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Endast gettext Machine Object-filer (MO-filer) accepteras."
 
 msgid "Only positive numbers are allowed for services ports."
-msgstr ""
+msgstr "Bara pos. nr. tillåten för service port."
 
 msgid "Only positive numbers are allowed."
 msgstr "Endast positiva tal är tillåtna."
@@ -3000,7 +3051,7 @@ msgid "Open tickets"
 msgstr "Öppna supportärenden"
 
 msgid "Optional"
-msgstr ""
+msgstr "Valfri"
 
 msgid "Options"
 msgstr "Inställningar"
@@ -3009,7 +3060,7 @@ msgid "Order"
 msgstr "Beställning"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr ""
+msgstr "Order Canceled: resellers limit(s) exceeded."
 
 msgid "Order Cancelled: resellers limit(s) exceeded."
 msgstr "Beställning Inställt: återförsäljare gräns (er) överskrids."
@@ -3042,7 +3093,7 @@ msgid "Order details"
 msgstr "Beställningsdetaljer"
 
 msgid "Order email"
-msgstr ""
+msgstr "Order e-mail"
 
 msgid "Order email setup"
 msgstr "E-postinställningar för beställningar"
@@ -3063,10 +3114,10 @@ msgid "Order successfully updated."
 msgstr "Beställning uppdaterats."
 
 msgid "Order template"
-msgstr ""
+msgstr "Order template"
 
 msgid "Orders"
-msgstr ""
+msgstr "Orders"
 
 msgid "Orders settings"
 msgstr "Beställningar inställningar"
@@ -3091,19 +3142,19 @@ msgstr "PHP"
 
 #, php-format
 msgid "PHP %s directive"
-msgstr ""
+msgstr "PHP %s directive"
 
 msgid "PHP Editor"
-msgstr ""
+msgstr "PHP Editor"
 
 msgid "PHP Editor Settings"
-msgstr ""
+msgstr "PHP Editor Settings"
 
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD  laddas inte."
 
 msgid "PHP Settings (system wide)"
-msgstr ""
+msgstr "PHP Settings (system wide)"
 
 msgid "PHP Support: disabled"
 msgstr "PHP-stöd: inaktiverad"
@@ -3112,16 +3163,16 @@ msgid "PHP Support: enabled"
 msgstr "PHP-stöd: aktiverat"
 
 msgid "PHP configuration scheduled for update."
-msgstr ""
+msgstr "PHP configuration scheduled for update."
 
 msgid "PHP directives values"
-msgstr ""
+msgstr "PHP directives values"
 
 msgid "PHP exec() function"
-msgstr ""
+msgstr "PHP exec() function"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHP settings"
 
 msgid "PHP support"
 msgstr "PHP-stöd"
@@ -3138,14 +3189,11 @@ msgstr "POP3/IMAP utåt"
 msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP trafik"
 
-msgid "POP3/IMAP<br>traffic"
-msgstr "POP3/IMAP<br>trafik"
-
 msgid "Package actions"
 msgstr "Paket åtgärder"
 
 msgid "Package features"
-msgstr ""
+msgstr "Package features"
 
 msgid "Package install type"
 msgstr "Paket installera typ"
@@ -3157,7 +3205,7 @@ msgid "Package name"
 msgstr "Paketnamn"
 
 msgid "Package price"
-msgstr ""
+msgstr "Package price"
 
 msgid "Package title"
 msgstr "Paket titel"
@@ -3175,7 +3223,7 @@ msgid "Panel default language"
 msgstr "Panelens standardspråk"
 
 msgid "Parameter"
-msgstr ""
+msgstr "Parameter"
 
 msgid "Parent Directory"
 msgstr "Föregående katalog"
@@ -3241,13 +3289,13 @@ msgid "Passwords do not match."
 msgstr "Lösenord matchar inte."
 
 msgid "Passwords doesn't match."
-msgstr ""
+msgstr "Passwords doesn't match."
 
 msgid "Passwords doesn't matches"
 msgstr "Lösenord matchar inte"
 
 msgid "Passwords doesn't matches."
-msgstr ""
+msgstr "Passwords doesn't matches."
 
 msgid "Passwords doesn't not matches."
 msgstr "Lösenorden matchar inte."
@@ -3256,7 +3304,7 @@ msgid "Passwords don't match!"
 msgstr "Lösenorden stämmer inte överens!"
 
 msgid "Passwords don't match."
-msgstr ""
+msgstr "Passwords don't match."
 
 msgid "Path"
 msgstr "Sökväg"
@@ -3301,16 +3349,16 @@ msgid "Plain record data"
 msgstr "Simpel postdata"
 
 msgid "Please choose htaccess user or htaccess group."
-msgstr ""
+msgstr "Please choose htaccess user or htaccess group."
 
 msgid "Please delete first CatchAll account for this email."
-msgstr ""
+msgstr "Please delete first CatchAll account for this email."
 
 msgid "Please enter FTP account username."
 msgstr "Ange FTP-konto användarnamn."
 
 msgid "Please enter a name for the protected area."
-msgstr ""
+msgstr "Please enter a name for the protected area."
 
 msgid "Please enter mail account username."
 msgstr "Ange användarnamn postkonto."
@@ -3325,11 +3373,11 @@ msgid "Please fill up both data fields for password."
 msgstr "Fyll upp både datafält för lösenord."
 
 msgid "Please select a valid  SQL user for the database."
-msgstr ""
+msgstr "Please select a valid  SQL user for the database."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr ""
+msgstr "Please select another directory. %s (%s) is installed there."
 
 msgid "Please select at least one mail type."
 msgstr "Välj minst ett mail typ."
@@ -3398,7 +3446,7 @@ msgid "Please write mount point!"
 msgstr "Vänligen ange monteringspunkt!"
 
 msgid "Please, check the PHP Editor settings."
-msgstr ""
+msgstr "Please, check the PHP Editor settings."
 
 msgid "Please, don't use special chars like '@, $, %...' in the password."
 msgstr "Snälla, inte använda specialtecken som \"@, $, %...' i lösenordet."
@@ -3431,7 +3479,7 @@ msgid "Price must be a number."
 msgstr "Priset måste vara ett tal."
 
 msgid "Price style"
-msgstr ""
+msgstr "Price style"
 
 msgid "Priority"
 msgstr "Prioritet"
@@ -3443,7 +3491,7 @@ msgid "Process updates"
 msgstr "Process uppdateringar"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profile"
 
 msgid "Properties"
 msgstr "Egenskaper"
@@ -3452,7 +3500,7 @@ msgid "Protect it"
 msgstr "Skydda"
 
 msgid "Protected"
-msgstr ""
+msgstr "Protected"
 
 msgid "Protected Areas"
 msgstr "Skyddsområden"
@@ -3461,13 +3509,13 @@ msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "Skyddat område status bör vara \"OK\" om du vill ta bort den."
 
 msgid "Protected area successfully scheduled for addition."
-msgstr ""
+msgstr "Protected area successfully scheduled for addition."
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr ""
+msgstr "Protected area successfully scheduled for deletion."
 
 msgid "Protected area successfully scheduled for update."
-msgstr ""
+msgstr "Protected area successfully scheduled for update."
 
 msgid "Protected areas"
 msgstr "Skyddade områden"
@@ -3507,7 +3555,7 @@ msgid "Redirect to URL"
 msgstr "Omdirigera till URL"
 
 msgid "Registration date"
-msgstr ""
+msgstr "Registrations datum"
 
 msgid "Relative weight for records with the same priority"
 msgstr "Relativa vikt för poster med samma prioritet"
@@ -3522,7 +3570,7 @@ msgid "Remote File not found."
 msgstr "Fjärrfil hittades inte."
 
 msgid "Remote Web software repository"
-msgstr ""
+msgstr "Remote Web software repository"
 
 msgid "Remove"
 msgstr "Ta bort"
@@ -3540,7 +3588,7 @@ msgid "Reopen the ticket"
 msgstr "Återöppna ticket"
 
 msgid "Repeat  password"
-msgstr ""
+msgstr "Repeat  password"
 
 msgid "Repeat password"
 msgstr "Upprepa lösenord"
@@ -3555,19 +3603,19 @@ msgid "Reseller Name"
 msgstr "Återförsäljare Namn"
 
 msgid "Reseller account successfully created."
-msgstr ""
+msgstr "Reseller account successfully created."
 
 msgid "Reseller account successfully updated."
 msgstr "Återförsäljare konto har uppdaterats."
 
 msgid "Reseller and customer"
-msgstr ""
+msgstr "Reseller and customer"
 
 msgid "Reseller assignment"
 msgstr "Återförsäljare tilldelning"
 
 msgid "Reseller consumption"
-msgstr ""
+msgstr "Reseller consumption"
 
 msgid "Reseller data"
 msgstr "Återförsäljare uppgifter"
@@ -3590,9 +3638,6 @@ msgstr "Återförsäljarnamn"
 msgid "Reseller software list"
 msgstr "Återförsäljare programvara lista"
 
-msgid "Reseller statistics table"
-msgstr "Statistiktabell för återförsäljare"
-
 msgid "Reseller successfully added."
 msgstr "Återförsäljare lagts till."
 
@@ -3609,10 +3654,10 @@ msgid "Reseller with permissions total"
 msgstr "Återförsäljare med behörigheter totala"
 
 msgid "Reseller's layout color successfully updated."
-msgstr ""
+msgstr "Reseller's layout color successfully updated."
 
 msgid "Reseller's statistics"
-msgstr ""
+msgstr "Reseller's statistics"
 
 msgid "Reseller/IP usage statistics"
 msgstr "Återförsäljare / IP användarstatistik"
@@ -3621,7 +3666,7 @@ msgid "Resellers"
 msgstr "Återförsäljare"
 
 msgid "Resellers assignment"
-msgstr ""
+msgstr "Resellers assignment"
 
 msgid "Reset"
 msgstr "Återställ"
@@ -3636,7 +3681,7 @@ msgid "Return to previous menu"
 msgstr "Återgå till föregående meny"
 
 msgid "Revision date"
-msgstr ""
+msgstr "Revision date"
 
 msgid "Rights succesfully added."
 msgstr "Rättigheter lagts till."
@@ -3645,7 +3690,7 @@ msgid "Rights succesfully removed."
 msgstr "Rättigheter har tagits bort."
 
 msgid "Rootkit logs"
-msgstr ""
+msgstr "Rootkit logs"
 
 msgid "SMTP"
 msgstr "SMTP"
@@ -3658,9 +3703,6 @@ msgstr "SMTP utåt"
 
 msgid "SMTP traffic"
 msgstr "SMTP trafik"
-
-msgid "SMTP<br>traffic"
-msgstr "SMTP<br>trafik"
 
 msgid "SQL"
 msgstr "SQL"
@@ -3680,9 +3722,6 @@ msgstr "SQL-användarna"
 msgid "SQL accounts limit reached."
 msgstr "SQL-konton max värde nådd."
 
-msgid "SQL database"
-msgstr "SQL-databas"
-
 msgid "SQL database created."
 msgstr "SQL-databas skapas."
 
@@ -3696,15 +3735,17 @@ msgid ""
 "SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQL-databaser gränsen är <i>inaktiverad.</i>"
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
+msgstr "SQL databases limit is disabled but SQL users limit is not."
 
 msgid "SQL databases limit is disabled but SQL users limit not."
-msgstr ""
+msgstr "SQL databases limit is disabled but SQL users limit not."
 
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "SQL-databaser gränsen inte är <i>inaktiverad.</i>"
@@ -3713,15 +3754,14 @@ msgid ""
 "SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQL-databasgräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
 
 msgid "SQL support"
 msgstr "SQL-stöd"
-
-msgid "SQL user"
-msgstr "SQL-användare"
 
 msgid "SQL user created."
 msgstr "SQL-användare skapat."
@@ -3742,6 +3782,8 @@ msgid ""
 "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQL-användargränsen är <i>inaktiverat</i>!"
@@ -3750,10 +3792,10 @@ msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQL-användare gräns är <i>inaktiverad.</i>"
 
 msgid "SQL users limit is disabled but SQL databases limit is not."
-msgstr ""
+msgstr "SQL users limit is disabled but SQL databases limit is not."
 
 msgid "SQL users limit is disabled but SQL databases limit not."
-msgstr ""
+msgstr "SQL users limit is disabled but SQL databases limit not."
 
 msgid "SQL users limit reached."
 msgstr "SQL-användare max. nådd."
@@ -3761,6 +3803,7 @@ msgstr "SQL-användare max. nådd."
 msgid ""
 "SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
 msgstr ""
+"SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
 
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQL-användargräns <br><i>(-1 inaktiv, 0 obegränsat)</i>"
@@ -3771,17 +3814,11 @@ msgstr "SQL-User"
 msgid "SQL-user not found."
 msgstr "SQL-användare hittades inte."
 
-msgid "SQL<br>database"
-msgstr "SQL<br>databas"
-
-msgid "SQL<br>user"
-msgstr "SQL<br>användare"
-
 msgid "SSL Certificates"
-msgstr ""
+msgstr "SSL certs"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
-msgstr ""
+msgstr "SSL feature is disabled. You cannot add / change certificate"
 
 msgid "Save"
 msgstr "Spara"
@@ -3790,13 +3827,13 @@ msgid "Search"
 msgstr "Sök"
 
 msgid "Sec."
-msgstr ""
+msgstr "Sek."
 
 msgid "Second Level Domain name strict validation"
 msgstr "Strikt validering av huvuddomän"
 
 msgid "Secure connection"
-msgstr ""
+msgstr "Secure connection"
 
 msgid "Security code"
 msgstr "Säkerhetskod"
@@ -3879,10 +3916,10 @@ msgid "Service port was successfully added"
 msgstr "Serviceport har lagts till"
 
 msgid "Service port was successfully removed."
-msgstr ""
+msgstr "Service port was successfully removed."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Service ports"
 
 msgid "Service protocol"
 msgstr "Tjänstprotokoll"
@@ -3894,7 +3931,7 @@ msgid "Session not found in login table."
 msgstr "Session finns inte i login tabellen."
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sessions"
 
 msgid "Set status to 'change'"
 msgstr "Ange status till 'ändra'"
@@ -3903,7 +3940,7 @@ msgid "Settings"
 msgstr "Inställningar"
 
 msgid "Settings saved."
-msgstr ""
+msgstr "Settings saved."
 
 msgid "Setup fee"
 msgstr "Startavgift"
@@ -3930,6 +3967,12 @@ msgstr ""
 msgid "Show default E-Mail addresses"
 msgstr "Visa standard e-postadresser"
 
+msgid "Show detailed statistics for this domain"
+msgstr "Visa detalj statistik för denna domain."
+
+msgid "Show detailed statistics for this reseller"
+msgstr "Visa detalj statistik för denna återförsäljare."
+
 msgid "Show hosting plan"
 msgstr "Visa webbhotellsplan"
 
@@ -3937,7 +3980,7 @@ msgid "Show in"
 msgstr "Visa i"
 
 msgid "Show labels for main menu links"
-msgstr ""
+msgstr "Show labels for main menu links"
 
 msgid ""
 "Single letter Second Level Domains (SLD) are not allowed under the most Top "
@@ -3972,22 +4015,22 @@ msgid "Software installation"
 msgstr "Installation av programvara"
 
 msgid "Software installer"
-msgstr ""
+msgstr "Software installer"
 
 msgid "Software installer options"
-msgstr ""
+msgstr "Software installer options"
 
 msgid "Software installer options successfully updated."
-msgstr ""
+msgstr "Software installer options successfully updated."
 
 msgid "Software installer require PHP feature."
-msgstr ""
+msgstr "Software installer require PHP feature."
 
 msgid "Software name"
 msgstr "Mjukvara namn"
 
 msgid "Software options"
-msgstr ""
+msgstr "Software options"
 
 msgid "Software permissions"
 msgstr "Programvara behörigheter"
@@ -4026,22 +4069,22 @@ msgid "Softwaredepot"
 msgstr "Softwaredepot"
 
 msgid "Softwares"
-msgstr ""
+msgstr "Softwares"
 
 msgid "Softwares in repository"
 msgstr "Mjukvara i förvar"
 
 msgid "Softwares installer"
-msgstr ""
+msgstr "Softwares installer"
 
 msgid "Softwares management"
-msgstr ""
+msgstr "Softwares management"
 
 msgid "Softwares permissions"
-msgstr ""
+msgstr "Softwares permissions"
 
 msgid "Softwares repository"
-msgstr ""
+msgstr "Softwares repository"
 
 msgid "Source and destination reseller are the same!"
 msgstr "Du försöker skicka från och till samma återförsäljare"
@@ -4059,31 +4102,31 @@ msgstr ""
 "Angivna antalet är mindre <em>än%s</em> register, som finns på systemet."
 
 msgid "Sql"
-msgstr ""
+msgstr "Sql"
 
 msgid "Sql Users"
-msgstr ""
+msgstr "Sql Users"
 
 msgid "Sql database"
-msgstr ""
+msgstr "Sql database"
 
 msgid "Sql databases"
-msgstr ""
+msgstr "Sql databases"
 
 msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "Sql user"
-msgstr ""
+msgstr "Sql user"
 
 msgid "Sql users"
-msgstr ""
+msgstr "Sql users"
 
 msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "State"
-msgstr ""
+msgstr "State"
 
 msgid "State/Province"
 msgstr "Län/Landskap"
@@ -4098,7 +4141,7 @@ msgid "Status"
 msgstr "Status"
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr ""
+msgstr "Status for protected area must be 'OK' if you want to edit it."
 
 msgid "Street 1"
 msgstr "Adress 1"
@@ -4164,11 +4207,15 @@ msgid ""
 "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid ""
 "Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
 msgstr ""
+"Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
+"unlimited)</span>"
 
 msgid "Subject"
 msgstr "Ämne"
@@ -4220,13 +4267,13 @@ msgid "System info"
 msgstr "Systeminfo"
 
 msgid "System information"
-msgstr ""
+msgstr "System information"
 
 msgid "System tools"
 msgstr "Systemverktyg"
 
 msgid "System under maintenance"
-msgstr ""
+msgstr "System under maintenance"
 
 msgid "TTL"
 msgstr "TTL"
@@ -4235,7 +4282,7 @@ msgid "TTL must be a number!"
 msgstr "TTL måste vara ett nummer!"
 
 msgid "Target"
-msgstr ""
+msgstr "Target"
 
 msgid "Target host"
 msgstr "Målvärd"
@@ -4247,6 +4294,8 @@ msgid ""
 "Tells whether or not customers can add/change SSL certificates for their "
 "domains."
 msgstr ""
+"Tells whether or not customers can add/change SSL certificates for their "
+"domains."
 
 msgid "Template for Auto email successfully updated."
 msgstr "Mall för automatisk e-post uppdaterats."
@@ -4255,10 +4304,10 @@ msgid "Template name"
 msgstr "Namn"
 
 msgid "Template successfully reseted."
-msgstr ""
+msgstr "Template successfully reseted."
 
 msgid "Template successfully updated."
-msgstr ""
+msgstr "Template successfully updated."
 
 msgid "Term Of Service"
 msgstr "Term Of Service"
@@ -4267,7 +4316,7 @@ msgid "Term of Service"
 msgstr "Användarvillkor"
 
 msgid "Term of service"
-msgstr ""
+msgstr "Term of service"
 
 msgid "Text"
 msgstr "Text"
@@ -4280,36 +4329,48 @@ msgid ""
 "The %s limit for this customer cannot be greater than <strong>%d</strong>, "
 "the calculated limit for his reseller."
 msgstr ""
+"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
+"the calculated limit for his reseller."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than <strong>%d</strong>, "
 "your calculated limit."
 msgstr ""
+"The %s limit for this customer cannot be greater than <strong>%d</strong>, "
+"your calculated limit."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
 " total of %s already used by him."
 msgstr ""
+"The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
+" total of %s already used by him."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
 msgstr ""
+"The %s limit for this customer cannot be set to 'disabled' because he has "
+"already <strong>%d</strong> %s."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because his reseller is "
 "limited for this service."
 msgstr ""
+"The %s limit for this customer cannot be unlimited because his reseller is "
+"limited for this service."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
 msgstr ""
+"The %s limit for this customer cannot be unlimited because your are limited "
+"for this service."
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled."
@@ -4328,10 +4389,10 @@ msgid "The <em>%s</em> service cannot be unlimited."
 msgstr "<em>%s</em> tjänsten kan inte vara obegränsad."
 
 msgid "The IP address you trying to remove is assigned to a reseller."
-msgstr ""
+msgstr "The IP address you trying to remove is assigned to a reseller."
 
 msgid "The `Enter` key is disabled for performance reasons."
-msgstr ""
+msgstr "The `Enter` key is disabled for performance reasons."
 
 #, php-format
 msgid "The admin has <em>%s</em> disabled on this system."
@@ -4345,29 +4406,32 @@ msgstr "Det aktuella lösenordet är fel."
 
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
-msgstr ""
+msgstr "The directory %s doesn't exist. Please create it first."
 
 #, php-format
 msgid "The directory %s was created."
-msgstr ""
+msgstr "The directory %s was created."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
 msgstr ""
+"The domain is currently deactivated. The modification of some of its "
+"properties will result by a complete or partial reactivation of it."
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
 msgstr ""
+"The domain or at least one of its entities has a different status than 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
-msgstr ""
+msgstr "The domain you are trying to edit doesn't exist."
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "I-MSCP Application Installer behöver PHP att aktivera det."
 
 msgid "The menu you trying to edit doesn't exist."
-msgstr ""
+msgstr "The menu you trying to edit doesn't exist."
 
 #, php-format
 msgid ""
@@ -4384,14 +4448,14 @@ msgstr ""
 "fjärr filstorlek (%1$d B) är lägre än 1 byte. Kontrollera webbadressen."
 
 msgid "The reseller account you trying to edit doesn't exist."
-msgstr ""
+msgstr "The reseller account you trying to edit doesn't exist."
 
 msgid "The softwares installer needs PHP."
-msgstr ""
+msgstr "The softwares installer needs PHP."
 
 #, php-format
 msgid "The username %s is not available."
-msgstr ""
+msgstr "The username %s is not available."
 
 #, php-format
 msgid "There are <em>%s</em> records on system."
@@ -4444,27 +4508,24 @@ msgid "This hosting plan is not available for purchase."
 msgstr "Detta webbhotell är inte tillgänglig för köp."
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "This htaccess group already exists."
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "This htaccess user already exist."
 
 #, php-format
 msgid ""
 "This reseller has %s customer(s) with unlimited rights for the %s service."
 msgstr ""
+"This reseller has %s customer(s) with unlimited rights for the %s service."
 
 #, php-format
 msgid ""
 "This reseller has already assigned more/higher %s accounts/limits than the "
 "new limit you entered."
 msgstr ""
-
-msgid "This reseller has no domains yet."
-msgstr "Denna återförsäljare har inga domäner än."
-
-msgid "This reseller has no domains."
-msgstr "Denna återförsäljare har inga domäner."
+"This reseller has already assigned more/higher %s accounts/limits than the "
+"new limit you entered."
 
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
@@ -4478,6 +4539,8 @@ msgid ""
 "This reseller's customers are using/have more/higher %s accounts/limits than"
 " the new limit you entered."
 msgstr ""
+"This reseller's customers are using/have more/higher %s accounts/limits than"
+" the new limit you entered."
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -4504,10 +4567,10 @@ msgid "Ticket with Id: '%d' no found."
 msgstr "Biljett med Id: '%d' hittades inte."
 
 msgid "Tickets closed"
-msgstr ""
+msgstr "Tickets closed"
 
 msgid "Tickets open"
-msgstr ""
+msgstr "Tickets open"
 
 msgid "To Admin"
 msgstr "Till Administratör"
@@ -4580,19 +4643,16 @@ msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
 msgstr "Trafikgräns <br><i>(0 obegränsat)</i>"
 
 msgid "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
 
 msgid "Traffic usage"
 msgstr "Trafikanvändning"
-
-msgid "Traffic<br>usage"
-msgstr "Trafik<br>nyttjad"
 
 msgid "Translated strings"
 msgstr "Översatta strängar"
@@ -4627,7 +4687,7 @@ msgstr ""
 "har inaktiverats."
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
-msgstr ""
+msgstr "Unable to get the IP addresses list. Please fix this problem."
 
 msgid "Unable to read xml file for Web softwares."
 msgstr "Det går inte att läsa XML-fil för Web mjukvaran."
@@ -4639,6 +4699,8 @@ msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
 "reseller."
 msgstr ""
+"Unable to retrieve directories list for your domain. Please contact your "
+"reseller."
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -4648,7 +4710,7 @@ msgid "Undefined reference to data."
 msgstr "Odefinierade hänvisning till data."
 
 msgid "Under maintenance mode, only administrators can login."
-msgstr ""
+msgstr "Under maintenance mode, only administrators can login."
 
 msgid "Unknown"
 msgstr "Okänt"
@@ -4670,16 +4732,16 @@ msgid "Unknown domain type."
 msgstr "Okänd domän typ."
 
 msgid "Unknown language name."
-msgstr ""
+msgstr "Unknown language name."
 
 msgid "Unknown layout color."
-msgstr ""
+msgstr "Unknown layout color."
 
 msgid "Unknown subdomain type."
 msgstr "Okänd underdomän typ."
 
 msgid "Unknown type."
-msgstr ""
+msgstr "Unknown type."
 
 #, php-format
 msgid "Unknown zone type %s."
@@ -4698,7 +4760,7 @@ msgid "Update"
 msgstr "Uppdatera"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Update SQL user password"
 
 msgid "Update checking is disabled!"
 msgstr "Uppdateringskontroll är inaktiverad"
@@ -4728,7 +4790,7 @@ msgid "Update plan"
 msgstr "Uppdatera webbhotellsplan"
 
 msgid "Updates"
-msgstr ""
+msgstr "Updates"
 
 msgid "Upload"
 msgstr "Ladda upp"
@@ -4740,10 +4802,10 @@ msgid "Upload now"
 msgstr "Ladda upp nu"
 
 msgid "Usage status"
-msgstr ""
+msgstr "Usage status"
 
 msgid "Use normal connection (No SSL)"
-msgstr ""
+msgstr "Use normal connection (No SSL)"
 
 msgid "Use numeric ID"
 msgstr "Använda numeriskt ID"
@@ -4760,7 +4822,7 @@ msgid "Use other dir"
 msgstr "Använd en annan katalog"
 
 msgid "Use secure connection (SSL)"
-msgstr ""
+msgstr "Use secure connection (SSL)"
 
 msgid "Use strong Passwords"
 msgstr "Använd starka lösenord"
@@ -4806,7 +4868,7 @@ msgstr ""
 "Användaren finns inte eller om du inte har behörighet till detta gränssnitt."
 
 msgid "User does not exist."
-msgstr ""
+msgstr "User does not exist."
 
 msgid "User list is empty."
 msgstr "Användare listan är tom."
@@ -4857,34 +4919,36 @@ msgid "Username"
 msgstr "Användarnamn"
 
 msgid "Username and password for application login"
-msgstr ""
+msgstr "Username and password for application login"
 
 msgid "Users"
 msgstr "Användare"
 
 msgid "Users and groups"
-msgstr ""
+msgstr "Users and groups"
 
 msgid "Users list"
 msgstr "Användarlista"
 
 #, php-format
 msgid "Value for the %s  directive"
-msgstr ""
+msgstr "Value for the %s  directive"
 
 #, php-format
 msgid "Value for the %s directive"
-msgstr ""
+msgstr "Value for the %s directive"
 
 #, php-format
 msgid "Value for the PHP %s directive is out of range."
-msgstr ""
+msgstr "Value for the PHP %s directive is out of range."
 
 #, php-format
 msgid ""
 "Value for the PHP <strong>%%s</strong> directive must be between %%d and "
 "%%d."
 msgstr ""
+"Value for the PHP <strong>%%s</strong> directive must be between %%d and "
+"%%d."
 
 msgid "Values"
 msgstr "Värden"
@@ -4902,7 +4966,7 @@ msgid "View / Update service(s) port"
 msgstr "Visa / Uppdatera tjänst(er) porten"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "View SSL certificate"
 
 msgid "View Support Ticket"
 msgstr "Visa Support Ticket"
@@ -4911,7 +4975,7 @@ msgid "View aliases"
 msgstr "Se alias"
 
 msgid "View certificates"
-msgstr ""
+msgstr "View certificates"
 
 msgid "View details"
 msgstr "Visa information"
@@ -4926,7 +4990,7 @@ msgid "WEB"
 msgstr "WEB"
 
 msgid "Warning traffic"
-msgstr ""
+msgstr "Warning traffic"
 
 msgid "Warning traffic is bigger than max traffic!"
 msgstr "Trafikvarningen är större än max angiven trafik"
@@ -4967,19 +5031,16 @@ msgid "Web software depot packages total"
 msgstr "Web depå paket totalt"
 
 msgid "Web softwares repository"
-msgstr ""
+msgstr "Web softwares repository"
 
 msgid "Web statistics"
 msgstr "Webbstatistik"
 
 msgid "Web statistics (AWStats)"
-msgstr ""
+msgstr "Web statistics (AWStats)"
 
 msgid "Web traffic"
 msgstr "Webbtrafik"
-
-msgid "Web<br>traffic"
-msgstr "Webb<br>trafik"
 
 msgid "Webmail"
 msgstr "Webbmail"
@@ -4991,19 +5052,21 @@ msgid "Webtools"
 msgstr "Webbverktyg"
 
 msgid "Welcome mail"
-msgstr ""
+msgstr "Welcome mail"
 
 msgid ""
 "When allowed, scripts can call the PHP exec() function. This function is "
 "needed by many applications but can cause some security issues"
 msgstr ""
+"When allowed, scripts can call the PHP exec() function. This function is "
+"needed by many applications but can cause some security issues"
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
 msgstr "Jokertecken som%% och? är inte tillåtna."
 
 msgid "Wrong IP address."
-msgstr ""
+msgstr "Fel IP adr."
 
 #, php-format
 msgid "Wrong IPv4 address (\"%s\")."
@@ -5014,7 +5077,7 @@ msgid "Wrong IPv6 address (\"%s\")."
 msgstr "Felaktig IPv6 adress (\"%s\")."
 
 msgid "Wrong SQL user identifier."
-msgstr ""
+msgstr "Fel SQL användar indentifiering"
 
 msgid "Wrong address in forward URL."
 msgstr "Fel adress i framåt webbadress."
@@ -5062,7 +5125,7 @@ msgid "Wrong software id."
 msgstr "Fel mjukvara ID."
 
 msgid "Wrong syntax for new expire date."
-msgstr ""
+msgstr "Wrong syntax for new expire date."
 
 #, php-format
 msgid "Wrong syntax for the %s forward email address."
@@ -5070,7 +5133,7 @@ msgstr "Fel Syntaxen för %s framåt e-postadress."
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
-msgstr ""
+msgstr "Wrong syntax for the %s limit."
 
 msgid "Wrong syntax in forward URL."
 msgstr "Fel syntax i framåt URL."
@@ -5079,13 +5142,13 @@ msgid "Wrong username"
 msgstr "Fel användarnamn"
 
 msgid "Wrong username."
-msgstr ""
+msgstr "Fel användarnamn"
 
 msgid "Wrong_request."
-msgstr ""
+msgstr "Wrong_request."
 
 msgid "XML file URL for the Web software repository"
-msgstr ""
+msgstr "XML file URL for the Web software repository"
 
 msgid "Year"
 msgstr "År"
@@ -5107,7 +5170,7 @@ msgid "You are exceeding your disk limit."
 msgstr "Du överskrider din disk gräns."
 
 msgid "You are exceeding your disk space limit."
-msgstr ""
+msgstr "Du överskrider din hårddisk limit."
 
 msgid "You are exceeding your traffic limit."
 msgstr "Du överskrider din trafik gräns."
@@ -5122,7 +5185,7 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "Du får inte ta bort den här DNS-posten."
 
 msgid "You are not allowed to remove this service port entry."
-msgstr ""
+msgstr "You are not allowed to remove this service port entry."
 
 msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
@@ -5150,26 +5213,26 @@ msgstr ""
 " gränser för tjänsten <b>%2$s</b>"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr ""
+msgstr "You cannot protect an area without selected htaccess group(s)."
 
 msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr ""
+msgstr "You cannot protect an area without selected htaccess user(s)."
 
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "Du kan inte ta bort%s IP-adress."
 
 msgid "You cannot set expire date in past."
-msgstr ""
+msgstr "You cannot set expire date in past."
 
 msgid "You cannot unassign an IP address already in use."
-msgstr ""
+msgstr "You cannot unassign an IP address already in use."
 
 msgid "You cannot update to this hosting plan, see notices in text."
 msgstr "Du kan inte uppdatera till denna hosting plan, se antekning i texten."
 
 msgid "You cant't install the software outside the htdocs directory."
-msgstr ""
+msgstr "You cant't install the software outside the htdocs directory."
 
 msgid "You did have more traffic than the new hosting plan limits."
 msgstr "Du har haft mer trafik än vad den nya webbhotelsplanen tillåter."
@@ -5208,7 +5271,7 @@ msgid "You do not have subdomains."
 msgstr "Du har inga underdomäner."
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr ""
+msgstr "You do not have sufficient permissions to perform this operation."
 
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "Du behöver inte \"www.\" i-MSCP kommer att lägga till den automatiskt."
@@ -5220,11 +5283,11 @@ msgstr ""
 
 #, php-format
 msgid "You have %d new accounts %s."
-msgstr ""
+msgstr "You have %d new accounts %s."
 
 #, php-format
 msgid "You have %d new domain alias %s."
-msgstr ""
+msgstr "You have %d new domain alias %s."
 
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't has this feature."
@@ -5254,6 +5317,7 @@ msgstr ""
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
 msgstr ""
+"You have chosen a directory which doesn't matches the domain directory."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
 msgstr ""
@@ -5296,7 +5360,7 @@ msgstr ""
 "Du använder fler subdomäner än vad den nya webbhotellsplanen tillåter."
 
 msgid "You have no custom service ports defined."
-msgstr ""
+msgstr "You have no custom service ports defined."
 
 msgid "You have no groups."
 msgstr "Du har inga grupper."
@@ -5309,7 +5373,7 @@ msgstr "Du har inga användare!"
 
 #, php-format
 msgid "You have received %d new support questions."
-msgstr ""
+msgstr "You have received %d new support questions."
 
 #, php-format
 msgid "You have received <b>%d</b> new support questions."
@@ -5341,13 +5405,13 @@ msgid "You must fill out all required fields."
 msgstr "Du måste fylla i alla obligatoriska fält."
 
 msgid "You must first generate a password"
-msgstr ""
+msgstr "You must first generate a password"
 
 msgid "You must first update the template to preview your changes."
-msgstr ""
+msgstr "You must first update the template to preview your changes."
 
 msgid "You must provide a password."
-msgstr ""
+msgstr "You must provide a password."
 
 msgid "You must select a file to upload/download."
 msgstr "Du måste välja en fil att ladda upp / ladda ner."
@@ -5363,7 +5427,7 @@ msgstr "Du måste ange ett ämne."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
-msgstr ""
+msgstr "You received %d new answer(s) to your support questions."
 
 msgid "You send email to your users successfully!"
 msgstr "Du har nu skickat iväg e-postmeddelandet till dina användare!"
@@ -5375,7 +5439,7 @@ msgid "Your account has expired. Please renew your subscription."
 msgstr "Ditt konto har gått ut. Vänligen förnya prenumerationen."
 
 msgid "Your consumption"
-msgstr ""
+msgstr "Your consumption"
 
 msgid "Your message"
 msgstr "Ditt meddelande"
@@ -5399,7 +5463,7 @@ msgstr ""
 "Din beställning har inte påträffats i vår databas. Kanske redan bekräftad?"
 
 msgid "Your own domain"
-msgstr ""
+msgstr "Your own domain"
 
 #, php-format
 msgid ""
@@ -5421,7 +5485,7 @@ msgstr ""
 "instruktioner för att slutföra processen."
 
 msgid "Zip code"
-msgstr ""
+msgstr "Zip code"
 
 msgid "Zip/Postal code"
 msgstr "Postnr"
@@ -5444,6 +5508,12 @@ msgstr "dag"
 msgid "days"
 msgstr "dagar"
 
+msgid "disabled"
+msgstr "Inte aktivt"
+
+msgid "disabled</b>"
+msgstr "inte aktivt</b>"
+
 msgid "disk space"
 msgstr "diskutrymme"
 
@@ -5451,16 +5521,16 @@ msgid "domain"
 msgstr "domän"
 
 msgid "domain alias"
-msgstr ""
+msgstr "domain alias"
 
 msgid "domain aliases"
 msgstr "domänalias"
 
 msgid "domain aliasses"
-msgstr ""
+msgstr "domain aliasses"
 
 msgid "domains"
-msgstr ""
+msgstr "domains"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -5488,13 +5558,13 @@ msgid "i-MSCP - Admin - Manage custom menus"
 msgstr "i-MSCP - Admininistratör - Hantera anpassade menyer"
 
 msgid "i-MSCP - Admin / Add hosting plan"
-msgstr ""
+msgstr "i-MSCP - Admin / Add hosting plan"
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP - Admin / Domain radering av konto validering"
 
 msgid "i-MSCP - Admin / Edit hosting plan"
-msgstr ""
+msgstr "i-MSCP - Admin / Edit hosting plan"
 
 msgid "i-MSCP - Admin / General information"
 msgstr "i-MSCP - Admin / Allmän information"
@@ -5503,31 +5573,37 @@ msgid "i-MSCP - Admin / General settings / IPs management"
 msgstr "i-MSCP - Admin / Allmänna inställningar / IPS management"
 
 msgid "i-MSCP - Admin / Internationalisation"
-msgstr ""
+msgstr "i-MSCP - Admin / Internationalisation"
 
 msgid "i-MSCP - Admin / Manage users / Add Reseller"
-msgstr ""
+msgstr "i-MSCP - Admin / Manage users / Add Reseller"
 
 msgid "i-MSCP - Admin / Manage users / Edit Reseller"
-msgstr ""
+msgstr "i-MSCP - Admin / Manage users / Edit Reseller"
 
 msgid "i-MSCP - Admin / My Profile"
-msgstr ""
+msgstr "i-MSCP - Admin / My Profile"
 
 msgid "i-MSCP - Admin / Profile /  Language"
-msgstr ""
+msgstr "i-MSCP - Admin / Profile /  Language"
 
 msgid "i-MSCP - Admin / Profile /  Password"
-msgstr ""
+msgstr "i-MSCP - Admin / Profile /  Password"
 
 msgid "i-MSCP - Admin / Profile /  Personal Data"
-msgstr ""
+msgstr "i-MSCP - Admin / Profile /  Personal Data"
 
 msgid "i-MSCP - Admin / Profile / Layout"
-msgstr ""
+msgstr "i-MSCP - Admin / Profile / Layout"
+
+msgid "i-MSCP - Admin / Reseller customer statistics"
+msgstr "i-MSCP - Admin / Reseller customer statistics"
+
+msgid "i-MSCP - Admin / Reseller statistics"
+msgstr "i-MSCP - Admin / Reseller statistics"
 
 msgid "i-MSCP - Admin / Settings / Service ports"
-msgstr ""
+msgstr "i-MSCP - Admin / Settings / Service ports"
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Admin / supportsystem / stänga tickets"
@@ -5577,9 +5653,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Administratör/Hantera användare/Överlåtelse av användare"
 
-msgid "i-MSCP - Admin/Reseller User Statistics"
-msgstr "i-MSCP - Administratör/Användartabell för återförsäljare"
-
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - Administratör/Servertrafikinställningar"
 
@@ -5593,7 +5666,7 @@ msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Administratör/Inställningar"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
-msgstr ""
+msgstr "i-MSCP - Administrator / Hosting Plans Management"
 
 msgid "i-MSCP - Application Management"
 msgstr "i-MSCP - Application Management"
@@ -5602,7 +5675,7 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Application Management (behörigheter)"
 
 msgid "i-MSCP - Client / Change Language"
-msgstr ""
+msgstr "i-MSCP - Client / Change Language"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Supportsystem / stängda tickets"
@@ -5617,19 +5690,20 @@ msgid "i-MSCP - Client / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Client / Support Ticket System / Visa Ticket"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
-msgstr ""
+msgstr "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user"
-msgstr ""
+msgstr "i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Manage users and groups"
 msgstr ""
+"i-MSCP - Client / Webtools / Protected areas / Manage users and groups"
 
 msgid "i-MSCP - Client / Webtools / Softwares"
-msgstr ""
+msgstr "i-MSCP - Client / Webtools / Softwares"
 
 msgid "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
-msgstr ""
+msgstr "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Kund/Lägg till FTP-användare"
@@ -5683,13 +5757,13 @@ msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - Kund/Hantera användare"
 
 msgid "i-MSCP - Client/Manage certificates"
-msgstr ""
+msgstr "i-MSCP - Client/Manage certificates"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Kund/Webbverktyg"
 
 msgid "i-MSCP - Domain Details"
-msgstr ""
+msgstr "i-MSCP - Domain Details"
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - Domän Statistik Data"
@@ -5701,7 +5775,7 @@ msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - Domän/Ändra"
 
 msgid "i-MSCP - Ftp / Choose directory"
-msgstr ""
+msgstr "i-MSCP - Ftp / Choose directory"
 
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Installationsprogram"
@@ -5731,13 +5805,16 @@ msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / Logga in"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Lost password"
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Maintenance"
 
 msgid "i-MSCP - Reseller / Add hosting plan"
-msgstr ""
+msgstr "i-MSCP - Reseller / Add hosting plan"
+
+msgid "i-MSCP - Reseller / Customers statistics"
+msgstr "i-MSCP - Reseller / Customers statistics"
 
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Återförsäljare / Domain radering av konto validering"
@@ -5749,7 +5826,7 @@ msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Återförsäljare / Layout"
 
 msgid "i-MSCP - Reseller / My Profile"
-msgstr ""
+msgstr "i-MSCP - Reseller / My Profile"
 
 msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Återförsäljare / Supportsystem / stängda tickets"
@@ -5762,9 +5839,6 @@ msgstr "i-MSCP - Återförsäljare / Support Ticket System / Open tickets"
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Återförsäljare / Support Ticket System / Visa Ticket"
-
-msgid "i-MSCP - Reseller statistics"
-msgstr "i-MSCP - Återförsäljarstatistik"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Återförsäljare/Ändra Språk"
@@ -5812,7 +5886,7 @@ msgid "i-MSCP - Software details"
 msgstr "i-MSCP - Mjukvara detaljer"
 
 msgid "i-MSCP - Software installer options"
-msgstr ""
+msgstr "i-MSCP - Software installer options"
 
 msgid "i-MSCP - Update hosting plan"
 msgstr "i-MSCP - Uppdatera webbhotellsplaner"
@@ -5836,10 +5910,10 @@ msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Användare/Redigera"
 
 msgid "i-MSCP - client / Setting Layout"
-msgstr ""
+msgstr "i-MSCP - client / Setting Layout"
 
 msgid "i-MSCP / Client / Manage domains / PHP Editor"
-msgstr ""
+msgstr "i-MSCP / Client / Manage domains / PHP Editor"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / Software Installer / Manager"
@@ -5855,7 +5929,7 @@ msgstr ""
 "i-MSCP Administratör / Systemverktyg / Loggvisare för anti-rootkitverktyg"
 
 msgid "i-MSCP Client / General Information"
-msgstr ""
+msgstr "i-MSCP Client / General Information"
 
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP Kund: Lägg Alias"
@@ -5867,16 +5941,16 @@ msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP Daemon verktyg"
 
 msgid "i-MSCP Notice"
-msgstr ""
+msgstr "i-MSCP Notice"
 
 msgid "i-MSCP Reseller / Domain statistics"
-msgstr ""
+msgstr "i-MSCP Reseller / Domain statistics"
 
 msgid "i-MSCP Reseller/Add Alias"
-msgstr ""
+msgstr "i-MSCP Reseller/Add Alias"
 
 msgid "i-MSCP Reseller/Circular"
-msgstr ""
+msgstr "i-MSCP Reseller/Circular"
 
 msgid "i-MSCP application installer"
 msgstr "i-MSCP Aplikation installationsprogrammet"
@@ -5909,10 +5983,10 @@ msgid "internet Multi Server Control Panel"
 msgstr "Internet Multi Server Control Panel"
 
 msgid "mail"
-msgstr ""
+msgstr "mail"
 
 msgid "mail account"
-msgstr ""
+msgstr "mail account"
 
 msgid "mail accounts"
 msgstr "postkonton"
@@ -5961,10 +6035,10 @@ msgid "or remote file (Max: %1$d MB)"
 msgstr "eller fjärr-fil (Max:%1$d MB)"
 
 msgid "order"
-msgstr ""
+msgstr "order"
 
 msgid "orders"
-msgstr ""
+msgstr "orders"
 
 msgid "orphan entry"
 msgstr "föräldralös post"
@@ -5979,7 +6053,7 @@ msgid "reseller"
 msgstr "återförsäljare"
 
 msgid "subdomain"
-msgstr ""
+msgstr "subdomain"
 
 msgid "subdomains"
 msgstr "underdomäner"
@@ -6003,15 +6077,12 @@ msgid "view aliases"
 msgstr "visa alias"
 
 msgid "wrong request."
-msgstr ""
+msgstr "wrong request."
 
 msgid "yes"
 msgstr "ja"
 
-msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010 - 2011 i-MSCP Team <br/> All Rights Reserved"
-
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 
 

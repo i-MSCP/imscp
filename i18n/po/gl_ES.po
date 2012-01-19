@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-14 11:27+0100\n"
-"PO-Revision-Date: 2012-01-14 10:23+0000\n"
+"POT-Creation-Date: 2012-01-19 09:06+0100\n"
+"PO-Revision-Date: 2012-01-18 07:26+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -37,12 +37,8 @@ msgid ""
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-msgstr "%1$d / %2$d <br/>de<br/> <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$d / %2$d <br/>de<br/> <b>ilimitados</b>"
+msgid "%1$d / %2$d of %3$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -53,8 +49,16 @@ msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d de <b>ilimitado</b>"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$d <br/>de<br/> <b>%2$d</b>"
+msgid "%1$d / %2$d of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -73,20 +77,24 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr ""
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
-msgstr "%1$s / %2$s <br/>de<br/> <b>%3$s</b>"
+msgid "%1$s / %2$s of %3$s"
+msgstr ""
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$s / %2$s <br/>de<br/> <b>ilimitados</b>"
+msgid "%1$s / %2$s of unlimited"
+msgstr ""
 
 #, php-format
-msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>de<br/> <b>%2$s</b>"
+msgid "%1$s of %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
 msgstr "%1$s de %2$s MB"
+
+#, php-format
+msgid "%1$s of %2$s</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$s of <b>unlimited</b> MB"
@@ -109,10 +117,6 @@ msgid "%d %s remaining until account expiration"
 msgstr ""
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br/>de<br/> <b>ilimitado</b>"
-
-#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
@@ -125,12 +129,16 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d strings translated"
+msgid "%d of unlimited"
 msgstr ""
 
 #, php-format
-msgid "%s <br/>of<br/> <b>unlimited</b>"
-msgstr "%s <br/>de<br/> <b>ilimitado</b>"
+msgid "%d of unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%d strings translated"
+msgstr ""
 
 #, php-format
 msgid "%s Errors in database"
@@ -186,6 +194,14 @@ msgstr ""
 
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts."
+msgstr ""
+
+#, php-format
+msgid "%s of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%s of unlimited</b>"
 msgstr ""
 
 #, php-format
@@ -996,9 +1012,6 @@ msgstr "Solicitudes pechadas"
 msgid "Closes tickets"
 msgstr ""
 
-msgid "Compagny"
-msgstr ""
-
 msgid "Company"
 msgstr "Empresa"
 
@@ -1329,9 +1342,6 @@ msgstr ""
 
 msgid "Disk usage"
 msgstr "Emprego de disco"
-
-msgid "Disk<br>usage"
-msgstr "Emprego<br>do disco"
 
 msgid "Do not show any error"
 msgstr ""
@@ -1846,9 +1856,6 @@ msgstr "Límite de contas FTP<br><i>(-1 desactivado, 0 sen límite)</i>"
 msgid "FTP traffic"
 msgstr "Tráfico FTP"
 
-msgid "FTP<br>traffic"
-msgstr "Tráfico<br>FTP"
-
 msgid "FTPs"
 msgstr "FTPs"
 
@@ -2110,6 +2117,9 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
+msgstr ""
+
+msgid "Http traffic"
 msgstr ""
 
 msgid "I Accept The Term of Service"
@@ -2834,6 +2844,9 @@ msgstr ""
 msgid "No domain alias system errors"
 msgstr "Non hai erros de sistema de alias de dominios"
 
+msgid "No domain statistics to display."
+msgstr ""
+
 msgid "No domain system errors"
 msgstr "Non hai erros de sistema de dominios"
 
@@ -2856,9 +2869,6 @@ msgid "No records found"
 msgstr ""
 
 msgid "No reseller accounts found."
-msgstr ""
-
-msgid "No reseller is registered in your system."
 msgstr ""
 
 msgid "No set"
@@ -3086,9 +3096,6 @@ msgstr "POP3/IMAP de saída"
 
 msgid "POP3/IMAP traffic"
 msgstr "Tráficos POP3/IMAP"
-
-msgid "POP3/IMAP<br>traffic"
-msgstr "Tráfico<br>POP3/IMAP"
 
 msgid "Package actions"
 msgstr ""
@@ -3540,9 +3547,6 @@ msgstr "Nome do revendedor"
 msgid "Reseller software list"
 msgstr ""
 
-msgid "Reseller statistics table"
-msgstr "Táboa de estatísticas do revendedor"
-
 msgid "Reseller successfully added."
 msgstr ""
 
@@ -3609,9 +3613,6 @@ msgstr "SMTP de saída"
 msgid "SMTP traffic"
 msgstr "Tráfico SMTP"
 
-msgid "SMTP<br>traffic"
-msgstr "Tráfico<br>SMTP"
-
 msgid "SQL"
 msgstr "SQL"
 
@@ -3629,9 +3630,6 @@ msgstr "Usuarios SQL"
 
 msgid "SQL accounts limit reached."
 msgstr ""
-
-msgid "SQL database"
-msgstr "Banco de datos SQL"
 
 msgid "SQL database created."
 msgstr ""
@@ -3670,9 +3668,6 @@ msgstr ""
 
 msgid "SQL support"
 msgstr "Soporte SQL"
-
-msgid "SQL user"
-msgstr "Usuario SQL"
 
 msgid "SQL user created."
 msgstr ""
@@ -3721,12 +3716,6 @@ msgstr ""
 
 msgid "SQL-user not found."
 msgstr ""
-
-msgid "SQL<br>database"
-msgstr "Banco de datos<br>SQL"
-
-msgid "SQL<br>user"
-msgstr "Usuario<br>SQL"
 
 msgid "SSL Certificates"
 msgstr ""
@@ -3879,6 +3868,12 @@ msgstr ""
 
 msgid "Show default E-Mail addresses"
 msgstr "Amosar enderezos de correo-e predeterminados"
+
+msgid "Show detailed statistics for this domain"
+msgstr ""
+
+msgid "Show detailed statistics for this reseller"
+msgstr ""
 
 msgid "Show hosting plan"
 msgstr "Amosar plano de hospedaxe"
@@ -4401,12 +4396,6 @@ msgid ""
 "new limit you entered."
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr "Este revendedor aínda non ten dominios."
-
-msgid "This reseller has no domains."
-msgstr "Este revendedor non ten dominios."
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
@@ -4526,9 +4515,6 @@ msgstr ""
 
 msgid "Traffic usage"
 msgstr "Emprego de tráfico"
-
-msgid "Traffic<br>usage"
-msgstr "Emprego<br>do tráfico"
 
 msgid "Translated strings"
 msgstr ""
@@ -4904,9 +4890,6 @@ msgstr ""
 
 msgid "Web traffic"
 msgstr "Tráfico web"
-
-msgid "Web<br>traffic"
-msgstr "Tráfico<br>web"
 
 msgid "Webmail"
 msgstr "Correo-web"
@@ -5372,6 +5355,12 @@ msgstr ""
 msgid "days"
 msgstr ""
 
+msgid "disabled"
+msgstr ""
+
+msgid "disabled</b>"
+msgstr ""
+
 msgid "disk space"
 msgstr ""
 
@@ -5454,6 +5443,12 @@ msgstr ""
 msgid "i-MSCP - Admin / Profile / Layout"
 msgstr ""
 
+msgid "i-MSCP - Admin / Reseller customer statistics"
+msgstr ""
+
+msgid "i-MSCP - Admin / Reseller statistics"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr ""
 
@@ -5501,9 +5496,6 @@ msgstr "i-MSCP - Admin/Xestionar usuarios/Asignación de revendedor"
 
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Admin/Xestionar usuarios/Asignación de usuarios"
-
-msgid "i-MSCP - Admin/Reseller User Statistics"
-msgstr "i-MSCP - Admin/Estatísticas de Usuarios de Revendedor"
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - Admin/Configuración do Tráfico do Servidor"
@@ -5664,6 +5656,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Customers statistics"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
@@ -5687,9 +5682,6 @@ msgstr ""
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr ""
-
-msgid "i-MSCP - Reseller statistics"
-msgstr "i-MSCP - Estatísticas de revendedor"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Revendedor/Mudar Idioma"
@@ -5934,9 +5926,6 @@ msgstr ""
 
 msgid "yes"
 msgstr "si"
-
-msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

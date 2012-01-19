@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-14 11:27+0100\n"
-"PO-Revision-Date: 2012-01-14 10:23+0000\n"
+"POT-Creation-Date: 2012-01-19 09:06+0100\n"
+"PO-Revision-Date: 2012-01-18 07:27+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,12 +50,8 @@ msgstr ""
 " Show all errors, except for warnings about deprecated code (Production)"
 
 #, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-msgstr "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
+msgid "%1$d / %2$d of %3$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -66,8 +62,16 @@ msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d of <b>unlimited</b>"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$d / %2$d of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -86,20 +90,24 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (Version: %2$s, Language: %3$s)"
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
-msgstr "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgid "%1$s / %2$s of %3$s"
+msgstr ""
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
+msgid "%1$s / %2$s of unlimited"
+msgstr ""
 
 #, php-format
-msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>of<br/> <b>%2$s</b>"
+msgid "%1$s of %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
 msgstr "%1$s of %2$s MB"
+
+#, php-format
+msgid "%1$s of %2$s</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$s of <b>unlimited</b> MB"
@@ -122,10 +130,6 @@ msgid "%d %s remaining until account expiration"
 msgstr "%d %s remaining until account expiration"
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br/>of<br/> <b>unlimited</b>"
-
-#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr "%d Service(s) port was successfully updated"
 
@@ -138,12 +142,16 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr "%d configuration parameter(s) have/has been updated."
 
 #, php-format
-msgid "%d strings translated"
-msgstr "%d strings translated"
+msgid "%d of unlimited"
+msgstr ""
 
 #, php-format
-msgid "%s <br/>of<br/> <b>unlimited</b>"
-msgstr "%s <br/>of<br/> <b>unlimited</b>"
+msgid "%d of unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%d strings translated"
+msgstr "%d strings translated"
 
 #, php-format
 msgid "%s Errors in database"
@@ -200,6 +208,14 @@ msgstr "%s is not a valid i-MSCP language file."
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts."
 msgstr "%s list is empty! You cannot add mail accounts."
+
+#, php-format
+msgid "%s of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%s of unlimited</b>"
+msgstr ""
 
 #, php-format
 msgid "%s page"
@@ -1033,9 +1049,6 @@ msgstr "Closed tickets"
 msgid "Closes tickets"
 msgstr ""
 
-msgid "Compagny"
-msgstr ""
-
 msgid "Company"
 msgstr "Company"
 
@@ -1368,9 +1381,6 @@ msgstr ""
 
 msgid "Disk usage"
 msgstr "Disk usage"
-
-msgid "Disk<br>usage"
-msgstr "Disk<br>usage"
 
 msgid "Do not show any error"
 msgstr "Do not show any error"
@@ -1892,9 +1902,6 @@ msgstr "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgid "FTP traffic"
 msgstr "FTP traffic"
 
-msgid "FTP<br>traffic"
-msgstr "FTP<br>traffic"
-
 msgid "FTPs"
 msgstr "FTPs"
 
@@ -2156,6 +2163,9 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
+msgstr ""
+
+msgid "Http traffic"
 msgstr ""
 
 msgid "I Accept The Term of Service"
@@ -2889,6 +2899,9 @@ msgstr "No database updates available."
 msgid "No domain alias system errors"
 msgstr "No domain alias system errors"
 
+msgid "No domain statistics to display."
+msgstr ""
+
 msgid "No domain system errors"
 msgstr "No domain system errors"
 
@@ -2912,9 +2925,6 @@ msgstr "No records found"
 
 msgid "No reseller accounts found."
 msgstr "No reseller accounts found."
-
-msgid "No reseller is registered in your system."
-msgstr ""
 
 msgid "No set"
 msgstr "No set"
@@ -3141,9 +3151,6 @@ msgstr "POP3/IMAP out"
 
 msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAP traffic"
-
-msgid "POP3/IMAP<br>traffic"
-msgstr "POP3/IMAP<br>traffic"
 
 msgid "Package actions"
 msgstr "Package actions"
@@ -3595,9 +3602,6 @@ msgstr "Reseller name"
 msgid "Reseller software list"
 msgstr "Reseller software list"
 
-msgid "Reseller statistics table"
-msgstr "Reseller statistics table"
-
 msgid "Reseller successfully added."
 msgstr "Reseller successfully added."
 
@@ -3664,9 +3668,6 @@ msgstr "SMTP out"
 msgid "SMTP traffic"
 msgstr "SMTP traffic"
 
-msgid "SMTP<br>traffic"
-msgstr "SMTP<br>traffic"
-
 msgid "SQL"
 msgstr "SQL"
 
@@ -3684,9 +3685,6 @@ msgstr "SQL Users"
 
 msgid "SQL accounts limit reached."
 msgstr "SQL accounts limit reached."
-
-msgid "SQL database"
-msgstr "SQL database"
 
 msgid "SQL database created."
 msgstr "SQL database created."
@@ -3724,9 +3722,6 @@ msgstr "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "SQL support"
 msgstr "SQL support"
-
-msgid "SQL user"
-msgstr "SQL user"
 
 msgid "SQL user created."
 msgstr "SQL user created."
@@ -3775,12 +3770,6 @@ msgstr "SQL-User"
 
 msgid "SQL-user not found."
 msgstr "SQL-user not found."
-
-msgid "SQL<br>database"
-msgstr "SQL<br>database"
-
-msgid "SQL<br>user"
-msgstr "SQL<br>user"
 
 msgid "SSL Certificates"
 msgstr ""
@@ -3936,6 +3925,12 @@ msgstr ""
 
 msgid "Show default E-Mail addresses"
 msgstr "Show default E-Mail addresses"
+
+msgid "Show detailed statistics for this domain"
+msgstr ""
+
+msgid "Show detailed statistics for this reseller"
+msgstr ""
 
 msgid "Show hosting plan"
 msgstr "Show hosting plan"
@@ -4462,12 +4457,6 @@ msgid ""
 "new limit you entered."
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr "This reseller has no domains yet."
-
-msgid "This reseller has no domains."
-msgstr "This reseller has no domains."
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
@@ -4592,9 +4581,6 @@ msgstr ""
 
 msgid "Traffic usage"
 msgstr "Traffic usage"
-
-msgid "Traffic<br>usage"
-msgstr "Traffic<br>usage"
 
 msgid "Translated strings"
 msgstr "Translated strings"
@@ -4977,9 +4963,6 @@ msgstr ""
 
 msgid "Web traffic"
 msgstr "Web traffic"
-
-msgid "Web<br>traffic"
-msgstr "Web<br>traffic"
 
 msgid "Webmail"
 msgstr "Webmail"
@@ -5437,6 +5420,12 @@ msgstr "day"
 msgid "days"
 msgstr "days"
 
+msgid "disabled"
+msgstr ""
+
+msgid "disabled</b>"
+msgstr ""
+
 msgid "disk space"
 msgstr "disk space"
 
@@ -5519,6 +5508,12 @@ msgstr ""
 msgid "i-MSCP - Admin / Profile / Layout"
 msgstr ""
 
+msgid "i-MSCP - Admin / Reseller customer statistics"
+msgstr ""
+
+msgid "i-MSCP - Admin / Reseller statistics"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr ""
 
@@ -5566,9 +5561,6 @@ msgstr "i-MSCP - Admin/Manage users/Reseller assignment"
 
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Admin/Manage users/User assignment"
-
-msgid "i-MSCP - Admin/Reseller User Statistics"
-msgstr "i-MSCP - Admin/Reseller User Statistics"
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - Admin/Server Traffic Settings"
@@ -5729,6 +5721,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Customers statistics"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Reseller / Domain Account Deletion Validation"
 
@@ -5752,9 +5747,6 @@ msgstr "i-MSCP - Reseller / Support Ticket System / Open Tickets"
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Reseller / Support Ticket System / View Ticket"
-
-msgid "i-MSCP - Reseller statistics"
-msgstr "i-MSCP - Reseller statistics"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Reseller/Change Language"
@@ -5996,9 +5988,6 @@ msgstr ""
 
 msgid "yes"
 msgstr "yes"
-
-msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""

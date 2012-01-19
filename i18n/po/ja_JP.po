@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-14 11:27+0100\n"
-"PO-Revision-Date: 2012-01-14 10:23+0000\n"
+"POT-Creation-Date: 2012-01-19 09:06+0100\n"
+"PO-Revision-Date: 2012-01-18 07:26+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,12 +48,8 @@ msgid ""
 msgstr "非推奨のコードについての警告を除いて、全てのエラーを表示する（生産）"
 
 #, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-msgstr "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$d / %2$d <br/>of<br/> <b>無制限</b>"
+msgid "%1$d / %2$d of %3$d"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of <b>%3$d</b>"
@@ -64,8 +60,16 @@ msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d of <b>無制限</b>"
 
 #, php-format
-msgid "%1$d <br/>of<br/> <b>%2$d</b>"
-msgstr "%1$d <br/>of<br/> <b>%2$d</b>"
+msgid "%1$d / %2$d of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d"
+msgstr ""
+
+#, php-format
+msgid "%1$d of %2$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -84,20 +88,24 @@ msgid "%1$s - (Version: %2$s, Language: %3$s)"
 msgstr "%1$s - (バージョン： %2$s, 言語： %3$s)"
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
-msgstr "%1$s / %2$s <br/>of<br/> <b>%3$s</b>"
+msgid "%1$s / %2$s of %3$s"
+msgstr ""
 
 #, php-format
-msgid "%1$s / %2$s <br/>of<br/> <b>unlimited</b>"
-msgstr "%1$s / %2$s <br/>of<br/> <b>無制限</b>"
+msgid "%1$s / %2$s of unlimited"
+msgstr ""
 
 #, php-format
-msgid "%1$s <br/>of<br/> <b>%2$s</b>"
-msgstr "%1$s <br/>of<br/> <b>%2$s</b>"
+msgid "%1$s of %2$s"
+msgstr ""
 
 #, php-format
 msgid "%1$s of %2$s MB"
 msgstr "%2$s の %1$s MB"
+
+#, php-format
+msgid "%1$s of %2$s</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$s of <b>unlimited</b> MB"
@@ -120,10 +128,6 @@ msgid "%d %s remaining until account expiration"
 msgstr "アカウントの有効期限まで、残りの%d %s"
 
 #, php-format
-msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%d <br/>of<br/> <b>無制限</b>"
-
-#, php-format
 msgid "%d Service(s) port was successfully updated"
 msgstr "%d のサービスポートが更新されました"
 
@@ -136,12 +140,16 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr "%d 個の設定パラメータが更新されました。"
 
 #, php-format
-msgid "%d strings translated"
-msgstr "%d の文字列を翻訳"
+msgid "%d of unlimited"
+msgstr ""
 
 #, php-format
-msgid "%s <br/>of<br/> <b>unlimited</b>"
-msgstr "%s <br/>of<br/> <b>無制限</b>"
+msgid "%d of unlimited</b>"
+msgstr ""
+
+#, php-format
+msgid "%d strings translated"
+msgstr "%d の文字列を翻訳"
 
 #, php-format
 msgid "%s Errors in database"
@@ -198,6 +206,14 @@ msgstr "%sは、有効なi-MSCP言語ファイルでありません。"
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts."
 msgstr "%sのリストが空です！メールアカウントを追加できません。"
+
+#, php-format
+msgid "%s of unlimited"
+msgstr ""
+
+#, php-format
+msgid "%s of unlimited</b>"
+msgstr ""
 
 #, php-format
 msgid "%s page"
@@ -1005,9 +1021,6 @@ msgstr "解決したチケット"
 msgid "Closes tickets"
 msgstr ""
 
-msgid "Compagny"
-msgstr ""
-
 msgid "Company"
 msgstr "会社"
 
@@ -1338,9 +1351,6 @@ msgstr ""
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
-
-msgid "Disk<br>usage"
-msgstr "ディスク<br>使用量"
 
 msgid "Do not show any error"
 msgstr "全てのエラーを表示しない"
@@ -1851,9 +1861,6 @@ msgstr "FTPアカウントの制限<br><i>(-1:無効, 0:無制限)</i>"
 msgid "FTP traffic"
 msgstr "FTPトラフィック"
 
-msgid "FTP<br>traffic"
-msgstr "FTP<br>トラフィック"
-
 msgid "FTPs"
 msgstr "FTPs"
 
@@ -2115,6 +2122,9 @@ msgid "Htaccess user successfully deleted from the %s htaccess group "
 msgstr ""
 
 msgid "Htaccess user successfully scheduled for addition."
+msgstr ""
+
+msgid "Http traffic"
 msgstr ""
 
 msgid "I Accept The Term of Service"
@@ -2842,6 +2852,9 @@ msgstr "利用可能なデータベースのアップデートはありません
 msgid "No domain alias system errors"
 msgstr "ドメインエイリアスシステムのエラーは発生していません"
 
+msgid "No domain statistics to display."
+msgstr ""
+
 msgid "No domain system errors"
 msgstr "ドメインシステムのエラーは発生していません"
 
@@ -2865,9 +2878,6 @@ msgstr "レコードがありません"
 
 msgid "No reseller accounts found."
 msgstr "代理店アカウントが見つかりません。"
-
-msgid "No reseller is registered in your system."
-msgstr ""
 
 msgid "No set"
 msgstr "設定されない"
@@ -3092,9 +3102,6 @@ msgstr "POP3/IMAP out"
 
 msgid "POP3/IMAP traffic"
 msgstr "POP3/IMAPトラフィック"
-
-msgid "POP3/IMAP<br>traffic"
-msgstr "POP3/IMAP<br>トラフィック"
 
 msgid "Package actions"
 msgstr "パッケージのアクション"
@@ -3544,9 +3551,6 @@ msgstr "代理店名"
 msgid "Reseller software list"
 msgstr "代理店ソフトウェアリスト"
 
-msgid "Reseller statistics table"
-msgstr "代理店の統計テーブル"
-
 msgid "Reseller successfully added."
 msgstr "代理店は追加されました。"
 
@@ -3613,9 +3617,6 @@ msgstr "SMTP out"
 msgid "SMTP traffic"
 msgstr "SMTPトラフィック"
 
-msgid "SMTP<br>traffic"
-msgstr "SMTP<br>トラフィック"
-
 msgid "SQL"
 msgstr "SQL"
 
@@ -3633,9 +3634,6 @@ msgstr "SQLユーザー"
 
 msgid "SQL accounts limit reached."
 msgstr "SQLアカウントが制限に達しています。"
-
-msgid "SQL database"
-msgstr "SQLデータベース"
 
 msgid "SQL database created."
 msgstr "SQLデータベースが作成されました。"
@@ -3673,9 +3671,6 @@ msgstr "SQLデータベース制限<br><i>(-1:無効, 0:無制限)</i>"
 
 msgid "SQL support"
 msgstr "SQLサポート"
-
-msgid "SQL user"
-msgstr "SQLユーザー"
 
 msgid "SQL user created."
 msgstr "SQLユーザーが作成されました。"
@@ -3724,12 +3719,6 @@ msgstr "SQL-ユーザー"
 
 msgid "SQL-user not found."
 msgstr "SQLユーザーが見つかりません。"
-
-msgid "SQL<br>database"
-msgstr "SQL<br>データベース"
-
-msgid "SQL<br>user"
-msgstr "SQL<br>ユーザー"
 
 msgid "SSL Certificates"
 msgstr ""
@@ -3881,6 +3870,12 @@ msgstr "コーディング標準を含む、全ての誤り、警告、および
 
 msgid "Show default E-Mail addresses"
 msgstr "デフォルトメールアドレスを表示"
+
+msgid "Show detailed statistics for this domain"
+msgstr ""
+
+msgid "Show detailed statistics for this reseller"
+msgstr ""
 
 msgid "Show hosting plan"
 msgstr "ホスティングプラン閲覧"
@@ -4398,12 +4393,6 @@ msgid ""
 "new limit you entered."
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr "このユーザーにドメインが登録されていません。"
-
-msgid "This reseller has no domains."
-msgstr "この代理店にドメインが登録されていません"
-
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
 "reseller, please first remove these customers accounts."
@@ -4523,9 +4512,6 @@ msgstr ""
 
 msgid "Traffic usage"
 msgstr "トラフィック量"
-
-msgid "Traffic<br>usage"
-msgstr "トラフィック<br>使用量"
 
 msgid "Translated strings"
 msgstr "翻訳された文字列"
@@ -4900,9 +4886,6 @@ msgstr ""
 
 msgid "Web traffic"
 msgstr "Webトラフィック"
-
-msgid "Web<br>traffic"
-msgstr "Web<br>トラフィック"
 
 msgid "Webmail"
 msgstr "Webメール"
@@ -5342,6 +5325,12 @@ msgstr "日"
 msgid "days"
 msgstr "日"
 
+msgid "disabled"
+msgstr ""
+
+msgid "disabled</b>"
+msgstr ""
+
 msgid "disk space"
 msgstr "ディスクスペース"
 
@@ -5424,6 +5413,12 @@ msgstr ""
 msgid "i-MSCP - Admin / Profile / Layout"
 msgstr ""
 
+msgid "i-MSCP - Admin / Reseller customer statistics"
+msgstr ""
+
+msgid "i-MSCP - Admin / Reseller statistics"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr ""
 
@@ -5471,9 +5466,6 @@ msgstr "管理者/ユーザー管理/代理店の割り当て"
 
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "管理者/ユーザー管理/ユーザーの割り当て"
-
-msgid "i-MSCP - Admin/Reseller User Statistics"
-msgstr "i-MSCP - 管理者/代理店ユーザー情報"
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "i-MSCP - 管理者/サーバートラフィック設定"
@@ -5634,6 +5626,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Customers statistics"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - 代理店 / ドメインアカウント削除確認"
 
@@ -5657,9 +5652,6 @@ msgstr "i-MSCP - 代理店 / サポートチケットシステム / 未解決の
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr "i-MSCP - 代理店 / サポートチケットシステム / チケットを表示"
-
-msgid "i-MSCP - Reseller statistics"
-msgstr "i-MSCP - 代理店の統計"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理店/言語変更"
@@ -5901,9 +5893,6 @@ msgstr ""
 
 msgid "yes"
 msgstr "有効"
-
-msgid "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
-msgstr "© 2010 - 2011 i-MSCP Team<br/>All Rights Reserved"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
