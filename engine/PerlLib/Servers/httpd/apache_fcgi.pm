@@ -158,13 +158,19 @@ sub enableSite{
 	use iMSCP::Execute;
 
 	my $self	= shift;
-	my $site	= shift;
+	my $sites	= shift;
 	my ($rs, $stdout, $stderr);
 
-	$rs = execute("a2ensite $site", \$stdout, \$stderr);
-	debug("$stdout") if($stdout);
-	error("$stderr") if($stderr);
-	return $rs if $rs;
+	for(split(' ', $sites)){
+		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
+			$rs = execute("a2ensite $_", \$stdout, \$stderr);
+			debug("stdout $stdout") if($stdout);
+			error("stderr $stderr") if($stderr);
+			return $rs if $rs;
+		} else {
+			warning("Site $_ do not exists");
+		}
+	}
 
 	0;
 }
@@ -174,13 +180,19 @@ sub disableSite{
 	use iMSCP::Execute;
 
 	my $self	= shift;
-	my $site	= shift;
+	my $sites	= shift;
 	my ($rs, $stdout, $stderr);
 
-	$rs = execute("a2dissite $site", \$stdout, \$stderr);
-	debug("stdout $stdout") if($stdout);
-	error("stderr $stderr") if($stderr);
-	return $rs if $rs;
+	for(split(' ', $sites)){
+		if(-f "$self::apacheConfig{APACHE_SITES_DIR}/$_"){
+			$rs = execute("a2dissite $_", \$stdout, \$stderr);
+			debug("stdout $stdout") if($stdout);
+			error("stderr $stderr") if($stderr);
+			return $rs if $rs;
+		} else {
+			warning("Site $_ do not exists");
+		}
+	}
 
 	0;
 }

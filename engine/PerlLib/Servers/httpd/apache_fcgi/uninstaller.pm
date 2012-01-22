@@ -164,7 +164,7 @@ sub vHostConf {
 		}
 	}
 
-	$rs |= $httpd->enableSite("000-default");
+	$rs |= $httpd->enableSite("default");
 
 	$rs;
 }

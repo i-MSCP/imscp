@@ -524,7 +524,7 @@ sub masterHost {
 	my $httpd	= Servers::httpd::apache_fcgi->new();
 	my $rs		= 0;
 
-	$rs = $httpd->disableSite('000-default');
+	$rs = $httpd->disableSite('default');
 	return $rs if $rs;
 
 	my $adminEmailAddress = $main::imscpConfig{'DEFAULT_ADMIN_ADDRESS'};
