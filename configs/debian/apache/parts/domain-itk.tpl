@@ -98,7 +98,7 @@
 			php_admin_value open_basedir "{HOME_DIR}/:{HOME_DIR}/phptmp/:{PEAR_DIR}/"
 			php_admin_value upload_tmp_dir "{HOME_DIR}/phptmp/"
 			php_admin_value session.save_path "{HOME_DIR}/phptmp/"
-			php_admin_value sendmail_path '/usr/sbin/sendmail -f {USER} -t -i'
+			php_admin_value sendmail_path '/usr/sbin/sendmail -f webmaster@{DMN_NAME} -t -i'
 
 			#Custom values
 			php_admin_value max_execution_time "{MAX_EXECUTION_TIME}"
