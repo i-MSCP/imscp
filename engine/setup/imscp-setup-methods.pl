@@ -79,16 +79,15 @@ sub setup_engine {
 		[\&save_conf, 'Backup conf file: '],
 		[\&additional_tasks, 'Additional tasks: '],
 	);
-	my $rs;
+	my $rs = 0;
 	my $step = 1;
 	for (@steps){
-		$rs = step($_->[0], $_->[1], scalar @steps, $step);
-		return $rs if $rs;
+		$rs |= step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
 	iMSCP::Dialog->factory()->endGauge() if iMSCP::Dialog->factory()->needGauge();
 
-	0;
+	$rs;
 }
 
 ################################################################################
