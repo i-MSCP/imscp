@@ -4,9 +4,10 @@ i-MSCP ChangeLog
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.0 (RC1)
 -------------------------------------------------------------------------------------
-Tickets:
-	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 
+Tickets:
+	- Fixed #323: Defect - Password for customer not sent via mail
+	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.6 (beta 6)

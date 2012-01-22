@@ -1,5 +1,5 @@
 
-			<form name="admin_edit_user" method="post" action="admin_edit.php">
+			<form name="editCustomerFrm" method="post" action="admin_edit.php?edit_id={EDIT_ID}">
 				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_CORE_DATA}</th>
@@ -85,10 +85,7 @@
 				</table>
 				<div class="buttons">
 					<input name="submit" type="submit" value="{TR_UPDATE}"/>
-					<input id="send_data" type="checkbox" name="send_data" checked="checked"/>
+					<input id="send_data" type="checkbox" name="send_data" {SEND_DATA_CHECKED}/>
 					<label for="send_data">{TR_SEND_DATA}</label>
-					<input type="hidden" name="uaction" value="edit_user"/>
-					<input type="hidden" name="edit_id" value="{EDIT_ID}"/>
-					<input type="hidden" name="edit_username" value="{USERNAME}"/>
 				</div>
 			</form>
