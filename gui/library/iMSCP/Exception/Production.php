@@ -59,9 +59,9 @@ class iMSCP_Exception_Production extends iMSCP_Exception
 
 		if ($message == '') {
 			if (function_exists('tr') && iMSCP_Registry::isRegistered('Pdo')) {
-				$message = tr('An error occured! Please, contact your administrator.');
+				$message = tr('An error occured. Please, contact your administrator.');
 			} else {
-				$message = 'An error occured! Please, contact your administrator.';
+				$message = 'An error occured. Please, contact your administrator.';
 			}
 		}
 

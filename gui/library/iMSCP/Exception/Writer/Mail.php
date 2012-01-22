@@ -137,10 +137,17 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 	 */
 	public function update(SplSubject $exceptionHandler)
 	{
+		/** @var $exceptionHandler iMSCP_Exception_Handler */
+		/** @var $exception iMSCP_Exception */
 		$exception = $exceptionHandler->getException();
 
-		$this->_message = str_replace(array("\t", '<br />'), array('', "\n"),
-			$exception->getMessage());
+		$this->_message = str_replace(array("\t", '<br />'), array('', "\n"), $exception->getMessage());
+
+		/** @var $exception iMSCP_Exception_Database */
+		if($exception instanceof iMSCP_Exception_Database) {
+			$this->_message .= ' Query was: ' . $exception->getQuery();
+		}
+
 		$this->prepareMail($exception);
 		$this->_loadCache();
 

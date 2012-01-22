@@ -127,15 +127,22 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 			((isset($_SESSION['logged_from']) && $_SESSION['logged_from'] == 'admin')
 				|| isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin')
 		) {
-			$this->_message = $exceptionHandler->getException()->getMessage();
-		} else {
-			$productionException = $exceptionHandler->getProductionException();
+			/** @var $exception iMSCP_Exception */
+			$exception = $exceptionHandler->getException();
+			$this->_message = $exception->getMessage();
 
-			// An exception for production exists ? If it's not case, use the
-			// real exception raised
-			$this->_message = ($productionException)
-				? $productionException->getMessage()
-				: $exceptionHandler->getException()->getMessage();
+			/** @var $exception iMSCP_Exception_Database */
+			if($exception instanceof iMSCP_Exception_Database) {
+				$this->_message .= ' Query was: ' . $exception->getQuery();
+			}
+		} else { // Production exception
+			$exception = $exceptionHandler->getProductionException();
+
+			if(!$exception) { // If not exception for production is found, we get the original exception
+				$exception = $exceptionHandler->getException();
+			}
+
+			$this->_message = $exception->getMessage();
 		}
 
 		if ($this->_templateFile) {

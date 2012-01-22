@@ -1982,7 +1982,6 @@ function decrypt_db_password($password)
  * @param string $query					Sql statement to be executed
  * @param array|int|string $parameters	OPTIONAL parameters - See iMSCP_Database::execute()
  * @return iMSCP_Database_ResultSet		An iMSCP_Database_ResultSet object
- * @todo (Improve exception management)
  */
 function execute_query($query, $parameters = null)
 {
@@ -1993,16 +1992,21 @@ function execute_query($query, $parameters = null)
 		$db = iMSCP_Registry::get('db');
 	}
 
-	if (null !== $parameters) {
-		$parameters = func_get_args();
-		array_shift($parameters);
-		$stmt = call_user_func_array(array($db, 'execute'), $parameters);
-	} else {
-		$stmt = $db->execute($query);
-	}
+	try {
+		if (null !== $parameters) {
+			$parameters = func_get_args();
+			array_shift($parameters);
+			$stmt = call_user_func_array(array($db, 'execute'), $parameters);
+		} else {
+			$stmt = $db->execute($query);
+		}
 
-	if ($stmt == false) {
-		throw new iMSCP_Exception_Database($db->getLastErrorMessage());
+		if ($stmt == false) {
+			throw new iMSCP_Exception_Database($db->getLastErrorMessage(), $query);
+		}
+
+	} catch(PDOException $e) {
+		throw new iMSCP_Exception_Database($e->getMessage(), $query, $e->getCode(), $e);
 	}
 
 	return $stmt;
