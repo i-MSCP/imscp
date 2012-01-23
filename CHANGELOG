@@ -8,7 +8,7 @@ i-MSCP 1.0.2.0 (RC1)
 Tickets:
 	- Fixed #323: Defect - Password for customer not sent via mail
 	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
-	- Fixed #328: Defect - pagination is broken (reseller/alias.php)
+	- Fixed #328: Defect - pagination is broken (reseller/domain_alias.php)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.6 (beta 6)
