@@ -67,11 +67,11 @@
 				<!-- EDP: scroll_next_gray -->
 
 				<!-- BDP: scroll_next -->
-				<a class="icon i_next" href="users.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
+				<a class="icon i_next" href="alias.php?psi={NEXT_PSI}" title="{TR_NEXT}">{TR_NEXT}</a>
 				<!-- EDP: scroll_next -->
 
 				<!-- BDP: scroll_prev -->
-				<a class="icon i_prev" href="users.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
+				<a class="icon i_prev" href="alias.php?psi={PREV_PSI}" title="{TR_PREVIOUS}">{TR_PREVIOUS}</a>
 				<!-- EDP: scroll_prev -->
 
 				<!-- BDP: scroll_prev_gray -->
