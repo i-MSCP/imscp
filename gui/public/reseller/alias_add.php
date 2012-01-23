@@ -116,7 +116,6 @@ function gen_al_page($tpl, $reseller_id)
                       'CHECK_EN' => $check_en,
                       'CHECK_DIS' => $check_dis));
 
-    generate_ip_list($tpl, $reseller_id);
     gen_users_list($tpl, $reseller_id);
 }
 
