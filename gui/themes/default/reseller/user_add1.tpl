@@ -26,7 +26,7 @@
                 });
             /*]]>*/
         </script>
-            <!-- BDP: add_form -->
+            <!-- BDP: add_customer_block -->
             <form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
                     <table class="firstColFixed">
 						<tr>
@@ -41,7 +41,6 @@
                                 <input type="text" name="dmn_name" id="dmn_name" value="{DMN_NAME_VALUE}" />
                             </td>
                         </tr>
-                        <!-- BDP: expire -->
                         <tr>
                             <td><label for="datepicker">{TR_DOMAIN_EXPIRE}</label></td>
                             <td>
@@ -52,18 +51,18 @@
                                 </div>
                             </td>
                         </tr>
-                        <!-- BDP: add_user -->
+                        <!-- BDP: hosting_plan_entries_block -->
                         <tr>
-                            <td>{TR_CHOOSE_HOSTING_PLAN}</td>
+                            <td><label for="dmn_tpl">{TR_CHOOSE_HOSTING_PLAN}</label></td>
                             <td>
                                 <select id="dmn_tpl" name="dmn_tpl">
-                                    <!-- BDP: hp_entry -->
+                                    <!-- BDP: hosting_plan_entry_block -->
                                     <option value="{CHN}"{CH{CHN}}>{HP_NAME}</option>
-                                    <!-- EDP: hp_entry -->
+                                    <!-- EDP: hosting_plan_entry_block -->
                                 </select>
                             </td>
                         </tr>
-                        <!-- BDP: personalize -->
+                        <!-- BDP: customize_hosting_plan_block -->
                         <tr>
                             <td>{TR_PERSONALIZE_TEMPLATE}</td>
                             <td>
@@ -71,12 +70,12 @@
                                 <input type="radio" id="chtpl_no" name="chtpl" value="_no_" {CHTPL2_VAL} /><label for="chtpl_no">{TR_NO}</label>
                             </td>
                         </tr>
-                        <!-- EDP: personalize -->
-                        <!-- EDP: add_user -->
+                        <!-- EDP: customize_hosting_plan_block -->
+                        <!-- EDP: hosting_plan_entries_block -->
                     </table>
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" />
                 </div>
-                <input type="hidden" name="uaction" value="user_add_nxt" />
+                <input type="hidden" name="uaction" value="user_add_next" />
             </form>
-            <!-- EDP: add_form -->
+            <!-- EDP: add_customer_block -->
