@@ -30,7 +30,7 @@
 {RK-ENABLED}@weekly	root {RKHUNTER} --cronjob --createlogfile {RKHUNTER_LOG}.root --display-logfile 1>{RKHUNTER_LOG} 2>/dev/null
 
 # Chkrootkit
-{CR-ENABLED}@weekly	root {CHKROOTKIT} 1>{CHKROOTKIT_LOG} 2&>1
+{CR-ENABLED}@weekly	root {CHKROOTKIT} 1>{CHKROOTKIT_LOG} 2>&1
 
 # Look for and purge old sessions every 30 minutes
 0,30	*	*	*	*	root	{TOOLS_ROOT_DIR}/imscp-del-tmp >/dev/null 2>&1
