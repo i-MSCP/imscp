@@ -654,7 +654,7 @@ sub delMailForward{
 	if($data->{MAIL_STATUS} ne'delete'){
 		#for catch all we need a line like a@aa.aa\ta@aa.aa
 		my @line;
-		push(@line, $data->{MAIL_ADDR}) if $data->{MAIL_HAVE_CATCH_ALL} eq 'yes' && $data->{MAIL_TYPE} =~ m/_mail/;
+		push(@line, $data->{MAIL_ADDR}) if ($data->{MAIL_HAVE_CATCH_ALL} eq 'yes' || $data->{MAIL_AUTO_RSPND}) && $data->{MAIL_TYPE} =~ m/_mail/;
 		#for catch all we need a line like a@aa.aa\t[...]a@imscp-arpl.aa.aa
 		push(@line, "$data->{MAIL_ACC}\@imscp-arpl.$data->{DMN_NAME}")if $data->{MAIL_AUTO_RSPND} && $data->{MAIL_TYPE} =~ m/_mail/;
 		$wrkContent .= "$data->{MAIL_ADDR}\t".join(',', @line)."\n" if scalar @line;

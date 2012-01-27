@@ -11,6 +11,7 @@ Tickets:
 	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 	- Fixed #328: Defect - Pagination is broken (reseller/domain_alias.tpl)
 	- Fixed #330: Defect - The cron task for the anti-rootkit (chkrootkit) doesn't work
+	- Fixed #332: Bug - Autoresponder - alias missing
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.6 (beta 6)
