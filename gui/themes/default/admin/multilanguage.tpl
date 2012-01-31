@@ -29,7 +29,7 @@
 					<tbody>
 					<!-- BDP: language_block -->
 					<tr>
-						<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale" title="{TR_UPLOAD_HELP}">{LANGUAGE_NAME}</span></label></td>
+						<td><label for="defaultLanguage_{LOCALE}"><span class="icon i_locale">{LANGUAGE_NAME}</span></label></td>
 						<td>{NUMBER_TRANSLATED_STRINGS}</td>
 						<td>{LANGUAGE_REVISION}</td>
 						<td>{LAST_TRANSLATOR}</td>
@@ -44,7 +44,7 @@
 						<th colspan="2">{TR_INSTALL_NEW_LANGUAGE}</th>
 					</tr>
 					<tr>
-						<td>{TR_LANGUAGE_FILE} <span class="upload_help icon i_help" style="vertical-align: middle;">{TR_HELP}</span></td>
+						<td>{TR_LANGUAGE_FILE} <span class="upload_help icon i_help"  title="{TR_UPLOAD_HELP}" style="vertical-align: middle;">{TR_HELP}</span></td>
 						<td>
 							<input type="file" name="languageFile"/>
 							<button name="uploadLanguage" type="submit" onclick="$('#uaction').val('uploadLanguage')" class="frm-button">{TR_INSTALL}</button>
