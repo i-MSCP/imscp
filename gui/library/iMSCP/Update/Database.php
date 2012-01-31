@@ -1416,19 +1416,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add order option for custom menus.
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @return string SQL Statement to be executed
-	 */
-	protected function _databaseUpdate_99()
-	{
-		return $this->_addColumn(
-			'custom_menus',
-			'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)');
-	}
-
-	/**
 	 * #228: Enhancement - Multiple HTTPS domains on same IP + wildcard SSL
 	 *
 	 * @author Daniel Andreca<sci2tech@gmail.com>
@@ -1449,5 +1436,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 				KEY `id` (`id`)
 			) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		";
+	}
+
+	/**
+	 * Add order option for custom menus.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL Statement to be executed
+	 */
+	protected function _databaseUpdate_101()
+	{
+		return $this->_addColumn(
+			'custom_menus',
+			'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)');
 	}
 }
