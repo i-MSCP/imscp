@@ -134,7 +134,6 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 --
 -- Table structure for table `custom_menus`
 --
-'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)');
 
 CREATE TABLE IF NOT EXISTS `custom_menus` (
   `menu_id` int(10) unsigned NOT NULL auto_increment,
