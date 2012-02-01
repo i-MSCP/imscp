@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010 - 2012 by i-MSCP Team
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @category	iMSCP
+ * @package		iMSCP_Plugins
+ * @subpackage	Demo
+ * @copyright	2010 - 2012 by i-MSCP Team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.1
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ */
+ -->
+
+<!-- Configuration file sample for the demo plugin -->
+
+<config>
+	<!-- List of account that will be available via select box in login modal dialog -->
+	<user_accounts>
+		<admin1>
+			<label>Administrator 1</label>
+			<username>admin1</username>
+			<password>admin1</password>
+			<protected>1</protected>
+		</admin1>
+		<admin2>
+			<label>Administrator 2</label>
+			<username>admin1</username>
+			<password>admin1</password>
+			<protected>1</protected>
+		</admin2>
+		<admin3>
+			<label>Administrator 3</label>
+			<username>admin3</username>
+			<password>admin3</password>
+			<protected>1</protected>
+		</admin3>
+		<reseller1>
+			<label>Reseller 1</label>
+			<username>reseller1</username>
+			<password>reseller1</password>
+			<protected>1</protected>
+		</reseller1>
+		<reseller2>
+			<label>Reseller 2</label>
+			<username>reseller2</username>
+			<password>reseller2</password>
+			<protected>1</protected>
+		</reseller2>
+		<reseller3>
+			<label>Reseller 3</label>
+			<username>reseller3</username>
+			<password>reseller3</password>
+			<protected>1</protected>
+		</reseller3>
+		<customer1>
+			<label>Customer 1</label>
+			<username>domain1.tld</username>
+			<password>domain1</password>
+			<protected>1</protected>
+		</customer1>
+		<customer2>
+			<label>Customer 2</label>
+			<username>domain2.tld</username>
+			<password>domain2</password>
+			<protected>1</protected>
+		</customer2>
+		<customer3>
+			<label>Customer 3</label>
+			<username>domain3.tld</username>
+			<password>domain3</password>
+			<protected>1</protected>
+		</customer3>
+	</user_accounts>
+
+	<!--
+		List of actions that must be disabled. The action names are same as the event names without the prefixe part
+		such as 'onBefore' and 'onAfter'.
+	-->
+	<disabled_actions>
+		<user_deletion>DeleteUser</user_deletion>
+		<ftp_account_creation>AddFtp</ftp_account_creation>
+		<ftp_account_edition>EditFtp</ftp_account_edition>
+		<ftp_account_deletion>DeleteFtp</ftp_account_deletion>
+		<sql_user_creation>AddSqlUser</sql_user_creation>
+		<sql_user_edition>EditSqlUser</sql_user_edition>
+		<sql_user_deletion>DeleteSqlUser</sql_user_deletion>
+		<sql_database_creation>AddSqlDb</sql_database_creation>
+		<sql_database_deletion>DeleteSqlDb</sql_database_deletion>
+	</disabled_actions>
+</config>
