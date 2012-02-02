@@ -68,14 +68,17 @@ if (isset($_GET['id'])) {
  * @param $db_user_name
  * @return
  */
-function change_sql_user_pass($db_user_id, $db_user_name) {
+function change_sql_user_pass($db_user_id, $db_user_name)
+{
+	if (!isset($_POST['uaction'])) {
+		return;
+	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (!isset($_POST['uaction'])) {
-		return;
-	}
 
 	if ($_POST['pass'] === '' && $_POST['pass_rep'] === '') {
 		set_page_message(tr('Please type user password.'), 'error');
@@ -120,6 +123,8 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 	// TODO use prepared statement for $user_pass
 	$query = "SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')";
 	execute_query($query);
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser);
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
 	set_page_message(tr('SQL user password updated.'), 'success');

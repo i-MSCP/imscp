@@ -263,6 +263,7 @@ $phone, $fax;
  */
 function update_data_in_db($hpid)
 {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $hpid);
 
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
 $firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
@@ -409,6 +410,8 @@ $mail, $phone, $fax, $inpass, $admin_login;
 			write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change", E_USER_NOTICE);
 		}
 	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $hpid);
 
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login changes data/password for $dmn_user_name!", E_USER_NOTICE);

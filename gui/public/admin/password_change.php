@@ -44,12 +44,15 @@
  *
  * @return void
  */
-function admin_updatePassword() {
-
+function admin_updatePassword()
+{
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'updt_pass') {
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $_SESSION['user_id']);
+
 		if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 			set_page_message(tr('All fields are required.'), 'error');
 		} else if (!chk_password($_POST['pass'])) {
@@ -69,6 +72,8 @@ function admin_updatePassword() {
 
 			$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ? ";
 			exec_query($query, array($upass, $user_id));
+
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $_SESSION['user_id']);
 
 			set_page_message(tr('Password successfully updated.'), 'success');
 			redirectTo('profile.php');

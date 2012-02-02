@@ -108,6 +108,8 @@ function gen_admin_personal_data(&$tpl, $user_id) {
  */
 function update_admin_personal_data($user_id) {
 
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $user_id);
+
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
 	$gender = $_POST['gender'];
@@ -147,6 +149,8 @@ function update_admin_personal_data($user_id) {
 			$fax,
 			$gender,
 			$user_id));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $user_id);
 
 	set_page_message(tr('Personal data successfully updated.'), 'success');
 	redirectTo('profile.php');

@@ -131,12 +131,14 @@ function check_db_name($db_name) {
  * @param $user_id
  * @return
  */
-function add_sql_database($user_id) {
+function add_sql_database($user_id)
+{
+	if (!isset($_POST['uaction'])) return;
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlDb);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-
-	if (!isset($_POST['uaction'])) return;
 
 	// let's generate database name.
 
@@ -188,6 +190,8 @@ function add_sql_database($user_id) {
 	exec_query($query, array($dmn_id, $db_name));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb);
 
 	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . tohtml($db_name), E_USER_NOTICE);
 	set_page_message(tr('SQL database created.'), 'success');

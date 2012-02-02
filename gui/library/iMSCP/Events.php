@@ -33,7 +33,7 @@
  * @package		iMSCP_Core
  * @subpackage	Events
  * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.5
+ * @version		0.0.6
  */
 class iMSCP_Events
 {
@@ -56,7 +56,7 @@ class iMSCP_Events
 	const onLoginScriptEnd = 'onLoginScriptEnd';
 
 	/**
-	 * The onBeforeRegister event is fired before an user is registered (logged on).
+	 * The onBeforeRegisterUser event is fired before an user is registered (logged on).
 	 *
 	 * The event listener method receives an iMSCP_Events_Event object.
 	 *
@@ -65,7 +65,7 @@ class iMSCP_Events
 	const onBeforeRegisterUser = 'onBeforeRegisterUser';
 
 	/**
-	 * The onAfterRegister event is fired after an user is registered (logged on).
+	 * The onAfterRegisterUser event is fired after an user is registered (logged on).
 	 *
 	 * The event listener method receives an iMSCP_Events_Event object.
 	 *
@@ -179,4 +179,418 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
+
+	/**
+	 * The onBeforeAddUser event is fired before an user is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddUser = 'onBeforeAddUser';
+
+	/**
+	 * The onAfterAddUser event is fired after an user is created.
+	 *
+	 * The event listener method receives an iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterAddUser = 'onAfterAddUser';
+
+	/**
+	 * The onBeforeEditUser event is fired before an user is edited.
+	 *
+	 * The event listener method receives the user unique identifier.
+	 *
+	 * @var string
+	 */
+	const onBeforeEditUser = 'onBeforeEditUser';
+
+	/**
+	 * The onAfterEditUser event is fired after an user is edited.
+	 *
+	 * The event listener method receives the user unique identifier.
+	 *
+	 * @var string
+	 */
+	const onAfterEditUser = 'onAfterEditUser';
+
+	/**
+	 * The onBeforeDeleteUser event is fired before an user is deleted.
+	 *
+	 * The event listener method receives the user unique identifier.
+	 *
+	 * @var string
+	 */
+	const onBeforeDeleteUser = 'onBeforeDeleteUser';
+
+	/**
+	 * The onAfterDeleteUser event is fired after an user is deleted.
+	 *
+	 * The event listener method receives the user unique identifier.
+	 *
+	 * @var string
+	 */
+	const onAfterDeleteUser = 'onAfterDeleteUser';
+
+	/**
+	 * The onBeforeAddDomain event is fired before  a domain is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddDomain = 'onBeforeAddDomain';
+
+	/**
+	 * The onAfterAddDomain event is fired after a domain is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterAddDomain = 'onAfterAddDomain';
+
+	/**
+	 * The onBeforeEditDomain event is fired before a domain is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditDomain = 'onBeforeEditDomain';
+
+	/**
+	 * The onAfterEditDomain event is fired agfter a domain is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterEditDomain = 'onAfterEditDomain';
+
+	/**
+	 * The onBeforeDeleteDomain event is fired before a domain is deleted.
+	 *
+	 * The event listener method receives the domain unique identifier.
+	 *
+	 * @var string
+	 */
+	const onBeforeDeleteDomain = 'onBeforeDeleteDomain';
+
+	/**
+	 * The onAfterDeleteDomain event is fired after a domain is deleted.
+	 *
+	 * The event listener method receives a the domain unique identifier.
+	 *
+	 * @var string
+	 */
+	const onAfterDeleteDomain = 'onAfterDeleteDomain';
+
+	/**
+	 * The onBeforeAddSubdomain event is fired after a subdomain is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
+
+	/**
+	 * The onAfterAddSubdomain event is fired after a subdomain is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterAddSubdomain = 'onAfterAddSubdomain';
+
+	/**
+	 * The onBeforeEditSubdomain event is fired after a subdomain is edited.
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
+
+	/**
+	 * The onAfterEditSubdomain event is fired after a subdomain is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterEditSubdomain = 'onAfterEditSubdomain';
+
+	/**
+	 * The onBeforeDeleteSubdomain event is fired before a subdomain is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
+
+	/**
+	 * The onAfterDeleteSubdomain event is fired after a subdomain is delteded.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
+
+	/**
+	 * The onBeforeAddDomainAlias event is fired before a domain alias is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
+
+	/**
+	 * The onAfterAddDomainAlias event is fired after a domain alias is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
+
+	/**
+	 * The onBeforeEditDomainAlias event is fired before a domain alias is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
+
+	/**
+	 * The onAfterEditDomainALias event is fired after a domain alias is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterEditDomainALias = 'onAfterEditDomainAlias';
+
+	/**
+	 * The onBeforeDeleteDomainAlias event is fired before a domain alias is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+
+	/**
+	 * The onAfterDeleteDomainAlias event is fired after a domain alias is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+
+	/**
+	 * The onBeforeAddMail event is fired after a mail account is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddMail = 'onBeforeAddMail';
+
+	/**
+	 * The onAfterAddMail event is fired after a mail account is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterAddMail = 'onAfterAddMail';
+
+	/**
+	 * The onBeforeEditMail event is fired before a mail account is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditMail = 'onBeforeEditMail';
+
+	/**
+	 * The onAfterEditMail event is fired after a mail account is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterEditMail = 'onAfterEditMail';
+
+	/**
+	 * The onBeforeDeleteMail event is fired before a mail account is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onBeforeDeleteMail = 'onBeforeDeleteMail';
+
+	/**
+	 * The onAfterDeleteMail event is fired after a mail account is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	//const onAfterDeleteMail = 'onAfterDeleteMail';
+
+	/**
+	 * The onBeforeAddFtp event is fired after a Ftp account is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeAddFtp = 'onBeforeAddFtp';
+
+	/**
+	 * The onAfterAddFtp event is fired after a Ftp account is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterAddFtp = 'onAfterAddFtp';
+
+	/**
+	 * The onBeforeEditFtp event is fired before a Ftp account is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeEditFtp = 'onBeforeEditFtp';
+
+	/**
+	 * The onAfterEditFtp event is fired after a Ftp account is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterEditFtp = 'onAfterEditFtp';
+
+	/**
+	 * The onBeforeDeleteFtp event is fired before a Ftp account is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeDeleteFtp = 'onBeforeDeleteFtp';
+
+	/**
+	 * The onAfterDeleteFtp event is fired after a Ftp account is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterDeleteFtp = 'onAfterDeleteFtp';
+
+	// Sql Users and databases
+
+	/**
+	 * The onBeforeAddSqlUser event is fired before a Sql user is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeAddSqlUser = 'onBeforeAddSqlUser';
+
+	/**
+	 * The onAfterAddSqlUser event is fired after a Sql user is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterAddSqlUser = 'onAfterAddSqlUser';
+
+	/**
+	 * The onBeforeEditSqlUser event is fired before a Sql user is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeEditSqlUser = 'onBeforeEditSqlUser';
+
+	/**
+	 * The onAfterEditSqlUser event is fired after a Sql user is edited.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterEditSqlUser = 'onAfterEditSqlUser';
+
+	/**
+	 * The onBeforeDeleteSqlUser event is fired before a Sql user is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeDeleteSqlUser = 'onBeforeDeleteSqlUser';
+
+	/**
+	 * The onAfterDeleteSqlUser event is fired after a Sql user is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterDeleteSqlUser = 'onAfterDeleteSqlUser';
+
+	/**
+	 * The onBeforeAddSqlDb event is fired before a Sql database is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeAddSqlDb = 'onBeforeAddSqlDb';
+
+	/**
+	 * The onAfterAddSqlDb event is fired after a Sql database is created.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterAddSqlDb = 'onAfterAddSqlDb';
+
+	/**
+	 * The onBeforeDeleteSqlDb event is fired before a Sql database is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onBeforeDeleteSqlDb = 'onBeforeDeleteSqlDb';
+
+	/**
+	 * The onAfterDeleteSqlDb event is fired after a Sql database is deleted.
+	 *
+	 * The event listener method receives a iMSCP_Event object.
+	 *
+	 * @var string
+	 */
+	const onAfterDeleteSqlDb = 'onAfterSqlDb';
 }

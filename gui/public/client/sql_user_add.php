@@ -243,13 +243,15 @@ function check_db_user($db_user) {
  *  * If creation of database user fails in MySQL-Table, database user is already
  * 		in local i-MSCP table -> Error handling
  */
-function add_sql_user($user_id, $db_id) {
-
-	$cfg = iMSCP_Registry::get('config');
-
+function add_sql_user($user_id, $db_id)
+{
 	if (!isset($_POST['uaction'])) {
 		return;
 	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
+
+	$cfg = iMSCP_Registry::get('config');
 
 	// let's check user input
 
@@ -374,6 +376,8 @@ function add_sql_user($user_id, $db_id) {
 	$query = "GRANT ALL PRIVILEGES ON ". quoteIdentifier($db_name) .".* TO ?@? IDENTIFIED BY ?";
 	exec_query($query, array($db_user, "localhost", $user_pass));
 	exec_query($query, array($db_user, "%", $user_pass));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
 	set_page_message(tr('SQL user created.'), 'success');

@@ -57,6 +57,9 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $_SESSION['user_id']);
+
 	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 		set_page_message(tr('Please fill up all data fields!'), 'error');
 	} else if ($_POST['pass'] !== $_POST['pass_rep']) {
@@ -75,6 +78,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		$user_id = $_SESSION['user_id'];
 		$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?";
 		$rs = exec_query($query, array($upass, $user_id));
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $_SESSION['user_id']);
 
 		write_log($_SESSION['user_logged'] . ": updated password.", E_USER_NOTICE);
 		set_page_message(tr('Password updated.'), 'success');

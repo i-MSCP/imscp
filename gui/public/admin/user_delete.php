@@ -46,6 +46,8 @@
  */
 function admin_deleteUser($userId)
 {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, $userId);
+
     $userId = (int)$userId;
 
     /** @var $cfg iMSCP_Config_Handler_File */
@@ -169,6 +171,8 @@ function admin_deleteUser($userId)
             throw new iMSCP_Exception_Database($e->getMessage());
         }
     }
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, $userId);
 
     redirectTo('manage_users.php');
 }

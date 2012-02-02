@@ -419,13 +419,14 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
  * Deletes a domain account with all its sub items.
  *
  * @param integer $domainId Domain unique identifier
- * @param boolean $checkCreator Tell whether or not domain must have been created by
- *						   logged-in user
+ * @param boolean $checkCreator Tell whether or not domain must have been created by logged-in user
  * @return bool TRUE on success, FALSE otherwise
  */
 function delete_domain($domainId, $checkCreator = false)
 {
 	$domainId = (int)$domainId;
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomain, $domainId);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -436,8 +437,8 @@ function delete_domain($domainId, $checkCreator = false)
 	// Get username, uid and gid of domain user
 	$query = "
 		SELECT
-			`a`.`domain_uid`, `a`.`domain_gid`, `a`.`domain_admin_id`,
-			`a`.`domain_name`, `a`.`domain_created_id`, `b`.admin_name
+			`a`.`domain_uid`, `a`.`domain_gid`, `a`.`domain_admin_id`, `a`.`domain_name`, `a`.`domain_created_id`,
+			`b`.admin_name
 		FROM
 			`domain` `a`
 		JOIN
@@ -447,14 +448,14 @@ function delete_domain($domainId, $checkCreator = false)
 	";
 
 	if ($checkCreator) {
-		$query .= "AND `domain_created_id` = ?";
+		$query .= 'AND `domain_created_id` = ?';
 		$stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 	} else {
 		$stmt = exec_query($query, $domainId);
 	}
 
-	if($stmt->rowCount() == 0) {
-		set_page_message(tr('Wrong domain Id.'), 'error');
+	if(!$stmt->rowCount()) {
+		set_page_message(tr('Wrong request.'), 'error');
 		return false;
 	}
 
@@ -587,11 +588,10 @@ function delete_domain($domainId, $checkCreator = false)
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
 		// Delete domain
-
 		$query = 'UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?';
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
-		//certificates
+		// Delete SSL certificates
 		$query = 'UPDATE `ssl_certs` SET `status` = ? WHERE `type` = \'dmn\' AND `id` = ?';
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
@@ -602,14 +602,13 @@ function delete_domain($domainId, $checkCreator = false)
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
 		$query = '
-			UPDATE `ssl_certs` SET `status` = ?
-			WHERE `type` = \'alssub\'
-			AND `id` IN (
-				SELECT `subdomain_alias_id` FROM `subdomain_alias`
-				WHERE `alias_id` IN (
-					SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?
-				)
-			)';
+			UPDATE
+				`ssl_certs` SET `status` = ?
+			WHERE
+				`type` = \'alssub\'
+			AND
+				`id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?))
+		';
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
 		// Delegated tasks to the engine - end
@@ -619,6 +618,8 @@ function delete_domain($domainId, $checkCreator = false)
 
 		// Commit all changes to database server
 		$db->commit();
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomain, $domainId);
 
 		write_log($_SESSION['user_logged'] . ': deleted domain ' . $domainName, E_USER_NOTICE);
 

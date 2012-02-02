@@ -502,6 +502,8 @@ function count_sql_user_by_name($sqlu_name)
  */
 function sql_delete_user($domain_id, $db_user_id)
 {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser);
+
     $query = "
 		SELECT
 			`t1`.`sqld_id`, `t1`.`sqlu_name`, `t2`.`sqld_name`, `t1`.`sqlu_name`
@@ -560,6 +562,8 @@ function sql_delete_user($domain_id, $db_user_id)
         $query = "REVOKE ALL ON $db_name.* FROM ?@localhost";
         exec_query($query, $db_user_name);
     }
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser);
 }
 
 /**
@@ -616,6 +620,8 @@ function check_ftp_perms($ftp_acc)
  */
 function delete_sql_database($domain_id, $database_id)
 {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb);
+
     $query = "
 		SELECT
 			`sqld_name` AS `db_name`
@@ -673,6 +679,8 @@ function delete_sql_database($domain_id, $database_id)
     exec_query($query, array($domain_id, $database_id));
 
     update_reseller_c_props(get_reseller_id($database_id));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb);
 }
 
 /**

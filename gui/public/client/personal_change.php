@@ -107,6 +107,9 @@ function gen_user_personal_data($tpl, $user_id) {
  * @return void
  */
 function update_user_personal_data($user_id) {
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $user_id);
+
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
 	$gender = $_POST['gender'];
@@ -134,6 +137,8 @@ function update_user_personal_data($user_id) {
 	exec_query($query, array($fname, $lname, $firm, $zip, $city, $state, $country,
                             $street1, $street2, $email, $phone, $fax, $gender,
                             $user_id));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $user_id);
 
 	write_log($_SESSION['user_logged'] . ": update personal data", E_USER_NOTICE);
 	set_page_message(tr('Personal data updated.'), 'success');

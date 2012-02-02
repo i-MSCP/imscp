@@ -398,7 +398,9 @@ function get_ftp_user_uid($dmn_name, $ftp_user, $ftp_user_gid) {
  * @param $dmn_name
  * @return
  */
-function add_ftp_user($dmn_name) {
+function add_ftp_user($dmn_name)
+{
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddFtp);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -480,6 +482,8 @@ function add_ftp_user($dmn_name) {
 
 	$domain_props = get_domain_default_props($_SESSION['user_id']);
 	update_reseller_c_props($domain_props[4]);
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp);
 
 	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user", E_USER_NOTICE);
 	set_page_message(tr('FTP account added.'), 'success');

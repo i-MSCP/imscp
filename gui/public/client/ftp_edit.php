@@ -115,6 +115,9 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 	$vfs = new iMSCP_VirtualFileSystem($dmn_name);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp);
+
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
 				set_page_message(tr("Entered passwords doesn't match."), 'error');
@@ -198,6 +201,8 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 			}
 			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
 			exec_query($query, array($other_dir, $ftp_acc));
+
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp);
 
 			set_page_message(tr('FTP account successfully updated.'), 'success');
 			redirectTo('ftp_accounts.php');

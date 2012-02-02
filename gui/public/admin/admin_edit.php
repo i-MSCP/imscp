@@ -47,6 +47,8 @@
  */
 function admin_updateUserPersonalData($userId)
 {
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $userId);
+
 	$fname = isset($_POST['fname']) ? clean_input($_POST['fname']) : '';
 	$lname = isset($_POST['lname']) ? clean_input($_POST['lname']) : '';
 	$firm = isset($_POST['firm']) ? clean_input($_POST['firm']) : '';
@@ -104,6 +106,8 @@ function admin_updateUserPersonalData($userId)
 			set_page_message(tr('User session successfully killed for password change.'), 'success');
 		}
 	}
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $userId);
 
 	if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 		$query = 'SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?';
