@@ -73,7 +73,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 		if(is_array($config)) {
 			$this->_config = $config;
 		} elseif(is_string($config) && is_readable($config)) {
-			$this->_config = include_once($config);
+			$this->_config = include $config;
 		} else {
 			throw new iMSCP_Exception('Demo plugin must be configured.');
 		}
@@ -97,31 +97,6 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	public function getListenedEvents()
 	{
 		return $this->_listenedEvents;
-	}
-
-	/**
-	 * Sets disabled actions.
-	 *
-	 * @param array $actionNames List of actions to disable
-	 * @return void
-	 */
-	protected function setDisabledActions(array $actionNames = array())
-	{
-		$this->_disabledActions = $actionNames;
-
-		// Accounts explicitely protected against deletion and password modification
-		if(isset($this->_config['user_accounts'])) {
-			foreach ($this->_config['user_accounts'] as $account) {
-				if(isset($account['protected']) && $account['protected']) {
-					$actionNames[] = 'onBeforeEditUser';
-					$actionNames[] = 'onBeforeDeleteUser';
-					$actionNames[] = 'onBeforeDeleteDomain';
-					break;
-				}
-			}
-		}
-
-		$this->_listenedEvents = array_merge($this->getListenedEvents(), $actionNames);
 	}
 
 	/**
@@ -205,6 +180,31 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	}
 
 	/**
+	 * Sets disabled actions.
+	 *
+	 * @param array $actionNames List of actions to disable
+	 * @return void
+	 */
+	protected function setDisabledActions(array $actionNames = array())
+	{
+		$this->_disabledActions = $actionNames;
+
+		// Accounts explicitely protected against deletion and password modification
+		if(isset($this->_config['user_accounts'])) {
+			foreach ($this->_config['user_accounts'] as $account) {
+				if(isset($account['protected']) && $account['protected']) {
+					$actionNames[] = 'onBeforeEditUser';
+					$actionNames[] = 'onBeforeDeleteUser';
+					$actionNames[] = 'onBeforeDeleteDomain';
+					break;
+				}
+			}
+		}
+
+		$this->_listenedEvents = array_unique(array_merge($this->getListenedEvents(), $actionNames));
+	}
+
+	/**
 	 * Protect demo user / domain accounts against some actions.
 	 *
 	 * @param int $userId User unique identifier
@@ -241,14 +241,14 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 							// reseller/user_edit.php
 							!empty($_POST['userpassword'])
 						) {
-							set_page_message(tr("You are not allowed to change the demo's users passwords."), 'info');
+							set_page_message(tr("You are not allowed to change the demo's users passwords. Create your own user if you want test this feature."), 'info');
 						} else {
 							return;
 						}
 						break;
 					case 'onBeforeDeleteUser':
 					case 'onBeforeDeleteDomain':
-						set_page_message(tr('This user/domain account cannot be removed.'), 'info');
+						set_page_message(tr('This user / domain account cannot be removed.'), 'info');
 						break;
 				}
 
