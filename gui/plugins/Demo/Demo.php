@@ -169,8 +169,6 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	/**
 	 * Is disabled action?
 	 *
-	 * Note: Action names are same as events name without the prefix 'onBefore'.
-	 *
 	 * @param string $actionName Action name
 	 * @return bool TRUE if the given action is disabled, FALSE otherwise.
 	 */
@@ -237,7 +235,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 							// admin/admin_edit.php
 							!empty($_POST['pass']) ||
 							// admin/reseller_edit.php
-							!empty($data['password']) ||
+							!empty($_POST['password']) ||
 							// reseller/user_edit.php
 							!empty($_POST['userpassword'])
 						) {
