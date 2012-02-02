@@ -41,7 +41,7 @@
  * @package		iMSCP_Core
  * @subpackage	Initializer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.1.7
+ * @version		0.1.8
  */
 class iMSCP_Initializer
 {
@@ -178,6 +178,9 @@ class iMSCP_Initializer
 		$this->_initializeLayout();
 
 		$this->_initializeNavigation();
+
+		// Initialize Demo plugin if needed
+		$this->_initializeDemo();
 
 		// Initialize logger
 		// $this->_initializeLogger();
@@ -638,6 +641,29 @@ class iMSCP_Initializer
 					// Debug information about all queries made during a script exection
 					// and their execution time.
 					new iMSCP_Debug_Bar_Plugin_Database())));
+		}
+	}
+
+	/**
+	 * Initialize Demo plugin.
+	 *
+	 * Edit the DEMO_SERVER variable in the /etc/imscp.conf file to enable it.
+	 *
+	 * @return void
+	 */
+	protected function _initializeDemo()
+	{
+		if(isset($this->_config->DEMO_SERVER) && $this->_config->DEMO_SERVER) {
+			$pluginPath = LIBRARY_PATH .'/../plugins/Demo/Demo.php';
+
+			if(is_readable($pluginPath)) {
+				// Loaded manually since we have not plugins management library yet.
+				require_once $pluginPath;
+
+				$demoPlugin = new iMSCP_Plugins_Demo(LIBRARY_PATH . '/../plugins/Demo/demo_config.php');
+
+				iMSCP_Events_Manager::getInstance()->registerListener($demoPlugin->getListenedEvents(), $demoPlugin);
+			}
 		}
 	}
 
