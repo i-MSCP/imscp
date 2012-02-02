@@ -288,8 +288,8 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 			<script type="text/javascript">
 			/*<![CDATA[*/
 				$(document).ready(function() {
-					var welcome = "Welcome to the i-MSCP Demo version";
-					var credentialInfo = "Please select the account you want use to login and click on the \'Ok\' button..<br /><br />";
+					var welcome = ' . json_encode(tr('Welcome to the i-MSCP Demo version')) . ';
+					var credentialInfo = '. json_encode(tr("Please select the account you want use to login and click on the 'Ok' button.")) . ' + "<br /><br />";
 					$("<div/>", {"id": "demo", html: "<h2>" + welcome + "</h2>" + credentialInfo}).appendTo("body");
 					$("<select/>", {"id": "demo_credentials"}).appendTo("#demo");
 					var credentials = ' . $credentials . '
