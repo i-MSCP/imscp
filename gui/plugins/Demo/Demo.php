@@ -43,7 +43,7 @@
 class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 {
 	/**
-	 * Plugin configuration.
+	 * Plugin configuration parameters.
 	 *
 	 * @var array
 	 */
@@ -66,9 +66,9 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	/**
 	 * Constructor.
 	 *
-	 * @param string|array $config
+	 * @param string|array $config Plugin configuration file path or array of parameters
 	 */
-	public function __construct($config = null)
+	public function __construct($config)
 	{
 		if(is_array($config)) {
 			$this->_config = $config;
@@ -84,6 +84,8 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 
 		if(isset($this->_config['disabled_actions'])) {
 			$this->setDisabledActions($this->_config['disabled_actions']);
+		} else {
+			$this->setDisabledActions();
 		}
 	}
 
@@ -103,7 +105,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * @param array $actionNames List of actions to disable
 	 * @return void
 	 */
-	protected function setDisabledActions(array $actionNames)
+	protected function setDisabledActions(array $actionNames = array())
 	{
 		$this->_disabledActions = $actionNames;
 
@@ -142,6 +144,20 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	}
 
 	/**
+	 * Implements the onBeforeEditUser listener method.
+	 *
+	 * @param int $userId User unique identifier
+	 */
+	public function onBeforeEditUser($userId)
+	{
+		if($this->isDisabledAction('onBeforeEditUser')) {
+			$this->__call('onBeforeEditUser', $userId);
+		} else {
+			$this->_protectDemoUser($userId, 'onBeforeEditUser');
+		}
+	}
+
+	/**
 	 * Implements the onBeforeDeleteUser listener method.
 	 *
 	 * @param int $userId User unique identifier
@@ -172,34 +188,6 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 			if($stmt->rowCount()) {
 				$this->_protectDemoUser($stmt->fields['domain_admin_id'], 'onBeforeDeleteDomain');
 			}
-		}
-	}
-
-	/**
-	 * Implements the onBeforeEditReseller listener method.
-	 *
-	 * @param int $userId Reseller unique identifier
-	 */
-	public function onBeforeEditReseller($userId)
-	{
-		if($this->isDisabledAction('onBeforeEditReseller')) {
-			$this->__call('onBeforeEditReseller', $userId);
-		} else {
-			$this->_protectDemoUser($userId, 'onBeforeEditReseller');
-		}
-	}
-
-	/**
-	 * Implements the onBeforeEditCustomer listener method.
-	 *
-	 * @param int $userId Customer unique identifier
-	 */
-	public function onBeforeEditCustomer($userId)
-	{
-		if($this->isDisabledAction('onBeforeEditCustomer')) {
-			$this->__call('onBeforeEditCustomer', $userId);
-		} else {
-			$this->_protectDemoUser($userId, 'onBeforeEditCustomer');
 		}
 	}
 
@@ -243,14 +231,14 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 					case 'onBeforeEditUser':
 						// Only password change is not allowed
 						if (
-							// admin/password_change.php (ok)
-							// reseller/password_change.php (ok)
-							// client/password_change.php (ok)
-							// admin/admin_edit.php (ok)
+							// admin/password_change.php
+							// reseller/password_change.php
+							// client/password_change.php
+							// admin/admin_edit.php
 							!empty($_POST['pass']) ||
-							// admin/reseller_edit.php (ok)
+							// admin/reseller_edit.php
 							!empty($data['password']) ||
-							// reseller/user_edit.php (ok)
+							// reseller/user_edit.php
 							!empty($_POST['userpassword'])
 						) {
 							set_page_message(tr("You are not allowed to change the demo's users passwords."), 'info');
@@ -258,8 +246,8 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 							return;
 						}
 						break;
-					case 'onBeforeDeleteUser': // (ok)
-					case 'onBeforeDeleteDomain': // (ok)
+					case 'onBeforeDeleteUser':
+					case 'onBeforeDeleteDomain':
 						set_page_message(tr('This user/domain account cannot be removed.'), 'info');
 						break;
 				}
