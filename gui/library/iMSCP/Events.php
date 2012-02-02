@@ -187,7 +187,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeAddUser = 'onBeforeAddUser';
+	const onBeforeAddUser = 'onBeforeAddUser';
 
 	/**
 	 * The onAfterAddUser event is fired after an user is created.
@@ -196,7 +196,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterAddUser = 'onAfterAddUser';
+	const onAfterAddUser = 'onAfterAddUser';
 
 	/**
 	 * The onBeforeEditUser event is fired before an user is edited.

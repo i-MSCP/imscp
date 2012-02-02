@@ -384,7 +384,7 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndCreateResellerAccount()
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddReseller);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -617,7 +617,7 @@ function admin_checkAndCreateResellerAccount()
 				write_log("System was unable to create the '{$cfg->GUI_SOFTWARE_DIR}/{$resellerId} directory for reseller software repository", E_USER_ERROR);
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddReseller);
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
 
 			// Send welcome mail to the new reseller
 			send_add_user_auto_msg(

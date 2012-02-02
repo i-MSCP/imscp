@@ -69,7 +69,7 @@ function add_user($tpl)
 
     if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddAdmin);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddUser);
 
         if (check_user_data()) {
             $upass = crypt_user_pass($_POST['pass']);
@@ -133,7 +133,7 @@ function add_user($tpl)
 
             exec_query($query, array($new_admin_id, $user_def_lang, $user_theme_color));
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddAdmin);
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddUser);
 
             send_add_user_auto_msg($user_id, clean_input($_POST['username']),
                                    clean_input($_POST['pass']),
