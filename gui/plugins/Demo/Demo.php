@@ -37,8 +37,7 @@
  * @package		iMSCP_Plugins
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
- * @TODO WORK IN PROGRESS
+ * @version		0.0.2
  */
 class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 {
@@ -103,7 +102,8 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * Implements listener methods that are not explicitely implemented.
 	 *
 	 * @param string $listenerMethod Litener method name
-	 * @param iMSCP_Events $params
+	 * @param mixed $params
+	 * @return void
 	 */
 	public function __call($listenerMethod, $params)
 	{
@@ -122,6 +122,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * Implements the onBeforeEditUser listener method.
 	 *
 	 * @param int $userId User unique identifier
+	 * @return void
 	 */
 	public function onBeforeEditUser($userId)
 	{
@@ -136,6 +137,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * Implements the onBeforeDeleteUser listener method.
 	 *
 	 * @param int $userId User unique identifier
+	 * @return void
 	 */
 	public function onBeforeDeleteUser($userId)
 	{
