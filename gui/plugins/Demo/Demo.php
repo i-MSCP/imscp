@@ -37,7 +37,7 @@
  * @package		iMSCP_Plugins
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 {
