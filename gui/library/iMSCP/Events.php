@@ -21,7 +21,7 @@
  * @package		iMSCP_Core
  * @subpackage	Events
  * @copyright	2010-2012 by i-MSCP team
- * @author		Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.7
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -33,7 +33,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Events
- * @author		Laurent Declercq <l.declercq@i-mscp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.7
  */
 class iMSCP_Events
