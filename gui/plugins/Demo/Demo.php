@@ -22,7 +22,7 @@
  * @subpackage	Demo
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @version		0.0.5
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -36,7 +36,7 @@
  * @package		iMSCP_Plugins
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @version		0.0.5
  */
 class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 {
@@ -48,7 +48,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	protected $_config = array();
 
 	/**
-	 * Listened events
+	 * Listened events.
 	 *
 	 * @var array
 	 */
@@ -111,7 +111,9 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	public function __call($listenerMethod, $params)
 	{
 		if (in_array($listenerMethod, $this->getListenedEvents())) {
-			set_page_message(tr('This action is not permitted in <strong>demo</strong> version.'), 'info');
+			if (!Zend_Session::namespaceIsset('pageMessages')) {
+				set_page_message(tr('The %s action is not permitted in demo version.', str_replace('onBefore', '', "<strong>$listenerMethod</strong>")), 'info');
+			}
 
 			if (isset($_SERVER['HTTP_REFERER'])) {
 				redirectTo($_SERVER['HTTP_REFERER']);
@@ -159,6 +161,9 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function onBeforeDeleteDomain($domainId)
 	{
+		// Avoid interfering with child' events
+		iMSCP_Events_Manager::getInstance()->unregisterListener($this->getListenedEvents(), $this);
+
 		if ($this->isDisabledAction('onBeforeDeleteDomain')) {
 			$this->__call('onBeforeDeleteDomain', $domainId);
 		} else {
@@ -251,7 +256,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 						break;
 					case 'onBeforeDeleteUser':
 					case 'onBeforeDeleteDomain':
-						set_page_message(tr('This user / domain account cannot be removed.'), 'info');
+						set_page_message(tr("The demo's user accounts can't be removed. Create your own user if you want test this feature."), 'info');
 						break;
 				}
 
@@ -264,7 +269,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * Implements the onLoginScriptEnd listener method.
 	 *
 	 * Create a modal dialog to allow users to choose user account they want use to login. Available users are those
-	 * defined in plugin configuration.
+	 * defined in plugin configuration. If an user account doesn't exists in database, it is not showed.
 	 *
 	 * @param iMSCP_Events_Response $event
 	 * @return void
@@ -328,11 +333,14 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 
 		foreach ($this->_config['user_accounts'] as $account) {
 			if (isset($account['label']) && isset($account['username']) && isset($account['password'])) {
-				$credentials[] = array(
-					'label' => $account['label'],
-					'username' => $account['username'],
-					'password' => $account['password']
-				);
+				$query = 'SELECT COUNT(`admin_id`) `cnt` FROM `admin` WHERE `admin_name` = ? AND (`admin_pass` = ? OR `admin_pass` = MD5(?))';
+				$stmt = exec_query($query, array(idn_to_ascii($account['username']), crypt($account['password']), $account['password']));
+
+				if ($stmt->fields['cnt'] > 0) {
+					$credentials[] = array(
+						'label' => $account['label'], 'username' => $account['username'], 'password' => $account['password']
+					);
+				}
 			}
 		}
 
