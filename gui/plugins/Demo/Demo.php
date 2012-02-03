@@ -22,7 +22,7 @@
  * @subpackage	Demo
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.4
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -30,14 +30,13 @@
 /**
  * iMSCP_Plugins_Demo class.
  *
- * This plugin is intended to be used on demo server. He allow to disable some actions and also
- * show a modal dialog to allow the tester to choose what account he want use to login on.
+ * This plugin allow to setup an i-MSCP demo server.
  *
  * @category	iMSCP
  * @package		iMSCP_Plugins
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 {
@@ -69,19 +68,23 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function __construct($config)
 	{
-		if(is_array($config)) {
+		if (is_array($config)) {
 			$this->_config = $config;
-		} elseif(is_string($config) && is_readable($config)) {
-			$this->_config = include $config;
+		} elseif (is_string($config)) {
+			if (is_readable($config)) {
+				$this->_config = include $config;
+			} else {
+				throw new iMSCP_Exception(sprintf("Demo plugin's configuration file '%s' doesn't exists or is not readable.", $config));
+			}
 		} else {
 			throw new iMSCP_Exception('Demo plugin must be configured.');
 		}
 
-		if(isset($this->_config['user_accounts'])) {
+		if (isset($this->_config['user_accounts'])) {
 			$this->_listenedEvents[] = 'onLoginScriptEnd';
 		}
 
-		if(isset($this->_config['disabled_actions'])) {
+		if (isset($this->_config['disabled_actions'])) {
 			$this->setDisabledActions($this->_config['disabled_actions']);
 		} else {
 			$this->setDisabledActions();
@@ -107,10 +110,10 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function __call($listenerMethod, $params)
 	{
-		if(in_array($listenerMethod, $this->getListenedEvents())) {
+		if (in_array($listenerMethod, $this->getListenedEvents())) {
 			set_page_message(tr('This action is not permitted in <strong>demo</strong> version.'), 'info');
 
-			if(isset($_SERVER['HTTP_REFERER'])) {
+			if (isset($_SERVER['HTTP_REFERER'])) {
 				redirectTo($_SERVER['HTTP_REFERER']);
 			} else {
 				redirectTo('index.php');
@@ -126,7 +129,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function onBeforeEditUser($userId)
 	{
-		if($this->isDisabledAction('onBeforeEditUser')) {
+		if ($this->isDisabledAction('onBeforeEditUser')) {
 			$this->__call('onBeforeEditUser', $userId);
 		} else {
 			$this->_protectDemoUser($userId, 'onBeforeEditUser');
@@ -141,7 +144,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function onBeforeDeleteUser($userId)
 	{
-		if($this->isDisabledAction('onBeforeDeleteUser')) {
+		if ($this->isDisabledAction('onBeforeDeleteUser')) {
 			$this->__call('onBeforeDeleteUser', $userId);
 		} else {
 			$this->_protectDemoUser($userId, 'onBeforeDeleteUser');
@@ -156,13 +159,13 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function onBeforeDeleteDomain($domainId)
 	{
-		if($this->isDisabledAction('onBeforeDeleteDomain')) {
+		if ($this->isDisabledAction('onBeforeDeleteDomain')) {
 			$this->__call('onBeforeDeleteDomain', $domainId);
 		} else {
 			$query = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?';
-			$stmt = exec_query($query, (int) $domainId);
+			$stmt = exec_query($query, (int)$domainId);
 
-			if($stmt->rowCount()) {
+			if ($stmt->rowCount()) {
 				$this->_protectDemoUser($stmt->fields['domain_admin_id'], 'onBeforeDeleteDomain');
 			}
 		}
@@ -172,7 +175,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * Is disabled action?
 	 *
 	 * @param string $actionName Action name
-	 * @return bool TRUE if the given action is disabled, FALSE otherwise.
+	 * @return bool TRUE if the given action is disabled, FALSE otherwise
 	 */
 	public function isDisabledAction($actionName)
 	{
@@ -190,9 +193,9 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 		$this->_disabledActions = $actionNames;
 
 		// Accounts explicitely protected against deletion and password modification
-		if(isset($this->_config['user_accounts'])) {
+		if (isset($this->_config['user_accounts'])) {
 			foreach ($this->_config['user_accounts'] as $account) {
-				if(isset($account['protected']) && $account['protected']) {
+				if (isset($account['protected']) && $account['protected']) {
 					$actionNames[] = 'onBeforeEditUser';
 					$actionNames[] = 'onBeforeDeleteUser';
 					$actionNames[] = 'onBeforeDeleteDomain';
@@ -208,7 +211,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 * Protect demo user / domain accounts against some actions.
 	 *
 	 * @param int $userId User unique identifier
-	 * @param string $fromAction Action name from which user is protected
+	 * @param string $fromAction Action name from which $userId is protected
 	 * @return void
 	 */
 	protected function _protectDemoUser($userId, $fromAction)
@@ -268,10 +271,9 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function onLoginScriptEnd($event)
 	{
-		if(isset($this->_config['user_accounts'])) {
+		if (isset($this->_config['user_accounts']) && ($jsCode = $this->_getCredentialsDialog()) != '') {
 			$tpl = $event->getTemplateEngine();
-			$tpl->replaceLastParseResult(
-				str_replace('</head>', $this->_getCredentialsDialog() . PHP_EOL . '</head>', $tpl->getLastParseResult()));
+			$tpl->replaceLastParseResult(str_replace('</head>', $jsCode . PHP_EOL . '</head>', $tpl->getLastParseResult()));
 		}
 	}
 
@@ -284,40 +286,56 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	{
 		$credentials = $this->_getCredentials();
 
-		return '
-			<script type="text/javascript">
-			/*<![CDATA[*/
-				$(document).ready(function() {
-					var welcome = ' . json_encode(tr('Welcome to the i-MSCP Demo version')) . ';
-					var credentialInfo = '. json_encode(tr("Please select the account you want use to login and click on the 'Ok' button.")) . ' + "<br /><br />";
-					$("<div/>", {"id": "demo", html: "<h2>" + welcome + "</h2>" + credentialInfo}).appendTo("body");
-					$("<select/>", {"id": "demo_credentials"}).appendTo("#demo");
-					var credentials = ' . $credentials . '
-					$.each(credentials, function() {
-						$("#demo_credentials").append($("<option></option>").val(this.username + " " + this.password).text(this.label));
-					})
-					$("#demo_credentials").change(function() {
-						var credentials = $("#demo_credentials option:selected").val().split(" ");
-						$("#uname").val(credentials.shift());
-						$("#upass").val(credentials.shift());
-					}).trigger("change");
-					$("#demo").dialog({
-						modal: true, width:"500", autoOpen:true, height:"auto", buttons: {Ok: function(){$(this).dialog("close");}},
-						title:"i-MSCP Demo"
+		if (!empty($credentials)) {
+			return '
+				<script type="text/javascript">
+				/*<![CDATA[*/
+					$(document).ready(function() {
+						var welcome = ' . json_encode(tr('Welcome to the i-MSCP Demo version')) . ';
+						var credentialInfo = ' . json_encode(tr("Please select the account you want use to login and click on the 'Ok' button.")) . ' + "<br /><br />";
+						$("<div/>", {"id": "demo", html: "<h2>" + welcome + "</h2>" + credentialInfo}).appendTo("body");
+						$("<select/>", {"id": "demo_credentials"}).appendTo("#demo");
+						var credentials = ' . json_encode($credentials) . '
+						$.each(credentials, function() {
+							$("#demo_credentials").append($("<option></option>").val(this.username + " " + this.password).text(this.label));
+						})
+						$("#demo_credentials").change(function() {
+							var credentials = $("#demo_credentials option:selected").val().split(" ");
+							$("#uname").val(credentials.shift());
+							$("#upass").val(credentials.shift());
+						}).trigger("change");
+						$("#demo").dialog({
+							modal: true, width:"500", autoOpen:true, height:"auto", buttons: {Ok: function(){$(this).dialog("close");}},
+							title:"i-MSCP Demo"
+						});
 					});
-				});
-			/*]]>*/
-			</script>
-		';
+				/*]]>*/
+				</script>
+			';
+		} else {
+			return '';
+		}
 	}
 
 	/**
 	 * Returns credentials to push in select element.
 	 *
-	 * @return string
+	 * @return array
 	 */
 	protected function _getCredentials()
 	{
-		return json_encode($this->_config['user_accounts']);
+		$credentials = array();
+
+		foreach ($this->_config['user_accounts'] as $account) {
+			if (isset($account['label']) && isset($account['username']) && isset($account['password'])) {
+				$credentials[] = array(
+					'label' => $account['label'],
+					'username' => $account['username'],
+					'password' => $account['password']
+				);
+			}
+		}
+
+		return $credentials;
 	}
 }
