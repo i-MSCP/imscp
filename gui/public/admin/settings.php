@@ -53,6 +53,9 @@ $cfg = iMSCP_Registry::get('config');
 $phpini = iMSCP_PHPini::getInstance();
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditAdminGeneralSettings);
+
 	$lostpwd = $_POST['lostpassword'];
 	$lostpwd_timeout = clean_input($_POST['lostpassword_timeout']);
 	$pwd_chars = clean_input($_POST['passwd_chars']);
@@ -177,6 +180,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
 		$db_cfg->MAIN_MENU_SHOW_LABELS = $mainMenuShowLabels;
 		$cfg->replaceWith($db_cfg);
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
 
 		// gets the number of queries that were been executed
 		$updt_count = $db_cfg->countQueries('update');

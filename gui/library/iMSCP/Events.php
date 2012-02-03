@@ -21,7 +21,8 @@
  * @package		iMSCP_Core
  * @subpackage	Events
  * @copyright	2010-2012 by i-MSCP team
- * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author		Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @version		0.0.7
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -33,7 +34,7 @@
  * @package		iMSCP_Core
  * @subpackage	Events
  * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.6
+ * @version		0.0.7
  */
 class iMSCP_Events
 {
@@ -74,8 +75,7 @@ class iMSCP_Events
 	const  onAfterRegisterUser = 'onAfterRegisterUser';
 
 	/**
-	 * The onLostPasswordScriptStart event is fired at the very beginning of the
-	 * LostPassword script.
+	 * The onLostPasswordScriptStart event is fired at the very beginning of the LostPassword script.
 	 *
 	 * The event listener method receives an iMSCP_Events_Event object.
 	 *
@@ -179,6 +179,20 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
+
+	/**
+	 * The onBeforeEditAdminGeneralSettings event is fired before the admin general settings are editied.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 */
+	const onBeforeEditAdminGeneralSettings = 'onBeforeEditAdminGeneralSettings';
+
+	/**
+	 * The onAfterEditAdminGeneralSettings event is fired after the admin general settings are editied.
+	 *
+	 * The event listener method receives an iMSCP_Events_Event object.
+	 */
+	const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
 	/**
 	 * The onBeforeAddUser event is fired before an user is created.
