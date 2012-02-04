@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-01-19 09:06+0100\n"
+"POT-Creation-Date: 2012-02-04 10:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "An error occured! Please, contact your administrator."
+msgid "An error occured. Please, contact your administrator."
 msgstr ""
 
 msgid "An error occurred while the authentication attempt."
@@ -1610,9 +1610,6 @@ msgstr ""
 msgid "Edit User"
 msgstr ""
 
-msgid "Edit admin"
-msgstr ""
-
 msgid "Edit alias"
 msgstr ""
 
@@ -1725,9 +1722,6 @@ msgid "Enabled for domain data"
 msgstr ""
 
 msgid "Enabled for domain data and databases"
-msgstr ""
-
-msgid "Entered passwords do not match!"
 msgstr ""
 
 msgid "Entered passwords do not match."
@@ -2425,6 +2419,10 @@ msgstr ""
 msgid "Login As"
 msgstr ""
 
+#, php-format
+msgid "Login data successfully sent to %s."
+msgstr ""
+
 msgid "Login into PhpMyAdmin"
 msgstr ""
 
@@ -2841,6 +2839,11 @@ msgstr ""
 msgid "No group found."
 msgstr ""
 
+msgid ""
+"No hosting plan available for purchasing. Please contact your system "
+"administrator."
+msgstr ""
+
 msgid "No htaccess related system errors"
 msgstr ""
 
@@ -3131,9 +3134,6 @@ msgstr ""
 msgid "Password change is deactivated!"
 msgstr ""
 
-msgid "Password change is disabled!"
-msgstr ""
-
 msgid "Password confirmation"
 msgstr ""
 
@@ -3152,6 +3152,9 @@ msgid "Password data is shorter than %s signs or includes not permitted signs."
 msgstr ""
 
 msgid "Password doesn't matches"
+msgstr ""
+
+msgid "Password doesn't matches."
 msgstr ""
 
 msgid "Password is missing."
@@ -4707,13 +4710,16 @@ msgstr ""
 msgid "User password successfully updated."
 msgstr ""
 
+msgid "User personal data successfully updated."
+msgstr ""
+
 msgid "User real (first and last) name"
 msgstr ""
 
 msgid "User scheduled for deletion."
 msgstr ""
 
-msgid "User session was killed!"
+msgid "User session successfully killed for password change."
 msgstr ""
 
 msgid "User session was killed."
@@ -5152,9 +5158,6 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no hosting plans. Please contact your system administrator."
-msgstr ""
-
 msgid "You have no users !"
 msgstr ""
 
@@ -5342,6 +5345,9 @@ msgstr ""
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr ""
 
+msgid "i-MSCP - Admin / Edit customer"
+msgstr ""
+
 msgid "i-MSCP - Admin / Edit hosting plan"
 msgstr ""
 
@@ -5412,12 +5418,6 @@ msgid "i-MSCP - Admin/Manage Users"
 msgstr ""
 
 msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr ""
-
-msgid "i-MSCP - Admin/Manage users/Edit Administrator"
-msgstr ""
-
-msgid "i-MSCP - Admin/Manage users/Edit User"
 msgstr ""
 
 msgid "i-MSCP - Admin/Manage users/Email setup"
@@ -5585,6 +5585,9 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Add customer - step 1"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
@@ -5676,9 +5679,6 @@ msgid "i-MSCP - User/Add domain alias"
 msgstr ""
 
 msgid "i-MSCP - Users"
-msgstr ""
-
-msgid "i-MSCP - Users/Add domain account - step 1"
 msgstr ""
 
 msgid "i-MSCP - Users/Edit"
