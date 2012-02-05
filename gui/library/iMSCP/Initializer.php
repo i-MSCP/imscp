@@ -660,9 +660,8 @@ class iMSCP_Initializer
 				// Loaded manually since we have not plugins management library yet.
 				require_once $pluginPath;
 
-				$demoPlugin = new iMSCP_Plugins_Demo(LIBRARY_PATH . '/../plugins/Demo/demo_config.php');
-
-				iMSCP_Events_Manager::getInstance()->registerListener($demoPlugin->getListenedEvents(), $demoPlugin);
+				$demoPlugin = new iMSCP_Plugins_Demo();
+				$demoPlugin->register(iMSCP_Events_Manager::getInstance());
 			}
 		}
 	}

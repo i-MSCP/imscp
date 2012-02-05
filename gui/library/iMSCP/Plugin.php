@@ -74,7 +74,7 @@ abstract class iMSCP_Plugin
 	public function getInfo()
 	{
 		$parts = explode('_', get_class($this));
-		$infoFile = LIBRARY_PATH . '/../plugins/Demo/info.php';
+		$infoFile = LIBRARY_PATH . '/../plugins/' . $parts[2] .  '/info.php';
 
 		if (is_readable($infoFile)) {
 			return include $infoFile;
@@ -85,7 +85,7 @@ abstract class iMSCP_Plugin
 				'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
 				get_class($this),
 				$infoFile,
-				$parts['2']
+				$parts[2]
 			), 'warning'
 		);
 

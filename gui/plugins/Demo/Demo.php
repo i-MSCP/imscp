@@ -36,17 +36,10 @@
  * @package		iMSCP_Plugins
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.5
+ * @version		0.0.6
  */
-class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
+class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Listeners_Interface
 {
-	/**
-	 * Plugin configuration parameters.
-	 *
-	 * @var array
-	 */
-	protected $_config = array();
-
 	/**
 	 * Listened events.
 	 *
@@ -63,32 +56,28 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 
 	/**
 	 * Constructor.
-	 *
-	 * @param string|array $config Plugin configuration file path or array of parameters
 	 */
-	public function __construct($config)
+	public function __construct()
 	{
-		if (is_array($config)) {
-			$this->_config = $config;
-		} elseif (is_string($config)) {
-			if (is_readable($config)) {
-				$this->_config = include $config;
-			} else {
-				throw new iMSCP_Exception(sprintf("Demo plugin's configuration file '%s' doesn't exists or is not readable.", $config));
-			}
-		} else {
-			throw new iMSCP_Exception('Demo plugin must be configured.');
-		}
-
-		if (isset($this->_config['user_accounts'])) {
+		if ($this->getConfig('user_accounts')) {
 			$this->_listenedEvents[] = 'onLoginScriptEnd';
 		}
 
-		if (isset($this->_config['disabled_actions'])) {
-			$this->setDisabledActions($this->_config['disabled_actions']);
+		if (($disabledActions = $this->getConfig('disabled_actions'))) {
+			$this->setDisabledActions($disabledActions);
 		} else {
 			$this->setDisabledActions();
 		}
+	}
+
+	/**
+	 * Register a callback for the given event(s).
+	 *
+	 * @param iMSCP_Events_Manager $controller
+	 */
+	public function register(iMSCP_Events_Manager $controller)
+	{
+		$controller->registerListener($this->getListenedEvents(), $this, 1000);
 	}
 
 	/**
@@ -162,7 +151,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	public function onBeforeDeleteDomain($domainId)
 	{
 		// Avoid interfering with child' events
-		iMSCP_Events_Manager::getInstance()->unregisterListener($this->getListenedEvents(), $this);
+		$this->getController()->unregisterListener($this->getListenedEvents(), $this);
 
 		if ($this->isDisabledAction('onBeforeDeleteDomain')) {
 			$this->__call('onBeforeDeleteDomain', $domainId);
@@ -228,7 +217,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 			$username = idn_to_utf8($stmt->fields['admin_name']);
 			$foundUser = false;
 
-			foreach ($this->_config['user_accounts'] as $account) {
+			foreach ($this->getConfig('user_accounts') as $account) {
 				if ($account['username'] == $username && (isset($account['protected']) && $account['protected'])) {
 					$foundUser = true;
 				}
@@ -276,7 +265,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	 */
 	public function onLoginScriptEnd($event)
 	{
-		if (isset($this->_config['user_accounts']) && ($jsCode = $this->_getCredentialsDialog()) != '') {
+		if ($this->getConfig('user_accounts') && ($jsCode = $this->_getCredentialsDialog()) != '') {
 			$tpl = $event->getTemplateEngine();
 			$tpl->replaceLastParseResult(str_replace('</head>', $jsCode . PHP_EOL . '</head>', $tpl->getLastParseResult()));
 		}
@@ -331,7 +320,7 @@ class iMSCP_Plugins_Demo implements iMSCP_Events_Listeners_Interface
 	{
 		$credentials = array();
 
-		foreach ($this->_config['user_accounts'] as $account) {
+		foreach ($this->getConfig('user_accounts') as $account) {
 			if (isset($account['label']) && isset($account['username']) && isset($account['password'])) {
 				$query = 'SELECT COUNT(`admin_id`) `cnt` FROM `admin` WHERE `admin_name` = ? AND (`admin_pass` = ? OR `admin_pass` = MD5(?))';
 				$stmt = exec_query($query, array(idn_to_ascii($account['username']), crypt($account['password']), $account['password']));
