@@ -20,7 +20,7 @@
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Plugin_Exception
- * @copyright	2010 - 2012 by Laurent Declercq
+ * @copyright	2010 - 2012 2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site

@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package
- * @subpackage
- * @copyright	2010 - 2012 by Laurent Declercq
+ * @package		iMSCP_Core
+ * @subpackage	Plugin_Action
+ * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
@@ -32,9 +32,9 @@
  *
  * All i-MSCP plugins to interfere with the event system need to inherit from this class.
  *
- * @category
- * @package		iMSCP
- * @subpackage
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Plugin_Action
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
  */
