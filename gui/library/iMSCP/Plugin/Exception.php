@@ -39,7 +39,7 @@ require_once 'iMSCP/Exception.php';
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
  */
-class Exception extends iMSCP_Exception
+class iMSCP_Plugin_Exception extends iMSCP_Exception
 {
 
 }
