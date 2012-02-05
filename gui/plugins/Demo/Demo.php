@@ -78,6 +78,7 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	public function register(iMSCP_Events_Manager $controller)
 	{
 		$controller->registerListener($this->getListenedEvents(), $this, 1000);
+		$this->_controller = $controller;
 	}
 
 	/**
