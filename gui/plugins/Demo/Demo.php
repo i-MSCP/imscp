@@ -27,6 +27,12 @@
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+/** @See iMSCP_Plugin_Action */
+require_once 'iMSCP/Plugin/Action.php';
+
+/** @See iMSCP_Events_Listeners_Interface */
+require_once 'iMSCP/Events/Listeners/Interface.php';
+
 /**
  * iMSCP_Plugins_Demo class.
  *

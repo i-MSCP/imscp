@@ -27,8 +27,12 @@
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+
+/** @See iMSCP_Plugin */
+require_once 'iMSCP/Plugin.php';
+
 /**
- * Base class for Action plugins class.
+ * Base class for Action plugins.
  *
  * All i-MSCP plugins to interfere with the event system need to inherit from this class.
  *
