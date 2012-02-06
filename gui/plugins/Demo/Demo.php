@@ -22,7 +22,7 @@
  * @subpackage	Demo
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.5
+ * @version		0.0.6
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
