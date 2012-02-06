@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-02-04 10:33+0100\n"
+"POT-Creation-Date: 2012-02-06 15:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2853,6 +2853,9 @@ msgstr ""
 msgid "No new i-MSCP updates available"
 msgstr ""
 
+msgid "No provided"
+msgstr ""
+
 msgid "No records found"
 msgstr ""
 
@@ -5325,6 +5328,12 @@ msgid "free of charge"
 msgstr ""
 
 msgid "from other browser"
+msgstr ""
+
+#, php-format
+msgid ""
+"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
+"the %s plugin and should be reported to the plugin author."
 msgstr ""
 
 msgid "help"
