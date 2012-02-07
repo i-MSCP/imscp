@@ -13,7 +13,7 @@ Tickets:
 	- Fixed #330: Defect - The cron task for the anti-rootkit (chkrootkit) doesn't work
 	- Fixed #332: Bug - Autoresponder - alias missing
 	- Fixed #336: Bug - Domain alias deletion
-	- Fixed #337: Bug - Fcgi process should be killed during setup/update
+	- Fixed #327: Bug - Fcgi process should be killed during setup/update
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.6 (beta 6)
