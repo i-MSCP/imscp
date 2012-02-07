@@ -82,6 +82,7 @@ sub addSystemUser{
 
 	} else {
 		@cmd = (
+			'skill -KILL -vu ' . $userName . '; ',
 			$main::imscpConfig{'CMD_USERGROUP'},
 			($^O =~ /bsd$/ ? "\"$userName\"" : ''),	#username bsd way
 			"-c", $comment,							#comment
@@ -163,6 +164,7 @@ sub addToGroup{
 		if(!$self->{userGroups}->{$groupName}){
 			my $newGroups =  join(',', keys %{$self->{userGroups}}) .",$groupName";
 			my  @cmd = (
+				'skill -KILL -vu ' . $userName . '; ',
 				"$main::imscpConfig{'CMD_USERGROUP'}",
 				($^O =~ /bsd$/ ? "\"$userName\"" : ''),	#bsd way
 				'-G', "\"$newGroups\"",
@@ -227,6 +229,7 @@ sub removeFromGroup{
 		delete $self->{userGroups}->{$groupName};
 		my $newGroups =  join(',', keys %{$self->{userGroups}});
 		my  @cmd = (
+			'skill -KILL -vu ' . $userName . '; ',
 			"$main::imscpConfig{'CMD_USERGROUP'}",
 			($^O =~ /bsd$/ ? "\"$userName\"" : ''),	#bsd way
 			'-G', "\"$newGroups\"",
