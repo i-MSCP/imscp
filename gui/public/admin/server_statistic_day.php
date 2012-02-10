@@ -30,9 +30,107 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @author	  ispCP Team
+ * @author	  i-MSCP Team
+ * @link		http://i-mscp.net
+ */
+
+/******************************************************************************
+ * Script functions
+ */
+
+/**
+ * Generates page.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param int $year
+ * @param int $month
+ * @param int $day
+ */
+function admin_generatePage($tpl, $year, $month, $day)
+{
+	$all = array_fill(0, 8, 0);
+	$allOtherIn = $allOtherOut = 0;
+	$ftm = mktime(0, 0, 0, $month, $day, $year);
+	$ltm = mktime(23, 59, 59, $month, $day, $year);
+
+	$query = "SELECT COUNT(`bytes_in`) `cnt` FROM `server_traffic` WHERE `traff_time` > ? AND `traff_time` < ?";
+	$stmt = exec_query($query, array($ftm, $ltm));
+
+	$dnum = $stmt->fields['cnt'];
+
+	$query = "
+		SELECT
+			`traff_time` `ttime`, `bytes_in` `sbin`, `bytes_out` `sbout`, `bytes_mail_in` `smbin`,
+			`bytes_mail_out` `smbout`, `bytes_pop_in` `spbin`, `bytes_pop_out` `spbout`, `bytes_web_in` `swbin`,
+			`bytes_web_out` `swbout`
+		FROM
+			`server_traffic`
+		WHERE
+			`traff_time` > ? AND `traff_time` < ?
+	";
+	$stmt = exec_query($query, array($ftm, $ltm));
+
+	if ($dnum) {
+		for ($i = 0; $i < $dnum; $i++) {
+			// make it in kb mb or bytes :)
+			$ttime = date('H:i', $stmt->fields['ttime']);
+
+			// make other traffic
+			$otherIn = $stmt->fields['sbin'] - ($stmt->fields['swbin'] + $stmt->fields['smbin'] + $stmt->fields['spbin']);
+			$otherOut = $stmt->fields['sbout'] - ($stmt->fields['swbout'] + $stmt->fields['smbout'] + $stmt->fields['spbout']);
+
+			$tpl->assign(
+				array(
+					'HOUR' => $ttime,
+					'WEB_IN' => numberBytesHuman($stmt->fields['swbin']),
+					'WEB_OUT' => numberBytesHuman($stmt->fields['swbout']),
+					'SMTP_IN' => numberBytesHuman($stmt->fields['smbin']),
+					'SMTP_OUT' => numberBytesHuman($stmt->fields['smbout']),
+					'POP_IN' => numberBytesHuman($stmt->fields['spbin']),
+					'POP_OUT' => numberBytesHuman($stmt->fields['spbout']),
+					'OTHER_IN' => numberBytesHuman($otherIn),
+					'OTHER_OUT' => numberBytesHuman($otherOut),
+					'ALL_IN' => numberBytesHuman($stmt->fields['sbin']),
+					'ALL_OUT' => numberBytesHuman($stmt->fields['sbout']),
+					'ALL' => numberBytesHuman($stmt->fields['sbin'] + $stmt->fields['sbout']),));
+
+			$all[0] = $all[0] + $stmt->fields['swbin'];
+			$all[1] = $all[1] + $stmt->fields['swbout'];
+			$all[2] = $all[2] + $stmt->fields['smbin'];
+			$all[3] = $all[3] + $stmt->fields['smbout'];
+			$all[4] = $all[4] + $stmt->fields['spbin'];
+			$all[5] = $all[5] + $stmt->fields['spbout'];
+			$all[6] = $all[6] + $stmt->fields['sbin'];
+			$all[7] = $all[7] + $stmt->fields['sbout'];
+
+			$tpl->parse('HOUR_LIST', '.hour_list');
+			$stmt->moveNext();
+		}
+
+		$allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
+		$allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
+	} else {
+		$tpl->assign('HOUR_LIST', '');
+	}
+
+	$tpl->assign(
+		array(
+			'WEB_IN_ALL' => numberBytesHuman($all[0]),
+			'WEB_OUT_ALL' => numberBytesHuman($all[1]),
+			'SMTP_IN_ALL' => numberBytesHuman($all[2]),
+			'SMTP_OUT_ALL' => numberBytesHuman($all[3]),
+			'POP_IN_ALL' => numberBytesHuman($all[4]),
+			'POP_OUT_ALL' => numberBytesHuman($all[5]),
+			'OTHER_IN_ALL' => numberBytesHuman($allOtherIn),
+			'OTHER_OUT_ALL' => numberBytesHuman($allOtherOut),
+			'ALL_IN_ALL' => numberBytesHuman($all[6]),
+			'ALL_OUT_ALL' => numberBytesHuman($all[7]),
+			'ALL_ALL' => numberBytesHuman($all[6] + $all[7])));
+}
+
+/******************************************************************************
+ * Main script
  */
 
 // Include core library
@@ -42,6 +140,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -52,146 +151,25 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'hour_list' => 'page'));
 
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server day stats'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-global $month, $year, $day;
+//global $month, $year, $day;
 
 if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day']) && is_numeric($_GET['month']) &&
 	is_numeric($_GET['year']) && is_numeric($_GET['day'])
 ) {
 	$year = $_GET['year'];
-
 	$month = $_GET['month'];
-
 	$day = $_GET['day'];
 } else {
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('server_statistic.php');
+	exit; // Useless but avoid IDE warning about possible undefined variables
 }
-
-/**
- * @param $tpl
- */
-function generate_page($tpl) {
-	global $month, $year, $day;
-
-	$all[0] = 0;
-	$all[1] = 0;
-	$all[2] = 0;
-	$all[3] = 0;
-	$all[4] = 0;
-	$all[5] = 0;
-	$all[6] = 0;
-	$all[7] = 0;
-
-	$all_other_in = 0;
-	$all_other_out = 0;
-
-	$row = 1;
-
-	$ftm = mktime(0, 0, 0, $month, $day, $year);
-	$ltm = mktime(23, 59, 59, $month, $day, $year);
-
-	$query = "
-		SELECT
-			COUNT(`bytes_in`) AS cnt
-		FROM
-			`server_traffic`
-		WHERE
-			`traff_time` > ? AND `traff_time` < ?
-	";
-
-	$rs = exec_query($query, array($ftm, $ltm));
-
-	$dnum = $rs->fields['cnt'];
-
-	$query = "
-		SELECT
-			`traff_time` AS ttime,
-			`bytes_in` AS sbin,
-			`bytes_out` AS sbout,
-			`bytes_mail_in` AS smbin,
-			`bytes_mail_out` AS smbout,
-			`bytes_pop_in` AS spbin,
-			`bytes_pop_out` AS spbout,
-			`bytes_web_in` AS swbin,
-			`bytes_web_out` AS swbout
-		FROM
-			`server_traffic`
-		WHERE
-			`traff_time` > ? AND `traff_time` < ?
-	";
-
-	$rs1 = exec_query($query, array($ftm, $ltm));
-
-	$row = 1;
-
-	if ($dnum != 0) {
-		for ($i = 0; $i < $dnum; $i++) {
-			// make it in kb mb or bytes :)
-			$ttime = date('H:i', $rs1->fields['ttime']);
-
-			// make other traffic
-			$other_in = $rs1->fields['sbin'] - ($rs1->fields['swbin'] + $rs1->fields['smbin'] + $rs1->fields['spbin']);
-			$other_out = $rs1->fields['sbout'] - ($rs1->fields['swbout'] + $rs1->fields['smbout'] + $rs1->fields['spbout']);
-
-			$tpl->assign(
-				array(
-					'HOUR' => $ttime,
-					'WEB_IN' => sizeit($rs1->fields['swbin']),
-					'WEB_OUT' => sizeit($rs1->fields['swbout']),
-					'SMTP_IN' => sizeit($rs1->fields['smbin']),
-					'SMTP_OUT' => sizeit($rs1->fields['smbout']),
-					'POP_IN' => sizeit($rs1->fields['spbin']),
-					'POP_OUT' => sizeit($rs1->fields['spbout']),
-					'OTHER_IN' => sizeit($other_in),
-					'OTHER_OUT' => sizeit($other_out),
-					'ALL_IN' => sizeit($rs1->fields['sbin']),
-					'ALL_OUT' => sizeit($rs1->fields['sbout']),
-					'ALL' => sizeit($rs1->fields['sbin'] + $rs1->fields['sbout']),
-				)
-			);
-
-			$all[0] = $all[0] + $rs1->fields['swbin'];
-			$all[1] = $all[1] + $rs1->fields['swbout'];
-			$all[2] = $all[2] + $rs1->fields['smbin'];
-			$all[3] = $all[3] + $rs1->fields['smbout'];
-			$all[4] = $all[4] + $rs1->fields['spbin'];
-			$all[5] = $all[5] + $rs1->fields['spbout'];
-			$all[6] = $all[6] + $rs1->fields['sbin'];
-			$all[7] = $all[7] + $rs1->fields['sbout'];
-
-			$tpl->parse('HOUR_LIST', '.hour_list');
-
-			$rs1->moveNext();
-		} // end for
-		$all_other_in = $all[6] - ($all[0] + $all[2] + $all[4]);
-		$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);
-	} else { // if dnum
-		$tpl->assign('HOUR_LIST', '');
-	}
-	$tpl->assign(
-		array(
-			'WEB_IN_ALL' => sizeit($all[0]),
-			'WEB_OUT_ALL' => sizeit($all[1]),
-			'SMTP_IN_ALL' => sizeit($all[2]),
-			'SMTP_OUT_ALL' => sizeit($all[3]),
-			'POP_IN_ALL' => sizeit($all[4]),
-			'POP_OUT_ALL' => sizeit($all[5]),
-			'OTHER_IN_ALL' => sizeit($all_other_in),
-			'OTHER_OUT_ALL' => sizeit($all_other_out),
-			'ALL_IN_ALL' => sizeit($all[6]),
-			'ALL_OUT_ALL' => sizeit($all[7]),
-			'ALL_ALL' => sizeit($all[6] + $all[7])));
-}
-
-generateNavigation($tpl);
 
 $tpl->assign(
 	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Server statistics by day'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MONTH' => tr('Month:'),
 		'TR_YEAR' => tr('Year:'),
 		'TR_DAY' => tr('Day:'),
@@ -212,8 +190,9 @@ $tpl->assign(
 		'YEAR' => $year,
 		'DAY' => $day));
 
+generateNavigation($tpl);
 generatePageMessage($tpl);
-generate_page ($tpl);
+admin_generatePage($tpl, $year, $month, $day);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
