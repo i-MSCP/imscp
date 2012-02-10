@@ -1354,54 +1354,69 @@ sub del_old_logs{
 
 sub del_tmp{
 
-	use iMSCP::Dir;
-	use iMSCP::File;
+	#use iMSCP::Dir;
+	#use iMSCP::File;
 	use POSIX;
 
 	my $rs = 0;
-
 	my ($stdout, $stderr);
 
-	my $hDMN	= iMSCP::Dir->new(dirname => "$main::imscpConfig{USER_HOME_DIR}");
-	return 1 if $hDMN->get();
-
-	my @domains	= $hDMN->getDirs();
-
-	for (@domains){
-		my $dmn = $_;
-		if(-d "$self::apacheConfig{PHP_STARTER_DIR}/$_"){
-			my $hPHPINI	= iMSCP::Dir->new(dirname => "$self::apacheConfig{PHP_STARTER_DIR}/$dmn");
-			if ($hPHPINI->get()){
-				error("Can't read php.ini list for $dmn");
-				$rs |= 1;
-				next;
-			}
-			my @phpInis = $hPHPINI->getDirs();
-			my $max = 0;
-			foreach(@phpInis){
-				unless (-f "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini"){
-					error("File not found $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
-					$rs |= 1;
-					next;
-				}
-				my $hFile	= iMSCP::File->new(filename => "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini");
-				my $file	= $hFile->get();
-				unless ($file){
-					error("Can not read $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
-					$rs |= 1;
-					next;
-				}
-				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
-				$max = floor($1/60) if $1 && $max < floor($1/60);
-			}
-			$max = 24 unless $max;
-			my $cmd = "nice -n 19 find $main::imscpConfig{USER_HOME_DIR}/$dmn -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
-			$rs |= execute($cmd, \$stdout, \$stderr);
-			debug($stdout) if $stdout;
-			error($stderr) if $stderr;
-			error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
-		}
+	# panel sessions gc (since we are not using default session path)
+	if(-d "/var/www/imscp/gui/data/sessions"){
+		my $cmd = '[ -x /usr/lib/php5/maxlifetime ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$(/usr/lib/php5/maxlifetime) -delete';
+		$rs |= execute($cmd, \$stdout, \$stderr);
+		debug($stdout) if $stdout;
+		error($stderr) if $stderr;
+		error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
 	}
+
+#
+# Code below was commented because for itk server we are using default /etc/php5/apache2/php.ini file and also
+# because starter directories are not used. When using ITK, sessions GC is the one provided by distro (/etc/cron.d/php5)
+# and session file are stored in /var/lib/php5
+#
+
+#	my $hDMN	= iMSCP::Dir->new(dirname => "$main::imscpConfig{USER_HOME_DIR}");
+#	return 1 if $hDMN->get();
+#
+#
+#	my @domains	= $hDMN->getDirs();
+#
+#	for (@domains){
+#		my $dmn = $_;
+#		if(-d "$self::apacheConfig{PHP_STARTER_DIR}/$_"){
+#			my $hPHPINI	= iMSCP::Dir->new(dirname => "$self::apacheConfig{PHP_STARTER_DIR}/$dmn");
+#			if ($hPHPINI->get()){
+#				error("Can't read php.ini list for $dmn");
+#				$rs |= 1;
+#				next;
+#			}
+#			my @phpInis = $hPHPINI->getDirs();
+#			my $max = 0;
+#			foreach(@phpInis){
+#				unless (-f "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini"){
+#					error("File not found $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
+#					$rs |= 1;
+#					next;
+#				}
+#				my $hFile	= iMSCP::File->new(filename => "$self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini");
+#				my $file	= $hFile->get();
+#				unless ($file){
+#					error("Can not read $self::apacheConfig{PHP_STARTER_DIR}/$dmn/$_/php.ini!");
+#					$rs |= 1;
+#					next;
+#				}
+#				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
+#				$max = floor($1/60) if $1 && $max < floor($1/60);
+#			}
+#			$max = 24 unless $max;
+#			my $cmd = "nice -n 19 find $main::imscpConfig{USER_HOME_DIR}/$dmn -type f -path '*/phptmp/sess_*' -cmin +$max -exec rm -v {} \\;";
+#			$rs |= execute($cmd, \$stdout, \$stderr);
+#			debug($stdout) if $stdout;
+#			error($stderr) if $stderr;
+#			error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
+#		}
+#	}
 
 	$rs;
 }

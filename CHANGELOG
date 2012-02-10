@@ -14,6 +14,7 @@ Tickets:
 	- Fixed #332: Bug - Autoresponder - alias missing
 	- Fixed #336: Bug - Domain alias deletion
 	- Fixed #327: Bug - Fcgi process should be killed during setup/update
+	- Fixed #344: Bug - PHP session garbage collector not implemented for the panel (GUI)
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.1.6 (beta 6)
