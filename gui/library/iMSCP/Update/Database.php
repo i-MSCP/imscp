@@ -1450,4 +1450,26 @@ class iMSCP_Update_Database extends iMSCP_Update
 			'custom_menus',
 			'menu_order', 'INT UNSIGNED NULL AFTER `menu_level`, ADD INDEX (`menu_order`)');
 	}
+
+	/**
+	 * Add plugin table for plugins management.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL Statement to be executed
+	 */
+	protected function _databaseUpdate_102()
+	{
+		return "
+			CREATE TABLE IF NOT EXISTS `plugin` (
+				`plugin_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+				`plugin_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+				`plugin_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+				`plugin_info` text COLLATE utf8_unicode_ci NOT NULL,
+				`plugin_config` text COLLATE utf8_unicode_ci DEFAULT NULL,
+				`plugin_status` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'disabled',
+				PRIMARY KEY (`plugin_id`),
+				UNIQUE KEY `name` (`plugin_name`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+		";
+	}
 }

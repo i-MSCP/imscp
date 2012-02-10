@@ -59,7 +59,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $_SESSION['user_id']);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $_SESSION['user_id']));
 
 	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 		set_page_message(tr('All fields are required.'), 'error');
@@ -93,7 +93,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 		$rs = exec_query($query, array($upass, $user_id));
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $_SESSION['user_id']);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $_SESSION['user_id']));
 
 		set_page_message(tr('User password successfully updated.'), 'success');
 	}
@@ -138,7 +138,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

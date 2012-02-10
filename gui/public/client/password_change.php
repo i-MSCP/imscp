@@ -58,7 +58,7 @@ $tpl->assign(
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $_SESSION['user_id']);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $_SESSION['user_id']));
 
 	if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 		set_page_message(tr('Please fill up all data fields!'), 'error');
@@ -79,7 +79,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ?";
 		$rs = exec_query($query, array($upass, $user_id));
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $_SESSION['user_id']);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $_SESSION['user_id']));
 
 		write_log($_SESSION['user_logged'] . ": updated password.", E_USER_NOTICE);
 		set_page_message(tr('Password updated.'), 'success');
@@ -122,7 +122,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

@@ -74,7 +74,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 		return;
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSqlUser, array('sqlUserId' => $db_user_id));
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -124,7 +124,7 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 	$query = "SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')";
 	execute_query($query);
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $db_user_id));
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
 	set_page_message(tr('SQL user password updated.'), 'success');
@@ -185,7 +185,7 @@ $tpl->assign(
 generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

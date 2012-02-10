@@ -51,7 +51,7 @@ function admin_updatePassword()
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'updt_pass') {
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $_SESSION['user_id']);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $_SESSION['user_id']));
 
 		if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
 			set_page_message(tr('All fields are required.'), 'error');
@@ -73,7 +73,7 @@ function admin_updatePassword()
 			$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ? ";
 			exec_query($query, array($upass, $user_id));
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $_SESSION['user_id']);
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $_SESSION['user_id']));
 
 			set_page_message(tr('Password successfully updated.'), 'success');
 			redirectTo('profile.php');
@@ -144,7 +144,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

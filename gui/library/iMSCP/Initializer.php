@@ -180,7 +180,7 @@ class iMSCP_Initializer
 		$this->_initializeNavigation();
 
 		// Initialize Demo plugin if needed
-		$this->_initializeDemo();
+		//$this->_initializeDemo();
 
 		// Initialize logger
 		// $this->_initializeLogger();
@@ -375,7 +375,7 @@ class iMSCP_Initializer
 				$this->_config->DATABASE_HOST, $this->_config->DATABASE_NAME);
 
 		} catch (PDOException $e) {
-			throw new iMSCP_Exception_Database('Unable to establish connection to the database. ' .
+			throw new iMSCP_Exception_Database('Unable to establish the connection to the database. ' .
 				'SQL returned: ' . $e->getMessage());
 		}
 
@@ -405,7 +405,7 @@ class iMSCP_Initializer
 			/** @var $db iMSCP_Database */
 			$db = iMSCP_Registry::get('db');
 
-			if (!$db->execute('SET NAMES `utf8`;')) {
+			if (!$db->execute('SET NAMES `utf8`')) {
 				throw new iMSCP_Exception(
 					'Error: Unable to set charset for database communication. SQL returned: ' . $db->errorMsg());
 			}
@@ -596,7 +596,8 @@ class iMSCP_Initializer
 			{
 				unset($_SESSION['user_theme_color']);
 			};
-			$eventManager->registerListener(iMSCP_Events::onAfterRegisterUser, $callback);
+
+			$eventManager->registerListener(iMSCP_Events::onAfterSetIdentity, $callback);
 		}
 	}
 

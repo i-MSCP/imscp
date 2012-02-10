@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Events_Manager
+ * @package		iMSCP_Events
  * @copyright	2010-2012 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@i-mscp.net>
  * @link		http://www.i-mscp.net i-MSCP Home Site
@@ -27,18 +26,169 @@
  */
 
 /**
- * Base class for classes containing event data.
+ * Representation of an event
  *
- * This class contains no event data. It is used by events that do not pass state
- * information to an event listener when an event is thrown.
+ * Encapsulates the parameters passed, and provides some behavior for interacting with the events manager.
+ *
+ * Note: Most part of this code was borrowed to Zend Framework 2.
  *
  * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Events_Manager
+ * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@i-mscp.net>
- * @version		0.0.1
+ * @version		0.0.2
  */
-class iMSCP_Events_Event
+class iMSCP_Events_Event implements iMSCP_Events_Description
 {
+	/**
+	 * @var string Event name
+	 */
+	protected $name;
 
+	/**
+	 * @var array|ArrayAccess|object The event parameters
+	 */
+	protected $params = array();
+
+	/**
+	 * @var bool Whether or not to stop propagation
+	 */
+	protected $stopPropagation = false;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string $name Event name
+	 * @param array|ArrayAccess $params
+	 */
+	public function __construct($name = null, $params = null)
+	{
+		if (null !== $name) {
+			$this->setName($name);
+		}
+
+		if (null !== $params) {
+			$this->setParams($params);
+		}
+	}
+
+	/**
+	 * Returns event name.
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Set parameters.
+	 *
+	 * Overwrites parameters
+	 *
+	 * @param  array|ArrayAccess|object $params
+	 * @return iMSCP_Events_Event Provides fluent interface, returns self
+	 */
+	public function setParams($params)
+	{
+		if (!is_array($params) && !is_object($params)) {
+			throw new iMSCP_Events_Exception('Event parameters must be an array or object');
+		}
+
+		$this->params = $params;
+
+		return $this;
+	}
+
+	/**
+	 * Returns all parameters.
+	 *
+	 * @return array|object|ArrayAccess
+	 */
+	public function getParams()
+	{
+		return $this->params;
+	}
+
+	/**
+	 * Return an individual parameter.
+	 *
+	 * If the parameter does not exist, the $default value will be returned.
+	 *
+	 * @param  string|int $name Parameter name
+	 * @param  mixed $default Default value to be returned if $name doesn't exists
+	 * @return mixed
+	 */
+	public function getParam($name, $default = null)
+	{
+		// Check in params that are arrays or implement array access
+		if (is_array($this->params) || $this->params instanceof ArrayAccess) {
+			if (!isset($this->params[$name])) {
+				return $default;
+			}
+
+			return $this->params[$name];
+		}
+
+		// Check in normal objects
+		if (!isset($this->params->{$name})) {
+			return $default;
+		}
+
+		return $this->params->{$name};
+	}
+
+	/**
+	 * Set the event name.
+	 *
+	 * @param  string $name Event Name
+	 * @return iMSCP_Events_Event Provides fluent interface, returns self
+	 */
+	public function setName($name)
+	{
+		$this->name = (string)$name;
+
+		return $this;
+	}
+
+	/**
+	 * Set an individual parameter to a value.
+	 *
+	 * @param string|int $name Parameter name
+	 * @param mixed $value Parameter value
+	 * @return iMSCP_Events_Event
+	 */
+	public function setParam($name, $value)
+	{
+		if (is_array($this->params) || $this->params instanceof ArrayAccess) {
+			// Arrays or objects implementing array access
+			$this->params[$name] = $value;
+		} else {
+			// Objects
+			$this->params->{$name} = $value;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Stop further event propagation.
+	 *
+	 * @param  bool $flag TRUE to stop propagation, FALSE otherwise
+	 * @return void
+	 */
+	public function stopPropagation($flag = true)
+	{
+		$this->stopPropagation = (bool)$flag;
+	}
+
+	/**
+	 * Is propagation stopped?
+	 *
+	 * @return bool TRUE if propagation is stopped, FALSE otherwise
+	 */
+	public function propagationIsStopped()
+	{
+		return $this->stopPropagation;
+	}
 }

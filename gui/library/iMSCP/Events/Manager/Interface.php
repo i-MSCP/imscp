@@ -41,56 +41,52 @@
  * @package		iMSCP_Events
  * @subpackage	Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 interface iMSCP_Events_Manager_Interface
 {
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @abstract
-	 * @param string $eventName			The name of the event to dispatch. The name
-	 *									of the event is the name of the method that
-	 *									is invoked on listeners objects. Callbacks
-	 *									functions can have arbitrary names.
-	 * @param mixed $argument OPTIONAL	The data to pass to the event listener method.
-	 *									If not supplied, an empty iMSCP_Events_Event
-	 *									instance is created.
-	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
-	 * @todo allow to pass multiple arguments to listeners methods
+	 * @throws iMSCP_Events_Manager_Exception	When an listener is an object that do not implement the listener method or
+	 * 											when the listener is not a valid PHP callback
+	 * @param string $eventName					The name of the event to dispatch.
+	 * @param mixed $arguments OPTIONAL			The data to pass to the event listener method.
+	 *
+	 * @return iMSCP_Events_Listeners_ResponseCollection
 	 */
-	public function dispatch($eventName, $argument = null);
+	public function dispatch($eventName, $arguments = array());
 
 	/**
 	 * Registers an event listener that listens on the specified events.
 	 *
 	 * @abstract
-	 * @param  string|array $eventName		The event(s) to listen on.
+	 * @param  string|array $eventNames		The event(s) to listen on.
 	 * @param  callback|object $listener	Listener callback or listener object.
-	 * @param  int $stackIndex OPTIONAL		The higher this value, the earlier an event
-	 * 										listener will be triggered in the chain.
+	 * @param  int $priority				The higher this value, the earlier an event listener will be triggered in
+	 * 										the chain.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
-	public function registerListener($eventName, $listener, $stackIndex = null);
+	public function registerListener($eventNames, $listener, $priority = 1);
 
 	/**
-	 * Unregister an event listener from the specified events.
+	 * Unregister an event listener from the given event.
 	 *
 	 * @abstract
-	 * @param  string|array $eventNames The event(s) to remove a listener from.
+	 * @param  string|array $eventName The event to remove a listener from.
 	 * @param  callback|object $listener The listener callback or object to remove.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
-	public function unregisterListener($eventNames, $listener);
+	public function unregisterListener($eventName, $listener);
 
 	/**
-	 * Returns the listeners of a specific event or all listeners.
+	 * Returns the listeners for the given event or all listeners.
 	 *
 	 * @abstract
-	 * @param  string $eventName The name of the event.
-	 * @return array The event listeners for the specified event, or all event listeners by event name.
+	 * @param  string|null $eventName The name of the event.
+	 * @return array The event listeners for the specified event, or all event listeners by event name if $event is NULL.
 	 */
-	public function getListeners($eventName);
+	public function getListeners($eventName = null);
 
 	/**
 	 * Checks whether an event has any registered listeners.

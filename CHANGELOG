@@ -4,7 +4,33 @@ i-MSCP ChangeLog
 i-MSCP 1.0.2.1 (RC2)
 -------------------------------------------------------------------------------------
 
+Features / Enhancements:
+
+	GUI:
+		Core:
+			- Updated action scripts and core library to fit with events system changes
+		Components:
+			- Authentication
+				- Added authentication base class to handle authentication process
+				- Added bruteforce class for bruteforce detection
+			- Events system:
+				- Added the following events:
+					- onBeforeAuthentication (triggered in the iMSCP_Authentication class)
+					- onAfterAuthentication (triggered in the iMSCP_Authentication class)
+					- onBeforeSetIdentity (triggered in the iMSCP_Authentication class)
+					- onAfterSetIdentity (triggered in the iMSCP_Authentication class)
+					- onBeforeUnsetIdentity (triggered in the iMSCP_Authentication class)
+					- onAfterUnsetIdentity (triggered in the iMSCP_Authentication class)
+				- Added support for listeners return values
+				- Finished implementation of iMSCP_Events_Manager_interface
+				- Updated Events documentation (iMSCP_Events, iMSCP_Database_Events, iMSCP_pTemplate_Events)
+			- DebugBar:
+				- Updated to fit with events system changes
+			- Plugins:
+				- Updated demo plugin to fit with events system changes
+
 Tickets:
+	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
 	- Fixed #345: Bug - admin - statistics
 
 -------------------------------------------------------------------------------------

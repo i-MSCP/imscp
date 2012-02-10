@@ -503,7 +503,9 @@ class iMSCP_pTemplate
 
 		if (!is_array($fname)) {
 			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_pTemplate_Events::onBeforeAssembleTemplateFiles, self::$_root_dir . '/'. $fname);
+				iMSCP_pTemplate_Events::onBeforeAssembleTemplateFiles,
+				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
+			);
 		} else { // INCLUDED file
 			$fname = ($parentTplDir !== null) ? $parentTplDir . '/' . $fname[1] : $fname[1];
 		}
@@ -513,11 +515,16 @@ class iMSCP_pTemplate
 			$parentTplDir = dirname($fname);
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_pTemplate_Events::onBeforeLoadTemplateFile, self::$_root_dir . '/'. $fname);
+				iMSCP_pTemplate_Events::onBeforeLoadTemplateFile,
+				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
+			);
 
 			$fileContent = file_get_contents(self::$_root_dir . '/' . $fname);
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_pTemplate_Events::onAfterLoadTemplateFile, $fileContent);
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_pTemplate_Events::onAfterLoadTemplateFile,
+				array('context' => $this, 'templateContent' => $fileContent)
+			);
 
 			$fileContent = preg_replace_callback($this->tpl_include, array($this, 'get_file'), $fileContent);
 			$parentTplDir = $prevParentTplDir;
@@ -525,7 +532,10 @@ class iMSCP_pTemplate
 			throw new iMSCP_Exception(sprintf('Unable to find the %s template file', $fname));
 		}
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_pTemplate_Events::onAfterAssembleTemplateFiles, $fileContent);
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_pTemplate_Events::onAfterAssembleTemplateFiles,
+			array('context' => $this, 'templateContent' => $fileContent)
+		);
 
 		return $fileContent;
 	}

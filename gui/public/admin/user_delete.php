@@ -46,7 +46,7 @@
  */
 function admin_deleteUser($userId)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, $userId);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteUser, array('userId' => $userId));
 
     $userId = (int)$userId;
 
@@ -172,7 +172,7 @@ function admin_deleteUser($userId)
         }
     }
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, $userId);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteUser, array('userId' => $userId));
 
     redirectTo('manage_users.php');
 }
@@ -527,6 +527,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 $tpl->prnt();
 unsetMessages();

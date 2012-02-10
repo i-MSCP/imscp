@@ -27,41 +27,62 @@
  */
 
 /**
- * Contains all events thrown in the pTemplate component
+ * Describes all events triggered in the iMSCP_pTemplate class.
  *
  * @package     iMSCP
  * @package     iMSCP_pTemplates
  * @subpackage  Events
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @version     0.0.2
+ * @TODO Merge this class with iMSCP_Events (all core events in same class is much readable and more easy to found)
  */
 final class iMSCP_pTemplate_Events
 {
 	/**
-	 * The onBeforeAssembleTemplateFiles event is fired before the first parent template is loaded.
+	 * The onBeforeAssembleTemplateFiles event is triggered before the first parent template is loaded.
 	 *
-	 * The event listeners methods receives the path of the template that will be loaded
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 *  - templatePath: The filepath of the template being loaded
+	 *
+	 * @var string
 	 */
 	const onBeforeAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
 
 	/**
-	 * The onAfterAssembleTemplateFiles event is fired after the first parent template is loaded.
+	 * The onAfterAssembleTemplateFiles event is triggered after the first parent template is loaded.
 	 *
-	 * The event listener method receives the template content as a string
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 * - templateContent: The template content as a string
+	 *
+	 * @var string
 	 */
 	const onAfterAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
 
 	/**
-	 * The onBeforeLoadTemplateFile event is fired before a template is loaded.
+	 * The onBeforeLoadTemplateFile event is triggered before a template is loaded.
 	 *
-	 * The event listeners methods receives the path of the template that will be loaded
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 *  - templatePath: The filepath of the template being loaded
+	 *
+	 * @var string
 	 */
 	const onBeforeLoadTemplateFile = 'onBeforeLoadTemplateFile';
 
 	/**
-	 * The onAfterLoadTemplateFile event is fired after the loading of a template file.
+	 * The onAfterLoadTemplateFile event is triggered after the loading of a template file.
 	 *
-	 * The event listener method receives the template content as a string
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 * - templateContent: The template content as a string
+	 *
+	 * @var string
 	 */
 	const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
 }

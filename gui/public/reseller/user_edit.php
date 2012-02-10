@@ -154,7 +154,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 
@@ -263,7 +263,7 @@ $phone, $fax;
  */
 function update_data_in_db($hpid)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $hpid);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $hpid));
 
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
 $firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
@@ -411,7 +411,7 @@ $mail, $phone, $fax, $inpass, $admin_login;
 		}
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $hpid);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $hpid));
 
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login changes data/password for $dmn_user_name!", E_USER_NOTICE);

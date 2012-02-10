@@ -42,22 +42,18 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  * @Todo Replace the markers to see the parameters in queries strings
  */
 class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements iMSCP_Events_Listeners_Interface
 {
 	/**
-	 * Plugin unique identifier.
-	 *
-	 * @var string
+	 * @var string Plugin unique identifier
 	 */
 	const IDENTIFIER = 'Database';
 
 	/**
-	 * Events that this plugin listens on.
-	 *
-	 * @var array
+	 * @var array Listened events
 	 */
 	protected $_listenedEvents = array(
 		iMSCP_Database_Events::onBeforeConnection,
@@ -67,23 +63,17 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	);
 
 	/**
-	 * Total time elapsed.
-	 *
-	 * @var int
+	 * @var int Total time elapsed
 	 */
 	protected $_totalTimeElapsed = 0;
 
 	/**
-	 * Array that contains queries and their execution time.
-	 *
-	 * @var array
+	 * @var array queries and their execution time
 	 */
 	protected $_queries = array();
 
 	/**
-	 * Query index.
-	 *
-	 * @var int
+	 * @var int Query index
 	 */
 	protected $_queryIndex = 0;
 
@@ -145,7 +135,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	}
 
 	/**
-	 * Returns list of events that this plugin listens on.
+	 * Returns listened events.
 	 *
 	 * @return array
 	 */

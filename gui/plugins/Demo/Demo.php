@@ -42,7 +42,7 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  * @package		iMSCP_Plugins
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.6
+ * @version		0.0.7
  */
 class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Listeners_Interface
 {
@@ -66,7 +66,7 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	public function __construct()
 	{
 		if ($this->getConfig('user_accounts')) {
-			$this->_listenedEvents[] = 'onLoginScriptEnd';
+			$this->_listenedEvents[] = iMSCP_Events::onLoginScriptEnd;
 		}
 
 		if (($disabledActions = $this->getConfig('disabled_actions'))) {
@@ -79,9 +79,9 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	/**
 	 * Register a callback for the given event(s).
 	 *
-	 * @param iMSCP_Events_Manager $controller
+	 * @param iMSCP_Events_Manager_Interface $controller
 	 */
-	public function register(iMSCP_Events_Manager $controller)
+	public function register(iMSCP_Events_Manager_Interface $controller)
 	{
 		$controller->registerListener($this->getListenedEvents(), $this, 1000);
 		$this->_controller = $controller;
@@ -101,10 +101,10 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	 * Implements listener methods that are not explicitely implemented.
 	 *
 	 * @param string $listenerMethod Litener method name
-	 * @param mixed $params
+	 * @param array $arguments Enumerated array containing listener method arguments (always an iMSCP_Events_Description object)
 	 * @return void
 	 */
-	public function __call($listenerMethod, $params)
+	public function __call($listenerMethod, $arguments)
 	{
 		if (in_array($listenerMethod, $this->getListenedEvents())) {
 			if (!Zend_Session::namespaceIsset('pageMessages')) {
@@ -122,52 +122,63 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	/**
 	 * Implements the onBeforeEditUser listener method.
 	 *
-	 * @param int $userId User unique identifier
+	 * @param iMSCP_Events_Event $event
 	 * @return void
 	 */
-	public function onBeforeEditUser($userId)
+	public function onBeforeEditUser($event)
 	{
-		if ($this->isDisabledAction('onBeforeEditUser')) {
-			$this->__call('onBeforeEditUser', $userId);
+		if ($this->isDisabledAction(iMSCP_Events::onBeforeEditUser)) {
+			$this->__call(iMSCP_Events::onBeforeEditUser, $event->getParam('userId'));
 		} else {
-			$this->_protectDemoUser($userId, 'onBeforeEditUser');
+			$event->setParam('fromAction', iMSCP_Events::onBeforeEditUser);
+			$this->_protectDemoUser($event);
 		}
+
 	}
 
 	/**
 	 * Implements the onBeforeDeleteUser listener method.
 	 *
-	 * @param int $userId User unique identifier
+	 * @param iMSCP_Events_Event $event
 	 * @return void
 	 */
-	public function onBeforeDeleteUser($userId)
+	public function onBeforeDeleteUser($event)
 	{
-		if ($this->isDisabledAction('onBeforeDeleteUser')) {
-			$this->__call('onBeforeDeleteUser', $userId);
+		if ($this->isDisabledAction(iMSCP_Events::onBeforeDeleteUser)) {
+			$this->__call(iMSCP_Events::onBeforeDeleteUser, $event);
 		} else {
-			$this->_protectDemoUser($userId, 'onBeforeDeleteUser');
+			$event->setParam('fromAction', iMSCP_Events::onBeforeDeleteUser);
+			$this->_protectDemoUser($event);
 		}
 	}
 
 	/**
 	 * Implements the onBeforeDeleteDomain listener methods.
 	 *
-	 * @param $domainId Domain unique identifier
+	 * @param iMSCP_Events_Event $event
 	 * @return void
 	 */
-	public function onBeforeDeleteDomain($domainId)
+	public function onBeforeDeleteDomain($event)
 	{
-		// Avoid interfering with child' events
-		$this->getController()->unregisterListener($this->getListenedEvents(), $this);
-
-		if ($this->isDisabledAction('onBeforeDeleteDomain')) {
-			$this->__call('onBeforeDeleteDomain', $domainId);
+		if ($this->isDisabledAction(iMSCP_Events::onBeforeDeleteDomain)) {
+			$this->__call(iMSCP_Events::onBeforeDeleteDomain, $event);
 		} else {
 			$query = 'SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?';
-			$stmt = exec_query($query, (int)$domainId);
+			$stmt = exec_query($query, (int)$event->getParam('domainId'));
 
 			if ($stmt->rowCount()) {
-				$this->_protectDemoUser($stmt->fields['domain_admin_id'], 'onBeforeDeleteDomain');
+				// Avoid interfering with other events
+				$events = $this->getController();
+
+				foreach($this->getListenedEvents() as $eventName) {
+					$events->unregisterListener($eventName, $this);
+				}
+
+				$event
+					->setParam('userId', $stmt->fields['domain_admin_id'])
+					->setParam('fromAction', iMSCP_Events::onBeforeDeleteDomain);
+
+				$this->_protectDemoUser($event);
 			}
 		}
 	}
@@ -197,9 +208,9 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 		if (isset($this->_config['user_accounts'])) {
 			foreach ($this->_config['user_accounts'] as $account) {
 				if (isset($account['protected']) && $account['protected']) {
-					$actionNames[] = 'onBeforeEditUser';
-					$actionNames[] = 'onBeforeDeleteUser';
-					$actionNames[] = 'onBeforeDeleteDomain';
+					$actionNames[] = iMSCP_Events::onBeforeEditUser;
+					$actionNames[] = iMSCP_Events::onBeforeDeleteUser;
+					$actionNames[] = iMSCP_Events::onBeforeDeleteDomain;
 					break;
 				}
 			}
@@ -211,14 +222,13 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	/**
 	 * Protect demo user / domain accounts against some actions.
 	 *
-	 * @param int $userId User unique identifier
-	 * @param string $fromAction Action name from which $userId is protected
+	 * @param iMSCP_Events_Event $event
 	 * @return void
 	 */
-	protected function _protectDemoUser($userId, $fromAction)
+	protected function _protectDemoUser($event)
 	{
 		$query = 'SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?';
-		$stmt = exec_query($query, (int)$userId);
+		$stmt = exec_query($query, (int)$event->getParam('userId'));
 
 		if ($stmt->rowCount()) {
 			$username = idn_to_utf8($stmt->fields['admin_name']);
@@ -231,8 +241,8 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 			}
 
 			if ($foundUser) {
-				switch ($fromAction) {
-					case 'onBeforeEditUser':
+				switch ($event->getParam('fromAction')) {
+					case iMSCP_Events::onBeforeEditUser:
 						// Only password change is not allowed
 						if (
 							// admin/password_change.php
@@ -250,13 +260,13 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 							return;
 						}
 						break;
-					case 'onBeforeDeleteUser':
-					case 'onBeforeDeleteDomain':
+					case iMSCP_Events::onBeforeDeleteUser:
+					case iMSCP_Events::onBeforeDeleteDomain:
 						set_page_message(tr("The demo's user accounts can't be removed. Create your own user if you want test this feature."), 'info');
 						break;
 				}
 
-				$this->__call($fromAction, new iMSCP_Events());
+				$this->__call($event->getParam('fromAction'), $event);
 			}
 		}
 	}
@@ -267,13 +277,14 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	 * Create a modal dialog to allow users to choose user account they want use to login. Available users are those
 	 * defined in plugin configuration. If an user account doesn't exists in database, it is not showed.
 	 *
-	 * @param iMSCP_Events_Response $event
+	 * @param iMSCP_Events_Event $event
 	 * @return void
 	 */
 	public function onLoginScriptEnd($event)
 	{
 		if ($this->getConfig('user_accounts') && ($jsCode = $this->_getCredentialsDialog()) != '') {
-			$tpl = $event->getTemplateEngine();
+			/** @var $tpl iMSCP_pTemplate */
+			$tpl = $event->getParam('templateEngine');
 			$tpl->replaceLastParseResult(str_replace('</head>', $jsCode . PHP_EOL . '</head>', $tpl->getLastParseResult()));
 		}
 	}

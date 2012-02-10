@@ -22,589 +22,693 @@
  * @subpackage	Events
  * @copyright	2010-2012 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.7
+ * @version		0.0.8
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
- * Class that describes all core events fired in the i-MSCP actions scripts.
+ * Describes all events triggered in the iMSCP Core code class.
  *
  * @category	iMSCP
- * @package		iMSCP_Core
+ * @package		Events
  * @subpackage	Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.7
+ * @version		0.0.8
  */
 class iMSCP_Events
 {
 	/**
-	 * The onLoginScriptStart event is fired at the very beginning of Login script.
+	 * The onLoginScriptStart event is triggered at the very beginning of Login script.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onLoginScriptStart = 'onLoginScriptStart';
 
 	/**
-	 * The onLoginScriptEnd event is fired at the end of Login script.
+	 * The onLoginScriptEnd event is triggered at the end of Login script.
 	 *
-	 * The event listener method receives an iMSCP_Events_Response object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onLoginScriptEnd = 'onLoginScriptEnd';
 
 	/**
-	 * The onBeforeRegisterUser event is fired before an user is registered (logged on).
+	 * The onLostPasswordScriptStart event is triggered at the very beginning of the LostPassword script.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
-	 *
-	 * @var string
-	 */
-	const onBeforeRegisterUser = 'onBeforeRegisterUser';
-
-	/**
-	 * The onAfterRegisterUser event is fired after an user is registered (logged on).
-	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
-	 *
-	 * @var string
-	 */
-	const  onAfterRegisterUser = 'onAfterRegisterUser';
-
-	/**
-	 * The onLostPasswordScriptStart event is fired at the very beginning of the LostPassword script.
-	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
 
 	/**
-	 * The onLostPasswordScriptEnd event is fired at the end of the LostPassword script.
+	 * The onLostPasswordScriptEnd event is triggered at the end of the LostPassword script.
 	 *
-	 * The event listener method receives an iMSCP_Events_Response object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
 
 	/**
-	 * The onAdminScriptStart event is fired at the very beginning of admin scripts.
+	 * The onAdminScriptStart event is triggered at the very beginning of admin scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onAdminScriptStart = 'onAdminScriptStart';
 
 	/**
-	 * The onAdminScriptEnd event is fired at the end of admin scripts.
+	 * The onAdminScriptEnd event is triggered at the end of admin scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Response object.
+	 * The listeners receive iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onAdminScriptEnd = 'onAdminScriptEnd';
 
 	/**
-	 * The onResellerScriptStart event is fired at the very beginning of reseller scripts.
+	 * The onResellerScriptStart event is triggered at the very beginning of reseller scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onResellerScriptStart = 'onResellerScriptStart';
 
 	/**
-	 * The onResellerScriptEnd event is fired at the end of reseller scripts.
+	 * The onResellerScriptEnd event is triggered at the end of reseller scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Response object.
+	 * The listeners receive iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onResellerScriptEnd = 'onResellerScriptEnd';
 
 	/**
-	 * The onClientScriptStart event is fired at the very beginning of client scripts.
+	 * The onClientScriptStart event is triggered at the very beginning of client scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onClientScriptStart = 'onClientScriptStart';
 
 	/**
-	 * The onClientScriptEnd event is fired at the end of client scripts.
+	 * The onClientScriptEnd event is triggered at the end of client scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Response object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onClientScriptEnd = 'onClientScriptEnd';
 
 	/**
-	 * The onOrderPanelScriptStart is fired occurs at the very beginning of orderpanel scripts.
+	 * The onOrderPanelScriptStart is triggered occurs at the very beginning of orderpanel scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onOrderPanelScriptStart = 'onOrderPanelScriptStart';
 
 	/**
-	 * The onOrderPanelScriptEnd event is fired at the end of orderpanel scripts.
+	 * The onOrderPanelScriptEnd event is triggered at the end of orderpanel scripts.
 	 *
-	 * The event listener method receives an iMSCP_Events_Response object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onOrderPanelScriptEnd = 'onOrderPanelScriptEnd';
 
 	/**
-	 * The onExceptioToBrowserStart event is fired before of exception browser write processs.
+	 * The onExceptioToBrowserStart event is triggered before of exception browser write processs.
 	 *
-	 * The event listener method receives a iMSCP_Envents_Event object.
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
+	 *
+	 * @var string
 	 */
 	const onExceptionToBrowserStart = 'onExceptionToBrowserStart';
 
 	/**
-	 * The onExceptionToBrowserEnd event is fired at the end of exception browser write process.
+	 * The onExceptionToBrowserEnd event is triggered at the end of exception browser write process.
 	 *
-	 * The event listener method receives a iMSCP_Events_Response object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
 
+
 	/**
-	 * The onBeforeEditAdminGeneralSettings event is fired before the admin general settings are editied.
+	 * The onBeforeAuthentication event is triggered before the authentication process.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 */
+	const onBeforeAuthentication  = 'onBeforeAuthentication';
+
+	/**
+	 * The onBeforeAuthentication event is triggered after the authentication process.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 * - authResult: An iMSCP_Authentication_Result object, an object that encapsulates the authentication result
+	 *
+	 * @var string
+	 */
+	const onAfterAuthentication  = 'onAfterAuthentication';
+
+	/**
+	 * The onBeforeSetIdentity event is triggered before an user identity is set (logged on).
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 * - identity: A stdClass object that represent user identity data
+	 *
+	 * @var string
+	 */
+	const onBeforeSetIdentity = 'onBeforeSetIdentity';
+
+	/**
+	 * The onAfterSetIdentity event is triggered after an user identity is set (logged on).
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 *
+	 * @var string
+	 */
+	const  onAfterSetIdentity = 'onAfterSetIdentity';
+
+	/**
+	 * The onBeforeUnsetIdentity event is triggered before an user identity is unset (logout).
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 *
+	 * @var string
+	 */
+	const onBeforeUnsetIdentity = 'onBeforeUnsetIdentity';
+
+	/**
+	 * The onAfterUnsetIdentity event is triggered after an user identity is unset (logged on).
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - context: An iMSCP_Authentication object, the context in which the event is triggered
+	 *
+	 * @var string
+	 */
+	const  onAfterUnsetIdentity = 'onAfterUnsetIdentity';
+
+	/**
+	 * The onBeforeEditAdminGeneralSettings event is triggered before the admin general settings are editied.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object.
 	 */
 	const onBeforeEditAdminGeneralSettings = 'onBeforeEditAdminGeneralSettings';
 
 	/**
-	 * The onAfterEditAdminGeneralSettings event is fired after the admin general settings are editied.
+	 * The onAfterEditAdminGeneralSettings event is triggered after the admin general settings are editied.
 	 *
-	 * The event listener method receives an iMSCP_Events_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 */
 	const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
 	/**
-	 * The onBeforeAddUser event is fired before an user is created.
+	 * The onBeforeAddUser event is triggered before an user is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onBeforeAddUser = 'onBeforeAddUser';
 
 	/**
-	 * The onAfterAddUser event is fired after an user is created.
+	 * The onAfterAddUser event is triggered after an user is created.
 	 *
-	 * The event listener method receives an iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event.
 	 *
 	 * @var string
 	 */
 	const onAfterAddUser = 'onAfterAddUser';
 
 	/**
-	 * The onBeforeEditUser event is fired before an user is edited.
+	 * The onBeforeEditUser event is triggered before an user is edited.
 	 *
-	 * The event listener method receives the user unique identifier.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - userId: The user id being edited.
 	 *
 	 * @var string
 	 */
 	const onBeforeEditUser = 'onBeforeEditUser';
 
 	/**
-	 * The onAfterEditUser event is fired after an user is edited.
+	 * The onAfterEditUser event is triggered after an user is edited.
 	 *
-	 * The event listener method receives the user unique identifier.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - userId: The user id that has been edited.
 	 *
 	 * @var string
 	 */
 	const onAfterEditUser = 'onAfterEditUser';
 
 	/**
-	 * The onBeforeDeleteUser event is fired before an user is deleted.
+	 * The onBeforeDeleteUser event is triggered before an user is deleted.
 	 *
-	 * The event listener method receives the user unique identifier.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - userId: The user id being deleted.
 	 *
 	 * @var string
 	 */
 	const onBeforeDeleteUser = 'onBeforeDeleteUser';
 
 	/**
-	 * The onAfterDeleteUser event is fired after an user is deleted.
+	 * The onAfterDeleteUser event is triggered after an user is deleted.
 	 *
-	 * The event listener method receives the user unique identifier.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - userId: The user id that has been deleted.
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteUser = 'onAfterDeleteUser';
 
 	/**
-	 * The onBeforeAddDomain event is fired before  a domain is created.
+	 * The onBeforeDeleteDomain event is triggered before a domain is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * @var string
-	 */
-	//const onBeforeAddDomain = 'onBeforeAddDomain';
-
-	/**
-	 * The onAfterAddDomain event is fired after a domain is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterAddDomain = 'onAfterAddDomain';
-
-	/**
-	 * The onBeforeEditDomain event is fired before a domain is edited.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeEditDomain = 'onBeforeEditDomain';
-
-	/**
-	 * The onAfterEditDomain event is fired agfter a domain is edited.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterEditDomain = 'onAfterEditDomain';
-
-	/**
-	 * The onBeforeDeleteDomain event is fired before a domain is deleted.
-	 *
-	 * The event listener method receives the domain unique identifier.
+	 * - domainId: The domain id being deleted.
 	 *
 	 * @var string
 	 */
 	const onBeforeDeleteDomain = 'onBeforeDeleteDomain';
 
 	/**
-	 * The onAfterDeleteDomain event is fired after a domain is deleted.
+	 * The onAfterDeleteDomain event is triggered after a domain is deleted.
 	 *
-	 * The event listener method receives a the domain unique identifier.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - userId: The domain id that has been deleted.
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteDomain = 'onAfterDeleteDomain';
 
 	/**
-	 * The onBeforeAddSubdomain event is fired after a subdomain is created.
+	 * The onBeforeAddFtp event is triggered after a Ftp account is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
-
-	/**
-	 * The onAfterAddSubdomain event is fired after a subdomain is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterAddSubdomain = 'onAfterAddSubdomain';
-
-	/**
-	 * The onBeforeEditSubdomain event is fired after a subdomain is edited.
-	 *
-	 * @var string
-	 */
-	//const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
-
-	/**
-	 * The onAfterEditSubdomain event is fired after a subdomain is edited.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterEditSubdomain = 'onAfterEditSubdomain';
-
-	/**
-	 * The onBeforeDeleteSubdomain event is fired before a subdomain is deleted.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
-
-	/**
-	 * The onAfterDeleteSubdomain event is fired after a subdomain is delteded.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
-
-	/**
-	 * The onBeforeAddDomainAlias event is fired before a domain alias is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
-
-	/**
-	 * The onAfterAddDomainAlias event is fired after a domain alias is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
-
-	/**
-	 * The onBeforeEditDomainAlias event is fired before a domain alias is edited.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
-
-	/**
-	 * The onAfterEditDomainALias event is fired after a domain alias is edited.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterEditDomainALias = 'onAfterEditDomainAlias';
-
-	/**
-	 * The onBeforeDeleteDomainAlias event is fired before a domain alias is deleted.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
-
-	/**
-	 * The onAfterDeleteDomainAlias event is fired after a domain alias is deleted.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
-
-	/**
-	 * The onBeforeAddMail event is fired after a mail account is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeAddMail = 'onBeforeAddMail';
-
-	/**
-	 * The onAfterAddMail event is fired after a mail account is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterAddMail = 'onAfterAddMail';
-
-	/**
-	 * The onBeforeEditMail event is fired before a mail account is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeEditMail = 'onBeforeEditMail';
-
-	/**
-	 * The onAfterEditMail event is fired after a mail account is edited.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterEditMail = 'onAfterEditMail';
-
-	/**
-	 * The onBeforeDeleteMail event is fired before a mail account is deleted.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onBeforeDeleteMail = 'onBeforeDeleteMail';
-
-	/**
-	 * The onAfterDeleteMail event is fired after a mail account is deleted.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
-	 *
-	 * @var string
-	 */
-	//const onAfterDeleteMail = 'onAfterDeleteMail';
-
-	/**
-	 * The onBeforeAddFtp event is fired after a Ftp account is created.
-	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onBeforeAddFtp = 'onBeforeAddFtp';
 
 	/**
-	 * The onAfterAddFtp event is fired after a Ftp account is created.
+	 * The onAfterAddFtp event is triggered after a Ftp account is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onAfterAddFtp = 'onAfterAddFtp';
 
 	/**
-	 * The onBeforeEditFtp event is fired before a Ftp account is edited.
+	 * The onBeforeEditFtp event is triggered before a Ftp account is edited.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - ftpId: The Ftp account id being edited.
 	 *
 	 * @var string
 	 */
 	const onBeforeEditFtp = 'onBeforeEditFtp';
 
 	/**
-	 * The onAfterEditFtp event is fired after a Ftp account is edited.
+	 * The onAfterEditFtp event is triggered after a Ftp account is edited.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - ftpId: The Ftp account id that has been edited.
 	 *
 	 * @var string
 	 */
 	const onAfterEditFtp = 'onAfterEditFtp';
 
 	/**
-	 * The onBeforeDeleteFtp event is fired before a Ftp account is deleted.
+	 * The onBeforeDeleteFtp event is triggered before a Ftp account is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - ftpId: The Ftp account id being deleted.
 	 *
 	 * @var string
 	 */
 	const onBeforeDeleteFtp = 'onBeforeDeleteFtp';
 
 	/**
-	 * The onAfterDeleteFtp event is fired after a Ftp account is deleted.
+	 * The onAfterDeleteFtp event is triggered after a Ftp account is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - ftpId: The Ftp account id that has been deleted.
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteFtp = 'onAfterDeleteFtp';
 
-	// Sql Users and databases
-
 	/**
-	 * The onBeforeAddSqlUser event is fired before a Sql user is created.
+	 * The onBeforeAddSqlUser event is triggered before a Sql user is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onBeforeAddSqlUser = 'onBeforeAddSqlUser';
 
 	/**
-	 * The onAfterAddSqlUser event is fired after a Sql user is created.
+	 * The onAfterAddSqlUser event is triggered after a Sql user is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onAfterAddSqlUser = 'onAfterAddSqlUser';
 
 	/**
-	 * The onBeforeEditSqlUser event is fired before a Sql user is edited.
+	 * The onBeforeEditSqlUser event is triggered before a Sql user is edited.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - sqlUserId: The Sql user id being edited.
 	 *
 	 * @var string
 	 */
 	const onBeforeEditSqlUser = 'onBeforeEditSqlUser';
 
 	/**
-	 * The onAfterEditSqlUser event is fired after a Sql user is edited.
+	 * The onAfterEditSqlUser event is triggered after a Sql user is edited.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - sqlUserId: The Sql user id that has been edited.
 	 *
 	 * @var string
 	 */
 	const onAfterEditSqlUser = 'onAfterEditSqlUser';
 
 	/**
-	 * The onBeforeDeleteSqlUser event is fired before a Sql user is deleted.
+	 * The onBeforeDeleteSqlUser event is triggered before a Sql user is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - sqlUserId: The Sql user id being deleted.
 	 *
 	 * @var string
 	 */
 	const onBeforeDeleteSqlUser = 'onBeforeDeleteSqlUser';
 
 	/**
-	 * The onAfterDeleteSqlUser event is fired after a Sql user is deleted.
+	 * The onAfterDeleteSqlUser event is triggered after a Sql user is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - sqlUserId: The Sql user id that has been deleted.
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteSqlUser = 'onAfterDeleteSqlUser';
 
 	/**
-	 * The onBeforeAddSqlDb event is fired before a Sql database is created.
+	 * The onBeforeAddSqlDb event is triggered before a Sql database is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onBeforeAddSqlDb = 'onBeforeAddSqlDb';
 
 	/**
-	 * The onAfterAddSqlDb event is fired after a Sql database is created.
+	 * The onAfterAddSqlDb event is triggered after a Sql database is created.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
 	const onAfterAddSqlDb = 'onAfterAddSqlDb';
 
 	/**
-	 * The onBeforeDeleteSqlDb event is fired before a Sql database is deleted.
+	 * The onBeforeDeleteSqlDb event is triggered before a Sql database is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - sqlDbId: The Sql user id being deleted.
 	 *
 	 * @var string
 	 */
 	const onBeforeDeleteSqlDb = 'onBeforeDeleteSqlDb';
 
 	/**
-	 * The onAfterDeleteSqlDb event is fired after a Sql database is deleted.
+	 * The onAfterDeleteSqlDb event is triggered after a Sql database is deleted.
 	 *
-	 * The event listener method receives a iMSCP_Event object.
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - sqlDbId: The Sql user id that has been deleted.
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteSqlDb = 'onAfterSqlDb';
+
+	###########################################################
+	## No yet integrated events
+	#
+
+	/**
+	 * The onBeforeAddDomain event is triggered before a domain is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddDomain = 'onBeforeAddDomain';
+
+	/**
+	 * The onAfterAddDomain event is triggered after a domain is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterAddDomain = 'onAfterAddDomain';
+
+	/**
+	 * The onBeforeEditDomain event is triggered before a domain is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditDomain = 'onBeforeEditDomain';
+
+	/**
+	 * The onAfterEditDomain event is triggered agfter a domain is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterEditDomain = 'onAfterEditDomain';
+
+	/**
+	 * The onBeforeAddSubdomain event is triggered after a subdomain is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
+
+	/**
+	 * The onAfterAddSubdomain event is triggered after a subdomain is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterAddSubdomain = 'onAfterAddSubdomain';
+
+	/**
+	 * The onBeforeEditSubdomain event is triggered after a subdomain is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
+
+	/**
+	 * The onAfterEditSubdomain event is triggered after a subdomain is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterEditSubdomain = 'onAfterEditSubdomain';
+
+	/**
+	 * The onBeforeDeleteSubdomain event is triggered before a subdomain is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
+
+	/**
+	 * The onAfterDeleteSubdomain event is triggered after a subdomain is delteded.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
+
+	/**
+	 * The onBeforeAddDomainAlias event is triggered before a domain alias is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
+
+	/**
+	 * The onAfterAddDomainAlias event is triggered after a domain alias is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
+
+	/**
+	 * The onBeforeEditDomainAlias event is triggered before a domain alias is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
+
+	/**
+	 * The onAfterEditDomainALias event is triggered after a domain alias is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterEditDomainALias = 'onAfterEditDomainAlias';
+
+	/**
+	 * The onBeforeDeleteDomainAlias event is triggered before a domain alias is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+
+	/**
+	 * The onAfterDeleteDomainAlias event is triggered after a domain alias is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+
+	/**
+	 * The onBeforeAddMail event is triggered after a mail account is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeAddMail = 'onBeforeAddMail';
+
+	/**
+	 * The onAfterAddMail event is triggered after a mail account is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterAddMail = 'onAfterAddMail';
+
+	/**
+	 * The onBeforeEditMail event is triggered before a mail account is created.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeEditMail = 'onBeforeEditMail';
+
+	/**
+	 * The onAfterEditMail event is triggered after a mail account is edited.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterEditMail = 'onAfterEditMail';
+
+	/**
+	 * The onBeforeDeleteMail event is triggered before a mail account is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onBeforeDeleteMail = 'onBeforeDeleteMail';
+
+	/**
+	 * The onAfterDeleteMail event is triggered after a mail account is deleted.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with ???
+	 *
+	 * @var string
+	 */
+	//const onAfterDeleteMail = 'onAfterDeleteMail';
 }

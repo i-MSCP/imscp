@@ -41,29 +41,22 @@ require_once 'iMSCP/Database/Events/Database.php';
 class iMSCP_Database_Events_Statement extends iMSCP_Database_Events_Database
 {
     /**
-     * @var PDOStatement
-     */
-    protected $_statement;
-
-    /**
-     * Constructor.
-     *
-     * @param PDOStatement $statement
-     * @param iMSCP_Database $db Database instance
-     */
-    public function __construct(PDOStatement $statement, iMSCP_Database $db)
-    {
-        $this->_statement = $statement;
-        parent::__construct($statement->queryString, $db);
-    }
-
-    /**
      * Returns a PDOstatement.
      *
      * @return PDOStatement
      */
     public function getStatement()
     {
-        return $this->_statement;
+		return $this->getParam('statement');
     }
+
+	/**
+	 * Returns the query string.
+	 *
+	 * @return string
+	 */
+	public function getQueryString()
+	{
+		return $this->getStatement()->queryString;
+	}
 }

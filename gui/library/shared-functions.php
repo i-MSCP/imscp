@@ -426,7 +426,7 @@ function delete_domain($domainId, $checkCreator = false)
 {
 	$domainId = (int)$domainId;
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomain, $domainId);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomain, array('domainId' => $domainId));
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -619,7 +619,7 @@ function delete_domain($domainId, $checkCreator = false)
 		// Commit all changes to database server
 		$db->commit();
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomain, $domainId);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomain, array('domainId' => $domainId));
 
 		write_log($_SESSION['user_logged'] . ': deleted domain ' . $domainName, E_USER_NOTICE);
 

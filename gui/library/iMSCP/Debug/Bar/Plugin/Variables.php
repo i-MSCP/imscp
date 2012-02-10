@@ -38,14 +38,12 @@ require_once 'iMSCP/Debug/Bar/Plugin.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
 {
 	/**
-	 * Plugin unique identifier.
-	 *
-	 * @var string
+	 * @var string Plugin unique identifier
 	 */
 	const IDENTIFIER = 'Variables';
 

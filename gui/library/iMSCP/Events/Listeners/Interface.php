@@ -38,10 +38,10 @@
 interface iMSCP_Events_Listeners_Interface
 {
 	/**
-	 * Returns list of listened events.
+	 * Returns listened event(s).
 	 *
 	 * @abstract
-	 * @return array
+	 * @return array|string
 	 */
 	public function getListenedEvents();
 }

@@ -116,7 +116,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditFtp, array('ftpId' => $ftp_acc));
 
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
@@ -202,7 +202,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 			$query = "UPDATE `ftp_users` SET `homedir` = ? WHERE `userid` = ?";
 			exec_query($query, array($other_dir, $ftp_acc));
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp);
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditFtp, array('ftpId' => $ftp_acc));
 
 			set_page_message(tr('FTP account successfully updated.'), 'success');
 			redirectTo('ftp_accounts.php');
@@ -245,7 +245,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

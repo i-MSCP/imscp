@@ -268,7 +268,7 @@ function layout_getUserLayoutColor($userId)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.6
- * @param iMSCP_Events_Response $event iMSCP_Events_Response instance
+ * @param iMSCP_Events_Event $event
  * @return void
  * @todo Use cookies to store user UI properties (Remember me implementation?)
  */
@@ -288,7 +288,8 @@ function layout_setColor($event)
 		$color = array_shift($colors);
 	}
 
-	$tpl = $event->getTemplateEngine();
+	/** @var $tpl iMSCP_pTemplate */
+	$tpl = $event->getParam('templateEngine');
 
 	$tpl->assign(
 		array(
@@ -560,7 +561,7 @@ function layout_isUserLogo($logoPath)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.6
- * @param iMSCP_Events_Response $event iMSCP_Events_Response instance
+ * @param iMSCP_Events_Event
  * @return void
  */
 function layout_LoadNavigation($event)

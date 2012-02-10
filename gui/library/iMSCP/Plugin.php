@@ -142,7 +142,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Load plugin configuration parameter
+	 * Load plugin configuration parameter.
 	 *
 	 * @return void
 	 */

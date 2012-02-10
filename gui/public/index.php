@@ -39,34 +39,35 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptStart);
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
+// Purge expired session
+do_session_timeout();
+
+$auth = iMSCP_Authentication::getInstance();
+
+// Init login process
+init_login($auth->events());
 
 if (isset($_GET['logout'])) {
-	unset_user_login_data();
-}
-
-do_session_timeout();
-init_login();
-
-if(!empty($_POST)) {
+	$auth->unsetIdentity();
+} elseif (!empty($_POST)) {
 	if (isset($_POST['uname']) && isset($_POST['upass'])) {
 		if (!empty($_POST['uname']) && !empty($_POST['upass'])) {
-			$uname = encode_idna($_POST['uname']);
-			check_input(trim($_POST['uname']));
-			check_input(trim($_POST['upass']));
-			register_user($uname, $_POST['upass']);
+			$result = $auth
+				->setUsername(idn_to_ascii(clean_input($_POST['uname'])))
+				->setPassword(clean_input($_POST['upass']))->authenticate();
+
+			if (!$result->isValid()) {
+				if(($messages = $result->getMessages())) {
+					set_page_message(format_message($result->getMessages()), 'error');
+				}
+			}
 		} else {
 			set_page_message(tr('All fields are required.'), 'error');
 		}
 	}
 }
 
-if (!redirect_to_level_page()) {
-	unset_user_login_data();
-}
-
-shall_user_wait();
+redirectToUiLevel();
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
@@ -82,7 +83,10 @@ $tpl->assign(
 		'productCopyright' => tr('© 2010-2012 i-MSCP Team<br/>All Rights Reserved'),
 		'THEME_CHARSET' => tr('encoding')));
 
-if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableUpdate()) && !isset($_GET['admin'])) {
+/** @var $cfg iMSCP_Config_Handler_File */
+$cfg = iMSCP_Registry::get('config');
+
+if ($cfg->MAINTENANCEMODE && !isset($_GET['admin'])) {
 	$tpl->define_dynamic('page', 'box.tpl');
 	$tpl->assign(
 		array(
@@ -137,6 +141,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

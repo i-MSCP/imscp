@@ -48,10 +48,10 @@ class iMSCP_Database
      */
     protected static $_instances = array();
 
-    /**
-     * @var iMSCP_Events_Manager
-     */
-    protected $_eventManager;
+	/**
+	 * @var iMSCP_Events_Manager
+	 */
+	protected $_events;
 
     /**
      * PDO instance.
@@ -101,21 +101,13 @@ class iMSCP_Database
      * @param array $driver_options OPTIONAL Driver options
      * @return iMSCP_Database
      */
-    private function __construct($user, $pass, $type, $host, $name,
-        $driver_options = array())
+    private function __construct($user, $pass, $type, $host, $name, $driver_options = array())
     {
-        // Getting an events manager instance
-        // TODO dependency injection
-        $this->_eventManager = iMSCP_Events_Manager::getInstance();
+        $this->events()->dispatch(iMSCP_Database_Events::onBeforeConnection, array('context' => $this));
 
-        // The onBeforeConnection event is fired here.
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeConnection, new iMSCP_Database_Events_Database('', $this));
+        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,$pass, $driver_options);
 
-        $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,
-            $pass, $driver_options);
-
-        // The onAfterConnection event is fired here.
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterConnection, new iMSCP_Database_Events_Database('', $this));
+		$this->events()->dispatch(iMSCP_Database_Events::onAfterConnection, array('context' => $this));
 
         // Set Errorhandling to Exception
         $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -129,7 +121,25 @@ class iMSCP_Database
      */
     private function __clone()
     {
+
     }
+
+	/**
+	 * Return an event manager instance.
+	 *
+	 * @param iMSCP_Events_Manager $events
+	 * @return iMSCP_Events_Manager
+	 */
+	public function events(iMSCP_Events_Manager $events = null)
+	{
+		if (null !== $events) {
+			$this->_events = $events;
+		} elseif (null === $this->_events) {
+			$this->_events = iMSCP_Events_Manager::getInstance();
+		}
+
+		return $this->_events;
+	}
 
     /**
      * Establishes the connection to the database.
@@ -147,11 +157,9 @@ class iMSCP_Database
      * @param string $name          Database name
      * @param string $connection    OPTIONAL Connection key name
      * @param array $driver_options OPTIONAL Driver options
-     * @return iMSCP_Database       An iMSCP_Database instance that represents the
-     *                              connection to the database
+     * @return iMSCP_Database       An iMSCP_Database instance that represents the connection to the database
      */
-    public static function connect($user, $pass, $type, $host, $name,
-        $connection = 'default', $driver_options = null)
+    public static function connect($user, $pass, $type, $host, $name, $connection = 'default', $driver_options = null)
     {
         if (is_array($connection)) {
             $driver_options = $connection;
@@ -219,7 +227,11 @@ class iMSCP_Database
      */
     public function prepare($sql, $driver_options = null)
     {
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforePrepare, new iMSCP_Database_Events_Database($sql, $this));
+		$this->events()->dispatch(
+			new iMSCP_Database_Events_Database(
+				iMSCP_Database_Events::onBeforePrepare, array('context' => $this, 'query' => $sql)
+			)
+		);
 
         if (is_array($driver_options)) {
             $stmt = $this->_db->prepare($sql, $driver_options);
@@ -227,7 +239,11 @@ class iMSCP_Database
             $stmt = $this->_db->prepare($sql);
         }
 
-        $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterPrepare, new iMSCP_Database_Events_Statement($stmt, $this));
+		$this->events()->dispatch(
+			new iMSCP_Database_Events_Statement(
+				iMSCP_Database_Events::onAfterPrepare, array('context' => $this, 'statement' => $stmt)
+			)
+		);
 
         if (!$stmt) {
             $errorInfo = $this->errorInfo();
@@ -304,26 +320,40 @@ class iMSCP_Database
     public function execute($stmt, $parameters = null)
     {
         if ($stmt instanceof PDOStatement) {
-            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute, new iMSCP_Database_Events_Statement($stmt, $this));
+			$this->events()->dispatch(
+				new iMSCP_Database_Events_Statement(
+					iMSCP_Database_Events::onBeforeExecute, array('context' => $this, 'statement' => $stmt)
+				)
+			);
 
             if (null === $parameters) {
                 $rs = $stmt->execute();
             } else {
                 $rs = $stmt->execute((array)$parameters);
             }
-        } elseif (null == $parameters) {
-            $this->_eventManager->dispatch(iMSCP_Database_Events::onBeforeExecute, new iMSCP_Database_Events_Database($stmt, $this));
-
-            $rs = $this->_db->query($stmt);
         } else {
-            $parameters = func_get_args();
-            $rs = call_user_func_array(array($this->_db, 'query'), $parameters);
+			$this->events()->dispatch(
+				new iMSCP_Database_Events_Database(
+					iMSCP_Database_Events::onBeforeExecute, array('context' => $this, 'query' => $stmt)
+				)
+			);
+
+			if(is_null($parameters)) {
+            	$rs = $this->_db->query($stmt);
+			} else {
+            	$parameters = func_get_args();
+            	$rs = call_user_func_array(array($this->_db, 'query'), $parameters);
+			}
         }
 
         if ($rs) {
             $stmt = ($rs === true) ? $stmt : $rs;
 
-            $this->_eventManager->dispatch(iMSCP_Database_Events::onAfterExecute, new iMSCP_Database_Events_Statement($stmt, $this));
+			$this->events()->dispatch(
+				new iMSCP_Database_Events_Statement(
+					iMSCP_Database_Events::onAfterExecute, array('context' => $this, 'statement' => $stmt)
+				)
+			);
 
             return new iMSCP_Database_ResultSet($stmt);
         } else {

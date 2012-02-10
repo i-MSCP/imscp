@@ -41,40 +41,13 @@ require_once 'iMSCP/Events/Event.php';
 class iMSCP_Database_Events_Database extends iMSCP_Events_Event
 {
 	/**
-	 * The Database instance in which this event was dispatched.
-	 *
-	 * @var iMSCP_Database
-	 */
-	protected $_db;
-
-	/**
-	 * Query string.
-	 *
-	 * @var string
-	 */
-	protected $_query;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param string $query
-	 * @param iMSCP_Database $db Database instance
-	 * @return iMSCP_Database_Events_Database
-	 */
-	public function __construct($query = '', iMSCP_Database $db)
-	{
-		$this->_db = $db;
-		$this->_query = (string)$query;
-	}
-
-	/**
 	 * Returns the database instance in which this event was dispatched.
 	 *
 	 * @return iMSCP_Database
 	 */
 	public function getDb()
 	{
-		return $this->_db;
+		return $this->getParam('context');
 	}
 
 	/**
@@ -84,6 +57,6 @@ class iMSCP_Database_Events_Database extends iMSCP_Events_Event
 	 */
 	public function getQueryString()
 	{
-		return $this->_query;
+		return $this->getParam('query');
 	}
 }

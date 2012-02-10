@@ -42,21 +42,17 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Debug_Bar_Plugin_Timer extends iMSCP_Debug_Bar_Plugin implements iMSCP_Events_Listeners_Interface
 {
 	/**
-	 * Plugin unique identifier.
-	 *
-	 * @var string
+	 * @var string Plugin unique identifier
 	 */
 	const IDENTIFIER = 'Timer';
 
 	/**
-	 * Events that this plugin listens on.
-	 *
-	 * @var array
+	 * @var array Listened events
 	 */
 	protected $_listenedEvents = array(
 		iMSCP_Events::onLoginScriptStart,
@@ -76,9 +72,7 @@ class iMSCP_Debug_Bar_Plugin_Timer extends iMSCP_Debug_Bar_Plugin implements iMS
 	);
 
 	/**
-	 * An array of times.
-	 *
-	 * @var float
+	 * @var float Times
 	 */
 	protected $_times = array();
 
@@ -87,10 +81,10 @@ class iMSCP_Debug_Bar_Plugin_Timer extends iMSCP_Debug_Bar_Plugin implements iMS
 	 *
 	 * @throws iMSCP_Debug_Bar_Exception on an unknown listener method
 	 * @param  string $listenerMethod Listener method name
-	 * @param  iMSCP_Events_Event|iMSCP_Events_Response $event
+	 * @param  array $arguments Enumerated array containing listener method arguments (always an iMSCP_Events_Description object)
 	 * @return void
 	 */
-	public function __call($listenerMethod, $event)
+	public function __call($listenerMethod, $arguments)
 	{
 		if (!in_array($listenerMethod, $this->_listenedEvents)) {
 			throw new iMSCP_Debug_Bar_Exception('Unknown listener method.');

@@ -35,34 +35,17 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * The events manager is the central point of i-MSCP's event listener system.
  * Listeners are registered on the manager and events are dispatched through the manager.
  *
- * A listener can be an object or a callback function. The listeners objects must
- * implement listeners methods named as the events they listens on.
+ * A listener can be an object that implement listener method (method named as event names) or ANY PHP callback function
+ * such as user function,anonymous function, closure, functor... Again, ANY PHP callback is allowed.
+ *
  *
  * A very basic example for a listener that listen on the 'AdminScriptStart' event:
- *
- * <code>
- * class HelloWorld
- * {
- *	  public function AdminScriptStart()
- *	  {
- *		  echo 'Hello World!';
- *		  exit;
- *	  }
- * }
- *
- * $eventsManager = iMSCP_Events_Manager::getInstance()->registerListener('onAdminScriptStart', new HelloWorld());
- *
- * // Later in the code
- * iMSCP_Events_Manager::getInstance()->dispatch('AdminScriptStart');
- *
- * // Result on screen will be: Hello World!
- * </code>
  *
  * @category	iMSCP
  * @package		iMSCP_Events
  * @subpackage	Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @version		0.0.5
  */
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
@@ -127,137 +110,152 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @param string $eventName			The name of the event to dispatch. The name
-	 *									of the event is the name of the method that
-	 *									is invoked on listeners objects. Callbacks
-	 *									functions can have arbitrary names.
-	 *
-	 * @param mixed $argument OPTIONAL	The data to pass to the event listener method.
-	 *									If not supplied, an empty iMSCP_Events_Event
-	 *									instance is created.
-	 *
-	 * @return mixed
-	 * @todo allow to pass multiple arguments to listeners methods
+	 * @throws iMSCP_Events_Manager_Exception	When an listener is an object that do not implement the listener method or
+	 * 											when the listener is not a valid PHP callback
+	 * @param string $eventName					The name of the event to dispatch.
+	 * @param array|ArrayAccess $arguments		Array of arguments (eg. an associative array)
+	 * @return iMSCP_Events_Listeners_ResponseCollection
 	 */
-	public function dispatch($eventName, $argument = null)
+	public function dispatch($eventName, $arguments = array())
 	{
-		if (isset($this->_events[$eventName])) {
-			if (null === $argument) {
-				$argument = new iMSCP_Events_Event();
-			}
+		$responses = new iMSCP_Events_Listeners_ResponseCollection();
 
+		if(!$eventName instanceof iMSCP_Events_Description) {
+			$event = new iMSCP_Events_Event($eventName, $arguments);
+		} else {
+			$event = $eventName;
+			$eventName = $event->getName();
+		}
+
+		if (isset($this->_events[$eventName])) {
 			foreach ($this->_events[$eventName]->getIterator() as $listener) {
 				if (is_callable($listener)) {
-					call_user_func_array($listener, array($argument));
+					$responses->push(call_user_func_array($listener, array($event)));
 				} elseif (is_object($listener)) {
 					if (is_callable(array($listener, $eventName))) {
-						$listener->$eventName($argument);
+						$responses->push($listener->$eventName($event));
 					} else {
 						require_once 'iMSCP/Events/Exception.php';
 						throw new iMSCP_Events_Manager_Exception(sprintf(
-							'The %s object must implement the %s() listener method.', get_class($listener), $eventName));
+							'%s object must implement the %s() listener method or be a functor.', get_class($listener), $eventName));
 
 					}
 				} else {
 					require_once 'iMSCP/Events/Exception.php';
 					throw new iMSCP_Events_Manager_Exception("Listener must be a valid callback function or an object.");
 				}
+
+				// Stop the event propagation if asked
+				if ($event->propagationIsStopped()) {
+					$responses->setStopped(true);
+        			break;
+    			}
 			}
 		}
+
+		return $responses;
 	}
 
 	/**
 	 * Registers an event listener that listens on the specified events.
 	 *
-	 * Example:
-	 *
-	 * $eventManager = iMSCP_Events_Manager::getInstance();
-	 *
-	 * 1. Using object that implement event listener method(s)
-	 * $eventManager->registerListener('eventName', $objectInstance)
-	 *
-	 * 2. Using static class method
-	 * $eventManager->registerListener('eventName', 'classname::staticMethodName')
-	 *
-	 * 3. Using class instance method
-	 * $eventManager->registerListener('eventName', array($ObjectInstance, 'methodName')
-	 *
-	 * 4. Using fonction name
-	 * $eventManager->registerListener('eventName', 'functionName')
-	 *
-	 * 5. Using anonymous function,
-	 * $funct = create_function('$event', 'do something here');
-	 * $eventManager->registerListener('eventName', $funct)
-	 *
-	 * 6. Using closure
-	 * $closure = function($event) { do something here };
-	 * $eventManager->registerListener('eventName', $closure)
-	 * ...
-	 *
 	 * @param  string|array $eventNames		The event(s) to listen on.
 	 * @param  callback|object $listener	Listener callback function or object.
-	 * @param  int $stackIndex				OPTIONAL The higher this value, the earlier
-	 *										an event listener will be triggered in the
-	 *										chain of the specified events.
+	 * @param  int priority					The higher this value, the earlier an event listener will be triggered in
+	 * 										the chain of the specified events.
 	 *
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
-	public function registerListener($eventNames, $listener, $stackIndex = null)
+	public function registerListener($eventNames, $listener, $priority = 1)
 	{
-		foreach ((array)$eventNames as $eventName) {
-			if (!isset($this->_events[$eventName])) {
-				$this->_events[$eventName] = new iMSCP_Events_Listeners_Stack();
+		if (is_string($eventNames)) {
+			if (!isset($this->_events[$eventNames])) {
+				$this->_events[$eventNames] = new iMSCP_Events_Listeners_Stack();
 			}
 
-			$this->_events[$eventName]->addListener($listener, $stackIndex);
+			$this->_events[$eventNames]->addListener($listener, $priority);
+		} elseif (is_array($eventNames)) {
+			foreach ($eventNames as $eventName) {
+				if (!isset($this->_events[$eventName])) {
+					$this->_events[$eventName] = new iMSCP_Events_Listeners_Stack();
+				}
+
+				$this->_events[$eventName]->addListener($listener, $priority);
+			}
+		} else {
+			throw new iMSCP_Events_Exception(
+				sprintf(__CLASS__.'::'.__FUNCTION__ . ' expects an array or string, %s given.', gettype($eventNames))
+			);
 		}
 
 		return $this;
 	}
 
 	/**
-	 * Unregister an event listener from the specified events.
+	 * Unregister an event listener from the given event.
 	 *
 	 * Note: For now, it's only possible to remove a listener implemented as object.
-	 *
-	 * @param  string|array $eventNames	The event(s) to remove a listener from.
-	 * @param  object $listener			The listener object to remove.
+	 * @thrown iMSCP_Events_Exception If $eventName is not a string
+	 * @param  string|array $eventName The event to remove a listener from.
+	 * @param  object $listener The listener object to remove.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
-	public function unregisterListener($eventNames, $listener)
+	public function unregisterListener($eventName, $listener)
 	{
-		foreach ((array)$eventNames as $eventName) {
+		if (is_string($eventName)) {
 			if (isset($this->_events[$eventName])) {
-				$this->_events[$eventName]->removeListener($listener);
+				$retVal =  $this->_events[$eventName]->removeListener($listener);
+			} else {
+				$retVal =  false;
 			}
-
-			if (empty($this->_events[$eventName])) {
-				unset($this->_events[$eventName]);
-			}
+		} else {
+			throw new iMSCP_Events_Exception(
+				sprintf(__CLASS__.'::'.__FUNCTION__ . '() expects a string, %s given.', gettype($eventName)
+				)
+			);
 		}
+
+		if(!$this->hasListener($eventName)) {
+			unset($this->_events[$eventName]);
+		}
+
+		return $retVal;
 	}
 
 	/**
 	 * Returns the listeners of a specific event or all listeners.
 	 *
-	 * @param string $eventName The name of the event.
-	 * @return array The event listeners for the specified event, or all event
-	 *				 listeners by event name.
+	 * @param string|null $eventName The name of the event.
+	 * @return array The event listeners for the specified event, or all event listeners by event name.
 	 */
 	public function getListeners($eventName = null)
 	{
-		throw new iMSCP_Events_Manager_Exception('iMSCP_Events_Manager::getListeners() is not implemented yet');
+		if (null !== $eventName) {
+			if (isset($this->_events[$eventName])) {
+				return $this->_events[$eventName]->getListeners();
+			} else {
+				return array();
+			}
+		}
+
+		$events = array();
+
+		foreach ($this->_events as $eventName => $event) {
+			$events[$eventName] = $event->getListeners();
+		}
+
+		return $events;
 	}
 
 	/**
 	 * Checks whether an event has any registered listeners.
 	 *
-	 * @param string $eventName The name of the event.
-	 * @param string $listener listener classname or callback name
+	 * @param string $eventName Event name
+	 * @param string|null $listener listener classname or callback name
 	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
 	 */
 	public function hasListener($eventName, $listener = null)
 	{
-		throw new iMSCP_Events_Manager_Exception('iMSCP_Events_Manager::hasListener() is not implemented yet');
+		return (bool) count($this->getListeners($eventName));
 	}
 }

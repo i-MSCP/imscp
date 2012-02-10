@@ -38,33 +38,29 @@ require_once 'iMSCP/Debug/Bar/Plugin.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar_Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements iMSCP_Events_Listeners_Interface
 {
 	/**
-	 * Plugin unique identifier.
-	 *
-	 * @var string
+	 * @var string Plugin unique identifier
 	 */
 	const IDENTIFIER = 'Files';
 
 	/**
-	 * Events that this plugin listens on.
-	 *
-	 * @var array
+	 * @var string Listened event
 	 */
 	protected $_listenedEvents = iMSCP_pTemplate_Events::onBeforeLoadTemplateFile;
 
 	/**
 	 * Implements onLoadTemplateFile listener method.
 	 *
-	 * @param $templatePath Loaded template path
+	 * @param iMSCP_Events_Event $event
 	 * @return void
 	 */
-	public function onBeforeLoadTemplateFile($templatePath)
+	public function onBeforeLoadTemplateFile($event)
 	{
-		$this->_loadedTemplateFiles[] = realpath($templatePath);
+		$this->_loadedTemplateFiles[] = realpath($event->getParam('templatePath'));
 	}
 
 	/**

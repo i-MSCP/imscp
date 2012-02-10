@@ -53,16 +53,12 @@ require_once  'iMSCP/Exception/Writer.php';
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 {
 	/**
-	 * pTemplate instance
-	 *
 	 * @var iMSCP_pTemplate
 	 */
 	protected $_tpl;
 
 	/**
-	 * Template file path
-	 *
-	 * @var string
+	 * @var string Template file path
 	 */
 	protected $_templateFile;
 
@@ -107,7 +103,9 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 
 		$tpl->parse('LAYOUT', 'layout');
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onExceptionToBrowserEnd, new iMSCP_Events_Response($tpl));
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onExceptionToBrowserEnd, array('context' => $this, 'templateEngine' => $tpl)
+		);
 		$tpl->prnt();
 	}
 
@@ -119,7 +117,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 	 */
 	public function update(SplSubject $exceptionHandler)
 	{
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onExceptionToBrowserStart);
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onExceptionToBrowserStart, array('context', $this));
 
 		/** @var $exceptionHandler iMSCP_Exception_Handler */
 		// Always write the real exception message if we are the admin

@@ -39,6 +39,9 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
 
+// Purge expired sessions
+do_session_timeout();
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -96,11 +99,15 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
 } elseif (!empty($_POST)) { // Request for new password
-
-	// Check if we are not blocked (brute force feature)
-	check_ipaddr(getipaddr(), 'captcha');
-
 	if (!empty($_POST['uname']) && isset($_SESSION['image']) && isset($_POST['capcode'])) {
+
+		$bruteForce = new iMSCP_Authentication_Bruteforce('captcha');
+		if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
+			set_page_message($bruteForce->getLastMessage());
+		} else {
+			$bruteForce->recordAttempt();
+		}
+
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
@@ -114,10 +121,6 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	} else {
 		set_page_message(tr('All fields are required.'), 'error');
 	}
-
-} else { // Lost password form (Default)
-	unblock($cfg->BRUTEFORCE_BLOCK_TIME, 'captcha');
-	is_ipaddr_blocked(null, 'captcha', true);
 }
 
 // Generate page messages
@@ -125,6 +128,6 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();

@@ -61,35 +61,27 @@ require_once 'iMSCP/Events.php';
  * @package		iMSCP_Debug
  * @subpackage	Bar
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 {
 	/**
-	 * Events manager instance.
-	 *
 	 * @var iMSCP_Events_Manager
 	 */
 	protected $_eventsManager;
 
 	/**
-	 * Event that this listener receives.
-	 *
-	 * @var iMSCP_Events_Response
+	 * @var iMSCP_Events_Event
 	 */
 	protected $_event;
 
 	/**
-	 * Contains registered plugins for debug bar
-	 *
 	 * @var iMSCP_Debug_Bar_Plugin_Interface
 	 */
 	protected $_plugins = array();
 
 	/**
-	 * Events that this component listens on.
-	 *
-	 * @var array An array that contains list of events.
+	 * @var array Listened events
 	 */
 	protected $_listenedEvents = array(
 		iMSCP_Events::onLoginScriptEnd,
@@ -115,15 +107,15 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 		// Creating i-MSCP Version Tab always shown
 		$this->_plugins[] = new iMSCP_Debug_Bar_Plugin_Version();
 
-		$stackIndex = 998;
+		$priority = 998;
 
 		foreach ((array)$plugins as $plugin) {
 			if (!$plugin instanceof iMSCP_Debug_Bar_Plugin_Interface) {
 				throw new iMSCP_Debug_Bar_Exception(
 					'All plugins for the debug bar must implement the iMSCP_Debug_Bar_Plugin_Interface interface.');
 			} elseif ($plugin instanceof iMSCP_Events_Listeners_Interface) {
-				$this->registerListener($plugin, $stackIndex);
-				$stackIndex--;
+				$this->registerListener($plugin, $priority);
+				$priority--;
 			}
 
 			$this->_plugins[] = $plugin;
@@ -136,13 +128,12 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 * Register a plugin listener on the events manager.
 	 *
 	 * @param  iMSCP_Events_Listeners_Interface $plugin Plugin instance.
-	 * @param  int $stackIndex Order in which listeners methods will be executed.
+	 * @param  int $priority Order in which listeners methods will be executed.
 	 * @return void
 	 */
-	protected function registerListener($plugin, $stackIndex)
+	protected function registerListener($plugin, $priority)
 	{
-		$this->_eventsManager->registerListener(
-			$plugin->getListenedEvents(), $plugin, $stackIndex);
+		$this->_eventsManager->registerListener($plugin->getListenedEvents(), $plugin, $priority);
 	}
 
 	/**
@@ -150,15 +141,15 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 	 * since they do same job.
 	 *
 	 * @param string $listenerMethod Listener method
-	 * @param iMSCP_Events_Response $event Event object
+	 * @param array $arguments Enumerated array containing listener method arguments (always an iMSCP_Events_Description object)
 	 */
-	public function __call($listenerMethod, $event)
+	public function __call($listenerMethod, $arguments)
 	{
 		if (!in_array($listenerMethod, $this->_listenedEvents)) {
 			throw new iMSCP_Debug_Bar_Exception('Unknown listener method.');
 		}
 
-		$this->_event = $event[0];
+		$this->_event = $arguments[0];
 		$this->buildDebugBar();
 	}
 
@@ -203,7 +194,8 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 		$xhtml .= '<span class="iMSCPdebug_span iMSCPdebug_last clickable" id="iMSCPdebug_toggler" onclick="iMSCPdebugSlideBar()">&#171;</span>';
 		$xhtml .= '</div>';
 
-		$templateEngine = $this->_event->getTemplateEngine();
+		/** @var $templateEngine iMSCP_pTemplate */
+		$templateEngine = $this->_event->getParam('templateEngine');
 		$response = $templateEngine->getLastParseResult();
 		$response = preg_replace('@(</head>)@i', $this->_buildHeader() . PHP_EOL . '$1', $response);
 		$response = str_ireplace('</body>', '<div id="iMSCPdebug_debug">' . $xhtml . '</div></body>', $response);

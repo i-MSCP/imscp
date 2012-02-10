@@ -47,7 +47,7 @@
  */
 function admin_updateUserPersonalData($userId)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $userId);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $userId));
 
 	$fname = isset($_POST['fname']) ? clean_input($_POST['fname']) : '';
 	$lname = isset($_POST['lname']) ? clean_input($_POST['lname']) : '';
@@ -107,7 +107,7 @@ function admin_updateUserPersonalData($userId)
 		}
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $userId);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $userId));
 
 	if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 		$query = 'SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?';
@@ -279,7 +279,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

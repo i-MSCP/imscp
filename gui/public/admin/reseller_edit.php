@@ -506,7 +506,7 @@ function admin_generateForm($tpl, &$data)
  */
 function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, $resellerId);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $resellerId));
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -810,7 +810,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 
 			$db->commit();
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, $resellerId);
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditUser, array('userId' => $resellerId));
 
 			// Send mail to reseller for new password
 			if($data['password'] != '') {
@@ -972,7 +972,7 @@ generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
 

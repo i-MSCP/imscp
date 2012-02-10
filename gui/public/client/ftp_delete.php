@@ -49,9 +49,9 @@ if (!customerHasFeature('ftp')) {
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp);
-
 	$ftp_id = $_GET['id'];
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteFtp, array('ftpId' => $ftp_id));
 	$dmn_name = $_SESSION['user_logged'];
 
 	$query = "
@@ -129,7 +129,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$domain_props = get_domain_default_props($_SESSION['user_id']);
 	update_reseller_c_props($domain_props[4]);
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp);
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteFtp, array('ftpid' => $ftp_id));
 
 	write_log($_SESSION['user_logged'].": deletes FTP account: ".$ftp_name, E_USER_NOTICE);
 	set_page_message(tr('FTP account deleted.'), 'success');

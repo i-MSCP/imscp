@@ -53,37 +53,26 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 	 * @throws iMSCP_EventsManager_Exception When listener is already registered
 	 * @throws iMSCP_EventsManager_Exception When listener with same priority is found
 	 * @param string|object $listener Fonction name or Listener objet
-	 * @param null $stackIndex OPTIONAL Stack index Listener priority
+	 * @param int $stackIndex OPTIONAL Stack index Listener priority
 	 * @return iMSCP_Events_Listeners_Stack Provides fluent interface, returns self
 	 */
-	public function addListener($listener, $stackIndex = null)
+	public function addListener($listener, $stackIndex = 1)
 	{
-		if (false !== array_search($listener, $this->_listeners, true)) {
-			require_once 'iMSCP/Events/Exception.php';
-			throw new iMSCP_Events_Exception('Listener is already registered.');
-		}
+		if (false === array_search($listener, $this->_listeners, true)) {
+			$stackIndex = (int)$stackIndex;
 
-		$stackIndex = (int)$stackIndex;
+			if (!isset($this->_listeners[$stackIndex])) {
+				$this->_listeners[$stackIndex] = $listener;
+			} else {
+				while (isset($this->_listeners[$stackIndex])) {
+					++$stackIndex;
+				}
 
-		if ($stackIndex) {
-			if (isset($this->_listeners[$stackIndex])) {
-				require_once 'iMSCP/Events/Exception.php';
-				throw new iMSCP_Events_Exception(
-					'Listener with stackIndex "' . $stackIndex . '" already registered');
+				$this->_listeners[$stackIndex] = $listener;
 			}
 
-			$this->_listeners[$stackIndex] = $listener;
-		} else {
-			$stackIndex = count($this->_listeners);
-
-			while (isset($this->_listeners[$stackIndex])) {
-				++$stackIndex;
-			}
-
-			$this->_listeners[$stackIndex] = $listener;
+			ksort($this->_listeners);
 		}
-
-		ksort($this->_listeners);
 
 		return $this;
 	}
@@ -91,35 +80,33 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 	/**
 	 * Remove a listener from the stack.
 	 *
-	 * @param string|int|object $listener Listener object or class name or stack index
-	 * @return iMSCP_Events_Listeners_Stack Provides fluent interface, returns self
+	 * @param string|int|object $listener Listener object or class name
+	 * @return bool TRUE if listener has been removed from the stack, FALSE otherwise
 	 */
 	public function removeListener($listener)
 	{
-		if (is_object($listener)) {
-			$key = array_search($listener, $this->_listeners, true);
-
-			if (false === $key) {
-				require_once 'iMSCP/Events/Exception.php';
-				throw new iMSCP_Events_Exception('Listener is not registered.');
+		$retVal = false;
+		if (is_object($listener)) { // Remove by object
+			if($key = array_search($listener, $this->_listeners, true)) {
+				$retVal = true;
+				unset($this->_listeners[$key]);
 			}
 
-			unset($this->_listeners[$key]);
-		} elseif (is_string($listener)) {
+		} elseif (is_string($listener)) { // Remove by className
+			$retVal = false;
 			foreach ($this->_listeners as $index => $_listener) {
 				if (is_object($_listener)) {
 					$classname = get_class($_listener);
 
 					if ($listener == $classname) {
+						$retVal = true;
 						unset($this->_listeners[$index]);
 					}
 				}
 			}
-		} elseif (is_int($listener)) {
-			unset($this->_listeners[$listener]);
 		}
 
-		return $this;
+		return $retVal;
 	}
 
 	/**
@@ -130,5 +117,14 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 	public function getIterator()
 	{
 		return new ArrayIterator($this->_listeners);
+	}
+
+	/**
+	 * Return all listeners from the stack.
+	 *
+	 * @return array
+	 */
+	public function getListeners() {
+		return $this->_listeners;
 	}
 }
