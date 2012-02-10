@@ -201,6 +201,14 @@
 					<label>Server statistics</label>
 					<uri>/admin/server_statistic.php</uri>
 					<title_class>stats</title_class>
+					<pages>
+						<server_statistic_by_day>
+							<label>Server day statistics</label>
+							<uri>/admin/server_statistic_day.php</uri>
+							<title_class>statistics</title_class>
+							<visible>0</visible>
+						</server_statistic_by_day>
+					</pages>
 				</server_statistic>
 				<resellers_statistics>
 					<label>Reseller's statistics</label>

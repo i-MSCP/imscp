@@ -48,7 +48,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
-		'page', 'admin/server_statistic_day.tpl',
+		'page' => 'admin/server_statistic_day.tpl',
 		'page_message' => 'layout',
 		'hour_list' => 'page'));
 
@@ -192,7 +192,6 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_SERVER_DAY_STATISTICS' => tr('Server day statistics'),
 		'TR_MONTH' => tr('Month:'),
 		'TR_YEAR' => tr('Year:'),
 		'TR_DAY' => tr('Day:'),
