@@ -1441,32 +1441,6 @@ sub del_tmp{
 	my $rs = 0;
 	my ($stdout, $stderr);
 
-	# panel sessions gc
-	if(-d "$self::apacheConfig{PHP_STARTER_DIR}/master"){
-		unless (-f "$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini"){
-			error("$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini!");
-			$rs |= 1;
-		} else {
-			my $hFile = iMSCP::File->new(filename => "$self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini");
-			my $file = $hFile->get();
-			unless ($file){
-				error("Can not read $self::apacheConfig{PHP_STARTER_DIR}/master/php5/php.ini!");
-				$rs |= 1;
-			} else {
-				my $max = 0;
-				$file =~ m/^\s*session.gc_maxlifetime\s*=\s*([0-9]+).*$/mgi;
-				$max = floor($1/60) if $1 && $max < floor($1/60);
-				$max = 24 unless $max;
-				my $cmd = "[ -d /var/www/imscp/gui/data/sessions/ ] && find /var/www/imscp/gui/data/sessions/ -type f -cmin +$max -delete";
-				$rs |= execute($cmd, \$stdout, \$stderr);
-				debug($stdout) if $stdout;
-				error($stderr) if $stderr;
-				error("Error while executing $cmd.\nReturned value is $rs") if !$stderr && $rs;
-			}
-		}
-	}
-
-	# Customers sessions gc
 	my $hDMN = iMSCP::Dir->new(dirname => "$main::imscpConfig{USER_HOME_DIR}");
 	return 1 if $hDMN->get();
 
