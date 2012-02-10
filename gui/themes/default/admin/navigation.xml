@@ -202,12 +202,12 @@
 					<uri>/admin/server_statistic.php</uri>
 					<title_class>stats</title_class>
 					<pages>
-						<server_statistic_by_day>
+						<server_day_statistics_link>
 							<label>Server day statistics</label>
 							<uri>/admin/server_statistic_day.php</uri>
-							<title_class>statistics</title_class>
+							<title_class>stats</title_class>
 							<visible>0</visible>
-						</server_statistic_by_day>
+						</server_day_statistics_link>
 					</pages>
 				</server_statistic>
 				<resellers_statistics>
@@ -219,13 +219,13 @@
 							<label>Customer statistics</label>
 							<uri>/admin/reseller_user_statistics.php</uri>
 							<visible>0</visible>
-							<title_class>statistics</title_class>
+							<title_class>stats</title_class>
 							<pages>
 								<domain_statistics_link>
 									<label>Domain_statistics</label>
 									<uri>/admin/domain_statistics.php</uri>
 									<visible>0</visible>
-									<title_class>statistics</title_class>
+									<title_class>stats</title_class>
 								</domain_statistics_link>
 							</pages>
 						</reseller_user_statistics_link>
