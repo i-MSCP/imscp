@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-19 09:06+0100\n"
-"PO-Revision-Date: 2012-01-18 13:00+0000\n"
-"Last-Translator: Christian Hernmarck <joximu@web.de>\n"
+"POT-Creation-Date: 2012-02-10 06:54+0100\n"
+"PO-Revision-Date: 2012-02-07 11:14+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -734,8 +734,8 @@ msgstr "Bereits in Benutzung"
 msgid "Alternative URL to reach your website"
 msgstr "Alternative Website-URL"
 
-msgid "An error occured! Please, contact your administrator."
-msgstr "Ein Fehler ist aufgetreten. Bitte kontaktieren Sie den Administrator"
+msgid "An error occured. Please, contact your administrator."
+msgstr ""
 
 msgid "An error occurred while the authentication attempt."
 msgstr "Ein Fehler trat auf während der Authentisierung"
@@ -765,8 +765,7 @@ msgstr "Sind Sie sich dass Sie das Paket aktivieren möchten ?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s domain account?"
-msgstr ""
-"Sind Sie sicher, dass Sie den Status von %s Domain Konten ändern wollen?"
+msgstr "Sind Sie sicher, dass Sie den Status der  Domain %s ändern wollen?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
@@ -843,7 +842,7 @@ msgid "Assign existing SQL user"
 msgstr "Existierenden SQL-Benutzer zuweisen."
 
 msgid "Assign group"
-msgstr ""
+msgstr "Gruppe zuweisen"
 
 msgid "Auto email template data updated!"
 msgstr "E-Mail-Vorlage für automatische Nachrichten hochgeladen!"
@@ -995,10 +994,10 @@ msgid "Certificate key"
 msgstr "Zertifikat Schlüssel"
 
 msgid "Certificate successfully scheduled for addition or modification."
-msgstr ""
+msgstr "Zertifikat erfolgreich für das Hinzufügen oder Änderung hinzugefügt."
 
 msgid "Certificate sucessfully scheduled for deletion."
-msgstr ""
+msgstr "Zertifikat erfolgreich für die Löschung vorgemerkt."
 
 msgid "Change"
 msgstr "Wechseln"
@@ -1217,10 +1216,10 @@ msgid "Customer scheduled for deletion."
 msgstr "Kunde zum Löschen vorgemerkt."
 
 msgid "Customer statistics"
-msgstr ""
+msgstr "Kunden Statistik"
 
 msgid "Customer successfully added."
-msgstr ""
+msgstr "Kunde erfolgreich hinzugefügt."
 
 msgid "Customer's layout color successfully updated."
 msgstr ""
@@ -1326,7 +1325,7 @@ msgid "Delete domain"
 msgstr "Domain löschen"
 
 msgid "Delete domain - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Lösche Domain - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Lösche aus Log:"
@@ -1696,9 +1695,6 @@ msgstr "SSL Zertifikat bearbeiten"
 msgid "Edit User"
 msgstr "Benutzer bearbeiten"
 
-msgid "Edit admin"
-msgstr "Administrator bearbeiten"
-
 msgid "Edit alias"
 msgstr "Alias bearbeiten"
 
@@ -1812,9 +1808,6 @@ msgstr "Aktiviert für Domain Daten"
 
 msgid "Enabled for domain data and databases"
 msgstr "Aktiviert für Domain-Daten und Datenbanken"
-
-msgid "Entered passwords do not match!"
-msgstr "Die eingegebenen Passwörter stimmen nicht überein!"
 
 msgid "Entered passwords do not match."
 msgstr "Eingegebene Passwörter stimmen nicht überein."
@@ -2162,7 +2155,7 @@ msgid "Hosting plans not found!"
 msgstr "Keine Tarife gefunden!"
 
 msgid "Hosting plans not found."
-msgstr ""
+msgstr "Hosting Plan wurde nicht gefunden."
 
 msgid "Hour"
 msgstr "Stunde"
@@ -2212,10 +2205,10 @@ msgid "IP address"
 msgstr "IP-Adresse"
 
 msgid "IP address already known by the system."
-msgstr ""
+msgstr "IP Adresse ist bereits im System bekannt."
 
 msgid "IP address scheduled for addition."
-msgstr ""
+msgstr "IP Adresse wurde zum hinzufügen vorgemerkt."
 
 msgid "IP addresse data"
 msgstr ""
@@ -2443,7 +2436,7 @@ msgid "Language file successfully installed."
 msgstr ""
 
 msgid "Language successfully updated."
-msgstr ""
+msgstr "Sprache erfolgreich aktualisiert."
 
 msgid "Languages"
 msgstr "Sprache"
@@ -2473,7 +2466,7 @@ msgid "Layout"
 msgstr "Layout"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Layout Farbe"
 
 msgid "Layout color successfully updated."
 msgstr ""
@@ -2499,7 +2492,7 @@ msgid "Limits"
 msgstr ""
 
 msgid "Link"
-msgstr ""
+msgstr "Link"
 
 msgid "Link to authors homepage"
 msgstr "Link zur Homepage des Autors"
@@ -2519,23 +2512,27 @@ msgstr "Anmelden"
 msgid "Login As"
 msgstr "Anmelden als"
 
+#, php-format
+msgid "Login data successfully sent to %s."
+msgstr "Login Daten wurden erfolgreich gesendet an: %s."
+
 msgid "Login into PhpMyAdmin"
 msgstr "In PhpMyAdmin einloggen"
 
 msgid "Login into PḧpMyAdmin"
-msgstr ""
+msgstr "Lohin in phpMyAdmin"
 
 msgid "Login into the filemanager"
-msgstr ""
+msgstr "Login in den FileManager"
 
 msgid "Login into the webmail"
-msgstr ""
+msgstr "Login in Webmail"
 
 msgid "Login password"
-msgstr ""
+msgstr "Login Passwort"
 
 msgid "Login username"
-msgstr ""
+msgstr "Login Benutzername"
 
 msgid "Login with your FTP account"
 msgstr "Melden Sie sich über FTP an."
@@ -2944,6 +2941,11 @@ msgstr "Keine Fehler im E-Mail-Konten-System"
 msgid "No group found."
 msgstr "Keine Gruppe gefunden"
 
+msgid ""
+"No hosting plan available for purchasing. Please contact your system "
+"administrator."
+msgstr ""
+
 msgid "No htaccess related system errors"
 msgstr "Keine .htaccess bezogene Systemfehler"
 
@@ -2952,6 +2954,9 @@ msgstr "Keine Sprachen gefunden."
 
 msgid "No new i-MSCP updates available"
 msgstr "Keine neuen i-MSCP-Updates verfügbar"
+
+msgid "No provided"
+msgstr ""
 
 msgid "No records found"
 msgstr "Keinen Eintrag gefunden"
@@ -3238,9 +3243,6 @@ msgstr "Passwort-E-Mail"
 msgid "Password change is deactivated!"
 msgstr "Passwort ändern ist deaktiviert!"
 
-msgid "Password change is disabled!"
-msgstr "Passwort ändern ist deaktiviert!"
-
 msgid "Password confirmation"
 msgstr "Passwort-Bestätigung"
 
@@ -3265,6 +3267,9 @@ msgstr ""
 
 msgid "Password doesn't matches"
 msgstr "Passwort stimmt nicht überein"
+
+msgid "Password doesn't matches."
+msgstr "Passwörter stimmen nicht überein"
 
 msgid "Password is missing."
 msgstr "Passwort fehlt."
@@ -3694,7 +3699,7 @@ msgid "Rights succesfully removed."
 msgstr "Rechte erfolgreich entfernt."
 
 msgid "Rootkit logs"
-msgstr ""
+msgstr "Rootkit Logs"
 
 msgid "SMTP"
 msgstr "SMTP"
@@ -3812,7 +3817,7 @@ msgid "SQL-user not found."
 msgstr "SQL Benutzer nicht gefunden."
 
 msgid "SSL Certificates"
-msgstr ""
+msgstr "SSl Zertifikate"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
 msgstr ""
@@ -3830,7 +3835,7 @@ msgid "Second Level Domain name strict validation"
 msgstr "Strikte Second Level Domain Verifikation"
 
 msgid "Secure connection"
-msgstr ""
+msgstr "Sichere Verbindung"
 
 msgid "Security code"
 msgstr "Sicherheitscode"
@@ -4014,10 +4019,10 @@ msgid "Software installation"
 msgstr "Software-Installation"
 
 msgid "Software installer"
-msgstr ""
+msgstr "Software Installer"
 
 msgid "Software installer options"
-msgstr ""
+msgstr "Software Installer Optionen"
 
 msgid "Software installer options successfully updated."
 msgstr ""
@@ -4862,14 +4867,17 @@ msgstr "Passwort"
 msgid "User password successfully updated."
 msgstr "Benutzer Passwort erfolgreich aktualisiert."
 
+msgid "User personal data successfully updated."
+msgstr ""
+
 msgid "User real (first and last) name"
 msgstr "Realer (Vor- und Nach-)Name des Benutzer"
 
 msgid "User scheduled for deletion."
 msgstr "Benutzer zum Löschen vorgemerkt."
 
-msgid "User session was killed!"
-msgstr "Benutzersitzung wurde beendet!"
+msgid "User session successfully killed for password change."
+msgstr ""
 
 msgid "User session was killed."
 msgstr "Benutzer Sitzung wurde gelöscht."
@@ -5337,11 +5345,6 @@ msgstr ""
 msgid "You have no groups."
 msgstr "Sie haben keine Gruppen."
 
-msgid "You have no hosting plans. Please contact your system administrator."
-msgstr ""
-"Sie haben keine Tarife angelegt. Bitte wenden Sie sich an Ihren "
-"Systemadministrator."
-
 msgid "You have no users !"
 msgstr "Sie haben noch keine Benutzer angelegt."
 
@@ -5489,7 +5492,7 @@ msgid "disabled"
 msgstr ""
 
 msgid "disabled</b>"
-msgstr ""
+msgstr "Ausgeschaltet</b>"
 
 msgid "disk space"
 msgstr "Speicherplatz"
@@ -5522,6 +5525,12 @@ msgstr "keine"
 msgid "from other browser"
 msgstr "von anderen Browser"
 
+#, php-format
+msgid ""
+"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
+"the %s plugin and should be reported to the plugin author."
+msgstr ""
+
 msgid "help"
 msgstr "Hilfe"
 
@@ -5540,8 +5549,11 @@ msgstr ""
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP - Admin / Domain Account Deletion Validation"
 
+msgid "i-MSCP - Admin / Edit customer"
+msgstr "i-MSCP - Admin / Kunde bearbeiten"
+
 msgid "i-MSCP - Admin / Edit hosting plan"
-msgstr ""
+msgstr "i-MSCP - Admin / Hosting Plan bearbeiten"
 
 msgid "i-MSCP - Admin / General information"
 msgstr "i-MSCP - Admin / Allgemeine Informationen"
@@ -5556,7 +5568,7 @@ msgid "i-MSCP - Admin / Manage users / Add Reseller"
 msgstr ""
 
 msgid "i-MSCP - Admin / Manage users / Edit Reseller"
-msgstr ""
+msgstr "i-MSCP - Admin / Benutzer Verwalten / Reseller bearbeiten"
 
 msgid "i-MSCP - Admin / My Profile"
 msgstr ""
@@ -5611,12 +5623,6 @@ msgstr "Benutzer"
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Admin/Benutzerverwaltung/Benutzer anlegen"
-
-msgid "i-MSCP - Admin/Manage users/Edit Administrator"
-msgstr "i-MSCP - Benutzer/Administrator bearbeiten/verwalten"
-
-msgid "i-MSCP - Admin/Manage users/Edit User"
-msgstr "i-MSCP - Admin/Benutzerverwaltung/Benutzer bearbeiten"
 
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Admin/Benutzerverwaltung/E-Mail-Einstellungen"
@@ -5783,6 +5789,9 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Add customer - step 1"
+msgstr "i-MSCP - Reseller / Kunde hinzufügen - Schritt 1"
+
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr "i-MSCP - Reseller / Hosting Plan hinzufügen"
 
@@ -5875,9 +5884,6 @@ msgstr "i-MSCP - User / Domain-Alias ​​hinzufügen"
 
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Benutzer"
-
-msgid "i-MSCP - Users/Add domain account - step 1"
-msgstr "i-MSCP - Benutzer-/Domain Konto hinzufügen - Schritt 1"
 
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Benutzer/Bearbeiten"

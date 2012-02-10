@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-19 09:06+0100\n"
-"PO-Revision-Date: 2012-01-18 11:13+0000\n"
+"POT-Creation-Date: 2012-02-10 06:54+0100\n"
+"PO-Revision-Date: 2012-02-08 17:38+0000\n"
 "Last-Translator: Cool <barni@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -731,8 +731,8 @@ msgstr "Redan i bruk"
 msgid "Alternative URL to reach your website"
 msgstr "Alternativ URL för att nå din webbplats"
 
-msgid "An error occured! Please, contact your administrator."
-msgstr "Ett fel inträffade, var god och kontaktar administratören-"
+msgid "An error occured. Please, contact your administrator."
+msgstr "An error occured. Please, contact your administrator."
 
 msgid "An error occurred while the authentication attempt."
 msgstr "An error occurred while the authentication attempt."
@@ -1692,9 +1692,6 @@ msgstr "Ändra SSL cert."
 msgid "Edit User"
 msgstr "Redigera användare"
 
-msgid "Edit admin"
-msgstr "Ändra administratör"
-
 msgid "Edit alias"
 msgstr "Ändra alias"
 
@@ -1808,9 +1805,6 @@ msgstr "Aktiverad för domänen uppgifter"
 
 msgid "Enabled for domain data and databases"
 msgstr "Aktiverad för domänen data och databaser"
-
-msgid "Entered passwords do not match!"
-msgstr "Lösenord stämmer inte överens!"
 
 msgid "Entered passwords do not match."
 msgstr "Lösenord stämmer inte överens."
@@ -2521,6 +2515,10 @@ msgstr "Logga in"
 msgid "Login As"
 msgstr "Logga in som"
 
+#, php-format
+msgid "Login data successfully sent to %s."
+msgstr "Login data successfully sent to %s."
+
 msgid "Login into PhpMyAdmin"
 msgstr "Logga in till PhpMyAdmin"
 
@@ -2947,6 +2945,13 @@ msgstr "Inget systemfel för e-postkonton"
 msgid "No group found."
 msgstr "Ingen grupp hittades."
 
+msgid ""
+"No hosting plan available for purchasing. Please contact your system "
+"administrator."
+msgstr ""
+"No hosting plan available for purchasing. Please contact your system "
+"administrator."
+
 msgid "No htaccess related system errors"
 msgstr "Inga htaccess relaterade systemfel"
 
@@ -2955,6 +2960,9 @@ msgstr "Inga språk hittats."
 
 msgid "No new i-MSCP updates available"
 msgstr "Det finns inga tillgängliga uppdateringar för i-MSCP"
+
+msgid "No provided"
+msgstr "No provided"
 
 msgid "No records found"
 msgstr "Inga poster hittades"
@@ -3240,9 +3248,6 @@ msgstr "Lösenordsmeddelande"
 msgid "Password change is deactivated!"
 msgstr "Byte av lösenord är inaktiverat!"
 
-msgid "Password change is disabled!"
-msgstr "Lösenordsbyte är inaktiverat!"
-
 msgid "Password confirmation"
 msgstr "Lösenord bekräftelse"
 
@@ -3265,6 +3270,9 @@ msgstr ""
 
 msgid "Password doesn't matches"
 msgstr "Lösenord matchar inte"
+
+msgid "Password doesn't matches."
+msgstr "Lösenord matchar inte varandra"
 
 msgid "Password is missing."
 msgstr "Lösenord saknas."
@@ -4888,14 +4896,17 @@ msgstr "Användarlösenord"
 msgid "User password successfully updated."
 msgstr "Användarlösenord uppdaterats."
 
+msgid "User personal data successfully updated."
+msgstr "Personligt data för användare uppdaterad"
+
 msgid "User real (first and last) name"
 msgstr "Användares riktiga (första och sista) namn"
 
 msgid "User scheduled for deletion."
 msgstr "Användare schemalagd för radering."
 
-msgid "User session was killed!"
-msgstr "Användarsession avslutad!"
+msgid "User session successfully killed for password change."
+msgstr "User session successfully killed for password change."
 
 msgid "User session was killed."
 msgstr "Användarsession dödades."
@@ -5271,7 +5282,7 @@ msgid "You do not have subdomains."
 msgstr "Du har inga underdomäner."
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr "You do not have sufficient permissions to perform this operation."
+msgstr "mail konto"
 
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "Du behöver inte \"www.\" i-MSCP kommer att lägga till den automatiskt."
@@ -5364,9 +5375,6 @@ msgstr "You have no custom service ports defined."
 
 msgid "You have no groups."
 msgstr "Du har inga grupper."
-
-msgid "You have no hosting plans. Please contact your system administrator."
-msgstr "Du har inga webbhotellsplaner. Kontakta din systemadministratör."
 
 msgid "You have no users !"
 msgstr "Du har inga användare!"
@@ -5545,6 +5553,14 @@ msgstr "gratis"
 msgid "from other browser"
 msgstr "från andra webbläsare"
 
+#, php-format
+msgid ""
+"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
+"the %s plugin and should be reported to the plugin author."
+msgstr ""
+"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
+"the %s plugin and should be reported to the plugin author."
+
 msgid "help"
 msgstr "hjälp"
 
@@ -5562,6 +5578,9 @@ msgstr "i-MSCP - Admin / Add hosting plan"
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP - Admin / Domain radering av konto validering"
+
+msgid "i-MSCP - Admin / Edit customer"
+msgstr "i-MSCP - Admin / Edit customer"
 
 msgid "i-MSCP - Admin / Edit hosting plan"
 msgstr "i-MSCP - Admin / Edit hosting plan"
@@ -5636,12 +5655,6 @@ msgstr "i-MSCP - Administratör/Hantera Användare"
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Administratör/Hantera användare/Lägg till användare"
-
-msgid "i-MSCP - Admin/Manage users/Edit Administrator"
-msgstr "i-MSCP - Administratör/Hantera användare/Ändra administratör"
-
-msgid "i-MSCP - Admin/Manage users/Edit User"
-msgstr "i-MSCP - Administratör/Hantera användare/Ändra användare"
 
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Administratör/Hantera användare/E-postinställningar"
@@ -5810,6 +5823,9 @@ msgstr "i-MSCP - Multi Server Control Panel / Lost password"
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr "i-MSCP - Multi Server Control Panel / Maintenance"
 
+msgid "i-MSCP - Reseller / Add customer - step 1"
+msgstr "i-MSCP - Reseller / Add customer - step 1"
+
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr "i-MSCP - Reseller / Add hosting plan"
 
@@ -5903,9 +5919,6 @@ msgstr "i-MSCP - Användare / Lägg till domänalias"
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Användare"
 
-msgid "i-MSCP - Users/Add domain account - step 1"
-msgstr "i-MSCP - Användare / Lägg domänkonto - steg 1"
-
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Användare/Redigera"
 
@@ -5986,7 +5999,7 @@ msgid "mail"
 msgstr "mail"
 
 msgid "mail account"
-msgstr "mail account"
+msgstr "mail konto"
 
 msgid "mail accounts"
 msgstr "postkonton"

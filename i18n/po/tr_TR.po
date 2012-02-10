@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <tango-net@freenet.de>, 2011.
+#   <tango-net@freenet.de>, 2011, 2012.
 # VOLKAN KIRIK <volkirik@yahoo.com.tr>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-19 09:06+0100\n"
-"PO-Revision-Date: 2012-01-18 07:26+0000\n"
+"POT-Creation-Date: 2012-02-10 06:54+0100\n"
+"PO-Revision-Date: 2012-02-07 11:14+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -684,7 +684,7 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "An error occured! Please, contact your administrator."
+msgid "An error occured. Please, contact your administrator."
 msgstr ""
 
 msgid "An error occurred while the authentication attempt."
@@ -1068,7 +1068,7 @@ msgid "Create default E-Mail addresses"
 msgstr "Varsayılan Eposta adresi oluştur"
 
 msgid "Create directory, if not exist!"
-msgstr ""
+msgstr "Mevcut değilse, klasör oluşturun!"
 
 msgid "Created by"
 msgstr "Oluşturan"
@@ -1198,7 +1198,7 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "veritabanı"
 
 msgid "Database Name and Users"
 msgstr "Veritabanı adı ve kullanıcıları"
@@ -1216,7 +1216,7 @@ msgid "Database prefix"
 msgstr ""
 
 msgid "Database required"
-msgstr ""
+msgstr "gerekli veritabanı"
 
 msgid "Database update is available."
 msgstr ""
@@ -1630,9 +1630,6 @@ msgstr ""
 msgid "Edit User"
 msgstr "Kullanıcı düzenle"
 
-msgid "Edit admin"
-msgstr "Yöneticiyi düzenle"
-
 msgid "Edit alias"
 msgstr ""
 
@@ -1746,9 +1743,6 @@ msgstr ""
 
 msgid "Enabled for domain data and databases"
 msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr "Girilen şifreler eşleşmiyor"
 
 msgid "Entered passwords do not match."
 msgstr ""
@@ -2279,7 +2273,7 @@ msgid "Install"
 msgstr "Kur"
 
 msgid "Install Software"
-msgstr ""
+msgstr "Yazılımı Yükle"
 
 msgid "Install path"
 msgstr ""
@@ -2443,6 +2437,10 @@ msgid "Login"
 msgstr "Giriş"
 
 msgid "Login As"
+msgstr ""
+
+#, php-format
+msgid "Login data successfully sent to %s."
 msgstr ""
 
 msgid "Login into PhpMyAdmin"
@@ -2862,6 +2860,11 @@ msgstr "Eposta hesabı sistem hatası yok"
 msgid "No group found."
 msgstr ""
 
+msgid ""
+"No hosting plan available for purchasing. Please contact your system "
+"administrator."
+msgstr ""
+
 msgid "No htaccess related system errors"
 msgstr "htaccess ile ilgili sistem hataları yok"
 
@@ -2870,6 +2873,9 @@ msgstr ""
 
 msgid "No new i-MSCP updates available"
 msgstr "Yeni i-MSCP güncellemesi yok"
+
+msgid "No provided"
+msgstr ""
 
 msgid "No records found"
 msgstr "Hiçbir kayıt bulunamadı"
@@ -3154,9 +3160,6 @@ msgstr "Şifre epostası"
 msgid "Password change is deactivated!"
 msgstr "Şifre değiştirme devre dışı!"
 
-msgid "Password change is disabled!"
-msgstr "Şifre değiştirme devre dışıdır!"
-
 msgid "Password confirmation"
 msgstr ""
 
@@ -3177,6 +3180,9 @@ msgid ""
 msgstr ""
 
 msgid "Password doesn't matches"
+msgstr ""
+
+msgid "Password doesn't matches."
 msgstr ""
 
 msgid "Password is missing."
@@ -3748,10 +3754,10 @@ msgid "Security code is incorrect."
 msgstr ""
 
 msgid "Select Domain"
-msgstr ""
+msgstr "Alan seçin"
 
 msgid "Select database"
-msgstr ""
+msgstr "veritabanını seçin"
 
 msgid "Select group:"
 msgstr "Grup seç:"
@@ -3897,7 +3903,7 @@ msgid "Size"
 msgstr "Boyut"
 
 msgid "Software"
-msgstr ""
+msgstr "Yazılım"
 
 msgid "Software available"
 msgstr ""
@@ -3915,7 +3921,7 @@ msgid "Software in repository"
 msgstr ""
 
 msgid "Software installation"
-msgstr ""
+msgstr "Yazılım yükleme"
 
 msgid "Software installer"
 msgstr ""
@@ -4739,14 +4745,17 @@ msgstr "Kullanıcı şifresi"
 msgid "User password successfully updated."
 msgstr ""
 
+msgid "User personal data successfully updated."
+msgstr ""
+
 msgid "User real (first and last) name"
 msgstr "Kullanıcı ad soyad"
 
 msgid "User scheduled for deletion."
 msgstr ""
 
-msgid "User session was killed!"
-msgstr "Kullanıcı sessionı sonlandırıldı"
+msgid "User session successfully killed for password change."
+msgstr ""
 
 msgid "User session was killed."
 msgstr ""
@@ -4803,7 +4812,7 @@ msgid "Values"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "Sürüm"
 
 msgid "Very high"
 msgstr "Çok yüksek"
@@ -5193,9 +5202,6 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no hosting plans. Please contact your system administrator."
-msgstr "Hosting planınız yok. Lütfen sistem yöneticinizle irtibana geçiniz."
-
 msgid "You have no users !"
 msgstr "Kullanıcınız yok !"
 
@@ -5317,7 +5323,7 @@ msgid "_: Localised language"
 msgstr "Türkçe - Turkish"
 
 msgid "back"
-msgstr ""
+msgstr "geri"
 
 msgid "conflict with CNAME record"
 msgstr "CNAME kaydı ile çatışma"
@@ -5365,6 +5371,12 @@ msgstr "ücretsiz"
 msgid "from other browser"
 msgstr ""
 
+#, php-format
+msgid ""
+"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
+"the %s plugin and should be reported to the plugin author."
+msgstr ""
+
 msgid "help"
 msgstr ""
 
@@ -5382,6 +5394,9 @@ msgstr ""
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP - Yönetici / Alan Hesabı Silme Doğrulama"
+
+msgid "i-MSCP - Admin / Edit customer"
+msgstr ""
 
 msgid "i-MSCP - Admin / Edit hosting plan"
 msgstr ""
@@ -5454,12 +5469,6 @@ msgstr "i-MSCP - Yönetici/Kullanıcıları Düzenle"
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Yönet/Kullanıcı Ekle"
-
-msgid "i-MSCP - Admin/Manage users/Edit Administrator"
-msgstr "i-MSCP - Yönetici/Kullanıcıları düzenle/Yönetici Düzenle"
-
-msgid "i-MSCP - Admin/Manage users/Edit User"
-msgstr "i-MSCP - Yönetici/Kullanıcıları Yönet/Kullanıcı düzenle"
 
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Düzenle/Eposta kurulumu"
@@ -5594,7 +5603,7 @@ msgid "i-MSCP - Ftp / Choose directory"
 msgstr ""
 
 msgid "i-MSCP - Install Software"
-msgstr ""
+msgstr "i-MSCP - Yazılım yükleyin"
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "i-MSCP - Domain Alias Yönetimi/Alias Düzenle"
@@ -5624,6 +5633,9 @@ msgid "i-MSCP - Multi Server Control Panel / Lost password"
 msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Add customer - step 1"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Add hosting plan"
@@ -5719,9 +5731,6 @@ msgstr ""
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Kullanıcılar"
 
-msgid "i-MSCP - Users/Add domain account - step 1"
-msgstr ""
-
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Kullanıcı/Düzenle"
 
@@ -5793,7 +5802,7 @@ msgid "iMSCP - Admin/Admin Log"
 msgstr "iMSCP - Yönetici / Yönetici Logları"
 
 msgid "install"
-msgstr ""
+msgstr "kur"
 
 msgid "internet Multi Server Control Panel"
 msgstr "İnternet Multi Server Kontrol Paneli"

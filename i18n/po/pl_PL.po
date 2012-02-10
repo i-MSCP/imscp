@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-01-19 09:06+0100\n"
-"PO-Revision-Date: 2012-01-18 07:26+0000\n"
+"POT-Creation-Date: 2012-02-10 06:54+0100\n"
+"PO-Revision-Date: 2012-02-07 11:14+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -680,7 +680,7 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "An error occured! Please, contact your administrator."
+msgid "An error occured. Please, contact your administrator."
 msgstr ""
 
 msgid "An error occurred while the authentication attempt."
@@ -1623,9 +1623,6 @@ msgstr ""
 msgid "Edit User"
 msgstr "Edytuj użytkownika"
 
-msgid "Edit admin"
-msgstr "Edytuj administratora"
-
 msgid "Edit alias"
 msgstr ""
 
@@ -1739,9 +1736,6 @@ msgstr ""
 
 msgid "Enabled for domain data and databases"
 msgstr ""
-
-msgid "Entered passwords do not match!"
-msgstr "Wprowadzone hasła nie są jednakowe!"
 
 msgid "Entered passwords do not match."
 msgstr ""
@@ -2438,6 +2432,10 @@ msgstr "Logowanie"
 msgid "Login As"
 msgstr ""
 
+#, php-format
+msgid "Login data successfully sent to %s."
+msgstr ""
+
 msgid "Login into PhpMyAdmin"
 msgstr ""
 
@@ -2855,6 +2853,11 @@ msgstr "Brak błędów systemu pocztowego"
 msgid "No group found."
 msgstr ""
 
+msgid ""
+"No hosting plan available for purchasing. Please contact your system "
+"administrator."
+msgstr ""
+
 msgid "No htaccess related system errors"
 msgstr ""
 
@@ -2863,6 +2866,9 @@ msgstr ""
 
 msgid "No new i-MSCP updates available"
 msgstr "Brak aktualizacji i-MSCP"
+
+msgid "No provided"
+msgstr ""
 
 msgid "No records found"
 msgstr ""
@@ -3147,9 +3153,6 @@ msgstr "E-Mail z hasłem"
 msgid "Password change is deactivated!"
 msgstr "Zmiana hasła jest nieaktywna!"
 
-msgid "Password change is disabled!"
-msgstr "Zmiana hasła jest wyłączona!"
-
 msgid "Password confirmation"
 msgstr ""
 
@@ -3170,6 +3173,9 @@ msgid ""
 msgstr ""
 
 msgid "Password doesn't matches"
+msgstr ""
+
+msgid "Password doesn't matches."
 msgstr ""
 
 msgid "Password is missing."
@@ -4735,14 +4741,17 @@ msgstr "Hasło użytkownika"
 msgid "User password successfully updated."
 msgstr ""
 
+msgid "User personal data successfully updated."
+msgstr ""
+
 msgid "User real (first and last) name"
 msgstr "Prawdziwe imię i nazwisko użytkownika"
 
 msgid "User scheduled for deletion."
 msgstr ""
 
-msgid "User session was killed!"
-msgstr "Sesja użytkownika została zabita!"
+msgid "User session successfully killed for password change."
+msgstr ""
 
 msgid "User session was killed."
 msgstr ""
@@ -5204,9 +5213,6 @@ msgstr ""
 msgid "You have no groups."
 msgstr ""
 
-msgid "You have no hosting plans. Please contact your system administrator."
-msgstr "Nie masz planów hostingowych. Skontaktuj się z administratorem."
-
 msgid "You have no users !"
 msgstr "Nie masz użytkowników !"
 
@@ -5376,6 +5382,12 @@ msgstr "bezpłatnie"
 msgid "from other browser"
 msgstr ""
 
+#, php-format
+msgid ""
+"getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
+"the %s plugin and should be reported to the plugin author."
+msgstr ""
+
 msgid "help"
 msgstr ""
 
@@ -5392,6 +5404,9 @@ msgid "i-MSCP - Admin / Add hosting plan"
 msgstr ""
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
+msgstr ""
+
+msgid "i-MSCP - Admin / Edit customer"
 msgstr ""
 
 msgid "i-MSCP - Admin / Edit hosting plan"
@@ -5465,12 +5480,6 @@ msgstr "i-MSCP - Admin/Zarządzaj użytkownikami"
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Dodaj użytkownika"
-
-msgid "i-MSCP - Admin/Manage users/Edit Administrator"
-msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Edytuj Administratora"
-
-msgid "i-MSCP - Admin/Manage users/Edit User"
-msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Edytuj użytkownika"
 
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Admin/Zarządzaj użytkownikami/Ustawienia poczty"
@@ -5637,6 +5646,9 @@ msgstr ""
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Add customer - step 1"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
@@ -5730,9 +5742,6 @@ msgstr ""
 
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Użytkownicy"
-
-msgid "i-MSCP - Users/Add domain account - step 1"
-msgstr ""
 
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Użytkownicy/Edytuj"
