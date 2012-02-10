@@ -1371,9 +1371,9 @@ sub del_tmp{
 	}
 
 #
-# Code below was commented because for itk server we are using default /etc/php5/apache2/php.ini file and also
-# because starter directories are not used. When using ITK, sessions GC is the one provided by distro (/etc/cron.d/php5)
-# and session file are stored in /var/lib/php5
+# Code below was commented because for ITK server we are using default /etc/php5/apache2/php.ini file and also
+# because starter directories are not used. When using ITK, sessions gc is the one provided by distro (/etc/cron.d/php5)
+# and session files are stored in /var/lib/php5
 #
 
 #	my $hDMN	= iMSCP::Dir->new(dirname => "$main::imscpConfig{USER_HOME_DIR}");
