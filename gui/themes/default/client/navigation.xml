@@ -134,7 +134,7 @@
 				<add_ftp_account>
 					<label>Add Ftp account</label>
 					<uri>/client/ftp_add.php</uri>
-					<class>ftp</class>
+					<title_class>ftp</title_class>
 				</add_ftp_account>
 				<file_manager>
 					<label>Filemanager</label>

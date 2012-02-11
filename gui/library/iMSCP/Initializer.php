@@ -180,7 +180,7 @@ class iMSCP_Initializer
 		$this->_initializeNavigation();
 
 		// Initialize Demo plugin if needed
-		//$this->_initializeDemo();
+		$this->_initializeDemo();
 
 		// Initialize logger
 		// $this->_initializeLogger();
@@ -654,13 +654,13 @@ class iMSCP_Initializer
 	 */
 	protected function _initializeDemo()
 	{
+
 		if(isset($this->_config->DEMO_SERVER) && $this->_config->DEMO_SERVER) {
 			$pluginPath = LIBRARY_PATH .'/../plugins/Demo/Demo.php';
 
 			if(is_readable($pluginPath)) {
 				// Loaded manually since we have not plugins management library yet.
 				require_once $pluginPath;
-
 				$demoPlugin = new iMSCP_Plugins_Demo();
 				$demoPlugin->register(iMSCP_Events_Manager::getInstance());
 			}
