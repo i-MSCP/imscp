@@ -118,7 +118,7 @@ sub setGuiPermissions{
 	setRights("$ROOT_DIR/gui/i18n",
 		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
 	);
-	setRights("$ROOT_DIR/gui/plugins"),
+	setRights("$ROOT_DIR/gui/plugins",
 		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
 	);
 	$rs |= setRights("$ROOT_DIR/gui/plugins",
