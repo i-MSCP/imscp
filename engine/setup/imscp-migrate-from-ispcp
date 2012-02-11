@@ -70,7 +70,7 @@ sub setup_engine {
 	);
 	my $step = 1;
 	for (@steps){
-		step($_->[0], $_->[1], scalar @steps, $step);
+		exit 1 if step($_->[0], $_->[1], scalar @steps, $step);
 		$step++;
 	}
 	iMSCP::Dialog->factory()->endGauge()  if iMSCP::Dialog->factory()->needGauge();
