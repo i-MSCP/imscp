@@ -142,8 +142,9 @@ class iMSCP_Authentication
 			} else {
 				$resultRow = $stmt->fetchRow(PDO::FETCH_OBJ);
 				$password = $this->getPassword();
+				$dbPass = $resultRow->admin_pass;
 
-				if (crypt($password) != $resultRow->admin_pass && $resultRow->admin_pass != md5($password)) {
+				if (crypt($password, $dbPass) != $dbPass && $dbPass != md5($password)) {
 					$result = new iMSCP_Authentication_Result(
 						iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID,
 						$resultRow,
