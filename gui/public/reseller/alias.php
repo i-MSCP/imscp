@@ -53,7 +53,7 @@ function generate_als_list($tpl, $reseller_id)
 
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
-	$resellerProperties = get_reseller_default_props($reseller_id);
+	$resellerProperties = imscp_getResellerProperties($reseller_id);
 
 	if ($uals_current >= $resellerProperties['max_als_cnt'] && $resellerProperties['max_als_cnt'] != '0') {
 		$tpl->assign('ALS_ADD_BUTTON', '');

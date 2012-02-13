@@ -44,63 +44,6 @@ function get_sql_user_count()
 }
 
 /**
- * Returns properties for the given reseller.
- *
- * @throws iMSCP_Exception When reseller properties are not found
- * @param int $resellerId Reseller unique identifier
- * @param bool $forceReload Whether or not force properties reload from database
- * @return array
- */
-function imscp_getResellerProperties($resellerId, $forceReload = false)
-{
-	static $properties = null;
-
-	if (null === $properties || $forceReload) {
-		$resellerId = (int)$resellerId;
-		$query = 'SELECT * FROM `reseller_props` WHERE `reseller_id` = ? LIMIT 1';
-		$stmt = exec_query($query, $resellerId);
-
-		if (!$stmt->rowCount()) {
-			throw new iMSCP_Exception(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
-		}
-
-		$properties = $stmt->fetchRow();
-	}
-
-	return $properties;
-}
-
-/**
- * Returns reseller properties.
- *
- * @param  int $reseller_id Reseller unique identifier
- * @return array An array that contains reseller properties
- * @deprecated Replaced by admin_getResellerProperties()
- */
-/*
-function generate_reseller_props($reseller_id)
-{
-    $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
-    $stmt = exec_query($query, (int)$reseller_id);
-
-    if ($stmt->rowCount() == 0) {
-        return array_fill(0, 18, 0);
-    }
-
-    return array(
-        $stmt->fields['current_dmn_cnt'], $stmt->fields['max_dmn_cnt'],
-        $stmt->fields['current_sub_cnt'], $stmt->fields['max_sub_cnt'],
-        $stmt->fields['current_als_cnt'], $stmt->fields['max_als_cnt'],
-        $stmt->fields['current_mail_cnt'], $stmt->fields['max_mail_cnt'],
-        $stmt->fields['current_ftp_cnt'], $stmt->fields['max_ftp_cnt'],
-        $stmt->fields['current_sql_db_cnt'], $stmt->fields['max_sql_db_cnt'],
-        $stmt->fields['current_sql_user_cnt'], $stmt->fields['max_sql_user_cnt'],
-        $stmt->fields['current_traff_amnt'], $stmt->fields['max_traff_amnt'],
-        $stmt->fields['current_disk_amnt'], $stmt->fields['max_disk_amnt']);
-}
-*/
-
-/**
  * Returns reseller user's properties.
  *
  * @param  int $reseller_id Reseller unique indentifier

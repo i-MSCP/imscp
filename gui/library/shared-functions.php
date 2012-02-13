@@ -792,6 +792,33 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
  */
 
 /**
+ * Returns properties for the given reseller.
+ *
+ * @throws iMSCP_Exception When reseller properties are not found
+ * @param int $resellerId Reseller unique identifier
+ * @param bool $forceReload Whether or not force properties reload from database
+ * @return array
+ */
+function imscp_getResellerProperties($resellerId, $forceReload = false)
+{
+	static $properties = null;
+
+	if (null === $properties || $forceReload) {
+		$resellerId = (int)$resellerId;
+		$query = 'SELECT * FROM `reseller_props` WHERE `reseller_id` = ? LIMIT 1';
+		$stmt = exec_query($query, $resellerId);
+
+		if (!$stmt->rowCount()) {
+			throw new iMSCP_Exception(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
+		}
+
+		$properties = $stmt->fetchRow();
+	}
+
+	return $properties;
+}
+
+/**
  * Update reseller properties.
  *
  * @param  int $reseller_id Reseller unique identifier.

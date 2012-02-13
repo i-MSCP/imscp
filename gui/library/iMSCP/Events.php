@@ -28,7 +28,7 @@
  */
 
 /**
- * Describes all events triggered in the iMSCP Core code class.
+ * Describes all events triggered in the iMSCP core code.
  *
  * @category	iMSCP
  * @package		Events

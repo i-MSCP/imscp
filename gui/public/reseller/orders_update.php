@@ -157,7 +157,7 @@ list(
 ) = generate_user_props($dmn_id);
 
 
-$resellerProperties = get_reseller_default_props($reseller_id);
+$resellerProperties = imscp_getResellerProperties($reseller_id);
 
 list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($dmn_id);
 

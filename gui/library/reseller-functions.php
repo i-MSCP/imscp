@@ -47,32 +47,6 @@ define('MT_ALIAS_CATCHALL', 'alias_catchall');
 define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 /**
- * Returns reseller's properties.
- *
- * @throws iMSCP_Exception if reseller properties are not found in database
- * @param int $resellerId Reseller unique identifier
- * @param bool $forceReload If TRUE, force data to be reloaded from database
- * @return mixed
- */
-function get_reseller_default_props($resellerId, $forceReload = false)
-{
-	static $resellerProperties = null;
-
-	if(null === $resellerProperties || $forceReload) {
-		$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?";
-		$stmt = exec_query($query, $resellerId);
-
-		if ($stmt->rowCount()) {
-			$resellerProperties = $stmt->fields;
-		} else {
-			throw new iMSCP_Exception('Reseller properties were not found.');
-		}
-	}
-
-	return $resellerProperties;
-}
-
-/**
  * Generates user's properties.
  *
  * @param  $reseller_id Reseller unique identifier
@@ -1059,7 +1033,7 @@ function get_reseller_id($domain_id)
  */
 function check_reseller_permissions($resellerId, $permission)
 {
-	$resellerProperties = get_reseller_default_props($resellerId);
+	$resellerProperties = imscp_getResellerProperties($resellerId);
 
 	if ($permission == 'all_permissions') {
 		return array(

@@ -184,7 +184,7 @@ function reseller_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
  */
 function reseller_generatePageData($tpl, $resellerId, $resellerName)
 {
-	$resellerProperties = get_reseller_default_props($resellerId);
+	$resellerProperties = imscp_getResellerProperties($resellerId);
 
 	list(
 		$udmnCurrent, , , $usubCurrent, , , $ualsCurrent, , , $umailCurrent, , ,
