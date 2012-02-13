@@ -477,9 +477,9 @@ table .icon {float: none;}
 .body .icon_center {
 	display: block;
 	text-align: center;
-	background-position: center top;
+	background-position: top center;
 	background-repeat: no-repeat;
-	padding-top : 45px;
+	padding-top : 46px;
 	cursor: pointer;
 }
 
