@@ -21,7 +21,6 @@
  * @package		Authentication
  * @copyright	2010 - 2012 by Laurent Declercq
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -32,7 +31,7 @@
  * @category	iMSCP
  * @package		Authentication
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_Authentication
 {
@@ -142,9 +141,9 @@ class iMSCP_Authentication
 			} else {
 				$resultRow = $stmt->fetchRow(PDO::FETCH_OBJ);
 				$password = $this->getPassword();
-				$dbPass = $resultRow->admin_pass;
+				$dbPassword = $resultRow->admin_pass;
 
-				if (crypt($password, $dbPass) != $dbPass && $dbPass != md5($password)) {
+				if (crypt($password, $dbPassword) != $dbPassword && $dbPassword != md5($password)) {
 					$result = new iMSCP_Authentication_Result(
 						iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID,
 						$resultRow,
@@ -156,7 +155,7 @@ class iMSCP_Authentication
 			}
 
 			// Prevent multiple succesive calls from storing inconsistent results
-			$this->hasIdentity();
+			$this->unsetIdentity();
 
 			if ($result->isValid()) {
 				$this->setIdentity($result->getIdentity());

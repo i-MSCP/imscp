@@ -22,7 +22,6 @@
  * @subpackage	Demo
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.5
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -30,7 +29,8 @@
 return array(
 	'author' => 'Laurent Declercq',
 	'email' => 'l.declercq@nuxwin.com',
-	'date' => '2012-02-06',
+	'version' => '0.0.7',
+	'date' => '2013-02-06',
 	'name' => 'Demo',
 	'desc' => 'Plugin that allow to setup an i-MSCP demo server in few minutes',
 	'url' => 'http://i-mscp.net'

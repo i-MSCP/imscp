@@ -92,6 +92,7 @@ abstract class iMSCP_Plugin
 		return array(
 			'author' => tr('Unknown'),
 			'email' => '',
+			'version' => '',
 			'date' => '0000-00-00',
 			'name' => $parts[2],
 			'desc' => tr('No provided'),
