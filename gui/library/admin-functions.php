@@ -61,7 +61,7 @@ function imscp_getResellerProperties($resellerId, $forceReload = false)
 		$stmt = exec_query($query, $resellerId);
 
 		if (!$stmt->rowCount()) {
-			throw new iMSCP_Exception(tr('Properties for reseller with ID %d were not found in database.'), $resellerId);
+			throw new iMSCP_Exception(tr('Properties for reseller with ID %d were not found in database.', $resellerId));
 		}
 
 		$properties = $stmt->fetchRow();
@@ -99,7 +99,6 @@ function generate_reseller_props($reseller_id)
         $stmt->fields['current_disk_amnt'], $stmt->fields['max_disk_amnt']);
 }
 */
-
 
 /**
  * Returns reseller user's properties.
@@ -322,4 +321,3 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
         }
     }
 }
-
