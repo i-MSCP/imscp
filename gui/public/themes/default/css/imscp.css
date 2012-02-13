@@ -474,6 +474,15 @@ table .icon {float: none;}
 	text-align: center;
 }
 
+.body .icon_center {
+	display: block;
+	text-align: center;
+	background-position: center top;
+	background-repeat: no-repeat;
+	padding-top : 45px;
+	cursor: pointer;
+}
+
 /* Content icons (link icons) */
 .i_add_user {background-image: url(../images/icons/add_user.png);}
 .i_awstatsicon {background-image: url(../images/icons/awstatsicon.png);}
@@ -525,6 +534,7 @@ table .icon {float: none;}
 .i_app_download {background-image: url(../images/icons/app_installer_download.png);}
 .i_app_asc {background-image: url(../images/icons/app_installer_asc.gif);}
 .i_app_desc {background-image: url(../images/icons/app_installer_desc.gif);}
+.i_appicon { background-image: url(../images/icons/appicon.png); }
 
 /* data tables */
 .dataTables_wrapper {
