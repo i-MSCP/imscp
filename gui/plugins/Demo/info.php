@@ -30,7 +30,7 @@ return array(
 	'author' => 'Laurent Declercq',
 	'email' => 'l.declercq@nuxwin.com',
 	'version' => '0.0.7',
-	'date' => '2013-02-06',
+	'date' => '2012-02-13',
 	'name' => 'Demo',
 	'desc' => 'Plugin that allow to setup an i-MSCP demo server in few minutes',
 	'url' => 'http://i-mscp.net'
