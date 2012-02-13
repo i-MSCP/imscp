@@ -292,7 +292,7 @@ class Message {
      * @return object Message object
      * @todo define argument and return types
      */
-    function parseStructure($read, &$i, $sub_msg = '') {
+    static function parseStructure($read, &$i, $sub_msg = '') {
         $msg = @Message::parseBodyStructure($read, $i, $sub_msg);
         if($msg) $msg->setEntIds($msg,false,0);
         return $msg;
