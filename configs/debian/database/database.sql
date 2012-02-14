@@ -117,7 +117,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '101'),
+('DATABASE_REVISION', '104'),
 ('PHPINI_ALLOW_URL_FOPEN', 'Off'),
 ('PHPINI_DISPLAY_ERRORS', 'Off'),
 ('PHPINI_REGISTER_GLOBALS', 'Off'),
@@ -409,7 +409,7 @@ CREATE TABLE IF NOT EXISTS `login` (
 
 CREATE TABLE IF NOT EXISTS `mail_users` (
   `mail_id` int(10) unsigned NOT NULL auto_increment,
-  `mail_acc` varchar(200) collate utf8_unicode_ci default NULL,
+  `mail_acc` text collate utf8_unicode_ci default NULL,
   `mail_pass` varchar(150) collate utf8_unicode_ci default NULL,
   `mail_forward` text collate utf8_unicode_ci,
   `domain_id` int(10) unsigned default NULL,
@@ -419,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `mail_auto_respond` tinyint(1) NOT NULL default '0',
   `mail_auto_respond_text` text collate utf8_unicode_ci,
   `quota` int(10) default '104857600',
-  `mail_addr` varchar(200) collate utf8_unicode_ci default NULL,
+  `mail_addr` varchar(254) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`mail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -489,6 +489,23 @@ CREATE TABLE IF NOT EXISTS `php_ini` (
   `memory_limit` int(11) NOT NULL DEFAULT '128',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plugin`
+--
+
+CREATE TABLE IF NOT EXISTS `plugin` (
+  `plugin_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `plugin_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `plugin_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `plugin_info` text COLLATE utf8_unicode_ci NOT NULL,
+  `plugin_config` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `plugin_status` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'disabled',
+  PRIMARY KEY (`plugin_id`),
+  UNIQUE KEY `name` (`plugin_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 

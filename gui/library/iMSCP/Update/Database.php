@@ -1454,10 +1454,12 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Add plugin table for plugins management.
 	 *
+	 * Note: Not used at this moment.
+	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
 	 */
-	protected function _databaseUpdate_102()
+	protected function _databaseUpdate_103()
 	{
 		return "
 			CREATE TABLE IF NOT EXISTS `plugin` (
@@ -1471,5 +1473,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 				UNIQUE KEY `name` (`plugin_name`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 		";
+	}
+
+	/**
+	 * Update for the `mail_users` table structure.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return string SQL Statement to be executed
+	 */
+	protected function _databaseUpdate_104()
+	{
+		return array(
+			// change to allows forward mail list
+			'ALTER IGNORE TABLE `mail_users` CHANGE `mail_acc` `mail_acc` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL',
+			// change to fix with RFC
+			'ALTER IGNORE TABLE `mail_users` CHANGE `mail_addr` `mail_addr` VARCHAR(254) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
+		);
+
 	}
 }
