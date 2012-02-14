@@ -30,10 +30,42 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
+
+/************************************************************************************
+ * Script functions
+ */
+
+/**
+ * Hide disabled feature.
+ *
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ */
+function client_hideDisabledFeatures($tpl)
+{
+	if (!customerHasFeature('backup')) {
+		$tpl->assign('BACKUP_FEATURE', '');
+	}
+
+	if (!customerHasFeature('mail')) {
+		$tpl->assign('MAIL_FEATURE', '');
+	}
+
+	if (!customerHasFeature('ftp')) {
+		$tpl->assign('FTP_FEATURE', '');
+	}
+
+	if (!customerHasFeature('aps')) {
+		$tpl->assign('APS_FEATURE', '');
+	}
+
+	if (!customerHasFeature('awstats')) {
+		$tpl->assign('AWSTATS_FEATURE', '');
+	}
+}
 
 /************************************************************************************
  * Main script
@@ -53,31 +85,33 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
 $tpl->define_dynamic(
 	array(
-		 'page' => 'client/webtools.tpl',
-		 'page_message' => 'layout'));
+		'page' => 'client/webtools.tpl',
+		'page_message' => 'layout'));
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_TITLE_WEBTOOLS' => tr('Webtools'),
-		 'TR_HTACCESS' => tr('Protected areas'),
-		 'TR_HTACCESS_TXT' => tr('Manage your protected areas, users and groups.'),
-		 'TR_ERROR_PAGES' => tr('Error pages'),
-		 'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
-		 'TR_BACKUP' => tr('Backup'),
-		 'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
-		 'TR_WEBMAIL' => tr('Webmail'),
-		 'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
-		 'TR_FILEMANAGER' => tr('Filemanager'),
-		 'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
-		 'TR_AWSTATS' => tr('Awstats'),
-		 'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
-		 'TR_APP_INSTALLER' => 'Application installer',
-		 'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Webtools'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
+		'TR_FEATURE' => tr('Feature'),
+		'TR_DESCRIPTION' => tr('Description'),
+		'TR_HTACCESS' => tr('Protected areas'),
+		'TR_HTACCESS_TXT' => tr('Manage your protected areas, users and groups.'),
+		'TR_ERROR_PAGES' => tr('Error pages'),
+		'TR_ERROR_PAGES_TXT' => tr('Customize error pages for your domain.'),
+		'TR_BACKUP' => tr('Backup'),
+		'TR_BACKUP_TXT' => tr('Backup and restore settings.'),
+		'TR_WEBMAIL' => tr('Webmail'),
+		'TR_WEBMAIL_TXT' => tr('Access your mail through the web interface.'),
+		'TR_FILEMANAGER' => tr('Filemanager'),
+		'TR_FILEMANAGER_TXT' => tr('Access your files through the web interface.'),
+		'TR_AWSTATS' => tr('Awstats'),
+		'TR_AWSTATS_TXT' => tr('Access your domain statistics through the Awstats Web interface.'),
+		'TR_APP_INSTALLER' => 'Application installer',
+		'TR_APP_INSTALLER_TXT' => tr('Install various Web applications with a few clicks.')));
 
 generateNavigation($tpl);
+client_hideDisabledFeatures($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
