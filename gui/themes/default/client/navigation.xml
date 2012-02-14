@@ -223,12 +223,12 @@
 					<uri>/client/mail_catchall.php</uri>
 					<title_class>email</title_class>
 					<pages>
-						<add_catchall>
+						<add_catchall_link>
 							<label>Add catchall</label>
 							<uri>/client/mail_catchall_add.php</uri>
 							<visible>0</visible>
-							<title_clas>email</title_clas>
-						</add_catchall>
+							<title_class>email</title_class>
+						</add_catchall_link>
 					</pages>
 				</catchall>
 				<webmail>
