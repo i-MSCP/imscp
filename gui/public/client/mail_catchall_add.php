@@ -471,6 +471,7 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Add catchall'),
 		 'TR_CREATE_CATCHALL_MAIL_ACCOUNT' => tr('Create catch all mail account'),
 		 'TR_MAIL_LIST' => tr('Mail accounts list'),
 		 'TR_CREATE_CATCHALL' => tr('Create catch all'),

@@ -369,7 +369,7 @@ function gen_page_lists($tpl, $user_id)
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Users'),
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Catchall'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo()));
 

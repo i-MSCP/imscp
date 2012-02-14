@@ -64,7 +64,7 @@ $tpl->define_dynamic('table_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Users'),
+		'TR_PAGE_TITLE'	=> tr('i-MSCP - Client / Manage mail'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -690,7 +690,6 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		'TR_MANAGE_USERS' => tr('Manage users'),
 		'TR_MAIL_USERS' => tr('Mail users'),
 		'TR_MAIL' => tr('Mail'),
 		'TR_TYPE' => tr('Type'),

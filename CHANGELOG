@@ -14,13 +14,7 @@ Features / Enhancements:
 				- Added authentication base class to handle authentication process
 				- Added bruteforce class for bruteforce detection
 			- Events system:
-				- Added the following events:
-					- onBeforeAuthentication (triggered in the iMSCP_Authentication class)
-					- onAfterAuthentication (triggered in the iMSCP_Authentication class)
-					- onBeforeSetIdentity (triggered in the iMSCP_Authentication class)
-					- onAfterSetIdentity (triggered in the iMSCP_Authentication class)
-					- onBeforeUnsetIdentity (triggered in the iMSCP_Authentication class)
-					- onAfterUnsetIdentity (triggered in the iMSCP_Authentication class)
+				- Added new events (See iMSCP_Events class)
 				- Added support for listeners return values
 				- Finished implementation of iMSCP_Events_Manager_interface
 				- Updated Events documentation (iMSCP_Events, iMSCP_Database_Events, iMSCP_pTemplate_Events)

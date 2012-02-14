@@ -182,7 +182,7 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_ENABLE_MAIL_AUTORESPONDER' => tr('Enable mail auto responder'),
+		 'TR_ENABLE_MAIL_AUTORESPONDER' => tr('i-MSCP - Client / Manage mail / Enable autoresponder'),
 		 'TR_ARSP_MESSAGE' => tr('Your message'),
 		 'TR_ENABLE' => tr('Save'),
 		 'TR_CANCEL' => tr('Cancel'),
