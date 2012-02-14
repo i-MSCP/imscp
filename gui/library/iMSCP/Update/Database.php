@@ -1479,7 +1479,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * Update for the `mail_users` table structure.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @return string SQL Statement to be executed
+	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_104()
 	{
