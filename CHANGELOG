@@ -22,6 +22,8 @@ Features / Enhancements:
 				- Updated to fit with events system changes
 			- Plugins:
 				- Updated demo plugin to fit with events system changes
+	Tools:
+		- Updated PhpMyAdmin to version 3.4.10	
 
 Tickets:
 	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
