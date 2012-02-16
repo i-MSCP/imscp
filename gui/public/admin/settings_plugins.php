@@ -150,6 +150,7 @@ if (isset($_GET['update'])) {
 
 	// TODO message about updated plugins
 	set_page_message(tr('Plugin list successfully updated. <strong>%d</strong> new plugin(s) found.', $newPluginsCount), 'success');
+	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeActivatePlugin, array('pluginManager' => $pluginManager));

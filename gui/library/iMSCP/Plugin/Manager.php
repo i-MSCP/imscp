@@ -33,7 +33,7 @@
  * @package		iMSCP_Core
  * @subpackage	Plugin_Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_Plugin_Manager
 {
@@ -401,16 +401,23 @@ class iMSCP_Plugin_Manager
 	 */
 	protected function _saveIntoDatabase($pluginData)
 	{
-		$query = "
-			REPLACE INTO
-				`plugin` (
-					`plugin_name`, `plugin_type`, `plugin_info`, `plugin_config`, `plugin_status`
-				) VALUE (
-					:name, :type, :info, :config, :status
-				)
-		";
-		$stmt = exec_query($query, $pluginData);
+		if(!array_key_exists($pluginData['name'], $this->_plugins)) {
+			$query = '
+				INSERT INTO
+					`plugin` (
+						`plugin_name`, `plugin_type`, `plugin_info`, `plugin_config`, `plugin_status`
+					) VALUE (
+						:name, :type, :info, :config, :status
+					)
+			';
+			$stmt = exec_query($query, $pluginData);
+			return 1;
+		}
 
-		return (int)$stmt->rowCount();
+		$query = 'UPDATE `plugin` SET `plugin_info` = ?, `plugin_config` = ? WHERE `plugin_name` = ?';
+		$stmt = exec_query($query, array($pluginData['info'], $pluginData['config'], $pluginData['name']));
+
+		return 2;
+
 	}
 }
