@@ -51,9 +51,11 @@ function admin_generatesPluginList($tpl, $pluginManager)
 		$cacheFile = 'gui/cache/protected_plugins.php';
 		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' . tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected plugin') . '</span>';
 
+		$hasLoadedPlugins = false;
+
 		foreach ($pluginList as $pluginName) {
 			$plugin = $pluginManager->load('Action', $pluginName, false, true);
-
+			if(null === $plugin) continue;
 			$pluginInfo = $plugin->getInfo();
 			$tpl->assign(
 				array(
@@ -79,6 +81,11 @@ function admin_generatesPluginList($tpl, $pluginManager)
 			}
 
 			$tpl->parse('PLUGIN_BLOCK', '.plugin_block');
+			$hasLoadedPlugins = true;
+		}
+
+		if(!$hasLoadedPlugins) {
+			$tpl->assign('PLUGINS_BLOCK', '');
 		}
 	}
 }
@@ -208,7 +215,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Settings / Plugins management'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Settings / Plugin management'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
@@ -220,8 +227,9 @@ $tpl->assign(
 		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin'),
 		'TR_DEACTIVATE' => tr('Deactivate'),
 		'TR_PROTECT' => tr('Protect'),
-		'TR_PROTECT_TOOLTIP' => tr('Protect this plugin against disabling'),
-		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugins management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file.", 'gui/cache/protected_plugins.php'),
+		'TR_PROTECT_TOOLTIP' => tr('Protect this plugin'),
+		'TR_PLUGIN_CONFIRMATION_TITLE' => tr('Confirmation for plugin protection'),
+		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugin management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file.", 'gui/cache/protected_plugins.php'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),

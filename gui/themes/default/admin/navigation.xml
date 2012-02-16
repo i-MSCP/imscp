@@ -322,7 +322,7 @@
 					<title_class>apps_installer</title_class>
 				</softwares_options>
 				<plugins_management>
-					<label>Plugins management</label>
+					<label>Plugin management</label>
 					<uri>/admin/settings_plugins.php</uri>
 					<title_class>plugin</title_class>
 				</plugins_management>

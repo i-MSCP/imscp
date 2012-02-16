@@ -202,7 +202,7 @@ class iMSCP_Plugin_Manager
 
 		if (!class_exists($className, true)) {
 			// TODO: Be more generic
-			write_log(sprintf('Plugin manager was unable to load the %s plugin - Class %s not found.', $pluginName, $className));
+			write_log(sprintf('Plugin manager was unable to load the %s plugin - Class %s not found.', $pluginName, $className), E_USER_WARNING);
 			return null;
 		}
 
@@ -381,11 +381,11 @@ class iMSCP_Plugin_Manager
 						}
 					} else {
 						// TODO: Be more generic
-						set_page_message(tr('%s plugin class not found in file %s', $className, $pluginFile), 'error');
+						set_page_message(tr('The <strong>%s</strong> class for the <strong>%s</strong> plugin was not found in file <strong>%s</strong>', $className, $pluginName, $pluginFile), 'error');
 					}
 				} else {
 					// TODO: Be more generic
-					set_page_message(tr('%s plugin file do not exists or is not readable', $pluginFile), 'error');
+					set_page_message(tr('The <strong>%s</strong> file for the <strong>%s</strong> plugin do not exists or is not readable.', $pluginFile, $pluginName), 'error');
 				}
 			}
 		}

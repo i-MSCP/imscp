@@ -27,7 +27,7 @@
 			</script>
 			<!-- BDP: plugins_block -->
 
-			<div id="dialog_box" title="Plugin protection confirmation">
+			<div id="dialog_box" title="{TR_PLUGIN_CONFIRMATION_TITLE}">
 				<p>{TR_PROTECT_CONFIRMATION}</p>
 			</div>
 
