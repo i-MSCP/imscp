@@ -30,24 +30,24 @@
 // TODO datatable (Must fix layout issue before - table header + checkbox)
 
 /*******************************************************************************
- * Script function
+ * Script functions
  */
 
 /**
  * Generates plugins list from database.
  *
- * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_pTemplate $tpl Template engine instance
  * @param iMSCP_Plugin_Manager $pluginManager
  */
 function admin_generatesPluginList($tpl, $pluginManager)
 {
 	$pluginList = $pluginManager->getPluginList('Action', false);
-	sort($pluginList);
 
 	if (empty($pluginList)) {
 		$tpl->assign('PLUGINS_BLOCK', '');
 		set_page_message(tr('Plugin list is empty. To install a new plugin, extract its content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
 	} else {
+		sort($pluginList);
 		$cacheFile = 'gui/cache/protected_plugins.php';
 		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' . tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected plugin') . '</span>';
 
