@@ -41,7 +41,7 @@
  * @package		iMSCP_Events
  * @subpackage	Manager
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 interface iMSCP_Events_Manager_Interface
 {
@@ -73,9 +73,9 @@ interface iMSCP_Events_Manager_Interface
 	 * Unregister an event listener from the given event.
 	 *
 	 * @abstract
-	 * @param  string|array $eventName The event to remove a listener from.
+	 * @param  string $eventName The event to remove a listener from.
 	 * @param  callback|object $listener The listener callback or object to remove.
-	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
+	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
 	public function unregisterListener($eventName, $listener);
 
@@ -93,8 +93,7 @@ interface iMSCP_Events_Manager_Interface
 	 *
 	 * @abstract
 	 * @param string $eventName The name of the event.
-	 * @param string $listener listener classname or callback name
 	 * @return bool TRUE if the specified event has any listeners, FALSE otherwise.
 	 */
-	public function hasListener($eventName, $listener);
+	public function hasListener($eventName);
 }

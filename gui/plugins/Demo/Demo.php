@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package		iMSCP_Plugins
+ * @package		iMSCP_Plugin
  * @subpackage	Demo
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
@@ -38,12 +38,12 @@ require_once 'iMSCP/Events/Listeners/Interface.php';
  * This plugin allow to setup an i-MSCP demo server.
  *
  * @category	iMSCP
- * @package		iMSCP_Plugins
+ * @package		iMSCP_Plugin
  * @subpackage	Demo
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.7
  */
-class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Listeners_Interface
+class iMSCP_Plugin_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Listeners_Interface
 {
 	/**
 	 * Listened events.
@@ -64,11 +64,11 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	 */
 	public function __construct()
 	{
-		if ($this->getConfig('user_accounts')) {
+		if ($this->getConfigParam('user_accounts')) {
 			$this->_listenedEvents[] = iMSCP_Events::onLoginScriptEnd;
 		}
 
-		if (($disabledActions = $this->getConfig('disabled_actions'))) {
+		if (($disabledActions = $this->getConfigParam('disabled_actions'))) {
 			$this->setDisabledActions($disabledActions);
 		} else {
 			$this->setDisabledActions();
@@ -233,7 +233,7 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 			$username = idn_to_utf8($stmt->fields['admin_name']);
 			$foundUser = false;
 
-			foreach ($this->getConfig('user_accounts') as $account) {
+			foreach ($this->getConfigParam('user_accounts') as $account) {
 				if ($account['username'] == $username && (isset($account['protected']) && $account['protected'])) {
 					$foundUser = true;
 				}
@@ -281,7 +281,7 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	 */
 	public function onLoginScriptEnd($event)
 	{
-		if ($this->getConfig('user_accounts') && ($jsCode = $this->_getCredentialsDialog()) != '') {
+		if ($this->getConfigParam('user_accounts') && ($jsCode = $this->_getCredentialsDialog()) != '') {
 			/** @var $tpl iMSCP_pTemplate */
 			$tpl = $event->getParam('templateEngine');
 			$tpl->replaceLastParseResult(str_replace('</head>', $jsCode . PHP_EOL . '</head>', $tpl->getLastParseResult()));
@@ -337,7 +337,7 @@ class iMSCP_Plugins_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_Lis
 	{
 		$credentials = array();
 
-		foreach ($this->getConfig('user_accounts') as $account) {
+		foreach ($this->getConfigParam('user_accounts') as $account) {
 			if (isset($account['label']) && isset($account['username']) && isset($account['password'])) {
 				$query = 'SELECT COUNT(`admin_id`) `cnt` FROM `admin` WHERE `admin_name` = ? AND (`admin_pass` = ? OR `admin_pass` = MD5(?))';
 				$stmt = exec_query($query, array(idn_to_ascii($account['username']), crypt($account['password']), $account['password']));

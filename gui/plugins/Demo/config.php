@@ -22,6 +22,7 @@
  * @subpackage	Demo
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.7
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -29,10 +30,8 @@
 // Configuration file sample for the demo plugin
 
 return array(
-	/*
-		List of user accounts that will be available via select box on login page. If an user account is protected, it
-		will be imposible to remove it. Also, its password will be protected against modification.
-	*/
+	//	List of user accounts that will be available via select box on login page. If an user account is protected, it
+	//	will be imposible to remove it. Also, its password will be protected against modification.
 	'user_accounts' => array(
 		array(
 			'label' => 'Administrator 1',
@@ -90,9 +89,7 @@ return array(
 		)
 	),
 
-	/*
-		List of actions that must be totally disabled. Each action must be prefixed by 'onBefore'
-	*/
+	// List of actions that must be totally disabled. Each action must be prefixed by 'onBefore'
 	'disabled_actions' => array(
 		'onBeforeAddFtp',
 		'onBeforeEditFtp',

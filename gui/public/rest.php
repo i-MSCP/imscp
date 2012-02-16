@@ -1,7 +1,8 @@
 <?php
+
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010 - 2012 by i-MSCP Team
+ * Copyright (C) 2010-2012 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -10,7 +11,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -18,21 +19,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package		iMSCP_Plugins
- * @subpackage	Demo
- * @copyright	2010 - 2012 by i-MSCP Team
+ * @package		iMSCP_Core
+ * @subpackage	Rest
+ * @copyright	2010-2012 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
- * @version		0.0.7
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-return array(
-	'author' => 'Laurent Declercq',
-	'email' => 'l.declercq@nuxwin.com',
-	'version' => '0.0.7',
-	'date' => '2012-02-16',
-	'name' => 'Demo',
-	'desc' => 'Plugin that allow to setup an i-MSCP demo server in few minutes',
-	'url' => 'http://i-mscp.net'
-);
+// Include core library
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && stristr($_SERVER['HTTP_X_REQUESTED_WITH'], 'RestHttpRequest') !== false) {
+	// Include core library
+	require_once 'imscp-lib.php'; // TODO avoid to load useless files
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onRestRequest, array('request' => $_REQUEST));
+} else {
+	die('Error - Only the REST requests are allowed through this door.');
+}

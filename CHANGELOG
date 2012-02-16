@@ -8,6 +8,8 @@ Features / Enhancements:
 
 	GUI:
 		Core:
+			- Added plugins management interface
+			- Added action script (rest.php) to handle REST requests (The REST server will comming soon)
 			- Updated action scripts and core library to fit with events system changes
 		Components:
 			- Authentication
@@ -21,6 +23,7 @@ Features / Enhancements:
 			- DebugBar:
 				- Updated to fit with events system changes
 			- Plugins:
+				- Added plugin manager
 				- Updated demo plugin to fit with events system changes
 	Tools:
 		- Updated PhpMyAdmin to version 3.4.10	

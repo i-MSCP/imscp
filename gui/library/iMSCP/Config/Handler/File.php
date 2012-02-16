@@ -148,6 +148,7 @@ require_once  'iMSCP/Config/Handler.php';
  * @property int COMPRESS_OUTPUT Tells whether or not output must be compressed
  * @property int ENABLE_SSL Tells whether or not SSL feature for customers is enabled
  * @property bool MAIN_MENU_SHOW_LABELS Tells whether or not labels must be showed for main menu links
+ * @property array PLUGIN Plugins configuration
  *
  * @category	iMSCP
  * @package		iMSCP_Core

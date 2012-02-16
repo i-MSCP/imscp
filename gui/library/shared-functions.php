@@ -965,7 +965,7 @@ function array_encode_idna($array, $asPath = false)
  * Convert domain name to IDNA ASCII form.
  *
  * @throws iMSCP_Exception When PHP intl extension is not loaded
- * @param  $domain Domain to convert.
+ * @param  string $domain Domain to convert.
  * @return string Domain name encoded in ASCII-compatible form
  */
 function encode_idna($domain)
@@ -1115,13 +1115,10 @@ function is_basicString($string)
  *
  * Returns true if the request‘s "X-Requested-With" header contains "XMLHttpRequest".
  *
- * Note: jQuery and Prototype Javascript libraries sends this header with every Ajax
- * request.
+ * Note: jQuery and Prototype Javascript libraries sends this header with every Ajax request.
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
- * @Since r2587
- * @return boolean  TRUE if the request‘s "X-Requested-With" header contains
- *				  "XMLHttpRequest", FALSE otherwise
+ * @return boolean  TRUE if the request‘s "X-Requested-With" header contains "XMLHttpRequest", FALSE otherwise
  */
 function is_xhr()
 {
@@ -1135,9 +1132,8 @@ function is_xhr()
 }
 
 /**
- * Check if a data is serialized
+ * Check if a data is serialized.
  *
- * @since ispCP 1.0.7
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @param mixed $data Data to be checked
  * @return boolean TRUE if serialized data, FALSE otherwise
@@ -1161,56 +1157,6 @@ function is_serialized($data)
 	}
 
 	return false;
-}
-
-/**
- * Checks for feature permissions.
- *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @return void
- * @deprecated use customerHasFeature() instead
- */
-function check_permissions($tpl)
-{
-	if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == 'no') {
-		$tpl->assign('SQL_SUPPORT', '');
-	}
-
-	if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
-		$tpl->assign('ADD_EMAIL', '');
-	}
-
-	if (isset($_SESSION['subdomain_support'])
-		&& $_SESSION['subdomain_support'] == 'no'
-	) {
-		$tpl->assign('SUBDOMAIN_SUPPORT', '');
-	}
-
-	if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
-		$tpl->assign('DOMAINALIAS_SUPPORT', '');
-	}
-
-	if (isset($_SESSION['subdomain_support'])
-		&& $_SESSION['subdomain_support'] == 'no') {
-		$tpl->assign('SUBDOMAIN_SUPPORT_CONTENT', '');
-	}
-
-	if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
-		$tpl->assign('DOMAINALIAS_SUPPORT_CONTENT', '');
-	}
-
-	if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no'
-		&& isset($_SESSION['subdomain_support'])
-		&& $_SESSION['subdomain_support'] == 'no'
-	) {
-		$tpl->assign('DMN_MNGMNT', '');
-	}
-
-	if (isset($_SESSION['software_support'])
-		&& $_SESSION['software_support'] == 'no'
-	) {
-		$tpl->assign('NO_SOFTWARE', '');
-	}
 }
 
 /************************************************************************************
@@ -1422,8 +1368,7 @@ AUTO_LOG_MSG;
  * @param string $gender
  * @return void
  */
-function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
-	$ulname, $utype, $gender = '')
+function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ulname, $utype, $gender = '')
 {
 	 /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -1491,7 +1436,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
  * Returns client software permissions.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $user_id User unique identifier
+ * @param  int $user_id User unique identifier
  * @return void
  */
 function get_client_software_permission($tpl, $user_id)
@@ -1538,7 +1483,7 @@ function get_client_software_permission($tpl, $user_id)
  * Returns reseller software permissions.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $reseller_id Reseller unique identifier
+ * @param  int $reseller_id Reseller unique identifier
  * @return void
  */
 function get_reseller_software_permission($tpl, $reseller_id)
@@ -1590,12 +1535,12 @@ function get_application_installer_conf()
  *
  * @since 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
- * @param $package_installtype
- * @param $package_name
- * @param $package_version
- * @param $package_language
- * @param $user_id
- * @return result array
+ * @param string $package_installtype
+ * @param string $package_name
+ * @param string $package_version
+ * @param string $package_language
+ * @param int $user_id
+ * @return array
  */
 function check_package_is_installed($package_installtype, $package_name,
 	$package_version, $package_language, $user_id)
@@ -1687,10 +1632,9 @@ function check_package_is_installed($package_installtype, $package_name,
  * Get all software packages from database since last update from the websoftware
  * depot.
  *
- * @since 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $user_id User unique identifier
+ * @param int $user_id User unique identifier
  * @return int
  */
 function get_webdepot_software_list($tpl, $user_id)
@@ -1763,7 +1707,6 @@ function get_webdepot_software_list($tpl, $user_id)
 /**
  * Update database from the websoftware depot xml file list.
  *
- * @since iMSCP 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
  * @param string $XML_URL
  * @param string $webdepot_last_update
@@ -2072,7 +2015,7 @@ function exec_query($query, $bind = null)
  *
  * Note: An Identifier is essentially a name of a database, table, or table column.
  *
- * @param  $identifier Identifier to quote
+ * @param  string $identifier Identifier to quote
  * @return string quoted identifier
  */
 function quoteIdentifier($identifier)

@@ -22,13 +22,12 @@
  * @subpackage	Plugin_Manager
  * @copyright	2010 - 2012 by i-MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
 /**
- * Manager class.
+ * Plugin Manager class.
  *
  * @category	iMSCP
  * @package		iMSCP_Core
@@ -38,89 +37,381 @@
  */
 class iMSCP_Plugin_Manager
 {
-
 	/**
-	 * Plugins directory.
-	 *
-	 * @var string
+	 * @var string Plugins directory.
 	 */
 	protected $_pluginsDirectory;
 
 	/**
-	 * Plugins manager configuration parameters.
-	 *
-	 * @var array()
+	 * @var array Keys are the plugin names and the values a bool to tell if the plugins are enabled or disabled
 	 */
-	protected $_config;
+	protected $_plugins = array();
+
+	/**
+	 * @var array List of protected plugins.
+	 */
+	protected $_protectedPlugins = array();
+
+	/**
+	 * @var bool
+	 */
+	protected $_isLoadedProtectedPlugins = false;
+
+	/**
+	 * @var array Plugin by type
+	 */
+	protected $_pluginsByType = array();
 
 	/**
 	 * Constructor.
 	 *
-	 * @param null $pluginDirectory
+	 * @param string $pluginDirectory
 	 */
 	public function __construct($pluginDirectory)
 	{
-		if($pluginDirectory) {
-			$this->setPluginsDirectory($pluginDirectory);
+		if ($pluginDirectory) {
+			$this->setDirectory($pluginDirectory);
 		}
 
-		$this->_loadConfig();
+		$this->_generatePluginLists();
+
+		// Allow access to loaded plugins outside this namespace
+		iMSCP_Registry::set('PLUGINS', array());
+
+		// Register autoloader for plugin classes
+		spl_autoload_register(array($this, '_autoload'));
 	}
 
 	/**
-	 * Sets plugin directory.
+	 * Generates plugin lists.
+	 *
+	 * @return array
+	 */
+	protected function _generatePluginLists()
+	{
+		$stmt = execute_query('SELECT `plugin_name`, `plugin_type`, `plugin_status` FROM `plugin`');
+
+		while ($plugin = $stmt->fetchRow(PDO::FETCH_OBJ)) {
+			if ($plugin->plugin_status == 'enabled') {
+				$this->_plugins[$plugin->plugin_name] = true;
+				$this->_pluginsByType[$plugin->plugin_type]['enabled'][] = $plugin->plugin_name;
+			} elseif ($plugin->plugin_status == 'disabled') {
+				$this->_plugins[$plugin->plugin_name] = false;
+				$this->_pluginsByType[$plugin->plugin_type]['disabled'][] = $plugin->plugin_name;
+			}
+		}
+	}
+
+	/**
+	 * Autoloader for plugin classes.
+	 *
+	 * @param string $className Plugin class to load
+	 */
+	public function _autoload($className)
+	{
+		list(, , $className) = explode('_', $className, 3);
+		$filePath = $this->getPluginDirectory() . "/{$className}/{$className}.php";
+
+		if (is_readable($filePath)) {
+			require_once $filePath;
+		}
+	}
+
+	/**
+	 * Sets plugins directory.
 	 *
 	 * @thrown iMSCP_Plugin_Exception When $pluginDirectory doesn't exists or is not readable.
 	 * @param string $pluginDirectory Plugins directory path
 	 * @throws iMSCP_Plugin_Exception
 	 */
-	public function setPluginsDirectory($pluginDirectory)
+	public function setDirectory($pluginDirectory)
 	{
-		$pluginDirectory = realpath($pluginDirectory);
+		$pluginDirectory = (string)$pluginDirectory;
 
-		if($pluginDirectory && is_readable($pluginDirectory)) {
-			$this->_pluginsDirectory = realpath($pluginDirectory);
+		if (is_readable($pluginDirectory)) {
+			$this->_pluginsDirectory = $pluginDirectory;
 		} else {
-			throw new iMSCP_Plugin_Exception(sprintf("The %s plugins directory doesn't exists or is not readable", $pluginDirectory));
+			throw new iMSCP_Plugin_Exception(
+				sprintf("The %s plugins directory doesn't exists or is not readable", $pluginDirectory)
+			);
 		}
 	}
 
 	/**
-	 *  Load plugins manager configuration parameters.
+	 * Returns plugin directory.
 	 *
-	 * @return void
+	 * @return string Plugin directory
 	 */
-	protected  function _loadConfig()
+	public function getPluginDirectory()
 	{
-		$config = iMSCP_Registry::get('config');
-
-		if(!isset($config->PLUGIN)) {
-			$config->PLUGIN =  array();
-			$config->PLUGIN['pluginsManager'] = array();
-		} elseif(!isset($config->PLUGIN['pluginsManager'])) {
-			$config->PLUGIN['pluginsManager'] = array();
-		}
-
-		$this->_config =& $config->PLUGIN['pluginsManager'];
+		return $this->_pluginsDirectory;
 	}
 
-
-	public function rebuildPluginsIndex()
+	/**
+	 * Returns a list of available plugins of given type
+	 *
+	 * @param string $type PLugin The type of plugin to return ('all' means all plugin type).
+	 * @param bool $onlyEnabled TRUE to only return enabled plugins (default), FALSE to return both enabled and disabled plugins
+	 *
+	 * @return array of plugin names
+	 */
+	function getPluginList($type = 'all', $onlyEnabled = true)
 	{
-		$pluginsDirectory = LIBRARY_PATH . '/../plugins';
-		$plugins = array();
+		if ($type == 'all') {
+			return $onlyEnabled ? array_keys(array_filter($this->_plugins)) : array_keys($this->_plugins);
+		}
 
-		$iterator =new RecursiveDirectoryIterator($pluginsDirectory, FilesystemIterator::SKIP_DOTS);
+		if (!isset($this->_pluginsByType[$type]['enabled'])) {
+			$this->_pluginsByType[$type]['enabled'] = array();
+		}
 
+		if (!isset($this->_pluginsByType[$type]['disabled'])) {
+			$this->_pluginsByType[$type]['disabled'] = array();
+		}
 
-		/** @var $fileInfo SplFileInfo */
-		foreach($iterator as $fileInfo)
-		{
-			if($fileInfo->isDir() && is_readable($pluginsDirectory . '/' . $fileInfo->getFilename())) {
-				$plugins = $fileInfo->getFilename();
+		return !$onlyEnabled
+			? array_merge($this->_pluginsByType[$type]['enabled'], $this->_pluginsByType[$type]['disabled'])
+			: $this->_pluginsByType[$type]['enabled'];
+	}
+
+	/**
+	 * Loads the given plugin and creates an object of it.
+	 *
+	 * @param string $pluginType Type of plugin to load
+	 * @param string $pluginName Name of the plugin to load
+	 * @param bool $newInstance true to return a new instance of the plugin, false to use an already loaded instance
+	 * @param bool $loadDisabled true to load even disabled plugins
+	 * @return null|iMSCP_Plugin
+	 */
+	public function load($pluginType, $pluginName, $newInstance = false, $loadDisabled = false)
+	{
+		if (!$loadDisabled && $this->isDeactivated($pluginName)) {
+			return null;
+		}
+
+		$className = "iMSCP_Plugin_$pluginName";
+		$loadedPlugins =& iMSCP_Registry::get('PLUGINS');
+
+		if (!empty($loadedPlugins[$pluginType][$pluginName])) {
+			if ($newInstance) {
+				return class_exists($className, true) ? new $className : null;
+			}
+
+			return $loadedPlugins[$pluginType][$pluginName];
+		}
+
+		if (!class_exists($className, true)) {
+			// TODO: Be more generic
+			write_log(sprintf('Plugin manager was unable to load the %s plugin - Class %s not found.', $pluginName, $className));
+			return null;
+		}
+
+		$loadedPlugins[$pluginType][$pluginName] = new $className;
+
+		return $loadedPlugins[$pluginType][$pluginName];
+	}
+
+	/**
+	 * Is plugin activated?
+	 *
+	 * @param string $pluginName Plugin name
+	 * @return bool TRUE if $pluginName is activated FALSE otherwise
+	 */
+	public function isActivated($pluginName)
+	{
+		return (bool)($this->_plugins[$pluginName]);
+	}
+
+	/**
+	 * Activates the given plugin.
+	 *
+	 * @param string $pluginName Name of the plugin to activate
+	 * @return bool TRUE if $pluginName has been successfully activated FALSE otherwise
+	 */
+	public function activate($pluginName)
+	{
+		if (array_key_exists($pluginName, $this->_plugins)) {
+			$stmt = exec_query(
+				"UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_name` = ?", array('enabled', $pluginName)
+			);
+
+			if ($stmt->rowCount()) {
+				$this->_plugins[$pluginName] = true;
+				return true;
 			}
 		}
 
-		$this->_config['plugins'] = $plugins;
+		return false;
+	}
+
+	/**
+	 * Is plugin deactivated ?
+	 *
+	 * @param string $pluginName Plugin name
+	 * @return bool TRUE if $pluginName is deactivated FALSE otherwise
+	 */
+	public function isDeactivated($pluginName)
+	{
+		return (bool)(!$this->_plugins[$pluginName]);
+	}
+
+	/**
+	 * Deactivates the given plugin.
+	 *
+	 * @param string $pluginName Name of the plugin to deactivate
+	 * @return bool TRUE if $pluginName has been successfully deactivated FALSE otherwise
+	 */
+	public function deactivate($pluginName)
+	{
+		if (array_key_exists($pluginName, $this->_plugins)) {
+			$stmt = exec_query(
+				"UPDATE `plugin` SET `plugin_status` = ? WHERE `plugin_name` = ?", array('disabled', $pluginName)
+			);
+
+			if ($stmt->rowCount()) {
+				$this->_plugins[$pluginName] = false;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Is plugin protected.
+	 *
+	 * @param string $pluginName Plugin name
+	 * @return bool TRUE if $pluginName is protected FALSE otherwise
+	 */
+	public function isProtected($pluginName)
+	{
+		if (!$this->_isLoadedProtectedPlugins) {
+			$file = CACHE_PATH . '/protected_plugins.php';
+			$protectedPlugins = array();
+
+			if (is_readable($file)) {
+				include_once $file;
+			}
+
+			$this->_protectedPlugins = $protectedPlugins;
+			$this->_isLoadedProtectedPlugins = true;
+		}
+
+		//print_r($this->_protectedPlugins);
+		return in_array($pluginName, $this->_protectedPlugins);
+	}
+
+	/**
+	 * Protects the given plugin against deactivation.
+	 *
+	 * @param string $pluginName Name of the plugin to protect
+	 * @return bool TRUE on success, FALSE otherwise
+	 */
+	public function protect($pluginName)
+	{
+		if (array_key_exists($pluginName, $this->_plugins) && $this->isActivated($pluginName) &&
+			!$this->isProtected($pluginName)
+		) {
+			$this->_protectedPlugins[] = $pluginName;
+			$file = CACHE_PATH . '/protected_plugins.php';
+			$lastUpdate = 'Last update: ' . date('Y/m/d', time()) . " by {$_SESSION['user_logged']}";
+			$content = "<?php\n/**\n * Protected plugin list\n * Auto-generated by i-MSCP plugin manager\n";
+			$content .= " * $lastUpdate\n */\n\n";
+
+			foreach ($this->_protectedPlugins as $pluginName) {
+				$content .= "\$protectedPlugins[] = '$pluginName';\n";
+			}
+
+			if (file_put_contents($file, $content, LOCK_EX) === false) {
+				// TODO: Be more generic
+				set_page_message(tr('Plugin manager was unable to write the %s cache file for protected plugins.', $file), 'error');
+				write_log(sprintf('Plugin manager was unable to write the %s cache file for protected plugins.', $file));
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Update plugin list.
+	 *
+	 * @return int Number of new plugin that were found
+	 */
+	public function updatePluginList()
+	{
+		$plugins = array();
+
+		$query = 'SELECT `plugin_name`, `plugin_info`, `plugin_config`, `plugin_status` FROM `plugin`';
+		$stmt = execute_query($query);
+
+		if ($stmt->rowCount()) {
+			$plugins = $stmt->fetchAll(PDO::FETCH_ASSOC | PDO::FETCH_GROUP);
+		}
+
+		$pluginCount = 0;
+
+		/** @var $fileInfo SplFileInfo */
+		foreach (new RecursiveDirectoryIterator($this->_pluginsDirectory, FilesystemIterator::SKIP_DOTS) as $fileInfo) {
+			if ($fileInfo->isDir() && $fileInfo->isReadable()) {
+				$pluginName = $fileInfo->getBasename();
+				$pluginFile = $fileInfo->getPathname() . '/' . $pluginName . '.php';
+
+				if (is_readable($pluginFile)) {
+					$className = "iMSCP_Plugin_{$pluginName}";
+
+					if (class_exists($className, true)) {
+						/** @var $plugin iMSCP_Plugin */
+						$plugin = new $className();
+						$pluginData = array(
+							'name' => $pluginName,
+							'type' => $plugin->getType(),
+							'info' => serialize($plugin->getInfo()),
+							// TODO review this when plugin settings interface will be ready
+							'config' => serialize($plugin->getConfig()),
+							'status' => array_key_exists($pluginName, $plugins)
+								? $plugins[$pluginName][0]['plugin_status'] : 'disabled'
+						);
+
+						unset($plugin);
+
+						$retVal = $this->_saveIntoDatabase($pluginData);
+
+						if ($retVal == 1) {
+							$pluginCount++;
+						}
+					} else {
+						// TODO: Be more generic
+						set_page_message(tr('%s plugin class not found in file %s', $className, $pluginFile), 'error');
+					}
+				} else {
+					// TODO: Be more generic
+					set_page_message(tr('%s plugin file do not exists or is not readable', $pluginFile), 'error');
+				}
+			}
+		}
+
+		return $pluginCount;
+	}
+
+	/**
+	 * Save a plugin definition to database.
+	 *
+	 * @param Array $pluginData An associative array where each key correspond to a table name without the 'plugin_' prefix.
+	 * @return int 1 when new plugin definition was inserted, 2 when plugin definition was updated
+	 */
+	protected function _saveIntoDatabase($pluginData)
+	{
+		$query = "
+			REPLACE INTO
+				`plugin` (
+					`plugin_name`, `plugin_type`, `plugin_info`, `plugin_config`, `plugin_status`
+				) VALUE (
+					:name, :type, :info, :config, :status
+				)
+		";
+		$stmt = exec_query($query, $pluginData);
+
+		return (int)$stmt->rowCount();
 	}
 }

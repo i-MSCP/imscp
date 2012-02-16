@@ -41,7 +41,7 @@
  * @package		iMSCP_Core
  * @subpackage	Initializer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.1.8
+ * @version		0.1.9
  */
 class iMSCP_Initializer
 {
@@ -179,8 +179,8 @@ class iMSCP_Initializer
 
 		$this->_initializeNavigation();
 
-		// Initialize Demo plugin if needed
-		$this->_initializeDemo();
+		// Initialize plugin (Action)
+		$this->_initializeActionPlugins();
 
 		// Initialize logger
 		// $this->_initializeLogger();
@@ -646,25 +646,27 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Initialize Demo plugin.
-	 *
-	 * Edit the DEMO_SERVER variable in the /etc/imscp.conf file to enable it.
+	 * Initialize action plugins.
 	 *
 	 * @return void
 	 */
-	protected function _initializeDemo()
+	protected function _initializeActionPlugins()
 	{
+		$pluginManager = new iMSCP_Plugin_Manager(PLUGINS_PATH);
+		$pluginList = $pluginManager->getPluginList('Action');
 
-		if(isset($this->_config->DEMO_SERVER) && $this->_config->DEMO_SERVER) {
-			$pluginPath = LIBRARY_PATH .'/../plugins/Demo/Demo.php';
+		if(!empty($pluginList)) {
+			$eventManager = iMSCP_Events_Manager::getInstance();
 
-			if(is_readable($pluginPath)) {
-				// Loaded manually since we have not plugins management library yet.
-				require_once $pluginPath;
-				$demoPlugin = new iMSCP_Plugins_Demo();
-				$demoPlugin->register(iMSCP_Events_Manager::getInstance());
+			foreach($pluginList as $pluginName) {
+				/** @var $plugin iMSCP_Plugin_Action */
+				$plugin = $pluginManager->load('Action', $pluginName);
+				$plugin->register($eventManager);
 			}
 		}
+
+		// Register the plugin manager for further usage
+		iMSCP_Registry::set('pluginManager', $pluginManager);
 	}
 
 	/**

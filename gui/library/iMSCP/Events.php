@@ -18,11 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package		iMSCP_Core
- * @subpackage	Events
+ * @package		iMSCP_Events
  * @copyright	2010-2012 by i-MSCP team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.8
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -31,13 +29,23 @@
  * Describes all events triggered in the iMSCP core code.
  *
  * @category	iMSCP
- * @package		Events
- * @subpackage	Events
+ * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.8
+ * @version		0.0.9
  */
 class iMSCP_Events
 {
+	/**
+	 * The 'onRestRequest' event is triggered in the rest.php action script when the 'X-Requested-With" header contains
+	 * "RestHttpRequest".
+	 *
+	 * The listener receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - request: The request data (for now, it's a copy of $_REQUEST)
+	 *
+	 * @var string
+	 */
+	const onRestRequest = 'onRestRequest';
 	/**
 	 * The onLoginScriptStart event is triggered at the very beginning of Login script.
 	 *
@@ -189,7 +197,7 @@ class iMSCP_Events
 	 *
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 */
-	const onBeforeAuthentication  = 'onBeforeAuthentication';
+	const onBeforeAuthentication = 'onBeforeAuthentication';
 
 	/**
 	 * The onBeforeAuthentication event is triggered after the authentication process.
@@ -201,7 +209,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	const onAfterAuthentication  = 'onAfterAuthentication';
+	const onAfterAuthentication = 'onAfterAuthentication';
 
 	/**
 	 * The onBeforeSetIdentity event is triggered before an user identity is set (logged on).
@@ -509,6 +517,117 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onAfterDeleteSqlDb = 'onAfterSqlDb';
+
+	/**
+	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onBeforeUpdatePluginList = 'onBeforeUpdatePluginList';
+
+	/**
+	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onAfterUpdatePluginList = 'onAfterUpdatePLuginList';
+
+
+	/**
+	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onBeforeActivatePlugin = 'onBeforeActivatePlugin';
+
+	/**
+	 * The onAfterActivatePlugin event is triggered after the plugin list is updated.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onAfterActivatePlugin = 'onAfterActivatePlugin';
+
+	/**
+	 * The onBeforeDeactivatePlugin event is triggered before a plugin is deactivated.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onBeforeDeactivatePlugin = 'onBeforeDeactivatePlugin';
+
+	/**
+	 * The onAfterDeactivatePlugin event is triggered after a plugin is deactivated.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onAfterDeactivatePlugin = 'onAfterDeactivatePlugin';
+
+	/**
+	 * The onBeforeProtectPlugin event is triggered before a plugin is protected.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onBeforeProtectPlugin = 'onBeforeProtectPlugin';
+
+	/**
+	 * The onAfterProtectPlugin event is triggered after a plugin is protected.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onAfterProtectPlugin = 'onAfterProtectPlugin';
+
+	/**
+	 * The onBeforeBulkAction event is triggered before a plugin bulk action.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onBeforeBulkAction = 'onBeforeBulkAction';
+
+	/**
+	 * The onAfterBulkAction event is triggered after a plugin bulk action.
+	 *
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 *
+	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *
+	 * @var string
+	 */
+	const onAfterBulkAction = 'onAfterBulkAction';
 
 	###########################################################
 	## No yet integrated events

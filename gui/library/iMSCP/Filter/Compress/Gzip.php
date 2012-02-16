@@ -183,8 +183,8 @@ class iMSCP_Filter_Compress_Gzip {
 	 * instead of be written in a file.
 	 *
 	 * @param string $data Data to be compressed
-	 * @param [string $filePath File path to be used for gz file creation]
-	 * @return string|false Encoded string in gzip file format, FALSE on failure
+	 * @param string $filePath File path to be used for gz file creation]
+	 * @return string|bool Encoded string in gzip file format, FALSE on failure
 	 */
 	public function filter($data, $filePath = '') {
 
@@ -252,7 +252,7 @@ class iMSCP_Filter_Compress_Gzip {
 	/**
 	 * Encode data in Gzip file format
 	 *
-	 * @return string|false Encoded string in gzip file format, FALSE on failure
+	 * @return string|bool Encoded string in gzip file format, FALSE on failure
 	 */
 	protected function _getEncodedData() {
 
@@ -300,9 +300,8 @@ class iMSCP_Filter_Compress_Gzip {
 	 *
 	 * Note: Only called when the filter is used as callback function of the PHP ob_start function.
 	 *
-	 * @param string $gzipData Encoded data in gzip file format
 	 * @param string $time Time for data compression
-	 * @return string|false Encoded data in gzip file format, FALSE on failure
+	 * @return string|bool Encoded data in gzip file format, FALSE on failure
 	 */
 	protected function _addCompressionInformation($time) {
 

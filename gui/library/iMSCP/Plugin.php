@@ -33,13 +33,11 @@
  * Please, do not inherite from this class. Instead, inherite from the specialized classes localized into
  * gui/library/iMSCP/Plugin/
  *
- * Note: Based upon the docuwiki plugin base class.
- *
  * @category	iMSCP
  * @package		iMSCP_Core
  * @subpackage	Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 abstract class iMSCP_Plugin
 {
@@ -64,6 +62,7 @@ abstract class iMSCP_Plugin
 	 *
 	 * author: Plugin author name
 	 * email: Plugin author email
+	 * version: Plugin version
 	 * date: Last modified date of the plugin in YYYY-MM-DD format
 	 * name: Plugin name
 	 * desc: Plugin short description (text only)
@@ -74,29 +73,34 @@ abstract class iMSCP_Plugin
 	public function getInfo()
 	{
 		$parts = explode('_', get_class($this));
-		$infoFile = LIBRARY_PATH . '/../plugins/' . $parts[2] .  '/info.php';
+		$infoFile = PLUGINS_PATH . '/' . $parts[2] .  '/info.php';
+
+		$info = array();
 
 		if (is_readable($infoFile)) {
-			return include $infoFile;
+			$info = include $infoFile;
+		} else {
+			set_page_message(
+				tr(
+					'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
+					get_class($this),
+					$infoFile,
+					$parts[2]
+				), 'warning'
+			);
 		}
 
-		set_page_message(
-			tr(
-				'getInfo() not implemented in %s and %s not found. <br /> This is a bug in the %s plugin and should be reported to the plugin author.',
-				get_class($this),
-				$infoFile,
-				$parts[2]
-			), 'warning'
-		);
-
-		return array(
-			'author' => tr('Unknown'),
-			'email' => '',
-			'version' => '',
-			'date' => '0000-00-00',
-			'name' => $parts[2],
-			'desc' => tr('No provided'),
-			'url' => ''
+		return array_merge(
+			array(
+				'author' => tr('Unknown'),
+				'email' => '',
+				'version' => 'Unknown',
+				'date' => '0000-00-00',
+				'name' => $parts[2],
+				'desc' => tr('No provided'),
+				'url' => ''
+			),
+			$info
 		);
 	}
 
@@ -123,13 +127,28 @@ abstract class iMSCP_Plugin
 		return $name;
 	}
 
+
+	/**
+	 * Return plugin configuration parameters.
+	 *
+	 * @return array
+	 */
+	final public function getConfig()
+	{
+		if (!$this->_isLoadedConfig) {
+			$this->loadConfig();
+		}
+
+		return $this->_config;
+	}
+
 	/**
 	 * Return given configuration parameter.
 	 *
 	 * @param string $paramName Configuration parameter name
 	 * @return mixed Configuration parameter value or NULL if $paramName no found
 	 */
-	public function getConfig($paramName)
+	final public function getConfigParam($paramName = null)
 	{
 		if (!$this->_isLoadedConfig) {
 			$this->loadConfig();
@@ -147,24 +166,29 @@ abstract class iMSCP_Plugin
 	 *
 	 * @return void
 	 */
-	protected function loadConfig()
+	final protected function loadConfig()
 	{
+		/** @var $config iMSCP_Config_Handler_File */
 		$config = iMSCP_Registry::get('config');
 
 		$default = $this->loadDefaultConfig();
 		$name = $this->getName();
 
-		if (!isset($config->PLUGIN)) { // TODO must be review
-			$config->PLUGIN = array();
-		}
+		// TODO Should be reviewed to avoid too many queries when multiple plugins call this method.
+		$stmt = exec_query('SELECT plugin_config FROM plugin WHERE plugin_name = ?', $name);
 
-		foreach ($default as $parameter => $value) {
+		if($stmt->rowCount()) {
+			$config->PLUGIN[$name] = unserialize($stmt->fetchRow(PDO::FETCH_COLUMN));
 
-			if (isset($config->PLUGIN[$name][$parameter])) {
-				continue;
+			foreach ($default as $parameter => $value) {
+				if (isset($config->PLUGIN[$name][$parameter])) {
+					continue;
+				}
+
+				$config->PLUGIN[$name][$parameter] = $value;
 			}
-
-			$config->PLUGIN[$name][$parameter] = $value;
+		} else {
+			$config->PLUGIN[$name] = $default;
 		}
 
 		$this->_isLoadedConfig = true;
@@ -176,13 +200,13 @@ abstract class iMSCP_Plugin
 	 *
 	 * @return array
 	 */
-	protected function loadDefaultConfig()
+	final protected function loadDefaultConfig()
 	{
-		$path = LIBRARY_PATH . '/../plugins/' . $this->getName() . '/';
+		$configFile = PLUGINS_PATH . '/' . $this->getName() . '/config.php';
 		$config = array();
 
-		if (file_exists($path . 'config.php')) {
-			$config = include $path . 'config.php';
+		if (is_readable($configFile)) {
+			$config = include $configFile;
 		}
 
 		return $config;

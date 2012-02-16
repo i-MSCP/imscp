@@ -355,6 +355,7 @@ h2 span, h3 span {
 .body .users2 { background-image: url(../images/content/table_icon_users2.png); }
 .body .apps_installer { background-image: url(../images/content/table_icon_app_installer_cd_big.png); }
 .body .custom_link { background-image: url(../images/content/table_icon_custom_link.png); }
+.body .plugin { background-image: url(../images/content/table_icon_plugin.png); }
 
 /* Paragraph */
 p { margin: 0.5em 0;}
@@ -535,6 +536,8 @@ table .icon {float: none;}
 .i_app_asc {background-image: url(../images/icons/app_installer_asc.gif);}
 .i_app_desc {background-image: url(../images/icons/app_installer_desc.gif);}
 .i_appicon { background-image: url(../images/icons/appicon.png); }
+.i_open { background-image: url(../images/icons/open.png); }
+.i_close { background-image: url(../images/icons/close.png); }
 
 /* data tables */
 .dataTables_wrapper {
