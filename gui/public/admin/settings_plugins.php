@@ -44,21 +44,14 @@ function admin_generatesPluginList($tpl, $pluginManager)
 	$pluginList = $pluginManager->getPluginList('Action', false);
 	sort($pluginList);
 
-	if(empty($pluginList)) {
+	if (empty($pluginList)) {
 		$tpl->assign('PLUGINS_BLOCK', '');
-		set_page_message(
-			tr('Plugin list is empty. To install a new plugin, extract its content into the <strong>gui/plugins</strong> directory and update the plugin list.'),
-			'info'
-		);
+		set_page_message(tr('Plugin list is empty. To install a new plugin, extract its content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
 	} else {
-		if(in_array('Demo', $pluginList) && $pluginManager->isActivated('Demo')) {
-			$protectTooltip = '<span style="color:rgb(96, 0, 14);">' . tr('Protected plugin') . '</span>';
-		} else {
-			$cacheFile = 'gui/cache/protected_plugins.php';
-			$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' . tr('To un-protect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected plugin').'</span>';
-		}
+		$cacheFile = 'gui/cache/protected_plugins.php';
+		$protectTooltip = '<span style="color:rgb(96, 0, 14);cursor:pointer" title="' . tr('To unprotect this plugin, you must edit the %s file', $cacheFile) . '">' . tr('Protected plugin') . '</span>';
 
-		foreach($pluginList as $pluginName) {
+		foreach ($pluginList as $pluginName) {
 			$plugin = $pluginManager->load('Action', $pluginName, false, true);
 
 			$pluginInfo = $plugin->getInfo();
@@ -73,7 +66,7 @@ function admin_generatesPluginList($tpl, $pluginManager)
 				)
 			);
 
-			if($pluginManager->isProtected($pluginName)) {
+			if ($pluginManager->isProtected($pluginName)) {
 				$tpl->assign('PLUGIN_DEACTIVATE_LINK', '');
 				$tpl->assign('PLUGIN_ACTIVATE_LINK', $protectTooltip);
 
@@ -100,14 +93,14 @@ function admin_doBulkAction($pluginManager)
 {
 	$action = clean_input($_POST['bulkActions']);
 
-	if(isset($_POST['checked']) && is_array($_POST['checked'])) {
-		if(!empty($_POST['checked'])) {
-			foreach($_POST['checked'] as $pluginName) {
+	if (isset($_POST['checked']) && is_array($_POST['checked'])) {
+		if (!empty($_POST['checked'])) {
+			foreach ($_POST['checked'] as $pluginName) {
 				// TODO: Add check for possible failure and $pluginName is unknown
 				$pluginManager->{$action}(clean_input($pluginName));
 			}
 
-			switch($action) {
+			switch ($action) {
 				case 'activate':
 					set_page_message(tr('Plugin(s) successfully activated.'), 'success');
 					break;
@@ -137,7 +130,7 @@ check_login(__FILE__);
 $pluginManager = iMSCP_Registry::get('pluginManager');
 
 // Dispatches the request
-if(isset($_GET['update'])) {
+if (isset($_GET['update'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager)
 	);
@@ -150,7 +143,7 @@ if(isset($_GET['update'])) {
 
 	// TODO message about updated plugins
 	set_page_message(tr('Plugin list successfully updated. <strong>%d</strong> new plugin(s) found.', $newPluginsCount), 'success');
-} elseif(isset($_GET['activate'])) {
+} elseif (isset($_GET['activate'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeActivatePlugin, array('pluginManager' => $pluginManager));
 
@@ -161,7 +154,7 @@ if(isset($_GET['update'])) {
 	);
 
 	set_page_message(tr('Plugin successfully activated.'), 'success');
-} elseif(isset($_GET['deactivate'])) {
+} elseif (isset($_GET['deactivate'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeDeactivatePlugin, array('pluginManager' => $pluginManager)
 	);
@@ -173,7 +166,7 @@ if(isset($_GET['update'])) {
 	);
 
 	set_page_message(tr('Plugin successfully deactivated.'), 'success');
-} elseif(isset($_GET['protect'])) {
+} elseif (isset($_GET['protect'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeProtectPlugin, array('pluginManager' => $pluginManager)
 	);
@@ -185,7 +178,7 @@ if(isset($_GET['update'])) {
 	);
 
 	set_page_message(tr('Plugin successfully protected.'), 'success');
-} elseif(isset($_POST['bulkActions']) && in_array($_POST['bulkActions'], array('activate', 'deactivate', 'protect'))) {
+} elseif (isset($_POST['bulkActions']) && in_array($_POST['bulkActions'], array('activate', 'deactivate', 'protect'))) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeBulkAction, array('pluginManager' => $pluginManager)
 	);
@@ -195,8 +188,6 @@ if(isset($_GET['update'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterBulkAction, array('pluginManager' => $pluginManager)
 	);
-} elseif(!empty($_REQUEST)) {
-	set_page_message(tr('Wrong request'), 'error');
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -230,7 +221,7 @@ $tpl->assign(
 		'TR_DEACTIVATE' => tr('Deactivate'),
 		'TR_PROTECT' => tr('Protect'),
 		'TR_PROTECT_TOOLTIP' => tr('Protect this plugin against disabling'),
-		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugins management interface.<br /><br />To unprotect  a plugin, you'll have to edit the gui/cache/protected_plugin.php file."),
+		'TR_PROTECT_CONFIRMATION' => tr("If you protect a plugin, you'll no longer be able to deactivate it from the plugins management interface.<br /><br />To unprotect  a plugin, you'll have to edit the %s file.", 'gui/cache/protected_plugins.php'),
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),

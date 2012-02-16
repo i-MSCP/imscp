@@ -122,7 +122,6 @@ class iMSCP_Plugin_Manager
 	 *
 	 * @thrown iMSCP_Plugin_Exception When $pluginDirectory doesn't exists or is not readable.
 	 * @param string $pluginDirectory Plugins directory path
-	 * @throws iMSCP_Plugin_Exception
 	 */
 	public function setDirectory($pluginDirectory)
 	{
@@ -151,7 +150,8 @@ class iMSCP_Plugin_Manager
 	 * Returns a list of available plugins of given type
 	 *
 	 * @param string $type PLugin The type of plugin to return ('all' means all plugin type).
-	 * @param bool $onlyEnabled TRUE to only return enabled plugins (default), FALSE to return both enabled and disabled plugins
+	 * @param bool $onlyEnabled TRUE to only return enabled plugins (default), FALSE to return both enabled and
+	 * 							disabled plugins
 	 *
 	 * @return array of plugin names
 	 */
@@ -297,12 +297,11 @@ class iMSCP_Plugin_Manager
 			$this->_isLoadedProtectedPlugins = true;
 		}
 
-		//print_r($this->_protectedPlugins);
 		return in_array($pluginName, $this->_protectedPlugins);
 	}
 
 	/**
-	 * Protects the given plugin against deactivation.
+	 * Protect the given plugin against deactivation.
 	 *
 	 * @param string $pluginName Name of the plugin to protect
 	 * @return bool TRUE on success, FALSE otherwise

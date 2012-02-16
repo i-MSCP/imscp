@@ -239,7 +239,7 @@ $config->ORDERS_EXPIRE_TIME = 604800;
 // Tells whether or not labels must be showed for main menu links
 $config->MAIN_MENU_SHOW_LABELS = false;
 
-// Plugin config namespace
+// Plugins config namespace
 $config->PLUGIN = array();
 
 // Initialize the application

@@ -42,7 +42,7 @@
 abstract class iMSCP_Plugin
 {
 	/**
-	 * Plugin configuration parameter.
+	 * Plugin configuration parameters.
 	 *
 	 * @var array
 	 */
@@ -51,12 +51,12 @@ abstract class iMSCP_Plugin
 	/**
 	 * Whether or not plugin configuration is loaded.
 	 *
-	 * @var bool TRUE if plugin config is loaded, FALSE otherwise
+	 * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
 	 */
 	protected $_isLoadedConfig = false;
 
 	/**
-	 * Return plugin general information.
+	 * Returns plugin general information.
 	 *
 	 * Need return an associative array with the following info:
 	 *
@@ -68,12 +68,12 @@ abstract class iMSCP_Plugin
 	 * desc: Plugin short description (text only)
 	 * url: Website in which it's possible to found more information about the plugin.
 	 *
-	 * @return array Array
+	 * @return array
 	 */
 	public function getInfo()
 	{
 		$parts = explode('_', get_class($this));
-		$infoFile = PLUGINS_PATH . '/' . $parts[2] .  '/info.php';
+		$infoFile = PLUGINS_PATH . '/' . $parts[2] . '/info.php';
 
 		$info = array();
 
@@ -105,7 +105,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Returns the plugin type.
+	 * Returns plugin type.
 	 *
 	 * @return string
 	 */
@@ -117,7 +117,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Return plugin name.
+	 * Returns plugin name.
 	 *
 	 * @return string
 	 */
@@ -126,7 +126,6 @@ abstract class iMSCP_Plugin
 		list(, , $name) = explode('_', get_class($this), 3);
 		return $name;
 	}
-
 
 	/**
 	 * Return plugin configuration parameters.
@@ -143,7 +142,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Return given configuration parameter.
+	 * Returns given configuration parameter.
 	 *
 	 * @param string $paramName Configuration parameter name
 	 * @return mixed Configuration parameter value or NULL if $paramName no found
@@ -162,7 +161,7 @@ abstract class iMSCP_Plugin
 	}
 
 	/**
-	 * Load plugin configuration parameter.
+	 * Load plugin configuration parameters.
 	 *
 	 * @return void
 	 */
@@ -175,9 +174,9 @@ abstract class iMSCP_Plugin
 		$name = $this->getName();
 
 		// TODO Should be reviewed to avoid too many queries when multiple plugins call this method.
-		$stmt = exec_query('SELECT plugin_config FROM plugin WHERE plugin_name = ?', $name);
+		$stmt = exec_query('SELECT `plugin_config` FROM `plugin` WHERE `plugin_name` = ?', $name);
 
-		if($stmt->rowCount()) {
+		if ($stmt->rowCount()) {
 			$config->PLUGIN[$name] = unserialize($stmt->fetchRow(PDO::FETCH_COLUMN));
 
 			foreach ($default as $parameter => $value) {

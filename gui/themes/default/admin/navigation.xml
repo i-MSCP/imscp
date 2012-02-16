@@ -321,11 +321,11 @@
 					<uri>/admin/software_options.php</uri>
 					<title_class>apps_installer</title_class>
 				</softwares_options>
-				<plugins>
+				<plugins_management>
 					<label>Plugins management</label>
 					<uri>/admin/settings_plugins.php</uri>
 					<title_class>plugin</title_class>
-				</plugins>
+				</plugins_management>
 			</pages>
 		</settings>
 
