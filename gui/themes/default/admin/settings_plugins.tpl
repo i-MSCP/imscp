@@ -4,18 +4,15 @@
 				$(document).ready(function(){
 					// $('.datatable').dataTable({"oLanguage": {DATATABLE_TRANSLATIONS}});
 
-					$('#dialog_box').dialog({
-						modal: true, autoOpen:false, hide:'blind', show:'blind', width:'500'
-					});
-
+					$('#dialog_box').dialog({modal: true, autoOpen:false, hide:'blind', show:'blind', width:'500'});
 					$('.i_change_password').click(function(e) {
 						e.preventDefault();
-    					var href = $(this).attr("href");
+						var href = $(this).attr("href");
 
-    					$("#dialog_box").dialog('option', 'buttons', {
-            				"{TR_PROTECT}" : function() {document.location.href = href;},
-           				 	"{TR_CANCEL}" : function() {$(this).dialog("close");}
-           				});
+						$("#dialog_box").dialog('option', 'buttons', {
+							"{TR_PROTECT}" : function() {document.location.href = href;},
+							"{TR_CANCEL}" : function() {$(this).dialog("close");}
+						});
 
 						$("#dialog_box").dialog("open");
 					});
@@ -35,7 +32,6 @@
 			</div>
 
 			<form name="pluginsFrm" action="settings_plugins.php" method="post">
-
 				<div style="float:left;">
 					<select name="bulkActions" id="bulkActionsTop">
 						<option value="dummy">{TR_BULK_ACTIONS}</option>
@@ -46,7 +42,7 @@
 					<label for="bulkActionsTop"><input type="submit" name="Submit" value="Apply"/></label>
 				</div>
 				<div class="buttons" style="margin: 0px;">
-					<button type="buttons" onclick="document.location='?update=all'">{TR_UPDATE_PLUGIN_LIST}</button>
+					<button type="button" onclick="document.location='?update=all'">{TR_UPDATE_PLUGIN_LIST}</button>
 				</div>
 				<table>
 					<thead>
@@ -81,7 +77,7 @@
 						<td>
 							<p>{PLUGIN_DESCRIPTION}</p>
 							<span class="bold italic">
-								{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> |	<a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
+								{TR_VERSION} {PLUGIN_VERSION} | <a href="mailto:{PLUGIN_MAILTO}">{TR_BY} {PLUGIN_AUTHOR}</a> | <a href="{PLUGIN_SITE}" target="_blank">{TR_VISIT_PLUGIN_SITE}</a>
 							</span>
 						</td>
 					</tr>
@@ -100,7 +96,7 @@
 			</form>
 			<!-- EDP: plugins_block -->
 
-		<div class="buttons" style="margin: 0px;">
-			<button type="buttons" onclick="document.location='?update=all'">{TR_UPDATE_PLUGIN_LIST}</button>
-		</div>
+			<div class="buttons" style="margin: 0px;">
+				<button type="buttons" onclick="document.location='?update=all'">{TR_UPDATE_PLUGIN_LIST}</button>
+			</div>
 
