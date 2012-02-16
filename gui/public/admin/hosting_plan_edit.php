@@ -309,6 +309,7 @@ generateNavigation($tpl);
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Edit hosting plan'),
+		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),
 		'TR_TEMPLATE_NAME' => tr('Template name'),

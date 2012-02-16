@@ -255,6 +255,7 @@ $tpl->define_dynamic(
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Add customer - step 1'),
+		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_ADD_USER' => tr('Add user'),
 		'TR_CORE_DATA' => tr('Core data'),
