@@ -1289,16 +1289,15 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 function write_log($msg, $logLevel = E_USER_WARNING)
 {
-	 /** @var $cfg iMSCP_Config_Handler_File */
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$clientIp = (isset($_SERVER['REMOTE_ADDR'])) ?$_SERVER['REMOTE_ADDR'] : 'unknown';
+	$clientIp = (isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
 
-	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>',
-						ENT_COMPAT, tr('encoding'));
+	$msg = replace_html($msg . '<br /><small>User IP: ' . $clientIp . '</small>', ENT_COMPAT, tr('encoding'));
 
 	$query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?)";
-	exec_query($query, $msg, false);
+	exec_query($query, $msg);
 
 	$msg = strip_tags(str_replace('<br />', "\n", $msg));
 	$to = isset($cfg->DEFAULT_ADMIN_ADDRESS) ? $cfg->DEFAULT_ADMIN_ADDRESS : '';
@@ -1306,16 +1305,15 @@ function write_log($msg, $logLevel = E_USER_WARNING)
 	if ($to != '' && $logLevel <= $cfg->LOG_LEVEL) {
 		$hostname = isset($cfg->SERVER_HOSTNAME) ? $cfg->SERVER_HOSTNAME : '';
 		$baseServerIp = isset($cfg->BASE_SERVER_IP) ? $cfg->BASE_SERVER_IP : '';
-		$version = isset($cfg->Version) ? $cfg->Version : 'unknown' ;
-		$buildDate = isset($cfg->BuildDate) ? $cfg->BuildDate : 'unknown' ;
+		$version = isset($cfg->Version) ? $cfg->Version : 'unknown';
+		$buildDate = isset($cfg->BuildDate) ? $cfg->BuildDate : 'unknown';
 		$subject = "i-MSCP $version on $hostname ($baseServerIp)";
 
-
-		if($logLevel == E_USER_NOTICE) {
+		if ($logLevel == E_USER_NOTICE) {
 			$severity = 'Notice (You can ignore this message)';
-		} elseif($logLevel == E_USER_WARNING) {
+		} elseif ($logLevel == E_USER_WARNING) {
 			$severity = 'Warning';
-		} elseif($logLevel == E_USER_ERROR) {
+		} elseif ($logLevel == E_USER_ERROR) {
 			$severity = 'Error';
 		} else {
 			$severity = 'Unknown';
@@ -1342,7 +1340,7 @@ AUTO_LOG_MSG;
 
 		$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
-		$headers.= "Content-Transfer-Encoding: 7bit\n";
+		$headers .= "Content-Transfer-Encoding: 7bit\n";
 		$headers .= "X-Mailer: i-MSCP $version Logging Mailer";
 
 		if (!mail($to, $subject, $message, $headers)) {
