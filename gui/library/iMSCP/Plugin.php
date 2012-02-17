@@ -109,7 +109,7 @@ abstract class iMSCP_Plugin
 	 *
 	 * @return string
 	 */
-	public function getType()
+	final public function getType()
 	{
 		list(, , $type) = explode('_', get_parent_class($this), 3);
 
@@ -121,7 +121,7 @@ abstract class iMSCP_Plugin
 	 *
 	 * @return string
 	 */
-	public function getName()
+	final public function getName()
 	{
 		list(, , $name) = explode('_', get_class($this), 3);
 		return $name;
@@ -139,6 +139,16 @@ abstract class iMSCP_Plugin
 		}
 
 		return $this->_config;
+	}
+
+	/**
+	 * Return plugin default configuration parameters.
+	 *
+	 * @return array
+	 */
+	final public function getDefaultConfig()
+	{
+		return $this->_loadDefaultConfig();
 	}
 
 	/**
@@ -170,7 +180,7 @@ abstract class iMSCP_Plugin
 		/** @var $config iMSCP_Config_Handler_File */
 		$config = iMSCP_Registry::get('config');
 
-		$default = $this->loadDefaultConfig();
+		$default = $this->_loadDefaultConfig();
 		$name = $this->getName();
 
 		// TODO Should be reviewed to avoid too many queries when multiple plugins call this method.
@@ -199,7 +209,7 @@ abstract class iMSCP_Plugin
 	 *
 	 * @return array
 	 */
-	final protected function loadDefaultConfig()
+	final protected function _loadDefaultConfig()
 	{
 		$configFile = PLUGINS_PATH . '/' . $this->getName() . '/config.php';
 		$config = array();

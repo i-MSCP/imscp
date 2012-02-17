@@ -367,7 +367,10 @@ class iMSCP_Plugin_Manager
 							'type' => $plugin->getType(),
 							'info' => serialize($plugin->getInfo()),
 							// TODO review this when plugin settings interface will be ready
-							'config' => serialize($plugin->getConfig()),
+							// For now, when we update plugin list, we override parameters with those
+							// found in default configuration file. This behavior will change when settings interface
+							// will be ready
+							'config' => serialize($plugin->getDefaultConfig()),
 							'status' => array_key_exists($pluginName, $plugins)
 								? $plugins[$pluginName][0]['plugin_status'] : 'disabled'
 						);
