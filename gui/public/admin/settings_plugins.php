@@ -45,7 +45,7 @@ function admin_generatesPluginList($tpl, $pluginManager)
 
 	if (empty($pluginList)) {
 		$tpl->assign('PLUGINS_BLOCK', '');
-		set_page_message(tr('Plugin list is empty. To install a new plugin, extract its content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
+		set_page_message(tr('Plugin list is empty. To install a new plugin, extract its archive content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
 	} else {
 		sort($pluginList);
 		$cacheFile = 'gui/cache/protected_plugins.php';
@@ -55,7 +55,7 @@ function admin_generatesPluginList($tpl, $pluginManager)
 
 		foreach ($pluginList as $pluginName) {
 			$plugin = $pluginManager->load('Action', $pluginName, false, true);
-			if(null === $plugin) continue;
+			if (null === $plugin) continue;
 			$pluginInfo = $plugin->getInfo();
 			$tpl->assign(
 				array(
@@ -84,7 +84,8 @@ function admin_generatesPluginList($tpl, $pluginManager)
 			$hasLoadedPlugins = true;
 		}
 
-		if(!$hasLoadedPlugins) {
+		if (!$hasLoadedPlugins) {
+			set_page_message(tr('Plugin list is empty. To install a new plugin, extract its archive content into the <strong>gui/plugins</strong> directory and update the plugin list.'), 'info');
 			$tpl->assign('PLUGINS_BLOCK', '');
 		}
 	}
