@@ -142,14 +142,15 @@ if (isset($_GET['update'])) {
 		iMSCP_Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager)
 	);
 
-	$newPluginsCount = $pluginManager->updatePluginList();
+	$info = $pluginManager->updatePluginList();
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager)
 	);
 
 	// TODO message about updated plugins
-	set_page_message(tr('Plugin list successfully updated. <strong>%d</strong> new plugin(s) found.', $newPluginsCount), 'success');
+	set_page_message(
+		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success');
 	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
