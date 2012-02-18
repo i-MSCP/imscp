@@ -618,7 +618,7 @@ $tpl->assign(
 		 'TR_ADMIN' => tr('Admin'),
 		 'TR_RESELLER' => tr('Reseller'),
 		 'TR_DOMAIN_ROWS_PER_PAGE' => tr('Domains per page'),
-		 'TR_LOG_LEVEL' => tr('Log Level'),
+		 'TR_LOG_LEVEL' => tr('Mail Log Level'),
 		 'TR_E_USER_OFF' => tr('Disabled'),
 		 'TR_E_USER_NOTICE' => tr('Notices, Warnings and Errors'),
 		 'TR_E_USER_WARNING' => tr('Warnings and Errors'),

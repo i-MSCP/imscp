@@ -1281,10 +1281,10 @@ function calc_bar_value($value, $value_max, $bar_width)
  */
 
 /**
- * Writes a log message in the database and sends it to the administrator by email.
+ * Writes a log message in the database and sends it to the administrator by email according log level.
  *
  * @param string $msg Message to log
- * @param int $logLevel Log level
+ * @param int $logLevel Log level Loggin level from which log is sent via mail
  * @return void
  */
 function write_log($msg, $logLevel = E_USER_WARNING)
@@ -1336,11 +1336,15 @@ Message: ----------------[END]----------------------------
 _________________________
 i-MSCP Log Mailer
 
+Note: If you want no longer receive this kind of message,
+you can change the logging level via the settings page.
+
 AUTO_LOG_MSG;
 
 		$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
 		$headers .= "Content-Transfer-Encoding: 7bit\n";
+		$headers .= "X-php-originating-script: i-MSCP $version\n";
 		$headers .= "X-Mailer: i-MSCP $version Logging Mailer";
 
 		if (!mail($to, $subject, $message, $headers)) {
