@@ -676,8 +676,12 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 			// Check for permissions - We are safe here (If a value is not accepted, we use previous value)
 			$phpEditor->setRePerm('phpiniSystem', 'yes');
 
-			if(!$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions'])) {
-				$phpEditor->setRePerm('phpiniDisableFunctions', $data['fallback_php_ini_al_disable_functions']);
+			if(PHP_SAPI != 'apache2handler') {
+				if(!$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions'])) {
+					$phpEditor->setRePerm('phpiniDisableFunctions', $data['fallback_php_ini_al_disable_functions']);
+				}
+			} else {
+				$phpEditor->setRePerm('phpiniDisableFunctions', 'no');
 			}
 
 			if(!$phpEditor->setRePerm('phpiniAllowUrlFopen', $data['php_ini_al_allow_url_fopen'])) {

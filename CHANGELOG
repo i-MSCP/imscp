@@ -32,6 +32,7 @@ Tickets:
 	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
 	- Fixed #345: Bug - admin - statistics
 	- Fixed #346: Cosmetics - SquirrelMail - Warning: mime.php on line 36
+	- Fixed #355: Defect - PHP Editor - When using ITK disabled functions must be hidden
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.0 (RC1)

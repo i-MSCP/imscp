@@ -436,7 +436,7 @@ function _admin_generateFeaturesForm($tpl, &$data)
 			$permissionsBlock = true;
 		}
 
-		if (!$phpEditor->checkRePerm('phpiniDisableFunctions')) {
+		if (!$phpEditor->checkRePerm('phpiniDisableFunctions') || PHP_SAPI == 'apache2handler') {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>');
@@ -691,11 +691,16 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 					$phpEditor->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
 				}
 
-				if ($phpEditor->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
-					if($phpEditor->getClPerm('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
-						$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
-						$phpEditor->setData('phpiniDisableFunctions', $phpEditor->getDataDefaultVal('phpiniDisableFunctions'));
+				if (PHP_SAPI != 'apache2handler') {
+					if($phpEditor->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
+						if($phpEditor->getClPerm('phpiniDisableFunctions') != $_POST['phpini_perm_disable_functions']) {
+							$phpEditor->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
+							$phpEditor->setData('phpiniDisableFunctions', $phpEditor->getDataDefaultVal('phpiniDisableFunctions'));
+						}
 					}
+				} else {
+					$phpEditor->setClPerm('phpiniDisableFunctions', 'no');
+					$phpEditor->setData('phpiniDisableFunctions', $phpEditor->getDataDefaultVal('phpiniDisableFunctions'));
 				}
 
 				if (isset($_POST['post_max_size']) && (!$phpEditor->setDataWithPermCheck('phpiniPostMaxSize', $_POST['post_max_size']))) {

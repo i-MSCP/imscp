@@ -148,7 +148,7 @@ function get_init_au2_page($tpl, $phpini)
 			$permissionsBlock = true;
 		}
 
-		if (!$phpini->checkRePerm('phpiniDisableFunctions')) {
+		if (PHP_SAPI == 'apache2handler' || !$phpini->checkRePerm('phpiniDisableFunctions')) {
 			$tplVars['PHP_EDITOR_DISABLE_FUNCTIONS_BLOCK'] = '';
 		} else {
 			$tplVars['TR_CAN_EDIT_DISABLE_FUNCTIONS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>');
@@ -335,7 +335,9 @@ function check_user_data($phpini)
 			$phpini->setClPerm('phpiniErrorReporting', clean_input($_POST['phpini_al_error_reporting']));
 		}
 
-		if ($phpini->checkRePerm('phpiniDisableFunctions') && isset($_POST['phpini_perm_disable_functions'])) {
+		if (PHP_SAPI != 'apache2handler' && $phpini->checkRePerm('phpiniDisableFunctions') &&
+			isset($_POST['phpini_perm_disable_functions'])
+		) {
 			$phpini->setClPerm('phpiniDisableFunctions', clean_input($_POST['phpini_perm_disable_functions']));
 		}
 

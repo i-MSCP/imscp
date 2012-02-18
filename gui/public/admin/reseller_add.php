@@ -531,8 +531,15 @@ function admin_checkAndCreateResellerAccount()
 		if($data['php_ini_system'] == 'yes') {
 
 			// Check for permissions - We are safe here (If a permissions is wrong, default value is used)
+
 			$phpEditor->setRePerm('phpiniSystem', 'yes');
-			$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
+
+			if(PHP_SAPI != 'apache2handler') {
+				$phpEditor->setRePerm('phpiniDisableFunctions', $data['php_ini_al_disable_functions']);
+			} else {
+				$phpEditor->setRePerm('phpiniDisableFunctions', 'no');
+			}
+
 			$phpEditor->setRePerm('phpiniAllowUrlFopen', $data['php_ini_al_allow_url_fopen']);
 			$phpEditor->setRePerm('phpiniRegisterGlobals', $data['php_ini_al_register_globals']);
 			$phpEditor->setRePerm('phpiniDisplayErrors', $data['php_ini_al_display_errors']);
