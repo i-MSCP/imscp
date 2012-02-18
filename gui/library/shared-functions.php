@@ -1344,7 +1344,6 @@ AUTO_LOG_MSG;
 		$headers = "From: \"i-MSCP Logging Mailer\" <" . $to . ">\n";
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n";
 		$headers .= "Content-Transfer-Encoding: 7bit\n";
-		$headers .= "X-php-originating-script: i-MSCP $version\n";
 		$headers .= "X-Mailer: i-MSCP $version Logging Mailer";
 
 		if (!mail($to, $subject, $message, $headers)) {
