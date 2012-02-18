@@ -80,8 +80,7 @@ $tpl->assign(
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_ADD' => tr('Add'),
 		'TR_DOMAIN' => tr('Domain'),
-		'TR_EDIT_DNS' => ($add_mode) ? tr("Add custom DNS record") :
-			tr("Edit custom DNS record"),
+		'TR_EDIT_DNS' => ($add_mode) ? tr("Add custom DNS record") : tr("Edit custom DNS record"),
 		'TR_DNS' => tr("Custom DNS record"),
 		'TR_DNS_NAME' => tr('Name'),
 		'TR_DNS_CLASS' => tr('Class'),
@@ -248,11 +247,11 @@ function decode_zone_data($data) {
 }
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @param $edit_id
  * @return void
  */
-function gen_editdns_page(&$tpl, $edit_id) {
+function gen_editdns_page($tpl, $edit_id) {
 
 	global $DNS_allowed_types;
 
@@ -366,16 +365,18 @@ function tryPost($id, $data) {
  * @param null $err
  * @return bool
  */
-function validate_CNAME($record, &$err = null) {
-
-	if (preg_match('~([^a-z,A-Z,0-9\.])~u', $record['dns_cname'], $e)) {
-		$err .= sprintf(tr('Use of disallowed char("%s") in CNAME'), $e[1]);
+function validate_CNAME($record, &$err = null)
+{
+	if(!iMSCP_Validate::getInstance()->domainName($record['dns_cname'], array('tld' => false))) {
+		$err .= tr('Usage of disallowed character in CNAME');
 		return false;
 	}
+
 	if (empty($record['dns_name'])) {
 		$err .= tr('Name must be filled.');
 		return false;
 	}
+
 	return true;
 }
 
@@ -387,7 +388,7 @@ function validate_CNAME($record, &$err = null) {
 function validate_A($record, &$err = null) {
 
 	if (filter_var($record['dns_A_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-		$err .= sprintf(tr('Wrong IPv4 address ("%s").'), $record['dns_A_address']);
+		$err .= sprintf(tr('Wrong IPv4 address ("%s")'), $record['dns_A_address']);
 		return false;
 	}
 	if (empty($record['dns_name'])) {
@@ -405,7 +406,7 @@ function validate_A($record, &$err = null) {
 function validate_AAAA($record, &$err = null) {
 
 	if (filter_var($record['dns_AAAA_address'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
-		$err .= sprintf(tr('Wrong IPv6 address ("%s").'), $record['dns_AAAA_address']);
+		$err .= sprintf(tr('Wrong IPv6 address ("%s")'), $record['dns_AAAA_address']);
 		return false;
 	}
 
@@ -514,9 +515,16 @@ function check_CNAME_conflict($domain,&$err) {
  * @param $err
  * @return bool
  */
-function validate_NAME($domain, &$err) {
-	if (preg_match('~([^-a-z,A-Z,0-9.])~u', $domain['name'], $e)) {
-		$err .= sprintf(tr('Use of disallowed char("%s") in NAME'), $e[1]);
+function validate_NAME($domain, &$err)
+{
+	if(strpos($domain['name'], '.') === false) {
+		$entry = $domain['name'].'.dummy';
+	} else {
+		$entry = $domain['name'];
+	}
+
+	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
+		$err .= tr('Invalid NAME');
 		return false;
 	}
 	if (preg_match('/\.$/', $domain['name'])) {
@@ -603,40 +611,42 @@ function check_fwd_data($tpl, $edit_id) {
 		$_dns = $data['domain_dns'];
 	}
 
-	if (!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $record_domain), $err)) {
-		set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+	$nameValidationError = '';
+	if(!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $record_domain), $nameValidationError)) {
+		set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $nameValidationError), 'error');
 	}
+
 	switch ($_POST['type']) {
 		case 'CNAME':
 			if (!validate_CNAME($_POST, $err))
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			$_text = $_POST['dns_cname'];
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'A':
 			if (!validate_A($_POST, $err))
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			if (!check_CNAME_conflict($_POST['dns_name'].'.'.$record_domain, $err))
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			$_text = $_POST['dns_A_address'];
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'AAAA':
 			if (!validate_AAAA($_POST, $err))
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			if (!check_CNAME_conflict($_POST['dns_name'].'.'.$record_domain, $err))
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			$_text = $_POST['dns_AAAA_address'];
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'SRV':
 			if (!validate_SRV($_POST, $err, $_dns, $_text))
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			break;
 		case 'MX':
 			$_dns = '';
 			if (!validate_MX($_POST, $err, $_text)) {
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason '%s'."), $_POST['type'], $err), 'error');
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			} else {
 				$_dns = $record_domain . '.';
 			}
@@ -646,7 +656,6 @@ function check_fwd_data($tpl, $edit_id) {
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
-
 		if ($add_mode) {
 			$query = "
 				INSERT INTO

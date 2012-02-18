@@ -171,8 +171,7 @@
 				</tr>
 				<tr id="tr_dns_cname">
 					<td>{TR_DNS_CNAME}</td>
-					<td><input type="text" name="dns_cname" value="{DNS_CNAME}" />.
-					</td>
+					<td><input type="text" name="dns_cname" value="{DNS_CNAME}" /></td>
 				</tr>
 			</table>
 
