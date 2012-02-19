@@ -248,16 +248,49 @@ sub oldEngineCompatibility{
 	$rs;
 }
 
+################################################################################
+# i-MSCP GUI PHP configuration files - (Setup / Update)
+#
+# This subroutine do the following tasks:
+#  - Create the master fcgi directory
+#  - Built, store and install gui php related files (starter script, php.ini...)
+#
+# @return int 0 on success, other on failure
+#
 sub phpConf {
 
 	use Servers::httpd::apache_itk;
+	use iMSCP::File;
 
-	my $self	= shift;
-	my $httpd	= Servers::httpd::apache_itk->new();
-	my $rs		= 0;
+	my $self		= shift;
+	my $httpd		= Servers::httpd::apache_itk->new();
+	my $rs			= 0;
+	my $rootUName	= $main::imscpConfig{'ROOT_USER'};
+	my $rootGName	= $main::imscpConfig{'ROOT_GROUP'};
+
+	## PHP php.ini file
+
+	# Loading the template from /etc/imscp/apache2/parts/php{version}.itk.ini
+	$httpd->setData({
+			PHP_TIMEZONE	=> $main::imscpConfig{PHP_TIMEZONE}
+	});
+
+	$httpd->buildConfFile(
+						$self->{cfgDir}.'/parts/php'.$self::apacheConfig{PHP_VERSION}.'.itk.ini',
+						{
+							destination	=> "$self->{wrkDir}/php.ini",
+							mode		=> 0644,
+							user		=> $rootUName,
+							group		=> $rootGName
+						}
+	);
+
+	# Install the new file
+	my $file = iMSCP::File->new(filename => "$self->{wrkDir}/php.ini");
+	$rs |= $file->copyFile($self::apacheConfig{'ITK_PHP'.$self::apacheConfig{PHP_VERSION}.'_PATH'});
 
 	for("fastcgi", "fcgid", "fastcgi_imscp", "fcgid_imscp", "php4"){
-		$rs |= $httpd->disableMod($_) if( -e "$self::apacheConfig{'APACHE_MODS_DIR'}/$_.load");
+		$rs |= $httpd->disableMod($_) if( -e "$self::apacheConfig{APACHE_MODS_DIR}/$_.load");
 	}
 
 	$rs |= $httpd->enableMod("actions php5");

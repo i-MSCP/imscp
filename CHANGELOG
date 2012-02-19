@@ -34,6 +34,7 @@ Tickets:
 	- Fixed #329: Bug - Custom DNS record - Syntax issue
 	- Fixed #345: Bug - admin - statistics
 	- Fixed #346: Cosmetics - SquirrelMail - Warning: mime.php on line 36
+	- Fixed #354: Bug - Timezone is not set in ITK configuration
 	- Fixed #355: Defect - PHP Editor - When using ITK disabled functions must be hidden
 
 -------------------------------------------------------------------------------------
