@@ -262,6 +262,7 @@ sub addDmnDb {
 	####################### TIMESTAMP SECTION START #############################
 
 	my $tags = {
+		MX					=> $option->{MX},
 		DMN_NAME			=> $option->{DMN_NAME},
 		DMN_IP				=> $option->{DMN_IP},
 		IP_TYPE				=> (lc($ipH->getIpType($option->{DMN_IP})) eq 'ipv4' ? 'A' : 'AAAA'),

@@ -32,6 +32,7 @@ Tickets:
 	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
 	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 	- Fixed #329: Bug - Custom DNS record - Syntax issue
+	- Fixed #343: Defect - Disabled Mail should remove DNS entries
 	- Fixed #345: Bug - admin - statistics
 	- Fixed #346: Cosmetics - SquirrelMail - Warning: mime.php on line 36
 	- Fixed #353: Bug - An exception have been thrown, when deleting a DB

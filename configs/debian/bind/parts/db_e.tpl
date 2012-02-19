@@ -13,23 +13,23 @@ $ORIGIN {DMN_NAME}.
                 IN              NS              ns{NS_NUMBER}.{DMN_NAME}.
 ; ns DECLARATION SECTION END
 
-                IN              MX      10      mail.{DMN_NAME}.
+{MX}                IN              MX      10      mail.{DMN_NAME}.
 
 {DMN_NAME}.     IN              {IP_TYPE}               {DMN_IP}
 www             IN              {IP_TYPE}               {DMN_IP}
-{DMN_NAME}.     IN              TXT             "v=spf1 a mx {TXT_DMN_IP_TYPE}:{DMN_IP} {TXT_SERVER_IP_TYPE}:{BASE_SERVER_IP} ~all"
+{MX}{DMN_NAME}.     IN              TXT             "v=spf1 a mx {TXT_DMN_IP_TYPE}:{DMN_IP} {TXT_SERVER_IP_TYPE}:{BASE_SERVER_IP} ~all"
 localhost       IN              A               127.0.0.1
-mail            IN              {IP_TYPE}               {DMN_IP}
+{MX}mail            IN              {IP_TYPE}               {DMN_IP}
 ; ns A SECTION BEGIN
 ns{NS_NUMBER}             IN              {NS_IP_TYPE}               {NS_IP}
 ; ns A SECTION END
 
 ; CNAME for mail transfer
-imap            IN              CNAME           mail
-pop             IN              CNAME           mail
-pop3            IN              CNAME           mail
-relay           IN              CNAME           mail
-smtp            IN              CNAME           mail
+{MX}imap            IN              CNAME           mail
+{MX}pop             IN              CNAME           mail
+{MX}pop3            IN              CNAME           mail
+{MX}relay           IN              CNAME           mail
+{MX}smtp            IN              CNAME           mail
 ; CNAME for web transfer
 ftp             IN              CNAME           www
 
