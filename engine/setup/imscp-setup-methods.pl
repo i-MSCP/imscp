@@ -338,6 +338,18 @@ sub setup_imscp_database {
 		}
 	}
 
+	#secure accounts
+	my $rdata = iMSCP::Database->factory()->doQuery('User', "SELECT `User` FROM `mysql`.`user` WHERE `Password` = ''");
+	if(ref $rdata ne 'HASH'){
+		error("$rdata");
+		return 1;
+	}
+	foreach (keys %$rdata) {
+		if (my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?", $_)){
+			error("$error");
+		}
+	}
+
 	0;
 }
 
@@ -1147,8 +1159,8 @@ sub setup_gui_pma {
 
 		$error = $database->doQuery(
 			'dummy',"
-				GRANT SELECT ON `mysql`.`db` TO ?;
-			", $ctrlUser."@".$dbHost
+				GRANT SELECT ON `mysql`.`db` TO ?@?;
+			", $ctrlUser, $dbHost
 		);
 		return $error if (ref $error ne 'HASH');
 
@@ -1163,13 +1175,13 @@ sub setup_gui_pma {
 					Repl_client_priv
 				)
 				ON `mysql`.`user`
-				TO ?;
-			", $ctrlUser."@".$dbHost
+				TO ?@?;
+			", $ctrlUser, $dbHost
 		);
 		return $error if (ref $error ne 'HASH');
 
 		$error = $database->doQuery(
-			'dummy',"GRANT SELECT ON `mysql`.`host` TO ?;", $ctrlUser."@".$dbHost
+			'dummy',"GRANT SELECT ON `mysql`.`host` TO ?@?;", $ctrlUser, $dbHost
 		);
 		return $error if (ref $error ne 'HASH');
 
@@ -1180,8 +1192,8 @@ sub setup_gui_pma {
 				ON
 					`mysql`.`tables_priv`
 				TO
-					?;
-			", $ctrlUser."@".$dbHost
+					?@?;
+			", $ctrlUser, $dbHost
 		);
 		return $error if (ref $error ne 'HASH');
 
