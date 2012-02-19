@@ -65,7 +65,7 @@ class iMSCP_Exception_Database extends iMSCP_Exception
 	public function __construct($msg = '', $query = null, $code = 0, Exception $previous = null)
 	{
 		parent::__construct($msg, (int)$code, $previous);
-		$this->_query = (string)$query;
+		$this->_query = (string) preg_replace("/[\t\n]+/", ' ', $query);
 	}
 
 	/**

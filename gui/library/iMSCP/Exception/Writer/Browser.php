@@ -48,7 +48,7 @@ require_once  'iMSCP/Exception/Writer.php';
  * @package		iMSCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 {
@@ -127,16 +127,21 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 		) {
 			/** @var $exception iMSCP_Exception */
 			$exception = $exceptionHandler->getException();
-			$this->_message = $exception->getMessage();
+
+			$this->_message .= 'An exception with the following message has been thrown in file ' .
+				$exception->getFile() . ' (Line: ' .
+				$exception->getLine() . "):\n\n";
+
+			$this->_message .= preg_replace('#([\t\n]+|<br \/>)#', ' ', $exception->getMessage());
 
 			/** @var $exception iMSCP_Exception_Database */
-			if($exception instanceof iMSCP_Exception_Database) {
-				$this->_message .= ' Query was: ' . $exception->getQuery();
+			if ($exception instanceof iMSCP_Exception_Database) {
+				$this->_message .= "\n\n<strong>Query was:</strong>\n\n" . $exception->getQuery();
 			}
 		} else { // Production exception
 			$exception = $exceptionHandler->getProductionException();
 
-			if(!$exception) { // If not exception for production is found, we get the original exception
+			if (!$exception) { // If not exception for production is found, we get the original exception
 				$exception = $exceptionHandler->getException();
 			}
 

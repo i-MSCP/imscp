@@ -44,7 +44,7 @@ require_once  'iMSCP/Exception/Writer.php';
  * @package		iMSCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.5
+ * @version		0.0.6
  */
 class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 {
@@ -113,8 +113,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 	public function __construct($to)
 	{
 		if (filter_var($to, FILTER_VALIDATE_EMAIL) === false) {
-			throw new iMSCP_Exception(
-				'iMSCP_Exception_Writer_Mail error: Invalid email address.');
+			throw new iMSCP_Exception('iMSCP_Exception_Writer_Mail error: Invalid email address.');
 		} else {
 			$this->_to = $to;
 		}
@@ -141,11 +140,11 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 		/** @var $exception iMSCP_Exception */
 		$exception = $exceptionHandler->getException();
 
-		$this->_message = str_replace(array("\t", '<br />'), array('', "\n"), $exception->getMessage());
+		$this->_message = preg_replace('#([\t\n]+|<br \/>)#', ' ', $exception->getMessage());
 
 		/** @var $exception iMSCP_Exception_Database */
-		if($exception instanceof iMSCP_Exception_Database) {
-			$this->_message .= ' Query was: ' . $exception->getQuery();
+		if ($exception instanceof iMSCP_Exception_Database) {
+			$this->_message .= "\n\nQuery was:\n\n" . $exception->getQuery();
 		}
 
 		$this->prepareMail($exception);
@@ -172,9 +171,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 		if (iMSCP_Registry::isRegistered('dbConfig')) {
 			$dbConfig = iMSCP_Registry::get('dbConfig');
 
-			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) &&
-				is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)
-			) {
+			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 				$this->_cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
 			}
 		}
@@ -201,9 +198,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 	 */
 	protected function _isAlreadySent()
 	{
-		if (array_key_exists($this->_footprint, $this->_cache) &&
-			$this->_cache[$this->_footprint] > time()
-		) {
+		if (array_key_exists($this->_footprint, $this->_cache) && $this->_cache[$this->_footprint] > time()) {
 			return true;
 		}
 
@@ -223,9 +218,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 			/** @var $dbConfig iMSCP_Config_Handler_Db */
 			$dbConfig = iMSCP_Registry::get('dbConfig');
 
-			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) &&
-				is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)
-			) {
+			if (isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 				$cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
 				$now = time();
 
@@ -289,13 +282,12 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 		$this->_header .= 'X-Mailer: ' . self::NAME;
 
 		// Subject
-		$this->_subject = self::NAME . ' - Exception raised!';
+		$this->_subject = self::NAME . ' - Exception raised';
 
 		// Body
 		$this->_body = "Dear admin,\n\n";
-		$this->_body .= 'An exception with the following message was thrown in file ' .
-			$exception->getFile() . ' (Line: ' .
-			$exception->getLine() . "):\n\n";
+		$this->_body .= 'An exception with the following message has been thrown in file ' .
+			$exception->getFile() . ' (Line: ' . $exception->getLine() . "):\n\n";
 
 		$this->_body .= str_repeat('=', 65) . "\n\n";
 		$this->_body .= "{$this->_message}\n";
@@ -330,20 +322,16 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 		$this->_body .= "\nAdditional information:\n";
 		$this->_body .= str_repeat('-', 22) . "\n\n";
 
-		foreach (array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER',
-					 'REMOTE_ADDR', 'SERVER_ADDR') as $key
-		) {
+		foreach (array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER', 'REMOTE_ADDR', 'SERVER_ADDR') as $key) {
 			if (isset($_SERVER[$key]) && $_SERVER[$key] != '') {
-				$this->_body .= ucwords(strtolower(str_replace('_', ' ', $key))) .
-					": {$_SERVER["$key"]}\n";
+				$this->_body .= ucwords(strtolower(str_replace('_', ' ', $key))) . ": {$_SERVER["$key"]}\n";
 			}
 		}
 
 		$this->_body .= "\n" . str_repeat('_', 60) . "\n";
 		$this->_body .= self::NAME . "\n";
-		$this->_body .= "\n\nNote: If an exception of same type is thrown again, you " .
-			"will not receive this mail before an expiration time that is " .
-			"currently fixed at {$this->_expiryTime} hour(s).\n";
+		$this->_body .= "\n\nNote: If an exception of same type is thrown again, you will not receive this mail before" .
+			" an expiration time that is currently fixed at {$this->_expiryTime} hour(s).\n";
 		$this->_body = wordwrap($this->_body, 70, "\n");
 	}
 
