@@ -112,31 +112,51 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 	$user_pass = $_POST['pass'];
 
 	try {
+		// Update SQL user password in the mysql system tables;
+
+		$passwordUpdated = false;
+
+		exec_query("SET PASSWORD FOR ?@'%' = PASSWORD(?)", array($db_user_name, $user_pass));
+		exec_query("SET PASSWORD FOR ?@'localhost' = PASSWORD(?)", array($db_user_name, $user_pass));
+
+		$passwordUpdated = true;
+
 		iMSCP_Database::getInstance()->beginTransaction();
+
+		$stmt = exec_query('SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_name` = ? LIMIT 1', $db_user_name);
+
+		if(!$stmt->rowCount()) {
+			throw new iMSCP_Exception('SQL user to update no found.');
+		}
+
+		$oldPassword = $stmt->fields['sqlu_pass'];
 
 		// Update user password in the i-MSCP sql_user table;
 
 		$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
 		exec_query($query, array($user_pass, $db_user_name));
 
-		// Update user pass in the mysql system tables;
-
-		$query = "SET PASSWORD FOR ?@'%' = PASSWORD(?)";
-		exec_query($query, array($db_user_name, $user_pass));
-
-		$query = "SET PASSWORD FOR ?@localhost = PASSWORD(?)";
-		exec_query($query, array($db_user_name, $user_pass));
-
 		iMSCP_Database::getInstance()->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $db_user_id));
 
 		set_page_message(tr('SQL user password successfully updated.'), 'success');
-		write_log($_SESSION['user_logged'] . ": updated SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
-	} catch (iMSCP_Exception_Database $e) {
-		iMSCP_Database::getInstance()->rollBack();
+		write_log(sprintf("%s updated password for the '%s' SQL user.", $_SESSION['user_logged'], tohtml($db_user_name)), E_USER_NOTICE);
+	} catch (iMSCP_Exception $e) {
+		if($passwordUpdated) {
+			iMSCP_Database::getInstance()->rollBack();
+
+			if(isset($oldPassword)) {
+				// Our transaction failed so we try to rollback by restoring old password
+				try { // We don't care about result here - An exception is throw in case the user do not exists
+					exec_query("SET PASSWORD FOR ?@'%' = PASSWORD(?)", array($db_user_name, $oldPassword));
+					exec_query("SET PASSWORD FOR ?@'localhost' = PASSWORD(?)", array($db_user_name, $oldPassword));
+				} catch(iMSCP_Exception_Database $e) {}
+			}
+		}
+
 		set_page_message(tr('System was unable to update the SQL user password.'), 'error');
-		write_log(sprintf("System was unable to update password for the '%s' SQL user. Message was: %s", $db_user_name, $e->getMessage()), E_USER_ERROR);
+		write_log(sprintf("System was unable to update password for the '%s' SQL user. Message was: %s", tohtml($db_user_name), $e->getMessage()), E_USER_ERROR);
 	}
 
 	redirectTo('sql_manage.php');

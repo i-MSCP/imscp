@@ -364,7 +364,7 @@ function add_sql_user($user_id, $databaseId)
 			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
 
 			set_page_message(tr('SQL user successfully added.'), 'success');
-			write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
+			write_log(sprintf("%s added new SQL user: %s", $_SESSION['user_logged'], tohtml($db_user)), E_USER_NOTICE);
 		} catch (iMSCP_Exception_Database $e) {
 			if($sqlUserCreated) {
 				// Our transaction failed so we rollback and we remove the user and all its privileges from
