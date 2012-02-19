@@ -344,10 +344,8 @@ sub buildMTAData{
 sub buildNAMEDData{
 
 	use iMSCP::Database;
-	use iMSCP::IP;
 
 	my $self	= shift;
-	my $ipH		= iMSCP::IP->new();
 
 	if($self->{mode} eq 'add' && $self->{domain_dns} eq 'yes'){
 		my $sql = "
