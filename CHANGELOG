@@ -26,10 +26,11 @@ Features / Enhancements:
 				- Added plugin manager
 				- Updated demo plugin to fit with events system changes
 	Tools:
-		- Updated PhpMyAdmin to version 3.4.10.1	
+		- Updated PhpMyAdmin to version 3.4.10.1
 
 Tickets:
 	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
+	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 	- Fixed #329: Bug - Custom DNS record - Syntax issue
 	- Fixed #345: Bug - admin - statistics
 	- Fixed #346: Cosmetics - SquirrelMail - Warning: mime.php on line 36

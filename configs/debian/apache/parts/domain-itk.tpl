@@ -1,9 +1,5 @@
 <VirtualHost {DMN_IP}:80>
 
-#	<IfModule suexec_module>
-#		SuexecUserGroup {USER} {GROUP}
-#	</IfModule>
-
 	<IfModule mpm_itk_module>
 		AssignUserID {USER} {GROUP}
 	</IfModule>
