@@ -499,28 +499,43 @@ $cfg = iMSCP_Registry::get('config');
 if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
     if (admin_validateUserDeletion($_GET['delete_id'])) {
         admin_deleteUser($_GET['delete_id']);
+		exit; // Avoid IDE warning
     } else {
         redirectTo('manage_users.php');
+		exit; // Avoid IDE warning
     }
 } elseif (isset($_GET['domain_id'])) {
     $tpl = admin_generateDomainAcountDeletionValidationPage($_GET['domain_id']);
-} elseif (isset($_POST['domain_id']) && isset($_POST['delete']) &&
-          $_POST['delete'] == 1
-) {
-    if(delete_domain($_POST['domain_id'])) {
-        set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
-    }
+} elseif (isset($_POST['domain_id']) && isset($_POST['delete']) && $_POST['delete'] == 1) {
+	$domainId = intval($_POST['domain_id']);
+
+	try {
+    	if(!delete_domain($domainId)) {
+			set_page_message(tr(''), 'error');
+			throw new iMSCP_Exception('Domain account not found.');
+		}
+
+		set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
+		write_log(sprintf('%s deleted the domain account with ID %d', $_SESSION['user_logged'], $domainId), E_USER_NOTICE);
+	} catch(iMSCP_Exception $e) {
+		set_page_message(tr('Unable to delete the domain. Please, consult admin logs or your mail for more information.'), 'error');
+		write_log(sprintf("System was unable to delete domain account with ID %s. Message was: %s", $domainId, $e->getMessage()), E_USER_ERROR);
+
+	}
 
     redirectTo('manage_users.php');
+	exit; // Avoid IDE warning
 } else {
     if (isset($_GET['delete'])) {
         set_page_message(tr('Wrong domain ID.'), 'error');
     } else {
         set_page_message(tr('You must confirm domain deletion.'), 'error');
         redirectTo('user_delete.php?domain_id=' . intval($_POST['domain_id']));
+		exit; // Avoid IDE warning
     }
 
     redirectTo('manage_users.php');
+	exit; // Avoid IDE warning
 }
 
 generatePageMessage($tpl);
@@ -528,5 +543,7 @@ generatePageMessage($tpl);
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, array('templateEngine' => $tpl));
+
 $tpl->prnt();
+
 unsetMessages();

@@ -177,24 +177,39 @@ function add_sql_database($user_id)
 		return;
 	}
 
-	$query = 'create database ' . quoteIdentifier($db_name);
-	execute_query($query);
+	// Here we cannot start transaction before the CREATE DATABABSE statement because its cause an implicit commit
+	try {
 
-	$query = "
-		INSERT INTO `sql_database` (
-		    `domain_id`, `sqld_name`
-		) VALUES (
-		    ?, ?
-		)
-	";
-	exec_query($query, array($dmn_id, $db_name));
+		$dbCreated = false;
 
-	update_reseller_c_props(get_reseller_id($dmn_id));
+		execute_query('CREATE DATABASE IF NOT EXISTS ' . quoteIdentifier($db_name));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb);
+		$dbCreated = true;
 
-	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . tohtml($db_name), E_USER_NOTICE);
-	set_page_message(tr('SQL database created.'), 'success');
+		iMSCP_Database::getInstance()->beginTransaction();
+
+		$query = "INSERT INTO `sql_database` (`domain_id`, `sqld_name`) VALUES (?, ?)";
+		exec_query($query, array($dmn_id, $db_name));
+
+		update_reseller_c_props(get_reseller_id($dmn_id));
+
+		iMSCP_Database::getInstance()->commit();
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlDb);
+
+		set_page_message(tr('SQL database successfully added.'), 'success');
+		write_log($_SESSION['user_logged'] . ": added new SQL database: " . tohtml($db_name), E_USER_NOTICE);
+
+	} catch (iMSCP_Exception_Database $e) {
+		if($dbCreated) { // Our transaction failed so we rollback and we remove the database previously created
+			iMSCP_Database::getInstance()->rollBack();
+			execute_query('DROP DATABASE IF EXISTS ' . quoteIdentifier($db_name));
+		}
+		set_page_message(tr('System was unable to add the SQL database.'), 'error');
+		write_log(sprintf("System was unable to add the '%s' SQL database. Message was: %s", $db_name, $e->getMessage()), E_USER_ERROR);
+	}
+
+
 	redirectTo('sql_manage.php');
 }
 
@@ -205,10 +220,6 @@ function add_sql_database($user_id)
  * @return void
  */
 function check_sql_permissions($user_id) {
-	if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-		header("Location: index.php");
-	}
-
 	list($dmn_id,
 		$dmn_name,
 		$dmn_gid,

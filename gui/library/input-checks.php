@@ -777,7 +777,7 @@ function get_session($value)
  * @param mixed $id FTP/mail/domain/alias/subdomain/etc id to check
  * @param string $type What kind of id $id is
  * @param boolean $forcefinal Ignore the resolver's is_final value (force as yes)
- * @return numeric The id of the admin who owns the id $id of $type type
+ * @return int The id of the admin who owns the id $id of $type type
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 {
