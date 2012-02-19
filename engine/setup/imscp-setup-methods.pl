@@ -346,10 +346,10 @@ sub setup_imscp_database {
 		error("$rdata");
 		return 1;
 	}
+
 	foreach (keys %$rdata) {
-		if (my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?", $_)){
-			error("$error");
-		}
+		my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?", $_);
+		error("$error") if(ref $error ne 'HASH');
 	}
 
 	0;
