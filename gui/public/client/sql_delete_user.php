@@ -58,7 +58,7 @@ if (!customerHasFeature('sql')) {
 		iMSCP_Database::getInstance()->commit();
 
 		set_page_message(tr('SQL user successfully deleted.'), 'success');
-		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL user with ID %s", $sqlUserId), E_USER_NOTICE);
+		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL user with ID %d", $sqlUserId), E_USER_NOTICE);
 	} catch (iMSCP_Exception $e) {
 		iMSCP_Database::getInstance()->rollBack();
 

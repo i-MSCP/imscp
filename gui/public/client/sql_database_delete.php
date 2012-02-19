@@ -68,7 +68,7 @@ if (!customerHasFeature('sql')) {
 		iMSCP_Database::getInstance()->rollBack();
 
 		set_page_message(tr('System was unable to remove the SQL database.'), 'error');
-		write_log(sprintf("System was unable to delete SQL database with ID %s. Message was: %s", $databaseId, $e->getMessage()), E_USER_ERROR);
+		write_log(sprintf("System was unable to delete SQL database with ID %d. Message was: %s", $databaseId, $e->getMessage()), E_USER_ERROR);
 	}
 }
 

@@ -205,6 +205,7 @@ function add_sql_database($user_id)
 			iMSCP_Database::getInstance()->rollBack();
 			execute_query('DROP DATABASE IF EXISTS ' . quoteIdentifier($db_name));
 		}
+
 		set_page_message(tr('System was unable to add the SQL database.'), 'error');
 		write_log(sprintf("System was unable to add the '%s' SQL database. Message was: %s", $db_name, $e->getMessage()), E_USER_ERROR);
 	}
