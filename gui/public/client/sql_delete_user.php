@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 // Include core library
@@ -44,23 +44,27 @@ check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('sql')) {
-    redirectTo('index.php');
+	redirectTo('index.php');
+} elseif (isset($_GET['id'])) {
+	$sqlUserId = intval($_GET['id']);
+
+	try {
+		iMSCP_Database::getInstance()->beginTransaction();
+
+		if (!sql_delete_user(get_user_domain_id($_SESSION['user_id']), $sqlUserId)) {
+			throw new iMSCP_Exception(sprintf('SQL user with ID %d no found in iMSCP database or not owned by customer with ID %d.', $_SESSION['user_id'], $sqlUserId));
+		}
+
+		iMSCP_Database::getInstance()->commit();
+
+		set_page_message(tr('SQL user successfully deleted.'), 'success');
+		write_log(sprintf("{$_SESSION['user_logged']} deleted SQL user with ID %s", $sqlUserId), E_USER_NOTICE);
+	} catch (iMSCP_Exception $e) {
+		iMSCP_Database::getInstance()->rollBack();
+
+		set_page_message(tr('System was unable to remove the SQL user.'), 'error');
+		write_log(sprintf("System was unable to delete SQL user with ID %d. Message was: %s", $sqlUserId, $e->getMessage()), E_USER_ERROR);
+	}
 }
 
-if (isset($_GET['id'])) {
-	$db_user_id = $_GET['id'];
-} else {
-	redirectTo('sql_manage.php');
-}
-
-$dmn_id = get_user_domain_id($_SESSION['user_id']);
-
-if(!check_user_sql_perms($db_user_id)) {
-    set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
-    redirectTo('sql_manage.php');
-}
-
-sql_delete_user($dmn_id, $db_user_id);
-write_log($_SESSION['user_logged'].": deletes SQL user ".$db_user_id."!", E_USER_NOTICE);
-set_page_message(tr('SQL user deleted.'), 'success');
 redirectTo('sql_manage.php');

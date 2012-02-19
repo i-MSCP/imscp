@@ -431,9 +431,6 @@ function delete_domain($domainId, $checkCreator = false)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	/** @var $db iMSCP_Database */
-	$db = iMSCP_Registry::get('db');
-
 	// Get username, uid and gid of domain user
 	$query = "
 		SELECT
@@ -454,8 +451,7 @@ function delete_domain($domainId, $checkCreator = false)
 		$stmt = exec_query($query, $domainId);
 	}
 
-	if(!$stmt->rowCount()) {
-		set_page_message(tr('Wrong request.'), 'error');
+	if (!$stmt->rowCount()) {
 		return false;
 	}
 
@@ -467,11 +463,31 @@ function delete_domain($domainId, $checkCreator = false)
 	$resellerId = $stmt->fields['domain_created_id'];
 
 	try {
-		$db->beginTransaction();
-
 		// First, remove domain user sessions to prevent any problems
 		$query = 'DELETE FROM `login` WHERE `user_name` = ?';
 		exec_query($query, $domainAdminUsername);
+
+		$query = 'SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?';
+		$stmt = exec_query($query, $domainId);
+
+		while (!$stmt->EOF) {
+			try {
+				iMSCP_Database::getInstance()->beginTransaction();
+
+				// Delete all SQL databases and users. Must be done in isolated transaction (implicit commit)
+				delete_sql_database($domainId, $stmt->fields['sqld_id']);
+
+				// just for fun since an implicit commit is made before in the delete_sql_database() function
+				iMSCP_Database::getInstance()->commit();
+
+				$stmt->moveNext();
+			} catch (iMSCP_Exception $e) {
+				iMSCP_Database::getInstance()->rollBack();
+				throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
+			}
+		}
+
+		iMSCP_Database::getInstance()->beginTransaction();
 
 		// Deletes all protected areas related data (areas, groups and users)
 
@@ -479,29 +495,19 @@ function delete_domain($domainId, $checkCreator = false)
 			DELETE
 				`areas`, `users`, `groups`
 			FROM
-				`domain` AS `dmn`
+				`domain` `dmn`
 			LEFT JOIN
-				`htaccess` AS `areas` ON `areas`.`dmn_id` = `dmn`.`domain_id`
+				`htaccess` `areas` ON (`areas`.`dmn_id` = `dmn`.`domain_id`)
 			LEFT JOIN
-				`htaccess_users` AS `users` ON `users`.`dmn_id` = `dmn`.`domain_id`
+				`htaccess_users` `users` ON (`users`.`dmn_id` = `dmn`.`domain_id`)
 			LEFT JOIN
-				`htaccess_groups` AS `groups` ON `groups`.`dmn_id` = `dmn`.`domain_id`
+				`htaccess_groups` `groups` ON (`groups`.`dmn_id` = `dmn`.`domain_id`)
 			WHERE
 				`dmn`.`domain_id` = ?
 		";
 		exec_query($query, $domainId);
 
-		// Deletes SQL databases and users
-
-		$query = 'SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?';
-		$stmt = exec_query($query, $domainId);
-
-		while (!$stmt->EOF) {
-			delete_sql_database($domainId, $stmt->fields['sqld_id']);
-			$stmt->moveNext();
-		}
-
-		// Deletes traffic entries
+		// Deletes domain traffic entries
 		$query = 'DELETE FROM `domain_traffic` WHERE`domain_id` = ?';
 		exec_query($query, $domainId);
 
@@ -540,22 +546,22 @@ function delete_domain($domainId, $checkCreator = false)
 		$query = 'DELETE FROM `user_gui_props` WHERE `user_id` = ?';
 		exec_query($query, $domainAdminId);
 
-        // Deletes own php.ini entry
+		// Deletes own php.ini entry
 
 		$query = 'DELETE FROM `php_ini` WHERE `domain_id` = ?';
 		exec_query($query, $domainId);
 
-		// Delegated tasks to the engine - begin
+		// Delegated tasks - begin
 
-		// Deletes Mail accounts
+		// Schedule mail accounts deletion
 		$query = 'UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?';
 		exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domainId));
 
-		// Deletes subdomain's aliasses (Delegated to the engine)
+		// Schedule subdomain's aliasses deletion
 		$query = 'SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?';
 		$stmt = exec_query($query, $domainId);
 
-		if ($stmt->recordCount() != 0) {
+		if ($stmt->rowCount()) {
 			$aliasesIds = array();
 
 			// TODO Not better to use PDO::FETCH_COLUMN ?
@@ -564,7 +570,8 @@ function delete_domain($domainId, $checkCreator = false)
 				$stmt->moveNext();
 			}
 
-			$aliasesIds = implode(',', $aliasesIds);
+			$db = iMSCP_Database::getRawInstance();
+			$aliasesIds = array_map(array($db, 'quote'), implode(',', $aliasesIds));
 
 			$query = "
 				UPDATE
@@ -617,40 +624,19 @@ function delete_domain($domainId, $checkCreator = false)
 		update_reseller_c_props($resellerId);
 
 		// Commit all changes to database server
-		$db->commit();
+		iMSCP_Database::getInstance()->commit();
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomain, array('domainId' => $domainId));
-
-		write_log($_SESSION['user_logged'] . ': deleted domain ' . $domainName, E_USER_NOTICE);
-
-	} catch (iMSCP_Exception_Database $e) {
-		$db->rollBack();
-
-		if(!$cfg->DEBUG) {
-			if ($checkCreator) {
-				set_page_message(tr('Unable to delete the domain. A message has been sent to the administrator.'), 'error');
-			} else {
-				set_page_message(tr('Unable to delete the domain. Please, consult admin logs or your mail for more information.'), 'error');
-			}
-
-			write_log(sprintf("System was unable to delete domain '%s' for the following reason: %s",
-							  $domainName, $e->getMessage()), E_USER_ERROR);
-		} else {
-			throw new iMSCP_Exception_Database($e->getMessage());
-		}
-
-		return false;
+	} catch (iMSCP_Exception $e) {
+		iMSCP_Database::getInstance()->rollBack();
+		throw new iMSCP_Exception($e->getMessage(), $e->getCode(), $e);
 	}
 
 	// We are now ready to send a request to the daemon for delegated tasks.
-	// Note: We are safe here. If the daemon doesn't answer, the entities will not be
-	// removed but it's not really a problem because they are no longer viewable
-	// through the panel. To finish the deletion process, the administrator must send
-	// a request to the daemon manually via the panel, or run the imscp-rqst-mngr
-	// script manually.
+	// Note: We are safe here. If the daemon doesn't answer, the entities will not be removed but it's not really a
+	// problem because they are no longer viewable through the panel. To finish the deletion process, the administrator
+	// must send a request to the daemon manually via the panel, or run the imscp-rqst-mngr script manually.
 	send_request();
-
-	$_SESSION['ddel'] = '_yes_';
 
 	return true;
 }

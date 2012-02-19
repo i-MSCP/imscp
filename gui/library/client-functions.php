@@ -494,79 +494,6 @@ function count_sql_user_by_name($sqlu_name)
 }
 
 /**
- * Deletes a SQL user.
- *
- * @param  int $domain_id Domain unique identifier
- * @param  int $db_user_id Sql user unique identifier
- * @return
- */
-function sql_delete_user($domain_id, $db_user_id)
-{
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, array('sqlUserId' => $db_user_id));
-
-    $query = "
-		SELECT
-			`t1`.`sqld_id`, `t1`.`sqlu_name`, `t2`.`sqld_name`, `t1`.`sqlu_name`
-		FROM
-			`sql_user` AS `t1`,
-			`sql_database` AS `t2`
-		WHERE
-			`t1`.`sqld_id` = `t2`.`sqld_id`
-		AND
-			`t2`.`domain_id` = ?
-		AND
-			`t1`.`sqlu_id` = ?
-	";
-    $stmt = exec_query($query, array($domain_id, $db_user_id));
-
-    if ($stmt->rowCount() == 0) {
-        if ($_SESSION['user_type'] === 'admin'
-            || $_SESSION['user_type'] === 'reseller'
-        ) {
-            return;
-        }
-        redirectTo('sql_manage.php');
-    }
-
-    // remove from i-MSCP sql_user table.
-    $query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
-    exec_query($query, $db_user_id);
-
-    update_reseller_c_props(get_reseller_id($domain_id));
-
-    $db_name = quoteIdentifier($stmt->fields['sqld_name']);
-    $db_user_name = $stmt->fields['sqlu_name'];
-
-    if (count_sql_user_by_name($stmt->fields['sqlu_name']) == 0) {
-        // revoke grants on global level, if any;
-        $query = "REVOKE ALL ON *.* FROM ?@'%'";
-        exec_query($query, $db_user_name);
-
-        $query = "REVOKE ALL ON *.* FROM ?@localhost";
-        exec_query($query, $db_user_name);
-
-        // delete user record from mysql.user table;
-        $query = "DROP USER ?@'%'";
-        exec_query($query, $db_user_name);
-
-        $query = "DROP USER ?@'localhost'";
-        exec_query($query, $db_user_name);
-
-        // flush privileges.
-        $query = "FLUSH PRIVILEGES";
-        execute_query($query);
-    } else {
-        $query = "REVOKE ALL ON $db_name.* FROM ?@'%'";
-        exec_query($query, $db_user_name);
-
-        $query = "REVOKE ALL ON $db_name.* FROM ?@localhost";
-        exec_query($query, $db_user_name);
-    }
-
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $db_user_id));
-}
-
-/**
  * Checks if an user has permissions on a specific SQL user.
  *
  * @param  int $db_user_id SQL user unique identifier.
@@ -612,48 +539,95 @@ function check_ftp_perms($ftp_acc)
 }
 
 /**
+ * Deletes a SQL user.
+ *
+ * Note: Please, be sure to execute this function inside a MYSQL transaction to ensure data consistency.
+ *
+ * @param  int $domainId Domain unique identifier
+ * @param  int $sqlUserId Sql user unique identifier
+ * @return bool TRUE if $sqlUserId has been found and successfully removed, FALSE otherwise
+ */
+function sql_delete_user($domainId, $sqlUserId)
+{
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlUser, array('sqlUserId' => $sqlUserId));
+
+	$query = "
+		SELECT
+			`t1`.`sqld_id`, `t1`.`sqlu_name`, `t2`.`sqld_name`, `t1`.`sqlu_name`
+		FROM
+			`sql_user` `t1`, `sql_database` `t2`
+		WHERE
+			`t1`.`sqld_id` = `t2`.`sqld_id`
+		AND
+			`t2`.`domain_id` = ?
+		AND
+			`t1`.`sqlu_id` = ?
+	";
+	$stmt = exec_query($query, array($domainId, $sqlUserId));
+
+	if (!$stmt->rowCount()) {
+		return false;
+	}
+
+	$sqlUserName = $stmt->fields['sqlu_name'];
+
+	// If SQL user is only assigned to one database we can remove it completely
+	if (count_sql_user_by_name($stmt->fields['sqlu_name']) == 1) {
+		$query = 'DELETE FROM `mysql`.`user` WHERE `User` = ?';
+		exec_query($query, $sqlUserName);
+
+		$query = 'DELETE FROM `mysql`.`db` WHERE `User` = ?';
+		exec_query($query, $sqlUserName);
+
+	} else {
+		$query = 'DELETE FROM `mysql`.`db` WHERE `User` = ? AND `Db` = ?';
+		exec_query($query, array($sqlUserName, quoteIdentifier($stmt->fields['sqld_name'])));
+	}
+
+	// Flush mysql privileges
+	$query = "FLUSH PRIVILEGES";
+	execute_query($query);
+
+	// Delete the database from the i-MSCP sql_user table
+	// Must be done at end of process
+	$query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
+	exec_query($query, $sqlUserId);
+
+	// Update reseller sql user limit
+	update_reseller_c_props(get_reseller_id($domainId));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlUser, array('sqlUserId' => $sqlUserId));
+
+	return true;
+}
+
+/**
  * Deletes a SQL database.
  *
- * @param  int $domain_id Domain unique identifier
- * @param  int $database_id Databse unique identifier
- * @return
+ * @param  int $domainId Domain unique identifier
+ * @param  int $databaseId Databse unique identifier
+ * @return bool TRUE when $databaseId has been found and successfully deleted, FALSE otherwise
  */
-function delete_sql_database($domain_id, $database_id)
+function delete_sql_database($domainId, $databaseId)
 {
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqlDbId' => $database_id));
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSqlDb, array('sqlDbId' => $databaseId));
 
-    $query = "
+	// Get name of $databaseId being deleted
+	$query = "SELECT `sqld_name` FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
+	$stmt = exec_query($query, array($domainId, $databaseId));
+
+	if (!$stmt->rowCount()) {
+		return false;
+	}
+
+	$databaseName = quoteIdentifier($stmt->fields['sqld_name']);
+
+	// Get list of users assigned to $databaseId
+	$query = "
 		SELECT
-			`sqld_name` AS `db_name`
+			`t2`.`sqlu_id`
 		FROM
-			`sql_database`
-		WHERE
-			`domain_id` = ?
-		AND
-			`sqld_id` = ?
-	";
-    $stmt = exec_query($query, array($domain_id, $database_id));
-
-    if ($stmt->recordCount() == 0) {
-        if ($_SESSION['user_type'] === 'admin'
-            || $_SESSION['user_type'] === 'reseller'
-        ) {
-            return;
-        }
-
-        redirectTo('sql_manage.php');
-    }
-
-    $db_name = quoteIdentifier($stmt->fields['db_name']);
-
-    // have we any users assigned to this database;
-    $query = "
-		SELECT
-			`t2`.`sqlu_id` AS `db_user_id`,
-			`t2`.`sqlu_name` AS `db_user_name`
-		FROM
-			`sql_database` AS `t1`,
-			`sql_user` AS `t2`
+			`sql_database` `t1`, `sql_user` `t2`
 		WHERE
 			`t1`.`sqld_id` = `t2`.`sqld_id`
 		AND
@@ -661,26 +635,30 @@ function delete_sql_database($domain_id, $database_id)
 		AND
 			`t1`.`sqld_id` = ?
 	";
-    $stmt = exec_query($query, array($domain_id, $database_id));
+	$stmt = exec_query($query, array($domainId, $databaseId));
 
-    if ($stmt->rowCount() != 0) {
-        while (!$stmt->EOF) {
-            $db_user_id = $stmt->fields['db_user_id'];
-            sql_delete_user($domain_id, $db_user_id);
-            $stmt->moveNext();
-        }
-    }
+	if ($stmt->rowCount()) {
+		while (!$stmt->EOF) {
+			$sqlUserId = $stmt->fields['sqlu_id'];
+			if (!sql_delete_user($domainId, $sqlUserId)) {
+				throw new iMSCP_Exception(sprintf('Unable to delete SQL user linked to database with ID %d.', $sqlUserId));
+			}
 
-    exec_query("DROP DATABASE IF EXISTS $db_name");
+			$stmt->moveNext();
+		}
+	}
 
-    write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name), E_USER_NOTICE);
+	$query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
+	exec_query($query, array($domainId, $databaseId));
 
-    $query = "DELETE FROM `sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?";
-    exec_query($query, array($domain_id, $database_id));
+	update_reseller_c_props(get_reseller_id($databaseId));
 
-    update_reseller_c_props(get_reseller_id($database_id));
+	// Must be done last du to the implicit commit
+	exec_query("DROP DATABASE IF EXISTS $databaseName");
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $database_id));
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSqlDb, array('sqlDbId' => $databaseId));
+
+	return true;
 }
 
 /**

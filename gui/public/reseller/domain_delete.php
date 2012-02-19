@@ -65,8 +65,8 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     ";
     $stmt = exec_query($query, array($domainId, $_SESSION['user_id']));
 
-    if ($stmt->rowCount() == 0) {
-        set_page_message(tr('Wrong domain Id.'), 'error');
+    if (!$stmt->rowCount()) {
+        set_page_message(tr('Wrong request'), 'error');
         redirectTo('users.php');
     }
 
@@ -114,7 +114,7 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     $query = "SELECT `mail_type`, `mail_addr` FROM `mail_users` WHERE `domain_id` = ?";
     $stmt = exec_query($query, $domainId);
 
-    if ($stmt->rowCount() != 0) {
+    if ($stmt->rowCount()) {
         while (!$stmt->EOF) {
             $mailTypes = explode(',', $stmt->fields['mail_type']);
             $mailTypesdisplayArray = array();
@@ -126,9 +126,10 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
             $mailTypesdisplayTxt = implode(', ', $mailTypesdisplayArray);
             $addr = explode('@', $stmt->fields['mail_addr']);
 
-            $tpl->assign(array(
-                              'MAIL_ADDR' => tohtml($addr[0] . '@' . decode_idna($addr[1])),
-                              'MAIL_TYPE' => $mailTypesdisplayTxt));
+			$tpl->assign(
+				array(
+					'MAIL_ADDR' => tohtml($addr[0] . '@' . decode_idna($addr[1])),
+					'MAIL_TYPE' => $mailTypesdisplayTxt));
 
             $tpl->parse('MAIL_ITEM', '.mail_item');
             $stmt->moveNext();
@@ -151,14 +152,15 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
 	";
     $stmt = exec_query($query, $domainId);
 
-    if ($stmt->rowCount() != 0) {
+    if ($stmt->rowCount()) {
         while (!$stmt->EOF) {
-            $username = explode('@', $stmt->fields['userid']);
-            $tpl->assign(array(
-                              'FTP_USER' => tohtml($username[0] . '@' . decode_idna($username[1])),
-                              'FTP_HOME' => tohtml(substr($stmt->fields['homedir'], strlen($cfg->FTP_HOMEDIR)))));
+			$username = explode('@', $stmt->fields['userid']);
+			$tpl->assign(
+				array(
+					'FTP_USER' => tohtml($username[0] . '@' . decode_idna($username[1])),
+					'FTP_HOME' => tohtml(substr($stmt->fields['homedir'], strlen($cfg->FTP_HOMEDIR)))));
 
-            $tpl->parse('FTP_ITEM', '.ftp_item');
+			$tpl->parse('FTP_ITEM', '.ftp_item');
             $stmt->moveNext();
         }
     } else {
@@ -178,7 +180,7 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     ";
     $stmt = exec_query($query, $domainId);
 
-    if ($stmt->rowCount() != 0) {
+    if ($stmt->rowCount()) {
         while (!$stmt->EOF) {
             $aliasIds[] = $stmt->fields['alias_id'];
 			$tpl->assign(
@@ -205,7 +207,7 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     ";
     $stmt = exec_query($query, $domainId);
 
-    if ($stmt->rowCount() != 0) {
+    if ($stmt->rowCount()) {
         while (!$stmt->EOF) {
 			$tpl->assign(
 				array(
@@ -234,7 +236,7 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
         ";
         $stmt = execute_query($query);
 
-        if ($stmt->rowCount() != 0) {
+        if ($stmt->rowCount()) {
             while (!$stmt->EOF) {
 				$tpl->assign(
 					array(
@@ -252,14 +254,14 @@ function reseller_generateDomainAcountDeletionValidationPage($domainId)
     $query = "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
     $stmt = exec_query($query, $domainId);
 
-    if ($stmt->rowCount() != 0) {
+    if ($stmt->rowCount()) {
         while (!$stmt->EOF) {
             $query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
             $stmt2 = exec_query($query, $stmt->fields['sqld_id']);
 
             $sqlUsersList = array();
 
-            if ($stmt2->rowCount() != 0) {
+            if ($stmt2->rowCount()) {
                 while (!$stmt2->EOF) {
                     $sqlUsersList[] = $stmt2->fields['sqlu_name'];
                     $stmt2->moveNext();
@@ -294,15 +296,25 @@ check_login(__FILE__);
 
 if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
     $tpl = reseller_generateDomainAcountDeletionValidationPage($_GET['domain_id']);
-} elseif (isset($_POST['domain_id']) && !empty($_POST['domain_id']) &&
-          isset($_POST['delete']) && $_POST['delete'] == 1
-) {
-    if(delete_domain($_POST['domain_id'], true)) {
-        set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
-    }
+} elseif (isset($_POST['domain_id']) && !empty($_POST['domain_id']) && isset($_POST['delete']) && $_POST['delete'] == 1) {
 
-    redirectTo('users.php');
-	exit;
+	$domainId = intval($_POST['domain_id']);
+
+	try {
+    	if(!delete_domain($domainId, true)) {
+			set_page_message(tr(''), 'error');
+			throw new iMSCP_Exception('Domain account not found.');
+		}
+
+		set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
+		write_log(sprintf('%s deleted the domain account with ID %d', $_SESSION['user_logged'], $domainId), E_USER_NOTICE);
+	} catch(iMSCP_Exception $e) {
+		set_page_message(tr('Unable to delete the domain account. A message has been sent to the administrator.'), 'error');
+		write_log(sprintf("System was unable to delete domain account with ID %s. Message was: %s", $domainId, $e->getMessage()), E_USER_ERROR);
+	}
+
+	redirectTo('users.php');
+	exit; // Avoid IDE warning
 } else {
     if (isset($_GET['delete'])) {
         set_page_message(tr('Wrong domain Id.'), 'error');

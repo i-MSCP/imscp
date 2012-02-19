@@ -111,23 +111,34 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 
 	$user_pass = $_POST['pass'];
 
-	// update user pass in the i-MSCP sql_user table;
-	$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
-	exec_query($query, array($user_pass, $db_user_name));
+	try {
+		iMSCP_Database::getInstance()->beginTransaction();
 
-	// update user pass in the mysql system tables;
-	// TODO use prepared statement for $user_pass
-	$query = "SET PASSWORD FOR '$db_user_name'@'%' = PASSWORD('$user_pass')";
+		// Update user password in the i-MSCP sql_user table;
 
-	execute_query($query);
-	// TODO use prepared statement for $user_pass
-	$query = "SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')";
-	execute_query($query);
+		$query = "UPDATE `sql_user` SET `sqlu_pass` = ? WHERE `sqlu_name` = ?";
+		exec_query($query, array($user_pass, $db_user_name));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $db_user_id));
+		// Update user pass in the mysql system tables;
 
-	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
-	set_page_message(tr('SQL user password updated.'), 'success');
+		$query = "SET PASSWORD FOR ?@'%' = PASSWORD(?)";
+		exec_query($query, array($db_user_name, $user_pass));
+
+		$query = "SET PASSWORD FOR ?@localhost = PASSWORD(?)";
+		exec_query($query, array($db_user_name, $user_pass));
+
+		iMSCP_Database::getInstance()->commit();
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSqlUser, array('sqlUserId' => $db_user_id));
+
+		set_page_message(tr('SQL user password successfully updated.'), 'success');
+		write_log($_SESSION['user_logged'] . ": updated SQL user password: " . tohtml($db_user_name), E_USER_NOTICE);
+	} catch (iMSCP_Exception_Database $e) {
+		iMSCP_Database::getInstance()->rollBack();
+		set_page_message(tr('System was unable to update the SQL user password.'), 'error');
+		write_log(sprintf("System was unable to update password for the '%s' SQL user. Message was: %s", $db_user_name, $e->getMessage()), E_USER_ERROR);
+	}
+
 	redirectTo('sql_manage.php');
 }
 

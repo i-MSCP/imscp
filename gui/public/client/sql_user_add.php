@@ -72,42 +72,21 @@ if (isset($_GET['id'])) {
 }
 
 /**
- * @param $tpl
- * @param $user_id
- * @param $db_id
- * @param $sqluser_available
- * @return void
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param int $customerId Customer unique identifier
+ * @param int $databaseId Database unique identifier
+ * @param array $sqlUserList
  */
-function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($user_id);
+function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
+{
+	$domainProperties = get_domain_default_props($customerId, true);
+	$domainSqlUsersLimit = $domainProperties['domain_sqlu_limit'];
 
-	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
+	$limits =  get_domain_running_sql_acc_cnt($domainProperties['domain_id']);
 
-	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
-		if (!$sqluser_available) {
+	if ($domainSqlUsersLimit != 0 && $limits[1] >= $domainSqlUsersLimit) {
+		if (!$sqlUserList) {
 			set_page_message(tr('SQL users limit reached.'), 'error');
 			redirectTo('sql_manage.php');
 		} else {
@@ -115,67 +94,65 @@ function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 		}
 	}
 
-	$dmn_name = $_SESSION['user_logged'];
-
 	$query = "
 		SELECT
-			t1.`sqld_id`, t2.`domain_id`, t2.`domain_name`
+			`t1`.`domain_id`
 		FROM
-			`sql_database` AS t1,
-			`domain` AS t2
+			`domain` `t1`
+		INNER JOIN
+			`sql_database` `t2` ON(t2.domain_id = t1.domain_id)
 		WHERE
-			t1.`sqld_id` = ?
+			`t1`.`domain_id` = ?
 		AND
-			t2.`domain_id` = t1.`domain_id`
-		AND
-			t2.`domain_name` = ?
+			`t2`.`sqld_id` = ?
+		LIMIT 1
 	";
+	$stmt = exec_query($query, array($domainProperties['domain_id'], $databaseId));
 
-	$rs = exec_query($query, array($db_id, $dmn_name));
-
-	if (!$rs->recordCount()) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
+	if (!$stmt->rowCount()) {
+		set_page_message(tr('Wrong request'), 'error');
 		redirectTo('sql_manage.php');
 	}
 }
 
 /**
- * @param $db_id
- * @return array|bool
+ *
+ * @param int $databaseId Database unique identifier
+ * @return array
  */
-function get_sqluser_list_of_current_db($db_id) {
+function get_sqluser_list_of_current_db($databaseId)
+{
 	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
+	$stmt = exec_query($query, $databaseId);
 
-	$rs = exec_query($query, $db_id);
+	$userlist = array();
 
-	if ($rs->recordCount() == 0) {
-		return false;
-	} else {
-		while (!$rs->EOF) {
-			$userlist[] = $rs->fields['sqlu_name'];
-			$rs->moveNext();
-		}
+	while (!$stmt->EOF) {
+			$userlist[] = $stmt->fields['sqlu_name'];
+			$stmt->moveNext();
 	}
 
 	return $userlist;
 }
 
 /**
- * @param $tpl
- * @param $user_id
- * @param $db_id
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param $sqlUserId
+ * @param $databaseId
  * @return bool
  */
-function gen_sql_user_list($tpl, $user_id, $db_id) {
+function gen_sql_user_list($tpl, $sqlUserId, $databaseId) {
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$first_passed = true;
-	$user_found = false;
-	$oldrs_name = '';
-	$userlist = get_sqluser_list_of_current_db($db_id);
-	$dmn_id = get_user_domain_id($user_id);
+	$firstPassed = true;
+	$sqlUserFound = false;
+	$oldrsName = '';
+	$userlist = get_sqluser_list_of_current_db($databaseId);
+	$domainId = get_user_domain_id($sqlUserId);
+
 	// Let's select all sqlusers of the current domain except the users of the current database
 	$query = "
 		SELECT
@@ -191,34 +168,38 @@ function gen_sql_user_list($tpl, $user_id, $db_id) {
 		ORDER BY
 			t1.`sqlu_name`
 	";
-	$rs = exec_query($query, array($dmn_id, $db_id));
+	$stmt = exec_query($query, array($domainId, $databaseId));
 
-	while (!$rs->EOF) {
+	while (!$stmt->EOF) {
 		// Checks if it's the first element of the combobox and set it as selected
-		if ($first_passed) {
+		if ($firstPassed) {
 			$select = $cfg->HTML_SELECTED;
-			$first_passed = false;
+			$firstPassed = false;
 		} else {
 			$select = '';
 		}
 		// 1. Compares the sqluser name with the record before (Is set as '' at the first time, see above)
 		// 2. Compares the sqluser name with the userlist of the current database
-		if ($oldrs_name != $rs->fields['sqlu_name'] && @!in_array($rs->fields['sqlu_name'], $userlist)) {
-			$user_found = true;
-			$oldrs_name = $rs->fields['sqlu_name'];
+		if ($oldrsName != $stmt->fields['sqlu_name'] && !in_array($stmt->fields['sqlu_name'], $userlist)) {
+			$sqlUserFound = true;
+			$oldrsName = $stmt->fields['sqlu_name'];
+
 			$tpl->assign(
 				array(
-					'SQLUSER_ID' => $rs->fields['sqlu_id'],
+					'SQLUSER_ID' => $stmt->fields['sqlu_id'],
 					'SQLUSER_SELECTED' => $select,
-					'SQLUSER_NAME' => tohtml($rs->fields['sqlu_name'])
+					'SQLUSER_NAME' => tohtml($stmt->fields['sqlu_name'])
 				)
 			);
+
 			$tpl->parse('SQLUSER_LIST', '.sqluser_list');
 		}
-		$rs->moveNext();
+
+		$stmt->moveNext();
 	}
+
 	// let's hide the combobox in case there are no other sqlusers
-	if (!$user_found) {
+	if (!$sqlUserFound) {
 		$tpl->assign('SHOW_SQLUSER_LIST', '');
 		return false;
 	} else {
@@ -227,23 +208,25 @@ function gen_sql_user_list($tpl, $user_id, $db_id) {
 }
 
 /**
+ *
  * @param $db_user
- * @return
+ * @return mixed
  */
-function check_db_user($db_user) {
-	$query = "SELECT COUNT(`User`) AS cnt FROM mysql.`user` WHERE `User` = ?";
+function check_db_user($db_user)
+{
+	$query = "SELECT COUNT(`User`) `cnt` FROM `mysql`.`user` WHERE `User` = ?";
+	$stmt = exec_query($query, $db_user);
 
-	$rs = exec_query($query, $db_user);
-	return $rs->fields['cnt'];
+	return $stmt->fields['cnt'];
 }
 
 /**
- * @todo
- * 	* Database user with same name can be added several times
- *  * If creation of database user fails in MySQL-Table, database user is already
- * 		in local i-MSCP table -> Error handling
+ *
+ * @param $user_id
+ * @param $databaseId
+ * @return mixed
  */
-function add_sql_user($user_id, $db_id)
+function add_sql_user($user_id, $databaseId)
 {
 	if (!isset($_POST['uaction'])) {
 		return;
@@ -251,34 +234,35 @@ function add_sql_user($user_id, $db_id)
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddSqlUser);
 
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	// let's check user input
 
 	if (empty($_POST['user_name']) && !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Please type user name!'), 'error');
+		set_page_message(tr('Please enter an username.'), 'error');
 		return;
 	}
 
 	if (empty($_POST['pass']) && empty($_POST['pass_rep']) && !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Please type user password.'), 'error');
+		set_page_message(tr('Please enter a password.'), 'error');
 		return;
 	}
 
 	if ((isset($_POST['pass']) && isset($_POST['pass_rep'])) && $_POST['pass'] !== $_POST['pass_rep']
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Entered passwords do not match.'), 'error');
+		set_page_message(tr("Entered passwords doesn't matches."), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass']) && strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH && !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Too user long password.'), 'error');
+		set_page_message(tr('The password is too long.'), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass']) && !preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr("Please, don't use special chars like '@, $, %...' in the password."), 'error');
+		set_page_message(tr("Please, don't use special chars such as '@, $, %...' in the password."), 'error');
 		return;
 	}
 
@@ -293,13 +277,14 @@ function add_sql_user($user_id, $db_id)
 
 	if (isset($_POST['Add_Exist'])) {
 		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_id` = ?";
-		$rs = exec_query($query, $_POST['sqluser_id']);
+		$stmt = exec_query($query, $_POST['sqluser_id']);
 
-		if ($rs->recordCount() == 0) {
+		if (!$stmt->rowCount()) {
 			set_page_message(tr('SQL-user not found.'), 'error');
 			return;
 		}
-		$user_pass = $rs->fields['sqlu_pass'];
+
+		$user_pass = $stmt->fields['sqlu_pass'];
 	} else {
 		$user_pass = $_POST['pass'];
 	}
@@ -322,8 +307,8 @@ function add_sql_user($user_id, $db_id)
 		}
 	} else {
 		$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
-		$rs = exec_query($query, $_POST['sqluser_id']);
-		$db_user = $rs->fields['sqlu_name'];
+		$stmt = exec_query($query, $_POST['sqluser_id']);
+		$db_user = $stmt->fields['sqlu_name'];
 	}
 
 	if (strlen($db_user) > $cfg->MAX_SQL_USER_LENGTH) {
@@ -344,48 +329,64 @@ function add_sql_user($user_id, $db_id)
 		return;
 	}
 
-	// add user in the i-MSCP table;
+	$query = "SELECT `sqld_name` FROM `sql_database` WHERE `sqld_id` = ? AND `domain_id` = ?";
+	$stmt = exec_query($query, array($databaseId, $dmn_id));
 
-	$query = "
-		INSERT INTO `sql_user` (
-		    `sqld_id`, `sqlu_name`, `sqlu_pass`
-		) VALUES (
-		    ?, ?, ?
-		)
-	";
-	exec_query($query, array($db_id, $db_user, $user_pass));
+	if(!$stmt->rowCount()) {
+		set_page_message('wrong_request');
+	} else {
+		$db_name = $stmt->fields['sqld_name'];
+		$db_name = preg_replace("/([_%\?\*])/", '\\\$1', $db_name);
 
-	update_reseller_c_props(get_reseller_id($dmn_id));
+		// Here we cannot use transaction because the GRANT statement cause an implicit commit
+		// We execute the GRANT statements first to let the i-MSCP database in clean state if one of them fails.
+		try {
 
-	$query = "
-		SELECT
-			`sqld_name` AS `db_name`
-		FROM
-			`sql_database`
-		WHERE
-			`sqld_id` = ?
-		AND
-			`domain_id` = ?
-	";
+			$sqlUserCreated = false;
 
-	$rs = exec_query($query, array($db_id, $dmn_id));
-	$db_name = $rs->fields['db_name'];
-	$db_name = preg_replace("/([_%\?\*])/",'\\\$1',$db_name);
+			$query = "GRANT ALL PRIVILEGES ON " . quoteIdentifier($db_name) . ".* TO ?@? IDENTIFIED BY ?";
 
-	// add user in the mysql system tables
-	$query = "GRANT ALL PRIVILEGES ON ". quoteIdentifier($db_name) .".* TO ?@? IDENTIFIED BY ?";
-	exec_query($query, array($db_user, "localhost", $user_pass));
-	exec_query($query, array($db_user, "%", $user_pass));
+			// Todo prepare the statement only once here
+			exec_query($query, array($db_user, 'localhost', $user_pass));
+			exec_query($query, array($db_user, '%', $user_pass));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
+			$sqlUserCreated = true;
 
-	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
-	set_page_message(tr('SQL user created.'), 'success');
+			iMSCP_Database::getInstance()->beginTransaction();
+
+			$query = "INSERT INTO `sql_user` (`sqld_id`, `sqlu_name`, `sqlu_pass`) VALUES (?, ?, ?)";
+			exec_query($query, array($databaseId, $db_user, $user_pass));
+
+			update_reseller_c_props(get_reseller_id($dmn_id));
+
+			iMSCP_Database::getInstance()->commit();
+
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddSqlUser);
+
+			set_page_message(tr('SQL user successfully added.'), 'success');
+			write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user), E_USER_NOTICE);
+		} catch (iMSCP_Exception_Database $e) {
+			if($sqlUserCreated) {
+				// Our transaction failed so we rollback and we remove the user and all its privileges from
+				// the mysql tables
+				iMSCP_Database::getInstance()->rollBack();
+
+				try { // We don't care about result here - An exception is throw in case the user do not exists
+					exec_query("DROP USER ?@'localhost'", $db_user);
+					exec_query("DROP USER ?@'%'", $db_user);
+				} catch(iMSCP_Debug_Bar_Exception $e) {}
+			}
+
+			set_page_message(tr('System was unable to add the SQL user.'), 'error');
+			write_log(sprintf("System was unable to add the '%s' SQL user. Message was: %s", $db_user, $e->getMessage()), E_USER_ERROR);
+		}
+	}
+
 	redirectTo('sql_manage.php');
 }
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @param $db_id
  * @return void
  */
@@ -429,10 +430,6 @@ function gen_page_post_data($tpl, $db_id) {
 	}
 
 	$tpl->assign('ID', $db_id);
-}
-
-if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
-	redirectTo('index.php');
 }
 
 $tpl->assign(
