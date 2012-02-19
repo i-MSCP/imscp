@@ -72,25 +72,25 @@ sub _init{
 
 	$self->{'_opts'}->{'column-separator'}	= undef;
 
-	$self->{'_opts'}->{'cr-wrap'}			=  undef;
-	$self->{'_opts'}->{'no-collapse'}		=  undef;
-	$self->{'_opts'}->{'trim'}				=  undef;
-	$self->{'_opts'}->{'date-format'}		=  undef;
+	$self->{'_opts'}->{'cr-wrap'}			= undef;
+	$self->{'_opts'}->{'no-collapse'}		= undef;
+	$self->{'_opts'}->{'trim'}				= undef;
+	$self->{'_opts'}->{'date-format'}		= undef;
 
-	$self->{'_opts'}->{'help-status'}		=  undef;
-	$self->{'_opts'}->{'insecure'}			=  undef;
-	$self->{'_opts'}->{'item-help'}			=  undef;
-	$self->{'_opts'}->{'max-input'}			=  undef;
-	$self->{'_opts'}->{'no-shadow'}			=  undef;
-	$self->{'_opts'}->{'shadow'}			=  undef;
-	$self->{'_opts'}->{'single-quoted'}		=  undef;
-	$self->{'_opts'}->{'tab-correct'}		=  undef;
-	$self->{'_opts'}->{'tab-len'}			=  undef;
-	$self->{'_opts'}->{'time-out'}			=  undef;
+	$self->{'_opts'}->{'help-status'}		= undef;
+	$self->{'_opts'}->{'insecure'}			= undef;
+	$self->{'_opts'}->{'item-help'}			= undef;
+	$self->{'_opts'}->{'max-input'}			= undef;
+	$self->{'_opts'}->{'no-shadow'}			= undef;
+	$self->{'_opts'}->{'shadow'}			= undef;
+	$self->{'_opts'}->{'single-quoted'}		= undef;
+	$self->{'_opts'}->{'tab-correct'}		= undef;
+	$self->{'_opts'}->{'tab-len'}			= undef;
+	$self->{'_opts'}->{'time-out'}			= undef;
 
-	$self->{'_opts'}->{'height'}			=  undef;
-	$self->{'_opts'}->{'width'}				=  undef;
-	$self->{'_opts'}->{'aspect'}			=  undef;
+	$self->{'_opts'}->{'height'}			= undef;
+	$self->{'_opts'}->{'width'}				= undef;
+	$self->{'_opts'}->{'aspect'}			= undef;
 
 	$self->_find_bin($^O	=~ /bsd$/ ? 'cdialog' : 'dialog');
 	$self->_determine_dialog_variant();
@@ -171,7 +171,7 @@ sub _clean{
 sub _restoreDefaults{
 	my $self = shift;
 	foreach my $prop (keys %{$self->{'_opts'}}){
-		if(!(grep $_ eq $prop, qw/title backtitle colors begin/)){
+		if(!(grep $_ eq $prop, qw/title backtitle colors begin exitOnPrompt/)){
 			$self->{'_opts'}->{$prop} = undef;
 		}
 	}
@@ -205,6 +205,9 @@ sub _execute{
 sub fselect{
 	my $self = shift;
 	my $file = shift;
+
+	exit 1 if $main::noprompt;
+
 	$self->{'lines'} = $self->{'lines'} - 8;
 	my $rv = $self->_execute($file, undef, "fselect");
 	$self->{'lines'} = $self->{'lines'} + 8;
@@ -231,6 +234,9 @@ sub radiolist{
 	my $text = shift;
 	my @init = (@_);
 	my $opts = '';
+
+	exit 1 if $main::noprompt;
+
 	for my $init (@init){
 		if(!$opts){
 			$opts = "'$init' '' on ";
@@ -247,6 +253,8 @@ sub checkbox{
 	my @init = (@_);
 	my $opts = '';
 
+	exit 1 if $main::noprompt;
+
 	$opts .= "$_ '' on " foreach(@init);
 
 	return $self->_textbox($text, 'checklist', (@init +1)." $opts");
@@ -255,18 +263,27 @@ sub checkbox{
 sub tailbox{
 	my $self = shift;
 	my $file = shift;
+
+	exit 1 if $main::noprompt;
+
 	return $self->_execute($file, undef, 'tailbox');
 }
 
 sub editbox{
 	my $self = shift;
 	my $file = shift;
+
+	exit 1 if $main::noprompt;
+
 	return $self->_execute($file, undef, 'editbox');
 }
 
 sub dselect{
 	my $self = shift;
 	my $file = shift;
+
+	exit 1 if $main::noprompt;
+
 	$self->{'lines'} = $self->{'lines'} - 8;
 	my $rv = $self->_execute($file, undef, 'dselect');
 	$self->{'lines'} = $self->{'lines'} + 8;
@@ -276,12 +293,17 @@ sub dselect{
 sub msgbox{
 	my $self = shift;
 	my $text = shift;
+
+	exit 1 if $main::noprompt;
+
 	return $self->_textbox($text, 'msgbox');
 }
 
 sub yesno{
 	my $self = shift;
 	my $text = shift;
+
+	exit 1 if $main::noprompt;
 
 	my ($rv, undef) = ($self->_textbox($text, 'yesno'));
 	return $rv;
@@ -291,12 +313,17 @@ sub inputbox{
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
+
+	exit 1 if $main::noprompt;
+
 	return $self->_textbox($text, 'inputbox', $init);
 }
 
 sub infobox{
 	my $self = shift;
 	my $text = shift;
+
+	exit 1 if $main::noprompt;
 
 	my $clear					= $self->{'_opts'}->{'clear'};
 	$self->{'_opts'}->{'clear'}	= undef;
@@ -309,6 +336,8 @@ sub passwordbox{
 	my $self = shift;
 	my $text = shift;
 	my $init = shift || '';
+
+	exit 1 if $main::noprompt;
 
 	$self->{'_opts'}->{'insecure'} = '';
 	return $self->_textbox($text, 'passwordbox', "'$init'");

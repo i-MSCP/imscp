@@ -99,6 +99,8 @@ sub user_dialog {
 
 	use iMSCP::Dialog;
 
+	return 0 if $main::noprompt;
+
 	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
 	iMSCP::Dialog->factory()->set('no-label','EXIT');
 	if (iMSCP::Dialog->factory()->yesno(

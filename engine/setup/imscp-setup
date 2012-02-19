@@ -40,6 +40,16 @@ use iMSCP::Dialog;
 
 newDebug('imscp-setup.log');
 
+our $noprompt;
+
+use Getopt::Long;
+
+my $opt = ''; # option variable with default value (false)
+GetOptions ('noprompt' => \$noprompt);
+
+
+iMSCP::Dialog->factory()->set('exitOnPrompt', 'yes') if $noprompt;
+
 require "$FindBin::Bin/imscp-setup-methods.pl";
 
 
@@ -49,6 +59,8 @@ require "$FindBin::Bin/imscp-setup-methods.pl";
 # @return int 0 on success, other on failure
 #
 sub setup_shut_down {
+
+	return 0 if $main::noprompt;
 
 	iMSCP::Dialog->factory()->msgbox(
 					"\n
