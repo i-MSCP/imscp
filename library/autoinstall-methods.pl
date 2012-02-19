@@ -500,6 +500,17 @@ sub saveGuiWorkingData {
 			return $rs if $rs;
 		}
 
+		if(-f "$main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php"){
+			$rs = execute(
+				"cp -vf $main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php",
+				\$stdout, \$stderr
+			);
+
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
+
 	# For i-MSCP versions prior 1.0.4
 	} else {
 		# Save i-MSCP GUI data (isp logos)
