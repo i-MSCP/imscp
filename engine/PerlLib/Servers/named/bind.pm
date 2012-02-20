@@ -490,6 +490,7 @@ sub postaddDmn{
 	$rs |= $self->addDmn({
 			DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
 			DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+			MX		=> '',
 			DMN_ADD		=> {
 				MANUAL_DNS_NAME		=> "$option->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
 				MANUAL_DNS_CLASS	=> 'IN',
@@ -726,12 +727,14 @@ sub postaddSub{
 	$rs |= $self->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
 		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		MX			=> '',
 		DMN_ADD		=> {
 			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
 			MANUAL_DNS_CLASS	=> 'IN',
 			MANUAL_DNS_TYPE		=> (lc($ipH->getIpType($data->{DMN_IP})) eq 'ipv4' ? 'A' : 'AAAA'),
 			MANUAL_DNS_DATA		=> $data->{DMN_IP}
 		}
+
 	});
 
 	$self->{restart}	= 'yes';

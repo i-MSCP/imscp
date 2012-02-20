@@ -127,6 +127,7 @@ sub addMasterZone{
 	my $rs = $named->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
 		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		MX			=> ''
 	});
 	return $rs if $rs;
 
