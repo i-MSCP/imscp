@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-02-21 08:32+0100\n"
+"POT-Creation-Date: 2012-02-21 13:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,11 +40,7 @@ msgid "%1$d / %2$d of %3$d"
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d of <b>%3$d</b>"
-msgstr ""
-
-#, php-format
-msgid "%1$d / %2$d of <b>unlimited</b>"
+msgid "%1$d / %2$d of %3$d</b>"
 msgstr ""
 
 #, php-format
@@ -53,10 +49,6 @@ msgstr ""
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
-
-#, php-format
-msgid "%1$d of %2$d</b>"
 msgstr ""
 
 #, php-format
@@ -92,10 +84,6 @@ msgid "%1$s of %2$s MB"
 msgstr ""
 
 #, php-format
-msgid "%1$s of %2$s</b>"
-msgstr ""
-
-#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 
@@ -128,11 +116,11 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d of unlimited"
+msgid "%d of %s"
 msgstr ""
 
 #, php-format
-msgid "%d of unlimited</b>"
+msgid "%d of unlimited"
 msgstr ""
 
 #, php-format
@@ -196,11 +184,11 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr ""
 
 #, php-format
-msgid "%s of unlimited"
+msgid "%s of %s"
 msgstr ""
 
 #, php-format
-msgid "%s of unlimited</b>"
+msgid "%s of unlimited"
 msgstr ""
 
 #, php-format
@@ -370,9 +358,6 @@ msgstr ""
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
-msgstr ""
-
-msgid "<b>disabled</b>"
 msgstr ""
 
 msgid ""
@@ -1240,9 +1225,6 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-msgid "Day:"
-msgstr ""
-
 msgid "Days"
 msgstr ""
 
@@ -1334,9 +1316,6 @@ msgid "Disallowed"
 msgstr ""
 
 msgid "Disk"
-msgstr ""
-
-msgid "Disk in MB"
 msgstr ""
 
 msgid "Disk limit"
@@ -1581,9 +1560,6 @@ msgid "Domain with that name already exists on the system."
 msgstr ""
 
 msgid "Domain with this name already exist."
-msgstr ""
-
-msgid "Domain_statistics"
 msgstr ""
 
 msgid "Domains"
@@ -2663,9 +2639,6 @@ msgstr ""
 msgid "Manage your protected areas, users and groups."
 msgstr ""
 
-msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr ""
-
 msgid "Mark"
 msgstr ""
 
@@ -2753,9 +2726,6 @@ msgid "Modify"
 msgstr ""
 
 msgid "Month"
-msgstr ""
-
-msgid "Month:"
 msgstr ""
 
 msgid "More Details"
@@ -2866,6 +2836,9 @@ msgstr ""
 msgid "No domain alias system errors"
 msgstr ""
 
+msgid "No domain statistics to display for this reseller."
+msgstr ""
+
 msgid "No domain statistics to display."
 msgstr ""
 
@@ -2873,6 +2846,9 @@ msgid "No domain system errors"
 msgstr ""
 
 msgid "No email account system errors"
+msgstr ""
+
+msgid "No found."
 msgstr ""
 
 msgid "No group found."
@@ -2905,6 +2881,9 @@ msgid "No reseller accounts found."
 msgstr ""
 
 msgid "No set"
+msgstr ""
+
+msgid "No statistics found for the given period. Try another period."
 msgstr ""
 
 msgid "No subdomain system errors"
@@ -3120,9 +3099,6 @@ msgid "PHP settings"
 msgstr ""
 
 msgid "PHP support"
-msgstr ""
-
-msgid "POP3/IMAP"
 msgstr ""
 
 msgid "POP3/IMAP in"
@@ -3691,9 +3667,6 @@ msgstr ""
 msgid "Rootkit logs"
 msgstr ""
 
-msgid "SMTP"
-msgstr ""
-
 msgid "SMTP in"
 msgstr ""
 
@@ -4197,9 +4170,6 @@ msgstr ""
 msgid "Submit changes"
 msgstr ""
 
-msgid "Sum"
-msgstr ""
-
 msgid "Support"
 msgstr ""
 
@@ -4599,9 +4569,6 @@ msgstr ""
 msgid "Traffic"
 msgstr ""
 
-msgid "Traffic in MB"
-msgstr ""
-
 msgid "Traffic limit"
 msgstr ""
 
@@ -4952,9 +4919,6 @@ msgstr ""
 msgid "Vital system info"
 msgstr ""
 
-msgid "WEB"
-msgstr ""
-
 msgid "Warning traffic"
 msgstr ""
 
@@ -4978,9 +4942,6 @@ msgid ""
 msgstr ""
 
 msgid "Web & E-Mail Support"
-msgstr ""
-
-msgid "Web Stats"
 msgstr ""
 
 msgid "Web in"
@@ -5116,9 +5077,6 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-msgid "Year:"
-msgstr ""
-
 msgid "Yes"
 msgstr ""
 
@@ -5127,6 +5085,9 @@ msgstr ""
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
+msgstr ""
+
+msgid "You are exceeding the server traffic limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
@@ -5312,10 +5273,6 @@ msgstr ""
 msgid "You have received %d new support questions."
 msgstr ""
 
-#, php-format
-msgid "You have received <b>%d</b> new support questions."
-msgstr ""
-
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
 "doesn't has this feature."
@@ -5443,9 +5400,6 @@ msgstr ""
 msgid "disabled"
 msgstr ""
 
-msgid "disabled</b>"
-msgstr ""
-
 msgid "disk space"
 msgstr ""
 
@@ -5543,13 +5497,21 @@ msgstr ""
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr ""
 
-msgid "i-MSCP - Admin / Server statistics by day"
-msgstr ""
-
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr ""
 
 msgid "i-MSCP - Admin / Settings / Service ports"
+msgstr ""
+
+msgid "i-MSCP - Admin / Statistics  / Server statistics"
+msgstr ""
+
+msgid ""
+"i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
+"Domain_statistics"
+msgstr ""
+
+msgid "i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
 msgstr ""
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
@@ -5562,6 +5524,9 @@ msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
 msgstr ""
 
 msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr ""
+
+msgid "i-MSCP - Admin / Users management / Domain Details"
 msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
@@ -5592,9 +5557,6 @@ msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr ""
 
 msgid "i-MSCP - Admin/Server Traffic Settings"
-msgstr ""
-
-msgid "i-MSCP - Admin/Server statistics"
 msgstr ""
 
 msgid "i-MSCP - Admin/Settings"
@@ -5690,9 +5652,6 @@ msgstr ""
 msgid "i-MSCP - Client/Daily Backup"
 msgstr ""
 
-msgid "i-MSCP - Client/Domain Statistics"
-msgstr ""
-
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr ""
 
@@ -5715,15 +5674,6 @@ msgid "i-MSCP - Client/Manage certificates"
 msgstr ""
 
 msgid "i-MSCP - Client/Webtools"
-msgstr ""
-
-msgid "i-MSCP - Domain Details"
-msgstr ""
-
-msgid "i-MSCP - Domain Statistics Data"
-msgstr ""
-
-msgid "i-MSCP - Domain/Details"
 msgstr ""
 
 msgid "i-MSCP - Domain/Edit"
@@ -5795,6 +5745,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Users management / Domain Details"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr ""
 
@@ -5861,6 +5814,9 @@ msgstr ""
 msgid "i-MSCP - Users/Edit"
 msgstr ""
 
+msgid "i-MSCP - admin / System tools / System information"
+msgstr ""
+
 msgid "i-MSCP - client / Setting Layout"
 msgstr ""
 
@@ -5877,6 +5833,9 @@ msgid "i-MSCP Admin / General Information / Server Status"
 msgstr ""
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr ""
+
+msgid "i-MSCP Client / Domain statistics"
 msgstr ""
 
 msgid "i-MSCP Client / General Information"
@@ -5901,9 +5860,6 @@ msgid "i-MSCP Reseller/Add Alias"
 msgstr ""
 
 msgid "i-MSCP Reseller/Circular"
-msgstr ""
-
-msgid "i-MSCP application installer"
 msgstr ""
 
 msgid "i-MSCP application installer Web softwares repository"
