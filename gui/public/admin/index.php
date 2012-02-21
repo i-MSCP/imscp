@@ -200,8 +200,8 @@ function admin_generateServerTrafficBar($tpl)
 		$trafficMessage = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
  	}
 
-	// Warning message about traffic
-	if ($trafficUsageBytes && $trafficUsageBytes > $trafficWarningBytes) {
+	// Warning message about traffic only if trafficWarning is set
+	if ($trafficUsageBytes && $trafficWarningBytes && $trafficUsageBytes > $trafficWarningBytes) {
 		set_page_message( tr('You are exceeding the server traffic limit.'), 'warning');
 	}
 
