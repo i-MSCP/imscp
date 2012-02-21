@@ -223,13 +223,23 @@ function gen_purchase_haf($userId, $encode = false)
 	<link href="{THEME_COLOR_PATH}/css/jquery-ui-{THEME_COLOR}.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.js"></script>
-	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltip-min.js"></script>
 	<!--[if IE 6]>
 	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 	<script type="text/javascript">
 		DD_belatedPNG.fix('.error');
 	</script>
 	<![endif]-->
+	<script type="text/javascript">
+	/*<![CDATA[*/
+		$(document).ready(function() {
+			$.fx.speeds._default = 500;
+			setTimeout(function(){\$('.error').fadeOut(1000);},3000);
+			$('.body a, .body span, .body input').imscpTooltip();
+			$("input:submit, input:button, button").button();
+		});
+	/*]]>*/
+	</script>
 </head>
 <body class="no_menu">
 	<div class="body" align="center" style="margin:0;">

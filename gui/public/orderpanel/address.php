@@ -45,7 +45,7 @@
  * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function GenerateUserPersonalData($tpl)
+function generateUserPersonalData($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -262,7 +262,9 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($userId)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/address.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'page' // Must be in page here
+	)
+);
 
 $tpl->assign(
 	array(
@@ -288,7 +290,7 @@ $tpl->assign(
 		'NEED_FILLED' => tr('* denotes mandatory field.'),
 		'THEME_CHARSET' => tr('encoding')));
 
-GenerateUserPersonalData($tpl);
+generateUserPersonalData($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

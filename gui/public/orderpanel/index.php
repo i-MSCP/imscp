@@ -132,15 +132,17 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/index.tpl',
-		'page_message' => 'layout',
-		'purchase_list' => 'page'));
+		'page_message' => 'page', // Must be in page here
+		'purchase_list' => 'page'
+	)
+);
 
 gen_packages_list($tpl, $user_id);
 generatePageMessage($tpl);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('Order Panel / Choosing an hosting package'),
+		'TR_PAGE_TITLE' => tr('Order Panel / Choose hosting plan'),
 		'THEME_CHARSET' => tr('encoding')));
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

@@ -152,11 +152,9 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
 	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }
-
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(

@@ -161,7 +161,6 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-
 if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$userId = $_SESSION['user_id'];
 	$hostingPlanId = $_SESSION['plan_id'];
@@ -171,10 +170,11 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_no_file('layout', implode('', gen_purchase_haf($userId)));
+
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/chart.tpl',
-		'page_message' => 'layout',
+		'page_message' => 'page', // Must be in page here
 		'tos_field' => 'page'));
 
 $tpl->assign(

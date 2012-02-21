@@ -134,7 +134,9 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/addon.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'page' // Must be in page here
+	)
+);
 
 $tpl->assign(
 	array(

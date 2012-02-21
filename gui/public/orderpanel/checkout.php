@@ -35,6 +35,7 @@
  * @link        http://i-mscp.net
  */
 
+
 /************************************************************************************
  * Script functions
  */
@@ -42,8 +43,8 @@
 /**
  * Generates checkout.
  *
- * @param $user_id User unique identifier
- * @param $plan_id Plan unique identifier
+ * @param  int $user_id User unique identifier
+ * @param int $plan_id Plan unique identifier
  * @return void
  */
 function generateCheckout($user_id, $plan_id)
@@ -102,6 +103,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
 
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -140,16 +142,22 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/checkout.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'page' // Must be in page here
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_ORDER_PANEL_PAGE_TITLE' => tr('Order Panel / Checkout'),
+		'TR_PAGE_TITLE' => tr('Order Panel / Checkout'),
 		'CHECK_OUT' => tr('Check Out'),
 		'THANK_YOU_MESSAGE' => tr("<strong>Thank you for purchasing.</strong><br /><br />An email has been sent to your email address for confirmation. Do not forget to click on the link in email to validate your order."),
-		'THEME_CHARSET' => tr('encoding')));
+		'THEME_CHARSET' => tr('encoding')
+	)
+);
 
 generatePageMessage($tpl);
+
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptEnd, array('templateEngine' => $tpl));
 
