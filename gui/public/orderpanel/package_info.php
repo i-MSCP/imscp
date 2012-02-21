@@ -159,12 +159,12 @@ $bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
 
 if (isset($_GET['id']) && $bcoid) {
 	$plan_id = $_GET['id'];
-	$_SESSION['plan_id'] = $plan_id;
-	if (isset($_SESSION['user_id'])) {
-		$user_id = $_SESSION['user_id'];
-	} else if (isset($_GET['user_id'])) {
-		$user_id = $_GET['user_id'];
-		$_SESSION['user_id'] = $user_id;
+	$_SESSION['order_panel_plan_id'] = $plan_id;
+	if (isset($_SESSION['order_panel_user_id'])) {
+		$user_id = $_SESSION['order_panel_user_id'];
+	} else if (isset($_GET['order_panel_user_id'])) {
+		$user_id = $_GET['order_panel_user_id'];
+		$_SESSION['order_panel_user_id'] = $user_id;
 	} else {
 		throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 	}

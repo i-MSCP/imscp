@@ -100,10 +100,10 @@ function generateChart($tpl, $user_id, $plan_id)
 					'TR_TOS_ACCEPT' => tr('I Accept The Term of Service'),
 					'TOS' => tohtml($stmt->fields['tos'])));
 
-			$_SESSION['tos'] = true;
+			$_SESSION['order_panel_tos'] = true;
 		} else {
 			$tpl->assign('TOS_FIELD', '');
-			$_SESSION['tos'] = false;
+			$_SESSION['order_panel_tos'] = false;
 		}
 	}
 }
@@ -117,20 +117,20 @@ function generateChart($tpl, $user_id, $plan_id)
  */
 function generateUserPersonalData($tpl)
 {
-	$first_name = (isset($_SESSION['fname'])) ? $_SESSION['fname'] : '';
-	$last_name = (isset($_SESSION['lname'])) ? $_SESSION['lname'] : '';
-	$company = (isset($_SESSION['firm'])) ? $_SESSION['firm'] : '';
-	$postal_code = (isset($_SESSION['zip'])) ? $_SESSION['zip'] : '';
-	$city = (isset($_SESSION['city'])) ? $_SESSION['city'] : '';
-	$state = (isset($_SESSION['state'])) ? $_SESSION['state'] : '';
-	$country = (isset($_SESSION['country'])) ? $_SESSION['country'] : '';
-	$street1 = (isset($_SESSION['street1'])) ? $_SESSION['street1'] : '';
-	$street2 = (isset($_SESSION['street2'])) ? $_SESSION['street2'] : '';
-	$phone = (isset($_SESSION['phone'])) ? $_SESSION['phone'] : '';
-	$fax = (isset($_SESSION['fax'])) ? $_SESSION['fax'] : '';
-	$email = (isset($_SESSION['email'])) ? $_SESSION['email'] : '';
-	$gender = (isset($_SESSION['gender']))
-		? get_gender_by_code($_SESSION['gender']) : get_gender_by_code('');
+	$first_name = (isset($_SESSION['order_panel_fname'])) ? $_SESSION['order_panel_fname'] : '';
+	$last_name = (isset($_SESSION['order_panel_lname'])) ? $_SESSION['order_panel_lname'] : '';
+	$company = (isset($_SESSION['order_panel_firm'])) ? $_SESSION['order_panel_firm'] : '';
+	$postal_code = (isset($_SESSION['order_panel_zip'])) ? $_SESSION['order_panel_zip'] : '';
+	$city = (isset($_SESSION['order_panel_city'])) ? $_SESSION['order_panel_city'] : '';
+	$state = (isset($_SESSION['order_panel_state'])) ? $_SESSION['order_panel_state'] : '';
+	$country = (isset($_SESSION['order_panel_country'])) ? $_SESSION['order_panel_country'] : '';
+	$street1 = (isset($_SESSION['order_panel_street1'])) ? $_SESSION['order_panel_street1'] : '';
+	$street2 = (isset($_SESSION['order_panel_street2'])) ? $_SESSION['order_panel_street2'] : '';
+	$phone = (isset($_SESSION['order_panel_phone'])) ? $_SESSION['order_panel_phone'] : '';
+	$fax = (isset($_SESSION['order_panel_fax'])) ? $_SESSION['order_panel_fax'] : '';
+	$email = (isset($_SESSION['order_panel_email'])) ? $_SESSION['order_panel_email'] : '';
+	$gender = (isset($_SESSION['order_panel_gender']))
+		? get_gender_by_code($_SESSION['order_panel_gender']) : get_gender_by_code('');
 
 	$tpl->assign(
 		array(
@@ -161,9 +161,9 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
-	$userId = $_SESSION['user_id'];
-	$hostingPlanId = $_SESSION['plan_id'];
+if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan_id'])) {
+	$userId = $_SESSION['order_panel_user_id'];
+	$hostingPlanId = $_SESSION['order_panel_plan_id'];
 } else {
 	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }

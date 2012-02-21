@@ -52,104 +52,104 @@ function generateUserPersonalData($tpl)
 
 	if (isset($_POST['fname'])) {
 		$first_name = clean_input($_POST['fname']);
-	} else if (isset($_SESSION['fname'])) {
-		$first_name = $_SESSION['fname'];
+	} else if (isset($_SESSION['order_panel_fname'])) {
+		$first_name = $_SESSION['order_panel_fname'];
 	} else {
 		$first_name = '';
 	}
 
 	if (isset($_POST['lname'])) {
 		$last_name = clean_input($_POST['lname']);
-	} else if (isset($_SESSION['lname'])) {
-		$last_name = $_SESSION['lname'];
+	} else if (isset($_SESSION['order_panel_lname'])) {
+		$last_name = $_SESSION['order_panel_lname'];
 	} else {
 		$last_name = '';
 	}
 
 	if (isset($_POST['email'])) {
 		$email = clean_input($_POST['email']);
-	} else if (isset($_SESSION['email'])) {
-		$email = $_SESSION['email'];
+	} else if (isset($_SESSION['order_panel_email'])) {
+		$email = $_SESSION['order_panel_email'];
 	} else {
 		$email = '';
 	}
 
 	if (isset($_POST['gender']) && (in_array($_POST['gender'], array('M', 'F', 'U')))) {
 		$gender = $_POST['gender'];
-	} else if (isset($_SESSION['gender'])) {
-		$gender = $_SESSION['gender'];
+	} else if (isset($_SESSION['order_panel_gender'])) {
+		$gender = $_SESSION['order_panel_gender'];
 	} else {
 		$gender = 'U';
 	}
 
 	if (isset($_POST['firm'])) {
 		$company = clean_input($_POST['firm']);
-	} else if (isset($_SESSION['firm'])) {
-		$company = $_SESSION['firm'];
+	} else if (isset($_SESSION['order_panel_firm'])) {
+		$company = $_SESSION['order_panel_firm'];
 	} else {
 		$company = '';
 	}
 
 	if (isset($_POST['zip'])) {
 		$postal_code = clean_input($_POST['zip']);
-	} else if (isset($_SESSION['zip'])) {
-		$postal_code = $_SESSION['zip'];
+	} else if (isset($_SESSION['order_panel_zip'])) {
+		$postal_code = $_SESSION['order_panel_zip'];
 	} else {
 		$postal_code = '';
 	}
 
 	if (isset($_POST['city'])) {
 		$city = clean_input($_POST['city']);
-	} else if (isset($_SESSION['city'])) {
-		$city = $_SESSION['city'];
+	} else if (isset($_SESSION['order_panel_city'])) {
+		$city = $_SESSION['order_panel_city'];
 	} else {
 		$city = '';
 	}
 
 	if (isset($_POST['state'])) {
 		$state = clean_input($_POST['state']);
-	} else if (isset($_SESSION['state'])) {
-		$state = $_SESSION['state'];
+	} else if (isset($_SESSION['order_panel_state'])) {
+		$state = $_SESSION['order_panel_state'];
 	} else {
 		$state = '';
 	}
 
 	if (isset($_POST['country'])) {
 		$country = clean_input($_POST['country']);
-	} else if (isset($_SESSION['country'])) {
-		$country = $_SESSION['country'];
+	} else if (isset($_SESSION['order_panel_country'])) {
+		$country = $_SESSION['order_panel_country'];
 	} else {
 		$country = '';
 	}
 
 	if (isset($_POST['street1'])) {
 		$street1 = clean_input($_POST['street1']);
-	} else if (isset($_SESSION['street1'])) {
-		$street1 = $_SESSION['street1'];
+	} else if (isset($_SESSION['order_panel_street1'])) {
+		$street1 = $_SESSION['order_panel_street1'];
 	} else {
 		$street1 = '';
 	}
 
 	if (isset($_POST['street2'])) {
 		$street2 = clean_input($_POST['street2']);
-	} else if (isset($_SESSION['street2'])) {
-		$street2 = $_SESSION['street2'];
+	} else if (isset($_SESSION['order_panel_street2'])) {
+		$street2 = $_SESSION['order_panel_street2'];
 	} else {
 		$street2 = '';
 	}
 
 	if (isset($_POST['phone'])) {
 		$phone = clean_input($_POST['phone']);
-	} else if (isset($_SESSION['phone'])) {
-		$phone = $_SESSION['phone'];
+	} else if (isset($_SESSION['order_panel_phone'])) {
+		$phone = $_SESSION['order_panel_phone'];
 	} else {
 		$phone = '';
 	}
 
 	if (isset($_POST['fax'])) {
 		$fax = clean_input($_POST['fax']);
-	} else if (isset($_SESSION['fax'])) {
-		$fax = $_SESSION['fax'];
+	} else if (isset($_SESSION['order_panel_fax'])) {
+		$fax = $_SESSION['order_panel_fax'];
 	} else {
 		$fax = '';
 	}
@@ -188,34 +188,34 @@ function checkUserPersonalData()
 		&& (isset($_POST['city']) && $_POST['city'] != '') && (isset($_POST['country']) && $_POST['country'] != '')
 		&& (isset($_POST['street1']) && $_POST['street1'] != '') && (isset($_POST['phone']) && $_POST['phone'] != '')
 	) {
-		$_SESSION['fname'] = clean_input($_POST['fname']);
-		$_SESSION['lname'] = clean_input($_POST['lname']);
-		$_SESSION['email'] = clean_input($_POST['email']);
-		$_SESSION['zip'] = clean_input($_POST['zip']);
-		$_SESSION['city'] = clean_input($_POST['city']);
-		$_SESSION['state'] = clean_input($_POST['state']);
-		$_SESSION['country'] = clean_input($_POST['country']);
-		$_SESSION['street1'] = clean_input($_POST['street1']);
-		$_SESSION['phone'] = clean_input($_POST['phone']);
+		$_SESSION['order_panel_fname'] = clean_input($_POST['fname']);
+		$_SESSION['order_panel_lname'] = clean_input($_POST['lname']);
+		$_SESSION['order_panel_email'] = clean_input($_POST['email']);
+		$_SESSION['order_panel_zip'] = clean_input($_POST['zip']);
+		$_SESSION['order_panel_city'] = clean_input($_POST['city']);
+		$_SESSION['order_panel_state'] = clean_input($_POST['state']);
+		$_SESSION['order_panel_country'] = clean_input($_POST['country']);
+		$_SESSION['order_panel_street1'] = clean_input($_POST['street1']);
+		$_SESSION['order_panel_phone'] = clean_input($_POST['phone']);
 
 		if (isset($_POST['firm']) && $_POST['firm'] != '') {
-			$_SESSION['firm'] = clean_input($_POST['firm']);
+			$_SESSION['order_panel_firm'] = clean_input($_POST['firm']);
 		}
 
 		if (isset($_POST['gender'])
 			&& get_gender_by_code($_POST['gender'], true) !== null
 		) {
-			$_SESSION['gender'] = $_POST['gender'];
+			$_SESSION['order_panel_gender'] = $_POST['gender'];
 		} else {
-			$_SESSION['gender'] = '';
+			$_SESSION['order_panel_gender'] = '';
 		}
 
 		if (isset($_POST['street2']) && $_POST['street2'] != '') {
-			$_SESSION['street2'] = clean_input($_POST['street2']);
+			$_SESSION['order_panel_street2'] = clean_input($_POST['street2']);
 		}
 
 		if (isset($_POST['fax']) && $_POST['fax'] != '') {
-			$_SESSION['fax'] = clean_input($_POST['fax']);
+			$_SESSION['order_panel_fax'] = clean_input($_POST['fax']);
 		}
 
 		redirectTo('chart.php');
@@ -237,9 +237,9 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
-	$userId = $_SESSION['user_id'];
-	$hostingPlanId = $_SESSION['plan_id'];
+if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan_id'])) {
+	$userId = $_SESSION['order_panel_user_id'];
+	$hostingPlanId = $_SESSION['order_panel_plan_id'];
 } else {
 	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }
@@ -247,11 +247,15 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'address')
 	checkUserPersonalData();
 
-if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
-	&& (isset($_SESSION['email']) && $_SESSION['email'] != '') && (isset($_SESSION['lname']) && $_SESSION['lname'] != '')
-	&& (isset($_SESSION['zip']) && $_SESSION['zip'] != '') && (isset($_SESSION['city']) && $_SESSION['city'] != '')
-	&& (isset($_SESSION['state']) && $_SESSION['state'] != '') && (isset($_SESSION['country']) && $_SESSION['country'] != '')
-	&& (isset($_SESSION['street1']) && $_SESSION['street1'] != '') && (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
+if ((isset($_SESSION['order_panel_fname']) && $_SESSION['order_panel_fname'] != '')
+	&& (isset($_SESSION['order_panel_email']) && $_SESSION['order_panel_email'] != '')
+	&& (isset($_SESSION['order_panel_lname']) && $_SESSION['order_panel_lname'] != '')
+	&& (isset($_SESSION['order_panel_zip']) && $_SESSION['order_panel_zip'] != '')
+	&& (isset($_SESSION['order_panel_city']) && $_SESSION['order_panel_city'] != '')
+	&& (isset($_SESSION['order_panel_state']) && $_SESSION['order_panel_state'] != '')
+	&& (isset($_SESSION['order_panel_country']) && $_SESSION['order_panel_country'] != '')
+	&& (isset($_SESSION['order_panel_street1']) && $_SESSION['order_panel_street1'] != '')
+	&& (isset($_SESSION['order_panel_phone']) && $_SESSION['order_panel_phone'] != '')
 	&& !isset($_GET['edit'])
 ) {
 	redirectTo('chart.php');

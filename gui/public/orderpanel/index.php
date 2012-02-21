@@ -118,14 +118,14 @@ $bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
 
 if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $bcoid) {
 	$user_id = $_GET['user_id'];
-	$_SESSION['user_id'] = $user_id;
-} elseif (isset($_SESSION['user_id'])) {
-	$user_id = $_SESSION['user_id'];
+	$_SESSION['order_panel_user_id'] = $user_id;
+} elseif (isset($_SESSION['order_panel_user_id'])) {
+	$user_id = $_SESSION['order_panel_user_id'];
 } else {
 	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }
 
-unset($_SESSION['plan_id']);
+unset($_SESSION['order_panel_plan_id']);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
