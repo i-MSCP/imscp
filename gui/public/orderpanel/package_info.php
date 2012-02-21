@@ -90,7 +90,7 @@ function gen_plan_details($tpl, $user_id, $plan_id)
 
 		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
 			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware
-			) = explode(';', $props);
+		) = explode(';', $props);
 
 		$price = $stmt->fields['price'];
 		$setup_fee = $stmt->fields['setup_fee'];
@@ -159,12 +159,12 @@ $bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
 
 if (isset($_GET['id']) && $bcoid) {
 	$plan_id = $_GET['id'];
-	$_SESSION['plan_id'] = $plan_id;
-	if (isset($_SESSION['user_id'])) {
-		$user_id = $_SESSION['user_id'];
-	} else if (isset($_GET['user_id'])) {
-		$user_id = $_GET['user_id'];
-		$_SESSION['user_id'] = $user_id;
+	$_SESSION['order_panel_plan_id'] = $plan_id;
+	if (isset($_SESSION['order_panel_user_id'])) {
+		$user_id = $_SESSION['order_panel_user_id'];
+	} else if (isset($_GET['order_panel_user_id'])) {
+		$user_id = $_GET['order_panel_user_id'];
+		$_SESSION['order_panel_user_id'] = $user_id;
 	} else {
 		throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 	}

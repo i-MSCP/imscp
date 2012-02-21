@@ -61,7 +61,7 @@ function addon_domain($dmn_name)
 		return;
 	}
 
-	$_SESSION['domainname'] = $dmn_name;
+	$_SESSION['order_panel_domainname'] = $dmn_name;
 	redirectTo('address.php');
 }
 
@@ -99,15 +99,15 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptSt
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_SESSION['user_id'])) {
-	$user_id = $_SESSION['user_id'];
+if (isset($_SESSION['order_panel_user_id'])) {
+	$user_id = $_SESSION['order_panel_user_id'];
 
-	if (isset($_SESSION['plan_id'])) {
-		$plan_id = $_SESSION['plan_id'];
+	if (isset($_SESSION['order_panel_plan_id'])) {
+		$plan_id = $_SESSION['order_panel_plan_id'];
 	} else if (isset($_GET['id'])) {
 		$plan_id = $_GET['id'];
 		if (is_plan_available($plan_id, $user_id)) {
-			$_SESSION['plan_id'] = $plan_id;
+			$_SESSION['order_panel_plan_id'] = $plan_id;
 		} else {
 			throw new iMSCP_Exception_Production(
 				tr('This hosting plan is not available for purchase.'));
@@ -121,7 +121,7 @@ if (isset($_SESSION['user_id'])) {
 		tr('You do not have permission to access this interface.'));
 }
 
-if (isset($_SESSION['domainname'])) {
+if (isset($_SESSION['order_panel_domainname'])) {
 	redirectTo('address.php');
 }
 
@@ -134,7 +134,9 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/addon.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'page' // Must be in page here
+	)
+);
 
 $tpl->assign(
 	array(

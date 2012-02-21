@@ -346,6 +346,7 @@ sub buildNAMEDData{
 	use iMSCP::Database;
 
 	my $self	= shift;
+
 	if($self->{mode} eq 'add' && $self->{domain_dns} eq 'yes'){
 		my $sql = "
 			SELECT
@@ -388,6 +389,7 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_NAME}	= $self->{domain_name};
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName;
+	$self->{named}->{MX}		= ($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0 ? '' : ';');
 
 	0;
 }

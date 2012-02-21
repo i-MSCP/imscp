@@ -155,19 +155,27 @@ function admin_getAdminGeneralInfo($tpl)
  */
 function admin_generateServerTrafficBar($tpl)
 {
-    $query = "SELECT `straff_max` FROM `straff_settings`";
-    $stmt = exec_query($query);
+	// Getting max server traffic per month in mebibytes
 
-    $year = date('Y');
-    $month = date('m');
+	$query = "SELECT IFNULL(`straff_max`, 0) `maxTraffic`, IFNULL(`straff_warn`, 0) `warningTraffic` FROM `straff_settings`";
+ 	$stmt = exec_query($query);
 
-    $maxServerTraffic = (($stmt->fields['straff_max']) * 1024) * 1024;
-    $fdofmnth = mktime(0, 0, 0, $month, 1, $year);
-    $ldofmnth = mktime(1, 0, 0, $month + 1, 0, $year);
+	if($stmt->rowCount()) {
+		// Get bytes value for max server traffic
+		$trafficLimitBytes = $stmt->fields['maxTraffic'] * 1048576;
+		$trafficWarningBytes = $stmt->fields['warningTraffic'] * 1048576;
 
+		if(!$trafficWarningBytes) {
+			$trafficWarningBytes = $trafficLimitBytes;
+		}
+	} else {
+		$trafficLimitBytes = $trafficWarningBytes = 0;
+	}
+
+	// Getting server traffic usage value in bytes for the current month
     $query = "
         SELECT
-            IFNULL((SUM(`bytes_in`) + SUM(`bytes_out`)), 0) AS `traffic`
+            IFNULL((SUM(`bytes_in`) + SUM(`bytes_out`)), 0) `serverTrafficUsage`
         FROM
             `server_traffic`
         WHERE
@@ -175,42 +183,34 @@ function admin_generateServerTrafficBar($tpl)
         AND
             `traff_time` < ?
     ";
-    $stmt = exec_query($query, array($fdofmnth, $ldofmnth));
+    $stmt = exec_query($query, array(getFirstDayOfMonth(), getLastDayOfMonth()));
 
-    $traffic = $stmt->fields['traffic'];
-    $mtraff = sprintf('%.2f', $traffic);
+	if($stmt->rowCount()) {
+		$trafficUsageBytes = $stmt->fields['serverTrafficUsage'];
+	} else {
+		$trafficUsageBytes = 0;
+	}
 
-    if ($maxServerTraffic == 0) {
-        $pr = 0;
-    } else {
-        $pr = ($traffic / $maxServerTraffic) * 100;
-    }
+	// Get traffic usage in percent
+	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
 
-    if (($maxServerTraffic != 0 || $maxServerTraffic != '') &&
-        ($mtraff > $maxServerTraffic)
-    ) {
-        $tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit.'));
-    } else {
-        $tpl->assign('TRAFFIC_WARNING_MESSAGE', '');
-    }
+	if ($trafficLimitBytes) {
+		$trafficMessage = tr('%1$s%% [%2$s of %3$s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
+ 	} else {
+		$trafficMessage = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
+ 	}
 
-    $bar_value = calc_bar_value($traffic, $maxServerTraffic, 400);
-    $percent = 0;
-
-    if ($maxServerTraffic == 0) {
-        $trafficMessage = tr('%1$d%% [%2$s of unlimited]', $pr, sizeit($mtraff));
-    } else {
-        $trafficMessage = tr('%1$d%% [%2$s of %3$s]', $pr, sizeit($mtraff),
-                             sizeit($maxServerTraffic));
-
-        $percent = ($traffic / $maxServerTraffic) * 100;
-    }
+	// Warning message about traffic
+	if ($trafficUsageBytes && $trafficUsageBytes > $trafficWarningBytes) {
+		set_page_message( tr('You are exceeding the server traffic limit.'), 'warning');
+	}
 
 	$tpl->assign(
 		array(
 			'TRAFFIC_WARNING' => $trafficMessage,
-			'BAR_VALUE' => $bar_value,
-			'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
+			'TRAFFIC_PERCENT' => $trafficUsagePercent
+		)
+	);
 }
 
 /************************************************************************************

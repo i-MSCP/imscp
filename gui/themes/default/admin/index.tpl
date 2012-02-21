@@ -59,13 +59,8 @@
 
 			<h2 class="traffic"><span>{TR_SERVER_TRAFFIC}</span></h2>
 
-			<!-- BDP: traffic_warning_message -->
-			<div class="warning">{TR_TRAFFIC_WARNING}</div>
-			<!-- EDP: traffic_warning_message -->
-
 			<p>{TRAFFIC_WARNING}</p>
 
 			<div class="graph">
 				<span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
 			</div>
-

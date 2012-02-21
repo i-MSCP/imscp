@@ -360,6 +360,7 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_NAME}	= $self->{alias_name};
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName.'als'.$self->{alias_id};
+	$self->{named}->{MX}		= ($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0 ? '' : ';');
 
 	0;
 }

@@ -100,10 +100,10 @@ function client_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
 	list($percent, $bars) = calc_bars($usage, $maxUsage, $barMax);
 
 	if ($maxUsage != 0) {
-		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, numberBytesHuman($usage),
-								 numberBytesHuman($maxUsage));
+		$traffic_usage_data = tr('%1$d%% [%2$s of %3$s]', $percent, bytesHuman($usage),
+								 bytesHuman($maxUsage));
 	} else {
-		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, numberBytesHuman($usage));
+		$traffic_usage_data = tr('%1$d%% [%2$s of unlimited]', $percent, bytesHuman($usage));
 	}
 
 	$tpl->assign(
@@ -134,10 +134,10 @@ function client_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
 
 	if ($maxUsage != 0) {
 		$traffic_usage_data = tr(
-			'%1$s%% [%2$s of %3$s]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
+			'%1$s%% [%2$s of %3$s]', $percent, bytesHuman($usage), bytesHuman($maxUsage));
 	} else {
 		$traffic_usage_data = tr(
-			'%1$s%% [%2$s of unlimited]', $percent, numberBytesHuman($usage));
+			'%1$s%% [%2$s of unlimited]', $percent, bytesHuman($usage));
 	}
 
 	$tpl->assign(

@@ -99,6 +99,8 @@ sub user_dialog {
 
 	use iMSCP::Dialog;
 
+	return 0 if $main::noprompt;
+
 	iMSCP::Dialog->factory()->set('yes-label','CONTINUE');
 	iMSCP::Dialog->factory()->set('no-label','EXIT');
 	if (iMSCP::Dialog->factory()->yesno(
@@ -344,10 +346,10 @@ sub setup_imscp_database {
 		error("$rdata");
 		return 1;
 	}
+
 	foreach (keys %$rdata) {
-		if (my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?", $_)){
-			error("$error");
-		}
+		my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?", $_);
+		error("$error") if(ref $error ne 'HASH');
 	}
 
 	0;

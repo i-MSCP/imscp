@@ -1150,24 +1150,19 @@ function is_serialized($data)
  */
 
 /**
- * Must be documented
+ * Return usage in percent.
  *
- * @param  int $current
- * @param  int $max
- * @return int
+ * @param  int $amount Current value
+ * @param  int $total (0 = unlimited)
+ * @return int Usage in percent
  */
-function make_usage_vals($current, $max)
+function make_usage_vals($amount, $total)
 {
-	if ($max == 0) {
-		// 1 TeraByte Limit ;) for Unlimited Value
-		$max = 1024 * 1024 * 1024 * 1024;
+	if (!$total) {
+		return 0; // Avoid to divide by zero
 	}
 
-	$percent = 100 * $current / $max;
-	$percent = sprintf("%.2f", $percent);
-	$red = (int)$percent;
-
-	return ($red > 100) ? array($percent, 100, 0) : array($percent, $red, 100 - $red);
+	return sprintf('%.2f', (($percent = ($amount / $total) * 100)) > 100 ? 100 : $percent);
 }
 
 /**
@@ -1251,6 +1246,7 @@ function generate_user_traffic($domainId)
  * @param  $value_max
  * @param  $bar_width
  * @return int
+ * @deprecated
  */
 function calc_bar_value($value, $value_max, $bar_width)
 {

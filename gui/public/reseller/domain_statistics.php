@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Reseller
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 /*********************************************************************************
@@ -40,124 +40,93 @@
  */
 
 /**
- * Returns domain traffic.
+ * Returns traffic information for the given domain and period.
  *
- * @param $from
- * @param $to
- * @param $domain_id
+ * @access private
+ * @param int $domainId domain unique identifier
+ * @param int $beginTime An UNIX timestamp representing a begin time period
+ * @param int $endTime An UNIX timestamp representing an end time period
  * @return array
  */
-function get_domain_trafic($from, $to, $domain_id) {
-
-	$reseller_id = $_SESSION['user_id'];
-	$query = "SELECT `domain_id` FROM `domain` WHERE `domain_id` = ? AND `domain_created_id` = ?";
-	$stmt = exec_query($query, array($domain_id, $reseller_id));
-
-	if (!$stmt->rowCount()) {
-		set_page_message(tr('Domain not found.'), 'error');
-		redirectTo('user_statistics.php');
-	}
-
+function _reseller_getDomainTraffic($domainId, $beginTime, $endTime)
+{
 	$query = "
 		SELECT
-			IFNULL(SUM(`dtraff_web`), 0) `web_dr`,
-			IFNULL(SUM(`dtraff_ftp`), 0) `ftp_dr`,
-			IFNULL(SUM(`dtraff_mail`), 0) `mail_dr`,
-			IFNULL(SUM(`dtraff_pop`), 0) `pop_dr`
+			IFNULL(SUM(`dtraff_web`), 0) `web_dr`, IFNULL(SUM(`dtraff_ftp`), 0) `ftp_dr`,
+			IFNULL(SUM(`dtraff_mail`), 0) `mail_dr`, IFNULL(SUM(`dtraff_pop`), 0) `pop_dr`
 		FROM
 			`domain_traffic`
 		WHERE
 			`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
 	";
-	$stmt = exec_query($query, array($domain_id, $from, $to));
+	$stmt = exec_query($query, array($domainId, $beginTime, $endTime));
 
-	if ($stmt->recordCount() == 0) {
+	if (!$stmt->rowCount()) {
 		return array(0, 0, 0, 0);
 	} else {
 		return array(
-			$stmt->fields['web_dr'],
-			$stmt->fields['ftp_dr'],
-			$stmt->fields['pop_dr'],
-			$stmt->fields['mail_dr']);
+			$stmt->fields['web_dr'], $stmt->fields['ftp_dr'], $stmt->fields['mail_dr'], $stmt->fields['pop_dr']
+		);
 	}
 }
 
 /**
- * Generates page.
+ * Generate domain statistics for the given period.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $domain_id Domain unique identifier
+ * @param int $domainId Domain unique identifier
+ * @param int $month Month of the period for which statistics are requested
+ * @param int $year Year of the period for which statistics are requested
+ * @return void
  */
-function generate_page($tpl, $domain_id)
+function reseller_generatePage($tpl, $domainId, $month, $year)
 {
-	global $month, $year, $web_trf, $ftp_trf, $smtp_trf, $pop_trf, $sum_web, $sum_ftp, $sum_mail, $sum_pop;
+	// Let see if the domain exists
+	$stmt = exec_query('SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_id` = ?', $domainId);
 
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-
-	$domainProperties = get_domain_default_props(who_owns_this($domain_id), true);
-	$tpl->assign('DOMAIN_NAME', $domainProperties['domain_name']);
-
-
-	if ($month == date('m') && $year == date('Y')) {
-		$curday = date('j');
+	if (!$stmt->rowCount()) {
+		set_page_message(tr('Domain not found.'), 'error');
+		redirectTo('user_statistics.php');
 	} else {
-		$tmp = mktime(1, 0, 0, $month + 1, 0, $year);
-		$curday = date('j', $tmp);
+		$tpl->assign('DOMAIN_NAME', idn_to_utf8($stmt->fields['domain_name']));
 	}
 
-	$all[0] = 0;
-	$all[1] = 0;
-	$all[2] = 0;
-	$all[3] = 0;
-	$all[4] = 0;
-	$all[5] = 0;
-	$all[6] = 0;
-	$all[7] = 0;
+	// Let see if we have any statistics available for the given periode
+	$query = "SELECT `domain_id` FROM `domain_traffic` WHERE `dtraff_time` > ? AND `dtraff_time` < ? LIMIT 1";
+	$stmt = exec_query($query, array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)));
 
-	for ($i = 1; $i <= $curday; $i++) {
-		$ftm = mktime(0, 0, 0, $month, $i, $year);
-		$ltm = mktime(23, 59, 59, $month, $i, $year);
+	$tpl->assign('DOMAIN_ID', $domainId);
 
-		$query = "
-			SELECT
-				`dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`, `dtraff_time`
-			FROM
-				`domain_traffic`
-			WHERE
-				`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
-		";
-		exec_query($query, array($domain_id, $ftm, $ltm));
+	if ($stmt->rowCount()) {
+		$requestedPeriod = getLastDayOfMonth($month, $year);
+		$toDay = ($requestedPeriod < time()) ? date('j', $requestedPeriod) : date('j');
+		$all = array_fill(0, 8, 0);
 
-		list($web_trf, $ftp_trf, $pop_trf, $smtp_trf) = get_domain_trafic($ftm, $ltm, $domain_id);
+		$dateFormat = iMSCP_Registry::get('config')->DATE_FORMAT;
 
-		if ($web_trf == 0 && $ftp_trf == 0 && $smtp_trf == 0 && $pop_trf == 0) {
-			$tpl->assign(
-				array(
-					'MONTH' => $month,
-					'YEAR' => $year,
-					'DOMAIN_ID' => $domain_id,
-					'DATE' => date($cfg->DATE_FORMAT, strtotime($year . "-" . $month . "-" . $i)),
-					'WEB_TRAFFIC' => 0,
-					'FTP_TRAFFIC' => 0,
-					'SMTP_TRAFFIC' => 0,
-					'POP3_TRAFFIC' => 0,
-					'ALL_TRAFFIC' => 0));
-		} else {
-			$sum_web += $web_trf;
-			$sum_ftp += $ftp_trf;
-			$sum_mail += $smtp_trf;
-			$sum_pop += $pop_trf;
+		for ($fromDay = 1; $fromDay <= $toDay; $fromDay++) {
+			$beginTime = mktime(0, 0, 0, $month, $fromDay, $year);
+			$endTime = mktime(23, 59, 59, $month, $fromDay, $year);
+
+			list(
+				$webTraffic, $ftpTraffic, $smtpTraffic, $popTraffic
+				) = _reseller_getDomainTraffic($domainId, $beginTime, $endTime);
 
 			$tpl->assign(
 				array(
-					'DATE' => date($cfg->DATE_FORMAT, strtotime($year . "-" . $month . "-" . $i)),
-					'WEB_TRAFFIC' => sizeit($web_trf),
-					'FTP_TRAFFIC' => sizeit($ftp_trf),
-					'SMTP_TRAFFIC' => sizeit($smtp_trf),
-					'POP3_TRAFFIC' => sizeit($pop_trf),
-					'ALL_TRAFFIC' => sizeit($web_trf + $ftp_trf + $smtp_trf + $pop_trf)));
+					'DATE' => date($dateFormat, strtotime($year . '-' . $month . '-' . $fromDay)),
+					'WEB_TRAFFIC' => bytesHuman($webTraffic),
+					'FTP_TRAFFIC' => bytesHuman($ftpTraffic),
+					'SMTP_TRAFFIC' => bytesHuman($smtpTraffic),
+					'POP3_TRAFFIC' => bytesHuman($popTraffic),
+					'ALL_TRAFFIC' => bytesHuman($webTraffic + $ftpTraffic + $smtpTraffic + $popTraffic),
+				)
+			);
+
+			$all[0] = $all[0] + $webTraffic;
+			$all[1] = $all[1] + $ftpTraffic;
+			$all[2] = $all[2] + $smtpTraffic;
+			$all[3] = $all[3] + $popTraffic;
 
 			$tpl->parse('TRAFFIC_TABLE_ITEM', '.traffic_table_item');
 		}
@@ -166,17 +135,19 @@ function generate_page($tpl, $domain_id)
 			array(
 				'MONTH' => $month,
 				'YEAR' => $year,
-				'DOMAIN_ID' => $domain_id,
-				'ALL_WEB_TRAFFIC' => sizeit($sum_web),
-				'ALL_FTP_TRAFFIC' => sizeit($sum_ftp),
-				'ALL_SMTP_TRAFFIC' => sizeit($sum_mail),
-				'ALL_POP3_TRAFFIC' => sizeit($sum_pop),
-				'ALL_ALL_TRAFFIC' => sizeit($sum_web + $sum_ftp + $sum_mail + $sum_pop)));
-
-		$tpl->parse('TRAFFIC_TABLE', 'traffic_table');
+				'DOMAIN_ID' => $domainId,
+				'ALL_WEB_TRAFFIC' => bytesHuman($all[0]),
+				'ALL_FTP_TRAFFIC' => bytesHuman($all[1]),
+				'ALL_SMTP_TRAFFIC' => bytesHuman($all[2]),
+				'ALL_POP3_TRAFFIC' => bytesHuman($all[3]),
+				'ALL_ALL_TRAFFIC' => bytesHuman($all[0] + $all[1] + $all[2] + $all[3]),
+			)
+		);
+	} else {
+		set_page_message(tr('No statistics found for the given period. Try another period.'), 'info');
+		$tpl->assign('DOMAIN_STATISTICS_BLOCK', '');
 	}
 }
-
 
 /*********************************************************************************
  * Main script
@@ -200,8 +171,10 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'month_list' => 'page',
 		'year_list' => 'page',
-		'traffic_table' => 'page',
-		'traffic_table_item' => 'traffic_table'));
+		'domain_statistics_block' => 'page',
+		'traffic_table_item' => 'domain_statistics_block'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -218,12 +191,14 @@ $tpl->assign(
 		'TR_POP3_TRAFFIC' => tr('POP3/IMAP traffic'),
 		'TR_ALL_TRAFFIC' => tr('All traffic'),
 		'TR_ALL' => tr('All'),
-		'TR_DAY' => tr('Day')));
+		'TR_DAY' => tr('Day')
+	)
+);
 
 if (isset($_POST['domain_id'])) {
-	$domain_id = $_POST['domain_id'];
+	$domainId = $_POST['domain_id'];
 } else if (isset($_GET['domain_id'])) {
-	$domain_id = $_GET['domain_id'];
+	$domainId = $_GET['domain_id'];
 }
 
 if (isset($_POST['month']) && isset($_POST['year'])) {
@@ -233,17 +208,18 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 	$month = intval($_GET['month']);
 	$year = intval($_GET['year']);
 } else {
-	$month = date("m");
-	$year = date("Y");
+	$month = date('m');
+	$year = date('Y');
 }
 
-if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
-	redirectTo('reseller_statistics.php');
+if (!isset($domainId)) {
+	set_page_message(tr('Wrong request.'), 'error');
+	redirectTo('user_statistics.php');
 }
 
 generateNavigation($tpl);
-gen_select_lists($tpl, $month, $year);
-generate_page($tpl, $domain_id);
+generateSelectListForMonthsAndYears($tpl, $month, $year);
+reseller_generatePage($tpl, $domainId, $month, $year);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

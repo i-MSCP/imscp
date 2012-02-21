@@ -316,6 +316,7 @@ function translate_dmn_status($status)
         case $cfg->ITEM_ADD_STATUS:
             return tr('Addition in progress');
         case $cfg->ITEM_CHANGE_STATUS:
+		case $cfg->ITEM_DNSCHANGE_STATUS:
             return tr('Modification in progress');
         case $cfg->ITEM_DELETE_STATUS:
             return tr('Deletion in progress');
