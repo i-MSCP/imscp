@@ -59,16 +59,16 @@ function calc_bars($crnt, $max, $bars_max)
 /**
  * Turns byte counts to usual readable format.
  *
- * If you feel like a hard-drive manufacturer, you can start counting bytes by powers
- * of 1000 (instead of the generous 1024). Just set $base to 1000.
+ * If you feel like a hard-drive manufacturer, you can start counting bytes by power
+ * of 1000 (instead of the generous 1024). Just set $power to 1000.
  *
  * But if you are a floppy disk manufacturer and want to start counting in units of
- * 1024000 (for your "1.44 MB" disks)? let the default value for $base.
+ * 1024 (for your "1.44 MB" disks ?) let the default value for $power.
  *
- * The units for base 1000 are:
+ * The units for power 1000 are:
  * ('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB')
  *
- * The ones for base 1024 are:
+ * Those for power 1024 are:
  *
  * ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
  *
@@ -79,30 +79,30 @@ function calc_bars($crnt, $max, $bars_max)
  * @param int|float $bytes Bytes value to convert
  * @param string $unit OPTIONAL Unit to format
  * @param int $decimals OPTIONAL Number of decimal to be show
- * @param int $base OPTIONAL Base to use for conversion (1024 or 1000)
+ * @param int $power OPTIONAL Power to use for conversion (1024 or 1000)
  * @return string
  */
-function numberBytesHuman($bytes, $unit = '', $decimals = 2, $base = 1024)
+function bytesHuman($bytes, $unit = null, $decimals = 2, $power = 1024)
 {
-	if ($base == 1000) {
+	if ($power == 1000) {
 		$units = array('B' => 0, 'kB' => 1, 'MB' => 2, 'GB' => 3, 'TB' => 4,
 					   'PB' => 5, 'EB' => 6, 'ZB' => 7, 'YB' => 8);
-	} elseif ($base == 1024) {
+	} elseif ($power == 1024) {
 		$units = array('B' => 0, 'kiB' => 1, 'MiB' => 2, 'GiB' => 3, 'TiB' => 4,
 					   'PiB' => 5, 'EiB' => 6, 'ZiB' => 7, 'YiB' => 8);
 	} else {
-		throw new iMSCP_Exception('Wrong value for the $base argument.');
+		throw new iMSCP_Exception('Wrong value given for $base.');
 	}
 
 	$value = 0;
 
 	if ($bytes > 0) {
 		if (!array_key_exists($unit, $units)) {
-			$pow = floor(log($bytes) / log($base));
+			$pow = floor(log($bytes) / log($power));
 			$unit = array_search($pow, $units);
 		}
 
-		$value = ($bytes / pow($base, floor($units[$unit])));
+		$value = ($bytes / pow($power, floor($units[$unit])));
 	} else {
 		$unit = 'B';
 	}
@@ -172,17 +172,35 @@ function numberBytesHuman($bytes, $unit = '', $decimals = 2, $base = 1024)
 }
 
 /**
- * Bytes convertion.
+ * Humanize a mebibyte value.
  *
- * @throws iMSCP_Exception
- * @param int|float $bytes Bytes value
- * @param string $to unit to convert to
- * @return Translated
- * @deprecated Please use the NumberBytesHuman() instead
+ * @param int $value mebibyte value
+ * @param $unit
+ * @return string
  */
-function sizeit($bytes, $to = '')
+function mebibyteHuman($value, $unit = null)
 {
-	return numberBytesHuman($bytes, $to);
+	return bytesHuman($value * 1048576, $unit);
+}
+
+/**
+ * Translates '-1', 'no', 'yes', '0' or mebibyte value string into human readable string.
+ *
+ * @param int $value variable to be translated
+ * @param bool $autosize calculate value in different unit (default false)
+ * @param string $to unit to calclulate to (default 'MiB')
+ * @return String
+ */
+function translate_limit_value($value, $autosize = false, $to = 'MiB')
+{
+    switch ($value) {
+        case '-1':
+            return tr('disabled');
+        case  '0':
+            return tr('unlimited');
+        default:
+            return (!$autosize) ? $value : mebibyteHuman($value, $to);
+    }
 }
 
 //
@@ -289,22 +307,34 @@ function passgen()
     return $pw;
 }
 
+
 /**
- * Translates -1, 0 or value string into human readable string.
+ * Return UNIX timestamp representing first day of $month for $year.
  *
- * @param int $value variable to be translated
- * @param bool $autosize calculate value in different unit (default false)
- * @param string $to unit to calclulate to (default 'MB')
- * @return String
+ * @param int $month OPTIONAL a month
+ * @param int $year OPTIONAL A year (two or 4 digits, whatever)
+ * @return int
  */
-function translate_limit_value($value, $autosize = false, $to = 'MB')
+function getFirstDayOfMonth($month = null, $year = null)
 {
-    switch ($value) {
-        case -1:
-            return tr('disabled');
-        case  0:
-            return tr('unlimited');
-        default:
-            return (!$autosize) ? $value : sizeit($value, $to);
-    }
+	$month = $month ?: date('m');
+	$year = $year ?: date('y');
+
+	return mktime(0, 0, 0, $month, 1, $year);
+
+}
+
+/**
+ * Return UNIX timestamp representing last day of month for $year.
+ *
+ * @param int $month OPTIONAL a month
+ * @param int $year OPTIONAL A year (two or 4 digits, whatever)
+ * @return int
+ */
+function getLastDayOfMonth($month = null, $year = null)
+{
+	$month = $month ?: date('m');
+	$year = $year ?: date('y');
+
+	return mktime(1, 0, 0, $month + 1, 0, $year);
 }

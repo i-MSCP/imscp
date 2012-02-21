@@ -147,36 +147,53 @@ function gen_def_language($tpl, $user_def_language)
  * Helper function to generate HTML list of months and years
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $user_month
- * @param  $user_year
+ * @param  $fromMonth
+ * @param  $fromYear
+ * @param  $numberYears
  * @return void
  */
-function gen_select_lists($tpl, $user_month, $user_year)
+function generateSelectListForMonthsAndYears($tpl, $fromMonth = null, $fromYear = null, $numberYears = 3)
 {
-    global $crnt_month, $crnt_year;
+	$fromMonth = intval($fromMonth);
+	$fromYear = intval($fromYear);
 
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    if (!$user_month == '' || !$user_year == '') {
-        $crnt_month = $user_month;
-        $crnt_year = $user_year;
-    } else {
-        $crnt_month = date('m');
-        $crnt_year = date('Y');
-    }
+	if (!$fromMonth || $fromMonth > 12) {
+		$fromMonth = date('m');
+	}
 
-    for ($i = 1; $i <= 12; $i++) {
-        $selected = ($i == $crnt_month) ? $cfg->HTML_SELECTED : '';
-        $tpl->assign(array('OPTION_SELECTED' => $selected, 'MONTH_VALUE' => $i));
-        $tpl->parse('MONTH_LIST', '.month_list');
-    }
+	if ($fromYear) {
+		$fromYearTwoDigit = date('y', mktime(0, 0, 0, 1, 1, $fromYear));
+	} else {
+		$fromYearTwoDigit = date('y');
+	}
 
-    for ($i = $crnt_year - 1; $i <= $crnt_year + 1; $i++) {
-        $selected = ($i == $crnt_year) ? $cfg->HTML_SELECTED : '';
-        $tpl->assign(array('OPTION_SELECTED' => $selected, 'YEAR_VALUE' => $i));
-        $tpl->parse('YEAR_LIST', '.year_list');
-    }
+	foreach(range(1, 12) as $month) {
+		$tpl->assign(
+			array(
+				'OPTION_SELECTED' => ($month == $fromMonth) ? $cfg->HTML_SELECTED : '',
+				'MONTH_VALUE' => $month
+			)
+		);
+
+		$tpl->parse('MONTH_LIST', '.month_list');
+	}
+
+	$currentYear = date('y');
+
+	foreach (range($currentYear - ($numberYears - 1), $currentYear) as $year) {
+		$tpl->assign(
+			array(
+				'OPTION_SELECTED' => ($fromYearTwoDigit == $year) ? $cfg->HTML_SELECTED : '',
+				'VALUE' => $year,
+				'HUMAN_VALUE' => date('Y', mktime(0, 0, 0, 1, 1, $year))
+			)
+		);
+
+		$tpl->parse('YEAR_LIST', '.year_list');
+	}
 }
 
 /**

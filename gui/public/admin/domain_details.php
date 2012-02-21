@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 /*****************************************************************
@@ -40,69 +40,62 @@
  */
 
 /**
- * Generates page.
+ * Generates page
  *
- * @param iMSCP_pTemplate $tpl
- * @param $user_id
- * @param $domain_id
+ * @param iMSCP_pTemplate $tpl Template instance engine
+ * @param int $domainId Domain unique identifier
+ * @return void
  */
-function gen_detaildom_page($tpl, $user_id, $domain_id) {
+function admin_generatePage($tpl, $domainId)
+{
+	$domainId = (int)$domainId;
+
+	$query = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ?";
+	$stmt = exec_query($query, $domainId);
+
+	if (!$stmt->rowCount()) {
+		set_page_message(tr('Domain not found.'));
+		redirectTo('manage_users.php');
+	}
+
+	$domainProperties = get_domain_default_props($stmt->fields['domain_admin_id'], true);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	// Get domain data
-	$query = "
-		SELECT
-			*, IFNULL(`domain_disk_usage`, 0) `domain_disk_usage`
-		FROM
-			`domain`
-		WHERE
-			`domain_id` = ?;
-	";
-	$stmt = exec_query($query, $domain_id);
-	$data = $stmt->fetchRow();
+	// Domain IP address info
+	$stmt = exec_query(
+		"SELECT `ip_number`, `ip_domain`  FROM `server_ips` WHERE `ip_id` = ?", $domainProperties['domain_ip_id']
+	);
 
 	if (!$stmt->rowCount()) {
-		redirectTo('manage_users.php');
-	}
-
-	// Get admin data
-	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
-	$stmt = exec_query($query, $data['domain_admin_id']);
-	$data1 = $stmt->fetchRow();
-
-	if (!$stmt->rowCount()) {
-		redirectTo('manage_users.php');
-	}
-
-	// Get IP info
-	//$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
-	//$stmt = exec_query($query, $data['domain_ip_id']);
-	//$ipdat = $stmt->fetchRow();
-
-	// Get status name
-	$dstatus = $data['domain_status'];
-
-	if ($dstatus == $cfg->ITEM_OK_STATUS || $dstatus == $cfg->ITEM_DISABLED_STATUS || $dstatus == $cfg->ITEM_DELETE_STATUS
-		|| $dstatus == $cfg->ITEM_ADD_STATUS || $dstatus == $cfg->ITEM_RESTORE_STATUS || $dstatus == $cfg->ITEM_CHANGE_STATUS
-		|| $dstatus == $cfg->ITEM_TOENABLE_STATUS || $dstatus == $cfg->ITEM_TODISABLED_STATUS
-	) {
-		$dstatus = translate_dmn_status($data['domain_status']);
+		$domainIpAddr = tr('No found.');
 	} else {
-		$dstatus = "<b><font size=\"3\" color=\"red\">" . $data['domain_status'] . "</font></b>";
+		$domainIpAddr = "{$stmt->fields['ip_number']} " . (($stmt->fields['ip_domain']) ? "({$stmt->fields['ip_domain']})" : '');
 	}
 
-	// Traffic diagram
-	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
-	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
+	$domainStatus = $domainProperties['domain_status'];
+
+	// Domain status
+
+	if (
+		$domainStatus == $cfg->ITEM_OK_STATUS || $domainStatus == $cfg->ITEM_DISABLED_STATUS ||
+		$domainStatus == $cfg->ITEM_DELETE_STATUS || $domainStatus == $cfg->ITEM_ADD_STATUS ||
+		$domainStatus == $cfg->ITEM_RESTORE_STATUS || $domainStatus == $cfg->ITEM_CHANGE_STATUS ||
+		$domainStatus == $cfg->ITEM_TOENABLE_STATUS || $domainStatus == $cfg->ITEM_TODISABLED_STATUS ||
+		$domainStatus == $cfg->ITEM_DNSCHANGE_STATUS
+	) {
+		$domainStatus = '<span style="color:green">' . tohtml(translate_dmn_status($domainStatus)) . '</span>';
+	} else {
+		$domainStatus = '<b><font size="3" color="red">' . $domainStatus . "</font></b>";
+	}
+
+	// Get total domain traffic usage in bytes
 
 	$query = "
 		SELECT
-			IFNULL(SUM(`dtraff_web`), 0) `dtraff_web`,
-			IFNULL(SUM(`dtraff_ftp`), 0) `dtraff_ftp`,
-			IFNULL(SUM(`dtraff_mail`), 0) `dtraff_mail`,
-			IFNULL(SUM(`dtraff_pop`), 0) `dtraff_pop`
+			IFNULL(SUM(`dtraff_web`), 0) `dtraff_web`, IFNULL(SUM(`dtraff_ftp`), 0) `dtraff_ftp`,
+			IFNULL(SUM(`dtraff_mail`), 0) `dtraff_mail`, IFNULL(SUM(`dtraff_pop`), 0) `dtraff_pop`
 		FROM
 			`domain_traffic`
 		WHERE
@@ -112,182 +105,59 @@ function gen_detaildom_page($tpl, $user_id, $domain_id) {
 		AND
 			`dtraff_time` < ?
 	";
+	$stmt = exec_query($query, array($domainProperties['domain_id'], getFirstDayOfMonth(), getLastDayOfMonth()));
 
-	$res7 = exec_query($query, array($data['domain_id'], $fdofmnth, $ldofmnth));
-	$dtraff = $res7->fetchRow();
-	$sumtraff = $dtraff['dtraff_web'] + $dtraff['dtraff_ftp'] + $dtraff['dtraff_mail'] + $dtraff['dtraff_pop'];
-	$dtraffmb = sprintf("%.1f", ($sumtraff / 1024) / 1024);
-
-	$month = date("m");
-	$year = date("Y");
-
-	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
-	$res8 = exec_query($query, $data['domain_ip_id']);
-	$ipdat = $res8->fetchRow();
-
-	$domain_traffic_limit = $data['domain_traffic_limit'];
-	$domain_all_traffic = $sumtraff; //$dtraff['traffic'];
-
-	$traff = ($domain_all_traffic / 1024) / 1024;
-	$mtraff = sprintf("%.2f", $traff);
-
-	if ($domain_traffic_limit == 0) {
-		$pr = 0;
+	if($stmt->rowCount()) {
+		$trafficUsageBytes = $stmt->fields['dtraff_web'] + $stmt->fields['dtraff_ftp'] + $stmt->fields['dtraff_mail'] +
+			$stmt->fields['dtraff_pop'];
 	} else {
-		$pr = ($traff / $domain_traffic_limit) * 100;
-		$pr = sprintf("%.2f", $pr);
+		$trafficUsageBytes = 0;
 	}
 
-	$indx = (int)$pr;
+	// Get limits in bytes
+	$trafficLimitBytes = $domainProperties['domain_traffic_limit'] * 1048576;
+	$diskspaceLimitBytes = $domainProperties['domain_disk_limit'] * 1048576;
 
-	list($traffic_percent, $indx, $a) = make_usage_vals($domain_all_traffic, $domain_traffic_limit * 1024 * 1024);
-	// Get disk status
-	$domdu = $data['domain_disk_usage'];
-	$domdl = $data['domain_disk_limit'];
+	// Get usages in percent
+	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
+	$diskspaceUsagePercent = make_usage_vals($domainProperties['domain_disk_usage'], $diskspaceLimitBytes);
 
-	$tmp = ($domdu / 1024) / 1024;
+	# Features
 
-	if ($domdu == 0) {
-		$dpr = 0;
-	} else if ($domdl == 0) {
-		$dpr = 0;
-	} else {
-		$dpr = ($tmp / $domdl) * 100;
-		$dpr = sprintf("%.2f", $dpr);
-	}
+	$trEnabled = '<span style="color:green">' . tr('Enabled') . '</span>';
+	$trDisabled = '<span style="color:red">' . tr('Disabled') . '</span>';
 
-	$dindx = (int) $dpr;
-	$domduh = sizeit($domdu);
-
-	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
-	// Get current mail count
-	$query = "
-		SELECT
-			COUNT(`mail_id`) `mcnt`
-		FROM
-			`mail_users`
-		WHERE
-			`domain_id` = ?
-		AND
-			`mail_type` NOT RLIKE '_catchall'
-	";
-
-	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
-		$query .= " AND `mail_acc` != 'abuse' AND `mail_acc` != 'postmaster' AND `mail_acc` != 'webmaster'";
-	}
-
-	$res6 = exec_query($query, $data['domain_id']);
-	$dat3 = $res6->fetchRow();
-	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
-
-	// FTP stat
-	$query = "SELECT `gid` FROM `ftp_group` WHERE `groupname` = ?";
-	$res4 = exec_query($query, $data['domain_name']);
-	$ftp_gnum = $res4->rowCount();
-	if ($ftp_gnum == 0) {
-		$used_ftp_acc = 0;
-	} else {
-		$dat1 = $res4->fetchRow();
-		$query = "SELECT COUNT(*) `ftp_cnt` FROM `ftp_users` WHERE `gid` = ?";
-		$res5 = exec_query($query, $dat1['gid']);
-		$dat2 = $res5->fetchRow();
-
-		$used_ftp_acc = $dat2['ftp_cnt'];
-	}
-	$ftp_limit = translate_limit_value($data['domain_ftpacc_limit']);
-
-	// Get sql database count
-	$query = "SELECT COUNT(*) `dnum` FROM `sql_database` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $data['domain_id']);
-	$dat5 = $stmt->fetchRow();
-	$sql_db = translate_limit_value($data['domain_sqld_limit']);
-
-	// Get sql users count
-	$query = "
-		SELECT
-			COUNT(`u`.`sqlu_id`) `ucnt`
-		FROM
-			`sql_user` `u`, `sql_database` `d`
-		WHERE
-			`u`.`sqld_id` = `d`.`sqld_id`
-		AND
-			`d`.`domain_id` = ?
-	";
-	$stmt = exec_query($query, $data['domain_id']);
-
-	$dat6 = $stmt->fetchRow();
-	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
-
-	// Get subdomain
-	$query = "SELECT COUNT(`subdomain_id`) `sub_num` FROM `subdomain` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $data['domain_id']);
-
-	$sub_num_data = $stmt->fetchRow();
-
-	$query = "
-		SELECT
-			COUNT(`subdomain_alias_id`) `sub_num`
-		FROM
-			`subdomain_alias`
-		WHERE
-			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
-	";
-	$stmt = exec_query($query, $domain_id);
-
-	$alssub_num_data = $stmt->fetchRow();
-	$sub_dom = translate_limit_value($data['domain_subd_limit']);
-
-	// Get domain aliases
-	$query = "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?";
-	$stmt = exec_query($query, $data['domain_id']);
-	$alias_num_data = $stmt->fetchRow();
-
-	// Check if Backup support is available for this user
-	switch($data['allowbackup']){
-    case "full":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Full')));
-        break;
-    case "sql":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('SQL')));
-        break;
-    case "dmn":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Domain')));
-        break;
-    default:
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('No')));
-    }
-
-	$dom_alias = translate_limit_value($data['domain_alias_limit']);
-	// Fill in the fields
 	$tpl->assign(
 		array(
-			'DOMAIN_ID' => $data['domain_id'],
-			'VL_DOMAIN_NAME' => tohtml(decode_idna($data['domain_name'])),
-			'VL_DOMAIN_IP' => $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
-			'VL_STATUS' => $dstatus,
-			'VL_PHP_SUPP' => ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_CGI_SUPP' => ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_DNS_SUPP' => ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_MYSQL_SUPP' => ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
-			'VL_SOFTWARE_SUPP' => ($data['domain_software_allowed'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_TRAFFIC_PERCENT' => $traffic_percent > 100 ? 100 : $traffic_percent,
-			'VL_TRAFFIC_USED' => sizeit($domain_all_traffic),
-			'VL_TRAFFIC_LIMIT' => sizeit($domain_traffic_limit, 'MB'),
-			'VL_DISK_PERCENT' => $disk_percent > 100 ? 100 : $disk_percent,
-			'VL_DISK_USED' => $domduh,
-			'VL_DISK_LIMIT' => sizeit($data['domain_disk_limit'], 'MB'),
-			'VL_MAIL_ACCOUNTS_USED' => $dat3['mcnt'],
-			'VL_MAIL_ACCOUNTS_LIIT' => $mail_limit,
-			'VL_FTP_ACCOUNTS_USED' => $used_ftp_acc,
-			'VL_FTP_ACCOUNTS_LIIT' => $ftp_limit,
-			'VL_SQL_DB_ACCOUNTS_USED' => $dat5['dnum'],
-			'VL_SQL_DB_ACCOUNTS_LIIT' => $sql_db,
-			'VL_SQL_USER_ACCOUNTS_USED' => $dat6['ucnt'],
-			'VL_SQL_USER_ACCOUNTS_LIIT' => $sql_users,
-			'VL_SUBDOM_ACCOUNTS_USED' => $sub_num_data['sub_num'] + $alssub_num_data['sub_num'],
-			'VL_SUBDOM_ACCOUNTS_LIIT' => $sub_dom,
-			'VL_DOMALIAS_ACCOUNTS_USED' => $alias_num_data['alias_num'],
-			'VL_DOMALIAS_ACCOUNTS_LIIT' => $dom_alias));
+			'DOMAIN_ID' => $domainId,
+			'VL_DOMAIN_NAME' => tohtml(decode_idna($domainProperties['domain_name'])),
+			'VL_DOMAIN_IP' => tohtml($domainIpAddr),
+			'VL_STATUS' => $domainStatus,
+			'VL_PHP_SUPP' => ($domainProperties['domain_php'] == 'yes') ? $trEnabled : $trDisabled,
+			'VL_CGI_SUPP' => ($domainProperties['domain_cgi'] == 'yes') ? $trEnabled : $trDisabled,
+			'VL_DNS_SUPP' => ($domainProperties['domain_dns'] == 'yes') ? $trEnabled : $trDisabled,
+			'VL_MYSQL_SUPP' => ($domainProperties['domain_sqld_limit'] >= 0) ? $trEnabled : $trDisabled,
+			'VL_SOFTWARE_SUPP' => ($domainProperties['domain_software_allowed'] == 'yes') ? $trEnabled : $trDisabled,
+			'VL_TRAFFIC_PERCENT' => $trafficUsagePercent,
+			'VL_TRAFFIC_USED' => bytesHuman($trafficUsageBytes),
+			'VL_TRAFFIC_LIMIT' => bytesHuman($trafficLimitBytes),
+			'VL_DISK_PERCENT' => $diskspaceUsagePercent,
+			'VL_DISK_USED' => bytesHuman($domainProperties['domain_disk_usage']),
+			'VL_DISK_LIMIT' => bytesHuman($diskspaceLimitBytes),
+			'VL_MAIL_ACCOUNTS_USED' => get_domain_running_mail_acc_cnt($domainId),
+			'VL_MAIL_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_mailacc_limit']),
+			'VL_FTP_ACCOUNTS_USED' => get_domain_running_ftp_acc_cnt($domainId),
+			'VL_FTP_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_ftpacc_limit']),
+			'VL_SQL_DB_ACCOUNTS_USED' => get_domain_running_sqld_acc_cnt($domainId),
+			'VL_SQL_DB_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_sqld_limit']),
+			'VL_SQL_USER_ACCOUNTS_USED' => get_domain_running_sqlu_acc_cnt($domainId),
+			'VL_SQL_USER_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_sqlu_limit']),
+			'VL_SUBDOM_ACCOUNTS_USED' => get_domain_running_sub_cnt($domainId),
+			'VL_SUBDOM_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_subd_limit']),
+			'VL_DOMALIAS_ACCOUNTS_USED' => get_domain_running_als_cnt($domainId),
+			'VL_DOMALIAS_ACCOUNTS_LIIT' => translate_limit_value($domainProperties['domain_alias_limit']),
+		)
+	);
 }
 
 /*******************************************************************************
@@ -306,8 +176,6 @@ if (!isset($_GET['domain_id'])) {
 	redirectTo('manage_users.php');
 }
 
-$editid = $_GET['domain_id'];
-
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -316,12 +184,13 @@ $tpl->define_dynamic(
 	array(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/domain_details.tpl',
-		'logged_from' => 'page',
-		'custom_buttons' => 'page'));
+		'page_messages' => 'layout',
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Domain Details'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Users management / Domain Details'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_DETAILS' => tr('Domain details'),
@@ -349,8 +218,8 @@ $tpl->assign(
 		'TR_BACK' => tr('Back')));
 
 generateNavigation($tpl);
+admin_generatePage($tpl, intval($_GET['domain_id']));
 generatePageMessage($tpl);
-gen_detaildom_page($tpl, $_SESSION['user_id'], $editid);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

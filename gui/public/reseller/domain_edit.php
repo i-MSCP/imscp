@@ -349,21 +349,21 @@ function _reseller_generateLimitsForm($tpl, &$data)
 	$tplVars['TR_TRAFFIC_LIMIT'] = tr('Traffic limit [MiB] <br /><span class="italic">(0 unlimited)</span>', true);
 	$tplVars['TRAFFIC_LIMIT'] = tohtml($data['domain_traffic_limit']);
 
-	$tplVars['TR_CUSTOMER_TRAFFIC_COMSUPTION'] = tohtml(numberBytesHuman($data['domainTraffic'], 'MiB')) . ' / ' .
-												 (($data['fallback_domain_traffic_limit'] != 0) ? tohtml(numberBytesHuman($data['fallback_domain_traffic_limit'] * 1048576)) : tr('Unlimited'));
+	$tplVars['TR_CUSTOMER_TRAFFIC_COMSUPTION'] = tohtml(bytesHuman($data['domainTraffic'], 'MiB')) . ' / ' .
+												 (($data['fallback_domain_traffic_limit'] != 0) ? tohtml(bytesHuman($data['fallback_domain_traffic_limit'] * 1048576)) : tr('Unlimited'));
 
-	$tplVars['TR_RESELLER_TRAFFIC_COMSUPTION'] = tohtml(numberBytesHuman($data['current_traff_amnt'] * 1048576))  . ' / ' .
-												 (($data['max_traff_amnt'] != 0) ? tohtml(numberBytesHuman($data['max_traff_amnt'] * 1048576)) : tr('Unlimited'));
+	$tplVars['TR_RESELLER_TRAFFIC_COMSUPTION'] = tohtml(bytesHuman($data['current_traff_amnt'] * 1048576))  . ' / ' .
+												 (($data['max_traff_amnt'] != 0) ? tohtml(bytesHuman($data['max_traff_amnt'] * 1048576)) : tr('Unlimited'));
 
 	// Disk space limit
 	$tplVars['TR_DISK_LIMIT'] = tr('Disk space limit [MiB] <br /><span class="italic">(0 unlimited)</span>', true);
 	$tplVars['DISK_LIMIT'] = tohtml($data['domain_disk_limit']);
 
-	$tplVars['TR_CUSTOMER_DISKPACE_COMSUPTION'] = tohtml(numberBytesHuman($data['domain_disk_usage'], 'MiB')) . ' / ' .
-												  (($data['fallback_domain_disk_limit'] != 0) ? tohtml(numberBytesHuman($data['fallback_domain_disk_limit'] * 1048576)) : tr('Unlimited'));
+	$tplVars['TR_CUSTOMER_DISKPACE_COMSUPTION'] = tohtml(bytesHuman($data['domain_disk_usage'], 'MiB')) . ' / ' .
+												  (($data['fallback_domain_disk_limit'] != 0) ? tohtml(bytesHuman($data['fallback_domain_disk_limit'] * 1048576)) : tr('Unlimited'));
 
-	$tplVars['TR_RESELLER_DISKPACE_COMSUPTION'] = tohtml(numberBytesHuman($data['current_disk_amnt'] * 1048576))  . ' / ' .
-												  (($data['max_disk_amnt'] != 0) ? tohtml(numberBytesHuman($data['max_disk_amnt'] * 1048576)) : tr('Unlimited'));
+	$tplVars['TR_RESELLER_DISKPACE_COMSUPTION'] = tohtml(bytesHuman($data['current_disk_amnt'] * 1048576))  . ' / ' .
+												  (($data['max_disk_amnt'] != 0) ? tohtml(bytesHuman($data['max_disk_amnt'] * 1048576)) : tr('Unlimited'));
 
 	if(!empty($tplVars)) {
 		$tpl->assign($tplVars);

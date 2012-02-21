@@ -38,20 +38,19 @@
 				<tr>
 					<td>{TR_TRAFFIC}</td>
 					<td>
-						<div class="graph"><span style="width:{VL_TRAFFIC_PERCENT}%">&nbsp;</span>
-						</div>
-					{VL_TRAFFIC_USED} / {VL_TRAFFIC_LIMIT}
+						<div class="graph"><span style="width:{VL_TRAFFIC_PERCENT}%">&nbsp;</span></div>
+						{VL_TRAFFIC_USED} / {VL_TRAFFIC_LIMIT}
 					</td>
 				</tr>
 				<tr>
 					<td>{TR_DISK}</td>
 					<td>
-						<div class="graph"><span style="width:{VL_DISK_PERCENT}%">&nbsp;</span>
-						</div>
-					{VL_DISK_USED} / {VL_DISK_LIMIT}
+						<div class="graph"><span style="width:{VL_DISK_PERCENT}%">&nbsp;</span></div>
+						{VL_DISK_USED} / {VL_DISK_LIMIT}
 					</td>
 				</tr>
 			</table>
+
 			<table class="firstColFixed">
 				<tr>
 					<th>{TR_FEATURE}</th>
@@ -89,4 +88,3 @@
 					<td>{VL_DOMALIAS_ACCOUNTS_LIIT}</td>
 				</tr>
 			</table>
-

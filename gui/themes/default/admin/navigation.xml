@@ -222,7 +222,7 @@
 							<title_class>stats</title_class>
 							<pages>
 								<domain_statistics_link>
-									<label>Domain_statistics</label>
+									<label>Domain statistics</label>
 									<uri>/admin/domain_statistics.php</uri>
 									<visible>0</visible>
 									<title_class>stats</title_class>

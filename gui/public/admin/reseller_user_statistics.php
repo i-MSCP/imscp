@@ -51,14 +51,14 @@ function admin_generatePage($tpl, $resellerId)
 	$query = "SELECT `domain_id` FROM `domain` WHERE `domain_created_id` = ?";
 	$stmt = exec_query($query, $resellerId);
 
-	if($stmt->rowCount()) {
-		foreach($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
+	if ($stmt->rowCount()) {
+		foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
 			_admin_generateDomainStatisticsEntry($tpl, $domainId);
 			$tpl->parse('DOMAIN_STATISTICS_ENTRY_BLOCK', 'domain_statistics_entry_block');
 		}
 	} else {
 		$tpl->assign('DOMAIN_STATISTICS_ENTRIES_BLOCK', '');
-		set_page_message('No domain statistics to display for this reseller.');
+		set_page_message(tr('No domain statistics to display for this reseller.'), 'info');
 	}
 }
 
@@ -73,78 +73,59 @@ function admin_generatePage($tpl, $resellerId)
 function _admin_generateDomainStatisticsEntry($tpl, $domainId)
 {
 	list(
-		$domain_name, $domainId, $web, $ftp, $smtp, $pop3, $utraff_current, $udisk_current
+		$domain_name, $domainId, $web, $ftp, $smtp, $pop3, $trafficUsageBytes, $diskspaceUsageBytes
 	) = generate_user_traffic($domainId);
 
 	list(
 		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
-		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $utraff_max, $udisk_max
+		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $trafficMaxMebimytes, $diskspaceMaxMebibytes
 	) = generate_user_props($domainId);
 
-	$utraff_max = $utraff_max * 1024 * 1024;
-	$udisk_max = $udisk_max * 1024 * 1024;
 
-	list($traff_percent) = make_usage_vals($utraff_current, $utraff_max);
-	list($disk_percent) = make_usage_vals($udisk_current, $udisk_max);
+	$trafficLimitBytes = $trafficMaxMebimytes * 1048576;
+	$diskspaceLimitBytes = $diskspaceMaxMebibytes * 1048576;
 
-	if ($traff_percent > 100) {
-		$traff_percent = 100;
-	}
-
-	if ($disk_percent > 100) {
-		$disk_percent = 100;
-	}
-
-	$domain_name = decode_idna($domain_name);
+	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
+	$diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME' => tohtml($domain_name),
+			'DOMAIN_NAME' => tohtml( decode_idna($domain_name)),
 			'MONTH' => date('m'),
 			'YEAR' => date('y'),
 			'DOMAIN_ID' => $domainId,
-			'TRAFF_PERCENT' => $traff_percent,
-			'TRAFF_MSG' => ($utraff_max)
-				? tr('%1$s of %2$s</b>', numberBytesHuman($utraff_current), numberBytesHuman($utraff_max))
-				: tr('%s of unlimited</b>', numberBytesHuman($utraff_current)),
-			'DISK_PERCENT' => $disk_percent,
-			'DISK_MSG' => ($udisk_max)
-				? tr('%1$s of %2$s</b>', numberBytesHuman($udisk_current), numberBytesHuman($udisk_max))
-				: tr('%s of unlimited</b>', numberBytesHuman($udisk_current)),
-			'WEB' => numberBytesHuman($web),
-			'FTP' => numberBytesHuman($ftp),
-			'SMTP' => numberBytesHuman($smtp),
-			'POP3' => numberBytesHuman($pop3),
+			'TRAFF_PERCENT' => $trafficUsagePercent,
+			'TRAFF_MSG' => ($trafficLimitBytes)
+				? tr('%s of %s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
+				: tr('%s of unlimited', bytesHuman($trafficUsageBytes)),
+			'DISK_PERCENT' => $diskspaceUsagePercent,
+			'DISK_MSG' => ($diskspaceLimitBytes)
+				? tr('%s of %s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes))
+				: tr('%s of unlimited', bytesHuman($diskspaceUsageBytes)),
+			'WEB' => bytesHuman($web),
+			'FTP' => bytesHuman($ftp),
+			'SMTP' => bytesHuman($smtp),
+			'POP3' => bytesHuman($pop3),
 			'SUB_MSG' => ($usub_max)
-				? (($usub_max > 0)
-					? tr('%1$d of %2$d</b>', numberBytesHuman($usub_current), $usub_max)
-					: tr('disabled</b>'))
-				: tr('%d of unlimited</b>', numberBytesHuman($usub_current)),
+				? tr('%d of %s', $usub_current, translate_limit_value($usub_max))
+				: translate_limit_value($usub_max),
 			'ALS_MSG' => ($uals_max)
-				? (($uals_max > 0)
-					? tr('%1$d of %2$d</b>', numberBytesHuman($uals_current), $uals_max)
-					: tr('disabled</b>'))
-				: tr('%d of unlimited</b>', numberBytesHuman($uals_current)),
+				? tr('%d of %s', $uals_current, translate_limit_value($uals_max))
+				: translate_limit_value($uals_max),
 			'MAIL_MSG' => ($umail_max)
-				? (($umail_max > 0)
-					? tr('%1$d of %2$d</b>', $umail_current, $umail_max)
-					: tr('disabled</b>'))
-				: tr('%d of unlimited</b>', $umail_current),
+				? tr('%d of %s', $umail_current, translate_limit_value($umail_max))
+				: translate_limit_value($umail_max),
 			'FTP_MSG' => ($uftp_max)
-				? (($uftp_max > 0)
-					? tr('%1$d of %2$d</b>', $uftp_current, $uftp_max)
-					: tr('disabled</b>'))
-				: tr('%d of unlimited', $uftp_current),
+				? tr('%d of %s', $uftp_current, translate_limit_value($uftp_max))
+				: translate_limit_value($uftp_max),
 			'SQL_DB_MSG' => ($usql_db_max)
-				? (($usql_db_max > 0)
-					? tr('%1$d of %2$d', $usql_db_current, $usql_db_max)
-					: tr('disabled</b>'))
-				: tr('%d of unlimited', $usql_db_current),
+				? tr('%d of %s', $usql_db_current, translate_limit_value($usql_db_max))
+				: translate_limit_value($usql_db_max),
 			'SQL_USER_MSG' => ($usql_user_max)
-				? (($usql_user_max > 0)
-					? tr('%1$d of %2$d', $usql_user_current, $usql_user_max)
-					: tr('disabled'))
-				: tr('%d of unlimited', $usql_user_current)));
+				? tr('%1$d of %2$d', $usql_user_current, translate_limit_value($usql_user_max))
+				: translate_limit_value($usql_user_max)
+		)
+	);
 }
 
 /*******************************************************************************

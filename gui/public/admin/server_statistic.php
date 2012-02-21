@@ -27,12 +27,134 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
+ */
+
+/******************************************************************************
+ * Script functions
+ */
+/**
+ * Return server traffic information for the given period.
+ *
+ * @param int $beginDate An UNIX timestamp representing a begin date
+ * @param int $endDate An UNIX timestamp representing an end date
+ * @return array
+ */
+function admin_getServerTraffic($beginDate, $endDate)
+{
+	$query = "
+		SELECT
+			IFNULL(SUM(`bytes_in`), 0) `sbin`, IFNULL(SUM(`bytes_out`), 0) `sbout`,
+			IFNULL(SUM(`bytes_mail_in`), 0) `smbin`, IFNULL(SUM(`bytes_mail_out`), 0) `smbout`,
+			IFNULL(SUM(`bytes_pop_in`), 0) `spbin`, IFNULL(SUM(`bytes_pop_out`), 0) `spbout`,
+			IFNULL(SUM(`bytes_web_in`), 0) `swbin`, IFNULL(SUM(`bytes_web_out`), 0) `swbout`
+		FROM
+			`server_traffic`
+		WHERE
+			`traff_time` > ? AND `traff_time` < ?
+	";
+	$stmt = exec_query($query, array($beginDate, $endDate));
+
+	if (!$stmt->rowCount()) {
+		return array_fill(0, 10, 0);
+	} else {
+		return array(
+			$stmt->fields['swbin'], $stmt->fields['swbout'],
+			$stmt->fields['smbin'], $stmt->fields['smbout'],
+			$stmt->fields['spbin'], $stmt->fields['spbout'],
+			$stmt->fields['sbin'] - ($stmt->fields['swbin'] + $stmt->fields['smbin'] + $stmt->fields['spbin']),
+			$stmt->fields['sbout'] - ($stmt->fields['swbout'] + $stmt->fields['smbout'] + $stmt->fields['spbout']),
+			$stmt->fields['sbin'], $stmt->fields['sbout']);
+	}
+}
+
+/**
+ * generates statistics page for the given period.
+ *
+ * @param iMSCP_pTemplate $tpl template engine instance
+ * @param int $month Month of the period for which statistics are requested
+ * @param int $year Year of the period for which statistics are requested
+ * @return void
+ */
+function admin_generatePage($tpl, $month, $year)
+{
+	// Let see if we have any statistics available for the given periode
+	$query = "SELECT `bytes_in` FROM `server_traffic` WHERE `traff_time` > ? AND `traff_time` < ? LIMIT 1";
+	$stmt = exec_query($query, array(getFirstDayOfMonth($month, $year), getLastDayOfMonth($month, $year)));
+
+	if ($stmt->rowCount()) { // Statistic were found the the period
+		if ($month == date('m') && $year == date('y')) { // Statistics needed only from begin of month to today
+			$curday = date('j');
+		} else { // Statistics needed for entire month
+			$curday = date('j', getLastDayOfMonth($month, $year));
+		}
+
+		$all = array_fill(0, 8, 0);
+
+		// Getting statistics by day for the period
+		for ($day = 1; $day <= $curday; $day++) {
+			$beginDate = mktime(0, 0, 0, $month, $day, $year);
+			$endDate = mktime(23, 59, 59, $month, $day, $year);
+
+			list(
+				$webIn, $webOut, $smtpIn, $smtpOut, $popIn, $popOut, $otherIn, $otherOut, $allIn, $allOut
+			) = admin_getServerTraffic($beginDate, $endDate);
+
+			$tpl->assign(
+				array(
+					'DAY' => $day,
+					'YEAR' => $year,
+					'MONTH' => $month,
+					'WEB_IN' => bytesHuman($webIn),
+					'WEB_OUT' => bytesHuman($webOut),
+					'SMTP_IN' => bytesHuman($smtpIn),
+					'SMTP_OUT' => bytesHuman($smtpOut),
+					'POP_IN' => bytesHuman($popIn),
+					'POP_OUT' => bytesHuman($popOut),
+					'OTHER_IN' => bytesHuman($otherIn),
+					'OTHER_OUT' => bytesHuman($otherOut),
+					'ALL_IN' => bytesHuman($allIn),
+					'ALL_OUT' => bytesHuman($allOut),
+					'ALL' => bytesHuman($allIn + $allOut)
+				)
+			);
+
+			$all[0] = $all[0] + $webIn;
+			$all[1] = $all[1] + $webOut;
+			$all[2] = $all[2] + $smtpIn;
+			$all[3] = $all[3] + $smtpOut;
+			$all[4] = $all[4] + $popIn;
+			$all[5] = $all[5] + $popOut;
+			$all[6] = $all[6] + $allIn;
+			$all[7] = $all[7] + $allOut;
+
+			$tpl->parse('DAY_SERVER_STATISTICS_BLOCK', '.day_server_statistics_block');
+		}
+
+		$allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
+		$allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
+
+		$tpl->assign(
+			array(
+				'WEB_IN_ALL' => bytesHuman($all[0]), 'WEB_OUT_ALL' => bytesHuman($all[1]),
+				'SMTP_IN_ALL' => bytesHuman($all[2]), 'SMTP_OUT_ALL' => bytesHuman($all[3]),
+				'POP_IN_ALL' => bytesHuman($all[4]), 'POP_OUT_ALL' => bytesHuman($all[5]),
+				'OTHER_IN_ALL' => bytesHuman($allOtherIn), 'OTHER_OUT_ALL' => bytesHuman($allOtherOut),
+				'ALL_IN_ALL' => bytesHuman($all[6]), 'ALL_OUT_ALL' => bytesHuman($all[7]),
+				'ALL_ALL' => bytesHuman($all[6] + $all[7])));
+	} else { // no statistic available for the given period
+		set_page_message(tr('No statistics found for the given period. Try another period.'), 'info');
+		$tpl->assign('SERVER_STATISTICS_BLOCK', '');
+	}
+}
+
+/******************************************************************************
+ * Main script
  */
 
 // Include core library
@@ -42,28 +164,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-	array(
-		'layout' => 'shared/layouts/ui.tpl',
-		'page' => 'admin/server_statistic.tpl',
-		'page_message' => 'layout',
-		'hosting_plans' => 'page',
-		'month_list' => 'page',
-		'year_list' => 'page',
-		'day_list' => 'page'));
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin/Server statistics'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-global $month, $year;
-
+// dispatches the request
 if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = intval($_GET['year']);
 	$month = intval($_GET['month']);
@@ -71,161 +172,28 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 	$year = intval($_POST['year']);
 	$month = intval($_POST['month']);
 } else {
-	$month = date("m");
-	$year = date("Y");
+	$month = date('m');
+	$year = date('y');
 }
 
-/**
- * @param $from
- * @param $to
- * @return array
- */
-function get_server_trafic($from, $to) {
-
-	$query = "
-		SELECT
-			IFNULL(SUM(`bytes_in`), 0) AS sbin,
-			IFNULL(SUM(`bytes_out`), 0) AS sbout,
-			IFNULL(SUM(`bytes_mail_in`), 0) AS smbin,
-			IFNULL(SUM(`bytes_mail_out`), 0) AS smbout,
-			IFNULL(SUM(`bytes_pop_in`), 0) AS spbin,
-			IFNULL(SUM(`bytes_pop_out`), 0) AS spbout,
-			IFNULL(SUM(`bytes_web_in`), 0) AS swbin,
-			IFNULL(SUM(`bytes_web_out`), 0) AS swbout
-		FROM
-			`server_traffic`
-		WHERE
-			`traff_time` > ? AND `traff_time` < ?
-	";
-
-	$rs = exec_query($query, array($from, $to));
-
-	if ($rs->recordCount() == 0) {
-		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-	} else {
-		return array($rs->fields['swbin'], $rs->fields['swbout'],
-			$rs->fields['smbin'], $rs->fields['smbout'],
-			$rs->fields['spbin'], $rs->fields['spbout'],
-			$rs->fields['sbin'] - ($rs->fields['swbin'] + $rs->fields['smbin'] + $rs->fields['spbin']),
-			$rs->fields['sbout'] - ($rs->fields['swbout'] + $rs->fields['smbout'] + $rs->fields['spbout']),
-			$rs->fields['sbin'], $rs->fields['sbout']);
-	}
-}
-
-/**
- * @param $tpl
- */
-function generate_page(&$tpl) {
-
-	global $month, $year;
-
-	if ($month == date('m') && $year == date('Y')) {
-		$curday = date('j');
-	} else {
-		$tmp = mktime(1, 0, 0, $month + 1, 0, $year);
-		$curday = date('j', $tmp);
-	}
-
-	$curtimestamp = time();
-	$firsttimestamp = mktime(0, 0, 0, $month, 1, $year);
-
-	$all[0] = 0;
-	$all[1] = 0;
-	$all[2] = 0;
-	$all[3] = 0;
-	$all[4] = 0;
-	$all[5] = 0;
-	$all[6] = 0;
-	$all[7] = 0;
-
-	for ($i = 1; $i <= $curday; $i++) {
-		$ftm = mktime(0, 0, 0, $month, $i, $year);
-		$ltm = mktime(23, 59, 59, $month, $i, $year);
-
-		$query = "
-			SELECT
-				COUNT(`bytes_in`) AS cnt
-			FROM
-				`server_traffic`
-			WHERE
-				`traff_time` > ? AND `traff_time` < ?
-		";
-
-		$rs = exec_query($query, array($ftm, $ltm));
-		$has_data = false;
-
-		if ($rs->recordCount() > 0) {
-			list($web_in,
-				$web_out,
-				$smtp_in,
-				$smtp_out,
-				$pop_in,
-				$pop_out,
-				$other_in,
-				$other_out,
-				$all_in,
-				$all_out) = get_server_trafic($ftm, $ltm);
-
-			$has_data = true;
-
-			$tpl->assign(
-				array(
-					'DAY' => $i,
-					'YEAR' => $year,
-					'MONTH' => $month,
-					'WEB_IN' => sizeit($web_in),
-					'WEB_OUT' => sizeit($web_out),
-					'SMTP_IN' => sizeit($smtp_in),
-					'SMTP_OUT' => sizeit($smtp_out),
-					'POP_IN' => sizeit($pop_in),
-					'POP_OUT' => sizeit($pop_out),
-					'OTHER_IN' => sizeit($other_in),
-					'OTHER_OUT' => sizeit($other_out),
-					'ALL_IN' => sizeit($all_in),
-					'ALL_OUT' => sizeit($all_out),
-					'ALL' => sizeit($all_in + $all_out)
-				)
-			);
-			$all[0] = $all[0] + $web_in;
-			$all[1] = $all[1] + $web_out;
-			$all[2] = $all[2] + $smtp_in;
-			$all[3] = $all[3] + $smtp_out;
-			$all[4] = $all[4] + $pop_in;
-			$all[5] = $all[5] + $pop_out;
-			$all[6] = $all[6] + $all_in;
-			$all[7] = $all[7] + $all_out;
-
-			$tpl->parse('DAY_LIST', '.day_list');
-		} // if count
-	} // end for
-	if (!$has_data) {
-		$tpl->assign('DAY_LIST', '');
-	}
-
-	$all_other_in = $all[6] - ($all[0] + $all[2] + $all[4]);
-	$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);
-
-	$tpl->assign(
-		array(
-			'WEB_IN_ALL' => sizeit($all[0]),
-			'WEB_OUT_ALL' => sizeit($all[1]),
-			'SMTP_IN_ALL' => sizeit($all[2]),
-			'SMTP_OUT_ALL' => sizeit($all[3]),
-			'POP_IN_ALL' => sizeit($all[4]),
-			'POP_OUT_ALL' => sizeit($all[5]),
-			'OTHER_IN_ALL' => sizeit($all_other_in),
-			'OTHER_OUT_ALL' => sizeit($all_other_out),
-			'ALL_IN_ALL' => sizeit($all[6]),
-			'ALL_OUT_ALL' => sizeit($all[7]),
-			'ALL_ALL' => sizeit($all[6] + $all[7])));
-}
-
-generateNavigation($tpl);
-gen_select_lists($tpl, $month, $year);
-generate_page($tpl);
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic(
+	array(
+		'layout' => 'shared/layouts/ui.tpl',
+		'page' => 'admin/server_statistic.tpl',
+		'page_message' => 'layout',
+		'month_list' => 'page',
+		'year_list' => 'page',
+		'server_statistics_block' => 'page',
+		'day_server_statistics_block' => 'server_statistics_block'
+	)
+);
 
 $tpl->assign(
 	array(
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Statistics  / Server statistics'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_SERVER_STATISTICS' => tr('Server statistics'),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),
@@ -241,8 +209,13 @@ $tpl->assign(
 		'TR_OTHER_OUT' => tr('Other out'),
 		'TR_ALL_IN' => tr('All in'),
 		'TR_ALL_OUT' => tr('All out'),
-		'TR_ALL' => tr('All')));
+		'TR_ALL' => tr('All'),
+	)
+);
 
+generateNavigation($tpl);
+generateSelectListForMonthsAndYears($tpl, $month, $year);
+admin_generatePage($tpl, $month, $year);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

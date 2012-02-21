@@ -1,5 +1,6 @@
 
-            <p>{TR_YEAR} {YEAR}&nbsp;&nbsp;&nbsp;&nbsp; {TR_MONTH} {MONTH}&nbsp;&nbsp;&nbsp;{TR_DAY} {DAY}</p>
+			<!-- BDP: day_server_statistics_block -->
+            <p><strong>{TR_YEAR}:</strong> {YEAR} <strong>{TR_MONTH}:</strong> {MONTH} <strong>{TR_DAY}:</strong> {DAY}</p>
             <table>
             	<thead>
 	                <tr>
@@ -52,4 +53,4 @@
 	                <!-- EDP: hour_list -->
                 </tbody>
             </table>
-
+			<!-- EDP: day_server_statistics_block -->

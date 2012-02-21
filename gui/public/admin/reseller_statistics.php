@@ -75,25 +75,17 @@ function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName
 	$resellerProperties = imscp_getResellerProperties($resellerId);
 
 	list(
-		$udmn_current,,, $usub_current,,, $uals_current,,, $umail_current,,, $uftp_current,,, $usql_db_current,,,
-		$usql_user_current,,, $utraff_current,,, $udisk_current,
+		$udmn_current, , , $usub_current, , , $uals_current, , , $umail_current, , , $uftp_current, , , $usql_db_current, , ,
+		$usql_user_current, , , $utraff_current, , , $udisk_current,
 	) = generate_reseller_users_props($resellerId);
 
-	$rtraff_max = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
-	$rtraff_current = $resellerProperties['current_traff_amnt'] * 1024 * 1024;
-	$rdisk_max = $resellerProperties['max_disk_amnt'] * 1024 * 1024;
-	$rdisk_current = $resellerProperties['current_disk_amnt'] * 1024 * 1024;
+	$trafficLimitBytes = $resellerProperties['max_traff_amnt'] * 1048576;
+	$trafficUsageBytes = $resellerProperties['current_traff_amnt'] * 1048576;
+	$diskspaceLimitBytes = $resellerProperties['max_disk_amnt'] * 1048576;
+	$diskspaceUsageBytes = $resellerProperties['current_disk_amnt'] * 1048576;
 
-	list($traff_percent) = make_usage_vals($utraff_current, $rtraff_max);
-	list($disk_percent) = make_usage_vals($udisk_current, $rdisk_max);
-
-	if ($traff_percent > 100) {
-		$traff_percent = 100;
-	}
-
-	if ($disk_percent > 100) {
-		$disk_percent = 100;
-	}
+	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
+	$diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
 
 	$tpl->assign(
 		array(
@@ -101,14 +93,14 @@ function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName
 			'RESELLER_ID' => $resellerId,
 			'MONTH' => date('m'),
 			'YEAR' => date('y'),
-			'TRAFF_PERCENT' => $traff_percent,
-			'TRAFF_MSG' => ($rtraff_max)
-				? tr('%1$s / %2$s of %3$s', numberBytesHuman($utraff_current), numberBytesHuman($rtraff_current), numberBytesHuman($rtraff_max))
-				: tr('%1$s / %2$s of unlimited', numberBytesHuman($utraff_current), numberBytesHuman($rtraff_current)),
-			'DISK_PERCENT' => $disk_percent,
-			'DISK_MSG' => ($rdisk_max)
-				? tr('%1$s / %2$s of %3$s', numberBytesHuman($udisk_current), numberBytesHuman($rdisk_current), numberBytesHuman($rdisk_max))
-				: tr('%1$s / %2$s of unlimited', numberBytesHuman($udisk_current), numberBytesHuman($rdisk_current)),
+			'TRAFF_PERCENT' => $trafficUsagePercent,
+			'TRAFF_MSG' => ($trafficLimitBytes)
+				? tr('%1$s / %2$s of %3$s', bytesHuman($utraff_current), bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
+				: tr('%1$s / %2$s of unlimited', bytesHuman($utraff_current), bytesHuman($trafficUsageBytes)),
+			'DISK_PERCENT' => $diskspaceUsagePercent,
+			'DISK_MSG' => ($diskspaceLimitBytes)
+				? tr('%1$s / %2$s of %3$s', bytesHuman($udisk_current), bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes))
+				: tr('%1$s / %2$s of unlimited', bytesHuman($udisk_current), bytesHuman($diskspaceUsageBytes)),
 			'DMN_MSG' => ($resellerProperties['max_dmn_cnt'])
 				? tr('%1$d / %2$d of %3$d', $udmn_current, $resellerProperties['current_dmn_cnt'], $resellerProperties['max_dmn_cnt'])
 				: tr('%1$d / %2$d of unlimited', $udmn_current, $resellerProperties['current_dmn_cnt']),
@@ -121,15 +113,12 @@ function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName
 			'MAIL_MSG' => ($resellerProperties['max_mail_cnt'] > 0)
 				? tr('%1$d / %2$d of %3$d', $umail_current, $resellerProperties['current_mail_cnt'], $resellerProperties['max_mail_cnt'])
 				: (($resellerProperties['max_mail_cnt'] == "-1") ? tr('disabled') : tr('%1$d / %2$d of unlimited', $umail_current, $resellerProperties['current_mail_cnt'])),
-
 			'FTP_MSG' => ($resellerProperties['max_ftp_cnt'] > 0)
 				? tr('%1$d / %2$d of %3$d', $uftp_current, $resellerProperties['current_ftp_cnt'], $resellerProperties['max_ftp_cnt'])
 				: (($resellerProperties['max_ftp_cnt'] == "-1") ? tr('disabled') : tr('%1$d / %2$d of unlimited', $uftp_current, $resellerProperties['current_ftp_cnt'])),
-
 			'SQL_DB_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
 				? tr('%1$d / %2$d of %3$d', $usql_db_current, $resellerProperties['current_sql_db_cnt'], $resellerProperties['max_sql_db_cnt'])
 				: (($resellerProperties['max_sql_db_cnt'] == "-1") ? tr('disabled') : tr('%1$d / %2$d of unlimited', $usql_db_current, $resellerProperties['current_sql_db_cnt'])),
-
 			'SQL_USER_MSG' => ($resellerProperties['max_sql_user_cnt'] > 0)
 				? tr('%1$d / %2$d of %3$d', $usql_user_current, $resellerProperties['current_sql_user_cnt'], $resellerProperties['max_sql_user_cnt'])
 				: (($resellerProperties['max_sql_user_cnt'] == "-1") ? tr('disabled') : tr('%1$d / %2$d of unlimited', $usql_user_current, $resellerProperties['current_sql_user_cnt']))));

@@ -90,7 +90,7 @@ function gen_plan_details($tpl, $user_id, $plan_id)
 
 		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
 			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware
-			) = explode(';', $props);
+		) = explode(';', $props);
 
 		$price = $stmt->fields['price'];
 		$setup_fee = $stmt->fields['setup_fee'];

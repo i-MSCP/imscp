@@ -104,28 +104,28 @@ function _reseller_GenerateDomainStatisticsEntry($tpl, $domainId)
 			'MONTH' => date('m'),
 			'YEAR' => date('y'),
 			'TRAFF_MSG' => ($utraff_max)
-				? tr('%1$s of %2$s', numberBytesHuman($utraff_current), numberBytesHuman($utraff_max))
-				: tr('%s of unlimited', numberBytesHuman($utraff_current)),
+				? tr('%1$s of %2$s', bytesHuman($utraff_current), bytesHuman($utraff_max))
+				: tr('%s of unlimited', bytesHuman($utraff_current)),
 			'DISK_PERCENT' => $diskPercent,
 			'DISK_MSG' => ($udisk_max)
-				? tr('%1$s of %2$s', numberBytesHuman($udisk_current), numberBytesHuman($udisk_max))
-				: tr('%s of unlimited', numberBytesHuman($udisk_current)),
-			'WEB' => numberBytesHuman($web),
-			'FTP' => numberBytesHuman($ftp),
-			'SMTP' => numberBytesHuman($smtp),
-			'POP3' => numberBytesHuman($pop3),
+				? tr('%1$s of %2$s', bytesHuman($udisk_current), bytesHuman($udisk_max))
+				: tr('%s of unlimited', bytesHuman($udisk_current)),
+			'WEB' => bytesHuman($web),
+			'FTP' => bytesHuman($ftp),
+			'SMTP' => bytesHuman($smtp),
+			'POP3' => bytesHuman($pop3),
 			'SUB_MSG' => ($usub_max)
 				? (
 					($usub_max > 0)
-						? tr('%1$d of %2$d', numberBytesHuman($usub_current), $usub_max)
+						? tr('%1$d of %2$d', bytesHuman($usub_current), $usub_max)
 						: tr('disabled')
-				) : tr('%d of unlimited', numberBytesHuman($usub_current)),
+				) : tr('%d of unlimited', bytesHuman($usub_current)),
 			'ALS_MSG' => ($uals_max)
 				? (
 					($uals_max > 0)
-						? tr('%1$d of %2$d', numberBytesHuman($uals_current), $uals_max)
+						? tr('%1$d of %2$d', bytesHuman($uals_current), $uals_max)
 						: tr('disabled')
-				) : tr('%d of unlimited', numberBytesHuman($uals_current)),
+				) : tr('%d of unlimited', bytesHuman($uals_current)),
 			'MAIL_MSG' => ($umail_max)
 				? (
 					($umail_max > 0)

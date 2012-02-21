@@ -65,7 +65,7 @@ function reseller_generateSupportQuestionsMessage()
 	$nbQuestions = $stmt->fields['nbQuestions'];
 
 	if ($nbQuestions != 0) {
-		set_page_message(tr('You have received <b>%d</b> new support questions.', $nbQuestions));
+		set_page_message(tr('You have received %d new support questions.', '<strong>' . $nbQuestions . '</strong>'));
 	}
 }
 
@@ -124,62 +124,62 @@ function reseller_generateOrdersAliasesMessage()
  * Generates traffic usage bar.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param int $usage Current traffic usage
- * @param int $maxUsage Traffic max usage
- * @param int $barMax Bar max
+ * @param int $trafficUsageBytes Current traffic usage
+ * @param int $trafficLimitBytes Traffic max usage
  * @return void
  */
-function reseller_generateTrafficUsageBar($tpl, $usage, $maxUsage, $barMax)
+function reseller_generateTrafficUsageBar($tpl, $trafficUsageBytes, $trafficLimitBytes)
 {
+	$trafficUsagePercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
+
 	// Is limited traffic usage for reseller ?
-	if ($maxUsage != 0) {
-		list($percent, $bar) = calc_bars($usage, $maxUsage, $barMax);
-		$trafficUsageData = tr('%1$s%% [%2$s of %3$s]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
+	if ($trafficLimitBytes) {
+		$trafficUsageData = tr('%1$s%% [%2$s of %3$s]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
 	} else {
-		$percent = $bar = 0;
-		$trafficUsageData = tr('%1$s%% [%2$s of unlimited]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
+		$trafficUsageData = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes));
 	}
 
 	$tpl->assign(
 		array(
 			 'TRAFFIC_USAGE_DATA' => $trafficUsageData,
-			 'TRAFFIC_BARS' => $bar,
-			 'TRAFFIC_PERCENT' => $percent > 100 ? 100 : $percent));
+			 'TRAFFIC_PERCENT' => $trafficUsagePercent
+		)
+	);
 }
 
 /**
  * Generates disk usage bar.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $usage Disk usage
- * @param $maxUsage Max disk usage
- * @param $barMax Bar max
+ * @param int $diskspaceUsageBytes Disk usage
+ * @param int $diskspaceLimitBytes Max disk usage
  * @return void
  */
-function reseller_generateDiskUsageBar($tpl, $usage, $maxUsage, $barMax)
+function reseller_generateDiskUsageBar($tpl, $diskspaceUsageBytes, $diskspaceLimitBytes)
 {
+	$diskspaceUsagePercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
+
 	// is Limited disk usage for reseller ?
-	if ($maxUsage != 0) {
-		list($percent, $bar) = calc_bars($usage, $maxUsage, $barMax);
-		$diskUsageData = tr('%1$s%% [%2$s of %3$s]', $percent, numberBytesHuman($usage), numberBytesHuman($maxUsage));
+	if ($diskspaceLimitBytes) {
+		$diskUsageData = tr('%1$s%% [%2$s of %3$s]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes));
 	} else {
-		$percent = $bar = 0;
-		$diskUsageData = tr('%1$s%% [%2$s of unlimited]', $percent, numberBytesHuman($usage));
+		$diskUsageData = tr('%1$s%% [%2$s of unlimited]', $diskspaceUsagePercent, bytesHuman($diskspaceUsageBytes));
 	}
 
 	$tpl->assign(
 		array(
 			 'DISK_USAGE_DATA' => $diskUsageData,
-			 'DISK_BARS' => $bar,
-			 'DISK_PERCENT' => $percent > 100 ? 100 : $percent));
+			 'DISK_PERCENT' => $diskspaceUsagePercent
+		)
+	);
 }
 
 /**
  * Generates page data.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $resellerId Reseller unique identifier
- * @param $resellerName Reseller name
+ * @param int $resellerId Reseller unique identifier
+ * @param string $resellerName Reseller name
  * @return void
  */
 function reseller_generatePageData($tpl, $resellerId, $resellerName)
@@ -196,8 +196,8 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 	$rtraffMax = $resellerProperties['max_traff_amnt'] * 1024 * 1024;
 	$rdiskMax = $resellerProperties['max_disk_amnt'] * 1024 * 1024;
 
-	reseller_generateTrafficUsageBar($tpl, $utraffCurrent, $rtraffMax, 400);
-	reseller_generateDiskUsageBar($tpl, $udiskCurrent, $rdiskMax, 400);
+	reseller_generateTrafficUsageBar($tpl, $utraffCurrent, $rtraffMax);
+	reseller_generateDiskUsageBar($tpl, $udiskCurrent, $rdiskMax);
 
 	if ($rtraffMax > 0 && $utraffCurrent > $rtraffMax) {
 		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit.'));
@@ -229,32 +229,32 @@ function reseller_generatePageData($tpl, $resellerId, $resellerName)
 			 'DISK' => tr('Disk'),
 			 'RESELLER_NAME' => tohtml($resellerName),
 			 'DMN_MSG' => ($resellerProperties['max_dmn_cnt'])
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $udmnCurrent, $resellerProperties['current_dmn_cnt'], $resellerProperties['max_dmn_cnt'])
-				 : tr('%1$d / %2$d of <b>unlimited</b>', $udmnCurrent, $resellerProperties['current_dmn_cnt']),
+				 ? tr('%1$d / %2$d of %3$d', $udmnCurrent, $resellerProperties['current_dmn_cnt'], $resellerProperties['max_dmn_cnt'])
+				 : tr('%1$d / %2$d of unlimited', $udmnCurrent, $resellerProperties['current_dmn_cnt']),
 			 'SUB_MSG' => ($resellerProperties['max_sub_cnt'] > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usubCurrent, $resellerProperties['current_sub_cnt'], $resellerProperties['max_sub_cnt'])
-				 : (($resellerProperties['max_sub_cnt'] === '-1') ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $usubCurrent, $resellerProperties['current_sub_cnt'])),
+				 ? tr('%1$d / %2$d of %3$d</b>', $usubCurrent, $resellerProperties['current_sub_cnt'], $resellerProperties['max_sub_cnt'])
+				 : (($resellerProperties['max_sub_cnt'] == '-1') ? tr('disabled')
+					 : tr('%1$d / %2$d of unlimited', $usubCurrent, $resellerProperties['current_sub_cnt'])),
 			 'ALS_MSG' => ($resellerProperties['max_als_cnt'] > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $ualsCurrent, $resellerProperties['current_als_cnt'], $resellerProperties['max_als_cnt'])
-				 : (($resellerProperties['max_als_cnt'] === '-1') ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $ualsCurrent, $resellerProperties['current_als_cnt'])),
+				 ? tr('%1$d / %2$d of %3$d', $ualsCurrent, $resellerProperties['current_als_cnt'], $resellerProperties['max_als_cnt'])
+				 : (($resellerProperties['max_als_cnt'] == '-1') ? tr('disabled')
+					 : tr('%1$d / %2$d of unlimited', $ualsCurrent, $resellerProperties['current_als_cnt'])),
 			 'MAIL_MSG' => ($resellerProperties['max_mail_cnt'] > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $umailCurrent, $resellerProperties['current_mail_cnt'], $resellerProperties['max_mail_cnt'])
-				 : (($resellerProperties['max_mail_cnt'] === '-1') ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $umailCurrent, $resellerProperties['current_mail_cnt'])),
+				 ? tr('%1$d / %2$d of %3$d', $umailCurrent, $resellerProperties['current_mail_cnt'], $resellerProperties['max_mail_cnt'])
+				 : (($resellerProperties['max_mail_cnt'] == '-1') ? tr('disabled')
+					 : tr('%1$d / %2$d of unlimited', $umailCurrent, $resellerProperties['current_mail_cnt'])),
 			 'FTP_MSG' => ($resellerProperties['max_ftp_cnt'] > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $uftpCurrent, $resellerProperties['current_ftp_cnt'], $resellerProperties['max_ftp_cnt'])
-				 : (($resellerProperties['max_ftp_cnt'] === '-1') ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $uftpCurrent, $resellerProperties['current_ftp_cnt'])),
+				 ? tr('%1$d / %2$d of %3$d', $uftpCurrent, $resellerProperties['current_ftp_cnt'], $resellerProperties['max_ftp_cnt'])
+				 : (($resellerProperties['max_ftp_cnt'] == '-1') ? tr('disabled')
+					 : tr('%1$d / %2$d of unlimited', $uftpCurrent, $resellerProperties['current_ftp_cnt'])),
 			 'SQL_DB_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'], $resellerProperties['max_sql_db_cnt'])
-				 : (($resellerProperties['max_sql_db_cnt'] === '-1') ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'])),
+				 ? tr('%1$d / %2$d of %3$d', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'], $resellerProperties['max_sql_db_cnt'])
+				 : (($resellerProperties['max_sql_db_cnt'] == '-1') ? tr('disabled')
+					 : tr('%1$d / %2$d of unlimited', $usqlDbCurrent, $resellerProperties['current_sql_db_cnt'])),
 			 'SQL_USER_MSG' => ($resellerProperties['max_sql_db_cnt'] > 0)
-				 ? tr('%1$d / %2$d of <b>%3$d</b>', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'], $resellerProperties['max_sql_user_cnt'])
-				 : (($resellerProperties['max_sql_user_cnt'] === '-1') ? tr('<b>disabled</b>')
-					 : tr('%1$d / %2$d of <b>unlimited</b>', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'])),
+				 ? tr('%1$d / %2$d of %3$d', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'], $resellerProperties['max_sql_user_cnt'])
+				 : (($resellerProperties['max_sql_user_cnt'] == '-1') ? tr('disabled')
+					 : tr('%1$d / %2$d of unlimited', $usqlUserCurrent, $resellerProperties['current_sql_user_cnt'])),
 			 'TR_SUPPORT' => tr('Support system'),
 			 'SUPPORT_STATUS' => ($resellerProperties['support_system'] == 'yes')
 				 ? '<span style="color:green;">' . tr('Enabled') . '</span>'
