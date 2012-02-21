@@ -212,6 +212,9 @@ function client_UpdateMailAccount($mailAccountData)
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
 		if ($passwordUpdate || $forwardAddressesUpdate) {
+
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditMail, array('mail_id' => $mailAccountData['mail_id']));
+
 			$query = "
 				UPDATE
 					`mail_users`
@@ -226,6 +229,8 @@ function client_UpdateMailAccount($mailAccountData)
 									$mailAccountData['mail_type'],
 									$cfg->ITEM_CHANGE_STATUS,
 									$mailAccountData['mail_id']));
+
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditMail, array('mail_id' => $mailAccountData['mail_id']));
 
 			// Sending request to the i-MSCP daemon for backend process
 			send_request();

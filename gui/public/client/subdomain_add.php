@@ -353,7 +353,18 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
+
 	$status_add = $cfg->ITEM_ADD_STATUS;
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onBeforeAddSubdomain, array(
+								'subdomain_name' => $sub_name,
+								'domain_id' => $domain_id,
+								'user_id' => $user_id
+							)
+	);
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
@@ -376,6 +387,16 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 	}
 
 	exec_query($query, array($domain_id, $sub_name, $sub_mnt_pt, $forward, $status_add));
+	$subdomain_id = $db->insertId();
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterAddSubdomain, array(
+									'subdomain_name' => $sub_name,
+									'domain_id' => $domain_id,
+									'user_id' => $user_id,
+									'subdomain_id' => $subdomain_id
+								)
+		);
 
 	update_reseller_c_props(get_reseller_id($domain_id));
 

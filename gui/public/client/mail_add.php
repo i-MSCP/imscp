@@ -355,6 +355,9 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
+
 	$mail_auto_respond = false;
 	$mail_auto_respond_text = '';
 	$mail_addr = $mail_acc.'@'.decode_idna($dmn_name);
@@ -449,6 +452,8 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 		return false;
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddMail, array('mail_acc' => $mail_acc, 'mail_addr' => $mail_addr));
+
 	$query = '
 		INSERT INTO `mail_users` (
 			`mail_acc`, `mail_pass`, `mail_forward`, `domain_id`, `mail_type`,
@@ -468,6 +473,10 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$mail_auto_respond,
 			$mail_auto_respond_text,
 			$mail_addr));
+
+	$mail_id = $db->insertId();
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddMail, array('mail_acc' => $mail_acc, 'mail_addr' => $mail_addr, 'mail_id' => $mail_id));
 
 	update_reseller_c_props(get_reseller_id($domain_id));
 

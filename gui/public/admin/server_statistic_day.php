@@ -27,11 +27,11 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author	  ispCP Team
- * @author	  i-MSCP Team
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
  * @link		http://i-mscp.net
  */
 
@@ -40,24 +40,18 @@
  */
 
 /**
- * Generates page.
+ * Return server traffic information for the given day.
  *
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $year
- * @param int $month
- * @param int $day
+ * @param iMSCP_pTemplate $tpl
+ * @param int $year Year
+ * @param int $month Month
+ * @param int $day Day
+ * @return void
  */
 function admin_generatePage($tpl, $year, $month, $day)
 {
-	$all = array_fill(0, 8, 0);
-	$allOtherIn = $allOtherOut = 0;
-	$ftm = mktime(0, 0, 0, $month, $day, $year);
-	$ltm = mktime(23, 59, 59, $month, $day, $year);
-
-	$query = "SELECT COUNT(`bytes_in`) `cnt` FROM `server_traffic` WHERE `traff_time` > ? AND `traff_time` < ?";
-	$stmt = exec_query($query, array($ftm, $ltm));
-
-	$dnum = $stmt->fields['cnt'];
+	$firstHourOfDay = mktime(0, 0, 0, $month, $day, $year);
+	$lastHourOfDay = mktime(23, 59, 59, $month, $day, $year);
 
 	$query = "
 		SELECT
@@ -69,31 +63,30 @@ function admin_generatePage($tpl, $year, $month, $day)
 		WHERE
 			`traff_time` > ? AND `traff_time` < ?
 	";
-	$stmt = exec_query($query, array($ftm, $ltm));
+	$stmt = exec_query($query, array($firstHourOfDay, $lastHourOfDay));
 
-	if ($dnum) {
-		for ($i = 0; $i < $dnum; $i++) {
-			// make it in kb mb or bytes :)
-			$ttime = date('H:i', $stmt->fields['ttime']);
+	if ($stmt->rowCount()) {
+		$all = array_fill(0, 8, 0);
 
-			// make other traffic
+		while (!$stmt->EOF) {
+			// Compute other traffic statistics
 			$otherIn = $stmt->fields['sbin'] - ($stmt->fields['swbin'] + $stmt->fields['smbin'] + $stmt->fields['spbin']);
 			$otherOut = $stmt->fields['sbout'] - ($stmt->fields['swbout'] + $stmt->fields['smbout'] + $stmt->fields['spbout']);
 
 			$tpl->assign(
 				array(
-					'HOUR' => $ttime,
-					'WEB_IN' => numberBytesHuman($stmt->fields['swbin']),
-					'WEB_OUT' => numberBytesHuman($stmt->fields['swbout']),
-					'SMTP_IN' => numberBytesHuman($stmt->fields['smbin']),
-					'SMTP_OUT' => numberBytesHuman($stmt->fields['smbout']),
-					'POP_IN' => numberBytesHuman($stmt->fields['spbin']),
-					'POP_OUT' => numberBytesHuman($stmt->fields['spbout']),
-					'OTHER_IN' => numberBytesHuman($otherIn),
-					'OTHER_OUT' => numberBytesHuman($otherOut),
-					'ALL_IN' => numberBytesHuman($stmt->fields['sbin']),
-					'ALL_OUT' => numberBytesHuman($stmt->fields['sbout']),
-					'ALL' => numberBytesHuman($stmt->fields['sbin'] + $stmt->fields['sbout']),));
+					'HOUR' => date('H:i', $stmt->fields['ttime']),
+					'WEB_IN' => bytesHuman($stmt->fields['swbin']),
+					'WEB_OUT' => bytesHuman($stmt->fields['swbout']),
+					'SMTP_IN' => bytesHuman($stmt->fields['smbin']),
+					'SMTP_OUT' => bytesHuman($stmt->fields['smbout']),
+					'POP_IN' => bytesHuman($stmt->fields['spbin']),
+					'POP_OUT' => bytesHuman($stmt->fields['spbout']),
+					'OTHER_IN' => bytesHuman($otherIn),
+					'OTHER_OUT' => bytesHuman($otherOut),
+					'ALL_IN' => bytesHuman($stmt->fields['sbin']),
+					'ALL_OUT' => bytesHuman($stmt->fields['sbout']),
+					'ALL' => bytesHuman($stmt->fields['sbin'] + $stmt->fields['sbout']),));
 
 			$all[0] = $all[0] + $stmt->fields['swbin'];
 			$all[1] = $all[1] + $stmt->fields['swbout'];
@@ -110,23 +103,26 @@ function admin_generatePage($tpl, $year, $month, $day)
 
 		$allOtherIn = $all[6] - ($all[0] + $all[2] + $all[4]);
 		$allOtherOut = $all[7] - ($all[1] + $all[3] + $all[5]);
-	} else {
-		$tpl->assign('HOUR_LIST', '');
-	}
 
-	$tpl->assign(
-		array(
-			'WEB_IN_ALL' => numberBytesHuman($all[0]),
-			'WEB_OUT_ALL' => numberBytesHuman($all[1]),
-			'SMTP_IN_ALL' => numberBytesHuman($all[2]),
-			'SMTP_OUT_ALL' => numberBytesHuman($all[3]),
-			'POP_IN_ALL' => numberBytesHuman($all[4]),
-			'POP_OUT_ALL' => numberBytesHuman($all[5]),
-			'OTHER_IN_ALL' => numberBytesHuman($allOtherIn),
-			'OTHER_OUT_ALL' => numberBytesHuman($allOtherOut),
-			'ALL_IN_ALL' => numberBytesHuman($all[6]),
-			'ALL_OUT_ALL' => numberBytesHuman($all[7]),
-			'ALL_ALL' => numberBytesHuman($all[6] + $all[7])));
+		$tpl->assign(
+			array(
+				'WEB_IN_ALL' => bytesHuman($all[0]),
+				'WEB_OUT_ALL' => bytesHuman($all[1]),
+				'SMTP_IN_ALL' => bytesHuman($all[2]),
+				'SMTP_OUT_ALL' => bytesHuman($all[3]),
+				'POP_IN_ALL' => bytesHuman($all[4]),
+				'POP_OUT_ALL' => bytesHuman($all[5]),
+				'OTHER_IN_ALL' => bytesHuman($allOtherIn),
+				'OTHER_OUT_ALL' => bytesHuman($allOtherOut),
+				'ALL_IN_ALL' => bytesHuman($all[6]),
+				'ALL_OUT_ALL' => bytesHuman($all[7]),
+				'ALL_ALL' => bytesHuman($all[6] + $all[7])
+			)
+		);
+	} else {
+		set_page_message(tr('No statistics found for the given period. Try another period.'), 'info');
+		$tpl->assign('DAY_SERVER_STATISTICS_BLOCK', '');
+	}
 }
 
 /******************************************************************************
@@ -149,30 +145,28 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/server_statistic_day.tpl',
 		'page_message' => 'layout',
-		'hour_list' => 'page'));
+		'day_server_statistics_block' => 'page',
+		'hour_list' => 'day_server_statistics_block'
+	)
+);
 
-//global $month, $year, $day;
-
-if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day']) && is_numeric($_GET['month']) &&
-	is_numeric($_GET['year']) && is_numeric($_GET['day'])
-) {
-	$year = $_GET['year'];
-	$month = $_GET['month'];
-	$day = $_GET['day'];
+if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])) {
+	$year = intval($_GET['year']);
+	$month = intval($_GET['month']);
+	$day = intval($_GET['day']);
 } else {
 	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('server_statistic.php');
-	exit; // Useless but avoid IDE warning about possible undefined variables
 }
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Server statistics by day'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Statistics / Server statistics / Server day statistics'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
-		'TR_MONTH' => tr('Month:'),
-		'TR_YEAR' => tr('Year:'),
-		'TR_DAY' => tr('Day:'),
+		'TR_MONTH' => tr('Month'),
+		'TR_YEAR' => tr('Year'),
+		'TR_DAY' => tr('Day'),
 		'TR_HOUR' => tr('Hour'),
 		'TR_WEB_IN' => tr('Web in'),
 		'TR_WEB_OUT' => tr('Web out'),
@@ -185,14 +179,15 @@ $tpl->assign(
 		'TR_ALL_IN' => tr('All in'),
 		'TR_ALL_OUT' => tr('All out'),
 		'TR_ALL' => tr('All'),
-		'TR_BACK' => tr('Back'),
 		'MONTH' => $month,
-		'YEAR' => $year,
-		'DAY' => $day));
+		'YEAR' => date('Y', mktime(0,0,0,1, $year)),
+		'DAY' => $day,
+	)
+);
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
 admin_generatePage($tpl, $year, $month, $day);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

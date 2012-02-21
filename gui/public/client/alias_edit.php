@@ -249,6 +249,9 @@ function check_fwd_data($tpl, $alias_id) {
 	}
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, array('alias_id' => $alias_id));
+
 		$query = "
 			UPDATE
 				`domain_aliasses`
@@ -269,6 +272,8 @@ function check_fwd_data($tpl, $alias_id) {
 				`alias_id` = ?
 		";
 		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
+
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainALias, array('alias_id' => $alias_id));
 
 		send_request();
 

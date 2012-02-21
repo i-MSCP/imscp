@@ -150,7 +150,7 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin implements iM
 	 */
 	public function getTab()
 	{
-		return numberBytesHuman($this->_memory['whole'] = memory_get_peak_usage()) . ' of ' .
+		return bytesHuman($this->_memory['whole'] = memory_get_peak_usage()) . ' of ' .
 			str_replace('M', ' MiB', ini_get("memory_limit"));
 	}
 
@@ -162,13 +162,13 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin implements iM
 	public function getPanel()
 	{
 		$panel = '<h4>Memory Usage</h4>';
-		$panel .= "<pre>\t<strong>Script:</strong> " . numberBytesHuman($this->_memory['endScript'] - $this->_memory['startScript']) . PHP_EOL;
-		$panel .= "\t<strong>Whole Application:</strong> " . numberBytesHuman($this->_memory['whole']) . PHP_EOL . "</pre>";
+		$panel .= "<pre>\t<strong>Script:</strong> " . bytesHuman($this->_memory['endScript'] - $this->_memory['startScript']) . PHP_EOL;
+		$panel .= "\t<strong>Whole Application:</strong> " . bytesHuman($this->_memory['whole']) . PHP_EOL . "</pre>";
 
 		if (isset($this->_memory['user']) && count($this->_memory['user'])) {
 			$panel . "<pre>";
 			foreach ($this->_memory['user'] as $key => $value) {
-				$panel .= "\t<strong>" . $key . ':</strong> ' . numberBytesHuman($value) . PHP_EOL;
+				$panel .= "\t<strong>" . $key . ':</strong> ' . bytesHuman($value) . PHP_EOL;
 			}
 			$panel . '</pre>';
 		}

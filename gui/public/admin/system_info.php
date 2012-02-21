@@ -51,7 +51,6 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'admin/system_info.tpl',
 		'page_message' => 'layout',
-		'hosting_plans' => 'page',
 		'disk_list' => 'page',
 		'disk_list_item' => 'disk_list'));
 
@@ -66,15 +65,13 @@ $tpl->assign(
 		'CPU_BOGOMIPS' => tohtml($sysinfo->cpu['bogomips']),
 		'UPTIME' => tohtml($sysinfo->uptime),
 		'KERNEL' => tohtml($sysinfo->kernel),
-		'LOAD' => $sysinfo->load[0] . ' ' .
-			$sysinfo->load[1] . ' ' .
-			$sysinfo->load[2],
-		'RAM_TOTAL' => numberBytesHuman($sysinfo->ram['total'] * 1024),
-		'RAM_USED' => numberBytesHuman($sysinfo->ram['used'] * 1024),
-		'RAM_FREE' => numberBytesHuman($sysinfo->ram['free'] * 1024),
-		'SWAP_TOTAL' => numberBytesHuman($sysinfo->swap['total'] * 1024),
-		'SWAP_USED' => numberBytesHuman($sysinfo->swap['used'] * 1024),
-		'SWAP_FREE' => numberBytesHuman($sysinfo->swap['free'] * 1024)));
+		'LOAD' => $sysinfo->load[0] . ' ' . $sysinfo->load[1] . ' ' . $sysinfo->load[2],
+		'RAM_TOTAL' => bytesHuman($sysinfo->ram['total'] * 1024),
+		'RAM_USED' => bytesHuman($sysinfo->ram['used'] * 1024),
+		'RAM_FREE' => bytesHuman($sysinfo->ram['free'] * 1024),
+		'SWAP_TOTAL' => bytesHuman($sysinfo->swap['total'] * 1024),
+		'SWAP_USED' => bytesHuman($sysinfo->swap['used'] * 1024),
+		'SWAP_FREE' => bytesHuman($sysinfo->swap['free'] * 1024)));
 
 $mount_points = $sysinfo->filesystem;
 
@@ -85,9 +82,9 @@ foreach ($mount_points as $mountpoint) {
 			'TYPE' => tohtml($mountpoint['fstype']),
 			'PARTITION' => tohtml($mountpoint['disk']),
 			'PERCENT' => $mountpoint['percent'],
-			'FREE' => numberBytesHuman($mountpoint['free'] * 1024),
-			'USED' => numberBytesHuman($mountpoint['used'] * 1024),
-			'SIZE' => numberBytesHuman($mountpoint['size'] * 1024)));
+			'FREE' => bytesHuman($mountpoint['free'] * 1024),
+			'USED' => bytesHuman($mountpoint['used'] * 1024),
+			'SIZE' => bytesHuman($mountpoint['size'] * 1024)));
 
 	$tpl->parse('DISK_LIST_ITEM', '.disk_list_item');
 }
@@ -96,12 +93,9 @@ $tpl->parse('DISK_LIST', 'disk_list');
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - admin / System tools / System information'),
 		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()));
-
-$tpl->assign(
-	array(
+		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_CPU_BOGOMIPS' => tr('CPU bogomips'),
 		'TR_CPU_CACHE' => tr('CPU cache'),
 		'TR_CPU_COUNT' => tr('Number of CPU Cores'),

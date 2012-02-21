@@ -77,6 +77,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		redirectTo('domains_manage.php');
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteSubdomain, array('subdomain_id' => $sub_id));
+
 	$query = "
 		UPDATE
 			`subdomain`
@@ -98,6 +100,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`type` = 'sub'
 	";
 	$rs = exec_query($query, $sub_id);
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteSubdomain, array('subdomain_id' => $sub_id));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));
 	send_request();

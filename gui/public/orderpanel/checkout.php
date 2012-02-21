@@ -35,6 +35,7 @@
  * @link        http://i-mscp.net
  */
 
+
 /************************************************************************************
  * Script functions
  */
@@ -42,8 +43,8 @@
 /**
  * Generates checkout.
  *
- * @param $user_id User unique identifier
- * @param $plan_id Plan unique identifier
+ * @param  int $user_id User unique identifier
+ * @param int $plan_id Plan unique identifier
  * @return void
  */
 function generateCheckout($user_id, $plan_id)
@@ -52,20 +53,20 @@ function generateCheckout($user_id, $plan_id)
 	$cfg = iMSCP_Registry::get('config');
 
 	$date = time();
-	$domain_name = $_SESSION['domainname'];
-	$fname = $_SESSION['fname'];
-	$lname = $_SESSION['lname'];
-	$gender = $_SESSION['gender'];
-	$firm = (isset($_SESSION['firm'])) ? $_SESSION['firm'] : '';
-	$zip = $_SESSION['zip'];
-	$city = $_SESSION['city'];
-	$state = $_SESSION['state'];
-	$country = $_SESSION['country'];
-	$email = $_SESSION['email'];
-	$phone = $_SESSION['phone'];
-	$fax = (isset($_SESSION['fax'])) ? $_SESSION['fax'] : '';
-	$street1 = $_SESSION['street1'];
-	$street2 = (isset($_SESSION['street2'])) ? $_SESSION['street2'] : '';
+	$domain_name = $_SESSION['order_panel_domainname'];
+	$fname = $_SESSION['order_panel_fname'];
+	$lname = $_SESSION['order_panel_lname'];
+	$gender = $_SESSION['order_panel_gender'];
+	$firm = (isset($_SESSION['order_panel_firm'])) ? $_SESSION['order_panel_firm'] : '';
+	$zip = $_SESSION['order_panel_zip'];
+	$city = $_SESSION['order_panel_city'];
+	$state = $_SESSION['order_panel_state'];
+	$country = $_SESSION['order_panel_country'];
+	$email = $_SESSION['order_panel_email'];
+	$phone = $_SESSION['order_panel_phone'];
+	$fax = (isset($_SESSION['order_panel_fax'])) ? $_SESSION['order_panel_fax'] : '';
+	$street1 = $_SESSION['order_panel_street1'];
+	$street2 = (isset($_SESSION['order_panel_street2'])) ? $_SESSION['order_panel_street2'] : '';
 
 	$query = "
 		INSERT INTO `orders` (
@@ -86,11 +87,13 @@ function generateCheckout($user_id, $plan_id)
 	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $db->insertId());
 
 	// Remove useless data
-	unset($_SESSION['details'], $_SESSION['domainname'], $_SESSION['fname'],
-	$_SESSION['lname'], $_SESSION['gender'], $_SESSION['email'], $_SESSION['firm'],
-	$_SESSION['zip'], $_SESSION['city'], $_SESSION['state'], $_SESSION['country'],
-	$_SESSION['street1'], $_SESSION['street2'], $_SESSION['phone'], $_SESSION['fax'],
-	$_SESSION['plan_id'], $_SESSION['image'], $_SESSION['tos']);
+	unset(
+	$_SESSION['order_panel_details'], $_SESSION['order_panel_domainname'], $_SESSION['order_panel_fname'],
+	$_SESSION['order_panel_lname'], $_SESSION['order_panel_gender'], $_SESSION['order_panel_email'],
+	$_SESSION['order_panel_firm'], $_SESSION['order_panel_zip'], $_SESSION['order_panel_city'],
+	$_SESSION['order_panel_state'], $_SESSION['order_panel_country'], $_SESSION['order_panel_street1'],
+	$_SESSION['order_panel_street2'], $_SESSION['order_panel_phone'], $_SESSION['order_panel_fax'],
+	$_SESSION['order_panel_plan_id'], $_SESSION['order_panel_image'], $_SESSION['order_panel_tos']);
 }
 
 /************************************************************************************
@@ -102,33 +105,38 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
 
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
-	$user_id = $_SESSION['user_id'];
-	$plan_id = $_SESSION['plan_id'];
+if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan_id'])) {
+	$user_id = $_SESSION['order_panel_user_id'];
+	$plan_id = $_SESSION['order_panel_plan_id'];
 } else {
 	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }
 
-if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
+if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['order_panel_image']) {
 	set_page_message(tr('Security code is incorrect.'), 'error');
 	redirectTo('chart.php');
 }
 
 // If term of service field was set (not empty value)
-if (isset($_SESSION['tos']) && $_SESSION['tos'] == true) {
+if (isset($_SESSION['order_panel_tos']) && $_SESSION['order_panel_tos'] == true) {
 	if (!isset($_POST['tosAccept']) || $_POST['tosAccept'] != 1) {
 		set_page_message(tr('You have to accept the Term of Service.'), 'error');
 		redirectTo('chart.php');
 	}
 }
 
-if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '') && (isset($_SESSION['lname']) && $_SESSION['lname'] != '')
-	&& (isset($_SESSION['email']) && $_SESSION['email'] != '') && (isset($_SESSION['zip']) && $_SESSION['zip'] != '')
-	&& (isset($_SESSION['city']) && $_SESSION['city'] != '') && (isset($_SESSION['country']) && $_SESSION['country'] != '')
-	&& (isset($_SESSION['street1']) && $_SESSION['street1'] != '') && (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
+if ((isset($_SESSION['order_panel_fname']) && $_SESSION['order_panel_fname'] != '')
+	&& (isset($_SESSION['order_panel_lname']) && $_SESSION['order_panel_lname'] != '')
+	&& (isset($_SESSION['order_panel_email']) && $_SESSION['order_panel_email'] != '')
+	&& (isset($_SESSION['order_panel_zip']) && $_SESSION['order_panel_zip'] != '')
+	&& (isset($_SESSION['order_panel_city']) && $_SESSION['order_panel_city'] != '')
+	&& (isset($_SESSION['order_panel_country']) && $_SESSION['order_panel_country'] != '')
+	&& (isset($_SESSION['order_panel_street1']) && $_SESSION['order_panel_street1'] != '')
+	&& (isset($_SESSION['order_panel_phone']) && $_SESSION['order_panel_phone'] != '')
 ) {
 	generateCheckout($user_id, $plan_id);
 } else {
@@ -140,16 +148,22 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/checkout.tpl',
-		'page_message' => 'layout'));
+		'page_message' => 'page' // Must be in page here
+	)
+);
 
 $tpl->assign(
 	array(
-		'TR_ORDER_PANEL_PAGE_TITLE' => tr('Order Panel / Checkout'),
+		'TR_PAGE_TITLE' => tr('Order Panel / Checkout'),
 		'CHECK_OUT' => tr('Check Out'),
 		'THANK_YOU_MESSAGE' => tr("<strong>Thank you for purchasing.</strong><br /><br />An email has been sent to your email address for confirmation. Do not forget to click on the link in email to validate your order."),
-		'THEME_CHARSET' => tr('encoding')));
+		'THEME_CHARSET' => tr('encoding')
+	)
+);
 
 generatePageMessage($tpl);
+
+$tpl->parse('LAYOUT_CONTENT', 'page');
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptEnd, array('templateEngine' => $tpl));
 

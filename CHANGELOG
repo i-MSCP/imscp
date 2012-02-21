@@ -38,6 +38,7 @@ Tickets:
 	- Fixed #353: Bug - An exception have been thrown, when deleting a DB
 	- Fixed #354: Bug - Timezone is not set in ITK configuration
 	- Fixed #355: Defect - PHP Editor - When using ITK disabled functions must be hidden
+	- Fixed #358: Cosmetics - OrderPanel - Disk and Traffic limits
 	- Fixed #361: Bug - main::setup_imscp_database: HASH(0xb0e18fc)
 
 -------------------------------------------------------------------------------------
