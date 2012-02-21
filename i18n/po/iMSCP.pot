@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-02-17 07:24+0100\n"
+"POT-Creation-Date: 2012-02-21 08:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -899,7 +899,7 @@ msgid "Cancel order"
 msgstr ""
 
 #, php-format
-msgid "Cannot validate %s record. Reason '%s'."
+msgid "Cannot validate %s record. Reason: '%s'."
 msgstr ""
 
 msgid "Canonical name"
@@ -1751,6 +1751,9 @@ msgstr ""
 msgid "Entered passwords doesn't match."
 msgstr ""
 
+msgid "Entered passwords doesn't matches."
+msgstr ""
+
 msgid "Error"
 msgstr ""
 
@@ -2304,6 +2307,9 @@ msgstr ""
 msgid "Internationalization"
 msgstr ""
 
+msgid "Invalid NAME"
+msgstr ""
+
 msgid "Invalid URL."
 msgstr ""
 
@@ -2440,9 +2446,6 @@ msgstr ""
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
 
-msgid "Log Level"
-msgstr ""
-
 msgid "Login"
 msgstr ""
 
@@ -2517,6 +2520,9 @@ msgid "Mail"
 msgstr ""
 
 msgid "Mail Accounts"
+msgstr ""
+
+msgid "Mail Log Level"
 msgstr ""
 
 msgid "Mail account"
@@ -3296,6 +3302,12 @@ msgstr ""
 msgid "Please enter a name for the protected area."
 msgstr ""
 
+msgid "Please enter a password."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
+
 msgid "Please enter mail account username."
 msgstr ""
 
@@ -3363,9 +3375,6 @@ msgstr ""
 msgid "Please type database name."
 msgstr ""
 
-msgid "Please type user name!"
-msgstr ""
-
 msgid "Please type user password."
 msgstr ""
 
@@ -3384,23 +3393,29 @@ msgstr ""
 msgid "Please, check the PHP Editor settings."
 msgstr ""
 
-msgid "Please, don't use special chars like '@, $, %...' in the password."
+msgid "Please, don't use special chars such as '@, $, %...' in the password."
 msgstr ""
 
 msgid "Plugin"
 msgstr ""
 
 msgid ""
-"Plugin list is empty. To install a new plugin, extract its content into the "
-"<strong>gui/plugins</strong> directory and update the plugin list."
+"Plugin list is empty. To install a new plugin, extract its archive content "
+"into the <strong>gui/plugins</strong> directory and update the plugin list."
 msgstr ""
 
 #, php-format
 msgid ""
-"Plugin list successfully updated. <strong>%d</strong> new plugin(s) found."
+"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
+"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin"
+"(s) deleted."
 msgstr ""
 
 msgid "Plugin management"
+msgstr ""
+
+#, php-format
+msgid "Plugin manager was unable to remove the %s file"
 msgstr ""
 
 #, php-format
@@ -3706,10 +3721,10 @@ msgstr ""
 msgid "SQL accounts limit reached."
 msgstr ""
 
-msgid "SQL database created."
+msgid "SQL database successfully added."
 msgstr ""
 
-msgid "SQL database deleted."
+msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
@@ -3743,16 +3758,16 @@ msgstr ""
 msgid "SQL support"
 msgstr ""
 
-msgid "SQL user created."
-msgstr ""
-
-msgid "SQL user deleted."
-msgstr ""
-
 msgid "SQL user name"
 msgstr ""
 
-msgid "SQL user password updated."
+msgid "SQL user password successfully updated."
+msgstr ""
+
+msgid "SQL user successfully added."
+msgstr ""
+
+msgid "SQL user successfully deleted."
 msgstr ""
 
 msgid "SQL users"
@@ -4234,6 +4249,21 @@ msgstr ""
 msgid "System under maintenance"
 msgstr ""
 
+msgid "System was unable to add the SQL database."
+msgstr ""
+
+msgid "System was unable to add the SQL user."
+msgstr ""
+
+msgid "System was unable to remove the SQL database."
+msgstr ""
+
+msgid "System was unable to remove the SQL user."
+msgstr ""
+
+msgid "System was unable to update the SQL user password."
+msgstr ""
+
 msgid "TTL"
 msgstr ""
 
@@ -4387,6 +4417,9 @@ msgstr ""
 msgid "The menu you trying to edit doesn't exist."
 msgstr ""
 
+msgid "The password is too long."
+msgstr ""
+
 #, php-format
 msgid ""
 "The password must be at least %s long and contain letters and numbers to be "
@@ -4536,9 +4569,6 @@ msgstr ""
 msgid "Too long user password."
 msgstr ""
 
-msgid "Too user long password."
-msgstr ""
-
 msgid "Top Level Domain name strict validation"
 msgstr ""
 
@@ -4610,6 +4640,16 @@ msgid "Unable to create '%s' directory for language file."
 msgstr ""
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr ""
+
+msgid ""
+"Unable to delete the domain account. A message has been sent to the "
+"administrator."
+msgstr ""
+
+msgid ""
+"Unable to delete the domain. Please, consult admin logs or your mail for "
+"more information."
 msgstr ""
 
 #, php-format
@@ -4739,6 +4779,9 @@ msgstr ""
 msgid "Upload now"
 msgstr ""
 
+msgid "Usage of disallowed character in CNAME"
+msgstr ""
+
 msgid "Usage status"
 msgstr ""
 
@@ -4746,14 +4789,6 @@ msgid "Use normal connection (No SSL)"
 msgstr ""
 
 msgid "Use numeric ID"
-msgstr ""
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in CNAME"
-msgstr ""
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in NAME"
 msgstr ""
 
 msgid "Use other dir"
@@ -4994,11 +5029,11 @@ msgid "Wrong IP address."
 msgstr ""
 
 #, php-format
-msgid "Wrong IPv4 address (\"%s\")."
+msgid "Wrong IPv4 address (\"%s\")"
 msgstr ""
 
 #, php-format
-msgid "Wrong IPv6 address (\"%s\")."
+msgid "Wrong IPv6 address (\"%s\")"
 msgstr ""
 
 msgid "Wrong SQL user identifier."
