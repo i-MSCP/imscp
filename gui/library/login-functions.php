@@ -147,7 +147,7 @@ function check_login($fileName = '', $preventExternalLogin = true)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg =iMSCP_Registry::get('config');
 
-	if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' && (!isset($_SESSION['logged_from']) || $_SESSION['logged_from']!='admin')) {
+	if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' && (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type']!='admin')) {
 		$auth->unsetIdentity();
 		redirectTo('/index.php');
 	}
@@ -285,12 +285,13 @@ function change_user_interface($fromId, $toId)
 		if (($toAdminType != 'admin' && ((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $toId)
 			|| !isset($_SESSION['logged_from_id']))) || ($fromAdminType == 'admin' && $toAdminType == 'admin')
 		) {
+			$_SESSION['logged_from_type'] = $fromUserData['admin_type'];
 			$_SESSION['logged_from'] = $fromUserData['admin_name'];
 			$_SESSION['logged_from_id'] = $fromUserData['admin_id'];
 		}
 
 		if ($fromAdminType == 'user') {
-			unset($_SESSION['logged_from'], $_SESSION['logged_from_id']);
+			unset($_SESSION['logged_from'], $_SESSION['logged_from_id'], $_SESSION['logged_from_type']);
 		}
 
 		write_log(
