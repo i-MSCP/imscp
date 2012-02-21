@@ -640,7 +640,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeAddDomain = 'onBeforeAddDomain';
+	const onBeforeAddDomain = 'onBeforeAddDomain';
 
 	/**
 	 * The onAfterAddDomain event is triggered after a domain is created.
@@ -649,7 +649,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterAddDomain = 'onAfterAddDomain';
+	const onAfterAddDomain = 'onAfterAddDomain';
 
 	/**
 	 * The onBeforeEditDomain event is triggered before a domain is edited.
@@ -658,7 +658,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeEditDomain = 'onBeforeEditDomain';
+	const onBeforeEditDomain = 'onBeforeEditDomain';
 
 	/**
 	 * The onAfterEditDomain event is triggered agfter a domain is edited.
@@ -667,7 +667,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterEditDomain = 'onAfterEditDomain';
+	const onAfterEditDomain = 'onAfterEditDomain';
 
 	/**
 	 * The onBeforeAddSubdomain event is triggered after a subdomain is created.
@@ -676,7 +676,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
+	const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
 
 	/**
 	 * The onAfterAddSubdomain event is triggered after a subdomain is created.
@@ -685,7 +685,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterAddSubdomain = 'onAfterAddSubdomain';
+	const onAfterAddSubdomain = 'onAfterAddSubdomain';
 
 	/**
 	 * The onBeforeEditSubdomain event is triggered after a subdomain is edited.
@@ -694,7 +694,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
+	const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
 
 	/**
 	 * The onAfterEditSubdomain event is triggered after a subdomain is edited.
@@ -703,7 +703,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterEditSubdomain = 'onAfterEditSubdomain';
+	const onAfterEditSubdomain = 'onAfterEditSubdomain';
 
 	/**
 	 * The onBeforeDeleteSubdomain event is triggered before a subdomain is deleted.
@@ -712,7 +712,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
+	const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
 
 	/**
 	 * The onAfterDeleteSubdomain event is triggered after a subdomain is delteded.
@@ -721,7 +721,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
+	const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
 
 	/**
 	 * The onBeforeAddDomainAlias event is triggered before a domain alias is created.
@@ -730,7 +730,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
+	const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
 
 	/**
 	 * The onAfterAddDomainAlias event is triggered after a domain alias is created.
@@ -739,7 +739,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
+	const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
 
 	/**
 	 * The onBeforeEditDomainAlias event is triggered before a domain alias is edited.
@@ -748,7 +748,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
+	const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
 
 	/**
 	 * The onAfterEditDomainALias event is triggered after a domain alias is edited.
@@ -757,7 +757,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterEditDomainALias = 'onAfterEditDomainAlias';
+	const onAfterEditDomainALias = 'onAfterEditDomainAlias';
 
 	/**
 	 * The onBeforeDeleteDomainAlias event is triggered before a domain alias is deleted.
@@ -766,7 +766,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+	const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
 
 	/**
 	 * The onAfterDeleteDomainAlias event is triggered after a domain alias is deleted.
@@ -775,7 +775,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+	const onAfterDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
 
 	/**
 	 * The onBeforeAddMail event is triggered after a mail account is created.
@@ -784,7 +784,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeAddMail = 'onBeforeAddMail';
+	const onBeforeAddMail = 'onBeforeAddMail';
 
 	/**
 	 * The onAfterAddMail event is triggered after a mail account is created.
@@ -793,7 +793,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterAddMail = 'onAfterAddMail';
+	const onAfterAddMail = 'onAfterAddMail';
 
 	/**
 	 * The onBeforeEditMail event is triggered before a mail account is created.
@@ -802,7 +802,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeEditMail = 'onBeforeEditMail';
+	const onBeforeEditMail = 'onBeforeEditMail';
 
 	/**
 	 * The onAfterEditMail event is triggered after a mail account is edited.
@@ -811,7 +811,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterEditMail = 'onAfterEditMail';
+	const onAfterEditMail = 'onAfterEditMail';
 
 	/**
 	 * The onBeforeDeleteMail event is triggered before a mail account is deleted.
@@ -820,7 +820,7 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onBeforeDeleteMail = 'onBeforeDeleteMail';
+	const onBeforeDeleteMail = 'onBeforeDeleteMail';
 
 	/**
 	 * The onAfterDeleteMail event is triggered after a mail account is deleted.
@@ -829,5 +829,5 @@ class iMSCP_Events
 	 *
 	 * @var string
 	 */
-	//const onAfterDeleteMail = 'onAfterDeleteMail';
+	const onAfterDeleteMail = 'onAfterDeleteMail';
 }

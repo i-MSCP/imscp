@@ -204,6 +204,16 @@ function add_user_data($reseller_id)
 		return false;
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeAddDomain, array(
+				'domain_name' => $dmn_name,
+				'created_by' => $reseller_id,
+				'customer_id' => $customer_id,
+				'email' => $user_email
+
+			)
+	);
+
 	$query = "
 		INSERT INTO
 		    `admin` (
@@ -253,6 +263,16 @@ function add_user_data($reseller_id)
 
 
 	$dmn_id = $db->insertId();
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onAfterAddDomain, array(
+							'domain_name' => $dmn_name,
+							'created_by' => $reseller_id,
+							'customer_id' => $customer_id,
+							'email' => $user_email,
+							'domain_id' => $dmn_id
+						)
+	);
 
 	//save php.ini if exist
 	if ($phpini_system == 'yes') {

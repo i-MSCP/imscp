@@ -133,6 +133,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		redirectTo('domains_manage.php');
 	}
 
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteDomainAlias, array('domain_alias_id' => $als_id));
+
 	$query = "
 		UPDATE
 			`domain_aliasses`
@@ -156,6 +158,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	";
 
 	$rs = exec_query($query, $als_id);
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteDomainAlias, array('domain_alias_id' => $als_id));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));
 

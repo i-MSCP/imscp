@@ -282,6 +282,11 @@ function add_domain_alias() {
 		return;
 	}
 
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array('domain_id' => $cr_user_id, 'alias_name' => $alias_name));
+
 	// Begin add new alias domain
 
 	$status = $cfg->ITEM_ORDERED_STATUS;
@@ -295,9 +300,10 @@ function add_domain_alias() {
 	";
 	exec_query($query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 	$als_id = $db->insertId();
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array('domain_id' => $cr_user_id, 'alias_name' => $alias_name,
+			'domain_alias_id' => $als_id));
 
 	update_reseller_c_props(get_reseller_id($cr_user_id));
 
