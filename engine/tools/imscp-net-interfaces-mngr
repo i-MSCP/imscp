@@ -79,15 +79,15 @@ sub virtual_netcard_add{
 			if($ips->getCardByIP($_->{ip_number})){
 				#if is a virtual interface?
 				my $vcard = $ips->addedToVCard($_->{ip_number});
-				if( $vcard ){
-					my $msg =
-						"$_->{ip_number} is already attached to $vcard\n".
-						"Consider remove from network configuration ".
-						"and let i-MSCP handle it"
-					;
-					warning("$msg");
-					iMSCP::Mail->new()->warnMsg($msg);
-				}
+				#if( $vcard ){
+					#my $msg =
+						#"$_->{ip_number} is already attached to $vcard\n".
+						#"Consider remove from network configuration ".
+						#"and let i-MSCP handle it"
+					#;
+					#warning("$msg");
+					#iMSCP::Mail->new()->warnMsg($msg);
+				#}
 			} else {
 				#ip is not attached so we will attached to virtual card
 				#check if phisical card exits
