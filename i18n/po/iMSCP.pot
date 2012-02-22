@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-02-21 13:34+0100\n"
+"POT-Creation-Date: 2012-02-22 06:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2995,10 +2995,10 @@ msgstr ""
 msgid "Order Panel / Checkout"
 msgstr ""
 
-msgid "Order Panel / Choosing a domain name"
+msgid "Order Panel / Choose hosting plan"
 msgstr ""
 
-msgid "Order Panel / Choosing an hosting package"
+msgid "Order Panel / Choosing a domain name"
 msgstr ""
 
 msgid "Order Panel / Order confirmation"
@@ -3864,7 +3864,7 @@ msgstr ""
 msgid "Server traffic settings"
 msgstr ""
 
-msgid "Server traffic settings updated successfully!"
+msgid "Server traffic settings successfully updated."
 msgstr ""
 
 msgid "Service"
@@ -4584,7 +4584,16 @@ msgstr ""
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
+msgid "Traffic limit must be a digit."
+msgstr ""
+
 msgid "Traffic usage"
+msgstr ""
+
+msgid "Traffic warning cannot be bigger than traffic limit."
+msgstr ""
+
+msgid "Traffic warning must be a digit."
 msgstr ""
 
 msgid "Translated strings"
@@ -4922,9 +4931,6 @@ msgstr ""
 msgid "Warning traffic"
 msgstr ""
 
-msgid "Warning traffic is bigger than max traffic!"
-msgstr ""
-
 msgid "Warning:"
 msgstr ""
 
@@ -5001,9 +5007,6 @@ msgid "Wrong SQL user identifier."
 msgstr ""
 
 msgid "Wrong address in forward URL."
-msgstr ""
-
-msgid "Wrong data input!"
 msgstr ""
 
 msgid "Wrong domain ID."
@@ -5500,6 +5503,9 @@ msgstr ""
 msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr ""
 
+msgid "i-MSCP - Admin / Settings / Server traffic settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr ""
 
@@ -5554,9 +5560,6 @@ msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr ""
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
-msgstr ""
-
-msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr ""
 
 msgid "i-MSCP - Admin/Settings"
@@ -5676,6 +5679,9 @@ msgstr ""
 msgid "i-MSCP - Client/Webtools"
 msgstr ""
 
+msgid "i-MSCP - Domain / Edit"
+msgstr ""
+
 msgid "i-MSCP - Domain/Edit"
 msgstr ""
 
@@ -5718,9 +5724,6 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
-msgid "i-MSCP - Reseller / Customers statistics"
-msgstr ""
-
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
@@ -5731,6 +5734,9 @@ msgid "i-MSCP - Reseller / Layout"
 msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
