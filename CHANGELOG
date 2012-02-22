@@ -29,6 +29,7 @@ Features / Enhancements:
 		- Updated PhpMyAdmin to version 3.4.10.1
 
 Tickets:
+	- Fixed #68: Defect - Hide disabled features
 	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
 	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 	- Fixed #329: Bug - Custom DNS record - Syntax issue
