@@ -411,10 +411,20 @@
 			<class>profile</class>
 			<pages>
 				<overview>
-					<label>Overview</label>
+					<label>Account summary</label>
 					<uri>/client/profile.php</uri>
 					<title_class>profile</title_class>
 				</overview>
+				<personal_data>
+					<label>Personal data</label>
+					<uri>/client/personal_change.php</uri>
+					<title_class>profile</title_class>
+				</personal_data>
+				<passsword>
+					<label>Password</label>
+					<uri>/client/password_change.php</uri>
+					<title_class>profile</title_class>
+				</passsword>
 				<language>
 					<label>Language</label>
 					<uri>/client/language.php</uri>
@@ -425,16 +435,6 @@
 					<uri>/client/layout.php</uri>
 					<title_class>layout</title_class>
 				</layout>
-				<passsword>
-					<label>Password</label>
-					<uri>/client/password_change.php</uri>
-					<title_class>password</title_class>
-				</passsword>
-				<personal_data>
-					<label>Personal data</label>
-					<uri>/client/personal_change.php</uri>
-					<title_class>doc</title_class>
-				</personal_data>
 			</pages>
 		</profile>
 	</navigation>

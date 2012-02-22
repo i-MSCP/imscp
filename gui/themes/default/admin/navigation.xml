@@ -339,6 +339,16 @@
 					<uri>/admin/profile.php</uri>
 					<title_class>profile</title_class>
 				</overview>
+				<personal_change>
+					<label>Personal data</label>
+					<uri>/admin/personal_change.php</uri>
+					<title_class>profile</title_class>
+				</personal_change>
+				<passsword_change>
+					<label>Password</label>
+					<uri>/admin/password_change.php</uri>
+					<title_class>profile</title_class>
+				</passsword_change>
 				<language>
 					<label>Language</label>
 					<uri>/admin/language.php</uri>
@@ -349,16 +359,6 @@
 					<uri>/admin/layout.php</uri>
 					<title_class>layout</title_class>
 				</layout>
-				<passsword_change>
-					<label>Password</label>
-					<uri>/admin/password_change.php</uri>
-					<title_class>password</title_class>
-				</passsword_change>
-				<personal_change>
-					<label>Personal data</label>
-					<uri>/admin/personal_change.php</uri>
-					<title_class>doc</title_class>
-				</personal_change>
 			</pages>
 		</profile>
 	</navigation>

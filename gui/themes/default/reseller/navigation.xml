@@ -254,10 +254,20 @@
 			<class>profile</class>
 			<pages>
 				<overview>
-					<label>Overview</label>
+					<label>Account summary</label>
 					<uri>/reseller/profile.php</uri>
 					<title_class>profile</title_class>
 				</overview>
+				<personal_data>
+					<label>Personal data</label>
+					<uri>/reseller/personal_change.php</uri>
+					<title_class>profile</title_class>
+				</personal_data>
+				<passsword>
+					<label>Password</label>
+					<uri>/reseller/password_change.php</uri>
+					<title_class>profile</title_class>
+				</passsword>
 				<language>
 					<label>Language</label>
 					<uri>/reseller/language.php</uri>
@@ -268,16 +278,6 @@
 					<uri>/reseller/layout.php</uri>
 					<title_class>layout</title_class>
 				</layout>
-				<passsword>
-					<label>Password</label>
-					<uri>/reseller/password_change.php</uri>
-					<title_class>password</title_class>
-				</passsword>
-				<personal_data>
-					<label>Personal data</label>
-					<uri>/reseller/personal_change.php</uri>
-					<title_class>doc</title_class>
-				</personal_data>
 			</pages>
 		</profile>
 	</navigation>
