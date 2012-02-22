@@ -86,7 +86,7 @@ function get_update_infos($tpl)
 			array(
 				'UPDATE_INFOS' => '',
 				'UPDATE' => tr('New i-MSCP update is now available'),
-				'TR_MESSAGE' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.i-mscp.net/download.html</a>"));
+				'TR_MESSAGE' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download\" class=\"link\" target=\"_blank\">http://www.i-mscp.net/download</a>"));
 
         $tpl->parse('UPDATE_MESSAGE', 'update_message');
     } elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
