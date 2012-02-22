@@ -233,12 +233,12 @@
 				<tickets_open>
 					<label>Tickets open</label>
 					<uri>/reseller/ticket_system.php</uri>
-					<class>support</class>
+					<title_class>support</title_class>
 				</tickets_open>
 				<tickets_closed>
 					<label>Tickets closed</label>
 					<uri>/reseller/ticket_closed.php</uri>
-					<class>support</class>
+					<title_class>support</title_class>
 				</tickets_closed>
 				<new_ticket>
 					<label>New ticket</label>
