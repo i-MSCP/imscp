@@ -26,7 +26,7 @@
 			<!-- EDP: admin_message -->
 
 			<!-- BDP: admin_list -->
-			<table class="firstColFixed">
+			<table>
 				<tr>
 					<th>{TR_ADMIN_USERNAME}</th>
 					<th>{TR_CREATED_ON}</th>
@@ -60,7 +60,7 @@
 			<!-- EDP: rsl_message -->
 
 			<!-- BDP: rsl_list -->
-			<table class="firstColFixed">
+			<table>
 				<tr>
 					<th>{TR_RSL_USERNAME}</th>
 					<th>{TR_CREATED_ON}</th>
@@ -113,7 +113,7 @@
 				</div>
 
 			</form>
-			<table class="firstColFixed">
+			<table>
 				<tr>
 					<th>{TR_USER_STATUS}</th>
 					<th>{TR_USR_USERNAME}</th>

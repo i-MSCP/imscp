@@ -91,30 +91,39 @@
 				<tr>
 					<th colspan="2">{TR_LIMITS}</th>
 				</tr>
+				<!-- BDP: subdomain_feature -->
 				<tr>
 					<td><label for="nreseller_max_subdomain_cnt">{TR_MAX_SUBDOMAIN}</label></td>
 					<td>
 						<input id="nreseller_max_subdomain_cnt" type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDMN_CNT}"/>
 					</td>
 				</tr>
+				<!-- EDP: subdomain_feature -->
+				<!-- BDP: alias_feature -->
 				<tr>
 					<td><label for="nreseller_max_alias_cnt">{TR_MAX_DOMAIN_ALIAS}</label></td>
 					<td>
 						<input id="nreseller_max_alias_cnt" type="text" name="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}"/>
 					</td>
 				</tr>
+				<!-- EDP: alias_feature -->
+				<!-- BDP: mail_feature -->
 				<tr>
 					<td><label for="nreseller_max_mail_cnt">{TR_MAX_MAIL_COUNT}</label></td>
 					<td>
 						<input id="nreseller_max_mail_cnt" type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}"/>
 					</td>
 				</tr>
+				<!-- EDP: mail_feature -->
+				<!-- BDP: ftp_feature -->
 				<tr>
 					<td><label for="nreseller_max_ftp_cnt">{TR_MAX_FTP}</label></td>
 					<td>
 						<input id="nreseller_max_ftp_cnt" type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}"/>
 					</td>
 				</tr>
+				<!-- EDP: ftp_feature -->
+				<!-- BDP: sql_feature -->
 				<tr>
 					<td><label for="nreseller_max_sql_db_cnt">{TR_MAX_SQL_DB}</label></td>
 					<td>
@@ -127,6 +136,7 @@
 						<input id="nreseller_max_sql_user_cnt" type="text" name="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}"/>
 					</td>
 				</tr>
+				<!-- EDP: sql_feature -->
 				<tr>
 					<td><label for="nreseller_max_traffic">{TR_MAX_TRAFFIC}</label></td>
 					<td>
@@ -291,7 +301,7 @@
 						</div>
 					</td>
 				</tr>
-				<!-- BDP: t_software_support -->
+				<!-- BDP: aps_feature -->
 				<tr>
 					<td>{TR_SOFTWARE_SUPP}</td>
 					<td>
@@ -303,7 +313,8 @@
 						</div>
 					</td>
 				</tr>
-				<!-- EDP: t_software_support -->
+				<!-- EDP: aps_feature -->
+				<!-- BDP: backup_feature -->
 				<tr>
 					<td>{TR_BACKUP}</td>
 					<td>
@@ -319,6 +330,7 @@
 						</div>
 					</td>
 				</tr>
+				<!-- EDP: backup_feature -->
 			</table>
 			<div class="buttons">
 				<input type="hidden" name="uaction" value="user_add2_nxt"/>

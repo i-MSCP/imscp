@@ -44,6 +44,7 @@
 					<Label>Software upload</Label>
 					<uri>/reseller/software_upload.php</uri>
 					<title_class>apps_installer</title_class>
+					<privilege_callback name="resellerHasFeature" param="aps"/>
 				</software_upload>
 			</pages>
 		</general_information>
@@ -113,6 +114,7 @@
 					<label>Manage aliasses</label>
 					<uri>/reseller/alias.php</uri>
 					<title_class>domains</title_class>
+					<privilege_callback name="resellerHasFeature" param="domain_aliases"/>
 					<pages>
 						<add_alias>
 							<label>Add alias</label>
@@ -226,6 +228,7 @@
 			<uri>{SUPPORT_SYSTEM_PATH}</uri>
 			<target>{SUPPORT_SYSTEM_TARGET}</target>
 			<class>support</class>
+			<privilege_callback name="resellerHasFeature" param="support"/>
 			<pages>
 				<tickets_open>
 					<label>Tickets open</label>

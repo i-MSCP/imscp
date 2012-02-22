@@ -45,10 +45,10 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 {
 	static $data = null;
 
-	if(null == $data || $recoveryMode) {
-		/** @var $cfg iMSCP_Config_Handler_File */
-		$cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
+	if(null == $data || $recoveryMode) {
 		$statusOk = "$cfg->ITEM_OK_STATUS|$cfg->ITEM_DISABLED_STATUS|$cfg->ITEM_ORDERED_STATUS";
 
 		// Checks for domain existence and status
@@ -236,11 +236,19 @@ function &admin_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			$data['domain_dns'] = isset($_POST['domain_dns'])
 				? clean_input($_POST['domain_dns']) : $data['domain_software_allowed'];
 
-			$data['domain_software_allowed'] = isset($_POST['domain_software_allowed'])
-				? clean_input($_POST['domain_software_allowed']) : $data['domain_software_allowed'];
+			if ($data['software_allowed'] == 'yes') {
+				$data['domain_software_allowed'] = isset($_POST['domain_software_allowed'])
+					? clean_input($_POST['domain_software_allowed']) : $data['domain_software_allowed'];
+			} else {
+				$data['domain_software_allowed'] = 'no';
+			}
 
-			$data['allowbackup'] = isset($_POST['allowbackup'])
-				? clean_input($_POST['allowbackup']) : $data['allowbackup'];
+			if($cfg->BACKUP_DOMAINS == 'yes') {
+				$data['allowbackup'] = isset($_POST['allowbackup'])
+					? clean_input($_POST['allowbackup']) : $data['allowbackup'];
+			} else {
+				$data['allowbackup'] = 'no';
+			}
 		}
 	}
 
@@ -290,7 +298,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 
 	// Domain aliasses limit
 	if ($data['max_als_cnt'] == -1) { // Reseller has no permissions on this service
-		$tpl->assign('DOMAIN_ALIASSES_LIMIT_BLOCK', '');
+		$tpl->assign('DOMAIN_ALIASES_LIMIT_BLOCK', '');
 	} else {
 		$tplVars['TR_ALIASSES_LIMIT'] = tr('Domain aliases limit<br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['DOMAIN_ALIASSES_LIMIT'] = tohtml($data['domain_alias_limit']);
@@ -320,7 +328,7 @@ function _admin_generateLimitsForm($tpl, &$data)
 
 	// SQL Database - Sql Users limits
 	if ($data['max_sql_db_cnt'] == -1 || $data['max_sql_user_cnt'] == -1) { // Reseller has no permissions on this service
-		$tplVars['SQL_BD_AND_USERS_LIMIT_BLOCK'] = '';
+		$tplVars['SQL_DB_AND_USERS_LIMIT_BLOCK'] = '';
 	} else {
 		$tplVars['TR_SQL_DATABASES_LIMIT'] = tr('SQL databases limit <br /><span class="italic">(-1 disabled, 0 unlimited)</span>', true);
 		$tplVars['SQL_DATABASES_LIMIT'] = tohtml($data['domain_sqld_limit']);
@@ -499,15 +507,19 @@ function _admin_generateFeaturesForm($tpl, &$data)
 	}
 
 	// Backup support
-	$tplVars['TR_BACKUP'] = tr('Backup');
-	$tplVars['TR_BACKUP_DOMAIN'] = tr('Domain');
-	$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlSelected : '';
-	$tplVars['TR_BACKUP_SQL'] = tr('Sql');
-	$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlSelected : '';
-	$tplVars['TR_BACKUP_FULL'] = tr('Full');
-	$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlSelected : '';
-	$tplVars['TR_BACKUP_NO'] = tr('No');
-	$tplVars['BACKUP_NO'] = ($data['allowbackup'] == 'no') ? $htmlSelected : '';
+	if ($cfg->BACKUP_DOMAINS == 'yes') {
+		$tplVars['TR_BACKUP'] = tr('Backup');
+		$tplVars['TR_BACKUP_DOMAIN'] = tr('Domain');
+		$tplVars['BACKUP_DOMAIN'] = ($data['allowbackup'] == 'dmn') ? $htmlSelected : '';
+		$tplVars['TR_BACKUP_SQL'] = tr('Sql');
+		$tplVars['BACKUP_SQL'] = ($data['allowbackup'] == 'sql') ? $htmlSelected : '';
+		$tplVars['TR_BACKUP_FULL'] = tr('Full');
+		$tplVars['BACKUP_FULL'] = ($data['allowbackup'] == 'full') ? $htmlSelected : '';
+		$tplVars['TR_BACKUP_NO'] = tr('No');
+		$tplVars['BACKUP_NO'] = ($data['allowbackup'] == 'no') ? $htmlSelected : '';
+	} else {
+		$tplVars['BACKUP_BLOCK'] = '';
+	}
 
 	// Shared strings
 	$tplVars['TR_YES'] = tr('Yes');
@@ -1012,7 +1024,10 @@ $tpl->define_dynamic(
 		 'cgi_block' => 'page',
 		 'dns_block' => 'page',
 		 'aps_block' => 'page',
-		 'dns_block' => 'page'));
+		 'dns_block' => 'page',
+		 'backup_block' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(

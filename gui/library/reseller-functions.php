@@ -49,7 +49,7 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 /**
  * Generates user's properties.
  *
- * @param  $reseller_id Reseller unique identifier
+ * @param  int $reseller_id Reseller unique identifier
  * @return array An array that contains user's properties
  */
 function generate_reseller_user_props($reseller_id)
@@ -161,7 +161,7 @@ function generate_reseller_user_props($reseller_id)
 /**
  * Returns user's traffic information.
  *
- * @param  $user_id User unique identifier
+ * @param  int $user_id User unique identifier
  * @return array An array that contains user's traffic information
  */
 function get_user_traffic($user_id)
@@ -234,7 +234,7 @@ function get_user_traffic($user_id)
 /**
  * Returns user's properties from database.
  *
- * @param  $user_id User unique identifier
+ * @param  int $user_id User unique identifier
  * @return array An array that contain user's properties
  */
 function get_user_props($user_id)
@@ -457,7 +457,7 @@ function imscp_domain_exists($domain_name, $reseller_id)
  *
  * @param  $search_query
  * @param  $count_query
- * @param  $reseller_id Reseller unique identifier
+ * @param  int $reseller_id Reseller unique identifier
  * @param  $start_index
  * @param  $rows_per_page
  * @param  $search_for
@@ -1064,9 +1064,53 @@ function check_reseller_permissions($resellerId, $permission)
  * @author Peter Ziergoebel <info@fisa4.de>
  * @since 1.0.0 (i-MSCP)
  * @param string $time A date/time string
- * @return int|false
+ * @return mixed
  */
 function datepicker_reseller_convert($time)
 {
     return strtotime($time);
+}
+
+/**
+ * Tells whether or not the given feature is available for the reseller.
+ *
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
+ * @throws iMSCP_Exception When $featureName is not known
+ * @param string $featureName Feature name
+ * @param bool $forceReload If true force data to be reloaded
+ * @return bool TRUE if $featureName is available for reseller, FALSE otherwise
+ */
+function resellerHasFeature($featureName, $forceReload = false)
+{
+	static $availableFeatures = null;
+	$featureName = strtolower($featureName);
+
+	if (null === $availableFeatures || $forceReload) {
+		/** @var $cfg iMSCP_Config_Handler_File */
+		$cfg = iMSCP_Registry::get('config');
+
+		$resellerProps = imscp_getResellerProperties((int)$_SESSION['user_id'], true);
+
+		$availableFeatures = array(
+			'php_editor' => ($resellerProps['php_ini_system'] == 'yes') ? true : false,
+			'ftp' => ($resellerProps['max_ftp_cnt'] != '-1') ? true : false,
+			'sql' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false,
+			'mail' => ($resellerProps['max_mail_cnt'] != '-1') ? true : false,
+			'subdomains' => ($resellerProps['max_sub_cnt'] != '-1') ? true : false,
+			'domain_aliases' => ($resellerProps['max_als_cnt'] != '-1') ? true : false,
+			'backup' => ($cfg->BACKUP_DOMAINS != 'no') ? true : false,
+			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false); // aps feature check must be revisted
+
+		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
+			$availableFeatures['support'] = ($resellerProps['support_system'] == 'yes') ? true : false;
+		} else {
+			$availableFeatures['support'] = false;
+		}
+	}
+
+	if (!array_key_exists($featureName, $availableFeatures)) {
+		throw new iMSCP_Exception(sprintf("Feature %s is not known by the resellerHasFeature() function.", $featureName));
+	}
+
+	return $availableFeatures[$featureName];
 }

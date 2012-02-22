@@ -153,7 +153,7 @@ function admin_getAdminGeneralInfo($tpl)
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function admin_generateServerTrafficBar($tpl)
+function admin_generateServerTrafficInfo($tpl)
 {
 	// Getting max server traffic per month in mebibytes
 
@@ -200,9 +200,14 @@ function admin_generateServerTrafficBar($tpl)
 		$trafficMessage = tr('%1$s%% [%2$s of unlimited]', $trafficUsagePercent, bytesHuman($trafficUsageBytes));
  	}
 
-	// Warning message about traffic only if trafficWarning is set
-	if ($trafficUsageBytes && $trafficWarningBytes && $trafficUsageBytes > $trafficWarningBytes) {
-		set_page_message( tr('You are exceeding the server traffic limit.'), 'warning');
+	// Warning message about traffic
+	if($trafficUsageBytes) {
+		if(($trafficWarningBytes && $trafficUsageBytes > $trafficWarningBytes) ||
+			// In any case, display a warning if traffic limit is reached
+			($trafficLimitBytes &&  $trafficUsageBytes > $trafficLimitBytes)
+		) {
+			set_page_message( tr('You are exceeding the server traffic limit.'), 'warning');
+		}
 	}
 
 	$tpl->assign(
@@ -262,7 +267,7 @@ generateNavigation($tpl);
 admin_generateSupportQuestionsMessage();
 admin_generateUpdateMessages($tpl);
 admin_getAdminGeneralInfo($tpl);
-admin_generateServerTrafficBar($tpl);
+admin_generateServerTrafficInfo($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');

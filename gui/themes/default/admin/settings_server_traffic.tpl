@@ -17,7 +17,6 @@
 				</table>
 				<div class="buttons">
 					<input name="Submit" type="submit" value="{TR_MODIFY}"/>
-					<input type="hidden" name="uaction" value="modify"/>
 				</div>
 			</form>
 

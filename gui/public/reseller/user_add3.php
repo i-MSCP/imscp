@@ -142,7 +142,7 @@ function gen_empty_data()
 /**
  * Save data for new user in db.
  *
- * @param  $reseller_id Reseller unique identifier
+ * @param  int $reseller_id Reseller unique identifier
  * @return bool TRUE on success, FALSE otherwiser
  */
 function add_user_data($reseller_id)
@@ -381,7 +381,9 @@ $tpl->define_dynamic(
 		'page' => 'reseller/user_add3.tpl',
 		'page_message' => 'layout',
 		'ip_entry' => 'page',
-		'alias_add' => 'page'));
+		'alias_feature' => 'page'
+	)
+);
 
 $tpl->assign(
 	array(
@@ -439,8 +441,8 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'user_add3_nxt') &&
 
 gen_user_add3_page($tpl);
 
-if (!check_reseller_permissions($_SESSION['user_id'], 'alias')) {
-	$tpl->assign('ALIAS_ADD', '');
+if (!resellerHasFeature('domain_aliases')) {
+	$tpl->assign('ALIAS_FEATURE', '');
 }
 
 generatePageMessage($tpl);

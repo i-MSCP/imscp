@@ -312,8 +312,10 @@ function check_user_data($phpini)
 		$hp_dns = $_POST['dns'];
 	}
 
-	if (isset($_POST['software_allowed'])) {
+	if (isset($_POST['software_allowed']) && resellerHasFeature('aps')) {
 		$hp_allowsoftware = $_POST['software_allowed'];
+	} else {
+		$hp_allowsoftware = 'no';
 	}
 
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
@@ -473,13 +475,13 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/ui.tpl',
 		'page' => 'reseller/user_add2.tpl',
 		'page_message' => 'layout',
-		'subdomain_add' => 'page',
-		'alias_add' => 'page',
-		'mail_add' => 'page',
-		'ftp_add' => 'page',
-		'sql_db_add' => 'page',
-		'sql_user_add' => 'page',
-		't_software_support' => 'page',
+		'subdomain_feature' => 'page',
+		'alias_feature' => 'page',
+		'mail_feature' => 'page',
+		'ftp_feature' => 'page',
+		'sql_feature' => 'page',
+		'aps_feature' => 'page',
+		'backup_feature' => 'page',
 		'php_editor_js' => 'page',
 		'php_editor_block' => 'page',
 		'php_editor_permissions_block' => 'php_editor_block',
@@ -565,34 +567,36 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) &&
 }
 
 get_init_au2_page($tpl, $phpini);
-get_reseller_software_permission($tpl, $_SESSION['user_id']);
 
-list(
-	$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max
-	) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+// TODO check the resellerHasFeature('aps') according the function below
+//get_reseller_software_permission($tpl, $_SESSION['user_id']);
 
-if ($rsub_max == '-1') {
-	$tpl->assign('ALIAS_ADD', '');
+if (!resellerHasFeature('subdomains')) {
+	$tpl->assign('SUBDOMAIN_FEATURE', '');
 }
 
-if ($rals_max == '-1') {
-	$tpl->assign('SUBDOMAIN_ADD', '');
+if (!resellerHasFeature('domain_aliases')) {
+	$tpl->assign('ALIAS_FEATURE', '');
 }
 
-if ($rmail_max == '-1') {
-	$tpl->assign('MAIL_ADD', '');
+if (!resellerHasFeature('mail')) {
+	$tpl->assign('MAIL_FEATURE', '');
 }
 
-if ($rftp_max == '-1') {
-	$tpl->assign('FTP_ADD', '');
+if (!resellerHasFeature('ftp')) {
+	$tpl->assign('FTP_FEATURE', '');
 }
 
-if ($rsql_db_max == '-1') {
-	$tpl->assign('SQL_DB_ADD', '');
+if (!resellerHasFeature('sql')) {
+	$tpl->assign('SQL_FEATURE', '');
 }
 
-if ($rsql_user_max == '-1') {
-	$tpl->assign('SQL_USER_ADD', '');
+if (!resellerHasFeature('aps')) {
+	$tpl->assign('APS_FEATURE', '');
+}
+
+if (!resellerHasFeature('backup')) {
+	$tpl->assign('BACKUP_FEATURE', '');
 }
 
 generatePageMessage($tpl);

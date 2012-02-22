@@ -32,9 +32,9 @@
                 </fieldset>
                 <fieldset>
                     <legend>{TR_ADDITIONAL_DATA}</legend>
-                    <table>
+                    <table class="firstColFixed">
                         <tr>
-                            <td style="width: 300px;">
+                            <td>
                                 <label for="useruid">{TR_CUSTOMER_ID}</label></td>
                             <td>
                                 <input type="text" name="useruid" id="useruid" value="{VL_USR_ID}" />
@@ -111,7 +111,7 @@
                         </tr>
                     </table>
                     <div class="buttons">
-                        <input name="Submit" type="submit" class="button" value="{TR_BTN_ADD_USER}" />
+                        <input name="Submit" type="submit" value="{TR_BTN_ADD_USER}" />
                         <input type="checkbox" id="send_data" name="send_data" checked="checked" /><label for="send_data">{TR_SEND_DATA}</label>
                     </div>
                 </fieldset>
