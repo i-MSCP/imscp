@@ -629,14 +629,15 @@ class iMSCP_Events
 	 */
 	const onAfterBulkAction = 'onAfterBulkAction';
 
-	###########################################################
-	## No yet integrated events
-	#
-
 	/**
 	 * The onBeforeAddDomain event is triggered before a domain is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - domain_name: Name of a domain to create
+	 *  - created_by: Id of a reseller who is adding domain
+	 *  - customer_id: Id of owner of the domain
+	 *  - email: email of an owner
 	 *
 	 * @var string
 	 */
@@ -645,7 +646,13 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddDomain event is triggered after a domain is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - domain_name: Name of a domain to create
+	 *  - created_by: Id of a reseller who is adding domain
+	 *  - customer_id: Id of owner of the domain
+	 *  - email: email of an owner
+	 *  - domain_id: id of created database record
 	 *
 	 * @var string
 	 */
@@ -654,7 +661,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeEditDomain event is triggered before a domain is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - domain_id: Id of a domain to edit
 	 *
 	 * @var string
 	 */
@@ -663,7 +672,9 @@ class iMSCP_Events
 	/**
 	 * The onAfterEditDomain event is triggered agfter a domain is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - domain_id: Id of a domain to edit
 	 *
 	 * @var string
 	 */
@@ -672,7 +683,11 @@ class iMSCP_Events
 	/**
 	 * The onBeforeAddSubdomain event is triggered after a subdomain is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - subdomain_name: name of a subdomain to add
+	 *  - domain_id: parent domain id
+	 *  - user_id: owner id
 	 *
 	 * @var string
 	 */
@@ -681,7 +696,12 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddSubdomain event is triggered after a subdomain is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - subdomain_name: name of a subdomain to add
+	 *  - domain_id: parent domain id
+	 *  - user_id: owner id
+	 *  - subdomain_id: id of a created database record
 	 *
 	 * @var string
 	 */
@@ -690,7 +710,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeEditSubdomain event is triggered after a subdomain is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - subdomain_id: id of a subdomain
 	 *
 	 * @var string
 	 */
@@ -699,7 +721,9 @@ class iMSCP_Events
 	/**
 	 * The onAfterEditSubdomain event is triggered after a subdomain is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - subdomain_id: id of a subdomain
 	 *
 	 * @var string
 	 */
@@ -708,7 +732,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeDeleteSubdomain event is triggered before a subdomain is deleted.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - subdomain_id: id of a subdomain
 	 *
 	 * @var string
 	 */
@@ -717,7 +743,9 @@ class iMSCP_Events
 	/**
 	 * The onAfterDeleteSubdomain event is triggered after a subdomain is delteded.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - subdomain_id: id of a subdomain
 	 *
 	 * @var string
 	 */
@@ -726,7 +754,10 @@ class iMSCP_Events
 	/**
 	 * The onBeforeAddDomainAlias event is triggered before a domain alias is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - domain_id: id of a parent domain
+	 *  - alias_name: name of alias to add
 	 *
 	 * @var string
 	 */
@@ -735,7 +766,10 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddDomainAlias event is triggered after a domain alias is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - domain_id: id of a parent domain
+	 *  - alias_name: name of alias to add
 	 *
 	 * @var string
 	 */
@@ -744,7 +778,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeEditDomainAlias event is triggered before a domain alias is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - alias_id: id of an alias to edit
 	 *
 	 * @var string
 	 */
@@ -753,7 +789,9 @@ class iMSCP_Events
 	/**
 	 * The onAfterEditDomainALias event is triggered after a domain alias is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - alias_id: id of a created database record
 	 *
 	 * @var string
 	 */
@@ -762,7 +800,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeDeleteDomainAlias event is triggered before a domain alias is deleted.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - alias_id: id of alias to delete
 	 *
 	 * @var string
 	 */
@@ -771,16 +811,21 @@ class iMSCP_Events
 	/**
 	 * The onAfterDeleteDomainAlias event is triggered after a domain alias is deleted.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - alias_id: id of alias to delete
 	 *
 	 * @var string
 	 */
-	const onAfterDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
+	const onAfterDeleteDomainAlias = 'onAfterDeleteDomainAlias';
 
 	/**
 	 * The onBeforeAddMail event is triggered after a mail account is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - mail_acc: email login (before @)
+	 *  - mail_addr: email (with domain included)
 	 *
 	 * @var string
 	 */
@@ -789,7 +834,11 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddMail event is triggered after a mail account is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 *  - mail_acc: email login (before @)
+	 *  - mail_addr: email (with domain included)
+	 *  - mail_id: id of a created database record
 	 *
 	 * @var string
 	 */
@@ -798,7 +847,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeEditMail event is triggered before a mail account is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - mail_id: id of a mail to edit
 	 *
 	 * @var string
 	 */
@@ -807,7 +858,9 @@ class iMSCP_Events
 	/**
 	 * The onAfterEditMail event is triggered after a mail account is edited.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - mail_id: id of a mail which was edited
 	 *
 	 * @var string
 	 */
@@ -816,7 +869,9 @@ class iMSCP_Events
 	/**
 	 * The onBeforeDeleteMail event is triggered before a mail account is deleted.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - mail_id: id of a mail to delete
 	 *
 	 * @var string
 	 */
@@ -825,9 +880,12 @@ class iMSCP_Events
 	/**
 	 * The onAfterDeleteMail event is triggered after a mail account is deleted.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with ???
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 *  - mail_id: id of a mail which was deleted
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteMail = 'onAfterDeleteMail';
+
 }
