@@ -662,7 +662,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TILE' => tr('i-MSCP - Client / Manage mail / Add account'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Add account'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
