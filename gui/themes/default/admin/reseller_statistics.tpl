@@ -7,7 +7,7 @@
 			</script>
 
 			<!-- BDP: reseller_statistics_entries_block -->
-			<table class="datatable" style="text-align: center;">
+			<table class="datatable">
 				<thead>
 					<tr>
 						<th>{TR_RESELLER_NAME}</th>
