@@ -46,6 +46,11 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if(!resellerHasFeature('support')) {
+	return 'index.php';
+}
+
 $userId = $_SESSION['user_id'];
 
 // Checks if support ticket system is activated and if the reseller can access to it

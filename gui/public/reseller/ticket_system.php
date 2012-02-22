@@ -46,6 +46,11 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login(__FILE__);
 
+// If the feature is disabled, redirects in silent way
+if(!resellerHasFeature('support')) {
+	return 'index.php';
+}
+
 /** @var $cfg abook_local_file */
 $cfg = iMSCP_Registry::get('config');
 
