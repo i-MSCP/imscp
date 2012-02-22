@@ -40,6 +40,69 @@
  */
 
 /**
+ * Generates statistics entry for the given domain.
+ *
+ * @access private
+ * @param iMSCP_pTemplate $tpl Template engine instance
+ * @param int $domainId Domain unique identifier
+ * @return void
+ */
+function _reseller_generateDomainStatisticsEntry($tpl, $domainId)
+{
+	list(
+		$domainName, $domainId, $web, $ftp, $smtp, $pop3, $trafficUsageBytes, $diskspaceUsageBytes
+		) = generate_user_traffic($domainId);
+
+	list(
+		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
+		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $trafficLimit, $diskspaceLimit
+		) = generate_user_props($domainId);
+
+	$trafficLimitBytes = $trafficLimit * 1048576;
+	$diskspaceLimitBytes = $diskspaceLimit * 1048576;
+
+	$trafficPercent = make_usage_vals($trafficUsageBytes, $trafficLimitBytes);
+	$diskPercent = make_usage_vals($diskspaceUsageBytes, $diskspaceLimitBytes);
+
+	$tpl->assign(
+		array(
+			'DOMAIN_NAME' => tohtml(decode_idna($domainName)),
+			'DOMAIN_ID' => $domainId,
+			'TRAFF_PERCENT' => $trafficPercent,
+			'MONTH' => date('m'),
+			'YEAR' => date('y'),
+			'TRAFF_MSG' => ($trafficLimitBytes)
+				? tr('%1$s of %2$s', bytesHuman($trafficUsageBytes), bytesHuman($trafficLimitBytes))
+				: tr('%s of unlimited', bytesHuman($trafficUsageBytes)),
+			'DISK_PERCENT' => $diskPercent,
+			'DISK_MSG' => ($diskspaceLimitBytes)
+				? tr('%1$s of %2$s', bytesHuman($diskspaceUsageBytes), bytesHuman($diskspaceLimitBytes))
+				: tr('%s of unlimited', bytesHuman($diskspaceUsageBytes)),
+			'WEB' => bytesHuman($web),
+			'FTP' => bytesHuman($ftp),
+			'SMTP' => bytesHuman($smtp),
+			'POP3' => bytesHuman($pop3),
+			'SUB_MSG' => ($usub_max)
+				? (($usub_max > 0) ? tr('%1$d of %2$d', $usub_current, $usub_max)
+					: tr('disabled')) : tr('%d of unlimited', $usub_current),
+			'ALS_MSG' => ($uals_max)
+				? (($uals_max > 0) ? tr('%1$d of %2$d', $uals_current, $uals_max) : tr('disabled'))
+				: tr('%d of unlimited', $uals_current),
+			'MAIL_MSG' => ($umail_max)
+				? (($umail_max > 0) ? tr('%1$d of %2$d', $umail_current, $umail_max) : tr('disabled'))
+				: tr('%d of unlimited', $umail_current),
+			'FTP_MSG' => ($uftp_max)
+				? (($uftp_max > 0) ? tr('%1$d of %2$d', $uftp_current, $uftp_max) : tr('disabled'))
+				: tr('%d of unlimited', $uftp_current),
+			'SQL_DB_MSG' => ($usql_db_max)
+				? (($usql_db_max > 0) ? tr('%1$d of %2$d', $usql_db_current, $usql_db_max) : tr('disabled'))
+				: tr('%d of unlimited', $usql_db_current),
+			'SQL_USER_MSG' => ($usql_user_max)
+				? (($usql_user_max > 0) ? tr('%1$d of %2$d', $usql_user_current, $usql_user_max) : tr('disabled'))
+				: tr('%d of unlimited', $usql_user_current)));
+}
+
+/**
  * Generate page.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
@@ -50,106 +113,15 @@ function reseller_generatePage($tpl)
 	$query = 'SELECT `domain_id` FROM `domain` WHERE `domain_created_id` = ?';
 	$stmt = exec_query($query, $_SESSION['user_id']);
 
-	if($stmt->rowCount()) {
-		foreach($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
-			_reseller_GenerateDomainStatisticsEntry($tpl, $domainId);
+	if ($stmt->rowCount()) {
+		foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
+			_reseller_generateDomainStatisticsEntry($tpl, $domainId);
 			$tpl->parse('DOMAIN_STATISTICS_ENTRY_BLOCK', '.domain_statistics_entry_block');
 		}
 	} else {
 		$tpl->assign('DOMAIN_STATISTICS_ENTRIES_BLOCK', '');
 		set_page_message(tr('No domain statistics to display.'), 'info');
 	}
-}
-
-/**
- * Generates statistics entry for the given domain.
- *
- * @access private
- * @param iMSCP_pTemplate $tpl Template engine instance
- * @param int $domainId Domain unique identifier
- * @return void
- */
-function _reseller_GenerateDomainStatisticsEntry($tpl, $domainId)
-{
-	list(
-		$domainName, $domainId, $web, $ftp, $smtp, $pop3, $utraff_current, $udisk_current
-	) = generate_user_traffic($domainId);
-
-	list(
-		$usub_current, $usub_max, $uals_current, $uals_max, $umail_current, $umail_max, $uftp_current, $uftp_max,
-		$usql_db_current, $usql_db_max, $usql_user_current, $usql_user_max, $utraff_max, $udisk_max
-	) = generate_user_props($domainId);
-
-	$utraff_max = $utraff_max * 1024 * 1024;
-	$udisk_max = $udisk_max * 1024 * 1024;
-
-	list($trafficPercent) = make_usage_vals($utraff_current, $utraff_max);
-	list($diskPercent) = make_usage_vals($udisk_current, $udisk_max);
-
-	if ($trafficPercent > 100) {
-		$trafficPercent = 100;
-	}
-
-	if ($diskPercent > 100) {
-		$diskPercent = 100;
-	}
-
-	$domainName = decode_idna($domainName);
-
-	$tpl->assign(
-		array(
-			'DOMAIN_NAME' => tohtml($domainName),
-			'DOMAIN_ID' => $domainId,
-			'TRAFF_PERCENT' => $trafficPercent,
-			'MONTH' => date('m'),
-			'YEAR' => date('y'),
-			'TRAFF_MSG' => ($utraff_max)
-				? tr('%1$s of %2$s', bytesHuman($utraff_current), bytesHuman($utraff_max))
-				: tr('%s of unlimited', bytesHuman($utraff_current)),
-			'DISK_PERCENT' => $diskPercent,
-			'DISK_MSG' => ($udisk_max)
-				? tr('%1$s of %2$s', bytesHuman($udisk_current), bytesHuman($udisk_max))
-				: tr('%s of unlimited', bytesHuman($udisk_current)),
-			'WEB' => bytesHuman($web),
-			'FTP' => bytesHuman($ftp),
-			'SMTP' => bytesHuman($smtp),
-			'POP3' => bytesHuman($pop3),
-			'SUB_MSG' => ($usub_max)
-				? (
-					($usub_max > 0)
-						? tr('%1$d of %2$d', bytesHuman($usub_current), $usub_max)
-						: tr('disabled')
-				) : tr('%d of unlimited', bytesHuman($usub_current)),
-			'ALS_MSG' => ($uals_max)
-				? (
-					($uals_max > 0)
-						? tr('%1$d of %2$d', bytesHuman($uals_current), $uals_max)
-						: tr('disabled')
-				) : tr('%d of unlimited', bytesHuman($uals_current)),
-			'MAIL_MSG' => ($umail_max)
-				? (
-					($umail_max > 0)
-						? tr('%1$d of %2$d', $umail_current, $umail_max)
-						: tr('disabled')
-				) : tr('%d of unlimited', $umail_current),
-			'FTP_MSG' => ($uftp_max)
-				? (
-					($uftp_max > 0)
-						? tr('%1$d of %2$d', $uftp_current, $uftp_max)
-						: tr('disabled')
-				) : tr('%d of unlimited', $uftp_current),
-			'SQL_DB_MSG' => ($usql_db_max)
-				? (
-					($usql_db_max > 0)
-						? tr('%1$d of %2$d', $usql_db_current, $usql_db_max)
-						: tr('disabled')
-				) : tr('%d of unlimited', $usql_db_current),
-			'SQL_USER_MSG' => ($usql_user_max)
-				? (
-					($usql_user_max > 0)
-						? tr('%1$d of %2$d', $usql_user_current, $usql_user_max)
-						: tr('disabled'))
-				: tr('%d of unlimited', $usql_user_current)));
 }
 
 /************************************************************************************
@@ -177,7 +149,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr("i-MSCP - Reseller / Customers statistics"),
+		'TR_PAGE_TITLE' => tr("i-MSCP - Reseller / Statistics /  Customers statistics"),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_DOMAIN_NAME' => tr('Domain'),
