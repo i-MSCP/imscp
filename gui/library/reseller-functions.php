@@ -1085,27 +1085,24 @@ function resellerHasFeature($featureName, $forceReload = false)
 	static $availableFeatures = null;
 	$featureName = strtolower($featureName);
 
-	if (null === $availableFeatures || $forceReload) {
+	if (null == $availableFeatures || $forceReload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
 
 		$resellerProps = imscp_getResellerProperties((int)$_SESSION['user_id'], true);
 
 		$availableFeatures = array(
-			'php_editor' => ($resellerProps['php_ini_system'] == 'yes') ? true : false,
-			'ftp' => ($resellerProps['max_ftp_cnt'] != '-1') ? true : false,
-			'sql' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false,
-			'mail' => ($resellerProps['max_mail_cnt'] != '-1') ? true : false,
+			'domains' => ($resellerProps['max_dmn_cnt'] != '-1') ? true : false,
 			'subdomains' => ($resellerProps['max_sub_cnt'] != '-1') ? true : false,
 			'domain_aliases' => ($resellerProps['max_als_cnt'] != '-1') ? true : false,
+			'mail' => ($resellerProps['max_mail_cnt'] != '-1') ? true : false,
+			'ftp' => ($resellerProps['max_ftp_cnt'] != '-1') ? true : false,
+			'sql' => ($resellerProps['max_sql_db_cnt'] != '-1') ? true : false,
+			'php_editor' => ($resellerProps['php_ini_system'] == 'yes') ? true : false,
 			'backup' => ($cfg->BACKUP_DOMAINS != 'no') ? true : false,
-			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false); // aps feature check must be revisted
-
-		if (($cfg->IMSCP_SUPPORT_SYSTEM)) {
-			$availableFeatures['support'] = ($resellerProps['support_system'] == 'yes') ? true : false;
-		} else {
-			$availableFeatures['support'] = false;
-		}
+			'aps' => ($resellerProps['software_allowed'] != 'no') ? true : false, // aps feature check must be revisted
+			'support' => ($cfg->IMSCP_SUPPORT_SYSTEM && $resellerProps['support_system'] == 'yes') ? true : false
+		);
 	}
 
 	if (!array_key_exists($featureName, $availableFeatures)) {
