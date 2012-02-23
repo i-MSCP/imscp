@@ -623,6 +623,7 @@ sub postdelDmn{
 	$rs |= $self->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
 		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		MX			=> '',
 		DMN_DEL		=> {
 			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
 		}
@@ -823,6 +824,7 @@ sub postdelSub{
 	$rs |= $self->addDmn({
 		DMN_NAME	=> $main::imscpConfig{BASE_SERVER_VHOST},
 		DMN_IP		=> $main::imscpConfig{BASE_SERVER_IP},
+		MX			=> '',
 		DMN_DEL		=> {
 			MANUAL_DNS_NAME		=> "$data->{USER_NAME}.$main::imscpConfig{BASE_SERVER_VHOST}.",
 		}

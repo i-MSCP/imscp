@@ -250,6 +250,13 @@ sub saveConf{
 	my $self	= shift;
 	my $rs		= 0;
 	my $file	= iMSCP::File->new(filename => "$self->{cfgDir}/bind.data");
+
+	$self::bindConfig{'PRIMARY_DNS'} = $self::bindOldConfig{'PRIMARY_DNS'}
+		if $self::bindOldConfig{'PRIMARY_DNS'} && $self::bindConfig{'PRIMARY_DNS'} ne $self::bindOldConfig{'PRIMARY_DNS'};
+
+	$self::bindConfig{'SECONDARY_DNS'} = $self::bindOldConfig{'SECONDARY_DNS'}
+		if $self::bindOldConfig{'SECONDARY_DNS'} && $self::bindConfig{'SECONDARY_DNS'} ne $self::bindOldConfig{'SECONDARY_DNS'};
+
 	my $cfg		= $file->get() or return 1;
 
 	$rs |= $file->mode(0644);
