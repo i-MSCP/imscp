@@ -60,9 +60,11 @@ class iMSCP_Plugin_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_List
 	protected $_disabledActions = array();
 
 	/**
-	 * Constructor.
+	 * Initialize plugin.
+	 *
+	 *  @return void
 	 */
-	public function __construct()
+	public function init()
 	{
 		if ($this->getConfigParam('user_accounts')) {
 			$this->_listenedEvents[] = iMSCP_Events::onLoginScriptEnd;

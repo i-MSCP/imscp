@@ -42,7 +42,7 @@
  * @package		iMSCP_Authentication
  * @subpackage	Bruteforce
  * @author		Daniel Andreca <sci2tech@gmail.com>
- * @version		0.0.1
+ * @version		0.0.2
  */
 class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMSCP_Events_Listeners_Interface
 {
@@ -144,8 +144,29 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 		$this->_blockTime = $cfg->BRUTEFORCE_BLOCK_TIME;
 		$this->_waitTime = $cfg->BRUTEFORCE_BETWEEN_TIME;
 
-		$this->_unblock();
-		$this->_init();
+		$this->unblock();
+
+		// Component / Plugin initialization
+		parent::__construct();
+	}
+
+
+	/**
+	 * Returns plugin general information.
+	 *
+	 * @return array
+	 */
+	public function getInfo()
+	{
+		return array(
+			'author' => 'Daniel Andreca',
+			'email' => 'sci2tech@gmail.com',
+			'version' => '0.0.2',
+			'date' => '2012-02-24',
+			'name' => 'Bruteforce',
+			'desc' => 'Allow to improve system security by detecting any dictionnary attacks and blocking them according a set of configuration parameters',
+			'url' => 'http://www.i-mscp.net'
+		);
 	}
 
 	/**
@@ -264,6 +285,19 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	}
 
 	/**
+	 * Unblock any Ip address for which blocking time is expired.
+	 *
+	 * @return void
+	 */
+	public function unblock()
+	{
+		//$this->_message[] = tr('Unblocking expired sessions.');
+		$timeout = time() - ($this->_blockTime * 60);
+		$query = "UPDATE `login` SET `{$this->_type}_count` = 0 WHERE `lastaccess` < ? AND `user_name` IS NULL";
+		exec_query($query, array($timeout));
+	}
+
+	/**
 	 * Initialization.
 	 *
 	 * @return void
@@ -329,18 +363,5 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 			)
 		';
 		exec_query($query, array($this->_sessionId, $this->_ipAddr));
-	}
-
-	/**
-	 * Unblock any Ip address for which blocking time is expired.
-	 *
-	 * @return void
-	 */
-	protected function _unblock()
-	{
-		//$this->_message[] = tr('Unblocking expired sessions.');
-		$timeout = time() - ($this->_blockTime * 60);
-		$query = "UPDATE `login` SET `{$this->_type}_count` = 0 WHERE `lastaccess` < ? AND `user_name` IS NULL";
-		exec_query($query, array($timeout));
 	}
 }

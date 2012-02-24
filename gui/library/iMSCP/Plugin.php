@@ -37,7 +37,7 @@
  * @package		iMSCP_Core
  * @subpackage	Plugin
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 abstract class iMSCP_Plugin
 {
@@ -54,6 +54,20 @@ abstract class iMSCP_Plugin
 	 * @var bool TRUE if plugin configuration is loaded, FALSE otherwise
 	 */
 	protected $_isLoadedConfig = false;
+
+
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->init();
+	}
+
+	/**
+	 * Allow plugin initialization.
+	 */
+	public function init() {}
 
 	/**
 	 * Returns plugin general information.
