@@ -33,6 +33,6 @@ return array(
 	'version' => '0.0.7',
 	'date' => '2012-02-16',
 	'name' => 'Demo',
-	'desc' => 'Plugin that allow to setup an i-MSCP demo server in few minutes',
-	'url' => 'http://i-mscp.net'
+	'desc' => 'Allow to setup an i-MSCP demo server in few minutes',
+	'url' => 'http://wiki.i-mscp.net/doku.php?id=plugins:demo'
 );
