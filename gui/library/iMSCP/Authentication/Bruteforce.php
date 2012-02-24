@@ -144,7 +144,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 		$this->_blockTime = $cfg->BRUTEFORCE_BLOCK_TIME;
 		$this->_waitTime = $cfg->BRUTEFORCE_BETWEEN_TIME;
 
-		$this->unblock();
+		$this->_unblock();
 
 		// Component / Plugin initialization
 		parent::__construct();
@@ -285,19 +285,6 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	}
 
 	/**
-	 * Unblock any Ip address for which blocking time is expired.
-	 *
-	 * @return void
-	 */
-	public function unblock()
-	{
-		//$this->_message[] = tr('Unblocking expired sessions.');
-		$timeout = time() - ($this->_blockTime * 60);
-		$query = "UPDATE `login` SET `{$this->_type}_count` = 0 WHERE `lastaccess` < ? AND `user_name` IS NULL";
-		exec_query($query, array($timeout));
-	}
-
-	/**
 	 * Initialization.
 	 *
 	 * @return void
@@ -363,5 +350,18 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 			)
 		';
 		exec_query($query, array($this->_sessionId, $this->_ipAddr));
+	}
+
+	/**
+	 * Unblock any Ip address for which blocking time is expired.
+	 *
+	 * @return void
+	 */
+	protected function _unblock()
+	{
+		//$this->_message[] = tr('Unblocking expired sessions.');
+		$timeout = time() - ($this->_blockTime * 60);
+		$query = "UPDATE `login` SET `{$this->_type}_count` = 0 WHERE `lastaccess` < ? AND `user_name` IS NULL";
+		exec_query($query, array($timeout));
 	}
 }
