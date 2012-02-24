@@ -168,15 +168,15 @@ function get_init_au2_page($tpl, $phpini)
 
 		// check only to dont break old plans without ini values
 		$tplVars['POST_MAX_SIZE'] = tohtml(($phpini->getDataVal('phpiniPostMaxSize') != 'no')
-			? $phpini->getDataVal('phpiniPostMaxSize') : $phpini->getDataDefaultVal('phpiniPostMaxSize'));
+			? $phpini->getReDefaultPermVal('phpiniPostMaxSize') : $phpini->getDataDefaultVal('phpiniPostMaxSize'));
 		$tplVars['UPLOAD_MAX_FILESIZE'] = tohtml(($phpini->getDataVal('phpiniUploadMaxFileSize') != 'no')
-			? $phpini->getDataVal('phpiniUploadMaxFileSize') : $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'));
+			? $phpini->getReDefaultPermVal('phpiniUploadMaxFileSize') : $phpini->getDataDefaultVal('phpiniUploadMaxFileSize'));
 		$tplVars['MAX_EXECUTION_TIME'] = tohtml(($phpini->getDataVal('phpiniMaxExecutionTime') != 'no')
-			? $phpini->getDataVal('phpiniMaxExecutionTime') : $phpini->getDataDefaultVal('phpiniMaxExecutionTime'));
+			? $phpini->getReDefaultPermVal('phpiniMaxExecutionTime') : $phpini->getDataDefaultVal('phpiniMaxExecutionTime'));
 		$tplVars['MAX_INPUT_TIME'] = tohtml(($phpini->getDataVal('phpiniMaxInputTime') != 'no')
-			? $phpini->getDataVal('phpiniMaxInputTime') : $phpini->getDataDefaultVal('phpiniMaxInputTime'));
+			? $phpini->getReDefaultPermVal('phpiniMaxInputTime') : $phpini->getDataDefaultVal('phpiniMaxInputTime'));
 		$tplVars['MEMORY_LIMIT'] = tohtml(($phpini->getDataVal('phpiniMemoryLimit') != 'no')
-			? $phpini->getDataVal('phpiniMemoryLimit') : $phpini->getDataDefaultVal('phpiniMemoryLimit'));
+			? $phpini->getReDefaultPermVal('phpiniMemoryLimit') : $phpini->getDataDefaultVal('phpiniMemoryLimit'));
 
 		$tplVars['PHP_DIRECTIVES_RESELLER_MAX_VALUES'] = json_encode(
 			array(

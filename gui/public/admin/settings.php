@@ -639,7 +639,7 @@ $tpl->assign(
 		 'TR_SLD_STRICT_VALIDATION_HELP' => tr('Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de.'),
 		 'TR_MAX_DNAMES_LABELS' => tr('Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</small>)'),
 		 'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
-		 'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system wide)'),
+		 'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
 		 'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<span class="bold">allow_url_fopen</span>'),
 		 'TR_PHPINI_REGISTER_GLOBALS' => tr('Value for the %s directive', true, '<span class="bold">register_globals</span>'),
 		 'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<span class="bold">display_errors</span>'),

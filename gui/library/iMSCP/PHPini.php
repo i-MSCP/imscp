@@ -580,6 +580,11 @@ class iMSCP_PHPini
 		return $this->_phpiniRePerm[$key];
 	}
 
+	public function getReDefaultPermVal($key)
+	{
+		return min($this->getRePermVal($key), $this->getDataVal($key));
+	}
+
 	/**
 	 * Returns customer permissions like currently set in this object.
 	 *
