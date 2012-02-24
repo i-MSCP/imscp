@@ -224,7 +224,7 @@ $tpl->assign(
 		'DATATABLE_TRANSLATIONS' => getDataTablesPluginTranslations(),
 		'TR_BULK_ACTIONS' => tr('Bulk Actions'),
 		'TR_PLUGIN' => tr('Plugin'),
-		'TR_DESCRIPTION' => tr('description'),
+		'TR_DESCRIPTION' => tr('Description'),
 		'TR_ACTIVATE' => tr('Activate'),
 		'TR_ACTIVATE_TOOLTIP' => tr('Activate this plugin'),
 		'TR_DEACTIVATE_TOOLTIP' => tr('Deactivate this plugin'),
