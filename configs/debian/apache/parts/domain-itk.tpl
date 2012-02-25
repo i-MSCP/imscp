@@ -91,7 +91,7 @@
 
 	# SECTION php enabled BEGIN.
 		<IfModule mod_php5.c>
-			php_admin_value open_basedir "{HOME_DIR}/:{HOME_DIR}/phptmp/:{PEAR_DIR}/"
+			php_admin_value open_basedir "{HOME_DIR}/:{HOME_DIR}/phptmp/:{PEAR_DIR}/{PHPINI_OPEN_BASEDIR}"
 			php_admin_value upload_tmp_dir "{HOME_DIR}/phptmp/"
 			php_admin_value session.save_path "{HOME_DIR}/phptmp/"
 			php_admin_value sendmail_path '/usr/sbin/sendmail -f webmaster@{DMN_NAME} -t -i'
