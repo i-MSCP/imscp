@@ -22,6 +22,7 @@
  * @copyright	2010-2012 by i-MSCP team
  * @author		Hannes Koschier <hannes@cheat.at>
  * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
+ * @contributor Paweł Iwanowski <kontakt@raisen.pl>
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
@@ -34,7 +35,8 @@
  * @subpackage	PHPini
  * @author		Hannes Koschier <hannes@cheat.at>
  * @contributor	Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.6
+ * @contributor Paweł Iwanowski <kontakt@raisen.pl>
+ * @version		0.0.7
  */
 class iMSCP_PHPini
 {
@@ -580,6 +582,12 @@ class iMSCP_PHPini
 		return $this->_phpiniRePerm[$key];
 	}
 
+    /**
+     * Returns default value for the giver reseller permission.
+     *
+     * @param string $key Permissions key name
+     * @return string Permissions value
+     */
 	public function getReDefaultPermVal($key)
 	{
 		return min($this->getRePermVal($key), $this->getDataVal($key));
