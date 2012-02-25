@@ -256,7 +256,7 @@ function check_externel_events()
         }
     } elseif (isset($_SESSION['edit'])) {
         if ('_yes_' === $_SESSION['edit']) {
-            set_page_message(tr('User data were succefully updated.'), 'success');
+            set_page_message(tr('User data were successfully updated.'), 'success');
         } else {
             set_page_message(tr('User data were not updated.'), 'error');
         }

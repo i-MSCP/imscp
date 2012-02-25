@@ -57,7 +57,7 @@ function check_user_data()
 
 	if (isset($_POST['datepicker']) && !empty($_POST['datepicker'])) {
 		if (($dmn_expire = strtotime($_POST['datepicker'])) === false) {
-			set_page_message(tr('Invalide domain expiration date.'), 'error');
+			set_page_message(tr('Invalid expiration date.'), 'error');
 			return false;
 		}
 	} elseif (isset($_POST['never_expire'])) {
