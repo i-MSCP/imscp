@@ -251,6 +251,13 @@
 								<input name="phpini_memory_limit" id="phpini_memory_limit" type="text" value="{PHPINI_MEMORY_LIMIT}"/> {TR_MIB}
 							</td>
 						</tr>
+						<tr>
+							<td><label for="phpini_open_basedir">{TR_PHPINI_OPEN_BASEDIR}</label>
+								<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}></span></td>
+							<td>
+								<input name="phpini_open_basedir" id="phpini_open_basedir" type="text" value="{PHPINI_OPEN_BASEDIR}"/>
+							</td>
+						</tr>
 						<!-- BDP: php_editor_disable_functions_block -->
 						<tr>
 							<td><label>{TR_PHPINI_DISABLE_FUNCTIONS}</label></td>
