@@ -1489,6 +1489,21 @@ class iMSCP_Update_Database extends iMSCP_Update
 			// change to fix with RFC
 			'ALTER IGNORE TABLE `mail_users` CHANGE `mail_addr` `mail_addr` VARCHAR(254) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL'
 		);
+	}
 
+	/**
+	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers.
+	 *
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
+	 * @return void
+	 */
+	protected function _databaseUpdate_105()
+	{
+		/** @var $dbConfig iMSCP_Config_Handler_Db */
+		$dbConfig = iMSCP_Registry::get('dbConfig');
+
+		if (isset($dbConfig->PHPINI_OPEN_BASEDIR)) {
+			$dbConfig->PHPINI_OPEN_BASEDIR = '';
+		}
 	}
 }
