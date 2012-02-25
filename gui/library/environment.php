@@ -242,6 +242,10 @@ $config->MAIN_MENU_SHOW_LABELS = true;
 // Plugins config namespace
 $config->PLUGIN = array();
 
+
+// Paths appended to the default PHP open_basedir directive of customers
+$config->PHPINI_OPEN_BASEDIR = '';
+
 // Initialize the application
 iMSCP_Initializer::run($config);
 

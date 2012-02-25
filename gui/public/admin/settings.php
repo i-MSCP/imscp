@@ -96,6 +96,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$phpini->setData('phpiniMaxExecutionTime', clean_input($_POST['phpini_max_execution_time']));
 	$phpini->setData('phpiniMaxInputTime', clean_input($_POST['phpini_max_input_time']));
 	$phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
+	$phpini_open_basedir = isset($_POST['phpini_open_basedir']) ? clean_input($_POST['phpini_open_basedir']) : $cfg->PHPINI_OPEN_BASEDIR;
 	$mainMenuShowLabels = (intval($_POST['mainMenuShowLabels'])) ? true : false;
 
 
@@ -117,7 +118,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$phpini->setData('phpiniDisableFunctions', $cfg->PHPINI_DISABLE_FUNCTIONS);
 	}
 
-	if ((!is_number($lostpwd_timeout))
+	if(!is_scalar($phpini_open_basedir)) { // No more check here - Admin must know what he do...
+		set_page_message(tr('Wrong value for the PHP open_basedir directive.'), 'error');
+	} elseif ((!is_number($lostpwd_timeout))
 		|| (!is_number($pwd_chars)) || (!is_number($bruteforce_max_login))
 		|| (!is_number($bruteforce_block_time)) || (!is_number($bruteforce_between_time))
 		|| (!is_number($bruteforce_max_capcha)) || (!is_number($domain_rows_per_page))
@@ -177,6 +180,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->PHPINI_MAX_EXECUTION_TIME = $phpini->getDataVal('phpiniMaxExecutionTime');
 		$db_cfg->PHPINI_MAX_INPUT_TIME = $phpini->getDataVal('phpiniMaxInputTime');
 		$db_cfg->PHPINI_MEMORY_LIMIT = $phpini->getDataVal('phpiniMemoryLimit');
+		$db_cfg->PHPINI_OPEN_BASEDIR = $phpini_open_basedir;
 		$db_cfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
 		$db_cfg->MAIN_MENU_SHOW_LABELS = $mainMenuShowLabels;
 		$cfg->replaceWith($db_cfg);
@@ -589,6 +593,7 @@ $tpl->assign(
 		 'PHPINI_MAX_EXECUTION_TIME' => $phpini->getDataVal('phpiniMaxExecutionTime'),
 		 'PHPINI_MAX_INPUT_TIME' => $phpini->getDataVal('phpiniMaxInputTime'),
 		 'PHPINI_MEMORY_LIMIT' => $phpini->getDataVal('phpiniMemoryLimit'),
+		 'PHPINI_OPEN_BASEDIR' => $cfg->PHPINI_OPEN_BASEDIR,
 		 'TR_GENERAL_SETTINGS' => tr('General settings'),
 		 'TR_SETTINGS' => tr('Settings'),
 		 'TR_MESSAGE' => tr('Message'),
@@ -653,6 +658,8 @@ $tpl->assign(
 		 'TR_PHPINI_MAX_EXECUTION_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_execution_time</span>'),
 		 'TR_PHPINI_MAX_INPUT_TIME' => tr('Value for the %s directive', true, '<span class="bold">max_input_time</span>'),
 		 'TR_PHPINI_MEMORY_LIMIT' => tr('Value for the %s directive', true, '<span class="bold">memory_limit</span>'),
+		 'TR_PHPINI_OPEN_BASEDIR' => tr('Value for the %s directive', true, '<span class="bold">open_basedir</span>'),
+		 'TR_PHPINI_OPEN_BASEDIR_TOOLTIP' => json_encode(tr('The directory/file paths are appended to the default PHP open_basedir directive of customers. Each of them must be separated by PATH_SEPARATOR. See the PHP documentation for more information.')),
 		 'TR_PHPINI_DISABLE_FUNCTIONS' => tr('Value for the %s directive', true, '<span class="bold">disable_functions</span>'),
 		 'TR_ORDERS_SETTINGS' => tr('Orders settings'),
 		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true),
