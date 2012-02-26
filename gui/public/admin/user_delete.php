@@ -511,7 +511,6 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
 
 	try {
     	if(!delete_domain($domainId)) {
-			set_page_message(tr(''), 'error');
 			throw new iMSCP_Exception('Domain account not found.');
 		}
 
@@ -520,7 +519,6 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
 	} catch(iMSCP_Exception $e) {
 		set_page_message(tr('Unable to delete the domain. Please, consult admin logs or your mail for more information.'), 'error');
 		write_log(sprintf("System was unable to delete domain account with ID %s. Message was: %s", $domainId, $e->getMessage()), E_USER_ERROR);
-
 	}
 
     redirectTo('manage_users.php');
