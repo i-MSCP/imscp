@@ -13,7 +13,7 @@
 		<h3 class="domains"><span>{TR_DOMAINS}</span></h3>
 
 		<!-- BDP: domain_list -->
-		<table class="tablesorter">
+		<table class="firstColFixed">
 			<tr>
 				<th>{TR_NAME}</th>
 				<th>{TR_CREATE_DATE}</th>
@@ -24,12 +24,12 @@
 			<!-- BDP: domain_item -->
 			<tr>
 				<!-- BDP: domain_status_reload_true -->
-				<td style="width: 300px">
+				<td>
 					<a href="http://{DOMAIN_NAME}/" class="icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</a>
 				</td>
 				<!-- EDP: domain_status_reload_true -->
 				<!-- BDP: domain_status_reload_false -->
-				<td style="width: 300px">
+				<td>
 					<span class="icon i_domain_icon" title="{DOMAIN_NAME}">{DOMAIN_NAME}</span>
 				</td>
 				<!-- EDP: domain_status_reload_false -->
@@ -50,7 +50,7 @@
 		<!-- EDP: als_message -->
 
 		<!-- BDP: als_list -->
-		<table class="tablesorter">
+		<table class="firstColFixed">
 			<tr>
 				<th>{TR_NAME}</th>
 				<th>{TR_MOUNT}</th>
@@ -62,12 +62,12 @@
 			<!-- BDP: als_item -->
 			<tr>
 				<!-- BDP: als_status_reload_true -->
-				<td style="width: 300px">
-					<a href="http://{ALS_NAME}/" class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</a>
+				<td>
+					<a href="http://{ALS_NAME}/" class="icon i_domain_icon" target="_blank" title="{ALS_NAME}">{ALS_NAME}</a>
 				</td>
 				<!-- EDP: als_status_reload_true -->
 				<!-- BDP: als_status_reload_false -->
-				<td style="width: 300px">
+				<td>
 					<span class="icon i_domain_icon" title="{ALS_NAME}">{ALS_NAME}</span>
 				</td>
 				<!-- EDP: als_status_reload_false -->
@@ -95,7 +95,7 @@
 		<!-- EDP: sub_message -->
 
 		<!-- BDP: sub_list -->
-		<table class="tablesorter">
+		<table class="firstColFixed">
 			<tr>
 				<th>{TR_NAME}</th>
 				<th>{TR_MOUNT}</th>
@@ -107,12 +107,12 @@
 			<!-- BDP: sub_item -->
 			<tr>
 				<!-- BDP: sub_status_reload_true -->
-				<td style="width: 300px">
-					<a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
+				<td>
+					<a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="icon i_domain_icon" target="_blank" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a>
 				</td>
 				<!-- EDP: sub_status_reload_true -->
 				<!-- BDP: sub_status_reload_false -->
-				<td style="width: 300px">
+				<td>
 					<span class="icon i_domain_icon" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</span>
 				</td>
 				<!-- EDP: sub_status_reload_false -->
@@ -140,7 +140,7 @@
 		<!-- EDP: dns_message -->
 
 		<!-- BDP: dns_list -->
-		<table class="tablesorter">
+		<table class="firstColFixed">
 			<tr>
 				<th>{TR_DOMAIN_NAME}</th>
 				<th>{TR_DNS_NAME}</th>
@@ -151,7 +151,7 @@
 			</tr>
 			<!-- BDP: dns_item -->
 			<tr>
-				<td style="width: 300px"><span class="icon i_domain_icon">{DNS_DOMAIN}</span></td>
+				<td><span class="icon i_domain_icon">{DNS_DOMAIN}</span></td>
 				<td>{DNS_NAME}</td>
 				<td>{DNS_CLASS}</td>
 				<td>{DNS_TYPE}</td>
