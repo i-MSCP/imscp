@@ -363,6 +363,7 @@
 				<file_manager>
 					<label>Filemanager</label>
 					<uri>{FILEMANAGER_PATH}</uri>
+					<target>{FILEMANAGER_TARGET}</target>
 					<privilege_callback name="customerHasFeature" param="ftp"/>
 				</file_manager>
 				<phpmyadmin>
