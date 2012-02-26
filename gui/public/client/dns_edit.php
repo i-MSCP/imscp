@@ -612,8 +612,10 @@ function check_fwd_data($tpl, $edit_id) {
 	}
 
 	$nameValidationError = '';
-	if(!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $record_domain), $nameValidationError)) {
-		set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $nameValidationError), 'error');
+	if(in_array($_POST['type'], array('A', 'AAAA', 'CNAME'))) {
+		if(!validate_NAME(array('name' => $_POST['dns_name'], 'domain' => $record_domain), $nameValidationError)) {
+			set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $nameValidationError), 'error');
+		}
 	}
 
 	switch ($_POST['type']) {
