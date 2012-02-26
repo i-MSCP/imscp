@@ -63,7 +63,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `uniqkey` varchar(255) collate utf8_unicode_ci default NULL,
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
-  UNIQUE KEY `admin_name` (`admin_name`)
+  UNIQUE KEY `admin_name` (`admin_name`),
+  KEY `created_by` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -117,7 +118,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '105'),
+('DATABASE_REVISION', '106'),
 ('PHPINI_ALLOW_URL_FOPEN', 'Off'),
 ('PHPINI_DISPLAY_ERRORS', 'Off'),
 ('PHPINI_REGISTER_GLOBALS', 'Off'),
@@ -202,7 +203,8 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
   `alias_ip_id` int(10) unsigned default NULL,
   `url_forward` varchar(200) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`alias_id`)
+  PRIMARY KEY  (`alias_id`),
+  KEY `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -421,7 +423,8 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `mail_auto_respond_text` text collate utf8_unicode_ci,
   `quota` int(10) default '104857600',
   `mail_addr` varchar(254) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`mail_id`)
+  PRIMARY KEY  (`mail_id`),
+  KEY `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -602,7 +605,8 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `php_ini_max_max_execution_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_max_input_time` int(11) NOT NULL DEFAULT '0',
   `php_ini_max_memory_limit` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`),
+  KEY `reseller_id` (`reseller_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -653,7 +657,8 @@ CREATE TABLE IF NOT EXISTS `sql_database` (
   `sqld_id` int(10) unsigned NOT NULL auto_increment,
   `domain_id` int(10) unsigned default '0',
   `sqld_name` varchar(64) character set utf8 collate utf8_bin default 'n/a',
-  PRIMARY KEY `sqld_id` (`sqld_id`)
+  PRIMARY KEY `sqld_id` (`sqld_id`),
+  KEY `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -667,7 +672,8 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqld_id` int(10) unsigned default '0',
   `sqlu_name` varchar(64) collate utf8_unicode_ci default 'n/a',
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
-  PRIMARY KEY `sqlu_id` (`sqlu_id`)
+  PRIMARY KEY `sqlu_id` (`sqlu_id`),
+  KEY `sqld_id` (`sqld_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -720,7 +726,8 @@ CREATE TABLE IF NOT EXISTS `subdomain` (
   `subdomain_mount` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subdomain_status` varchar(255) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`subdomain_id`)
+  PRIMARY KEY  (`subdomain_id`),
+  KEY `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -736,7 +743,8 @@ CREATE TABLE IF NOT EXISTS `subdomain_alias` (
   `subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_alias_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`subdomain_alias_id`)
+  PRIMARY KEY  (`subdomain_alias_id`),
+  KEY `alias_id` (`alias_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------

@@ -1506,4 +1506,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$dbConfig->PHPINI_OPEN_BASEDIR = '';
 		}
 	}
+
+	/**
+	 * Database schema update (KEY for some fields)
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_106(){
+		return array(
+			$this->_addIndex('admin', 'created_by', '', 'INDEX'),
+			$this->_addIndex('domain_aliasses', 'domain_id', '', 'INDEX'),
+			$this->_addIndex('mail_users', 'domain_id', '', 'INDEX'),
+			$this->_addIndex('reseller_props', 'reseller_id', '', 'INDEX'),
+			$this->_addIndex('sql_database', 'domain_id', '', 'INDEX'),
+			$this->_addIndex('sql_user', 'sqld_id', '', 'INDEX'),
+			$this->_addIndex('subdomain', 'domain_id', '', 'INDEX'),
+			$this->_addIndex('subdomain_alias', 'alias_id', '', 'INDEX')
+		);
+	}
 }
