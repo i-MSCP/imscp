@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-02-22 06:35+0100\n"
+"POT-Creation-Date: 2012-02-26 06:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2292,6 +2292,9 @@ msgstr ""
 msgid "Invalid certificate."
 msgstr ""
 
+msgid "Invalid expiration date."
+msgstr ""
+
 msgid "Invalid group name!"
 msgstr ""
 
@@ -2320,9 +2323,6 @@ msgid "Invalid type given. String expected"
 msgstr ""
 
 msgid "Invalid user Id."
-msgstr ""
-
-msgid "Invalide domain expiration date."
 msgstr ""
 
 #, php-format
@@ -3077,7 +3077,7 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr ""
 
-msgid "PHP Settings (system wide)"
+msgid "PHP Settings (system default)"
 msgstr ""
 
 msgid "PHP Support: disabled"
@@ -4370,6 +4370,12 @@ msgid "The directory %s was created."
 msgstr ""
 
 msgid ""
+"The directory/file paths are appended to the default PHP open_basedir "
+"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
+"See the PHP documentation for more information."
+msgstr ""
+
+msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
 msgstr ""
@@ -4797,7 +4803,7 @@ msgstr ""
 msgid "User data were not updated."
 msgstr ""
 
-msgid "User data were succefully updated."
+msgid "User data were successfully updated."
 msgstr ""
 
 msgid ""
@@ -5069,6 +5075,9 @@ msgid "Wrong username"
 msgstr ""
 
 msgid "Wrong username."
+msgstr ""
+
+msgid "Wrong value for the PHP open_basedir directive."
 msgstr ""
 
 msgid "Wrong_request."
@@ -5395,9 +5404,6 @@ msgid "day"
 msgstr ""
 
 msgid "days"
-msgstr ""
-
-msgid "description"
 msgstr ""
 
 msgid "disabled"
