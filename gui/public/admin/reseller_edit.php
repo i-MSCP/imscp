@@ -60,30 +60,10 @@ function &admin_getData($resellerId, $forUpdate = false, $recoveryMode = false)
 		$query = "
 			SELECT
 				-- Reseller personal data
-				`admin_name`, `fname`, `lname`, `gender`, `firm`, `zip`, `city`, `state`,
-				`country`, `email`, `phone`, `fax`, `street1`, `street2`,
+				t1.*,
 
 				-- Reseller limits and assigned items
-				`max_dmn_cnt`, `current_dmn_cnt`, `max_sub_cnt`, `current_sub_cnt`, `max_als_cnt`,
-				`current_als_cnt`, `max_mail_cnt`, `current_mail_cnt`, `max_ftp_cnt`, `current_ftp_cnt`,
-				`max_sql_db_cnt`, `current_sql_db_cnt`, `max_sql_user_cnt`, `current_sql_user_cnt`,
-				`max_traff_amnt`, `current_traff_amnt`, `max_disk_amnt`, `current_disk_amnt`,
-
-				-- Reseller assigned IP addresses
-				`reseller_ips`,
-
-				-- Reseller customer id
-				`t2`.`customer_id`,
-
-				-- Reseller features permissions
-				`software_allowed`, `softwaredepot_allowed`, `websoftwaredepot_allowed`,
-				`support_system`,
-
-				-- PHP Editor permissions and max values for reseller
-				`php_ini_system`, `php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
-				`php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
-				`php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
-				`php_ini_max_max_input_time`, `php_ini_max_memory_limit`,
+				t2.*,
 
 				-- Whether or not a customer has unlimited domain aliases (count > 0 if yes)
 				COUNT(DISTINCT IF(`t3`.`domain_alias_limit` = 0, 1, NULL)) `unlimitedDomainAliases`,
@@ -117,13 +97,6 @@ function &admin_getData($resellerId, $forUpdate = false, $recoveryMode = false)
 				-- count Sql users already created
 				COUNT(DISTINCT `t10`.`sqlu_id`) `nbSqlUsers`,
 
-				-- Total traffic already in use
-				IFNULL(
-					SUM(DISTINCT `t11`.`dtraff_web`) + SUM(DISTINCT `t11`.`dtraff_ftp`) +
-					SUM(DISTINCT `t11`.`dtraff_mail`) + SUM(DISTINCT `t11`.`dtraff_pop`),
-					0
-				) `totalTraffic`,
-
 				-- Total disk space already in use
 				SUM(DISTINCT `t3`.`domain_disk_usage`) `totalDiskspace`
 			FROM
@@ -146,8 +119,6 @@ function &admin_getData($resellerId, $forUpdate = false, $recoveryMode = false)
 				`sql_database` `t9` ON (`t9`.`domain_id` = `t3`.`domain_id`)
 			LEFT JOIN
 				`sql_user` `t10` ON (`t10`.`sqld_id` = `t9`.`sqld_id`)
-			LEFT JOIN
-				`domain_traffic` `t11` ON (`t11`.`domain_id` = `t3`.`domain_id`)
 			WHERE
 				`t1`.`admin_id` = ?
 			GROUP BY
@@ -165,6 +136,25 @@ function &admin_getData($resellerId, $forUpdate = false, $recoveryMode = false)
 
 		$data['password'] = '';
 		$data['password_confirmation'] = '';
+
+		$query = "
+			SELECT
+				-- Total traffic already in use
+				IFNULL(
+					SUM(`dtraff_web`) + SUM(`dtraff_ftp`) +
+					SUM(`dtraff_mail`) + SUM(`dtraff_pop`),
+					0
+				) `totalTraffic`
+			FROM
+				`domain_traffic`
+			WHERE
+				dtraff_time > UNIX_TIMESTAMP(CONCAT(YEAR(NOW()),'-', MONTH(NOW()), '-', '1'))
+			AND
+				`domain_id` IN (SELECT `admin_id` FROM `admin` WHERE `created_by` = ?)
+		";
+
+		$stmt = exec_query($query, $resellerId);
+		$data = array_merge($data, $stmt->fetchRow());
 
 		// Ip data begin
 
