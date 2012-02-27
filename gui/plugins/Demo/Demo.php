@@ -341,13 +341,16 @@ class iMSCP_Plugin_Demo extends iMSCP_Plugin_Action implements iMSCP_Events_List
 
 		foreach ($this->getConfigParam('user_accounts') as $account) {
 			if (isset($account['label']) && isset($account['username']) && isset($account['password'])) {
-				$query = 'SELECT COUNT(`admin_id`) `cnt` FROM `admin` WHERE `admin_name` = ? AND (`admin_pass` = ? OR `admin_pass` = MD5(?))';
-				$stmt = exec_query($query, array(idn_to_ascii($account['username']), crypt($account['password']), $account['password']));
+				$query = 'SELECT `admin_pass` FROM `admin` WHERE `admin_name` = ?';
+				$stmt = exec_query($query, idn_to_ascii($account['username']));
 
-				if ($stmt->fields['cnt'] > 0) {
-					$credentials[] = array(
-						'label' => $account['label'], 'username' => $account['username'], 'password' => $account['password']
-					);
+				if ($stmt->rowCount()) {
+					$dbPassword = $stmt->fields['admin_pass'];
+					if(crypt($account['password'], $dbPassword) == $dbPassword || $dbPassword == md5($account['password'])) {
+						$credentials[] = array(
+							'label' => $account['label'], 'username' => $account['username'], 'password' => $account['password']
+						);
+					}
 				}
 			}
 		}
