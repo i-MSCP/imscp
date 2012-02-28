@@ -200,7 +200,7 @@ sub delete{
 		my $destDir 	= "$dir/".$mountPoints{$_};
 		$destDir		=~ s~/+~/~g;
 		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make();
-		$rs |= execute("cp -RTfv $sourceDir $destDir", \$stdout, \$stderr);
+		$rs |= execute("cp -pRTfv $sourceDir $destDir", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 		return $rs if $rs;
@@ -220,7 +220,7 @@ sub delete{
 		my $sourceDir	= "$dir/$_";
 		$sourceDir		=~ s~/+~/~g;
 		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make();
-		$rs |= execute("cp -RTfv $sourceDir $destDir ", \$stdout, \$stderr);
+		$rs |= execute("cp -pRTfv $sourceDir $destDir ", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
 		return $rs if $rs;
