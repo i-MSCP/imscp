@@ -205,13 +205,14 @@ function add_user_data($reseller_id)
 	}
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeAddDomain, array(
-				'domain_name' => $dmn_name,
-				'created_by' => $reseller_id,
-				'customer_id' => $customer_id,
-				'email' => $user_email
+		iMSCP_Events::onBeforeAddDomain,
+		array(
+			'domainName' => $dmn_name,
+			'createdBy' => $reseller_id,
+			'customerId' => $customer_id,
+			'customerEmail' => $user_email
 
-			)
+		)
 	);
 
 	$query = "
@@ -235,7 +236,6 @@ function add_user_data($reseller_id)
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	//print $db->errorMsg();
 	$record_id = $db->insertId();
 
 	$query = "
@@ -265,16 +265,17 @@ function add_user_data($reseller_id)
 	$dmn_id = $db->insertId();
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterAddDomain, array(
-							'domain_name' => $dmn_name,
-							'created_by' => $reseller_id,
-							'customer_id' => $customer_id,
-							'email' => $user_email,
-							'domain_id' => $dmn_id
-						)
+		iMSCP_Events::onAfterAddDomain,
+		array(
+			'domainName' => $dmn_name,
+			'createdBy' => $reseller_id,
+			'customerId' => $record_id,
+			'customerEmail' => $user_email,
+			'domainId' => $dmn_id
+		)
 	);
 
-	//save php.ini if exist
+	// save php.ini if exist
 	if ($phpini_system == 'yes') {
 		/* @var $phpini iMSCP_PHPini */
 		$phpini = iMSCP_PHPini::getInstance();

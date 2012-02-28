@@ -395,11 +395,11 @@ function _client_updateSubdomainData($subdomainId, $subdomainType, $forwardUrl)
 		return false;
 	}
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, array('subdomain_id' => $subdomainId));
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditSubdomain, array('subdomainId' => $subdomainId));
 
 	exec_query($query, array($forwardUrl, $cfg->ITEM_CHANGE_STATUS, $subdomainId));
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, array('subdomain_id' => $subdomainId));
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditSubdomain, array('subdomainId' => $subdomainId));
 
 	return true;
 }

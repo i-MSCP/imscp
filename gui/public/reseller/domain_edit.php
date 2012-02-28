@@ -861,7 +861,9 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 				$daemonRequest= true;
 			}
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomain, array('domain_id' => $domainId));
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onBeforeEditDomain, array('domainId' => $domainId)
+			);
 
 			// Update domain properties
 			$query = "
@@ -894,7 +896,9 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 									$phpEditor->getClPermVal('phpiniDisableFunctions'),
 									$domainId));
 
-			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditDomain, array('domain_id' => $domainId));
+			iMSCP_Events_Manager::getInstance()->dispatch(
+				iMSCP_Events::onAfterEditDomain, array('domainId' => $domainId)
+			);
 
 			// Update Ftp quota limit if needed
 			if ($data['domain_disk_limit'] != $data['fallback_domain_disk_limit']) {

@@ -126,12 +126,12 @@ if ($num > 0) {
 /**
  * @todo useDB prepared statements
  */
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mail_id' => $delete_id));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $delete_id));
 
 $query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
 exec_query($query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
 
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mail_id' => $delete_id));
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $delete_id));
 
 update_reseller_c_props(get_reseller_id($data['domain_id']));
 

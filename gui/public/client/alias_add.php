@@ -285,7 +285,8 @@ function add_domain_alias() {
 	/** @var $db iMSCP_Database */
 	$db = iMSCP_Registry::get('db');
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeAddDomainAlias, array('domain_id' => $cr_user_id, 'alias_name' => $alias_name));
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeAddDomainAlias, array('domainId' => $cr_user_id, 'domainAliasName' => $alias_name));
 
 	// Begin add new alias domain
 
@@ -302,8 +303,14 @@ function add_domain_alias() {
 
 	$als_id = $db->insertId();
 
-	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddDomainAlias, array('domain_id' => $cr_user_id, 'alias_name' => $alias_name,
-			'domain_alias_id' => $als_id));
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onAfterAddDomainAlias,
+		array(
+			'domainId' => $cr_user_id,
+			'domainAliasName' => $alias_name,
+			'domainAliasId' => $als_id
+		)
+	);
 
 	update_reseller_c_props(get_reseller_id($cr_user_id));
 

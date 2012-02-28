@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.9
+ * @version		0.0.10
  */
 class iMSCP_Events
 {
@@ -46,6 +46,7 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onRestRequest = 'onRestRequest';
+
 	/**
 	 * The onLoginScriptStart event is triggered at the very beginning of Login script.
 	 *
@@ -171,7 +172,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
-	 *  - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
+	 *   - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
 	 *
 	 * @var string
 	 */
@@ -188,7 +189,6 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
-
 
 	/**
 	 * The onBeforeAuthentication event is triggered before the authentication process.
@@ -217,7 +217,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
-	 * - identity: A stdClass object that represent user identity data
+	 * - identity: A stdClass object that contains the user' identity data
 	 *
 	 * @var string
 	 */
@@ -293,7 +293,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - userId: The user id being edited.
+	 *  - userId: An integer representing the ID of user being edited.
 	 *
 	 * @var string
 	 */
@@ -304,7 +304,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - userId: The user id that has been edited.
+	 *  - userId: An integer representing the ID of user that has been edited
 	 *
 	 * @var string
 	 */
@@ -315,7 +315,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - userId: The user id being deleted.
+	 * - userId: An integer representing the ID of user being deleted
 	 *
 	 * @var string
 	 */
@@ -326,7 +326,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - userId: The user id that has been deleted.
+	 * - userId: An integer representing the ID of user that has been deleted
 	 *
 	 * @var string
 	 */
@@ -337,7 +337,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - domainId: The domain id being deleted.
+	 *  - domainId: An integer representing the ID of domain being deleted
 	 *
 	 * @var string
 	 */
@@ -348,7 +348,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - userId: The domain id that has been deleted.
+	 *  - userId: an integer representing the ID of domain that has been deleted
 	 *
 	 * @var string
 	 */
@@ -377,7 +377,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - ftpId: The Ftp account id being edited.
+	 *  - ftpId: An integer representing the ID of Ftp account being edited
 	 *
 	 * @var string
 	 */
@@ -388,7 +388,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - ftpId: The Ftp account id that has been edited.
+	 *  - ftpId: An integer representing the ID of Ftp account that has been edited
 	 *
 	 * @var string
 	 */
@@ -399,7 +399,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - ftpId: The Ftp account id being deleted.
+	 *  - ftpId: An integer representing the ID of Ftp account being deleted
 	 *
 	 * @var string
 	 */
@@ -410,7 +410,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - ftpId: The Ftp account id that has been deleted.
+	 *  - ftpId: An integer reprensenting the ID of Ftp account that has been deleted
 	 *
 	 * @var string
 	 */
@@ -439,7 +439,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - sqlUserId: The Sql user id being edited.
+	 *  - sqlUserId: An integer representing the ID of Sql user being edited
 	 *
 	 * @var string
 	 */
@@ -450,7 +450,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - sqlUserId: The Sql user id that has been edited.
+	 *  - sqlUserId: An integer representing the ID of Sql user that has been edited
 	 *
 	 * @var string
 	 */
@@ -461,7 +461,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - sqlUserId: The Sql user id being deleted.
+	 *  - sqlUserId: An integer representing the ID of Sql user being deleted
 	 *
 	 * @var string
 	 */
@@ -472,7 +472,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - sqlUserId: The Sql user id that has been deleted.
+	 *  - sqlUserId: An integer representing the ID of Sql user that has been deleted
 	 *
 	 * @var string
 	 */
@@ -501,7 +501,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - sqlDbId: The Sql user id being deleted.
+	 *  - sqlDbId: An integer representing the ID of Sql database being deleted
 	 *
 	 * @var string
 	 */
@@ -512,7 +512,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * - sqlDbId: The Sql user id that has been deleted.
+	 *  - sqlDbId: An integer representing the ID of Sql database that has been deleted
 	 *
 	 * @var string
 	 */
@@ -539,7 +539,6 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onAfterUpdatePluginList = 'onAfterUpdatePLuginList';
-
 
 	/**
 	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
@@ -634,10 +633,10 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domain_name: Name of a domain to create
-	 *  - created_by: Id of a reseller who is adding domain
-	 *  - customer_id: Id of owner of the domain
-	 *  - email: email of an owner
+	 *  - domainName: A string representing the name of the domain being created
+	 *  - createdBy: An integer representing the ID of the reseller that adds the domain
+	 *  - customerId: An integer representitng the ID of the customer for which the domain is added
+	 *  - customerEmail: A string representing the email of the customer for which the domain is added
 	 *
 	 * @var string
 	 */
@@ -648,11 +647,11 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domain_name: Name of a domain to create
-	 *  - created_by: Id of a reseller who is adding domain
-	 *  - customer_id: Id of owner of the domain
-	 *  - email: email of an owner
-	 *  - domain_id: id of created database record
+	 *  - domainName: A string representing the name of a the domain that has been added
+	 *  - createdBy: An integer representing the ID of the reseller that added the domain
+	 *  - customerId: An integer representing the ID of the customer for which the domain has been added
+	 *  - customerEmail: A string representing the email of customer for which the domain has been added
+	 *  - domainId: An integer representing the ID of the domain that has been added
 	 *
 	 * @var string
 	 */
@@ -663,7 +662,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domain_id: Id of a domain to edit
+	 *  - domainId: An integer representing the ID of the domain being edited
 	 *
 	 * @var string
 	 */
@@ -674,7 +673,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - domain_id: Id of a domain to edit
+	 *  - domainId: An integer reprensenting the ID of the domain that has been edited
 	 *
 	 * @var string
 	 */
@@ -685,9 +684,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - subdomain_name: name of a subdomain to add
-	 *  - domain_id: parent domain id
-	 *  - user_id: owner id
+	 *  - subdomainName: A string representing the name of the subdomain being added
+	 *  - domainId: An integer representing the ID of the parent domain
+	 *  - customerId: An integer representing the ID of the customer for which the subdomain is added
 	 *
 	 * @var string
 	 */
@@ -698,10 +697,10 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - subdomain_name: name of a subdomain to add
-	 *  - domain_id: parent domain id
-	 *  - user_id: owner id
-	 *  - subdomain_id: id of a created database record
+	 *  - subdomainName: A string representing the name of the subdomain that has been added
+	 *  - domainId: An integer representing the ID of the parent domain
+	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
+	 *  - subdomainId: An integer representing the ID of thesubdomain that has been added
 	 *
 	 * @var string
 	 */
@@ -712,7 +711,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomain_id: id of a subdomain
+	 *  - subdomainId: An integer representing the ID of the subdomain being edited
 	 *
 	 * @var string
 	 */
@@ -723,7 +722,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomain_id: id of a subdomain
+	 *  - subdomainId: An integer representing the ID of the subdomain that has been edited
 	 *
 	 * @var string
 	 */
@@ -734,7 +733,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomain_id: id of a subdomain
+	 *  - subdomainId: An integer representing the ID of the subdomain being deleted
 	 *
 	 * @var string
 	 */
@@ -745,7 +744,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - subdomain_id: id of a subdomain
+	 *  - subdomainId: An integer representing the ID of the subdomain that has been deleted
 	 *
 	 * @var string
 	 */
@@ -756,8 +755,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domain_id: id of a parent domain
-	 *  - alias_name: name of alias to add
+	 *  - domainId: An integer representing the ID of the parent domain
+	 *  - domainAliasName: A string representing the name of the domain alias being added
 	 *
 	 * @var string
 	 */
@@ -768,8 +767,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - domain_id: id of a parent domain
-	 *  - alias_name: name of alias to add
+	 *  - domainId: An integer representing the ID of the parent domain
+	 *  - domainAliasName: A string representing the name of the domain alias that has been added
+	 *  - domainAliasId: An integer representing the ID of the domain alias that has been added
 	 *
 	 * @var string
 	 */
@@ -780,7 +780,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - alias_id: id of an alias to edit
+	 *  - domainAliasId: An integer representing the ID of the domain alias being edited
 	 *
 	 * @var string
 	 */
@@ -791,7 +791,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - alias_id: id of a created database record
+	 *  - domainAliasId: An integer representing the ID of the domain alias that has been edited
 	 *
 	 * @var string
 	 */
@@ -802,7 +802,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - alias_id: id of alias to delete
+	 *  - domainAliasId: An integer representing the  ID of the domain alias being deleted
 	 *
 	 * @var string
 	 */
@@ -813,7 +813,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - alias_id: id of alias to delete
+	 *  - domainAliasId: An integer representing the ID of the domain alias that has been deleted
 	 *
 	 * @var string
 	 */
@@ -824,8 +824,8 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - mail_acc: email login (before @)
-	 *  - mail_addr: email (with domain included)
+	 *  - mailUsername: A string representing the local part of the email account being added
+	 *  - mailAddress: A string representing the complete email address of the mail account being added
 	 *
 	 * @var string
 	 */
@@ -836,9 +836,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
-	 *  - mail_acc: email login (before @)
-	 *  - mail_addr: email (with domain included)
-	 *  - mail_id: id of a created database record
+	 *  - mailUsername: A string representing the local part of the email account that has been added
+	 *  - mailAddress: A string representing the complete address of the mail account that has been added
+	 *  - mailId: An integer representing the ID of the email account that has been added
 	 *
 	 * @var string
 	 */
@@ -849,7 +849,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mail_id: id of a mail to edit
+	 *  - mailId: An integer representing the ID of the mail account being edited
 	 *
 	 * @var string
 	 */
@@ -860,7 +860,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mail_id: id of a mail which was edited
+	 *  - mailId: An integer representing the ID of the mail account that has been edited
 	 *
 	 * @var string
 	 */
@@ -871,7 +871,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mail_id: id of a mail to delete
+	 *  - mailId: An integer representing the ID of the mail account being deleted
 	 *
 	 * @var string
 	 */
@@ -882,10 +882,9 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 *  - mail_id: id of a mail which was deleted
+	 *  - mailId: An integer representing the ID of the mail account that has been deleted
 	 *
 	 * @var string
 	 */
 	const onAfterDeleteMail = 'onAfterDeleteMail';
-
 }

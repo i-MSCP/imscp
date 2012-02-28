@@ -359,11 +359,12 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 	$status_add = $cfg->ITEM_ADD_STATUS;
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_Events::onBeforeAddSubdomain, array(
-								'subdomain_name' => $sub_name,
-								'domain_id' => $domain_id,
-								'user_id' => $user_id
-							)
+		iMSCP_Events::onBeforeAddSubdomain,
+		array(
+			'subdomainName' => $sub_name,
+			'domainId' => $domain_id,
+			'customerId' => $user_id
+		)
 	);
 
 	if ($_POST['dmn_type'] == 'als') {
@@ -390,13 +391,14 @@ function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forwa
 	$subdomain_id = $db->insertId();
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_Events::onAfterAddSubdomain, array(
-									'subdomain_name' => $sub_name,
-									'domain_id' => $domain_id,
-									'user_id' => $user_id,
-									'subdomain_id' => $subdomain_id
-								)
-		);
+		iMSCP_Events::onAfterAddSubdomain,
+		array(
+			'subdomainName' => $sub_name,
+			'domainId' => $domain_id,
+			'customerId' => $user_id,
+			'subdomainId' => $subdomain_id
+		)
+	);
 
 	update_reseller_c_props(get_reseller_id($domain_id));
 

@@ -250,7 +250,9 @@ function check_fwd_data($tpl, $alias_id) {
 
 	if (!Zend_Session::namespaceIsset('pageMessages')) {
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditDomainAlias, array('alias_id' => $alias_id));
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onBeforeEditDomainAlias, array('domainAliasId' => $alias_id)
+		);
 
 		$query = "
 			UPDATE
@@ -273,7 +275,9 @@ function check_fwd_data($tpl, $alias_id) {
 		";
 		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
 
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditDomainALias, array('alias_id' => $alias_id));
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterEditDomainALias, array('domainAliasId' => $alias_id)
+		);
 
 		send_request();
 
