@@ -43,6 +43,7 @@ Tickets:
 	- Fixed #358: Cosmetics - OrderPanel - Disk and Traffic limits
 	- Fixed #361: Bug - main::setup_imscp_database: HASH(0xb0e18fc)
 	- Fixed #373: Defect - i18n issues
+	- Fixed #374: system php include dirs should be openbasedir allowed paths
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.0 (RC1)
