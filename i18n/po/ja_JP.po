@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <kazu.nito@gmail.com>, 2011.
+#   <kazu.nito@gmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-02-10 06:54+0100\n"
-"PO-Revision-Date: 2012-02-09 08:37+0000\n"
+"POT-Creation-Date: 2012-02-28 08:23+0100\n"
+"PO-Revision-Date: 2012-02-26 10:17+0000\n"
 "Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,18 +30,7 @@ msgid ""
 "______________________\n"
 "i-MSCP Service Mailer\n"
 "\n"
-msgstr ""
-"\n"
-"\n"
-"親愛なる {RESELLER}様 \n"
-"\n"
-"ドメインの{DOMAIN}ために、{NAME}<{MAIL}>からの新しいオーダーを受けとっています。\n"
-"\n"
-"詳細については、お使いの i-MSCPコントロールパネルにログインしてください。\n"
-"\n"
-"______________________\n"
-"i-MSCP サービスメーラー\n"
-"\n"
+msgstr "\n\n親愛なる {RESELLER}様 \n\nドメインの{DOMAIN}ために、{NAME}<{MAIL}>からの新しいオーダーを受けとっています。\n\n詳細については、お使いの i-MSCPコントロールパネルにログインしてください。\n\n______________________\ni-MSCP サービスメーラー\n\n"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -52,12 +41,8 @@ msgid "%1$d / %2$d of %3$d"
 msgstr "%1$d / %2$d of %3$d"
 
 #, php-format
-msgid "%1$d / %2$d of <b>%3$d</b>"
-msgstr "%1$d / %2$d of <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d of <b>unlimited</b>"
-msgstr "%1$d / %2$d of <b>無制限</b>"
+msgid "%1$d / %2$d of %3$d</b>"
+msgstr "%1$d / %2$d の %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
@@ -66,10 +51,6 @@ msgstr "%1$d / %2$d of 無制限"
 #, php-format
 msgid "%1$d of %2$d"
 msgstr "%1$d of %2$d"
-
-#, php-format
-msgid "%1$d of %2$d</b>"
-msgstr "%1$d of %2$d</b>"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -104,10 +85,6 @@ msgid "%1$s of %2$s MB"
 msgstr "%2$s の %1$s MB"
 
 #, php-format
-msgid "%1$s of %2$s</b>"
-msgstr "%1$s of %2$s</b>"
-
-#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr "<b>無制限</b> の%1$s MB"
 
@@ -140,12 +117,12 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr "%d 個の設定パラメータが更新されました。"
 
 #, php-format
-msgid "%d of unlimited"
-msgstr "%d of 無制限"
+msgid "%d of %s"
+msgstr "%d の %s"
 
 #, php-format
-msgid "%d of unlimited</b>"
-msgstr "%d of 無制限</b>"
+msgid "%d of unlimited"
+msgstr "%d of 無制限"
 
 #, php-format
 msgid "%d strings translated"
@@ -160,28 +137,28 @@ msgid "%s account successfully deleted."
 msgstr "%s のアカウントは削除されました。"
 
 #, php-format
-msgid "%s deleted the admin log older than one month!"
-msgstr "%s は1ヶ月より古い管理ログを削除しました！"
+msgid "%s deleted the admin log older than one month."
+msgstr "%s は1ヶ月以上古い管理者ログを削除しました。"
 
 #, php-format
-msgid "%s deleted the admin log older than one year!"
-msgstr "%s は1年より古い管理ログを削除しました！"
+msgid "%s deleted the admin log older than one year."
+msgstr "%s は1年以上古い管理者ログを削除しました。"
 
 #, php-format
-msgid "%s deleted the admin log older than six months!"
-msgstr "%s は半年より古い管理ログを削除しました！"
+msgid "%s deleted the admin log older than six months."
+msgstr "%s は半年以上古い管理者ログを削除しました。"
 
 #, php-format
-msgid "%s deleted the admin log older than three months!"
-msgstr "%s は3ヶ月より古い管理ログを削除しました！"
+msgid "%s deleted the admin log older than three months."
+msgstr "%s は3ヶ月以上古い管理者ログを削除しました。"
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
 msgstr "%s は2週より古い管理ログを削除しました！"
 
 #, php-format
-msgid "%s deleted the full admin log!"
-msgstr "%s は全ての管理ログを削除しました！"
+msgid "%s deleted the full admin log."
+msgstr "%s は全ての管理者ログを削除しました。"
 
 #, php-format
 msgid "%s does not exist"
@@ -208,12 +185,12 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr "%sのリストが空です！メールアカウントを追加できません。"
 
 #, php-format
-msgid "%s of unlimited"
-msgstr "%s of 無制限"
+msgid "%s of %s"
+msgstr "%s の %s"
 
 #, php-format
-msgid "%s of unlimited</b>"
-msgstr "%s of 無制限</b>"
+msgid "%s of unlimited"
+msgstr "%s of 無制限"
 
 #, php-format
 msgid "%s page"
@@ -234,9 +211,7 @@ msgstr "'%hostname%'は、Eメールアドレスの'%value%'の有効なホス�
 msgid ""
 "'%hostname%' is not in a routable network segment. The email address "
 "'%value%' should not be resolved from public network"
-msgstr ""
-"'%hostname%'は、ルーティング可能なネットワークセグメント内にありません。Eメールアドレス "
-"'%value%'は、パブリックネットワークで解決されません"
+msgstr "'%hostname%'は、ルーティング可能なネットワークセグメント内にありません。Eメールアドレス '%value%'は、パブリックネットワークで解決されません"
 
 #, php-format
 msgid "'%localPart%' can not be matched against dot-atom format"
@@ -283,8 +258,7 @@ msgstr "'%value%' はドメイン名であるように見えますが、知ら�
 msgid ""
 "'%value%' appears to be a domain name but cannot match against domain name "
 "schema for TLD '%tld%'"
-msgstr ""
-"''%value%' はドメイン名であるように見えますが、TLD' %tld%' のドメイン·ネーム·スキーマに対して一致させることはできません"
+msgstr "''%value%' はドメイン名であるように見えますが、TLD' %tld%' のドメイン・ネーム・スキーマに対して一致させることはできません"
 
 msgid ""
 "'%value%' appears to be a domain name but contains a dash in an invalid "
@@ -369,36 +343,31 @@ msgid ".htaccess related errors"
 msgstr ".htaccessに関連のエラー"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
-msgstr "<b>%1$s</b> は <b>%2$s</b> サービスへの無制限の権利を持っています！<br>"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
+msgstr "<b>%1$s</b> は <b>%2$s</b> サービスの無制限の権限を持っています。"
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller!<br>"
-msgstr "<b>%1$s</b> は限界を超えるために<br> <b>%2$s</b>サービスの代理店！<br>"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
+"destination reseller.<br />"
+msgstr "<b>%1$s</b>は、目的の代理店での<br /><b>%2$s</b>サービスの制限を超えています。<br />"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller !<br>This user cannot be moved!"
-msgstr "<b>%s</b> には代理店で対処できないIPアドレスがあります！<br>このユーザーを動かすことができません！"
+"reseller!<br />This user cannot be moved!"
+msgstr "<b>%s</b>が持っているＩＰアドレスは、目的の代理店では管理する事ができない！<br />このユーザーが移動することはできません！"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
-msgstr "あなたがホスティングプランを提供しないなら<b>Optional:</b> ラベルの項目を空にしてください。"
-
-msgid "<b>disabled</b>"
-msgstr "<b>無効</b>"
+msgstr "<b>オプション：</ b>このホスティングプランのサービスの期間を必要としない場合は、空のままにしておいてください。"
 
 msgid ""
 "<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
 " to your email address for confirmation. Do not forget to click on the link "
 "in email to validate your order."
-msgstr ""
-"<strong>お買い上げいただき、誠にありがとうございます。</strong><br /><br "
-"/>この電子メールは確認のためEメールアドレスに送信されています。 オーダー確認のためEメール内のリンクをクリックしてください。"
+msgstr "<strong>お買い上げいただき、誠にありがとうございます。</strong><br /><br />この電子メールは確認のためEメールアドレスに送信されています。 オーダー確認のためEメール内のリンクをクリックしてください。"
 
 msgid "Access your domain statistics through the Awstats Web interface."
 msgstr "AwstatsのWebインターフェイスを介してドメインの統計情報にアクセスします。"
@@ -416,8 +385,7 @@ msgid ""
 "Account data were modified by another person before your changes. The update"
 " process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
-msgstr ""
-"アカウントデータはあなたの変更の前にもう一人の人によって修正されました。リカバリモードの中で、更新処理は行われました。更新結果をチェックしてください。"
+msgstr "アカウントデータはあなたの変更の前にもう一人の人によって修正されました。リカバリモードの中で、更新処理は行われました。更新結果をチェックしてください。"
 
 msgid "Account limits"
 msgstr "アカウント制限"
@@ -443,17 +411,20 @@ msgstr "アクション"
 msgid "Activate"
 msgstr "アクティブ"
 
+msgid "Activate this plugin"
+msgstr "このプラグインをアクティブにする"
+
 msgid "Activated softwares"
 msgstr "アクティブなソフトウェア"
 
 msgid "Activation E-Mail"
-msgstr "有効化メール"
+msgstr "アクティベーションEメール"
 
 msgid "Activation Link"
-msgstr "有効なリンク"
+msgstr "アクティベーションリンク"
 
 msgid "Activation link expire time (minutes)"
-msgstr "有効化リンク有効時間 (分)"
+msgstr "アクティベーションリンク有効期限 (分)"
 
 msgid "Add"
 msgstr "追加"
@@ -507,7 +478,7 @@ msgid "Add domain alias"
 msgstr "ドメインエイリアス追加"
 
 msgid "Add email account"
-msgstr "email アカウント追加"
+msgstr "Eメールアカウント追加"
 
 msgid "Add group"
 msgstr "グループ追加"
@@ -615,7 +586,7 @@ msgid "Alias already assigned to another IP address."
 msgstr "エイリアスは、既に別のIPアドレスに割り当てられます。"
 
 msgid "Alias awaiting for activation."
-msgstr "エイリアスの有効化を待つ。"
+msgstr "エイリアスのアクティベーションを待つ。"
 
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "エイリアスが登録されていないため、FTPアカウントを追加できません！"
@@ -627,7 +598,7 @@ msgid "Alias name"
 msgstr "エイリアスネーム"
 
 msgid "Alias scheduled for activation."
-msgstr "エイリアスは有効にされます。"
+msgstr "エイリアスのアクティベーションを予定しました。"
 
 msgid "Alias scheduled for addition."
 msgstr "エイリアスの追加を予定しました。"
@@ -693,10 +664,10 @@ msgid "Alternative URL to reach your website"
 msgstr "代替URLはあなたのWebサイトへのアクセス"
 
 msgid "An error occured. Please, contact your administrator."
-msgstr ""
+msgstr "エラーが発生しました。 管理者に連絡してください。"
 
 msgid "An error occurred while the authentication attempt."
-msgstr ""
+msgstr "認証処理中にエラーが発生しました。"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "アンチルートキットのログチェック"
@@ -752,11 +723,11 @@ msgstr "%sの全てを捕らえて削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
-msgstr ""
+msgstr "%s のホスティングプランを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
-msgstr ""
+msgstr "%s のメニューを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -795,7 +766,7 @@ msgid "Assign existing SQL user"
 msgstr "既存のSQLユーザーを割り当てます。"
 
 msgid "Assign group"
-msgstr ""
+msgstr "グループを割り当てる"
 
 msgid "Auto email template data updated!"
 msgstr "自動送信Eメールのテンプレート情報が更新されました！"
@@ -866,8 +837,17 @@ msgstr "連続ログインのブロックタイム (秒)"
 msgid "Blocktime (minutes)"
 msgstr "ログイン拒否時間(分)"
 
+msgid "Both source and destination are identical."
+msgstr "送信元と宛先の両方は同じです。"
+
 msgid "Bruteforce detection"
 msgstr "ブルートフォース検知"
+
+msgid "Bulk Actions"
+msgstr "一括操作"
+
+msgid "By"
+msgstr "から"
 
 msgid "CGI"
 msgstr "CGI"
@@ -904,11 +884,11 @@ msgid "Cancel"
 msgstr "取り消し"
 
 msgid "Cancel order"
-msgstr "オーダーの取消"
+msgstr "オーダーの取消し"
 
 #, php-format
-msgid "Cannot validate %s record. Reason '%s'."
-msgstr "レコード %s は使えません。　理由 「%s」。"
+msgid "Cannot validate %s record. Reason: '%s'."
+msgstr " %s のレコードを検証することはできません。理由：'%s'にあります。"
 
 msgid "Canonical name"
 msgstr "正式な名前"
@@ -938,19 +918,19 @@ msgid "Certificate data"
 msgstr "証明書データ"
 
 msgid "Certificate doesn't match key."
-msgstr ""
+msgstr "証明書と、鍵が一致しません。"
 
 msgid "Certificate for"
-msgstr ""
+msgstr "の証明書"
 
 msgid "Certificate key"
-msgstr ""
+msgstr "認証書の鍵"
 
 msgid "Certificate successfully scheduled for addition or modification."
-msgstr ""
+msgstr "証明書の追加または修正を予定しました。"
 
 msgid "Certificate sucessfully scheduled for deletion."
-msgstr ""
+msgstr "証明書の削除がスケジュールされました。"
 
 msgid "Change"
 msgstr "変更"
@@ -1030,7 +1010,10 @@ msgid "Compress HTML output"
 msgstr "圧縮HTML出力"
 
 msgid "Configuration in progress..."
-msgstr ""
+msgstr "設定中..."
+
+msgid "Confirmation for plugin protection"
+msgstr "プラグインの保護の確認"
 
 msgid "Continue"
 msgstr "続行"
@@ -1057,7 +1040,7 @@ msgid "Couldn't check for updates. Website not reachable."
 msgstr "更新プログラムを確認できませんでした。Webサイトに到達できません。"
 
 msgid "Count default E-Mail addresses"
-msgstr "デフォルトメールをアドレスとしてカウント"
+msgstr "既定のメールアドレスをカウント"
 
 msgid "Country"
 msgstr "国"
@@ -1072,7 +1055,7 @@ msgid "Create catch all mail account"
 msgstr "キャッチオールメールアカウント作成"
 
 msgid "Create default E-Mail addresses"
-msgstr "デフォルトメールアドレスを作成"
+msgstr "既定のメールアドレスを作成"
 
 msgid "Create directory, if not exist!"
 msgstr "存在しない場合、ディレクトリを作成します！"
@@ -1117,7 +1100,7 @@ msgid "Custom error pages"
 msgstr "カスタムエラーページ"
 
 msgid "Custom menu name and link"
-msgstr ""
+msgstr "カスタムメニュー名とリンク"
 
 msgid "Custom menu successfully added."
 msgstr "カスタムメニューを追加しました。"
@@ -1147,13 +1130,13 @@ msgid "Customer account successfully updated."
 msgstr "顧客アカウントを更新しました。"
 
 msgid "Customer consumption"
-msgstr ""
+msgstr "顧客の消費量"
 
 msgid "Customer data"
 msgstr "顧客データ"
 
 msgid "Customer level"
-msgstr ""
+msgstr "顧客レベル"
 
 msgid "Customer order sucessfully removed."
 msgstr "顧客のオーダーが削除されました。"
@@ -1165,19 +1148,22 @@ msgid "Customer scheduled for deletion."
 msgstr "顧客の削除を予定しました。"
 
 msgid "Customer statistics"
-msgstr ""
+msgstr "顧客の統計情報"
 
 msgid "Customer successfully added."
 msgstr "顧客が追加されました。"
 
 msgid "Customer's layout color successfully updated."
-msgstr ""
+msgstr "顧客のレイアウトカラーを更新しました。"
+
+msgid "Customer(s) successfully moved."
+msgstr "顧客が移動しました。"
 
 msgid "Customers"
 msgstr "顧客"
 
 msgid "Customers assignment"
-msgstr ""
+msgstr "顧客の割り当て"
 
 msgid "Customize error pages for your domain."
 msgstr "ドメインのエラーページをカスタマイズする。"
@@ -1202,7 +1188,7 @@ msgid "Daily backup"
 msgstr "日次バックアップ"
 
 msgid "Data were been altered. Please try again."
-msgstr ""
+msgstr "データが変更されました。もう一度やり直してください。"
 
 msgid "Database"
 msgstr "データベース"
@@ -1243,20 +1229,23 @@ msgstr "日付"
 msgid "Day"
 msgstr "日"
 
-msgid "Day:"
-msgstr "日:"
-
 msgid "Days"
 msgstr "日"
+
+msgid "Deactivate"
+msgstr "無効にする"
+
+msgid "Deactivate this plugin"
+msgstr "このプラグインを無効にする"
 
 msgid "Debugger"
 msgstr "デバッガー"
 
 msgid "Default language"
-msgstr "デフォルト言語"
+msgstr "既定の言語"
 
 msgid "Default language successfully updated."
-msgstr "デフォルト言語が更新されました。"
+msgstr "既定の言語が更新されました。"
 
 msgid "Delete"
 msgstr "削除"
@@ -1274,7 +1263,7 @@ msgid "Delete domain"
 msgstr "ドメイン削除"
 
 msgid "Delete domain - {DOMAIN_NAME}"
-msgstr ""
+msgstr "ドメインの削除 - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "ログから削除："
@@ -1292,7 +1281,7 @@ msgid "Delete the ticket"
 msgstr "チケットを削除します"
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "削除中..."
 
 msgid "Demo Version!"
 msgstr "デモ版！"
@@ -1328,28 +1317,25 @@ msgid "Disabled"
 msgstr "無効"
 
 msgid "Disallowed"
-msgstr ""
+msgstr "許可されていない"
 
 msgid "Disk"
 msgstr "ディスク"
 
-msgid "Disk in MB"
-msgstr "ディスク in MB"
-
 msgid "Disk limit"
-msgstr "ディスク制限"
+msgstr "ディスク容量制限"
 
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "容量制限[MB]<br><i>(0:無制限)</i>"
+msgstr "ディスク容量制限[MB]<br><i>(0 無制限)</i>"
 
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "ディスク容量制限 [MB]<br/><span class=\"italic\">(0 無制限)</span>"
 
 msgid "Disk limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "ディスク容量制限 [MB]<br><i>(0 無制限)</i>"
 
 msgid "Disk space limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "ディスク容量制限 [MB] <br /><span class=\"italic\">(0 unlimited)</span>"
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
@@ -1376,7 +1362,7 @@ msgid "Domain IP"
 msgstr "ドメインIP"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "ドメインの制限"
 
 msgid "Domain Name"
 msgstr "ドメイン名"
@@ -1388,7 +1374,7 @@ msgid "Domain account expired."
 msgstr "ドメインアカウントの有効期限が切れました。"
 
 msgid "Domain account scheduled for activation."
-msgstr "ドメインアカウントの起動を予定しました。"
+msgstr "ドメインアカウントのアクティベーションを予定しました。"
 
 msgid "Domain account scheduled for suspension."
 msgstr "ドメインアカウントの停止を予定しました。"
@@ -1400,7 +1386,7 @@ msgid "Domain account successfully scheduled for deletion."
 msgstr "ドメインアカウントの予定通り削除されました。"
 
 msgid "Domain account summary"
-msgstr "ドメインアカウントの概要"
+msgstr "ドメインアカウント要約"
 
 msgid "Domain accounts"
 msgstr "ドメインアカウント"
@@ -1483,15 +1469,15 @@ msgstr "ドメインエイリアスが制限に達しています。"
 msgid ""
 "Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "ドメインエイリアス制限<br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid ""
 "Domain aliases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "ドメインエイリアス制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "Domain already assigned to another IP address."
-msgstr ""
+msgstr "ドメインが既に別のIPアドレスに割り当てられます。"
 
 msgid "Domain already registered in our database."
 msgstr "ドメインは既にデータベース上に登録されています。"
@@ -1506,13 +1492,13 @@ msgid ""
 "Domain data were modified by another person before your changes. The update "
 "process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
-msgstr ""
+msgstr "ドメインデータは、変更前に別の人によって変更されました。アップデート処理はリカバリーモードで行ないました。すいませんが結果を確認してください。"
 
 msgid "Domain databases"
 msgstr "ドメインのデータベース"
 
 msgid "Domain detail"
-msgstr ""
+msgstr "ドメインの詳細"
 
 msgid "Domain details"
 msgstr "ドメイン詳細"
@@ -1530,7 +1516,7 @@ msgid "Domain expire date"
 msgstr "ドメインの有効期限"
 
 msgid "Domain expires date"
-msgstr ""
+msgstr "ドメインの有効期限"
 
 msgid "Domain mails"
 msgstr "ドメインメール"
@@ -1542,34 +1528,34 @@ msgid "Domain names validation"
 msgstr "ドメイン名の確認"
 
 msgid "Domain new expires date"
-msgstr ""
+msgstr "ドメインの新しい有効期限"
 
 msgid "Domain not found."
 msgstr "ドメインが見つかりません。"
 
 msgid "Domain overview"
-msgstr ""
+msgstr "ドメインの概要"
 
 msgid "Domain properties successfully updated."
 msgstr "ドメインのプロパティが更新されました。"
 
 msgid "Domain scheduled for update."
-msgstr ""
+msgstr "ドメインは更新がスケジュールされます。"
 
 msgid "Domain statistics"
 msgstr "ドメイン統計"
 
 msgid "Domain statistics - {DOMAIN_NAME}"
-msgstr ""
+msgstr "ドメイン統計 - {DOMAIN_NAME}"
 
 msgid "Domain status is not ok."
-msgstr ""
+msgstr "ドメイン状態がOKではありません。"
 
 msgid "Domain subdomains"
 msgstr "ドメインのサブドメイン"
 
 msgid "Domain successfully updated."
-msgstr ""
+msgstr "ドメインが更新されました。"
 
 msgid "Domain with same name already exists."
 msgstr "同じ名前のドメインがすでに存在しています。"
@@ -1580,14 +1566,11 @@ msgstr "システム上にその名前のドメインは既に存在していま
 msgid "Domain with this name already exist."
 msgstr "この名前のドメインが既に存在している。"
 
-msgid "Domain_statistics"
-msgstr ""
-
 msgid "Domains"
-msgstr "ドメイン数"
+msgstr "ドメイン"
 
 msgid "Domains limit<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "ドメイン制限<br/><span class=\"italic\">(0 無制限)</span>"
 
 msgid "Domains per page"
 msgstr "1ページあたりのドメイン数"
@@ -1626,28 +1609,28 @@ msgid "Edit Ftp account"
 msgstr "Ftp アカウント編集"
 
 msgid "Edit SSL certificate"
-msgstr ""
+msgstr "SSL証明書を編集"
 
 msgid "Edit User"
 msgstr "ユーザー編集"
 
 msgid "Edit alias"
-msgstr ""
+msgstr "エイリアス編集"
 
 msgid "Edit auto responder"
-msgstr ""
+msgstr "自動応答を編集"
 
 msgid "Edit custom DNS record"
 msgstr "カスタムDNSレコード編集"
 
 msgid "Edit custom error page"
-msgstr ""
+msgstr "顧客エラーページの編集"
 
 msgid "Edit custom menu"
-msgstr ""
+msgstr "カスタムメニューの編集"
 
 msgid "Edit customer"
-msgstr ""
+msgstr "顧客編集"
 
 msgid "Edit domain"
 msgstr "ドメイン編集"
@@ -1662,7 +1645,7 @@ msgid "Edit hosting plan"
 msgstr "ホスティングプランの編集"
 
 msgid "Edit htaccess user"
-msgstr ""
+msgstr "ｈtaccessユーザーの編集"
 
 msgid "Edit mail account"
 msgstr "メールアカウント編集"
@@ -1710,7 +1693,7 @@ msgid "Empty data or wrong field!"
 msgstr "誤り、または空欄があります！"
 
 msgid "Empty data or wrong field."
-msgstr ""
+msgstr "空のデータまたは間違ったフィールド。"
 
 msgid "Empty list"
 msgstr "未登録"
@@ -1725,10 +1708,7 @@ msgid "Enable SSL"
 msgstr "SSLを有効にする"
 
 msgid "Enable auto responder"
-msgstr ""
-
-msgid "Enable mail auto responder"
-msgstr "メール自動返信を有効にする"
+msgstr "自動応答を有効"
 
 msgid "Enable update at"
 msgstr "更新を可能にします"
@@ -1749,7 +1729,10 @@ msgid "Entered passwords do not match."
 msgstr "入力したパスワードが一致しません。"
 
 msgid "Entered passwords doesn't match."
-msgstr ""
+msgstr "入力したパスワードが一致しません。"
+
+msgid "Entered passwords doesn't matches."
+msgstr "入力したパスワードが一致しません。"
 
 msgid "Error"
 msgstr "エラー"
@@ -1779,7 +1762,7 @@ msgid "Error pages"
 msgstr "エラーページ"
 
 msgid "Error state..."
-msgstr ""
+msgstr "エラー状態..."
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "ネットワークカードのリストを取得中にエラーが発生しました。"
@@ -1788,16 +1771,16 @@ msgid "Error: Remote File not found!"
 msgstr "エラー：リモートファイルが見つかりません！"
 
 msgid "Error: Service port with same name already exists."
-msgstr ""
+msgstr "エラー：同じ名前のサービスポートが既に存在しています。"
 
 msgid "Error: Unallowed protocol."
-msgstr ""
+msgstr "エラー：許可されないプロトコルです。"
 
 msgid "Error: Wrong Ip number."
-msgstr ""
+msgstr "エラー：間違ったIP番号を指定します。"
 
 msgid "Error: Wrong value for show entry."
-msgstr ""
+msgstr "エラー：表示されたエントリの値が誤っています。"
 
 msgid "Errors"
 msgstr "エラー"
@@ -1833,7 +1816,7 @@ msgid "FTP account deleted."
 msgstr "FTPアカウントは削除されました。"
 
 msgid "FTP account successfully updated."
-msgstr ""
+msgstr "FTPアカウントを更新しました。"
 
 msgid "FTP accounts"
 msgstr "FTPアカウント"
@@ -1841,7 +1824,7 @@ msgstr "FTPアカウント"
 msgid ""
 "FTP accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "FTP アカウント制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "FTP accounts limit reached!"
 msgstr "FTPアカウントが限界です！"
@@ -1849,7 +1832,7 @@ msgstr "FTPアカウントが限界です！"
 msgid ""
 "FTP accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "FTP アカウント制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTPアカウントの制限<br><i>(-1:無効, 0:無制限)</i>"
@@ -1908,13 +1891,13 @@ msgid "Filesystem system Info"
 msgstr "ファイルシステム情報"
 
 msgid "Fill out a message text."
-msgstr ""
+msgstr "メッセージテキストを記入してください。"
 
 msgid "First name"
 msgstr "名字"
 
 msgid "Firstname"
-msgstr ""
+msgstr "名"
 
 msgid "Footer"
 msgstr "フッター"
@@ -1992,7 +1975,7 @@ msgid "Generate password"
 msgstr "パスワードの生成"
 
 msgid "Get a new image"
-msgstr ""
+msgstr "新しいイメージを取得"
 
 msgid "Get it at"
 msgstr "取得します"
@@ -2022,7 +2005,7 @@ msgid "Help"
 msgstr "ヘルプ"
 
 msgid "Hide default E-Mail Addresses"
-msgstr "デフォルトの電子メールアドレスを隠す"
+msgstr "既定のEメールアドレスを隠す"
 
 msgid "High"
 msgstr "高"
@@ -2043,7 +2026,7 @@ msgid "Hosting plan"
 msgstr "ホスティングプラン"
 
 msgid "Hosting plan can't be deleted, there are active orders."
-msgstr ""
+msgstr "ホスティングプランを削除することはできません、アクティブなオーダーがあります。"
 
 msgid "Hosting plan properties"
 msgstr "ホスティングプランの詳細"
@@ -2052,26 +2035,26 @@ msgid "Hosting plan successfully added."
 msgstr "ホスティングプランが追加されました。"
 
 msgid "Hosting plan successfully created."
-msgstr ""
+msgstr "ホスティングプランが作成されました。"
 
 msgid "Hosting plan successfully deleted."
 msgstr "ホスティングプランが削除されました。"
 
 msgid "Hosting plan successfully updated."
-msgstr ""
+msgstr "ホスティングプランが更新されました。"
 
 msgid "Hosting plan sucessfully updated."
 msgstr "ホスティングプランが更新されました。"
 
 msgid "Hosting plan update"
-msgstr ""
+msgstr "ホスティングプラン更新"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "ホスティングプラン値は、代理店の最大値を超えない。"
 
 #, php-format
 msgid "Hosting plan with Id %d doesn't exist."
-msgstr ""
+msgstr "Id %d ホスティングプランが存在しません。"
 
 msgid "Hosting plan with same name already exists."
 msgstr "同じ名前のホスティングプランが既に存在しています。"
@@ -2089,7 +2072,7 @@ msgid "Hosting plans not found!"
 msgstr "ホスティングプランが見つかりません"
 
 msgid "Hosting plans not found."
-msgstr ""
+msgstr "ホスティングプランが見つかりません。"
 
 msgid "Hour"
 msgstr "時間"
@@ -2098,30 +2081,30 @@ msgid "Hours"
 msgstr "時"
 
 msgid "Htaccess group"
-msgstr ""
+msgstr "Htaccess グループ"
 
 msgid "Htaccess group successfully scheduled for addition."
-msgstr ""
+msgstr "htaccessグループの追加が予定されました。"
 
 msgid "Htaccess group successfully scheduled for deletion."
-msgstr ""
+msgstr "Htaccessグループが削除が予定されました。"
 
 msgid "Htaccess user"
-msgstr ""
+msgstr "Htaccessユーザー"
 
 #, php-format
 msgid "Htaccess user successfully assigned to the %s htaccess group"
-msgstr ""
+msgstr "htaccessユーザーが %s htaccessグループに割り当てられました"
 
 #, php-format
 msgid "Htaccess user successfully deleted from the %s htaccess group "
-msgstr ""
+msgstr "htaccessユーザーが %s htaccessグループから削除しました"
 
 msgid "Htaccess user successfully scheduled for addition."
-msgstr ""
+msgstr "htaccessユーザーの追加が予定されました。"
 
 msgid "Http traffic"
-msgstr ""
+msgstr "Http トラフィック"
 
 msgid "I Accept The Term of Service"
 msgstr "私は、このサービス期間を受け入れる"
@@ -2139,16 +2122,16 @@ msgid "IP address"
 msgstr "IPアドレス"
 
 msgid "IP address already known by the system."
-msgstr ""
+msgstr "IPアドレスはシステムで既にわかっています。"
 
 msgid "IP address scheduled for addition."
-msgstr ""
+msgstr "IPアドレスの追加を予定しました。"
 
 msgid "IP addresse data"
-msgstr ""
+msgstr "IPアドレスのデータ"
 
 msgid "IP addresses configured"
-msgstr ""
+msgstr "IPアドレスが設定された"
 
 msgid "IP scheduled for deletion."
 msgstr "IPアドレスの削除を予定しました。"
@@ -2157,7 +2140,7 @@ msgid "IP usage"
 msgstr "IPアドレス管理"
 
 msgid "IPs usage"
-msgstr ""
+msgstr "IPアドレスの使用状況"
 
 msgid "IPv6 address"
 msgstr "IPv6アドレス"
@@ -2165,7 +2148,14 @@ msgstr "IPv6アドレス"
 msgid ""
 "If yes, means that the reseller can allow its customers to edit this "
 "directive"
-msgstr ""
+msgstr "yesの場合、代理店は、顧客のディレクティブを編集できるようにすることができることを意味"
+
+#, php-format
+msgid ""
+"If you protect a plugin, you'll no longer be able to deactivate it from the "
+"plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
+"to edit the %s file."
+msgstr "プラグインを保護する場合は、プラグイン管理インターフェースから無効にすることはできません。<br /><br />プラグインを解除するには、 %s ファイルを編集する必要があります。"
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "代理店を制限する場合は、顧客を制限する必要があります。"
@@ -2179,7 +2169,7 @@ msgstr "ローカルリポジトリのインポート"
 msgid ""
 "In case domain expires date is 'N/A', the expiration date will be set from "
 "today."
-msgstr ""
+msgstr "ドメインの有効期限が 'N/A'の場合、有効期限は今日の日付から設定されます。"
 
 msgid "In front the name"
 msgstr "名前の前に付加"
@@ -2189,10 +2179,7 @@ msgid ""
 "must note that for now, the directives defined here apply to your entire "
 "domain account (including subdomains and domain aliases). Of course some "
 "values can be modified through the PHP ini_set() function."
-msgstr ""
-"このページでは、PHPの振舞いの側面のいくつかを構成できます。 "
-"当分ここで定義された指示が、あなたの全体のドメインアカウントに適用されることに注意しなければなりません。(サブドメインとドメインエイリアスを含む) "
-"もちろん、PHPのini_set()関数を通していくつかの値を変更できます。"
+msgstr "このページでは、PHPの振舞いの側面のいくつかを構成できます。 当分ここで定義された指示が、あなたの全体のドメインアカウントに適用されることに注意しなければなりません。(サブドメインとドメインエイリアスを含む) もちろん、PHPのini_set()関数を通していくつかの値を変更できます。"
 
 msgid "Including domain aliases subdomains"
 msgstr "ドメインエイリアスのサブドメインを含む"
@@ -2201,7 +2188,7 @@ msgid "Incorrect FTP accounts limit."
 msgstr "FTPアカウント制限が誤っています。"
 
 msgid "Incorrect Ftp accounts limit."
-msgstr ""
+msgstr "FTPアカウント制限が誤っています。"
 
 msgid "Incorrect SQL databases limit."
 msgstr "SQLデータベース制限が誤っています。"
@@ -2210,10 +2197,10 @@ msgid "Incorrect SQL users limit."
 msgstr "SQLユーザー制限が誤っています。"
 
 msgid "Incorrect Sql databases limit."
-msgstr ""
+msgstr "SQLデータベース制限が誤っています。"
 
 msgid "Incorrect Sql users limit."
-msgstr ""
+msgstr "SQLユーザー制限が誤っています。"
 
 msgid "Incorrect aliases limit."
 msgstr "エイリアス制限に誤っています。"
@@ -2222,10 +2209,10 @@ msgid "Incorrect disk quota limit."
 msgstr "ディスククォータ制限が誤っています。"
 
 msgid "Incorrect disk space limit."
-msgstr ""
+msgstr "ディスク容量制限が誤っています。"
 
 msgid "Incorrect email length or syntax!"
-msgstr "Eメールの長さか構文に誤っています！"
+msgstr "Eメールの長さか構文が誤っています！"
 
 msgid "Incorrect email length or syntax."
 msgstr "Eメールの長さか構文が誤っています。"
@@ -2259,7 +2246,7 @@ msgid "Incorrect subdomains limit."
 msgstr "サブドメイン制限が誤っています。"
 
 msgid "Incorrect syntax for email address."
-msgstr ""
+msgstr "メールアドレスの誤った構文があります。"
 
 msgid "Incorrect template description length."
 msgstr "テンプレートの記述の長さが誤っています。"
@@ -2286,7 +2273,7 @@ msgid "Install various Web applications with a few clicks."
 msgstr "数回のクリックでさまざまなWebアプリケーションをインストールします。"
 
 msgid "Installation details"
-msgstr ""
+msgstr "インストールの詳細"
 
 msgid "Installed on"
 msgstr "インストールされました"
@@ -2295,43 +2282,46 @@ msgid "Instructions to download today's backup"
 msgstr "今日のバックアップをダウンロードする指示"
 
 msgid "Intermediar certificate"
-msgstr ""
+msgstr "中間証明書"
 
 msgid "Internationalization"
 msgstr "国際化"
 
+msgid "Invalid NAME"
+msgstr "無効な名前"
+
 msgid "Invalid URL."
-msgstr ""
+msgstr "無効なURL。"
 
 msgid "Invalid certificate."
+msgstr "証明書が無効です。"
+
+msgid "Invalid expiration date."
 msgstr ""
 
 msgid "Invalid group name!"
 msgstr "無効なグループ名！"
 
 msgid "Invalid htaccess group name."
-msgstr ""
+msgstr "無効なhtaccessグループ名。"
 
 msgid "Invalid intermediate certificate."
-msgstr ""
+msgstr "無効な中間証明書。"
 
 msgid "Invalid key or password."
-msgstr ""
+msgstr "無効なキーまたはパスワード。"
 
 msgid "Invalid mail local part."
 msgstr "無効なメールのローカル部分。"
 
 msgid "Invalid menu order."
-msgstr ""
+msgstr "無効なメニューの順序。"
 
 msgid "Invalid name."
-msgstr ""
+msgstr "名前が無効です。"
 
 msgid "Invalid target."
-msgstr ""
-
-msgid "Invalid time period!"
-msgstr "無効な期間！"
+msgstr "ターゲットが無効です。"
 
 msgid "Invalid type given. String expected"
 msgstr "無効な型の文字列が指定された。"
@@ -2339,14 +2329,19 @@ msgstr "無効な型の文字列が指定された。"
 msgid "Invalid user Id."
 msgstr "無効なユーザーＩＤ"
 
-msgid "Invalide domain expiration date."
-msgstr "ドメイン有効期限が間違っています。"
+#, php-format
+msgid "Ip %s is blocked for %s minutes."
+msgstr "IP %s は %s 分間ブロックされます。"
+
+#, php-format
+msgid "Ip %s is waiting %s seconds."
+msgstr "IP %s は %s 秒を待っています。"
 
 msgid "Ip management"
-msgstr ""
+msgstr "IP管理"
 
 msgid "Ip usage"
-msgstr ""
+msgstr "IPアドレスの使用状況"
 
 msgid "Kernel Version"
 msgstr "カーネルバージョン"
@@ -2364,10 +2359,10 @@ msgid "Language file"
 msgstr "言語ファイル"
 
 msgid "Language file successfully installed."
-msgstr ""
+msgstr "言語ファイルがインストールされました。"
 
 msgid "Language successfully updated."
-msgstr ""
+msgstr "言語が更新されました。"
 
 msgid "Languages"
 msgstr "言語"
@@ -2391,7 +2386,7 @@ msgid "Last translator"
 msgstr "最後の翻訳者"
 
 msgid "Lastname"
-msgstr ""
+msgstr "姓"
 
 msgid "Layout"
 msgstr "レイアウト"
@@ -2400,7 +2395,7 @@ msgid "Layout color"
 msgstr "レイアウトカラー"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "レイアウトカラーが更新されました。"
 
 msgid "Layout settings"
 msgstr "レイアウト設定"
@@ -2408,7 +2403,7 @@ msgstr "レイアウト設定"
 msgid ""
 "Leave this field empty if you do not want term of service for this hosting "
 "plan."
-msgstr ""
+msgstr "このホスティングプランのサービス項目使用したくない場合は、空のままにしておいてください。"
 
 msgid "Level"
 msgstr "レベル"
@@ -2431,12 +2426,6 @@ msgstr "著者ホームページへのリンク"
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "ロードアベレージ (1 秒, 5 秒, 15秒)"
 
-msgid "Log Level"
-msgstr "ログレベル"
-
-msgid "Log is empty!"
-msgstr "ログが存在していません"
-
 msgid "Login"
 msgstr "ログイン"
 
@@ -2445,25 +2434,25 @@ msgstr "ログイン"
 
 #, php-format
 msgid "Login data successfully sent to %s."
-msgstr ""
+msgstr "ログインデータを %s に送りました。"
 
 msgid "Login into PhpMyAdmin"
 msgstr "phpMyAdminにログイン"
 
 msgid "Login into PḧpMyAdmin"
-msgstr ""
+msgstr "phpMyAdminにログイン"
 
 msgid "Login into the filemanager"
-msgstr ""
+msgstr "ファイルマネージャーにログイン"
 
 msgid "Login into the webmail"
-msgstr ""
+msgstr "Webメールにログイン"
 
 msgid "Login password"
-msgstr ""
+msgstr "ログインパスワード"
 
 msgid "Login username"
-msgstr ""
+msgstr "ログインユーザ名"
 
 msgid "Login with your FTP account"
 msgstr "FTPアカウントでログインしてください"
@@ -2480,17 +2469,20 @@ msgstr "ロゴは更新されました。"
 msgid "Logout"
 msgstr "ログアウト"
 
+msgid "Logs successfully deleted."
+msgstr "ログが削除されました。"
+
 msgid "Lost password"
-msgstr "パスワード忘れ"
+msgstr "パスワードを忘れた"
 
 msgid "Lost password e-mail"
-msgstr "メールパスワード忘れ"
+msgstr "パスワード忘れEメール"
 
 msgid "Lost password link"
 msgstr "パスワード忘れリンク"
 
 msgid "Lost password mail"
-msgstr ""
+msgstr "パスワード忘れEメール"
 
 msgid "Lostpw email"
 msgstr "パスワード忘れEメール"
@@ -2505,10 +2497,13 @@ msgid "Low"
 msgstr "低"
 
 msgid "Mail"
-msgstr "電子メール"
+msgstr "メール"
 
 msgid "Mail Accounts"
 msgstr "メールアカウント"
+
+msgid "Mail Log Level"
+msgstr "メールログレベル"
 
 msgid "Mail account"
 msgstr "メールアカウント"
@@ -2537,7 +2532,7 @@ msgstr "メールアカウント"
 msgid ""
 "Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "メールアカウント制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "Mail accounts limit reached!"
 msgstr "メールアカウントが限界です！"
@@ -2548,7 +2543,7 @@ msgstr "メールアカウントが制限に達しています。"
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "メールアカウント制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "メールアカウントの制限<br><i>(-1:無効, 0:無制限)</i>"
@@ -2557,10 +2552,10 @@ msgid "Mail accounts list"
 msgstr "メールアカウント一覧"
 
 msgid "Mail accounts list is empty!"
-msgstr "メールアカウントリストが空です!"
+msgstr "メールアカウント一覧が空です!"
 
 msgid "Mail forward list empty."
-msgstr "メール転送リストが空です。"
+msgstr "メール転送一覧が空です。"
 
 msgid "Mail forward list error!"
 msgstr "メールアカウント管理でエラーが発生しました"
@@ -2572,13 +2567,13 @@ msgid "Mail users"
 msgstr "メールユーザー"
 
 msgid "Mailformat of an address in your forward list is incorrect."
-msgstr "転送リスト内のアドレスのメール形式が誤っています。"
+msgstr "転送一覧内のアドレスのメール形式が誤っています。"
 
 msgid "Mails total"
 msgstr "メール アカウント合計"
 
 msgid "Maintenance message"
-msgstr ""
+msgstr "メンテナンスメッセージ"
 
 msgid "Maintenance mode"
 msgstr "メンテナンスモード"
@@ -2586,19 +2581,19 @@ msgstr "メンテナンスモード"
 msgid ""
 "Maintenance mode is activated. Under this mode, only administrators can "
 "login."
-msgstr ""
+msgstr "メンテナンスモードが有効になります。このモードでは、管理者のみがログインすることができます。"
 
 msgid "Male"
 msgstr "男性"
 
 msgid "Manage Customers"
-msgstr ""
+msgstr "顧客管理"
 
 msgid "Manage Domains"
 msgstr "ドメイン管理"
 
 msgid "Manage Hosting Plans"
-msgstr ""
+msgstr "ホスティングプラン管理"
 
 msgid "Manage IPs"
 msgstr "IPアドレス管理"
@@ -2610,13 +2605,13 @@ msgid "Manage SQL"
 msgstr "SQL管理"
 
 msgid "Manage Users"
-msgstr ""
+msgstr "ユーザー管理"
 
 msgid "Manage alias"
 msgstr "エイリアス管理"
 
 msgid "Manage aliasses"
-msgstr ""
+msgstr "エイリアス管理"
 
 msgid "Manage domain alias"
 msgstr "ドメインエイリアス管理"
@@ -2628,7 +2623,7 @@ msgid "Manage hosting plans"
 msgstr "ホスティングプラン管理"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "htaccessユーザーとグループを管理"
 
 msgid "Manage orders"
 msgstr "オーダー管理"
@@ -2646,10 +2641,7 @@ msgid "Manage users and groups"
 msgstr "ユーザーとグループの管理"
 
 msgid "Manage your protected areas, users and groups."
-msgstr "あなたの保護領域、ユーザーとグループを管理します。"
-
-msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr "手動DNSをサポート(実験中）"
+msgstr "あなたのアクセス制限領域、ユーザーとグループを管理します。"
 
 msgid "Mark"
 msgstr "マーク"
@@ -2673,11 +2665,11 @@ msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "サブドメインの上限<br><i>(-1:無効, 0:無制限)</i>"
 
 msgid "Max traffic"
-msgstr ""
+msgstr "最大トラフィック"
 
 #, php-format
 msgid "Max value for the %s PHP directive"
-msgstr ""
+msgstr "%s のPHPディレクティブの最大値"
 
 #, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
@@ -2741,9 +2733,6 @@ msgstr "変更"
 msgid "Month"
 msgstr "月"
 
-msgid "Month:"
-msgstr "月"
-
 msgid "More Details"
 msgstr "より多くの詳細"
 
@@ -2765,8 +2754,8 @@ msgstr "既にマウントポイントは使用されています。"
 msgid "Move"
 msgstr "移動"
 
-msgid "Moving aborted!"
-msgstr "移動に失敗しました"
+msgid "Moving aborted."
+msgstr "移動を中止しました。"
 
 msgid "MySQL support"
 msgstr "MySQLのサポート"
@@ -2784,7 +2773,7 @@ msgid "Network interface"
 msgstr "ネットワークインターフェイス"
 
 msgid "Never expires"
-msgstr ""
+msgstr "期限切れになることはありません"
 
 msgid "New Sql user data"
 msgstr "新しいSQLユーザーのデータ"
@@ -2802,7 +2791,7 @@ msgid "New password has not been sent. Ask your administrator."
 msgstr "新しいパスワードが送信されていません。管理者に問い合わせてください。"
 
 msgid "New password is"
-msgstr ""
+msgstr "新しいパスワードは"
 
 msgid "New ticket"
 msgstr "新規チケット"
@@ -2817,7 +2806,7 @@ msgid "No"
 msgstr "いいえ"
 
 msgid "No IP address found."
-msgstr ""
+msgstr "IPアドレスが見つかりませんでした。"
 
 msgid "No Ip statistics to be show."
 msgstr "IP統計情報は表示できなくする。"
@@ -2835,13 +2824,13 @@ msgid "No available hosting packages."
 msgstr "利用可能なホスティングパッケージがありません。"
 
 msgid "No certificate found."
-msgstr ""
+msgstr "証明書見つかりませんでした。"
 
 msgid "No corresponding subdomain found."
 msgstr "対応するサブドメインが見つかりませんでした。"
 
 msgid "No custom menu found."
-msgstr ""
+msgstr "カスタムメニューが見つかりません。"
 
 msgid "No customer accounts found."
 msgstr "顧客アカウントが見つかりません。"
@@ -2852,8 +2841,11 @@ msgstr "利用可能なデータベースのアップデートはありません
 msgid "No domain alias system errors"
 msgstr "ドメインエイリアスシステムのエラーは発生していません"
 
+msgid "No domain statistics to display for this reseller."
+msgstr "この代理店にはドメイン統計情報を表示しません。"
+
 msgid "No domain statistics to display."
-msgstr ""
+msgstr "ドメインの統計情報は表示しないようにする。"
 
 msgid "No domain system errors"
 msgstr "ドメインシステムのエラーは発生していません"
@@ -2861,13 +2853,16 @@ msgstr "ドメインシステムのエラーは発生していません"
 msgid "No email account system errors"
 msgstr "Eメールアカウントシステムのエラーは発生していません"
 
+msgid "No found."
+msgstr "見つかりませんでした。"
+
 msgid "No group found."
-msgstr ""
+msgstr "グループが見つかりませんでした。"
 
 msgid ""
 "No hosting plan available for purchasing. Please contact your system "
 "administrator."
-msgstr ""
+msgstr "購買のために利用可能なホスティングプランはありません。システム管理者に連絡してください。"
 
 msgid "No htaccess related system errors"
 msgstr "htaccess関連のシステムのエラーは発生していません"
@@ -2875,11 +2870,14 @@ msgstr "htaccess関連のシステムのエラーは発生していません"
 msgid "No languages found."
 msgstr "言語が見つかりません。"
 
+msgid "No logs found."
+msgstr "ログは見つかりませんでした。"
+
 msgid "No new i-MSCP updates available"
 msgstr "i-MSCPのアップデートは有りません"
 
 msgid "No provided"
-msgstr ""
+msgstr "提供されません"
 
 msgid "No records found"
 msgstr "レコードがありません"
@@ -2890,11 +2888,20 @@ msgstr "代理店アカウントが見つかりません。"
 msgid "No set"
 msgstr "設定されない"
 
+msgid "No statistics found for the given period. Try another period."
+msgstr "統計情報は指定された期間に見つかりませんでした。別の期間をお試しください。"
+
 msgid "No subdomain system errors"
 msgstr "サブドメインシステムのエラーは発生していません"
 
+msgid "No unassigned users was found in database."
+msgstr "割り当てられていないユーザーがデータベースに見つかりませんでした。"
+
 msgid "No user found."
-msgstr ""
+msgstr "ユーザーが見つかりませんでした。"
+
+msgid "No users found for this reseller."
+msgstr "代理店のユーザーが見つかりません。"
 
 msgid "No valid alias domain selected."
 msgstr "有効なエイリアスドメインが選択されていません。"
@@ -2906,7 +2913,7 @@ msgid "None"
 msgstr "なし"
 
 msgid "Normal connection"
-msgstr ""
+msgstr "通常接続"
 
 msgid "Normal mail"
 msgstr "通常のメール"
@@ -2927,7 +2934,7 @@ msgid "Not found user records matching the search criteria."
 msgstr "検索条件に一致するユーザーレコードが見つかりませんでした。"
 
 msgid "Not used"
-msgstr ""
+msgstr "使用しない"
 
 msgid "Nothing been changed."
 msgstr "何も変わりませんでした。"
@@ -2936,7 +2943,7 @@ msgid "Nothing's been changed"
 msgstr "何も変更されていません"
 
 msgid "Nothing's been changed."
-msgstr "何も変更しませんでした。"
+msgstr "何も変更がありませんでした。"
 
 msgid "Notices, Warnings and Errors"
 msgstr "通知, 警告とエラー"
@@ -2958,13 +2965,13 @@ msgid ""
 msgstr "IANAにルートゾーンのデータベースに記載されている、トップレベルドメイン（TLD）のみが使用することができます。"
 
 msgid "Only exec"
-msgstr ""
+msgstr "実行のみ"
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "gettext Machine Objectファイル（MOファイル）だけは、受け入れられます。"
 
 msgid "Only positive numbers are allowed for services ports."
-msgstr ""
+msgstr "正の数値のみが、サービスポートに対して許可されています。"
 
 msgid "Only positive numbers are allowed."
 msgstr "正の数値のみが許可されます。"
@@ -2973,7 +2980,7 @@ msgid "Open tickets"
 msgstr "未解決のチケット"
 
 msgid "Optional"
-msgstr ""
+msgstr "オプショナル"
 
 msgid "Options"
 msgstr "オプション"
@@ -2982,10 +2989,10 @@ msgid "Order"
 msgstr "オーダー"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr ""
+msgstr "オーダー取消し：代理店制限を超過しています。"
 
 msgid "Order Cancelled: resellers limit(s) exceeded."
-msgstr "オーダー中止：リセラー制限を超えました。"
+msgstr "オーダー取消し：代理店制限を超過しました。"
 
 msgid "Order Panel / Chart"
 msgstr "オーダーパネル/チャート"
@@ -2993,11 +3000,11 @@ msgstr "オーダーパネル/チャート"
 msgid "Order Panel / Checkout"
 msgstr "オーダーパネル/チェックアウト"
 
+msgid "Order Panel / Choose hosting plan"
+msgstr "オーダーパネル / ホスティングプランを選択"
+
 msgid "Order Panel / Choosing a domain name"
 msgstr "オーダーパネル/ドメイン名を選択"
-
-msgid "Order Panel / Choosing an hosting package"
-msgstr "オーダーパネル/ホスティングパッケージの選択"
 
 msgid "Order Panel / Order confirmation"
 msgstr "オーダーパネル/オーダーの確認"
@@ -3015,7 +3022,7 @@ msgid "Order details"
 msgstr "オーダー詳細"
 
 msgid "Order email"
-msgstr ""
+msgstr "オーダーEメール"
 
 msgid "Order email setup"
 msgstr "オーダーEメール設定"
@@ -3036,7 +3043,7 @@ msgid "Order successfully updated."
 msgstr "オーダーが更新されました。"
 
 msgid "Order template"
-msgstr ""
+msgstr "オーダーテンプレート"
 
 msgid "Orders"
 msgstr "オーダー"
@@ -3064,18 +3071,18 @@ msgstr "PHP"
 
 #, php-format
 msgid "PHP %s directive"
-msgstr ""
+msgstr "PHPの %s ディレクティブ"
 
 msgid "PHP Editor"
-msgstr ""
+msgstr "PHPエディタ"
 
 msgid "PHP Editor Settings"
-msgstr ""
+msgstr "PHPエディタの設定"
 
 msgid "PHP GD extension not loaded."
 msgstr "ＰＨＰのGD拡張モジュールがロードされていない。"
 
-msgid "PHP Settings (system wide)"
+msgid "PHP Settings (system default)"
 msgstr ""
 
 msgid "PHP Support: disabled"
@@ -3085,22 +3092,19 @@ msgid "PHP Support: enabled"
 msgstr "PHPサポート：有効"
 
 msgid "PHP configuration scheduled for update."
-msgstr ""
+msgstr "PHPの構成スケジュールを更新。"
 
 msgid "PHP directives values"
-msgstr ""
+msgstr "PHPディレクティブの値"
 
 msgid "PHP exec() function"
-msgstr ""
+msgstr "PHPのexec（）関数"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "PHPの設定"
 
 msgid "PHP support"
 msgstr "PHPサポート"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP in"
@@ -3115,7 +3119,7 @@ msgid "Package actions"
 msgstr "パッケージのアクション"
 
 msgid "Package features"
-msgstr ""
+msgstr "パッケージの機能"
 
 msgid "Package install type"
 msgstr "パッケージインストールタイプ"
@@ -3127,7 +3131,7 @@ msgid "Package name"
 msgstr "パッケージ名"
 
 msgid "Package price"
-msgstr ""
+msgstr "パッケージ価格"
 
 msgid "Package title"
 msgstr "パッケージのタイトル"
@@ -3142,10 +3146,10 @@ msgid "Package version"
 msgstr "パッケージバージョン"
 
 msgid "Panel default language"
-msgstr "デフォルト言語を選択"
+msgstr "既定の言語を選択"
 
 msgid "Parameter"
-msgstr ""
+msgstr "パラメタ"
 
 msgid "Parent Directory"
 msgstr "親ディレクトリ"
@@ -3185,7 +3189,7 @@ msgid "Password doesn't matches"
 msgstr "パスワードが一致しません"
 
 msgid "Password doesn't matches."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 msgid "Password is missing."
 msgstr "パスワードが入力されていません。"
@@ -3210,13 +3214,13 @@ msgid "Passwords do not match."
 msgstr "パスワードが一致しません。"
 
 msgid "Passwords doesn't match."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 msgid "Passwords doesn't matches"
 msgstr "パスワードが一致しません"
 
 msgid "Passwords doesn't matches."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 msgid "Passwords doesn't not matches."
 msgstr "パスワードが一致しないことはありません。"
@@ -3225,7 +3229,7 @@ msgid "Passwords don't match!"
 msgstr "パスワードが違います！"
 
 msgid "Passwords don't match."
-msgstr ""
+msgstr "パスワードが一致しません。"
 
 msgid "Path"
 msgstr "パス"
@@ -3264,28 +3268,34 @@ msgid "Phone"
 msgstr "電話番号"
 
 msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
+msgstr "phpMyAdmin"
 
 msgid "Plain record data"
 msgstr "プレーンレコードデータ"
 
 msgid "Please choose htaccess user or htaccess group."
-msgstr ""
+msgstr "htaccessユーザーまたはhtaccessグループを選択してください。"
 
 msgid "Please delete first CatchAll account for this email."
-msgstr ""
+msgstr "このEメールの全てアカウントを探して最初に削除してください。"
 
 msgid "Please enter FTP account username."
 msgstr "FTPアカウントのユーザー名を入力してください。"
 
 msgid "Please enter a name for the protected area."
-msgstr ""
+msgstr "アクセス制限領域の名前を入力してください。"
+
+msgid "Please enter a password."
+msgstr "パスワードを入力してください。"
+
+msgid "Please enter an username."
+msgstr "ユーザー名を入力してください。"
 
 msgid "Please enter mail account username."
 msgstr "メールアカウントのユーザー名を入力してください。"
 
 msgid "Please enter protected area path"
-msgstr "アクセス保護領域のパスを入力してください"
+msgstr "アクセス制限領域のパスを入力してください"
 
 msgid "Please fill up all data fields!"
 msgstr "すべてのフィールドを埋めてください"
@@ -3293,18 +3303,18 @@ msgstr "すべてのフィールドを埋めてください"
 msgid "Please fill up both data fields for password."
 msgstr "パスワードを両方のデータ項目を入力してください。"
 
+msgid "Please select a least one user."
+msgstr "少なくとも一つのユーザーを選択してください。"
+
 msgid "Please select a valid  SQL user for the database."
-msgstr ""
+msgstr "データベースの有効なSQLユーザを選択してください。"
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr ""
+msgstr "別のディレクトリを選択してください。 %s (%s) がインストールされています。"
 
 msgid "Please select at least one mail type."
 msgstr "少なくとも一つのメールタイプを選択してください。"
-
-msgid "Please select some user(s)!"
-msgstr "ユーザーを選択してください！"
 
 msgid "Please specify a message content!"
 msgstr "内容を指定してください！"
@@ -3348,9 +3358,6 @@ msgstr "サブドメイン名を指定してください。"
 msgid "Please type database name."
 msgstr "データベース名を入力してください。"
 
-msgid "Please type user name!"
-msgstr "ユーザー名を入力してください！"
-
 msgid "Please type user password."
 msgstr "ユーザーのパスワードを入力してください。"
 
@@ -3367,10 +3374,55 @@ msgid "Please write mount point!"
 msgstr "マウントポイントを指定してください！"
 
 msgid "Please, check the PHP Editor settings."
-msgstr ""
+msgstr "PHPエディタの設定を確認してください。"
 
-msgid "Please, don't use special chars like '@, $, %...' in the password."
-msgstr "\"@、$、%...\"のような特殊文字をパスワードに使用しないでください。"
+msgid "Please, don't use special chars such as '@, $, %...' in the password."
+msgstr "パスワードに、'@, $, %...'のような特殊文字を使用しないでください。"
+
+msgid "Plugin"
+msgstr "プラグイン"
+
+msgid ""
+"Plugin list is empty. To install a new plugin, extract its archive content "
+"into the <strong>gui/plugins</strong> directory and update the plugin list."
+msgstr "プラグインリストは空です。新しいプラグインをインストールするには、<strong>gui/plugins</strong> ディレクトリに、アーカイブのコンテンツを抽出し、プラグインのリストを更新します。"
+
+#, php-format
+msgid ""
+"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
+"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
+"plugin(s) deleted."
+msgstr "プラグインリストを更新しました。<br/><strong>%d</strong>個の新しいプラグインが見つかりました。<strong>%d</strong> 個のプラグインを更新し、及び<strong>%d</strong>個のプラグインを削除しました。"
+
+msgid "Plugin management"
+msgstr "プラグインの管理"
+
+#, php-format
+msgid "Plugin manager was unable to remove the %s file"
+msgstr "プラグイン管理は %s ファイルを削除することができませんでした"
+
+#, php-format
+msgid ""
+"Plugin manager was unable to write the %s cache file for protected plugins."
+msgstr "プラグイン管理は、保護されたプラグインの %s のキャッシュファイルを書き込むことができませんでした。"
+
+msgid "Plugin successfully activated."
+msgstr "プラグインが有効になりました。"
+
+msgid "Plugin successfully deactivated."
+msgstr "プラグインが無効になりました。"
+
+msgid "Plugin successfully protected."
+msgstr "プラグインが保護されました。"
+
+msgid "Plugin(s) successfully activated."
+msgstr "プラグインが有効になりました。"
+
+msgid "Plugin(s) successfully deactivated."
+msgstr "プラグインが無効になりました。"
+
+msgid "Plugin(s) successfully protected."
+msgstr "プラグインが保護されました。"
 
 msgid "Port"
 msgstr "ポート番号"
@@ -3400,7 +3452,7 @@ msgid "Price must be a number."
 msgstr "価格は、数値でなければなりません。"
 
 msgid "Price style"
-msgstr ""
+msgstr "価格のスタイル"
 
 msgid "Priority"
 msgstr "優先度"
@@ -3417,11 +3469,17 @@ msgstr "プロフィール"
 msgid "Properties"
 msgstr "プロパティ"
 
+msgid "Protect"
+msgstr "保護"
+
 msgid "Protect it"
 msgstr "保護する"
 
+msgid "Protect this plugin"
+msgstr "このプラグインを保護する"
+
 msgid "Protected"
-msgstr ""
+msgstr "保護された"
 
 msgid "Protected Areas"
 msgstr "アクセス制限領域"
@@ -3430,16 +3488,19 @@ msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "アクセス制限領域削除したいならば、ステータスは'OK'でなければなりません。"
 
 msgid "Protected area successfully scheduled for addition."
-msgstr ""
+msgstr "アクセス制限領域の追加が予定されました。"
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr ""
+msgstr "アクセス制限領域の削除が予定されました。"
 
 msgid "Protected area successfully scheduled for update."
-msgstr ""
+msgstr "アクセス制限領域の更新が予定されました。"
 
 msgid "Protected areas"
 msgstr "アクセス制限領域"
+
+msgid "Protected plugin"
+msgstr "保護されたプラグイン"
 
 msgid "Protocol"
 msgstr "プロトコル"
@@ -3476,7 +3537,7 @@ msgid "Redirect to URL"
 msgstr "URLを転送"
 
 msgid "Registration date"
-msgstr ""
+msgstr "登録日"
 
 msgid "Relative weight for records with the same priority"
 msgstr "すでに同じ優先権のものが存在します"
@@ -3491,7 +3552,7 @@ msgid "Remote File not found."
 msgstr "リモートファイルが見つかりません。"
 
 msgid "Remote Web software repository"
-msgstr ""
+msgstr "リモートのWebソフトウェアリポジトリ"
 
 msgid "Remove"
 msgstr "削除"
@@ -3509,7 +3570,7 @@ msgid "Reopen the ticket"
 msgstr "チケットを再開します"
 
 msgid "Repeat  password"
-msgstr ""
+msgstr "パスワードを繰り返してください。"
 
 msgid "Repeat password"
 msgstr "パスワード再入力"
@@ -3524,19 +3585,19 @@ msgid "Reseller Name"
 msgstr "代理店名"
 
 msgid "Reseller account successfully created."
-msgstr ""
+msgstr "代理店アカウントが作成されました。"
 
 msgid "Reseller account successfully updated."
 msgstr "代理店のアカウントが更新されました。"
 
 msgid "Reseller and customer"
-msgstr ""
+msgstr "代理店と顧客"
 
 msgid "Reseller assignment"
 msgstr "代理店の割り当て"
 
 msgid "Reseller consumption"
-msgstr ""
+msgstr "代理店の消費量"
 
 msgid "Reseller data"
 msgstr "代理店データ"
@@ -3575,10 +3636,10 @@ msgid "Reseller with permissions total"
 msgstr "代理店のアクセス権合計"
 
 msgid "Reseller's layout color successfully updated."
-msgstr ""
+msgstr "代理店のレイアウトが更新されました。"
 
 msgid "Reseller's statistics"
-msgstr ""
+msgstr "代理店の統計情報"
 
 msgid "Reseller/IP usage statistics"
 msgstr "代理店/IPアドレス使用状況"
@@ -3587,7 +3648,7 @@ msgid "Resellers"
 msgstr "代理店"
 
 msgid "Resellers assignment"
-msgstr ""
+msgstr "代理店の割り当て"
 
 msgid "Reset"
 msgstr "リセット"
@@ -3602,7 +3663,7 @@ msgid "Return to previous menu"
 msgstr "前のメニューに戻る"
 
 msgid "Revision date"
-msgstr ""
+msgstr "改訂日付"
 
 msgid "Rights succesfully added."
 msgstr "権利が追加されました。"
@@ -3611,10 +3672,7 @@ msgid "Rights succesfully removed."
 msgstr "権利が削除されました。"
 
 msgid "Rootkit logs"
-msgstr ""
-
-msgid "SMTP"
-msgstr "SMTP"
+msgstr "ルートキットログ"
 
 msgid "SMTP in"
 msgstr "SMTP in"
@@ -3643,11 +3701,11 @@ msgstr "SQLユーザー"
 msgid "SQL accounts limit reached."
 msgstr "SQLアカウントが制限に達しています。"
 
-msgid "SQL database created."
-msgstr "SQLデータベースが作成されました。"
+msgid "SQL database successfully added."
+msgstr "SQLデータベースを追加しました。"
 
-msgid "SQL database deleted."
-msgstr "SQLデータベースが削除されました。"
+msgid "SQL database successfully deleted."
+msgstr "SQLデータベースを削除しました。"
 
 msgid "SQL databases"
 msgstr "SQLデータベース"
@@ -3655,16 +3713,16 @@ msgstr "SQLデータベース"
 msgid ""
 "SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "SQL データベース制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQLデータベース制限が無効です。"
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
+msgstr "SQLデータベース制限は無効になりますが、SQLユーザー制限はありません。"
 
 msgid "SQL databases limit is disabled but SQL users limit not."
-msgstr ""
+msgstr "SQLデータベース制限は無効になりますが、SQLユーザー制限はありません。"
 
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "SQLデータベース制限が<i>無効</i>にされていない。"
@@ -3672,7 +3730,7 @@ msgstr "SQLデータベース制限が<i>無効</i>にされていない。"
 msgid ""
 "SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "SQL データベース制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQLデータベース制限<br><i>(-1:無効, 0:無制限)</i>"
@@ -3680,17 +3738,17 @@ msgstr "SQLデータベース制限<br><i>(-1:無効, 0:無制限)</i>"
 msgid "SQL support"
 msgstr "SQLサポート"
 
-msgid "SQL user created."
-msgstr "SQLユーザーが作成されました。"
-
-msgid "SQL user deleted."
-msgstr "SQLユーザーが削除されました。"
-
 msgid "SQL user name"
 msgstr "SQLユーザー名"
 
-msgid "SQL user password updated."
+msgid "SQL user password successfully updated."
 msgstr "SQLユーザーのパスワードを更新しました。"
+
+msgid "SQL user successfully added."
+msgstr "SQLユーザーを追加しました。"
+
+msgid "SQL user successfully deleted."
+msgstr "SQLユーザーを削除しました。"
 
 msgid "SQL users"
 msgstr "SQLユーザー"
@@ -3698,7 +3756,7 @@ msgstr "SQLユーザー"
 msgid ""
 "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "SQL ユーザー制限 <br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "SQLユーザー制限<br><i>無効</i>！"
@@ -3707,17 +3765,17 @@ msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQLユーザー制限が<i>無効</i>です。"
 
 msgid "SQL users limit is disabled but SQL databases limit is not."
-msgstr ""
+msgstr "SQLユーザー制限は無効になりますが、SQLデータベース制限はありません。"
 
 msgid "SQL users limit is disabled but SQL databases limit not."
-msgstr ""
+msgstr "SQLユーザー制限は無効になりますが、SQLデータベース制限はありません。"
 
 msgid "SQL users limit reached."
 msgstr "SQLユーザーの制限に達しました。"
 
 msgid ""
 "SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr ""
+msgstr "SQL ユーザー制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "SQLユーザー最大数<br><i>(-1:無効, 0:無制限)"
@@ -3729,10 +3787,10 @@ msgid "SQL-user not found."
 msgstr "SQLユーザーが見つかりません。"
 
 msgid "SSL Certificates"
-msgstr ""
+msgstr "SSL証明書"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
-msgstr ""
+msgstr "SSL機能が無効になっています。あなたが証明書を追加/変更することはできません"
 
 msgid "Save"
 msgstr "保存"
@@ -3741,13 +3799,13 @@ msgid "Search"
 msgstr "検索"
 
 msgid "Sec."
-msgstr ""
+msgstr "秒。"
 
 msgid "Second Level Domain name strict validation"
 msgstr "セカンドレベルドメイン名の厳密な確認"
 
 msgid "Secure connection"
-msgstr ""
+msgstr "安全な接続"
 
 msgid "Security code"
 msgstr "セキュリティーコード"
@@ -3813,8 +3871,8 @@ msgstr "サーバーのトラフィック"
 msgid "Server traffic settings"
 msgstr "サーバーのトラフィック設定"
 
-msgid "Server traffic settings updated successfully!"
-msgstr "サーバーのトラフィック情報は更新されました！"
+msgid "Server traffic settings successfully updated."
+msgstr "サーバトラフィックが正常に更新されました。"
 
 msgid "Service"
 msgstr "サービス"
@@ -3829,7 +3887,7 @@ msgid "Service port was successfully added"
 msgstr "サービスポートは追加されました"
 
 msgid "Service port was successfully removed."
-msgstr ""
+msgstr "サービスポートが削除されました。"
 
 msgid "Service ports"
 msgstr "サービスポート"
@@ -3869,7 +3927,7 @@ msgstr "表示HTML出力の圧縮サイズコメント"
 
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
-msgstr "通知やコーディング標準の警告を除いて、全てのエラーを表示する（デフォルト）"
+msgstr "通知やコーディング標準の警告を除いて、全てのエラーを表示する（既定）"
 
 msgid ""
 "Show all errors, warnings and notices including coding standards "
@@ -3877,13 +3935,13 @@ msgid ""
 msgstr "コーディング標準を含む、全ての誤り、警告、および通知を表示する(開発)"
 
 msgid "Show default E-Mail addresses"
-msgstr "デフォルトメールアドレスを表示"
+msgstr "既定のEメールアドレスを表示"
 
 msgid "Show detailed statistics for this domain"
-msgstr ""
+msgstr "このドメインの詳細な統計情報を表示する"
 
 msgid "Show detailed statistics for this reseller"
-msgstr ""
+msgstr "この代理店の詳細な統計情報を表示する"
 
 msgid "Show hosting plan"
 msgstr "ホスティングプラン閲覧"
@@ -3892,14 +3950,12 @@ msgid "Show in"
 msgstr "表示レベル"
 
 msgid "Show labels for main menu links"
-msgstr ""
+msgstr "メインメニューのリンクのラベルを表示する"
 
 msgid ""
 "Single letter Second Level Domains (SLD) are not allowed under the most Top "
 "Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-"１文字でのセカンドレベルドメイン(SLD)は、ほとんどのトップレベルドメイン "
-"(TLD)では許可されていません。少ないですが、例えは、トップレベルドメイン .de　など例外もあります。"
+msgstr "１文字でのセカンドレベルドメイン(SLD)は、ほとんどのトップレベルドメイン (TLD)では許可されていません。少ないですが、例えは、トップレベルドメイン .de　など例外もあります。"
 
 msgid "Size"
 msgstr "サイズ"
@@ -3997,9 +4053,6 @@ msgstr "ソフトウェアの権限"
 msgid "Softwares repository"
 msgstr "ソフトウェアリポリトジー"
 
-msgid "Source and destination reseller are the same!"
-msgstr "ソースと目的地の代理店は同じ！"
-
 msgid "Specified SQL username name already exists."
 msgstr "指定されたSQLユーザー名は既に存在します。"
 
@@ -4012,19 +4065,19 @@ msgid ""
 msgstr "指定された番号は、システム上に存在する<em>%s</em>レコードより小さいです。"
 
 msgid "Sql"
-msgstr "Sql"
+msgstr "SQL"
 
 msgid "Sql Users"
-msgstr "Sql ユーザー"
+msgstr "SQL ユーザー"
 
 msgid "Sql database"
-msgstr "Sql データベース"
+msgstr "SQL データベース"
 
 msgid "Sql databases"
-msgstr "Sql データベース"
+msgstr "SQL データベース"
 
 msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "SQLlデータベース制限<br><i>(-1 無効, 0 無制限)</i>"
 
 msgid "Sql user"
 msgstr "SQLユーザー"
@@ -4033,7 +4086,7 @@ msgid "Sql users"
 msgstr "SQLユーザー"
 
 msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "SQL ユーザー制限<br /><i>(-1 無効, 0 無制限)</i>"
 
 msgid "State"
 msgstr "都道府県"
@@ -4042,7 +4095,7 @@ msgid "State/Province"
 msgstr "都道府県"
 
 msgid "Statistics"
-msgstr "統計"
+msgstr "統計情報"
 
 msgid "Stats"
 msgstr "統計"
@@ -4051,7 +4104,7 @@ msgid "Status"
 msgstr "ステータス"
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr ""
+msgstr "編集したい場合は、アクセス制限領域のステータスは'OK'でなければなりません。"
 
 msgid "Street 1"
 msgstr "建物名"
@@ -4113,21 +4166,18 @@ msgstr "サブドメインの制限に達しました。"
 msgid ""
 "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "サブドメイン制限<br /><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid ""
 "Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "サブドメイン制限<br/><span class=\"italic\">(-1 無効, 0 無制限)</span>"
 
 msgid "Subject"
 msgstr "タイトル"
 
 msgid "Submit changes"
 msgstr "変更を送信"
-
-msgid "Sum"
-msgstr "合計"
 
 msgid "Support"
 msgstr "サポート"
@@ -4170,13 +4220,28 @@ msgid "System info"
 msgstr "システム情報"
 
 msgid "System information"
-msgstr ""
+msgstr "システム情報"
 
 msgid "System tools"
 msgstr "システムツール"
 
 msgid "System under maintenance"
-msgstr ""
+msgstr "保守対象のシステム"
+
+msgid "System was unable to add the SQL database."
+msgstr "システムは、SQLデータベースを追加できませんでした。"
+
+msgid "System was unable to add the SQL user."
+msgstr "システムは、SQLユーザーを追加できませんでした。"
+
+msgid "System was unable to remove the SQL database."
+msgstr "システムは、SQLデータベースを削除できませんでした。"
+
+msgid "System was unable to remove the SQL user."
+msgstr "システムは、SQLユーザーを削除できませんでした。"
+
+msgid "System was unable to update the SQL user password."
+msgstr "システムは、SQLユーザーのパスワードを更新できませんでした。"
 
 msgid "TTL"
 msgstr "TTL"
@@ -4196,7 +4261,7 @@ msgstr "ターゲットポート"
 msgid ""
 "Tells whether or not customers can add/change SSL certificates for their "
 "domains."
-msgstr ""
+msgstr "顧客が、ドメインのSSL証明書を追加/変更することができるかを判断します。"
 
 msgid "Template for Auto email successfully updated."
 msgstr "自動Eメールのテンプレートは更新されました。"
@@ -4205,10 +4270,10 @@ msgid "Template name"
 msgstr "テンプレート名"
 
 msgid "Template successfully reseted."
-msgstr ""
+msgstr "テンプレートはリセットされました。"
 
 msgid "Template successfully updated."
-msgstr ""
+msgstr "テンプレートは更新されました。"
 
 msgid "Term Of Service"
 msgstr "サービス期間"
@@ -4217,7 +4282,7 @@ msgid "Term of Service"
 msgstr "サービス期間"
 
 msgid "Term of service"
-msgstr ""
+msgstr "サービス期間"
 
 msgid "Text"
 msgstr "テキスト"
@@ -4229,41 +4294,41 @@ msgstr "テキストのみ"
 msgid ""
 "The %s limit for this customer cannot be greater than <strong>%d</strong>, "
 "the calculated limit for his reseller."
-msgstr ""
+msgstr "この顧客のための %s 制限<strong>%d</strong>は、代理店のために計算された制限を超えることはできません。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than <strong>%d</strong>, "
 "your calculated limit."
-msgstr ""
+msgstr "この顧客のための %s 制限<strong>%d</strong>は、計算された制限を超えることはできません。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
 " total of %s already used by him."
-msgstr ""
+msgstr "この顧客のための %s 制限<strong>%d</strong>は、 %s が既に使用された合計よりも小さくなることはありません。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr ""
+msgstr "彼が既に <strong>%d</strong> %sを持つので、この顧客のための %s 制限は'無効'に設定するこはできません。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because his reseller is "
 "limited for this service."
-msgstr ""
+msgstr "代理店がサービスのために制限されているので、顧客のための %s 制限は無制限とすることはできません。"
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr ""
+msgstr "顧客のための %s 制限は、サービスのために制限されているので無制限とすることはできません。"
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled."
-msgstr " <em>%s</em> 無効にする必要があります。"
+msgstr "<em>%s</em> 無効にする必要があります。"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be disabled."
@@ -4277,11 +4342,23 @@ msgstr "<em>%s</em>のサービスに制限を掛けることはできません�
 msgid "The <em>%s</em> service cannot be unlimited."
 msgstr "<em>%s</em>のサービスを無制限にすることはできません。"
 
+#, php-format
+msgid ""
+"The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
+"found in file <strong>%s</strong>"
+msgstr "<strong>%s</strong> プラグインの <strong>%s</strong> クラスは、 <strong>%s</strong> ファイルで見つかりませんでした"
+
+#, php-format
+msgid ""
+"The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
+"exists or is not readable."
+msgstr "<strong>%s</strong> プラグインの <strong>%s</strong> のファイルが存在するか読み出し可能でありません。"
+
 msgid "The IP address you trying to remove is assigned to a reseller."
-msgstr ""
+msgstr "削除しようとしたIPアドレスは代理店に割り当てられています。"
 
 msgid "The `Enter` key is disabled for performance reasons."
-msgstr ""
+msgstr "`Enter`キーは、パフォーマンス理由のために無効です。"
 
 #, php-format
 msgid "The admin has <em>%s</em> disabled on this system."
@@ -4295,29 +4372,38 @@ msgstr "現在のパスワードに誤りがあります。"
 
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
-msgstr ""
+msgstr "ディレクトリ％sは存在しません。最初に作成してください。"
 
 #, php-format
 msgid "The directory %s was created."
+msgstr "ディレクトリ %s が作成されました。"
+
+msgid ""
+"The directory/file paths are appended to the default PHP open_basedir "
+"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
+"See the PHP documentation for more information."
 msgstr ""
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
-msgstr ""
+msgstr "ドメインは現在無効になっています。そのプロパティの一部の変更は、完全または部分的な再活性化により発生します。"
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr ""
+msgstr "ドメインまたはエンティティの少なくとも一方が'OK'とは異なるステータスを持っています。"
 
 msgid "The domain you are trying to edit doesn't exist."
-msgstr ""
+msgstr "編集しようとしているドメインは存在しません。"
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "i-MSCPアプリケーションインストーラーは、PHPを必要とします。"
 
 msgid "The menu you trying to edit doesn't exist."
-msgstr ""
+msgstr "編集しようとしているメニューは存在しません。"
+
+msgid "The password is too long."
+msgstr "パスワードが長すぎます。"
 
 #, php-format
 msgid ""
@@ -4331,18 +4417,18 @@ msgid ""
 msgstr "リモートファイルサイズ(%1$d B) が1バイト未満です。 URLを確認してください。"
 
 msgid "The reseller account you trying to edit doesn't exist."
-msgstr ""
+msgstr "編集しようしている代理店アカウントは存在しません。"
 
 msgid "The softwares installer needs PHP."
-msgstr ""
+msgstr "ソフトウェアインストーラは、PHPが必要です。"
 
 #, php-format
 msgid "The username %s is not available."
-msgstr ""
+msgstr "ユーザ名 %s は使用できません。"
 
 #, php-format
 msgid "There are <em>%s</em> records on system."
-msgstr "<em>%s</em>のレコードがシステム上にあります。"
+msgstr "システム上に<em>%s</em>のレコードがあります。"
 
 #, php-format
 msgid "There are <em>%s</em> records on the system."
@@ -4373,9 +4459,7 @@ msgid ""
 "This database will be permanently deleted. This process cannot be recovered."
 " All users linked to this database will also be deleted if not linked to "
 "another database. Are you sure you want to delete the '%s' database?"
-msgstr ""
-"データベースは完全に削除されます。この処理を回復することはできません。別のデータベースにリンクされていない場合は、このデータベースにリンクされている全てのユーザーも削除されます。"
-" '%s' データベースを削除してもよろしいですか？"
+msgstr "データベースは完全に削除されます。この処理を回復することはできません。別のデータベースにリンクされていない場合は、このデータベースにリンクされている全てのユーザーも削除されます。 '%s' データベースを削除してもよろしいですか？"
 
 msgid ""
 "This hosting plan can't be deleted, there are some orders linked to it."
@@ -4385,21 +4469,21 @@ msgid "This hosting plan is not available for purchase."
 msgstr "このホスティングプランは、購入には使用できません。"
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "htaccessグループが既に存在しています。"
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "htaccessユーザーが既に存在しています。"
 
 #, php-format
 msgid ""
 "This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr ""
+msgstr "この代理店は %s サービスのための無制限の権限で %s を顧客を持っています。"
 
 #, php-format
 msgid ""
 "This reseller has already assigned more/higher %s accounts/limits than the "
 "new limit you entered."
-msgstr ""
+msgstr "この代理店は既にあなたが入れた新しい限界よりさらに多いか高い %s アカウント/限界を割り当てました。"
 
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
@@ -4410,7 +4494,7 @@ msgstr "この代理店は、1つまたは複数の顧客アカウントを持�
 msgid ""
 "This reseller's customers are using/have more/higher %s accounts/limits than"
 " the new limit you entered."
-msgstr ""
+msgstr "この代理店の顧客は入れた新しい限界より多くの高い %s アカウント/限界を持ってください。"
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -4464,11 +4548,12 @@ msgstr "代理店へ"
 msgid "To subdomain"
 msgstr "サブドメインへ"
 
+#, php-format
+msgid "To unprotect this plugin, you must edit the %s file"
+msgstr "このプラグインを解除するには、 %s ファイルを編集する必要があります。"
+
 msgid "Too long user password."
 msgstr "ユーザーのパスワードが長すぎます。"
-
-msgid "Too user long password."
-msgstr "長いパスワードを使用してください。"
 
 msgid "Top Level Domain name strict validation"
 msgstr "トップレベルドメイン名の厳密な確認"
@@ -4500,26 +4585,32 @@ msgstr "ソフトウェアの合計"
 msgid "Traffic"
 msgstr "トラフィック"
 
-msgid "Traffic in MB"
-msgstr "トラフィック in MB"
-
 msgid "Traffic limit"
 msgstr "トラフィック制限"
 
 msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
-msgstr "トラフィック制限 [Mb]<br><i>(0:無制限)</i>"
+msgstr "トラフィック制限 [MB]<br><i>(0:無制限)</i>"
 
 msgid "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "トラフィック制限 [MB] <br /><span class=\"italic\">(0 無制限)</span>"
 
 msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "トラフィック制限 [MB]<br/><span class=\"italic\">(0 無制限)</span>"
 
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "トラフィック制限 [MB]<br><i>(0 無制限)</i>"
+
+msgid "Traffic limit must be a digit."
+msgstr "トラフィック制限は数字でなければなりません。"
 
 msgid "Traffic usage"
 msgstr "トラフィック量"
+
+msgid "Traffic warning cannot be bigger than traffic limit."
+msgstr "トラフィック警告は、トラフィック制限よりも大きくすることはできません。"
+
+msgid "Traffic warning must be a digit."
+msgstr "トラフィック警告が数字でなければなりません。"
 
 msgid "Translated strings"
 msgstr "翻訳された文字列"
@@ -4543,6 +4634,16 @@ msgstr "言語ファイルのための'%s' ディレクトリを作成できま�
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
 msgstr "言語ファイルのための\"LC_MESSAGES\"ディレクトリを作成できません。"
 
+msgid ""
+"Unable to delete the domain account. A message has been sent to the "
+"administrator."
+msgstr "ドメインアカウントを削除することができません。メッセージは管理者に送信されました。"
+
+msgid ""
+"Unable to delete the domain. Please, consult admin logs or your mail for "
+"more information."
+msgstr "ドメインを削除することができません。 詳細については、管理者ログ、またはメールを参照してください。"
+
 #, php-format
 msgid "Unable to delete user with Id: %d"
 msgstr "このIDを持つユーザーを削除することができない： %d"
@@ -4552,7 +4653,7 @@ msgid ""
 msgstr "ネットワークカードを見つけることができません。 新しいIPアドレスを追加するフォームは無効にされました。"
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
-msgstr ""
+msgstr "IPアドレスのリストを取得することができません。この問題を修正してください。"
 
 msgid "Unable to read xml file for Web softwares."
 msgstr "WebソフトウェアのためのXMLファイルを読み込むことができません。"
@@ -4563,7 +4664,7 @@ msgstr "WebソフトウェアのためのXMLファイルを読み込むことが
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
 "reseller."
-msgstr ""
+msgstr "ドメインのディレクトリ一覧を取得できません。代理店にお問い合わせください。"
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -4573,7 +4674,7 @@ msgid "Undefined reference to data."
 msgstr "データの未定義参照。"
 
 msgid "Under maintenance mode, only administrators can login."
-msgstr ""
+msgstr "メンテナンスモードで、管理者だけがログインすることができます。"
 
 msgid "Unknown"
 msgstr "不明"
@@ -4606,6 +4707,9 @@ msgstr "サブドメインタイプがありません。"
 msgid "Unknown type."
 msgstr "不明な種別が指定されました。"
 
+msgid "Unknown username."
+msgstr "未知のユーザ名。"
+
 #, php-format
 msgid "Unknown zone type %s."
 msgstr "%s は不明なゾーンタイプ。"
@@ -4623,7 +4727,7 @@ msgid "Update"
 msgstr "更新"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "SQLユーザーパスワードの更新"
 
 msgid "Update checking is disabled!"
 msgstr "更新チェック機能が無効です！"
@@ -4652,6 +4756,9 @@ msgstr "オーダーを更新"
 msgid "Update plan"
 msgstr "プランの更新"
 
+msgid "Update plugin list"
+msgstr "プラグインリストを更新"
+
 msgid "Updates"
 msgstr "アップデート"
 
@@ -4664,28 +4771,23 @@ msgstr "ロゴをアップロード"
 msgid "Upload now"
 msgstr "アップロード開始"
 
+msgid "Usage of disallowed character in CNAME"
+msgstr "CNAMEでない文字の使用"
+
 msgid "Usage status"
-msgstr ""
+msgstr "利用状況"
 
 msgid "Use normal connection (No SSL)"
-msgstr ""
+msgstr "通常接続を使用する（SSLなし）"
 
 msgid "Use numeric ID"
 msgstr "数値IDを使う"
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in CNAME"
-msgstr "CNAMEで(\"%s\")文字は使えません"
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in NAME"
-msgstr "NAMEで(\"%s\")文字は使えません"
 
 msgid "Use other dir"
 msgstr "他のディレクトリを使用する"
 
 msgid "Use secure connection (SSL)"
-msgstr ""
+msgstr "安全な接続を使用する（SSL）"
 
 msgid "Use strong Passwords"
 msgstr "強力なパスワードを使う"
@@ -4711,8 +4813,8 @@ msgstr "ユーザー認証"
 msgid "User data were not updated."
 msgstr "ユーザデータは更新されませんでした。"
 
-msgid "User data were succefully updated."
-msgstr "ユーザーデータは更新されました。"
+msgid "User data were successfully updated."
+msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
@@ -4727,10 +4829,7 @@ msgid ""
 msgstr "ユーザーが存在しないか、このインターフェイスにアクセスする権限がありません。"
 
 msgid "User does not exist."
-msgstr ""
-
-msgid "User list is empty."
-msgstr "ユーザーリストは未登録です"
+msgstr "ユーザーは存在しません。"
 
 msgid "User login (system) name"
 msgstr "ユーザーのログイン名"
@@ -4748,7 +4847,7 @@ msgid "User password successfully updated."
 msgstr "ユーザーのパスワードが更新されました！"
 
 msgid "User personal data successfully updated."
-msgstr ""
+msgstr "ユーザーの個人情報が更新されました。"
 
 msgid "User real (first and last) name"
 msgstr "ユーザーの本当の名前（姓と名）"
@@ -4757,7 +4856,7 @@ msgid "User scheduled for deletion."
 msgstr "ユーザーの削除を予定しました。"
 
 msgid "User session successfully killed for password change."
-msgstr ""
+msgstr "ユーザーセッションは、パスワード変更のため切断されました。"
 
 msgid "User session was killed."
 msgstr "ユーザーセッションは強制終了されました。"
@@ -4771,9 +4870,6 @@ msgstr "ユーザータイプ"
 msgid "User type (admin, reseller, user)"
 msgstr "ユーザータイプ (管理者, 代理店, ユーザー)"
 
-msgid "User was moved"
-msgstr "ユーザーは移動しました"
-
 msgid "User was not deleted."
 msgstr "ユーザーは、削除されませんでした。"
 
@@ -4781,34 +4877,34 @@ msgid "Username"
 msgstr "ユーザー名"
 
 msgid "Username and password for application login"
-msgstr ""
+msgstr "アプリケーションへのログイン用のユーザ名とパスワード"
 
 msgid "Users"
 msgstr "ユーザー"
 
 msgid "Users and groups"
-msgstr ""
+msgstr "ユーザーとグループ"
 
 msgid "Users list"
 msgstr "ユーザーリスト"
 
 #, php-format
 msgid "Value for the %s  directive"
-msgstr ""
+msgstr " %s ディレクティブの値"
 
 #, php-format
 msgid "Value for the %s directive"
-msgstr ""
+msgstr " %s ディレクティブの値"
 
 #, php-format
 msgid "Value for the PHP %s directive is out of range."
-msgstr ""
+msgstr "PHPの %s ディレクティブの値が範囲外です。"
 
 #, php-format
 msgid ""
 "Value for the PHP <strong>%%s</strong> directive must be between %%d and "
 "%%d."
-msgstr ""
+msgstr "PHPの<strong>%%s</strong> ディレクティブの値は %%d と %%d の間でなければなりません。"
 
 msgid "Values"
 msgstr "値"
@@ -4826,7 +4922,7 @@ msgid "View / Update service(s) port"
 msgstr "表示/更新　サービスポート"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "SSL証明書を表示する"
 
 msgid "View Support Ticket"
 msgstr "サポートチケット表示"
@@ -4835,7 +4931,7 @@ msgid "View aliases"
 msgstr "エイリアス表示"
 
 msgid "View certificates"
-msgstr ""
+msgstr "証明書を表示する"
 
 msgid "View details"
 msgstr "ビュー 詳細"
@@ -4843,17 +4939,14 @@ msgstr "ビュー 詳細"
 msgid "View hosting plan"
 msgstr "ビュー ホスティングプラン"
 
+msgid "Visit plugin site"
+msgstr "プラグインサイトの訪問"
+
 msgid "Vital system info"
 msgstr "システム情報"
 
-msgid "WEB"
-msgstr "WEB"
-
 msgid "Warning traffic"
-msgstr ""
-
-msgid "Warning traffic is bigger than max traffic!"
-msgstr "警告　トラフィック最大を超えてます！"
+msgstr "警告トラフィック"
 
 msgid "Warning:"
 msgstr "警告："
@@ -4874,9 +4967,6 @@ msgstr "申し訳ありませんが、あなたの契約で許可されている
 msgid "Web & E-Mail Support"
 msgstr "Webとメールサポート"
 
-msgid "Web Stats"
-msgstr "Web統計"
-
 msgid "Web in"
 msgstr "Web in"
 
@@ -4887,13 +4977,13 @@ msgid "Web software depot packages total"
 msgstr "Webソフトウェアデポットのパッケージ合計"
 
 msgid "Web softwares repository"
-msgstr ""
+msgstr "Webソフトウェアリポジトリ"
 
 msgid "Web statistics"
 msgstr "Web統計"
 
 msgid "Web statistics (AWStats)"
-msgstr ""
+msgstr "Web統計情報(AWStats)"
 
 msgid "Web traffic"
 msgstr "Webトラフィック"
@@ -4908,36 +4998,33 @@ msgid "Webtools"
 msgstr "Webツール"
 
 msgid "Welcome mail"
-msgstr ""
+msgstr "歓迎メール"
 
 msgid ""
 "When allowed, scripts can call the PHP exec() function. This function is "
 "needed by many applications but can cause some security issues"
-msgstr ""
+msgstr "許可されている場合は、スクリプトはPHPのexec（）関数を呼び出すことができます。この関数は、多くのアプリケーションで必要とされていますが、いくつかのセキュリティ問題を引き起こす可能性があります"
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
 msgstr "%%と？などのワイルドカードは許可されません。"
 
 msgid "Wrong IP address."
-msgstr ""
+msgstr "間違ったIPアドレス"
 
 #, php-format
-msgid "Wrong IPv4 address (\"%s\")."
-msgstr "IPv4アドレスに誤りがあります (\"%s\")。"
+msgid "Wrong IPv4 address (\"%s\")"
+msgstr "間違ったIPv4アドレス(\"%s\")"
 
 #, php-format
-msgid "Wrong IPv6 address (\"%s\")."
-msgstr "IPv6アドレスに誤りがあります (\"%s\")。"
+msgid "Wrong IPv6 address (\"%s\")"
+msgstr "間違ったIPv6アドレス(\"%s\")"
 
 msgid "Wrong SQL user identifier."
-msgstr ""
+msgstr "SQLユーザ識別子に誤りがあります。"
 
 msgid "Wrong address in forward URL."
 msgstr "転送先URLのアドレスに誤りがあります。"
-
-msgid "Wrong data input!"
-msgstr "データ入力に誤りがあります！"
 
 msgid "Wrong domain ID."
 msgstr "ドメインIDに誤りがあります。"
@@ -4960,6 +5047,9 @@ msgstr "転送URLのホスト名に誤りがあります。"
 msgid "Wrong order ID."
 msgstr "オーターIDに誤りがあります。"
 
+msgid "Wrong password."
+msgstr "間違ったパスワード。"
+
 msgid "Wrong redirect URL."
 msgstr "転送先URLに誤りがあります。"
 
@@ -4979,7 +5069,7 @@ msgid "Wrong software id."
 msgstr "ソフトウェアIDに誤りがあります。"
 
 msgid "Wrong syntax for new expire date."
-msgstr ""
+msgstr "新しい有効期限の構文に誤りがあります。"
 
 #, php-format
 msgid "Wrong syntax for the %s forward email address."
@@ -4987,7 +5077,7 @@ msgstr "%sの転送するEメールアドレスは間違った構文です。"
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
-msgstr ""
+msgstr "%s 制限の構文に誤りがあります。"
 
 msgid "Wrong syntax in forward URL."
 msgstr "URL転送の構文に誤りがあります。"
@@ -4996,19 +5086,19 @@ msgid "Wrong username"
 msgstr "ユーザー名に誤りがあります。"
 
 msgid "Wrong username."
+msgstr "間違ったユーザー名。"
+
+msgid "Wrong value for the PHP open_basedir directive."
 msgstr ""
 
 msgid "Wrong_request."
-msgstr ""
+msgstr "Wrong_request."
 
 msgid "XML file URL for the Web software repository"
-msgstr ""
+msgstr "WebソフトウェアリポジトリのXMLファイルへのURL"
 
 msgid "Year"
 msgstr "年"
-
-msgid "Year:"
-msgstr "年:"
 
 msgid "Yes"
 msgstr "はい"
@@ -5020,11 +5110,14 @@ msgstr "はい、そのドメインを削除します。"
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "<em>%s</em> のサービスは代理店の限界を超えています。"
 
+msgid "You are exceeding the server traffic limit."
+msgstr "サーバートラフィックの制限を超えています。"
+
 msgid "You are exceeding your disk limit."
-msgstr "ディスクの制限を超えています。"
+msgstr "ディスク容量制限を超えています。"
 
 msgid "You are exceeding your disk space limit."
-msgstr ""
+msgstr "ディスクスペースの制限を超えています。"
 
 msgid "You are exceeding your traffic limit."
 msgstr "あなたのトラフィックの制限を超えています。"
@@ -5039,7 +5132,7 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "このDNSレコードを削除することが許可されていません。"
 
 msgid "You are not allowed to remove this service port entry."
-msgstr ""
+msgstr "このサービスポートのエントリを削除することはできません。"
 
 msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
@@ -5058,31 +5151,31 @@ msgstr "あなたが自分で%sを転送することはできません。"
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service!"
-msgstr "<b>%1$s</b>へ代理店を移動できません、<br> <b>%2$s</b> サービスは限界をもっています！"
+"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
+" for the <b>%2$s</b> service."
+msgstr "あなたは<b>%2$s</b> サービスの制限がありますので、<br />目的の販売店に <b>%1$s</b> iを移動することはできません。"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr ""
+msgstr "選択したhtaccessファイルグループ（複数可）を使用せずに領域を保護することはできません。"
 
 msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr ""
+msgstr "選択したhtaccessのユーザー（複数可）を使用せずに領域を保護することはできません。"
 
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "あなたは%sのIPアドレスを削除することはできません。"
 
 msgid "You cannot set expire date in past."
-msgstr ""
+msgstr "過去に有効期限を設定することはできません。"
 
 msgid "You cannot unassign an IP address already in use."
-msgstr ""
+msgstr "既に使用中のIPアドレスの割り当てを解除することはできません。"
 
 msgid "You cannot update to this hosting plan, see notices in text."
 msgstr "ホスティングプランに変更できない理由が通知されています。"
 
 msgid "You cant't install the software outside the htdocs directory."
-msgstr ""
+msgstr "htdocsディレクトリ外にソフトウェアをインストールすることはできません。"
 
 msgid "You did have more traffic than the new hosting plan limits."
 msgstr "あなたは、新しいホスティングプランのトラフィック制限よりも、多くのトラフィックを使用しています。"
@@ -5097,10 +5190,10 @@ msgid "You do not have custom DNS records."
 msgstr "カスタムDNSレコードを持っていません。"
 
 msgid "You do not have customers."
-msgstr "あなたは顧客を持っていない。"
+msgstr "あなたは顧客を持っていません。"
 
 msgid "You do not have database."
-msgstr "データベースを持っていない。"
+msgstr "データベースを持っていません。"
 
 msgid "You do not have domain aliases."
 msgstr "ドメインエイリアスを持っていません。"
@@ -5115,13 +5208,13 @@ msgid "You do not have permission to access this interface."
 msgstr "このインターフェイスにアクセスする権限がありません。"
 
 msgid "You do not have protected areas."
-msgstr "アクセス保護領域を持っていない。"
+msgstr "アクセス制限領域を持っていない。"
 
 msgid "You do not have subdomains."
 msgstr "サブドメインを持っていません。"
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr ""
+msgstr "この操作を実行する権限がありません。"
 
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "'www'を必要としません。i-MSCPが自動的に追加します。"
@@ -5131,11 +5224,11 @@ msgstr "i-MSCPが加えるので 'www.' を必要としません。"
 
 #, php-format
 msgid "You have %d new accounts %s."
-msgstr ""
+msgstr "%d の新しいアカウント %s は持ちます。"
 
 #, php-format
 msgid "You have %d new domain alias %s."
-msgstr ""
+msgstr "%d の新しいドメインエイリアス %s は持ちます。"
 
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't has this feature."
@@ -5154,14 +5247,11 @@ msgid ""
 "You have an update order for the account %s\n"
 "\n"
 "Please login into your i-MSCP control panel at %s for more details"
-msgstr ""
-"アカウント %s には更新依頼があります\n"
-"\n"
-"詳細については、i-MSCPコントロールパネルに %s でログインしてください"
+msgstr "アカウント %s には更新依頼があります\n\n詳細については、i-MSCPコントロールパネルに %s でログインしてください"
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
-msgstr ""
+msgstr "ドメインディレクトリに一致しないディレクトリを選択しました。"
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
 msgstr "あなたは、新しいホスティングプランの制限よりも、多くのEメールアドレスを使用しています。"
@@ -5183,7 +5273,7 @@ msgid "You have more aliases in use than the new hosting plan limits."
 msgstr "あなたは、新しいホスティングプランのエイリアス制限よりも、多くのエイリアスを使用しています。"
 
 msgid "You have more disk space in use than the new hosting plan limits."
-msgstr "あなたは、新しいホスティングプランのディスク制限よりも、多くのディスクスペースを使用しています。"
+msgstr "あなたは、新しいホスティングプランのディスク容量制限よりも、多くのディスク容量を使用しています。"
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
@@ -5196,7 +5286,7 @@ msgid "You have more subdomains in use than the new hosting plan limits."
 msgstr "あなたは、新しいホスティングプランのサブドメイン制限よりも、多くのサブドメインを使用しています。"
 
 msgid "You have no custom service ports defined."
-msgstr ""
+msgstr "カスタムサービスポートが定義されていません。"
 
 msgid "You have no groups."
 msgstr "グループがありません。"
@@ -5206,11 +5296,7 @@ msgstr "ユーザーが登録されていません!"
 
 #, php-format
 msgid "You have received %d new support questions."
-msgstr ""
-
-#, php-format
-msgid "You have received <b>%d</b> new support questions."
-msgstr "あなたは<b>%d個</b>の新しいサポートの質問を受けている。"
+msgstr "%d の新しいサポートに関する質問を受けています。"
 
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
@@ -5236,13 +5322,13 @@ msgid "You must fill out all required fields."
 msgstr "全ての必須フィールドに入力する必要があります。"
 
 msgid "You must first generate a password"
-msgstr ""
+msgstr "最初にパスワードを生成する必要があります"
 
 msgid "You must first update the template to preview your changes."
-msgstr ""
+msgstr "最初にあなたの変更をプレビューするためのテンプレートを更新する必要があります。"
 
 msgid "You must provide a password."
-msgstr ""
+msgstr "パスワードを入力する必要があります。"
 
 msgid "You must select a file to upload/download."
 msgstr "アップロード/ダウンロードするファイルを選択する必要があります。"
@@ -5258,7 +5344,7 @@ msgstr "件名を指定する必要があります。"
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
-msgstr ""
+msgstr "あなたのサポートに関する質問に %d 個の新しい回答を受け取った。"
 
 msgid "You send email to your users successfully!"
 msgstr "ユーザーへEメールを送信しました"
@@ -5270,7 +5356,7 @@ msgid "Your account has expired. Please renew your subscription."
 msgstr "アカウントの有効期限が切れています。契約を更新してください。"
 
 msgid "Your consumption"
-msgstr ""
+msgstr "あなたの消費量"
 
 msgid "Your message"
 msgstr "本文"
@@ -5291,7 +5377,7 @@ msgid ""
 msgstr "オーダーを私たちのデータベースで見つけられません。 おそらく既に確認されていますか?"
 
 msgid "Your own domain"
-msgstr ""
+msgstr "独自ドメイン"
 
 #, php-format
 msgid ""
@@ -5336,9 +5422,6 @@ msgstr "日"
 msgid "disabled"
 msgstr "無効"
 
-msgid "disabled</b>"
-msgstr "無効</b>"
-
 msgid "disk space"
 msgstr "ディスクスペース"
 
@@ -5374,7 +5457,7 @@ msgstr "他のブラウザから"
 msgid ""
 "getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
 "the %s plugin and should be reported to the plugin author."
-msgstr ""
+msgstr "getInfo（）を %s に実装されていないと %s が見つかりませんでした。 <br /> このは %s プラグインのバグであり、プラグインの作者に報告する必要があります。"
 
 msgid "help"
 msgstr "ヘルプ"
@@ -5389,16 +5472,16 @@ msgid "i-MSCP - Admin - Manage custom menus"
 msgstr "i-MSCP - 管理者 - カスタムメニュー管理"
 
 msgid "i-MSCP - Admin / Add hosting plan"
-msgstr "i-MSCP - 管理者/ホスティングプラン追加"
+msgstr "i-MSCP - 管理者 / ホスティングプラン追加"
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP - 管理者 / ドメインアカウント削除確認"
 
 msgid "i-MSCP - Admin / Edit customer"
-msgstr "i-MSCP - 管理者/顧客編集"
+msgstr "i-MSCP - 管理者 / 顧客編集"
 
 msgid "i-MSCP - Admin / Edit hosting plan"
-msgstr "i-MSCP - 管理者/ホスティングプラン編集"
+msgstr "i-MSCP - 管理者 / ホスティングプラン編集"
 
 msgid "i-MSCP - Admin / General information"
 msgstr "i-MSCP - 管理者 / 一般情報"
@@ -5407,13 +5490,13 @@ msgid "i-MSCP - Admin / General settings / IPs management"
 msgstr "i-MSCP - 管理者 / 一般設定 / IPアドレス管理"
 
 msgid "i-MSCP - Admin / Internationalisation"
-msgstr "i-MSCP - 管理者/国際化"
+msgstr "i-MSCP - 管理者 / 国際化"
 
 msgid "i-MSCP - Admin / Manage users / Add Reseller"
-msgstr "i-MSCP - 管理者/ユーザー管理/代理店追加"
+msgstr "i-MSCP - 管理者 / ユーザー管理 / 代理店追加"
 
 msgid "i-MSCP - Admin / Manage users / Edit Reseller"
-msgstr "i-MSCP - 管理者/ユーザー管理/代理店編集"
+msgstr "i-MSCP - 管理者 / ユーザー管理 / 代理店編集"
 
 msgid "i-MSCP - Admin / My Profile"
 msgstr "i-MSCP - 管理者 / マイプロフィール"
@@ -5436,8 +5519,26 @@ msgstr "i-MSCP - 管理者 / 代理店顧客統計"
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr "i-MSCP - 管理者 / 代理店統計"
 
+msgid "i-MSCP - Admin / Settings / Plugin management"
+msgstr "i-MSCP - 管理者 / 設定 / プラグイン管理"
+
+msgid "i-MSCP - Admin / Settings / Server traffic settings"
+msgstr "i-MSCP - 管理者 / 設定 / サーバートラフィック設定"
+
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr "i-MSCP - 管理者 / 設定 / サービスポート"
+
+msgid "i-MSCP - Admin / Statistics  / Server statistics"
+msgstr "i-MSCP - 管理者 / 統計情報  / サーバー統計情報"
+
+msgid ""
+"i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
+"Domain_statistics"
+msgstr "i-MSCP - 管理者 / 統計情報 / 代理店統計情報 / 顧客の統計情報 / ドメイン統計情報"
+
+msgid ""
+"i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
+msgstr "i-MSCP - 管理者 / 統計情報 / サーバー統計情報 / 毎日のサーバー統計情報"
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - 管理者 / サポートチケットシステム / 解決したチケット"
@@ -5450,6 +5551,9 @@ msgstr "i-MSCP - 管理者 / サポートチケットシステム / チケット
 
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - 管理者 / システムツール / アンチルートキットログチェック"
+
+msgid "i-MSCP - Admin / Users management / Domain Details"
+msgstr "i-MSCP - 管理者 / ユーザー管理 / ドメイン詳細"
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - 管理者/IPアドレス管理"
@@ -5464,7 +5568,10 @@ msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - 管理者/セッション管理"
 
 msgid "i-MSCP - Admin/Manage Users"
-msgstr " i-MSCP - 管理者/ユーザー管理"
+msgstr "i-MSCP - 管理者/ユーザー管理"
+
+msgid "i-MSCP - Admin/Manage users / User assignment"
+msgstr "i-MSCP - 管理者/ユーザ管理 / ユーザー割り当て"
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - 管理者/ユーザー管理/ユーザー追加"
@@ -5474,18 +5581,6 @@ msgstr "i-MSCP - 管理者/ユーザー管理/Eメール設定"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - 管理者/ユーザー管理/代理店の割り当て"
-
-msgid "i-MSCP - Admin/Manage users/User assignment"
-msgstr "i-MSCP - 管理者/ユーザー管理/ユーザーの割り当て"
-
-msgid "i-MSCP - Admin/Server Traffic Settings"
-msgstr "i-MSCP - 管理者/サーバートラフィック設定"
-
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - 管理者/サーバー統計日"
-
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - 管理者/サーバーの統計"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - 管理者/設定"
@@ -5502,6 +5597,27 @@ msgstr "i-MSCP - アプリケーション管理（アクセス権）"
 msgid "i-MSCP - Client / Change Language"
 msgstr "i-MSCP - クライアント/言語変更"
 
+msgid "i-MSCP - Client / Manage mail"
+msgstr "i-MSCP - クライアント / メール管理"
+
+msgid "i-MSCP - Client / Manage mail / Add account"
+msgstr "i-MSCP - クライアント / メール管理 / アカウント追加"
+
+msgid "i-MSCP - Client / Manage mail / Add catchall"
+msgstr "i-MSCP - クライアント / メール管理 / キャッチオール追加"
+
+msgid "i-MSCP - Client / Manage mail / Catchall"
+msgstr "i-MSCP - クライアント / メール管理 / キャッチオール"
+
+msgid "i-MSCP - Client / Manage mail / Edit account"
+msgstr "i-MSCP - クライアント / メール管理 / アカウント編集"
+
+msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
+msgstr "i-MSCP - クライアント / メール管理 / 自動応答編集"
+
+msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
+msgstr "i-MSCP - クライアント / メール管理 / 自動応答を有効にする"
+
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - クライアント / サポートチケットシステム / 解決したチケット"
 
@@ -5514,26 +5630,26 @@ msgstr "i-MSCP - クライアント / サポートチケットシステム / 未
 msgid "i-MSCP - Client / Support Ticket System / View Ticket"
 msgstr "i-MSCP - クライアント / サポートチケットシステム / チケット閲覧"
 
+msgid "i-MSCP - Client / Webtools"
+msgstr "i-MSCP - クライアント / Webtools"
+
 msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
-msgstr "i-MSCP - クライアント / Webtools / 保護領域 / htaccessユーザー追加"
+msgstr "i-MSCP - クライアント / Webtools / アクセス制限領域 / htaccessユーザー追加"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user"
-msgstr "i-MSCP - クライアント / Webtools / 保護領域 / htaccessユーザー編集"
+msgstr "i-MSCP - クライアント / Webtools / アクセス制限領域 / htaccessユーザー編集"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Manage users and groups"
-msgstr "i-MSCP - クライアント / Webtools / 保護領域 / ユーザーとグループ管理"
+msgstr "i-MSCP - クライアント / Webtools / アクセス制限領域 / ユーザーとグループ管理"
 
 msgid "i-MSCP - Client / Webtools / Softwares"
 msgstr "i-MSCP - クライアント / Webtools / ソフトウェア"
 
 msgid "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
-msgstr "i-MSCP - クライアント / Webtools / 保護領域 / Htaccessグループ追加"
+msgstr "i-MSCP - クライアント / Webtools / アクセス制限領域 / Htaccessグループ追加"
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - クライアント/FTPユーザー追加"
-
-msgid "i-MSCP - Client/Add Mail User"
-msgstr "i-MSCP - クライアント/メールユーザー追加"
 
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - クライアント/SQLデータベース追加"
@@ -5559,9 +5675,6 @@ msgstr "i-MSCP - クライアント/メールアカウントのゴミ箱作成"
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - クライアント/日次バックアップ"
 
-msgid "i-MSCP - Client/Domain Statistics"
-msgstr "i-MSCP - クライアント/ドメイン統計"
-
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - クライアント/FTPアカウント編集"
 
@@ -5586,14 +5699,8 @@ msgstr "i-MSCP - クライアント / 証明書管理"
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - クライアント/Webツール"
 
-msgid "i-MSCP - Domain Details"
-msgstr "i-MSCP - ドメイン詳細"
-
-msgid "i-MSCP - Domain Statistics Data"
-msgstr "i-MSCP - ドメインの統計情報"
-
-msgid "i-MSCP - Domain/Details"
-msgstr "i-MSCP - ドメイン/詳細"
+msgid "i-MSCP - Domain / Edit"
+msgstr "i-MSCP - ドメイン / 編集"
 
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - ドメイン/編集"
@@ -5616,9 +5723,6 @@ msgstr "i-MSCP - ドメインエイリアス管理/DNSゾーン編集"
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - ドメイン管理/エイリアス"
 
-msgid "i-MSCP - Manage Mail / Edit mail account"
-msgstr "i-MSCP - メール管理 / メールアカウント編集"
-
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - ドメイン管理/サブドメイン編集"
 
@@ -5640,9 +5744,6 @@ msgstr "i-MSCP - 代理点 / 顧客追加 - ステップ 1"
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr "i-MSCP - 代理店 / ホスティングプラン追加"
 
-msgid "i-MSCP - Reseller / Customers statistics"
-msgstr "i-MSCP - 代理店 / 顧客統計"
-
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - 代理店 / ドメインアカウント削除確認"
 
@@ -5655,6 +5756,9 @@ msgstr "i-MSCP - 代理店 / レイアウト"
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - 代理店 / マイプロフィール"
 
+msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
+msgstr "i-MSCP - 代理店 / 統計情報 /  顧客の統計情報"
+
 msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - 代理店 / サポートチケットシステム / 解決したチケット"
 
@@ -5666,6 +5770,9 @@ msgstr "i-MSCP - 代理店 / サポートチケットシステム / 未解決の
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr "i-MSCP - 代理店 / サポートチケットシステム / チケットを表示"
+
+msgid "i-MSCP - Reseller / Users management / Domain Details"
+msgstr "i-MSCP - 代理店 / ユーザー管理 / ドメイン詳細"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理店/言語変更"
@@ -5733,11 +5840,14 @@ msgstr "i-MSCP - ユーザー"
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - ユーザー/編集"
 
+msgid "i-MSCP - admin / System tools / System information"
+msgstr "i-MSCP - 管理者 / システムツール / システム情報"
+
 msgid "i-MSCP - client / Setting Layout"
 msgstr "i-MSCP - クライアント / レイアウト設定"
 
 msgid "i-MSCP / Client / Manage domains / PHP Editor"
-msgstr "i-MSCP / クライアント / ドメイン管理 / PHPの編集"
+msgstr "i-MSCP / クライアント / ドメイン管理 / PHPエディター"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / ソフトウェアインストーラ / 管理"
@@ -5750,6 +5860,9 @@ msgstr "i-MSCP 管理者 / 一般情報 / サーバーステータス"
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "i-MSCP 管理者 / システムツール / アンチルートキットログチェック"
+
+msgid "i-MSCP Client / Domain statistics"
+msgstr "i-MSCP クライアント / ドメイン統計情報"
 
 msgid "i-MSCP Client / General Information"
 msgstr "i-MSCP クライアント / 一般情報"
@@ -5773,10 +5886,7 @@ msgid "i-MSCP Reseller/Add Alias"
 msgstr "i-MSCP 代理店/エイリアス追加"
 
 msgid "i-MSCP Reseller/Circular"
-msgstr "i-MSCP 代理店/回覧"
-
-msgid "i-MSCP application installer"
-msgstr "i-MSCP アプリケーションインストーラー"
+msgstr "i-MSCP 代理店/回報"
 
 msgid "i-MSCP application installer Web softwares repository"
 msgstr "i-MSCP Webソフトウェアリポジトリのアプリケーションインストーラ　"
@@ -5830,7 +5940,7 @@ msgid "missing domain"
 msgstr "ドメインが見つからない"
 
 msgid "no"
-msgstr "無効"
+msgstr "いいえ"
 
 msgid "not available"
 msgstr "利用可能でありません。"
@@ -5903,9 +6013,7 @@ msgid "wrong request."
 msgstr "要求に誤りがあります。"
 
 msgid "yes"
-msgstr "有効"
+msgstr "はい"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
-
-
+msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"

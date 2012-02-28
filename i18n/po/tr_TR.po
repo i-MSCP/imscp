@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-02-10 06:54+0100\n"
-"PO-Revision-Date: 2012-02-07 11:14+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
+"POT-Creation-Date: 2012-02-28 08:23+0100\n"
+"PO-Revision-Date: 2012-02-26 10:13+0000\n"
+"Last-Translator: Tango <tango-net@freenet.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,12 +42,8 @@ msgid "%1$d / %2$d of %3$d"
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d of <b>%3$d</b>"
-msgstr "%1$d / %2$d toplam <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d of <b>unlimited</b>"
-msgstr "%1$d / %2$d toplam <b>limitsiz</b>"
+msgid "%1$d / %2$d of %3$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
@@ -55,10 +51,6 @@ msgstr ""
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
-
-#, php-format
-msgid "%1$d of %2$d</b>"
 msgstr ""
 
 #, php-format
@@ -94,10 +86,6 @@ msgid "%1$s of %2$s MB"
 msgstr ""
 
 #, php-format
-msgid "%1$s of %2$s</b>"
-msgstr ""
-
-#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 
@@ -130,11 +118,11 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d of unlimited"
+msgid "%d of %s"
 msgstr ""
 
 #, php-format
-msgid "%d of unlimited</b>"
+msgid "%d of unlimited"
 msgstr ""
 
 #, php-format
@@ -150,28 +138,28 @@ msgid "%s account successfully deleted."
 msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than one month!"
-msgstr "%s bir aydan daha eski olan yönetici loglarını sildi"
+msgid "%s deleted the admin log older than one month."
+msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than one year!"
-msgstr "%s 1 yıldan daha eski olan yönetici loglarını sildi"
+msgid "%s deleted the admin log older than one year."
+msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than six months!"
-msgstr "%s 6 aydan daha eski olan yönetici loglarını sildi"
+msgid "%s deleted the admin log older than six months."
+msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than three months!"
-msgstr "%s 3 aydan daha eski olan yönetici loglarını sildi"
+msgid "%s deleted the admin log older than three months."
+msgstr ""
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
 msgstr "%s iki haftadan daha eski olan yönetici loglarını sildi"
 
 #, php-format
-msgid "%s deleted the full admin log!"
-msgstr "%s tüm yönetici loglarını sildi"
+msgid "%s deleted the full admin log."
+msgstr ""
 
 #, php-format
 msgid "%s does not exist"
@@ -198,11 +186,11 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr ""
 
 #, php-format
-msgid "%s of unlimited"
+msgid "%s of %s"
 msgstr ""
 
 #, php-format
-msgid "%s of unlimited</b>"
+msgid "%s of unlimited"
 msgstr ""
 
 #, php-format
@@ -356,36 +344,25 @@ msgid ".htaccess related errors"
 msgstr ".htaccess ile ilgili hatalar"
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
 msgstr ""
-"<b>%1$s</b> kullanıcısının <b>%2$s</b> servisi için limitsiz yetkisi var "
-"!<br>"
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller!<br>"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
+"destination reseller.<br />"
 msgstr ""
-"<b>%1$s</b> kullanıcısını <b>%2$s</b> servisi için<br>hedef bayideki "
-"limitleri aşıyor!"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller !<br>This user cannot be moved!"
+"reseller!<br />This user cannot be moved!"
 msgstr ""
-"<b>%s</b> kullanıcısının kaynak bayiden taşınamaz bir IP adresi "
-"var!<br>Kullanıcı taşınamaz!"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
-msgstr ""
-"<b>Opsyonel:</b> Alanı boş bırakın eğer hosting planı için servis süresi "
-"istemiyorsanız."
-
-msgid "<b>disabled</b>"
-msgstr "pasif"
+msgstr "<b>Opsyonel:</b> Alanı boş bırakın eğer hosting planı için servis süresi istemiyorsanız."
 
 msgid ""
 "<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
@@ -434,6 +411,9 @@ msgstr "Eylem"
 
 msgid "Activate"
 msgstr "Etkinleştir"
+
+msgid "Activate this plugin"
+msgstr ""
 
 msgid "Activated softwares"
 msgstr ""
@@ -556,7 +536,7 @@ msgid "Add/Details"
 msgstr "Ekle/Detaylar"
 
 msgid "Added by"
-msgstr ""
+msgstr "Ekleyen"
 
 msgid "Additional data"
 msgstr "Ek veri"
@@ -858,8 +838,17 @@ msgstr "İki giriş arası bloke süresi(saniye)"
 msgid "Blocktime (minutes)"
 msgstr "Engelleme süresi(dakika)"
 
+msgid "Both source and destination are identical."
+msgstr ""
+
 msgid "Bruteforce detection"
 msgstr "Bruteforce denetimi"
+
+msgid "Bulk Actions"
+msgstr ""
+
+msgid "By"
+msgstr ""
 
 msgid "CGI"
 msgstr ""
@@ -899,8 +888,8 @@ msgid "Cancel order"
 msgstr "Sipariş iptali"
 
 #, php-format
-msgid "Cannot validate %s record. Reason '%s'."
-msgstr "Kayıt %s doğruluyamadık, sebep '%s'."
+msgid "Cannot validate %s record. Reason: '%s'."
+msgstr ""
 
 msgid "Canonical name"
 msgstr "Kanonik isim"
@@ -1001,8 +990,7 @@ msgstr "Kayıtları temizle"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Yükle buttonuna tıklayınız ve sistem en son alınan günlük yedeği yükleyecek"
+msgstr "Yükle buttonuna tıklayınız ve sistem en son alınan günlük yedeği yükleyecek"
 
 msgid "Close"
 msgstr ""
@@ -1023,6 +1011,9 @@ msgid "Compress HTML output"
 msgstr ""
 
 msgid "Configuration in progress..."
+msgstr ""
+
+msgid "Confirmation for plugin protection"
 msgstr ""
 
 msgid "Continue"
@@ -1166,6 +1157,9 @@ msgstr ""
 msgid "Customer's layout color successfully updated."
 msgstr ""
 
+msgid "Customer(s) successfully moved."
+msgstr ""
+
 msgid "Customers"
 msgstr ""
 
@@ -1236,11 +1230,14 @@ msgstr "Tarih"
 msgid "Day"
 msgstr "Gün"
 
-msgid "Day:"
-msgstr "Gün:"
-
 msgid "Days"
 msgstr "Gün"
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Deactivate this plugin"
+msgstr ""
 
 msgid "Debugger"
 msgstr ""
@@ -1326,9 +1323,6 @@ msgstr ""
 msgid "Disk"
 msgstr "Disk"
 
-msgid "Disk in MB"
-msgstr "MB olarak disk"
-
 msgid "Disk limit"
 msgstr "Disk limiti"
 
@@ -1354,9 +1348,7 @@ msgstr ""
 msgid ""
 "Do you really want to delete the entire <strong>'%s'</strong> domain? This "
 "operation cannot be undone."
-msgstr ""
-"Gerçekten tüm <strong>'%s'</strong> domaini silmek istiyormusunuz? Bu işlem "
-"geri alınamaz."
+msgstr "Gerçekten tüm <strong>'%s'</strong> domaini silmek istiyormusunuz? Bu işlem geri alınamaz."
 
 msgid "Domain"
 msgstr "Domain"
@@ -1458,9 +1450,7 @@ msgstr ""
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
 "them!"
-msgstr ""
-"Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce "
-"onları silin"
+msgstr "Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce onları silin"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1469,9 +1459,7 @@ msgstr ""
 
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr ""
-"Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce "
-"onları silin"
+msgstr "Silmeye çalıştığınız domain aliasına kayıtlı eposta hesapları var!<br>Önce onları silin"
 
 msgid "Domain aliases"
 msgstr "Domain alias"
@@ -1577,9 +1565,6 @@ msgid "Domain with that name already exists on the system."
 msgstr ""
 
 msgid "Domain with this name already exist."
-msgstr ""
-
-msgid "Domain_statistics"
 msgstr ""
 
 msgid "Domains"
@@ -1726,9 +1711,6 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
-msgid "Enable mail auto responder"
-msgstr "Posta otoyanıt aktif et"
-
 msgid "Enable update at"
 msgstr "Şurdaki güncellemeleri aktif et"
 
@@ -1748,6 +1730,9 @@ msgid "Entered passwords do not match."
 msgstr ""
 
 msgid "Entered passwords doesn't match."
+msgstr ""
+
+msgid "Entered passwords doesn't matches."
 msgstr ""
 
 msgid "Error"
@@ -1784,7 +1769,7 @@ msgid "Error while trying to obtain list of network cards."
 msgstr ""
 
 msgid "Error: Remote File not found!"
-msgstr ""
+msgstr "Hata: Uzaktaki Dosya bulunamadı!"
 
 msgid "Error: Service port with same name already exists."
 msgstr ""
@@ -1895,7 +1880,7 @@ msgid "File successfully uploaded."
 msgstr ""
 
 msgid "File was successfully uploaded."
-msgstr ""
+msgstr "Dosya başarıyla yüklendi."
 
 msgid "FileManager"
 msgstr "Dosya yöneticisi"
@@ -2166,6 +2151,13 @@ msgid ""
 "directive"
 msgstr ""
 
+#, php-format
+msgid ""
+"If you protect a plugin, you'll no longer be able to deactivate it from the "
+"plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
+"to edit the %s file."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
 
@@ -2285,7 +2277,7 @@ msgid "Installation details"
 msgstr ""
 
 msgid "Installed on"
-msgstr ""
+msgstr "Yüklendi"
 
 msgid "Instructions to download today's backup"
 msgstr "Bugünün yedeğini indirme talimatları"
@@ -2296,10 +2288,16 @@ msgstr ""
 msgid "Internationalization"
 msgstr "Uluslararasılaşma"
 
+msgid "Invalid NAME"
+msgstr ""
+
 msgid "Invalid URL."
 msgstr ""
 
 msgid "Invalid certificate."
+msgstr ""
+
+msgid "Invalid expiration date."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2326,16 +2324,18 @@ msgstr ""
 msgid "Invalid target."
 msgstr ""
 
-msgid "Invalid time period!"
-msgstr "Yanlış zaman peryodu"
-
 msgid "Invalid type given. String expected"
 msgstr ""
 
 msgid "Invalid user Id."
 msgstr ""
 
-msgid "Invalide domain expiration date."
+#, php-format
+msgid "Ip %s is blocked for %s minutes."
+msgstr ""
+
+#, php-format
+msgid "Ip %s is waiting %s seconds."
 msgstr ""
 
 msgid "Ip management"
@@ -2345,7 +2345,7 @@ msgid "Ip usage"
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Kernel sürümü"
 
 msgid "Kill session"
 msgstr "Session sonlandır"
@@ -2427,12 +2427,6 @@ msgstr ""
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
 
-msgid "Log Level"
-msgstr "Giriş Seviyesi"
-
-msgid "Log is empty!"
-msgstr "Kayıtlar boş!"
-
 msgid "Login"
 msgstr "Giriş"
 
@@ -2476,6 +2470,9 @@ msgstr ""
 msgid "Logout"
 msgstr "Çıkış"
 
+msgid "Logs successfully deleted."
+msgstr ""
+
 msgid "Lost password"
 msgstr "Kayıp şifre"
 
@@ -2504,6 +2501,9 @@ msgid "Mail"
 msgstr "Eposta"
 
 msgid "Mail Accounts"
+msgstr ""
+
+msgid "Mail Log Level"
 msgstr ""
 
 msgid "Mail account"
@@ -2644,9 +2644,6 @@ msgstr "Kullanıcı ve grupları düzenle"
 msgid "Manage your protected areas, users and groups."
 msgstr ""
 
-msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr "MySQL desteği (DENEYSEL)"
-
 msgid "Mark"
 msgstr "İşaretle"
 
@@ -2737,9 +2734,6 @@ msgstr "Düzenle"
 msgid "Month"
 msgstr "Ay"
 
-msgid "Month:"
-msgstr "Ay:"
-
 msgid "More Details"
 msgstr ""
 
@@ -2761,8 +2755,8 @@ msgstr ""
 msgid "Move"
 msgstr "Taşı"
 
-msgid "Moving aborted!"
-msgstr "Taşıma durduruldu!"
+msgid "Moving aborted."
+msgstr ""
 
 msgid "MySQL support"
 msgstr "MySQL desteği"
@@ -2848,6 +2842,9 @@ msgstr ""
 msgid "No domain alias system errors"
 msgstr "Domain alias sistem hatası yok"
 
+msgid "No domain statistics to display for this reseller."
+msgstr ""
+
 msgid "No domain statistics to display."
 msgstr ""
 
@@ -2856,6 +2853,9 @@ msgstr "Domain sistem hatası yok"
 
 msgid "No email account system errors"
 msgstr "Eposta hesabı sistem hatası yok"
+
+msgid "No found."
+msgstr ""
 
 msgid "No group found."
 msgstr ""
@@ -2869,6 +2869,9 @@ msgid "No htaccess related system errors"
 msgstr "htaccess ile ilgili sistem hataları yok"
 
 msgid "No languages found."
+msgstr ""
+
+msgid "No logs found."
 msgstr ""
 
 msgid "No new i-MSCP updates available"
@@ -2886,10 +2889,19 @@ msgstr ""
 msgid "No set"
 msgstr ""
 
+msgid "No statistics found for the given period. Try another period."
+msgstr ""
+
 msgid "No subdomain system errors"
 msgstr "Subdomain sistem hatası yok"
 
+msgid "No unassigned users was found in database."
+msgstr ""
+
 msgid "No user found."
+msgstr ""
+
+msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No valid alias domain selected."
@@ -2911,7 +2923,7 @@ msgid "Normal users"
 msgstr "Normal kullanıcı"
 
 msgid "Not Set"
-msgstr ""
+msgstr "belirlenmemiş"
 
 msgid "Not found records matching the search criteria."
 msgstr ""
@@ -2951,9 +2963,7 @@ msgstr ""
 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
-"Sadece IANA veritabanına kayıtlı olan Top Level Domain'ler (TLD) "
-"kullanılabilir. "
+msgstr "Sadece IANA veritabanına kayıtlı olan Top Level Domain'ler (TLD) kullanılabilir. "
 
 msgid "Only exec"
 msgstr ""
@@ -2991,10 +3001,10 @@ msgstr ""
 msgid "Order Panel / Checkout"
 msgstr ""
 
-msgid "Order Panel / Choosing a domain name"
+msgid "Order Panel / Choose hosting plan"
 msgstr ""
 
-msgid "Order Panel / Choosing an hosting package"
+msgid "Order Panel / Choosing a domain name"
 msgstr ""
 
 msgid "Order Panel / Order confirmation"
@@ -3073,7 +3083,7 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr ""
 
-msgid "PHP Settings (system wide)"
+msgid "PHP Settings (system default)"
 msgstr ""
 
 msgid "PHP Support: disabled"
@@ -3096,9 +3106,6 @@ msgstr ""
 
 msgid "PHP support"
 msgstr "PHP desteği"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
 
 msgid "POP3/IMAP in"
 msgstr "POP3/IMAP gelen"
@@ -3279,6 +3286,12 @@ msgstr ""
 msgid "Please enter a name for the protected area."
 msgstr ""
 
+msgid "Please enter a password."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
+
 msgid "Please enter mail account username."
 msgstr ""
 
@@ -3291,6 +3304,9 @@ msgstr "Lütfen, tüm alanları doldurunuz!"
 msgid "Please fill up both data fields for password."
 msgstr ""
 
+msgid "Please select a least one user."
+msgstr ""
+
 msgid "Please select a valid  SQL user for the database."
 msgstr ""
 
@@ -3300,9 +3316,6 @@ msgstr ""
 
 msgid "Please select at least one mail type."
 msgstr ""
-
-msgid "Please select some user(s)!"
-msgstr "Lütfen kullanıcı(lar) seçiniz!"
 
 msgid "Please specify a message content!"
 msgstr "Lütfen, mesaj içeriğini yazınız"
@@ -3346,9 +3359,6 @@ msgstr ""
 msgid "Please type database name."
 msgstr ""
 
-msgid "Please type user name!"
-msgstr "Lütfen, kullanıcı adını giriniz!"
-
 msgid "Please type user password."
 msgstr ""
 
@@ -3367,7 +3377,52 @@ msgstr "Lütfen güncelleme için bekleyiniz"
 msgid "Please, check the PHP Editor settings."
 msgstr ""
 
-msgid "Please, don't use special chars like '@, $, %...' in the password."
+msgid "Please, don't use special chars such as '@, $, %...' in the password."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid ""
+"Plugin list is empty. To install a new plugin, extract its archive content "
+"into the <strong>gui/plugins</strong> directory and update the plugin list."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
+"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
+"plugin(s) deleted."
+msgstr ""
+
+msgid "Plugin management"
+msgstr ""
+
+#, php-format
+msgid "Plugin manager was unable to remove the %s file"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin manager was unable to write the %s cache file for protected plugins."
+msgstr ""
+
+msgid "Plugin successfully activated."
+msgstr ""
+
+msgid "Plugin successfully deactivated."
+msgstr ""
+
+msgid "Plugin successfully protected."
+msgstr ""
+
+msgid "Plugin(s) successfully activated."
+msgstr ""
+
+msgid "Plugin(s) successfully deactivated."
+msgstr ""
+
+msgid "Plugin(s) successfully protected."
 msgstr ""
 
 msgid "Port"
@@ -3415,8 +3470,14 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
+msgid "Protect"
+msgstr ""
+
 msgid "Protect it"
 msgstr "Koruma altına al"
+
+msgid "Protect this plugin"
+msgstr ""
 
 msgid "Protected"
 msgstr ""
@@ -3438,6 +3499,9 @@ msgstr ""
 
 msgid "Protected areas"
 msgstr "Korunan alanlar"
+
+msgid "Protected plugin"
+msgstr ""
 
 msgid "Protocol"
 msgstr "Protokol"
@@ -3498,7 +3562,7 @@ msgid "Remove IP"
 msgstr "IP kaldır"
 
 msgid "Remove permissions"
-msgstr ""
+msgstr "yetkileri kaldırma"
 
 msgid "Reopen"
 msgstr ""
@@ -3611,9 +3675,6 @@ msgstr "Hakları başarıyla kaldırıldı."
 msgid "Rootkit logs"
 msgstr ""
 
-msgid "SMTP"
-msgstr "SMTP"
-
 msgid "SMTP in"
 msgstr "SMTP gelen"
 
@@ -3641,10 +3702,10 @@ msgstr "SQL kullanıcıları"
 msgid "SQL accounts limit reached."
 msgstr ""
 
-msgid "SQL database created."
+msgid "SQL database successfully added."
 msgstr ""
 
-msgid "SQL database deleted."
+msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
@@ -3678,16 +3739,16 @@ msgstr "SQL veritabanı limiti<br><i>(-1 pasif, 0 limitsiz)</i>"
 msgid "SQL support"
 msgstr "SQL desteği"
 
-msgid "SQL user created."
-msgstr ""
-
-msgid "SQL user deleted."
-msgstr ""
-
 msgid "SQL user name"
 msgstr "SQL kullanıcı adı"
 
-msgid "SQL user password updated."
+msgid "SQL user password successfully updated."
+msgstr ""
+
+msgid "SQL user successfully added."
+msgstr ""
+
+msgid "SQL user successfully deleted."
 msgstr ""
 
 msgid "SQL users"
@@ -3811,8 +3872,8 @@ msgstr "Server trafik"
 msgid "Server traffic settings"
 msgstr "Server trafik ayarları"
 
-msgid "Server traffic settings updated successfully!"
-msgstr "Server trafik ayarları başarıyla güncellendi!"
+msgid "Server traffic settings successfully updated."
+msgstr ""
 
 msgid "Service"
 msgstr "Servis"
@@ -3895,9 +3956,7 @@ msgstr ""
 msgid ""
 "Single letter Second Level Domains (SLD) are not allowed under the most Top "
 "Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-"Tek haneli Second Level Domain'ler (SLD) çoğu Top Level Domainlerde izin "
-"verilmez. Bazı istisnalar mevcuttur, örneğin (TLD) .de."
+msgstr "Tek haneli Second Level Domain'ler (SLD) çoğu Top Level Domainlerde izin verilmez. Bazı istisnalar mevcuttur, örneğin (TLD) .de."
 
 msgid "Size"
 msgstr "Boyut"
@@ -3942,7 +4001,7 @@ msgid "Software options"
 msgstr ""
 
 msgid "Software permissions"
-msgstr ""
+msgstr "Yazılım yetkileri"
 
 msgid "Software repository"
 msgstr ""
@@ -3994,9 +4053,6 @@ msgstr ""
 
 msgid "Softwares repository"
 msgstr ""
-
-msgid "Source and destination reseller are the same!"
-msgstr "Kaynak ve hedef bayiler aynı!"
 
 msgid "Specified SQL username name already exists."
 msgstr ""
@@ -4096,9 +4152,7 @@ msgstr ""
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
 "them!"
-msgstr ""
-"Silmeye çalıştığını subdomain üzerinde eposta hesapları var!<br>Önce onları "
-"siliniz!"
+msgstr "Silmeye çalıştığını subdomain üzerinde eposta hesapları var!<br>Önce onları siliniz!"
 
 msgid ""
 "Subdomain you are trying to remove has email accounts.<br>First remove them."
@@ -4125,9 +4179,6 @@ msgstr "Konu"
 
 msgid "Submit changes"
 msgstr "Değişiklikleri onayla"
-
-msgid "Sum"
-msgstr "Toplam"
 
 msgid "Support"
 msgstr ""
@@ -4176,6 +4227,21 @@ msgid "System tools"
 msgstr "Sistem araçları"
 
 msgid "System under maintenance"
+msgstr ""
+
+msgid "System was unable to add the SQL database."
+msgstr ""
+
+msgid "System was unable to add the SQL user."
+msgstr ""
+
+msgid "System was unable to remove the SQL database."
+msgstr ""
+
+msgid "System was unable to remove the SQL user."
+msgstr ""
+
+msgid "System was unable to update the SQL user password."
 msgstr ""
 
 msgid "TTL"
@@ -4277,6 +4343,18 @@ msgstr ""
 msgid "The <em>%s</em> service cannot be unlimited."
 msgstr ""
 
+#, php-format
+msgid ""
+"The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
+"found in file <strong>%s</strong>"
+msgstr ""
+
+#, php-format
+msgid ""
+"The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
+"exists or is not readable."
+msgstr ""
+
 msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr ""
 
@@ -4302,6 +4380,12 @@ msgid "The directory %s was created."
 msgstr ""
 
 msgid ""
+"The directory/file paths are appended to the default PHP open_basedir "
+"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
+"See the PHP documentation for more information."
+msgstr ""
+
+msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
 msgstr ""
@@ -4317,6 +4401,9 @@ msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr ""
 
 msgid "The menu you trying to edit doesn't exist."
+msgstr ""
+
+msgid "The password is too long."
 msgstr ""
 
 #, php-format
@@ -4462,10 +4549,11 @@ msgstr "Bayiye"
 msgid "To subdomain"
 msgstr "Subdomaine"
 
-msgid "Too long user password."
+#, php-format
+msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
 
-msgid "Too user long password."
+msgid "Too long user password."
 msgstr ""
 
 msgid "Top Level Domain name strict validation"
@@ -4498,9 +4586,6 @@ msgstr ""
 msgid "Traffic"
 msgstr "Trafik"
 
-msgid "Traffic in MB"
-msgstr "Trafik (MB)"
-
 msgid "Traffic limit"
 msgstr "Trafik limiti"
 
@@ -4516,8 +4601,17 @@ msgstr ""
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
+msgid "Traffic limit must be a digit."
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Trafik kullanımı"
+
+msgid "Traffic warning cannot be bigger than traffic limit."
+msgstr ""
+
+msgid "Traffic warning must be a digit."
+msgstr ""
 
 msgid "Translated strings"
 msgstr ""
@@ -4539,6 +4633,16 @@ msgid "Unable to create '%s' directory for language file."
 msgstr ""
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr ""
+
+msgid ""
+"Unable to delete the domain account. A message has been sent to the "
+"administrator."
+msgstr ""
+
+msgid ""
+"Unable to delete the domain. Please, consult admin logs or your mail for "
+"more information."
 msgstr ""
 
 #, php-format
@@ -4604,6 +4708,9 @@ msgstr ""
 msgid "Unknown type."
 msgstr ""
 
+msgid "Unknown username."
+msgstr ""
+
 #, php-format
 msgid "Unknown zone type %s."
 msgstr ""
@@ -4650,6 +4757,9 @@ msgstr "Sipariş güncelle"
 msgid "Update plan"
 msgstr "Planı güncelle"
 
+msgid "Update plugin list"
+msgstr ""
+
 msgid "Updates"
 msgstr ""
 
@@ -4662,6 +4772,9 @@ msgstr "Logo yükle"
 msgid "Upload now"
 msgstr "Şimdi yükleyin"
 
+msgid "Usage of disallowed character in CNAME"
+msgstr ""
+
 msgid "Usage status"
 msgstr ""
 
@@ -4670,14 +4783,6 @@ msgstr ""
 
 msgid "Use numeric ID"
 msgstr "Rakamsal ID kullanınız"
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in CNAME"
-msgstr "Kullanımı char(\"%s\") CNAME olarak izin verilmedi"
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in NAME"
-msgstr "Kullanımı char(\"%s\") ADI izin verilmedi"
 
 msgid "Use other dir"
 msgstr "Farklı bir dizine"
@@ -4709,7 +4814,7 @@ msgstr "Oluşturan kullanıcı"
 msgid "User data were not updated."
 msgstr ""
 
-msgid "User data were succefully updated."
+msgid "User data were successfully updated."
 msgstr ""
 
 msgid ""
@@ -4725,9 +4830,6 @@ msgid ""
 msgstr ""
 
 msgid "User does not exist."
-msgstr ""
-
-msgid "User list is empty."
 msgstr ""
 
 msgid "User login (system) name"
@@ -4768,9 +4870,6 @@ msgstr "Kulanıcı tipi"
 
 msgid "User type (admin, reseller, user)"
 msgstr "Kullanıcı tipi (yönetici, bayi, kullanıcı)"
-
-msgid "User was moved"
-msgstr "Kullanıcı taşındı"
 
 msgid "User was not deleted."
 msgstr ""
@@ -4841,17 +4940,14 @@ msgstr "Ayrıntıları göster"
 msgid "View hosting plan"
 msgstr "Hosting planlarını göster"
 
+msgid "Visit plugin site"
+msgstr ""
+
 msgid "Vital system info"
 msgstr "Önemli sistem hakkında bilgi"
 
-msgid "WEB"
-msgstr "WEB"
-
 msgid "Warning traffic"
 msgstr ""
-
-msgid "Warning traffic is bigger than max traffic!"
-msgstr "Trafik uyarı limiti, azami trafik limitinden daha büyük!"
 
 msgid "Warning:"
 msgstr "Uyarı:"
@@ -4871,9 +4967,6 @@ msgstr ""
 
 msgid "Web & E-Mail Support"
 msgstr "Web ve E-Posta Desteği"
-
-msgid "Web Stats"
-msgstr "Web İstatistikleri"
 
 msgid "Web in"
 msgstr "Web gelen"
@@ -4921,21 +5014,18 @@ msgid "Wrong IP address."
 msgstr ""
 
 #, php-format
-msgid "Wrong IPv4 address (\"%s\")."
-msgstr "Yanlış IPv4 adresi (\"%s\")."
+msgid "Wrong IPv4 address (\"%s\")"
+msgstr ""
 
 #, php-format
-msgid "Wrong IPv6 address (\"%s\")."
-msgstr "Yanlış IPv6 adresi (\"%s\")."
+msgid "Wrong IPv6 address (\"%s\")"
+msgstr ""
 
 msgid "Wrong SQL user identifier."
 msgstr ""
 
 msgid "Wrong address in forward URL."
 msgstr ""
-
-msgid "Wrong data input!"
-msgstr "Hatalı veri girişi!"
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -4958,6 +5048,9 @@ msgstr ""
 msgid "Wrong order ID."
 msgstr ""
 
+msgid "Wrong password."
+msgstr ""
+
 msgid "Wrong redirect URL."
 msgstr ""
 
@@ -4968,7 +5061,7 @@ msgid "Wrong request."
 msgstr ""
 
 msgid "Wrong reseller id."
-msgstr ""
+msgstr "Yanlış Bayi ID'si"
 
 msgid "Wrong security code"
 msgstr ""
@@ -4996,6 +5089,9 @@ msgstr ""
 msgid "Wrong username."
 msgstr ""
 
+msgid "Wrong value for the PHP open_basedir directive."
+msgstr ""
+
 msgid "Wrong_request."
 msgstr ""
 
@@ -5005,9 +5101,6 @@ msgstr ""
 msgid "Year"
 msgstr "Yıl"
 
-msgid "Year:"
-msgstr "Yıl:"
-
 msgid "Yes"
 msgstr "Evet"
 
@@ -5016,6 +5109,9 @@ msgstr "%s tüm yönetici loglarını sildi"
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
+msgstr ""
+
+msgid "You are exceeding the server traffic limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
@@ -5056,11 +5152,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service!"
+"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
+" for the <b>%2$s</b> service."
 msgstr ""
-"<b>%1$s</b> kullanıcısını <b>%2$s</b> servisi için kısıtlı<br>yetkisi olan "
-"bir bayiye taşıyamazsınız!"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr ""
@@ -5154,10 +5248,7 @@ msgid ""
 "You have an update order for the account %s\n"
 "\n"
 "Please login into your i-MSCP control panel at %s for more details"
-msgstr ""
-"%s\n"
-" hesabı için bir güncelleme talebiniz var\n"
-"Lütfen, ayrıntılar için %s olarak i-MSCP kontrol paneline giriş yapınız"
+msgstr "%s\n hesabı için bir güncelleme talebiniz var\nLütfen, ayrıntılar için %s olarak i-MSCP kontrol paneline giriş yapınız"
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
@@ -5171,8 +5262,7 @@ msgstr "İzin verilen FTP hesabından fazlasını kullanmaktasınız."
 
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
-msgstr ""
-"İzin verilen Veritabanı kullanıcısı sayısından fazlasını kullanmaktasınız."
+msgstr "İzin verilen Veritabanı kullanıcısı sayısından fazlasını kullanmaktasınız."
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr "İzin verilen Veritabanı sayısından fazlasını kullanmaktasınız."
@@ -5207,10 +5297,6 @@ msgstr "Kullanıcınız yok !"
 
 #, php-format
 msgid "You have received %d new support questions."
-msgstr ""
-
-#, php-format
-msgid "You have received <b>%d</b> new support questions."
 msgstr ""
 
 msgid ""
@@ -5337,9 +5423,6 @@ msgstr ""
 msgid "disabled"
 msgstr ""
 
-msgid "disabled</b>"
-msgstr ""
-
 msgid "disk space"
 msgstr ""
 
@@ -5437,7 +5520,25 @@ msgstr ""
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr ""
 
+msgid "i-MSCP - Admin / Settings / Plugin management"
+msgstr ""
+
+msgid "i-MSCP - Admin / Settings / Server traffic settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
+msgstr ""
+
+msgid "i-MSCP - Admin / Statistics  / Server statistics"
+msgstr ""
+
+msgid ""
+"i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
+"Domain_statistics"
+msgstr ""
+
+msgid ""
+"i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
 msgstr ""
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
@@ -5451,6 +5552,9 @@ msgstr ""
 
 msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - Yönetici / Sistem Araçları / Veritabanı Güncellemesi"
+
+msgid "i-MSCP - Admin / Users management / Domain Details"
+msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - Yönetici / IP Kullanımı"
@@ -5467,6 +5571,9 @@ msgstr "i-MSCP - Yönetici/Sessionları Düzenle"
 msgid "i-MSCP - Admin/Manage Users"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Düzenle"
 
+msgid "i-MSCP - Admin/Manage users / User assignment"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Yönet/Kullanıcı Ekle"
 
@@ -5475,18 +5582,6 @@ msgstr "i-MSCP - Yönetici/Kullanıcıları Düzenle/Eposta kurulumu"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Yönetici/Kullanıcıları Düzenle/Bayi atanması"
-
-msgid "i-MSCP - Admin/Manage users/User assignment"
-msgstr "i-MSCP - Yönetici/Kullanıcıları düzenle/Kullanıcı atanması"
-
-msgid "i-MSCP - Admin/Server Traffic Settings"
-msgstr "i-MSCP - Yönetici/Server Trafik Ayarları"
-
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - Yönetici/Server günlük istatistikler"
-
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - Yönetici/Server istatistikleri"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Yönetici/Ayarlar"
@@ -5503,6 +5598,27 @@ msgstr ""
 msgid "i-MSCP - Client / Change Language"
 msgstr ""
 
+msgid "i-MSCP - Client / Manage mail"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Add account"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Add catchall"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Catchall"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Edit account"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
@@ -5513,6 +5629,9 @@ msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
 msgstr ""
 
 msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "i-MSCP - Client / Webtools"
 msgstr ""
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
@@ -5532,9 +5651,6 @@ msgstr ""
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Müşteri/FTP Kullanıcısı Ekle"
-
-msgid "i-MSCP - Client/Add Mail User"
-msgstr "i-MSCP - Müşteri/Posta Kullanıcısı Ekle"
 
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Müşteri/SQL Veritabanı Ekle"
@@ -5560,9 +5676,6 @@ msgstr "i-MSCP - Müşteri/TümünüYakala Posta Hesabı Oluştur"
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Müşteri/Günlük Yedek"
 
-msgid "i-MSCP - Client/Domain Statistics"
-msgstr "i-MSCP - Müşteri/Domain İstatistikleri"
-
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Müşeri/FTP Hesabı Düzenle"
 
@@ -5587,14 +5700,8 @@ msgstr ""
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Müşteri/Web araçları"
 
-msgid "i-MSCP - Domain Details"
+msgid "i-MSCP - Domain / Edit"
 msgstr ""
-
-msgid "i-MSCP - Domain Statistics Data"
-msgstr "i-MSCP - Domain İstatistik Bilgileri"
-
-msgid "i-MSCP - Domain/Details"
-msgstr "i-MSCP - Domain/Ayrıntılar"
 
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - Domain/Düzenle"
@@ -5617,9 +5724,6 @@ msgstr "i-MSCP - Domain Alias Yönetimi/Alias Düzenle"
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Domain Düzenle/Alias"
 
-msgid "i-MSCP - Manage Mail / Edit mail account"
-msgstr ""
-
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr ""
 
@@ -5641,9 +5745,6 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
-msgid "i-MSCP - Reseller / Customers statistics"
-msgstr ""
-
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
@@ -5656,6 +5757,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / My Profile"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
 msgstr ""
 
@@ -5666,6 +5770,9 @@ msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
@@ -5734,6 +5841,9 @@ msgstr "i-MSCP - Kullanıcılar"
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Kullanıcı/Düzenle"
 
+msgid "i-MSCP - admin / System tools / System information"
+msgstr ""
+
 msgid "i-MSCP - client / Setting Layout"
 msgstr ""
 
@@ -5750,8 +5860,10 @@ msgid "i-MSCP Admin / General Information / Server Status"
 msgstr "Genel / i-MSCP Yönetici  Genel Bilgi / Sunucu Durumu"
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "i-MSCP Yönetici / Sistem Araçları / Anti-Rootkits Araçları Log Checker"
+
+msgid "i-MSCP Client / Domain statistics"
 msgstr ""
-"i-MSCP Yönetici / Sistem Araçları / Anti-Rootkits Araçları Log Checker"
 
 msgid "i-MSCP Client / General Information"
 msgstr ""
@@ -5776,9 +5888,6 @@ msgstr ""
 
 msgid "i-MSCP Reseller/Circular"
 msgstr ""
-
-msgid "i-MSCP application installer"
-msgstr "i-MSCP uygulama yükleyicisi"
 
 msgid "i-MSCP application installer Web softwares repository"
 msgstr ""
@@ -5909,5 +6018,3 @@ msgstr "evet"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
-
-

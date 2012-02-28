@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-02-10 06:54+0100\n"
-"PO-Revision-Date: 2012-02-07 11:14+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@yahoo.de>\n"
+"POT-Creation-Date: 2012-02-28 08:23+0100\n"
+"PO-Revision-Date: 2012-02-26 10:11+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,12 +40,8 @@ msgid "%1$d / %2$d of %3$d"
 msgstr ""
 
 #, php-format
-msgid "%1$d / %2$d of <b>%3$d</b>"
-msgstr "%1$d / %2$d от <b>%3$d</b>"
-
-#, php-format
-msgid "%1$d / %2$d of <b>unlimited</b>"
-msgstr "%1$d / %2$d от <b>без Ограничение</b>"
+msgid "%1$d / %2$d of %3$d</b>"
+msgstr ""
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
@@ -53,10 +49,6 @@ msgstr ""
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
-
-#, php-format
-msgid "%1$d of %2$d</b>"
 msgstr ""
 
 #, php-format
@@ -92,10 +84,6 @@ msgid "%1$s of %2$s MB"
 msgstr ""
 
 #, php-format
-msgid "%1$s of %2$s</b>"
-msgstr ""
-
-#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 
@@ -128,11 +116,11 @@ msgid "%d configuration parameter(s) have/has been updated."
 msgstr ""
 
 #, php-format
-msgid "%d of unlimited"
+msgid "%d of %s"
 msgstr ""
 
 #, php-format
-msgid "%d of unlimited</b>"
+msgid "%d of unlimited"
 msgstr ""
 
 #, php-format
@@ -148,28 +136,28 @@ msgid "%s account successfully deleted."
 msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than one month!"
-msgstr "%s изтрий логовете на админа по-стари от месец !"
+msgid "%s deleted the admin log older than one month."
+msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than one year!"
-msgstr "%s изтрий логовете на админа по-стари от година!"
+msgid "%s deleted the admin log older than one year."
+msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than six months!"
-msgstr "%s изтрий логовете на админа по-стари от шест месеца!"
+msgid "%s deleted the admin log older than six months."
+msgstr ""
 
 #, php-format
-msgid "%s deleted the admin log older than three months!"
-msgstr "%s изтрий логовете на админа по-стари от три месеца!"
+msgid "%s deleted the admin log older than three months."
+msgstr ""
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
 msgstr "%s изтрий логовете на админа по-стари от две седмици!"
 
 #, php-format
-msgid "%s deleted the full admin log!"
-msgstr "%s изтрий целия лог на администратора!"
+msgid "%s deleted the full admin log."
+msgstr ""
 
 #, php-format
 msgid "%s does not exist"
@@ -196,11 +184,11 @@ msgid "%s list is empty! You cannot add mail accounts."
 msgstr ""
 
 #, php-format
-msgid "%s of unlimited"
+msgid "%s of %s"
 msgstr ""
 
 #, php-format
-msgid "%s of unlimited</b>"
+msgid "%s of unlimited"
 msgstr ""
 
 #, php-format
@@ -354,32 +342,25 @@ msgid ".htaccess related errors"
 msgstr ""
 
 #, php-format
-msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
-msgstr "<b>%1$s</b> има безграничени права за услугата <b>%2$s</b> !"
+msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
+msgstr ""
 
 #, php-format
 msgid ""
-"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
-"reseller!<br>"
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
+"destination reseller.<br />"
 msgstr ""
-"Превишени ограничения <b>%1$s</b> за услугатаа <b>%2$s</b><br> в определения"
-"  риселъра!<br>"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
-"reseller !<br>This user cannot be moved!"
+"reseller!<br />This user cannot be moved!"
 msgstr ""
-"<b>%s</b> има IP адрес който не може да се управлява от определеното място "
-"риселъра !<br>Този потребител не може да бъде преместен!"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
 msgstr ""
-
-msgid "<b>disabled</b>"
-msgstr "<b>забранен</b>"
 
 msgid ""
 "<strong>Thank you for purchasing.</strong><br /><br />An email has been sent"
@@ -428,6 +409,9 @@ msgstr "Действия"
 
 msgid "Activate"
 msgstr "Активирай"
+
+msgid "Activate this plugin"
+msgstr ""
 
 msgid "Activated softwares"
 msgstr ""
@@ -852,8 +836,17 @@ msgstr "Блокиращо време между опитите за влиза�
 msgid "Blocktime (minutes)"
 msgstr "Блокиращо време (в минути)"
 
+msgid "Both source and destination are identical."
+msgstr ""
+
 msgid "Bruteforce detection"
 msgstr "Определи атаките - грубасила"
+
+msgid "Bulk Actions"
+msgstr ""
+
+msgid "By"
+msgstr ""
 
 msgid "CGI"
 msgstr ""
@@ -893,7 +886,7 @@ msgid "Cancel order"
 msgstr "Отмени заявка"
 
 #, php-format
-msgid "Cannot validate %s record. Reason '%s'."
+msgid "Cannot validate %s record. Reason: '%s'."
 msgstr ""
 
 msgid "Canonical name"
@@ -995,9 +988,7 @@ msgstr "Изпразни лога"
 
 msgid ""
 "Click the Restore button and the system will restore the last daily backup"
-msgstr ""
-"Натиснете Възстанови бутона и системата ще възстанови последния ежедневно "
-"архивно копие"
+msgstr "Натиснете Възстанови бутона и системата ще възстанови последния ежедневно архивно копие"
 
 msgid "Close"
 msgstr ""
@@ -1018,6 +1009,9 @@ msgid "Compress HTML output"
 msgstr ""
 
 msgid "Configuration in progress..."
+msgstr ""
+
+msgid "Confirmation for plugin protection"
 msgstr ""
 
 msgid "Continue"
@@ -1161,6 +1155,9 @@ msgstr ""
 msgid "Customer's layout color successfully updated."
 msgstr ""
 
+msgid "Customer(s) successfully moved."
+msgstr ""
+
 msgid "Customers"
 msgstr ""
 
@@ -1231,10 +1228,13 @@ msgstr "Дата"
 msgid "Day"
 msgstr "Ден"
 
-msgid "Day:"
-msgstr "Ден:"
-
 msgid "Days"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Deactivate this plugin"
 msgstr ""
 
 msgid "Debugger"
@@ -1321,15 +1321,11 @@ msgstr ""
 msgid "Disk"
 msgstr "Диск"
 
-msgid "Disk in MB"
-msgstr "Пространство в Мб"
-
 msgid "Disk limit"
 msgstr "Ограничение на дисковото пространство"
 
 msgid "Disk limit [MB]<br><i>(0 unlimited)</i>"
-msgstr ""
-"Ограничение за дисково пространство [Мб]<br><i>(0 без Ограничение)</i>"
+msgstr "Ограничение за дисково пространство [Мб]<br><i>(0 без Ограничение)</i>"
 
 msgid "Disk limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
 msgstr ""
@@ -1452,9 +1448,7 @@ msgstr ""
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
 "them!"
-msgstr ""
-"Псевдонима на домейна,който искате да изтриете има пощенски кутии !<br>Първо"
-" ги изтрийте!"
+msgstr "Псевдонима на домейна,който искате да изтриете има пощенски кутии !<br>Първо ги изтрийте!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1569,9 +1563,6 @@ msgid "Domain with that name already exists on the system."
 msgstr ""
 
 msgid "Domain with this name already exist."
-msgstr ""
-
-msgid "Domain_statistics"
 msgstr ""
 
 msgid "Domains"
@@ -1718,9 +1709,6 @@ msgstr ""
 msgid "Enable auto responder"
 msgstr ""
 
-msgid "Enable mail auto responder"
-msgstr "Включи пощенския Автоматичен отговор"
-
 msgid "Enable update at"
 msgstr ""
 
@@ -1740,6 +1728,9 @@ msgid "Entered passwords do not match."
 msgstr ""
 
 msgid "Entered passwords doesn't match."
+msgstr ""
+
+msgid "Entered passwords doesn't matches."
 msgstr ""
 
 msgid "Error"
@@ -2158,6 +2149,13 @@ msgid ""
 "directive"
 msgstr ""
 
+#, php-format
+msgid ""
+"If you protect a plugin, you'll no longer be able to deactivate it from the "
+"plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
+"to edit the %s file."
+msgstr ""
+
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr ""
 
@@ -2288,10 +2286,16 @@ msgstr ""
 msgid "Internationalization"
 msgstr ""
 
+msgid "Invalid NAME"
+msgstr ""
+
 msgid "Invalid URL."
 msgstr ""
 
 msgid "Invalid certificate."
+msgstr ""
+
+msgid "Invalid expiration date."
 msgstr ""
 
 msgid "Invalid group name!"
@@ -2318,16 +2322,18 @@ msgstr ""
 msgid "Invalid target."
 msgstr ""
 
-msgid "Invalid time period!"
-msgstr "Неправилен времеви период"
-
 msgid "Invalid type given. String expected"
 msgstr ""
 
 msgid "Invalid user Id."
 msgstr ""
 
-msgid "Invalide domain expiration date."
+#, php-format
+msgid "Ip %s is blocked for %s minutes."
+msgstr ""
+
+#, php-format
+msgid "Ip %s is waiting %s seconds."
 msgstr ""
 
 msgid "Ip management"
@@ -2419,12 +2425,6 @@ msgstr ""
 msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
 
-msgid "Log Level"
-msgstr ""
-
-msgid "Log is empty!"
-msgstr "Логът е празен!"
-
 msgid "Login"
 msgstr "Вход"
 
@@ -2468,6 +2468,9 @@ msgstr ""
 msgid "Logout"
 msgstr "Изход"
 
+msgid "Logs successfully deleted."
+msgstr ""
+
 msgid "Lost password"
 msgstr "Забравена парола"
 
@@ -2496,6 +2499,9 @@ msgid "Mail"
 msgstr "Имейл"
 
 msgid "Mail Accounts"
+msgstr ""
+
+msgid "Mail Log Level"
 msgstr ""
 
 msgid "Mail account"
@@ -2539,8 +2545,7 @@ msgid ""
 msgstr ""
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-"Ограничение пощенски кутии<br><i>(-1 забранено, 0 без Ограничение)</i>"
+msgstr "Ограничение пощенски кутии<br><i>(-1 забранено, 0 без Ограничение)</i>"
 
 msgid "Mail accounts list"
 msgstr "Списък пощенски кутии"
@@ -2637,9 +2642,6 @@ msgstr "Управление потребители и групи"
 msgid "Manage your protected areas, users and groups."
 msgstr ""
 
-msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr ""
-
 msgid "Mark"
 msgstr "Марка"
 
@@ -2730,9 +2732,6 @@ msgstr "Промяна"
 msgid "Month"
 msgstr "Месец"
 
-msgid "Month:"
-msgstr "Месец:"
-
 msgid "More Details"
 msgstr ""
 
@@ -2754,8 +2753,8 @@ msgstr ""
 msgid "Move"
 msgstr "Премести"
 
-msgid "Moving aborted!"
-msgstr "Преместването е прекъснато!"
+msgid "Moving aborted."
+msgstr ""
 
 msgid "MySQL support"
 msgstr "Поддръжка MySQL"
@@ -2841,6 +2840,9 @@ msgstr ""
 msgid "No domain alias system errors"
 msgstr "Няма грешки на системата за псевдоними на домейна"
 
+msgid "No domain statistics to display for this reseller."
+msgstr ""
+
 msgid "No domain statistics to display."
 msgstr ""
 
@@ -2849,6 +2851,9 @@ msgstr "Няма грешки на системата за домейни"
 
 msgid "No email account system errors"
 msgstr "Няма грешки на системата за пошенски кутии"
+
+msgid "No found."
+msgstr ""
 
 msgid "No group found."
 msgstr ""
@@ -2862,6 +2867,9 @@ msgid "No htaccess related system errors"
 msgstr ""
 
 msgid "No languages found."
+msgstr ""
+
+msgid "No logs found."
 msgstr ""
 
 msgid "No new i-MSCP updates available"
@@ -2879,10 +2887,19 @@ msgstr ""
 msgid "No set"
 msgstr ""
 
+msgid "No statistics found for the given period. Try another period."
+msgstr ""
+
 msgid "No subdomain system errors"
 msgstr "Няма грешки на системата за поддомейни"
 
+msgid "No unassigned users was found in database."
+msgstr ""
+
 msgid "No user found."
+msgstr ""
+
+msgid "No users found for this reseller."
 msgstr ""
 
 msgid "No valid alias domain selected."
@@ -2982,10 +2999,10 @@ msgstr ""
 msgid "Order Panel / Checkout"
 msgstr ""
 
-msgid "Order Panel / Choosing a domain name"
+msgid "Order Panel / Choose hosting plan"
 msgstr ""
 
-msgid "Order Panel / Choosing an hosting package"
+msgid "Order Panel / Choosing a domain name"
 msgstr ""
 
 msgid "Order Panel / Order confirmation"
@@ -3064,7 +3081,7 @@ msgstr ""
 msgid "PHP GD extension not loaded."
 msgstr ""
 
-msgid "PHP Settings (system wide)"
+msgid "PHP Settings (system default)"
 msgstr ""
 
 msgid "PHP Support: disabled"
@@ -3087,9 +3104,6 @@ msgstr ""
 
 msgid "PHP support"
 msgstr "Поддръжка PHP"
-
-msgid "POP3/IMAP"
-msgstr ""
 
 msgid "POP3/IMAP in"
 msgstr ""
@@ -3270,6 +3284,12 @@ msgstr ""
 msgid "Please enter a name for the protected area."
 msgstr ""
 
+msgid "Please enter a password."
+msgstr ""
+
+msgid "Please enter an username."
+msgstr ""
+
 msgid "Please enter mail account username."
 msgstr ""
 
@@ -3282,6 +3302,9 @@ msgstr "Моля, попълнете всички полета!"
 msgid "Please fill up both data fields for password."
 msgstr ""
 
+msgid "Please select a least one user."
+msgstr ""
+
 msgid "Please select a valid  SQL user for the database."
 msgstr ""
 
@@ -3291,9 +3314,6 @@ msgstr ""
 
 msgid "Please select at least one mail type."
 msgstr ""
-
-msgid "Please select some user(s)!"
-msgstr "Моля, изберете някой друг потребител(и)!"
 
 msgid "Please specify a message content!"
 msgstr "Моля, въведете съдержанието на съобщението!"
@@ -3337,9 +3357,6 @@ msgstr ""
 msgid "Please type database name."
 msgstr ""
 
-msgid "Please type user name!"
-msgstr "Моля, въведете потребителско име!"
-
 msgid "Please type user password."
 msgstr ""
 
@@ -3358,7 +3375,52 @@ msgstr ""
 msgid "Please, check the PHP Editor settings."
 msgstr ""
 
-msgid "Please, don't use special chars like '@, $, %...' in the password."
+msgid "Please, don't use special chars such as '@, $, %...' in the password."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid ""
+"Plugin list is empty. To install a new plugin, extract its archive content "
+"into the <strong>gui/plugins</strong> directory and update the plugin list."
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
+"found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
+"plugin(s) deleted."
+msgstr ""
+
+msgid "Plugin management"
+msgstr ""
+
+#, php-format
+msgid "Plugin manager was unable to remove the %s file"
+msgstr ""
+
+#, php-format
+msgid ""
+"Plugin manager was unable to write the %s cache file for protected plugins."
+msgstr ""
+
+msgid "Plugin successfully activated."
+msgstr ""
+
+msgid "Plugin successfully deactivated."
+msgstr ""
+
+msgid "Plugin successfully protected."
+msgstr ""
+
+msgid "Plugin(s) successfully activated."
+msgstr ""
+
+msgid "Plugin(s) successfully deactivated."
+msgstr ""
+
+msgid "Plugin(s) successfully protected."
 msgstr ""
 
 msgid "Port"
@@ -3406,8 +3468,14 @@ msgstr ""
 msgid "Properties"
 msgstr ""
 
+msgid "Protect"
+msgstr ""
+
 msgid "Protect it"
 msgstr "Защити"
+
+msgid "Protect this plugin"
+msgstr ""
 
 msgid "Protected"
 msgstr ""
@@ -3429,6 +3497,9 @@ msgstr ""
 
 msgid "Protected areas"
 msgstr "Защитена зона"
+
+msgid "Protected plugin"
+msgstr ""
 
 msgid "Protocol"
 msgstr "Протокол"
@@ -3602,9 +3673,6 @@ msgstr ""
 msgid "Rootkit logs"
 msgstr ""
 
-msgid "SMTP"
-msgstr ""
-
 msgid "SMTP in"
 msgstr ""
 
@@ -3632,10 +3700,10 @@ msgstr "SQL потребителии"
 msgid "SQL accounts limit reached."
 msgstr ""
 
-msgid "SQL database created."
+msgid "SQL database successfully added."
 msgstr ""
 
-msgid "SQL database deleted."
+msgid "SQL database successfully deleted."
 msgstr ""
 
 msgid "SQL databases"
@@ -3664,22 +3732,21 @@ msgid ""
 msgstr ""
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-"Ограничение SQL бази данни<br><i>(-1 забранено, 0 без Ограничение)</i>"
+msgstr "Ограничение SQL бази данни<br><i>(-1 забранено, 0 без Ограничение)</i>"
 
 msgid "SQL support"
 msgstr "Поддръжка SQL"
 
-msgid "SQL user created."
-msgstr ""
-
-msgid "SQL user deleted."
-msgstr ""
-
 msgid "SQL user name"
 msgstr "SQL потребителско име"
 
-msgid "SQL user password updated."
+msgid "SQL user password successfully updated."
+msgstr ""
+
+msgid "SQL user successfully added."
+msgstr ""
+
+msgid "SQL user successfully deleted."
 msgstr ""
 
 msgid "SQL users"
@@ -3710,8 +3777,7 @@ msgid ""
 msgstr ""
 
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
-"Ограничение SQL потребители<br><i>(-1 забранено, 0 без Ограничение)</i>"
+msgstr "Ограничение SQL потребители<br><i>(-1 забранено, 0 без Ограничение)</i>"
 
 msgid "SQL-User"
 msgstr ""
@@ -3804,8 +3870,8 @@ msgstr "Трафик на сървъра"
 msgid "Server traffic settings"
 msgstr "настройки за трафик на сървъра"
 
-msgid "Server traffic settings updated successfully!"
-msgstr "настройките за трафик на сървъра са обновени успешно!"
+msgid "Server traffic settings successfully updated."
+msgstr ""
 
 msgid "Service"
 msgstr "Служба"
@@ -3986,9 +4052,6 @@ msgstr ""
 msgid "Softwares repository"
 msgstr ""
 
-msgid "Source and destination reseller are the same!"
-msgstr "Началния и крайния риселъри съвпадат!"
-
 msgid "Specified SQL username name already exists."
 msgstr ""
 
@@ -4087,9 +4150,7 @@ msgstr ""
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
 "them!"
-msgstr ""
-"Поддомейна, който искате да изтриете има пощенски кутии !<br>Първо ги "
-"изтрийте!"
+msgstr "Поддомейна, който искате да изтриете има пощенски кутии !<br>Първо ги изтрийте!"
 
 msgid ""
 "Subdomain you are trying to remove has email accounts.<br>First remove them."
@@ -4116,9 +4177,6 @@ msgstr "Тема"
 
 msgid "Submit changes"
 msgstr "Приеми промените"
-
-msgid "Sum"
-msgstr ""
 
 msgid "Support"
 msgstr ""
@@ -4167,6 +4225,21 @@ msgid "System tools"
 msgstr "Системни инструменти"
 
 msgid "System under maintenance"
+msgstr ""
+
+msgid "System was unable to add the SQL database."
+msgstr ""
+
+msgid "System was unable to add the SQL user."
+msgstr ""
+
+msgid "System was unable to remove the SQL database."
+msgstr ""
+
+msgid "System was unable to remove the SQL user."
+msgstr ""
+
+msgid "System was unable to update the SQL user password."
 msgstr ""
 
 msgid "TTL"
@@ -4268,6 +4341,18 @@ msgstr ""
 msgid "The <em>%s</em> service cannot be unlimited."
 msgstr ""
 
+#, php-format
+msgid ""
+"The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
+"found in file <strong>%s</strong>"
+msgstr ""
+
+#, php-format
+msgid ""
+"The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
+"exists or is not readable."
+msgstr ""
+
 msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr ""
 
@@ -4293,6 +4378,12 @@ msgid "The directory %s was created."
 msgstr ""
 
 msgid ""
+"The directory/file paths are appended to the default PHP open_basedir "
+"directive of customers. Each of them must be separated by PATH_SEPARATOR. "
+"See the PHP documentation for more information."
+msgstr ""
+
+msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
 msgstr ""
@@ -4308,6 +4399,9 @@ msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr ""
 
 msgid "The menu you trying to edit doesn't exist."
+msgstr ""
+
+msgid "The password is too long."
 msgstr ""
 
 #, php-format
@@ -4453,10 +4547,11 @@ msgstr "За риселъра"
 msgid "To subdomain"
 msgstr "Към поддомейн"
 
-msgid "Too long user password."
+#, php-format
+msgid "To unprotect this plugin, you must edit the %s file"
 msgstr ""
 
-msgid "Too user long password."
+msgid "Too long user password."
 msgstr ""
 
 msgid "Top Level Domain name strict validation"
@@ -4489,9 +4584,6 @@ msgstr ""
 msgid "Traffic"
 msgstr "Трафик"
 
-msgid "Traffic in MB"
-msgstr "Трафик в Мб"
-
 msgid "Traffic limit"
 msgstr "Ограничение на трафика"
 
@@ -4507,8 +4599,17 @@ msgstr ""
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
 msgstr ""
 
+msgid "Traffic limit must be a digit."
+msgstr ""
+
 msgid "Traffic usage"
 msgstr "Използван трафик"
+
+msgid "Traffic warning cannot be bigger than traffic limit."
+msgstr ""
+
+msgid "Traffic warning must be a digit."
+msgstr ""
 
 msgid "Translated strings"
 msgstr ""
@@ -4530,6 +4631,16 @@ msgid "Unable to create '%s' directory for language file."
 msgstr ""
 
 msgid "Unable to create 'LC_MESSAGES' directory for language file."
+msgstr ""
+
+msgid ""
+"Unable to delete the domain account. A message has been sent to the "
+"administrator."
+msgstr ""
+
+msgid ""
+"Unable to delete the domain. Please, consult admin logs or your mail for "
+"more information."
 msgstr ""
 
 #, php-format
@@ -4595,6 +4706,9 @@ msgstr ""
 msgid "Unknown type."
 msgstr ""
 
+msgid "Unknown username."
+msgstr ""
+
 #, php-format
 msgid "Unknown zone type %s."
 msgstr ""
@@ -4641,6 +4755,9 @@ msgstr "Обнови заявката"
 msgid "Update plan"
 msgstr "Промяна план"
 
+msgid "Update plugin list"
+msgstr ""
+
 msgid "Updates"
 msgstr ""
 
@@ -4653,6 +4770,9 @@ msgstr "Качи лого"
 msgid "Upload now"
 msgstr ""
 
+msgid "Usage of disallowed character in CNAME"
+msgstr ""
+
 msgid "Usage status"
 msgstr ""
 
@@ -4661,14 +4781,6 @@ msgstr ""
 
 msgid "Use numeric ID"
 msgstr "Използвайте числен ID"
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in CNAME"
-msgstr ""
-
-#, php-format
-msgid "Use of disallowed char(\"%s\") in NAME"
-msgstr ""
 
 msgid "Use other dir"
 msgstr "Използвайте друга папка"
@@ -4700,7 +4812,7 @@ msgstr "Право потребител"
 msgid "User data were not updated."
 msgstr ""
 
-msgid "User data were succefully updated."
+msgid "User data were successfully updated."
 msgstr ""
 
 msgid ""
@@ -4709,17 +4821,13 @@ msgstr ""
 
 msgid ""
 "User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"Потребителя не съществува или Вие нямате право на достъпа до този интерфейс!"
+msgstr "Потребителя не съществува или Вие нямате право на достъпа до този интерфейс!"
 
 msgid ""
 "User does not exist or you do not have permission to access this interface."
 msgstr ""
 
 msgid "User does not exist."
-msgstr ""
-
-msgid "User list is empty."
 msgstr ""
 
 msgid "User login (system) name"
@@ -4760,9 +4868,6 @@ msgstr "Тип потребител"
 
 msgid "User type (admin, reseller, user)"
 msgstr ""
-
-msgid "User was moved"
-msgstr "Потребителя беше преместен"
 
 msgid "User was not deleted."
 msgstr ""
@@ -4833,17 +4938,14 @@ msgstr "Преглед детайли"
 msgid "View hosting plan"
 msgstr "Преглед хостинг-план"
 
+msgid "Visit plugin site"
+msgstr ""
+
 msgid "Vital system info"
 msgstr "Важна системна информация"
 
-msgid "WEB"
-msgstr "Уеб"
-
 msgid "Warning traffic"
 msgstr ""
-
-msgid "Warning traffic is bigger than max traffic!"
-msgstr "Предупреждение: Вашия трафик е превишил максималния!"
 
 msgid "Warning:"
 msgstr ""
@@ -4863,9 +4965,6 @@ msgstr ""
 
 msgid "Web & E-Mail Support"
 msgstr "Поддръжка Web и E-Mail"
-
-msgid "Web Stats"
-msgstr "Уеб статистика"
 
 msgid "Web in"
 msgstr "Уеб-вход"
@@ -4913,11 +5012,11 @@ msgid "Wrong IP address."
 msgstr ""
 
 #, php-format
-msgid "Wrong IPv4 address (\"%s\")."
+msgid "Wrong IPv4 address (\"%s\")"
 msgstr ""
 
 #, php-format
-msgid "Wrong IPv6 address (\"%s\")."
+msgid "Wrong IPv6 address (\"%s\")"
 msgstr ""
 
 msgid "Wrong SQL user identifier."
@@ -4925,9 +5024,6 @@ msgstr ""
 
 msgid "Wrong address in forward URL."
 msgstr ""
-
-msgid "Wrong data input!"
-msgstr "Грешка при въвеждане на данни!"
 
 msgid "Wrong domain ID."
 msgstr ""
@@ -4948,6 +5044,9 @@ msgid "Wrong hostname in forward URL."
 msgstr ""
 
 msgid "Wrong order ID."
+msgstr ""
+
+msgid "Wrong password."
 msgstr ""
 
 msgid "Wrong redirect URL."
@@ -4988,6 +5087,9 @@ msgstr ""
 msgid "Wrong username."
 msgstr ""
 
+msgid "Wrong value for the PHP open_basedir directive."
+msgstr ""
+
 msgid "Wrong_request."
 msgstr ""
 
@@ -4997,9 +5099,6 @@ msgstr ""
 msgid "Year"
 msgstr "Година"
 
-msgid "Year:"
-msgstr "Година:"
-
 msgid "Yes"
 msgstr "Да"
 
@@ -5008,6 +5107,9 @@ msgstr ""
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
+msgstr ""
+
+msgid "You are exceeding the server traffic limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
@@ -5048,11 +5150,9 @@ msgstr ""
 
 #, php-format
 msgid ""
-"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
-"for the <b>%2$s</b> service!"
+"You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
+" for the <b>%2$s</b> service."
 msgstr ""
-"Вие не можете да преместите <b>%1$s</b> в определения риселъра,<br>с "
-"ограничения на услугата <b>%2$s</b> !"
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr ""
@@ -5197,10 +5297,6 @@ msgstr "Нямате потребители !"
 msgid "You have received %d new support questions."
 msgstr ""
 
-#, php-format
-msgid "You have received <b>%d</b> new support questions."
-msgstr ""
-
 msgid ""
 "You have the i-MSCP application installer enabled, but the new hosting plan "
 "doesn't has this feature."
@@ -5325,9 +5421,6 @@ msgstr ""
 msgid "disabled"
 msgstr ""
 
-msgid "disabled</b>"
-msgstr ""
-
 msgid "disk space"
 msgstr ""
 
@@ -5425,7 +5518,25 @@ msgstr ""
 msgid "i-MSCP - Admin / Reseller statistics"
 msgstr ""
 
+msgid "i-MSCP - Admin / Settings / Plugin management"
+msgstr ""
+
+msgid "i-MSCP - Admin / Settings / Server traffic settings"
+msgstr ""
+
 msgid "i-MSCP - Admin / Settings / Service ports"
+msgstr ""
+
+msgid "i-MSCP - Admin / Statistics  / Server statistics"
+msgstr ""
+
+msgid ""
+"i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
+"Domain_statistics"
+msgstr ""
+
+msgid ""
+"i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
 msgstr ""
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
@@ -5438,6 +5549,9 @@ msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
 msgstr ""
 
 msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr ""
+
+msgid "i-MSCP - Admin / Users management / Domain Details"
 msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
@@ -5455,6 +5569,9 @@ msgstr "i-MSCP - Админ/Управление на сесии"
 msgid "i-MSCP - Admin/Manage Users"
 msgstr "i-MSCP - Админ/Управление на потребители"
 
+msgid "i-MSCP - Admin/Manage users / User assignment"
+msgstr ""
+
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Админ/Управление на потребители/Добави потребител"
 
@@ -5463,18 +5580,6 @@ msgstr "i-MSCP - Админ/Управление на потребители/Н�
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Админ/Управление на потребители/Назначи риселър"
-
-msgid "i-MSCP - Admin/Manage users/User assignment"
-msgstr "i-MSCP - Админ/Управление на потребители/Назначи потребител"
-
-msgid "i-MSCP - Admin/Server Traffic Settings"
-msgstr "i-MSCP - Админ/настройки за трафик на сървъра"
-
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - Админ/Дневна статистика на сървъра"
-
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - Админ/Статистика на сървъра"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Админ/Настройки"
@@ -5491,6 +5596,27 @@ msgstr ""
 msgid "i-MSCP - Client / Change Language"
 msgstr ""
 
+msgid "i-MSCP - Client / Manage mail"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Add account"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Add catchall"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Catchall"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Edit account"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
+msgstr ""
+
+msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
+msgstr ""
+
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr ""
 
@@ -5501,6 +5627,9 @@ msgid "i-MSCP - Client / Support Ticket System / Open Tickets"
 msgstr ""
 
 msgid "i-MSCP - Client / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "i-MSCP - Client / Webtools"
 msgstr ""
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
@@ -5520,9 +5649,6 @@ msgstr ""
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Клиент/Добави FTP потребител"
-
-msgid "i-MSCP - Client/Add Mail User"
-msgstr "i-MSCP - Клиент/Добави пощенска кутия"
 
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Клиент/Добави SQL база данни"
@@ -5548,9 +5674,6 @@ msgstr "i-MSCP - Клиент/Создат CatchAll пощенска кутия"
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Клиент/Ежедневен бекап"
 
-msgid "i-MSCP - Client/Domain Statistics"
-msgstr "i-MSCP - Клиент/Статистика на домейна"
-
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Клиент/Редакция на FTP акаунт"
 
@@ -5575,14 +5698,8 @@ msgstr ""
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Клиент/Уеб инструменти"
 
-msgid "i-MSCP - Domain Details"
+msgid "i-MSCP - Domain / Edit"
 msgstr ""
-
-msgid "i-MSCP - Domain Statistics Data"
-msgstr "i-MSCP - данни Статистики домейни"
-
-msgid "i-MSCP - Domain/Details"
-msgstr "i-MSCP - домейн/Детайли"
 
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - домейн/Редакция"
@@ -5605,9 +5722,6 @@ msgstr ""
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Управление домейни/Псевдоними"
 
-msgid "i-MSCP - Manage Mail / Edit mail account"
-msgstr ""
-
 msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr ""
 
@@ -5629,9 +5743,6 @@ msgstr ""
 msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr ""
 
-msgid "i-MSCP - Reseller / Customers statistics"
-msgstr ""
-
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
@@ -5644,6 +5755,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / My Profile"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
 msgstr ""
 
@@ -5654,6 +5768,9 @@ msgid "i-MSCP - Reseller / Support Ticket System / Open Tickets"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Change Language"
@@ -5722,6 +5839,9 @@ msgstr "i-MSCP - потребителии"
 msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Потребители/Редакция"
 
+msgid "i-MSCP - admin / System tools / System information"
+msgstr ""
+
 msgid "i-MSCP - client / Setting Layout"
 msgstr ""
 
@@ -5738,9 +5858,10 @@ msgid "i-MSCP Admin / General Information / Server Status"
 msgstr ""
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "i-MSCP Админ / Системни инструменти / Анти-шпионски инструмент за проврка на Логовете"
+
+msgid "i-MSCP Client / Domain statistics"
 msgstr ""
-"i-MSCP Админ / Системни инструменти / Анти-шпионски инструмент за проврка на"
-" Логовете"
 
 msgid "i-MSCP Client / General Information"
 msgstr ""
@@ -5764,9 +5885,6 @@ msgid "i-MSCP Reseller/Add Alias"
 msgstr ""
 
 msgid "i-MSCP Reseller/Circular"
-msgstr ""
-
-msgid "i-MSCP application installer"
 msgstr ""
 
 msgid "i-MSCP application installer Web softwares repository"
@@ -5898,5 +6016,3 @@ msgstr "да"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr ""
-
-
