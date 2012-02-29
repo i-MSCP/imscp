@@ -38,22 +38,22 @@
 class iMSCP_Plugin_Manager
 {
 	/**
-	 * @var string Plugins directory.
+	 * @var string Plugins directory
 	 */
 	protected $_pluginsDirectory;
 
 	/**
-	 * @var array Keys are the plugin names and the values a bool to tell if the plugins are enabled or disabled
+	 * @var array Keys are the plugin names and the values a bool to tell if the plugins are activated or deactivated
 	 */
 	protected $_plugins = array();
 
 	/**
-	 * @var array List of protected plugins.
+	 * @var array List of protected plugins
 	 */
 	protected $_protectedPlugins = array();
 
 	/**
-	 * @var bool
+	 * @var bool Whether or not list of protected plugin is loaded
 	 */
 	protected $_isLoadedProtectedPluginsList = false;
 

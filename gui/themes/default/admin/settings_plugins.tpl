@@ -22,6 +22,8 @@
 					});
 
 					$("th :checkbox").change(function(){$("table :checkbox").prop('checked', $(this).is(':checked'));});
+
+					$('button[name=updatePluginList]').click(function(){document.location = "?updatePluginList=all";});
 				});
 			/*]]>*/
 			</script>
@@ -39,10 +41,10 @@
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
 					</select>
-					<label for="bulkActionsTop"><input type="submit" name="Submit" value="Apply"/></label>
+					<label for="bulkActionsTop"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
 				</div>
 				<div class="buttons" style="margin: 0px;">
-					<button type="button" onclick="document.location='?update=all'">{TR_UPDATE_PLUGIN_LIST}</button>
+					<button type="button" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
 				</div>
 				<table>
 					<thead>
@@ -91,12 +93,12 @@
 						<option value="deactivate">{TR_DEACTIVATE}</option>
 						<option value="protect">{TR_PROTECT}</option>
 					</select>
-					<label for="bulkActionsBottom"><input type="submit" name="Submit" value="Apply"/></label>
+					<label for="bulkActionsBottom"><input type="submit" name="Submit" value="{TR_APPLY}"/></label>
 				</div>
 			</form>
 			<!-- EDP: plugins_block -->
 
 			<div class="buttons" style="margin: 0px;">
-				<button type="buttons" onclick="document.location='?update=all'">{TR_UPDATE_PLUGIN_LIST}</button>
+				<button type="buttons" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
 			</div>
 

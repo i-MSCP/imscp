@@ -546,6 +546,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Name of the plugin being activated
 	 *
 	 * @var string
 	 */
@@ -557,6 +558,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Name of the plugin that has been activated
 	 *
 	 * @var string
 	 */
@@ -568,6 +570,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Name of the plugin being deactivated
 	 *
 	 * @var string
 	 */
@@ -579,6 +582,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Name of the plugin that has been deactivated
 	 *
 	 * @var string
 	 */
@@ -590,6 +594,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Name of the plugin being protected
 	 *
 	 * @var string
 	 */
@@ -601,6 +606,7 @@ class iMSCP_Events
 	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
+	 *  - pluginName: Name of the plugin that has been protected
 	 *
 	 * @var string
 	 */

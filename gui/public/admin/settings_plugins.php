@@ -39,7 +39,7 @@
  * @param iMSCP_pTemplate $tpl Template engine instance
  * @param iMSCP_Plugin_Manager $pluginManager
  */
-function admin_generatesPluginList($tpl, $pluginManager)
+function admin_pluginManagerGeneratePluginList($tpl, $pluginManager)
 {
 	$pluginList = $pluginManager->getPluginList('Action', false);
 
@@ -97,27 +97,41 @@ function admin_generatesPluginList($tpl, $pluginManager)
  * @param iMSCP_Plugin_Manager $pluginManager
  * @return void
  */
-function admin_doBulkAction($pluginManager)
+function admin_pluginManagerDoBulkAction($pluginManager)
 {
 	$action = clean_input($_POST['bulkActions']);
 
 	if (isset($_POST['checked']) && is_array($_POST['checked'])) {
 		if (!empty($_POST['checked'])) {
-			foreach ($_POST['checked'] as $pluginName) {
-				// TODO: Add check for possible failure and $pluginName is unknown
-				$pluginManager->{$action}(clean_input($pluginName));
-			}
+			$trActions = array(
+				'activate' => tr('activate'), 'deactivate' => tr('deactivate'), 'protect' => tr('protect'),
+				'activated' => tr('activated'), 'deactivated' => tr('deactivated'), 'protected' => tr('protected')
+			);
 
-			switch ($action) {
-				case 'activate':
-					set_page_message(tr('Plugin(s) successfully activated.'), 'success');
-					break;
-				case 'deactivate':
-					set_page_message(tr('Plugin(s) successfully deactivated.'), 'success');
-					break;
-				case 'protect':
-					set_page_message(tr('Plugin(s) successfully protected.'), 'success');
-					break;
+			$eventAction = array(
+				'activate' => array(iMSCP_Events::onBeforeActivatePlugin, iMSCP_Events::onAfterActivatePlugin),
+				'deactivate' => array(iMSCP_Events::onBeforeDeactivatePlugin, iMSCP_Events::onAfterDeactivatePlugin),
+				'protect' => array(iMSCP_Events::onBeforeProtectPlugin, iMSCP_Events::onAfterProtectPlugin),
+			);
+
+			foreach ($_POST['checked'] as $pluginName) {
+				if (!$pluginManager->isProtected($pluginName)) {
+					iMSCP_Events_Manager::getInstance()->dispatch(
+						$eventAction[$action][0], array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
+					);
+
+					if (!$pluginManager->{$action}(clean_input($pluginName))) {
+						set_page_message(tr('Plugin manager was unable to %s the %s plugin.', $trActions[$action], "<strong>$pluginName</strong>"), 'error');
+					} else {
+						iMSCP_Events_Manager::getInstance()->dispatch(
+							$eventAction[$action][1], array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
+						);
+
+						set_page_message(tr('Plugin %s successfully %s.', "<strong>$pluginName</strong>", $trActions[$action . 'd']), 'success');
+					}
+				} else {
+					set_page_message(tr('The plugin %s is protected. You cannot perform an action on it.', "<strong>$pluginName</strong>"), 'warning');
+				}
 			}
 		}
 	}
@@ -138,7 +152,7 @@ check_login(__FILE__);
 $pluginManager = iMSCP_Registry::get('pluginManager');
 
 // Dispatches the request
-if (isset($_GET['update'])) {
+if (isset($_GET['updatePluginList'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeUpdatePluginList, array('pluginManager' => $pluginManager)
 	);
@@ -149,51 +163,63 @@ if (isset($_GET['update'])) {
 		iMSCP_Events::onAfterUpdatePluginList, array('pluginManager' => $pluginManager)
 	);
 
-	// TODO message about updated plugins
 	set_page_message(
 		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success');
 	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeActivatePlugin, array('pluginManager' => $pluginManager));
-
-	$pluginManager->activate(clean_input($_GET['activate']));
+	$pluginName = clean_input($_GET['activate']);
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterActivatePlugin, array('pluginManager' => $pluginManager)
+		iMSCP_Events::onBeforeActivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
 	);
 
-	set_page_message(tr('Plugin successfully activated.'), 'success');
+	if ($pluginManager->activate($pluginName)) {
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterActivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
+		);
+
+		set_page_message(tr('Plugin successfully activated.'), 'success');
+	} else {
+		set_page_message(tr('Plugin manager was unable to activate the plugin.'), 'error');
+	}
 } elseif (isset($_GET['deactivate'])) {
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeDeactivatePlugin, array('pluginManager' => $pluginManager)
-	);
-
-	$pluginManager->deactivate(clean_input($_GET['deactivate']));
+	$pluginName = clean_input($_GET['deactivate']);
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterDeactivatePlugin, array('pluginManager' => $pluginManager)
+		iMSCP_Events::onBeforeDeactivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
 	);
 
-	set_page_message(tr('Plugin successfully deactivated.'), 'success');
+	if ($pluginManager->deactivate($pluginName)) {
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterDeactivatePlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
+		);
+
+		set_page_message(tr('Plugin successfully deactivated.'), 'success');
+	} else {
+		set_page_message(tr('Plugin manager was unable to deactivate the plugin.'), 'error');
+	}
 } elseif (isset($_GET['protect'])) {
-	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onBeforeProtectPlugin, array('pluginManager' => $pluginManager)
-	);
-
-	$pluginManager->protect(clean_input($_GET['protect']));
+	$pluginName = clean_input($_GET['protect']);
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
-		iMSCP_Events::onAfterProtectPlugin, array('pluginManager' => $pluginManager)
+		iMSCP_Events::onBeforeProtectPlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
 	);
 
-	set_page_message(tr('Plugin successfully protected.'), 'success');
+	if ($pluginManager->protect($pluginName)) {
+		iMSCP_Events_Manager::getInstance()->dispatch(
+			iMSCP_Events::onAfterProtectPlugin, array('pluginManager' => $pluginManager, 'pluginName' => $pluginName)
+		);
+
+		set_page_message(tr('Plugin successfully protected.'), 'success');
+	} else {
+		set_page_message(tr('Plugin manager was unable to protect the plugin.'), 'error');
+	}
 } elseif (isset($_POST['bulkActions']) && in_array($_POST['bulkActions'], array('activate', 'deactivate', 'protect'))) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeBulkAction, array('pluginManager' => $pluginManager)
 	);
 
-	admin_doBulkAction($pluginManager);
+	admin_pluginManagerDoBulkAction($pluginManager);
 
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterBulkAction, array('pluginManager' => $pluginManager)
@@ -237,12 +263,13 @@ $tpl->assign(
 		'TR_VERSION' => tr('Version'),
 		'TR_BY' => tr('By'),
 		'TR_VISIT_PLUGIN_SITE' => tr('Visit plugin site'),
-		'TR_UPDATE_PLUGIN_LIST' => tr('Update plugin list')
+		'TR_UPDATE_PLUGIN_LIST' => tr('Update plugin list'),
+		'TR_APPLY' => tr('Apply')
 	)
 );
 
 generateNavigation($tpl);
-admin_generatesPluginList($tpl, $pluginManager);
+admin_pluginManagerGeneratePluginList($tpl, $pluginManager);
 generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
