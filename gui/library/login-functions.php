@@ -328,6 +328,8 @@ function redirectToUiLevel($file = 'index.php')
 				$userType = 'client';
 			case 'admin':
 			case 'reseller':
+				// Prevents display of any old message when switching to another user level
+				Zend_Session::namespaceUnset('pageMessages');
 				redirectTo('/' . $userType . '/' . $file);
 		}
 	}
