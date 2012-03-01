@@ -571,7 +571,7 @@ function delete_domain($domainId, $checkCreator = false)
 			}
 
 			$db = iMSCP_Database::getRawInstance();
-			$aliasesIds = array_map(array($db, 'quote'), implode(',', $aliasesIds));
+			$aliasesIds = implode(',', array_map(array($db, 'quote'), $aliasesIds));
 
 			$query = "
 				UPDATE
