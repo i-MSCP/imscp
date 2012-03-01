@@ -129,9 +129,9 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 
 		if (isset($this->_events[$eventName])) {
 			foreach ($this->_events[$eventName]->getIterator() as $listener) {
-				if (is_callable($listener)) {
+				if (is_callable($listener)) { // user function, closure, functor...
 					$responses->push(call_user_func_array($listener, array($event)));
-				} elseif (is_object($listener)) {
+				} elseif (is_object($listener)) { // object method
 					if (is_callable(array($listener, $eventName))) {
 						$responses->push($listener->$eventName($event));
 					} else {
@@ -161,7 +161,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 *
 	 * @param  string|array $eventNames		The event(s) to listen on.
 	 * @param  callback|object $listener	Listener callback function or object.
-	 * @param  int $priority					The higher this value, the earlier an event listener will be triggered in
+	 * @param  int $priority				The higher this value, the earlier an event listener will be triggered in
 	 * 										the chain of the specified events.
 	 *
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self

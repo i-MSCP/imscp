@@ -50,8 +50,6 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 	/**
 	 * Adds a listener to the stack.
 	 *
-	 * @throws iMSCP_EventsManager_Exception When listener is already registered
-	 * @throws iMSCP_EventsManager_Exception When listener with same priority is found
 	 * @param string|object $listener Fonction name or Listener objet
 	 * @param int $stackIndex OPTIONAL Stack index Listener priority
 	 * @return iMSCP_Events_Listeners_Stack Provides fluent interface, returns self
@@ -86,6 +84,7 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 	public function removeListener($listener)
 	{
 		$retVal = false;
+
 		if (is_object($listener)) { // Remove by object
 			if($key = array_search($listener, $this->_listeners, true)) {
 				$retVal = true;
@@ -94,6 +93,7 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
 
 		} elseif (is_string($listener)) { // Remove by className
 			$retVal = false;
+
 			foreach ($this->_listeners as $index => $_listener) {
 				if (is_object($_listener)) {
 					$classname = get_class($_listener);
