@@ -99,7 +99,7 @@ class iMSCP_Events
 	/**
 	 * The onAdminScriptEnd event is triggered at the end of admin scripts.
 	 *
-	 * The listeners receive iMSCP_Events_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
@@ -119,7 +119,7 @@ class iMSCP_Events
 	/**
 	 * The onResellerScriptEnd event is triggered at the end of reseller scripts.
 	 *
-	 * The listeners receive iMSCP_Events_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
@@ -282,7 +282,7 @@ class iMSCP_Events
 	/**
 	 * The onAfterAddUser event is triggered after an user is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event.
+	 * The listeners receive an iMSCP_Events_Event object.
 	 *
 	 * @var string
 	 */
@@ -543,7 +543,7 @@ class iMSCP_Events
 	/**
 	 * The onAfterUpdatePluginList event is triggered before the plugin list is updated.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin being activated
@@ -555,7 +555,7 @@ class iMSCP_Events
 	/**
 	 * The onAfterActivatePlugin event is triggered after the plugin list is updated.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin that has been activated
@@ -567,7 +567,7 @@ class iMSCP_Events
 	/**
 	 * The onBeforeDeactivatePlugin event is triggered before a plugin is deactivated.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin being deactivated
@@ -579,7 +579,7 @@ class iMSCP_Events
 	/**
 	 * The onAfterDeactivatePlugin event is triggered after a plugin is deactivated.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin that has been deactivated
@@ -591,7 +591,7 @@ class iMSCP_Events
 	/**
 	 * The onBeforeProtectPlugin event is triggered before a plugin is protected.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin being protected
@@ -603,7 +603,7 @@ class iMSCP_Events
 	/**
 	 * The onAfterProtectPlugin event is triggered after a plugin is protected.
 	 *
-	 * The listeners receive an iMSCP_Envents_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Envents_Event object with the following parameters:
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin that has been protected
@@ -637,7 +637,7 @@ class iMSCP_Events
 	/**
 	 * The onBeforeAddDomain event is triggered before a domain is created.
 	 *
-	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
 	 *
 	 *  - domainName: A string representing the name of the domain being created
 	 *  - createdBy: An integer representing the ID of the reseller that adds the domain
