@@ -511,14 +511,21 @@ if (isset($_GET['delete_id']) && !empty($_GET['delete_id'])) {
 
 	try {
     	if(!delete_domain($domainId)) {
-			throw new iMSCP_Exception('Domain account not found.');
+			throw new iMSCP_Exception('Domain account not found');
 		}
 
 		set_page_message(tr('Domain account successfully scheduled for deletion.'), 'success');
 		write_log(sprintf('%s deleted the domain account with ID %d', $_SESSION['user_logged'], $domainId), E_USER_NOTICE);
 	} catch(iMSCP_Exception $e) {
+		if(($previous = $e->getPrevious()) && ($previous instanceof iMSCP_Exception_Database)) {
+			/** @var $previous iMSCP_Exception_Database */
+			$queryMessagePart = ' Query was: ' . $previous->getQuery();
+		} else {
+			$queryMessagePart = '';
+		}
+
 		set_page_message(tr('Unable to delete the domain. Please, consult admin logs or your mail for more information.'), 'error');
-		write_log(sprintf("System was unable to delete domain account with ID %s. Message was: %s", $domainId, $e->getMessage()), E_USER_ERROR);
+		write_log(sprintf("System was unable to delete domain account with ID %s. Message was: %s.", $domainId, $e->getMessage() . $queryMessagePart), E_USER_ERROR);
 	}
 
     redirectTo('manage_users.php');
