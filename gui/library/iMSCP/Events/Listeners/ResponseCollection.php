@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category	iMSCP
- * @package
- * @subpackage
+ * @package		iMSCP_Core
+ * @subpackage	Events_Listeners
  * @copyright	2010 - 2012 by Laurent Declercq
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
@@ -30,9 +30,9 @@
 /**
  * Responses class.
  *
- * @category
- * @package		iMSCP
- * @subpackage
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Events_Listeners
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		0.0.1
  */
@@ -57,7 +57,7 @@ class iMSCP_Events_Listeners_ResponseCollection extends SplStack
 	 * Mark the collection as stopped (or its opposite)
 	 *
 	 * @param  bool $flag
-	 * @return ResponseCollection
+	 * @return iMSCP_Events_Listeners_ResponseCollection
 	 */
 	public function setStopped($flag)
 	{
