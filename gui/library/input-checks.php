@@ -710,26 +710,21 @@ function imscp_limit_check($data, $extra = -1)
  * Validates a mount point.
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
- * @copyright 2006-2009 by ispCP | http://isp-control.net
  * @param string $mpoint mount point to validate
  * @param int|null $max_token_char number of max. chars by token. Set as null for no limit
  * @return boolean True if the mount point is valid, FALSE otherwise
  */
 function validates_mpoint($mpoint, $max_token_char = null)
 {
-    $pattern = '@^((:?|(:?[[:alnum:]]|/|/(?:htdocs|backups|cgi-bin|errors|logs|phptmp)[/]?))|.+/|.*//.*)$@';
+	if($mpoint != '/') {
+		$tokens = preg_split('@/@', $mpoint, -1, PREG_SPLIT_NO_EMPTY);
 
-    if (preg_match($pattern, $mpoint)) {
-        return false;
-    }
-
-    $tokens = preg_split('@/@', $mpoint, -1, PREG_SPLIT_NO_EMPTY);
-
-    foreach ($tokens as $token) {
-        if (!_validates_mpoint_token($token, $max_token_char)) {
-            return false;
-        }
-    }
+		foreach ($tokens as $token) {
+			if (!_validates_mpoint_token($token, $max_token_char)) {
+				return false;
+			}
+		}
+	}
 
     return true;
 }
@@ -753,7 +748,7 @@ function validates_mpoint($mpoint, $max_token_char = null)
  */
 function _validates_mpoint_token($token, $max_char = null)
 {
-    $pattern = '@^[[:alnum:]](:?(?<![-_])(:?-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
+    $pattern = '@^[[:alnum:]](?:(?<![-_])(?:-*|[_.])?(?![-_])[[:alnum:]]*)*?(?<![-_.])$@';
 
     return (bool)(preg_match($pattern, $token) && (is_null($max_char) || strlen($token) <= $max_char));
 }

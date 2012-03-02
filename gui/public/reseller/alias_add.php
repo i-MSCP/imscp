@@ -54,7 +54,7 @@ function init_empty_data()
  * Generates page.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $reseller_id Reseller unique identifier
+ * @param int $reseller_id Reseller unique identifier
  * @return void
  */
 function gen_al_page($tpl, $reseller_id)
@@ -74,49 +74,104 @@ function gen_al_page($tpl, $reseller_id)
 
     if (isset($_POST['status']) && $_POST['status'] == 1) {
         $forward_prefix = clean_input($_POST['forward_prefix']);
+
         if ($_POST['status'] == 1) {
             $check_en = $cfg->HTML_CHECKED;
             $check_dis = '';
             $forward = encode_idna(strtolower(clean_input($_POST['forward'])));
-            $tpl->assign(array(
-                              'READONLY_FORWARD' => '',
-                              'DISABLE_FORWARD' => ''));
+			$tpl->assign(
+				array(
+					'READONLY_FORWARD' => '',
+					'DISABLE_FORWARD' => ''
+				)
+			);
         } else {
             $check_en = '';
             $check_dis = $cfg->HTML_CHECKED;
             $forward = '';
-            $tpl->assign(array(
-                              'READONLY_FORWARD' => $cfg->HTML_READONLY,
-                              'DISABLE_FORWARD' => $cfg->HTML_DISABLED));
+			$tpl->assign(
+				array(
+					'READONLY_FORWARD' => $cfg->HTML_READONLY,
+					'DISABLE_FORWARD' => $cfg->HTML_DISABLED
+				)
+			);
         }
 
-        $tpl->assign(array(
-                          'HTTP_YES' => ($forward_prefix === 'http://')
-                              ? $cfg->HTML_SELECTED : '',
-                          'HTTPS_YES' => ($forward_prefix === 'https://')
-                              ? $cfg->HTML_SELECTED : '',
-                          'FTP_YES' => ($forward_prefix === 'ftp://')
-                              ? $cfg->HTML_SELECTED : ''));
+		$tpl->assign(
+			array(
+				'HTTP_YES' => ($forward_prefix == 'http://')
+					? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES' => ($forward_prefix == 'https://')
+					? $cfg->HTML_SELECTED : '',
+				'FTP_YES' => ($forward_prefix == 'ftp://')
+					? $cfg->HTML_SELECTED : ''
+			)
+		);
     } else {
         $check_en = '';
         $check_dis = $cfg->HTML_CHECKED;
         $forward = '';
-        $tpl->assign(array(
-                          'READONLY_FORWARD' => $cfg->HTML_READONLY,
-                          'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
-                          'HTTP_YES' => '',
-                          'HTTPS_YES' => '',
-                          'FTP_YES' => ''));
+		$tpl->assign(
+			array(
+				'READONLY_FORWARD' => $cfg->HTML_READONLY,
+				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
+				'HTTP_YES' => '',
+				'HTTPS_YES' => '',
+				'FTP_YES' => ''
+			)
+		);
     }
 
-    $tpl->assign(array(
-                      'DOMAIN' => tohtml(decode_idna($alias_name)),
-                      'MP' => tohtml($mount_point),
-                      'FORWARD' => tohtml(encode_idna($forward)),
-                      'CHECK_EN' => $check_en,
-                      'CHECK_DIS' => $check_dis));
+	$tpl->assign(
+		array(
+			'DOMAIN' => tohtml(decode_idna($alias_name)),
+			'MP' => tohtml($mount_point),
+			'FORWARD' => tohtml(encode_idna($forward)),
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis
+		)
+	);
 
     gen_users_list($tpl, $reseller_id);
+}
+
+/**
+ * Is allowed mount point?
+ *
+ * @param string $mountPoint Mount point
+ * @param int $domainId parent domain ID
+ * @return bool TRUE if $mountPoint is allowed, FALSE otherwise
+ */
+function _reseller_isAllowedMountPoint($mountPoint, $domainId)
+{
+	$regRestrictedTokens = 'backups|cgi-bin|domain_disable_page|errors|logs|phptmp';
+
+	if(preg_match("@^(.*)({$regRestrictedTokens})(?:[/]|$).*@", $mountPoint, $matches)) {
+		$mountPoint = $matches[1];
+
+		if($mountPoint == '/') {
+			return false;
+		} elseif(in_array($matches[2], array('cgi-bin', 'domain_disable_page', 'phptmp'))) {
+			$mountPoint = rtrim($mountPoint, '/');
+			$mountPoint = "^$mountPoint/?$";
+
+			$query = "
+				SELECT `subdomain_mount` `mpoint` FROM `subdomain` WHERE `subdomain_mount` REGEXP ? AND `domain_id` = ?
+				UNION
+				SELECT `subdomain_alias_mount` `mpoint` FROM subdomain_alias WHERE `subdomain_alias_mount` REGEXP ?
+				AND alias_id IN(SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				UNION
+				SELECT alias_mount `mpoint` FROM domain_aliasses WHERE alias_mount REGEXP ? AND domain_id = ?
+			";
+			$stmt = exec_query($query, array($mountPoint, $domainId, $mountPoint, $domainId, $mountPoint, $domainId));
+
+			if($stmt->rowCount()){
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 /**
@@ -126,13 +181,12 @@ function gen_al_page($tpl, $reseller_id)
  */
 function add_domain_alias()
 {
-    global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
-        $mount_point, $validation_err_msg;
+    global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $validation_err_msg;
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $cr_user_id = $_POST['usraccounts'];
+    $cr_user_id = (int) clean_input($_POST['usraccounts']);
 
     $alias_name = strtolower($_POST['ndomain_name']);
     $mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
@@ -161,8 +215,10 @@ function add_domain_alias()
 
     if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
         set_page_message(tr('Domain with that name already exists on the system.'), 'error');
-    } elseif (!validates_mpoint($mount_point) && $mount_point != '/') {
+    } elseif (!validates_mpoint($mount_point)) {
        set_page_message(tr('Incorrect mount point syntax.'), 'error');
+	} elseif(!_reseller_isAllowedMountPoint($mount_point, $cr_user_id)) {
+		set_page_message(tr('This mount point is not allowed.'), 'error');
     } elseif ($alias_name == $cfg->BASE_SERVER_VHOST) {
         set_page_message(tr('Master domain cannot be used.'), 'error');
     } elseif ($_POST['status'] == 1) {
@@ -179,8 +235,6 @@ function add_domain_alias()
                 $ret = validates_dname($domain, true);
             }
 
-            $domain = encode_idna($aurl['host']);
-
             if (!$ret) {
                 set_page_message(tr('Wrong domain part in forward URL.', 'error'));
             } else {
@@ -188,8 +242,7 @@ function add_domain_alias()
                 $forward = $aurl['scheme'] . '://';
 
                 if (isset($aurl['user'])) {
-                    $forward .= $aurl['user'] . (isset($aurl['pass'])
-                        ? ':' . $aurl['pass'] : '') . '@';
+                    $forward .= $aurl['user'] . (isset($aurl['pass']) ? ':' . $aurl['pass'] : '') . '@';
                 }
 
                 $forward .= $domain;
@@ -220,14 +273,14 @@ function add_domain_alias()
         $query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
         $res2 = exec_query($query, $alias_name);
 
-        if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
+        if ($res->rowCount() || $res2->rowCount()) {
             // we already have domain with this name
             set_page_message(tr('Domain already registered on the system.'), 'error');
         }
 
         $query = "
 			SELECT
-				COUNT(`subdomain_id`) AS cnt
+				COUNT(`subdomain_id`) `cnt`
 			FROM
 				`subdomain`
 			WHERE
@@ -240,7 +293,7 @@ function add_domain_alias()
 
         $query = "
 			SELECT
-				COUNT(`subdomain_alias_id`) AS alscnt
+				COUNT(`subdomain_alias_id`) `alscnt`
 			FROM
 				`subdomain_alias`
 			WHERE
@@ -254,12 +307,12 @@ function add_domain_alias()
 
         $alssubdomdata = $alssubdomres->fetchRow();
 
-        if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) {
+        if ($subdomdata['cnt'] || $alssubdomdata['alscnt']) {
             set_page_message(tr('There is a subdomain with the same mount point.'), 'error');
         }
     }
 
-    if($_SESSION['user_page_message']) {
+    if(Zend_Session::namespaceIsset('pageMessages')) {
         return;
     }
 
@@ -304,7 +357,7 @@ function add_domain_alias()
  * Generate users list.
  *
  * @param iMSCP_pTemplate $tpl Template engine
- * @param $reseller_id Reseller unique identifier
+ * @param int $reseller_id Reseller unique identifier
  * @return bool
  */
 function gen_users_list($tpl, $reseller_id)
@@ -328,7 +381,7 @@ function gen_users_list($tpl, $reseller_id)
 	";
     $ar = exec_query($query, $reseller_id);
 
-    if ($ar->rowCount() == 0) {
+    if (!$ar->rowCount()) {
         set_page_message(tr('There is no user records for this reseller to add an alias for.'));
         redirectTo('alias.php');
     }
@@ -342,8 +395,7 @@ function gen_users_list($tpl, $reseller_id)
         // Get domain data
         $query = "
 			SELECT
-				`domain_id`,
-				IFNULL(`domain_name`, '') AS domain_name
+				`domain_id`, IFNULL(`domain_name`, '') `domain_name`
 			FROM
 				`domain`
 			WHERE
@@ -355,7 +407,7 @@ function gen_users_list($tpl, $reseller_id)
         $domain_id = $dd['domain_id'];
         $domain_name = $dd['domain_name'];
 
-        if (('' == $cr_user_id && $i == 1) || ($cr_user_id == $domain_id)) {
+        if (($cr_user_id == '' && $i == 1) || ($cr_user_id == $domain_id)) {
             $selected = $cfg->HTML_SELECTED;
         }
 
@@ -365,7 +417,10 @@ function gen_users_list($tpl, $reseller_id)
 			array(
 				'USER' => $domain_id,
 				'USER_DOMAIN_ACCOUNT' => tohtml($domain_name),
-				'SELECTED' => $selected));
+				'SELECTED' => $selected
+			)
+		);
+
         $i++;
         $tpl->parse('USER_ENTRY', '.user_entry');
     }
@@ -400,7 +455,9 @@ if (!is_xhr()) {
 			'layout' => 'shared/layouts/ui.tpl',
 			'page' => 'reseller/alias_add.tpl',
 			'page_message' => 'layout',
-			'user_entry' => 'page'));
+			'user_entry' => 'page'
+		)
+	);
 
     $tpl->assign(
 		array(
@@ -475,3 +532,5 @@ $tpl->parse('LAYOUT_CONTENT', 'page');
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptEnd, array('templateEngine' => $tpl));
 
 $tpl->prnt();
+
+unsetMessages();

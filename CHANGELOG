@@ -5,6 +5,7 @@ i-MSCP 1.0.2.2 (RC3)
 -------------------------------------------------------------------------------------
 
 Tickets:
+	- Fixed #375: Defect - GUI should allow shared mount points
 	- Fixed #380: Bug - Order Panel - An exception have been thrown Hosting
 
 -------------------------------------------------------------------------------------

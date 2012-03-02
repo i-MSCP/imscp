@@ -144,19 +144,57 @@ function gen_al_page($tpl)
 }
 
 /**
+ * Is allowed mount point?
+ *
+ * @param string $mountPoint Mount point
+ * @param int $domainId parent domain ID
+ * @return bool TRUE if $mountPoint is allowed, FALSE otherwise
+ */
+function _reseller_isAllowedMountPoint($mountPoint, $domainId)
+{
+	$regRestrictedTokens = 'backups|cgi-bin|domain_disable_page|errors|logs|phptmp';
+
+	if(preg_match("@^(.*)({$regRestrictedTokens})(?:[/]|$).*@", $mountPoint, $matches)) {
+		$mountPoint = $matches[1];
+		if($mountPoint == '/') {
+			return false;
+		} elseif(in_array($matches[2], array('cgi-bin', 'domain_disable_page', 'phptmp'))) {
+			$mountPoint = rtrim($mountPoint, '/');
+			$mountPoint = "^$mountPoint/?$";
+
+			$query = "
+				SELECT `subdomain_mount` `mpoint` FROM `subdomain` WHERE `subdomain_mount` REGEXP ? AND `domain_id` = ?
+				UNION
+				SELECT `subdomain_alias_mount` `mpoint` FROM subdomain_alias WHERE `subdomain_alias_mount` REGEXP ?
+				AND alias_id IN(SELECT alias_id FROM domain_aliasses WHERE domain_id = ?)
+				UNION
+				SELECT alias_mount `mpoint` FROM domain_aliasses WHERE alias_mount REGEXP ? AND domain_id = ?
+			";
+			$stmt = exec_query($query, array($mountPoint, $domainId, $mountPoint, $domainId, $mountPoint, $domainId));
+
+			if($stmt->rowCount()){
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+/**
  * Adds domain alias.
  *
  * @return void
  */
 function add_domain_alias()
 {
-    global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
-        $mount_point, $validation_err_msg;
+    global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $validation_err_msg;
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $cr_user_id = $dmn_id = $_SESSION['dmn_id'];
+    $cr_user_id = (int) $_SESSION['dmn_id'];
+
     $alias_name = strtolower(clean_input($_POST['ndomain_name']));
     $domain_ip = $_SESSION['dmn_ip'];
     $mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
@@ -179,8 +217,10 @@ function add_domain_alias()
 
     if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
         set_page_message(tr('Domain already registered on the system.'), 'error');
-    } elseif (!validates_mpoint($mount_point) && $mount_point != '/') {
+    } elseif (!validates_mpoint($mount_point)) {
         set_page_message(tr('Incorrect mount point syntax'), 'error');
+	} elseif(!_reseller_isAllowedMountPoint($mount_point, $cr_user_id)) {
+		set_page_message(tr('This mount point is not allowed.'), 'error');
     } elseif ($_POST['status'] == 1) {
         if(($urlElements = @parse_url($forward_prefix . decode_idna($forward))) === false) {
             set_page_message(tr('Wrong syntax in forward URL.'), 'error');
@@ -249,7 +289,7 @@ function add_domain_alias()
              set_page_message(tr('Domain already registered on the system.'), 'error');
         }
 
-        if (mount_point_exists($dmn_id, $mount_point)) {
+        if (mount_point_exists($cr_user_id, $mount_point)) {
              set_page_message(tr('Mount point already in use.'), 'error');
         }
     }
@@ -267,8 +307,7 @@ function add_domain_alias()
                 ?, ?, ?, ?, ?, ?
             )
 	";
-    exec_query($query, array($cr_user_id, $alias_name, $mount_point,
-                            $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
+    exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
 
     update_reseller_c_props(get_reseller_id($cr_user_id));
     send_request();
