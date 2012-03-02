@@ -105,7 +105,7 @@ function admin_pluginManagerDoBulkAction($pluginManager)
 		if (!empty($_POST['checked'])) {
 			$trActions = array(
 				'activate' => tr('activate'), 'deactivate' => tr('deactivate'), 'protect' => tr('protect'),
-				'activated' => tr('activated'), 'deactivated' => tr('deactivated'), 'protected' => tr('protected')
+				'activated' => tr('activated'), 'deactivated' => tr('deactivated'), 'protectd' => tr('protected')
 			);
 
 			$eventAction = array(
