@@ -13,7 +13,7 @@ i-MSCP 1.0.2.1 (RC2)
 -------------------------------------------------------------------------------------
 2012-02-28: Torsten Widmann
 	- RELEASE i-MSCP 1.0.2.1 (RC2)
-	
+
 Features / Enhancements:
 
 	GUI:
@@ -54,6 +54,7 @@ Tickets:
 	- Fixed #361: Bug - main::setup_imscp_database: HASH(0xb0e18fc)
 	- Fixed #373: Defect - i18n issues
 	- Fixed #374: Defect - system php include dirs should be openbasedir allowed paths
+	- Fixed #377: Defect - Some issues with shared mount point
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.0 (RC1)

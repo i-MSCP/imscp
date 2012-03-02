@@ -139,9 +139,21 @@ sub delete{
 	use iMSCP::Addons;
 	use iMSCP::Execute;
 	use iMSCP::Dir;
+	use Servers::httpd;
 
 	my $self		= shift;
-	my $rs = 0;
+	my $rs			= 0;
+	my $userName	=
+	my $groupName	=
+			$main::imscpConfig{SYSTEM_USER_PREFIX}.
+			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
+	my $httpdGroup	= (
+			Servers::httpd->factory()->can('getRunningGroup')
+			?
+			Servers::httpd->factory()->getRunningGroup()
+			:
+			$groupName
+		);
 	my ($stdout, $stderr);
 
 	my @sql = ("
@@ -195,7 +207,7 @@ sub delete{
 		$sourceDir		=~ s~/+~/~g;
 		my $destDir 	= "$dir/".$mountPoints{$_};
 		$destDir		=~ s~/+~/~g;
-		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make();
+		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
 		$rs |= execute("cp -pTRfv $sourceDir $destDir", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;
@@ -215,7 +227,7 @@ sub delete{
 		$destDir		=~ s~/+~/~g;
 		my $sourceDir	= "$dir/$_";
 		$sourceDir		=~ s~/+~/~g;
-		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make();
+		$rs |= iMSCP::Dir->new(dirname => "$destDir")->make({user => $userName, group => $httpdGroup, mode => 0710});
 		$rs |= execute("cp -pTRfv $sourceDir $destDir ", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		error("$stderr") if $stderr;

@@ -1003,8 +1003,10 @@ sub delDmn{
 
 	for(
 		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf",
+		"$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}_ssl.conf",
 		"$self::apacheConfig{APACHE_CUSTOM_SITES_CONFIG_DIR}/$data->{DMN_NAME}.conf",
 		"$self->{wrkDir}/$data->{DMN_NAME}.conf",
+		"$self->{wrkDir}/$data->{DMN_NAME}_ssl.conf",
 	){
 		$rs |= iMSCP::File->new(filename => $_)->delFile() if -f $_;
 	}

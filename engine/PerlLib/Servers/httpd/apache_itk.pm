@@ -917,8 +917,6 @@ sub delDmn{
 
 	my $rs = 0;
 
-	$rs |= $self->disableSite("$data->{DMN_NAME}.conf") if -f "$self::apacheConfig{APACHE_SITES_DIR}/$data->{DMN_NAME}.conf";
-
 	for(
 		"$data->{DMN_NAME}.conf",
 		"$data->{DMN_NAME}_ssl.conf",
@@ -936,7 +934,7 @@ sub delDmn{
 		$rs |= iMSCP::File->new(filename => $_)->delFile() if -f $_;
 	}
 
-	my $hDir		= $data->{HOME_DIR};
+	$rs |= iMSCP::Dir->new(dirname => $data->{HOME_DIR})->remove() if -d $data->{HOME_DIR};
 
 	$self->{restart}	= 'yes';
 	delete $self->{data};
