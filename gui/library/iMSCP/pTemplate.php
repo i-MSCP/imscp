@@ -503,7 +503,7 @@ class iMSCP_pTemplate
 
 		if (!is_array($fname)) {
 			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_pTemplate_Events::onBeforeAssembleTemplateFiles,
+				iMSCP_Events::onBeforeAssembleTemplateFiles,
 				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
 			);
 		} else { // INCLUDED file
@@ -515,14 +515,14 @@ class iMSCP_pTemplate
 			$parentTplDir = dirname($fname);
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_pTemplate_Events::onBeforeLoadTemplateFile,
+				iMSCP_Events::onBeforeLoadTemplateFile,
 				array('context' => $this, 'templatePath' => self::$_root_dir . '/'. $fname)
 			);
 
 			$fileContent = file_get_contents(self::$_root_dir . '/' . $fname);
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
-				iMSCP_pTemplate_Events::onAfterLoadTemplateFile,
+				iMSCP_Events::onAfterLoadTemplateFile,
 				array('context' => $this, 'templateContent' => $fileContent)
 			);
 
@@ -533,7 +533,7 @@ class iMSCP_pTemplate
 		}
 
 		iMSCP_Events_Manager::getInstance()->dispatch(
-			iMSCP_pTemplate_Events::onAfterAssembleTemplateFiles,
+			iMSCP_Events::onAfterAssembleTemplateFiles,
 			array('context' => $this, 'templateContent' => $fileContent)
 		);
 

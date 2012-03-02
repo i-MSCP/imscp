@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.10
+ * @version		0.0.11
  */
 class iMSCP_Events
 {
@@ -267,6 +267,8 @@ class iMSCP_Events
 	 * The onAfterEditAdminGeneralSettings event is triggered after the admin general settings are editied.
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
+	 *
+	 * @var string
 	 */
 	const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
@@ -893,4 +895,130 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onAfterDeleteMail = 'onAfterDeleteMail';
+
+	/**
+	 * The onBeforeDatabaseConnection event is triggered before the connection to the database is made.
+	 *
+	 * The listeners receive an iMSCP_Events_Event instance with the following parameter:
+	 *
+	 * - context: An iMSCP_Database instance, the context in which the event is triggered
+	 *
+	 * @var string
+	 */
+	const onBeforeDatabaseConnection = 'onBeforeDatabaseConnection';
+
+	/**
+	 * The onAfterDatabaseConnection event is triggered after the connection to the database is made.
+	 *
+	 * The listeners receive an iMSCP_Events_Event instance with the following parameter:
+	 *
+	 * - context: An iMSCP_Database object, the context in which the event is triggered
+	 *
+	 * @var string
+	 */
+	const onAfterDatabaseConnection = 'onAfterDatabaseConnection';
+
+	/**
+	 * The onBeforeQueryPrepare event is triggered before an SQL statement is prepared for execution.
+	 *
+	 * The listeners receive an iMSCP_Database_Events_Database instance with the following parameters:
+	 *
+	 * - context: An iMSCP_Database object, the context in which the event is triggered
+	 * - query: The SQL statement being prepared
+	 *
+	 * @var string
+	 */
+	const onBeforeQueryPrepare = 'onBeforeQueryPrepare';
+
+	/**
+	 * The onAfterQueryPrepare event occurs after a SQL statement has been prepared for execution.
+	 *
+	 * The listeners receive an iMSCP_Database_Events_Statement instance with the following parameters:
+	 *
+	 *  - context: An iMSCP_Database object, the context in which the event is triggered
+	 *  - statement: A PDOStatement object that represent the prepared statement
+	 *
+	 * @var string
+	 */
+	const onAfterQueryPrepare = 'onAfterQueryPrepare';
+
+	/**
+	 * The onBeforeQueryExecute event is triggered before a prepared SQL statement is executed.
+	 *
+	 * The listeners receive either :
+	 *
+	 *	 - an iMSCP_Database_Events_Statement instance with the following parameters:
+	 *
+	 *		 - context: An iMSCP_Database object, the context in which the event is triggered
+	 *		 - statement: A PDOStatement object that represent the prepared statement
+	 * Or
+	 *
+	 *	 - an iMSCP_Database_Events_Database instance with the following arguments:
+	 *
+	 *		 - context: An iMSCP_Database object, the context in which the event is triggered
+	 *		 - query: The SQL statement being prepared and executed (PDO::query())
+	 *
+	 * @var string
+	 */
+	const onBeforeQueryExecute = 'onBeforeQueryExecute';
+
+	/**
+	 * The onAfterQueryExecute event is triggered after a prepared SQL statement has been executed.
+	 *
+	 * The listeners receive an iMSCP_Database_Events_Statement instance with the following parameters:
+	 *
+	 * - context: An iMSCP_Database object, the context in which the event is triggered
+	 * - statement: The PDOStatement that has been executed
+	 *
+	 * @var string
+	 */
+	const onAfterQueryExecute = 'onAfterQueryExecute';
+
+	/**
+	 * The onBeforeAssembleTemplateFiles event is triggered before the first parent template is loaded.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 *  - templatePath: The filepath of the template being loaded
+	 *
+	 * @var string
+	 */
+	const onBeforeAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
+
+	/**
+	 * The onAfterAssembleTemplateFiles event is triggered after the first parent template is loaded.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 * - templateContent: The template content as a string
+	 *
+	 * @var string
+	 */
+	const onAfterAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
+
+	/**
+	 * The onBeforeLoadTemplateFile event is triggered before a template is loaded.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters
+	 *
+	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 *  - templatePath: The filepath of the template being loaded
+	 *
+	 * @var string
+	 */
+	const onBeforeLoadTemplateFile = 'onBeforeLoadTemplateFile';
+
+	/**
+	 * The onAfterLoadTemplateFile event is triggered after the loading of a template file.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameters:
+	 *
+	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
+	 * - templateContent: The template content as a string
+	 *
+	 * @var string
+	 */
+	const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
 }

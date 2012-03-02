@@ -56,10 +56,10 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	 * @var array Listened events
 	 */
 	protected $_listenedEvents = array(
-		iMSCP_Database_Events::onBeforeConnection,
-		iMSCP_Database_Events::onAfterConnection,
-		iMSCP_Database_Events::onBeforeExecute,
-		iMSCP_Database_Events::onAfterExecute
+		iMSCP_Events::onBeforeDatabaseConnection,
+		iMSCP_Events::onAfterDatabaseConnection,
+		iMSCP_Events::onBeforeQueryExecute,
+		iMSCP_Events::onAfterQueryExecute
 	);
 
 	/**
@@ -83,7 +83,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	 * @param  iMSCP_Database_Events_Database $event
 	 * @return void
 	 */
-	public function onBeforeConnection($event)
+	public function onBeforeDatabaseConnection($event)
 	{
 		$this->_queries[$this->_queryIndex]['time'] = microtime(true);
 		$this->_queries[$this->_queryIndex]['queryString'] = 'connection';
@@ -95,7 +95,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	 * @param  iMSCP_Database_Events_Database $event
 	 * @return void
 	 */
-	public function onAfterConnection($event)
+	public function onAfterDatabaseConnection($event)
 	{
 		$time = microtime(true) - $this->_queries[$this->_queryIndex]['time'];
 		$this->_queries[$this->_queryIndex]['time'] = $time;
@@ -107,7 +107,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	 * @param  iMSCP_Database_Events_Database $event
 	 * @return void
 	 */
-	public function onBeforeExecute($event)
+	public function onBeforeQueryExecute($event)
 	{
 		$this->_queries[$this->_queryIndex]['time'] = microtime(true);
 		$this->_queries[$this->_queryIndex]['queryString'] = $event->getQueryString();
@@ -117,7 +117,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements 
 	 * @param  iMSCP_Database_Events_Database $event
 	 * @return void
 	 */
-	public function onAfterExecute($event)
+	public function onAfterQueryExecute($event)
 	{
 		$this->_queries[$this->_queryIndex]['time'] = ((microtime(true)) - $this->_queries[$this->_queryIndex]['time']);
 		$this->_totalTimeElapsed += $this->_queries[$this->_queryIndex]['time'];

@@ -50,7 +50,7 @@ class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin implements iMS
 	/**
 	 * @var string Listened event
 	 */
-	protected $_listenedEvents = iMSCP_pTemplate_Events::onBeforeLoadTemplateFile;
+	protected $_listenedEvents = iMSCP_Events::onBeforeLoadTemplateFile;
 
 	/**
 	 * Implements onLoadTemplateFile listener method.

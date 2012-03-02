@@ -103,11 +103,11 @@ class iMSCP_Database
      */
     private function __construct($user, $pass, $type, $host, $name, $driver_options = array())
     {
-        $this->events()->dispatch(iMSCP_Database_Events::onBeforeConnection, array('context' => $this));
+        $this->events()->dispatch(iMSCP_Events::onBeforeDatabaseConnection, array('context' => $this));
 
         $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,$pass, $driver_options);
 
-		$this->events()->dispatch(iMSCP_Database_Events::onAfterConnection, array('context' => $this));
+		$this->events()->dispatch(iMSCP_Events::onAfterDatabaseConnection, array('context' => $this));
 
         // Set Errorhandling to Exception
         $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -229,7 +229,7 @@ class iMSCP_Database
     {
 		$this->events()->dispatch(
 			new iMSCP_Database_Events_Database(
-				iMSCP_Database_Events::onBeforePrepare, array('context' => $this, 'query' => $sql)
+				iMSCP_Events::onBeforeQueryPrepare, array('context' => $this, 'query' => $sql)
 			)
 		);
 
@@ -241,7 +241,7 @@ class iMSCP_Database
 
 		$this->events()->dispatch(
 			new iMSCP_Database_Events_Statement(
-				iMSCP_Database_Events::onAfterPrepare, array('context' => $this, 'statement' => $stmt)
+				iMSCP_Events::onAfterQueryPrepare, array('context' => $this, 'statement' => $stmt)
 			)
 		);
 
@@ -322,7 +322,7 @@ class iMSCP_Database
         if ($stmt instanceof PDOStatement) {
 			$this->events()->dispatch(
 				new iMSCP_Database_Events_Statement(
-					iMSCP_Database_Events::onBeforeExecute, array('context' => $this, 'statement' => $stmt)
+					iMSCP_Events::onBeforeQueryExecute, array('context' => $this, 'statement' => $stmt)
 				)
 			);
 
@@ -334,7 +334,7 @@ class iMSCP_Database
         } else {
 			$this->events()->dispatch(
 				new iMSCP_Database_Events_Database(
-					iMSCP_Database_Events::onBeforeExecute, array('context' => $this, 'query' => $stmt)
+					iMSCP_Events::onBeforeQueryExecute, array('context' => $this, 'query' => $stmt)
 				)
 			);
 
@@ -351,7 +351,7 @@ class iMSCP_Database
 
 			$this->events()->dispatch(
 				new iMSCP_Database_Events_Statement(
-					iMSCP_Database_Events::onAfterExecute, array('context' => $this, 'statement' => $stmt)
+					iMSCP_Events::onAfterQueryExecute, array('context' => $this, 'statement' => $stmt)
 				)
 			);
 
@@ -405,7 +405,7 @@ class iMSCP_Database
      * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since 1.0.0 (iMSCP)
      * @link i-mscp.net
-     * @param $string                   The string to be quoted
+     * @param string $string            The string to be quoted
      * @param null|int $parameterType   Provides a data type hint for drivers that have alternate quoting styles.
      * @return string                   A quoted string that is theoretically safe to pass into an SQL statement
      */
