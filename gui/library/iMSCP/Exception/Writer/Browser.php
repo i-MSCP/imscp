@@ -122,7 +122,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
 		/** @var $exceptionHandler iMSCP_Exception_Handler */
 		// Always write the real exception message if we are the admin
 		if (isset($_SESSION) &&
-			((isset($_SESSION['logged_from']) && $_SESSION['logged_from'] == 'admin')
+			((isset($_SESSION['logged_from_type']) && $_SESSION['logged_from_type'] == 'admin')
 				|| isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin')
 		) {
 			/** @var $exception iMSCP_Exception */
