@@ -337,7 +337,9 @@ class iMSCP_Plugin_Manager
 				$content .= "\$protectedPlugins[] = '$pluginName';\n";
 			}
 
-			if (@unlink($file) && @file_put_contents($file, "$content\n", LOCK_EX) === false) {
+			@unlink($file);
+
+			if (@file_put_contents($file, "$content\n", LOCK_EX) === false) {
 				// TODO: Be more generic
 				set_page_message(tr('Plugin manager was unable to write the %s cache file for protected plugins.', $file), 'error');
 				write_log(sprintf('Plugin manager was unable to write the %s cache file for protected plugins.', $file));
