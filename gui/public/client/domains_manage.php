@@ -86,9 +86,9 @@ function client_generateDomainsList($tpl, $userId)
 			array(
 				'DOMAIN_NAME' => tohtml($domainName),
 				'DOMAIN_CREATE_DATE' => tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_created'])),
-				'DOMAIN_EXPIRE_DATE' => tohtml(($stmt->fields['domain_expires'] != 0)
-													? date($cfg->DATE_FORMAT, $stmt->fields['domain_expires'])
-													: tr('No set')),
+				'DOMAIN_EXPIRE_DATE' => ($stmt->fields['domain_expires'] != 0)
+					? tohtml(date($cfg->DATE_FORMAT, $stmt->fields['domain_expires']))
+					: tr('No set'),
 				'DOMAIN_STATUS' => translate_dmn_status($stmt->fields['domain_status']),
 				'CERT_SCRIPT' => 'cert_view.php?id=' . $stmt->fields['domain_id'] . '&type=dmn',
 				'VIEW_CERT' => tr('View certificates')
