@@ -162,7 +162,9 @@ $tpl->define_dynamic(
 		'layout' => 'shared/layouts/simple.tpl',
 		'page' => '/box.tpl',
 		'page_message' => 'layout',
-		'backlink_block' => 'page'));
+		'backlink_block' => 'page'
+	)
+);
 
 $tpl->assign('THEME_CHARSET', tr('encoding'));
 
@@ -183,7 +185,9 @@ $tpl->assign(
 		'productCopyright' => tr('© 2010-2012 i-MSCP Team<br/>All Rights Reserved'),
 		'BOX_MESSAGE_TITLE' => tr('Order confirmation'),
 		'BOX_MESSAGE' => $msg,
-		'BACKLINK_BLOCK' => ''));
+		'BACKLINK_BLOCK' => ''
+	)
+);
 
 generatePageMessage($tpl);
 

@@ -118,7 +118,10 @@ function gen_hp_message($tpl) {
 } // End of gen_hp_message()
 
 /**
- * Extract and show data for hosting plans
+ * Extract and show data for hosting plans.
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param $reseller_id
  */
 function gen_hp_table($tpl, $reseller_id) {
 	global $external_event;
@@ -209,7 +212,6 @@ function gen_hp_table($tpl, $reseller_id) {
 			if($hp_allowsoftware == "_no_" || $hp_allowsoftware == "" || $hp_allowsoftware == "_yes_" && get_reseller_sw_installer($reseller_id) == "yes") {
 			*/
 				$orders_count++;
-				$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
 
 				$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
 

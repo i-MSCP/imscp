@@ -162,8 +162,8 @@ if (isset($_GET['id']) && $bcoid) {
 	$_SESSION['order_panel_plan_id'] = $plan_id;
 	if (isset($_SESSION['order_panel_user_id'])) {
 		$user_id = $_SESSION['order_panel_user_id'];
-	} else if (isset($_GET['order_panel_user_id'])) {
-		$user_id = $_GET['order_panel_user_id'];
+	} else if (isset($_GET['user_id'])) {
+		$user_id = $_GET['user_id'];
 		$_SESSION['order_panel_user_id'] = $user_id;
 	} else {
 		throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
@@ -177,6 +177,7 @@ $tpl->define_no_file('layout', implode('', gen_purchase_haf($user_id)));
 $tpl->define_dynamic(
 	array(
 		'page' => 'orderpanel/package_info.tpl',
+		'page_message' => 'page', // Must be in page here
 		't_software_support' => 'page'));
 
 $tpl->assign(
@@ -220,6 +221,7 @@ $tpl->assign(
 		'YES' => tr('Yes')));
 
 gen_plan_details($tpl, $user_id, $plan_id);
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
