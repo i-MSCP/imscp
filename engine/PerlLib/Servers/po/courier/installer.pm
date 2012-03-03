@@ -73,7 +73,8 @@ sub migrateMailboxes{
 
 		$rs = execute("$binPath --to-courier --convert --recursive $mailPath", \$stdout, \$stderr);
 		debug("$stdout...") if $stdout;
-		error("$stderr") if $stderr;
+		warning("$stderr") if $stderr && !$rs;
+		error("$stderr") if $stderr && $rs;
 		error("Error while converting mails") if !$stderr && $rs;
 	}
 
