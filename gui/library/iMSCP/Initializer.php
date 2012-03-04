@@ -591,6 +591,19 @@ class iMSCP_Initializer
 			'layout_setColor'
 		);
 
+        $eventManager->registerListener(
+            array(
+                iMSCP_Events::onLoginScriptEnd,
+                iMSCP_Events::onLostPasswordScriptEnd,
+                iMSCP_Events::onAdminScriptEnd,
+                iMSCP_Events::onResellerScriptEnd,
+                iMSCP_Events::onClientScriptEnd,
+                iMSCP_Events::onOrderPanelScriptEnd,
+                iMSCP_Events::onExceptionToBrowserEnd
+            ),
+            'layout_setMainMenuLabelsVisibilityEvt'
+        );
+
 		if (!isset($_SESSION['user_logged'])) {
 			$callback = function($event)
 			{

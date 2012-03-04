@@ -1525,4 +1525,18 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->_addIndex('subdomain_alias', 'alias_id', '', 'INDEX')
 		);
 	}
+
+    /**
+     * #366: Enhancement - Move menu label show/disable option at user profile level
+     *
+     * @author Paweł Iwanowski <kontakt@raisen.pl>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_107()
+    {
+        return array(
+            $this->_addColumn('user_gui_props', 'show_main_menu_labels', "BOOL DEFAULT TRUE"),
+            "DELETE FROM `config` WHERE `name` = 'MAIN_MENU_SHOW_LABELS'"
+        );
+    }
 }

@@ -110,9 +110,32 @@ if(isset($_POST['uaction'])) {
 		} else {
 			set_page_message(tr('Unknown layout color.'), 'error');
 		}
+    } elseif($_POST['uaction'] == 'changeShowLabels') {
+        $userId = $_SESSION['user_id'];
+        layout_setMainMenuLabelsVisibility($userId, $_POST['mainMenuShowLabels']);
+        if($_POST['mainMenuShowLabels']) {
+            set_page_message(tr('Labels are visible now.'), 'success');
+        }
+        else {
+            set_page_message(tr('Labels are hidden now.'), 'success');
+        }
     } else {
         set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
     }
+}
+
+$html_selected = $cfg->HTML_SELECTED;
+$userId = $_SESSION['user_id'];
+if (layout_isMainMenuLabelsVisible($userId)) {
+    $tpl->assign(
+        array(
+            'MAIN_MENU_SHOW_LABELS_ON' => $html_selected,
+            'MAIN_MENU_SHOW_LABELS_OFF' => ''));
+} else {
+    $tpl->assign(
+        array(
+            'MAIN_MENU_SHOW_LABELS_ON' => '',
+            'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected));
 }
 
 $tpl->assign(
@@ -123,7 +146,11 @@ $tpl->assign(
 		'TR_LAYOUT_SETTINGS' => tr('Layout settings'),
 		'TR_LAYOUT_COLOR' => tr('Layout color'),
 		'TR_CHOOSE_LAYOUT_COLOR' =>  tr('Choose layout color'),
-		'TR_CHANGE' => tr('Change')));
+        'TR_ENABLED' => tr('Enabled'),
+        'TR_DISABLED' => tr('Disabled'),
+		'TR_CHANGE' => tr('Change'),
+        'TR_OTHER_SETTINGS' => tr('Other settings'),
+        'TR_MAIN_MENU_SHOW_LABELS' => tr('Show labels for main menu links')));
 
 generateNavigation($tpl);
 client_generateLayoutColorForm($tpl);

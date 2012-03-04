@@ -584,3 +584,30 @@ function layout_LoadNavigation($event)
 		iMSCP_Registry::set('navigation', new Zend_Navigation(new Zend_Config_Xml($menuPath, 'navigation')));
 	}
 }
+
+function layout_isMainMenuLabelsVisible($userId) {
+    $query = 'SELECT `show_main_menu_labels` FROM `user_gui_props` WHERE `user_id` = ?';
+    $stmt = exec_query($query, (int)$userId);
+
+    if ($stmt->rowCount()) {
+        return $stmt->fields['show_main_menu_labels'];
+    }
+
+    return true;
+}
+
+function layout_setMainMenuLabelsVisibility($userId, $visibility) {
+    $visibility = $visibility?1:0;
+    $query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
+    $stmt = exec_query($query, array($visibility,(int)$userId));
+    if (!isset($_SESSION['logged_from_id']))
+        $_SESSION['show_main_menu_labels'] = $visibility;
+    return true;
+}
+
+function layout_setMainMenuLabelsVisibilityEvt($event) {
+    if (!isset($_SESSION['show_main_menu_labels']) && isset($_SESSION['user_type'])) {
+        $userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
+        $_SESSION['show_main_menu_labels'] =  layout_isMainMenuLabelsVisible($userId);
+    }
+}

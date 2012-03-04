@@ -365,7 +365,7 @@ function generateNavigation($tpl)
 					'IS_ACTIVE_CLASS' => ($page->isActive(true)) ? 'active' : 'dummy',
 					'LABEL' => tr($page->getLabel()),
 					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self',
-					'LINK_LABEL' => ($cfg->MAIN_MENU_SHOW_LABELS) ? tr($page->getLabel()) : '')
+					'LINK_LABEL' => ($_SESSION['show_main_menu_labels']) ? tr($page->getLabel()) : '')
 			);
 
 			// Add page to main menu

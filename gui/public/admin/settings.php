@@ -97,7 +97,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$phpini->setData('phpiniMaxInputTime', clean_input($_POST['phpini_max_input_time']));
 	$phpini->setData('phpiniMemoryLimit', clean_input($_POST['phpini_memory_limit']));
 	$phpini_open_basedir = isset($_POST['phpini_open_basedir']) ? clean_input($_POST['phpini_open_basedir']) : $cfg->PHPINI_OPEN_BASEDIR;
-	$mainMenuShowLabels = (intval($_POST['mainMenuShowLabels'])) ? true : false;
 
 
 	if (PHP_SAPI != 'apache2handler') {
@@ -182,7 +181,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->PHPINI_MEMORY_LIMIT = $phpini->getDataVal('phpiniMemoryLimit');
 		$db_cfg->PHPINI_OPEN_BASEDIR = $phpini_open_basedir;
 		$db_cfg->PHPINI_DISABLE_FUNCTIONS = $phpini->getDataVal('phpiniDisableFunctions');
-		$db_cfg->MAIN_MENU_SHOW_LABELS = $mainMenuShowLabels;
 		$cfg->replaceWith($db_cfg);
 
 		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterEditAdminGeneralSettings);
@@ -379,19 +377,6 @@ if ($cfg->ENABLE_SSL) {
 			 'ENABLE_SSL_ON' => '',
 			 'ENABLE_SSL_OFF' => $html_selected));
 }
-
-if ($cfg->MAIN_MENU_SHOW_LABELS) {
-	$tpl->assign(
-		array(
-			 'MAIN_MENU_SHOW_LABELS_ON' => $html_selected,
-			 'MAIN_MENU_SHOW_LABELS_OFF' => ''));
-} else {
-	$tpl->assign(
-		array(
-			 'MAIN_MENU_SHOW_LABELS_ON' => '',
-			 'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected));
-}
-
 
 if ($cfg->COMPRESS_OUTPUT) {
 	$tpl->assign(
@@ -664,8 +649,7 @@ $tpl->assign(
 		 'TR_ORDERS_SETTINGS' => tr('Orders settings'),
 		 'TR_ORDERS_EXPIRE_TIME' => tr('Expire time for unconfirmed orders<br /><small>(In days)</small>', true),
 		 'TR_MIB' => tr('MiB'),
-		 'TR_SEC' => tr('Sec.'),
-		 'TR_MAIN_MENU_SHOW_LABELS' => tr('Show labels for main menu links')));
+		 'TR_SEC' => tr('Sec.')));
 
 generateNavigation($tpl);
 gen_def_language($tpl, $cfg->USER_INITIAL_LANG);
