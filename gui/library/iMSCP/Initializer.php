@@ -696,6 +696,6 @@ class iMSCP_Initializer
 	 */
 	protected function _afterInitialize()
 	{
-		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterInitialize, array('context', $this));
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterInitialize, array('context' => $this));
 	}
 }
