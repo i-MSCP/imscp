@@ -575,7 +575,7 @@ class iMSCP_Initializer
 			iMSCP_Events::onLoginScriptStart,
 			function($event)
 			{
-				if (!iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
+				if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
 					iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
 				}
 			}
