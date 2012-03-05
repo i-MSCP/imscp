@@ -41,7 +41,7 @@
  * @package		iMSCP_Core
  * @subpackage	Initializer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.1.9
+ * @version		0.1.10
  */
 class iMSCP_Initializer
 {
@@ -571,16 +571,15 @@ class iMSCP_Initializer
 	 */
 	protected function _checkForDatabaseUpdate()
 	{
-		$eventManager = iMSCP_Events_Manager::getInstance();
-
-		$callback = function($event)
-		{
-			if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-				iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
+		iMSCP_Events_Manager::getInstance()->registerListener(
+			iMSCP_Events::onLoginScriptStart,
+			function($event)
+			{
+				if (!iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
+					iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
+				}
 			}
-		};
-
-		$eventManager->registerListener(iMSCP_Events::onLoginScriptStart, $callback);
+		);
 	}
 
 	/**
@@ -697,12 +696,6 @@ class iMSCP_Initializer
 	 */
 	protected function _afterInitialize()
 	{
-		$callbacks = $this->_config->getAfterInitialize();
-
-		if (!empty($callbacks)) {
-			foreach ($callbacks as $callback) {
-				call_user_func_array($callback['callback'], $callback['parameters']);
-			}
-		}
+		iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterInitialize, array('context', $this));
 	}
 }

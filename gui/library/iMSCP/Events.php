@@ -31,10 +31,21 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.12
+ * @version		0.0.13
  */
 class iMSCP_Events
 {
+	/**
+	 * The onAfterInitialize event is triggered after i-MSCP has been fully initialized.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - context: An iMSCP_Initializer object, the context in which the event is triggered
+	 *
+	 * @var string
+	 */
+	const onAfterInitialize = 'onAfterInitialize';
+
 	/**
 	 * The 'onRestRequest' event is triggered in the rest.php action script when the 'X-Requested-With" header contains
 	 * "RestHttpRequest".

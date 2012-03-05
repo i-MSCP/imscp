@@ -46,18 +46,10 @@
  * @package     iMSCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.7
+ * @version     1.0.8
  */
 class iMSCP_Config_Handler implements ArrayAccess
 {
-    /**
-     * Callbacks that will be executed after i-MSCP has been fully initialized.
-     *
-     * @var array
-     */
-    protected $_afterInitializeCallbacks = null;
-
-
     /**
      * Loads all configuration parameters from an array.
      *
@@ -85,7 +77,7 @@ class iMSCP_Config_Handler implements ArrayAccess
     /**
      * PHP overloading on inaccessible members.
      *
-     * @param $key Configuration parameter key name
+     * @param string $key Configuration parameter key name
      * @return mixed Configuration parameter value
      */
     public function __get($key)
@@ -172,51 +164,6 @@ class iMSCP_Config_Handler implements ArrayAccess
         }
 
         return $array;
-    }
-
-    /**
-     * Adds a callback which will be executed after i-MSCP has been fully initialized.
-     *
-     * Useful for per-environment configuration which depends on the i-MSCP being
-     * fully initialized.
-     *
-     * Callbacks can be defined in a PHP call_user_func() function format.
-     *
-     * @throws iMSCP_Exception
-     * @param callback $callback The function to be called
-     * @internal param mixed $parameters ... Zero or more parameters to be passed to
-     * the function
-     * @return void
-     */
-    public function afterInitialize($callback)
-    {
-        $args = func_get_args();
-        $tmp['callback'] = array_shift($args);
-
-        if (!empty($args)) {
-            $tmp['parameters'] = $args;
-        } else {
-            $tmp['parameters'] = array();
-        }
-
-        if (!is_callable($tmp['callback'])) {
-            throw new iMSCP_Exception('Callback can not be accessed!');
-        }
-
-        $this->_afterInitializeCallbacks[] = array(
-            'callback' => $tmp['callback'], 'parameters' => $tmp['parameters']
-        );
-    }
-
-    /**
-     * Returns callbacks registered with afterInitialize.
-     *
-     * @return array Array that contains registered callbacks
-     */
-    public function getAfterInitialize()
-    {
-        return is_array($this->_afterInitializeCallbacks)
-            ? $this->_afterInitializeCallbacks : array();
     }
 
     /**
