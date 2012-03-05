@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.11
+ * @version		0.0.12
  */
 class iMSCP_Events
 {
@@ -61,7 +61,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
 	 *
-	 * templateEngine: An iMSCP_pTemplate object
+	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
 	 * @var string
 	 */
@@ -1021,4 +1021,28 @@ class iMSCP_Events
 	 * @var string
 	 */
 	const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
+
+	/**
+	 * The onBeforeGenerateNavigation event is triggeed before the navigation is generated.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - templateEngine: An iMSCP_pTemplate object
+	 *
+	 * @var string
+	 */
+	const onBeforeGenerateNavigation = 'onBeforeGenerateNavigation';
+
+
+	/**
+	 * The onAfterGenerateNavigation event is triggered after the navigation is generated.
+	 *
+	 * The listeners receive an iMSCP_Events_Event object with the following parameter:
+	 *
+	 * - templateEngine: An iMSCP_pTemplate object
+	 *
+	 * @var string
+	 *
+	 */
+	const onAfterGenerateNavigation = 'onAfterGenerateNavigation';
 }

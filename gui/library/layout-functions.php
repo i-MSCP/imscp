@@ -539,7 +539,7 @@ function layout_deleteUserLogo($logoFilePath = null, $onlyFile = false)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.4
- * @param $logoPath Logo path to match against
+ * @param string $logoPath Logo path to match against
  * @return bool TRUE if $logoPath is an user's logo, FALSE otherwise
  */
 function layout_isUserLogo($logoPath)
@@ -561,7 +561,7 @@ function layout_isUserLogo($logoPath)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since i-MSCP 1.0.1.6
- * @param iMSCP_Events_Event
+ * @param iMSCP_Events_Event $event
  * @return void
  */
 function layout_LoadNavigation($event)
@@ -582,30 +582,59 @@ function layout_LoadNavigation($event)
 		}
 
 		iMSCP_Registry::set('navigation', new Zend_Navigation(new Zend_Config_Xml($menuPath, 'navigation')));
+
+		// Set main menu labels visibility for the current environment
+		iMSCP_Events_Manager::getInstance()->registerListener(
+			iMSCP_Events::onBeforeGenerateNavigation, 'layout_setMainMenuLabelsVisibilityEvt'
+		);
 	}
 }
 
-function layout_isMainMenuLabelsVisible($userId) {
-    $query = 'SELECT `show_main_menu_labels` FROM `user_gui_props` WHERE `user_id` = ?';
-    $stmt = exec_query($query, (int)$userId);
+/**
+ * Tells whether or not main menu labels are visible for the given user.
+ *
+ * @param int $userId User unique identifier
+ * @return bool
+ */
+function layout_isMainMenuLabelsVisible($userId)
+{
+	$query = 'SELECT `show_main_menu_labels` FROM `user_gui_props` WHERE `user_id` = ?';
+	$stmt = exec_query($query, (int)$userId);
 
-    if ($stmt->rowCount()) {
-        return $stmt->fields['show_main_menu_labels'];
-    }
+	if ($stmt->rowCount()) {
+		return (bool) $stmt->fields['show_main_menu_labels'];
+	}
 
-    return true;
+	return true;
 }
 
-function layout_setMainMenuLabelsVisibility($userId, $visibility) {
-    $visibility = $visibility?1:0;
+/**
+ * Sets main menu label visibility for the given user.
+ *
+ * @param int $userId User unique identifier
+ * @param int $visibility (0|1)
+ * @return void
+ */
+function layout_setMainMenuLabelsVisibility($userId, $visibility)
+{
+	$visibility = (int) $visibility;
+
     $query = 'UPDATE `user_gui_props` SET `show_main_menu_labels` = ? WHERE `user_id` = ?';
-    $stmt = exec_query($query, array($visibility,(int)$userId));
-    if (!isset($_SESSION['logged_from_id']))
-        $_SESSION['show_main_menu_labels'] = $visibility;
-    return true;
+    exec_query($query, array($visibility, (int)$userId));
+
+    if (!isset($_SESSION['logged_from_id'])) {
+       $_SESSION['show_main_menu_labels'] = $visibility;
+	}
 }
 
-function layout_setMainMenuLabelsVisibilityEvt($event) {
+/**
+ * Sets main menu visibility for current environment.
+ *
+ * @param $event iMSCP_Events_Event
+ * @return void
+ */
+function layout_setMainMenuLabelsVisibilityEvt($event)
+{
     if (!isset($_SESSION['show_main_menu_labels']) && isset($_SESSION['user_type'])) {
         $userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
         $_SESSION['show_main_menu_labels'] =  layout_isMainMenuLabelsVisible($userId);

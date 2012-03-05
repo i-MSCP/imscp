@@ -79,7 +79,7 @@ class iMSCP_Initializer
 	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be executed or an iMSCP_Config_Handler_File
 	 * 													object
 	 * @param iMSCP_Config_Handler_File $config			OPTIONAL iMSCP_Config_Handler_File object
-	 * @return iMSCP_Initializer The iMSCP_Initializer instance
+	 * @return iMSCP_Initializer
 	 */
 	public static function run($command = '_processAll', iMSCP_Config_Handler_File $config = null)
 	{
@@ -167,6 +167,8 @@ class iMSCP_Initializer
 
 		// Create or restore the session
 		$this->_initializeSession();
+
+		$this->_checkForDatabaseUpdate();
 
 		// Initialize user's GUI properties
 		$this->_initializeUserGuiProperties();
@@ -312,9 +314,7 @@ class iMSCP_Initializer
 			$query = "SELECT `lang`, `layout` FROM `user_gui_props` WHERE `user_id` = ?";
 			$stmt = exec_query($query, $_SESSION['user_id']);
 
-			if ($stmt->recordCount() == 0 ||
-				(empty($stmt->fields['lang']) && empty($stmt->fields['layout']))
-			) {
+			if (!$stmt->rowCount() || (empty($stmt->fields['lang']) && empty($stmt->fields['layout']))) {
 				$properties = array($this->_config->USER_INITIAL_LANG, $this->_config->USER_INITIAL_THEME);
 			} elseif (empty($stmt->fields['lang'])) {
 				$properties = array($this->_config->USER_INITIAL_LANG, $stmt->fields['layout']);
@@ -565,6 +565,25 @@ class iMSCP_Initializer
 	}
 
 	/**
+	 * Check for database update.
+	 *
+	 * @return void
+	 */
+	protected function _checkForDatabaseUpdate()
+	{
+		$eventManager = iMSCP_Events_Manager::getInstance();
+
+		$callback = function($event)
+		{
+			if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
+				iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
+			}
+		};
+
+		$eventManager->registerListener(iMSCP_Events::onLoginScriptStart, $callback);
+	}
+
+	/**
 	 * Initialize layout.
 	 *
 	 * @since i-MSCP 1.0.1.6
@@ -577,7 +596,7 @@ class iMSCP_Initializer
 
 		$eventManager = iMSCP_Events_Manager::getInstance();
 
-		// Layout color
+		// Set layout color for the current environment (Must be donne at end
 		$eventManager->registerListener(
 			array(
 				iMSCP_Events::onLoginScriptEnd,
@@ -590,19 +609,6 @@ class iMSCP_Initializer
 			),
 			'layout_setColor'
 		);
-
-        $eventManager->registerListener(
-            array(
-                iMSCP_Events::onLoginScriptEnd,
-                iMSCP_Events::onLostPasswordScriptEnd,
-                iMSCP_Events::onAdminScriptEnd,
-                iMSCP_Events::onResellerScriptEnd,
-                iMSCP_Events::onClientScriptEnd,
-                iMSCP_Events::onOrderPanelScriptEnd,
-                iMSCP_Events::onExceptionToBrowserEnd
-            ),
-            'layout_setMainMenuLabelsVisibilityEvt'
-        );
 
 		if (!isset($_SESSION['user_logged'])) {
 			$callback = function($event)

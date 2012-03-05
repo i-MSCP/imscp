@@ -276,7 +276,9 @@ class iMSCP_Authentication
 			$query = "DELETE FROM `login` WHERE `session_id` = ? AND `user_name` = ?";
 			exec_query($query, array(session_id(), $this->getIdentity()->admin_name));
 
-			$preserveList = array('user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages');
+			$preserveList = array(
+				'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
+			);
 
 			foreach (array_keys($_SESSION) as $sessionVariable) {
 				if (!in_array($sessionVariable, $preserveList)) {

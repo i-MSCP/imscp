@@ -5,7 +5,10 @@ i-MSCP 1.0.2.2 (RC3)
 -------------------------------------------------------------------------------------
 
 Tickets:
+	- Fixed #296: Defect - Some issues with dovecot migration script
+	- Fixed #366: Enhancement - Move menu label show/disable option at user profile level
 	- Fixed #375: Defect - GUI should allow shared mount points
+	- Fixed #377: Defect - Some issues with shared mount point
 	- Fixed #380: Bug - Order Panel - An exception have been thrown Hosting
 
 -------------------------------------------------------------------------------------
@@ -42,7 +45,6 @@ Tickets:
 	- Fixed #68: Defect - Hide disabled features
 	- Fixed #201: Cosmetics - An exception have been thrown at Login with wrong password
 	- Fixed #254: Defect - Error raised for default PHP directives values
-	- Fixed #296: Defect - Some issues with dovecot migration script
 	- Fixed #325: Defect - Missing PHP sendmail parameter in vhost file for ITK
 	- Fixed #329: Bug - Custom DNS record - Syntax issue
 	- Fixed #343: Defect - Disabled Mail should remove DNS entries
@@ -55,7 +57,6 @@ Tickets:
 	- Fixed #361: Bug - main::setup_imscp_database: HASH(0xb0e18fc)
 	- Fixed #373: Defect - i18n issues
 	- Fixed #374: Defect - system php include dirs should be openbasedir allowed paths
-	- Fixed #377: Defect - Some issues with shared mount point
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.0 (RC1)

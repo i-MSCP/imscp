@@ -48,9 +48,7 @@ require_once  'iMSCP/Exception.php';
 class iMSCP_Exception_Database extends iMSCP_Exception
 {
 	/**
-	 * Query that failed.
-	 *
-	 * @var null
+	 * @var string Query that failed.
 	 */
 	protected $_query = null;
 
@@ -64,7 +62,7 @@ class iMSCP_Exception_Database extends iMSCP_Exception
 	 */
 	public function __construct($msg = '', $query = null, $code = 0, Exception $previous = null)
 	{
-		parent::__construct($msg, (int)$code, $previous);
+		parent::__construct($msg, $code, $previous);
 		$this->_query = (string) preg_replace("/[\t\n]+/", ' ', $query);
 	}
 

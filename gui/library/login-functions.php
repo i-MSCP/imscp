@@ -152,7 +152,8 @@ function check_login($fileName = '', $preventExternalLogin = true)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg =iMSCP_Registry::get('config');
 
-	if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' && (!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type']!='admin')) {
+	if ($cfg->MAINTENANCEMODE && $identity->admin_type != 'admin' &&
+		(!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] !='admin')) {
 		$auth->unsetIdentity();
 		redirectTo('/index.php');
 	}

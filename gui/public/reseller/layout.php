@@ -96,7 +96,9 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'logo_remove_button' => 'page',
 		'layout_colors_block' => 'page',
-		'layout_color_block' => 'layout_colors_block'));
+		'layout_color_block' => 'layout_colors_block'
+	)
+);
 
 /**
  * Dispatches request
@@ -119,14 +121,8 @@ if (isset($_POST['uaction'])) {
 			set_page_message(tr('Unknown layout color.'), 'error');
 		}
 	} elseif($_POST['uaction'] == 'changeShowLabels') {
-        $userId = $_SESSION['user_id'];
-        layout_setMainMenuLabelsVisibility($userId, $_POST['mainMenuShowLabels']);
-        if($_POST['mainMenuShowLabels']) {
-            set_page_message(tr('Labels are visible now.'), 'success');
-        }
-        else {
-            set_page_message(tr('Labels are hidden now.'), 'success');
-        }
+        layout_setMainMenuLabelsVisibility($_SESSION['user_id'], clean_input($_POST['mainMenuShowLabels']));
+		set_page_message(tr('Main menu labels visibility successfully updated.'), 'success');
     } else {
 		set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
 	}
@@ -134,6 +130,7 @@ if (isset($_POST['uaction'])) {
 
 $html_selected = $cfg->HTML_SELECTED;
 $userId = $_SESSION['user_id'];
+
 if (layout_isMainMenuLabelsVisible($userId)) {
     $tpl->assign(
         array(
@@ -145,6 +142,7 @@ if (layout_isMainMenuLabelsVisible($userId)) {
             'MAIN_MENU_SHOW_LABELS_ON' => '',
             'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected));
 }
+
 
 $ispLogo = layout_getUserLogo(false);
 

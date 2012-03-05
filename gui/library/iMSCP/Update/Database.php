@@ -1385,7 +1385,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Allow to change SSH port number.
+	 * Allow to change SSH port number
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
@@ -1400,7 +1400,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Update level propertie for custom menus.
+	 * Update level propertie for custom menus
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
@@ -1439,7 +1439,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add order option for custom menus.
+	 * Add order option for custom menus
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return string SQL Statement to be executed
@@ -1452,7 +1452,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Add plugin table for plugins management.
+	 * Add plugin table for plugins management
 	 *
 	 * Note: Not used at this moment.
 	 *
@@ -1476,7 +1476,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Update for the `mail_users` table structure.
+	 * Update for the `mail_users` table structure
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return array Stack of SQL statements to be executed
@@ -1492,7 +1492,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers.
+	 * Added parameter to allow the admin to append some paths to the default PHP open_basedir directive of customers
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @return void
@@ -1526,17 +1526,17 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 	}
 
-    /**
-     * #366: Enhancement - Move menu label show/disable option at user profile level
-     *
-     * @author Paweł Iwanowski <kontakt@raisen.pl>
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_107()
-    {
-        return array(
-            $this->_addColumn('user_gui_props', 'show_main_menu_labels', "BOOL DEFAULT TRUE"),
-            "DELETE FROM `config` WHERE `name` = 'MAIN_MENU_SHOW_LABELS'"
-        );
-    }
+	/**
+	 * #366: Enhancement - Move menu label show/disable option at user profile level
+	 *
+	 * @author Paweł Iwanowski <kontakt@raisen.pl>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_107()
+	{
+		return array(
+			$this->_addColumn('user_gui_props', 'show_main_menu_labels', "tinyint(1) NOT NULL DEFAULT '1'"),
+			"DELETE FROM `config` WHERE `name` = 'MAIN_MENU_SHOW_LABELS'"
+		);
+	}
 }

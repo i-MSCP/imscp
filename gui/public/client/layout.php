@@ -93,16 +93,18 @@ $tpl->define_dynamic(
 		'page' => 'client/layout.tpl',
 		'page_message' => 'layout',
 		'layout_colors_block' => 'page',
-		'layout_color_block' => 'layout_colors_block'));
+		'layout_color_block' => 'layout_colors_block'
+	)
+);
 
 /**
  * Dispatches request
  */
-if(isset($_POST['uaction'])) {
-    if($_POST['uaction'] == 'changeLayoutColor' && isset($_POST['layoutColor'])) {
-		if(layout_setUserLayoutColor($_SESSION['user_id'], $_POST['layoutColor'])) {
-			if(!isset($_SESSION['logged_from_id'])) {
-     			$_SESSION['user_theme_color'] = $_POST['layoutColor'];
+if (isset($_POST['uaction'])) {
+	if ($_POST['uaction'] == 'changeLayoutColor' && isset($_POST['layoutColor'])) {
+		if (layout_setUserLayoutColor($_SESSION['user_id'], $_POST['layoutColor'])) {
+			if (!isset($_SESSION['logged_from_id'])) {
+				$_SESSION['user_theme_color'] = $_POST['layoutColor'];
 				set_page_message(tr('Layout color successfully updated.'), 'success');
 			} else {
 				set_page_message(tr("Customer's layout color successfully updated."), 'success');
@@ -110,22 +112,17 @@ if(isset($_POST['uaction'])) {
 		} else {
 			set_page_message(tr('Unknown layout color.'), 'error');
 		}
-    } elseif($_POST['uaction'] == 'changeShowLabels') {
-        $userId = $_SESSION['user_id'];
-        layout_setMainMenuLabelsVisibility($userId, $_POST['mainMenuShowLabels']);
-        if($_POST['mainMenuShowLabels']) {
-            set_page_message(tr('Labels are visible now.'), 'success');
-        }
-        else {
-            set_page_message(tr('Labels are hidden now.'), 'success');
-        }
-    } else {
-        set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
-    }
+	} elseif ($_POST['uaction'] == 'changeShowLabels') {
+		layout_setMainMenuLabelsVisibility($_SESSION['user_id'], clean_input($_POST['mainMenuShowLabels']));
+		set_page_message(tr('Main menu labels visibility successfully updated.'), 'success');
+	} else {
+		set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
+	}
 }
 
 $html_selected = $cfg->HTML_SELECTED;
 $userId = $_SESSION['user_id'];
+
 if (layout_isMainMenuLabelsVisible($userId)) {
     $tpl->assign(
         array(

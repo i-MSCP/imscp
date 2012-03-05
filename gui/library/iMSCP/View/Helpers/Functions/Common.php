@@ -276,6 +276,10 @@ RIC;
  */
 function generateNavigation($tpl)
 {
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onBeforeGenerateNavigation, array('templateEngine' => $tpl)
+	);
+
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -321,14 +325,14 @@ function generateNavigation($tpl)
 	}
 
 	// Hide hosting plan pages if management is delegated to reseller level
-	if($_SESSION['user_type'] != 'user') {
+	if ($_SESSION['user_type'] != 'user') {
 		if ($cfg->HOSTING_PLANS_LEVEL != $_SESSION['user_type']) {
 			$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
 		}
 	}
 
 	// Custom menus
-	if(null != ($customMenus = getCustomMenus($_SESSION['user_type']))) {
+	if (null != ($customMenus = getCustomMenus($_SESSION['user_type']))) {
 		foreach ($customMenus as $customMenu) {
 			$navigation->addPage(
 				array(
@@ -345,7 +349,7 @@ function generateNavigation($tpl)
 		$activePage->setActive();
 	}
 
-	if(!empty($_GET)) {
+	if (!empty($_GET)) {
 		$query = http_build_query($_GET);
 	} else {
 		$query = '';
@@ -353,15 +357,15 @@ function generateNavigation($tpl)
 
 	/** @var $page Zend_Navigation_Page */
 	foreach ($navigation as $page) {
-		if(null !== ($callback = $page->get('privilege_callback')) &&
+		if (null !== ($callback = $page->get('privilege_callback')) &&
 			!call_user_func($callback['name'], $callback['param'])
 		) {
 			continue;
-		} elseif($page->isVisible()) {
+		} elseif ($page->isVisible()) {
 			$tpl->assign(
 				array(
 					'HREF' => $page->getHref(),
-					'CLASS' => $page->getClass() . (($cfg->MAIN_MENU_SHOW_LABELS) ? ' show_labels' : ''),
+					'CLASS' => $page->getClass() . (($_SESSION['show_main_menu_labels']) ? ' show_labels' : ''),
 					'IS_ACTIVE_CLASS' => ($page->isActive(true)) ? 'active' : 'dummy',
 					'LABEL' => tr($page->getLabel()),
 					'TARGET' => ($page->getTarget()) ? $page->getTarget() : '_self',
@@ -380,12 +384,12 @@ function generateNavigation($tpl)
 				// Add page to breadcrumb
 				$tpl->parse('BREADCRUMB_BLOCK', '.breadcrumb_block');
 
-				if($page->hasPages()) {
-					$iterator = new RecursiveIteratorIterator($page , RecursiveIteratorIterator::SELF_FIRST);
+				if ($page->hasPages()) {
+					$iterator = new RecursiveIteratorIterator($page, RecursiveIteratorIterator::SELF_FIRST);
 
 					/** @var $subpage Zend_Navigation_Page_Uri */
 					foreach ($iterator as $subpage) {
-						if(null !== ($callback = $subpage->get('privilege_callback')) &&
+						if (null !== ($callback = $subpage->get('privilege_callback')) &&
 							!call_user_func($callback['name'], $callback['param'])
 						) {
 							continue;
@@ -413,7 +417,7 @@ function generateNavigation($tpl)
 								}
 
 								// ad subpage to breadcrumbs
-								if(null != ($label = $subpage->get('dynamic_title'))) {
+								if (null != ($label = $subpage->get('dynamic_title'))) {
 									$tpl->assign('LABEL', $label);
 								}
 
@@ -440,7 +444,13 @@ function generateNavigation($tpl)
 			'TR_MENU_LOGOUT' => 'Logout',
 			'VERSION' => $cfg->Version,
 			'BUILDDATE' => $cfg->BuildDate,
-			'CODENAME' => $cfg->CodeName));
+			'CODENAME' => $cfg->CodeName
+		)
+	);
+
+	iMSCP_Events_Manager::getInstance()->dispatch(
+		iMSCP_Events::onAfterGenerateNavigation, array('templateEngine' => $tpl)
+	);
 }
 
 /**
@@ -448,7 +458,7 @@ function generateNavigation($tpl)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since iMSCP 1.0.1.6
- * @param $userLevel User type (admin, reseller or user)
+ * @param string $userLevel User type (admin, reseller or user)
  * @return null|array Array that contain custom menus description or NULL
  */
 function getCustomMenus($userLevel)

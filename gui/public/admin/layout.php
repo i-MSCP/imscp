@@ -96,46 +96,44 @@ $tpl->define_dynamic(
 		'page_message' => 'layout',
 		'logo_remove_button' => 'page',
 		'layout_colors_block' => 'page',
-		'layout_color_block' => 'layout_colors_block'));
+		'layout_color_block' => 'layout_colors_block'
+	)
+);
 
 /**
  * Dispatches request
  */
-if(isset($_POST['uaction'])) {
-    if($_POST['uaction'] == 'updateIspLogo') {
-        if(layout_updateUserLogo()) {
-            set_page_message(tr('Logo successfully updated.'), 'success');
-        }
-    } elseif($_POST['uaction'] == 'deleteIspLogo') {
-        if(layout_deleteUserLogo()) {
-            set_page_message(tr('Logo successfully removed.'), 'success');
-        }
-    } elseif($_POST['uaction'] == 'changeShowLabels') {
-        $userId = $_SESSION['user_id'];
-        layout_setMainMenuLabelsVisibility($userId, $_POST['mainMenuShowLabels']);
-        if($_POST['mainMenuShowLabels']) {
-            set_page_message(tr('Labels are visible now.'), 'success');
-        }
-        else {
-            set_page_message(tr('Labels are hidden now.'), 'success');
-        }
-    } elseif($_POST['uaction'] == 'changeLayoutColor' && isset($_POST['layoutColor'])) {
+if (isset($_POST['uaction'])) {
+	if ($_POST['uaction'] == 'updateIspLogo') {
+		if (layout_updateUserLogo()) {
+			set_page_message(tr('Logo successfully updated.'), 'success');
+		}
+	} elseif ($_POST['uaction'] == 'deleteIspLogo') {
+		if (layout_deleteUserLogo()) {
+			set_page_message(tr('Logo successfully removed.'), 'success');
+		}
+	} elseif ($_POST['uaction'] == 'changeShowLabels') {
+		layout_setMainMenuLabelsVisibility($_SESSION['user_id'], clean_input($_POST['mainMenuShowLabels']));
+		set_page_message(tr('Main menu labels visibility successfully updated.'), 'success');
+
+	} elseif ($_POST['uaction'] == 'changeLayoutColor' && isset($_POST['layoutColor'])) {
 		$userId = isset($_SESSION['logged_from_id']) ? $_SESSION['logged_from_id'] : $_SESSION['user_id'];
 
-		if(layout_setUserLayoutColor($userId, $_POST['layoutColor'])) {
-     		$_SESSION['user_theme_color'] = $_POST['layoutColor'];
+		if (layout_setUserLayoutColor($userId, $_POST['layoutColor'])) {
+			$_SESSION['user_theme_color'] = $_POST['layoutColor'];
 			set_page_message(tr('Layout color successfully updated.'), 'success');
 		} else {
 			set_page_message(tr('Unknown layout color.'), 'error');
 		}
-    } else {
-        set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
-    }
+	} else {
+		set_page_message(tr('Unknown action: %s', tohtml($_POST['uaction'])), 'error');
+	}
 }
 
 $html_selected = $cfg->HTML_SELECTED;
 $userId = $_SESSION['user_id'];
-if (layout_isMainMenuLabelsVisible($userId)) {
+
+if ($_SESSION['show_main_menu_labels']) {
     $tpl->assign(
         array(
             'MAIN_MENU_SHOW_LABELS_ON' => $html_selected,
@@ -146,6 +144,7 @@ if (layout_isMainMenuLabelsVisible($userId)) {
             'MAIN_MENU_SHOW_LABELS_ON' => '',
             'MAIN_MENU_SHOW_LABELS_OFF' => $html_selected));
 }
+
 
 $ispLogo = layout_getUserLogo();
 
@@ -184,4 +183,3 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptEnd, ar
 $tpl->prnt();
 
 unsetMessages();
-$mainMenuShowLabels = (intval($_POST['mainMenuShowLabels'])) ? true : false;

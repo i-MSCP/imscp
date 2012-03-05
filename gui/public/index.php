@@ -54,7 +54,8 @@ if (isset($_GET['logout'])) {
 		if (!empty($_POST['uname']) && !empty($_POST['upass'])) {
 			$result = $auth
 				->setUsername(idn_to_ascii(clean_input($_POST['uname'])))
-				->setPassword(clean_input($_POST['upass']))->authenticate();
+				->setPassword(clean_input($_POST['upass']))
+				->authenticate();
 
 			if (!$result->isValid()) {
 				if(($messages = $result->getMessages())) {
