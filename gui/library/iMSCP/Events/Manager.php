@@ -35,11 +35,8 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * The events manager is the central point of i-MSCP's event listener system.
  * Listeners are registered on the manager and events are dispatched through the manager.
  *
- * A listener can be an object that implement listener method (method named as event names) or ANY PHP callback function
- * such as user function,anonymous function, closure, functor... Again, ANY PHP callback is allowed.
- *
- *
- * A very basic example for a listener that listen on the 'AdminScriptStart' event:
+ * A listener can be an object that implements listener method (method named as event names) or ANY PHP callback function
+ * such as user function, anonymous function, closure, functor... Again, ANY PHP callback is allowed.
  *
  * @category	iMSCP
  * @package		iMSCP_Events
@@ -50,16 +47,12 @@ require_once 'iMSCP/Events/Manager/Interface.php';
 class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 {
 	/**
-	 * Instance of this class.
-	 *
 	 * @var iMSCP_Events_Manager
 	 */
 	protected static $_instance;
 
 	/**
-	 * Array that contains events listeners stacks.
-	 *
-	 * @var iMSCP_Events_Listeners_Stack[]
+	 * @var iMSCP_Events_Listeners_Stack[] Array that contains events listeners stacks.
 	 */
 	protected $_events = array();
 
@@ -110,8 +103,8 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	/**
 	 * Dispatches an event to all registered listeners.
 	 *
-	 * @throws iMSCP_Events_Manager_Exception	When an listener is an object that do not implement the listener method or
-	 * 											when the listener is not a valid PHP callback
+	 * @throws iMSCP_Events_Manager_Exception	When an listener is an object that do not implement the listener method
+	 *											or when the listener is not a valid PHP callback
 	 * @param string $eventName					The name of the event to dispatch.
 	 * @param array|ArrayAccess $arguments		Array of arguments (eg. an associative array)
 	 * @return iMSCP_Events_Listeners_ResponseCollection
@@ -120,7 +113,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	{
 		$responses = new iMSCP_Events_Listeners_ResponseCollection();
 
-		if(!$eventName instanceof iMSCP_Events_Description) {
+		if (!$eventName instanceof iMSCP_Events_Description) {
 			$event = new iMSCP_Events_Event($eventName, $arguments);
 		} else {
 			$event = $eventName;
@@ -137,8 +130,9 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 					} else {
 						require_once 'iMSCP/Events/Exception.php';
 						throw new iMSCP_Events_Manager_Exception(sprintf(
-							'%s object must implement the %s() listener method or be a functor.', get_class($listener), $eventName));
-
+								'%s object must implement the %s() listener method or be a functor.',
+								get_class($listener), $eventName)
+						);
 					}
 				} else {
 					require_once 'iMSCP/Events/Exception.php';
@@ -148,8 +142,8 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 				// Stop the event propagation if asked
 				if ($event->propagationIsStopped()) {
 					$responses->setStopped(true);
-        			break;
-    			}
+					break;
+				}
 			}
 		}
 
@@ -162,7 +156,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 * @param  string|array $eventNames		The event(s) to listen on.
 	 * @param  callback|object $listener	Listener callback function or object.
 	 * @param  int $priority				The higher this value, the earlier an event listener will be triggered in
-	 * 										the chain of the specified events.
+	 *										the chain of the specified events.
 	 *
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
 	 */
@@ -184,7 +178,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 			}
 		} else {
 			throw new iMSCP_Events_Exception(
-				sprintf(__CLASS__.'::'.__FUNCTION__ . ' expects an array or string, %s given.', gettype($eventNames))
+				sprintf(__CLASS__ . '::' . __FUNCTION__ . ' expects an array or string, %s given.', gettype($eventNames))
 			);
 		}
 
@@ -205,18 +199,18 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	{
 		if (is_string($eventName)) {
 			if (isset($this->_events[$eventName])) {
-				$retVal =  $this->_events[$eventName]->removeListener($listener);
+				$retVal = $this->_events[$eventName]->removeListener($listener);
 			} else {
-				$retVal =  false;
+				$retVal = false;
 			}
 		} else {
 			throw new iMSCP_Events_Exception(
-				sprintf(__CLASS__.'::'.__FUNCTION__ . '() expects a string, %s given.', gettype($eventName)
+				sprintf(__CLASS__ . '::' . __FUNCTION__ . '() expects a string, %s given.', gettype($eventName)
 				)
 			);
 		}
 
-		if(!$this->hasListener($eventName)) {
+		if (!$this->hasListener($eventName)) {
 			unset($this->_events[$eventName]);
 		}
 
@@ -256,6 +250,6 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 */
 	public function hasListener($eventName)
 	{
-		return (bool) count($this->getListeners($eventName));
+		return (bool)count($this->getListeners($eventName));
 	}
 }
