@@ -141,12 +141,12 @@ class iMSCP_Filter_Compress_Gzip {
 	protected $_mode;
 
 	/**
-	 * Constructor Create a new
+	 * Constructor.
 	 *
 	 * @param int $mode Tells if the filter should act as callback function for the PHP ob_start function or as function
-	 * for create a standard gz file. The filter mode must be one of the iMSCP_Filter_Compress_Gzip::FILTER_* constants.
+	 * 					for create a standard gz file. The filter mode must be one of the
+	 * 					iMSCP_Filter_Compress_Gzip::FILTER_* constants.
 	 * @param int $compressionLevel Compression level
-	 * @return void
 	 */
 	public function __construct($mode = self::FILTER_FILE, $compressionLevel = 7) {
 
@@ -157,7 +157,7 @@ class iMSCP_Filter_Compress_Gzip {
 				throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Unknown filter mode!');
 			}
 		} else {
-			throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded!');
+			throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded.');
 		}
 
 		if(in_array(
@@ -165,7 +165,7 @@ class iMSCP_Filter_Compress_Gzip {
 			range($this->_minCompressionLevel, $this->_maxCompressionLevel))) {
 			$this->_compressionLevel = $compressionLevel;
 		} else {
-			throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Wrong value for compression level!');
+			throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Wrong value for compression level.');
 		}
 	}
 
@@ -244,7 +244,7 @@ class iMSCP_Filter_Compress_Gzip {
 			fclose($fileHandle);
 		} else {
 			throw new iMSCP_Exception(
-				"iMSCP_GzipFilter error: `$filePath` is not a valid directory or is not writable!"
+				"iMSCP_GzipFilter error: `$filePath` is not a valid directory or is not writable."
 			);
 		}
 	}
@@ -326,5 +326,4 @@ class iMSCP_Filter_Compress_Gzip {
 
 		return $gzipData;
 	}
-
 }

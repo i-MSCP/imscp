@@ -78,13 +78,13 @@ function init_login($events)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	// Register listener method to check domain status and expire date when the onBeforeSetIdentity event is triggered
-	$events->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
-
 	if($cfg->BRUTEFORCE) {
 		$bruteforce = new iMSCP_Authentication_Bruteforce();
 		$bruteforce->register($events);
 	}
+
+	// Register listener method to check domain status and expire date when the onBeforeSetIdentity event is triggered
+	$events->registerListener(iMSCP_Events::onBeforeSetIdentity, 'login_checkDomainAccount');
 }
 
 /**
