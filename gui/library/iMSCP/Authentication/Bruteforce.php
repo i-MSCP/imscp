@@ -150,6 +150,32 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 		parent::__construct();
 	}
 
+	/**
+	 * Initialization.
+	 *
+	 * @return void
+	 */
+	public function init()
+	{
+		$query = 'SELECT * FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL';
+		$stmt = exec_query($query, $this->_ipAddr);
+
+		if (!$stmt->rowCount()) {
+			$this->recordExists = false;
+		} else {
+			$this->recordExists = true;
+
+			if ($stmt->fields($this->_type . '_count') >= $this->_maxAttempts) {
+				$this->_isBlockedFor = $stmt->fields('lastaccess') + $this->_blockTime * 60;
+				$this->_isWaitingFor = 0;
+				$this->_message[] = tr('Found 1 record. ip %s is blocked for another %s minutes.', $this->_ipAddr, $this->isBlockedFor());
+			} else {
+				$this->_message[] = tr('Found records for ip %s', $this->_ipAddr);
+				$this->_isBlockedFor = 0;
+				$this->_isWaitingFor = $stmt->fields('lastaccess') + $this->_waitTime;
+			}
+		}
+	}
 
 	/**
 	 * Returns plugin general information.
@@ -217,7 +243,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	public function recordAttempt()
 	{
 		if (!$this->recordExists) {
-			//$this->_message[] = tr('No records found for ip %s with username not set.', $this->_ipAddr);
+			$this->_message[] = tr('No records found for ip %s with username not set.', $this->_ipAddr);
 			$this->_createRecord();
 		} else {
 			$this->_updateRecord($this->{$this->_type . 'Count'});
@@ -285,33 +311,6 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	}
 
 	/**
-	 * Initialization.
-	 *
-	 * @return void
-	 */
-	protected function _init()
-	{
-		$query = 'SELECT * FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL';
-		$stmt = exec_query($query, $this->_ipAddr);
-
-		if (!$stmt->rowCount()) {
-			$this->recordExists = false;
-		} else {
-			$this->recordExists = true;
-
-			if ($stmt->fields($this->_type . '_count') >= $this->_maxAttempts) {
-				$this->_isBlockedFor = $stmt->fields('lastaccess') + $this->_blockTime * 60;
-				$this->_isWaitingFor = 0;
-				//$this->_message[] = tr('Found 1 record. ip %s is blocked for another %s minutes.', $this->_ipAddr, $this->isBlockedFor());
-			} else {
-				//$this->_message[] = tr('Found records for ip %s', $this->_ipAddr);
-				$this->_isBlockedFor = 0;
-				$this->_isWaitingFor = $stmt->fields('lastaccess') + $this->_waitTime;
-			}
-		}
-	}
-
-	/**
 	 * Increase login|captcha attempts by 1 for $_ipAddr.
 	 *
 	 * @param int $count
@@ -319,7 +318,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	protected function _updateRecord($count)
 	{
 		if ($count < $this->_maxAttempts) {
-			//$this->_message[] = tr('Increasing %s attempts by 1 for ip %s.', $this->_type, $this->_ipAddr);
+			$this->_message[] = tr('Increasing %s attempts by 1 for ip %s.', $this->_type, $this->_ipAddr);
 
 			$query = "
 				UPDATE
@@ -359,7 +358,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	 */
 	protected function _unblock()
 	{
-		//$this->_message[] = tr('Unblocking expired sessions.');
+		$this->_message[] = tr('Unblocking expired sessions.');
 		$timeout = time() - ($this->_blockTime * 60);
 		$query = "UPDATE `login` SET `{$this->_type}_count` = 0 WHERE `lastaccess` < ? AND `user_name` IS NULL";
 		exec_query($query, array($timeout));
