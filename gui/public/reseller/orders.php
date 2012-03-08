@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Reseller
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 /************************************************************************************
@@ -48,18 +48,18 @@
  */
 function generateOrderPage($tpl, $user_id)
 {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
-    $start_index = 0;
+	$start_index = 0;
 
-    if (isset($_GET['psi']) && is_numeric($_GET['psi'])) {
-        $start_index = $_GET['psi'];
-    }
+	if (isset($_GET['psi']) && is_numeric($_GET['psi'])) {
+		$start_index = $_GET['psi'];
+	}
 
-    $rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
-    // count query
-    $count_query = "
+	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
+	// count query
+	$count_query = "
 		SELECT
 			COUNT(`id`) AS `cnt`
 		FROM
@@ -71,12 +71,12 @@ function generateOrderPage($tpl, $user_id)
 		AND
 		    `status` != ?
 	";
-    $rs = exec_query($count_query, array($user_id, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS,
-                                        $cfg->ITEM_ORDER_TREATED_STATUS));
+	$rs = exec_query($count_query, array($user_id, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS,
+		$cfg->ITEM_ORDER_TREATED_STATUS));
 
-    $records_count = $rs->fields['cnt'];
+	$records_count = $rs->fields['cnt'];
 
-    $query = "
+	$query = "
 		SELECT
 			*
 		FROM
@@ -92,83 +92,83 @@ function generateOrderPage($tpl, $user_id)
 		LIMIT
 			$start_index, $rows_per_page
 	";
-    $rs = exec_query($query, array($user_id, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS,
-                                  $cfg->ITEM_ORDER_TREATED_STATUS));
+	$rs = exec_query($query, array($user_id, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS,
+		$cfg->ITEM_ORDER_TREATED_STATUS));
 
-    $prev_si = $start_index - $rows_per_page;
+	$prev_si = $start_index - $rows_per_page;
 
-    if ($start_index == 0) {
-        $tpl->assign('SCROLL_PREV', '');
-    } else {
-        $tpl->assign(array(
-                 'SCROLL_PREV_GRAY' => '',
-                 'PREV_PSI' => $prev_si));
-    }
+	if ($start_index == 0) {
+		$tpl->assign('SCROLL_PREV', '');
+	} else {
+		$tpl->assign(array(
+			'SCROLL_PREV_GRAY' => '',
+			'PREV_PSI' => $prev_si));
+	}
 
-    $next_si = $start_index + $rows_per_page;
+	$next_si = $start_index + $rows_per_page;
 
-    if ($next_si + 1 > $records_count) {
-        $tpl->assign('SCROLL_NEXT', '');
-    } else {
-        $tpl->assign(array(
-                 'SCROLL_NEXT_GRAY' => '',
-                 'NEXT_PSI' => $next_si));
-    }
+	if ($next_si + 1 > $records_count) {
+		$tpl->assign('SCROLL_NEXT', '');
+	} else {
+		$tpl->assign(array(
+			'SCROLL_NEXT_GRAY' => '',
+			'NEXT_PSI' => $next_si));
+	}
 
-    if ($rs->recordCount() == 0) {
-        set_page_message(tr('You do not have new orders.'), 'info');
-        $tpl->assign('ORDERS_TABLE', '');
-        $tpl->assign('SCROLL_NEXT_GRAY', '');
-        $tpl->assign('SCROLL_PREV_GRAY', '');
-    } else {
-        while (!$rs->EOF) {
-            $plan_id = $rs->fields['plan_id'];
-            $order_status = tr('New order');
+	if ($rs->recordCount() == 0) {
+		set_page_message(tr('You do not have new orders.'), 'info');
+		$tpl->assign('ORDERS_TABLE', '');
+		$tpl->assign('SCROLL_NEXT_GRAY', '');
+		$tpl->assign('SCROLL_PREV_GRAY', '');
+	} else {
+		while (!$rs->EOF) {
+			$plan_id = $rs->fields['plan_id'];
+			$order_status = tr('New order');
 
-            $planname_query = "SELECT `name` FROM `hosting_plans` WHERE `id` = ?";
-            $rs_planname = exec_query($planname_query, $plan_id);
+			$planname_query = "SELECT `name` FROM `hosting_plans` WHERE `id` = ?";
+			$rs_planname = exec_query($planname_query, $plan_id);
 
-            $plan_name = $rs_planname->fields['name'];
-            $status = $rs->fields['status'];
+			$plan_name = $rs_planname->fields['name'];
+			$status = $rs->fields['status'];
 
-            if ($status === 'update') {
-                $customer_id = $rs->fields['customer_id'];
-                $cusrtomer_query = "SELECT * FROM `admin` WHERE `admin_id` = ?";
-                $rs_customer = exec_query($cusrtomer_query, $customer_id);
+			if ($status === 'update') {
+				$customer_id = $rs->fields['customer_id'];
+				$cusrtomer_query = "SELECT * FROM `admin` WHERE `admin_id` = ?";
+				$rs_customer = exec_query($cusrtomer_query, $customer_id);
 
-                $user_details = tohtml($rs_customer->fields['fname']) . '&nbsp;'
-                                . tohtml($rs_customer->fields['lname'])
-                                . "<br /><a href=\"mailto:" . tohtml($rs_customer->fields['email'])
-                                . "\" class=\"link\">" . tohtml($rs_customer->fields['email'])
-                                . "</a><br />" . tohtml($rs_customer->fields['zip'])
-                                . '&nbsp;' . tohtml($rs_customer->fields['city'])
-                                . '&nbsp;' . tohtml($rs_customer->fields['state'])
-                                . '&nbsp;' . tohtml($rs_customer->fields['country']);
-                $order_status = tr('Update order');
-                $tpl->assign('LINK', 'orders_update.php?order_id=' . $rs->fields['id']);
-            } else {
-                $user_details = $rs->fields['fname'] . '&nbsp;'
-                                . tohtml($rs->fields['lname'])
-                                . "<br /><a href=\"mailto:" . tohtml($rs->fields['email'])
-                                . "\" class=\"link\">" . tohtml($rs->fields['email'])
-                                . "</a><br />" . tohtml($rs->fields['zip'])
-                                . '&nbsp;' . tohtml($rs->fields['city'])
-                                . '&nbsp;' . tohtml($rs->fields['state'])
-                                . '&nbsp;' . tohtml($rs->fields['country']);
-                $tpl->assign('LINK', 'orders_detailst.php?order_id=' . $rs->fields['id']);
-            }
+				$user_details = tohtml($rs_customer->fields['fname']) . '&nbsp;'
+					. tohtml($rs_customer->fields['lname'])
+					. "<br /><a href=\"mailto:" . tohtml($rs_customer->fields['email'])
+					. "\" class=\"link\">" . tohtml($rs_customer->fields['email'])
+					. "</a><br />" . tohtml($rs_customer->fields['zip'])
+					. '&nbsp;' . tohtml($rs_customer->fields['city'])
+					. '&nbsp;' . tohtml($rs_customer->fields['state'])
+					. '&nbsp;' . tohtml($rs_customer->fields['country']);
+				$order_status = tr('Update order');
+				$tpl->assign('LINK', 'orders_update.php?order_id=' . $rs->fields['id']);
+			} else {
+				$user_details = $rs->fields['fname'] . '&nbsp;'
+					. tohtml($rs->fields['lname'])
+					. "<br /><a href=\"mailto:" . tohtml($rs->fields['email'])
+					. "\" class=\"link\">" . tohtml($rs->fields['email'])
+					. "</a><br />" . tohtml($rs->fields['zip'])
+					. '&nbsp;' . tohtml($rs->fields['city'])
+					. '&nbsp;' . tohtml($rs->fields['state'])
+					. '&nbsp;' . tohtml($rs->fields['country']);
+				$tpl->assign('LINK', 'orders_detailst.php?order_id=' . $rs->fields['id']);
+			}
 
-            $tpl->assign(array(
-                              'ID' => $rs->fields['id'],
-                              'HP' => tohtml($plan_name),
-                              'DOMAIN' => tohtml($rs->fields['domain_name']),
-                              'USER' => $user_details,
-                              'STATUS' => $order_status));
+			$tpl->assign(array(
+				'ID' => $rs->fields['id'],
+				'HP' => tohtml($plan_name),
+				'DOMAIN' => tohtml($rs->fields['domain_name']),
+				'USER' => $user_details,
+				'STATUS' => $order_status));
 
-            $tpl->parse('ORDER', '.order');
-            $rs->moveNext();
-        }
-    }
+			$tpl->parse('ORDER', '.order');
+			$rs->moveNext();
+		}
+	}
 }
 
 /**
@@ -178,11 +178,11 @@ function generateOrderPage($tpl, $user_id)
  */
 function OrdersGarbageCollector()
 {
-    $cfg = iMSCP_Registry::get('config');
-    $expireTime = time() - intval($cfg->ORDERS_EXPIRE_TIME);
+	$cfg = iMSCP_Registry::get('config');
+	$expireTime = time() - intval($cfg->ORDERS_EXPIRE_TIME);
 
-    $query = "DELETE FROM `orders` WHERE `date` <= ? AND `status` = ?";
-    exec_query($query, array($expireTime, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
+	$query = "DELETE FROM `orders` WHERE `date` <= ? AND `status` = ?";
+	exec_query($query, array($expireTime, $cfg->ITEM_ORDER_UNCONFIRMED_STATUS));
 }
 
 /************************************************************************************
@@ -214,7 +214,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Order management'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Order management'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'TR_MANAGE_ORDERS' => tr('Manage Orders'),

@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Reseller
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 // Include core library
@@ -42,39 +42,29 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 
 check_login(__FILE__);
 
-$reseller_id = $_SESSION['user_id'];
-
+$resellerId = $_SESSION['user_id'];
 
 if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
-	$order_id = $_GET['order_id'];
+	$orderId = $_GET['order_id'];
 } else {
 	set_page_message(tr('Wrong order ID.'), 'error');
 	redirectTo('orders.php');
+	exit; // Useless but avoid IDE warning about possible undefined variable
 }
 
-$query = "
-	SELECT
-		`id`
-	FROM
-		`orders`
-	WHERE
-		`id` = ?
-	AND
-		`user_id` = ?
-";
+$query = "SELECT `id` FROM `orders` WHERE `id` = ? AND `user_id` = ?";
+$stmt = exec_query($query, array($orderId, $resellerId));
 
-$rs = exec_query($query, array($order_id, $reseller_id));
-
-if ($rs->recordCount() == 0) {
-	set_page_message(tr('Permission deny.'), 'error');
+if (!$stmt->rowCount()) {
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('orders.php');
 }
 
 // delete all FTP Accounts
 $query = "DELETE FROM `orders` WHERE `id` = ?";
-$rs = exec_query($query, $order_id);
+$stmt = exec_query($query, $orderId);
 
-set_page_message(tr('Customer order sucessfully removed.'), 'error');
+set_page_message(tr('Customer order sucessfully removed.'), 'success');
 
-write_log($_SESSION['user_logged'].": deletes customer order.", E_USER_NOTICE);
+write_log($_SESSION['user_logged'] . ": deleted a customer order.", E_USER_NOTICE);
 redirectTo('orders.php');
