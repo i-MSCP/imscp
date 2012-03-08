@@ -89,12 +89,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	/**
 	 * @var int Login attempts count
 	 */
-	protected $loginCount = 0;
+	protected $_loginCount = 0;
 
 	/**
 	 * @var int Captcha attempts count
 	 */
-	protected $captchaCount = 0;
+	protected $_captchaCount = 0;
 
 	/**
 	 * @var int Time during which an IP address is blocked
@@ -109,7 +109,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	/**
 	 * @var bool Tells whether or not a bruteforce detection record exists for $_ipAddr
 	 */
-	protected $recordExists = false;
+	protected $_recordExists = false;
 
 	/**
 	 * @var string Session unique identifier
@@ -161,9 +161,9 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 		$stmt = exec_query($query, $this->_ipAddr);
 
 		if (!$stmt->rowCount()) {
-			$this->recordExists = false;
+			$this->_recordExists = false;
 		} else {
-			$this->recordExists = true;
+			$this->_recordExists = true;
 
 			if ($stmt->fields($this->_type . '_count') >= $this->_maxAttempts) {
 				$this->_isBlockedFor = $stmt->fields('lastaccess') + $this->_blockTime * 60;
@@ -242,7 +242,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	 */
 	public function recordAttempt()
 	{
-		if (!$this->recordExists) {
+		if (!$this->_recordExists) {
 			$this->_message[] = tr('No records found for ip %s with username not set.', $this->_ipAddr);
 			$this->_createRecord();
 		} else {
