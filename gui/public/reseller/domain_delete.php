@@ -302,7 +302,6 @@ if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
 
 	try {
     	if(!delete_domain($domainId, true)) {
-			set_page_message(tr(''), 'error');
 			throw new iMSCP_Exception('Domain account not found.');
 		}
 
