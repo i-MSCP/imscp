@@ -235,13 +235,13 @@ function change_user_interface($fromId, $toId)
 			FROM
 				`admin`
 			WHERE
-				binary `admin_id` = ?
+				`admin_id` = ?
 		";
 
 		$rsFrom = exec_query($query, $fromId);
 		$rsTo = exec_query($query, $toId);
 
-		if (($rsFrom->recordCount()) != 1 || ($rsTo->recordCount()) != 1) {
+		if (!$rsFrom->rowCount() || !$rsTo->rowCount()) {
 			set_page_message(tr('Wrong request'), 'error');
 			break;
 		}
@@ -265,7 +265,14 @@ function change_user_interface($fromId, $toId)
 			if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $toId) {
 				$index = $allowedChanges[$toAdminType]['BACK'];
 			} else {
-				set_page_message(tr('You do not have permission to access this interface.'), 'error');
+				set_page_message(tr('Wrong request.'), 'error');
+				write_log(
+					sprintf(
+						"%s tried to switch onto %s's interface",
+						$fromUserData['admin_name'], decode_idna($toUserData['admin_name'])
+					),
+					E_USER_WARNING
+				);
 				break;
 			}
 		}
@@ -279,7 +286,7 @@ function change_user_interface($fromId, $toId)
 		$identity->admin_type = $toUserData['admin_type'];
 		$identity->admin_id = $toUserData['admin_id'];
 		$identity->email = $toUserData['email'];
-		$identity->created_by =$toUserData['created_by'];
+		$identity->created_by = $toUserData['created_by'];
 
 		// Unset previous identity
 		$auth->unsetIdentity();
@@ -287,25 +294,28 @@ function change_user_interface($fromId, $toId)
 		// Set new identity
 		$auth->setIdentity($identity);
 
-		// Additional data
-		if (($toAdminType != 'admin' && ((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $toId)
-			|| !isset($_SESSION['logged_from_id']))) || ($fromAdminType == 'admin' && $toAdminType == 'admin')
-		) {
+		if($fromAdminType != 'user' && $toAdminType != 'admin') {
+			// Set additional data about logged from user
 			$_SESSION['logged_from_type'] = $fromUserData['admin_type'];
 			$_SESSION['logged_from'] = $fromUserData['admin_name'];
 			$_SESSION['logged_from_id'] = $fromUserData['admin_id'];
-		}
 
-		if ($fromAdminType == 'user') {
-			unset($_SESSION['logged_from'], $_SESSION['logged_from_id'], $_SESSION['logged_from_type']);
+			write_log(
+				sprintf(
+					"%s switched onto %s's interface", $fromUserData['admin_name'],
+					decode_idna($toUserData['admin_name'])
+				),
+				E_USER_NOTICE
+			);
+		} else {
+			write_log(
+				sprintf(
+					"%s switched back from %s's interface", $toUserData['admin_name'],
+					decode_idna($fromUserData['admin_name'])
+				),
+				E_USER_NOTICE
+			);
 		}
-
-		write_log(
-			sprintf(
-				"%s switched onto %s's interface", $fromUserData['admin_name'], decode_idna($toUserData['admin_name'])
-			),
-			E_USER_NOTICE
-		);
 
 		break;
 	}
