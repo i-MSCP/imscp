@@ -341,14 +341,14 @@ sub setup_imscp_database {
 	}
 
 	#secure accounts
-	my $rdata = iMSCP::Database->factory()->doQuery('User', "SELECT `User` FROM `mysql`.`user` WHERE `Password` = ''");
+	my $rdata = iMSCP::Database->factory()->doQuery('User', "SELECT `User`, `Host` FROM `mysql`.`user` WHERE `Password` = ''");
 	if(ref $rdata ne 'HASH'){
 		error("$rdata");
 		return 1;
 	}
 
 	foreach (keys %$rdata) {
-		my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?", $_);
+		my $error = iMSCP::Database->factory()->doQuery('drop', "DROP USER ?@?", $_, $rdata->{$_}->{Host});
 		error("$error") if(ref $error ne 'HASH');
 	}
 
