@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Reseller
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 // Include needed libraries
@@ -43,50 +43,28 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 // Check for login
 check_login(__FILE__);
 
-// logged from admin to reseller - switch back to admin
+// Switch back to admin
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && isset($_GET['action']) &&
-	$_GET['action'] == 'go_back') {
-
+	$_GET['action'] == 'go_back'
+) {
 	change_user_interface($_SESSION['user_id'], $_SESSION['logged_from_id']);
+} elseif (isset($_SESSION['user_id']) && isset($_GET['to_id'])) { // Switch to customer
+	$toUserId = intval($_GET['to_id']);
 
-// Switch to customer
-} elseif (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
-
-	$to_id = $_GET['to_id'];
-
-	// admin logged as reseller:
+	// Admin logged as reseller:
 	if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-		$from_id = $_SESSION['logged_from_id'];
-	} else { // reseller:
-		$from_id = $_SESSION['user_id'];
+		$fromUserId = $_SESSION['logged_from_id'];
+	} else { // reseller to customer
+		$fromUserId = $_SESSION['user_id'];
 
-		if (who_owns_this($to_id, 'client') != $from_id) {
-			set_page_message(tr('User does not exist or you do not have permission to access this interface.'), 'error');
-			redirectTo('users.php?psi=last');
+		if (who_owns_this($toUserId, 'client') != $fromUserId) {
+			set_page_message(tr('Wrong request.'), 'error');
+			redirectTo('users.php');
 		}
 	}
 
-    // Remember some data
-	/*
-    if (isset($_SESSION['search_for'])) {
-        $_SESSION['uistack'] = array('search_for' => $_SESSION['search_for']);
-
-        if (isset($_SESSION['search_status'])) {
-            $_SESSION['uistack']['search_status'] = $_SESSION['search_status'];
-        }
-
-        if (isset($_SESSION['search_common'])) {
-            $_SESSION['uistack']['search_common'] = $_SESSION['search_common'];
-        }
-
-        if (isset($_SESSION['search_page'])) {
-            $_SESSION['uistack']['search_page'] = $_SESSION['search_page'];
-        }
-    }
-	*/
-
-	change_user_interface($from_id, $to_id);
-
+	change_user_interface($fromUserId, $toUserId);
 } else {
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('index.php');
 }

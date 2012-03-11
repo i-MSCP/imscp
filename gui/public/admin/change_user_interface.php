@@ -27,34 +27,24 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Admin
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
+// Include core library
 require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
 check_login(__FILE__);
 
-// we need to check only if all vars are OK
-// admin can walk into all interfaces
 if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
-    $from_id = $_SESSION['user_id'];
-
-    $to_id = $_GET['to_id'];
-    // admin logged as an other admin:
-    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-        $from_id = $_SESSION['logged_from_id'];
-    } else {
-        $from_id = $_SESSION['user_id'];
-    }
-
-    change_user_interface($from_id, $to_id);
+	change_user_interface($_SESSION['user_id'], intval($_GET['to_id']));
 } else {
-    redirectTo('manage_users.php');
+	set_page_message(tr('Wrong request.'), 'error');
+	redirectTo('manage_users.php');
 }

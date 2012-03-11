@@ -27,12 +27,12 @@
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Client
- * @copyright   2001-2006 by moleSoftware GmbH
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @copyright	2001-2006 by moleSoftware GmbH
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright	2010-2012 by i-MSCP | http://i-mscp.net
+ * @author		ispCP Team
+ * @author		i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 // Include core library
@@ -42,14 +42,11 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 
 check_login(__FILE__);
 
-if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) &&
-	isset($_GET['action']) && $_GET['action'] == 'go_back'
+if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && isset($_GET['action']) &&
+	$_GET['action'] == 'go_back'
 ) {
-	$from_id	= $_SESSION['user_id'];
-	$to_id		= $_SESSION['logged_from_id'];
-
-	change_user_interface($from_id, $to_id);
-
+	change_user_interface($_SESSION['user_id'], $_SESSION['logged_from_id']);
 } else {
+	set_page_message(tr('Wrong request.'), 'error');
 	redirectTo('index.php');
 }
