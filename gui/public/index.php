@@ -47,8 +47,10 @@ $auth = iMSCP_Authentication::getInstance();
 // Init login process
 init_login($auth->events());
 
-if (isset($_GET['logout'])) {
+if (isset($_GET['logout']) && $auth->hasIdentity()) {
+	$adminName = $auth->getIdentity()->admin_name;
 	$auth->unsetIdentity();
+	write_log(sprintf("%s logged out", $adminName), E_USER_NOTICE);
 } elseif (!empty($_POST)) {
 	if (isset($_POST['uname']) && isset($_POST['upass'])) {
 		if (!empty($_POST['uname']) && !empty($_POST['upass'])) {
@@ -59,9 +61,14 @@ if (isset($_GET['logout'])) {
 
 			if (!$result->isValid()) {
 				if(($messages = $result->getMessages())) {
-					set_page_message(format_message($result->getMessages()), 'error');
+					$messages = format_message($messages);
+					set_page_message($messages, 'error');
+					write_log(sprintf("Authentication failed. Reason: %s", $messages), E_USER_NOTICE);
+				} else {
+					write_log(sprintf("Authentication failed for unknown reason", $messages), E_USER_NOTICE);
 				}
 			}
+			write_log(sprintf("%s logged in", $result->getIdentity()->admin_name), E_USER_NOTICE);
 		} else {
 			set_page_message(tr('All fields are required.'), 'error');
 		}

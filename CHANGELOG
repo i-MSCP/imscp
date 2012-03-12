@@ -11,6 +11,7 @@ Tickets:
 	- Fixed #377: Defect - Some issues with shared mount point
 	- Fixed #380: Bug - Order Panel - An exception have been thrown Hosting
 	- Fixed #381: Defect - Wrong query in setup_imscp_database - Drop user - Condition
+	- Fixed #382: Defect - Notifications system for authentication is broken
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.1 (RC2)
