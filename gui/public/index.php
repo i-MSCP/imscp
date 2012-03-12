@@ -65,7 +65,7 @@ if (isset($_GET['logout']) && $auth->hasIdentity()) {
 					set_page_message($messages, 'error');
 					write_log(sprintf("Authentication failed. Reason: %s", $messages), E_USER_NOTICE);
 				} else {
-					write_log(sprintf("Authentication failed for unknown reason", $messages), E_USER_NOTICE);
+					write_log('Authentication failed for unknown reason', E_USER_NOTICE);
 				}
 			}
 			write_log(sprintf("%s logged in", $result->getIdentity()->admin_name), E_USER_NOTICE);
