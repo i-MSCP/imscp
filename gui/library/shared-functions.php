@@ -1700,7 +1700,7 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
 	$context = stream_context_create($opts);
 	libxml_set_streams_context($context);
 
-	$webdepot_xml_file = new DOMDocument('1.0', 'iso-8859-1');
+	$webdepot_xml_file = new DOMDocument('1.0', 'UTF-8');
 	$webdepot_xml_file->load($XML_URL);
 	$XML_FILE = simplexml_import_dom($webdepot_xml_file);
 
@@ -1728,15 +1728,15 @@ function update_webdepot_software_list($XML_URL, $webdepot_last_update)
 				";
 				exec_query($query,
 						   array(
-								utf8_decode(clean_input($output->INSTALL_TYPE)),
-								utf8_decode(clean_input($output->TITLE)),
-								utf8_decode(clean_input($output->VERSION)),
-								utf8_decode(clean_input($output->LANGUAGE)),
-								utf8_decode(clean_input($output->TYPE)),
-								utf8_decode(clean_input($output->DESCRIPTION)),
-								encode_idna(utf8_decode(strtolower(clean_input($output->VENDOR_HP)))),
-								encode_idna(utf8_decode(strtolower(clean_input($output->DOWNLOAD_LINK)))),
-								encode_idna(utf8_decode(strtolower(clean_input($output->SIGNATURE_LINK))))));
+								clean_input($output->INSTALL_TYPE),
+								clean_input($output->TITLE),
+								clean_input($output->VERSION),
+								clean_input($output->LANGUAGE),
+								clean_input($output->TYPE),
+								clean_input($output->DESCRIPTION),
+								encode_idna(strtolower(clean_input($output->VENDOR_HP))),
+								encode_idna(strtolower(clean_input($output->DOWNLOAD_LINK))),
+								encode_idna(strtolower(clean_input($output->SIGNATURE_LINK)))));
 			}
 		}
 		$query = "
