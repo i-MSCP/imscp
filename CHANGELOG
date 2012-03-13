@@ -7,6 +7,8 @@ i-MSCP 1.0.2.2 (RC3)
 Tickets:
 	- Fixed #296: Defect - Some issues with dovecot migration script
 	- Fixed #366: Enhancement - Move menu label show/disable option at user profile level
+	- Fixed #370: Enhancement - Admin/Reseller must be able to edit "Open_Base_Dir" for a domain
+	- Fixed #372: Cosmetic - Change colour of enable/disabled Features in PHP Editor
 	- Fixed #375: Defect - GUI should allow shared mount points
 	- Fixed #377: Defect - Some issues with shared mount point
 	- Fixed #380: Bug - Order Panel - An exception have been thrown Hosting
