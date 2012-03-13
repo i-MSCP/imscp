@@ -157,3 +157,8 @@ input[type="text"]:disabled, input[type="password"]:disabled, select:disabled, t
 	background: transparent url('../images/black/box/message_top.jpg') no-repeat top left;
 	border-color: rgb(204, 204, 204);
 }
+
+/** Toogle on/off - override jQuery UI styles */
+.ui-widget-header .ui-buttonset .ui-state-default, .ui-widget-content .ui-buttonset .ui-state-default, .ui-buttonset .ui-state-default {background-image: url("../images/red/background/ui-bg_glass_40_5a0505_1x400.png")}
+.ui-widget-header .ui-buttonset .ui-state-active, .ui-widget-content .ui-buttonset .ui-state-active, .ui-buttonset .ui-state-active {background-image: url("../images/green/background/ui-bg_glass_40_055a0d_1x400.png")}
+.ui-widget-header .ui-buttonset .ui-state-hover, .ui-widget-content .ui-buttonset .ui-state-hover, .ui-buttonset .ui-state-hover {background-image: url("../images/jquery-ui-common/ui-bg_glass_40_5cbada_1x400.png")}
