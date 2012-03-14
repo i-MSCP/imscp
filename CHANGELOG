@@ -4,6 +4,10 @@ i-MSCP ChangeLog
 i-MSCP 1.0.2.2 (RC3)
 -------------------------------------------------------------------------------------
 
+Distributions:
+	Ubuntu:
+		- Added support for Oneiric Ocelot
+
 Tickets:
 	- Fixed #296: Defect - Some issues with dovecot migration script
 	- Fixed #366: Enhancement - Move menu label show/disable option at user profile level
@@ -14,6 +18,7 @@ Tickets:
 	- Fixed #380: Bug - Order Panel - An exception have been thrown Hosting
 	- Fixed #381: Defect - Wrong query in setup_imscp_database - Drop user - Condition
 	- Fixed #382: Defect - Notifications system for authentication is broken
+	- Fixed #384: Defect - Deleting FTP-Account: An exception have been thrown
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.1 (RC2)

@@ -58,11 +58,13 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		SELECT
 			`t1`.`userid`, `t1`.`uid`, `t2`.`domain_uid`
 		FROM
-			`ftp_users` AS `t1`, `domain` AS `t2`
+			`ftp_users` AS `t1`
+		JOIN
+			`domain` AS `t2`
+			ON
+				`t1`.`uid` = t2.`domain_uid`
 		WHERE
 			`t1`.`userid` = ?
-		AND
-			`t1`.`uid` = t2.`domain_uid`
 		AND
 			`t2`.`domain_name` = ?
 	";
@@ -71,6 +73,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$ftp_name = $rs->fields['userid'];
 
 	if ($rs->recordCount() == 0) {
+		set_page_message(tr('Wrong request.'), 'error');
 		redirectTo('ftp_accounts.php');
 	}
 
@@ -78,10 +81,12 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		SELECT
 			`t1`.`gid`, t2.`members`
 		FROM
-			`ftp_users` AS `t1`, `ftp_group` AS `t2`
+			`ftp_users` AS `t1`
+		JOIN
+			`ftp_group` AS `t2`
+			ON
+				`t1`.`gid` = `t2`.`gid`
 		WHERE
-			`t1`.`gid` = `t2`.`gid`
-		AND
 			`t1`.`userid` = ?
 	";
 
@@ -89,10 +94,11 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$ftp_gid = $rs->fields['gid'];
 	$ftp_members = $rs->fields['members'];
-	$members = preg_replace("/$ftp_id/", "", "$ftp_members");
-	$members = preg_replace("/,,/", ",", "$members");
-	$members = preg_replace("/^,/", "", "$members");
-	$members = preg_replace("/,$/", "", "$members");
+
+	$members = str_replace(",{$ftp_id},", ",", "$ftp_members");
+	if ($members == $ftp_members) {
+		$members = preg_replace("/(^{$ftp_id},)|(,{$ftp_id}$)|(^{$ftp_id}$)/", "", "$ftp_members");
+	}
 
 	if (strlen($members) == 0) {
 		$query = "
