@@ -550,6 +550,7 @@ sub setup_hosts {
 	use iMSCP::File;
 	use iMSCP::IP;
 
+	my $rs = 0;
 	my $err = askHostname();
 	return 1 if($err);
 
@@ -561,9 +562,7 @@ sub setup_hosts {
 	my $hostname_local = "$main::imscpConfig{'SERVER_HOSTNAME'}.local";
 
 	my $file = iMSCP::File->new(filename => "/etc/hosts");
-	if(!-f '/etc/hosts.bkp') {
-		$file->copyFile("/etc/hosts.bkp") and return 1;
-	}
+	$rs |= $file->copyFile("/etc/hosts.bkp") if(!-f '/etc/hosts.bkp');
 
 	my $content = "# 'hosts' file configuration.\n\n";
 
@@ -578,12 +577,27 @@ sub setup_hosts {
 	$content .= "ff02::2\tip6-allrouters\n";
 	$content .= "ff02::3\tip6-allhosts\n";
 
-	$file->set($content) and return 1;
-	$file->save() and return 1;
-	$file->mode(0644) and return 1;
-	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
+	$rs |= $file->set($content);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
 
-	0;
+	$file = iMSCP::File->new(filename => "/etc/hostname");
+	$rs |= $file->copyFile("/etc/hostname.bkp") if(!-f '/etc/hostname.bkp');
+	$content = $host;
+	$rs |= $file->set($content);
+	$rs |= $file->save();
+	$rs |= $file->mode(0644);
+	$rs |= $file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'});
+
+	my ($stdout, $stderr);
+	$rs |= execute("$main::imscpConfig{'CMD_HOSTNAME'} $host", \$stdout, \$stderr);
+	debug("$stdout") if $stdout;
+	warning("$stderr") if !$rs && $stderr;
+	error("$stderr") if $rs && $stderr;
+	error("Can not set hostname") if $rs && !$stderr;
+
+	$rs;
 }
 
 

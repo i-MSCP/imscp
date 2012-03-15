@@ -19,6 +19,7 @@ Tickets:
 	- Fixed #381: Defect - Wrong query in setup_imscp_database - Drop user - Condition
 	- Fixed #382: Defect - Notifications system for authentication is broken
 	- Fixed #384: Defect - Deleting FTP-Account: An exception have been thrown
+	- Fixed #385: Enhancement - Unable to install correctry - Installer: fqdn & hostname errors
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.1 (RC2)
