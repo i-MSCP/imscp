@@ -33,7 +33,9 @@ $REPOSITORIES["imscp_ftp"] = array(
 		"FTP_HOST" => "localhost",
 		"FTP_PORT" => "21",
 		"DEFAULT_RIGHTS" => "rw",
+		"FIX_PERMISSIONS" => "user",
 		"USE_SESSION_CREDENTIALS" => true,
+		"TMP_UPLOAD" => AJXP_TMP_DIR
 	)
 );
 
