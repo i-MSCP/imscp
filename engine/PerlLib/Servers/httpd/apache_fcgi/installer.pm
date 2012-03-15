@@ -124,7 +124,7 @@ sub setGuiPermissions{
 	$rs |= setRights("$ROOT_DIR/gui/plugins",
 		{user => $panelUName, group => $apacheGName, mode => '0550'}
 	);
-	$rs |= setRights("$ROOT_DIR/gui/public/tools/filemanager/temp",
+	$rs |= setRights("$ROOT_DIR/gui/public/tools/filemanager/data",
 		{user => $panelUName, group => $panelGName, dirmode => '0700', filemode => '0600', recursive => 'yes'}
 	);
 	$rs |= setRights("$ROOT_DIR/gui/public/tools/webmail/data",

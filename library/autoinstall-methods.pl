@@ -500,6 +500,18 @@ sub saveGuiWorkingData {
 			return $rs if $rs;
 		}
 
+		# Save filemanager data (ajaxplorer)
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data") {
+			$rs = execute(
+				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data",
+				\$stdout, \$stderr
+			);
+
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
+
 		if(-f "$main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php"){
 			$rs = execute(
 				"cp -vf $main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php",

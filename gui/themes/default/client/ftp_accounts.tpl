@@ -23,7 +23,7 @@
 					<tr>
 						<td>{FTP_ACCOUNT}</td>
 						<td>
-							<a href="ftp_auth.php?id={UID}" target="{FILEMANAFER_TARGET}" class="icon i_filemanager">{TR_LOGINAS}</a>
+							<!--<a href="ftp_auth.php?id={UID}" target="{FILEMANAFER_TARGET}" class="icon i_filemanager">{TR_LOGINAS}</a>-->
 							<a href="ftp_edit.php?id={UID}" class="icon i_edit">{TR_EDIT}</a>
 							<a href="#" class="icon i_delete" onclick="action_delete('ftp_delete.php?id={UID}', '{FTP_ACCOUNT}'); return false;">{TR_DELETE}</a>
 						</td>
