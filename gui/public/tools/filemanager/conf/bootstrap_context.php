@@ -63,11 +63,10 @@ define("ADMIN_PASSWORD", "admin");
 // example in log.serial. Do not forget the trailing slash
 // define("AJXP_FORCE_LOGPATH", "/var/log/ajaxplorer/");
 
-
 // DEBUG OPTIONS
 define("AJXP_CLIENT_DEBUG",	false);
 define("AJXP_SERVER_DEBUG",	false);
-define("AJXP_SKIP_CACHE",   true);
+define("AJXP_SKIP_CACHE",   false);
 
 require(AJXP_BIN_FOLDER."/compat.php");
 
@@ -91,7 +90,5 @@ spl_autoload_register('AjaXplorer_autoload');
 
 AJXP_Utils::safeIniSet("session.cookie_httponly", 1);
 //AJXP_Utils::safeIniSet("session.cookie_path", "/ajaxplorer");
-
-
 
 ?>
