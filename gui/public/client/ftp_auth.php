@@ -16,22 +16,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
- * @subpackage  Client
- * @copyright   2010-2012 by i-MSCP team
- * @author      iMSCP Team
- * @author      William Lightning <kassah@gmail.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @category	iMSCP
+ * @package		iMSCP_Core
+ * @subpackage	Client
+ * @copyright	2010-2012 by i-MSCP team
+ * @author		iMSCP Team
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /************************************************************************************
  * Script short description:
  *
- * This script allows net2ftp authentication from i-MSCP
+ * This script allows AjaxPlorer authentication from i-MSCP (onClick login)
  *
- * Borrowed heavily from client/pma_auth.php by Laurent Declercq <l.declercq@nuxwin.com>
  */
 
 /************************************************************************************
@@ -41,14 +40,13 @@
 /**
  * Get ftp login credentials.
  *
- * @author William Lightning <kassah@gmail.com>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @param  int $userId FTP User
  * @return array Array that contains login credentials or FALSE on failure
  */
 function _getLoginCredentials($userId)
 {
-	// @todo Should be optimized
 	$query = "
 		SELECT
 			`userid`, `rawpasswd`
@@ -63,7 +61,7 @@ function _getLoginCredentials($userId)
 	";
 	$stmt = exec_query($query, array($userId, $_SESSION['user_id']));
 
-	if($stmt->rowCount() == 1) {
+	if ($stmt->rowCount()) {
 		return array(
 			$stmt->fields['userid'],
 			$stmt->fields['rawpasswd']
@@ -74,78 +72,109 @@ function _getLoginCredentials($userId)
 }
 
 /**
- * Creates all cookies for net2ftp.
+ * Creates all cookies for AjaxPlorer.
  *
- * @author William Lightning <kassah@gmail.com>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
  * @param  array $cookies Array that contains cookies definitions for net2ftp
  * @return void
  */
-function _net2ftpCreateCookies($cookies)
+function _ajaxplorerCreateCookies($cookies)
 {
-	foreach($cookies as $cookie) {
+	foreach ($cookies as $cookie) {
 		header("Set-Cookie: $cookie", false);
 	}
 }
 
 /**
- * net2ftp authentication.
+ * AjaxPlorer authentication.
  *
- * @author William Lightning <kassah@gmail.com>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param  int $userId ftp username
  * @return bool TRUE on success, FALSE otherwise
  */
-function net2ftpAuth($userId)
+function _ajaxplorerAuth($userId)
 {
 	$credentials = _getLoginCredentials($userId);
 
-	if($credentials) {
+	if ($credentials) {
 		$data = http_build_query(
 			array(
-				'username' => $credentials[0],
+				'userid' => $credentials[0],
 				'password' => stripcslashes($credentials[1]),
-				'ftpserver' => 'localhost',
-				'ftpserverport' => '21',
-				'directory' => '',
-				'language' => 'en',
-				'ftpmode' => 'automatic',
-				'state' => 'browse',
-				'state2' => 'main'));
+				'get_action' => 'login',
+				'login_seed' => '-1',
+				'_method' => 'put',
+				"remember_me" => ''
+			)
+		);
 	} else {
 		set_page_message(tr('Unknown FTP user id.'), 'error');
 		return false;
 	}
 
-	// Prepares Net2FTP absolute Uri to use
-	if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
+	// Prepares AjaxPlorer absolute Uri to use
+	if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
 		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
-		$net2ftpUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
+		$ajaxplorerUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	} else {
 		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
-		$net2ftpUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
+		$ajaxplorerUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	}
 
-	// Set stream context (http) options
+	// AjaxPlorer session initialization
+
+	stream_context_get_default(
+		array(
+			'http' => array(
+				'method' => 'HEAD',
+				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
+					"Connection: close\r\n\r\n",
+				'user_agent' => $_SERVER["HTTP_USER_AGENT"],
+			)
+		)
+	);
+
+	$headers = get_headers($ajaxplorerUri, true);
+
+	// AjaxPlorer secure token
+
+	stream_context_get_default(
+		array(
+			'http' => array(
+				'method' => 'GET',
+				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
+					"Connection: close\r\n" .
+					"Cookie: {$headers['Set-Cookie']}\r\n\r\n",
+				'user_agent' => $_SERVER["HTTP_USER_AGENT"]
+			)
+		)
+	);
+
+	$secureToken = file_get_contents("{$ajaxplorerUri}/?action=get_secure_token");
+
+	// AjaxPlorer authentication
+
 	stream_context_get_default(
 		array(
 			'http' => array(
 				'method' => 'POST',
-				'header' => "Host: {$_SERVER['SERVER_NAME']}$port\r\n" .
+				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
+					"Connection: close\r\n" .
 					"Content-Type: application/x-www-form-urlencoded\r\n" .
+					"X-Requested-With: XMLHttpRequest\r\n" .
 					'Content-Length: ' . strlen($data) . "\r\n" .
-					"Connection: close\r\n\r\n",
+					"Cookie: {$headers['Set-Cookie']}\r\n\r\n",
 				'content' => $data,
 				'user_agent' => $_SERVER["HTTP_USER_AGENT"],
-				'max_redirects' => 1)));
+			)
+		)
+	);
 
-	// Gets the headers from Net2FTP
-	$headers = get_headers($net2ftpUri, true);
+	$headers = get_headers("{$ajaxplorerUri}?secure_token={$secureToken}", true);
 
-	// Absolute minimum I could get a listing with.
-	$url = $net2ftpUri.'?ftpserver=localhost&username='.urlencode($userId).'&state=browse&state2=main';
-
-	_net2ftpCreateCookies($headers['Set-Cookie']);
-	header("Location: {$url}");
+	_ajaxplorerCreateCookies($headers['Set-Cookie']);
+	header("Location: {$ajaxplorerUri}");
 
 	return true;
 }
@@ -164,14 +193,14 @@ check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('ftp')) {
-    redirectTo('index.php');
+	redirectTo('index.php');
 }
 
 /**
  *  Dispatches the request
  */
-if(isset($_GET['id'])) {
-	if(!net2ftpAuth($_GET['id'])) {
+if (isset($_GET['id'])) {
+	if (!_ajaxplorerAuth($_GET['id'])) {
 		redirectTo('ftp_accounts.php');
 	}
 } else {
