@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Ivan Petre Paul <ivanpetrepaul@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-02-28 08:23+0100\n"
-"PO-Revision-Date: 2012-02-26 10:15+0000\n"
+"POT-Creation-Date: 2012-03-16 08:25+0100\n"
+"PO-Revision-Date: 2012-03-08 08:47+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -677,6 +678,9 @@ msgstr "Loguri Apache"
 msgid "Application installer"
 msgstr ""
 
+msgid "Apply"
+msgstr ""
+
 msgid "Apply changes"
 msgstr "Salveaza modificarile"
 
@@ -1036,7 +1040,7 @@ msgid ""
 msgstr ""
 
 msgid "Couldn't check for updates. Website not reachable."
-msgstr ""
+msgstr "Nu se pot căuta actualizări. Website-ul nu este accesibil."
 
 msgid "Count default E-Mail addresses"
 msgstr "Calculeaza emailuri predefinite"
@@ -1351,6 +1355,9 @@ msgstr ""
 msgid "Domain"
 msgstr "Domeniu"
 
+msgid "Domain Aliases"
+msgstr ""
+
 msgid "Domain FTP accounts"
 msgstr ""
 
@@ -1398,9 +1405,6 @@ msgstr ""
 
 msgid "Domain alias errors"
 msgstr "Erori alias domenii"
-
-msgid "Domain alias limit reached!"
-msgstr "Limita aliasuri domeniu atinsa!"
 
 msgid "Domain alias limit reached."
 msgstr ""
@@ -1922,8 +1926,19 @@ msgstr "Forward spre URL"
 msgid "Forward to same address is not allowed."
 msgstr ""
 
+#, php-format
+msgid "Found 1 record. ip %s is blocked for another %s minutes."
+msgstr ""
+
+#, php-format
+msgid "Found records for ip %s"
+msgstr ""
+
 msgid "Free"
 msgstr "Liber"
+
+msgid "Free of charge"
+msgstr ""
 
 msgid "From"
 msgstr "De La"
@@ -2136,7 +2151,7 @@ msgid "IP scheduled for deletion."
 msgstr ""
 
 msgid "IP usage"
-msgstr ""
+msgstr "Utilizare IP"
 
 msgid "IPs usage"
 msgstr ""
@@ -2235,6 +2250,9 @@ msgstr "Sintaxa <i>mount point</i> incorecta!"
 msgid "Incorrect mount point syntax."
 msgstr ""
 
+msgid "Incorrect or is not allowed."
+msgstr ""
+
 msgid "Incorrect price. Example: 9.99"
 msgstr "Pret incorect. Exemplu: 9.99"
 
@@ -2257,6 +2275,10 @@ msgid "Incorrect traffic limit."
 msgstr ""
 
 msgid "Incorrect username length or syntax."
+msgstr ""
+
+#, php-format
+msgid "Increasing %s attempts by 1 for ip %s."
 msgstr ""
 
 msgid "Install"
@@ -2284,7 +2306,7 @@ msgid "Intermediar certificate"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Internaţionalizare"
 
 msgid "Invalid NAME"
 msgstr ""
@@ -2571,6 +2593,9 @@ msgstr ""
 msgid "Mails total"
 msgstr "Total e-mailuri"
 
+msgid "Main menu labels visibility successfully updated."
+msgstr ""
+
 msgid "Maintenance message"
 msgstr ""
 
@@ -2744,9 +2769,6 @@ msgstr "Punct de instalare"
 msgid "Mount point"
 msgstr "Punct instalare"
 
-msgid "Mount point already in use"
-msgstr ""
-
 msgid "Mount point already in use."
 msgstr ""
 
@@ -2881,6 +2903,10 @@ msgstr ""
 msgid "No records found"
 msgstr ""
 
+#, php-format
+msgid "No records found for ip %s with username not set."
+msgstr ""
+
 msgid "No reseller accounts found."
 msgstr ""
 
@@ -2892,6 +2918,9 @@ msgstr ""
 
 msgid "No subdomain system errors"
 msgstr "Nu exista erori de sistem in subdomeniu"
+
+msgid "No such update order found."
+msgstr ""
 
 msgid "No unassigned users was found in database."
 msgstr ""
@@ -2954,7 +2983,7 @@ msgid "OK"
 msgstr "OK"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -3381,6 +3410,10 @@ msgstr ""
 msgid "Plugin"
 msgstr ""
 
+#, php-format
+msgid "Plugin %s successfully %s."
+msgstr ""
+
 msgid ""
 "Plugin list is empty. To install a new plugin, extract its archive content "
 "into the <strong>gui/plugins</strong> directory and update the plugin list."
@@ -3394,6 +3427,19 @@ msgid ""
 msgstr ""
 
 msgid "Plugin management"
+msgstr ""
+
+#, php-format
+msgid "Plugin manager was unable to %s the %s plugin."
+msgstr ""
+
+msgid "Plugin manager was unable to activate the plugin."
+msgstr ""
+
+msgid "Plugin manager was unable to deactivate the plugin."
+msgstr ""
+
+msgid "Plugin manager was unable to protect the plugin."
 msgstr ""
 
 #, php-format
@@ -3412,15 +3458,6 @@ msgid "Plugin successfully deactivated."
 msgstr ""
 
 msgid "Plugin successfully protected."
-msgstr ""
-
-msgid "Plugin(s) successfully activated."
-msgstr ""
-
-msgid "Plugin(s) successfully deactivated."
-msgstr ""
-
-msgid "Plugin(s) successfully protected."
 msgstr ""
 
 msgid "Port"
@@ -3545,7 +3582,7 @@ msgid "Relative weight must be a number!"
 msgstr "Prioritatea relativa trebuie sa fie un numar!"
 
 msgid "Reload"
-msgstr ""
+msgstr "Reîncarcă"
 
 msgid "Remote File not found."
 msgstr ""
@@ -3895,7 +3932,7 @@ msgid "Service protocol"
 msgstr "Protocol"
 
 msgid "Services status"
-msgstr ""
+msgstr "Status servicii"
 
 msgid "Session not found in login table."
 msgstr ""
@@ -3990,6 +4027,12 @@ msgid "Software installer options successfully updated."
 msgstr ""
 
 msgid "Software installer require PHP feature."
+msgstr ""
+
+msgid "Software installer: disabled"
+msgstr ""
+
+msgid "Software installer: enabled"
 msgstr ""
 
 msgid "Software name"
@@ -4138,13 +4181,13 @@ msgstr "Emailuri subdomeniu"
 msgid "Subdomain name"
 msgstr "Nume subdomeniu"
 
-msgid "Subdomain scheduled for addition."
-msgstr ""
-
 msgid "Subdomain scheduled for deletion."
 msgstr ""
 
 msgid "Subdomain scheduled for update."
+msgstr ""
+
+msgid "Subdomain successfully scheduled for addition."
 msgstr ""
 
 msgid ""
@@ -4158,9 +4201,6 @@ msgstr ""
 
 msgid "Subdomains"
 msgstr "Subdomenii"
-
-msgid "Subdomains limit reached."
-msgstr ""
 
 msgid ""
 "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
@@ -4411,6 +4451,10 @@ msgid ""
 msgstr "Parola trebuie sa contina minim %s caractere, atat litere cat si cifre pentru a fi valida"
 
 #, php-format
+msgid "The plugin %s is protected. You cannot perform an action on it."
+msgstr ""
+
+#, php-format
 msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
 msgstr ""
@@ -4471,6 +4515,9 @@ msgid "This htaccess group already exists."
 msgstr ""
 
 msgid "This htaccess user already exist."
+msgstr ""
+
+msgid "This mount point is not allowed."
 msgstr ""
 
 #, php-format
@@ -4667,6 +4714,9 @@ msgstr ""
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+msgid "Unblocking expired sessions."
 msgstr ""
 
 msgid "Undefined reference to data."
@@ -4954,13 +5004,13 @@ msgid "Warnings and Errors"
 msgstr "Atentionari si Erori"
 
 msgid ""
-"We are sorry but you reached the maximum number of domain aliases allowed by"
-" your subscription. Contact your reseller for more information."
+"We are sorry but You reached the maximum number of subdomains allowed by "
+"your subscription."
 msgstr ""
 
 msgid ""
-"We are sorry but you reached the maximum number of subdomains allowed by "
-"your subscription. Contact your reseller for more information."
+"We are sorry but you reached the maximum number of domain aliases allowed by"
+" your subscription. Contact your reseller for more information."
 msgstr ""
 
 msgid "Web & E-Mail Support"
@@ -5230,16 +5280,12 @@ msgid "You have %d new domain alias %s."
 msgstr ""
 
 msgid ""
-"You have CGI enabled, but the new hosting plan doesn't has this feature."
-msgstr "Aveti CGI activat, insa noul plan nu are aceasta optiune."
+"You have CGI enabled, but the new hosting plan doesn't provide this feature."
+msgstr ""
 
 msgid ""
-"You have DNS enabled, but the new hosting plan doesn't has this feature."
-msgstr "Aveti DNS activat, insa noul plan nu are aceasta optiune."
-
-msgid ""
-"You have PHP enabled, but the new hosting plan doesn't has this feature."
-msgstr "Aveti PHP activat, insa noul plan nu are aceasta optiune."
+"You have PHP enabled, but the new hosting plan doesn't provide this feature."
+msgstr ""
 
 #, php-format
 msgid ""
@@ -5250,6 +5296,11 @@ msgstr "Aveti o comanda de actualizare pentru contul %s\n\nAutentifica-te in pan
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
+msgstr ""
+
+msgid ""
+"You have custom DNS enabled, but the new hosting plan doesn't provide this "
+"feature."
 msgstr ""
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
@@ -5265,14 +5316,14 @@ msgstr "Folositi mai multi utilizatori pentru bazele de date decat permite noul 
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr "Folositi mai mult baze de date decat permite noul plan de hosting."
 
-msgid "You have more aliases in use than the new hosting plan limits"
-msgstr ""
-
 msgid "You have more aliases in use than the new hosting plan limits."
 msgstr "Folositi mai mult aliasuri decat permite noul plan de hosting."
 
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Folositi mai mult spatiu decat permite noul plan de hosting."
+
+msgid "You have more domain aliases in use than the new hosting plan limits"
+msgstr ""
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
@@ -5298,8 +5349,8 @@ msgid "You have received %d new support questions."
 msgstr ""
 
 msgid ""
-"You have the i-MSCP application installer enabled, but the new hosting plan "
-"doesn't has this feature."
+"You have software installer enabled, but the new hosting plan doesn't "
+"provide this feature."
 msgstr ""
 
 msgid "You have to accept the Term of Service."
@@ -5341,6 +5392,9 @@ msgstr ""
 msgid "You must specify a subject."
 msgstr ""
 
+msgid "You reached your domain aliases limit."
+msgstr ""
+
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
 msgstr ""
@@ -5366,6 +5420,9 @@ msgstr ""
 msgid "Your order"
 msgstr "Comanda dumneavoastra"
 
+msgid "Your order for hosting plan update was successfully canceled."
+msgstr ""
+
 msgid ""
 "Your order has been confirmed and is being processed... You will receive a "
 "mail after verifying."
@@ -5383,10 +5440,7 @@ msgid ""
 "Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
 msgstr ""
 
-msgid "Your request for hosting plan update was registered."
-msgstr ""
-
-msgid "Your request for hosting plan update was removed."
+msgid "Your request for hosting plan update was successfully registered."
 msgstr ""
 
 msgid ""
@@ -5406,6 +5460,12 @@ msgstr "[i-MSCP PanouComenzi] - Aveti o cerere de actualizare"
 msgid "_: Localised language"
 msgstr "Română - Romanian"
 
+msgid "activate"
+msgstr ""
+
+msgid "activated"
+msgstr ""
+
 msgid "back"
 msgstr ""
 
@@ -5416,6 +5476,12 @@ msgid "day"
 msgstr ""
 
 msgid "days"
+msgstr ""
+
+msgid "deactivate"
+msgstr ""
+
+msgid "deactivated"
 msgstr ""
 
 msgid "disabled"
@@ -5596,6 +5662,9 @@ msgstr ""
 msgid "i-MSCP - Client / Change Language"
 msgstr ""
 
+msgid "i-MSCP - Client / Manage domains - Add subdomain"
+msgstr ""
+
 msgid "i-MSCP - Client / Manage mail"
 msgstr ""
 
@@ -5655,9 +5724,6 @@ msgstr "i-MSCP - Client/Adauga Baza Date SQL"
 
 msgid "i-MSCP - Client/Add SQL User"
 msgstr "i-MSCP - Client/ Adauga utilizator SQL"
-
-msgid "i-MSCP - Client/Add Subdomain"
-msgstr "i-MSCP - Client/ Adauga subdomeniu"
 
 msgid "i-MSCP - Client/Change Password"
 msgstr "i-MSCP - Client/Schimba parola"
@@ -5755,6 +5821,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / My Profile"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Order management"
+msgstr ""
+
 msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
 msgstr ""
 
@@ -5803,9 +5872,6 @@ msgstr "i-MSCP - Reseller/ Detalii comanda"
 msgid "i-MSCP - Reseller/Order email setup"
 msgstr "i-MSCP - Reseller/Setari mail comanda"
 
-msgid "i-MSCP - Reseller/Order management"
-msgstr "i-MSCP - Reseller/Administrare comanda"
-
 msgid "i-MSCP - Reseller/Order settings"
 msgstr "i-MSCP - Reseller/Setari Comanda"
 
@@ -5820,9 +5886,6 @@ msgstr ""
 
 msgid "i-MSCP - Software installer options"
 msgstr ""
-
-msgid "i-MSCP - Update hosting plan"
-msgstr "Actualizare plan gazduire"
 
 msgid "i-MSCP - User/Add domain account - step 2"
 msgstr ""
@@ -5840,6 +5903,9 @@ msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Utilizatori/Editeaza"
 
 msgid "i-MSCP - admin / System tools / System information"
+msgstr ""
+
+msgid "i-MSCP - client / General Information / Update hosting plan"
 msgstr ""
 
 msgid "i-MSCP - client / Setting Layout"
@@ -5891,12 +5957,6 @@ msgid "i-MSCP application installer Web softwares repository"
 msgstr ""
 
 msgid "i-MSCP application installer web software depot"
-msgstr ""
-
-msgid "i-MSCP application installer: disabled"
-msgstr ""
-
-msgid "i-MSCP application installer: enabled"
 msgstr ""
 
 msgid "i-MSCP debugger"
@@ -5975,10 +6035,19 @@ msgstr ""
 msgid "orphan entry"
 msgstr ""
 
+msgid "per"
+msgstr ""
+
 msgid "phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "post_max_size out of range."
+msgstr ""
+
+msgid "protect"
+msgstr ""
+
+msgid "protected"
 msgstr ""
 
 msgid "reseller"
