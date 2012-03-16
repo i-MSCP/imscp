@@ -164,31 +164,28 @@ unless(iMSCP::Dialog->factory()->yesno($msg)) {
 	$rs = removeTmp();
 	exit $rs;
 } else {
-	# Nuxwin review recommendation:
-	# I think this part must be because in future, we  will support another
-	# distributions such as openSUSE where the install process can be different.
-	# I think the better is to provide link to our wiki based on the distro name
-	# when a howto (for manual install/update) is available.
 	iMSCP::Dialog->factory()->msgbox(
 		"To continue setup run from console\n\n".
 		"1.  Purge all GUI sessions files\n\n".
 		"\t# rm -Rf /var/www/imscp/gui/data/sessions\n\n".
-		"2.  Backup needed files\n\n".
+		"2.  Purge all GUI cache files\n\n".
+		"\t# rm -Rf /var/www/imscp/gui/data/cache\n\n".
+		"3.  Backup needed files\n\n".
 		"\t# cp -Rfv /var/www/imscp/gui/data /tmp/imscp/var/www/imscp/gui\n".
 		"\t# cp -Rfv /var/www/imscp/gui/public/tools/webmail/data ".
 		"/tmp/imscp/var/www/imscp/gui/public/tools/webmail\n\n".
-		"3.  Delete old directories:\n\n".
+		"4.  Delete old directories:\n\n".
 		"\t# rm -Rf /var/www/imscp/{daemon,engine,gui}\n\n".
-		"4.  Copy directories into your system (you may make backups)\n\n".
+		"5.  Copy directories into your system (you may make backups)\n\n".
 		"\t# cp -R /tmp/imscp/* / \n\n".
-		"5. Clean tmp\n\n".
+		"6. Clean tmp\n\n".
 		"\t# rm -R /tmp/imscp\n\n".
-		"6.  Now it's time to update your installation.".
+		"7.  Now it's time to update your installation.".
 		"Change into the engine directory\n\n".
 		"\t# cd /var/www/imscp/engine/setup\n\n".
-		"7. Start the engine update\n\n".
+		"8. Start the engine update\n\n".
 		"\t# perl imscp-setup\n\n".
-		"8. Update i-MSCP step-by-step\n\n".
+		"9. Update i-MSCP step-by-step\n\n".
 		"If you get no error, all went good; if you get one, look at ".
 		"http://forum.i-mscp.net to solve the problem."
 	);
