@@ -36,7 +36,8 @@ iMSCP_Bootstrap::boot();
 
 // Configuration parameters
 
-$config = new iMSCP_Config_Handler_File();
+/** @var $config iMSCP_Config_Handler_File */
+$config = iMSCP_Config::getInstance();
 
 // Template root directory
 $config->ROOT_TEMPLATE_PATH = dirname(dirname(__FILE__)) . '/themes/' . $config->USER_INITIAL_THEME;
