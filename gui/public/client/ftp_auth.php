@@ -76,7 +76,7 @@ function _getLoginCredentials($userId)
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @access private
- * @param  array $cookies Array that contains cookies definitions for net2ftp
+ * @param  array $cookies Array that contains cookies definitions for ajaxplorer
  * @return void
  */
 function _ajaxplorerCreateCookies($cookies)

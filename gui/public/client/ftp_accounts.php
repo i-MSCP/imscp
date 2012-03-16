@@ -123,7 +123,7 @@ $tpl->assign(
 		 'TR_EDIT' => tr('Edit'),
 		 'TR_DELETE' => tr('Delete'),
 		 'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s FTP user?', true, '%s'),
-		 'FILEMANAFER_TARGET' => $cfg->FILEMANAGER_TARGET));
+		 'FILEMANAGER_TARGET' => $cfg->FILEMANAGER_TARGET));
 
 generateNavigation($tpl);
 gen_page_ftp_list($tpl);
