@@ -8,6 +8,12 @@ Distributions:
 	Ubuntu:
 		- Added support for Oneiric Ocelot
 
+Features / Enhancements:
+
+	GUI:
+		Tools:
+			- Replaced net2ftp by ajaxplorer
+
 Tickets:
 	- Fixed #296: Defect - Some issues with dovecot migration script
 	- Fixed #366: Enhancement - Move menu label show/disable option at user profile level
@@ -20,6 +26,7 @@ Tickets:
 	- Fixed #382: Defect - Notifications system for authentication is broken
 	- Fixed #384: Defect - Deleting FTP-Account: An exception have been thrown
 	- Fixed #385: Enhancement - Unable to install correctry - Installer: fqdn & hostname errors
+	- Fixed #386: Defect - The gui cache directory must be purged during update
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.1 (RC2)

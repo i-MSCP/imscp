@@ -512,17 +512,6 @@ sub saveGuiWorkingData {
 			return $rs if $rs;
 		}
 
-		if(-f "$main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php"){
-			$rs = execute(
-				"cp -vf $main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/cache/protected_plugins.php",
-				\$stdout, \$stderr
-			);
-
-			debug("$stdout") if $stdout;
-			error("$stderr") if $stderr;
-			return $rs if $rs;
-		}
-
 	# For i-MSCP versions prior 1.0.4
 	} else {
 		# Save i-MSCP GUI data (isp logos)
@@ -597,9 +586,19 @@ sub installTmp {
 		return $rs if $rs;
 	}
 
-	# Session files must not be saved to prevent any troubles after upate.
+	# Session files must not be saved to prevent any troubles after update.
 	$rs = execute(
 		"rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/sessions/*",
+		\$stdout, \$stderr
+	);
+
+	debug("$stdout") if $stdout;
+	error("$stderr") if $stderr;
+	return $rs if $rs;
+
+	# Cache files must not be saved to prevent any troubles after update.
+	$rs = execute(
+		"rm -fr $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/cache/*",
 		\$stdout, \$stderr
 	);
 

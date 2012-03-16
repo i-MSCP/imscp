@@ -55,14 +55,19 @@ if (version_compare(phpversion(), '5.3.2', '<') === true) {
 	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.3.2 or newer.\n");
 }
 
+define('GUI_ROOT_DIR', dirname(__DIR__));
+
 // Define path for the i-MSCP library directory
-define('LIBRARY_PATH', __DIR__);
+define('LIBRARY_PATH', GUI_ROOT_DIR . '/library');
 
 // Define path of the plugins directory
-define('PLUGINS_PATH', dirname(__DIR__) .'/plugins');
+define('PLUGINS_PATH', GUI_ROOT_DIR .'/plugins');
 
 // Define cache directory path
-define('CACHE_PATH', dirname(__DIR__) .'/data/cache');
+define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
+
+// Define persistent directory path
+define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
 /**
  * Autoloading classes
