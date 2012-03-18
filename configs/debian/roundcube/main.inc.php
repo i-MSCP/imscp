@@ -358,7 +358,7 @@ $rcmail_config['email_dns_check'] = false;
 // ----------------------------------
 
 // List of active plugins (in plugins/ directory)
-$rcmail_config['plugins'] = array();
+$rcmail_config['plugins'] = array({PLUGINS});
 
 // ----------------------------------
 // USER INTERFACE

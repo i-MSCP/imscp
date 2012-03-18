@@ -17,128 +17,123 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP Roundcube password changer
+ * @category	iMSCP
+ * @package	 iMSCP Roundcube password changer
  * @copyright   2010-2011 by i-MSCP team
  * @author 		Sascha Bay
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license	 http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
- 
-function password_save($passwd)
-{
-    $rcmail = rcmail::get_instance();
-    if($rcmail->config->get('which_mail_po') == '0') $sql = "UPDATE `mail_users` SET `mail_pass` = %p, `status` = 'change' WHERE `mail_addr` = %u LIMIT 1";
-	else  $sql = "UPDATE `mail_users` SET `mail_pass` = %p WHERE `mail_addr` = %u LIMIT 1";
 
-    if ($dsn = $rcmail->config->get('password_db_dsn')) {
+function password_save($passwd){
+	$rcmail = rcmail::get_instance();
+	$sql = "UPDATE `mail_users` SET `mail_pass` = %p, `status` = 'change' WHERE `mail_addr` = %u LIMIT 1";
+
+	if ($dsn = $rcmail->config->get('password_db_dsn')) {
 	// #1486067: enable new_link option
 	if (is_array($dsn) && empty($dsn['new_link']))
-	    $dsn['new_link'] = true;
+		$dsn['new_link'] = true;
 	else if (!is_array($dsn) && !preg_match('/\?new_link=true/', $dsn))
 	  $dsn .= '?new_link=true';
 
-        $db = new rcube_mdb2($dsn, '', FALSE);
-        $db->set_debug((bool)$rcmail->config->get('sql_debug'));
-        $db->db_connect('w');
-    }
-    if ($err = $db->is_error())
-        return PASSWORD_ERROR;
+		$db = new rcube_mdb2($dsn, '', FALSE);
+		$db->set_debug((bool)$rcmail->config->get('sql_debug'));
+		$db->db_connect('w');
+	}
+	if ($err = $db->is_error())
+		return PASSWORD_ERROR;
 
-    $sql = str_replace('%u', $db->quote($_SESSION['username'],'text'), $sql);
-    $sql = str_replace('%p', $db->quote($passwd,'text'), $sql);
+	$sql = str_replace('%u', $db->quote($_SESSION['username'],'text'), $sql);
+	$sql = str_replace('%p', $db->quote($passwd,'text'), $sql);
 
-    $res = $db->query($sql);
+	$res = $db->query($sql);
 
-    if (!$db->is_error()) {
-        if ($db->affected_rows($res) == 1) {
-		if($rcmail->config->get('which_mail_po') === 0) {
-            require_once($rcmail->config->get('imscp_lib_path').'/imscp-lib.php');
+	if (!$db->is_error()) {
+		if ($db->affected_rows($res) == 1) {
+			//require_once($rcmail->config->get('imscp_lib_path').'/imscp-lib.php');
 			send_request();
+			return PASSWORD_SUCCESS; // This is the good case: 1 row updated
 		}
-        return PASSWORD_SUCCESS; // This is the good case: 1 row updated
-        }
-    }
+	}
 
-    return PASSWORD_ERROR;
+	return PASSWORD_ERROR;
 }
-function read_line(&$socket)
-{
-    $line = '';
+function read_line(&$socket){
+	$line = '';
 
-    do {
-        $ch = socket_read($socket, 1);
-        $line = $line . $ch;
-    } while ($ch != "\r" && $ch != "\n");
+	do {
+		$ch = socket_read($socket, 1);
+		$line = $line . $ch;
+	} while ($ch != "\r" && $ch != "\n");
 
-    return $line;
+	return $line;
 }
-function send_request()
-{
-    $version = "1.0.4";
 
-    //$code = 999;
+function send_request(){
+	$version = "1.0.4";
 
-    @$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-    if ($socket < 0) {
-        $errno = "socket_create() failed.\n";
-        return $errno;
-    }
+	//$code = 999;
 
-    @$result = socket_connect($socket, '127.0.0.1', 9876);
-    if ($result == false) {
-        $errno = "socket_connect() failed.\n";
-        return $errno;
-    }
+	@$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+	if ($socket < 0) {
+		$errno = "socket_create() failed.\n";
+		return $errno;
+	}
 
-    // read one line with welcome string
-    $out = read_line($socket);
+	@$result = socket_connect($socket, '127.0.0.1', 9876);
+	if ($result == false) {
+		$errno = "socket_connect() failed.\n";
+		return $errno;
+	}
 
-    list($code) = explode(' ', $out);
-    if ($code == 999) {
-        return $out;
-    }
+	// read one line with welcome string
+	$out = read_line($socket);
 
-    // send hello query
-    $query = "helo  $version\r\n";
-    socket_write($socket, $query, strlen($query));
+	list($code) = explode(' ', $out);
+	if ($code == 999) {
+		return $out;
+	}
 
-    // read one line with helo answer
-    $out = read_line($socket);
+	// send hello query
+	$query = "helo  $version\r\n";
+	socket_write($socket, $query, strlen($query));
 
-    list($code) = explode(' ', $out);
-    if ($code == 999) {
-        return $out;
-    }
+	// read one line with helo answer
+	$out = read_line($socket);
 
-    // send reg check query
-    $query = "execute query\r\n";
-    socket_write($socket, $query, strlen($query));
-    // read one line key replay
-    $execute_reply = read_line($socket);
+	list($code) = explode(' ', $out);
+	if ($code == 999) {
+		return $out;
+	}
 
-    list($code) = explode(' ', $execute_reply);
-    if ($code == 999) {
-        return $out;
-    }
+	// send reg check query
+	$query = "execute query\r\n";
+	socket_write($socket, $query, strlen($query));
+	// read one line key replay
+	$execute_reply = read_line($socket);
 
-    // send quit query
-    $quit_query = "bye\r\n";
-    socket_write($socket, $quit_query, strlen($quit_query));
+	list($code) = explode(' ', $execute_reply);
+	if ($code == 999) {
+		return $out;
+	}
 
-    // read quit answer
-    $quit_reply = read_line($socket);
+	// send quit query
+	$quit_query = "bye\r\n";
+	socket_write($socket, $quit_query, strlen($quit_query));
 
-    list($code) = explode(' ', $quit_reply);
+	// read quit answer
+	$quit_reply = read_line($socket);
 
-    if ($code == 999) {
-        return $out;
-    }
+	list($code) = explode(' ', $quit_reply);
 
-    list($answer) = explode(' ', $execute_reply);
+	if ($code == 999) {
+		return $out;
+	}
 
-    socket_close($socket);
+	list($answer) = explode(' ', $execute_reply);
 
-    return $answer;
+	socket_close($socket);
+
+	return $answer;
 }
 ?>

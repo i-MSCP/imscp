@@ -36,5 +36,4 @@ $messages['passwordinconsistency'] = 'Passwords do not match, please try again.'
 $messages['connecterror'] = 'Could not save new password. Connection error.';
 $messages['internalerror'] = 'Could not save new password.';
 $messages['passwordlenght'] = 'Password lenght! Min. characters: ';
-$messages['wrongpointeger'] = 'Wrong value for "which_mail_po" in config.inc.php';
 ?>

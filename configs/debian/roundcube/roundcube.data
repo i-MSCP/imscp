@@ -31,3 +31,5 @@ DATABASE_USER =
 DATABASE_PASSWORD =
 
 DES_KEY =
+
+PLUGINS = 'imscp_pw_changer'

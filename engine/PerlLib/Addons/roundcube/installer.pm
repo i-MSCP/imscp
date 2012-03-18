@@ -70,6 +70,7 @@ sub install{
 
 	$rs |= $self->setupDB();
 	$rs |= $self->DESKey();
+	$rs |= $self->savePlugins();
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
 
@@ -306,6 +307,16 @@ sub DESKey{
 	0;
 }
 
+sub savePlugins{
+
+	my $self = shift;
+
+	$self::roundcubeConfig{'PLUGINS'} = $self::roundcubeOldConfig{'PLUGINS'}
+		if(!$self::roundcubeConfig{'PLUGINS'} && $self::roundcubeOldConfig{'PLUGINS'});
+
+	0;
+}
+
 sub buildConf{
 
 	use Servers::mta;
@@ -324,6 +335,7 @@ sub buildConf{
 		BASE_SERVER_VHOST	=> $main::imscpConfig{BASE_SERVER_VHOST},
 		TMP_PATH			=> "$main::imscpConfig{'GUI_ROOT_DIR'}/data/tmp",
 		DES_KEY				=> $self::roundcubeConfig{DES_KEY},
+		PLUGINS				=> $self::roundcubeConfig{PLUGINS},
 	};
 
 	my $cfgFiles = {

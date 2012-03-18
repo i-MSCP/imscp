@@ -17,24 +17,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP Roundcube password changer
- * @copyright   2010-2011 by i-MSCP team
+ * @category	iMSCP
+ * @package		iMSCP Roundcube password changer
+ * @copyright	2010-2011 by i-MSCP team
  * @author 		Sascha Bay
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 define('PASSWORD_ERROR', 2);
 define('PASSWORD_CONNECT_ERROR', 3);
 define('PASSWORD_SUCCESS', 0);
 
+class imscp_pw_changer extends rcube_plugin{
 
-class imscp_pw_changer extends rcube_plugin
-{
 	public $task = 'settings';
-	
-	function init()
-	{
+
+	function init(){
 		$rcmail = rcmail::get_instance();
 		// add Tab label
 		$rcmail->output->add_label('password');
@@ -42,9 +40,8 @@ class imscp_pw_changer extends rcube_plugin
 		$this->register_action('plugin.imscp_pw_changer-save', array($this, 'password_save'));
 		$this->include_script('password.js');
 	}
-	
-	function password_init()
-	{
+
+	function password_init(){
 		$this->add_texts('localization/');
 		$this->register_handler('plugin.body', array($this, 'password_form'));
 
@@ -52,9 +49,8 @@ class imscp_pw_changer extends rcube_plugin
 		$rcmail->output->set_pagetitle($this->gettext('changepasswd'));
 		$rcmail->output->send('plugin');
 	}
- 	
-	function password_save()
-	{
+
+	function password_save(){
 		$rcmail = rcmail::get_instance();
 		$this->load_config();
 
@@ -62,10 +58,7 @@ class imscp_pw_changer extends rcube_plugin
 		$this->register_handler('plugin.body', array($this, 'password_form'));
 		$rcmail->output->set_pagetitle($this->gettext('changepasswd'));
 
-		if($rcmail->config->get('which_mail_po') != '0' && $rcmail->config->get('which_mail_po') != '1') {
-			$rcmail->output->command('display_message', $this->gettext('wrongpointeger'), 'error');
-		}
-		elseif((!isset($_POST['_confpasswd'])) || !isset($_POST['_newpasswd'])) {
+		if((!isset($_POST['_confpasswd'])) || !isset($_POST['_newpasswd'])) {
 		  $rcmail->output->command('display_message', $this->gettext('nopassword'), 'error');
 		}
 		elseif($_POST['_confpasswd'] != $_POST['_newpasswd']) {
@@ -86,9 +79,8 @@ class imscp_pw_changer extends rcube_plugin
 		rcmail_overwrite_action('plugin.imscp_pw_changer');
 		$rcmail->output->send('plugin');
 	}
-	
-	function password_form()
-	{
+
+	function password_form(){
 		$rcmail = rcmail::get_instance();
 		$this->load_config();
 
@@ -133,49 +125,55 @@ class imscp_pw_changer extends rcube_plugin
 
 		$rcmail->output->add_gui_object('passform', 'imscp_pw_changer-form');
 
-		return $rcmail->output->form_tag(array(
-		  'id' => 'imscp_pw_changer-form',
-		  'name' => 'imscp_pw_changer-form',
-		  'method' => 'post',
-		  'action' => './?_task=settings&_action=plugin.imscp_pw_changer-save',
-		  ), $out);
+		return $rcmail->output->form_tag(
+			array(
+				'id' => 'imscp_pw_changer-form',
+				'name' => 'imscp_pw_changer-form',
+				'method' => 'post',
+				'action' => './?_task=settings&_action=plugin.imscp_pw_changer-save',
+			),
+			$out
+		);
 	}
-	
-	private function _save($passwd)
-	{
+
+	private function _save($passwd){
 		$config = rcmail::get_instance()->config;
 		$driver = $this->home.'/drivers/'.$config->get('password_driver', 'sql').'.php';
-		
+
 		if (!is_readable($driver)) {
-		  raise_error(array(
-			'code' => 600,
-			'type' => 'php',
-			'file' => __FILE__,
-			'message' => "Password plugin: Unable to open driver file $driver"
-			), true, false);
-		  return $this->gettext('internalerror');
+			raise_error(
+				array(
+					'code' => 600,
+					'type' => 'php',
+					'file' => __FILE__,
+					'message' => "Password plugin: Unable to open driver file $driver"
+				),
+				true,
+				false
+			);
+			return $this->gettext('internalerror');
 		}
-		
+
 		include($driver);
 
 		if (!function_exists('password_save')) {
-		  raise_error(array(
-			'code' => 600,
-			'type' => 'php',
-			'file' => __FILE__,
-			'message' => "Password plugin: Broken driver: $driver"
+			raise_error(array(
+				'code' => 600,
+				'type' => 'php',
+				'file' => __FILE__,
+				'message' => "Password plugin: Broken driver: $driver"
 			), true, false);
-		  return $this->gettext('internalerror');
+			return $this->gettext('internalerror');
 		}
 		$result = password_save($passwd);
 		switch ($result) {
-		  case PASSWORD_SUCCESS:
-			return;
-		  case PASSWORD_CONNECT_ERROR;
-			return $this->gettext('connecterror');
-		  case PASSWORD_ERROR:
-		  default:
-			return $this->gettext('internalerror');
+			case PASSWORD_SUCCESS:
+				return;
+			case PASSWORD_CONNECT_ERROR;
+				return $this->gettext('connecterror');
+			case PASSWORD_ERROR:
+			default:
+				return $this->gettext('internalerror');
 		}
 	}
 }
