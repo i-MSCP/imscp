@@ -57,6 +57,7 @@
 		<php5>php5-intl</php5>
 		<php5>php5-mcrypt</php5>
 		<php5>php5-mysql</php5>
+		<php5>php5-suhosin</php5>
 	</php>
 	<perl>
 		perl
@@ -102,7 +103,7 @@
 	<other>awstats</other>
 	<other>chkrootkit</other>
 	<other>dialog</other>
-	<other>diff</other>
+	<other>diffutils</other>
 	<other>dnsutils</other>
 	<other>gcc</other>
 	<other>gzip</other>
