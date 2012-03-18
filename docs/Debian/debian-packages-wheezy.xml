@@ -102,7 +102,7 @@
 	<other>awstats</other>
 	<other>chkrootkit</other>
 	<other>dialog</other>
-	<other>diff</other>
+	<other>diffutils</other>
 	<other>dnsutils</other>
 	<other>gcc</other>
 	<other>gzip</other>
