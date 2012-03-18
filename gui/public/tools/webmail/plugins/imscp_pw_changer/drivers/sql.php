@@ -50,7 +50,6 @@ function password_save($passwd){
 
 	if (!$db->is_error()) {
 		if ($db->affected_rows($res) == 1) {
-			//require_once($rcmail->config->get('imscp_lib_path').'/imscp-lib.php');
 			send_request();
 			return PASSWORD_SUCCESS; // This is the good case: 1 row updated
 		}
