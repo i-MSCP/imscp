@@ -113,8 +113,6 @@ sub bkpConfFile{
 	if(-f $cfgFile){
 		my $file	= iMSCP::File->new(filename => $cfgFile);
 		$file->copyFile("$self->{bkpDir}/$name$suffix.$timestamp") and return 1;
-	} else {
-		error("$cfgFile do not exists");
 	}
 
 	0;
@@ -229,6 +227,7 @@ sub setupDB{
 
 		## Inserting new data into the database
 		for ((
+				'mail_users',
 				'roundcube_cache',
 				'roundcube_cache_index',
 				'roundcube_cache_messages',
@@ -257,6 +256,21 @@ sub setupDB{
 				error("$err");
 				return 1;
 			}
+		}
+		$err = $database->doQuery(
+			'dummy',
+			"
+				GRANT SELECT,UPDATE ON `$main::imscpConfig{'DATABASE_NAME'}`.`mail_users`
+				TO ?@?
+				IDENTIFIED BY ?;
+			",
+			$self::roundcubeConfig{'DATABASE_USER'},
+			$main::imscpConfig{'DATABASE_HOST'},
+			$self::roundcubeConfig{'DATABASE_PASSWORD'}
+		);
+		if (ref $err ne 'HASH'){
+			error("$err");
+			return 1;
 		}
 	}
 

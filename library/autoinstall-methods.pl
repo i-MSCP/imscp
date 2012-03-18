@@ -488,18 +488,6 @@ sub saveGuiWorkingData {
 		error("$stderr") if $stderr;
 		return $rs if $rs;
 
-		# Save webmail data (Squirrel)
-		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data") {
-			$rs = execute(
-				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
-				\$stdout, \$stderr
-			);
-
-			debug("$stdout") if $stdout;
-			error("$stderr") if $stderr;
-			return $rs if $rs;
-		}
-
 		# Save filemanager data (ajaxplorer)
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/public/tools/filemanager/data") {
 			$rs = execute(
@@ -518,18 +506,6 @@ sub saveGuiWorkingData {
 		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos") {
 			$rs = execute(
 				"cp -TvRf $main::defaultConf{'ROOT_DIR'}/gui/themes/user_logos $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/data/ispLogos",
-				\$stdout, \$stderr
-			);
-
-			debug("$stdout") if $stdout;
-			error("$stderr") if $stderr;
-			return $rs if $rs;
-		}
-
-		# Save webmail data (Squirrel)
-		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data") {
-			$rs = execute(
-				"cp -RTvf $main::defaultConf{'ROOT_DIR'}/gui/tools/webmail/data $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/public/tools/webmail/data",
 				\$stdout, \$stderr
 			);
 
