@@ -25,7 +25,7 @@ $rcmail_config['debug_level'] = 1;
 $rcmail_config['log_driver'] = 'file';
 
 // date format for log entries
-// (read http://php.net/manual/en/function.date.php for all format characters)  
+// (read http://php.net/manual/en/function.date.php for all format characters)
 $rcmail_config['log_date_format'] = 'd-M-Y H:i:s O';
 
 // Syslog ident string to use, if using the 'syslog' log driver.
@@ -69,14 +69,14 @@ $rcmail_config['smtp_debug'] = false;
 // %d - domain (http hostname without the first part)
 // %s - domain name after the '@' from e-mail address provided at login screen
 // For example %n = mail.domain.tld, %d = domain.tld
-$rcmail_config['default_host'] = '';
+$rcmail_config['default_host'] = 'imap.{BASE_SERVER_VHOST}';
 
 // TCP port used for IMAP connections
 $rcmail_config['default_port'] = 143;
 
 // IMAP AUTH type (DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN or empty to use
 // best server supported one)
-$rcmail_config['imap_auth_type'] = null;
+$rcmail_config['imap_auth_type'] = LOGIN;
 
 // If you know your imap's folder delimiter, you can specify it here.
 // Otherwise it will be determined automatically
@@ -132,18 +132,18 @@ $rcmail_config['messages_cache'] = false;
 // %d - domain (http hostname without the first part)
 // %z - IMAP domain (IMAP hostname without the first part)
 // For example %n = mail.domain.tld, %d = domain.tld
-$rcmail_config['smtp_server'] = '';
+$rcmail_config['smtp_server'] = 'smtp.{BASE_SERVER_VHOST}';
 
 // SMTP port (default is 25; 465 for SSL)
 $rcmail_config['smtp_port'] = 25;
 
 // SMTP username (if required) if you use %u as the username Roundcube
 // will use the current username for login
-$rcmail_config['smtp_user'] = '';
+$rcmail_config['smtp_user'] = '%u';
 
 // SMTP password (if required) if you use %p as the password Roundcube
 // will use the current user's password for login
-$rcmail_config['smtp_pass'] = '';
+$rcmail_config['smtp_pass'] = '%p';
 
 // SMTP AUTH type (DIGEST-MD5, CRAM-MD5, LOGIN, PLAIN or empty to use
 // best server supported one)
@@ -155,10 +155,10 @@ $rcmail_config['smtp_auth_cid'] = null;
 // Optional SMTP authentication password to be used for smtp_auth_cid
 $rcmail_config['smtp_auth_pw'] = null;
 
-// SMTP HELO host 
-// Hostname to give to the remote server for SMTP 'HELO' or 'EHLO' messages 
-// Leave this blank and you will get the server variable 'server_name' or 
-// localhost if that isn't defined. 
+// SMTP HELO host
+// Hostname to give to the remote server for SMTP 'HELO' or 'EHLO' messages
+// Leave this blank and you will get the server variable 'server_name' or
+// localhost if that isn't defined.
 $rcmail_config['smtp_helo_host'] = '';
 
 // SMTP connection timeout, in seconds. Default: 0 (no limit)
@@ -177,7 +177,7 @@ $rcmail_config['enable_installer'] = false;
 $rcmail_config['log_dir'] = 'logs/';
 
 // use this folder to store temp files (must be writeable for apache user)
-$rcmail_config['temp_dir'] = 'temp/';
+$rcmail_config['temp_dir'] = '{TMP_PATH}';
 
 // lifetime of message cache
 // possible units: s, m, h, d, w
@@ -247,7 +247,7 @@ $rcmail_config['x_frame_options'] = 'sameorigin';
 // this key is used to encrypt the users imap password which is stored
 // in the session record (and the client cookie if remember password is enabled).
 // please provide a string of exactly 24 chars.
-$rcmail_config['des_key'] = 'rcmail-!24ByteDESkey*Str';
+$rcmail_config['des_key'] = '{DES_KEY}';
 
 // Automatically add this domain to user names for login
 // Only for IMAP servers that require full e-mail addresses for login
@@ -273,17 +273,17 @@ $rcmail_config['mail_domain'] = '';
 // Password charset.
 // Use it if your authentication backend doesn't support UTF-8.
 // Defaults to ISO-8859-1 for backward compatibility
-$rcmail_config['password_charset'] = 'ISO-8859-1';
+//$rcmail_config['password_charset'] = 'ISO-8859-1';
 
 // How many seconds must pass between emails sent by a user
 $rcmail_config['sendmail_delay'] = 0;
 
 // Maximum number of recipients per message. Default: 0 (no limit)
-$rcmail_config['max_recipients'] = 0; 
+$rcmail_config['max_recipients'] = 0;
 
 // Maximum allowednumber of members of an address group. Default: 0 (no limit)
 // If 'max_recipients' is set this value should be less or equal
-$rcmail_config['max_group_members'] = 0; 
+$rcmail_config['max_group_members'] = 0;
 
 // add this user-agent to message headers when sending
 $rcmail_config['useragent'] = 'Roundcube Webmail/'.RCMAIL_VERSION;
@@ -364,7 +364,7 @@ $rcmail_config['plugins'] = array();
 // USER INTERFACE
 // ----------------------------------
 
-// default messages sort column. Use empty value for default server's sorting, 
+// default messages sort column. Use empty value for default server's sorting,
 // or 'arrival', 'date', 'subject', 'from', 'to', 'size', 'cc'
 $rcmail_config['message_sort_col'] = '';
 
@@ -427,7 +427,7 @@ $rcmail_config['create_default_folders'] = false;
 // protect the default folders from renames, deletes, and subscription changes
 $rcmail_config['protect_default_folders'] = true;
 
-// if in your system 0 quota means no limit set this option to true 
+// if in your system 0 quota means no limit set this option to true
 $rcmail_config['quota_zero_as_unlimited'] = false;
 
 // Make use of the built-in spell checker. It is based on GoogieSpell.
@@ -499,7 +499,7 @@ $rcmail_config['address_book_type'] = 'sql';
 // Array key must contain only safe characters, ie. a-zA-Z0-9_
 $rcmail_config['ldap_public'] = array();
 
-// If you are going to use LDAP for individual address books, you will need to 
+// If you are going to use LDAP for individual address books, you will need to
 // set 'user_specific' to true and use the variables to generate the appropriate DNs to access it.
 //
 // The recommended directory structure for LDAP is to store all the address book entries
@@ -512,7 +512,7 @@ $rcmail_config['ldap_public'] = array();
 //
 // So the base_dn would be uid=%fu,ou=people,o=root
 // The bind_dn would be the same as based_dn or some super user login.
-/* 
+/*
  * example config for Verisign directory
  *
 $rcmail_config['ldap_public']['Verisign'] = array(
@@ -600,7 +600,7 @@ $rcmail_config['ldap_public']['Verisign'] = array(
   // definition for contact groups (uncomment if no groups are supported)
   // for the groups base_dn, the user replacements %fu, %u, $d and %dc work as for base_dn (see above)
   // if the groups base_dn is empty, the contact base_dn is used for the groups as well
-  // -> in this case, assure that groups and contacts are separated due to the concernig filters! 
+  // -> in this case, assure that groups and contacts are separated due to the concernig filters!
   'groups'        => array(
     'base_dn'     => '',
     'filter'      => '(objectClass=groupOfNames)',
@@ -669,7 +669,7 @@ $rcmail_config['prefer_html'] = true;
 $rcmail_config['show_images'] = 0;
 
 // compose html formatted messages by default
-// 0 - never, 1 - always, 2 - on reply to HTML message only 
+// 0 - never, 1 - always, 2 - on reply to HTML message only
 $rcmail_config['htmleditor'] = 0;
 
 // show pretty dates as standard
@@ -691,14 +691,14 @@ $rcmail_config['logout_purge'] = false;
 // Compact INBOX on logout
 $rcmail_config['logout_expunge'] = false;
 
-// Display attached images below the message body 
+// Display attached images below the message body
 $rcmail_config['inline_images'] = true;
 
 // Encoding of long/non-ascii attachment names:
 // 0 - Full RFC 2231 compatible
 // 1 - RFC 2047 for 'name' and RFC 2231 for 'filename' parameter (Thunderbird's default)
 // 2 - Full 2047 compatible
-$rcmail_config['mime_param_folding'] = 1;
+$rcmail_config['mime_param_folding'] = 0;
 
 // Set true if deleted messages should not be displayed
 // This will make the application run slower
@@ -722,9 +722,9 @@ $rcmail_config['check_all_folders'] = false;
 // If true, after message delete/move, the next message will be displayed
 $rcmail_config['display_next'] = false;
 
-// 0 - Do not expand threads 
-// 1 - Expand all threads automatically 
-// 2 - Expand only threads with unread messages 
+// 0 - Do not expand threads
+// 1 - Expand all threads automatically
+// 2 - Expand only threads with unread messages
 $rcmail_config['autoexpand_threads'] = 0;
 
 // When replying place cursor above original message (top posting)

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+i-MSCP - internet Multi Server Control Panel
+
+Copyright 2010 - 2012 by internet Multi Server Control Panel - http://i-mscp.net
+
+This program is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software Foundation;
+either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this
+program. If not, see <http://www.gnu.org/licenses/>
+
+@category	i-MSCP
+@copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
+@author		Daniel Andreca <sci2tech@i-mscp.net>
+@version	SVN: $Id$
+@link		http://i-mscp.net i-MSCP Home Site
+@license	http://www.gnu.org/licenses/ GPL v2
+-->
+
+<install>
+	<folders>${ROOT_CONF}/roundcube</folders>
+	<folders>${SYSTEM_CONF}/roundcube</folders>
+	<folders>${SYSTEM_CONF}/roundcube/backup</folders>
+	<folders>${SYSTEM_CONF}/roundcube/working</folders>
+
+	<copy_config>${SYSTEM_CONF}/roundcube/roundcube.data</copy_config>
+	<copy_config>${SYSTEM_CONF}/roundcube/config.inc.php</copy_config>
+	<copy_config>${SYSTEM_CONF}/roundcube/db.inc.php</copy_config>
+	<copy_config>${SYSTEM_CONF}/roundcube/main.inc.php</copy_config>
+
+	<copy />
+
+	<create_file />
+
+	<chown_file />
+
+	<chmod_file />
+</install>
