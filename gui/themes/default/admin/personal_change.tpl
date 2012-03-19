@@ -1,5 +1,5 @@
 			<form name="personalChangeFrm" action="personal_change.php" method="post">
-				<table class="fisrtColFixed">
+				<table class="firstColFixed">
 					<tr>
 						<th colspan="2">{TR_PERSONAL_DATA}</th>
 					</tr>

@@ -1,4 +1,3 @@
-
 			<form name="personalChangeFrm" action="personal_change.php" method="post">
 				<table class="firstColFixed">
 					<tr>
@@ -19,6 +18,7 @@
 								<option value="M" {VL_MALE}>{TR_MALE}</option>
 								<option value="F" {VL_FEMALE}>{TR_FEMALE}</option>
 								<option value="U" {VL_UNKNOWN}>{TR_UNKNOWN}</option>
+                            </select>
 						</td>
 					</tr>
 					<tr>
