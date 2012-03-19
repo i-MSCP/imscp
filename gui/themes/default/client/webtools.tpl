@@ -37,7 +37,7 @@
 				<!-- EDP: aps_feature -->
 				<!-- BDP: awstats_feature -->
 				<tr>
-					<td><a href="{AWSTATS_PATH}" target="{AWSTATST_TARGET}" class="icon_big icon_center i_awstatsicon" title="{TR_AWSTATS}"></a></td>
+					<td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="icon_big icon_center i_awstatsicon" title="{TR_AWSTATS}"></a></td>
 					<td>{TR_AWSTATS_TXT}</td>
 				</tr>
 				<!-- EDP: awstats_feature -->

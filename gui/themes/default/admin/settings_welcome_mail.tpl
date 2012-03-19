@@ -40,7 +40,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td><label for="auto_message"<strong>{TR_MESSAGE}</strong></label></td>
+						<td><label for="auto_message"><strong>{TR_MESSAGE}</strong></label></td>
 						<td><textarea name="auto_message" id="auto_message">{MESSAGE_VALUE}</textarea></td>
 					</tr>
 					<tr>

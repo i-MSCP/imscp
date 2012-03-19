@@ -45,7 +45,7 @@
                             <td><label for="datepicker">{TR_DOMAIN_EXPIRE}</label></td>
                             <td>
                                 <div>
-                                    <input type="text" name="datepicker" id="datepicker" value="{DATEPICKER_VALUE}">
+                                    <input type="text" name="datepicker" id="datepicker" value="{DATEPICKER_VALUE}" />
                                     <label for="never_expire">(MM/DD/YYYY) {TR_EXPIRE_CHECKBOX}</label>
                                     <input type="checkbox" name="never_expire" id="never_expire" value="0" checked />
                                 </div>

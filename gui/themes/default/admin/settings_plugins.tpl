@@ -99,6 +99,6 @@
 			<!-- EDP: plugins_block -->
 
 			<div class="buttons" style="margin: 0px;">
-				<button type="buttons" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
+				<button type="button" name="updatePluginList">{TR_UPDATE_PLUGIN_LIST}</button>
 			</div>
 

@@ -1,5 +1,4 @@
 
-<body>
 	<script type="text/javascript">
 	/* <![CDATA[ */
 		<!-- BDP: js_to_all_domain -->

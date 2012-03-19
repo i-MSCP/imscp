@@ -77,7 +77,7 @@
 		$(window).load(function(){begin_js();});
 	/* ]]> */
 	</script>
-		<form name="addFrm" action="mail_add.php" method="post" id="client_mail_add">
+		<form name="client_mail_add" action="mail_add.php" method="post" id="client_mail_add">
 			<table>
 				<tr>
 					<th colspan="2">{TR_MAIl_ACCOUNT_DATA}</th>
