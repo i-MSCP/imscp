@@ -127,7 +127,7 @@ sub askRBL{
 		} else {
 			while (! ($rs = iMSCP::Dialog->factory()->radiolist(
 				"Request that ALL clients are only ".
-				"checked against RBLs ( do not check DNS entries for your MTA, HELO and Domain)?\n\nDefault is OFF",
+				"checked against RBLs (do not check DNS entries for your MTA, HELO and Domain)?\n\nDefault is OFF",
 				'Off',
 				'On'
 			))){}
