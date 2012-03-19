@@ -126,12 +126,13 @@ sub askRBL{
 			$self::policydConfig{'DNSBL_CHECKS_ONLY'} = $self::policydOldConfig{'DNSBL_CHECKS_ONLY'};
 		} else {
 			while (! ($rs = iMSCP::Dialog->factory()->radiolist(
-				"Request that ALL clients are only ".
-				"checked against RBLs (do not check DNS entries for your MTA, HELO and Domain)?\n\nDefault is OFF",
-				'Off',
-				'On'
+				"Do you want to disable additional checks for MTA, HELO and domain?\n\n".
+				"YES (may cause some spam messages to be accepted).\n\n".
+				"NO (default, some misconfigured mail service providers\n\t\t\twill be treat as spam and messages will be rejected).\n",
+				'No',
+				'Yes'
 			))){}
-			$rs = $rs eq 'Off' ? 0 : 1;
+			$rs = $rs eq 'No' ? 0 : 1;
 			$self::policydConfig{'DNSBL_CHECKS_ONLY'} = $rs;
 		}
 	}
