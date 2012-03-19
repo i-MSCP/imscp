@@ -58,10 +58,10 @@
 							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}"/>
 						</td>
 						<td>
-							<input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED}" />{DOMAIN_NAME}
+							<input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} />{DOMAIN_NAME}
 							<br />
 							<!-- BDP: to_alias_domain -->
-							<input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED}" />
+							<input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED} />
 							<select name="als_id">
 								<!-- BDP: als_list -->
 								<option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>

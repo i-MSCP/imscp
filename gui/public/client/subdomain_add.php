@@ -111,7 +111,10 @@ function client_generatePage($tpl, $userId)
 		$tpl->assign(
 			array(
 				'READONLY_FORWARD' => ' readonly',
-				'DISABLE_FORWARD' => $cfg->HTML_DISABLED
+				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
+                'HTTP_YES' => '',
+                'HTTPS_YES' => '',
+                'FTP_YES' => ''
 			)
 		);
 	}
