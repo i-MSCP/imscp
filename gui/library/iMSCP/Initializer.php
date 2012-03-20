@@ -535,11 +535,26 @@ class iMSCP_Initializer
 	protected function _checkForDatabaseUpdate()
 	{
 		iMSCP_Events_Manager::getInstance()->registerListener(
-			iMSCP_Events::onLoginScriptStart,
+			array(
+				iMSCP_Events::onLoginScriptStart,
+				iMSCP_Events::onBeforeSetIdentity
+			)
+			,
 			function($event)
 			{
 				if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
 					iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
+
+					/** @var $event iMSCP_Events_Event */
+					if (($identity = $event->getParam('identity', null))) {
+						if ($identity->admin_type != 'admin' &&
+							(!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
+						) {
+							iMSCP_Authentication::getInstance()->unsetIdentity();
+							set_page_message(tr('Only administrator can login when maintenance mode is activated.'), 'error');
+							redirectTo('index.php?admin=1');
+						}
+					}
 				}
 			}
 		);
