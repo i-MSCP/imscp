@@ -543,7 +543,7 @@ class iMSCP_Initializer
 			function($event)
 			{
 				if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
-					iMSCP_Registry::get('config')->MAINTENANCEMODE = true;
+					$this->_config->MAINTENANCEMODE = true;
 
 					/** @var $event iMSCP_Events_Event */
 					if (($identity = $event->getParam('identity', null))) {
