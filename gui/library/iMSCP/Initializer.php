@@ -32,16 +32,16 @@
  */
 
 /**
- * Initializer.
+ * Initializer class.
  *
- * The initializer is responsible for processing the i-MSCP configuration, such as
- * etting the include_path, initializing logging, database and more.
+ * The initializer is responsible for processing the i-MSCP configuration, such as setting the include_path, database
+ * and more.
  *
  * @category	i-MSCP
  * @package		iMSCP_Core
  * @subpackage	Initializer
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.1.10
+ * @version		0.1.11
  */
 class iMSCP_Initializer
 {
@@ -62,9 +62,8 @@ class iMSCP_Initializer
 	/**
 	 * Runs initializer
 	 *
-	 * By default, this will invoke the {@link _processAll}  or {@link _processCLI}
-	 * methods, which simply executes all of the initialization routines for
-	 * execution context. Alternately, you can specify explicitly which
+	 * By default, this will invoke the {@link _processAll}  or {@link _processCLI} methods, which simply executes all
+	 * of the initialization routines for execution context. Alternately, you can specify explicitly which
 	 * initialization methods you want:
 	 *
 	 * <i>Usage example:</i>
@@ -72,12 +71,12 @@ class iMSCP_Initializer
 	 *	iMSCP_Initializer::run('_setIncludePath')
 	 * </code>
 	 *
-	 * This is useful if you only want the include_path path initialized, without
-	 * incurring the overhead of completely loading the entire environment.
+	 * This is useful if you only want the include_path path initialized, without incurring the overhead of completely
+	 * loading the entire environment.
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be executed or an iMSCP_Config_Handler_File
-	 * 													object
+	 *													object
 	 * @param iMSCP_Config_Handler_File $config			OPTIONAL iMSCP_Config_Handler_File object
 	 * @return iMSCP_Initializer
 	 */
@@ -107,8 +106,7 @@ class iMSCP_Initializer
 	/**
 	 * Singleton - Make new unavailbale.
 	 *
-	 * Create a new Initializer instance that references the given
-	 * {@link iMSCP_Config_Handler_File} instance.
+	 * Create a new Initializer instance that references the given {@link iMSCP_Config_Handler_File} instance.
 	 *
 	 * @param iMSCP_Config_Handler|iMSCP_Config_Handler_File $config
 	 * @return iMSCP_Initializer
@@ -184,9 +182,6 @@ class iMSCP_Initializer
 		// Initialize plugin (Action)
 		$this->_initializeActionPlugins();
 
-		// Initialize logger
-		// $this->_initializeLogger();
-
 		// Run after initialize callbacks (will be changed later)
 		$this->_afterInitialize();
 
@@ -200,9 +195,6 @@ class iMSCP_Initializer
 	 */
 	protected function _processCLI()
 	{
-		// Include path
-		//$this->_setIncludePath();
-
 		// Sets encryption keys
 		$this->_setEncryptionKeys();
 
@@ -212,8 +204,7 @@ class iMSCP_Initializer
 		// Sets encoding (Both PHP and database)
 		$this->_setEncoding();
 
-		// Load all the configuration parameters from the database and merge
-		// it to our basis configuration object
+		// Load all the configuration parameters from the database and merge it to our basis configuration object
 		$this->_processConfiguration();
 
 		self::$_initialized = true;
@@ -253,24 +244,26 @@ class iMSCP_Initializer
 	}
 
 	/**
-	 * Sets the include path.
+	 * Sets include path.
 	 *
 	 * Sets the PHP include_path. Duplicates entries are removed.
-	 *
-	 * <b>Note:</b> Will be completed later with other paths (MVC switching).
 	 *
 	 * @return void
 	 */
 	protected function _setIncludePath()
 	{
 		// Ensure library/ and vendor/ are on include_path
-		set_include_path(implode(
-			PATH_SEPARATOR,
-			array_unique(
-				array(
-					LIBRARY_PATH,
-					LIBRARY_PATH . '/vendor',
-					DEFAULT_INCLUDE_PATH))));
+		set_include_path(
+			implode(
+				PATH_SEPARATOR,
+				array_unique(
+					array(
+						LIBRARY_PATH,
+						LIBRARY_PATH . '/vendor',
+						DEFAULT_INCLUDE_PATH)
+				)
+			)
+		);
 	}
 
 	/**
@@ -297,7 +290,8 @@ class iMSCP_Initializer
 				'gc_divisor' => 100,
 				'gc_maxlifetime' => 1440,
 				'gc_probability' => 1,
-				'save_path' => $this->_config->GUI_ROOT_DIR . '/data/sessions'));
+				'save_path' => $this->_config->GUI_ROOT_DIR . '/data/sessions')
+		);
 
 		Zend_Session::start();
 	}
@@ -354,12 +348,11 @@ class iMSCP_Initializer
 	/**
 	 * Establishes the connection to the database server.
 	 *
-	 * This methods establishes the default connection to the database server by
-	 * using configuration parameters that come from the basis configuration object
-	 * and then, register the {@link iMSCP_Database} instance in the
-	 * {@link iMSCP_Registry} for shared access.
+	 * This methods establishes the default connection to the database server by using configuration parameters that
+	 * come from the basis configuration object and then, register the {@link iMSCP_Database} instance in the
+	 * {@link iMSCP_Registry} for further usage.
 	 *
-	 * A PDO instance is also registered in the registry for shared access.
+	 * A PDO instance is also registered in the registry for further usage.
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
@@ -415,12 +408,10 @@ class iMSCP_Initializer
 	/**
 	 * Sets timezone.
 	 *
-	 * This method ensures that the timezone is set to avoid any error with PHP
-	 * versions equal or later than version 5.3.x
+	 * This method ensures that the timezone is set to avoid any error with PHP versions equal or later than version 5.3.x
 	 *
-	 * This method acts by checking the `date.timezone` value, and sets it to the
-	 * value from the i-MSCP PHP_TIMEZONE parameter if exists and if it not empty or
-	 * to 'UTC' otherwise. If the timezone identifier is invalid, an
+	 * This method acts by checking the `date.timezone` value, and sets it to the value from the i-MSCP PHP_TIMEZONE
+	 * parameter if exists and if it not empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
 	 * {@link iMSCP_Exception} exception is raised.
 	 *
 	 * @throws iMSCP_Exception
@@ -435,11 +426,9 @@ class iMSCP_Initializer
 
 			if (!date_default_timezone_set($timezone)) {
 				throw new iMSCP_Exception(
-					'Invalid timezone identifier set in your imscp.conf file. ' .
-						'Please fix this error and re-run the imscp-setup script to fix ' .
-						'the value in all your customers\' php.ini files. The' .
-						'list of valid identifiers is available at the ' .
-						'<a href="http://www.php.net/manual/en/timezones.php" ' .
+					'Invalid timezone identifier set in your imscp.conf file. Please fix this error and re-run the ' .
+						'imscp-setup script to fix the value in all your customers\' php.ini files. The list of valid ' .
+						'identifiers is available at the <a href="http://www.php.net/manual/en/timezones.php" ' .
 						'target="_blank">PHP Homepage</a> .');
 			}
 		}
@@ -448,12 +437,10 @@ class iMSCP_Initializer
 	/**
 	 * Load configuration parameters from the database.
 	 *
-	 * This function retrieves all the parameters from the database and merge them
-	 * with the basis configuration object.
+	 * This function retrieves all the parameters from the database and merge them with the basis configuration object.
 	 *
-	 * Parameters that exists in the basis configuration object will be replaced by
-	 * them that come from the database. The basis configuration object contains
-	 * parameters that come from the i-mscp.conf configuration file or any
+	 * Parameters that exists in the basis configuration object will be replaced by them that come from the database.
+	 * The basis configuration object contains parameters that come from the i-mscp.conf configuration file or any
 	 * parameter defined in the {@link environment.php} file.
 	 *
 	 * @return void
@@ -464,13 +451,9 @@ class iMSCP_Initializer
 		$pdo = iMSCP_Database::getRawInstance();
 
 		// Creating new Db configuration handler.
-		// TODO: Inject the PDO object by using dependency injection instead of pass
-		// the PDO instance in constructor. All configuration handlers will be aware
-		// of the dependency injection container.
 		$dbConfig = new iMSCP_Config_Handler_Db($pdo);
 
-		// Now, we can override our basis configuration object with parameter
-		// that come from the database
+		// Now, we can override our basis configuration object with parameter that come from the database
 		$this->_config->replaceWith($dbConfig);
 
 		// Finally, we register the iMSCP_Config_Handler_Db for shared access
@@ -480,9 +463,8 @@ class iMSCP_Initializer
 	/**
 	 * Initialize the PHP output buffering / spGzip filter.
 	 *
-	 * <b>Note:</b> The hight level such as 8 and 9 for compression are not
-	 * recommended for performances reasons. The obtained gain with these levels is
-	 * very small compared to the intermediate level such as 6 or 7.
+	 * Note: The hight level such as 8 and 9 for compression are not recommended for performances reasons. The obtained
+	 * gain with these levels is very small compared to the intermediate level such as 6 or 7.
 	 *
 	 * @return void
 	 */
@@ -508,21 +490,17 @@ class iMSCP_Initializer
 	/**
 	 * Initialize localization.
 	 *
-	 * Note: We are using the PHP-gettext library as gettext wrapper to be able to
-	 * use all locales same if they are not installed on the server. In case the
-	 * current locale is installed on the server, the navive gettext functions are
-	 * still used.
+	 * Note: We are using the PHP-gettext library as gettext wrapper to be able to use all locales same if they are not
+	 * installed on the server. In case the current locale is installed on the server, the navive gettext functions used.
 	 *
 	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since i-MSCP 1.0.1.4
 	 * @return void
 	 */
 	protected function _initializeLocalization()
 	{
 		require_once 'vendor/php-gettext/gettext.inc';
 
-		$locale = isset($_SESSION['user_def_lang'])
-			? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
+		$locale = isset($_SESSION['user_def_lang']) ? $_SESSION['user_def_lang'] : $this->_config->USER_INITIAL_LANG;
 
 		// Small fix for ar_AE locale
 		if ($locale == 'ar') {
@@ -531,11 +509,8 @@ class iMSCP_Initializer
 
 		$checkedLocale = setlocale(
 			LC_MESSAGES,
-			array(
-				$locale . '.utf8',
-				$locale . '.utf-8',
-				$locale . '.UTF8',
-				$locale . '.UTF-8'));
+			array($locale . '.utf8', $locale . '.utf-8', $locale . '.UTF8', $locale . '.UTF-8')
+		);
 
 		$checkedLocale = (empty($checkedLocale)) ? $locale . '.utf8' : $checkedLocale;
 
@@ -550,18 +525,6 @@ class iMSCP_Initializer
 		T_bindtextdomain($domain, $this->_config->GUI_ROOT_DIR . '/i18n/locales');
 		T_bind_textdomain_codeset($domain, 'UTF-8');
 		T_textdomain($domain);
-	}
-
-	/**
-	 * Initialize logger.
-	 *
-	 * <b>Note:</b> Not used at this moment (testing in progress)
-	 *
-	 * @return void
-	 */
-	protected function _initializeLogger()
-	{
-		throw new iMSCP_Exception('Not implemented yet.');
 	}
 
 	/**
@@ -585,7 +548,6 @@ class iMSCP_Initializer
 	/**
 	 * Initialize layout.
 	 *
-	 * @since i-MSCP 1.0.1.6
 	 * @return void
 	 */
 	protected function _initializeLayout()
@@ -639,8 +601,8 @@ class iMSCP_Initializer
 	/**
 	 * Initialize Debug bar.
 	 *
-	 * Note: Each Debug bar plugin listens specfics events. They will auto-registered
-	 * on the events manager by the debug bar component.
+	 * Note: Each Debug bar plugin listens specfics events. They will auto-registered on the events manager by the debug
+	 * bar component.
 	 *
 	 * @return void
 	 */
@@ -673,13 +635,13 @@ class iMSCP_Initializer
 		$pluginManager = new iMSCP_Plugin_Manager(PLUGINS_PATH);
 		$pluginList = $pluginManager->getPluginList('Action');
 
-		if(!empty($pluginList)) {
+		if (!empty($pluginList)) {
 			$eventManager = iMSCP_Events_Manager::getInstance();
 
-			foreach($pluginList as $pluginName) {
+			foreach ($pluginList as $pluginName) {
 				/** @var $plugin iMSCP_Plugin_Action */
 				$plugin = $pluginManager->load('Action', $pluginName);
-				if(null === $plugin) continue;
+				if (null === $plugin) continue;
 				$plugin->register($eventManager);
 			}
 		}
@@ -692,7 +654,6 @@ class iMSCP_Initializer
 	 * Fires the afterInitialize callbacks.
 	 *
 	 * @return void
-	 * @todo To be replaced by a specific event
 	 */
 	protected function _afterInitialize()
 	{

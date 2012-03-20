@@ -111,7 +111,7 @@ function admin_generatePage($tpl)
 			$logMessage = $stmt->fields['log_message'];
 
 			$replaces = array(
-				'/[^a-zA-Z](delete[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+				'/[^a-zA-Z](delete[sd]?|failed)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 				'/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 				'/[^a-zA-Z](unable?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
 				'/[^a-zA-Z](add(s|ed)?)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
