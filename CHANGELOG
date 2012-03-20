@@ -7,6 +7,7 @@ i-MSCP 1.0.3.0
 Tickets:
 	- Fixed #388: Cosmetics - Typo Error
 	- Fixed #391: Bug - HELO-Mismatch (policyd-weight)
+	- Fixed #393: Defect - Apache cannot restart after a libapach2-mod* update
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.2 (RC3)

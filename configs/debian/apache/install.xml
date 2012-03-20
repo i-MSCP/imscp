@@ -36,8 +36,10 @@ program. If not, see <http://www.gnu.org/licenses/>
 	<folders>${INST_PREF}/var/www/scoreboards</folders>
 
 	<copy_config>${SYSTEM_CONF}/apache/httpd.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/00_master.conf</copy_config>
-	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_master_fcgi.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl_fcgi.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_master_itk.conf</copy_config>
+	<copy_config>${SYSTEM_CONF}/apache/00_master_ssl_itk.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_nameserver.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/00_modcband.conf</copy_config>
 	<copy_config>${SYSTEM_CONF}/apache/01_awstats.conf</copy_config>
