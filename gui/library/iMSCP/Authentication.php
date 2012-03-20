@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		Authentication
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.3
  */
 class iMSCP_Authentication
 {
@@ -222,6 +222,7 @@ class iMSCP_Authentication
 	 */
 	public function hasIdentity()
 	{
+		// TODO: Should we test really all these variables?
 		return isset(
 			$_SESSION['user_id'], $_SESSION['user_logged'], $_SESSION['user_pass'], $_SESSION['user_type'],
 			$_SESSION['user_email'], $_SESSION['user_created_by']
@@ -237,20 +238,19 @@ class iMSCP_Authentication
 	{
 		$this->events()->dispatch(iMSCP_Events::onBeforeSetIdentity, array('context' => $this, 'identity' => $identity));
 
-		// TODO Found another solution since if we do that at this step, related login data in database will be lost
-		// We wil up to one permission level so we regenerate the session identifier to enforce security
-		//session_regenerate_id();
+		// We wil change permission level so we regenerate the session identifier to enforce security
+		session_regenerate_id();
 
 		$lastAccess = time();
 
 		$query = "
-			REPLACE INTO `login` (
-				`session_id`, `ipaddr`, `user_name`, `lastaccess`, `login_count`
+			INSERT INTO `login` (
+				`session_id`, `ipaddr`, `lastaccess`, `user_name`
 			) VALUES (
-				?, ?, ?, ?, ?
+				?, ?, ?, ?
 			)
 		";
-		exec_query($query, array(session_id(), $_SERVER['REMOTE_ADDR'], $identity->admin_name, $lastAccess, 1));
+		exec_query($query, array(session_id(), $_SERVER['REMOTE_ADDR'], $lastAccess, $identity->admin_name));
 
 		$_SESSION['user_logged'] = $identity->admin_name;
 		$_SESSION['user_pass'] = $identity->admin_pass;
@@ -273,8 +273,8 @@ class iMSCP_Authentication
 		if ($this->hasIdentity()) {
 			$this->events()->dispatch(iMSCP_Events::onBeforeUnsetIdentity, array('context' => $this));
 
-			$query = "DELETE FROM `login` WHERE `session_id` = ? AND `user_name` = ?";
-			exec_query($query, array(session_id(), $this->getIdentity()->admin_name));
+			$query = "DELETE FROM `login` WHERE `session_id` = ?";
+			exec_query($query, session_id());
 
 			$preserveList = array(
 				'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
