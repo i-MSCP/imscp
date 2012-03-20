@@ -551,7 +551,7 @@ class iMSCP_Initializer
 							(!isset($_SESSION['logged_from_type']) || $_SESSION['logged_from_type'] != 'admin')
 						) {
 							iMSCP_Authentication::getInstance()->unsetIdentity();
-							set_page_message(tr('Only administrator can login when maintenance mode is activated.'), 'error');
+							set_page_message(tr('Only administrators can login when maintenance mode is activated.'), 'error');
 							redirectTo('index.php?admin=1');
 						}
 					}
