@@ -232,9 +232,9 @@ class iMSCP_Authentication
 	 */
 	public function getIdentity()
 	{
-		static $identity = null;
+		$identity = null;
 
-		if (!$identity && $this->hasIdentity()) {
+		if ($this->hasIdentity()) {
 			$identity = new stdClass();
 			$identity->admin_id = $_SESSION['user_id'];
 			$identity->admin_name = $_SESSION['user_logged'];
