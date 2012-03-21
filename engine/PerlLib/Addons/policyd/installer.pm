@@ -55,17 +55,8 @@ sub install{
 
 	my $self	= shift;
 	my $rs		= 0;
-	$self->{httpd} = Servers::httpd->factory() unless $self->{httpd} ;
 
-	$self->{user} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningUser() : $main::imscpConfig{ROOT_USER};
-	$self->{group} = $self->{httpd}->can('getRunningUser') ? $self->{httpd}->getRunningGroup() : $main::imscpConfig{ROOT_GROUP};
-
-	for ((
-		$self::policydConfig{'POLYCYD_CONF_FILE'}
-	)) {
-		$rs |= $self->bkpConfFile($_);
-	}
-
+	$rs |= $self->bkpConfFile($self::policydConfig{'POLICYD_CONF_FILE'});
 	$rs |= $self->askRBL();
 	$rs |= $self->buildConf();
 	$rs |= $self->saveConf();
@@ -147,14 +138,14 @@ sub buildConf{
 
 	my $self		= shift;
 	my $rs			= 0;
-	my $panelUName	= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
-	my $panelGName	= $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $uName		= $self::policydConfig{'POLICYD_USER'};
+	my $gName		= $self::policydConfig{'POLICYD_GROUP'};
 
-	my ($name,$path,$suffix) = fileparse($self::policydConfig{'POLYCYD_CONF_FILE'});
+	my ($name,$path,$suffix) = fileparse($self::policydConfig{'POLICYD_CONF_FILE'});
 
-	unless (-f $self::policydConfig{'POLYCYD_CONF_FILE'}){
+	unless (-f $self::policydConfig{'POLICYD_CONF_FILE'}){
 		my ($stdout, $stderr);
-		$rs |= execute("$self::policydConfig{POLYCYD_BIN_FILE} defaults > $self::policydConfig{POLYCYD_CONF_FILE}", \$stdout, \$stderr);
+		$rs |= execute("$self::policydConfig{POLICYD_BIN_FILE} defaults > $self::policydConfig{POLICYD_CONF_FILE}", \$stdout, \$stderr);
 		debug("$stdout") if $stdout;
 		warning("$stderr") if !$rs && $stderr;
 		error("$stderr") if $rs && $stderr;
@@ -162,7 +153,7 @@ sub buildConf{
 		return $rs if $rs;
 	}
 
-	my $file	= iMSCP::File->new(filename => $self::policydConfig{POLYCYD_CONF_FILE});
+	my $file	= iMSCP::File->new(filename => $self::policydConfig{POLICYD_CONF_FILE});
 	my $cfgTpl	= $file->get();
 	return 1 unless $cfgTpl;
 
@@ -172,8 +163,8 @@ sub buildConf{
 	$rs |= $file->set($cfgTpl);
 	$rs |= $file->save();
 	$rs |= $file->mode(0640);
-	$rs |= $file->owner($panelUName, $panelGName);
-	$rs |= $file->copyFile($self::policydConfig{POLYCYD_CONF_FILE});
+	$rs |= $file->owner($uName, $gName);
+	$rs |= $file->copyFile($self::policydConfig{POLICYD_CONF_FILE});
 
 	$rs;
 }
