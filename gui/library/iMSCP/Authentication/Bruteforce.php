@@ -338,7 +338,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	protected function _createRecord()
 	{
 		$query = "
-			INSERT INTO `login` (
+			REPLACE INTO `login` (
 				`session_id`, `ipaddr`, `{$this->_type}_count`, `user_name`, `lastaccess`
 				) VALUES (
 					?, ?, 1, NULL, UNIX_TIMESTAMP()

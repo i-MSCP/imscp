@@ -261,7 +261,7 @@ class iMSCP_Authentication
 		$lastAccess = time();
 
 		$query = "
-			INSERT INTO `login` (
+			REPLACE INTO `login` (
 				`session_id`, `ipaddr`, `lastaccess`, `user_name`
 			) VALUES (
 				?, ?, ?, ?
