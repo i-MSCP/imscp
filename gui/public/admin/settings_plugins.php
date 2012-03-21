@@ -101,7 +101,7 @@ function admin_pluginManagerDoBulkAction($pluginManager)
 {
 	$action = clean_input($_POST['bulkActions']);
 
-	if (isset($_POST['checked']) && is_array($_POST['checked'])) {
+	if (isset($_POST['checked']) && is_array($_POST['checked']) && !empty($_POST['checked'])) {
 		if (!empty($_POST['checked'])) {
 			$trActions = array(
 				'activate' => tr('activate'), 'deactivate' => tr('deactivate'), 'protect' => tr('protect'),
@@ -134,6 +134,8 @@ function admin_pluginManagerDoBulkAction($pluginManager)
 				}
 			}
 		}
+	} else {
+		set_page_message(tr('You must select one or more plugins to operate on.'), 'error');
 	}
 }
 
@@ -164,7 +166,9 @@ if (isset($_GET['updatePluginList'])) {
 	);
 
 	set_page_message(
-		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success');
+		tr('Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> plugin(s) deleted.', $info['added'], $info['updated'], $info['deleted']), 'success'
+	);
+
 	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['activate'])) {
 	$pluginName = clean_input($_GET['activate']);
@@ -182,6 +186,8 @@ if (isset($_GET['updatePluginList'])) {
 	} else {
 		set_page_message(tr('Plugin manager was unable to activate the plugin.'), 'error');
 	}
+
+	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['deactivate'])) {
 	$pluginName = clean_input($_GET['deactivate']);
 
@@ -198,6 +204,8 @@ if (isset($_GET['updatePluginList'])) {
 	} else {
 		set_page_message(tr('Plugin manager was unable to deactivate the plugin.'), 'error');
 	}
+
+	redirectTo('settings_plugins.php');
 } elseif (isset($_GET['protect'])) {
 	$pluginName = clean_input($_GET['protect']);
 
@@ -214,6 +222,8 @@ if (isset($_GET['updatePluginList'])) {
 	} else {
 		set_page_message(tr('Plugin manager was unable to protect the plugin.'), 'error');
 	}
+
+	redirectTo('settings_plugins.php');
 } elseif (isset($_POST['bulkActions']) && in_array($_POST['bulkActions'], array('activate', 'deactivate', 'protect'))) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onBeforeBulkAction, array('pluginManager' => $pluginManager)
@@ -224,6 +234,8 @@ if (isset($_GET['updatePluginList'])) {
 	iMSCP_Events_Manager::getInstance()->dispatch(
 		iMSCP_Events::onAfterBulkAction, array('pluginManager' => $pluginManager)
 	);
+
+	redirectTo('settings_plugins.php');
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */

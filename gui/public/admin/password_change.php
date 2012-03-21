@@ -67,7 +67,6 @@ function admin_updatePassword()
 			set_page_message(tr('The current password is wrong.'), 'error');
 		} else {
 			$upass = crypt_user_pass($_POST['pass']);
-			$_SESSION['user_pass'] = $upass;
 			$user_id = $_SESSION['user_id'];
 
 			$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `admin_id` = ? ";

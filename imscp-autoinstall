@@ -174,6 +174,7 @@ unless(iMSCP::Dialog->factory()->yesno($msg)) {
 		"\t# cp -Rfv /var/www/imscp/gui/data /tmp/imscp/var/www/imscp/gui\n".
 		"\t# cp -Rfv /var/www/imscp/gui/public/tools/webmail/data ".
 		"/tmp/imscp/var/www/imscp/gui/public/tools/webmail\n\n".
+		"\t# cp -Rfv /var/www/imscp/gui/plugins /tmp/imscp/var/www/imscp/gui\n\n".
 		"4.  Delete old directories:\n\n".
 		"\t# rm -Rf /var/www/imscp/{daemon,engine,gui}\n\n".
 		"5.  Copy directories into your system (you may make backups)\n\n".
