@@ -77,10 +77,8 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 		// Correct input password
 		$upass = crypt_user_pass(htmlentities($_POST['pass']));
-
-		$_SESSION['user_pass'] = $upass;
-
 		$user_id = $_SESSION['user_id'];
+
 		// Begin update admin-db
 		$query = "
 			UPDATE

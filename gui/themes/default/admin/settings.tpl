@@ -1,4 +1,12 @@
-
+			<script type="text/javascript">
+			/* <![CDATA[ */
+			$(document).ready(function(){
+				$('#bruteforce').change(function(){
+					($(this).val() == '1') ? $('.display').show() : $('.display').hide();
+				}).trigger('change');
+			});
+			/*]]>*/
+			</script>
 			<form action="settings.php" method="post" name="frmsettings" id="frmsettings">
 				<fieldset>
 					<legend>{TR_UPDATES}</legend>
@@ -69,7 +77,7 @@
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<tr class="display">
 							<td><label for="bruteforce_between">{TR_BRUTEFORCE_BETWEEN}</label></td>
 							<td>
 								<select name="bruteforce_between" id="bruteforce_between">
@@ -78,25 +86,25 @@
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<tr class="display">
 							<td><label for="bruteforce_max_login">{TR_BRUTEFORCE_MAX_LOGIN}</label></td>
 							<td>
 								<input type="text" name="bruteforce_max_login" id="bruteforce_max_login" value="{BRUTEFORCE_MAX_LOGIN_VALUE}" maxlength="3"/>
 							</td>
 						</tr>
-						<tr>
+						<tr class="display">
 							<td><label for="bruteforce_block_time">{TR_BRUTEFORCE_BLOCK_TIME}</label></td>
 							<td>
 								<input name="bruteforce_block_time" id="bruteforce_block_time" type="text" value="{BRUTEFORCE_BLOCK_TIME_VALUE}" maxlength="3"/>
 							</td>
 						</tr>
-						<tr>
+						<tr class="display">
 							<td><label for="bruteforce_between_time">{TR_BRUTEFORCE_BETWEEN_TIME}</label></td>
 							<td>
 								<input name="bruteforce_between_time" id="bruteforce_between_time" type="text" value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3"/>
 							</td>
 						</tr>
-						<tr>
+						<tr class="display">
 							<td><label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label></td>
 							<td>
 								<input name="bruteforce_max_capcha" id="bruteforce_max_capcha" type="text" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3"/>

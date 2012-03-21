@@ -45,12 +45,9 @@ function do_session_timeout()
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "DELETE FROM `login` WHERE `lastaccess` < ?";
+	// We must not remove bruteforce plugin data (AND `user_name` IS NOT NULL)
+	$query = "DELETE FROM `login` WHERE `lastaccess` < ? AND `user_name` IS NOT NULL";
 	exec_query($query, time() - $cfg->SESSION_TIMEOUT * 60);
-
-	if (!session_exists(session_id())) {
-		iMSCP_Authentication::getInstance()->unsetIdentity();
-	}
 }
 
 /**

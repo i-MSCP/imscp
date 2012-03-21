@@ -139,9 +139,13 @@ function gen_dynamic_page_data($tpl, $id) {
 
 			$rs = exec_query($query, array($item_id, $item_id, $ok_status));
 			if ($rs->recordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward', 'NORMAL_MAIL' => $cfg->HTML_DISABLED));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+                $tpl->assign(
+                    array(
+                        'NORMAL_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? '' : $cfg->HTML_CHECKED,
+                        'FORWARD_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? $cfg->HTML_CHECKED : '',
+                        'DEFAULT' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? 'forward' : 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);
@@ -182,9 +186,13 @@ function gen_dynamic_page_data($tpl, $id) {
 			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward', 'NORMAL_MAIL' => $cfg->HTML_DISABLED));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+                $tpl->assign(
+                    array(
+                        'NORMAL_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? '' : $cfg->HTML_CHECKED,
+                        'FORWARD_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? $cfg->HTML_CHECKED : '',
+                        'DEFAULT' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? 'forward' : 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);
@@ -227,9 +235,13 @@ function gen_dynamic_page_data($tpl, $id) {
 			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward', 'NORMAL_MAIL' => $cfg->HTML_DISABLED));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+                $tpl->assign(
+                    array(
+                        'NORMAL_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? '' : $cfg->HTML_CHECKED,
+                        'FORWARD_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? $cfg->HTML_CHECKED : '',
+                        'DEFAULT' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? 'forward' : 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);
@@ -271,9 +283,13 @@ function gen_dynamic_page_data($tpl, $id) {
 			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
-				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
+				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward', 'NORMAL_MAIL' => $cfg->HTML_DISABLED));
 			} else {
-				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
+                $tpl->assign(
+                    array(
+                        'NORMAL_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? '' : $cfg->HTML_CHECKED,
+                        'FORWARD_MAIL' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? $cfg->HTML_CHECKED : '',
+                        'DEFAULT' => (isset($_POST['mail_type']) && $_POST['mail_type'] === 'forward') ? 'forward' : 'normal'));
 
 				while (!$rs->EOF) {
 					$show_mail_acc = decode_idna($rs->fields['mail_acc']);

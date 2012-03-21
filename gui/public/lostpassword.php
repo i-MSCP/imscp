@@ -99,15 +99,16 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
 } elseif (!empty($_POST)) { // Request for new password
+
+	$bruteForce = new iMSCP_Authentication_Bruteforce('captcha');
+	if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
+		set_page_message($bruteForce->getLastMessage(), 'error');
+		redirectTo('lostpassword.php');
+	} else {
+		$bruteForce->recordAttempt();
+	}
+
 	if (!empty($_POST['uname']) && isset($_SESSION['image']) && isset($_POST['capcode'])) {
-
-		$bruteForce = new iMSCP_Authentication_Bruteforce('captcha');
-		if ($bruteForce->isWaiting() || $bruteForce->isBlocked()) {
-			set_page_message($bruteForce->getLastMessage());
-		} else {
-			$bruteForce->recordAttempt();
-		}
-
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 

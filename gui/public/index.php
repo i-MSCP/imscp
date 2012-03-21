@@ -39,7 +39,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLoginScriptStart);
 
-// Purge expired session
+// Purge expired sessions
 do_session_timeout();
 
 $auth = iMSCP_Authentication::getInstance();
@@ -50,7 +50,9 @@ init_login($auth->events());
 if (isset($_GET['logout']) && $auth->hasIdentity()) {
 	$adminName = $auth->getIdentity()->admin_name;
 	$auth->unsetIdentity();
+	set_page_message(tr('You have been successfully logged out.'), 'success');
 	write_log(sprintf("%s logged out", $adminName), E_USER_NOTICE);
+	redirectTo('index.php');
 } elseif (!empty($_POST)) {
 	if (isset($_POST['uname']) && isset($_POST['upass'])) {
 		if (!empty($_POST['uname']) && !empty($_POST['upass'])) {
@@ -67,8 +69,9 @@ if (isset($_GET['logout']) && $auth->hasIdentity()) {
 				} else {
 					write_log('Authentication failed for unknown reason', E_USER_NOTICE);
 				}
+			} else {
+				write_log(sprintf("%s logged in", $result->getIdentity()->admin_name), E_USER_NOTICE);
 			}
-			write_log(sprintf("%s logged in", $result->getIdentity()->admin_name), E_USER_NOTICE);
 		} else {
 			set_page_message(tr('All fields are required.'), 'error');
 		}

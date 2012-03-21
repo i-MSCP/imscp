@@ -17,11 +17,11 @@
 		</script>
 			<table>
             	<tr>
-					<th><div style="float:left">{TR_SOFTWARE_NAME}</div><div style="float:left"><a href="{TR_SOFTWARE_NAME_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_NAME_DESC}" class="app_icon i_app_desc"></div></th>
+					<th><div style="float:left">{TR_SOFTWARE_NAME}</div><div style="float:left"><a href="{TR_SOFTWARE_NAME_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_NAME_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th width="100">{TR_SOFTWARE_VERSION}</th>
 					<th width="100"><div style="float:left">{TR_SOFTWARE_LANGUAGE}</div><div style="float:left"><a href="{TR_LANGUAGE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_LANGUAGE_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th width="170"><div style="float:left">{TR_SOFTWARE_STATUS}</div><div style="float:left"><a href="{TR_SOFTWARE_STATUS_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_STATUS_DESC}" class="app_icon i_app_desc"></a></div></th>
-					<th width="120"><div style="float:left">{TR_SOFTWARE_TYPE}</div><div style="float:left"><a href="{TR_SOFTWARE_TYPE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_TYPE_DESC}" class="app_icon i_app_desc"></div></th>
+					<th width="120"><div style="float:left">{TR_SOFTWARE_TYPE}</div><div style="float:left"><a href="{TR_SOFTWARE_TYPE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_TYPE_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th align="center" width="100">{TR_SOFTWARE_DELETE}</th>
 				</tr>
 				<!-- BDP: no_software_list -->

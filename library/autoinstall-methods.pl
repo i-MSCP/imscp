@@ -500,6 +500,18 @@ sub saveGuiWorkingData {
 			return $rs if $rs;
 		}
 
+		# Save GUI plugins
+		if(-d "$main::defaultConf{'ROOT_DIR'}/gui/plugins") {
+			$rs = execute(
+				"cp -vRTf $main::defaultConf{'ROOT_DIR'}/gui/plugins $$$tmp$main::defaultConf{'ROOT_DIR'}/gui/plugins",
+				\$stdout, \$stderr
+			);
+
+			debug("$stdout") if $stdout;
+			error("$stderr") if $stderr;
+			return $rs if $rs;
+		}
+
 	# For i-MSCP versions prior 1.0.4
 	} else {
 		# Save i-MSCP GUI data (isp logos)

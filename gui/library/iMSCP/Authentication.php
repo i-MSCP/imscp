@@ -19,7 +19,7 @@
  *
  * @category	iMSCP
  * @package		Authentication
- * @copyright	2010 - 2012 by Laurent Declercq
+ * @copyright	2010 - 2012 by -MSCP Team
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @link		http://www.i-mscp.net i-MSCP Home Site
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		Authentication
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.2
+ * @version		0.0.4
  */
 class iMSCP_Authentication
 {
@@ -58,7 +58,7 @@ class iMSCP_Authentication
 	protected $_password;
 
 	/**
-	 * Singleton pattern implementation makes "new" unavailable.
+	 * Singleton pattern implementation -  makes "new" unavailable.
 	 */
 	protected function __construct()
 	{
@@ -66,7 +66,7 @@ class iMSCP_Authentication
 	}
 
 	/**
-	 * Singleton pattern implementation makes "clone" unavailable.
+	 * Singleton pattern implementation -  makes "clone" unavailable.
 	 *
 	 * @return void
 	 */
@@ -115,11 +115,11 @@ class iMSCP_Authentication
 	public function authenticate()
 	{
 		// If propagation is stopped, expects a message to explain the cause
-		$response = $this->events()->dispatch(iMSCP_Events::onBeforeAuthentication, array('context' => $this));
+		$responseCollection = $this->events()->dispatch(iMSCP_Events::onBeforeAuthentication, array('context' => $this));
 
-		if ($response->isStopped()) {
+		if ($responseCollection->isStopped()) {
 			$result = new iMSCP_Authentication_Result(
-				iMSCP_Authentication_Result::FAILURE_UNCATEGORIZED, null, array($response->last())
+				iMSCP_Authentication_Result::FAILURE_UNCATEGORIZED, null, array($responseCollection->last())
 			);
 		} else {
 			$query = "
@@ -222,10 +222,28 @@ class iMSCP_Authentication
 	 */
 	public function hasIdentity()
 	{
-		return isset(
-			$_SESSION['user_id'], $_SESSION['user_logged'], $_SESSION['user_pass'], $_SESSION['user_type'],
-			$_SESSION['user_email'], $_SESSION['user_created_by']
-		);
+		return isset($_SESSION['user_id']);
+	}
+
+	/**
+	 * Returns the identity from storage or null if no identity is available.
+	 *
+	 * @return stdClass|null
+	 */
+	public function getIdentity()
+	{
+		$identity = null;
+
+		if ($this->hasIdentity()) {
+			$identity = new stdClass();
+			$identity->admin_id = $_SESSION['user_id'];
+			$identity->admin_name = $_SESSION['user_logged'];
+			$identity->admin_type = $_SESSION['user_type'];
+			$identity->email = $_SESSION['user_email'];
+			$identity->created_by = $_SESSION['user_created_by'];
+		}
+
+		return $identity;
 	}
 
 	/**
@@ -237,23 +255,21 @@ class iMSCP_Authentication
 	{
 		$this->events()->dispatch(iMSCP_Events::onBeforeSetIdentity, array('context' => $this, 'identity' => $identity));
 
-		// TODO Found another solution since if we do that at this step, related login data in database will be lost
-		// We wil up to one permission level so we regenerate the session identifier to enforce security
-		//session_regenerate_id();
+		// We wil change permission level so we regenerate the session identifier to enforce security
+		session_regenerate_id();
 
 		$lastAccess = time();
 
 		$query = "
 			REPLACE INTO `login` (
-				`session_id`, `ipaddr`, `user_name`, `lastaccess`, `login_count`
+				`session_id`, `ipaddr`, `lastaccess`, `user_name`
 			) VALUES (
-				?, ?, ?, ?, ?
+				?, ?, ?, ?
 			)
 		";
-		exec_query($query, array(session_id(), $_SERVER['REMOTE_ADDR'], $identity->admin_name, $lastAccess, 1));
+		exec_query($query, array(session_id(), $_SERVER['REMOTE_ADDR'], $lastAccess, $identity->admin_name));
 
 		$_SESSION['user_logged'] = $identity->admin_name;
-		$_SESSION['user_pass'] = $identity->admin_pass;
 		$_SESSION['user_type'] = $identity->admin_type;
 		$_SESSION['user_id'] = $identity->admin_id;
 		$_SESSION['user_email'] = $identity->email;
@@ -273,8 +289,8 @@ class iMSCP_Authentication
 		if ($this->hasIdentity()) {
 			$this->events()->dispatch(iMSCP_Events::onBeforeUnsetIdentity, array('context' => $this));
 
-			$query = "DELETE FROM `login` WHERE `session_id` = ? AND `user_name` = ?";
-			exec_query($query, array(session_id(), $this->getIdentity()->admin_name));
+			$query = "DELETE FROM `login` WHERE `session_id` = ?";
+			exec_query($query, session_id());
 
 			$preserveList = array(
 				'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
@@ -288,27 +304,5 @@ class iMSCP_Authentication
 
 			$this->events()->dispatch(iMSCP_Events::onAfterUnsetIdentity, array('context' => $this));
 		}
-	}
-
-	/**
-	 * Returns the identity from storage or null if no identity is available
-	 *
-	 * @return stdClass|null
-	 */
-	public function getIdentity()
-	{
-		$identity = null;
-
-		if ($this->hasIdentity()) {
-			$identity = new stdClass();
-			$identity->admin_id = $_SESSION['user_id'];
-			$identity->admin_name = $_SESSION['user_logged'];
-			$identity->admin_pass = $_SESSION['user_pass'];
-			$identity->admin_type = $_SESSION['user_type'];
-			$identity->email = $_SESSION['user_email'];
-			$identity->created_by = $_SESSION['user_created_by'];
-		}
-
-		return $identity;
 	}
 }

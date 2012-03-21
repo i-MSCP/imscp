@@ -416,22 +416,29 @@ sub masterHost {
 		PEAR_DIR				=> $main::imscpConfig{'PEAR_DIR'},
 		OTHER_ROOTKIT_LOG		=> ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '') ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : ''
 	});
-	for('00_master.conf','00_master_ssl.conf'){
 
-		$rs = $httpd->buildConfFile("$self->{cfgDir}/$_");
-		return $rs if $rs;
+	$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_itk.conf");
+	return $rs if $rs;
 
-		iMSCP::File->new(
-			filename => "$self->{wrkDir}/$_"
-		)->copyFile(
-			$self::apacheConfig{'APACHE_SITES_DIR'}
-		) and return 1;
-	}
+	iMSCP::File->new(
+		filename => "$self->{wrkDir}/00_master_itk.conf"
+	)->copyFile(
+		"$self::apacheConfig{'APACHE_SITES_DIR'}/00_master.conf"
+	) and return 1;
 
 	$rs = $httpd->enableSite('00_master.conf');
 	return $rs if $rs;
 
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
+
+		$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_ssl_itk.conf");
+		return $rs if $rs;
+
+		iMSCP::File->new(
+			filename => "$self->{wrkDir}/00_master_ssl_itk.conf"
+		)->copyFile(
+			"$self::apacheConfig{'APACHE_SITES_DIR'}/00_master_ssl.conf"
+		) and return 1;
 
 		$rs = $httpd->enableSite('00_master_ssl.conf');
 		return $rs if $rs;

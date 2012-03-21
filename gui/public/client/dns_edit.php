@@ -68,8 +68,8 @@ $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => ($add_mode)
-			? tr("i-MSCP - Manage Domain Alias/Add DNS zone's record")
-			: tr("i-MSCP - Manage Domain Alias/Edit DNS zone's record"),
+			? tr("i-MSCP - Manage Domain Alias/Add DNS zones record")
+			: tr("i-MSCP - Manage Domain Alias/Edit DNS zones record"),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo(),
 		'ACTION_MODE' => ($add_mode) ? 'dns_add.php' : 'dns_edit.php?edit_id={ID}'));
