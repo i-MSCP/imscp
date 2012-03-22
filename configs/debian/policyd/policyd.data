@@ -22,10 +22,14 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-POLYCYD_CONF_DIR = /etc
+POLICYD_CONF_DIR = /etc
 
-POLYCYD_CONF_FILE = /etc/policyd-weight.conf
+POLICYD_CONF_FILE = /etc/policyd-weight.conf
 
-POLYCYD_BIN_FILE = /usr/sbin/policyd-weight
+POLICYD_BIN_FILE = /usr/sbin/policyd-weight
+
+POLICYD_USER = polw
+
+POLICYD_GROUP = polw
 
 DNSBL_CHECKS_ONLY =

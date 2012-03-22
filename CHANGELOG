@@ -9,6 +9,7 @@ Tickets:
 	- Fixed #389: Defect - Plugins installed by admin are removed during update
 	- Fixed #391: Bug - HELO-Mismatch (policyd-weight)
 	- Fixed #393: Defect - Apache cannot restart after a libapach2-mod* update
+	- Fixed #394: Defect - Wrong permissions for /etc/policyd-weight.conf
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.2.2 (RC3)
