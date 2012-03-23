@@ -12,6 +12,7 @@
 #   <mail@stefan-riegel.de>, 2011.
 # Marc Schütz <schuetzm@gmx.net>, 2011.
 # Markus  <daywalkerebay@googlemail.com>, 2011.
+#   <neppumuck@web.de>, 2012.
 #   <paderwan@googlemail.com>, 2012.
 #   <schlanki_26@web.de>, 2011.
 #   <strauss3@gmx.at>, 2011.
@@ -22,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-03-16 08:25+0100\n"
-"PO-Revision-Date: 2012-03-11 16:28+0000\n"
+"POT-Creation-Date: 2012-03-23 08:23+0100\n"
+"PO-Revision-Date: 2012-03-23 07:23+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -152,19 +153,19 @@ msgstr "%s Konto erfolgreich gelöscht."
 
 #, php-format
 msgid "%s deleted the admin log older than one month."
-msgstr ""
+msgstr "%s löschte die Adminmeldungen, die älter waren als einen Monat"
 
 #, php-format
 msgid "%s deleted the admin log older than one year."
-msgstr ""
+msgstr "%s löschte die Adminmeldungen, die älter waren als ein Jahr"
 
 #, php-format
 msgid "%s deleted the admin log older than six months."
-msgstr ""
+msgstr "%s löschte die Adminmeldungen, die älter waren als sechs Monate"
 
 #, php-format
 msgid "%s deleted the admin log older than three months."
-msgstr ""
+msgstr "%s löschte die Adminmeldungen die älter waren als drei Monate"
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
@@ -272,17 +273,17 @@ msgstr "'%value%' sieht aus wie ein Domainname, der TLD-Teil ist aber nicht in d
 msgid ""
 "'%value%' appears to be a domain name but cannot match against domain name "
 "schema for TLD '%tld%'"
-msgstr ""
+msgstr "'%value%'  scheint ein Domain-Name sein, sie entspricht aber nicht dem Schema für TLD´s '%tld%'"
 
 msgid ""
 "'%value%' appears to be a domain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%value%' scheint ein Domain-Name sein, sie enthält aber einen Bindestrich an einer ungültigen Stelle"
 
 msgid ""
 "'%value%' appears to be a domain name but the given punycode notation cannot"
 " be decoded"
-msgstr ""
+msgstr "'%value%' scheint ein Domain-Name sein, aber die Schreibweise des Punycodes kann nicht konvertiert werden"
 
 msgid ""
 "'%value%' appears to be a local network name but local network names are not"
@@ -290,27 +291,27 @@ msgid ""
 msgstr "'%value%' scheint ein lokaler Netzwerk Name zu sein, aber lokale Netzwerke sind nicht zulässig"
 
 msgid "'%value%' appears to be a subdomain name but cannot extract TLD part"
-msgstr ""
+msgstr "'%value%' scheint eine Sub-Domain zu sein, kann aber nicht die TLD extrahieren"
 
 msgid ""
 "'%value%' appears to be a subdomain name but cannot match TLD against known "
 "list"
-msgstr ""
+msgstr "'%value%' scheint eine Sub-Domain zu sein, aber die TLD steht nicht auf der Liste"
 
 msgid ""
 "'%value%' appears to be a subdomain name but cannot match against subdomain "
 "schema for TLD '%tld%'"
-msgstr ""
+msgstr "'%value%' scheint eine Sub-Domain zu sein, entspricht aber nicht dem Subdomain-Schema für TLD´s '%tld% \""
 
 msgid ""
 "'%value%' appears to be a subdomain name but contains a dash in an invalid "
 "position"
-msgstr ""
+msgstr "'%value%' scheint eine Sub-Domain zu sein, sie enthält aber einen Bindestrich an einer ungültigen Stelle"
 
 msgid ""
 "'%value%' appears to be a subdomain name but the given punycode notation "
 "cannot be decoded"
-msgstr ""
+msgstr "'%value%' scheint eine Sub-Domain zu sein, aber die Schreibweise des Punycodes kann nicht konvertiert werden"
 
 msgid ""
 "'%value%' appears to be an IP address, but IP addresses are not allowed"
@@ -358,19 +359,19 @@ msgstr ".htaccess bezogener Fehler"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr ""
+msgstr "<b>%1$s</b> hat uneingeschränkte Rechte für a <b>%2$s</b> Dienst.<br />"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
 "destination reseller.<br />"
-msgstr ""
+msgstr "<b>%1$s</b>übersteigt die Limits für den a <b>%2$s</b><br />Dienst für diesen Reseller.<br />"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br />This user cannot be moved!"
-msgstr ""
+msgstr "<b>%s</b> verwendet IP Adressen, die dieser Reseller nicht verändern darf!<br />Der Kunde kann nicht verschoben werden!"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
@@ -399,7 +400,7 @@ msgid ""
 "Account data were modified by another person before your changes. The update"
 " process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
-msgstr ""
+msgstr "Die Kontodaten wurden vorab von einer anderen Person geändert. Der Updatevorgang war zwar erfolgreich, aber wurde im Recovery-Modus durchgeführt. Wir empfehlen Ihnen die Daten zu überprüfen."
 
 msgid "Account limits"
 msgstr "Account Beschränkungen"
@@ -501,7 +502,7 @@ msgid "Add hosting plan"
 msgstr "Hosting Tarif anlegen"
 
 msgid "Add mail user"
-msgstr "E-Mail-Konto anlegen"
+msgstr "E-Mail Konto anlegen"
 
 msgid "Add mail users"
 msgstr "E-Mail-Konto anlegen"
@@ -798,7 +799,7 @@ msgid "Available for purchasing"
 msgstr "Zum Kauf freigeben"
 
 msgid "Available i-MSCP updates"
-msgstr "Verfügbare i-MSCP-Updates"
+msgstr "Verfügbare i-MSCP Updates"
 
 msgid "Available softwares"
 msgstr "Verfügbare Software"
@@ -843,13 +844,13 @@ msgid "Behind the name"
 msgstr "Nach dem Namen"
 
 msgid "Billing Settings"
-msgstr "Tarifgestaltung"
+msgstr "Zahlungs Einstellungen"
 
-msgid "Block time between logins"
-msgstr "Sperrzeit zwischen Anmeldungen"
+msgid "Blocking time between login/captcha attempts (seconds)"
+msgstr ""
 
-msgid "Block time between logins (seconds)"
-msgstr "Sperrzeit zwischen Anmeldungen (Sekunden)"
+msgid "Blocking time between logins and captcha attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Sperrzeit (Minuten)"
@@ -1509,7 +1510,7 @@ msgid ""
 "Domain data were modified by another person before your changes. The update "
 "process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
-msgstr ""
+msgstr "Die Domaindaten wurden vorab von einer anderen Person geändert. Der Updatevorgang war zwar erfolgreich, aber wurde im Recovery-Modus durchgeführt. Wir empfehlen Ihnen die Daten zu überprüfen."
 
 msgid "Domain databases"
 msgstr "Domain Datenbanken"
@@ -1686,7 +1687,7 @@ msgid "Email"
 msgstr "E-Mail-Adresse"
 
 msgid "Email Accounts"
-msgstr "E-Mail-Konten"
+msgstr "E-Mail Konten"
 
 msgid "Email Updated."
 msgstr "E-Mail aktualisiert."
@@ -1815,7 +1816,7 @@ msgid "FTP"
 msgstr "FTP"
 
 msgid "FTP Accounts"
-msgstr "FTP-Zugänge"
+msgstr "FTP Zugänge"
 
 msgid "FTP Users"
 msgstr "FTP-Benutzer"
@@ -1940,19 +1941,11 @@ msgstr "Weiterleiten zu URL"
 msgid "Forward to same address is not allowed."
 msgstr "Das Weiterleiten zu der gleichen Adresse ist nicht erlaubt."
 
-#, php-format
-msgid "Found 1 record. ip %s is blocked for another %s minutes."
-msgstr ""
-
-#, php-format
-msgid "Found records for ip %s"
-msgstr ""
-
 msgid "Free"
 msgstr "Frei"
 
 msgid "Free of charge"
-msgstr ""
+msgstr "kostenlos"
 
 msgid "From"
 msgstr "Von"
@@ -2176,14 +2169,14 @@ msgstr "IPv6-Adresse"
 msgid ""
 "If yes, means that the reseller can allow its customers to edit this "
 "directive"
-msgstr ""
+msgstr "Ja bedeutet, dass Reseller ihren Kunden das Bearbeiten dieser Richtlinie ermöglichen"
 
 #, php-format
 msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
 "plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
 "to edit the %s file."
-msgstr ""
+msgstr "Wenn Sie ein Plugin zu schützen, werden Sie nicht mehr in der Lage, es über den Plugin-Manager zu deaktivieren.<br /><br />Um den Schutz aufzuheben, müssen Sie die %s-Datei bearbeiten."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Wenn Sie den Reseller begrenzen wollen, müssen Sie zunächst die Kunden begrenzen."
@@ -2197,7 +2190,7 @@ msgstr "Import in lokales Repository"
 msgid ""
 "In case domain expires date is 'N/A', the expiration date will be set from "
 "today."
-msgstr ""
+msgstr "Wenn das Domain-Ablaufdatum auf 'N/A' steht, wird das Ablaufdatum von heute an gerechnet"
 
 msgid "In front the name"
 msgstr "Vor dem Namen"
@@ -2265,7 +2258,7 @@ msgid "Incorrect mount point syntax."
 msgstr "Falsche Mount-Punkt-Syntax."
 
 msgid "Incorrect or is not allowed."
-msgstr ""
+msgstr "falsch oder nicht erlaubt."
 
 msgid "Incorrect price. Example: 9.99"
 msgstr "Falscher Preis! Beispiel: 9.99"
@@ -2290,10 +2283,6 @@ msgstr "Falsches Trafficlimit"
 
 msgid "Incorrect username length or syntax."
 msgstr "Falsche Länge des Benutzernamens oder Syntax."
-
-#, php-format
-msgid "Increasing %s attempts by 1 for ip %s."
-msgstr ""
 
 msgid "Install"
 msgstr "Installieren"
@@ -2332,7 +2321,7 @@ msgid "Invalid certificate."
 msgstr "Ungültiges Zertifikat."
 
 msgid "Invalid expiration date."
-msgstr ""
+msgstr "Ungültiges Ablaufdatum."
 
 msgid "Invalid group name!"
 msgstr "Ungültiger Gruppenname!"
@@ -2608,7 +2597,7 @@ msgid "Mails total"
 msgstr "E-Mail-Konten gesamt"
 
 msgid "Main menu labels visibility successfully updated."
-msgstr ""
+msgstr "Sichtbarkeit der Menübeschriftung erfoglreich geändert"
 
 msgid "Maintenance message"
 msgstr "Wartungs Nachricht"
@@ -2693,9 +2682,6 @@ msgstr "Anzahl Domain-Aliase<br><i>(-1 nicht verfügbar, 0 unbegrenzt)</i>"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximale Anzahl an Domains<br><i>(-1 deaktiviert, 0 unbeschränkt)</i>"
 
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Maximale Anzahl an CAPTCHA-Validierungsversuchen"
-
 msgid "Max number of login attempts"
 msgstr "Maximale Anzahl an Anmeldeversuchen"
 
@@ -2722,6 +2708,9 @@ msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
 msgstr "Maximale Anzahl von Beschriftungen für Domain-Namen <br /> <small>(Ohne SLD und TLD)</small>"
+
+msgid "Maximum number of captcha validation attempts"
+msgstr ""
 
 msgid "Maximum number of labels for subdomains"
 msgstr "Maximale Anzahl der Labels für Subdomains"
@@ -2796,7 +2785,7 @@ msgid "MySQL support"
 msgstr "MySQL-Unterstützung"
 
 msgid "N/A"
-msgstr "N/A"
+msgstr "N/V"
 
 msgid "Name"
 msgstr "Name"
@@ -2909,17 +2898,13 @@ msgid "No logs found."
 msgstr "Keine Logs gefunden"
 
 msgid "No new i-MSCP updates available"
-msgstr "Keine neuen i-MSCP-Updates verfügbar"
+msgstr "Keine neuen i-MSCP Updates verfügbar"
 
 msgid "No provided"
 msgstr "Nicht vorgesehen"
 
 msgid "No records found"
 msgstr "Keinen Eintrag gefunden"
-
-#, php-format
-msgid "No records found for ip %s with username not set."
-msgstr ""
 
 msgid "No reseller accounts found."
 msgstr "Keine Reseller Konten gefunden."
@@ -2934,7 +2919,7 @@ msgid "No subdomain system errors"
 msgstr "Keine Fehler im Subdomain-System"
 
 msgid "No such update order found."
-msgstr ""
+msgstr "kein solcher Updatebefehl gefunden"
 
 msgid "No unassigned users was found in database."
 msgstr "Es wurden keine zugewiesenen Benutzer in der Datenbank gefunden."
@@ -3005,6 +2990,9 @@ msgstr "Ein oder mehrere Datenbank Updates sind jetzt verfügbar. Siehe Details 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr "Nur Top Level Domains (TLD), die in der IANA Datenbank eingetragen sind, können genutzt werden."
+
+msgid "Only administrators can login when maintenance mode is activated."
+msgstr ""
 
 msgid "Only exec"
 msgstr "Nur Exec"
@@ -3109,7 +3097,7 @@ msgid "Owner"
 msgstr "Besitzer"
 
 msgid "PHP"
-msgstr "PHP-Unterstützung"
+msgstr "PHP Unterstützung"
 
 #, php-format
 msgid "PHP %s directive"
@@ -3426,12 +3414,12 @@ msgstr "Plugin"
 
 #, php-format
 msgid "Plugin %s successfully %s."
-msgstr ""
+msgstr "Plugin %s erfolgreich %s."
 
 msgid ""
 "Plugin list is empty. To install a new plugin, extract its archive content "
 "into the <strong>gui/plugins</strong> directory and update the plugin list."
-msgstr ""
+msgstr "Die Plugin-Liste ist leer. Um ein neues Plugin zu installieren, entpacken Sie den Inhalt des Archivs in das <strong>gui/plugins</strong> Verzeichnis und aktualisieren Sie die Plugin-Liste."
 
 #, php-format
 msgid ""
@@ -3445,16 +3433,16 @@ msgstr "Pluginverwaltung"
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
-msgstr ""
+msgstr "Der Plugin Manager konnte das %s Plugin nicht %s."
 
 msgid "Plugin manager was unable to activate the plugin."
-msgstr ""
+msgstr "Plugin Manager konnte das Plugin nicht aktivieren."
 
 msgid "Plugin manager was unable to deactivate the plugin."
-msgstr ""
+msgstr "Plugin Manager konnte das Plugin nicht deaktivieren."
 
 msgid "Plugin manager was unable to protect the plugin."
-msgstr ""
+msgstr "Plugin Manager konnte das Plugin nicht schützen."
 
 #, php-format
 msgid "Plugin manager was unable to remove the %s file"
@@ -3463,7 +3451,7 @@ msgstr "Die Pluginverwaltung konnte die Datei %s nicht löschen"
 #, php-format
 msgid ""
 "Plugin manager was unable to write the %s cache file for protected plugins."
-msgstr ""
+msgstr "Der Plugin-Manager konnte für die geschützten Plugins %s keine Cache-Datei schreiben."
 
 msgid "Plugin successfully activated."
 msgstr "Plugin erfolgreich aktiviert."
@@ -3725,7 +3713,7 @@ msgid "Rootkit logs"
 msgstr "Rootkit Logs"
 
 msgid "SMTP in"
-msgstr "SMTP (in)"
+msgstr "Keine neuen i-MSCP Updates verfügbar"
 
 msgid "SMTP out"
 msgstr "SMTP (out)"
@@ -3769,10 +3757,10 @@ msgid "SQL databases limit is <i>disabled</i>."
 msgstr "SQL-Datenbanken Limit ist <i>deaktiviert</i>"
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
+msgstr "Das SQL-Datenbanklimit ist deaktiviert, aber das SQL-Benutzerlimit ist es nicht"
 
 msgid "SQL databases limit is disabled but SQL users limit not."
-msgstr ""
+msgstr "Das SQL-Datenbanklimit ist deaktiviert, aber das SQL-Benutzerlimit nicht"
 
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "SQL-Datenbanken zu begrenzen ist nicht <i>deaktiviert.</i>"
@@ -3815,10 +3803,10 @@ msgid "SQL users limit is <i>disabled</i>."
 msgstr "SQL-Benutzer Limit ist <i>deaktiviert</i>."
 
 msgid "SQL users limit is disabled but SQL databases limit is not."
-msgstr ""
+msgstr "Das SQL-Benutzerlimit ist deaktiviert, aber das SQL-Datenbanklimit ist es nicht"
 
 msgid "SQL users limit is disabled but SQL databases limit not."
-msgstr ""
+msgstr "Das SQL-Benutzerlimit ist deaktiviert, aber das SQL-Datenbanklimit nicht"
 
 msgid "SQL users limit reached."
 msgstr "SQL-Benutzer Limit erreicht."
@@ -4044,10 +4032,10 @@ msgid "Software installer require PHP feature."
 msgstr "Software Installer benötigt das PHP Feature."
 
 msgid "Software installer: disabled"
-msgstr ""
+msgstr "Software installer: ausgeschaltet"
 
 msgid "Software installer: enabled"
-msgstr ""
+msgstr "Software installer: eingeschaltet"
 
 msgid "Software name"
 msgstr "Name der Software"
@@ -4202,7 +4190,7 @@ msgid "Subdomain scheduled for update."
 msgstr "Subdomain für Update geplant."
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr ""
+msgstr "Ergänzung der Subdomain erfolgreich geplant."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
@@ -4359,25 +4347,25 @@ msgstr "Für diesen Benutzer kann die Anzahl %s nicht größer als Ihre berechne
 msgid ""
 "The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
 " total of %s already used by him."
-msgstr ""
+msgstr "Das %s Limit für diesen Kunden kann nicht niedriger sein als <strong>%d</strong>,  er verwendet bereits %s."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr ""
+msgstr "Das %s Limit für diesen Kunden kann nicht \"deaktiviert\" werden, er hat bereits <strong>%d</strong> %s."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because his reseller is "
 "limited for this service."
-msgstr ""
+msgstr "Das %s Limit für diesen Kunden kann nicht \"unbegrenzt\" sein, denn sein Reseller hat diesen Dienst begrenzt."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr ""
+msgstr "Das %s Limit für diesen Kunden kann nicht \"unbegrenzt\" sein, denn Sie haben diesen Dienst begrenzt."
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled."
@@ -4399,13 +4387,13 @@ msgstr "Der <em>%s</em> Dienst kann nicht unbegrenzt sein."
 msgid ""
 "The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
 "found in file <strong>%s</strong>"
-msgstr ""
+msgstr "Die <strong>%s</strong> class für das <strong>%s</strong> Plugin wurde in der Datei <strong>%s</strong> nicht gefunden"
 
 #, php-format
 msgid ""
 "The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
 "exists or is not readable."
-msgstr ""
+msgstr "Die <strong>%s</strong> Datei für das <strong>%s</strong> Plugin existiert nicht oder ist nicht lesbar."
 
 msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr "Die IP-Adresse die Sie löschen möchten, ist einem Reseller zugewiesen."
@@ -4435,7 +4423,7 @@ msgid ""
 "The directory/file paths are appended to the default PHP open_basedir "
 "directive of customers. Each of them must be separated by PATH_SEPARATOR. "
 "See the PHP documentation for more information."
-msgstr ""
+msgstr "Die Verzeichnis / Datei-Pfade werden an die Standard PHP open_basedir Direktive der Kunden angehängt. Jeder von ihnen muss durch einen PATH_SEPARATOR getrennt werden. Zum Beispiel durch einen Doppelpunkt. Lesen Sie die PHP-Dokumentation für weitere Informationen."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
@@ -4444,7 +4432,7 @@ msgstr "Die Domain ist momentan deaktiviert. Die Änderungen einiger Eigenschaft
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr ""
+msgstr "Die Domain oder mindestens eine ihrer Teile hat einen anderen Status als 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "Die zu bearbeitende Domäne existiert nicht."
@@ -4466,7 +4454,7 @@ msgstr "Das Passwort muss mindestens %s Zeichen lang sein, sowie Buchstaben und 
 
 #, php-format
 msgid "The plugin %s is protected. You cannot perform an action on it."
-msgstr ""
+msgstr "Das Plugin %s ist gesperrt. Sie können es nicht verwenden."
 
 #, php-format
 msgid ""
@@ -4532,18 +4520,18 @@ msgid "This htaccess user already exist."
 msgstr "Dieser htaccess-Benutzer existiert bereits"
 
 msgid "This mount point is not allowed."
-msgstr ""
+msgstr "Der Mount-Punkt ist nicht üngültig."
 
 #, php-format
 msgid ""
 "This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr ""
+msgstr "Dieser Reseller hat %s Kunde(n) mit uneingeschränkten Rechten für den %s-Dienst."
 
 #, php-format
 msgid ""
 "This reseller has already assigned more/higher %s accounts/limits than the "
 "new limit you entered."
-msgstr ""
+msgstr "Dieser Reseller hat bereits mehr oder höhere %s Accounts zugewiesen als Sie als Limit vorgegeben haben."
 
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
@@ -4554,7 +4542,7 @@ msgstr "Dieser Reseller hat noch Kundenkonten.<br /> Um den Reseller zu löschen
 msgid ""
 "This reseller's customers are using/have more/higher %s accounts/limits than"
 " the new limit you entered."
-msgstr ""
+msgstr "Die Kunden dieses Resellers nutzen bereits mehr oder höhere %s Accounts als Sie als Limit vorgegeben haben."
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -4729,9 +4717,6 @@ msgstr "Die Verzeichnisliste zu Ihrer Domain kann nicht aufgerufen werden. Bitte
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Kann Datei nicht hochladen. Max. upload Dateigrösse (%1$d MB) erreicht?"
-
-msgid "Unblocking expired sessions."
-msgstr ""
 
 msgid "Undefined reference to data."
 msgstr "Undefinierte referenz zu Daten."
@@ -5020,7 +5005,7 @@ msgstr "Warnungen und Fehler"
 msgid ""
 "We are sorry but You reached the maximum number of subdomains allowed by "
 "your subscription."
-msgstr ""
+msgstr "Es tut uns leid, aber Sie haben die maximale Anzahl der Subdomains in Ihrem Tarif erreicht."
 
 msgid ""
 "We are sorry but you reached the maximum number of domain aliases allowed by"
@@ -5174,7 +5159,7 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "Limit der Grenzwerte für Reseller  für den <em>%s</em> Service."
 
 msgid "You are exceeding the server traffic limit."
-msgstr ""
+msgstr "Sie überschreiten das Traffic-Limit des Servers."
 
 msgid "You are exceeding your disk limit."
 msgstr "Sie haben Ihr Disk Speicher Limit überschritten"
@@ -5216,7 +5201,7 @@ msgstr "Sie können nicht %s auf sich selbst weiterleiten."
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
 " for the <b>%2$s</b> service."
-msgstr ""
+msgstr "Sie können <b>%1$s</b> nicht in den Resellern verschieben,<br />der Limits für den <b>%2$s</b> Dienst hat."
 
 msgid "You cannot protect an area without selected htaccess group(s)."
 msgstr "Sie können ohne ausgewählter htaccess-Gruppe(n) keinen Bereich schützen."
@@ -5295,11 +5280,11 @@ msgstr "Sie haben %d neue Domain-Aliase %s."
 
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't provide this feature."
-msgstr ""
+msgstr "Sie haben CGI aktiviert, aber der neue Tarif beinhaltet diese Funktion nicht."
 
 msgid ""
 "You have PHP enabled, but the new hosting plan doesn't provide this feature."
-msgstr ""
+msgstr "Sie haben CGI aktiviert, aber der neue Tarif beinhaltet diese Funktion nicht."
 
 #, php-format
 msgid ""
@@ -5308,6 +5293,9 @@ msgid ""
 "Please login into your i-MSCP control panel at %s for more details"
 msgstr "%s möchte in einen neuen Tarif wechseln.\n\nFür weitere Details melden Sie sich bitte an Ihrem i-MSCP-Control-Panel unter %s an."
 
+msgid "You have been successfully logged out."
+msgstr ""
+
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
 msgstr "htaccess Gruppe erfolgreich zum Löschen vorgemerkt."
@@ -5315,7 +5303,7 @@ msgstr "htaccess Gruppe erfolgreich zum Löschen vorgemerkt."
 msgid ""
 "You have custom DNS enabled, but the new hosting plan doesn't provide this "
 "feature."
-msgstr ""
+msgstr "Sie haben beutzerdefinirtes DNS aktiviert, aber der neue Tarif beinhaltet diese Funktion nicht."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
 msgstr "Sie benutzen mehr E-Mail-Adressen als im neuen Tarif vorgesehen."
@@ -5337,7 +5325,7 @@ msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Sie verbrauchen bereits mehr Speicherplatz als im neuen Tarif vorgesehen."
 
 msgid "You have more domain aliases in use than the new hosting plan limits"
-msgstr ""
+msgstr "Sie verwenden mehr Domain-Aliase als der neue Tarif zulässt."
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
@@ -5365,7 +5353,7 @@ msgstr "Sie haben %d neue Support-Fragen erhalten."
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "
 "provide this feature."
-msgstr ""
+msgstr "Sie verwenden den Software installer, aber der neue Tarif beinhaltet diese Funktion nicht."
 
 msgid "You have to accept the Term of Service."
 msgstr "Sie müssen die AGB's akzeptieren."
@@ -5400,6 +5388,9 @@ msgstr "Sie müssen eine Datei zum Hoch- oder Herunterladen wählen."
 msgid "You must select a network card."
 msgstr "Sie müssen eine Netzwerkkarte auswählen."
 
+msgid "You must select one or more plugins to operate on."
+msgstr ""
+
 msgid "You must specify a message."
 msgstr "Sie müssen eine Nachricht eingeben."
 
@@ -5407,7 +5398,7 @@ msgid "You must specify a subject."
 msgstr "Sie müssen ein Betreff angeben."
 
 msgid "You reached your domain aliases limit."
-msgstr ""
+msgstr "Sie haben das Domain-Alias limit erreicht."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
@@ -5435,7 +5426,7 @@ msgid "Your order"
 msgstr "Ihre Bestellung"
 
 msgid "Your order for hosting plan update was successfully canceled."
-msgstr ""
+msgstr "Die Bestellung für Ihren neuen Tarif wurde storniert."
 
 msgid ""
 "Your order has been confirmed and is being processed... You will receive a "
@@ -5455,7 +5446,7 @@ msgid ""
 msgstr "Die Dateigröße (%1$d B) ist kleiner als 1 Byte. Bitte überprüfen sie die URL."
 
 msgid "Your request for hosting plan update was successfully registered."
-msgstr ""
+msgstr "Die Bestellung für Ihren neuen Tarif wurde erfolgreich entgegengenommen."
 
 msgid ""
 "Your request for new password was registered. You will receive an email with"
@@ -5524,7 +5515,7 @@ msgid "encoding"
 msgstr "UTF-8"
 
 msgid "everything"
-msgstr "alles"
+msgstr "Alles"
 
 msgid "free of charge"
 msgstr "keine"
@@ -5608,12 +5599,12 @@ msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr "i-MSCP - Admin / Einstellungen / Dienst-Ports"
 
 msgid "i-MSCP - Admin / Statistics  / Server statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Statistiken / Server Statistiken "
 
 msgid ""
 "i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
 "Domain_statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Statistik / Reseller Statistik / Kunden Statistik / Domain Statistik"
 
 msgid ""
 "i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
@@ -5790,14 +5781,14 @@ msgstr "i-MSCP - FTP / Verzeichnis auswählen"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Software installieren"
 
-msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
-msgstr "i-MSCP - Domain-Aliase verwalten/Erstelle DNS-Zonen-Eintrag"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Domain-Aliase verwalten/Alias bearbeiten"
 
-msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
-msgstr "i-MSCP - Domain-Aliase verwalten/Bearbeite DNS-Zonen-Eintrag"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Domainverwaltung/Alias"
@@ -5836,7 +5827,7 @@ msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Reseller / Mein Profil"
 
 msgid "i-MSCP - Reseller / Order management"
-msgstr ""
+msgstr "i-MSCP - Reseller / Bestellverwaltung"
 
 msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
 msgstr "i-MSCP - Reseller / Statistiken /  Kunden Statistiken"
@@ -5920,7 +5911,7 @@ msgid "i-MSCP - admin / System tools / System information"
 msgstr "i-MSCP - Admin / System Tools / System Information"
 
 msgid "i-MSCP - client / General Information / Update hosting plan"
-msgstr ""
+msgstr "i-MSCP - Kunde / Allgemeine Informationen / Tarifänderung"
 
 msgid "i-MSCP - client / Setting Layout"
 msgstr "i-MSCP - Kunde / Einstellungen Layout"
@@ -6050,7 +6041,7 @@ msgid "orphan entry"
 msgstr "verwaister Eintrag"
 
 msgid "per"
-msgstr ""
+msgstr "per"
 
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"

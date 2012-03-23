@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-03-16 08:25+0100\n"
-"PO-Revision-Date: 2012-03-08 11:50+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2012-03-23 08:23+0100\n"
+"PO-Revision-Date: 2012-03-23 07:23+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -831,11 +831,11 @@ msgstr "Bakom namnet"
 msgid "Billing Settings"
 msgstr "Fakturainställningar"
 
-msgid "Block time between logins"
-msgstr "Blockeringstid mellan inloggningar"
+msgid "Blocking time between login/captcha attempts (seconds)"
+msgstr ""
 
-msgid "Block time between logins (seconds)"
-msgstr "Blockeringstid mellan inloggningsförsök (i sekunder)"
+msgid "Blocking time between logins and captcha attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Blockeringstid (i minuter)"
@@ -844,7 +844,7 @@ msgid "Both source and destination are identical."
 msgstr "Both source and destination are identical."
 
 msgid "Bruteforce detection"
-msgstr "Bruteforcedetektering"
+msgstr "Bruteforce detektering"
 
 msgid "Bulk Actions"
 msgstr "Bulk Actions"
@@ -1272,7 +1272,7 @@ msgid "Delete from log:"
 msgstr "Ta bort från logg:"
 
 msgid "Delete order"
-msgstr "Ta bort beställning"
+msgstr "i-MSCP Kund: Lägg till Alias"
 
 msgid "Delete reseller software"
 msgstr "Radera återförsäljare programvara"
@@ -1398,7 +1398,7 @@ msgid "Domain accounts"
 msgstr "Domain accounts"
 
 msgid "Domain alias"
-msgstr "Domänalias"
+msgstr "Normal användare"
 
 msgid "Domain alias data"
 msgstr "Domänalias uppgifter"
@@ -1926,14 +1926,6 @@ msgstr "Vidarebefordra till URL"
 msgid "Forward to same address is not allowed."
 msgstr "Vidarebefordra till samma adress är inte tillåtet."
 
-#, php-format
-msgid "Found 1 record. ip %s is blocked for another %s minutes."
-msgstr "Fann 1 post. ip- %s är spärrad för  %s minuter."
-
-#, php-format
-msgid "Found records for ip %s"
-msgstr "Hitta poster för ip- %s"
-
 msgid "Free"
 msgstr "Ledigt"
 
@@ -2277,10 +2269,6 @@ msgstr "Felaktig trafik gräns."
 msgid "Incorrect username length or syntax."
 msgstr "Felaktigt användarnamn längd eller syntax."
 
-#, php-format
-msgid "Increasing %s attempts by 1 for ip %s."
-msgstr "Öka %s försök med 1 för ip- %s."
-
 msgid "Install"
 msgstr "Intallera"
 
@@ -2518,7 +2506,7 @@ msgid "Low"
 msgstr "Låg"
 
 msgid "Mail"
-msgstr "E-post"
+msgstr "i-MSCP - Administratör - E-post-marknadsföring"
 
 msgid "Mail Accounts"
 msgstr "Mail Accounts"
@@ -2679,9 +2667,6 @@ msgstr "Max alias <br><i>(-1 inaktiv, 0 obegränsat)</i>"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max domäner<br><i>(-1 inaktiverad, 0 obegränsat)</i>"
 
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Max antal CAPTCHA-valideringsförsök"
-
 msgid "Max number of login attempts"
 msgstr "Max antal inloggningförsök"
 
@@ -2708,6 +2693,9 @@ msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
 msgstr "Maximalt antal etiketter för domännamn <br /> <small>(Exklusive SLD &amp; TLD)</small>"
+
+msgid "Maximum number of captcha validation attempts"
+msgstr ""
 
 msgid "Maximum number of labels for subdomains"
 msgstr "Maximalt antal etiketter för underdomäner"
@@ -2903,10 +2891,6 @@ msgstr "No provided"
 msgid "No records found"
 msgstr "Inga poster hittades"
 
-#, php-format
-msgid "No records found for ip %s with username not set."
-msgstr "Inga poster hittades för ip- %s med inget användarnamn."
-
 msgid "No reseller accounts found."
 msgstr "Inga återförsäljare konton hittats."
 
@@ -2947,7 +2931,7 @@ msgid "Normal mail"
 msgstr "Normal e-post"
 
 msgid "Normal users"
-msgstr "Normala användare"
+msgstr "Normal användare"
 
 msgid "Not Set"
 msgstr "Ej definierad"
@@ -2968,7 +2952,7 @@ msgid "Nothing been changed."
 msgstr "Ingenting har ändrats."
 
 msgid "Nothing's been changed"
-msgstr "Ingenting har ändrats"
+msgstr "Bruteforce detektering"
 
 msgid "Nothing's been changed."
 msgstr "Ingenting har ändrats."
@@ -2991,6 +2975,9 @@ msgstr "En eller flera uppdateringar av databasen finns nu tillgängliga. Se inf
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr "Bara toppnivådomäner (TLD) som finns i IANA's rotzondatabas kan användas."
+
+msgid "Only administrators can login when maintenance mode is activated."
+msgstr ""
 
 msgid "Only exec"
 msgstr "Bara exec"
@@ -3254,7 +3241,7 @@ msgid "Passwords doesn't not matches."
 msgstr "Lösenorden matchar inte."
 
 msgid "Passwords don't match!"
-msgstr "Lösenorden stämmer inte överens!"
+msgstr "Lösenord stämmer inte överens!"
 
 msgid "Passwords don't match."
 msgstr "Passwords don't match."
@@ -4149,7 +4136,7 @@ msgid "Status for protected area must be 'OK' if you want to edit it."
 msgstr "Status for protected area must be 'OK' if you want to edit it."
 
 msgid "Street 1"
-msgstr "Adress 1"
+msgstr "Lösenord stämmer inte överens!"
 
 msgid "Street 2"
 msgstr "Adress 2"
@@ -4716,9 +4703,6 @@ msgstr "Unable to retrieve directories list for your domain. Please contact your
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "Kan inte ladda upp filer. Max. uppladdning filstorlek (%1$d MB) nått?"
 
-msgid "Unblocking expired sessions."
-msgstr "Avblockering löpt ut."
-
 msgid "Undefined reference to data."
 msgstr "Odefinierade hänvisning till data."
 
@@ -5122,7 +5106,7 @@ msgstr "Wrong syntax for new expire date."
 
 #, php-format
 msgid "Wrong syntax for the %s forward email address."
-msgstr "Fel Syntaxen för %s framåt e-postadress."
+msgstr "Fel Syntax för %s framåt e-postadress."
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
@@ -5292,7 +5276,10 @@ msgid ""
 "You have an update order for the account %s\n"
 "\n"
 "Please login into your i-MSCP control panel at %s for more details"
-msgstr "Du har en uppdateringsbeställning för kontot %s\n\nVänligen logga in på i-MSCP på %s för mer information"
+msgstr "Du har en uppdateringsbeställning för kontot %s⏎\n⏎\nVänligen logga in på i-MSCP på %s för mer information"
+
+msgid "You have been successfully logged out."
+msgstr ""
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
@@ -5385,6 +5372,9 @@ msgstr "Du måste välja en fil att ladda upp / ladda ner."
 
 msgid "You must select a network card."
 msgstr "Du måste välja ett nätverkskort."
+
+msgid "You must select one or more plugins to operate on."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "Du måste ange ett meddelande."
@@ -5531,7 +5521,7 @@ msgid "hide aliases"
 msgstr "göm alias"
 
 msgid "i-MSCP - Admin - Email Marketing"
-msgstr "i-MSCP - Administratör - E-postmarknadsföring"
+msgstr "i-MSCP - Administratör - E-post-marknadsföring"
 
 msgid "i-MSCP - Admin - Manage custom menus"
 msgstr "i-MSCP - Admininistratör - Hantera anpassade menyer"
@@ -5776,14 +5766,14 @@ msgstr "i-MSCP - Ftp / Choose directory"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Installationsprogram"
 
-msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
-msgstr "i-MSCP - Hantera Domänalias/Lägg till DNS-post"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Hantera domänalias/Redigera alias"
 
-msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
-msgstr "i-MSCP - Hantera Domänalias/Redigera DNS-post"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Hantera Domän/Alias"
@@ -5933,7 +5923,7 @@ msgid "i-MSCP Client / General Information"
 msgstr "i-MSCP Client / General Information"
 
 msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP Kund: Lägg Alias"
+msgstr "i-MSCP Kund: Lägg till Alias"
 
 msgid "i-MSCP Control Panel"
 msgstr "i-MSCP Kontrollpanel"

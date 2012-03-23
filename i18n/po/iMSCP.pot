@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-03-16 08:25+0100\n"
+"POT-Creation-Date: 2012-03-23 08:23+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -828,10 +828,10 @@ msgstr ""
 msgid "Billing Settings"
 msgstr ""
 
-msgid "Block time between logins"
+msgid "Blocking time between login/captcha attempts (seconds)"
 msgstr ""
 
-msgid "Block time between logins (seconds)"
+msgid "Blocking time between logins and captcha attempts"
 msgstr ""
 
 msgid "Blocktime (minutes)"
@@ -1922,14 +1922,6 @@ msgstr ""
 msgid "Forward to same address is not allowed."
 msgstr ""
 
-#, php-format
-msgid "Found 1 record. ip %s is blocked for another %s minutes."
-msgstr ""
-
-#, php-format
-msgid "Found records for ip %s"
-msgstr ""
-
 msgid "Free"
 msgstr ""
 
@@ -2271,10 +2263,6 @@ msgid "Incorrect traffic limit."
 msgstr ""
 
 msgid "Incorrect username length or syntax."
-msgstr ""
-
-#, php-format
-msgid "Increasing %s attempts by 1 for ip %s."
 msgstr ""
 
 msgid "Install"
@@ -2675,9 +2663,6 @@ msgstr ""
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
 
-msgid "Max number of CAPTCHA validation attempts"
-msgstr ""
-
 msgid "Max number of login attempts"
 msgstr ""
 
@@ -2702,6 +2687,9 @@ msgstr ""
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & TLD</"
 "small>)"
+msgstr ""
+
+msgid "Maximum number of captcha validation attempts"
 msgstr ""
 
 msgid "Maximum number of labels for subdomains"
@@ -2898,10 +2886,6 @@ msgstr ""
 msgid "No records found"
 msgstr ""
 
-#, php-format
-msgid "No records found for ip %s with username not set."
-msgstr ""
-
 msgid "No reseller accounts found."
 msgstr ""
 
@@ -2985,6 +2969,9 @@ msgstr ""
 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Only administrators can login when maintenance mode is activated."
 msgstr ""
 
 msgid "Only exec"
@@ -4706,9 +4693,6 @@ msgstr ""
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr ""
 
-msgid "Unblocking expired sessions."
-msgstr ""
-
 msgid "Undefined reference to data."
 msgstr ""
 
@@ -5283,6 +5267,9 @@ msgid ""
 "Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 
+msgid "You have been successfully logged out."
+msgstr ""
+
 msgid "You have chosen a directory which doesn't matches the domain directory."
 msgstr ""
 
@@ -5371,6 +5358,9 @@ msgid "You must select a file to upload/download."
 msgstr ""
 
 msgid "You must select a network card."
+msgstr ""
+
+msgid "You must select one or more plugins to operate on."
 msgstr ""
 
 msgid "You must specify a message."
@@ -5762,13 +5752,13 @@ msgstr ""
 msgid "i-MSCP - Install Software"
 msgstr ""
 
-msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
 msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr ""
 
-msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zones record"
 msgstr ""
 
 msgid "i-MSCP - Manage Domain/Alias"
