@@ -61,7 +61,7 @@ $tpl->define_dynamic('page', 'client/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('logged_from', 'page');
 
-$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'MX');
+$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'MX', 'TXT');
 
 $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
@@ -96,6 +96,7 @@ $tpl->assign(
 		'TR_DNS_SRV_PORT' => tr('Target port'),
 		'TR_DNS_CNAME' => tr('Canonical name'),
 		'TR_DNS_PLAIN' => tr('Plain record data'),
+		'TR_DNS_TXT_DATA' => tr('TXT data'),
 		'TR_TITLE_CUSTOM_DNS_RECORD' => ($add_mode) ? tr("Add custom DNS record") : tr("Edit custom DNS record"),
 		'TR_CUSTOM_DNS_RECORD_DATA' => tr('Custom DNS record data')));
 
@@ -342,6 +343,7 @@ function gen_editdns_page($tpl, $edit_id) {
 			'DNS_SRV_PORT'				=> tohtml(tryPost('dns_srv_port', $srv_port)),
 			'DNS_CNAME'					=> tohtml(tryPost('dns_cname', $cname)),
 			'DNS_PLAIN'					=> tohtml(tryPost('dns_plain_data', $plain)),
+			'DNS_TXT_DATA'				=> tohtml(tryPost('dns_txt_data', $plain)),
 			'ID'						=> $edit_id
 		)
 	);
@@ -415,6 +417,25 @@ function validate_AAAA($record, &$err = null) {
 		return false;
 	}
 
+	return true;
+}
+
+/**
+ * @param $record
+ * @param null $err
+ * @return bool
+ */
+function validate_TXT($record, &$err = null) {
+
+	if (!preg_match('/^([a-zA-Z0-9\+\?\-_~=:. \/])+$/', str_replace('"','',$record['dns_txt_data']))) {
+		$err .= sprintf(tr('Invalid characters in TXT data ("%s")'), str_replace('"','',$record['dns_txt_data']));
+		return false;
+	}
+
+	if (empty($record['dns_txt_data'])) {
+		$err .= tr('TXT data must be filled.');
+		return false;
+	}
 	return true;
 }
 
@@ -650,6 +671,15 @@ function check_fwd_data($tpl, $edit_id) {
 			if (!validate_MX($_POST, $err, $_text)) {
 				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			} else {
+				$_dns = $record_domain . '.';
+			}
+			break;
+		case 'TXT':
+			if (!validate_TXT($_POST, $err)) {
+				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
+			} else {
+				
+				$_text = "\"".str_replace('"','',$_POST['dns_txt_data'])."\"";
 				$_dns = $record_domain . '.';
 			}
 			break;
