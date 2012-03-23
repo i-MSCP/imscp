@@ -101,7 +101,7 @@ $rcmail_config['imap_force_caps'] = false;
 // extension if available. Some servers (dovecot 1.x) returns wrong results
 // for shared namespaces in this case. http://trac.roundcube.net/ticket/1486225
 // Enable this option to force LSUB command usage instead.
-$rcmail_config['imap_force_lsub'] = false;
+$rcmail_config['imap_force_lsub'] = true;
 
 // IMAP connection timeout, in seconds. Default: 0 (no limit)
 $rcmail_config['imap_timeout'] = 0;
@@ -289,7 +289,7 @@ $rcmail_config['max_group_members'] = 0;
 $rcmail_config['useragent'] = 'Roundcube Webmail/'.RCMAIL_VERSION;
 
 // use this name to compose page titles
-$rcmail_config['product_name'] = 'Roundcube Webmail';
+$rcmail_config['product_name'] = '{BASE_SERVER_VHOST} webmail';
 
 // try to load host-specific configuration
 // see http://trac.roundcube.net/wiki/Howto_Config for more details
@@ -331,7 +331,7 @@ $rcmail_config['dont_override'] = array();
 // 1 - many identities with possibility to edit all params but not email address
 // 2 - one identity with possibility to edit all params
 // 3 - one identity with possibility to edit all params but not email address
-$rcmail_config['identities_level'] = 0;
+$rcmail_config['identities_level'] = 3;
 
 // Mimetypes supported by the browser.
 // attachments of these types will open in a preview window
@@ -422,18 +422,18 @@ $rcmail_config['trash_mbox'] = 'Trash';
 $rcmail_config['default_imap_folders'] = array('INBOX', 'Drafts', 'Sent', 'Junk', 'Trash');
 
 // automatically create the above listed default folders on first login
-$rcmail_config['create_default_folders'] = false;
+$rcmail_config['create_default_folders'] = true;
 
 // protect the default folders from renames, deletes, and subscription changes
 $rcmail_config['protect_default_folders'] = true;
 
 // if in your system 0 quota means no limit set this option to true
-$rcmail_config['quota_zero_as_unlimited'] = false;
+$rcmail_config['quota_zero_as_unlimited'] = true;
 
 // Make use of the built-in spell checker. It is based on GoogieSpell.
 // Since Google only accepts connections over https your PHP installatation
 // requires to be compiled with Open SSL support
-$rcmail_config['enable_spellcheck'] = true;
+$rcmail_config['enable_spellcheck'] = false;
 
 // Enables spellchecker exceptions dictionary.
 // Setting it to 'shared' will make the dictionary shared by all users.
@@ -689,7 +689,7 @@ $rcmail_config['preview_pane_mark_read'] = 0;
 $rcmail_config['logout_purge'] = false;
 
 // Compact INBOX on logout
-$rcmail_config['logout_expunge'] = false;
+$rcmail_config['logout_expunge'] = true;
 
 // Display attached images below the message body
 $rcmail_config['inline_images'] = true;
