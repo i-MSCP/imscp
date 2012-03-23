@@ -49,8 +49,8 @@ plugin {
 	global_script_path = /etc/dovecot/sieve/dovecot.sieve
 	quota = dict:user::proxy::quotadict
 	quota_rule = *:bytes=1G
-	quota_warning = storage=75%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 75
-	quota_warning2 = storage=85%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 85
+	quota_warning = storage=85%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 85
+	quota_warning2 = storage=90%% {ENGINE_ROOT_DIR}/quota/imscp-dovecot-quota 90
 }
 
 protocols = imap pop3 managesieve
