@@ -7,3 +7,4 @@ i-MSCP 1.1.1.0 (beta 1)
 Features / Enhancements:
 
 Tickets:
+	Fixed #368: Enhancement - Add custom TXT DNS resource records
