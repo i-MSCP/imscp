@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-03-16 08:25+0100\n"
-"PO-Revision-Date: 2012-03-08 08:47+0000\n"
+"POT-Creation-Date: 2012-03-23 08:23+0100\n"
+"PO-Revision-Date: 2012-03-23 07:23+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgstr "%1$s - <strong>korlátlan</strong> MB"
 
 #, php-format
 msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s bejelentkezve, mint %2$s"
+msgstr "%1$s belépett, mint: %2$s"
 
 #, php-format
 msgid "%1$s%% [%2$s of %3$s]"
@@ -139,19 +139,19 @@ msgstr "%s azonosító sikeresen törölve!"
 
 #, php-format
 msgid "%s deleted the admin log older than one month."
-msgstr ""
+msgstr "%s törölte az 1 hónapnál régebbi adminisztrátori naplóbejegyzéseket!"
 
 #, php-format
 msgid "%s deleted the admin log older than one year."
-msgstr ""
+msgstr "%s törölte az 1 évnél régebbi adminisztrátori naplóbejegyzéseket!"
 
 #, php-format
 msgid "%s deleted the admin log older than six months."
-msgstr ""
+msgstr "%s törölte a 6 hónapnál régebbi adminisztrátori naplóbejegyzéseket!"
 
 #, php-format
 msgid "%s deleted the admin log older than three months."
-msgstr ""
+msgstr "%s törölte a 3 hónapnál régebbi adminisztrátori naplóbejegyzéseket!"
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
@@ -159,7 +159,7 @@ msgstr "%s törölte a 2 hétnél régebbi adminisztrátori naplóbejegyzéseket
 
 #, php-format
 msgid "%s deleted the full admin log."
-msgstr ""
+msgstr "%s törölte a teljes adminisztrátori naplót!"
 
 #, php-format
 msgid "%s does not exist"
@@ -167,7 +167,7 @@ msgstr "%s nem létezik"
 
 #, php-format
 msgid "%s doesn't exist"
-msgstr "Nem létezik: %s"
+msgstr "%s nem létezik"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -175,7 +175,7 @@ msgstr "%s nem létezik vagy üres"
 
 #, php-format
 msgid "%s id is invalid! You cannot add mail accounts."
-msgstr "A(z) %s érvénytelen! Nem vehetsz fel e-mail fiókokat!"
+msgstr "A(z) %s érvénytelen! Nem vehet fel email fiókokat!"
 
 #, php-format
 msgid "%s is not a valid i-MSCP language file."
@@ -183,7 +183,7 @@ msgstr "%s nem érvényes i-MSCP nyelvi fájl."
 
 #, php-format
 msgid "%s list is empty! You cannot add mail accounts."
-msgstr "A(z) %s lista üres! Nem vehetsz fel e-mail fiókokat!"
+msgstr "A(z) %s lista üres! Nem vehet fel email fiókokat!"
 
 #, php-format
 msgid "%s of %s"
@@ -345,19 +345,19 @@ msgstr ".htaccess fájllal kapcsolatos hibák"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr ""
+msgstr "<strong>%1$s</strong> korlátlan jogokkal rendelkezik a(z) <strong>%2$s</strong> szolgáltatáshoz!<br />"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
 "destination reseller.<br />"
-msgstr ""
+msgstr "<strong>%1$s</strong> korlátja meghaladja a cél viszonteladó <strong>%2$s</strong><br> szolgáltatásra vonatkozó korlátját!"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br />This user cannot be moved!"
-msgstr ""
+msgstr "<strong>%s</strong> olyan IP-címmel rendelkezik, amit a cél viszonteladó nem kezelhet!<br />Ez a felhasználó nem mozgatható át!"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
@@ -386,7 +386,7 @@ msgid ""
 "Account data were modified by another person before your changes. The update"
 " process was successfully done but in recovery mode. We recommend you to "
 "check the result of it."
-msgstr ""
+msgstr "Domain név adatait egy másik személy módosította. A frissítési folyamat sikeresen lefutott, de helyreállító módban. Javasoljuk ellenőrizze az eredményt."
 
 msgid "Account limits"
 msgstr "Korlátok beállítása"
@@ -410,22 +410,22 @@ msgid "Actions"
 msgstr "Műveletek"
 
 msgid "Activate"
-msgstr "Aktivál"
+msgstr "Aktiválás"
 
 msgid "Activate this plugin"
 msgstr "Bővítőmodul (plugin) aktíválása"
 
 msgid "Activated softwares"
-msgstr "Aktívált szoftverek"
+msgstr "Aktivált szoftverek"
 
 msgid "Activation E-Mail"
 msgstr "Aktivációs email"
 
 msgid "Activation Link"
-msgstr "Aktíváló link"
+msgstr "Aktiválási hivatkozás"
 
 msgid "Activation link expire time (minutes)"
-msgstr "Aktivációs link elévülési ideje (percben)"
+msgstr "Aktiválási hivatkozás elévülési ideje (percben)"
 
 msgid "Add"
 msgstr "Létrehozás"
@@ -461,7 +461,7 @@ msgid "Add alias"
 msgstr "Domain álnév létrehozása"
 
 msgid "Add catchall"
-msgstr "Gyüjtő e-mail cím hozzáadása"
+msgstr "Gyüjtő email cím hozzáadása"
 
 msgid "Add custom DNS record"
 msgstr "Egyéni DNS zóna rekord hozzáadása"
@@ -479,7 +479,7 @@ msgid "Add domain alias"
 msgstr "Domain álnév létrehozása"
 
 msgid "Add email account"
-msgstr "E-mail fiók hozzáadása"
+msgstr "Email fiók hozzáadása"
 
 msgid "Add group"
 msgstr "Csoport létrehozása"
@@ -578,13 +578,13 @@ msgid "Administrators"
 msgstr "Adminisztrátorok"
 
 msgid "After the name"
-msgstr "Név végén (formátum: DBnév_ID)"
+msgstr "Név végén (adatbázisnév_ID)"
 
 msgid "Alias"
 msgstr "Domain álnév"
 
 msgid "Alias already assigned to another IP address."
-msgstr ""
+msgstr "Áldomain név már hozzá van rendelve egy másik IP-címhez."
 
 msgid "Alias awaiting for activation."
 msgstr "Álnév jóváhagyásra beütemezve!"
@@ -614,7 +614,7 @@ msgid "Aliases"
 msgstr "Domain álnevek"
 
 msgid "All"
-msgstr "Mind"
+msgstr "Összes"
 
 msgid "All closed tickets were deleted."
 msgstr "Minden lezárt hibajegy sikeresen törölve!"
@@ -629,7 +629,7 @@ msgid "All fields seem to be valid."
 msgstr "Minden mező úgy tűnik, hogy érvényes."
 
 msgid "All in"
-msgstr "Össz (bejövő)"
+msgstr "Összes (bejövő)"
 
 msgid "All levels"
 msgstr "Összes szint"
@@ -659,10 +659,10 @@ msgid "Allowed"
 msgstr "Engedélyezve"
 
 msgid "Already in use"
-msgstr "Használatban van"
+msgstr "OK"
 
 msgid "Alternative URL to reach your website"
-msgstr "Alternatív URL a weboldal eléréséhez"
+msgstr "Alternatív webcím a weboldal eléréséhez"
 
 msgid "An error occured. Please, contact your administrator."
 msgstr "Hiba történt. Kérjük forduljon a rendszergazdához."
@@ -680,7 +680,7 @@ msgid "Application installer"
 msgstr "Alkalmazás telepítő"
 
 msgid "Apply"
-msgstr ""
+msgstr "OK"
 
 msgid "Apply changes"
 msgstr "Változások mentése"
@@ -697,7 +697,7 @@ msgstr "Biztos, hogy szeretné aktiválni ezt a programcsomagot?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s domain account?"
-msgstr "Biztosan meg akarod változtatni a %s domain státuszát?"
+msgstr "Biztosan meg akarja változtatni a %s domain státuszát?"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
@@ -727,11 +727,11 @@ msgstr "Biztos, hogy törölni szeretné a %s begyűjtő címet?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
-msgstr ""
+msgstr "Biztos, hogy törölni szeretné a %s tárhely csomagot?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s menu?"
-msgstr ""
+msgstr "Biztos, hogy törölni szeretné a(z) %s menüt?"
 
 #, php-format
 msgid "Are you sure you want to delete the '%s' ticket?"
@@ -745,7 +745,7 @@ msgid "Are you sure you want to delete this order?"
 msgstr "Biztos, hogy törölni szeretné a megrendelését?"
 
 msgid "Are you sure you want to delete this package?"
-msgstr "Biztos, hogy szeretné törölni ezt a programcsomagot?"
+msgstr "Biztos, hogy törölni szeretné ezt a programcsomagot?"
 
 msgid ""
 "Are you sure you want to import this package into the local software "
@@ -832,29 +832,29 @@ msgstr "Név végén (adatbázisnév_ID)"
 msgid "Billing Settings"
 msgstr "Számlázási beállítások"
 
-msgid "Block time between logins"
-msgstr "Zárolási idő sikertelen bejelentkezések között"
+msgid "Blocking time between login/captcha attempts (seconds)"
+msgstr ""
 
-msgid "Block time between logins (seconds)"
-msgstr "Zárolási idő sikertelen bejelentkezések között (másodpercben)"
+msgid "Blocking time between logins and captcha attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "Zárolási idő (percben)"
 
 msgid "Both source and destination are identical."
-msgstr ""
+msgstr "Megegyezik a forrás és a cél."
 
 msgid "Bruteforce detection"
-msgstr "Bruteforce (nyers-erő) észlelése"
+msgstr "Bruteforce támadás észlelése"
 
 msgid "Bulk Actions"
-msgstr "Művelet (összesre)"
+msgstr "Csoportműveletek"
 
 msgid "By"
-msgstr ""
+msgstr "által"
 
 msgid "CGI"
-msgstr "CGI"
+msgstr "CGI használata"
 
 msgid "CGI Support: disabled"
 msgstr "CGI használat: letiltva"
@@ -882,7 +882,7 @@ msgstr "CPU adatok"
 
 #, php-format
 msgid "Can edit the PHP %s directive"
-msgstr "Szerkesztheti a %s  PHP konfigurációs értéket"
+msgstr "Módosíthatja a %s  PHP direktívát"
 
 msgid "Cancel"
 msgstr "Mégsem"
@@ -892,7 +892,7 @@ msgstr "Rendelés lemondása"
 
 #, php-format
 msgid "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "%s  rekord jóváhagyása meghiúsult, mert '%s'"
 
 msgid "Canonical name"
 msgstr "Egyszerűsített név (CNAME)"
@@ -901,16 +901,16 @@ msgid "Captcha fontfile not found."
 msgstr "Captcha betűtípus nem található."
 
 msgid "Catch all"
-msgstr "Gyűjtő e-mail cím (catch-all)"
+msgstr "Catch-all funkció"
 
 msgid "Catch all account scheduled for creation."
-msgstr "Gyűjtő e-mail fiók létrehozása beütemezve."
+msgstr "Gyűjtő email fiók létrehozása beütemezve."
 
 msgid "Catch all account scheduled for deletion."
-msgstr "Gyűjtő e-mail fiók törlése beütemezve."
+msgstr "Gyűjtő email fiók törlése beütemezve."
 
 msgid "Catchall"
-msgstr "Gyűjtő e-mail cím (catch-all)"
+msgstr "Catch-all funkció"
 
 msgid "Caution:"
 msgstr "Vigyázat:"
@@ -919,13 +919,13 @@ msgid "Certificate"
 msgstr "Tanusítvány"
 
 msgid "Certificate data"
-msgstr "Tanúsítvány "
+msgstr "Tanusítvány "
 
 msgid "Certificate doesn't match key."
-msgstr "Tanúsítvány kulcs nem egyezik meg."
+msgstr "Tanusítvány kulcs nem egyezik meg."
 
 msgid "Certificate for"
-msgstr "Tanúsítvány"
+msgstr "Tanusítvány"
 
 msgid "Certificate key"
 msgstr "Tanusítvány kulcs"
@@ -1017,7 +1017,7 @@ msgid "Configuration in progress..."
 msgstr "Beállítás folyamatban"
 
 msgid "Confirmation for plugin protection"
-msgstr ""
+msgstr "Bővítőmodul védelem megerősítése"
 
 msgid "Continue"
 msgstr "Tovább"
@@ -1044,22 +1044,22 @@ msgid "Couldn't check for updates. Website not reachable."
 msgstr "Nem lehet ellenőrizni, hogy van-e frissítés, mert a weboldal elérhetetlen!"
 
 msgid "Count default E-Mail addresses"
-msgstr "Alap email címek beleszámítása a korlátba"
+msgstr "Alternatív email címek beleszámítása a korlátba"
 
 msgid "Country"
 msgstr "Ország"
 
 msgid "Create"
-msgstr "Létrehoz"
+msgstr "OK"
 
 msgid "Create catch all"
-msgstr "Gyűjtő cím (catch-all) létrehozása"
+msgstr "Catch-all létrehozása"
 
 msgid "Create catch all mail account"
-msgstr "Gyűjtő (catch-all) email cím létrehozása"
+msgstr "Catch-all létrehozása"
 
 msgid "Create default E-Mail addresses"
-msgstr "Alap e-mail címek létrehozása<br /><em>(postmaster@, abuse@, stb.)</em>"
+msgstr "Alternatív email címek létrehozása<br /><em>(postmaster@, abuse@, stb.)</em>"
 
 msgid "Create directory, if not exist!"
 msgstr "Létre kell hozni a könyvtárat, ha nem létezne!"
@@ -1198,7 +1198,7 @@ msgid "Database"
 msgstr "Adatbázis"
 
 msgid "Database Name and Users"
-msgstr "SQL adatbázisok és felhasználói"
+msgstr "SQL adatbázisok és felhasználók"
 
 msgid "Database Update Revision"
 msgstr "Adatbázis frissítés felülvizsgálata"
@@ -1222,7 +1222,7 @@ msgid "Database updates"
 msgstr "Adatbázis frissítések"
 
 msgid "Database users"
-msgstr "SQL adatbázis felhasználói"
+msgstr "Adatbázis felhasználók"
 
 msgid "Databases"
 msgstr "Adatbázisok"
@@ -1231,13 +1231,13 @@ msgid "Date"
 msgstr "Dátum"
 
 msgid "Day"
-msgstr "nap"
+msgstr "Nap"
 
 msgid "Days"
-msgstr "nap"
+msgstr "Nap"
 
 msgid "Deactivate"
-msgstr "Deaktivál"
+msgstr "Deaktiválás"
 
 msgid "Deactivate this plugin"
 msgstr "Bővítőmodul (plugin) deaktiválása"
@@ -1255,7 +1255,7 @@ msgid "Delete"
 msgstr "Törlés"
 
 msgid "Delete CatchAll"
-msgstr "Gyűjtő cím (catch-all) törlése"
+msgstr "Catch-all törlése"
 
 msgid "Delete all tickets"
 msgstr "Minden hibajegy törlése"
@@ -1297,13 +1297,13 @@ msgid "Details"
 msgstr "Részletek"
 
 msgid "Directive name"
-msgstr "Korlátozás neve"
+msgstr "Direktíva neve"
 
 msgid "Directive value"
-msgstr "Korlátozás értéke"
+msgstr "Direktíva értéke"
 
 msgid "Directive values"
-msgstr "Korlátozás értékei"
+msgstr "Direktíva értékei"
 
 msgid "Directories"
 msgstr "Könyvtárak"
@@ -1315,7 +1315,7 @@ msgid "Directory tree"
 msgstr "Könyvtárfa"
 
 msgid "Disable"
-msgstr "Letilt"
+msgstr "Letiltás"
 
 msgid "Disabled"
 msgstr "Letiltva"
@@ -1357,13 +1357,13 @@ msgid "Domain"
 msgstr "Domain"
 
 msgid "Domain Aliases"
-msgstr ""
+msgstr "Domain álnevek"
 
 msgid "Domain FTP accounts"
 msgstr "Domain FTP hozzáférések"
 
 msgid "Domain Features"
-msgstr "Domain jellemzői"
+msgstr "Domain szolgáltatások"
 
 msgid "Domain IP"
 msgstr "Domain IP-címe"
@@ -1453,7 +1453,7 @@ msgstr "A törölni kívánt domain álnévhez FTP hozzáférés tartozik!<br />
 msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
 "them!"
-msgstr "A törölni kívánt domain álnévhez E-mail fiók tartozik!<br />Előbb azt kell törölni!"
+msgstr "A törölni kívánt domain álnévhez email fiók tartozik!<br />Előbb azt kell törölni!"
 
 msgid ""
 "Domain alias you are trying to remove has email accounts.<br>First remove "
@@ -1514,13 +1514,13 @@ msgid "Domain errors"
 msgstr "Domain hibák"
 
 msgid "Domain expiration date must be filled."
-msgstr "A domain lejárati ideje nincs megadva."
+msgstr "A domain lejáratának dátuma nincs megadva."
 
 msgid "Domain expire date"
-msgstr "Domain lejárati ideje"
+msgstr "Domain lejáratának dátuma"
 
 msgid "Domain expires date"
-msgstr "Domain lejárati ideje"
+msgstr "Domain lejáratának dátuma"
 
 msgid "Domain mails"
 msgstr "Domainhez tartozó email címek"
@@ -1532,7 +1532,7 @@ msgid "Domain names validation"
 msgstr "Domain nevek érvényesítés"
 
 msgid "Domain new expires date"
-msgstr "Domain új lejárati ideje"
+msgstr "Domain lejáratának új dátuma"
 
 msgid "Domain not found."
 msgstr "Domain nem található."
@@ -1592,7 +1592,7 @@ msgid "Download the files stored in this directory"
 msgstr "A könyvtárban található fájl(ok) tartalmazzák a teljes mentést."
 
 msgid "E-Mail accounts are hard suspended"
-msgstr "E-mail címek teljes tiltása a jelszócsere helyett<br /><em>beérkező levelek visszautasítása (bounce)</em>"
+msgstr "Email címek teljes tiltása a jelszócsere helyett<br /><em>beérkező levelek visszautasítása (bounce)</em>"
 
 msgid "E-Mail settings"
 msgstr "Email beállítások"
@@ -1613,7 +1613,7 @@ msgid "Edit Ftp account"
 msgstr "FTP fiók módosítása"
 
 msgid "Edit SSL certificate"
-msgstr "SSL tanúsítvány kezelése"
+msgstr "SSL tanusítvány kezelése"
 
 msgid "Edit User"
 msgstr "Felhasználó módosítása"
@@ -1622,7 +1622,7 @@ msgid "Edit alias"
 msgstr "Domain álnév módosítása"
 
 msgid "Edit auto responder"
-msgstr "'Automatikus válasz' e-mail módosítása"
+msgstr "'Automatikus válasz' email módosítása"
 
 msgid "Edit custom DNS record"
 msgstr "Egyéni DNS rekord szerkesztése"
@@ -1652,7 +1652,7 @@ msgid "Edit htaccess user"
 msgstr "Htaccess felhasználó módosítása"
 
 msgid "Edit mail account"
-msgstr "E-mail fiók módosítása"
+msgstr "Email fiók módosítása"
 
 msgid "Edit mail auto responder"
 msgstr "'Automatikus válasz' email módosítása"
@@ -1676,10 +1676,10 @@ msgid "Email Accounts"
 msgstr "Email fiókok"
 
 msgid "Email Updated."
-msgstr "E-mail módosítva."
+msgstr "Email módosítva."
 
 msgid "Email address"
-msgstr "E-mail címek"
+msgstr "Email címek"
 
 msgid "Email marketing"
 msgstr "Email marketing"
@@ -1703,16 +1703,16 @@ msgid "Empty list"
 msgstr "Üres lista"
 
 msgid "Enable"
-msgstr "Engedélyez"
+msgstr "Engedélyezés"
 
 msgid "Enable Forward"
-msgstr "Továbbítás engedélyezése"
+msgstr "Továbbítás"
 
 msgid "Enable SSL"
-msgstr "SSL engedélyezése"
+msgstr "SSL tanusítvány használata"
 
 msgid "Enable auto responder"
-msgstr "'Automatikus válasz' e-mail engedélyezése"
+msgstr "'Automatikus válasz' email engedélyezése"
 
 msgid "Enable update at"
 msgstr "Frissítés indítása:"
@@ -1721,13 +1721,13 @@ msgid "Enabled"
 msgstr "Engedélyezve"
 
 msgid "Enabled for SQL databases"
-msgstr ""
+msgstr "Adatbázisok"
 
 msgid "Enabled for domain data"
-msgstr ""
+msgstr "Domain adatok"
 
 msgid "Enabled for domain data and databases"
-msgstr ""
+msgstr "Teljes (domain adatok és adatbázisok)"
 
 msgid "Entered passwords do not match."
 msgstr "A két beírt jelszó nem egyezik meg!"
@@ -1736,7 +1736,7 @@ msgid "Entered passwords doesn't match."
 msgstr "A beírt jelszavak nem egyeznek!"
 
 msgid "Entered passwords doesn't matches."
-msgstr ""
+msgstr "A beírt jelszavak nem egyeznek!"
 
 msgid "Error"
 msgstr "Hiba"
@@ -1766,7 +1766,7 @@ msgid "Error pages"
 msgstr "Hibaoldalak"
 
 msgid "Error state..."
-msgstr ""
+msgstr "Hiba..."
 
 msgid "Error while trying to obtain list of network cards."
 msgstr "Hiba a hálózati eszközök beolvasásakor!"
@@ -1784,7 +1784,7 @@ msgid "Error: Wrong Ip number."
 msgstr "HIBA: Az IP-cím hibás!"
 
 msgid "Error: Wrong value for show entry."
-msgstr ""
+msgstr "Hiba: Rossz bejegyzés megjelenítési érték."
 
 msgid "Errors"
 msgstr "Hibák"
@@ -1842,7 +1842,7 @@ msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Létrehozható FTP hozzáférések száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
 
 msgid "FTP traffic"
-msgstr "FTP forgalom"
+msgstr "FTP"
 
 msgid "FTPs"
 msgstr "FTP hozzáférések"
@@ -1854,7 +1854,7 @@ msgid "Fax"
 msgstr "Fax"
 
 msgid "Feature"
-msgstr "Funkció"
+msgstr "Szolgáltatás"
 
 msgid "Features"
 msgstr "Szolgáltatások"
@@ -1910,7 +1910,7 @@ msgid "Forward"
 msgstr "Továbbítás"
 
 msgid "Forward account"
-msgstr ""
+msgstr "Továbbítási fiók"
 
 msgid "Forward list is empty."
 msgstr "Továbbító lista üres!"
@@ -1919,27 +1919,19 @@ msgid "Forward mail"
 msgstr "Levelek továbbítása"
 
 msgid "Forward to"
-msgstr "Továbbítás ide"
+msgstr "Továbbítás címe"
 
 msgid "Forward to URL"
-msgstr "Továbbítás az URL-re"
+msgstr "Továbbítás a következő webcímre"
 
 msgid "Forward to same address is not allowed."
 msgstr "Továbbitási címek nem elérhetők."
-
-#, php-format
-msgid "Found 1 record. ip %s is blocked for another %s minutes."
-msgstr ""
-
-#, php-format
-msgid "Found records for ip %s"
-msgstr ""
 
 msgid "Free"
 msgstr "Szabad"
 
 msgid "Free of charge"
-msgstr ""
+msgstr "Ingyenes"
 
 msgid "From"
 msgstr "Feladó"
@@ -1960,13 +1952,13 @@ msgid "Ftp account not found."
 msgstr "FTP azonosító nem található!"
 
 msgid "Ftp accounts"
-msgstr "Ftp hozzáférések"
+msgstr "FTP hozzáférések"
 
 msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "FTP fiókok száma <br><i>(-1 disabled, 0 unlimited)</i>"
 
 msgid "Ftp user data"
-msgstr "Ftp felhasználó adatai"
+msgstr "FTP felhasználó adatai"
 
 msgid "Full"
 msgstr "Teljes"
@@ -1984,7 +1976,7 @@ msgid "General settings"
 msgstr "Általános beállítások"
 
 msgid "Generate"
-msgstr "Létrehoz"
+msgstr "Generálás"
 
 msgid "Generate password"
 msgstr "Jelszó generálása"
@@ -2020,7 +2012,7 @@ msgid "Help"
 msgstr "Segítség"
 
 msgid "Hide default E-Mail Addresses"
-msgstr "Alap email címek elrejtése"
+msgstr "Alternatív email címek elrejtése"
 
 msgid "High"
 msgstr "Magas"
@@ -2090,10 +2082,10 @@ msgid "Hosting plans not found."
 msgstr "Tárhely csomag nem található."
 
 msgid "Hour"
-msgstr "ora"
+msgstr "Ora"
 
 msgid "Hours"
-msgstr "ora"
+msgstr "Ora"
 
 msgid "Htaccess group"
 msgstr "Védett csoport"
@@ -2119,7 +2111,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "Védett felhasználó létrehozása sikeresen beütemezve."
 
 msgid "Http traffic"
-msgstr "Http adatforgalom"
+msgstr "HTTP"
 
 msgid "I Accept The Term of Service"
 msgstr "Elfogadom a felhasználási feltételeket."
@@ -2152,10 +2144,10 @@ msgid "IP scheduled for deletion."
 msgstr "IP törlésre beütemezve!"
 
 msgid "IP usage"
-msgstr "IP-cím használat"
+msgstr "IP-cím használata"
 
 msgid "IPs usage"
-msgstr "IP-cím használat"
+msgstr "IP-címek használata"
 
 msgid "IPv6 address"
 msgstr "IPv6-cím"
@@ -2187,7 +2179,7 @@ msgid ""
 msgstr ""
 
 msgid "In front the name"
-msgstr "Név elején (például: ID_DBnév)"
+msgstr "Név elején (ID_adatbázisnév)"
 
 msgid ""
 "In this page, you can configure some of the aspects of PHP's behavior. You "
@@ -2197,7 +2189,7 @@ msgid ""
 msgstr "Ezen a lapon konfigurálhat néhány PHP beállítást. A most az itt meghatározott irányelvek vonatkoznak a teljes tartományi fiókokra (beleértve az aldomain és a álnév tartományokat is). Természetesen néhány érték módosítható a PHP ini_set() függvényen keresztül."
 
 msgid "Including domain aliases subdomains"
-msgstr ""
+msgstr "beleszámítva az aldomain nevek álneveit is"
 
 msgid "Incorrect FTP accounts limit."
 msgstr "Az FTP hozzáférési korlát hibás."
@@ -2227,10 +2219,10 @@ msgid "Incorrect disk space limit."
 msgstr "A tárhely korlát hibás."
 
 msgid "Incorrect email length or syntax!"
-msgstr "Az e-mail cím hossza vagy formátuma nem megfelelő!"
+msgstr "Az email cím hossza vagy formátuma nem megfelelő!"
 
 msgid "Incorrect email length or syntax."
-msgstr "Hibásan formázott e-mail cím!"
+msgstr "Hibásan formázott email cím!"
 
 #, php-format
 msgid "Incorrect limit for %s."
@@ -2252,7 +2244,7 @@ msgid "Incorrect mount point syntax."
 msgstr "A csatolási pont formátuma hibás!"
 
 msgid "Incorrect or is not allowed."
-msgstr ""
+msgstr "Helytelen vagy nem engedélyezett."
 
 msgid "Incorrect price. Example: 9.99"
 msgstr "A beírt Díj hibás. Példa: 9.99"
@@ -2264,7 +2256,7 @@ msgid "Incorrect subdomains limit."
 msgstr "Az aldomain korlát hibás."
 
 msgid "Incorrect syntax for email address."
-msgstr "Hibásan formázott e-mail cím!"
+msgstr "Hibásan formázott email cím!"
 
 msgid "Incorrect template description length."
 msgstr "A sablon leírásának hossza nem megfelelő!"
@@ -2278,10 +2270,6 @@ msgstr "Az adatforgalom korlát hibás."
 msgid "Incorrect username length or syntax."
 msgstr "Rossz felhasználónév: nem megfelelő hossz, vagy szintaktikai hiba!"
 
-#, php-format
-msgid "Increasing %s attempts by 1 for ip %s."
-msgstr ""
-
 msgid "Install"
 msgstr "Telepítés"
 
@@ -2292,7 +2280,7 @@ msgid "Install path"
 msgstr "telepítés célkönyvtára"
 
 msgid "Install various Web applications with a few clicks."
-msgstr "Különböző webes alkalmazások telepítése."
+msgstr "Webes alkalmazások telepítése."
 
 msgid "Installation details"
 msgstr "Telepítés részletei"
@@ -2310,16 +2298,16 @@ msgid "Internationalization"
 msgstr "Nyelvi beállítások"
 
 msgid "Invalid NAME"
-msgstr ""
+msgstr "Érvénytelen NAME"
 
 msgid "Invalid URL."
-msgstr "Érvénytelen URL!"
+msgstr "Érvénytelen webcím!"
 
 msgid "Invalid certificate."
 msgstr "Érvénytelen tanusítvány."
 
 msgid "Invalid expiration date."
-msgstr ""
+msgstr "Érvénytelen a lejárat dátuma."
 
 msgid "Invalid group name!"
 msgstr "A csoportnév hibás!"
@@ -2334,7 +2322,7 @@ msgid "Invalid key or password."
 msgstr "Érvénytelen kulcs vagy jelszó."
 
 msgid "Invalid mail local part."
-msgstr "Az e-mail cím '@' utáni része érvénytelen!"
+msgstr "Az email cím '@' utáni része érvénytelen!"
 
 msgid "Invalid menu order."
 msgstr "Érvénytelen megrendelés menü."
@@ -2443,26 +2431,26 @@ msgid "Link"
 msgstr "Hivatkozás (link)"
 
 msgid "Link to authors homepage"
-msgstr "Link a készítő weboldalára"
+msgstr "Hivatkozás a készítő weboldalára"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr "Terhelés/Load (1, 5, 15 percre vonatkozó)"
+msgstr "Terhelés (Load: 1, 5, 15 percre vonatkozóan)"
 
 msgid "Login"
 msgstr "Bejelentkezés"
 
 msgid "Login As"
-msgstr "Belépve mint"
+msgstr "Fájlkezelő megnyitása"
 
 #, php-format
 msgid "Login data successfully sent to %s."
 msgstr "A bejeletkezési adatokat sikerült %s -nek elküldeni."
 
 msgid "Login into PhpMyAdmin"
-msgstr "Belépés a phpMyAdmin-ba."
+msgstr "Belépés az adatbáziskezelőbe"
 
 msgid "Login into PḧpMyAdmin"
-msgstr "Belépés a PhpMyAdmin-ba."
+msgstr "Belépés az adatbáziskezelőbe"
 
 msgid "Login into the filemanager"
 msgstr "Belépés a fájlkezelőbe"
@@ -2498,7 +2486,7 @@ msgid "Lost password"
 msgstr "Elfelejtett jelszó"
 
 msgid "Lost password e-mail"
-msgstr "Elfelejtett jelszó beállításai"
+msgstr "Elfelejtett jelszó email beállításai"
 
 msgid "Lost password link"
 msgstr "Elfelejtett jelszó linkje"
@@ -2507,10 +2495,10 @@ msgid "Lost password mail"
 msgstr "Üzenetsablon (jelszó) beállítása"
 
 msgid "Lostpw email"
-msgstr "Elfelejtett jelszó"
+msgstr "Elfelejtett jelszó email"
 
 msgid "Lostpw email setup"
-msgstr "Elfelejtett jelszó beállításai"
+msgstr "Elfelejtett jelszó email beállításai"
 
 msgid "Lostpw link"
 msgstr "Elfelejtett jelszó linkje"
@@ -2531,22 +2519,22 @@ msgid "Mail account"
 msgstr "Email fiók"
 
 msgid "Mail account already exists."
-msgstr "Már létezik ilyen e-mail fiók!"
+msgstr "Már létezik ilyen email fiók!"
 
 msgid "Mail account data"
-msgstr "E-mail fiók adatok"
+msgstr "Email fiók adatok"
 
 msgid "Mail account errors"
 msgstr "Email fiók hibák"
 
 msgid "Mail account not found."
-msgstr "Az e-mail fiók nem található!"
+msgstr "Az email fiók nem található!"
 
 msgid "Mail account scheduled for addition."
-msgstr "Az e-mail fiók hozzáadása beütemezve!"
+msgstr "Az email fiók hozzáadása beütemezve!"
 
 msgid "Mail account scheduled for update."
-msgstr "Az e-mail fiók frissítése beütemezve!"
+msgstr "Az email fiók frissítése beütemezve!"
 
 msgid "Mail accounts"
 msgstr "Email fiókok"
@@ -2554,7 +2542,7 @@ msgstr "Email fiókok"
 msgid ""
 "Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "E-mail fiókok száma <br /><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
+msgstr "Email fiókok száma <br /><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
 
 msgid "Mail accounts limit reached!"
 msgstr "Elérte az email fiókok maximális számát!"
@@ -2565,10 +2553,10 @@ msgstr "Elérte az email fiókok maximális számát!"
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr "E-mail fiókok száma <br/><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
+msgstr "Email fiókok száma <br/><span class=\"italic\">(-1 tiltva, 0 korlátlan)</span>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Létrehozható e-mail fiókok száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
+msgstr "Létrehozható email fiókok száma<br /><em>(-1 letiltás, 0 korlátlan)</em>"
 
 msgid "Mail accounts list"
 msgstr "Email fiókok listája"
@@ -2577,25 +2565,25 @@ msgid "Mail accounts list is empty!"
 msgstr "Az email fiókok listája üres!"
 
 msgid "Mail forward list empty."
-msgstr "Az e-mail továbbítási lista üres!"
+msgstr "Az email továbbítási lista üres!"
 
 msgid "Mail forward list error!"
 msgstr "Email továbbítási lista hiba!"
 
 msgid "Mail successfully sent to your users."
-msgstr "Az e-mail sikeresen elküldve a felhasználóknak!"
+msgstr "Az email sikeresen elküldve a felhasználóknak!"
 
 msgid "Mail users"
 msgstr "Email postafiókok"
 
 msgid "Mailformat of an address in your forward list is incorrect."
-msgstr "A továbbítási listádon hibás e-mail cím szerepel!"
+msgstr "A továbbítási listádon hibás email cím szerepel!"
 
 msgid "Mails total"
 msgstr "Email összesen"
 
 msgid "Main menu labels visibility successfully updated."
-msgstr ""
+msgstr "Főmenü hivatkozások sikeresen frissültek."
 
 msgid "Maintenance message"
 msgstr "Karbantartási üzenet"
@@ -2680,9 +2668,6 @@ msgstr "Létrehozható álnevek száma<br /><em>(-1 letiltás, 0 korlátlan)</em
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Max. domainek<br /><em>(-1 tiltva, 0 korlátlan)</em>"
 
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Maximális CAPTCHA-ellenőrzési kísérletek száma"
-
 msgid "Max number of login attempts"
 msgstr "Belépési kísérletek száma"
 
@@ -2708,10 +2693,13 @@ msgstr "A letöltendő fájl mérete (%2$d MB) nagyobb, mint a megengedett (%1$d
 msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
+msgstr "Domainekhez társítható címkék maximális száma<br />(<small>Kivéve SLD és TLD</small>)"
+
+msgid "Maximum number of captcha validation attempts"
 msgstr ""
 
 msgid "Maximum number of labels for subdomains"
-msgstr "Az aldomainekhez társítható címkék korlátja"
+msgstr "Aldomainekhez társítható címkék maximális száma"
 
 msgid "Medium"
 msgstr "Közepes"
@@ -2744,10 +2732,10 @@ msgid "MiB"
 msgstr "MB"
 
 msgid "Minute"
-msgstr "perc"
+msgstr "Perc"
 
 msgid "Minutes"
-msgstr "perc"
+msgstr "Perc"
 
 msgid "Missing domain"
 msgstr "Hiányzó domain"
@@ -2783,7 +2771,7 @@ msgid "MySQL support"
 msgstr "MySQL használat"
 
 msgid "N/A"
-msgstr "nincs adat"
+msgstr "N/A"
 
 msgid "Name"
 msgstr "Név"
@@ -2864,7 +2852,7 @@ msgid "No domain alias system errors"
 msgstr "Nincs rendszer szintű domain álnév hiba"
 
 msgid "No domain statistics to display for this reseller."
-msgstr ""
+msgstr "Nincs megjelenítendő statisztikája ennek a viszoteladónak."
 
 msgid "No domain statistics to display."
 msgstr "Nincs megjeleníthető domain statisztika."
@@ -2873,7 +2861,7 @@ msgid "No domain system errors"
 msgstr "Nincs rendszer szintű domain hiba"
 
 msgid "No email account system errors"
-msgstr "Nincs rendszer szintű e-mail fiók hiba"
+msgstr "Nincs rendszer szintű email fiók hiba"
 
 msgid "No found."
 msgstr "Nem található."
@@ -2904,33 +2892,29 @@ msgstr "Nincs megadott"
 msgid "No records found"
 msgstr "Nem található bejegyzés"
 
-#, php-format
-msgid "No records found for ip %s with username not set."
-msgstr ""
-
 msgid "No reseller accounts found."
 msgstr "Viszonteladói fiók nem található."
 
 msgid "No set"
-msgstr "Nincs adat"
+msgstr "-"
 
 msgid "No statistics found for the given period. Try another period."
-msgstr ""
+msgstr "Nincs statisztika a megadott periodusban. Adjon meg egy másik periodust."
 
 msgid "No subdomain system errors"
 msgstr "Nincs rendszer szintű aldomain hiba"
 
 msgid "No such update order found."
-msgstr ""
+msgstr "Nincs friss megrendelés."
 
 msgid "No unassigned users was found in database."
-msgstr ""
+msgstr "Nem azonosított felhasználók nem találhatók az adatbázisban."
 
 msgid "No user found."
 msgstr "Nem található felhasználó."
 
 msgid "No users found for this reseller."
-msgstr ""
+msgstr "Nincs felhasználója ennek a viszonteladónak."
 
 msgid "No valid alias domain selected."
 msgstr "Nincs kiválasztva érvényes domain álnév!"
@@ -2939,7 +2923,7 @@ msgid "No."
 msgstr "Sorszám"
 
 msgid "None"
-msgstr "nincs"
+msgstr "Nincs"
 
 msgid "Normal connection"
 msgstr "Normál kapcsolat"
@@ -2951,7 +2935,7 @@ msgid "Normal users"
 msgstr "Felhasználó"
 
 msgid "Not Set"
-msgstr "Nincs beállítva"
+msgstr "-"
 
 msgid "Not found records matching the search criteria."
 msgstr "A keresési feltételek alapján nem találhatók rekordok!"
@@ -2992,6 +2976,9 @@ msgstr "Egy vagy több adatbázis frissítés már elérhető. Lásd a részlete
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr "Engedélyezése esetén csak az IANA (root) zona-adatbázisában szerelő végződéseket (TLD) lehet használni."
+
+msgid "Only administrators can login when maintenance mode is activated."
+msgstr ""
 
 msgid "Only exec"
 msgstr "Csak szöveg"
@@ -3054,7 +3041,7 @@ msgid "Order email"
 msgstr "Üzenetsablon (megrendelés) beállítása"
 
 msgid "Order email setup"
-msgstr "Megrendelés e-mail beállítása"
+msgstr "Megrendelés email beállítása"
 
 msgid "Order for domain alias deleted."
 msgstr "A megrendelt domain álnév törölve!"
@@ -3096,23 +3083,23 @@ msgid "Owner"
 msgstr "Tulajdonos"
 
 msgid "PHP"
-msgstr "PHP"
+msgstr "PHP használata"
 
 #, php-format
 msgid "PHP %s directive"
-msgstr "PHP %s konfigurációs érték"
+msgstr "PHP %s direktíva"
 
 msgid "PHP Editor"
-msgstr "PHP beállítás engedélyezése"
+msgstr "PHP beállítások használata"
 
 msgid "PHP Editor Settings"
-msgstr "PHP beállítás szerkesztése"
+msgstr "PHP beállítások szerkesztése"
 
 msgid "PHP GD extension not loaded."
 msgstr "PHP GD kiterjesztés nincs betöltve."
 
 msgid "PHP Settings (system default)"
-msgstr "PHP beállítások (rendszer)"
+msgstr "PHP beállítások (alapértelmezett)"
 
 msgid "PHP Support: disabled"
 msgstr "PHP használat: letiltva"
@@ -3136,13 +3123,13 @@ msgid "PHP support"
 msgstr "PHP használat"
 
 msgid "POP3/IMAP in"
-msgstr "POP3/IMAP (bejövő)"
+msgstr "POP3/IMAP(bejövő)"
 
 msgid "POP3/IMAP out"
-msgstr "POP3/IMAP (kimenő)"
+msgstr "POP3/IMAP(kimenő)"
 
 msgid "POP3/IMAP traffic"
-msgstr "POP3/IMAP forgalom"
+msgstr "POP3/IMAP"
 
 msgid "Package actions"
 msgstr "Műveletek"
@@ -3175,7 +3162,7 @@ msgid "Package version"
 msgstr "Verzió"
 
 msgid "Panel default language"
-msgstr "Panel alapértelmezett nyelve"
+msgstr "Kezelőfelület alapértelmezett nyelve"
 
 msgid "Parameter"
 msgstr "Paraméter"
@@ -3228,10 +3215,10 @@ msgid "Password is shorter than %s signs or includes not permitted signs."
 msgstr "A jelszó rövidebb, mint %s jel, vagy nem engedélyezett karaktereket tartalmaz!"
 
 msgid "Password length"
-msgstr "Jelszó hossza"
+msgstr "Jelszavak hossza"
 
 msgid "Password settings"
-msgstr "Jelszó beállításai"
+msgstr "Jelszavak beállításai"
 
 msgid "Password successfully updated."
 msgstr "A jelszó sikeresen frissítve."
@@ -3240,7 +3227,7 @@ msgid "Password updated."
 msgstr "A jelszó sikeresen frissítve."
 
 msgid "Passwords do not match."
-msgstr "A beírt jelszavak nem egyeznek!"
+msgstr "A jelszavak nem egyeznek!"
 
 msgid "Passwords doesn't match."
 msgstr "A jelszavak nem egyeznek!"
@@ -3252,10 +3239,10 @@ msgid "Passwords doesn't matches."
 msgstr "A jelszavak nem egyeznek!"
 
 msgid "Passwords doesn't not matches."
-msgstr "A beírt jelszavak nem egyeznek!"
+msgstr "A  jelszavak nem egyeznek!"
 
 msgid "Passwords don't match!"
-msgstr "A beírt jelszavak nem egyeznek!"
+msgstr "A jelszavak nem egyeznek!"
 
 msgid "Passwords don't match."
 msgstr "A jelszavak nem egyeznek!"
@@ -3306,10 +3293,10 @@ msgid "Please choose htaccess user or htaccess group."
 msgstr "Kérem válasszon védett felhasználót vagy védett csoportot."
 
 msgid "Please delete first CatchAll account for this email."
-msgstr "Először a begyűjtő e-mail fiókot töröld!"
+msgstr "Először a begyűjtő email fiókot törölje!"
 
 msgid "Please enter FTP account username."
-msgstr "Írd be az FTP azonosító felhasználónevét!"
+msgstr "Írja be az FTP azonosító felhasználó nevét!"
 
 msgid "Please enter a name for the protected area."
 msgstr "Kérem a védett terület nevét."
@@ -3321,7 +3308,7 @@ msgid "Please enter an username."
 msgstr "Adja meg a felhasználó nevet."
 
 msgid "Please enter mail account username."
-msgstr "Add meg a felhasználónevet az e-mail fiókhoz!"
+msgstr "Add meg a felhasználónevet az email fiókhoz!"
 
 msgid "Please enter protected area path"
 msgstr "Kérem a védett terület útvonalát."
@@ -3343,7 +3330,7 @@ msgid "Please select another directory. %s (%s) is installed there."
 msgstr "Másik célkönyvtárat kell választani, mert a(z) %s (%s) már ide van telepítve!"
 
 msgid "Please select at least one mail type."
-msgstr "Válassz ki legalább egy levéltípust!"
+msgstr "Válasszon ki legalább egy levéltípust!"
 
 msgid "Please specify a message content!"
 msgstr "Üzenet szövege nincs megadva!"
@@ -3406,51 +3393,51 @@ msgid "Please, check the PHP Editor settings."
 msgstr "Kérem ellenőrizze a PHP-szerkesztő beállításait."
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
-msgstr ""
+msgstr "Kérem, ne használja '@, $, %...' karaktereket a jelszóban."
 
 msgid "Plugin"
 msgstr "Bővítőmodul (plugin)"
 
 #, php-format
 msgid "Plugin %s successfully %s."
-msgstr ""
+msgstr "Bővítőmodul %s sikeresen %s."
 
 msgid ""
 "Plugin list is empty. To install a new plugin, extract its archive content "
 "into the <strong>gui/plugins</strong> directory and update the plugin list."
-msgstr ""
+msgstr "Bővítőmodul lista üres. Az új plugin telepítéséhez, tömörítse ki az archivált tartalmakat a következő <strong>gui/plugins</strong> könyvtárba és frissitse a plugin listát."
 
 #, php-format
 msgid ""
 "Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
 "found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
 "plugin(s) deleted."
-msgstr ""
+msgstr "Bővítőmodul lista sikeresen frissítve.<br/><strong>%d</strong> plugin létrehozva, <strong>%d</strong> plugin frissitve, és <strong>%d</strong> plugin törölve."
 
 msgid "Plugin management"
 msgstr "Bővítőmodulok kezelése"
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
-msgstr ""
+msgstr "Plugin kezelő nem tudta %s a %s plugint."
 
 msgid "Plugin manager was unable to activate the plugin."
-msgstr ""
+msgstr "Plugin kezelő nem tudta aktiválni a plugint."
 
 msgid "Plugin manager was unable to deactivate the plugin."
-msgstr ""
+msgstr "Plugin kezelő nem tudta deaktiválni a plugint. "
 
 msgid "Plugin manager was unable to protect the plugin."
-msgstr ""
+msgstr "Plugin kezelő nem tudta védetté tenni a plugint. "
 
 #, php-format
 msgid "Plugin manager was unable to remove the %s file"
-msgstr ""
+msgstr "Plugin kezelő nem tudta törölni a %s fájlt."
 
 #, php-format
 msgid ""
 "Plugin manager was unable to write the %s cache file for protected plugins."
-msgstr ""
+msgstr "Plugin kezelő nem tudta írni a(z) %s cache fájlt a védett modulokhoz."
 
 msgid "Plugin successfully activated."
 msgstr "Bővítőmodul (plugin) sikeresen aktiválva."
@@ -3507,10 +3494,10 @@ msgid "Properties"
 msgstr "Tulajdonságok"
 
 msgid "Protect"
-msgstr "Védett"
+msgstr "Levédés"
 
 msgid "Protect it"
-msgstr "Védelem"
+msgstr "Levédés"
 
 msgid "Protect this plugin"
 msgstr "Bővítőmodul (plugin) levédése"
@@ -3537,7 +3524,7 @@ msgid "Protected areas"
 msgstr "Védett területek"
 
 msgid "Protected plugin"
-msgstr ""
+msgstr "Védett bővítőmodul"
 
 msgid "Protocol"
 msgstr "Protokoll"
@@ -3558,7 +3545,7 @@ msgid "Real domain"
 msgstr "Valódi domain"
 
 msgid "Rebuild languages index"
-msgstr "Nyelv fájl újraindexelése"
+msgstr "Újraindexelés"
 
 #, php-format
 msgid "Record \"%s\" is not part of domain \"%s\"."
@@ -3571,7 +3558,7 @@ msgid "Redirect"
 msgstr "Átirányítás"
 
 msgid "Redirect to URL"
-msgstr "Továbbítás az URL-re:"
+msgstr "Továbbítás a következő webcímre"
 
 msgid "Registration date"
 msgstr "Regisztráció dátuma"
@@ -3688,7 +3675,7 @@ msgid "Resellers assignment"
 msgstr "Viszonteladók átadása"
 
 msgid "Reset"
-msgstr "Alaphelyzetbe"
+msgstr "Visszaállítás"
 
 msgid "Restore"
 msgstr "Visszaállítás"
@@ -3700,7 +3687,7 @@ msgid "Return to previous menu"
 msgstr "Vissza az előző menübe"
 
 msgid "Revision date"
-msgstr "Változat dátuma"
+msgstr "Módosítás dátuma"
 
 msgid "Rights succesfully added."
 msgstr "Jogok sikeresen megadva."
@@ -3718,7 +3705,7 @@ msgid "SMTP out"
 msgstr "SMTP (kimenő)"
 
 msgid "SMTP traffic"
-msgstr "SMTP forgalom"
+msgstr "SMTP"
 
 msgid "SQL"
 msgstr "SQL"
@@ -3739,10 +3726,10 @@ msgid "SQL accounts limit reached."
 msgstr "Elérted a kiadható SQL azonosítók korlátját!"
 
 msgid "SQL database successfully added."
-msgstr ""
+msgstr "SQL adatbázis sikeresen létrehozva"
 
 msgid "SQL database successfully deleted."
-msgstr ""
+msgstr "SQL datbázis sikeresen törölve"
 
 msgid "SQL databases"
 msgstr "SQL adatbázisok"
@@ -3779,13 +3766,13 @@ msgid "SQL user name"
 msgstr "SQL felhasználó neve"
 
 msgid "SQL user password successfully updated."
-msgstr ""
+msgstr "SQL felhasználó jelszava sikeresen frissítve."
 
 msgid "SQL user successfully added."
-msgstr ""
+msgstr "SQL felhasználó sikeresen hozzáadva."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "SQL felhasználó sikeresen törölve."
 
 msgid "SQL users"
 msgstr "SQL felhasználók"
@@ -3827,7 +3814,7 @@ msgid "SSL Certificates"
 msgstr "SSL tanusítványok"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
-msgstr ""
+msgstr "SSL szolgáltatás letiltva, ezért tanusítványt nem tud hozzáadni / módosítani."
 
 msgid "Save"
 msgstr "Mentés"
@@ -3836,7 +3823,7 @@ msgid "Search"
 msgstr "Keresés"
 
 msgid "Sec."
-msgstr "Sec"
+msgstr "s"
 
 msgid "Second Level Domain name strict validation"
 msgstr "Második szintű domain (SLD) szigorú ellenőrzése"
@@ -3957,22 +3944,22 @@ msgid "Setup fee must be a number."
 msgstr "A beállítási díj csak szám lehet!"
 
 msgid "Show"
-msgstr "Megjelenít"
+msgstr "Megjelenítés"
 
 msgid "Show HTML output compression size comment"
 msgstr "HTML kimenet tömörítési méretének megjelenítése"
 
 msgid ""
 "Show all errors, except for notices and coding standards warnings (Default)"
-msgstr ""
+msgstr "Minden hiba megjelenítése, kivéve a közlemény és kódolási szabványok figyelmeztetései (alapértelmezett)"
 
 msgid ""
 "Show all errors, warnings and notices including coding standards "
 "(Development)"
-msgstr ""
+msgstr "Minden hiba, figyelmeztetés és közlemény megjelenítése, beleértve a kódolási szabványokat is (fejlesztés)"
 
 msgid "Show default E-Mail addresses"
-msgstr "Alap email címek megjelenítése"
+msgstr "Alternatív email címek megjelenítése"
 
 msgid "Show detailed statistics for this domain"
 msgstr "Domain név részletes statisztikájának megjelenítése"
@@ -3984,7 +3971,7 @@ msgid "Show hosting plan"
 msgstr "Tárhely csomag megjelenítése"
 
 msgid "Show in"
-msgstr "Megjelenik:"
+msgstr "Megjelenik"
 
 msgid "Show labels for main menu links"
 msgstr "Főmenü hivatkozások megjelenítése"
@@ -4019,7 +4006,7 @@ msgid "Software installation"
 msgstr "Alkalmazás telepítése"
 
 msgid "Software installer"
-msgstr "Alkakmazástelepítő"
+msgstr "Alkalmazástelepítő"
 
 msgid "Software installer options"
 msgstr "Alkalmazástelepítő beállításai"
@@ -4031,10 +4018,10 @@ msgid "Software installer require PHP feature."
 msgstr "Alkalmazástelepítőnek szüksége van a PHP szolgáltatásokra."
 
 msgid "Software installer: disabled"
-msgstr ""
+msgstr "Szoftvertelepítő: letiltva"
 
 msgid "Software installer: enabled"
-msgstr ""
+msgstr "Szoftvertelepítő: engedélyezve"
 
 msgid "Software name"
 msgstr "Szoftver neve"
@@ -4177,7 +4164,7 @@ msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Az aldomain lista üres, így oda nem vehető fel FTP azonosító!"
 
 msgid "Subdomain mails"
-msgstr "Aldomainhez tartozó email címek"
+msgstr "Aldomain névhez tartozó email címek"
 
 msgid "Subdomain name"
 msgstr "Aldomain neve"
@@ -4189,16 +4176,16 @@ msgid "Subdomain scheduled for update."
 msgstr "Az aldomain frissítés beütemezve!"
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr ""
+msgstr "Aldomain létrehozása beütemezve."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
 "them!"
-msgstr "A törölni kívánt aldomainhez e-mail fiók tartozik!<br />Előbb azt kell törölni!"
+msgstr "A törölni kívánt aldomain névhez email fiók tartozik!<br />Előbb azt kell törölni!"
 
 msgid ""
 "Subdomain you are trying to remove has email accounts.<br>First remove them."
-msgstr "A törölni kívánt aldomainhez e-mail fiók tartozik!<br>Előbb azt kell törölni!"
+msgstr "A törölni kívánt aldomain névhez email fiók tartozik!<br>Előbb azt kell törölni!"
 
 msgid "Subdomains"
 msgstr "Aldomainek"
@@ -4220,7 +4207,7 @@ msgid "Submit changes"
 msgstr "Változások mentése"
 
 msgid "Support"
-msgstr "Támogatás"
+msgstr "Ügyfélszolgálat"
 
 msgid "Support System"
 msgstr "Ügyfélszolgálat"
@@ -4269,19 +4256,19 @@ msgid "System under maintenance"
 msgstr "A rendszer karbantartás alatt van."
 
 msgid "System was unable to add the SQL database."
-msgstr ""
+msgstr "Rendszer nem tudta hozzáadni az SQL-adatbázist."
 
 msgid "System was unable to add the SQL user."
-msgstr ""
+msgstr "Rendszer nem tudta hozzáadni az SQL-felhasználót."
 
 msgid "System was unable to remove the SQL database."
-msgstr ""
+msgstr "Rendszer nem tudta törölni az SQL-adatbázist."
 
 msgid "System was unable to remove the SQL user."
-msgstr ""
+msgstr "Rendszer nem tudta törölni az SQL-felhasználót."
 
 msgid "System was unable to update the SQL user password."
-msgstr ""
+msgstr "Rendszer nem tudta frissíteni a SQL-felhasználó jelszavát."
 
 msgid "TTL"
 msgstr "TTL"
@@ -4458,7 +4445,7 @@ msgstr ""
 #, php-format
 msgid ""
 "The remote filesize (%1$d B) is lower than 1 Byte. Please check the URL."
-msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze az URL-t!"
+msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet!"
 
 msgid "The reseller account you trying to edit doesn't exist."
 msgstr "A módosítani kívánt viszonteladó nem létezik."
@@ -4519,7 +4506,7 @@ msgid "This htaccess user already exist."
 msgstr "Ez a védett felhasználó már létezik."
 
 msgid "This mount point is not allowed."
-msgstr ""
+msgstr "Csatolási pont használata nem megengedett. "
 
 #, php-format
 msgid ""
@@ -4564,7 +4551,7 @@ msgstr "A hibajegy sikeresen törölve!"
 
 #, php-format
 msgid "Ticket with Id: '%d' no found."
-msgstr ""
+msgstr "'%d' ID hibajegy nem található."
 
 msgid "Tickets closed"
 msgstr "Lezárt hibajegyek"
@@ -4587,13 +4574,13 @@ msgid "To domain alias"
 msgstr "domain álnévhez"
 
 msgid "To main domain"
-msgstr "fő domainhez"
+msgstr "fődomain névhez"
 
 msgid "To reseller"
 msgstr "Új tulajdonos (viszonteladó):"
 
 msgid "To subdomain"
-msgstr "aldomainhez"
+msgstr "aldomain névhez"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
@@ -4669,10 +4656,10 @@ msgid "UP"
 msgstr "FUT"
 
 msgid "URL protocol"
-msgstr "URL protokoll (például: http:// https://)"
+msgstr "Webcím protokoll (például: http:// https://)"
 
 msgid "URL to this admin panel"
-msgstr "Kezelőfelület URL címe"
+msgstr "Kezelőfelület webcíme"
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -4715,9 +4702,6 @@ msgstr "Nem sikerült lekérdezni a domain névhez tartozó könyvtárak listáj
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
-msgstr ""
-
-msgid "Unblocking expired sessions."
 msgstr ""
 
 msgid "Undefined reference to data."
@@ -4807,7 +4791,7 @@ msgid "Update plan"
 msgstr "Tárhely csomag frissítése"
 
 msgid "Update plugin list"
-msgstr "Plugin lista frissitése"
+msgstr "Lista frissítése"
 
 msgid "Updates"
 msgstr "Frissítések"
@@ -4822,19 +4806,19 @@ msgid "Upload now"
 msgstr "Feltöltés indítása"
 
 msgid "Usage of disallowed character in CNAME"
-msgstr ""
+msgstr "CNAME-ben nem engedélyezett karakterek használata"
 
 msgid "Usage status"
-msgstr "Felhasználás állapota"
+msgstr "Állapot"
 
 msgid "Use normal connection (No SSL)"
 msgstr "Normál kapcsolat használata (no SSL)"
 
 msgid "Use numeric ID"
-msgstr "Numerikus felhasználói azonosító (ID)"
+msgstr "Numerikus azonosító (ID) használata"
 
 msgid "Use other dir"
-msgstr "Másik könyvtár használata"
+msgstr "Egyéb könyvtár használata"
 
 msgid "Use secure connection (SSL)"
 msgstr "Biztonságos kapcsolat használata (SSL)"
@@ -4948,7 +4932,7 @@ msgstr "%s korlátozás értéke"
 
 #, php-format
 msgid "Value for the PHP %s directive is out of range."
-msgstr ""
+msgstr "%s PHP direktíva értéke a tartományon kivül van."
 
 #, php-format
 msgid ""
@@ -4990,7 +4974,7 @@ msgid "View hosting plan"
 msgstr "Tárhely csomag megtekintése"
 
 msgid "Visit plugin site"
-msgstr ""
+msgstr "Plugin weboldalának megjelenítése"
 
 msgid "Vital system info"
 msgstr "Alapvető rendszerinformációk"
@@ -5030,13 +5014,13 @@ msgid "Web softwares repository"
 msgstr "Webes programtároló"
 
 msgid "Web statistics"
-msgstr "Web statisztikák"
+msgstr "Webes statisztikák"
 
 msgid "Web statistics (AWStats)"
 msgstr "Webes statisztika (AWStats)"
 
 msgid "Web traffic"
-msgstr "Web forgalom"
+msgstr "Adatforgalom"
 
 msgid "Webmail"
 msgstr "Webmail"
@@ -5074,7 +5058,7 @@ msgid "Wrong SQL user identifier."
 msgstr "Rossz SQL felhasználó meghatározás."
 
 msgid "Wrong address in forward URL."
-msgstr "Hibás cím a továbbítási URL-ben!"
+msgstr "Hibás cím a továbbítási webcímben."
 
 msgid "Wrong domain ID."
 msgstr "Rossz domain azonosító!"
@@ -5089,10 +5073,10 @@ msgid "Wrong domain name!"
 msgstr "A domain név hibás!"
 
 msgid "Wrong domain part in forward URL."
-msgstr "Hibás domain rész a továbbítási URL-ben!"
+msgstr "Hibás domain rész a továbbítási webcímben."
 
 msgid "Wrong hostname in forward URL."
-msgstr "A továbbítási URL-ben hibás a hostnév."
+msgstr "Hibás hosztnév a továbbítási webcímben."
 
 msgid "Wrong order ID."
 msgstr "Rossz rendelésazonosító!"
@@ -5101,7 +5085,7 @@ msgid "Wrong password."
 msgstr "Rossz jelszó."
 
 msgid "Wrong redirect URL."
-msgstr "Rossz átirányítási URL-cím."
+msgstr "Rossz átirányítási webcím."
 
 msgid "Wrong request"
 msgstr "Hibás kérés"
@@ -5130,7 +5114,7 @@ msgid "Wrong syntax for the %s limit."
 msgstr "HIBA: Szintaktikai hiba a(z) %s korlátban."
 
 msgid "Wrong syntax in forward URL."
-msgstr "A továbbítási URL formátuma hibás."
+msgstr "A továbbítási webcím formátuma hibás."
 
 msgid "Wrong username"
 msgstr "Hibás felhasználói név"
@@ -5139,13 +5123,13 @@ msgid "Wrong username."
 msgstr "Rossz felhasználónév!"
 
 msgid "Wrong value for the PHP open_basedir directive."
-msgstr ""
+msgstr "Hibás érték a PHP open_basedir direktivához."
 
 msgid "Wrong_request."
 msgstr "Hibás kérés."
 
 msgid "XML file URL for the Web software repository"
-msgstr "Webes szoftverraktár használatához szükséges XML fájl linkje."
+msgstr "Webes szoftverraktár használatához szükséges XML fájl webcíme"
 
 msgid "Year"
 msgstr "Év"
@@ -5161,7 +5145,7 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "A(z) <em>%s</em> szolgáltatás elérte a viszonteladói korlátot!"
 
 msgid "You are exceeding the server traffic limit."
-msgstr ""
+msgstr "Túllépte az adatforgalmi korlátot!"
 
 msgid "You are exceeding your disk limit."
 msgstr "Túllépted a rendelkezésre álló tárhelyméretet!"
@@ -5197,7 +5181,7 @@ msgstr "Nem törölheted az utolsó aktív IP-címet!"
 
 #, php-format
 msgid "You cannot forward %s on himself."
-msgstr ""
+msgstr "%s magára nem irányítható."
 
 #, php-format
 msgid ""
@@ -5216,10 +5200,10 @@ msgid "You cannot remove the %s IP address."
 msgstr "Nem törölheted az %s IP-címet!"
 
 msgid "You cannot set expire date in past."
-msgstr ""
+msgstr "Lejárati dátum nem lehet korábbi "
 
 msgid "You cannot unassign an IP address already in use."
-msgstr ""
+msgstr "Nem lehet visszavonni a már használatban lévő IP-címet."
 
 msgid "You cannot update to this hosting plan, see notices in text."
 msgstr "Nem lehetséges a tárhely csomag módosítása. Bővebb információ a megjegyzés részben olvasható."
@@ -5274,19 +5258,19 @@ msgstr "A \"www\" címet nem szükséges létrehozni, az i-MSCP automatikusan ho
 
 #, php-format
 msgid "You have %d new accounts %s."
-msgstr ""
+msgstr "Önnek van: %d új fiókja %s."
 
 #, php-format
 msgid "You have %d new domain alias %s."
-msgstr ""
+msgstr "Önnek van: %d új domain álneve %s."
 
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't provide this feature."
-msgstr ""
+msgstr "A CGI használata engedélyezett, azonban a új tárhely csomag nem tartalmazza ezt a szolgáltatást."
 
 msgid ""
 "You have PHP enabled, but the new hosting plan doesn't provide this feature."
-msgstr ""
+msgstr "A PHP használata engedélyezett, azonban a új tárhely csomag nem tartalmazza ezt a szolgáltatást."
 
 #, php-format
 msgid ""
@@ -5295,17 +5279,20 @@ msgid ""
 "Please login into your i-MSCP control panel at %s for more details"
 msgstr "Tisztelt {RESELLER}!\n\nTárhely csomag módosítására érkezett igény: %s\n\nTovábbi információk az i-MSCP kezelőfelületén: %s\nÜdvözlettel:\naz i-MSCP csapat"
 
+msgid "You have been successfully logged out."
+msgstr ""
+
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
-msgstr ""
+msgstr "A kiválasztott könyvtár nem egyezik a domain könyvtárával. "
 
 msgid ""
 "You have custom DNS enabled, but the new hosting plan doesn't provide this "
 "feature."
-msgstr ""
+msgstr "Az egyedi DNS használata engedélyezett, azonban a új tárhely csomag nem tartalmazza ezt a szolgáltatást."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
-msgstr "Jelenleg több e-mail van létrehozva, mint amennyit a választott tárhely csomag megenged."
+msgstr "Jelenleg több email van létrehozva, mint amennyit a választott tárhely csomag megenged."
 
 msgid "You have more FTP accounts in use than the new hosting plan limits."
 msgstr "Jelenleg több FTP hozzáférés van létrehozva, mint amennyit a választott tárhely csomag megenged."
@@ -5324,11 +5311,11 @@ msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Jelenleg több tárhely van használatban, mint amit a választott tárhely csomag megenged."
 
 msgid "You have more domain aliases in use than the new hosting plan limits"
-msgstr ""
+msgstr "Jelenleg több domain álnév van használatban, mint amennyit a választott tárhely csomag megenged."
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
-msgstr "Jelenleg több e-mail van létrehozva, mint amennyit a választott tárhely csomag megenged."
+msgstr "Jelenleg több email van létrehozva, mint amennyit a választott tárhely csomag megenged."
 
 msgid "You have more subdomains in use than the new hosting plan limits"
 msgstr "Több aldomaint használ, mint amennyit az új szolgáltatói csomag megenged."
@@ -5352,7 +5339,7 @@ msgstr ""
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "
 "provide this feature."
-msgstr ""
+msgstr "Az alkalmazás telepítő engedélyezett, azonban a új tárhely csomag nem tartalmazza ezt a szolgáltatást."
 
 msgid "You have to accept the Term of Service."
 msgstr "El kell fogadni a felhasználási feltételeket!"
@@ -5387,6 +5374,9 @@ msgstr "Meg kell adni a feltöltendő/letöltendő fájlt."
 msgid "You must select a network card."
 msgstr "Meg kell adni a hálózati kártyát."
 
+msgid "You must select one or more plugins to operate on."
+msgstr ""
+
 msgid "You must specify a message."
 msgstr "Adja meg az üzenet szövegét."
 
@@ -5394,7 +5384,7 @@ msgid "You must specify a subject."
 msgstr "Adja meg az üzenet tárgyát."
 
 msgid "You reached your domain aliases limit."
-msgstr ""
+msgstr "Elérte a domain álnevek korlátját."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
@@ -5422,12 +5412,12 @@ msgid "Your order"
 msgstr "Jelenlegi megrendelés"
 
 msgid "Your order for hosting plan update was successfully canceled."
-msgstr ""
+msgstr "A tárhely csomag megrendelésére vonatkozó kérelme sikeresen törlésre került."
 
 msgid ""
 "Your order has been confirmed and is being processed... You will receive a "
 "mail after verifying."
-msgstr "Megrendelésének feldolgozása folyamatban van... Az ellenőrzés után küldünk egy e-mailt."
+msgstr "Megrendelésének feldolgozása folyamatban van... Az ellenőrzés után küldünk egy emailt."
 
 msgid ""
 "Your order has not been found in our database. Perhaps already confirmed?"
@@ -5439,10 +5429,10 @@ msgstr "Saját domain"
 #, php-format
 msgid ""
 "Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL."
-msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze az URL-t!"
+msgstr "A távoli fájlméret (%1$d B) kevesebb, mint 1 bájt. Kérjük ellenőrizze a webcímet!"
 
 msgid "Your request for hosting plan update was successfully registered."
-msgstr ""
+msgstr "A tárhely csomag frissítésére vonatkozó kérelme sikeresen regisztrálásra került."
 
 msgid ""
 "Your request for new password was registered. You will receive an email with"
@@ -5462,10 +5452,10 @@ msgid "_: Localised language"
 msgstr "Magyar - Hungarian"
 
 msgid "activate"
-msgstr ""
+msgstr "aktiválása"
 
 msgid "activated"
-msgstr ""
+msgstr "aktivált"
 
 msgid "back"
 msgstr "vissza"
@@ -5480,10 +5470,10 @@ msgid "days"
 msgstr "nap"
 
 msgid "deactivate"
-msgstr ""
+msgstr "deaktiválás"
 
 msgid "deactivated"
-msgstr ""
+msgstr "deaktivált"
 
 msgid "disabled"
 msgstr "tiltva"
@@ -5532,7 +5522,7 @@ msgid "hide aliases"
 msgstr "álnevek elrejtése"
 
 msgid "i-MSCP - Admin - Email Marketing"
-msgstr "i-MSCP - Adminisztrátor / E-mail marketing"
+msgstr "i-MSCP - Adminisztrátor / Email marketing"
 
 msgid "i-MSCP - Admin - Manage custom menus"
 msgstr "i-MSCP - Adminisztrátor / Saját menük módosítása"
@@ -5541,7 +5531,7 @@ msgid "i-MSCP - Admin / Add hosting plan"
 msgstr "i-MSCP - Adminisztrátor / Tárhely csomag létrehozása"
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
-msgstr ""
+msgstr "i-MSCP - Adminisztrátor / Domain Account Deletion Validation"
 
 msgid "i-MSCP - Admin / Edit customer"
 msgstr "i-MSCP - Adminisztrátor / Ügyfél adatok módosítása"
@@ -5553,7 +5543,7 @@ msgid "i-MSCP - Admin / General information"
 msgstr "i-MSCP - Adminisztrátor / Kezdőlap"
 
 msgid "i-MSCP - Admin / General settings / IPs management"
-msgstr ""
+msgstr "i-MSCP - Adminisztrátor / Beállítások / IP-címek kezelése"
 
 msgid "i-MSCP - Admin / Internationalisation"
 msgstr "i-MSCP - Adminisztrátor / Nyelvi beállítások"
@@ -5600,14 +5590,14 @@ msgstr "i-MSCP - Adminisztrátor / Statisztika / Forgalmi adatok"
 msgid ""
 "i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
 "Domain_statistics"
-msgstr ""
+msgstr "i-MSCP - Adminisztrátor / Statisztika / Viszonteladói statisztika / Felhasználó statisztika / Domain statisztika"
 
 msgid ""
 "i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
 msgstr "i-MSCP - Adminisztrátor / Statisztika / Forgalmi adatok / Napi statisztika"
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
-msgstr "i-MSCP - Viszonteladól / Ügyfélszolgálat / Lezárt hibajegyek"
+msgstr "i-MSCP - Adminisztrátor / Ügyfélszolgálat / Lezárt hibajegyek"
 
 msgid "i-MSCP - Admin / Support Ticket System / Open Tickets"
 msgstr "i-MSCP - Adminisztrátorl / Ügyfélszolgálat / Nyitott hibajegyek"
@@ -5619,13 +5609,13 @@ msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - Adminisztrátor / Rendszereszközök / Adatbázis frissítések"
 
 msgid "i-MSCP - Admin / Users management / Domain Details"
-msgstr ""
+msgstr "i-MSCP - Adminisztrátor / Felhasználók kezelése / Domain részletei"
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - Adminisztrátor / IP-cím használat"
 
 msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Adminisztrátor / Elfelejtett jelszó beállításai"
+msgstr "i-MSCP - Adminisztrátor / Elfelejtett jelszó email beállításai"
 
 msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "i-MSCP - Adminisztrátor / Karbantartási mód"
@@ -5664,28 +5654,28 @@ msgid "i-MSCP - Client / Change Language"
 msgstr "i-MSCP - Ügyfél / Nyelv kiválasztása"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage domains - Add subdomain"
 
 msgid "i-MSCP - Client / Manage mail"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail"
 
 msgid "i-MSCP - Client / Manage mail / Add account"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail / Add account"
 
 msgid "i-MSCP - Client / Manage mail / Add catchall"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail / Add catchall"
 
 msgid "i-MSCP - Client / Manage mail / Catchall"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail / Catchall"
 
 msgid "i-MSCP - Client / Manage mail / Edit account"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail / Edit account"
 
 msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail / Edit autoresponder"
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Manage mail / Enable autoresponder"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Ügyfél / Ügyfélszolgálat / Lezárt hibajegyek"
@@ -5777,14 +5767,14 @@ msgstr "i-MSCP - FTP / Könyvtár választás"
 msgid "i-MSCP - Install Software"
 msgstr "I-MSCP - Alkalmazás telepítése"
 
-msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
-msgstr "i-MSCP - Domain álnév kezelése / Rekord hozzáadása a DNS zónához"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Domain álnevek kezelése / Domain álnév módosítása"
 
-msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
-msgstr "i-MSCP - Domain álnév kezelése / Rekord módosítása a DNS zónában"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Domain kezelés / Álnév"
@@ -5811,7 +5801,7 @@ msgid "i-MSCP - Reseller / Add hosting plan"
 msgstr "i-MSCP - Viszonteladó / Tárhely csomag hozzáadása"
 
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
-msgstr ""
+msgstr "i-MSCP - Reseller / Domain Account Deletion Validation"
 
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - Viszonteladó / Kezdőlap"
@@ -5823,7 +5813,7 @@ msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Viszonteladó / Profilom"
 
 msgid "i-MSCP - Reseller / Order management"
-msgstr ""
+msgstr "i-MSCP - Viszonteladó / Megrendelések kezelése"
 
 msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
 msgstr "i-MSCP - Viszonteladó / Statisztika / Ügyfél statisztikák"
@@ -5841,7 +5831,7 @@ msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Viszonteladó / Ügyfélszolgálat / Hibajegyek"
 
 msgid "i-MSCP - Reseller / Users management / Domain Details"
-msgstr ""
+msgstr "i-MSCP - Viszonteladó / Felhasználók kezelése / Domain részletei"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Viszonteladó / Nyelv beállítása"
@@ -5859,7 +5849,7 @@ msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Viszonteladó / IP-cím használat"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
-msgstr "i-MSCP - Viszonteladó / Elfelejtett jelszó beállításai"
+msgstr "i-MSCP - Viszonteladó / Elfelejtett jelszó email beállításai"
 
 msgid "i-MSCP - Reseller/Main Index"
 msgstr "i-MSCP - Viszonteladó / Kezdőlap"
@@ -5871,13 +5861,13 @@ msgid "i-MSCP - Reseller/Order details"
 msgstr "i-MSCP - Viszonteladó / Megrendelés részletei"
 
 msgid "i-MSCP - Reseller/Order email setup"
-msgstr "i-MSCP - Viszonteladó / Megrendelések e-mail címének beállítása"
+msgstr "i-MSCP - Viszonteladó / Megrendelések email címének beállítása"
 
 msgid "i-MSCP - Reseller/Order settings"
 msgstr "i-MSCP - Viszonteladó / Megrendelés beállításai"
 
 msgid "i-MSCP - Service Mailer - You have a new order"
-msgstr ""
+msgstr "i-MSCP - Service Mailer - You have a new order"
 
 msgid "i-MSCP - Software Installer Management"
 msgstr "i-MSCP - Alkalmazástelepítő kezelése"
@@ -5907,7 +5897,7 @@ msgid "i-MSCP - admin / System tools / System information"
 msgstr "i-MSCP - Adminisztrátor / Rendszereszközök / Rendszerinformációk"
 
 msgid "i-MSCP - client / General Information / Update hosting plan"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / General Information / Update hosting plan"
 
 msgid "i-MSCP - client / Setting Layout"
 msgstr "i-MSCP - Ügyfél / Kinézet beállítása"
@@ -5937,7 +5927,7 @@ msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP - Ügyfél / Domain álnév létrehozása"
 
 msgid "i-MSCP Control Panel"
-msgstr "i-MSCP Vezérlőpult"
+msgstr "i-MSCP Kezelőfelület"
 
 msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP Háttérfolyamatok"
@@ -6021,7 +6011,7 @@ msgid "older than 6 months"
 msgstr "hat hónapnál régebbi"
 
 msgid "or Check for <strong>never Expire</strong>"
-msgstr "vagy beállítani, hogy <strong>nem jár le</strong>"
+msgstr "vagy <strong>soha nem jár le</strong>:"
 
 #, php-format
 msgid "or remote file (Max: %1$d MB)"
@@ -6037,7 +6027,7 @@ msgid "orphan entry"
 msgstr "árva bejegyzés"
 
 msgid "per"
-msgstr ""
+msgstr "/"
 
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
@@ -6046,10 +6036,10 @@ msgid "post_max_size out of range."
 msgstr "post_max_size kívül esik a tartományon."
 
 msgid "protect"
-msgstr ""
+msgstr "levéd"
 
 msgid "protected"
-msgstr ""
+msgstr "védett"
 
 msgid "reseller"
 msgstr "viszonteladó"

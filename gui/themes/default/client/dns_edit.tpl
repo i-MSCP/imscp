@@ -22,7 +22,7 @@
 		function dns_show_rows(arr_show) {
 			var arr_possible = new Array(
 				'name', 'ip_address', 'ip_address_v6', 'srv_name', 'srv_protocol',
-				'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port', 'cname'
+				'srv_ttl', 'srv_prio', 'srv_weight', 'srv_host', 'srv_port', 'cname', 'txt_data'
 			);
 
 			var n = arr_possible.length;
@@ -55,6 +55,8 @@
 				dns_show_rows(new Array('name', 'cname'));
 			} else if (value == 'MX') {
 				dns_show_rows(new Array('srv_prio', 'srv_host'));
+			} else if (value == 'TXT') {
+				dns_show_rows(new Array('txt_data'));
 			}
 		}
 
@@ -172,6 +174,10 @@
 				<tr id="tr_dns_cname">
 					<td>{TR_DNS_CNAME}</td>
 					<td><input type="text" name="dns_cname" value="{DNS_CNAME}" /></td>
+				</tr>
+				<tr id="tr_dns_txt_data">
+					<td>{TR_DNS_TXT_DATA}</td>
+					<td><input type="text" name="dns_txt_data" value="{DNS_TXT_DATA}" /></td>
 				</tr>
 			</table>
 

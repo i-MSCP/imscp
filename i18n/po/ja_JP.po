@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-03-16 08:25+0100\n"
-"PO-Revision-Date: 2012-03-09 06:30+0000\n"
-"Last-Translator: kazuo <kazu.nito@gmail.com>\n"
+"POT-Creation-Date: 2012-03-23 08:23+0100\n"
+"PO-Revision-Date: 2012-03-23 07:23+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -831,11 +831,11 @@ msgstr "名前の後に付加"
 msgid "Billing Settings"
 msgstr "課金設定"
 
-msgid "Block time between logins"
-msgstr "連続ログインのブロックタイム"
+msgid "Blocking time between login/captcha attempts (seconds)"
+msgstr ""
 
-msgid "Block time between logins (seconds)"
-msgstr "連続ログインのブロックタイム (秒)"
+msgid "Blocking time between logins and captcha attempts"
+msgstr ""
 
 msgid "Blocktime (minutes)"
 msgstr "ログイン拒否時間(分)"
@@ -1926,14 +1926,6 @@ msgstr "転送先URL"
 msgid "Forward to same address is not allowed."
 msgstr "フォワードに同じアドレスは許可されていません。"
 
-#, php-format
-msgid "Found 1 record. ip %s is blocked for another %s minutes."
-msgstr "1つのレコードが見つかりました。 IPアドレス %s は %s 分間ブロックされます。"
-
-#, php-format
-msgid "Found records for ip %s"
-msgstr "IPアドレス %s のレコードが見つかりました。"
-
 msgid "Free"
 msgstr "空き容量"
 
@@ -2276,10 +2268,6 @@ msgstr "トラフィック制限が誤っています。"
 
 msgid "Incorrect username length or syntax."
 msgstr "ユーザー名の長さか構文が誤っています。"
-
-#, php-format
-msgid "Increasing %s attempts by 1 for ip %s."
-msgstr "IPアドレス %sのために%s試みを1増やします。"
 
 msgid "Install"
 msgstr "インストール"
@@ -2679,9 +2667,6 @@ msgstr "エイリアスの上限<br><i>(-1:無効, 0:無制限)</i>"
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "最大ドメイン数<br><i>(-1:無効, 0:無制限)</i>"
 
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "最大数のCAPTCHA認証の試み"
-
 msgid "Max number of login attempts"
 msgstr "最大数のログインの試み"
 
@@ -2708,6 +2693,9 @@ msgid ""
 "Maximal number of labels for domain names<br />(<small>Excluding SLD & "
 "TLD</small>)"
 msgstr "ドメイン名のラベルの最大数<br />（<small>SLD＆TLDを除く</small>）"
+
+msgid "Maximum number of captcha validation attempts"
+msgstr ""
 
 msgid "Maximum number of labels for subdomains"
 msgstr "サブドメインのラベルの最大数"
@@ -2903,10 +2891,6 @@ msgstr "提供されません"
 msgid "No records found"
 msgstr "レコードがありません"
 
-#, php-format
-msgid "No records found for ip %s with username not set."
-msgstr "ユーザ名が設定されていないIPアドレス %s　のレコードがありませんでした。 "
-
 msgid "No reseller accounts found."
 msgstr "代理店アカウントが見つかりません。"
 
@@ -2991,6 +2975,9 @@ msgstr "1つ以上のデータベース更新が利用可能です。詳細は�
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr "IANAにルートゾーンのデータベースに記載されている、トップレベルドメイン（TLD）のみが使用することができます。"
+
+msgid "Only administrators can login when maintenance mode is activated."
+msgstr ""
 
 msgid "Only exec"
 msgstr "実行のみ"
@@ -4716,9 +4703,6 @@ msgstr "ドメインのディレクトリ一覧を取得できません。代理
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
 msgstr "ファイルをアップロードすることができない。アップロードできるファイルサイズ(%1$d MB) に達しましたか？"
 
-msgid "Unblocking expired sessions."
-msgstr "期限切れセッションのブロックを解除します。"
-
 msgid "Undefined reference to data."
 msgstr "データの未定義参照。"
 
@@ -5294,6 +5278,9 @@ msgid ""
 "Please login into your i-MSCP control panel at %s for more details"
 msgstr "アカウント %s には更新依頼があります\n\n詳細については、i-MSCPコントロールパネルに %s でログインしてください"
 
+msgid "You have been successfully logged out."
+msgstr ""
+
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
 msgstr "ドメインディレクトリに一致しないディレクトリを選択しました。"
@@ -5385,6 +5372,9 @@ msgstr "アップロード/ダウンロードするファイルを選択する�
 
 msgid "You must select a network card."
 msgstr "ネットワークカードを選択してください。"
+
+msgid "You must select one or more plugins to operate on."
+msgstr ""
 
 msgid "You must specify a message."
 msgstr "メッセージを指定する必要があります。"
@@ -5776,14 +5766,14 @@ msgstr "i-MSCP - Ftp / ディレクトリ選択"
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - ソフトウェアのインストール"
 
-msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
-msgstr "i-MSCP - ドメインエイリアス管理/DNSゾーン追加"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - ドメインエイリアス管理/エイリアス編集"
 
-msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
-msgstr "i-MSCP - ドメインエイリアス管理/DNSゾーン編集"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zones record"
+msgstr ""
 
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - ドメイン管理/エイリアス"
