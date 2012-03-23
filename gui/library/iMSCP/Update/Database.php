@@ -1541,12 +1541,13 @@ class iMSCP_Update_Database extends iMSCP_Update
 	}
 
 	/**
-	 * #366: Enhancement - Move menu label show/disable option at user profile level
+	 * Enhancement - Roundcube integration
 	 *
-	 * @author Paweł Iwanowski <kontakt@raisen.pl>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_108(){
+	protected function _databaseUpdate_108()
+	{
 		return array(
 			"CREATE TABLE IF NOT EXISTS `roundcube_users` (
 				`user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
