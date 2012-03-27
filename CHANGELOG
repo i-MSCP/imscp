@@ -13,3 +13,4 @@ Tickets:
 	- Fixed #402: Task - Ajaxplorer - Integrate fix from ajaxplorer forum
 	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
 	- Fixed #404: Defect - Missing translations
+	- Fixed #405: Bug - Custom message for maintenance mode is always overridden
