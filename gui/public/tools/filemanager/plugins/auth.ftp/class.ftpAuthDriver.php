@@ -24,7 +24,7 @@ require_once(AJXP_INSTALL_PATH."/".AJXP_PLUGINS_FOLDER."/access.ftp/class.ftpAcc
 
 class ftpSonWrapper extends ftpAccessWrapper {
 	public function initUrl($url){
-		$this->parseUrl($url);
+		$this->parseUrl($url, true);
 	}
 }
 
