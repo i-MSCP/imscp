@@ -116,7 +116,7 @@ if (isset($_SESSION['order_panel_user_id']) && isset($_SESSION['order_panel_plan
 	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface.'));
 }
 
-if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['order_panel_image']) {
+if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
 	set_page_message(tr('Security code is incorrect.'), 'error');
 	redirectTo('chart.php');
 }

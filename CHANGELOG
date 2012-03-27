@@ -11,3 +11,4 @@ Tickets:
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
 	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
 	- Fixed #402: Task - Ajaxplorer - Integrate fix from ajaxplorer forum
+	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
