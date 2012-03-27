@@ -665,9 +665,9 @@ $tpl->assign(
 
 		 'TR_MANAGE_DOMAINS' => tr('Manage domains'),
 
-		 'TR_DOMAINS' => 'Domains',
-		 'TR_CREATE_DATE' => 'Creation date',
-		 'TR_EXPIRE_DATE' => 'Expire date',
+		 'TR_DOMAINS' => tr('Domains'),
+		 'TR_CREATE_DATE' => tr('Creation date'),
+		 'TR_EXPIRE_DATE' => tr('Expire date'),
 
 		 'TR_DOMAIN_ALIASES' => tr('Domain aliases'),
 		 'TR_SUBDOMAINS' => tr('Subdomains'),

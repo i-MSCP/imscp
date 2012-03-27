@@ -64,9 +64,10 @@ fi
 -d "i-MSCP" \
 --keyword="tr" \
 --no-location \
-${GUI}/library/i18n.php \
+${GUI}/library/*.php \
 ${GUI}/library/iMSCP/*.php \
 ${GUI}/library/iMSCP/*/*.php \
+${GUI}/library/iMSCP/*/*/*.php \
 ${GUI}/library/resources/i18n/zend.php \
 ${GUI}/library/iMSCP/View/Helpers/Functions/*.php \
 ${GUI}/public/*.php \
