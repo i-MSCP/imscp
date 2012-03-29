@@ -64,7 +64,7 @@ if($use_webdepot) {
     if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
         //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
         $xml_file = @file_get_contents($webdepot_xml_url);
-        if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
+        if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
             set_page_message(tr("Unable to read xml file for Web softwares."), 'error');
             $error = 1;
         }
