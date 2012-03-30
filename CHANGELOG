@@ -6,6 +6,10 @@ i-MSCP 1.1.1.0 (beta 1)
 
 Features / Enhancements:
 
+Tools:
+	- Updated phpMyAdmin to Version 3.4.10.2
+
+
 Tickets:
 	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
