@@ -6,8 +6,9 @@ i-MSCP 1.1.1.0 (beta 1)
 
 Features / Enhancements:
 
-Tools:
-	- Updated phpMyAdmin to Version 3.4.10.2
+GUI:
+	Tools:
+		- Updated PhpMyAdmin to version 3.4.10.2
 
 
 Tickets:
