@@ -131,7 +131,7 @@ function admin_generateForm($tpl)
 		$tpl->assign(
 			array(
 				'TR_DYNAMIC_TITLE' => tr('Add custom menu'),
-				'TR_ADD' => 'Add',
+				'TR_ADD' => tr('Add'),
 				'EDIT_MENU' => ''));
 	}
 
@@ -147,8 +147,8 @@ function admin_generateForm($tpl)
 
 	foreach (array(
 				 'A' => tr('Administrator level'), 'R' => tr('Reseller level'), 'C' => tr('Customer level'),
-				 'AR' => 'Admininistrator and Reseller levels', 'AC' => 'Administrator and customer levels',
-				 'RC' => 'Reselller and customer levels', 'ARC' => tr('All levels')) as $level => $trLevel
+				 'AR' => tr('Admininistrator and Reseller levels'), 'AC' => tr('Administrator and customer levels'),
+				 'RC' => tr('Reselller and customer levels'), 'ARC' => tr('All levels')) as $level => $trLevel
 	) {
 		$tpl->assign(
 			array(
