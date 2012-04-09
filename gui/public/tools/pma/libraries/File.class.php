@@ -3,15 +3,14 @@
 /**
  * file upload functions
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
  *
- * @todo replace error messages with localized string
  * @todo when uploading a file into a blob field, should we also consider using
  *       chunks like in import? UPDATE `table` SET `field` = `field` + [chunk]
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 class PMA_File
 {
@@ -73,14 +72,13 @@ class PMA_File
     /**
      * @staticvar string most recent BLOB repository reference
     */
-    static $_recent_bs_reference = NULL;
+    static $_recent_bs_reference = null;
 
     /**
      * constructor
      *
      * @access  public
-     * @uses    PMA_File::setName()
-     * @param   string  $name   file name
+     * @param string  $name   file name
      */
     function __construct($name = false)
     {
@@ -94,7 +92,6 @@ class PMA_File
      *
      * @see     PMA_File::cleanUp()
      * @access  public
-     * @uses    PMA_File::cleanUp()
      */
     function __destruct()
     {
@@ -105,8 +102,6 @@ class PMA_File
      * deletes file if it is temporary, usally from a moved upload file
      *
      * @access  public
-     * @uses    PMA_File::delet()
-     * @uses    PMA_File::isTemp()
      * @return  boolean success
      */
     function cleanUp()
@@ -122,8 +117,6 @@ class PMA_File
      * deletes the file
      *
      * @access  public
-     * @uses    PMA_File::getName()
-     * @uses    unlink()
      * @return  boolean success
      */
     function delete()
@@ -136,8 +129,7 @@ class PMA_File
      * file objects with temp flags are deleted with object destruction
      *
      * @access  public
-     * @uses    PMA_File::$_is_temp to set and read it
-     * @param   boolean sets the temp flag
+     * @param boolean sets the temp flag
      * @return  boolean PMA_File::$_is_temp
      */
     function isTemp($is_temp = null)
@@ -153,8 +145,7 @@ class PMA_File
      * accessor
      *
      * @access  public
-     * @uses    PMA_File::$_name
-     * @param   string  $name   file name
+     * @param string  $name   file name
      */
     function setName($name)
     {
@@ -163,17 +154,6 @@ class PMA_File
 
     /**
      * @access  public
-     * @uses    PMA_File::getName()
-     * @uses    PMA_File::isUploaded()
-     * @uses    PMA_File::checkUploadedFile()
-     * @uses    PMA_File::isReadable()
-     * @uses    PMA_File::$_content
-     * @uses    function_exists()
-     * @uses    file_get_contents()
-     * @uses    filesize()
-     * @uses    fread()
-     * @uses    fopen()
-     * @uses    bin2hex()
      * @return  string  binary file content
      */
     function getContent($as_binary = true, $offset = 0, $length = null)
@@ -209,8 +189,7 @@ class PMA_File
 
     /**
      * @access  public
-     * @uses    PMA_File::getName()
-     * @uses    is_uploaded_file()
+     * @return bool
      */
     function isUploaded()
     {
@@ -221,7 +200,6 @@ class PMA_File
      * accessor
      *
      * @access  public
-     * @uses    PMA_File::$name as return value
      * @return  string  PMA_File::$_name
      */
     function getName()
@@ -230,12 +208,8 @@ class PMA_File
     }
 
     /**
-     * @todo replace error message with localized string
      * @access  public
-     * @uses    PMA_File::isUploaded()
-     * @uses    PMA_File::setName()
-     * @uses    PMA_File::$_error_message
-     * @param   string  name of file uploaded
+     * @param string  name of file uploaded
      * @return  boolean success
      */
     function setUploadedFile($name)
@@ -244,7 +218,7 @@ class PMA_File
 
         if (! $this->isUploaded()) {
             $this->setName(null);
-            $this->_error_message = 'not an uploaded file';
+            $this->_error_message = __('File was not an uploaded file.');
             return false;
         }
 
@@ -253,14 +227,8 @@ class PMA_File
 
     /**
      * @access  public
-     * @uses    PMA_File::fetchUploadedFromTblChangeRequestMultiple()
-     * @uses    PMA_File::setUploadedFile()
-     * @uses    PMA_File::setRecentBLOBReference()
-     * @uses    curl_setopt_array()
-     * @uses    PMA_File::$_error_message
-     * @uses    $_FILES
-     * @param   string  $key the md5 hash of the column name 
-     * @param   string  $rownumber
+     * @param string  $key the md5 hash of the column name
+     * @param string  $rownumber
      * @return  boolean success
      */
     function setUploadedFromTblChangeRequest($key, $rownumber)
@@ -271,11 +239,11 @@ class PMA_File
         $file = PMA_File::fetchUploadedFromTblChangeRequestMultiple($_FILES['fields_upload'], $rownumber, $key);
 
         // for blobstreaming
-        $is_bs_upload = FALSE;
+        $is_bs_upload = false;
 
         // check if this field requires a repository upload
         if (isset($_REQUEST['upload_blob_repo']['multi_edit'][$rownumber][$key])) {
-            $is_bs_upload = ($_REQUEST['upload_blob_repo']['multi_edit'][$rownumber][$key] == "on") ? TRUE : FALSE;
+            $is_bs_upload = ($_REQUEST['upload_blob_repo']['multi_edit'][$rownumber][$key] == "on") ? true : false;
         }
         // if request is an upload to the BLOB repository
         if ($is_bs_upload) {
@@ -285,12 +253,12 @@ class PMA_File
             $tmp_file_type = $file['type'];
 
             if (! $tmp_file_type) {
-                $tmp_file_type = NULL;
+                $tmp_file_type = null;
             }
 
             if (! $bs_db || ! $bs_table) {
-                $this->_error_message = $GLOBALS['strUploadErrorUnknown'];
-                return FALSE;
+                $this->_error_message = __('Unknown error while uploading.');
+                return false;
             }
             $blob_url =  PMA_BS_UpLoadFile($bs_db, $bs_table, $tmp_file_type, $tmp_filename);
             PMA_File::setRecentBLOBReference($blob_url);
@@ -350,12 +318,11 @@ class PMA_File
      * $file['error'] = [value]
      * </code>
      *
-     * @todo re-check if requirements changes to PHP >= 4.2.0
      * @access  public
      * @static
-     * @param   array   $file       the array
-     * @param   string  $rownumber
-     * @param   string  $key
+     * @param array   $file       the array
+     * @param string  $rownumber
+     * @param string  $key
      * @return  array
      */
     function fetchUploadedFromTblChangeRequestMultiple($file, $rownumber, $key)
@@ -375,11 +342,8 @@ class PMA_File
      * sets the name if the file to the one selected in the tbl_change form
      *
      * @access  public
-     * @uses    $_REQUEST
-     * @uses    PMA_File::setLocalSelectedFile()
-     * @uses    is_string()
-     * @param   string  $key the md5 hash of the column name 
-     * @param   string  $rownumber
+     * @param string  $key the md5 hash of the column name
+     * @param string  $rownumber
      * @return  boolean success
      */
     function setSelectedFromTblChangeRequest($key, $rownumber = null)
@@ -388,11 +352,11 @@ class PMA_File
          && is_string($_REQUEST['fields_uploadlocal']['multi_edit'][$rownumber][$key])) {
             // ... whether with multiple rows ...
             // for blobstreaming
-            $is_bs_upload = FALSE;
+            $is_bs_upload = false;
 
             // check if this field requires a repository upload
             if (isset($_REQUEST['upload_blob_repo']['multi_edit'][$rownumber][$key])) {
-                $is_bs_upload = ($_REQUEST['upload_blob_repo']['multi_edit'][$rownumber][$key] == "on") ? TRUE : FALSE;
+                $is_bs_upload = ($_REQUEST['upload_blob_repo']['multi_edit'][$rownumber][$key] == "on") ? true : false;
             }
 
             // is a request to upload file to BLOB repository using uploadDir mechanism
@@ -418,12 +382,12 @@ class PMA_File
                 }
 
                 if (! $tmp_file_type) {
-                    $tmp_file_type = NULL;
+                    $tmp_file_type = null;
                 }
 
                 if (! $bs_db || !$bs_table) {
-                    $this->_error_message = $GLOBALS['strUploadErrorUnknown'];
-                    return FALSE;
+                    $this->_error_message = __('Unknown error while uploading.');
+                    return false;
                 }
                 $blob_url = PMA_BS_UpLoadFile($bs_db, $bs_table, $tmp_file_type, $tmp_filename);
                 PMA_File::setRecentBLOBReference($blob_url);
@@ -437,7 +401,6 @@ class PMA_File
 
     /**
      * @access  public
-     * @uses    PMA_File->$_error_message as return value
      * @return  string  error message
      */
     function getError()
@@ -447,7 +410,6 @@ class PMA_File
 
     /**
      * @access  public
-     * @uses    PMA_File->$_error_message to check it
      * @return  boolean whether an error occured or not
      */
     function isError()
@@ -460,10 +422,8 @@ class PMA_File
      * and uses the submitted/selected file
      *
      * @access  public
-     * @uses    PMA_File::setUploadedFromTblChangeRequest()
-     * @uses    PMA_File::setSelectedFromTblChangeRequest()
-     * @param   string  $key the md5 hash of the column name 
-     * @param   string  $rownumber
+     * @param string  $key the md5 hash of the column name
+     * @param string  $rownumber
      * @return  boolean success
      */
     function checkTblChangeForm($key, $rownumber)
@@ -485,11 +445,7 @@ class PMA_File
     /**
      *
      * @access  public
-     * @uses    PMA_File::setName()
-     * @uses    PMA_securePath()
-     * @uses    PMA_userDir()
-     * @uses    $GLOBALS['cfg']['UploadDir']
-     * @param   string  $name
+     * @param string  $name
      * @return  boolean success
      */
     function setLocalSelectedFile($name)
@@ -508,10 +464,6 @@ class PMA_File
 
     /**
      * @access  public
-     * @uses    PMA_File::getName()
-     * @uses    is_readable()
-     * @uses    ob_start()
-     * @uses    ob_end_clean()
      * @return  boolean whether the file is readable or not
      */
     function isReadable()
@@ -529,23 +481,8 @@ class PMA_File
      * before opening it. The FAQ 1.11 explains how to create the "./tmp"
      * directory - if needed
      *
-     * @todo replace error message with localized string
      * @todo move check of $cfg['TempDir'] into PMA_Config?
      * @access  public
-     * @uses    $cfg['TempDir']
-     * @uses    PMA_File::isReadable()
-     * @uses    PMA_File::getName()
-     * @uses    PMA_File::setName()
-     * @uses    PMA_File::isTemp()
-     * @uses    PMA_File::$_error_message
-     * @uses    is_dir()
-     * @uses    mkdir()
-     * @uses    chmod()
-     * @uses    is_writable()
-     * @uses    basename()
-     * @uses    move_uploaded_file()
-     * @uses    ob_start()
-     * @uses    ob_end_clean()
      * @return  boolean whether uploaded fiel is fine or not
      */
     function checkUploadedFile()
@@ -568,7 +505,7 @@ class PMA_File
         $move_uploaded_file_result = move_uploaded_file($this->getName(), $new_file_to_upload);
         ob_end_clean();
         if (! $move_uploaded_file_result) {
-            $this->_error_message = 'error while moving uploaded file';
+            $this->_error_message = __('Error while moving uploaded file.');
             return false;
         }
 
@@ -576,7 +513,7 @@ class PMA_File
         $this->isTemp(true);
 
         if (! $this->isReadable()) {
-            $this->_error_message = 'cannot read (moved) upload file';
+            $this->_error_message = __('Cannot read (moved) upload file.');
             return false;
         }
 
@@ -588,14 +525,6 @@ class PMA_File
      *
      * @todo    move file read part into readChunk() or getChunk()
      * @todo    add support for compression plugins
-     * @uses    PMA_File::$_compression to set it
-     * @uses    PMA_File::getName()
-     * @uses    fopen()
-     * @uses    fread()
-     * @uses    strlen()
-     * @uses    fclose()
-     * @uses    chr()
-     * @uses    substr()
      * @access  protected
      * @return  string MIME type of compression, none for none
      */
@@ -663,7 +592,7 @@ class PMA_File
     }
 
     /**
-     *
+     * @return bool
      */
     function open()
     {
@@ -715,7 +644,7 @@ class PMA_File
                 break;
         }
 
-
+        return true;
     }
 
     function getCharset()
@@ -729,8 +658,6 @@ class PMA_File
     }
 
     /**
-     * @uses    PMA_File::$_compression as return value
-     * @uses    PMA_File::detectCompression()
      * @return  string MIME type of compression, none for none
      * @access  public
      */
@@ -746,15 +673,13 @@ class PMA_File
     /**
      * advances the file pointer in the file handle by $length bytes/chars
      *
-     * @param   integer $length numbers of chars/bytes to skip
+     * @param integer $length numbers of chars/bytes to skip
      * @return  boolean
      * @todo this function is unused
      */
     function advanceFilePointer($length)
     {
         while ($length > 0) {
-            // Disable read progresivity, otherwise we eat all memory!
-            $read_multiply = 1; // required?
             $this->getNextChunk($length);
             $length -= $this->getChunkSize();
         }
@@ -764,6 +689,8 @@ class PMA_File
      * http://bugs.php.net/bug.php?id=29532
      * bzip reads a maximum of 8192 bytes on windows systems
      * @todo this function is unused
+     * @param int $max_size
+     * @return bool|string
      */
     function getNextChunk($max_size = null)
     {
@@ -813,14 +740,8 @@ class PMA_File
                 return false;
         }
 
-        echo $size . ' - ';
-        echo strlen($result) . ' - ';
-        echo (@$GLOBALS['__len__'] += strlen($result)) . ' - ';
-        echo $this->_error_message;
-        echo '<hr />';
-
         if ($GLOBALS['charset_conversion']) {
-            $result = PMA_convert_string($this->getCharset(), $GLOBALS['charset'], $result);
+            $result = PMA_convert_string($this->getCharset(), 'utf-8', $result);
         } else {
             /**
              * Skip possible byte order marks (I do not think we need more
@@ -882,7 +803,7 @@ class PMA_File
      * sets reference to most recent BLOB repository reference
      *
      * @access  public
-     * @param   string - BLOB repository reference
+     * @param string - BLOB repository reference
     */
     static function setRecentBLOBReference($ref)
     {
@@ -898,7 +819,7 @@ class PMA_File
     static function getRecentBLOBReference()
     {
         $ref = PMA_File::$_recent_bs_reference;
-        PMA_File::$_recent_bs_reference = NULL;
+        PMA_File::$_recent_bs_reference = null;
 
         return $ref;
     }

@@ -3,20 +3,13 @@
 /**
  * main css file from theme Original
  *
- * @package phpMyAdmin-theme
+ * @package PhpMyAdmin-theme
  * @subpackage Original
  */
 
 // unplanned execution path
-if (!defined('PMA_MINIMUM_COMMON')) {
+if (!defined('PMA_MINIMUM_COMMON') && !defined('TESTSUITE')) {
     exit();
-}
-
-function PMA_ieFilter($start_color, $end_color)
-{
-    return PMA_USR_BROWSER_AGENT == 'IE' && PMA_USR_BROWSER_VER >= 6 && PMA_USR_BROWSER_VER <= 8
-        ? 'filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr="' . $start_color . '", endColorstr="' . $end_color . '");'
-        : '';
 }
 ?>
 /******************************************************************************/
@@ -35,7 +28,7 @@ body {
     font-family:        <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
 <?php } ?>
     padding:            0;
-    margin:             0.5em;
+    margin:             0 0.5em 0 0;
     color:              <?php echo $GLOBALS['cfg']['MainColor']; ?>;
     background:         <?php echo $GLOBALS['cfg']['MainBackground']; ?>;
 }
@@ -151,9 +144,21 @@ button {
     vertical-align:     middle;
 }
 
-
 /******************************************************************************/
 /* classes */
+.clearfloat {
+    clear: both;
+}
+
+.floatleft {
+    float: <?php echo $left; ?>;
+    margin-<?php echo $right; ?>: 1em;
+}
+
+.paddingtop {
+    padding-top: 1em;
+}
+
 div.tools {
     border: 1px solid #000000;
     padding: 0.2em;
@@ -247,8 +252,6 @@ table tr.hover th {
 /**
  * marks table rows/cells if the db field is in a where condition
  */
-tr.condition th,
-tr.condition td,
 td.condition,
 th.condition {
     border: 1px solid <?php echo $GLOBALS['cfg']['BrowseMarkerBackground']; ?>;
@@ -262,6 +265,10 @@ td.null {
     text-align: <?php echo $right; ?>;
 }
 
+table .valueHeader {
+    text-align:         <?php echo $right; ?>;
+    white-space:        normal;
+}
 table .value {
     text-align:         <?php echo $right; ?>;
     white-space:        normal;
@@ -277,11 +284,11 @@ table [class=value] {
     font-family:        <?php echo $GLOBALS['cfg']['FontFamilyFixed']; ?>;
 }
 <?php } ?>
-.value .attention {
+.attention {
     color:              red;
     font-weight:        bold;
 }
-.value .allfine {
+.allfine {
     color:              green;
 }
 
@@ -678,10 +685,18 @@ ul#topmenu ul {
     margin:             0;
     padding:            0;
     position:           absolute;
-    right:              0;
     list-style-type:    none;
     display:            none;
     border:             1px #666 solid;
+    z-index:            2;
+}
+
+ul#topmenu ul.only {
+    left: 0;
+}
+
+ul#topmenu ul.notonly {
+    right: 0;
 }
 
 ul#topmenu li:hover ul, ul#topmenu .submenuhover ul {
@@ -795,6 +810,14 @@ a.error {
 <?php } ?>
 /* end topmenu */
 
+/* zoom search */
+div#dataDisplay input, div#dataDisplay select {
+    margin: 0;
+    margin-<?php echo $right; ?>: 0.5em;
+}
+div#dataDisplay th {
+    line-height: 2em;
+}
 
 /* Calendar */
 table.calendar {
@@ -829,20 +852,10 @@ form.clock {
 
 
 /* table stats */
-div#tablestatistics {
-    border-bottom: 0.1em solid #669999;
-    margin-bottom: 0.5em;
-    padding-bottom: 0.5em;
-}
-
 div#tablestatistics table {
     float: <?php echo $left; ?>;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    margin-<?php echo $right; ?>: 0.5em;
-}
-
-div#tablestatistics table caption {
     margin-<?php echo $right; ?>: 0.5em;
 }
 /* END table stats */
@@ -859,13 +872,23 @@ div#tablestatistics table caption {
 
 
 /* Heading */
+#topmenucontainer {
+    background: white;
+    padding-right: 1em;
+    width: 100%;
+}
+
 #serverinfo {
+    background: white;
     font-weight:        bold;
-    margin-bottom:      0.5em;
+    padding-bottom: 0.5em;
+    width: 10000px;
+    overflow: hidden;
 }
 
 #serverinfo .item {
     white-space:        nowrap;
+    float: <?php echo $left; ?>
 }
 
 #span_table_comment {
@@ -965,48 +988,173 @@ div#tablestatistics table caption {
 
 
 /* serverstatus */
-div#serverstatus table caption a.top {
+
+.linkElem:hover {
+    text-decoration:    underline;
+    color:              #235a81;
+    cursor: pointer;
+}
+
+h3#serverstatusqueries span {
+    font-size:60%;
+    display:inline;
+}
+
+img.sortableIcon {
+    float:right;
+    background-repeat:no-repeat;
+    margin:0;
+}
+
+.buttonlinks {
+    float: <?php echo $right; ?>;
+    white-space: nowrap;
+}
+
+.jsfeature {
+    display: none; /* Made visible with js */
+}
+
+/* Also used for the variables page */
+fieldset#tableFilter {
+    margin-bottom:1em;
+}
+
+div#serverStatusTabs {
+    margin-top:1em;
+}
+
+caption a.top {
     float: <?php echo $right; ?>;
 }
 
-div#serverstatus div#serverstatusqueriesdetails table,
-div#serverstatus table#serverstatustraffic,
-div#serverstatus table#serverstatusconnections {
+div#serverstatusquerieschart {
+    float:<?php echo $left; ?>;
+    width:500px;
+    height:350px;
+    padding-<?php echo $left; ?>: 30px;
+}
+
+div#serverstatus table#serverstatusqueriesdetails {
     float: <?php echo $left; ?>;
 }
 
-#serverstatussection,
-.clearfloat {
-    clear: both;
+table#serverstatustraffic {
+    float: <?php echo $left; ?>;
 }
-div#serverstatussection table {
+table#serverstatusconnections {
+    float: <?php echo $left; ?>;
+    margin-<?php echo $left; ?>: 30px;
+}
+
+table#serverstatusvariables {
     width: 100%;
     margin-bottom: 1em;
 }
-div#serverstatussection table .name {
+table#serverstatusvariables .name {
     width: 18em;
+    white-space:nowrap;
 }
-div#serverstatussection table .value {
+table#serverstatusvariables .value {
     width: 6em;
+}
+table#serverstatusconnections {
+    float: <?php echo $left; ?>;
+    margin-<?php echo $left; ?>: 30px;
 }
 
 div#serverstatus table tbody td.descr a,
 div#serverstatus table .tblFooters a {
     white-space: nowrap;
 }
-div#serverstatus div#statuslinks a:before,
-div#serverstatus div#sectionlinks a:before,
-div#serverstatus table tbody td.descr a:before,
-div#serverstatus table .tblFooters a:before {
-    content: '[';
+
+div.liveChart {
+    clear:both;
+    min-width:500px;
+    height:400px;
+    padding-bottom:80px;
 }
-div#serverstatus div#statuslinks a:after,
-div#serverstatus div#sectionlinks a:after,
-div#serverstatus table tbody td.descr a:after,
-div#serverstatus table .tblFooters a:after {
-    content: ']';
+
+#addChartDialog input[type="text"] {
+    margin: 0;
+    padding:3px;
 }
+
+div#chartVariableSettings {
+    border:1px solid #ddd;
+    background-color:#E6E6E6;
+    margin-left:10px;
+}
+
+table#chartGrid div.monitorChart {
+    background: #EBEBEB;
+}
+
+div#serverstatus div.tabLinks {
+    float:<?php echo $left; ?>;
+    padding-bottom: 10px;
+}
+
+.popupContent {
+    display: none;
+    position: absolute;
+    border: 1px solid #CCC;
+    margin:0;
+    padding:3px;
+    -moz-box-shadow:    1px 1px 6px #ddd;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow:         2px 2px 3px #666;
+    background-color:white;
+    z-index: 2;
+}
+
+div#logTable {
+    padding-top: 10px;
+    clear: both;
+}
+
+div#logTable table {
+    width:100%;
+}
+
+.smallIndent {
+    padding-left: 7px;
+}
+
 /* end serverstatus */
+
+/* server variables */
+
+a.editLink {
+    float: <?php echo $left; ?>;
+    font-family:sans-serif;
+}
+
+table.serverVariableEditTable {
+    border:0;
+    margin:0;
+    padding:0;
+    width:100%;
+}
+table.serverVariableEditTable td {
+    border:0;
+    margin:0;
+    padding:0;
+}
+table.serverVariableEditTable td:first-child {
+    white-space:nowrap;
+    vertical-align:middle;
+}
+
+table.serverVariableEditTable input {
+    width:95%;
+}
+
+table#serverVariables td {
+    height:18px;
+}
+
+/* end server variables */
 
 /* querywindow */
 body#bodyquerywindow {
@@ -1027,6 +1175,15 @@ div#querywindowcontainer fieldset {
 }
 /* END querywindow */
 
+/* profiling */
+
+div#profilingchart {
+    width:550px;
+    height:370px;
+    float:left;
+}
+
+/* END profiling */
 
 /* querybox */
 
@@ -1315,7 +1472,7 @@ div.upload_progress_bar_outer
 div.upload_progress_bar_inner
 {
     background-color: <?php echo $GLOBALS['cfg']['NaviBackground']; ?>;
-    width: 0px;
+    width: 0;
     height: 12px;
     margin: 1px;
 }
@@ -1336,7 +1493,7 @@ table#serverconnection_trg_local  {
   *  Ajax notification styling
   */
  .ajax_notification {
-    top: 0px;           /** The notification needs to be shown on the top of the page */
+    top: 0;           /** The notification needs to be shown on the top of the page */
     position: fixed;
     margin-top: 0;
     margin-right: auto;
@@ -1391,29 +1548,14 @@ table#serverconnection_trg_local  {
     margin: 20px 30px 30px 10px
 }
 
-.exportoptions #buttonGo, .importoptions #buttonGo {
-    padding: 5px 30px;
-    -moz-border-radius: 11px;
-    -webkit-border-radius: 11px;
-    border-radius: 11px;
-    background-image: url(./themes/svg_gradient.php?from=ffffff&to=cccccc);
-    background-size: 100% 100%;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc));
-    background: -moz-linear-gradient(top,  #ffffff,  #cccccc);
-    background: -o-linear-gradient(top,  #ffffff,  #cccccc);
-    <?php echo PMA_ieFilter('#ffffff', '#cccccc'); ?>
-    border: 1px solid #444444;
-    cursor: pointer;
-}
-
 .format_specific_options h3 {
-    margin: 10px 0px 0px 10px;
-    border: 0px;
+    margin: 10px 0 0 10px;
+    border: 0;
 }
 
 .format_specific_options {
     border: 1px solid #999999;
-    margin: 7px 0px;
+    margin: 7px 0;
     padding: 3px;
 }
 
@@ -1429,7 +1571,7 @@ select#db_select, select#table_select {
 }
 
 .export_sub_options {
-    margin: 20px 0px 0px 30px;
+    margin: 20px 0 0 30px;
 }
 
 .export_sub_options h4 {
@@ -1437,12 +1579,12 @@ select#db_select, select#table_select {
 }
 
 .export_sub_options li.subgroup {
-	display: inline-block;
-	margin-top: 0;
+    display: inline-block;
+    margin-top: 0;
 }
 
 .export_sub_options li {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 #quick_or_custom, #output_quick_export {
@@ -1453,7 +1595,7 @@ select#db_select, select#table_select {
  */
 
 .importoptions #import_notification {
-    margin: 10px 0px;
+    margin: 10px 0;
     font-style: italic;
 }
 
@@ -1462,33 +1604,45 @@ input#input_import_file {
 }
 
 .formelementrow {
-    margin: 5px 0px 5px 0px;
+    margin: 5px 0 5px 0;
 }
 
 /**
- * ENUM/SET editor styles
+ * GIS data editor styles
  */
-p.enum_notice {
-    margin: 5px 2px;
-    font-size: 80%;
+a.close_gis_editor {
+    float: right;
 }
 
-#enum_editor {
+#gis_editor {
     display: none;
     position: fixed;
     _position: absolute; /* hack for IE */
-    z-index: 101;
+    z-index: 1001;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-#enum_editor_no_js {
-   margin: auto auto;
+#gis_data {
+    min-height: 230px;
 }
 
-#enum_editor, #enum_editor_no_js {
+#gis_data_textarea {
+    height: 6em;
+}
+
+#gis_data_editor {
     background: #D0DCE0;
     padding: 15px;
+    min-height: 500px;
+}
+
+#gis_data_editor .choice {
+    display: none;
+}
+
+#gis_data_editor input[type="text"] {
+    width: 75px;
 }
 
 #popup_background {
@@ -1500,29 +1654,88 @@ p.enum_notice {
     top: 0;
     left: 0;
     background: #000;
-    z-index: 100;
+    z-index: 1000;
     overflow: hidden;
 }
 
-a.close_enum_editor {
+/**
+ * ENUM/SET editor styles
+ */
+p.enum_notice {
+    margin: 5px 2px;
+    font-size: 80%;
+}
+
+fieldset.enum_editor_no_js {
+    width: 40em;
+    padding: 1em;
+}
+
+hr.enum_editor_no_js {
+    background-color: #aaa;
+}
+
+#enum_editor p {
+    font-style:italic;
+}
+
+#enum_editor .values, #enum_editor .add, .enum_editor_no_js #values {
+    width: 100%;
+}
+
+#enum_editor .add td {
+    vertical-align: middle;
+    width: 50%;
+    padding: 0 1em;
+}
+
+#enum_editor .values td.drop {
+    width: 2em;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#enum_editor .values input {
+    margin: 0.1em 0;
+    padding-right: 2.5em;
+    width: 100%;
+}
+
+#enum_editor .values img {
+    width: 2em;
+    vertical-align: middle;
+}
+
+#enum_editor input.add_value {
+    margin: 1em 0;
+}
+
+#enum_editor_output textarea,
+.enum_editor_no_js input {
+    width: 100%;
     float: right;
+    margin: 1em 0 0 0;
 }
 
-#enum_editor #values, #enum_editor_no_js #values {
-    margin: 15px 0px;
+#enum_editor_no_js {
     width: 100%;
 }
 
-#enum_editor #values input, #enum_editor_no_js #values input {
-    margin: 5px 0px;
-    float: top;
-    width: 100%;
+.enum_editor_no_js input.submit {
+    margin: 1em 0;
 }
 
+/**
+ * ENUM/SET editor integration for the routines editor
+ */
+.enum_hint {
+    position: relative;
 }
 
-#enum_editor_output {
-    margin-top: 50px;
+.enum_hint a {
+    position: absolute;
+    left: 81%;
+    bottom: 0.35em;
 }
 
 /**
@@ -1542,6 +1755,48 @@ a.close_enum_editor {
 td.more_opts {
     display: none;
     white-space: nowrap;
+}
+
+/**
+ * Indexes
+ */
+#index_frm .index_info input,
+#index_frm .index_info select {
+    width: 100%;
+    box-sizing:         border-box;
+    -ms-box-sizing:     border-box;
+    -moz-box-sizing:    border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#index_frm .slider {
+    width: 10em;
+    margin: 0.6em;
+    float: <?php echo $left; ?>;
+}
+
+#index_frm .add_fields {
+    float: <?php echo $left; ?>;
+}
+
+#index_frm .add_fields input {
+    margin-<?php echo $left; ?>: 1em;
+}
+
+#index_frm input {
+    margin: 0;
+}
+
+#index_frm td {
+    vertical-align: middle;
+}
+
+table#index_columns {
+    width: 100%;
+}
+
+table#index_columns select {
+    width: 100%;
 }
 
 iframe.IE_hack {
@@ -1581,7 +1836,7 @@ iframe.IE_hack {
     padding:          0.1em 0.6em 0.2em;
 }
 
-.config-form ul.tabs li a.active {
+.config-form ul.tabs li.active a {
     background-color: <?php echo $GLOBALS['cfg']['BgOne']; ?>;
 }
 
@@ -1618,7 +1873,7 @@ iframe.IE_hack {
     padding:    0;
     list-style: none;
     color:      #9A0000;
-	font-size:  small;
+    font-size:  small;
 }
 
 .config-form fieldset th {
@@ -1768,11 +2023,1022 @@ fieldset .disabled-field td {
     margin-bottom: 0.5em;
 }
 
-#table_columns input, #table_columns select {
-    width:              14em;
+.rte_table {
+    table-layout: fixed;
+}
+
+.rte_table td {
+    vertical-align:     middle;
+}
+
+.rte_table tr td:nth-child(1) {
+    font-weight:        bold;
+}
+
+.rte_table input, .rte_table select, .rte_table textarea {
+    width:              100%;
+    margin:             0;
     box-sizing:         border-box;
     -ms-box-sizing:     border-box;
     -moz-box-sizing:    border-box;
     -webkit-box-sizing: border-box;
 }
 
+.rte_table .routine_params_table {
+    width:              100%;
+}
+
+#placeholder .button {
+    position: absolute;
+    cursor: pointer;
+}
+
+#placeholder div.button {
+    font-size: smaller;
+    color: #999;
+    background-color: #eee;
+    padding: 2px;
+}
+
+.wrapper {
+    float: <?php echo $left; ?>;
+    margin-bottom: 0.5em;
+}
+.toggleButton {
+    position: relative;
+    cursor: pointer;
+    font-size: 0.8em;
+    text-align: center;
+    line-height: 1.55em;
+    height: 1.55em;
+    overflow: hidden;
+    border-right: 0.1em solid #888;
+    border-left: 0.1em solid #888;
+}
+.toggleButton table,
+.toggleButton td,
+.toggleButton img {
+    padding: 0;
+    position: relative;
+}
+.toggleButton .container {
+    position: absolute;
+}
+.toggleButton .toggleOn {
+    color: white;
+    padding: 0 1em;
+}
+.toggleButton .toggleOff {
+    padding: 0 1em;
+}
+
+.doubleFieldset fieldset {
+    width: 48%;
+    float: <?php echo $left; ?>;
+    padding: 0;
+}
+.doubleFieldset fieldset.left {
+    margin-<?php echo $right; ?>: 1%;
+}
+.doubleFieldset fieldset.right {
+    margin-<?php echo $left; ?>: 1%;
+}
+.doubleFieldset legend {
+    margin-<?php echo $left; ?>: 0.5em;
+}
+.doubleFieldset div.wrap {
+    padding: 0.5em;
+}
+
+#table_columns input[type="text"], #table_columns select {
+    width:              10em;
+    box-sizing:         border-box;
+    -ms-box-sizing:     border-box;
+    -moz-box-sizing:    border-box;
+    -webkit-box-sizing: border-box;
+}
+
+#placeholder {
+    position: relative;
+    border: 1px solid #aaa;
+    float: right;
+    overflow: hidden;
+}
+
+.placeholderDrag {
+    cursor: move;
+}
+
+#placeholder .button {
+    position: absolute;
+}
+
+#left_arrow {
+    left:8px;
+    top:26px;
+}
+
+#right_arrow {
+    left:26px;
+    top:26px;
+}
+
+#up_arrow {
+    left:17px;
+    top:8px;
+}
+
+#down_arrow {
+    left:17px;
+    top:44px;
+}
+
+#zoom_in {
+    left:17px;
+    top:67px;
+}
+
+#zoom_world {
+    left:17px;
+    top:85px;
+}
+
+#zoom_out {
+    left:17px;
+    top:103px;
+}
+
+.gis_table td {
+    vertical-align: middle;
+}
+
+.gis_table select {
+    min-width: 151px;
+}
+
+.gis_table .save {
+    font-weight: bold;
+    vertical-align: bottom;
+    height: 100px;
+}
+
+.gis_table .button {
+   text-align: <?php echo $right; ?>;
+}
+
+.gis_table .choice {
+    display:none;
+}
+
+.CodeMirror {
+  font-size: 140%;
+  font-family: monospace;
+  background: white;
+  border: 1px solid black;
+}
+
+.CodeMirror-scroll {
+  overflow: auto;
+  height:             <?php echo ceil($GLOBALS['cfg']['TextareaRows'] * 1.2); ?>em;
+  /* This is needed to prevent an IE[67] bug where the scrolled content
+     is visible outside of the scrolling box. */
+  position: relative;
+}
+
+.CodeMirror-gutter {
+  position: absolute; left: 0; top: 0;
+  z-index: 10;
+  background-color: #f7f7f7;
+  border-right: 1px solid #eee;
+  min-width: 2em;
+  height: 100%;
+}
+.CodeMirror-gutter-text {
+  color: #aaa;
+  text-align: right;
+  padding: .4em .2em .4em .4em;
+  white-space: pre !important;
+}
+.CodeMirror-lines {
+  padding: .4em;
+}
+
+.CodeMirror pre {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border-width: 0; margin: 0; padding: 0; background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0; margin: 0;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+.CodeMirror-wrap pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+.CodeMirror-wrap .CodeMirror-scroll {
+  overflow-x: hidden;
+}
+
+.CodeMirror textarea {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+.CodeMirror-cursor {
+  z-index: 10;
+  position: absolute;
+  visibility: hidden;
+  border-left: 1px solid black !important;
+}
+.CodeMirror-focused .CodeMirror-cursor {
+  visibility: visible;
+}
+
+span.CodeMirror-selected {
+  background: #ccc !important;
+  color: HighlightText !important;
+}
+.CodeMirror-focused span.CodeMirror-selected {
+  background: Highlight !important;
+}
+
+.CodeMirror-matchingbracket {color: #0f0 !important;}
+.CodeMirror-nonmatchingbracket {color: #f22 !important;}
+
+<?php echo $_SESSION['PMA_Theme']->getCssCodeMirror(); ?>
+
+.colborder {
+    cursor: col-resize;
+    height: 100%;
+    margin-left: -5px;
+    position: absolute;
+    width: 5px;
+}
+
+.colborder_active {
+    border-right: 2px solid #a44;
+}
+
+.pma_table td {
+    position: static;
+}
+
+.pma_table th.draggable span, .pma_table tbody td span {
+    display: block;
+    overflow: hidden;
+}
+
+.cRsz {
+    position: absolute;
+}
+
+.draggable {
+    cursor: move;
+}
+
+.cCpy {
+    background: #000;
+    color: #FFF;
+    font-weight: bold;
+    margin: 0.1em;
+    padding: 0.3em;
+    position: absolute;
+}
+
+.cPointer {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>col_pointer.png);
+    height: 20px;
+    margin-left: -5px;  /* must be minus half of its width */
+    margin-top: -10px;
+    position: absolute;
+    width: 10px;
+}
+
+.normalqTip {
+    background: #333 !important;
+    opacity: 0.8 !important;
+    border:1px solid #000 !important;
+    -moz-border-radius: 0.3em !important;
+    -webkit-border-radius: 0.3em !important;
+    border-radius: 0.3em !important;
+    text-shadow: -1px -1px #000 !important;
+    font-size: 0.8em !important;
+    font-weight: bold !important;
+}
+
+.normalqTip * {
+    background: none !important;
+    color: #FFF !important;
+}
+
+.normalqTipContent {
+    padding: 1px 3px !important;
+}
+
+
+.data_full_width {
+    width: 100%;
+}
+.cHide {
+    background: #D3DCE3 url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>col_hide.png);
+    color: #CCC;
+    cursor: pointer;
+    height: 16px;
+    margin-left: -5px;
+    margin-top: 0.3em;
+    position: absolute;
+    width: 16px;
+}
+
+.cHide:hover {
+    background-color: #AAA;
+}
+
+.cDrop {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.coldrop {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>col_drop.png);
+    cursor: pointer;
+    height: 16px;
+    margin-left: 0.5em;
+    margin-top: 0.3em;
+    position: absolute;
+    width: 16px;
+}
+
+.coldrop:hover, .coldrop-hover {
+    background-color: #999;
+}
+
+.cList {
+    background: #EEE;
+    border: solid 1px #999;
+    position: absolute;
+}
+
+.cList .lDiv div {
+    padding: 0.2em 0.5em 0.2em 0.2em;
+}
+
+.cList .lDiv div:hover {
+    background: #DDD;
+    cursor: pointer;
+}
+
+.cList .lDiv div input {
+    cursor: pointer;
+}
+
+.showAllColBtn {
+    border-bottom: solid 1px #999;
+    border-top: solid 1px #999;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    padding: 0.35em 1em;
+    text-align: center;
+}
+
+.showAllColBtn:hover {
+    background: #DDD;
+}
+
+.navigation {
+    background: #E5E5E5;
+    border: 1px solid black;
+    margin: 0.8em 0;
+}
+
+.navigation td {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.navigation_separator {
+    color: #555;
+    display: inline-block;
+    text-align: center;
+    width: 1.2em;
+    text-shadow: 1px 0 #FFF;
+}
+
+.navigation input[type=submit] {
+    background: none;
+    border: 0;
+    margin: 0;
+    padding: 0.3em 0.5em;
+    min-width: 1.5em;
+    font-weight: bold;
+}
+
+.navigation input[type=submit]:hover, .navigation input.edit_mode_active {
+    background: #333;
+    color: white;
+    cursor: pointer;
+}
+
+.navigation select {
+    margin: 0 0.8em;
+}
+
+.cEdit {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+}
+
+.cEdit input[type=text] {
+    background: #FFF;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.cEdit .edit_area {
+    background: #FFF;
+    border: 1px solid #999;
+    min-width: 10em;
+    padding: 0.3em 0.5em;
+}
+
+.cEdit .edit_area select, .cEdit .edit_area textarea {
+    width: 97%;
+}
+
+.cEdit .cell_edit_hint {
+    color: #555;
+    font-size: 0.8em;
+    margin: 0.3em 0.2em;
+}
+
+.cEdit .edit_box {
+    overflow: hidden;
+    padding: 0;
+}
+
+.cEdit .edit_box_posting {
+    background: #FFF url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>ajax_clock_small.gif) no-repeat right center;
+    padding-right: 1.5em;
+}
+
+.cEdit .edit_area_loading {
+    background: #FFF url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>ajax_clock_small.gif) no-repeat center;
+    height: 10em;
+}
+
+.cEdit .goto_link {
+    background: #EEE;
+    color: #555;
+    padding: 0.2em 0.3em;
+}
+
+.saving_edited_data {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>ajax_clock_small.gif) no-repeat left;
+    padding-left: 20px;
+}
+
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; }
+.ui-timepicker-div dl dd { margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+
+/* Designer */
+.input_tab {
+    background-color: #A6C7E1;
+    color: #000000;
+}
+
+#canvas {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+canvas.pmd {
+    display: inline-block;
+    overflow: hidden;
+    text-align: left;
+}
+
+canvas.pmd * {
+    behavior: url(#default#VML);
+}
+
+.pmd_tab {
+    background-color: #FFFFFF;
+    color: #000000;
+    border-collapse: collapse;
+    border: 1px solid #AAAAAA;
+    z-index: 1;
+    -moz-user-select: none;
+}
+
+.tab_zag {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header.png);
+    background-repeat: repeat-x;
+    text-align: center;
+    cursor: move;
+    padding: 1px;
+    font-weight: bold;
+}
+
+.tab_zag_2 {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header_Linked.png);
+    background-repeat: repeat-x;
+    text-align: center;
+    cursor: move;
+    padding: 1px;
+    font-weight: bold;
+}
+
+.tab_field {
+    background: #FFFFFF;
+    color: #000000;
+    cursor: default;
+}
+
+.tab_field_2 {
+    background-color: #CCFFCC;
+    color: #000000;
+    background-repeat: repeat-x;
+    cursor: default;
+}
+
+.tab_field_3 {
+    background-color: #FFE6E6; /*#DDEEFF*/
+    color: #000000;
+    cursor: default;
+}
+
+#pmd_hint {
+    white-space: nowrap;
+    position: absolute;
+    background-color: #99FF99;
+    color: #000000;
+    left: 200px;
+    top: 50px;
+    z-index: 3;
+    border: #00CC66 solid 1px;
+    display: none;
+}
+
+.scroll_tab {
+    overflow: auto;
+    width: 100%;
+    height: 500px;
+}
+
+.pmd_Tabs {
+    cursor: default;
+    color: #0055bb;
+    white-space: nowrap;
+    text-decoration: none;
+    text-indent: 3px;
+    font-weight: bold;
+    margin-left: 2px;
+    text-align: left;
+    background-color: #FFFFFF;
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/left_panel_butt.png);
+    border: #CCCCCC solid 1px;
+}
+
+.pmd_Tabs2 {
+    cursor: default;
+    color: #0055bb;
+    background: #FFEE99;
+    text-indent: 3px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-decoration: none;
+    border: #9999FF solid 1px;
+    text-align: left;
+}
+
+.owner {
+    font-weight: normal;
+    color: #888888;
+}
+
+.option_tab {
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 5px;
+}
+
+.select_all {
+    vertical-align: top;
+    padding-left: 2px;
+    padding-right: 2px;
+    cursor: default;
+    width: 1px;
+    color: #000000;
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header.png);
+    background-repeat: repeat-x;
+}
+
+.small_tab {
+    vertical-align: top;
+    background-color: #0064ea;
+    color: #FFFFFF;
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/small_tab.png);
+    cursor: default;
+    text-align: center;
+    font-weight: bold;
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 1px;
+    text-decoration: none;
+}
+
+.small_tab2 {
+    vertical-align: top;
+    color: #FFFFFF;
+    background-color: #FF9966;
+    cursor: default;
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: center;
+    font-weight: bold;
+    width: 1px;
+    text-decoration: none;
+}
+
+.small_tab_pref {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header.png);
+    background-repeat: repeat-x;
+    text-align: center;
+    width: 1px;
+}
+
+.small_tab_pref2 {
+    vertical-align: top;
+    color: #FFFFFF;
+    background-color: #FF9966;
+    cursor: default;
+    text-align: center;
+    font-weight: bold;
+    width: 1px;
+    text-decoration: none;
+}
+
+.butt {
+    border: #4477aa solid 1px;
+    font-weight: bold;
+    height: 19px;
+    width: 70px;
+    background-color: #FFFFFF;
+    color: #000000;
+    vertical-align: baseline;
+}
+
+.L_butt2_1 {
+    padding: 1px;
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #000000;
+    vertical-align: middle;
+    cursor: default;
+}
+
+.L_butt2_2 {
+    padding: 0;
+    border: #0099CC solid 1px;
+    background: #FFEE99;
+    text-decoration: none;
+    color: #000000;
+    cursor: default;
+}
+
+/* ---------------------------------------------------------------------------*/
+.bor {
+    width: 10px;
+    height: 10px;
+}
+
+.frams1 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/1.png) no-repeat right bottom;
+}
+
+.frams2 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/2.png) no-repeat left bottom;
+}
+
+.frams3 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/3.png) no-repeat left top;
+}
+
+.frams4 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/4.png) no-repeat right top;
+}
+
+.frams5 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/5.png) repeat-x center bottom;
+}
+
+.frams6 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/6.png) repeat-y left;
+}
+
+.frams7 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/7.png) repeat-x top;
+}
+
+.frams8 {
+    background: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/8.png) repeat-y right;
+}
+
+#osn_tab {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: #A9A9A9 solid 1px;
+}
+
+.pmd_header {
+    background-color: #EAEEF0;
+    color: #000000;
+    text-align: center;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/top_panel.png);
+    background-position: top;
+    background-repeat: repeat-x;
+    border-right: #999999 solid 1px;
+    border-left: #999999 solid 1px;
+    height: 28px;
+}
+
+.pmd_header a {
+    display: block;
+    float: left;
+    margin: 3px 1px 4px 1px;
+    height: 20px;
+    border: 1px dotted #ffffff;
+}
+
+.pmd_header .M_bord {
+    display: block;
+    float: left;
+    margin: 4px;
+    height: 20px;
+    width: 2px;
+}
+
+.pmd_header a.first {
+    margin-right: 1em;
+}
+
+.pmd_header a.last {
+    margin-left: 1em;
+}
+
+a.M_butt_Selected_down_IE,
+a.M_butt_Selected_down {
+    border: 1px solid #C0C0BB;
+    background-color: #99FF99;
+    color: #000000;
+}
+
+a.M_butt_Selected_down_IE:hover,
+a.M_butt_Selected_down:hover,
+a.M_butt:hover {
+    border: 1px solid #0099CC;
+    background-color: #FFEE99;
+    color: #000000;
+}
+
+#layer_menu {
+    z-index: 1000;
+    position: absolute;
+    left: 0;
+    background-color: #EAEEF0;
+    border: #999999 solid 1px;
+}
+
+#layer_action {
+    position: absolute;
+    left: 638px;
+    top: 52px;
+    z-index: 1000;
+    background-color: #CCFF99;
+    padding: 3px;
+    border: #009933 solid 1px;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+#layer_upd_relation {
+    position: absolute;
+    left: 637px;
+    top: 224px;
+    z-index: 1000;
+}
+
+#layer_new_relation {
+    position: absolute;
+    left: 636px;
+    top: 85px;
+    z-index: 1000;
+    width: 153px;
+}
+
+#pmd_optionse {
+    position: absolute;
+    left: 636px;
+    top: 85px;
+    z-index: 1000;
+    width: 153px;
+}
+
+#layer_menu_sizer {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/resize.png);
+    cursor: nw-resize;
+    width: 16px;
+    height: 16px;
+}
+
+.panel {
+    position: fixed;
+    top: 50px;
+    right: 0;
+    display: none;
+    background: #FFF;
+    border:1px solid #F5F5F5;
+    width: 350 px;
+    height: auto;
+    padding: 30px 170px 30px 30px;
+    color:#FFF;
+    z-index:99;
+}
+
+a.trigger{
+    position: fixed;
+    text-decoration: none;
+    top: 60px; right: 0;
+    color:#fff;
+    padding: 10px 40px 10px 15px;
+    background:#333333 url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/plus.png) 85% 55% no-repeat;
+    border:1px solid #444444;
+    display: block;
+}
+
+a.trigger:hover{
+    position: fixed;
+    text-decoration: none;
+    top: 60px; right: 0;
+    color:#080808;
+    padding: 10px 40px 10px 15px;
+    background:#fff696 url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/plus.png) 85% 55% no-repeat;
+    border:1px solid #999;
+    display: block;
+}
+
+a.active.trigger {
+    background:#222222 url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/minus.png) 85% 55% no-repeat;
+    z-index:999;
+}
+
+a.active.trigger:hover {
+    background:#fff696 url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/minus.png) 85% 55% no-repeat;
+    z-index:999;
+}
+
+h2.tiger{
+    background-repeat: repeat-x;
+    padding: 1px;
+    font-weight: bold;
+    padding: 50 20 50 20px;
+    margin: 0 0 5px 0;
+    width: 250px;
+    float: left;
+    color : #333;
+    text-align: center;
+}
+
+h2.tiger a {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header.png);
+    text-align: center;
+    text-decoration: none;
+    color : #333;
+    display: block;
+}
+
+h2.tiger a:hover {
+    color: #000;
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header_Linked.png);
+}
+
+h2.active {
+    background-image: url(<?php echo $_SESSION['PMA_Theme']->getImgPath(); ?>pmd/Header.png);
+    background-repeat: repeat-x;
+    padding: 1px;
+    background-position: left bottom;
+}
+
+.toggle_container {
+    margin: 0 0 5px;
+    padding: 0;
+    border-top: 1px solid #d6d6d6;
+    background: #FFF ;
+    width: 250px;
+    overflow: hidden;
+    font-size: 1.2em;
+    clear: both;
+}
+
+.toggle_container .block {
+    background-color: #DBE4E8;
+    padding:40 15 40 15px; /*--Padding of Container--*/
+    border:1px solid #999;
+    color:#000;
+}
+
+.history_table {
+    text-align: center;
+    background-color: #9999CC;
+}
+
+.history_table2 {
+    text-align: center;
+    background-color: #DBE4E8;
+}
+
+#filter {
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: #CCA;
+    z-index:10;
+    opacity:0.5;
+    filter: alpha(opacity=50);
+}
+
+#box {
+    display: none;
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    width: 500px;
+    height: 220px;
+    padding: 48px;
+    margin:0;
+    border: 1px solid black;
+    background-color: white;
+    z-index:101;
+    overflow: visible;
+}
+
+#boxtitle {
+    position:absolute;
+    float:center;
+    top:0;
+    left:0;
+    width:593px;
+    height:20px;
+    padding:0;
+    padding-top:4px;
+    left-padding:8px;
+    margin:0;
+    border-bottom:4px solid #3CF;
+    background-color: #D0DCE0;
+    color:black;
+    font-weight:bold;
+    padding-left: 2px;
+    text-align:left;
+}
+
+#tblfooter {
+    background-color: #D3DCE3;
+    float: right;
+    padding-top:10px;
+    color: black;
+    font-weight: normal;
+}
+
+input.btn {
+    color:#333;
+    background-color: #D0DCE0;
+}
+
+body .ui-widget {
+    font-size: 1em;
+}
+
+.ui-dialog fieldset legend a {
+    color: #0000FF;
+}

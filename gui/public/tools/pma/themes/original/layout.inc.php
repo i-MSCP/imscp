@@ -4,7 +4,7 @@
  * configures general layout
  * for detailed layout configuration please refer to the css files
  *
- * @package phpMyAdmin-theme
+ * @package PhpMyAdmin-theme
  * @subpackage Original
  */
 
@@ -33,7 +33,6 @@ $GLOBALS['cfg']['MainColor']                = '#000000';
 
 // background for the main frame
 $GLOBALS['cfg']['MainBackground']           = '#F5F5F5';
-//$GLOBALS['cfg']['MainBackground']       = '#F5F5F5 url(' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
 
 // foreground (text) color of the pointer in browse mode
 $GLOBALS['cfg']['BrowsePointerColor']       = '#000000';
@@ -114,7 +113,7 @@ $GLOBALS['cfg']['SQP']['fmtColor']      = array(
 /**
  * Chart colors
  */
- 
+
  $GLOBALS['cfg']['chartColor'] = array(
     'gradientIntensity'       => 0,
     // The style of the chart title.

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -19,7 +19,7 @@ function PMA_replication_db_multibox()
     $multi_values .= '<select name="db_select[]" size="6" multiple="multiple" id="db_select">';
 
     foreach ($GLOBALS['pma']->databases as $current_db) {
-        if ('information_schema' == $current_db) {
+        if (PMA_is_system_schema($current_db)) {
             continue;
         }
         if (! empty($selectall) || (isset($tmp_select) && strpos(' ' . $tmp_select, '|' . $current_db . '|'))) {
@@ -43,7 +43,8 @@ function PMA_replication_db_multibox()
  * @param String $submitname - submit button name
  */
 
-function PMA_replication_gui_changemaster($submitname) {
+function PMA_replication_gui_changemaster($submitname)
+{
 
     list($username_length, $hostname_length) = PMA_replication_get_username_hostname_length();
 
@@ -80,11 +81,12 @@ function PMA_replication_gui_changemaster($submitname) {
 /**
  * This function prints out table with replication status.
  *
- * @param String type - either master or slave
- * @param boolean $hidden - if true, then default style is set to hidden, default value false
- * @param boolen $title - if true, then title is displayed, default true
+ * @param string  $type   either master or slave
+ * @param boolean $hidden if true, then default style is set to hidden, default value false
+ * @param boolen  $title  if true, then title is displayed, default true
  */
-function PMA_replication_print_status_table($type, $hidden = false, $title = true) {
+function PMA_replication_print_status_table($type, $hidden = false, $title = true)
+{
     global ${"{$type}_variables"};
     global ${"{$type}_variables_alerts"};
     global ${"{$type}_variables_oks"};
@@ -113,8 +115,8 @@ function PMA_replication_print_status_table($type, $hidden = false, $title = tru
     echo '   <table id="server' . $type . 'replicationsummary" class="data"> ';
     echo '   <thead>';
     echo '    <tr>';
-    echo ' 	<th>' . __('Variable') . '</th>';
-    echo '		<th>' . __('Value') . '</th>';
+    echo '     <th>' . __('Variable') . '</th>';
+    echo '        <th>' . __('Value') . '</th>';
     echo '    </tr>';
     echo '   </thead>';
     echo '   <tbody>';
@@ -162,7 +164,8 @@ function PMA_replication_print_status_table($type, $hidden = false, $title = tru
  *
  * @param boolean $hidden - if true, then default style is set to hidden, default value false
  */
-function PMA_replication_print_slaves_table($hidden = false) {
+function PMA_replication_print_slaves_table($hidden = false)
+{
 
     // Fetch data
     $data = PMA_DBI_fetch_result('SHOW SLAVE HOSTS', null, null);
@@ -199,15 +202,15 @@ function PMA_replication_print_slaves_table($hidden = false) {
 /**
  * get the correct username and hostname lengths for this MySQL server
  *
- * @uses    strtok()
  * @return  array   username length, hostname length
  */
 
-function PMA_replication_get_username_hostname_length() {
-    $fields_info = PMA_DBI_get_fields('mysql', 'user');
+function PMA_replication_get_username_hostname_length()
+{
+    $fields_info = PMA_DBI_get_columns('mysql', 'user');
     $username_length = 16;
     $hostname_length = 41;
-    foreach ($fields_info as $key => $val) {
+    foreach ($fields_info as $val) {
         if ($val['Field'] == 'User') {
             strtok($val['Type'], '()');
             $v = strtok('()');
@@ -228,7 +231,8 @@ function PMA_replication_get_username_hostname_length() {
 /**
  * Print code to add a replication slave user to the master
  */
-function PMA_replication_gui_master_addslaveuser() {
+function PMA_replication_gui_master_addslaveuser()
+{
 
     list($username_length, $hostname_length) = PMA_replication_get_username_hostname_length();
 
@@ -240,11 +244,11 @@ function PMA_replication_gui_master_addslaveuser() {
     echo PMA_generate_common_hidden_inputs('', '');
     echo '<fieldset id="fieldset_add_user_login">'
         . '<legend>'.__('Add slave replication user').'</legend>'
-	. '<input type="hidden" name="grant_count" value="25" />'
-	. '<input type="hidden" name="createdb" id="createdb_0" value="0" />'
+    . '<input type="hidden" name="grant_count" value="25" />'
+    . '<input type="hidden" name="createdb" id="createdb_0" value="0" />'
         . '<input id="checkbox_Repl_slave_priv" type="hidden" title="Needed for the replication slaves." value="Y" name="Repl_slave_priv"/>'
         . '<input id="checkbox_Repl_client_priv" type="hidden" title="Needed for the replication slaves." value="Y" name="Repl_client_priv"/>'
-	. ''
+    . ''
         . '<input type="hidden" name="sr_take_action" value="true" />'
         . '<div class="item">'
         . '<label for="select_pred_username">'
@@ -306,7 +310,7 @@ function PMA_replication_gui_master_addslaveuser() {
         . '        <option value="localhost"'
         . ((isset($GLOBALS['pred_hostname']) && $GLOBALS['pred_hostname'] == 'localhost')
         ? ' selected="selected"' : '') . '>' . __('Local')
-		. '</option>';
+        . '</option>';
 
     if (!empty($thishost)) {
         echo '        <option value="thishost"'

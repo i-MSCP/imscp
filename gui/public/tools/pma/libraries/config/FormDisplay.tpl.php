@@ -3,14 +3,12 @@
 /**
  * Form templates
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
  * Displays top part of the form
  *
- * @uses PMA_generate_common_hidden_inputs()
- * @uses PMA_getHiddenFields()
  * @param string $action         default: $_SERVER['REQUEST_URI']
  * @param string $method         'post' or 'get'
  * @param array  $hidden_fields  array of form hidden fields (key: field name)
@@ -51,7 +49,7 @@ function display_tabs_top($tabs)
 ?>
 <ul class="tabs">
 <?php foreach ($tabs as $tab_id => $tab_name): ?>
-    <li><a href="#<?php echo $tab_id ?>"><?php echo $tab_name ?></a></li>
+    <li><a href="#<?php echo $tab_id ?>"><?php echo htmlspecialchars($tab_name); ?></a></li>
 <?php endforeach; ?>
 </ul>
 <br clear="right" />
@@ -115,10 +113,6 @@ function display_fieldset_top($title = '', $description = '', $errors = null, $a
  * o comment_warning - (bool) whether this comments warns about something
  * o wiki - (string) wiki link
  *
- * @uses $GLOBALS['_FormDisplayGroup']
- * @uses $GLOBALS['cfg']['ThemePath']
- * @uses $_SESSION['PMA_Theme']
- * @uses display_group_footer()
  * @param string $path
  * @param string $name
  * @param string $description
@@ -130,14 +124,46 @@ function display_fieldset_top($title = '', $description = '', $errors = null, $a
 function display_input($path, $name, $description = '', $type, $value, $value_is_default = true, $opts = null)
 {
     global $_FormDisplayGroup;
-    static $base_dir, $img_path;
+    static $base_dir; // Relative path to the root phpMyAdmin folder
+    static $icons;    // An array of IMG tags used further below in the function
 
     $is_setup_script = defined('PMA_SETUP');
-    if ($base_dir === null) {
+    if ($base_dir === null) { // if the static variables have not been initialised
         $base_dir = $is_setup_script ? '../' : '';
-        $img_path = $is_setup_script
-            ? '../' . ltrim($GLOBALS['cfg']['ThemePath'], './') . '/original/img/'
-            : $_SESSION['PMA_Theme']->img_path;
+        $icons = array();
+        // Icon definitions:
+        // The same indexes will be used in the $icons array.
+        // The first element contains the filename and the second
+        // element is used for the "alt" and "title" attributes.
+        $icon_init = array(
+            'edit'   => array('b_edit.png',   ''),
+            'help'   => array('b_help.png',   __('Documentation')),
+            'info'   => array('b_info.png',   __('Wiki')),
+            'reload' => array('s_reload.png', ''),
+            'tblops' => array('b_tblops.png', '')
+        );
+        if ($is_setup_script) {
+            // When called from the setup script, we don't have access to the
+            // sprite-aware PMA_getImage() function because the PMA_theme class
+            // has not been loaded, so we generate the img tags manually.
+            foreach ($icon_init as $k => $v) {
+                $title = '';
+                if (! empty($v[1])) {
+                    $title = ' title="' . $v[1] . '"';
+                }
+                $icons[$k] = sprintf(
+                    '<img alt="%s" src="%s"%s />',
+                    $v[1],
+                    ".{$GLOBALS['cfg']['ThemePath']}/original/img/{$v[0]}",
+                    $title
+                );
+            }
+        } else {
+            // In this case we just use PMA_getImage() because it's available
+            foreach ($icon_init as $k => $v) {
+                $icons[$k] = PMA_getImage($v[0], $v[1]);
+            }
+        }
     }
     $has_errors = isset($opts['errors']) && !empty($opts['errors']);
     $option_is_disabled = !$is_setup_script && isset($opts['userprefs_allow']) && !$opts['userprefs_allow'];
@@ -165,8 +191,8 @@ function display_input($path, $name, $description = '', $type, $value, $value_is
         <label for="<?php echo htmlspecialchars($path) ?>"><?php echo $name ?></label>
         <?php if (!empty($opts['doc']) || !empty($opts['wiki'])) { ?>
         <span class="doc">
-            <?php if (!empty($opts['doc'])) { ?><a href="<?php echo $base_dir . $opts['doc']  ?>" target="documentation"><img class="icon" src="<?php echo $img_path ?>b_help.png" width="11" height="11" alt="Doc" title="<?php echo __('Documentation') ?>" /></a><?php } ?>
-            <?php if (!empty($opts['wiki'])){ ?><a href="<?php echo $opts['wiki'] ?>" target="wiki"><img class="icon" src="<?php echo $img_path ?>b_info.png" width="11" height="11" alt="Wiki" title="Wiki" /></a><?php } ?>
+            <?php if (!empty($opts['doc'])) { ?><a href="<?php echo $base_dir . $opts['doc']  ?>" target="documentation"><?php echo $icons['help']; ?></a><?php } ?>
+            <?php if (!empty($opts['wiki'])){ ?><a href="<?php echo $opts['wiki'] ?>" target="wiki"><?php echo $icons['info']; ?></a><?php } ?>
         </span>
         <?php } ?>
         <?php if ($option_is_disabled) { ?>
@@ -240,17 +266,17 @@ function display_input($path, $name, $description = '', $type, $value, $value_is
     }
     if ($is_setup_script && isset($opts['userprefs_comment']) && $opts['userprefs_comment']) {
         ?>
-        <a class="userprefs-comment" title="<?php echo htmlspecialchars($opts['userprefs_comment']) ?>"><img alt="comment" src="<?php echo $img_path ?>b_tblops.png" width="16" height="16" /></a>
+        <a class="userprefs-comment" title="<?php echo htmlspecialchars($opts['userprefs_comment']) ?>"><?php echo $icons['tblops']; ?></a>
         <?php
     }
     if (isset($opts['setvalue']) && $opts['setvalue']) {
         ?>
-        <a class="set-value" href="#<?php echo htmlspecialchars("$path={$opts['setvalue']}") ?>" title="<?php echo sprintf(__('Set value: %s'), htmlspecialchars($opts['setvalue'])) ?>" style="display:none"><img alt="set-value" src="<?php echo $img_path ?>b_edit.png" width="16" height="16" /></a>
+        <a class="set-value" href="#<?php echo htmlspecialchars("$path={$opts['setvalue']}") ?>" title="<?php echo sprintf(__('Set value: %s'), htmlspecialchars($opts['setvalue'])) ?>" style="display:none"><?php echo $icons['edit']; ?></a>
         <?php
     }
     if (isset($opts['show_restore_default']) && $opts['show_restore_default']) {
         ?>
-        <a class="restore-default" href="#<?php echo $path ?>" title="<?php echo __('Restore default value') ?>" style="display:none"><img alt="restore-default" src="<?php echo $img_path ?>s_reload.png" width="16" height="16" /></a>
+        <a class="restore-default" href="#<?php echo $path ?>" title="<?php echo __('Restore default value') ?>" style="display:none"><?php echo $icons['reload']; ?></a>
         <?php
     }
     // this must match with displayErrors() in scripts/config.js
@@ -281,8 +307,6 @@ function display_input($path, $name, $description = '', $type, $value, $value_is
 /**
  * Display group header
  *
- * @uses $GLOBALS['_FormDisplayGroup']
- * @uses display_group_footer()
  * @param string $header_text
  */
 function display_group_header($header_text)
@@ -308,7 +332,6 @@ function display_group_header($header_text)
 /**
  * Display group footer
  *
- * @uses $GLOBALS['_FormDisplayGroup']
  */
 function display_group_footer()
 {
@@ -370,7 +393,6 @@ function display_form_bottom()
 /**
  * Appends JS validation code to $js_array
  *
- * @uses PMA_escapeJsString()
  * @param string       $field_id
  * @param string|array $validator
  * @param array        $js_array

@@ -3,17 +3,12 @@
 /**
  * Set of functions used with the bookmark feature
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
  * Defines the bookmark parameters for the current user
  *
- * @uses    $GLOBALS['server']
- * @uses    PMA_getRelationsParam()
- * @uses    $GLOBALS['cfg']['Server']['user']
- * @uses    $GLOBALS['cfg']['Server']['pmadb']
- * @uses    $GLOBALS['cfg']['Server']['bookmarktable']
  * @return  array    the bookmark parameters for the current user
  * @access  public
  */
@@ -44,14 +39,9 @@ function PMA_Bookmark_getParams()
 /**
  * Gets the list of bookmarks defined for the current database
  *
- * @uses    PMA_backquote()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_DBI_fetch_result()
- * @uses    PMA_DBI_QUERY_STORE
- * @uses    PMA_Bookmark_getParams()
  * @global  resource  the controluser db connection handle
  *
- * @param   string    the current database name
+ * @param string    the current database name
  *
  * @return  array     the bookmarks list (key as index, label as value)
  *
@@ -68,18 +58,18 @@ function PMA_Bookmark_getList($db)
     }
 
     $query  = 'SELECT label, id FROM '. PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
-            . ' WHERE dbase = \'' . PMA_sqlAddslashes($db) . '\''
-            . ' AND user = \'' . PMA_sqlAddslashes($cfgBookmark['user']) . '\''
+            . ' WHERE dbase = \'' . PMA_sqlAddSlashes($db) . '\''
+            . ' AND user = \'' . PMA_sqlAddSlashes($cfgBookmark['user']) . '\''
             . ' ORDER BY label';
     $per_user = PMA_DBI_fetch_result($query, 'id', 'label', $controllink, PMA_DBI_QUERY_STORE);
 
     $query  = 'SELECT label, id FROM '. PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
-            . ' WHERE dbase = \'' . PMA_sqlAddslashes($db) . '\''
+            . ' WHERE dbase = \'' . PMA_sqlAddSlashes($db) . '\''
             . ' AND user = \'\''
             . ' ORDER BY label';
     $global = PMA_DBI_fetch_result($query, 'id', 'label', $controllink, PMA_DBI_QUERY_STORE);
 
-    foreach($global as $key => $val) {
+    foreach ($global as $key => $val) {
         $global[$key] = $val . ' (' . __('shared') . ')';
     }
 
@@ -94,23 +84,19 @@ function PMA_Bookmark_getList($db)
 /**
  * Gets the sql command from a bookmark
  *
- * @uses    PMA_backquote()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_DBI_fetch_value()
- * @uses    PMA_Bookmark_getParams()
  * @global  resource  the controluser db connection handle
  *
- * @param   string    the current database name
- * @param   mixed     the id of the bookmark to get
- * @param   string    which field to look up the $id
- * @param   boolean  TRUE: get all bookmarks regardless of the owning user
- * @param   boolean   whether to ignore bookmarks with no user
+ * @param string    the current database name
+ * @param mixed     the id of the bookmark to get
+ * @param string    which field to look up the $id
+ * @param boolean  true: get all bookmarks regardless of the owning user
+ * @param boolean   whether to ignore bookmarks with no user
  *
  * @return  string    the sql query
  *
  * @access  public
  */
-function PMA_Bookmark_get($db, $id, $id_field = 'id', $action_bookmark_all = FALSE, $exact_user_match = FALSE)
+function PMA_Bookmark_get($db, $id, $id_field = 'id', $action_bookmark_all = false, $exact_user_match = false)
 {
     global $controllink;
 
@@ -121,10 +107,10 @@ function PMA_Bookmark_get($db, $id, $id_field = 'id', $action_bookmark_all = FAL
     }
 
     $query = 'SELECT query FROM ' . PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
-        . ' WHERE dbase = \'' . PMA_sqlAddslashes($db) . '\'';
+        . ' WHERE dbase = \'' . PMA_sqlAddSlashes($db) . '\'';
 
     if (!$action_bookmark_all) {
-        $query .= ' AND (user = \'' . PMA_sqlAddslashes($cfgBookmark['user']) . '\'';
+        $query .= ' AND (user = \'' . PMA_sqlAddSlashes($cfgBookmark['user']) . '\'';
         if (!$exact_user_match) {
             $query .= ' OR user = \'\'';
         }
@@ -139,15 +125,11 @@ function PMA_Bookmark_get($db, $id, $id_field = 'id', $action_bookmark_all = FAL
 /**
  * Adds a bookmark
  *
- * @uses    PMA_backquote()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_DBI_query()
- * @uses    PMA_Bookmark_getParams()
  * @global  resource  the controluser db connection handle
  *
- * @param   array     the properties of the bookmark to add; here,
+ * @param array     the properties of the bookmark to add; here,
  *                    $fields['query'] is urlencoded
- * @param   boolean   whether to make the bookmark available for all users
+ * @param boolean   whether to make the bookmark available for all users
  *
  * @return  boolean   whether the INSERT succeeds or not
  *
@@ -164,7 +146,7 @@ function PMA_Bookmark_save($fields, $all_users = false)
     }
 
     $query = 'INSERT INTO ' . PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
-           . ' (id, dbase, user, query, label) VALUES (NULL, \'' . PMA_sqlAddslashes($fields['dbase']) . '\', \'' . ($all_users ? '' : PMA_sqlAddslashes($fields['user'])) . '\', \'' . PMA_sqlAddslashes(urldecode($fields['query'])) . '\', \'' . PMA_sqlAddslashes($fields['label']) . '\')';
+           . ' (id, dbase, user, query, label) VALUES (NULL, \'' . PMA_sqlAddSlashes($fields['dbase']) . '\', \'' . ($all_users ? '' : PMA_sqlAddSlashes($fields['user'])) . '\', \'' . PMA_sqlAddSlashes(urldecode($fields['query'])) . '\', \'' . PMA_sqlAddSlashes($fields['label']) . '\')';
     return PMA_DBI_query($query, $controllink);
 } // end of the 'PMA_Bookmark_save()' function
 
@@ -172,14 +154,10 @@ function PMA_Bookmark_save($fields, $all_users = false)
 /**
  * Deletes a bookmark
  *
- * @uses    PMA_backquote()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_DBI_try_query()
- * @uses    PMA_Bookmark_getParams()
  * @global  resource  the controluser db connection handle
  *
- * @param   string   the current database name
- * @param   integer  the id of the bookmark to get
+ * @param string   the current database name
+ * @param integer  the id of the bookmark to get
  *
  * @access  public
  */
@@ -194,7 +172,7 @@ function PMA_Bookmark_delete($db, $id)
     }
 
     $query  = 'DELETE FROM ' . PMA_backquote($cfgBookmark['db']) . '.' . PMA_backquote($cfgBookmark['table'])
-            . ' WHERE (user = \'' . PMA_sqlAddslashes($cfgBookmark['user']) . '\''
+            . ' WHERE (user = \'' . PMA_sqlAddSlashes($cfgBookmark['user']) . '\''
             . '        OR user = \'\')'
             . ' AND id = ' . $id;
     return PMA_DBI_try_query($query, $controllink);

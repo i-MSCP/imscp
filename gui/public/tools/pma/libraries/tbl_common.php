@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -17,11 +17,7 @@ require_once './libraries/bookmark.lib.php';
 // Check parameters
 PMA_checkParameters(array('db', 'table'));
 
-if ($db === 'information_schema') {
-    $db_is_information_schema = true;
-} else {
-    $db_is_information_schema = false;
-}
+$db_is_information_schema = PMA_is_system_schema($db);
 
 /**
  * Set parameters for links

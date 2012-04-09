@@ -2,22 +2,20 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin-Designer
+ * @package PhpMyAdmin-Designer
  */
 
 /**
  *
  */
-include_once 'pmd_common.php';
+require_once './libraries/pmd_common.php';
 $die_save_pos = 0;
-include_once 'pmd_save_pos.php';
+require_once 'pmd_save_pos.php';
 extract($_POST, EXTR_SKIP);
 
 $tables = PMA_DBI_get_tables_full($db, $T1);
 $type_T1 = strtoupper($tables[$T1]['ENGINE']);
 $tables = PMA_DBI_get_tables_full($db, $T2);
-//print_r($tables);
-//die();
 $type_T2 = strtoupper($tables[$T2]['ENGINE']);
 
 // native foreign key
@@ -26,7 +24,7 @@ if (PMA_foreignkey_supported($type_T1) && PMA_foreignkey_supported($type_T2) && 
     $existrel_foreign = PMA_getForeigners($db, $T2, '', 'foreign');
     if (isset($existrel_foreign[$F2])
      && isset($existrel_foreign[$F2]['constraint'])) {
-         PMD_return_new(0,__('Error: relation already exists.'));
+         PMD_return_new(0, __('Error: relation already exists.'));
     }
 // note: in InnoDB, the index does not requires to be on a PRIMARY
 // or UNIQUE key
@@ -58,8 +56,8 @@ if (PMA_foreignkey_supported($type_T1) && PMA_foreignkey_supported($type_T2) && 
         if ($on_update != 'nix') {
             $upd_query   .= ' ON UPDATE ' . $on_update;
         }
-        PMA_DBI_try_query($upd_query) or PMD_return_new(0,__('Error: Relation not added.'));
-    PMD_return_new(1,__('FOREIGN KEY relation added'));
+        PMA_DBI_try_query($upd_query) or PMD_return_new(0, __('Error: Relation not added.'));
+    PMD_return_new(1, __('FOREIGN KEY relation added'));
     }
 
 // internal (pmadb) relation
@@ -73,14 +71,14 @@ if (PMA_foreignkey_supported($type_T1) && PMA_foreignkey_supported($type_T2) && 
         $q  = 'INSERT INTO ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['relation'])
                             . '(master_db, master_table, master_field, foreign_db, foreign_table, foreign_field)'
                             . ' values('
-                            . '\'' . PMA_sqlAddslashes($db) . '\', '
-                            . '\'' . PMA_sqlAddslashes($T2) . '\', '
-                            . '\'' . PMA_sqlAddslashes($F2) . '\', '
-                            . '\'' . PMA_sqlAddslashes($db) . '\', '
-                            . '\'' . PMA_sqlAddslashes($T1) . '\','
-                            . '\'' . PMA_sqlAddslashes($F1) . '\')';
+                            . '\'' . PMA_sqlAddSlashes($db) . '\', '
+                            . '\'' . PMA_sqlAddSlashes($T2) . '\', '
+                            . '\'' . PMA_sqlAddSlashes($F2) . '\', '
+                            . '\'' . PMA_sqlAddSlashes($db) . '\', '
+                            . '\'' . PMA_sqlAddSlashes($T1) . '\','
+                            . '\'' . PMA_sqlAddSlashes($F1) . '\')';
 
-        if (PMA_query_as_controluser($q , false, PMA_DBI_QUERY_STORE)) {
+        if (PMA_query_as_controluser($q, false, PMA_DBI_QUERY_STORE)) {
             PMD_return_new(1, __('Internal relation added'));
         } else {
             PMD_return_new(0, __('Error: Relation not added.'));
@@ -91,7 +89,7 @@ if (PMA_foreignkey_supported($type_T1) && PMA_foreignkey_supported($type_T2) && 
 function PMD_return_new($b,$ret)
 {
     global $db,$T1,$F1,$T2,$F2;
-    header("Content-Type: text/xml; charset=utf-8");//utf-8 .$_GLOBALS['charset']
+    header("Content-Type: text/xml; charset=utf-8");
     header("Cache-Control: no-cache");
     die('<root act="relation_new" return="'.$ret.'" b="'.$b.
     '" DB1="'.urlencode($db).

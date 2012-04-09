@@ -19,7 +19,7 @@
  * End group blocks with:
  * ':group:end'
  *
- * @package phpMyAdmin-setup
+ * @package PhpMyAdmin-setup
  */
 
 $forms = array();
@@ -64,6 +64,7 @@ $forms['Servers']['Server_config'] = array('Servers' => array(1 => array(
     'CountTables')));
 $forms['Servers']['Server_pmadb'] = array('Servers' => array(1 => array(
     'pmadb' => 'phpmyadmin',
+    'controlhost',
     'controluser',
     'controlpass',
     'verbose_check',
@@ -73,10 +74,13 @@ $forms['Servers']['Server_pmadb'] = array('Servers' => array(1 => array(
     'table_info' => 'pma_table_info',
     'column_info' => 'pma_column_info',
     'history' => 'pma_history',
+    'recent' => 'pma_recent',
+    'table_uiprefs' => 'pma_table_uiprefs',
     'tracking' => 'pma_tracking',
     'table_coords' => 'pma_table_coords',
     'pdf_pages' => 'pma_pdf_pages',
-    'designer_coords' => 'pma_designer_coords')));
+    'designer_coords' => 'pma_designer_coords',
+    'MaxTableUiprefs' => 100)));
 $forms['Servers']['Server_tracking'] = array('Servers' => array(1 => array(
     'tracking_version_auto_create',
     'tracking_default_statements',
@@ -128,11 +132,13 @@ $forms['Features']['Other_core_settings'] = array(
     'ReplaceHelpImg',
     'MaxDbList',
     'MaxTableList',
+    'ShowHint',
     'OBGzip',
     'PersistentConnections',
     'ExecTimeLimit',
     'MemoryLimit',
     'SkipLockedTables',
+    'DisableMultiTableMaintenance',
     'UseDbSearch',
     'AllowThirdPartyFraming');
 $forms['Sql_queries']['Sql_queries'] = array(
@@ -146,7 +152,8 @@ $forms['Sql_queries']['Sql_queries'] = array(
     'EditInWindow',
     //'QueryWindowWidth', // overridden in theme
     //'QueryWindowHeight',
-    'QueryWindowDefTab');
+    'QueryWindowDefTab',
+    'RetainQueryBox');
 $forms['Sql_queries']['Sql_box'] = array('SQLQuery' => array(
     'Edit',
     'Explain',
@@ -162,7 +169,8 @@ $forms['Left_frame']['Left_frame'] = array(
     'LeftDisplayLogo',
     'LeftLogoLink',
     'LeftLogoLinkWindow',
-    'LeftPointerEnable');
+    'LeftPointerEnable',
+    'LeftRecentTable');
 $forms['Left_frame']['Left_servers'] = array(
     'LeftDisplayServers',
     'DisplayServersList');
@@ -194,16 +202,20 @@ $forms['Main_frame']['Browse'] = array(
     'Order',
     'BrowsePointerEnable',
     'BrowseMarkerEnable',
+    'SaveCellsAtOnce',
+    'ShowDisplayDirection',
     'RepeatCells',
     'LimitChars',
-    'ModifyDeleteAtLeft',
-    'ModifyDeleteAtRight',
-    'DefaultDisplay');
+    'RowActionLinks',
+    'DefaultDisplay',
+    'RememberSorting');
 $forms['Main_frame']['Edit'] = array(
     'ProtectBinary',
     'ShowFunctionFields',
     'ShowFieldTypesInDataEditView',
     'CharEditing',
+    'MinSizeForInputField',
+    'MaxSizeForInputField',
     'CharTextareaCols',
     'CharTextareaRows',
     'TextareaCols',
@@ -211,15 +223,14 @@ $forms['Main_frame']['Edit'] = array(
     'LongtextDoubleTextarea',
     'InsertRows',
     'ForeignKeyDropdownOrder',
-    'ForeignKeyMaxLimit',
-    'DefaultPropDisplay');
+    'ForeignKeyMaxLimit');
 $forms['Main_frame']['Tabs'] = array(
     'LightTabs',
     'PropertiesIconic',
     'DefaultTabServer',
     'DefaultTabDatabase',
     'DefaultTabTable',
-	'QueryWindowDefTab');
+    'QueryWindowDefTab');
 $forms['Import']['Import_defaults'] = array('Import' => array(
     'format',
     'charset',

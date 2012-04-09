@@ -3,7 +3,7 @@
 /**
  * User preferences page
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -23,7 +23,7 @@ PMA_userprefs_pageinit();
 // handle form processing
 
 $form_param = filter_input(INPUT_GET, 'form');
-if (!isset($forms[$form_param])) {
+if (! isset($forms[$form_param])) {
     $forms_keys = array_keys($forms);
     $form_param = array_shift($forms_keys);
 }

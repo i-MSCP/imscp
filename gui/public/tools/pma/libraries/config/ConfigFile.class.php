@@ -3,7 +3,7 @@
 /**
  * Config file management
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -72,13 +72,12 @@ class ConfigFile
     /**
      * Private constructor, use {@link getInstance()}
      *
-     * @uses PMA_array_write()
      */
     private function __construct()
     {
         // load default config values
         $cfg = &$this->cfg;
-        require './libraries/config.default.php';
+        include './libraries/config.default.php';
         $cfg['fontsize'] = '82%';
 
         // create PMA_Config to read config.inc.php values
@@ -86,7 +85,7 @@ class ConfigFile
 
         // load additional config information
         $cfg_db = &$this->cfgDb;
-        require './libraries/config.values.php';
+        include './libraries/config.values.php';
 
         // apply default values overrides
         if (count($cfg_db['_overrides'])) {
@@ -116,7 +115,7 @@ class ConfigFile
 
     /**
      * Returns PMA_Config without user preferences applied
-     * 
+     *
      * @return PMA_Config
      */
     public function getOrgConfigObj()
@@ -193,9 +192,6 @@ class ConfigFile
     /**
      * Sets config value
      *
-     * @uses PMA_array_read()
-     * @uses PMA_array_remove()
-     * @uses PMA_array_write()
      * @param string $path
      * @param mixed  $value
      * @param string $canonical_path
@@ -285,7 +281,6 @@ class ConfigFile
     /**
      * Returns config value or $default if it's not set
      *
-     * @uses PMA_array_read()
      * @param  string $path
      * @param  mixed  $default
      * @return mixed
@@ -300,7 +295,6 @@ class ConfigFile
      * exist in config.default.php ($cfg) and config.values.php
      * ($_cfg_db['_overrides'])
      *
-     * @uses PMA_array_read()
      * @param  string $canonical_path
      * @param  mixed  $default
      * @return mixed
@@ -314,7 +308,6 @@ class ConfigFile
      * Returns config value, if it's not set uses the default one; returns
      * $default if the path isn't set and doesn't contain a default value
      *
-     * @uses PMA_array_read()
      * @param  string $path
      * @param  mixed  $default
      * @return mixed
@@ -342,7 +335,6 @@ class ConfigFile
     /**
      * Returns config database entry for $path ($cfg_db in config_info.php)
      *
-     * @uses PMA_array_read()
      * @param  string $path
      * @param  mixed  $default
      * @return mixed
@@ -422,10 +414,10 @@ class ConfigFile
         }
         $verbose = $this->get("Servers/$id/verbose");
         if (!empty($verbose)) {
-            return htmlspecialchars($verbose);
+            return $verbose;
         }
         $host = $this->get("Servers/$id/host");
-        return empty($host) ? 'localhost' : htmlspecialchars($host);
+        return empty($host) ? 'localhost' : $host;
     }
 
     /**
@@ -460,7 +452,7 @@ class ConfigFile
     {
         // Load paths
         if (!defined('SETUP_CONFIG_FILE')) {
-            require_once './libraries/vendor_config.php';
+            include_once './libraries/vendor_config.php';
         }
 
         return SETUP_CONFIG_FILE;

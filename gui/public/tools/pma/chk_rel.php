@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -15,7 +15,7 @@ require_once './libraries/header.inc.php';
 /**
  * Gets the relation settings
  */
-$cfgRelation = PMA_getRelationsParam(TRUE);
+$cfgRelation = PMA_getRelationsParam(true);
 
 
 /**

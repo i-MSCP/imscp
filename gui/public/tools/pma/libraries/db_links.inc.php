@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -61,8 +61,7 @@ $tab_search['text']     = __('Search');
 $tab_search['icon']     = 'b_search.png';
 $tab_search['link']     = 'db_search.php';
 
-if(PMA_Tracker::isActive())
-{
+if (PMA_Tracker::isActive()) {
     $tab_tracking['text'] = __('Tracking');
     $tab_tracking['icon'] = 'eye.png';
     $tab_tracking['link'] = 'db_tracking.php';
@@ -85,7 +84,7 @@ if (! $db_is_information_schema) {
     $tab_operation['link']  = 'db_operations.php';
     $tab_operation['text']  = __('Operations');
     $tab_operation['icon']  = 'b_tblops.png';
-    if ($is_superuser) {
+    if ($is_superuser && !PMA_DRIZZLE) {
         $tab_privileges['link'] = 'server_privileges.php';
         $tab_privileges['args']['checkprivs']       = $db;
         // stay on database view
@@ -93,6 +92,17 @@ if (! $db_is_information_schema) {
         $tab_privileges['text'] = __('Privileges');
         $tab_privileges['icon'] = 's_rights.png';
     }
+    $tab_routines['link']   = 'db_routines.php';
+    $tab_routines['text']   = __('Routines');
+    $tab_routines['icon']   = 'b_routines.png';
+
+    $tab_events['link']     = 'db_events.php';
+    $tab_events['text']     = __('Events');
+    $tab_events['icon']     = 'b_events.png';
+
+    $tab_triggers['link']   = 'db_triggers.php';
+    $tab_triggers['text']   = __('Triggers');
+    $tab_triggers['icon']   = 'b_triggers.png';
 }
 
 /**
@@ -107,8 +117,21 @@ $tabs[] =& $tab_export;
 if (! $db_is_information_schema) {
     $tabs[] =& $tab_import;
     $tabs[] =& $tab_operation;
-    if ($is_superuser) {
+    if ($is_superuser && !PMA_DRIZZLE) {
         $tabs[] =& $tab_privileges;
+    }
+    if (!PMA_DRIZZLE) {
+        $tabs[] =& $tab_routines;
+    }
+    if (PMA_MYSQL_INT_VERSION >= 50106 && ! PMA_DRIZZLE) {
+        if (PMA_currentUserHasPrivilege('EVENT', $db)) {
+            $tabs[] =& $tab_events;
+        }
+    }
+    if (!PMA_DRIZZLE) {
+        if (PMA_currentUserHasPrivilege('TRIGGER', $db)) {
+            $tabs[] =& $tab_triggers;
+        }
     }
 }
 if (PMA_Tracker::isActive()) {

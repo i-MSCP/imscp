@@ -5,7 +5,7 @@
  *
  * @todo js error when view name is empty (strFormEmpty)
  * @todo (also validate if js is disabled, after form submission?)
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -72,7 +72,7 @@ if (isset($_REQUEST['createview'])) {
 
     if (PMA_DBI_try_query($sql_query)) {
         $message = PMA_Message::success();
-        require './' . $cfg['DefaultTabDatabase'];
+        include './' . $cfg['DefaultTabDatabase'];
         exit();
     } else {
         $message = PMA_Message::rawError(PMA_DBI_getError());

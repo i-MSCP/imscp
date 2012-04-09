@@ -1,12 +1,12 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @package phpMyAdmin-Engines
+ * @package PhpMyAdmin-Engines
  */
 
 /**
  * the MyISAM storage engine
- * @package phpMyAdmin-Engines
+ * @package PhpMyAdmin-Engines
  */
 class PMA_StorageEngine_pbxt extends PMA_StorageEngine
 {
@@ -91,7 +91,7 @@ class PMA_StorageEngine_pbxt extends PMA_StorageEngine
      */
     function resolveTypeSize($formatted_size)
     {
-        if (preg_match('/^[0-9]+[a-zA-Z]+$/', $formatted_size)){
+        if (preg_match('/^[0-9]+[a-zA-Z]+$/', $formatted_size)) {
             $value = PMA_extractValueFromFormattedSize($formatted_size);
         } else {
             $value = $formatted_size;

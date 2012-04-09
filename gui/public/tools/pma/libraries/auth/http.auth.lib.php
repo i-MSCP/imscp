@@ -4,7 +4,7 @@
  * Set of functions used to run http authentication.
  * NOTE: Requires PHP loaded as a Apache module.
  *
- * @package phpMyAdmin-Auth-HTTP
+ * @package PhpMyAdmin-Auth-HTTP
  */
 
 
@@ -42,20 +42,20 @@ function PMA_auth()
     header('WWW-Authenticate: Basic realm="' . $realm_message .  '"');
     header('HTTP/1.0 401 Unauthorized');
     if (php_sapi_name() !== 'cgi-fcgi') {
-	header('status: 401 Unauthorized');
+        header('status: 401 Unauthorized');
     }
 
     // Defines the charset to be used
-    header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
+    header('Content-Type: text/html; charset=utf-8');
     /* HTML header */
     $page_title = __('Access denied');
-    require './libraries/header_meta_style.inc.php';
+    include './libraries/header_meta_style.inc.php';
     ?>
 </head>
 <body>
     <?php
     if (file_exists(CUSTOM_HEADER_FILE)) {
-        require CUSTOM_HEADER_FILE;
+        include CUSTOM_HEADER_FILE;
     }
     ?>
 
@@ -69,7 +69,7 @@ function PMA_auth()
     PMA_Message::error(__('Wrong username/password. Access denied.'))->display();
 
     if (file_exists(CUSTOM_FOOTER_FILE)) {
-        require CUSTOM_FOOTER_FILE;
+        include CUSTOM_FOOTER_FILE;
     }
     ?>
 

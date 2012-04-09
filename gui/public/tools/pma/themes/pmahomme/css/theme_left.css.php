@@ -3,20 +3,13 @@
 /**
  * navigation css file from theme Original
  *
- * @package phpMyAdmin-theme
+ * @package PhpMyAdmin-theme
  * @subpackage pmahomme
  */
 
 // unplanned execution path
 if (!defined('PMA_MINIMUM_COMMON')) {
     exit();
-}
-
-function PMA_ieFilter($start_color, $end_color)
-{
-    return PMA_USR_BROWSER_AGENT == 'IE' && PMA_USR_BROWSER_VER >= 6 && PMA_USR_BROWSER_VER <= 8
-        ? 'filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr="' . $start_color . '", endColorstr="' . $end_color . '");'
-        : '';
 }
 ?>
 /******************************************************************************/
@@ -34,7 +27,7 @@ body {
     font-family:        <?php echo $GLOBALS['cfg']['FontFamily']; ?>;
 <?php } ?>
     background:         url(./themes/pmahomme/img/left_nav_bg.png) repeat-y right 0% #f3f3f3;
-    border-right:		1px solid #aaa;    
+    border-right:       1px solid #aaa;
     color:              <?php echo $GLOBALS['cfg']['NaviColor']; ?>;
     margin:             0;
     padding:            0;
@@ -72,16 +65,8 @@ button {
     display:            inline;
 }
 
-
 /******************************************************************************/
 /* classes */
-
-/* leave some space between icons and text */
-.icon {
-    vertical-align:     middle;
-    margin-right:       0.3em;
-    margin-left:        0.3em;
-}
 
 .navi_dbName {
     font-weight:    bold;
@@ -94,11 +79,21 @@ button {
 div#pmalogo {
     <?php //better echo $GLOBALS['cfg']['logoBGC']; ?>
 }
+
+div#recentTableList {
+    text-align: center;
+    margin: 20px 10px 0px 10px;
+}
+
+div#recentTableList select {
+    width: 100%;
+}
+
 div#pmalogo,
 div#leftframelinks,
 div#databaseList {
     text-align:         center;
-    margin:      		20px 10px 0px 10px;
+    margin:             5px 10px 0px 10px;
 }
 
 ul#databaseList {
@@ -114,9 +109,10 @@ ul#databaseList span {
 
 ul#databaseList a {
     color: #333;
-    background: url(./themes/pmahomme/img/database.png) no-repeat 0% 50% transparent;
+    background: url(./themes/pmahomme/img/database.png) no-repeat 0 5px transparent;
     display: block;
-    padding: 5px;
+    text-indent: 0;
+    padding: 5px 5px 5px 25px;
     font-style: normal;
 }
 
@@ -132,14 +128,19 @@ div#navidbpageselector select{
 }
 
 ul#databaseList ul {
-    margin:0px;
-    padding:0px;
+    margin: 0;
+    padding: 0;
 }
-ul#databaseList li{    list-style:none;text-indent:20px;    margin:0px;
-    padding:0px;}
+
+ul#databaseList li {
+    list-style: none;
+    text-indent: 20px;
+    margin: 0;
+    padding: 0;
+}
 
 ul#databaseList a:hover {
-    background:url(./themes/pmahomme/img/database.png) no-repeat 0% 50% #e4e4e4;    
+    background-color: #e4e4e4;
 }
 
 ul#databaseList li.selected a {
@@ -154,9 +155,9 @@ div#leftframelinks .icon {
 
 div#reloadlink a img,
 div#leftframelinks a img.icon {
-    margin:             10px 2px 0 0;
-    padding:            0.2em;
-    border:             0px;
+    margin:        0.3em;
+    margin-top:    0.7em;
+    border:        0;
 }
 
 div#leftframelinks a:hover img {
@@ -213,12 +214,7 @@ div#left_tableList li {
 #newtable a {
     display: block;
     padding: 1px;
-    background-image: url(./themes/svg_gradient.php?from=ffffff&to=cccccc);
-    background-size: 100% 100%;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc));
-    background: -moz-linear-gradient(top,  #ffffff,  #cccccc);
-    background: -o-linear-gradient(top,  #ffffff,  #cccccc);
-    <?php echo PMA_ieFilter('#ffffff', '#cccccc'); ?>
+    <?php echo $_SESSION['PMA_Theme']->getCssGradient('ffffff', 'cccccc'); ?>
     border: 1px solid #aaa;
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
@@ -230,12 +226,7 @@ div#left_tableList li {
 }
 
 #newtable a:hover {
-    background-image: url(./themes/svg_gradient.php?from=cccccc&to=dddddd);
-    background-size: 100% 100%;
-    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#dddddd)) !important;
-    background: -moz-linear-gradient(top,  #cccccc,  #dddddd) !important;
-    background: -o-linear-gradient(top,  #cccccc,  #dddddd) !important;
-    <?php echo PMA_ieFilter('#cccccc', '#dddddd'); ?>
+    <?php echo $_SESSION['PMA_Theme']->getCssGradient('cccccc', 'dddddd'); ?>
 }
 
 #newtable li a:hover {
@@ -314,4 +305,8 @@ div#left_tableList ul ul {
 #fast_filter {
     width: 85%;
     padding: 0.1em;
+}
+
+#fast_filter.gray {
+    color: gray;
 }

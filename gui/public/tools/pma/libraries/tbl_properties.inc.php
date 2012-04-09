@@ -4,7 +4,7 @@
  * Display form for changing/adding table fields/columns
  *
  * included by tbl_addfield.php, -_alter.php, -_create.php
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -14,6 +14,7 @@ if (! defined('PHPMYADMIN')) {
  * Check parameters
  */
 require_once './libraries/common.inc.php';
+require_once './libraries/common.lib.php';
 PMA_checkParameters(array('db', 'table', 'action', 'num_fields'));
 
 
@@ -26,21 +27,14 @@ require_once './libraries/StorageEngine.class.php';
  */
 require_once './libraries/Partition.class.php';
 
-if (is_int($cfg['DefaultPropDisplay'])) {
-    if ($num_fields <= $cfg['DefaultPropDisplay']) {
-        $display_type = 'vertical';
-    } else {
-        $display_type = 'horizontal';
-    }
+// load additional configuration variables
+if (PMA_DRIZZLE) {
+    include_once './libraries/data_drizzle.inc.php';
 } else {
-    $display_type = $cfg['DefaultPropDisplay'];
+    include_once './libraries/data_mysql.inc.php';
 }
 
-if ('horizontal' == $display_type) {
-    $length_values_input_size = 8;
-} else {
-    $length_values_input_size = 30;
-}
+$length_values_input_size = 8;
 
 $_form_params = array(
     'db' => $db,
@@ -95,7 +89,7 @@ $is_backup = ($action != 'tbl_create.php' && $action != 'tbl_addfield.php');
 $header_cells = array();
 $content_cells = array();
 
-$header_cells[] = __('Column');
+$header_cells[] = __('Name');
 $header_cells[] = __('Type')
      . ($GLOBALS['cfg']['ReplaceHelpImg']
         ? PMA_showMySQLDocu('SQL-Syntax', 'data-types')
@@ -115,7 +109,7 @@ if (!$is_backup) {
     $header_cells[] = __('Index');
 }
 
-$header_cells[] = '<abbr title="AUTO_INCREMENT">' . ($display_type == 'horizontal' ? 'A_I' : 'AUTO_INCREMENT') . '</abbr>';
+$header_cells[] = '<abbr title="AUTO_INCREMENT">A_I</abbr>';
 
 require_once './libraries/transformations.lib.php';
 $cfgRelation = PMA_getRelationsParam();
@@ -223,7 +217,7 @@ for ($i = 0; $i < $num_fields; $i++) {
                 if ($row['Null'] == 'YES') {
                     $row['DefaultType']  = 'NULL';
                     $row['DefaultValue'] = '';
-    // SHOW FULL FIELDS does not report the case when there is a DEFAULT value
+    // SHOW FULL COLUMNS does not report the case when there is a DEFAULT value
     // which is empty so we need to use the results of SHOW CREATE TABLE
                 } elseif (isset($row) && isset($analyzed_sql[0]['create_table_fields'][$row['Field']]['default_value'])) {
                     $row['DefaultType']  = 'USER_DEFINED';
@@ -271,7 +265,7 @@ for ($i = 0; $i < $num_fields; $i++) {
     $content_cells[$i][$ci] = '<input id="field_' . $i . '_' . ($ci - $ci_offset) . '"'
         . ' type="text" name="field_name[' . $i . ']"'
         . ' maxlength="64" class="textfield" title="' . __('Column') . '"'
-        . ' size="' . ($GLOBALS['cfg']['DefaultPropDisplay'] == 'horizontal' ? '10' : '30') . '"'
+        . ' size="10"'
         . ' value="' . (isset($row['Field']) ? htmlspecialchars($row['Field']) : '') . '"'
         . ' />';
     $ci++;
@@ -285,25 +279,10 @@ for ($i = 0; $i < $num_fields; $i++) {
         // creating a column
         $row['Type'] = '';
         $type        = '';
-    } else {
-        $type        = $row['Type'];
-    }
-
-    if (! empty($row['Type'])) {
-        $type = $extracted_fieldspec['type'];
-        if ('set' == $extracted_fieldspec['type'] || 'enum' == $extracted_fieldspec['type']) {
-            $length = $extracted_fieldspec['spec_in_brackets'];
-        } else {
-            // strip the "BINARY" attribute, except if we find "BINARY(" because
-            // this would be a BINARY or VARBINARY field type
-            $type   = preg_replace('@BINARY([^\(])@i', '', $type);
-            $type   = preg_replace('@ZEROFILL@i', '', $type);
-            $type   = preg_replace('@UNSIGNED@i', '', $type);
-            $length = $extracted_fieldspec['spec_in_brackets'];
-        } // end if else
-    } else {
-        // creating a column
         $length = '';
+    } else {
+        $type = $extracted_fieldspec['type'];
+        $length = $extracted_fieldspec['spec_in_brackets'];
     }
 
     // some types, for example longtext, are reported as
@@ -322,27 +301,7 @@ for ($i = 0; $i < $num_fields; $i++) {
     $type = rtrim($type);
     $type_upper = strtoupper($type);
 
-    foreach ($cfg['ColumnTypes'] as $col_goup => $column_type) {
-        if (is_array($column_type)) {
-            $content_cells[$i][$ci] .= '<optgroup label="' . htmlspecialchars($col_goup) . '">';
-            foreach ($column_type as $col_group_type) {
-                $content_cells[$i][$ci] .= '<option value="'. $col_group_type . '"';
-                if ($type_upper == strtoupper($col_group_type)) {
-                    $content_cells[$i][$ci] .= ' selected="selected"';
-                }
-                $content_cells[$i][$ci] .= '>' . $col_group_type . '</option>';
-            }
-            $content_cells[$i][$ci] .= '</optgroup>';
-            continue;
-        }
-
-        $content_cells[$i][$ci] .= '<option value="'. $column_type . '"';
-        if ($type_upper == strtoupper($column_type)) {
-            $content_cells[$i][$ci] .= ' selected="selected"';
-        }
-        $content_cells[$i][$ci] .= '>' . $column_type . '</option>';
-    } // end for
-
+    $content_cells[$i][$ci] .= PMA_getSupportedDatatypes(true, $type_upper);
     $content_cells[$i][$ci] .= '    </select>';
     $ci++;
 
@@ -352,15 +311,6 @@ for ($i = 0; $i < $num_fields; $i++) {
     }
 
     // column length
-    if (isset($extracted_fieldspec) && ('set' == $extracted_fieldspec['type'] || 'enum' == $extracted_fieldspec['type'])) {
-        $binary           = 0;
-        $unsigned         = 0;
-        $zerofill         = 0;
-    } else {
-        $binary           = false;
-        $unsigned         = stristr($row['Type'], 'unsigned');
-        $zerofill         = stristr($row['Type'], 'zerofill');
-    }
     $length_to_display = $length;
 
     $content_cells[$i][$ci] = '<input id="field_' . $i . '_' . ($ci - $ci_offset) . '"'
@@ -369,8 +319,13 @@ for ($i = 0; $i < $num_fields; $i++) {
         . ' class="textfield" />'
         . '<p class="enum_notice" id="enum_notice_' . $i . '_' . ($ci - $ci_offset) . '">';
     $content_cells[$i][$ci] .= __('ENUM or SET data too long?')
-        . '<a onclick="return false;" href="enum_editor.php?' . PMA_generate_common_url() . '&amp;values=' . urlencode($length_to_display) . '&amp;field=' .  (isset($row['Field']) ? urlencode($row['Field']) : "") . '" class="open_enum_editor" target="_blank"> '
-        . __('Get more editing space') . '</a></p>';
+        . '<a onclick="return false;" href="enum_editor.php?'
+        . PMA_generate_common_url()
+        . '&amp;values=' . urlencode($length_to_display)
+        . '&amp;field=' .  (isset($row['Field']) ? urlencode($row['Field']) : "")
+        . '" class="open_enum_editor" target="_blank"> '
+        . __('Get more editing space') . '</a>'
+        . '</p>';
     $ci++;
 
     // column default
@@ -378,15 +333,15 @@ for ($i = 0; $i < $num_fields; $i++) {
      * having NULL enabled does not implicit having Default with NULL
      *
     if (isset($row)
-      && !isset($row['Default']) && isset($row['Null']) && $row['Null'] == 'YES') {
+      && ! isset($row['Default']) && isset($row['Null']) && $row['Null'] == 'YES') {
         $row['Default'] = 'NULL';
     }
      */
 
     // old column default
     if ($is_backup) {
-        $_form_params['field_default_orig[' . $i . ']'] =
-            (isset($row['Default']) ? $row['Default'] : '');
+        $_form_params['field_default_orig[' . $i . ']']
+            = (isset($row['Default']) ? $row['Default'] : '');
     }
 
     // here we put 'NONE' as the default value of drop-down; otherwise
@@ -410,7 +365,7 @@ for ($i = 0; $i < $num_fields; $i++) {
         $row['DefaultValue'] = PMA_convert_bit_default_value($row['DefaultValue']);
     }
 
-    $content_cells[$i][$ci] = '<select name="field_default_type[' . $i . ']">';
+    $content_cells[$i][$ci] = '<select name="field_default_type[' . $i . ']" class="default_type">';
     foreach ($default_options as $key => $value) {
         $content_cells[$i][$ci] .= '<option value="' . $key . '"';
         // is only set when we go back to edit a field's structure
@@ -424,7 +379,7 @@ for ($i = 0; $i < $num_fields; $i++) {
     $content_cells[$i][$ci] .= '<input id="field_' . $i . '_' . ($ci - $ci_offset) . '"'
         . ' type="text" name="field_default_value[' . $i . ']" size="12"'
         . ' value="' . (isset($row['DefaultValue']) ? htmlspecialchars($row['DefaultValue']) : '') . '"'
-        . ' class="textfield" />';
+        . ' class="textfield default_value" />';
     $ci++;
 
     // column collation
@@ -441,15 +396,10 @@ for ($i = 0; $i < $num_fields; $i++) {
         . ' id="field_' . $i . '_' . ($ci - $ci_offset) . '">';
 
     $attribute     = '';
-    if ($binary) {
-        $attribute = 'BINARY';
+    if (isset($extracted_fieldspec)) {
+        $attribute = $extracted_fieldspec['attribute'];
     }
-    if ($unsigned) {
-        $attribute = 'UNSIGNED';
-    }
-    if ($zerofill) {
-        $attribute = 'UNSIGNED ZEROFILL';
-    }
+
     if (isset($row['Extra']) && $row['Extra'] == 'on update CURRENT_TIMESTAMP') {
         $attribute = 'on update CURRENT_TIMESTAMP';
     }
@@ -458,7 +408,7 @@ for ($i = 0; $i < $num_fields; $i++) {
         $attribute = $submit_attribute;
     }
 
-    // here, we have a TIMESTAMP that SHOW FULL FIELDS reports as having the
+    // here, we have a TIMESTAMP that SHOW FULL COLUMNS reports as having the
     // NULL attribute, but SHOW CREATE TABLE says the contrary. Believe
     // the latter.
     if (PMA_MYSQL_INT_VERSION < 50025
@@ -531,11 +481,13 @@ for ($i = 0; $i < $num_fields; $i++) {
         }
         $content_cells[$i][$ci] .= '>INDEX</option>';
 
-        $content_cells[$i][$ci] .= '<option value="fulltext_' . $i . '" title="' . __('Fulltext') . '"';
-        if (isset($row['Key']) && $row['Key'] == 'FULLTEXT') {
-            $content_cells[$i][$ci] .= ' selected="selected"';
+        if (!PMA_DRIZZLE) {
+            $content_cells[$i][$ci] .= '<option value="fulltext_' . $i . '" title="' . __('Fulltext') . '"';
+            if (isset($row['Key']) && $row['Key'] == 'FULLTEXT') {
+                $content_cells[$i][$ci] .= ' selected="selected"';
+            }
+            $content_cells[$i][$ci] .= '>FULLTEXT</option>';
         }
-        $content_cells[$i][$ci] .= '>FULLTEXT</option>';
 
         $content_cells[$i][$ci] .= '</select>';
         $ci++;
@@ -579,8 +531,7 @@ for ($i = 0; $i < $num_fields; $i++) {
         if (is_array($available_mime['transformation'])) {
             foreach ($available_mime['transformation'] AS $mimekey => $transform) {
                 $checked = (isset($row['Field']) && isset($mime_map[$row['Field']]['transformation']) && (preg_match('@' . preg_quote($available_mime['transformation_file'][$mimekey]) . '3?@i', $mime_map[$row['Field']]['transformation'])) ? 'selected ' : '');
-                $tooltip = 'strTransformation_' . strtolower(str_replace('.inc.php', '', $available_mime['transformation_file'][$mimekey]));
-                $tooltip = isset($$tooltip) ? $$tooltip : sprintf(str_replace('<br />', ' ', __('No description is available for this transformation.<br />Please ask the author what %s does.')), 'PMA_transformation_' . $tooltip . '()');
+                $tooltip = PMA_getTransformationDescription($available_mime['transformation_file'][$mimekey], false);
                 $content_cells[$i][$ci] .= '<option value="' . $available_mime['transformation_file'][$mimekey] . '" ' . $checked . ' title="' . htmlspecialchars($tooltip) . '">' . htmlspecialchars($transform) . '</option>';
             }
         }
@@ -601,7 +552,7 @@ for ($i = 0; $i < $num_fields; $i++) {
 <script src="./js/keyhandler.js" type="text/javascript"></script>
 <script type="text/javascript">
 // <![CDATA[
-var switch_movement = <?php echo $display_type == 'horizontal' ? '0' : '1'; ?>;
+var switch_movement = 0;
 document.onkeydown = onKeyDownArrowsHandler;
 // ]]>
 </script>
@@ -613,14 +564,19 @@ unset($_form_params);
 if ($action == 'tbl_create.php') {
     ?>
     <table>
-    <tr valign="top">
-        <th><?php echo __('Table name'); ?>:&nbsp;</th>
-    </tr>
-    <tr><td><input type="text" name="table" size="40" maxlength="80"
+        <tr><td><?php echo __('Table name'); ?>:&nbsp;<input type="text" name="table" size="40" maxlength="80"
                 value="<?php echo (isset($_REQUEST['table']) ? htmlspecialchars($_REQUEST['table']) : ''); ?>"
                 class="textfield" />
-        </td>
-    </tr>
+            </td>
+            <td>
+                <?php if ($action == 'tbl_create.php' || $action == 'tbl_addfield.php') { ?>
+                <?php echo sprintf(__('Add %s column(s)'), '<input type="text" id="added_fields" name="added_fields" size="2" value="1" onfocus="this.select()" />'); ?>
+                <input type="submit" name="submit_num_fields" value="<?php echo __('Go'); ?>"
+                    onclick="return checkFormElementInRange(this.form, 'added_fields', '<?php echo str_replace('\'', '\\\'', __('You have to add at least one column.')); ?>', 1)"
+                />
+                <?php } ?>
+            </td>
+        </tr>
     </table>
     <?php
 }
@@ -630,51 +586,30 @@ if (is_array($content_cells) && is_array($header_cells)) {
     // last row is for javascript insert
     //$empty_row = array_pop($content_cells);
 
-    echo '<table id="table_columns">';
+    echo '<table id="table_columns" class="noclick">';
     echo '<caption class="tblHeaders">' . __('Structure') . PMA_showMySQLDocu('SQL-Syntax', 'CREATE_TABLE') . '</caption>';
 
-    if ($display_type == 'horizontal') {
         ?>
 <tr>
-        <?php foreach ($header_cells as $header_val) { ?>
+    <?php foreach ($header_cells as $header_val) { ?>
     <th><?php echo $header_val; ?></th>
-        <?php } ?>
+    <?php } ?>
 </tr>
-        <?php
+    <?php
 
-        $odd_row = true;
-        foreach ($content_cells as $content_row) {
-            echo '<tr class="' . ($odd_row ? 'odd' : 'even') . ' noclick">';
-            $odd_row = ! $odd_row;
+    $odd_row = true;
+    foreach ($content_cells as $content_row) {
+        echo '<tr class="' . ($odd_row ? 'odd' : 'even') . '">';
+        $odd_row = ! $odd_row;
 
-            if (is_array($content_row)) {
-                foreach ($content_row as $content_row_val) {
-                    ?>
+        if (is_array($content_row)) {
+            foreach ($content_row as $content_row_val) {
+                ?>
     <td align="center"><?php echo $content_row_val; ?></td>
-                    <?php
-                }
+                <?php
             }
-            echo '</tr>';
         }
-    } else {
-        $i = 0;
-        $odd_row = true;
-        foreach ($header_cells as $header_val) {
-            echo '<tr class="' . ($odd_row ? 'odd' : 'even') . ' noclick">';
-            $odd_row = ! $odd_row;
-            ?>
-    <th><?php echo $header_val; ?></th>
-            <?php
-            foreach ($content_cells as $content_cell) {
-                if (isset($content_cell[$i]) && $content_cell[$i] != '') {
-                    ?>
-    <td><?php echo $content_cell[$i]; ?></td>
-                    <?php
-                }
-            }
-            echo '</tr>';
-            $i++;
-        }
+        echo '</tr>';
     }
     ?>
 </table>
@@ -696,7 +631,8 @@ if ($display_type == 'horizontal') {
 // <![CDATA[
 var odd_row = <?php echo $odd_row; ?>;
 
-function addField() {
+function addField()
+{
     var new_fields = document.getElementById('added_fields').value;
     var new_field_container = document.getElementById('table_columns');
     var new_field = '<?php echo preg_replace('|\s+|', ' ', preg_replace('|\'|', '\\\'', $new_field)); ?>';
@@ -775,26 +711,8 @@ if ($action == 'tbl_create.php') {
 
 <fieldset class="tblFooters">
     <input type="submit" name="do_save_data" value="<?php echo __('Save'); ?>" />
-<?php if ($action == 'tbl_create.php' || $action == 'tbl_addfield.php') { ?>
-    <?php echo __('Or'); ?>
-    <?php echo sprintf(__('Add %s column(s)'), '<input type="text" id="added_fields" name="added_fields" size="2" value="1" onfocus="this.select()" />'); ?>
-    <input type="submit" name="submit_num_fields"
-        value="<?php echo __('Go'); ?>"
-<?php /*        onclick="if (addField()) return false;" */ ?>
-        onclick="return checkFormElementInRange(this.form, 'added_fields', '<?php echo str_replace('\'', '\\\'', __('You have to add at least one column.')); ?>', 1)"
-        />
-<?php } ?>
 </fieldset>
 <div id="properties_message"></div>
 </form>
-
-<div id="enum_editor">
-<a class="close_enum_editor"><?php echo __('Close'); ?></a>
-<h3><?php printf(__('Values for the column "%s"'), isset($row['Field']) ? htmlspecialchars($row['Field']) : ""); ?></h3>
-<p><?php echo __('Enter each value in a separate field.'); ?></p>
-<div id="values"></div>
-<p><a class="add_value"><?php echo __('+ Add a new value'); ?></a></p>
-<input type="submit" value="<?php echo __('Go'); ?>" /> <a class="cancel_enum_editor"><?php echo __('Cancel'); ?></a>
-</div>
 
 <div id="popup_background"></div>

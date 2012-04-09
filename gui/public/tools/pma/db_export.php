@@ -3,11 +3,7 @@
 /**
  * dumps a database
  *
- * @uses    libraries/db_common.inc.php
- * @uses    libraries/db_info.inc.php
- * @uses    libraries/display_export.lib.php
- * @uses    $tables     from libraries/db_info.inc.php
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -32,7 +28,7 @@ $export_page_title = __('View dump (schema) of database');
 // exit if no tables in db found
 if ($num_tables < 1) {
     PMA_Message::error(__('No tables found in database.'))->display();
-    require './libraries/footer.inc.php';
+    include './libraries/footer.inc.php';
     exit;
 } // end if
 
@@ -53,14 +49,14 @@ if (!empty($selected_tbl) && empty($table_select)) {
 }
 
 // Check if the selected tables are defined in $_GET (from clicking Back button on export.php)
-if(isset($_GET['table_select'])) {
+if (isset($_GET['table_select'])) {
     $_GET['table_select'] = urldecode($_GET['table_select']);
     $_GET['table_select'] = explode(",", $_GET['table_select']);
 }
 
 foreach ($tables as $each_table) {
-    if(isset($_GET['table_select'])) {
-        if(in_array($each_table['Name'], $_GET['table_select'])) {
+    if (isset($_GET['table_select'])) {
+        if (in_array($each_table['Name'], $_GET['table_select'])) {
             $is_selected = ' selected="selected"';
         } else {
             $is_selected = '';

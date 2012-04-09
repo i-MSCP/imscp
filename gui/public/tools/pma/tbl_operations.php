@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -29,6 +29,10 @@ $cfgRelation = PMA_getRelationsParam();
  */
 require_once './libraries/mysql_charsets.lib.php';
 require_once './libraries/StorageEngine.class.php';
+
+// add a javascript file for jQuery functions to handle Ajax actions
+// also add jQueryUI
+$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.16.custom.js';
 
 /**
  * Class for partition management
@@ -66,15 +70,15 @@ $table_alters = array();
 /**
  * If the table has to be moved to some other database
  */
-if(isset($_REQUEST['submit_move']) || isset($_REQUEST['submit_copy'])) {
+if (isset($_REQUEST['submit_move']) || isset($_REQUEST['submit_copy'])) {
     $_message = '';
-    require_once './tbl_move_copy.php';
+    include_once './tbl_move_copy.php';
 }
 /**
  * If the table has to be maintained
  */
-if(isset($_REQUEST['table_maintenance'])) {
-    require_once './sql.php';
+if (isset($_REQUEST['table_maintenance'])) {
+    include_once './sql.php';
     unset($result);
 }
 /**
@@ -98,7 +102,7 @@ if (isset($_REQUEST['submitoptions'])) {
     }
     if (isset($_REQUEST['comment'])
       && urldecode($_REQUEST['prev_comment']) !== $_REQUEST['comment']) {
-        $table_alters[] = 'COMMENT = \'' . PMA_sqlAddslashes($_REQUEST['comment']) . '\'';
+        $table_alters[] = 'COMMENT = \'' . PMA_sqlAddSlashes($_REQUEST['comment']) . '\'';
     }
     if (! empty($_REQUEST['new_tbl_type'])
       && strtolower($_REQUEST['new_tbl_type']) !== strtolower($tbl_type)) {
@@ -152,13 +156,13 @@ if (isset($_REQUEST['submitoptions'])) {
     if (($is_myisam_or_aria || $is_innodb || $is_pbxt)
       &&  ! empty($_REQUEST['new_auto_increment'])
       && (! isset($auto_increment) || $_REQUEST['new_auto_increment'] !== $auto_increment)) {
-        $table_alters[] = 'auto_increment = ' . PMA_sqlAddslashes($_REQUEST['new_auto_increment']);
+        $table_alters[] = 'auto_increment = ' . PMA_sqlAddSlashes($_REQUEST['new_auto_increment']);
     }
 
     if (($is_myisam_or_aria || $is_innodb || $is_pbxt)
       &&  ! empty($_REQUEST['new_row_format'])
       && (! isset($row_format) || strtolower($_REQUEST['new_row_format']) !== strtolower($row_format))) {
-        $table_alters[] = 'ROW_FORMAT = ' . PMA_sqlAddslashes($_REQUEST['new_row_format']);
+        $table_alters[] = 'ROW_FORMAT = ' . PMA_sqlAddSlashes($_REQUEST['new_row_format']);
     }
 
     if (count($table_alters) > 0) {
@@ -207,30 +211,39 @@ if ($reread_info) {
     // a change, clear the cache
     PMA_Table::$cache = array();
     $page_checksum = $checksum = $delay_key_write = 0;
-    require './libraries/tbl_info.inc.php';
+    include './libraries/tbl_info.inc.php';
 }
 unset($reread_info);
 
 /**
- * Displays top menu links
+ * Displays top menu links in non ajax requests
  */
-require_once './libraries/tbl_links.inc.php';
-
+if (!isset($_REQUEST['ajax_request'])) {
+    include_once './libraries/tbl_links.inc.php';
+}
 if (isset($result) && empty($message_to_show)) {
     // set to success by default, because result set could be empty
     // (for example, a table rename)
     $_type = 'success';
     if (empty($_message)) {
-        $_message = $result ? __('Your SQL query has been executed successfully') : __('Error');
+        $_message = $result ? $message = PMA_Message::success(__('Your SQL query has been executed successfully')) : PMA_Message::error(__('Error'));
         // $result should exist, regardless of $_message
         $_type = $result ? 'success' : 'error';
+        if ( $_REQUEST['ajax_request'] == true) {
+            $extra_data['sql_query'] = PMA_showMessage(null, $sql_query);
+            PMA_ajaxResponse($_message, $_message->isSuccess(), $extra_data);
+        }
     }
     if (! empty($warning_messages)) {
         $_message = new PMA_Message;
         $_message->addMessages($warning_messages);
         $_message->isError(true);
+        if ( $_REQUEST['ajax_request'] == true) {
+            PMA_ajaxResponse($_message, false);
+        }
         unset($warning_messages);
     }
+
     PMA_showMessage($_message, $sql_query, $_type);
     unset($_message, $_type);
 }
@@ -241,12 +254,7 @@ $url_params['back'] = 'tbl_operations.php';
 /**
  * Get columns names
  */
-$local_query = '
-    SHOW COLUMNS
-    FROM ' . PMA_backquote($GLOBALS['table']) . '
-    FROM ' . PMA_backquote($GLOBALS['db']);
-$columns = PMA_DBI_fetch_result($local_query, null, 'Field');
-unset($local_query);
+$columns = PMA_DBI_get_columns($GLOBALS['db'], $GLOBALS['table']);
 
 /**
  * Displays the page
@@ -254,15 +262,15 @@ unset($local_query);
 ?>
 <!-- Order the table -->
 <div class="operations_half_width">
-<form method="post" action="tbl_operations.php">
+<form method="post" id="alterTableOrderby" action="tbl_operations.php" <?php echo ($GLOBALS['cfg']['AjaxEnable'] ? ' class="ajax"' : '');?>>
 <?php echo PMA_generate_common_hidden_inputs($GLOBALS['db'], $GLOBALS['table']); ?>
 <fieldset id="fieldset_table_order">
     <legend><?php echo __('Alter table order by'); ?></legend>
     <select name="order_field">
 <?php
 foreach ($columns as $fieldname) {
-    echo '            <option value="' . htmlspecialchars($fieldname) . '">'
-        . htmlspecialchars($fieldname) . '</option>' . "\n";
+    echo '            <option value="' . htmlspecialchars($fieldname['Field']) . '">'
+        . htmlspecialchars($fieldname['Field']) . '</option>' . "\n";
 }
 unset($columns);
 ?>
@@ -372,8 +380,10 @@ if (strstr($show_comment, '; InnoDB free') === false) {
 
     <!-- Table character set -->
     <tr><td><?php echo __('Collation'); ?></td>
-        <td><?php echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_COLLATION,
-                'tbl_collation', null, $tbl_collation, false, 3); ?>
+        <td><?php echo PMA_generateCharsetDropdownBox(
+                PMA_CSDROPDOWN_COLLATION,
+                'tbl_collation', null, $tbl_collation, false, 3
+            ); ?>
         </td>
     </tr>
 <?php
@@ -484,7 +494,7 @@ $innodb_engine_plugin = PMA_StorageEngine::getEngine('innodb');
 $innodb_plugin_version = $innodb_engine_plugin->getInnodbPluginVersion();
 if (!empty($innodb_plugin_version)) {
     $innodb_file_format = $innodb_engine_plugin->getInnodbFileFormat();
-}  else {
+} else {
     $innodb_file_format = '';
 }
 if ('Barracuda' == $innodb_file_format && $innodb_engine_plugin->supportsFilePerTable()) {
@@ -519,7 +529,7 @@ if (isset($possible_row_formats[$tbl_type])) {
 
 <!-- Copy table -->
 <div class="operations_half_width">
-<form method="post" action="tbl_operations.php"
+<form method="post" action="tbl_operations.php" name="copyTable" id="copyTable" <?php echo ($GLOBALS['cfg']['AjaxEnable'] ? ' class="ajax"' : '');?>
     onsubmit="return emptyFormElements(this, 'new_name')">
 <?php echo PMA_generate_common_hidden_inputs($GLOBALS['db'], $GLOBALS['table']); ?>
 <input type="hidden" name="reload" value="1" />
@@ -585,82 +595,96 @@ if (isset($possible_row_formats[$tbl_type])) {
 <fieldset>
  <legend><?php echo __('Table maintenance'); ?></legend>
 
-<ul>
+<ul id="tbl_maintenance" <?php echo ($GLOBALS['cfg']['AjaxEnable'] ? ' class="ajax"' : '');?>>
 <?php
 // Note: BERKELEY (BDB) is no longer supported, starting with MySQL 5.1
 if ($is_myisam_or_aria || $is_innodb || $is_berkeleydb) {
     if ($is_myisam_or_aria || $is_innodb) {
-        $this_url_params = array_merge($url_params,
+        $this_url_params = array_merge(
+            $url_params,
             array(
                 'sql_query' => 'CHECK TABLE ' . PMA_backquote($GLOBALS['table']),
                 'table_maintenance' => 'Go',
-                ));
+                )
+        );
         ?>
-    <li><a href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
+    <li><a class='maintain_action' href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Check table'); ?></a>
         <?php echo PMA_showMySQLDocu('MySQL_Database_Administration', 'CHECK_TABLE'); ?>
     </li>
         <?php
     }
     if ($is_innodb) {
-        $this_url_params = array_merge($url_params,
-            array('sql_query' => 'ALTER TABLE ' . PMA_backquote($GLOBALS['table']) . ' ENGINE = InnoDB'));
+        $this_url_params = array_merge(
+            $url_params,
+            array('sql_query' => 'ALTER TABLE ' . PMA_backquote($GLOBALS['table']) . ' ENGINE = InnoDB')
+        );
         ?>
-    <li><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>">
+    <li><a class='maintain_action' href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Defragment table'); ?></a>
         <?php echo PMA_showMySQLDocu('Table_types', 'InnoDB_File_Defragmenting'); ?>
     </li>
         <?php
     }
     if ($is_myisam_or_aria || $is_berkeleydb) {
-        $this_url_params = array_merge($url_params,
+        $this_url_params = array_merge(
+            $url_params,
             array(
                 'sql_query' => 'ANALYZE TABLE ' . PMA_backquote($GLOBALS['table']),
                 'table_maintenance' => 'Go',
-                ));
+                )
+        );
         ?>
-    <li><a href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
+    <li><a class='maintain_action' href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Analyze table'); ?></a>
         <?php echo PMA_showMySQLDocu('MySQL_Database_Administration', 'ANALYZE_TABLE');?>
     </li>
         <?php
     }
-    if ($is_myisam_or_aria) {
-        $this_url_params = array_merge($url_params,
+    if ($is_myisam_or_aria && !PMA_DRIZZLE) {
+        $this_url_params = array_merge(
+            $url_params,
             array(
                 'sql_query' => 'REPAIR TABLE ' . PMA_backquote($GLOBALS['table']),
                 'table_maintenance' => 'Go',
-                ));
+                )
+        );
         ?>
-    <li><a href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
+    <li><a class='maintain_action' href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Repair table'); ?></a>
         <?php echo PMA_showMySQLDocu('MySQL_Database_Administration', 'REPAIR_TABLE'); ?>
     </li>
         <?php
     }
-    if ($is_myisam_or_aria || $is_innodb || $is_berkeleydb) {
-        $this_url_params = array_merge($url_params,
+    if (($is_myisam_or_aria || $is_innodb || $is_berkeleydb) && !PMA_DRIZZLE) {
+        $this_url_params = array_merge(
+            $url_params,
             array(
                 'sql_query' => 'OPTIMIZE TABLE ' . PMA_backquote($GLOBALS['table']),
                 'table_maintenance' => 'Go',
-                ));
+                )
+        );
         ?>
-    <li><a href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
+    <li><a class='maintain_action' href="tbl_operations.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Optimize table'); ?></a>
         <?php echo PMA_showMySQLDocu('MySQL_Database_Administration', 'OPTIMIZE_TABLE'); ?>
     </li>
         <?php
     }
 } // end MYISAM or BERKELEYDB case
-$this_url_params = array_merge($url_params,
+$this_url_params = array_merge(
+    $url_params,
     array(
         'sql_query' => 'FLUSH TABLE ' . PMA_backquote($GLOBALS['table']),
-        'message_to_show' => sprintf(__('Table %s has been flushed'),
-            htmlspecialchars($GLOBALS['table'])),
+        'message_to_show' => sprintf(
+            __('Table %s has been flushed'),
+            htmlspecialchars($GLOBALS['table'])
+        ),
         'reload'    => 1,
-        ));
+    )
+);
 ?>
-    <li><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>">
+    <li><a class='maintain_action' href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Flush the table (FLUSH)'); ?></a>
         <?php echo PMA_showMySQLDocu('MySQL_Database_Administration', 'FLUSH'); ?>
     </li>
@@ -676,15 +700,17 @@ $this_url_params = array_merge($url_params,
 <?php
 if (! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $this_sql_query = 'TRUNCATE TABLE ' . PMA_backquote($GLOBALS['table']);
-    $this_url_params = array_merge($url_params,
+    $this_url_params = array_merge(
+        $url_params,
         array(
             'sql_query' => $this_sql_query,
             'goto' => 'tbl_structure.php',
             'reload' => '1',
             'message_to_show' => sprintf(__('Table %s has been emptied'), htmlspecialchars($table)),
-        ));
+        )
+    );
     ?>
-    <li><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>" onclick="return confirmLink(this, '<?php echo PMA_jsFormat($this_sql_query); ?>')">
+    <li><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>" <?php echo ($GLOBALS['cfg']['AjaxEnable'] ? 'id="truncate_tbl_anchor" class="ajax"' : ''); ?>>
             <?php echo __('Empty the table (TRUNCATE)'); ?></a>
         <?php echo PMA_showMySQLDocu('SQL-Syntax', 'TRUNCATE_TABLE'); ?>
     </li>
@@ -692,7 +718,8 @@ if (! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_
 }
 if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $this_sql_query = 'DROP TABLE ' . PMA_backquote($GLOBALS['table']);
-    $this_url_params = array_merge($url_params,
+    $this_url_params = array_merge(
+        $url_params,
         array(
             'sql_query' => $this_sql_query,
             'goto' => 'db_operations.php',
@@ -702,9 +729,10 @@ if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
             // table name is needed to avoid running
             // PMA_relationsCleanupDatabase() on the whole db later
             'table' => $GLOBALS['table'],
-        ));
+        )
+    );
     ?>
-    <li><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>" onclick="return confirmLink(this, '<?php echo PMA_jsFormat($this_sql_query); ?>')">
+    <li><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>" <?php echo ($GLOBALS['cfg']['AjaxEnable'] ? 'id="drop_tbl_anchor"' : ''); ?>>
             <?php echo __('Delete the table (DROP)'); ?></a>
         <?php echo PMA_showMySQLDocu('SQL-Syntax', 'DROP_TABLE'); ?>
     </li>
@@ -730,7 +758,7 @@ if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
  <legend><?php echo __('Partition maintenance'); ?></legend>
 <?php
         $html_select = '<select name="partition_name">' . "\n";
-        foreach($partition_names as $one_partition) {
+        foreach ($partition_names as $one_partition) {
             $one_partition = htmlspecialchars($one_partition);
             $html_select .= '<option value="' . $one_partition . '">' . $one_partition . '</option>' . "\n";
         }
@@ -748,10 +776,12 @@ if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
         echo PMA_showMySQLDocu('partitioning_maintenance', 'partitioning_maintenance');
         // I'm not sure of the best way to display that; this link does
         // not depend on the Go button
-    $this_url_params = array_merge($url_params,
+    $this_url_params = array_merge(
+        $url_params,
         array(
             'sql_query' => 'ALTER TABLE ' . PMA_backquote($GLOBALS['table']) . ' REMOVE PARTITIONING'
-            ));
+            )
+        );
 ?>
     <br /><a href="sql.php<?php echo PMA_generate_common_url($this_url_params); ?>">
             <?php echo __('Remove partitioning'); ?></a>
@@ -802,8 +832,10 @@ if ($cfgRelation['relwork'] && ! $is_innodb) {
                          . ' IS NULL AND '
                          . PMA_backquote($GLOBALS['table']) . '.' . PMA_backquote($master)
                          . ' IS NOT NULL';
-            $this_url_params = array_merge($url_params,
-                array('sql_query' => $join_query));
+            $this_url_params = array_merge(
+                $url_params,
+                array('sql_query' => $join_query)
+            );
             echo '        <li>'
                  . '<a href="sql.php'
                  . PMA_generate_common_url($this_url_params)

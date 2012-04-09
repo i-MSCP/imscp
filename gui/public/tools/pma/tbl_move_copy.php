@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -65,6 +65,13 @@ if (PMA_isValid($_REQUEST['new_name'])) {
             $db        = $_REQUEST['target_db'];
             $table     = $_REQUEST['new_name'];
         }
+
+        if ( $_REQUEST['ajax_request'] == true) {
+            $extra_data['sql_query'] = PMA_showMessage(null, $sql_query);
+            $extra_data['db'] = $GLOBALS['db'];
+            PMA_ajaxResponse($message, $message->isSuccess(), $extra_data);
+        }
+
         $reload = 1;
     }
 } else {

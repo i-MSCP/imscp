@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -145,11 +145,20 @@ $cfg['Servers'][$i]['connect_type'] = 'tcp';
 $cfg['Servers'][$i]['extension'] = 'mysqli';
 
 /**
- * Use compressed protocol for the MySQL connection (requires PHP >= 4.3.0)
+ * Use compressed protocol for the MySQL connection
  *
  * @global boolean $cfg['Servers'][$i]['compress']
  */
 $cfg['Servers'][$i]['compress'] = false;
+
+/**
+ * MySQL control host. This permits to use a host different than the
+ * main host, for the phpMyAdmin configuration storage. If left empty,
+ * $cfg['Servers'][$i]['host'] is used instead.
+ *
+ * @global string $cfg['Servers'][$i]['controlhost']
+ */
+$cfg['Servers'][$i]['controlhost'] = '';
 
 /**
  * MySQL control user settings (this user must have read-only
@@ -213,6 +222,13 @@ $cfg['Servers'][$i]['password'] = '';
 $cfg['Servers'][$i]['SignonSession'] = '';
 
 /**
+ * PHP script to use for 'signon' authentication method
+ *
+ * @global string $cfg['Servers'][$i]['SignonScript']
+ */
+$cfg['Servers'][$i]['SignonScript'] = '';
+
+/**
  * URL where to redirect user to login for 'signon' authentication method
  *
  * @global string $cfg['Servers'][$i]['SignonURL']
@@ -258,7 +274,7 @@ $cfg['Servers'][$i]['verbose'] = '';
 
 /**
  * Database used for Relation, Bookmark and PDF Features
- * (see scripts/create_tables.sql)
+ * (see examples/create_tables.sql)
  *   - leave blank for no support
  *     SUGGESTED: 'phpmyadmin'
  *
@@ -339,6 +355,20 @@ $cfg['Servers'][$i]['history'] = '';
 $cfg['Servers'][$i]['designer_coords'] = '';
 
 /**
+ * table to store recently used tables
+ *   - leave blank for no "persistent" recently used tables
+ *     SUGGESTED: 'pma_recent'
+ */
+$cfg['Servers'][$i]['recent'] = '';
+
+/**
+ * table to store UI preferences for tables
+ *   - leave blank for no "persistent" UI preferences
+ *     SUGGESTED: 'pma_table_uiprefs'
+ */
+$cfg['Servers'][$i]['table_uiprefs'] = '';
+
+/**
  * table to store SQL tracking
  *   - leave blank for no SQL tracking
  *     SUGGESTED: 'pma_tracking'
@@ -355,6 +385,19 @@ $cfg['Servers'][$i]['tracking'] = '';
  * @global string $cfg['Servers'][$i]['userconfig']
  */
 $cfg['Servers'][$i]['userconfig'] = '';
+
+/**
+ * Maximum number of records saved in $cfg['Servers'][$i]['table_uiprefs'] table.
+ *
+ * In case where tables in databases is modified (e.g. dropped or renamed),
+ * table_uiprefs may contains invalid data (referring to tables which are not
+ * exist anymore).
+ * This configuration make sure that we only keep N (N = MaxTableUiprefs)
+ * newest record in table_uiprefs and automatically delete older records.
+ *
+ * @global integer $cfg['Servers'][$i]['userconfig'] = '';
+ */
+$cfg['Servers'][$i]['MaxTableUiprefs'] = 100;
 
 /**
  * set to false if you know that your pma_* tables are up to date.
@@ -393,7 +436,7 @@ $cfg['Servers'][$i]['AllowDeny']['order'] = '';
 $cfg['Servers'][$i]['AllowDeny']['rules'] = array();
 
 /**
- * Disable use of INFORMATION_SCHEMA
+ * Disable use of INFORMATION_SCHEMA. Is always 'true' for Drizzle.
  *
  * @see http://sf.net/support/tracker.php?aid=1849494
  * @see http://bugs.mysql.com/19588
@@ -523,6 +566,13 @@ $cfg['MaxDbList'] = 100;
 $cfg['MaxTableList'] = 250;
 
 /**
+ * whether to show hint or not
+ *
+ * @global boolean $cfg['ShowHint']
+ */
+$cfg['ShowHint'] = true;
+
+/**
  * maximum number of characters when a SQL query is displayed
  *
  * @global integer $cfg['MaxCharactersInDisplayedSQL']
@@ -575,6 +625,7 @@ $cfg['MemoryLimit'] = '0';
 
 /**
  * mark used tables, make possible to show locked tables (since MySQL 3.23.30)
+ * Is ignored for Drizzle.
  *
  * @global boolean $cfg['SkipLockedTables']
  */
@@ -586,6 +637,13 @@ $cfg['SkipLockedTables'] = false;
  * @global boolean $cfg['ShowSQL']
  */
 $cfg['ShowSQL'] = true;
+
+/**
+ * retain SQL input on Ajax execute
+ *
+ * @global boolean $cfg['RetainQueryEditor']
+ */
+$cfg['RetainQueryBox'] = false;
 
 /**
  * show a 'Drop database' link to normal users
@@ -795,6 +853,13 @@ $cfg['LeftLogoLink'] = 'main.php';
 $cfg['LeftLogoLinkWindow'] = 'main';
 
 /**
+ * number of recently used tables displayed in the navigation frame
+ *
+ * @global integer $cfg['LeftRecentTable']
+ */
+$cfg['LeftRecentTable'] = 10;
+
+/**
  * display a JavaScript table filter in the left frame
  * when more then x tables are present
  *
@@ -968,6 +1033,20 @@ $cfg['ShowFieldTypesInDataEditView'] = true;
  * @global string $cfg['CharEditing']
  */
 $cfg['CharEditing'] = 'input';
+
+/**
+ * The minimum size for character input fields
+ *
+ * @global integer $cfg['MinSizeForInputField']
+ */
+$cfg['MinSizeForInputField'] = 4;
+
+/**
+ * The maximum size for character input fields
+ *
+ * @global integer $cfg['MinSizeForInputField']
+ */
+$cfg['MaxSizeForInputField'] = 60;
 
 /**
  * How many rows can be inserted at one time
@@ -1288,7 +1367,7 @@ $cfg['Export']['texytext_structure_or_data'] = 'structure_and_data';
  *
  * @global boolean $cfg['Export']['texytext_columns']
  */
-$cfg['Export']['texytext_columns'] = FALSE;
+$cfg['Export']['texytext_columns'] = false;
 
 /**
  *
@@ -1379,7 +1458,7 @@ $cfg['Export']['csv_enclosed'] = '"';
  *
  * @global string $cfg['Export']['csv_escaped']
  */
-$cfg['Export']['csv_escaped'] = '\\';
+$cfg['Export']['csv_escaped'] = '"';
 
 /**
  *
@@ -1876,7 +1955,7 @@ $cfg['Import']['csv_enclosed'] = '"';
  *
  * @global string $cfg['Import']['csv_escaped']
  */
-$cfg['Import']['csv_escaped'] = '\\';
+$cfg['Import']['csv_escaped'] = '"';
 
 /**
  *
@@ -2228,20 +2307,14 @@ $cfg['CharTextareaRows'] = 2;
 $cfg['LimitChars'] = 50;
 
 /**
- * show edit/delete links on left side of browse
- * (or at the top with vertical browse)
+ * Where to show the edit/copy/delete links in browse mode
+ * Possible values are 'left', 'right', 'both' and 'none';
+ * which will be interpreted as 'top', 'bottom', 'both' and 'none'
+ * respectively for vertical display mode
  *
- * @global boolean $cfg['ModifyDeleteAtLeft']
+ * @global string $cfg['RowActionLinks']
  */
-$cfg['ModifyDeleteAtLeft'] = true;
-
-/**
- * show edit/delete links on right side of browse
- * (or at the bottom with vertical browse)
- *
- * @global boolean $cfg['ModifyDeleteAtRight']
- */
-$cfg['ModifyDeleteAtRight'] = false;
+$cfg['RowActionLinks'] = 'left';
 
 /**
  * default display direction (horizontal|vertical|horizontalflipped)
@@ -2251,13 +2324,11 @@ $cfg['ModifyDeleteAtRight'] = false;
 $cfg['DefaultDisplay'] = 'horizontal';
 
 /**
- * default display direction for altering/creating columns (tbl_properties)
- * (horizontal|vertical|<number>)
- * number indicates maximum number for which vertical model is used
+ * remember the last way a table sorted
  *
- * @global integer $cfg['DefaultPropDisplay']
+ * @global string $cfg['RememberSorting']
  */
-$cfg['DefaultPropDisplay'] = 3;
+$cfg['RememberSorting'] = true;
 
 /**
  * table-header rotation via faking or CSS? (css|fake|auto)
@@ -2280,6 +2351,16 @@ $cfg['ShowBrowseComments'] = true;
  * @global boolean $cfg['ShowPropertyComments']
  */
 $cfg['ShowPropertyComments']= true;
+
+/**
+ * save edited cell(s) in browse-mode at once.
+ */
+$cfg['SaveCellsAtOnce'] = false;
+
+/**
+ * shows table display direction.
+ */
+$cfg['ShowDisplayDirection'] = false;
 
 /**
  * repeat header names every X cells? (0 = deactivate)
@@ -2352,7 +2433,7 @@ $cfg['MaxExactCount'] = 20000;
  *
  * @global integer $cfg['MaxExactCountViews']
  */
-$cfg['MaxExactCountViews'] = 0;
+$cfg['MaxExactCountViews'] = 100000;
 
 /**
  * Sort table and database in natural order
@@ -2363,7 +2444,7 @@ $cfg['NaturalOrder'] = true;
 
 /**
  * Initial state for sliders
- * (open | closed)
+ * (open | closed | disabled)
  *
  * @global string $cfg['InitialSlidersState']
  */
@@ -2596,11 +2677,18 @@ $cfg['CheckConfigurationPermissions'] = true;
  * Limit for length of URL in links. When length would be above this limit, it
  * is replaced by form with button.
  * This is required as some web servers (IIS) have problems with long URLs.
- * The recommended limit is 2000 
+ * The recommended limit is 2000
  * (see http://www.boutell.com/newfaq/misc/urllength.html) but we put
  * 1000 to accommodate Suhosin, see bug #3358750.
  */
 $cfg['LinkLengthLimit'] = 1000;
+
+/**
+ * Disable the table maintenance mass operations, like optimizing or
+ * repairing the selected tables of a database. An accidental execution
+ * of such a maintenance task can enormously slow down a bigger database.
+ */
+$cfg['DisableMultiTableMaintenance'] = false;
 
 /*******************************************************************************
  * SQL Parser Settings
@@ -2687,325 +2775,49 @@ $cfg['DBG']['sql'] = false;
  * Column types;
  * VARCHAR, TINYINT, TEXT and DATE are listed first, based on estimated popularity
  *
+ * This variable is filled in data_*.inc.php
+ *
  * @global array $cfg['ColumnTypes']
  */
-$cfg['ColumnTypes'] = array(
-    // most used
-    'INT',
-    'VARCHAR',
-    'TEXT',
-    'DATE',
-
-    // numeric
-    'NUMERIC' => array(
-        'TINYINT',
-        'SMALLINT',
-        'MEDIUMINT',
-        'INT',
-        'BIGINT',
-        '-',
-        'DECIMAL',
-        'FLOAT',
-        'DOUBLE',
-        'REAL',
-        '-',
-        'BIT',
-        'BOOLEAN',
-        'SERIAL',
-    ),
-
-
-    // Date/Time
-    'DATE and TIME' => array(
-        'DATE',
-        'DATETIME',
-        'TIMESTAMP',
-        'TIME',
-        'YEAR',
-    ),
-
-    // Text
-    'STRING' => array(
-        'CHAR',
-        'VARCHAR',
-        '-',
-        'TINYTEXT',
-        'TEXT',
-        'MEDIUMTEXT',
-        'LONGTEXT',
-        '-',
-        'BINARY',
-        'VARBINARY',
-        '-',
-        'TINYBLOB',
-        'MEDIUMBLOB',
-        'BLOB',
-        'LONGBLOB',
-        '-',
-        'ENUM',
-        'SET',
-    ),
-
-    'SPATIAL' => array(
-        'GEOMETRY',
-        'POINT',
-        'LINESTRING',
-        'POLYGON',
-        'MULTIPOINT',
-        'MULTILINESTRING',
-        'MULTIPOLYGON',
-        'GEOMETRYCOLLECTION',
-    ),
-);
+$cfg['ColumnTypes'] = array();
 
 /**
  * Attributes
  *
+ * This variable is filled in data_*.inc.php
+ *
  * @global array $cfg['AttributeTypes']
  */
-$cfg['AttributeTypes'] = array(
-   '',
-   'BINARY',
-   'UNSIGNED',
-   'UNSIGNED ZEROFILL',
-   'on update CURRENT_TIMESTAMP',
-);
+$cfg['AttributeTypes'] = array();
 
 
 if ($cfg['ShowFunctionFields']) {
     /**
      * Available functions
      *
+     * This variable is filled in data_*.inc.php
+     *
      * @global array $cfg['Functions']
      */
-    $cfg['Functions'] = array(
-        'ABS',
-        'ACOS',
-        'ASCII',
-        'ASIN',
-        'ATAN',
-        'BIN',
-        'BIT_COUNT',
-        'BIT_LENGTH',
-        'CEILING',
-        'CHAR',
-        'CHAR_LENGTH',
-        'COMPRESS',
-        'COS',
-        'COT',
-        'CRC32',
-        'CURDATE',
-        'CURRENT_USER',
-        'CURTIME',
-        'DATE',
-        'DAYNAME',
-        'DEGREES',
-        'DES_DECRYPT',
-        'DES_ENCRYPT',
-        'ENCRYPT',
-        'EXP',
-        'FLOOR',
-        'FROM_DAYS',
-        'FROM_UNIXTIME',
-        'HEX',
-        'INET_ATON',
-        'INET_NTOA',
-        'LENGTH',
-        'LN',
-        'LOG',
-        'LOG10',
-        'LOG2',
-        'LOWER',
-        'MD5',
-        'NOW',
-        'OCT',
-        'OLD_PASSWORD',
-        'ORD',
-        'PASSWORD',
-        'RADIANS',
-        'RAND',
-        'REVERSE',
-        'ROUND',
-        'SEC_TO_TIME',
-        'SHA1',
-        'SOUNDEX',
-        'SPACE',
-        'SQRT',
-        'STDDEV_POP',
-        'STDDEV_SAMP',
-        'TAN',
-        'TIMESTAMP',
-        'TIME_TO_SEC',
-        'UNCOMPRESS',
-        'UNHEX',
-        'UNIX_TIMESTAMP',
-        'UPPER',
-        'USER',
-        'UTC_DATE',
-        'UTC_TIME',
-        'UTC_TIMESTAMP',
-        'UUID',
-        'VAR_POP',
-        'VAR_SAMP',
-        'YEAR',
-    );
+    $cfg['Functions'] = array();
 
     /**
      * Which column types will be mapped to which Group?
      *
+     * This variable is filled in data_*.inc.php
+     *
      * @global array $cfg['RestrictColumnTypes']
      */
-    $cfg['RestrictColumnTypes'] = array(
-        'TINYINT'   => 'FUNC_NUMBER',
-        'SMALLINT'  => 'FUNC_NUMBER',
-        'MEDIUMINT' => 'FUNC_NUMBER',
-        'INT'       => 'FUNC_NUMBER',
-        'BIGINT'    => 'FUNC_NUMBER',
-        'DECIMAL'   => 'FUNC_NUMBER',
-        'FLOAT'     => 'FUNC_NUMBER',
-        'DOUBLE'    => 'FUNC_NUMBER',
-        'REAL'      => 'FUNC_NUMBER',
-        'BIT'       => 'FUNC_NUMBER',
-        'BOOLEAN'   => 'FUNC_NUMBER',
-        'SERIAL'    => 'FUNC_NUMBER',
-
-        'DATE'      => 'FUNC_DATE',
-        'DATETIME'  => 'FUNC_DATE',
-        'TIMESTAMP' => 'FUNC_DATE',
-        'TIME'      => 'FUNC_DATE',
-        'YEAR'      => 'FUNC_DATE',
-
-        'CHAR'          => 'FUNC_CHAR',
-        'VARCHAR'       => 'FUNC_CHAR',
-        'TINYTEXT'      => 'FUNC_CHAR',
-        'TEXT'          => 'FUNC_CHAR',
-        'MEDIUMTEXT'    => 'FUNC_CHAR',
-        'LONGTEXT'      => 'FUNC_CHAR',
-        'BINARY'        => 'FUNC_CHAR',
-        'VARBINARY'     => 'FUNC_CHAR',
-        'TINYBLOB'      => 'FUNC_CHAR',
-        'MEDIUMBLOB'    => 'FUNC_CHAR',
-        'BLOB'          => 'FUNC_CHAR',
-        'LONGBLOB'      => 'FUNC_CHAR',
-        'ENUM'          => '',
-        'SET'           => '',
-
-        'GEOMETRY'              => 'FUNC_SPATIAL',
-        'POINT'                 => 'FUNC_SPATIAL',
-        'LINESTRING'            => 'FUNC_SPATIAL',
-        'POLYGON'               => 'FUNC_SPATIAL',
-        'MULTIPOINT'            => 'FUNC_SPATIAL',
-        'MULTILINESTRING'       => 'FUNC_SPATIAL',
-        'MULTIPOLYGON'          => 'FUNC_SPATIAL',
-        'GEOMETRYCOLLECTION'    => 'FUNC_SPATIAL',
-
-    );
+    $cfg['RestrictColumnTypes'] = array();
 
     /**
      * Map above defined groups to any function
      *
+     * This variable is filled in data_*.inc.php
+     *
      * @global array $cfg['RestrictFunctions']
      */
-    $cfg['RestrictFunctions'] = array(
-        'FUNC_CHAR' => array(
-            'BIN',
-            'CHAR',
-            'CURRENT_USER',
-            'COMPRESS',
-            'DAYNAME',
-            'DES_DECRYPT',
-            'DES_ENCRYPT',
-            'ENCRYPT',
-            'HEX',
-            'INET_NTOA',
-            'LOWER',
-            'MD5',
-            'OLD_PASSWORD',
-            'PASSWORD',
-            'REVERSE',
-            'SHA1',
-            'SOUNDEX',
-            'SPACE',
-            'UNCOMPRESS',
-            'UNHEX',
-            'UPPER',
-            'USER',
-            'UUID',
-        ),
-
-        'FUNC_DATE' => array(
-            'CURDATE',
-            'CURTIME',
-            'DATE',
-            'FROM_DAYS',
-            'FROM_UNIXTIME',
-            'NOW',
-            'SEC_TO_TIME',
-            'TIMESTAMP',
-            'UTC_DATE',
-            'UTC_TIME',
-            'UTC_TIMESTAMP',
-            'YEAR',
-        ),
-
-        'FUNC_NUMBER' => array(
-            'ABS',
-            'ACOS',
-            'ASCII',
-            'ASIN',
-            'ATAN',
-            'BIT_LENGTH',
-            'BIT_COUNT',
-            'CEILING',
-            'CHAR_LENGTH',
-            'COS',
-            'COT',
-            'CRC32',
-            'DEGREES',
-            'EXP',
-            'FLOOR',
-            'INET_ATON',
-            'LENGTH',
-            'LN',
-            'LOG',
-            'LOG2',
-            'LOG10',
-            'OCT',
-            'ORD',
-            'RADIANS',
-            'RAND',
-            'ROUND',
-            'SQRT',
-            'STDDEV_POP',
-            'STDDEV_SAMP',
-            'TAN',
-            'TIME_TO_SEC',
-            'UNIX_TIMESTAMP',
-            'VAR_POP',
-            'VAR_SAMP',
-        ),
-
-        'FUNC_SPATIAL' => array(
-            'GeomFromText',
-            'GeomFromWKB',
-
-            'GeomCollFromText',
-            'LineFromText',
-            'MLineFromText',
-            'PointFromText',
-            'MPointFromText',
-            'PolyFromText',
-            'MPolyFromText',
-
-            'GeomCollFromWKB',
-            'LineFromWKB',
-            'MLineFromWKB',
-            'PointFromWKB',
-            'MPointFromWKB',
-            'PolyFromWKB',
-            'MPolyFromWKB',
-        ),
-    );
+    $cfg['RestrictFunctions'] = array();
 
     /**
      * Default functions for above defined groups
@@ -3016,11 +2828,10 @@ if ($cfg['ShowFunctionFields']) {
         'FUNC_CHAR' => '',
         'FUNC_DATE' => '',
         'FUNC_NUMBER' => '',
+        'FUNC_SPATIAL' => 'GeomFromText',
+        'FUNC_UUID' => 'UUID',
         'first_timestamp' => 'NOW',
-        'pk_char36' => 'UUID',
     );
-
-
 } // end if
 
 /**
@@ -3106,5 +2917,10 @@ $cfg['UnaryOperators'] = array(
    "= ''" => 1,
    "!= ''" => 1
 );
+
+/**
+ * Max rows retreived for zoom search
+ */
+$cfg['maxRowPlotLimit'] = 500;
 
 ?>

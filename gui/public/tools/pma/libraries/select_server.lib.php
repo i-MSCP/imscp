@@ -3,20 +3,14 @@
 /**
  * Code for displaying server selection
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
  * display server selection in list or selectbox form, or option tags only
  *
- * @uses    $GLOBALS['cfg']['DisplayServersList']
- * @uses    $GLOBALS['cfg']['Servers']
- * @uses    implode()
- * @uses    htmlspecialchars()
- * @uses    PMA_generate_common_hidden_inputs()
- * @uses    PMA_generate_common_url()
- * @param   boolean $not_only_options   whether to include form tags or not
- * @param   boolean $ommit_fieldset     whether to ommit fieldset tag or not
+ * @param boolean $not_only_options   whether to include form tags or not
+ * @param boolean $ommit_fieldset     whether to ommit fieldset tag or not
  */
 function PMA_select_server($not_only_options, $ommit_fieldset)
 {
@@ -37,8 +31,7 @@ function PMA_select_server($not_only_options, $ommit_fieldset)
         }
         echo '<label for="select_server">' . __('Current Server') . ':</label> ';
 
-        echo '<select name="server" id="select_server"'
-            . ' onchange="if (this.value != \'\') this.form.submit();">';
+        echo '<select name="server" id="select_server" class="autosubmit">';
         echo '<option value="">(' . __('Servers') . ') ...</option>' . "\n";
     } elseif ($list) {
         echo __('Current Server') . ':<br />';

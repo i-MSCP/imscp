@@ -3,13 +3,13 @@
 /**
  * holds the database index class
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
  * @since phpMyAdmin 3.0.0
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 class PMA_Index
 {
@@ -43,14 +43,14 @@ class PMA_Index
     protected $_columns = array();
 
     /**
-     * The index method used (BTREE, FULLTEXT, HASH, RTREE).
+     * The index method used (BTREE, SPATIAL, FULLTEXT, HASH, RTREE).
      *
      * @var string
      */
     protected $_type = '';
 
     /**
-     * The index choice (PRIMARY, UNIQUE, INDEX, FULLTEXT)
+     * The index choice (PRIMARY, UNIQUE, INDEX, SPATIAL, FULLTEXT)
      *
      * @var string
      */
@@ -86,8 +86,7 @@ class PMA_Index
     /**
      * Constructor
      *
-     * @uses    $this->set()
-     * @param   array $params
+     * @param array $params
      */
     public function __construct($params = array())
     {
@@ -112,10 +111,8 @@ class PMA_Index
     /**
      * returns an array with all indexes from the given table
      *
-     * @uses    PMA_Index::_loadIndexes()
-     * @uses    PMA_Index::$_registry
-     * @param   string $table
-     * @param   string $schema
+     * @param string $table
+     * @param string $schema
      * @return  array
      */
     static public function getFromTable($table, $schema)
@@ -132,10 +129,8 @@ class PMA_Index
     /**
      * return primary if set, false otherwise
      *
-     * @uses    PMA_Index::_loadIndexes()
-     * @uses    PMA_Index::$_registry
-     * @param   string $table
-     * @param   string $schema
+     * @param string $table
+     * @param string $schema
      * @return  mixed primary index or false if no one exists
      */
     static public function getPrimary($table, $schema)
@@ -152,13 +147,8 @@ class PMA_Index
     /**
      * Load index data for table
      *
-     * @uses    PMA_Index::$_registry
-     * @uses    PMA_DBI_fetch_result()
-     * @uses    PMA_backquote()
-     * @uses    PMA_Index
-     * @uses    PMA_Index->addColumn()
-     * @param   string $table
-     * @param   string $schema
+     * @param string $table
+     * @param string $schema
      * @return  boolean
      */
     static protected function _loadIndexes($table, $schema)
@@ -167,7 +157,7 @@ class PMA_Index
             return true;
         }
 
-        $_raw_indexes = PMA_DBI_fetch_result('SHOW INDEX FROM ' . PMA_backquote($schema) . '.' . PMA_backquote($table));
+        $_raw_indexes = PMA_DBI_get_table_indexes($schema, $table);
         foreach ($_raw_indexes as $_each_index) {
             $_each_index['Schema'] = $schema;
             if (! isset(PMA_Index::$_registry[$schema][$table][$_each_index['Key_name']])) {
@@ -186,9 +176,7 @@ class PMA_Index
     /**
      * Add column to index
      *
-     * @uses    $this->_columns
-     * @uses    PMA_Index_Column
-     * @param   array $params column params
+     * @param array $params column params
      */
     public function addColumn($params)
     {
@@ -206,9 +194,10 @@ class PMA_Index
             // $columns[names][]
             // $columns[sub_parts][]
             foreach ($columns['names'] as $key => $name) {
+                $sub_part = isset($columns['sub_parts'][$key]) ? $columns['sub_parts'][$key] : '';
                 $_columns[] = array(
                     'Column_name'   => $name,
-                    'Sub_part'      => $columns['sub_parts'][$key],
+                    'Sub_part'      => $sub_part,
                 );
             }
         } else {
@@ -227,8 +216,7 @@ class PMA_Index
     /**
      * Returns true if $column indexed in this index
      *
-     * @uses    $this->_columns
-     * @param   string $column
+     * @param string $column
      * @return  boolean
      */
     public function hasColumn($column)
@@ -269,6 +257,8 @@ class PMA_Index
             $this->_choice = 'PRIMARY';
         } elseif ('FULLTEXT' == $this->_type) {
             $this->_choice = 'FULLTEXT';
+        } elseif ('SPATIAL' == $this->_type) {
+            $this->_choice = 'SPATIAL';
         } elseif ('0' == $this->_non_unique) {
             $this->_choice = 'UNIQUE';
         } else {
@@ -323,6 +313,7 @@ class PMA_Index
             'PRIMARY',
             'INDEX',
             'UNIQUE',
+            'SPATIAL',
             'FULLTEXT',
         );
     }
@@ -412,10 +403,10 @@ class PMA_Index
     /**
      * Show index data
      *
-     * @param   string      $table          The tablename
-     * @param   array       $indexes_info   Referenced info array
-     * @param   array       $indexes_data   Referenced data array
-     * @param   boolean     $print_mode
+     * @param string      $table          The tablename
+     * @param array       $indexes_info   Referenced info array
+     * @param array       $indexes_data   Referenced data array
+     * @param boolean     $print_mode
      * @access  public
      * @return  array       Index collection array
      */
@@ -423,16 +414,24 @@ class PMA_Index
     {
         $indexes = PMA_Index::getFromTable($table, $schema);
 
-        if (count($indexes) < 1) {
-            return PMA_Message::error(__('No index defined!'))->getDisplay();
-        }
+        $no_indexes_class = count($indexes) > 0 ? ' hide' : '';
+        $no_indexes  = "<div class='no_indexes_defined$no_indexes_class'>";
+        $no_indexes .= PMA_Message::notice(__('No index defined!'))->getDisplay();
+        $no_indexes .= '</div>';
 
-        $r = '';
-
-        $r .= '<h2>' . __('Indexes') . ': ';
+        $r  = '<fieldset>';
+        $r .= '<legend id="index_header">' . __('Indexes');
         $r .= PMA_showMySQLDocu('optimization', 'optimizing-database-structure');
-        $r .= '</h2>';
-        $r .= '<table>';
+        $r .= '</legend>';
+        $r .= $no_indexes;
+        if (count($indexes) < 1) {
+            $r .= '</fieldset>';
+            return $r;
+        }
+        if (! $print_mode) {
+            $r .= PMA_Index::findDuplicates($table, $schema);
+        }
+        $r .= '<table id="table_index">';
         $r .= '<thead>';
         $r .= '<tr>';
         if (! $print_mode) {
@@ -455,12 +454,16 @@ class PMA_Index
         foreach ($indexes as $index) {
             $row_span = ' rowspan="' . $index->getColumnCount() . '" ';
 
-            $r .= '<tr class="' . ($odd_row ? 'odd' : 'even') . '">';
+            $r .= '<tr class="noclick ' . ($odd_row ? 'odd' : 'even') . '">';
 
             if (! $print_mode) {
                 $this_params = $GLOBALS['url_params'];
                 $this_params['index'] = $index->getName();
-                $r .= '<td ' . $row_span . '>'
+                $r .= '<td class="edit_index ';
+                if ($GLOBALS['cfg']['AjaxEnable']) {
+                    $r .= 'ajax" ';
+                }
+                $r .= '" ' . $row_span . '>'
                    . '    <a href="tbl_indexes.php' . PMA_generate_common_url($this_params)
                    . '">' . PMA_getIcon('b_edit.png', __('Edit')) . '</a>'
                    . '</td>' . "\n";
@@ -495,7 +498,7 @@ class PMA_Index
 
             foreach ($index->getColumns() as $column) {
                 if ($column->getSeqInIndex() > 1) {
-                    $r .= '<tr class="' . ($odd_row ? 'odd' : 'even') . '">';
+                    $r .= '<tr class="noclick ' . ($odd_row ? 'odd' : 'even') . '">';
                 }
                 $r .= '<td>' . htmlspecialchars($column->getName());
                 if ($column->getSubPart()) {
@@ -504,7 +507,7 @@ class PMA_Index
                 $r .= '</td>';
                 $r .= '<td>' . htmlspecialchars($column->getCardinality()) . '</td>';
                 $r .= '<td>' . htmlspecialchars($column->getCollation()) . '</td>';
-                $r .= '<td>' . htmlspecialchars($column->getNull()) . '</td>';
+                $r .= '<td>' . htmlspecialchars($column->getNull(true)) . '</td>';
 
                 if ($column->getSeqInIndex() == 1) {
                     $r .= '<td ' . $row_span . '>'
@@ -517,10 +520,7 @@ class PMA_Index
         } // end while
         $r .= '</tbody>';
         $r .= '</table>';
-
-        if (! $print_mode) {
-            $r .= PMA_Index::findDuplicates($table, $schema);
-        }
+        $r .= '</fieldset>';
 
         return $r;
     }
@@ -543,14 +543,8 @@ class PMA_Index
     /**
      * Function to check over array of indexes and look for common problems
      *
-     * @uses    is_string()
-     * @uses    is_array()
-     * @uses    count()
-     * @uses    array_pop()
-     * @uses    reset()
-     * @uses    current()
      * @access  public
-     * @param   string      name of table
+     * @param string      name of table
      * @return  string      Output HTML
      */
     static public function findDuplicates($table, $schema)
@@ -576,7 +570,7 @@ class PMA_Index
                 // did not find any difference
                 // so it makes no sense to have this two equal indexes
 
-                $message = PMA_Message::error(__('The indexes %1$s and %2$s seem to be equal and one of them could possibly be removed.'));
+                $message = PMA_Message::notice(__('The indexes %1$s and %2$s seem to be equal and one of them could possibly be removed.'));
                 $message->addParam($each_index->getName());
                 $message->addParam($while_index->getName());
                 $output .= $message->getDisplay();
@@ -591,7 +585,7 @@ class PMA_Index
 }
 
 /**
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 class PMA_Index_Column
 {
@@ -635,7 +629,7 @@ class PMA_Index_Column
      *
      * @var integer
      */
-    protected $_cardinality = 0;
+    protected $_cardinality = null;
 
     public function __construct($params = array())
     {
@@ -679,9 +673,11 @@ class PMA_Index_Column
         return $this->_cardinality;
     }
 
-    public function getNull()
+    public function getNull($as_text = false)
     {
-        return $this->_null;
+        return $as_text
+            ? (!$this->_null || $this->_null == 'NO' ? __('No') : __('Yes'))
+            : $this->_null;
     }
 
     public function getSeqInIndex()

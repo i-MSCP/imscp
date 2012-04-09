@@ -9,29 +9,7 @@
  *
  * speedup view on locked tables
  *
- * @uses    $cfg['ShowStats']
- * @uses    $cfg['ShowTooltip']
- * @uses    $cfg['ShowTooltipAliasTB']
- * @uses    $cfg['SkipLockedTables']
- * @uses    $GLOBALS['db']
- * @uses    PMA_fillTooltip()
- * @uses    PMA_checkParameters()
- * @uses    PMA_escape_mysql_wildcards()
- * @uses    PMA_DBI_query()
- * @uses    PMA_backquote()
- * @uses    PMA_DBI_num_rows()
- * @uses    PMA_DBI_fetch_row()
- * @uses    PMA_DBI_fetch_assoc()
- * @uses    PMA_DBI_free_result()
- * @uses    PMA_DBI_get_tables_full()
- * @uses    PMA_isValid()
- * @uses    preg_match()
- * @uses    preg_quote()
- * @uses    uksort()
- * @uses    strnatcasecmp()
- * @uses    count()
- * @uses    addslashes()
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -57,12 +35,9 @@ $pos = $_SESSION['tmp_user_values']['table_limit_offset'];
 /**
  * fills given tooltip arrays
  *
- * @uses    $cfg['ShowTooltipAliasTB']
- * @uses    PMA_localisedDate()
- * @uses    strtotime()
- * @param   array   $tooltip_truename   tooltip data
- * @param   array   $tooltip_aliasname  tooltip data
- * @param   array   $table              tabledata
+ * @param array   $tooltip_truename   tooltip data
+ * @param array   $tooltip_aliasname  tooltip data
+ * @param array   $table              tabledata
  */
 function PMA_fillTooltip(&$tooltip_truename, &$tooltip_aliasname, $table)
 {
@@ -123,7 +98,7 @@ $is_show_stats = $cfg['ShowStats'];
  */
 $db_is_information_schema = false;
 
-if ($db == 'information_schema') {
+if (PMA_is_system_schema($db)) {
     $is_show_stats = false;
     $db_is_information_schema = true;
 }
@@ -165,15 +140,15 @@ if (true === $cfg['SkipLockedTables']) {
                 null, PMA_DBI_QUERY_STORE);
             if ($db_info_result && PMA_DBI_num_rows($db_info_result) > 0) {
                 while ($tmp = PMA_DBI_fetch_row($db_info_result)) {
-                    if (!isset($sot_cache[$tmp[0]])) {
+                    if (! isset($sot_cache[$tmp[0]])) {
                         $sts_result  = PMA_DBI_query(
                             'SHOW TABLE STATUS FROM ' . PMA_backquote($db)
-                             . ' LIKE \'' . addslashes($tmp[0]) . '\';');
+                             . ' LIKE \'' . PMA_sqlAddSlashes($tmp[0], true) . '\';');
                         $sts_tmp     = PMA_DBI_fetch_assoc($sts_result);
                         PMA_DBI_free_result($sts_result);
                         unset($sts_result);
 
-                        if (!isset($sts_tmp['Type']) && isset($sts_tmp['Engine'])) {
+                        if (! isset($sts_tmp['Type']) && isset($sts_tmp['Engine'])) {
                             $sts_tmp['Type'] =& $sts_tmp['Engine'];
                         }
 
@@ -285,7 +260,7 @@ unset($each_table, $tbl_group_sql, $db_info_result);
  * Displays top menu links
  * If in an Ajax request, we do not need to show this
  */
-if($GLOBALS['is_ajax_request'] != true) {
-    require './libraries/db_links.inc.php';
+if ($GLOBALS['is_ajax_request'] != true) {
+    include './libraries/db_links.inc.php';
 }
 ?>

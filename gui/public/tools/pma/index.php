@@ -3,28 +3,8 @@
 /**
  * forms frameset
  *
- * @uses    $GLOBALS['cfg']['QueryHistoryDB']
- * @uses    $GLOBALS['cfg']['Server']['user']
- * @uses    $GLOBALS['cfg']['DefaultTabServer']     as src for the mainframe
- * @uses    $GLOBALS['cfg']['DefaultTabDatabase']   as src for the mainframe
- * @uses    $GLOBALS['cfg']['NaviWidth']            for navi frame width
- * @uses    $GLOBALS['collation_connection']    from $_REQUEST (grab_globals.lib.php)
  *                                              or common.inc.php
- * @uses    $GLOBALS['available_languages'] from common.inc.php (select_lang.lib.php)
- * @uses    $GLOBALS['db']
- * @uses    $GLOBALS['charset']
- * @uses    $GLOBALS['lang']
- * @uses    $GLOBALS['text_dir']
- * @uses    $_ENV['HTTP_HOST']
- * @uses    PMA_getRelationsParam()
- * @uses    PMA_purgeHistory()
- * @uses    PMA_generate_common_url()
- * @uses    PMA_VERSION
- * @uses    session_write_close()
- * @uses    time()
- * @uses    PMA_getenv()
- * @uses    header()                to send charset
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -74,7 +54,7 @@ if (! strlen($GLOBALS['db'])) {
 } else {
     $_GET['db'] = $GLOBALS['db'];
     $_GET['table'] = $GLOBALS['table'];
-    $main_target = $GLOBALS['cfg']['DefaultTabTable'];
+    $main_target = isset($GLOBALS['goto']) ? $GLOBALS['goto'] : $GLOBALS['cfg']['DefaultTabTable'];
 }
 
 $url_query = PMA_generate_common_url($_GET);
@@ -89,7 +69,7 @@ $lang_iso_code = $GLOBALS['available_languages'][$GLOBALS['lang']][1];
 
 
 // start output
-include ('./libraries/header_http.inc.php');
+require './libraries/header_http.inc.php';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
@@ -102,8 +82,7 @@ include ('./libraries/header_http.inc.php');
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 <title>phpMyAdmin <?php echo PMA_VERSION; ?> -
     <?php echo htmlspecialchars($HTTP_HOST); ?></title>
-<meta http-equiv="Content-Type"
-    content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="robots" content="noindex,nofollow" />
 <script type="text/javascript">
 // <![CDATA[
@@ -153,7 +132,7 @@ include ('./libraries/header_http.inc.php');
 // ]]>
 </script>
 <?php
-echo PMA_includeJS('jquery/jquery-1.4.4.js');
+echo PMA_includeJS('jquery/jquery-1.6.2.js');
 echo PMA_includeJS('update-location.js');
 echo PMA_includeJS('common.js');
 ?>

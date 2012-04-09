@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -43,11 +43,14 @@ if ($text_dir == 'ltr') {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $available_languages[$lang][1]; ?>" lang="<?php echo $available_languages[$lang][1]; ?>" dir="<?php echo $text_dir; ?>">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $charset; ?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="icon" href="./favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 <title><?php echo __('SQL result'); ?> - phpMyAdmin <?php echo PMA_VERSION ?></title>
 <link rel="stylesheet" type="text/css" href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=print&amp;nocache=<?php echo $GLOBALS['PMA_Config']->getThemeUniqueValue(); ?>" />
+<?php
+require_once './libraries/header_scripts.inc.php';
+?>
 </head>
 
 <body bgcolor="#ffffff">
@@ -69,5 +72,5 @@ if ($text_dir == 'ltr') {
 /**
  * Sets a variable to remember headers have been sent
  */
-$is_header_sent = TRUE;
+$is_header_sent = true;
 ?>

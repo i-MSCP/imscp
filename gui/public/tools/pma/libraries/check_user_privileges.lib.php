@@ -3,7 +3,7 @@
 /**
  * Get user's global privileges and some db-specific privileges
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -30,27 +30,6 @@ $GLOBALS['is_superuser']       = PMA_isSuperuser();
  * displayed. For example, if an anonymous account exists, the named account
  * might be able to use its privileges, but SHOW GRANTS will not display them.
  *
- * @uses    $_SESSION['is_create_db_priv'] for caching
- * @uses    $_SESSION['is_process_priv'] for caching
- * @uses    $_SESSION['is_reload_priv'] for caching
- * @uses    $_SESSION['db_to_create'] for caching
- * @uses    $_SESSION['dbs_where_create_table_allowed'] for caching
- * @uses    $GLOBALS['is_create_db_priv'] to set it
- * @uses    $GLOBALS['is_process_priv'] to set it
- * @uses    $GLOBALS['is_reload_priv'] to set it
- * @uses    $GLOBALS['db_to_create'] to set it
- * @uses    $GLOBALS['dbs_where_create_table_allowed'] to set it
- * @uses    $GLOBALS['server']
- * @uses    PMA_DBI_try_query()
- * @uses    PMA_DBI_fetch_row()
- * @uses    PMA_DBI_free_result()
- * @uses    PMA_DBI_getError()
- * @uses    PMA_unQuote()
- * @uses    PMA_backquote()
- * @uses    preg_match()
- * @uses    preg_replace()
- * @uses    substr()
- * @uses    strpos()
  */
 function PMA_analyseShowGrant()
 {
@@ -139,7 +118,7 @@ function PMA_analyseShowGrant()
 
                     /**
                      * @todo collect $GLOBALS['db_to_create'] into an array, to display a
-                     * drop-down in the "Create new database" dialog
+                     * drop-down in the "Create database" dialog
                      */
                      // we don't break, we want all possible databases
                      //break;
@@ -158,6 +137,15 @@ function PMA_analyseShowGrant()
     PMA_cacheSet('dbs_where_create_table_allowed', $GLOBALS['dbs_where_create_table_allowed'], true);
 } // end function
 
-PMA_analyseShowGrant();
+if (!PMA_DRIZZLE) {
+    PMA_analyseShowGrant();
+} else {
+    // todo: for simple_user_policy only database with user's login can be created (unless logged in as root)
+    $GLOBALS['is_create_db_priv'] = $GLOBALS['is_superuser'];
+    $GLOBALS['is_process_priv']   = false;
+    $GLOBALS['is_reload_priv']    = false;
+    $GLOBALS['db_to_create']      = '';
+    $GLOBALS['dbs_where_create_table_allowed'] = array('*');
+}
 
 ?>

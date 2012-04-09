@@ -4,31 +4,7 @@
  * this file is register_globals safe
  *
  * @todo    move JavaScript out of here into .js files
- * @uses    $cfg['QueryWindowDefTab']
- * @uses    $cfg['PropertiesIconic']
- * @uses    $cfg['QueryHistoryDB']
- * @uses    $cfg['Server']['user']
- * @uses    $cfg['AllowUserDropDatabase']
- * @uses    $cfg['Confirm']
- * @uses    $GLOBALS['db']
- * @uses    $GLOBALS['table']
- * @uses    PMA_isSuperuser()
- * @uses    PMA_outBufferPre()
- * @uses    PMA_getRelationsParam()
- * @uses    PMA_isValid()
- * @uses    PMA_ifSetOr()
- * @uses    PMA_getHistory()
- * @uses    PMA_generate_common_url()
- * @uses    PMA_generate_common_hidden_inputs()
- * @uses    PMA_escapeJsString()
- * @uses    PMA_generate_html_tabs()
- * @uses    PMA_sqlQueryForm()
- * @uses    PMA_jsFormat()
- * @uses    in_array()
- * @uses    strlen()
- * @uses    preg_replace()
- * @uses    htmlspecialchars()
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -95,7 +71,7 @@ if ($no_js) {
     $tabs['import']['attr']   = 'onclick="PMA_querywindowCommit(\'files\');return false;"';
     $tabs['import']['active'] = (bool) ($querydisplay_tab == 'files');
     $tabs['history']['icon']   = 'b_bookmark.png';
-    $tabs['history']['text']   = __('SQL history'); 
+    $tabs['history']['text']   = __('SQL history');
     $tabs['history']['fragment']   = '#';
     $tabs['history']['attr']   = 'onclick="PMA_querywindowCommit(\'history\');return false;"';
     $tabs['history']['active'] = (bool) ($querydisplay_tab == 'history');
@@ -108,19 +84,7 @@ if ($no_js) {
     }
 }
 
-if ($GLOBALS['cfg']['PropertiesIconic']) {
-    $titles['Change'] =
-         '<img class="icon" width="16" height="16" src="' . $pmaThemeImage
-        . 'b_edit.png" alt="' . __('Change') . '" title="' . __('Change')
-        . '" />';
-
-    if ('both' === $GLOBALS['cfg']['PropertiesIconic']) {
-        $titles['Change'] .= __('Change') . ' ';
-    }
-} else {
-    $titles['Change'] = __('Change') . ' ';
-}
-
+$titles['Change'] = PMA_getIcon('b_edit.png', __('Change'));
 $url_query = PMA_generate_common_url($db, $table);
 
 if (! empty($sql_query)) {
@@ -131,11 +95,11 @@ if ($no_js) {
     // ... we redirect to appropriate query sql page
     // works only full if $db and $table is also stored/grabbed from $_COOKIE
     if (strlen($table)) {
-        require './tbl_sql.php';
+        include './tbl_sql.php';
     } elseif (strlen($db)) {
-        require './db_sql.php';
+        include './db_sql.php';
     } else {
-        require './server_sql.php';
+        include './server_sql.php';
     }
     exit;
 }

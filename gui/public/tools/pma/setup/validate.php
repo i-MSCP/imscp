@@ -3,7 +3,7 @@
 /**
  * Validation callback.
  *
- * @package phpMyAdmin-setup
+ * @package PhpMyAdmin-setup
  */
 
 /**
@@ -19,7 +19,7 @@ header('Content-type: application/json');
 $vids = explode(',', filter_input(INPUT_POST, 'id'));
 $values = json_decode(filter_input(INPUT_POST, 'values'));
 if (!($values instanceof stdClass)) {
-    die('Wrong data');
+    die(__('Wrong data'));
 }
 $values = (array)$values;
 $result = PMA_config_validate($vids, $values, true);

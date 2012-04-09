@@ -57,7 +57,7 @@ $.extend(true, validators, {
             }
             return true;
         },
-		/**
+        /**
          * TrustedProxies field
          *
          * @param {boolean} isKeyUp
@@ -120,8 +120,9 @@ $.extend(true, validators, {
  * @param {String}  id      validator id
  * @param {Object}  values  values hash {element1_id: value, ...}
  */
-function ajaxValidate(parent, id, values) {
-	parent = $(parent);
+function ajaxValidate(parent, id, values)
+{
+    parent = $(parent);
     // ensure that parent is a fieldset
     if (parent.attr('tagName') != 'FIELDSET') {
         parent = parent.closest('fieldset');
@@ -131,7 +132,7 @@ function ajaxValidate(parent, id, values) {
     }
 
     if (parent.data('ajax') != null) {
-    	parent.data('ajax').abort();
+        parent.data('ajax').abort();
     }
 
     parent.data('ajax', $.ajax({
@@ -155,7 +156,7 @@ function ajaxValidate(parent, id, values) {
                 error[parent.id] = [response['error']];
             } else {
                 for (var key in response) {
-                	var value = response[key];
+                    var value = response[key];
                     error[key] = jQuery.isArray(value) ? value : [value];
                 }
             }

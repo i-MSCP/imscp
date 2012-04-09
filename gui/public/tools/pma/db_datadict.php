@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -10,8 +10,9 @@
  */
 require_once './libraries/common.inc.php';
 
-if (!isset($selected_tbl)) {
-    require_once './libraries/header.inc.php';
+if (! isset($selected_tbl)) {
+    include './libraries/db_common.inc.php';
+    include './libraries/db_info.inc.php';
 }
 
 
@@ -55,12 +56,10 @@ if ($cfgRelation['commwork']) {
  * Selects the database and gets tables names
  */
 PMA_DBI_select_db($db);
-$rowset = PMA_DBI_query('SHOW TABLES FROM ' . PMA_backquote($db) . ';', null, PMA_DBI_QUERY_STORE);
+$tables = PMA_DBI_get_tables($db);
 
 $count  = 0;
-while ($row = PMA_DBI_fetch_assoc($rowset)) {
-    $myfieldname = 'Tables_in_' . htmlspecialchars($db);
-    $table        = $row[$myfieldname];
+foreach ($tables as $table) {
     $comments = PMA_getComments($db, $table);
 
     echo '<div>' . "\n";
@@ -77,7 +76,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
      */
 
     PMA_DBI_select_db($db);
-    $result       = PMA_DBI_query('SHOW KEYS FROM ' . PMA_backquote($table) . ';');
+    $indexes      = PMA_DBI_get_table_indexes($db, $table);
     $primary      = '';
     $indexes      = array();
     $lastIndex    = '';
@@ -85,14 +84,14 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
     $indexes_data = array();
     $pk_array     = array(); // will be use to emphasis prim. keys in the table
                              // view
-    while ($row = PMA_DBI_fetch_assoc($result)) {
+    foreach ($indexes as $row) {
         // Backups the list of primary keys
         if ($row['Key_name'] == 'PRIMARY') {
             $primary   .= $row['Column_name'] . ', ';
             $pk_array[$row['Column_name']] = 1;
         }
         // Retains keys informations
-        if ($row['Key_name'] != $lastIndex){
+        if ($row['Key_name'] != $lastIndex) {
             $indexes[] = $row['Key_name'];
             $lastIndex = $row['Key_name'];
         }
@@ -112,20 +111,16 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
         }
 
     } // end while
-    if ($result) {
-        PMA_DBI_free_result($result);
-    }
-
 
     /**
      * Gets columns properties
      */
-    $result      = PMA_DBI_query('SHOW COLUMNS FROM ' . PMA_backquote($table) . ';', null, PMA_DBI_QUERY_STORE);
-    $fields_cnt  = PMA_DBI_num_rows($result);
+    $columns = PMA_DBI_get_columns($db, $table);
+    $fields_cnt  = count($columns);
 
     if (PMA_MYSQL_INT_VERSION < 50025) {
         // We need this to correctly learn if a TIMESTAMP is NOT NULL, since
-        // SHOW FULL FIELDS or INFORMATION_SCHEMA incorrectly says NULL
+        // SHOW FULL COLUMNS or INFORMATION_SCHEMA incorrectly says NULL
         // and SHOW CREATE TABLE says NOT NULL
         // http://bugs.mysql.com/20910.
 
@@ -135,19 +130,19 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
         $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
     }
 
-    // Check if we can use Relations (Mike Beck)
+    // Check if we can use Relations
     if (!empty($cfgRelation['relation'])) {
         // Find which tables are related with the current one and write it in
         // an array
         $res_rel = PMA_getForeigners($db, $table);
 
         if (count($res_rel) > 0) {
-            $have_rel = TRUE;
+            $have_rel = true;
         } else {
-            $have_rel = FALSE;
+            $have_rel = false;
         }
     } else {
-        $have_rel = FALSE;
+        $have_rel = false;
     } // end if
 
 
@@ -182,45 +177,23 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
 </tr>
     <?php
     $odd_row = true;
-    while ($row = PMA_DBI_fetch_assoc($result)) {
+    foreach ($columns as $row) {
 
         if ($row['Null'] == '') {
             $row['Null'] = 'NO';
         }
-        $type             = $row['Type'];
+        $extracted_fieldspec = PMA_extractFieldSpec($row['Type']);
         // reformat mysql query output
         // set or enum types: slashes single quotes inside options
-        if (preg_match('@^(set|enum)\((.+)\)$@i', $type, $tmp)) {
-            $tmp[2]       = substr(preg_replace('@([^,])\'\'@', '\\1\\\'', ',' . $tmp[2]), 1);
-            $type         = $tmp[1] . '(' . str_replace(',', ', ', $tmp[2]) . ')';
+        if ('set' == $extracted_fieldspec['type'] || 'enum' == $extracted_fieldspec['type']) {
             $type_nowrap  = '';
 
-            $binary       = 0;
-            $unsigned     = 0;
-            $zerofill     = 0;
         } else {
-            $binary       = stristr($row['Type'], 'binary');
-            $unsigned     = stristr($row['Type'], 'unsigned');
-            $zerofill     = stristr($row['Type'], 'zerofill');
             $type_nowrap  = ' nowrap="nowrap"';
-            $type         = preg_replace('@BINARY@i', '', $type);
-            $type         = preg_replace('@ZEROFILL@i', '', $type);
-            $type         = preg_replace('@UNSIGNED@i', '', $type);
-            if (empty($type)) {
-                $type     = ' ';
-            }
         }
-        $attribute     = ' ';
-        if ($binary) {
-            $attribute = 'BINARY';
-        }
-        if ($unsigned) {
-            $attribute = 'UNSIGNED';
-        }
-        if ($zerofill) {
-            $attribute = 'UNSIGNED ZEROFILL';
-        }
-        if (!isset($row['Default'])) {
+        $type = htmlspecialchars($extracted_fieldspec['print_type']);
+        $attribute     = $extracted_fieldspec['attribute'];
+        if (! isset($row['Default'])) {
             if ($row['Null'] != 'NO') {
                 $row['Default'] = '<i>NULL</i>';
             }
@@ -233,7 +206,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
          && ! empty($analyzed_sql[0]['create_table_fields'][$field_name]['type'])
          && $analyzed_sql[0]['create_table_fields'][$field_name]['type'] == 'TIMESTAMP'
          && $analyzed_sql[0]['create_table_fields'][$field_name]['timestamp_not_null']) {
-            // here, we have a TIMESTAMP that SHOW FULL FIELDS reports as having the
+            // here, we have a TIMESTAMP that SHOW FULL COLUMNS reports as having the
             // NULL attribute, but SHOW CREATE TABLE says the contrary. Believe
             // the latter.
             /**
@@ -285,8 +258,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
         ?>
 </tr>
         <?php
-    } // end while
-    PMA_DBI_free_result($result);
+    } // end foreach
     $count++;
     ?>
 </table>
@@ -297,22 +269,7 @@ while ($row = PMA_DBI_fetch_assoc($rowset)) {
 /**
  * Displays the footer
  */
-?>
-<script type="text/javascript">
-//<![CDATA[
-function printPage()
-{
-    document.getElementById('print').style.visibility = 'hidden';
-    // Do print the page
-    if (typeof(window.print) != 'undefined') {
-        window.print();
-    }
-    document.getElementById('print').style.visibility = '';
-}
-//]]>
-</script>
-<?php
-echo '<br /><br /><input type="button" id="print" value="' . __('Print') . '" onclick="printPage()" />';
+PMA_printButton();
 
 require './libraries/footer.inc.php';
 ?>

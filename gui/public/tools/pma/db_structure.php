@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -10,8 +10,11 @@
  */
 require_once './libraries/common.inc.php';
 
-$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.custom.js';
+$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.16.custom.js';
 $GLOBALS['js_include'][] = 'db_structure.js';
+$GLOBALS['js_include'][] = 'tbl_change.js';
+$GLOBALS['js_include'][] = 'jquery/timepicker.js';
+$GLOBALS['js_include'][] = 'jquery/jquery.sprintf.js';
 
 /**
  * Prepares the tables list if the user where not redirected to this script
@@ -20,7 +23,8 @@ $GLOBALS['js_include'][] = 'db_structure.js';
 if (empty($is_info)) {
     // Drops/deletes/etc. multiple tables if required
     if ((!empty($submit_mult) && isset($selected_tbl))
-      || isset($mult_btn)) {
+        || isset($mult_btn)
+    ) {
         $action = 'db_structure.php';
         $err_url = 'db_structure.php?'. PMA_generate_common_url($db);
 
@@ -28,21 +32,25 @@ if (empty($is_info)) {
         // db_structure.php -> libraries/mult_submits.inc.php -> sql.php
         // -> db_structure.php and if we got an error on the multi submit,
         // we must display it here and not call again mult_submits.inc.php
-        if (! isset($error) || FALSE === $error) {
-            require './libraries/mult_submits.inc.php';
+        if (! isset($error) || false === $error) {
+            include './libraries/mult_submits.inc.php';
         }
         if (empty($message)) {
             $message = PMA_Message::success();
         }
     }
-    require './libraries/db_common.inc.php';
+    include './libraries/db_common.inc.php';
     $url_query .= '&amp;goto=db_structure.php';
 
     // Gets the database structure
     $sub_part = '_structure';
-    require './libraries/db_info.inc.php';
+    include './libraries/db_info.inc.php';
 
-    require_once './libraries/replication.inc.php';
+    if (!PMA_DRIZZLE) {
+        include_once './libraries/replication.inc.php';
+    } else {
+        $server_slave_status = false;
+    }
 }
 
 require_once './libraries/bookmark.lib.php';
@@ -55,26 +63,19 @@ require_once './libraries/db_structure.lib.php';
 $titles = PMA_buildActionTitles();
 
 // 1. No tables
+
 if ($num_tables == 0) {
-	echo '<p>' . __('No tables found in database') . '</p>' . "\n";
+    echo '<p>' . __('No tables found in database') . '</p>' . "\n";
 
-	// Routines
-	require './libraries/db_routines.inc.php';
+    if (empty($db_is_information_schema)) {
+        include './libraries/display_create_table.lib.php';
+    } // end if (Create Table dialog)
 
-	// Events
-	if (PMA_MYSQL_INT_VERSION > 50100) {
-	    require './libraries/db_events.inc.php';
-	}
-
-	if (empty($db_is_information_schema)) {
-		require './libraries/display_create_table.lib.php';
-	} // end if (Create Table dialog)
-
-	/**
-	 * Displays the footer
-	 */
-	require_once './libraries/footer.inc.php';
-	exit;
+    /**
+     * Displays the footer
+     */
+    include_once './libraries/footer.inc.php';
+    exit;
 }
 
 // else
@@ -97,7 +98,10 @@ if (isset($_REQUEST['sort_order'])) {
     $_url_params['sort_order'] = $_REQUEST['sort_order'];
 }
 
-PMA_listNavigator($total_num_tables, $pos, $_url_params, 'db_structure.php', 'frame_content', $GLOBALS['cfg']['MaxTableList']);
+PMA_listNavigator(
+    $total_num_tables, $pos, $_url_params, 'db_structure.php',
+    'frame_content', $GLOBALS['cfg']['MaxTableList']
+);
 
 ?>
 <form method="post" action="db_structure.php" name="tablesForm" id="tablesForm">
@@ -111,7 +115,9 @@ $sum_size       = (double) 0;
 $overhead_size  = (double) 0;
 $overhead_check = '';
 $checked        = !empty($checkall) ? ' checked="checked"' : '';
-$num_columns    = $cfg['PropertiesNumColumns'] > 1 ? ceil($num_tables / $cfg['PropertiesNumColumns']) + 1 : 0;
+$num_columns    = $cfg['PropertiesNumColumns'] > 1
+    ? ceil($num_tables / $cfg['PropertiesNumColumns']) + 1
+    : 0;
 $row_count      = 0;
 
 
@@ -140,79 +146,88 @@ foreach ($tables as $keyname => $each_table) {
     switch ( $each_table['ENGINE']) {
         // MyISAM, ISAM or Heap table: Row count, data size and index size
         // are accurate; data size is accurate for ARCHIVE
-        case 'MyISAM' :
-        case 'ISAM' :
-        case 'HEAP' :
-        case 'MEMORY' :
-        case 'ARCHIVE' :
-        case 'Aria' :
-        case 'Maria' :
-            if ($db_is_information_schema) {
-                $each_table['Rows'] = PMA_Table::countRecords($db,
-                    $each_table['Name']);
-            }
+    case 'MyISAM' :
+    case 'ISAM' :
+    case 'HEAP' :
+    case 'MEMORY' :
+    case 'ARCHIVE' :
+    case 'Aria' :
+    case 'Maria' :
+        if ($db_is_information_schema) {
+            $each_table['Rows'] = PMA_Table::countRecords(
+                $db, $each_table['Name']
+            );
+        }
 
-            if ($is_show_stats) {
-                $tblsize                    =  doubleval($each_table['Data_length']) + doubleval($each_table['Index_length']);
-                $sum_size                   += $tblsize;
-                list($formatted_size, $unit) =  PMA_formatByteDown($tblsize, 3, ($tblsize > 0) ? 1 : 0);
-                if (isset($each_table['Data_free']) && $each_table['Data_free'] > 0) {
-                    list($formatted_overhead, $overhead_unit)     = PMA_formatByteDown($each_table['Data_free'], 3, ($each_table['Data_free'] > 0) ? 1 : 0);
-                    $overhead_size           += $each_table['Data_free'];
-                }
+        if ($is_show_stats) {
+            $tblsize                    =  doubleval($each_table['Data_length']) + doubleval($each_table['Index_length']);
+            $sum_size                   += $tblsize;
+            list($formatted_size, $unit) =  PMA_formatByteDown($tblsize, 3, ($tblsize > 0) ? 1 : 0);
+            if (isset($each_table['Data_free']) && $each_table['Data_free'] > 0) {
+                list($formatted_overhead, $overhead_unit)     = PMA_formatByteDown($each_table['Data_free'], 3, ($each_table['Data_free'] > 0) ? 1 : 0);
+                $overhead_size           += $each_table['Data_free'];
             }
-            break;
-        case 'InnoDB' :
-            // InnoDB table: Row count is not accurate but data and index
-            // sizes are.
+        }
+        break;
+    case 'InnoDB' :
+    case 'PBMS' :
+        // InnoDB table: Row count is not accurate but data and index sizes are.
+        // PBMS table in Drizzle: TABLE_ROWS is taken from table cache, so it may be unavailable
 
-            if ($each_table['TABLE_ROWS'] < $GLOBALS['cfg']['MaxExactCount']) {
-                $each_table['COUNTED'] = true;
-                $each_table['TABLE_ROWS'] = PMA_Table::countRecords($db,
-                    $each_table['TABLE_NAME'], $force_exact = true,
-                    $is_view = false);
-            } else {
-                $each_table['COUNTED'] = false;
-            }
+        if (($each_table['ENGINE'] == 'InnoDB'
+            && $each_table['TABLE_ROWS'] < $GLOBALS['cfg']['MaxExactCount'])
+            || !isset($each_table['TABLE_ROWS'])
+        ) {
+            $each_table['COUNTED'] = true;
+            $each_table['TABLE_ROWS'] = PMA_Table::countRecords(
+                $db, $each_table['TABLE_NAME'],
+                $force_exact = true, $is_view = false
+            );
+        } else {
+            $each_table['COUNTED'] = false;
+        }
 
-            if ($is_show_stats) {
-                $tblsize                    =  $each_table['Data_length'] + $each_table['Index_length'];
-                $sum_size                   += $tblsize;
-                list($formatted_size, $unit) =  PMA_formatByteDown($tblsize, 3, ($tblsize > 0) ? 1 : 0);
-            }
-            //$display_rows                   =  ' - ';
-            break;
-	    // Mysql 5.0.x (and lower) uses MRG_MyISAM and MySQL 5.1.x (and higher) uses MRG_MYISAM
-        // Both are aliases for MERGE
-        case 'MRG_MyISAM' :
-        case 'MRG_MYISAM' :
-        case 'MERGE' :
-        case 'BerkeleyDB' :
-            // Merge or BerkleyDB table: Only row count is accurate.
-            if ($is_show_stats) {
-                $formatted_size =  ' - ';
-                $unit          =  '';
-            }
-            break;
-            // for a view, the ENGINE is sometimes reported as null,
-            // or on some servers it's reported as "SYSTEM VIEW"
-        case null :
-        case 'SYSTEM VIEW' :
-            // if table is broken, Engine is reported as null, so one more test
-            if ($each_table['TABLE_TYPE'] == 'VIEW') {
-                // countRecords() takes care of $cfg['MaxExactCountViews']
-                $each_table['TABLE_ROWS'] = PMA_Table::countRecords($db,
-                    $each_table['TABLE_NAME'], $force_exact = true,
-                    $is_view = true);
-                $table_is_view = true;
-            }
-            break;
-        default :
-            // Unknown table type.
-            if ($is_show_stats) {
-                $formatted_size =  'unknown';
-                $unit          =  '';
-            }
+        // Drizzle doesn't provide data and index length, check for null
+        if ($is_show_stats && $each_table['Data_length'] !== null) {
+            $tblsize                    =  $each_table['Data_length'] + $each_table['Index_length'];
+            $sum_size                   += $tblsize;
+            list($formatted_size, $unit) =  PMA_formatByteDown($tblsize, 3, ($tblsize > 0) ? 1 : 0);
+        }
+        //$display_rows                   =  ' - ';
+        break;
+    // Mysql 5.0.x (and lower) uses MRG_MyISAM and MySQL 5.1.x (and higher) uses MRG_MYISAM
+    // Both are aliases for MERGE
+    case 'MRG_MyISAM' :
+    case 'MRG_MYISAM' :
+    case 'MERGE' :
+    case 'BerkeleyDB' :
+        // Merge or BerkleyDB table: Only row count is accurate.
+        if ($is_show_stats) {
+            $formatted_size =  ' - ';
+            $unit          =  '';
+        }
+        break;
+        // for a view, the ENGINE is sometimes reported as null,
+        // or on some servers it's reported as "SYSTEM VIEW"
+    case null :
+    case 'SYSTEM VIEW' :
+    case 'FunctionEngine' :
+        // if table is broken, Engine is reported as null, so one more test
+        if ($each_table['TABLE_TYPE'] == 'VIEW') {
+            // countRecords() takes care of $cfg['MaxExactCountViews']
+            $each_table['TABLE_ROWS'] = PMA_Table::countRecords(
+                $db, $each_table['TABLE_NAME'],
+                $force_exact = true, $is_view = true
+            );
+            $table_is_view = true;
+        }
+        break;
+    default :
+        // Unknown table type.
+        if ($is_show_stats) {
+            $formatted_size =  __('unknown');
+            $unit          =  '';
+        }
     } // end switch
 
     if (! PMA_Table::isMerge($db, $each_table['TABLE_NAME'])) {
@@ -230,8 +245,8 @@ foreach ($tables as $keyname => $each_table) {
     if ($is_show_stats) {
         if (isset($formatted_overhead)) {
             $overhead = '<a href="tbl_structure.php?'
-                . $tbl_url_query . '#showusage">' . $formatted_overhead
-                . ' ' . $overhead_unit . '</a>' . "\n";
+                . $tbl_url_query . '#showusage"><span>' . $formatted_overhead
+                . '</span> <span class="unit">' . $overhead_unit . '</span></a>' . "\n";
             unset($formatted_overhead);
             $overhead_check .=
                 "document.getElementById('checkbox_tbl_" . ($i + 1) . "').checked = true;";
@@ -251,7 +266,8 @@ foreach ($tables as $keyname => $each_table) {
 
     $row_count++;
     if ($table_is_view) {
-        $hidden_fields[] = '<input type="hidden" name="views[]" value="' .  htmlspecialchars($each_table['TABLE_NAME']) . '" />';
+        $hidden_fields[] = '<input type="hidden" name="views[]" value="'
+            .  htmlspecialchars($each_table['TABLE_NAME']) . '" />';
     }
 
     /*
@@ -310,20 +326,29 @@ foreach ($tables as $keyname => $each_table) {
             . ' ' . PMA_backquote($each_table['TABLE_NAME']);
         $drop_message = sprintf(
             $table_is_view ? __('View %s has been dropped') : __('Table %s has been dropped'),
-            str_replace(' ', '&nbsp;', htmlspecialchars($each_table['TABLE_NAME'])));
+            str_replace(' ', '&nbsp;', htmlspecialchars($each_table['TABLE_NAME']))
+        );
     }
 
     $tracking_icon = '';
     if (PMA_Tracker::isActive()) {
         if (PMA_Tracker::isTracked($GLOBALS["db"], $truename)) {
-            $tracking_icon = '<a href="tbl_tracking.php?' . $url_query.'&amp;table=' . $truename . '"><img class="icon" width="14" height="14" src="' . $pmaThemeImage . 'eye.png" alt="' . __('Tracking is active.') . '" title="' . __('Tracking is active.') . '" /></a>';
+            $tracking_icon = '<a href="tbl_tracking.php?' . $url_query
+                . '&amp;table=' . $truename . '">'
+                . PMA_getImage('eye.png', __('Tracking is active.'))
+                . '</a>';
         } elseif (PMA_Tracker::getVersion($GLOBALS["db"], $truename) > 0) {
-            $tracking_icon = '<a href="tbl_tracking.php?' . $url_query . '&amp;table=' . $truename . '"><img class="icon" width="14" height="14" src="' . $pmaThemeImage . 'eye_grey.png" alt="' . __('Tracking is not active.') . '" title="' . __('Tracking is not active.') . '" /></a>';
+            $tracking_icon = '<a href="tbl_tracking.php?' . $url_query
+                . '&amp;table=' . $truename . '">'
+                . PMA_getImage('eye.png', __('Tracking is not active.'))
+                . '</a>';
         }
     }
 
-    if ($num_columns > 0 && $num_tables > $num_columns
-      && (($row_count % $num_columns) == 0)) {
+    if ($num_columns > 0
+        && $num_tables > $num_columns
+        && ($row_count % $num_columns) == 0
+    ) {
         $row_count = 1;
         $odd_row = true;
         ?>
@@ -348,17 +373,23 @@ foreach ($tables as $keyname => $each_table) {
         }
         foreach ($server_slave_Wild_Do_Table as $db_table) {
             $table_part = PMA_extract_db_or_table($db_table, 'table');
-            if (($db == PMA_extract_db_or_table($db_table, 'db')) && (preg_match("@^" . substr($table_part, 0, strlen($table_part) - 1) . "@", $truename))) {
+            if (($db == PMA_extract_db_or_table($db_table, 'db'))
+                && (preg_match("@^" . substr($table_part, 0, strlen($table_part) - 1) . "@", $truename))
+            ) {
                 $do = true;
             }
         }
         ////////////////////////////////////////////////////////////////////
-        if ((strlen(array_search($truename, $server_slave_Ignore_Table)) > 0)  || (strlen(array_search($db, $server_slave_Ignore_DB)) > 0)) {
+        if ((strlen(array_search($truename, $server_slave_Ignore_Table)) > 0)
+            || (strlen(array_search($db, $server_slave_Ignore_DB)) > 0)
+        ) {
             $ignored = true;
         }
         foreach ($server_slave_Wild_Ignore_Table as $db_table) {
             $table_part = PMA_extract_db_or_table($db_table, 'table');
-            if (($db == PMA_extract_db_or_table($db_table)) && (preg_match("@^" . substr($table_part, 0, strlen($table_part) - 1) . "@", $truename))) {
+            if (($db == PMA_extract_db_or_table($db_table))
+                && (preg_match("@^" . substr($table_part, 0, strlen($table_part) - 1) . "@", $truename))
+            ) {
                 $ignored = true;
             }
         }
@@ -373,15 +404,21 @@ foreach ($tables as $keyname => $each_table) {
     <th><?php echo $browse_table_label; ?>
         <?php echo (! empty($tracking_icon) ? $tracking_icon : ''); ?>
     </th>
-   <?php if ($server_slave_status) { ?><td align="center"><?php echo $ignored ? ' <img class="icon" src="' . $pmaThemeImage . 's_cancel.png" width="16" height="16"  alt="NOT REPLICATED" />' : ''. $do ? ' <img class="icon" src="' . $pmaThemeImage . 's_success.png" width="16" height="16"  alt="REPLICATED" />' : ''; ?></td><?php } ?>
+   <?php if ($server_slave_status) { ?><td align="center"><?php
+        echo $ignored
+            ? PMA_getImage('s_cancel.png', 'NOT REPLICATED')
+            : ''.
+        $do
+            ? PMA_getImage('s_success.png', 'REPLICATED')
+            : ''; ?></td><?php } ?>
     <td align="center"><?php echo $browse_table; ?></td>
     <td align="center">
         <a href="tbl_structure.php?<?php echo $tbl_url_query; ?>">
             <?php echo $titles['Structure']; ?></a></td>
     <td align="center"><?php echo $search_table; ?></td>
     <?php if (! $db_is_information_schema) { ?>
-    <td align="center">
-        <a href="tbl_change.php?<?php echo $tbl_url_query; ?>">
+    <td align="center" class="insert_table">
+        <a <?php echo ($GLOBALS['cfg']['AjaxEnable'] ? 'class="ajax"' : ''); ?> href="tbl_change.php?<?php echo $tbl_url_query; ?>">
             <?php echo $titles['Insert']; ?></a></td>
     <td align="center"><?php echo $empty_table; ?></td>
     <td align="center">
@@ -398,19 +435,30 @@ foreach ($tables as $keyname => $each_table) {
     //  so ensure that we'll display "in use" below for a table
     //  that needs to be repaired
     if (isset($each_table['TABLE_ROWS']) && ($each_table['ENGINE'] != null || $table_is_view)) {
+        $row_count_pre = '';
+        $show_superscript = '';
         if ($table_is_view) {
-            if ($each_table['TABLE_ROWS'] >= $GLOBALS['cfg']['MaxExactCountViews']){
+            // Drizzle views use FunctionEngine, and the only place where they are available are I_S and D_D
+            // schemas, where we do exact counting
+            if ($each_table['TABLE_ROWS'] >= $GLOBALS['cfg']['MaxExactCountViews']
+                && $each_table['ENGINE'] != 'FunctionEngine'
+            ) {
                 $row_count_pre = '~';
                 $sum_row_count_pre = '~';
-                $show_superscript = PMA_showHint(PMA_sanitize(sprintf(__('This view has at least this number of rows. Please refer to %sdocumentation%s.'), '[a@./Documentation.html#cfg_MaxExactCountViews@_blank]', '[/a]')));
+                $show_superscript = PMA_showHint(
+                    PMA_sanitize(
+                        sprintf(
+                            __('This view has at least this number of rows. Please refer to %sdocumentation%s.'),
+                            '[a@./Documentation.html#cfg_MaxExactCountViews@_blank]',
+                            '[/a]'
+                        )
+                    )
+                );
             }
-        } elseif($each_table['ENGINE'] == 'InnoDB' && (! $each_table['COUNTED'])) {
+        } elseif ($each_table['ENGINE'] == 'InnoDB' && (! $each_table['COUNTED'])) {
             // InnoDB table: we did not get an accurate row count
             $row_count_pre = '~';
             $sum_row_count_pre = '~';
-            $show_superscript = '';
-        } else {
-            $row_count_pre = '';
             $show_superscript = '';
         }
     ?>
@@ -425,8 +473,8 @@ foreach ($tables as $keyname => $each_table) {
         <?php if ($is_show_stats) { ?>
     <td class="value tbl_size"><a
         href="tbl_structure.php?<?php echo $tbl_url_query; ?>#showusage"
-        ><?php echo $formatted_size . ' ' . $unit; ?></a></td>
-    <td class="value"><?php echo $overhead; ?></td>
+        ><?php echo '<span>' . $formatted_size . '</span> <span class="unit">' . $unit . '</span>'; ?></a></td>
+    <td class="value tbl_overhead"><?php echo $overhead; ?></td>
         <?php } // end if ?>
     <?php } elseif ($table_is_view) { ?>
     <td class="value">-</td>
@@ -448,21 +496,24 @@ foreach ($tables as $keyname => $each_table) {
 // Show Summary
 if ($is_show_stats) {
     list($sum_formatted, $unit) = PMA_formatByteDown($sum_size, 3, 1);
-    list($overhead_formatted, $overhead_unit) =
-        PMA_formatByteDown($overhead_size, 3, 1);
+    list($overhead_formatted, $overhead_unit)
+        = PMA_formatByteDown($overhead_size, 3, 1);
 }
 ?>
 </tbody>
 <tbody id="tbl_summary_row">
 <tr><th></th>
-    <th align="center" nowrap="nowrap">
+    <th align="center" nowrap="nowrap" class="tbl_num">
         <?php
             // for blobstreaming - if the number of tables is 0, set tableReductionCount to 0
             // (we don't want negative numbers here)
-            if ($num_tables == 0)
+            if ($num_tables == 0) {
                 $tableReductionCount = 0;
-
-            echo sprintf(_ngettext('%s table', '%s tables', $num_tables - $tableReductionCount), PMA_formatNumber($num_tables - $tableReductionCount, 0));
+            }
+            echo sprintf(
+                _ngettext('%s table', '%s tables', $num_tables - $tableReductionCount),
+                PMA_formatNumber($num_tables - $tableReductionCount, 0)
+            );
         ?>
     </th>
     <?php
@@ -475,10 +526,11 @@ if ($is_show_stats) {
     <th class="value tbl_rows"><?php echo $sum_row_count_pre . PMA_formatNumber($sum_entries, 0); ?></th>
 <?php
 if (!($cfg['PropertiesNumColumns'] > 1)) {
-    $default_engine = PMA_DBI_get_default_engine();
+    $default_engine = PMA_DBI_fetch_value('SHOW VARIABLES LIKE \'storage_engine\';', 0, 1);
     echo '    <th align="center">' . "\n"
        . '        <dfn title="'
-       . sprintf(__('%s is the default storage engine on this MySQL server.'), $default_engine) . '">' .$default_engine . '</dfn></th>' . "\n";
+       . sprintf(__('%s is the default storage engine on this MySQL server.'), $default_engine)
+       . '">' .$default_engine . '</dfn></th>' . "\n";
     // we got a case where $db_collation was empty
     echo '    <th align="center">' . "\n";
     if (! empty($db_collation)) {
@@ -492,7 +544,7 @@ if (!($cfg['PropertiesNumColumns'] > 1)) {
 if ($is_show_stats) {
     ?>
     <th class="value tbl_size"><?php echo $sum_formatted . ' ' . $unit; ?></th>
-    <th class="value"><?php echo $overhead_formatted . ' ' . $overhead_unit; ?></th>
+    <th class="value tbl_overhead"><?php echo $overhead_formatted . ' ' . $overhead_unit; ?></th>
     <?php
 }
 ?>
@@ -521,7 +573,7 @@ $checkall_url = 'db_structure.php?' . PMA_generate_common_url($db);
     <?php echo __('Check tables having overhead'); ?></a>
 <?php } ?>
 
-<select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;">
+<select name="submit_mult" class="autosubmit" style="margin: 0 3em 0 3em;">
 <?php
 echo '    <option value="' . __('With selected:') . '" selected="selected">'
      . __('With selected:') . '</option>' . "\n";
@@ -530,19 +582,27 @@ echo '    <option value="export" >'
 echo '    <option value="print" >'
     . __('Print view') . '</option>' . "\n";
 
-if (!$db_is_information_schema) {
+if (!$db_is_information_schema && !$cfg['DisableMultiTableMaintenance']) {
     echo '    <option value="empty_tbl" >'
          . __('Empty') . '</option>' . "\n";
     echo '    <option value="drop_tbl" >'
          . __('Drop') . '</option>' . "\n";
     echo '    <option value="check_tbl" >'
          . __('Check table') . '</option>' . "\n";
-    echo '    <option value="optimize_tbl" >'
-         . __('Optimize table') . '</option>' . "\n";
-    echo '    <option value="repair_tbl" >'
-         . __('Repair table') . '</option>' . "\n";
+    if (!PMA_DRIZZLE) {
+        echo '    <option value="optimize_tbl" >'
+             . __('Optimize table') . '</option>' . "\n";
+        echo '    <option value="repair_tbl" >'
+             . __('Repair table') . '</option>' . "\n";
+    }
     echo '    <option value="analyze_tbl" >'
          . __('Analyze table') . '</option>' . "\n";
+    echo '    <option value="add_prefix_tbl" >'
+         . __('Add prefix to table') . '</option>' . "\n";
+    echo '    <option value="replace_prefix_tbl" >'
+         . __('Replace table prefix') . '</option>' . "\n";
+    echo '    <option value="copy_tbl_change_prefix" >'
+         . __('Copy table with prefix') . '</option>' . "\n";
 }
 ?>
 </select>
@@ -559,19 +619,15 @@ if (!$db_is_information_schema) {
 </form>
 <?php
 // display again the table list navigator
-PMA_listNavigator($total_num_tables, $pos, $_url_params, 'db_structure.php', 'frame_content', $GLOBALS['cfg']['MaxTableList']);
+PMA_listNavigator(
+    $total_num_tables, $pos, $_url_params, 'db_structure.php',
+    'frame_content', $GLOBALS['cfg']['MaxTableList']
+);
 ?>
 </div>
 <hr />
 
 <?php
-// Routines
-require './libraries/db_routines.inc.php';
-
-// Events
-if (PMA_MYSQL_INT_VERSION > 50100) {
-    require './libraries/db_events.inc.php';
-}
 
 /**
  * Work on the database
@@ -580,22 +636,14 @@ if (PMA_MYSQL_INT_VERSION > 50100) {
 /* Printable view of a table */
 echo '<p>';
 echo '<a href="db_printview.php?' . $url_query . '">';
-if ($cfg['PropertiesIconic']) {
-     echo '<img class="icon" src="' . $pmaThemeImage
-        .'b_print.png" width="16" height="16" alt="" />';
-}
-echo __('Print view') . '</a> ';
+echo PMA_getIcon('b_print.png', __('Print view'), true) . '</a>';
 
 echo '<a href="./db_datadict.php?' . $url_query . '">';
-if ($cfg['PropertiesIconic']) {
-    echo '<img class="icon" src="' . $pmaThemeImage
-        .'b_tblanalyse.png" width="16" height="16" alt="" />';
-}
-echo __('Data Dictionary') . '</a>';
+echo PMA_getIcon('b_tblanalyse.png', __('Data Dictionary'), true) . '</a>';
 echo '</p>';
 
 if (empty($db_is_information_schema)) {
-    require './libraries/display_create_table.lib.php';
+    include './libraries/display_create_table.lib.php';
 } // end if (Create Table dialog)
 
 /**

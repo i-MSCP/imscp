@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -52,8 +52,8 @@ if ($cfg['SkipLockedTables'] == true) {
             $result      = PMA_DBI_query('SHOW TABLES FROM ' . PMA_backquote($db) . ';', null, PMA_DBI_QUERY_STORE);
             if ($result != false && PMA_DBI_num_rows($result) > 0) {
                 while ($tmp = PMA_DBI_fetch_row($result)) {
-                    if (!isset($sot_cache[$tmp[0]])) {
-                        $sts_result  = PMA_DBI_query('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . addslashes($tmp[0]) . '\';');
+                    if (! isset($sot_cache[$tmp[0]])) {
+                        $sts_result  = PMA_DBI_query('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . PMA_sqlAddSlashes($tmp[0], true) . '\';');
                         $sts_tmp     = PMA_DBI_fetch_assoc($sts_result);
                         $tables[]    = $sts_tmp;
                     } else { // table in use
@@ -92,9 +92,8 @@ echo '<br />';
 // 1. No table
 if ($num_tables == 0) {
     echo __('No tables found in database.');
-}
-// 2. Shows table informations on mysql >= 3.23.03
-else {
+} else {
+// 2. Shows table information
     ?>
 <table>
 <thead>
@@ -245,24 +244,9 @@ else {
 /**
  * Displays the footer
  */
-?>
+PMA_printButton();
 
-<script type="text/javascript">
-//<![CDATA[
-function printPage()
-{
-    // Do print the page
-    if (typeof(window.print) != 'undefined') {
-        window.print();
-    }
-}
-//]]>
-</script>
-<br /><br />
+echo "<div id='PMA_disable_floating_menubar'></div>\n";
 
-<input type="button" class="print_ignore"
-    id="print" value="<?php echo __('Print'); ?>" onclick="printPage()" />
-
-<?php
 require './libraries/footer.inc.php';
 ?>

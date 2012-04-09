@@ -1,7 +1,7 @@
 <?php
 /**
  * Enter description here...
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  *
  */
 
@@ -15,7 +15,7 @@ require_once './libraries/List_Database.class.php';
  *
  *
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 class PMA
 {
@@ -44,6 +44,9 @@ class PMA
      * magic access to protected/inaccessible members/properties
      *
      * @see http://php.net/language.oop5.overloading
+     *
+     * @param string $param
+     * @return mixed
      */
     public function __get($param)
     {
@@ -66,6 +69,9 @@ class PMA
      * magic access to protected/inaccessible members/properties
      *
      * @see http://php.net/language.oop5.overloading
+     *
+     * @param string $param
+     * @param mixed  $value
      */
     public function __set($param, $value)
     {
@@ -82,10 +88,6 @@ class PMA
     /**
      * Accessor to PMA::$databases
      *
-     * @uses    PMA::$databases
-     * @uses    PMA::$userlink
-     * @uses    PMA::$controllink
-     * @uses    PMA_List_Database
      * @return PMA_List_Databases
      */
     public function getDatabaseList()

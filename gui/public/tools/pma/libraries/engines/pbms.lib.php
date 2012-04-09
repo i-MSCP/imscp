@@ -1,12 +1,12 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @package phpMyAdmin-Engines
+ * @package PhpMyAdmin-Engines
  */
 
 /**
  * the PBMS daemon
- * @package phpMyAdmin-Engines
+ * @package PhpMyAdmin-Engines
  */
 class PMA_StorageEngine_pbms extends PMA_StorageEngine
 {
@@ -23,7 +23,7 @@ class PMA_StorageEngine_pbms extends PMA_StorageEngine
         $this->support = PMA_ENGINE_SUPPORT_YES;
     }
 
-   function getVariables()
+    function getVariables()
     {
         return array(
             'pbms_garbage_threshold' => array(

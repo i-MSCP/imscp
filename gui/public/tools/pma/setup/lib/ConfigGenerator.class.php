@@ -3,13 +3,13 @@
 /**
  * Config file generator
  *
- * @package phpMyAdmin-setup
+ * @package PhpMyAdmin-setup
  */
 
 /**
  * Config file generation class
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 class ConfigGenerator
 {
@@ -113,7 +113,7 @@ class ConfigGenerator
     private static function _isZeroBasedArray(array $array)
     {
         for ($i = 0; $i < count($array); $i++) {
-            if (!isset($array[$i])) {
+            if (! isset($array[$i])) {
                 return false;
             }
         }

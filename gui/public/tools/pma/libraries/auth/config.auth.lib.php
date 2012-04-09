@@ -3,7 +3,7 @@
 /**
  * Set of functions used to run config authentication (ie no authentication).
  *
- * @package phpMyAdmin-Auth-Config
+ * @package PhpMyAdmin-Auth-Config
  */
 
 
@@ -16,7 +16,7 @@
  */
 function PMA_auth()
 {
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth()' function
 
 
@@ -29,7 +29,7 @@ function PMA_auth()
  */
 function PMA_auth_check()
 {
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth_check()' function
 
 
@@ -42,7 +42,7 @@ function PMA_auth_check()
  */
 function PMA_auth_set_user()
 {
-    return TRUE;
+    return true;
 } // end of the 'PMA_auth_set_user()' function
 
 
@@ -66,22 +66,16 @@ function PMA_auth_set_user()
  */
 function PMA_auth_fails()
 {
-    global $php_errormsg, $cfg;
-
     $conn_error = PMA_DBI_getError();
     if (!$conn_error) {
-        if (isset($php_errormsg)) {
-            $conn_error = $php_errormsg;
-        } else {
-            $conn_error = __('Cannot connect: invalid settings.');
-        }
+        $conn_error = __('Cannot connect: invalid settings.');
     }
 
     // Defines the charset to be used
-    header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
+    header('Content-Type: text/html; charset=utf-8');
     /* HTML header */
     $page_title = __('Access denied');
-    require './libraries/header_meta_style.inc.php';
+    include './libraries/header_meta_style.inc.php';
     ?>
 </head>
 
@@ -96,7 +90,7 @@ function PMA_auth_fails()
         <td>
 
     <?php
-    $GLOBALS['is_header_sent'] = TRUE;
+    $GLOBALS['is_header_sent'] = true;
 
     if (isset($GLOBALS['allowDeny_forbidden']) && $GLOBALS['allowDeny_forbidden']) {
         trigger_error(__('Access denied'), E_USER_NOTICE);
@@ -123,16 +117,16 @@ function PMA_auth_fails()
 <?php
     if (count($GLOBALS['cfg']['Servers']) > 1) {
         // offer a chance to login to other servers if the current one failed
-        require_once './libraries/select_server.lib.php';
+        include_once './libraries/select_server.lib.php';
         echo '<tr>' . "\n";
         echo ' <td>' . "\n";
-        PMA_select_server(TRUE, TRUE);
+        PMA_select_server(true, true);
         echo ' </td>' . "\n";
         echo '</tr>' . "\n";
     }
     echo '</table>' . "\n";
-    require './libraries/footer.inc.php';
-    return TRUE;
+    include './libraries/footer.inc.php';
+    return true;
 } // end of the 'PMA_auth_fails()' function
 
 ?>

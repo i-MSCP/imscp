@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -25,13 +25,13 @@ require_once './libraries/server_synchronize.lib.php';
  * Checks if the user is allowed to do what he tries to...
  */
 if (! $is_superuser) {
-    require './libraries/server_links.inc.php';
+    include './libraries/server_links.inc.php';
     echo '<h2>' . "\n"
         . PMA_getIcon('s_replication.png')
         . __('Replication') . "\n"
         . '</h2>' . "\n";
     PMA_Message::error(__('No Privileges'))->display();
-    require './libraries/footer.inc.php';
+    include './libraries/footer.inc.php';
 }
 
 /**
@@ -40,10 +40,10 @@ if (! $is_superuser) {
 if (isset($GLOBALS['sr_take_action'])) {
     $refresh = false;
     if (isset($GLOBALS['slave_changemaster'])) {
-        $_SESSION['replication']['m_username'] = $sr['username'] = PMA_sqlAddslashes($GLOBALS['username']);
-        $_SESSION['replication']['m_password'] = $sr['pma_pw']   = PMA_sqlAddslashes($GLOBALS['pma_pw']);
-        $_SESSION['replication']['m_hostname'] = $sr['hostname'] = PMA_sqlAddslashes($GLOBALS['hostname']);
-        $_SESSION['replication']['m_port']     = $sr['port']     = PMA_sqlAddslashes($GLOBALS['port']);
+        $_SESSION['replication']['m_username'] = $sr['username'] = PMA_sqlAddSlashes($GLOBALS['username']);
+        $_SESSION['replication']['m_password'] = $sr['pma_pw']   = PMA_sqlAddSlashes($GLOBALS['pma_pw']);
+        $_SESSION['replication']['m_hostname'] = $sr['hostname'] = PMA_sqlAddSlashes($GLOBALS['hostname']);
+        $_SESSION['replication']['m_port']     = $sr['port']     = PMA_sqlAddSlashes($GLOBALS['port']);
         $_SESSION['replication']['m_correct']  = '';
         $_SESSION['replication']['sr_action_status'] = 'error';
         $_SESSION['replication']['sr_action_info'] = __('Unknown error');
@@ -69,8 +69,7 @@ if (isset($GLOBALS['sr_take_action'])) {
                     $_SESSION['replication']['sr_action_info'] = __('Unable to change master');
                 } else {
                     $_SESSION['replication']['sr_action_status'] = 'success';
-                    $_SESSION['replication']['sr_action_info'] = sprintf(__('Master server changed succesfully to %s'), $sr['hostname']);
-                    $_SESSION['replication']['sr_action_info'] = sprintf(__('Master server changed succesfully to %s'), htmlspecialchars($sr['hostname']));
+                    $_SESSION['replication']['sr_action_info'] = sprintf(__('Master server changed successfully to %s'), htmlspecialchars($sr['hostname']));
                 }
             }
         }
@@ -114,7 +113,7 @@ if (isset($GLOBALS['sr_take_action'])) {
 
         $tmp_alldbs = PMA_DBI_query('SHOW DATABASES;', $src_link);
         while ($tmp_row = PMA_DBI_fetch_row($tmp_alldbs)) {
-            if ($tmp_row[0] == 'information_schema') {
+            if (PMA_is_system_schema($tmp_row[0])) {
                 continue;
             }
             if (count($do_db) == 0) {
@@ -159,7 +158,7 @@ require './libraries/server_links.inc.php';
 
 echo '<div id="replication">';
 echo ' <h2>';
-echo '   <img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 's_replication.png"  width="16" height="16" alt="" />';
+echo '   ' . PMA_getImage('s_replication.png');
 echo     __('Replication');
 echo ' </h2>';
 
@@ -235,7 +234,7 @@ if (isset($GLOBALS['mr_configure'])) {
     echo ' </form>';
     echo '</fieldset>';
 
-    require './libraries/footer.inc.php';
+    include './libraries/footer.inc.php';
     exit;
 }
 

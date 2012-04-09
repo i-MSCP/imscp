@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -17,7 +17,7 @@ require './libraries/tbl_common.php';
  */
 $print_view = true;
 if (! isset($selected_tbl)) {
-    require_once './libraries/header.inc.php';
+    include_once './libraries/header.inc.php';
 }
 
 // Check parameters
@@ -51,7 +51,7 @@ PMA_DBI_select_db($db);
 
 
 /**
- * Multi-tables printview 
+ * Multi-tables printview
  */
 if (isset($selected_tbl) && is_array($selected_tbl)) {
     $the_tables   = $selected_tbl;
@@ -62,14 +62,14 @@ $multi_tables     = (count($the_tables) > 1);
 
 if ($multi_tables) {
     if (empty($GLOBALS['is_header_sent'])) {
-        require_once './libraries/header.inc.php';
+        include_once './libraries/header.inc.php';
     }
     $tbl_list     = '';
     foreach ($the_tables as $key => $table) {
         $tbl_list .= (empty($tbl_list) ? '' : ', ')
                   . PMA_backquote($table);
     }
-    echo '<strong>'.  __('Show tables') . ': ' . htmlspecialchars($tbl_list) . '</strong>' . "\n";
+    echo '<strong>'.  __('Showing tables') . ': ' . htmlspecialchars($tbl_list) . '</strong>' . "\n";
     echo '<hr />' . "\n";
 } // end if
 
@@ -98,23 +98,20 @@ foreach ($the_tables as $key => $table) {
     /**
      * Gets fields properties
      */
-    $result      = PMA_DBI_query(
-        'SHOW FIELDS FROM ' . PMA_backquote($table) . ';', null,
-        PMA_DBI_QUERY_STORE);
-    $fields_cnt  = PMA_DBI_num_rows($result);
+    $columns = PMA_DBI_get_columns($db, $table);
 
 
-// We need this to correctly learn if a TIMESTAMP is NOT NULL, since
-// SHOW FULL FIELDS or INFORMATION_SCHEMA incorrectly says NULL
-// and SHOW CREATE TABLE says NOT NULL (tested
-// in MySQL 4.0.25 and 5.0.21, http://bugs.mysql.com/20910).
+    // We need this to correctly learn if a TIMESTAMP is NOT NULL, since
+    // SHOW FULL FIELDS or INFORMATION_SCHEMA incorrectly says NULL
+    // and SHOW CREATE TABLE says NOT NULL (tested
+    // in MySQL 4.0.25 and 5.0.21, http://bugs.mysql.com/20910).
 
     $show_create_table = PMA_DBI_fetch_value(
         'SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table),
         0, 1);
     $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
 
-    // Check if we can use Relations (Mike Beck)
+    // Check if we can use Relations
     // Find which tables are related with the current one and write it in
     // an array
     $res_rel  = PMA_getForeigners($db, $table);
@@ -138,10 +135,8 @@ foreach ($the_tables as $key => $table) {
 <tr>
     <th><?php echo __('Column'); ?></th>
     <th><?php echo __('Type'); ?></th>
-    <!--<th><?php echo __('Attributes'); ?></th>-->
     <th><?php echo __('Null'); ?></th>
     <th><?php echo __('Default'); ?></th>
-    <!--<th><?php echo __('Extra'); ?></th>-->
     <?php
     if ($have_rel) {
         echo '<th>' . __('Links to') . '</th>' . "\n";
@@ -155,41 +150,12 @@ foreach ($the_tables as $key => $table) {
 </thead>
 <tbody>
     <?php
-    while ($row = PMA_DBI_fetch_assoc($result)) {
-        $type             = $row['Type'];
-        // reformat mysql query output
-        // set or enum types: slashes single quotes inside options
-        if (preg_match('@^(set|enum)\((.+)\)$@i', $type, $tmp)) {
-            $tmp[2]       = substr(preg_replace('@([^,])\'\'@', '\\1\\\'',
-                                    ',' . $tmp[2]), 1);
-            $type         = $tmp[1] . '(' . str_replace(',', ', ', $tmp[2]) . ')';
+    foreach ($columns as $row) {
+        $extracted_fieldspec = PMA_extractFieldSpec($row['Type']);
+        $type             = $extracted_fieldspec['print_type'];
+        $attribute     = $extracted_fieldspec['attribute'];
 
-            $binary       = 0;
-            $unsigned     = 0;
-            $zerofill     = 0;
-        } else {
-            $type         = preg_replace('@BINARY@i', '', $type);
-            $type         = preg_replace('@ZEROFILL@i', '', $type);
-            $type         = preg_replace('@UNSIGNED@i', '', $type);
-            if (empty($type)) {
-                $type     = '&nbsp;';
-            }
-
-            $binary       = stristr($row['Type'], 'binary');
-            $unsigned     = stristr($row['Type'], 'unsigned');
-            $zerofill     = stristr($row['Type'], 'zerofill');
-        }
-        $attribute     = '&nbsp;';
-        if ($binary) {
-            $attribute = 'BINARY';
-        }
-        if ($unsigned) {
-            $attribute = 'UNSIGNED';
-        }
-        if ($zerofill) {
-            $attribute = 'UNSIGNED ZEROFILL';
-        }
-        if (!isset($row['Default'])) {
+        if (! isset($row['Default'])) {
             if ($row['Null'] != ''  && $row['Null'] != 'NO') {
                 $row['Default'] = '<i>NULL</i>';
             }
@@ -198,7 +164,7 @@ foreach ($the_tables as $key => $table) {
         }
         $field_name = htmlspecialchars($row['Field']);
 
-        // here, we have a TIMESTAMP that SHOW FULL FIELDS reports as having the
+        // here, we have a TIMESTAMP that SHOW FULL COLUMNS reports as having the
         // NULL attribute, but SHOW CREATE TABLE says the contrary. Believe
         // the latter.
         /**
@@ -210,55 +176,51 @@ foreach ($the_tables as $key => $table) {
         if (!empty($analyzed_sql[0]['create_table_fields'][$field_name]['type']) && $analyzed_sql[0]['create_table_fields'][$field_name]['type'] == 'TIMESTAMP' && $analyzed_sql[0]['create_table_fields'][$field_name]['timestamp_not_null']) {
             $row['Null'] = '';
         }
-        ?>
 
-<tr><td>
-    <?php
-    if (isset($pk_array[$row['Field']])) {
-        echo '    <u>' . $field_name . '</u>' . "\n";
-    } else {
-        echo '    ' . $field_name . "\n";
-    }
+        echo '<tr><td>';
+
+        if (isset($pk_array[$row['Field']])) {
+            echo '    <u>' . $field_name . '</u>' . "\n";
+        } else {
+            echo '    ' . $field_name . "\n";
+        }
     ?>
     </td>
     <td><?php echo $type; ?><bdo dir="ltr"></bdo></td>
-    <!--<td><?php echo $attribute; ?></td>-->
     <td><?php echo (($row['Null'] == '' || $row['Null'] == 'NO') ? __('No') : __('Yes')); ?>&nbsp;</td>
     <td><?php if (isset($row['Default'])) { echo $row['Default']; } ?>&nbsp;</td>
-    <!--<td><?php echo $row['Extra']; ?>&nbsp;</td>-->
     <?php
-    if ($have_rel) {
+        if ($have_rel) {
+            echo '    <td>';
+            if (isset($res_rel[$field_name])) {
+                echo htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' -> ' . $res_rel[$field_name]['foreign_field']);
+            }
+            echo '&nbsp;</td>' . "\n";
+        }
         echo '    <td>';
-        if (isset($res_rel[$field_name])) {
-            echo htmlspecialchars($res_rel[$field_name]['foreign_table'] . ' -> ' . $res_rel[$field_name]['foreign_field']);
+        $comments = PMA_getComments($db, $table);
+        if (isset($comments[$field_name])) {
+            echo htmlspecialchars($comments[$field_name]);
         }
         echo '&nbsp;</td>' . "\n";
-    }
-    echo '    <td>';
-    $comments = PMA_getComments($db, $table);
-    if (isset($comments[$field_name])) {
-        echo htmlspecialchars($comments[$field_name]);
-    }
-    echo '&nbsp;</td>' . "\n";
-    if ($cfgRelation['mimework']) {
-        $mime_map = PMA_getMIME($db, $table, true);
+        if ($cfgRelation['mimework']) {
+            $mime_map = PMA_getMIME($db, $table, true);
 
-        echo '    <td>';
-        if (isset($mime_map[$field_name])) {
-            echo htmlspecialchars(str_replace('_', '/', $mime_map[$field_name]['mimetype']));
+            echo '    <td>';
+            if (isset($mime_map[$field_name])) {
+                echo htmlspecialchars(str_replace('_', '/', $mime_map[$field_name]['mimetype']));
+            }
+            echo '&nbsp;</td>' . "\n";
         }
-        echo '&nbsp;</td>' . "\n";
-    }
     ?>
 </tr>
         <?php
-    } // end while
-    PMA_DBI_free_result($result);
+    } // end foreach
     ?>
 </tbody>
 </table>
     <?php
-    if (! $tbl_is_view && $db != 'information_schema') {
+    if (! $tbl_is_view && !PMA_is_system_schema($db)) {
         /**
          * Displays indexes
          */
@@ -276,7 +238,7 @@ foreach ($the_tables as $key => $table) {
             if ($nonisam == false) {
                 // Gets some sizes
 
-		$mergetable = PMA_Table::isMerge($db, $table);
+                $mergetable = PMA_Table::isMerge($db, $table);
 
                 list($data_size, $data_unit)         = PMA_formatByteDown($showtable['Data_length']);
                 if ($mergetable == false) {
@@ -370,7 +332,7 @@ foreach ($the_tables as $key => $table) {
                 if (isset($showtable['Row_format'])) {
                     ?>
             <tr>
-                <td><?php echo ucfirst(__('Format')); ?></td>
+                <td><?php echo __('Format'); ?></td>
                 <td align="<?php echo $cell_align_left; ?>">
                     <?php
                     if ($showtable['Row_format'] == 'Fixed') {
@@ -388,7 +350,7 @@ foreach ($the_tables as $key => $table) {
                 if (isset($showtable['Rows'])) {
                     ?>
             <tr>
-                <td><?php echo ucfirst(__('Rows')); ?></td>
+                <td><?php echo __('Rows'); ?></td>
                 <td align="right">
                     <?php echo PMA_formatNumber($showtable['Rows'], 0) . "\n"; ?>
                 </td>
@@ -398,7 +360,7 @@ foreach ($the_tables as $key => $table) {
                 if (isset($showtable['Avg_row_length']) && $showtable['Avg_row_length'] > 0) {
                     ?>
             <tr>
-                <td><?php echo ucfirst(__('Row length')); ?>&nbsp;&oslash;</td>
+                <td><?php echo __('Row length'); ?>&nbsp;&oslash;</td>
                 <td>
                     <?php echo PMA_formatNumber($showtable['Avg_row_length'], 0) . "\n"; ?>
                 </td>
@@ -408,7 +370,7 @@ foreach ($the_tables as $key => $table) {
                 if (isset($showtable['Data_length']) && $showtable['Rows'] > 0 && $mergetable == false) {
                     ?>
             <tr>
-                <td><?php echo ucfirst(__(' Row size ')); ?>&nbsp;&oslash;</td>
+                <td><?php echo __('Row size'); ?>&nbsp;&oslash;</td>
                 <td align="right">
                     <?php echo $avg_size . ' ' . $avg_unit . "\n"; ?>
                 </td>
@@ -418,7 +380,7 @@ foreach ($the_tables as $key => $table) {
                 if (isset($showtable['Auto_increment'])) {
                     ?>
             <tr>
-                <td><?php echo ucfirst(__('Next')); ?>&nbsp;Autoindex</td>
+                <td><?php echo __('Next autoindex'); ?></td>
                 <td align="right">
                     <?php echo PMA_formatNumber($showtable['Auto_increment'], 0) . "\n"; ?>
                 </td>
@@ -477,24 +439,9 @@ foreach ($the_tables as $key => $table) {
 /**
  * Displays the footer
  */
-?>
+PMA_printButton();
 
-<script type="text/javascript">
-//<![CDATA[
-function printPage()
-{
-    // Do print the page
-    if (typeof(window.print) != 'undefined') {
-        window.print();
-    }
-}
-//]]>
-</script>
+echo "<div id='PMA_disable_floating_menubar'></div>\n";
 
-<p class="print_ignore">
-    <input type="button" id="print" value="<?php echo __('Print'); ?>"
-        onclick="printPage()" /></p>
-
-<?php
 require './libraries/footer.inc.php';
 ?>

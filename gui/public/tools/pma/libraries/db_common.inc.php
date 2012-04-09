@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -18,11 +18,9 @@ PMA_checkParameters(array('db'));
 
 $is_show_stats = $cfg['ShowStats'];
 
-if ($db == 'information_schema') {
+$db_is_information_schema = PMA_is_system_schema($db);
+if ($db_is_information_schema) {
     $is_show_stats = false;
-    $db_is_information_schema = true;
-} else {
-    $db_is_information_schema = false;
 }
 
 /**
@@ -69,7 +67,7 @@ if (isset($submitcollation) && !empty($db_collation)) {
      * db charset change action on db_operations.php.  If this causes a bug on
      * other pages, we might have to move this to a different location.
      */
-    if( $GLOBALS['is_ajax_request'] == true) {
+    if ( $GLOBALS['is_ajax_request'] == true) {
         PMA_ajaxResponse($message, $message->isSuccess());
     };
 }

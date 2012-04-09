@@ -5,11 +5,12 @@
  *
  * Explanation of used terms:
  * o work_path - original field path, eg. Servers/4/verbose
- * o system_path - work_path modified so that it points to the first server, eg. Servers/1/verbose
+ * o system_path - work_path modified so that it points to the first server,
+ *                 eg. Servers/1/verbose
  * o translated_path - work_path modified for HTML field name, a path with
  *                     slashes changed to hyphens, eg. Servers-4-verbose
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -21,7 +22,6 @@ require_once './libraries/js_escape.lib.php';
 
 /**
  * Form management class, displays and processes forms
- * @package    phpMyAdmin-setup
  */
 class FormDisplay
 {
@@ -132,9 +132,6 @@ class FormDisplay
     /**
      * Runs validation for all registered forms
      *
-     * @uses ConfigFile::getInstance()
-     * @uses ConfigFile::getValue()
-     * @uses PMA_config_validate()
      */
     private function _validate()
     {
@@ -178,19 +175,6 @@ class FormDisplay
     /**
      * Outputs HTML for forms
      *
-     * @uses ConfigFile::getInstance()
-     * @uses ConfigFile::get()
-     * @uses display_fieldset_bottom()
-     * @uses display_fieldset_top()
-     * @uses display_form_bottom()
-     * @uses display_form_top()
-     * @uses display_js()
-     * @uses display_tabs_bottom()
-     * @uses display_tabs_top()
-     * @uses js_validate()
-     * @uses PMA_config_get_validators()
-     * @uses PMA_jsFormat()
-     * @uses PMA_lang()
      * @param bool $tabbed_form
      * @param bool   $show_restore_default  whether show "restore default" button besides the input field
      */
@@ -237,8 +221,12 @@ class FormDisplay
                 : '';
             $form_errors = isset($this->errors[$form->name])
                 ? $this->errors[$form->name] : null;
-            display_fieldset_top(PMA_lang("Form_$form->name"),
-                $form_desc, $form_errors, array('id' => $form->name));
+            display_fieldset_top(
+                PMA_lang("Form_$form->name"),
+                $form_desc,
+                $form_errors,
+                array('id' => $form->name)
+            );
 
             foreach ($form->fields as $field => $path) {
                 $work_path = array_search($path, $this->system_paths);
@@ -249,8 +237,16 @@ class FormDisplay
                     ? !isset($this->userprefs_disallow[$path])
                     : null;
                 // display input
-                $this->_displayFieldInput($form, $field, $path, $work_path,
-                    $translated_path, $show_restore_default, $userprefs_allow, $js_default);
+                $this->_displayFieldInput(
+                    $form,
+                    $field,
+                    $path,
+                    $work_path,
+                    $translated_path,
+                    $show_restore_default,
+                    $userprefs_allow,
+                    $js_default
+                );
                 // register JS validators for this field
                 if (isset($validators[$path])) {
                     js_validate($translated_path, $validators[$path], $js);
@@ -281,17 +277,6 @@ class FormDisplay
     /**
      * Prepares data for input field display and outputs HTML code
      *
-     * @uses ConfigFile::get()
-     * @uses ConfigFile::getDefault()
-     * @uses ConfigFile::getInstance()
-     * @uses display_group_footer()
-     * @uses display_group_header()
-     * @uses display_input()
-     * @uses Form::getOptionType()
-     * @uses Form::getOptionValueList()
-     * @uses PMA_escapeJsString()
-     * @uses PMA_lang_desc()
-     * @uses PMA_lang_name()
      * @param Form   $form
      * @param string $field                 field name as it appears in $form
      * @param string $system_path           field path, eg. Servers/1/verbose
@@ -361,8 +346,8 @@ class FormDisplay
                 }
                 return;
             case 'NULL':
-            	trigger_error("Field $system_path has no type", E_USER_WARNING);
-            	return;
+                trigger_error("Field $system_path has no type", E_USER_WARNING);
+                return;
         }
 
         // TrustedProxies requires changes before displaying
@@ -405,8 +390,6 @@ class FormDisplay
     /**
      * Displays errors
      *
-     * @uses display_errors()
-     * @uses PMA_lang_name()
      */
     public function displayErrors()
     {
@@ -429,9 +412,6 @@ class FormDisplay
     /**
      * Reverts erroneous fields to their default values
      *
-     * @uses ConfigFile::getDefault()
-     * @uses ConfigFile::getInstance()
-     * @uses ConfigFile::set()
      *
      */
     public function fixErrors()
@@ -481,13 +461,6 @@ class FormDisplay
     /**
      * Validates and saves form data to session
      *
-     * @uses ConfigFile::get()
-     * @uses ConfigFile::getInstance()
-     * @uses ConfigFile::getServerCount()
-     * @uses ConfigFile::set()
-     * @uses Form::getOptionType()
-     * @uses Form::getOptionValueList()
-     * @uses PMA_lang_name()
      * @param  array|string  $forms               array of form names
      * @param  bool          $allow_partial_save  allows for partial form saving on failed validation
      * @return boolean  true on success (no errors and all saved)
@@ -506,10 +479,10 @@ class FormDisplay
         }
 
         $this->errors = array();
-        foreach ($forms as $form) {
+        foreach ($forms as $form_name) {
             /* @var $form Form */
-            if (isset($this->forms[$form])) {
-                $form = $this->forms[$form];
+            if (isset($this->forms[$form_name])) {
+                $form = $this->forms[$form_name];
             } else {
                 continue;
             }
@@ -707,7 +680,6 @@ class FormDisplay
     /**
      * Fills out {@link userprefs_keys} and {@link userprefs_disallow}
      *
-     * @uses PMA_read_userprefs_fieldnames()
      */
     private function _loadUserprefsInfo()
     {

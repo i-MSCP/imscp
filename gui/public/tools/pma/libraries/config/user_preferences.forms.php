@@ -17,7 +17,7 @@
  * End group blocks with:
  * ':group:end'
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 $forms = array();
@@ -32,10 +32,14 @@ $forms['Features']['General'] = array(
     'Servers/1/only_db', // saves to Server/only_db
     'Servers/1/hide_db', // saves to Server/hide_db
     'SkipLockedTables',
+    'DisableMultiTableMaintenance',
     'MaxDbList',
-    'MaxTableList');
+    'MaxTableList',
+    'ShowHint');
 $forms['Features']['Text_fields'] = array(
     'CharEditing',
+    'MinSizeForInputField',
+    'MaxSizeForInputField',
     'CharTextareaCols',
     'CharTextareaRows',
     'TextareaCols',
@@ -65,7 +69,8 @@ $forms['Sql_queries']['Sql_queries'] = array(
     'EditInWindow',
     //'QueryWindowWidth', // overridden in theme
     //'QueryWindowHeight',
-    'QueryWindowDefTab');
+    'QueryWindowDefTab',
+    'RetainQueryBox');
 $forms['Sql_queries']['Sql_box'] = array(
     'SQLQuery/Edit',
     'SQLQuery/Explain',
@@ -77,7 +82,8 @@ $forms['Left_frame']['Left_frame'] = array(
     'LeftDisplayLogo',
     'LeftLogoLink',
     'LeftLogoLinkWindow',
-    'LeftPointerEnable');
+    'LeftPointerEnable',
+    'LeftRecentTable');
 $forms['Left_frame']['Left_databases'] = array(
     'DisplayDatabasesList',
     'LeftFrameDBTree',
@@ -106,19 +112,20 @@ $forms['Main_frame']['Browse'] = array(
     'DisplayBinaryAsHex',
     'BrowsePointerEnable',
     'BrowseMarkerEnable',
+    'SaveCellsAtOnce',
+    'ShowDisplayDirection',
     'RepeatCells',
     'LimitChars',
-    'ModifyDeleteAtLeft',
-    'ModifyDeleteAtRight',
-    'DefaultDisplay');
+    'RowActionLinks',
+    'DefaultDisplay',
+    'RememberSorting');
 $forms['Main_frame']['Edit'] = array(
     'ProtectBinary',
     'ShowFunctionFields',
     'ShowFieldTypesInDataEditView',
     'InsertRows',
     'ForeignKeyDropdownOrder',
-    'ForeignKeyMaxLimit',
-    'DefaultPropDisplay');
+    'ForeignKeyMaxLimit');
 $forms['Main_frame']['Tabs'] = array(
     'LightTabs',
     'DefaultTabServer',

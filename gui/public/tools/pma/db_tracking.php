@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -10,14 +10,14 @@
 require_once './libraries/common.inc.php';
 
 //Get some js files needed for Ajax requests
-$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.custom.js';
+$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.16.custom.js';
 $GLOBALS['js_include'][] = 'db_structure.js';
 
 /**
  * If we are not in an Ajax request, then do the common work and show the links etc.
  */
-if($GLOBALS['is_ajax_request'] != true) {
-    require './libraries/db_common.inc.php';
+if ($GLOBALS['is_ajax_request'] != true) {
+    include './libraries/db_common.inc.php';
 }
 $url_query .= '&amp;goto=tbl_tracking.php&amp;back=db_tracking.php';
 
@@ -34,7 +34,7 @@ if (isset($_REQUEST['delete_tracking']) && isset($_REQUEST['table'])) {
      * If in an Ajax request, generate the success message and use
      * {@link PMA_ajaxResponse()} to send the output
      */
-    if($GLOBALS['is_ajax_request'] == true) {
+    if ($GLOBALS['is_ajax_request'] == true) {
         $message = PMA_Message::success();
         PMA_ajaxResponse($message, true);
     }
@@ -48,11 +48,11 @@ if ($num_tables == 0 && count($data['ddlog']) == 0) {
     echo '<p>' . __('No tables found in database.') . '</p>' . "\n";
 
     if (empty($db_is_information_schema)) {
-        require './libraries/display_create_table.lib.php';
+        include './libraries/display_create_table.lib.php';
     }
 
     // Display the footer
-    require './libraries/footer.inc.php';
+    include './libraries/footer.inc.php';
     exit;
 }
 
@@ -67,15 +67,16 @@ require_once './libraries/db_links.inc.php';
 $all_tables_query = ' SELECT table_name, MAX(version) as version FROM ' .
              PMA_backquote($GLOBALS['cfg']['Server']['pmadb']) . '.' .
              PMA_backquote($GLOBALS['cfg']['Server']['tracking']) .
-             ' WHERE ' . PMA_backquote('db_name')    . ' = \'' . PMA_sqlAddslashes($_REQUEST['db']) . '\' ' .
-             ' GROUP BY '. PMA_backquote('table_name') .
-             ' ORDER BY '. PMA_backquote('table_name') .' ASC';
+             ' WHERE db_name = \'' . PMA_sqlAddSlashes($_REQUEST['db']) . '\' ' .
+             ' GROUP BY table_name' .
+             ' ORDER BY table_name ASC';
 
 $all_tables_result = PMA_query_as_controluser($all_tables_query);
 
 // If a HEAD version exists
 if (PMA_DBI_num_rows($all_tables_result) > 0) {
 ?>
+    <div id="tracked_tables">
     <h3><?php echo __('Tracked tables');?></h3>
 
     <table id="versions" class="data">
@@ -98,7 +99,7 @@ if (PMA_DBI_num_rows($all_tables_result) > 0) {
 
     $drop_image_or_text = '';
     if (true == $GLOBALS['cfg']['PropertiesIconic']) {
-        $drop_image_or_text .= '<img class="icon" width="16" height="16" src="' . $pmaThemeImage . 'b_drop.png" alt="' . __('Delete tracking data for this table') . '" title="' . __('Delete tracking data for this table') . '" />';
+        $drop_image_or_text .= PMA_getImage('b_drop.png', __('Delete tracking data for this table'));
     }
     if ('both' === $GLOBALS['cfg']['PropertiesIconic'] || false === $GLOBALS['cfg']['PropertiesIconic']) {
         $drop_image_or_text .= __('Drop');
@@ -110,7 +111,7 @@ if (PMA_DBI_num_rows($all_tables_result) > 0) {
         $table_query = ' SELECT * FROM ' .
              PMA_backquote($GLOBALS['cfg']['Server']['pmadb']) . '.' .
              PMA_backquote($GLOBALS['cfg']['Server']['tracking']) .
-             ' WHERE `db_name` = \'' . PMA_sqlAddslashes($_REQUEST['db']) . '\' AND `table_name`  = \'' . PMA_sqlAddslashes($table_name) . '\' AND `version` = \'' . $version_number . '\'';
+             ' WHERE `db_name` = \'' . PMA_sqlAddSlashes($_REQUEST['db']) . '\' AND `table_name`  = \'' . PMA_sqlAddSlashes($table_name) . '\' AND `version` = \'' . $version_number . '\'';
 
         $table_result = PMA_query_as_controluser($table_query);
         $version_data = PMA_DBI_fetch_array($table_result);
@@ -146,6 +147,7 @@ if (PMA_DBI_num_rows($all_tables_result) > 0) {
     ?>
     </tbody>
     </table>
+    </div>
 <?php
 }
 
@@ -161,7 +163,7 @@ foreach ($table_list as $key => $value) {
         foreach ($value as $temp_table) {
             // If $temp_table is a table with the value for 'Name' is set,
             // rather than a propery of the table group.
-            if (array_key_exists('Name', $temp_table)) {
+            if (is_array($temp_table) && array_key_exists('Name', $temp_table)) {
                 if (PMA_Tracker::getVersion($GLOBALS['db'], $temp_table['Name']) == -1) {
                     $my_tables[] = $temp_table['Name'];
                 }
@@ -196,11 +198,7 @@ if (isset($my_tables)) {
     foreach ($my_tables as $key => $tablename) {
         if (PMA_Tracker::getVersion($GLOBALS['db'], $tablename) == -1) {
             $my_link = '<a href="tbl_tracking.php?' . $url_query . '&amp;table=' . htmlspecialchars($tablename) .'">';
-
-            if ($cfg['PropertiesIconic']) {
-                $my_link .= '<img class="icon" src="' . $pmaThemeImage . 'eye.png" width="16" height="16" alt="' . __('Track table') . '" /> ';
-            }
-            $my_link .= __('Track table') . '</a>';
+            $my_link .= PMA_getIcon('eye.png', __('Track table')) . '</a>';
         ?>
             <tr class="noclick <?php echo $style;?>">
             <td><?php echo htmlspecialchars($tablename);?></td>

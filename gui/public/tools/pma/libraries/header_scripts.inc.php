@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -35,12 +35,14 @@ if (! isset($page_title)) {
 $is_superuser    = function_exists('PMA_isSuperuser') && PMA_isSuperuser();
 
 $GLOBALS['js_include'][] = 'functions.js';
-$GLOBALS['js_include'][] = 'jquery/jquery.qtip-1.0.0.min.js';
+$GLOBALS['js_include'][] = 'jquery/jquery.qtip-1.0.0-rc3.js';
 $params = array('lang' => $GLOBALS['lang']);
 if (isset($GLOBALS['db'])) {
     $params['db'] = $GLOBALS['db'];
 }
 $GLOBALS['js_include'][] = 'messages.php' . PMA_generate_common_url($params);
+// Append the theme id to this url to invalidate the cache on a theme change
+$GLOBALS['js_include'][] = 'get_image.js.php?theme=' . urlencode($_SESSION['PMA_Theme']->getId());
 
 /**
  * Here we add a timestamp when loading the file, so that users who
@@ -53,16 +55,19 @@ $GLOBALS['js_include'] = array_unique($GLOBALS['js_include']);
 foreach ($GLOBALS['js_include'] as $js_script_file) {
     echo PMA_includeJS($js_script_file);
 }
+// Below javascript Updates the title of the frameset if possible
 ?>
 <script type="text/javascript">
 // <![CDATA[
-// Updates the title of the frameset if possible (ns4 does not allow this)
 if (typeof(parent.document) != 'undefined' && typeof(parent.document) != 'unknown'
     && typeof(parent.document.title) == 'string') {
     parent.document.title = '<?php echo (isset($title) ? PMA_sanitize(PMA_escapeJsString(htmlspecialchars($title))) : ''); ?>';
 }
-
 <?php
+if (count($GLOBALS['js_script']) > 0) {
+    echo implode("\n", $GLOBALS['js_script'])."\n";
+}
+
 foreach ($GLOBALS['js_events'] as $js_event) {
     echo "$(window.parent).bind('" . $js_event['event'] . "', "
         . $js_event['function'] . ");\n";

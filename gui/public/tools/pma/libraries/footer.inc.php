@@ -13,32 +13,7 @@
  *
  * always use $GLOBALS, as this script is also included by functions
  *
- * @uses    $_REQUEST['no_history']
- * @uses    $GLOBALS['lang']
- * @uses    $GLOBALS['collation_connection']
- * @uses    $GLOBALS['server']
- * @uses    $GLOBALS['db']
- * @uses    $GLOBALS['table']
- * @uses    $GLOBALS['error_message']
- * @uses    $GLOBALS['reload']
- * @uses    $GLOBALS['sql_query']
- * @uses    $GLOBALS['focus_querywindow']
- * @uses    $GLOBALS['checked_special']
- * @uses    $GLOBALS['pmaThemeImage']
- * @uses    $GLOBALS['controllink'] to close it
- * @uses    $GLOBALS['userlink'] to close it
- * @uses    $cfg['Server']['user']
- * @uses    $cfg['NavigationBarIconic']
- * @uses    $cfg['MaxCharactersInDisplayedSQL']
- * @uses    PMA_isValid()
- * @uses    PMA_setHistory()
- * @uses    PMA_ifSetOr()
- * @uses    PMA_escapeJsString()
- * @uses    PMA_getenv()
- * @uses    PMA_generate_common_url()
- * @uses    basename()
- * @uses    file_exists()
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -95,7 +70,7 @@ if (!$GLOBALS['is_ajax_request']) {
 <?php
 if (empty($GLOBALS['error_message'])) {
     ?>
-$(document).ready(function(){
+$(document).ready(function() {
 // updates current settings
 if (window.parent.setAll) {
     window.parent.setAll('<?php
@@ -166,7 +141,7 @@ if (window.parent.frame_content) {
 }
 
 // Link to itself to replicate windows including frameset
-if (!isset($GLOBALS['checked_special'])) {
+if (! isset($GLOBALS['checked_special'])) {
     $GLOBALS['checked_special'] = false;
 }
 
@@ -187,8 +162,7 @@ setURLHash("<?php echo PMA_generate_common_url($url_params, 'text', ''); ?>");
     echo '<a href="index.php' . PMA_generate_common_url($url_params) . '"'
         . ' title="' . __('Open new phpMyAdmin window') . '" target="_blank">';
     if ($GLOBALS['cfg']['NavigationBarIconic']) {
-        echo '<img class="icon" src="'. $GLOBALS['pmaThemeImage'] . 'window-new.png"'
-            . ' alt="' . __('Open new phpMyAdmin window') . '" />';
+        echo PMA_getImage('window-new.png', __('Open new phpMyAdmin window'));
     }
     if ($GLOBALS['cfg']['NavigationBarIconic'] !== true) {
         echo __('Open new phpMyAdmin window');
@@ -199,7 +173,7 @@ setURLHash("<?php echo PMA_generate_common_url($url_params, 'text', ''); ?>");
 
 // Include possible custom footers
 if (! $GLOBALS['is_ajax_request'] && file_exists(CUSTOM_FOOTER_FILE)) {
-    require CUSTOM_FOOTER_FILE;
+    include CUSTOM_FOOTER_FILE;
 }
 
 /**

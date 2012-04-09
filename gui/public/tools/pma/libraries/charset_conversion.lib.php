@@ -3,7 +3,7 @@
 /**
  * Charset conversion functions.
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -51,23 +51,24 @@ if ($cfg['RecodingEngine'] == 'iconv') {
 
 /* Load AIX iconv wrapper if needed */
 if ($PMA_recoding_engine == PMA_CHARSET_ICONV_AIX) {
-    require_once './libraries/iconv_wrapper.lib.php';
+    include_once './libraries/iconv_wrapper.lib.php';
 }
 
 /**
  * Converts encoding of text according to parameters with detected
  * conversion function.
  *
- * @param   string   source charset
- * @param   string   target charset
- * @param   string   what to convert
+ * @param string   source charset
+ * @param string   target charset
+ * @param string   what to convert
  *
  * @return  string   converted text
  *
  * @access  public
  *
  */
-function PMA_convert_string($src_charset, $dest_charset, $what) {
+function PMA_convert_string($src_charset, $dest_charset, $what)
+{
     if ($src_charset == $dest_charset) {
         return $what;
     }

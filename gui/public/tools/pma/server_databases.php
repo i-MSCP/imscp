@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -11,7 +11,12 @@
 require_once './libraries/common.inc.php';
 
 require './libraries/server_common.inc.php';
-require './libraries/replication.inc.php';
+if (!PMA_DRIZZLE) {
+    include_once './libraries/replication.inc.php';
+} else {
+    $replication_types = array();
+    $replication_info = null;
+}
 require './libraries/build_html_for_db.lib.php';
 
 /**
@@ -69,7 +74,7 @@ if ((isset($_REQUEST['drop_selected_dbs']) || isset($_REQUEST['query_type']))
         if (isset($_REQUEST['selected_dbs'])) {
             $selected_db = $_REQUEST['selected_dbs'];
         }
-        require './libraries/mult_submits.inc.php';
+        include './libraries/mult_submits.inc.php';
         unset($action, $submit_mult, $err_url, $selected_db, $GLOBALS['db']);
         if (empty($message)) {
             $message = PMA_Message::success(__('%s databases have been dropped successfully.'));
@@ -94,18 +99,17 @@ require './libraries/server_links.inc.php';
  */
 echo '<h2>' . "\n"
    . ($GLOBALS['cfg']['MainPageIconic']
-      ? '<img class="icon" src="' . $pmaThemeImage . 's_db.png" width="16"'
-        .' height="16" alt="" />'
+      ? PMA_getImage('s_db.png')
       : '')
    . ($dbstats ? __('Databases statistics') : __('Databases')) . "\n"
    .'</h2>' . "\n";
 
 /**
- * Create new database.
+ * Create database.
  */
 if ($cfg['ShowCreateDb']) {
     echo '<ul><li id="li_create_database">' . "\n";
-    require './libraries/display_create_database.lib.php';
+    include './libraries/display_create_database.lib.php';
     echo '    </li>' . "\n";
     echo '</ul>' . "\n";
 }
@@ -155,7 +159,7 @@ if ($databases_count > 0) {
        . ($is_superuser || $cfg['AllowUserDropDatabase'] ? '        <th></th>' . "\n" : '')
        . '    <th><a href="./server_databases.php' . PMA_generate_common_url($_url_params) . '">' . "\n"
        . '            ' . __('Database') . "\n"
-       . ($sort_by == 'SCHEMA_NAME' ? '                <img class="icon" src="' . $pmaThemeImage . 's_' . $sort_order . '.png" width="11" height="9"  alt="' . ($sort_order == 'asc' ? __('Ascending') : __('Descending')) . '" />' . "\n" : '')
+       . ($sort_by == 'SCHEMA_NAME' ? '                ' . PMA_getImage('s_' . $sort_order . '.png', ($sort_order == 'asc' ? __('Ascending') : __('Descending'))) . "\n" : '')
        . '        </a></th>' . "\n";
     $table_columns = 3;
     foreach ($column_order as $stat_name => $stat) {
@@ -172,22 +176,21 @@ if ($databases_count > 0) {
             echo '    <th' . $colspan . '>'
                 .'<a href="./server_databases.php' . PMA_generate_common_url($_url_params) . '">' . "\n"
                 .'            ' . $stat['disp_name'] . "\n"
-                .($sort_by == $stat_name ? '            <img class="icon" src="' . $pmaThemeImage . 's_' . $sort_order . '.png" width="11" height="9"  alt="' . ($sort_order == 'asc' ? __('Ascending') : __('Descending')) . '" />' . "\n" : '')
+                .($sort_by == $stat_name ? '            ' . PMA_getImage('s_' . $sort_order . '.png', ($sort_order == 'asc' ? __('Ascending') : __('Descending'))) . "\n" : '')
                 .'        </a></th>' . "\n";
         }
     }
 
-    foreach ($replication_types as $type)
-    {
+    foreach ($replication_types as $type) {
       if ($type=="master")
         $name = __('Master replication');
-      elseif($type == "slave")
+      elseif ($type == "slave")
         $name = __('Slave replication');
       if (${"server_{$type}_status"})
         echo '    <th>'. $name .'</th>' . "\n";
     }
 
-    if ($is_superuser) {
+    if ($is_superuser && !PMA_DRIZZLE) {
         echo '    <th>' . ($cfg['PropertiesIconic'] ? '' : __('Action')) . "\n"
            . '    </th>' . "\n";
     }
@@ -197,7 +200,11 @@ if ($databases_count > 0) {
 
     $odd_row = true;
     foreach ($databases as $current) {
-        echo '<tr class="' . ($odd_row ? 'odd' : 'even') . '">' . "\n";
+        $tr_class = $odd_row ? 'odd' : 'even';
+        if (PMA_is_system_schema($current['SCHEMA_NAME'], true)) {
+            $tr_class .= ' noclick';
+        }
+        echo '<tr class="' . $tr_class . '">' . "\n";
         $odd_row = ! $odd_row;
 
         list($column_order, $generated_html) = PMA_buildHtmlForDb($current, $is_superuser, (isset($checkall) ? $checkall : ''), $url_query, $column_order, $replication_types, $replication_info);
@@ -237,10 +244,10 @@ if ($databases_count > 0) {
         }
     }
 
-    foreach ($replication_types as $type)
-    {
-      if (${"server_{$type}_status"})
-        echo '    <th></th>' . "\n";
+    foreach ($replication_types as $type) {
+        if (${"server_{$type}_status"}) {
+            echo '    <th></th>' . "\n";
+        }
     }
 
     if ($is_superuser) {
@@ -263,13 +270,13 @@ if ($databases_count > 0) {
     }
 
     if (empty($dbstats)) {
-	echo '<ul><li id="li_switch_dbstats"><strong>' . "\n";
-        echo '        <a href="./server_databases.php?' . $url_query . '&amp;dbstats=1"'
-            .' title="' . __('Enable Statistics') . '">' . "\n"
-            .'            ' . __('Enable Statistics');
-	echo '</a></strong><br />' . "\n";
-	PMA_Message::notice(__('Note: Enabling the database statistics here might cause heavy traffic between the web server and the MySQL server.'))->display();
-	echo '</li>' . "\n" . '</ul>' . "\n";
+        echo '<ul><li id="li_switch_dbstats"><strong>' . "\n";
+            echo '        <a href="./server_databases.php?' . $url_query . '&amp;dbstats=1"'
+                .' title="' . __('Enable Statistics') . '">' . "\n"
+                .'            ' . __('Enable Statistics');
+        echo '</a></strong><br />' . "\n";
+        PMA_Message::notice(__('Note: Enabling the database statistics here might cause heavy traffic between the web server and the MySQL server.'))->display();
+        echo '</li>' . "\n" . '</ul>' . "\n";
     }
     echo '</form>';
     echo '</div>';

@@ -9,7 +9,7 @@
  *
  * 2002/2/22 - by Yukihiro Kawada <kawada@den.fujifilm.co.jp>
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -25,7 +25,8 @@ if (! defined('PHPMYADMIN')) {
  *
  * @return  boolean  always true
  */
-function PMA_internal_enc_check() {
+function PMA_internal_enc_check()
+{
     global $internal_enc, $enc_list;
 
     $internal_enc = mb_internal_encoding();
@@ -35,7 +36,7 @@ function PMA_internal_enc_check() {
         $enc_list = 'ASCII,SJIS,EUC-JP,JIS';
     }
 
-    return TRUE;
+    return true;
 } // end of the 'PMA_internal_enc_check' function
 
 
@@ -47,7 +48,8 @@ function PMA_internal_enc_check() {
  *
  * @return  boolean  always true
  */
-function PMA_change_enc_order() {
+function PMA_change_enc_order()
+{
     global $enc_list;
 
     $p            = explode(',', $enc_list);
@@ -57,7 +59,7 @@ function PMA_change_enc_order() {
         $enc_list = 'ASCII,EUC-JP,SJIS,JIS';
     }
 
-    return TRUE;
+    return true;
 } // end of the 'PMA_change_enc_order' function
 
 
@@ -65,15 +67,16 @@ function PMA_change_enc_order() {
  * Kanji string encoding convert
  * 2002/1/4 by Y.Kawada
  *
- * @param   string   the string to convert
- * @param   string   the destination encoding code
- * @param   string   set 'kana' convert to JIS-X208-kana
+ * @param string   the string to convert
+ * @param string   the destination encoding code
+ * @param string   set 'kana' convert to JIS-X208-kana
  *
  * @global  string   the available encoding codes list
  *
  * @return  string   the converted string
  */
-function PMA_kanji_str_conv($str, $enc, $kana) {
+function PMA_kanji_str_conv($str, $enc, $kana)
+{
     global $enc_list;
 
     if ($enc == '' && $kana == '') {
@@ -98,13 +101,14 @@ function PMA_kanji_str_conv($str, $enc, $kana) {
  * Kanji file encoding convert
  * 2002/1/4 by Y.Kawada
  *
- * @param   string   the name of the file to convert
- * @param   string   the destination encoding code
- * @param   string   set 'kana' convert to JIS-X208-kana
+ * @param string   the name of the file to convert
+ * @param string   the destination encoding code
+ * @param string   set 'kana' convert to JIS-X208-kana
  *
  * @return  string   the name of the converted file
  */
-function PMA_kanji_file_conv($file, $enc, $kana) {
+function PMA_kanji_file_conv($file, $enc, $kana)
+{
     if ($enc == '' && $kana == '') {
         return $file;
     }
@@ -131,11 +135,12 @@ function PMA_kanji_file_conv($file, $enc, $kana) {
  * Defines radio form fields to switch between encoding modes
  * 2002/1/4 by Y.Kawada
  *
- * @param   string   spaces character to prepend the output with
+ * @param string   spaces character to prepend the output with
  *
  * @return  string   xhtml code for the radio controls
  */
-function PMA_set_enc_form($spaces) {
+function PMA_set_enc_form($spaces)
+{
     return "\n"
              /* l10n: This is currently used only in Japanese locales */
            . $spaces . '<ul>' . "\n" . '<li>'

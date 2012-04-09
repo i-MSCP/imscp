@@ -5,8 +5,8 @@
  *
  * @todo    Pretty much everything
  * @todo    Importing of accented characters seems to fail
- * @version 0.5-beta
- * @package phpMyAdmin-Import
+ * @package PhpMyAdmin-Import
+ * @subpackage ODS
  */
 
 if (! defined('PHPMYADMIN')) {
@@ -52,11 +52,11 @@ $buffer = "";
  */
 while (! ($finished && $i >= $len) && ! $error && ! $timeout_passed) {
     $data = PMA_importGetNextChunk();
-    if ($data === FALSE) {
+    if ($data === false) {
         /* subtract data we didn't handle yet and stop processing */
         $offset -= strlen($buffer);
         break;
-    } elseif ($data === TRUE) {
+    } elseif ($data === true) {
         /* Handle rest of buffer */
     } else {
         /* Append new data to buffer */
@@ -83,11 +83,10 @@ $xml = simplexml_load_string($buffer, "SimpleXMLElement", LIBXML_COMPACT);
 
 unset($buffer);
 
-if ($xml === FALSE) {
+if ($xml === false) {
     $sheets = array();
-    /* TODO: this message should be improved later, used existing because of string freeze */
-    $message = PMA_Message::error(__('Error in Processing Request'));
-    $error = TRUE;
+    $message = PMA_Message::error(__('The XML file specified was either malformed or incomplete. Please correct the issue and try again.'));
+    $error = true;
 } else {
     $sheets = $xml->children('office', true)->{'body'}->{'spreadsheet'}->children('table', true);
 }
@@ -290,11 +289,11 @@ if (strlen($db)) {
     $options = array('create_db' => false);
 } else {
     $db_name = 'ODS_DB';
-    $options = NULL;
+    $options = null;
 }
 
 /* Non-applicable parameters */
-$create = NULL;
+$create = null;
 
 /* Created and execute necessary SQL statements from data */
 PMA_buildSQL($db_name, $tables, $analyses, $create, $options);

@@ -3,7 +3,7 @@
 /**
  * Common header for user preferences pages
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (!defined('PHPMYADMIN')) {
     exit;
@@ -15,7 +15,7 @@ require './libraries/server_links.inc.php';
 // build user preferences menu
 
 $form_param = filter_input(INPUT_GET, 'form');
-if (!isset($forms[$form_param])) {
+if (! isset($forms[$form_param])) {
     $forms_keys = array_keys($forms);
     $form_param = array_shift($forms_keys);
 }
@@ -27,9 +27,12 @@ $tabs_icons = array(
     'Import'      => 'b_import.png',
     'Export'      => 'b_export.png');
 echo '<ul id="topmenu2">';
-echo PMA_generate_html_tab(array(
-    'link' => 'prefs_manage.php',
-    'text' => __('Manage your settings'))) . "\n";
+echo PMA_generate_html_tab(
+    array(
+        'link' => 'prefs_manage.php',
+        'text' => __('Manage your settings')
+    )
+) . "\n";
 echo '<li>&nbsp; &nbsp;</li>' . "\n";
 $script_name = basename($GLOBALS['PMA_PHP_SELF']);
 foreach (array_keys($forms) as $formset) {
@@ -64,7 +67,7 @@ $msg->display();
 
 // warn about using session storage for settings
 $cfgRelation = PMA_getRelationsParam();
-if (!$cfgRelation['userconfigwork']) {
+if (! $cfgRelation['userconfigwork']) {
     $msg = __('Your preferences will be saved for current session only. Storing them permanently requires %sphpMyAdmin configuration storage%s.');
     $msg = PMA_sanitize(sprintf($msg, '[a@./Documentation.html#linked-tables@_blank]', '[/a]'));
     PMA_Message::notice($msg)->display();

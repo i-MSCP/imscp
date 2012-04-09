@@ -5,31 +5,7 @@
  *
  * @todo    make use of UNION when searching multiple tables
  * @todo    display executed query, optional?
- * @uses    $cfg['UseDbSearch']
- * @uses    $GLOBALS['db']
- * @uses    PMA_DBI_get_tables()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_getSearchSqls()
- * @uses    PMA_DBI_fetch_value()
- * @uses    PMA_linkOrButton()
- * @uses    PMA_generate_common_url()
- * @uses    PMA_generate_common_hidden_inputs()
- * @uses    PMA_showMySQLDocu()
- * @uses    $_REQUEST['search_str']
- * @uses    $_REQUEST['submit_search']
- * @uses    $_REQUEST['search_option']
- * @uses    $_REQUEST['table_select']
- * @uses    $_REQUEST['unselectall']
- * @uses    $_REQUEST['selectall']
- * @uses    $_REQUEST['field_str']
- * @uses    is_string()
- * @uses    htmlspecialchars()
- * @uses    array_key_exists()
- * @uses    is_array()
- * @uses    array_intersect()
- * @uses    sprintf()
- * @uses    in_array()
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -38,6 +14,9 @@
 require_once './libraries/common.inc.php';
 
 $GLOBALS['js_include'][] = 'db_search.js';
+$GLOBALS['js_include'][] = 'sql.js';
+$GLOBALS['js_include'][] = 'makegrid.js';
+$GLOBALS['js_include'][] = 'jquery/timepicker.js';
 
 /**
  * Gets some core libraries and send headers
@@ -83,11 +62,11 @@ if (empty($_REQUEST['search_str']) || ! is_string($_REQUEST['search_str'])) {
     $searched = htmlspecialchars($_REQUEST['search_str']);
     // For "as regular expression" (search option 4), we should not treat
     // this as an expression that contains a LIKE (second parameter of
-    // PMA_sqlAddslashes()).
+    // PMA_sqlAddSlashes()).
     //
     // Usage example: If user is seaching for a literal $ in a regexp search,
     // he should enter \$ as the value.
-    $search_str = PMA_sqlAddslashes($_REQUEST['search_str'], ($search_option == 4 ? false : true));
+    $search_str = PMA_sqlAddSlashes($_REQUEST['search_str'], ($search_option == 4 ? false : true));
 }
 
 $tables_selected = array();
@@ -106,7 +85,7 @@ if (isset($_REQUEST['selectall'])) {
 if (empty($_REQUEST['field_str']) || ! is_string($_REQUEST['field_str'])) {
     unset($field_str);
 } else {
-    $field_str = PMA_sqlAddslashes($_REQUEST['field_str'], true);
+    $field_str = PMA_sqlAddSlashes($_REQUEST['field_str'], true);
 }
 
 /**
@@ -114,8 +93,8 @@ if (empty($_REQUEST['field_str']) || ! is_string($_REQUEST['field_str'])) {
  */
 $sub_part = '';
 
-if( $GLOBALS['is_ajax_request'] != true) {
-    require './libraries/db_info.inc.php';
+if ( $GLOBALS['is_ajax_request'] != true) {
+    include './libraries/db_info.inc.php';
     echo '<div id="searchresults">';
 }
 
@@ -128,7 +107,6 @@ if (isset($_REQUEST['submit_search'])) {
      * Builds the SQL search query
      *
      * @todo    can we make use of fulltextsearch IN BOOLEAN MODE for this?
-     * @uses    PMA_DBI_query
      * PMA_backquote
      * PMA_DBI_free_result
      * PMA_DBI_fetch_assoc
@@ -136,34 +114,27 @@ if (isset($_REQUEST['submit_search'])) {
      * explode
      * count
      * strlen
-     * @param   string   the table name
-     * @param   string   restrict the search to this field
-     * @param   string   the string to search
-     * @param   integer  type of search (1 -> 1 word at least, 2 -> all words,
+     * @param string   the table name
+     * @param string   restrict the search to this field
+     * @param string   the string to search
+     * @param integer  type of search (1 -> 1 word at least, 2 -> all words,
      *                                   3 -> exact string, 4 -> regexp)
      *
      * @return  array    3 SQL querys (for count, display and delete results)
-     *
-     * @global  string   the url to return to in case of errors
-     * @global  string   charset connection
      */
     function PMA_getSearchSqls($table, $field, $search_str, $search_option)
     {
-        global $err_url;
-
         // Statement types
         $sqlstr_select = 'SELECT';
         $sqlstr_delete = 'DELETE';
 
         // Fields to select
-        $tblfields = PMA_DBI_fetch_result('SHOW FIELDS FROM ' . PMA_backquote($table) . ' FROM ' . PMA_backquote($GLOBALS['db']),
-            null, 'Field');
+        $tblfields = PMA_DBI_get_columns($GLOBALS['db'], $table);
 
         // Table to use
         $sqlstr_from = ' FROM ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($table);
 
         $search_words    = (($search_option > 2) ? array($search_str) : explode(' ', $search_str));
-        $search_wds_cnt  = count($search_words);
 
         $like_or_regex   = (($search_option == 4) ? 'REGEXP' : 'LIKE');
         $automatic_wildcard   = (($search_option < 3) ? '%' : '');
@@ -177,12 +148,21 @@ if (isset($_REQUEST['submit_search'])) {
 
             $thefieldlikevalue = array();
             foreach ($tblfields as $tblfield) {
-                if (! isset($field) || strlen($field) == 0 || $tblfield == $field) {
-                    $thefieldlikevalue[] = 'CONVERT(' . PMA_backquote($tblfield) . ' USING utf8)'
-                                         . ' ' . $like_or_regex . ' '
-                                         . "'" . $automatic_wildcard
-                                         . $search_word
-                                         . $automatic_wildcard . "'";
+                if (! isset($field) || strlen($field) == 0 || $tblfield['Field'] == $field) {
+                    // Drizzle has no CONVERT and all text columns are UTF-8
+                    if (PMA_DRIZZLE) {
+                        $thefieldlikevalue[] = PMA_backquote($tblfield['Field'])
+                                            . ' ' . $like_or_regex . ' '
+                                            . "'" . $automatic_wildcard
+                                            . $search_word
+                                            . $automatic_wildcard . "'";
+                    } else {
+                        $thefieldlikevalue[] = 'CONVERT(' . PMA_backquote($tblfield['Field']) . ' USING utf8)'
+                                            . ' ' . $like_or_regex . ' '
+                                            . "'" . $automatic_wildcard
+                                            . $search_word
+                                            . $automatic_wildcard . "'";
+                    }
                 }
             } // end for
 
@@ -277,10 +257,9 @@ if (isset($_REQUEST['submit_search'])) {
 /**
  * If we are in an Ajax request, we need to exit after displaying all the HTML
  */
-if($GLOBALS['is_ajax_request'] == true) {
+if ($GLOBALS['is_ajax_request'] == true) {
     exit;
-}
-else {
+} else {
     echo '</div>';//end searchresults div
 }
 
@@ -295,7 +274,7 @@ else {
     <legend><?php echo __('Search in database'); ?></legend>
 
     <table class="formlayout">
-    <tr><td><?php echo __('Word(s) or value(s) to search for (wildcard: "%"):'); ?></td>
+    <tr><td><?php echo __('Words or values to search for (wildcard: "%"):'); ?></td>
         <td><input type="text" name="search_str" size="60"
                 value="<?php echo $searched; ?>" /></td>
     </tr>
@@ -318,7 +297,7 @@ unset($choices);
             </td>
     </tr>
     <tr><td align="right" valign="top">
-            <?php echo __('Inside table(s):'); ?></td>
+            <?php echo __('Inside tables:'); ?></td>
         <td rowspan="2">
 <?php
 echo '            <select name="table_select[]" size="6" multiple="multiple">' . "\n";
@@ -335,8 +314,8 @@ foreach ($tables_names_only as $each_table) {
 } // end while
 
 echo '            </select>' . "\n";
-$alter_select =
-    '<a href="db_search.php' . PMA_generate_common_url(array_merge($url_params, array('selectall' => 1))) . '#db_search"'
+$alter_select
+    = '<a href="db_search.php' . PMA_generate_common_url(array_merge($url_params, array('selectall' => 1))) . '#db_search"'
     . ' onclick="setSelectOptions(\'db_search\', \'table_select[]\', true); return false;">' . __('Select All') . '</a>'
     . '&nbsp;/&nbsp;'
     . '<a href="db_search.php' . PMA_generate_common_url(array_merge($url_params, array('unselectall' => 1))) . '#db_search"'

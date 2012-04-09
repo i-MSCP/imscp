@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 // Run common work
@@ -27,7 +27,7 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
     }
     if ($_REQUEST['logtype'] == 'schema') {
         $selection_schema = true;
-    } elseif($_REQUEST['logtype'] == 'data') {
+    } elseif ($_REQUEST['logtype'] == 'data') {
         $selection_data   = true;
     } else {
         $selection_both   = true;
@@ -52,10 +52,10 @@ if (isset($_REQUEST['report_export'])) {
 /**
  * Filters tracking entries
  *
- * @param   array   the entries to filter
- * @param   string  "from" date
- * @param   string  "to" date
- * @param   string  users
+ * @param array   the entries to filter
+ * @param string  "from" date
+ * @param string  "to" date
+ * @param string  users
  *
  * @return  array   filtered entries
  *
@@ -63,7 +63,7 @@ if (isset($_REQUEST['report_export'])) {
     function PMA_filter_tracking($data, $filter_ts_from, $filter_ts_to, $filter_users) {
         $tmp_entries = array();
         $id = 0;
-        foreach( $data as $entry ) {
+        foreach ( $data as $entry ) {
             $timestamp = strtotime($entry['date']);
 
             if ($timestamp >= $filter_ts_from && $timestamp <= $filter_ts_to &&
@@ -104,25 +104,15 @@ if (isset($_REQUEST['report_export'])) {
 
 // Export as file download
 if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'sqldumpfile') {
-    @ini_set('url_rewriter.tags','');
+    @ini_set('url_rewriter.tags', '');
 
     $dump = "# " . sprintf(__('Tracking report for table `%s`'), htmlspecialchars($_REQUEST['table'])) . "\n" .
             "# " . date('Y-m-d H:i:s') . "\n";
-    foreach($entries as $entry) {
+    foreach ($entries as $entry) {
         $dump .= $entry['statement'];
     }
-    //$filename = 'log_' . str_replace(';', '', htmlspecialchars($_REQUEST['table'])) . '.sql';
-    $filename = PMA_sanitize_filename('log_' . $_REQUEST['table'] . '.sql');
-    header('Content-Type: text/x-sql');
-    header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
-    if (PMA_USR_BROWSER_AGENT == 'IE') {
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-    } else {
-        header('Pragma: no-cache');
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-    }
+    $filename = 'log_' . htmlspecialchars($_REQUEST['table']) . '.sql';
+    PMA_download_header($filename, 'text/x-sql', strlen($dump));
 
     echo $dump;
     exit();
@@ -180,7 +170,7 @@ if (isset($_REQUEST['submit_create_version'])) {
     $tracking_set = rtrim($tracking_set, ',');
 
     if (PMA_Tracker::createVersion($GLOBALS['db'], $GLOBALS['table'], $_REQUEST['version'], $tracking_set )) {
-        $msg = PMA_Message::success(sprintf(__('Version %s is created, tracking for %s.%s is activated.'), $_REQUEST['version'], htmlspecialchars($GLOBALS['db']), htmlspecialchars($GLOBALS['table'])));
+        $msg = PMA_Message::success(sprintf(__('Version %s is created, tracking for %s.%s is activated.'), htmlspecialchars($_REQUEST['version']), htmlspecialchars($GLOBALS['db']), htmlspecialchars($GLOBALS['table'])));
         $msg->display();
     }
 }
@@ -188,7 +178,7 @@ if (isset($_REQUEST['submit_create_version'])) {
 // Deactivate tracking
 if (isset($_REQUEST['submit_deactivate_now'])) {
     if (PMA_Tracker::deactivateTracking($GLOBALS['db'], $GLOBALS['table'], $_REQUEST['version'])) {
-        $msg = PMA_Message::success(sprintf(__('Tracking for %s.%s , version %s is deactivated.'), htmlspecialchars($GLOBALS['db']), htmlspecialchars($GLOBALS['table']), $_REQUEST['version']));
+        $msg = PMA_Message::success(sprintf(__('Tracking for %s.%s , version %s is deactivated.'), htmlspecialchars($GLOBALS['db']), htmlspecialchars($GLOBALS['table']), htmlspecialchars($_REQUEST['version'])));
         $msg->display();
     }
 }
@@ -196,14 +186,14 @@ if (isset($_REQUEST['submit_deactivate_now'])) {
 // Activate tracking
 if (isset($_REQUEST['submit_activate_now'])) {
     if (PMA_Tracker::activateTracking($GLOBALS['db'], $GLOBALS['table'], $_REQUEST['version'])) {
-        $msg = PMA_Message::success(sprintf(__('Tracking for %s.%s , version %s is activated.'), htmlspecialchars($GLOBALS['db']), htmlspecialchars($GLOBALS['table']), $_REQUEST['version']));
+        $msg = PMA_Message::success(sprintf(__('Tracking for %s.%s , version %s is activated.'), htmlspecialchars($GLOBALS['db']), htmlspecialchars($GLOBALS['table']), htmlspecialchars($_REQUEST['version'])));
         $msg->display();
     }
 }
 
 // Export as SQL execution
 if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'execution') {
-    foreach($entries as $entry) {
+    foreach ($entries as $entry) {
         $sql_result = PMA_DBI_query( "/*NOTRACK*/\n" . $entry['statement'] );
     }
     $msg = PMA_Message::success(__('SQL statements executed.'));
@@ -211,8 +201,7 @@ if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'execution'
 }
 
 // Export as SQL dump
-if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'sqldump')
-{
+if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'sqldump') {
     $new_query =    "# " . __('You can execute the dump by creating and using a temporary database. Please ensure that you have the privileges to do so.') . "\n" .
                     "# " . __('Comment out these two lines if you do not need them.') . "\n" .
                     "\n" .
@@ -220,7 +209,7 @@ if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'sqldump')
                     "USE pma_temp_db; \n" .
                     "\n";
 
-    foreach($entries as $entry) {
+    foreach ($entries as $entry) {
         $new_query .= $entry['statement'];
     }
     $msg = PMA_Message::success(__('SQL statements exported. Please copy the dump or execute it.'));
@@ -230,7 +219,7 @@ if (isset($_REQUEST['report_export']) && $_REQUEST['export_type'] == 'sqldump')
     $table_temp = $table;
 
     $db = $table = '';
-    require_once './libraries/sql_query_form.lib.php';
+    include_once './libraries/sql_query_form.lib.php';
 
     PMA_sqlQueryForm($new_query, 'sql');
 
@@ -254,7 +243,7 @@ if (isset($_REQUEST['snapshot'])) {
         $drop_create_statements .= $data['ddlog'][1]['statement'];
     }
     // Print SQL code
-    PMA_showMessage(sprintf(__('Version %s snapshot (SQL code)'), $_REQUEST['version']), $drop_create_statements);
+    PMA_showMessage(sprintf(__('Version %s snapshot (SQL code)'), htmlspecialchars($_REQUEST['version'])), $drop_create_statements);
 
     // Unserialize snapshot
     $temp = unserialize($data['schema_snapshot']);
@@ -277,7 +266,7 @@ if (isset($_REQUEST['snapshot'])) {
     <tbody>
 <?php
     $style = 'odd';
-    foreach($columns as $field_index => $field) {
+    foreach ($columns as $field_index => $field) {
 ?>
         <tr class="noclick <?php echo $style; ?>">
             <?php
@@ -289,8 +278,23 @@ if (isset($_REQUEST['snapshot'])) {
             ?>
             <td><?php echo htmlspecialchars($field['Type']);?></td>
             <td><?php echo htmlspecialchars($field['Collation']);?></td>
-            <td><?php echo htmlspecialchars($field['Null']);?></td>
-            <td><?php echo htmlspecialchars($field['Default']);?></td>
+            <td><?php echo (($field['Null'] == 'YES') ? __('Yes') : __('No')); ?></td>
+            <td><?php
+            if (isset($field['Default'])) {
+                $extracted_fieldspec = PMA_extractFieldSpec($field['Type']);
+                if ($extracted_fieldspec['type'] == 'bit') {
+                    // here, $field['Default'] contains something like b'010'
+                    echo PMA_convert_bit_default_value($field['Default']);
+                } else {
+                    echo htmlspecialchars($field['Default']);
+                }
+            } else {
+                if ($field['Null'] == 'YES') {
+                    echo '<i>NULL</i>';
+                } else {
+                    echo '<i>' . _pgettext('None for default', 'None') . '</i>';
+                }
+            } ?></td>
             <td><?php echo htmlspecialchars($field['Extra']);?></td>
             <td><?php echo htmlspecialchars($field['Comment']);?></td>
         </tr>
@@ -369,6 +373,43 @@ if (isset($_REQUEST['snapshot'])) {
 /*
  *  Tracking report
  */
+if (isset($_REQUEST['report']) && (isset($_REQUEST['delete_ddlog']) || isset($_REQUEST['delete_dmlog']))) {
+
+    if (isset($_REQUEST['delete_ddlog'])) {
+
+        // Delete ddlog row data
+        $delete_id = $_REQUEST['delete_ddlog'];
+
+        // Only in case of valable id
+        if ($delete_id == (int)$delete_id) {
+            unset($data['ddlog'][$delete_id]);
+
+            if (PMA_Tracker::changeTrackingData($_REQUEST['db'], $_REQUEST['table'], $_REQUEST['version'], 'DDL', $data['ddlog']))
+                $msg = PMA_Message::success(__('Tracking data definition successfully deleted'));
+            else
+                $msg = PMA_Message::rawError(__('Query error'));
+            $msg->display();
+        }
+    }
+
+    if (isset($_REQUEST['delete_dmlog'])) {
+
+        // Delete dmlog row data
+        $delete_id = $_REQUEST['delete_dmlog'];
+
+        // Only in case of valable id
+        if ($delete_id == (int)$delete_id) {
+            unset($data['dmlog'][$delete_id]);
+
+            if (PMA_Tracker::changeTrackingData($_REQUEST['db'], $_REQUEST['table'], $_REQUEST['version'], 'DML', $data['dmlog']))
+                $msg = PMA_Message::success(__('Tracking data manipulation successfully deleted'));
+            else
+                $msg = PMA_Message::rawError(__('Query error'));
+            $msg->display();
+        }
+    }
+}
+
 if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
     ?>
     <h3><?php echo __('Tracking report');?>  [<a href="tbl_tracking.php?<?php echo $url_query;?>"><?php echo __('Close');?></a>]</h3>
@@ -391,12 +432,25 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
 
     printf(__('Show %s with dates from %s to %s by user %s %s'), $str1, $str2, $str3, $str4, $str5);
 
+    // Prepare delete link content here
+    $drop_image_or_text = '';
+    if (true == $GLOBALS['cfg']['PropertiesIconic']) {
+        $drop_image_or_text .= PMA_getImage('b_drop.png', __('Delete tracking data row from report'));
+    }
+    if ('both' === $GLOBALS['cfg']['PropertiesIconic'] || false === $GLOBALS['cfg']['PropertiesIconic']) {
+        $drop_image_or_text .= __('Delete');
+    }
 
     /*
      *  First, list tracked data definition statements
      */
     $i = 1;
-    if ($selection_schema || $selection_both ) {
+    if (count($data['ddlog']) == 0 && count($data['dmlog']) == 0) {
+        $msg = PMA_Message::notice(__('No data'));
+        $msg->display();
+    }
+
+    if ($selection_schema || $selection_both  && count($data['ddlog']) > 0) {
     ?>
         <table id="ddl_versions" class="data" width="100%">
         <thead>
@@ -405,10 +459,12 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
             <th width="100"><?php echo __('Date');?></th>
             <th width="60"><?php echo __('Username');?></th>
             <th><?php echo __('Data definition statement');?></th>
+            <th><?php echo __('Delete');?></th>
         </tr>
         </thead>
         <tbody>
         <?php
+
         $style = 'odd';
         foreach ($data['ddlog'] as $entry) {
             if (strlen($entry['statement']) > $GLOBALS['cfg']['MaxCharactersInDisplayedSQL']) {
@@ -426,6 +482,7 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
                     <td><small><?php echo htmlspecialchars($entry['date']);?></small></td>
                     <td><small><?php echo htmlspecialchars($entry['username']); ?></small></td>
                     <td><?php echo $statement; ?></td>
+                    <td nowrap="nowrap"><a href="tbl_tracking.php?<?php echo $url_query;?>&amp;report=true&amp;version=<?php echo $version['version'];?>&amp;delete_ddlog=<?php echo $i-1; ?>"><?php echo $drop_image_or_text; ?></a></td>
                 </tr>
         <?php
                 if ($style == 'even') {
@@ -443,6 +500,9 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
 
     } //endif
 
+    // Memorize data definition amount
+    $ddlog_count = $i;
+
     /*
      *  Secondly, list tracked data manipulation statements
      */
@@ -456,6 +516,7 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
             <th width="100"><?php echo __('Date');?></th>
             <th width="60"><?php echo __('Username');?></th>
             <th><?php echo __('Data manipulation statement');?></th>
+            <th><?php echo __('Delete');?></th>
         </tr>
         </thead>
         <tbody>
@@ -477,6 +538,7 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
                     <td><small><?php echo htmlspecialchars($entry['date']); ?></small></td>
                     <td><small><?php echo htmlspecialchars($entry['username']); ?></small></td>
                     <td><?php echo $statement; ?></td>
+                    <td nowrap="nowrap"><a href="tbl_tracking.php?<?php echo $url_query;?>&amp;report=true&amp;version=<?php echo $version['version'];?>&amp;delete_dmlog=<?php echo $i-$ddlog_count; ?>"><?php echo $drop_image_or_text; ?></a></td>
                 </tr>
         <?php
                 if ($style == 'even') {
@@ -528,8 +590,8 @@ if (isset($_REQUEST['report']) || isset($_REQUEST['report_export'])) {
 $sql_query = " SELECT DISTINCT db_name, table_name FROM " .
              PMA_backquote($GLOBALS['cfg']['Server']['pmadb']) . "." .
              PMA_backquote($GLOBALS['cfg']['Server']['tracking']) .
-             " WHERE " . PMA_backquote('db_name') . " = '" . PMA_sqlAddslashes($GLOBALS['db']) . "' " .
-             " ORDER BY ". PMA_backquote('db_name') . ", " . PMA_backquote('table_name');
+             " WHERE db_name = '" . PMA_sqlAddSlashes($GLOBALS['db']) . "' " .
+             " ORDER BY db_name, table_name";
 
 $sql_result = PMA_query_as_controluser($sql_query);
 
@@ -568,9 +630,9 @@ if (PMA_DBI_num_rows($sql_result) > 0) {
 $sql_query = " SELECT * FROM " .
              PMA_backquote($GLOBALS['cfg']['Server']['pmadb']) . "." .
              PMA_backquote($GLOBALS['cfg']['Server']['tracking']) .
-             " WHERE " . PMA_backquote('db_name')    . " = '" . PMA_sqlAddslashes($_REQUEST['db']) . "' ".
-             " AND "   . PMA_backquote('table_name') . " = '" . PMA_sqlAddslashes($_REQUEST['table']) ."' ".
-             " ORDER BY ". PMA_backquote('version') . " DESC ";
+             " WHERE db_name = '" . PMA_sqlAddSlashes($_REQUEST['db']) . "' ".
+             " AND table_name = '" . PMA_sqlAddSlashes($_REQUEST['table']) ."' ".
+             " ORDER BY version DESC ";
 
 $sql_result = PMA_query_as_controluser($sql_query);
 
@@ -596,13 +658,13 @@ if ($last_version > 0) {
     <?php
     $style = 'odd';
     PMA_DBI_data_seek($sql_result, 0);
-    while($version = PMA_DBI_fetch_array($sql_result)) {
+    while ($version = PMA_DBI_fetch_array($sql_result)) {
         if ($version['tracking_active'] == 1) {
             $version_status = __('active');
         } else {
             $version_status = __('not active');
         }
-        if ($version['version'] == $last_version){
+        if ($version['version'] == $last_version) {
             if ($version['tracking_active'] == 1) {
                 $tracking_active = true;
             } else {
@@ -618,7 +680,7 @@ if ($last_version > 0) {
             <td><?php echo htmlspecialchars($version['date_updated']);?></td>
             <td><?php echo $version_status;?></td>
             <td> <a href="tbl_tracking.php<?php echo PMA_generate_common_url($url_params + array('report' => 'true', 'version' => $version['version'])
-);?>"><?php echo __('Tracking report');?></a> 
+);?>"><?php echo __('Tracking report');?></a>
                 | <a href="tbl_tracking.php<?php echo PMA_generate_common_url($url_params + array('snapshot' => 'true', 'version' => $version['version'])
 );?>"><?php echo __('Structure snapshot');?></a>
             </td>

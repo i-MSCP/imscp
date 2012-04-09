@@ -7,14 +7,14 @@
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.phpmyadmin.net>.
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /*
  * This is needed for cookie based authentication to encrypt password in
  * cookie
  */
-$cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
+$cfg['blowfish_secret'] = 'a8b7c6d'; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
 
 /*
  * Servers configuration
@@ -40,6 +40,7 @@ $cfg['Servers'][$i]['AllowNoPassword'] = false;
  */
 
 /* User used to manipulate with storage */
+// $cfg['Servers'][$i]['controlhost'] = '';
 // $cfg['Servers'][$i]['controluser'] = 'pma';
 // $cfg['Servers'][$i]['controlpass'] = 'pmapass';
 
@@ -52,9 +53,12 @@ $cfg['Servers'][$i]['AllowNoPassword'] = false;
 // $cfg['Servers'][$i]['pdf_pages'] = 'pma_pdf_pages';
 // $cfg['Servers'][$i]['column_info'] = 'pma_column_info';
 // $cfg['Servers'][$i]['history'] = 'pma_history';
+// $cfg['Servers'][$i]['table_uiprefs'] = 'pma_table_uiprefs';
 // $cfg['Servers'][$i]['tracking'] = 'pma_tracking';
 // $cfg['Servers'][$i]['designer_coords'] = 'pma_designer_coords';
 // $cfg['Servers'][$i]['userconfig'] = 'pma_userconfig';
+// $cfg['Servers'][$i]['recent'] = 'pma_recent';
+// $cfg['Servers'][$i]['table_uiprefs'] = 'pma_table_uiprefs';
 /* Contrib / Swekey authentication */
 // $cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey-pma.conf';
 

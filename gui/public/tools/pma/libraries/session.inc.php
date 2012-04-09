@@ -6,10 +6,7 @@
  * @todo    add failover or warn if sessions are not configured properly
  * @todo    add an option to use mm-module for session handler
  * @see     http://www.php.net/session
- * @uses    session_name()
- * @uses    session_start()
- * @uses    ini_set()
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -96,7 +93,7 @@ if (! isset($_COOKIE[$session_name])) {
  * Token which is used for authenticating access queries.
  * (we use "space PMA_token space" to prevent overwriting)
  */
-if (!isset($_SESSION[' PMA_token '])) {
+if (! isset($_SESSION[' PMA_token '])) {
     $_SESSION[' PMA_token '] = md5(uniqid(rand(), true));
 }
 
@@ -105,7 +102,6 @@ if (!isset($_SESSION[' PMA_token '])) {
  * should be called before login and after successfull login
  * (only required if sensitive information stored in session)
  *
- * @uses    session_regenerate_id() to secure session from fixation
  */
 function PMA_secureSession()
 {

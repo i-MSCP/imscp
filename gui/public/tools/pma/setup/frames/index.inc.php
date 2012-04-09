@@ -2,7 +2,7 @@
 /**
  * Overview (main page)
  *
- * @package phpMyAdmin-setup
+ * @package PhpMyAdmin-setup
  */
 
 if (!defined('PHPMYADMIN')) {
@@ -57,9 +57,10 @@ if (!$is_https) {
     $text = __('You are not using a secure connection; all data (including potentially sensitive information, like passwords) is transferred unencrypted!');
 
     if (!empty($_SERVER['REQUEST_URI']) && !empty($_SERVER['HTTP_HOST'])) {
+        $link = 'https://' . htmlspecialchars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $strInsecureConnectionMsg2 = __('If your server is also configured to accept HTTPS requests follow [a@%s]this link[/a] to use a secure connection.');
-        $text .= ' ' . PMA_lang($strInsecureConnectionMsg2,
-            'https://' . htmlspecialchars($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']));
+        $strInsecureConnectionMsg2 = sprintf($strInsecureConnectionMsg2, $link);
+        $text .= ' ' . PMA_lang($strInsecureConnectionMsg2);
     }
     messages_set('notice', 'no_https', __('Insecure connection'), $text);
 }
@@ -70,7 +71,7 @@ if (!$is_https) {
     <bdo xml:lang="en" dir="ltr"><label for="lang">
     <?php echo __('Language') . (__('Language') != 'Language' ? ' - Language' : '') ?>
     </label></bdo><br />
-    <select id="lang" name="lang" onchange="this.form.submit();" xml:lang="en" dir="ltr">
+    <select id="lang" name="lang" class="autosubmit" xml:lang="en" dir="ltr">
     <?php
     // create language list
     $lang_list = array();
@@ -84,6 +85,19 @@ if (!$is_https) {
     ?>
     </select>
 </form>
+
+<?php
+// Check for done action info and set notice message if present
+switch ($action_done) {
+    case 'config_saved':
+        /* Use uniqid to display this message every time configuration is saved */
+        messages_set('notice', uniqid('config_saved'), __('Configuration saved.'),
+            PMA_lang(__('Configuration saved to file config/config.inc.php in phpMyAdmin top level directory, copy it to top level one and delete directory config to use it.')));
+        break;
+    default:
+        break;
+}
+?>
 
 <h2><?php echo __('Overview') ?></h2>
 

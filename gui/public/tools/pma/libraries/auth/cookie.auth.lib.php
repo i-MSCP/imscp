@@ -3,7 +3,7 @@
 /**
  * Set of functions used to run cookie based authentication.
  *
- * @package phpMyAdmin-Auth-Cookie
+ * @package PhpMyAdmin-Auth-Cookie
  */
 
 if (! defined('PHPMYADMIN')) {
@@ -28,13 +28,12 @@ if (function_exists('mcrypt_encrypt')) {
      * further decryption. I don't think necessary to have one iv
      * per server so I don't put the server number in the cookie name.
      */
-    if (empty($_COOKIE['pma_mcrypt_iv'])
-     || false === ($iv = base64_decode($_COOKIE['pma_mcrypt_iv'], true))) {
+    if (empty($_COOKIE['pma_mcrypt_iv']) || false === ($iv = base64_decode($_COOKIE['pma_mcrypt_iv'], true))) {
         srand((double) microtime() * 1000000);
-         $td = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_CBC, '');
-         if ($td === false) {
-            PMA_warnMissingExtension('mcrypt');
-         }
+        $td = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_CBC, '');
+        if ($td === false) {
+            die(__('Failed to use Blowfish from mcrypt!'));
+        }
         $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
         $GLOBALS['PMA_Config']->setCookie('pma_mcrypt_iv', base64_encode($iv));
     }
@@ -74,20 +73,17 @@ if (function_exists('mcrypt_encrypt')) {
     }
 
 } else {
-    require_once './libraries/blowfish.php';
-    if (!$GLOBALS['cfg']['McryptDisableWarning']) {
-        PMA_warnMissingExtension('mcrypt');
-    }
+    include_once './libraries/blowfish.php';
 }
 
 /**
  * Returns blowfish secret or generates one if needed.
- * @uses    $cfg['blowfish_secret']
- * @uses    $_SESSION['auto_blowfish_secret']
  *
  * @access  public
+ * @return string
  */
-function PMA_get_blowfish_secret() {
+function PMA_get_blowfish_secret()
+{
     if (empty($GLOBALS['cfg']['blowfish_secret'])) {
         if (empty($_SESSION['auto_blowfish_secret'])) {
             // this returns 23 characters
@@ -105,33 +101,6 @@ function PMA_get_blowfish_secret() {
  *
  * this function MUST exit/quit the application
  *
- * @uses    $GLOBALS['server']
- * @uses    $GLOBALS['PHP_AUTH_USER']
- * @uses    $GLOBALS['pma_auth_server']
- * @uses    $GLOBALS['text_dir']
- * @uses    $GLOBALS['pmaThemeImage']
- * @uses    $GLOBALS['charset']
- * @uses    $GLOBALS['target']
- * @uses    $GLOBALS['db']
- * @uses    $GLOBALS['table']
- * @uses    $GLOBALS['pmaThemeImage']
- * @uses    $cfg['Servers']
- * @uses    $cfg['LoginCookieRecall']
- * @uses    $cfg['Lang']
- * @uses    $cfg['Server']
- * @uses    $cfg['ReplaceHelpImg']
- * @uses    $cfg['blowfish_secret']
- * @uses    $cfg['AllowArbitraryServer']
- * @uses    $_COOKIE
- * @uses    $_REQUEST['old_usr']
- * @uses    PMA_sendHeaderLocation()
- * @uses    PMA_select_language()
- * @uses    PMA_select_server()
- * @uses    file_exists()
- * @uses    sprintf()
- * @uses    count()
- * @uses    htmlspecialchars()
- * @uses    is_array()
  * @global  string    the last connection error
  *
  * @access  public
@@ -162,15 +131,13 @@ function PMA_auth()
     $cell_align = ($GLOBALS['text_dir'] == 'ltr') ? 'left' : 'right';
 
     // Defines the charset to be used
-    header('Content-Type: text/html; charset=' . $GLOBALS['charset']);
-    // Defines the "item" image depending on text direction
-    $item_img = $GLOBALS['pmaThemeImage'] . 'item_' . $GLOBALS['text_dir'] . '.png';
+    header('Content-Type: text/html; charset=utf-8');
 
     /* HTML header; do not show here the PMA version to improve security */
     $page_title = 'phpMyAdmin ';
-    require './libraries/header_meta_style.inc.php';
+    include './libraries/header_meta_style.inc.php';
     // if $page_title is set, this script uses it as the title:
-    require './libraries/header_scripts.inc.php';
+    include './libraries/header_scripts.inc.php';
     ?>
 <script type="text/javascript">
 //<![CDATA[
@@ -186,7 +153,7 @@ if (top != self) {
 
     <?php
     if (file_exists(CUSTOM_HEADER_FILE)) {
-        require CUSTOM_HEADER_FILE;
+        include CUSTOM_HEADER_FILE;
     }
     ?>
 
@@ -215,7 +182,7 @@ if (top != self) {
 
     // Displays the languages form
     if (empty($GLOBALS['cfg']['Lang'])) {
-        require_once './libraries/display_select_lang.lib.php';
+        include_once './libraries/display_select_lang.lib.php';
         // use fieldset, don't show doc link
         PMA_select_language(true, false);
     }
@@ -229,9 +196,9 @@ if (top != self) {
 <?php
     echo __('Log in');
     echo '<a href="./Documentation.html" target="documentation" ' .
-        'title="' . __('phpMyAdmin documentation') . '">';
+        'title="' . __('phpMyAdmin documentation') . '"> ';
     if ($GLOBALS['cfg']['ReplaceHelpImg']) {
-        echo '<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_help.png" width="11" height="11" alt="' . __('phpMyAdmin documentation') . '" />';
+        echo PMA_getImage('b_help.png', __('phpMyAdmin documentation'));
     } else {
         echo '(*)';
     }
@@ -265,7 +232,7 @@ if (top != self) {
         }
         echo '>';
 
-        require_once './libraries/select_server.lib.php';
+        include_once './libraries/select_server.lib.php';
         PMA_select_server(false, false);
 
         echo '</select></div>';
@@ -314,7 +281,7 @@ if (top != self) {
 </div>
     <?php
     if (file_exists(CUSTOM_FOOTER_FILE)) {
-        require CUSTOM_FOOTER_FILE;
+        include CUSTOM_FOOTER_FILE;
     }
     ?>
 </body>
@@ -342,25 +309,6 @@ if (top != self) {
  * @todo    AllowArbitraryServer on does not imply that the user wants an
  *          arbitrary server, or? so we should also check if this is filled and
  *          not only if allowed
- * @uses    $GLOBALS['PHP_AUTH_USER']
- * @uses    $GLOBALS['PHP_AUTH_PW']
- * @uses    $GLOBALS['no_activity']
- * @uses    $GLOBALS['server']
- * @uses    $GLOBALS['from_cookie']
- * @uses    $GLOBALS['pma_auth_server']
- * @uses    $cfg['AllowArbitraryServer']
- * @uses    $cfg['LoginCookieValidity']
- * @uses    $cfg['Servers']
- * @uses    $_REQUEST['old_usr'] from logout link
- * @uses    $_REQUEST['pma_username'] from login form
- * @uses    $_REQUEST['pma_password'] from login form
- * @uses    $_REQUEST['pma_servername'] from login form
- * @uses    $_COOKIE
- * @uses    $_SESSION['last_access_time']
- * @uses    $GLOBALS['PMA_Config']->removeCookie()
- * @uses    PMA_blowfish_decrypt()
- * @uses    PMA_auth_fails()
- * @uses    time()
  *
  * @return  boolean   whether we get authentication settings or not
  *
@@ -384,7 +332,7 @@ function PMA_auth_check()
     // END Swekey Integration
 
     if (defined('PMA_CLEAR_COOKIES')) {
-        foreach($GLOBALS['cfg']['Servers'] as $key => $val) {
+        foreach ($GLOBALS['cfg']['Servers'] as $key => $val) {
             $GLOBALS['PMA_Config']->removeCookie('pmaPass-' . $key);
             $GLOBALS['PMA_Config']->removeCookie('pmaServer-' . $key);
             $GLOBALS['PMA_Config']->removeCookie('pmaUser-' . $key);
@@ -404,7 +352,7 @@ function PMA_auth_check()
         session_destroy();
         // -> delete password cookie(s)
         if ($GLOBALS['cfg']['LoginCookieDeleteAll']) {
-            foreach($GLOBALS['cfg']['Servers'] as $key => $val) {
+            foreach ($GLOBALS['cfg']['Servers'] as $key => $val) {
                 $GLOBALS['PMA_Config']->removeCookie('pmaPass-' . $key);
                 if (isset($_COOKIE['pmaPass-' . $key])) {
                     unset($_COOKIE['pmaPass-' . $key]);
@@ -485,23 +433,6 @@ function PMA_auth_check()
 /**
  * Set the user and password after last checkings if required
  *
- * @uses    $GLOBALS['PHP_AUTH_USER']
- * @uses    $GLOBALS['PHP_AUTH_PW']
- * @uses    $GLOBALS['server']
- * @uses    $GLOBALS['from_cookie']
- * @uses    $GLOBALS['pma_auth_server']
- * @uses    $cfg['Server']
- * @uses    $cfg['AllowArbitraryServer']
- * @uses    $cfg['LoginCookieStore']
- * @uses    $cfg['PmaAbsoluteUri']
- * @uses    $_SESSION['last_access_time']
- * @uses    PMA_COMING_FROM_COOKIE_LOGIN
- * @uses    $GLOBALS['PMA_Config']->setCookie()
- * @uses    PMA_blowfish_encrypt()
- * @uses    $GLOBALS['PMA_Config']->removeCookie()
- * @uses    PMA_sendHeaderLocation()
- * @uses    time()
- * @uses    define()
  * @return  boolean   always true
  *
  * @access  public
@@ -624,17 +555,6 @@ function PMA_auth_set_user()
  * this function MUST exit/quit the application,
  * currently doen by call to PMA_auth()
  *
- * @uses    $GLOBALS['server']
- * @uses    $GLOBALS['allowDeny_forbidden']
- * @uses    $GLOBALS['no_activity']
- * @uses    $cfg['LoginCookieValidity']
- * @uses    $GLOBALS['PMA_Config']->removeCookie()
- * @uses    PMA_getenv()
- * @uses    PMA_DBI_getError()
- * @uses    PMA_sanitize()
- * @uses    PMA_auth()
- * @uses    sprintf()
- * @uses    basename()
  * @access  public
  */
 function PMA_auth_fails()

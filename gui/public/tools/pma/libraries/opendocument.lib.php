@@ -3,7 +3,7 @@
 /**
  * Simple interface for creating OASIS OpenDocument files.
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -23,14 +23,15 @@ $GLOBALS['OpenDocumentNS'] = 'xmlns:office="urn:oasis:names:tc:opendocument:xmln
 /**
  * Minimalistic creator of OASIS OpenDocument
  *
- * @param   string      desired MIME type
- * @param   string      document content
+ * @param string      desired MIME type
+ * @param string      document content
  *
  * @return  string      OASIS OpenDocument data
  *
  * @access  public
  */
-function PMA_createOpenDocument($mime, $data) {
+function PMA_createOpenDocument($mime, $data)
+{
     $zipfile = new zipfile();
     $zipfile -> addFile($mime, 'mimetype');
     $zipfile -> addFile($data, 'content.xml');
@@ -44,8 +45,8 @@ function PMA_createOpenDocument($mime, $data) {
                 . '<meta:initial-creator>phpMyAdmin ' . PMA_VERSION . '</meta:initial-creator>'
                 . '<meta:creation-date>' . strftime('%Y-%m-%dT%H:%M:%S') . '</meta:creation-date>'
             . '</office:meta>'
-        . '</office:document-meta>'
-        , 'meta.xml');
+        . '</office:document-meta>',
+        'meta.xml');
     $zipfile -> addFile('<?xml version="1.0" encoding="UTF-8"?' . '>'
         . '<office:document-styles '. $GLOBALS['OpenDocumentNS'] . 'office:version="1.0">'
             . '<office:font-face-decls>'
@@ -88,16 +89,16 @@ function PMA_createOpenDocument($mime, $data) {
             . '<office:master-styles>'
                 . '<style:master-page style:name="Standard" style:page-layout-name="pm1"/>'
             . '</office:master-styles>'
-        . '</office:document-styles>'
-        , 'styles.xml');
+        . '</office:document-styles>',
+        'styles.xml');
     $zipfile -> addFile('<?xml version="1.0" encoding="UTF-8"?' . '>'
         . '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">'
         . '<manifest:file-entry manifest:media-type="' . $mime . '" manifest:full-path="/"/>'
         . '<manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/>'
         . '<manifest:file-entry manifest:media-type="text/xml" manifest:full-path="meta.xml"/>'
         . '<manifest:file-entry manifest:media-type="text/xml" manifest:full-path="styles.xml"/>'
-        . '</manifest:manifest>'
-        , 'META-INF/manifest.xml');
+        . '</manifest:manifest>',
+        'META-INF/manifest.xml');
     return $zipfile -> file();
 }
 ?>

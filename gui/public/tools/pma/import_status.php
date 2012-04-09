@@ -2,15 +2,14 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 require_once './libraries/common.inc.php';
 require_once './libraries/display_import_ajax.lib.php';
 
 // AJAX requests can't be cached!
-header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-header("Expires: Sat, 11 Jan 1991 06:30:00 GMT"); // Date in the past
+PMA_no_cache_header();
 
 // $GLOBALS["message"] is used for asking for an import message
 if (isset($GLOBALS["message"]) && $GLOBALS["message"]) {
@@ -18,7 +17,7 @@ if (isset($GLOBALS["message"]) && $GLOBALS["message"]) {
     header('Content-type: text/html');
 
     // wait 0.3 sec before we check for $_SESSION variable, which is set inside import.php
-	usleep(300000);
+    usleep(300000);
 
     // wait until message is available
     while ($_SESSION['Import_message']['message'] == null) {
@@ -27,7 +26,7 @@ if (isset($GLOBALS["message"]) && $GLOBALS["message"]) {
 
     echo $_SESSION['Import_message']['message'];
     echo '<fieldset class="tblFooters">' . "\n";
-    echo '	[ <a href="' . $_SESSION['Import_message']['go_back_url'] . '">' . __('Back') . '</a> ]' . "\n";
+    echo '    [ <a href="' . $_SESSION['Import_message']['go_back_url'] . '">' . __('Back') . '</a> ]' . "\n";
     echo '</fieldset>'."\n";
 
 } else {

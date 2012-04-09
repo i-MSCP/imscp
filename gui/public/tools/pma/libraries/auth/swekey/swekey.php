@@ -18,18 +18,18 @@
 /**
  * Errors codes
  */
-define ("SWEKEY_ERR_INVALID_DEV_STATUS",901);   // The satus of the device is not SWEKEY_STATUS_OK
-define ("SWEKEY_ERR_INTERNAL",902);             // Should never occurd
-define ("SWEKEY_ERR_OUTDATED_RND_TOKEN",910);   // You random token is too old
-define ("SWEKEY_ERR_INVALID_OTP",911);          // The otp was not correct
+define ("SWEKEY_ERR_INVALID_DEV_STATUS", 901);   // The satus of the device is not SWEKEY_STATUS_OK
+define ("SWEKEY_ERR_INTERNAL", 902);             // Should never occurd
+define ("SWEKEY_ERR_OUTDATED_RND_TOKEN", 910);   // You random token is too old
+define ("SWEKEY_ERR_INVALID_OTP", 911);          // The otp was not correct
 
 /**
  * Those errors are considered as an attack and your site will be blacklisted during one minute
  * if you receive one of those errors
  */
-define ("SWEKEY_ERR_BADLY_ENCODED_REQUEST",920);
-define ("SWEKEY_ERR_INVALID_RND_TOKEN",921);
-define ("SWEKEY_ERR_DEV_NOT_FOUND",922);
+define ("SWEKEY_ERR_BADLY_ENCODED_REQUEST", 920);
+define ("SWEKEY_ERR_INVALID_RND_TOKEN", 921);
+define ("SWEKEY_ERR_DEV_NOT_FOUND", 922);
 
 /**
  * Default values for configuration.
@@ -128,7 +128,7 @@ function Swekey_SetStatusServer($server)
 function Swekey_SetCAFile($cafile)
 {
     global $gSwekeyCA;
-   	$gSwekeyCA = $cafile;
+       $gSwekeyCA = $cafile;
 }
 
 /**
@@ -142,7 +142,7 @@ function Swekey_SetCAFile($cafile)
 function Swekey_EnableTokenCache($enable)
 {
     global $gSwekeyTokenCacheEnabled;
-	$gSwekeyTokenCacheEnabled = ! empty($enable);
+    $gSwekeyTokenCacheEnabled = ! empty($enable);
 }
 
 
@@ -186,86 +186,79 @@ function Swekey_HttpGet($url, &$response_code)
     global $gSwekeyLastResult;
     $gSwekeyLastResult = "<not set>";
 
- 	// use curl if available
-	if (function_exists('curl_init'))
-	{
-		$sess = curl_init($url);
-		if (substr($url, 0, 8) == "https://")
-		{
-			global $gSwekeyCA;
+     // use curl if available
+    if (function_exists('curl_init')) {
+        $sess = curl_init($url);
+        if (substr($url, 0, 8) == "https://") {
+            global $gSwekeyCA;
 
-			if (! empty($gSwekeyCA))
-			{
-				if (file_exists($gSwekeyCA))
-				{
-					if (! curl_setopt($sess, CURLOPT_CAINFO, $gSwekeyCA))
-						error_log("SWEKEY_ERROR:Could not set CA file : ".curl_error($sess));
-					else
-						$caFileOk = true;
-				}
-				else
-					error_log("SWEKEY_ERROR:Could not find CA file $gSwekeyCA getting $url");
-			}
+            if (! empty($gSwekeyCA)) {
+                if (file_exists($gSwekeyCA)) {
+                    if (! curl_setopt($sess, CURLOPT_CAINFO, $gSwekeyCA)) {
+                        error_log("SWEKEY_ERROR:Could not set CA file : ".curl_error($sess));
+                    } else {
+                        $caFileOk = true;
+                    }
+                } else {
+                    error_log("SWEKEY_ERROR:Could not find CA file $gSwekeyCA getting $url");
+                }
+            }
 
-			curl_setopt($sess, CURLOPT_SSL_VERIFYHOST, '2');
-			curl_setopt($sess, CURLOPT_SSL_VERIFYPEER, '2');
-			curl_setopt($sess, CURLOPT_CONNECTTIMEOUT, '20');
-			curl_setopt($sess, CURLOPT_TIMEOUT, '20');
-		}
-		else
-		{
-			curl_setopt($sess, CURLOPT_CONNECTTIMEOUT, '3');
-			curl_setopt($sess, CURLOPT_TIMEOUT, '5');
-		}
+            curl_setopt($sess, CURLOPT_SSL_VERIFYHOST, '2');
+            curl_setopt($sess, CURLOPT_SSL_VERIFYPEER, '2');
+            curl_setopt($sess, CURLOPT_CONNECTTIMEOUT, '20');
+            curl_setopt($sess, CURLOPT_TIMEOUT, '20');
+        } else {
+            curl_setopt($sess, CURLOPT_CONNECTTIMEOUT, '3');
+            curl_setopt($sess, CURLOPT_TIMEOUT, '5');
+        }
 
-		curl_setopt($sess, CURLOPT_RETURNTRANSFER, '1');
-		$res=curl_exec($sess);
-		$response_code = curl_getinfo($sess, CURLINFO_HTTP_CODE);
-		$curlerr = curl_error($sess);
-		curl_close($sess);
+        curl_setopt($sess, CURLOPT_RETURNTRANSFER, '1');
+        $res=curl_exec($sess);
+        $response_code = curl_getinfo($sess, CURLINFO_HTTP_CODE);
+        $curlerr = curl_error($sess);
+        curl_close($sess);
 
-		if ($response_code == 200)
-		{
-	        $gSwekeyLastResult = $res;
-	        return $res;
-		}
+        if ($response_code == 200) {
+            $gSwekeyLastResult = $res;
+            return $res;
+        }
 
-		if (! empty($response_code))
-        {
+        if (! empty($response_code)) {
             $gSwekeyLastError = $response_code;
             error_log("SWEKEY_ERROR:Error $gSwekeyLastError ($curlerr) getting $url");
             return "";
-       }
+        }
 
         $response_code = 408; // Request Timeout
         $gSwekeyLastError = $response_code;
         error_log("SWEKEY_ERROR:Error $curlerr getting $url");
         return "";
-	}
+    }
 
-	// use pecl_http if available
-    if (class_exists('HttpRequest'))
-    {
+    // use pecl_http if available
+    if (class_exists('HttpRequest')) {
         // retry if one of the server is down
-        for ($num=1; $num <= 3; $num++ )
-        {
+        for ($num=1; $num <= 3; $num++ ) {
             $r = new HttpRequest($url);
             $options = array('timeout' => '3');
 
-            if (substr($url,0, 6) == "https:")
-            {
+            if (substr($url, 0, 6) == "https:") {
                 $sslOptions = array();
                 $sslOptions['verifypeer'] = true;
                 $sslOptions['verifyhost'] = true;
 
                 $capath = __FILE__;
                 $name = strrchr($capath, '/');
-                if (empty($name)) // windows
+                // windows
+                if (empty($name)) {
                     $name = strrchr($capath, '\\');
+                }
                 $capath = substr($capath, 0, strlen($capath) - strlen($name) + 1).'musbe-ca.crt';
 
-                if (! empty($gSwekeyCA))
+                if (! empty($gSwekeyCA)) {
                     $sslOptions['cainfo'] = $gSwekeyCA;
+                }
 
                 $options['ssl'] = $sslOptions;
             }
@@ -276,18 +269,18 @@ function Swekey_HttpGet($url, &$response_code)
             {
                $reply = $r->send();
                $res = $reply->getBody();
-	           $info = $r->getResponseInfo();
-	           $response_code = $info['response_code'];
-	           if ($response_code != 200)
-	           {
+               $info = $r->getResponseInfo();
+               $response_code = $info['response_code'];
+               if ($response_code != 200)
+               {
                     $gSwekeyLastError = $response_code;
                     error_log("SWEKEY_ERROR:Error ".$gSwekeyLastError." getting ".$url);
                     return "";
                }
 
 
-	           $gSwekeyLastResult = $res;
-	           return $res;
+               $gSwekeyLastResult = $res;
+               return $res;
             }
  //           catch (HttpException $e)
  //           {
@@ -301,14 +294,13 @@ function Swekey_HttpGet($url, &$response_code)
         return "";
     }
 
-   	global $http_response_header;
-	$res = @file_get_contents($url);
-	$response_code = substr($http_response_header[0], 9, 3); //HTTP/1.0
-	if ($response_code == 200)
-	{
-	   $gSwekeyLastResult = $res;
-	   return $res;
-	}
+       global $http_response_header;
+    $res = @file_get_contents($url);
+    $response_code = substr($http_response_header[0], 9, 3); //HTTP/1.0
+    if ($response_code == 200) {
+       $gSwekeyLastResult = $res;
+       return $res;
+    }
 
     $gSwekeyLastError = $response_code;
     error_log("SWEKEY_ERROR:Error ".$response_code." getting ".$url);
@@ -336,7 +328,7 @@ function Swekey_GetRndToken()
 function Swekey_GetHalfRndToken()
 {
     global $gSwekeyRndTokenServer;
-	return Swekey_HttpGet($gSwekeyRndTokenServer.'/HALF-RND-TOKEN', $response_code);
+    return Swekey_HttpGet($gSwekeyRndTokenServer.'/HALF-RND-TOKEN', $response_code);
 }
 
 /**
@@ -355,51 +347,47 @@ function Swekey_GetFastHalfRndToken()
     $cachefile = "";
 
     // We check if we have a valid RT is the session
-    if (isset($_SESSION['rnd-token-date']))
-       if (time() - $_SESSION['rnd-token-date'] < 30)
-	   	  $res = $_SESSION['rnd-token'];
+    if (isset($_SESSION['rnd-token-date'])) {
+        if (time() - $_SESSION['rnd-token-date'] < 30) {
+             $res = $_SESSION['rnd-token'];
+        }
+    }
 
     // If not we try to get it from a temp file (PHP >= 5.2.1 only)
-   if (strlen($res) != 32 && $gSwekeyTokenCacheEnabled)
-   {
-        if (function_exists('sys_get_temp_dir'))
-        {
+    if (strlen($res) != 32 && $gSwekeyTokenCacheEnabled) {
+        if (function_exists('sys_get_temp_dir')) {
             $tempdir = sys_get_temp_dir();
             $cachefile = $tempdir."/swekey-rnd-token-".get_current_user();
             $modif = filemtime($cachefile);
-			if ($modif != false)
-                if (time() - $modif < 30)
-	            {
-	                $res = @file_get_contents($cachefile);
-	                if (strlen($res) != 32)
-	                    $res = "";
-               		else
-               		{
-               		 	$_SESSION['rnd-token'] = $res;
-               		 	$_SESSION['rnd-token-date'] = $modif;
-		 			}
-	            }
+            if ($modif != false) {
+                if (time() - $modif < 30) {
+                    $res = @file_get_contents($cachefile);
+                    if (strlen($res) != 32) {
+                         $res = "";
+                    } else {
+                         $_SESSION['rnd-token'] = $res;
+                         $_SESSION['rnd-token-date'] = $modif;
+                    }
+                }
+            }
         }
-   }
+    }
 
-   // If we don't have a valid RT here we have to get it from the server
-   if (strlen($res) != 32)
-   {
+    // If we don't have a valid RT here we have to get it from the server
+    if (strlen($res) != 32) {
         $res = substr(Swekey_GetHalfRndToken(), 0, 32);
         $_SESSION['rnd-token'] = $res;
         $_SESSION['rnd-token-date'] = time();
-        if (! empty($cachefile))
-        {
-        	// we unlink the file so no possible tempfile race attack
-        	unlink($cachefile);
-	   		$file = fopen($cachefile , "x");
-	   		if ($file != FALSE)
-	   		{
-	   	    	@fwrite($file, $res);
-    			@fclose($file);
-    		}
+        if (! empty($cachefile)) {
+            // we unlink the file so no possible tempfile race attack
+            unlink($cachefile);
+            $file = fopen($cachefile, "x");
+            if ($file != false) {
+                @fwrite($file, $res);
+                @fclose($file);
+            }
         }
-   }
+    }
 
    return $res."00000000000000000000000000000000";
 }
@@ -434,30 +422,30 @@ function Swekey_GetFastRndToken()
 function Swekey_CheckOtp($id, $rt, $otp)
 {
     global $gSwekeyCheckServer;
-	$res = Swekey_HttpGet($gSwekeyCheckServer.'/CHECK-OTP/'.$id.'/'.$rt.'/'.$otp, $response_code);
-	return $response_code == 200 && $res == "OK";
+    $res = Swekey_HttpGet($gSwekeyCheckServer.'/CHECK-OTP/'.$id.'/'.$rt.'/'.$otp, $response_code);
+    return $response_code == 200 && $res == "OK";
 }
 
 /**
  * Values that are associated with a key.
  * The following values can be returned by the Swekey_GetStatus() function
  */
-define ("SWEKEY_STATUS_OK",0);
-define ("SWEKEY_STATUS_NOT_FOUND",1);  // The key does not exist in the db
-define ("SWEKEY_STATUS_INACTIVE",2);   // The key has never been activated
-define ("SWEKEY_STATUS_LOST",3);	   // The user has lost his key
-define ("SWEKEY_STATUS_STOLEN",4);	   // The key was stolen
-define ("SWEKEY_STATUS_FEE_DUE",5);	   // The annual fee was not paid
-define ("SWEKEY_STATUS_OBSOLETE",6);   // The hardware is no longer supported
-define ("SWEKEY_STATUS_UNKOWN",201);   // We could not connect to the authentication server
+define ("SWEKEY_STATUS_OK", 0);
+define ("SWEKEY_STATUS_NOT_FOUND", 1);  // The key does not exist in the db
+define ("SWEKEY_STATUS_INACTIVE", 2);   // The key has never been activated
+define ("SWEKEY_STATUS_LOST", 3);       // The user has lost his key
+define ("SWEKEY_STATUS_STOLEN", 4);       // The key was stolen
+define ("SWEKEY_STATUS_FEE_DUE", 5);       // The annual fee was not paid
+define ("SWEKEY_STATUS_OBSOLETE", 6);   // The hardware is no longer supported
+define ("SWEKEY_STATUS_UNKOWN", 201);   // We could not connect to the authentication server
 
 /**
  * Values that are associated with a key.
  * The Javascript Api can also return the following values
  */
-define ("SWEKEY_STATUS_REPLACED",100);	 // This key has been replaced by a backup key
-define ("SWEKEY_STATUS_BACKUP_KEY",101); // This key is a backup key that is not activated yet
-define ("SWEKEY_STATUS_NOTPLUGGED",200); // This key is not plugged in the computer
+define ("SWEKEY_STATUS_REPLACED", 100);     // This key has been replaced by a backup key
+define ("SWEKEY_STATUS_BACKUP_KEY", 101); // This key is a backup key that is not activated yet
+define ("SWEKEY_STATUS_NOTPLUGGED", 200); // This key is not plugged in the computer
 
 
 /**
@@ -469,21 +457,21 @@ define ("SWEKEY_STATUS_NOTPLUGGED",200); // This key is not plugged in the compu
  */
 function Swekey_GetStatusStr($status)
 {
-	switch($status)
-	{
-       case SWEKEY_STATUS_OK			: return 'OK';
-       case SWEKEY_STATUS_NOT_FOUND	    : return 'Key does not exist in the db';
-       case SWEKEY_STATUS_INACTIVE		: return 'Key not activated';
-       case SWEKEY_STATUS_LOST			: return 'Key was lost';
-       case SWEKEY_STATUS_STOLEN		: return 'Key was stolen';
-       case SWEKEY_STATUS_FEE_DUE		: return 'The annual fee was not paid';
-       case SWEKEY_STATUS_OBSOLETE		: return 'Key no longer supported';
-       case SWEKEY_STATUS_REPLACED	    : return 'This key has been replaced by a backup key';
+    switch($status)
+    {
+       case SWEKEY_STATUS_OK            : return 'OK';
+       case SWEKEY_STATUS_NOT_FOUND        : return 'Key does not exist in the db';
+       case SWEKEY_STATUS_INACTIVE        : return 'Key not activated';
+       case SWEKEY_STATUS_LOST            : return 'Key was lost';
+       case SWEKEY_STATUS_STOLEN        : return 'Key was stolen';
+       case SWEKEY_STATUS_FEE_DUE        : return 'The annual fee was not paid';
+       case SWEKEY_STATUS_OBSOLETE        : return 'Key no longer supported';
+       case SWEKEY_STATUS_REPLACED        : return 'This key has been replaced by a backup key';
        case SWEKEY_STATUS_BACKUP_KEY    : return 'This key is a backup key that is not activated yet';
        case SWEKEY_STATUS_NOTPLUGGED    : return 'This key is not plugged in the computer';
-       case SWEKEY_STATUS_UNKOWN    	: return 'Unknow Status, could not connect to the authentication server';
-	}
-	return 'unknown status '.$status;
+       case SWEKEY_STATUS_UNKOWN        : return 'Unknow Status, could not connect to the authentication server';
+    }
+    return 'unknown status '.$status;
 }
 
 /**
@@ -497,7 +485,7 @@ function Swekey_GetStatusStr($status)
 function Swekey_GetStatus($id)
 {
     global $gSwekeyStatusServer;
-	$res = Swekey_HttpGet($gSwekeyStatusServer.'/GET-STATUS/'.$id, $response_code);
+    $res = Swekey_HttpGet($gSwekeyStatusServer.'/GET-STATUS/'.$id, $response_code);
     if ($response_code == 200)
         return intval($res);
 

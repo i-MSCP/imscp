@@ -3,7 +3,7 @@
 /**
  * query by example the whole database
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -26,7 +26,7 @@ if (isset($_REQUEST['submit_sql']) && ! empty($sql_query)) {
         $message_to_display = true;
     } else {
         $goto      = 'db_sql.php';
-        require './sql.php';
+        include './sql.php';
         exit;
     }
 }
@@ -99,13 +99,13 @@ $tbl_result     = PMA_DBI_query('SHOW TABLES FROM ' . PMA_backquote($db) . ';', 
 $tbl_result_cnt = PMA_DBI_num_rows($tbl_result);
 if (0 == $tbl_result_cnt) {
     PMA_Message::error(__('No tables found in database.'))->display();
-    require './libraries/footer.inc.php';
+    include './libraries/footer.inc.php';
     exit;
 }
 
 // The tables list gets from MySQL
 while (list($tbl) = PMA_DBI_fetch_row($tbl_result)) {
-    $fld_results = PMA_DBI_get_fields($db, $tbl);
+    $fld_results = PMA_DBI_get_columns($db, $tbl);
 
     if (empty($tbl_names[$tbl]) && !empty($_REQUEST['TableList'])) {
         $tbl_names[$tbl] = '';
@@ -182,8 +182,8 @@ function showColumnSelectCell($columns, $column_number, $selected = '')
     if (isset($tab_designer['link'])) {
 ?>
 <div id="visual_builder_anchor" class="notice hide">
-	<span id="footnote_1">
-<?php echo __('Switch to') . ' <a href="' . $tab_designer['link'] . PMA_get_arg_separator('html') . 'query=1">' . __('visual builder') . '</a>'; ?>
+    <span id="footnote_1">
+<?php printf(__('Switch to %svisual builder%s'), ' <a href="' . $tab_designer['link'] . PMA_get_arg_separator('html') . 'query=1">', '</a>'); ?>
     </span>
 </div>
 <?php
@@ -339,7 +339,7 @@ for ($x = 0; $x < $col; $x++) {
     if (isset($criteria[$x])) {
         $tmp_criteria = $criteria[$x];
     }
-    if ((empty($prev_criteria) || !isset($prev_criteria[$x]))
+    if ((empty($prev_criteria) || ! isset($prev_criteria[$x]))
         || $prev_criteria[$x] != htmlspecialchars($tmp_criteria)) {
         $curCriteria[$z]   = $tmp_criteria;
     } else {
@@ -497,7 +497,7 @@ for ($y = 0; $y <= $row; $y++) {
 
         echo "\n";
         $or = 'Or' . $y;
-        if (!isset(${$or})) {
+        if (! isset(${$or})) {
             ${$or} = '';
         }
         if (!empty(${$or}) && isset(${$or}[$x])) {
@@ -667,7 +667,7 @@ foreach ($tbl_names as $key => $val) {
 <?php
 // 1. SELECT
 $last_select = 0;
-if (!isset($qry_select)) {
+if (! isset($qry_select)) {
     $qry_select         = '';
 }
 for ($x = 0; $x < $col; $x++) {
@@ -686,7 +686,6 @@ if (!empty($qry_select)) {
 // 2. FROM
 
 // Create LEFT JOINS out of Relations
-// Code originally by Mike Beck <mike.beck@ibmiller.de>
 // If we can use Relations we could make some left joins.
 // First find out if relations are available in this database.
 
@@ -756,11 +755,11 @@ if (isset($Field) && count($Field) > 0) {
             PMA_DBI_select_db($db);
 
             foreach ($tab_all as $tab) {
-                $ind_rs   = PMA_DBI_query('SHOW INDEX FROM ' . PMA_backquote($tab) . ';');
-                while ($ind = PMA_DBI_fetch_assoc($ind_rs)) {
+                $indexes = PMA_DBI_get_table_indexes($db, $tab);
+                foreach ($indexes as $ind) {
                     $col1 = $tab . '.' . $ind['Column_name'];
                     if (isset($col_all[$col1])) {
-                        if ($ind['non_unique'] == 0) {
+                        if ($ind['Non_unique'] == 0) {
                             if (isset($col_where[$col1])) {
                                 $col_unique[$col1] = 'Y';
                             } else {
@@ -892,7 +891,7 @@ if ($criteria_cnt > 1) {
     $qry_where      = '(' . $qry_where . ')';
 }
 // OR rows ${'cur' . $or}[$x]
-if (!isset($curAndOrRow)) {
+if (! isset($curAndOrRow)) {
     $curAndOrRow          = array();
 }
 for ($y = 0; $y <= $row; $y++) {
@@ -929,7 +928,7 @@ if (!empty($qry_where) && $qry_where != '()') {
 
 // 4. ORDER BY
 $last_orderby = 0;
-if (!isset($qry_orderby)) {
+if (! isset($qry_orderby)) {
     $qry_orderby      = '';
 }
 for ($x = 0; $x < $col; $x++) {

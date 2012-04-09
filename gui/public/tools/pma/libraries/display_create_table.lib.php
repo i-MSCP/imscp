@@ -22,7 +22,7 @@
  * warnings about the lack of privileges for CREATE TABLE. Tested
  * on MySQL 5.0.18.
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -41,9 +41,9 @@ $is_create_table_priv = true;
     <legend>
 <?php
 if ($GLOBALS['cfg']['PropertiesIconic']) {
-    echo '<img class="icon" src="' . $pmaThemeImage . 'b_newtbl.png" width="16" height="16" alt="" />';
+    echo PMA_getImage('b_newtbl.png');
 }
-echo sprintf(__('Create table on database %s'), PMA_getDbLink());
+echo __('Create table');
 ?>
     </legend>
     <?php echo PMA_generate_common_hidden_inputs($db); ?>

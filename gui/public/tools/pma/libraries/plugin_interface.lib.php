@@ -3,7 +3,7 @@
 /**
  * Generic plugin interface.
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -11,13 +11,8 @@
  *
  * Reads all plugin information from directory $plugins_dir.
  *
- * @uses    ksort()
- * @uses    opendir()
- * @uses    readdir()
- * @uses    is_file()
- * @uses    preg_match()
- * @param   string  $plugins_dir    directrory with plugins
- * @param   mixed   $plugin_param   parameter to plugin by which they can decide whether they can work
+ * @param string  $plugins_dir    directrory with plugins
+ * @param mixed   $plugin_param   parameter to plugin by which they can decide whether they can work
  * @return  array                   list of plugins
  */
 function PMA_getPlugins($plugins_dir, $plugin_param)
@@ -25,7 +20,6 @@ function PMA_getPlugins($plugins_dir, $plugin_param)
     /* Scan for plugins */
     $plugin_list = array();
     if ($handle = @opendir($plugins_dir)) {
-        $is_first = 0;
         while ($file = @readdir($handle)) {
             // In some situations, Mac OS creates a new file for each file
             // (for example ._csv.php) so the following regexp
@@ -45,8 +39,7 @@ function PMA_getPlugins($plugins_dir, $plugin_param)
  *
  * returns locale string for $name or $name if no locale is found
  *
- * @uses    $GLOBALS
- * @param   string  $name   for local string
+ * @param string  $name   for local string
  * @return  string          locale string for $name
  */
 function PMA_getString($name)
@@ -59,19 +52,15 @@ function PMA_getString($name)
  *
  * returns html input tag option 'checked' if plugin $opt should be set by config or request
  *
- * @uses    $_REQUEST
- * @uses    $_GET
- * @uses    $GLOBALS['cfg']
- * @uses    $GLOBALS['timeout_passed']
- * @param   string  $section    name of config section in
+ * @param string  $section    name of config section in
  *                              $GLOBALS['cfg'][$section] for plugin
- * @param   string  $opt        name of option
+ * @param string  $opt        name of option
  * @return  string              hmtl input tag option 'checked'
  */
 function PMA_pluginCheckboxCheck($section, $opt)
 {
     // If the form is being repopulated using $_GET data, that is priority
-    if (isset($_GET[$opt]) || !isset($_GET['repopulate']) && ((isset($GLOBALS['timeout_passed']) && $GLOBALS['timeout_passed'] && isset($_REQUEST[$opt])) ||
+    if (isset($_GET[$opt]) || ! isset($_GET['repopulate']) && ((isset($GLOBALS['timeout_passed']) && $GLOBALS['timeout_passed'] && isset($_REQUEST[$opt])) ||
         (isset($GLOBALS['cfg'][$section][$opt]) && $GLOBALS['cfg'][$section][$opt]))) {
         return ' checked="checked"';
     }
@@ -83,19 +72,14 @@ function PMA_pluginCheckboxCheck($section, $opt)
  *
  * returns default value for option $opt
  *
- * @uses    htmlspecialchars()
- * @uses    $_REQUEST
- * @uses    $_GET
- * @uses    $GLOBALS['cfg']
- * @uses    $GLOBALS['timeout_passed']
- * @param   string  $section    name of config section in
+ * @param string  $section    name of config section in
  *                              $GLOBALS['cfg'][$section] for plugin
- * @param   string  $opt        name of option
+ * @param string  $opt        name of option
  * @return  string              default value for option $opt
  */
 function PMA_pluginGetDefault($section, $opt)
 {
-    if(isset($_GET[$opt])) { // If the form is being repopulated using $_GET data, that is priority
+    if (isset($_GET[$opt])) { // If the form is being repopulated using $_GET data, that is priority
         return htmlspecialchars($_GET[$opt]);
     } elseif (isset($GLOBALS['timeout_passed']) && $GLOBALS['timeout_passed'] && isset($_REQUEST[$opt])) {
         return htmlspecialchars($_REQUEST[$opt]);
@@ -104,7 +88,7 @@ function PMA_pluginGetDefault($section, $opt)
         /* Possibly replace localised texts */
         if (preg_match_all('/(str[A-Z][A-Za-z0-9]*)/', $GLOBALS['cfg'][$section][$opt], $matches)) {
             $val = $GLOBALS['cfg'][$section][$opt];
-            foreach($matches[0] as $match) {
+            foreach ($matches[0] as $match) {
                 if (isset($GLOBALS[$match])) {
                     $val = str_replace($match, $GLOBALS[$match], $val);
                 }
@@ -122,13 +106,10 @@ function PMA_pluginGetDefault($section, $opt)
  *
  * returns html input tag option 'checked' if option $opt should be set by config or request
  *
- * @uses    $_REQUEST
- * @uses    $GLOBALS['cfg']
- * @uses    $GLOBALS['timeout_passed']
- * @param   string  $section    name of config section in
+ * @param string  $section    name of config section in
  *                              $GLOBALS['cfg'][$section] for plugin
- * @param   string  $opt        name of option
- * @param   string  $val        value of option to check against
+ * @param string  $opt        name of option
+ * @param string  $val        value of option to check against
  * @return  string              html input tag option 'checked'
  */
 function PMA_pluginIsActive($section, $opt, $val)
@@ -149,18 +130,16 @@ function PMA_pluginIsActive($section, $opt, $val)
  * returns html select form element for plugin choice
  * and hidden fields denoting whether each plugin must be exported as a file
  *
- * @uses    PMA_pluginGetDefault()
- * @uses    PMA_getString()
- * @param   string  $section    name of config section in
+ * @param string  $section    name of config section in
  *                              $GLOBALS['cfg'][$section] for plugin
- * @param   string  $name       name of select element
- * @param   array   &$list      array with plugin configuration defined in plugin file
- * @param   string  $cfgname    name of config value, if none same as $name
+ * @param string  $name       name of select element
+ * @param array   &$list      array with plugin configuration defined in plugin file
+ * @param string  $cfgname    name of config value, if none same as $name
  * @return  string              html select tag
  */
-function PMA_pluginGetChoice($section, $name, &$list, $cfgname = NULL)
+function PMA_pluginGetChoice($section, $name, &$list, $cfgname = null)
 {
-    if (!isset($cfgname)) {
+    if (! isset($cfgname)) {
         $cfgname = $name;
     }
     $ret = '<select id="plugins" name="' . $name . '">';
@@ -168,7 +147,7 @@ function PMA_pluginGetChoice($section, $name, &$list, $cfgname = NULL)
     foreach ($list as $plugin_name => $val) {
         $ret .= '<option';
          // If the form is being repopulated using $_GET data, that is priority
-        if(isset($_GET[$name]) && $plugin_name == $_GET[$name] || !isset($_GET[$name]) && $plugin_name == $default) {
+        if (isset($_GET[$name]) && $plugin_name == $_GET[$name] || ! isset($_GET[$name]) && $plugin_name == $default) {
             $ret .= ' selected="selected"';
         }
          $ret .= ' value="' . $plugin_name . '">' . PMA_getString($val['text']) . '</option>' . "\n";
@@ -178,7 +157,7 @@ function PMA_pluginGetChoice($section, $name, &$list, $cfgname = NULL)
     // Whether each plugin has to be saved as a file
     foreach ($list as $plugin_name => $val) {
         $ret .= '<input type="hidden" id="force_file_' . $plugin_name . '" value="';
-        if(isset($val['force_file'])) {
+        if (isset($val['force_file'])) {
             $ret .= 'true';
         } else {
             $ret .= 'false';
@@ -193,14 +172,11 @@ function PMA_pluginGetChoice($section, $name, &$list, $cfgname = NULL)
  *
  * returns single option in a list element
  *
- * @uses    PMA_getString()
- * @uses    PMA_pluginCheckboxCheck()
- * @uses    PMA_pluginGetDefault()
- * @param   string  $section        name of config section in
+ * @param string  $section        name of config section in
  *                                  $GLOBALS['cfg'][$section] for plugin
- * @param   string  $plugin_name    unique plugin name
- * @param   string  $id             option id
- * @param   array   &$opt           plugin option details
+ * @param string  $plugin_name    unique plugin name
+ * @param string  $id             option id
+ * @param array   &$opt           plugin option details
  * @return  string                  table row with option
  */
 function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
@@ -240,7 +216,7 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
         $ret .= '<select name="' . $plugin_name . '_' . $opt['name'] . '"'
             . ' id="select_' . $plugin_name . '_' . $opt['name'] . '">';
         $default = PMA_pluginGetDefault($section, $plugin_name . '_' . $opt['name']);
-        foreach($opt['values'] as $key => $val) {
+        foreach ($opt['values'] as $key => $val) {
             $ret .= '<option value="' . $key . '"';
             if ($key == $default) {
                 $ret .= ' selected="selected"';
@@ -250,10 +226,10 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
         $ret .= '</select>';
     } elseif ($opt['type'] == 'radio') {
         $default = PMA_pluginGetDefault($section, $plugin_name . '_' . $opt['name']);
-        foreach($opt['values'] as $key => $val) {
+        foreach ($opt['values'] as $key => $val) {
             $ret .= '<li><input type="radio" name="' . $plugin_name . '_' . $opt['name'] . '" value="' . $key
             . '" id="radio_' . $plugin_name . '_' . $opt['name'] . '_' . $key . '"';
-            if($key == $default) {
+            if ($key == $default) {
                 $ret .= 'checked="checked"';
             }
             $ret .= ' />' . '<label for="radio_' . $plugin_name . '_' . $opt['name'] . '_' . $key . '">'
@@ -273,7 +249,7 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
     } elseif ($opt['type'] == 'begin_subgroup') {
         /* each subgroup can have a header, which may also be a form element */
         $ret .=  PMA_pluginGetOneOption($section, $plugin_name, $id, $opt['subgroup_header']) . '<li class="subgroup"><ul';
-        if(isset($opt['subgroup_header']['name'])) {
+        if (isset($opt['subgroup_header']['name'])) {
             $ret .= ' id="ul_' . $opt['subgroup_header']['name'] . '">';
         } else {
             $ret .= '>';
@@ -296,7 +272,7 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
     }
 
     // Close the list element after $opt['doc'] link is displayed
-    if($opt['type'] == 'bool' || $opt['type'] == 'text' || $opt['type'] == 'message_only' || $opt['type'] == 'select') {
+    if ($opt['type'] == 'bool' || $opt['type'] == 'text' || $opt['type'] == 'message_only' || $opt['type'] == 'select') {
         $ret .= '</li>';
     }
     $ret .= "\n";
@@ -308,11 +284,8 @@ function PMA_pluginGetOneOption($section, $plugin_name, $id, &$opt)
  *
  * return html div with editable options for plugin
  *
- * @uses    PMA_getString()
- * @uses    PMA_pluginGetOneOption()
- * @uses    PMA_pluginGetDefault();
- * @param   string  $section    name of config section in $GLOBALS['cfg'][$section]
- * @param   array   &$list      array with plugin configuration defined in plugin file
+ * @param string  $section    name of config section in $GLOBALS['cfg'][$section]
+ * @param array   &$list      array with plugin configuration defined in plugin file
  * @return  string              html fieldset with plugin options
  */
 function PMA_pluginGetOptions($section, &$list)

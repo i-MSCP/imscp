@@ -3,7 +3,7 @@
 /**
  * Code for displaying language selection
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -12,12 +12,13 @@ if (! defined('PHPMYADMIN')) {
 /**
  * Sorts available languages by their true english names
  *
- * @param   array   the array to be sorted
- * @param   mixed   a required parameter
+ * @param array   the array to be sorted
+ * @param mixed   a required parameter
  * @return  the sorted array
  * @access  private
  */
-function PMA_language_cmp(&$a, &$b) {
+function PMA_language_cmp(&$a, &$b)
+{
     return (strcmp($a[1], $b[1]));
 } // end of the 'PMA_language_cmp()' function
 
@@ -26,7 +27,8 @@ function PMA_language_cmp(&$a, &$b) {
  *
  * @access  public
  */
-function PMA_select_language($use_fieldset = FALSE, $show_doc = TRUE) {
+function PMA_select_language($use_fieldset = false, $show_doc = true)
+{
     global $cfg, $lang;
     ?>
 
@@ -53,7 +55,7 @@ function PMA_select_language($use_fieldset = FALSE, $show_doc = TRUE) {
     }
     ?>
 
-    <select name="lang" onchange="this.form.submit();" xml:lang="en" dir="ltr">
+    <select name="lang" class="autosubmit" xml:lang="en" dir="ltr">
     <?php
 
     uasort($GLOBALS['available_languages'], 'PMA_language_cmp');

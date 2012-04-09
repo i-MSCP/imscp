@@ -3,36 +3,7 @@
 /**
  * the navigation frame - displays server, db and table selection tree
  *
- * @package phpMyAdmin
- * @uses $GLOBALS['pma']->databases
- * @uses $GLOBALS['server']
- * @uses $GLOBALS['db']
- * @uses $GLOBALS['table']
- * @uses $GLOBALS['available_languages']
- * @uses $GLOBALS['lang']
- * @uses $GLOBALS['text_dir']
- * @uses $GLOBALS['charset']
- * @uses $GLOBALS['pmaThemeImage']
- * @uses $GLOBALS['cfg']['LeftFrameLight']
- * @uses $GLOBALS['cfg']['ShowTooltip']
- * @uses $GLOBALS['cfg']['ShowTooltipAliasDB']
- * @uses $GLOBALS['cfg']['DefaultTabDatabase']
- * @uses $GLOBALS['cfgRelation']['commwork']) {
- * @uses PMA_List_Database::getSingleItem()
- * @uses PMA_List_Database::getHtmlSelectGrouped()
- * @uses PMA_List_Database::getGroupedDetails()
- * @uses PMA_generate_common_url()
- * @uses PMA_generate_common_hidden_inputs()
- * @uses PMA_getDbComment();
- * @uses PMA_getTableCount()
- * @uses PMA_getTableList()
- * @uses PMA_getRelationsParam()
- * @uses PMA_outBufferPre()
- * @uses strlen()
- * @uses session_write_close()
- * @uses is_array()
- * @uses implode()
- * @uses htmlspecialchars()
+ * @package PhpMyAdmin
  */
 
 /**
@@ -43,14 +14,22 @@ require_once './libraries/common.inc.php';
 /**
  * finish and cleanup navigation.php script execution, only to be used in navigation.php
  *
- * @uses $GLOBALS['controllink'] to close it
- * @uses $GLOBALS['userlink'] to close it
  * @access private
  */
 function PMA_exitNavigationFrame()
 {
     echo '</body></html>';
     exit;
+}
+
+require_once './libraries/common.lib.php';
+require_once './libraries/RecentTable.class.php';
+
+/**
+ * Check if it is an ajax request to reload the recent tables list.
+ */
+if ($GLOBALS['is_ajax_request'] && $_REQUEST['recent_table']) {
+    PMA_ajaxResponse('', true, array('options' => PMA_RecentTable::getInstance()->getHtmlSelectOption()) );
 }
 
 // keep the offset of the db list in session before closing it
@@ -62,12 +41,11 @@ if (! isset($_SESSION['tmp_user_values']['table_limit_offset']) || $_SESSION['tm
     $_SESSION['tmp_user_values']['table_limit_offset_db'] = $db;
 }
 if (isset($_REQUEST['pos'])) {
-	if (isset($_REQUEST['tpos'])) {
-		$_SESSION['tmp_user_values']['table_limit_offset'] = (int) $_REQUEST['pos'];
-	}
-	else {
-		$_SESSION['tmp_user_values']['navi_limit_offset'] = (int) $_REQUEST['pos'];
-	}
+    if (isset($_REQUEST['tpos'])) {
+        $_SESSION['tmp_user_values']['table_limit_offset'] = (int) $_REQUEST['pos'];
+    } else {
+        $_SESSION['tmp_user_values']['navi_limit_offset'] = (int) $_REQUEST['pos'];
+    }
 }
 $pos = $_SESSION['tmp_user_values']['navi_limit_offset'];
 $tpos = $_SESSION['tmp_user_values']['table_limit_offset'];
@@ -108,7 +86,7 @@ require_once './libraries/header_http.inc.php';
  * Displays the frame
  */
 // xml declaration moves IE into quirks mode, making much trouble with CSS
-/* echo '<?xml version="1.0" encoding="' . $GLOBALS['charset'] . '"?>'; */
+/* echo '<?xml version="1.0" encoding="utf-8"?>'; */
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -121,19 +99,22 @@ require_once './libraries/header_http.inc.php';
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <title>phpMyAdmin</title>
-    <meta http-equiv="Content-Type"
-        content="text/html; charset=<?php echo $GLOBALS['charset']; ?>" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <base target="frame_content" />
     <link rel="stylesheet" type="text/css"
         href="phpmyadmin.css.php?<?php echo PMA_generate_common_url('', ''); ?>&amp;js_frame=left&amp;nocache=<?php echo $GLOBALS['PMA_Config']->getThemeUniqueValue(); ?>" />
-    <script src="./js/jquery/jquery-1.4.4.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/navigation.js"></script>
-    <script type="text/javascript" src="js/functions.js"></script>
+    <?php
+    echo PMA_includeJS('jquery/jquery-1.6.2.js');
+    echo PMA_includeJS('jquery/jquery-ui-1.8.16.custom.js');
+    echo PMA_includeJS('jquery/jquery.qtip-1.0.0-rc3.js');
+    echo PMA_includeJS('navigation.js');
+    echo PMA_includeJS('functions.js');
+    echo PMA_includeJS('messages.php');
+    // Append the theme id to this url to invalidate the cache on a theme change
+    echo PMA_includeJS('get_image.js.php?theme=' . urlencode($_SESSION['PMA_Theme']->getId()));
+    ?>
     <script type="text/javascript">
     // <![CDATA[
-    var image_minus = '<?php echo $GLOBALS['pmaThemeImage']; ?>b_minus.png';
-    var image_plus = '<?php echo $GLOBALS['pmaThemeImage']; ?>b_plus.png';
-
     // INIT PMA_setFrameSize
     var onloadCnt = 0;
     var onLoadHandler = window.onload;
@@ -179,6 +160,20 @@ require_once './libraries/header_http.inc.php';
 <body id="body_leftFrame">
 <?php
 require './libraries/navigation_header.inc.php';
+
+// display recently used tables
+if ($GLOBALS['cfg']['LeftRecentTable'] > 0) {
+    echo '<div id="recentTableList">' . "\n"
+        .'<form method="post" action="index.php" target="_parent">' . "\n"
+        .PMA_generate_common_hidden_inputs() . "\n"
+        .PMA_RecentTable::getInstance()->getHtmlSelect()
+        .'<noscript>' . "\n"
+        .'<input type="submit" name="Go" value="' . __('Go') . '" />' . "\n"
+        .'</noscript>' . "\n"
+        .'</form>' . "\n"
+        .'</div>' . "\n";
+}
+
 if (! $GLOBALS['server']) {
     // no server selected
     PMA_exitNavigationFrame();
@@ -234,10 +229,8 @@ if (! $GLOBALS['server']) {
 //    or $GLOBALS['cfg']['Servers']['only_db'] is defined and is not an array)
 //    In this case, the database should not be collapsible/expandable
 
-$img_plus = '<img class="icon" id="el%dImg" src="' . $pmaThemeImage . 'b_plus.png"'
-    .' alt="+" />';
-$img_minus = '<img class="icon" id="el%dImg" src="' . $pmaThemeImage . 'b_minus.png"'
-    .' alt="-" />';
+$img_plus = PMA_getImage('b_plus.png', '+', array('id' => 'el%dImg'));
+$img_minus = PMA_getImage('b_minus.png', '-', array('id' => 'el%dImg'));
 
 $href_left = '<a onclick="if (toggle(\'%d\')) return false;"'
     .' href="navigation.php?%s" target="_self">';
@@ -274,7 +267,7 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
         ?>
         <span id="NavFilter">
         <span id="clear_fast_filter" title="<?php echo __('Clear'); ?>">X</span>
-            <input type="text" name="fast_filter" id="fast_filter" title="<?php echo __('Filter'); ?>" value="<?php echo __('filter tables by name'); ?>" />
+            <input type="text" class="gray" name="fast_filter" id="fast_filter" title="<?php echo __('Filter tables by name'); ?>" value="<?php echo __('Filter tables by name'); ?>" />
         </span>
         <?php
     }
@@ -303,9 +296,11 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
         echo __('No tables found in database.');
     }
     unset($table_list);
-    if ($db != 'information_schema') {
-        echo '<ul id="newtable"><li><a target="frame_content" href="tbl_create.php' . PMA_generate_common_url(array('db' => $GLOBALS['db'])) . '">'
-            .'<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_snewtbl.png" id="icon_newtable" alt="' . _pgettext('short form', 'Create table') . '" />'
+    if (!PMA_is_system_schema($db)) {
+        $class = '';
+        $GLOBALS['cfg']['AjaxEnable'] ? $class="ajax" : '';
+        echo '<ul id="newtable"><li><a target="frame_content" href="tbl_create.php' . PMA_generate_common_url(array('db' => $GLOBALS['db'])) . '"  class="'.$class .'" >'
+            . PMA_getImage('b_snewtbl.png', _pgettext('short form', 'Create table'), array('id' => "icon_newtable"))
             . _pgettext('short form', 'Create table') . '</a></li></ul>';
     }
 } elseif ($GLOBALS['cfg']['LeftFrameLight']) {
@@ -320,32 +315,24 @@ if ($GLOBALS['cfg']['LeftFrameLight'] && strlen($GLOBALS['db'])) {
     echo '</div>' . "\n";
 
     $common_url_query = PMA_generate_common_url();
-    PMA_displayDbList($GLOBALS['pma']->databases->getGroupedDetails($_SESSION['tmp_user_values']['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']), $_SESSION['tmp_user_values']['navi_limit_offset'],$GLOBALS['cfg']['MaxDbList']);
+    PMA_displayDbList($GLOBALS['pma']->databases->getGroupedDetails($_SESSION['tmp_user_values']['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']), $_SESSION['tmp_user_values']['navi_limit_offset'], $GLOBALS['cfg']['MaxDbList']);
 }
 
 /**
  * displays collapsable db list
  *
- * @uses    $_REQUEST['dbgroup']
- * @uses    $GLOBALS['cfg']['DefaultTabDatabase']
- * @uses    strpos()
- * @uses    urlencode()
- * @uses    printf()
- * @uses    htmlspecialchars()
- * @uses    PMA_generate_common_url()
- * @uses    PMA_getTableList()
- * @uses    PMA_displayTableList()
  * @global  integer $element_counter
  * @global  string $img_minus
  * @global  string $img_plus
  * @global  string $href_left
  * @global  string $db_start
  * @global  string $common_url_query
- * @param   array   $ext_dblist extended db list
- * @param   integer $offset
- * @param   integer $count
+ * @param array   $ext_dblist extended db list
+ * @param integer $offset
+ * @param integer $count
  */
-function PMA_displayDbList($ext_dblist, $offset, $count) {
+function PMA_displayDbList($ext_dblist, $offset, $count)
+{
     global $element_counter, $img_minus, $img_plus, $href_left,
         $db_start, $common_url_query;
 
@@ -477,8 +464,8 @@ function PMA_displayDbList($ext_dblist, $offset, $count) {
                 } else {
                     $tables = PMA_getTableList($db['name']);
                 }
-                $child_visible =
-                    (bool) (count($GLOBALS['pma']->databases) === 1 || $db_start == $db['name']);
+                $child_visible
+                    = (bool) (count($GLOBALS['pma']->databases) === 1 || $db_start == $db['name']);
                 PMA_displayTableList($tables, $child_visible, '', $db['name']);
             } elseif ($GLOBALS['cfg']['LeftFrameLight']) {
                 // no tables and LeftFrameLight:
@@ -504,30 +491,14 @@ function PMA_displayDbList($ext_dblist, $offset, $count) {
  * calls itself recursively if table in given list
  * is a list itself
  *
- * @uses    is_array()
- * @uses    count()
- * @uses    urlencode()
- * @uses    strpos()
- * @uses    printf()
- * @uses    htmlspecialchars()
- * @uses    strlen()
- * @uses    is_array()
- * @uses    PMA_displayTableList()
- * @uses    $_REQUEST['tbl_group']
- * @uses    $GLOBALS['common_url_query']
- * @uses    $GLOBALS['table']
- * @uses    $GLOBALS['pmaThemeImage']
- * @uses    $GLOBALS['cfg']['LeftFrameTableSeparator']
- * @uses    $GLOBALS['cfg']['DefaultTabDatabase']
- * @uses    $GLOBALS['cfg']['DefaultTabTable']
  * @global  integer the element counter
  * @global  string  html code for '-' image
  * @global  string  html code for '+' image
  * @global  string  html code for self link
- * @param   array   $tables         array of tables/tablegroups
- * @param   boolean $visible        whether the list is visible or not
- * @param   string  $tab_group_full full tab group name
- * @param   string  $table_db       db of this table
+ * @param array   $tables         array of tables/tablegroups
+ * @param boolean $visible        whether the list is visible or not
+ * @param string  $tab_group_full full tab group name
+ * @param string  $table_db       db of this table
  */
 function PMA_displayTableList($tables, $visible = false,
     $tab_group_full = '', $table_db = '')
@@ -606,7 +577,7 @@ function PMA_displayTableList($tables, $visible = false,
             while (isset($table['is' . $sep . 'group'])) {
                 // get the array with the actual table information
                 foreach ($table as $value) {
-                    if(is_array($value)) {
+                    if (is_array($value)) {
                         $table = $value;
                     }
                 }
@@ -623,16 +594,14 @@ function PMA_displayTableList($tables, $visible = false,
                 . $GLOBALS['common_url_query']
                 .'&amp;table=' . urlencode($table['Name'])
                 .'&amp;goto=' . $GLOBALS['cfg']['LeftDefaultTabTable']
-                . '" >'
-                .'<img class="icon"';
-
+                . '" >';
+            $attr = array('id' => 'icon_' . htmlspecialchars($table_db . '.' . $table['Name']));
             if (PMA_Table::isView($table_db, $table['Name'])) {
-                echo ' src="' . $GLOBALS['pmaThemeImage'] . 's_views.png"';
+                echo PMA_getImage('s_views.png', htmlspecialchars($link_title), $attr);
             } else {
-                echo ' src="' . $GLOBALS['pmaThemeImage'] . 'b_sbrowse.png"';
+                echo PMA_getImage('b_browse.png', htmlspecialchars($link_title), $attr);
             }
-            echo ' id="icon_' . htmlspecialchars($table_db . '.' . $table['Name']) . '"'
-                .' alt="' . htmlspecialchars($link_title) . '" /></a>' . "\n";
+            echo '</a>';
 
             // link for the table name itself
             $href = $GLOBALS['cfg']['DefaultTabTable'] . '?'

@@ -3,7 +3,7 @@
 /**
  * User preferences management page
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -24,9 +24,7 @@ $error = '';
 if (isset($_POST['submit_export']) && filter_input(INPUT_POST, 'export_type') == 'text_file') {
     // export to JSON file
     $filename = 'phpMyAdmin-config-' . urlencode(PMA_getenv('HTTP_HOST')) . '.json';
-    header('Content-Type: application/json');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
-    header('Expires: ' . date(DATE_RFC1123));
+    PMA_download_header($filename, 'application/json');
     $settings = PMA_load_userprefs();
     echo json_encode($settings['config_data']);
     return;
@@ -76,7 +74,7 @@ if (isset($_POST['submit_export']) && filter_input(INPUT_POST, 'export_type') ==
 
     $config = json_decode($json, true);
     $return_url = filter_input(INPUT_POST, 'return_url');
-    if (!is_array($config)) {
+    if (! is_array($config)) {
         $error = __('Could not import configuration');
     } else {
         // sanitize input values: treat them as though they came from HTTP POST request
@@ -107,8 +105,8 @@ if (isset($_POST['submit_export']) && filter_input(INPUT_POST, 'export_type') ==
         }
         if (!$all_ok) {
             // mimic original form and post json in a hidden field
-            require './libraries/header.inc.php';
-            require './libraries/user_preferences.inc.php';
+            include './libraries/header.inc.php';
+            include './libraries/user_preferences.inc.php';
             $msg = PMA_Message::error(__('Configuration contains incorrect data for some fields.'));
             $msg->display();
             echo '<div class="config-form">';
@@ -130,7 +128,7 @@ if (isset($_POST['submit_export']) && filter_input(INPUT_POST, 'export_type') ==
                 <input type="submit" name="submit_ignore" value="<?php echo __('No') ?>" />
             </form>
             <?php
-            require './libraries/footer.inc.php';
+            include './libraries/footer.inc.php';
             return;
         }
 
@@ -238,7 +236,7 @@ PMA_printJsValue("PMA_messages['strSavedOn']", __('Saved on: @DATE@'));
                 <input type="radio" id="import_text_file" name="import_type" value="text_file" checked="checked" />
                 <label for="import_text_file"><?php echo __('Import from file') ?></label>
                 <div id="opts_import_text_file" class="prefsmanage_opts">
-                    <label for="input_import_file"><?php echo __('Location of the text file'); ?></label>
+                    <label for="input_import_file"><?php echo __('Browse your computer:'); ?></label>
                     <input type="file" name="import_file" id="input_import_file" />
                 </div>
                 <input type="radio" id="import_local_storage" name="import_type" value="local_storage" disabled="disabled" />

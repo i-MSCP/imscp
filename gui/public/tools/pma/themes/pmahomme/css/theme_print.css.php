@@ -3,7 +3,7 @@
 /**
  * print css file from theme Original
  *
- * @package phpMyAdmin-theme
+ * @package PhpMyAdmin-theme
  * @subpackage pmahomme
  */
 ?>
@@ -35,4 +35,8 @@ th, td {
 th {
     font-weight:       bold;
     background-color:  #e5e5e5;
+}
+
+.hide {
+    display: none;
 }

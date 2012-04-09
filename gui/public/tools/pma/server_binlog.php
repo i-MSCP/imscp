@@ -3,26 +3,7 @@
 /**
  * display the binary logs and the content of the selected
  *
- * @uses    $cfg['MainPageIconic']
- * @uses    $cfg['NavigationBarIconic']
- * @uses    $cfg['MaxRows']
- * @uses    $cfg['LimitChars']
- * @uses    $pmaThemeImage
- * @uses    $binary_logs
- * @uses    PMA_generate_common_hidden_inputs()
- * @uses    PMA_generate_common_url()
- * @uses    PMA_formatByteDown()
- * @uses    PMA_DBI_fetch_assoc()
- * @uses    PMA_strlen()
- * @uses    PMA_substr()
- * @uses    $_REQUEST['pos']
- * @uses    $_REQUEST['log']
- * @uses    $_REQUEST['dontlimitchars']
- * @uses    count()
- * @uses    array_key_exists()
- * @uses    implode()
- * @uses    htmlspecialchars()
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -92,7 +73,7 @@ if (empty($_REQUEST['dontlimitchars'])) {
  * Displays the sub-page heading
  */
 echo '<h2>' . "\n"
-   . ($GLOBALS['cfg']['MainPageIconic'] ? '<img src="' . $pmaThemeImage . 's_tbl.png" width="16" height="16" border="0" hspace="2" align="middle" alt="" />' : '')
+   . ($GLOBALS['cfg']['MainPageIconic'] ? PMA_getImage('s_tbl.png') : '')
    . '    ' . __('Binary log') . "\n"
    . '</h2>' . "\n";
 
@@ -151,9 +132,9 @@ if ($pos > 0) {
 
     echo '<a href="./server_binlog.php' . PMA_generate_common_url($this_url_params) . '"';
     if ($GLOBALS['cfg']['NavigationBarIconic']) {
-        echo ' title="' . __('Previous') . '">';
+        echo ' title="' . _pgettext('Previous page', 'Previous') . '">';
     } else {
-        echo '>' . __('Previous');
+        echo '>' . _pgettext('Previous page', 'Previous');
     } // end if... else...
     echo ' &lt; </a> - ';
 }
@@ -186,9 +167,9 @@ if ($num_rows >= $GLOBALS['cfg']['MaxRows']) {
     $this_url_params['pos'] = $pos + $GLOBALS['cfg']['MaxRows'];
     echo ' - <a href="./server_binlog.php' . PMA_generate_common_url($this_url_params) . '"';
     if ($GLOBALS['cfg']['NavigationBarIconic']) {
-        echo ' title="' . __('Next') . '">';
+        echo ' title="' . _pgettext('Next page', 'Next') . '">';
     } else {
-        echo '>' . __('Next');
+        echo '>' . _pgettext('Next page', 'Next');
     } // end if... else...
     echo ' &gt; </a>';
 }

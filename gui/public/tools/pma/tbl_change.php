@@ -5,18 +5,26 @@
  *
  * register_globals_save (mark this file save for disabling register globals)
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
  * Gets the variables sent or posted to this script and displays the header
  */
 require_once './libraries/common.inc.php';
+require_once './libraries/common.lib.php';
 
 /**
  * Ensures db and table are valid, else moves to the "parent" script
  */
 require_once './libraries/db_table_exists.lib.php';
+
+// load additional configuration variables
+if (PMA_DRIZZLE) {
+    include_once './libraries/data_drizzle.inc.php';
+} else {
+    include_once './libraries/data_mysql.inc.php';
+}
 
 /**
  * Sets global variables.
@@ -112,8 +120,10 @@ if ($GLOBALS['cfg']['ShowPropertyComments']) {
  */
 $GLOBALS['js_include'][] = 'functions.js';
 $GLOBALS['js_include'][] = 'tbl_change.js';
-$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.custom.js';
+$GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.16.custom.js';
 $GLOBALS['js_include'][] = 'jquery/timepicker.js';
+$GLOBALS['js_include'][] = 'gis_data_editor.js';
+
 /**
  * HTTP and HTML headers
  */
@@ -151,8 +161,7 @@ unset($show_create_table);
  * Get the list of the fields of the current table
  */
 PMA_DBI_select_db($db);
-$table_fields = PMA_DBI_fetch_result('SHOW FIELDS FROM ' . PMA_backquote($table) . ';',
-    null, null, null, PMA_DBI_QUERY_STORE);
+$table_fields = array_values(PMA_DBI_get_columns($db, $table));
 $rows               = array();
 if (isset($where_clause)) {
     // when in edit mode load all selected rows from table
@@ -178,7 +187,7 @@ if (isset($where_clause)) {
             unset($rows[$key_id], $where_clause_array[$key_id]);
             PMA_showMessage(__('MySQL returned an empty result set (i.e. zero rows).'), $local_query);
             echo "\n";
-            require './libraries/footer.inc.php';
+            include './libraries/footer.inc.php';
         } else { // end if (no row returned)
             $meta = PMA_DBI_get_fields_meta($result[$key_id]);
             list($unique_condition, $tmp_clause_is_unique) = PMA_getUniqueCondition($result[$key_id], count($meta), $meta, $rows[$key_id], true);
@@ -367,8 +376,8 @@ foreach ($rows as $row_id => $vrow) {
                 $table_fields[$i]['Default'] = null;
             }
 
-            $table_fields[$i]['len'] =
-                preg_match('@float|double@', $table_fields[$i]['Type']) ? 100 : -1;
+            $table_fields[$i]['len']
+                = preg_match('@float|double@', $table_fields[$i]['Type']) ? 100 : -1;
 
 
             if (isset($comments_map[$table_fields[$i]['Field']])) {
@@ -440,6 +449,10 @@ foreach ($rows as $row_id => $vrow) {
 
         if (-1 === $field['len']) {
             $field['len'] = PMA_DBI_field_len($vresult, $i);
+            // length is unknown for geometry fields, make enough space to edit very simple WKTs
+            if (-1 === $field['len']) {
+                $field['len'] = 30;
+            }
         }
         //Call validation when the form submited...
         $unnullify_trigger = $chg_evt_handler . "=\"return verificationsAfterFieldChange('". PMA_escapeJsString($field['Field_md5']) . "', '"
@@ -468,18 +481,25 @@ foreach ($rows as $row_id => $vrow) {
 
          <?php } //End if
 
+        // Get a list of GIS data types.
+        $gis_data_types = PMA_getGISDatatypes();
+
         // Prepares the field value
-        $real_null_value = FALSE;
+        $real_null_value = false;
         $special_chars_encoded = '';
         if (isset($vrow)) {
             // (we are editing)
             if (is_null($vrow[$field['Field']])) {
-                $real_null_value = TRUE;
+                $real_null_value = true;
                 $vrow[$field['Field']]    = '';
                 $special_chars   = '';
                 $data            = $vrow[$field['Field']];
             } elseif ($field['True_Type'] == 'bit') {
                 $special_chars = PMA_printable_bit_value($vrow[$field['Field']], $extracted_fieldspec['spec_in_brackets']);
+            } elseif (in_array($field['True_Type'], $gis_data_types)) {
+                // Convert gis data to Well Know Text format
+                $vrow[$field['Field']] = PMA_asWKT($vrow[$field['Field']], true);
+                $special_chars = htmlspecialchars($vrow[$field['Field']]);
             } else {
                 // special binary "characters"
                 if ($field['is_binary'] || ($field['is_blob'] && ! $cfg['ProtectBinary'])) {
@@ -500,8 +520,8 @@ foreach ($rows as $row_id => $vrow) {
 
             //when copying row, it is useful to empty auto-increment column to prevent duplicate key error
             if (isset($default_action) && $default_action === 'insert') {
-                if ($field['Key'] === 'PRI' && strpos($field['Extra'], 'auto_increment') !== FALSE) {
-                    $data = $special_chars_encoded = $special_chars = NULL;
+                if ($field['Key'] === 'PRI' && strpos($field['Extra'], 'auto_increment') !== false) {
+                    $data = $special_chars_encoded = $special_chars = null;
                 }
             }
             // If a timestamp field value is not included in an update
@@ -514,9 +534,9 @@ foreach ($rows as $row_id => $vrow) {
         } else {
             // (we are inserting)
             // display default values
-            if (!isset($field['Default'])) {
+            if (! isset($field['Default'])) {
                 $field['Default'] = '';
-                $real_null_value          = TRUE;
+                $real_null_value          = true;
                 $data                     = '';
             } else {
                 $data                     = $field['Default'];
@@ -537,8 +557,8 @@ foreach ($rows as $row_id => $vrow) {
         $idindex  = ($o_rows * $fields_cnt) + $i + 1;
         $tabindex = $idindex;
 
-        // These GIS data types are not yet supported.
-        $no_support_types = array('geometry', 'point', 'linestring', 'polygon', 'multipoint', 'multilinestring', 'multipolygon', 'geometrycollection');
+        // Get a list of data types that are not yet supported.
+        $no_support_types = PMA_unsupportedDatatypes();
 
         // The function column
         // -------------------
@@ -556,88 +576,9 @@ foreach ($rows as $row_id => $vrow) {
                 ?>
             <td>
                 <select name="funcs<?php echo $field_name_appendix; ?>" <?php echo $unnullify_trigger; ?> tabindex="<?php echo ($tabindex + $tabindex_for_function); ?>" id="field_<?php echo $idindex; ?>_1">
-                    <option></option>
-                <?php
-                $selected     = '';
-
-                // Find the current type in the RestrictColumnTypes. Will result in 'FUNC_CHAR'
-                // or something similar. Then directly look up the entry in the RestrictFunctions array,
-                // which will then reveal the available dropdown options
-                if (isset($cfg['RestrictColumnTypes'][strtoupper($field['True_Type'])])
-                 && isset($cfg['RestrictFunctions'][$cfg['RestrictColumnTypes'][strtoupper($field['True_Type'])]])) {
-                    $current_func_type  = $cfg['RestrictColumnTypes'][strtoupper($field['True_Type'])];
-                    $dropdown           = $cfg['RestrictFunctions'][$current_func_type];
-                    $default_function   = $cfg['DefaultFunctions'][$current_func_type];
-                } else {
-                    $dropdown = array();
-                    $default_function   = '';
-                }
-
-                $dropdown_built = array();
-                $op_spacing_needed = FALSE;
-
-                // what function defined as default?
-                // for the first timestamp we don't set the default function
-                // if there is a default value for the timestamp
-                // (not including CURRENT_TIMESTAMP)
-                // and the column does not have the
-                // ON UPDATE DEFAULT TIMESTAMP attribute.
-
-                if ($field['True_Type'] == 'timestamp'
-                  && empty($field['Default'])
-                  && empty($data)
-                  && ! isset($analyzed_sql[0]['create_table_fields'][$field['Field']]['on_update_current_timestamp'])) {
-                    $default_function = $cfg['DefaultFunctions']['first_timestamp'];
-                }
-
-                // For primary keys of type char(36) or varchar(36) UUID if the default function
-                // Only applies to insert mode, as it would silently trash data on updates.
-                if ($insert_mode
-                    && $field['Key'] == 'PRI'
-                    && ($field['Type'] == 'char(36)' || $field['Type'] == 'varchar(36)')
-                ) {
-                     $default_function = $cfg['DefaultFunctions']['pk_char36'];
-                }
-
-                // this is set only when appropriate and is always true
-                if (isset($field['display_binary_as_hex'])) {
-                    $default_function = 'UNHEX';
-                }
-
-                // loop on the dropdown array and print all available options for that field.
-                foreach ($dropdown as $each_dropdown){
-                    echo '<option';
-                    if ($default_function === $each_dropdown) {
-                        echo ' selected="selected"';
-                    }
-                    echo '>' . $each_dropdown . '</option>' . "\n";
-                    $dropdown_built[$each_dropdown] = 'TRUE';
-                    $op_spacing_needed = TRUE;
-                }
-
-                // For compatibility's sake, do not let out all other functions. Instead
-                // print a separator (blank) and then show ALL functions which weren't shown
-                // yet.
-                $cnt_functions = count($cfg['Functions']);
-                for ($j = 0; $j < $cnt_functions; $j++) {
-                    if (!isset($dropdown_built[$cfg['Functions'][$j]]) || $dropdown_built[$cfg['Functions'][$j]] != 'TRUE') {
-                        // Is current function defined as default?
-                        $selected = ($field['first_timestamp'] && $cfg['Functions'][$j] == $cfg['DefaultFunctions']['first_timestamp'])
-                                    || (!$field['first_timestamp'] && $cfg['Functions'][$j] == $default_function)
-                                  ? ' selected="selected"'
-                                  : '';
-                        if ($op_spacing_needed == TRUE) {
-                            echo '                ';
-                            echo '<option value="">--------</option>' . "\n";
-                            $op_spacing_needed = FALSE;
-                        }
-
-                        echo '                ';
-                        echo '<option' . $selected . '>' . $cfg['Functions'][$j] . '</option>' . "\n";
-                    }
-                } // end for
-                unset($selected);
-                ?>
+<?php
+    echo PMA_getFunctionsForField($field, $insert_mode);
+?>
                 </select>
             </td>
                 <?php
@@ -755,7 +696,7 @@ foreach ($rows as $row_id => $vrow) {
             echo "\n";
             if (strlen($special_chars) > 32000) {
                 echo "        </td>\n";
-                echo '        <td>' . __(' Because of its length,<br /> this column might not be editable ');
+                echo '        <td>' . __('Because of its length,<br /> this column might not be editable');
             }
         } elseif ($field['pma_type'] == 'enum') {
             if (! isset($table_fields[$i]['values'])) {
@@ -862,30 +803,29 @@ foreach ($rows as $row_id => $vrow) {
             ?>
                 </select>
             <?php
-        }
         // We don't want binary data destroyed
-        elseif ($field['is_binary'] || $field['is_blob']) {
+        } elseif ($field['is_binary'] || $field['is_blob']) {
             if (($cfg['ProtectBinary'] && $field['is_blob'])
-                || ($cfg['ProtectBinary'] == 'all' && $field['is_binary'])) {
+                || ($cfg['ProtectBinary'] == 'all' && $field['is_binary'])
+            ) {
                 echo "\n";
                     // for blobstreaming
-                if (PMA_BS_IsTablePBMSEnabled($db, $table, $tbl_type) && PMA_BS_IsPBMSReference($data, $db))
-                    {
-                        echo '<input type="hidden" name="remove_blob_ref_' . $field['Field_md5'] . $vkey . '" value="' . $data . '" />';
-                        echo '<input type="checkbox" name="remove_blob_repo_' . $field['Field_md5'] . $vkey . '" /> ' . __('Remove BLOB Repository Reference') . "<br />";
-                        echo PMA_BS_CreateReferenceLink($data, $db);
-                        echo "<br />";
+                if (PMA_BS_IsTablePBMSEnabled($db, $table, $tbl_type)
+                    && PMA_BS_IsPBMSReference($data, $db)
+                ) {
+                    echo '<input type="hidden" name="remove_blob_ref_' . $field['Field_md5'] . $vkey . '" value="' . $data . '" />';
+                    echo '<input type="checkbox" name="remove_blob_repo_' . $field['Field_md5'] . $vkey . '" /> ' . __('Remove BLOB Repository Reference') . "<br />";
+                    echo PMA_BS_CreateReferenceLink($data, $db);
+                    echo "<br />";
+                } else {
+                    echo __('Binary - do not edit');
+                    if (isset($data)) {
+                        $data_size = PMA_formatByteDown(strlen(stripslashes($data)), 3, 1);
+                        echo ' ('. $data_size [0] . ' ' . $data_size[1] . ')';
+                        unset($data_size);
                     }
-                    else
-                    {
-                        echo __('Binary - do not edit');
-                        if (isset($data)) {
-                            $data_size = PMA_formatByteDown(strlen(stripslashes($data)), 3, 1);
-                            echo ' ('. $data_size [0] . ' ' . $data_size[1] . ')';
-                                    unset($data_size);
-                        }
-                        echo "\n";
-                    }   // end if (PMA_BS_IsTablePBMSEnabled($db, $table, $tbl_type) && PMA_BS_IsPBMSReference($data, $db))
+                    echo "\n";
+                }   // end if (PMA_BS_IsTablePBMSEnabled($db, $table, $tbl_type) && PMA_BS_IsPBMSReference($data, $db))
                 ?>
                 <input type="hidden" name="fields_type<?php echo $field_name_appendix; ?>" value="protected" />
                 <input type="hidden" name="fields<?php echo $field_name_appendix; ?>" value="" />
@@ -924,7 +864,9 @@ foreach ($rows as $row_id => $vrow) {
 
             if ($is_upload && $field['is_blob']) {
                 // check if field type is of longblob and  if the table is PBMS enabled.
-                if (($field['pma_type'] == "longblob") && PMA_BS_IsTablePBMSEnabled($db, $table, $tbl_type)) {
+                if (($field['pma_type'] == "longblob")
+                    && PMA_BS_IsTablePBMSEnabled($db, $table, $tbl_type)
+                ) {
                     echo '<br />';
                     echo '<input type="checkbox" name="upload_blob_repo' . $vkey . '[' . $field['Field_md5'] . ']" /> ' .  __('Upload to BLOB repository');
                 }
@@ -957,7 +899,7 @@ foreach ($rows as $row_id => $vrow) {
 
             if (!empty($cfg['UploadDir'])) {
                 $files = PMA_getFileSelectOptions(PMA_userDir($cfg['UploadDir']));
-                if ($files === FALSE) {
+                if ($files === false) {
                     echo '        <font color="red">' . __('Error') . '</font><br />' . "\n";
                     echo '        ' . __('The directory you set for upload work cannot be reached') . "\n";
                 } elseif (!empty($files)) {
@@ -969,16 +911,25 @@ foreach ($rows as $row_id => $vrow) {
                     echo '        </select>' . "\n";
                 }
             } // end if (web-server upload directory)
-        } // end elseif (binary or blob)
-
-        elseif (in_array($field['pma_type'], $no_support_types)) {
+        // end elseif (binary or blob)
+        } elseif (! in_array($field['pma_type'], $no_support_types)) {
             // ignore this column to avoid changing it
-        }
-        else {
-            // field size should be at least 4 and max 40
-            $fieldsize = min(max($field['len'], 4), 40);
+            if ($field['is_char']) {
+                $fieldsize = $extracted_fieldspec['spec_in_brackets'];
+            } else {
+            /**
+             * This case happens for example for INT or DATE columns;
+             * in these situations, the value returned in $field['len']
+             * seems appropriate.
+             */
+                $fieldsize = $field['len'];
+            }
+            $fieldsize = min(max($fieldsize, $cfg['MinSizeForInputField']), $cfg['MaxSizeForInputField']);
             echo $backup_field . "\n";
-            if ($field['is_char'] && ($cfg['CharEditing'] == 'textarea' || strpos($data, "\n") !== FALSE)) {
+            if ($field['is_char']
+                && ($cfg['CharEditing'] == 'textarea'
+                || strpos($data, "\n") !== false)
+            ) {
                 echo "\n";
                 ?>
                 <textarea class="char" name="fields<?php echo $field_name_appendix; ?>"
@@ -994,7 +945,9 @@ foreach ($rows as $row_id => $vrow) {
                 $the_class = 'textfield';
                 if ($field['pma_type'] == 'date') {
                     $the_class .= ' datefield';
-                } elseif ($field['pma_type'] == 'datetime' || substr($field['pma_type'], 0, 9) == 'timestamp') {
+                } elseif ($field['pma_type'] == 'datetime'
+                    || substr($field['pma_type'], 0, 9) == 'timestamp'
+                ) {
                     $the_class .= ' datetimefield';
                 }
                 ?>
@@ -1024,12 +977,30 @@ foreach ($rows as $row_id => $vrow) {
                     <input type="hidden" name="fields_type<?php echo $field_name_appendix; ?>" value="bit" />
                     <?php
                 }
-                if ($field['pma_type'] == 'date' || $field['pma_type'] == 'datetime' || substr($field['pma_type'], 0, 9) == 'timestamp') {
+                if ($field['pma_type'] == 'date'
+                    || $field['pma_type'] == 'datetime'
+                    || substr($field['pma_type'], 0, 9) == 'timestamp'
+                ) {
                     // the _3 suffix points to the date field
                     // the _2 suffix points to the corresponding NULL checkbox
                     // in dateFormat, 'yy' means the year with 4 digits
                 }
             }
+        }
+        if (in_array($field['pma_type'], $gis_data_types)) {
+            $data_val = isset($vrow[$field['Field']]) ? $vrow[$field['Field']] : '';
+            $_url_params = array(
+                'field' => $field['Field_title'],
+                'value' => $data_val,
+             );
+            if ($field['pma_type'] != 'geometry') {
+                $_url_params = $_url_params + array('gis_data[gis_type]' => strtoupper($field['pma_type']));
+            }
+            $edit_url = 'gis_data_editor.php' . PMA_generate_common_url($_url_params);
+            $edit_str = PMA_getIcon('b_edit.png', __('Edit/Insert'));
+            echo('<span class="open_gis_editor">');
+            echo(PMA_linkOrButton($edit_url, $edit_str, array(), false, false, '_blank'));
+            echo('</span>');
         }
         ?>
             </td>
@@ -1041,8 +1012,8 @@ foreach ($rows as $row_id => $vrow) {
     echo '  </tbody></table><br />';
 } // end foreach on multi-edit
 ?>
+    <div id="gis_editor"></div><div id="popup_background"></div>
     <br />
-
     <fieldset id="actions_panel">
     <table border="0" cellpadding="5" cellspacing="0">
     <tr>
@@ -1062,7 +1033,7 @@ if (isset($where_clause)) {
     <?php
 echo "\n";
 
-if (!isset($after_insert)) {
+if (! isset($after_insert)) {
     $after_insert = 'back';
 }
 ?>

@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 
 /**
@@ -19,31 +19,26 @@
  * // }
  * </code>
  *
- * @uses    preg_split()
- * @uses    array_shift()
- * @uses    trim()
- * @uses    rtrim()
- * @uses    ltrim()
- * @uses    strlen()
- * @uses    substr()
- * @uses    stripslashes()
- * @param   string  $option_string  comma separated options
- * @return  array   options
+ * @param string $option_string comma separated options
+ *
+ * @return array options
  */
 function PMA_transformation_getOptions($option_string)
 {
     $result = array();
 
     if (! strlen($option_string)
-     || ! $transform_options = preg_split('/,/', $option_string)) {
+        || ! $transform_options = preg_split('/,/', $option_string)
+    ) {
         return $result;
     }
 
     while (($option = array_shift($transform_options)) !== null) {
         $trimmed = trim($option);
         if (strlen($trimmed) > 1
-         && $trimmed[0] == "'"
-         && $trimmed[strlen($trimmed) - 1] == "'") {
+            && $trimmed[0] == "'"
+            && $trimmed[strlen($trimmed) - 1] == "'"
+        ) {
             // '...'
             $option = substr($trimmed, 1, -1);
         } elseif (isset($trimmed[0]) && $trimmed[0] == "'") {
@@ -70,13 +65,6 @@ function PMA_transformation_getOptions($option_string)
  * Gets all available MIME-types
  *
  * @access  public
- * @uses    opendir()
- * @uses    readdir()
- * @uses    closedir()
- * @uses    sort()
- * @uses    preg_match()
- * @uses    explode()
- * @uses    str_replace()
  * @staticvar   array   mimetypes
  * @return  array    array[mimetype], array[transformation]
  */
@@ -130,18 +118,44 @@ function PMA_getAvailableMIMEtypes()
 }
 
 /**
+ * Returns the description of the transformation
+ *
+ * @param string $file           transformation file
+ * @param string $html_formatted whether the description should be formatted as HTML
+ *
+ * @return the description of the transformation
+ */
+function PMA_getTransformationDescription($file, $html_formatted = true)
+{
+    include_once './libraries/transformations/' . $file;
+    $func = strtolower(str_replace('.inc.php', '', $file));
+    $funcname = 'PMA_transformation_' . $func . '_info';
+
+    $desc = sprintf(__('No description is available for this transformation.<br />Please ask the author what %s does.'), 'PMA_transformation_' . $func . '()');
+    if ($html_formatted) {
+        $desc = '<i>' . $desc . '</i>';
+    } else {
+        $desc = str_replace('<br />', ' ', $desc);
+    }
+    if (function_exists($funcname)) {
+        $desc_arr = $funcname();
+        if (isset($desc_arr['info'])) {
+            $desc = $desc_arr['info'];
+        }
+    }
+    return $desc;
+}
+
+/**
  * Gets the mimetypes for all columns of a table
  *
- * @uses    $GLOBALS['controllink']
- * @uses    PMA_getRelationsParam()
- * @uses    PMA_backquote()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_DBI_fetch_result()
+ * @param string $db     the name of the db to check for
+ * @param string $table  the name of the table to check for
+ * @param string $strict whether to include only results having a mimetype set
+ *
  * @access  public
- * @param   string   $db        the name of the db to check for
- * @param   string   $table     the name of the table to check for
- * @param   string   $strict    whether to include only results having a mimetype set
- * @return  array    [field_name][field_key] = field_value
+ *
+ * @return array [field_name][field_key] = field_value
  */
 function PMA_getMIME($db, $table, $strict = false)
 {
@@ -156,9 +170,9 @@ function PMA_getMIME($db, $table, $strict = false)
                 `mimetype`,
                 `transformation`,
                 `transformation_options`
-          FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info']) . '
-         WHERE `db_name`    = \'' . PMA_sqlAddslashes($db) . '\'
-           AND `table_name` = \'' . PMA_sqlAddslashes($table) . '\'
+         FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info']) . '
+         WHERE `db_name`    = \'' . PMA_sqlAddSlashes($db) . '\'
+           AND `table_name` = \'' . PMA_sqlAddSlashes($table) . '\'
            AND ( `mimetype` != \'\'' . (!$strict ? '
               OR `transformation` != \'\'
               OR `transformation_options` != \'\'' : '') . ')';
@@ -168,23 +182,17 @@ function PMA_getMIME($db, $table, $strict = false)
 /**
  * Set a single mimetype to a certain value.
  *
- * @uses    PMA_DBI_QUERY_STORE
- * @uses    PMA_getRelationsParam()
- * @uses    PMA_backquote()
- * @uses    PMA_sqlAddslashes()
- * @uses    PMA_query_as_controluser()
- * @uses    PMA_DBI_num_rows()
- * @uses    PMA_DBI_fetch_assoc()
- * @uses    PMA_DBI_free_result()
- * @uses    strlen()
+ * @param string $db                     the name of the db
+ * @param string $table                  the name of the table
+ * @param string $key                    the name of the column
+ * @param string $mimetype               the mimetype of the column
+ * @param string $transformation         the transformation of the column
+ * @param string $transformation_options the transformation options of the column
+ * @param string $forcedelete            force delete, will erase any existing
+ *                                       comments for this column
+ *
  * @access  public
- * @param   string   $db        the name of the db
- * @param   string   $table     the name of the table
- * @param   string   $key       the name of the column
- * @param   string   $mimetype  the mimetype of the column
- * @param   string   $transformation    the transformation of the column
- * @param   string   $transformation_options    the transformation options of the column
- * @param   string   $forcedelete   force delete, will erase any existing comments for this column
+ *
  * @return  boolean  true, if comment-query was made.
  */
 function PMA_setMIME($db, $table, $key, $mimetype, $transformation,
@@ -200,9 +208,9 @@ function PMA_setMIME($db, $table, $key, $mimetype, $transformation,
          SELECT `mimetype`,
                 `comment`
            FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info']) . '
-          WHERE `db_name`     = \'' . PMA_sqlAddslashes($db) . '\'
-            AND `table_name`  = \'' . PMA_sqlAddslashes($table) . '\'
-            AND `column_name` = \'' . PMA_sqlAddslashes($key) . '\'';
+          WHERE `db_name`     = \'' . PMA_sqlAddSlashes($db) . '\'
+            AND `table_name`  = \'' . PMA_sqlAddSlashes($table) . '\'
+            AND `column_name` = \'' . PMA_sqlAddSlashes($key) . '\'';
     $test_rs   = PMA_query_as_controluser($test_qry, true, PMA_DBI_QUERY_STORE);
 
     if ($test_rs && PMA_DBI_num_rows($test_rs) > 0) {
@@ -210,34 +218,35 @@ function PMA_setMIME($db, $table, $key, $mimetype, $transformation,
         PMA_DBI_free_result($test_rs);
 
         if (! $forcedelete
-         && (strlen($mimetype) || strlen($transformation)
-          || strlen($transformation_options) || strlen($row['comment']))) {
+            && (strlen($mimetype) || strlen($transformation)
+            || strlen($transformation_options) || strlen($row['comment']))
+        ) {
             $upd_query = '
                 UPDATE ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info']) . '
-                   SET `mimetype`               = \'' . PMA_sqlAddslashes($mimetype) . '\',
-                       `transformation`         = \'' . PMA_sqlAddslashes($transformation) . '\',
-                       `transformation_options` = \'' . PMA_sqlAddslashes($transformation_options) . '\'';
+                   SET `mimetype`               = \'' . PMA_sqlAddSlashes($mimetype) . '\',
+                       `transformation`         = \'' . PMA_sqlAddSlashes($transformation) . '\',
+                       `transformation_options` = \'' . PMA_sqlAddSlashes($transformation_options) . '\'';
         } else {
             $upd_query = 'DELETE FROM ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info']);
         }
         $upd_query .= '
-            WHERE `db_name`     = \'' . PMA_sqlAddslashes($db) . '\'
-              AND `table_name`  = \'' . PMA_sqlAddslashes($table) . '\'
-              AND `column_name` = \'' . PMA_sqlAddslashes($key) . '\'';
+            WHERE `db_name`     = \'' . PMA_sqlAddSlashes($db) . '\'
+              AND `table_name`  = \'' . PMA_sqlAddSlashes($table) . '\'
+              AND `column_name` = \'' . PMA_sqlAddSlashes($key) . '\'';
     } elseif (strlen($mimetype) || strlen($transformation)
      || strlen($transformation_options)) {
         $upd_query = 'INSERT INTO ' . PMA_backquote($cfgRelation['db']) . '.' . PMA_backquote($cfgRelation['column_info'])
                    . ' (db_name, table_name, column_name, mimetype, transformation, transformation_options) '
                    . ' VALUES('
-                   . '\'' . PMA_sqlAddslashes($db) . '\','
-                   . '\'' . PMA_sqlAddslashes($table) . '\','
-                   . '\'' . PMA_sqlAddslashes($key) . '\','
-                   . '\'' . PMA_sqlAddslashes($mimetype) . '\','
-                   . '\'' . PMA_sqlAddslashes($transformation) . '\','
-                   . '\'' . PMA_sqlAddslashes($transformation_options) . '\')';
+                   . '\'' . PMA_sqlAddSlashes($db) . '\','
+                   . '\'' . PMA_sqlAddSlashes($table) . '\','
+                   . '\'' . PMA_sqlAddSlashes($key) . '\','
+                   . '\'' . PMA_sqlAddSlashes($mimetype) . '\','
+                   . '\'' . PMA_sqlAddSlashes($transformation) . '\','
+                   . '\'' . PMA_sqlAddSlashes($transformation_options) . '\')';
     }
 
-    if (isset($upd_query)){
+    if (isset($upd_query)) {
         return PMA_query_as_controluser($upd_query);
     } else {
         return false;

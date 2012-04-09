@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -21,7 +21,7 @@ $import_list = PMA_getPlugins('./libraries/import/', $import_type);
 /* Fail if we didn't find any plugin */
 if (empty($import_list)) {
     PMA_Message::error(__('Could not load import plugins, please check your installation!'))->display();
-    require './libraries/footer.inc.php';
+    include './libraries/footer.inc.php';
 }
 ?>
 
@@ -123,11 +123,11 @@ if ($_SESSION[$SESSION_KEY]["handler"]!="noplugin") {
 
     <div class="exportoptions" id="header">
         <h2>
-            <img src="<?php echo $GLOBALS['pmaThemeImage'];?>b_import.png" alt="import" />
+            <?php echo PMA_getImage('b_import.png', __('Import')); ?>
             <?php
-            if($import_type == 'server') {
+            if ($import_type == 'server') {
                 echo __('Importing into the current server');
-            } elseif($import_type == 'database') {
+            } elseif ($import_type == 'database') {
                 printf(__('Importing into the database "%s"'), htmlspecialchars($db));
             } else {
                 printf(__('Importing into the table "%s"'), htmlspecialchars($table));
@@ -160,7 +160,7 @@ if ($_SESSION[$SESSION_KEY]["handler"]!="noplugin") {
         }?>
 
         <div class="formelementrow" id="upload_form">
-        <?php if($GLOBALS['is_upload'] && !empty($cfg['UploadDir'])) { ?>
+        <?php if ($GLOBALS['is_upload'] && !empty($cfg['UploadDir'])) { ?>
             <ul>
             <li>
                 <input type="radio" name="file_location" id="radio_import_file" />
@@ -190,7 +190,7 @@ if ($_SESSION[$SESSION_KEY]["handler"]!="noplugin") {
             echo '<select id="charset_of_file" name="charset_of_file" size="1">';
             foreach ($cfg['AvailableCharsets'] as $temp_charset) {
                 echo '<option value="' . htmlentities($temp_charset) .  '"';
-                if ((empty($cfg['Import']['charset']) && $temp_charset == $charset)
+                if ((empty($cfg['Import']['charset']) && $temp_charset == 'utf-8')
                         || $temp_charset == $cfg['Import']['charset']) {
                     echo ' selected="selected"';
                 }
@@ -199,7 +199,7 @@ if ($_SESSION[$SESSION_KEY]["handler"]!="noplugin") {
             echo ' </select><br />';
         } else {
             echo '<label for="charset_of_file">' . __('Character set of the file:') . '</label>' . "\n";
-            echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_CHARSET, 'charset_of_file', 'charset_of_file', 'utf8', FALSE);
+            echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_CHARSET, 'charset_of_file', 'charset_of_file', 'utf8', false);
         } // end if (recoding)
         ?>
         </div>

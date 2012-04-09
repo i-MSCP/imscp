@@ -9,7 +9,7 @@
  * @usedby  tbl_structure.php
  * @usedby  tbl_tracking.php
  * @usedby  querywindow.php
- * @package phpMyAdmin
+ * @package PhpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
     exit;
@@ -30,38 +30,12 @@ require_once './libraries/bookmark.lib.php'; // used for file listing
  * @usedby  tbl_structure.php
  * @usedby  tbl_tracking.php
  * @usedby  querywindow.php
- * @uses    $GLOBALS['table']
- * @uses    $GLOBALS['db']
- * @uses    $GLOBALS['server']
- * @uses    $GLOBALS['goto']
- * @uses    $GLOBALS['is_upload']           from common.inc.php
- * @uses    $GLOBALS['sql_query']           from grab_globals.lib.php
- * @uses    $GLOBALS['cfg']['DefaultQueryTable']
- * @uses    $GLOBALS['cfg']['DefaultQueryDatabase']
- * @uses    $GLOBALS['cfg']['Servers']
- * @uses    $GLOBALS['cfg']['DefaultTabDatabase']
- * @uses    $GLOBALS['cfg']['Bookmark']
- * @uses    PMA_generate_common_url()
- * @uses    PMA_backquote()
- * @uses    PMA_DBI_fetch_result()
- * @uses    PMA_showMySQLDocu()
- * @uses    PMA_generate_common_hidden_inputs()
- * @uses    PMA_sqlQueryFormBookmark()
- * @uses    PMA_sqlQueryFormInsert()
- * @uses    PMA_sqlQueryFormUpload()
- * @uses    PMA_DBI_QUERY_STORE
- * @uses    PMA_set_enc_form()
- * @uses    sprintf()
- * @uses    htmlspecialchars()
- * @uses    str_replace()
- * @uses    md5()
- * @uses    function_exists()
- * @param   boolean|string  $query          query to display in the textarea
+ * @param boolean|string  $query          query to display in the textarea
  *                                          or true to display last executed
- * @param   boolean|string  $display_tab    sql|files|history|full|FALSE
+ * @param boolean|string  $display_tab    sql|files|history|full|false
  *                                          what part to display
  *                                          false if not inside querywindow
- * @param   string          $delimiter
+ * @param string          $delimiter
  */
 function PMA_sqlQueryForm($query = true, $display_tab = false, $delimiter = ';')
 {
@@ -136,7 +110,7 @@ function PMA_sqlQueryForm($query = true, $display_tab = false, $delimiter = ';')
         .'<input type="hidden" name="goto" value="'
         .htmlspecialchars($goto) . '" />' . "\n"
         .'<input type="hidden" name="message_to_show" value="'
-        . htmlspecialchars(__('Your SQL query has been executed successfully')) . '" />' . "\n"
+        . __('Your SQL query has been executed successfully') . '" />' . "\n"
         .'<input type="hidden" name="prev_sql_query" value="'
         . htmlspecialchars($query) . '" />' . "\n";
 
@@ -183,17 +157,9 @@ function PMA_sqlQueryForm($query = true, $display_tab = false, $delimiter = ';')
  * prints querybox fieldset
  *
  * @usedby  PMA_sqlQueryForm()
- * @uses    $GLOBALS['text_dir']
- * @uses    $GLOBALS['cfg']['TextareaAutoSelect']
- * @uses    $GLOBALS['cfg']['TextareaCols']
- * @uses    $GLOBALS['cfg']['TextareaRows']
- * @uses    PMA_USR_OS
- * @uses    PMA_USR_BROWSER_AGENT
- * @uses    PMA_USR_BROWSER_VER
- * @uses    htmlspecialchars()
- * @param   string      $query          query to display in the textarea
- * @param   boolean     $is_querywindow if inside querywindow or not
- * @param   string      $delimiter      default delimiter to use
+ * @param string      $query          query to display in the textarea
+ * @param boolean     $is_querywindow if inside querywindow or not
+ * @param string      $delimiter      default delimiter to use
  */
 function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter = ';')
 {
@@ -247,9 +213,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
         // Get the list and number of fields
         // we do a try_query here, because we could be in the query window,
         // trying to synchonize and the table has not yet been created
-        $fields_list = PMA_DBI_fetch_result(
-            'SHOW FULL COLUMNS FROM ' . PMA_backquote($db)
-            . '.' . PMA_backquote($GLOBALS['table']));
+        $fields_list = PMA_DBI_get_columns($db, $GLOBALS['table'], null, true);
 
         $tmp_db_link = '<a href="' . $GLOBALS['cfg']['DefaultTabDatabase']
             . '?' . PMA_generate_common_url($db) . '"';
@@ -286,7 +250,7 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
         .'  dir="' . $GLOBALS['text_dir'] . '"'
         .$auto_sel . $locking . '>' . htmlspecialchars($query) . '</textarea>' . "\n";
     // Add buttons to generate query easily for select all,single select,insert,update and delete
-    if(count($fields_list)) {
+    if (count($fields_list)) {
         echo '<input type="button" value="SELECT *" id="selectall" class="sqlbutton" />';
         echo '<input type="button" value="SELECT" id="select" class="sqlbutton" />';
         echo '<input type="button" value="INSERT" id="insert" class="sqlbutton" />';
@@ -377,9 +341,17 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
 
     echo '<input type="checkbox" name="show_query" value="1" '
         .'id="checkbox_show_query" tabindex="132" checked="checked" />' . "\n"
-        .'<label for="checkbox_show_query">' . __(' Show this query here again ')
+        .'<label for="checkbox_show_query">' . __('Show this query here again')
         .'</label>' . "\n";
 
+    if (! $is_querywindow) {
+        echo '<input type="checkbox" name="retain_query_box" value="1" '
+            . 'id="retain_query_box" tabindex="133" '
+            . ($GLOBALS['cfg']['RetainQueryBox'] === false ? '' : ' checked="checked"')
+            . ' />'
+            . '<label for="retain_query_box">' . __('Retain query box')
+            . '</label>';
+    }
     echo '</div>' . "\n";
     echo '<input type="submit" id="button_submit_query" name="SQL" tabindex="200" value="' . __('Go') . '" />'
         ."\n";
@@ -391,12 +363,6 @@ function PMA_sqlQueryFormInsert($query = '', $is_querywindow = false, $delimiter
  * prints bookmark fieldset
  *
  * @usedby  PMA_sqlQueryForm()
- * @uses    PMA_Bookmark_getList()
- * @uses    $GLOBALS['db']
- * @uses    $GLOBALS['pmaThemeImage']
- * @uses    $GLOBALS['cfg']['ReplaceHelpImg']
- * @uses    count()
- * @uses    htmlspecialchars()
  */
 function PMA_sqlQueryFormBookmark()
 {
@@ -409,7 +375,7 @@ function PMA_sqlQueryFormBookmark()
     echo '<legend>';
     echo __('Bookmarked SQL query') . '</legend>' . "\n";
     echo '<div class="formelement">';
-    echo '<select name="id_bookmark">' . "\n";
+    echo '<select name="id_bookmark" id="id_bookmark">' . "\n";
     echo '<option value="">&nbsp;</option>' . "\n";
     foreach ($bookmark_list as $key => $value) {
         echo '<option value="' . htmlspecialchars($key) . '">'
@@ -423,9 +389,7 @@ function PMA_sqlQueryFormBookmark()
     if ($GLOBALS['cfg']['ReplaceHelpImg']) {
         echo ' <a href="./Documentation.html#faqbookmark"'
             .' target="documentation">'
-            .'<img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 'b_help.png"'
-            .' border="0" width="11" height="11" align="middle"'
-            .' alt="' . __('Documentation') . '" /></a> ';
+            . PMA_getImage('b_help.png', __('Documentation')) . '</a>';
     } else {
         echo ' (<a href="./Documentation.html#faqbookmark"'
             .' target="documentation">' . __('Documentation') . '</a>): ';
@@ -460,21 +424,9 @@ function PMA_sqlQueryFormBookmark()
  * prints bookmark fieldset
  *
  * @usedby  PMA_sqlQueryForm()
- * @uses    $GLOBALS['cfg']['GZipDump']
- * @uses    $GLOBALS['cfg']['BZipDump']
- * @uses    $GLOBALS['cfg']['UploadDir']
- * @uses    $GLOBALS['cfg']['AvailableCharsets']
- * @uses    $GLOBALS['charset']
- * @uses    $GLOBALS['max_upload_size']
- * @uses    PMA_supportedDecompressions()
- * @uses    PMA_getFileSelectOptions()
- * @uses    PMA_displayMaximumUploadSize()
- * @uses    PMA_generateCharsetDropdownBox()
- * @uses    PMA_generateHiddenMaxFileSize()
- * @uses    PMA_CSDROPDOWN_CHARSET
- * @uses    empty()
  */
-function PMA_sqlQueryFormUpload(){
+function PMA_sqlQueryFormUpload()
+{
     $errors = array ();
 
     $matcher = '@\.sql(\.(' . PMA_supportedDecompressions() . '))?$@'; // we allow only SQL here
@@ -488,7 +440,7 @@ function PMA_sqlQueryFormUpload(){
     // start output
     echo '<fieldset id="">';
     echo '<legend>';
-    echo __('Location of the text file') . '</legend>';
+    echo __('Browse your computer:') . '</legend>';
     echo '<div class="formelement">';
     echo '<input type="file" name="sql_file" class="textfield" /> ';
     echo PMA_displayMaximumUploadSize($GLOBALS['max_upload_size']);
@@ -496,7 +448,7 @@ function PMA_sqlQueryFormUpload(){
     echo PMA_generateHiddenMaxFileSize($GLOBALS['max_upload_size']) . "\n";
     echo '</div>';
 
-    if ($files === FALSE) {
+    if ($files === false) {
         $errors[] = PMA_Message::error( __('The directory you set for upload work cannot be reached'));
     } elseif (!empty($files)) {
         echo '<div class="formelement">';
@@ -515,7 +467,7 @@ function PMA_sqlQueryFormUpload(){
     echo '<fieldset id="" class="tblFooters">';
     echo __('Character set of the file:') . "\n";
     echo PMA_generateCharsetDropdownBox(PMA_CSDROPDOWN_CHARSET,
-            'charset_of_file', null, 'utf8', FALSE);
+            'charset_of_file', null, 'utf8', false);
     echo '<input type="submit" name="SQL" value="' . __('Go')
         .'" />' . "\n";
     echo '<div class="clearfloat"></div>' . "\n";
