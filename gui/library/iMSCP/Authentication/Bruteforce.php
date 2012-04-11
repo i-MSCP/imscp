@@ -98,6 +98,12 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	 * @var int Time to wait before a new login|captcha attempts is allowed
 	 */
 	protected $_isWaitingFor = 0;
+	
+	/**
+	 * 
+	 * @var int Max attemps before IP is forced to wait.
+	 */
+	protected $_maxAttemptsBeforeWait = 0;
 
 	/**
 	 * @var bool Tells whether or not a bruteforce detection record exists for $_ipAddr
@@ -136,7 +142,8 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 
 		$this->_blockTime = $cfg->BRUTEFORCE_BLOCK_TIME;
 		$this->_waitTime = $cfg->BRUTEFORCE_BETWEEN_TIME;
-
+		$this->_maxAttemptsBeforeWait = $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT;
+		
 		$this->_unblock();
 
 		// Plugin initialization
@@ -163,7 +170,11 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 				$this->_isWaitingFor = 0;
 			} else {
 				$this->_isBlockedFor = 0;
-				$this->_isWaitingFor = $stmt->fields('lastaccess') + $this->_waitTime;
+				if ($stmt->fields($this->_type . '_count') >= $this->_maxAttemptsBeforeWait) {
+					$this->_isWaitingFor = $stmt->fields('lastaccess') + $this->_waitTime;
+				} else {
+					$this->_isWaitingFor = 0;
+				}
 			}
 		}
 	}

@@ -160,6 +160,9 @@ $config->BRUTEFORCE_BLOCK_TIME = 30;
 // Max login before block
 $config->BRUTEFORCE_MAX_LOGIN = 3;
 
+// Max login attempts before forced to wait
+$config->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT=2;
+
 // Max captcha failed attempts before block
 $config->BRUTEFORCE_MAX_CAPTCHA = 5;
 

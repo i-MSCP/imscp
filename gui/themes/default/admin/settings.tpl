@@ -105,6 +105,12 @@
 							</td>
 						</tr>
 						<tr class="display">
+							<td><label for="bruteforce_max_attempts_before_wait">{TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}</label></td>
+							<td>
+								<input name="bruteforce_max_attempts_before_wait" id="bruteforce_max_attempts_before_wait" type="text" value="{BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT}" maxlength="3"/>
+							</td>
+						</tr>
+						<tr class="display">
 							<td><label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label></td>
 							<td>
 								<input name="bruteforce_max_capcha" id="bruteforce_max_capcha" type="text" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3"/>

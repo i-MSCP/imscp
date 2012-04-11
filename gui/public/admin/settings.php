@@ -66,6 +66,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$bruteforce_block_time = clean_input($_POST['bruteforce_block_time']);
 	$bruteforce_between_time = clean_input($_POST['bruteforce_between_time']);
 	$bruteforce_max_capcha = clean_input($_POST['bruteforce_max_capcha']);
+	$bruteforce_max_attempts_before_wait = clean_input($_POST['bruteforce_max_attempts_before_wait']);
 	$create_default_emails = $_POST['create_default_email_addresses'];
 	$count_default_emails = $_POST['count_default_email_addresses'];
 	$hard_mail_suspension = $_POST['hard_mail_suspension'];
@@ -122,9 +123,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} elseif ((!is_number($lostpwd_timeout))
 		|| (!is_number($pwd_chars)) || (!is_number($bruteforce_max_login))
 		|| (!is_number($bruteforce_block_time)) || (!is_number($bruteforce_between_time))
-		|| (!is_number($bruteforce_max_capcha)) || (!is_number($domain_rows_per_page))
-		|| (!is_number($max_dnames_labels)) || (!is_number($max_subdnames_labels))
-		|| (!is_number($ordersExpireTime))
+		|| (!is_number($bruteforce_max_capcha)) || (!is_number($bruteforce_max_attempts_before_wait))
+		|| (!is_number($domain_rows_per_page))  || (!is_number($max_dnames_labels))
+		|| (!is_number($max_subdnames_labels))  || (!is_number($ordersExpireTime))
 	) {
 		set_page_message(tr('Only positive numbers are allowed.'), 'error');
 	} elseif ($domain_rows_per_page < 1) {
@@ -149,6 +150,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->BRUTEFORCE_BLOCK_TIME = $bruteforce_block_time;
 		$db_cfg->BRUTEFORCE_BETWEEN_TIME = $bruteforce_between_time;
 		$db_cfg->BRUTEFORCE_MAX_CAPTCHA = $bruteforce_max_capcha;
+		$db_cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT = $bruteforce_max_attempts_before_wait;
 		$db_cfg->CREATE_DEFAULT_EMAIL_ADDRESSES = $create_default_emails;
 		$db_cfg->COUNT_DEFAULT_EMAIL_ADDRESSES = $count_default_emails;
 		$db_cfg->HARD_MAIL_SUSPENSION = $hard_mail_suspension;
@@ -568,6 +570,7 @@ $tpl->assign(
 		 'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg->BRUTEFORCE_BLOCK_TIME,
 		 'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg->BRUTEFORCE_BETWEEN_TIME,
 		 'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
+		 'BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => $cfg->BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT,
 		 'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
 		 'CUSTOM_ORDERPANEL_ID' => tohtml($coid),
 		 'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
@@ -593,6 +596,7 @@ $tpl->assign(
 		 'TR_BRUTEFORCE_BLOCK_TIME' => tr('Blocktime (minutes)'),
 		 'TR_BRUTEFORCE_BETWEEN_TIME' => tr('Blocking time between login/captcha attempts (seconds)'),
 		 'TR_BRUTEFORCE_MAX_CAPTCHA' => tr('Maximum number of captcha validation attempts'),
+		 'TR_BRUTEFORCE_MAX_ATTEMPTS_BEFORE_WAIT' => tr('Maximum number of validation attempts before waiting restriction intervenes'),
 		 'TR_OTHER_SETTINGS' => tr('Other settings'),
 		 'TR_MAIL_SETTINGS' => tr('E-Mail settings'),
 		 'TR_CREATE_DEFAULT_EMAIL_ADDRESSES' => tr('Create default E-Mail addresses'),
