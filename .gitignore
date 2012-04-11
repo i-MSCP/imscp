@@ -1,4 +1,4 @@
-i-MSCP.PHPEditProject
+*.PHPEditProject
 .idea
 nbproject
 .pc
