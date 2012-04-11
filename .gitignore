@@ -2,3 +2,6 @@ i-MSCP.PHPEditProject
 .idea
 nbproject
 .pc
+.buildpath
+.project
+.settings/org.eclipse.php.core.prefs
