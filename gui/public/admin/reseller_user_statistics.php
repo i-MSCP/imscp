@@ -54,7 +54,7 @@ function admin_generatePage($tpl, $resellerId)
 	if ($stmt->rowCount()) {
 		foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $domainId) {
 			_admin_generateDomainStatisticsEntry($tpl, $domainId);
-			$tpl->parse('DOMAIN_STATISTICS_ENTRY_BLOCK', 'domain_statistics_entry_block');
+			$tpl->parse('DOMAIN_STATISTICS_ENTRY_BLOCK', '.domain_statistics_entry_block');
 		}
 	} else {
 		$tpl->assign('DOMAIN_STATISTICS_ENTRIES_BLOCK', '');
