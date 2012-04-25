@@ -1695,4 +1695,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8"
 		);
 	}
+
+    /**
+     * #157: Enhancement - Relaying Domains
+     *
+     * @author Sascha Bay <worst.case@gmx.de>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_109()
+    {
+    	return array(
+            $this->_addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
+            $this->_addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+            $this->_addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'")
+    	);
+    }
 }
