@@ -186,6 +186,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `phpini_perm_disable_functions` VARCHAR( 20 ) NOT NULL DEFAULT 'no',
   `domain_external_mail` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL default 'off',
+  `external_mail_dns_ids` varchar(150) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
@@ -206,6 +207,7 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `alias_ip_id` int(10) unsigned default NULL,
   `url_forward` varchar(200) collate utf8_unicode_ci default NULL,
   `external_mail` varchar(15) collate utf8_unicode_ci NOT NULL default 'off',
+  `external_mail_dns_ids` varchar(150) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`alias_id`),
   KEY `domain_id` (`domain_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

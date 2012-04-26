@@ -150,7 +150,7 @@ function add_user_data($reseller_id)
 	global $hpid, $dmn_name, $dmn_expire, $dmn_user_name, $admin_login, $user_email,
 	$customer_id, $first_name, $last_name, $gender, $firm, $zip, $city, $state,
 	$country, $street_one, $street_two, $mail, $phone, $fax, $inpass, $domain_ip,
-	$dns, $backup, $software_allowed;
+	$dns, $backup, $software_allowed, $external_mail;
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
@@ -177,14 +177,15 @@ function add_user_data($reseller_id)
 		$backup, $dns, $software_allowed, $phpini_system, $phpini_al_register_globals,
 		$phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
 		$phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time,
-		$phpini_max_input_time, $phpini_memory_limit
-	) = array_pad(explode(';', $props), 23, 'no');
+		$phpini_max_input_time, $phpini_memory_limit, $external_mail
+	) = array_pad(explode(';', $props), 24, 'no');
 
 	$php = preg_replace("/\_/", '', $php);
 	$cgi = preg_replace("/\_/", '', $cgi);
 	$backup = preg_replace("/\_/", '', $backup);
 	$dns = preg_replace("/\_/", '', $dns);
 	$software_allowed = preg_replace("/\_/", '', $software_allowed);
+    $external_mail = preg_replace("/\_/", '', $external_mail);
 	$pure_user_pass = $inpass;
 	$inpass = crypt_user_pass($inpass);
 	$first_name = clean_input($first_name);
@@ -248,9 +249,10 @@ function add_user_data($reseller_id)
 			    `domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
 			    `domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
 			    `domain_software_allowed`, `phpini_perm_system`, `phpini_perm_register_globals`,
-			    `phpini_perm_allow_url_fopen`, `phpini_perm_display_errors`, `phpini_perm_disable_functions`
+			    `phpini_perm_allow_url_fopen`, `phpini_perm_display_errors`, `phpini_perm_disable_functions`,
+			    `domain_external_mail`
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
 	";
 
@@ -259,7 +261,7 @@ function add_user_data($reseller_id)
 							$cfg->ITEM_ADD_STATUS, $sub, $als, $domain_ip, $disk, 0,
 							$php, $cgi, $backup, $dns, $software_allowed,
 							$phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen,
-							$phpini_al_display_errors, $phpini_al_disable_functions));
+							$phpini_al_display_errors, $phpini_al_disable_functions, $external_mail));
 
 
 	$dmn_id = $db->insertId();

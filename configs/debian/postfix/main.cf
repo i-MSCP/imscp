@@ -27,6 +27,7 @@ append_dot_mydomain          = no
 append_at_myorigin           = yes
 local_transport              = local
 transport_maps               = hash:{MTA_TRANSPORT_HASH}
+relay_domains                = hash:{MTA_RELAY_HASH}
 alias_maps                   = hash:{MTA_LOCAL_ALIAS_HASH}
 alias_database               = hash:{MTA_LOCAL_ALIAS_HASH}
 

@@ -92,6 +92,7 @@ $tpl->assign(
 		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MiB]<br><i>(0 unlimited)</i>'),
 		 'TR_DISK_LIMIT' => tr('Disk limit [MiB]<br><i>(0 unlimited)</i>'),
 		 'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
+         'TR_EXTMAIL' => tr('External mail server'),
 		 'TR_PHP' => tr('PHP'),
 		 'TR_CGI' => tr('CGI'),
 		 'TR_DNS' => tr('Custom DNS records'),
@@ -228,6 +229,8 @@ function restore_form($tpl, $phpini)
 			 'HP_CURRENCY' => clean_input($_POST['hp_currency'], true),
 			 'HP_PAYMENT' => clean_input($_POST['hp_payment'], true),
 			 'HP_TOS_VALUE' => clean_input($_POST['hp_tos'], true),
+             'TR_EXTMAIL_YES' => ($_POST['external_mail'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+             'TR_EXTMAIL_NO' => ($_POST['external_mail'] == '_no_') ? $cfg->HTML_CHECKED : '',
 			 'TR_PHP_YES' => ($_POST['php'] == '_yes_') ? $cfg->HTML_CHECKED : '',
 			 'TR_PHP_NO' => ($_POST['php'] == '_no_') ? $cfg->HTML_CHECKED : '',
 			 'TR_CGI_YES' => ($_POST['cgi'] == '_yes_') ? $cfg->HTML_CHECKED : '',
@@ -337,7 +340,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 		$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
 		$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware,
 		$phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen, $phpini_al_display_errors, $phpini_al_disable_functions,
-		$phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit
+		$phpini_post_max_size, $phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time, $phpini_memory_limit, $hp_ext_mail
 		) = array_pad(explode(';', $props), 24, 'no');
 
 	$hp_name = $data['name'];
@@ -394,6 +397,8 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 			 'DISBLED' => tohtml($disabled),
 			 'HP_PAYMENT' => tohtml($payment),
 			 'HP_TOS_VALUE' => tohtml($tos),
+             'TR_EXTMAIL_YES' => ($hp_ext_mail == '_yes_') ? $cfg->HTML_CHECKED : '',
+             'TR_EXTMAIL_NO' => ($hp_ext_mail == '_no_') ? $cfg->HTML_CHECKED : '',
 			 'TR_PHP_YES' => ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
 			 'TR_PHP_NO' => ($hp_php == '_no_') ? $cfg->HTML_CHECKED : '',
 			 'TR_CGI_YES' => ($hp_cgi == '_yes_') ? $cfg->HTML_CHECKED : '',
@@ -456,7 +461,7 @@ function check_data_iscorrect($tpl, $phpini)
 {
 
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
-$hp_disk, $hpid, $price, $setup_fee, $hp_backup, $hp_dns, $hp_allowsoftware;
+$hp_disk, $hpid, $price, $setup_fee, $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail;
 
 
 	$ahp_error = array();
@@ -482,7 +487,11 @@ $hp_disk, $hpid, $price, $setup_fee, $hp_backup, $hp_dns, $hp_allowsoftware;
 	$_SESSION['hpid'] = $hpid;
 
 	// Get values from previous page and check him correction
-	if (isset($_POST['php'])) {
+    if (isset($_POST['external_mail'])) {
+        $hp_ext_mail = $_POST['external_mail'];
+    }
+
+    if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
 	}
 
@@ -632,7 +641,7 @@ function save_data_to_db($phpini)
 {
 	global $tpl, $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp,
 		$hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hpid, $hp_backup, $hp_dns,
-		$hp_allowsoftware;
+		$hp_allowsoftware, $hp_ext_mail;
 	//	global $tos;
 
 	$description = clean_input($_POST['hp_description']);
@@ -649,7 +658,7 @@ function save_data_to_db($phpini)
 	$hp_props .= ";" . $phpini->getClPermVal('phpiniSystem') . ";" . $phpini->getClPermVal('phpiniRegisterGlobals') . ";" . $phpini->getClPermVal('phpiniAllowUrlFopen');
 	$hp_props .= ";" . $phpini->getClPermVal('phpiniDisplayErrors') . ";" . $phpini->getClPermVal('phpiniDisableFunctions');
 	$hp_props .= ";" . $phpini->getDataVal('phpiniPostMaxSize') . ";" . $phpini->getDataVal('phpiniUploadMaxFileSize') . ";" . $phpini->getDataVal('phpiniMaxExecutionTime');
-	$hp_props .= ";" . $phpini->getDataVal('phpiniMaxInputTime') . ";" . $phpini->getDataVal('phpiniMemoryLimit');
+	$hp_props .= ";" . $phpini->getDataVal('phpiniMaxInputTime') . ";" . $phpini->getDataVal('phpiniMemoryLimit') . ";" .$hp_ext_mail;
 
 
 	$admin_id = $_SESSION['user_id'];

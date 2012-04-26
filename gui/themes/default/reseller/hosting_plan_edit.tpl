@@ -85,6 +85,17 @@
 								<input id="hp_disk" type="text" name="hp_disk" value="{HP_DISK_VALUE}"  {READONLY}/>
 							</td>
 						</tr>
+                        <tr>
+                            <td>{TR_EXTMAIL}</td>
+                            <td>
+                                <div class="radio">
+                                    <input type="radio" name="external_mail" value="_yes_" {TR_EXTMAIL_YES} id="extmail_yes" {DISBLED}/>
+                                    <label for="extmail_yes">{TR_YES}</label>
+                                    <input type="radio" name="external_mail" value="_no_" {TR_EXTMAIL_NO} id="extmail_no"  {DISBLED}/>
+                                    <label for="extmail_no">{TR_NO}</label>
+                                </div>
+                            </td>
+                        </tr>
 						<tr>
 							<td>{TR_PHP}</td>
 							<td>

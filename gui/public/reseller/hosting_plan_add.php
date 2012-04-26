@@ -92,6 +92,7 @@ $tpl->assign(
 		 'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
 		 'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+         'TR_EXTMAIL' => tr('External mail server'),
 		 'TR_PHP' => tr('PHP'),
 		 'TR_SOFTWARE_SUPP' => tr('Softwares installer'),
 		 'TR_CGI' => tr('CGI'),
@@ -228,6 +229,8 @@ function gen_empty_ahp_page($tpl, $phpini)
 			 'HP_VELUE' => '',
 			 'HP_PAYMENT' => '',
 			 'HP_DESCRIPTION_VALUE' => '',
+             'TR_EXTMAIL_YES' => '',
+             'TR_EXTMAIL_NO' => $cfg->HTML_CHECKED,
 			 'TR_PHP_YES' => '',
 			 'TR_PHP_NO' => $cfg->HTML_CHECKED,
 			 'VL_SOFTWAREY' => '',
@@ -275,7 +278,7 @@ function gen_data_ahp_page($tpl, $phpini)
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns, $hp_allowsoftware;
+	global $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail;
 	global $tos;
 
 	/** @var $cfg iMSCP_pTemplate */
@@ -303,6 +306,8 @@ function gen_data_ahp_page($tpl, $phpini)
 
 	$tpl->assign(
 		array(
+             'TR_EXTMAIL_YES' => ($hp_ext_mail == '_yes_') ? $cfg->HTML_CHECKED : '',
+             'TR_EXTMAIL_NO' => ($hp_ext_mail == '_no_') ? $cfg->HTML_CHECKED : '',
 			 'TR_PHP_YES' => ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
 			 'TR_PHP_NO' => ($hp_php == '_no_') ? $cfg->HTML_CHECKED : '',
 			 'VL_SOFTWAREY' => ($hp_allowsoftware == '_yes_') ? $cfg->HTML_CHECKED
@@ -361,7 +366,7 @@ function check_data_correction($tpl, $phpini)
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns, $hp_allowsoftware;
+	global $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail;
 	global $tos;
 
 	$hp_name = clean_input($_POST['hp_name']);
@@ -435,6 +440,10 @@ function check_data_correction($tpl, $phpini)
 	} else {
 		$setup_fee = clean_input($_POST['hp_setupfee']);
 	}
+
+    if (isset($_POST['external_mail'])) {
+        $hp_ext_mail = $_POST['external_mail'];
+    }
 
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
@@ -548,7 +557,7 @@ function save_data_to_db($tpl, $admin_id, $phpini)
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns, $hp_allowsoftware;
+	global $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail;
 	global $tos;
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
@@ -562,7 +571,7 @@ function save_data_to_db($tpl, $admin_id, $phpini)
 		$hp_props .= ";" . $phpini->getClPermVal('phpiniSystem') . ";" . $phpini->getClPermVal('phpiniRegisterGlobals') . ";" . $phpini->getClPermVal('phpiniAllowUrlFopen');
 		$hp_props .= ";" . $phpini->getClPermVal('phpiniDisplayErrors') . ";" . $phpini->getClPermVal('phpiniDisableFunctions');
 		$hp_props .= ";" . $phpini->getDataVal('phpiniPostMaxSize') . ";" . $phpini->getDataVal('phpiniUploadMaxFileSize') . ";" . $phpini->getDataVal('phpiniMaxExecutionTime');
-		$hp_props .= ";" . $phpini->getDataVal('phpiniMaxInputTime') . ";" . $phpini->getDataVal('phpiniMemoryLimit');
+		$hp_props .= ";" . $phpini->getDataVal('phpiniMaxInputTime') . ";" . $phpini->getDataVal('phpiniMemoryLimit') . ";" . $hp_ext_mail;
 
 		// this id is just for fake and is not used in reseller_limits_check.
 		$hpid = 0;

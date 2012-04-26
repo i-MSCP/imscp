@@ -1707,7 +1707,10 @@ class iMSCP_Update_Database extends iMSCP_Update
     	return array(
             $this->_addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
             $this->_addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-            $this->_addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'")
+            $this->_addColumn('domain', 'external_mail_dns_ids', "VARCHAR(150) NOT NULL"),
+            $this->_addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+            $this->_addColumn('domain_aliasses', 'external_mail_dns_ids', "VARCHAR(150) NOT NULL"),
+            "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_')"
     	);
     }
 }

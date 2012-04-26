@@ -236,6 +236,17 @@
 				<th>{TR_FEATURE}</th>
 				<th>{TR_STATUS}</th>
 			</tr>
+            <!-- BDP: ext_mail_block -->
+            <tr>
+                <td><label for="domain_external_mail">{TR_EXTMAIL}</label></td>
+                <td>
+                    <select id="domain_external_mail" name="domain_external_mail" style="vertical-align: middle">
+                        <option value="yes" {EXTMAIL_YES}>{TR_YES}</option>
+                        <option value="no" {EXTMAIL_NO}>{TR_NO}</option>
+                    </select>
+                </td>
+            </tr>
+            <!-- EDP: ext_mail_block -->
 			<!-- BDP: php_block -->
 			<tr>
 				<td><label for="domain_php">{TR_PHP}</label></td>

@@ -117,6 +117,7 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 				`t1`.`domain_sqlu_limit`, `t1`.`domain_disk_limit`, `t1`.`domain_disk_usage`,
 				`t1`.`domain_traffic_limit`, `t1`.`domain_php`, `t1`.`domain_cgi`, `t1`.`domain_dns`,
 				`t1`.`domain_software_allowed`, `t1`.`allowbackup`, `t1`.`phpini_perm_system` `customer_php_ini_system`,
+				`t1`.`domain_external_mail`,
 
 				-- domain reseller props
 				`t2`.`reseller_id`, `t2`.`current_sub_cnt`, `t2`.`max_sub_cnt`,
@@ -202,6 +203,7 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 		$data['fallback_domain_dns'] = $data['domain_dns'];
 		$data['fallback_domain_software_allowed'] = $data['domain_software_allowed'];
 		$data['fallback_allowbackup'] = $data['allowbackup'];
+        $data['fallback_domain_external_mail'] = $data['domain_external_mail'];
 
 		$data['domain_expires_ok'] = true;
 		$data['domain_never_expires'] = ($data['domain_expires'] == 0) ? 'on' : 'off';
@@ -260,6 +262,9 @@ function &reseller_getData($domainId, $forUpdate = false, $recoveryMode = false)
 			} else {
 				$data['allowbackup'] = 'no';
 			}
+
+            $data['domain_external_mail'] = isset($_POST['domain_external_mail'])
+                ? clean_input($_POST['domain_external_mail']) : $data['domain_external_mail'];
 		}
 	}
 
@@ -400,6 +405,15 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 
 	$tplVars['TR_FEATURE'] = tr('Feature');
 	$tplVars['TR_STATUS'] = tr('Status');
+
+    // External mail support
+    if($data['max_mail_cnt'] == '-1') {
+    	$tplVars['EXT_MAIL_BLOCK'] =  '';
+    } else {
+    	$tplVars['TR_EXTMAIL'] = tr('External mail server');
+    	$tplVars['EXTMAIL_YES'] = ($data['domain_external_mail'] == 'yes') ? $htmlSelected : '';
+    	$tplVars['EXTMAIL_NO'] = ($data['domain_external_mail'] != 'yes') ? $htmlSelected : '';
+    }
 
 	// PHP support
 	$tplVars['TR_PHP'] = tr('PHP');
@@ -764,6 +778,10 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 		$phpEditorNew = array_merge($phpEditor->getData(), $phpEditor->getClPerm());
 		// Check for PHP editor values - End
 
+        // Check for External mail server support (we are safe here)
+        $data['domain_external_mail'] = (in_array($data['domain_external_mail'], array('no', 'yes')))
+            ? $data['domain_external_mail'] : $data['fallback_domain_external_mail'];
+
 		// Check for CGI support (we are safe here)
 		$data['domain_cgi'] = (in_array($data['domain_cgi'], array('no', 'yes')))
 			? $data['domain_cgi'] : $data['fallback_domain_cgi'];
@@ -877,7 +895,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 					`allowbackup` = ?, `domain_dns` = ?,  `domain_software_allowed` = ?,
 					`phpini_perm_system` = ?, `phpini_perm_register_globals` = ?,
 					`phpini_perm_allow_url_fopen` = ?, `phpini_perm_display_errors` = ?,
-					`phpini_perm_disable_functions` = ?
+					`phpini_perm_disable_functions` = ?, domain_external_mail = ?
 				WHERE
 					`domain_id` = ?
 			";
@@ -894,6 +912,7 @@ function reseller_checkAndUpdateData($domainId, $recoveryMode = false)
 									$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
 									$phpEditor->getClPermVal('phpiniDisplayErrors'),
 									$phpEditor->getClPermVal('phpiniDisableFunctions'),
+                                    $data['domain_external_mail'],
 									$domainId));
 
 			iMSCP_Events_Manager::getInstance()->dispatch(
@@ -1033,6 +1052,7 @@ $tpl->define_dynamic(
 		'mail_accounts_limit_block' => 'page',
 		'ftp_accounts_limit_block' => 'page',
 		'sql_db_and_users_limit_block' => 'page',
+        'ext_mail_block' => 'page',
 		'php_block' => 'page',
 		'php_editor_js' => 'page',
 		'php_editor_block' => 'php_block',
