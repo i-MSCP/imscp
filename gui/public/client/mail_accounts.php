@@ -35,6 +35,19 @@
  * @link        http://i-mscp.net
  */
 
+/**
+* Hide disabled feature.
+*
+* @param iMSCP_pTemplate $tpl Template engine instance
+*/
+function client_hideDisabledFeatures($tpl)
+{
+    if (!customerHasFeature('external_mail')) {
+        $tpl->assign('EXTERNAL_MAIL', '');
+    }
+}
+
+
 // Include core library
 require_once 'imscp-lib.php';
 
@@ -687,6 +700,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
 
 gen_page_lists($tpl, $_SESSION['user_id']);
 generateNavigation($tpl);
+client_hideDisabledFeatures($tpl);
 
 $tpl->assign(
 	array(

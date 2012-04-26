@@ -62,7 +62,8 @@ function get_domain_default_props($domainAdminId, $returnWKeys = false)
 				`domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
 				`domain_software_allowed`, `phpini_perm_system`,
 				`phpini_perm_register_globals`, `phpini_perm_allow_url_fopen`,
-				`phpini_perm_display_errors`, `phpini_perm_disable_functions`
+				`phpini_perm_display_errors`, `phpini_perm_disable_functions`,
+				`domain_external_mail`
 			FROM
 				`domain`
 			WHERE
@@ -755,6 +756,7 @@ function customerHasFeature($featureName, $forceReload = false)
 						 || $dmnProps['domain_subd_limit'] != '-1'
 						 || $dmnProps['domain_dns'] == 'yes'
 						 || $dmnProps['phpini_perm_system'] == 'yes') ? true : false,
+            'external_mail' => ($dmnProps['domain_external_mail'] == 'yes') ? true : false,
 			'php' => ($dmnProps['domain_php'] == 'yes') ? true : false,
 			'php_editor' => ($dmnProps['phpini_perm_system'] == 'yes' &&
 							 ($dmnProps['phpini_perm_register_globals'] == 'yes'
