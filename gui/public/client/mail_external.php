@@ -34,7 +34,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
-if (!customerHasFeature('external_mail')) {
+if (!customerHasFeature('external_mail') || !customerHasFeature('mail')) {
     redirectTo('index.php');
 }
 
@@ -43,7 +43,7 @@ $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/external_mail.tpl');
+$tpl->define_dynamic('page', 'client/mail_external.tpl');
 $tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('relay_message', 'page');
 $tpl->define_dynamic('relay_item', 'page');
@@ -72,7 +72,7 @@ function gen_relay_item(&$tpl, $action, $dmn_id, $dmn_name, $relay_status, $rel_
                 'RELAY_ACTIVE' => tr('not activated'),
 				'RELAY_STATUS' => tr('N/A'),
 				'RELAY_CREATE_ACTION' => tr('Create Relay Entry'),
-				'RELAY_CREATE_ACTION_SCRIPT' => "external_mail_add.php?id=$dmn_id;$rel_type",
+				'RELAY_CREATE_ACTION_SCRIPT' => "mail_external_add.php?id=$dmn_id;$rel_type",
                 'RELAY_ITEM_EDIT' => '',
                 'RELAY_ITEM_DELETE' => ''));
 	} else {
@@ -84,9 +84,9 @@ function gen_relay_item(&$tpl, $action, $dmn_id, $dmn_name, $relay_status, $rel_
                 'RELAY_ACTIVE' => tr('activated'),
 				'RELAY_STATUS' => translate_dmn_status($relay_status),
                 'RELAY_EDIT_ACTION' => tr('Edit Relay Entry'),
-                'RELAY_EDIT_ACTION_SCRIPT' => "external_mail_edit.php?id=$dmn_id;$rel_type",
+                'RELAY_EDIT_ACTION_SCRIPT' => "mail_external_edit.php?id=$dmn_id;$rel_type",
 				'RELAY_DELETE_ACTION' => tr('Delete Relay Entry'),
-				'RELAY_DELETE_ACTION_SCRIPT' => "external_mail_delete.php?id=$dmn_id;$rel_type",
+				'RELAY_DELETE_ACTION_SCRIPT' => "mail_external_delete.php?id=$dmn_id;$rel_type",
                 'RELAY_ITEM_NEW' => ''));
 	}
 }

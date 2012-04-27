@@ -233,13 +233,13 @@
 				</catchall>
                 <relay>
                     <label>External mail servers</label>
-                    <uri>/client/external_mail.php</uri>
+                    <uri>/client/mail_external.php</uri>
                     <title_class>email</title_class>
                     <privilege_callback name="customerHasFeature" param="external_mail"/>
                     <pages>
                         <add_relay_link>
                             <label>Add external mail servers</label>
-                                <uri>/client/external_mail_add.php</uri>
+                                <uri>/client/mail_external_add.php</uri>
                                 <visible>0</visible>
                                 <title_class>email</title_class>
                         </add_relay_link>
