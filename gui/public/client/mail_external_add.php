@@ -285,7 +285,7 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 					} else {
 						/** @var $db iMSCP_Database */
 						$db = iMSCP_Registry::get('db');
-						$dns_entry_ids .= ($i === 0) ? $db->insertId() : ",".$db->insertId();
+						$dns_entry_ids .= ($dns_entry_ids == '') ? $db->insertId() : ",".$db->insertId();
 					}
 
 					if ($alias_id == 0) {
@@ -399,6 +399,7 @@ function gen_page_external_mail_props($tpl, $item_id, $user_id) {
             redirectTo('mail_external.php');
         }
     } else {
+		set_page_message(tr('Domaintype not allowed for external mail servers.'), 'error');
         redirectTo('mail_external.php');
     }
 }

@@ -18,7 +18,7 @@
                         var str_cname = '<tr class="relay_new_field">';
                         str_cname += '<td colspan="2">{TR_CNAME}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="CNAME" /></td>';
                         str_cname += '<td><input type="text" name="cname_name[]" id="cname_name_' + i + '" value="" /><input type="hidden" name="mx_alias[]" id="mx_alias_' + i + '" value="" /></td>';
-                        str_cname += '<td><input type="text" name="cname_priority[]" id="cname_priority_' + i + '" value="{CNAME_PRIORITY}" readonly /><input type="hidden" name="mx_priority[]" id="mx_priority_' + i + '" value="" /></td>';
+                        str_cname += '<td><input type="text" name="cname_priority[]" id="cname_priority_' + i + '" value="{CNAME_PRIORITY}" readonly="readonly" /><input type="hidden" name="mx_priority[]" id="mx_priority_' + i + '" value="" /></td>';
                         str_cname += '<td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord_' + i + '" value="" /></td>';
                         str_cname += '</tr>';
                         $(".inputs tbody").append(str_cname);
@@ -94,7 +94,7 @@
             </thead>
             <tbody id="relay_lines">
                 <tr>
-                    <td><input type="checkbox" name="del_item[]" id="del_item" value="0" readonly /></td>
+                    <td><input type="checkbox" name="del_item[]" id="del_item" value="0" readonly="readonly" /></td>
                     <td><select name="relay_type[]" id="relay_type" onchange="changeType(this.value);">{SELECT_RELAY_TYPE}</select></td>
                     <td>
                         <select name="mx_alias[]" id="mx_alias">{SELECT_MX_ALIAS}</select>
@@ -102,7 +102,7 @@
                     </td>
                     <td>
                         <select name="mx_priority[]" id="mx_priority">{SELECT_MX_PRIO}</select>
-                        <input type="text" name="cname_priority[]" id="cname_priority" value="{CNAME_PRIORITY}" readonly />
+                        <input type="text" name="cname_priority[]" id="cname_priority" value="{CNAME_PRIORITY}" readonly="readonly" />
                     </td>
                     <td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord" value="{SRV_DNSRECORD}" /></td>
                 </tr>
@@ -129,7 +129,7 @@
                         <input type="hidden" name="mx_alias[]" id="{MX_ALIAS_ID}" value="" />
                     </td>
                     <td>
-                        <input type="text" name="cname_priority[]" id="{CNAME_PRIORITY_ID}" value="{CNAME_PRIORITY}" readonly />
+                        <input type="text" name="cname_priority[]" id="{CNAME_PRIORITY_ID}" value="{CNAME_PRIORITY}" readonly="readonly" />
                         <input type="hidden" name="mx_priority[]" id="{MX_PRIORITY_ID}" value="" />
                     </td>
                     <td><input type="text" name="srv_dnsrecord[]" id="{SRV_DNSRECORD_ID}" value="{SRV_DNSRECORD_ITEM}" /></td>
@@ -140,8 +140,8 @@
 		</table>
 
 		<div class="buttons">
-			<input type="hidden" name="uaction" value="add_external_mail"/>
-			<input type="hidden" name="id" value="{ID}"/>
-			<input name="Submit" type="submit" value="{TR_CREATE_RELAY}"/>
+			<input type="hidden" name="uaction" value="add_external_mail" />
+			<input type="hidden" name="id" value="{ID}" />
+			<input name="Submit" type="submit" value="{TR_CREATE_RELAY}" />
 		</div>
 	</form>
