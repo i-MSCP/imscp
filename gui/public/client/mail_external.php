@@ -65,29 +65,37 @@ function gen_relay_item(&$tpl, $action, $dmn_id, $dmn_name, $relay_status, $rel_
 	$show_dmn_name = decode_idna($dmn_name);
 
 	if ($action === 'create') {
-        $tpl->assign('EXTERNAL_MAIL', '');
 		$tpl->assign(
 			array(
 				'RELAY_DOMAIN' => tohtml($show_dmn_name),
                 'RELAY_ACTIVE' => tr('not activated'),
-				'RELAY_STATUS' => tr('N/A'),
+				'RELAY_STATUS' => translate_dmn_status($relay_status),
 				'RELAY_CREATE_ACTION' => tr('Create Relay Entry'),
 				'RELAY_CREATE_ACTION_SCRIPT' => "mail_external_add.php?id=$dmn_id;$rel_type",
+				'RELAY_EDIT_ACTION' => '',
+				'RELAY_EDIT_ACTION_SCRIPT' => '',
+				'RELAY_DELETE_ACTION' => '',
+				'RELAY_DELETE_ACTION_SCRIPT' => '',
                 'RELAY_ITEM_EDIT' => '',
                 'RELAY_ITEM_DELETE' => ''));
-	} else {
-		$show_dmn_name = decode_idna($dmn_name);
 
+		$tpl->parse('RELAY_ITEM_NEW', 'relay_item_new');
+	} else {
 		$tpl->assign(
 			array(
 				'RELAY_DOMAIN' => tohtml($show_dmn_name),
-                'RELAY_ACTIVE' => tr('activated'),
+				'RELAY_ACTIVE' => tr('activated'),
 				'RELAY_STATUS' => translate_dmn_status($relay_status),
-                'RELAY_EDIT_ACTION' => tr('Edit Relay Entry'),
-                'RELAY_EDIT_ACTION_SCRIPT' => "mail_external_edit.php?id=$dmn_id;$rel_type",
-				'RELAY_DELETE_ACTION' => tr('Delete Relay Entry'),
-				'RELAY_DELETE_ACTION_SCRIPT' => "mail_external_delete.php?id=$dmn_id;$rel_type",
-                'RELAY_ITEM_NEW' => ''));
+				'RELAY_CREATE_ACTION' => '',
+				'RELAY_CREATE_ACTION_SCRIPT' => '',
+				'RELAY_EDIT_ACTION' => ($relay_status === "ok") ? tr('Edit Relay Entry') : tr('N/A'),
+				'RELAY_EDIT_ACTION_SCRIPT' => ($relay_status === "ok") ? "mail_external_edit.php?id=$dmn_id;$rel_type" : '',
+				'RELAY_DELETE_ACTION' => ($relay_status === "ok") ? tr('Delete Relay Entry') : tr('N/A'),
+				'RELAY_DELETE_ACTION_SCRIPT' => ($relay_status === "ok") ? "mail_external_delete.php?id=$dmn_id;$rel_type" : '',
+				'RELAY_ITEM_NEW' => ''));
+
+		$tpl->parse('RELAY_ITEM_EDIT', 'relay_item_edit');
+		$tpl->parse('RELAY_ITEM_DELETE', 'relay_item_delete');
 	}
 }
 
@@ -96,84 +104,81 @@ function gen_relay_item(&$tpl, $action, $dmn_id, $dmn_name, $relay_status, $rel_
  * @param $dmn_id
  * @param $dmn_name
  */
-function gen_page_relay_list($tpl, $dmn_id, $dmn_name) {
-
+function gen_page_relay_list($tpl, $dmn_id, $dmn_name)
+{
 	$tpl->assign('RELAY_MESSAGE', '');
 
-		$query = "
-			SELECT
-				`external_mail_status`
-			FROM
-				`domain`
-			WHERE
-				`domain_id` = '$dmn_id'
-			AND
-				`external_mail` = 'on'
+	$query = "
+		SELECT
+			`external_mail_status`, `external_mail`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = '$dmn_id'
+		AND
+			`domain_status` = 'ok'
 		";
 
-		$rs = execute_query($query);
+	$rs = execute_query($query);
 
-		if ($rs->recordCount() == 0) {
-			gen_relay_item($tpl, 'create', $dmn_id, $dmn_name, '', 'normal');
-		} else {
-			gen_relay_item(
-				$tpl,
-				'',
-				$dmn_id,
-				$dmn_name,
-				$rs->fields['external_mail_status'], 'normal');
-		}
+	if ($rs->fields['external_mail'] == "off" && $rs->fields['external_mail_status'] == "ok") {
+		gen_relay_item($tpl, 'create', $dmn_id, $dmn_name, $rs->fields['external_mail_status'], 'normal');
+	} else {
+		gen_relay_item(
+			$tpl,
+			'',
+			$dmn_id,
+			$dmn_name,
+			$rs->fields['external_mail_status'], 'normal');
+	}
 
-		$tpl->parse('RELAY_ITEM', 'relay_item');
+	$tpl->parse('RELAY_ITEM', 'relay_item');
+
+	$query = "
+		SELECT
+			`alias_id`, `alias_name`
+		FROM
+			`domain_aliasses`
+		WHERE
+			`domain_id` = '$dmn_id'
+		AND
+			`alias_status` = 'ok'
+	";
+
+	$rs = execute_query($query);
+
+	while (!$rs->EOF) {
+		$als_id = $rs->fields['alias_id'];
+		$als_name = $rs->fields['alias_name'];
 
 		$query = "
 			SELECT
-				`alias_id`, `alias_name`
+				`external_mail_status`, `external_mail`
 			FROM
 				`domain_aliasses`
 			WHERE
 				`domain_id` = '$dmn_id'
 			AND
-				`alias_status` = 'ok'
+				`alias_id` = '$als_id'
 		";
 
-		$rs = execute_query($query);
+		$rs_als = execute_query($query);
 
-		while (!$rs->EOF) {
-			$als_id = $rs->fields['alias_id'];
-			$als_name = $rs->fields['alias_name'];
-
-			$query = "
-				SELECT
-					`external_mail_status`
-				FROM
-					`domain_aliasses`
-				WHERE
-					`domain_id` = '$dmn_id'
-				AND
-					`alias_id` = '$als_id'
-				AND
-                    `external_mail` = 'on'
-			";
-
-			$rs_als = execute_query($query);
-
-			if ($rs_als->recordCount() == 0) {
-				gen_relay_item($tpl, 'create', $als_id, $als_name, '', 'alias');
-			} else {
-				gen_relay_item(
-					$tpl,
-					'',
-					$als_id,
-					$als_name,
-					$rs_als->fields['external_mail_status'], 'alias'
-				);
-			}
-
-			$tpl->parse('RELAY_ITEM', '.relay_item');
-
-			$rs->moveNext();
+		if ($rs_als->fields['external_mail'] == "off" && $rs_als->fields['external_mail_status'] == "ok") {
+			gen_relay_item($tpl, 'create', $als_id, $als_name, $rs_als->fields['external_mail_status'], 'alias');
+		} else {
+			gen_relay_item(
+				$tpl,
+				'',
+				$als_id,
+				$als_name,
+				$rs_als->fields['external_mail_status'], 'alias');
 		}
+
+		$tpl->parse('RELAY_ITEM', '.relay_item');
+
+		$rs->moveNext();
+	}
 }
 
 /**

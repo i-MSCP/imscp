@@ -7,19 +7,19 @@
                 switch ($('#relay_type_add').val()) {
                     case "mx_add":
                         var str_mx = '<tr class="relay_new_field">';
-                        str_mx += '<td>{TR_MX}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="mx" /></td>';
-                        str_mx += '<td><select name="mx_domain_dns[]" id="mx_domain_dns_' + i + '"><option value="empty">&nbsp;</option><option value="*">*</option></select></td>';
-                        str_mx += '<td><input type="text" name="mx_priority[]" id="mx_priority_' + i + '" value="{MX_PRIORITY}" /></td>';
-                        str_mx += '<td><input type="text" name="domain_text[]" id="domain_text_' + i + '" value="{DOMAIN_TEXT}" /></td>';
+                        str_mx += '<td colspan="2">{TR_MX}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="MX" /></td>';
+                        str_mx += '<td><select name="mx_alias[]" id="mx_alias_' + i + '"><option value="empty">empty</option><option value="*">*</option></select><input type="hidden" name="cname_name[]" id="cname_' + i + '" value="" /></td>';
+                        str_mx += '<td><select name="mx_priority[]" id="mx_priority_' + i + '"><option value="10">10</option><option value="15">15</option><option value="20">20</option></select><input type="hidden" name="cname_priority[]" id="cname_priority_' + i + '" value="" /></td>';
+                        str_mx += '<td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord_' + i + '" value="" /></td>';
                         str_mx += '</tr>';
                         $(".inputs tbody").append(str_mx);
                         break;
                     case "cname_add":
                         var str_cname = '<tr class="relay_new_field">';
-                        str_cname += '<td>{TR_CNAME}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="cname" /></td>';
-                        str_cname += '<td><input type="text" name="cname_domain_dns[]" id="cname_domain_dns_' + i + '" value="{CNAME_DOMAIN_DNS}" /></td>';
-                        str_cname += '<td><input type="text" name="cname_priority[]" id="cname_priority_' + i + '" value="{CNAME_PRIORITY}" disabled /></td>';
-                        str_cname += '<td><input type="text" name="domain_text[]" id="domain_text_' + i + '" value="{DOMAIN_TEXT}" /></td>';
+                        str_cname += '<td colspan="2">{TR_CNAME}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="CNAME" /></td>';
+                        str_cname += '<td><input type="text" name="cname_name[]" id="cname_name_' + i + '" value="" /><input type="hidden" name="mx_alias[]" id="mx_alias_' + i + '" value="" /></td>';
+                        str_cname += '<td><input type="text" name="cname_priority[]" id="cname_priority_' + i + '" value="{CNAME_PRIORITY}" readonly /><input type="hidden" name="mx_priority[]" id="mx_priority_' + i + '" value="" /></td>';
+                        str_cname += '<td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord_' + i + '" value="" /></td>';
                         str_cname += '</tr>';
                         $(".inputs tbody").append(str_cname);
                         break;
@@ -43,19 +43,16 @@
         	});
         });
 		function changeType(what) {
-			if (what == "mx") {
-				document.forms[0].mx_domain_dns.disabled = false;
-                document.forms[0].mx_domain_dns.style.display = 'inline';
+			if (what == "MX") {
+                document.forms[0].mx_alias.style.display = 'inline';
                 document.forms[0].mx_priority.style.display = 'inline';
-				document.forms[0].cname_domain_dns.disabled = true;
-                document.forms[0].cname_domain_dns.style.display = 'none';
+                document.forms[0].cname_name.style.display = 'none';
                 document.forms[0].cname_priority.style.display = 'none';
 			} else {
-				document.forms[0].mx_domain_dns.disabled = true;
-                document.forms[0].mx_domain_dns.style.display = 'none';
+
+                document.forms[0].mx_alias.style.display = 'none';
                 document.forms[0].mx_priority.style.display = 'none';
-				document.forms[0].cname_domain_dns.disabled = false;
-                document.forms[0].cname_domain_dns.style.display = 'inline';
+                document.forms[0].cname_name.style.display = 'inline';
                 document.forms[0].cname_priority.style.display = 'inline';
 			}
 		}
@@ -88,6 +85,7 @@
 		<table class="inputs">
             <thead>
                 <tr>
+                    <th width="10">{TR_REMOVE_RELAY_ITEM}</th>
                     <th>{TR_RELAY_TYPE}</th>
                     <th>{TR_RELAY_DNS}</th>
                     <th>{TR_MX_PRIORITY}</th>
@@ -96,25 +94,48 @@
             </thead>
             <tbody id="relay_lines">
                 <tr>
+                    <td><input type="checkbox" name="del_item[]" id="del_item" value="0" readonly /></td>
+                    <td><select name="relay_type[]" id="relay_type" onchange="changeType(this.value);">{SELECT_RELAY_TYPE}</select></td>
                     <td>
-                        <select name="relay_type[]" onchange="changeType(this.value);">
-                            <option value="mx">{TR_MX}</option>
-                            <option value="cname">{TR_CNAME}</option>
-                        </select>
+                        <select name="mx_alias[]" id="mx_alias">{SELECT_MX_ALIAS}</select>
+                        <input type="text" name="cname_name[]" id="cname_name" value="{CNAME_NAME}" />
                     </td>
                     <td>
-                        <select name="mx_domain_dns[]" id="mx_domain_dns">
-                            <option value="empty">&nbsp;</option>
-                            <option value="*">*</option>
-                        </select>
-                        <input type="text" name="cname_domain_dns[]" id="cname_domain_dns" value="{CNAME_DOMAIN_DNS}" />
+                        <select name="mx_priority[]" id="mx_priority">{SELECT_MX_PRIO}</select>
+                        <input type="text" name="cname_priority[]" id="cname_priority" value="{CNAME_PRIORITY}" readonly />
                     </td>
-                    <td>
-                        <input type="text" name="mx_priority[]" id="mx_priority" value="{MX_PRIORITY}" />
-                        <input type="text" name="cname_priority[]" id="cname_priority" value="{CNAME_PRIORITY}" disabled />
-                    </td>
-                    <td><input type="text" name="domain_text[]" id="domain_text" value="{DOMAIN_TEXT}" /></td>
+                    <td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord" value="{SRV_DNSRECORD}" /></td>
                 </tr>
+                <!-- BDP: relay_server_entry_item -->
+                <tr>
+                    <!-- BDP: mx_entry_item -->
+                    <td><input type="checkbox" name="del_item[]" id="{DEL_ITEM_ID}" value="{DEL_ITEM}" /></td>
+                    <td>{TR_MX}<input type="hidden" name="relay_type[]" id="{RELAY_TYPE_ID}" value="MX" /></td>
+                    <td>
+                        <select name="mx_alias[]" id="{MX_ALIAS_ID}">{SELECT_MX_ALIAS_ITEM}</select>
+                        <input type="hidden" name="cname_name[]" id="{CNAME_NAME_ID}" value="" />
+                    </td>
+                    <td>
+                        <select name="mx_priority[]" id="{MX_PRIORITY_ID}">{SELECT_MX_PRIO_ITEM}</select>
+                        <input type="hidden" name="cname_priority[]" id="{CNAME_PRIORITY_ID}" value="" />
+                    </td>
+                    <td><input type="text" name="srv_dnsrecord[]" id="{SRV_DNSRECORD_ID}" value="{SRV_DNSRECORD_ITEM}" /></td>
+                    <!-- EDP: mx_entry_item -->
+                    <!-- BDP: cname_entry_item -->
+                    <td><input type="checkbox" name="del_item[]" id="{DEL_ITEM_ID}" value="{DEL_ITEM}" /></td>
+                    <td>{TR_CNAME}<input type="hidden" name="relay_type[]" id="{RELAY_TYPE_ID}" value="CNAME" /></td>
+                    <td>
+                        <input type="text" name="cname_name[]" id="{CNAME_NAME_ID}" value="{CNAME_NAME_ITEM}" />
+                        <input type="hidden" name="mx_alias[]" id="{MX_ALIAS_ID}" value="" />
+                    </td>
+                    <td>
+                        <input type="text" name="cname_priority[]" id="{CNAME_PRIORITY_ID}" value="{CNAME_PRIORITY}" readonly />
+                        <input type="hidden" name="mx_priority[]" id="{MX_PRIORITY_ID}" value="" />
+                    </td>
+                    <td><input type="text" name="srv_dnsrecord[]" id="{SRV_DNSRECORD_ID}" value="{SRV_DNSRECORD_ITEM}" /></td>
+                    <!-- EDP: cname_entry_item -->
+                </tr>
+                <!-- EDP: relay_server_entry_item -->
             </tbody>
 		</table>
 
