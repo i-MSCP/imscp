@@ -474,7 +474,7 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 			$cfg->ITEM_ADD_STATUS,
 			$mail_auto_respond,
 			$mail_auto_respond_text,
-			$mail_addr));
+			$mail_acc.'@'.$dmn_name));
 
 	$mail_id = $db->insertId();
 
