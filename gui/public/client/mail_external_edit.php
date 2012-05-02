@@ -100,6 +100,32 @@ function validate_CNAME($dns_record, $cname_name, &$err = null)
 }
 
 /**
+ * @param $domain
+ * @param $err
+ * @return bool
+ */
+function validate_NAME($domain, &$err)
+{
+	if(strpos($domain['name'], '.') === false) {
+		$entry = $domain['name'].'.dummy';
+	} else {
+		$entry = $domain['name'];
+	}
+
+	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
+		$err .= tr('Invalid NAME');
+		return false;
+	}
+	if (preg_match('/\.$/', $domain['name'])) {
+		if (!preg_match('/'.str_replace('.', '\.', $domain['domain']).'\.$/', $domain['name'])) {
+			$err .= sprintf(tr('Record "%s" is not part of domain "%s".', $domain['name'], $domain['domain']));
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
  * @param $dns_record
  * @param $mx_srv_prio
  * @param $err
@@ -239,7 +265,7 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 						$mx_alias = '';
 						switch ($rs->fields['domain_type']) {
 							case 'CNAME':
-								$srv_dnsrecord = $rs->fields['domain_text'];
+								$srv_dnsrecord = decode_idna($rs->fields['domain_text']);
 								$cname_name = $rs->fields['domain_dns'];
 										$tpl->assign(
 									array(
@@ -260,7 +286,7 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 							case 'MX':
 								if (preg_match('~([\d]+)[\s]+([^\s]+)+~', $rs->fields['domain_text'], $srv)) {
 									$mx_priority = $srv[1];
-									$srv_dnsrecord = $srv[2];
+									$srv_dnsrecord = decode_idna($srv[2]);
 								}
 								$mx_alias = $rs->fields['domain_dns'];
 								$tpl->assign(
@@ -338,7 +364,7 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 						$mx_alias = '';
 						switch ($rs->fields['domain_type']) {
 							case 'CNAME':
-								$srv_dnsrecord = $rs->fields['domain_text'];
+								$srv_dnsrecord = decode_idna($rs->fields['domain_text']);
 								$cname_name = $rs->fields['domain_dns'];
 								$tpl->assign(
 									array(
@@ -359,7 +385,7 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 							case 'MX':
 								if (preg_match('~([\d]+)[\s]+([^\s]+)+~', $rs->fields['domain_text'], $srv)) {
 									$mx_priority = $srv[1];
-									$srv_dnsrecord = $srv[2];
+									$srv_dnsrecord = decode_idna($srv[2]);
 								}
 								$mx_alias = $rs->fields['domain_dns'];
 								$tpl->assign(
@@ -434,6 +460,8 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 							$item_counter++;
 							if (!validate_CNAME($srv_dnsrecord, $cname_name, $err))
 								set_page_message(sprintf(tr("\nCannot validate %s record. Reason: '%s'."), $_POST['relay_type'][$i], $err), 'error');
+							if(!validate_NAME(array('name' => $cname_name, 'domain' => $srv_dnsrecord), $err))
+								set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), 'CNAME', $err), 'error');
 							$tpl->assign(
 								array(
 									'DEL_ITEM_ID' => 'del_item_'.$i,
@@ -495,7 +523,7 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 					if(!in_array($i, $del_items)) {
 						$mx_alias = (isset($_POST['mx_alias'][$i]) && $_POST['mx_alias'][$i] === "empty") ? '' : '*';
 						$_dns = ($_POST['relay_type'][$i] === "CNAME") ? $cname_name : $mx_alias;
-						$srv_dnsrecord = ($_POST['relay_type'][$i] === "MX") ? $_POST['mx_priority'][$i]."	".$_POST['srv_dnsrecord'][$i] : $_POST['srv_dnsrecord'][$i];
+						$srv_dnsrecord = ($_POST['relay_type'][$i] === "MX") ? $_POST['mx_priority'][$i]."	".encode_idna($_POST['srv_dnsrecord'][$i]) : encode_idna($_POST['srv_dnsrecord'][$i]);
 						if (substr($srv_dnsrecord, -1) != '.') {
 							$srv_dnsrecord .= '.';
 						}
