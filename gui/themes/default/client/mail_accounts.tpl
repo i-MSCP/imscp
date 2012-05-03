@@ -19,6 +19,7 @@
 					<th>{TR_MAIL}</th>
 					<th>{TR_TYPE}</th>
 					<th>{TR_STATUS}</th>
+					<th>{TR_QUOTA_USE}</th>
 					<th>{TR_ACTION}</th>
 				</tr>
 			</thead>
@@ -40,9 +41,11 @@
 					</td>
 					<td>{MAIL_TYPE}</td>
 					<td>{MAIL_STATUS}</td>
+					<td>{MAIL_QUOTA_VALUE}</td>
 					<td>
 						<a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
 						<a href="#" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
+						<a href="{MAIL_QUOTA_SCRIPT}" title="{MAIL_QUOTA}" class="icon i_edit">{MAIL_QUOTA}</a>
 					</td>
 				</tr>
 				<!-- EDP: mail_item -->
@@ -50,7 +53,7 @@
 			<!-- BDP: mails_total -->
 			<tfoot>
 				<tr>
-					<td colspan="4">{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}</td>
+					<td colspan="5">{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}</td>
 				</tr>
 			</tfoot>
 			<!-- EDP: mails_total -->
