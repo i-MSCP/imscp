@@ -259,6 +259,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			}
 
 			$txt_quota = "---";
+			$localeinfo=localeconv();
 
 			if ($is_mailbox) {
 				$complete_email = $mail_acc . '@' . $show_dmn_name;
@@ -282,9 +283,9 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			}
 			if ($userquotamax == 0)	{
 				$userquotamax=tr('unlimited');
-				$userquotapercent = "0.000";
+				$userquotapercent = "0".$localeinfo['decimal_point']."000";
 			} else {
-				$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, '.', '');
+				$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
 				$userquotamax = formatBytes($userquotamax);
 			}
 				$userquota= formatBytes($userquota);	
@@ -773,6 +774,7 @@ $tpl->assign(
 		'TR_MAIL' => tr('Mail'),
 		'TR_TYPE' => tr('Type'),
 		'TR_STATUS' => tr('Status'),
+		'TR_QUOTA' => tr('Quota'),
 		'TR_ACTION' => tr('Action'),
 		'TR_AUTORESPOND' => tr('Auto respond'),
 		'TR_DMN_MAILS' => tr('Domain mails'),

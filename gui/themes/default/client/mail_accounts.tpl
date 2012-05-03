@@ -19,7 +19,7 @@
 					<th>{TR_MAIL}</th>
 					<th>{TR_TYPE}</th>
 					<th>{TR_STATUS}</th>
-					<th>{TR_QUOTA_USE}</th>
+					<th>{TR_QUOTA}</th>
 					<th>{TR_ACTION}</th>
 				</tr>
 			</thead>

@@ -97,11 +97,11 @@ function client_UpdateMailAccount($mailAccountData)
 
 	// Quota data validation
 	$quotaValue = 0;
-	$quotaUpdate = false;
+	$quotaUpdate = 0;
 	if (!empty($_POST['quota']) || $_POST['quota'] == 0) {
-		if($_POST['quota'] != $mailAccountData['quota']) {
+		if($_POST['quota'] != floor($mailAccountData['quota'] / 1024 /1024)) {
 			if(is_numeric($_POST['quota'])) {
-				$quotaUpdate = true;
+				$quotaUpdate = 1;
 				$quotaValue = $_POST['quota'] * 1024 * 1024;
 			} else {
 				set_page_message(tr('Quota must be number'), 'error');
@@ -111,7 +111,7 @@ function client_UpdateMailAccount($mailAccountData)
 		set_page_message(tr('Quota must have a value'), 'error');
 	}
 
-	if (!Zend_Session::namespaceIsset('pageMessages') && $quotaUpdate) {
+	if ((!Zend_Session::namespaceIsset('pageMessages')) && ($quotaUpdate!=0)) {
 		iMSCP_Events_Manager::getInstance()->dispatch(
 			iMSCP_Events::onBeforeEditMail, array('mailId' => $mailAccountData['mail_id'])
 		);
@@ -136,7 +136,8 @@ function client_UpdateMailAccount($mailAccountData)
 		write_log("{$_SESSION['user_logged']}: updated mail quota: {$mailAccountData['mail_addr']}", E_USER_NOTICE);
 		return true;
 	} else {
-		set_page_message(tr("Nothing's been changed."), 'info');
+		set_page_message(tr("Nothing has been changed."), 'info');
+		return true;
 	}
 
 	return false;
@@ -212,7 +213,7 @@ $tpl->assign(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Edit quota'),
 		 'THEME_CHARSET' => tr('encoding'),
 		 'ISP_LOGO' => layout_getUserLogo(),
-		 'TR_EDIT_MAIL_ACCOUNT' => tr('Edit mail quota'),
+		 'TR_EDIT_MAIL_QUOTA' => tr('Edit mail quota'),
 		 'TR_QUOTA' => tr('Quota in MB (0 unlimited)'),
 		 'QUOTA' => $quotaValue,
 		 'TR_HELP' => tr('help'),
