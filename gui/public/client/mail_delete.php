@@ -50,94 +50,189 @@ if (!customerHasFeature('mail')) {
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
+$delete_multi_email_acc = false;
+$delete_ids = 0;
+
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	global $delete_id;
 	$delete_id = $_GET['id'];
+} elseif (isset($_POST['uaction']) && $_POST['uaction'] == "delete_marked_mails") {
+	if (isset($_POST['del_item']) && count($_POST['del_item']) > 0) {
+		$delete_multi_email_acc = true;
+		$delete_ids = $_POST['del_item'];
+	} else {
+		redirectTo('mail_accounts.php');
+	}
 } else {
 	redirectTo('mail_accounts.php');
 }
 
 // Test if we have a proper delete_id.
-if (!isset($delete_id)) {
+if (!isset($delete_id) && $delete_multi_email_acc === false) {
 	redirectTo('mail_accounts.php');
 }
 
-if (!is_numeric($delete_id)) {
+if (!is_numeric($delete_id) && $delete_multi_email_acc === false) {
+	redirectTo('mail_accounts.php');
+}
+
+if (count($delete_ids) === 0 && $delete_multi_email_acc === true) {
 	redirectTo('mail_accounts.php');
 }
 
 $dmn_name = $_SESSION['user_logged'];
 
-$query = "
-	SELECT
-		t1.`mail_id`, t2.`domain_id`, t2.`domain_name`
-	FROM
-		`mail_users` AS t1,
-		`domain` AS t2
-	WHERE
-		t1.`mail_id` = ?
-	AND
-		t1.`domain_id` = t2.`domain_id`
-	AND
-		t2.`domain_name` = ?
-";
+if ($delete_multi_email_acc === false) {
+	$query = "
+		SELECT
+			t1.`mail_id`, t2.`domain_id`, t2.`domain_name`
+		FROM
+			`mail_users` AS t1,
+			`domain` AS t2
+		WHERE
+			t1.`mail_id` = ?
+		AND
+			t1.`domain_id` = t2.`domain_id`
+		AND
+			t2.`domain_name` = ?
+	";
 
-$rs = exec_query($query, array($delete_id, $dmn_name));
+	$rs = exec_query($query, array($delete_id, $dmn_name));
 
-if ($rs->recordCount() == 0) {
-	redirectTo('mail_accounts.php');
+	if ($rs->recordCount() == 0) {
+		redirectTo('mail_accounts.php');
+	}
+
+	// check for catchall assigment !!
+	$query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
+	$res = exec_query($query, $delete_id);
+	$data = $res->fetchRow();
+
+	if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_NORMAL_FORWARD."/", $data['mail_type'])) {
+		// mail to normal domain
+		// global $domain_name;
+		$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
+	} else if (preg_match("/".MT_ALIAS_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALIAS_FORWARD."/", $data['mail_type'])) {
+		// mail to domain alias
+		$res_tmp = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $data['sub_id']);
+		$dat_tmp = $res_tmp->fetchRow();
+		$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
+	} else if (preg_match("/".MT_SUBDOM_MAIL."/", $data['mail_type']) || preg_match("/".MT_SUBDOM_FORWARD."/", $data['mail_type'])) {
+		// mail to subdomain
+		$res_tmp = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $data['sub_id']);
+		$dat_tmp = $res_tmp->fetchRow();
+		$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_name'].'.'.$dmn_name;
+	} else if (preg_match("/".MT_ALSSUB_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALSSUB_FORWARD."/", $data['mail_type'])) {
+		// mail to subdomain
+		$res_tmp = exec_query("SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", $data['sub_id']);
+		$dat_tmp = $res_tmp->fetchRow();
+		$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_alias_name'].'.'.$dat_tmp['alias_name'];
+	}
+
+	$query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?";
+	$res_tmp = exec_query($query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
+	$num = $res_tmp->rowCount();
+	if ($num > 0) {
+		set_page_message(tr('Please delete first CatchAll account for this email.'), 'error');
+		$_SESSION['catchall_assigned'] = 1;
+		redirectTo('mail_accounts.php');
+	}
+
+	/**
+	 * @todo useDB prepared statements
+	 */
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $delete_id));
+
+	$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
+	exec_query($query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
+
+	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $delete_id));
+
+	update_reseller_c_props(get_reseller_id($data['domain_id']));
+
+	send_request();
+	set_page_message(tr('Mail account scheduled for deletion.'), 'success');
+	$admin_login = decode_idna($_SESSION['user_logged']);
+	write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
+
+} else {
+	$deleted_items_counter = 0;
+	foreach ($delete_ids as $del_itemID) {
+		$query = "
+			SELECT
+				t1.`mail_id`, t2.`domain_id`, t2.`domain_name`
+			FROM
+				`mail_users` AS t1,
+				`domain` AS t2
+			WHERE
+				t1.`mail_id` = ?
+			AND
+				t1.`domain_id` = t2.`domain_id`
+			AND
+				t2.`domain_name` = ?
+		";
+
+		$rs = exec_query($query, array($del_itemID, $dmn_name));
+
+		if ($rs->recordCount() == 0) {
+			redirectTo('mail_accounts.php');
+		}
+
+		// check for catchall assigment !!
+		$query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
+		$res = exec_query($query, $del_itemID);
+		$data = $res->fetchRow();
+
+		if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_NORMAL_FORWARD."/", $data['mail_type'])) {
+			// mail to normal domain
+			// global $domain_name;
+			$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
+		} else if (preg_match("/".MT_ALIAS_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALIAS_FORWARD."/", $data['mail_type'])) {
+			// mail to domain alias
+			$res_tmp = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $data['sub_id']);
+			$dat_tmp = $res_tmp->fetchRow();
+			$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
+		} else if (preg_match("/".MT_SUBDOM_MAIL."/", $data['mail_type']) || preg_match("/".MT_SUBDOM_FORWARD."/", $data['mail_type'])) {
+			// mail to subdomain
+			$res_tmp = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $data['sub_id']);
+			$dat_tmp = $res_tmp->fetchRow();
+			$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_name'].'.'.$dmn_name;
+		} else if (preg_match("/".MT_ALSSUB_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALSSUB_FORWARD."/", $data['mail_type'])) {
+			// mail to subdomain
+			$res_tmp = exec_query("SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", $data['sub_id']);
+			$dat_tmp = $res_tmp->fetchRow();
+			$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_alias_name'].'.'.$dat_tmp['alias_name'];
+		}
+
+		$query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?";
+		$res_tmp = exec_query($query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
+		$num = $res_tmp->rowCount();
+		if ($num > 0) {
+			set_page_message(tr('Please delete first CatchAll account for the email %s.', $mail_name), 'error');
+			$_SESSION['catchall_assigned'] = 1;
+		} else {
+			/**
+			* @todo useDB prepared statements
+			*/
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $del_itemID));
+
+			$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
+			exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_itemID));
+
+			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $del_itemID));
+
+			update_reseller_c_props(get_reseller_id($data['domain_id']));
+
+			$admin_login = decode_idna($_SESSION['user_logged']);
+			write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
+			$deleted_items_counter++;
+		}
+	}
+	if ($deleted_items_counter > 0) {
+		set_page_message(tr('Mail account scheduled for deletion.'), 'success');
+		send_request();
+	}
 }
-
-// check for catchall assigment !!
-$query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
-$res = exec_query($query, $delete_id);
-$data = $res->fetchRow();
-
-if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_NORMAL_FORWARD."/", $data['mail_type'])) {
-	// mail to normal domain
-	// global $domain_name;
-	$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
-} else if (preg_match("/".MT_ALIAS_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALIAS_FORWARD."/", $data['mail_type'])) {
-	// mail to domain alias
-	$res_tmp = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $data['sub_id']);
-	$dat_tmp = $res_tmp->fetchRow();
-	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
-} else if (preg_match("/".MT_SUBDOM_MAIL."/", $data['mail_type']) || preg_match("/".MT_SUBDOM_FORWARD."/", $data['mail_type'])) {
-	// mail to subdomain
-	$res_tmp = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $data['sub_id']);
-	$dat_tmp = $res_tmp->fetchRow();
-	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_name'].'.'.$dmn_name;
-} else if (preg_match("/".MT_ALSSUB_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALSSUB_FORWARD."/", $data['mail_type'])) {
-	// mail to subdomain
-	$res_tmp = exec_query("SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", $data['sub_id']);
-	$dat_tmp = $res_tmp->fetchRow();
-	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_alias_name'].'.'.$dat_tmp['alias_name'];
-}
-
-$query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?";
-$res_tmp = exec_query($query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
-$num = $res_tmp->rowCount();
-if ($num > 0) {
-	set_page_message(tr('Please delete first CatchAll account for this email.'), 'error');
-	$_SESSION['catchall_assigned'] = 1;
-	redirectTo('mail_accounts.php');
-}
-
-/**
- * @todo useDB prepared statements
- */
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeDeleteMail, array('mailId' => $delete_id));
-
-$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
-exec_query($query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $delete_id));
-
-update_reseller_c_props(get_reseller_id($data['domain_id']));
-
-send_request();
-$admin_login = decode_idna($_SESSION['user_logged']);
-write_log("$admin_login: deletes mail account: " . $mail_name, E_USER_NOTICE);
 $_SESSION['maildel'] = 1;
 
 redirectTo('mail_accounts.php');
