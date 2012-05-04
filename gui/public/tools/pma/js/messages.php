@@ -173,6 +173,7 @@ $js_messages['strUnit'] = __('Unit');
 
 $js_messages['strFromSlowLog'] = __('From slow log');
 $js_messages['strFromGeneralLog'] = __('From general log');
+$js_messages['strAnalysingLogsTitle'] = __('Analysing logs');
 $js_messages['strAnalysingLogs'] = __('Analysing & loading logs. This may take a while.');
 $js_messages['strCancelRequest'] = __('Cancel request');
 $js_messages['strCountColumnExplanation'] = __('This column shows the amount of identical queries that are grouped together. However only the SQL query itself has been used as a grouping criteria, so the other attributes of queries, such as start time, may differ.');
@@ -180,6 +181,7 @@ $js_messages['strMoreCountColumnExplanation'] = __('Since grouping of INSERTs qu
 $js_messages['strLogDataLoaded'] = __('Log data loaded. Queries executed in this time span:');
 
 $js_messages['strJumpToTable'] = __('Jump to Log table');
+$js_messages['strNoDataFoundTitle'] = __('No data found');
 $js_messages['strNoDataFound'] = __('Log analysed, but no data found in this time span.');
 
 $js_messages['strAnalyzing'] = __('Analyzing...');
@@ -190,6 +192,8 @@ $js_messages['strTotalTime'] = __('Total time:');
 $js_messages['strProfilingResults'] = __('Profiling results');
 $js_messages['strTable'] = _pgettext('Display format', 'Table');
 $js_messages['strChart'] = __('Chart');
+$js_messages['strChartEdit'] = __('Edit chart');
+$js_messages['strSeries'] = __('Series');
 
 /* l10n: A collection of available filters */
 $js_messages['strFiltersForLogTable'] = __('Log table filter options');
@@ -210,6 +214,8 @@ $js_messages['strAffectedRows'] = __('Affected rows:');
 $js_messages['strFailedParsingConfig'] = __('Failed parsing config file. It doesn\'t seem to be valid JSON code.');
 $js_messages['strFailedBuildingGrid'] = __('Failed building chart grid with imported config. Resetting to default config...');
 $js_messages['strImport'] = __('Import');
+$js_messages['strImportDialogTitle'] = __('Import monitor configuration');
+$js_messages['strImportDialogMessage'] = __('Please select the file you want to import');
 
 $js_messages['strAnalyzeQuery'] = __('Analyse Query');
 
