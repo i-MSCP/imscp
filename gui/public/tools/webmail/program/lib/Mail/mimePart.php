@@ -48,7 +48,7 @@
  * @author    Aleksander Machniak <alec@php.net>
  * @copyright 2003-2006 PEAR <pear-group@php.net>
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
- * @version   CVS: $Id: mimePart.php 5038 2011-08-10 08:06:00Z alec $
+ * @version   CVS: $Id: mimePart.php 5991 2012-03-09 07:43:54Z alec $
  * @link      http://pear.php.net/package/Mail_mime
  */
 
@@ -639,8 +639,8 @@ class Mail_mimePart
         // RFC 2045:
         // value needs encoding if contains non-ASCII chars or is longer than 78 chars
         if (!preg_match('#[^\x20-\x7E]#', $value)) {
-            $token_regexp = '#([^\x21,\x23-\x27,\x2A,\x2B,\x2D'
-                . ',\x2E,\x30-\x39,\x41-\x5A,\x5E-\x7E])#';
+            $token_regexp = '#([^\x21\x23-\x27\x2A\x2B\x2D'
+                . '\x2E\x30-\x39\x41-\x5A\x5E-\x7E])#';
             if (!preg_match($token_regexp, $value)) {
                 // token
                 if (strlen($name) + strlen($value) + 3 <= $maxLength) {
@@ -662,7 +662,7 @@ class Mail_mimePart
 
         // RFC2231:
         $encValue = preg_replace_callback(
-            '/([^\x21,\x23,\x24,\x26,\x2B,\x2D,\x2E,\x30-\x39,\x41-\x5A,\x5E-\x7E])/',
+            '/([^\x21\x23\x24\x26\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5E-\x7E])/',
             array($this, '_encodeReplaceCallback'), $value
         );
         $value = "$charset'$language'$encValue";

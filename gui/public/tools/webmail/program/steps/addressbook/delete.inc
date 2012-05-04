@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: delete.inc 4951 2011-07-21 11:15:18Z alec $
+ $Id: delete.inc 5967 2012-03-05 19:59:07Z alec $
 
 */
 
@@ -69,6 +69,7 @@ $page = isset($_SESSION['page']) ? $_SESSION['page'] : 1;
 
 // update saved search after data changed
 if (($search_request = $_REQUEST['_search']) && isset($_SESSION['search'][$search_request])) {
+    $sort_col = $RCMAIL->config->get('addressbook_sort_col', 'name');
     $search  = (array)$_SESSION['search'][$search_request];
     $records = array();
 
@@ -91,7 +92,7 @@ if (($search_request = $_REQUEST['_search']) && isset($_SESSION['search'][$searc
 
         while ($row = $result->next()) {
             $row['sourceid'] = $s;
-            $key = $row['name'] . ':' . $row['sourceid'];
+            $key = rcmail_contact_key($row, $sort_col);
             $records[$key] = $row;
         }
         unset($result);

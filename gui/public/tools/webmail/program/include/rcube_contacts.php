@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_contacts.php 5712 2012-01-05 08:50:07Z alec $
+ $Id: rcube_contacts.php 5873 2012-02-11 13:50:04Z thomasb $
 
 */
 
@@ -213,6 +213,16 @@ class rcube_contacts extends rcube_addressbook
             $join = " LEFT JOIN ".get_table_name($this->db_groupmembers)." AS m".
                 " ON (m.contact_id = c.".$this->primary_key.")";
 
+        $order_col = (in_array($this->sort_col, $this->table_cols) ? $this->sort_col : 'name');
+        $order_cols = array('c.'.$order_col);
+        if ($order_col == 'firstname')
+            $order_cols[] = 'c.surname';
+        else if ($order_col == 'surname')
+            $order_cols[] = 'c.firstname';
+        if ($order_col != 'name')
+            $order_cols[] = 'c.name';
+        $order_cols[] = 'c.email';
+
         $sql_result = $this->db->limitquery(
             "SELECT * FROM ".get_table_name($this->db_name)." AS c" .
             $join .
@@ -220,7 +230,8 @@ class rcube_contacts extends rcube_addressbook
                 " AND c.user_id=?" .
                 ($this->group_id ? " AND m.contactgroup_id=?" : "").
                 ($this->filter ? " AND (".$this->filter.")" : "") .
-            " ORDER BY ". $this->db->concat('c.name', 'c.email'),
+            " ORDER BY ". $this->db->concat($order_cols) .
+            " " . $this->sort_order,
             $start_row,
             $length,
             $this->user_id,
@@ -237,13 +248,6 @@ class rcube_contacts extends rcube_addressbook
             else {
                 $sql_arr['email'] = explode(self::SEPARATOR, $sql_arr['email']);
                 $sql_arr['email'] = array_map('trim', $sql_arr['email']);
-            }
-
-            // make sure we have a name to display
-            if (empty($sql_arr['name'])) {
-                if (empty($sql_arr['email']))
-                  $sql_arr['email'] = $this->get_col_values('email', $sql_arr, true);
-                $sql_arr['name'] = $sql_arr['email'][0];
             }
 
             $this->result->add($sql_arr);

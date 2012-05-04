@@ -22,7 +22,7 @@
  | Author: Ryo Chijiiwa <Ryo@IlohaMail.org>                              |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_imap_generic.php 5691 2012-01-03 09:57:14Z alec $
+ $Id: rcube_imap_generic.php 5970 2012-03-06 19:43:49Z alec $
 
 */
 
@@ -1557,6 +1557,11 @@ class rcube_imap_generic
         }
 
         if (!$this->select($mailbox)) {
+        }
+
+        // RFC 5957: SORT=DISPLAY
+        if (($field == 'FROM' || $field == 'TO') && $this->getCapability('SORT=DISPLAY')) {
+            $field = 'DISPLAY' . $field;
             return null;
         }
 
@@ -2274,12 +2279,16 @@ class rcube_imap_generic
                         $folders[$mailbox] = array();
                     }
 
-                    // Add to options array
-                    if (empty($this->data['LIST'][$mailbox]))
-                        $this->data['LIST'][$mailbox] = $opts;
-                    else if (!empty($opts))
-                        $this->data['LIST'][$mailbox] = array_unique(array_merge(
-                            $this->data['LIST'][$mailbox], $opts));
+                    // store LSUB options only if not empty, this way
+                    // we can detect a situation when LIST doesn't return specified folder
+                    if (!empty($opts) || $cmd == 'LIST') {
+                        // Add to options array
+                        if (empty($this->data['LIST'][$mailbox]))
+                            $this->data['LIST'][$mailbox] = $opts;
+                        else if (!empty($opts))
+                            $this->data['LIST'][$mailbox] = array_unique(array_merge(
+                                $this->data['LIST'][$mailbox], $opts));
+                    }
                 }
                 // * STATUS <mailbox> (<result>)
                 else if ($cmd == 'STATUS') {
@@ -3502,13 +3511,16 @@ class rcube_imap_generic
         if ($string === null) {
             return 'NIL';
         }
+
         if ($string === '') {
             return '""';
         }
+
         // atom-string (only safe characters)
-        if (!$force_quotes && !preg_match('/[\x00-\x20\x22\x28-\x2A\x5B-\x5D\x7B\x7D\x80-\xFF]/', $string)) {
+        if (!$force_quotes && !preg_match('/[\x00-\x20\x22\x25\x28-\x2A\x5B-\x5D\x7B\x7D\x80-\xFF]/', $string)) {
             return $string;
         }
+
         // quoted-string
         if (!preg_match('/[\r\n\x00\x80-\xFF]/', $string)) {
             return '"' . addcslashes($string, '\\"') . '"';

@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save.inc 5712 2012-01-05 08:50:07Z alec $
+ $Id: save.inc 5873 2012-02-11 13:50:04Z thomasb $
 
 */
 
@@ -132,8 +132,7 @@ if (!empty($cid))
     $a_js_cols = array();
     $record = $CONTACTS->get_record($newcid ? $newcid : $cid, true);
     $record['email'] = reset($CONTACTS->get_col_values('email', $record, true));
-    if (empty($record['name']))
-      $record['name']  = rcube_addressbook::compose_display_name($record, true);
+    $record['name']  = rcube_addressbook::compose_list_name($record);
 
     foreach (array('name', 'email') as $col)
       $a_js_cols[] = Q((string)$record[$col]);

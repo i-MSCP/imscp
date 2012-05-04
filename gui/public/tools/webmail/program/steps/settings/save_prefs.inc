@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save_prefs.inc 5543 2011-12-05 07:24:36Z alec $
+ $Id: save_prefs.inc 5873 2012-02-11 13:50:04Z thomasb $
 
 */
 
@@ -94,6 +94,8 @@ switch ($CURR_SECTION)
     $a_user_prefs = array(
       'default_addressbook' => get_input_value('_default_addressbook', RCUBE_INPUT_POST, true),
       'autocomplete_single' => isset($_POST['_autocomplete_single']) ? TRUE : FALSE,
+      'addressbook_sort_col' => get_input_value('_addressbook_sort_col', RCUBE_INPUT_POST),
+      'addressbook_name_listing' => intval(get_input_value('_addressbook_name_listing', RCUBE_INPUT_POST)),
     );
 
   break;

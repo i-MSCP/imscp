@@ -11,7 +11,7 @@
  +-----------------------------------------------------------------------+
  | Author: Thomas <Unknown>                                              |
  +-----------------------------------------------------------------------+
- @version $Id: labels.inc 5742 2012-01-08 16:40:15Z thomasb $
+ @version $Id: labels.inc 5873 2012-02-11 13:50:04Z thomasb $
 */
 
 $labels = array();
@@ -385,6 +385,7 @@ $labels['reqdsn'] = 'Übermittlungsbestätigung (DSN) immer anfordern';
 $labels['replysamefolder'] = 'Antworten im selben Ordner wie Original speichern';
 $labels['defaultaddressbook'] = 'Neue Kontakte speichern in';
 $labels['autocompletesingle'] = 'Keine alternativen E-Mail-Adressen in Autovervollständigung';
+$labels['listnamedisplay'] = 'Kontakte auflisten als';
 $labels['spellcheckbeforesend'] = 'Rechtscheibung vor dem Senden prüfen';
 $labels['spellcheckoptions'] = 'Rechtschreibprüfungsoptionen';
 $labels['spellcheckignoresyms'] = 'Wörter mit Symbolen überspringen';

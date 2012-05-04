@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: addcontact.inc 5415 2011-11-11 15:04:45Z alec $
+ $Id: addcontact.inc 5873 2012-02-11 13:50:04Z thomasb $
 
 */
 
@@ -58,7 +58,10 @@ if (!empty($_POST['_address']) && is_object($CONTACTS))
     }
 
     $contact['email'] = rcube_idn_to_utf8($contact['email']);
-    $contact['name'] = rcube_addressbook::compose_display_name($contact);
+    $contact = $RCMAIL->plugins->exec_hook('contact_displayname', $contact);
+
+    if (empty($contact['firstname']) || empty($contact['surname']))
+      $contact['name'] = rcube_addressbook::compose_display_name($contact);
 
     // validate contact record
     if (!$CONTACTS->validate($contact, true)) {

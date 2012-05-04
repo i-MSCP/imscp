@@ -17,7 +17,7 @@
  |         Aleksander Machniak <machniak@kolabsys.com>                   |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_ldap.php 5736 2012-01-06 15:57:33Z thomasb $
+ $Id: rcube_ldap.php 5879 2012-02-15 08:29:33Z thomasb $
 
 */
 
@@ -35,8 +35,6 @@ class rcube_ldap extends rcube_addressbook
     public $readonly = true;
     public $ready = false;
     public $group_id = 0;
-    public $list_page = 1;
-    public $page_size = 10;
     public $coltypes = array();
 
     /** private properties */
@@ -47,7 +45,6 @@ class rcube_ldap extends rcube_addressbook
     protected $filter = '';
     protected $result = null;
     protected $ldap_result = null;
-    protected $sort_col = '';
     protected $mail_domain = '';
     protected $debug = false;
 
@@ -413,24 +410,15 @@ class rcube_ldap extends rcube_addressbook
 
 
     /**
-     * Set internal list page
+     * Set internal sort settings
      *
-     * @param number $page Page number to list
+     * @param string $sort_col Sort column
+     * @param string $sort_order Sort order
      */
-    function set_page($page)
+    function set_sort_order($sort_col, $sort_order = null)
     {
-        $this->list_page = (int)$page;
-    }
-
-
-    /**
-     * Set internal page size
-     *
-     * @param number $size Number of messages to display on one page
-     */
-    function set_pagesize($size)
-    {
-        $this->page_size = (int)$size;
+        if ($this->fieldmap[$sort_col])
+            $this->sort_col = $this->fieldmap[$sort_col];
     }
 
 
@@ -618,6 +606,9 @@ class rcube_ldap extends rcube_addressbook
 
         for ($i=0; $i < $entry[$attr]['count']; $i++)
         {
+            if (empty($entry[$attr][$i]))
+                continue;
+
             $result = @ldap_read($this->conn, $entry[$attr][$i], '(objectclass=*)',
                 $attrib, 0, (int)$this->prop['sizelimit'], (int)$this->prop['timelimit']);
 
@@ -1234,9 +1225,9 @@ class rcube_ldap extends rcube_addressbook
                 $attrs, 0, (int)$this->prop['sizelimit'], (int)$this->prop['timelimit'])
             ) {
                 $entries_count = ldap_count_entries($this->conn, $this->ldap_result);
-                $this->_debug("S: $count_entries record(s)");
+                $this->_debug("S: $entries_count record(s)");
 
-                return $count ? $count_entries : true;
+                return $count ? $entries_count : true;
             }
             else {
                 $this->_debug("S: ".ldap_error($this->conn));

@@ -5,18 +5,18 @@
  | program/include/iniset.php                                            |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2008-2011, The Roundcube Dev Team                       |
+ | Copyright (C) 2008-2012, The Roundcube Dev Team                       |
  | Licensed under the GNU GPL                                            |
  |                                                                       |
  | PURPOSE:                                                              |
- |   Setup the application envoronment required to process               |
+ |   Setup the application environment required to process               |
  |   any request.                                                        |
  +-----------------------------------------------------------------------+
  | Author: Till Klampaeckel <till@php.net>                               |
  |         Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: iniset.php 5738 2012-01-06 16:01:53Z thomasb $
+ $Id: iniset.php 5995 2012-03-11 16:22:50Z thomasb $
 
 */
 
@@ -37,7 +37,7 @@ foreach ($crit_opts as $optname => $optval) {
 }
 
 // application constants
-define('RCMAIL_VERSION', '0.7.1');
+define('RCMAIL_VERSION', '0.7.2');
 define('RCMAIL_CHARSET', 'UTF-8');
 define('JS_OBJECT_NAME', 'rcmail');
 define('RCMAIL_START', microtime(true));
@@ -65,7 +65,7 @@ if (set_include_path($include_path) === false) {
     die("Fatal error: ini_set/set_include_path does not work.");
 }
 
-ini_set('error_reporting', E_ALL&~E_NOTICE);
+ini_set('error_reporting', E_ALL &~ (E_NOTICE | E_STRICT));
 
 // increase maximum execution time for php scripts
 // (does not work in safe mode)

@@ -15,7 +15,7 @@
 | Author: Roland Liebl <myroundcube@mail4us.net>                        |
 +-----------------------------------------------------------------------+
 
-@version $Id: labels.inc 5569 2011-12-07 14:47:32Z thomasb $
+@version $Id: labels.inc 5873 2012-02-11 13:50:04Z thomasb $
 
 */
 
@@ -375,6 +375,8 @@ $labels['reqmdn'] = 'Empfangsbestätigung (MSN) immer anfordern';
 $labels['reqdsn'] = 'Übermittlungsbestätigung (DSN) immer anfordern';
 $labels['replysamefolder'] = 'Antworten im selben Ordner wie Original speichern';
 $labels['defaultaddressbook'] = 'Neue Kontakte zum ausgewählten Adressbuch hinzufügen';
+$labels['autocompletesingle'] = 'Alternative E-Mailadressen bei der Auto-Vervollständigung nicht berücksichtigen';
+$labels['listnamedisplay'] = 'Kontakte auflisten als';
 $labels['spellcheckbeforesend'] = 'Rechtschreibprüfung vor dem Absenden der Nachricht';
 $labels['spellcheckoptions'] = 'Rechtschreibprüfungsoptionen';
 $labels['spellcheckignoresyms'] = 'Wörter mit Symbolen überspringen';

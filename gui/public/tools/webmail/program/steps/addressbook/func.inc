@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: func.inc 5499 2011-11-28 09:03:27Z alec $
+ $Id: func.inc 5967 2012-03-05 19:59:07Z alec $
 
 */
 
@@ -338,13 +338,9 @@ function rcmail_js_contacts_list($result, $prefix='')
 
         // format each col
         foreach ($a_show_cols as $col) {
-            $val = $row[$col];
-            if ($val == '' && $col == 'name') {
-                $val = rcube_addressbook::compose_display_name($row, true);
-            }
-
+            $val = $col == 'name' ? rcube_addressbook::compose_list_name($row) : $row[$col];
             $a_row_cols[$col] = Q($val);
-	}
+        }
 
         $OUTPUT->command($prefix.'add_contact_row', $row['ID'], $a_row_cols);
     }
@@ -729,6 +725,24 @@ function rcmail_format_date_col($val)
 {
     global $RCMAIL;
     return format_date($val, $RCMAIL->config->get('date_format', 'Y-m-d'), false);
+}
+
+
+function rcmail_contact_key($row, $sort_col)
+{
+    $key = $row[$sort_col] . ':' . $row['sourceid'];
+
+    // add email to a key to not skip contacts with the same name (#1488375)
+    if (!empty($row['email'])) {
+         if (is_array($row['email'])) {
+             $key .= ':' . implode(':', $row['email']);
+         }
+         else {
+             $key .= ':' . $row['email'];
+         }
+     }
+
+     return $key;
 }
 
 

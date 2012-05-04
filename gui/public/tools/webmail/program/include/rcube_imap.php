@@ -17,7 +17,7 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_imap.php 5638 2011-12-21 18:57:01Z alec $
+ $Id: rcube_imap.php 5952 2012-03-03 13:20:14Z alec $
 
 */
 
@@ -3040,9 +3040,10 @@ class rcube_imap
                     NULL, array('SUBSCRIBED'));
 
                 // unsubscribe non-existent folders, remove from the list
-                if (is_array($a_folders) && $name == '*') {
+                // we can do this only when LIST response is available
+                if (is_array($a_folders) && $name == '*' && !empty($this->conn->data['LIST'])) {
                     foreach ($a_folders as $idx => $folder) {
-                        if ($this->conn->data['LIST'] && ($opts = $this->conn->data['LIST'][$folder])
+                        if (($opts = $this->conn->data['LIST'][$folder])
                             && in_array('\\NonExistent', $opts)
                         ) {
                             $this->conn->unsubscribe($folder);
@@ -3055,11 +3056,12 @@ class rcube_imap
             else {
                 $a_folders = $this->conn->listSubscribed($root, $name);
 
-                // unsubscribe non-existent folders, remove from the list
-                if (is_array($a_folders) && $name == '*') {
+                // unsubscribe non-existent folders, remove them from the list,
+                // we can do this only when LIST response is available
+                if (is_array($a_folders) && $name == '*' && !empty($this->conn->data['LIST'])) {
                     foreach ($a_folders as $idx => $folder) {
-                        if ($this->conn->data['LIST'] && ($opts = $this->conn->data['LIST'][$folder])
-                            && in_array('\\Noselect', $opts)
+                        if (!isset($this->conn->data['LIST'][$folder])
+                            || in_array('\\Noselect', $this->conn->data['LIST'][$folder])
                         ) {
                             // Some servers returns \Noselect for existing folders
                             if (!$this->mailbox_exists($folder)) {

@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcmail.php 5527 2011-12-02 09:58:03Z alec $
+ $Id: rcmail.php 5897 2012-02-21 20:46:15Z thomasb $
 
 */
 
@@ -452,6 +452,10 @@ class rcmail
         true, true);
     }
 
+    // set configured sort order
+    if ($sort_col = $this->config->get('addressbook_sort_col'))
+        $contacts->set_sort_order($sort_col);
+
     // add to the 'books' array for shutdown function
     $this->address_books[$id] = $contacts;
 
@@ -700,8 +704,7 @@ class rcmail
     $this->session = new rcube_session($this->get_dbh(), $this->config);
 
     $this->session->register_gc_handler('rcmail_temp_gc');
-    if ($this->config->get('enable_caching'))
-      $this->session->register_gc_handler('rcmail_cache_gc');
+    $this->session->register_gc_handler('rcmail_cache_gc');
 
     // start PHP session (if not in CLI mode)
     if ($_SERVER['REMOTE_ADDR'])

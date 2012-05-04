@@ -48,7 +48,7 @@
  * @author    Aleksander Machniak <alec@php.net>
  * @copyright 2003-2006 PEAR <pear-group@php.net>
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
- * @version   CVS: $Id: mime.php 4295 2010-12-01 10:49:20Z alec $
+ * @version   CVS: $Id: mime.php 5991 2012-03-09 07:43:54Z alec $
  * @link      http://pear.php.net/package/Mail_mime
  *
  *            This class is based on HTML Mime Mail class from
@@ -1142,8 +1142,8 @@ class Mail_mime
             ? $this->_build_params['eol'] : "\r\n";
 
         // add parameters
-        $token_regexp = '#([^\x21,\x23-\x27,\x2A,\x2B,\x2D'
-            . ',\x2E,\x30-\x39,\x41-\x5A,\x5E-\x7E])#';
+        $token_regexp = '#([^\x21\x23-\x27\x2A\x2B\x2D'
+            . '\x2E\x30-\x39\x41-\x5A\x5E-\x7E])#';
         if (is_array($params)) {
             foreach ($params as $name => $value) {
                 if ($name == 'boundary') {
