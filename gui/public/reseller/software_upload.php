@@ -65,7 +65,7 @@ if (ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
 		if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
 			$xml_file = @file_get_contents($webdepot_xml_url);
 
-			if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
+			if (!strpos($xml_file, 'i-MSCP web software repositories list')) {
 				set_page_message(tr("Unable to read xml file for web softwares."), 'error');
 				$error = 1;
 			}
