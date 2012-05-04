@@ -1,0 +1,17 @@
+#!/bin/sh
+
+PERCENT=$1
+FROM="postmaster@{HOST_NAME}"
+qwf="/tmp/quota.warning.$$"
+
+echo "From: $FROM
+To: $USER
+Subject: Mail ocupation for $USER exceeds $PERCENT%
+Content-Type: text/plain; charset="UTF-8"
+
+You are using $PERCENT% of the space assigned to your mailbox." >> $qwf
+
+cat $qwf | /usr/sbin/sendmail -f $FROM "$USER"
+rm -f $qwf
+
+exit 0
