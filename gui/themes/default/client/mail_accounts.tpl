@@ -84,7 +84,7 @@
 			<!-- BDP: mails_total -->
 			<tfoot>
 				<tr>
-					<td colspan="5">{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}</td>
+					<td colspan="6">{TR_TOTAL_MAIL_ACCOUNTS}: <strong>{TOTAL_MAIL_ACCOUNTS}</strong>/{ALLOWED_MAIL_ACCOUNTS}</td>
 				</tr>
 			</tfoot>
 			<!-- EDP: mails_total -->

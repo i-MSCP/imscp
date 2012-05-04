@@ -284,15 +284,19 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 				$rs_quota = exec_query($quota_query, array($complete_email));
 				$userquotamax = $rs_quota->fields['quota'];
 				$userquota = $rs_quota->fields['bytes'];
-			if (is_null($userquota) || ($userquota<0)) {
-				$userquota=0;
-			}
-			if ($userquotamax == 0)	{
-				$userquotamax=tr('unlimited');
-				$userquotapercent = "0".$localeinfo['decimal_point']."000";
-			} else {
-				$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
-				$userquotamax = formatBytes($userquotamax);
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
