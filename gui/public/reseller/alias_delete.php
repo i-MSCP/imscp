@@ -120,7 +120,7 @@ $query = "
  FROM
      `ftp_users`
  WHERE
-     `userid` LIKE '%".$alias_name."%'
+     `userid` LIKE '%@".$alias_name."'
 ";
 $stmt = exec_query($query);
 
