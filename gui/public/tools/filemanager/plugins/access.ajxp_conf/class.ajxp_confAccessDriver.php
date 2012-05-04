@@ -313,7 +313,7 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
 				if(is_array($customData) && count($customData)>0)
 					$newUser->setPref("CUSTOM_PARAMS", $customData);
 				
-				$newUser->save();
+				$newUser->save("superuser");
 				AuthService::createUser($new_user_login, $httpVars["new_user_pwd"]);
 				AJXP_XMLWriter::header();
 				AJXP_XMLWriter::sendMessage($mess["ajxp_conf.44"], null);
@@ -330,7 +330,7 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
 				$confStorage = ConfService::getConfStorageImpl();		
 				$user = $confStorage->createUserObject($userId);
 				$user->setAdmin(($httpVars["right_value"]=="1"?true:false));
-				$user->save();
+				$user->save("superuser");
 				AJXP_XMLWriter::header();
 				AJXP_XMLWriter::sendMessage($mess["ajxp_conf.45"].$httpVars["user_id"], null);
 				AJXP_XMLWriter::reloadCurrentNode(true);
@@ -615,7 +615,7 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
 				}else{
 					$loggedUser = AuthService::getLoggedUser();
 					$loggedUser->setRight($newRep->getUniqueId(), "rw");
-					$loggedUser->save();
+					$loggedUser->save("superuser");
 					AuthService::updateUser($loggedUser);
 					
 					AJXP_XMLWriter::sendMessage($mess["ajxp_conf.52"], null);
@@ -924,9 +924,11 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
                     echo("<param name=\"AJXP_PLUGIN_ENABLED\" value=\"".($ajxpPlugin->isEnabled()?"true":"false")."\"/>");
                 }
                 echo("</plugin_settings_values>");
+                echo("<plugin_doc><![CDATA[<p>".$ajxpPlugin->getPluginInformationHTML("Charles du Jeu", "http://ajaxplorer.info/plugins/")."</p>");
                 if(file_exists($ajxpPlugin->getBaseDir()."/plugin_doc.html")){
-                    echo("<plugin_doc><![CDATA[".file_get_contents($ajxpPlugin->getBaseDir()."/plugin_doc.html")."]]></plugin_doc>");
+                    echo(file_get_contents($ajxpPlugin->getBaseDir()."/plugin_doc.html"));
                 }
+                echo("]]></plugin_doc>");
 				AJXP_XMLWriter::close("admin_data");
 				
 			break;
@@ -939,6 +941,7 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
 				$confStorage->savePluginConfig($httpVars["plugin_id"], $options);
 				@unlink(AJXP_PLUGINS_CACHE_FILE);
 				@unlink(AJXP_PLUGINS_REQUIRES_FILE);				
+				@unlink(AJXP_PLUGINS_MESSAGES_FILE);
 				AJXP_XMLWriter::header();
 				AJXP_XMLWriter::sendMessage($mess["ajxp_conf.97"], null);
 				AJXP_XMLWriter::reloadDataNode();
@@ -1263,8 +1266,10 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
 	}
 	
 	function metaSourceOrderingFunction($key1, $key2){
-		$t1 = array_shift(explode(".", $key1));
-		$t2 = array_shift(explode(".", $key2));
+        $a1 = explode(".", $key1);
+		$t1 = array_shift($a1);
+        $a2 = explode(".", $key2);
+		$t2 = array_shift($a2);
 		if($t1 == "index") return 1;
         if($t1 == "metastore") return -1;
 		if($t2 == "index") return -1;
@@ -1308,7 +1313,7 @@ class ajxp_confAccessDriver extends AbstractAccessDriver
 		}else{
 			$user->removeRole($roleId);
 		}
-		$user->save();
+		$user->save("superuser");
 		$loggedUser = AuthService::getLoggedUser();
 		if($loggedUser->getId() == $user->getId()){
 			AuthService::updateUser($user);

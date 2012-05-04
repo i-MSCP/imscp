@@ -79,7 +79,7 @@ class ZohoEditor extends AJXP_Plugin {
                 'apikey' => $this->pluginConf["ZOHO_API_KEY"],
                 'output' => 'url',
                 'lang' => "en",
-                'skey'=> $this->pluginConf["ZOHO_SECRET_KEY"],
+                //'skey'=> $this->pluginConf["ZOHO_SECRET_KEY"],
                 'filename' => urlencode(basename($file)),
                 'persistence' => 'false',
                 'format' => $extension,
@@ -130,6 +130,9 @@ class ZohoEditor extends AJXP_Plugin {
 		}else if($action == "retrieve_from_zohoagent"){
             $targetFile = $_SESSION["ZOHO_CURRENT_EDITED"];
             $id = $_SESSION["ZOHO_CURRENT_UUID"].".".pathinfo($targetFile, PATHINFO_EXTENSION);
+            $node = new AJXP_Node($targetFile);
+            $node->loadNodeInfo();
+            AJXP_Controller::applyHook("node.before_change", array(&$node));
 
             if($this->pluginConf["USE_ZOHO_AGENT"]){
                 $data = file_get_contents($this->pluginConf["ZOHO_AGENT_URL"]."?ajxp_action=get_file&name=".$id);

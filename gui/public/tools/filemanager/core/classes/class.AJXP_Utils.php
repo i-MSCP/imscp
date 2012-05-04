@@ -164,7 +164,7 @@ class AJXP_Utils
      */
     public static function getAjxpTmpDir()
     {
-        if (ConfService::getCoreConf("AJXP_TMP_DIR") != "") {
+        if (ConfService::getCoreConf("AJXP_TMP_DIR") != null) {
             return ConfService::getCoreConf("AJXP_TMP_DIR");
         }
         if (defined("AJXP_TMP_DIR") && AJXP_TMP_DIR != "") {
@@ -261,7 +261,7 @@ class AJXP_Utils
                     $output["EXT_REP"] = SystemTextEncoding::toUTF8(urldecode($parameters["folder"]));
                     $loggedUser->setArrayPref("history", "last_repository", $parameters["repository_id"]);
                     $loggedUser->setPref("pending_folder", SystemTextEncoding::toUTF8(AJXP_Utils::decodeSecureMagic($parameters["folder"])));
-                    $loggedUser->save();
+                    $loggedUser->save("user");
                     AuthService::updateUser($loggedUser);
                 } else {
                     $session["PENDING_REPOSITORY_ID"] = $parameters["repository_id"];
@@ -340,22 +340,49 @@ class AJXP_Utils
         $fileName = strtolower($fileName);
         $EXTENSIONS = ConfService::getRegisteredExtensions();
         if ($isDir) {
-            $mime = $EXTENSIONS["folder"];
+            $mime = $EXTENSIONS["ajxp_folder"];
         } else {
             foreach ($EXTENSIONS as $ext) {
                 if (preg_match("/\.$ext[0]$/", $fileName)) {
                     $mime = $ext;
+                    break;
                 }
             }
         }
         if (!isSet($mime)) {
-            $mime = $EXTENSIONS["unkown"];
+            $mime = $EXTENSIONS["ajxp_empty"];
         }
         if (is_numeric($mime[2]) || array_key_exists($mime[2], $mess)) {
             $mime[2] = $mess[$mime[2]];
         }
         return (($mode == "image" ? $mime[1] : $mime[2]));
     }
+
+    static $registeredExtensions;
+    static function mimeData($fileName, $isDir){
+        $fileName = strtolower($fileName);
+        if(self::$registeredExtensions == null){
+            self::$registeredExtensions = ConfService::getRegisteredExtensions();
+        }
+        if ($isDir) {
+            $mime = self::$registeredExtensions["ajxp_folder"];
+        } else {
+            $pos = strrpos($fileName, ".");
+            if($pos !== false){
+                $fileExt = substr($fileName, $pos + 1);
+                if(array_key_exists($fileExt, self::$registeredExtensions) && $fileExt != "ajxp_folder" && $fileExt != "ajxp_empty"){
+                    $mime = self::$registeredExtensions[$fileExt];
+                }
+            }
+        }
+        if (!isSet($mime)) {
+            $mime = self::$registeredExtensions["ajxp_empty"];
+        }
+        return array($mime[2], $mime[1]);
+
+    }
+
+
     /**
      * Gather a list of mime that must be treated specially. Used for dynamic replacement in XML mainly.
      * @static
@@ -482,6 +509,7 @@ class AJXP_Utils
         else return false;
     }
 
+    static $sizeUnit;
     /**
      * Display a human readable string for a bytesize (1MB, 2,3Go, etc)
      * @static
@@ -491,22 +519,24 @@ class AJXP_Utils
      */
     static function roundSize($filesize, $phpConfig = false)
     {
-        $mess = ConfService::getMessages();
-        $size_unit = $mess["byte_unit_symbol"];
+        if(self::$sizeUnit == null){
+            $mess = ConfService::getMessages();
+            self::$sizeUnit = $mess["byte_unit_symbol"];
+        }
         if ($filesize < 0) {
             $filesize = sprintf("%u", $filesize);
         }
         if ($filesize >= 1073741824) {
-            $filesize = round($filesize / 1073741824 * 100) / 100 . ($phpConfig ? "G" : " G" . $size_unit);
+            $filesize = round($filesize / 1073741824 * 100) / 100 . ($phpConfig ? "G" : " G" . self::$sizeUnit);
         }
         elseif ($filesize >= 1048576) {
-            $filesize = round($filesize / 1048576 * 100) / 100 . ($phpConfig ? "M" : " M" . $size_unit);
+            $filesize = round($filesize / 1048576 * 100) / 100 . ($phpConfig ? "M" : " M" . self::$sizeUnit);
         }
         elseif ($filesize >= 1024) {
-            $filesize = round($filesize / 1024 * 100) / 100 . ($phpConfig ? "K" : " K" . $size_unit);
+            $filesize = round($filesize / 1024 * 100) / 100 . ($phpConfig ? "K" : " K" . self::$sizeUnit);
         }
         else {
-            $filesize = $filesize . " " . $size_unit;
+            $filesize = $filesize . " " . self::$sizeUnit;
         }
         if ($filesize == 0) {
             $filesize = "-";
@@ -544,7 +574,7 @@ class AJXP_Utils
     static function convertBytes($value)
     {
         if (is_numeric($value)) {
-            return $value;
+            return intval($value);
         }
         else
         {
@@ -577,6 +607,24 @@ class AJXP_Utils
     static function xmlEntities($string, $toUtf8 = false)
     {
         $xmlSafe = str_replace(array("&", "<", ">", "\"", "\n", "\r"), array("&amp;", "&lt;", "&gt;", "&quot;", "&#13;", "&#10;"), $string);
+        if ($toUtf8) {
+            return SystemTextEncoding::toUTF8($xmlSafe);
+        } else {
+            return $xmlSafe;
+        }
+    }
+
+
+    /**
+     * Replace specific chars by their XML Entities, for use inside attributes value
+     * @static
+     * @param $string
+     * @param bool $toUtf8
+     * @return mixed|string
+     */
+    static function xmlContentEntities($string, $toUtf8 = false)
+    {
+        $xmlSafe = str_replace(array("&", "<", ">", "\""), array("&amp;", "&lt;", "&gt;", "&quot;"), $string);
         if ($toUtf8) {
             return SystemTextEncoding::toUTF8($xmlSafe);
         } else {

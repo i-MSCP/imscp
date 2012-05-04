@@ -273,8 +273,9 @@ class AJXP_XMLWriter
 			$xml = preg_replace("/\t/", " ", $xml);
 		}
         $xml = str_replace(array('xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"','xsi:noNamespaceSchemaLocation="file:../core.ajaxplorer/ajxp_registry.xsd"'), "", $xml);
-        AJXP_Controller::applyIncludeHook("xml.filter", array(&$xml));
-		return $xml;		
+        $tab = array(&$xml);
+        AJXP_Controller::applyIncludeHook("xml.filter", $tab);
+		return $xml;
 	}	
 	/**
      * Send a <reload> XML instruction for refreshing the list
@@ -419,12 +420,12 @@ class AJXP_XMLWriter
 		if($errorMessage == null)
 		{
 			$messageType = "SUCCESS";
-			$message = AJXP_Utils::xmlEntities($logMessage);
+			$message = AJXP_Utils::xmlContentEntities($logMessage);
 		}
 		else
 		{
 			$messageType = "ERROR";
-			$message = AJXP_Utils::xmlEntities($errorMessage);
+			$message = AJXP_Utils::xmlContentEntities($errorMessage);
 		}
 		return AJXP_XMLWriter::write("<message type=\"$messageType\">".$message."</message>", $print);
 	}

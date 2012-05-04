@@ -610,7 +610,7 @@ define('IDX_VALUE', 1);
 		$cwd = NULL; //'/tmp';
 		$pipes = NULL;
 		
-		$cmdline = $cmd." ".$switches." ".$arg;
+		$cmdline = (SVNLIB_PATH!=""?SVNLIB_PATH."/":"").$cmd." ".$switches." ".$arg;
 		
 		/*
 		$output = shell_exec($cmdline);

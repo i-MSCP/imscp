@@ -127,8 +127,8 @@ Class.create("Diaporama", AbstractEditor, {
 			return false;
 		}.bind(this);
 		this.downloadButton.onclick = function(){
-			if(!this.currentFile) return;		
-			ajaxplorer.triggerDownload(ajxpBootstrap.parameters.get('ajxpServerAccess')+'&action=download&file='+this.currentFile);
+			if(!this.currentFile) return;
+			ajaxplorer.triggerDownload(ajxpBootstrap.parameters.get('ajxpServerAccess')+'&action=download&file='+encodeURIComponent(this.currentFile));
 			return false;
 		}.bind(this);
 		this.actualSizeButton.onclick = function(){
@@ -421,10 +421,15 @@ Class.create("Diaporama", AbstractEditor, {
             ov.update("").setStyle({border :"1px solid red", display: "block",backgroundColor:"rgba(0,0,0,0.2)"});
             ov.draggableInitialized = new Draggable(ov, {
                 onStart : function(){
+                    theImage.up('div.infoPanelImagePreview').setStyle({marginTop:theImage.getStyle('margin-top')});
+                    theImage.setStyle({marginTop:0});
                     this.skipScrollObserver = true;
                 }.bind(this),
                 onEnd : function(){
+                    theImage.setStyle({marginTop:theImage.up('div.infoPanelImagePreview').getStyle('margin-top')});
+                    theImage.up('div.infoPanelImagePreview').setStyle({marginTop:0});
                     this.skipScrollObserver = false;
+                    this.imageNavigator();
                 }.bind(this),
                 onDrag:function(){
                     if(!theImage) return;

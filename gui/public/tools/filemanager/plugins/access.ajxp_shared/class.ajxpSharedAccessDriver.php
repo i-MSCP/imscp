@@ -99,7 +99,8 @@ class ajxpSharedAccessDriver extends AbstractAccessDriver
 				AJXP_XMLWriter::header();
 				foreach ($files as $index => $element){
 					$element = basename($element);
-                    $mime = array_pop(explode("shared_", $mime));
+                    $ar = explode("shared_", $mime);
+                    $mime = array_pop($ar);
                     ShareCenter::deleteSharedElement($mime, $element, $loggedUser);
                     if($mime == "repository") $out = $mess["ajxp_conf.59"];
                     else if($mime == "user") $out = $mess["ajxp_conf.60"];
@@ -156,6 +157,7 @@ class ajxpSharedAccessDriver extends AbstractAccessDriver
 		$dlFolder = ConfService::getCoreConf("PUBLIC_DOWNLOAD_FOLDER");
 		if(!is_dir($dlFolder)) return ;		
 		$files = glob($dlFolder."/*.php");
+        if(!is_array($files))return;
 		$mess = ConfService::getMessages();
 		$loggedUser = AuthService::getLoggedUser();
 		$userId = $loggedUser->getId();
@@ -168,7 +170,8 @@ class ajxpSharedAccessDriver extends AbstractAccessDriver
         }
 		
 		foreach ($files as $file){
-            $id = array_shift(explode(".", basename($file)));
+            $ar = explode(".", basename($file));
+            $id = array_shift($ar);
             if(strlen($id) != 32) continue;
 			$publicletData = ShareCenter::loadPublicletData($id);
 			if(isset($publicletData["OWNER_ID"]) && $publicletData["OWNER_ID"] != $userId){
@@ -193,7 +196,8 @@ class ajxpSharedAccessDriver extends AbstractAccessDriver
 		$userId = $loggedUser->getId();
 		$deleted = array();
 		foreach ($files as $file){
-            $id = array_shift(explode(".", basename($file)));
+            $ar = explode(".", basename($file));
+            $id = array_shift($ar);
             if(strlen($id) != 32) continue;
 			$publicletData = ShareCenter::loadPublicletData($id);
 			if(!isSet($publicletData["OWNER_ID"]) || $publicletData["OWNER_ID"] != $userId){

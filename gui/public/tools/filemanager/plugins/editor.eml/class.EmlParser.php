@@ -61,7 +61,8 @@ class EmlParser extends AJXP_Plugin{
     			$decoder = $this->getStructureDecoder($file, ($wrapperClassName == "imapAccessWrapper"));
     			$xml = $decoder->getXML($decoder->decode($params));
 				if(function_exists("imap_mime_header_decode")){
-					$doc = DOMDocument::loadXML($xml);
+                    $doc = new DOMDocument();
+                    $doc->loadXML($xml);
 					$xPath = new DOMXPath($doc);
 					$headers = $xPath->query("//headername");
 					$changes = false;
@@ -334,7 +335,8 @@ class EmlParser extends AJXP_Plugin{
 			foreach ($dom->documentElement->childNodes as $child){		
 				if($mobileAgent){
 					$from = $child->getAttribute("eml_from");
-					$from = trim(array_shift(explode("&lt;", $from)));
+                    $ar = explode("&lt;", $from);
+					$from = trim(array_shift($ar));
 					$text = ($index < 10?"0":"").$index.". ".$from." &gt; ".$child->getAttribute("eml_subject");
 					if((strpos($_SERVER["HTTP_USER_AGENT"], "ajaxplorer-ios-client")!==false)){
 						$text = html_entity_decode($text, ENT_COMPAT, "UTF-8");																

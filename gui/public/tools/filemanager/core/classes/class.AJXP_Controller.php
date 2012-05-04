@@ -213,7 +213,7 @@ class AJXP_Controller{
 	public static function applyActionInBackground($currentRepositoryId, $actionName, $parameters){
 		$token = md5(time());
         $logDir = AJXP_CACHE_DIR."/cmd_outputs";
-        if(!is_dir($logDir)) mkdir($logDir, 755);
+        if(!is_dir($logDir)) mkdir($logDir, 0755);
         $logFile = $logDir."/".$token.".out";
 		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
         $user = "shared";
@@ -336,6 +336,11 @@ class AJXP_Controller{
 		if(!$callbacks->length) return ;
         $callback = new DOMNode();
 		foreach ($callbacks as $callback){
+            if($callback->getAttribute("applyCondition")!=""){
+                $apply = false;
+                eval($callback->getAttribute("applyCondition"));
+                if(!$apply) continue;
+          	}
             $fake1; $fake2; $fake3;
             $defer = ($callback->attributes->getNamedItem("defer") != null && $callback->attributes->getNamedItem("defer")->nodeValue == "true");
             self::applyCallback($xPath, $callback, $fake1, $fake2, $fake3, $args, $defer);
@@ -349,7 +354,7 @@ class AJXP_Controller{
      * @param $args
      * @return
      */
-	public static function applyIncludeHook($hookName, $args){
+	public static function applyIncludeHook($hookName, &$args){
 		if(!isSet(self::$includeHooks[$hookName])) return;
 		foreach(self::$includeHooks[$hookName] as $callback){
 			call_user_func_array($callback, $args);			

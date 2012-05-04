@@ -23,6 +23,15 @@
  */
 include_once("base.conf.php");
 
+if( !isSet($_GET["action"]) && !isSet($_GET["get_action"])
+    && !isSet($_POST["action"]) && !isSet($_POST["get_action"])
+    && defined("AJXP_FORCE_SSL_REDIRECT") && AJXP_FORCE_SSL_REDIRECT === true
+    && $_SERVER['SERVER_PORT'] != 443) {
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+    exit();
+}
+
 if(isSet($_GET["ajxp_sessid"]))
 {
     // Don't overwrite cookie
@@ -137,7 +146,7 @@ if(AuthService::usersEnabled())
 		if(isSet($_SESSION["PENDING_REPOSITORY_ID"]) && isSet($_SESSION["PENDING_FOLDER"])){
 			$loggedUser->setArrayPref("history", "last_repository", $_SESSION["PENDING_REPOSITORY_ID"]);
 			$loggedUser->setPref("pending_folder", $_SESSION["PENDING_FOLDER"]);
-			$loggedUser->save();
+			$loggedUser->save("user");
 			AuthService::updateUser($loggedUser);
 			unset($_SESSION["PENDING_REPOSITORY_ID"]);
 			unset($_SESSION["PENDING_FOLDER"]);

@@ -9,6 +9,7 @@ Features / Enhancements:
 GUI:
 	Tools:
 		- Updated PhpMyAdmin to version 3.5.1
+		- Updated AjaxPlorer to 4.1.0
 
 
 Tickets:
@@ -18,7 +19,7 @@ Tickets:
 	- Fixed #337: Enhancement - Add possibility to edit per user mail quotas
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
 	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
-	- Fixed #402: Task - Ajaxplorer - Integrate fix from ajaxplorer forum
+	- Fixed #402: Task - Ajaxplorer - Not Compatible with php 5.4
 	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
 	- Fixed #404: Defect - Missing translations
 	- Fixed #405: Bug - Custom message for maintenance mode is always overridden
