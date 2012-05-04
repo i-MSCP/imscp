@@ -48,7 +48,7 @@
 					<th>{TR_MAIL}</th>
 					<th>{TR_TYPE}</th>
 					<th>{TR_STATUS}</th>
-					<th>{TR_QUOTA_USE}</th>
+					<th>{TR_QUOTA}</th>
 					<th>{TR_ACTION}</th>
                     <th>{TR_DEL_ITEM}  <!-- BDP: mark_all_mails_to_delete --><input type="checkbox" id="checkAll" name="checkAll" /><!-- EDP: mark_all_mails_to_delete --></th>
 				</tr>
@@ -75,6 +75,7 @@
 					<td>
 						<a href="{MAIL_EDIT_SCRIPT}" title="{MAIL_EDIT}" class="icon i_edit">{MAIL_EDIT}</a>
 						<a href="#" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')" title="{MAIL_DELETE}" class="icon i_delete">{MAIL_DELETE}</a>
+						<a href="{MAIL_QUOTA_SCRIPT}" title="{MAIL_QUOTA}" class="icon i_edit">{MAIL_QUOTA}</a>
 					</td>
                     <td style="width: 10px;"><input type="checkbox" name="del_item[]" value="{DEL_ITEM}" {DISABLED_DEL_ITEM}/></td>
 				</tr>
