@@ -13,6 +13,8 @@ GUI:
 
 Tickets:
 	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
+	- Fixed #213: Enhancement - Bruteforce component - login attemps
+	- Fixed #322: Enhancemant - Add possibility to delete more then only one eMail Adress
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
 	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
 	- Fixed #402: Task - Ajaxplorer - Integrate fix from ajaxplorer forum
@@ -21,3 +23,4 @@ Tickets:
 	- Fixed #405: Bug - Custom message for maintenance mode is always overridden
 	- Fixed #408: Defect: warning: master.cf: unused parameter: smtpd_override_options=no_address_mappings
 	- Fixed #421: Defect: Adding email account not IDN compatible
+	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview

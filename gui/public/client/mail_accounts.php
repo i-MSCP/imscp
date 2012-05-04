@@ -91,6 +91,10 @@ $tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('mail_message', 'page');
 $tpl->define_dynamic('mail_item', 'page');
 $tpl->define_dynamic('mail_auto_respond', 'mail_item');
+$tpl->define_dynamic('mark_all_mails_to_delete', 'page');
+$tpl->define_dynamic('delete_marked_mails_form_head', 'page');
+$tpl->define_dynamic('delete_marked_mails_form_bottom', 'page');
+$tpl->define_dynamic('mark_all_mails_to_delete_jquery', 'page');
 $tpl->define_dynamic('default_mails_form', 'page');
 $tpl->define_dynamic('mails_total', 'page');
 $tpl->define_dynamic('no_mails', 'page');
@@ -181,6 +185,8 @@ function gen_user_mail_auto_respond(
  * @return int number of domain mails adresses
  */
 function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_query = "
 		SELECT
@@ -302,7 +308,9 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
 					'MAIL_QUOTA' => $mail_quota,
 					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
-					'MAIL_QUOTA_VALUE' => $txt_quota
+					'MAIL_QUOTA_VALUE' => $txt_quota,
+					'DEL_ITEM' => $rs->fields['mail_id'],
+					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''
 				)
 			);
 
@@ -329,6 +337,8 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
  * @return int number of subdomain mails addresses
  */
 function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	$sub_query = "
 		SELECT
@@ -416,7 +426,9 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE' => $mail_delete,
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script));
+					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'DEL_ITEM' => $rs->fields['mail_id'],
+					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
 				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
@@ -440,6 +452,8 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
  * @return int number of subdomain alias mails addresses
  */
 function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	$sub_query = "
 		SELECT
@@ -524,9 +538,9 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE' => $mail_delete,
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script
-				)
-			);
+					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'DEL_ITEM' => $rs->fields['mail_id'],
+					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
 				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
@@ -550,6 +564,8 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
  * @return int number of domain alias mails addresses
  */
 function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	$als_query = "
 		SELECT
@@ -630,7 +646,9 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE' => $mail_delete,
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
-					'MAIL_EDIT_SCRIPT' => $mail_edit_script));
+					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'DEL_ITEM' => $rs->fields['mail_id'],
+					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
 			gen_user_mail_auto_respond(
 				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
@@ -682,7 +700,6 @@ function gen_page_lists($tpl, $user_id) {
 			$counted_mails += $default_mails;
 		}
 	}
-
 	if ($total_mails > 0) {
 		$tpl->assign(
 			array(
@@ -693,9 +710,14 @@ function gen_page_lists($tpl, $user_id) {
 				'ALS_TOTAL' => $als_mails,
 				'TOTAL_MAIL_ACCOUNTS' => $counted_mails,
 				'ALLOWED_MAIL_ACCOUNTS' => ($dmn_mailacc_limit != 0)
-					? $dmn_mailacc_limit : tr('unlimited')
+					? $dmn_mailacc_limit : tr('unlimited'),
+				'TR_DELETE_MARKED_MAILS' => tr('Delete marked mails')
 			)
 		);
+		$tpl->parse('MARK_ALL_MAILS_TO_DELETE_JQUERY', 'mark_all_mails_to_delete_jquery');
+		$tpl->parse('MARK_ALL_MAILS_TO_DELETE', 'mark_all_mails_to_delete');
+		$tpl->parse('DELETE_MARKED_MAILS_FORM_HEAD', 'delete_marked_mails_form_head');
+		$tpl->parse('DELETE_MARKED_MAILS_FORM_BOTTOM', 'delete_marked_mails_form_bottom');
 	} else {
 		if (!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
 			$tpl->assign(array('TABLE_LIST' => ''));
@@ -704,7 +726,10 @@ function gen_page_lists($tpl, $user_id) {
 		$tpl->assign(
 			array(
 				'MAIL_MSG' => tr('Mail accounts list is empty!'),
-				'MAIL_ITEM' => '', 'MAILS_TOTAL' => ''
+				'MAIL_ITEM' => '', 'MAILS_TOTAL' => '', 'DEL_ITEM' => '',
+				'MARK_ALL_MAILS_TO_DELETE' => '', 'TR_DELETE_MARKED_MAILS' => '',
+				'DELETE_MARKED_MAILS_FORM_HEAD' => '', 'DELETE_MARKED_MAILS_FORM_BOTTOM' => '',
+				'MARK_ALL_MAILS_TO_DELETE_JQUERY' => ''
 			)
 		);
 
@@ -744,6 +769,12 @@ function count_default_mails($dmn_id) {
 				`domain_id` = ?
 			AND
 				(
+					`status` = 'ok'
+				OR
+					`status` = 'toadd'
+				)
+			AND
+				(
 				 	`mail_acc` = 'abuse'
 				OR
 					`mail_acc` = 'postmaster'
@@ -771,6 +802,7 @@ $tpl->assign(
 	array(
 		'TR_MAIL_USERS' => tr('Mail users'),
 		'TR_MAIL' => tr('Mail'),
+		'TR_DEL_ITEM' => tr('Mark all'),
 		'TR_TYPE' => tr('Type'),
 		'TR_STATUS' => tr('Status'),
 		'TR_ACTION' => tr('Action'),
@@ -780,7 +812,8 @@ $tpl->assign(
 		'TR_ALS_MAILS' => tr('Alias mails'),
 		'TR_TOTAL_MAIL_ACCOUNTS' => tr('Mails total'),
 		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_MESSAGE_DELETE_MARKED' => tr('Are you sure you want to delete all marked emails?', true)));
 
 // Displays the "show/hide" button for default emails
 // only if default mail address exists
