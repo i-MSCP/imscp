@@ -12,6 +12,7 @@ GUI:
 
 
 Tickets:
+	- Fixed #17: Feature - Send mail if quota reached
 	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
 	- Fixed #213: Enhancement - Bruteforce component - login attemps
 	- Fixed #322: Enhancement - Add possibility to delete more then only one eMail Adress
@@ -23,5 +24,6 @@ Tickets:
 	- Fixed #404: Defect - Missing translations
 	- Fixed #405: Bug - Custom message for maintenance mode is always overridden
 	- Fixed #408: Defect: warning: master.cf: unused parameter: smtpd_override_options=no_address_mappings
+	- Fixed #413: Defect: dovecot quota config inconsistent
 	- Fixed #421: Defect: Adding email account not IDN compatible
 	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
