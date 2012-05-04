@@ -25,3 +25,4 @@ Tickets:
 	- Fixed #408: Defect: warning: master.cf: unused parameter: smtpd_override_options=no_address_mappings
 	- Fixed #421: Defect: Adding email account not IDN compatible
 	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
+	- Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist

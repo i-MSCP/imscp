@@ -113,6 +113,83 @@ exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
 $query = "UPDATE `domain_aliasses` SET `alias_status` = ? WHERE `alias_id` = ?";
 exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
 
+// Checks for FTP accounts in ALIAS domain (ALIAS FTP) and delete them
+$query = "
+ SELECT
+     `userid`
+ FROM
+     `ftp_users`
+ WHERE
+     `userid` LIKE '%".$alias_name."%'
+";
+$stmt = exec_query($query);
+
+if ($stmt->recordCount() > 0) {
+	while (!$stmt->EOF) {
+		$ftp_id = $stmt->fields['userid'];
+
+		$query = "
+			SELECT
+				`t1`.`gid`, t2.`members`
+			FROM
+				`ftp_users` AS `t1`
+			JOIN
+				`ftp_group` AS `t2`
+				ON
+					`t1`.`gid` = `t2`.`gid`
+			WHERE
+				`t1`.`userid` = ?
+		";
+
+		$rs = exec_query($query, $ftp_id);
+
+
+
+	$ftp_gid = $rs->fields['gid'];
+
+	$ftp_members = $rs->fields['members'];
+
+		$members = str_replace(",{$ftp_id},", ",", "$ftp_members");
+		if ($members == $ftp_members) {
+			$members = preg_replace("/(^{$ftp_id},)|(,{$ftp_id}$)|(^{$ftp_id}$)/", "", "$ftp_members");
+		}
+
+		if (strlen($members) == 0) {
+			$query = "
+				DELETE FROM
+					`ftp_group`
+				WHERE
+					`gid` = ?
+			";
+
+			$rs = exec_query($query, $ftp_gid);
+
+		} else {
+			$query = "
+				UPDATE
+					`ftp_group`
+				SET
+					`members` = ?
+				WHERE
+					`gid` = ?
+			";
+
+			$rs = exec_query($query, array($members, $ftp_gid));
+		}
+
+		$query = "
+			DELETE FROM
+				`ftp_users`
+			WHERE
+				`userid` = ?
+		";
+
+		$rs = exec_query($query, $ftp_id);
+
+		$stmt->moveNext();
+	}
+}
+
 update_reseller_c_props($reseller_id);
 
 send_request();
