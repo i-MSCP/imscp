@@ -417,11 +417,11 @@ sub masterHost {
 		OTHER_ROOTKIT_LOG		=> ($main::imscpConfig{'OTHER_ROOTKIT_LOG'} ne '') ? ":$main::imscpConfig{'OTHER_ROOTKIT_LOG'}" : ''
 	});
 
-	$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_itk.conf");
+	$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master.conf");
 	return $rs if $rs;
 
 	iMSCP::File->new(
-		filename => "$self->{wrkDir}/00_master_itk.conf"
+		filename => "$self->{wrkDir}/00_master.conf"
 	)->copyFile(
 		"$self::apacheConfig{'APACHE_SITES_DIR'}/00_master.conf"
 	) and return 1;
@@ -431,11 +431,11 @@ sub masterHost {
 
 	if($main::imscpConfig{'SSL_ENABLED'} eq 'yes'){
 
-		$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_ssl_itk.conf");
+		$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_ssl.conf");
 		return $rs if $rs;
 
 		iMSCP::File->new(
-			filename => "$self->{wrkDir}/00_master_ssl_itk.conf"
+			filename => "$self->{wrkDir}/00_master_ssl.conf"
 		)->copyFile(
 			"$self::apacheConfig{'APACHE_SITES_DIR'}/00_master_ssl.conf"
 		) and return 1;
