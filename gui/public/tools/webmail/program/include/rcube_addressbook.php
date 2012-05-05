@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_addressbook.php 5415 2011-11-11 15:04:45Z alec $
+ $Id: rcube_addressbook.php 5873 2012-02-11 13:50:04Z thomasb $
 
 */
 
@@ -44,6 +44,8 @@ abstract class rcube_addressbook
     public $group_id = null;
     public $list_page = 1;
     public $page_size = 10;
+    public $sort_col = 'name';
+    public $sort_order = 'ASC';
     public $coltypes = array('name' => array('limit'=>1), 'firstname' => array('limit'=>1), 'surname' => array('limit'=>1), 'email' => array('limit'=>1));
 
     protected $error;
@@ -180,6 +182,21 @@ abstract class rcube_addressbook
         $this->page_size = (int)$size;
     }
 
+    /**
+     * Set internal sort settings
+     *
+     * @param string $sort_col Sort column
+     * @param string $sort_order Sort order
+     */
+    function set_sort_order($sort_col, $sort_order = null)
+    {
+        if ($sort_col != null && ($this->coltypes[$sort_col] || in_array($sort_col, $this->coltypes))) {
+            $this->sort_col = $sort_col;
+        }
+        if ($sort_order != null) {
+            $this->sort_order = strtoupper($sort_order) == 'DESC' ? 'DESC' : 'ASC';
+        }
+    }
 
     /**
      * Check the given data before saving.
@@ -452,24 +469,24 @@ abstract class rcube_addressbook
      * Compose a valid display name from the given structured contact data
      *
      * @param array  Hash array with contact data as key-value pairs
-     * @param bool   The name will be used on the list
+     * @param bool   Don't attempt to extract components from the email address
      *
      * @return string Display name
      */
-    public static function compose_display_name($contact, $list_mode = false)
+    public static function compose_display_name($contact, $full_email = false)
     {
         $contact = rcmail::get_instance()->plugins->exec_hook('contact_displayname', $contact);
         $fn = $contact['name'];
 
-        if (!$fn)
+        if (!$fn)  // default display name composition according to vcard standard
             $fn = join(' ', array_filter(array($contact['prefix'], $contact['firstname'], $contact['middlename'], $contact['surname'], $contact['suffix'])));
 
         // use email address part for name
         $email = is_array($contact['email']) ? $contact['email'][0] : $contact['email'];
 
         if ($email && (empty($fn) || $fn == $email)) {
-            // Use full email address on contacts list
-            if ($list_mode)
+            // return full email
+            if ($full_email)
                 return $email;
 
             list($emailname) = explode('@', $email);
@@ -478,6 +495,44 @@ abstract class rcube_addressbook
             else
                 $fn = ucfirst($emailname);
         }
+
+        return $fn;
+    }
+
+
+    /**
+     * Compose the name to display in the contacts list for the given contact record.
+     * This respects the settings parameter how to list conacts.
+     *
+     * @param array  Hash array with contact data as key-value pairs
+     * @return string List name
+     */
+    public static function compose_list_name($contact)
+    {
+        static $compose_mode;
+
+        if (!isset($compose_mode))  // cache this
+            $compose_mode = rcmail::get_instance()->config->get('addressbook_name_listing', 0);
+
+        if ($compose_mode == 3)
+            $fn = join(' ', array($contact['surname'] . ',', $contact['firstname'], $contact['middlename']));
+        else if ($compose_mode == 2)
+            $fn = join(' ', array($contact['surname'], $contact['firstname'], $contact['middlename']));
+        else if ($compose_mode == 1)
+            $fn = join(' ', array($contact['firstname'], $contact['middlename'], $contact['surname']));
+        else
+            $fn = !empty($contact['name']) ? $contact['name'] : join(' ', array($contact['prefix'], $contact['firstname'], $contact['middlename'], $contact['surname'], $contact['suffix']));
+
+        $fn = trim($fn, ', ');
+
+        // fallback to display name
+        if (empty($fn) && $contact['name'])
+            $fn = $contact['name'];
+
+        // fallback to email address
+        $email = is_array($contact['email']) ? $contact['email'][0] : $contact['email'];
+        if (empty($fn) && $email)
+            return $email;
 
         return $fn;
     }

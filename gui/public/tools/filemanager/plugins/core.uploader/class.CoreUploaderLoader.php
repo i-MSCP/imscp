@@ -26,17 +26,28 @@ defined('AJXP_EXEC') or die( 'Access not allowed');
  * Config loader overrider
  */
 class CoreUploaderLoader extends AJXP_Plugin{
-	
+
+    public function getConfigs(){
+        $data = parent::getConfigs();
+        $this->filterData($data);
+        return $data;
+    }
 	public function loadConfigs($data){
 
-        $confMaxSize = AJXP_Utils::convertBytes($data["UPLOAD_MAX_SIZE"]);
-        $UploadMaxSize = min(AJXP_Utils::convertBytes(ini_get('upload_max_filesize')), AJXP_Utils::convertBytes(ini_get('post_max_size')));
-        if($confMaxSize != 0) $UploadMaxSize = min ($UploadMaxSize, $confMaxSize);
-        $data["UPLOAD_MAX_SIZE"] = $UploadMaxSize;
-
+        $this->filterData($data);
         parent::loadConfigs($data);
 
 	}
-		
+
+	private function filterData(&$data){
+
+        $confMaxSize = AJXP_Utils::convertBytes($data["UPLOAD_MAX_SIZE"]);
+        $UploadMaxSize = min(AJXP_Utils::convertBytes(ini_get('upload_max_filesize')), AJXP_Utils::convertBytes(ini_get('post_max_size')));
+        if(intval($confMaxSize) != 0) {
+            $UploadMaxSize = min ($UploadMaxSize, $confMaxSize);
+        }
+        $data["UPLOAD_MAX_SIZE"] = $UploadMaxSize;
+
+    }
 }
 ?>

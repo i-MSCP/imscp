@@ -16,7 +16,7 @@
  | Author: Lukas Kahwe Smith <smith@pooteeweet.org>                      |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_mdb2.php 5543 2011-12-05 07:24:36Z alec $
+ $Id: rcube_mdb2.php 5872 2012-02-11 11:38:46Z thomasb $
 
 */
 
@@ -633,6 +633,8 @@ class rcube_mdb2
     {
         $func = '';
         $args = func_get_args();
+        if (is_array($args[0]))
+            $args = $args[0];
 
         switch($this->db_provider) {
             case 'mysql':

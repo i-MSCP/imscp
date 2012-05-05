@@ -8,19 +8,26 @@ Features / Enhancements:
 
 GUI:
 	Tools:
-		- Updated PhpMyAdmin to version 3.5.0
+		- Updated PhpMyAdmin to version 3.5.1
+		- Updated AjaxPlorer to 4.1.0
+		- Updated roundcube to 0.7.2
 
 
 Tickets:
+	- Fixed #17: Feature - Send mail if quota reached
 	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
 	- Fixed #213: Enhancement - Bruteforce component - login attemps
-	- Fixed #322: Enhancemant - Add possibility to delete more then only one eMail Adress
+	- Fixed #322: Enhancement - Add possibility to delete more then only one eMail Adress
+	- Fixed #337: Enhancement - Add possibility to edit per user mail quotas
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
 	- Fixed #387: Enhancement - php.ini modifications to allow the usage of roundcube
-	- Fixed #402: Task - Ajaxplorer - Integrate fix from ajaxplorer forum
+	- Fixed #429: Enhancement - TXT entries should allow * as a valid character
+	- Fixed #402: Task - Ajaxplorer - Not Compatible with php 5.4
 	- Fixed #403: Defect - Hosting Plan Secure Code doesn't work
 	- Fixed #404: Defect - Missing translations
 	- Fixed #405: Bug - Custom message for maintenance mode is always overridden
 	- Fixed #408: Defect: warning: master.cf: unused parameter: smtpd_override_options=no_address_mappings
+	- Fixed #413: Defect: dovecot quota config inconsistent
 	- Fixed #421: Defect: Adding email account not IDN compatible
 	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
+	- Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist

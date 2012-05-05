@@ -199,6 +199,12 @@
 							<visible>0</visible>
 							<title_class>email</title_class>
 						</mail_account_edit_link>
+						<mail_account_quota_link>
+							<label>Edit mail quota</label>
+							<uri>/client/mail_quota.php</uri>
+							<visible>0</visible>
+							<title_class>email</title_class>
+						</mail_account_quota_link>
 						<enable_autoresponder_link>
 							<label>Enable auto responder</label>
 							<uri>/client/mail_autoresponder_enable.php</uri>

@@ -16,7 +16,7 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_imap_cache.php 5366 2011-10-26 11:48:27Z thomasb $
+ $Id: rcube_imap_cache.php 5761 2012-01-12 14:54:21Z alec $
 
 */
 
@@ -1108,10 +1108,12 @@ class rcube_imap_cache
     private function build_thread_data($data, &$depth, &$children, $level = 0)
     {
         foreach ((array)$data as $key => $val) {
-            $children[$key] = !empty($val);
-            $depth[$key] = $level;
-            if (!empty($val))
+            $empty          = empty($val) || !is_array($val);
+            $children[$key] = !$empty;
+            $depth[$key]    = $level;
+            if (!$empty) {
                 $this->build_thread_data($val, $depth, $children, $level + 1);
+            }
         }
     }
 

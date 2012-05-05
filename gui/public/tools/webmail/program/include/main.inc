@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: main.inc 5715 2012-01-05 10:28:24Z alec $
+ $Id: main.inc 5943 2012-03-02 11:56:25Z alec $
 
 */
 
@@ -169,14 +169,16 @@ function rcmail_cache_gc()
   // get target timestamp
   $ts = get_offset_time($rcmail->config->get('message_cache_lifetime', '30d'), -1);
 
-  $db->query("DELETE FROM ".get_table_name('cache_messages')
+  if ($rcmail->config->get('messages_cache') || $rcmail->config->get('enable_caching')) {
+    $db->query("DELETE FROM ".get_table_name('cache_messages')
         ." WHERE changed < " . $db->fromunixtime($ts));
 
-  $db->query("DELETE FROM ".get_table_name('cache_index')
+    $db->query("DELETE FROM ".get_table_name('cache_index')
         ." WHERE changed < " . $db->fromunixtime($ts));
 
-  $db->query("DELETE FROM ".get_table_name('cache_thread')
+    $db->query("DELETE FROM ".get_table_name('cache_thread')
         ." WHERE changed < " . $db->fromunixtime($ts));
+  }
 
   $db->query("DELETE FROM ".get_table_name('cache')
         ." WHERE created < " . $db->fromunixtime($ts));

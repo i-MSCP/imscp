@@ -16,7 +16,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: sendmail.inc 5527 2011-12-02 09:58:03Z alec $
+ $Id: sendmail.inc 5952 2012-03-03 13:20:14Z alec $
 
 */
 
@@ -176,7 +176,11 @@ function rcmail_email_input_format($mailto, $count=false, $check=true)
     // address with name (handle name)
     } else if (preg_match('/<*'.$email_regexp.'>*$/', $item, $matches)) {
       $address = $matches[0];
-      $name = trim(str_replace($address, '', $item), '" ');
+      $name = trim(str_replace($address, '', $item));
+      if ($name[0] == '"' && $name[count($name)-1] == '"') {
+        $name = substr($name, 1, -1);
+      }
+      $name = stripcslashes($name);
       $address = rcube_idn_to_ascii(trim($address, '<>'));
       $result[] = format_email_recipient($address, $name);
       $item = $address;
@@ -730,9 +734,10 @@ if ($savedraft) {
     $saved     = $draftuids[0];
   }
   $COMPOSE['param']['draft_uid'] = $saved;
+  $plugin = $RCMAIL->plugins->exec_hook('message_draftsaved', array('msgid' => $msgid, 'uid' => $saved, 'folder' => $store_target));
 
   // display success
-  $OUTPUT->show_message('messagesaved', 'confirmation');
+  $OUTPUT->show_message($plugin['message'] ? $plugin['message'] : 'messagesaved', 'confirmation');
 
   // update "_draft_saveid" and the "cmp_hash" to prevent "Unsaved changes" warning
   $OUTPUT->command('set_draft_id', $msgid);

@@ -427,7 +427,7 @@ function validate_AAAA($record, &$err = null) {
  */
 function validate_TXT($record, &$err = null) {
 
-	if (!preg_match('/^([a-zA-Z0-9\+\?\-_~=:. \/])+$/', str_replace('"','',$record['dns_txt_data']))) {
+	if (!preg_match('/^([a-zA-Z0-9\+\?\-\*_~=:. \/])+$/', str_replace('"','',$record['dns_txt_data']))) {
 		$err .= sprintf(tr('Invalid characters in TXT data ("%s")'), str_replace('"','',$record['dns_txt_data']));
 		return false;
 	}

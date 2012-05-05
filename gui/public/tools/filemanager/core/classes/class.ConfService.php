@@ -264,9 +264,10 @@ class ConfService
 		{
 			if($temporary && isSet($_SESSION['REPO_ID'])){
 				$crtId = $_SESSION['REPO_ID'];
-				$_SESSION['SWITCH_BACK_REPO_ID'] = $crtId;
-				//AJXP_Logger::debug("switching to $rootDirIndex, registering $crtId");
-				//register_shutdown_function(array("ConfService","switchRootDir"), $crtId);
+                if($crtId != $rootDirIndex && !isSet($_SESSION['SWITCH_BACK_REPO_ID'])){
+                    $_SESSION['SWITCH_BACK_REPO_ID'] = $crtId;
+                    //AJXP_Logger::debug("switching to $rootDirIndex, registering $crtId");
+                }
 			}else{
                 $crtId = $_SESSION['REPO_ID'];
                 $_SESSION['PREVIOUS_REPO_ID'] = $crtId;
@@ -289,7 +290,7 @@ class ConfService
 		if($rootDirIndex!=-1 && AuthService::usersEnabled() && AuthService::getLoggedUser()!=null){
 			$loggedUser = AuthService::getLoggedUser();
 			$loggedUser->setArrayPref("history", "last_repository", $rootDirIndex);
-			$loggedUser->save();
+			$loggedUser->save("user");
 		}	
 				
 	}
@@ -642,6 +643,15 @@ class ConfService
      */
 	public function getMessagesInst($forceRefresh = false)
 	{
+        if(!isset($this->configs["MESSAGES"]) && is_file(AJXP_PLUGINS_MESSAGES_FILE) && !$forceRefresh){
+            include(AJXP_PLUGINS_MESSAGES_FILE);
+            if(isSet($MESSAGES)){
+                $this->configs["MESSAGES"] = $MESSAGES;
+            }
+            if(isSet($CONF_MESSAGES)){
+                $this->configs["CONF_MESSAGES"] = $CONF_MESSAGES;
+            }
+        }
 		if(!isset($this->configs["MESSAGES"]) || $forceRefresh)
 		{
             $crtLang = self::getLanguage();
@@ -670,6 +680,7 @@ class ConfService
                     $this->configs["CONF_MESSAGES"] = array_merge($this->configs["CONF_MESSAGES"], $mess);
                 }
 			}
+            @file_put_contents(AJXP_PLUGINS_MESSAGES_FILE, "<?php \$MESSAGES = ".var_export($this->configs["MESSAGES"], true) ." ; \$CONF_MESSAGES = ".var_export($this->configs["CONF_MESSAGES"], true) ." ; ");
 		}
 		
 		return $this->configs["MESSAGES"];
@@ -693,10 +704,14 @@ class ConfService
             $RESERVED_EXTENSIONS = array();
             include_once(AJXP_CONF_PATH."/extensions.conf.php");
             $EXTENSIONS = array_merge($RESERVED_EXTENSIONS, $EXTENSIONS);
+            foreach($EXTENSIONS as $key => $value){
+                unset($EXTENSIONS[$key]);
+                $EXTENSIONS[$value[0]] = $value;
+            }
             $nodes = AJXP_PluginsService::getInstance()->searchAllManifests("//extensions/extension", "nodes", true);
             $res = array();
             foreach($nodes as $node){
-                $res[] = array($node->getAttribute("mime"), $node->getAttribute("icon"), $node->getAttribute("messageId"));
+                $res[$node->getAttribute("mime")] = array($node->getAttribute("mime"), $node->getAttribute("icon"), $node->getAttribute("messageId"));
             }
             if(count($res)){
                 $EXTENSIONS = array_merge($EXTENSIONS, $res);

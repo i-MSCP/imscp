@@ -48,6 +48,27 @@ function client_hideDisabledFeatures($tpl)
 }
 
 
+/**
+* Format bytes in human form
+*
+* @param int $bytes
+*/
+function formatBytes($bytes, $precision = 0) { 
+    $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+
+    $bytes = max($bytes, 0); 
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
+    $pow = min($pow, count($units) - 1); 
+
+    // Uncomment one of the following alternatives
+    $bytes /= pow(1024, $pow);
+
+    return round($bytes, $precision) . ' ' . $units[$pow]; 
+}
+
+
+
+
 // Include core library
 require_once 'imscp-lib.php';
 
@@ -101,7 +122,9 @@ function gen_user_mail_action($mail_id, $mail_status) {
 			tr('Delete'),
 			"mail_delete.php?id=$mail_id",
 			tr('Edit'),
-			"mail_edit.php?id=$mail_id");
+			"mail_edit.php?id=$mail_id",
+			tr('Quota'),
+			"mail_quota.php?id=$mail_id");
 	} else {
 		return array(tr('N/A'), '#', tr('N/A'), '#');
 	}
@@ -210,7 +233,9 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 				$mail_delete,
 				$mail_delete_script,
 				$mail_edit,
-				$mail_edit_script
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
@@ -221,6 +246,8 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
+			$is_mailbox = 0;
+
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
@@ -230,9 +257,46 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 							array("\r\n", "\n", "\r"), ", ",
 							$rs->fields['mail_forward']
 						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
+			}
+
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$quota_query = "SELECT 
+						`bytes`,
+						`quota` 
+				 	FROM 
+						`mail_users` 
+					LEFT JOIN 
+						`quota_dovecot` 
+					ON 
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username` 
+					WHERE 
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
 			}
 
 			$tpl->assign(
@@ -244,8 +308,13 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
-					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
+					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''
+				)
+			);
 
 			gen_user_mail_auto_respond(
 				$tpl, $rs->fields['mail_id'], $rs->fields['mail_type'],
@@ -738,6 +807,7 @@ $tpl->assign(
 		'TR_DEL_ITEM' => tr('Mark all'),
 		'TR_TYPE' => tr('Type'),
 		'TR_STATUS' => tr('Status'),
+		'TR_QUOTA' => tr('Quota'),
 		'TR_ACTION' => tr('Action'),
 		'TR_AUTORESPOND' => tr('Auto respond'),
 		'TR_DMN_MAILS' => tr('Domain mails'),

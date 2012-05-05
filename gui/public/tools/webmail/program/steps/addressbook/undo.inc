@@ -15,7 +15,7 @@
  | Author: Aleksander Machniak <machniak@kolabsys.com>                   |
  +-----------------------------------------------------------------------+
 
- $Id: undo.inc 4916 2011-07-07 11:44:26Z alec $
+ $Id: undo.inc 5967 2012-03-05 19:59:07Z alec $
 
 */
 
@@ -64,13 +64,6 @@ if ($delcnt && ($search_request = $_REQUEST['_search']) && isset($_SESSION['sear
             unset($search[$s]);
             continue;
         }
-
-        while ($row = $result->next()) {
-            $row['sourceid'] = $s;
-            $key = $row['name'] . ':' . $row['sourceid'];
-            $records[$key] = $row;
-        }
-        unset($result);
 
         $search[$s] = $source->get_search_set();
     }

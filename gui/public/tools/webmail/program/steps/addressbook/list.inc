@@ -15,7 +15,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: list.inc 5315 2011-10-06 12:31:38Z thomasb $
+ $Id: list.inc 5967 2012-03-05 19:59:07Z alec $
 
 */
 
@@ -31,6 +31,7 @@ if (!empty($_REQUEST['_search']) && isset($_SESSION['search'][$_REQUEST['_search
         $page = isset($_SESSION['page']) ? $_SESSION['page'] : 1;
 
     $_SESSION['page'] = $page;
+    $sort_col = $this->config->get('addressbook_sort_col', 'name');
 
     // Get records from all sources
     foreach ($search as $s => $set) {
@@ -46,7 +47,7 @@ if (!empty($_REQUEST['_search']) && isset($_SESSION['search'][$_REQUEST['_search
 
         while ($row = $result->next()) {
             $row['sourceid'] = $s;
-            $key = $row['name'] . ':' . $row['sourceid'];
+            $key = rcmail_contact_key($row, $sort_col);
             $records[$key] = $row;
         }
         unset($result);

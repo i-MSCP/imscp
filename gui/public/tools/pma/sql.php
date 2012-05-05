@@ -435,7 +435,7 @@ if ($GLOBALS['cfg']['RememberSorting']
             // retrieve the remembered sorting order for current table
             $sql_order_to_append = ' ORDER BY ' . $sorted_col . ' ';
             $full_sql_query = $analyzed_sql[0]['section_before_limit'] . $sql_order_to_append
-                . $analyzed_sql[0]['section_after_limit'];
+                . $analyzed_sql[0]['limit_clause'] . ' ' . $analyzed_sql[0]['section_after_limit'];
 
             // update the $analyzed_sql
             $analyzed_sql[0]['section_before_limit'] .= $sql_order_to_append;
@@ -906,7 +906,11 @@ $(document).ready(makeProfilingChart);
             echo ' <tr>' .  "\n";
             echo '<td>' . ucwords($one_result['Status']) . '</td>' .  "\n";
             echo '<td align="right">' . (PMA_formatNumber($one_result['Duration'], 3, 1)) . 's</td>' .  "\n";
-            $chart_json[ucwords($one_result['Status'])] = $one_result['Duration'];
+            if (isset($chart_json[ucwords($one_result['Status'])])) {
+                $chart_json[ucwords($one_result['Status'])] += $one_result['Duration'];
+            } else {
+                $chart_json[ucwords($one_result['Status'])] = $one_result['Duration'];
+            }
         }
 
         echo '</table>' . "\n";
