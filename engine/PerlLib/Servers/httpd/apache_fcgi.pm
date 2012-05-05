@@ -492,8 +492,23 @@ sub buildPHPini{
 	my $data		= shift;
 	my $rs			= 0;
 	my $php5Dir		= "$self::apacheConfig{PHP_STARTER_DIR}/$data->{DMN_NAME}";
-	my $fileSource	= "$main::imscpConfig{CONF_DIR}/fcgi/parts/php5-fcgi-starter.tpl";
-	my $destFile	= "$php5Dir/php5-fcgi-starter";
+
+	# FCGID launcher setup
+	my $fileSource	= "$main::imscpConfig{CONF_DIR}/fcgi/parts/php5-fcgid-starter.tpl";
+	my $destFile	= "$php5Dir/php5-fcgid-starter";
+
+	$rs |= $self->buildConfFile($fileSource, {destination => $destFile});
+	$rs |= setRights($destFile,
+		{
+			user	=> $data->{USER},
+			group	=> $data->{GROUP},
+			mode	=> '0550',
+		}
+	);
+
+	# FASTCGI launcher setup
+	$fileSource	= "$main::imscpConfig{CONF_DIR}/fcgi/parts/php5-fastcgi-starter.tpl";
+	$destFile	= "$php5Dir/php5-fastcgi-starter";
 
 	$rs |= $self->buildConfFile($fileSource, {destination => $destFile});
 	$rs |= setRights($destFile,

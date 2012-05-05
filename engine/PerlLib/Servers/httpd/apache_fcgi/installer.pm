@@ -435,7 +435,7 @@ sub phpConf {
 	my $timestamp = time;
 
 	# Saving files if they exists
-	for ('php5-fcgi-starter', 'php5/php.ini', 'php5/browscap.ini') {
+	for ('php5-fcgid-starter', 'php5-fastcgi-starter', 'php5/php.ini', 'php5/browscap.ini') {
 		if(-f "$self::apacheConfig{'PHP_STARTER_DIR'}/master/$_") {
 			my (undef, $name) = split('/');
 			$name = $_ if(!defined $name);
@@ -444,7 +444,7 @@ sub phpConf {
 		}
 	}
 
-	## PHP5 Starter script
+	## PHP5 Starter script (fcgid)
 	# Loading the template from /etc/imscp/fcgi/parts/master
 	$httpd->setData({
 					HOME_DIR	=> $main::imscpConfig{'GUI_ROOT_DIR'},
@@ -453,9 +453,9 @@ sub phpConf {
 	my $panelUname = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
 	$httpd->buildConfFile(
-						"$cfgDir/parts/master/php5-fcgi-starter.tpl",
+						"$cfgDir/parts/master/php5-fcgid-starter.tpl",
 						{
-							destination	=> "$wrkDir/master.php5-fcgi-starter",
+							destination	=> "$wrkDir/master.php5-fcgid-starter",
 							mode		=> 0755,
 							user		=> $panelUname,
 							group		=> $panelGName
@@ -463,9 +463,30 @@ sub phpConf {
 	);
 
 	# Install the new file
-	$file = iMSCP::File->new(filename => "$wrkDir/master.php5-fcgi-starter");
-	$file->copyFile("$self::apacheConfig{'PHP_STARTER_DIR'}/master/php5-fcgi-starter") and return 1;
+	$file = iMSCP::File->new(filename => "$wrkDir/master.php5-fcgid-starter");
+	$file->copyFile("$self::apacheConfig{'PHP_STARTER_DIR'}/master/php5-fcgid-starter") and return 1;
 
+	## PHP5 Starter script (fastcgi)
+	# Loading the template from /etc/imscp/fcgi/parts/master
+	$httpd->setData({
+					HOME_DIR	=> $main::imscpConfig{'GUI_ROOT_DIR'},
+					DMN_NAME	=> 'master'
+	});
+	my $panelUname = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	my $panelGName = $main::imscpConfig{'SYSTEM_USER_PREFIX'}.$main::imscpConfig{'SYSTEM_USER_MIN_UID'};
+	$httpd->buildConfFile(
+						"$cfgDir/parts/master/php5-fastcgi-starter.tpl",
+						{
+							destination	=> "$wrkDir/master.php5-fastcgi-starter",
+							mode		=> 0755,
+							user		=> $panelUname,
+							group		=> $panelGName
+						}
+	);
+
+	# Install the new file
+	$file = iMSCP::File->new(filename => "$wrkDir/master.php5-fastcgi-starter");
+	$file->copyFile("$self::apacheConfig{'PHP_STARTER_DIR'}/master/php5-fastcgi-starter") and return 1;
 	## PHP5 php.ini file
 
 	# Loading the template from /etc/imscp/fcgi/parts/master/php5
