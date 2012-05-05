@@ -112,7 +112,7 @@ sub delAwstatsSection{
 	my $data = shift;
 	my $filename = shift;
 
-	if($filename =~ /domain-.*.tpl/){
+	if($filename =~ /domain.*tpl/){
 		my $bTag = "# SECTION awstats support BEGIN.\n";
 		my $eTag = "# SECTION awstats support END.\n";
 		$data = replaceBloc($bTag, $eTag, '', $data, undef);
@@ -138,7 +138,7 @@ sub awstatsSection{
 	my $filename = shift;
 
 
-	if($filename =~ /domain-.*.tpl/){
+	if($filename =~ /domain.*tpl/){
 		my ($bTag, $eTag);
 		if($main::imscpConfig{AWSTATS_ACTIVE} ne 'yes'){
 			$bTag = "# SECTION awstats support BEGIN.\n";
