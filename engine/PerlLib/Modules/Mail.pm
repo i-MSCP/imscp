@@ -137,7 +137,7 @@ sub buildMTAData{
 		MAIL_ON_CATCHALL	=> undef
 	};
 
-	if($self->{mail_type} =~ m/_catchall/ && $self->{status} eq 'delete'){
+	if($self->{mail_type} =~ m/_catchall/){
 		my $sql = "SELECT `mail_addr` FROM `mail_users` WHERE `mail_addr` LIKE '\%$self->{mail_addr}' AND `mail_type` LIKE '\%mail'";
 		my $rdata = iMSCP::Database->factory()->doQuery('mail_addr', $sql);
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');

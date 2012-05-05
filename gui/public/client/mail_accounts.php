@@ -30,9 +30,9 @@
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010-2012 by i-MSCP | http://i-mscp.net
- * @author      ispCP Team
- * @author      i-MSCP Team
- * @link        http://i-mscp.net
+ * @author	  ispCP Team
+ * @author	  i-MSCP Team
+ * @link		http://i-mscp.net
  */
 
 /**
@@ -42,9 +42,9 @@
 */
 function client_hideDisabledFeatures($tpl)
 {
-    if (!customerHasFeature('external_mail')) {
-        $tpl->assign('EXTERNAL_MAIL', '');
-    }
+	if (!customerHasFeature('external_mail')) {
+		$tpl->assign('EXTERNAL_MAIL', '');
+	}
 }
 
 
@@ -53,17 +53,17 @@ function client_hideDisabledFeatures($tpl)
 *
 * @param int $bytes
 */
-function formatBytes($bytes, $precision = 0) { 
-    $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+function formatBytes($bytes, $precision = 0) {
+	$units = array('B', 'KB', 'MB', 'GB', 'TB');
 
-    $bytes = max($bytes, 0); 
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-    $pow = min($pow, count($units) - 1); 
+	$bytes = max($bytes, 0);
+	$pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+	$pow = min($pow, count($units) - 1);
 
-    // Uncomment one of the following alternatives
-    $bytes /= pow(1024, $pow);
+	// Uncomment one of the following alternatives
+	$bytes /= pow(1024, $pow);
 
-    return round($bytes, $precision) . ' ' . $units[$pow]; 
+	return round($bytes, $precision) . ' ' . $units[$pow];
 }
 
 
@@ -78,7 +78,7 @@ check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('mail')) {
-    redirectTo('index.php');
+	redirectTo('index.php');
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -126,7 +126,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 			tr('Quota'),
 			"mail_quota.php?id=$mail_id");
 	} else {
-		return array(tr('N/A'), '#', tr('N/A'), '#');
+		return array(tr('N/A'), '#', tr('N/A'), '#', tr('N/A'), '#');
 	}
 }
 
@@ -269,16 +269,16 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 
 			if ($is_mailbox) {
 				$complete_email = $mail_acc . '@' . $show_dmn_name;
-				$quota_query = "SELECT 
+				$quota_query = "SELECT
 						`bytes`,
-						`quota` 
-				 	FROM 
-						`mail_users` 
-					LEFT JOIN 
-						`quota_dovecot` 
-					ON 
-						`mail_users`.`mail_addr` = `quota_dovecot`.`username` 
-					WHERE 
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
 						`mail_addr` = ?";
 
 				$rs_quota = exec_query($quota_query, array($complete_email));
