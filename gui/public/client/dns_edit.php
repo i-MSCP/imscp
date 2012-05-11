@@ -508,7 +508,7 @@ function validate_MX($record, &$err, &$text) {
 		return false;
 	}
 
-	$text = sprintf("%d\t%s", $record['dns_srv_prio'], $record['dns_srv_host']);
+	$text = sprintf("%d\t%s", $record['dns_srv_prio'], encode_idna($record['dns_srv_host']));
 	return true;
 }
 
@@ -643,7 +643,7 @@ function check_fwd_data($tpl, $edit_id) {
 		case 'CNAME':
 			if (!validate_CNAME($_POST, $err))
 				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
-			$_text = $_POST['dns_cname'];
+			$_text = encode_idna($_POST['dns_cname']);
 			$_dns = $_POST['dns_name'];
 			break;
 		case 'A':
@@ -678,7 +678,7 @@ function check_fwd_data($tpl, $edit_id) {
 			if (!validate_TXT($_POST, $err)) {
 				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			} else {
-				
+
 				$_text = "\"".str_replace('"','',$_POST['dns_txt_data'])."\"";
 				$_dns = $record_domain . '.';
 			}
@@ -707,8 +707,8 @@ function check_fwd_data($tpl, $edit_id) {
 
 			# Error because duplicate entry ? (SQLSTATE 23000)
 			if($rs === false) {
-                /** @var $db iMSCP_Database */
-                $db = iMSCP_Registry::get('db');
+				/** @var $db iMSCP_Database */
+				$db = iMSCP_Registry::get('db');
 				if($db->getLastErrorCode() == 23000) {
 					set_page_message(tr('DNS record already exist.'), 'error');
 					return false;

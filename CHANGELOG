@@ -32,4 +32,5 @@ Tickets:
 	- Fixed #421: Defect: Adding email account not IDN compatible
 	- Fixed #423: Malfunction: Ticket-Summary at Reseller-Overview
 	- Fixed #424: BUG: After deleting alias domain the ftp accounts of this domain still exist
+	- Fixed #427: Malfunction: DNS Servernames not IDN compatible stored in database
 	- Fixed #432: Awstats static configuration generated when awstats dynamic is enabled
