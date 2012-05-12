@@ -51,6 +51,7 @@ sub loadData{
 			`sub`.*,
 			`domain_name` AS `user_home`,
 			`alias_name`,
+			`alias`.`external_mail`,
 			`domain_admin_id`,
 			`domain_php`,
 			`domain_cgi`,
@@ -346,8 +347,32 @@ sub buildNAMEDData{
 		PARENT_DMN_NAME	=> $self->{alias_name},
 		DMN_IP			=> $self->{ip_number},
 		USER_NAME		=> $userName.'alssub'.$self->{subdomain_alias_id},
-		MX				=> $self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0
 	};
+
+	if($self->{external_mail} eq 'on'){
+
+		my $sql = "
+			SELECT
+				*
+			FROM
+				`domain_dns`
+			WHERE
+				`domain_dns`.`alias_id` = ?
+			AND
+				`domain_dns`.`domain_type` = ?
+		";
+
+		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{alias_id}, 'MX');
+		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
+
+		$self->{named}->{MX}->{$_} = $rdata->{$_} for (keys %$rdata);
+
+	} elsif($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0) {
+
+		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.".$self->{alias_name}
+
+	}
+
 
 	0;
 }

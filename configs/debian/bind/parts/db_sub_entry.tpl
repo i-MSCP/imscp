@@ -2,5 +2,5 @@
 www.{SUB_NAME}.         IN A  {DMN_IP}
 ftp.{SUB_NAME}.         IN A  {DMN_IP}
 ; sub MX entry BEGIN
-{SUB_NAME}.        MX 10  mail.{PARENT_DMN_NAME}.
+{SUB_NAME}.             IN MX {MAIL_SERVER}
 ; sub MX entry END

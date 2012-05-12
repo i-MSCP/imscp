@@ -374,6 +374,10 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName.'als'.$self->{alias_id};
 	$self->{named}->{MX}		= ($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0 ? '' : ';');
+	$self->{named}->{MX}		= (
+									($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0)
+									&& ($self->{external_mail} ne 'on')
+									? '' : ';');
 
 	0;
 }

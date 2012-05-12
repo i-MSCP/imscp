@@ -329,7 +329,6 @@ sub addDmnDb {
 
 		for(keys %{$option->{DMN_CUSTOM}}){
 			next unless
-				$option->{DMN_CUSTOM}->{$_}->{domain_dns} &&
 				$option->{DMN_CUSTOM}->{$_}->{domain_text} &&
 				$option->{DMN_CUSTOM}->{$_}->{domain_class} &&
 				$option->{DMN_CUSTOM}->{$_}->{domain_type};
@@ -687,7 +686,21 @@ sub addSub{
 
 	my $bTag		= "; sub MX entry BEGIN\n";
 	my $eTag		= "; sub MX entry END\n";
-	$cleanTag		= replaceBloc($bTag, $eTag, '', $cleanTag, undef) unless $data->{MX};
+	my $mxBlock;
+	if($data->{MX}){
+		######################### SUBDOMAIN MX SECTION START ###############################
+		my $cleanMXBlock = getBloc($bTag, $eTag, $cleanTag);
+		for(keys $data->{MX}){
+			$mxBlock .= process({
+				MAIL_SERVER =>$data->{MX}->{$_}->{domain_text}
+			}, $cleanMXBlock);
+		}
+		$cleanTag		= replaceBloc($bTag, $eTag, $mxBlock, $cleanTag, undef);
+
+		########################## SUBDOMAIN MX SECTION END ################################
+	} else {
+		$cleanTag		= replaceBloc($bTag, $eTag, '', $cleanTag, undef);
+	}
 
 	$bTag 			= process({SUB_NAME => $data->{DMN_NAME}}, $cleanBTag);
 	$eTag 			= process({SUB_NAME => $data->{DMN_NAME}}, $cleanETag);

@@ -365,7 +365,9 @@ sub buildNAMEDData{
 		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, 0, $self->{domain_id});
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
-		$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_} for keys %$rdata;
+		for (keys %$rdata){
+			$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_};
+		}
 
 		if(scalar keys %$rdata){
 			my $sql = "
@@ -392,7 +394,10 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_NAME}	= $self->{domain_name};
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName;
-	$self->{named}->{MX}		= ($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0 ? '' : ';');
+	$self->{named}->{MX}		= (
+									($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0)
+									&& ($self->{external_mail} ne 'on')
+									? '' : ';');
 
 	0;
 }
