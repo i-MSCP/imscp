@@ -16,14 +16,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    iMSCP
- * @package     iMSCP_Core
+ * @category	iMSCP
+ * @package	 iMSCP_Core
  * @subpackage  Client
  * @copyright   2010-2012 by i-MSCP team
  * @author		Sascha Bay <worst.case@gmx.de>
- * @author      iMSCP Team
- * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @author	  iMSCP Team
+ * @link		http://www.i-mscp.net i-MSCP Home Site
+ * @license	 http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 // Include core library
@@ -35,7 +35,7 @@ check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('external_mail') || !customerHasFeature('mail')) {
-    redirectTo('index.php');
+	redirectTo('index.php');
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -85,17 +85,17 @@ function create_options($data, $value = null) {
  * @param null $err
  * @return bool
  */
-function validate_CNAME($dns_record, $cname_name, &$err = null)
-{
-    if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
-        $err .= tr('Usage of disallowed character in CNAME');
-        return false;
-    }
+function validate_CNAME($dns_record, $cname_name, &$err = null) {
 
-    if (empty($cname_name)) {
-        $err .= tr('Name must be filled.');
-        return false;
-    }
+	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
+		$err .= tr('Usage of disallowed character in CNAME');
+		return false;
+	}
+
+	if (empty($cname_name)) {
+		$err .= tr('Name must be filled.');
+		return false;
+	}
 	return true;
 }
 
@@ -104,8 +104,8 @@ function validate_CNAME($dns_record, $cname_name, &$err = null)
  * @param $err
  * @return bool
  */
-function validate_NAME($domain, &$err)
-{
+function validate_NAME($domain, &$err) {
+
 	if(strpos($domain['name'], '.') === false) {
 		$entry = $domain['name'].'.dummy';
 	} else {
@@ -136,7 +136,7 @@ function validate_MX($dns_record, $mx_srv_prio, &$err, &$text) {
 
 	// Add a dot in the end if not
 	if (substr($dns_record, -1) != '.') {
-        $dns_record .= '.';
+		$dns_record .= '.';
 	}
 
 
@@ -145,10 +145,10 @@ function validate_MX($dns_record, $mx_srv_prio, &$err, &$text) {
 		return false;
 	}
 
-    if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
-            $err .= tr('Usage of disallowed character in MX');
-            return false;
-    }
+	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
+			$err .= tr('Usage of disallowed character in MX');
+			return false;
+	}
 
 	$text = sprintf("%d\t%s", $mx_srv_prio, $dns_record);
 	return true;
@@ -168,12 +168,12 @@ function delete_old_dns_entries($old_dns_entry_ids, $domain_id, $dmn_id, $dmn_ty
 			case 'normal':
 				if ($domain_id === $dmn_id) {
 					// Delete DNS record from the database
-					$query = "
+					$query = '
 						DELETE FROM
 							`domain_dns`
 						WHERE
-							`domain_dns_id` IN(".$old_dns_entry_ids.")
-					";
+							`domain_dns_id` IN('.$old_dns_entry_ids.')
+					';
 					$rs = exec_query($query);
 				} else {
 					set_page_message(tr('You are not allowed to remove this external mail entry.'), 'error');
@@ -181,7 +181,7 @@ function delete_old_dns_entries($old_dns_entry_ids, $domain_id, $dmn_id, $dmn_ty
 				}
 				break;
 			case 'alias':
-				$query = "
+				$query = '
 					SELECT
 						`alias_name`
 					FROM
@@ -190,16 +190,16 @@ function delete_old_dns_entries($old_dns_entry_ids, $domain_id, $dmn_id, $dmn_ty
 						`domain_id` = ?
 					AND
 						`alias_id` = ?
-					";
+					';
 				$rs = exec_query($query, array($domain_id, $dmn_id));
 				if ($rs->recordCount() > 0) {
 					// Delete DNS record from the database
-					$query = "
+					$query = '
 						DELETE FROM
 							`domain_dns`
 						WHERE
-							`domain_dns_id` IN(".$old_dns_entry_ids.")
-					";
+							`domain_dns_id` IN('.$old_dns_entry_ids.')
+					';
 					$rs = exec_query($query);
 				} else {
 					set_page_message(tr('You are not allowed to remove this external mail entry.'), 'error');
@@ -220,29 +220,33 @@ function delete_old_dns_entries($old_dns_entry_ids, $domain_id, $dmn_id, $dmn_ty
  * @return bool
  */
 function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
+
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
+
 	$dns_entry_ids = '';
 	switch ($dmn_type) {
 		case 'normal':
-			$query = "
+			$query = '
 				SELECT
 					`domain_name`,
 					`external_mail_dns_ids`
 				FROM
 					`domain`
 				WHERE
-					`domain_id` = '$dmn_id'
+					`domain_id` = ?
 				AND
-					`external_mail` = 'on'
+					`external_mail` = ?
 				AND
-					`external_mail_status` = 'ok'
+					`domain_status` = ?
 				AND
-					`external_mail_dns_ids` != ''
-			";
-			$rs = execute_query($query);
+					`external_mail_dns_ids` != ?
+			';
+			$rs = exec_query($query, array($dmn_id, 'on', $cfg->ITEM_OK_STATUS, ''));
 			if ($rs->recordCount() > 0) {
 				$dmn_name = $rs->fields['domain_name'];
 				$dns_entry_ids = $rs->fields['external_mail_dns_ids'];
-				$query = "
+				$query = '
 					SELECT
 						`domain_dns`,
 						`domain_type`,
@@ -250,10 +254,10 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 					FROM
 						`domain_dns`
 					WHERE
-						`domain_dns_id` IN(".$dns_entry_ids.")
+						`domain_dns_id` IN('.$dns_entry_ids.')
 					ORDER BY
 						`domain_type` DESC
-				";
+				';
 				$rs = execute_query($query);
 
 				if ($rs->recordCount() > 0) {
@@ -322,26 +326,26 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 			}
 			break;
 		case 'alias':
-			$query = "
+			$query = '
 				SELECT
 					`alias_name`,
 					`external_mail_dns_ids`
 				FROM
 					`domain_aliasses`
 				WHERE
-					`domain_id` = '$domain_id'
+					`domain_id` = ?
 				AND
-					`alias_id` = '$dmn_id'
+					`alias_id` = ?
 				AND
-					`external_mail_status` = 'ok'
+					`alias_status` = ?
 				AND
-					`external_mail_dns_ids` != ''
-			";
-			$rs = execute_query($query);
+					`external_mail_dns_ids` != ?
+			';
+			$rs = exec_query($query, array($domain_id, $dmn_id, $cfg->ITEM_OK_STATUS, ''));
 			if ($rs->recordCount() > 0) {
 				$dmn_name = $rs->fields['alias_name'];
 				$dns_entry_ids = $rs->fields['external_mail_dns_ids'];
-				$query = "
+				$query = '
 					SELECT
 						`domain_dns`,
 						`domain_type`,
@@ -349,10 +353,10 @@ function get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type) {
 					FROM
 						`domain_dns`
 					WHERE
-						`domain_dns_id` IN(".$dns_entry_ids.")
+						`domain_dns_id` IN('.$dns_entry_ids.')
 					ORDER BY
 						`domain_type` DESC
-				";
+				';
 				$rs = execute_query($query);
 
 				if ($rs->recordCount() > 0) {
@@ -441,7 +445,7 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 	if ($post_check === 'no') {
 		get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type);
 	} else {
-        $del_items = (isset($_POST['del_item'])) ? $_POST['del_item'] : array();
+		$del_items = (isset($_POST['del_item'])) ? $_POST['del_item'] : array();
 		if (count($del_items) < count($_POST['relay_type'])) {
 			$item_counter = 0;
 			for($i=0;$i<count($_POST['relay_type']);$i++) {
@@ -513,22 +517,24 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 			}
 
 			if (!Zend_Session::namespaceIsset('pageMessages')) {
-				$alias_id = ($dmn_type === "alias") ? $dmn_id : '0';
-				$dmn_id = ($dmn_type === "normal") ? $dmn_id : '0';
+				$alias_id = ($dmn_type === 'alias') ? $dmn_id : '0';
+				$dmn_id = ($dmn_type === 'normal') ? $dmn_id : '0';
 				$dns_entry_ids = '';
 
-				delete_old_dns_entries($_POST['old_dns_entry_ids'], $domain_id, (($dmn_type === "alias") ? $alias_id : $dmn_id), $dmn_type);
+				delete_old_dns_entries($_POST['old_dns_entry_ids'], $domain_id, (($dmn_type === 'alias') ? $alias_id : $dmn_id), $dmn_type);
 
 				for($i=0;$i<count($_POST['relay_type']);$i++) {
 					if(!in_array($i, $del_items)) {
-						$mx_alias = (isset($_POST['mx_alias'][$i]) && $_POST['mx_alias'][$i] === "empty") ? '' : '*';
-						$_dns = ($_POST['relay_type'][$i] === "CNAME") ? $cname_name : $mx_alias;
-						$srv_dnsrecord = ($_POST['relay_type'][$i] === "MX") ? $_POST['mx_priority'][$i]."	".encode_idna($_POST['srv_dnsrecord'][$i]) : encode_idna($_POST['srv_dnsrecord'][$i]);
-						if (substr($srv_dnsrecord, -1) != '.') {
+						$mx_alias = (isset($_POST['mx_alias'][$i]) && $_POST['mx_alias'][$i] === 'empty') ? '' : '*';
+						$_dns = ($_POST['relay_type'][$i] === 'CNAME') ? $cname_name : $mx_alias;
+
+						$srv_dnsrecord = encode_idna($_POST['srv_dnsrecord'][$i]);
+						if (filter_var($srv_dnsrecord, FILTER_VALIDATE_IP) === false && substr($srv_dnsrecord, -1) != '.') {
 							$srv_dnsrecord .= '.';
 						}
+						$srv_dnsrecord = ($_POST['relay_type'][$i] === 'MX') ? $_POST['mx_priority'][$i]."\t". $srv_dnsrecord : $srv_dnsrecord;
 
-						$query = "
+						$query = '
 							INSERT INTO
 								`domain_dns` (
 									`domain_id`, `alias_id`, `domain_dns`, `domain_class`,
@@ -536,7 +542,7 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 								) VALUES (
 									?, ?, ?, ?, ?, ?, ?
 								)
-						";
+						';
 
 						$rs = exec_query(
 							$query,
@@ -563,32 +569,32 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 						}
 
 						if ($alias_id == 0) {
-							$query = "
+							$query = '
 								UPDATE
 									`domain`
 								SET
 									`domain`.`external_mail` = ?,
-									`domain`.`external_mail_status` = ?,
+									`domain`.`domain_status` = ?,
 									`domain`.`external_mail_dns_ids` = ?
 								WHERE
 									`domain`.`domain_id` = ?
-							";
+							';
 
 							exec_query(
 								$query, array('on', $cfg->ITEM_CHANGE_STATUS, $dns_entry_ids, $dmn_id)
 							);
 
 						} else {
-							$query = "
+							$query = '
 								UPDATE
 									`domain_aliasses`
 								SET
 									`domain_aliasses`.`external_mail` = ?,
-									`domain_aliasses`.`external_mail_status` = ?,
+									`domain_aliasses`.`alias_status` = ?,
 									`domain_aliasses`.`external_mail_dns_ids` = ?
 								WHERE
 									`domain_aliasses`.`alias_id` = ?
-							";
+							';
 
 							exec_query(
 								$query, array('on', $cfg->ITEM_CHANGE_STATUS, $dns_entry_ids, $alias_id)
@@ -608,7 +614,7 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
 			}
 		} else {
 			get_dns_relay_items($tpl, $domain_id, $dmn_id, $dmn_type);
-			set_page_message(sprintf(tr("One DNS entry must still exist.")), 'error');
+			set_page_message(sprintf(tr('One DNS entry must still exist.')), 'error');
 			return false;
 		}
 	}
@@ -620,37 +626,37 @@ function gen_page_form_data($tpl, $dmn_id, $dmn_type, $post_check) {
  * @param $item_type
  */
 function get_dmn_data($tpl, $dmn_id, $item_type) {
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
+	/** @var $cfg iMSCP_Config_Handler_File */
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($item_type === 'normal') {
-        $query = "
-              SELECT
-                `domain_name`
-              FROM
-                `domain`
-              WHERE
-                `domain_id` = '$dmn_id'
-            ";
-        $rs = execute_query($query);
-        $dmn_name = $rs->fields['domain_name'];
+		$query = '
+			  SELECT
+				`domain_name`
+			  FROM
+				`domain`
+			  WHERE
+				`domain_id` = ?
+			';
+		$rs = exec_query($query, array($dmn_id));
+		$dmn_name = $rs->fields['domain_name'];
 	} else {
-        $query = "
-              SELECT
-                `alias_name`
-              FROM
-                `domain_aliasses`
-              WHERE
-                `alias_id` = '$dmn_id'
-            ";
-        $rs = execute_query($query);
-        $dmn_name = $rs->fields['alias_name'];
+		$query = '
+			  SELECT
+				`alias_name`
+			  FROM
+				`domain_aliasses`
+			  WHERE
+				`alias_id` = ?
+			';
+		$rs = exec_query($query, array($dmn_id));
+		$dmn_name = $rs->fields['alias_name'];
 	}
 
-    $tpl->assign(
-        array(
-            'DOMAIN_NAME' => tohtml($dmn_name),
-            'ID' => $dmn_id.";".$item_type));
+	$tpl->assign(
+		array(
+			'DOMAIN_NAME' => tohtml($dmn_name),
+			'ID' => $dmn_id.';'.$item_type));
 }
 
 /**
@@ -660,35 +666,37 @@ function get_dmn_data($tpl, $dmn_id, $item_type) {
  * @return void
  */
 function gen_page_external_mail_props($tpl, $item_id, $user_id) {
-    $form_data = false;
-    $match = array();
-    if (preg_match("/(\d+);(normal|alias)/", $item_id, $match) == 1) {
-        $item_id = $match[1];
-        $item_type = $match[2];
-        if ($item_type === 'normal' || $item_type === 'alias') {
-            get_dmn_data($tpl, $item_id, $item_type);
-        } else {
-            redirectTo('mail_external.php');
-        }
-        $post_check = isset($_POST['uaction']) ? 'yes' : 'no';
-        $form_data = gen_page_form_data($tpl, $item_id, $item_type, $post_check);
-        if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_external_mail' && $form_data === true) {
-            set_page_message(tr('External mail servers scheduled for addition.'), 'success');
-            redirectTo('mail_external.php');
-        }
-    } else {
+	$form_data = false;
+	$match = array();
+	if (preg_match("/(\d+);(normal|alias)/", $item_id, $match) == 1) {
+		$item_id = $match[1];
+		$item_type = $match[2];
+		if ($item_type === 'normal' || $item_type === 'alias') {
+			get_dmn_data($tpl, $item_id, $item_type);
+		} else {
+			redirectTo('mail_external.php');
+		}
+		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
+		$form_data = gen_page_form_data($tpl, $item_id, $item_type, $post_check);
+		if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_external_mail' && $form_data === true) {
+			set_page_message(tr('External mail servers scheduled for addition.'), 'success');
+			redirectTo('mail_external.php');
+		}
+	} else {
 		set_page_message(tr('Domaintype not allowed for external mail servers.'), 'error');
-        redirectTo('mail_external.php');
-    }
+		redirectTo('mail_external.php');
+	}
 }
 
 // common page data.
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Edit External mail server entries'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
+		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / Edit External mail server entries'),
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => layout_getUserLogo()
+	)
+);
 
 if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	$tpl->assign('NO_MAILS', '');
@@ -699,23 +707,25 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-         'TR_ACTION' => tr('Action'),
-         'TR_RELAY_TYPE' => tr('Entry type'),
-         'TR_MX' => tr('MX'),
-         'TR_CNAME' => tr('CNAME'),
-         'TR_RELAY_DNS' => tr('Alias / Canonical name'),
-		 'TR_CHANGE_RELAY' => tr('Change Entries'),
-         'CNAME_PRIORITY' => tr('Not needed in CNAME'),
-         'TR_MX_PRIORITY' => tr('Priority'),
-		 'TR_MX_ENTRY' => tr('MX entry IN'),
-		 'TR_TITLE_RELAY_MAIL_USERS' => tr('Edit External mail server entries'),
-		 'TR_DOMAIN' => tr('Domain'),
-		 'TR_RELAY' => tr('External mail servers'),
-         'TR_RELAY_SERVER' => tr('IP or FQDN-Servername'),
-         'TR_ADD_NEW' => tr('Add new line'),
-         'TR_REMOVE_LAST' => tr('Remove last'),
-         'TR_REMOVE_RELAY_ITEM' => tr('Del'),
-         'TR_RESET' => tr('Reset')));
+		'TR_ACTION' => tr('Action'),
+		'TR_RELAY_TYPE' => tr('Entry type'),
+		'TR_MX' => tr('MX'),
+		'TR_CNAME' => tr('CNAME'),
+		'TR_RELAY_DNS' => tr('Alias / Canonical name'),
+		'TR_CHANGE_RELAY' => tr('Change Entries'),
+		'CNAME_PRIORITY' => tr('Not needed in CNAME'),
+		'TR_MX_PRIORITY' => tr('Priority'),
+		'TR_MX_ENTRY' => tr('MX entry IN'),
+		'TR_TITLE_RELAY_MAIL_USERS' => tr('Edit External mail server entries'),
+		'TR_DOMAIN' => tr('Domain'),
+		'TR_RELAY' => tr('External mail servers'),
+		'TR_RELAY_SERVER' => tr('IP or FQDN-Servername'),
+		'TR_ADD_NEW' => tr('Add new line'),
+		'TR_REMOVE_LAST' => tr('Remove last'),
+		'TR_REMOVE_RELAY_ITEM' => tr('Del'),
+		'TR_RESET' => tr('Reset')
+	)
+);
 
 generatePageMessage($tpl);
 

@@ -15,6 +15,7 @@ GUI:
 
 Tickets:
 	- Fixed #17: Feature - Send mail if quota reached
+	- Fixed #157: Enhancement - Relaying Domains
 	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
 	- Fixed #213: Enhancement - Bruteforce component - login attemps
 	- Fixed #322: Enhancement - Add possibility to delete more then only one eMail Adress

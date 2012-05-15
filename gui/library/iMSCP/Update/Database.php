@@ -1696,23 +1696,34 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 	}
 
-    /**
-     * #157: Enhancement - Relaying Domains
-     *
-     * @author Sascha Bay <worst.case@gmx.de>
-     * @return array Stack of SQL statements to be executed
-     */
-    protected function _databaseUpdate_109()
-    {
-    	return array(
-            $this->_addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
-            $this->_addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-            $this->_addColumn('domain', 'external_mail_status', "VARCHAR(255) NOT NULL DEFAULT 'ok'"),
-            $this->_addColumn('domain', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
-            $this->_addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
-            $this->_addColumn('domain_aliasses', 'external_mail_status', "VARCHAR(255) NOT NULL DEFAULT 'ok'"),
-            $this->_addColumn('domain_aliasses', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
-            "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_')"
-    	);
-    }
+	/**
+	 * #157: Enhancement - Relaying Domains
+	 *
+	 * @author Sascha Bay <worst.case@gmx.de>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_109()
+	{
+		return array(
+			$this->_addColumn('domain', 'domain_external_mail', "VARCHAR(15) NOT NULL DEFAULT 'no'"),
+			$this->_addColumn('domain', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			$this->_addColumn('domain', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
+			$this->_addColumn('domain_aliasses', 'external_mail', "VARCHAR(15) NOT NULL DEFAULT 'off'"),
+			$this->_addColumn('domain_aliasses', 'external_mail_dns_ids', "VARCHAR(255) NOT NULL"),
+			"UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_')"
+		);
+	}
+
+	/**
+	 * #157: Enhancement - Relaying Domains
+	 *
+	 * @author Daniel Andreca <worst.case@gmx.de>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_110(){
+		return array(
+			$this->_dropColumn('domain', 'external_mail_status'),
+			$this->_dropColumn('domain_aliasses', 'external_mail_status'),
+		);
+	}
 }
