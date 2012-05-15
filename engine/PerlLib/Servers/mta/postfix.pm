@@ -174,7 +174,6 @@ sub postmap{
 sub addDmn{
 
 	use iMSCP::File;
-	use iMSCP::Dir;
 
 	my $self	= shift;
 	my $data	= shift;
@@ -186,15 +185,111 @@ sub addDmn{
 	error('You must supply domain name!') unless $data->{DMN_NAME};
 	return 1 unless $data->{DMN_NAME};
 
+	if($data->{EXTERNAL} eq 'on'){
+		$rs |= $self->addToRelayHash($data);
+		$rs |= $self->disableDmn($data);
+	} else {
+		$rs |= $self->addToDomainHash($data);
+		$rs |= $self->delFromRelayHash($data);
+	}
+
+	$rs;
+}
+
+sub addToRelayHash{
+	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $data	= shift;
+	my $rs		= 0;
+
+	my $entry = "$data->{DMN_NAME}\t\t\tOK\n";
+
+	$rs = 1 if(
+		iMSCP::File->new(
+			filename => $self->{MTA_RELAY_HASH}
+		)->copyFile( "$self->{bkpDir}/relay_domains.".time )
+	);
+
+	my $file	= iMSCP::File->new( filename => "$self->{wrkDir}/relay_domains");
+	my $content	= $file->get();
+
+	if(!$content){
+
+		error("Can not read $self->{wrkDir}/relay_domains");
+		return 1;
+
+	}
+
+	$content .= $entry unless $content =~ /^$entry/mg;
+
+	$file->set($content);
+	$rs |=	$file->save();
+	$rs |=	$file->mode(0644);
+	$rs |=	$file->owner(
+				$main::imscpConfig{'ROOT_USER'},
+				$main::imscpConfig{'ROOT_GROUP'}
+			);
+	$rs |= $file->copyFile( $self->{MTA_RELAY_HASH} );
+	$self->{postmap}->{$self->{MTA_RELAY_HASH}} = $data->{DMN_NAME};
+
+	$rs;
+}
+
+sub delFromRelayHash{
+	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $data	= shift;
+	my $rs		= 0;
+
+	my $entry = "$data->{DMN_NAME}\t\t\tOK\n";
+
+	$rs = 1 if(
+		iMSCP::File->new(
+			filename => $self->{MTA_RELAY_HASH}
+		)->copyFile( "$self->{bkpDir}/relay_domains.".time )
+	);
+
+	my $file	= iMSCP::File->new( filename => "$self->{wrkDir}/relay_domains");
+	my $content	= $file->get();
+
+	if(!$content){
+
+		error("Can not read $self->{wrkDir}/relay_domains");
+		return 1;
+
+	}
+
+	$content =~ s/^$entry//mg;
+
+	$file->set($content);
+	$rs |=	$file->save();
+	$rs |=	$file->mode(0644);
+	$rs |=	$file->owner(
+				$main::imscpConfig{'ROOT_USER'},
+				$main::imscpConfig{'ROOT_GROUP'}
+			);
+	$rs |= $file->copyFile( $self->{MTA_RELAY_HASH} );
+	$self->{postmap}->{$self->{MTA_RELAY_HASH}} = $data->{DMN_NAME};
+
+	$rs;
+}
+
+sub addToDomainHash{
+	use iMSCP::Dir;
+
+	my $self	= shift;
+	my $data	= shift;
+	my $rs		= 0;
+
 	my $entry = "$data->{DMN_NAME}\t\t\t$data->{TYPE}\n";
 
-	if(
+	$rs = 1 if(
 		iMSCP::File->new(
 			filename => $self->{MTA_VIRTUAL_DMN_HASH}
 		)->copyFile( "$self->{bkpDir}/domains.".time )
-	){
-		$rs = 1;
-	}
+	);
 
 	my $file	= iMSCP::File->new( filename => "$self->{wrkDir}/domains");
 	my $content	= $file->get();
@@ -225,8 +320,6 @@ sub addDmn{
 				group	=> $self->{MTA_MAILBOX_GID_NAME},
 				mode	=> 0700
 			});
-
-	$rs;
 }
 
 sub delDmn{
@@ -300,6 +393,8 @@ sub disableDmn{
 	$rs |= $file->copyFile( $self->{MTA_VIRTUAL_DMN_HASH} );
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_DMN_HASH}} = $data->{DMN_NAME};
+
+	$rs |= $self->delFromRelayHash($data);
 
 	$rs;
 }

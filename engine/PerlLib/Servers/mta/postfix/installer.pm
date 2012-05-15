@@ -80,7 +80,8 @@ sub install{
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/domains',
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/mailboxes',
 		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/transport',
-		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/sender-access'
+		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/sender-access',
+		$self::postfixConfig{'MTA_VIRTUAL_CONF_DIR'}.'/relay_domains'
 	)) {
 		$rs |= $self->bkpConfFile($_);
 	}
@@ -202,7 +203,7 @@ sub buildLookup{
 	use iMSCP::File;
 	use iMSCP::Execute;
 
-	for (qw/aliases domains mailboxes transport sender-access/) {
+	for (qw/aliases domains mailboxes transport sender-access relay_domains/) {
 		# Storing the new files in the working directory
 		$file = iMSCP::File->new(filename => "$self->{vrlDir}/$_");
 		$rs |= $file->copyFile("$self->{wrkDir}");
@@ -385,6 +386,7 @@ sub buildMain{
 			MTA_VIRTUAL_DMN_HASH		=> $self::postfixConfig{'MTA_VIRTUAL_DMN_HASH'},
 			MTA_VIRTUAL_MAILBOX_HASH	=> $self::postfixConfig{'MTA_VIRTUAL_MAILBOX_HASH'},
 			MTA_VIRTUAL_ALIAS_HASH		=> $self::postfixConfig{'MTA_VIRTUAL_ALIAS_HASH'},
+			MTA_RELAY_HASH				=> $self::postfixConfig{'MTA_RELAY_HASH'},
 			MTA_MAILBOX_MIN_UID			=> $uid,
 			MTA_MAILBOX_UID				=> $uid,
 			MTA_MAILBOX_GID				=> $gid,

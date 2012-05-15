@@ -319,7 +319,8 @@ sub buildMTAData{
 	){
 		$self->{mta} = {
 			DMN_NAME	=> $self->{alias_name},
-			TYPE		=> 'vals_entry'
+			TYPE		=> 'vals_entry',
+			EXTERNAL	=> $self->{external_mail}
 		};
 	}
 
