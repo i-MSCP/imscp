@@ -690,7 +690,7 @@ sub addSub{
 	if($data->{MX}){
 		######################### SUBDOMAIN MX SECTION START ###############################
 		my $cleanMXBlock = getBloc($bTag, $eTag, $cleanTag);
-		for(keys $data->{MX}){
+		for(keys %{$data->{MX}}){
 			$mxBlock .= process({
 				MAIL_SERVER =>$data->{MX}->{$_}->{domain_text}
 			}, $cleanMXBlock);
