@@ -106,6 +106,9 @@ protocol pop3 {
 	pop3_uidl_format = %u-%v
 }
 
+# Should automatically created mailboxes be also automatically subscribed?
+lda_mailbox_autosubscribe = yes
+
 protocol lda {
 	auth_socket_path = /var/run/dovecot/auth-master
 	mail_plugins = quota sieve
