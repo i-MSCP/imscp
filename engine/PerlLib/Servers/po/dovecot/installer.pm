@@ -31,6 +31,7 @@ use warnings;
 use iMSCP::Debug;
 use iMSCP::File;
 use iMSCP::Execute;
+use Data::Dumper;
 
 use vars qw/@ISA/;
 
@@ -50,6 +51,8 @@ sub _init{
 	tie %self::dovecotConfig, 'iMSCP::Config','fileName' => $conf;
 	tie %self::dovecotOldConfig, 'iMSCP::Config','fileName' => $oldConf, noerror => 1 if -f $oldConf;
 
+	$self->getVersion() and return 1;
+
 	0;
 }
 
@@ -57,8 +60,6 @@ sub install{
 
 	my $self	= shift;
 	my $rs		= 0;
-
-	$self->getVersion() and return 1;
 
 	# Saving all system configuration files if they exists
 	for ((
@@ -394,6 +395,19 @@ sub mtaConf{
 		"$mta->{commentChar} dovecot end",
 		$content
 	);
+
+	my $tpl = {
+		SFLAG		=>(
+								version->new($self->{version}) < version->new('2.0.0')
+								?
+								'-s'
+								:
+								''
+		)
+	};
+
+	$poBloc = iMSCP::Templator::process($tpl, $poBloc);
+
 
 	$content = replaceBloc(
 		"$mta->{commentChar} po setup begin",

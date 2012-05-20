@@ -116,7 +116,7 @@ imscp-arpl unix  -      n       n       -       -       pipe
 # po setup begin
 # dovecot begin
 dovecot   unix  -       n       n       -       -       pipe
-  flags=DRhu user={ARPL_USER} argv=/usr/lib/dovecot/deliver -f ${sender} -d ${recipient}
+  flags=DRhu user={ARPL_USER} argv=/usr/lib/dovecot/deliver -f ${sender} -d ${recipient} {SFLAG}
 # dovecot end
 # courier begin
 # courier end

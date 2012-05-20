@@ -18,6 +18,7 @@ Tickets:
 	- Fixed #157: Enhancement - Relaying Domains
 	- Fixed #163: Enhancement - Add Support for Roundcube Mail (or switch from Squirrel)
 	- Fixed #213: Enhancement - Bruteforce component - login attemps
+	- Fixed #313: Enhancement - Some improvements on postfix's master.cf
 	- Fixed #322: Enhancement - Add possibility to delete more then only one eMail Adress
 	- Fixed #337: Enhancement - Add possibility to edit per user mail quotas
 	- Fixed #368: Enhancement - Add custom TXT DNS resource records
