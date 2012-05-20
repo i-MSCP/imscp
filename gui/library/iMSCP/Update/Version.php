@@ -90,7 +90,7 @@ class iMSCP_Update_Version extends iMSCP_Update
         ini_set('user_agent', 'Mozilla/5.0');
 
         $timeout = ini_set('default_socket_timeout', 3);
-        $fh = @fopen('http://i-mscp.net/latest.txt', 'r');
+        $fh = @fopen('https://raw.github.com/i-MSCP/imscp/master/latest.txt', 'r');
 
         // Restore previous timeout
         ini_set('default_socket_timeout', $timeout);
