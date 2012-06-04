@@ -22,6 +22,9 @@
 			<courier>libgamin0</courier>
 			<dovecot>dovecot-imapd</dovecot>
 			<dovecot>dovecot-pop3d</dovecot>
+			<dovecot>dovecot-mysql</dovecot>
+			<dovecot>dovecot-sieve</dovecot>
+			<dovecot>dovecot-managesieved</dovecot>
 		</alternative>
 	</po>
 	<mta>
