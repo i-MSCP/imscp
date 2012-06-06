@@ -147,8 +147,8 @@ function admin_generateForm($tpl)
 
 	foreach (array(
 				 'A' => tr('Administrator level'), 'R' => tr('Reseller level'), 'C' => tr('Customer level'),
-				 'AR' => tr('Admininistrator and Reseller levels'), 'AC' => tr('Administrator and customer levels'),
-				 'RC' => tr('Reselller and customer levels'), 'ARC' => tr('All levels')) as $level => $trLevel
+				 'AR' => tr('Administrator and Reseller levels'), 'AC' => tr('Administrator and customer levels'),
+				 'RC' => tr('Reseller and customer levels'), 'ARC' => tr('All levels')) as $level => $trLevel
 	) {
 		$tpl->assign(
 			array(
