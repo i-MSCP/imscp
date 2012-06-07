@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-04 20:48+0200\n"
-"PO-Revision-Date: 2012-06-04 18:41+0000\n"
+"POT-Creation-Date: 2012-06-07 08:15+0200\n"
+"PO-Revision-Date: 2012-06-07 06:16+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -161,13 +161,13 @@ msgstr "\n\nHello {NAME},\n\nYour user name is: {USERNAME}\nYour password is: {P
 msgid ""
 "\n"
 "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "\nCannot validate %s record. Reason: '%s'."
 
 #, php-format
 msgid ""
 "\n"
 "Unknown entry type %s."
-msgstr ""
+msgstr "\nUnknown entry type %s."
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -573,7 +573,7 @@ msgid "Activate"
 msgstr "Aktivera"
 
 msgid "Activate Entries"
-msgstr ""
+msgstr "Activate Entries"
 
 msgid "Activate this plugin"
 msgstr "Activate this plugin"
@@ -645,7 +645,7 @@ msgid "Add email account"
 msgstr "Lägg till ett mail konto"
 
 msgid "Add external mail servers"
-msgstr ""
+msgstr "Add external mail servers"
 
 msgid "Add group"
 msgstr "Lägg till grupp"
@@ -666,7 +666,7 @@ msgid "Add new database"
 msgstr "Lägg till SQL-databas"
 
 msgid "Add new line"
-msgstr ""
+msgstr "Add new line"
 
 msgid "Add new protected area"
 msgstr "Lägg till nytt skyddat område"
@@ -737,17 +737,17 @@ msgstr "Administratörer"
 msgid "Admin/IP usage statistics"
 msgstr "Admin / IP användarstatistik"
 
-msgid "Admininistrator and Reseller levels"
-msgstr ""
-
 msgid "Administrator"
 msgstr "Administratör"
+
+msgid "Administrator and Reseller levels"
+msgstr ""
 
 msgid "Administrator and customer"
 msgstr "Administratör och kund"
 
 msgid "Administrator and customer levels"
-msgstr ""
+msgstr "Administrator and customer levels"
 
 msgid "Administrator and reseller"
 msgstr "Administratör och återförsäljare"
@@ -773,7 +773,7 @@ msgid "Alias"
 msgstr "Alias"
 
 msgid "Alias / Canonical name"
-msgstr ""
+msgstr "Alias / Canonical name"
 
 msgid "Alias already assigned to another IP address."
 msgstr "Aliasen redan aktivt med en annan IP address"
@@ -935,7 +935,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Är du säker på att du vill ta bort alla stängda tickets?"
 
 msgid "Are you sure you want to delete all marked emails?"
-msgstr ""
+msgstr "Are you sure you want to delete all marked emails?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Är du säker på att du vill ta bort alla tickets?"
@@ -950,7 +950,7 @@ msgstr "Är du säker på att du vill ta bort%s fånga alla?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s external mail server?"
-msgstr ""
+msgstr "Are you sure you want to delete the %s external mail server?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1111,7 +1111,7 @@ msgid "CGI support"
 msgstr "CGI-stöd"
 
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 msgid "CPU MHz"
 msgstr "CPU-MHz"
@@ -1188,7 +1188,7 @@ msgid "Change"
 msgstr "Ändra"
 
 msgid "Change Entries"
-msgstr ""
+msgstr "Change Entries"
 
 msgid "Change SQL user password"
 msgstr "Ändra SQL-användarens lösenord"
@@ -1331,10 +1331,10 @@ msgid "Create"
 msgstr "Create"
 
 msgid "Create External mail server entry"
-msgstr ""
+msgstr "Create External mail server entry"
 
 msgid "Create Relay Entry"
-msgstr ""
+msgstr "Create Relay Entry"
 
 msgid "Create catch all"
 msgstr "Skapa catch-all"
@@ -1588,7 +1588,7 @@ msgid "Default language successfully updated."
 msgstr "Standardspråk uppdaterats."
 
 msgid "Del"
-msgstr ""
+msgstr "Del"
 
 msgid "Delete"
 msgstr "Ta bort"
@@ -1597,7 +1597,7 @@ msgid "Delete CatchAll"
 msgstr "Ta bort Catch-all"
 
 msgid "Delete Relay Entry"
-msgstr ""
+msgstr "Delete Relay Entry"
 
 msgid "Delete all tickets"
 msgstr "Ta bort alla tickets"
@@ -1615,7 +1615,7 @@ msgid "Delete from log:"
 msgstr "Ta bort från logg:"
 
 msgid "Delete marked mails"
-msgstr ""
+msgstr "Delete marked mails"
 
 msgid "Delete order"
 msgstr "i-MSCP Kund: Lägg till Alias"
@@ -1937,7 +1937,7 @@ msgid "Domains per page"
 msgstr "Domäner per sida"
 
 msgid "Domaintype not allowed for external mail servers."
-msgstr ""
+msgstr "Domaintype not allowed for external mail servers."
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr "Använd inte specialtecken som \"@, $, %...\" i lösenordet."
@@ -1970,7 +1970,7 @@ msgid "Edit Domain"
 msgstr "Ändra domän"
 
 msgid "Edit External mail server entries"
-msgstr ""
+msgstr "Edit External mail server entries"
 
 msgid "Edit FTP user"
 msgstr "Redigera FTP-användare"
@@ -1979,7 +1979,7 @@ msgid "Edit Ftp account"
 msgstr "Ändra Ftp konto"
 
 msgid "Edit Relay Entry"
-msgstr ""
+msgstr "Edit Relay Entry"
 
 msgid "Edit SSL certificate"
 msgstr "Ändra SSL cert."
@@ -2015,7 +2015,7 @@ msgid "Edit error page"
 msgstr "Redigera felsida"
 
 msgid "Edit external mail servers"
-msgstr ""
+msgstr "Edit external mail servers"
 
 msgid "Edit hosting plan"
 msgstr "Ändra webbhotellsplan"
@@ -2030,7 +2030,7 @@ msgid "Edit mail auto responder"
 msgstr "Redigera e-postautosvar"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Edit mail quota"
 
 msgid "Edit protected area"
 msgstr "Redigera skyddat område"
@@ -2123,7 +2123,7 @@ msgid "Entered passwords doesn't matches."
 msgstr "Lösenord är inte lika med varandra."
 
 msgid "Entry type"
-msgstr ""
+msgstr "Entry type"
 
 msgid "Error"
 msgstr "Fel"
@@ -2186,19 +2186,19 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "Upphör tid för obekräftade order <br /> <small>(I dagar)</small>"
 
 msgid "External mail server"
-msgstr ""
+msgstr "External mail server"
 
 msgid "External mail servers"
-msgstr ""
+msgstr "External mail servers"
 
 msgid "External mail servers scheduled for addition."
-msgstr ""
+msgstr "External mail servers scheduled for addition."
 
 msgid "External mail servers scheduled for deletion."
-msgstr ""
+msgstr "External mail servers scheduled for deletion."
 
 msgid "External mail servers status"
-msgstr ""
+msgstr "External mail servers status"
 
 msgid "FTP"
 msgstr "FTP"
@@ -2561,7 +2561,7 @@ msgid "IP addresses configured"
 msgstr "IP adr. konfigurerat."
 
 msgid "IP or FQDN-Servername"
-msgstr ""
+msgstr "IP or FQDN-Servername"
 
 msgid "IP scheduled for deletion."
 msgstr "IP planeras för radering."
@@ -2761,7 +2761,7 @@ msgstr "Invalid certificate."
 
 #, php-format
 msgid "Invalid characters in TXT data (\"%s\")"
-msgstr ""
+msgstr "Invalid characters in TXT data (\"%s\")"
 
 msgid "Invalid expiration date."
 msgstr "Invalid expiration date."
@@ -2974,10 +2974,10 @@ msgid "MB"
 msgstr "MB"
 
 msgid "MX"
-msgstr ""
+msgstr "MX"
 
 msgid "MX entry IN"
-msgstr ""
+msgstr "MX entry IN"
 
 msgid "Mail"
 msgstr "i-MSCP - Administratör - E-post-marknadsföring"
@@ -3004,13 +3004,13 @@ msgid "Mail account not found."
 msgstr "Mail-konto hittades inte."
 
 msgid "Mail account quota updated."
-msgstr ""
+msgstr "Mail account quota updated."
 
 msgid "Mail account scheduled for addition."
 msgstr "Mail-konto planerad till addition."
 
 msgid "Mail account scheduled for deletion."
-msgstr ""
+msgstr "Mail account scheduled for deletion."
 
 msgid "Mail account scheduled for update."
 msgstr "Mail-konto planerad till uppdatering."
@@ -3139,7 +3139,7 @@ msgid "Mark"
 msgstr "Välj"
 
 msgid "Mark all"
-msgstr ""
+msgstr "Mark all"
 
 msgid "Master domain cannot be used."
 msgstr "Master domän kan inte användas."
@@ -3185,7 +3185,7 @@ msgstr "Maximalt antal etiketter för underdomäner"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
-msgstr ""
+msgstr "Maximum number of validation attempts before waiting restriction intervenes"
 
 msgid "Medium"
 msgstr "Medium"
@@ -3365,7 +3365,7 @@ msgid "No email account system errors"
 msgstr "Inget systemfel för e-postkonton"
 
 msgid "No external mail entries available."
-msgstr ""
+msgstr "No external mail entries available."
 
 msgid "No file was uploaded."
 msgstr "No file was uploaded."
@@ -3475,7 +3475,7 @@ msgid "Not found user records matching the search criteria."
 msgstr "Hittades inte användarens poster som matchar sökkriteriet."
 
 msgid "Not needed in CNAME"
-msgstr ""
+msgstr "Not needed in CNAME"
 
 msgid "Not used"
 msgstr "Inte i bruk."
@@ -3487,7 +3487,7 @@ msgid "Nothing found - sorry"
 msgstr "Nothing found - sorry"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "Nothing has been changed."
 
 msgid "Nothing's been changed"
 msgstr "Bruteforce detektering"
@@ -3508,7 +3508,7 @@ msgid "Ok"
 msgstr "Ok"
 
 msgid "One DNS entry must still exist."
-msgstr ""
+msgstr "One DNS entry must still exist."
 
 msgid "One or more database updates are now available. See the details below."
 msgstr "En eller flera uppdateringar av databasen finns nu tillgängliga. Se information nedan."
@@ -3867,7 +3867,7 @@ msgstr "Please contact the administrator!<br />Ask him for the permissions to us
 
 #, php-format
 msgid "Please delete first CatchAll account for the email %s."
-msgstr ""
+msgstr "Please delete first CatchAll account for the email %s."
 
 msgid "Please delete first CatchAll account for this email."
 msgstr "Please delete first CatchAll account for this email."
@@ -4126,16 +4126,16 @@ msgid "Purchasing"
 msgstr "Inköp"
 
 msgid "Quota"
-msgstr ""
+msgstr "Quota"
 
 msgid "Quota in MB (0 unlimited)"
-msgstr ""
+msgstr "Quota in MB (0 unlimited)"
 
 msgid "Quota must be number"
-msgstr ""
+msgstr "Quota must be number"
 
 msgid "Quota must have a value"
-msgstr ""
+msgstr "Quota must have a value"
 
 msgid "RAM"
 msgstr "RAM"
@@ -4187,7 +4187,7 @@ msgid "Remove IP"
 msgstr "Ta bort IP-adress"
 
 msgid "Remove last"
-msgstr ""
+msgstr "Remove last"
 
 msgid "Remove permissions"
 msgstr "Ta bort behörigheter"
@@ -4224,6 +4224,9 @@ msgstr "Återförsäljare konto har uppdaterats."
 
 msgid "Reseller and customer"
 msgstr "Reseller and customer"
+
+msgid "Reseller and customer levels"
+msgstr ""
 
 msgid "Reseller assignment"
 msgstr "Återförsäljare tilldelning"
@@ -4281,9 +4284,6 @@ msgstr "Återförsäljare"
 
 msgid "Resellers assignment"
 msgstr "Resellers assignment"
-
-msgid "Reselller and customer levels"
-msgstr ""
 
 msgid "Reset"
 msgstr "Återställ"
@@ -4924,10 +4924,10 @@ msgid "TTL must be a number!"
 msgstr "TTL måste vara ett nummer!"
 
 msgid "TXT data"
-msgstr ""
+msgstr "TXT data"
 
 msgid "TXT data must be filled."
-msgstr ""
+msgstr "TXT data must be filled."
 
 msgid "Target"
 msgstr "Target"
@@ -5080,7 +5080,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "The domain you are trying to edit doesn't exist."
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr ""
+msgstr "The external mail feature needs min. 1 email account."
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "I-MSCP Application Installer behöver PHP att aktivera det."
@@ -5238,7 +5238,7 @@ msgid "This software is installed on following domain(s):"
 msgstr "This software is installed on following domain(s):"
 
 msgid "This type of account does not have quota."
-msgstr ""
+msgstr "This type of account does not have quota."
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -5472,7 +5472,7 @@ msgstr "Okänd domän typ."
 
 #, php-format
 msgid "Unknown entry type %s."
-msgstr ""
+msgstr "Unknown entry type %s."
 
 msgid "Unknown error"
 msgstr "Unknown error"
@@ -5560,7 +5560,7 @@ msgid "Usage of disallowed character in CNAME"
 msgstr "Usage of disallowed character in CNAME"
 
 msgid "Usage of disallowed character in MX"
-msgstr ""
+msgstr "Usage of disallowed character in MX"
 
 msgid "Usage status"
 msgstr "Usage status"
@@ -5998,7 +5998,7 @@ msgid "You are not allowed to edit this DNS record."
 msgstr "Du får inte redigera den här DNS-posten."
 
 msgid "You are not allowed to edit this external mail entry."
-msgstr ""
+msgstr "You are not allowed to edit this external mail entry."
 
 msgid "You are not allowed to perform this operation."
 msgstr "Du har inte tillåtelse att utföra den här åtgärden."
@@ -6007,7 +6007,7 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "Du får inte ta bort den här DNS-posten."
 
 msgid "You are not allowed to remove this external mail entry."
-msgstr ""
+msgstr "You are not allowed to remove this external mail entry."
 
 msgid "You are not allowed to remove this service port entry."
 msgstr "You are not allowed to remove this service port entry."
@@ -6247,7 +6247,7 @@ msgstr "You have received %d new support questions."
 
 #, php-format
 msgid "You have received %s new support questions."
-msgstr ""
+msgstr "You have received %s new support questions."
 
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "
@@ -6618,10 +6618,10 @@ msgid "i-MSCP - Client / Manage mail / Catchall"
 msgstr "i-MSCP - Client / Manage mail / Catchall"
 
 msgid "i-MSCP - Client / Manage mail / Create External mail server entry"
-msgstr ""
+msgstr "i-MSCP - Client / Manage mail / Create External mail server entry"
 
 msgid "i-MSCP - Client / Manage mail / Edit External mail server entries"
-msgstr ""
+msgstr "i-MSCP - Client / Manage mail / Edit External mail server entries"
 
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - Client / Manage mail / Edit account"
@@ -6630,13 +6630,13 @@ msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
 msgstr "i-MSCP - Client / Manage mail / Edit autoresponder"
 
 msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr ""
+msgstr "i-MSCP - Client / Manage mail / Edit quota"
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
 msgstr "i-MSCP - Client / Manage mail / Enable autoresponder"
 
 msgid "i-MSCP - Client / Manage mail / External mail servers"
-msgstr ""
+msgstr "i-MSCP - Client / Manage mail / External mail servers"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Supportsystem / stängda tickets"
@@ -6966,7 +6966,7 @@ msgid "no"
 msgstr "nej"
 
 msgid "not activated"
-msgstr ""
+msgstr "not activated"
 
 msgid "not available"
 msgstr "inte tillgänglig"

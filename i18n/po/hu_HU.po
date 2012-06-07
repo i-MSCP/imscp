@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-04 20:48+0200\n"
-"PO-Revision-Date: 2012-06-04 18:41+0000\n"
+"POT-Creation-Date: 2012-06-07 08:15+0200\n"
+"PO-Revision-Date: 2012-06-07 06:16+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -646,7 +646,7 @@ msgid "Add email account"
 msgstr "Email fiók hozzáadása"
 
 msgid "Add external mail servers"
-msgstr ""
+msgstr "Külső levelező szerver hozzáadása"
 
 msgid "Add group"
 msgstr "Csoport létrehozása"
@@ -667,7 +667,7 @@ msgid "Add new database"
 msgstr "Új adatbázis létrehozása"
 
 msgid "Add new line"
-msgstr ""
+msgstr "Új sor hozzáadása"
 
 msgid "Add new protected area"
 msgstr "Védett terület létrehozása"
@@ -738,17 +738,17 @@ msgstr "Adminisztrátor"
 msgid "Admin/IP usage statistics"
 msgstr "Adminisztrátor / IP használati statisztika"
 
-msgid "Admininistrator and Reseller levels"
-msgstr ""
-
 msgid "Administrator"
 msgstr "Adminisztrátor"
+
+msgid "Administrator and Reseller levels"
+msgstr ""
 
 msgid "Administrator and customer"
 msgstr "Adminisztrátor és ügyfél"
 
 msgid "Administrator and customer levels"
-msgstr ""
+msgstr "Adminisztrátori és ügyfél szint"
 
 msgid "Administrator and reseller"
 msgstr "Adminisztrátor és viszonteladó"
@@ -1589,7 +1589,7 @@ msgid "Default language successfully updated."
 msgstr "Alapértelmezett nyelv sikeresen frissítve"
 
 msgid "Del"
-msgstr ""
+msgstr "Törlés"
 
 msgid "Delete"
 msgstr "Törlés"
@@ -2562,7 +2562,7 @@ msgid "IP addresses configured"
 msgstr "Beállított IP-címek"
 
 msgid "IP or FQDN-Servername"
-msgstr ""
+msgstr "IP-cím vagy FQDN szervernév"
 
 msgid "IP scheduled for deletion."
 msgstr "IP törlésre beütemezve"
@@ -2975,7 +2975,7 @@ msgid "MB"
 msgstr "MB"
 
 msgid "MX"
-msgstr ""
+msgstr "MX"
 
 msgid "MX entry IN"
 msgstr ""
@@ -3140,7 +3140,7 @@ msgid "Mark"
 msgstr "Kijelölés"
 
 msgid "Mark all"
-msgstr ""
+msgstr "Összes kijelölése"
 
 msgid "Master domain cannot be used."
 msgstr "Fődomain nem használható"
@@ -4127,10 +4127,10 @@ msgid "Purchasing"
 msgstr "Vásárlás"
 
 msgid "Quota"
-msgstr ""
+msgstr "Kvóta"
 
 msgid "Quota in MB (0 unlimited)"
-msgstr ""
+msgstr "Kvóta MB-ban (0 - korlátlan)"
 
 msgid "Quota must be number"
 msgstr ""
@@ -4226,6 +4226,9 @@ msgstr "Viszonteladói adatok frissítése sikeresen megtörtént"
 msgid "Reseller and customer"
 msgstr "Viszonteladó és ügyfél"
 
+msgid "Reseller and customer levels"
+msgstr ""
+
 msgid "Reseller assignment"
 msgstr "Viszonteladó átadása"
 
@@ -4282,9 +4285,6 @@ msgstr "Viszonteladók"
 
 msgid "Resellers assignment"
 msgstr "Viszonteladók átadása"
-
-msgid "Reselller and customer levels"
-msgstr ""
 
 msgid "Reset"
 msgstr "Visszaállítás"

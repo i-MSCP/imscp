@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-04 20:48+0200\n"
-"PO-Revision-Date: 2012-06-04 18:41+0000\n"
+"POT-Creation-Date: 2012-06-07 08:15+0200\n"
+"PO-Revision-Date: 2012-06-07 06:16+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -737,11 +737,11 @@ msgstr "Usuarios administradores"
 msgid "Admin/IP usage statistics"
 msgstr "Administrador/ Estadísticas de uso de IP"
 
-msgid "Admininistrator and Reseller levels"
-msgstr ""
-
 msgid "Administrator"
 msgstr "Administrador"
+
+msgid "Administrator and Reseller levels"
+msgstr ""
 
 msgid "Administrator and customer"
 msgstr ""
@@ -4225,6 +4225,9 @@ msgstr ""
 msgid "Reseller and customer"
 msgstr ""
 
+msgid "Reseller and customer levels"
+msgstr ""
+
 msgid "Reseller assignment"
 msgstr "Asignar revendedor"
 
@@ -4280,9 +4283,6 @@ msgid "Resellers"
 msgstr "Revendedores"
 
 msgid "Resellers assignment"
-msgstr ""
-
-msgid "Reselller and customer levels"
 msgstr ""
 
 msgid "Reset"

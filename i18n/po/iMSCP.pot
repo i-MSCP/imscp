@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP 1.0.1.6\n"
 "Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
-"POT-Creation-Date: 2012-06-04 20:48+0200\n"
+"POT-Creation-Date: 2012-06-07 08:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -735,10 +735,10 @@ msgstr ""
 msgid "Admin/IP usage statistics"
 msgstr ""
 
-msgid "Admininistrator and Reseller levels"
+msgid "Administrator"
 msgstr ""
 
-msgid "Administrator"
+msgid "Administrator and Reseller levels"
 msgstr ""
 
 msgid "Administrator and customer"
@@ -4219,6 +4219,9 @@ msgstr ""
 msgid "Reseller and customer"
 msgstr ""
 
+msgid "Reseller and customer levels"
+msgstr ""
+
 msgid "Reseller assignment"
 msgstr ""
 
@@ -4274,9 +4277,6 @@ msgid "Resellers"
 msgstr ""
 
 msgid "Resellers assignment"
-msgstr ""
-
-msgid "Reselller and customer levels"
 msgstr ""
 
 msgid "Reset"
