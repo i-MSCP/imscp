@@ -37,7 +37,7 @@ my $LastLine='';
 # Return:		None
 #------------------------------------------------------------------------------
 sub error {
-	print "Error: $_[0].\n";
+	print STDERR "Error: $_[0].\n";
     exit 1;
 }
 

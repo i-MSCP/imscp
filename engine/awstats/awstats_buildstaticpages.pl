@@ -44,6 +44,7 @@ my @pages=();
 my @OutputList=();
 my $FileConfig;
 my $FileSuffix;
+my $SiteConfig;
 my $DatabaseBreak;
 use vars qw/
 $ShowAuthenticatedUsers $ShowFileSizesStats $ShowScreenSizeStats $ShowSMTPErrorsStats
@@ -80,7 +81,7 @@ $nowsec $nowmin $nowhour $nowday $nowmonth $nowyear $nowwday $nowyday $nowns
 # Return:		None
 #------------------------------------------------------------------------------
 sub error {
-	print "Error: $_[0].\n";
+	print STDERR "Error: $_[0].\n";
     exit 1;
 }
 
@@ -100,7 +101,7 @@ sub warning {
 #    		print "$messagestring<br />\n";
 #    	}
 #    	else {
-	    	print "$messagestring\n";
+	    	print STDERR "$messagestring\n";
 #    	}
 #	}
 }
@@ -192,10 +193,11 @@ sub Parse_Config {
 			    # Correct relative include files
 				if ($FileConfig =~ /^(.*[\\\/])[^\\\/]*$/) { $includeFile = "$1$includeFile"; }
 			}
-			if ($level > 1) {
+			if ( $level > 1 && $^V lt v5.6.0 ) {
 				warning("Warning: Perl versions before 5.6 cannot handle nested includes");
 				next;
 			}
+		    local( *CONFIG_INCLUDE );
 		    if ( open( CONFIG_INCLUDE, $includeFile ) ) {
 				&Parse_Config( *CONFIG_INCLUDE , $level+1, $includeFile);
 				close( CONFIG_INCLUDE );
@@ -306,8 +308,8 @@ my $retour;
 # Check if AWSTATS prog is found
 my $AwstatsFound=0;
 if (-s "$Awstats") { $AwstatsFound=1; }
-elsif (-s "/usr/local/awstats/wwwroot/cgi-bin/awstats.pl") {
-	$Awstats="/usr/local/awstats/wwwroot/cgi-bin/awstats.pl";
+elsif (-s "/usr/lib/cgi-bin/awstats.pl") {
+	$Awstats="/usr/lib/cgi-bin/awstats.pl";
 	$AwstatsFound=1;
 }
 if (! $AwstatsFound) {
