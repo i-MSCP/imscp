@@ -112,7 +112,7 @@ sub backup_imscp_database {
 sub backup_imscp_engine {
 
 	if ($main::imscpConfig{'BACKUP_IMSCP'} ne 'yes') {
-		#warning('domain backups are disabled');
+		#warning('main backup is disabled');
 		return 0;
 	}
 

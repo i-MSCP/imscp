@@ -37,3 +37,4 @@ Tickets:
 	- Fixed #427: Malfunction: DNS Servernames not IDN compatible stored in database
 	- Fixed #432: Awstats static configuration generated when awstats dynamic is enabled
 	- Fixed #440: Broken installer after External email servers commit
+	- Fixed #445: Disabling domain and panel's backups does not work

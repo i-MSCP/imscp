@@ -61,6 +61,12 @@ sub backup{
 	my $rs = 0;
 	my ($stdout, $stderr);
 
+	if ($main::imscpConfig{'BACKUP_DOMAINS'} ne 'yes') {
+		#warning('Domain backup is disabled');
+		return 0;
+	}
+
+
 	unless ($main::imscpConfig{ZIP} =~ /^(bzip2|gzip|lzma|xz)$/i) {
 		my $msg = "Backup algorithm not supported: $main::imscpConfig{ZIP}!";
 		error($msg);
