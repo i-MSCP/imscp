@@ -429,6 +429,12 @@
 					<uri>/client/ticket_create.php</uri>
 					<title_class>support</title_class>
 				</new_ticket>
+				<view_ticket>
+					<label>View ticket</label>
+					<uri>/client/ticket_view.php</uri>
+					<title_class>support</title_class>
+					<visible>0</visible>
+				</view_ticket>
 			</pages>
 		</support>
 

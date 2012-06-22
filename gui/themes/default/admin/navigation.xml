@@ -254,6 +254,12 @@
 					<uri>/admin/ticket_closed.php</uri>
 					<title_class>support</title_class>
 				</closed_tickets>
+				<view_ticket>
+					<label>View ticket</label>
+					<uri>/admin/ticket_view.php</uri>
+					<title_class>support</title_class>
+					<visible>0</visible>
+				</view_ticket>
 			</pages>
 		</support_system>
 

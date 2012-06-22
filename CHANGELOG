@@ -39,3 +39,4 @@ Tickets:
 	- Fixed #440: Broken installer after External email servers commit
 	- Fixed #445: Disabling domain and panel's backups does not work
 	- Fixed #447: External mailserver relay_domains
+	- Fixed #452: View Support Ticket
