@@ -186,8 +186,8 @@ sub addDmn{
 	return 1 unless $data->{DMN_NAME};
 
 	if($data->{EXTERNAL} eq 'on'){
-		$rs |= $self->addToRelayHash($data);
 		$rs |= $self->disableDmn($data);
+		$rs |= $self->addToRelayHash($data);
 	} else {
 		$rs |= $self->addToDomainHash($data);
 		$rs |= $self->delFromRelayHash($data);
