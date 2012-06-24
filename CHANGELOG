@@ -1,7 +1,7 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 -------------------------------------------------------------------------------------
-i-MSCP 1.1.1.0 (beta 1)
+i-MSCP 1.1.0
 -------------------------------------------------------------------------------------
 
 Features / Enhancements:
@@ -10,7 +10,7 @@ GUI:
 	Tools:
 		- Updated PhpMyAdmin to version 3.5.1
 		- Updated AjaxPlorer to 4.1.0
-		- Updated roundcube to 0.7.2
+		- Updated Roundcube to 0.7.2
 
 
 Tickets:
