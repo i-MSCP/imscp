@@ -164,7 +164,14 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
 	abstract function instantiateAbstractUserImpl($userId);
 	
 	abstract function getUserClassFileName();
-	
+
+    /**
+     * @abstract
+     * @param $userId
+     * @return array()
+     */
+    abstract function getUserChildren($userId);
+
 	function getOption($optionName){	
 		return (isSet($this->options[$optionName])?$this->options[$optionName]:"");	
 	}
@@ -174,7 +181,7 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
      * @return array()
      */
     function getExposedPreferences($userObject){
-        $stringPrefs = array("display","lang","diapo_autofit","sidebar_splitter_size","vertical_splitter_size","history/last_repository","pending_folder","thumb_size","plugins_preferences","upload_auto_send","upload_auto_close","upload_existing","action_bar_style");
+        $stringPrefs = array("display","lang","diapo_autofit","sidebar_splitter_size","vertical_splitter_size","history/last_repository","pending_folder","thumb_size","plugins_preferences","upload_auto_send","upload_auto_close","upload_existing","action_bar_style", "force_default_repository");
         $jsonPrefs = array("ls_history","columns_size", "columns_visibility", "gui_preferences");
         $prefs = array();
         if( $userObject->getId()=="guest" && ConfService::getCoreConf("SAVE_GUEST_PREFERENCES", "conf") === false){
@@ -216,7 +223,7 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
 				{
 					break;
 				}
-				$dirList = ConfService::getRootDirsList();
+				$dirList = ConfService::getRepositoriesList();
                 /** @var $repository_id string */
                 if(!isSet($dirList[$repository_id]))
 				{
@@ -364,7 +371,8 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
 				$loggedUser = AuthService::getLoggedUser();
 				foreach($repoList as $repoIndex => $repoObject){
 					$accessType = $repoObject->getAccessType();
-					if(in_array($accessType, array("fs", "ftp")) && ($loggedUser->canRead($repoIndex) || $loggedUser->canWrite($repoIndex))){
+                    $driver = AJXP_PluginsService::getInstance()->getPluginByTypeName("access", $accessType);
+					if(is_a($driver, "AjxpWebdavProvider") && ($loggedUser->canRead($repoIndex) || $loggedUser->canWrite($repoIndex))){
 						$davRepos[$repoIndex] = $webdavBaseUrl ."".($repoObject->getSlug()==null?$repoObject->getId():$repoObject->getSlug());
 					}
 				}
@@ -376,7 +384,7 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
 				);
 				HTMLWriter::charsetHeader("application/json");
 				print(json_encode($prefs));
-				
+
 			break;
 
 			case  "get_user_template_logo":
@@ -456,6 +464,8 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
                     AJXP_XMLWriter::sendMessage(null, $mess[426]);
                 }else{
                     $loggedUser = AuthService::getLoggedUser();
+                    // Make sure we do not overwrite otherwise loaded rights.
+                    $loggedUser->load();
                     $loggedUser->setRight($newRep->getUniqueId(), "rw");
                     $loggedUser->save("superuser");
                     AuthService::updateUser($loggedUser);
@@ -481,6 +491,8 @@ abstract class AbstractConfDriver extends AJXP_Plugin {
                     AJXP_XMLWriter::sendMessage(null, $mess[427]);
                 }else{
                     $loggedUser = AuthService::getLoggedUser();
+                    // Make sure we do not override remotely set rights
+                    $loggedUser->load();
                     $loggedUser->removeRights($repoId);
                     $loggedUser->save("superuser");
                     AuthService::updateUser($loggedUser);

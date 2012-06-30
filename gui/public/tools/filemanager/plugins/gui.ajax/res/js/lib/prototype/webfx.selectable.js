@@ -38,6 +38,15 @@ SelectableElements = Class.create({
 		this.initSelectableItems(oElement, bMultiple);
 	},
 
+    initNonSelectableItems:function(oElement){
+        this._htmlElement = oElement;
+        this._multiple = false;
+
+        this._selectedItems = [];
+        this._fireChange = true;
+        this.hasFocus = false;
+    },
+
 	initSelectableItems: function(oElement, bMultiple, dragSelectionElement) {
 	
 		this._htmlElement = oElement;
@@ -228,8 +237,10 @@ SelectableElements = Class.create({
 			
 			if(!this.skipScroll){
 				// CHECK THAT SCROLLING IS OK
-				var parent = $('selectable_div');
-				if($('table_rows_container')) parent = $('table_rows_container');		
+				var parent = this._htmlElement;
+				if(this._htmlElement.up('.table_rows_container')) {
+                    parent = this._htmlElement.up('.table_rows_container');
+                }
 				var scrollOffset = oEl.offsetTop;
 				
 				var parentHeight = parent.getHeight();

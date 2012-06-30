@@ -210,30 +210,36 @@ class AJXP_Controller{
      * @param Array $parameters
      * @return null|UnixProcess
      */
-	public static function applyActionInBackground($currentRepositoryId, $actionName, $parameters){
+	public static function applyActionInBackground($currentRepositoryId, $actionName, $parameters, $user ="", $statusFile = ""){
 		$token = md5(time());
         $logDir = AJXP_CACHE_DIR."/cmd_outputs";
         if(!is_dir($logDir)) mkdir($logDir, 0755);
         $logFile = $logDir."/".$token.".out";
 		$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB), MCRYPT_RAND);
-        $user = "shared";
+        if(empty($user)){
+            if(AuthService::usersEnabled()) $user = AuthService::getLoggedUser()->getId();
+            else $user = "shared";
+        }
         if(AuthService::usersEnabled()){
-            $user = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  md5($token."\1CDAFx¨op#"), AuthService::getLoggedUser()->getId(), MCRYPT_MODE_ECB, $iv));
+            $user = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256,  md5($token."\1CDAFx¨op#"), $user, MCRYPT_MODE_ECB, $iv));
         }
 		$cmd = ConfService::getCoreConf("CLI_PHP")." ".AJXP_INSTALL_PATH.DIRECTORY_SEPARATOR."cmd.php -u=$user -t=$token -a=$actionName -r=$currentRepositoryId";
+        if($statusFile != ""){
+            $cmd .= " -s=".$statusFile;
+        }
 		foreach($parameters as $key=>$value){
             if($key == "action" || $key == "get_action") continue;
 			$cmd .= " --$key=".escapeshellarg($value);
 		}
 		if (PHP_OS == "WIN32" || PHP_OS == "WINNT" || PHP_OS == "Windows"){
 			$tmpBat = implode(DIRECTORY_SEPARATOR, array(AJXP_INSTALL_PATH, "data","tmp", md5(time()).".bat"));
-            $cmd .= " > ".$logFile;
+            if(AJXP_SERVER_DEBUG) $cmd .= " > ".$logFile;
 			$cmd .= "\n DEL $tmpBat";
 			AJXP_Logger::debug("Writing file $cmd to $tmpBat");
 			file_put_contents($tmpBat, $cmd);
 			pclose(popen("start /b ".$tmpBat, 'r'));
 		}else{
-			$process = new UnixProcess($cmd, $logFile);
+			$process = new UnixProcess($cmd, (AJXP_SERVER_DEBUG?$logFile:null));
 			AJXP_Logger::debug("Starting process and sending output dev null");
             return $process;
 		}		
@@ -341,7 +347,7 @@ class AJXP_Controller{
                 eval($callback->getAttribute("applyCondition"));
                 if(!$apply) continue;
           	}
-            $fake1; $fake2; $fake3;
+            //$fake1; $fake2; $fake3;
             $defer = ($callback->attributes->getNamedItem("defer") != null && $callback->attributes->getNamedItem("defer")->nodeValue == "true");
             self::applyCallback($xPath, $callback, $fake1, $fake2, $fake3, $args, $defer);
 		}

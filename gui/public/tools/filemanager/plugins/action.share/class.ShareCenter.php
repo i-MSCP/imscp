@@ -36,7 +36,7 @@ class ShareCenter extends AJXP_Plugin{
     private $urlBase;
 
     /**
-     * @var SerialMetaStore
+     * @var MetaStoreProvider
      */
     private $metaStore;
 
@@ -91,7 +91,7 @@ class ShareCenter extends AJXP_Plugin{
         }
         $this->metaStore = AJXP_PluginsService::getInstance()->getUniqueActivePluginForType("metastore");
         if($this->metaStore !== false){
-            $this->metaStore->accessDriver = $this->accessDriver;
+            $this->metaStore->initMeta($this->accessDriver);
         }
     }
 
@@ -131,17 +131,18 @@ class ShareCenter extends AJXP_Plugin{
             		}
             		$loggedUser = AuthService::getLoggedUser();
                     $crtValue = $httpVars["value"];
-                    if(!empty($crtValue)) $regexp = '/^'.$crtValue.'/i';
+                    if(!empty($crtValue)) $regexp = '^'.preg_quote($crtValue);
                     else $regexp = null;
-            		$allUsers = AuthService::listUsers($regexp);
-            		$users = "";
-                    $limit = $this->pluginConf["SHARED_USERS_LIST_LIMIT"];
+                    $limit = min($this->pluginConf["SHARED_USERS_LIST_LIMIT"], 20);
+                    $allUsers = AuthService::listUsers($regexp, 0, $limit, false);
+                    $users = "";
                     $index = 0;
             		foreach ($allUsers as $userId => $userObject){
-            			if( ( $userObject->hasParent() && $userObject->getParent() == $loggedUser->getId() ) || ConfService::getCoreConf("ALLOW_CROSSUSERS_SHARING") == true  ){
+                        if( ( !$userObject->hasParent() &&  ConfService::getCoreConf("ALLOW_CROSSUSERS_SHARING")) || $userObject->getParent() == $loggedUser->getId() ){
+                            if($regexp != null && !preg_match("/$regexp/i", $userId)) continue;
             				$users .= "<li>".$userId."</li>";
-            			}
-                        $index ++;
+                            $index ++;
+                        }
                         if($index == $limit) break;
             		}
             		if(strlen($users)) {
@@ -149,7 +150,10 @@ class ShareCenter extends AJXP_Plugin{
             		}
             	}else{
 					$file = AJXP_Utils::decodeSecureMagic($httpVars["file"]);
-	                $data = $this->accessDriver->makePublicletOptions($file, $httpVars["password"], $httpVars["expiration"], $this->repository);
+                    if(!isSet($httpVars["downloadlimit"])){
+                        $httpVars["downloadlimit"] = 0;
+                    }
+	                $data = $this->accessDriver->makePublicletOptions($file, $httpVars["password"], $httpVars["expiration"], $httpVars["downloadlimit"], $this->repository);
                     $customData = array();
                     foreach($httpVars as $key => $value){
                         if(substr($key, 0, strlen("PLUGINS_DATA_")) == "PLUGINS_DATA_"){
@@ -196,9 +200,15 @@ class ShareCenter extends AJXP_Plugin{
                         if($pData["OWNER_ID"] != AuthService::getLoggedUser()->getId()){
                             throw new Exception("You are not allowed to access this data");
                         }
+                        if(isSet($metadata["short_form_url"])){
+                            $link = $metadata["short_form_url"];
+                        }else{
+                            $link = $this->buildPublicletLink($metadata["element"]);
+                        }
                         $jsonData = array(
-                                         "publiclet_link"   => $this->buildPublicletLink($metadata["element"]),
+                                         "publiclet_link"   => $link,
                                          "download_counter" => PublicletCounter::getCount($metadata["element"]),
+                                         "download_limit"   => $pData["DOWNLOAD_LIMIT"],
                                          "expire_time"      => ($pData["EXPIRE_TIME"]!=0?date($messages["date_format"], $pData["EXPIRE_TIME"]):0),
                                          "has_password"     => (!empty($pData["PASSWORD"]))
                                          );
@@ -445,11 +455,12 @@ class ShareCenter extends AJXP_Plugin{
     {
         // create driver from $data
         $className = $data["DRIVER"]."AccessDriver";
-        if ($data["EXPIRE_TIME"] && time() > $data["EXPIRE_TIME"])
+        $hash = md5(serialize($data));
+        if ( ($data["EXPIRE_TIME"] && time() > $data["EXPIRE_TIME"]) || 
+            ($data["DOWNLOAD_LIMIT"] && $data["DOWNLOAD_LIMIT"]> 0 && $data["DOWNLOAD_LIMIT"] <= PublicletCounter::getCount($hash)) )
         {
             // Remove the publiclet, it's done
             if (strstr(realpath($_SERVER["SCRIPT_FILENAME"]),realpath(ConfService::getCoreConf("PUBLIC_DOWNLOAD_FOLDER"))) !== FALSE){
-		        $hash = md5(serialize($data));
 		        PublicletCounter::delete($hash);
                 unlink($_SERVER["SCRIPT_FILENAME"]);
             }
@@ -549,7 +560,11 @@ class ShareCenter extends AJXP_Plugin{
             if(!empty($this->pluginConf["SHARED_USERS_TMP_PREFIX"]) && strpos($newshareduser, $this->pluginConf["SHARED_USERS_TMP_PREFIX"])!==0 ){
                 $newshareduser = $this->pluginConf["SHARED_USERS_TMP_PREFIX"] . $newshareduser;
             }
-            array_push($users, $newshareduser);
+            if(!AuthService::userExists($newshareduser)){
+                array_push($users, $newshareduser);
+            }else{
+                throw new Exception("User already exists, please choose another name.");
+            }
         }
 		//$userName = AJXP_Utils::decodeSecureMagic($httpVars["shared_user"], AJXP_SANITIZE_ALPHANUM);
 		$label = AJXP_Utils::decodeSecureMagic($httpVars["repo_label"]);
@@ -602,6 +617,11 @@ class ShareCenter extends AJXP_Plugin{
         }else{
             if($repository->getOption("META_SOURCES")){
                 $options["META_SOURCES"] = $repository->getOption("META_SOURCES");
+                foreach($options["META_SOURCES"] as $index => $data){
+                    if(isSet($data["USE_SESSION_CREDENTIALS"]) && $data["USE_SESSION_CREDENTIALS"] === true){
+                        $options["META_SOURCES"][$index]["ENCODED_CREDENTIALS"] = AJXP_Safe::getEncodedCredentialString();
+                    }
+                }
             }
             $newRepo = $repository->createSharedChild(
                 $label,
@@ -633,7 +653,12 @@ class ShareCenter extends AJXP_Plugin{
                 // check that it's a child user
                 $userObject = $confDriver->createUserObject($userName);
             }else{
-                AuthService::createUser($userName, md5($httpVars["shared_pass"]));
+                if(ConfService::getAuthDriverImpl()->getOption("TRANSMIT_CLEAR_PASS")){
+                    $pass = $httpVars["shared_pass"];
+                }else{
+                    $pass = md5($httpVars["shared_pass"]);
+                }
+                AuthService::createUser($userName, $pass);
                 $userObject = $confDriver->createUserObject($userName);
                 $userObject->clearRights();
                 $userObject->setParent($loggedUser->id);

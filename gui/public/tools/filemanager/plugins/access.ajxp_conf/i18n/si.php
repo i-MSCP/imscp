@@ -99,7 +99,7 @@ $mess=array(
 "77" => "Nadzor dostopa",
 "78" => "Osebni podatki",
 "79" => "Zbirka",
-"80" => "Fino nastavljanje pravic uporabnika",
+"80" => "Fino nastavljanje pravic uporabnika  (Click on a repository label if you wish to make it the default repository when user logs in)",
 "81" => "Posebne nastavitve zbirk",
 "82" => "Serijsko urejanje",
 "83" => "Povleci in spusti vloge za dodelitev uporabnikom (uporabniki skupne rabe se preskočijo)",
@@ -135,5 +135,8 @@ $mess=array(
 "112" => "<b>Apply this role by default</b> to all new users.",
 "113" => "Role status was successfully modified",
 "114" => "Default",
+"115" => "Scheme",
+"116" => "Template Label",
+"117" => "Template Driver",
 );
 ?>
