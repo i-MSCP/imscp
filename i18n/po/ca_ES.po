@@ -8,13 +8,14 @@
 # Esteve Camós <ecamos@grn.cat>, 2008.
 # Joan Juvanteny <jjuvan@grn.cat>, 2008, 2009, 2010, 2011.
 #   <sagi@canbasis.com>, 2012.
+# Sagi Roca <sagi@canbasis.com>, 2012.
 #   <shadow+transifex@la3.org>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-07 08:15+0200\n"
-"PO-Revision-Date: 2012-06-07 06:16+0000\n"
+"POT-Creation-Date: 2012-06-30 09:50+0200\n"
+"PO-Revision-Date: 2012-06-30 07:45+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -746,7 +747,7 @@ msgid "Administrator"
 msgstr "Administrador"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "Nivells Administrador i Distribuidor"
 
 msgid "Administrator and customer"
 msgstr "Administrador i client"
@@ -4231,7 +4232,7 @@ msgid "Reseller and customer"
 msgstr "Distribuïdor i client"
 
 msgid "Reseller and customer levels"
-msgstr ""
+msgstr "Nivells Distribuidor i Client"
 
 msgid "Reseller assignment"
 msgstr "Assignació distribuïdors"
@@ -5737,6 +5738,9 @@ msgstr "Veure detalls"
 
 msgid "View hosting plan"
 msgstr "Veure pla de hosting"
+
+msgid "View ticket"
+msgstr ""
 
 msgid "Visit plugin site"
 msgstr "Visitar el lloc dels plugins"
