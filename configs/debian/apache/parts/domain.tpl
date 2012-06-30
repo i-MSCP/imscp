@@ -107,7 +107,7 @@
         </IfModule>
         <IfModule fcgid_module>
             <Directory {HOME_DIR}/htdocs>
-                FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter
+                FCGIWrapper {PHP_STARTER_DIR}/{FCGID_NAME}/php{PHP_VERSION}-fcgid-starter .php
                 Options +ExecCGI
             </Directory>
             <Directory "{PHP_STARTER_DIR}/{FCGID_NAME}">
