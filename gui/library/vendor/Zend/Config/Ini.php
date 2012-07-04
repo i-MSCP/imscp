@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Ini.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: Ini.php 24594 2012-01-05 21:27:01Z matthew $
  */
 
 
@@ -29,7 +29,7 @@ require_once 'Zend/Config.php';
 /**
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Config_Ini extends Zend_Config
@@ -83,16 +83,17 @@ class Zend_Config_Ini extends Zend_Config
      *
      * The $options parameter may be provided as either a boolean or an array.
      * If provided as a boolean, this sets the $allowModifications option of
-     * Zend_Config. If provided as an array, there are two configuration
+     * Zend_Config. If provided as an array, there are three configuration
      * directives that may be set. For example:
      *
      * $options = array(
      *     'allowModifications' => false,
-     *     'nestSeparator'      => '->'
+     *     'nestSeparator'      => ':',
+     *     'skipExtends'        => false,
      *      );
      *
      * @param  string        $filename
-     * @param  string|null   $section
+     * @param  mixed         $section
      * @param  boolean|array $options
      * @throws Zend_Config_Exception
      * @return void

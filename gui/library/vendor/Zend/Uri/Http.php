@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Uri
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Http.php 23970 2011-05-03 15:46:57Z ralph $
+ * @version   $Id: Http.php 24594 2012-01-05 21:27:01Z matthew $
  */
 
 /**
@@ -35,7 +35,7 @@ require_once 'Zend/Validate/Hostname.php';
  * @category  Zend
  * @package   Zend_Uri
  * @uses      Zend_Uri
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Uri_Http extends Zend_Uri
@@ -439,9 +439,8 @@ class Zend_Uri_Http extends Zend_Uri
             return false;
         }
 
-
         // Check the host against the allowed values; delegated to Zend_Filter.
-		$validate = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_ALL);
+        $validate = new Zend_Validate_Hostname(Zend_Validate_Hostname::ALLOW_ALL);
 
         return $validate->isValid($host);
     }

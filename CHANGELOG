@@ -4,6 +4,13 @@ i-MSCP ChangeLog
 i-MSCP 1.1.0-beta2 / RC1
 -------------------------------------------------------------------------------------
 
+Features / Enhancements:
+
+GUI:
+	Libs:
+		- Updated Zend Framework to 1.11.12
+		
+
 Tickets:
 	- Fixed #453: Wrong Support Ticket System Mailer template
 
