@@ -58,3 +58,4 @@ Tickets:
 	- Fixed #445: Disabling domain and panel's backups does not work
 	- Fixed #447: External mailserver relay_domains
 	- Fixed #452: View Support Ticket
+	- Fixed #456: Wrong welcome message usertype when create client
