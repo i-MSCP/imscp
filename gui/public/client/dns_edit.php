@@ -41,7 +41,7 @@ require_once 'imscp-lib.php';
 // Temporary fix for all 'Strict Standards' errors that come from the Net_DNS library
 error_reporting(E_ALL);
 
-require_once 'vendor/Net_DNS/DNS.php';
+require_once 'vendor/Net_DNS2/DNS2.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
