@@ -9,10 +9,12 @@ Features / Enhancements:
 GUI:
 	Libs:
 		- Updated Zend Framework to 1.11.12
+		- Updated Net_DNS to Net_DNS2
 		
 
 Tickets:
 	- Fixed #453: Wrong Support Ticket System Mailer template
+	- Fixed #458: Switch to Net_DNS2
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
