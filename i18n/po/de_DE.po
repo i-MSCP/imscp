@@ -26,9 +26,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-30 09:50+0200\n"
-"PO-Revision-Date: 2012-06-30 07:51+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
+"POT-Creation-Date: 2012-07-05 17:04+0200\n"
+"PO-Revision-Date: 2012-06-30 12:38+0000\n"
+"Last-Translator: Florian Jung <>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -179,7 +179,7 @@ msgstr "\n\nHallo {NAME},\n\nIhr Benutzername lautet: {USERNAME}\nIhr Passwort l
 msgid ""
 "\n"
 "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "\nRekord %s kann nicht überprüft werden. Grund: '%s'."
 
 #, php-format
 msgid ""
@@ -791,7 +791,7 @@ msgid "Alias"
 msgstr "Alias"
 
 msgid "Alias / Canonical name"
-msgstr ""
+msgstr "Alias Name"
 
 msgid "Alias already assigned to another IP address."
 msgstr "Alias ist bereits einer anderen IP Addresse zugewiesen."
@@ -1352,7 +1352,7 @@ msgid "Create External mail server entry"
 msgstr "Externen Mailserver Eintrag erstellen"
 
 msgid "Create Relay Entry"
-msgstr ""
+msgstr "Weiterleitung erstellen"
 
 msgid "Create catch all"
 msgstr "Catch-All anlegen"
@@ -1615,7 +1615,7 @@ msgid "Delete CatchAll"
 msgstr "Catch-All löschen"
 
 msgid "Delete Relay Entry"
-msgstr ""
+msgstr "Weiterleitung löschen"
 
 msgid "Delete all tickets"
 msgstr "Alle Tickets löschen"
@@ -1997,7 +1997,7 @@ msgid "Edit Ftp account"
 msgstr "FTP Konto bearbeiten"
 
 msgid "Edit Relay Entry"
-msgstr ""
+msgstr "Weiterleitung ändern"
 
 msgid "Edit SSL certificate"
 msgstr "SSL-Zertifikat bearbeiten"
@@ -2141,7 +2141,7 @@ msgid "Entered passwords doesn't matches."
 msgstr "Die eingegebenen Passwörter stimmen nicht überein."
 
 msgid "Entry type"
-msgstr ""
+msgstr "Eintrags-Typ"
 
 msgid "Error"
 msgstr "Fehler"
@@ -3203,7 +3203,7 @@ msgstr "Maximale Anzahl der Labels für Subdomains"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
-msgstr ""
+msgstr "Maximale Anzahl der Validierungsversuche erreicht."
 
 msgid "Medium"
 msgstr "Mittel"
@@ -3493,7 +3493,7 @@ msgid "Not found user records matching the search criteria."
 msgstr "Keine Benutzerdatensätze gefunden, die den Suchkriterien entsprechen."
 
 msgid "Not needed in CNAME"
-msgstr ""
+msgstr "In CNAME nicht benötigt"
 
 msgid "Not used"
 msgstr "Nicht benutzt"
@@ -3526,7 +3526,7 @@ msgid "Ok"
 msgstr "Ok"
 
 msgid "One DNS entry must still exist."
-msgstr ""
+msgstr "Ein DNS Eintrag muss mindestens vorhanden sein."
 
 msgid "One or more database updates are now available. See the details below."
 msgstr "Ein oder mehrere Datenbank Updates sind jetzt verfügbar. Siehe Details weiter unten."
@@ -4153,7 +4153,7 @@ msgid "Quota must be number"
 msgstr "Limit muss als Zahl angegeben sein"
 
 msgid "Quota must have a value"
-msgstr ""
+msgstr "Kontigent muss definiert sein"
 
 msgid "RAM"
 msgstr "RAM"
@@ -5098,7 +5098,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "Die zu bearbeitende Domäne existiert nicht."
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr ""
+msgstr "Um Externe Mailserver verwenden zu können wird mindestens 1 Mail Account benötigt"
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "Die i-MSCP Application Installer benötigt PHP zu aktivieren."
@@ -5578,7 +5578,7 @@ msgid "Usage of disallowed character in CNAME"
 msgstr "CNAME enthält nicht erlaubten Zeichen"
 
 msgid "Usage of disallowed character in MX"
-msgstr ""
+msgstr "Sie haben ein unerlaubtes Zeichen in MX verwendet."
 
 msgid "Usage status"
 msgstr "Verbrauchsstatus"
@@ -6268,7 +6268,7 @@ msgstr "Sie haben %d neue Support-Fragen erhalten."
 
 #, php-format
 msgid "You have received %s new support questions."
-msgstr ""
+msgstr "Sie haben %s neue Support Tickets."
 
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "

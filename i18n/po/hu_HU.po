@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-30 09:50+0200\n"
-"PO-Revision-Date: 2012-06-30 07:45+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
+"POT-Creation-Date: 2012-07-05 17:04+0200\n"
+"PO-Revision-Date: 2012-07-05 14:12+0000\n"
+"Last-Translator: balazsz <balazsz@citromail.hu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2194,13 +2194,13 @@ msgid "External mail servers"
 msgstr "Külső levelező szerverek"
 
 msgid "External mail servers scheduled for addition."
-msgstr ""
+msgstr "Külső levelező szerver hozzáadása beütemezve."
 
 msgid "External mail servers scheduled for deletion."
-msgstr ""
+msgstr "Külső levelező szerver törlése beütemezve."
 
 msgid "External mail servers status"
-msgstr ""
+msgstr "Külső levelező szerver állapota"
 
 msgid "FTP"
 msgstr "FTP"
@@ -2763,7 +2763,7 @@ msgstr "Érvénytelen tanúsítvány"
 
 #, php-format
 msgid "Invalid characters in TXT data (\"%s\")"
-msgstr ""
+msgstr "Érvénytelen karakter TXT adatban (\"%s\")"
 
 msgid "Invalid expiration date."
 msgstr "Érvénytelen a lejárat dátuma"
@@ -2979,7 +2979,7 @@ msgid "MX"
 msgstr "MX"
 
 msgid "MX entry IN"
-msgstr ""
+msgstr "MX entry IN"
 
 msgid "Mail"
 msgstr "Email"
@@ -3012,7 +3012,7 @@ msgid "Mail account scheduled for addition."
 msgstr "Email fiók hozzáadása beütemezve"
 
 msgid "Mail account scheduled for deletion."
-msgstr ""
+msgstr "Postafiók törlése beütemezve."
 
 msgid "Mail account scheduled for update."
 msgstr "Email fiók frissítése beütemezve"
@@ -3489,7 +3489,7 @@ msgid "Nothing found - sorry"
 msgstr "Nem található - sajnálom"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "Semmi sem változott."
 
 msgid "Nothing's been changed"
 msgstr "Nincs változás"
@@ -4134,10 +4134,10 @@ msgid "Quota in MB (0 unlimited)"
 msgstr "Kvóta MB-ban (0 - korlátlan)"
 
 msgid "Quota must be number"
-msgstr ""
+msgstr "Kvótának számnak kell lennie"
 
 msgid "Quota must have a value"
-msgstr ""
+msgstr "Kvótának értékkel kell rendelkeznie"
 
 msgid "RAM"
 msgstr "RAM"
@@ -4189,7 +4189,7 @@ msgid "Remove IP"
 msgstr "IP-cím törlése"
 
 msgid "Remove last"
-msgstr ""
+msgstr "Utolsó sor törlése"
 
 msgid "Remove permissions"
 msgstr "Jogosultság elvétele"
@@ -4926,7 +4926,7 @@ msgid "TTL must be a number!"
 msgstr "A \"TTL\" csak nem-negatív egész szám lehet (1-2147483647, cache tiltása: 0)"
 
 msgid "TXT data"
-msgstr ""
+msgstr "TXT adat"
 
 msgid "TXT data must be filled."
 msgstr ""
@@ -5043,7 +5043,7 @@ msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr "IP-cím, amit próbál eltávolítani, hozzá van rendelve viszonteladóhoz"
 
 msgid "The `Enter` key is disabled for performance reasons."
-msgstr "Az 'Enter' kulcs le van tiltva a megfelelő teljesítmény érdekében"
+msgstr "Az `Enter` kulcs le van tiltva a megfelelő teljesítmény érdekében."
 
 #, php-format
 msgid "The admin has <em>%s</em> disabled on this system."
@@ -5736,7 +5736,7 @@ msgid "View hosting plan"
 msgstr "Tárhely csomag megjelenítése"
 
 msgid "View ticket"
-msgstr ""
+msgstr "Hibajegy megnézése"
 
 msgid "Visit plugin site"
 msgstr "Plugin weboldalának megjelenítése"
@@ -6252,7 +6252,7 @@ msgstr "Önnek %d új támogatással kapcsolatos hibajegye érkezett"
 
 #, php-format
 msgid "You have received %s new support questions."
-msgstr ""
+msgstr "Önnek %s új támogatással kapcsolatos hibajegye érkezett"
 
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "

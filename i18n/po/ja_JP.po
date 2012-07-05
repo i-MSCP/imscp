@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-30 09:50+0200\n"
-"PO-Revision-Date: 2012-06-30 07:45+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
+"POT-Creation-Date: 2012-07-05 17:04+0200\n"
+"PO-Revision-Date: 2012-07-05 00:47+0000\n"
+"Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,13 +161,13 @@ msgstr "\n\nこんにちは {NAME} 様\n\nあなたのユーザ名： {USERNAME}
 msgid ""
 "\n"
 "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "\n %s レコードを検証する事ができません。理由： '%s'。"
 
 #, php-format
 msgid ""
 "\n"
 "Unknown entry type %s."
-msgstr ""
+msgstr "\n未知のエントリ種別 %s です。"
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -573,7 +573,7 @@ msgid "Activate"
 msgstr "アクティブ"
 
 msgid "Activate Entries"
-msgstr ""
+msgstr "エントリが有効"
 
 msgid "Activate this plugin"
 msgstr "このプラグインをアクティブにする"
@@ -645,7 +645,7 @@ msgid "Add email account"
 msgstr "Eメールアカウント追加"
 
 msgid "Add external mail servers"
-msgstr ""
+msgstr "i-MSCP - クライアント / メール管理 / 外部メールサーバのエントリ編集"
 
 msgid "Add group"
 msgstr "グループ追加"
@@ -666,7 +666,7 @@ msgid "Add new database"
 msgstr "新しいデータベースを追加"
 
 msgid "Add new line"
-msgstr ""
+msgstr "新しい行を追加"
 
 msgid "Add new protected area"
 msgstr "新しいアクセス制限領域追加"
@@ -741,13 +741,13 @@ msgid "Administrator"
 msgstr "管理者"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "管理者と代理店レベル"
 
 msgid "Administrator and customer"
 msgstr "管理者と顧客"
 
 msgid "Administrator and customer levels"
-msgstr ""
+msgstr "管理者と顧客レベル"
 
 msgid "Administrator and reseller"
 msgstr "管理者と代理店"
@@ -773,7 +773,7 @@ msgid "Alias"
 msgstr "エイリアス"
 
 msgid "Alias / Canonical name"
-msgstr ""
+msgstr "エイリアス / 標準名"
 
 msgid "Alias already assigned to another IP address."
 msgstr "エイリアスは、既に別のIPアドレスに割り当てられます。"
@@ -935,7 +935,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "全ての解決したチケットを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete all marked emails?"
-msgstr ""
+msgstr "マークされたすべてのメールを削除してもよろしいですか？"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "全てのチケットを削除してもよろしいですか？"
@@ -950,7 +950,7 @@ msgstr "%sの全てを捕らえて削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s external mail server?"
-msgstr ""
+msgstr "%s 外部のメールサーバを削除してもよろしいですか？"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1111,7 +1111,7 @@ msgid "CGI support"
 msgstr "CGIサポート"
 
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 msgid "CPU MHz"
 msgstr "CPUクロック(MHz)"
@@ -1188,7 +1188,7 @@ msgid "Change"
 msgstr "変更"
 
 msgid "Change Entries"
-msgstr ""
+msgstr "エントリを変更"
 
 msgid "Change SQL user password"
 msgstr "SQLユーザーのパスワード変更"
@@ -1331,10 +1331,10 @@ msgid "Create"
 msgstr "作成"
 
 msgid "Create External mail server entry"
-msgstr ""
+msgstr "外部のメールサーバのエントリを作成します"
 
 msgid "Create Relay Entry"
-msgstr ""
+msgstr "リレーエントリを作成します"
 
 msgid "Create catch all"
 msgstr "キャッチオール作成"
@@ -1588,7 +1588,7 @@ msgid "Default language successfully updated."
 msgstr "既定の言語が更新されました。"
 
 msgid "Del"
-msgstr ""
+msgstr "削除"
 
 msgid "Delete"
 msgstr "削除"
@@ -1597,7 +1597,7 @@ msgid "Delete CatchAll"
 msgstr "ごみ箱の削除"
 
 msgid "Delete Relay Entry"
-msgstr ""
+msgstr "リレーエントリを削除します"
 
 msgid "Delete all tickets"
 msgstr "全てのチケットを削除"
@@ -1615,7 +1615,7 @@ msgid "Delete from log:"
 msgstr "ログから削除："
 
 msgid "Delete marked mails"
-msgstr ""
+msgstr "マークしたメールを削除"
 
 msgid "Delete order"
 msgstr "オーダーを削除"
@@ -1937,7 +1937,7 @@ msgid "Domains per page"
 msgstr "1ページあたりのドメイン数"
 
 msgid "Domaintype not allowed for external mail servers."
-msgstr ""
+msgstr "外部メールサーバに許可されないドメイン種別です。"
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr "\"@、$、%...\"のような特殊文字をパスワードに使用しないでください。"
@@ -1970,7 +1970,7 @@ msgid "Edit Domain"
 msgstr "ドメインの編集"
 
 msgid "Edit External mail server entries"
-msgstr ""
+msgstr "外部メールサーバのエントリを編集"
 
 msgid "Edit FTP user"
 msgstr "FTPユーザーの編集"
@@ -1979,7 +1979,7 @@ msgid "Edit Ftp account"
 msgstr "Ftp アカウント編集"
 
 msgid "Edit Relay Entry"
-msgstr ""
+msgstr "リレーエントリを編集します"
 
 msgid "Edit SSL certificate"
 msgstr "SSL証明書を編集"
@@ -2015,7 +2015,7 @@ msgid "Edit error page"
 msgstr "エラーページの編集"
 
 msgid "Edit external mail servers"
-msgstr ""
+msgstr "外部メールサーバの編集"
 
 msgid "Edit hosting plan"
 msgstr "ホスティングプランの編集"
@@ -2030,7 +2030,7 @@ msgid "Edit mail auto responder"
 msgstr "自動応答メールの編集"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "メール容量制限の編集"
 
 msgid "Edit protected area"
 msgstr "アクセス制限領域を編集"
@@ -2123,7 +2123,7 @@ msgid "Entered passwords doesn't matches."
 msgstr "入力したパスワードが一致しません。"
 
 msgid "Entry type"
-msgstr ""
+msgstr "エントリ種別"
 
 msgid "Error"
 msgstr "エラー"
@@ -2138,7 +2138,7 @@ msgid "Error 404 (not found)"
 msgstr "エラー 404 (ファイルが無い)"
 
 msgid "Error 500 (internal server error)"
-msgstr "エラー 500 (サーバー内部のエラー)"
+msgstr "エラー 500 (サーバ内部のエラー)"
 
 msgid "Error 503 (service unavailable)"
 msgstr "エラー 503 (サービスは利用できません)"
@@ -2186,19 +2186,19 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "未確認オーダーの有効期限<br /><small>(営業日)</small>"
 
 msgid "External mail server"
-msgstr ""
+msgstr "外部メールサーバ"
 
 msgid "External mail servers"
-msgstr ""
+msgstr "外部メールサーバ"
 
 msgid "External mail servers scheduled for addition."
-msgstr ""
+msgstr "外部メールサーバの追加は予定されています。"
 
 msgid "External mail servers scheduled for deletion."
-msgstr ""
+msgstr "外部メールサーバの削除は予定されています。"
 
 msgid "External mail servers status"
-msgstr ""
+msgstr "外部メールサーバの状態"
 
 msgid "FTP"
 msgstr "FTP"
@@ -2561,7 +2561,7 @@ msgid "IP addresses configured"
 msgstr "IPアドレスが設定された"
 
 msgid "IP or FQDN-Servername"
-msgstr ""
+msgstr "IPアドレス又は、FQDN-サーバ名"
 
 msgid "IP scheduled for deletion."
 msgstr "IPアドレスの削除が予定されました。"
@@ -2642,7 +2642,7 @@ msgid "Incorrect aliases limit."
 msgstr "エイリアス制限に誤っています。"
 
 msgid "Incorrect disk quota limit."
-msgstr "ディスククォータ制限が誤っています。"
+msgstr "ディスクの容量制限が誤っています。"
 
 msgid "Incorrect disk space limit."
 msgstr "ディスク容量制限が誤っています。"
@@ -2761,7 +2761,7 @@ msgstr "証明書が無効です。"
 
 #, php-format
 msgid "Invalid characters in TXT data (\"%s\")"
-msgstr ""
+msgstr "TXTデータに無効な文字 (\"%s\")"
 
 msgid "Invalid expiration date."
 msgstr "無効な有効期限。"
@@ -2974,10 +2974,10 @@ msgid "MB"
 msgstr "MB"
 
 msgid "MX"
-msgstr ""
+msgstr "MX"
 
 msgid "MX entry IN"
-msgstr ""
+msgstr "MXエントリで"
 
 msgid "Mail"
 msgstr "メール"
@@ -3004,13 +3004,13 @@ msgid "Mail account not found."
 msgstr "メールアカウントが見つかりません。"
 
 msgid "Mail account quota updated."
-msgstr ""
+msgstr "メールアカウントの容量制限を更新しました。"
 
 msgid "Mail account scheduled for addition."
 msgstr "メールアカウントの追加が予定されました。"
 
 msgid "Mail account scheduled for deletion."
-msgstr ""
+msgstr "メールアカウントの削除は予定されています。"
 
 msgid "Mail account scheduled for update."
 msgstr "メールアカウントの更新が予定されました。"
@@ -3139,7 +3139,7 @@ msgid "Mark"
 msgstr "マーク"
 
 msgid "Mark all"
-msgstr ""
+msgstr "全てのマークを付ける"
 
 msgid "Master domain cannot be used."
 msgstr "マスタードメインは使用できません。"
@@ -3365,7 +3365,7 @@ msgid "No email account system errors"
 msgstr "Eメールアカウントシステムのエラーは発生していません"
 
 msgid "No external mail entries available."
-msgstr ""
+msgstr "利用可能な外部メールのエントリはありません。"
 
 msgid "No file was uploaded."
 msgstr "ファイルをアップロードできませんでした。"
@@ -3475,7 +3475,7 @@ msgid "Not found user records matching the search criteria."
 msgstr "検索条件に一致するユーザーレコードが見つかりませんでした。"
 
 msgid "Not needed in CNAME"
-msgstr ""
+msgstr "CNAMEでは必要ありません"
 
 msgid "Not used"
 msgstr "使用しない"
@@ -3487,7 +3487,7 @@ msgid "Nothing found - sorry"
 msgstr "何も見つかりません - すいません"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "何も変更されていません。"
 
 msgid "Nothing's been changed"
 msgstr "何も変更されていません"
@@ -3508,7 +3508,7 @@ msgid "Ok"
 msgstr "OK"
 
 msgid "One DNS entry must still exist."
-msgstr ""
+msgstr "一つのDNSエントリがまだ存在している必要があります。"
 
 msgid "One or more database updates are now available. See the details below."
 msgstr "1つ以上のデータベース更新が利用可能です。詳細は下記を参照してください。"
@@ -3867,7 +3867,7 @@ msgstr "管理者に連絡してください！<br />このパッケージを使
 
 #, php-format
 msgid "Please delete first CatchAll account for the email %s."
-msgstr ""
+msgstr "Eメール %s のために、最初に選択した全てのアカウントを削除してください。"
 
 msgid "Please delete first CatchAll account for this email."
 msgstr "このEメールの全てアカウントを探して最初に削除してください。"
@@ -4126,16 +4126,16 @@ msgid "Purchasing"
 msgstr "購入"
 
 msgid "Quota"
-msgstr ""
+msgstr "容量制限"
 
 msgid "Quota in MB (0 unlimited)"
-msgstr ""
+msgstr "容量制限 MB (0 無制限)"
 
 msgid "Quota must be number"
-msgstr ""
+msgstr "容量制限は、数字でなければなりません"
 
 msgid "Quota must have a value"
-msgstr ""
+msgstr "容量制限が値を持っている必要があります"
 
 msgid "RAM"
 msgstr "メモリ"
@@ -4187,7 +4187,7 @@ msgid "Remove IP"
 msgstr "IPアドレス削除"
 
 msgid "Remove last"
-msgstr ""
+msgstr "最後を削除"
 
 msgid "Remove permissions"
 msgstr "アクセス権を削除します。"
@@ -4226,7 +4226,7 @@ msgid "Reseller and customer"
 msgstr "代理店と顧客"
 
 msgid "Reseller and customer levels"
-msgstr ""
+msgstr "代理店と顧客レベル"
 
 msgid "Reseller assignment"
 msgstr "代理店の割り当て"
@@ -4492,22 +4492,22 @@ msgid ""
 msgstr "独立した複数のEメールは、スペース、コンマまたは改行で対処しています。"
 
 msgid "Server day statistics"
-msgstr "サーバーの統計情報（日次）"
+msgstr "サーバの統計情報（日次）"
 
 msgid "Server ports"
-msgstr "サーバーポート"
+msgstr "サーバポート"
 
 msgid "Server statistics"
-msgstr "サーバー統計情報"
+msgstr "サーバ統計情報"
 
 msgid "Server status"
-msgstr "サーバーのステータス"
+msgstr "サーバのステータス"
 
 msgid "Server traffic"
-msgstr "サーバーのトラフィック"
+msgstr "サーバのトラフィック"
 
 msgid "Server traffic settings"
-msgstr "サーバーのトラフィック設定"
+msgstr "サーバのトラフィック設定"
 
 msgid "Server traffic settings successfully updated."
 msgstr "サーバトラフィックが正常に更新されました。"
@@ -4924,10 +4924,10 @@ msgid "TTL must be a number!"
 msgstr "TTLは数値です！"
 
 msgid "TXT data"
-msgstr ""
+msgstr "TXT データ"
 
 msgid "TXT data must be filled."
-msgstr ""
+msgstr "TXTデータを入力する必要があります。"
 
 msgid "Target"
 msgstr "ターゲット"
@@ -5080,7 +5080,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "編集しようとしているドメインは存在しません。"
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr ""
+msgstr "外部メール機能は、最低 1つのEメールアカウントが必要です。"
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "i-MSCPアプリケーションインストーラーは、PHPを必要とします。"
@@ -5238,7 +5238,7 @@ msgid "This software is installed on following domain(s):"
 msgstr "このソフトウェアは、次のドメインにインストールされています："
 
 msgid "This type of account does not have quota."
-msgstr ""
+msgstr "この種類のアカウントは容量制限を持っていません。"
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -5472,7 +5472,7 @@ msgstr "ドメインタイプがありません。"
 
 #, php-format
 msgid "Unknown entry type %s."
-msgstr ""
+msgstr "未知のエントリ種別 %s です。"
 
 msgid "Unknown error"
 msgstr "不明なエラー"
@@ -5560,7 +5560,7 @@ msgid "Usage of disallowed character in CNAME"
 msgstr "CNAMEでない文字の使用"
 
 msgid "Usage of disallowed character in MX"
-msgstr ""
+msgstr "MXで使用できない文字です"
 
 msgid "Usage status"
 msgstr "利用状況"
@@ -5734,7 +5734,7 @@ msgid "View hosting plan"
 msgstr "ビュー ホスティングプラン"
 
 msgid "View ticket"
-msgstr ""
+msgstr "チケットを表示"
 
 msgid "Visit plugin site"
 msgstr "プラグインサイトの訪問"
@@ -5971,7 +5971,7 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "<em>%s</em> のサービスは代理店の限界を超えています。"
 
 msgid "You are exceeding the server traffic limit."
-msgstr "サーバートラフィックの制限を超えています。"
+msgstr "サーバトラフィックの制限を超えています。"
 
 msgid "You are exceeding your FTP accounts limit."
 msgstr "FTPアカウント数の制限を超えています。"
@@ -6001,7 +6001,7 @@ msgid "You are not allowed to edit this DNS record."
 msgstr "このDNSレコードを編集することが許可されていません。"
 
 msgid "You are not allowed to edit this external mail entry."
-msgstr ""
+msgstr "この外部メールのエントリを編集することはできません。"
 
 msgid "You are not allowed to perform this operation."
 msgstr "この操作を実行するための許可はされていません。"
@@ -6010,7 +6010,7 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "このDNSレコードを削除することが許可されていません。"
 
 msgid "You are not allowed to remove this external mail entry."
-msgstr ""
+msgstr "この外部メールのエントリを削除することはできません。"
 
 msgid "You are not allowed to remove this service port entry."
 msgstr "このサービスポートのエントリを削除することはできません。"
@@ -6250,7 +6250,7 @@ msgstr "%d の新しいサポートに関する質問を受けています。"
 
 #, php-format
 msgid "You have received %s new support questions."
-msgstr ""
+msgstr "%s の新しいサポートの質問を受けています。"
 
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "
@@ -6531,13 +6531,13 @@ msgid "i-MSCP - Admin / Settings / Plugin management"
 msgstr "i-MSCP - 管理者 / 設定 / プラグイン管理"
 
 msgid "i-MSCP - Admin / Settings / Server traffic settings"
-msgstr "i-MSCP - 管理者 / 設定 / サーバートラフィック設定"
+msgstr "i-MSCP - 管理者 / 設定 / サーバトラフィック設定"
 
 msgid "i-MSCP - Admin / Settings / Service ports"
 msgstr "i-MSCP - 管理者 / 設定 / サービスポート"
 
 msgid "i-MSCP - Admin / Statistics  / Server statistics"
-msgstr "i-MSCP - 管理者 / 統計情報  / サーバー統計情報"
+msgstr "i-MSCP - 管理者 / 統計情報  / サーバ統計情報"
 
 msgid ""
 "i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
@@ -6546,7 +6546,7 @@ msgstr "i-MSCP - 管理者 / 統計情報 / 代理店統計情報 / 顧客の統
 
 msgid ""
 "i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
-msgstr "i-MSCP - 管理者 / 統計情報 / サーバー統計情報 / 毎日のサーバー統計情報"
+msgstr "i-MSCP - 管理者 / 統計情報 / サーバ統計情報 / 毎日のサーバ統計情報"
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - 管理者 / サポートチケットシステム / 解決したチケット"
@@ -6621,10 +6621,10 @@ msgid "i-MSCP - Client / Manage mail / Catchall"
 msgstr "i-MSCP - クライアント / メール管理 / キャッチオール"
 
 msgid "i-MSCP - Client / Manage mail / Create External mail server entry"
-msgstr ""
+msgstr "i-MSCP - クライアント / メール管理 / 外部メールサーバのエントリ作成"
 
 msgid "i-MSCP - Client / Manage mail / Edit External mail server entries"
-msgstr ""
+msgstr "i-MSCP - クライアント / メール管理 / 外部メールサーバのエントリ編集"
 
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - クライアント / メール管理 / アカウント編集"
@@ -6633,13 +6633,13 @@ msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
 msgstr "i-MSCP - クライアント / メール管理 / 自動応答編集"
 
 msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr ""
+msgstr "i-MSCP - クライアント / メール管理 / 容量制限の編集"
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
 msgstr "i-MSCP - クライアント / メール管理 / 自動応答を有効にする"
 
 msgid "i-MSCP - Client / Manage mail / External mail servers"
-msgstr ""
+msgstr "i-MSCP - クライアント / メール管理 / 外部メールサーバ"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - クライアント / サポートチケットシステム / 解決したチケット"
@@ -6747,16 +6747,16 @@ msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - ドメイン管理/サブドメイン編集"
 
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr "i-MSCP - マルチサーバーコントロールパネル"
+msgstr "i-MSCP - マルチサーバコントロールパネル"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "i-MSCP - マルチサーバーコントロールパネル / ログイン"
+msgstr "i-MSCP - マルチサーバコントロールパネル / ログイン"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
-msgstr "i-MSCP - マルチサーバーコントロールパネル / パスワードをお忘れの場合"
+msgstr "i-MSCP - マルチサーバコントロールパネル / パスワードをお忘れの場合"
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
-msgstr "i-MSCP - マルチサーバーコントロールパネル / メンテナンス"
+msgstr "i-MSCP - マルチサーバコントロールパネル / メンテナンス"
 
 msgid "i-MSCP - Reseller / Add customer - step 1"
 msgstr "i-MSCP - 代理点 / 顧客追加 - ステップ 1"
@@ -6876,7 +6876,7 @@ msgid "i-MSCP / Softwares Installer / Management"
 msgstr "i-MSCP / ソフトウェアインストーラ / 管理"
 
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr "i-MSCP 管理者 / 一般情報 / サーバーステータス"
+msgstr "i-MSCP 管理者 / 一般情報 / サーバステータス"
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "i-MSCP 管理者 / システムツール / アンチルートキットログチェック"
@@ -6933,7 +6933,7 @@ msgid "installing"
 msgstr "インストール中"
 
 msgid "internet Multi Server Control Panel"
-msgstr "インターネットマルチサーバーコントロールパネル"
+msgstr "インターネットマルチサーバコントロールパネル"
 
 msgid "kB"
 msgstr "KB"
@@ -6969,7 +6969,7 @@ msgid "no"
 msgstr "いいえ"
 
 msgid "not activated"
-msgstr ""
+msgstr "有効になっていません"
 
 msgid "not available"
 msgstr "利用可能でありません。"
