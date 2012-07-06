@@ -327,7 +327,7 @@ function add_user_data($reseller_id)
 
 	// let's send mail to user
 	send_add_user_auto_msg($reseller_id, $dmn_user_name, $pure_user_pass, $user_email,
-						   $first_name, $last_name, tr('Domain account'));
+						   $first_name, $last_name, tr('User'));
 
 	$user_def_lang = $cfg->USER_INITIAL_LANG;
 	$user_theme_color = $cfg->USER_INITIAL_THEME;

@@ -5,13 +5,14 @@
 		<resources>
 			<i18n namespace="meta.user" path="plugins/meta.user/i18n" />
 			<js file="plugins/meta.user/class.MetaCellRenderer.js" className="MetaCellRenderer" autoload="true"/>
+            <img_library alias="meta_user" path="plugins/meta.user/img"/>
 		</resources>
 	</client_settings>	
 	<server_settings>
 		<!--<param name="meta_file_name" type="string" label="CONF_MESSAGE[Meta File]" description="CONF_MESSAGE[Hidden file used inside folders to save meta data]" mandatory="true" default=".ajxp_meta"/>-->
-		<param name="meta_fields" type="string" label="CONF_MESSAGE[Meta Fields]" description="CONF_MESSAGE[Comma separated list of fields, use standard characters here.]" mandatory="true" default="comment_field"/>
-		<param name="meta_labels" type="string" label="CONF_MESSAGE[Meta Labels]" description="CONF_MESSAGE[Comma separated list of labels, be sure to define as many as fields!]" mandatory="true" default="My Comments"/>
-		<param name="meta_visibility" type="string" label="CONF_MESSAGE[Columns visibility]" description="CONF_MESSAGE[Set default visibility for each columns. Either by columns, using commas, or one value that will be applied to all columns. Value can be 'visible' or 'hidden'.]" mandatory="false" default="visible"/>
+		<param name="meta_fields" type="string" replicationGroup="group1" label="CONF_MESSAGE[Meta Fields]" description="CONF_MESSAGE[Comma separated list of fields, use standard characters here.]" mandatory="true" default="comment_field"/>
+		<param name="meta_labels" type="string" replicationGroup="group1" label="CONF_MESSAGE[Meta Labels]" description="CONF_MESSAGE[Comma separated list of labels, be sure to define as many as fields!]" mandatory="true" default="My Comments"/>
+		<param name="meta_visibility" type="string" replicationGroup="group1" label="CONF_MESSAGE[Columns visibility]" description="CONF_MESSAGE[Set default visibility for each columns. Either by columns, using commas, or one value that will be applied to all columns. Value can be 'visible' or 'hidden'.]" mandatory="false" default="visible"/>
 	</server_settings>
 	<registry_contributions>
 		<hooks>
@@ -31,7 +32,7 @@
 		</client_configs>
 		<actions>
 			<action name="edit_user_meta">
-				<gui text="meta.user.1" title="meta.user.1" src="documentinfo_koffice.png" hasAccessKey="false">
+				<gui text="meta.user.1" title="meta.user.1" src="meta_user/ICON_SIZE/tag.png" hasAccessKey="false">
 					<context selection="true" dir="" recycle="hidden"
 						actionBar="false" contextMenu="true" infoPanel="false"
 						actionBarGroup="put" inZip="false">

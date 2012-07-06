@@ -93,9 +93,10 @@
     </xs:element>
     <xs:element name="subMenu">
         <xs:complexType>
-            <xs:sequence>
+            <xs:choice maxOccurs="1">
                 <xs:element ref="dynamicBuilder"/>
-            </xs:sequence>
+                <xs:element ref="dynamicItems"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
     <xs:element name="dynamicBuilder" type="xs:string"/>
@@ -113,6 +114,19 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+    <xs:element name="dynamicItems">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element ref="item"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="item">
+        <xs:complexType>
+            <xs:attribute name="actionId" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
 
     <xs:element name="registry_contributions">
         <xs:complexType>
@@ -488,6 +502,7 @@
                 <xs:element minOccurs="0" ref="dialogOnOpen"/>
                 <xs:element minOccurs="0" ref="extensionOnInit"/>
                 <xs:element minOccurs="0" ref="clientListener"/>
+                <xs:element minOccurs="0" ref="standardFormDefinition"/>
                 <xs:choice minOccurs="0">
                     <xs:element ref="serverCallback"/>
                     <xs:element ref="activeCondition"/>
@@ -531,6 +546,13 @@
             <xs:attribute name="methodName" use="required" type="xs:NCName"/>
             <xs:attribute name="pluginId" use="optional" type="xs:NCName"/>
             <xs:attribute name="defer" type="xs:boolean"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="standardFormDefinition">
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element ref="param"/>
+            </xs:choice>
         </xs:complexType>
     </xs:element>
     <xs:element name="client_settings">
@@ -597,6 +619,7 @@
             <xs:choice maxOccurs="unbounded">
                 <xs:element ref="global_param"/>
                 <xs:element ref="param"/>
+                <xs:element ref="user_param"/>
             </xs:choice>
         </xs:complexType>
     </xs:element>
@@ -607,6 +630,7 @@
             <xs:attribute name="description" use="required"/>
             <xs:attribute name="expose" type="xs:boolean"/>
             <xs:attribute name="group"/>
+            <xs:attribute name="replicationGroup"/>
             <xs:attribute name="label" use="required"/>
             <xs:attribute name="mandatory" type="xs:boolean"/>
             <xs:attribute name="name" use="required" type="xs:NCName"/>
@@ -619,6 +643,22 @@
             <xs:attribute name="default"/>
             <xs:attribute name="description" use="required"/>
             <xs:attribute name="group"/>
+            <xs:attribute name="replicationGroup"/>
+            <xs:attribute name="label" use="required"/>
+            <xs:attribute name="mandatory" type="xs:boolean"/>
+            <xs:attribute name="name" use="required" type="xs:NCName"/>
+            <xs:attribute name="no_templates" type="xs:boolean"/>
+            <xs:attribute name="templates_only" type="xs:boolean"/>
+            <xs:attribute name="type" use="required" type="xs:NCName"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="user_param">
+        <xs:complexType>
+            <xs:attribute name="choices"/>
+            <xs:attribute name="default"/>
+            <xs:attribute name="description" use="required"/>
+            <xs:attribute name="group"/>
+            <xs:attribute name="replicationGroup"/>
             <xs:attribute name="label" use="required"/>
             <xs:attribute name="mandatory" type="xs:boolean"/>
             <xs:attribute name="name" use="required" type="xs:NCName"/>

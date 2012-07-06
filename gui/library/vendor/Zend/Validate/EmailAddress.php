@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: EmailAddress.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: EmailAddress.php 24661 2012-02-26 07:32:09Z adamlundrigan $
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Zend/Validate/Hostname.php';
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
@@ -177,6 +177,8 @@ class Zend_Validate_EmailAddress extends Zend_Validate_Abstract
             } else {
                 $this->setHostnameValidator($options['hostname']);
             }
+        } elseif ($this->_options['hostname'] == null) {
+            $this->setHostnameValidator();
         }
 
         if (array_key_exists('mx', $options)) {

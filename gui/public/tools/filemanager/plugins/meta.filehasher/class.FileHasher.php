@@ -26,9 +26,20 @@ class FileHasher extends AJXP_Plugin
     protected $accessDriver;
     const METADATA_HASH_NAMESPACE = "file_hahser";
     /**
-    * @var SerialMetaStore
+    * @var MetaStoreProvider
     */
     protected $metaStore;
+
+    public static function rsyncEnabled(){
+        return function_exists("rsync_generate_signature");
+    }
+
+    public function parseSpecificContributions(&$contribNode){
+        parent::parseSpecificContributions($contribNode);
+        if(!self::rsyncEnabled()){
+            // REMOVE rsync actions get_filesignature
+        }
+    }
 
    	public function initMeta($accessDriver){
    		$this->accessDriver = $accessDriver;
@@ -37,7 +48,62 @@ class FileHasher extends AJXP_Plugin
         //   throw new Exception("The 'meta.simple_lock' plugin requires at least one active 'metastore' plugin");
         //}
         $this->metaStore = $store;
-        $this->metaStore->accessDriver = $accessDriver;
+        $this->metaStore->initMeta($accessDriver);
+    }
+
+    public function switchActions($actionName, $httpVars, $fileVars){
+        //$urlBase = $this->accessDriver
+        $repository = ConfService::getRepository();
+        if(!$repository->detectStreamWrapper(true)){
+            return false;
+        }
+        if(!isSet($this->pluginConf)){
+            $this->pluginConf = array("GENERATE_THUMBNAIL"=>false);
+        }
+        $streamData = $repository->streamData;
+        $this->streamData = $streamData;
+        $destStreamURL = $streamData["protocol"]."://".$repository->getId();
+        switch($actionName){
+            case "filehasher_signature":
+                $file = AJXP_Utils::decodeSecureMagic($httpVars["file"]);
+                if(!file_exists($destStreamURL.$file)) break;
+                $cacheItem = AJXP_Cache::getItem("signatures", $destStreamURL.$file, array($this, "generateSignature"));
+                $data = $cacheItem->getData();
+                header("Content-Type:application/octet-stream");
+                header("Content-Length", strlen($data));
+                echo($data);
+            break;
+            case "filehasher_delta":
+            case "filehasher_patch":
+                // HANDLE UPLOAD DATA
+                if(!isSet($fileVars) && !is_array($fileVars["userfile_0"])) {
+                    throw new Exception("These action should find uploaded data");
+                }
+                $uploadedData = tempnam(AJXP_Utils::getAjxpTmpDir(), $actionName."-sig");
+                move_uploaded_file($fileVars["userfile_0"]["tmp_name"], $uploadedData);
+
+                $fileUrl = $destStreamURL.AJXP_Utils::decodeSecureMagic($httpVars["file"]);
+                $file = call_user_func(array($this->streamData["classname"], "getRealFSReference"), $fileUrl, true);
+                if($actionName == "filehasher_delta"){
+                    $signatureFile = $uploadedData;
+                    $deltaFile = tempnam(AJXP_Utils::getAjxpTmpDir(), $actionName."-delta");
+                    rsync_generate_delta($signatureFile, $file, $deltaFile);
+                    header("Content-Type:application/octet-stream");
+                    header("Content-Length:".filesize($deltaFile));
+                    readfile($deltaFile);
+                    unlink($signatureFile);
+                    unlink($deltaFile);
+                }else{
+                    $patched = $file.".rdiff_patched";
+                    $deltaFile = $uploadedData;
+                    rsync_patch_file($file, $deltaFile, $patched);
+                    rename($patched, $file);
+                    header("Content-Type:text/plain");
+                    echo md5_file($file);
+                }
+
+            break;
+        }
     }
 
     /**
@@ -53,13 +119,19 @@ class FileHasher extends AJXP_Plugin
                    FileHasher::METADATA_HASH_NAMESPACE,
                    false,
                    AJXP_METADATA_SCOPE_GLOBAL);
+                $mtime = filemtime($node->getUrl());
                 if(is_array($hashMeta)
-                    && array_key_exists("md5", $hashMeta)){
+                    && array_key_exists("md5", $hashMeta)
+                    && array_key_exists("md5_mtime", $hashMeta)
+                    && $hashMeta["md5_mtime"] >= $mtime){
                     $md5 = $hashMeta["md5"];
                 }
                 if($md5 == null){
                     $md5 = md5_file($node->getUrl());
-                    $hashMeta = array("md5" => $md5);
+                    $hashMeta = array(
+                        "md5" => $md5,
+                        "md5_mtime" => $mtime
+                    );
                     $this->metaStore->setMetadata($node, FileHasher::METADATA_HASH_NAMESPACE, $hashMeta, false, AJXP_METADATA_SCOPE_GLOBAL);
                 }
 
@@ -72,55 +144,14 @@ class FileHasher extends AJXP_Plugin
         }
     }
 
-    public function invalidateHash($oldNode, $newNode, $copy){
+    public function invalidateHash($oldNode = null, $newNode = null, $copy = false){
         if($this->metaStore == false) return;
         if($oldNode == null) return;
         $this->metaStore->removeMetadata($oldNode, FileHasher::METADATA_HASH_NAMESPACE, false, AJXP_METADATA_SCOPE_GLOBAL);
     }
 
-    /**
-     * @param AJXP_Node $node
-     */
-    public function processLockMeta($node){
-        // Transform meta into overlay_icon
-        // AJXP_Logger::debug("SHOULD PROCESS METADATA FOR ", $node->getLabel());
-        $lock = $this->metaStore->retrieveMetadata(
-           $node,
-           SimpleLockManager::METADATA_HASH_NAMESPACE,
-           false,
-           AJXP_METADATA_SCOPE_GLOBAL);
-        if(is_array($lock)
-            && array_key_exists("lock_user", $lock)){
-            if($lock["lock_user"] != AuthService::getLoggedUser()->getId()){
-                $node->mergeMetadata(array(
-                    "sl_locked" => "true",
-                    "overlay_icon" => "meta_simple_lock/ICON_SIZE/lock.png"
-                ), true);
-            }else{
-                $node->mergeMetadata(array(
-                    "sl_locked" => "true",
-                    "sl_mylock" => "true",
-                    "overlay_icon" => "meta_simple_lock/ICON_SIZE/lock_my.png"
-                ), true);
-            }
-        }
-    }
 
-    /**
-     * @param AJXP_Node $node
-     */
-    public function checkFileLock($node){
-        AJXP_Logger::debug("SHOULD CHECK LOCK METADATA FOR ", $node->getLabel());
-        $lock = $this->metaStore->retrieveMetadata(
-           $node,
-           SimpleLockManager::METADATA_HASH_NAMESPACE,
-           false,
-           AJXP_METADATA_SCOPE_GLOBAL);
-        if(is_array($lock)
-            && array_key_exists("lock_user", $lock)
-            && $lock["lock_user"] != AuthService::getLoggedUser()->getId()){
-            $mess = ConfService::getMessages();
-            throw new Exception($mess["meta.simple_lock.5"]);
-        }
+    public function generateSignature($masterFile, $targetFile){
+        rsync_generate_signature($masterFile, $targetFile);
     }
 }

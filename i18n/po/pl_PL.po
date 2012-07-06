@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#   <b13n1u@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-07 08:15+0200\n"
-"PO-Revision-Date: 2012-06-07 06:16+0000\n"
+"POT-Creation-Date: 2012-07-05 17:04+0200\n"
+"PO-Revision-Date: 2012-06-30 07:45+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -277,7 +278,7 @@ msgstr ""
 
 #, php-format
 msgid "%s Errors in database"
-msgstr ""
+msgstr "%s Błędy w bazie danych"
 
 #, php-format
 msgid "%s account successfully deleted."
@@ -539,7 +540,7 @@ msgid "Access your mail through the web interface."
 msgstr ""
 
 msgid "Account data"
-msgstr ""
+msgstr "Dane konta "
 
 msgid ""
 "Account data were modified by another person before your changes. The update"
@@ -596,7 +597,7 @@ msgid "Add FTP user"
 msgstr "Dodaj użytkownika FTP"
 
 msgid "Add Ftp account"
-msgstr ""
+msgstr "Dodaj konto FTP"
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -632,7 +633,7 @@ msgid "Add custom menu"
 msgstr ""
 
 msgid "Add customer"
-msgstr ""
+msgstr "Dodaj klienta"
 
 msgid "Add customer - Next step"
 msgstr ""
@@ -641,7 +642,7 @@ msgid "Add domain alias"
 msgstr "Dodaj alias domeny"
 
 msgid "Add email account"
-msgstr ""
+msgstr "Dodaj konto email"
 
 msgid "Add external mail servers"
 msgstr ""
@@ -680,7 +681,7 @@ msgid "Add other domains to this account"
 msgstr "Dodaj inne domeny do tego konta"
 
 msgid "Add permissions"
-msgstr ""
+msgstr "Dodaj uprawnienia"
 
 msgid "Add permissions for reseller to software:"
 msgstr ""
@@ -707,7 +708,7 @@ msgid "Add/Details"
 msgstr "Dodaj/Szczegóły"
 
 msgid "Added by"
-msgstr ""
+msgstr "Dodane przez"
 
 msgid "Addition in progress"
 msgstr ""
@@ -734,7 +735,7 @@ msgid "Admin users"
 msgstr "Administratorzy"
 
 msgid "Admin/IP usage statistics"
-msgstr ""
+msgstr "Administrator/Adresy IP - statystyki użycia"
 
 msgid "Administrator"
 msgstr "Administrator"
@@ -826,7 +827,7 @@ msgid "All closed tickets were successfully deleted."
 msgstr ""
 
 msgid "All fields are required."
-msgstr ""
+msgstr "Wszystkie pola są wymagane."
 
 msgid "All fields seem to be valid."
 msgstr ""
@@ -1050,7 +1051,7 @@ msgid "Backup and restore"
 msgstr "Kopia zapasowa i przywracanie"
 
 msgid "Backup and restore settings."
-msgstr ""
+msgstr "Ustawienia kopii bezpieczeństwa i odzyskiwania."
 
 msgid "Backup archive scheduled for restoring."
 msgstr ""
@@ -1163,7 +1164,7 @@ msgid "Caution:"
 msgstr "Uwaga:"
 
 msgid "Certificate"
-msgstr ""
+msgstr "Certyfikat"
 
 msgid "Certificate data"
 msgstr ""
@@ -1202,7 +1203,7 @@ msgid "Change personal data"
 msgstr "Zmień dane osobowe"
 
 msgid "Changes"
-msgstr ""
+msgstr "Zmiany"
 
 msgid "Check Out"
 msgstr "Zakończono"
@@ -1248,7 +1249,7 @@ msgid "Choose layout color"
 msgstr ""
 
 msgid "Choose your language"
-msgstr ""
+msgstr "Wybierz swój język"
 
 msgid "Circular"
 msgstr "Kołowy"
@@ -1267,10 +1268,10 @@ msgid ""
 msgstr "Kliknij na przycisk 'Przywróć' a system przywróci ostatnią dzienną kopię"
 
 msgid "Close"
-msgstr ""
+msgstr "Zamknij"
 
 msgid "Close the ticket"
-msgstr ""
+msgstr "Zamknij zgłoszenie"
 
 msgid "Close ticket"
 msgstr ""
@@ -1327,7 +1328,7 @@ msgid "Country"
 msgstr "Kraj"
 
 msgid "Create"
-msgstr ""
+msgstr "Utwórz"
 
 msgid "Create External mail server entry"
 msgstr ""
@@ -1405,7 +1406,7 @@ msgid "Custom orderpanel Id"
 msgstr ""
 
 msgid "Customer"
-msgstr ""
+msgstr "Klient"
 
 msgid "Customer ID"
 msgstr "ID Użytkownika"
@@ -1447,7 +1448,7 @@ msgid "Customer(s) successfully moved."
 msgstr ""
 
 msgid "Customers"
-msgstr ""
+msgstr "Klienci"
 
 msgid "Customers assignment"
 msgstr ""
@@ -1478,7 +1479,7 @@ msgid "Data were been altered. Please try again."
 msgstr ""
 
 msgid "Database"
-msgstr ""
+msgstr "Baza danych"
 
 msgid "Database Name and Users"
 msgstr "Nazwa i użytkownicy bazy danych"
@@ -1499,7 +1500,7 @@ msgid "Database required"
 msgstr ""
 
 msgid "Database update is available."
-msgstr ""
+msgstr "Jest dostępna aktualizacja bazy danych"
 
 msgid "Database updates"
 msgstr "Aktualizacje bazy danych"
@@ -1511,7 +1512,7 @@ msgid "Database users"
 msgstr "Użytkownicy baz danych"
 
 msgid "Databases"
-msgstr ""
+msgstr "Bazy danych"
 
 msgid "Date"
 msgstr "Data"
@@ -1520,7 +1521,7 @@ msgid "Day"
 msgstr "Dzień"
 
 msgid "Days"
-msgstr ""
+msgstr "Dni"
 
 msgid "Deactivate"
 msgstr ""
@@ -1581,7 +1582,7 @@ msgid "Debugger"
 msgstr ""
 
 msgid "Default language"
-msgstr ""
+msgstr "Domyślny język"
 
 msgid "Default language successfully updated."
 msgstr ""
@@ -1602,13 +1603,13 @@ msgid "Delete all tickets"
 msgstr ""
 
 msgid "Delete customer"
-msgstr ""
+msgstr "Usuń klienta"
 
 msgid "Delete domain"
 msgstr "Usuń domenę"
 
 msgid "Delete domain - {DOMAIN_NAME}"
-msgstr ""
+msgstr "Usuń domenę - {DOMAIN_NAME}"
 
 msgid "Delete from log:"
 msgstr "Usuń z logu:"
@@ -1632,7 +1633,7 @@ msgid "Deletion in progress"
 msgstr ""
 
 msgid "Deletion in progress..."
-msgstr ""
+msgstr "Usuwanie w toku..."
 
 msgid "Demo Version!"
 msgstr "Wersja Demo!"
@@ -1710,7 +1711,7 @@ msgid "Domain Aliases"
 msgstr ""
 
 msgid "Domain FTP accounts"
-msgstr ""
+msgstr "Konta FTP "
 
 msgid "Domain Features"
 msgstr "Usługi"
@@ -1719,10 +1720,10 @@ msgid "Domain IP"
 msgstr "IP domeny"
 
 msgid "Domain Limit"
-msgstr ""
+msgstr "Limit domen"
 
 msgid "Domain Name"
-msgstr ""
+msgstr "Nazwa domeny"
 
 msgid "Domain account"
 msgstr "Konto domeny"
@@ -1749,7 +1750,7 @@ msgid "Domain account summary"
 msgstr ""
 
 msgid "Domain accounts"
-msgstr ""
+msgstr "Dodaj konto email"
 
 msgid "Domain alias"
 msgstr "Alias domeny"
@@ -1821,7 +1822,7 @@ msgid "Domain aliases"
 msgstr "Aliasy domeny"
 
 msgid "Domain aliases limit reached."
-msgstr ""
+msgstr "Osiągnieto limit aliasów"
 
 msgid ""
 "Domain aliases limit<br /><span class=\"italic\">(-1 disabled, 0 "
@@ -1861,7 +1862,7 @@ msgid "Domain details"
 msgstr "Szczególy domeny"
 
 msgid "Domain e-mails"
-msgstr ""
+msgstr "Adresy e-mail"
 
 msgid "Domain errors"
 msgstr "Błędy domeny"
@@ -1870,7 +1871,7 @@ msgid "Domain expiration date must be filled."
 msgstr ""
 
 msgid "Domain expire date"
-msgstr ""
+msgstr "Data wygaśnięcia domeny"
 
 msgid "Domain expires date"
 msgstr ""
@@ -1912,7 +1913,7 @@ msgid "Domain status is not ok."
 msgstr ""
 
 msgid "Domain subdomains"
-msgstr ""
+msgstr "Poddomeny"
 
 msgid "Domain successfully updated."
 msgstr ""
@@ -1963,7 +1964,7 @@ msgid "Edit"
 msgstr "Edytuj"
 
 msgid "Edit Customer"
-msgstr ""
+msgstr "Edytuj klienta"
 
 msgid "Edit Domain"
 msgstr "Edytuj domenę"
@@ -1975,19 +1976,19 @@ msgid "Edit FTP user"
 msgstr "Edytuj użytkownika FTP"
 
 msgid "Edit Ftp account"
-msgstr ""
+msgstr "Edytyj konto FTP"
 
 msgid "Edit Relay Entry"
 msgstr ""
 
 msgid "Edit SSL certificate"
-msgstr ""
+msgstr "Edytuj certyfikat SSL"
 
 msgid "Edit User"
 msgstr "Edytuj użytkownika"
 
 msgid "Edit alias"
-msgstr ""
+msgstr "Edytuj alias"
 
 msgid "Edit auto responder"
 msgstr ""
@@ -2023,7 +2024,7 @@ msgid "Edit htaccess user"
 msgstr ""
 
 msgid "Edit mail account"
-msgstr ""
+msgstr "Adres e-mail"
 
 msgid "Edit mail auto responder"
 msgstr "Edytuj automatyczną odpowiedź pocztową"
@@ -2038,7 +2039,7 @@ msgid "Edit reseller"
 msgstr "Edytuj resellera"
 
 msgid "Edit subdomain"
-msgstr ""
+msgstr "Edytuj pododmenę"
 
 msgid "Edit user"
 msgstr "Edytuj użytkownika"
@@ -2053,10 +2054,10 @@ msgid "Email Accounts"
 msgstr "Konta Pocztowe"
 
 msgid "Email Updated."
-msgstr ""
+msgstr "Email zaktualizowany"
 
 msgid "Email address"
-msgstr ""
+msgstr "Adres e-mail"
 
 msgid "Email forward"
 msgstr ""
@@ -2155,7 +2156,7 @@ msgid "Error state..."
 msgstr ""
 
 msgid "Error while trying to obtain list of network cards."
-msgstr ""
+msgstr "Błąd w trakcie pobierania listy kart sieciowych."
 
 msgid "Error: Remote File not found!"
 msgstr ""
@@ -2212,10 +2213,10 @@ msgid "FTP account"
 msgstr "Konto FTP"
 
 msgid "FTP account added."
-msgstr ""
+msgstr "Konto FTP dodane."
 
 msgid "FTP account already exists."
-msgstr ""
+msgstr "Konto FTP już istnieje."
 
 msgid "FTP account deleted."
 msgstr ""
@@ -2299,7 +2300,7 @@ msgid "File was successfully uploaded."
 msgstr ""
 
 msgid "FileManager"
-msgstr ""
+msgstr "Menadżer plików"
 
 msgid "Filemanager"
 msgstr "Menadżer plików"
@@ -2314,7 +2315,7 @@ msgid "First name"
 msgstr "Imię"
 
 msgid "Firstname"
-msgstr ""
+msgstr "Imię"
 
 msgid "Footer"
 msgstr "Stopka"
@@ -2353,19 +2354,19 @@ msgid "From reseller"
 msgstr "Od resellera"
 
 msgid "Ftp"
-msgstr ""
+msgstr "FTP"
 
 msgid "Ftp Accounts"
 msgstr ""
 
 msgid "Ftp account"
-msgstr ""
+msgstr "Konto FTP"
 
 msgid "Ftp account not found."
 msgstr ""
 
 msgid "Ftp accounts"
-msgstr ""
+msgstr "konta FTP"
 
 msgid "Ftp accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -2383,7 +2384,7 @@ msgid "Gender"
 msgstr "Płeć"
 
 msgid "General Information"
-msgstr ""
+msgstr "Informacje ogólne"
 
 msgid "General information"
 msgstr "Ogólne informacje"
@@ -2428,7 +2429,7 @@ msgid "Header"
 msgstr "Nagłówek"
 
 msgid "Help"
-msgstr ""
+msgstr "Pomoc"
 
 msgid "Hide default E-Mail Addresses"
 msgstr "Ukryj domyślne adresy E-Mail"
@@ -2437,7 +2438,7 @@ msgid "High"
 msgstr "Wysoki"
 
 msgid "Homepage"
-msgstr ""
+msgstr "Strona główna"
 
 msgid "Host"
 msgstr "Host"
@@ -2504,7 +2505,7 @@ msgid "Hour"
 msgstr "Godzina"
 
 msgid "Hours"
-msgstr ""
+msgstr "Godziny"
 
 msgid "Htaccess group"
 msgstr ""
@@ -2551,7 +2552,7 @@ msgid "IP address already known by the system."
 msgstr ""
 
 msgid "IP address scheduled for addition."
-msgstr ""
+msgstr "Limit domen"
 
 msgid "IP addresse data"
 msgstr ""
@@ -2732,7 +2733,7 @@ msgid "Installed in software depot"
 msgstr ""
 
 msgid "Installed on"
-msgstr ""
+msgstr "Zainstalowano na"
 
 msgid "Installing your uploaded package. Please refresh the site."
 msgstr ""
@@ -2747,7 +2748,7 @@ msgid "Intermediar certificate"
 msgstr ""
 
 msgid "Internationalization"
-msgstr ""
+msgstr "Tłumaczenie"
 
 msgid "Invalid NAME"
 msgstr ""
@@ -2810,7 +2811,7 @@ msgid "Ip usage"
 msgstr ""
 
 msgid "Kernel Version"
-msgstr ""
+msgstr "Wersja jądra"
 
 msgid "Kill session"
 msgstr "Zabij sesję"
@@ -2856,7 +2857,7 @@ msgid "Last translator"
 msgstr ""
 
 msgid "Lastname"
-msgstr ""
+msgstr "Nazwisko"
 
 msgid "Layout"
 msgstr "Szablon"
@@ -2894,7 +2895,7 @@ msgid "Link to authors homepage"
 msgstr ""
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Obciążenie (1 Min, 5 Min, 15 Min)"
 
 msgid "Log in to answer"
 msgstr ""
@@ -2903,29 +2904,29 @@ msgid "Login"
 msgstr "Logowanie"
 
 msgid "Login As"
-msgstr ""
+msgstr "Zaloguj się jako"
 
 #, php-format
 msgid "Login data successfully sent to %s."
 msgstr ""
 
 msgid "Login into PhpMyAdmin"
-msgstr ""
+msgstr "Zaloguj się do PhpMyAdmin"
 
 msgid "Login into PḧpMyAdmin"
-msgstr ""
+msgstr "Login do PḧpMyAdmin"
 
 msgid "Login into the filemanager"
-msgstr ""
+msgstr "Login do menadżera plików"
 
 msgid "Login into the webmail"
-msgstr ""
+msgstr "Login do poczty"
 
 msgid "Login password"
-msgstr ""
+msgstr "Login hasło"
 
 msgid "Login username"
-msgstr ""
+msgstr "Login użytkownik"
 
 msgid "Login with your FTP account"
 msgstr "Zaloguj się do konta FTP"
@@ -2982,7 +2983,7 @@ msgid "Mail"
 msgstr "Poczta"
 
 msgid "Mail Accounts"
-msgstr ""
+msgstr "Konta e-mail"
 
 msgid "Mail Log Level"
 msgstr ""
@@ -3081,7 +3082,7 @@ msgid "Manage Customers"
 msgstr ""
 
 msgid "Manage Domains"
-msgstr ""
+msgstr "Zarządzaj domenami"
 
 msgid "Manage Hosting Plans"
 msgstr ""
@@ -3120,7 +3121,7 @@ msgid "Manage orders"
 msgstr "Zarządzaj zamówieniami"
 
 msgid "Manage subdomain"
-msgstr ""
+msgstr "Zarządzaj poddomeną "
 
 msgid "Manage user sessions"
 msgstr "Zarządzaj sesjami użytkownika"
@@ -3217,10 +3218,10 @@ msgid "MiB"
 msgstr ""
 
 msgid "Minute"
-msgstr ""
+msgstr "Minuta"
 
 msgid "Minutes"
-msgstr ""
+msgstr "Minuty"
 
 msgid "Missing domain"
 msgstr ""
@@ -3235,7 +3236,7 @@ msgid "Month"
 msgstr "Miesiąc"
 
 msgid "More Details"
-msgstr ""
+msgstr "Więcej informacji"
 
 msgid "Mount"
 msgstr "Montowanie"
@@ -3274,7 +3275,7 @@ msgid "Never"
 msgstr ""
 
 msgid "Never expires"
-msgstr ""
+msgstr "Nigdy nie wygasa"
 
 msgid "New Sql user data"
 msgstr ""
@@ -3283,7 +3284,7 @@ msgid "New alias order for {CUSTOMER}"
 msgstr ""
 
 msgid "New i-MSCP update is available"
-msgstr ""
+msgstr "Aktualizacja  i-MSCP jest dostępna"
 
 msgid "New i-MSCP update is now available"
 msgstr "Nowa aktualizacja i-MSCP jest dostępna!"
@@ -3292,7 +3293,7 @@ msgid "New order"
 msgstr "Nowe zamówienie"
 
 msgid "New password has not been sent. Ask your administrator."
-msgstr ""
+msgstr "Niestety nowe hasło nie zostało wysłane. Skontaktuj się z administratorem."
 
 msgid "New password is"
 msgstr ""
@@ -3310,7 +3311,7 @@ msgid "No"
 msgstr "Nie"
 
 msgid "No IP address found."
-msgstr ""
+msgstr "Nie znaleziono adresu IP."
 
 msgid "No Ip statistics to be show."
 msgstr ""
@@ -3322,7 +3323,7 @@ msgid "No Reseller with permissions for this software found"
 msgstr ""
 
 msgid "No Resellers found."
-msgstr ""
+msgstr "Nie znaleziono sprzedawców"
 
 msgid "No administrator accounts found."
 msgstr ""
@@ -3334,7 +3335,7 @@ msgid "No available hosting packages."
 msgstr ""
 
 msgid "No certificate found."
-msgstr ""
+msgstr "Nie znależiono certyfikatu."
 
 msgid "No corresponding subdomain found."
 msgstr ""
@@ -3346,7 +3347,7 @@ msgid "No customer accounts found."
 msgstr ""
 
 msgid "No database updates available."
-msgstr ""
+msgstr "Brak aktualizaji bazy danych"
 
 msgid "No domain alias system errors"
 msgstr "Brak błędów systemu aliasów domeny"
@@ -3396,7 +3397,7 @@ msgid "No provided"
 msgstr ""
 
 msgid "No records found"
-msgstr ""
+msgstr "Nie znaleziono rekordów"
 
 msgid "No reseller accounts found."
 msgstr ""
@@ -3405,7 +3406,7 @@ msgid "No reseller with activated software installer found!"
 msgstr ""
 
 msgid "No set"
-msgstr ""
+msgstr "Nie ustawione"
 
 msgid "No software available"
 msgstr ""
@@ -3462,7 +3463,7 @@ msgid "Normal users"
 msgstr "Zwykli użytkownicy"
 
 msgid "Not Set"
-msgstr ""
+msgstr "Nie ustawione"
 
 msgid "Not found records matching the search criteria."
 msgstr ""
@@ -3489,10 +3490,10 @@ msgid "Nothing has been changed."
 msgstr ""
 
 msgid "Nothing's been changed"
-msgstr ""
+msgstr "Nic nie zostało zmienione."
 
 msgid "Nothing's been changed."
-msgstr ""
+msgstr "Nic nie zostało zmienione."
 
 msgid "Notices, Warnings and Errors"
 msgstr "Uwagi, Ostrzeżenia i Błędy"
@@ -3504,7 +3505,7 @@ msgid "OK"
 msgstr "OK"
 
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 msgid "One DNS entry must still exist."
 msgstr ""
@@ -3662,7 +3663,7 @@ msgid "PHP exec() function"
 msgstr ""
 
 msgid "PHP settings"
-msgstr ""
+msgstr "Ustawienia PHP"
 
 msgid "PHP support"
 msgstr "Obsługa PHP"
@@ -3743,7 +3744,7 @@ msgid "Password change is deactivated!"
 msgstr "Zmiana hasła jest nieaktywna!"
 
 msgid "Password confirmation"
-msgstr ""
+msgstr "Potwierdź hasło"
 
 msgid "Password data"
 msgstr "Dane hasła"
@@ -3762,7 +3763,7 @@ msgid ""
 msgstr ""
 
 msgid "Password doesn't matches"
-msgstr ""
+msgstr "Hasła się nie zgadzają"
 
 msgid "Password doesn't matches."
 msgstr ""
@@ -3793,7 +3794,7 @@ msgid "Passwords doesn't match."
 msgstr ""
 
 msgid "Passwords doesn't matches"
-msgstr ""
+msgstr "Podane hasła nie zgadzają się "
 
 msgid "Passwords doesn't matches."
 msgstr ""
@@ -3823,7 +3824,7 @@ msgid "Permission deny."
 msgstr ""
 
 msgid "Permissions"
-msgstr ""
+msgstr "Uprawnienia"
 
 msgid "Personal Data"
 msgstr "Dane osobowe"
@@ -4073,10 +4074,10 @@ msgid "Process updates"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Properties"
-msgstr ""
+msgstr "Właściwości"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
@@ -4156,13 +4157,13 @@ msgid "Record data"
 msgstr "Dane rekordu"
 
 msgid "Redirect"
-msgstr ""
+msgstr "Przekieruj"
 
 msgid "Redirect to URL"
-msgstr ""
+msgstr "Przekieruj na URL"
 
 msgid "Registration date"
-msgstr ""
+msgstr "Data rejestracji"
 
 msgid "Relative weight for records with the same priority"
 msgstr "Względna waga dla zapisów z takim samym priorytetem"
@@ -4171,7 +4172,7 @@ msgid "Relative weight must be a number!"
 msgstr "Względna waga musi być liczbą! "
 
 msgid "Reload"
-msgstr ""
+msgstr "Przeładuj"
 
 msgid "Remote File not found."
 msgstr ""
@@ -4189,7 +4190,7 @@ msgid "Remove last"
 msgstr ""
 
 msgid "Remove permissions"
-msgstr ""
+msgstr "Usuń uprawnienia."
 
 msgid "Reopen"
 msgstr ""
@@ -4198,7 +4199,7 @@ msgid "Reopen the ticket"
 msgstr ""
 
 msgid "Repeat  password"
-msgstr ""
+msgstr "Powtrórz hasło"
 
 msgid "Repeat password"
 msgstr "Powtórz hasło"
@@ -4213,7 +4214,7 @@ msgid "Reseller"
 msgstr "Reseller"
 
 msgid "Reseller Name"
-msgstr ""
+msgstr "Nazwa sprzedawcy"
 
 msgid "Reseller account successfully created."
 msgstr ""
@@ -4240,7 +4241,7 @@ msgid "Reseller level"
 msgstr "Poziom resellera"
 
 msgid "Reseller list"
-msgstr ""
+msgstr "Lista sprzedawców"
 
 msgid "Reseller list is empty!"
 msgstr "Lista resellerów jest pusta!"
@@ -4424,7 +4425,7 @@ msgid "SQL-user not found."
 msgstr ""
 
 msgid "SSL Certificates"
-msgstr ""
+msgstr "Certyfikaty SSL"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
 msgstr ""
@@ -4442,7 +4443,7 @@ msgid "Second Level Domain name strict validation"
 msgstr "Sprawdzanie nazw domen drugiego poziomu"
 
 msgid "Secure connection"
-msgstr ""
+msgstr "Bezpieczne połaczenie"
 
 msgid "Security code"
 msgstr "Kod zabezpieczający"
@@ -4451,16 +4452,16 @@ msgid "Security code is incorrect."
 msgstr ""
 
 msgid "Select Domain"
-msgstr ""
+msgstr "Wybierz domenę"
 
 msgid "Select database"
-msgstr ""
+msgstr "Wybierz bazę danych"
 
 msgid "Select group:"
 msgstr "Wybierz grupę:"
 
 msgid "Send"
-msgstr ""
+msgstr "Wyślij"
 
 msgid "Send message"
 msgstr "Wyślij wiadomość"
@@ -4533,13 +4534,13 @@ msgid "Service protocol"
 msgstr "Protokół usługi"
 
 msgid "Services status"
-msgstr ""
+msgstr "Stan usług"
 
 msgid "Session not found in login table."
 msgstr ""
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sesje"
 
 msgid "Set status to 'change'"
 msgstr "Ustaw status na \"zmień\""
@@ -4548,7 +4549,7 @@ msgid "Settings"
 msgstr "Ustawienia"
 
 msgid "Settings saved."
-msgstr ""
+msgstr "Ustawienia zapisane."
 
 msgid "Setup fee"
 msgstr "Opłata aktywacyjna"
@@ -4849,7 +4850,7 @@ msgid "Support"
 msgstr ""
 
 msgid "Support System"
-msgstr ""
+msgstr "System wsparcia"
 
 msgid "Support Ticket System"
 msgstr ""
@@ -5244,7 +5245,7 @@ msgid ""
 msgstr ""
 
 msgid "This user name already exist."
-msgstr ""
+msgstr "Podana nazwa użytkownika jest już zajęta."
 
 msgid "TiB"
 msgstr ""
@@ -5322,7 +5323,7 @@ msgid "Total"
 msgstr "Ogółem"
 
 msgid "Total Domains"
-msgstr ""
+msgstr "Razem domen"
 
 msgid "Total Softwares"
 msgstr ""
@@ -5499,7 +5500,7 @@ msgid "Unknown zone type %s."
 msgstr ""
 
 msgid "Unlimited"
-msgstr ""
+msgstr "Nieograniczone."
 
 msgid "Unprotect it"
 msgstr "Odblokuj"
@@ -5697,13 +5698,13 @@ msgid ""
 msgstr ""
 
 msgid "Values"
-msgstr ""
+msgstr "Wartości"
 
 msgid "Vendor hompage"
 msgstr ""
 
 msgid "Version"
-msgstr ""
+msgstr "Wersja"
 
 msgid "Very high"
 msgstr "Bardzo wysoki"
@@ -5731,6 +5732,9 @@ msgstr "Pokaż szczegóły"
 
 msgid "View hosting plan"
 msgstr "Pokaż plan hostingowy"
+
+msgid "View ticket"
+msgstr ""
 
 msgid "Visit plugin site"
 msgstr ""
@@ -5979,7 +5983,7 @@ msgid "You are exceeding your SQL databases limit."
 msgstr ""
 
 msgid "You are exceeding your disk limit."
-msgstr ""
+msgstr "Uprawnienia"
 
 msgid "You are exceeding your disk space limit."
 msgstr ""
@@ -6000,7 +6004,7 @@ msgid "You are not allowed to edit this external mail entry."
 msgstr ""
 
 msgid "You are not allowed to perform this operation."
-msgstr ""
+msgstr "Nie masz uprawnień pozwalajacyh na wykonanie tej operacji."
 
 msgid "You are not allowed to remove this DNS record."
 msgstr ""
@@ -6327,7 +6331,7 @@ msgid "Your new i-MSCP login"
 msgstr ""
 
 msgid "Your new password has been sent. Check your mail."
-msgstr ""
+msgstr "Twoje nowe hasło zostało wysłane. Sprawdź swój email."
 
 msgid "Your order"
 msgstr "Twoje zamówienie"
@@ -6406,10 +6410,10 @@ msgid "conflict with CNAME record"
 msgstr "konflikt z rekordem CNAME"
 
 msgid "day"
-msgstr ""
+msgstr "dzień"
 
 msgid "days"
-msgstr ""
+msgstr "dni"
 
 msgid "deactivate"
 msgstr ""
@@ -6427,7 +6431,7 @@ msgid "disk space"
 msgstr ""
 
 msgid "domain"
-msgstr ""
+msgstr "domena"
 
 msgid "domain alias"
 msgstr ""
@@ -6464,7 +6468,7 @@ msgid ""
 msgstr ""
 
 msgid "help"
-msgstr ""
+msgstr "pomoc"
 
 msgid "hide aliases"
 msgstr "ukryj aliasy"
@@ -6554,13 +6558,13 @@ msgid "i-MSCP - Admin / Support Ticket System / View Ticket"
 msgstr ""
 
 msgid "i-MSCP - Admin / System tools / Database Update"
-msgstr ""
+msgstr "i-MSCP - Adminnistrator / Narzędzia systemowe / Aktualizacja bazy danych"
 
 msgid "i-MSCP - Admin / Users management / Domain Details"
 msgstr ""
 
 msgid "i-MSCP - Admin/IP Usage"
-msgstr ""
+msgstr "i-MSCP - Administrator /Adresy IP - użycie"
 
 msgid "i-MSCP - Admin/Lostpw email setup"
 msgstr "i-MSCP - ustawienia Admin/Zgub.hasło ustawienia poczty"
@@ -6743,10 +6747,10 @@ msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr ""
 
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Login"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
 msgstr ""
@@ -6872,7 +6876,7 @@ msgid "i-MSCP / Softwares Installer / Management"
 msgstr ""
 
 msgid "i-MSCP Admin / General Information / Server Status"
-msgstr ""
+msgstr "i-MSCP Admin / Informacje ogólne / Stan serwera"
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "Admin i-MSCP / Narzędzia systemowe / Kontrola logu narzędzi przeciwko rootkit-om"
@@ -6917,7 +6921,7 @@ msgid "i-MSCP updates"
 msgstr "Aktualizacje i-MSCP"
 
 msgid "iMSCP - Admin/Admin Log"
-msgstr ""
+msgstr "iMSCP - Administrator/Adminministrator Log"
 
 msgid "install"
 msgstr ""
@@ -6929,7 +6933,7 @@ msgid "installing"
 msgstr ""
 
 msgid "internet Multi Server Control Panel"
-msgstr ""
+msgstr "internet Multi Server Control Panel"
 
 msgid "kB"
 msgstr ""
@@ -6944,7 +6948,7 @@ msgid "mail account"
 msgstr ""
 
 msgid "mail accounts"
-msgstr ""
+msgstr "konta e-mail"
 
 msgid "max_execution_time out of range."
 msgstr ""
@@ -6956,10 +6960,10 @@ msgid "memory_limit out of range."
 msgstr ""
 
 msgid "missing alias"
-msgstr ""
+msgstr "brakuje aliasu"
 
 msgid "missing domain"
-msgstr ""
+msgstr "brakuje domeny"
 
 msgid "no"
 msgstr "nie"
@@ -6968,7 +6972,7 @@ msgid "not activated"
 msgstr ""
 
 msgid "not available"
-msgstr ""
+msgstr "nie dostepne"
 
 msgid "not required"
 msgstr ""
@@ -7029,13 +7033,13 @@ msgid "subdomain"
 msgstr ""
 
 msgid "subdomains"
-msgstr ""
+msgstr "poddomeny"
 
 msgid "tcp"
 msgstr "tcp"
 
 msgid "traffic"
-msgstr ""
+msgstr "transfer"
 
 msgid "udp"
 msgstr "udp"

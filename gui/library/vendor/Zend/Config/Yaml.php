@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Config
- * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Yaml.php 23952 2011-05-03 05:45:06Z ralph $
+ * @version   $Id: Yaml.php 24594 2012-01-05 21:27:01Z matthew $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Config.php';
  *
  * @category  Zend
  * @package   Zend_Config
- * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Config_Yaml extends Zend_Config
@@ -124,9 +124,9 @@ class Zend_Config_Yaml extends Zend_Config
      * - skip_extends: whether or not to skip processing of parent configuration
      * - yaml_decoder: a callback to use to decode the Yaml source
      *
-     * @param  string  $yaml     YAML file to process
-     * @param  mixed   $section Section to process
-     * @param  boolean $options Whether modifiacations are allowed at runtime
+     * @param  string        $yaml     YAML file to process
+     * @param  mixed         $section  Section to process
+     * @param  array|boolean $options 
      */
     public function __construct($yaml, $section = null, $options = false)
     {
@@ -285,13 +285,12 @@ class Zend_Config_Yaml extends Zend_Config
         $inIndent = false;
         while (list($n, $line) = each($lines)) {
             $lineno = $n + 1;
+            
+            $line = rtrim(preg_replace("/#.*$/", "", $line));
             if (strlen($line) == 0) {
                 continue;
             }
-            if ($line[0] == '#') {
-                // comment
-                continue;
-            }
+
             $indent = strspn($line, " ");
 
             // line without the spaces

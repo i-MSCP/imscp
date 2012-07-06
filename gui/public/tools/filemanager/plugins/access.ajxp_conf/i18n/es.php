@@ -98,7 +98,7 @@ $mess=array(
 "77" => "Control de acceso",
 "78" => "Datos personales",
 "79" => "Repositorio",
-"80" => "Ajustes finos de acceso para este usuario",
+"80" => "Ajustes finos de acceso para este usuario  (Click on a repository label if you wish to make it the default repository when user logs in)",
 "81" => "Datos específicos de repositorios",
 "82" => "Edición batch de usuarios",
 "83" => "Arrastre roles para aplicárselos a los usuarios seleccionados (Se excluyen los usuarios compartidos)",
@@ -134,6 +134,9 @@ $mess=array(
 "112" => "<b>Aplique este rol por defecto</b> a los nuevos usuarios.",
 "113" => "Estado del rol modificado con éxito",
 "114" => "Por defecto",
+"115" => "Scheme",
+"116" => "Template Label",
+"117" => "Template Driver",
 /* END SENTENCE */
 );
 ?>

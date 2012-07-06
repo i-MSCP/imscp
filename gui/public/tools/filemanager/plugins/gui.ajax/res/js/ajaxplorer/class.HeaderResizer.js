@@ -77,6 +77,7 @@ Class.create("HeaderResizer", {
 	generateHeader : function(){
 		var data = this.options.headerData;
 		this.element.addClassName('header_resizer');
+		this.element.addClassName('css_gradient');
 		var initSizes;
 		var index=0;
 		data.each(function(el){
@@ -104,6 +105,7 @@ Class.create("HeaderResizer", {
 		var computeWidth = this.getInnerWidth() - (this.cells.length - 1) * this.options.handleWidth;
 		var uniqueSize = Math.floor(computeWidth * ratio);
 		for(var i=0;i<this.cells.length;i++) sizes[i] = uniqueSize;
+        this.log("Compute equal size on "+this.getInnerWidth() + " result:"+sizes.join(","));
 		return sizes;
 	},
 	
@@ -143,7 +145,7 @@ Class.create("HeaderResizer", {
 	 */
 	resize : function(size){
 		
-		this.mainSize = size-2;
+		this.mainSize = size;
 		this.element.setStyle({width:this.mainSize+"px"});
 		this.checkBodyScroll();
 		this.resizeHeaders();
@@ -165,7 +167,7 @@ Class.create("HeaderResizer", {
 		var innerWidth = this.getInnerWidth();	
 		if(!innerWidth) return;	
 		if(!sizes && this.currentInner && innerWidth != this.currentInner){
-			sizes = this.computePercentSizes(this.currentSizes, this.currentInner);						
+			sizes = this.computePercentSizes(this.currentSizes, this.currentInner);
 		}
 		//console.log("return");
 		if(!sizes) return;
@@ -313,7 +315,7 @@ Class.create("HeaderResizer", {
 			}else{
 				var selector = "#"+this.options.body.id+" td.resizer_"+ (i);
 			}
-			var rule = "width:"+(newSizes[i] + (Prototype.Browser.IE?10:-7))+" !important;";
+			var rule = "width:"+(newSizes[i] + (Prototype.Browser.IE?10:0))+"px !important;";
 			
 			this.addStyleRule(sheet, selector, rule);
 			
@@ -322,7 +324,7 @@ Class.create("HeaderResizer", {
 			}else{
 				selector = "#"+this.options.body.id+" td.resizer_"+ (i) + " .text_label";
 			}
-			rule = "width:"+(newSizes[i] - (Prototype.Browser.IE?0:(this.options.headerData[i]?this.options.headerData[i].leftPadding:0)+1))+"px !important;";
+			rule = "width:"+(newSizes[i] - (Prototype.Browser.IE?0:(this.options.headerData[i]?this.options.headerData[i].leftPadding:0)+2))+"px !important;";
 			this.addStyleRule(sheet, selector, rule);
 		}
 
@@ -339,7 +341,7 @@ Class.create("HeaderResizer", {
 		if(Prototype.Browser.IE){
 			sheet.addRule(selector, rule);
 		}else{
-			sheet.insertRule(selector+"{"+rule+"}", sheet.length);
+			sheet.insertRule(selector+"{"+rule+"}", sheet.cssRules.length);
 		}		
 	},
 	
@@ -349,10 +351,10 @@ Class.create("HeaderResizer", {
 	createStyleSheet : function(){
 		if(Prototype.Browser.IE){
 			return;
-			if(!window.ajxp_resizer_sheet){
-		        window.ajxp_resizer_sheet = document.createStyleSheet();		    
+			if(!window['ajxp_resizer_'+this.options.body.id]){
+		        window['ajxp_resizer_'+this.options.body.id] = document.createStyleSheet();
 			}
-			var sheet = window.ajxp_resizer_sheet;
+			var sheet = window['ajxp_resizer_'+this.options.body.id];
 	        // Remove previous rules
 	        var rules = sheet.rules;
 	        var len = rules.length;	
@@ -361,10 +363,10 @@ Class.create("HeaderResizer", {
 	        }			
 			
 		}else{
-			var cssTag = $('resizer_css');
+			var cssTag = $('resizer_css-'+this.options.body.id);
 			// Remove previous rules
 			if(cssTag) cssTag.remove();
-	        cssTag = new Element("style", {type:"text/css", id:"resizer_css"});
+	        cssTag = new Element("style", {type:"text/css", id:'resizer_css-'+this.options.body.id});
 	        $$("head")[0].insert(cssTag);
 	        var sheet = cssTag.sheet;		        
 		}
@@ -377,9 +379,10 @@ Class.create("HeaderResizer", {
 	removeStyleSheet : function(){
 		if(Prototype.Browser.IE){
 			return;
-			if(window.ajxp_resizer_sheet){
+
+			if(window['ajxp_resizer_'+this.options.body.id]){
 		        // Remove previous rules
-		        var sheet = window.ajxp_resizer_sheet;
+		        var sheet = window['ajxp_resizer_'+this.options.body.id];
 		        var rules = sheet.rules;
 		        var len = rules.length;	
 		        for (var i=len-1; i>=0; i--) {
@@ -387,7 +390,7 @@ Class.create("HeaderResizer", {
 		        }			
 			}			
 		}else{
-			var cssTag = $('resizer_css');
+			var cssTag = $('resizer_css-'+this.options.body.id);
 			if(cssTag) cssTag.remove();
 		}		
 	},

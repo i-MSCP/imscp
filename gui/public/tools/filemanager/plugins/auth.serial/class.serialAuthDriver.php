@@ -36,6 +36,9 @@ class serialAuthDriver extends AbstractAuthDriver {
 
 	function performChecks(){
         if(!isset($this->options)) return;
+        if(isset($this->options["FAST_CHECKS"]) && $this->options["FAST_CHECKS"] === true){
+            return;
+        }
 		$usersDir = dirname($this->usersSerFile);
 		if(!is_dir($usersDir) || !is_writable($usersDir)){
 			throw new Exception("Parent folder for users file is either inexistent or not writeable.");
@@ -46,16 +49,48 @@ class serialAuthDriver extends AbstractAuthDriver {
 	}
 	
 	function listUsers(){
-		return AJXP_Utils::loadSerialFile($this->usersSerFile);
+		$users = AJXP_Utils::loadSerialFile($this->usersSerFile);
+        if(AuthService::ignoreUserCase()){
+            $users = array_combine(array_map("strtolower", array_keys($users)), array_values($users));
+        }
+        return $users;
 	}
+
+    function supportsUsersPagination(){
+        return true;
+    }
+    function listUsersPaginated($regexp, $offset = -1 , $limit = -1){
+        $users = $this->listUsers();
+        $result = array();
+        $index = 0;
+        foreach($users as $usr => $pass){
+            if(!empty($regexp) && !preg_match("/$regexp/i", $usr)){
+                continue;
+            }
+            if($offset != -1 && $index < $offset) {
+                $index ++;
+                continue;
+            }
+            $result[$usr] = $pass;
+            $index ++;
+            if($limit != -1 && count($result) >= $limit) break;
+        }
+        return $result;
+    }
+    function getUsersCount(){
+        return count($this->listUsers());
+    }
+
 	
 	function userExists($login){
+        if(AuthService::ignoreUserCase()) $login = strtolower($login);
 		$users = $this->listUsers();
 		if(!is_array($users) || !array_key_exists($login, $users)) return false;
 		return true;
 	}	
 	
 	function checkPassword($login, $pass, $seed){
+        if(AuthService::ignoreUserCase()) $login = strtolower($login);
 		$userStoredPass = $this->getUserPass($login);
 		if(!$userStoredPass) return false;
 		if($seed == "-1"){ // Seed = -1 means that password is not encoded.
@@ -73,6 +108,7 @@ class serialAuthDriver extends AbstractAuthDriver {
 	}
 	
 	function createUser($login, $passwd){
+        if(AuthService::ignoreUserCase()) $login = strtolower($login);
 		$users = $this->listUsers();
 		if(!is_array($users)) $users = array();
 		if(array_key_exists($login, $users)) return "exists";
@@ -84,6 +120,7 @@ class serialAuthDriver extends AbstractAuthDriver {
 		AJXP_Utils::saveSerialFile($this->usersSerFile, $users);		
 	}	
 	function changePassword($login, $newPass){
+        if(AuthService::ignoreUserCase()) $login = strtolower($login);
 		$users = $this->listUsers();
 		if(!is_array($users) || !array_key_exists($login, $users)) return ;
 		if($this->getOption("TRANSMIT_CLEAR_PASS") === true){
@@ -94,6 +131,7 @@ class serialAuthDriver extends AbstractAuthDriver {
 		AJXP_Utils::saveSerialFile($this->usersSerFile, $users);
 	}	
 	function deleteUser($login){
+        if(AuthService::ignoreUserCase()) $login = strtolower($login);
 		$users = $this->listUsers();
 		if(is_array($users) && array_key_exists($login, $users))
 		{

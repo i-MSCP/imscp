@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-07 08:15+0200\n"
-"PO-Revision-Date: 2012-06-07 06:16+0000\n"
+"POT-Creation-Date: 2012-07-05 17:04+0200\n"
+"PO-Revision-Date: 2012-06-30 07:45+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {NAME},\n\nSe ha creado una nueva cuenta i-MSCP para ti.\n\nInformación de tu cuenta:\n\nTipo de usuario: {USERTYPE}\nNombre de usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nNo olvide cambiar su contraseña habitualmente y tambien la primera vez que usted inicie sesión.\n\nPuedes iniciar sesión ahora mismo en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nEstadísticas: {BASE_SERVER_VHOST_PREFIX}{USERNAME}/stats/\n(Mismo nombre de usuario y la contraseña de arriba)\n\nGracxias por usar los servicios i-MSCP.\n\n___________________________\nEl equipo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -69,7 +69,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {NAME},\n\nUna nueva cuenta i-MSCP ha sido creada para ti.\n\nInformación de tu cuenta:\n\nTipo de usuario: {USERTYPE}\nNombre de usuario: {USERNAME}\nContraseña: {PASSWORD}\n\nNo olvides cambiar tu contraseña habitualmente y tambiésn despues de iniciar sesión por primera vez.\n\nYa puedes iniciar sesión en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGracias por usar los servicios de i-MSCP.\n\n___________________________\nEl equipo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -92,7 +92,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {NAME},\n\nEsta es una confirmación automática para el pedido del dominio:\n\n{DOMAIN}\n\nDebes hacer click en el siguiente enlace para confirmar tu pedido.\n\n{ACTIVATION_LINK}\n\nSi no lo confirmas antes de  {EXPIRE_DATE}, será cancelado automáticamente.\n\nGracias por usar los servicios de i-MSCP.\n\n___________________________\nEl equipo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -108,7 +108,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {NAME},\n\nUsa este enlace para activar tu nueva contraseña  i-MSCP:\n\n{LINK}\n\nGracias por usar los servicios de i-MSCP.\n\n___________________________\nEl equipo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -140,7 +140,7 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nEstimado {RESELLER},\n\nTu cliente {CUSTOMER} está a la espera de la aprobación de su nuevo alias:\n\n{ALIAS}\n\nUna vez iniciada sesión, puedes activar su nuevo alias en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n\nGracias por usar los servicios de i-MSCP.\n\n___________________________\nEl equipo i-MSCP\n\n"
 
 msgid ""
 "\n"
@@ -157,42 +157,42 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
+msgstr "\n\nHola {NAME},\n\nTu nombre de usuario es: {USERNAME}\nTu contraseña es: {PASSWORD}\n\nPuedes iniciar sesión en {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGracias por usar los servicios de i-MSCP.\n\n___________________________\nEl equipo i-MSCP\n\n"
 
 #, php-format
 msgid ""
 "\n"
 "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "\nNo puedo validar el registro %s. Motivo: '%s'."
 
 #, php-format
 msgid ""
 "\n"
 "Unknown entry type %s."
-msgstr ""
+msgstr "\nTipo de entrada desconocido %s."
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
 msgstr "Mostrar todos los errores, a excepción de las advertencias sobre código obsoleto (Producción)"
 
 msgid " was deleted by {ADMIN}!"
-msgstr ""
+msgstr " ha sido eliminado por {ADMIN}!"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d"
-msgstr ""
+msgstr "%1$d / %2$d de %3$d"
 
 #, php-format
 msgid "%1$d / %2$d of %3$d</b>"
-msgstr ""
+msgstr "%1$d / %2$d de %3$d</b>"
 
 #, php-format
 msgid "%1$d / %2$d of unlimited"
-msgstr ""
+msgstr "%1$d / %2$d de ilimitado"
 
 #, php-format
 msgid "%1$d of %2$d"
-msgstr ""
+msgstr "%1$d de %2$d"
 
 #, php-format
 msgid "%1$d%% [%2$s of %3$s]"
@@ -208,7 +208,7 @@ msgstr "%1$s (%2$s)"
 
 #, php-format
 msgid "%1$s - (Softwaredepot)"
-msgstr ""
+msgstr "%1$s - (Repositorio de software)"
 
 #, php-format
 msgid "%1$s - (Version: %2$s, Language: %3$s)"
@@ -216,15 +216,15 @@ msgstr "%1$s - (Versión: %2$s, Idioma: %3$s)"
 
 #, php-format
 msgid "%1$s / %2$s of %3$s"
-msgstr ""
+msgstr "%1$s / %2$s de %3$s"
 
 #, php-format
 msgid "%1$s / %2$s of unlimited"
-msgstr ""
+msgstr "%1$s / %2$s de ilimitado"
 
 #, php-format
 msgid "%1$s of %2$s"
-msgstr ""
+msgstr "%1$s de %2$s"
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -248,7 +248,7 @@ msgstr "%1$s%% [%2$s de ilimitados]"
 
 #, php-format
 msgid "%1$s`s - Software"
-msgstr ""
+msgstr "%1$s`s - Software"
 
 #, php-format
 msgid "%d %s remaining until account expiration"
@@ -268,11 +268,11 @@ msgstr "Se ha/han actualizado %d parametro(s) de configuración."
 
 #, php-format
 msgid "%d of %s"
-msgstr ""
+msgstr "%d de %s"
 
 #, php-format
 msgid "%d of unlimited"
-msgstr ""
+msgstr "%d de ilimitado"
 
 #, php-format
 msgid "%d strings translated"
@@ -288,19 +288,19 @@ msgstr "La cuenta %s ha sido eliminada correctamente."
 
 #, php-format
 msgid "%s deleted the admin log older than one month."
-msgstr ""
+msgstr "%s ha eliminado el registro de administración anterior a un mes."
 
 #, php-format
 msgid "%s deleted the admin log older than one year."
-msgstr ""
+msgstr "%s ha eliminado el registro de administración anterior a un año."
 
 #, php-format
 msgid "%s deleted the admin log older than six months."
-msgstr ""
+msgstr "%s ha eliminado el registro de administración anterior a seis meses."
 
 #, php-format
 msgid "%s deleted the admin log older than three months."
-msgstr ""
+msgstr "%s ha eliminado el registro de administración anterior a tres meses."
 
 #, php-format
 msgid "%s deleted the admin log older than two weeks!"
@@ -308,7 +308,7 @@ msgstr "%s ha borrado las entradas más antiguas que 2 semanas del log de admini
 
 #, php-format
 msgid "%s deleted the full admin log."
-msgstr ""
+msgstr "%s ha eliminado todo el registro de administración."
 
 #, php-format
 msgid "%s does not exist"
@@ -336,11 +336,11 @@ msgstr "La lista %s está vacia! No puedes añadir cuentas de correo."
 
 #, php-format
 msgid "%s of %s"
-msgstr ""
+msgstr "%s de %s"
 
 #, php-format
 msgid "%s of unlimited"
-msgstr ""
+msgstr "%s de ilimitado"
 
 #, php-format
 msgid "%s page"
@@ -485,7 +485,7 @@ msgstr "(Ej. dominio-de-su-eleccion.es)"
 
 #, php-format
 msgid "(filtered from %s total records)"
-msgstr ""
+msgstr "(filtrado de un total de %s registros)"
 
 msgid "(usually named"
 msgstr "(normalmente llamado "
@@ -498,19 +498,19 @@ msgstr "errores relacionados con .htaccess"
 
 #, php-format
 msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service.<br />"
-msgstr ""
+msgstr "<b>%1$s</b> tiene derechos ilimitados para el Servicio <b>%2$s</b> .<br />"
 
 #, php-format
 msgid ""
 "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br />service in "
 "destination reseller.<br />"
-msgstr ""
+msgstr "<b>%1$s</b> está excediendo los límites para el servicio <b>%2$s</b><br /> en el distribuidor de destino.<br />"
 
 #, php-format
 msgid ""
 "<b>%s</b> has IP address that cannot be managed from the destination "
 "reseller!<br />This user cannot be moved!"
-msgstr ""
+msgstr "<b>%s</b> tiene una dirección IP que no puede ser administrada por el distribuidor de destino!<br />Este usuario no puede ser movido!"
 
 msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
@@ -524,13 +524,13 @@ msgid ""
 msgstr "<strong>Grácias por su adquisición.</strong><br /><br />Ha sido enviado un email de confirmación a su dirección de email. Recuerde de pulsar el enlace incluido en el email para validar su pedido."
 
 msgid "A PHP extension stopped the file upload."
-msgstr ""
+msgstr "Una extensión de PHP detuvo la carga de archivos."
 
 msgid ""
 "ACE labels are not allowed. Please use the ToUnicode equivalent.<br "
 "/><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
-msgstr ""
+msgstr "No estan permitidas las etiquetas ACE. Por favor use el equivalente ToUnicode.<br/><small>Ejemplo: para la eqtiqueta ACE <b>xn--bcher-kva</b> usa <b>bücher</b> en su lugar</small>."
 
 msgid "Access your domain statistics through the Awstats Web interface."
 msgstr "Accede a las estadísticas de tu dominio mediante la interfaz web de Awstats."
@@ -575,10 +575,10 @@ msgid "Activate"
 msgstr "Activar"
 
 msgid "Activate Entries"
-msgstr ""
+msgstr "Activar Entradas"
 
 msgid "Activate this plugin"
-msgstr ""
+msgstr "Activar este plugin"
 
 msgid "Activated softwares"
 msgstr "Software activado"
@@ -647,7 +647,7 @@ msgid "Add email account"
 msgstr "Añadir cuenta de email"
 
 msgid "Add external mail servers"
-msgstr ""
+msgstr "Añadir servidores externos de correo"
 
 msgid "Add group"
 msgstr "Añadir grupo"
@@ -665,10 +665,10 @@ msgid "Add new IP address"
 msgstr "Añadir nueva dirección IP"
 
 msgid "Add new database"
-msgstr ""
+msgstr "Añadir nueva Base de Datos"
 
 msgid "Add new line"
-msgstr ""
+msgstr "Añadir nueva linea"
 
 msgid "Add new protected area"
 msgstr "Añadir nueva area protegida"
@@ -713,7 +713,7 @@ msgid "Added by"
 msgstr "Añadido por"
 
 msgid "Addition in progress"
-msgstr ""
+msgstr "Creación en progreso"
 
 msgid "Additional data"
 msgstr "Información adicional"
@@ -731,7 +731,7 @@ msgid "Admin log"
 msgstr "Log de administración"
 
 msgid "Admin not available"
-msgstr ""
+msgstr "Admin no disponible"
 
 msgid "Admin users"
 msgstr "Usuarios administradores"
@@ -743,13 +743,13 @@ msgid "Administrator"
 msgstr "Administrador"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "Niveles Administrador y Distribuidor"
 
 msgid "Administrator and customer"
 msgstr "Administrador y cliente"
 
 msgid "Administrator and customer levels"
-msgstr ""
+msgstr "Niveles administrador y cliente"
 
 msgid "Administrator and reseller"
 msgstr "Administrador y distribuidor"
@@ -769,13 +769,13 @@ msgstr "Después del nombre"
 msgid ""
 "After your upload the package it will be installed on your systems.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
+msgstr "Después de su carga el paquete será instalado en tus sistemas. <br /> Actualiza tu sitio para ver el estado de nuevo!"
 
 msgid "Alias"
 msgstr "Alias"
 
 msgid "Alias / Canonical name"
-msgstr ""
+msgstr "Alias / nombre Canónico"
 
 msgid "Alias already assigned to another IP address."
 msgstr "El alias ya está asignado a otra dirección IP."
@@ -784,13 +784,13 @@ msgid "Alias awaiting for activation."
 msgstr "Àlias en espera de activación."
 
 msgid "Alias forward"
-msgstr ""
+msgstr "Redirección de alias"
 
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "¡La lista de alias está vacía! ¡No puede agregar cuentas de FTP ahi!"
 
 msgid "Alias mail"
-msgstr ""
+msgstr "Alias de correo"
 
 msgid "Alias mails"
 msgstr "Normal<br>(Alias de correo)"
@@ -811,10 +811,10 @@ msgid "Alias subdomain errors"
 msgstr "Errores de subdominios o alias"
 
 msgid "Alias subdomain forward"
-msgstr ""
+msgstr "Redirección de alias de subdominio"
 
 msgid "Alias subdomain mail"
-msgstr ""
+msgstr "Correo de alias de subdominio"
 
 msgid "Aliases"
 msgstr "Alias"
@@ -850,7 +850,7 @@ msgid "All out"
 msgstr "Todo saliente"
 
 msgid "All reseller"
-msgstr ""
+msgstr "Todo distribuidor"
 
 msgid "All resellers"
 msgstr "Todos los revendedores"
@@ -874,14 +874,14 @@ msgid "Alternative URL to reach your website"
 msgstr "URL alternativa para encontrar tu website"
 
 msgid "An error occured. Please, contact your administrator."
-msgstr ""
+msgstr "Ha ocurrido un error. Por favor, póngase en contacto con el administrador."
 
 msgid "An error occurred while the authentication attempt."
 msgstr "Se produjo un error durante el intento de autenticación."
 
 #, php-format
 msgid "An unknown error occured during file upload: %s"
-msgstr ""
+msgstr "Ha ocurrido un error desconocido mientras se cargaba el fichero: %s"
 
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Analizar el registro del anti-rootkit"
@@ -890,13 +890,13 @@ msgid "Apache logfiles"
 msgstr "Archivos de log de Apache"
 
 msgid "Application Description"
-msgstr ""
+msgstr "Descripción de la Aplicación"
 
 msgid "Application installer"
 msgstr "Instalador de aplicación"
 
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 msgid "Apply changes"
 msgstr "Aplicar cambios"
@@ -905,10 +905,10 @@ msgid "Are you sure to install this package from the webdepot?"
 msgstr "¿Estas seguro de instalar este paquete desde el repositorio web?"
 
 msgid "Are you sure to install this package?"
-msgstr ""
+msgstr "¿Estas seguro de instalar este paquete?"
 
 msgid "Are you sure to remove the permissions ?"
-msgstr ""
+msgstr "¿Estas seguro de eliminar los permisos?"
 
 #, php-format
 msgid "Are you sure you want delete the '%s' SQL user?"
@@ -937,7 +937,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "¿Desea realmente eliminar todos los tiquets cerrados?"
 
 msgid "Are you sure you want to delete all marked emails?"
-msgstr ""
+msgstr "¿Desea realmente eliminar todos los emails marcados?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "¿Estas seguro de querer eliminar todos los tiquets?"
@@ -952,7 +952,7 @@ msgstr "¿Desea realmente eliminar el CatchAll %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s external mail server?"
-msgstr ""
+msgstr "¿Desea realmente eliminar el servidor externo de correo %s?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -982,7 +982,7 @@ msgid ""
 msgstr "¿Seguro que deseas importar este paquete al repositorio local de software?"
 
 msgid "Are you sure you want to import this package into the software depot?"
-msgstr ""
+msgstr "¿Estas seguro que deseas importar este paquete al repositorio de software?"
 
 msgid ""
 "Are you sure you want to install this package from the Web software "
@@ -1005,7 +1005,7 @@ msgid "Assign group"
 msgstr "Asignar grupo"
 
 msgid "At first you must create a database!"
-msgstr ""
+msgstr "¡Primero debes crear una Base de Datos!"
 
 msgid "Auto email template data updated!"
 msgstr "¡Datos de la plantilla de auto email actualizados!"
@@ -1035,13 +1035,13 @@ msgid "Awaiting activation"
 msgstr "En espera de activación"
 
 msgid "Awaiting approval"
-msgstr ""
+msgstr "¡En espera de aprobación!"
 
 msgid "Awstats"
 msgstr "AWStats"
 
 msgid "B"
-msgstr ""
+msgstr "B"
 
 msgid "Back"
 msgstr "Atrás"
@@ -1071,34 +1071,34 @@ msgid "Behind the name"
 msgstr "Detras del nombre"
 
 msgid "Being enabled"
-msgstr ""
+msgstr "Habilitado"
 
 msgid "Being suspended"
-msgstr ""
+msgstr "Suspendido"
 
 msgid "Billing Settings"
 msgstr "Opciones de facturación"
 
 msgid "Blocking time between login/captcha attempts (seconds)"
-msgstr ""
+msgstr "Tiempo de bloqueo entre intentos de  Inicio de sesión / Captcha (en segundos)"
 
 msgid "Blocking time between logins and captcha attempts"
-msgstr ""
+msgstr "Tiempo de bloqueo entre intentos de inicio de sesión y captcha"
 
 msgid "Blocktime (minutes)"
 msgstr "Tiempo bloqueado (minutos)"
 
 msgid "Both source and destination are identical."
-msgstr ""
+msgstr "Ambos, origen y destino, son idénticos."
 
 msgid "Bruteforce detection"
 msgstr "Detección de Acceso ilegal por fuerza bruta"
 
 msgid "Bulk Actions"
-msgstr ""
+msgstr "Acciones masivas"
 
 msgid "By"
-msgstr ""
+msgstr "Por"
 
 msgid "CGI"
 msgstr "CGI"
@@ -1113,7 +1113,7 @@ msgid "CGI support"
 msgstr "Soporte CGI"
 
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 msgid "CPU MHz"
 msgstr "MHz del CPU"
@@ -1142,7 +1142,7 @@ msgstr "Orden de cancelación"
 
 #, php-format
 msgid "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "No se puede validar el registro %s. Razón: '%s'."
 
 msgid "Canonical name"
 msgstr "Nombre canónico"
@@ -1190,7 +1190,7 @@ msgid "Change"
 msgstr "Cambiar"
 
 msgid "Change Entries"
-msgstr ""
+msgstr "Cambiar entradas"
 
 msgid "Change SQL user password"
 msgstr "Cambiar contraseña de usuario SQL"
@@ -1216,23 +1216,23 @@ msgstr "¡Buscar actualizaciones!"
 msgid ""
 "Check the reseller uploads!<br />It is not allowed to upload this package "
 "two times.<br />Refresh your site to see the new status!"
-msgstr ""
+msgstr "¡Comprueba las cargas del distribuidor!<br />No está permitido cargar este paquete dos veces.<br />¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid ""
 "Check your own uploads!<br />Ask the administrator if you don't find the "
 "package.<br />It is not allowed to upload this packages two times.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
+msgstr "¡Comprueba tus propias cargas!<br />Pregunta al administrador si no encuentras el paquete.<br />No está permitido cargar este paquete dos veces.<br />¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid ""
 "Check your package. There is an error inside!<br />Refresh your site to see "
 "the new status!"
-msgstr ""
+msgstr "Comprueba tu paquete. ¡Contiene un error!<br />¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid ""
 "Check your software depot uploads!<br />It is not allowed to upload this "
 "package two times.<br />Refresh your site to see the new status!"
-msgstr ""
+msgstr "¡Comprueba las cargas de tu repositorio de software!<br />No está permitido cargar este paquete dos veces.<br />¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid "Choose"
 msgstr "Seleccionar"
@@ -1276,7 +1276,7 @@ msgid "Close the ticket"
 msgstr "Cerrar el tiquet"
 
 msgid "Close ticket"
-msgstr ""
+msgstr "Cerrar tiquet"
 
 msgid "Closed tickets"
 msgstr "Tickets cerrados"
@@ -1294,10 +1294,10 @@ msgid "Configuration in progress..."
 msgstr "Configuración en progreso..."
 
 msgid "Confirmation for domain order {DOMAIN}"
-msgstr ""
+msgstr "Confirmación para el pedido de dominio {DOMAIN}"
 
 msgid "Confirmation for plugin protection"
-msgstr ""
+msgstr "Confirmación para protecció del plug-in"
 
 msgid "Continue"
 msgstr "Continuar"
@@ -1333,10 +1333,10 @@ msgid "Create"
 msgstr "Crear"
 
 msgid "Create External mail server entry"
-msgstr ""
+msgstr "Crear entrada de servidor de correo Externo"
 
 msgid "Create Relay Entry"
-msgstr ""
+msgstr "Crear entrada de Relay"
 
 msgid "Create catch all"
 msgstr "Crear Catch-All"
@@ -1447,7 +1447,7 @@ msgid "Customer's layout color successfully updated."
 msgstr "Color de diseño del cliente modificado correctamente."
 
 msgid "Customer(s) successfully moved."
-msgstr ""
+msgstr "Cliente(s) movido(s) correctamente."
 
 msgid "Customers"
 msgstr "Clientes"
@@ -1508,7 +1508,7 @@ msgid "Database updates"
 msgstr "Actualizaciones de la Base de Datos"
 
 msgid "Database user list is empty!"
-msgstr ""
+msgstr "¡La lista de ususrios de la Base de Datos está vacia!"
 
 msgid "Database users"
 msgstr "Usuarios de base de datos"
@@ -1526,24 +1526,24 @@ msgid "Days"
 msgstr "Dias"
 
 msgid "Deactivate"
-msgstr ""
+msgstr "Desactivar"
 
 msgid "Deactivate this plugin"
-msgstr ""
+msgstr "Desactivar este plug-in"
 
 #, php-format
 msgid ""
 "Dear %s,\n"
 "\n"
 "You have a new ticket:\n"
-msgstr ""
+msgstr "Estimado %s,\n\nTiene un nuevo tiquet:\n"
 
 #, php-format
 msgid ""
 "Dear %s,\n"
 "\n"
 "You have an answer for this ticket:\n"
-msgstr ""
+msgstr "Estimado %s,\n\nTiene una nueva respuesta para este tiquet:\n"
 
 msgid ""
 "Dear {ADMIN},\n"
@@ -1555,7 +1555,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Estimado {ADMIN},\n\t{RESELLER} ha cargado un nuevo paquete de software.\n\n\tDetalles:\n\tDistribuidor ID: {RESELLER_ID}\n\tNombre del Paquete: {SOFTWARE}\n\tPaquete ID: {SOFTWARE_ID}\n\n        Por favor, inicia sesión en tu panel de control  i-MSCP para mas detalles."
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1567,7 +1567,7 @@ msgid ""
 "\n"
 "\tMessage from {ADMIN}:\n"
 "\t"
-msgstr ""
+msgstr "Estimado {RESELLER},\n\t\tEl software que has cargado ha sido eliminado por {ADMIN}.\n\n\tDetalles:\n\tNombre del Paquete: {SOFTWARE}\n\tPaquete ID: {SOFTWARE_ID}\n\n\tMensaje de {ADMIN}:\n\t"
 
 msgid ""
 "Dear {RESELLER},\n"
@@ -1578,7 +1578,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Estimado {RESELLER},\n\tEl paquete de software que has cargado ha sido activado por {ADMIN}.\n\n\tDetalles:\n\tNombre del Paquete: {SOFTWARE}\n\tPaquete ID: {SOFTWARE_ID}\n\n        Por favor, inicia sesión en tu panel de control  i-MSCP para mas detalles."
 
 msgid "Debugger"
 msgstr "Depurador"
@@ -1590,7 +1590,7 @@ msgid "Default language successfully updated."
 msgstr "Se ha actualizado el Idioma por defecto."
 
 msgid "Del"
-msgstr ""
+msgstr "Del"
 
 msgid "Delete"
 msgstr "Eliminar"
@@ -1599,7 +1599,7 @@ msgid "Delete CatchAll"
 msgstr "Eliminar Catch-All"
 
 msgid "Delete Relay Entry"
-msgstr ""
+msgstr "Eliminar entrada de Relay"
 
 msgid "Delete all tickets"
 msgstr "Eliminar todos los tiquets"
@@ -1617,7 +1617,7 @@ msgid "Delete from log:"
 msgstr "Eliminar del log:"
 
 msgid "Delete marked mails"
-msgstr ""
+msgstr "Eliminar correos marcados"
 
 msgid "Delete order"
 msgstr "Eliminar pedido"
@@ -1632,7 +1632,7 @@ msgid "Delete the ticket"
 msgstr "Eliminar el Tiquet"
 
 msgid "Deletion in progress"
-msgstr ""
+msgstr "Eliminación en progreso"
 
 msgid "Deletion in progress..."
 msgstr "Eliminación en progreso..."
@@ -1641,7 +1641,7 @@ msgid "Demo Version!"
 msgstr "¡Versión Demostración!"
 
 msgid "Depot import"
-msgstr ""
+msgstr "Repositorio de importación "
 
 msgid "Description"
 msgstr "Descripcion"
@@ -1710,7 +1710,7 @@ msgid "Domain"
 msgstr "Dominio"
 
 msgid "Domain Aliases"
-msgstr ""
+msgstr "Alias de Dominio"
 
 msgid "Domain FTP accounts"
 msgstr "Cuentas FTP del dominio"
@@ -1734,7 +1734,7 @@ msgid "Domain account expired."
 msgstr "Cuenta de dominio expirada."
 
 msgid "Domain account is in inconsistent state."
-msgstr ""
+msgstr "El estado de la cuenta de dominio es inconsistente."
 
 msgid "Domain account scheduled for activation."
 msgstr "La cuenta de dominio está programada para su activación."
@@ -1879,7 +1879,7 @@ msgid "Domain expires date"
 msgstr "Fecha de expiración del dominio"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Correo de dominio"
 
 msgid "Domain mails"
 msgstr "Correos del dominio"
@@ -1939,7 +1939,7 @@ msgid "Domains per page"
 msgstr "Dominios por página"
 
 msgid "Domaintype not allowed for external mail servers."
-msgstr ""
+msgstr "Tipo de dominio no permitido para servidores externos de correo."
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr "No use caracteres especiales como \"@, $, %...\" en la contraseña."
@@ -1960,7 +1960,7 @@ msgid "E-Mail settings"
 msgstr "Configuración del E-Mail"
 
 msgid "EB"
-msgstr ""
+msgstr "EB"
 
 msgid "Edit"
 msgstr "Editar"
@@ -1972,7 +1972,7 @@ msgid "Edit Domain"
 msgstr "Editar dominio"
 
 msgid "Edit External mail server entries"
-msgstr ""
+msgstr "Editar entradas de servidor de correo externo"
 
 msgid "Edit FTP user"
 msgstr "Editar usuario de FTP"
@@ -1981,7 +1981,7 @@ msgid "Edit Ftp account"
 msgstr "Editar cuenta Ftp"
 
 msgid "Edit Relay Entry"
-msgstr ""
+msgstr "Editar entrada de Relay"
 
 msgid "Edit SSL certificate"
 msgstr "Editar certificado SSL"
@@ -2017,7 +2017,7 @@ msgid "Edit error page"
 msgstr "Editar pagina de error"
 
 msgid "Edit external mail servers"
-msgstr ""
+msgstr "Editar servidores de correo externos"
 
 msgid "Edit hosting plan"
 msgstr "Editar plan de hosting"
@@ -2032,7 +2032,7 @@ msgid "Edit mail auto responder"
 msgstr "Editar el mensaje de auto-respuesta"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Editar cuota de correo"
 
 msgid "Edit protected area"
 msgstr "Editar área protegida"
@@ -2047,7 +2047,7 @@ msgid "Edit user"
 msgstr "Editar usuario"
 
 msgid "EiB"
-msgstr ""
+msgstr "EiB"
 
 msgid "Email"
 msgstr "Correo electrónico"
@@ -2062,7 +2062,7 @@ msgid "Email address"
 msgstr "Dirección de Email"
 
 msgid "Email forward"
-msgstr ""
+msgstr "Reenvio de Email"
 
 msgid "Email marketing"
 msgstr "Email masivo"
@@ -2071,7 +2071,7 @@ msgid "Email setup"
 msgstr "Configuración de eMail"
 
 msgid "Emailadress"
-msgstr ""
+msgstr "Dirección de Email"
 
 msgid "Emails"
 msgstr "Correos electrónicos"
@@ -2122,10 +2122,10 @@ msgid "Entered passwords doesn't match."
 msgstr "Las contraseñas introducidas no coinciden"
 
 msgid "Entered passwords doesn't matches."
-msgstr ""
+msgstr "Las contraseñas introducidas no coinciden."
 
 msgid "Entry type"
-msgstr ""
+msgstr "Tipo de entrada"
 
 msgid "Error"
 msgstr "Error"
@@ -2158,7 +2158,7 @@ msgid "Error state..."
 msgstr "Estado de error..."
 
 msgid "Error while trying to obtain list of network cards."
-msgstr "Error while trying to obtain list of network cards."
+msgstr "Error mientras se intentaba obtener una lista de tarjetas de red."
 
 msgid "Error: Remote File not found!"
 msgstr "Error: Archivo Remoto no localizado!"
@@ -2188,19 +2188,19 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "Tiempo de expiración para órdenes no confirmadas<br /><small>(En dias)</small>"
 
 msgid "External mail server"
-msgstr ""
+msgstr "Servidor de correo externo"
 
 msgid "External mail servers"
-msgstr ""
+msgstr "Servidores de correo externos"
 
 msgid "External mail servers scheduled for addition."
-msgstr ""
+msgstr "Servidores externos de correo programados para ser añadidos."
 
 msgid "External mail servers scheduled for deletion."
-msgstr ""
+msgstr "Servidores externos de correo programados para ser eliminados."
 
 msgid "External mail servers status"
-msgstr ""
+msgstr "Estado de los servidores de correo externos."
 
 msgid "FTP"
 msgstr "Transferencia FTP"
@@ -2255,13 +2255,13 @@ msgid "FTPs total"
 msgstr "Total FTPs"
 
 msgid "Failed to write file to disk."
-msgstr ""
+msgstr "Fallo al grabar fichero en el disco."
 
 msgid "Failure in package. Deleting!"
-msgstr ""
+msgstr "Fallo en paquete. ¡Eliminandolo!"
 
 msgid "Failure in the package. Deleting!"
-msgstr ""
+msgstr "Fallo en el paquete. ¡Eliminandolo!"
 
 msgid "Fax"
 msgstr "Fax"
@@ -2284,7 +2284,7 @@ msgid "File does not exist. %1$s.tar.gz"
 msgstr "Fichero no existe. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
-msgstr ""
+msgstr "El fichero excede el limite de tamaño."
 
 msgid "File is not readable."
 msgstr "No se puede leer el archivo."
@@ -2347,7 +2347,7 @@ msgid "Free"
 msgstr "Libre"
 
 msgid "Free of charge"
-msgstr ""
+msgstr "Sin cargo"
 
 msgid "From"
 msgstr "De"
@@ -2380,7 +2380,7 @@ msgid "Full"
 msgstr "Todo"
 
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 msgid "Gender"
 msgstr "Sexo"
@@ -2407,7 +2407,7 @@ msgid "Get it at"
 msgstr "Obtener en"
 
 msgid "GiB"
-msgstr ""
+msgstr "GiB"
 
 msgid "Go back"
 msgstr "Volver atrás"
@@ -2533,7 +2533,7 @@ msgid "Htaccess user successfully scheduled for addition."
 msgstr "Usuario Htaccess programado para ser añadido."
 
 msgid "Http traffic"
-msgstr ""
+msgstr "Tráfico Http"
 
 msgid "I Accept The Term of Service"
 msgstr "Acepto las condiciones del Servicio"
@@ -2563,7 +2563,7 @@ msgid "IP addresses configured"
 msgstr "Dirección IP configurada"
 
 msgid "IP or FQDN-Servername"
-msgstr ""
+msgstr "IP o Nombre de servidor-FQDN"
 
 msgid "IP scheduled for deletion."
 msgstr "IP programada para su eliminación."
@@ -2587,19 +2587,19 @@ msgid ""
 "If you protect a plugin, you'll no longer be able to deactivate it from the "
 "plugin management interface.<br /><br />To unprotect  a plugin, you'll have "
 "to edit the %s file."
-msgstr ""
+msgstr "Si usted protege a un plug-in, usted ya no podrá desactivarlo desde el interfaz de administración de plug-in. <br /> <br /> Para desproteger un plug-in, usted tendrá que editar el archivo %s."
 
 msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "Para poner limites a un distribuidor, primero debes poner límites a sus clientes."
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr ""
+msgstr "Las imágenes deben ser menores de 500 x 900 pixels."
 
 msgid "Implementation URL"
 msgstr "Implementación URL"
 
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 msgid "Import in local repository"
 msgstr "Importar repositorio local"
@@ -2675,7 +2675,7 @@ msgid "Incorrect mount point syntax."
 msgstr "Sintaxis de punto de montaje incorrecta."
 
 msgid "Incorrect or is not allowed."
-msgstr ""
+msgstr "Incorrecto o no está permitido."
 
 msgid "Incorrect price. Example: 9.99"
 msgstr "Precio incorrecto. Ejemplo: 9.99"
@@ -2708,7 +2708,7 @@ msgid "Install Software"
 msgstr "Instalar Software"
 
 msgid "Install in progress..."
-msgstr ""
+msgstr "Instalación en progreso..."
 
 msgid "Install path"
 msgstr "Ruta de instalación"
@@ -2720,28 +2720,28 @@ msgid "Installation details"
 msgstr "Detalles de instalación"
 
 msgid "Installation infos"
-msgstr ""
+msgstr "Información de instalación"
 
 msgid "Installation path:"
-msgstr ""
+msgstr "Ruta de instalación"
 
 msgid "Installed Package which was deleted by your reseller."
-msgstr ""
+msgstr "Paquete instalado que fue eliminado por el distribuidor."
 
 msgid "Installed in reseller depot"
-msgstr ""
+msgstr "Instalado en el reporitorio del distribuidor"
 
 msgid "Installed in software depot"
-msgstr ""
+msgstr "Instalado en el repositorio de software"
 
 msgid "Installed on"
 msgstr "Instalado en"
 
 msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
+msgstr "Instalando el paquete cargado. Por favor, refresque el sitio."
 
 msgid "Installing your uploaded package. Please refresh this site."
-msgstr ""
+msgstr "Instalando el paquete cargado. Por favor, refresque este sitio."
 
 msgid "Instructions to download today's backup"
 msgstr "Instrucciones para descargar el backup de hoy"
@@ -2753,7 +2753,7 @@ msgid "Internationalization"
 msgstr "Internacionalización"
 
 msgid "Invalid NAME"
-msgstr ""
+msgstr "NAME no válido"
 
 msgid "Invalid URL."
 msgstr "URL inválida"
@@ -2763,10 +2763,10 @@ msgstr "Certificado inválido"
 
 #, php-format
 msgid "Invalid characters in TXT data (\"%s\")"
-msgstr ""
+msgstr "Caracteres no válidos en contenido TXT (\"%s\")"
 
 msgid "Invalid expiration date."
-msgstr ""
+msgstr "Fecha de expiración no válida."
 
 msgid "Invalid group name!"
 msgstr "¡Nombre de grupo invalido!"
@@ -2800,11 +2800,11 @@ msgstr "Id. de usuario no válido"
 
 #, php-format
 msgid "Ip %s is blocked for %s minutes."
-msgstr ""
+msgstr "La IP %s está bloqueada por %s minutos."
 
 #, php-format
 msgid "Ip %s is waiting %s seconds."
-msgstr ""
+msgstr "La IP %s está esperando %s segundos."
 
 msgid "Ip management"
 msgstr "Administración de IP"
@@ -2823,7 +2823,7 @@ msgstr "Dominio"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
-msgstr ""
+msgstr "Etiqueta no permitida:<b>%s</b>"
 
 msgid "Language"
 msgstr "Idioma"
@@ -2865,10 +2865,10 @@ msgid "Layout"
 msgstr "Diseño"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Color de diseño"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "El color de diseño ha sido actualizado correctamente."
 
 msgid "Layout settings"
 msgstr "Configuración del diseño"
@@ -2876,7 +2876,7 @@ msgstr "Configuración del diseño"
 msgid ""
 "Leave this field empty if you do not want term of service for this hosting "
 "plan."
-msgstr ""
+msgstr "Deja este campo vacio si no deseas terminos de servicio para este plan de alojamiento."
 
 msgid "Level"
 msgstr "Nivel"
@@ -2885,13 +2885,13 @@ msgid "Limit"
 msgstr "Limite"
 
 msgid "Limit value"
-msgstr ""
+msgstr "Valor límite"
 
 msgid "Limits"
-msgstr ""
+msgstr "Límites"
 
 msgid "Link"
-msgstr ""
+msgstr "Enlace"
 
 msgid "Link to authors homepage"
 msgstr "Enlace a la página del autor"
@@ -2900,7 +2900,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Carga (1 Min, 5 Min, 15 Min)"
 
 msgid "Log in to answer"
-msgstr ""
+msgstr "Inicia sesión para responder"
 
 msgid "Login"
 msgstr "Iniciar sesión"
@@ -2910,25 +2910,25 @@ msgstr "Iniciar sesión como"
 
 #, php-format
 msgid "Login data successfully sent to %s."
-msgstr ""
+msgstr "Datos de inicio de sesión enviados con éxito a %s."
 
 msgid "Login into PhpMyAdmin"
 msgstr "Iniciar sesión en PhpMyAdmin"
 
 msgid "Login into PḧpMyAdmin"
-msgstr ""
+msgstr "Iniciar sesión enPhpMyAdmin"
 
 msgid "Login into the filemanager"
-msgstr ""
+msgstr "Iniciar sesion en filemanager"
 
 msgid "Login into the webmail"
-msgstr ""
+msgstr "Iniciar sesión en el webmail"
 
 msgid "Login password"
-msgstr ""
+msgstr "Contraseña de inicio de sesión"
 
 msgid "Login username"
-msgstr ""
+msgstr "Usuari de inicio de sesión"
 
 msgid "Login with your FTP account"
 msgstr "Iniciar sesión con su cuenta de FTP"
@@ -2946,7 +2946,7 @@ msgid "Logout"
 msgstr "Cerrar sesión"
 
 msgid "Logs successfully deleted."
-msgstr ""
+msgstr "Registro (logs) eliminado correctamente."
 
 msgid "Lost password"
 msgstr "No recuerdo mi contraseña"
@@ -2958,7 +2958,7 @@ msgid "Lost password link"
 msgstr "Link de contraseña perdida"
 
 msgid "Lost password mail"
-msgstr ""
+msgstr "Correo para contraseña perdida"
 
 msgid "Lostpw email"
 msgstr "Recuperación de contraseña"
@@ -2973,22 +2973,22 @@ msgid "Low"
 msgstr "Bajo"
 
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 msgid "MX"
-msgstr ""
+msgstr "MX"
 
 msgid "MX entry IN"
-msgstr ""
+msgstr "Entrada MX IN"
 
 msgid "Mail"
 msgstr "Correo"
 
 msgid "Mail Accounts"
-msgstr ""
+msgstr "Cuentas de Correo"
 
 msgid "Mail Log Level"
-msgstr ""
+msgstr "Nivel de registro (log) de correo"
 
 msgid "Mail account"
 msgstr "Cuenta de correo"
@@ -3006,13 +3006,13 @@ msgid "Mail account not found."
 msgstr "Cuenta de correo no encontrada."
 
 msgid "Mail account quota updated."
-msgstr ""
+msgstr "Cuota de cuenta de correo actualizada."
 
 msgid "Mail account scheduled for addition."
 msgstr "Cuenta de correo programada para añadirse."
 
 msgid "Mail account scheduled for deletion."
-msgstr ""
+msgstr "Cuenta de correo programada para su eliminación."
 
 msgid "Mail account scheduled for update."
 msgstr "Cuenta de correu programada para ser actualizada."
@@ -3023,7 +3023,7 @@ msgstr "Cuentas de correo"
 msgid ""
 "Mail accounts limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de cuentas de correo <br /><span class=\"italic\">(-1 desactivado, 0 ilimitadas)</span>"
 
 msgid "Mail accounts limit reached!"
 msgstr "Has llegado al límite de cuentas correo electrónico!"
@@ -3034,7 +3034,7 @@ msgstr "Se ha alcanzado el límite de cuentas de correo."
 msgid ""
 "Mail accounts limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de cuentas de correo<br/><span class=\"italic\">(-1 desactivado, 0 ilimitadas)</span>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de cuentas de mail<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
@@ -3064,10 +3064,10 @@ msgid "Mails total"
 msgstr "Total de correos"
 
 msgid "Main menu labels visibility successfully updated."
-msgstr ""
+msgstr "Visibilidad de las etiquetes del menú principal actualizada correctamente."
 
 msgid "Maintenance message"
-msgstr ""
+msgstr "Mensaje de mantenimiento"
 
 msgid "Maintenance mode"
 msgstr "Modo mantenimiento"
@@ -3075,19 +3075,19 @@ msgstr "Modo mantenimiento"
 msgid ""
 "Maintenance mode is activated. Under this mode, only administrators can "
 "login."
-msgstr ""
+msgstr "El modo mantenimiento está activado. Bajo este modo solo puede iniciar sesión el administrador."
 
 msgid "Male"
 msgstr "Hombre"
 
 msgid "Manage Customers"
-msgstr ""
+msgstr "Administrar Clientes"
 
 msgid "Manage Domains"
 msgstr "Administrar Dominios"
 
 msgid "Manage Hosting Plans"
-msgstr ""
+msgstr "Administrar Planes de Alojamiento"
 
 msgid "Manage IPs"
 msgstr "Administrar IPs"
@@ -3099,13 +3099,13 @@ msgid "Manage SQL"
 msgstr "Administrar SQL"
 
 msgid "Manage Users"
-msgstr ""
+msgstr "Administrar Usuarios"
 
 msgid "Manage alias"
 msgstr "Administrar alias"
 
 msgid "Manage aliasses"
-msgstr ""
+msgstr "Administrar alias"
 
 msgid "Manage domain alias"
 msgstr "Administrar alias de dominio"
@@ -3117,7 +3117,7 @@ msgid "Manage hosting plans"
 msgstr "Administrar planes de hosting"
 
 msgid "Manage htaccess users and groups"
-msgstr ""
+msgstr "Administrar usuarios y grupos htaccess"
 
 msgid "Manage orders"
 msgstr "Administrar pedidos"
@@ -3141,7 +3141,7 @@ msgid "Mark"
 msgstr "Marcar"
 
 msgid "Mark all"
-msgstr ""
+msgstr "Marcar todos"
 
 msgid "Master domain cannot be used."
 msgstr "El dominio maestro no puede ser utilizado."
@@ -3159,11 +3159,11 @@ msgid "Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de subdominios<br><i>(-1 deshabilitado, 0 ilimitadas)</i>"
 
 msgid "Max traffic"
-msgstr ""
+msgstr "Tráfico máximo"
 
 #, php-format
 msgid "Max value for the %s PHP directive"
-msgstr ""
+msgstr "Valor máximo de la directiva PHP %s"
 
 #, php-format
 msgid "Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
@@ -3180,14 +3180,14 @@ msgid ""
 msgstr "Máximo número de etiquetas para nombres de dominio<br />(<small>Excluyendo SLD & TLD</small>)"
 
 msgid "Maximum number of captcha validation attempts"
-msgstr ""
+msgstr "Número máximo de intntos validaciones captcha"
 
 msgid "Maximum number of labels for subdomains"
 msgstr "Máximo número de etiquetas para subdominios"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
-msgstr ""
+msgstr "Número máximo de intentos de validación antes de intervenir la restricción de espera"
 
 msgid "Medium"
 msgstr "Medio"
@@ -3217,7 +3217,7 @@ msgid "Messages"
 msgstr "mensajes"
 
 msgid "MiB"
-msgstr ""
+msgstr "MiB"
 
 msgid "Minute"
 msgstr "Minuto"
@@ -3229,7 +3229,7 @@ msgid "Missing domain"
 msgstr "Falta dominio"
 
 msgid "Modification in progress"
-msgstr ""
+msgstr "Modificación en progreso"
 
 msgid "Modify"
 msgstr "Modificar"
@@ -3256,7 +3256,7 @@ msgid "Move"
 msgstr "Mover"
 
 msgid "Moving aborted."
-msgstr ""
+msgstr "Mover abortado."
 
 msgid "MySQL support"
 msgstr "Soporte MySQL"
@@ -3274,16 +3274,16 @@ msgid "Network interface"
 msgstr "Interfaz de red"
 
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
 msgid "Never expires"
-msgstr ""
+msgstr "No expira nunca"
 
 msgid "New Sql user data"
 msgstr "Datos del nuevo usuario SQL"
 
 msgid "New alias order for {CUSTOMER}"
-msgstr ""
+msgstr "Nuevo pedido de alias de {CUSTOMER}"
 
 msgid "New i-MSCP update is available"
 msgstr "Nueva actualización de i-MSCP disponible"
@@ -3298,7 +3298,7 @@ msgid "New password has not been sent. Ask your administrator."
 msgstr "La nueva contraseña no se ha enviado. Pregunte a su administrador."
 
 msgid "New password is"
-msgstr ""
+msgstr "La nueva contraseña es"
 
 msgid "New ticket"
 msgstr "Nuevo ticket"
@@ -3313,16 +3313,16 @@ msgid "No"
 msgstr "No"
 
 msgid "No IP address found."
-msgstr ""
+msgstr "No se encontró dirección IP."
 
 msgid "No Ip statistics to be show."
 msgstr "No hay estadísticas Ip para mostrar."
 
 msgid "No Reseller available to add the permissions"
-msgstr ""
+msgstr "Ningún distribuidor disponible para agregar los permisos"
 
 msgid "No Reseller with permissions for this software found"
-msgstr ""
+msgstr "No se ha encontrado ningun distribuidor con pernisos para este software"
 
 msgid "No Resellers found."
 msgstr "No se encontraron Distribuidores."
@@ -3337,13 +3337,13 @@ msgid "No available hosting packages."
 msgstr "No hay paquetes de alojamiento disponibles."
 
 msgid "No certificate found."
-msgstr ""
+msgstr "No se encontró certificado."
 
 msgid "No corresponding subdomain found."
 msgstr "Se ha encontrado un subdominio que no corresponde."
 
 msgid "No custom menu found."
-msgstr ""
+msgstr "No se encontró menú personalizado."
 
 msgid "No customer accounts found."
 msgstr "No se encontraron cuentas de clients."
@@ -3355,10 +3355,10 @@ msgid "No domain alias system errors"
 msgstr "No hay errores en el sistema de alias de dominio"
 
 msgid "No domain statistics to display for this reseller."
-msgstr ""
+msgstr "No hay estadísticas para mostrar de este distribuidor."
 
 msgid "No domain statistics to display."
-msgstr ""
+msgstr "No hay estadísticas de dominio para mostrar."
 
 msgid "No domain system errors"
 msgstr "No hay errores en el sistema de dominio"
@@ -3367,21 +3367,21 @@ msgid "No email account system errors"
 msgstr "No hay errores en el sistema de cuentas de eMail"
 
 msgid "No external mail entries available."
-msgstr ""
+msgstr "No hay disponibles entradas de correo externo."
 
 msgid "No file was uploaded."
-msgstr ""
+msgstr "No se cargó ningún archivo."
 
 msgid "No found."
-msgstr ""
+msgstr "No encontrado."
 
 msgid "No group found."
-msgstr ""
+msgstr "No se encontro grupo."
 
 msgid ""
 "No hosting plan available for purchasing. Please contact your system "
 "administrator."
-msgstr ""
+msgstr "No hay un plan de alojamiento disponible para la compra. Por favor, póngase en contacto con el administrador del sistema."
 
 msgid "No htaccess related system errors"
 msgstr "No hay errores relacionados con el sistema htaccess"
@@ -3390,13 +3390,13 @@ msgid "No languages found."
 msgstr "No se encontraron idiomas."
 
 msgid "No logs found."
-msgstr ""
+msgstr "No se encontraron registros (logs)."
 
 msgid "No new i-MSCP updates available"
 msgstr "No hay nuevas actualizaciones de i-MSCP disponibles!"
 
 msgid "No provided"
-msgstr ""
+msgstr "No se ha proporcionado"
 
 msgid "No records found"
 msgstr "No se encontraron registros"
@@ -3405,46 +3405,46 @@ msgid "No reseller accounts found."
 msgstr "No se han encontrado cuentas de distribuidor"
 
 msgid "No reseller with activated software installer found!"
-msgstr ""
+msgstr "¡No se ha encontrado ningún distribuidor con el instalador de software activado!"
 
 msgid "No set"
 msgstr "No aplicado"
 
 msgid "No software available"
-msgstr ""
+msgstr "No hay software disponible"
 
 msgid "No software available!"
-msgstr ""
+msgstr "¡No hay software disponible!"
 
 msgid "No software in software depot available!"
-msgstr ""
+msgstr "¡No hay software disponible en el repositorio de software!"
 
 msgid "No software in webdepot found!"
-msgstr ""
+msgstr "¡No se encontró software en el repositorio web!"
 
 msgid "No software is waiting for activation"
-msgstr ""
+msgstr "No hay software esperando activación"
 
 msgid "No statistics found for the given period. Try another period."
-msgstr ""
+msgstr "No se encontraron estadísticas para el periodo indicado. Pruebe con otro período."
 
 msgid "No subdomain system errors"
 msgstr "No hay errores en el sistema de subdominios"
 
 msgid "No such update order found."
-msgstr ""
+msgstr "No se ha encontrado el pedido de actualización."
 
 msgid "No unassigned users was found in database."
-msgstr ""
+msgstr "No se encontraron usuarios sin asignar en la Base de Datos."
 
 msgid "No update for the websoftware depot list available"
-msgstr ""
+msgstr "No hay ninguna actualización de la lista del repositorio web de software"
 
 msgid "No user found."
-msgstr ""
+msgstr "No se encontró usuario."
 
 msgid "No users found for this reseller."
-msgstr ""
+msgstr "No se encontraron usuarios de este distribuidor."
 
 msgid "No valid alias domain selected."
 msgstr "El alias de dominio seleccionado no es válido."
@@ -3456,7 +3456,7 @@ msgid "None"
 msgstr "Ninguno"
 
 msgid "Normal connection"
-msgstr ""
+msgstr "Conexión normal"
 
 msgid "Normal mail"
 msgstr "Correo comun"
@@ -3477,19 +3477,19 @@ msgid "Not found user records matching the search criteria."
 msgstr "No se han encontrado registros de usuraio que coincidan con el criterio de búsqueda."
 
 msgid "Not needed in CNAME"
-msgstr ""
+msgstr "No se necesita en CNAME"
 
 msgid "Not used"
-msgstr ""
+msgstr "No usado"
 
 msgid "Nothing been changed."
 msgstr "No se ha modificado nada."
 
 msgid "Nothing found - sorry"
-msgstr ""
+msgstr "Nada encontrado - disculpa"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "No se ha cambiado nada."
 
 msgid "Nothing's been changed"
 msgstr "No se ha modificado nada."
@@ -3510,7 +3510,7 @@ msgid "Ok"
 msgstr "Ok"
 
 msgid "One DNS entry must still exist."
-msgstr ""
+msgstr "Una entrada DNS debe seguir existiendo."
 
 msgid "One or more database updates are now available. See the details below."
 msgstr "Una o mas actualizaciones de Base de Datos estan disponibles. Ver los detalles debajo."
@@ -3520,28 +3520,28 @@ msgid ""
 msgstr "Solo dominios de primer nivel (TLD) que figuran en la zona de base de datos raíz de IANA se puede utilizar."
 
 msgid "Only administrators can login when maintenance mode is activated."
-msgstr ""
+msgstr "Solo los administradores pueden iniciar sesión cuendo está activado el modo de mantenimiento."
 
 msgid "Only exec"
-msgstr ""
+msgstr "Solo exec"
 
 msgid "Only gettext Machine Object files (MO files) are accepted."
 msgstr "Solo se aceptan gettex Machine Object files (MO files)."
 
 msgid "Only positive numbers are allowed for services ports."
-msgstr ""
+msgstr "Solo estan permitidos numeros positivos para los puertos de servicios."
 
 msgid "Only positive numbers are allowed."
 msgstr "Solo se admiten números positivos."
 
 msgid "Open ticket"
-msgstr ""
+msgstr "Abrir tiquet"
 
 msgid "Open tickets"
 msgstr "Tickets abiertos"
 
 msgid "Optional"
-msgstr ""
+msgstr "Opcional"
 
 msgid "Options"
 msgstr "Opciones"
@@ -3550,7 +3550,7 @@ msgid "Order"
 msgstr "Pedido"
 
 msgid "Order Canceled: resellers limit(s) exceeded."
-msgstr ""
+msgstr "Pedido cancelado: excedido(s) el/los limite(s) de distribuidores."
 
 msgid "Order Cancelled: resellers limit(s) exceeded."
 msgstr "Pedido Cancelado: se superó/superaron el/los limite(s) de distribuidores."
@@ -3562,7 +3562,7 @@ msgid "Order Panel / Checkout"
 msgstr "Panel de Pedido / Realizar Pedido"
 
 msgid "Order Panel / Choose hosting plan"
-msgstr ""
+msgstr "Panel de pedidos / Elegir plan de alojamiento"
 
 msgid "Order Panel / Choosing a domain name"
 msgstr "Panel de Pedido / Esgoge un nombre de dominio"
@@ -3583,7 +3583,7 @@ msgid "Order details"
 msgstr "Detalles del pedido"
 
 msgid "Order email"
-msgstr ""
+msgstr "Pedido de email"
 
 msgid "Order email setup"
 msgstr "Configuración del eMail de pedidos"
@@ -3604,10 +3604,10 @@ msgid "Order successfully updated."
 msgstr "El pedido ha sido actualizado correctamente."
 
 msgid "Order template"
-msgstr ""
+msgstr "Pedido plantilla"
 
 msgid "Orders"
-msgstr ""
+msgstr "Pedidos"
 
 msgid "Orders settings"
 msgstr "Configuración de órdenes"
@@ -3628,26 +3628,26 @@ msgid "Owner"
 msgstr "Propietario"
 
 msgid "PB"
-msgstr ""
+msgstr "PB"
 
 msgid "PHP"
 msgstr "PHP"
 
 #, php-format
 msgid "PHP %s directive"
-msgstr ""
+msgstr "Directiva PHP %s"
 
 msgid "PHP Editor"
-msgstr ""
+msgstr "Editor PHP"
 
 msgid "PHP Editor Settings"
-msgstr ""
+msgstr "Configuración editor PHP"
 
 msgid "PHP GD extension not loaded."
 msgstr "No se ha cargado la extensión PHP GD."
 
 msgid "PHP Settings (system default)"
-msgstr ""
+msgstr "Configuración PHP (predeterminado del sistema)"
 
 msgid "PHP Support: disabled"
 msgstr "Soporte PHP: deshabilitado"
@@ -3656,16 +3656,16 @@ msgid "PHP Support: enabled"
 msgstr "Soporte PHP: habilitado"
 
 msgid "PHP configuration scheduled for update."
-msgstr ""
+msgstr "Configuración de PHP programada para su actualización."
 
 msgid "PHP directives values"
-msgstr ""
+msgstr "Valores de las directivas PHP"
 
 msgid "PHP exec() function"
-msgstr ""
+msgstr "Función PHP exec()"
 
 msgid "PHP settings"
-msgstr ""
+msgstr "Configuración PHP"
 
 msgid "PHP support"
 msgstr "Soporte PHP"
@@ -3683,25 +3683,25 @@ msgid "Package actions"
 msgstr "Acciones del paquete"
 
 msgid "Package already exist in the reseller depot!"
-msgstr ""
+msgstr "¡El paquete ya existe en el repositorio del distribuidor!"
 
 msgid "Package already exist in the software depot!"
-msgstr ""
+msgstr "¡El paquete ya existe en el repositorio de software!"
 
 msgid "Package already exist in your software depot!"
-msgstr ""
+msgstr "¡El paquete ya existe en tu repositorio de software!"
 
 msgid "Package features"
-msgstr ""
+msgstr "Caracteristicas del paquete"
 
 msgid "Package install type"
 msgstr "Tipo de instalación del paquete"
 
 msgid "Package installed successfully!"
-msgstr ""
+msgstr "¡Paquete instalado correctamente!"
 
 msgid "Package installed successfully... Awaiting release from Admin!"
-msgstr ""
+msgstr "Paquete instalado correctamente...¡Esperando lanzamiento del Administrador!"
 
 msgid "Package language"
 msgstr "Idioma del paquete"
@@ -3710,7 +3710,7 @@ msgid "Package name"
 msgstr "Nombre del paquete"
 
 msgid "Package price"
-msgstr ""
+msgstr "Precio de paquete"
 
 msgid "Package title"
 msgstr "Titulo del paquete"
@@ -3728,7 +3728,7 @@ msgid "Panel default language"
 msgstr "Idioma predeterminado del panel"
 
 msgid "Parameter"
-msgstr ""
+msgstr "Parámetro"
 
 msgid "Parent Directory"
 msgstr "Directorio Principal"
@@ -3768,7 +3768,7 @@ msgid "Password doesn't matches"
 msgstr "La contraseña no coincide."
 
 msgid "Password doesn't matches."
-msgstr ""
+msgstr "La contraseña no coincide."
 
 msgid "Password is missing."
 msgstr "Falta la contraseña."
@@ -3793,13 +3793,13 @@ msgid "Passwords do not match."
 msgstr "Las contraseñas no coinciden."
 
 msgid "Passwords doesn't match."
-msgstr ""
+msgstr "Las contraseñas no coinciden."
 
 msgid "Passwords doesn't matches"
 msgstr "Las contraseñas no coinciden."
 
 msgid "Passwords doesn't matches."
-msgstr ""
+msgstr "Las contraseñas no coinciden."
 
 msgid "Passwords doesn't not matches."
 msgstr "Las contraseñas no coinciden."
@@ -3808,7 +3808,7 @@ msgid "Passwords don't match!"
 msgstr "Las contraseñas no concuerdan!"
 
 msgid "Passwords don't match."
-msgstr ""
+msgstr "Las contraseñas no coinciden."
 
 msgid "Path"
 msgstr "Ruta"
@@ -3850,41 +3850,41 @@ msgid "PhpMyAdmin"
 msgstr "phpMyAdmin"
 
 msgid "PiB"
-msgstr ""
+msgstr "PiB"
 
 msgid "Plain record data"
 msgstr "Registro de datos simple"
 
 msgid "Please activate your new i-MSCP password"
-msgstr ""
+msgstr "Por favor activa tu nueva contraseña i-MSCP"
 
 msgid "Please choose htaccess user or htaccess group."
-msgstr ""
+msgstr "Por favor, elige usuario htaccess o grupo athaccess."
 
 msgid ""
 "Please contact the administrator!<br />Ask him for the permissions to use "
 "this package.<br />It is not allowed to upload this packet two times.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
+msgstr "¡Por favor, ponte en contacto con el administrador! <br /> Pregúntale por los permisos para utilizar este paquete. <br /> No estás autorizado a cargar este paquete dos veces. <br />¡ Actualiza tu sitio para ver el nuevo estado!"
 
 #, php-format
 msgid "Please delete first CatchAll account for the email %s."
-msgstr ""
+msgstr "Por favor elimine primero la cuenta CatchAll para el email %s."
 
 msgid "Please delete first CatchAll account for this email."
-msgstr ""
+msgstr "Por favor, primero elimina la cuenta CatchAll para este email."
 
 msgid "Please enter FTP account username."
 msgstr "Por favor, introduzca el nombre de usuario de la cuenta FTP."
 
 msgid "Please enter a name for the protected area."
-msgstr ""
+msgstr "Por favor, intoduce un nombre para el área aprotegida."
 
 msgid "Please enter a password."
-msgstr ""
+msgstr "Por favor, introduce una contraseña."
 
 msgid "Please enter an username."
-msgstr ""
+msgstr "Por favor, introduce un nombre de usuario."
 
 msgid "Please enter mail account username."
 msgstr "Por favor, introduce el nombre de usuario de la cuenta de correo."
@@ -3899,14 +3899,14 @@ msgid "Please fill up both data fields for password."
 msgstr "Por favor rellenar los dos campos de contraseña."
 
 msgid "Please select a least one user."
-msgstr ""
+msgstr "Por favor, seleccione al menos un usuario."
 
 msgid "Please select a valid  SQL user for the database."
-msgstr ""
+msgstr "Por favor, selecciona un usuario  SQL válido para la Base de Datos."
 
 #, php-format
 msgid "Please select another directory. %s (%s) is installed there."
-msgstr ""
+msgstr "Por favor, selecciona otro directorio. %s (%s) no está instalado aqui."
 
 msgid "Please select at least one mail type."
 msgstr "Por favor, selecciona al menos un tipo de correo."
@@ -3914,7 +3914,7 @@ msgstr "Por favor, selecciona al menos un tipo de correo."
 msgid ""
 "Please set now the Username and Password for the later Login in the "
 "Application. (Required fiels!)"
-msgstr ""
+msgstr "Por favor, establece ahora el nombre de usuario y contraseña para el inicio de sesión más adelante en la aplicación. (Campos obligatorios!)"
 
 msgid "Please specify a message content!"
 msgstr "¡Por favor especifique un contenido de mensaje!"
@@ -3974,63 +3974,63 @@ msgid "Please write mount point!"
 msgstr "¡Por favor escribe punto de montaje!"
 
 msgid "Please, check the PHP Editor settings."
-msgstr ""
+msgstr "Por favor, comprueba la configuración del editor PHP."
 
 msgid "Please, don't use special chars such as '@, $, %...' in the password."
-msgstr ""
+msgstr "Por favor, no uses caracteres especiales tal como '@, $, %...' para la contraseña."
 
 msgid "Plugin"
-msgstr ""
+msgstr "Plug-in"
 
 #, php-format
 msgid "Plugin %s successfully %s."
-msgstr ""
+msgstr "El plug-in %s ha %s correctamente."
 
 msgid ""
 "Plugin list is empty. To install a new plugin, extract its archive content "
 "into the <strong>gui/plugins</strong> directory and update the plugin list."
-msgstr ""
+msgstr "La lista de plug-in está vacía. Para instalar un nuevo plugin, extraer el contenido de su archivo en el directorio <strong>gui/plugins</ strong> y actualizar la lista de plugins."
 
 #, php-format
 msgid ""
 "Plugin list successfully updated.<br/><strong>%d</strong> new plugin(s) "
 "found, <strong>%d</strong> plugin(s) updated, and <strong>%d</strong> "
 "plugin(s) deleted."
-msgstr ""
+msgstr "La lista de plugins ha sido actualizada.<br/>Se han encontrado <strong>%d</strong> plugin(s), se han actualizado <strong>%d</strong> plugin(s), y se han eliminado <strong>%d</strong> plugin(s)."
 
 msgid "Plugin management"
-msgstr ""
+msgstr "Administrador de Plug-in"
 
 #, php-format
 msgid "Plugin manager was unable to %s the %s plugin."
-msgstr ""
+msgstr "El administrador de Plug-ins no ha podido %s el plug-in %s."
 
 msgid "Plugin manager was unable to activate the plugin."
-msgstr ""
+msgstr "El Administrador de plug-in no ha podido activar el plug-in."
 
 msgid "Plugin manager was unable to deactivate the plugin."
-msgstr ""
+msgstr "El Administrador de plug-in no ha podido desactivar el plug-in."
 
 msgid "Plugin manager was unable to protect the plugin."
-msgstr ""
+msgstr "El Administrador de plug-in no ha podido proteger el plug-in."
 
 #, php-format
 msgid "Plugin manager was unable to remove the %s file"
-msgstr ""
+msgstr "El Administrador de plugins no ha podido eliminar el archivo %s."
 
 #, php-format
 msgid ""
 "Plugin manager was unable to write the %s cache file for protected plugins."
-msgstr ""
+msgstr "Plug-in Manager no ha podido escribir el archivo de cache %s de plug-ins protegidas."
 
 msgid "Plugin successfully activated."
-msgstr ""
+msgstr "El plug-in ha sido activado correctamente."
 
 msgid "Plugin successfully deactivated."
-msgstr ""
+msgstr "El plug-in ha sido desactivado correctamente."
 
 msgid "Plugin successfully protected."
-msgstr ""
+msgstr "El plug-in ha sido protegido correctamente."
 
 msgid "Port"
 msgstr "Puerto"
@@ -4060,7 +4060,7 @@ msgid "Price must be a number."
 msgstr "El precio debe ser un número."
 
 msgid "Price style"
-msgstr ""
+msgstr "Estilo del precio"
 
 msgid "Priority"
 msgstr "Prioridad"
@@ -4070,32 +4070,32 @@ msgstr "¡Prioridad deber ser un numero!"
 
 #, php-format
 msgid "Priority: %s\n"
-msgstr ""
+msgstr "Prioridad: %s\n"
 
 msgid "Process updates"
 msgstr "Actualizaciones del proceso"
 
 msgid "Profile"
-msgstr ""
+msgstr "Perfil"
 
 msgid "Properties"
 msgstr "Propiedades"
 
 #, php-format
 msgid "Properties for reseller with ID %d were not found in database."
-msgstr ""
+msgstr "Las propiedades para el distribuidor con ID %d no se encontraron en la Base de Datos."
 
 msgid "Protect"
-msgstr ""
+msgstr "Proteger"
 
 msgid "Protect it"
 msgstr "Proteger"
 
 msgid "Protect this plugin"
-msgstr ""
+msgstr "Proteger este Plug-in"
 
 msgid "Protected"
-msgstr ""
+msgstr "Protegido"
 
 msgid "Protected Areas"
 msgstr "Áreas Protegidas"
@@ -4104,19 +4104,19 @@ msgid "Protected area status should be 'OK' if you want to delete it."
 msgstr "Para poder eliminar una área protegida su estado tiene que ser 'OK'."
 
 msgid "Protected area successfully scheduled for addition."
-msgstr ""
+msgstr "Área protegida programada para ser añadida."
 
 msgid "Protected area successfully scheduled for deletion."
-msgstr ""
+msgstr "Área protegida programada para su eliminación."
 
 msgid "Protected area successfully scheduled for update."
-msgstr ""
+msgstr "Área protegida programada para su actualización."
 
 msgid "Protected areas"
 msgstr "Áreas protegidas"
 
 msgid "Protected plugin"
-msgstr ""
+msgstr "Plug-in protegido"
 
 msgid "Protocol"
 msgstr "Protocolo"
@@ -4128,16 +4128,16 @@ msgid "Purchasing"
 msgstr "Compra"
 
 msgid "Quota"
-msgstr ""
+msgstr "Cuota"
 
 msgid "Quota in MB (0 unlimited)"
-msgstr ""
+msgstr "Cuota en MB (0 ilimitada)"
 
 msgid "Quota must be number"
-msgstr ""
+msgstr "La cuota debe ser un número"
 
 msgid "Quota must have a value"
-msgstr ""
+msgstr "La cuota debe tener un valor"
 
 msgid "RAM"
 msgstr "RAM"
@@ -4165,7 +4165,7 @@ msgid "Redirect to URL"
 msgstr "Redireccionar a la URL"
 
 msgid "Registration date"
-msgstr ""
+msgstr "Fecha de registro"
 
 msgid "Relative weight for records with the same priority"
 msgstr "Valor relativo para los registros con igual prioridad"
@@ -4180,7 +4180,7 @@ msgid "Remote File not found."
 msgstr "No se ha encontrado el fichero remoto."
 
 msgid "Remote Web software repository"
-msgstr ""
+msgstr "Repositorio de software Web remoto"
 
 msgid "Remove"
 msgstr "Eliminar"
@@ -4189,7 +4189,7 @@ msgid "Remove IP"
 msgstr "Eliminar IP"
 
 msgid "Remove last"
-msgstr ""
+msgstr "Eliminar el último"
 
 msgid "Remove permissions"
 msgstr "Eliminar permisos"
@@ -4201,13 +4201,13 @@ msgid "Reopen the ticket"
 msgstr "Reabrir el tiquet"
 
 msgid "Repeat  password"
-msgstr ""
+msgstr "Repite  contraseña"
 
 msgid "Repeat password"
 msgstr "Repite la contraseña"
 
 msgid "Request from foreign host was blocked."
-msgstr ""
+msgstr "La petición del servidor externo ha sido bloqueada."
 
 msgid "Requires Database?"
 msgstr "Requiere base de datos?"
@@ -4219,22 +4219,22 @@ msgid "Reseller Name"
 msgstr "Nombre de Distribuidor"
 
 msgid "Reseller account successfully created."
-msgstr ""
+msgstr "La cuenta de distribuidor se ha creado correctamente."
 
 msgid "Reseller account successfully updated."
 msgstr "Cuenta de diatribuidor actualizada correctamente,"
 
 msgid "Reseller and customer"
-msgstr ""
+msgstr "Distribuidor y cliente"
 
 msgid "Reseller and customer levels"
-msgstr ""
+msgstr "Niveles Distribuidor y Cliente "
 
 msgid "Reseller assignment"
 msgstr "Asignar revendedor"
 
 msgid "Reseller consumption"
-msgstr ""
+msgstr "Consumo de Distribuidor"
 
 msgid "Reseller data"
 msgstr "Datos de Distribuidor"
@@ -4273,10 +4273,10 @@ msgid "Reseller with permissions total"
 msgstr "Distribuidor con el total de permisos"
 
 msgid "Reseller's layout color successfully updated."
-msgstr ""
+msgstr "Color de diseño de distribuidor actualizado correctamente,"
 
 msgid "Reseller's statistics"
-msgstr ""
+msgstr "Estadísticas de Distribuidor."
 
 msgid "Reseller/IP usage statistics"
 msgstr "Distribuidor/Estadísticas de uso de IP"
@@ -4285,7 +4285,7 @@ msgid "Resellers"
 msgstr "Revendedores"
 
 msgid "Resellers assignment"
-msgstr ""
+msgstr "Asignación de distribuidores"
 
 msgid "Reset"
 msgstr "Limpiar"
@@ -4300,10 +4300,10 @@ msgid "Return to previous menu"
 msgstr "Volver al menú anterior"
 
 msgid "Revision date"
-msgstr ""
+msgstr "Fecha de revisión"
 
 msgid "Rights"
-msgstr ""
+msgstr "Derechos"
 
 msgid "Rights succesfully added."
 msgstr "Derechos añadidos correctamente."
@@ -4312,7 +4312,7 @@ msgid "Rights succesfully removed."
 msgstr "Derechos eliminados correctamente."
 
 msgid "Rootkit logs"
-msgstr ""
+msgstr "Registro de rootkits"
 
 msgid "SMTP in"
 msgstr "SMTP entrante"
@@ -4342,10 +4342,10 @@ msgid "SQL accounts limit reached."
 msgstr "Se ha alcanzado el limite de cuentas SQL."
 
 msgid "SQL database successfully added."
-msgstr ""
+msgstr "La Base de Datos SQL ha sido añadida correctamente."
 
 msgid "SQL database successfully deleted."
-msgstr ""
+msgstr "La Base de Datos SQL ha sido eliminada correctamente."
 
 msgid "SQL databases"
 msgstr "Bases de datos SQL"
@@ -4353,16 +4353,16 @@ msgstr "Bases de datos SQL"
 msgid ""
 "SQL databases limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de Bases de Datos SQL <br /><span class=\"italic\">(-1 desactivado, 0 ilimitadas)</span>"
 
 msgid "SQL databases limit is <i>disabled</i>."
 msgstr "El límite de Bases de Datos SQL está <i>desactivado</i>."
 
 msgid "SQL databases limit is disabled but SQL users limit is not."
-msgstr ""
+msgstr "El límite de Bases de Datos SQL está desactivado pero el límite de usuarios SQL no."
 
 msgid "SQL databases limit is disabled but SQL users limit not."
-msgstr ""
+msgstr "El límite de Bases de Datos SQL está desactivado pero el límite de usuarios SQL no."
 
 msgid "SQL databases limit is not <i>disabled</i>."
 msgstr "El límite de Bases de Datos SQL no está <i>desactivado</i>."
@@ -4370,7 +4370,7 @@ msgstr "El límite de Bases de Datos SQL no está <i>desactivado</i>."
 msgid ""
 "SQL databases limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de Bases de Datos SQL<br/><span class=\"italic\">(-1 desactivado, 0 ilimitadas)</span>"
 
 msgid "SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de bases de datos SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
@@ -4382,13 +4382,13 @@ msgid "SQL user name"
 msgstr "Nombre de usuario SQL"
 
 msgid "SQL user password successfully updated."
-msgstr ""
+msgstr "La contraseña del usuari SQL ha sido actualizada correctamente."
 
 msgid "SQL user successfully added."
-msgstr ""
+msgstr "El usuario SQL ha sido añadido correctamente."
 
 msgid "SQL user successfully deleted."
-msgstr ""
+msgstr "El usuario SQL ha sido eliminado correctamente."
 
 msgid "SQL users"
 msgstr "Usuarios SQL"
@@ -4396,7 +4396,7 @@ msgstr "Usuarios SQL"
 msgid ""
 "SQL users limit <br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de usuarios SQL <br /><span class=\"italic\">(-1 desactivado, 0 ilimitados)</span>"
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "¡Límite de usuarios SQL esta <i>desactivado</i>!"
@@ -4405,17 +4405,17 @@ msgid "SQL users limit is <i>disabled</i>."
 msgstr "El límite de usuarios SQL está <i>desactivado</i>."
 
 msgid "SQL users limit is disabled but SQL databases limit is not."
-msgstr ""
+msgstr "El límite de usuarios SQL está desactivado pero el límite de Bases de Datos SQL no lo está."
 
 msgid "SQL users limit is disabled but SQL databases limit not."
-msgstr ""
+msgstr "El límite de usuarios SQL está desactivado pero el límite de Bases de Datos SQL no lo está."
 
 msgid "SQL users limit reached."
 msgstr "Se ha alcanzado el límite de usuarios SQL."
 
 msgid ""
 "SQL users limit<br/><span class=\"italic\">(-1 disabled, 0 unlimited)</span>"
-msgstr ""
+msgstr "Límite de usuarios SQL<br/><span class=\"italic\">(-1 desactivado, 0 ilimitados)</span>"
 
 msgid "SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Límite de usuarios SQL<br><i>(-1 deshabilitado, 0 ilimitado)</i>"
@@ -4427,10 +4427,10 @@ msgid "SQL-user not found."
 msgstr "Usuario SQL no encontrado."
 
 msgid "SSL Certificates"
-msgstr ""
+msgstr "Certificados SSL"
 
 msgid "SSL feature is disabled. You cannot add / change certificate"
-msgstr ""
+msgstr "La función de SSL está desactivada. No puedes añadir / cambiar certificados"
 
 msgid "Save"
 msgstr "Guardar"
@@ -4439,13 +4439,13 @@ msgid "Search"
 msgstr "Buscar"
 
 msgid "Sec."
-msgstr ""
+msgstr "Seg."
 
 msgid "Second Level Domain name strict validation"
 msgstr "Validación estricta de nombres de dominio de segundo nivel"
 
 msgid "Secure connection"
-msgstr ""
+msgstr "Conexión segura"
 
 msgid "Security code"
 msgstr "Código de seguridad"
@@ -4512,7 +4512,7 @@ msgid "Server traffic settings"
 msgstr "Configuración de tráfico del servidor"
 
 msgid "Server traffic settings successfully updated."
-msgstr ""
+msgstr "La configuración del tráfico del servidor se ha actualizado correctamente."
 
 msgid "Service"
 msgstr "Servicio"
@@ -4527,10 +4527,10 @@ msgid "Service port was successfully added"
 msgstr "Se ha añadido un puerto de servicio."
 
 msgid "Service port was successfully removed."
-msgstr ""
+msgstr "El puerto de servicio ha sido eliminado correctamente."
 
 msgid "Service ports"
-msgstr ""
+msgstr "Puertos de servicio"
 
 msgid "Service protocol"
 msgstr "Protocolo del servicio"
@@ -4542,7 +4542,7 @@ msgid "Session not found in login table."
 msgstr "La sesión no se encuentra en la tabla de inicios de sesión."
 
 msgid "Sessions"
-msgstr ""
+msgstr "Sesiones"
 
 msgid "Set status to 'change'"
 msgstr "Cambiar el estado a 'cambiar'"
@@ -4551,7 +4551,7 @@ msgid "Settings"
 msgstr "Configuraciones"
 
 msgid "Settings saved."
-msgstr ""
+msgstr "Configuración guardada"
 
 msgid "Setup fee"
 msgstr "Precio del setup "
@@ -4564,7 +4564,7 @@ msgstr "Mostrar"
 
 #, php-format
 msgid "Show %s records per page"
-msgstr ""
+msgstr "Muestra %s registros por página"
 
 msgid "Show HTML output compression size comment"
 msgstr "Mostrar el comentario del tamaño de compresión de la salida HTML"
@@ -4582,10 +4582,10 @@ msgid "Show default E-Mail addresses"
 msgstr "Mostrar dirección de correo por defecto"
 
 msgid "Show detailed statistics for this domain"
-msgstr ""
+msgstr "Mostrar estadísticas detalladas para este dominio"
 
 msgid "Show detailed statistics for this reseller"
-msgstr ""
+msgstr "Mostrar estadísticas detalladas para este distribuidor"
 
 msgid "Show hosting plan"
 msgstr "Mostrar los planes de alojamiento"
@@ -4594,14 +4594,14 @@ msgid "Show in"
 msgstr "Ver contenido"
 
 msgid "Show labels for main menu links"
-msgstr ""
+msgstr "Mostrar las etiquetas de los enlaces del menú principal"
 
 #, php-format
 msgid "Showing %s to %s of %s records"
-msgstr ""
+msgstr "Mostrando %s a %s de %s registros"
 
 msgid "Showing 0 to 0 of 0 records"
-msgstr ""
+msgstr "Mostrando 0 a 0 de 0 registros"
 
 msgid ""
 "Single letter Second Level Domains (SLD) are not allowed under the most Top "
@@ -4633,31 +4633,31 @@ msgid "Software installation"
 msgstr "Instalación de software"
 
 msgid "Software installer"
-msgstr ""
+msgstr "Instalador de software"
 
 msgid "Software installer options"
-msgstr ""
+msgstr "Opciones del instalador de software"
 
 msgid "Software installer options successfully updated."
-msgstr ""
+msgstr "Opciones del instalador de software han sido actualizadas."
 
 msgid "Software installer require PHP feature."
-msgstr ""
+msgstr "El instalador de software requiere de la característica PHP."
 
 msgid "Software installer: disabled"
-msgstr ""
+msgstr "Instalador de software: desactivado."
 
 msgid "Software installer: enabled"
-msgstr ""
+msgstr "Instalador de software: activado."
 
 msgid "Software name"
 msgstr "Nombre del software"
 
 msgid "Software not found!"
-msgstr ""
+msgstr "¡Software no encontrado!"
 
 msgid "Software options"
-msgstr ""
+msgstr "Opciones de software"
 
 msgid "Software permissions"
 msgstr "Permisos de software"
@@ -4672,7 +4672,7 @@ msgid "Software status"
 msgstr "Estado del software"
 
 msgid "Software status:"
-msgstr ""
+msgstr "Estado del software:"
 
 msgid "Software total"
 msgstr "Total software"
@@ -4699,22 +4699,22 @@ msgid "Softwaredepot"
 msgstr "Repositorio de software"
 
 msgid "Softwares"
-msgstr ""
+msgstr "Programas"
 
 msgid "Softwares in repository"
 msgstr "Programas en el repositorio"
 
 msgid "Softwares installer"
-msgstr ""
+msgstr "Instalador de software"
 
 msgid "Softwares management"
-msgstr ""
+msgstr "Administrador de software"
 
 msgid "Softwares permissions"
-msgstr ""
+msgstr "Permisos del software"
 
 msgid "Softwares repository"
-msgstr ""
+msgstr "Repositorio de software"
 
 msgid "Specified SQL username name already exists."
 msgstr "El nombre de usuario SQL ya existe."
@@ -4728,34 +4728,34 @@ msgid ""
 msgstr "El numero especificado es menor que <em>%s</em> registros, presente en el sistema."
 
 msgid "Sql"
-msgstr ""
+msgstr "Sql"
 
 msgid "Sql Users"
-msgstr ""
+msgstr "Usuarios Sql"
 
 msgid "Sql database"
-msgstr ""
+msgstr "Base de Datos Sql"
 
 msgid "Sql databases"
-msgstr ""
+msgstr "Bases de Datos Sql"
 
 msgid "Sql databases limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Límite de Bases de Datos Sql<br><i>(-1 desactivado, 0 ilimitadas)</i>"
 
 msgid "Sql user"
-msgstr ""
+msgstr "Usuario Sql"
 
 msgid "Sql users"
-msgstr ""
+msgstr "Usuarios Sql"
 
 msgid "Sql users limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr ""
+msgstr "Límite de usuarios Sql<br><i>(-1 desactivado, 0 ilimitados)</i>"
 
 msgid "Start installation"
-msgstr ""
+msgstr "Empezar instalación"
 
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 msgid "State/Province"
 msgstr "Estado/Provincia"
@@ -4770,7 +4770,7 @@ msgid "Status"
 msgstr "Estado"
 
 msgid "Status for protected area must be 'OK' if you want to edit it."
-msgstr ""
+msgstr "La área protegida tiene que estar en estado 'OK' si deseas editarla."
 
 msgid "Street 1"
 msgstr "Domicilio 1"
@@ -4797,13 +4797,13 @@ msgid "Subdomain errors"
 msgstr "Errores de subdominio"
 
 msgid "Subdomain forward"
-msgstr ""
+msgstr "Redirección de subdominio"
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "¡La lista de subdominios está vacía! ¡No puede agregar cuentas FTP ahi!"
 
 msgid "Subdomain mail"
-msgstr ""
+msgstr "Correo de subdominio"
 
 msgid "Subdomain mails"
 msgstr "Correo del subdominio"
@@ -4818,7 +4818,7 @@ msgid "Subdomain scheduled for update."
 msgstr "Subdominio programado para su actualización."
 
 msgid "Subdomain successfully scheduled for addition."
-msgstr ""
+msgstr "El subdominio ha sido programado para ser añadido."
 
 msgid ""
 "Subdomain you are trying to remove has email accounts !<br>First remove "
@@ -4835,12 +4835,12 @@ msgstr "Subdominios"
 msgid ""
 "Subdomains limit<br /><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de subdominios<br/><span class=\"italic\">(-1 desactivado, 0 ilimitados)</span>"
 
 msgid ""
 "Subdomains limit<br/><span class=\"italic\">(-1 disabled, 0 "
 "unlimited)</span>"
-msgstr ""
+msgstr "Límite de subdominios<br/><span class=\"italic\">(-1 desactivado, 0 ilimitados)</span>"
 
 msgid "Subject"
 msgstr "Asunto"
@@ -4889,35 +4889,35 @@ msgid "System info"
 msgstr "Información del sistema"
 
 msgid "System information"
-msgstr ""
+msgstr "Información del Sistema"
 
 #, php-format
 msgid "System is unable to remove '%s' user logo."
-msgstr ""
+msgstr "El sistema no puede eliminar el logo de usuario '%s'."
 
 msgid "System tools"
 msgstr "Herramientas de sistema"
 
 msgid "System under maintenance"
-msgstr ""
+msgstr "Sistema en mantenimiento"
 
 msgid "System was unable to add the SQL database."
-msgstr ""
+msgstr "El sistema no ha podido añadir la Base de Datos SQL."
 
 msgid "System was unable to add the SQL user."
-msgstr ""
+msgstr "El sistema no ha podido añadir el usuario SQL."
 
 msgid "System was unable to remove the SQL database."
-msgstr ""
+msgstr "El sistema no ha podido eliminar la Base de Datos SQL."
 
 msgid "System was unable to remove the SQL user."
-msgstr ""
+msgstr "El sistema no ha podido eliminar el usuario SQL."
 
 msgid "System was unable to update the SQL user password."
-msgstr ""
+msgstr "El sistema no ha podido actualizar la contraseña del usuario SQL."
 
 msgid "TB"
-msgstr ""
+msgstr "TB"
 
 msgid "TTL"
 msgstr "TTL"
@@ -4926,13 +4926,13 @@ msgid "TTL must be a number!"
 msgstr "¡TTL debe ser un número!"
 
 msgid "TXT data"
-msgstr ""
+msgstr "Contenido TXT"
 
 msgid "TXT data must be filled."
-msgstr ""
+msgstr "Debe rellenarse el contenido TXT"
 
 msgid "Target"
-msgstr ""
+msgstr "Destino"
 
 msgid "Target host"
 msgstr "Servidor destino"
@@ -4943,7 +4943,7 @@ msgstr "Puerto de destino"
 msgid ""
 "Tells whether or not customers can add/change SSL certificates for their "
 "domains."
-msgstr ""
+msgstr "Indica si los clientes pueden añadir / cambiar los certificados SSL para sus dominios."
 
 msgid "Template for Auto email successfully updated."
 msgstr "La plantilla para Auto email ha sido actualizada correctamente."
@@ -4952,13 +4952,13 @@ msgid "Template name"
 msgstr "Nombre de plantilla"
 
 msgid "Template successfully reseted."
-msgstr ""
+msgstr "Plantilla reseteada correctamente."
 
 msgid "Template successfully updated."
-msgstr ""
+msgstr "Plantilla actualizada correctamente."
 
 msgid "Temporary folder not found."
-msgstr ""
+msgstr "No se ha encontrado la carpeta temporal."
 
 msgid "Term Of Service"
 msgstr "Condiciones de Servicio"
@@ -4967,7 +4967,7 @@ msgid "Term of Service"
 msgstr "Condiciones del Servicio"
 
 msgid "Term of service"
-msgstr ""
+msgstr "Terminos de servicio"
 
 msgid "Text"
 msgstr "Texto"
@@ -4979,37 +4979,37 @@ msgstr "Solo Texto"
 msgid ""
 "The %s limit for this customer cannot be greater than <strong>%d</strong>, "
 "the calculated limit for his reseller."
-msgstr ""
+msgstr "El límite %s para este cliente no puede ser superior que <strong>%d</strong>, el límite calculado para su distribuidor."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be greater than <strong>%d</strong>, "
 "your calculated limit."
-msgstr ""
+msgstr "El límite %s para este cliente no puede ser superior que <strong>%d</strong>, el límite calculado para usted."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be lower than <strong>%d</strong>, the"
 " total of %s already used by him."
-msgstr ""
+msgstr "El límite %s para este cliente no puede ser superior que <strong>%d</strong>, el total de %s ya usado por el."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be set to 'disabled' because he has "
 "already <strong>%d</strong> %s."
-msgstr ""
+msgstr "El límite %s para este cliente no puede ponerse como 'desactivado' porqué ya tiene <strong>%d</strong> %s."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because his reseller is "
 "limited for this service."
-msgstr ""
+msgstr "El límite %s para este cliente no puede ser 'ilimitado' porqué su distribuidor tiene este servicio limitado."
 
 #, php-format
 msgid ""
 "The %s limit for this customer cannot be unlimited because your are limited "
 "for this service."
-msgstr ""
+msgstr "El límite %s para este cliente no puede ser 'ilimitado' porqué tienes este servicio limitado."
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled."
@@ -5031,19 +5031,19 @@ msgstr "El servicio <em>%s</em> no puede ser limitado."
 msgid ""
 "The <strong>%s</strong> class for the <strong>%s</strong> plugin was not "
 "found in file <strong>%s</strong>"
-msgstr ""
+msgstr "La clase <strong>%s</strong> para el plug-in <strong>%s</strong> no se ha encontrado en el archivo <strong>%s</strong>"
 
 #, php-format
 msgid ""
 "The <strong>%s</strong> file for the <strong>%s</strong> plugin do not "
 "exists or is not readable."
-msgstr ""
+msgstr "El archivo <strong>%s</strong> de el plug-in <strong>%s</strong> no existe o es ilegible."
 
 msgid "The IP address you trying to remove is assigned to a reseller."
-msgstr ""
+msgstr "La dirección IP que intentas eliminar está asignada a un distribuidor."
 
 msgid "The `Enter` key is disabled for performance reasons."
-msgstr ""
+msgstr "La tecla 'Enter' está desactivada por razones de rendimiento."
 
 #, php-format
 msgid "The admin has <em>%s</em> disabled on this system."
@@ -5057,49 +5057,49 @@ msgstr "La contraseña actual es incorrecta."
 
 #, php-format
 msgid "The directory %s doesn't exist. Please create it first."
-msgstr ""
+msgstr "El directorio %s no existe. Por favor crealo primero."
 
 #, php-format
 msgid "The directory %s was created."
-msgstr ""
+msgstr "El directorio %s ha sido creado."
 
 msgid ""
 "The directory/file paths are appended to the default PHP open_basedir "
 "directive of customers. Each of them must be separated by PATH_SEPARATOR. "
 "See the PHP documentation for more information."
-msgstr ""
+msgstr "Las rutas de directorio/archivo se anexan a la directiva por defecto de PHP open_basedir de los clientes. Cada uno de ellos deben estar separados por PATH_SEPARATOR. Consulte la documentación de PHP para más información."
 
 msgid ""
 "The domain is currently deactivated. The modification of some of its "
 "properties will result by a complete or partial reactivation of it."
-msgstr ""
+msgstr "Actualmente el dominio está desactivado. La modificación de algunas de sus propiedades será el  resultado de una reactivación total o parcial del mismo. "
 
 msgid ""
 "The domain or at least one of its entities has a different status than 'ok'."
-msgstr ""
+msgstr "El dominio o por lo menos una de sus entidades tiene un estatus diferente a 'ok'."
 
 msgid "The domain you are trying to edit doesn't exist."
-msgstr ""
+msgstr "El dominio que estas intentando editar no existe."
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr ""
+msgstr "La función de correo externo necesita al menos 1 cuenta de email."
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "El instalador de aplicación i-MSCP necesita PHP para habilitarlo."
 
 msgid "The menu you trying to edit doesn't exist."
-msgstr ""
+msgstr "El menú que estas intentando editar no existe."
 
 msgid "The package is corrupt. Please correct it."
-msgstr ""
+msgstr "El paquete está corrupto. Por favor corrigelo."
 
 msgid ""
 "The package will be installed automaticly to your system after upload.<br "
 "/>Refresh your site to see the new status!"
-msgstr ""
+msgstr "El paquete se instalará automaticamente en tu sistema después de su carga.<br/>¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid "The password is too long."
-msgstr ""
+msgstr "La contraseña es demasiado larga."
 
 #, php-format
 msgid ""
@@ -5109,7 +5109,7 @@ msgstr "La contraseña debe ser al menos de %s caracteres y contener letras y n�
 
 #, php-format
 msgid "The plugin %s is protected. You cannot perform an action on it."
-msgstr ""
+msgstr "El plug-in %s está protegido. No puedes realizar acciones sobre el."
 
 #, php-format
 msgid ""
@@ -5117,17 +5117,17 @@ msgid ""
 msgstr "El tamaño del fichero remoto (%1$d B) es menor de 1 Byte. Por favor comprueba la URL."
 
 msgid "The reseller account you trying to edit doesn't exist."
-msgstr ""
+msgstr "La cuenta de distribuidor que estas intentando editar no existe."
 
 msgid "The softwares installer needs PHP."
-msgstr ""
+msgstr "El instalador de software necesita PHP."
 
 msgid "The uploaded file was only partially uploaded."
-msgstr ""
+msgstr "El fichero cargado solo se ha cargado parcialmente."
 
 #, php-format
 msgid "The username %s is not available."
-msgstr ""
+msgstr "El nombre de usuario %s no está disponible."
 
 #, php-format
 msgid "There are <em>%s</em> records on system."
@@ -5153,7 +5153,7 @@ msgstr "Ya existe un subdominio con el mismo punto de montaje."
 msgid ""
 "There is an Error inside your package. Please check it!<br />Refresh your "
 "site to see the new status!"
-msgstr ""
+msgstr "Tu paquete contiene un error. ¡Por favor, compruebalo!<br />¡Refresca tu sitio para ver el nuevo estado!"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr "No hay registros de usuarios de este revendedor para agregar un alias."
@@ -5167,7 +5167,7 @@ msgid ""
 "This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
 "this package!<br />Please delete the files and database for this package "
 "manually!"
-msgstr ""
+msgstr "Este paquete (%s, V%s) ha sido eliminado por tu distribuidor. ¡Tu solo puedes desinstalar este paquete!<br />¡Refresca tu sitio para ver el nuevo estado!"
 
 #, php-format
 msgid ""
@@ -5184,46 +5184,46 @@ msgid "This hosting plan is not available for purchase."
 msgstr "Este plan de alojamiento no está disponible para ser adquirido."
 
 msgid "This htaccess group already exists."
-msgstr ""
+msgstr "Este grupo htaccess ya existe."
 
 msgid "This htaccess user already exist."
-msgstr ""
+msgstr "Este usuario htaccess ya existe."
 
 msgid "This mount point is not allowed."
-msgstr ""
+msgstr "Este punto de montaje no está permitido."
 
 msgid "This package already exist in the administrator software depot."
-msgstr ""
+msgstr "Este paquete ya existe en el repositorio de software del administrador."
 
 #, php-format
 msgid "This package already exist in the depot of the reseller \"%1$s\"!"
-msgstr ""
+msgstr "¡Este paquete ya existe en el repositorio del distribuidor \"%1$s\"!"
 
 msgid "This package already exist in the software depot!"
-msgstr ""
+msgstr "¡Este paquete ya existe en el repositorio de software!"
 
 msgid "This package already exist in your software depot."
-msgstr ""
+msgstr "¡Este paquete ya existe en tu repositorio de software"
 
 msgid "This package is installed on following domain(s):"
-msgstr ""
+msgstr "Este paquete está instalado en el/los siguiente(s) dominio(s):"
 
 msgid "This package is not installed"
-msgstr ""
+msgstr "Este paquete no está instalado"
 
 msgid "This package is not installed yet"
-msgstr ""
+msgstr "Este paquete aun no está instalado"
 
 #, php-format
 msgid ""
 "This reseller has %s customer(s) with unlimited rights for the %s service."
-msgstr ""
+msgstr "Este distribuidor tiene %s cliente(s) con derechos ilimitados para el servicio %s."
 
 #, php-format
 msgid ""
 "This reseller has already assigned more/higher %s accounts/limits than the "
 "new limit you entered."
-msgstr ""
+msgstr "Este distribuidor ya tiene asignado(s) mas/mayores cuentas/límites %s que el nuevo límite que has introducido."
 
 msgid ""
 "This reseller has one or more customers accounts.<br /> To remove this "
@@ -5234,13 +5234,13 @@ msgstr "Este distribuidor tiene una  o mas cuentas de cliente.<br /> Para elimin
 msgid ""
 "This reseller's customers are using/have more/higher %s accounts/limits than"
 " the new limit you entered."
-msgstr ""
+msgstr "Este cliente del distribuidor está usando/tiene mas/mayores cuentas/límites %s que el nuevo límite que has introducido."
 
 msgid "This software is installed on following domain(s):"
-msgstr ""
+msgstr "Este software está instalado en el/los siguiente(s) dominio(s):"
 
 msgid "This type of account does not have quota."
-msgstr ""
+msgstr "Este tipo de cuenta no tiene cuota."
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -5250,7 +5250,7 @@ msgid "This user name already exist."
 msgstr "Este nombre de usuario ya existe."
 
 msgid "TiB"
-msgstr ""
+msgstr "TiB"
 
 msgid "Ticket deleted."
 msgstr "Tiquet eliminado."
@@ -5262,31 +5262,31 @@ msgid "Ticket not found."
 msgstr "Tiquet no encontrado."
 
 msgid "Ticket successfully closed."
-msgstr ""
+msgstr "Tiquet cerrado correctamente."
 
 msgid "Ticket successfully deleted."
 msgstr "El tiquet ha sido eliminado correctamente."
 
 msgid "Ticket successfully reopened."
-msgstr ""
+msgstr "Tiquet reabierto correctamente."
 
 #, php-format
 msgid "Ticket with Id '%d' was not found."
-msgstr ""
+msgstr "El tiquet con id '%d' no se ha encontrado."
 
 #, php-format
 msgid "Ticket with Id '%s' was not found."
-msgstr ""
+msgstr "El tiquet con id '%s' no se ha encontrado."
 
 #, php-format
 msgid "Ticket with Id: '%d' no found."
 msgstr "No se ha encontrado el tiquet con Id: '%d' ."
 
 msgid "Tickets closed"
-msgstr ""
+msgstr "Tiquets cerrados"
 
 msgid "Tickets open"
-msgstr ""
+msgstr "Tiquets abiertos"
 
 msgid "To Admin"
 msgstr "Al Administrador"
@@ -5313,7 +5313,7 @@ msgstr "Al subdominio"
 
 #, php-format
 msgid "To unprotect this plugin, you must edit the %s file"
-msgstr ""
+msgstr "Para desproteger este plug-in debes editar el archivo %s"
 
 msgid "Too long user password."
 msgstr "Contraseña de usuario demasiado larga."
@@ -5355,25 +5355,25 @@ msgid "Traffic limit [MB]<br><i>(0 unlimited)</i>"
 msgstr "Límite de Tráfico [MB]<br><i>(0 ilimitado)</i>"
 
 msgid "Traffic limit [MiB] <br /><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Límite de tráfico [MiB] <br /><span class=\"italic\">(0 ilimitado)</span>"
 
 msgid "Traffic limit [MiB]<br/><span class=\"italic\">(0 unlimited)</span>"
-msgstr ""
+msgstr "Límite de tráfico [MiB]<br/><span class=\"italic\">(0 ilimitado)</span>"
 
 msgid "Traffic limit [MiB]<br><i>(0 unlimited)</i>"
-msgstr ""
+msgstr "Límite de tráfico [MiB]<br><i>(0 ilimitado)</i>"
 
 msgid "Traffic limit must be a digit."
-msgstr ""
+msgstr "El límite de tráfico debe ser numérico."
 
 msgid "Traffic usage"
 msgstr "Tráfico (uso)"
 
 msgid "Traffic warning cannot be bigger than traffic limit."
-msgstr ""
+msgstr "El aviso de tráfico no puede ser superior al límite de tráfico."
 
 msgid "Traffic warning must be a digit."
-msgstr ""
+msgstr "El aviso de tráfico debe ser numérico."
 
 msgid "Translated strings"
 msgstr "Cadenas traducidas"
@@ -5392,7 +5392,7 @@ msgstr "URL a este panel de adminsitracion"
 
 #, php-format
 msgid "Unable to close ticket with Id '%s'."
-msgstr ""
+msgstr "No se puede cerrar el tiquet con Id '%s'."
 
 #, php-format
 msgid "Unable to create '%s' directory for language file."
@@ -5404,12 +5404,12 @@ msgstr "Imposible crear el directorio 'LC_MESSAGES' para el fichero de idioma."
 msgid ""
 "Unable to delete the domain account. A message has been sent to the "
 "administrator."
-msgstr ""
+msgstr "No se puede eliminar la cuenta de dominio. Un mensaje ha sido enviado al administrador."
 
 msgid ""
 "Unable to delete the domain. Please, consult admin logs or your mail for "
 "more information."
-msgstr ""
+msgstr "No se puede eliminar el dominio. Por favor, consulta los registros de administración o en tu correo electrónico para más información."
 
 #, php-format
 msgid "Unable to delete user with Id: %d"
@@ -5420,10 +5420,10 @@ msgid ""
 msgstr "No se pueden encontrar tarjetas de red. El formulario para agregar la nueva dirección IP ha sido desactivado."
 
 msgid "Unable to get the IP addresses list. Please fix this problem."
-msgstr ""
+msgstr "No se puede obtener la lista de direcciones IP. Por favor, corrige este problema."
 
 msgid "Unable to move file."
-msgstr ""
+msgstr "No se puede mover el fichero."
 
 msgid "Unable to read xml file for Web softwares."
 msgstr "No se puede leer el archivo XML para software web."
@@ -5433,12 +5433,12 @@ msgstr "No se puede leer el archivo XML para software web."
 
 #, php-format
 msgid "Unable to reopen ticket with Id '%s'."
-msgstr ""
+msgstr "No se puede reabrir el tiquet con Id '%s'."
 
 msgid ""
 "Unable to retrieve directories list for your domain. Please contact your "
 "reseller."
-msgstr ""
+msgstr "No se puede recuperar la lista de directorios para su dominio. Por favor, ponte en contacto con tu distribuidor."
 
 #, php-format
 msgid "Unbale not upload file. Max. upload filesize (%1$d MB) reached?"
@@ -5448,10 +5448,10 @@ msgid "Undefined reference to data."
 msgstr "Referencia a datos indefinida."
 
 msgid "Under maintenance mode, only administrators can login."
-msgstr ""
+msgstr "En modo de mantenimiento, sólo los administradores pueden iniciar sesión."
 
 msgid "Uninstall"
-msgstr ""
+msgstr "Desinstalar"
 
 msgid "Unknown"
 msgstr "Desconocido"
@@ -5474,28 +5474,28 @@ msgstr "Tipo de dominio desconocido."
 
 #, php-format
 msgid "Unknown entry type %s."
-msgstr ""
+msgstr "Tipo de entrada %s desconocida."
 
 msgid "Unknown error"
-msgstr ""
+msgstr "Error desconocido"
 
 msgid "Unknown language name."
-msgstr ""
+msgstr "Nombre de idioma desconocido."
 
 msgid "Unknown layout color."
-msgstr ""
+msgstr "Color de diseño desconocido."
 
 msgid "Unknown subdomain type."
 msgstr "Tipo de subdominio desconocido."
 
 msgid "Unknown type"
-msgstr ""
+msgstr "Tipo desconocido"
 
 msgid "Unknown type."
-msgstr ""
+msgstr "Tipo desconocido."
 
 msgid "Unknown username."
-msgstr ""
+msgstr "Nombre de usuario desconocido."
 
 #, php-format
 msgid "Unknown zone type %s."
@@ -5514,7 +5514,7 @@ msgid "Update"
 msgstr "Actualizar"
 
 msgid "Update SQL user password"
-msgstr ""
+msgstr "Actualizar contraseña de usuario SQL"
 
 msgid "Update checking is disabled!"
 msgstr "La comprobación de las actualizaciones esta desactivada!"
@@ -5544,10 +5544,10 @@ msgid "Update plan"
 msgstr "Actualizar plan"
 
 msgid "Update plugin list"
-msgstr ""
+msgstr "Actualizar lista de plug-ins"
 
 msgid "Updates"
-msgstr ""
+msgstr "Actualizaciones"
 
 msgid "Upload"
 msgstr "Subir"
@@ -5559,16 +5559,16 @@ msgid "Upload now"
 msgstr "Cargar ahora"
 
 msgid "Usage of disallowed character in CNAME"
-msgstr ""
+msgstr "Uso de caracter no permitido en CNAME"
 
 msgid "Usage of disallowed character in MX"
-msgstr ""
+msgstr "Uso de un caracter no permitido en MX"
 
 msgid "Usage status"
-msgstr ""
+msgstr "Estado de utilización"
 
 msgid "Use normal connection (No SSL)"
-msgstr ""
+msgstr "Usar conexión normal (No SSL)"
 
 msgid "Use numeric ID"
 msgstr "Usar ID numerico"
@@ -5577,7 +5577,7 @@ msgid "Use other dir"
 msgstr "Usar otro directorio"
 
 msgid "Use secure connection (SSL)"
-msgstr ""
+msgstr "Usar conexión segura (SSL)"
 
 msgid "Use strong Passwords"
 msgstr "Utilizar contraseñas fuertes"
@@ -5586,7 +5586,7 @@ msgid "Used"
 msgstr "Usado"
 
 msgid "Used database:"
-msgstr ""
+msgstr "Base de Datos utilizada:"
 
 msgid "User"
 msgstr "Usuario"
@@ -5607,7 +5607,7 @@ msgid "User data were not updated."
 msgstr "Los datos de usuario no han sido actualizados."
 
 msgid "User data were successfully updated."
-msgstr ""
+msgstr "Los datos de usuario han sido actualizados correctamente."
 
 msgid ""
 "User does not exist or you do not have permission to access this interface"
@@ -5622,7 +5622,7 @@ msgid ""
 msgstr "El usuario no existe o no tienes permisos para acceder a esta interfaz."
 
 msgid "User does not exist."
-msgstr ""
+msgstr "Usuario no existe."
 
 msgid "User login (system) name"
 msgstr "Nombre de usuario del sistema"
@@ -5640,7 +5640,7 @@ msgid "User password successfully updated."
 msgstr "La contraseña de usuario se ha actualizado correctamente."
 
 msgid "User personal data successfully updated."
-msgstr ""
+msgstr "Los datos personales de usuario han sido actualizados correctamente."
 
 msgid "User real (first and last) name"
 msgstr "Nombre y apellidos del usuario real"
@@ -5649,7 +5649,7 @@ msgid "User scheduled for deletion."
 msgstr "Usuario programado para ser eliminado."
 
 msgid "User session successfully killed for password change."
-msgstr ""
+msgstr "Sesión de usuario eliminada por cambio de contraseña."
 
 msgid "User session was killed."
 msgstr "La sesión de usuario ha sido eliminada."
@@ -5670,40 +5670,40 @@ msgid "Username"
 msgstr "Nombre de usuario"
 
 msgid "Username and password for application login"
-msgstr ""
+msgstr "Nombre de usuario y contraseña para iniciar sesión en la aplicación"
 
 msgid "Users"
 msgstr "Usuarios"
 
 msgid "Users and groups"
-msgstr ""
+msgstr "Usuarios y grupos"
 
 msgid "Users list"
 msgstr "Lista de usuarios"
 
 #, php-format
 msgid "Value for the %s  directive"
-msgstr ""
+msgstr "Valor de la directiva %s"
 
 #, php-format
 msgid "Value for the %s directive"
-msgstr ""
+msgstr "Valor de la directiva %s"
 
 #, php-format
 msgid "Value for the PHP %s directive is out of range."
-msgstr ""
+msgstr "El valor de la directiva PHP %s está fuera de rango."
 
 #, php-format
 msgid ""
 "Value for the PHP <strong>%%s</strong> directive must be between %%d and "
 "%%d."
-msgstr ""
+msgstr "El valor de la directiva PHP <strong>%%s</strong> debe estar entre %%d y %%d."
 
 msgid "Values"
 msgstr "Valores"
 
 msgid "Vendor hompage"
-msgstr ""
+msgstr "Página del vendedor"
 
 msgid "Version"
 msgstr "Versión"
@@ -5718,7 +5718,7 @@ msgid "View / Update service(s) port"
 msgstr "Ver /Actualizar puerto de servicio/s"
 
 msgid "View SSL certificate"
-msgstr ""
+msgstr "Ver certificado SSL"
 
 msgid "View Support Ticket"
 msgstr "Ver Tiquet de Soporte"
@@ -5727,7 +5727,7 @@ msgid "View aliases"
 msgstr "Ver alias"
 
 msgid "View certificates"
-msgstr ""
+msgstr "er certificados"
 
 msgid "View details"
 msgstr "Ver detalles"
@@ -5735,14 +5735,17 @@ msgstr "Ver detalles"
 msgid "View hosting plan"
 msgstr "Ver plan de hosting"
 
-msgid "Visit plugin site"
+msgid "View ticket"
 msgstr ""
+
+msgid "Visit plugin site"
+msgstr "Visitar el sito de plug-ins"
 
 msgid "Vital system info"
 msgstr "Información vital del sistema"
 
 msgid "Warning traffic"
-msgstr ""
+msgstr "Advertencia del tráfico"
 
 msgid "Warning:"
 msgstr "Alerta:"
@@ -5753,7 +5756,7 @@ msgstr "Avisos y Errores"
 msgid ""
 "We are sorry but You reached the maximum number of subdomains allowed by "
 "your subscription."
-msgstr ""
+msgstr "Lamentablemente has alcanzado el número máximo de subdominios permitido por tu subscripción."
 
 msgid ""
 "We are sorry but you reached the maximum number of domain aliases allowed by"
@@ -5763,7 +5766,7 @@ msgstr "Lo sentimos, pero has alcanzado el número máximo de alias de dominio p
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
-msgstr ""
+msgstr "We are sorry, but the system is currently under maintenance.\nPlease try again later."
 
 msgid "Web & E-Mail Support"
 msgstr "Soporte para Web y Correo"
@@ -5778,13 +5781,13 @@ msgid "Web software depot packages total"
 msgstr "Total paquetes en el repositorio de software web"
 
 msgid "Web softwares repository"
-msgstr ""
+msgstr "Repositorio de software web"
 
 msgid "Web statistics"
 msgstr "Estadísticas web"
 
 msgid "Web statistics (AWStats)"
-msgstr ""
+msgstr "Estadísticas web (AWStats)"
 
 msgid "Web traffic"
 msgstr "Tráfico Web"
@@ -5793,7 +5796,7 @@ msgid "Webmail"
 msgstr "Webmail"
 
 msgid "Websoftware depot list was updated"
-msgstr ""
+msgstr "Lo sentimos, pero el sistema se encuentra actualmente en mantenimiento.\nPor favor, intentalo mas tarde."
 
 msgid "Webspace"
 msgstr "Espacio Web"
@@ -5802,49 +5805,49 @@ msgid "Webtools"
 msgstr "Herramientas Web"
 
 msgid "Welcome mail"
-msgstr ""
+msgstr "Correo de bienvenida"
 
 msgid "Welcome {USERNAME} to i-MSCP"
-msgstr ""
+msgstr "Bienvenido {USERNAME} a i-MSCP"
 
 msgid ""
 "When allowed, scripts can call the PHP exec() function. This function is "
 "needed by many applications but can cause some security issues"
-msgstr ""
+msgstr "Cuando está permitido, los scripts pueden llamar a la función de PHP exec(). Esta función es necesaria para muchas aplicaciones, pero puede causar algunos problemas de seguridad"
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
 msgstr "No estan permitidos los comodines tipo %% y ? ."
 
 msgid "Wrong IP address."
-msgstr ""
+msgstr "Dirección IP incorrecta."
 
 #, php-format
 msgid "Wrong IPv4 address (\"%s\")"
-msgstr ""
+msgstr "Dirección IPv4 incorrecta (\"%s\")"
 
 #, php-format
 msgid "Wrong IPv6 address (\"%s\")"
-msgstr ""
+msgstr "Dirección IPv6 incorrecta (\"%s\")"
 
 msgid "Wrong SQL user identifier."
-msgstr ""
+msgstr "Identificador de usuario SQL incorrecto."
 
 #, php-format
 msgid "Wrong Second Level Domain lenght: <b>%s</b>"
-msgstr ""
+msgstr "La longitud del Dominio de Segundo Nivel es incorrecta:<b>%s</b>"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "La sintaxis del Dominio de Segundo Nivel es incorrecta:<b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain lenght: <b>%s</b>"
-msgstr ""
+msgstr "La longitud del Dominio de Nivel Superior es incorrecta:<b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "La sintaxis del Dominio de Nivel Superior es incorrecta:<b>%s</b>"
 
 msgid "Wrong address in forward URL."
 msgstr "Dirección incorrecta en URL de reenvio."
@@ -5856,10 +5859,10 @@ msgid "Wrong domain Id."
 msgstr "Id. de dominio incorrecto"
 
 msgid "Wrong domain name lenght!"
-msgstr ""
+msgstr "¡Longitud de nombre de dominio incorrecta!"
 
 msgid "Wrong domain name syntax or number of labels"
-msgstr ""
+msgstr "Sintaxis de nombre de dominio o numero de etiquetas incorrectos"
 
 msgid "Wrong domain name syntax."
 msgstr "ntaxis de nombre de dominio incorrecta."
@@ -5869,7 +5872,7 @@ msgstr "¡Nombre de dominio erróneo!"
 
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr ""
+msgstr "Nombre de dominio incorrecto: ¡<b>%s</b> está reservado!"
 
 msgid "Wrong domain part in forward URL."
 msgstr "Parte del dominio incorrecta en URL de reenvio."
@@ -5879,17 +5882,17 @@ msgstr "Nombre de host incorrecto en la URL de reenvio."
 
 #, php-format
 msgid "Wrong label lenght: <b>%s</b>"
-msgstr ""
+msgstr "Longitud de etiqueta incorrecta: <b>%s</b>"
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
-msgstr ""
+msgstr "Sintaxis de etiqueta incorrecta: <b>%s</b>"
 
 msgid "Wrong order ID."
 msgstr "ID. de pedido incorrecto."
 
 msgid "Wrong password."
-msgstr ""
+msgstr "Contraseña incorrecta."
 
 msgid "Wrong redirect URL."
 msgstr "Redirección URL incorrecta."
@@ -5910,13 +5913,13 @@ msgid "Wrong software id."
 msgstr "Identificador de software incorrecto."
 
 msgid "Wrong subdomain lenght!"
-msgstr ""
+msgstr "¡Longitud de subdominio incorrecta!"
 
 msgid "Wrong subdomain syntax or number of labels!"
-msgstr ""
+msgstr "¡Sintaxis de subdominio o numero de etiquetas incorrectos!"
 
 msgid "Wrong syntax for new expire date."
-msgstr ""
+msgstr "Sintaxis errónea para la nueva fecha de expiración."
 
 #, php-format
 msgid "Wrong syntax for the %s forward email address."
@@ -5924,31 +5927,31 @@ msgstr "La dirección de email %s tiene una sintaxis errónea."
 
 #, php-format
 msgid "Wrong syntax for the %s limit."
-msgstr ""
+msgstr "SIntaxis errónea para el límite %s."
 
 msgid "Wrong syntax in forward URL."
 msgstr "Sintaxis incorrecta en la URL de reenvio."
 
 msgid "Wrong user level provided."
-msgstr ""
+msgstr "El nivel de usuario proporcionado es incorrecto"
 
 msgid "Wrong username"
 msgstr "Nombre de usuario incorrecto"
 
 msgid "Wrong username."
-msgstr ""
+msgstr "Nombre de usuario erróneo."
 
 msgid "Wrong value for the PHP open_basedir directive."
-msgstr ""
+msgstr "Valor incorrecto para la directiva PHP open_basedir."
 
 msgid "Wrong_request."
-msgstr ""
+msgstr "Petición errónea."
 
 msgid "XML file URL for the Web software repository"
-msgstr ""
+msgstr "URL del archivo XML para el repositorio de software Web"
 
 msgid "YB"
-msgstr ""
+msgstr "YB"
 
 msgid "Year"
 msgstr "Año"
@@ -5960,38 +5963,38 @@ msgid "Yes, delete the domain."
 msgstr "Si, borrar el dominio."
 
 msgid "YiB"
-msgstr ""
+msgstr "YiB"
 
 msgid "You Are Exceeding Your Alias Limit."
-msgstr ""
+msgstr "Estas excediendo tu límite de alias."
 
 #, php-format
 msgid "You are exceeding reseller limits for the <em>%s</em> service."
 msgstr "Estás excediendo los limites de distribuidor para el servicio <em>%s</em>."
 
 msgid "You are exceeding the server traffic limit."
-msgstr ""
+msgstr "Estas excediendo el límite de tráfico del servidor."
 
 msgid "You are exceeding your FTP accounts limit."
-msgstr ""
+msgstr "Estas excediendo tu límite de cuentas FTP."
 
 msgid "You are exceeding your SQL database limit."
-msgstr ""
+msgstr "Estas excediendo tu límite de Base de Datos SQL"
 
 msgid "You are exceeding your SQL databases limit."
-msgstr ""
+msgstr "Estas excediendo tu límite de Bases de Datos SQL"
 
 msgid "You are exceeding your disk limit."
 msgstr "Estas excediendo tu limite de espacio en disco."
 
 msgid "You are exceeding your disk space limit."
-msgstr ""
+msgstr "Estás excediendo el límite de espacio en disco."
 
 msgid "You are exceeding your mail accounts limit."
-msgstr ""
+msgstr "Estas excediendo tu límite de cuentas de correo."
 
 msgid "You are exceeding your subdomains limit."
-msgstr ""
+msgstr "Estas excediendo tu límite de subdominios."
 
 msgid "You are exceeding your traffic limit."
 msgstr "Estás excediendo tu límite de tráfico."
@@ -6000,7 +6003,7 @@ msgid "You are not allowed to edit this DNS record."
 msgstr "No tienes permiso para editar este registro DNS."
 
 msgid "You are not allowed to edit this external mail entry."
-msgstr ""
+msgstr "No tienes permiso para editar esta entrada de email externo."
 
 msgid "You are not allowed to perform this operation."
 msgstr "No tienes permiso para realizar esta operación."
@@ -6009,13 +6012,13 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "No tienes permiso para eliminar este registro DNS."
 
 msgid "You are not allowed to remove this external mail entry."
-msgstr ""
+msgstr "No tienes permiso para eliminar esta entrada de email externo."
 
 msgid "You are not allowed to remove this service port entry."
-msgstr ""
+msgstr "No tienes permiso para eliminar esta entrada de puerto de servicio."
 
 msgid "You can only upload images."
-msgstr ""
+msgstr "Solo puedes cargar imágenes."
 
 msgid ""
 "You can't delete a reseller that has domain accounts. Please, remove them "
@@ -6036,29 +6039,29 @@ msgstr "No puedes reenviar %s sobre si misma."
 msgid ""
 "You cannot move <b>%1$s</b> in a destination reseller,<br />which has limits"
 " for the <b>%2$s</b> service."
-msgstr ""
+msgstr "No puedes mover <b>%1$s</b> a un distribuidor de destino,<br /> el cual tiene limites para el servicio <b>%2$s</b>."
 
 msgid "You cannot protect an area without selected htaccess group(s)."
-msgstr ""
+msgstr "No se puede proteger una árera sin tener seleccionado(s) grupo(s) htaccess."
 
 msgid "You cannot protect an area without selected htaccess user(s)."
-msgstr ""
+msgstr "No se puede proteger una árera sin tener seleccionado(s) usuario(s) htaccess."
 
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "No puedes eliminar la dirección IP %s."
 
 msgid "You cannot set expire date in past."
-msgstr ""
+msgstr "No puedes asignar una fecha de expiración pasada."
 
 msgid "You cannot unassign an IP address already in use."
-msgstr ""
+msgstr "No puedes desasignar una dirección IP que está en uso."
 
 msgid "You cannot update to this hosting plan, see notices in text."
 msgstr "No puedes actualizar este plan de alojamiento, vea las razones en el texto."
 
 msgid "You cant't install the software outside the htdocs directory."
-msgstr ""
+msgstr "No puedes instalar el software fuera del directorio htdocs."
 
 msgid "You did have more traffic than the new hosting plan limits."
 msgstr "Tienes mas tráfico que los limites del nuevo plan de hospedaje."
@@ -6070,7 +6073,7 @@ msgid "You do not have FTP users."
 msgstr "No tienes usuarios FTP."
 
 msgid "You do not have any software uploaded yet"
-msgstr ""
+msgstr "Aun no tienes ningun software cargado."
 
 msgid "You do not have custom DNS records."
 msgstr "No tienes registros DNS personalizados."
@@ -6094,10 +6097,10 @@ msgid "You do not have permission to access this interface."
 msgstr "No tienes permiso para acceder a esta interfaz."
 
 msgid "You do not have permissions to install application yet"
-msgstr ""
+msgstr "Aun no tienes permisos para cargar aplicacion."
 
 msgid "You do not have permissions to upload software"
-msgstr ""
+msgstr "No tienes permisos para cargar software."
 
 msgid "You do not have protected areas."
 msgstr "No tienes áreas protegidas."
@@ -6106,7 +6109,7 @@ msgid "You do not have subdomains."
 msgstr "No tienes subdominios."
 
 msgid "You do not have sufficient permissions to perform this operation."
-msgstr ""
+msgstr "No tienes permisos suficientes para realizar esta operación."
 
 msgid "You do not need 'www.' i-MSCP will add it automatically."
 msgstr "No necesitas  'www.' i-MSCP lo añadirá automáticamente."
@@ -6116,58 +6119,58 @@ msgstr "No necesitas 'www.' iscpCP lo añadirá por ti."
 
 #, php-format
 msgid "You have %d new accounts %s."
-msgstr ""
+msgstr "Tienes %d nuevas cuentas %s."
 
 #, php-format
 msgid "You have %d new domain alias %s."
-msgstr ""
+msgstr "Tienes %d nuevos alias de dominio %s."
 
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't provide this feature."
-msgstr ""
+msgstr "Tienes CGI activado, pero el nuevo plan de alojamiento no dispone de esta característica."
 
 msgid ""
 "You have PHP enabled, but the new hosting plan doesn't provide this feature."
-msgstr ""
+msgstr "Tienes PHP activado, pero el nuevo plan de alojamiento no dispone de esta característica."
 
 msgid ""
 "You have a FTP accounts limit!<br />You cannot add an user with unlimited "
 "FTP accounts."
-msgstr ""
+msgstr "¡Tienes un límite de cuentas FTP! <br /> No se puede añadir un usuario con un número ilimitado de cuentas FTP."
 
 msgid ""
 "You have a SQL databases limit.<br />You cannot add an user with unlimited "
 "SQL databases."
-msgstr ""
+msgstr "Tienes un límite de bases de datos SQL. <br /> No se puede añadir un usuario con un número ilimitado de bases de datos SQL."
 
 msgid ""
 "You have a disk limit.<br />You cannot add an user with unlimited disk."
-msgstr ""
+msgstr "Tienes un límite de disco. <br /> No se puede añadir un usuario con disco ilimitado."
 
 msgid ""
 "You have a mail accounts limit.<br />You cannot add an user with unlimited "
 "mail accounts."
-msgstr ""
+msgstr "Tienes un límite de cuentas de correo. <br /> No se puede añadir un usuario con cuentas de correo ilimitadas."
 
 msgid ""
 "You have a subdomains limit.<br />You cannot add an user with unlimited "
 "subdomains."
-msgstr ""
+msgstr "Tienes un límite de subdominios. <br /> No se puede añadir un usuario con subdominios ilimitados."
 
 msgid ""
 "You have a traffic limit.<br />You cannot add an user with unlimited "
 "traffic."
-msgstr ""
+msgstr "Usted tiene un límite de tráfico. <br /> No se puede añadir un usuario con tráfico ilimitado."
 
 msgid ""
 "You have an SQL users limit.<br />You cannot add an user with unlimited SQL "
 "users."
-msgstr ""
+msgstr "Usted tiene un límite de usuarios SQL. <br /> No se puede añadir un usuario con un número ilimitado de usuarios SQL."
 
 msgid ""
 "You have an aliases limit.<br />You cannot add an user with unlimited "
 "aliases."
-msgstr ""
+msgstr "Usted tiene un límite de alias. <br /> No se puede añadir un usuario con alias ilimitados."
 
 #, php-format
 msgid ""
@@ -6177,21 +6180,21 @@ msgid ""
 msgstr "Tienes una petición para la cuenta %s\n\nPor favor, entra en tu panel de control i-MSCP en %s para más detalles"
 
 msgid "You have been successfully logged out."
-msgstr ""
+msgstr "Te has desconectado correctamente."
 
 msgid ""
 "You have chosen a directory which doesn't matches the domain directory."
-msgstr ""
+msgstr "Has elegido un directorio que no coincide con el directorio de dominio."
 
 msgid ""
 "You have custom DNS enabled, but the new hosting plan doesn't provide this "
 "feature."
-msgstr ""
+msgstr "Tienes DNS personalizadas activado, pero el nuevo plan de alojamiento no dispone de esta característica."
 
 msgid ""
 "You have disabled SQL databases for this user.<br />You cannot have SQL "
 "users here."
-msgstr ""
+msgstr "Tienes desactivado bases de datos SQL para este usuario. <br /> No se puede tener usuarios SQL aquí."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
 msgstr "Tienes mas direcciones de correo en uso que los limites del nuevo plan de hospedaje."
@@ -6213,7 +6216,7 @@ msgid "You have more disk space in use than the new hosting plan limits."
 msgstr "Tienes mas espacio de disco en uso que los limites del nuevo plan de hospedaje."
 
 msgid "You have more domain aliases in use than the new hosting plan limits"
-msgstr ""
+msgstr "Tienes mas alias de dominio en uso que los permitidos por los límites del nuevo plan de alojamiento."
 
 msgid ""
 "You have more e-mail addresses in use than the new hosting plan limits."
@@ -6226,35 +6229,35 @@ msgid "You have more subdomains in use than the new hosting plan limits."
 msgstr "Tienes mas subdominios en uso que los limites del nuevo plan de hospedaje."
 
 msgid "You have no custom service ports defined."
-msgstr ""
+msgstr "No tienes puertos de servicio personalizados definidos."
 
 msgid "You have no groups."
 msgstr "No tienes grupos."
 
 msgid "You have no tickets closed."
-msgstr ""
+msgstr "No tienes tiquets cerrados."
 
 msgid "You have no tickets open."
-msgstr ""
+msgstr "No tienes tiquets abiertos."
 
 msgid "You have no users !"
 msgstr "¡No tiene usuarios!"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains."
-msgstr ""
+msgstr "Has alcanzado el límite de dominios. <br /> No se puede agregar más dominios."
 
 #, php-format
 msgid "You have received %d new support questions."
-msgstr ""
+msgstr "Has recibido %d nuevas peticiones de soporte."
 
 #, php-format
 msgid "You have received %s new support questions."
-msgstr ""
+msgstr "Has recibido %s nuevas peticiones de soporte."
 
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "
 "provide this feature."
-msgstr ""
+msgstr "Tienes el instalador de software activado, pero el nuevo plan de alojamiento no dispone de esta característica."
 
 msgid "You have to accept the Term of Service."
 msgstr "Tienes que aceptar los Términos de Servicio."
@@ -6275,13 +6278,13 @@ msgid "You must fill out all required fields."
 msgstr "Debes rellenar todos los campos obligatorios"
 
 msgid "You must first generate a password"
-msgstr ""
+msgstr "Primero debes generar una contraseña."
 
 msgid "You must first update the template to preview your changes."
-msgstr ""
+msgstr "Para previsualizar los cambios primero debes actualizar la plantilla."
 
 msgid "You must provide a password."
-msgstr ""
+msgstr "Debes proporcionar una contraseña."
 
 msgid "You must select a file to upload/download."
 msgstr "Debes escoger un archivo para cargar/descargar."
@@ -6290,7 +6293,7 @@ msgid "You must select a network card."
 msgstr "Debes seleccionar una tarjeta de red."
 
 msgid "You must select one or more plugins to operate on."
-msgstr ""
+msgstr "Debes seleccionar uno o mas plug-ins para operar."
 
 msgid "You must specify a message."
 msgstr "Debe especificar un mensaje."
@@ -6299,14 +6302,14 @@ msgid "You must specify a subject."
 msgstr "Debe especificar un asunto."
 
 msgid "You need a Database for this software"
-msgstr ""
+msgstr "Necesitas una Base de Datos para este software"
 
 msgid "You reached your domain aliases limit."
-msgstr ""
+msgstr "Has alcanzado el límite de alias de dominio."
 
 #, php-format
 msgid "You received %d new answer(s) to your support questions."
-msgstr ""
+msgstr "Has recibido %d nueva(s) respuesta(s) a tus petitiones de soporte."
 
 msgid "You send email to your users successfully!"
 msgstr "¡Ha enviado el correo correctamente a sus usuarios!"
@@ -6318,16 +6321,16 @@ msgid "Your account has expired. Please renew your subscription."
 msgstr "Tu cuenta ha expirado. Por favor, renueva tu subscripción."
 
 msgid "Your consumption"
-msgstr ""
+msgstr "Tu consumo"
 
 msgid "Your message"
 msgstr "Su mensaje"
 
 msgid "Your message has been successfully sent."
-msgstr ""
+msgstr "Tu mensaje ha sido enviado correctamente."
 
 msgid "Your new i-MSCP login"
-msgstr ""
+msgstr "Tu nuevo inicio de sesión i_MSCP"
 
 msgid "Your new password has been sent. Check your mail."
 msgstr "Su nueva contraseña ha sido enviada. Revise su correo electrónico."
@@ -6336,7 +6339,7 @@ msgid "Your order"
 msgstr "Su pedido"
 
 msgid "Your order for hosting plan update was successfully canceled."
-msgstr ""
+msgstr "Tu pedido de actualización de plan de alojamiento ha sido cancelada."
 
 msgid ""
 "Your order has been confirmed and is being processed... You will receive a "
@@ -6348,10 +6351,10 @@ msgid ""
 msgstr "Su pedido no se ha encontrado en nuestra base de datos. ¿Tal vez ya confirmado?"
 
 msgid "Your own domain"
-msgstr ""
+msgstr "Tu propio dominio"
 
 msgid "Your package is corrupt. Please correct it!"
-msgstr ""
+msgstr "El paquete está corrupto. ¡Por favor corrigelo!"
 
 #, php-format
 msgid ""
@@ -6359,7 +6362,7 @@ msgid ""
 msgstr "El tamaño de tu fichero remoto (%1$d B) es menor de 1 Byte. Por favor comprueba tu URL."
 
 msgid "Your request for hosting plan update was successfully registered."
-msgstr ""
+msgstr "Tu petición de actualización de plan de alojamiento ha sido registrada."
 
 msgid ""
 "Your request for new password was registered. You will receive an email with"
@@ -6367,25 +6370,25 @@ msgid ""
 msgstr "Tu petición de nueva contraseña ha sido registrada. Recibirás un email con las instrucciones para completar el proceso."
 
 msgid "ZB"
-msgstr ""
+msgstr "ZB"
 
 msgid "ZiB"
-msgstr ""
+msgstr "ZiB"
 
 msgid "Zip code"
-msgstr ""
+msgstr "Código postal"
 
 msgid "Zip/Postal code"
 msgstr "Código postal"
 
 msgid "[New]"
-msgstr ""
+msgstr "[Nuevo]"
 
 msgid "[Re]"
-msgstr ""
+msgstr "[Re]"
 
 msgid "[Ticket]"
-msgstr ""
+msgstr "[Tiquet]"
 
 msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr "[i-MSCP Panel de Pedidos] - Tienes un pedido de actualización"
@@ -6394,13 +6397,13 @@ msgid "_: Localised language"
 msgstr "Español (España) - Spanish (Spain)"
 
 msgid "activate"
-msgstr ""
+msgstr "Activar"
 
 msgid "activated"
-msgstr ""
+msgstr "Activado"
 
 msgid "activated (Softwaredepot)"
-msgstr ""
+msgstr "activado (Repositorio de software)"
 
 msgid "back"
 msgstr "atrás"
@@ -6415,16 +6418,16 @@ msgid "days"
 msgstr "dias"
 
 msgid "deactivate"
-msgstr ""
+msgstr "Desactivar"
 
 msgid "deactivated"
-msgstr ""
+msgstr "Desactivado"
 
 msgid "deleting"
-msgstr ""
+msgstr "eliminando"
 
 msgid "disabled"
-msgstr ""
+msgstr "desactivado"
 
 msgid "disk space"
 msgstr "espacio en disco"
@@ -6433,19 +6436,19 @@ msgid "domain"
 msgstr "dominio"
 
 msgid "domain alias"
-msgstr ""
+msgstr "Alias de dominio"
 
 msgid "domain aliases"
 msgstr "álias de dominio"
 
 msgid "domain aliasses"
-msgstr ""
+msgstr "Alias de dominio"
 
 msgid "domains"
-msgstr ""
+msgstr "Dominios"
 
 msgid "enabled"
-msgstr ""
+msgstr "activado"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -6464,7 +6467,7 @@ msgstr "de otro navegador"
 msgid ""
 "getInfo() not implemented in %s and %s not found. <br /> This is a bug in "
 "the %s plugin and should be reported to the plugin author."
-msgstr ""
+msgstr "getinfo() no está implementada en %s y %s no encontrado.<br /> Hay un error en el pluguin %s y debe ser reportado al autor del plugin."
 
 msgid "help"
 msgstr "ayuda"
@@ -6479,16 +6482,16 @@ msgid "i-MSCP - Admin - Manage custom menus"
 msgstr "i-MSCP - Admin/Administrar menús personalizados"
 
 msgid "i-MSCP - Admin / Add hosting plan"
-msgstr ""
+msgstr "i-MSCP - Admin / Nuevo plan de alojamiento"
 
 msgid "i-MSCP - Admin / Domain Account Deletion Validation"
 msgstr "i-MSCP - Admin / Validación de Eliminación de Cuenta de Dominio"
 
 msgid "i-MSCP - Admin / Edit customer"
-msgstr ""
+msgstr "i-MSCP - Admin / Editas Cliente"
 
 msgid "i-MSCP - Admin / Edit hosting plan"
-msgstr ""
+msgstr "i-MSCP - Admin / Editar plan de alojamiento"
 
 msgid "i-MSCP - Admin / General information"
 msgstr "i-MSCP - Admin / Información general"
@@ -6497,55 +6500,55 @@ msgid "i-MSCP - Admin / General settings / IPs management"
 msgstr "i-MSCP - Admin / Configuración general / Administración de IPs"
 
 msgid "i-MSCP - Admin / Internationalisation"
-msgstr ""
+msgstr "i-MSCP - Admin / Internacionalización"
 
 msgid "i-MSCP - Admin / Manage users / Add Reseller"
-msgstr ""
+msgstr "i-MSCP - Admin / Administrar usuarios / Nuevo Distribuidor"
 
 msgid "i-MSCP - Admin / Manage users / Edit Reseller"
-msgstr ""
+msgstr "i-MSCP - Admin / Administrar usuarios / Editar Distribuidor"
 
 msgid "i-MSCP - Admin / My Profile"
-msgstr ""
+msgstr "i-MSCP - Admin / Mi Perfil"
 
 msgid "i-MSCP - Admin / Profile /  Language"
-msgstr ""
+msgstr "i-MSCP - Admin / Perfil /  Idioma"
 
 msgid "i-MSCP - Admin / Profile /  Password"
-msgstr ""
+msgstr "i-MSCP - Admin / Perfil /  Contraseña"
 
 msgid "i-MSCP - Admin / Profile /  Personal Data"
-msgstr ""
+msgstr "i-MSCP - Admin / Perfil /  Datos Personales"
 
 msgid "i-MSCP - Admin / Profile / Layout"
-msgstr ""
+msgstr "i-MSCP - Admin / Perfil / Diseño"
 
 msgid "i-MSCP - Admin / Reseller customer statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Estadísticas de clientes de distribuidor"
 
 msgid "i-MSCP - Admin / Reseller statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Estadísticas de distribuidor"
 
 msgid "i-MSCP - Admin / Settings / Plugin management"
-msgstr ""
+msgstr "i-MSCP - Admin / Configuración / Administración de Plug-ins."
 
 msgid "i-MSCP - Admin / Settings / Server traffic settings"
-msgstr ""
+msgstr "i-MSCP - Admin / Configuración / Configuración del tráfico del servidor"
 
 msgid "i-MSCP - Admin / Settings / Service ports"
-msgstr ""
+msgstr "i-MSCP - Admin / Configuración / Puertos de Servicio"
 
 msgid "i-MSCP - Admin / Statistics  / Server statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Estadísticas / Estadísticas de servidor"
 
 msgid ""
 "i-MSCP - Admin / Statistics / Reseller's statistics / Customer statistics / "
 "Domain_statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Estadísticas / Estadísticas de distribuidor / Estadísticas de cliente / Estadísticas de dominio"
 
 msgid ""
 "i-MSCP - Admin / Statistics / Server statistics / Server day statistics"
-msgstr ""
+msgstr "i-MSCP - Admin / Estadísticas / Estadísticas de servidor / Estadísticas diarias de servidor"
 
 msgid "i-MSCP - Admin / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Admin / Sistema de Tiquets de Soporte / Tiquets Cerrados"
@@ -6560,7 +6563,7 @@ msgid "i-MSCP - Admin / System tools / Database Update"
 msgstr "i-MSCP - Admin / Herramientas del Sistema / Actualización de Base de Datos"
 
 msgid "i-MSCP - Admin / Users management / Domain Details"
-msgstr ""
+msgstr "i-MSCP - Admin / Administración de usuarios / Detalles de Dominio"
 
 msgid "i-MSCP - Admin/IP Usage"
 msgstr "i-MSCP - Admin/Uso de IP"
@@ -6578,7 +6581,7 @@ msgid "i-MSCP - Admin/Manage Users"
 msgstr "i-MSCP - Admin/Administrar usuarios"
 
 msgid "i-MSCP - Admin/Manage users / User assignment"
-msgstr ""
+msgstr "i-MSCP - Admin / Administración de usuarios / Asignación de usuarios"
 
 msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "i-MSCP - Admin/Administrar usuarios/Añadir usuario"
@@ -6593,7 +6596,7 @@ msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Admin/Configuración"
 
 msgid "i-MSCP - Administrator / Hosting Plans Management"
-msgstr ""
+msgstr "i-MSCP - Administrador / Administración de Planes de Alojamiento"
 
 msgid "i-MSCP - Application Management"
 msgstr "i-MSCP - Administración de Aplicaciones"
@@ -6602,43 +6605,43 @@ msgid "i-MSCP - Application Management (Permissions)"
 msgstr "i-MSCP - Administrador de aplicaciones (Permisos)"
 
 msgid "i-MSCP - Client / Change Language"
-msgstr ""
+msgstr "i-MSCP - Cliente / Cambiar Idioma"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar dominios - añadir subdominio"
 
 msgid "i-MSCP - Client / Manage mail"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo"
 
 msgid "i-MSCP - Client / Manage mail / Add account"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Nueva cuenta"
 
 msgid "i-MSCP - Client / Manage mail / Add catchall"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Nueva CatchAll"
 
 msgid "i-MSCP - Client / Manage mail / Catchall"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / CatchAll"
 
 msgid "i-MSCP - Client / Manage mail / Create External mail server entry"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Crear entrada de servidor de correo externo"
 
 msgid "i-MSCP - Client / Manage mail / Edit External mail server entries"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Editar entradas de servidor de correo externo"
 
 msgid "i-MSCP - Client / Manage mail / Edit account"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Editar cuenta"
 
 msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Editar autorespuesta"
 
 msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Editar cuota"
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Activar autorespuesta"
 
 msgid "i-MSCP - Client / Manage mail / External mail servers"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar correo / Servidores esternos de correo"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Sistema de Tiquets de Soporte / Tiquets Cerrados"
@@ -6653,22 +6656,22 @@ msgid "i-MSCP - Client / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Client / Sistema de Tiquets de Soporte / Ver Tiquet"
 
 msgid "i-MSCP - Client / Webtools"
-msgstr ""
+msgstr "i-MSCP - Cliente / Webtools"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Add htaccess user"
-msgstr ""
+msgstr "i-MSCP - Cliente / Webtools / Áreas protegidas / Nuevo usuario htaccess"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Edit Htaccess user"
-msgstr ""
+msgstr "i-MSCP - Cliente / Webtools / Áreas protegidas / Editar usuario Htaccess"
 
 msgid "i-MSCP - Client / Webtools / Protected areas / Manage users and groups"
-msgstr ""
+msgstr "i-MSCP - Cliente / Webtools / Áreas protegidas / Administrar usuarios y grupos"
 
 msgid "i-MSCP - Client / Webtools / Softwares"
-msgstr ""
+msgstr "i-MSCP - Cliente / Webtools / Software"
 
 msgid "i-MSCP - Client / Webtools Protected areas / Add Htaccess group"
-msgstr ""
+msgstr "i-MSCP - Cliente / Webtools / Áreas protegidas / Nuevo grupo Htaccess"
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Cliente/Añadir usuario FTP"
@@ -6713,31 +6716,31 @@ msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - Cliente/Administrar usuarios"
 
 msgid "i-MSCP - Client/Manage certificates"
-msgstr ""
+msgstr "i-MSCP - Cliente / Administrar certificados"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Cliente/Herramientas Web"
 
 msgid "i-MSCP - Domain / Edit"
-msgstr ""
+msgstr "i-MSCP - Dominio / Editar"
 
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - Dominio/Editar"
 
 msgid "i-MSCP - Ftp / Choose directory"
-msgstr ""
+msgstr "i-MSCP - Ftp / Elegir directorio"
 
 msgid "i-MSCP - Install Software"
 msgstr "i-MSCP - Instalar Software"
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zones record"
-msgstr ""
+msgstr "i-MSCP - Administrar Alias de Dominio / Añadir registro de zona DNS"
 
 msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "i-MSCP - Administrar Alias de Dominio/Editar Alias"
 
 msgid "i-MSCP - Manage Domain Alias/Edit DNS zones record"
-msgstr ""
+msgstr "i-MSCP - Administrar Alias de Dominio / Editar registro de zona DNS"
 
 msgid "i-MSCP - Manage Domain/Alias"
 msgstr "i-MSCP - Administrar Dominio/Alias"
@@ -6752,16 +6755,16 @@ msgid "i-MSCP - Multi Server Control Panel / Login"
 msgstr "i-MSCP - Multi Server Control Panel / Inicio de sesion"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Contraseña perdida"
 
 msgid "i-MSCP - Multi Server Control Panel / Maintenance"
-msgstr ""
+msgstr "i-MSCP - Multi Server Control Panel / Mantenimiento"
 
 msgid "i-MSCP - Reseller / Add customer - step 1"
-msgstr ""
+msgstr "i-MSCP - Distribuidor / Nuevo cliente - paso 1"
 
 msgid "i-MSCP - Reseller / Add hosting plan"
-msgstr ""
+msgstr "i-MSCP - Distribuidor / Nuevo plan de alojamiento"
 
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Distribuidor / Validación de Eliminación de Cuenta de Dominio"
@@ -6773,13 +6776,13 @@ msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Distribuidor / Diseño"
 
 msgid "i-MSCP - Reseller / My Profile"
-msgstr ""
+msgstr "i-MSCP - Distribuidor / Mi Perfil"
 
 msgid "i-MSCP - Reseller / Order management"
-msgstr ""
+msgstr "i-MSCP - Distribuidor / Administración de pedidos"
 
 msgid "i-MSCP - Reseller / Statistics /  Customers statistics"
-msgstr ""
+msgstr "i-MSCP - Distribuidor / Estadístcas /  Estadísticas de cliente"
 
 msgid "i-MSCP - Reseller / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Distribuidor / Sistema de Tiquets de Soporte / Tiquets Cerrados"
@@ -6794,7 +6797,7 @@ msgid "i-MSCP - Reseller / Support Ticket System / View Ticket"
 msgstr "i-MSCP - Distribuidor / Sistema de Tiquets de Soporte / Ver Tiquet"
 
 msgid "i-MSCP - Reseller / Users management / Domain Details"
-msgstr ""
+msgstr "i-MSCP - Distribuidor / Administración de usuarios / Detalles de Dominio"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Revendedor/Cambiar idioma"
@@ -6839,7 +6842,7 @@ msgid "i-MSCP - Software details"
 msgstr "i-MSCP - Detalles de Software"
 
 msgid "i-MSCP - Software installer options"
-msgstr ""
+msgstr "i-MSCP - Opciones del instalador de software"
 
 msgid "i-MSCP - User/Add domain account - step 2"
 msgstr "i-MSCP - Usuario/Añadir cuenta de dominio - paso 2"
@@ -6857,16 +6860,16 @@ msgid "i-MSCP - Users/Edit"
 msgstr "i-MSCP - Usuarios/Editar"
 
 msgid "i-MSCP - admin / System tools / System information"
-msgstr ""
+msgstr "i-MSCP - Admin / Herramientas del sistema / Información del sistema"
 
 msgid "i-MSCP - client / General Information / Update hosting plan"
-msgstr ""
+msgstr "i-MSCP - Cliente / Información General / Actualizar plan de alojamiento"
 
 msgid "i-MSCP - client / Setting Layout"
-msgstr ""
+msgstr "i-MSCP - Cliente / Configuración de diseño"
 
 msgid "i-MSCP / Client / Manage domains / PHP Editor"
-msgstr ""
+msgstr "i-MSCP / Cliente / Administrar dominios / Editor PHP"
 
 msgid "i-MSCP / Software Installer / Management"
 msgstr "i-MSCP / Instalador de Software / Administración"
@@ -6881,10 +6884,10 @@ msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "i-MSCP Admin / Herramientas de sistema / Herramientas de comprobación Anti-Rootkits"
 
 msgid "i-MSCP Client / Domain statistics"
-msgstr ""
+msgstr "i-MSCP Cliente / Estadísticas de dominio"
 
 msgid "i-MSCP Client / General Information"
-msgstr ""
+msgstr "i-MSCP Cliente / Información General"
 
 msgid "i-MSCP Client : Add Alias"
 msgstr "i-MSCP Client : Añadir Alias"
@@ -6896,16 +6899,16 @@ msgid "i-MSCP Daemon tools"
 msgstr "i-MSCP - Herramientas de Proceso"
 
 msgid "i-MSCP Notice"
-msgstr ""
+msgstr "i-MSCP Notificación"
 
 msgid "i-MSCP Reseller / Domain statistics"
-msgstr ""
+msgstr "i-MSCP Distribuidor / Estadísticas de dominio"
 
 msgid "i-MSCP Reseller/Add Alias"
-msgstr ""
+msgstr "i-MSCP Distribuidor / Nuevo Alias"
 
 msgid "i-MSCP Reseller/Circular"
-msgstr ""
+msgstr "i-MSCP Distribuidor / Circular"
 
 msgid "i-MSCP application installer Web softwares repository"
 msgstr "i-MSCP instalador de aplicaciones del repositorio de software Web"
@@ -6926,25 +6929,25 @@ msgid "install"
 msgstr "instalar"
 
 msgid "installed"
-msgstr ""
+msgstr "instalado"
 
 msgid "installing"
-msgstr ""
+msgstr "instalando"
 
 msgid "internet Multi Server Control Panel"
 msgstr "internet Multi Server Control Panel"
 
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 msgid "kiB"
-msgstr ""
+msgstr "kiB"
 
 msgid "mail"
-msgstr ""
+msgstr "correo"
 
 msgid "mail account"
-msgstr ""
+msgstr "cuentas de correo"
 
 msgid "mail accounts"
 msgstr "cuentas de mail"
@@ -6968,13 +6971,13 @@ msgid "no"
 msgstr "no"
 
 msgid "not activated"
-msgstr ""
+msgstr "no activado"
 
 msgid "not available"
 msgstr "no disponible"
 
 msgid "not required"
-msgstr ""
+msgstr "no obligatorio"
 
 msgid "older than 1 month"
 msgstr "anterior a 1 mes"
@@ -6999,16 +7002,16 @@ msgid "or remote file (Max: %1$d MB)"
 msgstr "o fichero remoto (Max: %1$d MB)"
 
 msgid "order"
-msgstr ""
+msgstr "pedido"
 
 msgid "orders"
-msgstr ""
+msgstr "pedidos"
 
 msgid "orphan entry"
 msgstr "entrada huerfana"
 
 msgid "per"
-msgstr ""
+msgstr "por"
 
 msgid "phpMyAdmin"
 msgstr "phpMyAdmin"
@@ -7017,19 +7020,19 @@ msgid "post_max_size out of range."
 msgstr "post_max_size fuera de rango."
 
 msgid "protect"
-msgstr ""
+msgstr "proteger"
 
 msgid "protected"
-msgstr ""
+msgstr "protegido"
 
 msgid "required"
-msgstr ""
+msgstr "obligatorio"
 
 msgid "reseller"
 msgstr "distribuidor"
 
 msgid "subdomain"
-msgstr ""
+msgstr "subdominio"
 
 msgid "subdomains"
 msgstr "subdominios"
@@ -7053,19 +7056,19 @@ msgid "view aliases"
 msgstr "Ver alias"
 
 msgid "waiting for activation"
-msgstr ""
+msgstr "esperando activación"
 
 msgid "wrong request."
-msgstr ""
+msgstr "petición incorrecta."
 
 msgid "yes"
 msgstr "si"
 
 msgid "{ADMIN} activated your software package"
-msgstr ""
+msgstr "{ADMIN} ha activado tu paquete de software"
 
 msgid "{RESELLER} uploaded a new software package"
-msgstr ""
+msgstr "{RESELLER} ha cargado un nuevo paquete de software"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
-msgstr ""
+msgstr "© 2010-2012 i-MSCP Team<br/>Todos los Derechos Reservados"

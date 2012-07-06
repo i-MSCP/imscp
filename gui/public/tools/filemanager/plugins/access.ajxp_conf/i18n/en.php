@@ -69,7 +69,7 @@ $mess=array(
 "49" => "Cannot update password",
 "50" => "Error: a repository with the same name already exists",
 "51" => "The conf directory is not writeable",
-"52" => "Successfully created repository",
+"52" => "Successfully created repository! You can now add some 'Metadata Sources' to enrich the data, add automatic indexation, etc",
 "53" => "Error while trying to edit repository", 
 "54" => "Successfully edited repository", 
 "55" => "Warning, at the moment, you can only add one instance of each meta plugin.", 
@@ -98,7 +98,7 @@ $mess=array(
 "77" => "Access Control", 
 "78" => "Personal data",
 "79" => "Repository",
-"80" => "Fine-tune access for this user",
+"80" => "Fine-tune access for this user (Click on a repository label if you wish to make it the default repository when user logs in)",
 "81" => "Specific repositories data",
 "82" => "Batch-edit users",
 "83" => "Drag'n'drop roles to apply them to all selected users (shared users are skipped)",
@@ -134,5 +134,7 @@ $mess=array(
 "112" => "<b>Apply this role by default</b> to all new users.",
 "113" => "Role status was successfully modified",
 "114" => "Default",
+"115" => "Scheme",
+"116" => "Template Label",
+"117" => "Template Driver",
 );
-?>

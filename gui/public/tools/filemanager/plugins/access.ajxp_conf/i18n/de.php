@@ -100,7 +100,7 @@ $mess=array(
 "77" => "Zugriffssteuerung",
 "78" => "Persönliche Daten",
 "79" => "Repository",
-"80" => "Detaillierter Zugriff für diesen Benutzer",
+"80" => "Detaillierter Zugriff für diesen Benutzer  (Click on a repository label if you wish to make it the default repository when user logs in)",
 "81" => "Typische Repositories Inhalte",
 "82" => "Benutzer Batch-editieren",
 "83" => "Drag'n'Drop der Rollen um diese allen ausgewählten Benutzern zuzuweisen (Freigegebene Benutzer werden übersprungen)",
@@ -136,5 +136,8 @@ $mess=array(
 "112" => "<b>Apply this role by default</b> to all new users.",
 "113" => "Role status was successfully modified",
 "114" => "Default",
+"115" => "Scheme",
+    "116" => "Template Label",
+    "117" => "Template Driver",
 );
 ?>

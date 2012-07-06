@@ -49,8 +49,8 @@ $mess=array(
 "28" => "L'utilisateur est administrateur?",
 "29" => "Lire",
 "30" => "Ecrire",
-"32" => "Plugin du répository",
-"33" => "Loading...",
+"32" => "Plugin du dépôt",
+"33" => "Chargement...",
 "34" => "Etes vous sur de vouloir effacer cet utilisateur? Cette opération est irréversible!",
 "35" => "Etes vous sur de vouloir effacer ce dépôt? Cette opération est irréversible!",
 "36" => "Des champs obligatoires ne sont pas remplis!",
@@ -98,7 +98,7 @@ $mess=array(
 "77" => "Contrôle d'accès",
 "78" => "Données Personnelles",
 "79" => "Dépot",
-"80" => "Précisez les droits d'accès pour cet utilisateur",
+"80" => "Précisez les droits d'accès pour cet utilisateur  (Click on a repository label if you wish to make it the default repository when user logs in)",
 "81" => "Données spécifiques aux dépôts",
 "82" => "Edition en groupe des utilisateurs",
 "83" => "Glissez/Déposez les rôles pour les assigner aux utilisateurs sélectionnés (les utilisateurs partagés ne seront pas pris en compte)",
@@ -134,6 +134,9 @@ $mess=array(
 "112" => "<b>Appliquer ce rôle par défaut</b> à tous les nouveaux utilisateurs.",
 "113" => "Le rôle a été modifié avec succès",
 "114" => "Defaut",
+"115" => "Schema",
+"116" => "Nom du modèle",
+"117" => "Plugin d'accès",
 /* END SENTENCE */
 );
 ?>

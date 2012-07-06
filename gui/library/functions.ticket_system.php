@@ -827,7 +827,8 @@ function _sendTicketNotification($toId, $fromId, $ticketSubject, $ticketMessage,
 
     $subject = str_replace($search, $replace, $subject);
     $message = str_replace($search, $replace, $message);
-
+	
+	$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
     $headers = 'From: ' . $from . "\n" .
                "MIME-Version: 1.0\nContent-Type: text/plain;" .
                "charset=utf-8\nContent-Transfer-Encoding: 8bit\n" .

@@ -4,14 +4,15 @@
 # 
 # Translators:
 #   <balazsz@citromail.hu>, 2011, 2012.
+#   <k.norbi555@gmail.com>, 2012.
 # Zsolt Jónás <jonas.zsolt@naxonet.hu>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-06-07 08:15+0200\n"
-"PO-Revision-Date: 2012-06-07 06:16+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
+"POT-Creation-Date: 2012-07-05 17:04+0200\n"
+"PO-Revision-Date: 2012-07-05 14:12+0000\n"
+"Last-Translator: balazsz <balazsz@citromail.hu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -162,13 +163,13 @@ msgstr "\n\nHello {NAME},\n\nFelhasználó neve:  {USERNAME}\nJelszava:         
 msgid ""
 "\n"
 "Cannot validate %s record. Reason: '%s'."
-msgstr ""
+msgstr "\nNem lehetett érvényesíteni a %s rekordot. Oka: '%s'."
 
 #, php-format
 msgid ""
 "\n"
 "Unknown entry type %s."
-msgstr ""
+msgstr "\nIsmeretlen bejegyzés típus %s."
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -574,7 +575,7 @@ msgid "Activate"
 msgstr "Aktiválás"
 
 msgid "Activate Entries"
-msgstr ""
+msgstr "Aktív bejegyzések"
 
 msgid "Activate this plugin"
 msgstr "Bővítőmodul (plugin) aktiválása"
@@ -742,7 +743,7 @@ msgid "Administrator"
 msgstr "Adminisztrátor"
 
 msgid "Administrator and Reseller levels"
-msgstr ""
+msgstr "Adminisztrátor és viszonteladói szint"
 
 msgid "Administrator and customer"
 msgstr "Adminisztrátor és ügyfél"
@@ -774,7 +775,7 @@ msgid "Alias"
 msgstr "Domain álnév"
 
 msgid "Alias / Canonical name"
-msgstr ""
+msgstr "Álnév / Kanonikus név"
 
 msgid "Alias already assigned to another IP address."
 msgstr "Álnév már hozzá van rendelve egy másik IP-címhez"
@@ -936,7 +937,7 @@ msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Biztosan szeretné töröln az összes lezárt hibajegyet?"
 
 msgid "Are you sure you want to delete all marked emails?"
-msgstr ""
+msgstr "Biztos, hogy törölni szeretnéd az összes megjelölt email-t?"
 
 msgid "Are you sure you want to delete all tickets?"
 msgstr "Biztosan szeretné törölni az összes hibajegyet?"
@@ -951,7 +952,7 @@ msgstr "Biztosan szeretné törölni a %s begyűjtő címet?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s external mail server?"
-msgstr ""
+msgstr "Biztos, hogy törölni szeretnéd a %s külső mail szervert?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1112,7 +1113,7 @@ msgid "CGI support"
 msgstr "CGI használat"
 
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 msgid "CPU MHz"
 msgstr "CPU MHz"
@@ -1189,7 +1190,7 @@ msgid "Change"
 msgstr "Módosítás"
 
 msgid "Change Entries"
-msgstr ""
+msgstr "Bejegyzések megváltoztatása"
 
 msgid "Change SQL user password"
 msgstr "SQL felhasználó jelszavának módosítása"
@@ -1332,10 +1333,10 @@ msgid "Create"
 msgstr "OK"
 
 msgid "Create External mail server entry"
-msgstr ""
+msgstr "Külső mail szerver bejegyzés készítése"
 
 msgid "Create Relay Entry"
-msgstr ""
+msgstr "Közvetítő bejegyzés létrehozása"
 
 msgid "Create catch all"
 msgstr "Catch-all létrehozása"
@@ -1598,7 +1599,7 @@ msgid "Delete CatchAll"
 msgstr "Catch-all törlése"
 
 msgid "Delete Relay Entry"
-msgstr ""
+msgstr "Közvetítő bejegyzés törlése"
 
 msgid "Delete all tickets"
 msgstr "Minden hibajegy törlése"
@@ -1616,7 +1617,7 @@ msgid "Delete from log:"
 msgstr "Törlés a naplóból:"
 
 msgid "Delete marked mails"
-msgstr ""
+msgstr "Megjelölt üzenetek törlése"
 
 msgid "Delete order"
 msgstr "Megrendelés törlése"
@@ -1938,7 +1939,7 @@ msgid "Domains per page"
 msgstr "Domainek száma oldalanként"
 
 msgid "Domaintype not allowed for external mail servers."
-msgstr ""
+msgstr "Domain típus nem engedélyezett külső mail szervereknél."
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr "Jelszóban ne használjon  \"@, $, %...\" speciális jeleket!"
@@ -1971,7 +1972,7 @@ msgid "Edit Domain"
 msgstr "Domain módosítása"
 
 msgid "Edit External mail server entries"
-msgstr ""
+msgstr "Külső mail szerverek bejegyzések szerkesztése"
 
 msgid "Edit FTP user"
 msgstr "FTP felhasználó módosítása"
@@ -1980,7 +1981,7 @@ msgid "Edit Ftp account"
 msgstr "FTP fiók módosítása"
 
 msgid "Edit Relay Entry"
-msgstr ""
+msgstr "Követítő bejegyzés szerkesztése"
 
 msgid "Edit SSL certificate"
 msgstr "SSL tanúsítvány kezelése"
@@ -2016,7 +2017,7 @@ msgid "Edit error page"
 msgstr "Hibaoldal szerkesztése"
 
 msgid "Edit external mail servers"
-msgstr ""
+msgstr "Külső levelező szerverek módosítása"
 
 msgid "Edit hosting plan"
 msgstr "Tárhely csomag módosítása"
@@ -2031,7 +2032,7 @@ msgid "Edit mail auto responder"
 msgstr "'Automatikus válasz' email módosítása"
 
 msgid "Edit mail quota"
-msgstr ""
+msgstr "Postafiók kvóta módosítása"
 
 msgid "Edit protected area"
 msgstr "Védett terület szerkesztése"
@@ -2124,7 +2125,7 @@ msgid "Entered passwords doesn't matches."
 msgstr "A beírt jelszavak nem egyeznek"
 
 msgid "Entry type"
-msgstr ""
+msgstr "Bejegyzés típus"
 
 msgid "Error"
 msgstr "Hiba"
@@ -2187,19 +2188,19 @@ msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "Rendelések megerősítésének határideje<br /><small>(napokban)</small>"
 
 msgid "External mail server"
-msgstr ""
+msgstr "Külső levelező szerver"
 
 msgid "External mail servers"
-msgstr ""
+msgstr "Külső levelező szerverek"
 
 msgid "External mail servers scheduled for addition."
-msgstr ""
+msgstr "Külső levelező szerver hozzáadása beütemezve."
 
 msgid "External mail servers scheduled for deletion."
-msgstr ""
+msgstr "Külső levelező szerver törlése beütemezve."
 
 msgid "External mail servers status"
-msgstr ""
+msgstr "Külső levelező szerver állapota"
 
 msgid "FTP"
 msgstr "FTP"
@@ -2762,7 +2763,7 @@ msgstr "Érvénytelen tanúsítvány"
 
 #, php-format
 msgid "Invalid characters in TXT data (\"%s\")"
-msgstr ""
+msgstr "Érvénytelen karakter TXT adatban (\"%s\")"
 
 msgid "Invalid expiration date."
 msgstr "Érvénytelen a lejárat dátuma"
@@ -2978,7 +2979,7 @@ msgid "MX"
 msgstr "MX"
 
 msgid "MX entry IN"
-msgstr ""
+msgstr "MX entry IN"
 
 msgid "Mail"
 msgstr "Email"
@@ -3005,13 +3006,13 @@ msgid "Mail account not found."
 msgstr "Email fiók nem található"
 
 msgid "Mail account quota updated."
-msgstr ""
+msgstr "Postafiók kvóta frissítve."
 
 msgid "Mail account scheduled for addition."
 msgstr "Email fiók hozzáadása beütemezve"
 
 msgid "Mail account scheduled for deletion."
-msgstr ""
+msgstr "Postafiók törlése beütemezve."
 
 msgid "Mail account scheduled for update."
 msgstr "Email fiók frissítése beütemezve"
@@ -3488,7 +3489,7 @@ msgid "Nothing found - sorry"
 msgstr "Nem található - sajnálom"
 
 msgid "Nothing has been changed."
-msgstr ""
+msgstr "Semmi sem változott."
 
 msgid "Nothing's been changed"
 msgstr "Nincs változás"
@@ -4133,10 +4134,10 @@ msgid "Quota in MB (0 unlimited)"
 msgstr "Kvóta MB-ban (0 - korlátlan)"
 
 msgid "Quota must be number"
-msgstr ""
+msgstr "Kvótának számnak kell lennie"
 
 msgid "Quota must have a value"
-msgstr ""
+msgstr "Kvótának értékkel kell rendelkeznie"
 
 msgid "RAM"
 msgstr "RAM"
@@ -4188,7 +4189,7 @@ msgid "Remove IP"
 msgstr "IP-cím törlése"
 
 msgid "Remove last"
-msgstr ""
+msgstr "Utolsó sor törlése"
 
 msgid "Remove permissions"
 msgstr "Jogosultság elvétele"
@@ -4227,7 +4228,7 @@ msgid "Reseller and customer"
 msgstr "Viszonteladó és ügyfél"
 
 msgid "Reseller and customer levels"
-msgstr ""
+msgstr "Viszonteladói és ügyfél szint"
 
 msgid "Reseller assignment"
 msgstr "Viszonteladó átadása"
@@ -4925,7 +4926,7 @@ msgid "TTL must be a number!"
 msgstr "A \"TTL\" csak nem-negatív egész szám lehet (1-2147483647, cache tiltása: 0)"
 
 msgid "TXT data"
-msgstr ""
+msgstr "TXT adat"
 
 msgid "TXT data must be filled."
 msgstr ""
@@ -5042,7 +5043,7 @@ msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr "IP-cím, amit próbál eltávolítani, hozzá van rendelve viszonteladóhoz"
 
 msgid "The `Enter` key is disabled for performance reasons."
-msgstr "Az 'Enter' kulcs le van tiltva a megfelelő teljesítmény érdekében"
+msgstr "Az `Enter` kulcs le van tiltva a megfelelő teljesítmény érdekében."
 
 #, php-format
 msgid "The admin has <em>%s</em> disabled on this system."
@@ -5734,6 +5735,9 @@ msgstr "Részletek"
 msgid "View hosting plan"
 msgstr "Tárhely csomag megjelenítése"
 
+msgid "View ticket"
+msgstr "Hibajegy megnézése"
+
 msgid "Visit plugin site"
 msgstr "Plugin weboldalának megjelenítése"
 
@@ -6248,7 +6252,7 @@ msgstr "Önnek %d új támogatással kapcsolatos hibajegye érkezett"
 
 #, php-format
 msgid "You have received %s new support questions."
-msgstr ""
+msgstr "Önnek %s új támogatással kapcsolatos hibajegye érkezett"
 
 msgid ""
 "You have software installer enabled, but the new hosting plan doesn't "
@@ -6967,7 +6971,7 @@ msgid "no"
 msgstr "nem"
 
 msgid "not activated"
-msgstr ""
+msgstr "nincs aktiválva"
 
 msgid "not available"
 msgstr "nem elérhető"
