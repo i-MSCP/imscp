@@ -35,7 +35,7 @@ $REPOSITORIES["imscp_ftp"] = array(
 		"DEFAULT_RIGHTS" => "rw",
 		"FIX_PERMISSIONS" => "user",
 		"USE_SESSION_CREDENTIALS" => true,
-		"TMP_UPLOAD" => AJXP_TMP_DIR
+		"TMP_UPLOAD" => "/tmp"
 	)
 );
 
