@@ -60,3 +60,4 @@ Tickets:
 	- Fixed #452: View Support Ticket
 	- Fixed #456: Wrong welcome message usertype when create client
 	- Fixed #457: Domain specific apache2 configuration gets deleted in imscp-setup (tx Jadawin)
+	- Fixed #470: Default mail_quota is still 10485760 bytes

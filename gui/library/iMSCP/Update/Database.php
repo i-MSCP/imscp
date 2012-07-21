@@ -1726,4 +1726,16 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->_dropColumn('domain_aliasses', 'external_mail_status'),
 		);
 	}
+	
+	/**
+	 * #470: Default mail_quota is still 10485760 bytes
+	 *
+	 * @author Sascha Bay <worst.case@gmx.de>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_111(){
+		return "
+			ALTER TABLE `mail_users` CHANGE `quota` `quota` INT( 10 ) NULL DEFAULT '104857600'
+		";
+	}
 }
