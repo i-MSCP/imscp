@@ -30,12 +30,12 @@ $REPOSITORIES["imscp_ftp"] = array(
 	"DISPLAY" => "FTP Server",
 	"DRIVER" => "ftp",
 	"DRIVER_OPTIONS" => array(
-		"FTP_HOST" => "localhost",
-		"FTP_PORT" => "21",
-		"DEFAULT_RIGHTS" => "rw",
-		"FIX_PERMISSIONS" => "user",
-		"USE_SESSION_CREDENTIALS" => true,
-		"TMP_UPLOAD" => "/tmp"
+	"FTP_HOST" => "localhost",
+	"FTP_PORT" => "21",
+	"DEFAULT_RIGHTS" => "rw",
+	"FIX_PERMISSIONS" => "user",
+	"USE_SESSION_CREDENTIALS" => true,
+	"TMP_UPLOAD" => AJXP_TMP_DIR
 	)
 );
 
@@ -47,7 +47,7 @@ $REPOSITORIES["ajxp_shared"] = array(
 	"DISPLAY_ID" => "363",
 	"DRIVER" => "ajxp_shared",
 	"DRIVER_OPTIONS" => array(
-		"DEFAULT_RIGHTS" => "rw"
+	"DEFAULT_RIGHTS" => "rw"
 	)
 );
 */

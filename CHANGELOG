@@ -62,3 +62,4 @@ Tickets:
 	- Fixed #457: Domain specific apache2 configuration gets deleted in imscp-setup (tx Jadawin)
 	- Fixed #470: Default mail_quota is still 10485760 bytes
 	- Fixed #468: SSL for Customers does not Work since upgrade to beta
+	- Fixed #467: FTP Account, Datamanager-> no autologin in ajax explorer
