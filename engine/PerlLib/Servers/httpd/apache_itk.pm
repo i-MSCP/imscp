@@ -743,7 +743,7 @@ sub addCfg{
 	if($data->{have_cert}){
 		$configs{"$data->{DMN_NAME}_ssl.conf"}	=	{
 													redirect => 'domain_redirect_ssl.tpl',
-													normal => 'domain-ssl.tpl'
+													normal => 'domain_ssl.tpl'
 												} ;
 		$self->{data}->{CERT} = $certFile;
 	}
