@@ -1,6 +1,22 @@
 phpMyAdmin - ChangeLog
 ======================
 
+3.5.2.0 (2012-07-07)
+- bug #3521416 [interface] JS error when editing index
+- bug #3521313 [core] Call to undefined function __()
+- bug #3521016 [edit] NOW() function incorrectly selected
+- bug [GUI] Invalid HTML code on transformation_overview.php
+- bug #3522930 [browse] Missing validation in Ajax mode
+- bug Fix popup message on build SQL of import
+- bug #3523499 [core] Make X-WebKit-CSP work better
+- replace Highcharts with jqplot for query profiling, zoom search
+- bug #3531584 [interface] No form validation in change password dialog
+- bug #3531585 [interface] Broken password validation in copy user form
+- bug #3531586 [unterface] Add user form prints JSON when user presses enter
+- bug #3534121 [config] duplicate line in config.sample.inc.php
+- bug #3534311 [interface] Grid editing incorrectly parses ENUM/SET values
+- bug #3510196 [core] More clever URL rewriting with ForceSSL
+
 3.5.1.0 (2012-05-03)
 - bug #3510784 [edit] Limit clause ignored when sort order is remembered
 - bug #3511471 [interface] View name not seen in navi panel (MySQL 5.1)

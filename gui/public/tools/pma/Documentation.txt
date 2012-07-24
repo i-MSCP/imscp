@@ -1,4 +1,4 @@
-phpMyAdmin 3.5.1 Documentation
+phpMyAdmin 3.5.2 Documentation
 
   * Top
   * Requirements
@@ -1112,7 +1112,7 @@ $cfg['LeftLogoLinkWindow'] string
 $cfg['LeftDisplayTableFilterMinimum'] integer
     Defines the minimum number of tables to display a JavaScript filter box
     above the list of tables in the left frame. Defaults to 30. To disable the
-    filter completely some high number can he used (e.g. 9999)
+    filter completely some high number can be used (e.g. 9999)
 $cfg['LeftDisplayServers'] boolean
     Defines whether or not to display a server choice at the top of the left
     frame. Defaults to FALSE.
