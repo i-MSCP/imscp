@@ -31,9 +31,19 @@ class AjxpScheduler extends AJXP_Plugin{
         if(!is_dir(dirname($this->db))) mkdir(dirname($this->db), 0755, true);
     }
 
+    function unserialize($serialized){
+        parent::unserialize($serialized);
+        $this->db =AJXP_DATA_PATH."/plugins/action.scheduler/calendar.json" ;
+        if(!is_dir(dirname($this->db))) mkdir(dirname($this->db), 0755, true);
+    }
+
+
     function performChecks(){
         if(!ConfService::backgroundActionsSupported()) {
             throw new Exception("The command line must be supported. See 'AjaXplorer Core Options'.");
+        }
+        if(!is_dir(dirname($this->db))) {
+            throw new Exception("Could not create the db folder!");
         }
     }
 
@@ -47,7 +57,7 @@ class AjxpScheduler extends AJXP_Plugin{
         $sVals = array();
         $repos = ConfService::getRepositoriesList();
         foreach($repos as $repoId => $repoObject){
-            $sVals[] = $repoId."|".$repoObject->getDisplay();
+            $sVals[] = $repoId."|". AJXP_Utils::xmlEntities($repoObject->getDisplay());
         }
         $sVals[] = "*|All Repositories";
         $paramNode->attributes->getNamedItem("choices")->nodeValue = implode(",", $sVals);
@@ -283,7 +293,7 @@ class AjxpScheduler extends AJXP_Plugin{
 
     function getTimeArray($schedule){
         $parts = explode(" ", $schedule);
-        if(count($parts)!=5) throw new Exception("Invalid Schedule Format");
+        if(count($parts)!=5) throw new Exception("Invalid Schedule Format ($schedule)");
         $timeArray['minutes'] = $parts[0];
         $timeArray['hours'] = $parts[1];
         $timeArray['days'] = $parts[2];

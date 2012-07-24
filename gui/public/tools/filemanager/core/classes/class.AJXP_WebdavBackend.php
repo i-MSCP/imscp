@@ -175,8 +175,8 @@ class AJXP_WebdavBackend extends ezcWebdavSimpleBackend implements ezcWebdavLock
      */
     protected function setResourceContents( $path, $content ){
         $path = $this->fixPath($path);
-        //AJXP_Logger::debug("AJXP_WebdavBackend :: putResourceContent ($path)");
-        $this->getAccessDriver()->nodeWillChange($path);
+        AJXP_Logger::debug("AJXP_WebdavBackend :: putResourceContent ($path)");
+        $this->getAccessDriver()->nodeWillChange($path, intval($_SERVER["CONTENT_LENGTH"]));
 
         $fp=fopen($this->getAccessDriver()->getRessourceUrl($path),"w");
 		$in = fopen( 'php://input', 'r' );
@@ -531,12 +531,13 @@ class AJXP_WebdavBackend extends ezcWebdavSimpleBackend implements ezcWebdavLock
     	$path = $this->fixPath($path);
         $storage = $this->getPropertyStorage( $path );
         $metaStore = $this->getMetastore();
-        if($metaStore == false) return true;
-        $node = new AJXP_Node($this->getAccessDriver()->getRessourceUrl($path));
-        $existingMeta = $metaStore->retrieveMetadata($node, "ezcWEBDAV", false, AJXP_METADATA_SCOPE_GLOBAL);
-        if(is_array($existingMeta) && count($existingMeta)) {
-            foreach($existingMeta as $pName => $serialized){
-                $storage->attach(unserialize(base64_decode($serialized)));
+        if($metaStore != false) {
+            $node = new AJXP_Node($this->getAccessDriver()->getRessourceUrl($path));
+            $existingMeta = $metaStore->retrieveMetadata($node, "ezcWEBDAV", false, AJXP_METADATA_SCOPE_GLOBAL);
+            if(is_array($existingMeta) && count($existingMeta)) {
+                foreach($existingMeta as $pName => $serialized){
+                    $storage->attach(unserialize(base64_decode($serialized)));
+                }
             }
         }
         // Add all live properties to stored properties
@@ -923,6 +924,9 @@ class AJXP_WebdavBackend extends ezcWebdavSimpleBackend implements ezcWebdavLock
     
     protected function urlEncodePath($path){
         //AJXP_Logger::debug("User Agent : ".$_SERVER["HTTP_USER_AGENT"]);
+        if(strstr($_SERVER["HTTP_USER_AGENT"], "GoodReader") !== false){
+            return $path;
+        }
         if(strstr($_SERVER["HTTP_USER_AGENT"], "MiniRedir") !== false){
             return $path;
         }

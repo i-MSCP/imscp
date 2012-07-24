@@ -55,6 +55,13 @@ class smbAccessDriver extends fsAccessDriver
 		$this->wrapperClassName = $wrapperData["classname"];
 		$this->urlBase = $wrapperData["protocol"]."://".$this->repository->getId();
 	}
+
+    function detectStreamWrapper($register = false){
+        if($register){
+            require_once($this->getBaseDir()."/smb.php");
+        }
+        return parent::detectStreamWrapper($register);
+    }
 	
 	/**
 	 * Parse 
@@ -99,6 +106,12 @@ class smbAccessDriver extends fsAccessDriver
         return $bytesize;
     }
 
+    public function isWriteable($dir, $type="dir")
+    {
+        if(substr_count($dir, '/') == 3 && $dir[strlen($dir) - 1] == '/') $rc = true;
+	else $rc = is_writable($dir);
+	return $rc;
+    }
 }	
 
 ?>
