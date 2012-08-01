@@ -15,6 +15,7 @@ GUI:
 Tickets:
 	- Fixed #453: Wrong Support Ticket System Mailer template
 	- Fixed #458: Switch to Net_DNS2
+	- Fixed #475: Some field-lengths are too short for their content
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1

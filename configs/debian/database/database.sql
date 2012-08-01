@@ -118,7 +118,7 @@ INSERT IGNORE INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '111'),
+('DATABASE_REVISION', '112'),
 ('PHPINI_ALLOW_URL_FOPEN', 'Off'),
 ('PHPINI_DISPLAY_ERRORS', 'Off'),
 ('PHPINI_REGISTER_GLOBALS', 'Off'),
@@ -523,7 +523,7 @@ CREATE TABLE IF NOT EXISTS `plugin` (
 --
 
 CREATE TABLE IF NOT EXISTS `quotalimits` (
-  `name` varchar(30) collate utf8_unicode_ci NOT NULL default '',
+  `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',
   `quota_type` enum('user','group','class','all') collate utf8_unicode_ci NOT NULL default 'user',
   `per_session` enum('false','true') collate utf8_unicode_ci NOT NULL default 'false',
   `limit_type` enum('soft','hard') collate utf8_unicode_ci NOT NULL default 'soft',
@@ -543,7 +543,7 @@ CREATE TABLE IF NOT EXISTS `quotalimits` (
 --
 
 CREATE TABLE IF NOT EXISTS `quotatallies` (
-  `name` varchar(30) collate utf8_unicode_ci NOT NULL default '',
+  `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',
   `quota_type` enum('user','group','class','all') collate utf8_unicode_ci NOT NULL default 'user',
   `bytes_in_used` float NOT NULL default '0',
   `bytes_out_used` float NOT NULL default '0',

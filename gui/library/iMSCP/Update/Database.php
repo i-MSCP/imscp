@@ -1726,7 +1726,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			$this->_dropColumn('domain_aliasses', 'external_mail_status'),
 		);
 	}
-	
+
 	/**
 	 * #470: Default mail_quota is still 10485760 bytes
 	 *
@@ -1738,4 +1738,19 @@ class iMSCP_Update_Database extends iMSCP_Update
 			ALTER TABLE `mail_users` CHANGE `quota` `quota` INT( 10 ) NULL DEFAULT '104857600'
 		";
 	}
+
+
+	/**
+	 * Update for the `quotalimits` and `quotatallies` table structure
+	 *
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_112(){
+		return array(
+			'ALTER TABLE `quotalimits` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\'',
+			'ALTER TABLE `quotatallies` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\''
+		);
+	}
+
 }
