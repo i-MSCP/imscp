@@ -606,7 +606,15 @@ sub masterHost {
 		return $rs if $rs;
 
 	} else {
+		$rs = $httpd->buildConfFile("$self->{cfgDir}/00_master_ssl.conf");
+		return $rs if $rs;
 
+		iMSCP::File->new(
+			filename => "$self->{wrkDir}/00_master_ssl.conf"
+		)->copyFile(
+			"$self::apacheConfig{'APACHE_SITES_DIR'}/00_master_ssl.conf"
+		) and return 1;
+		
 		$rs = $httpd->disableSite('00_master_ssl.conf');
 		return $rs if $rs;
 
