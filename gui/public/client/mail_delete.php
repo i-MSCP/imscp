@@ -145,6 +145,10 @@ if ($delete_multi_email_acc === false) {
 
 	$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
 	exec_query($query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
+	
+	/* Removing old autoreplies_log entries */
+	delete_autoreplies_log_entries($mail_name);
+	/* Removing old autoreplies_log entries */
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $delete_id));
 
@@ -218,6 +222,10 @@ if ($delete_multi_email_acc === false) {
 
 			$query = "UPDATE `mail_users` SET `status` = ? WHERE `mail_id` = ?";
 			exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_itemID));
+			
+			/* Removing old autoreplies_log entries */
+			delete_autoreplies_log_entries($mail_name);
+			/* Removing old autoreplies_log entries */
 
 			iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterDeleteMail, array('mailId' => $del_itemID));
 
