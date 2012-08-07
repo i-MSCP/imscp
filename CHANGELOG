@@ -17,6 +17,9 @@ Tickets:
 	- Fixed #458: Switch to Net_DNS2
 	- Fixed #475: Some field-lengths are too short for their content
 	- Fixed #479: WARNING 00_master_ssl.conf do not exists
+	- Fixed #481: Fatal Error in create/edit custom DNS entry
+	- Fixed #483: Autoresponder: Problems displaying umlauts
+	- Fixed #484: Autoresponder: Table autoreplies_log is not updated after deactivation
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1

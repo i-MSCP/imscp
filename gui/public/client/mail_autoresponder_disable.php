@@ -60,16 +60,18 @@ function check_email_user() {
 
 	$query = "
 		SELECT
-			t1.*, t2.domain_id, t2.domain_name
+			`t1`.*,
+			`t2`.`domain_id`,
+			`t2`.`domain_name`
 		FROM
-			mail_users AS t1,
-			domain AS t2
+			`mail_users` AS `t1`,
+			`domain` AS `t2`
 		WHERE
-			t1.mail_id = ?
+			`t1`.`mail_id` = ?
 		AND
-			t2.domain_id = t1.domain_id
+			`t2`.`domain_id` = `t1`.`domain_id`
 		AND
-			t2.domain_name = ?
+			`t2`.`domain_name` = ?
     ";
 
 	$rs = exec_query($query, array($mail_id, $dmn_name));
@@ -89,11 +91,12 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$query = "
 		UPDATE
-			mail_users
+			`mail_users`
 		SET
-			status = ?, mail_auto_respond = 0
+			`status` = ?,
+			`mail_auto_respond` = 0
 		WHERE
-			mail_id = ?
+			`mail_id` = ?
 	";
 
 	$rs = exec_query($query, array($item_change_status, $mail_id));
@@ -101,26 +104,39 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	send_request();
 	$query = "
 		SELECT
+			`mail_acc`,
 			`mail_type`,
-			IF(`mail_type` like 'normal_%',t2.`domain_name`,
-				IF(`mail_type` like 'alias_%',t3.`alias_name`,
-					IF(`mail_type` like 'subdom_%', CONCAT(t4.`subdomain_name`,'.',t6.`domain_name`), CONCAT(t5.`subdomain_alias_name`,'.',t7.`alias_name`))
+			IF(`mail_type` like 'normal_%',`t2`.`domain_name`,
+				IF(`mail_type` like 'alias_%',`t3`.`alias_name`,
+					IF(`mail_type` like 'subdom_%', CONCAT(`t4`.`subdomain_name`,'.',`t6`.`domain_name`), CONCAT(`t5`.`subdomain_alias_name`,'.',`t7`.`alias_name`))
 				)
 			) AS mailbox
 		FROM
-			`mail_users` AS t1
-		LEFT JOIN (domain AS t2) ON (t1.domain_id = t2.domain_id)
-		LEFT JOIN (domain_aliasses AS t3) ON (sub_id = alias_id)
-		LEFT JOIN (subdomain AS t4) ON (sub_id = subdomain_id)
-		LEFT JOIN (subdomain_alias AS t5) ON (sub_id = subdomain_alias_id)
-		LEFT JOIN (domain AS t6) ON (t4.domain_id = t6.domain_id)
-		LEFT JOIN (domain_aliasses AS t7) ON (t5.alias_id = t7.alias_id)
+			`mail_users` AS `t1`
+		LEFT JOIN (`domain` AS `t2`) ON (`t1`.`domain_id` = `t2`.`domain_id`)
+		LEFT JOIN (`domain_aliasses` AS `t3`) ON (`sub_id` = `alias_id`)
+		LEFT JOIN (`subdomain` AS `t4`) ON (`sub_id` = `subdomain_id`)
+		LEFT JOIN (`subdomain_alias` AS `t5`) ON (`sub_id` = `subdomain_alias_id`)
+		LEFT JOIN (`domain` AS `t6`) ON (`t4`.`domain_id` = `t6`.`domain_id`)
+		LEFT JOIN (`domain_aliasses` AS `t7`) ON (`t5`.`alias_id` = `t7`.`alias_id`)
 		WHERE
 			`mail_id` = ?
 	";
 
 	$rs = exec_query($query, $mail_id);
 	$mail_name = $rs->fields['mailbox'];
+	
+	/* Removing old autoreplies_log entries */
+	$mail_address = $rs->fields['mail_acc'].'@'.$rs->fields['mailbox'];
+	$query = "
+		DELETE FROM
+			`autoreplies_log`
+		WHERE
+			`from` = ?
+	";
+	$rs = exec_query($query, $mail_address);
+	/* Removing old autoreplies_log entries */
+	
 	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name, E_USER_NOTICE);
 	set_page_message(tr('Mail account scheduled for update.'), 'success');
 	redirectTo('mail_accounts.php');
