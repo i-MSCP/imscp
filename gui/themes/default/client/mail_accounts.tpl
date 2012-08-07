@@ -92,7 +92,7 @@
         <!-- BDP: delete_marked_mails_form_bottom -->
             <div class="buttons">
                 <input type="hidden" name="uaction" value="delete_marked_mails" />
-                <input type="submit" name="Submit" value="{TR_DELETE_MARKED_MAILS}" onclick="action_delete_marked()" />
+                <input type="submit" name="Submit" value="{TR_DELETE_MARKED_MAILS}" onclick="return action_delete_marked()" />
             </div>
         </form>
         <!-- EDP: delete_marked_mails_form_bottom -->
