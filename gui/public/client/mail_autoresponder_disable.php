@@ -127,14 +127,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_name = $rs->fields['mailbox'];
 	
 	/* Removing old autoreplies_log entries */
-	$mail_address = $rs->fields['mail_acc'].'@'.$rs->fields['mailbox'];
-	$query = "
-		DELETE FROM
-			`autoreplies_log`
-		WHERE
-			`from` = ?
-	";
-	$rs = exec_query($query, $mail_address);
+	delete_autoreplies_log_entries($rs->fields['mail_acc'].'@'.$rs->fields['mailbox']);
 	/* Removing old autoreplies_log entries */
 	
 	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name, E_USER_NOTICE);

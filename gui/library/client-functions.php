@@ -791,3 +791,19 @@ function customerHasFeature($featureName, $forceReload = false)
 
 	return $availableFeatures[$featureName];
 }
+
+/**
+ * DELETE existing autoreplies_log for emailaddress.
+ * @author Sascha Bay <worst.case@gmx.de>
+ * @param string $email_address emailaddress to match against
+ */
+function delete_autoreplies_log_entries($email_address)
+{
+    $query = "
+		DELETE FROM
+			`autoreplies_log`
+		WHERE
+			`from` = ?
+	";
+    $stmt = exec_query($query, $email_address);
+}
