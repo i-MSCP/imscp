@@ -38,6 +38,7 @@ use Mail::Address;
 use MIME::Entity;
 use Email::Simple;
 use Data::Dumper;
+use Encode;
 
 newDebug('imscp-arpl-msgr/imscp-arpl-msgr.log');
 
@@ -138,7 +139,7 @@ sub arpl_engine {
 		Type => "text/plain; charset=utf-8",
 		Encoding => "7bit",
 		Description => "Mail User Autoreply Message",
-		Data => $text
+		Data => Encode::encode("UTF-8", $text)
 	);
 
 	$out->attach(
