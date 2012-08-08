@@ -1,26 +1,24 @@
 <?php
 
 /*
-+-----------------------------------------------------------------------+
-| localization/ka_GE/messages.inc                                       |
-|                                                                       |
-| Language file of the Roundcube Webmail client                         |
-| Copyright (C) 2005-2010, The Roundcube Dev Team                       |
-| Licensed under the GNU GPL                                            |
-|                                                                       |
-+-----------------------------------------------------------------------+
-| Author: Zaza Zviadadze, George Machitidze                             |
-+-----------------------------------------------------------------------+
-
-@version $Id: messages.inc 842 2009-10-03 19:30:00  zaza$
-
+ +-----------------------------------------------------------------------+
+ | localization/ka_GE/messages.inc                                       |
+ |                                                                       |
+ | Language file of the Roundcube Webmail client                         |
+ | Copyright (C) 2012, The Roundcube Dev Team                            |
+ | Licensed under the GNU General Public License                         |
+ |                                                                       |
+ +-----------------------------------------------------------------------+
+ | Author: Thomas <Unknown>                                              |
+ +-----------------------------------------------------------------------+
+ @version $Id$
 */
 
 $messages = array();
 $messages['loginfailed'] = 'შესვლა შეუძლებელია';
 $messages['cookiesdisabled'] = 'თქვენი ბროუზერი კუკიებს არ პასუხობს';
 $messages['sessionerror'] = 'თქვენი სესია არის მცდარი ან ვადაგასული';
-$messages['imaperror'] = 'IMAP სერვერთან დაკავშირება შეუძლებელია';
+$messages['storageerror'] = 'IMAP სერვერთან დაკავშირება შეუძლებელია';
 $messages['servererror'] = 'შეცდომა სერვერზე!';
 $messages['servererrormsg'] = 'სერვერის შეცდომა: $msg';
 $messages['dberror'] = 'მონაცემთა ბაზის შეცდომა!';
@@ -121,4 +119,3 @@ $messages['folderupdated'] = 'დასტა წარმატებით გ
 $messages['foldercreated'] = 'დასტა წარმატებით შეიქმნა.';
 $messages['invalidimageformat'] = 'გამოსახულების ფორმატი არასწორია.';
 
-?>

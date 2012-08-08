@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube PHP suite                          |
  | Copyright (C) 2005-2007, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | CONTENTS:                                                             |
  |   Shared functions and classes used in PHP projects                   |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_shared.inc 5770 2012-01-13 11:23:17Z alec $
+ $Id$
 
 */
 
@@ -63,7 +66,7 @@ function send_future_expire_header($offset=2600000)
   if (headers_sent())
     return;
 
-  header("Expires: ".gmdate("D, d M Y H:i:s", mktime()+$offset)." GMT");
+  header("Expires: ".gmdate("D, d M Y H:i:s", time()+$offset)." GMT");
   header("Cache-Control: max-age=$offset");
   header("Pragma: ");
 }
@@ -79,9 +82,11 @@ function send_future_expire_header($offset=2600000)
 function in_array_nocase($needle, $haystack)
 {
   $needle = mb_strtolower($needle);
-  foreach ($haystack as $value)
-    if ($needle===mb_strtolower($value))
-      return true;
+  foreach ((array)$haystack as $value) {
+    if ($needle === mb_strtolower($value)) {
+       return true;
+    }
+  }
 
   return false;
 }
@@ -296,7 +301,7 @@ function get_offset_time($offset_str, $factor=1)
     $unit = 's';
   }
 
-  $ts = mktime();
+  $ts = time();
   switch ($unit)
   {
     case 'w':
@@ -415,123 +420,6 @@ function rc_image_content_type($data)
 //  else if (preg_match('/^\xFF\xD8\xFF\xE0/', $data)) $type = 'jpeg';
 
     return 'image/' . $type;
-}
-
-
-/**
- * A method to guess encoding of a string.
- *
- * @param string $string     	String.
- * @param string $failover 	Default result for failover.
- *
- * @return string
- */
-function rc_detect_encoding($string, $failover='')
-{
-    if (!function_exists('mb_detect_encoding')) {
-        return $failover;
-    }
-
-    // FIXME: the order is important, because sometimes 
-    // iso string is detected as euc-jp and etc.
-    $enc = array(
-      'UTF-8', 'SJIS', 'BIG5', 'GB2312',
-      'ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4',
-      'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8', 'ISO-8859-9',
-      'ISO-8859-10', 'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15', 'ISO-8859-16',
-      'WINDOWS-1252', 'WINDOWS-1251', 'EUC-JP', 'EUC-TW', 'KOI8-R', 
-      'ISO-2022-KR', 'ISO-2022-JP'
-    );
-
-    $result = mb_detect_encoding($string, join(',', $enc));
-
-    return $result ? $result : $failover;
-}
-
-/**
- * Removes non-unicode characters from input
- *
- * @param mixed $input String or array.
- * @return string
- */
-function rc_utf8_clean($input)
-{
-  // handle input of type array
-  if (is_array($input)) {
-    foreach ($input as $idx => $val)
-      $input[$idx] = rc_utf8_clean($val);
-    return $input;
-  }
-
-  if (!is_string($input) || $input == '')
-    return $input;
-
-  // iconv/mbstring are much faster (especially with long strings)
-  if (function_exists('mb_convert_encoding') && ($res = mb_convert_encoding($input, 'UTF-8', 'UTF-8')) !== false)
-    return $res;
-
-  if (function_exists('iconv') && ($res = @iconv('UTF-8', 'UTF-8//IGNORE', $input)) !== false)
-    return $res;
-
-  $regexp = '/^('.
-//    '[\x00-\x7F]'.                                  // UTF8-1
-    '|[\xC2-\xDF][\x80-\xBF]'.                      // UTF8-2
-    '|\xE0[\xA0-\xBF][\x80-\xBF]'.                  // UTF8-3
-    '|[\xE1-\xEC][\x80-\xBF][\x80-\xBF]'.           // UTF8-3
-    '|\xED[\x80-\x9F][\x80-\xBF]'.                  // UTF8-3
-    '|[\xEE-\xEF][\x80-\xBF][\x80-\xBF]'.           // UTF8-3
-    '|\xF0[\x90-\xBF][\x80-\xBF][\x80-\xBF]'.       // UTF8-4
-    '|[\xF1-\xF3][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.// UTF8-4
-    '|\xF4[\x80-\x8F][\x80-\xBF][\x80-\xBF]'.       // UTF8-4
-    ')$/';
-
-  $seq = '';
-  $out = '';
-
-  for ($i = 0, $len = strlen($input); $i < $len; $i++) {
-    $chr = $input[$i];
-    $ord = ord($chr);
-    // 1-byte character
-    if ($ord <= 0x7F) {
-      if ($seq)
-        $out .= preg_match($regexp, $seq) ? $seq : '';
-      $seq = '';
-      $out .= $chr;
-    // first (or second) byte of multibyte sequence
-    } else if ($ord >= 0xC0) {
-      if (strlen($seq)>1) {
-	$out .= preg_match($regexp, $seq) ? $seq : '';
-        $seq = '';
-      } else if ($seq && ord($seq) < 0xC0) {
-        $seq = '';
-      }
-      $seq .= $chr;
-    // next byte of multibyte sequence
-    } else if ($seq) {
-      $seq .= $chr;
-    }
-  }
-
-  if ($seq)
-    $out .= preg_match($regexp, $seq) ? $seq : '';
-
-  return $out;
-}
-
-
-/**
- * Convert a variable into a javascript object notation
- *
- * @param mixed Input value
- * @return string Serialized JSON string
- */
-function json_serialize($input)
-{
-  $input = rc_utf8_clean($input);
-
-  // sometimes even using rc_utf8_clean() the input contains invalid UTF-8 sequences
-  // that's why we have @ here
-  return @json_encode($input);
 }
 
 

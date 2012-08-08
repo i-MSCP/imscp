@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2007, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Show edit form for a contact entry or to add a new one              |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: edit.inc 5681 2012-01-01 13:36:22Z alec $
+ $Id$
 
 */
 
@@ -33,8 +36,8 @@ if ($RCMAIL->action == 'edit') {
         $OUTPUT->set_env('cid', $record['ID']);
     }
 
-    // adding not allowed here
-    if ($CONTACTS->readonly) {
+    // editing not allowed here
+    if ($CONTACTS->readonly || $record['readonly']) {
         $OUTPUT->show_message('sourceisreadonly');
         rcmail_overwrite_action('show');
         return;
@@ -176,9 +179,8 @@ function rcmail_upload_photo_form($attrib)
 {
   global $OUTPUT;
 
-  // add ID if not given
-  if (!$attrib['id'])
-    $attrib['id'] = 'rcmUploadbox';
+  // set defaults
+  $attrib += array('id' => 'rcmUploadform', 'buttons' => 'yes');
 
   // find max filesize value
   $max_filesize = parse_bytes(ini_get('upload_max_filesize'));
@@ -192,19 +194,19 @@ function rcmail_upload_photo_form($attrib)
   $button = new html_inputfield(array('type' => 'button'));
 
   $out = html::div($attrib,
-    $OUTPUT->form_tag(array('name' => 'uploadform', 'method' => 'post', 'enctype' => 'multipart/form-data'),
+    $OUTPUT->form_tag(array('id' => $attrib['id'].'Frm', 'name' => 'uploadform', 'method' => 'post', 'enctype' => 'multipart/form-data'),
       $hidden->show() .
       html::div(null, $input->show()) .
       html::div('hint', rcube_label(array('name' => 'maxuploadsize', 'vars' => array('size' => $max_filesize)))) .
-      html::div('buttons',
+      (get_boolean($attrib['buttons']) ? html::div('buttons',
         $button->show(rcube_label('close'), array('class' => 'button', 'onclick' => "$('#$attrib[id]').hide()")) . ' ' .
         $button->show(rcube_label('upload'), array('class' => 'button mainaction', 'onclick' => JS_OBJECT_NAME . ".command('upload-photo', this.form)"))
-      )
+      ) : '')
     )
   );
 
   $OUTPUT->add_label('addphoto','replacephoto');
-  $OUTPUT->add_gui_object('uploadbox', $attrib['id']);
+  $OUTPUT->add_gui_object('uploadform', $attrib['id'].'Frm');
   return $out;
 }
 

@@ -9,7 +9,7 @@
  | Licensed under the GNU General Public License                         |
  |                                                                       |
  +-----------------------------------------------------------------------+
- | Author: Thomas <Unknown>                                              |
+ | Author: Jonas Nasholm <Unknown>                                       |
  +-----------------------------------------------------------------------+
  @version $Id$
 */
@@ -58,7 +58,7 @@ $labels['vacationdays'] = 'Antal dagar mellan auto-svar:';
 $labels['vacationreason'] = 'Meddelande i auto-svar:';
 $labels['vacationsubject'] = 'Meddelandeämne:';
 $labels['rulestop'] = 'Avsluta filtrering';
-$labels['enable'] = 'Aktivera/inaktivera';
+$labels['enable'] = 'Aktivera/deaktivera';
 $labels['filterset'] = 'Filtergrupp';
 $labels['filtersets'] = 'Filtergrupper';
 $labels['filtersetadd'] = 'Lägg till filtergrupp';
@@ -127,6 +127,7 @@ $labels['ruledeleteconfirm'] = 'Vill du ta bort filterregeln?';
 $labels['actiondeleteconfirm'] = 'Vill du ta bort filteråtgärden?';
 $labels['forbiddenchars'] = 'Otillåtet tecken i fältet';
 $labels['cannotbeempty'] = 'Fältet kan inte lämnas tomt';
+$labels['ruleexist'] = 'Ett filter med angivet namn finns redan.';
 $labels['setactivateerror'] = 'Filtergruppen kunde inte aktiveras på grund av serverfel';
 $labels['setdeactivateerror'] = 'Filtergruppen kunde inte deaktiveras på grund av serverfel';
 $labels['setdeleteerror'] = 'Filtergruppen kunde inte tas bort på grund av serverfel';
@@ -136,5 +137,14 @@ $labels['setdeleted'] = 'Filtergruppen är borttagen';
 $labels['setdeleteconfirm'] = 'Vill du ta bort filtergruppen?';
 $labels['setcreateerror'] = 'Filtergruppen kunde inte läggas till på grund av serverfel';
 $labels['setcreated'] = 'Filtergruppen har lagts till';
+$labels['activateerror'] = 'Kunde inte aktivera filter på grund av serverfel.';
+$labels['deactivateerror'] = 'Kunde inte deaktivera filter på grund av serverfel.';
+$labels['activated'] = 'Filter deaktiverat.';
+$labels['deactivated'] = 'Filter aktiverat.';
+$labels['moved'] = 'Filter flyttat.';
+$labels['moveerror'] = 'Kunde inte flytta filter på grund av serverfel.';
 $labels['nametoolong'] = 'Filtergruppen kan inte läggas till med för långt namn';
+$labels['namereserved'] = 'Reserverat namn.';
+$labels['setexist'] = 'Filtergrupp finns redan.';
+$labels['nodata'] = 'Minst en position måste väljas!';
 

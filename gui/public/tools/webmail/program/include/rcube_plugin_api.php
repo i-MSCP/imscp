@@ -5,8 +5,11 @@
  | program/include/rcube_plugin_api.php                                  |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2008-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2008-2011, The Roundcube Dev Team                       |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Plugins repository                                                  |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_plugin_api.php 5207 2011-09-12 12:52:01Z alec $
+ $Id$
 
 */
 
@@ -40,7 +43,7 @@ class rcube_plugin_api
   private $actionmap = array();
   private $objectsmap = array();
   private $template_contents = array();
-  private $required_plugins = array('filesystem_attachments');
+  private $required_plugins = array('filesystem_attachments', 'jqueryui');
   private $active_hook = false;
 
   // Deprecated names of hooks, will be removed after 0.5-stable release
@@ -71,6 +74,9 @@ class rcube_plugin_api
     'delete_identity'   => 'identity_delete',
     'save_identity'     => 'identity_update',
     'identity_save'     => 'identity_update',
+    // to be removed after 0.8
+    'imap_init'         => 'storage_init',
+    'mailboxes_list'    => 'storage_folders', 
   );
 
   /**
@@ -222,6 +228,20 @@ class rcube_plugin_api
       raise_error(array('code' => 521, 'type' => 'php',
         'file' => __FILE__, 'line' => __LINE__,
         'message' => "Invalid callback function for $hook"), true, false);
+  }
+
+  /**
+   * Allow a plugin object to unregister a callback.
+   *
+   * @param string $hook Hook name
+   * @param mixed  $callback String with global function name or array($obj, 'methodname')
+   */
+  public function unregister_hook($hook, $callback)
+  {
+    $callback_id = array_search($callback, $this->handlers[$hook]);
+    if ($callback_id !== false) {
+      unset($this->handlers[$hook][$callback_id]);
+    }
   }
 
 

@@ -15,10 +15,10 @@
 		<email>alec@alec.pl</email>
 		<active>yes</active>
 	</lead>
-	<date>2011-11-23</date>
+	<date>2012-03-07</date>
 	<version>
-		<release>2.4</release>
-		<api>1.6</api>
+		<release>3.1</release>
+		<api>2.0</api>
 	</version>
 	<stability>
 		<release>stable</release>
@@ -26,8 +26,13 @@
 	</stability>
 	<license uri="http://www.gnu.org/licenses/gpl-2.0.html">GNU GPLv2</license>
 	<notes>
-- Added option to use punycode or unicode for domain names (#1488103)
-- Save Samba password hashes in capital letters (#1488197)
+- Added pw_usermod driver (#1487826)
+- Added option password_login_exceptions (#1487826)
+- Added domainfactory driver (#1487882)
+- Added DBMail driver (#1488281)
+- Helper files moved to helpers/ directory from drivers/
+- Added Expect driver (#1488363)
+- Added Samba password (#1488364)
     </notes>
 	<contents>
 		<dir baseinstalldir="/" name="/">
@@ -74,10 +79,11 @@
 			<file name="localization/tr_TR.inc" role="data"></file>
 			<file name="localization/zh_TW.inc" role="data"></file>
 
-			<file name="drivers/chgsaslpasswd.c" role="data"></file>
-            <file name="drivers/chgvirtualminpasswd.c" role="data"></file>
             <file name="drivers/chpasswd.php" role="php"></file>
+            <file name="drivers/dbmail.php" role="php"></file>
             <file name="drivers/directadmin.php" role="php"></file>
+            <file name="drivers/domainfactory.php" role="php"></file>
+            <file name="drivers/expect.php" role="php"></file>
             <file name="drivers/ldap.php" role="php"></file>
             <file name="drivers/ldap_simple.php" role="php"></file>
             <file name="drivers/poppassd.php" role="php"></file>
@@ -86,11 +92,18 @@
             <file name="drivers/cpanel.php" role="php"></file>
             <file name="drivers/hmail.php" role="php"></file>
             <file name="drivers/pam.php" role="php"></file>
+            <file name="drivers/pw_usermod.php" role="php"></file>
             <file name="drivers/sasl.php" role="php"></file>
+            <file name="drivers/smb.php" role="php"></file>
             <file name="drivers/virtualmin.php" role="php"></file>
             <file name="drivers/ximss.php" role="php"></file>
             <file name="drivers/xmail.php" role="php"></file>
-            <file name="drivers/chpass-wrapper.py" role="data"></file>
+
+			<file name="helpers/chgdbmailusers.c" role="data"></file>
+			<file name="helpers/chgsaslpasswd.c" role="data"></file>
+            <file name="helpers/chgvirtualminpasswd.c" role="data"></file>
+            <file name="helpers/chpass-wrapper.py" role="data"></file>
+            <file name="helpers/passwd-expect" role="data"></file>
 
             <file name="config.inc.php.disc" role="data"></file>
 		</dir>
@@ -285,6 +298,37 @@
 - Added 'password_change' hook for plugin actions after successful password change
 - Fixed bug where 'doveadm pw' command was used as dovecotpw utility
 - Improve generated crypt() passwords (#1488136)
+            </notes>
+        </release>
+        <release>
+        	<date>2011-11-23</date>
+        	<version>
+        		<release>2.4</release>
+		        <api>1.6</api>
+        	</version>
+        	<stability>
+		        <release>stable</release>
+        		<api>stable</api>
+        	</stability>
+	        <license uri="http://www.gnu.org/licenses/gpl-2.0.html">GNU GPLv2</license>
+        	<notes>
+- Added option to use punycode or unicode for domain names (#1488103)
+- Save Samba password hashes in capital letters (#1488197)
+            </notes>
+        </release>
+        <release>
+	        <date>2011-11-23</date>
+        	<version>
+		        <release>3.0</release>
+        		<api>2.0</api>
+        	</version>
+        	<stability>
+        		<release>stable</release>
+		        <api>stable</api>
+        	</stability>
+        	<license uri="http://www.gnu.org/licenses/gpl-2.0.html">GNU GPLv2</license>
+        	<notes>
+- Fixed drivers namespace issues
             </notes>
         </release>
     </changelog>

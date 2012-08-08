@@ -23,7 +23,7 @@
  * @author    Chuck Hagenbuch <chuck@horde.org>
  * @copyright 1997-2003 The PHP Group
  * @license   http://www.php.net/license/2_02.txt PHP 2.02
- * @version   CVS: $Id: Socket.php 4437 2011-01-20 09:58:18Z alec $
+ * @version   CVS: $Id$
  * @link      http://pear.php.net/packages/Net_Socket
  */
 

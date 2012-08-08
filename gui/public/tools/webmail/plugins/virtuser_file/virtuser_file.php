@@ -2,13 +2,14 @@
 
 /**
  * File based User-to-Email and Email-to-User lookup
- * 
+ *
  * Add it to the plugins list in config/main.inc.php and set
  * path to a virtuser table file to resolve user names and e-mail
  * addresses
  * $rcmail_config['virtuser_file'] = '';
  *
- * @version 1.0
+ * @version @package_version@
+ * @license GNU GPLv3+
  * @author Aleksander Machniak
  */
 class virtuser_file extends rcube_plugin
@@ -63,7 +64,7 @@ class virtuser_file extends rcube_plugin
 
 	    for ($i=0; $i<count($r); $i++) {
 	        $arr = preg_split('/\s+/', trim($r[$i]));
-	    
+
 	        if (count($arr) > 0) {
 		        $p['user'] = trim($arr[count($arr)-1]);
 		        break;
@@ -83,23 +84,23 @@ class virtuser_file extends rcube_plugin
     {
 	    $result = array();
 	    $virtual = null;
-	
+
 	    if ($this->file)
 	        $virtual = file($this->file);
-	
+
 	    if (empty($virtual))
 	        return $result;
-	
+
 	    // check each line for matches
 	    foreach ($virtual as $line) {
 	        $line = trim($line);
 	        if (empty($line) || $line[0]=='#')
 	            continue;
-	
+
 	        if (preg_match($pattern, $line))
 	            $result[] = $line;
 	    }
-	
+
 	    return $result;
     }
 

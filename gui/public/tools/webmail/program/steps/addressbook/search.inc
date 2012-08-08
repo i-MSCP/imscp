@@ -7,7 +7,10 @@
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
  | Copyright (C) 2011, Kolab Systems AG                                  |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Search action (and form) for address book contacts                  |
@@ -88,7 +91,7 @@ $OUTPUT->send('contactsearch');
 
 function rcmail_contact_search()
 {
-    global $RCMAIL, $OUTPUT, $CONFIG, $SEARCH_MODS_DEFAULT;
+    global $RCMAIL, $OUTPUT, $SEARCH_MODS_DEFAULT, $PAGE_SIZE;
 
     $adv = isset($_POST['_adv']);
     $sid = get_input_value('_sid', RCUBE_INPUT_GET);
@@ -179,7 +182,7 @@ function rcmail_contact_search()
         }
 
         // get records
-        $result = $source->list_records(array('name', 'email'));
+        $result = $source->list_records(array('name', 'firstname', 'surname', 'email'));
 
         while ($row = $result->next()) {
             $row['sourceid'] = $s['id'];
@@ -199,8 +202,8 @@ function rcmail_contact_search()
     $result = new rcube_result_set($count);
 
     // cut first-page records
-    if ($CONFIG['pagesize'] < $count) {
-        $records = array_slice($records, 0, $CONFIG['pagesize']);
+    if ($PAGE_SIZE < $count) {
+        $records = array_slice($records, 0, $PAGE_SIZE);
     }
 
     $result->records = array_values($records);
@@ -229,7 +232,7 @@ function rcmail_contact_search()
 
     // update message count display
     $OUTPUT->command('set_env', 'search_request', $search_request);
-    $OUTPUT->command('set_env', 'pagecount', ceil($result->count / $CONFIG['pagesize']));
+    $OUTPUT->command('set_env', 'pagecount', ceil($result->count / $PAGE_SIZE));
     $OUTPUT->command('set_rowcount', rcmail_get_rowcount_text($result));
     // Re-set current source
     $OUTPUT->command('set_env', 'search_id', $sid);

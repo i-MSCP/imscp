@@ -5,8 +5,11 @@
  | program/steps/addressbook/func.inc                                    |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2005-2007, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2005-2012, The Roundcube Dev Team                       |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Provide addressbook functionality and GUI objects                   |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: func.inc 5967 2012-03-05 19:59:07Z alec $
+ $Id$
 
 */
 
@@ -56,6 +59,7 @@ $CONTACT_COLTYPES = array(
   // TODO: define fields for vcards like GEO, KEY
 );
 
+$PAGE_SIZE = $RCMAIL->config->get('addressbook_pagesize', $RCMAIL->config->get('pagesize', 50));
 
 // Addressbook UI
 if (!$RCMAIL->action && !$OUTPUT->ajax_call) {
@@ -108,7 +112,7 @@ if ($undo = $_SESSION['contact_undo']) {
 // instantiate a contacts object according to the given source
 function rcmail_contact_source($source=null, $init_env=false, $writable=false)
 {
-    global $RCMAIL, $OUTPUT, $CONFIG, $CONTACT_COLTYPES;
+    global $RCMAIL, $OUTPUT, $CONTACT_COLTYPES, $PAGE_SIZE;
 
     if (!strlen($source)) {
         $source = get_input_value('_source', RCUBE_INPUT_GPC);
@@ -116,7 +120,7 @@ function rcmail_contact_source($source=null, $init_env=false, $writable=false)
 
     // Get object
     $CONTACTS = $RCMAIL->get_address_book($source, $writable);
-    $CONTACTS->set_pagesize($CONFIG['pagesize']);
+    $CONTACTS->set_pagesize($PAGE_SIZE);
 
     // set list properties and session vars
     if (!empty($_GET['_page']))
@@ -140,8 +144,13 @@ function rcmail_contact_source($source=null, $init_env=false, $writable=false)
         $CONTACT_COLTYPES = array_intersect_key($CONTACT_COLTYPES, $contact_cols);
         // add associative coltypes definition
         if (!$CONTACTS->coltypes[0]) {
-            foreach ($CONTACTS->coltypes as $col => $colprop)
+            foreach ($CONTACTS->coltypes as $col => $colprop) {
+                if (is_array($colprop['childs'])) {
+                    foreach ($colprop['childs'] as $childcol => $childprop)
+                        $colprop['childs'][$childcol] = array_merge((array)$CONTACT_COLTYPES[$col]['childs'][$childcol], $childprop);
+                }
                 $CONTACT_COLTYPES[$col] = $CONTACT_COLTYPES[$col] ? array_merge($CONTACT_COLTYPES[$col], $colprop) : $colprop;
+            }
         }
     }
 
@@ -330,6 +339,7 @@ function rcmail_js_contacts_list($result, $prefix='')
 
     while ($row = $result->next()) {
         $a_row_cols = array();
+        $classes = array('person');  // org records will follow some day
 
         // build contact ID with source ID
         if (isset($row['sourceid'])) {
@@ -342,7 +352,10 @@ function rcmail_js_contacts_list($result, $prefix='')
             $a_row_cols[$col] = Q($val);
         }
 
-        $OUTPUT->command($prefix.'add_contact_row', $row['ID'], $a_row_cols);
+        if ($row['readonly'])
+            $classes[] = 'readonly';
+
+        $OUTPUT->command($prefix.'add_contact_row', $row['ID'], $a_row_cols, join(' ', $classes));
     }
 }
 
@@ -373,13 +386,16 @@ function rcmail_rowcount_display($attrib)
 
     $OUTPUT->add_gui_object('countdisplay', $attrib['id']);
 
+    if ($attrib['label'])
+      $_SESSION['contactcountdisplay'] = $attrib['label'];
+
     return html::span($attrib, rcube_label('loading'));
 }
 
 
 function rcmail_get_rowcount_text($result=null)
 {
-    global $CONTACTS, $CONFIG;
+    global $CONTACTS, $PAGE_SIZE;
 
     // read nr of contacts
     if (!$result) {
@@ -390,10 +406,10 @@ function rcmail_get_rowcount_text($result=null)
         $out = rcube_label('nocontactsfound');
     else
         $out = rcube_label(array(
-            'name'  => 'contactsfromto',
+            'name'  => $_SESSION['contactcountdisplay'] ? $_SESSION['contactcountdisplay'] : 'contactsfromto',
             'vars'  => array(
             'from'  => $result->first + 1,
-            'to'    => min($result->count, $result->first + $CONFIG['pagesize']),
+            'to'    => min($result->count, $result->first + $PAGE_SIZE),
             'count' => $result->count)
         ));
 
@@ -418,7 +434,6 @@ function rcmail_get_type_label($type)
 function rcmail_contact_form($form, $record, $attrib = null)
 {
     global $RCMAIL, $CONFIG;
-    static $jqueryui_loaded = 0;
 
     // Allow plugins to modify contact form content
     $plugin = $RCMAIL->plugins->exec_hook('contact_form', array(
@@ -568,8 +583,13 @@ function rcmail_contact_form($form, $record, $attrib = null)
                 if (empty($values) && $colprop['visible'])
                     $values[] = '';
 
+                if (!is_array($values)) {
+                    // $values can be an object, don't use (array)$values syntax
+                    $values = !empty($values) ? array($values) : array();
+                }
+
                 $rows = '';
-                foreach ((array)$values as $i => $val) {
+                foreach ($values as $i => $val) {
                     if ($subtypes[$i])
                         $subtype = $subtypes[$i];
 
@@ -578,7 +598,12 @@ function rcmail_contact_form($form, $record, $attrib = null)
                         $composite = array(); $j = 0;
                         $template = $RCMAIL->config->get($col . '_template', '{'.join('} {', array_keys($colprop['childs'])).'}');
                         foreach ($colprop['childs'] as $childcol => $cp) {
-                            $childvalue = $val[$childcol] ? $val[$childcol] : $val[$j];
+                            if (!empty($val) && is_array($val)) {
+                                $childvalue = $val[$childcol] ? $val[$childcol] : $val[$j];
+                            }
+                            else {
+                                $childvalue = '';
+                            }
 
                             if ($edit_mode) {
                                 if ($colprop['subtypes'] || $colprop['limit'] != 1) $cp['array'] = true;
@@ -593,7 +618,7 @@ function rcmail_contact_form($form, $record, $attrib = null)
 
                         $coltypes[$field] += (array)$colprop;
                         $coltypes[$field]['count']++;
-                        $val = strtr($template, $composite);
+                        $val = preg_replace('/\{\w+\}/', '', strtr($template, $composite));
                     }
                     else if ($edit_mode) {
                         // call callback to render/format value
@@ -605,17 +630,11 @@ function rcmail_contact_form($form, $record, $attrib = null)
                         if ($colprop['subtypes'] || $colprop['limit'] != 1)
                             $colprop['array'] = true;
 
-                        // load jquery UI datepickert for date fields
+                        // load jquery UI datepicker for date fields
                         if ($colprop['type'] == 'date') {
-                            if (!$jqueryui_loaded++) {
-                                $RCMAIL->plugins->load_plugin('jqueryui');
-                                $RCMAIL->output->set_env('date_format', strtr($RCMAIL->config->get('date_format', 'Y-m-d'), array('y'=>'y', 'Y'=>'yy', 'm'=>'mm', 'n'=>'m', 'd'=>'dd', 'j'=>'d')));
-                                foreach (array('jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec') as $month)
-                                    $month_names[] = rcube_label($month);
-                                $RCMAIL->output->set_env('month_names', $month_names);
-                            }
                             $colprop['class'] .= ($colprop['class'] ? ' ' : '') . 'datepicker';
-                            $val = format_date($val, $RCMAIL->config->get('date_format', 'Y-m-d'), false);
+                            if (!$colprop['render_func'])
+                                $val = rcmail_format_date_col($val);
                         }
 
                         $val = rcmail_get_edit_field($col, $val, $colprop, $colprop['type']);
@@ -660,7 +679,7 @@ function rcmail_contact_form($form, $record, $attrib = null)
                 }
             }
 
-            if (!$content)
+            if (!$content && (!$edit_mode || !$select_add->_count))
                 continue;
 
             // also render add-field selector
@@ -691,9 +710,6 @@ function rcmail_contact_photo($attrib)
 {
     global $SOURCE_ID, $CONTACTS, $CONTACT_COLTYPES, $RCMAIL, $CONFIG;
 
-    if (!$CONTACT_COLTYPES['photo'])
-        return '';
-
     if ($result = $CONTACTS->get_result())
         $record = $result->first();
 
@@ -711,7 +727,7 @@ function rcmail_contact_photo($attrib)
     $img = html::img(array('src' => $photo_img, 'border' => 1, 'alt' => ''));
     $content = html::div($attrib, $img);
 
-    if ($RCMAIL->action == 'edit' || $RCMAIL->action == 'add') {
+    if ($CONTACT_COLTYPES['photo'] && ($RCMAIL->action == 'edit' || $RCMAIL->action == 'add')) {
         $RCMAIL->output->add_gui_object('contactphoto', $attrib['id']);
         $hidden = new html_hiddenfield(array('name' => '_photo', 'id' => 'ff_photo', 'value' => $ff_value));
         $content .= $hidden->show();

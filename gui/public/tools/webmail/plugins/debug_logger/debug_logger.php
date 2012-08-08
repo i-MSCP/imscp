@@ -15,7 +15,7 @@
  * Enable the plugin in config/main.inc.php and add your desired
  * log types and files.
  *
- * @version 1.0
+ * @version @package_version@
  * @author Ziba Scott
  * @website http://roundcube.net
  * 
@@ -106,12 +106,15 @@ class debug_logger extends rcube_plugin
 
         if(!isset($args[1])){
             // This could be extended to detect types based on the 
-            // file which called console.  For now only rcube_imap.inc is supported
+            // file which called console. For now only rcube_imap/rcube_storage is supported
             $bt = debug_backtrace();
             $file  = $bt[3]['file'];
             switch(basename($file)){
                 case 'rcube_imap.php':
                     $type = 'imap';
+                    break;
+                case 'rcube_storage.php':
+                    $type = 'storage';
                     break;
                 default:
                     $type = FALSE; 

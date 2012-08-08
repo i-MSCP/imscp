@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Caching of IMAP folder contents (messages and index)                |
@@ -16,7 +19,7 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_imap_cache.php 5761 2012-01-12 14:54:21Z alec $
+ $Id$
 
 */
 
@@ -108,7 +111,7 @@ class rcube_imap_cache
 
 
     /**
-     * Return (sorted) messages index.
+     * Return (sorted) messages index (UIDs).
      * If index doesn't exist or is invalid, will be updated.
      *
      * @param string  $mailbox     Folder name
@@ -120,24 +123,25 @@ class rcube_imap_cache
      */
     function get_index($mailbox, $sort_field = null, $sort_order = null, $existing = false)
     {
-        if (empty($this->icache[$mailbox]))
+        if (empty($this->icache[$mailbox])) {
             $this->icache[$mailbox] = array();
+        }
 
         $sort_order = strtoupper($sort_order) == 'ASC' ? 'ASC' : 'DESC';
 
         // Seek in internal cache
         if (array_key_exists('index', $this->icache[$mailbox])) {
             // The index was fetched from database already, but not validated yet
-            if (!array_key_exists('result', $this->icache[$mailbox]['index'])) {
+            if (!array_key_exists('object', $this->icache[$mailbox]['index'])) {
                 $index = $this->icache[$mailbox]['index'];
             }
             // We've got a valid index
-            else if ($sort_field == 'ANY' || $this->icache[$mailbox]['index']['sort_field'] == $sort_field
-            ) {
-                if ($this->icache[$mailbox]['index']['sort_order'] == $sort_order)
-                    return $this->icache[$mailbox]['index']['result'];
-                else
-                    return array_reverse($this->icache[$mailbox]['index']['result'], true);
+            else if ($sort_field == 'ANY' || $this->icache[$mailbox]['index']['sort_field'] == $sort_field) {
+                $result = $this->icache[$mailbox]['index']['object'];
+                if ($result->get_parameters('ORDER') != $sort_order) {
+                    $result->revert();
+                }
+                return $result;
             }
         }
 
@@ -175,11 +179,11 @@ class rcube_imap_cache
             }
 
             if ($is_valid) {
-                // build index, assign sequence IDs to unique IDs
-                $data = array_combine($index['seq'], $index['uid']);
+                $data = $index['object'];
                 // revert the order if needed
-                if ($index['sort_order'] != $sort_order)
-                    $data = array_reverse($data, true);
+                if ($data->get_parameters('ORDER') != $sort_order) {
+                    $data->revert();
+                }
             }
         }
         else {
@@ -197,18 +201,16 @@ class rcube_imap_cache
         // Index not found, not valid or sort field changed, get index from IMAP server
         if ($data === null) {
             // Get mailbox data (UIDVALIDITY, counters, etc.) for status check
-            $mbox_data = $this->imap->mailbox_data($mailbox);
+            $mbox_data = $this->imap->folder_data($mailbox);
             $data      = $this->get_index_data($mailbox, $sort_field, $sort_order, $mbox_data);
 
             // insert/update
-            $this->add_index_row($mailbox, $sort_field, $sort_order, $data, $mbox_data,
-                $exists, $index['modseq']);
+            $this->add_index_row($mailbox, $sort_field, $data, $mbox_data, $exists, $index['modseq']);
         }
 
         $this->icache[$mailbox]['index'] = array(
-            'result'     => $data,
+            'object'     => $data,
             'sort_field' => $sort_field,
-            'sort_order' => $sort_order,
             'modseq'     => !empty($index['modseq']) ? $index['modseq'] : $mbox_data['HIGHESTMODSEQ']
         );
 
@@ -228,16 +230,13 @@ class rcube_imap_cache
      */
     function get_thread($mailbox)
     {
-        if (empty($this->icache[$mailbox]))
+        if (empty($this->icache[$mailbox])) {
             $this->icache[$mailbox] = array();
+        }
 
         // Seek in internal cache
         if (array_key_exists('thread', $this->icache[$mailbox])) {
-            return array(
-                $this->icache[$mailbox]['thread']['tree'],
-                $this->icache[$mailbox]['thread']['depth'],
-                $this->icache[$mailbox]['thread']['children'],
-            );
+            return $this->icache[$mailbox]['thread']['object'];
         }
 
         // Get thread from DB (if DB wasn't already queried)
@@ -249,8 +248,6 @@ class rcube_imap_cache
             // get_thread() is called more than once or after clear()
             $this->icache[$mailbox]['thread_queried'] = true;
         }
-
-        $data = null;
 
         // Entry exist, check cache status
         if (!empty($index)) {
@@ -265,26 +262,25 @@ class rcube_imap_cache
         // Index not found or not valid, get index from IMAP server
         if ($index === null) {
             // Get mailbox data (UIDVALIDITY, counters, etc.) for status check
-            $mbox_data = $this->imap->mailbox_data($mailbox);
+            $mbox_data = $this->imap->folder_data($mailbox);
 
             if ($mbox_data['EXISTS']) {
                 // get all threads (default sort order)
-                list ($thread_tree, $msg_depth, $has_children) = $this->imap->fetch_threads($mailbox, true);
+                $threads = $this->imap->fetch_threads($mailbox, true);
+            }
+            else {
+                $threads = new rcube_result_thread($mailbox, '* THREAD');
             }
 
-            $index = array(
-                'tree'     => !empty($thread_tree) ? $thread_tree : array(),
-                'depth'    => !empty($msg_depth) ? $msg_depth : array(),
-                'children' => !empty($has_children) ? $has_children : array(),
-            );
+            $index['object'] = $threads;
 
             // insert/update
-            $this->add_thread_row($mailbox, $index, $mbox_data, $exists);
+            $this->add_thread_row($mailbox, $threads, $mbox_data, $exists);
         }
 
         $this->icache[$mailbox]['thread'] = $index;
 
-        return array($index['tree'], $index['depth'], $index['children']);
+        return $index['object'];
     }
 
 
@@ -292,27 +288,14 @@ class rcube_imap_cache
      * Returns list of messages (headers). See rcube_imap::fetch_headers().
      *
      * @param string $mailbox  Folder name
-     * @param array  $msgs     Message sequence numbers
-     * @param bool   $is_uid   True if $msgs contains message UIDs
+     * @param array  $msgs     Message UIDs
      *
      * @return array The list of messages (rcube_mail_header) indexed by UID
      */
-    function get_messages($mailbox, $msgs = array(), $is_uid = true)
+    function get_messages($mailbox, $msgs = array())
     {
         if (empty($msgs)) {
             return array();
-        }
-
-        // @TODO: it would be nice if we could work with UIDs only
-        // then index would be not needed. For now we need it to
-        // map id to uid here and to update message id for cached message
-
-        // Convert IDs to UIDs
-        $index = $this->get_index($mailbox, 'ANY');
-        if (!$is_uid) {
-            foreach ($msgs as $idx => $msgid)
-                if ($uid = $index[$msgid])
-                    $msgs[$idx] = $uid;
         }
 
         // Fetch messages from cache
@@ -331,21 +314,17 @@ class rcube_imap_cache
             $uid          = intval($sql_arr['uid']);
             $result[$uid] = $this->build_message($sql_arr);
 
-            // save memory, we don't need message body here (?)
-            $result[$uid]->body = null;
-
-            // update message ID according to index data
-            if (!empty($index) && ($id = array_search($uid, $index)))
-                $result[$uid]->id = $id;
-
             if (!empty($result[$uid])) {
+                // save memory, we don't need message body here (?)
+                $result[$uid]->body = null;
+
                 unset($msgs[$uid]);
             }
         }
 
         // Fetch not found messages from IMAP server
         if (!empty($msgs)) {
-            $messages = $this->imap->fetch_headers($mailbox, array_keys($msgs), true, true);
+            $messages = $this->imap->fetch_headers($mailbox, array_keys($msgs), false, true);
 
             // Insert to DB and add to result list
             if (!empty($messages)) {
@@ -374,8 +353,9 @@ class rcube_imap_cache
     function get_message($mailbox, $uid, $update = true, $cache = true)
     {
         // Check internal cache
-        if (($message = $this->icache['message'])
-            && $message['mailbox'] == $mailbox && $message['object']->uid == $uid
+        if ($this->icache['message']
+            && $this->icache['message']['mailbox'] == $mailbox
+            && $this->icache['message']['object']->uid == $uid
         ) {
             return $this->icache['message']['object'];
         }
@@ -391,16 +371,11 @@ class rcube_imap_cache
         if ($sql_arr = $this->db->fetch_assoc($sql_result)) {
             $message = $this->build_message($sql_arr);
             $found   = true;
-
-            // update message ID according to index data
-            $index = $this->get_index($mailbox, 'ANY');
-            if (!empty($index) && ($id = array_search($uid, $index)))
-                $message->id = $id;
         }
 
         // Get the message from IMAP server
         if (empty($message) && $update) {
-            $message = $this->imap->get_headers($uid, $mailbox, true);
+            $message = $this->imap->get_message_headers($uid, $mailbox, true);
             // cache will be updated in close(), see below
         }
 
@@ -435,16 +410,19 @@ class rcube_imap_cache
      */
     function add_message($mailbox, $message, $force = false)
     {
-        if (!is_object($message) || empty($message->uid))
+        if (!is_object($message) || empty($message->uid)) {
             return;
+        }
 
         $msg   = serialize($this->db->encode(clone $message));
         $flags = 0;
 
         if (!empty($message->flags)) {
-            foreach ($this->flags as $idx => $flag)
-                if (!empty($message->flags[$flag]))
+            foreach ($this->flags as $idx => $flag) {
+                if (!empty($message->flags[$flag])) {
                     $flags += $idx;
+                }
+            }
         }
         unset($msg->flags);
 
@@ -459,8 +437,9 @@ class rcube_imap_cache
                     ." AND uid = ?",
                 $flags, $msg, $this->userid, $mailbox, (int) $message->uid);
 
-            if ($this->db->affected_rows())
+            if ($this->db->affected_rows()) {
                 return;
+            }
         }
 
         // insert new record
@@ -555,27 +534,30 @@ class rcube_imap_cache
         // The index should be only removed from database when
         // UIDVALIDITY was detected or the mailbox is empty
         // otherwise use 'valid' flag to not loose HIGHESTMODSEQ value
-        if ($remove)
+        if ($remove) {
             $this->db->query(
                 "DELETE FROM ".get_table_name('cache_index')
                 ." WHERE user_id = ".intval($this->userid)
                     .(strlen($mailbox) ? " AND mailbox = ".$this->db->quote($mailbox) : "")
             );
-        else
+        }
+        else {
             $this->db->query(
                 "UPDATE ".get_table_name('cache_index')
                 ." SET valid = 0"
                 ." WHERE user_id = ".intval($this->userid)
                     .(strlen($mailbox) ? " AND mailbox = ".$this->db->quote($mailbox) : "")
             );
+        }
 
         if (strlen($mailbox)) {
             unset($this->icache[$mailbox]['index']);
             // Index removed, set flag to skip SELECT query in get_index()
             $this->icache[$mailbox]['index_queried'] = true;
         }
-        else
+        else {
             $this->icache = array();
+        }
     }
 
 
@@ -597,8 +579,9 @@ class rcube_imap_cache
             // Thread data removed, set flag to skip SELECT query in get_thread()
             $this->icache[$mailbox]['thread_queried'] = true;
         }
-        else
+        else {
             $this->icache = array();
+        }
     }
 
 
@@ -617,39 +600,25 @@ class rcube_imap_cache
 
 
     /**
-     * @param string $mailbox Folder name
-     * @param int    $id      Message (sequence) ID
+     * Delete cache entries older than TTL
      *
-     * @return int Message UID
+     * @param string $ttl  Lifetime of message cache entries
      */
-    function id2uid($mailbox, $id)
+    function expunge($ttl)
     {
-        if (!empty($this->icache['pending_index_update']))
-            return null;
+        // get expiration timestamp
+        $ts = get_offset_time($ttl, -1);
 
-        // get index if it exists
-        $index = $this->get_index($mailbox, 'ANY', null, true);
+        $this->db->query("DELETE FROM ".get_table_name('cache_messages')
+              ." WHERE changed < " . $this->db->fromunixtime($ts));
 
-        return $index[$id];
+        $this->db->query("DELETE FROM ".get_table_name('cache_index')
+              ." WHERE changed < " . $this->db->fromunixtime($ts));
+
+        $this->db->query("DELETE FROM ".get_table_name('cache_thread')
+              ." WHERE changed < " . $this->db->fromunixtime($ts));
     }
 
-
-    /**
-     * @param string $mailbox Folder name
-     * @param int    $uid     Message UID
-     *
-     * @return int Message (sequence) ID
-     */
-    function uid2id($mailbox, $uid)
-    {
-        if (!empty($this->icache['pending_index_update']))
-            return null;
-
-        // get index if it exists
-        $index = $this->get_index($mailbox, 'ANY', null, true);
-
-        return array_search($uid, (array)$index);
-    }
 
     /**
      * Fetches index data from database
@@ -665,18 +634,22 @@ class rcube_imap_cache
             $this->userid, $mailbox);
 
         if ($sql_arr = $this->db->fetch_assoc($sql_result)) {
-            $data = explode('@', $sql_arr['data']);
+            $data  = explode('@', $sql_arr['data']);
+            $index = @unserialize($data[0]);
+            unset($data[0]);
+
+            if (empty($index)) {
+                $index = new rcube_result_index($mailbox);
+            }
 
             return array(
                 'valid'      => $sql_arr['valid'],
-                'seq'        => explode(',', $data[0]),
-                'uid'        => explode(',', $data[1]),
-                'sort_field' => $data[2],
-                'sort_order' => $data[3],
-                'deleted'    => $data[4],
-                'validity'   => $data[5],
-                'uidnext'    => $data[6],
-                'modseq'     => $data[7],
+                'object'     => $index,
+                'sort_field' => $data[1],
+                'deleted'    => $data[2],
+                'validity'   => $data[3],
+                'uidnext'    => $data[4],
+                'modseq'     => $data[5],
             );
         }
 
@@ -698,20 +671,16 @@ class rcube_imap_cache
             $this->userid, $mailbox);
 
         if ($sql_arr = $this->db->fetch_assoc($sql_result)) {
-            $data = explode('@', $sql_arr['data']);
+            $data   = explode('@', $sql_arr['data']);
+            $thread = @unserialize($data[0]);
+            unset($data[0]);
 
-            // Uncompress data, see add_thread_row()
-  //          $data[0] = str_replace(array('*', '^', '#'), array(';a:0:{}', 'i:', ';a:1:'), $data[0]);
-            $data[0] = unserialize($data[0]);
-
-            // build 'depth' and 'children' arrays
-            $depth = $children = array();
-            $this->build_thread_data($data[0], $depth, $children);
+            if (empty($thread)) {
+                $thread = new rcube_result_thread($mailbox);
+            }
 
             return array(
-                'tree'     => $data[0],
-                'depth'    => $depth,
-                'children' => $children,
+                'object'   => $thread,
                 'deleted'  => $data[1],
                 'validity' => $data[2],
                 'uidnext'  => $data[3],
@@ -725,14 +694,12 @@ class rcube_imap_cache
     /**
      * Saves index data into database
      */
-    private function add_index_row($mailbox, $sort_field, $sort_order,
-        $data = array(), $mbox_data = array(), $exists = false, $modseq = null)
+    private function add_index_row($mailbox, $sort_field,
+        $data, $mbox_data = array(), $exists = false, $modseq = null)
     {
         $data = array(
-            implode(',', array_keys($data)),
-            implode(',', array_values($data)),
+            serialize($data),
             $sort_field,
-            $sort_order,
             (int) $this->skip_deleted,
             (int) $mbox_data['UIDVALIDITY'],
             (int) $mbox_data['UIDNEXT'],
@@ -740,52 +707,52 @@ class rcube_imap_cache
         );
         $data = implode('@', $data);
 
-        if ($exists)
+        if ($exists) {
             $sql_result = $this->db->query(
                 "UPDATE ".get_table_name('cache_index')
                 ." SET data = ?, valid = 1, changed = ".$this->db->now()
                 ." WHERE user_id = ?"
                     ." AND mailbox = ?",
                 $data, $this->userid, $mailbox);
-        else
+        }
+        else {
             $sql_result = $this->db->query(
                 "INSERT INTO ".get_table_name('cache_index')
                 ." (user_id, mailbox, data, valid, changed)"
                 ." VALUES (?, ?, ?, 1, ".$this->db->now().")",
                 $this->userid, $mailbox, $data);
+        }
     }
 
 
     /**
      * Saves thread data into database
      */
-    private function add_thread_row($mailbox, $data = array(), $mbox_data = array(), $exists = false)
+    private function add_thread_row($mailbox, $data, $mbox_data = array(), $exists = false)
     {
-        $tree = serialize($data['tree']);
-        // This significantly reduces data length
-//        $tree = str_replace(array(';a:0:{}', 'i:', ';a:1:'), array('*', '^', '#'), $tree);
-
         $data = array(
-            $tree,
+            serialize($data),
             (int) $this->skip_deleted,
             (int) $mbox_data['UIDVALIDITY'],
             (int) $mbox_data['UIDNEXT'],
         );
         $data = implode('@', $data);
 
-        if ($exists)
+        if ($exists) {
             $sql_result = $this->db->query(
                 "UPDATE ".get_table_name('cache_thread')
                 ." SET data = ?, changed = ".$this->db->now()
                 ." WHERE user_id = ?"
                     ." AND mailbox = ?",
                 $data, $this->userid, $mailbox);
-        else
+        }
+        else {
             $sql_result = $this->db->query(
                 "INSERT INTO ".get_table_name('cache_thread')
                 ." (user_id, mailbox, data, changed)"
                 ." VALUES (?, ?, ?, ".$this->db->now().")",
                 $this->userid, $mailbox, $data);
+        }
     }
 
 
@@ -794,10 +761,11 @@ class rcube_imap_cache
      */
     private function validate($mailbox, $index, &$exists = true)
     {
-        $is_thread = isset($index['tree']);
+        $object    = $index['object'];
+        $is_thread = is_a($object, 'rcube_result_thread');
 
         // Get mailbox data (UIDVALIDITY, counters, etc.) for status check
-        $mbox_data = $this->imap->mailbox_data($mailbox);
+        $mbox_data = $this->imap->folder_data($mailbox);
 
         // @TODO: Think about skipping validation checks.
         // If we could check only every 10 minutes, we would be able to skip
@@ -814,21 +782,21 @@ class rcube_imap_cache
 
         // Folder is empty but cache isn't
         if (empty($mbox_data['EXISTS'])) {
-            if (!empty($index['seq']) || !empty($index['tree'])) {
+            if (!$object->is_empty()) {
                 $this->clear($mailbox);
                 $exists = false;
                 return false;
             }
         }
         // Folder is not empty but cache is
-        else if (empty($index['seq']) && empty($index['tree'])) {
+        else if ($object->is_empty()) {
             unset($this->icache[$mailbox][$is_thread ? 'thread' : 'index']);
             return false;
         }
 
         // Validation flag
         if (!$is_thread && empty($index['valid'])) {
-            unset($this->icache[$mailbox][$is_thread ? 'thread' : 'index']);
+            unset($this->icache[$mailbox]['index']);
             return false;
         }
 
@@ -853,7 +821,7 @@ class rcube_imap_cache
         // @TODO: find better validity check for threaded index
         if ($is_thread) {
             // check messages number...
-            if (!$this->skip_deleted && $mbox_data['EXISTS'] != @max(array_keys($index['depth']))) {
+            if (!$this->skip_deleted && $mbox_data['EXISTS'] != $object->count_messages()) {
                 return false;
             }
             return true;
@@ -862,14 +830,15 @@ class rcube_imap_cache
         // The rest of checks, more expensive
         if (!empty($this->skip_deleted)) {
             // compare counts if available
-            if ($mbox_data['COUNT_UNDELETED'] != null
-                && $mbox_data['COUNT_UNDELETED'] != count($index['uid'])) {
+            if (!empty($mbox_data['UNDELETED'])
+                && $mbox_data['UNDELETED']->count() != $object->count()
+            ) {
                 return false;
             }
             // compare UID sets
-            if ($mbox_data['ALL_UNDELETED'] != null) {
-                $uids_new = rcube_imap_generic::uncompressMessageSet($mbox_data['ALL_UNDELETED']);
-                $uids_old = $index['uid'];
+            if (!empty($mbox_data['UNDELETED'])) {
+                $uids_new = $mbox_data['UNDELETED']->get();
+                $uids_old = $object->get();
 
                 if (count($uids_new) != count($uids_old)) {
                     return false;
@@ -884,20 +853,20 @@ class rcube_imap_cache
             else {
                 // get all undeleted messages excluding cached UIDs
                 $ids = $this->imap->search_once($mailbox, 'ALL UNDELETED NOT UID '.
-                    rcube_imap_generic::compressMessageSet($index['uid']));
+                    rcube_imap_generic::compressMessageSet($object->get()));
 
-                if (!empty($ids)) {
+                if (!$ids->is_empty()) {
                     return false;
                 }
             }
         }
         else {
             // check messages number...
-            if ($mbox_data['EXISTS'] != max($index['seq'])) {
+            if ($mbox_data['EXISTS'] != $object->count()) {
                 return false;
             }
             // ... and max UID
-            if (max($index['uid']) != $this->imap->id2uid($mbox_data['EXISTS'], $mailbox, true)) {
+            if ($object->max() != $this->imap->id2uid($mbox_data['EXISTS'], $mailbox, true)) {
                 return false;
             }
         }
@@ -944,6 +913,10 @@ class rcube_imap_cache
             return;
         }
 
+        if (!$this->imap->check_connection()) {
+            return;
+        }
+
         // NOTE: make sure the mailbox isn't selected, before
         // enabling QRESYNC and invoking SELECT
         if ($this->imap->conn->selected !== null) {
@@ -957,7 +930,7 @@ class rcube_imap_cache
         }
 
         // Get mailbox data (UIDVALIDITY, HIGHESTMODSEQ, counters, etc.)
-        $mbox_data = $this->imap->mailbox_data($mailbox);
+        $mbox_data = $this->imap->folder_data($mailbox);
 
         if (empty($mbox_data)) {
              return;
@@ -1042,7 +1015,7 @@ class rcube_imap_cache
 
         // Get VANISHED
         if ($qresync) {
-            $mbox_data = $this->imap->mailbox_data($mailbox);
+            $mbox_data = $this->imap->folder_data($mailbox);
 
             // Removed messages
             if (!empty($mbox_data['VANISHED'])) {
@@ -1060,7 +1033,7 @@ class rcube_imap_cache
         }
 
         $sort_field = $index['sort_field'];
-        $sort_order = $index['sort_order'];
+        $sort_order = $index['object']->get_parameters('ORDER');
         $exists     = true;
 
         // Validate index
@@ -1069,14 +1042,14 @@ class rcube_imap_cache
             $data = $this->get_index_data($mailbox, $sort_field, $sort_order, $mbox_data);
         }
         else {
-            $data = array_combine($index['seq'], $index['uid']);
+            $data = $index['object'];
         }
 
         // update index and/or HIGHESTMODSEQ value
-        $this->add_index_row($mailbox, $sort_field, $sort_order, $data, $mbox_data, $exists);
+        $this->add_index_row($mailbox, $sort_field, $data, $mbox_data, $exists);
 
         // update internal cache for get_index()
-        $this->icache[$mailbox]['index']['result'] = $data;
+        $this->icache[$mailbox]['index']['object'] = $data;
     }
 
 
@@ -1093,28 +1066,14 @@ class rcube_imap_cache
 
         if ($message) {
             $message->flags = array();
-            foreach ($this->flags as $idx => $flag)
-                if (($sql_arr['flags'] & $idx) == $idx)
+            foreach ($this->flags as $idx => $flag) {
+                if (($sql_arr['flags'] & $idx) == $idx) {
                     $message->flags[$flag] = true;
+                }
+           }
         }
 
         return $message;
-    }
-
-
-    /**
-     * Creates 'depth' and 'children' arrays from stored thread 'tree' data.
-     */
-    private function build_thread_data($data, &$depth, &$children, $level = 0)
-    {
-        foreach ((array)$data as $key => $val) {
-            $empty          = empty($val) || !is_array($val);
-            $children[$key] = !$empty;
-            $depth[$key]    = $level;
-            if (!$empty) {
-                $this->build_thread_data($val, $depth, $children, $level + 1);
-            }
-        }
     }
 
 
@@ -1172,43 +1131,18 @@ class rcube_imap_cache
      */
     private function get_index_data($mailbox, $sort_field, $sort_order, $mbox_data = array())
     {
-        $data = array();
-
         if (empty($mbox_data)) {
-            $mbox_data = $this->imap->mailbox_data($mailbox);
+            $mbox_data = $this->imap->folder_data($mailbox);
         }
-
-        // Prevent infinite loop.
-        // It happens when rcube_imap::message_index_direct() is called.
-        // There id2uid() is called which will again call get_index() and so on.
-        if (!$sort_field && !$this->skip_deleted)
-            $this->icache['pending_index_update'] = true;
 
         if ($mbox_data['EXISTS']) {
             // fetch sorted sequence numbers
-            $data_seq = $this->imap->message_index_direct($mailbox, $sort_field, $sort_order);
-            // fetch UIDs
-            if (!empty($data_seq)) {
-                // Seek in internal cache
-                if (array_key_exists('index', (array)$this->icache[$mailbox])
-                    && array_key_exists('result', (array)$this->icache[$mailbox]['index'])
-                )
-                    $data_uid = $this->icache[$mailbox]['index']['result'];
-                else
-                    $data_uid = $this->imap->conn->fetchUIDs($mailbox, $data_seq);
-
-                // build index
-                if (!empty($data_uid)) {
-                    foreach ($data_seq as $seq)
-                        if ($uid = $data_uid[$seq])
-                            $data[$seq] = $uid;
-                }
-            }
+            $index = $this->imap->index_direct($mailbox, $sort_field, $sort_order);
+        }
+        else {
+            $index = new rcube_result_index($mailbox, '* SORT');
         }
 
-        // Reset internal flags
-        $this->icache['pending_index_update'] = false;
-
-        return $data;
+        return $index;
     }
 }

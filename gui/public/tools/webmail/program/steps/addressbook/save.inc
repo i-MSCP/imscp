@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Save a contact entry or to add a new one                            |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save.inc 5873 2012-02-11 13:50:04Z thomasb $
+ $Id$
 
 */
 

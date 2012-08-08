@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2010, The Roundcube Dev Team                            |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Create/delete/rename contact groups and assign/remove contacts      |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: groups.inc 4850 2011-06-14 13:45:26Z alec $
+ $Id$
 
 */
 
@@ -47,8 +50,10 @@ if ($RCMAIL->action == 'group-addmembers') {
 
     if ($result)
       $OUTPUT->show_message('contactaddedtogroup');
-    else
+    else if ($plugin['abort'] || $CONTACTS->get_error())
       $OUTPUT->show_message($plugin['message'] ? $plugin['message'] : 'errorsaving', 'error');
+    else
+      $OUTPUT->show_message($plugin['message'] ? $plugin['message'] : 'nogroupassignmentschanged');
   }
 }
 
@@ -61,10 +66,12 @@ else if ($RCMAIL->action == 'group-delmembers') {
     else
       $result = $plugin['result'];
 
-    if ($result)
+    if ($result){
       $OUTPUT->show_message('contactremovedfromgroup');
-    else
+      $OUTPUT->command('remove_group_contacts',array('source' => $source, 'gid' => $gid));
+    }else{
       $OUTPUT->show_message($plugin['message'] ? $plugin['message'] : 'errorsaving', 'error');
+    }
   }
 }
 

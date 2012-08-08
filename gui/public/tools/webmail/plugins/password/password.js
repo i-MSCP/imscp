@@ -6,7 +6,7 @@
 if (window.rcmail) {
   rcmail.addEventListener('init', function(evt) {
     // <span id="settingstabdefault" class="tablink"><roundcube:button command="preferences" type="link" label="preferences" title="editpreferences" /></span>
-    var tab = $('<span>').attr('id', 'settingstabpluginpassword').addClass('tablink');
+    var tab = $('<span>').attr('id', 'settingstabpluginpassword').addClass('tablink password');
     var button = $('<a>').attr('href', rcmail.env.comm_path+'&_action=plugin.password')
       .html(rcmail.gettext('password')).appendTo(tab);
 

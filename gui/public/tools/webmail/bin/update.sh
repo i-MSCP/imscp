@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2010-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Check local configuration and database schema after upgrading       |
@@ -111,6 +114,12 @@ if ($RCI->configured) {
         if ($write1 && $write2) {
           echo "Done.\n";
           echo "Your configuration files are now up-to-date!\n";
+
+          if ($messages['missing']) {
+            echo "But you still need to add the following missing options:\n";
+            foreach ($messages['missing'] as $msg)
+              echo "- '" . $msg['prop'] . ($msg['name'] ? "': " . $msg['name'] : "'") . "\n";
+          }
         }
         else {
           echo "Failed to write config files!\n";

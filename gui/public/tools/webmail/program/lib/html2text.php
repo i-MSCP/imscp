@@ -249,12 +249,11 @@ class html2text
      *  @access public
      */
     var $callback_search = array(
-        '/<(h)[123456][^>]*>(.*?)<\/h[123456]>/i', // H1 - H3
-        '/<(b)[^>]*>(.*?)<\/b>/i',                 // <b>
-        '/<(strong)[^>]*>(.*?)<\/strong>/i',       // <strong>
-        '/<(a) [^>]*href=("|\')([^"\']+)\2[^>]*>(.*?)<\/a>/i',
-                                                   // <a href="">
-        '/<(th)[^>]*>(.*?)<\/th>/i',               // <th> and </th>
+        '/<(a) [^>]*href=("|\')([^"\']+)\2[^>]*>(.*?)<\/a>/i', // <a href="">
+        '/<(h)[123456]( [^>]*)?>(.*?)<\/h[123456]>/i',         // h1 - h6
+        '/<(b)( [^>]*)?>(.*?)<\/b>/i',                         // <b>
+        '/<(strong)( [^>]*)?>(.*?)<\/strong>/i',               // <strong>
+        '/<(th)( [^>]*)?>(.*?)<\/th>/i',                       // <th> and </th>
     );
 
    /**
@@ -317,21 +316,11 @@ class html2text
     /**
      *  Contains URL addresses from links to be rendered in plain text.
      *
-     *  @var string $_link_list
+     *  @var array $_link_list
      *  @access private
      *  @see _build_link_list()
      */
-    var $_link_list = '';
-
-    /**
-     *  Number of valid links detected in the text, used for plain text
-     *  display (rendered similar to footnotes).
-     *
-     *  @var integer $_link_count
-     *  @access private
-     *  @see _build_link_list()
-     */
-    var $_link_count = 0;
+    var $_link_list = array();
 
     /**
      * Boolean flag, true if a table of link URLs should be listed after the text.
@@ -378,7 +367,7 @@ class html2text
     function set_html( $source, $from_file = false )
     {
         if ( $from_file && file_exists($source) ) {
-            $this->html = file_get_contents($source); 
+            $this->html = file_get_contents($source);
         }
         else
             $this->html = $source;
@@ -472,8 +461,7 @@ class html2text
     function _convert()
     {
         // Variables used for building the link list
-        $this->_link_count = 0;
-        $this->_link_list = '';
+        $this->_link_list = array();
 
         $text = trim(stripslashes($this->html));
 
@@ -481,8 +469,11 @@ class html2text
         $this->_converter($text);
 
         // Add link list
-        if ( !empty($this->_link_list) ) {
-            $text .= "\n\nLinks:\n------\n" . $this->_link_list;
+        if (!empty($this->_link_list)) {
+            $text .= "\n\nLinks:\n------\n";
+            foreach ($this->_link_list as $idx => $url) {
+                $text .= '[' . ($idx+1) . '] ' . $url . "\n";
+            }
         }
 
         $this->text = $text;
@@ -563,28 +554,32 @@ class html2text
      */
     function _build_link_list( $link, $display )
     {
-	    if ( !$this->_do_links )
+	    if (!$this->_do_links || empty($link)) {
 	        return $display;
+	    }
 
-	    if ( preg_match('!^(https?://|mailto:)!', $link) ) {
-            $this->_link_count++;
-            $this->_link_list .= '[' . $this->_link_count . "] $link\n";
-            $additional = ' [' . $this->_link_count . ']';
-	    } elseif ( substr($link, 0, 11) == 'javascript:' ) {
-		    // Don't count the link; ignore it
-		    $additional = '';
-		// what about href="#anchor" ?
-        } else {
-            $this->_link_count++;
-            $this->_link_list .= '[' . $this->_link_count . '] ' . $this->url;
-            if ( substr($link, 0, 1) != '/' ) {
-                $this->_link_list .= '/';
-            }
-            $this->_link_list .= "$link\n";
-            $additional = ' [' . $this->_link_count . ']';
+        // Ignored link types
+	    if (preg_match('!^(javascript:|mailto:|#)!i', $link)) {
+		    return $display;
         }
 
-        return $display . $additional;
+	    if (preg_match('!^([a-z][a-z0-9.+-]+:)!i', $link)) {
+            $url = $link;
+        }
+        else {
+            $url = $this->url;
+            if (substr($link, 0, 1) != '/') {
+                $url .= '/';
+            }
+            $url .= "$link";
+        }
+
+        if (($index = array_search($url, $this->_link_list)) === false) {
+            $index = count($this->_link_list);
+            $this->_link_list[] = $url;
+        }
+
+        return $display . ' [' . ($index+1) . ']';
     }
 
     /**
@@ -597,12 +592,20 @@ class html2text
     {
         // get the content of PRE element
         while (preg_match('/<pre[^>]*>(.*)<\/pre>/ismU', $text, $matches)) {
+            $this->pre_content = $matches[1];
+
+            // Run our defined tags search-and-replace with callback
+            $this->pre_content = preg_replace_callback($this->callback_search,
+                array('html2text', '_preg_callback'), $this->pre_content);
+
             // convert the content
             $this->pre_content = sprintf('<div><br>%s<br></div>',
-                preg_replace($this->pre_search, $this->pre_replace, $matches[1]));
+                preg_replace($this->pre_search, $this->pre_replace, $this->pre_content));
+
             // replace the content (use callback because content can contain $0 variable)
-            $text = preg_replace_callback('/<pre[^>]*>.*<\/pre>/ismU', 
+            $text = preg_replace_callback('/<pre[^>]*>.*<\/pre>/ismU',
                 array('html2text', '_preg_pre_callback'), $text, 1);
+
             // free memory
             $this->pre_content = '';
         }
@@ -672,14 +675,14 @@ class html2text
      */
     private function _preg_callback($matches)
     {
-        switch($matches[1]) {
+        switch (strtolower($matches[1])) {
         case 'b':
         case 'strong':
-            return $this->_strtoupper($matches[2]);
+            return $this->_toupper($matches[3]);
         case 'th':
-            return $this->_strtoupper("\t\t". $matches[2] ."\n");
+            return $this->_toupper("\t\t". $matches[3] ."\n");
         case 'h':
-            return $this->_strtoupper("\n\n". $matches[2] ."\n\n");
+            return $this->_toupper("\n\n". $matches[3] ."\n\n");
         case 'a':
             // Remove spaces in URL (#1487805)
             $url = str_replace(' ', '', $matches[3]);
@@ -699,16 +702,43 @@ class html2text
     }
 
     /**
-     *  Strtoupper multibyte wrapper function
+     * Strtoupper function with HTML tags and entities handling.
      *
-     *  @param  string
-     *  @return string
+     * @param string $str Text to convert
+     * @return string Converted text
+     */
+    private function _toupper($str)
+    {
+        // string can containg HTML tags
+        $chunks = preg_split('/(<[^>]*>)/', $str, null, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+        // convert toupper only the text between HTML tags
+        foreach ($chunks as $idx => $chunk) {
+            if ($chunk[0] != '<') {
+                $chunks[$idx] = $this->_strtoupper($chunk);
+            }
+        }
+
+        return implode($chunks);
+    }
+
+    /**
+     * Strtoupper multibyte wrapper function with HTML entities handling.
+     *
+     * @param string $str Text to convert
+     * @return string Converted text
      */
     private function _strtoupper($str)
     {
+        $str = html_entity_decode($str, ENT_COMPAT, RCMAIL_CHARSET);
+
         if (function_exists('mb_strtoupper'))
-            return mb_strtoupper($str);
+            $str = mb_strtoupper($str);
         else
-            return strtoupper($str);
+            $str = strtoupper($str);
+
+        $str = htmlspecialchars($str, ENT_COMPAT, RCMAIL_CHARSET);
+
+        return $str;
     }
 }

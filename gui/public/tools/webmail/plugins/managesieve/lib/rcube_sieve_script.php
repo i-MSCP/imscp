@@ -19,7 +19,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- * $Id: rcube_sieve_script.php 5452 2011-11-18 14:44:48Z alec $
+ * $Id$
  *
  */
 
@@ -1057,6 +1057,10 @@ class rcube_sieve_script
 
                         $result[] = $text;
                     }
+                }
+                // fallback, skip one character as infinite loop prevention
+                else {
+                    $str = substr($str, 1);
                 }
 
                 break;

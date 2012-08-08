@@ -14,7 +14,7 @@
  * @author     Greg Beaver <cellog@php.net>
  * @copyright  1997-2009 The Authors
  * @license    http://opensource.org/licenses/bsd-license.php New BSD License
- * @version    CVS: $Id: PEAR.php 5222 2011-09-16 08:06:09Z alec $
+ * @version    CVS: $Id$
  * @link       http://pear.php.net/package/PEAR
  * @since      File available since Release 0.1
  */
@@ -263,7 +263,7 @@ class PEAR
      * @access  public
      * @return  bool    true if parameter is an error
      */
-    function isError($data, $code = null)
+    static function isError($data, $code = null)
     {
         if (!is_object($data) || !is_a($data, 'PEAR_Error')) {
             return false;

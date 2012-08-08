@@ -5,8 +5,8 @@
 function plugin_vcard_save_contact(mime_id)
 {
   var lock = rcmail.set_busy(true, 'loading');
-  rcmail.http_post('plugin.savevcard', '_uid='+rcmail.env.uid+'&_mbox='+urlencode(rcmail.env.mailbox)+'&_part='+urlencode(mime_id), lock);
-  
+  rcmail.http_post('plugin.savevcard', { _uid: rcmail.env.uid, _mbox: rcmail.env.mailbox, _part: mime_id }, lock);
+
   return false;
 }
 
@@ -14,7 +14,7 @@ function plugin_vcard_insertrow(data)
 {
   var ctype = data.row.ctype;
   if (ctype == 'text/vcard' || ctype == 'text/x-vcard' || ctype == 'text/directory') {
-    $('#rcmrow'+data.uid+' > td.attachment').html('<img src="'+rcmail.env.vcard_icon+'" alt="">');
+    $('#rcmrow'+data.uid+' > td.attachment').html('<img src="'+rcmail.env.vcard_icon+'" alt="" />');
   }
 }
 

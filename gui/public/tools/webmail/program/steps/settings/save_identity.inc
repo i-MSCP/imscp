@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Save an identity record or to add a new one                         |
@@ -15,14 +18,13 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save_identity.inc 4829 2011-06-02 12:26:59Z alec $
+ $Id$
 
 */
 
 define('IDENTITIES_LEVEL', intval($RCMAIL->config->get('identities_level', 0)));
 
 $a_save_cols = array('name', 'email', 'organization', 'reply-to', 'bcc', 'standard', 'signature', 'html_signature');
-$a_html_cols = array('signature', 'name', 'organization');
 $a_boolean_cols = array('standard', 'html_signature');
 $updated = $default_id = false;
 
@@ -40,7 +42,7 @@ foreach ($a_save_cols as $col)
 {
   $fname = '_'.$col;
   if (isset($_POST[$fname]))
-    $save_data[$col] = get_input_value($fname, RCUBE_INPUT_POST, in_array($col, $a_html_cols));
+    $save_data[$col] = get_input_value($fname, RCUBE_INPUT_POST, true);
 }
 
 // set "off" values for checkboxes that were not checked, and therefore
@@ -57,15 +59,18 @@ if (IDENTITIES_LEVEL == 1 || IDENTITIES_LEVEL == 3)
   unset($save_data['email']);
 
 // Validate e-mail addresses
-foreach (array('email', 'reply-to', 'bcc') as $item) {
-  if ($email = $save_data[$item]) {
-    $ascii_email = rcube_idn_to_ascii($email);
-    if (!check_email($ascii_email)) {
-      // show error message
-      $OUTPUT->show_message('emailformaterror', 'error', array('email' => $email), false);
-      rcmail_overwrite_action('edit-identity');
-      return;
-    }
+$email_checks = array(rcube_idn_to_ascii($save_data['email']));
+foreach (array('reply-to', 'bcc') as $item) {
+  foreach (rcube_mime::decode_address_list(rcube_idn_to_ascii($save_data[$item]), null, false) as $rcpt)
+    $email_checks[] = $rcpt['mailto'];
+}
+
+foreach ($email_checks as $email) {
+  if ($email && !check_email($email)) {
+    // show error message
+    $OUTPUT->show_message('emailformaterror', 'error', array('email' => rcube_idn_to_utf8($email)), false);
+    rcmail_overwrite_action('edit-identity');
+    return;
   }
 }
 
@@ -84,7 +89,7 @@ if ($_POST['_iid'])
     $save_data['reply-to'] = rcube_idn_to_ascii($save_data['reply-to']);
 
   if (!$plugin['abort'])
-    $updated = $USER->update_identity($iid, $save_data);
+    $updated = $RCMAIL->user->update_identity($iid, $save_data);
   else
     $updated = $plugin['result'];
 
@@ -96,7 +101,7 @@ if ($_POST['_iid'])
 
     if ($_POST['_framed']) {
       // update the changed col in list
-      // ...
+      $OUTPUT->command('parent.update_identity_row', $iid, Q(trim($save_data['name'] . ' <' . rcube_idn_to_utf8($save_data['email']) .'>')));
     }
   }
   else {
@@ -124,7 +129,7 @@ else if (IDENTITIES_LEVEL < 2)
     $save_data['reply-to'] = rcube_idn_to_ascii($save_data['reply-to']);
 
   if (!$plugin['abort'])
-    $insert_id = $save_data['email'] ? $USER->insert_identity($save_data) : null;
+    $insert_id = $save_data['email'] ? $RCMAIL->user->insert_identity($save_data) : null;
   else
     $insert_id = $plugin['result'];
 
@@ -135,6 +140,11 @@ else if (IDENTITIES_LEVEL < 2)
 
     if (!empty($_POST['_standard']))
       $default_id = $insert_id;
+
+    if ($_POST['_framed']) {
+      // add a new row to the list
+      $OUTPUT->command('parent.update_identity_row', $insert_id, Q(trim($save_data['name'] . ' <' . rcube_idn_to_utf8($save_data['email']) .'>')), true);
+    }
   }
   else {
     // show error message
@@ -149,7 +159,11 @@ else
 
 // mark all other identities as 'not-default'
 if ($default_id)
-  $USER->set_default($default_id);
+  $RCMAIL->user->set_default($default_id);
 
 // go to next step
-rcmail_overwrite_action('identities');
+if (!empty($_REQUEST['_framed'])) {
+  rcmail_overwrite_action('edit-identity');
+}
+else
+  rcmail_overwrite_action('identities');

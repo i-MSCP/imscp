@@ -7,7 +7,10 @@
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2008-2011, The Roundcube Dev Team                       |
  | Copyright (C) 2011, Kolab Systems AG                                  |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Application class providing core functions and holding              |
@@ -16,7 +19,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcmail.php 5897 2012-02-21 20:46:15Z thomasb $
+ $Id$
 
 */
 
@@ -86,11 +89,11 @@ class rcmail
   public $smtp;
 
   /**
-   * Instance of rcube_imap class.
+   * Instance of rcube_storage class.
    *
-   * @var rcube_imap
+   * @var rcube_storage
    */
-  public $imap;
+  public $storage;
 
   /**
    * Instance of rcube_template class.
@@ -126,6 +129,12 @@ class rcmail
   private $caches = array();
   private $action_map = array();
   private $shutdown_functions = array();
+  private $expunge_cache = false;
+
+  const ERROR_STORAGE          = -2;
+  const ERROR_INVALID_REQUEST  = 1;
+  const ERROR_INVALID_HOST     = 2;
+  const ERROR_COOKIES_DISABLED = 3;
 
 
   /**
@@ -159,8 +168,6 @@ class rcmail
   /**
    * Initial startup function
    * to register session, create database and imap connections
-   *
-   * @todo Remove global vars $DB, $USER
    */
   private function startup()
   {
@@ -172,7 +179,7 @@ class rcmail
     }
 
     // connect to database
-    $GLOBALS['DB'] = $this->get_dbh();
+    $this->get_dbh();
 
     // start session
     $this->session_init();
@@ -240,7 +247,6 @@ class rcmail
   {
     if (is_object($user)) {
       $this->user = $user;
-      $GLOBALS['USER'] = $this->user;
 
       // overwrite config with user preferences
       $this->config->set_user_prefs((array)$this->user->get_prefs());
@@ -320,8 +326,8 @@ class rcmail
 
     return $this->db;
   }
-  
-  
+
+
   /**
    * Get global handle for memcache access
    *
@@ -338,15 +344,20 @@ class rcmail
 
       $this->memcache = new Memcache;
       $this->mc_available = 0;
-      
-      // add alll configured hosts to pool
+
+      // add all configured hosts to pool
       $pconnect = $this->config->get('memcache_pconnect', true);
       foreach ($this->config->get('memcache_hosts', array()) as $host) {
-        list($host, $port) = explode(':', $host);
-        if (!$port) $port = 11211;
+        if (substr($host, 0, 7) != 'unix://') {
+          list($host, $port) = explode(':', $host);
+          if (!$port) $port = 11211;
+        }
+        else {
+          $port = 0;
+        }
         $this->mc_available += intval($this->memcache->addServer($host, $port, $pconnect, 1, 1, 15, false, array($this, 'memcache_failure')));
       }
-      
+
       // test connection and failover (will result in $this->mc_available == 0 on complete failure)
       $this->memcache->increment('__CONNECTIONTEST__', 1);  // NOP if key doesn't exist
 
@@ -356,14 +367,14 @@ class rcmail
 
     return $this->memcache;
   }
-  
+
   /**
    * Callback for memcache failure
    */
   public function memcache_failure($host, $port)
   {
     static $seen = array();
-    
+
     // only report once
     if (!$seen["$host:$port"]++) {
       $this->mc_available--;
@@ -421,7 +432,7 @@ class rcmail
       $contacts = $this->address_books[$id];
     }
     else if ($id && $ldap_config[$id]) {
-      $contacts = new rcube_ldap($ldap_config[$id], $this->config->get('ldap_debug'), $this->config->mail_domain($_SESSION['imap_host']));
+      $contacts = new rcube_ldap($ldap_config[$id], $this->config->get('ldap_debug'), $this->config->mail_domain($_SESSION['storage_host']));
     }
     else if ($id === '0') {
       $contacts = new rcube_contacts($this->db, $this->user->ID);
@@ -493,7 +504,11 @@ class rcmail
 
     if ($ldap_config) {
       $ldap_config = (array) $ldap_config;
-      foreach ($ldap_config as $id => $prop)
+      foreach ($ldap_config as $id => $prop) {
+        // handle misconfiguration
+        if (empty($prop) || !is_array($prop)) {
+          continue;
+        }
         $list[$id] = array(
           'id'       => $id,
           'name'     => $prop['name'],
@@ -502,6 +517,7 @@ class rcmail
           'hidden'   => $prop['hidden'],
           'autocomplete' => in_array($id, $autocomplete)
         );
+      }
     }
 
     $plugin = $this->plugins->exec_hook('addressbooks_list', array('sources' => $list));
@@ -550,7 +566,7 @@ class rcmail
     $this->output->set_charset(RCMAIL_CHARSET);
 
     // add some basic labels to client
-    $this->output->add_label('loading', 'servererror');
+    $this->output->add_label('loading', 'servererror', 'requesttimedout');
 
     return $this->output;
   }
@@ -585,90 +601,147 @@ class rcmail
 
 
   /**
-   * Create global IMAP object and connect to server
+   * Initialize and get storage object
    *
-   * @param boolean True if connection should be established
-   * @todo Remove global $IMAP
+   * @return rcube_storage Storage object
    */
-  public function imap_init($connect = false)
+  public function get_storage()
   {
     // already initialized
-    if (is_object($this->imap))
-      return;
-
-    $this->imap = new rcube_imap();
-    $this->imap->skip_deleted = $this->config->get('skip_deleted');
-
-    // enable caching of imap data
-    $imap_cache = $this->config->get('imap_cache');
-    $messages_cache = $this->config->get('messages_cache');
-    // for backward compatybility
-    if ($imap_cache === null && $messages_cache === null && $this->config->get('enable_caching')) {
-        $imap_cache     = 'db';
-        $messages_cache = true;
+    if (!is_object($this->storage)) {
+      $this->storage_init();
     }
-    if ($imap_cache)
-        $this->imap->set_caching($imap_cache);
-    if ($messages_cache)
-        $this->imap->set_messages_caching(true);
 
-    // set pagesize from config
-    $this->imap->set_pagesize($this->config->get('pagesize', 50));
-
-    // Setting root and delimiter before establishing the connection
-    // can save time detecting them using NAMESPACE and LIST
-    $options = array(
-      'auth_type'   => $this->config->get('imap_auth_type', 'check'),
-      'auth_cid'    => $this->config->get('imap_auth_cid'),
-      'auth_pw'     => $this->config->get('imap_auth_pw'),
-      'debug'       => (bool) $this->config->get('imap_debug', 0),
-      'force_caps'  => (bool) $this->config->get('imap_force_caps'),
-      'timeout'     => (int) $this->config->get('imap_timeout', 0),
-    );
-
-    $this->imap->set_options($options);
-
-    // set global object for backward compatibility
-    $GLOBALS['IMAP'] = $this->imap;
-
-    $hook = $this->plugins->exec_hook('imap_init', array('fetch_headers' => $this->imap->fetch_add_headers));
-    if ($hook['fetch_headers'])
-      $this->imap->fetch_add_headers = $hook['fetch_headers'];
-
-    // support this parameter for backward compatibility but log warning
-    if ($connect) {
-      $this->imap_connect();
-      raise_error(array(
-        'code' => 800, 'type' => 'imap',
-        'file' => __FILE__, 'line' => __LINE__,
-        'message' => "rcube::imap_init(true) is deprecated, use rcube::imap_connect() instead"),
-        true, false);
-    }
+    return $this->storage;
   }
 
 
   /**
-   * Connect to IMAP server with stored session data
+   * Connect to the IMAP server with stored session data.
    *
-   * @return bool True on success, false on error
+   * @return bool True on success, False on error
+   * @deprecated
    */
   public function imap_connect()
   {
-    if (!$this->imap)
-      $this->imap_init();
+    return $this->storage_connect();
+  }
 
-    if ($_SESSION['imap_host'] && !$this->imap->conn->connected()) {
-      if (!$this->imap->connect($_SESSION['imap_host'], $_SESSION['username'], $this->decrypt($_SESSION['password']), $_SESSION['imap_port'], $_SESSION['imap_ssl'])) {
+
+  /**
+   * Initialize IMAP object.
+   *
+   * @deprecated
+   */
+  public function imap_init()
+  {
+    $this->storage_init();
+  }
+
+
+  /**
+   * Initialize storage object
+   */
+  public function storage_init()
+  {
+    // already initialized
+    if (is_object($this->storage)) {
+      return;
+    }
+
+    $driver = $this->config->get('storage_driver', 'imap');
+    $driver_class = "rcube_{$driver}";
+
+    if (!class_exists($driver_class)) {
+      raise_error(array(
+        'code' => 700, 'type' => 'php',
+        'file' => __FILE__, 'line' => __LINE__,
+        'message' => "Storage driver class ($driver) not found!"),
+        true, true);
+    }
+
+    // Initialize storage object
+    $this->storage = new $driver_class;
+
+    // for backward compat. (deprecated, will be removed)
+    $this->imap = $this->storage;
+
+    // enable caching of mail data
+    $storage_cache  = $this->config->get("{$driver}_cache");
+    $messages_cache = $this->config->get('messages_cache');
+    // for backward compatybility
+    if ($storage_cache === null && $messages_cache === null && $this->config->get('enable_caching')) {
+        $storage_cache  = 'db';
+        $messages_cache = true;
+    }
+
+    if ($storage_cache)
+        $this->storage->set_caching($storage_cache);
+    if ($messages_cache)
+        $this->storage->set_messages_caching(true);
+
+    // set pagesize from config
+    $pagesize = $this->config->get('mail_pagesize');
+    if (!$pagesize) {
+        $pagesize = $this->config->get('pagesize', 50);
+    }
+    $this->storage->set_pagesize($pagesize);
+
+    // set class options
+    $options = array(
+      'auth_type'   => $this->config->get("{$driver}_auth_type", 'check'),
+      'auth_cid'    => $this->config->get("{$driver}_auth_cid"),
+      'auth_pw'     => $this->config->get("{$driver}_auth_pw"),
+      'debug'       => (bool) $this->config->get("{$driver}_debug"),
+      'force_caps'  => (bool) $this->config->get("{$driver}_force_caps"),
+      'timeout'     => (int) $this->config->get("{$driver}_timeout"),
+      'skip_deleted' => (bool) $this->config->get('skip_deleted'),
+      'driver'      => $driver,
+    );
+
+    if (!empty($_SESSION['storage_host'])) {
+      $options['host']     = $_SESSION['storage_host'];
+      $options['user']     = $_SESSION['username'];
+      $options['port']     = $_SESSION['storage_port'];
+      $options['ssl']      = $_SESSION['storage_ssl'];
+      $options['password'] = $this->decrypt($_SESSION['password']);
+      // set 'imap_host' for backwards compatibility
+      $_SESSION[$driver.'_host'] = &$_SESSION['storage_host'];
+    }
+
+    $options = $this->plugins->exec_hook("storage_init", $options);
+
+    $this->storage->set_options($options);
+    $this->set_storage_prop();
+  }
+
+
+  /**
+   * Connect to the mail storage server with stored session data
+   *
+   * @return bool True on success, False on error
+   */
+  public function storage_connect()
+  {
+    $storage = $this->get_storage();
+
+    if ($_SESSION['storage_host'] && !$storage->is_connected()) {
+      $host = $_SESSION['storage_host'];
+      $user = $_SESSION['username'];
+      $port = $_SESSION['storage_port'];
+      $ssl  = $_SESSION['storage_ssl'];
+      $pass = $this->decrypt($_SESSION['password']);
+
+      if (!$storage->connect($host, $user, $pass, $port, $ssl)) {
         if ($this->output)
-          $this->output->show_message($this->imap->get_error_code() == -1 ? 'imaperror' : 'sessionerror', 'error');
+          $this->output->show_message($storage->get_error_code() == -1 ? 'storageerror' : 'sessionerror', 'error');
       }
       else {
-        $this->set_imap_prop();
-        return $this->imap->conn;
+        $this->set_storage_prop();
       }
     }
 
-    return false;
+    return $storage->is_connected();
   }
 
 
@@ -704,7 +777,7 @@ class rcmail
     $this->session = new rcube_session($this->get_dbh(), $this->config);
 
     $this->session->register_gc_handler('rcmail_temp_gc');
-    $this->session->register_gc_handler('rcmail_cache_gc');
+    $this->session->register_gc_handler(array($this, 'cache_gc'));
 
     // start PHP session (if not in CLI mode)
     if ($_SERVER['REMOTE_ADDR'])
@@ -713,6 +786,10 @@ class rcmail
     // set initial session vars
     if (!$_SESSION['user_id'])
       $_SESSION['temp'] = true;
+
+    // restore skin selection after logout
+    if ($_SESSION['temp'] && !empty($_SESSION['skin']))
+      $this->config->set('skin', $_SESSION['skin']);
   }
 
 
@@ -735,23 +812,35 @@ class rcmail
       $this->session->set_keep_alive($keep_alive);
     }
 
-    $this->session->set_secret($this->config->get('des_key') . $_SERVER['HTTP_USER_AGENT']);
+    $this->session->set_secret($this->config->get('des_key') . dirname($_SERVER['SCRIPT_NAME']));
     $this->session->set_ip_check($this->config->get('ip_check'));
   }
 
 
   /**
-   * Perfom login to the IMAP server and to the webmail service.
+   * Perfom login to the mail server and to the webmail service.
    * This will also create a new user entry if auto_create_user is configured.
    *
-   * @param string IMAP user name
-   * @param string IMAP password
-   * @param string IMAP host
+   * @param string Mail storage (IMAP) user name
+   * @param string Mail storage (IMAP) password
+   * @param string Mail storage (IMAP) host
+   * @param bool   Enables cookie check
+   *
    * @return boolean True on success, False on failure
    */
-  function login($username, $pass, $host=NULL)
+  function login($username, $pass, $host = null, $cookiecheck = false)
   {
-    $user = NULL;
+    $this->login_error = null;
+
+    if (empty($username)) {
+      return false;
+    }
+
+    if ($cookiecheck && empty($_COOKIE)) {
+      $this->login_error = self::ERROR_COOKIES_DISABLED;
+      return false;
+    }
+
     $config = $this->config->all();
 
     if (!$host)
@@ -768,24 +857,33 @@ class rcmail
           break;
         }
       }
-      if (!$allowed)
-        return false;
+      if (!$allowed) {
+        $host = null;
       }
-    else if (!empty($config['default_host']) && $host != rcube_parse_host($config['default_host']))
+    }
+    else if (!empty($config['default_host']) && $host != rcube_parse_host($config['default_host'])) {
+      $host = null;
+    }
+
+    if (!$host) {
+      $this->login_error = self::ERROR_INVALID_HOST;
       return false;
+    }
 
     // parse $host URL
     $a_host = parse_url($host);
     if ($a_host['host']) {
       $host = $a_host['host'];
-      $imap_ssl = (isset($a_host['scheme']) && in_array($a_host['scheme'], array('ssl','imaps','tls'))) ? $a_host['scheme'] : null;
+      $ssl = (isset($a_host['scheme']) && in_array($a_host['scheme'], array('ssl','imaps','tls'))) ? $a_host['scheme'] : null;
       if (!empty($a_host['port']))
-        $imap_port = $a_host['port'];
-      else if ($imap_ssl && $imap_ssl != 'tls' && (!$config['default_port'] || $config['default_port'] == 143))
-        $imap_port = 993;
+        $port = $a_host['port'];
+      else if ($ssl && $ssl != 'tls' && (!$config['default_port'] || $config['default_port'] == 143))
+        $port = 993;
     }
 
-    $imap_port = $imap_port ? $imap_port : $config['default_port'];
+    if (!$port) {
+        $port = $config['default_port'];
+    }
 
     /* Modify username with domain if required
        Inspired by Marco <P0L0_notspam_binware.org>
@@ -798,7 +896,7 @@ class rcmail
         $username .= '@'.rcube_parse_host($config['username_domain'], $host);
     }
 
-    // Convert username to lowercase. If IMAP backend
+    // Convert username to lowercase. If storage backend
     // is case-insensitive we need to store always the same username (#1487113)
     if ($config['login_lc']) {
       $username = mb_strtolower($username);
@@ -823,11 +921,11 @@ class rcmail
     if ($user = rcube_user::query($username, $host))
       $username = $user->data['username'];
 
-    if (!$this->imap)
-      $this->imap_init();
+    if (!$this->storage)
+      $this->storage_init();
 
-    // try IMAP login
-    if (!($imap_login = $this->imap->connect($host, $username, $pass, $imap_port, $imap_ssl))) {
+    // try to log in
+    if (!($login = $this->storage->connect($host, $username, $pass, $port, $ssl))) {
       // try with lowercase
       $username_lc = mb_strtolower($username);
       if ($username_lc != $username) {
@@ -835,14 +933,15 @@ class rcmail
         if (!$user && ($user = rcube_user::query($username_lc, $host)))
           $username_lc = $user->data['username'];
 
-        if ($imap_login = $this->imap->connect($host, $username_lc, $pass, $imap_port, $imap_ssl))
+        if ($login = $this->storage->connect($host, $username_lc, $pass, $port, $ssl))
           $username = $username_lc;
       }
     }
 
-    // exit if IMAP login failed
-    if (!$imap_login)
+    // exit if login failed
+    if (!$login) {
       return false;
+    }
 
     // user already registered -> update user's record
     if (is_object($user)) {
@@ -874,7 +973,7 @@ class rcmail
     if (is_object($user) && $user->ID) {
       // Configure environment
       $this->set_user($user);
-      $this->set_imap_prop();
+      $this->set_storage_prop();
       $this->session_configure();
 
       // fix some old settings according to namespace prefix
@@ -882,17 +981,17 @@ class rcmail
 
       // create default folders on first login
       if ($config['create_default_folders'] && (!empty($created) || empty($user->data['last_login']))) {
-        $this->imap->create_default_folders();
+        $this->storage->create_default_folders();
       }
 
       // set session vars
-      $_SESSION['user_id']   = $user->ID;
-      $_SESSION['username']  = $user->data['username'];
-      $_SESSION['imap_host'] = $host;
-      $_SESSION['imap_port'] = $imap_port;
-      $_SESSION['imap_ssl']  = $imap_ssl;
-      $_SESSION['password']  = $this->encrypt($pass);
-      $_SESSION['login_time'] = mktime();
+      $_SESSION['user_id']      = $user->ID;
+      $_SESSION['username']     = $user->data['username'];
+      $_SESSION['storage_host'] = $host;
+      $_SESSION['storage_port'] = $port;
+      $_SESSION['storage_ssl']  = $ssl;
+      $_SESSION['password']     = $this->encrypt($pass);
+      $_SESSION['login_time']   = time();
 
       if (isset($_REQUEST['_timezone']) && $_REQUEST['_timezone'] != '_default_')
         $_SESSION['timezone'] = floatval($_REQUEST['_timezone']);
@@ -900,7 +999,7 @@ class rcmail
         $_SESSION['dst_active'] = intval($_REQUEST['_dstactive']);
 
       // force reloading complete list of subscribed mailboxes
-      $this->imap->clear_cache('mailboxes', true);
+      $this->storage->clear_cache('mailboxes', true);
 
       return true;
     }
@@ -909,22 +1008,41 @@ class rcmail
   }
 
 
+    /**
+     * Returns error code of last login operation
+     *
+     * @return int Error code
+     */
+    public function login_error()
+    {
+        if ($this->login_error) {
+            return $this->login_error;
+        }
+
+        if ($this->storage && $this->storage->get_error_code() < -1) {
+            return self::ERROR_STORAGE;
+        }
+    }
+
+
   /**
-   * Set root dir and last stored mailbox
+   * Set storage parameters.
    * This must be done AFTER connecting to the server!
    */
-  public function set_imap_prop()
+  private function set_storage_prop()
   {
-    $this->imap->set_charset($this->config->get('default_charset', RCMAIL_CHARSET));
+    $storage = $this->get_storage();
 
-    if ($default_folders = $this->config->get('default_imap_folders')) {
-      $this->imap->set_default_mailboxes($default_folders);
+    $storage->set_charset($this->config->get('default_charset', RCMAIL_CHARSET));
+
+    if ($default_folders = $this->config->get('default_folders')) {
+      $storage->set_default_folders($default_folders);
     }
     if (isset($_SESSION['mbox'])) {
-      $this->imap->set_mailbox($_SESSION['mbox']);
+      $storage->set_folder($_SESSION['mbox']);
     }
     if (isset($_SESSION['page'])) {
-      $this->imap->set_page($_SESSION['page']);
+      $storage->set_page($_SESSION['page']);
     }
   }
 
@@ -941,26 +1059,32 @@ class rcmail
 
     if (is_array($default_host)) {
       $post_host = get_input_value('_host', RCUBE_INPUT_POST);
+      $post_user = get_input_value('_user', RCUBE_INPUT_POST);
+
+      list($user, $domain) = explode('@', $post_user);
 
       // direct match in default_host array
-      if ($default_host[$post_host] || in_array($post_host, array_values($default_host))) {
+      if ($default_host[$post_host] || in_array($post_host, $default_host)) {
         $host = $post_host;
       }
-
       // try to select host by mail domain
-      list($user, $domain) = explode('@', get_input_value('_user', RCUBE_INPUT_POST));
-      if (!empty($domain)) {
-        foreach ($default_host as $imap_host => $mail_domains) {
-          if (is_array($mail_domains) && in_array($domain, $mail_domains)) {
-            $host = $imap_host;
+      else if (!empty($domain)) {
+        foreach ($default_host as $storage_host => $mail_domains) {
+          if (is_array($mail_domains) && in_array_nocase($domain, $mail_domains)) {
+            $host = $storage_host;
+            break;
+          }
+          else if (stripos($storage_host, $domain) !== false || stripos(strval($mail_domains), $domain) !== false) {
+            $host = is_numeric($storage_host) ? $mail_domains : $storage_host;
             break;
           }
         }
       }
 
-      // take the first entry if $host is still an array
+      // take the first entry if $host is still not set
       if (empty($host)) {
-        $host = array_shift($default_host);
+        list($key, $val) = each($default_host);
+        $host = is_numeric($key) ? $val : $key;
       }
     }
     else if (empty($default_host)) {
@@ -991,7 +1115,6 @@ class rcmail
     if (is_string($attrib))
       $attrib = array('name' => $attrib);
 
-    $nr = is_numeric($attrib['nr']) ? $attrib['nr'] : 1;
     $name = $attrib['name'] ? $attrib['name'] : '';
 
     // attrib contain text values: use them from now
@@ -999,35 +1122,11 @@ class rcmail
         $this->texts[$name] = $setval;
 
     // check for text with domain
-    if ($domain && ($text_item = $this->texts[$domain.'.'.$name]))
+    if ($domain && ($text = $this->texts[$domain.'.'.$name]))
       ;
     // text does not exist
-    else if (!($text_item = $this->texts[$name])) {
+    else if (!($text = $this->texts[$name])) {
       return "[$name]";
-    }
-
-    // make text item array
-    $a_text_item = is_array($text_item) ? $text_item : array('single' => $text_item);
-
-    // decide which text to use
-    if ($nr == 1) {
-      $text = $a_text_item['single'];
-    }
-    else if ($nr > 0) {
-      $text = $a_text_item['multiple'];
-    }
-    else if ($nr == 0) {
-      if ($a_text_item['none'])
-        $text = $a_text_item['none'];
-      else if ($a_text_item['single'])
-        $text = $a_text_item['single'];
-      else if ($a_text_item['multiple'])
-        $text = $a_text_item['multiple'];
-    }
-
-    // default text is single
-    if ($text == '') {
-      $text = $a_text_item['single'];
     }
 
     // replace vars in text
@@ -1044,7 +1143,7 @@ class rcmail
     else if ($attrib['lowercase'])
       return mb_strtolower($text);
 
-    return $text;
+    return strtr($text, array('\n' => "\n"));
   }
 
 
@@ -1111,7 +1210,7 @@ class rcmail
         $this->texts = array_merge($this->texts, $messages);
 
       // include user language files
-      if ($lang != 'en' && is_dir(INSTALL_PATH . 'program/localization/' . $lang)) {
+      if ($lang != 'en' && $lang != 'en_US' && is_dir(INSTALL_PATH . 'program/localization/' . $lang)) {
         include_once(INSTALL_PATH . 'program/localization/' . $lang . '/labels.inc');
         include_once(INSTALL_PATH . 'program/localization/' . $lang . '/messages.inc');
 
@@ -1168,7 +1267,7 @@ class rcmail
     $this->plugins->exec_hook('session_destroy');
 
     $this->session->kill();
-    $_SESSION = array('language' => $this->user->language, 'temp' => true);
+    $_SESSION = array('language' => $this->user->language, 'temp' => true, 'skin' => $this->config->get('skin'));
     $this->user->reset();
   }
 
@@ -1185,15 +1284,15 @@ class rcmail
       if (!$this->session->check_auth())
         return;
 
-      $this->imap_connect();
+      $this->storage_connect();
     }
 
     if ($config['logout_purge'] && !empty($config['trash_mbox'])) {
-      $this->imap->clear_mailbox($config['trash_mbox']);
+      $this->storage->clear_folder($config['trash_mbox']);
     }
 
     if ($config['logout_expunge']) {
-      $this->imap->expunge('INBOX');
+      $this->storage->expunge_folder('INBOX');
     }
 
     // Try to save unsaved user preferences
@@ -1225,8 +1324,11 @@ class rcmail
             $cache->close();
     }
 
-    if (is_object($this->imap))
-      $this->imap->close();
+    if (is_object($this->storage)) {
+        if ($this->expunge_cache)
+            $this->storage->expunge_cache();
+      $this->storage->close();
+  }
 
     // before closing the database connection, write session data
     if ($_SERVER['REMOTE_ADDR'] && is_object($this->session)) {
@@ -1259,6 +1361,18 @@ class rcmail
   public function add_shutdown_function($function)
   {
     $this->shutdown_functions[] = $function;
+  }
+
+
+  /**
+   * Garbage collector for cache entries.
+   * Set flag to expunge caches on shutdown
+   */
+  function cache_gc()
+  {
+    // because this gc function is called before storage is initialized,
+    // we just set a flag to expunge storage cache on shutdown.
+    $this->expunge_cache = true;
   }
 
 
@@ -1454,73 +1568,13 @@ class rcmail
     $url = './';
     $delm = '?';
     foreach (array_reverse($p) as $key => $val) {
-      if ($val !== '') {
+      if ($val !== '' && $val !== null) {
         $par = $key[0] == '_' ? $key : '_'.$key;
         $url .= $delm.urlencode($par).'='.urlencode($val);
         $delm = '&';
       }
     }
     return $url;
-  }
-
-
-  /**
-   * Use imagemagick or GD lib to read image properties
-   *
-   * @param string Absolute file path
-   * @return mixed Hash array with image props like type, width, height or False on error
-   */
-  public static function imageprops($filepath)
-  {
-    $rcmail = rcmail::get_instance();
-    if ($cmd = $rcmail->config->get('im_identify_path', false)) {
-      list(, $type, $size) = explode(' ', strtolower(rcmail::exec($cmd. ' 2>/dev/null {in}', array('in' => $filepath))));
-      if ($size)
-        list($width, $height) = explode('x', $size);
-    }
-    else if (function_exists('getimagesize')) {
-      $imsize = @getimagesize($filepath);
-      $width = $imsize[0];
-      $height = $imsize[1];
-      $type = preg_replace('!image/!', '', $imsize['mime']);
-    }
-
-    return $type ? array('type' => $type, 'width' => $width, 'height' => $height) : false;
-  }
-
-
-  /**
-   * Convert an image to a given size and type using imagemagick (ensures input is an image)
-   *
-   * @param $p['in']  Input filename (mandatory)
-   * @param $p['out'] Output filename (mandatory)
-   * @param $p['size']  Width x height of resulting image, e.g. "160x60"
-   * @param $p['type']  Output file type, e.g. "jpg"
-   * @param $p['-opts'] Custom command line options to ImageMagick convert
-   * @return Success of convert as true/false
-   */
-  public static function imageconvert($p)
-  {
-    $result = false;
-    $rcmail = rcmail::get_instance();
-    $convert  = $rcmail->config->get('im_convert_path', false);
-    $identify = $rcmail->config->get('im_identify_path', false);
-
-    // imagemagick is required for this
-    if (!$convert)
-        return false;
-
-    if (!(($imagetype = @exif_imagetype($p['in'])) && ($type = image_type_to_extension($imagetype, false))))
-      list(, $type) = explode(' ', strtolower(rcmail::exec($identify . ' 2>/dev/null {in}', $p))); # for things like eps
-
-    $type = strtr($type, array("jpeg" => "jpg", "tiff" => "tif", "ps" => "eps", "ept" => "eps"));
-    $p += array('type' => $type, 'types' => "bmp,eps,gif,jp2,jpg,png,svg,tif", 'quality' => 75);
-    $p['-opts'] = array('-resize' => $p['size'].'>') + (array)$p['-opts'];
-
-    if (in_array($type, explode(',', $p['types']))) # Valid type?
-      $result = rcmail::exec($convert . ' 2>&1 -flatten -auto-orient -colorspace RGB -quality {quality} {-opts} {in} {type}:{out}', $p) === "";
-
-    return $result;
   }
 
 
@@ -1625,7 +1679,7 @@ class rcmail
    */
   private function fix_namespace_settings($user)
   {
-    $prefix     = $this->imap->get_namespace('prefix');
+    $prefix     = $this->storage->get_namespace('prefix');
     $prefix_len = strlen($prefix);
 
     if (!$prefix_len)
@@ -1636,7 +1690,7 @@ class rcmail
       return;
 
     // Build namespace prefix regexp
-    $ns     = $this->imap->get_namespace();
+    $ns     = $this->storage->get_namespace();
     $regexp = array();
 
     foreach ($ns as $entry) {
@@ -1660,10 +1714,10 @@ class rcmail
       }
     }
 
-    if (!empty($prefs['default_imap_folders'])) {
-      foreach ($prefs['default_imap_folders'] as $idx => $name) {
+    if (!empty($prefs['default_folders'])) {
+      foreach ($prefs['default_folders'] as $idx => $name) {
         if ($name != 'INBOX' && !preg_match($regexp, $name)) {
-          $prefs['default_imap_folders'][$idx] = $prefix.$name;
+          $prefs['default_folders'][$idx] = $prefix.$name;
         }
       }
     }
@@ -1713,7 +1767,7 @@ class rcmail
 
     // save updated preferences and reset imap settings (default folders)
     $user->save_prefs($prefs);
-    $this->set_imap_prop();
+    $this->set_storage_prop();
   }
 
 }

@@ -4,7 +4,7 @@
  *
  * Driver for XMail password
  *
- * @version 1.0
+ * @version 2.0
  * @author Helio Cavichiolo Jr <helio@hcsistemas.com.br>
  *
  * Setup xmail_host, xmail_user, xmail_pass and xmail_port into
@@ -17,38 +17,43 @@
  *
  */
 
-function password_save($currpass, $newpass)
+class rcube_xmail_password
 {
-    $rcmail = rcmail::get_instance();
-    list($user,$domain) = explode('@', $_SESSION['username']);
+    function save($currpass, $newpass)
+    {
+        $rcmail = rcmail::get_instance();
+        list($user,$domain) = explode('@', $_SESSION['username']);
 
-    $xmail = new XMail;
+        $xmail = new XMail;
 
-    $xmail->hostname = $rcmail->config->get('xmail_host');
-    $xmail->username = $rcmail->config->get('xmail_user');
-    $xmail->password = $rcmail->config->get('xmail_pass');
-    $xmail->port = $rcmail->config->get('xmail_port');
+        $xmail->hostname = $rcmail->config->get('xmail_host');
+        $xmail->username = $rcmail->config->get('xmail_user');
+        $xmail->password = $rcmail->config->get('xmail_pass');
+        $xmail->port = $rcmail->config->get('xmail_port');
 
-    if (!$xmail->connect()) {
-        raise_error(array(
-            'code' => 600,
-            'type' => 'php',
-            'file' => __FILE__, 'line' => __LINE__,
-            'message' => "Password plugin: Unable to connect to mail server"
-        ), true, false);
-        return PASSWORD_CONNECT_ERROR;
-    } else if (!$xmail->send("userpasswd\t".$domain."\t".$user."\t".$newpass."\n")) {
-        $xmail->close();
-        raise_error(array(
-            'code' => 600,
-            'type' => 'php',
-            'file' => __FILE__, 'line' => __LINE__,
-            'message' => "Password plugin: Unable to change password"
-        ), true, false);
-        return PASSWORD_ERROR;
-    } else {
-        $xmail->close();
-        return PASSWORD_SUCCESS;
+        if (!$xmail->connect()) {
+            raise_error(array(
+                'code' => 600,
+                'type' => 'php',
+                'file' => __FILE__, 'line' => __LINE__,
+                'message' => "Password plugin: Unable to connect to mail server"
+            ), true, false);
+            return PASSWORD_CONNECT_ERROR;
+        }
+        else if (!$xmail->send("userpasswd\t".$domain."\t".$user."\t".$newpass."\n")) {
+            $xmail->close();
+            raise_error(array(
+                'code' => 600,
+                'type' => 'php',
+                'file' => __FILE__, 'line' => __LINE__,
+                'message' => "Password plugin: Unable to change password"
+            ), true, false);
+            return PASSWORD_ERROR;
+        }
+        else {
+            $xmail->close();
+            return PASSWORD_SUCCESS;
+        }
     }
 }
 

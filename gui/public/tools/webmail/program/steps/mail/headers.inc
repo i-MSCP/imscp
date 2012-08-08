@@ -5,7 +5,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2007, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Fetch message headers in raw format for display                     |
@@ -14,13 +17,13 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: headers.inc 4410 2011-01-12 18:25:02Z thomasb $
+ $Id$
 
 */
 
 if ($uid = get_input_value('_uid', RCUBE_INPUT_POST))
 {
-    $source = $IMAP->get_raw_headers($uid);
+    $source = $RCMAIL->storage->get_raw_headers($uid);
 
     if ($source !== false) {
         $source = htmlspecialchars(trim($source));

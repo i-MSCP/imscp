@@ -7,27 +7,33 @@
  |                                                                       |
  | Language file of the Roundcube Webmail client                         |
  | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- @version $Id: messages.inc 5569 2011-12-07 14:47:32Z thomasb $
+ @version $Id$
 
 */
 
 $messages = array();
+$messages['errortitle']  = 'An error occurred!';
 $messages['loginfailed']  = 'Login failed.';
 $messages['cookiesdisabled'] = 'Your browser does not accept cookies.';
 $messages['sessionerror'] = 'Your session is invalid or expired.';
-$messages['imaperror'] = 'Connection to IMAP server failed.';
+$messages['storageerror'] = 'Connection to storage server failed.';
 $messages['servererror'] = 'Server Error!';
 $messages['servererrormsg'] = 'Server Error: $msg';
 $messages['dberror'] = 'Database Error!';
+$messages['requesttimedout'] = 'Request timed out';
 $messages['errorreadonly'] = 'Unable to perform operation. Folder is read-only.';
 $messages['errornoperm'] = 'Unable to perform operation. Permission denied.';
 $messages['invalidrequest'] = 'Invalid request! No data was saved.';
+$messages['invalidhost'] = 'Invalid server name.';
 $messages['nomessagesfound'] = 'No messages found in this mailbox.';
 $messages['loggedout'] = 'You have successfully terminated the session. Good bye!';
 $messages['mailboxempty'] = 'Mailbox is empty.';
@@ -109,12 +115,14 @@ $messages['addingmember'] = 'Adding contact(s) to the group...';
 $messages['removingmember'] = 'Removing contact(s) from the group...';
 $messages['receiptsent'] = 'Successfully sent a read receipt.';
 $messages['errorsendingreceipt'] = 'Could not send the receipt.';
+$messages['deleteidentityconfirm'] = 'Do you really want to delete this identity?';
 $messages['nodeletelastidentity'] = 'You cannot delete this identity, it\'s your last one.';
 $messages['forbiddencharacter'] = 'Folder name contains a forbidden character.';
 $messages['selectimportfile'] = 'Please select a file to upload.';
 $messages['addresswriterror'] = 'The selected address book is not writeable.';
 $messages['contactaddedtogroup'] = 'Successfully added the contacts to this group.';
 $messages['contactremovedfromgroup'] = 'Successfully removed contacts from this group.';
+$messages['nogroupassignmentschanged'] = 'No group assignments changed.';
 $messages['importwait'] = 'Importing, please wait...';
 $messages['importerror'] = 'Import failed! The uploaded file is not a valid vCard file.';
 $messages['importconfirm'] = '<b>Successfully imported $inserted contacts</b>';

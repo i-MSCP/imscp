@@ -5,8 +5,11 @@
  | bin/installto.sh                                                      |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2011, The Roundcube Dev Team                            |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2012, The Roundcube Dev Team                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Update an existing Roundcube installation with files from           |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: installto.sh 5311 2011-10-06 08:20:11Z thomasb $
+ $Id$
 
 */
 
@@ -44,20 +47,31 @@ $input = trim(fgets(STDIN));
 if (strtolower($input) == 'y') {
   $err = false;
   echo "Copying files to target location...";
-  foreach (array('program','installer','bin','SQL','plugins','skins/default') as $dir) {
+  foreach (array('program','installer','bin','SQL','plugins','skins') as $dir) {
     if (!system("rsync -avC " . INSTALL_PATH . "$dir/* $target_dir/$dir/")) {
       $err = true;
       break;
     }
   }
-  foreach (array('index.php','.htaccess','config/main.inc.php.dist','config/db.inc.php.dist','CHANGELOG','README','UPGRADING') as $file) {
+  foreach (array('index.php','.htaccess','config/main.inc.php.dist','config/db.inc.php.dist','CHANGELOG','README.md','UPGRADING','LICENSE') as $file) {
     if (!system("rsync -av " . INSTALL_PATH . "$file $target_dir/$file")) {
       $err = true;
       break;
     }
   }
   echo "done.\n\n";
-  
+
+  if (is_dir("$target_dir/skins/default")) {
+      echo "Removing old default skin...";
+      system("rm -rf $target_dir/skins/default $target_dir/plugins/jqueryui/themes/default");
+      foreach (glob(INSTALL_PATH . "plugins/*/skins") as $plugin_skin_dir) {
+          $plugin_skin_dir = preg_replace('!^.*' . INSTALL_PATH . '!', '', $plugin_skin_dir);
+          if (is_dir("$target_dir/$plugin_skin_dir/classic"))
+            system("rm -rf $target_dir/$plugin_skin_dir/default");
+      }
+      echo "done.\n\n";
+  }
+
   if (!$err) {
     echo "Running update script at target...\n";
     system("cd $target_dir && bin/update.sh --version=$oldversion");

@@ -5,8 +5,11 @@
  | program/include/html.php                                              |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Helper class to create valid XHTML code                             |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: html.php 4867 2011-06-18 11:28:43Z alec $
+ $Id$
 
  */
 
@@ -32,6 +35,7 @@ class html
     protected $allowed = array();
     protected $content;
 
+    public static $doctype = 'xhtml';
     public static $lc_tags = true;
     public static $common_attrib = array('id','class','style','title','align');
     public static $containers = array('iframe','div','span','p','h1','h2','h3','form','textarea','table','thead','tbody','tr','th','td','style','script');
@@ -79,13 +83,33 @@ class html
 
         $tagname = self::$lc_tags ? strtolower($tagname) : $tagname;
         if (isset($content) || in_array($tagname, self::$containers)) {
-            $templ = $attrib['noclose'] ? "<%s%s>%s" : "<%s%s>%s</%s>%s";
-            unset($attrib['noclose']);
-            return sprintf($templ, $tagname, self::attrib_string($attrib, $allowed_attrib), $content, $tagname, $suffix);
+            $suffix = $attrib['noclose'] ? $suffix : '</' . $tagname . '>' . $suffix;
+            unset($attrib['noclose'], $attrib['nl']);
+            return '<' . $tagname  . self::attrib_string($attrib, $allowed_attrib) . '>' . $content . $suffix;
         }
         else {
-            return sprintf("<%s%s />%s", $tagname, self::attrib_string($attrib, $allowed_attrib), $suffix);
+            return '<' . $tagname  . self::attrib_string($attrib, $allowed_attrib) . '>' . $suffix;
         }
+    }
+
+    /**
+     *
+     */
+    public static function doctype($type)
+    {
+        $doctypes = array(
+            'html5'        => '<!DOCTYPE html>',
+            'xhtml'        => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+            'xhtml-trans'  => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+            'xhtml-strict' => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
+        );
+
+        if ($doctypes[$type]) {
+            self::$doctype = preg_replace('/-\w+$/', '', $type);
+            return $doctypes[$type];
+        }
+
+        return '';
     }
 
     /**
@@ -133,7 +157,7 @@ class html
             $attr = array('src' => $attr);
         }
         return self::tag('img', $attr + array('alt' => ''), null, array_merge(self::$common_attrib,
-	    array('src','alt','width','height','border','usemap')));
+	        array('src','alt','width','height','border','usemap','onclick')));
     }
 
     /**
@@ -198,7 +222,31 @@ class html
             $attr = array('src' => $attr);
         }
         return self::tag('iframe', $attr, $cont, array_merge(self::$common_attrib,
-	    array('src','name','width','height','border','frameborder')));
+            array('src','name','width','height','border','frameborder')));
+    }
+
+    /**
+     * Derrived method to create <script> tags
+     *
+     * @param mixed $attr Hash array with tag attributes or string with script source (src)
+     * @param string $cont Javascript code to be placed as tag content
+     * @return string HTML code
+     * @see html::tag()
+     */
+    public static function script($attr, $cont = null)
+    {
+        if (is_string($attr)) {
+            $attr = array('src' => $attr);
+        }
+        if ($cont) {
+            if (self::$doctype == 'xhtml')
+                $cont = "\n/* <![CDATA[ */\n" . $cont . "\n/* ]]> */\n";
+            else
+                $cont = "\n" . $cont . "\n";
+        }
+
+        return self::tag('script', $attr + array('type' => 'text/javascript', 'nl' => true),
+            $cont, array_merge(self::$common_attrib, array('src','type','charset')));
     }
 
     /**
@@ -246,14 +294,14 @@ class html
             // attributes with no value
             if (in_array($key, array('checked', 'multiple', 'disabled', 'selected'))) {
                 if ($value) {
-                    $attrib_arr[] = sprintf('%s="%s"', $key, $key);
+                    $attrib_arr[] = $key . '="' . $key . '"';
                 }
             }
             else if ($key=='value') {
-                $attrib_arr[] = sprintf('%s="%s"', $key, Q($value, 'strict', false));
+                $attrib_arr[] = $key . '="' . Q($value, 'strict', false) . '"';
             }
             else {
-                $attrib_arr[] = sprintf('%s="%s"', $key, Q($value));
+                $attrib_arr[] = $key . '="' . Q($value) . '"';
             }
         }
         return count($attrib_arr) ? ' '.implode(' ', $attrib_arr) : '';
@@ -270,8 +318,8 @@ class html_inputfield extends html
     protected $tagname = 'input';
     protected $type = 'text';
     protected $allowed = array('type','name','value','size','tabindex',
-	'autocomplete','checked','onchange','onclick','disabled','readonly',
-	'spellcheck','results','maxlength','src','multiple');
+        'autocomplete','checked','onchange','onclick','disabled','readonly',
+        'spellcheck','results','maxlength','src','multiple','placeholder');
 
     /**
      * Object constructor
@@ -286,10 +334,6 @@ class html_inputfield extends html
 
         if ($attrib['type']) {
             $this->type = $attrib['type'];
-        }
-
-        if ($attrib['newline']) {
-            $this->newline = true;
         }
     }
 
@@ -333,11 +377,12 @@ class html_passwordfield extends html_inputfield
  * @package HTML
  */
 
-class html_hiddenfield extends html_inputfield
+class html_hiddenfield extends html
 {
+    protected $tagname = 'input';
     protected $type = 'hidden';
     protected $fields_arr = array();
-    protected $newline = true;
+    protected $allowed = array('type','name','value','onchange','disabled','readonly');
 
     /**
      * Constructor
@@ -576,7 +621,8 @@ class html_table extends html
      */
     public function __construct($attrib = array())
     {
-        $this->attrib = array_merge($attrib, array('summary' => '', 'border' => 0));
+        $default_attrib = self::$doctype == 'xhtml' ? array('summary' => '', 'border' => 0) : array();
+        $this->attrib = array_merge($attrib, $default_attrib);
     }
 
     /**

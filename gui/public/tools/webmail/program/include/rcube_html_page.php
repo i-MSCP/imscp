@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube PHP suite                          |
  | Copyright (C) 2005-2011 The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | CONTENTS:                                                             |
  |   Class to build XHTML page output                                    |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_html_page.php 5135 2011-08-26 09:22:53Z alec $
+ $Id$
 
 */
 
@@ -31,10 +34,6 @@ class rcube_html_page
     protected $css_files = array();
     protected $scripts = array();
     protected $charset = RCMAIL_CHARSET;
-
-    protected $script_tag_file = "<script type=\"text/javascript\" src=\"%s\"></script>\n";
-    protected $script_tag  =  "<script type=\"text/javascript\">\n/* <![CDATA[ */\n%s\n/* ]]> */\n</script>\n";
-    protected $link_css_file = "<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\" />\n";
     protected $default_template = "<html>\n<head><title></title></head>\n<body></body>\n</html>";
 
     protected $title = '';
@@ -56,9 +55,13 @@ class rcube_html_page
     public function include_script($file, $position='head')
     {
         static $sa_files = array();
-        
-        if (!preg_match('|^https?://|i', $file) && $file[0] != '/')
-            $file = $this->scripts_path . $file . (($fs = @filemtime($this->scripts_path . $file)) ? '?s='.$fs : '');
+
+        if (!preg_match('|^https?://|i', $file) && $file[0] != '/') {
+            $file = $this->scripts_path . $file;
+            if ($fs = @filemtime($file)) {
+                $file .= '?s=' . $fs;
+            }
+        }
 
         if (in_array($file, $sa_files)) {
             return;
@@ -69,6 +72,7 @@ class rcube_html_page
         if (!is_array($this->script_files[$position])) {
             $this->script_files[$position] = array();
         }
+
         $this->script_files[$position][] = $file;
     }
 
@@ -81,9 +85,10 @@ class rcube_html_page
     public function add_script($script, $position='head')
     {
         if (!isset($this->scripts[$position])) {
-            $this->scripts[$position] = "\n".rtrim($script);
-        } else {
-            $this->scripts[$position] .= "\n".rtrim($script);
+            $this->scripts[$position] = "\n" . rtrim($script);
+        }
+        else {
+            $this->scripts[$position] .= "\n" . rtrim($script);
         }
     }
 
@@ -104,7 +109,7 @@ class rcube_html_page
      */
     public function add_header($str)
     {
-        $this->header .= "\n".$str;
+        $this->header .= "\n" . $str;
     }
 
     /**
@@ -115,7 +120,7 @@ class rcube_html_page
      */
     public function add_footer($str)
     {
-        $this->footer .= "\n".$str;
+        $this->footer .= "\n" . $str;
     }
 
     /**
@@ -195,13 +200,13 @@ class rcube_html_page
         // definition of the code to be placed in the document header and footer
         if (is_array($this->script_files['head'])) {
             foreach ($this->script_files['head'] as $file) {
-                $page_header .= sprintf($this->script_tag_file, $file);
+                $page_header .= html::script($file);
             }
         }
 
         $head_script = $this->scripts['head_top'] . $this->scripts['head'];
         if (!empty($head_script)) {
-            $page_header .= sprintf($this->script_tag, $head_script);
+            $page_header .= html::script(array(), $head_script);
         }
 
         if (!empty($this->header)) {
@@ -215,7 +220,7 @@ class rcube_html_page
 
         if (is_array($this->script_files['foot'])) {
             foreach ($this->script_files['foot'] as $file) {
-                $page_footer .= sprintf($this->script_tag_file, $file);
+                $page_footer .= html::script($file);
             }
         }
 
@@ -224,7 +229,7 @@ class rcube_html_page
         }
 
         if (!empty($this->scripts['foot'])) {
-            $page_footer .= sprintf($this->script_tag, $this->scripts['foot']);
+            $page_footer .= html::script(array(), $this->scripts['foot']);
         }
 
         // find page header
@@ -266,7 +271,8 @@ class rcube_html_page
         ) {
             $css = '';
             foreach ($this->css_files as $file) {
-                $css .= sprintf($this->link_css_file, $file);
+                $css .= html::tag('link', array('rel' => 'stylesheet',
+                    'type' => 'text/css', 'href' => $file, 'nl' => true));
             }
             $output = substr_replace($output, $css, $pos, 0);
         }
@@ -278,15 +284,16 @@ class rcube_html_page
         $output = preg_replace_callback(
             '!(src|href|background)=(["\']?)([a-z0-9/_.-]+)(["\'\s>])!i',
             array($this, 'file_callback'), $output);
-        $output = str_replace('$__skin_path', $base_path, $output);
 
         // trigger hook with final HTML content to be sent
         $hook = rcmail::get_instance()->plugins->exec_hook("send_page", array('content' => $output));
         if (!$hook['abort']) {
-            if ($this->charset != RCMAIL_CHARSET)
+            if ($this->charset != RCMAIL_CHARSET) {
                 echo rcube_charset_convert($hook['content'], RCMAIL_CHARSET, $this->charset);
-            else
+            }
+            else {
                 echo $hook['content'];
+            }
         }
     }
 
@@ -300,14 +307,17 @@ class rcube_html_page
 	    $file = $matches[3];
 
         // correct absolute paths
-	    if ($file[0] == '/')
+	    if ($file[0] == '/') {
 	        $file = $this->base_path . $file;
+        }
 
         // add file modification timestamp
-	    if (preg_match('/\.(js|css)$/', $file))
-    	    $file .= '?s=' . @filemtime($file);
+	    if (preg_match('/\.(js|css)$/', $file)) {
+            if ($fs = @filemtime($file)) {
+                $file .= '?s=' . $fs;
+            }
+        }
 
-	    return sprintf("%s=%s%s%s", $matches[1], $matches[2], $file, $matches[4]);
+	    return $matches[1] . '=' . $matches[2] . $file . $matches[4];
     }
 }
-

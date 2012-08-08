@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2007-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Class representing the client browser's properties                  |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_browser.php 5499 2011-11-28 09:03:27Z alec $
+ $Id$
 
 */
 
@@ -42,9 +45,9 @@ class rcube_browser
         $this->ns4 = strpos($HTTP_USER_AGENT, 'mozilla/4') !== false && strpos($HTTP_USER_AGENT, 'msie') === false;
         $this->ns  = ($this->ns4 || strpos($HTTP_USER_AGENT, 'netscape') !== false);
         $this->ie  = !$this->opera && strpos($HTTP_USER_AGENT, 'compatible; msie') !== false;
-        $this->mz  = !$this->ie && strpos($HTTP_USER_AGENT, 'mozilla/5') !== false;
-        $this->chrome = strpos($HTTP_USER_AGENT, 'chrome') !== false;
         $this->khtml = strpos($HTTP_USER_AGENT, 'khtml') !== false;
+        $this->mz  = !$this->ie && !$this->khtml && strpos($HTTP_USER_AGENT, 'mozilla/5') !== false;
+        $this->chrome = strpos($HTTP_USER_AGENT, 'chrome') !== false;
         $this->safari = !$this->chrome && ($this->khtml || strpos($HTTP_USER_AGENT, 'safari') !== false);
 
         if ($this->ns || $this->chrome) {

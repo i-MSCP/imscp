@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Invoke the configured or default spell checking engine.             |
@@ -15,7 +18,7 @@
  | Author: Kris Steinhoff <steinhof@umich.edu>                           |
  +-----------------------------------------------------------------------+
 
- $Id: spell.inc 5181 2011-09-06 13:39:45Z alec $
+ $Id$
 
 */
 

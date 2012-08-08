@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2008-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |  Abstract plugins interface/class                                     |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_plugin.php 5168 2011-09-05 11:08:48Z alec $
+ $Id$
 
 */
 
@@ -78,7 +81,7 @@ abstract class rcube_plugin
     $this->home = $api->dir . $this->ID;
     $this->urlbase = $api->url . $this->ID . '/';
   }
-  
+
   /**
    * Initialization method, needs to be implemented by the plugin itself
    */
@@ -114,7 +117,7 @@ abstract class rcube_plugin
         'message' => "Failed to load config from $fpath"), true, false);
       return false;
     }
-    
+
     return true;
   }
 
@@ -128,7 +131,18 @@ abstract class rcube_plugin
   {
     $this->api->register_hook($hook, $callback);
   }
-  
+
+  /**
+   * Unregister a callback function for a specific (server-side) hook.
+   *
+   * @param string $hook Hook name
+   * @param mixed  $callback Callback function as string or array with object reference and method name
+   */
+  public function remove_hook($hook, $callback)
+  {
+    $this->api->unregister_hook($hook, $callback);
+  }
+
   /**
    * Load localized texts from the plugins dir
    *
@@ -138,19 +152,47 @@ abstract class rcube_plugin
   public function add_texts($dir, $add2client = false)
   {
     $domain = $this->ID;
-    
-    $lang = $_SESSION['language'];
+    $lang   = $_SESSION['language'];
+    $langs  = array_unique(array('en_US', $lang));
     $locdir = slashify(realpath(slashify($this->home) . $dir));
-    $texts = array();
+    $texts  = array();
+
+    // Language aliases used to find localization in similar lang, see below
+    $aliases = array(
+        'de_CH' => 'de_DE',
+        'es_AR' => 'es_ES',
+        'fa_AF' => 'fa_IR',
+        'nl_BE' => 'nl_NL',
+        'pt_BR' => 'pt_PT',
+        'zh_CN' => 'zh_TW',
+    );
 
     // use buffering to handle empty lines/spaces after closing PHP tag
     ob_start();
 
-    foreach (array('en_US', $lang) as $lng) {
+    foreach ($langs as $lng) {
       $fpath = $locdir . $lng . '.inc';
       if (is_file($fpath) && is_readable($fpath)) {
-        include($fpath);
+        include $fpath;
         $texts = (array)$labels + (array)$messages + (array)$texts;
+      }
+      else if ($lng != 'en_US') {
+        // Find localization in similar language (#1488401)
+        $alias = null;
+        if (!empty($aliases[$lng])) {
+          $alias = $aliases[$lng];
+        }
+        else if ($key = array_search($lng, $aliases)) {
+          $alias = $key;
+        }
+
+        if (!empty($alias)) {
+          $fpath = $locdir . $alias . '.inc';
+          if (is_file($fpath) && is_readable($fpath)) {
+            include $fpath;
+            $texts = (array)$labels + (array)$messages + (array)$texts;
+          }
+        }
       }
     }
 
@@ -164,7 +206,7 @@ abstract class rcube_plugin
 
       $rcmail = rcmail::get_instance();
       $rcmail->load_language($lang, $add);
-      
+
       // add labels to client
       if ($add2client) {
         $js_labels = is_array($add2client) ? array_map(array($this, 'label_map_callback'), $add2client) : array_keys($add);
@@ -172,7 +214,7 @@ abstract class rcube_plugin
       }
     }
   }
-  
+
   /**
    * Wrapper for rcmail::gettext() adding the plugin ID as domain
    *
@@ -242,7 +284,7 @@ abstract class rcube_plugin
   {
     $this->api->include_stylesheet($this->resource_url($fn));
   }
-  
+
   /**
    * Append a button to a certain container
    *
@@ -257,11 +299,11 @@ abstract class rcube_plugin
       foreach (array('imagepas', 'imageact', 'imagesel') as $key)
         if ($p[$key])
           $p[$key] = $this->api->url . $this->resource_url($p[$key]);
-      
+
       $this->api->add_content($this->api->output->button($p), $container);
     }
   }
-  
+
   /**
    * Generate an absolute URL to the given resource within the current
    * plugin directory
@@ -312,6 +354,4 @@ abstract class rcube_plugin
     return $this->ID.'.'.$key;
   }
 
-
 }
-

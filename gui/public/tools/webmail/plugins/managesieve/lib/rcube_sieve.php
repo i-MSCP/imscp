@@ -19,7 +19,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- * $Id: rcube_sieve.php 5452 2011-11-18 14:44:48Z alec $
+ * $Id$
  *
  */
 

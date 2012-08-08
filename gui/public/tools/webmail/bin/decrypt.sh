@@ -7,7 +7,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Decrypt the encrypted parts of the HTTP Received: headers           |
@@ -16,7 +19,7 @@
  | Author: Tomas Tevesz <ice@extreme.hu>                                 |
  +-----------------------------------------------------------------------+
 
- $Id: decrypt.sh 4677 2011-04-20 13:10:45Z alec $
+ $Id$
 */
 
 /*-

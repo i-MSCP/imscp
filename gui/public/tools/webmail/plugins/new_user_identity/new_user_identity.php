@@ -6,7 +6,7 @@
  *
  * This plugin requires that a working public_ldap directory be configured.
  *
- * @version 1.05
+ * @version @package_version@
  * @author Kris Steinhoff
  *
  * Example configuration:

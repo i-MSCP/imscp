@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Save user preferences to DB and to the current session              |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: save_prefs.inc 5873 2012-02-11 13:50:04Z thomasb $
+ $Id$
 
 */
 
@@ -29,15 +32,13 @@ switch ($CURR_SECTION)
   case 'general':
     $a_user_prefs = array(
       'language'     => isset($_POST['_language']) ? get_input_value('_language', RCUBE_INPUT_POST) : $CONFIG['language'],
-      'timezone'     => isset($_POST['_timezone']) ? (is_numeric($_POST['_timezone']) ? floatval($_POST['_timezone']) : get_input_value('_timezone', RCUBE_INPUT_POST)) : $CONFIG['timezone'],
-      'dst_active'   => isset($_POST['_dst_active']) ? TRUE : FALSE,
-      'pagesize'     => is_numeric($_POST['_pagesize']) ? max(2, intval($_POST['_pagesize'])) : $CONFIG['pagesize'],
+      'timezone'     => isset($_POST['_timezone']) ? get_input_value('_timezone', RCUBE_INPUT_POST) : $CONFIG['timezone'],
       'date_format'  => isset($_POST['_date_format']) ? get_input_value('_date_format', RCUBE_INPUT_POST) : $CONFIG['date_format'],
       'time_format'  => isset($_POST['_time_format']) ? get_input_value('_time_format', RCUBE_INPUT_POST) : ($CONFIG['time_format'] ? $CONFIG['time_format'] : 'H:i'),
       'prettydate'   => isset($_POST['_pretty_date']) ? TRUE : FALSE,
       'skin' 	     => isset($_POST['_skin']) ? get_input_value('_skin', RCUBE_INPUT_POST) : $CONFIG['skin'],
     );
-    
+
     // compose derived date/time format strings
     if ((isset($_POST['_date_format']) || isset($_POST['_time_format'])) && $a_user_prefs['date_format'] && $a_user_prefs['time_format']) {
       $a_user_prefs['date_short'] = 'D ' . $a_user_prefs['time_format'];
@@ -54,6 +55,7 @@ switch ($CURR_SECTION)
       'mdn_requests'         => isset($_POST['_mdn_requests']) ? intval($_POST['_mdn_requests']) : 0,
       'keep_alive'           => isset($_POST['_keep_alive']) ? intval($_POST['_keep_alive'])*60 : $CONFIG['keep_alive'],
       'check_all_folders'    => isset($_POST['_check_all_folders']) ? TRUE : FALSE,
+      'mail_pagesize'        => is_numeric($_POST['_mail_pagesize']) ? max(2, intval($_POST['_mail_pagesize'])) : $CONFIG['mail_pagesize'],
     );
 
   break;
@@ -86,16 +88,19 @@ switch ($CURR_SECTION)
       'top_posting'        => !empty($_POST['_top_posting']),
       'strip_existing_sig' => isset($_POST['_strip_existing_sig']),
       'sig_above'          => !empty($_POST['_sig_above']) && !empty($_POST['_top_posting']),
+      'default_font'       => get_input_value('_default_font', RCUBE_INPUT_POST),
+      'forward_attachment' => !empty($_POST['_forward_attachment']),
     );
 
   break;
 
   case 'addressbook':
     $a_user_prefs = array(
-      'default_addressbook' => get_input_value('_default_addressbook', RCUBE_INPUT_POST, true),
-      'autocomplete_single' => isset($_POST['_autocomplete_single']) ? TRUE : FALSE,
+      'default_addressbook'  => get_input_value('_default_addressbook', RCUBE_INPUT_POST, true),
+      'autocomplete_single'  => isset($_POST['_autocomplete_single']) ? TRUE : FALSE,
       'addressbook_sort_col' => get_input_value('_addressbook_sort_col', RCUBE_INPUT_POST),
       'addressbook_name_listing' => intval(get_input_value('_addressbook_name_listing', RCUBE_INPUT_POST)),
+      'addressbook_pagesize' => is_numeric($_POST['_addressbook_pagesize']) ? max(2, intval($_POST['_addressbook_pagesize'])) : $CONFIG['addressbook_pagesize'],
     );
 
   break;
@@ -106,6 +111,7 @@ switch ($CURR_SECTION)
       'skip_deleted'      => isset($_POST['_skip_deleted']) ? TRUE : FALSE,
       'flag_for_deletion' => isset($_POST['_flag_for_deletion']) ? TRUE : FALSE,
       'delete_always' 	  => isset($_POST['_delete_always']) ? TRUE : FALSE,
+      'delete_junk' 	  => isset($_POST['_delete_junk']) ? TRUE : FALSE,
       'logout_purge'      => isset($_POST['_logout_purge']) ? TRUE : FALSE,
       'logout_expunge'    => isset($_POST['_logout_expunge']) ? TRUE : FALSE,
     );
@@ -150,13 +156,6 @@ switch ($CURR_SECTION)
     else if ($RCMAIL->config->get('skin') != $a_user_prefs['skin'])
       $OUTPUT->command('reload', 500);
 
-    // force min size
-    if ($a_user_prefs['pagesize'] < 1)
-      $a_user_prefs['pagesize'] = 10;
-
-    if (isset($CONFIG['max_pagesize']) && ($a_user_prefs['pagesize'] > $CONFIG['max_pagesize']))
-      $a_user_prefs['pagesize'] = (int) $CONFIG['max_pagesize'];
-
     $a_user_prefs['timezone'] = (string) $a_user_prefs['timezone'];
 
   break;
@@ -169,18 +168,35 @@ switch ($CURR_SECTION)
         $a_user_prefs['keep_alive'] = min($CONFIG['session_lifetime']*60, $a_user_prefs['keep_alive']);
     }
 
+    // force min size
+    if ($a_user_prefs['mail_pagesize'] < 1)
+      $a_user_prefs['mail_pagesize'] = 10;
+
+    if (isset($CONFIG['max_pagesize']) && ($a_user_prefs['mail_pagesize'] > $CONFIG['max_pagesize']))
+      $a_user_prefs['mail_pagesize'] = (int) $CONFIG['max_pagesize'];
+
+  break;
+  case 'addressbook':
+
+    // force min size
+    if ($a_user_prefs['addressbook_pagesize'] < 1)
+      $a_user_prefs['addressbook_pagesize'] = 10;
+
+    if (isset($CONFIG['max_pagesize']) && ($a_user_prefs['addressbook_pagesize'] > $CONFIG['max_pagesize']))
+      $a_user_prefs['addressbook_pagesize'] = (int) $CONFIG['max_pagesize'];
+
   break;
   case 'folders':
 
-    // special handling for 'default_imap_folders'
-    if (in_array('default_imap_folders', (array)$CONFIG['dont_override'])) {
+    // special handling for 'default_folders'
+    if (in_array('default_folders', (array)$CONFIG['dont_override'])) {
       foreach (array('drafts_mbox','sent_mbox','junk_mbox','trash_mbox') as $p)
         $a_user_prefs[$p] = $CONFIG[$p];
     } else {
-      $a_user_prefs['default_imap_folders'] = array('INBOX');
+      $a_user_prefs['default_folders'] = array('INBOX');
       foreach (array('drafts_mbox','sent_mbox','junk_mbox','trash_mbox') as $p) {
         if ($a_user_prefs[$p])
-          $a_user_prefs['default_imap_folders'][] = $a_user_prefs[$p];
+          $a_user_prefs['default_folders'][] = $a_user_prefs[$p];
       }
     }
 
@@ -189,7 +205,7 @@ switch ($CURR_SECTION)
 
 // Save preferences
 if (!$plugin['abort'])
-  $saved = $USER->save_prefs($a_user_prefs);
+  $saved = $RCMAIL->user->save_prefs($a_user_prefs);
 else
   $saved = $plugin['result'];
 

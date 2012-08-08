@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2008-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Class to handle HTML page output using a skin template.             |
@@ -16,7 +19,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_json_output.php 5227 2011-09-16 17:54:07Z thomasb $
+ $Id$
 
 */
 
@@ -209,7 +212,7 @@ class rcube_json_output
     public function redirect($p = array(), $delay = 1)
     {
         $location = rcmail::get_instance()->url($p);
-        $this->remote_response("window.setTimeout(\"location.href='{$location}'\", $delay);");
+        $this->remote_response(sprintf("window.setTimeout(function(){ %s.redirect('%s',true); }, %d);", JS_OBJECT_NAME, $location, $delay));
         exit;
     }
 

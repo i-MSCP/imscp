@@ -5,7 +5,8 @@
  *
  * Sample plugin to replace emoticons in plain text message body with real icons
  *
- * @version 1.3
+ * @version @package_version@
+ * @license GNU GPLv3+
  * @author Thomas Bruederli
  * @author Aleksander Machniak
  * @website http://roundcube.net

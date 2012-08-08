@@ -503,7 +503,7 @@ class enigma_engine
         $mime_id = get_input_value('_part', RCUBE_INPUT_POST);
 
         if ($uid && $mime_id) {
-            $part = $this->rc->imap->get_message_part($uid, $mime_id);
+            $part = $this->rc->storage->get_message_part($uid, $mime_id);
         }
 
         if ($part && is_array($result = $this->import_key($part))) {
@@ -512,7 +512,7 @@ class enigma_engine
         }
         else
             $this->rc->output->show_message('enigma.keysimportfailed', 'error');
-    
+
         $this->rc->output->send();
     }
 
@@ -528,7 +528,7 @@ class enigma_engine
         // @TODO: Create such function in core
         // @TODO: Handle big bodies using file handles
         if (!isset($part->body)) {
-            $part->body = $this->rc->imap->get_message_part(
+            $part->body = $this->rc->storage->get_message_part(
                 $uid, $part->mime_id, $part);
         }
     }

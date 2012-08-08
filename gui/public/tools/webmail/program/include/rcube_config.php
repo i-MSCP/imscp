@@ -5,8 +5,11 @@
  | program/include/rcube_config.php                                      |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2008-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2008-2012, The Roundcube Dev Team                       |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Class to read configuration settings                                |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_config.php 5499 2011-11-28 09:03:27Z alec $
+ $Id$
 
 */
 
@@ -29,6 +32,18 @@ class rcube_config
     private $prop = array();
     private $errors = array();
     private $userprefs = array();
+
+    /**
+     * Renamed options
+     *
+     * @var array
+     */
+    private $legacy_props = array(
+        // new name => old name
+        'default_folders'      => 'default_imap_folders',
+        'mail_pagesize'        => 'pagesize',
+        'addressbook_pagesize' => 'pagesize',
+    );
 
 
     /**
@@ -62,7 +77,11 @@ class rcube_config
         if (empty($this->prop['skin']) && !empty($this->prop['skin_path']))
             $this->prop['skin'] = str_replace('skins/', '', unslashify($this->prop['skin_path']));
         else if (empty($this->prop['skin']))
-            $this->prop['skin'] = 'default';
+            $this->prop['skin'] = 'larry';
+
+        // larry is the new default skin :-)
+        if ($this->prop['skin'] == 'default')
+            $this->prop['skin'] = 'larry';
 
         // fix paths
         $this->prop['log_dir'] = $this->prop['log_dir'] ? realpath(unslashify($this->prop['log_dir'])) : INSTALL_PATH . 'logs';
@@ -72,9 +91,9 @@ class rcube_config
         foreach (array('drafts_mbox', 'junk_mbox', 'sent_mbox', 'trash_mbox') as $folder)
             $this->prop[$folder] = rcube_charset_convert($this->prop[$folder], RCMAIL_CHARSET, 'UTF7-IMAP');
 
-        if (!empty($this->prop['default_imap_folders']))
-            foreach ($this->prop['default_imap_folders'] as $n => $folder)
-                $this->prop['default_imap_folders'][$n] = rcube_charset_convert($folder, RCMAIL_CHARSET, 'UTF7-IMAP');
+        if (!empty($this->prop['default_folders']))
+            foreach ($this->prop['default_folders'] as $n => $folder)
+                $this->prop['default_folders'][$n] = rcube_charset_convert($folder, RCMAIL_CHARSET, 'UTF7-IMAP');
 
         // set PHP error logging according to config
         if ($this->prop['debug_level'] & 1) {
@@ -93,12 +112,14 @@ class rcube_config
 
         // set timezone auto settings values
         if ($this->prop['timezone'] == 'auto') {
-          $this->prop['dst_active'] = intval(date('I'));
-          $this->prop['_timezone_value'] = date('Z') / 3600 - $this->prop['dst_active'];
+          $this->prop['_timezone_value'] = $this->client_timezone();
         }
-        else if ($this->prop['dst_active'] === null) {
-          $this->prop['dst_active'] = intval(date('I'));
+        else if (is_numeric($this->prop['timezone'])) {
+          $this->prop['timezone'] = timezone_name_from_abbr("", $this->prop['timezone'] * 3600, 0);
         }
+
+        // remove deprecated properties
+        unset($this->prop['dst_active']);
 
         // export config data
         $GLOBALS['CONFIG'] = &$this->prop;
@@ -159,9 +180,18 @@ class rcube_config
      */
     public function get($name, $def = null)
     {
-        $result = isset($this->prop[$name]) ? $this->prop[$name] : $def;
+        if (isset($this->prop[$name])) {
+            $result = $this->prop[$name];
+        }
+        else if (isset($this->legacy_props[$name])) {
+            return $this->get($this->legacy_props[$name], $def);
+        }
+        else {
+            $result = $def;
+        }
+
         $rcmail = rcmail::get_instance();
-        
+
         if ($name == 'timezone' && isset($this->prop['_timezone_value']))
             $result = $this->prop['_timezone_value'];
 
@@ -210,20 +240,26 @@ class rcube_config
         // Honor the dont_override setting for any existing user preferences
         $dont_override = $this->get('dont_override');
         if (is_array($dont_override) && !empty($dont_override)) {
-            foreach ($prefs as $key => $pref) {
-                if (in_array($key, $dont_override)) {
-                    unset($prefs[$key]);
-                }
+            foreach ($dont_override as $key) {
+                unset($prefs[$key]);
             }
         }
+
+        // convert user's timezone into the new format
+        if (is_numeric($prefs['timezone'])) {
+            $prefs['timezone'] = timezone_name_from_abbr('', $prefs['timezone'] * 3600, 0);
+        }
+
+        // larry is the new default skin :-)
+        if ($prefs['skin'] == 'default')
+            $prefs['skin'] = 'larry';
 
         $this->userprefs = $prefs;
         $this->prop      = array_merge($this->prop, $prefs);
 
         // override timezone settings with client values
         if ($this->prop['timezone'] == 'auto') {
-            $this->prop['_timezone_value'] = isset($_SESSION['timezone']) ? $_SESSION['timezone'] : $this->prop['_timezone_value'];
-            $this->prop['dst_active'] = $this->userprefs['dst_active'] = isset($_SESSION['dst_active']) ? $_SESSION['dst_active'] : $this->prop['dst_active'];
+            $this->prop['_timezone_value'] = isset($_SESSION['timezone']) ? $this->client_timezone() : $this->prop['_timezone_value'];
         }
         else if (isset($this->prop['_timezone_value']))
            unset($this->prop['_timezone_value']);
@@ -244,10 +280,20 @@ class rcube_config
      * Special getter for user's timezone offset including DST
      *
      * @return float  Timezone offset (in hours)
+     * @deprecated
      */
     public function get_timezone()
     {
-      return floatval($this->get('timezone')) + intval($this->get('dst_active'));
+      if ($tz = $this->get('timezone')) {
+        try {
+          $tz = new DateTimeZone($tz);
+          return $tz->getOffset(new DateTime('now')) / 3600;
+        }
+        catch (Exception $e) {
+        }
+      }
+
+      return 0;
     }
 
     /**
@@ -347,6 +393,15 @@ class rcube_config
     public function get_error()
     {
         return empty($this->errors) ? false : join("\n", $this->errors);
+    }
+
+
+    /**
+     * Internal getter for client's (browser) timezone identifier
+     */
+    private function client_timezone()
+    {
+        return isset($_SESSION['timezone']) ? timezone_name_from_abbr("", $_SESSION['timezone'] * 3600, 0) : date_default_timezone_get();
     }
 
 }

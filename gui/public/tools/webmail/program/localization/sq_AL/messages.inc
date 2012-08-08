@@ -1,27 +1,24 @@
 <?php
 
 /*
-
  +-----------------------------------------------------------------------+
- | language/sq_AL/messages.inc                                           |
+ | localization/sq_AL/messages.inc                                       |
  |                                                                       |
  | Language file of the Roundcube Webmail client                         |
- | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2012, The Roundcube Dev Team                            |
+ | Licensed under the GNU General Public License                         |
  |                                                                       |
  +-----------------------------------------------------------------------+
- | Author: Dashamir Hoxha <dhoxha@albaniaonline.net>                     |
+ | Author: Thomas <Unknown>                                              |
  +-----------------------------------------------------------------------+
-
- @version $Id: messages.inc 4410 2011-01-12 18:25:02Z thomasb $
-
+ @version $Id$
 */
 
 $messages = array();
 $messages['loginfailed'] = 'Hyrja dështoi';
 $messages['cookiesdisabled'] = 'Shfletuesi juaj nuk i pranon sheqerkat';
 $messages['sessionerror'] = 'Sesioni juaj është i pavlefshëm ose i ka kaluar afati';
-$messages['imaperror'] = 'Lidhja me serverin IMAP dështoi';
+$messages['storageerror'] = 'Lidhja me serverin IMAP dështoi';
 $messages['nomessagesfound'] = 'Nuk ka mesazhe në këtë kuti postare';
 $messages['loggedout'] = 'Sesionin e mbyllët me sukses. Mirupafshim!';
 $messages['mailboxempty'] = 'Kutia postare është bosh';
@@ -56,7 +53,6 @@ $messages['nosubjectwarning'] = 'Fusha e temës është bosh. Dëshironi të sh�
 $messages['nobodywarning'] = 'Ta dërgoj mesazhin pa tekst?';
 $messages['notsentwarning'] = 'Mesazhi nuk u dërgua. Doni ta hidhni poshtë mesazhin?';
 $messages['noldapserver'] = 'Ju lutem jepni një server ldap për të kërkuar';
-$messages['nocontactsreturned'] = 'Nuk gjeta kontakte';
 $messages['nosearchname'] = 'Ju lutem jepni një adresë email ose një emër kontakti';
 $messages['searchsuccessful'] = 'U gjetën $nr mesazhe';
 $messages['searchnomatch'] = 'Kërkimi nuk gjeti gjë';
@@ -78,4 +74,3 @@ $messages['receiptsent'] = 'U dërgua me sukses një njoftim leximi';
 $messages['errorsendingreceipt'] = 'Nuk mund të dërgohet njoftimi';
 $messages['nodeletelastidentity'] = 'Ju nuk mund ta fshini këtë identitet sepse nuk ju ka mbetur tjetër.';
 
-?>

@@ -14,7 +14,7 @@
  *
  * $rcmail_config['virtuser_query'] = array('email' => '', 'user' => '', 'host' => '');
  *
- * @version 1.1
+ * @version @package_version@
  * @author Aleksander Machniak
  * @author Steffen Vogel
  */

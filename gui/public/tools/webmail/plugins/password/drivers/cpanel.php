@@ -7,11 +7,35 @@
  * The cPanel PHP API code has been taken from: http://www.phpclasses.org/browse/package/3534.html
  *
  * This driver has been tested with Hostmonster hosting and seems to work fine.
-
  *
- * @version 1.0
+ * @version 2.0
  * @author Fulvio Venturelli <fulvio@venturelli.org>
  */
+
+class rcube_cpanel_password
+{
+    public function save($curpas, $newpass)
+    {
+        $rcmail = rcmail::get_instance();
+
+        // Create a cPanel email object
+        $cPanel = new emailAccount($rcmail->config->get('password_cpanel_host'),
+    	$rcmail->config->get('password_cpanel_username'),
+	    $rcmail->config->get('password_cpanel_password'),
+    	$rcmail->config->get('password_cpanel_port'),
+	    $rcmail->config->get('password_cpanel_ssl'),
+    	$rcmail->config->get('password_cpanel_theme'),
+	    $_SESSION['username'] );
+
+        if ($cPanel->setPassword($newpass)){
+            return PASSWORD_SUCCESS;
+        }
+        else {
+            return PASSWORD_ERROR;
+        }
+    }
+}
+
 
 class HTTP
 {
@@ -60,7 +84,7 @@ class HTTP
 
 
 class emailAccount
-{          
+{
 	function emailAccount($host, $username, $password, $port, $ssl, $theme, $address)
 	{
 		$this->HTTP = new HTTP($host, $username, $password, $port, $ssl, $theme);
@@ -74,13 +98,13 @@ class emailAccount
 		}
 	}
 
- /*
-  * Change email account password
-  *
-  * Returns true on success or false on failure.
-  * @param string $password email account password
-  * @return bool
-  */
+    /**
+     * Change email account password
+     *
+     * Returns true on success or false on failure.
+     * @param string $password email account password
+     * @return bool
+     */
 	function setPassword($password)
 	{
 		$data['email'] = $this->email;
@@ -94,28 +118,3 @@ class emailAccount
 		return false;
 	}
 }
-
-
-function password_save($curpas, $newpass)
-{
-    $rcmail = rcmail::get_instance();
-
-    // Create a cPanel email object
-    $cPanel = new emailAccount($rcmail->config->get('password_cpanel_host'),
-	$rcmail->config->get('password_cpanel_username'),
-	$rcmail->config->get('password_cpanel_password'),
-	$rcmail->config->get('password_cpanel_port'),
-	$rcmail->config->get('password_cpanel_ssl'),
-	$rcmail->config->get('password_cpanel_theme'),
-	$_SESSION['username'] );
-
-    if ($cPanel->setPassword($newpass)){
-        return PASSWORD_SUCCESS;
-    }
-    else
-    {
-       return PASSWORD_ERROR;
-    }
-}
-
-?>

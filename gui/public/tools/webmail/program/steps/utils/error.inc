@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Display error message page                                          |
@@ -15,22 +18,22 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: error.inc 4685 2011-04-22 17:48:58Z alec $
+ $Id$
 
 */
 
 
 // browser is not compatible with this application
 if ($ERROR_CODE==409) {
-  $user_agent = $GLOBALS['HTTP_SERVER_VARS']['HTTP_USER_AGENT'];
+  $user_agent = $_SERVER['HTTP_USER_AGENT'];
   $__error_title = 'Your browser does not suit the requirements for this application';
   $__error_text = <<<EOF
 <i>Supported browsers:</i><br />
-&raquo; &nbsp;Netscape 7+<br />
 &raquo; &nbsp;Microsoft Internet Explorer 6+<br />
-&raquo; &nbsp;Mozilla Firefox 1.0+<br />
-&raquo; &nbsp;Opera 8.0+<br />
-&raquo; &nbsp;Safari 1.2+<br />
+&raquo; &nbsp;Mozilla Firefox 3+<br />
+&raquo; &nbsp;Chrome 10+<br />
+&raquo; &nbsp;Safari 4+<br />
+&raquo; &nbsp;Opera 8+<br />
 <br />
 &raquo; &nbsp;JavaScript enabled<br />
 &raquo; &nbsp;Support for XMLHTTPRequest<br />

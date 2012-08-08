@@ -7,7 +7,10 @@
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
  | Copyright (C) 2011, Kolab Systems AG                                  |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Provide alternative IMAP library that doesn't rely on the standard  |
@@ -22,10 +25,9 @@
  | Author: Ryo Chijiiwa <Ryo@IlohaMail.org>                              |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_imap_generic.php 5970 2012-03-06 19:43:49Z alec $
+ $Id$
 
 */
-
 
 /**
  * Struct representing an e-mail message header
@@ -57,10 +59,67 @@ class rcube_mail_header
     public $mdn_to;
     public $others = array();
     public $flags = array();
+
+    // map header to rcube_mail_header object property
+    private $obj_headers = array(
+        'date'      => 'date',
+        'from'      => 'from',
+        'to'        => 'to',
+        'subject'   => 'subject',
+        'reply-to'  => 'replyto',
+        'cc'        => 'cc',
+        'bcc'       => 'bcc',
+        'content-transfer-encoding' => 'encoding',
+        'in-reply-to'               => 'in_reply_to',
+        'content-type'              => 'ctype',
+        'references'                => 'references',
+        'return-receipt-to'         => 'mdn_to',
+        'disposition-notification-to' => 'mdn_to',
+        'x-confirm-reading-to'      => 'mdn_to',
+        'message-id'                => 'messageID',
+        'x-priority'                => 'priority',
+    );
+
+    /**
+     * Returns header value
+     */
+    public function get($name, $decode = true)
+    {
+        $name = strtolower($name);
+
+        if (isset($this->obj_headers[$name])) {
+            $value = $this->{$this->obj_headers[$name]};
+        }
+        else {
+            $value = $this->others[$name];
+        }
+
+        return $decode ? rcube_mime::decode_header($value, $this->charset) : $value;
+    }
+
+    /**
+     * Sets header value
+     */
+    public function set($name, $value)
+    {
+        $name = strtolower($name);
+
+        if (isset($this->obj_headers[$name])) {
+            $this->{$this->obj_headers[$name]} = $value;
+        }
+        else {
+            $this->others[$name] = $value;
+        }
+    }
 }
 
 // For backward compatibility with cached messages (#1486602)
 class iilBasicHeader extends rcube_mail_header
+{
+}
+
+// Support objects created in git-master (0.9)
+class rcube_message_header extends rcube_mail_header
 {
 }
 
@@ -154,16 +213,17 @@ class rcube_imap_generic
      * @param string $string Command string
      * @param bool   $endln  True if CRLF need to be added at the end of command
      *
-     * @param int Number of bytes sent, False on error
+     * @return int|bool Number of bytes sent, False on error
      */
     function putLineC($string, $endln=true)
     {
-        if (!$this->fp)
+        if (!$this->fp) {
             return false;
+        }
 
-        if ($endln)
+        if ($endln) {
             $string .= "\r\n";
-
+        }
 
         $res = 0;
         if ($parts = preg_split('/(\{[0-9]+\}\r\n)/m', $string, -1, PREG_SPLIT_DELIM_CAPTURE)) {
@@ -199,6 +259,13 @@ class rcube_imap_generic
         return $res;
     }
 
+    /**
+     * Reads line from the connection stream
+     *
+     * @param int  $size  Buffer size
+     *
+     * @return string Line of text response
+     */
     function readLine($size=1024)
     {
         $line = '';
@@ -227,6 +294,15 @@ class rcube_imap_generic
         return $line;
     }
 
+    /**
+     * Reads more data from the connection stream when provided
+     * data contain string literal
+     *
+     * @param string  $line    Response text
+     * @param bool    $escape  Enables escaping
+     *
+     * @return string Line of text response
+     */
     function multLine($line, $escape = false)
     {
         $line = rtrim($line);
@@ -248,6 +324,13 @@ class rcube_imap_generic
         return $line;
     }
 
+    /**
+     * Reads specified number of bytes from the connection stream
+     *
+     * @param int  $bytes  Number of bytes to get
+     *
+     * @return string Response text
+     */
     function readBytes($bytes)
     {
         $data = '';
@@ -269,6 +352,13 @@ class rcube_imap_generic
         return $data;
     }
 
+    /**
+     * Reads complete response to the IMAP command
+     *
+     * @param array  $untagged  Will be filled with untagged response lines
+     *
+     * @return string Response text
+     */
     function readReply(&$untagged=null)
     {
         do {
@@ -284,6 +374,14 @@ class rcube_imap_generic
         return $line;
     }
 
+    /**
+     * Response parser.
+     *
+     * @param  string  $string      Response text
+     * @param  string  $err_prefix  Error message prefix
+     *
+     * @return int Response status
+     */
     function parseResult($string, $err_prefix='')
     {
         if (preg_match('/^[a-z0-9*]+ (OK|NO|BAD|BYE)(.*)$/i', trim($string), $matches)) {
@@ -327,6 +425,11 @@ class rcube_imap_generic
         return self::ERROR_UNKNOWN;
     }
 
+    /**
+     * Checks connection stream state.
+     *
+     * @return bool True if connection is closed
+     */
     private function eof()
     {
         if (!is_resource($this->fp)) {
@@ -337,7 +440,7 @@ class rcube_imap_generic
         // by the server, feof() will hang.
         $start = microtime(true);
 
-        if (feof($this->fp) || 
+        if (feof($this->fp) ||
             ($this->prefs['timeout'] && (microtime(true) - $start > $this->prefs['timeout']))
         ) {
             $this->closeSocket();
@@ -347,29 +450,41 @@ class rcube_imap_generic
         return false;
     }
 
+    /**
+     * Closes connection stream.
+     */
     private function closeSocket()
     {
         @fclose($this->fp);
         $this->fp = null;
     }
 
+    /**
+     * Error code/message setter.
+     */
     function setError($code, $msg='')
     {
         $this->errornum = $code;
         $this->error    = $msg;
     }
 
-    // check if $string starts with $match (or * BYE/BAD)
+    /**
+     * Checks response status.
+     * Checks if command response line starts with specified prefix (or * BYE/BAD)
+     *
+     * @param string $string   Response text
+     * @param string $match    Prefix to match with (case-sensitive)
+     * @param bool   $error    Enables BYE/BAD checking
+     * @param bool   $nonempty Enables empty response checking
+     *
+     * @return bool True any check is true or connection is closed.
+     */
     function startsWith($string, $match, $error=false, $nonempty=false)
     {
-        $len = strlen($match);
-        if ($len == 0) {
-            return false;
-        }
         if (!$this->fp) {
             return true;
         }
-        if (strncmp($string, $match, $len) == 0) {
+        if (strncmp($string, $match, strlen($match)) == 0) {
             return true;
         }
         if ($error && preg_match('/^\* (BYE|BAD) /i', $string, $m)) {
@@ -609,7 +724,7 @@ class rcube_imap_generic
     }
 
     /**
-     * Gets the delimiter
+     * Detects hierarchy delimiter
      *
      * @return string The delimiter
      */
@@ -669,6 +784,16 @@ class rcube_imap_generic
         return $this->prefs['namespace'];
     }
 
+    /**
+     * Connects to IMAP server and authenticates.
+     *
+     * @param string $host      Server hostname or IP
+     * @param string $user      User name
+     * @param string $password  Password
+     * @param array  $options   Connection and class options
+     *
+     * @return bool True on success, False on failure
+     */
     function connect($host, $user, $password, $options=null)
     {
         // set options
@@ -856,11 +981,19 @@ class rcube_imap_generic
         return false;
     }
 
+    /**
+     * Checks connection status
+     *
+     * @return bool True if connection is active and user is logged in, False otherwise.
+     */
     function connected()
     {
         return ($this->fp && $this->logged) ? true : false;
     }
 
+    /**
+     * Closes connection with logout.
+     */
     function closeConnection()
     {
         if ($this->putLine($this->nextTag() . ' LOGOUT')) {
@@ -1073,7 +1206,7 @@ class rcube_imap_generic
     }
 
     /**
-     * Executes SUBSCRIBE command
+     * Folder subscription (SUBSCRIBE)
      *
      * @param string $mailbox Mailbox name
      *
@@ -1088,7 +1221,7 @@ class rcube_imap_generic
     }
 
     /**
-     * Executes UNSUBSCRIBE command
+     * Folder unsubscription (UNSUBSCRIBE)
      *
      * @param string $mailbox Mailbox name
      *
@@ -1097,6 +1230,36 @@ class rcube_imap_generic
     function unsubscribe($mailbox)
     {
         $result = $this->execute('UNSUBSCRIBE', array($this->escape($mailbox)),
+            self::COMMAND_NORESPONSE);
+
+        return ($result == self::ERROR_OK);
+    }
+
+    /**
+     * Folder creation (CREATE)
+     *
+     * @param string $mailbox Mailbox name
+     *
+     * @return bool True on success, False on error
+     */
+    function createFolder($mailbox)
+    {
+        $result = $this->execute('CREATE', array($this->escape($mailbox)),
+            self::COMMAND_NORESPONSE);
+
+        return ($result == self::ERROR_OK);
+    }
+
+    /**
+     * Folder renaming (RENAME)
+     *
+     * @param string $mailbox Mailbox name
+     *
+     * @return bool True on success, False on error
+     */
+    function renameFolder($from, $to)
+    {
+        $result = $this->execute('RENAME', array($this->escape($from), $this->escape($to)),
             self::COMMAND_NORESPONSE);
 
         return ($result == self::ERROR_OK);
@@ -1128,7 +1291,7 @@ class rcube_imap_generic
     {
         $num_in_trash = $this->countMessages($mailbox);
         if ($num_in_trash > 0) {
-            $res = $this->delete($mailbox, '1:*');
+            $res = $this->flag($mailbox, '1:*', 'DELETED');
         }
 
         if ($res) {
@@ -1139,6 +1302,139 @@ class rcube_imap_generic
         }
 
         return $res;
+    }
+
+    /**
+     * Returns list of mailboxes
+     *
+     * @param string $ref         Reference name
+     * @param string $mailbox     Mailbox name
+     * @param array  $status_opts (see self::_listMailboxes)
+     * @param array  $select_opts (see self::_listMailboxes)
+     *
+     * @return array List of mailboxes or hash of options if $status_opts argument
+     *               is non-empty.
+     */
+    function listMailboxes($ref, $mailbox, $status_opts=array(), $select_opts=array())
+    {
+        return $this->_listMailboxes($ref, $mailbox, false, $status_opts, $select_opts);
+    }
+
+    /**
+     * Returns list of subscribed mailboxes
+     *
+     * @param string $ref         Reference name
+     * @param string $mailbox     Mailbox name
+     * @param array  $status_opts (see self::_listMailboxes)
+     *
+     * @return array List of mailboxes or hash of options if $status_opts argument
+     *               is non-empty.
+     */
+    function listSubscribed($ref, $mailbox, $status_opts=array())
+    {
+        return $this->_listMailboxes($ref, $mailbox, true, $status_opts, NULL);
+    }
+
+    /**
+     * IMAP LIST/LSUB command
+     *
+     * @param string $ref         Reference name
+     * @param string $mailbox     Mailbox name
+     * @param bool   $subscribed  Enables returning subscribed mailboxes only
+     * @param array  $status_opts List of STATUS options (RFC5819: LIST-STATUS)
+     *                            Possible: MESSAGES, RECENT, UIDNEXT, UIDVALIDITY, UNSEEN
+     * @param array  $select_opts List of selection options (RFC5258: LIST-EXTENDED)
+     *                            Possible: SUBSCRIBED, RECURSIVEMATCH, REMOTE
+     *
+     * @return array List of mailboxes or hash of options if $status_ops argument
+     *               is non-empty.
+     */
+    private function _listMailboxes($ref, $mailbox, $subscribed=false,
+        $status_opts=array(), $select_opts=array())
+    {
+        if (!strlen($mailbox)) {
+            $mailbox = '*';
+        }
+
+        $args = array();
+
+        if (!empty($select_opts) && $this->getCapability('LIST-EXTENDED')) {
+            $select_opts = (array) $select_opts;
+
+            $args[] = '(' . implode(' ', $select_opts) . ')';
+        }
+
+        $args[] = $this->escape($ref);
+        $args[] = $this->escape($mailbox);
+
+        if (!empty($status_opts) && $this->getCapability('LIST-STATUS')) {
+            $status_opts = (array) $status_opts;
+            $lstatus = true;
+
+            $args[] = 'RETURN (STATUS (' . implode(' ', $status_opts) . '))';
+        }
+
+        list($code, $response) = $this->execute($subscribed ? 'LSUB' : 'LIST', $args);
+
+        if ($code == self::ERROR_OK) {
+            $folders  = array();
+            $last     = 0;
+            $pos      = 0;
+            $response .= "\r\n";
+
+            while ($pos = strpos($response, "\r\n", $pos+1)) {
+                // literal string, not real end-of-command-line
+                if ($response[$pos-1] == '}') {
+                    continue;
+                }
+
+                $line = substr($response, $last, $pos - $last);
+                $last = $pos + 2;
+
+                if (!preg_match('/^\* (LIST|LSUB|STATUS) /i', $line, $m)) {
+                    continue;
+                }
+                $cmd  = strtoupper($m[1]);
+                $line = substr($line, strlen($m[0]));
+
+                // * LIST (<options>) <delimiter> <mailbox>
+                if ($cmd == 'LIST' || $cmd == 'LSUB') {
+                    list($opts, $delim, $mailbox) = $this->tokenizeResponse($line, 3);
+
+                    // Add to result array
+                    if (!$lstatus) {
+                        $folders[] = $mailbox;
+                    }
+                    else {
+                        $folders[$mailbox] = array();
+                    }
+
+                    // store LSUB options only if not empty, this way
+                    // we can detect a situation when LIST doesn't return specified folder
+                    if (!empty($opts) || $cmd == 'LIST') {
+                        // Add to options array
+                        if (empty($this->data['LIST'][$mailbox]))
+                            $this->data['LIST'][$mailbox] = $opts;
+                        else if (!empty($opts))
+                            $this->data['LIST'][$mailbox] = array_unique(array_merge(
+                                $this->data['LIST'][$mailbox], $opts));
+                    }
+                }
+                // * STATUS <mailbox> (<result>)
+                else if ($cmd == 'STATUS') {
+                    list($mailbox, $status) = $this->tokenizeResponse($line, 2);
+
+                    for ($i=0, $len=count($status); $i<$len; $i += 2) {
+                        list($name, $value) = $this->tokenizeResponse($status, 2);
+                        $folders[$mailbox][$name] = $value;
+                    }
+                }
+            }
+
+            return $folders;
+        }
+
+        return false;
     }
 
     /**
@@ -1218,8 +1514,8 @@ class rcube_imap_generic
 
         // Invoke SEARCH as a fallback
         $index = $this->search($mailbox, 'ALL UNSEEN', false, array('COUNT'));
-        if (is_array($index)) {
-            return (int) $index['COUNT'];
+        if (!$index->is_error()) {
+            return $index->count();
         }
 
         return false;
@@ -1293,8 +1589,21 @@ class rcube_imap_generic
         return false;
     }
 
-    function sort($mailbox, $field, $add='', $is_uid=FALSE, $encoding = 'US-ASCII')
+    /**
+     * Executes SORT command
+     *
+     * @param string $mailbox    Mailbox name
+     * @param string $field      Field to sort by (ARRIVAL, CC, DATE, FROM, SIZE, SUBJECT, TO)
+     * @param string $add        Searching criteria
+     * @param bool   $return_uid Enables UID SORT usage
+     * @param string $encoding   Character set
+     *
+     * @return rcube_result_index Response data
+     */
+    function sort($mailbox, $field, $add='', $return_uid=false, $encoding = 'US-ASCII')
     {
+        require_once dirname(__FILE__) . '/rcube_result_index.php';
+
         $field = strtoupper($field);
         if ($field == 'INTERNALDATE') {
             $field = 'ARRIVAL';
@@ -1304,33 +1613,165 @@ class rcube_imap_generic
             'FROM' => 1, 'SIZE' => 1, 'SUBJECT' => 1, 'TO' => 1);
 
         if (!$fields[$field]) {
-            return false;
+            return new rcube_result_index($mailbox);
         }
 
         if (!$this->select($mailbox)) {
-            return false;
+            return new rcube_result_index($mailbox);
+        }
+
+        // RFC 5957: SORT=DISPLAY
+        if (($field == 'FROM' || $field == 'TO') && $this->getCapability('SORT=DISPLAY')) {
+            $field = 'DISPLAY' . $field;
         }
 
         // message IDs
         if (!empty($add))
             $add = $this->compressMessageSet($add);
 
-        list($code, $response) = $this->execute($is_uid ? 'UID SORT' : 'SORT',
+        list($code, $response) = $this->execute($return_uid ? 'UID SORT' : 'SORT',
             array("($field)", $encoding, 'ALL' . (!empty($add) ? ' '.$add : '')));
 
-        if ($code == self::ERROR_OK) {
-            // remove prefix and unilateral untagged server responses
-            $response = substr($response, stripos($response, '* SORT') + 7);
-            if ($pos = strpos($response, '*')) {
-                $response = substr($response, 0, $pos);
-            }
-            return preg_split('/[\s\r\n]+/', $response, -1, PREG_SPLIT_NO_EMPTY);
+        if ($code != self::ERROR_OK) {
+            $response = null;
         }
 
-        return false;
+        return new rcube_result_index($mailbox, $response);
     }
 
-    function fetchHeaderIndex($mailbox, $message_set, $index_field='', $skip_deleted=true, $uidfetch=false)
+    /**
+     * Executes THREAD command
+     *
+     * @param string $mailbox    Mailbox name
+     * @param string $algorithm  Threading algorithm (ORDEREDSUBJECT, REFERENCES, REFS)
+     * @param string $criteria   Searching criteria
+     * @param bool   $return_uid Enables UIDs in result instead of sequence numbers
+     * @param string $encoding   Character set
+     *
+     * @return rcube_result_thread Thread data
+     */
+    function thread($mailbox, $algorithm='REFERENCES', $criteria='', $return_uid=false, $encoding='US-ASCII')
+    {
+        require_once dirname(__FILE__) . '/rcube_result_thread.php';
+
+        $old_sel = $this->selected;
+
+        if (!$this->select($mailbox)) {
+            return new rcube_result_thread($mailbox);
+        }
+
+        // return empty result when folder is empty and we're just after SELECT
+        if ($old_sel != $mailbox && !$this->data['EXISTS']) {
+            return new rcube_result_thread($mailbox);
+        }
+
+        $encoding  = $encoding ? trim($encoding) : 'US-ASCII';
+        $algorithm = $algorithm ? trim($algorithm) : 'REFERENCES';
+        $criteria  = $criteria ? 'ALL '.trim($criteria) : 'ALL';
+        $data      = '';
+
+        list($code, $response) = $this->execute($return_uid ? 'UID THREAD' : 'THREAD',
+            array($algorithm, $encoding, $criteria));
+
+        if ($code != self::ERROR_OK) {
+            $response = null;
+        }
+
+        return new rcube_result_thread($mailbox, $response);
+    }
+
+    /**
+     * Executes SEARCH command
+     *
+     * @param string $mailbox    Mailbox name
+     * @param string $criteria   Searching criteria
+     * @param bool   $return_uid Enable UID in result instead of sequence ID
+     * @param array  $items      Return items (MIN, MAX, COUNT, ALL)
+     *
+     * @return rcube_result_index Result data
+     */
+    function search($mailbox, $criteria, $return_uid=false, $items=array())
+    {
+        require_once dirname(__FILE__) . '/rcube_result_index.php';
+
+        $old_sel = $this->selected;
+
+        if (!$this->select($mailbox)) {
+            return new rcube_result_index($mailbox);
+        }
+
+        // return empty result when folder is empty and we're just after SELECT
+        if ($old_sel != $mailbox && !$this->data['EXISTS']) {
+            return new rcube_result_index($mailbox, '* SEARCH');
+        }
+
+        // If ESEARCH is supported always use ALL
+        // but not when items are specified or using simple id2uid search
+        if (empty($items) && preg_match('/[^0-9]/', $criteria)) {
+            $items = array('ALL');
+        }
+
+        $esearch  = empty($items) ? false : $this->getCapability('ESEARCH');
+        $criteria = trim($criteria);
+        $params   = '';
+
+        // RFC4731: ESEARCH
+        if (!empty($items) && $esearch) {
+            $params .= 'RETURN (' . implode(' ', $items) . ')';
+        }
+
+        if (!empty($criteria)) {
+            $modseq = stripos($criteria, 'MODSEQ') !== false;
+            $params .= ($params ? ' ' : '') . $criteria;
+        }
+        else {
+            $params .= 'ALL';
+        }
+
+        list($code, $response) = $this->execute($return_uid ? 'UID SEARCH' : 'SEARCH',
+            array($params));
+
+        if ($code != self::ERROR_OK) {
+            $response = null;
+        }
+
+        return new rcube_result_index($mailbox, $response);
+    }
+
+    /**
+     * Simulates SORT command by using FETCH and sorting.
+     *
+     * @param string       $mailbox      Mailbox name
+     * @param string|array $message_set  Searching criteria (list of messages to return)
+     * @param string       $index_field  Field to sort by (ARRIVAL, CC, DATE, FROM, SIZE, SUBJECT, TO)
+     * @param bool         $skip_deleted Makes that DELETED messages will be skipped
+     * @param bool         $uidfetch     Enables UID FETCH usage
+     * @param bool         $return_uid   Enables returning UIDs instead of IDs
+     *
+     * @return rcube_result_index Response data
+     */
+    function index($mailbox, $message_set, $index_field='', $skip_deleted=true,
+        $uidfetch=false, $return_uid=false)
+    {
+        require_once dirname(__FILE__) . '/rcube_result_index.php';
+
+        $msg_index = $this->fetchHeaderIndex($mailbox, $message_set,
+            $index_field, $skip_deleted, $uidfetch, $return_uid);
+
+        if (!empty($msg_index)) {
+            asort($msg_index); // ASC
+            $msg_index = array_keys($msg_index);
+            $msg_index = '* SEARCH ' . implode(' ', $msg_index);
+        }
+        else {
+            $msg_index = is_array($msg_index) ? '* SEARCH' : null;
+        }
+
+        return new rcube_result_index($mailbox, $msg_index);
+    }
+
+    function fetchHeaderIndex($mailbox, $message_set, $index_field='', $skip_deleted=true,
+        $uidfetch=false, $return_uid=false)
     {
         if (is_array($message_set)) {
             if (!($message_set = $this->compressMessageSet($message_set)))
@@ -1370,25 +1811,32 @@ class rcube_imap_generic
         }
 
         // build FETCH command string
-        $key     = $this->nextTag();
-        $cmd     = $uidfetch ? 'UID FETCH' : 'FETCH';
-        $deleted = $skip_deleted ? ' FLAGS' : '';
+        $key    = $this->nextTag();
+        $cmd    = $uidfetch ? 'UID FETCH' : 'FETCH';
+        $fields = array();
 
-        if ($mode == 1 && $index_field == 'DATE')
-            $request = " $cmd $message_set (INTERNALDATE BODY.PEEK[HEADER.FIELDS (DATE)]$deleted)";
-        else if ($mode == 1)
-            $request = " $cmd $message_set (BODY.PEEK[HEADER.FIELDS ($index_field)]$deleted)";
+        if ($return_uid)
+            $fields[] = 'UID';
+        if ($skip_deleted)
+            $fields[] = 'FLAGS';
+
+        if ($mode == 1) {
+            if ($index_field == 'DATE')
+                $fields[] = 'INTERNALDATE';
+            $fields[] = "BODY.PEEK[HEADER.FIELDS ($index_field)]";
+        }
         else if ($mode == 2) {
             if ($index_field == 'SIZE')
-                $request = " $cmd $message_set (RFC822.SIZE$deleted)";
-            else
-                $request = " $cmd $message_set ($index_field$deleted)";
-        } else if ($mode == 3)
-            $request = " $cmd $message_set (FLAGS)";
-        else // 4
-            $request = " $cmd $message_set (INTERNALDATE$deleted)";
+                $fields[] = 'RFC822.SIZE';
+            else if (!$return_uid || $index_field != 'UID')
+                $fields[] = $index_field;
+        }
+        else if ($mode == 3 && !$skip_deleted)
+            $fields[] = 'FLAGS';
+        else if ($mode == 4)
+            $fields[] = 'INTERNALDATE';
 
-        $request = $key . $request;
+        $request = "$key $cmd $message_set (" . implode(' ', $fields) . ")";
 
         if (!$this->putLine($request)) {
             $this->setError(self::ERROR_COMMAND, "Unable to send command: $request");
@@ -1405,6 +1853,12 @@ class rcube_imap_generic
                 $id     = $m[1];
                 $flags  = NULL;
 
+                if ($return_uid) {
+                    if (preg_match('/UID ([0-9]+)/', $line, $matches))
+                        $id = (int) $matches[1];
+                    else
+                        continue;
+                }
                 if ($skip_deleted && preg_match('/FLAGS \(([^)]+)\)/', $line, $matches)) {
                     $flags = explode(' ', strtoupper($matches[1]));
                     if (in_array('\\DELETED', $flags)) {
@@ -1457,72 +1911,6 @@ class rcube_imap_generic
         return $result;
     }
 
-    static function compressMessageSet($messages, $force=false)
-    {
-        // given a comma delimited list of independent mid's,
-        // compresses by grouping sequences together
-
-        if (!is_array($messages)) {
-            // if less than 255 bytes long, let's not bother
-            if (!$force && strlen($messages)<255) {
-                return $messages;
-           }
-
-            // see if it's already been compressed
-            if (strpos($messages, ':') !== false) {
-                return $messages;
-            }
-
-            // separate, then sort
-            $messages = explode(',', $messages);
-        }
-
-        sort($messages);
-
-        $result = array();
-        $start  = $prev = $messages[0];
-
-        foreach ($messages as $id) {
-            $incr = $id - $prev;
-            if ($incr > 1) { // found a gap
-                if ($start == $prev) {
-                    $result[] = $prev; // push single id
-                } else {
-                    $result[] = $start . ':' . $prev; // push sequence as start_id:end_id
-                }
-                $start = $id; // start of new sequence
-            }
-            $prev = $id;
-        }
-
-        // handle the last sequence/id
-        if ($start == $prev) {
-            $result[] = $prev;
-        } else {
-            $result[] = $start.':'.$prev;
-        }
-
-        // return as comma separated string
-        return implode(',', $result);
-    }
-
-    static function uncompressMessageSet($messages)
-    {
-        $result   = array();
-        $messages = explode(',', $messages);
-
-        foreach ($messages as $part) {
-            $items = explode(':', $part);
-            $max   = max($items[0], $items[1]);
-
-            for ($x=$items[0]; $x<=$max; $x++) {
-                $result[] = $x;
-            }
-        }
-
-        return $result;
-    }
-
     /**
      * Returns message sequence identifier
      *
@@ -1534,9 +1922,11 @@ class rcube_imap_generic
     function UID2ID($mailbox, $uid)
     {
         if ($uid > 0) {
-            $id_a = $this->search($mailbox, "UID $uid");
-            if (is_array($id_a) && count($id_a) == 1) {
-                return (int) $id_a[0];
+            $index = $this->search($mailbox, "UID $uid");
+
+            if ($index->count() == 1) {
+                $arr = $index->get();
+                return (int) $arr[0];
             }
         }
         return null;
@@ -1557,29 +1947,138 @@ class rcube_imap_generic
         }
 
         if (!$this->select($mailbox)) {
-        }
-
-        // RFC 5957: SORT=DISPLAY
-        if (($field == 'FROM' || $field == 'TO') && $this->getCapability('SORT=DISPLAY')) {
-            $field = 'DISPLAY' . $field;
             return null;
         }
 
-        list($code, $response) = $this->execute('FETCH', array($id, '(UID)'));
+        $index = $this->search($mailbox, $id, true);
 
-        if ($code == self::ERROR_OK && preg_match("/^\* $id FETCH \(UID (.*)\)/i", $response, $m)) {
-            return (int) $m[1];
+        if ($index->count() == 1) {
+            $arr = $index->get();
+            return (int) $arr[0];
         }
 
         return null;
     }
 
-    function fetchUIDs($mailbox, $message_set=null)
-    {
-        if (empty($message_set))
-            $message_set = '1:*';
+    /**
+     * Sets flag of the message(s)
+     *
+     * @param string        $mailbox   Mailbox name
+     * @param string|array  $messages  Message UID(s)
+     * @param string        $flag      Flag name
+     *
+     * @return bool True on success, False on failure
+     */
+    function flag($mailbox, $messages, $flag) {
+        return $this->modFlag($mailbox, $messages, $flag, '+');
+    }
 
-        return $this->fetchHeaderIndex($mailbox, $message_set, 'UID', false);
+    /**
+     * Unsets flag of the message(s)
+     *
+     * @param string        $mailbox   Mailbox name
+     * @param string|array  $messages  Message UID(s)
+     * @param string        $flag      Flag name
+     *
+     * @return bool True on success, False on failure
+     */
+    function unflag($mailbox, $messages, $flag) {
+        return $this->modFlag($mailbox, $messages, $flag, '-');
+    }
+
+    /**
+     * Changes flag of the message(s)
+     *
+     * @param string        $mailbox   Mailbox name
+     * @param string|array  $messages  Message UID(s)
+     * @param string        $flag      Flag name
+     * @param string        $mod       Modifier [+|-]. Default: "+".
+     *
+     * @return bool True on success, False on failure
+     */
+    private function modFlag($mailbox, $messages, $flag, $mod = '+')
+    {
+        if ($mod != '+' && $mod != '-') {
+            $mod = '+';
+        }
+
+        if (!$this->select($mailbox)) {
+            return false;
+        }
+
+        if (!$this->data['READ-WRITE']) {
+            $this->setError(self::ERROR_READONLY, "Mailbox is read-only", 'STORE');
+            return false;
+        }
+
+        // Clear internal status cache
+        if ($flag == 'SEEN') {
+            unset($this->data['STATUS:'.$mailbox]['UNSEEN']);
+        }
+
+        $flag   = $this->flags[strtoupper($flag)];
+        $result = $this->execute('UID STORE', array(
+            $this->compressMessageSet($messages), $mod . 'FLAGS.SILENT', "($flag)"),
+            self::COMMAND_NORESPONSE);
+
+        return ($result == self::ERROR_OK);
+    }
+
+    /**
+     * Copies message(s) from one folder to another
+     *
+     * @param string|array  $messages  Message UID(s)
+     * @param string        $from      Mailbox name
+     * @param string        $to        Destination mailbox name
+     *
+     * @return bool True on success, False on failure
+     */
+    function copy($messages, $from, $to)
+    {
+        if (!$this->select($from)) {
+            return false;
+        }
+
+        // Clear internal status cache
+        unset($this->data['STATUS:'.$to]);
+
+        $result = $this->execute('UID COPY', array(
+            $this->compressMessageSet($messages), $this->escape($to)),
+            self::COMMAND_NORESPONSE);
+
+        return ($result == self::ERROR_OK);
+    }
+
+    /**
+     * Moves message(s) from one folder to another.
+     * Original message(s) will be marked as deleted.
+     *
+     * @param string|array  $messages  Message UID(s)
+     * @param string        $from      Mailbox name
+     * @param string        $to        Destination mailbox name
+     *
+     * @return bool True on success, False on failure
+     */
+    function move($messages, $from, $to)
+    {
+        if (!$this->select($from)) {
+            return false;
+        }
+
+        if (!$this->data['READ-WRITE']) {
+            $this->setError(self::ERROR_READONLY, "Mailbox is read-only", 'STORE');
+            return false;
+        }
+
+        $r = $this->copy($messages, $from, $to);
+
+        if ($r) {
+            // Clear internal status cache
+            unset($this->data['STATUS:'.$from]);
+
+            return $this->flag($from, $messages, 'DELETED');
+        }
+        return $r;
     }
 
     /**
@@ -1637,9 +2136,10 @@ class rcube_imap_generic
                 $result[$id]->subject   = '';
                 $result[$id]->messageID = 'mid:' . $id;
 
-                $lines = array();
-                $line  = substr($line, strlen($m[0]) + 2);
-                $ln    = 0;
+                $headers = null;
+                $lines   = array();
+                $line    = substr($line, strlen($m[0]) + 2);
+                $ln      = 0;
 
                 // get complete entry
                 while (preg_match('/\{([0-9]+)\}\r\n$/', $line, $m)) {
@@ -1896,417 +2396,6 @@ class rcube_imap_generic
         return $result;
     }
 
-
-    function modFlag($mailbox, $messages, $flag, $mod)
-    {
-        if ($mod != '+' && $mod != '-') {
-            $mod = '+';
-        }
-
-        if (!$this->select($mailbox)) {
-            return false;
-        }
-
-        if (!$this->data['READ-WRITE']) {
-            $this->setError(self::ERROR_READONLY, "Mailbox is read-only", 'STORE');
-            return false;
-        }
-
-        // Clear internal status cache
-        if ($flag == 'SEEN') {
-            unset($this->data['STATUS:'.$mailbox]['UNSEEN']);
-        }
-
-        $flag   = $this->flags[strtoupper($flag)];
-        $result = $this->execute('UID STORE', array(
-            $this->compressMessageSet($messages), $mod . 'FLAGS.SILENT', "($flag)"),
-            self::COMMAND_NORESPONSE);
-
-        return ($result == self::ERROR_OK);
-    }
-
-    function flag($mailbox, $messages, $flag) {
-        return $this->modFlag($mailbox, $messages, $flag, '+');
-    }
-
-    function unflag($mailbox, $messages, $flag) {
-        return $this->modFlag($mailbox, $messages, $flag, '-');
-    }
-
-    function delete($mailbox, $messages) {
-        return $this->modFlag($mailbox, $messages, 'DELETED', '+');
-    }
-
-    function copy($messages, $from, $to)
-    {
-        if (!$this->select($from)) {
-            return false;
-        }
-
-        // Clear internal status cache
-        unset($this->data['STATUS:'.$to]);
-
-        $result = $this->execute('UID COPY', array(
-            $this->compressMessageSet($messages), $this->escape($to)),
-            self::COMMAND_NORESPONSE);
-
-        return ($result == self::ERROR_OK);
-    }
-
-    function move($messages, $from, $to)
-    {
-        if (!$this->select($from)) {
-            return false;
-        }
-
-        if (!$this->data['READ-WRITE']) {
-            $this->setError(self::ERROR_READONLY, "Mailbox is read-only", 'STORE');
-            return false;
-        }
-
-        $r = $this->copy($messages, $from, $to);
-
-        if ($r) {
-            // Clear internal status cache
-            unset($this->data['STATUS:'.$from]);
-
-            return $this->delete($from, $messages);
-        }
-        return $r;
-    }
-
-    // Don't be tempted to change $str to pass by reference to speed this up - it will slow it down by about
-    // 7 times instead :-) See comments on http://uk2.php.net/references and this article:
-    // http://derickrethans.nl/files/phparch-php-variables-article.pdf
-    private function parseThread($str, $begin, $end, $root, $parent, $depth, &$depthmap, &$haschildren)
-    {
-        $node = array();
-        if ($str[$begin] != '(') {
-            $stop = $begin + strspn($str, '1234567890', $begin, $end - $begin);
-            $msg = substr($str, $begin, $stop - $begin);
-            if ($msg == 0)
-                return $node;
-            if (is_null($root))
-                $root = $msg;
-            $depthmap[$msg] = $depth;
-            $haschildren[$msg] = false;
-            if (!is_null($parent))
-                $haschildren[$parent] = true;
-            if ($stop + 1 < $end)
-                $node[$msg] = $this->parseThread($str, $stop + 1, $end, $root, $msg, $depth + 1, $depthmap, $haschildren);
-            else
-                $node[$msg] = array();
-        } else {
-            $off = $begin;
-            while ($off < $end) {
-                $start = $off;
-                $off++;
-                $n = 1;
-                while ($n > 0) {
-                    $p = strpos($str, ')', $off);
-                    if ($p === false) {
-                        error_log("Mismatched brackets parsing IMAP THREAD response:");
-                        error_log(substr($str, ($begin < 10) ? 0 : ($begin - 10), $end - $begin + 20));
-                        error_log(str_repeat(' ', $off - (($begin < 10) ? 0 : ($begin - 10))));
-                        return $node;
-                    }
-                    $p1 = strpos($str, '(', $off);
-                    if ($p1 !== false && $p1 < $p) {
-                        $off = $p1 + 1;
-                        $n++;
-                    } else {
-                        $off = $p + 1;
-                        $n--;
-                    }
-                }
-                $node += $this->parseThread($str, $start + 1, $off - 1, $root, $parent, $depth, $depthmap, $haschildren);
-            }
-        }
-
-        return $node;
-    }
-
-    function thread($mailbox, $algorithm='REFERENCES', $criteria='', $encoding='US-ASCII')
-    {
-        $old_sel = $this->selected;
-
-        if (!$this->select($mailbox)) {
-            return false;
-        }
-
-        // return empty result when folder is empty and we're just after SELECT
-        if ($old_sel != $mailbox && !$this->data['EXISTS']) {
-            return array(array(), array(), array());
-        }
-
-        $encoding  = $encoding ? trim($encoding) : 'US-ASCII';
-        $algorithm = $algorithm ? trim($algorithm) : 'REFERENCES';
-        $criteria  = $criteria ? 'ALL '.trim($criteria) : 'ALL';
-        $data      = '';
-
-        list($code, $response) = $this->execute('THREAD', array(
-            $algorithm, $encoding, $criteria));
-
-        if ($code == self::ERROR_OK) {
-            // remove prefix...
-            $response = substr($response, stripos($response, '* THREAD') + 9);
-            // ...unilateral untagged server responses
-            if ($pos = strpos($response, '*')) {
-                $response = substr($response, 0, $pos);
-            }
-
-            $response    = str_replace("\r\n", '', $response);
-            $depthmap    = array();
-            $haschildren = array();
-
-            $tree = $this->parseThread($response, 0, strlen($response),
-                null, null, 0, $depthmap, $haschildren);
-
-            return array($tree, $depthmap, $haschildren);
-        }
-
-        return false;
-    }
-
-    /**
-     * Executes SEARCH command
-     *
-     * @param string $mailbox    Mailbox name
-     * @param string $criteria   Searching criteria
-     * @param bool   $return_uid Enable UID in result instead of sequence ID
-     * @param array  $items      Return items (MIN, MAX, COUNT, ALL)
-     *
-     * @return array Message identifiers or item-value hash 
-     */
-    function search($mailbox, $criteria, $return_uid=false, $items=array())
-    {
-        $old_sel = $this->selected;
-
-        if (!$this->select($mailbox)) {
-            return false;
-        }
-
-        // return empty result when folder is empty and we're just after SELECT
-        if ($old_sel != $mailbox && !$this->data['EXISTS']) {
-            if (!empty($items))
-                return array_combine($items, array_fill(0, count($items), 0));
-            else
-                return array();
-        }
-
-        $esearch  = empty($items) ? false : $this->getCapability('ESEARCH');
-        $criteria = trim($criteria);
-        $params   = '';
-
-        // RFC4731: ESEARCH
-        if (!empty($items) && $esearch) {
-            $params .= 'RETURN (' . implode(' ', $items) . ')';
-        }
-        if (!empty($criteria)) {
-            $modseq = stripos($criteria, 'MODSEQ') !== false;
-            $params .= ($params ? ' ' : '') . $criteria;
-        }
-        else {
-            $params .= 'ALL';
-        }
-
-        list($code, $response) = $this->execute($return_uid ? 'UID SEARCH' : 'SEARCH',
-            array($params));
-
-        if ($code == self::ERROR_OK) {
-            // remove prefix...
-            $response = substr($response, stripos($response,
-                $esearch ? '* ESEARCH' : '* SEARCH') + ($esearch ? 10 : 9));
-            // ...and unilateral untagged server responses
-            if ($pos = strpos($response, '*')) {
-                $response = rtrim(substr($response, 0, $pos));
-            }
-
-            // remove MODSEQ response
-            if ($modseq) {
-                if (preg_match('/\(MODSEQ ([0-9]+)\)$/', $response, $m)) {
-                    $response = substr($response, 0, -strlen($m[0]));
-                }
-            }
-
-            if ($esearch) {
-                // Skip prefix: ... (TAG "A285") UID ...
-                $this->tokenizeResponse($response, $return_uid ? 2 : 1);
-
-                $result = array();
-                for ($i=0; $i<count($items); $i++) {
-                    // If the SEARCH returns no matches, the server MUST NOT
-                    // include the item result option in the ESEARCH response
-                    if ($ret = $this->tokenizeResponse($response, 2)) {
-                        list ($name, $value) = $ret;
-                        $result[$name] = $value;
-                    }
-                }
-
-                return $result;
-            }
-            else {
-                $response = preg_split('/[\s\r\n]+/', $response, -1, PREG_SPLIT_NO_EMPTY);
-
-                if (!empty($items)) {
-                    $result = array();
-                    if (in_array('COUNT', $items)) {
-                        $result['COUNT'] = count($response);
-                    }
-                    if (in_array('MIN', $items)) {
-                        $result['MIN'] = !empty($response) ? min($response) : 0;
-                    }
-                    if (in_array('MAX', $items)) {
-                        $result['MAX'] = !empty($response) ? max($response) : 0;
-                    }
-                    if (in_array('ALL', $items)) {
-                        $result['ALL'] = $this->compressMessageSet($response, true);
-                    }
-
-                    return $result;
-                }
-                else {
-                    return $response;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns list of mailboxes
-     *
-     * @param string $ref         Reference name
-     * @param string $mailbox     Mailbox name
-     * @param array  $status_opts (see self::_listMailboxes)
-     * @param array  $select_opts (see self::_listMailboxes)
-     *
-     * @return array List of mailboxes or hash of options if $status_opts argument
-     *               is non-empty.
-     */
-    function listMailboxes($ref, $mailbox, $status_opts=array(), $select_opts=array())
-    {
-        return $this->_listMailboxes($ref, $mailbox, false, $status_opts, $select_opts);
-    }
-
-    /**
-     * Returns list of subscribed mailboxes
-     *
-     * @param string $ref         Reference name
-     * @param string $mailbox     Mailbox name
-     * @param array  $status_opts (see self::_listMailboxes)
-     *
-     * @return array List of mailboxes or hash of options if $status_opts argument
-     *               is non-empty.
-     */
-    function listSubscribed($ref, $mailbox, $status_opts=array())
-    {
-        return $this->_listMailboxes($ref, $mailbox, true, $status_opts, NULL);
-    }
-
-    /**
-     * IMAP LIST/LSUB command
-     *
-     * @param string $ref         Reference name
-     * @param string $mailbox     Mailbox name
-     * @param bool   $subscribed  Enables returning subscribed mailboxes only
-     * @param array  $status_opts List of STATUS options (RFC5819: LIST-STATUS)
-     *                            Possible: MESSAGES, RECENT, UIDNEXT, UIDVALIDITY, UNSEEN
-     * @param array  $select_opts List of selection options (RFC5258: LIST-EXTENDED)
-     *                            Possible: SUBSCRIBED, RECURSIVEMATCH, REMOTE
-     *
-     * @return array List of mailboxes or hash of options if $status_ops argument
-     *               is non-empty.
-     */
-    private function _listMailboxes($ref, $mailbox, $subscribed=false,
-        $status_opts=array(), $select_opts=array())
-    {
-        if (!strlen($mailbox)) {
-            $mailbox = '*';
-        }
-
-        $args = array();
-
-        if (!empty($select_opts) && $this->getCapability('LIST-EXTENDED')) {
-            $select_opts = (array) $select_opts;
-
-            $args[] = '(' . implode(' ', $select_opts) . ')';
-        }
-
-        $args[] = $this->escape($ref);
-        $args[] = $this->escape($mailbox);
-
-        if (!empty($status_opts) && $this->getCapability('LIST-STATUS')) {
-            $status_opts = (array) $status_opts;
-            $lstatus = true;
-
-            $args[] = 'RETURN (STATUS (' . implode(' ', $status_opts) . '))';
-        }
-
-        list($code, $response) = $this->execute($subscribed ? 'LSUB' : 'LIST', $args);
-
-        if ($code == self::ERROR_OK) {
-            $folders  = array();
-            $last     = 0;
-            $pos      = 0;
-            $response .= "\r\n";
-
-            while ($pos = strpos($response, "\r\n", $pos+1)) {
-                // literal string, not real end-of-command-line
-                if ($response[$pos-1] == '}') {
-                    continue;
-                }
-
-                $line = substr($response, $last, $pos - $last);
-                $last = $pos + 2;
-
-                if (!preg_match('/^\* (LIST|LSUB|STATUS) /i', $line, $m)) {
-                    continue;
-                }
-                $cmd  = strtoupper($m[1]);
-                $line = substr($line, strlen($m[0]));
-
-                // * LIST (<options>) <delimiter> <mailbox>
-                if ($cmd == 'LIST' || $cmd == 'LSUB') {
-                    list($opts, $delim, $mailbox) = $this->tokenizeResponse($line, 3);
-
-                    // Add to result array
-                    if (!$lstatus) {
-                        $folders[] = $mailbox;
-                    }
-                    else {
-                        $folders[$mailbox] = array();
-                    }
-
-                    // store LSUB options only if not empty, this way
-                    // we can detect a situation when LIST doesn't return specified folder
-                    if (!empty($opts) || $cmd == 'LIST') {
-                        // Add to options array
-                        if (empty($this->data['LIST'][$mailbox]))
-                            $this->data['LIST'][$mailbox] = $opts;
-                        else if (!empty($opts))
-                            $this->data['LIST'][$mailbox] = array_unique(array_merge(
-                                $this->data['LIST'][$mailbox], $opts));
-                    }
-                }
-                // * STATUS <mailbox> (<result>)
-                else if ($cmd == 'STATUS') {
-                    list($mailbox, $status) = $this->tokenizeResponse($line, 2);
-
-                    for ($i=0, $len=count($status); $i<$len; $i += 2) {
-                        list($name, $value) = $this->tokenizeResponse($status, 2);
-                        $folders[$mailbox][$name] = $value;
-                    }
-                }
-            }
-
-            return $folders;
-        }
-
-        return false;
-    }
-
     function fetchMIMEHeaders($mailbox, $uid, $parts, $mime=true)
     {
         if (!$this->select($mailbox)) {
@@ -2515,22 +2604,6 @@ class rcube_imap_generic
         return false;
     }
 
-    function createFolder($mailbox)
-    {
-        $result = $this->execute('CREATE', array($this->escape($mailbox)),
-            self::COMMAND_NORESPONSE);
-
-        return ($result == self::ERROR_OK);
-    }
-
-    function renameFolder($from, $to)
-    {
-        $result = $this->execute('RENAME', array($this->escape($from), $this->escape($to)),
-            self::COMMAND_NORESPONSE);
-
-        return ($result == self::ERROR_OK);
-    }
-
     /**
      * Handler for IMAP APPEND command
      *
@@ -2688,6 +2761,11 @@ class rcube_imap_generic
         return false;
     }
 
+    /**
+     * Returns QUOTA information
+     *
+     * @return array Quota information
+     */
     function getQuota()
     {
         /*
@@ -3444,6 +3522,88 @@ class rcube_imap_generic
         return '(' . trim($string) . ')';
     }
 
+    /**
+     * Converts message identifiers array into sequence-set syntax
+     *
+     * @param array $messages Message identifiers
+     * @param bool  $force    Forces compression of any size
+     *
+     * @return string Compressed sequence-set
+     */
+    static function compressMessageSet($messages, $force=false)
+    {
+        // given a comma delimited list of independent mid's,
+        // compresses by grouping sequences together
+
+        if (!is_array($messages)) {
+            // if less than 255 bytes long, let's not bother
+            if (!$force && strlen($messages)<255) {
+                return $messages;
+           }
+
+            // see if it's already been compressed
+            if (strpos($messages, ':') !== false) {
+                return $messages;
+            }
+
+            // separate, then sort
+            $messages = explode(',', $messages);
+        }
+
+        sort($messages);
+
+        $result = array();
+        $start  = $prev = $messages[0];
+
+        foreach ($messages as $id) {
+            $incr = $id - $prev;
+            if ($incr > 1) { // found a gap
+                if ($start == $prev) {
+                    $result[] = $prev; // push single id
+                } else {
+                    $result[] = $start . ':' . $prev; // push sequence as start_id:end_id
+                }
+                $start = $id; // start of new sequence
+            }
+            $prev = $id;
+        }
+
+        // handle the last sequence/id
+        if ($start == $prev) {
+            $result[] = $prev;
+        } else {
+            $result[] = $start.':'.$prev;
+        }
+
+        // return as comma separated string
+        return implode(',', $result);
+    }
+
+    /**
+     * Converts message sequence-set into array
+     *
+     * @param string $messages Message identifiers
+     *
+     * @return array List of message identifiers
+     */
+    static function uncompressMessageSet($messages)
+    {
+        $result   = array();
+        $messages = explode(',', $messages);
+
+        foreach ($messages as $idx => $part) {
+            $items = explode(':', $part);
+            $max   = max($items[0], $items[1]);
+
+            for ($x=$items[0]; $x<=$max; $x++) {
+                $result[] = $x;
+            }
+            unset($messages[$idx]);
+        }
+
+        return $result;
+    }
+
     private function _xor($string, $string2)
     {
         $result = '';
@@ -3482,6 +3642,9 @@ class rcube_imap_generic
         return $ts < 0 ? 0 : $ts;
     }
 
+    /**
+     * CAPABILITY response parser
+     */
     private function parseCapability($str, $trusted=false)
     {
         $str = preg_replace('/^\* CAPABILITY /i', '', $str);
@@ -3530,6 +3693,13 @@ class rcube_imap_generic
         return sprintf("{%d}\r\n%s", strlen($string), $string);
     }
 
+    /**
+     * Unescapes quoted-string
+     *
+     * @param string  $string       IMAP string
+     *
+     * @return string String
+     */
     static function unEscape($string)
     {
         return stripslashes($string);

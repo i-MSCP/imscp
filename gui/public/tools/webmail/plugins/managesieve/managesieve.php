@@ -28,7 +28,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- * $Id: managesieve.php 5712 2012-01-05 08:50:07Z alec $
+ * $Id$
  */
 
 class managesieve extends rcube_plugin
@@ -64,7 +64,7 @@ class managesieve extends rcube_plugin
         "x-beenthere",
     );
 
-    const VERSION = '5.0';
+    const VERSION = '5.2';
     const PROGNAME = 'Roundcube (Managesieve)';
 
 
@@ -128,8 +128,9 @@ class managesieve extends rcube_plugin
                 'command'  => 'managesieve-create',
                 'label'    => 'managesieve.filtercreate',
                 'type'     => 'link',
-                'classact' => 'filterlink active',
-                'class'    => 'filterlink',
+                'classact' => 'icon filterlink active',
+                'class'    => 'icon filterlink',
+                'innerclass' => 'icon filterlink',
             ))), 'messagemenu');
 
         // register some labels/messages
@@ -144,17 +145,24 @@ class managesieve extends rcube_plugin
      */
     function mail_headers($args)
     {
+        // this hook can be executed many times
+        if ($this->mail_headers_done) {
+            return $args;
+        }
+
+        $this->mail_headers_done = true;
+
         $headers = $args['headers'];
         $ret     = array();
 
         if ($headers->subject)
-            $ret[] = array('Subject', $this->rc->imap->decode_header($headers->subject));
+            $ret[] = array('Subject', rcube_mime::decode_header($headers->subject));
 
         // @TODO: List-Id, others?
         foreach (array('From', 'To') as $h) {
             $hl = strtolower($h);
             if ($headers->$hl) {
-                $list = $this->rc->imap->decode_address_list($headers->$hl);
+                $list = rcube_mime::decode_address_list($headers->$hl);
                 foreach ($list as $item) {
                     if ($item['mailto']) {
                         $ret[] = array($h, $item['mailto']);
@@ -708,9 +716,12 @@ class managesieve extends rcube_plugin
                             if (!count($headers))
                                 $this->errors['tests'][$i]['header'] = $this->gettext('cannotbeempty');
                             else {
-                                foreach ($headers as $hr)
-                                    if (!preg_match('/^[a-z0-9-]+$/i', $hr))
+                                foreach ($headers as $hr) {
+                                    // RFC2822: printable ASCII except colon
+                                    if (!preg_match('/^[\x21-\x39\x41-\x7E]+$/i', $hr)) {
                                         $this->errors['tests'][$i]['header'] = $this->gettext('forbiddenchars');
+                                    }
+                                }
                             }
 
                             if (empty($this->errors['tests'][$i]['header']))
@@ -1514,7 +1525,6 @@ class managesieve extends rcube_plugin
         else
             $mailbox = '';
 
-        $this->rc->imap_connect();
         $select = rcmail_mailbox_select(array(
             'realnames' => false,
             'maxlength' => 100,

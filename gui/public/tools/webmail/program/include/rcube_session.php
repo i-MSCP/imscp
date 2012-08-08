@@ -5,9 +5,12 @@
  | program/include/rcube_session.php                                     |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
+ | Copyright (C) 2005-2012, The Roundcube Dev Team                       |
  | Copyright (C) 2011, Kolab Systems AG                                  |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Provide database supported session management                       |
@@ -37,10 +40,9 @@ class rcube_session
   private $unsets = array();
   private $gc_handlers = array();
   private $cookiename = 'roundcube_sessauth';
-  private $vars = false;
+  private $vars;
   private $key;
   private $now;
-  private $prev;
   private $secret = '';
   private $ip_check = false;
   private $logging = false;
@@ -56,7 +58,6 @@ class rcube_session
     $this->start   = microtime(true);
     $this->ip      = $_SERVER['REMOTE_ADDR'];
     $this->logging = $config->get('log_session', false);
-    $this->mc_debug = $config->get('memcache_debug', false);
 
     $lifetime = $config->get('session_lifetime', 1) * 60;
     $this->set_lifetime($lifetime);
@@ -136,11 +137,10 @@ class rcube_session
       $this->vars    = base64_decode($sql_arr['vars']);
       $this->key     = $key;
 
-      if (!empty($this->vars))
-        return $this->vars;
+      return !empty($this->vars) ? (string) $this->vars : '';
     }
 
-    return false;
+    return null;
   }
 
 
@@ -159,7 +159,7 @@ class rcube_session
 
     // no session row in DB (db_read() returns false)
     if (!$this->key) {
-      $oldvars = false;
+      $oldvars = null;
     }
     // use internal data from read() for fast requests (up to 0.5 sec.)
     else if ($key == $this->key && (!$this->vars || $ts - $this->start < 0.5)) {
@@ -169,7 +169,7 @@ class rcube_session
       $oldvars = $this->db_read($key);
     }
 
-    if ($oldvars !== false) {
+    if ($oldvars !== null) {
       $newvars = $this->_fixvars($vars, $oldvars);
 
       if ($newvars !== $oldvars) {
@@ -199,7 +199,7 @@ class rcube_session
    */
   private function _fixvars($vars, $oldvars)
   {
-    if ($oldvars !== false) {
+    if ($oldvars !== null) {
       $a_oldvars = $this->unserialize($oldvars);
       if (is_array($a_oldvars)) {
         foreach ((array)$this->unsets as $k)
@@ -221,13 +221,14 @@ class rcube_session
    * Handler for session_destroy()
    *
    * @param string Session ID
+   *
    * @return boolean True on success
    */
   public function db_destroy($key)
   {
-    $this->db->query(
-      sprintf("DELETE FROM %s WHERE sess_id = ?", get_table_name('session')),
-      $key);
+    if ($key) {
+      $this->db->query(sprintf("DELETE FROM %s WHERE sess_id = ?", get_table_name('session')), $key);
+    }
 
     return true;
   }
@@ -260,20 +261,19 @@ class rcube_session
    */
   public function mc_read($key)
   {
-    $value = $this->memcache->get($key);
-    if ($this->mc_debug) write_log('memcache', "get($key): " . strlen($value));
-    if ($value && ($arr = unserialize($value))) {
+    if ($value = $this->memcache->get($key)) {
+      $arr = unserialize($value);
       $this->changed = $arr['changed'];
       $this->ip      = $arr['ip'];
       $this->vars    = $arr['vars'];
       $this->key     = $key;
 
-      if (!empty($this->vars))
-        return $this->vars;
+      return !empty($this->vars) ? (string) $this->vars : '';
     }
 
-    return false;
+    return null;
   }
+
 
   /**
    * Save session data.
@@ -289,39 +289,36 @@ class rcube_session
 
     // no session data in cache (mc_read() returns false)
     if (!$this->key)
-      $oldvars = false;
+      $oldvars = null;
     // use internal data for fast requests (up to 0.5 sec.)
     else if ($key == $this->key && (!$this->vars || $ts - $this->start < 0.5))
       $oldvars = $this->vars;
     else // else read data again
       $oldvars = $this->mc_read($key);
 
-    $newvars = $oldvars !== false ? $this->_fixvars($vars, $oldvars) : $vars;
-    
-    if ($newvars !== $oldvars || $ts - $this->changed > $this->lifetime / 2) {
-      $value = serialize(array('changed' => time(), 'ip' => $this->ip, 'vars' => $newvars));
-      $ret = $this->memcache->set($key, $value, MEMCACHE_COMPRESSED, $this->lifetime);
-      if ($this->mc_debug) {
-        write_log('memcache', "set($key): " . strlen($value) . ": " . ($ret ? 'OK' : 'ERR'));
-        write_log('memcache', "... get($key): " . strlen($this->memcache->get($key)));
-      }
-      return $ret;
-    }
-    
+    $newvars = $oldvars !== null ? $this->_fixvars($vars, $oldvars) : $vars;
+
+    if ($newvars !== $oldvars || $ts - $this->changed > $this->lifetime / 2)
+      return $this->memcache->set($key, serialize(array('changed' => time(), 'ip' => $this->ip, 'vars' => $newvars)), MEMCACHE_COMPRESSED, $this->lifetime);
+
     return true;
   }
+
 
   /**
    * Handler for session_destroy() with memcache backend
    *
    * @param string Session ID
+   *
    * @return boolean True on success
    */
   public function mc_destroy($key)
   {
-    $ret = $this->memcache->delete($key);
-    if ($this->mc_debug) write_log('memcache', "delete($key): " . ($ret ? 'OK' : 'ERR'));
-    return $ret;
+    if ($key) {
+      $this->memcache->delete($key);
+    }
+
+    return true;
   }
 
 
@@ -340,10 +337,15 @@ class rcube_session
    *
    * @param mixed Callback function
    */
-  public function register_gc_handler($func_name)
+  public function register_gc_handler($func)
   {
-    if ($func_name && !in_array($func_name, $this->gc_handlers))
-      $this->gc_handlers[] = $func_name;
+    foreach ($this->gc_handlers as $handler) {
+      if ($handler == $func) {
+        return;
+      }
+    }
+
+    $this->gc_handlers[] = $func;
   }
 
 
@@ -356,7 +358,7 @@ class rcube_session
   {
     session_regenerate_id($destroy);
 
-    $this->vars = false;
+    $this->vars = null;
     $this->key  = session_id();
 
     return true;
@@ -379,13 +381,15 @@ class rcube_session
 
     return true;
   }
-  
+
+
   /**
    * Kill this session
    */
   public function kill()
   {
-    $this->vars = false;
+    $this->vars = null;
+    $this->ip = $_SERVER['REMOTE_ADDR']; // update IP (might have changed)
     $this->destroy(session_id());
     rcmail::setcookie($this->cookiename, '-del-', time() - 60);
   }
@@ -520,7 +524,6 @@ class rcube_session
       // valid time range is now - 1/2 lifetime to now + 1/2 lifetime
       $now = time();
       $this->now = $now - ($now % ($this->lifetime / 2));
-      $this->prev = $this->now - ($this->lifetime / 2);
   }
 
   /**
@@ -591,15 +594,22 @@ class rcube_session
       $this->log("IP check failed for " . $this->key . "; expected " . $this->ip . "; got " . $_SERVER['REMOTE_ADDR']);
 
     if ($result && $this->_mkcookie($this->now) != $this->cookie) {
-      // Check if using id from previous time slot
-      if ($this->_mkcookie($this->prev) == $this->cookie) {
-        $this->set_auth_cookie();
+      $this->log("Session auth check failed for " . $this->key . "; timeslot = " . date('Y-m-d H:i:s', $this->now));
+      $result = false;
+
+      // Check if using id from a previous time slot
+      for ($i = 1; $i <= 2; $i++) {
+        $prev = $this->now - ($this->lifetime / 2) * $i;
+        if ($this->_mkcookie($prev) == $this->cookie) {
+          $this->log("Send new auth cookie for " . $this->key . ": " . $this->cookie);
+          $this->set_auth_cookie();
+          $result = true;
+        }
       }
-      else {
-        $result = false;
-        $this->log("Session authentication failed for " . $this->key . "; invalid auth cookie sent");
-      }
-    }
+	}
+
+    if (!$result)
+      $this->log("Session authentication failed for " . $this->key . "; invalid auth cookie sent; timeslot = " . date('Y-m-d H:i:s', $prev));
 
     return $result;
   }

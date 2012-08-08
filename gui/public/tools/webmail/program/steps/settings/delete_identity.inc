@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Delete the submitted identities (IIDs) from the database            |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: delete_identity.inc 4668 2011-04-19 20:41:24Z thomasb $
+ $Id$
 
 */
 
@@ -32,7 +35,7 @@ if ($iid && preg_match('/^[0-9]+(,[0-9]+)*$/', $iid))
 {
   $plugin = $RCMAIL->plugins->exec_hook('identity_delete', array('id' => $iid));
   
-  $deleted = !$plugin['abort'] ? $USER->delete_identity($iid) : $plugin['result'];
+  $deleted = !$plugin['abort'] ? $RCMAIL->user->delete_identity($iid) : $plugin['result'];
 
   if ($deleted > 0 && $deleted !== false)
     $OUTPUT->show_message('deletedsuccessfully', 'confirmation', null, false);

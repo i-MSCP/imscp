@@ -15,14 +15,14 @@
 	</lead>
 	<date>2011-11-23</date>
 	<version>
-		<release>1.5</release>
-		<api>1.4</api>
+		<release>1.6</release>
+		<api>1.6</api>
 	</version>
 	<stability>
 		<release>stable</release>
 		<api>stable</api>
 	</stability>
-	<license uri="http://www.gnu.org/licenses/gpl-2.0.html">GNU GPLv2</license>
+	<license uri="http://www.gnu.org/licenses/gpl.html">GNU GPLv3+</license>
 	<notes>-</notes>
 	<contents>
 		<dir baseinstalldir="/" name="/">
@@ -50,9 +50,9 @@
 			<file name="localization/ru_RU.inc" role="data"></file>
 			<file name="localization/sv_SE.inc" role="data"></file>
 			<file name="localization/zh_TW.inc" role="data"></file>
-			<file name="skins/default/archive_act.png" role="data"></file>
-			<file name="skins/default/archive_pas.png" role="data"></file>
-			<file name="skins/default/foldericon.png" role="data"></file>
+			<file name="skins/classic/archive_act.png" role="data"></file>
+			<file name="skins/classic/archive_pas.png" role="data"></file>
+			<file name="skins/classic/foldericon.png" role="data"></file>
 		</dir>
 		<!-- / -->
 	</contents>

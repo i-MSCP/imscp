@@ -6,14 +6,17 @@
  | language/en_US/labels.inc                                             |
  |                                                                       |
  | Language file of the Roundcube Webmail client                         |
- | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  +-----------------------------------------------------------------------+
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- @version $Id: labels.inc 5873 2012-02-11 13:50:04Z thomasb $
+ @version $Id$
 
 */
 
@@ -52,11 +55,13 @@ $labels['size']    = 'Size';
 $labels['priority'] = 'Priority';
 $labels['organization'] = 'Organization';
 $labels['readstatus'] = 'Read status';
+$labels['listoptions'] = 'List options...';
 
 $labels['mailboxlist'] = 'Folders';
 $labels['messagesfromto'] = 'Messages $from to $to of $count';
 $labels['threadsfromto'] = 'Threads $from to $to of $count';
 $labels['messagenrof'] = 'Message $nr of $count';
+$labels['fromtoshort'] = '$from – $to of $count';
 
 $labels['copy']     = 'Copy';
 $labels['move']     = 'Move';
@@ -117,12 +122,16 @@ $labels['longdec']	= 'December';
 $labels['today'] = 'Today';
 
 // toolbar buttons
+$labels['refresh']          = 'Refresh';
 $labels['checkmail']        = 'Check for new messages';
+$labels['compose']          = 'Compose';
 $labels['writenewmessage']  = 'Create a new message';
+$labels['reply']            = 'Reply';
 $labels['replytomessage']   = 'Reply to sender';
 $labels['replytoallmessage'] = 'Reply to list or to sender and all recipients';
 $labels['replyall']         = 'Reply all';
 $labels['replylist']        = 'Reply list';
+$labels['forward']          = 'Forward';
 $labels['forwardinline']    = 'Forward inline';
 $labels['forwardattachment'] = 'Forward as attachment';
 $labels['forwardmessage']   = 'Forward the message';
@@ -135,12 +144,16 @@ $labels['nextmessage']      = 'Show next message';
 $labels['lastmessage']      = 'Show last message';
 $labels['backtolist']       = 'Back to message list';
 $labels['viewsource']       = 'Show source';
+$labels['mark']             = 'Mark';
 $labels['markmessages']     = 'Mark messages';
 $labels['markread']         = 'As read';
 $labels['markunread']       = 'As unread';
 $labels['markflagged']      = 'As flagged';
 $labels['markunflagged']    = 'As unflagged';
 $labels['moreactions']      = 'More actions...';
+$labels['more']             = 'More';
+$labels['back']             = 'Back';
+$labels['options']          = 'Options';
 
 $labels['select'] = 'Select';
 $labels['all'] = 'All';
@@ -192,10 +205,9 @@ $labels['openinextwin'] = 'Open in new window';
 $labels['emlsave'] = 'Download (.eml)';
 
 // message compose
-$labels['compose']        = 'Compose a message';
 $labels['editasnew']      = 'Edit as new';
-$labels['savemessage']    = 'Save this draft';
-$labels['sendmessage']    = 'Send now';
+$labels['savemessage']    = 'Save as draft';
+$labels['sendmessage']    = 'Send message';
 $labels['addattachment']  = 'Attach a file';
 $labels['charset']        = 'Charset';
 $labels['editortype']     = 'Editor type';
@@ -205,10 +217,12 @@ $labels['mailreplyintro'] = 'On $date, $sender wrote:';
 $labels['originalmessage'] = 'Original Message';
 
 $labels['editidents']    = 'Edit identities';
+$labels['spellcheck']    = 'Spell';
 $labels['checkspelling'] = 'Check spelling';
 $labels['resumeediting'] = 'Resume editing';
 $labels['revertto']      = 'Revert to';
 
+$labels['attach'] = 'Attach';
 $labels['attachments'] = 'Attachments';
 $labels['upload'] = 'Upload';
 $labels['uploadprogress'] = '$percent ($current from $total)';
@@ -276,6 +290,7 @@ $labels['spouse'] = 'Spouse';
 $labels['allfields'] = 'All fields';
 $labels['search'] = 'Search';
 $labels['advsearch'] = 'Advanced Search';
+$labels['advanced'] = 'Advanced';
 $labels['other'] = 'Other';
 
 $labels['typehome']   = 'Home';
@@ -307,6 +322,7 @@ $labels['delete'] = 'Delete';
 $labels['rename'] = 'Rename';
 $labels['addphoto'] = 'Add';
 $labels['replacephoto'] = 'Replace';
+$labels['uploadphoto'] = 'Upload photo';
 
 $labels['newcontact']     = 'Create new contact card';
 $labels['deletecontact']  = 'Delete selected contacts';
@@ -318,6 +334,7 @@ $labels['exportvcards']   = 'Export contacts in vCard format';
 $labels['newcontactgroup'] = 'Create new contact group';
 $labels['grouprename']    = 'Rename group';
 $labels['groupdelete']    = 'Delete group';
+$labels['groupremoveselected'] = 'Remove selected contacts from group';
 
 $labels['previouspage']   = 'Show previous page';
 $labels['firstpage']      = 'Show first page';
@@ -340,18 +357,18 @@ $labels['importtext'] = 'You can upload contacts from an existing address book.<
 $labels['done'] = 'Done';
 
 // settings
-$labels['settingsfor']  = 'Settings for';
+$labels['settingsfor'] = 'Settings for';
 $labels['about'] = 'About';
-$labels['preferences']  = 'Preferences';
-$labels['userpreferences']  = 'User preferences';
-$labels['editpreferences']  = 'Edit user preferences';
+$labels['preferences'] = 'Preferences';
+$labels['userpreferences'] = 'User preferences';
+$labels['editpreferences'] = 'Edit user preferences';
 
-$labels['identities']  = 'Identities';
-$labels['manageidentities']  = 'Manage identities for this account';
-$labels['newidentity']  = 'New identity';
+$labels['identities'] = 'Identities';
+$labels['manageidentities'] = 'Manage identities for this account';
+$labels['newidentity'] = 'New identity';
 
-$labels['newitem']  = 'New item';
-$labels['edititem']  = 'Edit item';
+$labels['newitem'] = 'New item';
+$labels['edititem'] = 'Edit item';
 
 $labels['preferhtml'] = 'Display HTML';
 $labels['defaultcharset'] = 'Default Character Set';
@@ -386,6 +403,7 @@ $labels['readwhendeleted'] = 'Mark the message as read on delete';
 $labels['flagfordeletion'] = 'Flag the message for deletion instead of delete';
 $labels['skipdeleted'] = 'Do not show deleted messages';
 $labels['deletealways'] = 'If moving messages to Trash fails, delete them';
+$labels['deletejunk'] = 'Directly delete messages in Junk';
 $labels['showremoteimages'] = 'Display remote inline images';
 $labels['fromknownsenders'] = 'from known senders';
 $labels['always'] = 'always';
@@ -408,10 +426,10 @@ $labels['checkallfolders'] = 'Check all folders for new messages';
 $labels['displaynext'] = 'After message delete/move display the next message';
 $labels['defaultfont'] = 'Default font of HTML message';
 $labels['mainoptions'] = 'Main Options';
+$labels['browseroptions'] = 'Browser Options';
 $labels['section'] = 'Section';
 $labels['maintenance'] = 'Maintenance';
 $labels['newmessage'] = 'New Message';
-$labels['listoptions'] = 'List Options';
 $labels['signatureoptions'] = 'Signature Options';
 $labels['whenreplying'] = 'When replying';
 $labels['replytopposting'] = 'start new message above original';
@@ -438,6 +456,10 @@ $labels['spellcheckignoresyms'] = 'Ignore words with symbols';
 $labels['spellcheckignorenums'] = 'Ignore words with numbers';
 $labels['spellcheckignorecaps'] = 'Ignore words with all letters capitalized';
 $labels['addtodict'] = 'Add to dictionary';
+$labels['mailtoprotohandler'] = 'Register protocol handler for mailto: links';
+$labels['forwardmode'] = 'Messages forwarding';
+$labels['inline'] = 'inline';
+$labels['asattachment'] = 'as attachment';
 
 $labels['folder']  = 'Folder';
 $labels['folders']  = 'Folders';

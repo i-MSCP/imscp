@@ -19,13 +19,13 @@
  * 'dont_override' list and the global option has changed, don't expect
  * to see the change until the folder list cache is refreshed.
  *
- * @version 1.1
+ * @version @package_version@
  * @author Ziba Scott
  */
 class subscriptions_option extends rcube_plugin
 {
     public $task = 'mail|settings';
-    
+
     function init()
     {
         $this->add_texts('localization/', false);
@@ -34,7 +34,7 @@ class subscriptions_option extends rcube_plugin
             $this->add_hook('preferences_list', array($this, 'settings_blocks'));
             $this->add_hook('preferences_save', array($this, 'save_prefs'));
         }
-        $this->add_hook('mailboxes_list', array($this, 'mailboxes_list'));
+        $this->add_hook('storage_folders', array($this, 'mailboxes_list'));
         $this->add_hook('folders_list', array($this, 'folders_list'));
     }
 
@@ -65,8 +65,8 @@ class subscriptions_option extends rcube_plugin
             // if the use_subscriptions preference changes, flush the folder cache
             if (($use_subscriptions && !isset($_POST['_use_subscriptions'])) ||
                 (!$use_subscriptions && isset($_POST['_use_subscriptions']))) {
-                    $rcmail->imap_connect();
-                    $rcmail->imap->clear_cache('mailboxes');
+                    $storage = $rcmail->get_storage();
+                    $storage->clear_cache('mailboxes');
             }
         }
         return $args;
@@ -76,7 +76,7 @@ class subscriptions_option extends rcube_plugin
     {
         $rcmail = rcmail::get_instance();
         if (!$rcmail->config->get('use_subscriptions', true)) {
-            $args['folders'] = $rcmail->imap->conn->listMailboxes($args['root'], $args['name']);
+            $args['folders'] = $rcmail->get_storage()->list_folders_direct();
         }
         return $args;
     }

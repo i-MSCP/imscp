@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2008-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Import contacts from a vCard or CSV file                            |
@@ -161,10 +164,11 @@ if ($_FILES['_file']['tmp_name'] && is_uploaded_file($_FILES['_file']['tmp_name'
       $CONTACTS->delete_all();
 
     foreach ($vcards as $vcard) {
-      $email = $vcard->email[0];
+      $email    = $vcard->email[0];
+      $a_record = $vcard->get_assoc();
 
-      // skip entries without an e-mail address
-      if (empty($email)) {
+      // skip entries without an e-mail address or invalid
+      if (empty($email) || !$CONTACTS->validate($a_record, true)) {
         $IMPORT_STATS->nomail++;
         continue;
       }
@@ -185,7 +189,6 @@ if ($_FILES['_file']['tmp_name'] && is_uploaded_file($_FILES['_file']['tmp_name'
         }
       }
 
-      $a_record = $vcard->get_assoc();
       $a_record['vcard'] = $vcard->export();
 
       $plugin = $RCMAIL->plugins->exec_hook('contact_create', array('record' => $a_record, 'source' => null));

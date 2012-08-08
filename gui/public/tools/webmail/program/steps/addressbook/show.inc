@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Show contact details                                                |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: show.inc 5681 2012-01-01 13:36:22Z alec $
+ $Id$
 
 */
 
@@ -30,6 +33,7 @@ $SOURCE_ID = $source;
 
 // read contact record
 if ($cid && ($record = $CONTACTS->get_record($cid, true))) {
+    $OUTPUT->set_env('readonly', $CONTACTS->readonly || $record['readonly']);
     $OUTPUT->set_env('cid', $record['ID']);
 }
 
@@ -203,7 +207,7 @@ function rcmail_contact_record_groups($contact_id)
     $RCMAIL->output->add_gui_object('editform', 'form');
     $RCMAIL->output->add_label('addingmember', 'removingmember');
 
-    return $form_start . $table->show() . $form_end;
+    return $form_start . html::tag('fieldset', 'contactfieldgroup contactgroups', $table->show()) . $form_end;
 }
 
 

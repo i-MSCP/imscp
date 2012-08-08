@@ -27,10 +27,8 @@ if (window.rcmail) {
     
     // set css style for archive folder
     var li;
-    if (rcmail.env.archive_folder && rcmail.env.archive_folder_icon
-      && (li = rcmail.get_folder_li(rcmail.env.archive_folder, '', true))
-    )
-      $(li).css('background-image', 'url(' + rcmail.env.archive_folder_icon + ')');
+    if (rcmail.env.archive_folder && (li = rcmail.get_folder_li(rcmail.env.archive_folder, '', true)))
+      $(li).addClass('archive');
   })
 }
 

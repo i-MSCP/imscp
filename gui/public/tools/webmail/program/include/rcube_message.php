@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2008-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Logical representation of a mail message with all its data          |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_message.php 5514 2011-11-30 11:35:43Z alec $
+ $Id$
 
 */
 
@@ -37,11 +40,18 @@ class rcube_message
     private $app;
 
     /**
-     * Instance of imap class
+     * Instance of storage class
      *
-     * @var rcube_imap
+     * @var rcube_storage
      */
-    private $imap;
+    private $storage;
+
+    /**
+     * Instance of mime class
+     *
+     * @var rcube_mime
+     */
+    private $mime;
     private $opt = array();
     private $inline_parts = array();
     private $parse_alternative = false;
@@ -63,34 +73,31 @@ class rcube_message
      *
      * @param string $uid The message UID.
      *
-     * @uses rcmail::get_instance()
-     * @uses rcube_imap::decode_mime_string()
-     * @uses self::set_safe()
-     *
-     * @see self::$app, self::$imap, self::$opt, self::$structure
+     * @see self::$app, self::$storage, self::$opt, self::$parts
      */
     function __construct($uid)
     {
-        $this->app = rcmail::get_instance();
-        $this->imap = $this->app->imap;
-        $this->imap->get_all_headers = true;
+        $this->uid  = $uid;
+        $this->app  = rcmail::get_instance();
+        $this->storage = $this->app->get_storage();
+        $this->storage->set_options(array('all_headers' => true));
 
-        $this->uid = $uid;
-        $this->headers = $this->imap->get_message($uid);
+        $this->headers = $this->storage->get_message($uid);
 
         if (!$this->headers)
             return;
 
-        $this->subject = rcube_imap::decode_mime_string(
-            $this->headers->subject, $this->headers->charset);
-        list(, $this->sender) = each($this->imap->decode_address_list($this->headers->from));
+        $this->mime = new rcube_mime($this->headers->charset);
+
+        $this->subject = $this->mime->decode_mime_string($this->headers->subject);
+        list(, $this->sender) = each($this->mime->decode_address_list($this->headers->from, 1));
 
         $this->set_safe((intval($_GET['_safe']) || $_SESSION['safe_messages'][$uid]));
         $this->opt = array(
             'safe' => $this->is_safe,
             'prefer_html' => $this->app->config->get('prefer_html'),
             'get_url' => rcmail_url('get', array(
-                '_mbox' => $this->imap->get_mailbox_name(), '_uid' => $uid))
+                '_mbox' => $this->storage->get_folder(), '_uid' => $uid))
         );
 
         if (!empty($this->headers->structure)) {
@@ -98,7 +105,7 @@ class rcube_message
             $this->parse_structure($this->headers->structure);
         }
         else {
-            $this->body = $this->imap->get_body($uid);
+            $this->body = $this->storage->get_body($uid);
         }
 
         // notify plugins and let them analyze this structured message object
@@ -115,12 +122,15 @@ class rcube_message
      */
     public function get_header($name, $raw = false)
     {
+        if (empty($this->headers))
+            return null;
+
         if ($this->headers->$name)
             $value = $this->headers->$name;
         else if ($this->headers->others[$name])
             $value = $this->headers->others[$name];
 
-        return $raw ? $value : $this->imap->decode_header($value);
+        return $raw ? $value : $this->mime->decode_header($value);
     }
 
 
@@ -154,22 +164,24 @@ class rcube_message
     /**
      * Get content of a specific part of this message
      *
-     * @param string $mime_id Part MIME-ID
-     * @param resource $fp File pointer to save the message part
+     * @param string   $mime_id           Part MIME-ID
+     * @param resource $fp File           pointer to save the message part
+     * @param boolean  $skip_charset_conv Disables charset conversion
+     *
      * @return string Part content
      */
-    public function get_part_content($mime_id, $fp=NULL)
+    public function get_part_content($mime_id, $fp = null, $skip_charset_conv = false)
     {
         if ($part = $this->mime_parts[$mime_id]) {
             // stored in message structure (winmail/inline-uuencode)
-            if ($part->encoding == 'stream') {
+            if (!empty($part->body) || $part->encoding == 'stream') {
                 if ($fp) {
                     fwrite($fp, $part->body);
                 }
                 return $fp ? true : $part->body;
             }
             // get from IMAP
-            return $this->imap->get_message_part($this->uid, $mime_id, $part, NULL, $fp);
+            return $this->storage->get_message_part($this->uid, $mime_id, $part, NULL, $fp, $skip_charset_conv);
         } else
             return null;
     }
@@ -178,15 +190,36 @@ class rcube_message
     /**
      * Determine if the message contains a HTML part
      *
+     * @param bool $recursive Enables checking in all levels of the structure
+     *
      * @return bool True if a HTML is available, False if not
      */
-    function has_html_part()
+    function has_html_part($recursive = true)
     {
         // check all message parts
-        foreach ($this->parts as $pid => $part) {
-            $mimetype = strtolower($part->ctype_primary . '/' . $part->ctype_secondary);
-            if ($mimetype == 'text/html')
+        foreach ($this->parts as $part) {
+            if ($part->mimetype == 'text/html') {
+                // Level check, we'll skip e.g. HTML attachments
+                if (!$recursive) {
+                    $level = explode('.', $part->mime_id);
+
+                    // Level too high
+                    if (count($level) > 2) {
+                        continue;
+                    }
+
+                    // HTML part can be on the lower level, if not...
+                    if (count($level) > 1) {
+                        // It can be an alternative or related message part
+                        $parent = $this->mime_parts[0];
+                        if ($parent->mimetype != 'multipart/alternative' && $parent->mimetype != 'multipart/related') {
+                            continue;
+                        }
+                    }
+                }
+
                 return true;
+            }
         }
 
         return false;
@@ -201,10 +234,9 @@ class rcube_message
     function first_html_part()
     {
         // check all message parts
-        foreach ($this->mime_parts as $mime_id => $part) {
-            $mimetype = strtolower($part->ctype_primary . '/' . $part->ctype_secondary);
-            if ($mimetype == 'text/html') {
-                return $this->imap->get_message_part($this->uid, $mime_id, $part);
+        foreach ($this->mime_parts as $pid => $part) {
+            if ($part->mimetype == 'text/html') {
+                return $this->get_part_content($pid);
             }
         }
     }
@@ -224,13 +256,11 @@ class rcube_message
 
         // check all message parts
         foreach ($this->mime_parts as $mime_id => $part) {
-            $mimetype = $part->ctype_primary . '/' . $part->ctype_secondary;
-
-            if ($mimetype == 'text/plain') {
-                return $this->imap->get_message_part($this->uid, $mime_id, $part);
+            if ($part->mimetype == 'text/plain') {
+                return $this->get_part_content($mime_id);
             }
-            else if ($mimetype == 'text/html') {
-                $out = $this->imap->get_message_part($this->uid, $mime_id, $part);
+            else if ($part->mimetype == 'text/html') {
+                $out = $this->get_part_content($mime_id);
 
                 // remove special chars encoding
                 $trans = array_flip(get_html_translation_table(HTML_ENTITIES));
@@ -248,7 +278,33 @@ class rcube_message
 
 
     /**
-     * Raad the message structure returend by the IMAP server
+     * Checks if part of the message is an attachment (or part of it)
+     *
+     * @param rcube_message_part $part Message part
+     *
+     * @return bool True if the part is an attachment part
+     */
+    public function is_attachment($part)
+    {
+        foreach ($this->attachments as $att_part) {
+            if ($att_part->mime_id == $part->mime_id) {
+                return true;
+            }
+
+            // check if the part is a subpart of another attachment part (message/rfc822)
+            if ($att_part->mimetype == 'message/rfc822') {
+                if (in_array($part, (array)$att_part->parts)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Read the message structure returend by the IMAP server
      * and build flat lists of content parts and attachments
      *
      * @param rcube_message_part $structure Message structure node
@@ -583,7 +639,7 @@ class rcube_message
     {
         // @TODO: attachment may be huge, hadle it via file
         if (!isset($part->body))
-            $part->body = $this->imap->get_message_part($this->uid, $part->mime_id, $part);
+            $part->body = $this->storage->get_message_part($this->uid, $part->mime_id, $part);
 
         $parts = array();
         $tnef = new tnef_decoder;
@@ -619,27 +675,33 @@ class rcube_message
     {
         // @TODO: messages may be huge, hadle body via file
         if (!isset($part->body))
-            $part->body = $this->imap->get_message_part($this->uid, $part->mime_id, $part);
+            $part->body = $this->storage->get_message_part($this->uid, $part->mime_id, $part);
 
         $parts = array();
         // FIXME: line length is max.65?
-        $uu_regexp = '/begin [0-7]{3,4} ([^\n]+)\n(([\x21-\x7E]{0,65}\n)+)`\nend/s';
+        $uu_regexp = '/begin [0-7]{3,4} ([^\n]+)\n/s';
 
         if (preg_match_all($uu_regexp, $part->body, $matches, PREG_SET_ORDER)) {
-            // remove attachments bodies from the message body
-            $part->body = preg_replace($uu_regexp, '', $part->body);
             // update message content-type
             $part->ctype_primary   = 'multipart';
             $part->ctype_secondary = 'mixed';
             $part->mimetype        = $part->ctype_primary . '/' . $part->ctype_secondary;
+            $uu_endstring = "`\nend\n";
 
             // add attachments to the structure
             foreach ($matches as $pid => $att) {
+                $startpos = strpos($part->body, $att[1]) + strlen($att[1]) + 1; // "\n"
+                $endpos = strpos($part->body, $uu_endstring);
+                $filebody = substr($part->body, $startpos, $endpos-$startpos);
+
+                // remove attachments bodies from the message body
+                $part->body = substr_replace($part->body, "", $startpos, $endpos+strlen($uu_endstring)-$startpos);
+
                 $uupart = new rcube_message_part;
 
                 $uupart->filename = trim($att[1]);
                 $uupart->encoding = 'stream';
-                $uupart->body     = convert_uudecode($att[2]);
+                $uupart->body     = convert_uudecode($filebody);
                 $uupart->size     = strlen($uupart->body);
                 $uupart->mime_id  = 'uu.' . $part->mime_id . '.' . $pid;
 
@@ -650,6 +712,9 @@ class rcube_message
                 $parts[] = $uupart;
                 unset($matches[$pid]);
             }
+
+            // remove attachments bodies from the message body
+            $part->body = preg_replace($uu_regexp, '', $part->body);
         }
 
         return $parts;
@@ -657,92 +722,17 @@ class rcube_message
 
 
     /**
-     * Interpret a format=flowed message body according to RFC 2646
-     *
-     * @param string  $text Raw body formatted as flowed text
-     * @return string Interpreted text with unwrapped lines and stuffed space removed
+     * Deprecated methods (to be removed)
      */
+
     public static function unfold_flowed($text)
     {
-        $text = preg_split('/\r?\n/', $text);
-        $last = -1;
-        $q_level = 0;
-
-        foreach ($text as $idx => $line) {
-            if ($line[0] == '>' && preg_match('/^(>+\s*)/', $line, $regs)) {
-                $q = strlen(str_replace(' ', '', $regs[0]));
-                $line = substr($line, strlen($regs[0]));
-
-                if ($q == $q_level && $line
-                    && isset($text[$last])
-                    && $text[$last][strlen($text[$last])-1] == ' '
-                ) {
-                    $text[$last] .= $line;
-                    unset($text[$idx]);
-                }
-                else {
-                    $last = $idx;
-                }
-            }
-            else {
-                $q = 0;
-                if ($line == '-- ') {
-                    $last = $idx;
-                }
-                else {
-                    // remove space-stuffing
-                    $line = preg_replace('/^\s/', '', $line);
-
-                    if (isset($text[$last]) && $line
-                        && $text[$last] != '-- '
-                        && $text[$last][strlen($text[$last])-1] == ' '
-                    ) {
-                        $text[$last] .= $line;
-                        unset($text[$idx]);
-                    }
-                    else {
-                        $text[$idx] = $line;
-                        $last = $idx;
-                    }
-                }
-            }
-            $q_level = $q;
-        }
-
-        return implode("\r\n", $text);
+        return rcube_mime::unfold_flowed($text);
     }
 
-
-    /**
-     * Wrap the given text to comply with RFC 2646
-     *
-     * @param string $text Text to wrap
-     * @param int $length Length
-     * @return string Wrapped text
-     */
     public static function format_flowed($text, $length = 72)
     {
-        $text = preg_split('/\r?\n/', $text);
-
-        foreach ($text as $idx => $line) {
-            if ($line != '-- ') {
-                if ($line[0] == '>' && preg_match('/^(>+)/', $line, $regs)) {
-                    $prefix = $regs[0];
-                    $level = strlen($prefix);
-                    $line  = rtrim(substr($line, $level));
-                    $line  = $prefix . rc_wordwrap($line, $length - $level - 2, " \r\n$prefix ");
-                }
-                else if ($line) {
-                    $line = rc_wordwrap(rtrim($line), $length - 2, " \r\n");
-                    // space-stuffing
-                    $line = preg_replace('/(^|\r\n)(From| |>)/', '\\1 \\2', $line);
-                }
-
-                $text[$idx] = $line;
-            }
-        }
-
-        return implode("\r\n", $text);
+        return rcube_mime::format_flowed($text, $length);
     }
 
 }

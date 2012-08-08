@@ -1,7 +1,7 @@
 <?php
 /**
  * Filesystem Attachments
- * 
+ *
  * This plugin which provides database backed storage for temporary
  * attachment file handling.  The primary advantage of this plugin
  * is its compatibility with round-robin dns multi-server roundcube
@@ -10,7 +10,8 @@
  * This plugin relies on the core filesystem_attachments plugin
  *
  * @author Ziba Scott <ziba@umich.edu>
- * 
+ * @author Aleksander Machniak <alec@alec.pl>
+ * @version @package_version@
  */
 require_once('plugins/filesystem_attachments/filesystem_attachments.php');
 class database_attachments extends filesystem_attachments

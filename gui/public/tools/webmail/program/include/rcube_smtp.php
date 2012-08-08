@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Provide SMTP functionality using socket connections                 |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_smtp.php 5499 2011-11-28 09:03:27Z alec $
+ $Id$
 
 */
 
@@ -50,13 +53,13 @@ class rcube_smtp
   public function connect($host=null, $port=null, $user=null, $pass=null)
   {
     $RCMAIL = rcmail::get_instance();
-  
+
     // disconnect/destroy $this->conn
     $this->disconnect();
-    
+
     // reset error/response var
     $this->error = $this->response = null;
-  
+
     // let plugins alter smtp connection config
     $CONFIG = $RCMAIL->plugins->exec_hook('smtp_connect', array(
       'smtp_server'    => $host ? $host : $RCMAIL->config->get('smtp_server'),
@@ -68,6 +71,7 @@ class rcube_smtp
       'smtp_auth_type' => $RCMAIL->config->get('smtp_auth_type'),
       'smtp_helo_host' => $RCMAIL->config->get('smtp_helo_host'),
       'smtp_timeout'   => $RCMAIL->config->get('smtp_timeout'),
+      'smtp_auth_callbacks' => array(),
     ));
 
     $smtp_host = rcube_parse_host($CONFIG['smtp_server']);
@@ -107,6 +111,14 @@ class rcube_smtp
 
     if ($RCMAIL->config->get('smtp_debug'))
       $this->conn->setDebug(true, array($this, 'debug_handler'));
+
+    // register authentication methods
+    if (!empty($CONFIG['smtp_auth_callbacks']) && method_exists($this->conn, 'setAuthMethod')) {
+      foreach ($CONFIG['smtp_auth_callbacks'] as $callback) {
+        $this->conn->setAuthMethod($callback['name'], $callback['function'],
+          isset($callback['prepend']) ? $callback['prepend'] : true);
+      }
+    }
 
     // try to connect to server and exit on failure
     $result = $this->conn->connect($smtp_timeout);

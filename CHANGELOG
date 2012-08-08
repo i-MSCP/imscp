@@ -10,7 +10,9 @@ GUI:
 	Libs:
 		- Updated Zend Framework to 1.11.12
 		- Updated Net_DNS to Net_DNS2
-
+	
+	Tools:
+		- Updated Roundcube to 0.8
 
 Tickets:
 	- Fixed #453: Wrong Support Ticket System Mailer template

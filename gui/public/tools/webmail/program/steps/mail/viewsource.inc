@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Display a mail message similar as a usual mail application does     |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: viewsource.inc 4410 2011-01-12 18:25:02Z thomasb $
+ $Id$
 
 */
 
@@ -24,12 +27,13 @@ ob_end_clean();
 // similar code as in program/steps/mail/get.inc
 if ($uid = get_input_value('_uid', RCUBE_INPUT_GET))
 {
-  $headers = $IMAP->get_headers($uid);
+  $headers = $RCMAIL->storage->get_message_headers($uid);
   $charset = $headers->charset ? $headers->charset : $CONFIG['default_charset'];
   header("Content-Type: text/plain; charset={$charset}");
 
   if (!empty($_GET['_save'])) {
-    $filename = ($headers->subject ? $IMAP->decode_header($headers->subject) : 'roundcube') . '.eml';
+    $subject = rcube_mime::decode_header($headers->subject, $headers->charset);
+    $filename = ($subject ? $subject : $RCMAIL->config->get('product_name', 'email')) . '.eml';
     $browser = $RCMAIL->output->browser;
 
     if ($browser->ie && $browser->ver < 7)
@@ -43,7 +47,7 @@ if ($uid = get_input_value('_uid', RCUBE_INPUT_GET))
     header("Content-Disposition: attachment; filename=\"$filename\"");
   }
 
-  $IMAP->print_raw_body($uid);
+  $RCMAIL->storage->print_raw_body($uid);
 }
 else
 {

@@ -11,7 +11,7 @@ if (window.rcmail) {
         rcmail.enable_command('managesieve-create', true);
     }
     else {
-      var tab = $('<span>').attr('id', 'settingstabpluginmanagesieve').addClass('tablink'),
+      var tab = $('<span>').attr('id', 'settingstabpluginmanagesieve').addClass('tablink filter'),
         button = $('<a>').attr('href', rcmail.env.comm_path+'&_action=plugin.managesieve')
           .attr('title', rcmail.gettext('managesieve.managefilters'))
           .html(rcmail.gettext('managesieve.filters'))
@@ -674,7 +674,8 @@ rcube_webmail.prototype.managesieve_tip_register = function(tips)
         function(e) {
           var offset = $(this).offset(),
             left = offset.left,
-            top = offset.top - 12;
+            top = offset.top - 12,
+            minwidth = $(this).width();
 
           if (framed) {
             offset = $((rcmail.env.task == 'mail'  ? '#sievefilterform > iframe' : '#filter-box'), parent.document).offset();
@@ -685,7 +686,7 @@ rcube_webmail.prototype.managesieve_tip_register = function(tips)
           tip.html(e.data.str)
           top -= tip.height();
 
-          tip.css({left: left, top: top}).show();
+          tip.css({left: left, top: top, minWidth: (minwidth-2) + 'px'}).show();
         })
       .bind('mouseleave', function(e) { tip.hide(); });
   }
@@ -778,9 +779,10 @@ rcube_webmail.prototype.managesieve_dialog_resize = function(o)
 {
   var dialog = this.env.managesieve_dialog,
     win = $(window), form = $(o);
-    width = form.width(), height = form.height(),
+    width = $('fieldset:first', o).width(), // fieldset width is more appropriate here
+    height = form.height(),
     w = win.width(), h = win.height();
 
   dialog.dialog('option', { height: Math.min(h-20, height+120), width: Math.min(w-20, width+65) })
-    .dialog('option', 'position', ['center', 'center']);  // only works in a separate call (!?)
+    .dialog('option', 'position', ['center', 'center']);  // works in a separate call only (!?)
 }

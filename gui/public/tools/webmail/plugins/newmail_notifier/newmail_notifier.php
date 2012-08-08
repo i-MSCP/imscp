@@ -9,7 +9,7 @@
  * 3. Desktop - display desktop notification (using webkitNotifications feature,
  *              supported by Chrome and Firefox with 'HTML5 Notifications' plugin)
  *
- * @version 0.4
+ * @version @package_version@
  * @author Aleksander Machniak <alec@alec.pl>
  *
  *
@@ -139,8 +139,10 @@ class newmail_notifier extends rcube_plugin
 
         // Get folders to skip checking for
         if (empty($this->exceptions)) {
-            $this->delimiter = $this->rc->imap->get_hierarchy_delimiter();
-            foreach (array('drafts_mbox', 'sent_mbox') as $folder) {
+            $this->delimiter = $this->rc->storage->get_hierarchy_delimiter();
+
+            $exceptions = array('drafts_mbox', 'sent_mbox', 'trash_mbox');
+            foreach ($exceptions as $folder) {
                 $folder = $this->rc->config->get($folder);
                 if (strlen($folder) && $folder != 'INBOX') {
                     $this->exceptions[] = $folder;

@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Compose a new mail message with all headers and attachments         |
@@ -16,7 +19,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: sendmail.inc 5952 2012-03-03 13:20:14Z alec $
+ $Id$
 
 */
 
@@ -72,9 +75,9 @@ function rcmail_encrypt_header($what)
 // get identity record
 function rcmail_get_identity($id)
 {
-  global $USER, $OUTPUT;
+  global $RCMAIL, $OUTPUT;
 
-  if ($sql_arr = $USER->get_identity($id)) {
+  if ($sql_arr = $RCMAIL->user->get_identity($id)) {
     $out = $sql_arr;
     $out['mailto'] = $sql_arr['email'];
     $out['string'] = format_email_recipient($sql_arr['email'],
@@ -401,6 +404,15 @@ $isHtml = (bool) get_input_value('_is_html', RCUBE_INPUT_POST);
 // fetch message body
 $message_body = get_input_value('_message', RCUBE_INPUT_POST, TRUE, $message_charset);
 
+if ($isHtml) {
+  $font   = rcube_fontdefs($RCMAIL->config->get('default_font', 'Verdana'));
+  $bstyle = $font && is_string($font) ? " style='font-family: $font'" : '';
+
+  // append doctype and html/body wrappers
+  $message_body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">' .
+    "\r\n<html><body$bstyle>\r\n" . $message_body;
+}
+
 if (!$savedraft) {
   if ($isHtml) {
     // remove signature's div ID
@@ -410,10 +422,6 @@ if (!$savedraft) {
     $bstyle = 'padding-left:5px; border-left:#1010ff 2px solid; margin-left:5px; width:100%';
     $message_body = preg_replace('/<blockquote>/',
       '<blockquote type="cite" style="'.$bstyle.'">', $message_body);
-
-    // append doctype and html/body wrappers
-    $message_body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">' .
-      "\r\n<html><body>\r\n" . $message_body;
   }
 
   // Check spelling before send
@@ -447,8 +455,10 @@ if (!$savedraft) {
 
   if ($footer)
     $message_body .= "\r\n" . $footer;
-  if ($isHtml)
-    $message_body .= "\r\n</body></html>\r\n";
+}
+
+if ($isHtml) {
+  $message_body .= "\r\n</body></html>\r\n";
 }
 
 // set line length for body wrapping
@@ -517,7 +527,7 @@ else {
 
   // compose format=flowed content if enabled
   if ($flowed = $RCMAIL->config->get('send_format_flowed', true))
-    $message_body = rcube_message::format_flowed($message_body, min($LINE_LENGTH+2, 79));
+    $message_body = rcube_mime::format_flowed($message_body, min($LINE_LENGTH+2, 79));
   else
     $message_body = rc_wordwrap($message_body, $LINE_LENGTH, "\r\n");
 
@@ -631,9 +641,9 @@ if (!$savedraft)
 
   // set replied/forwarded flag
   if ($COMPOSE['reply_uid'])
-    $IMAP->set_flag($COMPOSE['reply_uid'], 'ANSWERED', $COMPOSE['mailbox']);
+    $RCMAIL->storage->set_flag($COMPOSE['reply_uid'], 'ANSWERED', $COMPOSE['mailbox']);
   else if ($COMPOSE['forward_uid'])
-    $IMAP->set_flag($COMPOSE['forward_uid'], 'FORWARDED', $COMPOSE['mailbox']);
+    $RCMAIL->storage->set_flag($COMPOSE['forward_uid'], 'FORWARDED', $COMPOSE['mailbox']);
 
 } // End of SMTP Delivery Block
 
@@ -646,12 +656,12 @@ else
 
 if ($store_target) {
   // check if folder is subscribed
-  if ($IMAP->mailbox_exists($store_target, true))
+  if ($RCMAIL->storage->folder_exists($store_target, true))
     $store_folder = true;
   // folder may be existing but not subscribed (#1485241)
-  else if (!$IMAP->mailbox_exists($store_target))
-    $store_folder = $IMAP->create_mailbox($store_target, true);
-  else if ($IMAP->subscribe($store_target))
+  else if (!$RCMAIL->storage->folder_exists($store_target))
+    $store_folder = $RCMAIL->storage->create_folder($store_target, true);
+  else if ($RCMAIL->storage->subscribe($store_target))
     $store_folder = true;
 
   // append message to sent box
@@ -681,35 +691,37 @@ if ($store_target) {
             'message' => "Could not create message: ".$msg->getMessage()),
             TRUE, FALSE);
     else {
-      $saved = $IMAP->save_message($store_target, $msg, $headers, $mailbody_file ? true : false);
+      $saved = $RCMAIL->storage->save_message($store_target, $msg, $headers, $mailbody_file ? true : false);
     }
 
     if ($mailbody_file) {
       unlink($mailbody_file);
       $mailbody_file = null;
     }
+  }
 
-    // raise error if saving failed
-    if (!$saved) {
-      raise_error(array('code' => 800, 'type' => 'imap',
-	    'file' => __FILE__, 'line' => __LINE__,
-            'message' => "Could not save message in $store_target"), TRUE, FALSE);
+  // raise error if saving failed
+  if (!$saved) {
+    raise_error(array('code' => 800, 'type' => 'imap',
+       'file' => __FILE__, 'line' => __LINE__,
+       'message' => "Could not save message in $store_target"), TRUE, FALSE);
 
-      if ($savedraft) {
-        $OUTPUT->show_message('errorsaving', 'error');
-        $OUTPUT->send('iframe');
-      }
+    if ($savedraft) {
+      $OUTPUT->show_message('errorsaving', 'error');
+      // start the auto-save timer again
+      $OUTPUT->command('auto_save_start');
+      $OUTPUT->send('iframe');
     }
   }
 
   if ($olddraftmessageid) {
     // delete previous saved draft
     // @TODO: use message UID (remember to check UIDVALIDITY) to skip this SEARCH
-    $a_deleteid = $IMAP->search_once($CONFIG['drafts_mbox'],
-        'HEADER Message-ID '.$olddraftmessageid, true);
+    $delete_idx = $RCMAIL->storage->search_once($CONFIG['drafts_mbox'],
+        'HEADER Message-ID '.$olddraftmessageid);
 
-    if (!empty($a_deleteid)) {
-      $deleted = $IMAP->delete_message($a_deleteid, $CONFIG['drafts_mbox']);
+    if ($del_uid = $delete_idx->get_element('FIRST')) {
+      $deleted = $RCMAIL->storage->delete_message($del_uid, $CONFIG['drafts_mbox']);
 
       // raise error if deletion of old draft failed
       if (!$deleted)
@@ -730,8 +742,8 @@ if ($savedraft) {
 
   // remember new draft-uid ($saved could be an UID or TRUE here)
   if (is_bool($saved)) {
-    $draftuids = $IMAP->search_once($CONFIG['drafts_mbox'], 'HEADER Message-ID '.$msgid, true);
-    $saved     = $draftuids[0];
+    $draft_idx = $RCMAIL->storage->search_once($CONFIG['drafts_mbox'], 'HEADER Message-ID '.$msgid);
+    $saved     = $draft_idx->get_element('FIRST');
   }
   $COMPOSE['param']['draft_uid'] = $saved;
   $plugin = $RCMAIL->plugins->exec_hook('message_draftsaved', array('msgid' => $msgid, 'uid' => $saved, 'folder' => $store_target));

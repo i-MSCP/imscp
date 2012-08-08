@@ -5,50 +5,53 @@
  *
  * Driver to change passwords via DirectAdmin Control Panel
  *
- * @version 1.2
+ * @version 2.1
  * @author Victor Benincasa <vbenincasa@gmail.com>
  *
  */
 
+class rcube_directadmin_password
+{
+    public function save($curpass, $passwd)
+    {
+        $rcmail = rcmail::get_instance();
+        $Socket = new HTTPSocket;
 
-function password_save($curpass, $passwd){
+        $da_user    = $_SESSION['username'];
+        $da_curpass = $curpass;
+        $da_newpass = $passwd;
+        $da_host    = $rcmail->config->get('password_directadmin_host');
+        $da_port    = $rcmail->config->get('password_directadmin_port');
 
-    $rcmail = rcmail::get_instance();
-    $Socket = new HTTPSocket;
+        if (strpos($da_user, '@') === false) {
+            return array('code' => PASSWORD_ERROR, 'message' => 'Change the SYSTEM user password through control panel!');
+        }
 
-    $da_user    = $_SESSION['username'];
-    $da_curpass = $curpass;
-    $da_newpass = $passwd;
-    $da_host    = $rcmail->config->get('password_directadmin_host');
-    $da_port    = $rcmail->config->get('password_directadmin_port');
+        $da_host = str_replace('%h', $_SESSION['imap_host'], $da_host);
+        $da_host = str_replace('%d', $rcmail->user->get_username('domain'), $da_host);
 
-    if(strpos($da_user, '@') === false) return array('code' => PASSWORD_ERROR, 'message' => 'Change the SYSTEM user password through control panel!');
+        $Socket->connect($da_host,$da_port); 
+        $Socket->set_method('POST');
+        $Socket->query('/CMD_CHANGE_EMAIL_PASSWORD',
+            array(
+                'email' 		=> $da_user,
+                'oldpassword' 	=> $da_curpass,
+                'password1' 	=> $da_newpass,
+                'password2' 	=> $da_newpass,
+                'api' 			=> '1'
+            ));
+        $response = $Socket->fetch_parsed_body();
 
-    $da_host = str_replace('%h', $_SESSION['imap_host'], $da_host);
-    $da_host = str_replace('%d', $rcmail->user->get_username('domain'), $da_host);
+        //DEBUG
+        //console("Password Plugin: [USER: $da_user] [HOST: $da_host] - Response: [SOCKET: ".$Socket->result_status_code."] [DA ERROR: ".strip_tags($response['error'])."] [TEXT: ".$response[text]."]");
 
-    $Socket->connect($da_host,$da_port); 
-    $Socket->set_method('POST');
-    $Socket->query('/CMD_CHANGE_EMAIL_PASSWORD',
-        array(
-            'email' 		=> $da_user,
-            'oldpassword' 	=> $da_curpass,
-            'password1' 	=> $da_newpass,
-            'password2' 	=> $da_newpass,
-            'api' 			=> '1'
-    ));
-    $response = $Socket->fetch_parsed_body();
-
-    //DEBUG
-    //console("Password Plugin: [USER: $da_user] [HOST: $da_host] - Response: [SOCKET: ".$Socket->result_status_code."] [DA ERROR: ".strip_tags($response['error'])."] [TEXT: ".$response[text]."]");
-
-    if($Socket->result_status_code != 200)
-        return array('code' => PASSWORD_CONNECT_ERROR, 'message' => $Socket->error[0]);
-    elseif($response['error'] == 1)
-        return array('code' => PASSWORD_ERROR, 'message' => strip_tags($response['text']));
-    else 
-        return PASSWORD_SUCCESS;
-
+        if($Socket->result_status_code != 200)
+            return array('code' => PASSWORD_CONNECT_ERROR, 'message' => $Socket->error[0]);
+        elseif($response['error'] == 1)
+            return array('code' => PASSWORD_ERROR, 'message' => strip_tags($response['text']));
+        else
+            return PASSWORD_SUCCESS;
+    }
 }
 
 
@@ -59,15 +62,16 @@ function password_save($curpass, $passwd){
  *
  * Very, very basic usage:
  *   $Socket = new HTTPSocket;
- *   echo $Socket->get('http://user:pass@somesite.com/somedir/some.file?query=string&this=that');
+ *   echo $Socket->get('http://user:pass@somehost.com:2222/CMD_API_SOMEAPI?query=string&this=that');
  *
  * @author Phi1 'l0rdphi1' Stier <l0rdphi1@liquenox.net>
+ * @updates 2.7 and 2.8 by Victor Benincasa <vbenincasa @ gmail.com>
  * @package HTTPSocket
- * @version 2.7 (Updated by Victor Benincasa <vbenincasa@gmail.com>)
+ * @version 2.8
  */
 class HTTPSocket {
 
-    var $version = '2.7';
+    var $version = '2.8';
     
     /* all vars are private except $error, $query_cache, and $doFollowLocationHeader */
 
@@ -104,7 +108,7 @@ class HTTPSocket {
     {
         if (!is_numeric($port))
         {
-            $port = 80;
+            $port = 2222;
         }
 
         $this->remote_host = $host;
@@ -163,8 +167,8 @@ class HTTPSocket {
         $this->error = $this->warn = array();
         $this->result_status_code = NULL;
 
-        // is our request a http:// ... ?
-        if (preg_match('!^http://!i',$request))
+        // is our request a http(s):// ... ?
+        if (preg_match('/^(http|https):\/\//i',$request))
         {
             $location = parse_url($request);
             $this->connect($location['host'],$location['port']);
@@ -182,7 +186,7 @@ class HTTPSocket {
 
         $array_headers = array(
             'User-Agent' => "HTTPSocket/$this->version",
-            'Host' => ( $this->remote_port == 80 ? $this->remote_host : "$this->remote_host:$this->remote_port" ),
+            'Host' => ( $this->remote_port == 80 ? parse_url($this->remote_host,PHP_URL_HOST) : parse_url($this->remote_host,PHP_URL_HOST).":".$this->remote_port ),
             'Accept' => '*/*',
             'Connection' => 'Close' );
 
@@ -485,5 +489,3 @@ class HTTPSocket {
     }
 
 }
-
-?>

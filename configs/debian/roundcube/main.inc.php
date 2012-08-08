@@ -102,6 +102,9 @@ $rcmail_config['imap_force_caps'] = false;
 // for shared namespaces in this case. http://trac.roundcube.net/ticket/1486225
 // Enable this option to force LSUB command usage instead.
 $rcmail_config['imap_force_lsub'] = true;
+// Some server configurations (e.g. Courier) doesn't list folders in all namespaces
+// Enable this option to force listing of folders in all namespaces
+$rcmail_config['imap_force_ns'] = false;
 
 // IMAP connection timeout, in seconds. Default: 0 (no limit)
 $rcmail_config['imap_timeout'] = 0;
@@ -134,7 +137,8 @@ $rcmail_config['messages_cache'] = false;
 // For example %n = mail.domain.tld, %d = domain.tld
 $rcmail_config['smtp_server'] = 'smtp.{BASE_SERVER_VHOST}';
 
-// SMTP port (default is 25; 465 for SSL)
+// SMTP port (default is 25; use 587 for STARTTLS or 465 for the
+// deprecated SSL over SMTP (aka SMTPS))
 $rcmail_config['smtp_port'] = 25;
 
 // SMTP username (if required) if you use %u as the username Roundcube
@@ -172,6 +176,20 @@ $rcmail_config['smtp_timeout'] = 0;
 // ONLY ENABLE IT IF YOU'RE REALLY SURE WHAT YOU'RE DOING!
 $rcmail_config['enable_installer'] = false;
 
+// provide an URL where a user can get support for this Roundcube installation
+// PLEASE DO NOT LINK TO THE ROUNDCUBE.NET WEBSITE HERE!
+$rcmail_config['support_url'] = '';
+
+
+
+
+
+
+
+
+
+
+
 // use this folder to store log files (must be writeable for apache user)
 // This is used by the 'file' log driver.
 $rcmail_config['log_dir'] = 'logs/';
@@ -191,6 +209,7 @@ $rcmail_config['force_https'] = false;
 // tell PHP that it should work as under secure connection
 // even if it doesn't recognize it as secure ($_SERVER['HTTPS'] is not set)
 // e.g. when you're running Roundcube behind a https proxy
+// this option is mutually exclusive to 'force_https' and only either one of them should be set to true.
 $rcmail_config['use_https'] = false;
 
 // Allow browser-autocompletion on login form.
@@ -215,6 +234,8 @@ $rcmail_config['skin_logo'] = null;
 // Includes should be interpreted as PHP files
 $rcmail_config['skin_include_php'] = false;
 
+// display software version on login screen
+$rcmail_config['display_version'] = false;
 // Session lifetime in minutes
 // must be greater than 'keep_alive'/60
 $rcmail_config['session_lifetime'] = 10;
@@ -231,8 +252,8 @@ $rcmail_config['session_name'] = null;
 $rcmail_config['session_storage'] = 'db';
 
 // Use these hosts for accessing memcached
-// Define any number of hosts in the form hostname:port
-$rcmail_config['memcache_hosts'] = null; // e.g. array( 'localhost:11211', '192.168.1.12:11211' );
+// Define any number of hosts in the form of hostname:port or unix:///path/to/sock.file
+$rcmail_config['memcache_hosts'] = null; // e.g. array( 'localhost:11211', '192.168.1.12:11211', 'unix:///var/tmp/memcached.sock' );
 
 // check client IP in session athorization
 $rcmail_config['ip_check'] = false;
@@ -572,21 +593,36 @@ $rcmail_config['ldap_public']['Verisign'] = array(
   'required_fields' => array('cn', 'sn', 'mail'),
   'search_fields'   => array('mail', 'cn'),  // fields to search in
   // mapping of contact fields to directory attributes
+  //   for every attribute one can specify the number of values (limit) allowed.
+  //   default is 1, a wildcard * means unlimited
   'fieldmap' => array(
-    // Roundcube  => LDAP
+    // Roundcube  => LDAP:limit
     'name'        => 'cn',
     'surname'     => 'sn',
     'firstname'   => 'givenName',
-    'email'       => 'mail',
+    'title'       => 'title',
+    'email'       => 'mail:*',
     'phone:home'  => 'homePhone',
     'phone:work'  => 'telephoneNumber',
     'phone:mobile' => 'mobile',
+    'phone:pager' => 'pager',
     'street'      => 'street',
     'zipcode'     => 'postalCode',
+    'region'      => 'st',
     'locality'    => 'l',
-    'country'     => 'c',
-    'organization' => 'o',
+// if you uncomment country, you need to modify 'sub_fields' above
+//    'country'     => 'c',
+    'department'  => 'departmentNumber',
+    'notes'       => 'description',
+// these currently don't work:
+//    'phone:workfax' => 'facsimileTelephoneNumber',
+//    'photo'        => 'jpegPhoto',
+//    'organization' => 'o',
+//    'manager'      => 'manager',
+//    'assistant'    => 'secretary',
   ),
+// Map of contact sub-objects (attribute name => objectClass(es)), e.g. 'c' => 'country'
+  'sub_fields' => array(),
   'sort'          => 'cn',    // The field to sort the listing by.
   'scope'         => 'sub',   // search mode: sub|base|list
   'filter'        => '(objectClass=inetOrgPerson)',      // used for basic listing (if not empty) and will be &'d with search queries. example: status=act
@@ -603,6 +639,7 @@ $rcmail_config['ldap_public']['Verisign'] = array(
   // -> in this case, assure that groups and contacts are separated due to the concernig filters!
   'groups'        => array(
     'base_dn'     => '',
+	'scope'       => 'sub',   // search mode: sub|base|list
     'filter'      => '(objectClass=groupOfNames)',
     'object_classes' => array("top", "groupOfNames"),
     'member_attr'  => 'member',   // name of the member attribute, e.g. uniqueMember
@@ -648,12 +685,26 @@ $rcmail_config['addressbook_search_mode'] = 0;
 $rcmail_config['default_charset'] = 'ISO-8859-1';
 
 // skin name: folder from skins/
-$rcmail_config['skin'] = 'default';
+$rcmail_config['skin'] = 'larry';
+// show up to X items in messages list view
+$rcmail_config['mail_pagesize'] = 50;
 
-// show up to X items in list view
-$rcmail_config['pagesize'] = 40;
+// show up to X items in contacts list view
+$rcmail_config['addressbook_pagesize'] = 50;
+
+// sort contacts by this col (preferably either one of name, firstname, surname)
+$rcmail_config['addressbook_sort_col'] = 'surname';
+
+// the way how contact names are displayed in the list
+// 0: display name
+// 1: (prefix) firstname middlename surname (suffix)
+// 2: (prefix) surname firstname middlename (suffix)
+// 3: (prefix) surname, firstname middlename (suffix)
+$rcmail_config['addressbook_name_listing'] = 0;
 
 // use this timezone to display date/time
+// valid timezone identifers are listed here: php.net/manual/en/timezones.php
+// 'auto' will use the browser's timezone settings
 $rcmail_config['timezone'] = 'auto';
 
 // is daylight saving On? Default: (bool)date('I');
@@ -761,6 +812,8 @@ $rcmail_config['addressbook_search_mods'] = null;  // Example: array('name'=>1, 
 // when user is over quota and Trash is included in the quota.
 $rcmail_config['delete_always'] = false;
 
+// Directly delete messages in Junk instead of moving to Trash
+$rcmail_config['delete_junk'] = false;
 // Behavior if a received message requests a message delivery notification (read receipt)
 // 0 = ask the user, 1 = send automatically, 2 = ignore (never send or ask)
 // 3 = send automatically if sender is in addressbook, otherwise ask the user
@@ -790,4 +843,8 @@ $rcmail_config['spellcheck_before_send'] = false;
 // Skip alternative email addresses in autocompletion (show one address per contact)
 $rcmail_config['autocomplete_single'] = false;
 
+// Default font for composed HTML message.
+// Supported values: Andale Mono, Arial, Arial Black, Book Antiqua, Courier New,
+// Georgia, Helvetica, Impact, Tahoma, Terminal, Times New Roman, Trebuchet MS, Verdana
+$rcmail_config['default_font'] = '';
 // end of config file

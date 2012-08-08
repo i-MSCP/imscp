@@ -5,8 +5,11 @@
  | program/include/rcube_contacts.php                                    |
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
- | Copyright (C) 2006-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ | Copyright (C) 2006-2012, The Roundcube Dev Team                       |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Interface to the local address book database                        |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_contacts.php 5873 2012-02-11 13:50:04Z thomasb $
+ $Id$
 
 */
 
@@ -31,6 +34,7 @@ class rcube_contacts extends rcube_addressbook
     protected $db_name = 'contacts';
     protected $db_groups = 'contactgroups';
     protected $db_groupmembers = 'contactgroupmembers';
+    protected $vcard_fieldmap = array();
 
     /**
      * Store database connection.
@@ -696,7 +700,7 @@ class rcube_contacts extends rcube_addressbook
 
         if ($sql_arr['vcard']) {
             unset($sql_arr['email']);
-            $vcard = new rcube_vcard($sql_arr['vcard']);
+            $vcard = new rcube_vcard($sql_arr['vcard'], RCMAIL_CHARSET, false, $this->vcard_fieldmap);
             $record += $vcard->get_assoc() + $sql_arr;
         }
         else {
@@ -715,7 +719,7 @@ class rcube_contacts extends rcube_addressbook
         $words = '';
 
         // copy values into vcard object
-        $vcard = new rcube_vcard($record['vcard'] ? $record['vcard'] : $save_data['vcard']);
+        $vcard = new rcube_vcard($record['vcard'] ? $record['vcard'] : $save_data['vcard'], RCMAIL_CHARSET, false, $this->vcard_fieldmap);
         $vcard->reset();
         foreach ($save_data as $key => $values) {
             list($field, $section) = explode(':', $key);
@@ -879,7 +883,7 @@ class rcube_contacts extends rcube_addressbook
      * @param string New name to set for this group
      * @return boolean New name on success, false if no data was changed
      */
-    function rename_group($gid, $newname)
+    function rename_group($gid, $newname, &$new_gid)
     {
         // make sure we have a unique name
         $name = $this->unique_groupname($newname);
@@ -933,7 +937,9 @@ class rcube_contacts extends rcube_addressbook
                 $contact_id
             );
 
-            if (!$this->db->db_error)
+            if ($this->db->db_error)
+                $this->set_error(self::ERROR_SAVING, $this->db->db_error_msg);
+            else
                 $added++;
         }
 

@@ -16,14 +16,14 @@
 	<date>2010-03-29</date>
 	<time>13:20:00</time>
 	<version>
-		<release>1.0</release>
-		<api>1.0</api>
+		<release>1.1</release>
+		<api>1.1</api>
 	</version>
 	<stability>
 		<release>stable</release>
 		<api>stable</api>
 	</stability>
-	<license uri="http://www.gnu.org/licenses/gpl-2.0.html">GNU GPLv2</license>
+	<license uri="http://www.gnu.org/licenses/gpl.html">GNU GPLv3+</license>
 	<notes>-</notes>
 	<contents>
 		<dir baseinstalldir="/" name="/">
@@ -43,13 +43,15 @@
 			<file name="localization/es_ES.inc" role="data"></file>
 			<file name="localization/et_EE.inc" role="data"></file>
 			<file name="localization/gl_ES.inc" role="data"></file>
+			<file name="localization/it_IT.inc" role="data"></file>
 			<file name="localization/ja_JP.inc" role="data"></file>
 			<file name="localization/pl_PL.inc" role="data"></file>
 			<file name="localization/ru_RU.inc" role="data"></file>
+			<file name="localization/sk_SK.inc" role="data"></file>
 			<file name="localization/sv_SE.inc" role="data"></file>
 			<file name="localization/zh_TW.inc" role="data"></file>
-			<file name="skins/default/junk_act.png" role="data"></file>
-			<file name="skins/default/junk_pas.png" role="data"></file>
+			<file name="skins/classic/junk_act.png" role="data"></file>
+			<file name="skins/classic/junk_pas.png" role="data"></file>
 		</dir>
 		<!-- / -->
 	</contents>

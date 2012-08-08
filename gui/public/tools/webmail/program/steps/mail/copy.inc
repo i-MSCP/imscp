@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2010, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Copy the submitted messages to a specific mailbox                   |
@@ -15,7 +18,7 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: copy.inc 4410 2011-01-12 18:25:02Z thomasb $
+ $Id$
 
 */
 
@@ -29,7 +32,7 @@ if (!empty($_POST['_uid']) && !empty($_POST['_target_mbox'])) {
     $target = get_input_value('_target_mbox', RCUBE_INPUT_POST, true);
     $mbox = get_input_value('_mbox', RCUBE_INPUT_POST, true);
 
-    $copied = $IMAP->copy_message($uids, $target, $mbox);
+    $copied = $RCMAIL->storage->copy_message($uids, $target, $mbox);
 
     if (!$copied) {
         // send error message

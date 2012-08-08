@@ -7,7 +7,10 @@
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2011, Kolab Systems AG                                  |
  | Copyright (C) 2008-2011, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Spellchecking using different backends                              |
@@ -17,7 +20,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_spellchecker.php 5181 2011-09-06 13:39:45Z alec $
+ $Id$
 
 */
 
@@ -56,13 +59,6 @@ class rcube_spellchecker
         $this->rc     = rcmail::get_instance();
         $this->engine = $this->rc->config->get('spellcheck_engine', 'googie');
         $this->lang   = $lang ? $lang : 'en';
-
-        if ($this->engine == 'pspell' && !extension_loaded('pspell')) {
-            raise_error(array(
-                'code' => 500, 'type' => 'php',
-                'file' => __FILE__, 'line' => __LINE__,
-                'message' => "Pspell extension not available"), true, true);
-        }
 
         $this->options = array(
             'ignore_syms' => $this->rc->config->get('spellcheck_ignore_syms'),
@@ -235,8 +231,8 @@ class rcube_spellchecker
             else if (!pspell_check($this->plink, $word)) {
                 $suggestions = pspell_suggest($this->plink, $word);
 
-	            if (sizeof($suggestions) > self::MAX_SUGGESTIONS)
-	                $suggestions = array_slice($suggestions, 0, self::MAX_SUGGESTIONS);
+                if (sizeof($suggestions) > self::MAX_SUGGESTIONS)
+                    $suggestions = array_slice($suggestions, 0, self::MAX_SUGGESTIONS);
 
                 $matches[] = array($word, $pos, $len, null, $suggestions);
             }
@@ -321,6 +317,16 @@ class rcube_spellchecker
     private function _pspell_init()
     {
         if (!$this->plink) {
+            if (!extension_loaded('pspell')) {
+                $this->error = "Pspell extension not available";
+                raise_error(array(
+                    'code' => 500, 'type' => 'php',
+                    'file' => __FILE__, 'line' => __LINE__,
+                    'message' => $this->error), true, false);
+
+                return;
+            }
+
             $this->plink = pspell_new($this->lang, null, null, RCMAIL_CHARSET, PSPELL_FAST);
         }
 

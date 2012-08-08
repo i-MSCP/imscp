@@ -3,6 +3,9 @@
 /**
  * Sample plugin to try out some hooks.
  * This performs an automatic login if accessed from localhost
+ *
+ * @license GNU GPLv3+
+ * @author Thomas Bruederli
  */
 class autologon extends rcube_plugin
 {

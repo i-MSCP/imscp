@@ -7,7 +7,10 @@
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2011, The Roundcube Dev Team                            |
  | Copyright (C) 2011, Kolab Systems AG                                  |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Caching engine                                                      |
@@ -17,7 +20,7 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_cache.php 5305 2011-10-03 18:04:14Z alec $
+ $Id$
 
 */
 

@@ -2,28 +2,39 @@
 /*
  +-------------------------------------------------------------------------+
  | Roundcube Webmail IMAP Client                                           |
- | Version 0.7.1                                                           |
+ | Version 0.8.0                                                           |
  |                                                                         |
- | Copyright (C) 2005-2011, The Roundcube Dev Team                         |
+ | Copyright (C) 2005-2012, The Roundcube Dev Team                         |
  |                                                                         |
- | This program is free software; you can redistribute it and/or modify    |
- | it under the terms of the GNU General Public License version 2          |
- | as published by the Free Software Foundation.                           |
+ | This program is free software: you can redistribute it and/or modify    |
+ | it under the terms of the GNU General Public License (with exceptions   |
+ | for skins & plugins) as published by the Free Software Foundation,      |
+ | either version 3 of the License, or (at your option) any later version. |
+ |                                                                         |
+ | This file forms part of the Roundcube Webmail Software for which the    |
+ | following exception is added: Plugins and Skins which merely make       |
+ | function calls to the Roundcube Webmail Software, and for that purpose  |
+ | include it by reference shall not be considered modifications of        |
+ | the software.                                                           |
+ |                                                                         |
+ | If you wish to use this file in another project or create a modified    |
+ | version that will not be part of the Roundcube Webmail Software, you    |
+ | may remove the exception above and use this source code under the       |
+ | original version of the license.                                        |
  |                                                                         |
  | This program is distributed in the hope that it will be useful,         |
  | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
- | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the            |
  | GNU General Public License for more details.                            |
  |                                                                         |
- | You should have received a copy of the GNU General Public License along |
- | with this program; if not, write to the Free Software Foundation, Inc., |
- | 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.             |
+ | You should have received a copy of the GNU General Public License       |
+ | along with this program.  If not, see http://www.gnu.org/licenses/.     |
  |                                                                         |
  +-------------------------------------------------------------------------+
  | Author: Thomas Bruederli <roundcube@gmail.com>                          |
  +-------------------------------------------------------------------------+
 
- $Id: index.php 5738 2012-01-06 16:01:53Z thomasb $
+ $Id$
 
 */
 
@@ -48,7 +59,7 @@ if ($err_str = $RCMAIL->config->get_error()) {
 }
 
 // check DB connections and exit on failure
-if ($err_str = $DB->is_error()) {
+if ($err_str = $RCMAIL->db->is_error()) {
   raise_error(array(
     'code' => 603,
     'type' => 'db',
@@ -92,13 +103,9 @@ if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
     'valid' => $request_valid,
   ));
 
-  // check if client supports cookies
-  if ($auth['cookiecheck'] && empty($_COOKIE)) {
-    $OUTPUT->show_message("cookiesdisabled", 'warning');
-  }
-  else if ($auth['valid'] && !$auth['abort'] &&
-        !empty($auth['host']) && !empty($auth['user']) &&
-        $RCMAIL->login($auth['user'], $auth['pass'], $auth['host'])
+  // Login
+  if ($auth['valid'] && !$auth['abort'] &&
+    $RCMAIL->login($auth['user'], $auth['pass'], $auth['host'], $auth['cookiecheck'])
   ) {
     // create new session ID, don't destroy the current session
     // it was destroyed already by $RCMAIL->kill_session() above
@@ -119,6 +126,10 @@ if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
       // prevent endless looping on login page
       if ($query['_task'] == 'login')
         unset($query['_task']);
+
+      // prevent redirect to compose with specified ID (#1488226)
+      if ($query['_action'] == 'compose' && !empty($query['_id']))
+        $query = array();
     }
 
     // allow plugins to control the redirect url after login success
@@ -129,9 +140,23 @@ if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
     $OUTPUT->redirect($redir);
   }
   else {
-    $error_code = is_object($IMAP) ? $IMAP->get_error_code() : -1;
+    if (!$auth['valid']) {
+      $error_code  = RCMAIL::ERROR_INVALID_REQUEST;
+    }
+    else {
+      $error_code = $auth['error'] ? $auth['error'] : $RCMAIL->login_error();
+    }
 
-    $OUTPUT->show_message($error_code < -1 ? 'imaperror' : (!$auth['valid'] ? 'invalidrequest' : 'loginfailed'), 'warning');
+    $error_labels = array(
+      RCMAIL::ERROR_STORAGE          => 'storageerror',
+      RCMAIL::ERROR_COOKIES_DISABLED => 'cookiesdisabled',
+      RCMAIL::ERROR_INVALID_REQUEST  => 'invalidrequest',
+      RCMAIL::ERROR_INVALID_HOST     => 'invalidhost',
+    );
+
+    $error_message = $error_labels[$error_code] ? $error_labels[$error_code] : 'loginfailed';
+
+    $OUTPUT->show_message($error_message, 'warning');
     $RCMAIL->plugins->exec_hook('login_failed', array(
       'code' => $error_code, 'host' => $auth['host'], 'user' => $auth['user']));
     $RCMAIL->kill_session();
@@ -140,7 +165,11 @@ if ($RCMAIL->task == 'login' && $RCMAIL->action == 'login') {
 
 // end session (after optional referer check)
 else if ($RCMAIL->task == 'logout' && isset($_SESSION['user_id']) && (!$RCMAIL->config->get('referer_check') || rcube_check_referer())) {
-  $userdata = array('user' => $_SESSION['username'], 'host' => $_SESSION['imap_host'], 'lang' => $RCMAIL->user->language);
+  $userdata = array(
+    'user' => $_SESSION['username'],
+    'host' => $_SESSION['storage_host'],
+    'lang' => $RCMAIL->user->language,
+  );
   $OUTPUT->show_message('loggedout');
   $RCMAIL->logout_actions();
   $RCMAIL->kill_session();
@@ -184,8 +213,10 @@ if (empty($RCMAIL->user->ID)) {
   if ($session_error || $_REQUEST['_err'] == 'session')
     $OUTPUT->show_message('sessionerror', 'error', null, true, -1);
 
-  $RCMAIL->set_task('login');
-  $OUTPUT->send('login');
+  $plugin = $RCMAIL->plugins->exec_hook('unauthenticated', array('task' => 'login', 'error' => $session_error));
+
+  $RCMAIL->set_task($plugin['task']);
+  $OUTPUT->send($plugin['task']);
 }
 // CSRF prevention
 else {

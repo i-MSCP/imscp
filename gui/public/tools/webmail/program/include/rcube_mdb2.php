@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   PEAR:DB wrapper class that implements PEAR MDB2 functions           |
@@ -16,7 +19,7 @@
  | Author: Lukas Kahwe Smith <smith@pooteeweet.org>                      |
  +-----------------------------------------------------------------------+
 
- $Id: rcube_mdb2.php 5872 2012-02-11 11:38:46Z thomasb $
+ $Id$
 
 */
 
@@ -645,6 +648,11 @@ class rcube_mdb2
             case 'mssql':
             case 'sqlsrv':
                 $delim = ' + ';
+                // Modify arguments, because + operator requires them to be of type varchar (#1488505)
+                // with SQL Server 2012 we can use just CONCAT(), but we need to support older versions
+                foreach ($args as $idx => $arg) {
+                    $args[$idx] = "CAST($arg AS varchar)";
+                }
                 break;
             default:
                 $delim = ' || ';

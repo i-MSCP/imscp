@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Upload, remove, display attachments in compose form                 |
@@ -15,7 +18,7 @@
  | Author: Thomas Bruederli <roundcube@gmail.com>                        |
  +-----------------------------------------------------------------------+
 
- $Id: attachments.inc 5543 2011-12-05 07:24:36Z alec $
+ $Id$
 
 */
 
@@ -126,6 +129,7 @@ if (is_array($_FILES['_attachments']['tmp_name'])) {
         'href' => "#delete",
         'onclick' => sprintf("return %s.command('remove-attachment','rcmfile%s', this)", JS_OBJECT_NAME, $id),
         'title' => rcube_label('delete'),
+        'class' => 'delete',
       ), $button);
 
       $content .= Q($attachment['name']);
@@ -134,6 +138,7 @@ if (is_array($_FILES['_attachments']['tmp_name'])) {
         'html' => $content,
         'name' => $attachment['name'],
         'mimetype' => $attachment['mimetype'],
+        'classname' => rcmail_filetype2classname($attachment['mimetype'], $attachment['name']),
         'complete' => true), $uploadid);
     }
     else {  // upload failed

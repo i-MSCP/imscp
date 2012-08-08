@@ -6,48 +6,52 @@
  * Driver for passwords stored in LDAP
  * This driver is based on Edouard's LDAP Password Driver, but does not
  * require PEAR's Net_LDAP2 to be installed
- * 
- * @version 1.0 (2010-07-31)
+ *
+ * @version 2.0
  * @author Wout Decre <wout@canodus.be>
  */
-function password_save($curpass, $passwd)
+
+class rcube_ldap_simple_password
 {
-	$rcmail = rcmail::get_instance();
+    function save($curpass, $passwd)
+    {
+	    $rcmail = rcmail::get_instance();
 
-	// Connect
-	if (!$ds = ldap_connect($rcmail->config->get('password_ldap_host'), $rcmail->config->get('password_ldap_port'))) {
-		ldap_unbind($ds);
-		return PASSWORD_CONNECT_ERROR;
-	}
+    	// Connect
+	    if (!$ds = ldap_connect($rcmail->config->get('password_ldap_host'), $rcmail->config->get('password_ldap_port'))) {
+		    ldap_unbind($ds);
+    		return PASSWORD_CONNECT_ERROR;
+	    }
 
-	// Set protocol version
-	if (!ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, $rcmail->config->get('password_ldap_version'))) {
-		ldap_unbind($ds);
-		return PASSWORD_CONNECT_ERROR;
-	}
+    	// Set protocol version
+	    if (!ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, $rcmail->config->get('password_ldap_version'))) {
+		    ldap_unbind($ds);
+    		return PASSWORD_CONNECT_ERROR;
+	    }
 
-	// Start TLS
-	if ($rcmail->config->get('password_ldap_starttls')) {
-		if (!ldap_start_tls($ds)) {
-			ldap_unbind($ds);
-			return PASSWORD_CONNECT_ERROR;
-		}
-	}
+    	// Start TLS
+	    if ($rcmail->config->get('password_ldap_starttls')) {
+		    if (!ldap_start_tls($ds)) {
+    			ldap_unbind($ds);
+	    		return PASSWORD_CONNECT_ERROR;
+		    }
+	    }
 
-	// Build user DN
-	if ($user_dn = $rcmail->config->get('password_ldap_userDN_mask')) {
-		$user_dn = ldap_simple_substitute_vars($user_dn);
-	} else {
-		$user_dn = ldap_simple_search_userdn($rcmail, $ds);
-	}
+    	// Build user DN
+	    if ($user_dn = $rcmail->config->get('password_ldap_userDN_mask')) {
+		    $user_dn = $this->substitute_vars($user_dn);
+    	}
+    	else {
+	    	$user_dn = $this->search_userdn($rcmail, $ds);
+	    }
 
-	if (empty($user_dn)) {
-		ldap_unbind($ds);
-		return PASSWORD_CONNECT_ERROR;
-	}
+	    if (empty($user_dn)) {
+		    ldap_unbind($ds);
+    		return PASSWORD_CONNECT_ERROR;
+	    }
 
-	// Connection method
-	switch ($rcmail->config->get('password_ldap_method')) {
+    	// Connection method
+	    switch ($rcmail->config->get('password_ldap_method')) {
 		case 'admin':
 			$binddn = $rcmail->config->get('password_ldap_adminDN');
 			$bindpw = $rcmail->config->get('password_ldap_adminPW');
@@ -57,126 +61,125 @@ function password_save($curpass, $passwd)
 			$binddn = $user_dn;
 			$bindpw = $curpass;
 			break;
-	}
+	    }
 
+    	$crypted_pass = $this->hash_password($passwd, $rcmail->config->get('password_ldap_encodage'));
+	    $lchattr      = $rcmail->config->get('password_ldap_lchattr');
+    	$pwattr       = $rcmail->config->get('password_ldap_pwattr');
+        $smbpwattr    = $rcmail->config->get('password_ldap_samba_pwattr');
+        $smblchattr   = $rcmail->config->get('password_ldap_samba_lchattr');
+        $samba        = $rcmail->config->get('password_ldap_samba');
 
-	$crypted_pass = ldap_simple_hash_password($passwd, $rcmail->config->get('password_ldap_encodage'));
-	$lchattr      = $rcmail->config->get('password_ldap_lchattr');
-	$pwattr       = $rcmail->config->get('password_ldap_pwattr');
-    $smbpwattr    = $rcmail->config->get('password_ldap_samba_pwattr');
-    $smblchattr   = $rcmail->config->get('password_ldap_samba_lchattr');
-    $samba        = $rcmail->config->get('password_ldap_samba');
+        // Support password_ldap_samba option for backward compat.
+        if ($samba && !$smbpwattr) {
+            $smbpwattr  = 'sambaNTPassword';
+            $smblchattr = 'sambaPwdLastSet';
+        }
 
-    // Support password_ldap_samba option for backward compat.
-    if ($samba && !$smbpwattr) {
-        $smbpwattr  = 'sambaNTPassword';
-        $smblchattr = 'sambaPwdLastSet';
+    	// Crypt new password
+	    if (!$crypted_pass) {
+		    return PASSWORD_CRYPT_ERROR;
+	    }
+
+        // Crypt new Samba password
+        if ($smbpwattr && !($samba_pass = $this->hash_password($passwd, 'samba'))) {
+	        return PASSWORD_CRYPT_ERROR;
+        }
+
+    	// Bind
+	    if (!ldap_bind($ds, $binddn, $bindpw)) {
+		    ldap_unbind($ds);
+    		return PASSWORD_CONNECT_ERROR;
+	    }
+
+    	$entree[$pwattr] = $crypted_pass;
+
+	    // Update PasswordLastChange Attribute if desired
+    	if ($lchattr) {
+	    	$entree[$lchattr] = (int)(time() / 86400);
+	    }
+
+        // Update Samba password
+        if ($smbpwattr) {
+            $entree[$smbpwattr] = $samba_pass;
+        }
+
+        // Update Samba password last change
+        if ($smblchattr) {
+            $entree[$smblchattr] = time();
+        }
+
+    	if (!ldap_modify($ds, $user_dn, $entree)) {
+	    	ldap_unbind($ds);
+		    return PASSWORD_CONNECT_ERROR;
+    	}
+
+    	// All done, no error
+	    ldap_unbind($ds);
+	    return PASSWORD_SUCCESS;
     }
 
-	// Crypt new password
-	if (!$crypted_pass) {
-		return PASSWORD_CRYPT_ERROR;
-	}
+    /**
+     * Bind with searchDN and searchPW and search for the user's DN
+     * Use search_base and search_filter defined in config file
+     * Return the found DN
+     */
+    function search_userdn($rcmail, $ds)
+    {
+	    /* Bind */
+    	if (!ldap_bind($ds, $rcmail->config->get('password_ldap_searchDN'), $rcmail->config->get('password_ldap_searchPW'))) {
+	    	return false;
+	    }
 
-    // Crypt new Samba password
-    if ($smbpwattr && !($samba_pass = ldap_simple_hash_password($passwd, 'samba'))) {
-	    return PASSWORD_CRYPT_ERROR;
+    	/* Search for the DN */
+	    if (!$sr = ldap_search($ds, $rcmail->config->get('password_ldap_search_base'), $this->substitute_vars($rcmail->config->get('password_ldap_search_filter')))) {
+		    return false;
+	    }
+
+    	/* If no or more entries were found, return false */
+	    if (ldap_count_entries($ds, $sr) != 1) {
+		    return false;
+	    }
+
+	    return ldap_get_dn($ds, ldap_first_entry($ds, $sr));
     }
 
-	// Bind
-	if (!ldap_bind($ds, $binddn, $bindpw)) {
-		ldap_unbind($ds);
-		return PASSWORD_CONNECT_ERROR;
-	}
+    /**
+     * Substitute %login, %name, %domain, %dc in $str
+     * See plugin config for details
+     */
+    function substitute_vars($str)
+    {
+	    $str = str_replace('%login', $_SESSION['username'], $str);
+    	$str = str_replace('%l', $_SESSION['username'], $str);
 
-	$entree[$pwattr] = $crypted_pass;
+	    $parts = explode('@', $_SESSION['username']);
 
-	// Update PasswordLastChange Attribute if desired
-	if ($lchattr) {
-		$entree[$lchattr] = (int)(time() / 86400);
-	}
+    	if (count($parts) == 2) {
+            $dc = 'dc='.strtr($parts[1], array('.' => ',dc=')); // hierarchal domain string
 
-    // Update Samba password
-    if ($smbpwattr) {
-        $entree[$smbpwattr] = $samba_pass;
+    		$str = str_replace('%name', $parts[0], $str);
+            $str = str_replace('%n', $parts[0], $str);
+            $str = str_replace('%dc', $dc, $str);
+	    	$str = str_replace('%domain', $parts[1], $str);
+		    $str = str_replace('%d', $parts[1], $str);
+    	}
+
+	    return $str;
     }
 
-    // Update Samba password last change
-    if ($smblchattr) {
-        $entree[$smblchattr] = time();
-    }
-
-	if (!ldap_modify($ds, $user_dn, $entree)) {
-		ldap_unbind($ds);
-		return PASSWORD_CONNECT_ERROR;
-	}
-
-	// All done, no error
-	ldap_unbind($ds);
-	return PASSWORD_SUCCESS;
-}
-
-/**
- * Bind with searchDN and searchPW and search for the user's DN
- * Use search_base and search_filter defined in config file
- * Return the found DN
- */
-function ldap_simple_search_userdn($rcmail, $ds)
-{
-	/* Bind */
-	if (!ldap_bind($ds, $rcmail->config->get('password_ldap_searchDN'), $rcmail->config->get('password_ldap_searchPW'))) {
-		return false;
-	}
-
-	/* Search for the DN */
-	if (!$sr = ldap_search($ds, $rcmail->config->get('password_ldap_search_base'), ldap_simple_substitute_vars($rcmail->config->get('password_ldap_search_filter')))) {
-		return false;
-	}
-
-	/* If no or more entries were found, return false */
-	if (ldap_count_entries($ds, $sr) != 1) {
-		return false;
-	}
-
-	return ldap_get_dn($ds, ldap_first_entry($ds, $sr));
-}
-
-/**
- * Substitute %login, %name, %domain, %dc in $str
- * See plugin config for details
- */
-function ldap_simple_substitute_vars($str)
-{
-	$str = str_replace('%login', $_SESSION['username'], $str);
-	$str = str_replace('%l', $_SESSION['username'], $str);
-
-	$parts = explode('@', $_SESSION['username']);
-
-	if (count($parts) == 2) {
-        $dc = 'dc='.strtr($parts[1], array('.' => ',dc=')); // hierarchal domain string
-
-		$str = str_replace('%name', $parts[0], $str);
-        $str = str_replace('%n', $parts[0], $str);
-        $str = str_replace('%dc', $dc, $str);
-		$str = str_replace('%domain', $parts[1], $str);
-		$str = str_replace('%d', $parts[1], $str);
-	}
-
-	return $str;
-}
-
-/**
- * Code originaly from the phpLDAPadmin development team
- * http://phpldapadmin.sourceforge.net/
- *
- * Hashes a password and returns the hash based on the specified enc_type
- */
-function ldap_simple_hash_password($password_clear, $encodage_type)
-{
-	$encodage_type = strtolower($encodage_type);
-	switch ($encodage_type) {
+    /**
+     * Code originaly from the phpLDAPadmin development team
+     * http://phpldapadmin.sourceforge.net/
+     *
+     * Hashes a password and returns the hash based on the specified enc_type
+     */
+    function hash_password($password_clear, $encodage_type)
+    {
+    	$encodage_type = strtolower($encodage_type);
+	    switch ($encodage_type) {
 		case 'crypt':
-			$crypted_password = '{CRYPT}' . crypt($password_clear, ldap_simple_random_salt(2));
+			$crypted_password = '{CRYPT}' . crypt($password_clear, $this->random_salt(2));
 			break;
 		case 'ext_des':
 			/* Extended DES crypt. see OpenBSD crypt man page */
@@ -184,14 +187,14 @@ function ldap_simple_hash_password($password_clear, $encodage_type)
 				/* Your system crypt library does not support extended DES encryption */
 				return false;
 			}
-			$crypted_password = '{CRYPT}' . crypt($password_clear, '_' . ldap_simple_random_salt(8));
+			$crypted_password = '{CRYPT}' . crypt($password_clear, '_' . $this->random_salt(8));
 			break;
 		case 'md5crypt':
 			if (!defined('CRYPT_MD5') || CRYPT_MD5 == 0) {
 				/* Your system crypt library does not support md5crypt encryption */
 				return false;
 			}
-			$crypted_password = '{CRYPT}' . crypt($password_clear, '$1$' . ldap_simple_random_salt(9));
+			$crypted_password = '{CRYPT}' . crypt($password_clear, '$1$' . $this->random_salt(9));
 			break;
 		case 'blowfish':
 			if (!defined('CRYPT_BLOWFISH') || CRYPT_BLOWFISH == 0) {
@@ -199,7 +202,7 @@ function ldap_simple_hash_password($password_clear, $encodage_type)
 				return false;
 			}
 			/* Hardcoded to second blowfish version and set number of rounds */
-			$crypted_password = '{CRYPT}' . crypt($password_clear, '$2a$12$' . ldap_simple_random_salt(13));
+			$crypted_password = '{CRYPT}' . crypt($password_clear, '$2a$12$' . $this->random_salt(13));
 			break;
 		case 'md5':
 			$crypted_password = '{MD5}' . base64_encode(pack('H*', md5($password_clear)));
@@ -247,25 +250,27 @@ function ldap_simple_hash_password($password_clear, $encodage_type)
 		case 'clear':
 		default:
 			$crypted_password = $password_clear;
-	}
+	    }
 
-	return $crypted_password;
-}
+    	return $crypted_password;
+    }
 
-/**
- * Code originaly from the phpLDAPadmin development team
- * http://phpldapadmin.sourceforge.net/
- *
- * Used to generate a random salt for crypt-style passwords
- */
-function ldap_simple_random_salt($length)
-{
-	$possible = '0123456789' . 'abcdefghijklmnopqrstuvwxyz' . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' . './';
-	$str = '';
-	// mt_srand((double)microtime() * 1000000);
-	while (strlen($str) < $length) {
-		$str .= substr($possible, (rand() % strlen($possible)), 1);
-	}
+    /**
+     * Code originaly from the phpLDAPadmin development team
+     * http://phpldapadmin.sourceforge.net/
+     *
+     * Used to generate a random salt for crypt-style passwords
+     */
+    function random_salt($length)
+    {
+	    $possible = '0123456789' . 'abcdefghijklmnopqrstuvwxyz' . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' . './';
+    	$str = '';
+	    // mt_srand((double)microtime() * 1000000);
 
-	return $str;
+    	while (strlen($str) < $length) {
+	    	$str .= substr($possible, (rand() % strlen($possible)), 1);
+	    }
+
+	    return $str;
+    }
 }

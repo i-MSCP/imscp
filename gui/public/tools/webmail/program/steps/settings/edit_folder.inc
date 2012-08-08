@@ -6,7 +6,10 @@
  |                                                                       |
  | This file is part of the Roundcube Webmail client                     |
  | Copyright (C) 2005-2009, The Roundcube Dev Team                       |
- | Licensed under the GNU GPL                                            |
+ |                                                                       |
+ | Licensed under the GNU General Public License version 3 or            |
+ | any later version with exceptions for skins & plugins.                |
+ | See the README file for a full license statement.                     |
  |                                                                       |
  | PURPOSE:                                                              |
  |   Provide functionality to create/edit a folder                       |
@@ -15,18 +18,17 @@
  | Author: Aleksander Machniak <alec@alec.pl>                            |
  +-----------------------------------------------------------------------+
 
- $Id: edit_folder.inc 5402 2011-11-09 10:03:54Z alec $
+ $Id$
 
 */
 
 // WARNING: folder names in UI are encoded with RCMAIL_CHARSET
 
-// init IMAP connection
-$RCMAIL->imap_connect();
-
 function rcmail_folder_form($attrib)
 {
     global $RCMAIL;
+
+    $storage = $RCMAIL->get_storage();
 
     // edited folder name (empty in create-folder mode)
     $mbox      = trim(get_input_value('_mbox', RCUBE_INPUT_GPC, true));
@@ -36,13 +38,13 @@ function rcmail_folder_form($attrib)
     $parent      = trim(get_input_value('_path', RCUBE_INPUT_GPC, true));
     $parent_imap = rcube_charset_convert($parent, RCMAIL_CHARSET, 'UTF7-IMAP');
 
-    $threading_supported = $RCMAIL->imap->get_capability('THREAD');
-    $delimiter = $RCMAIL->imap->get_hierarchy_delimiter();
+    $threading_supported = $storage->get_capability('THREAD');
+    $delimiter = $storage->get_hierarchy_delimiter();
 
     // Get mailbox parameters
     if (strlen($mbox)) {
         $options   = rcmail_folder_options($mbox_imap);
-        $namespace = $RCMAIL->imap->get_namespace();
+        $namespace = $storage->get_namespace();
 
         $path   = explode($delimiter, $mbox_imap);
         $folder = array_pop($path);
@@ -57,14 +59,14 @@ function rcmail_folder_form($attrib)
 
         // allow creating subfolders of INBOX folder
         if ($path == 'INBOX') {
-            $path = $RCMAIL->imap->mod_mailbox($path, 'in');
+            $path = $storage->mod_folder($path, 'in');
         }
     }
 
     // remove personal namespace prefix
     if (strlen($path)) {
         $path_id = $path;
-        $path    = $RCMAIL->imap->mod_mailbox($path.$delimiter);
+        $path    = $storage->mod_folder($path.$delimiter);
         if ($path[strlen($path)-1] == $delimiter) {
             $path = substr($path, 0, -1);
         }
@@ -113,6 +115,15 @@ function rcmail_folder_form($attrib)
     }
     else {
         $selected = isset($_POST['_parent']) ? $_POST['_parent'] : $path_id;
+        $exceptions = array($mbox_imap);
+
+        // Exclude 'prefix' namespace from parent folders list (#1488349)
+        // If INBOX. namespace exists, folders created as INBOX subfolders
+        // will be listed at the same level - selecting INBOX as a parent does nothing
+        if ($prefix = $storage->get_namespace('prefix')) {
+            $exceptions[] = substr($prefix, 0, -1);
+        }
+
         $select = rcmail_mailbox_select(array(
             'name'        => '_parent',
             'noselection' => '---',
@@ -120,7 +131,7 @@ function rcmail_folder_form($attrib)
             'maxlength'   => 150,
             'unsubscribed' => true,
             'skip_noinferiors' => true,
-            'exceptions'  => array($mbox_imap),
+            'exceptions'  => $exceptions,
         ));
 
         $form['props']['fieldsets']['location']['content']['path'] = array(
@@ -193,7 +204,7 @@ function rcmail_folder_form($attrib)
         );
 
         if ((!$options['noselect'] && !$options['is_root']) || $mbox_imap == 'INBOX') {
-            $msgcount = $RCMAIL->imap->messagecount($mbox_imap, 'ALL', true, false);
+            $msgcount = $storage->count($mbox_imap, 'ALL', true, false);
 
             // Size
             if ($msgcount) {
@@ -236,7 +247,7 @@ function rcmail_folder_form($attrib)
     // Set form tags and hidden fields
     list($form_start, $form_end) = get_form_tags($attrib, 'save-folder', null, $hidden_fields);
 
-    unset($attrib['form']);
+    unset($attrib['form'], $attrib['id']);
 
     // return the complete edit form as table
     $out = "$form_start\n";
@@ -246,14 +257,14 @@ function rcmail_folder_form($attrib)
         if (!empty($tab['fieldsets']) && is_array($tab['fieldsets'])) {
             $content = '';
             foreach ($tab['fieldsets'] as $fieldset) {
-                $subcontent = rcmail_get_form_part($fieldset);
+                $subcontent = rcmail_get_form_part($fieldset, $attrib);
                 if ($subcontent) {
                     $content .= html::tag('fieldset', null, html::tag('legend', null, Q($fieldset['name'])) . $subcontent) ."\n";
                 }
             }
         }
         else {
-            $content = rcmail_get_form_part($tab);
+            $content = rcmail_get_form_part($tab, $attrib);
         }
 
         if ($content) {
@@ -268,7 +279,7 @@ function rcmail_folder_form($attrib)
     return $out;
 }
 
-function rcmail_get_form_part($form)
+function rcmail_get_form_part($form, $attrib = array())
 {
     $content = '';
 
@@ -278,10 +289,10 @@ function rcmail_get_form_part($form)
             $colprop['id'] = '_'.$col;
             $label = !empty($colprop['label']) ? $colprop['label'] : rcube_label($col);
 
-            $table->add('title', sprintf('<label for="%s">%s</label>', $colprop['id'], Q($label)));
+            $table->add('title', html::label($colprop['id'], Q($label)));
             $table->add(null, $colprop['value']);
         }
-        $content = $table->show();
+        $content = $table->show($attrib);
     }
     else {
         $content = $form['content'];

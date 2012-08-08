@@ -32,7 +32,7 @@
 // | Author: Richard Heyes <richard@php.net>                               | 
 // +-----------------------------------------------------------------------+ 
 // 
-// $Id: Login.php 584 2007-05-24 03:49:19Z estadtherr $
+// $Id$
 
 /**
 * This is technically not a SASL mechanism, however

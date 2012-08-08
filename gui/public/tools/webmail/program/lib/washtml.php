@@ -76,6 +76,7 @@
  * - added RFC2397 support
  * - base URL support
  * - invalid HTML comments removal before parsing
+ * - "fixing" unitless CSS values for XHTML output
  */
 
 class washtml
@@ -101,14 +102,14 @@ class washtml
     'cellpadding', 'valign', 'bgcolor', 'color', 'border', 'bordercolorlight',
     'bordercolordark', 'face', 'marginwidth', 'marginheight', 'axis', 'border',
     'abbr', 'char', 'charoff', 'clear', 'compact', 'coords', 'vspace', 'hspace',
-    'cellborder', 'size', 'lang', 'dir',
+    'cellborder', 'size', 'lang', 'dir', 'usemap',
     // attributes of form elements
     'type', 'rows', 'cols', 'disabled', 'readonly', 'checked', 'multiple', 'value'
   );
 
   /* Block elements which could be empty but cannot be returned in short form (<tag />) */
   static $block_elements = array('div', 'p', 'pre', 'blockquote', 'a', 'font', 'center',
-    'table', 'ul', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'dl', 'strong', 'i', 'b', 'u');
+    'table', 'ul', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ol', 'dl', 'strong', 'i', 'b', 'u', 'span');
 
   /* State for linked objects in HTML */
   public $extlinks = false;
@@ -133,7 +134,8 @@ class washtml
 
 
   /* Constructor */
-  public function __construct($p = array()) {
+  public function __construct($p = array())
+  {
     $this->_html_elements = array_flip((array)$p['html_elements']) + array_flip(self::$html_elements) ;
     $this->_html_attribs = array_flip((array)$p['html_attribs']) + array_flip(self::$html_attribs);
     $this->_ignore_elements = array_flip((array)$p['ignore_elements']) + array_flip(self::$ignore_elements);
@@ -149,20 +151,24 @@ class washtml
   }
 
   /* Check CSS style */
-  private function wash_style($style) {
+  private function wash_style($style)
+  {
     $s = '';
 
     foreach (explode(';', $style) as $declaration) {
       if (preg_match('/^\s*([a-z\-]+)\s*:\s*(.*)\s*$/i', $declaration, $match)) {
         $cssid = $match[1];
-        $str = $match[2];
+        $str   = $match[2];
         $value = '';
+
         while (sizeof($str) > 0 &&
           preg_match('/^(url\(\s*[\'"]?([^\'"\)]*)[\'"]?\s*\)'./*1,2*/
                  '|rgb\(\s*[0-9]+\s*,\s*[0-9]+\s*,\s*[0-9]+\s*\)'.
                  '|-?[0-9.]+\s*(em|ex|px|cm|mm|in|pt|pc|deg|rad|grad|ms|s|hz|khz|%)?'.
-                 '|#[0-9a-f]{3,6}|[a-z0-9", -]+'.
-                 ')\s*/i', $str, $match)) {
+                 '|#[0-9a-f]{3,6}'.
+                 '|[a-z0-9", -]+'.
+                 ')\s*/i', $str, $match)
+        ) {
           if ($match[2]) {
             if (($src = $this->config['cid_map'][$match[2]])
                 || ($src = $this->config['cid_map'][$this->config['base_url'].$match[2]])) {
@@ -178,20 +184,29 @@ class washtml
               $value .= ' url('.htmlspecialchars($match[2], ENT_QUOTES).')';
             }
           }
-          else if ($match[0] != 'url' && $match[0] != 'rgb') //whitelist ?
+          else { //whitelist ?
             $value .= ' ' . $match[0];
+
+            // #1488535: Fix size units, so width:800 would be changed to width:800px
+            if (preg_match('/(left|right|top|bottom|width|height)/i', $cssid) && preg_match('/^[0-9]+$/', $match[0])) {
+              $value .= 'px';
+            }
+          }
 
           $str = substr($str, strlen($match[0]));
         }
-        if ($value)
+
+        if (isset($value[0])) {
           $s .= ($s?' ':'') . $cssid . ':' . $value . ';';
+        }
       }
     }
     return $s;
   }
 
   /* Take a node and return allowed attributes and check values */
-  private function wash_attribs($node) {
+  private function wash_attribs($node)
+  {
     $t = '';
     $washed;
 
@@ -199,7 +214,7 @@ class washtml
       $key = strtolower($key);
       $value = $node->getAttribute($key);
       if (isset($this->_html_attribs[$key]) ||
-         ($key == 'href' && preg_match('/^(http:|https:|ftp:|mailto:|#).+/i', $value)))
+         ($key == 'href' && preg_match('!^([a-z][a-z0-9.+-]+:|//|#).+!i', $value)))
         $t .= ' ' . $key . '="' . htmlspecialchars($value, ENT_QUOTES) . '"';
       else if ($key == 'style' && ($style = $this->wash_style($value))) {
         $quot = strpos($style, '"') !== false ? "'" : '"';
@@ -231,7 +246,8 @@ class washtml
   /* The main loop that recurse on a node tree.
    * It output only allowed tags with allowed attributes
    * and allowed inline styles */
-  private function dumpHtml($node) {
+  private function dumpHtml($node)
+  {
     if(!$node->hasChildNodes())
       return '';
 
@@ -248,9 +264,7 @@ class washtml
         else if (isset($this->_html_elements[$tagName])) {
           $content = $this->dumpHtml($node);
           $dump .= '<' . $tagName . $this->wash_attribs($node) .
-            // create closing tag for block elements, but also for elements
-            // with content or with some attributes (eg. style, class) (#1486812)
-            ($content != '' || $node->hasAttributes() || isset($this->_block_elements[$tagName]) ? ">$content</$tagName>" : ' />');
+            ($content != '' || isset($this->_block_elements[$tagName]) ? ">$content</$tagName>" : ' />');
         }
         else if (isset($this->_ignore_elements[$tagName])) {
           $dump .= '<!-- ' . htmlspecialchars($tagName, ENT_QUOTES) . ' not allowed -->';
@@ -310,5 +324,3 @@ class washtml
   }
 
 }
-
-?>
