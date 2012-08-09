@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-07-05 17:04+0200\n"
-"PO-Revision-Date: 2012-06-30 07:45+0000\n"
-"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
+"POT-Creation-Date: 2012-08-09 07:38+0200\n"
+"PO-Revision-Date: 2012-07-18 09:36+0000\n"
+"Last-Translator: 9 Beliy <9beliy@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -581,7 +581,7 @@ msgid "Activate this plugin"
 msgstr ""
 
 msgid "Activated softwares"
-msgstr ""
+msgstr "Активированых приложений"
 
 msgid "Activation E-Mail"
 msgstr "Отправка активации"
@@ -599,7 +599,7 @@ msgid "Add FTP user"
 msgstr "Добавить пользователя FTP"
 
 msgid "Add Ftp account"
-msgstr ""
+msgstr "Учетная запись FTP"
 
 msgid "Add Htaccess group"
 msgstr ""
@@ -617,7 +617,7 @@ msgid "Add SQL user"
 msgstr "Добавить пользователя SQL"
 
 msgid "Add SSL certificate"
-msgstr ""
+msgstr "Добавить SSL сертификат"
 
 msgid "Add admin"
 msgstr "Добавить администратора"
@@ -632,7 +632,7 @@ msgid "Add custom DNS record"
 msgstr ""
 
 msgid "Add custom menu"
-msgstr ""
+msgstr "Добавить персональное меню "
 
 msgid "Add customer"
 msgstr "Добавить пользователя"
@@ -1014,7 +1014,7 @@ msgid "Auto respond"
 msgstr "Автоответ"
 
 msgid "Automatic updates"
-msgstr ""
+msgstr "Автоматическое обновление"
 
 msgid "Available for purchasing"
 msgstr "Доступно для заказа"
@@ -1390,19 +1390,19 @@ msgid "Custom error pages"
 msgstr "Персональные страницы ошибок"
 
 msgid "Custom menu name and link"
-msgstr ""
+msgstr "Название персонального меню и ссылка."
 
 msgid "Custom menu successfully added."
-msgstr ""
+msgstr "Персональное меню успешно добавлено."
 
 msgid "Custom menu successfully deleted."
-msgstr ""
+msgstr "Персональное меню успешно удалено."
 
 msgid "Custom menu successfully updated."
-msgstr ""
+msgstr "Персональное меню обновлено."
 
 msgid "Custom menus"
-msgstr "Персональные меню"
+msgstr "Персональное меню"
 
 msgid "Custom orderpanel Id"
 msgstr ""
@@ -2002,7 +2002,7 @@ msgid "Edit custom error page"
 msgstr ""
 
 msgid "Edit custom menu"
-msgstr ""
+msgstr "Редактировать персональное меню"
 
 msgid "Edit customer"
 msgstr ""
@@ -2095,7 +2095,7 @@ msgid "Enable Forward"
 msgstr "Активировать переадресацию"
 
 msgid "Enable SSL"
-msgstr ""
+msgstr "Разрешить SSL"
 
 msgid "Enable auto responder"
 msgstr ""
@@ -2865,10 +2865,10 @@ msgid "Layout"
 msgstr "Макет"
 
 msgid "Layout color"
-msgstr ""
+msgstr "Цветовая схема"
 
 msgid "Layout color successfully updated."
-msgstr ""
+msgstr "Цветовая схема успешно обновлена."
 
 msgid "Layout settings"
 msgstr "Настройки макета"
@@ -2891,7 +2891,7 @@ msgid "Limits"
 msgstr ""
 
 msgid "Link"
-msgstr ""
+msgstr "Ссылка"
 
 msgid "Link to authors homepage"
 msgstr ""
@@ -3343,7 +3343,7 @@ msgid "No corresponding subdomain found."
 msgstr ""
 
 msgid "No custom menu found."
-msgstr ""
+msgstr "Персональное меню не создано."
 
 msgid "No customer accounts found."
 msgstr ""
@@ -3541,7 +3541,7 @@ msgid "Open tickets"
 msgstr "Открытые тикеты"
 
 msgid "Optional"
-msgstr ""
+msgstr "Опционально"
 
 msgid "Options"
 msgstr "Опции"
@@ -3695,7 +3695,7 @@ msgid "Package features"
 msgstr ""
 
 msgid "Package install type"
-msgstr ""
+msgstr "Тип установки"
 
 msgid "Package installed successfully!"
 msgstr ""
@@ -3716,7 +3716,7 @@ msgid "Package title"
 msgstr ""
 
 msgid "Package type"
-msgstr ""
+msgstr "Тип"
 
 msgid "Package vendor HP"
 msgstr "Сайт производителя"
@@ -4255,7 +4255,7 @@ msgid "Reseller name"
 msgstr "Имя реселлера"
 
 msgid "Reseller software list"
-msgstr ""
+msgstr "Список реселлеров ПО"
 
 msgid "Reseller successfully added."
 msgstr ""
@@ -4303,7 +4303,7 @@ msgid "Revision date"
 msgstr "Дата изменения"
 
 msgid "Rights"
-msgstr ""
+msgstr "Права"
 
 msgid "Rights succesfully added."
 msgstr "Права успешно добавлены"
@@ -4627,7 +4627,7 @@ msgid "Software details"
 msgstr ""
 
 msgid "Software in repository"
-msgstr ""
+msgstr "Приложений в репоззитории"
 
 msgid "Software installation"
 msgstr "Установка ПО"
@@ -5328,22 +5328,22 @@ msgid "Total Domains"
 msgstr "Всего доменов"
 
 msgid "Total Softwares"
-msgstr ""
+msgstr "Всего приложений"
 
 msgid "Total Web softwares repositories"
 msgstr "Всего в репозитории:"
 
 msgid "Total installations"
-msgstr ""
+msgstr "Всего инсталяций"
 
 msgid "Total packages in Web softwares repository"
 msgstr "Всего пакетов в Web репозитории"
 
 msgid "Total reseller"
-msgstr ""
+msgstr "Всего реселлеров"
 
 msgid "Total softwares"
-msgstr ""
+msgstr "Всего приложений"
 
 msgid "Traffic"
 msgstr "Трафик"
@@ -5480,7 +5480,7 @@ msgid "Unknown error"
 msgstr ""
 
 msgid "Unknown language name."
-msgstr ""
+msgstr "Неизвестное имя языкового файла."
 
 msgid "Unknown layout color."
 msgstr ""
@@ -5544,7 +5544,7 @@ msgid "Update plan"
 msgstr "Изменить план"
 
 msgid "Update plugin list"
-msgstr ""
+msgstr "Обновить список плагинов"
 
 msgid "Updates"
 msgstr "Обновления"
@@ -5703,7 +5703,7 @@ msgid "Values"
 msgstr ""
 
 msgid "Vendor hompage"
-msgstr ""
+msgstr "Перейти на сайт"
 
 msgid "Version"
 msgstr "Версия"
@@ -5739,7 +5739,7 @@ msgid "View ticket"
 msgstr ""
 
 msgid "Visit plugin site"
-msgstr ""
+msgstr "Перейти на сайт плагина"
 
 msgid "Vital system info"
 msgstr "Важная системная информация"
@@ -6911,7 +6911,7 @@ msgid "i-MSCP Reseller/Circular"
 msgstr ""
 
 msgid "i-MSCP application installer Web softwares repository"
-msgstr ""
+msgstr "i-MSCP установщик приложений (Web репозиторий)"
 
 msgid "i-MSCP application installer web software depot"
 msgstr ""
