@@ -5,14 +5,15 @@
 # Translators:
 #   <balazsz@citromail.hu>, 2011, 2012.
 #   <k.norbi555@gmail.com>, 2012.
+# Zoltán Balázs <balazsz@citromail.hu>, 2012.
 # Zsolt Jónás <jonas.zsolt@naxonet.hu>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-07-05 17:04+0200\n"
-"PO-Revision-Date: 2012-07-05 14:12+0000\n"
-"Last-Translator: balazsz <balazsz@citromail.hu>\n"
+"POT-Creation-Date: 2012-08-09 07:38+0200\n"
+"PO-Revision-Date: 2012-07-08 21:56+0000\n"
+"Last-Translator: Zoltán Balázs <balazsz@citromail.hu>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -743,7 +744,7 @@ msgid "Administrator"
 msgstr "Adminisztrátor"
 
 msgid "Administrator and Reseller levels"
-msgstr "Adminisztrátor és viszonteladói szint"
+msgstr "Adminisztrátori és viszonteladói szint"
 
 msgid "Administrator and customer"
 msgstr "Adminisztrátor és ügyfél"
@@ -931,7 +932,7 @@ msgstr "Biztosan szeretné törölni a(z) \"%s\" szolgáltatási port?"
 
 #, php-format
 msgid "Are you sure you want to delete %s?"
-msgstr "Biztosan szeretné törölni a(z) %s-t?"
+msgstr "Biztosan szeretné törölni a következőt: %s ?"
 
 msgid "Are you sure you want to delete all closed tickets?"
 msgstr "Biztosan szeretné töröln az összes lezárt hibajegyet?"
@@ -1426,7 +1427,7 @@ msgid "Customer data"
 msgstr "Ügyfél adatai"
 
 msgid "Customer level"
-msgstr "Ügyfélszint"
+msgstr "Ügyfél szint"
 
 msgid "Customer order sucessfully removed."
 msgstr "Ügyfél megrendelése sikeresen törölve"
@@ -2504,10 +2505,10 @@ msgid "Hosting plans not found."
 msgstr "Tárhely csomag nem található"
 
 msgid "Hour"
-msgstr "ora"
+msgstr "óra"
 
 msgid "Hours"
-msgstr "ora"
+msgstr "óra"
 
 msgid "Htaccess group"
 msgstr "Védett csoport"
@@ -3187,7 +3188,7 @@ msgstr "Aldomainekhez társítható címkék maximális száma"
 
 msgid ""
 "Maximum number of validation attempts before waiting restriction intervenes"
-msgstr ""
+msgstr "Érvényesítési kísérletek maximális száma, mielőtt a várakozási korlátozás beavatkozik"
 
 msgid "Medium"
 msgstr "Közepes"
@@ -3367,7 +3368,7 @@ msgid "No email account system errors"
 msgstr "Nincs rendszer szintű email fiók hiba"
 
 msgid "No external mail entries available."
-msgstr ""
+msgstr "Nincs ekérhető külső levelezési bejegyzés"
 
 msgid "No file was uploaded."
 msgstr "Nincs feltöltött fájl"
@@ -3477,7 +3478,7 @@ msgid "Not found user records matching the search criteria."
 msgstr "Megadott keresési feltételekkel nem található felhasználó adat"
 
 msgid "Not needed in CNAME"
-msgstr ""
+msgstr "Nem szükséges a CNAME-ben "
 
 msgid "Not used"
 msgstr "Nem elérhető"
@@ -3510,7 +3511,7 @@ msgid "Ok"
 msgstr "OK"
 
 msgid "One DNS entry must still exist."
-msgstr ""
+msgstr "Egy DNS-bejegyzésnek léteznie kell "
 
 msgid "One or more database updates are now available. See the details below."
 msgstr "Egy vagy több adatbázis frissítés már elérhető. Lásd a részleteket az alábbiakban"
@@ -3869,7 +3870,7 @@ msgstr "Kérjük, forduljon az adminisztrátorhoz! <br /> Kérdezze meg ennek a 
 
 #, php-format
 msgid "Please delete first CatchAll account for the email %s."
-msgstr ""
+msgstr "Először %s begyűjtő email fiókot (Catch-all) kell törölni!"
 
 msgid "Please delete first CatchAll account for this email."
 msgstr "Először a begyűjtő email fiókot törölje"
@@ -4929,7 +4930,7 @@ msgid "TXT data"
 msgstr "TXT adat"
 
 msgid "TXT data must be filled."
-msgstr ""
+msgstr "TXT adatokat ki kell tölteni"
 
 msgid "Target"
 msgstr "Cél (target)"
@@ -5082,7 +5083,7 @@ msgid "The domain you are trying to edit doesn't exist."
 msgstr "A módosítani kívánt domain név nem létezik"
 
 msgid "The external mail feature needs min. 1 email account."
-msgstr ""
+msgstr "A külső levél szolgáltatáshoz min. 1 email fiókra van szükség"
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "Programtelepítő használatához engedélyezni kell a PHP-t"
@@ -5240,7 +5241,7 @@ msgid "This software is installed on following domain(s):"
 msgstr "Ez a program telepítve van a következő domain(ek)hez:"
 
 msgid "This type of account does not have quota."
-msgstr ""
+msgstr "Ez a fiók típus nem rendelkezik kvótával"
 
 msgid ""
 "This user has domain record.<br>First remove the domain from the system."
@@ -5474,7 +5475,7 @@ msgstr "Ismeretlen domain típus"
 
 #, php-format
 msgid "Unknown entry type %s."
-msgstr ""
+msgstr "Ismeretlen bejegyzés típusa: %s"
 
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
@@ -5562,7 +5563,7 @@ msgid "Usage of disallowed character in CNAME"
 msgstr "CNAME-ben nem engedélyezett karakterek használata"
 
 msgid "Usage of disallowed character in MX"
-msgstr ""
+msgstr "MX-ben nem engedélyezett karakterek használata"
 
 msgid "Usage status"
 msgstr "Állapot"
@@ -6003,7 +6004,7 @@ msgid "You are not allowed to edit this DNS record."
 msgstr "Nem engedélyezett a DNS rekord szerkesztése"
 
 msgid "You are not allowed to edit this external mail entry."
-msgstr ""
+msgstr "A külső levél bejegyzés szerkesztése nem engedélyezett"
 
 msgid "You are not allowed to perform this operation."
 msgstr "Nincs joga a művelet végrehajtásához"
@@ -6012,7 +6013,7 @@ msgid "You are not allowed to remove this DNS record."
 msgstr "Nem engedélyezett a DNS rekord törlése"
 
 msgid "You are not allowed to remove this external mail entry."
-msgstr ""
+msgstr "A külső levél bejegyzés törlése nem engedélyezett"
 
 msgid "You are not allowed to remove this service port entry."
 msgstr "Nem engedélyezett a szolgáltatási port törlése"
@@ -6608,40 +6609,40 @@ msgid "i-MSCP - Client / Change Language"
 msgstr "i-MSCP - Ügyfél / Nyelv kiválasztása"
 
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
-msgstr "i-MSCP - Ügyfél / Manage domains - Add subdomain"
+msgstr "i-MSCP - Ügyfél / Domainek kezelése / Aldomain létrehozása"
 
 msgid "i-MSCP - Client / Manage mail"
-msgstr "i-MSCP - Ügyfél / Manage mail"
+msgstr "i-MSCP - Ügyfél / Levelezés"
 
 msgid "i-MSCP - Client / Manage mail / Add account"
-msgstr "i-MSCP - Ügyfél / Manage mail / Add account"
+msgstr "i-MSCP - Ügyfél / Levelezés / Postafiók létrehozása"
 
 msgid "i-MSCP - Client / Manage mail / Add catchall"
-msgstr "i-MSCP - Ügyfél / Manage mail / Add catchall"
+msgstr "i-MSCP - Ügyfél / Levelezés / Catchall létrehozása"
 
 msgid "i-MSCP - Client / Manage mail / Catchall"
-msgstr "i-MSCP - Ügyfél / Manage mail / Catchall"
+msgstr "i-MSCP - Ügyfél / Levelezés / Catchall"
 
 msgid "i-MSCP - Client / Manage mail / Create External mail server entry"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Levelezés / Külső levelező szerver létrehozása"
 
 msgid "i-MSCP - Client / Manage mail / Edit External mail server entries"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Levelezés / Külső levelező szerver módosítása"
 
 msgid "i-MSCP - Client / Manage mail / Edit account"
-msgstr "i-MSCP - Ügyfél / Manage mail / Edit account"
+msgstr "i-MSCP - Ügyfél / Levelezés / Postafiók módosítása"
 
 msgid "i-MSCP - Client / Manage mail / Edit autoresponder"
-msgstr "i-MSCP - Ügyfél / Manage mail / Edit autoresponder"
+msgstr "i-MSCP - Ügyfél / Levelezés / Automatikus válaszolás szerkesztése"
 
 msgid "i-MSCP - Client / Manage mail / Edit quota"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Levelezés / Kvóta módosítása"
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr "i-MSCP - Ügyfél / Manage mail / Enable autoresponder"
+msgstr "i-MSCP - Ügyfél / Levelezés / Automatikus válaszolás engedélyezése"
 
 msgid "i-MSCP - Client / Manage mail / External mail servers"
-msgstr ""
+msgstr "i-MSCP - Ügyfél / Levelezés / Külső levelező szerverek"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Ügyfél / Ügyfélszolgálat / Lezárt hibajegyek"
@@ -6749,10 +6750,10 @@ msgid "i-MSCP - Manage domains / Edit Subdomain"
 msgstr "i-MSCP - Domainek  kezelése / Domain álnév szerkesztése"
 
 msgid "i-MSCP - Multi Server Control Panel"
-msgstr "i-MSCP - tárhely kezelő rendszer"
+msgstr "i-MSCP - Tárhely kezelő rendszer"
 
 msgid "i-MSCP - Multi Server Control Panel / Login"
-msgstr "i-MSCP - tárhely kezelő rendszer / Bejelentkezés"
+msgstr "i-MSCP - Tárhely kezelő rendszer / Bejelentkezés"
 
 msgid "i-MSCP - Multi Server Control Panel / Lost password"
 msgstr "i-MSCP - Tárhely kezelő rendszer / Elfelejtett jelszó"
