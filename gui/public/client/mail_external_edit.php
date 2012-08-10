@@ -87,7 +87,7 @@ function create_options($data, $value = null) {
  */
 function validate_CNAME($dns_record, $cname_name, &$err = null) {
 
-	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
+	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false, 'allow' => Zend_Validate_Hostname::ALLOW_ALL))) {
 		$err .= tr('Usage of disallowed character in CNAME');
 		return false;
 	}
@@ -145,7 +145,7 @@ function validate_MX($dns_record, $mx_srv_prio, &$err, &$text) {
 		return false;
 	}
 
-	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
+	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false, 'allow' => Zend_Validate_Hostname::ALLOW_ALL))) {
 			$err .= tr('Usage of disallowed character in MX');
 			return false;
 	}

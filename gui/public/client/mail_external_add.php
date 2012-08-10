@@ -111,8 +111,8 @@ function validate_NAME($domain, &$err){
 	} else {
 		$entry = $domain['name'];
 	}
-
-	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false))) {
+	
+	if(!iMSCP_Validate::getInstance()->domainName($entry, array('tld' => false, 'allow' => Zend_Validate_Hostname::ALLOW_ALL))) {
 		$err .= tr('Invalid NAME');
 		return false;
 	}
@@ -139,13 +139,12 @@ function validate_MX($dns_record, $mx_srv_prio, &$err, &$text) {
 		$dns_record .= '.';
 	}
 
-
 	if (!preg_match('~^([\d]+)$~', $mx_srv_prio)) {
 		$err .= tr('Priority must be a number!');
 		return false;
 	}
-
-	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false))) {
+	
+	if(!iMSCP_Validate::getInstance()->domainName($dns_record, array('tld' => false, 'allow' => Zend_Validate_Hostname::ALLOW_ALL))) {
 			$err .= tr('Usage of disallowed character in MX');
 			return false;
 	}
