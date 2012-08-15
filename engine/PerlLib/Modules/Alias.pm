@@ -398,7 +398,8 @@ sub buildFTPDData{
 
 	$self->{ftpd} = {
 		FILE_NAME	=> $file_name,
-		PATH		=> $hDir
+		PATH		=> $hDir,
+		ROOT_DOMAIN	=> 'false'
 	};
 
 	0;

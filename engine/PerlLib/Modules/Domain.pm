@@ -403,6 +403,28 @@ sub buildNAMEDData{
 	0;
 }
 
+sub buildFTPDData{
+
+	my $self	= shift;
+	my $rs 		= 0;
+	my ($stdout, $stderr);
+	my $hDir 		= "$main::imscpConfig{'USER_HOME_DIR'}/$self->{domain_name}";
+	my $file_name	= "$self->{domain_name}";
+	$file_name		=~ s~/+~\.~g;
+	$file_name		=~ s~\.$~~g;
+	$hDir			=~ s~/+~/~g;
+	$hDir			=~ s~/$~~g;
+
+
+	$self->{ftpd} = {
+		FILE_NAME	=> $file_name,
+		PATH		=> $hDir,
+		ROOT_DOMAIN	=> 'true'
+	};
+
+	0;
+}
+
 sub buildADDONData{
 
 	my $self	= shift;

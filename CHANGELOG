@@ -21,6 +21,7 @@ Tickets:
 	- Fixed #481: Fatal Error in create/edit custom DNS entry
 	- Fixed #483: Autoresponder: Problems displaying umlauts
 	- Fixed #484: Autoresponder: Table autoreplies_log is not updated after deactivation
+	- Fixed #486: Malfunction: ProFTP LIMIT directive problem
 	- Fixed #487: External Mailserver add/edit CNAMES
 
 -------------------------------------------------------------------------------------

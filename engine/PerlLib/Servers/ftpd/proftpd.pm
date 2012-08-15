@@ -167,11 +167,12 @@ sub addDmn{
 	)->copyFile( "$self->{bkpDir}/$data->{FILE_NAME}.".time ) and $rs = 1
 	if -f "$self::proftpdConfig{FTPD_CONF_DIR}/$data->{FILE_NAME}";
 
-	my $file	= iMSCP::File->new( filename => "$self->{tplDir}/proftpd.conf.tpl");
+	my $template = ($data->{ROOT_DOMAIN} eq "true") ? "proftpd_root.conf.tpl" : "proftpd.conf.tpl";
+	my $file	= iMSCP::File->new( filename => "$self->{tplDir}/".$template);
 	my $content	= $file->get();
 
 	if(!$content){
-		error("Can not read $self->{tplDir}/proftpd.conf.tpl");
+		error("Can not read $self->{tplDir}/".$template);
 		return 1;
 	}
 
