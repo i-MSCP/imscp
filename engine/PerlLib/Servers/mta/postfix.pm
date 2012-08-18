@@ -872,6 +872,8 @@ sub addMailBox{
 	my $self = shift;
 	my $data = shift;
 	my $rs = 0;
+	my $SubscribedName;
+	my $wrkSubscribedContent;
 
 	my $mBoxHashFile	= $self->{MTA_VIRTUAL_MAILBOX_HASH};
 	my ($filename, $directories, $suffix) = fileparse($mBoxHashFile);
@@ -903,12 +905,28 @@ sub addMailBox{
 				mode	=> 0700
 			});
 
-	for ("$mailDir/cur", "$mailDir/tmp", "$mailDir/new"){
+	for ("$mailDir/cur", "$mailDir/tmp", "$mailDir/new", "$mailDir/.Drafts", "$mailDir/.Sent", "$mailDir/.Junk", "$mailDir/.Trash"){
 		$rs |= iMSCP::Dir->new(dirname => $_)->make({
 			user	=> $self->{MTA_MAILBOX_UID_NAME},
 			group	=> $self->{MTA_MAILBOX_GID_NAME},
 			mode	=> 0700
 		});
+	
+	if($main::imscpConfig{PO_SERVER} eq 'dovecot'){
+		$SubscribedName			= "$mailDir/subscriptions";
+		$wrkSubscribedContent	= "Drafts\nSent\nJunk\nTrash\n";
+	} else {
+		$SubscribedName			= "$mailDir/courierimapsubscribed";
+		$wrkSubscribedContent	= "INBOX.Drafts\nINBOX.Sent\nINBOX.Junk\nINBOX.Trash\n";
+	}
+	my $wrkSubscribedFile = iMSCP::File->new(filename => $SubscribedName);
+	$wrkSubscribedFile->set($wrkSubscribedContent);
+	return 1 if $wrkSubscribedFile->save();
+	$rs |=	$wrkSubscribedFile->mode(0600);
+	$rs |=	$wrkSubscribedFile->owner(
+				$self->{MTA_MAILBOX_UID_NAME},
+				$self->{MTA_MAILBOX_GID_NAME}
+			);
 	}
 
 	$rs;
