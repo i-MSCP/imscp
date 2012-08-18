@@ -12,7 +12,7 @@ GUI:
 
 	Tools:
 		- Updated PhpMyAdmin to version 3.5.2
-		- Updated Roundcube to 0.8
+		- Updated Roundcube to 0.8.1
 
 Tickets:
 	- Fixed #453: Wrong Support Ticket System Mailer template
@@ -24,6 +24,7 @@ Tickets:
 	- Fixed #486: Malfunction: ProFTP LIMIT directive problem
 	- Fixed #487: External Mailserver add/edit CNAMES
 	- Fixed #490: Roundcube missing default folders
+	- Fixed #491: Security-Update: Roundcube 0.8.1
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1

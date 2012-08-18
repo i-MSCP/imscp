@@ -1,6 +1,24 @@
 CHANGELOG Roundcube Webmail
 ===========================
 
+- Fix bug where domain name was converted to lower-case even with login_lc=false (#1488593)
+- Fix lower-casing email address on replies (#1488598)
+- Fix line separator in exported messages (#1488603)
+- Fix XSS issue where plain signatures wasn't secured in HTML mode (#1488613)
+- Fix XSS issue where href="javascript:" wasn't secured (#1488613)
+- Fix impossible to create message with empty plain text part (#1488610)
+- Fix stripped apostrophes when replying in plain text to HTML message (#1488606)
+- Fix inactive Save search option after advanced search (#1488607)
+- Fix Remove from group option is active for contact search result (#1488608)
+- Disable autocapitalization in login form on iPad/iPhone (#1488609)
+- Fix focus on the list when list row is clicked (#1488600)
+- Added separate From and To columns apart from smart From/To column (#1486891)
+- Fix fallback to Larry skin when configured skin isn't available (#1488591)
+- Fix (workaround) delete operations with some versions of memcache (#1488592)
+- Fix (disable) request validation for spell and spell_html actions
+
+RELEASE 0.8.0
+-------------
 - Don't show product version on login screen (can be enabled by config)
 - Renamed old default skin to 'classic'. Larry is the new default skin.
 - Support connections to memcached socket file (#1488577)
