@@ -66,7 +66,6 @@ $tpl->define_dynamic(
 		'sql_user_add' => 'page',
 		't_software_support' => 'page',
 		't_phpini_system' => 'page',
-		't_phpini_register_globals' => 'page',
 		't_phpini_allow_url_fopen' => 'page',
 		't_phpini_display_errors' => 'page',
 		't_phpini_disable_functions' => 'page'));
@@ -121,7 +120,6 @@ $tpl->assign(
 		 // END TOS
 		 'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
 		 'TR_USER_EDITABLE_EXEC' => tr('Only exec'),
-		 'TR_PHPINI_AL_REGISTER_GLOBALS' => tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>'),
 		 'TR_PHPINI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>'),
 		 'TR_PHPINI_AL_DISPLAY_ERRORS' => tr('Can edit the PHP %s directive', true, '<span class="bold">display_errors</span>'),
 		 'TR_PHPINI_AL_DISABLE_FUNCTIONS' => tr('Can edit the PHP %s directive', true, '<span class="bold">disable_functions</span>'),
@@ -148,12 +146,6 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 }
 
 if ($phpini->checkRePerm('phpiniSystem')) { //if reseller has permission to use php.ini feature
-	if ($phpini->checkRePerm('phpiniRegisterGlobals')) {
-		$tpl->parse('T_PHPINI_REGISTER_GLOBALS', 't_phpini_register_globals');
-	} else {
-		$tpl->assign(array('T_PHPINI_REGISTER_GLOBALS' => ''));
-		$tpl->assign(array('PHPINI_AL_REGISTER_GLOBALS_YES' => '', 'PHPINI_AL_REGISTER_GLOBALS_NO' => $cfg->HTML_CHECKED));
-	}
 	if ($phpini->checkRePerm('phpiniAllowUrlFopen')) {
 		$tpl->parse('T_PHPINI_ALLOW_URL_FOPEN', 't_phpini_allow_url_fopen');
 	} else {
@@ -249,8 +241,6 @@ function gen_empty_ahp_page($tpl, $phpini)
 			 'HP_TOS_VALUE' => '',
 			 'PHPINI_SYSTEM_YES' => $cfg->HTML_CHECKED,
 			 'PHPINI_SYSTEM_NO' => '',
-			 'PHPINI_AL_REGISTER_GLOBALS_YES' => $cfg->HTML_CHECKED,
-			 'PHPINI_AL_REGISTER_GLOBALS_NO' => '',
 			 'PHPINI_AL_ALLOW_URL_FOPEN_YES' => $cfg->HTML_CHECKED,
 			 'PHPINI_AL_ALLOW_URL_FOPEN_NO' => '',
 			 'PHPINI_AL_DISPLAY_ERRORS_YES' => $cfg->HTML_CHECKED,
@@ -328,10 +318,6 @@ function gen_data_ahp_page($tpl, $phpini)
 				 ? $cfg->HTML_CHECKED : '',
 			 'PHPINI_SYSTEM_NO' => ($phpini->getClPermVal('phpiniSystem') != 'yes')
 				 ? $cfg->HTML_CHECKED : '',
-			 'PHPINI_AL_REGISTER_GLOBALS_YES' => ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes')
-				 ? $cfg->HTML_CHECKED : '',
-			 'PHPINI_AL_REGISTER_GLOBALS_NO' => ($phpini->getClPermVal('phpiniRegisterGlobals') != 'yes')
-				 ? $cfg->HTML_CHECKED : '',
 			 'PHPINI_AL_ALLOW_URL_FOPEN_YES' => ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes')
 				 ? $cfg->HTML_CHECKED : '',
 			 'PHPINI_AL_ALLOW_URL_FOPEN_NO' => ($phpini->getClPermVal('phpiniAllowUrlFopen') != 'yes')
@@ -386,10 +372,6 @@ function check_data_correction($tpl, $phpini)
 
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpini_system'])) {
 		$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpini_system']));
-	}
-
-	if ($phpini->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_al_register_globals'])) {
-		$phpini->setClPerm('phpiniRegisterGlobals', clean_input($_POST['phpini_al_register_globals']));
 	}
 
 	if ($phpini->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_al_allow_url_fopen'])) {
@@ -568,7 +550,7 @@ function save_data_to_db($tpl, $admin_id, $phpini)
 		return false;
 	} else {
 		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
-		$hp_props .= ";" . $phpini->getClPermVal('phpiniSystem') . ";" . $phpini->getClPermVal('phpiniRegisterGlobals') . ";" . $phpini->getClPermVal('phpiniAllowUrlFopen');
+		$hp_props .= ";" . $phpini->getClPermVal('phpiniSystem') . ";" . $phpini->getClPermVal('phpiniAllowUrlFopen');
 		$hp_props .= ";" . $phpini->getClPermVal('phpiniDisplayErrors') . ";" . $phpini->getClPermVal('phpiniDisableFunctions');
 		$hp_props .= ";" . $phpini->getDataVal('phpiniPostMaxSize') . ";" . $phpini->getDataVal('phpiniUploadMaxFileSize') . ";" . $phpini->getDataVal('phpiniMaxExecutionTime');
 		$hp_props .= ";" . $phpini->getDataVal('phpiniMaxInputTime') . ";" . $phpini->getDataVal('phpiniMemoryLimit') . ";" . $hp_ext_mail;

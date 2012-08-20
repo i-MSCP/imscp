@@ -207,15 +207,6 @@
 							</td>
 						</tr>
 						<tr>
-							<td><label for="phpini_register_globals">{TR_PHPINI_REGISTER_GLOBALS}</label></td>
-							<td>
-								<select name="phpini_register_globals" id="phpini_register_globals">
-									<option value="Off" {PHPINI_REGISTER_GLOBALS_OFF}>{TR_DISABLED}</option>
-									<option value="On" {PHPINI_REGISTER_GLOBALS_ON}>{TR_ENABLED}</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
 							<td><label for="phpini_display_errors">{TR_PHPINI_DISPLAY_ERRORS}</label></td>
 							<td>
 								<select name="phpini_display_errors" id="phpini_display_errors">

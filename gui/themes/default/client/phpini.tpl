@@ -35,19 +35,6 @@
 						</td>
 					</tr>
 					<!-- EDP: allow_url_fopen_block -->
-					<!-- BDP: register_globals_block -->
-					<tr>
-						<td>
-							<label for="register_globals">{TR_REGISTER_GLOBALS}</label>
-						</td>
-						<td>
-							<select name="register_globals" id="register_globals">
-								<option value="Off"{REGISTER_GLOBALS_OFF}>{TR_VALUE_OFF}</option>
-								<option value="On"{REGISTER_GLOBALS_ON}>{TR_VALUE_ON}</option>
-							</select>
-						</td>
-					</tr>
-					<!-- EDP: register_globals_block -->
 					<!-- BDP: display_errors_block -->
 					<tr>
 						<td>

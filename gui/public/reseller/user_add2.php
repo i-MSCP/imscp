@@ -123,15 +123,6 @@ function get_init_au2_page($tpl, $phpini)
 
 		$permissionsBlock = false;
 
-		if (!$phpini->checkRePerm('phpiniRegisterGlobals')) {
-			$tplVars['PHP_EDITOR_REGISTER_GLOBALS_BLOCK'] = '';
-		} else {
-			$tplVars['TR_CAN_EDIT_REGISTER_GLOBALS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>');
-			$tplVars['REGISTER_GLOBALS_YES'] = ($phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') ? $htmlChecked : '';
-			$tplVars['REGISTER_GLOBALS_NO'] = ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') ? $htmlChecked : '';
-			$permissionsBlock = true;
-		}
-
 		if (!$phpini->checkRePerm('phpiniAllowUrlFopen')) {
 			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
 		} else {
@@ -218,7 +209,7 @@ function get_hp_data($hpid, $resellerId, $phpini)
 		list(
 			$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
 			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware,
-			$phpini_system, $phpini_al_register_globals, $phpini_al_allow_url_fopen,
+			$phpini_system, $phpini_al_allow_url_fopen,
 			$phpini_al_display_errors, $phpini_al_disable_functions, $phpini_post_max_size,
 			$phpini_upload_max_filesize, $phpini_max_execution_time, $phpini_max_input_time,
 			$phpini_memory_limit, $hp_ext_mail
@@ -228,7 +219,6 @@ function get_hp_data($hpid, $resellerId, $phpini)
 
 		// Write into phpini object
 		$phpini->setClPerm('phpiniSystem', $phpini_system);
-		$phpini->setClPerm('phpiniRegisterGlobals', $phpini_al_register_globals);
 		$phpini->setClPerm('phpiniAllowUrlFopen', $phpini_al_allow_url_fopen);
 		$phpini->setClPerm('phpiniDisplayErrors', $phpini_al_display_errors);
 		$phpini->setClPerm('phpiniDisableFunctions', $phpini_al_disable_functions);
@@ -327,10 +317,6 @@ function check_user_data($phpini)
 
 	if ($phpini->checkRePerm('phpiniSystem') && isset($_POST['phpiniSystem'])) {
 		$phpini->setClPerm('phpiniSystem', clean_input($_POST['phpiniSystem']));
-
-		if ($phpini->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_perm_register_globals'])) {
-			$phpini->setClPerm('phpiniRegisterGlobals', clean_input($_POST['phpini_perm_register_globals']));
-		}
 
 		if ($phpini->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_perm_allow_url_fopen'])) {
 			$phpini->setClPerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_perm_allow_url_fopen']));
@@ -498,7 +484,6 @@ $tpl->define_dynamic(
 		'php_editor_js' => 'page',
 		'php_editor_block' => 'page',
 		'php_editor_permissions_block' => 'php_editor_block',
-		'php_editor_register_globals_block' => 'php_editor_permissions_block',
 		'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
 		'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		'php_editor_disable_functions_block' => 'php_editor_permissions_block',
@@ -558,7 +543,6 @@ if (isset($_POST['uaction']) && ('user_add2_nxt' == $_POST['uaction']) &&
 								  "$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;" .
 								  "$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware;" .
 								  $phpini->getClPermVal('phpiniSystem') . ';' .
-								  $phpini->getClPermVal('phpiniRegisterGlobals') . ';' .
 								  $phpini->getClPermVal('phpiniAllowUrlFopen') . ';' .
 								  $phpini->getClPermVal('phpiniDisplayErrors') . ';' .
 								  $phpini->getClPermVal('phpiniDisableFunctions') . ';' .

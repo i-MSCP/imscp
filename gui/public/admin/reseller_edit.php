@@ -199,7 +199,7 @@ function &admin_getData($resellerId, $forUpdate = false, $recoveryMode = false)
 					'max_traff_amnt', 'max_disk_amnt', 'software_allowed', 'softwaredepot_allowed',
 					'websoftwaredepot_allowed', 'support_system', 'customer_id',
 					'php_ini_system', 'php_ini_al_disable_functions', 'php_ini_al_allow_url_fopen',
-					'php_ini_al_register_globals', 'php_ini_al_display_errors', 'php_ini_max_post_max_size',
+					'php_ini_al_display_errors', 'php_ini_max_post_max_size',
 					'php_ini_max_upload_max_filesize', 'php_ini_max_max_execution_time',
 					'php_ini_max_max_input_time', 'php_ini_max_memory_limit') as $key
 			) {
@@ -354,10 +354,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 			'PHP_INI_SYSTEM_YES' => ($data['php_ini_system'] == 'yes') ? $htmlChecked : '',
 			'PHP_INI_SYSTEM_NO' => ($data['php_ini_system'] != 'yes') ? $htmlChecked : '',
-
-			'TR_PHP_INI_AL_REGISTER_GLOBALS' => tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>'),
-			'PHP_INI_AL_REGISTER_GLOBALS_YES' => ($data['php_ini_al_register_globals'] == 'yes') ? $htmlChecked : '',
-			'PHP_INI_AL_REGISTER_GLOBALS_NO' => ($data['php_ini_al_register_globals'] != 'yes') ? $htmlChecked : '',
 
 			'TR_PHP_INI_AL_ALLOW_URL_FOPEN' => tr('Can edit the PHP %s directive', true, '<span class="bold">allow_url_fopen</span>'),
 			'PHP_INI_AL_ALLOW_URL_FOPEN_YES' => ($data['php_ini_al_allow_url_fopen'] == 'yes') ? $htmlChecked : '',
@@ -678,10 +674,6 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 				$phpEditor->setRePerm('phpiniAllowUrlFopen', $data['fallback_php_ini_al_allow_url_fopen']);
 			}
 
-			if(!$phpEditor->setRePerm('phpiniRegisterGlobals', $data['php_ini_al_register_globals'])) {
-				$phpEditor->setRePerm('phpiniRegisterGlobals', $data['fallback_php_ini_al_register_globals']);
-			}
-
 			if(!$phpEditor->setRePerm('phpiniDisplayErrors', $data['php_ini_al_display_errors'])) {
 				$phpEditor->setRePerm('phpiniDisplayErrors', $data['fallback_php_ini_al_display_errors']);
 			}
@@ -754,7 +746,7 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 					`max_disk_amnt` = ?, `reseller_ips` = ?, `customer_id` = ?, `software_allowed` = ?,
 					`softwaredepot_allowed` = ?, `websoftwaredepot_allowed` = ?, `support_system` = ?,
 					`php_ini_system` = ?, `php_ini_al_disable_functions` = ?, `php_ini_al_allow_url_fopen` = ?,
-					`php_ini_al_register_globals` = ?, `php_ini_al_display_errors` = ?, `php_ini_max_post_max_size` = ?,
+					`php_ini_al_display_errors` = ?, `php_ini_max_post_max_size` = ?,
 					`php_ini_max_upload_max_filesize` = ?, `php_ini_max_max_execution_time` = ?,
 					`php_ini_max_max_input_time` = ?, `php_ini_max_memory_limit` = ?
 				WHERE
@@ -770,7 +762,6 @@ function admin_checkAndUpdateData($resellerId, $recoveryMode = false)
 									$phpEditor->getRePermVal('phpiniSystem'),
 									$phpEditor->getRePermVal('phpiniDisableFunctions'),
 									$phpEditor->getRePermVal('phpiniAllowUrlFopen'),
-									$phpEditor->getRePermVal('phpiniRegisterGlobals'),
 									$phpEditor->getRePermVal('phpiniDisplayErrors'),
 								 	$phpEditor->getRePermVal('phpiniPostMaxSize'),
 								 	$phpEditor->getRePermVal('phpiniUploadMaxFileSize'),
@@ -943,7 +934,7 @@ $tpl->define_dynamic(
 		'ip_block' => 'ips_block',
 		'php_editor_disable_functions_block' => 'page'
 	));
-
+	
 $tpl->assign(
 	array(
 		 'TR_PAGE_TITLE' => tr('i-MSCP - Admin / Manage users / Edit Reseller'),

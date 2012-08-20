@@ -154,19 +154,6 @@
 					</td>
 				</tr>
 				<tbody id='phpinidetail'>
-				<!-- BDP: t_phpini_register_globals -->
-				<tr id='php_ini_block_register_globals'>
-					<td>{TR_PHPINI_AL_REGISTER_GLOBALS}</td>
-					<td>
-						<div class="radio">
-							<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_yes" value="yes" {PHPINI_AL_REGISTER_GLOBALS_YES} />
-							<label for="phpini_al_register_globals_yes">{TR_YES}</label>
-							<input type="radio" name="phpini_al_register_globals" id="phpini_al_register_globals_no" value="no" {PHPINI_AL_REGISTER_GLOBALS_NO} />
-							<label for="phpini_al_register_globals_no">{TR_NO}</label>
-						</div>
-					</td>
-				</tr>
-				<!-- EDP: t_phpini_register_globals -->
 				<!-- BDP: t_phpini_allow_url_fopen -->
 				<tr id='php_ini_block_allow_url_fopen'>
 					<td>{TR_PHPINI_AL_ALLOW_URL_FOPEN}</td>

@@ -138,7 +138,6 @@
             php_admin_value memory_limit "{MEMORY_LIMIT}M"
             php_value error_reporting "{ERROR_REPORTING}"
             php_value display_errors "{DISPLAY_ERRORS}"
-            php_admin_value register_globals "{REGISTER_GLOBALS}"
             php_admin_value post_max_size "{POST_MAX_SIZE}M"
             php_admin_value upload_max_filesize "{UPLOAD_MAX_FILESIZE}M"
             php_admin_value allow_url_fopen "{ALLOW_URL_FOPEN}"

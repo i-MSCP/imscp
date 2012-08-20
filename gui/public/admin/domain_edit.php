@@ -417,15 +417,6 @@ function _admin_generateFeaturesForm($tpl, &$data)
 
 		$permissionsBlock = false;
 
-		if (!$phpEditor->checkRePerm('phpiniRegisterGlobals')) {
-			$tplVars['PHP_EDITOR_REGISTER_GLOBALS_BLOCK'] = '';
-		} else {
-			$tplVars['TR_CAN_EDIT_REGISTER_GLOBALS'] = tr('Can edit the PHP %s directive', true, '<span class="bold">register_globals</span>');
-			$tplVars['REGISTER_GLOBALS_YES'] = ($phpEditor->getClPermVal('phpiniRegisterGlobals') == 'yes') ? $htmlChecked : '';
-			$tplVars['REGISTER_GLOBALS_NO'] = ($phpEditor->getClPermVal('phpiniRegisterGlobals') == 'no') ? $htmlChecked : '';
-			$permissionsBlock = true;
-		}
-
 		if (!$phpEditor->checkRePerm('phpiniAllowUrlFopen')) {
 			$tplVars['PHP_EDITOR_ALLOW_URL_FOPEN_BLOCK'] = '';
 		} else {
@@ -687,10 +678,6 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 			$phpEditor->setClPerm('phpiniSystem', clean_input($_POST['phpiniSystem']));
 
 			if ($phpEditor->getClPermVal('phpiniSystem') == 'yes') {
-				if ($phpEditor->checkRePerm('phpiniRegisterGlobals') && isset($_POST['phpini_perm_register_globals'])) {
-					$phpEditor->setClPerm('phpiniRegisterGlobals', clean_input($_POST['phpini_perm_register_globals']));
-				}
-
 				if ($phpEditor->checkRePerm('phpiniAllowUrlFopen') && isset($_POST['phpini_perm_allow_url_fopen'])) {
 					$phpEditor->setClPerm('phpiniAllowUrlFopen', clean_input($_POST['phpini_perm_allow_url_fopen']));
 				}
@@ -859,9 +846,8 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 					`domain_sqlu_limit` = ?, `domain_status` = ?, `domain_alias_limit` = ?,
 					`domain_subd_limit` = ?, `domain_disk_limit` = ?, `domain_php` = ?, `domain_cgi` = ?,
 					`allowbackup` = ?, `domain_dns` = ?,  `domain_software_allowed` = ?,
-					`phpini_perm_system` = ?, `phpini_perm_register_globals` = ?,
-					`phpini_perm_allow_url_fopen` = ?, `phpini_perm_display_errors` = ?,
-					`phpini_perm_disable_functions` = ?
+					`phpini_perm_system` = ?, `phpini_perm_allow_url_fopen` = ?,
+					`phpini_perm_display_errors` = ?, `phpini_perm_disable_functions` = ?
 				WHERE
 					`domain_id` = ?
 			";
@@ -874,7 +860,6 @@ function admin_checkAndUpdateData($domainId, $recoveryMode = false)
 									$data['domain_disk_limit'], $data['domain_php'], $data['domain_cgi'],
 									$data['allowbackup'], $data['domain_dns'],
 									$data['domain_software_allowed'], $phpEditor->getClPermVal('phpiniSystem'),
-									$phpEditor->getClPermVal('phpiniRegisterGlobals'),
 									$phpEditor->getClPermVal('phpiniAllowUrlFopen'),
 									$phpEditor->getClPermVal('phpiniDisplayErrors'),
 									$phpEditor->getClPermVal('phpiniDisableFunctions'),
@@ -1016,7 +1001,6 @@ $tpl->define_dynamic(
 		 'php_editor_js' => 'page',
 		 'php_editor_block' => 'php_block',
 		 'php_editor_permissions_block' => 'php_editor_block',
-		 'php_editor_register_globals_block' => 'php_editor_permissions_block',
 		 'php_editor_allow_url_fopen_block' => 'php_editor_permissions_block',
 		 'php_editor_display_errors_block' => 'php_editor_permissions_block',
 		 'php_editor_disable_functions_block' => 'php_editor_permissions_block',

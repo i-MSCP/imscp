@@ -15,6 +15,7 @@ GUI:
 		- Updated Roundcube to 0.8.1
 
 Tickets:
+	- Fixed #433: PHP directive editor: register_globals does not exist in php 5.4.0 and above
 	- Fixed #453: Wrong Support Ticket System Mailer template
 	- Fixed #475: Some field-lengths are too short for their content
 	- Fixed #479: WARNING 00_master_ssl.conf do not exists

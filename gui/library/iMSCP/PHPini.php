@@ -151,7 +151,6 @@ class iMSCP_PHPini
 		$this->_phpiniData['phpiniSystem'] = 'no';
 
 		// Default permissions on PHP directives
-		$this->_phpiniData['phpiniRegisterGlobals'] = $this->_cfg->PHPINI_REGISTER_GLOBALS;
 		$this->_phpiniData['phpiniAllowUrlFopen'] = $this->_cfg->PHPINI_ALLOW_URL_FOPEN;
 		$this->_phpiniData['phpiniDisplayErrors'] = $this->_cfg->PHPINI_DISPLAY_ERRORS;
 		$this->_phpiniData['phpiniErrorReporting'] = $this->_cfg->PHPINI_ERROR_REPORTING;
@@ -181,7 +180,6 @@ class iMSCP_PHPini
 		if ($stmt->recordCount()) {
 			$this->_phpiniData['phpiniSystem'] = 'yes';
 
-			$this->_phpiniData['phpiniRegisterGlobals'] = $stmt->fields('register_globals');
 			$this->_phpiniData['phpiniAllowUrlFopen'] = $stmt->fields('allow_url_fopen');
 			$this->_phpiniData['phpiniDisplayErrors'] = $stmt->fields('display_errors');
 			$this->_phpiniData['phpiniErrorReporting'] = $stmt->fields('error_reporting');
@@ -211,10 +209,9 @@ class iMSCP_PHPini
 
 		$query = "
 			SELECT
-				`php_ini_system`,`php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
-				`php_ini_al_register_globals`, `php_ini_al_display_errors`, `php_ini_max_post_max_size`,
-				`php_ini_max_upload_max_filesize`, `php_ini_max_max_execution_time`,
-				`php_ini_max_max_input_time`, `php_ini_max_memory_limit`
+				`php_ini_system`, `php_ini_al_disable_functions`, `php_ini_al_allow_url_fopen`,
+				`php_ini_al_display_errors`, `php_ini_max_post_max_size`, `php_ini_max_upload_max_filesize`,
+				`php_ini_max_max_execution_time`, `php_ini_max_max_input_time`, `php_ini_max_memory_limit`
 			FROM
 				`reseller_props`
 			WHERE
@@ -225,7 +222,6 @@ class iMSCP_PHPini
 		if($stmt->rowCount() && $stmt->fields('php_ini_system') == 'yes') {
 			// Permissions on PHP directives
 			$this->_phpiniRePerm['phpiniSystem'] = 'yes';
-			$this->_phpiniRePerm['phpiniRegisterGlobals'] = $stmt->fields('php_ini_al_register_globals');
 			$this->_phpiniRePerm['phpiniAllowUrlFopen'] = $stmt->fields('php_ini_al_allow_url_fopen');
 			$this->_phpiniRePerm['phpiniDisplayErrors'] = $stmt->fields('php_ini_al_display_errors');
 			$this->_phpiniRePerm['phpiniDisableFunctions'] = $stmt->fields('php_ini_al_disable_functions');
@@ -252,7 +248,6 @@ class iMSCP_PHPini
 	{
 		// Default permissions on PHP directives
 		$this->_phpiniRePerm['phpiniSystem'] = 'no';
-		$this->_phpiniRePerm['phpiniRegisterGlobals'] = 'no';
 		$this->_phpiniRePerm['phpiniAllowUrlFopen'] = 'no';
 		$this->_phpiniRePerm['phpiniDisplayErrors'] = 'no';
 		$this->_phpiniRePerm['phpiniDisableFunctions'] = 'no';
@@ -365,8 +360,7 @@ class iMSCP_PHPini
 	{
 		if ($this->_phpiniRePerm['phpiniSystem'] == 'yes') {
 			if($key == 'phpiniSystem' ||
-			   in_array($key, array('phpiniRegisterGlobals', 'phpiniAllowUrlFopen',
-								    'phpiniDisplayErrors', 'phpiniDisableFunctions')
+			   in_array($key, array('phpiniAllowUrlFopen', 'phpiniDisplayErrors', 'phpiniDisableFunctions')
 			   ) && $this->_phpiniRePerm[$key] == 'yes'
 			) {
 				return true;
@@ -429,9 +423,9 @@ class iMSCP_PHPini
 					`php_ini`
 				SET
 					`status` = ?, `disable_functions` = ?, `allow_url_fopen` = ?,
-					`register_globals` = ?, `display_errors` = ?, `error_reporting` = ?,
-					`post_max_size` = ?, `upload_max_filesize` = ?, `max_execution_time` = ?,
-					`max_input_time` = ?, `memory_limit` = ?
+					`display_errors` = ?, `error_reporting` = ?, `post_max_size` = ?,
+					`upload_max_filesize` = ?, `max_execution_time` = ?, `max_input_time` = ?,
+					`memory_limit` = ?
 				WHERE
 					`domain_id` = ?
 			";
@@ -439,7 +433,6 @@ class iMSCP_PHPini
 									$this->_cfg->ITEM_CHANGE_STATUS,
 									$this->_phpiniData['phpiniDisableFunctions'],
 									$this->_phpiniData['phpiniAllowUrlFopen'],
-									$this->_phpiniData['phpiniRegisterGlobals'],
 									$this->_phpiniData['phpiniDisplayErrors'],
 									$this->_phpiniData['phpiniErrorReporting'],
 									$this->_phpiniData['phpiniPostMaxSize'],
@@ -453,18 +446,17 @@ class iMSCP_PHPini
 				INSERT INTO
 					`php_ini` (
 						`status`, `disable_functions`, `allow_url_fopen`,
-						`register_globals`, `display_errors`, `error_reporting`,
-						`post_max_size`, `upload_max_filesize`, `max_execution_time`,
-						`max_input_time`, `memory_limit`, `domain_id`
+						`display_errors`, `error_reporting`, `post_max_size`,
+						`upload_max_filesize`, `max_execution_time`, `max_input_time`,
+						`memory_limit`, `domain_id`
 				 ) VALUES (
-					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+					?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 				)
 			";
 			exec_query($query, array(
 								    $this->_cfg->ITEM_ADD_STATUS,
 									$this->_phpiniData['phpiniDisableFunctions'],
 									$this->_phpiniData['phpiniAllowUrlFopen'],
-									$this->_phpiniData['phpiniRegisterGlobals'],
 									$this->_phpiniData['phpiniDisplayErrors'],
 									$this->_phpiniData['phpiniErrorReporting'],
 									$this->_phpiniData['phpiniPostMaxSize'],
@@ -517,7 +509,6 @@ class iMSCP_PHPini
 				`domain`
 			SET
 				`phpini_perm_system` = ?,
-				`phpini_perm_register_globals` = ?,
 				`phpini_perm_allow_url_fopen` = ?,
 				`phpini_perm_display_errors` = ?,
 				`phpini_perm_disable_functions` = ?
@@ -526,7 +517,6 @@ class iMSCP_PHPini
 		";
 		exec_query($query, array(
 								$this->_phpiniClPerm['phpiniSystem'],
-								$this->_phpiniClPerm['phpiniRegisterGlobals'],
 								$this->_phpiniClPerm['phpiniAllowUrlFopen'],
 								$this->_phpiniClPerm['phpiniDisplayErrors'],
 								$this->_phpiniClPerm['phpiniDisableFunctions'],
@@ -635,7 +625,6 @@ class iMSCP_PHPini
 	{
 		$phpiniDatatmp['phpiniSystem'] = 'no';
 
-		$phpiniDatatmp['phpiniRegisterGlobals'] = $this->_cfg->PHPINI_REGISTER_GLOBALS;
 		$phpiniDatatmp['phpiniAllowUrlFopen'] = $this->_cfg->PHPINI_ALLOW_URL_FOPEN;
 		$phpiniDatatmp['phpiniDisplayErrors'] = $this->_cfg->PHPINI_DISPLAY_ERRORS;
 		$phpiniDatatmp['phpiniErrorReporting'] = $this->_cfg->PHPINI_ERROR_REPORTING;
@@ -659,7 +648,6 @@ class iMSCP_PHPini
 	public function loadClDefaultPerm()
 	{
 		$this->_phpiniClPerm['phpiniSystem'] = 'no';
-		$this->_phpiniClPerm['phpiniRegisterGlobals'] = 'no';
 		$this->_phpiniClPerm['phpiniAllowUrlFopen'] = 'no';
 		$this->_phpiniClPerm['phpiniDisplayErrors'] = 'no';
 		$this->_phpiniClPerm['phpiniDisableFunctions'] = 'no';
@@ -675,9 +663,8 @@ class iMSCP_PHPini
 	{
 		$query = "
 			SELECT
-				`phpini_perm_system`, `phpini_perm_register_globals`,
-				`phpini_perm_allow_url_fopen`, `phpini_perm_display_errors`,
-				`phpini_perm_disable_functions`
+				`phpini_perm_system`, `phpini_perm_allow_url_fopen`,
+				`phpini_perm_display_errors`, `phpini_perm_disable_functions`
 			FROM
 				`domain`
 			WHERE
@@ -687,7 +674,6 @@ class iMSCP_PHPini
 
 		if ($stmt->rowCount()) {
 			$this->_phpiniClPerm['phpiniSystem'] = $stmt->fields('phpini_perm_system');
-			$this->_phpiniClPerm['phpiniRegisterGlobals'] = $stmt->fields('phpini_perm_register_globals');
 			$this->_phpiniClPerm['phpiniAllowUrlFopen'] = $stmt->fields('phpini_perm_allow_url_fopen');
 			$this->_phpiniClPerm['phpiniDisplayErrors'] = $stmt->fields('phpini_perm_display_errors');
 			$this->_phpiniClPerm['phpiniDisableFunctions'] = $stmt->fields('phpini_perm_disable_functions');
@@ -740,10 +726,6 @@ class iMSCP_PHPini
 	protected function _rawCheckData($key, $value)
 	{
 		if ($key == 'phpiniSystem' && ($value == 'yes' || $value == 'no')) {
-			return true;
-		}
-
-		if ($key == 'phpiniRegisterGlobals' && ($value == 'On' || $value == 'Off')) {
 			return true;
 		}
 
@@ -833,10 +815,6 @@ class iMSCP_PHPini
 			return true;
 		}
 
-		if ($key == 'phpiniRegisterGlobals' && ($value == 'yes' || $value == 'no')) {
-			return true;
-		}
-
 		if ($key == 'phpiniAllowUrlFopen' && ($value == 'yes' || $value == 'no')) {
 			return true;
 		}
@@ -884,10 +862,6 @@ class iMSCP_PHPini
 	protected function _rawCheckClPermData($key, $value)
 	{
 		if ($key == 'phpiniSystem' && ($value == 'yes' || $value == 'no')) {
-			return true;
-		}
-
-		if ($key == 'phpiniRegisterGlobals' && ($value == 'yes' || $value == 'no')) {
 			return true;
 		}
 

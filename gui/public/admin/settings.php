@@ -88,7 +88,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$max_subdnames_labels = clean_input($_POST['max_subdnames_labels']);
 	$log_level = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
 	$ordersExpireTime = clean_input($_POST['ordersExpireTime']);
-	$phpini->setData('phpiniRegisterGlobals', clean_input($_POST['phpini_register_globals']));
 	$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['phpini_allow_url_fopen']));
 	$phpini->setData('phpiniDisplayErrors', clean_input($_POST['phpini_display_errors']));
 	$phpini->setData('phpiniErrorReporting', clean_input($_POST['phpini_error_reporting']));
@@ -173,7 +172,6 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
 		$db_cfg->ORDERS_EXPIRE_TIME = $ordersExpireTime * 86400;
 		$db_cfg->PHPINI_ALLOW_URL_FOPEN = $phpini->getDataVal('phpiniAllowUrlFopen');
-		$db_cfg->PHPINI_REGISTER_GLOBALS = $phpini->getDataVal('phpiniRegisterGlobals');
 		$db_cfg->PHPINI_DISPLAY_ERRORS = $phpini->getDataVal('phpiniDisplayErrors');
 		$db_cfg->PHPINI_ERROR_REPORTING = $phpini->getDataVal('phpiniErrorReporting');
 		$db_cfg->PHPINI_POST_MAX_SIZE = $phpini->getDataVal('phpiniPostMaxSize');
@@ -452,18 +450,6 @@ if ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') {
 			 'PHPINI_ALLOW_URL_FOPEN_OFF' => $html_selected));
 }
 
-if ($phpini->getDataVal('phpiniRegisterGlobals') == 'On') {
-	$tpl->assign(
-		array(
-			 'PHPINI_REGISTER_GLOBALS_ON' => $html_selected,
-			 'PHPINI_REGISTER_GLOBALS_OFF' => ''));
-} else {
-	$tpl->assign(
-		array(
-			 'PHPINI_REGISTER_GLOBALS_ON' => '',
-			 'PHPINI_REGISTER_GLOBALS_OFF' => $html_selected));
-}
-
 if ($phpini->getDataVal('phpiniDisplayErrors') == 'On') {
 	$tpl->assign(
 		array(
@@ -635,7 +621,6 @@ $tpl->assign(
 		 'TR_MAX_SUBDNAMES_LABELS' => tr('Maximum number of labels for subdomains'),
 		 'TR_PHPINI_BASE_SETTINGS' => tr('PHP Settings (system default)'),
 		 'TR_PHPINI_ALLOW_URL_FOPEN' => tr('Value for the %s directive', true, '<span class="bold">allow_url_fopen</span>'),
-		 'TR_PHPINI_REGISTER_GLOBALS' => tr('Value for the %s directive', true, '<span class="bold">register_globals</span>'),
 		 'TR_PHPINI_DISPLAY_ERRORS' => tr('Value for the %s directive', true, '<span class="bold">display_errors</span>'),
 		 'TR_PHPINI_ERROR_REPORTING' => tr('Value for the %s directive', true, '<span class="bold">error_reporting</span>'),
 		 'TR_PHPINI_ERROR_REPORTING_DEFAULT' => tr('Show all errors, except for notices and coding standards warnings (Default)'),

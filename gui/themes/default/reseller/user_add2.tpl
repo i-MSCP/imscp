@@ -196,19 +196,6 @@
 							<tr class="description">
 								<th colspan="2">{TR_PERMISSIONS}</th>
 							</tr>
-							<!-- BDP: php_editor_register_globals_block -->
-							<tr>
-								<td>{TR_CAN_EDIT_REGISTER_GLOBALS}</td>
-								<td>
-									<div class="radio">
-										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsYes" value="yes" {REGISTER_GLOBALS_YES}/>
-										<label for="phpiniRegisterGlobalsYes">{TR_YES}</label>
-										<input type="radio" name="phpini_perm_register_globals" id="phpiniRegisterGlobalsNo" value="no" {REGISTER_GLOBALS_NO}/>
-										<label for="phpiniRegisterGlobalsNo">{TR_NO}</label>
-									</div>
-								</td>
-							</tr>
-							<!-- EDP: php_editor_register_globals_block -->
 							<!-- BDP: php_editor_allow_url_fopen_block -->
 							<tr>
 								<td>{TR_CAN_EDIT_ALLOW_URL_FOPEN}</td>

@@ -1717,7 +1717,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * #157: Enhancement - Relaying Domains
 	 *
-	 * @author Daniel Andreca <worst.case@gmx.de>
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
 	protected function _databaseUpdate_110(){
@@ -1750,6 +1750,22 @@ class iMSCP_Update_Database extends iMSCP_Update
 		return array(
 			'ALTER TABLE `quotalimits` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\'',
 			'ALTER TABLE `quotatallies` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\''
+		);
+	}
+	
+	/**
+	 * #433: Defect - register_globals does not exist in php 5.4.0 and above
+	 *
+	 * @author Sascha Bay <worst.case@gmx.de>
+	 * @return array Stack of SQL statements to be executed
+	 */
+	protected function _databaseUpdate_113(){
+		return array(
+			"DELETE FROM `config` WHERE `name` = 'PHPINI_REGISTER_GLOBALS'",
+			$this->_dropColumn('domain', 'phpini_perm_register_globals'),
+			$this->_dropColumn('reseller_props', 'php_ini_al_register_globals'),
+			$this->_dropColumn('php_ini', 'register_globals'),
+			"UPDATE `hosting_plans` SET `props` = CONCAT(SUBSTRING_INDEX(`props`,';',14),';',SUBSTRING(`props` FROM LENGTH(SUBSTRING_INDEX(`props`, ';', 15))+2))"
 		);
 	}
 

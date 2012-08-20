@@ -246,18 +246,6 @@
 									<th colspan="2">{TR_PERMISSIONS}</th>
 								</tr>
 								<tr>
-									<td>{TR_PHP_INI_AL_REGISTER_GLOBALS}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
-
-									<td>
-										<div class="ui-buttonset">
-											<input type="radio" name="php_ini_al_register_globals" id="php_ini_al_register_globals_yes" value="yes" {PHP_INI_AL_REGISTER_GLOBALS_YES}/>
-											<label for="php_ini_al_register_globals_yes">{TR_YES}</label>
-											<input type="radio" name="php_ini_al_register_globals" id="php_ini_al_register_globals_no" value="no" {PHP_INI_AL_REGISTER_GLOBALS_NO}/>
-											<label for="php_ini_al_register_globals_no">{TR_NO}</label>
-										</div>
-									</td>
-								</tr>
-								<tr>
 									<td>{TR_PHP_INI_AL_ALLOW_URL_FOPEN}<span class="permission_help icon i_help" title="{TR_PHP_INI_PERMISSION_HELP}">{TR_HELP}</span></td>
 									<td>
 										<div class="ui-buttonset">

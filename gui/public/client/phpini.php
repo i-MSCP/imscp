@@ -58,10 +58,6 @@ if (!empty($_POST)) { // Post request
 		$oldData = $phpini->getData();
 		$phpini->setData('phpiniSystem', 'yes');
 
-		if (isset($_POST['register_globals']) && $phpini->getClPermVal('phpiniRegisterGlobals') == 'yes') {
-			$phpini->setData('phpiniRegisterGlobals', clean_input($_POST['register_globals']));
-		}
-
 		if (isset($_POST['allow_url_fopen']) && $phpini->getClPermVal('phpiniAllowUrlFopen') == 'yes') {
 			$phpini->setData('phpiniAllowUrlFopen', clean_input($_POST['allow_url_fopen']));
 		}
@@ -131,7 +127,6 @@ $tpl->define_dynamic(
 		 'page_message' => 'layout',
 		 'php_editor_first_block_js' => 'page',
 		 'php_editor_first_block' =>  'page',
-		 'register_globals_block' => 'php_editor_first_block',
 		 'allow_url_fopen_block' => 'php_editor_first_block',
 		 'display_errors_block' => 'php_editor_first_block',
 		 'error_reporting_block' => 'php_editor_first_block',
@@ -165,16 +160,6 @@ if ($phpini->getClPermVal('phpiniAllowUrlFopen') == 'no') {
 	$tplVars['TR_ALLOW_URL_FOPEN'] = 'allow_url_fopen';
 	$tplVars['ALLOW_URL_FOPEN_ON'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'On') ? $htmlSelected : '';
 	$tplVars['ALLOW_URL_FOPEN_OFF'] = ($phpini->getDataVal('phpiniAllowUrlFopen') == 'Off') ? $htmlSelected : '';
-	$firstBlock = true;
-}
-
-// register_global directive
-if ($phpini->getClPermVal('phpiniRegisterGlobals') == 'no') {
-	$tplVars['REGISTER_GLOBALS_BLOCK'] = '';
-} else {
-	$tplVars['TR_REGISTER_GLOBALS'] = 'register_globals';
-	$tplVars['REGISTER_GLOBALS_ON'] = ($phpini->getDataVal('phpiniRegisterGlobals') == 'On') ? $htmlSelected : '';
-	$tplVars['REGISTER_GLOBALS_OFF'] = ($phpini->getDataVal('phpiniRegisterGlobals') == 'Off') ? $htmlSelected : '';
 	$firstBlock = true;
 }
 
