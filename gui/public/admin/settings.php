@@ -346,7 +346,7 @@ if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	$tpl->assign(
 		array(
 			 'HOSTING_PLANS_LEVEL_ADMIN' => $html_selected,
-			 'HOSTING_PLANS_LEVEL_RESELLER', ''));
+			 'HOSTING_PLANS_LEVEL_RESELLER' => ''));
 } else {
 	$tpl->assign(
 		array(

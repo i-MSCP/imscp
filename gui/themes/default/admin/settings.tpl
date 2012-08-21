@@ -258,7 +258,7 @@
 						</tr>
 						<tr>
 							<td><label for="phpini_open_basedir">{TR_PHPINI_OPEN_BASEDIR}</label>
-								<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}></span></td>
+								<span class="icon i_help" title={TR_PHPINI_OPEN_BASEDIR_TOOLTIP}>{TR_HELP}</span></td>
 							<td>
 								<input name="phpini_open_basedir" id="phpini_open_basedir" type="text" value="{PHPINI_OPEN_BASEDIR}"/>
 							</td>
