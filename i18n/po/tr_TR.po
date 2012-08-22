@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-06-30 07:45+0000\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2462,13 +2462,7 @@ msgstr "Hosting planı özellikleri"
 msgid "Hosting plan successfully added."
 msgstr ""
 
-msgid "Hosting plan successfully created."
-msgstr ""
-
 msgid "Hosting plan successfully deleted."
-msgstr ""
-
-msgid "Hosting plan successfully updated."
 msgstr ""
 
 msgid "Hosting plan sucessfully updated."
@@ -2478,10 +2472,6 @@ msgid "Hosting plan update"
 msgstr ""
 
 msgid "Hosting plan values exceed reseller maximum values."
-msgstr ""
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
 msgstr ""
 
 msgid "Hosting plan with same name already exists."
@@ -2624,28 +2614,16 @@ msgstr ""
 msgid "Incorrect FTP accounts limit."
 msgstr ""
 
-msgid "Incorrect Ftp accounts limit."
-msgstr ""
-
 msgid "Incorrect SQL databases limit."
 msgstr ""
 
 msgid "Incorrect SQL users limit."
 msgstr ""
 
-msgid "Incorrect Sql databases limit."
-msgstr ""
-
-msgid "Incorrect Sql users limit."
-msgstr ""
-
 msgid "Incorrect aliases limit."
 msgstr ""
 
 msgid "Incorrect disk quota limit."
-msgstr ""
-
-msgid "Incorrect disk space limit."
 msgstr ""
 
 msgid "Incorrect email length or syntax!"
@@ -2675,12 +2653,6 @@ msgstr ""
 
 msgid "Incorrect or is not allowed."
 msgstr ""
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "Hatalı ücret. Örnek: 9.99"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Hatalı kurulum ücreti. Örnek: 19.99"
 
 msgid "Incorrect subdomains limit."
 msgstr ""
@@ -2871,11 +2843,6 @@ msgstr ""
 
 msgid "Layout settings"
 msgstr "Yerleşim ayarları"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr ""
 
 msgid "Level"
 msgstr "Seviye"
@@ -4058,9 +4025,6 @@ msgstr "Ücret"
 msgid "Price must be a number."
 msgstr ""
 
-msgid "Price style"
-msgstr ""
-
 msgid "Priority"
 msgstr "Öncelik"
 
@@ -4640,9 +4604,6 @@ msgstr ""
 msgid "Software installer options successfully updated."
 msgstr ""
 
-msgid "Software installer require PHP feature."
-msgstr ""
-
 msgid "Software installer: disabled"
 msgstr ""
 
@@ -4963,9 +4924,6 @@ msgid "Term Of Service"
 msgstr "Hizmet Şartları"
 
 msgid "Term of Service"
-msgstr ""
-
-msgid "Term of service"
 msgstr ""
 
 msgid "Text"
@@ -5943,9 +5901,6 @@ msgstr ""
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr ""
 
-msgid "Wrong_request."
-msgstr ""
-
 msgid "XML file URL for the Web software repository"
 msgstr ""
 
@@ -6768,10 +6723,16 @@ msgstr ""
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr ""
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr ""
 
 msgid "i-MSCP - Reseller / Layout"
+msgstr ""
+
+msgid "i-MSCP - Reseller / Main Index"
 msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
@@ -6798,6 +6759,9 @@ msgstr ""
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr ""
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Bayi/Dil Seçimini Değiştir"
 
@@ -6807,17 +6771,11 @@ msgstr "i-MSCP - Bayi/Şifre Değiştir"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Bayi/Kişisel Bilgileri Değiştir"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - Bayi/Hosting planı düzenle"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - BAyi/Kayıp şifre eposta kurulumu"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Bayi/Anamenü"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Bayi/Kullanıcıları Düzenle/Eposta Kurulumu"
@@ -7067,6 +7025,9 @@ msgid "{ADMIN} activated your software package"
 msgstr ""
 
 msgid "{RESELLER} uploaded a new software package"
+msgstr ""
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
 msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"

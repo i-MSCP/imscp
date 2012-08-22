@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-07-08 21:56+0000\n"
-"Last-Translator: Zoltán Balázs <balazsz@citromail.hu>\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2464,14 +2464,8 @@ msgstr "Tárhely csomag tulajdonságai"
 msgid "Hosting plan successfully added."
 msgstr "Tárhely csomag sikeresen hozzáadva"
 
-msgid "Hosting plan successfully created."
-msgstr "Tárhely csomag sikeresen létrejött"
-
 msgid "Hosting plan successfully deleted."
 msgstr "Tárhely csomag sikeresen törölve"
-
-msgid "Hosting plan successfully updated."
-msgstr "Tárhely csomag sikeresen frissítve"
 
 msgid "Hosting plan sucessfully updated."
 msgstr "Tárhely csomag sikeresen frissítve"
@@ -2481,10 +2475,6 @@ msgstr "Tárhely csomag frissítése"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "A tárhely csomag korlátjai meghaladja a viszonteladóét"
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
-msgstr "%d azonosítójú tárhely csomag nem létezik"
 
 msgid "Hosting plan with same name already exists."
 msgstr "Ilyen nevű tárhely csomag már létezik"
@@ -2626,28 +2616,16 @@ msgstr "beleszámítva az aldomain nevek álneveit is"
 msgid "Incorrect FTP accounts limit."
 msgstr "FTP hozzáférési korlát hibás"
 
-msgid "Incorrect Ftp accounts limit."
-msgstr "FTP hozzáférési korlát hibás"
-
 msgid "Incorrect SQL databases limit."
 msgstr "SQL adatbázis darabszám korlát hibás"
 
 msgid "Incorrect SQL users limit."
 msgstr "SQL felhasználói korlát hibás"
 
-msgid "Incorrect Sql databases limit."
-msgstr "SQL adatbázis darabszám korlát hibás"
-
-msgid "Incorrect Sql users limit."
-msgstr "SQL felhasználói korlát hibás"
-
 msgid "Incorrect aliases limit."
 msgstr "Domain álnév korlát hibás"
 
 msgid "Incorrect disk quota limit."
-msgstr "Tárhely korlát hibás"
-
-msgid "Incorrect disk space limit."
 msgstr "Tárhely korlát hibás"
 
 msgid "Incorrect email length or syntax!"
@@ -2677,12 +2655,6 @@ msgstr "A csatolási pont formátuma hibás"
 
 msgid "Incorrect or is not allowed."
 msgstr "Helytelen vagy nem engedélyezett"
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "Megadott díj hibás. Példa: 5000"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Megadott beállítási díj hibás. Példa: 2500"
 
 msgid "Incorrect subdomains limit."
 msgstr "Aldomain korlát hibás"
@@ -2873,11 +2845,6 @@ msgstr "Kinézet színe sikeresen frissítve"
 
 msgid "Layout settings"
 msgstr "Kinézet beállításai"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr "<strong>Opció:</strong> Üresen hagyva 'Felhasználási feltételek' nélküli tárhely csomag jön létre"
 
 msgid "Level"
 msgstr "Szint"
@@ -4060,9 +4027,6 @@ msgstr "Díj"
 msgid "Price must be a number."
 msgstr "Díj csak szám lehet"
 
-msgid "Price style"
-msgstr "Árfekvés"
-
 msgid "Priority"
 msgstr "Prioritás"
 
@@ -4642,9 +4606,6 @@ msgstr "Programtelepítő beállításai"
 msgid "Software installer options successfully updated."
 msgstr "Programtelepítő beállításai sikeresen frissültek"
 
-msgid "Software installer require PHP feature."
-msgstr "Programtelepítőnek szüksége van a PHP szolgáltatásokra"
-
 msgid "Software installer: disabled"
 msgstr "Programtelepítő: letiltva"
 
@@ -4965,9 +4926,6 @@ msgid "Term Of Service"
 msgstr "Felhasználási feltételek"
 
 msgid "Term of Service"
-msgstr "Felhasználási feltételek"
-
-msgid "Term of service"
 msgstr "Felhasználási feltételek"
 
 msgid "Text"
@@ -5945,9 +5903,6 @@ msgstr "Hibás felhasználónév"
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr "Hibás érték a PHP open_basedir direktivához"
 
-msgid "Wrong_request."
-msgstr "Hibás kérés"
-
 msgid "XML file URL for the Web software repository"
 msgstr "Webes szoftverraktár használatához szükséges XML fájl webcíme"
 
@@ -6770,11 +6725,17 @@ msgstr "i-MSCP - Viszonteladó / Tárhely csomag hozzáadása"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Viszonteladó / Domain Account Deletion Validation"
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - Viszonteladó / Kezdőlap"
 
 msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Viszonteladó / Kinézet"
+
+msgid "i-MSCP - Reseller / Main Index"
+msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Viszonteladó / Profilom"
@@ -6800,6 +6761,9 @@ msgstr "i-MSCP - Viszonteladó / Ügyfélszolgálat / Hibajegyek"
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - Viszonteladó / Felhasználók kezelése / Domain részletei"
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Viszonteladó / Nyelv beállítása"
 
@@ -6809,17 +6773,11 @@ msgstr "i-MSCP - Viszonteladó / Jelszó módosítása"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Viszonteladó / Személyes adatok módosítása"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - Viszonteladó / Tárhely csomag módosítása"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Viszonteladó / IP-cím használat"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Viszonteladó / Elfelejtett jelszó email beállításai"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Viszonteladó / Kezdőlap"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Viszonteladó / Felhasználók kezelése / Üzenetsablon beállítása"
@@ -7070,6 +7028,9 @@ msgstr "{ADMIN} aktívált program csomagjai"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} által fetöltött új program csomagok"
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
+msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br />Minden jog fenntartva."

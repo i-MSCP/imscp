@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-06-30 07:45+0000\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2463,14 +2463,8 @@ msgstr "Propiedades de plan de hosting"
 msgid "Hosting plan successfully added."
 msgstr "El plan de alojamiento ha sido añadido correctamente."
 
-msgid "Hosting plan successfully created."
-msgstr "El plan de alojamiento ha sido creado correctamente."
-
 msgid "Hosting plan successfully deleted."
 msgstr "El plan de alojamiento ha sido eliminado."
-
-msgid "Hosting plan successfully updated."
-msgstr "El plan de alojamiento ha sido actualizado correctamente."
 
 msgid "Hosting plan sucessfully updated."
 msgstr "El plan de alojamiento ha sido actualizado."
@@ -2480,10 +2474,6 @@ msgstr "Actualizar plan de alojamiento"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Los valores del plan de alojamiento exceden los valores máximos del distribuidor."
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
-msgstr "El plan de alojamiento con Id %d no existe."
 
 msgid "Hosting plan with same name already exists."
 msgstr "Ya existe un plan de alojamiento con el mismo nombre."
@@ -2625,19 +2615,10 @@ msgstr "Incluyendo subdominios de alias de dominio"
 msgid "Incorrect FTP accounts limit."
 msgstr "Límite de cuentas FTP incorrecto."
 
-msgid "Incorrect Ftp accounts limit."
-msgstr "Limite de cuentas Ftp incorrecto."
-
 msgid "Incorrect SQL databases limit."
 msgstr "Límite de Bases de Datos SQL incorrecto."
 
 msgid "Incorrect SQL users limit."
-msgstr "Límite de usuarios SQL incorrecto."
-
-msgid "Incorrect Sql databases limit."
-msgstr "Límite de Bases de Datos SQL incorrecto."
-
-msgid "Incorrect Sql users limit."
 msgstr "Límite de usuarios SQL incorrecto."
 
 msgid "Incorrect aliases limit."
@@ -2645,9 +2626,6 @@ msgstr "Límite de álias incorrecto."
 
 msgid "Incorrect disk quota limit."
 msgstr "Límite de cuota de disco incorrecto."
-
-msgid "Incorrect disk space limit."
-msgstr "Límite de espacio en disco incorrecto."
 
 msgid "Incorrect email length or syntax!"
 msgstr "Sintaxis o longitud del correo electrónico incorrectas!"
@@ -2676,12 +2654,6 @@ msgstr "Sintaxis de punto de montaje incorrecta."
 
 msgid "Incorrect or is not allowed."
 msgstr "Incorrecto o no está permitido."
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "Precio incorrecto. Ejemplo: 9.99"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Precio de setup incorrecto. Ejemplo: 19.99"
 
 msgid "Incorrect subdomains limit."
 msgstr "Límite de subdominios incorrecto."
@@ -2872,11 +2844,6 @@ msgstr "El color de diseño ha sido actualizado correctamente."
 
 msgid "Layout settings"
 msgstr "Configuración del diseño"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr "Deja este campo vacio si no deseas terminos de servicio para este plan de alojamiento."
 
 msgid "Level"
 msgstr "Nivel"
@@ -4059,9 +4026,6 @@ msgstr "Precio"
 msgid "Price must be a number."
 msgstr "El precio debe ser un número."
 
-msgid "Price style"
-msgstr "Estilo del precio"
-
 msgid "Priority"
 msgstr "Prioridad"
 
@@ -4641,9 +4605,6 @@ msgstr "Opciones del instalador de software"
 msgid "Software installer options successfully updated."
 msgstr "Opciones del instalador de software han sido actualizadas."
 
-msgid "Software installer require PHP feature."
-msgstr "El instalador de software requiere de la característica PHP."
-
 msgid "Software installer: disabled"
 msgstr "Instalador de software: desactivado."
 
@@ -4965,9 +4926,6 @@ msgstr "Condiciones de Servicio"
 
 msgid "Term of Service"
 msgstr "Condiciones del Servicio"
-
-msgid "Term of service"
-msgstr "Terminos de servicio"
 
 msgid "Text"
 msgstr "Texto"
@@ -5944,9 +5902,6 @@ msgstr "Nombre de usuario erróneo."
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr "Valor incorrecto para la directiva PHP open_basedir."
 
-msgid "Wrong_request."
-msgstr "Petición errónea."
-
 msgid "XML file URL for the Web software repository"
 msgstr "URL del archivo XML para el repositorio de software Web"
 
@@ -6769,11 +6724,17 @@ msgstr "i-MSCP - Distribuidor / Nuevo plan de alojamiento"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Distribuidor / Validación de Eliminación de Cuenta de Dominio"
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - Distribuidor / Información General"
 
 msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Distribuidor / Diseño"
+
+msgid "i-MSCP - Reseller / Main Index"
+msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Distribuidor / Mi Perfil"
@@ -6799,6 +6760,9 @@ msgstr "i-MSCP - Distribuidor / Sistema de Tiquets de Soporte / Ver Tiquet"
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - Distribuidor / Administración de usuarios / Detalles de Dominio"
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Revendedor/Cambiar idioma"
 
@@ -6808,17 +6772,11 @@ msgstr "i-MSCP - Revendedor/Cambiar contraseña"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Revendedor/Cambiar datos personales"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - Revendedor/Editar plan de hosting"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Distribuidor/Uso de IP"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Revendedor/Restablecer la contraseña"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Revendedor/Índice principal"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Revendedor/Gestor usuarios/Configuración del correo electrónico"
@@ -7069,6 +7027,9 @@ msgstr "{ADMIN} ha activado tu paquete de software"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha cargado un nuevo paquete de software"
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
+msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>Todos los Derechos Reservados"

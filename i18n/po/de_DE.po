@@ -26,8 +26,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-08-09 05:31+0000\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2479,14 +2479,8 @@ msgstr "Tarifeigenschaften"
 msgid "Hosting plan successfully added."
 msgstr "Hosting-Tarif erfolgreich hinzugefügt."
 
-msgid "Hosting plan successfully created."
-msgstr "Hosting-Tarif erfolgreich erstellt."
-
 msgid "Hosting plan successfully deleted."
 msgstr "Hosting-Tarif erfolgreich gelöscht."
-
-msgid "Hosting plan successfully updated."
-msgstr "Hosting-Tarif erfolgreich aktualisiert"
 
 msgid "Hosting plan sucessfully updated."
 msgstr "Hosting-Tarif erfolgreich aktualisiert."
@@ -2496,10 +2490,6 @@ msgstr "Hosting-Tarif aktualisieren"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Hosting Tarifwerte überschreiten die Reseller Maximalwerte."
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
-msgstr "Hosting-Tarif mit der ID %d existiert nicht."
 
 msgid "Hosting plan with same name already exists."
 msgstr "Tarif mit gleichen Namen existiert bereits."
@@ -2641,29 +2631,17 @@ msgstr "Inklusive Domain-Aliase Subdomains"
 msgid "Incorrect FTP accounts limit."
 msgstr "Falsche FTP-Konten Begrenzung."
 
-msgid "Incorrect Ftp accounts limit."
-msgstr "Falsche Anzahl der FTP Konten."
-
 msgid "Incorrect SQL databases limit."
 msgstr "Falsche SQL-Datenbank Begrenzung."
 
 msgid "Incorrect SQL users limit."
 msgstr "Falsche SQL-Benutzer Begrenzung."
 
-msgid "Incorrect Sql databases limit."
-msgstr "Falsche Anzahl der SQL-Datenbanken."
-
-msgid "Incorrect Sql users limit."
-msgstr "Falsche Anzahl der SQL-Benutzer."
-
 msgid "Incorrect aliases limit."
 msgstr "Falsche Alias Begrenzung."
 
 msgid "Incorrect disk quota limit."
 msgstr "Falsches Disk-Quota limit."
-
-msgid "Incorrect disk space limit."
-msgstr "Begrenzung des Speicherplatzes fehlerhaft."
 
 msgid "Incorrect email length or syntax!"
 msgstr "Ungültige Länge oder Schreibweise der E-Mail Adresse!"
@@ -2692,12 +2670,6 @@ msgstr "Falsche Mount-Punkt-Syntax."
 
 msgid "Incorrect or is not allowed."
 msgstr "Falsch oder nicht erlaubt."
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "Falscher Preis! Beispiel: 9.99"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Falsche Einrichtungsgebühr! Beispiel: 19.99"
 
 msgid "Incorrect subdomains limit."
 msgstr "Falsche Anzahl der Subdomains."
@@ -2888,11 +2860,6 @@ msgstr "Layout-Farbe erfolgreich aktualisiert."
 
 msgid "Layout settings"
 msgstr "Layout Einstellungen"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr "Lassen Sie dieses Feld leer, falls Sie für den Hosting-Tarif keine Nutzungsbedingung verwenden möchten."
 
 msgid "Level"
 msgstr "Ebene"
@@ -4075,9 +4042,6 @@ msgstr "monatliche Grundgebühr"
 msgid "Price must be a number."
 msgstr "Der Preis muss eine Nummer sein."
 
-msgid "Price style"
-msgstr "Preisgestaltung"
-
 msgid "Priority"
 msgstr "Priorität"
 
@@ -4657,9 +4621,6 @@ msgstr "Software Installer Optionen"
 msgid "Software installer options successfully updated."
 msgstr "Software Installer Optionen erfolgreich aktualisiert."
 
-msgid "Software installer require PHP feature."
-msgstr "Software Installer benötigt das PHP Feature."
-
 msgid "Software installer: disabled"
 msgstr "Software Installer: deaktiviert"
 
@@ -4981,9 +4942,6 @@ msgstr "Nutzungsbedingungen"
 
 msgid "Term of Service"
 msgstr "Nutzungsbedingungen"
-
-msgid "Term of service"
-msgstr "Allgemeine Geschäftsbedingungen"
 
 msgid "Text"
 msgstr "Text"
@@ -5960,9 +5918,6 @@ msgstr "Falscher Benutzername."
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr "Falscher Wert für die PHP-Richtlinie open_basedir."
 
-msgid "Wrong_request."
-msgstr "Wrong_request."
-
 msgid "XML file URL for the Web software repository"
 msgstr "XML-Datei Quell-URL für die Websoftware"
 
@@ -6785,11 +6740,17 @@ msgstr "i-MSCP - Reseller / Hosting-Tarif hinzufügen"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Reseller / Domain Accountlöschung Validation"
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - Reseller / Allgemeine Informationen"
 
 msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Reseller / Layout"
+
+msgid "i-MSCP - Reseller / Main Index"
+msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Reseller / Mein Profil"
@@ -6815,6 +6776,9 @@ msgstr "i-MSCP - Reseller / Support Ticket System / Ticket einsehen"
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - Reseller / Benutzerverwaltung / Domain Details"
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Reseller/Sprache ändern"
 
@@ -6824,17 +6788,11 @@ msgstr "i-MSCP - Reseller/Passwort ändern"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Reseller/Persönliche Daten ändern"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - Reseller/Tarif bearbeiten"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Reseller/IP Usage"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Reseller/\"Passwort vergessen\"-E-Mail-Einstellungen"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Reseller/Hauptmenü"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Reseller/Benutzerverwaltung/E-Mail-Einstellungen"
@@ -7085,6 +7043,9 @@ msgstr "{ADMIN} hat ihr Software Paket aktiviert"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} hat ein neues Software Paket hinzugefügt"
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
+msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>Alle Rechte vorbehalten"

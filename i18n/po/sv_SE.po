@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-07-06 07:13+0000\n"
-"Last-Translator: Cool <barni@telia.com>\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2461,14 +2461,8 @@ msgstr "Egenskaper för webbhotellsplan"
 msgid "Hosting plan successfully added."
 msgstr "Hosting plan lagts till."
 
-msgid "Hosting plan successfully created."
-msgstr "Hosting plan successfully created."
-
 msgid "Hosting plan successfully deleted."
 msgstr "Hosting plan tagits bort."
-
-msgid "Hosting plan successfully updated."
-msgstr "Hosting plan successfully updated."
 
 msgid "Hosting plan sucessfully updated."
 msgstr "Hosting plan uppdaterats."
@@ -2478,10 +2472,6 @@ msgstr "Hosting plan update"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Hosting plan värden överstiger återförsäljarens maximala värden."
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
-msgstr "Hosting plan with Id %d doesn't exist."
 
 msgid "Hosting plan with same name already exists."
 msgstr "Hosting plan med samma namn finns redan."
@@ -2623,29 +2613,17 @@ msgstr "Inklusive domänalias underdomäner"
 msgid "Incorrect FTP accounts limit."
 msgstr "Felaktig FTP konton gräns."
 
-msgid "Incorrect Ftp accounts limit."
-msgstr "Incorrect Ftp accounts limit."
-
 msgid "Incorrect SQL databases limit."
 msgstr "Felaktig SQL-databaser gräns."
 
 msgid "Incorrect SQL users limit."
 msgstr "Felaktig SQL-användare gräns."
 
-msgid "Incorrect Sql databases limit."
-msgstr "Incorrect Sql databases limit."
-
-msgid "Incorrect Sql users limit."
-msgstr "Incorrect Sql users limit."
-
 msgid "Incorrect aliases limit."
 msgstr "Felaktigt alias gränsen."
 
 msgid "Incorrect disk quota limit."
 msgstr "Felaktig diskkvot gräns."
-
-msgid "Incorrect disk space limit."
-msgstr "Incorrect disk space limit."
 
 msgid "Incorrect email length or syntax!"
 msgstr "Felaktig e-postlängd eller syntax"
@@ -2674,12 +2652,6 @@ msgstr "Felaktig monteringspunkt syntax."
 
 msgid "Incorrect or is not allowed."
 msgstr "Fel eller inte är tillåtna."
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "Felaktigt pris. Exempel: 9.99"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Felaktig startavgift. Exempel: 19.99"
 
 msgid "Incorrect subdomains limit."
 msgstr "Felaktig underdomäner gränsen."
@@ -2870,11 +2842,6 @@ msgstr "Layout color successfully updated."
 
 msgid "Layout settings"
 msgstr "Layoutinställningar"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr "Leave this field empty if you do not want term of service for this hosting plan."
 
 msgid "Level"
 msgstr "Nivå"
@@ -4057,9 +4024,6 @@ msgstr "Pris"
 msgid "Price must be a number."
 msgstr "Priset måste vara ett tal."
 
-msgid "Price style"
-msgstr "Price style"
-
 msgid "Priority"
 msgstr "Prioritet"
 
@@ -4639,9 +4603,6 @@ msgstr "Software installer options"
 msgid "Software installer options successfully updated."
 msgstr "Software installer options successfully updated."
 
-msgid "Software installer require PHP feature."
-msgstr "Software installer require PHP feature."
-
 msgid "Software installer: disabled"
 msgstr "Installationsprogrammet: avaktiverad"
 
@@ -4963,9 +4924,6 @@ msgstr "Term Of Service"
 
 msgid "Term of Service"
 msgstr "Användarvillkor"
-
-msgid "Term of service"
-msgstr "Term of service"
 
 msgid "Text"
 msgstr "Text"
@@ -5942,9 +5900,6 @@ msgstr "Fel användarnamn"
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr "Wrong value for the PHP open_basedir directive."
 
-msgid "Wrong_request."
-msgstr "Wrong_request."
-
 msgid "XML file URL for the Web software repository"
 msgstr "XML file URL for the Web software repository"
 
@@ -6767,11 +6722,17 @@ msgstr "i-MSCP - Reseller / Add hosting plan"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Återförsäljare / Domain radering av konto validering"
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - Återförsäljare / Allmän information"
 
 msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Återförsäljare / Layout"
+
+msgid "i-MSCP - Reseller / Main Index"
+msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Reseller / My Profile"
@@ -6797,6 +6758,9 @@ msgstr "i-MSCP - Återförsäljare / Support Ticket System / Visa Ticket"
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - Reseller / Users management / Domain Details"
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Återförsäljare/Ändra Språk"
 
@@ -6806,17 +6770,11 @@ msgstr "i-MSCP - Återförsäljare/Ändra lösenord"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Återförsäljare/Ändra personlig information"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - Återförsäljare/Ändra Webbhotell"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Återförsäljare / IP-användning"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Återförsäljare/E-postinställningar för förlorat lösenord"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Återförsäljare/Huvudindex"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Återförsäljare/Hantera användare/E-postinställningar"
@@ -7067,6 +7025,9 @@ msgstr "{ADMIN} activated your software package"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} uploaded a new software package"
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
+msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"

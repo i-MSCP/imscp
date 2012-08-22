@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-06-30 07:45+0000\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
 "Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2467,14 +2467,8 @@ msgstr "Propietats del pla de hosting"
 msgid "Hosting plan successfully added."
 msgstr "Pla d'hostatge afegit correctament."
 
-msgid "Hosting plan successfully created."
-msgstr "Pla d'allotjament creat amb èxit."
-
 msgid "Hosting plan successfully deleted."
 msgstr "Plà d'hostatge eliminat correctament."
-
-msgid "Hosting plan successfully updated."
-msgstr "El pla d'allotjament s'ha actualitzat correctament."
 
 msgid "Hosting plan sucessfully updated."
 msgstr "Plà d'hostatge actualitzat correctament."
@@ -2484,10 +2478,6 @@ msgstr "Actualització del pla d'allotjament"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "Els límits del domini sobrepassen el màxim disponible per aquest distribuïdor."
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
-msgstr "El pla d'allotjament amb Id %d no existeix."
 
 msgid "Hosting plan with same name already exists."
 msgstr "Ja existeix un plà d'hostatge amb el mateix nom."
@@ -2629,19 +2619,10 @@ msgstr "Incloent àlies de domini subdominis"
 msgid "Incorrect FTP accounts limit."
 msgstr "Límit de comptes FTP incorrecte."
 
-msgid "Incorrect Ftp accounts limit."
-msgstr "Límit de comptes FTP incorrecte."
-
 msgid "Incorrect SQL databases limit."
 msgstr "Límit de base de dades SQL incorrecte."
 
 msgid "Incorrect SQL users limit."
-msgstr "Límit d'usuaris SQL incorrecte."
-
-msgid "Incorrect Sql databases limit."
-msgstr "Límit de bases de dades SQL incorrecte."
-
-msgid "Incorrect Sql users limit."
 msgstr "Límit d'usuaris SQL incorrecte."
 
 msgid "Incorrect aliases limit."
@@ -2649,9 +2630,6 @@ msgstr "Límit d'àlies incorrecte."
 
 msgid "Incorrect disk quota limit."
 msgstr "Límit de disc incorrecte."
-
-msgid "Incorrect disk space limit."
-msgstr "Límit d'espai en disc incorrecte."
 
 msgid "Incorrect email length or syntax!"
 msgstr "Llargada o sintaxi del correu incorrecta"
@@ -2680,12 +2658,6 @@ msgstr "Sintaxis del punt de montatge incorrecte."
 
 msgid "Incorrect or is not allowed."
 msgstr "Incorrecta o no està permès."
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "Preu incorrecte: Exemple: 9.99"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Alta incorrecta: Exemple: 19.99"
 
 msgid "Incorrect subdomains limit."
 msgstr "Límit de subdominis incorrecte."
@@ -2876,11 +2848,6 @@ msgstr "Color del panell actualitzat"
 
 msgid "Layout settings"
 msgstr "Paràmetres presentació"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr "Deixeu aquest camp buit si no voleu establir condicions de servei per aquest plà d'hostatge."
 
 msgid "Level"
 msgstr "Nivell"
@@ -4063,9 +4030,6 @@ msgstr "Preu"
 msgid "Price must be a number."
 msgstr "El preu ha de ser numèric."
 
-msgid "Price style"
-msgstr "Estil de preu"
-
 msgid "Priority"
 msgstr "Prioritat"
 
@@ -4645,9 +4609,6 @@ msgstr "Opcions de l'instal·lador de software"
 msgid "Software installer options successfully updated."
 msgstr "Opcions de l'instal·lador de software actualitzades."
 
-msgid "Software installer require PHP feature."
-msgstr "L'instal·lador de software requeix que el PHP estigui activat pel domini."
-
 msgid "Software installer: disabled"
 msgstr "Instal.lador de programari: desactivat"
 
@@ -4969,9 +4930,6 @@ msgstr "Condicions d'ús"
 
 msgid "Term of Service"
 msgstr "Condicions d'us"
-
-msgid "Term of service"
-msgstr "Condicions del servei"
 
 msgid "Text"
 msgstr "Text"
@@ -5948,9 +5906,6 @@ msgstr "Usuari erroni."
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr "Valor erroni per la directiva de PHP open_basedir."
 
-msgid "Wrong_request."
-msgstr "Petició errònia."
-
 msgid "XML file URL for the Web software repository"
 msgstr "XML URL de l'arxiu per al repositori de programari Web"
 
@@ -6773,11 +6728,17 @@ msgstr "i-MSCP - Distribuidor / Afegir pla d'allotjament"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - Distribuïdor / Confirmació d'eliminació de domini"
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - Distribuïdor / Informació general"
 
 msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - Distribuïdor / Disseny"
+
+msgid "i-MSCP - Reseller / Main Index"
+msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - Distribuidor / El meu Perfil"
@@ -6803,6 +6764,9 @@ msgstr "i-MSCP - Distribuïdor / Sistema de Suport / Veure tiquet"
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - Distribuidor / Administració d'usuaris / Detalls del domini"
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Distribuïdor/Canviar Llenguatge"
 
@@ -6812,17 +6776,11 @@ msgstr "i-MSCP - Distribuïdor/Canviar contrasenya"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - Distribuïdor/Canviar dades personals"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - Distribuïdor/Editar pla de hosting"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - Distribuïdor / Adreces IP"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - Distribuïdor/Configuració pèrdua de contrasenya de correu"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Distribuïdor/Menú principal"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Distribuïdor/Administració usuaris/Configuració Correu"
@@ -7073,6 +7031,9 @@ msgstr "{ADMIN} ha activat el teu paquet de programari"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} ha carregat un nou paquet de programari"
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
+msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>Tots els Drets Reservats"

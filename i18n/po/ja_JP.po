@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-09 07:38+0200\n"
-"PO-Revision-Date: 2012-07-09 07:05+0000\n"
-"Last-Translator: kazuo <kazu.nito@gmail.com>\n"
+"POT-Creation-Date: 2012-08-22 23:32+0200\n"
+"PO-Revision-Date: 2012-08-22 21:32+0000\n"
+"Last-Translator: Torsten Widmann <goover0976@googlemail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2461,14 +2461,8 @@ msgstr "ホスティングプランの詳細"
 msgid "Hosting plan successfully added."
 msgstr "ホスティングプランが追加されました。"
 
-msgid "Hosting plan successfully created."
-msgstr "ホスティングプランが作成されました。"
-
 msgid "Hosting plan successfully deleted."
 msgstr "ホスティングプランが削除されました。"
-
-msgid "Hosting plan successfully updated."
-msgstr "ホスティングプランが更新されました。"
 
 msgid "Hosting plan sucessfully updated."
 msgstr "ホスティングプランが更新されました。"
@@ -2478,10 +2472,6 @@ msgstr "ホスティングプラン更新"
 
 msgid "Hosting plan values exceed reseller maximum values."
 msgstr "ホスティングプラン値は、代理店の最大値を超えない。"
-
-#, php-format
-msgid "Hosting plan with Id %d doesn't exist."
-msgstr "Id %d ホスティングプランが存在しません。"
 
 msgid "Hosting plan with same name already exists."
 msgstr "同じ名前のホスティングプランが既に存在しています。"
@@ -2623,19 +2613,10 @@ msgstr "ドメインエイリアスのサブドメインを含む"
 msgid "Incorrect FTP accounts limit."
 msgstr "FTPアカウント制限が誤っています。"
 
-msgid "Incorrect Ftp accounts limit."
-msgstr "FTPアカウント制限が誤っています。"
-
 msgid "Incorrect SQL databases limit."
 msgstr "SQLデータベース制限が誤っています。"
 
 msgid "Incorrect SQL users limit."
-msgstr "SQLユーザー制限が誤っています。"
-
-msgid "Incorrect Sql databases limit."
-msgstr "SQLデータベース制限が誤っています。"
-
-msgid "Incorrect Sql users limit."
 msgstr "SQLユーザー制限が誤っています。"
 
 msgid "Incorrect aliases limit."
@@ -2643,9 +2624,6 @@ msgstr "エイリアス制限に誤っています。"
 
 msgid "Incorrect disk quota limit."
 msgstr "ディスクの容量制限が誤っています。"
-
-msgid "Incorrect disk space limit."
-msgstr "ディスク容量制限が誤っています。"
 
 msgid "Incorrect email length or syntax!"
 msgstr "Eメールの長さか構文が誤っています！"
@@ -2674,12 +2652,6 @@ msgstr "マウント先の構文が誤っています。"
 
 msgid "Incorrect or is not allowed."
 msgstr "間違っているか、または許可されていません。"
-
-msgid "Incorrect price. Example: 9.99"
-msgstr "料金に誤り。 例： 9.99"
-
-msgid "Incorrect setup fee. Example: 19.99"
-msgstr "料金設定に誤り。 例： 19.99"
 
 msgid "Incorrect subdomains limit."
 msgstr "サブドメイン制限が誤っています。"
@@ -2870,11 +2842,6 @@ msgstr "レイアウトカラーが更新されました。"
 
 msgid "Layout settings"
 msgstr "レイアウト設定"
-
-msgid ""
-"Leave this field empty if you do not want term of service for this hosting "
-"plan."
-msgstr "このホスティングプランのサービス項目使用したくない場合は、空のままにしておいてください。"
 
 msgid "Level"
 msgstr "レベル"
@@ -4057,9 +4024,6 @@ msgstr "料金"
 msgid "Price must be a number."
 msgstr "価格は、数値でなければなりません。"
 
-msgid "Price style"
-msgstr "価格のスタイル"
-
 msgid "Priority"
 msgstr "優先度"
 
@@ -4639,9 +4603,6 @@ msgstr "ソフトウェアインストーラオプション"
 msgid "Software installer options successfully updated."
 msgstr "ソフトウェアインストーラオプションを更新しました。"
 
-msgid "Software installer require PHP feature."
-msgstr "ソフトウェアインストーラーは、PHP機能を必要とします。"
-
 msgid "Software installer: disabled"
 msgstr "ソフトウェアインストーラー：無効"
 
@@ -4962,9 +4923,6 @@ msgid "Term Of Service"
 msgstr "サービス期間"
 
 msgid "Term of Service"
-msgstr "サービス期間"
-
-msgid "Term of service"
 msgstr "サービス期間"
 
 msgid "Text"
@@ -5942,9 +5900,6 @@ msgstr "ユーザー名に誤りがあります。"
 msgid "Wrong value for the PHP open_basedir directive."
 msgstr "PHPの open_basedirディレクティブの値に誤りがあります。"
 
-msgid "Wrong_request."
-msgstr "Wrong_request."
-
 msgid "XML file URL for the Web software repository"
 msgstr "WebソフトウェアリポジトリのXMLファイルへのURL"
 
@@ -6767,11 +6722,17 @@ msgstr "i-MSCP - 代理店 / ホスティングプラン追加"
 msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - 代理店 / ドメインアカウント削除確認"
 
+msgid "i-MSCP - Reseller / Edit hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - 代理店/一般情報"
 
 msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - 代理店 / レイアウト"
+
+msgid "i-MSCP - Reseller / Main Index"
+msgstr ""
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - 代理店 / マイプロフィール"
@@ -6797,6 +6758,9 @@ msgstr "i-MSCP - 代理店 / サポートチケットシステム / チケット
 msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - 代理店 / ユーザー管理 / ドメイン詳細"
 
+msgid "i-MSCP - Reseller / View hosting plan"
+msgstr ""
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理店/言語変更"
 
@@ -6806,17 +6770,11 @@ msgstr "i-MSCP - 代理店/パスワード変更"
 msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "i-MSCP - 代理店/個人情報変更"
 
-msgid "i-MSCP - Reseller/Edit hosting plan"
-msgstr "i-MSCP - 代理店/ホスティングプラン編集"
-
 msgid "i-MSCP - Reseller/IP Usage"
 msgstr "i-MSCP - 代理店/IPアドレス管理"
 
 msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "i-MSCP - 代理店/パスワード忘れEメール設定"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - 代理店/メインインデックス"
 
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - 代理店/ユーザー管理/Eメール設定"
@@ -7067,6 +7025,9 @@ msgstr "{ADMIN} ソフトウェアパッケージを有効化"
 
 msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
+
+msgid "{TR_EDIT_HOSTING_PLAN}"
+msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
