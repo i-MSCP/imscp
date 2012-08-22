@@ -327,7 +327,11 @@ function generateNavigation($tpl)
 	// Hide hosting plan pages if management is delegated to reseller level
 	if ($_SESSION['user_type'] != 'user') {
 		if ($cfg->HOSTING_PLANS_LEVEL != $_SESSION['user_type']) {
-			$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
+			if($_SESSION['user_type'] === 'admin') {
+				$navigation->findOneBy('class', 'hosting_plans')->setVisible(false);
+			} else {
+				$navigation->findOneBy('class', 'hosting_plan_add')->setVisible(false);
+			}
 		}
 	}
 

@@ -58,7 +58,7 @@ $tpl->define_dynamic(
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Main Index'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Main Index'),
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => layout_getUserLogo()));
 
@@ -229,6 +229,9 @@ function gen_hp_table($tpl, $reseller_id) {
 					)
 				);
 
+				if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+					$tpl->assign('HP_DELETE', '');
+				}
 				$tpl->parse('HP_ENTRY', '.hp_entry');
 			//}
 		}

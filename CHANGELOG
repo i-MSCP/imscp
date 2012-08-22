@@ -26,6 +26,7 @@ Tickets:
 	- Fixed #487: External Mailserver add/edit CNAMES
 	- Fixed #490: Roundcube missing default folders
 	- Fixed #491: Security-Update: Roundcube 0.8.1
+	- Fixed #492: Hostingplans in admin level not complete
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1

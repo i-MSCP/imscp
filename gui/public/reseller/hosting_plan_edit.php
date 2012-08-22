@@ -74,13 +74,9 @@ generateNavigation($tpl);
 
 $tpl->assign(
 	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller/Edit hosting plan'),
 		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
-
-$tpl->assign(
-	array(
-		 'TR_HOSTING PLAN PROPS' => tr('Hosting plan properties'),
+		 'ISP_LOGO' => layout_getUserLogo(),
+		 'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),
 		 'TR_TEMPLATE_NAME' => tr('Template name'),
 		 'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_ALIASES' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
@@ -288,8 +284,10 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 		$readonly = $cfg->HTML_READONLY;
 		$disabled = $cfg->HTML_DISABLED;
 		$edit_hp = tr('View hosting plan');
-
-		$tpl->assign('FORM', '');
+		$tpl->assign(
+				array(
+					 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / View hosting plan'),
+					 'FORM' => ''));
 
 	} else {
 		$query = "
@@ -307,6 +305,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 		$readonly = '';
 		$disabled = '';
 		$edit_hp = tr('Edit hosting plan');
+		$tpl->assign('TR_PAGE_TITLE', tr('i-MSCP - Reseller / Edit hosting plan'));
 	}
 
 	if ($res->rowCount() !== 1) { // Error
@@ -314,7 +313,14 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 	}
 
 	$data = $res->fetchRow();
-
+	
+	//Do not allow to edit the reseller hosting plans if set to admin hosting plans
+	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+		if($data['reseller_id'] == $admin_id) {
+			redirectTo('hosting_plan.php');
+		}
+	}
+	
 	$props = $data['props'];
 	$description = $data['description'];
 	$price = $data['price'];
@@ -382,7 +388,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 			 'HP_SETUPFEE' => tohtml($setup_fee),
 			 'HP_CURRENCY' => tohtml($value),
 			 'READONLY' => tohtml($readonly),
-			 'DISBLED' => tohtml($disabled),
+			 'DISABLED' => tohtml($disabled),
 			 'HP_PAYMENT' => tohtml($payment),
 			 'HP_TOS_VALUE' => tohtml($tos),
              'TR_EXTMAIL_YES' => ($hp_ext_mail == '_yes_') ? $cfg->HTML_CHECKED : '',

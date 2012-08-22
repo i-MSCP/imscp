@@ -70,18 +70,15 @@ $tpl->define_dynamic(
 		't_phpini_display_errors' => 'page',
 		't_phpini_disable_functions' => 'page'));
 
-$tpl->assign(
-	array(
-		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Add hosting plan'),
-		 'THEME_CHARSET' => tr('encoding'),
-		 'ISP_LOGO' => layout_getUserLogo()));
-
 generateNavigation($tpl);
 
 $tpl->assign(
 	array(
+		 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / Add hosting plan'),
+		 'THEME_CHARSET' => tr('encoding'),
+		 'ISP_LOGO' => layout_getUserLogo(),
 		 'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-		 'TR_HOSTING PLAN PROPS' => tr('Hosting plan properties'),
+		 'TR_HOSTING_PLAN_PROPS' => tr('Hosting plan properties'),
 		 'TR_TEMPLATE_NAME' => tr('Template name'),
 		 'TR_MAX_SUBDOMAINS' => tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
 		 'TR_MAX_ALIASES' => tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
