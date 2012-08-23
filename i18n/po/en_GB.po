@@ -7,12 +7,13 @@
 # Laurent Declercq <l.declercq@nuxwin.com>, 2011.
 # Torsten Widmann <goover0976@googlemail.com>, 2012.
 # Torsten Widmann <goover0976@yahoo.de>, 2011, 2012.
+# Torsten Widmann <info@goover.de>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-23 14:52+0200\n"
-"PO-Revision-Date: 2012-08-22 21:32+0000\n"
+"POT-Creation-Date: 2012-08-23 18:54+0200\n"
+"PO-Revision-Date: 2012-08-23 16:55+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1579,7 +1580,7 @@ msgid ""
 "\tPackage ID: {SOFTWARE_ID}\n"
 "\n"
 "\tPlease login into your i-MSCP control panel for more details."
-msgstr ""
+msgstr "Dear {RESELLER},\n\tYour uploaded a software package was succesful activated by {ADMIN}.\n\n\tDetails:\n\tPackage Name: {SOFTWARE}\n\tPackage ID: {SOFTWARE_ID}\n\n\tPlease login into your i-MSCP control panel for more details."
 
 msgid "Debugger"
 msgstr "Debugger"
@@ -1633,7 +1634,7 @@ msgid "Delete the ticket"
 msgstr "Delete the ticket"
 
 msgid "Deletion in progress"
-msgstr ""
+msgstr "Deletion in progress"
 
 msgid "Deletion in progress..."
 msgstr "Deletion in progress..."
@@ -1642,7 +1643,7 @@ msgid "Demo Version!"
 msgstr "Demo Version!"
 
 msgid "Depot import"
-msgstr ""
+msgstr "Depot import"
 
 msgid "Description"
 msgstr "Description"
@@ -1735,7 +1736,7 @@ msgid "Domain account expired."
 msgstr "Domain account expired."
 
 msgid "Domain account is in inconsistent state."
-msgstr ""
+msgstr "Domain account is in inconsistent state."
 
 msgid "Domain account scheduled for activation."
 msgstr "Domain account scheduled for activation."
@@ -1880,7 +1881,7 @@ msgid "Domain expires date"
 msgstr "Domain expires date"
 
 msgid "Domain mail"
-msgstr ""
+msgstr "Domain mail"
 
 msgid "Domain mails"
 msgstr "Domain mails"
@@ -1961,7 +1962,7 @@ msgid "E-Mail settings"
 msgstr "E-Mail settings"
 
 msgid "EB"
-msgstr ""
+msgstr "EB"
 
 msgid "Edit"
 msgstr "Edit"
@@ -2048,7 +2049,7 @@ msgid "Edit user"
 msgstr "Edit user"
 
 msgid "EiB"
-msgstr ""
+msgstr "EiB"
 
 msgid "Email"
 msgstr "Email"
@@ -2063,7 +2064,7 @@ msgid "Email address"
 msgstr "Email address"
 
 msgid "Email forward"
-msgstr ""
+msgstr "Email forward"
 
 msgid "Email marketing"
 msgstr "Email marketing"
@@ -2072,7 +2073,7 @@ msgid "Email setup"
 msgstr "Email setup"
 
 msgid "Emailadress"
-msgstr ""
+msgstr "Emailadress"
 
 msgid "Emails"
 msgstr "Emails"
@@ -2256,13 +2257,13 @@ msgid "FTPs total"
 msgstr "FTPs total"
 
 msgid "Failed to write file to disk."
-msgstr ""
+msgstr "Failed to write file to disk."
 
 msgid "Failure in package. Deleting!"
-msgstr ""
+msgstr "Failure in package. Deleting!"
 
 msgid "Failure in the package. Deleting!"
-msgstr ""
+msgstr "Failure in the package. Deleting!"
 
 msgid "Fax"
 msgstr "Fax"
@@ -2285,7 +2286,7 @@ msgid "File does not exist. %1$s.tar.gz"
 msgstr "File does not exist. %1$s.tar.gz"
 
 msgid "File exceeds the size limit."
-msgstr ""
+msgstr "File exceeds the size limit."
 
 msgid "File is not readable."
 msgstr "File is not readable."
@@ -2381,7 +2382,7 @@ msgid "Full"
 msgstr "Full"
 
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 msgid "Gender"
 msgstr "Gender"
@@ -2408,7 +2409,7 @@ msgid "Get it at"
 msgstr "Get it at"
 
 msgid "GiB"
-msgstr ""
+msgstr "GiB"
 
 msgid "Go back"
 msgstr "Go back"
@@ -2584,13 +2585,13 @@ msgid "If you want to limit the reseller, you must first limit its customers."
 msgstr "If you want to limit the reseller, you must first limit its customers."
 
 msgid "Images have to be smaller than 500 x 90 pixels."
-msgstr ""
+msgstr "Images have to be smaller than 500 x 90 pixels."
 
 msgid "Implementation URL"
 msgstr "Implementation URL"
 
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 msgid "Import in local repository"
 msgstr "Import in local repository"
@@ -2681,7 +2682,7 @@ msgid "Install Software"
 msgstr "Install Software"
 
 msgid "Install in progress..."
-msgstr ""
+msgstr "Install in progress..."
 
 msgid "Install path"
 msgstr "Install path"
@@ -2693,28 +2694,28 @@ msgid "Installation details"
 msgstr "Installation details"
 
 msgid "Installation infos"
-msgstr ""
+msgstr "Installation infos"
 
 msgid "Installation path:"
-msgstr ""
+msgstr "Installation path:"
 
 msgid "Installed Package which was deleted by your reseller."
-msgstr ""
+msgstr "Installed Package which was deleted by your reseller."
 
 msgid "Installed in reseller depot"
-msgstr ""
+msgstr "Installed in reseller depot"
 
 msgid "Installed in software depot"
-msgstr ""
+msgstr "Installed in software depot"
 
 msgid "Installed on"
 msgstr "Installed on"
 
 msgid "Installing your uploaded package. Please refresh the site."
-msgstr ""
+msgstr "Installing your uploaded package. Please refresh the site."
 
 msgid "Installing your uploaded package. Please refresh this site."
-msgstr ""
+msgstr "Installing your uploaded package. Please refresh this site."
 
 msgid "Instructions to download today's backup"
 msgstr "Instructions to download today's backup"
@@ -2796,7 +2797,7 @@ msgstr "Label"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
-msgstr ""
+msgstr "Label not allowed: <b>%s</b>"
 
 msgid "Language"
 msgstr "Language"
@@ -2868,7 +2869,7 @@ msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr "Load (1 Min, 5 Min, 15 Min)"
 
 msgid "Log in to answer"
-msgstr ""
+msgstr "Log in to answer"
 
 msgid "Login"
 msgstr "Login"
@@ -2941,7 +2942,7 @@ msgid "Low"
 msgstr "Low"
 
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 msgid "MX"
 msgstr ""
@@ -3197,7 +3198,7 @@ msgid "Missing domain"
 msgstr "Missing domain"
 
 msgid "Modification in progress"
-msgstr ""
+msgstr "Modification in progress"
 
 msgid "Modify"
 msgstr "Modify"
@@ -3242,7 +3243,7 @@ msgid "Network interface"
 msgstr "Network interface"
 
 msgid "Never"
-msgstr ""
+msgstr "Never"
 
 msgid "Never expires"
 msgstr "Never expires"
@@ -3251,7 +3252,7 @@ msgid "New Sql user data"
 msgstr "New Sql user data"
 
 msgid "New alias order for {CUSTOMER}"
-msgstr ""
+msgstr "New alias order for {CUSTOMER}"
 
 msgid "New i-MSCP update is available"
 msgstr "New i-MSCP update is available"
@@ -3287,10 +3288,10 @@ msgid "No Ip statistics to be show."
 msgstr "No Ip statistics to be show."
 
 msgid "No Reseller available to add the permissions"
-msgstr ""
+msgstr "No Reseller available to add the permissions"
 
 msgid "No Reseller with permissions for this software found"
-msgstr ""
+msgstr "No Reseller with permissions for this software found"
 
 msgid "No Resellers found."
 msgstr "No Resellers found."
@@ -3338,7 +3339,7 @@ msgid "No external mail entries available."
 msgstr ""
 
 msgid "No file was uploaded."
-msgstr ""
+msgstr "No file was uploaded."
 
 msgid "No found."
 msgstr "No found."
@@ -3373,25 +3374,25 @@ msgid "No reseller accounts found."
 msgstr "No reseller accounts found."
 
 msgid "No reseller with activated software installer found!"
-msgstr ""
+msgstr "No reseller with activated software installer found!"
 
 msgid "No set"
 msgstr "No set"
 
 msgid "No software available"
-msgstr ""
+msgstr "No software available"
 
 msgid "No software available!"
-msgstr ""
+msgstr "No software available!"
 
 msgid "No software in software depot available!"
-msgstr ""
+msgstr "No software in software depot available!"
 
 msgid "No software in webdepot found!"
-msgstr ""
+msgstr "No software in webdepot found!"
 
 msgid "No software is waiting for activation"
-msgstr ""
+msgstr "No software is waiting for activation"
 
 msgid "No statistics found for the given period. Try another period."
 msgstr "No statistics found for the given period. Try another period."
@@ -3406,7 +3407,7 @@ msgid "No unassigned users was found in database."
 msgstr "No unassigned users was found in database."
 
 msgid "No update for the websoftware depot list available"
-msgstr ""
+msgstr "No update for the websoftware depot list available"
 
 msgid "No user found."
 msgstr "No user found."
@@ -3454,7 +3455,7 @@ msgid "Nothing been changed."
 msgstr "Nothing been changed."
 
 msgid "Nothing found - sorry"
-msgstr ""
+msgstr "Nothing found - sorry"
 
 msgid "Nothing has been changed."
 msgstr ""
@@ -3503,7 +3504,7 @@ msgid "Only positive numbers are allowed."
 msgstr "Only positive numbers are allowed."
 
 msgid "Open ticket"
-msgstr ""
+msgstr "Open ticket"
 
 msgid "Open tickets"
 msgstr "Open tickets"
@@ -3596,7 +3597,7 @@ msgid "Owner"
 msgstr "Owner"
 
 msgid "PB"
-msgstr ""
+msgstr "PB"
 
 msgid "PHP"
 msgstr "PHP"
@@ -3651,13 +3652,13 @@ msgid "Package actions"
 msgstr "Package actions"
 
 msgid "Package already exist in the reseller depot!"
-msgstr ""
+msgstr "Package already exist in the reseller depot!"
 
 msgid "Package already exist in the software depot!"
-msgstr ""
+msgstr "Package already exist in the software depot!"
 
 msgid "Package already exist in your software depot!"
-msgstr ""
+msgstr "Package already exist in your software depot!"
 
 msgid "Package features"
 msgstr "Package features"
@@ -3666,10 +3667,10 @@ msgid "Package install type"
 msgstr "Package install type"
 
 msgid "Package installed successfully!"
-msgstr ""
+msgstr "Package installed successfully!"
 
 msgid "Package installed successfully... Awaiting release from Admin!"
-msgstr ""
+msgstr "Package installed successfully... Awaiting release from Admin!"
 
 msgid "Package language"
 msgstr "Package language"
@@ -3818,7 +3819,7 @@ msgid "PhpMyAdmin"
 msgstr "PhpMyAdmin"
 
 msgid "PiB"
-msgstr ""
+msgstr "PiB"
 
 msgid "Plain record data"
 msgstr "Plain record data"
@@ -5691,9 +5692,6 @@ msgstr "View certificates"
 msgid "View details"
 msgstr "View details"
 
-msgid "View hosting plan"
-msgstr "View hosting plan"
-
 msgid "View ticket"
 msgstr ""
 
@@ -7029,7 +7027,7 @@ msgstr ""
 msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-msgid "{TR_EDIT_HOSTING_PLAN}"
+msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
 msgstr ""
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
