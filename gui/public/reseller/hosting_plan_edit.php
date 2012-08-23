@@ -281,9 +281,6 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 		$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
 		$res = exec_query($query, $hpid);
 
-		$readonly = $cfg->HTML_READONLY;
-		$disabled = $cfg->HTML_DISABLED;
-		$edit_hp = tr('View hosting plan');
 		$tpl->assign(
 				array(
 					 'TR_PAGE_TITLE' => tr('i-MSCP - Reseller / View hosting plan'),
@@ -302,9 +299,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 		";
 
 		$res = exec_query($query, array($admin_id, $hpid));
-		$readonly = '';
-		$disabled = '';
-		$edit_hp = tr('Edit hosting plan');
+		
 		$tpl->assign('TR_PAGE_TITLE', tr('i-MSCP - Reseller / Edit hosting plan'));
 	}
 
@@ -373,7 +368,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 	$tpl->assign(
 		array(
 			 'HP_NAME_VALUE' => tohtml($hp_name),
-			 'TR_EDIT_HOSTING_PLAN' => tohtml($edit_hp),
+			 'TR_EDIT_HOSTING_PLAN' => (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') ? tr('View hosting plan') : tr('Edit hosting plan'),
 			 'HOSTING_PLAN_ID' => tohtml($hpid),
 			 'TR_MAX_SUB_LIMITS' => tohtml($hp_sub),
 			 'TR_MAX_ALS_VALUES' => tohtml($hp_als),
@@ -387,8 +382,8 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 			 'HP_PRICE' => tohtml($price),
 			 'HP_SETUPFEE' => tohtml($setup_fee),
 			 'HP_CURRENCY' => tohtml($value),
-			 'READONLY' => tohtml($readonly),
-			 'DISABLED' => tohtml($disabled),
+			 'READONLY' => (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') ? $cfg->HTML_READONLY : '',
+			 'DISABLED' => (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') ? $cfg->HTML_DISABLED : '',
 			 'HP_PAYMENT' => tohtml($payment),
 			 'HP_TOS_VALUE' => tohtml($tos),
              'TR_EXTMAIL_YES' => ($hp_ext_mail == '_yes_') ? $cfg->HTML_CHECKED : '',
