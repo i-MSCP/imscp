@@ -105,7 +105,6 @@ $tpl->assign(
 		 'TR_TOS_PROPS' => tr('Term Of Service'),
 		 'TR_TOS_NOTE' => tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
 		 'TR_TOS_DESCRIPTION' => tr('Text'),
-		 'TR_EDIT_HOSTING_PLAN' => tr('Update plan'),
 		 'TR_UPDATE_PLAN' => tr('Update plan'),
 		 'TR_PHPINI_SYSTEM' => tr('PHP Editor'),
 		 'TR_USER_EDITABLE_EXEC' => tr('Only exec'),
@@ -248,7 +247,6 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 	";
 
 	$res = exec_query($query, array($admin_id, $hpid));
-	$edit_hp = tr('Edit hosting plan');
 
 	if ($res->rowCount() !== 1) { // Error
 		redirectTo('hosting_plan.php');
@@ -292,7 +290,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 	$tpl->assign(
 		array(
 			 'HP_NAME_VALUE' => tohtml($hp_name),
-			 'TR_EDIT_HOSTING_PLAN' => tohtml($edit_hp),
+			 'TR_EDIT_HOSTING_PLAN' => tr('Edit hosting plan'),
 			 'HOSTING_PLAN_ID' => tohtml($hpid),
 			 'TR_MAX_SUB_LIMITS' => tohtml($hp_sub),
 			 'TR_MAX_ALS_VALUES' => tohtml($hp_als),
