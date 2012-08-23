@@ -367,7 +367,7 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 	$tpl->assign(
 		array(
 			 'HP_NAME_VALUE' => tohtml($hp_name),
-			 'TR_EDIT_HOSTING_PLAN' => (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') ? tr('View hosting plan') : tr('Edit hosting plan'),
+			 'EDIT_HOSTING_PLAN' => (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') ? tr('View') : tr('Edit'),
 			 'HOSTING_PLAN_ID' => tohtml($hpid),
 			 'TR_MAX_SUB_LIMITS' => tohtml($hp_sub),
 			 'TR_MAX_ALS_VALUES' => tohtml($hp_als),
