@@ -32,23 +32,3 @@
 #
 #    http://i-mscp.net
 #
-
-# ProFTPd traffic rotation for i-MSCP traffic count
-#
-/var/log/proftpd/ftp_traff.log {
-  daily
-  rotate 7
-  missingok
-  compress
-  delaycompress
-  prerotate
-	/var/www/imscp/engine/traffic/imscp-vrl-traff >/var/log/imscp/imscp-vrl-traff.log 2>&1
-  endscript
-  postrotate
-    if [ -e /var/run/syslogd.pid ]; then
-      /usr/bin/killall -HUP syslogd
-    elif [ -e /var/run/rsyslogd.pid ]; then
-      /usr/bin/killall -HUP rsyslogd
-    fi
-  endscript
-}
