@@ -22,19 +22,20 @@
 #   <tango-net@freenet.de>, 2011.
 # Torsten Widmann <goover0976@googlemail.com>, 2012.
 # Torsten Widmann <goover0976@yahoo.de>, 2011, 2012.
+# Torsten Widmann <info@goover.de>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-23 18:54+0200\n"
-"PO-Revision-Date: 2012-08-23 16:54+0000\n"
+"POT-Creation-Date: 2012-09-14 07:23+0200\n"
+"PO-Revision-Date: 2012-08-28 04:43+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de_DE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid ""
 "\n"
@@ -7042,7 +7043,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} hat ein neues Software Paket hinzugefügt"
 
 msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr ""
+msgstr "{TR_EDIT_HOSTING_PLAN} Hosting Plan"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>Alle Rechte vorbehalten"

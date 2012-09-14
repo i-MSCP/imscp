@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <kazu.nito@gmail.com>, 2011, 2012.
+#   <kazu.nito@gmail.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-08-23 18:54+0200\n"
-"PO-Revision-Date: 2012-08-23 16:54+0000\n"
-"Last-Translator: Torsten Widmann <info@goover.de>\n"
+"POT-Creation-Date: 2012-09-14 07:23+0200\n"
+"PO-Revision-Date: 2012-09-03 21:26+0000\n"
+"Last-Translator: kazuo <kazu.nito@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja_JP\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid ""
 "\n"
@@ -6720,7 +6720,7 @@ msgid "i-MSCP - Reseller / Domain Account Deletion Validation"
 msgstr "i-MSCP - 代理店 / ドメインアカウント削除確認"
 
 msgid "i-MSCP - Reseller / Edit hosting plan"
-msgstr ""
+msgstr "i-MSCP - 代理店 / ホスティングプラン編集"
 
 msgid "i-MSCP - Reseller / General information"
 msgstr "i-MSCP - 代理店/一般情報"
@@ -6729,7 +6729,7 @@ msgid "i-MSCP - Reseller / Layout"
 msgstr "i-MSCP - 代理店 / レイアウト"
 
 msgid "i-MSCP - Reseller / Main Index"
-msgstr ""
+msgstr "i-MSCP - 代理店 / メインインデックス"
 
 msgid "i-MSCP - Reseller / My Profile"
 msgstr "i-MSCP - 代理店 / マイプロフィール"
@@ -6756,7 +6756,7 @@ msgid "i-MSCP - Reseller / Users management / Domain Details"
 msgstr "i-MSCP - 代理店 / ユーザー管理 / ドメイン詳細"
 
 msgid "i-MSCP - Reseller / View hosting plan"
-msgstr ""
+msgstr "i-MSCP - Reseller / View hosting plan"
 
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理店/言語変更"
@@ -7024,7 +7024,7 @@ msgid "{RESELLER} uploaded a new software package"
 msgstr "{RESELLER} 新しいソフトウェアパッケージをアップロード"
 
 msgid "{TR_EDIT_HOSTING_PLAN} hosting plan"
-msgstr ""
+msgstr "{TR_EDIT_HOSTING_PLAN} ホスティングプラン"
 
 msgid "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
 msgstr "© 2010-2012 i-MSCP Team<br/>All Rights Reserved"
