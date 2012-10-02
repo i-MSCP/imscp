@@ -101,6 +101,10 @@ exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id, $del_id));
 $res = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $del_id);
 $dat = $res->fetchRow();
 
+// Delete custom DNS and external mailservers for this alias
+$query = "DELETE FROM `domain_dns` WHERE `alias_id` = ?";
+exec_query($query, $del_id);
+
 // TODO Use prepared statements
 $query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = 'alssub' AND `id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ? )";
 exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id));
