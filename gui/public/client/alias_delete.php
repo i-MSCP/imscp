@@ -86,6 +86,22 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		redirectTo('domains_manage.php');
 	}
 
+	// check for dns records
+	$query = "
+		SELECT
+			COUNT(`domain_dns_id`) AS `dnsnum`
+		FROM
+			`domain_dns`
+		WHERE
+			`alias_id` = ?
+	";
+
+	$rs = exec_query($query, $als_id);
+	if ($rs->fields['dnsnum'] > 0) {
+		set_page_message(tr('Domain alias you are trying to remove has custom DNS records!<br>First remove them!'), 'error');
+		redirectTo('domains_manage.php');
+	}
+
 	// check for mail accounts
 	$query = "
 		SELECT
