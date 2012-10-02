@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package        iMSCP_Core
- * @subpackage    Validate
- * @copyright    2010-2012 by i-MSCP team
- * @author        Laurent Declercq <l.declercq@nuxwin.com>
+ * @package     iMSCP_Core
+ * @subpackage  Validate
+ * @copyright   2010-2012 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license        http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -368,7 +368,7 @@ class iMSCP_Validate
      *
      * @param mixed $value1 Value
      * @param mixed $value2 Value
-     * @param string|array $messages
+     * @param string|array $messages OPTIONAL Error message(s)
      * @return bool
      */
     public function assertEquals($value1, $value2, $messages = null)
@@ -421,7 +421,7 @@ class iMSCP_Validate
     {
         if ((!in_array($value, $stack, true))) {
             if (null === $messages) {
-                $messages = tr('The value has not been found in the stack', $value);
+                $messages = tr('The value has not been found in the stack');
             }
 
             $this->_lastValidationErrorMessages = array_merge($this->_lastValidationErrorMessages, (array)$messages);

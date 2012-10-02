@@ -20,11 +20,11 @@
  * @package     iMSCP_Core
  * @subpackage  Client
  * @copyright   2010-2012 by i-MSCP team
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @author      Sascha Bay <worst.case@gmx.de>
  * @author      iMSCP Team
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
- * @todo allow external mail server for subdomains
  */
 
 /***********************************************************************************************************************
@@ -35,9 +35,9 @@
  * Validate the given DNS MX record
  *
  * @access private
- * @param string $name Name
+ * @param string $name Value specific to mx type (ie domain.tld for domain MX and *.domain.tld for wildcard MX)
  * @param int $priority MX preference
- * @param string $host Host
+ * @param string $host Mail host
  * @param $verifiedData
  * @return bool TRUE if the given MX DNS record is valid, FALSE otherwise
  */
@@ -136,12 +136,16 @@ function client_addExternalMailServerEntries($itemData)
         $data['priority'] = $_POST['priority'] ? : array();
         $data['host'] = $_POST['host'] ? : array();
 
-        $entriesCount = isset($data['name']) ? count($data['name']) : 0;
+        iMSCP_Events_Manager::getInstance()->dispatch(
+            iMSCP_Events::onBeforeAddExternalMailServer, array('externalMailServerEntries' => &$data)
+        );
+
+        $entriesCount = count($data['name']);
         $error = false;
 
         // Validate all entries
         for ($index = 0; $index < $entriesCount; $index++) {
-            if (isset($data['name'][$index]) && isset($data['priority'][$index]) && isset($data['host'][$index])) {
+            if (isset($data['priority'][$index]) && isset($data['host'][$index])) {
                 if (!_client_validateDnsMxRecord(
                     $data['name'][$index], $data['priority'][$index], $data['host'][$index], $verifiedData)
                 ) {
@@ -208,16 +212,23 @@ function client_addExternalMailServerEntries($itemData)
                     exec_query($query, array('on', $cfg->ITEM_DNSCHANGE_STATUS, ltrim($dnsEntriesIds, ','), $verifiedData['item_id']));
                 }
 
+
                 $db->commit(); // Commit the transaction - All data will be now added into the database
-                send_request(); // Ask the daemon to trigger backend request
-                set_page_message(tr('External mail server(s) successfully scheduled for addition'), 'success');
+
+                iMSCP_Events_Manager::getInstance()->dispatch(
+                    iMSCP_Events::onAfterAddExternalMailServer, array('externalMailServerEntries' => &$data)
+                );
+
+                send_request(); // Ask the daemon to trigger backend dispatcher
+                set_page_message(tr('External mail server(s) successfully scheduled for addition.'), 'success');
                 redirectTo('mail_external.php');
             } catch (iMSCP_Exception_Database $e) {
                 $db->rollBack();
-                if ($e->getCode() === 23000) { // Entry already exists in domain_dns table or defined twice in entries stack?
+
+                if ($e->getCode() === 23000) { // Entry already exists in domain_dns table or is defined twice in entries stack?
                     set_page_message(
                         tr(
-                            'The DNS MX record "%s IN MX %s %s" already exists or is defined twice below.',
+                            'The MX record "%s IN MX %s %s" already exists or is defined twice below.',
                             $data['name'][$index],
                             $data['priority'][$index],
                             $data['host'][$index]
@@ -252,15 +263,18 @@ function client_generateView($verifiedData, $data)
 
     $idnItemName = decode_idna($verifiedData['item_name']);
     $entriesCount = isset($data['name']) ? count($data['name']) : 0;
+    $domainMx = tr('Domain MX');
+    $wildcardMx = tr('Wildcard MX');
 
     for ($index = 0; $index < $entriesCount; $index++) {
         // Generates html option elements for the names
-        foreach (array($idnItemName, "*.$idnItemName") as $option) {
+        foreach (array($domainMx => $idnItemName, $wildcardMx => "*.$idnItemName") as $optionName => $optionValue) {
             $tpl->assign(
                 array(
                     'INDEX' => $index,
-                    'OPTION_VALUE' => $option,
-                    'SELECTED' => ($option == $data['name'][$index]) ? ' selected' : ''
+                    'OPTION_VALUE' => $optionValue,
+                    'SELECTED' => ($optionValue == $data['name'][$index]) ? ' selected' : '',
+                    'OPTION_NAME' => $optionName
                 )
             );
             $tpl->parse('NAME_OPTIONS', '.name_options');
@@ -333,21 +347,25 @@ $tpl->assign(
         'THEME_CHARSET' => tr('encoding'),
         'ISP_LOGO' => layout_getUserLogo(),
         'TR_TITLE_RELAY_MAIL_USERS' => tr('Add external mail server entry'),
-        'TR_NAME' => tr('Name'),
+        'TR_MX_TYPE' => tr('Type'),
+        'TR_DOMAIN_MX' => tr('Domain MX'),
+        'TR_WILDCARD_MX' => tr('Wildcard MX'),
         'TR_PRIORITY' => tr('Priority'),
         'TR_HOST' => tr('Host'),
         'TR_ADD_NEW_ENTRY' => tr('Add a new entry'),
         'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
         'TR_RESET_ENTRIES' => tr('Reset entries'),
         'TR_ADD_ENTRIES' => tr('Add'),
-        'TR_WILDCARD_NOTE' =>  tr('Using a wildcard allow to handle mail of any inexistents domain (including subdomain)')
+        'TR_MX_TYPE_TOOLTIP' =>
+        tr('Domain MX: Setup an MX record to relay mail of your entire domain (including subdomains) to an external mail server. In such case, the mail host provided by imscp is deactivated.') .
+            '<br /><br />' .
+            tr('Wildcard MX: Setup an MX record for inexistent subdomains, for which an external mail server can handle mail. In such case the mail host provided by imscp keeps active.')
     )
 );
 
-client_addExternalMailServerEntries($itemData);
-
 generateNavigation($tpl);
 generatePageMessage($tpl);
+client_addExternalMailServerEntries($itemData);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

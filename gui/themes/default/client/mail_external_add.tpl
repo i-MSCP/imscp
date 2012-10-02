@@ -6,7 +6,7 @@
         $('#add').click(
                 function () {
                     var str_mx = '<tr class="item_entry">';
-                    str_mx += '<td><select name="name[]" id="name_' + i + '"><option value="{DOMAIN}">{DOMAIN}</option><option value="{WILDCARD}">{WILDCARD}</option></select></td>';
+                    str_mx += '<td><select name="name[]" id="name' + i + '"><option value="{DOMAIN}">{TR_DOMAIN_MX}</option><option value="{WILDCARD}">{TR_WILDCARD_MX}</option></select></td>';
                     str_mx += '<td><select name="priority[]" id="priority_' + i + '"><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option><option value="25">25</option><option value="30">30</option></select></td>';
                     str_mx += '<td><input type="text" name="host[]" id="host_' + i + '" value="" /></td>';
                     str_mx += '</tr>';
@@ -35,7 +35,7 @@
     <table class="inputs">
         <thead>
         <tr>
-            <th>{TR_NAME}</th>
+            <th><span>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></span></th>
             <th>{TR_PRIORITY}</th>
             <th>{TR_HOST}</th>
         </tr>
@@ -47,7 +47,7 @@
                 <label>
                     <select name="name[]" id="name_{INDEX}">
 						<!-- BDP: name_options -->
-                        <option value="{OPTION_VALUE}"{SELECTED}>{OPTION_VALUE}</option>
+                        <option value="{OPTION_VALUE}"{SELECTED}>{OPTION_NAME}</option>
 						<!-- EDP: name_options -->
                     </select>
                 </label>

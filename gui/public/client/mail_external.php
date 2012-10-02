@@ -16,14 +16,115 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category	iMSCP
- * @package	 iMSCP_Core
+ * @category    iMSCP
+ * @package     iMSCP_Core
  * @subpackage  Client
  * @copyright   2010-2012 by i-MSCP team
- * @author		Sascha Bay <worst.case@gmx.de>
- * @author	  iMSCP Team
- * @link		http://www.i-mscp.net i-MSCP Home Site
- * @license	 http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Sascha Bay <worst.case@gmx.de>
+ * @author      iMSCP Team
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
+ */
+
+/***********************************************************************************************************************
+ * Functions
+ */
+
+/**
+ * Generate an external mail server item
+ *
+ * @access private
+ * @param iMSCP_pTemplate $tpl Template instance
+ * @param string $action Action
+ * @param int $domainId Domain id
+ * @param string $domainName Domain name
+ * @param string $status Item status
+ * @param string $type Domain type (normal for domain or alias for domain alias)
+ * @return void
+ */
+function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $type)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+    $idnDomainName = decode_idna($domainName);
+    $statusOk = $cfg->ITEM_OK_STATUS;
+
+    if ($action == 'create') {
+        $tpl->assign(
+            array(
+                'DOMAIN' => tohtml($idnDomainName),
+                'STATUS' => ($status == $statusOk) ? tr('Deactivated') : translate_dmn_status($status),
+                'CREATE_ACTION_URL' => "mail_external_add.php?id=$domainId;$type",
+                'TR_CREATE' => tr('Create'),
+                'EDIT_LINK' => '',
+                'DELETE_LINK' => ''
+            )
+        );
+
+        $tpl->parse('CREATE_LINK', 'create_link');
+    } else {
+        $tpl->assign(
+            array(
+                'DOMAIN' => tohtml($idnDomainName),
+                'STATUS' => ($status == $statusOk) ? tr('Activated') : translate_dmn_status($status),
+                'CREATE_LINK' => '',
+                'TR_EDIT' => ($status == $statusOk) ? tr('Edit') : tr('N/A'),
+                'EDIT_ACTION_URL' => ($status == $statusOk) ? "mail_external_edit.php?id=$domainId;$type" : '#',
+                'TR_DELETE' => ($status == $statusOk) ? tr('Delete') : tr('N/A'),
+                'DELETE_ACTION_URL' => ($status == $statusOk) ? "mail_external_delete.php?id=$domainId;$type" : '#'
+            )
+        );
+
+        $tpl->parse('EDIT_LINK', 'edit_link');
+        $tpl->parse('DELETE_LINK', 'delete_link');
+    }
+}
+
+/**
+ * Generate external mail server item list
+ *
+ * @access private
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @param int $domainId Domain id
+ * @param string $domainName
+ * @return void
+ */
+function _client_generateItemList($tpl, $domainId, $domainName)
+{
+    $query = 'SELECT `domain_status`, `external_mail` FROM `domain` WHERE `domain_id` = ?';
+    $stmt = exec_query($query, $domainId);
+    $mode = $stmt->fields['external_mail'] == 'off' ? 'create' : 'normal';
+    _client_generateItem($tpl, $mode, $domainId, $domainName, $stmt->fields['domain_status'], 'normal');
+    $tpl->parse('ITEM', '.item');
+
+    $query = 'SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?';
+    $stmt = exec_query($query, array($domainId));
+
+    while (!$stmt->EOF) {
+        $aliasId = $stmt->fields['alias_id'];
+        $aliasName = $stmt->fields['alias_name'];
+        $mode = $stmt->fields['external_mail'] == 'off' ? 'create' : 'normal';
+        _client_generateItem($tpl, $mode, $aliasId, $aliasName, $stmt->fields['alias_status'], 'alias');
+        $tpl->parse('ITEM', '.item');
+        $stmt->moveNext();
+    }
+}
+
+/**
+ * Generates view
+ *
+ * @param iMSCP_pTemplate $tpl Template engine
+ * @return void
+ */
+function client_generateView($tpl)
+{
+    list($domainId, $domainName) = get_domain_default_props($_SESSION['user_id']);
+    _client_generateItemList($tpl, $domainId, $domainName);
+}
+
+/***********************************************************************************************************************
+ * Main
  */
 
 // Include core library
@@ -35,186 +136,41 @@ check_login(__FILE__);
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('external_mail') || !customerHasFeature('mail')) {
-	redirectTo('index.php');
+    redirectTo('index.php');
 }
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
-$tpl->define_dynamic('page', 'client/mail_external.tpl');
-$tpl->define_dynamic('page_message', 'layout');
-$tpl->define_dynamic('relay_message', 'page');
-$tpl->define_dynamic('relay_item', 'page');
-$tpl->define_dynamic('relay_item_new', 'page');
-$tpl->define_dynamic('relay_item_edit', 'page');
-$tpl->define_dynamic('relay_item_delete', 'page');
-
-/**
- * @param $tpl
- * @param $action
- * @param $dmn_id
- * @param $dmn_name
- * @param $relay_status
- * @param $rel_type
- * @return void
- */
-function gen_relay_item(&$tpl, $action, $dmn_id, $dmn_name, $relay_status, $rel_type){
-
-	/** @var $cfg iMSCP_Config_Handler_File */
-	$cfg = iMSCP_Registry::get('config');
-
-	$show_dmn_name = decode_idna($dmn_name);
-
-	if ($action === 'create') {
-		$tpl->assign(
-			array(
-				'RELAY_DOMAIN' => tohtml($show_dmn_name),
-				'RELAY_ACTIVE' => tr('not activated'),
-				'RELAY_STATUS' => translate_dmn_status($relay_status),
-				'RELAY_CREATE_ACTION' => tr('Create Relay Entry'),
-				'RELAY_CREATE_ACTION_SCRIPT' => "mail_external_add.php?id=$dmn_id;$rel_type",
-				'RELAY_EDIT_ACTION' => '',
-				'RELAY_EDIT_ACTION_SCRIPT' => '',
-				'RELAY_DELETE_ACTION' => '',
-				'RELAY_DELETE_ACTION_SCRIPT' => '',
-				'RELAY_ITEM_EDIT' => '',
-				'RELAY_ITEM_DELETE' => ''));
-
-		$tpl->parse('RELAY_ITEM_NEW', 'relay_item_new');
-	} else {
-		$tpl->assign(
-			array(
-				'RELAY_DOMAIN' => tohtml($show_dmn_name),
-				'RELAY_ACTIVE' => tr('activated'),
-				'RELAY_STATUS' => translate_dmn_status($relay_status),
-				'RELAY_CREATE_ACTION' => '',
-				'RELAY_CREATE_ACTION_SCRIPT' => '',
-				'RELAY_EDIT_ACTION' => ($relay_status === $cfg->ITEM_OK_STATUS) ? tr('Edit Relay Entry') : tr('N/A'),
-				'RELAY_EDIT_ACTION_SCRIPT' => ($relay_status === $cfg->ITEM_OK_STATUS) ? "mail_external_edit.php?id=$dmn_id;$rel_type" : '',
-				'RELAY_DELETE_ACTION' => ($relay_status === $cfg->ITEM_OK_STATUS) ? tr('Delete Relay Entry') : tr('N/A'),
-				'RELAY_DELETE_ACTION_SCRIPT' => ($relay_status === $cfg->ITEM_OK_STATUS) ? "mail_external_delete.php?id=$dmn_id;$rel_type" : '',
-				'RELAY_ITEM_NEW' => ''));
-
-		$tpl->parse('RELAY_ITEM_EDIT', 'relay_item_edit');
-		$tpl->parse('RELAY_ITEM_DELETE', 'relay_item_delete');
-	}
-}
-
-/**
- * @param $tpl
- * @param $dmn_id
- * @param $dmn_name
- */
-function gen_page_relay_list($tpl, $dmn_id, $dmn_name){
-	$tpl->assign('RELAY_MESSAGE', '');
-
-	$query = '
-		SELECT
-			`domain_status`, `external_mail`
-		FROM
-			`domain`
-		WHERE
-			`domain_id` = ?
-		';
-
-	$rs = exec_query($query, array($dmn_id));
-
-	$mode = $rs->fields['external_mail'] == 'off' ? 'create' : 'normal';
-
-	gen_relay_item($tpl, $mode, $dmn_id, $dmn_name, $rs->fields['domain_status'], 'normal');
-
-	$tpl->parse('RELAY_ITEM', 'relay_item');
-
-	$query = '
-		SELECT
-			*
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = ?
-	';
-
-	$rs = exec_query($query, array($dmn_id));
-
-	while (!$rs->EOF) {
-		$als_id = $rs->fields['alias_id'];
-		$als_name = $rs->fields['alias_name'];
-
-		$mode = $rs->fields['external_mail'] == 'off' ? 'create' : 'normal';
-
-		gen_relay_item($tpl, $mode, $als_id, $als_name, $rs->fields['alias_status'], 'alias');
-
-		$tpl->parse('RELAY_ITEM', '.relay_item');
-
-		$rs->moveNext();
-	}
-}
-
-/**
- * @param $tpl
- * @param $user_id
- */
-function gen_page_lists($tpl, $user_id){
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($user_id);
-
-	gen_page_relay_list($tpl, $dmn_id, $dmn_name);
-}
-
-// common page data.
-
-$tpl->assign(
-	array(
-		'TR_PAGE_TITLE' => tr('i-MSCP - Client / Manage mail / External mail servers'),
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => layout_getUserLogo()
-	)
+$tpl->define_dynamic(
+    array(
+        'layout' => 'shared/layouts/ui.tpl',
+        'page' => 'client/mail_external.tpl',
+        'page_message' => 'layout',
+        'item' => 'page',
+        'create_link' => 'item',
+        'edit_link' => 'item',
+        'delete_link' => 'item'
+    )
 );
 
-if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
-	$tpl->assign('NO_MAILS', '');
-}
+$tpl->assign(
+    array(
+        'TR_PAGE_TITLE' => tr('i-MSCP - Client / Mail Accounts / External mail servers'),
+        'THEME_CHARSET' => tr('encoding'),
+        'ISP_LOGO' => layout_getUserLogo(),
+        'TR_TITLE_RELAY_MAIL_USERS' => tr('External mail servers'),
+        'TR_DOMAIN' => tr('Domain'),
+        'TR_STATUS' => tr('Status'),
+        'TR_ACTION' => tr('Action'),
+        'TR_DELETE_MESSAGE' => tr("Are you sure you want to delete the external mail server entries for the '%s' domain?", true, '%s')
+    )
+);
 
-gen_page_lists($tpl, $_SESSION['user_id']);
 generateNavigation($tpl);
-
-$tpl->assign(
-	array(
-		'TR_STATUS' => tr('Status'),
-		'TR_ACTION' => tr('Action'),
-		'TR_TITLE_RELAY_MAIL_USERS' => tr('External mail servers'),
-		'TR_DOMAIN' => tr('Domain'),
-		'TR_RELAY' => tr('External mail servers'),
-		'TR_RELAY_ACTIVE' => tr('External mail servers status'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete the %s external mail server?', true, '%s')
-	)
-);
-
 generatePageMessage($tpl);
+client_generateView($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 
