@@ -187,10 +187,14 @@ sub addDmn{
 
 	if($data->{EXTERNAL} eq 'on'){
 		$rs |= $self->disableDmn($data);
-		$rs |= $self->addToRelayHash($data);
+		if($data->{DMN_TYPE} eq 'dmn' || $data->{DMN_TYPE} eq 'als') {
+			$rs |= $self->addToRelayHash($data);
+		}
 	} else {
 		$rs |= $self->addToDomainHash($data);
-		$rs |= $self->delFromRelayHash($data);
+		if($data->{DMN_TYPE} eq 'dmn' || $data->{DMN_TYPE} eq 'als') {
+			$rs |= $self->delFromRelayHash($data);
+		}
 	}
 
 	$rs;
@@ -394,7 +398,9 @@ sub disableDmn{
 
 	$self->{postmap}->{$self->{MTA_VIRTUAL_DMN_HASH}} = $data->{DMN_NAME};
 
-	$rs |= $self->delFromRelayHash($data);
+	if($data->{DMN_TYPE} eq 'dmn' || $data->{DMN_TYPE} eq 'als') {
+		$rs |= $self->delFromRelayHash($data);
+	}
 
 	$rs;
 }

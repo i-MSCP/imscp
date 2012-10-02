@@ -240,7 +240,6 @@ sub delete{
 	$rs;
 }
 
-
 sub buildHTTPDData{
 
 	my $self	= shift;
@@ -318,6 +317,7 @@ sub buildMTAData{
 	){
 		$self->{mta} = {
 			DMN_NAME	=> $self->{alias_name},
+			DMN_TYPE	=> 'als',
 			TYPE		=> 'vals_entry',
 			EXTERNAL	=> $self->{external_mail}
 		};
