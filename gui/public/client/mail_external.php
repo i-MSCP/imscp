@@ -55,29 +55,35 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
             array(
                 'DOMAIN' => tohtml($idnDomainName),
                 'STATUS' => ($status == $statusOk) ? tr('Deactivated') : translate_dmn_status($status),
-                'CREATE_ACTION_URL' => "mail_external_add.php?id=$domainId;$type",
-                'TR_CREATE' => tr('Create'),
+                'DISABLED' => ' disabled',
+                'ITEM_TYPE' => $type,
+                'ITEM_ID' => $domainId,
+                'ACTIVATE_URL' => "mail_external_add.php?id=$domainId;$type",
+                'TR_ACTIVATE' => tr('Activate'),
                 'EDIT_LINK' => '',
-                'DELETE_LINK' => ''
+                'DEACTIVATE_LINK' => ''
             )
         );
 
-        $tpl->parse('CREATE_LINK', 'create_link');
+        $tpl->parse('ACTIVATE_LINK', 'activate_link');
     } else {
         $tpl->assign(
             array(
                 'DOMAIN' => tohtml($idnDomainName),
                 'STATUS' => ($status == $statusOk) ? tr('Activated') : translate_dmn_status($status),
-                'CREATE_LINK' => '',
+                'DISABLED' => '',
+                'ITEM_TYPE' => $type,
+                'ITEM_ID' => $domainId,
+                'ACTIVATE_LINK' => '',
                 'TR_EDIT' => ($status == $statusOk) ? tr('Edit') : tr('N/A'),
-                'EDIT_ACTION_URL' => ($status == $statusOk) ? "mail_external_edit.php?id=$domainId;$type" : '#',
-                'TR_DELETE' => ($status == $statusOk) ? tr('Delete') : tr('N/A'),
-                'DELETE_ACTION_URL' => ($status == $statusOk) ? "mail_external_delete.php?id=$domainId;$type" : '#'
+                'EDIT_URL' => ($status == $statusOk) ? "mail_external_edit.php?id=$domainId;$type" : '#',
+                'TR_DEACTIVATE' => ($status == $statusOk) ? tr('Deactivate') : tr('N/A'),
+                'DEACTIVATE_URL' => ($status == $statusOk) ? "mail_external_delete.php?id=$domainId;$type" : '#'
             )
         );
 
         $tpl->parse('EDIT_LINK', 'edit_link');
-        $tpl->parse('DELETE_LINK', 'delete_link');
+        $tpl->parse('DEACTIVATE_LINK', 'deactivate_link');
     }
 }
 
@@ -149,9 +155,9 @@ $tpl->define_dynamic(
         'page' => 'client/mail_external.tpl',
         'page_message' => 'layout',
         'item' => 'page',
-        'create_link' => 'item',
+        'activate_link' => 'item',
         'edit_link' => 'item',
-        'delete_link' => 'item'
+        'deactivate_link' => 'item'
     )
 );
 
@@ -164,13 +170,15 @@ $tpl->assign(
         'TR_DOMAIN' => tr('Domain'),
         'TR_STATUS' => tr('Status'),
         'TR_ACTION' => tr('Action'),
-        'TR_DELETE_MESSAGE' => tr("Are you sure you want to delete the external mail server entries for the '%s' domain?", true, '%s')
+        'TR_DELETE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s')
     )
 );
 
 generateNavigation($tpl);
-generatePageMessage($tpl);
+
 client_generateView($tpl);
+
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

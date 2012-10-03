@@ -3,7 +3,7 @@
     $(document).ready(function () {
         var i = {INDEX} +1;
 
-        $('#add').click(
+        $('.trigger_add').click(
                 function () {
                     var str_mx = '<tr class="item_entry">';
                     str_mx += '<td><select name="name[]" id="name' + i + '"><option value="{DOMAIN}">{TR_DOMAIN_MX}</option><option value="{WILDCARD}">{TR_WILDCARD_MX}</option></select></td>';
@@ -15,14 +15,14 @@
                 }
         );
 
-        $('#remove').click(function () {
+        $('.trigger_remove').click(function () {
             if (i > 1) {
                 $('.item_entry:last').remove();
                 i--;
             }
         });
 
-        $('#reset').click(function () {
+        $('.trigger_reset').click(function () {
             while (i > 1) {
                 $('.item_entry:last').remove();
                 i--;
@@ -32,6 +32,9 @@
     /* ]]> */
 </script>
 <form name="add_external_mail_server" method="post" action="mail_external_add.php">
+	<div>
+     	<a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#" class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a> | <a href="#" class="trigger_reset">{TR_RESET_ENTRIES}</a>
+	</div>
     <table class="inputs">
         <thead>
         <tr>
@@ -40,6 +43,13 @@
             <th>{TR_HOST}</th>
         </tr>
         </thead>
+        <tfoot>
+        <tr>
+            <th><span>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></span></th>
+            <th>{TR_PRIORITY}</th>
+            <th>{TR_HOST}</th>
+        </tr>
+        </tfoot>
         <tbody>
         <!-- BDP: item_entries -->
         <tr class="item_entry">
@@ -67,7 +77,7 @@
         </tbody>
     </table>
     <div style="float:left;">
-        <a href="#" id="add">{TR_ADD_NEW_ENTRY}</a> | <a href="#" id="remove">{TR_REMOVE_LAST_ENTRY}</a> | <a href="#" id="reset">{TR_RESET_ENTRIES}</a>
+        <a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#" class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a> | <a href="#" class="trigger_reset">{TR_RESET_ENTRIES}</a>
     </div>
     <div class="buttons">
         <input type="hidden" name="id" value="{ITEM_ID}"/>

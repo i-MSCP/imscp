@@ -130,7 +130,7 @@ function client_addExternalMailServerEntries($itemData)
 {
     $verifiedData = _client_getVerifiedData($itemData[0], $itemData[1]);
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!empty($_POST)) {
         // Preparing entries stack
         $data['name'] = $_POST['name'] ? : array();
         $data['priority'] = $_POST['priority'] ? : array();
@@ -351,7 +351,7 @@ $tpl->assign(
         'TR_DOMAIN_MX' => tr('Domain MX'),
         'TR_WILDCARD_MX' => tr('Wildcard MX'),
         'TR_PRIORITY' => tr('Priority'),
-        'TR_HOST' => tr('Host'),
+        'TR_HOST' => tr('External Mail Host'),
         'TR_ADD_NEW_ENTRY' => tr('Add a new entry'),
         'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
         'TR_RESET_ENTRIES' => tr('Reset entries'),
@@ -363,9 +363,12 @@ $tpl->assign(
     )
 );
 
+
 generateNavigation($tpl);
-generatePageMessage($tpl);
+
 client_addExternalMailServerEntries($itemData);
+
+generatePageMessage($tpl);
 
 $tpl->parse('LAYOUT_CONTENT', 'page');
 

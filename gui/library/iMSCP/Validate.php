@@ -36,7 +36,7 @@
  * @package        iMSCP_Core
  * @subpackage    Validate
  * @author        Laurent Declercq <l.declercq@nuxwin.com>
- * @version        0.0.5
+ * @version        0.0.6
  */
 class iMSCP_Validate
 {
@@ -98,9 +98,6 @@ class iMSCP_Validate
             'hostnameInvalidHostnameSchema' => "'%value%' appears to be a subdomain name but cannot match against subdomain schema for TLD '%tld%'",
             'hostnameUndecipherableTld' => "'%value%' appears to be a subdomain name but cannot extract TLD part",
             'hostnameUnknownTld' => "'%value%' appears to be a subdomain name but cannot match TLD against known list",
-        ),
-        'assert_not_equal' => array(
-            "%message%"
         )
     );
 
