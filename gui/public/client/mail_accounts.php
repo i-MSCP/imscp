@@ -409,15 +409,19 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
+			$is_mailbox = 0;
+
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-						$mail_type .= ': ' . str_replace(
-							array("\r\n", "\n", "\r"),
-							", ",
+					$mail_type .= ': ' .
+						str_replace(
+							array("\r\n", "\n", "\r"), ", ",
 							$rs->fields['mail_forward']
 						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
@@ -566,14 +570,19 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
+			$is_mailbox = 0;
+
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-					$mail_type .= ': ' . str_replace(
-						array("\r\n", "\n", "\r"), ", ",
-						$rs->fields['mail_forward']
-					);
+					$mail_type .= ': ' .
+						str_replace(
+							array("\r\n", "\n", "\r"), ", ",
+							$rs->fields['mail_forward']
+						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
@@ -716,15 +725,19 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
+			$is_mailbox = 0;
+
 			foreach ($mail_types as $type) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-					 $mail_type .= ': ' . str_replace(
-					 	array("\r\n", "\n", "\r"),
-						", ",
-						$rs->fields['mail_forward']
-					 );
+					$mail_type .= ': ' .
+						str_replace(
+							array("\r\n", "\n", "\r"), ", ",
+							$rs->fields['mail_forward']
+						);
+				} else {
+					$is_mailbox = 1;
 				}
 
 				$mail_type .= '<br />';
