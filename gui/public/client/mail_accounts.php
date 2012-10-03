@@ -391,8 +391,12 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 	} else {
 		while (!$rs->EOF) {
 			list(
-				$mail_delete, $mail_delete_script,
-				$mail_edit, $mail_edit_script
+				$mail_delete,
+				$mail_delete_script,
+				$mail_edit,
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
@@ -419,6 +423,41 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 				$mail_type .= '<br />';
 			}
 
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$quota_query = "SELECT
+						`bytes`,
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+			}
+
 			$tpl->assign(
 				array(
 					'MAIL_ACC' =>
@@ -429,6 +468,9 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
@@ -509,7 +551,12 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 	} else {
 		while (!$rs->EOF) {
 			list(
-				$mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script
+				$mail_delete,
+				$mail_delete_script,
+				$mail_edit,
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
@@ -532,6 +579,41 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 				$mail_type .= '<br />';
 			}
 
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$quota_query = "SELECT
+						`bytes`,
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+			}
+
 			$tpl->assign(
 				array(
 					'MAIL_ACC' => tohtml($mail_acc . '@' . $show_alssub_name),
@@ -541,6 +623,9 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
@@ -614,7 +699,12 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 		while (!$rs->EOF) {
 
 			list(
-				$mail_delete, $mail_delete_script, $mail_edit, $mail_edit_script
+				$mail_delete,
+				$mail_delete_script,
+				$mail_edit,
+				$mail_edit_script,
+				$mail_quota,
+				$mail_quota_script
 			) = gen_user_mail_action(
 				$rs->fields['mail_id'], $rs->fields['status']
 			);
@@ -640,6 +730,41 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 				$mail_type .= '<br />';
 			}
 
+			$txt_quota = "---";
+			$localeinfo=localeconv();
+
+			if ($is_mailbox) {
+				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$quota_query = "SELECT
+						`bytes`,
+						`quota`
+				 	FROM
+						`mail_users`
+					LEFT JOIN
+						`quota_dovecot`
+					ON
+						`mail_users`.`mail_addr` = `quota_dovecot`.`username`
+					WHERE
+						`mail_addr` = ?";
+
+				$rs_quota = exec_query($quota_query, array($complete_email));
+				$userquotamax = $rs_quota->fields['quota'];
+				$userquota = $rs_quota->fields['bytes'];
+
+				if (is_null($userquota) || ($userquota<0)) {
+					$userquota=0;
+				}
+				if ($userquotamax == 0)	{
+					$userquotamax=tr('unlimited');
+					$userquotapercent = "0".$localeinfo['decimal_point']."000";
+				} else {
+					$userquotapercent = number_format((($userquota/$userquotamax)*100), 3, $localeinfo['decimal_point'], '');
+					$userquotamax = formatBytes($userquotamax);
+				}
+				$userquota= formatBytes($userquota);
+				$txt_quota = $userquota . " / " . $userquotamax . "<br>" . $userquotapercent . " %";
+			}
+
 			$tpl->assign(
 				array(
 					'MAIL_ACC' => tohtml($mail_acc . '@' . $show_als_name),
@@ -649,6 +774,9 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script,
+					'MAIL_QUOTA' => $mail_quota,
+					'MAIL_QUOTA_SCRIPT' => $mail_quota_script,
+					'MAIL_QUOTA_VALUE' => $txt_quota,
 					'DEL_ITEM' => $rs->fields['mail_id'],
 					'DISABLED_DEL_ITEM' => ($rs->fields['status'] != 'ok') ? $cfg->HTML_DISABLED : ''));
 
