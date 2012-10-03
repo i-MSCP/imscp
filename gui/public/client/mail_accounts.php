@@ -431,7 +431,7 @@ function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 			$localeinfo=localeconv();
 
 			if ($is_mailbox) {
-				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$complete_email = $mail_acc . '@' . $show_sub_name.'.'.$show_dmn_name;
 				$quota_query = "SELECT
 						`bytes`,
 						`quota`
@@ -567,6 +567,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
 			$show_alssub_name = decode_idna($rs->fields['alssub_name']);
+
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
@@ -592,7 +593,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 			$localeinfo=localeconv();
 
 			if ($is_mailbox) {
-				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$complete_email = $mail_acc . '@' . $show_alssub_name;
 				$quota_query = "SELECT
 						`bytes`,
 						`quota`
@@ -719,9 +720,8 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 			);
 
 			$mail_acc = decode_idna($rs->fields['mail_acc']);
-			// Unused variable
-			// $show_dmn_name = decode_idna($dmn_name);
 			$show_als_name = decode_idna($rs->fields['als_name']);
+
 			$mail_types = explode(',', $rs->fields['mail_type']);
 			$mail_type = '';
 
@@ -747,7 +747,7 @@ function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 			$localeinfo=localeconv();
 
 			if ($is_mailbox) {
-				$complete_email = $mail_acc . '@' . $show_dmn_name;
+				$complete_email = $mail_acc . '@' . $show_als_name;
 				$quota_query = "SELECT
 						`bytes`,
 						`quota`
