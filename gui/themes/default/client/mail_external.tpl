@@ -6,10 +6,10 @@
 		}
     );
 
-	function action(url, domain) {
+  function onclick_action(url, domain) {
      if (url.indexOf('delete') == -1) {
          location = url;
-     } else if (confirm(sprintf("{TR_DELETE_MESSAGE}", domain))) {
+     } else if (confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain))) {
          location = url;
      }
 
@@ -21,7 +21,7 @@
     <table>
         <thead>
         <tr>
-            <th style="width:21px;"><input type="checkbox" /></th>
+            <th style="width:21px;"><label><input type="checkbox" /></label></th>
             <th>{TR_DOMAIN}</th>
             <th>{TR_STATUS}</th>
             <th>{TR_ACTION}</th>
@@ -29,7 +29,7 @@
         </thead>
         <tfoot>
         <tr>
-            <th><input type="checkbox" /></th>
+			<th style="width:21px;"><label><input type="checkbox" /></label></th>
             <th>{TR_DOMAIN}</th>
             <th>{TR_STATUS}</th>
             <th>{TR_ACTION}</th>
@@ -38,18 +38,18 @@
         <tbody>
         <!-- BDP: item -->
         <tr>
-            <td><input type='checkbox' name='{ITEM_TYPE}[]' value="{ITEM_ID}"{DISABLED} /></td>
+            <td><label><input type="checkbox" name="{ITEM_TYPE}[]" value="{ITEM_ID}"{DISABLED} /></label></td>
             <td>{DOMAIN}</td>
             <td>{STATUS}</td>
             <td>
                 <!-- BDP: activate_link -->
-                <a href="#" class="icon i_users" onclick="action('{ACTIVATE_URL}', '')">{TR_ACTIVATE}</a>
+                <a href="#" class="icon i_users" onclick="onclick_action('{ACTIVATE_URL}', '')">{TR_ACTIVATE}</a>
                 <!-- EDP: activate_link -->
                 <!-- BDP: edit_link -->
-                <a href="#" class="icon i_edit" onclick="action('{EDIT_URL}', '')">{TR_EDIT}</a>
+                <a href="#" class="icon i_edit" onclick="onclick_action('{EDIT_URL}', '')">{TR_EDIT}</a>
                 <!-- EDP: edit_link -->
                 <!-- BDP: deactivate_link -->
-                <a href="#" class="icon i_delete" onclick="action('{DEACTIVATE_URL}', '{DOMAIN}')">{TR_DEACTIVATE}</a>
+                <a href="#" class="icon i_delete" onclick="onclick_action('{DEACTIVATE_URL}', '{DOMAIN}')">{TR_DEACTIVATE}</a>
                 <!-- EDP: deactivate_link -->
             </td>
         </tr>
@@ -57,7 +57,5 @@
         </tbody>
     </table>
 	<input type="hidden" name="from" value="mail_external" />
-    <label><input type="submit" name="submit" value="Deactivate selected items"/></label>
+    <label><input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}" /></label>
 </form>
-
-

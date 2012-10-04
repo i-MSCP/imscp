@@ -49,17 +49,18 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
     $cfg = iMSCP_Registry::get('config');
     $idnDomainName = decode_idna($domainName);
     $statusOk = $cfg->ITEM_OK_STATUS;
+    $queryParam = urlencode("$domainId;$type");
 
     if ($action == 'create') {
         $tpl->assign(
             array(
                 'DOMAIN' => tohtml($idnDomainName),
                 'STATUS' => ($status == $statusOk) ? tr('Deactivated') : translate_dmn_status($status),
-                'DISABLED' => ' disabled',
+                'DISABLED' => $cfg->HTML_DISABLED,
                 'ITEM_TYPE' => $type,
                 'ITEM_ID' => $domainId,
-                'ACTIVATE_URL' => "mail_external_add.php?id=$domainId;$type",
-                'TR_ACTIVATE' => tr('Activate'),
+                'ACTIVATE_URL' => ($status == $statusOk) ? "mail_external_add.php?id=$queryParam" : '#',
+                'TR_ACTIVATE' => ($status == $statusOk) ? tr('Activate') : tr('N/A'),
                 'EDIT_LINK' => '',
                 'DEACTIVATE_LINK' => ''
             )
@@ -76,9 +77,9 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
                 'ITEM_ID' => $domainId,
                 'ACTIVATE_LINK' => '',
                 'TR_EDIT' => ($status == $statusOk) ? tr('Edit') : tr('N/A'),
-                'EDIT_URL' => ($status == $statusOk) ? "mail_external_edit.php?id=$domainId;$type" : '#',
+                'EDIT_URL' => ($status == $statusOk) ? "mail_external_edit.php?id=$queryParam" : '#',
                 'TR_DEACTIVATE' => ($status == $statusOk) ? tr('Deactivate') : tr('N/A'),
-                'DEACTIVATE_URL' => ($status == $statusOk) ? "mail_external_delete.php?id=$domainId;$type" : '#'
+                'DEACTIVATE_URL' => ($status == $statusOk) ? "mail_external_delete.php?id=$queryParam" : '#'
             )
         );
 
@@ -170,7 +171,8 @@ $tpl->assign(
         'TR_DOMAIN' => tr('Domain'),
         'TR_STATUS' => tr('Status'),
         'TR_ACTION' => tr('Action'),
-        'TR_DELETE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s')
+        'TR_DEACTIVATE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s'),
+        'TR_DEACTIVATE_SELECTED_ITEMS' => tr('Deactivate selected items')
     )
 );
 
