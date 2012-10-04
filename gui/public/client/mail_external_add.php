@@ -106,7 +106,7 @@ function _client_getVerifiedData($itemId, $itemType)
 
         $itemName = $stmt->fields['alias_name'];
     } else {
-        set_page_message(tr('Only domain and domain alias are allowed for external mail servers.'), 'error');
+        set_page_message(tr('Wrong request'), 'error');
         redirectTo('mail_external.php');
         exit;
     }
@@ -220,7 +220,7 @@ function client_addExternalMailServerEntries($itemData)
                 );
 
                 send_request(); // Ask the daemon to trigger backend dispatcher
-                set_page_message(tr('External mail server(s) successfully scheduled for addition.'), 'success');
+                set_page_message(tr('External mail server successfully scheduled for addition.'), 'success');
                 redirectTo('mail_external.php');
             } catch (iMSCP_Exception_Database $e) {
                 $db->rollBack();
@@ -261,6 +261,10 @@ function client_generateView($verifiedData, $data)
     /** @var $tpl iMSCP_pTemplate */
     $tpl = iMSCP_Registry::get('templateEngine');
 
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+    $selectedOption = $cfg->HTML_SELECTED;
+
     $idnItemName = decode_idna($verifiedData['item_name']);
     $entriesCount = isset($data['name']) ? count($data['name']) : 0;
     $domainMx = tr('Domain MX');
@@ -273,7 +277,7 @@ function client_generateView($verifiedData, $data)
                 array(
                     'INDEX' => $index,
                     'OPTION_VALUE' => $optionValue,
-                    'SELECTED' => ($optionValue == $data['name'][$index]) ? ' selected' : '',
+                    'SELECTED' => ($optionValue == $data['name'][$index]) ? $selectedOption : '',
                     'OPTION_NAME' => $optionName
                 )
             );
@@ -286,7 +290,7 @@ function client_generateView($verifiedData, $data)
                 array(
                     'INDEX' => $index,
                     'OPTION_VALUE' => $option,
-                    'SELECTED' => ($option == $data['priority'][$index]) ? ' selected' : ''
+                    'SELECTED' => ($option == $data['priority'][$index]) ? $selectedOption : ''
                 )
             );
             $tpl->parse('PRIORITY_OPTIONS', '.priority_options');
@@ -355,11 +359,14 @@ $tpl->assign(
         'TR_ADD_NEW_ENTRY' => tr('Add a new entry'),
         'TR_REMOVE_LAST_ENTRY' => tr('Remove last entry'),
         'TR_RESET_ENTRIES' => tr('Reset entries'),
-        'TR_ADD_ENTRIES' => tr('Add'),
+        'TR_CANCEL' => tr('Cancel'),
+        'TR_ADD' => tr('Add'),
         'TR_MX_TYPE_TOOLTIP' =>
-        tr('Domain MX: Setup an MX record to relay mail of your entire domain (including subdomains) to an external mail server. In such case, the mail host provided by imscp is deactivated.') .
+            tr('Domain: Setup an MX record to relay mail of your domain to an external mail server.') .
             '<br /><br />' .
-            tr('Wildcard MX: Setup an MX record for inexistent subdomains, for which an external mail server can handle mail. In such case the mail host provided by imscp keeps active.')
+            tr('Domain and subdomains: Same as above including subdomains.') .
+            '<br /><br />' .
+            tr('Wildcard: Setup an MX record for in-existent subdomains, for which an external mail server can handle mail.')
     )
 );
 

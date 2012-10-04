@@ -81,6 +81,7 @@
     </div>
     <div class="buttons">
         <input type="hidden" name="id" value="{ITEM_ID}"/>
-        <input name="submit" type="submit" value="{TR_ADD_ENTRIES}"/>
+		<button name="cancel" type="button" onclick="location='mail_external.php'">{TR_CANCEL}</button>
+        <input name="submit" type="submit" value="{TR_ADD}"/>
     </div>
 </form>
