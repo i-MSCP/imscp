@@ -37,11 +37,6 @@ use vars qw/@ISA/;
 use Common::SimpleClass;
 use Modules::Subdomain;
 
-sub _init{
-	my $self		= shift;
-	$self->{type}	= 'Sub';
-}
-
 sub loadData{
 
 	my $self = shift;
@@ -325,7 +320,7 @@ sub buildMTAData{
 	){
 		$self->{mta} = {
 			DMN_NAME	=> $self->{subdomain_alias_name}.'.'.$self->{alias_name},
-			DMN_TYPE	=> 'alssub',
+			DMN_TYPE	=> $self->{type},
 			TYPE		=> 'valssub_entry',
 			EXTERNAL	=> $self->{external_mail}
 		};
@@ -352,18 +347,8 @@ sub buildNAMEDData{
 
 	if($self->{external_mail} eq 'on'){
 
-		my $sql = "
-			SELECT
-				*
-			FROM
-				`domain_dns`
-			WHERE
-				`domain_dns`.`alias_id` = ?
-			AND
-				`domain_dns`.`domain_type` = ?
-		";
-
-		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{alias_id}, 'MX');
+		my $sql = "SELECT * FROM `domain_dns` WHERE `alias_id` = ? AND `domain_type` = ? AND `protected` = ?";
+		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{alias_id}, 'MX', 'yes');
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 		$self->{named}->{MX}->{$_} = $rdata->{$_} for (keys %$rdata);

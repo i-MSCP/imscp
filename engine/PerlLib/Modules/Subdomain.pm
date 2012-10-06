@@ -320,7 +320,7 @@ sub buildMTAData{
 	){
 		$self->{mta} = {
 			DMN_NAME	=> $self->{subdomain_name}.'.'.$self->{user_home},
-			DMN_TYPE	=> 'sub',
+			DMN_TYPE	=> $self->{type},
 			TYPE		=> 'vsub_entry',
 			EXTERNAL	=> $self->{external_mail}
 		};

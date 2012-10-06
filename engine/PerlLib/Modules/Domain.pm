@@ -63,7 +63,7 @@ sub loadData{
 		ON
 			`domain`.`domain_id` = `mail_count`.`id`
 		LEFT JOIN
-			(SELECT `domain_ip_id` AS `ip_id`, COUNT( `domain_ip_id` ) AS `domains_on_ip` FROM `domain` WHERE `domain_status` != 'delete'GROUP BY `domain_ip_id`) AS `ips_count`
+			(SELECT `domain_ip_id` AS `ip_id`, COUNT( `domain_ip_id` ) AS `domains_on_ip` FROM `domain` WHERE `domain_status` != 'delete' GROUP BY `domain_ip_id`) AS `ips_count`
 		ON
 			`domain`.`domain_ip_id` = `ips_count`.`ip_id`
 		WHERE
@@ -336,7 +336,7 @@ sub buildMTAData{
 	){
 		$self->{mta} = {
 			DMN_NAME	=> $self->{domain_name},
-			DMN_TYPE	=> 'dmn',
+			DMN_TYPE	=> $self->{type},
 			TYPE		=> 'vdmn_entry',
 			EXTERNAL	=> $self->{external_mail}
 		};
