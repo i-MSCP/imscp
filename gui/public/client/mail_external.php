@@ -50,39 +50,38 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
     $idnDomainName = decode_idna($domainName);
     $statusOk = $cfg->ITEM_OK_STATUS;
     $queryParam = urlencode("$domainId;$type");
+    $htmlDisabled = $cfg->HTML_DISABLED;
 
-    if ($action == 'create') {
+    if ($action == 'activate') {
         $tpl->assign(
             array(
-                'DOMAIN' => tohtml($idnDomainName),
+                'DOMAIN' => $idnDomainName,
                 'STATUS' => ($status == $statusOk) ? tr('Deactivated') : translate_dmn_status($status),
-                'DISABLED' => $cfg->HTML_DISABLED,
+                'DISABLED' => $htmlDisabled,
                 'ITEM_TYPE' => $type,
                 'ITEM_ID' => $domainId,
-                'ACTIVATE_URL' => ($status == $statusOk) ? "mail_external_add.php?id=$queryParam" : '#',
+                'ACTIVATE_URL' => ($status == $statusOk) ? "mail_external_add.php?item=$queryParam" : '#',
                 'TR_ACTIVATE' => ($status == $statusOk) ? tr('Activate') : tr('N/A'),
                 'EDIT_LINK' => '',
                 'DEACTIVATE_LINK' => ''
             )
         );
-
         $tpl->parse('ACTIVATE_LINK', 'activate_link');
     } else {
         $tpl->assign(
             array(
-                'DOMAIN' => tohtml($idnDomainName),
+                'DOMAIN' => $idnDomainName,
                 'STATUS' => ($status == $statusOk) ? tr('Activated') : translate_dmn_status($status),
-                'DISABLED' => '',
+                'DISABLED' => ($status == $statusOk) ? '' : $htmlDisabled,
                 'ITEM_TYPE' => $type,
                 'ITEM_ID' => $domainId,
                 'ACTIVATE_LINK' => '',
                 'TR_EDIT' => ($status == $statusOk) ? tr('Edit') : tr('N/A'),
-                'EDIT_URL' => ($status == $statusOk) ? "mail_external_edit.php?id=$queryParam" : '#',
+                'EDIT_URL' => ($status == $statusOk) ? "mail_external_edit.php?item=$queryParam" : '#',
                 'TR_DEACTIVATE' => ($status == $statusOk) ? tr('Deactivate') : tr('N/A'),
-                'DEACTIVATE_URL' => ($status == $statusOk) ? "mail_external_delete.php?id=$queryParam" : '#'
+                'DEACTIVATE_URL' => ($status == $statusOk) ? "mail_external_delete.php?item=$queryParam" : '#'
             )
         );
-
         $tpl->parse('EDIT_LINK', 'edit_link');
         $tpl->parse('DEACTIVATE_LINK', 'deactivate_link');
     }
@@ -94,38 +93,59 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
  * @access private
  * @param iMSCP_pTemplate $tpl Template engine
  * @param int $domainId Domain id
- * @param string $domainName
+ * @param string $domainName Domain name
  * @return void
  */
 function _client_generateItemList($tpl, $domainId, $domainName)
 {
     $query = 'SELECT `domain_status`, `external_mail` FROM `domain` WHERE `domain_id` = ?';
     $stmt = exec_query($query, $domainId);
-    $mode = $stmt->fields['external_mail'] == 'off' ? 'create' : 'normal';
+    $mode = $stmt->fields['external_mail'] == 'off' ? 'activate' : 'normal';
     _client_generateItem($tpl, $mode, $domainId, $domainName, $stmt->fields['domain_status'], 'normal');
     $tpl->parse('ITEM', '.item');
 
-    $query = 'SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?';
-    $stmt = exec_query($query, array($domainId));
+    $query = 'SELECT `alias_id`, `alias_name`, `alias_status`, `external_mail` FROM `domain_aliasses` WHERE `domain_id` = ?';
+    $stmt = exec_query($query, $domainId);
 
-    while (!$stmt->EOF) {
-        $aliasId = $stmt->fields['alias_id'];
-        $aliasName = $stmt->fields['alias_name'];
-        $mode = $stmt->fields['external_mail'] == 'off' ? 'create' : 'normal';
-        _client_generateItem($tpl, $mode, $aliasId, $aliasName, $stmt->fields['alias_status'], 'alias');
-        $tpl->parse('ITEM', '.item');
-        $stmt->moveNext();
+    if ($stmt->rowCount()) {
+        while (!$stmt->EOF) {
+            _client_generateItem(
+                $tpl,
+                $stmt->fields['external_mail'] == 'off' ? 'activate' : 'edit_deactivate',
+                $stmt->fields['alias_id'],
+                $stmt->fields['alias_name'],
+                $stmt->fields['alias_status'],
+                'alias'
+            );
+
+            $tpl->parse('ITEM', '.item');
+            $stmt->moveNext();
+        }
     }
 }
 
 /**
  * Generates view
  *
- * @param iMSCP_pTemplate $tpl Template engine
  * @return void
  */
-function client_generateView($tpl)
+function client_generateView()
 {
+    $tpl = iMSCP_Registry::get('templateEngine');
+    $tpl->assign(
+        array(
+            'TR_PAGE_TITLE' => tr('i-MSCP - Client / Mail Accounts / External mail servers'),
+            'THEME_CHARSET' => tr('encoding'),
+            'ISP_LOGO' => layout_getUserLogo(),
+            'TR_TITLE_RELAY_MAIL_USERS' => tr('External mail servers'),
+            'TR_DOMAIN' => tr('Domain'),
+            'TR_STATUS' => tr('Status'),
+            'TR_ACTION' => tr('Action'),
+            'TR_DEACTIVATE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s'),
+            'TR_DEACTIVATE_SELECTED_ITEMS' => tr('Deactivate selected items')
+        )
+    );
+
     list($domainId, $domainName) = get_domain_default_props($_SESSION['user_id']);
     _client_generateItemList($tpl, $domainId, $domainName);
 }
@@ -138,54 +158,29 @@ function client_generateView($tpl)
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-
 check_login(__FILE__);
 
-// If the feature is disabled, redirects in silent way
-if (!customerHasFeature('external_mail') || !customerHasFeature('mail')) {
+if (customerHasFeature(array('mail', 'external_mail'))) {
+    $tpl = iMSCP_Registry::set('templateEngine', new iMSCP_pTemplate());
+    $tpl->define_dynamic(
+        array(
+            'layout' => 'shared/layouts/ui.tpl',
+            'page' => 'client/mail_external.tpl',
+            'page_message' => 'layout',
+            'item' => 'page',
+            'activate_link' => 'item',
+            'edit_link' => 'item',
+            'deactivate_link' => 'item'
+        )
+    );
+
+    generateNavigation($tpl);
+    client_generateView();
+    generatePageMessage($tpl);
+    $tpl->parse('LAYOUT_CONTENT', 'page');
+    iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
+    $tpl->prnt();
+    unsetMessages();
+} else {
     redirectTo('index.php');
 }
-
-/** @var $cfg iMSCP_Config_Handler_File */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic(
-    array(
-        'layout' => 'shared/layouts/ui.tpl',
-        'page' => 'client/mail_external.tpl',
-        'page_message' => 'layout',
-        'item' => 'page',
-        'activate_link' => 'item',
-        'edit_link' => 'item',
-        'deactivate_link' => 'item'
-    )
-);
-
-$tpl->assign(
-    array(
-        'TR_PAGE_TITLE' => tr('i-MSCP - Client / Mail Accounts / External mail servers'),
-        'THEME_CHARSET' => tr('encoding'),
-        'ISP_LOGO' => layout_getUserLogo(),
-        'TR_TITLE_RELAY_MAIL_USERS' => tr('External mail servers'),
-        'TR_DOMAIN' => tr('Domain'),
-        'TR_STATUS' => tr('Status'),
-        'TR_ACTION' => tr('Action'),
-        'TR_DEACTIVATE_MESSAGE' => tr("Are you sure you want to deactivate the external mail server(s) for the '%s' domain?", true, '%s'),
-        'TR_DEACTIVATE_SELECTED_ITEMS' => tr('Deactivate selected items')
-    )
-);
-
-generateNavigation($tpl);
-
-client_generateView($tpl);
-
-generatePageMessage($tpl);
-
-$tpl->parse('LAYOUT_CONTENT', 'page');
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptEnd, array('templateEngine' => $tpl));
-
-$tpl->prnt();
-
-unsetMessages();

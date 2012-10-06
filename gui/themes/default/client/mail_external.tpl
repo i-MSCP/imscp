@@ -1,27 +1,41 @@
+
 <script type="text/javascript">
     /* <![CDATA[ */
-    $(document).ready(
-    	function () {
-			$("th :checkbox").change(function (){$("table :checkbox").prop('checked', $(this).is(':checked'));});
-		}
-    );
-
-  function onclick_action(url, domain) {
-     if (url.indexOf('delete') == -1) {
-         location = url;
-     } else if (confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain))) {
-         location = url;
-     }
-
-     return false;
- }
+    $(document).ready(function () {
+        var i = $("tbody :checkbox:not(':disabled')").change(
+                function () {
+					if ($("tbody :checkbox:checked").length == i) {
+                        $("th :checkbox").prop('checked', true);
+                    } else {
+                        $("th :checkbox").prop('checked', false);
+                    }
+                }
+        ).length;
+        $("th :checkbox").click(
+                function (e) {
+					if($("tbody :checkbox:not(':disabled')").length != 0){
+                    	$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+					} else {
+						e.preventDefault();
+                    }
+                }
+        );
+    });
+    function onclick_action(url, domain) {
+        if (url.indexOf('delete') == -1) {
+            location = url;
+        } else if (confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain))) {
+            location = url;
+        }
+        return false;
+    }
     /* ]]> */
 </script>
-<form action="mail_external_delete.php" method="post">
+<form name="mail_external_delete" action="mail_external_delete.php" method="post">
     <table>
         <thead>
         <tr>
-            <th style="width:21px;"><label><input type="checkbox" /></label></th>
+            <th style="width:21px;"><label><input type="checkbox"/></label></th>
             <th>{TR_DOMAIN}</th>
             <th>{TR_STATUS}</th>
             <th>{TR_ACTION}</th>
@@ -29,7 +43,7 @@
         </thead>
         <tfoot>
         <tr>
-			<th style="width:21px;"><label><input type="checkbox" /></label></th>
+            <th style="width:21px;"><label><input type="checkbox"/></label></th>
             <th>{TR_DOMAIN}</th>
             <th>{TR_STATUS}</th>
             <th>{TR_ACTION}</th>
@@ -38,7 +52,7 @@
         <tbody>
         <!-- BDP: item -->
         <tr>
-            <td><label><input type="checkbox" name="{ITEM_TYPE}[]" value="{ITEM_ID}"{DISABLED} /></label></td>
+            <td><label><input type="checkbox" name="{ITEM_TYPE}[]" value="{ITEM_ID}"{DISABLED}/></label></td>
             <td>{DOMAIN}</td>
             <td>{STATUS}</td>
             <td>
@@ -56,6 +70,5 @@
         <!-- EDP: item -->
         </tbody>
     </table>
-	<input type="hidden" name="from" value="mail_external" />
-    <label><input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}" /></label>
+    <label><input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}"/></label>
 </form>
