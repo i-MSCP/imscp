@@ -319,10 +319,10 @@ sub buildMTAData{
 		defined $self->{domain_mailacc_limit} && $self->{domain_mailacc_limit} >=0
 	){
 		$self->{mta} = {
-			DMN_NAME	=> $self->{subdomain_name}.'.'.$self->{user_home},
-			DMN_TYPE	=> $self->{type},
-			TYPE		=> 'vsub_entry',
-			EXTERNAL	=> $self->{external_mail}
+			DMN_NAME		=> $self->{subdomain_name}.'.'.$self->{user_home},
+			DMN_TYPE		=> $self->{type},
+			TYPE			=> 'vsub_entry',
+			EXTERNAL_MAIL	=> $self->{external_mail}
 		};
 	}
 
@@ -333,7 +333,7 @@ sub buildNAMEDData{
 
 	my $self	= shift;
 
-	my $groupName	=
+	#my $groupName	=
 	my $userName	=
 			$main::imscpConfig{SYSTEM_USER_PREFIX}.
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
@@ -344,31 +344,35 @@ sub buildNAMEDData{
 		DMN_IP			=> $self->{ip_number},
 		USER_NAME		=> $userName.'sub'.$self->{subdomain_id},
 	};
+
 	if($self->{external_mail} eq 'on'){
 
+		# only no wildcard mx (NOT LIKE '*.%') must be add to existent subdomains
 		my $sql = "
 			SELECT
 				*
 			FROM
 				`domain_dns`
 			WHERE
-				`domain_dns`.`alias_id` = ?
-			AND
 				`domain_dns`.`domain_id` = ?
 			AND
+				`domain_dns`.`alias_id` = ?
+			AND
+				`domain_dns`.`domain_dns` NOT LIKE '*.%'
+			AND
 				`domain_dns`.`domain_type` = ?
+			AND
+				`domain_dns`.`protected` = ?
 		";
 
-		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, 0, $self->{domain_id}, 'MX');
+		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{domain_id}, 0, 'MX', 'yes');
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 		$self->{named}->{MX}->{$_} = $rdata->{$_} for (keys %$rdata);
 
 	} elsif($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0) {
 
-		$self->{named}->{MX}->{1} = {
-			domain_text => "10\tmail.".$self->{user_home}
-		};
+		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.".$self->{user_home};
 
 	}
 

@@ -136,6 +136,7 @@ function client_addExternalMailServerEntries($item)
         );
 
         $entriesCount = count($data['name']);
+        $wildcardMxOnly = true;
         $error = false;
 
         // Validate all entries
@@ -147,6 +148,10 @@ function client_addExternalMailServerEntries($item)
                     $data['name'][$index], $data['priority'][$index], $data['host'][$index], $verifiedData)
                 ) {
                     $error = true;
+                }
+
+                if(strpos($data['name'][$index], '*') === false) {
+                    $wildcardMxOnly = false;
                 }
             } else { // Not all expected data were received
                 set_page_message(tr('Wrong request: all expected data were not received.'), 'error');
@@ -197,7 +202,14 @@ function client_addExternalMailServerEntries($item)
                       WHERE
                         `domain_id` = ?
                     ';
-                    exec_query($query, array('on', $cfg->ITEM_CHANGE_STATUS, ltrim($dnsEntriesIds, ','), $verifiedData['item_id']));
+                    exec_query(
+                        $query,
+                        array(
+                            ($wildcardMxOnly) ? 'wildcard' : 'on',
+                            $cfg->ITEM_CHANGE_STATUS,
+                            ltrim($dnsEntriesIds, ','),
+                            $verifiedData['item_id'])
+                    );
                 } else {
                     $query = '
                       UPDATE
@@ -205,7 +217,14 @@ function client_addExternalMailServerEntries($item)
                       WHERE
                         `alias_id` = ?
                     ';
-                    exec_query($query, array('on', $cfg->ITEM_CHANGE_STATUS, ltrim($dnsEntriesIds, ','), $verifiedData['item_id']));
+                    exec_query(
+                        $query,
+                        array(
+                            ($wildcardMxOnly) ? 'wildcard' : 'on',
+                            $cfg->ITEM_CHANGE_STATUS,
+                            ltrim($dnsEntriesIds, ','),
+                            $verifiedData['item_id'])
+                    );
                 }
 
                 $db->commit(); // Commit the transaction - All data will be now added into the database

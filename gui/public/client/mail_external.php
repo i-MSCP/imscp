@@ -36,14 +36,14 @@
  *
  * @access private
  * @param iMSCP_pTemplate $tpl Template instance
- * @param string $action Action
+ * @param string $externalMail Status of external mail for the domain
  * @param int $domainId Domain id
  * @param string $domainName Domain name
  * @param string $status Item status
  * @param string $type Domain type (normal for domain or alias for domain alias)
  * @return void
  */
-function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $type)
+function _client_generateItem($tpl, $externalMail, $domainId, $domainName, $status, $type)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -52,7 +52,7 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
     $queryParam = urlencode("$domainId;$type");
     $htmlDisabled = $cfg->HTML_DISABLED;
 
-    if ($action == 'activate') {
+    if ($externalMail == 'off') {
         $tpl->assign(
             array(
                 'DOMAIN' => $idnDomainName,
@@ -67,11 +67,12 @@ function _client_generateItem($tpl, $action, $domainId, $domainName, $status, $t
             )
         );
         $tpl->parse('ACTIVATE_LINK', 'activate_link');
-    } else {
+    } elseif($externalMail == 'on' || $externalMail == 'wildcard') {
         $tpl->assign(
             array(
                 'DOMAIN' => $idnDomainName,
-                'STATUS' => ($status == $statusOk) ? tr('Activated') : translate_dmn_status($status),
+                'STATUS' => ($status == $statusOk) ?
+                    ($externalMail == 'on') ? tr('Activated') : tr('Wildcard MX only') : translate_dmn_status($status),
                 'DISABLED' => ($status == $statusOk) ? '' : $htmlDisabled,
                 'ITEM_TYPE' => $type,
                 'ITEM_ID' => $domainId,
@@ -100,8 +101,8 @@ function _client_generateItemList($tpl, $domainId, $domainName)
 {
     $query = 'SELECT `domain_status`, `external_mail` FROM `domain` WHERE `domain_id` = ?';
     $stmt = exec_query($query, $domainId);
-    $mode = $stmt->fields['external_mail'] == 'off' ? 'activate' : 'normal';
-    _client_generateItem($tpl, $mode, $domainId, $domainName, $stmt->fields['domain_status'], 'normal');
+
+    _client_generateItem($tpl, $stmt->fields['external_mail'], $domainId, $domainName, $stmt->fields['domain_status'], 'normal');
     $tpl->parse('ITEM', '.item');
 
     $query = 'SELECT `alias_id`, `alias_name`, `alias_status`, `external_mail` FROM `domain_aliasses` WHERE `domain_id` = ?';
@@ -111,7 +112,7 @@ function _client_generateItemList($tpl, $domainId, $domainName)
         while (!$stmt->EOF) {
             _client_generateItem(
                 $tpl,
-                $stmt->fields['external_mail'] == 'off' ? 'activate' : 'edit_deactivate',
+                $stmt->fields['external_mail'],
                 $stmt->fields['alias_id'],
                 $stmt->fields['alias_name'],
                 $stmt->fields['alias_status'],

@@ -185,14 +185,37 @@ sub addDmn{
 	error('You must supply domain name!') unless $data->{DMN_NAME};
 	return 1 unless $data->{DMN_NAME};
 
-	if($data->{EXTERNAL} eq 'on'){
+	if($data->{EXTERNAL_MAIL} eq 'on') { # Mail for both domain and subdomains is managed by external server
+
+		# Remove entry from the Postfix virtual_mailbox_domains map
 		$rs |= $self->disableDmn($data);
+
 		if($data->{DMN_TYPE} eq 'Dmn') {
+			# Remove any previous entry of this domain from the Postfix relay_domains map
+        	$rs |= $self->delFromRelayHash($data);
+
+			# Add the domain entry to the Postfix relay_domain map
 			$rs |= $self->addToRelayHash($data);
 		}
-	} else {
+	} elsif($data->{EXTERNAL_MAIL} eq 'wildcard') { # Only mail for in-existent subdomains is managed by external server
+
+		# Add the domain or subdomain entry to the Postfix virtual_mailbox_domains map
 		$rs |= $self->addToDomainHash($data);
+
 		if($data->{DMN_TYPE} eq 'Dmn') {
+			# Remove any previous entry of this domain from the Postfix relay_domains map
+			$rs |= $self->delFromRelayHash($data);
+
+			# Add the wildcard entry for in-existent subdomains to the Postfix relay_domain map
+			$rs |= $self->addToRelayHash($data);
+		}
+	} else { # Mail for both domain and subdomains is managed by iMSCP mail host
+
+		# Add domain or subdomain entry to the Postfix virtual_mailbox_domains map
+		$rs |= $self->addToDomainHash($data);
+
+		if($data->{DMN_TYPE} eq 'Dmn') {
+			# Remove any previous entry of this domain from the Postfix relay_domains map
 			$rs |= $self->delFromRelayHash($data);
 		}
 	}
@@ -208,6 +231,10 @@ sub addToRelayHash{
 	my $rs		= 0;
 
 	my $entry = "$data->{DMN_NAME}\t\t\tOK\n";
+
+	if($data->{EXTERNAL_MAIL} eq 'wildcard') { # For MX wildcard, we add entry such as ".domain.tld"
+		$entry = '.' . $entry;
+	}
 
 	$rs = 1 if(
 		iMSCP::File->new(
@@ -247,7 +274,7 @@ sub delFromRelayHash{
 	my $data	= shift;
 	my $rs		= 0;
 
-	my $entry = "$data->{DMN_NAME}\t\t\tOK\n";
+	my $entry = "\.?$data->{DMN_NAME}\t\t\tOK\n"; # Match both "domain;tld" and ".domain.tld" entries
 
 	$rs = 1 if(
 		iMSCP::File->new(

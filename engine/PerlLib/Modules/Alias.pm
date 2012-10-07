@@ -316,10 +316,10 @@ sub buildMTAData{
 		defined $self->{domain_mailacc_limit} && $self->{domain_mailacc_limit} >=0
 	){
 		$self->{mta} = {
-			DMN_NAME	=> $self->{alias_name},
-			DMN_TYPE	=> $self->{type},
-			TYPE		=> 'vals_entry',
-			EXTERNAL	=> $self->{external_mail}
+			DMN_NAME		=> $self->{alias_name},
+			DMN_TYPE		=> $self->{type},
+			TYPE			=> 'vals_entry',
+			EXTERNAL_MAIL	=> $self->{external_mail}
 		};
 	}
 
@@ -331,23 +331,30 @@ sub buildNAMEDData{
 	use iMSCP::Database;
 
 	my $self	= shift;
-	if($self->{mode} eq 'add' && $self->{domain_dns} eq 'yes'){
+
+	# Both features custom dns and external mail share the same table but are independent
+	if($self->{mode} eq 'add' && ($self->{domain_dns} eq 'yes' || $self->{external_mail} eq 'on')){
 		my $sql = "
 			SELECT
 				*
 			FROM
 				`domain_dns`
 			WHERE
+				`domain_dns`.`domain_id` = ?
+			AND
 				`domain_dns`.`alias_id` = ?
 		";
 
 		my $database = iMSCP::Database->factory();
-		my $rdata = $database->doQuery('domain_dns_id', $sql, $self->{alias_id});
+		my $rdata = $database->doQuery('domain_dns_id', $sql, $self->{domain_id}, $self->{alias_id});
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 		$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_} for keys %$rdata;
 
-		if(scalar keys %$rdata){
+		# We must trigger the module subalias whatever the number of entries
+		# found in the domain_dns table to ensure that sub alias DNS entries will
+		# be re-added into the db zone file. (It's a temporary fix for #503)
+		#if(scalar keys %$rdata){
 			my $sql = "
 				UPDATE
 					`subdomain_alias`
@@ -361,11 +368,10 @@ sub buildNAMEDData{
 
 			my $rdata = iMSCP::Database->factory()->doQuery('update', $sql, 'change', 'ok', $self->{alias_id});
 			error("$rdata") and return 1 if(ref $rdata ne 'HASH');
-		}
-
+		#}
 	}
 
-	my $groupName	=
+	#my $groupName	=
 	my $userName	=
 			$main::imscpConfig{SYSTEM_USER_PREFIX}.
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
@@ -373,11 +379,7 @@ sub buildNAMEDData{
 	$self->{named}->{DMN_NAME}	= $self->{alias_name};
 	$self->{named}->{DMN_IP}	= $self->{ip_number};
 	$self->{named}->{USER_NAME}	= $userName.'als'.$self->{alias_id};
-	$self->{named}->{MX}		= ($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0 ? '' : ';');
-	$self->{named}->{MX}		= (
-									($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0)
-									&& ($self->{external_mail} ne 'on')
-									? '' : ';');
+	$self->{named}->{MX}		= (($self->{mail_on_domain} || $self->{domain_mailacc_limit} >= 0) && ($self->{external_mail} ne 'on') ? '' : ';');
 
 	0;
 }

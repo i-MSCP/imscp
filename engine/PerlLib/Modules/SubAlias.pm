@@ -319,10 +319,10 @@ sub buildMTAData{
 		defined $self->{domain_mailacc_limit} && $self->{domain_mailacc_limit} >=0
 	){
 		$self->{mta} = {
-			DMN_NAME	=> $self->{subdomain_alias_name}.'.'.$self->{alias_name},
-			DMN_TYPE	=> $self->{type},
-			TYPE		=> 'valssub_entry',
-			EXTERNAL	=> $self->{external_mail}
+			DMN_NAME		=> $self->{subdomain_alias_name}.'.'.$self->{alias_name},
+			DMN_TYPE		=> $self->{type},
+			TYPE			=> 'valssub_entry',
+			EXTERNAL_MAIL	=> $self->{external_mail}
 		};
 	}
 
@@ -333,7 +333,7 @@ sub buildNAMEDData{
 
 	my $self	= shift;
 
-	my $groupName	=
+	#my $groupName	=
 	my $userName	=
 			$main::imscpConfig{SYSTEM_USER_PREFIX}.
 			($main::imscpConfig{SYSTEM_USER_MIN_UID} + $self->{domain_admin_id});
@@ -345,10 +345,27 @@ sub buildNAMEDData{
 		USER_NAME		=> $userName.'alssub'.$self->{subdomain_alias_id},
 	};
 
+	# only no wildcard mx (NOT LIKE '*.%') must be add to existent subdomains
 	if($self->{external_mail} eq 'on'){
 
-		my $sql = "SELECT * FROM `domain_dns` WHERE `alias_id` = ? AND `domain_type` = ? AND `protected` = ?";
-		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{alias_id}, 'MX', 'yes');
+		my $sql = "
+			SELECT
+				*
+			FROM
+				`domain_dns`
+			WHERE
+				`domain_dns`.`domain_id` = ?
+			AND
+				`domain_dns`.`alias_id` = ?
+			AND
+				`domain_dns`.`domain_dns` NOT LIKE '*.%'
+			AND
+				`domain_dns`.`domain_type` = ?
+			AND
+				`domain_dns`.`protected` = ?
+		";
+
+		my $rdata = iMSCP::Database->factory()->doQuery('domain_dns_id', $sql, $self->{domain_id}, $self->{alias_id}, 'MX', 'yes');
 		error("$rdata") and return 1 if(ref $rdata ne 'HASH');
 
 		$self->{named}->{MX}->{$_} = $rdata->{$_} for (keys %$rdata);
@@ -358,7 +375,6 @@ sub buildNAMEDData{
 		$self->{named}->{MX}->{1}->{domain_text} = "10\tmail.".$self->{alias_name}
 
 	}
-
 
 	0;
 }

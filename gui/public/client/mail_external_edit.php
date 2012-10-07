@@ -157,7 +157,7 @@ function client_editExternalMailServerEntries($item)
             if (isset($data['name'][$index]) && isset($data['priority'][$index]) && isset($data['host'][$index])) {
                 $data['host'][$index] = strtolower(rtrim($data['host'][$index], '.'));
 
-                if (!_client_validateDnsMxRecord(
+                if (empty($data['to_delete'][$index]) && !_client_validateDnsMxRecord(
                     $data['name'][$index], $data['priority'][$index], $data['host'][$index], $verifiedData)
                 ) {
                     $error = true;
@@ -176,6 +176,7 @@ function client_editExternalMailServerEntries($item)
 
             try {
                 $dnsEntriesIds = '';
+                $wildcardMxOnly = true;
 
                 for ($index = 0; $index < $entriesCount; $index++) {
                     // Entry to delete
@@ -189,6 +190,10 @@ function client_editExternalMailServerEntries($item)
                     } elseif (!empty($data['to_update'][$index]) &&
                         in_array($data['to_update'][$index], $verifiedData['external_mail_dns_ids'])
                     ) {
+                        if(strpos($data['name'][$index], '*') === false) {
+                            $wildcardMxOnly = false;
+                        }
+
                         $query = 'UPDATE `domain_dns` SET `domain_dns` = ?, `domain_text` = ? WHERE `domain_dns_id` = ?';
                         exec_query(
                             $query,
@@ -203,6 +208,10 @@ function client_editExternalMailServerEntries($item)
 
                         // Entry to add
                     } else {
+                        if(strpos($data['name'][$index], '*') === false) {
+                            $wildcardMxOnly = false;
+                        }
+
                         // Try to insert MX record into the domain_dns database table
                         $query = '
                           INSERT INTO `domain_dns` (
@@ -230,7 +239,7 @@ function client_editExternalMailServerEntries($item)
 
                 /** @var $cfg iMSCP_Config_Handler_File */
                 $cfg = iMSCP_Registry::get('config');
-                $externalMailServer = ($dnsEntriesIds != '') ? 'on' : 'off';
+                $externalMailServer = ($dnsEntriesIds != '') ? (($wildcardMxOnly) ? 'wildcard' : 'on') : 'off';
 
                 if ($verifiedData['item_type'] == 'normal') {
                     $query = '
