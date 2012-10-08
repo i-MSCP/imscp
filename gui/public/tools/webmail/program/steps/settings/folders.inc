@@ -47,8 +47,8 @@ if ($RCMAIL->action == 'subscribe')
 
         if ($result) {
             // Handle subscription of protected folder (#1487656)
-            if ($CONFIG['protect_default_folders'] == true
-                && in_array($mbox, $CONFIG['default_folders'])
+            if ($RCMAIL->config->get('protect_default_folders')
+                && in_array($mbox, (array)$RCMAIL->config->get('default_folders'))
             ) {
                 $OUTPUT->command('disable_subscription', $mbox);
             }
@@ -87,6 +87,11 @@ else if ($RCMAIL->action == 'delete-folder')
         }
         else {
             $deleted = $plugin['result'];
+        }
+
+        // #1488692: update session
+        if ($deleted && $_SESSION['mbox'] === $mbox) {
+            $RCMAIL->session->remove('mbox');
         }
     }
 
@@ -324,8 +329,8 @@ function rcube_subscription_form($attrib)
                 }
             }
         }
-        // check if the folder is shared, then disable subscription option on it
-        if (!$disabled && $folder['virtual'] && !empty($namespace)) {
+        // check if the folder is shared, then disable subscription option on it (if not subscribed already)
+        if (!$disabled && !$subscribed && $folder['virtual'] && !empty($namespace)) {
             $tmp_ns = array_merge((array)$namespace['other'], (array)$namespace['shared']);
             foreach ($tmp_ns as $item) {
                 if (strpos($folder['id'], $item[0]) === 0) {
@@ -396,14 +401,19 @@ function rcmail_rename_folder($oldname, $newname)
         foreach ($a_threaded as $key => $val) {
             if ($key == $oldname) {
                 unset($a_threaded[$key]);
-    	        $a_threaded[$newname] = true;
+                $a_threaded[$newname] = true;
             }
             else if (preg_match($oldprefix, $key)) {
                 unset($a_threaded[$key]);
-	            $a_threaded[preg_replace($oldprefix, $newname.$delimiter, $key)] = true;
+                $a_threaded[preg_replace($oldprefix, $newname.$delimiter, $key)] = true;
             }
         }
         $RCMAIL->user->save_prefs(array('message_threading' => $a_threaded));
+
+        // #1488692: update session
+        if ($_SESSION['mbox'] === $oldname) {
+            $_SESSION['mbox'] = $newname;
+        }
 
         return true;
     }
@@ -414,8 +424,10 @@ function rcmail_rename_folder($oldname, $newname)
 
 $OUTPUT->set_pagetitle(rcube_label('folders'));
 $OUTPUT->include_script('list.js');
-$OUTPUT->set_env('quota', $STORAGE->get_capability('QUOTA'));
 $OUTPUT->set_env('prefix_ns', $STORAGE->get_namespace('prefix'));
+if ($STORAGE->get_capability('QUOTA')) {
+    $OUTPUT->set_env('quota', true);
+}
 
 // add some labels to client
 $OUTPUT->add_label('deletefolderconfirm', 'purgefolderconfirm', 'folderdeleting',

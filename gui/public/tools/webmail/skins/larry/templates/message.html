@@ -31,12 +31,13 @@
 
 </div>
 
-<div id="mailview-right">
+<div id="mailview-right" class="offset uibox">
 
-<div id="mailview-top">
-<div id="messageheader" class="uibox">
+<div id="messageheader">
+<span id="previewheaderstoggle"></span>
+
 <h2 class="subject"><roundcube:object name="messageHeaders" valueOf="subject" /></h2>
-<roundcube:object name="messageHeaders" class="headers-table" addicon="/images/addcontact.png" exclude="subject" />
+<roundcube:object name="messageHeaders" class="headers-table" addicon="/images/addcontact.png" exclude="subject" max="20" />
 <roundcube:object name="messageFullHeaders" id="full-headers" />
 
 <!-- record navigation -->
@@ -48,7 +49,7 @@
 
 </div>
 
-<div id="messagecontent" class="uibox">
+<div id="messagecontent">
 <div class="rightcol">
 <roundcube:object name="messageAttachments" id="attachment-list" class="attachmentslist" />
 </div>
@@ -58,11 +59,7 @@
 </div>
 </div>
 
-</div><!-- end mailview-top -->
-
-<div id="mailview-bottom" class="uibox">
 <roundcube:object name="message" id="message" class="statusbar" />
-</div>
 
 </div><!-- end mailview-right -->
 

@@ -14,7 +14,7 @@ GUI:
 
 	Tools:
 		- Updated PhpMyAdmin to version 3.5.2.2
-		- Updated Roundcube to 0.8.1
+		- Updated Roundcube to 0.8.2
 
 Tickets:
 	- Fixed #433: PHP directive editor: register_globals does not exist in php 5.4.0 and above

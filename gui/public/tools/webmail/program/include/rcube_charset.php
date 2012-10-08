@@ -89,7 +89,7 @@ class rcube_charset
      * Sometimes charset string is malformed, there are also charset aliases 
      * but we need strict names for charset conversion (specially utf8 class)
      *
-     * @param  string Input charset name
+     * @param string $input Input charset name
      *
      * @return string The validated charset name
      */
@@ -182,8 +182,14 @@ class rcube_charset
         static $mbstring_list   = null;
         static $conv            = null;
 
-        $to   = empty($to) ? strtoupper(RCMAIL_CHARSET) : self::parse($to);
+        $to   = empty($to) ? strtoupper(RCMAIL_CHARSET) : $to;
         $from = self::parse($from);
+
+        // It is a common case when UTF-16 charset is used with US-ASCII content (#1488654)
+        // In that case we can just skip the conversion (use UTF-8)
+        if ($from == 'UTF-16' && !preg_match('/[^\x00-\x7F]/', $str)) {
+            $from = 'UTF-8';
+        }
 
         if ($from == $to || empty($str) || empty($from)) {
             return $str;
