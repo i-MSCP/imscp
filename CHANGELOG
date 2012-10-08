@@ -29,6 +29,11 @@ Tickets:
 	- Fixed #490: Roundcube missing default folders
 	- Fixed #491: Security-Update: Roundcube 0.8.1
 	- Fixed #492: Hostingplans in admin level not complete
+	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
+		server(s)) should be deleted
+	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
+	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
+	- Fixed #504: Roundcube 0.8.2
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
