@@ -1848,8 +1848,9 @@ class iMSCP_Update_Database extends iMSCP_Update
               0 = (SELECT COUNT(`t2`.`domain_dns_id`) FROM `domain_dns` AS `t2` WHERE `t2`.`alias_id` = `t1`.`alias_id` AND `t2`.`domain_dns` NOT LIKE '*.%')
              AND
               `t1`.`external_mail` = 'on'",
-            // Custom DNS CNAME record set via external mail feature are no longer protected
-            "UPDATE `domain_dns` SET `protected` = '' WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
+            // Custom DNS CNAME record set via external mail feature are no longer allowed (User will have to re-add them)
+            // via the custom DNS interface (easy update way)
+            "DELETE FROM `domain_dns` WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
         );
     }
 }
