@@ -345,7 +345,7 @@ sub buildNAMEDData{
 		USER_NAME		=> $userName.'alssub'.$self->{subdomain_alias_id},
 	};
 
-	# only no wildcard mx (NOT LIKE '*.%') must be add to existent subdomains
+	# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
 	if($self->{external_mail} eq 'on'){
 
 		my $sql = "

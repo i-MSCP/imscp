@@ -347,7 +347,7 @@ sub buildNAMEDData{
 
 	if($self->{external_mail} eq 'on'){
 
-		# only no wildcard mx (NOT LIKE '*.%') must be add to existent subdomains
+		# only no wildcard MX (NOT LIKE '*.%') must be add to existent subdomains
 		my $sql = "
 			SELECT
 				*

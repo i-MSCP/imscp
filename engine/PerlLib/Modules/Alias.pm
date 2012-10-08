@@ -352,7 +352,7 @@ sub buildNAMEDData{
 		$self->{named}->{DMN_CUSTOM}->{$_} = $rdata->{$_} for keys %$rdata;
 
 		# We must trigger the module subalias whatever the number of entries
-		# found in the domain_dns table to ensure that sub alias DNS entries will
+		# found in the 'domain_dns' table to ensure that sub alias DNS entries will
 		# be re-added into the db zone file. (It's a temporary fix for #503)
 		#if(scalar keys %$rdata){
 			my $sql = "

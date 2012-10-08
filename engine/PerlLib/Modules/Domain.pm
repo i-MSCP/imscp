@@ -373,7 +373,7 @@ sub buildNAMEDData{
 		}
 
 		# We must trigger the module 'subdomain' whatever the number of entries
-		# found in the 'domain_dns table' to ensure that subdomain DNS entries will
+		# found in the 'domain_dns' table to ensure that subdomain DNS entries will
 		# be re-added into the db zone file. (It's a temporary fix for #503)
 		#if(scalar keys %$rdata){
 			my $sql = "

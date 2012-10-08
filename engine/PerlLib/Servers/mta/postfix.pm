@@ -232,7 +232,7 @@ sub addToRelayHash{
 
 	my $entry = "$data->{DMN_NAME}\t\t\tOK\n";
 
-	if($data->{EXTERNAL_MAIL} eq 'wildcard') { # For MX wildcard, we add entry such as ".domain.tld"
+	if($data->{EXTERNAL_MAIL} eq 'wildcard') { # For wildcard MX, we add entry such as ".domain.tld"
 		$entry = '.' . $entry;
 	}
 
@@ -274,7 +274,7 @@ sub delFromRelayHash{
 	my $data	= shift;
 	my $rs		= 0;
 
-	my $entry = "\.?$data->{DMN_NAME}\t\t\tOK\n"; # Match both "domain;tld" and ".domain.tld" entries
+	my $entry = "\.?$data->{DMN_NAME}\t\t\tOK\n"; # Match both "domain.tld" and ".domain.tld" entries
 
 	$rs = 1 if(
 		iMSCP::File->new(
