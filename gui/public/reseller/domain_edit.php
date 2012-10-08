@@ -479,7 +479,7 @@ function _reseller_generateFeaturesForm($tpl, &$data)
 		$tplVars['TR_PHP_POST_MAX_SIZE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">post_max_size</span>');
 		$tplVars['POST_MAX_SIZE'] = tohtml($phpEditor->getDataVal('phpiniPostMaxSize'));
 
-		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">upload_max_filezize</span>');
+		$tplVars['PHP_UPLOAD_MAX_FILEZISE_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">upload_max_filesize</span>');
 		$tplVars['UPLOAD_MAX_FILESIZE'] = tohtml($phpEditor->getDataVal('phpiniUploadMaxFileSize'));
 
 		$tplVars['TR_PHP_MAX_EXECUTION_TIME_DIRECTIVE'] = tr('PHP %s directive', true, '<span class="bold">max_execution_time</span>');
