@@ -82,6 +82,11 @@
 			</tr>
 
 			<tr>
+				<td>{TR_EXTERNAL_MAIL_SERVER_FEATURE}</td>
+				<td>{EXTERNAL_MAIL_SERVERS_FEATURE_STATUS}</td>
+			</tr>
+
+			<tr>
 				<td>{TR_APP_INSTALLER_FEATURE}</td>
 				<td>{APP_INSTALLER_FEATURE_STATUS}</td>
 			</tr>
