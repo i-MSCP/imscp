@@ -569,9 +569,9 @@ function client_generateCustomDnsRecordsList($tpl, $userId)
 						 'DNS_TYPE' => tohtml($stmt->fields['domain_type']),
 						 'DNS_DATA' => tohtml($sbd_data),
 						 'DNS_ACTION_SCRIPT_DELETE' => tohtml($actionScriptDelete),
-						 'DNS_ACTION_DELETE' => tohtml($actionDelete),
+						 'DNS_ACTION_DELETE' => $actionDelete,
 						 'DNS_ACTION_SCRIPT_EDIT' => tohtml($actionScriptEdit),
-						 'DNS_ACTION_EDIT' => tohtml($actionEdit),
+						 'DNS_ACTION_EDIT' => $actionEdit,
 						 'DNS_TYPE_RECORD' => tr("%s record", $stmt->fields['domain_type'])));
 
 				$tpl->parse('DNS_ITEM', '.dns_item');

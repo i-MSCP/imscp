@@ -35,6 +35,7 @@ Tickets:
 	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
 	- Fixed #504: Roundcube 0.8.2
 	- Fixed #507: Cosmetics - External mail servers features status not show
+	- Fixed #508: German Umlaut in Custom DNS were shown wrong
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1
