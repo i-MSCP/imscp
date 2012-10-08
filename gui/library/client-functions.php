@@ -732,22 +732,23 @@ function mount_point_exists($domain_id, $mnt_point)
 }
 
 /**
- * Tells whether or not the given feature is available for the customer.
+ * Tells whether or not the current customer can access to the given feature(s).
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
- * @param string $featureName Feature name
+ * @param array|string $featureNames Feature name(s) (insensitive case)
  * @param bool $forceReload If true force data to be reloaded
  * @return bool TRUE if $featureName is available for customer, FALSE otherwise
  */
-function customerHasFeature($featureName, $forceReload = false)
+function customerHasFeature($featureNames, $forceReload = false)
 {
 	static $availableFeatures = null;
-	$featureName = strtolower($featureName);
+    static $debug = false;
 
 	if (null === $availableFeatures || $forceReload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
+        $debug = (bool) $cfg->DEBUG;
 		$dmnProps = get_domain_default_props((int)$_SESSION['user_id'], true);
 
 		$availableFeatures = array(
@@ -783,11 +784,21 @@ function customerHasFeature($featureName, $forceReload = false)
 		}
 	}
 
-	if (!array_key_exists($featureName, $availableFeatures)) {
-		throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
-	}
+    $canAccess = true;
+    foreach((array)$featureNames as $featureName) {
+        $featureName = strtolower($featureName);
 
-	return $availableFeatures[$featureName];
+	    if ($debug && !array_key_exists($featureName, $availableFeatures)) {
+		    throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
+	    }
+
+        if(!$availableFeatures[$featureName]) {
+            $canAccess = false;
+            break;
+        }
+    }
+
+	return $canAccess;
 }
 
 /**

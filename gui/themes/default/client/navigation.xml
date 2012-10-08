@@ -237,26 +237,26 @@
 						</add_catchall_link>
 					</pages>
 				</catchall>
-                <relay>
+                <external_mail_servers>
                     <label>External mail servers</label>
                     <uri>/client/mail_external.php</uri>
                     <title_class>email</title_class>
-                    <privilege_callback name="customerHasFeature" param="external_mail"/>
+                    <privilege_callback name="customerHasFeature" param="external_mail" />
                     <pages>
                         <add_relay_link>
-                            <label>Add external mail servers</label>
+                            <label>Add external mail servers for {DOMAIN_UTF8}</label>
                                 <uri>/client/mail_external_add.php</uri>
                                 <visible>0</visible>
                                 <title_class>email</title_class>
                         </add_relay_link>
                         <edit_relay_link>
-                            <label>Edit external mail servers</label>
+                            <label>Edit external mail servers for {DOMAIN_UTF8}</label>
                             <uri>/client/mail_external_edit.php</uri>
                             <visible>0</visible>
                             <title_class>email</title_class>
                         </edit_relay_link>
                     </pages>
-                </relay>
+                </external_mail_servers>
 				<webmail>
 					<label>Webmail</label>
 					<uri>{WEBMAIL_PATH}</uri>

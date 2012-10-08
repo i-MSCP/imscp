@@ -1,119 +1,127 @@
 <script type="text/javascript">
-/* <![CDATA[ */
-    $(document).ready(function(){
-        var i = $('#relay_lines tr').length + 1;
-
-    	$('#add').click(function() {
-            switch ($('#relay_type_add').val()) {
-                case "mx_add":
-                    var str_mx = '<tr class="relay_new_field">';
-                    str_mx += '<td colspan="2">{TR_MX}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="MX" /></td>';
-                    str_mx += '<td><select name="mx_alias[]" id="mx_alias_' + i + '"><option value="empty">empty</option><option value="*">*</option></select><input type="hidden" name="cname_name[]" id="cname_' + i + '" value="" /></td>';
-                    str_mx += '<td><select name="mx_priority[]" id="mx_priority_' + i + '"><option value="10">10</option><option value="15">15</option><option value="20">20</option></select><input type="hidden" name="cname_priority[]" id="cname_priority_' + i + '" value="" /></td>';
-                    str_mx += '<td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord_' + i + '" value="" /></td>';
+    /* <![CDATA[ */
+    $(document).ready(function () {
+        var i = $("tbody :checkbox").change(
+                function () {
+                    if ($(this).is(':checked') && $("tbody :checkbox:checked").length == i) {
+                        $("th :checkbox").prop('checked', true);
+                        alert('{TR_SELECT_ALL_ENTRIES_ALERT}');
+                    } else {
+                        $("th :checkbox").prop('checked', false);
+                    }
+                }
+        ).length;
+        $("th :checkbox").change(
+                function () {
+                    $("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+                    if ($(this).is(':checked') && $("tbody :checkbox:checked").length == i) {
+                        alert('{TR_SELECT_ALL_ENTRIES_ALERT}');
+                    }
+                }
+        );
+        $('.trigger_add').click(
+                function () {
+                    var str_mx = '<tr>';
+                    str_mx += '	<td>';
+                    str_mx += '		<label><input type="checkbox" name="to_delete[]" value="" disabled="disabled" /></label>';
+                    str_mx += '	</td>';
+                    str_mx += '	<td>';
+                    str_mx += '		<select name="name[]" id="name_' + i + '">';
+                    str_mx += '			<option value="{DOMAIN}">{TR_DOMAIN}</option>';
+                    str_mx += '			<option value="{WILDCARD}">{TR_WILDCARD}</option>';
+                    str_mx += '		</select>';
+                    str_mx += '	</td>';
+                    str_mx += '	<td>';
+                    str_mx += '		<select name="priority[]" id="priority_' + i + '">';
+                    str_mx += '			<option value="10" selected>10</option>';
+                    str_mx += '			<option value="15">15</option>';
+                    str_mx += '			<option value="20">20</option>';
+                    str_mx += '			<option value="25">25</option>';
+                    str_mx += '			<option value="30">30</option>';
+                    str_mx += '		</select>';
+                    str_mx += '	</td>';
+                    str_mx += '	<td>';
+                    str_mx += '		<label><input type="text" name="host[]" id="host_' + i + '" value="" /></label>';
+                    str_mx += '	</td>';
                     str_mx += '</tr>';
-                    $(".inputs tbody").append(str_mx);
-                    break;
-                case "cname_add":
-                    var str_cname = '<tr class="relay_new_field">';
-                    str_cname += '<td colspan="2">{TR_CNAME}<input type="hidden" name="relay_type[]" id="relay_type_' + i + '" value="CNAME" /></td>';
-                    str_cname += '<td><input type="text" name="cname_name[]" id="cname_name_' + i + '" value="" /><input type="hidden" name="mx_alias[]" id="mx_alias_' + i + '" value="" /></td>';
-                    str_cname += '<td><input type="text" name="cname_priority[]" id="cname_priority_' + i + '" value="{CNAME_PRIORITY}" readonly="readonly" /><input type="hidden" name="mx_priority[]" id="mx_priority_' + i + '" value="" /></td>';
-                    str_cname += '<td><input type="text" name="srv_dnsrecord[]" id="srv_dnsrecord_' + i + '" value="" /></td>';
-                    str_cname += '</tr>';
-                    $(".inputs tbody").append(str_cname);
-                    break;
-            }
-
-
-    		i++;
-    	})
-        $('#remove').click(function() {
-            if(i > 1) {
-                $('.relay_new_field:last').remove();
+                    $("tbody").append(str_mx);
+                    i++;
+                }
+        );
+        $('.trigger_remove').click(function () {
+            if (i > 1) {
+                $("tbody tr:last").remove();
                 i--;
+            } else {
+                alert('{TR_TRIGGER_REMOVE_ALERT}');
             }
-    	});
-
-    	$('#reset').click(function() {
-            while(i > 2) {
-                $('.relay_new_field:last').remove();
-                i--;
-            }
-    	});
+        });
     });
-/* ]]> */
+    /* ]]> */
 </script>
-<table>
-    <thead>
-        <tr>
-            <th>{TR_RELAY_TYPE}</th>
-            <th>{TR_ACTION}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <select name="relay_type_add" id="relay_type_add">
-                    <option value="mx_add">{TR_MX}</option>
-                    <option value="cname_add">{TR_CNAME}</option>
-                </select>
-            </td>
-            <td>
-                <a href="#" id="add">{TR_ADD_NEW}</a> | <a href="#" id="remove">{TR_REMOVE_LAST}</a>  | <a href="#" id="reset">{TR_RESET}</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<form name="create_relay_frm" method="post" action="mail_external_edit.php">
-<table class="inputs">
+<form name="edit_external_mail_server" method="post" action="mail_external_edit.php">
+    <div>
+        <a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#" class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a>
+    </div>
+    <table>
         <thead>
-            <tr>
-                <th width="10">{TR_REMOVE_RELAY_ITEM}</th>
-                <th>{TR_RELAY_TYPE}</th>
-                <th>{TR_RELAY_DNS}</th>
-                <th>{TR_MX_PRIORITY}</th>
-                <th>{TR_RELAY_SERVER}</th>
-            </tr>
+        <tr>
+            <th style="width:21px;">
+                <a href="#" title="{TR_SELECT_ALL_ENTRIES_MESSAGE}"><label><input type="checkbox"/></label></a>
+            </th>
+            <th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></th>
+            <th>{TR_PRIORITY}</th>
+            <th>{TR_HOST}</th>
+        </tr>
         </thead>
-        <tbody id="relay_lines">
-            <!-- BDP: relay_server_entry_item -->
-            <tr>
-                <!-- BDP: mx_entry_item -->
-                <td><input type="checkbox" name="del_item[]" id="{DEL_ITEM_ID}" value="{DEL_ITEM}" /></td>
-                <td>{TR_MX}<input type="hidden" name="relay_type[]" id="{RELAY_TYPE_ID}" value="MX" /></td>
-                <td>
-                    <select name="mx_alias[]" id="{MX_ALIAS_ID}">{SELECT_MX_ALIAS_ITEM}</select>
-                    <input type="hidden" name="cname_name[]" id="{CNAME_NAME_ID}" value="" />
-                </td>
-                <td>
-                    <select name="mx_priority[]" id="{MX_PRIORITY_ID}">{SELECT_MX_PRIO_ITEM}</select>
-                    <input type="hidden" name="cname_priority[]" id="{CNAME_PRIORITY_ID}" value="" />
-                </td>
-                <td><input type="text" name="srv_dnsrecord[]" id="{SRV_DNSRECORD_ID}" value="{SRV_DNSRECORD_ITEM}" /></td>
-                <!-- EDP: mx_entry_item -->
-                <!-- BDP: cname_entry_item -->
-                <td><input type="checkbox" name="del_item[]" id="{DEL_ITEM_ID}" value="{DEL_ITEM}" /></td>
-                <td>{TR_CNAME}<input type="hidden" name="relay_type[]" id="{RELAY_TYPE_ID}" value="CNAME" /></td>
-                <td>
-                    <input type="text" name="cname_name[]" id="{CNAME_NAME_ID}" value="{CNAME_NAME_ITEM}" />
-                    <input type="hidden" name="mx_alias[]" id="{MX_ALIAS_ID}" value="" />
-                </td>
-                <td>
-                    <input type="text" name="cname_priority[]" id="{CNAME_PRIORITY_ID}" value="{CNAME_PRIORITY}" readonly="readonly" />
-                    <input type="hidden" name="mx_priority[]" id="{MX_PRIORITY_ID}" value="" />
-                </td>
-                <td><input type="text" name="srv_dnsrecord[]" id="{SRV_DNSRECORD_ID}" value="{SRV_DNSRECORD_ITEM}" /></td>
-                <!-- EDP: cname_entry_item -->
-            </tr>
-            <!-- EDP: relay_server_entry_item -->
+        <tfoot>
+        <tr>
+            <th style="width:21px;">
+                <a href="#" title="{TR_SELECT_ALL_ENTRIES_MESSAGE}"><label><input type="checkbox"/></label></a>
+            </th>
+            <th>{TR_MX_TYPE} <a href="#" class="icon i_help" title="{TR_MX_TYPE_TOOLTIP}">Help</a></th>
+            <th>{TR_PRIORITY}</th>
+            <th>{TR_HOST}</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        <!-- BDP: item_entries -->
+        <tr>
+            <td>
+                <a href="#" title="{TR_SELECT_ENTRY_MESSAGE}">
+                    <label><input type="checkbox" name="to_delete[{INDEX}]" value="{ENTRY_ID}"/></label>
+                </a>
+                <input type="hidden" name="to_update[{INDEX}]" value="{ENTRY_ID}"/>
+            </td>
+            <td>
+                <label>
+                    <select name="name[{INDEX}]" id="name_{INDEX}">
+                        <!-- BDP: name_options -->
+                        <option value="{OPTION_VALUE}"{SELECTED}>{OPTION_NAME}</option>
+                        <!-- EDP: name_options -->
+                    </select>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <select name="priority[{INDEX}]" id="priority_{INDEX}">
+                        <!-- BDP: priority_options -->
+                        <option value="{OPTION_VALUE}"{SELECTED}>{OPTION_NAME}</option>
+                        <!-- EDP: priority_options -->
+                    </select>
+                </label>
+            </td>
+            <td><label><input type="text" name="host[{INDEX}]" id="host_{INDEX}" value="{HOST}"/></label></td>
+        </tr>
+        <!-- EDP: item_entries -->
         </tbody>
-</table>
-
-<div class="buttons">
-<input type="hidden" name="uaction" value="edit_external_mail" />
-<input type="hidden" name="id" value="{ID}" />
-<input type="hidden" name="old_dns_entry_ids" value="{OLD_DNS_ENTRY_IDS}" />
-<input name="Submit" type="submit" value="{TR_CHANGE_RELAY}" />
-</div>
+    </table>
+    <div style="float:left;">
+        <a href="#" class="trigger_add">{TR_ADD_NEW_ENTRY}</a> | <a href="#" class="trigger_remove">{TR_REMOVE_LAST_ENTRY}</a>
+    </div>
+    <div class="buttons">
+        <input name="cancel" type="button" onclick="location='mail_external.php'" value="{TR_CANCEL}"/>
+        <input type="hidden" name="item" value="{ITEM}"/>
+        <input name="submit" type="submit" value="{TR_UPDATE}"/>
+    </div>
 </form>

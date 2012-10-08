@@ -61,7 +61,8 @@ $tpl->define_dynamic('page', 'client/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('logged_from', 'page');
 
-$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'MX', 'TXT');
+// Nuxwin to devs (07.10.2012): MX records was removed since we have now a dedicated interface for it
+$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'TXT');
 
 $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
@@ -667,12 +668,17 @@ function check_fwd_data($tpl, $edit_id) {
 				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			break;
 		case 'MX':
-			$_dns = '';
-			if (!validate_MX($_POST, $err, $_text)) {
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
-			} else {
-				$_dns = $record_domain . '.';
-			}
+			#$_dns = '';
+			#if (!validate_MX($_POST, $err, $_text)) {
+			#	set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
+			#} else {
+			#	$_dns = $record_domain . '.';
+			#}
+            if(!customerHasFeature('external_mail')) {
+                set_page_message(tr('The DNS MX record is no longer allowed. Contact your reseller for further information.'));
+            } else {
+                set_page_message(tr('The DNS MX record is no longer allowed. You must now use the interface dedicated to external mail servers.'));
+            }
 			break;
 		case 'TXT':
 			if (!validate_TXT($_POST, $err)) {
