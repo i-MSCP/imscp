@@ -282,7 +282,7 @@ function client_editExternalMailServerEntries($item)
                 );
 
                 send_request(); // Ask the daemon to trigger backend dispatcher
-                if ($externalMailServer == 'on') {
+                if ($externalMailServer == 'on' || $externalMailServer == 'wildcard') {
                     set_page_message(tr('External mail server entries scheduled for modification.'), 'success');
                 } else {
                     set_page_message(tr('External mail server entries successfully scheduled for deletion.'), 'success');
@@ -304,17 +304,9 @@ function client_editExternalMailServerEntries($item)
                 }
             }
         }
-    } else { // Getting data from the database
-        if ($verifiedData['item_type'] == 'normal') { // Retrieving mx entries for the domain external mail server
-            $query = "SELECT `external_mail_dns_ids` FROM `domain` WHERE `domain_id` = ?";
-        } else { // Retrieving mx entries for the domain alias external mail server
-            $query = "SELECT `external_mail_dns_ids` FROM `domain_aliasses` WHERE `alias_id` = ?";
-        }
-
-        $stmt = exec_query($query, $verifiedData['item_id']);
-
-        if ($stmt->rowCount() && $stmt->fields['external_mail_dns_ids'] != null) {
-            $query = 'SELECT * FROM `domain_dns` WHERE `domain_dns_id` IN(' . $stmt->fields['external_mail_dns_ids'] . ')';
+    } else {
+        if (!empty($verifiedData['external_mail_dns_ids'])) {
+            $query = 'SELECT * FROM `domain_dns` WHERE `domain_dns_id` IN(' . implode(',', $verifiedData['external_mail_dns_ids']) . ')';
             $stmt = exec_query($query);
 
             if ($stmt->rowCount()) {
@@ -328,8 +320,19 @@ function client_editExternalMailServerEntries($item)
 
                     $stmt->moveNext();
                 }
-            } else { // DNS entries pointed by domain or domain alias were not found (should never occurs
-                set_page_message('Unable to retrieve entries associated to your external mail server. Please, contact your reseller.', 'error');
+            } else { // DNS entries pointed by domain or domain alias were not found (should never occurs)
+                if ($verifiedData['item_type'] == 'normal') {
+                    $query = "UPDATE `domain` SET `domain_status` = ?,  `external_mail` = ?, `external_mail_dns_ids` = ? WHERE domain_id = ?";
+                } else {
+                    $query = "UPDATE `domain_aliasses` SET `alias_status` = ?, `external_mail` = ?, `external_mail_dns_ids` = ? WHERE alias_id = ?";
+                }
+
+                /** @var $cfg iMSCP_Config_Handler_File */
+                $cfg = iMSCP_Registry::get('config');
+                exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, 'off', null, $verifiedData['item_id']));
+                send_request();
+
+                set_page_message(tr('Entries associated to your external mail servers were not found. A Resynchronization has been scheduled.'), 'warning');
                 redirectTo('mail_external.php');
                 exit; // Only to make some IDE happy
             }
