@@ -539,7 +539,7 @@ if (!is_xhr()) {
 	generateNavigation($tpl);
 }
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 $subdomainsUsage = get_domain_running_sub_cnt($domainProperties['domain_id']);
 
 /**

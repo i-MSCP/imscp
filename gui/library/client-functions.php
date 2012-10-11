@@ -37,46 +37,18 @@
  * Note: For performance reasons, the data are retrieved once per request.
  *
  * @param int $domainAdminId User unique identifier
- * @param bool $returnWKeys    Tells whether or not return value should be a
- *                             associative array
- * @return array               If $returnWkeys is TRUE, returns an associative array
- *                             where each key is a domain propertie name. Otherwise
- *                             returns an indexed array where each value correspond
- *                             to  a propertie value, following the columns order in
- *                             database table.
- * @todo Remove indexed array option to avoid using PHP list() function
+ * @return array Returns an associative array where each key is a domain propertie name.
  */
-function get_domain_default_props($domainAdminId, $returnWKeys = false)
+function get_domain_default_props($domainAdminId)
 {
 	static $domainProperties = null;
 
 	if (null === $domainProperties) {
-		$query = "
-			SELECT
-				`domain_id`, `domain_name`, `domain_gid`, `domain_uid`,
-				`domain_created_id`, `domain_created`, `domain_expires`,
-				`domain_last_modified`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
-				`domain_traffic_limit`, `domain_sqld_limit`, `domain_sqlu_limit`,
-				`domain_status`, `domain_alias_limit`, `domain_subd_limit`,
-				`domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
-				`domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
-				`domain_software_allowed`, `phpini_perm_system`,
-				`phpini_perm_allow_url_fopen`, `phpini_perm_display_errors`,
-				`phpini_perm_disable_functions`, `domain_external_mail`
-			FROM
-				`domain`
-			WHERE
-				`domain_admin_id` = ?
-		";
-		$stmt = exec_query($query, $domainAdminId);
+		$stmt = exec_query("SELECT * FROM `domain` WHERE `domain_admin_id` = ?", $domainAdminId);
 		$domainProperties = $stmt->fields;
 	}
 
-    if ($returnWKeys) {
-		return $domainProperties;
-    } else {
-        return array_values($domainProperties);
-    }
+    return $domainProperties;
 }
 
 /**
@@ -749,7 +721,7 @@ function customerHasFeature($featureNames, $forceReload = false)
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
         $debug = (bool) $cfg->DEBUG;
-		$dmnProps = get_domain_default_props((int)$_SESSION['user_id'], true);
+		$dmnProps = get_domain_default_props((int)$_SESSION['user_id']);
 
 		$availableFeatures = array(
 			'domain' => ($dmnProps['domain_alias_limit'] != '-1'

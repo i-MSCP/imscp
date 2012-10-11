@@ -46,12 +46,10 @@
  */
 function check_client_domainalias_counts($user_id)
 {
-	$domainProperties = get_domain_default_props($user_id, true);
+	$domainProperties = get_domain_default_props($user_id);
 	$domainAliasesUsage = get_domain_running_als_cnt($domainProperties['domain_id']);
 
-	if ($domainProperties['domain_alias_limit'] != 0 &&
-		$domainAliasesUsage >= $domainProperties['domain_alias_limit']
-	) {
+	if ($domainProperties['domain_alias_limit'] != 0 && $domainAliasesUsage >= $domainProperties['domain_alias_limit']) {
 		set_page_message(tr('You reached your domain aliases limit.'), 'error');
 		redirectTo('domains_manage.php');
 	}
@@ -402,7 +400,7 @@ if (!is_xhr()) {
 	generateNavigation($tpl);
 }
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 $currentNumberDomainAliases = get_domain_running_als_cnt($domainProperties['domain_id']);
 
 /**

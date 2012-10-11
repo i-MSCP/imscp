@@ -260,9 +260,10 @@ function gen_editdns_page($tpl, $edit_id) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list(
-		$dmn_id, $dmn_name,,,,,,,,,,,,,,,,,,,,,$dmn_dns
-	) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_dns = $domainProps['domain_dns'];
 
 	if ($dmn_dns != 'yes') {
 		not_allowed();
@@ -577,7 +578,8 @@ function check_fwd_data($tpl, $edit_id) {
 	$_class = $_POST['class'];
 	$_type = $_POST['type'];
 
-	list($dmn_id) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
 	if ($add_mode) {
 		$query = "
 			SELECT

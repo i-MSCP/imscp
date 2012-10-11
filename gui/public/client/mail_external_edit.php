@@ -82,7 +82,8 @@ function _client_validateDnsMxRecord($name, $priority, $host, $verifiedData)
  */
 function _client_getVerifiedData($itemId, $itemType)
 {
-    list($domainId) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $domainId = $domainProps['domain_id'];
 
     if ($itemType == 'normal') {
         $query = 'SELECT `domain_id`, `domain_name` AS `name`, `external_mail_dns_ids` FROM `domain` WHERE `domain_id` = ?';

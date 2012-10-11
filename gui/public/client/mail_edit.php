@@ -86,7 +86,7 @@ function client_getMailAccountData($mailAccountId)
 	static $mailAccountData = null;
 
 	if (null === $mailAccountData) {
-		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		$query = '
 			SELECT

@@ -297,7 +297,7 @@ function generateNavigation($tpl)
 	// Dynamic links (only at customer level)
 	if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'user') {
 
-		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		$tpl->assign(array(
 			'FILEMANAGER_PATH' => $cfg->FILEMANAGER_PATH,

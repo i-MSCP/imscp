@@ -58,7 +58,7 @@ function admin_generatePage($tpl, $domainId)
 		redirectTo('users.php.php');
 	}
 
-	$domainProperties = get_domain_default_props($stmt->fields['domain_admin_id'], true);
+	$domainProperties = get_domain_default_props($stmt->fields['domain_admin_id']);
 
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
