@@ -819,8 +819,10 @@ function gen_page_lists($tpl, $user_id) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list($domainId,$dmn_name,,,,,,,$dmn_mailacc_limit
-	) = get_domain_default_props($user_id);
+    $domainProps = get_domain_default_props($user_id);
+    $domainId = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
 
 	$dmn_mails = gen_page_dmn_mail_list($tpl, $domainId, $dmn_name);
 	$sub_mails = gen_page_sub_mail_list($tpl, $domainId, $dmn_name);

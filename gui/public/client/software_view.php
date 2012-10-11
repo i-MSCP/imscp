@@ -47,7 +47,7 @@ function client_generatePage($tpl, $customerId)
 		$software_id = intval($_GET['id']);
 	}
 
-	$domainProperties = get_domain_default_props($customerId, true);
+	$domainProperties = get_domain_default_props($customerId);
 
 	get_software_props (
 		$tpl, $domainProperties['domain_id'], $software_id, $domainProperties['domain_created_id'],

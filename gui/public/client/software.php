@@ -39,7 +39,7 @@
  */
 function client_generatePageLists($tpl, $customerId)
 {
-    $domainProperties = get_domain_default_props($customerId, true);
+    $domainProperties = get_domain_default_props($customerId);
     $software_poss = gen_software_list($tpl, $domainProperties['domain_id'], $domainProperties['domain_created_id']);
     $tpl->assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
 }

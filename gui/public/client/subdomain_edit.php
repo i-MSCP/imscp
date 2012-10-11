@@ -305,7 +305,9 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 	$subdomainType = (string) $subdomainType;
 
 	// Getting some user's domain data
-	list($domainId, $domainName) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $domainId = $domainProps['domain_id'];
+    $domainName = $domainProps['domain_name'];
 
 	if($subdomainType == 'dmn') {
 		$query = '

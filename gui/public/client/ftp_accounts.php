@@ -47,7 +47,8 @@
  */
 function gen_page_ftp_list($tpl)
 {
-	list(,$dmn_name) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_name = $domainProps['domain_name'];
 
 	$query = "
 		SELECT

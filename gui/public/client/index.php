@@ -179,7 +179,7 @@ function client_generateFeatureStatus($tpl)
     );
 
 	if (customerHasFeature('backup')) {
-		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		// Backup feature for customer can also be disabled by reseller via GUI
 		switch ($domainProperties['allowbackup']) {
@@ -211,7 +211,7 @@ function client_generateFeatureStatus($tpl)
  */
 function client_makeTrafficUsage($domainId)
 {
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
 	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
 
@@ -279,7 +279,7 @@ function client_generateDomainExpiresInformation($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 	if ($domainProperties['domain_expires'] != 0) {
 		$domainRemainingTime = '';
@@ -348,7 +348,7 @@ client_generateSupportSystemNotices();
 client_generateDomainExpiresInformation($tpl);
 client_generateFeatureStatus($tpl);
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 list(
 	$domainTrafficPercent, $domainTrafficUsage

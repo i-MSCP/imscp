@@ -141,7 +141,7 @@ if (!customerHasFeature('sql')) {
     redirectTo('index.php');
 }
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

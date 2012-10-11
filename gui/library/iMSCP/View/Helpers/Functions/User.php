@@ -233,7 +233,7 @@ function gen_client_menu($tpl, $menuTemplateFile)
 	}
 
 	// Getting domain properties
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 	if (customerHasFeature('awstats')) {
 		$tpl->assign(array(

@@ -257,30 +257,10 @@ function get_ftp_user_gid($dmn_name, $ftp_user) {
 	$rs = exec_query($query, $dmn_name);
 
 	if ($rs->recordCount() == 0) { // there is no such group. we'll need a new one.
-		list($temp_dmn_id,
-			$temp_dmn_name,
-			$temp_dmn_gid,
-			$temp_dmn_uid,
-			$temp_dmn_created_id,
-			$temp_dmn_created,
-			$temp_dmn_expires,
-			$temp_dmn_last_modified,
-			$temp_dmn_mailacc_limit,
-			$temp_dmn_ftpacc_limit,
-			$temp_dmn_traff_limit,
-			$temp_dmn_sqld_limit,
-			$temp_dmn_sqlu_limit,
-			$temp_dmn_status,
-			$temp_dmn_als_limit,
-			$temp_dmn_subd_limit,
-			$temp_dmn_ip_id,
-			$temp_dmn_disk_limit,
-			$temp_dmn_disk_usage,
-			$temp_dmn_php,
-			$temp_dmn_cgi,
-			$allowbackup,
-			$dmn_dns
-		) = get_domain_default_props($_SESSION['user_id']);
+        $domainProps =  get_domain_default_props($_SESSION['user_id']);
+        $temp_dmn_name = $domainProps['domain_name'];
+        $temp_dmn_gid = $domainProps['domain_gid'];
+        $temp_dmn_disk_limit = $domainProps['domain_disk_limit'];
 
 		$query = "
 			INSERT INTO ftp_group
@@ -366,30 +346,8 @@ function get_ftp_user_uid($dmn_name, $ftp_user, $ftp_user_gid) {
 		return -1;
 	}
 
-	list($temp_dmn_id,
-		$temp_dmn_name,
-		$temp_dmn_gid,
-		$temp_dmn_uid,
-		$temp_dmn_created_id,
-		$temp_dmn_created,
-		$temp_dmn_expires,
-		$temp_dmn_last_modified,
-		$temp_dmn_mailacc_limit,
-		$temp_dmn_ftpacc_limit,
-		$temp_dmn_traff_limit,
-		$temp_dmn_sqld_limit,
-		$temp_dmn_sqlu_limit,
-		$temp_dmn_status,
-		$temp_dmn_als_limit,
-		$temp_dmn_subd_limit,
-		$temp_dmn_ip_id,
-		$temp_dmn_disk_limit,
-		$temp_dmn_disk_usage,
-		$temp_dmn_php,
-		$temp_dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $temp_dmn_uid = $domainProps['domain_uid'];
 
 	return $temp_dmn_uid;
 }
@@ -481,7 +439,7 @@ function add_ftp_user($dmn_name)
 	exec_query($query, array($ftp_user, $ftp_passwd, $ftp_rawpasswd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
 
 	$domain_props = get_domain_default_props($_SESSION['user_id']);
-	update_reseller_c_props($domain_props[4]);
+	update_reseller_c_props($domain_props['domain_created_id']);
 
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAfterAddFtp);
 
@@ -551,30 +509,10 @@ function check_ftp_acc_data($tpl, $dmn_id, $dmn_name) {
  * @return void
  */
 function gen_page_ftp_acc_props($tpl, $user_id) {
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($user_id);
+    $domainProps = get_domain_default_props($user_id);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_ftpacc_limit = $domainProps['domain_ftpacc_limit'];
 
 	list($ftp_acc_cnt, $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt) = get_domain_running_ftp_acc_cnt($dmn_id);
 
