@@ -119,3 +119,21 @@
 
 		<div class="graph"><span style="width:{DISK_PERCENT}%">&nbsp;</span></div>
 		<p style="margin-left:5px;font-size: smaller;">{DISK_USAGE_DATA}</p>
+
+		<table>
+			<tr>
+				<th colspan="2">{TR_DISK_USAGE_DETAIL}</th>
+			</tr>
+            <tr>
+                <td style="width: 300px;">{TR_DISK_FILE_USAGE}</td>
+                <td>{DISK_FILESIZE}</td>
+            </tr>
+            <tr>
+                <td>{TR_DISK_DATABASE_USAGE}</td>
+                <td>{DISK_SQLSIZE}</td>
+            </tr>
+            <tr>
+                <td>{TR_DISK_MAIL_USAGE}</td>
+                <td>{DISK_MAILSIZE}</td>
+            </tr>
+        </table>

@@ -406,9 +406,17 @@ $tpl->assign(
 		 'TR_APP_INSTALLER_FEATURE' => tr('Softwares installer'),
 		 'TR_BACKUP_FEATURE' => tr('Backup'),
 		 'TR_AWSTATS_FEATURE' => tr('Web statistics (AWStats)'),
-
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-		 'TR_DISK_USAGE' => tr('Disk usage')));
+		 'TR_DISK_USAGE' => tr('Disk usage'),
+         'TR_DISK_USAGE_DETAIL' => tr('Disk usage detail'),
+         'TR_DISK_FILE_USAGE' => tr('File usage'),
+         'DISK_FILESIZE' => bytesHuman($domainProperties['domain_disk_file']),
+         'TR_DISK_DATABASE_USAGE' => tr('Database usage'),
+         'DISK_SQLSIZE' => bytesHuman($domainProperties['domain_disk_sql']),
+         'TR_DISK_MAIL_USAGE' => tr('Mail usage'),
+         'DISK_MAILSIZE' => bytesHuman($domainProperties['domain_disk_mail'])
+    )
+);
 
 generatePageMessage($tpl);
 

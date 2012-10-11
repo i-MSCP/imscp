@@ -448,6 +448,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Catch any database updates that were removed.
 	 *
+     * @throws iMSCP_Update_Exception
 	 * @param  string $updateMethod Database update method name
 	 * @param  array $param
 	 * @return void
@@ -923,38 +924,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
 				VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
 			"UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
-	}
-
-	/**
-	 * #145: Deletes possible orphan items in many tables
-	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @since r4961
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_70()
-	{
-		$sqlUpd = array();
-
-		$tablesToForeignKey = array(
-			'email_tpls' => 'owner_id',
-			'hosting_plans' => 'reseller_id',
-			'orders' => 'user_id',
-			'orders_settings' => 'user_id',
-			'reseller_props' => 'reseller_id',
-			'tickets' => 'ticket_to',
-			'tickets' => 'ticket_from',
-			'user_gui_props' => 'user_id',
-			'web_software' => 'reseller_id');
-
-		$stmt = execute_query('SELECT `admin_id` FROM `admin`');
-		$usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
-
-		foreach ($tablesToForeignKey as $table => $foreignKey) {
-			$sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
-		}
-
-		return $sqlUpd;
 	}
 
 	/**
@@ -1851,6 +1820,60 @@ class iMSCP_Update_Database extends iMSCP_Update
             // Custom DNS CNAME record set via external mail feature are no longer allowed (User will have to re-add them)
             // via the custom DNS interface (easy update way)
             "DELETE FROM `domain_dns` WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
+        );
+    }
+
+    /**
+     * #145: Deletes possible orphan items in many tables
+     *
+     * Moved from database update 70 due to duplicate key in foreign keys map.
+     *
+     * @author Laurent Declercq <l.declercq@i-mscp.net>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_115()
+    {
+        $sqlUpd = array();
+
+        $tablesToForeignKey = array(
+            'email_tpls' => 'owner_id',
+            'hosting_plans' => 'reseller_id',
+            'orders' => 'user_id',
+            'orders_settings' => 'user_id',
+            'reseller_props' => 'reseller_id',
+            'tickets' => array('ticket_to', 'ticket_from'),
+            'user_gui_props' => 'user_id',
+            'web_software' => 'reseller_id'
+        );
+
+        $stmt = execute_query('SELECT `admin_id` FROM `admin`');
+        $usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
+
+        foreach ($tablesToForeignKey as $table => $foreignKey) {
+            if (is_array($foreignKey)) {
+                foreach ($foreignKey as $key) {
+                    $sqlUpd[] = "DELETE FROM `$table` WHERE `$key` NOT IN ($usersIds)";
+                }
+            } else {
+                $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
+            }
+        }
+
+        return $sqlUpd;
+    }
+
+    /**
+     * Disk detail integration
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_116()
+    {
+        return array(
+            $this->_addColumn('domain', 'domain_disk_file', 'bigint(20) unsigned default NULL AFTER `domain_disk_usage`'),
+            $this->_addColumn('domain', 'domain_disk_mail', 'bigint(20) unsigned default NULL AFTER `domain_disk_file`'),
+            $this->_addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER `domain_disk_mail`')
         );
     }
 }
