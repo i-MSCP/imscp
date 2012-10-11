@@ -1826,7 +1826,7 @@ class iMSCP_Update_Database extends iMSCP_Update
     /**
      * #145: Deletes possible orphan items in many tables
      *
-     * Moved from database update 70 and fixed.
+     * Moved from database update 70 due to duplicate key in foreign keys map.
      *
      * @author Laurent Declercq <l.declercq@i-mscp.net>
      * @return array Stack of SQL statements to be executed
