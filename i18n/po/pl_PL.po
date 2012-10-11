@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-09-14 07:23+0200\n"
-"PO-Revision-Date: 2012-08-23 16:54+0000\n"
+"POT-Creation-Date: 2012-10-11 04:04+0200\n"
+"PO-Revision-Date: 2012-10-09 10:45+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -155,18 +155,6 @@ msgid ""
 "___________________________\n"
 "The i-MSCP Team\n"
 "\n"
-msgstr ""
-
-#, php-format
-msgid ""
-"\n"
-"Cannot validate %s record. Reason: '%s'."
-msgstr ""
-
-#, php-format
-msgid ""
-"\n"
-"Unknown entry type %s."
 msgstr ""
 
 msgid ""
@@ -572,10 +560,10 @@ msgstr "Akcja"
 msgid "Activate"
 msgstr "Aktywuj"
 
-msgid "Activate Entries"
+msgid "Activate this plugin"
 msgstr ""
 
-msgid "Activate this plugin"
+msgid "Activated"
 msgstr ""
 
 msgid "Activated softwares"
@@ -617,6 +605,9 @@ msgstr "Dodaj użytkownika bazy SQL"
 msgid "Add SSL certificate"
 msgstr ""
 
+msgid "Add a new entry"
+msgstr ""
+
 msgid "Add admin"
 msgstr "Dodaj administratora"
 
@@ -644,7 +635,10 @@ msgstr "Dodaj alias domeny"
 msgid "Add email account"
 msgstr "Dodaj konto email"
 
-msgid "Add external mail servers"
+msgid "Add external mail server entry"
+msgstr ""
+
+msgid "Add external mail servers for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Add group"
@@ -665,7 +659,7 @@ msgstr ""
 msgid "Add new database"
 msgstr ""
 
-msgid "Add new line"
+msgid "Add new entry"
 msgstr ""
 
 msgid "Add new protected area"
@@ -771,9 +765,6 @@ msgstr ""
 
 msgid "Alias"
 msgstr "Alias"
-
-msgid "Alias / Canonical name"
-msgstr ""
 
 msgid "Alias already assigned to another IP address."
 msgstr ""
@@ -924,6 +915,12 @@ msgid "Are you sure you want to change the status of %s?"
 msgstr "Czy na pewno chcesz zmienić  stan konta %s?"
 
 #, php-format
+msgid ""
+"Are you sure you want to deactivate the external mail server(s) for the '%s'"
+" domain?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete %s service port ?"
 msgstr ""
 
@@ -946,10 +943,6 @@ msgstr ""
 
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
-msgstr ""
-
-#, php-format
-msgid "Are you sure you want to delete the %s external mail server?"
 msgstr ""
 
 #, php-format
@@ -1110,9 +1103,6 @@ msgstr "Obsługa CGI: włączone"
 msgid "CGI support"
 msgstr "Obsługa CGI"
 
-msgid "CNAME"
-msgstr ""
-
 msgid "CPU MHz"
 msgstr "Mhz CPU"
 
@@ -1186,9 +1176,6 @@ msgstr ""
 
 msgid "Change"
 msgstr "Zmień"
-
-msgid "Change Entries"
-msgstr ""
 
 msgid "Change SQL user password"
 msgstr "Zmień hasło użytkownika bazy SQL"
@@ -1329,12 +1316,6 @@ msgstr "Kraj"
 
 msgid "Create"
 msgstr "Utwórz"
-
-msgid "Create External mail server entry"
-msgstr ""
-
-msgid "Create Relay Entry"
-msgstr ""
 
 msgid "Create catch all"
 msgstr "Stwórz CatchAll"
@@ -1526,7 +1507,13 @@ msgstr "Dni"
 msgid "Deactivate"
 msgstr ""
 
+msgid "Deactivate selected items"
+msgstr ""
+
 msgid "Deactivate this plugin"
+msgstr ""
+
+msgid "Deactivated"
 msgstr ""
 
 #, php-format
@@ -1587,17 +1574,11 @@ msgstr "Domyślny język"
 msgid "Default language successfully updated."
 msgstr ""
 
-msgid "Del"
-msgstr ""
-
 msgid "Delete"
 msgstr "Usuń"
 
 msgid "Delete CatchAll"
 msgstr "Usuń CatchAll"
-
-msgid "Delete Relay Entry"
-msgstr ""
 
 msgid "Delete all tickets"
 msgstr ""
@@ -1805,6 +1786,11 @@ msgid ""
 msgstr ""
 
 msgid ""
+"Domain alias you are trying to remove has custom DNS records!<br>First "
+"remove them!"
+msgstr ""
+
+msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
 "them!"
 msgstr "Alias domeny który chcesz usunąć posiada konta pocztowe !<br>Najpierw je usuń!"
@@ -1927,6 +1913,11 @@ msgstr ""
 msgid "Domain with this name already exist."
 msgstr ""
 
+msgid ""
+"Domain: Setup an MX record to relay mail of your entire domain (including "
+"subdomains) to an external mail server."
+msgstr ""
+
 msgid "Domains"
 msgstr "Domeny"
 
@@ -1935,9 +1926,6 @@ msgstr ""
 
 msgid "Domains per page"
 msgstr "Domen na stronę"
-
-msgid "Domaintype not allowed for external mail servers."
-msgstr ""
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr ""
@@ -1969,17 +1957,11 @@ msgstr "Edytuj klienta"
 msgid "Edit Domain"
 msgstr "Edytuj domenę"
 
-msgid "Edit External mail server entries"
-msgstr ""
-
 msgid "Edit FTP user"
 msgstr "Edytuj użytkownika FTP"
 
 msgid "Edit Ftp account"
 msgstr "Edytyj konto FTP"
-
-msgid "Edit Relay Entry"
-msgstr ""
 
 msgid "Edit SSL certificate"
 msgstr "Edytuj certyfikat SSL"
@@ -2014,7 +1996,7 @@ msgstr "Edytuj alias domeny"
 msgid "Edit error page"
 msgstr "Edytuj stronę błędu"
 
-msgid "Edit external mail servers"
+msgid "Edit external mail servers for {DOMAIN_UTF8}"
 msgstr ""
 
 msgid "Edit hosting plan"
@@ -2122,7 +2104,9 @@ msgstr ""
 msgid "Entered passwords doesn't matches."
 msgstr ""
 
-msgid "Entry type"
+msgid ""
+"Entries associated to your external mail servers were not found. A "
+"Resynchronization has been scheduled."
 msgstr ""
 
 msgid "Error"
@@ -2185,19 +2169,25 @@ msgstr "Data ekspiracji"
 msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr ""
 
+msgid "External Mail Host"
+msgstr ""
+
+msgid "External Mail Servers"
+msgstr ""
+
 msgid "External mail server"
 msgstr ""
 
+msgid "External mail server entries scheduled for modification."
+msgstr ""
+
+msgid "External mail server entries successfully scheduled for addition."
+msgstr ""
+
+msgid "External mail server entries successfully scheduled for deletion."
+msgstr ""
+
 msgid "External mail servers"
-msgstr ""
-
-msgid "External mail servers scheduled for addition."
-msgstr ""
-
-msgid "External mail servers scheduled for deletion."
-msgstr ""
-
-msgid "External mail servers status"
 msgstr ""
 
 msgid "FTP"
@@ -2550,9 +2540,6 @@ msgstr ""
 msgid "IP addresses configured"
 msgstr ""
 
-msgid "IP or FQDN-Servername"
-msgstr ""
-
 msgid "IP scheduled for deletion."
 msgstr ""
 
@@ -2605,9 +2592,6 @@ msgid ""
 "must note that for now, the directives defined here apply to your entire "
 "domain account (including subdomains and domain aliases). Of course some "
 "values can be modified through the PHP ini_set() function."
-msgstr ""
-
-msgid "Including domain aliases subdomains"
 msgstr ""
 
 msgid "Incorrect FTP accounts limit."
@@ -2722,6 +2706,9 @@ msgstr ""
 msgid "Internationalization"
 msgstr "Tłumaczenie"
 
+msgid "Invalid MX priority."
+msgstr ""
+
 msgid "Invalid NAME"
 msgstr ""
 
@@ -2760,6 +2747,9 @@ msgid "Invalid name."
 msgstr ""
 
 msgid "Invalid target."
+msgstr ""
+
+msgid "Invalid type detected."
 msgstr ""
 
 msgid "Invalid type given. String expected"
@@ -2938,12 +2928,6 @@ msgid "Low"
 msgstr "Niski"
 
 msgid "MB"
-msgstr ""
-
-msgid "MX"
-msgstr ""
-
-msgid "MX entry IN"
 msgstr ""
 
 msgid "Mail"
@@ -3331,9 +3315,6 @@ msgstr "Brak błędów systemu domen"
 msgid "No email account system errors"
 msgstr "Brak błędów systemu pocztowego"
 
-msgid "No external mail entries available."
-msgstr ""
-
 msgid "No file was uploaded."
 msgstr ""
 
@@ -3441,10 +3422,10 @@ msgstr ""
 msgid "Not found user records matching the search criteria."
 msgstr ""
 
-msgid "Not needed in CNAME"
+msgid "Not used"
 msgstr ""
 
-msgid "Not used"
+msgid "Note: You can mix these options."
 msgstr ""
 
 msgid "Nothing been changed."
@@ -3454,6 +3435,9 @@ msgid "Nothing found - sorry"
 msgstr ""
 
 msgid "Nothing has been changed."
+msgstr ""
+
+msgid "Nothing has been scheduled for deletion."
 msgstr ""
 
 msgid "Nothing's been changed"
@@ -3473,9 +3457,6 @@ msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
-
-msgid "One DNS entry must still exist."
-msgstr ""
 
 msgid "One or more database updates are now available. See the details below."
 msgstr ""
@@ -4150,7 +4131,7 @@ msgstr "Usuń"
 msgid "Remove IP"
 msgstr "Usuń IP"
 
-msgid "Remove last"
+msgid "Remove last entry"
 msgstr ""
 
 msgid "Remove permissions"
@@ -4251,6 +4232,9 @@ msgstr ""
 
 msgid "Reset"
 msgstr "Wyczyść"
+
+msgid "Reset entries"
+msgstr ""
 
 msgid "Restore"
 msgstr "Przywróć"
@@ -4418,11 +4402,22 @@ msgstr ""
 msgid "Select Domain"
 msgstr "Wybierz domenę"
 
+msgid "Select all entries for deletion."
+msgstr ""
+
 msgid "Select database"
 msgstr "Wybierz bazę danych"
 
 msgid "Select group:"
 msgstr "Wybierz grupę:"
+
+msgid "Select this entry for deletion."
+msgstr ""
+
+msgid ""
+"Selecting all entries for deletion will cause deactivation of external mail "
+"server."
+msgstr ""
 
 msgid "Send"
 msgstr "Wyślij"
@@ -4995,6 +4990,16 @@ msgid ""
 "exists or is not readable."
 msgstr ""
 
+msgid ""
+"The DNS MX record is no longer allowed. Contact your reseller for further "
+"information."
+msgstr ""
+
+msgid ""
+"The DNS MX record is no longer allowed. You must now use the interface "
+"dedicated to external mail servers."
+msgstr ""
+
 msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr ""
 
@@ -5037,10 +5042,18 @@ msgstr ""
 msgid "The domain you are trying to edit doesn't exist."
 msgstr ""
 
+#, php-format
+msgid "The entry %s already exists or is defined twice below."
+msgstr ""
+
 msgid "The external mail feature needs min. 1 email account."
 msgstr ""
 
 msgid "The i-MSCP application installer needs PHP to enable it."
+msgstr ""
+
+msgid ""
+"The mail host must not be equal to the domain name for which you add it."
 msgstr ""
 
 msgid "The menu you trying to edit doesn't exist."
@@ -5083,6 +5096,18 @@ msgstr ""
 
 #, php-format
 msgid "The username %s is not available."
+msgstr ""
+
+msgid "The value has been found in the stack"
+msgstr ""
+
+msgid "The value has not been found in the stack"
+msgstr ""
+
+msgid "The values must not be equal"
+msgstr ""
+
+msgid "The values must not be equals"
 msgstr ""
 
 #, php-format
@@ -5428,10 +5453,6 @@ msgstr ""
 msgid "Unknown domain type."
 msgstr ""
 
-#, php-format
-msgid "Unknown entry type %s."
-msgstr ""
-
 msgid "Unknown error"
 msgstr ""
 
@@ -5515,9 +5536,6 @@ msgid "Upload now"
 msgstr ""
 
 msgid "Usage of disallowed character in CNAME"
-msgstr ""
-
-msgid "Usage of disallowed character in MX"
 msgstr ""
 
 msgid "Usage status"
@@ -5768,6 +5786,17 @@ msgid ""
 "needed by many applications but can cause some security issues"
 msgstr ""
 
+msgid "Wildcard"
+msgstr ""
+
+msgid "Wildcard MX only"
+msgstr ""
+
+msgid ""
+"Wildcard: Setup an MX record for inexistent subdomains, for which an "
+"external mail server can handle mail."
+msgstr ""
+
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
 msgstr ""
@@ -5854,6 +5883,9 @@ msgid "Wrong request"
 msgstr ""
 
 msgid "Wrong request."
+msgstr ""
+
+msgid "Wrong request: all expected data were not received."
 msgstr ""
 
 msgid "Wrong reseller id."
@@ -5952,16 +5984,10 @@ msgstr ""
 msgid "You are not allowed to edit this DNS record."
 msgstr ""
 
-msgid "You are not allowed to edit this external mail entry."
-msgstr ""
-
 msgid "You are not allowed to perform this operation."
 msgstr "Nie masz uprawnień pozwalajacyh na wykonanie tej operacji."
 
 msgid "You are not allowed to remove this DNS record."
-msgstr ""
-
-msgid "You are not allowed to remove this external mail entry."
 msgstr ""
 
 msgid "You are not allowed to remove this service port entry."
@@ -5999,6 +6025,9 @@ msgstr ""
 
 #, php-format
 msgid "You cannot remove the %s IP address."
+msgstr ""
+
+msgid "You cannot remove this entry."
 msgstr ""
 
 msgid "You cannot set expire date in past."
@@ -6239,6 +6268,9 @@ msgstr ""
 msgid "You must select a file to upload/download."
 msgstr ""
 
+msgid "You must select a least one item to deactivate."
+msgstr ""
+
 msgid "You must select a network card."
 msgstr ""
 
@@ -6268,6 +6300,12 @@ msgid "Your Chart"
 msgstr "Twój wykres"
 
 msgid "Your account has expired. Please renew your subscription."
+msgstr ""
+
+msgid "Your are not the owner of this domain alias."
+msgstr ""
+
+msgid "Your are not the owner of this domain."
 msgstr ""
 
 msgid "Your consumption"
@@ -6557,6 +6595,12 @@ msgstr ""
 msgid "i-MSCP - Client / Change Language"
 msgstr ""
 
+msgid "i-MSCP - Client / Mail Account / Add external mail server"
+msgstr ""
+
+msgid "i-MSCP - Client / Mail Accounts / External mail servers"
+msgstr ""
+
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr ""
 
@@ -6572,12 +6616,6 @@ msgstr ""
 msgid "i-MSCP - Client / Manage mail / Catchall"
 msgstr ""
 
-msgid "i-MSCP - Client / Manage mail / Create External mail server entry"
-msgstr ""
-
-msgid "i-MSCP - Client / Manage mail / Edit External mail server entries"
-msgstr ""
-
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr ""
 
@@ -6588,9 +6626,6 @@ msgid "i-MSCP - Client / Manage mail / Edit quota"
 msgstr ""
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
-msgstr ""
-
-msgid "i-MSCP - Client / Manage mail / External mail servers"
 msgstr ""
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
@@ -6922,9 +6957,6 @@ msgstr "brakuje domeny"
 
 msgid "no"
 msgstr "nie"
-
-msgid "not activated"
-msgstr ""
 
 msgid "not available"
 msgstr "nie dostepne"
