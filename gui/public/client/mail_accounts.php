@@ -335,7 +335,7 @@ function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
  *
  * @param iMSCP_pTemplate $tpl reference to the template object
  * @param int $dmn_id domain name id
- * @param strinc $dmn_name domain name
+ * @param string $dmn_name domain name
  * @return int number of subdomain mails addresses
  */
 function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
@@ -655,7 +655,7 @@ function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 /**
  * Must be documented
  *
- * @param pTtempalte $tpl reference to pTemplate object
+ * @param iMSCP_pTemplate $tpl reference to pTemplate object
  * @param int $dmn_id domain name id;
  * @param string $dmn_name domain name
  * @return int number of domain alias mails addresses

@@ -54,6 +54,7 @@ if (isset($_GET['del_id']))
 else {
 	$_SESSION['aldel'] = '_no_';
 	redirectTo('alias.php');
+    exit;
 }
 $reseller_id = $_SESSION['user_id'];
 

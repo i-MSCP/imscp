@@ -70,7 +70,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $res_cnt = get_reseller_rights($tpl, $software_id);
-$res_list = get_reseller_list ($tpl, $software_id);
+get_reseller_list($tpl, $software_id);
 
 $query = "
 	SELECT

@@ -189,13 +189,13 @@ $tpl->prnt();
 
 /**
  * Restore form on any error
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
  */
 function restore_form($tpl, $phpini)
 {
-
-	/**
-	 * @var $cfg iMSCP_Config_Handler_File
-	 */
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
@@ -261,11 +261,15 @@ function restore_form($tpl, $phpini)
 
 		)
 	);
-} // end of function restore_form()
-
+}
 
 /**
  * Generate load data from sql for requested hosting plan
+ *
+ * @param $tpl iMSCP_pTemplate
+ * @param int $hpid
+ * @param int $admin_id
+ * @param $phpini iMSCP_PHPini
  */
 function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 {
@@ -440,6 +444,10 @@ function gen_load_ehp_page($tpl, $hpid, $admin_id, $phpini)
 
 /**
  * Check correction of input data
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
+ * @return bool
  */
 function check_data_iscorrect($tpl, $phpini)
 {
@@ -674,7 +682,7 @@ function save_data_to_db($phpini)
 			exit; // Useless but avoid stupid IDE warning about missing return statement
 	} else {
 		set_page_message(tr('Hosting plan values exceed reseller maximum values.'), 'error');
-		restore_form($tpl);
+		restore_form($tpl, $phpini);
 		return false;
 	}
 }

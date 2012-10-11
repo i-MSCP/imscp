@@ -51,7 +51,7 @@ if(!resellerHasFeature('support')) {
 	return 'index.php';
 }
 
-/** @var $cfg abook_local_file */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $userId = $_SESSION['user_id'];

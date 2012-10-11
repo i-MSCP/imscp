@@ -196,7 +196,7 @@ function protect_area($domainId)
  * Generates page.
  *
  * @param iMSCP_pTemplate $tpl Template engine instance
- * @param $domainId Domain unique identifier
+ * @param int $domainId Domain unique identifier
  * @return void
  */
 function gen_protect_it($tpl, $domainId)

@@ -295,8 +295,8 @@ function _client_initView()
  * Returns subdomain data.
  *
  * @access private
- * @param $subdomainId Subdomain unique identifier
- * @param $subdomainType Subdomain Type
+ * @param int $subdomainId Subdomain unique identifier
+ * @param string $subdomainType Subdomain Type
  * @return array Subdomain data. If any error occurs FALSE is returned
  */
 function _client_getSubdomainData($subdomainId, $subdomainType)

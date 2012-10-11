@@ -73,7 +73,6 @@ $tpl->assign(
 		'TR_ENABLE_FWD' => tr("Enable Forward"),
 		'TR_ENABLE' => tr("Enable"),
 		'TR_DISABLE' => tr("Disable"),
-		'TR_DISABLE' => tr("Disable"),
 		'TR_PREFIX_HTTP' => 'http://',
 		'TR_PREFIX_HTTPS' => 'https://',
 		'TR_PREFIX_FTP' => 'ftp://'));

@@ -163,8 +163,8 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 }
 
 /**
- * @param $tpl
- * @param $db_user_id
+ * @param iMSCP_pTemplate $tpl
+ * @param int $db_user_id
  * @return
  */
 function gen_page_data($tpl, $db_user_id)

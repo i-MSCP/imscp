@@ -62,7 +62,7 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @return void
  */
 function gen_page_post_data($tpl)

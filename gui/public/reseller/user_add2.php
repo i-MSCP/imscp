@@ -62,7 +62,7 @@ function get_pageone_param()
 /**
  * Show page with initial data fields.
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param iMSCP_PHPini $phpini
  * @return void
  */

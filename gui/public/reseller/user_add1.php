@@ -165,7 +165,7 @@ function get_data_au1_page($tpl)
  * Get list with hosting plan for selection.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $reseller_id Reseller unique identifier
+ * @param  int $reseller_id Reseller unique identifier
  * @return void
  */
 function get_hp_data_list($tpl, $reseller_id)
