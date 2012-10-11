@@ -69,6 +69,8 @@ sub quota_files {
 			my $domain_name	= $rdata->{$_}->{domain_name};
 			my $domain_id	= $rdata->{$_}->{domain_id};
 			my $size = 0;
+			my $file_size = 0;
+			my $mail_size = 0;
 			my @cmd;
 
 			if ($^O =~ /bsd$/) {
@@ -91,12 +93,17 @@ sub quota_files {
 					$stdout =~ /^(\d+)/;
 					$size += $1 if $1 && $^O !~ /bsd$/;
 					$size += $1*1024 if $1 && $^O =~ /bsd$/;
+					if(/$main::imscpConfig{USER_HOME_DIR}/) {
+						$file_size = $size;
+					} else {
+						$mail_size = $size;
+					}
 				}
 			}
 
 			if ($size > 0) {
-				$sql = "UPDATE `domain` SET `domain_disk_usage` = ? WHERE `domain_id` = ?";
-				my $rsdata = iMSCP::Database->new()->factory()->doQuery('update', $sql, $size, $domain_id);
+				$sql = "UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_file` = ?, `domain_disk_mail` = ? WHERE `domain_id` = ?";
+				my $rsdata = iMSCP::Database->new()->factory()->doQuery('update', $sql, $size, $file_size, $mail_size, $domain_id);
 				if (ref $rsdata ne 'HASH'){
 					error("$rsdata");
 					iMSCP::Mail->new()->errmsg($rsdata);
@@ -146,7 +153,8 @@ sub quota_mysql {
 			my $disk_usage	= $rdata->{$_}->{domain_disk_usage};
 			$sql			= "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id` = ?";
 			my $userDBs		= iMSCP::Database->new()->factory()->doQuery('sqld_id', $sql, $domain_id);
-			my $size			= 0;
+			my $size		= 0;
+			my $sql_size	= 0;
 
 			if (ref $userDBs ne 'HASH'){
 				error("$userDBs");
@@ -174,6 +182,7 @@ sub quota_mysql {
 								($tables->{$_}->{Data_length} =~ /^\d+$/ ? $tables->{$_}->{Data_length} : 0)
 								+
 								($tables->{$_}->{Index_length} =~ /^\d+$/ ? $tables->{$_}->{Index_length} : 0);
+						$sql_size += $size;
 					}
 				} else {
 					error("Database '$sqldb_name' exists only in table 'sql_database'!!!");
@@ -185,8 +194,8 @@ sub quota_mysql {
 
 				$size += $disk_usage;
 
-				$sql = "UPDATE `domain` SET `domain_disk_usage` = ? WHERE `domain_id` = ?";
-				my $quota = iMSCP::Database->new()->factory()->doQuery('update ', $sql, $size, $domain_id);
+				$sql = "UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_sql` = ? WHERE `domain_id` = ?";
+				my $quota = iMSCP::Database->new()->factory()->doQuery('update ', $sql, $size, $sql_size, $domain_id);
 				if (ref $quota ne 'HASH'){
 					error("$quota");
 					iMSCP::Mail->new()->errmsg($quota);
