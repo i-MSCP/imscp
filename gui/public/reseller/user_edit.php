@@ -51,6 +51,7 @@ if (isset($_GET['edit_id'])) {
 	$edit_id = $_POST['edit_id'];
 } else {
 	redirectTo('users.php?psi=last');
+    exit;
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -127,6 +128,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 	} else {
 		$_SESSION['edit'] = '_no_';
 		redirectTo('users.php?psi=last');
+        exit;
 	}
 
 	if (isset($_SESSION['user_name'])) {
@@ -134,6 +136,7 @@ if (isset($_POST['Submit']) && isset($_POST['uaction']) && ('save_changes' === $
 	} else {
 		$_SESSION['edit'] = '_no_';
 		redirectTo('users.php?psi=last');
+        exit;
 	}
 
 	if (check_ruser_data($tpl, '_yes_')) { // Save data to db
@@ -163,12 +166,8 @@ $tpl->prnt();
  */
 function load_user_data_page($user_id)
 {
-	global $dmn_user_name;
-	global $user_email, $customer_id, $first_name;
-	global $last_name, $firm, $zip, $gender;
-	global $city, $state, $country, $street_one;
-	global $street_two, $mail, $phone;
-	global $fax;
+	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name, $firm, $zip, $gender, $city, $state,
+           $country, $street_one, $street_two, $mail, $phone, $fax;
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -217,8 +216,10 @@ function load_user_data_page($user_id)
 
 /**
  * Show user data
+ *
+ * @param iMSCP_pTemplate $tpl
  */
-function gen_edituser_page(&$tpl)
+function gen_edituser_page($tpl)
 {
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
 $firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
@@ -265,9 +266,8 @@ function update_data_in_db($hpid)
 {
 	iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onBeforeEditUser, array('userId' => $hpid));
 
-	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
-$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
-$mail, $phone, $fax, $inpass, $admin_login;
+	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name, $firm, $zip, $gender, $city, $state,
+           $country, $street_one, $street_two, $mail, $phone, $fax, $inpass, $admin_login;
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -343,6 +343,7 @@ $mail, $phone, $fax, $inpass, $admin_login;
 			}
 
 			redirectTo('user_edit.php?edit_id=' . $hpid);
+            exit;
 		}
 
 		if ($_POST['userpassword'] != $_POST['userpassword_repeat']) {
@@ -350,6 +351,7 @@ $mail, $phone, $fax, $inpass, $admin_login;
 			set_page_message(tr("Passwords doesn't not matches."), 'error');
 
 			redirectTo('user_edit.php?edit_id=' . $hpid);
+            exit;
 		}
 		$pure_user_pass = $inpass;
 
@@ -416,7 +418,7 @@ $mail, $phone, $fax, $inpass, $admin_login;
 	$admin_login = $_SESSION['user_logged'];
 	write_log("$admin_login changes data/password for $dmn_user_name!", E_USER_NOTICE);
 
-	if (isset($_POST['send_data']) && !empty($inpass)) {
+	if (isset($_POST['send_data']) && !empty($pure_user_pass)) {
 		send_add_user_auto_msg(
 			$reseller_id,
 			$dmn_user_name,
@@ -433,4 +435,5 @@ $mail, $phone, $fax, $inpass, $admin_login;
 
 	$_SESSION['edit'] = "_yes_";
 	redirectTo('users.php?psi=last');
-} // End of update_data_in_db()
+    exit;
+}

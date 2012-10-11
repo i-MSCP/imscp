@@ -65,7 +65,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @param $dmn_id
  * @return void
  */

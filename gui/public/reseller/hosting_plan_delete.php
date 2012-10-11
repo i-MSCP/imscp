@@ -47,6 +47,7 @@ if (isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 else {
 	$_SESSION['hp_deleted'] = '_no_';
 	redirectTo('hosting_plan.php');
+    exit;
 }
 
 // Check if there is no order for this plan

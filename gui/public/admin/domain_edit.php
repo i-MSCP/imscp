@@ -1008,7 +1008,6 @@ $tpl->define_dynamic(
 		 'cgi_block' => 'page',
 		 'dns_block' => 'page',
 		 'aps_block' => 'page',
-		 'dns_block' => 'page',
 		 'backup_block' => 'page'
 	)
 );

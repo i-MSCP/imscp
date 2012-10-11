@@ -63,7 +63,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 gen_user_personal_data($tpl, $_SESSION['user_id']);
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @param $user_id
  * @return void
  */

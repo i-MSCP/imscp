@@ -437,7 +437,6 @@ $tpl->assign(
 		'TR_PORT' => tr('Port'),
 		'TR_PROTOCOL' => tr('Protocol'),
 		'TR_SHOW' => tr('Show'),
-		'TR_ACTION' => tr('Action'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s service port ?', true, '%s'),
 		'TR_SHOW_UPDATE_SERVICE_PORT' => tr('View / Update service(s) port'),

@@ -277,7 +277,6 @@ $tpl->assign(
 		'TR_STREET_2' => tr('Street 2'),
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
-		'TR_PHONE' => tr('Phone'),
 		'TR_ADD' => tr('Add'),
 		'GENPAS' => passgen()));
 
