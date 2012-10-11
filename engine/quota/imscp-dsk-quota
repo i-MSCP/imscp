@@ -84,22 +84,24 @@ sub quota_files {
 					"$main::imscpConfig{CMD_DU} -s -B1 $mta->{'MTA_VIRTUAL_MAIL_DIR'}/$domain_name"
 				);
 			}
+
 			foreach(@cmd){
 				my ($stdout, $stderr);
 				$rs |= execute($_, \$stdout, \$stderr);
 				error("$stderr") if $stderr;
 				if($stdout){
 					debug("$stdout");
-					$stdout =~ /^(\d+)/;
-					$size += $1 if $1 && $^O !~ /bsd$/;
-					$size += $1*1024 if $1 && $^O =~ /bsd$/;
 					if(/$main::imscpConfig{USER_HOME_DIR}/) {
-						$file_size = $size;
+						$stdout =~ /^(\d+)/;
+						$file_size = ($^O =~ /bsd$/) ? $1*1024 : $1 if $1;
 					} else {
-						$mail_size = $size;
+						$stdout =~ /^(\d+)/;
+						$mail_size = ($^O =~ /bsd$/) ? $1*1024 : $1 if $1;
 					}
 				}
 			}
+
+			$size = $file_size + $mail_size;
 
 			if ($size > 0) {
 				$sql = "UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_file` = ?, `domain_disk_mail` = ? WHERE `domain_id` = ?";
@@ -182,7 +184,6 @@ sub quota_mysql {
 								($tables->{$_}->{Data_length} =~ /^\d+$/ ? $tables->{$_}->{Data_length} : 0)
 								+
 								($tables->{$_}->{Index_length} =~ /^\d+$/ ? $tables->{$_}->{Index_length} : 0);
-						$sql_size += $size;
 					}
 				} else {
 					error("Database '$sqldb_name' exists only in table 'sql_database'!!!");
@@ -192,6 +193,7 @@ sub quota_mysql {
 
 			if ($size > 0) {
 
+				$sql_size += $size;
 				$size += $disk_usage;
 
 				$sql = "UPDATE `domain` SET `domain_disk_usage` = ?, `domain_disk_sql` = ? WHERE `domain_id` = ?";
