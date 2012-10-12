@@ -95,7 +95,7 @@ $tpl->assign(
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-if ($cfg->MAINTENANCEMODE && !isset($_GET['admin'])) {
+if ($cfg->MAINTENANCEMODE && !isset($_REQUEST['admin'])) {
 	$tpl->define_dynamic('page', 'box.tpl');
 	$tpl->assign(
 		array(
