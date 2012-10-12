@@ -122,7 +122,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 
 		if (isset($this->_events[$eventName])) {
 			foreach ($this->_events[$eventName]->getIterator() as $listener) {
-				if (is_callable($listener)) { // user function, closure, functor...
+				if (is_callable($listener, true)) { // user function, closure, functor...
 					$responses->push(call_user_func_array($listener, array($event)));
 				} elseif (is_object($listener)) { // object method
 					if (is_callable(array($listener, $eventName))) {
@@ -150,16 +150,17 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 		return $responses;
 	}
 
-	/**
-	 * Registers an event listener that listens on the specified events.
-	 *
-	 * @param  string|array $eventNames		The event(s) to listen on.
-	 * @param  callback|object $listener	Listener callback function or object.
-	 * @param  int $priority				The higher this value, the earlier an event listener will be triggered in
-	 *										the chain of the specified events.
-	 *
-	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
-	 */
+    /**
+     * Registers an event listener that listens on the specified events.
+     *
+     * @param  string|array $eventNames        The event(s) to listen on.
+     * @param  callable|object $listener    Listener callback function or object.
+     * @param  int $priority                The higher this value, the earlier an event listener will be triggered in
+     *                                        the chain of the specified events.
+     *
+     * @throws iMSCP_Events_Exception
+     * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
+     */
 	public function registerListener($eventNames, $listener, $priority = 1)
 	{
 		if (is_string($eventNames)) {
@@ -190,7 +191,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
 	 *
 	 * Note: For now, it's only possible to remove a listener implemented as object.
 	 *
-	 * @thrown iMSCP_Events_Exception If $eventName is not a string
+	 * @throws iMSCP_Events_Exception If $eventName is not a string
 	 * @param  string $eventName The event to remove a listener from.
 	 * @param  object $listener The listener object to remove.
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise

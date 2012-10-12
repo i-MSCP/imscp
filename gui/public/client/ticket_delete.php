@@ -44,7 +44,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('support')) {

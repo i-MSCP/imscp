@@ -210,6 +210,11 @@ class iMSCP_Events
 	 */
 	const onBeforeAuthentication = 'onBeforeAuthentication';
 
+    /**
+     *
+     */
+    const onAuthentication = 'onAuthentication';
+
 	/**
 	 * The onBeforeAuthentication event is triggered after the authentication process.
 	 *

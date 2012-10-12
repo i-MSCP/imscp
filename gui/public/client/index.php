@@ -322,7 +322,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
+check_login('user', $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');

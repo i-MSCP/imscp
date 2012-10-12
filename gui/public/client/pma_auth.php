@@ -165,7 +165,7 @@ require_once 'imscp-lib.php';
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
 // Check for login
-check_login(__FILE__);
+check_login('user');
 
 /**
  *  Dispatches the request

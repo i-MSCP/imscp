@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && isset($_GET['action']) &&
 	$_GET['action'] == 'go_back'

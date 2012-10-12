@@ -41,7 +41,7 @@ require 'imscp-lib.php';
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
 // Check for login
-check_login(__FILE__);
+check_login('reseller');
 
 // Switch back to admin
 if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && isset($_GET['action']) &&

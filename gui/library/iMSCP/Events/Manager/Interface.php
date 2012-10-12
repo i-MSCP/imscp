@@ -62,7 +62,7 @@ interface iMSCP_Events_Manager_Interface
 	 *
 	 * @abstract
 	 * @param  string|array $eventNames		The event(s) to listen on.
-	 * @param  callback|object $listener	Listener callback or listener object.
+	 * @param  callable|object $listener	Listener callback or listener object.
 	 * @param  int $priority				The higher this value, the earlier an event listener will be triggered in
 	 * 										the chain.
 	 * @return iMSCP_Events_Manager_Interface Provide fluent interface, returns self
@@ -74,7 +74,7 @@ interface iMSCP_Events_Manager_Interface
 	 *
 	 * @abstract
 	 * @param  string $eventName The event to remove a listener from.
-	 * @param  callback|object $listener The listener callback or object to remove.
+	 * @param  callable|object $listener The listener callback or object to remove.
 	 * @return bool TRUE if $listener is found and unregistered, FALSE otherwise
 	 */
 	public function unregisterListener($eventName, $listener);
