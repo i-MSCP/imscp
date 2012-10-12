@@ -29,8 +29,8 @@
 /**
  * Bruteforce detection plugin.
  *
- * This plugin provides a sublayer for the authentication process that allows to increase system security by
- * detecting any dictionary attacks and blocking them according a set of configuration parameters.
+ * This plugin allows to increase system security by detecting any dictionary attacks and blocking them according a set
+ * of configuration parameters.
  *
  * This plugin can be used in two different ways:
  *
@@ -42,18 +42,10 @@
  * @package		iMSCP_Authentication
  * @subpackage	Bruteforce
  * @author		Daniel Andreca <sci2tech@gmail.com>
- * @version		0.0.3
+ * @version		0.0.4
  */
-class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMSCP_Events_Listeners_Interface
+class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action
 {
-	/**
-	 * @var string listened events.
-	 */
-	protected $_listenedEvents = array(
-		iMSCP_Events::onBeforeAuthentication,
-		iMSCP_Events::onBeforeSetIdentity
-	);
-
 	/**
 	 * @var int Tells whether or not bruteforce detection is enabled
 	 */
@@ -132,7 +124,7 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 
 		$this->_sessionId = session_id();
 		$this->_type = $type;
-		$this->_ipAddr = $_SERVER['REMOTE_ADDR'];
+		$this->_ipAddr = getIpAddr();
 
 		if ($type == 'login') {
 			$this->_maxAttempts = $cfg->BRUTEFORCE_MAX_LOGIN;
@@ -204,7 +196,9 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	 */
 	public function register(iMSCP_Events_Manager_Interface $controller)
 	{
-		$controller->registerListener($this->getListenedEvents(), $this);
+		$controller->registerListener(iMSCP_Events::onBeforeAuthentication, $this, 900);
+		$controller->registerListener(iMSCP_Events::onBeforeSetIdentity, $this, 900);
+
 		$this->_controller = $controller;
 	}
 
@@ -222,7 +216,9 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 			return $this->getLastMessage();
 		}
 
-		$this->recordAttempt();
+		if($event->getParam('username')) {
+			$this->recordAttempt();
+		}
 
 		return null;
 	}
@@ -237,16 +233,6 @@ class iMSCP_Authentication_Bruteforce extends iMSCP_Plugin_Action implements iMS
 	public function onBeforeSetIdentity($event)
 	{
 		exec_query('DELETE FROM `login` WHERE `session_id` = ?', $this->_sessionId);
-	}
-
-	/**
-	 * Returns listened events.
-	 *
-	 * @return array
-	 */
-	public function getListenedEvents()
-	{
-		return $this->_listenedEvents;
 	}
 
 	/**

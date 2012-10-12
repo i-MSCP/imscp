@@ -447,7 +447,7 @@ function client_generateView($verifiedData, $data)
 require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
-check_login(__FILE__);
+check_login('user');
 
 if (customerHasFeature(array('mail', 'external_mail'))) {
     if (isset($_REQUEST['item']) && count($item = explode(';', $_REQUEST['item'], 2)) == 2) {

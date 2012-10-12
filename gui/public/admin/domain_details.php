@@ -169,7 +169,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-check_login(__FILE__);
+check_login('admin');
 
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {

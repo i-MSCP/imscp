@@ -31,7 +31,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-check_login(__FILE__);
+check_login('admin');
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {

@@ -281,7 +281,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStar
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
+check_login('reseller', $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic(
