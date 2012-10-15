@@ -18,8 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Http
- * @subpackage  Client
+ * @package     iMSCP_Loader
  * @copyright   2010 - 2012 by -MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
