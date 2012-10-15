@@ -69,11 +69,19 @@ define('CACHE_PATH', GUI_ROOT_DIR .'/data/cache');
 // Define persistent directory path
 define('PERSISTENT_PATH', GUI_ROOT_DIR .'/data/persistent');
 
-/**
- * Autoloading classes
- */
-require_once 'imscp-loader.php';
-spl_autoload_register('autoload_class');
+// Autoloader
+// TODO generate a classmap on first load and cache it for better performances
+require_once 'iMSCP/Loader/AutoloaderFactory.php';
+iMSCP\Loader\AutoloaderFactory::factory(
+    array(
+        'iMSCP\Loader\UniversalLoader' => array(
+            'prefixes' => array(
+                'iMSCP' => __DIR__, // Setup namespace for iMSCP classes using PHP5.3 namespaces
+                'Zend_' => __DIR__ . '/vendor', // Setup prefix for Zend class using Pear naming convention
+            )
+        )
+    )
+);
 
 /**
  * Attach the primary exception writer to write uncaught exceptions messages to the
