@@ -39,7 +39,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-check_login(__FILE__);
+check_login('admin');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -265,8 +265,7 @@ $tpl->assign(array(
                   'TR_ADDITIONAL_DATA' => tr('Additional data'),
                   'TR_SENDER_EMAIL' => tr('Senders email'),
                   'TR_SENDER_NAME' => tr('Senders name'),
-                  'TR_SEND_MESSAGE' => tr('Send message'),
-                  'TR_SENDER_NAME' => tr('Senders name')));
+                  'TR_SEND_MESSAGE' => tr('Send message')));
 
 send_circular($tpl);
 gen_page_data($tpl);

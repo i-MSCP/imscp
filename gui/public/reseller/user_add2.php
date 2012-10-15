@@ -62,7 +62,7 @@ function get_pageone_param()
 /**
  * Show page with initial data fields.
  *
- * @param  iMSCP_pTemplate $tpl Template engine
+ * @param iMSCP_pTemplate $tpl Template engine
  * @param iMSCP_PHPini $phpini
  * @return void
  */
@@ -459,7 +459,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

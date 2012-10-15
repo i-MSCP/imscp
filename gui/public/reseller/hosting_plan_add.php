@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -198,6 +198,9 @@ $tpl->prnt();
 
 /**
  * Generate empty form
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
  */
 function gen_empty_ahp_page($tpl, $phpini)
 {
@@ -257,6 +260,9 @@ function gen_empty_ahp_page($tpl, $phpini)
 
 /**
  * Show last entered data for new hp
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
  */
 function gen_data_ahp_page($tpl, $phpini)
 {
@@ -268,7 +274,7 @@ function gen_data_ahp_page($tpl, $phpini)
 	global $hp_backup, $hp_dns, $hp_allowsoftware, $hp_ext_mail;
 	global $tos;
 
-	/** @var $cfg iMSCP_pTemplate */
+	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
@@ -341,6 +347,9 @@ function gen_data_ahp_page($tpl, $phpini)
 
 /**
  * Check correction of input data
+ *
+ * @param iMSCP_pTemplate $tpl
+ * @param iMSCP_PHPini $phpini
  */
 function check_data_correction($tpl, $phpini)
 {
@@ -528,6 +537,10 @@ function check_data_correction($tpl, $phpini)
 
 /**
  * Add new host plan to DB
+ *
+ * @param $tpl iMSCP_pTemplate
+ * @param int $admin_id
+ * @param iMSCP_PHPini $phpini
  */
 function save_data_to_db($tpl, $admin_id, $phpini)
 {

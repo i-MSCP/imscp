@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 // If the feature is disabled, redirects in silent way
 if(!resellerHasFeature('domain_aliases')) {
@@ -54,6 +54,7 @@ if (isset($_GET['del_id']))
 else {
 	$_SESSION['aldel'] = '_no_';
 	redirectTo('alias.php');
+    exit;
 }
 $reseller_id = $_SESSION['user_id'];
 
@@ -100,6 +101,10 @@ exec_query($query, array($cfg->ITEM_DELETE_STATUS, $del_id, $del_id));
 
 $res = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $del_id);
 $dat = $res->fetchRow();
+
+// Delete custom DNS and external mailservers for this alias
+$query = "DELETE FROM `domain_dns` WHERE `alias_id` = ?";
+exec_query($query, $del_id);
 
 // TODO Use prepared statements
 $query = "UPDATE `ssl_certs` SET `status` = ? WHERE `type` = 'alssub' AND `id` IN (SELECT `subdomain_alias_id` FROM `subdomain_alias` WHERE `alias_id` = ? )";

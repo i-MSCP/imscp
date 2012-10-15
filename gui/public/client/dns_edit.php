@@ -45,7 +45,7 @@ require_once 'vendor/Net_DNS/DNS.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('custom_dns_records')) {
@@ -61,7 +61,8 @@ $tpl->define_dynamic('page', 'client/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'layout');
 $tpl->define_dynamic('logged_from', 'page');
 
-$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'MX', 'TXT');
+// Nuxwin to devs (07.10.2012): MX records was removed since we have now a dedicated interface for it
+$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'TXT');
 
 $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
@@ -259,9 +260,10 @@ function gen_editdns_page($tpl, $edit_id) {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	list(
-		$dmn_id, $dmn_name,,,,,,,,,,,,,,,,,,,,,$dmn_dns
-	) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_dns = $domainProps['domain_dns'];
 
 	if ($dmn_dns != 'yes') {
 		not_allowed();
@@ -576,7 +578,8 @@ function check_fwd_data($tpl, $edit_id) {
 	$_class = $_POST['class'];
 	$_type = $_POST['type'];
 
-	list($dmn_id) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
 	if ($add_mode) {
 		$query = "
 			SELECT
@@ -667,12 +670,17 @@ function check_fwd_data($tpl, $edit_id) {
 				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
 			break;
 		case 'MX':
-			$_dns = '';
-			if (!validate_MX($_POST, $err, $_text)) {
-				set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
-			} else {
-				$_dns = $record_domain . '.';
-			}
+			#$_dns = '';
+			#if (!validate_MX($_POST, $err, $_text)) {
+			#	set_page_message(sprintf(tr("Cannot validate %s record. Reason: '%s'."), $_POST['type'], $err), 'error');
+			#} else {
+			#	$_dns = $record_domain . '.';
+			#}
+            if(!customerHasFeature('external_mail')) {
+                set_page_message(tr('The DNS MX record is no longer allowed. Contact your reseller for further information.'));
+            } else {
+                set_page_message(tr('The DNS MX record is no longer allowed. You must now use the interface dedicated to external mail servers.'));
+            }
 			break;
 		case 'TXT':
 			if (!validate_TXT($_POST, $err)) {

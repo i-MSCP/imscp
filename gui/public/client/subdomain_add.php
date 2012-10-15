@@ -494,7 +494,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('subdomains')) {
@@ -539,7 +539,7 @@ if (!is_xhr()) {
 	generateNavigation($tpl);
 }
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 $subdomainsUsage = get_domain_running_sub_cnt($domainProperties['domain_id']);
 
 /**

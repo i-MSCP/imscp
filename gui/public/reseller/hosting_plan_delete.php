@@ -40,13 +40,14 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 if (isset($_GET['hpid']) && is_numeric($_GET['hpid']))
 	$hpid = $_GET['hpid'];
 else {
 	$_SESSION['hp_deleted'] = '_no_';
 	redirectTo('hosting_plan.php');
+    exit;
 }
 
 // Check if there is no order for this plan

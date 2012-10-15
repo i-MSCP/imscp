@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('sql')) {
@@ -62,7 +62,7 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @return void
  */
 function gen_page_post_data($tpl)
@@ -221,32 +221,13 @@ function add_sql_database($user_id)
  * @return void
  */
 function check_sql_permissions($user_id) {
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($user_id);
 
-	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
+    $domainProps = get_domain_default_props($user_id);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_sqld_limit = $domainProps['domain_sqld_limit'];
+
+
+	list($sqld_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
 		set_page_message(tr('SQL accounts limit reached.'), 'error');

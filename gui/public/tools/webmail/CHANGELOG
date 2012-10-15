@@ -1,6 +1,28 @@
 CHANGELOG Roundcube Webmail
 ===========================
 
+- Fix XSS vulnerability from HTTP User-Agent header (#1488737)
+- Force fonts in compose fields to be all the same (#1488690)
+- Add full headers view in message preview window (#1488538)
+- Fix message display page issues (#1488590, #1488642)
+- Fix handling vCard entries with TEL;TYPE=CELL (#1488728)
+- Fix error where session wasn't updated after folder rename/delete (#1488692)
+- Fix PLAIN authentication for some IMAP servers (#1488674)
+- Fix encoding vCard file when contains PHOTO;ENCODING=b (#1488683)
+- Fix focus issue in IE when selecting message row (#1488620)
+- Fix displaying all headers when they contain malformed characters (#1488666)
+- Fix decoding of HTML messages with UTF-16 charset specified (#1488654)
+- Fix quota capability detection so it can be overwritten by a plugin (#1488655)
+- Fix identity selection on reply (#1488101)
+- Fix Larry's messages list filter in IE (#1488632)
+- Fix more IE issues by disabling Compat. mode with X-UA-Compatible meta tag (#1488626)
+- Fix setting locales under Solaris - use additional .UTF-8 suffix (#1488628)
+- Fix email address validation for addresses with IP address in domain part
+- Fix Larry skin issues in IE7 compat. mode (#1488618)
+- Fix so subscribed non-existing/non-accessible shared folder can be unsubscribed
+
+RELEASE 0.8.1
+-------------
 - Fix bug where domain name was converted to lower-case even with login_lc=false (#1488593)
 - Fix lower-casing email address on replies (#1488598)
 - Fix line separator in exported messages (#1488603)
@@ -1381,7 +1403,3 @@ RELEASE 0.1-RC1
   Now based on the message structure delivered by the IMAP server.
 - Fixed some XSS and SQL injection issues
 - Fixed charset problems with folder renaming
-
-
-
-

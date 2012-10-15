@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('domain_aliases')) {
@@ -83,6 +83,22 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($query, $als_id);
 	if ($rs->fields['count'] > 0) {
 		set_page_message(tr('Domain alias you are trying to remove has subdomains!<br>First remove them!'), 'error');
+		redirectTo('domains_manage.php');
+	}
+
+	// check for dns records
+	$query = "
+		SELECT
+			COUNT(`domain_dns_id`) AS `dnsnum`
+		FROM
+			`domain_dns`
+		WHERE
+			`alias_id` = ?
+	";
+
+	$rs = exec_query($query, $als_id);
+	if ($rs->fields['dnsnum'] > 0) {
+		set_page_message(tr('Domain alias you are trying to remove has custom DNS records!<br>First remove them!'), 'error');
 		redirectTo('domains_manage.php');
 	}
 

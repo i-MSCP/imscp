@@ -13,8 +13,8 @@ GUI:
 		- Updated Zend Framework to 1.11.12
 
 	Tools:
-		- Updated PhpMyAdmin to version 3.5.2.2
-		- Updated Roundcube to 0.8.1
+		- Updated PhpMyAdmin to version 3.5.3
+		- Updated Roundcube to 0.8.2
 
 Tickets:
 	- Fixed #433: PHP directive editor: register_globals does not exist in php 5.4.0 and above
@@ -29,6 +29,13 @@ Tickets:
 	- Fixed #490: Roundcube missing default folders
 	- Fixed #491: Security-Update: Roundcube 0.8.1
 	- Fixed #492: Hostingplans in admin level not complete
+	- Fixed #499: When deleting a domain alias, the custom DNS records (including those related to external mail
+		server(s)) should be deleted
+	- Fixed #500: Mail quota edit link has wrong id for alias, subdomain and aliassubs mails.
+	- Fixed #503: Bug - DNS entries for subdomains are not re-added in db zone file
+	- Fixed #504: Roundcube 0.8.2
+	- Fixed #507: Cosmetics - External mail servers features status not show
+	- Fixed #508: German Umlaut in Custom DNS were shown wrong
 
 -------------------------------------------------------------------------------------
 i-MSCP 1.1.0-beta1

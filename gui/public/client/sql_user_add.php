@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('sql')) {
@@ -80,7 +80,7 @@ if (isset($_GET['id'])) {
  */
 function check_sql_permissions($tpl, $customerId, $databaseId, $sqlUserList)
 {
-	$domainProperties = get_domain_default_props($customerId, true);
+	$domainProperties = get_domain_default_props($customerId);
 	$domainSqlUsersLimit = $domainProperties['domain_sqlu_limit'];
 
 	$limits =  get_domain_running_sql_acc_cnt($domainProperties['domain_id']);

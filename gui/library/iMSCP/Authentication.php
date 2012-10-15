@@ -26,12 +26,25 @@
  */
 
 /**
- * Authentication class.
+ * Authentication class
+ *
+ * This is the component responsible to authenticate users. By default, only one authentication handler allowing to
+ * authenticate an user with its username and password is provided but since the authentication process is pluggable,
+ * any plugin can provide its own authentication handler by registering it on the onAuthentication event.
+ *
+ * Any authentication handler registered on the onAuthentication event should act only if the previous handler failed to
+ * authenticate the user. When triggered, the handler receive an event object as unique parameter, which provides some
+ * parameters such as the context (the iMSCP_Authentication instance) and an iMSCP_Authentication_Result object allowing
+ * to know whether or not the previous authentication attempt made by any other handler has been succeeded. Each handler
+ * should return an iMSCP_Authentication_Result object.
+ *
+ * If you want implement your own authentication handler in your plugins, look at the default one provided by this
+ * class.
  *
  * @category	iMSCP
  * @package		Authentication
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.4
+ * @version		0.0.5
  */
 class iMSCP_Authentication
 {
@@ -40,25 +53,25 @@ class iMSCP_Authentication
 	 *
 	 * @var iMSCP_Authentication
 	 */
-	protected static $_instance = null;
+	protected static $instance = null;
 
 	/**
 	 * @var iMSCP_Events_Manager_Interface
 	 */
-	protected $_events;
+	protected $events = null;
 
 	/**
 	 * @var string Username to match against
 	 */
-	protected $_username;
+	protected $username = null;
 
 	/**
 	 * @var string Clear text password to match against
 	 */
-	protected $_password;
+	protected $password = null;
 
 	/**
-	 * Singleton pattern implementation -  makes "new" unavailable.
+	 * Singleton pattern implementation -  makes "new" unavailable
 	 */
 	protected function __construct()
 	{
@@ -66,7 +79,7 @@ class iMSCP_Authentication
 	}
 
 	/**
-	 * Singleton pattern implementation -  makes "clone" unavailable.
+	 * Singleton pattern implementation -  makes "clone" unavailable
 	 *
 	 * @return void
 	 */
@@ -76,157 +89,198 @@ class iMSCP_Authentication
 	}
 
 	/**
-	 * Implements singleton design pattern.
+	 * Implements singleton design pattern
 	 *
 	 * @return iMSCP_Authentication Provides a fluent interface, returns self
 	 */
 	public static function getInstance()
 	{
-		if (null === self::$_instance) {
-			self::$_instance = new self();
+		if (null === self::$instance) {
+			self::$instance = new self();
 		}
 
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
-	 * Return an iMSCP_Events_Manager instance.
+	 * Return an iMSCP_Events_Manager instance
 	 *
 	 * @param iMSCP_Events_Manager_Interface $events
 	 * @return iMSCP_Events_Manager_Interface
 	 */
-	public function events(iMSCP_Events_Manager_Interface $events = null)
+	public function getEvents(iMSCP_Events_Manager_Interface $events = null)
 	{
 		if (null !== $events) {
-			$this->_events = $events;
-		} elseif (null === $this->_events) {
-			$this->_events = iMSCP_Events_Manager::getInstance();
+			$this->events = $events;
+		} elseif (null === $this->events) {
+			$this->events = iMSCP_Events_Manager::getInstance();
 		}
 
-		return $this->_events;
+		return $this->events;
 	}
 
 	/**
-	 * Process authentication.
+	 * User password authentication handler
+	 *
+	 * This is the default authentication handler that try to authenticate an user using it username and password.
 	 *
 	 * @return iMSCP_Authentication_Result
-	 * @return void
+	 * @param iMSCP_Events_Event $event
 	 */
-	public function authenticate()
+	static function authenticateUserPassword($event)
 	{
-		// If propagation is stopped, expects a message to explain the cause
-		$responseCollection = $this->events()->dispatch(iMSCP_Events::onBeforeAuthentication, array('context' => $this));
+		// If any other handler succeeded to authenticate the user, we simply return its result
+		$result = $event->getParam('authResult', false);
+		if ($result && $result->isValid) return $result;
 
-		if ($responseCollection->isStopped()) {
-			$result = new iMSCP_Authentication_Result(
-				iMSCP_Authentication_Result::FAILURE_UNCATEGORIZED, null, array($responseCollection->last())
-			);
-		} else {
+		$username = idn_to_ascii(clean_input($event->getParam('username')));
+		$password = clean_input($event->getParam('password'));
+
+		if (empty($username) || empty($password)) {
+			if (empty($username)) {
+				$message[] = tr('The username field is empty.');
+			}
+			if (empty($password)) {
+				$message[] = tr('The password field is empty.');
+			}
+		}
+
+		if (!isset($message)) {
 			$query = "
-				SELECT
-					`admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by`
-				FROM
-					`admin`
-				WHERE
-					`admin_name` = ?
-			";
-			$stmt = exec_query($query, $this->getUsername());
+              SELECT
+     		    `admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by`
+     	      FROM
+     		    `admin`
+     	      WHERE
+     		    `admin_name` = ?
+     	    ";
+			$stmt = exec_query($query, $username);
 
 			if (!$stmt->rowCount()) {
 				$result = new iMSCP_Authentication_Result(
-					iMSCP_Authentication_Result::FAILURE_IDENTITY_NOT_FOUND,
-					$stmt->fetchRow(PDO::FETCH_OBJ),
-					array(tr('Unknown username.'))
+					iMSCP_Authentication_Result::FAILURE_IDENTITY_NOT_FOUND, null, tr('Unknown username.')
 				);
 			} else {
-				$resultRow = $stmt->fetchRow(PDO::FETCH_OBJ);
-				$password = $this->getPassword();
-				$dbPassword = $resultRow->admin_pass;
+				$identity = $stmt->fetchRow(PDO::FETCH_OBJ);
+				$dbPassword = $identity->admin_pass;
 
-				if (crypt($password, $dbPassword) != $dbPassword && $dbPassword != md5($password)) {
+				if ($dbPassword != md5($password) && crypt($password, $dbPassword) != $dbPassword) {
 					$result = new iMSCP_Authentication_Result(
-						iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID,
-						$resultRow,
-						array(tr('Wrong password.'))
+						iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID, null, tr('Bad password.')
 					);
 				} else {
-					$result = new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $resultRow);
+					$result = new iMSCP_Authentication_Result(iMSCP_Authentication_Result::SUCCESS, $identity);
 				}
 			}
-
-			// Prevent multiple succesive calls from storing inconsistent results
-			$this->unsetIdentity();
-
-			if ($result->isValid()) {
-				$this->setIdentity($result->getIdentity());
-			}
-
-			$this->events()->dispatch(
-				iMSCP_Events::onAfterAuthentication, array('context' => $this, 'authResult' => $result)
+		} else {
+			$result = new iMSCP_Authentication_Result(
+				count($message) == 2
+					? iMSCP_Authentication_Result::FAILURE_CREDENTIAL_EMPTY
+					: iMSCP_Authentication_Result::FAILURE_CREDENTIAL_INVALID
+				, null, $message
 			);
 		}
+
+		$event->setParam('authResult', $result); // Pass the result to any other handler via event object
 
 		return $result;
 	}
 
 	/**
-	 * Return username.
+	 * Process authentication
 	 *
-	 * @return string
+	 * This method launchs the authentication process. By default, only the authenticateUserPassword handler is
+	 * registered, and triggered with a priority of 10.
+	 *
+	 * @trigger onBeforeAuthentication
+	 * @trigger onAuthentication
+	 * @trigger onAfterAuthentication
+	 * @return iMSCP_Authentication_Result
 	 */
-	public function getUsername()
+	public function authenticate()
 	{
-		return $this->_username;
+		$em = $this->getEvents();
+
+		$response = $em->dispatch(
+			iMSCP_Events::onBeforeAuthentication,
+			array('context' => $this, 'username' => $this->username, 'password' => $this->password)
+		);
+
+		if (!$response->isStopped()) {
+			// Registers the default authentication handler (user,password)
+			$em->registerListener(iMSCP_Events::onAuthentication, array($this, 'authenticateUserPassword'), 10);
+
+			// Process authentication through available handlers
+			$response = $em->dispatch(
+				iMSCP_Events::onAuthentication,
+				array('context' => $this, 'username' => $this->username, 'password' => $this->password)
+			);
+
+			if (!($resultAuth = $response->last()) instanceof iMSCP_Authentication_Result) {
+				// Should never occurs since any authentication handler must return an iMSCP_Authentication_Result object
+				$resultAuth = new iMSCP_Authentication_Result(
+					iMSCP_Authentication_Result::FAILURE_UNCATEGORIZED, tr('Unknown reason.')
+				);
+			}
+
+			if ($resultAuth->isValid()) {
+				//$this->unsetIdentity(); // Prevent multiple successive calls from storing inconsistent results
+				$this->setIdentity($resultAuth->getIdentity());
+			} elseif ($resultAuth->getCode() === iMSCP_Authentication_Result::FAILURE_CREDENTIAL_EMPTY) {
+				$resultAuth->setMessage(null);
+			}
+		} else {
+			$resultAuth = new iMSCP_Authentication_Result(
+				iMSCP_Authentication_Result::FAILURE_UNCATEGORIZED, null, $response->last()
+			);
+		}
+
+		$em->dispatch(iMSCP_Events::onAfterAuthentication, array('context' => $this, 'authResult' => $resultAuth));
+
+		return $resultAuth;
 	}
 
 	/**
-	 * Sets username to match against.
+	 * Sets username to match against
 	 *
 	 * @param string $username Password
 	 * @return iMSCP_Authentication Provides fluent interface, returns self
 	 */
 	public function setUsername($username)
 	{
-		$this->_username = (string)$username;
+		$this->username = (string)$username;
 
 		return $this;
 	}
 
 	/**
-	 * Return password.
-	 *
-	 * @return string
-	 */
-	public function getPassword()
-	{
-		return $this->_password;
-	}
-
-	/**
-	 * Set password to match against.
+	 * Set password to match against
 	 *
 	 * @param string $password Password
 	 * @return iMSCP_Authentication Provides fluent interface, returns self
 	 */
 	public function setPassword($password)
 	{
-		$this->_password = (string)$password;
+		$this->password = (string)$password;
 
 		return $this;
 	}
 
 	/**
-	 * Returns true if and only if an identity is available from storage.
+	 * Returns true if and only if an identity is available from storage
 	 *
 	 * @return boolean
 	 */
 	public function hasIdentity()
 	{
+		//$query = "SELECT COUNT(`session_id`) `cnt` FROM `login` WHERE `session_id` = ? AND `ipaddr` = ?";
+		//$stmt = exec_query($query, array(session_id(), getipaddr()));
+		//return ($stmt->fields['cnt'] && $_SESSION['user_id']);
 		return isset($_SESSION['user_id']);
 	}
 
 	/**
-	 * Returns the identity from storage or null if no identity is available.
+	 * Returns the identity from storage or null if no identity is available
 	 *
 	 * @return stdClass|null
 	 */
@@ -247,27 +301,23 @@ class iMSCP_Authentication
 	}
 
 	/**
-	 * Set the given identity.
+	 * Set the given identity
 	 *
+	 * @trigger onBeforeSetIdentity
+	 * @trigger onAfterSetIdentify
 	 * @param stdClass $identity Identity data
 	 */
 	public function setIdentity($identity)
 	{
-		$this->events()->dispatch(iMSCP_Events::onBeforeSetIdentity, array('context' => $this, 'identity' => $identity));
+		$this->getEvents()->dispatch(iMSCP_Events::onBeforeSetIdentity, array('context' => $this, 'identity' => $identity));
 
-		// We wil change permission level so we regenerate the session identifier to enforce security
+		// We'll change permission level so we regenerate the session identifier to enforce security
 		session_regenerate_id();
 
 		$lastAccess = time();
 
-		$query = "
-			REPLACE INTO `login` (
-				`session_id`, `ipaddr`, `lastaccess`, `user_name`
-			) VALUES (
-				?, ?, ?, ?
-			)
-		";
-		exec_query($query, array(session_id(), $_SERVER['REMOTE_ADDR'], $lastAccess, $identity->admin_name));
+		$query = 'INSERT INTO `login` (`session_id`, `ipaddr`, `lastaccess`, `user_name`) VALUES (?, ?, ?, ?)';
+		exec_query($query, array(session_id(), getIpAddr(), $lastAccess, $identity->admin_name));
 
 		$_SESSION['user_logged'] = $identity->admin_name;
 		$_SESSION['user_type'] = $identity->admin_type;
@@ -276,33 +326,33 @@ class iMSCP_Authentication
 		$_SESSION['user_created_by'] = $identity->created_by;
 		$_SESSION['user_login_time'] = $lastAccess;
 
-		$this->events()->dispatch(iMSCP_Events::onAfterSetIdentity, array('context' => $this));
+		$this->getEvents()->dispatch(iMSCP_Events::onAfterSetIdentity, array('context' => $this));
 	}
 
 	/**
-	 * Unset the current identity.
+	 * Unset the current identity
 	 *
+	 * @trigger onBeforeUnsetIdentity
+	 * @trigger onAfterUnserIdentity
 	 * @return void
 	 */
 	public function unsetIdentity()
 	{
-		if ($this->hasIdentity()) {
-			$this->events()->dispatch(iMSCP_Events::onBeforeUnsetIdentity, array('context' => $this));
+		$this->getEvents()->dispatch(iMSCP_Events::onBeforeUnsetIdentity, array('context' => $this));
 
-			$query = "DELETE FROM `login` WHERE `session_id` = ?";
-			exec_query($query, session_id());
+		$query = "DELETE FROM `login` WHERE `session_id` = ?";
+		exec_query($query, session_id());
 
-			$preserveList = array(
-				'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
-			);
+		$preserveList = array(
+			'user_def_lang', 'user_theme', 'user_theme_color', 'show_main_menu_labels', 'pageMessages'
+		);
 
-			foreach (array_keys($_SESSION) as $sessionVariable) {
-				if (!in_array($sessionVariable, $preserveList)) {
-					unset($_SESSION[$sessionVariable]);
-				}
+		foreach (array_keys($_SESSION) as $sessionVariable) {
+			if (!in_array($sessionVariable, $preserveList)) {
+				unset($_SESSION[$sessionVariable]);
 			}
-
-			$this->events()->dispatch(iMSCP_Events::onAfterUnsetIdentity, array('context' => $this));
 		}
+
+		$this->getEvents()->dispatch(iMSCP_Events::onAfterUnsetIdentity, array('context' => $this));
 	}
 }

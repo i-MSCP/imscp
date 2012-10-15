@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('sql')) {
@@ -163,8 +163,8 @@ function change_sql_user_pass($db_user_id, $db_user_name)
 }
 
 /**
- * @param $tpl
- * @param $db_user_id
+ * @param iMSCP_pTemplate $tpl
+ * @param int $db_user_id
  * @return
  */
 function gen_page_data($tpl, $db_user_id)

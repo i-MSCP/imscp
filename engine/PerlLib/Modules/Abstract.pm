@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 - 2012 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,6 @@
 # @category		i-MSCP
 # @copyright	2010 - 2012 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@gmail.com>
-# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -132,28 +131,47 @@ sub runStep{
 
 	my ($file, $class, $instance);
 
+#	for (@{$self->{$type}}){
+#		s/\.pm//;
+#		$file	= "$type/$_.pm";
+#		$class	= "${type}::$_";
+#		require $file;
+#		$instance	= $class->factory();
+#		if($type eq 'Addons'){
+#			debug("Calling addon $_ function $func")
+#				if $instance->can($func) && exists $self->{AddonsData};
+#			$rs |= $instance->$func($self->{AddonsData})
+#					if $instance->can($func) && exists $self->{AddonsData};
+#		} else {
+#			debug("Calling server $_ function $func")
+#				if $instance->can($func) && exists $self->{$_};
+#			$rs |= $instance->$func($self->{$_})
+#					if $instance->can($func) && exists $self->{$_};
+#		}
+#	}
+
+	# Nuxwin to devs (02.10.2012):
+	# This change avoids to load files and to instantiate servers or addons
+	# in case the current module doesn't provide any data for them. Also, it
+	# removes some redundant conditional tests. To resume, it avoids useless
+	# overhead for isolated tasks that are initiated by the frontend
 	for (@{$self->{$type}}){
 		s/\.pm//;
-		$file	= "$type/$_.pm";
-		$class	= "${type}::$_";
-		require $file;
-		$instance	= $class->factory();
-		if($type eq 'Addons'){
-			debug("Calling addon $_ function $func")
-				if $instance->can($func) && exists $self->{AddonsData};
-			$rs |= $instance->$func($self->{AddonsData})
-					if $instance->can($func) && exists $self->{AddonsData};
-		} else {
-			debug("Calling server $_ function $func")
-				if $instance->can($func) && exists $self->{$_};
-			$rs |= $instance->$func($self->{$_})
-					if $instance->can($func) && exists $self->{$_};
+		my $paramName = ($type eq 'Addons') ? 'AddonsData' : $_;
+		if(exists $self->{$paramName}) {
+			$file = "$type/$_.pm";
+			$class = "${type}::$_";
+			require $file;
+			$instance = $class->factory();
+			if ($instance->can($func)) {
+				debug("Calling function $func from ${type}::$_");
+				$rs |= $instance->$func($self->{$paramName});
+			}
 		}
 	}
 
 	$rs;
 }
-
 
 sub testCert{
 	use iMSCP::File;

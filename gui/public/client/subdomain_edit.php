@@ -295,8 +295,8 @@ function _client_initView()
  * Returns subdomain data.
  *
  * @access private
- * @param $subdomainId Subdomain unique identifier
- * @param $subdomainType Subdomain Type
+ * @param int $subdomainId Subdomain unique identifier
+ * @param string $subdomainType Subdomain Type
  * @return array Subdomain data. If any error occurs FALSE is returned
  */
 function _client_getSubdomainData($subdomainId, $subdomainType)
@@ -305,7 +305,9 @@ function _client_getSubdomainData($subdomainId, $subdomainType)
 	$subdomainType = (string) $subdomainType;
 
 	// Getting some user's domain data
-	list($domainId, $domainName) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $domainId = $domainProps['domain_id'];
+    $domainName = $domainProps['domain_name'];
 
 	if($subdomainType == 'dmn') {
 		$query = '
@@ -413,7 +415,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('subdomains')) {

@@ -98,7 +98,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.5.2.2');
+        $this->set('PMA_VERSION', '3.5.3');
         /**
          * @deprecated
          */
@@ -444,8 +444,6 @@ class PMA_Config
         $this->settings = PMA_array_merge_recursive($this->settings, $cfg);
         $this->checkPmaAbsoluteUri();
         $this->checkFontsize();
-
-        $this->checkPermissions();
 
         // Handling of the collation must be done after merging of $cfg
         // (from config.inc.php) so that $cfg['DefaultConnectionCollation']

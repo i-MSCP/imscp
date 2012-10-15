@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -60,9 +60,9 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 /**
- * @param $tpl
- * @param $user_id
- * @param $order_id
+ * @param iMSCP_pTemplate  $tpl
+ * @param int $user_id
+ * @param int $order_id
  */
 function gen_order_details($tpl, $user_id, $order_id) {
 

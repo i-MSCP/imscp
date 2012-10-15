@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 $cfg = iMSCP_Registry::get('config');
 
@@ -54,6 +54,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 } else {
 	set_page_message(tr('Wrong order ID.'), 'error');
 	redirectTo('orders.php');
+    exit;
 }
 
 if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'admin') {

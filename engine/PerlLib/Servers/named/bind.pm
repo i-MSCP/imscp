@@ -691,8 +691,10 @@ sub addSub{
 		######################### SUBDOMAIN MX SECTION START ###############################
 		my $cleanMXBlock = getBloc($bTag, $eTag, $cleanTag);
 		for(keys %{$data->{MX}}){
+			# remove trailing dot since it's now provided by the template
+			$data->{MX}->{$_}->{domain_text} =~ s/\.$//;
 			$mxBlock .= process({
-				MAIL_SERVER =>$data->{MX}->{$_}->{domain_text}
+				MAIL_SERVER => $data->{MX}->{$_}->{domain_text}
 			}, $cleanMXBlock);
 		}
 		$cleanTag		= replaceBloc($bTag, $eTag, $mxBlock, $cleanTag, undef);

@@ -1,42 +1,74 @@
 
 <script type="text/javascript">
-/* <![CDATA[ */
-function action_delete(url, domainname) {
-	if (url.indexOf("delete")==-1) {
-		location = url;
-	} else {
-		if (!confirm(sprintf("{TR_MESSAGE_DELETE}", domainname)))
-			return false;
-		location = url;
-	}
-}
-/* ]]> */
+    /* <![CDATA[ */
+    $(document).ready(function () {
+        var i = $("tbody :checkbox:not(':disabled')").change(
+                function () {
+					if ($("tbody :checkbox:checked").length == i) {
+                        $("th :checkbox").prop('checked', true);
+                    } else {
+                        $("th :checkbox").prop('checked', false);
+                    }
+                }
+        ).length;
+        $("th :checkbox").click(
+                function (e) {
+					if($("tbody :checkbox:not(':disabled')").length != 0){
+                    	$("table :checkbox:not(':disabled')").prop('checked', $(this).is(':checked'));
+					} else {
+						e.preventDefault();
+                    }
+                }
+        );
+    });
+    function onclick_action(url, domain) {
+        if (url.indexOf('delete') == -1) {
+            location = url;
+        } else if (confirm(sprintf("{TR_DEACTIVATE_MESSAGE}", domain))) {
+            location = url;
+        }
+        return false;
+    }
+    /* ]]> */
 </script>
-	<!-- BDP: relay_message -->
-	<div class="info">{RELAY_MSG}</div>
-	<!-- EDP: relay_message -->
-
-	<table>
-		<thead>
-			<tr>
-				<th>{TR_DOMAIN}</th>
-                <th>{TR_RELAY_ACTIVE}</th>
-				<th>{TR_STATUS}</th>
-				<th>{TR_ACTION}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<!-- BDP: relay_item -->
-			<tr>
-				<td>{RELAY_DOMAIN}</td>
-                <td>{RELAY_ACTIVE}</td>
-                <td>{RELAY_STATUS}</td>
-				<td>
-                    <!-- BDP: relay_item_new --><a href="#" class="icon i_users" onclick="action_delete('{RELAY_CREATE_ACTION_SCRIPT}', '{RELAY_DOMAIN}')">{RELAY_CREATE_ACTION}</a><!-- EDP: relay_item_new -->
-                    <!-- BDP: relay_item_edit --><a href="#" class="icon i_edit" onclick="action_delete('{RELAY_EDIT_ACTION_SCRIPT}', '{RELAY_DOMAIN}')">{RELAY_EDIT_ACTION}</a><!-- EDP: relay_item_edit -->
-                    <!-- BDP: relay_item_delete --><a href="#" class="icon i_delete" onclick="action_delete('{RELAY_DELETE_ACTION_SCRIPT}', '{RELAY_DOMAIN}')">{RELAY_DELETE_ACTION}</a><!-- EDP: relay_item_delete -->
-                </td>
-			</tr>
-			<!-- EDP: relay_item -->
-		</tbody>
-	</table>
+<form name="mail_external_delete" action="mail_external_delete.php" method="post">
+    <table>
+        <thead>
+        <tr>
+            <th style="width:21px;"><label><input type="checkbox"/></label></th>
+            <th>{TR_DOMAIN}</th>
+            <th>{TR_STATUS}</th>
+            <th>{TR_ACTION}</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th style="width:21px;"><label><input type="checkbox"/></label></th>
+            <th>{TR_DOMAIN}</th>
+            <th>{TR_STATUS}</th>
+            <th>{TR_ACTION}</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        <!-- BDP: item -->
+        <tr>
+            <td><label><input type="checkbox" name="{ITEM_TYPE}[]" value="{ITEM_ID}"{DISABLED}/></label></td>
+            <td>{DOMAIN}</td>
+            <td>{STATUS}</td>
+            <td>
+                <!-- BDP: activate_link -->
+                <a href="#" class="icon i_users" onclick="onclick_action('{ACTIVATE_URL}', '')">{TR_ACTIVATE}</a>
+                <!-- EDP: activate_link -->
+                <!-- BDP: edit_link -->
+                <a href="#" class="icon i_edit" onclick="onclick_action('{EDIT_URL}', '')">{TR_EDIT}</a>
+                <!-- EDP: edit_link -->
+                <!-- BDP: deactivate_link -->
+                <a href="#" class="icon i_delete" onclick="onclick_action('{DEACTIVATE_URL}', '{DOMAIN}')">{TR_DEACTIVATE}</a>
+                <!-- EDP: deactivate_link -->
+            </td>
+        </tr>
+        <!-- EDP: item -->
+        </tbody>
+    </table>
+    <label><input type="submit" name="submit" value="{TR_DEACTIVATE_SELECTED_ITEMS}"/></label>
+</form>

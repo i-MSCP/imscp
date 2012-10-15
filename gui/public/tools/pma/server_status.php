@@ -137,13 +137,13 @@ if (isset($_REQUEST['ajax_request']) && $_REQUEST['ajax_request'] == true) {
                         case 'cpu':
                             if (!$sysinfo) {
                                 include_once 'libraries/sysinfo.lib.php';
-                                $sysinfo = getSysInfo();
+                                $sysinfo = PMA_getSysInfo();
                             }
                             if (!$cpuload) {
                                 $cpuload = $sysinfo->loadavg();
                             }
 
-                            if (PHP_OS == 'Linux') {
+                            if (PMA_getSysInfoOs() == 'Linux') {
                                 $ret[$chart_id][$node_id][$point_id]['idle'] = $cpuload['idle'];
                                 $ret[$chart_id][$node_id][$point_id]['busy'] = $cpuload['busy'];
                             } else
@@ -154,7 +154,7 @@ if (isset($_REQUEST['ajax_request']) && $_REQUEST['ajax_request'] == true) {
                         case 'memory':
                             if (!$sysinfo) {
                                 include_once 'libraries/sysinfo.lib.php';
-                                $sysinfo = getSysInfo();
+                                $sysinfo = PMA_getSysInfo();
                             }
                             if (!$memory) {
                                 $memory  = $sysinfo->memory();
@@ -421,18 +421,20 @@ $GLOBALS['js_include'][] = 'server_status.js';
 $GLOBALS['js_include'][] = 'jquery/jquery-ui-1.8.16.custom.js';
 $GLOBALS['js_include'][] = 'jquery/jquery.tablesorter.js';
 $GLOBALS['js_include'][] = 'jquery/jquery.cookie.js'; // For tab persistence
-// Charting
-$GLOBALS['js_include'][] = 'highcharts/highcharts.js';
-/* Files required for chart exporting */
-$GLOBALS['js_include'][] = 'highcharts/exporting.js';
 /* < IE 9 doesn't support canvas natively */
 if (PMA_USR_BROWSER_AGENT == 'IE' && PMA_USR_BROWSER_VER < 9) {
-    $GLOBALS['js_include'][] = 'canvg/flashcanvas.js';
+    $GLOBALS['js_include'][] = 'jqplot/excanvas.js';
 }
 $GLOBALS['js_include'][] = 'canvg/canvg.js';
-// for profiling chart
+// for charting
 $GLOBALS['js_include'][] = 'jqplot/jquery.jqplot.js';
 $GLOBALS['js_include'][] = 'jqplot/plugins/jqplot.pieRenderer.js';
+$GLOBALS['js_include'][] = 'jqplot/plugins/jqplot.canvasTextRenderer.js';
+$GLOBALS['js_include'][] = 'jqplot/plugins/jqplot.canvasAxisLabelRenderer.js';
+$GLOBALS['js_include'][] = 'jqplot/plugins/jqplot.dateAxisRenderer.js';
+$GLOBALS['js_include'][] = 'jqplot/plugins/jqplot.highlighter.js';
+$GLOBALS['js_include'][] = 'jqplot/plugins/jqplot.cursor.js';
+$GLOBALS['js_include'][] = 'date.js';
 
 /**
  * flush status variables if requested
@@ -798,6 +800,10 @@ echo __('Runtime Information');
                     <?php echo __('Refresh'); ?>
                 </a>
                 <span class="refreshList" style="display:none;">
+                    <label for="id_trafficChartDataPointsList"><?php echo __('Number of data points: '); ?></label>
+                       <?php echo getDataPointsNumberList('trafficChartDataPoints'); ?>
+                </span>
+                <span class="refreshList" style="display:none;">
                     <label for="id_trafficChartRefresh"><?php echo __('Refresh rate: '); ?></label>
                     <?php refreshList('trafficChartRefresh'); ?>
                 </span>
@@ -819,6 +825,10 @@ echo __('Runtime Information');
                     <img src="<?php echo $GLOBALS['pmaThemeImage'];?>ajax_clock_small.gif" alt="ajax clock" style="display: none;" />
                     <?php echo __('Refresh'); ?>
                 </a>
+                <span class="refreshList" style="display:none;">
+                    <label for="id_queryChartDataPointsList"><?php echo __('Number of data points: '); ?></label>
+                       <?php echo getDataPointsNumberList('queryChartDataPoints'); ?>
+                </span>
                 <span class="refreshList" style="display:none;">
                     <label for="id_queryChartRefresh"><?php echo __('Refresh rate: '); ?></label>
                        <?php refreshList('queryChartRefresh'); ?>
@@ -1771,7 +1781,7 @@ function printMonitor()
 function refreshList($name, $defaultRate=5, $refreshRates=Array(1, 2, 5, 10, 20, 40, 60, 120, 300, 600))
 {
 ?>
-    <select name="<?php echo $name; ?>" id="id_<?php echo $name; ?>">
+    <select name="<?php echo $name; ?>" id="id_<?php echo $name; ?>" class="refreshRate">
         <?php
             foreach ($refreshRates as $rate) {
                 $selected = ($rate == $defaultRate)?' selected="selected"':'';
@@ -1785,6 +1795,21 @@ function refreshList($name, $defaultRate=5, $refreshRates=Array(1, 2, 5, 10, 20,
         ?>
     </select>
 <?php
+}
+
+/* Builds a <select> list for number of data points to be displayed */
+function getDataPointsNumberList($name, $defaultValue=12, $values=Array(8, 10, 12, 15, 20, 25, 30, 40))
+{
+    $html_output = '<select name="' . $name . '" id="id_' . $name . '" class="dataPointsNumber">';
+            foreach ($values as $number) {
+                $selected = ($number == $defaultValue)?' selected="selected"':'';
+                $html_output .= '<option value="' . $number . '"' . $selected . '>'
+                    . sprintf(_ngettext('%d second', '%d points', $number), $number)
+                    . '</option>';
+            }
+
+    $html_output .= '</select>';
+    return $html_output;
 }
 
 /**

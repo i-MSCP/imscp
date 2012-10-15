@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('mail')) {
@@ -615,30 +615,11 @@ function check_mail_acc_data($dmn_id, $dmn_name) {
  * @return void
  */
 function gen_page_mail_acc_props($tpl, $user_id) {
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($user_id);
+
+    $domainProps = get_domain_default_props($user_id);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
 
 	list($mail_acc_cnt,
 		$dmn_mail_acc_cnt,

@@ -86,7 +86,7 @@ function client_getMailAccountData($mailAccountId)
 	static $mailAccountData = null;
 
 	if (null === $mailAccountData) {
-		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		$query = '
 			SELECT
@@ -287,7 +287,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects the client in silent way
 if (!customerHasFeature('mail')) {

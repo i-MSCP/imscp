@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -63,7 +63,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 gen_user_personal_data($tpl, $_SESSION['user_id']);
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  * @param $user_id
  * @return void
  */

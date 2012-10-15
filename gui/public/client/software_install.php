@@ -47,7 +47,7 @@ function client_generatePage($tpl, $customerId)
 		$softwareId = intval($_GET['id']);
 	}
 
-	$domainProperties = get_domain_default_props($customerId, true);
+	$domainProperties = get_domain_default_props($customerId);
 
 	get_software_props_install(
 		$tpl, $domainProperties['domain_id'], $softwareId, $domainProperties['domain_created_id'],
@@ -65,7 +65,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('aps')) {
@@ -127,11 +127,28 @@ if (isset($_POST['Submit2'])) {
     $list = $vfs->ls($other_dir);
 
     // Check dir exists
-	list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified, $dmn_mailacc_limit,
-		$dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_status, $dmn_als_limit,
-		$dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage, $dmn_php, $dmn_cgi
-	) = get_domain_default_props($_SESSION['user_id']);
+
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_name = $domainProps['domain_name'];
+    $dmn_gid = $domainProps['domain_gid'];
+    $dmn_uid = $domainProps['domain_uid'];
+    $dmn_created_id = $domainProps['domain_created_id'];
+    $dmn_created = $domainProps['domain_created'];
+    $dmn_last_modified = $domainProps['domain_last_modified'];
+    $dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
+  	$dmn_ftpacc_limit = $domainProps['domain_ftpacc_limit'];
+    $dmn_traff_limit = $domainProps['domain_traffic_limit'];
+    $dmn_sqld_limit = $domainProps['domain_sqld_limit'];
+    $dmn_sqlu_limit = $domainProps['domain_sqlu_limit'];
+    $dmn_status = $domainProps['domain_status'];
+    $dmn_als_limit = $domainProps['domain_alias_limit'];
+  	$dmn_subd_limit = $domainProps['domain_subd_limit'];
+    $dmn_ip_id = $domainProps['domain_ip_id'];
+    $dmn_disk_limit = $domainProps['domain_disk_limit'];
+    $dmn_disk_usage = $domainProps['domain_disk_usage'];
+    $dmn_php = $domainProps['domain_php'];
+    $dmn_cgi = $domainProps['domain_cgi'];
 
 
 	$query = "

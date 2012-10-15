@@ -73,7 +73,7 @@ function client_generateHostingPlanEntries($tpl, $customerId)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 	//$availabe_order = 0;
 	$hpTitle = tr('Hosting plans available for update');
@@ -383,7 +383,7 @@ function client_addNewOrder($orderId, $customerId)
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
-	$domainProperties = get_domain_default_props($customerId, true);
+	$domainProperties = get_domain_default_props($customerId);
 
 	$query = "SELECT * FROM `hosting_plans` WHERE `id` = ?";
 	$stmt = exec_query($query, $orderId);
@@ -522,7 +522,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

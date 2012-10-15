@@ -292,7 +292,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 if (isset($_GET['domain_id']) && !empty($_GET['domain_id'])) {
     $tpl = reseller_generateDomainAcountDeletionValidationPage($_GET['domain_id']);

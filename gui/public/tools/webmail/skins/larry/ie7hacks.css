@@ -7,9 +7,15 @@
  * License. It is allowed to copy, distribute, transmit and to adapt the work
  * by keeping credits to the original autors in the README file.
  * See http://creativecommons.org/licenses/by-sa/3.0/ for details.
- *
- * $Id$
  */
+
+/* #1488618 */
+#mainscreen {
+  height: expression((parseInt(document.documentElement.clientHeight)-108)+'px');
+}
+#mainscreen.offset {
+  height: expression((parseInt(document.documentElement.clientHeight)-150)+'px');
+}
 
 input.button {
 	display: inline;
@@ -23,7 +29,7 @@ a.deletebutton,
 .boxfooter .listbutton .inner,
 .attachmentslist li a.delete,
 .attachmentslist li a.cancelupload,
-#messagepreviewheader .iconlink {
+.previewheader .iconlink {
 	/* workaround for text-indent which also offsets the background image */
 	text-indent: 0;
 	font-size: 0;
@@ -39,7 +45,7 @@ a.deletebutton,
 
 .pagenav a.button,
 .pagenav a.button span.inner,
-#messagepreviewheader .iconlink,
+.previewheader .iconlink,
 #uploadform a.iconlink {
 	display: inline;
 }
@@ -52,6 +58,10 @@ a.deletebutton,
 	right: -2px;
 }
 
+#login-form .box-inner form {
+	margin: 0;
+}
+
 #login-form #message div {
 	float: left;
 	display: block;
@@ -61,7 +71,7 @@ a.deletebutton,
 	text-align: left;
 }
 
-#messagepreviewheader .iconlink {
+#messageheader.previewheader .iconlink {
 	color: #fff;
 	height: 14px;
 }

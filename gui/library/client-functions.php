@@ -37,46 +37,18 @@
  * Note: For performance reasons, the data are retrieved once per request.
  *
  * @param int $domainAdminId User unique identifier
- * @param bool $returnWKeys    Tells whether or not return value should be a
- *                             associative array
- * @return array               If $returnWkeys is TRUE, returns an associative array
- *                             where each key is a domain propertie name. Otherwise
- *                             returns an indexed array where each value correspond
- *                             to  a propertie value, following the columns order in
- *                             database table.
- * @todo Remove indexed array option to avoid using PHP list() function
+ * @return array Returns an associative array where each key is a domain propertie name.
  */
-function get_domain_default_props($domainAdminId, $returnWKeys = false)
+function get_domain_default_props($domainAdminId)
 {
 	static $domainProperties = null;
 
 	if (null === $domainProperties) {
-		$query = "
-			SELECT
-				`domain_id`, `domain_name`, `domain_gid`, `domain_uid`,
-				`domain_created_id`, `domain_created`, `domain_expires`,
-				`domain_last_modified`, `domain_mailacc_limit`, `domain_ftpacc_limit`,
-				`domain_traffic_limit`, `domain_sqld_limit`, `domain_sqlu_limit`,
-				`domain_status`, `domain_alias_limit`, `domain_subd_limit`,
-				`domain_ip_id`, `domain_disk_limit`, `domain_disk_usage`,
-				`domain_php`, `domain_cgi`, `allowbackup`, `domain_dns`,
-				`domain_software_allowed`, `phpini_perm_system`,
-				`phpini_perm_allow_url_fopen`, `phpini_perm_display_errors`,
-				`phpini_perm_disable_functions`, `domain_external_mail`
-			FROM
-				`domain`
-			WHERE
-				`domain_admin_id` = ?
-		";
-		$stmt = exec_query($query, $domainAdminId);
+		$stmt = exec_query("SELECT * FROM `domain` WHERE `domain_admin_id` = ?", $domainAdminId);
 		$domainProperties = $stmt->fields;
 	}
 
-    if ($returnWKeys) {
-		return $domainProperties;
-    } else {
-        return array_values($domainProperties);
-    }
+    return $domainProperties;
 }
 
 /**
@@ -732,23 +704,24 @@ function mount_point_exists($domain_id, $mnt_point)
 }
 
 /**
- * Tells whether or not the given feature is available for the customer.
+ * Tells whether or not the current customer can access to the given feature(s).
  *
  * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @throws iMSCP_Exception When $featureName is not known
- * @param string $featureName Feature name
+ * @param array|string $featureNames Feature name(s) (insensitive case)
  * @param bool $forceReload If true force data to be reloaded
  * @return bool TRUE if $featureName is available for customer, FALSE otherwise
  */
-function customerHasFeature($featureName, $forceReload = false)
+function customerHasFeature($featureNames, $forceReload = false)
 {
 	static $availableFeatures = null;
-	$featureName = strtolower($featureName);
+    static $debug = false;
 
 	if (null === $availableFeatures || $forceReload) {
 		/** @var $cfg iMSCP_Config_Handler_File */
 		$cfg = iMSCP_Registry::get('config');
-		$dmnProps = get_domain_default_props((int)$_SESSION['user_id'], true);
+        $debug = (bool) $cfg->DEBUG;
+		$dmnProps = get_domain_default_props((int)$_SESSION['user_id']);
 
 		$availableFeatures = array(
 			'domain' => ($dmnProps['domain_alias_limit'] != '-1'
@@ -783,11 +756,21 @@ function customerHasFeature($featureName, $forceReload = false)
 		}
 	}
 
-	if (!array_key_exists($featureName, $availableFeatures)) {
-		throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
-	}
+    $canAccess = true;
+    foreach((array)$featureNames as $featureName) {
+        $featureName = strtolower($featureName);
 
-	return $availableFeatures[$featureName];
+	    if ($debug && !array_key_exists($featureName, $availableFeatures)) {
+		    throw new iMSCP_Exception(sprintf("Feature %s is not known by the customerHasFeature() function.", $featureName));
+	    }
+
+        if(!$availableFeatures[$featureName]) {
+            $canAccess = false;
+            break;
+        }
+    }
+
+	return $canAccess;
 }
 
 /**

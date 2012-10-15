@@ -31,7 +31,7 @@
  * @category	iMSCP
  * @package		iMSCP_Events
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		0.0.13
+ * @version		0.0.14
  */
 class iMSCP_Events
 {
@@ -42,7 +42,7 @@ class iMSCP_Events
 	 *
 	 * - context: An iMSCP_Initializer object, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterInitialize = 'onAfterInitialize';
 
@@ -54,7 +54,7 @@ class iMSCP_Events
 	 *
 	 * - request: The request data (for now, it's a copy of $_REQUEST)
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onRestRequest = 'onRestRequest';
 
@@ -63,7 +63,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onLoginScriptStart = 'onLoginScriptStart';
 
@@ -74,7 +74,7 @@ class iMSCP_Events
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onLoginScriptEnd = 'onLoginScriptEnd';
 
@@ -83,7 +83,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
 
@@ -94,7 +94,7 @@ class iMSCP_Events
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
 
@@ -103,7 +103,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAdminScriptStart = 'onAdminScriptStart';
 
@@ -114,7 +114,7 @@ class iMSCP_Events
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAdminScriptEnd = 'onAdminScriptEnd';
 
@@ -123,7 +123,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onResellerScriptStart = 'onResellerScriptStart';
 
@@ -134,7 +134,7 @@ class iMSCP_Events
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onResellerScriptEnd = 'onResellerScriptEnd';
 
@@ -143,7 +143,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onClientScriptStart = 'onClientScriptStart';
 
@@ -154,7 +154,7 @@ class iMSCP_Events
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onClientScriptEnd = 'onClientScriptEnd';
 
@@ -163,7 +163,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onOrderPanelScriptStart = 'onOrderPanelScriptStart';
 
@@ -174,7 +174,7 @@ class iMSCP_Events
 	 *
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onOrderPanelScriptEnd = 'onOrderPanelScriptEnd';
 
@@ -185,7 +185,7 @@ class iMSCP_Events
 	 *
 	 *   - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onExceptionToBrowserStart = 'onExceptionToBrowserStart';
 
@@ -197,7 +197,7 @@ class iMSCP_Events
 	 *  - context: An iMSCP_Exception_Writer_Browser object, the context in which the event is triggered
 	 *  - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onExceptionToBrowserEnd = 'onExceptionToBrowserEnd';
 
@@ -210,6 +210,11 @@ class iMSCP_Events
 	 */
 	const onBeforeAuthentication = 'onBeforeAuthentication';
 
+    /**
+     *
+     */
+    const onAuthentication = 'onAuthentication';
+
 	/**
 	 * The onBeforeAuthentication event is triggered after the authentication process.
 	 *
@@ -218,7 +223,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 * - authResult: An iMSCP_Authentication_Result object, an object that encapsulates the authentication result
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAuthentication = 'onAfterAuthentication';
 
@@ -230,7 +235,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 * - identity: A stdClass object that contains the user' identity data
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeSetIdentity = 'onBeforeSetIdentity';
 
@@ -241,7 +246,7 @@ class iMSCP_Events
 	 *
 	 * - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const  onAfterSetIdentity = 'onAfterSetIdentity';
 
@@ -252,7 +257,7 @@ class iMSCP_Events
 	 *
 	 *  - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeUnsetIdentity = 'onBeforeUnsetIdentity';
 
@@ -263,7 +268,7 @@ class iMSCP_Events
 	 *
 	 *  - context: An iMSCP_Authentication object, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const  onAfterUnsetIdentity = 'onAfterUnsetIdentity';
 
@@ -279,7 +284,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditAdminGeneralSettings = 'onAfterEditAdminGeneralSettings';
 
@@ -288,7 +293,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddUser = 'onBeforeAddUser';
 
@@ -297,7 +302,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddUser = 'onAfterAddUser';
 
@@ -308,7 +313,7 @@ class iMSCP_Events
 	 *
 	 *  - userId: An integer representing the ID of user being edited.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditUser = 'onBeforeEditUser';
 
@@ -319,7 +324,7 @@ class iMSCP_Events
 	 *
 	 *  - userId: An integer representing the ID of user that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditUser = 'onAfterEditUser';
 
@@ -330,7 +335,7 @@ class iMSCP_Events
 	 *
 	 * - userId: An integer representing the ID of user being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteUser = 'onBeforeDeleteUser';
 
@@ -341,7 +346,7 @@ class iMSCP_Events
 	 *
 	 * - userId: An integer representing the ID of user that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteUser = 'onAfterDeleteUser';
 
@@ -352,7 +357,7 @@ class iMSCP_Events
 	 *
 	 *  - domainId: An integer representing the ID of domain being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteDomain = 'onBeforeDeleteDomain';
 
@@ -363,7 +368,7 @@ class iMSCP_Events
 	 *
 	 *  - userId: an integer representing the ID of domain that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteDomain = 'onAfterDeleteDomain';
 
@@ -372,7 +377,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddFtp = 'onBeforeAddFtp';
 
@@ -381,7 +386,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddFtp = 'onAfterAddFtp';
 
@@ -392,7 +397,7 @@ class iMSCP_Events
 	 *
 	 *  - ftpId: An integer representing the ID of Ftp account being edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditFtp = 'onBeforeEditFtp';
 
@@ -403,7 +408,7 @@ class iMSCP_Events
 	 *
 	 *  - ftpId: An integer representing the ID of Ftp account that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditFtp = 'onAfterEditFtp';
 
@@ -414,7 +419,7 @@ class iMSCP_Events
 	 *
 	 *  - ftpId: An integer representing the ID of Ftp account being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteFtp = 'onBeforeDeleteFtp';
 
@@ -425,7 +430,7 @@ class iMSCP_Events
 	 *
 	 *  - ftpId: An integer reprensenting the ID of Ftp account that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteFtp = 'onAfterDeleteFtp';
 
@@ -434,7 +439,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddSqlUser = 'onBeforeAddSqlUser';
 
@@ -443,7 +448,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddSqlUser = 'onAfterAddSqlUser';
 
@@ -454,7 +459,7 @@ class iMSCP_Events
 	 *
 	 *  - sqlUserId: An integer representing the ID of Sql user being edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditSqlUser = 'onBeforeEditSqlUser';
 
@@ -465,7 +470,7 @@ class iMSCP_Events
 	 *
 	 *  - sqlUserId: An integer representing the ID of Sql user that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditSqlUser = 'onAfterEditSqlUser';
 
@@ -476,7 +481,7 @@ class iMSCP_Events
 	 *
 	 *  - sqlUserId: An integer representing the ID of Sql user being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteSqlUser = 'onBeforeDeleteSqlUser';
 
@@ -487,7 +492,7 @@ class iMSCP_Events
 	 *
 	 *  - sqlUserId: An integer representing the ID of Sql user that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteSqlUser = 'onAfterDeleteSqlUser';
 
@@ -496,7 +501,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddSqlDb = 'onBeforeAddSqlDb';
 
@@ -505,7 +510,7 @@ class iMSCP_Events
 	 *
 	 * The listeners receive an iMSCP_Events_Event object.
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddSqlDb = 'onAfterAddSqlDb';
 
@@ -516,7 +521,7 @@ class iMSCP_Events
 	 *
 	 *  - sqlDbId: An integer representing the ID of Sql database being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteSqlDb = 'onBeforeDeleteSqlDb';
 
@@ -527,7 +532,7 @@ class iMSCP_Events
 	 *
 	 *  - sqlDbId: An integer representing the ID of Sql database that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteSqlDb = 'onAfterSqlDb';
 
@@ -538,7 +543,7 @@ class iMSCP_Events
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeUpdatePluginList = 'onBeforeUpdatePluginList';
 
@@ -549,7 +554,7 @@ class iMSCP_Events
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterUpdatePluginList = 'onAfterUpdatePLuginList';
 
@@ -561,7 +566,7 @@ class iMSCP_Events
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin being activated
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeActivatePlugin = 'onBeforeActivatePlugin';
 
@@ -573,7 +578,7 @@ class iMSCP_Events
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin that has been activated
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterActivatePlugin = 'onAfterActivatePlugin';
 
@@ -585,7 +590,7 @@ class iMSCP_Events
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin being deactivated
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeactivatePlugin = 'onBeforeDeactivatePlugin';
 
@@ -597,7 +602,7 @@ class iMSCP_Events
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin that has been deactivated
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeactivatePlugin = 'onAfterDeactivatePlugin';
 
@@ -609,7 +614,7 @@ class iMSCP_Events
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin being protected
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeProtectPlugin = 'onBeforeProtectPlugin';
 
@@ -621,7 +626,7 @@ class iMSCP_Events
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *  - pluginName: Name of the plugin that has been protected
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterProtectPlugin = 'onAfterProtectPlugin';
 
@@ -632,7 +637,7 @@ class iMSCP_Events
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeBulkAction = 'onBeforeBulkAction';
 
@@ -643,7 +648,7 @@ class iMSCP_Events
 	 *
 	 *  - pluginManager: An iMSCP_Plugin_Manager instance
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterBulkAction = 'onAfterBulkAction';
 
@@ -657,7 +662,7 @@ class iMSCP_Events
 	 *  - customerId: An integer representitng the ID of the customer for which the domain is added
 	 *  - customerEmail: A string representing the email of the customer for which the domain is added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddDomain = 'onBeforeAddDomain';
 
@@ -672,7 +677,7 @@ class iMSCP_Events
 	 *  - customerEmail: A string representing the email of customer for which the domain has been added
 	 *  - domainId: An integer representing the ID of the domain that has been added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddDomain = 'onAfterAddDomain';
 
@@ -683,7 +688,7 @@ class iMSCP_Events
 	 *
 	 *  - domainId: An integer representing the ID of the domain being edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditDomain = 'onBeforeEditDomain';
 
@@ -694,7 +699,7 @@ class iMSCP_Events
 	 *
 	 *  - domainId: An integer reprensenting the ID of the domain that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditDomain = 'onAfterEditDomain';
 
@@ -707,7 +712,7 @@ class iMSCP_Events
 	 *  - domainId: An integer representing the ID of the parent domain
 	 *  - customerId: An integer representing the ID of the customer for which the subdomain is added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddSubdomain = 'onBeforeAddSubdomain';
 
@@ -721,7 +726,7 @@ class iMSCP_Events
 	 *  - customerId: An integer representing the ID of the customer for wich the subdomain has been added
 	 *  - subdomainId: An integer representing the ID of thesubdomain that has been added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddSubdomain = 'onAfterAddSubdomain';
 
@@ -732,7 +737,7 @@ class iMSCP_Events
 	 *
 	 *  - subdomainId: An integer representing the ID of the subdomain being edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditSubdomain = 'onBeforeEditSubdomain';
 
@@ -743,7 +748,7 @@ class iMSCP_Events
 	 *
 	 *  - subdomainId: An integer representing the ID of the subdomain that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditSubdomain = 'onAfterEditSubdomain';
 
@@ -754,7 +759,7 @@ class iMSCP_Events
 	 *
 	 *  - subdomainId: An integer representing the ID of the subdomain being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteSubdomain = 'onBeforeDeleteSubdomain';
 
@@ -765,7 +770,7 @@ class iMSCP_Events
 	 *
 	 *  - subdomainId: An integer representing the ID of the subdomain that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteSubdomain = 'onAfterDeleteSubdomain';
 
@@ -777,7 +782,7 @@ class iMSCP_Events
 	 *  - domainId: An integer representing the ID of the parent domain
 	 *  - domainAliasName: A string representing the name of the domain alias being added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddDomainAlias = 'onBeforeAddDomainAlias';
 
@@ -790,7 +795,7 @@ class iMSCP_Events
 	 *  - domainAliasName: A string representing the name of the domain alias that has been added
 	 *  - domainAliasId: An integer representing the ID of the domain alias that has been added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddDomainAlias = 'onAfterAddDomainAlias';
 
@@ -801,7 +806,7 @@ class iMSCP_Events
 	 *
 	 *  - domainAliasId: An integer representing the ID of the domain alias being edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditDomainAlias = 'onBeforeEditDomainAlias';
 
@@ -812,7 +817,7 @@ class iMSCP_Events
 	 *
 	 *  - domainAliasId: An integer representing the ID of the domain alias that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditDomainALias = 'onAfterEditDomainAlias';
 
@@ -823,7 +828,7 @@ class iMSCP_Events
 	 *
 	 *  - domainAliasId: An integer representing the  ID of the domain alias being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteDomainAlias = 'onBeforeDeleteDomainAlias';
 
@@ -834,7 +839,7 @@ class iMSCP_Events
 	 *
 	 *  - domainAliasId: An integer representing the ID of the domain alias that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteDomainAlias = 'onAfterDeleteDomainAlias';
 
@@ -846,7 +851,7 @@ class iMSCP_Events
 	 *  - mailUsername: A string representing the local part of the email account being added
 	 *  - mailAddress: A string representing the complete email address of the mail account being added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAddMail = 'onBeforeAddMail';
 
@@ -859,7 +864,7 @@ class iMSCP_Events
 	 *  - mailAddress: A string representing the complete address of the mail account that has been added
 	 *  - mailId: An integer representing the ID of the email account that has been added
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAddMail = 'onAfterAddMail';
 
@@ -870,7 +875,7 @@ class iMSCP_Events
 	 *
 	 *  - mailId: An integer representing the ID of the mail account being edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeEditMail = 'onBeforeEditMail';
 
@@ -881,7 +886,7 @@ class iMSCP_Events
 	 *
 	 *  - mailId: An integer representing the ID of the mail account that has been edited
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterEditMail = 'onAfterEditMail';
 
@@ -892,7 +897,7 @@ class iMSCP_Events
 	 *
 	 *  - mailId: An integer representing the ID of the mail account being deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDeleteMail = 'onBeforeDeleteMail';
 
@@ -903,7 +908,7 @@ class iMSCP_Events
 	 *
 	 *  - mailId: An integer representing the ID of the mail account that has been deleted
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDeleteMail = 'onAfterDeleteMail';
 
@@ -914,7 +919,7 @@ class iMSCP_Events
 	 *
 	 * - context: An iMSCP_Database instance, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeDatabaseConnection = 'onBeforeDatabaseConnection';
 
@@ -925,7 +930,7 @@ class iMSCP_Events
 	 *
 	 * - context: An iMSCP_Database object, the context in which the event is triggered
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterDatabaseConnection = 'onAfterDatabaseConnection';
 
@@ -937,7 +942,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_Database object, the context in which the event is triggered
 	 * - query: The SQL statement being prepared
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeQueryPrepare = 'onBeforeQueryPrepare';
 
@@ -949,7 +954,7 @@ class iMSCP_Events
 	 *  - context: An iMSCP_Database object, the context in which the event is triggered
 	 *  - statement: A PDOStatement object that represent the prepared statement
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterQueryPrepare = 'onAfterQueryPrepare';
 
@@ -969,7 +974,7 @@ class iMSCP_Events
 	 *		 - context: An iMSCP_Database object, the context in which the event is triggered
 	 *		 - query: The SQL statement being prepared and executed (PDO::query())
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeQueryExecute = 'onBeforeQueryExecute';
 
@@ -981,7 +986,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_Database object, the context in which the event is triggered
 	 * - statement: The PDOStatement that has been executed
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterQueryExecute = 'onAfterQueryExecute';
 
@@ -993,7 +998,7 @@ class iMSCP_Events
 	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
 	 *  - templatePath: The filepath of the template being loaded
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
 
@@ -1005,7 +1010,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
 	 * - templateContent: The template content as a string
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterAssembleTemplateFiles = 'onBeforeAssembleTemplateFiles';
 
@@ -1017,7 +1022,7 @@ class iMSCP_Events
 	 *  - context: An iMSCP_pTemplate object, the context in which the event is triggered
 	 *  - templatePath: The filepath of the template being loaded
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeLoadTemplateFile = 'onBeforeLoadTemplateFile';
 
@@ -1029,7 +1034,7 @@ class iMSCP_Events
 	 * - context: An iMSCP_pTemplate object, the context in which the event is triggered
 	 * - templateContent: The template content as a string
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onAfterLoadTemplateFile = 'onAfterLoadTemplateFile';
 
@@ -1040,7 +1045,7 @@ class iMSCP_Events
 	 *
 	 * - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 */
 	const onBeforeGenerateNavigation = 'onBeforeGenerateNavigation';
 
@@ -1052,8 +1057,30 @@ class iMSCP_Events
 	 *
 	 * - templateEngine: An iMSCP_pTemplate object
 	 *
-	 * @var string
+	 * @const string
 	 *
 	 */
 	const onAfterGenerateNavigation = 'onAfterGenerateNavigation';
+
+    /**
+     * The onBeforeAddExternalMailServer event is triggered before addition of external mail server entries in database
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * 
+     *  - externalMailServerEntries: A reference to an array containing all external mail entries
+     * 
+     * @const string
+     */
+    const onBeforeAddExternalMailServer = 'onBeforeAddExternalMailServer';
+
+    /**
+     * The onAfterAddExternalMailServer event is triggered after addition of external mail server entries in database
+     * 
+     * The listeners receive an iMSCP_Events_Event object with the following parameter:
+     * 
+     *  - externalMailServerEntries: A reference to an array containing all external mail entries
+     * 
+     * @const string
+     */
+    const onAfterAddExternalMailServer = 'onAfterAddExternalMailServer';
 }

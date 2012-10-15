@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('domain_aliases')) {
@@ -132,7 +132,9 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	$cfg = iMSCP_Registry::get('config');
 
 	// Get data from sql
-	list($domain_id) = get_domain_default_props($_SESSION['user_id']);
+	$domainProps = get_domain_default_props($_SESSION['user_id']);
+    $domain_id = $domainProps['domain_id'];
+
 	$res = exec_query("SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
 
 	if ($res->recordCount() <= 0) {

@@ -165,7 +165,7 @@ function get_data_au1_page($tpl)
  * Get list with hosting plan for selection.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  $reseller_id Reseller unique identifier
+ * @param  int $reseller_id Reseller unique identifier
  * @return void
  */
 function get_hp_data_list($tpl, $reseller_id)
@@ -236,7 +236,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

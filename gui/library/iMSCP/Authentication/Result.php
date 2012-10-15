@@ -38,27 +38,35 @@
 class iMSCP_Authentication_Result
 {
 	/**
-	 * General Failure
+	 * @const int General Failure
 	 */
 	const FAILURE = 0;
 
 	/**
-	 * Failure due to identity not being found
+	 * @const int Failure due to identity not being found
 	 */
 	const FAILURE_IDENTITY_NOT_FOUND = -1;
 
-	/**
-	 * Failure due to invalid credential being supplied
-	 */
-	const FAILURE_CREDENTIAL_INVALID = -2;
+    /**
+     * @const int Failure due to identity being ambiguous.
+     */
+    const FAILURE_IDENTITY_AMBIGUOUS = -2;
 
 	/**
-	 * Failure due to uncategorized reasons
+	 * @const int Failure due to invalid credential being supplied
 	 */
-	const FAILURE_UNCATEGORIZED = -3;
+	const FAILURE_CREDENTIAL_INVALID = -3;
+
+
+    const FAILURE_CREDENTIAL_EMPTY = -4;
 
 	/**
-	 * Authentication success
+	 * @const int Failure due to uncategorized reasons
+	 */
+	const FAILURE_UNCATEGORIZED = -5;
+
+	/**
+	 * @const int Authentication success
 	 */
 	const SUCCESS = 1;
 
@@ -88,9 +96,9 @@ class iMSCP_Authentication_Result
 	 *
 	 * @param int $code
 	 * @param mixed $identity
-	 * @param array $messages
+	 * @param array|string $messages Message(s)
 	 */
-	public function __construct($code, $identity, array $messages = array())
+	public function __construct($code, $identity, $messages = array())
 	{
 		$code = (int)$code;
 
@@ -102,7 +110,7 @@ class iMSCP_Authentication_Result
 
 		$this->_code = $code;
 		$this->_identity = $identity;
-		$this->_messages = $messages;
+		$this->_messages = (array) $messages;
 	}
 
 	/**
@@ -134,6 +142,16 @@ class iMSCP_Authentication_Result
 	{
 		return $this->_identity;
 	}
+
+    /**
+     * Set error messages
+     *
+     * @param array|string $messages Message(s)
+     */
+    public function setMessage($messages)
+    {
+        $this->_messages = (array)$messages;
+    }
 
 	/**
 	 * Returns an array of string reasons why the authentication attempt was unsuccessful

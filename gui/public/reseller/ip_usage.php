@@ -167,7 +167,7 @@ function listIPDomains($tpl)
  * Main script
  */
 
-check_login(__FILE__);
+check_login('reseller');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

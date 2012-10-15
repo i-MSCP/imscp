@@ -31,15 +31,16 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('aps')) {
     redirectTo('index.php');
 }
 
-if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
-	list($dmn_id, $rest) = get_domain_default_props($_SESSION['user_id']);
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
 	$query = "
 		SELECT
 			`software_id`, `software_res_del`

@@ -1,6 +1,30 @@
 phpMyAdmin - ChangeLog
 ======================
 
+3.5.3.0 (2012-10-08)
+- bug #3539044 [interface] Browse mode "Show" button gives blank page if no results anymore
+- bug #3534979 [interface] Copy Database Ajax feedback vanishes long before copying is done
+- bug #3527531 [interface] GC-maxlifetime warning incorrectly displayed
+- bug #3526916 [interface] Search fails with JS error when tooltips disabled
+- bug #3544366 [interface] Event comments not saved
+- bug #3549084 [edit] Can't enter date directly when editing inline
+- bug #3548491 [interface] Inline query editor doesn't work from search results
+- bug #3547825 [edit] BLOB download no longer works
+- bug #3541966 [config] Error in generated configuration arrray
+- bug #3553551 [GUI] Invalid HTML code in multi submits confirmation form
+- [interface] Designer sometimes places tables on the top menu
+- bug #3546277 [core] Call to undefined function __() when config file has wrong permissions
+- bug #3540922 [edit] Error searching table with many fields
+- bug #3555104 [edit] Cannot copy a DB with table & views
+- bug #3559925 [privileges] Incorrect updating of the list of users
+- bug #3561224 [edit] cell edit date field with empty date fills in current date
+- bug #3559955 [edit] current_date from function drop down fails on update
+- bug #3562472 add support for Solaris and FreeBSD system load and memory display in server status
+- bug #3553068 [import] Table import from XML file fails
+- replace Highcharts with jqplot for Display chart 
+- bug #3567684 [edit] Pasting value doesn't clear null checkbox
+- bug #3570786 [edit] Datepicker for date and datetime fields is broken
+
 3.5.2.2 (2012-08-12)
 - [security] Fixed XSS vulnerabilities, see PMASA-2012-4
 

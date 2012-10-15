@@ -441,21 +441,17 @@ function PMA_showMySQLDocu($chapter, $link, $big_icon = false, $anchor = '', $ju
         if (empty($link)) {
             $link = 'index';
         }
-        $mysql = '5.0';
+        $mysql = '5.5';
         $lang = 'en';
         if (defined('PMA_MYSQL_INT_VERSION')) {
-            if (PMA_MYSQL_INT_VERSION >= 50500) {
+            if (PMA_MYSQL_INT_VERSION >= 50600) {
+                $mysql = '5.6';
+            } else if (PMA_MYSQL_INT_VERSION >= 50500) {
                 $mysql = '5.5';
-                /* l10n: Please check that translation actually exists. */
-                $lang = _pgettext('MySQL 5.5 documentation language', 'en');
             } else if (PMA_MYSQL_INT_VERSION >= 50100) {
                 $mysql = '5.1';
-                /* l10n: Please check that translation actually exists. */
-                $lang = _pgettext('MySQL 5.1 documentation language', 'en');
             } else {
                 $mysql = '5.0';
-                /* l10n: Please check that translation actually exists. */
-                $lang = _pgettext('MySQL 5.0 documentation language', 'en');
             }
         }
         $url = $cfg['MySQLManualBase'] . '/' . $mysql . '/' . $lang . '/' . $link . '.html';

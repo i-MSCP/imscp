@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -59,7 +59,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo(),));
 
 /**
- * @param $tpl
+ * @param iMSCP_pTemplate $tpl
  */
 function gen_page_data($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
@@ -219,8 +219,7 @@ $tpl->assign(
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),
 		'TR_SENDER_EMAIL' => tr('Senders email'),
 		'TR_SENDER_NAME' => tr('Senders name'),
-		'TR_SEND_MESSAGE' => tr('Send message'),
-		'TR_SENDER_NAME' => tr('Senders name')));
+		'TR_SEND_MESSAGE' => tr('Send message')));
 
 send_circular($tpl);
 gen_page_data($tpl);

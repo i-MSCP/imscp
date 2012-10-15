@@ -962,7 +962,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-check_login(__FILE__);
+check_login('admin');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -1008,7 +1008,6 @@ $tpl->define_dynamic(
 		 'cgi_block' => 'page',
 		 'dns_block' => 'page',
 		 'aps_block' => 'page',
-		 'dns_block' => 'page',
 		 'backup_block' => 'page'
 	)
 );

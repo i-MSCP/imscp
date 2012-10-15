@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: i-MSCP\n"
 "Report-Msgid-Bugs-To: http://trac.i-mscp.net/timeline\n"
-"POT-Creation-Date: 2012-09-14 07:23+0200\n"
-"PO-Revision-Date: 2012-08-23 16:54+0000\n"
+"POT-Creation-Date: 2012-10-11 04:04+0200\n"
+"PO-Revision-Date: 2012-10-09 10:45+0000\n"
 "Last-Translator: Torsten Widmann <info@goover.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -162,18 +162,6 @@ msgid ""
 "The i-MSCP Team\n"
 "\n"
 msgstr "\n\nHola {NAME},\n\nEl teu nom d'usuari és: {USERNAME}\nLa teva contrasenya és: {PASSWORD}\n\nPots iniciar sessió a  {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n\nGràcies per utilitzar els serveis d'i-MSCP.\n\n___________________________\nL'equip de i-MSCP\n\n"
-
-#, php-format
-msgid ""
-"\n"
-"Cannot validate %s record. Reason: '%s'."
-msgstr "\nNo es pot validar el registre %s. Raó: '%s'."
-
-#, php-format
-msgid ""
-"\n"
-"Unknown entry type %s."
-msgstr "\nTipus d'entrada %s desconegut."
 
 msgid ""
 " Show all errors, except for warnings about deprecated code (Production)"
@@ -578,11 +566,11 @@ msgstr "Accions"
 msgid "Activate"
 msgstr "Activar"
 
-msgid "Activate Entries"
-msgstr "Activar les Entrades"
-
 msgid "Activate this plugin"
 msgstr "Activar aquest pluguin"
+
+msgid "Activated"
+msgstr ""
 
 msgid "Activated softwares"
 msgstr "Programes activats"
@@ -623,6 +611,9 @@ msgstr "Afegir usuari SQL"
 msgid "Add SSL certificate"
 msgstr "Afegir certificat SSL"
 
+msgid "Add a new entry"
+msgstr ""
+
 msgid "Add admin"
 msgstr "Afegir administrador"
 
@@ -650,8 +641,11 @@ msgstr "Afegir àlies de domini"
 msgid "Add email account"
 msgstr "Afegir compte de correu"
 
-msgid "Add external mail servers"
-msgstr "Afegir servidors externs de correu"
+msgid "Add external mail server entry"
+msgstr ""
+
+msgid "Add external mail servers for {DOMAIN_UTF8}"
+msgstr ""
 
 msgid "Add group"
 msgstr "Afegir grup"
@@ -671,8 +665,8 @@ msgstr "Afegir nova adreça IP"
 msgid "Add new database"
 msgstr "Afegir nova Base de Dades"
 
-msgid "Add new line"
-msgstr "Afegir nova línia"
+msgid "Add new entry"
+msgstr ""
 
 msgid "Add new protected area"
 msgstr "Afegir nova àrea protegida"
@@ -777,9 +771,6 @@ msgstr "Després de la càrrega, el paquet s'instal.larà als teus sistemes,<br/
 
 msgid "Alias"
 msgstr "Àlies"
-
-msgid "Alias / Canonical name"
-msgstr "Àlies / nom canònic"
 
 msgid "Alias already assigned to another IP address."
 msgstr "Aquest alias ja s'ha assignat a una altra adreça IP."
@@ -930,6 +921,12 @@ msgid "Are you sure you want to change the status of %s?"
 msgstr "Esteu segurs que voleu canviar l'estat del domini %s?"
 
 #, php-format
+msgid ""
+"Are you sure you want to deactivate the external mail server(s) for the '%s'"
+" domain?"
+msgstr ""
+
+#, php-format
 msgid "Are you sure you want to delete %s service port ?"
 msgstr "Estàs segur que vols esborrar el port del servei %s ?"
 
@@ -953,10 +950,6 @@ msgstr "Esteu segurs que voleu eliminar l'usuari FTP <b>%s</b>?"
 #, php-format
 msgid "Are you sure you want to delete the %s catch all?"
 msgstr "Estas segur de voler esborrar el %s catch-all?"
-
-#, php-format
-msgid "Are you sure you want to delete the %s external mail server?"
-msgstr "Estas segur de voler eliminar el servidor extern de correu %s ?"
 
 #, php-format
 msgid "Are you sure you want to delete the %s hosting plan?"
@@ -1116,9 +1109,6 @@ msgstr "Suport CGI: activat"
 msgid "CGI support"
 msgstr "Suport de CGI"
 
-msgid "CNAME"
-msgstr "CNAME"
-
 msgid "CPU MHz"
 msgstr "CPU MHz"
 
@@ -1192,9 +1182,6 @@ msgstr "S'ha programat l'eliminació del certificat."
 
 msgid "Change"
 msgstr "Canviar"
-
-msgid "Change Entries"
-msgstr "Canviar les entrades"
 
 msgid "Change SQL user password"
 msgstr "Canviar contrasenya usuari SQL"
@@ -1335,12 +1322,6 @@ msgstr "País"
 
 msgid "Create"
 msgstr "Crear"
-
-msgid "Create External mail server entry"
-msgstr "Crear entrada de servidor de correu Extern"
-
-msgid "Create Relay Entry"
-msgstr "Crear Entrada de Relay"
 
 msgid "Create catch all"
 msgstr "Crear catch all"
@@ -1532,8 +1513,14 @@ msgstr "Dies"
 msgid "Deactivate"
 msgstr "Desactivar"
 
+msgid "Deactivate selected items"
+msgstr ""
+
 msgid "Deactivate this plugin"
 msgstr "Desactivar aquest plugin"
+
+msgid "Deactivated"
+msgstr ""
 
 #, php-format
 msgid ""
@@ -1593,17 +1580,11 @@ msgstr "Idioma per defecte"
 msgid "Default language successfully updated."
 msgstr "L'idioma per defecte s'ha actualitzat correctament."
 
-msgid "Del"
-msgstr "Esb"
-
 msgid "Delete"
 msgstr "Esborrar"
 
 msgid "Delete CatchAll"
 msgstr "Esborrar CatchAll"
-
-msgid "Delete Relay Entry"
-msgstr "Eliminar Entrada de Relay"
 
 msgid "Delete all tickets"
 msgstr "Eliminar tots els tiquets"
@@ -1811,6 +1792,11 @@ msgid ""
 msgstr "L'àlies de domini que voleu eliminar disposa de comptes FTP.<br>Elimineu-los primer i torneu a intentar d'eliminar l'àlies."
 
 msgid ""
+"Domain alias you are trying to remove has custom DNS records!<br>First "
+"remove them!"
+msgstr ""
+
+msgid ""
 "Domain alias you are trying to remove has email accounts !<br>First remove "
 "them!"
 msgstr "L'àlies de domini que esteu intentant eliminar té comptes de correu!<br> Elimineu-los primer!"
@@ -1933,6 +1919,11 @@ msgstr "Un domini amb aquest nom ja existeix al sistema. "
 msgid "Domain with this name already exist."
 msgstr "Aquest domini ja està registrat al servidor."
 
+msgid ""
+"Domain: Setup an MX record to relay mail of your entire domain (including "
+"subdomains) to an external mail server."
+msgstr ""
+
 msgid "Domains"
 msgstr "Dominis"
 
@@ -1941,9 +1932,6 @@ msgstr "Limit de dominis<br/><span class=\"italic\">(0 il.limitats)</span>"
 
 msgid "Domains per page"
 msgstr "Dominis per pàgina"
-
-msgid "Domaintype not allowed for external mail servers."
-msgstr "Tipus de domini no permès per a servidors de correu externs."
 
 msgid "Don't use special chars like \"@, $, %...\" in the password."
 msgstr "No useu caracters especials com \"@, $, %...\" a la contrasenya."
@@ -1975,17 +1963,11 @@ msgstr "Editar Client"
 msgid "Edit Domain"
 msgstr "Editar domini"
 
-msgid "Edit External mail server entries"
-msgstr "Editar entrades de servidors Externs de correu"
-
 msgid "Edit FTP user"
 msgstr "Editar usuari FTP"
 
 msgid "Edit Ftp account"
 msgstr "Editar Compte Ftp"
-
-msgid "Edit Relay Entry"
-msgstr "Editar entrada de Relay"
 
 msgid "Edit SSL certificate"
 msgstr "Editar certificat SSL"
@@ -2020,8 +2002,8 @@ msgstr "Editar àlies de domini"
 msgid "Edit error page"
 msgstr "Editar pàgina d'error"
 
-msgid "Edit external mail servers"
-msgstr "Editar servidors externs de correu"
+msgid "Edit external mail servers for {DOMAIN_UTF8}"
+msgstr ""
 
 msgid "Edit hosting plan"
 msgstr "Editar pla de hosting"
@@ -2128,8 +2110,10 @@ msgstr "Les contrasenyes introduïdes no coincideixen."
 msgid "Entered passwords doesn't matches."
 msgstr "Les contrasenyes entrades no coincideixen."
 
-msgid "Entry type"
-msgstr "Tipus d'Entrada"
+msgid ""
+"Entries associated to your external mail servers were not found. A "
+"Resynchronization has been scheduled."
+msgstr ""
 
 msgid "Error"
 msgstr "Error"
@@ -2191,20 +2175,26 @@ msgstr "Data de caducitat"
 msgid "Expire time for unconfirmed orders<br /><small>(In days)</small>"
 msgstr "Temps d'expiració per les comandes no confirmades<br><small>(en dies)</small>"
 
+msgid "External Mail Host"
+msgstr ""
+
+msgid "External Mail Servers"
+msgstr ""
+
 msgid "External mail server"
 msgstr "Servidor Extern de correu"
 
+msgid "External mail server entries scheduled for modification."
+msgstr ""
+
+msgid "External mail server entries successfully scheduled for addition."
+msgstr ""
+
+msgid "External mail server entries successfully scheduled for deletion."
+msgstr ""
+
 msgid "External mail servers"
 msgstr "Servidors Externs de correu"
-
-msgid "External mail servers scheduled for addition."
-msgstr "Servidor Extern de correu programat per a ésser afegit."
-
-msgid "External mail servers scheduled for deletion."
-msgstr "Servidor Extern de correu programat per a ésser eliminat."
-
-msgid "External mail servers status"
-msgstr "Estat dels servidors externs de correu"
 
 msgid "FTP"
 msgstr "FTP"
@@ -2556,9 +2546,6 @@ msgstr "Dades de l'adreça IP"
 msgid "IP addresses configured"
 msgstr "Adreces IP configurades"
 
-msgid "IP or FQDN-Servername"
-msgstr "IP o FQDN-Servername"
-
 msgid "IP scheduled for deletion."
 msgstr "S'ha programat la IP per l'esborrat."
 
@@ -2612,9 +2599,6 @@ msgid ""
 "domain account (including subdomains and domain aliases). Of course some "
 "values can be modified through the PHP ini_set() function."
 msgstr "En aquesta pàgina, podeu configurar alguns dels aspectes del comportament de PHP. Vostè ha de notar que, per ara, les directives definides aquí s'apliquen al seu compte de domini complet (inclosos els subdominis i àlies de domini). Per descomptat, alguns valors poden ser modificats a través de la funció ini_set () de PHP."
-
-msgid "Including domain aliases subdomains"
-msgstr "Incloent àlies de domini subdominis"
 
 msgid "Incorrect FTP accounts limit."
 msgstr "Límit de comptes FTP incorrecte."
@@ -2728,6 +2712,9 @@ msgstr "Certificat intermediari"
 msgid "Internationalization"
 msgstr "Internacionalització"
 
+msgid "Invalid MX priority."
+msgstr ""
+
 msgid "Invalid NAME"
 msgstr "NOM invàlid"
 
@@ -2767,6 +2754,9 @@ msgstr "Nom incorrecte."
 
 msgid "Invalid target."
 msgstr "Destí incorrecte."
+
+msgid "Invalid type detected."
+msgstr ""
 
 msgid "Invalid type given. String expected"
 msgstr "Tipus invàlid. S'esperava una cadena"
@@ -2945,12 +2935,6 @@ msgstr "Baixa"
 
 msgid "MB"
 msgstr "MB"
-
-msgid "MX"
-msgstr "MX"
-
-msgid "MX entry IN"
-msgstr "Entrada MX IN"
 
 msgid "Mail"
 msgstr "Correu"
@@ -3337,9 +3321,6 @@ msgstr "No hi ha errors de domini al sistema"
 msgid "No email account system errors"
 msgstr "No hi ha errors amb els comptes de correu al sistema"
 
-msgid "No external mail entries available."
-msgstr "No hi ha disponibles entrades de correu extern."
-
 msgid "No file was uploaded."
 msgstr "No s'ha carregat cap arxiu."
 
@@ -3447,11 +3428,11 @@ msgstr "No s'han trobat usuaris que coincideixin amb la búsqueda"
 msgid "Not found user records matching the search criteria."
 msgstr "No s'han trobat usuaris amb aquestes característiques."
 
-msgid "Not needed in CNAME"
-msgstr "No és necessari en ell CNAME"
-
 msgid "Not used"
 msgstr "No usat"
+
+msgid "Note: You can mix these options."
+msgstr ""
 
 msgid "Nothing been changed."
 msgstr "Res ha canviat."
@@ -3461,6 +3442,9 @@ msgstr "No s'ha trobat res - ho sentim"
 
 msgid "Nothing has been changed."
 msgstr "No s'ha modificat res."
+
+msgid "Nothing has been scheduled for deletion."
+msgstr ""
 
 msgid "Nothing's been changed"
 msgstr "No s'ha realitzat cap modificació"
@@ -3479,9 +3463,6 @@ msgstr "OK"
 
 msgid "Ok"
 msgstr "Ok"
-
-msgid "One DNS entry must still exist."
-msgstr "Ha d'existir al menys una entrada DNS."
 
 msgid "One or more database updates are now available. See the details below."
 msgstr "Hi ha una o més actualitzacions de base de dades disponibles. Vegeu els detalls a sota."
@@ -4156,8 +4137,8 @@ msgstr "Eliminar"
 msgid "Remove IP"
 msgstr "Eliminar IP"
 
-msgid "Remove last"
-msgstr "Eliminar la darrera"
+msgid "Remove last entry"
+msgstr ""
 
 msgid "Remove permissions"
 msgstr "Eliminar permisos"
@@ -4257,6 +4238,9 @@ msgstr "Assignació de distribuïdor"
 
 msgid "Reset"
 msgstr "Reset"
+
+msgid "Reset entries"
+msgstr ""
 
 msgid "Restore"
 msgstr "Restaurar"
@@ -4424,11 +4408,22 @@ msgstr "El codi de seguretat és incorrecte."
 msgid "Select Domain"
 msgstr "Escull el domini"
 
+msgid "Select all entries for deletion."
+msgstr ""
+
 msgid "Select database"
 msgstr "Escull la base de dades"
 
 msgid "Select group:"
 msgstr "Seleccionar grup:"
+
+msgid "Select this entry for deletion."
+msgstr ""
+
+msgid ""
+"Selecting all entries for deletion will cause deactivation of external mail "
+"server."
+msgstr ""
 
 msgid "Send"
 msgstr "Enviar"
@@ -5001,6 +4996,16 @@ msgid ""
 "exists or is not readable."
 msgstr "L'arxiu <strong>%s</strong> per al plugin <strong>%s</strong> no existeix o no es pot llegir."
 
+msgid ""
+"The DNS MX record is no longer allowed. Contact your reseller for further "
+"information."
+msgstr ""
+
+msgid ""
+"The DNS MX record is no longer allowed. You must now use the interface "
+"dedicated to external mail servers."
+msgstr ""
+
 msgid "The IP address you trying to remove is assigned to a reseller."
 msgstr "L'adreça IP que intenteu esborrar està assignada a un distribuïdor."
 
@@ -5043,11 +5048,19 @@ msgstr "El domini o almenys alguna de les seves entitats te un estat diferent de
 msgid "The domain you are trying to edit doesn't exist."
 msgstr "El domini que estàs intentant editar no existeix."
 
+#, php-format
+msgid "The entry %s already exists or is defined twice below."
+msgstr ""
+
 msgid "The external mail feature needs min. 1 email account."
 msgstr "La funció de correu extern necessita al menys 1 compte d'email."
 
 msgid "The i-MSCP application installer needs PHP to enable it."
 msgstr "L'instal·lador d'aplicacions requereix tenir PHP activat."
+
+msgid ""
+"The mail host must not be equal to the domain name for which you add it."
+msgstr ""
 
 msgid "The menu you trying to edit doesn't exist."
 msgstr "El menú que estàs intentant editar no existeix."
@@ -5090,6 +5103,18 @@ msgstr "El fitxer carregat només s'ha carregat parcialment."
 #, php-format
 msgid "The username %s is not available."
 msgstr "El nom d'usuari %s no està disponible."
+
+msgid "The value has been found in the stack"
+msgstr ""
+
+msgid "The value has not been found in the stack"
+msgstr ""
+
+msgid "The values must not be equal"
+msgstr ""
+
+msgid "The values must not be equals"
+msgstr ""
 
 #, php-format
 msgid "There are <em>%s</em> records on system."
@@ -5434,10 +5459,6 @@ msgstr "Acció desconeguda: %s"
 msgid "Unknown domain type."
 msgstr "Tipus de domini desconegut."
 
-#, php-format
-msgid "Unknown entry type %s."
-msgstr "Tipus d'entrada %s desconegut."
-
 msgid "Unknown error"
 msgstr "Error desconegut"
 
@@ -5522,9 +5543,6 @@ msgstr "Pujar"
 
 msgid "Usage of disallowed character in CNAME"
 msgstr "Us de caracters no permesos al CNAME"
-
-msgid "Usage of disallowed character in MX"
-msgstr "Ús de caracter no permés en MX"
 
 msgid "Usage status"
 msgstr "Estadística d'us"
@@ -5774,6 +5792,17 @@ msgid ""
 "needed by many applications but can cause some security issues"
 msgstr "Quan està permés, els scripts poden cridar la funció PHP exec(). Aquesta funció es necessita a moltes aplicacions però pot provocar alguns problemes de seguretat."
 
+msgid "Wildcard"
+msgstr ""
+
+msgid "Wildcard MX only"
+msgstr ""
+
+msgid ""
+"Wildcard: Setup an MX record for inexistent subdomains, for which an "
+"external mail server can handle mail."
+msgstr ""
+
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed."
 msgstr "No estan permesos els comodins tipus %% i ?."
@@ -5861,6 +5890,9 @@ msgstr "Petició errònia"
 
 msgid "Wrong request."
 msgstr "Petició incorrecta."
+
+msgid "Wrong request: all expected data were not received."
+msgstr ""
 
 msgid "Wrong reseller id."
 msgstr "Identificador de distribuïdor incorrecte"
@@ -5958,17 +5990,11 @@ msgstr "Esteu excedint el vostre límit de transit."
 msgid "You are not allowed to edit this DNS record."
 msgstr "No teniu permisos per modificar aquest registre DNS."
 
-msgid "You are not allowed to edit this external mail entry."
-msgstr "No tens permis per editar aquesta entrada de correu extern."
-
 msgid "You are not allowed to perform this operation."
 msgstr "No teniu permisos per realitzar aquesta operació."
 
 msgid "You are not allowed to remove this DNS record."
 msgstr "No teniu permisos per eliminar aquest registre DNS."
-
-msgid "You are not allowed to remove this external mail entry."
-msgstr "No tens permis per eliminar aquesta entrada de correu extern."
 
 msgid "You are not allowed to remove this service port entry."
 msgstr "No tens permís per eliminar aquesta entrada de port de servei."
@@ -6006,6 +6032,9 @@ msgstr "No pots protegir una àrea sense seleccionar usuari(s) htaccess."
 #, php-format
 msgid "You cannot remove the %s IP address."
 msgstr "No podeu esborrar lla IP %s."
+
+msgid "You cannot remove this entry."
+msgstr ""
 
 msgid "You cannot set expire date in past."
 msgstr "No es pot assignar una data d'expiració passada."
@@ -6245,6 +6274,9 @@ msgstr "Has de proporcionar una contrasenya."
 msgid "You must select a file to upload/download."
 msgstr "Has d'escollir un arxiu a pujar"
 
+msgid "You must select a least one item to deactivate."
+msgstr ""
+
 msgid "You must select a network card."
 msgstr "Heu de triar una targeta de xarxa."
 
@@ -6275,6 +6307,12 @@ msgstr "La seva taula"
 
 msgid "Your account has expired. Please renew your subscription."
 msgstr "El seu compte ha expirat. Sisplau renoveu la vostra subscripció."
+
+msgid "Your are not the owner of this domain alias."
+msgstr ""
+
+msgid "Your are not the owner of this domain."
+msgstr ""
 
 msgid "Your consumption"
 msgstr "El teu consum."
@@ -6563,6 +6601,12 @@ msgstr "i-MSCP - Repositori d'aplicacions (Permisos)"
 msgid "i-MSCP - Client / Change Language"
 msgstr "i-MSCP - Client / Canviar Idioma"
 
+msgid "i-MSCP - Client / Mail Account / Add external mail server"
+msgstr ""
+
+msgid "i-MSCP - Client / Mail Accounts / External mail servers"
+msgstr ""
+
 msgid "i-MSCP - Client / Manage domains - Add subdomain"
 msgstr "i-MSCP - Client / Administrar dominis - Afegir subdomini"
 
@@ -6578,12 +6622,6 @@ msgstr "i-MSCP - Client / Administrar mail / Afegir catchall"
 msgid "i-MSCP - Client / Manage mail / Catchall"
 msgstr "i-MSCP - Client / Administrar mail / Catchall"
 
-msgid "i-MSCP - Client / Manage mail / Create External mail server entry"
-msgstr "i-MSCP - Client / Administrar correu / Crear entrades de servidor Extern de correu"
-
-msgid "i-MSCP - Client / Manage mail / Edit External mail server entries"
-msgstr "i-MSCP - Client / Administrar correu / Editar entrada de servidor Extern de correu"
-
 msgid "i-MSCP - Client / Manage mail / Edit account"
 msgstr "i-MSCP - Client / Administrar mail / Editar compte"
 
@@ -6595,9 +6633,6 @@ msgstr "i-MSCP - Client / Administrar correu / Editar quota"
 
 msgid "i-MSCP - Client / Manage mail / Enable autoresponder"
 msgstr "i-MSCP - Client / Ad ministrarmail / Habilitar autoresposta"
-
-msgid "i-MSCP - Client / Manage mail / External mail servers"
-msgstr "i-MSCP - Client / Administrar correu / Servidors Externs de correu"
 
 msgid "i-MSCP - Client / Support Ticket System / Closed Tickets"
 msgstr "i-MSCP - Client / Sistema de Suport / Tiquets Tancats"
@@ -6928,9 +6963,6 @@ msgstr "falta el domini"
 
 msgid "no"
 msgstr "no"
-
-msgid "not activated"
-msgstr "no activat"
 
 msgid "not available"
 msgstr "no disponible"

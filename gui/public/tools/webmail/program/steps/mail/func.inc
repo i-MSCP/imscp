@@ -93,11 +93,13 @@ if (empty($RCMAIL->action) || $RCMAIL->action == 'list') {
   // set current mailbox and some other vars in client environment
   $OUTPUT->set_env('mailbox', $mbox_name);
   $OUTPUT->set_env('pagesize', $RCMAIL->storage->get_pagesize());
-  $OUTPUT->set_env('quota', $RCMAIL->storage->get_capability('QUOTA'));
   $OUTPUT->set_env('delimiter', $RCMAIL->storage->get_hierarchy_delimiter());
   $OUTPUT->set_env('threading', $threading);
   $OUTPUT->set_env('threads', $threading || $RCMAIL->storage->get_capability('THREAD'));
   $OUTPUT->set_env('preview_pane_mark_read', $RCMAIL->config->get('preview_pane_mark_read', 0));
+  if ($RCMAIL->storage->get_capability('QUOTA')) {
+    $OUTPUT->set_env('quota', true);
+  }
 
   if ($CONFIG['delete_junk'])
     $OUTPUT->set_env('delete_junk', true);
@@ -317,7 +319,7 @@ function rcmail_js_message_list($a_headers, $insert_top=FALSE, $a_show_cols=null
       $col_name = $col == 'fromto' ? $smart_col : $col;
 
       if (in_array($col_name, array('from', 'to', 'cc', 'replyto')))
-        $cont = Q(rcmail_address_string($header->$col_name, 3, false, null, $header->charset), 'show');
+        $cont = rcmail_address_string($header->$col_name, 3, false, null, $header->charset);
       else if ($col == 'subject') {
         $cont = trim(rcube_mime::decode_header($header->$col, $header->charset));
         if (!$cont) $cont = rcube_label('nosubject');
@@ -950,6 +952,8 @@ function rcmail_message_headers($attrib, $headers=NULL)
   $output_headers = array();
 
   foreach ($standard_headers as $hkey) {
+    $ishtml = false;
+
     if ($headers[$hkey])
       $value = $headers[$hkey];
     else if ($headers['others'][$hkey])
@@ -959,6 +963,8 @@ function rcmail_message_headers($attrib, $headers=NULL)
 
     if (in_array($hkey, $exclude_headers))
       continue;
+
+    $header_title = rcube_label(preg_replace('/(^mail-|-)/', '', $hkey));
 
     if ($hkey == 'date') {
       if ($PRINT_MODE)
@@ -974,32 +980,41 @@ function rcmail_message_headers($attrib, $headers=NULL)
         continue;
     }
     else if ($hkey == 'replyto') {
-      if ($headers['replyto'] != $headers['from'])
-        $header_value = rcmail_address_string($value, null, true, $attrib['addicon'], $headers['charset']);
+      if ($headers['replyto'] != $headers['from']) {
+        $header_value = rcmail_address_string($value, $attrib['max'], true, $attrib['addicon'], $headers['charset'], $header_title);
+        $ishtml = true;
+      }
       else
         continue;
     }
     else if ($hkey == 'mail-reply-to') {
       if ($headers['mail-replyto'] != $headers['reply-to']
         && $headers['reply-to'] != $headers['from']
-      )
-        $header_value = rcmail_address_string($value, null, true, $attrib['addicon'], $headers['charset']);
+      ) {
+        $header_value = rcmail_address_string($value, $attrib['max'], true, $attrib['addicon'], $headers['charset'], $header_title);
+        $ishtml = true;
+      }
       else
         continue;
     }
     else if ($hkey == 'mail-followup-to') {
-      $header_value = rcmail_address_string($value, null, true, $attrib['addicon'], $headers['charset']);
+      $header_value = rcmail_address_string($value, $attrib['max'], true, $attrib['addicon'], $headers['charset'], $header_title);
+      $ishtml = true;
     }
-    else if (in_array($hkey, array('from', 'to', 'cc', 'bcc')))
-      $header_value = rcmail_address_string($value, null, true, $attrib['addicon'], $headers['charset']);
+    else if (in_array($hkey, array('from', 'to', 'cc', 'bcc'))) {
+      $header_value = rcmail_address_string($value, $attrib['max'], true, $attrib['addicon'], $headers['charset'], $header_title);
+      $ishtml = true;
+    }
     else if ($hkey == 'subject' && empty($value))
       $header_value = rcube_label('nosubject');
     else
       $header_value = trim(rcube_mime::decode_header($value, $headers['charset']));
 
     $output_headers[$hkey] = array(
-        'title' => rcube_label(preg_replace('/(^mail-|-)/', '', $hkey)),
-        'value' => $header_value, 'raw' => $value
+        'title' => $header_title,
+        'value' => $header_value,
+        'raw' => $value,
+        'html' => $ishtml,
     );
   }
 
@@ -1015,7 +1030,7 @@ function rcmail_message_headers($attrib, $headers=NULL)
 
   foreach ($plugin['output'] as $hkey => $row) {
     $table->add(array('class' => 'header-title'), Q($row['title']));
-    $table->add(array('class' => 'header '.$hkey), Q($row['value'], ($hkey == 'subject' ? 'strict' : 'show')));
+    $table->add(array('class' => 'header '.$hkey), $row['html'] ? $row['value'] : Q($row['value'], ($hkey == 'subject' ? 'strict' : 'show')));
   }
 
   return $table->show($attrib);
@@ -1339,7 +1354,7 @@ function rcmail_alter_html_link($matches)
 /**
  * decode address string and re-format it as HTML links
  */
-function rcmail_address_string($input, $max=null, $linked=false, $addicon=null, $default_charset=null)
+function rcmail_address_string($input, $max=null, $linked=false, $addicon=null, $default_charset=null, $title=null)
 {
   global $RCMAIL, $PRINT_MODE, $CONFIG;
 
@@ -1351,6 +1366,7 @@ function rcmail_address_string($input, $max=null, $linked=false, $addicon=null, 
   $c = count($a_parts);
   $j = 0;
   $out = '';
+  $allvalues = array();
 
   if ($addicon && !isset($_SESSION['writeable_abook'])) {
     $_SESSION['writeable_abook'] = $RCMAIL->get_address_sources(true) ? true : false;
@@ -1358,7 +1374,6 @@ function rcmail_address_string($input, $max=null, $linked=false, $addicon=null, 
 
   foreach ($a_parts as $part) {
     $j++;
-
     $name   = $part['name'];
     $mailto = $part['mailto'];
     $string = $part['string'];
@@ -1389,7 +1404,7 @@ function rcmail_address_string($input, $max=null, $linked=false, $addicon=null, 
       }
 
       if ($addicon && $_SESSION['writeable_abook']) {
-        $address = html::span(null, $address . html::a(array(
+        $address .= html::a(array(
             'href' => "#add",
             'onclick' => sprintf("return %s.command('add-contact','%s',this)", JS_OBJECT_NAME, $string),
             'title' => rcube_label('addtoaddressbook'),
@@ -1398,24 +1413,44 @@ function rcmail_address_string($input, $max=null, $linked=false, $addicon=null, 
           html::img(array(
             'src' => $CONFIG['skin_path'] . $addicon,
             'alt' => "Add contact",
-          ))));
+          )));
       }
-      $out .= $address;
     }
     else {
+      $address = '';
       if ($name)
-        $out .= Q($name);
+        $address .= Q($name);
       if ($mailto)
-        $out .= (strlen($out) ? ' ' : '') . sprintf('&lt;%s&gt;', Q($mailto));
+        $address .= (strlen($address) ? ' ' : '') . sprintf('&lt;%s&gt;', Q($mailto));
     }
 
-    if ($c>$j)
-      $out .= ','.($max ? '&nbsp;' : ' ');
+    $address = html::span('adr', $address);
+    $allvalues[] = $address;
 
-    if ($max && $j==$max && $c>$j) {
-      $out .= '...';
-      break;
+    if (!$moreadrs)
+      $out .= ($out ? ', ' : '') . $address;
+
+    if ($max && $j == $max && $c > $j) {
+      if ($linked) {
+        $moreadrs = $c - $j;
+      }
+      else {
+        $out .= '...';
+        break;
+      }
     }
+  }
+
+  if ($moreadrs) {
+      $out .= ' ' . html::a(array(
+          'href' => '#more',
+          'class' => 'morelink',
+          'onclick' => sprintf("return %s.show_popup_dialog('%s','%s')",
+            JS_OBJECT_NAME,
+            JQ(join(', ', $allvalues)),
+            JQ($title))
+        ),
+        Q(rcube_label(array('name' => 'andnmore', 'vars' => array('nr' => $moreadrs)))));
   }
 
   return $out;

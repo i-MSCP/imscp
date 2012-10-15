@@ -75,7 +75,6 @@ function rcube_mail_ui()
       }
 
       if (rcmail.env.action == 'show' || rcmail.env.action == 'preview') {
-        layout_messageview();
         rcmail.addEventListener('aftershow-headers', function() { layout_messageview(); });
         rcmail.addEventListener('afterhide-headers', function() { layout_messageview(); });
         $('#previewheaderstoggle').click(function(e){ toggle_preview_headers(this); return false });
@@ -145,6 +144,10 @@ function rcube_mail_ui()
       }
       else if (rcmail.env.action == 'identities') {
         new rcube_splitter({ id:'identviewsplitter', p1:'#identitieslist', p2:'#identity-details',
+          orientation:'v', relative:true, start:266, min:180, size:12 }).init();
+      }
+      else if (rcmail.env.action == 'preferences' || !rcmail.env.action) {
+        new rcube_splitter({ id:'prefviewsplitter', p1:'#sectionslist', p2:'#preferences-box',
           orientation:'v', relative:true, start:266, min:180, size:12 }).init();
       }
     }
@@ -313,7 +316,7 @@ function rcube_mail_ui()
    */
   function layout_messageview()
   {
-    $('#messagecontent').css('top', ($('#messageheader').outerHeight() + 10) + 'px');
+    $('#messagecontent').css('top', ($('#messageheader').outerHeight() + 1) + 'px');
     $('#message-objects div a').addClass('button');
 
     if (!$('#attachment-list li').length) {

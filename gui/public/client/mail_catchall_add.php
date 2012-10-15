@@ -40,7 +40,7 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('mail')) {
@@ -74,30 +74,9 @@ function gen_dynamic_page_data($tpl, $id) {
 	global $domain_id;
 	$cfg = iMSCP_Registry::get('config');
 
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
-	) = get_domain_default_props($_SESSION['user_id']);
+    $domainProps = get_domain_default_props($_SESSION['user_id']);
+    $dmn_id = $domainProps['domain_id'];
+    $dmn_mailacc_limit = $domainProps['domain_mailacc_limit'];
 
 	$domain_id = $dmn_id;
 

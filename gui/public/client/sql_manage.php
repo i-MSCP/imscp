@@ -134,14 +134,14 @@ require_once 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
 
-check_login(__FILE__);
+check_login('user');
 
 // If the feature is disabled, redirects in silent way
 if (!customerHasFeature('sql')) {
     redirectTo('index.php');
 }
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -169,7 +169,6 @@ $tpl->assign(
 		'TR_PHPMYADMIN' => tr('phpMyAdmin'),
 		'TR_DATABASE_USERS' => tr('Database users'),
 		'TR_ADD_USER' => tr('Add SQL user'),
-		'TR_CHANGE_PASSWORD' => tr('Change password'),
 		'TR_LOGIN_PMA' => tr('Login into PhpMyAdmin'),
 		'TR_DATABASE_MESSAGE_DELETE' => tr("This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete the '%s' database?", true, '%s'),
 		'TR_USER_MESSAGE_DELETE' => tr("Are you sure you want delete the '%s' SQL user?", true, '%s'),

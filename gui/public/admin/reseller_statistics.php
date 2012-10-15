@@ -130,7 +130,7 @@ function _admin_generateResellerStatisticsEntry($tpl, $resellerId, $resellerName
 // Include core library
 require 'imscp-lib.php';
 
-check_login(__FILE__);
+check_login('admin');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');

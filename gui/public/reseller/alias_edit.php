@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 // If the feature is disabled, redirects in silent way
 if(!resellerHasFeature('domain_aliases')) {
@@ -72,7 +72,6 @@ $tpl->assign(
 		'TR_CANCEL' => tr('Cancel'),
 		'TR_ENABLE_FWD' => tr("Enable Forward"),
 		'TR_ENABLE' => tr("Enable"),
-		'TR_DISABLE' => tr("Disable"),
 		'TR_DISABLE' => tr("Disable"),
 		'TR_PREFIX_HTTP' => 'http://',
 		'TR_PREFIX_HTTPS' => 'https://',

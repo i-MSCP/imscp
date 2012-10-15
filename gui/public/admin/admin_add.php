@@ -40,7 +40,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-check_login(__FILE__);
+check_login('admin');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -277,7 +277,6 @@ $tpl->assign(
 		'TR_STREET_2' => tr('Street 2'),
 		'TR_PHONE' => tr('Phone'),
 		'TR_FAX' => tr('Fax'),
-		'TR_PHONE' => tr('Phone'),
 		'TR_ADD' => tr('Add'),
 		'GENPAS' => passgen()));
 

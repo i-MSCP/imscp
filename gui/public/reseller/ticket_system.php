@@ -44,14 +44,14 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
 
-check_login(__FILE__);
+check_login('reseller');
 
 // If the feature is disabled, redirects in silent way
 if(!resellerHasFeature('support')) {
 	return 'index.php';
 }
 
-/** @var $cfg abook_local_file */
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $userId = $_SESSION['user_id'];

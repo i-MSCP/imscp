@@ -135,7 +135,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			// Get the database update method name
 			$databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
 
-			// Gets the querie(s) from the database update method
+			// Gets the queries from the database update method.
 			// A database update method can return void, an array (stack of SQL
 			// statements) or a string (SQL statement)
 			$queryStack = $this->$databaseUpdateMethod();
@@ -143,8 +143,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 			if (!empty($queryStack)) {
 				try {
 					// One transaction per database update
-					// If a query from a database update fail, all $queries from it
-					// are canceled. It's only valable for database updates that are
+					// If a query from a database update fail, all queries from it
+					// are canceled. It's only valid for database updates that are
 					// free of any statements causing an implicit commit
 					$pdo->beginTransaction();
 
@@ -448,6 +448,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 	/**
 	 * Catch any database updates that were removed.
 	 *
+     * @throws iMSCP_Update_Exception
 	 * @param  string $updateMethod Database update method name
 	 * @param  array $param
 	 * @return void
@@ -923,38 +924,6 @@ class iMSCP_Update_Database extends iMSCP_Update
 			"ALTER TABLE `user_gui_props` CHANGE `lang` `lang`
 				VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL",
 			"UPDATE `user_gui_props` SET `logo` = '' WHERE `logo` = 0");
-	}
-
-	/**
-	 * #145: Deletes possible orphan items in many tables
-	 *
-	 * @author Laurent Declercq <l.declercq@i-mscp.net>
-	 * @since r4961
-	 * @return array Stack of SQL statements to be executed
-	 */
-	protected function _databaseUpdate_70()
-	{
-		$sqlUpd = array();
-
-		$tablesToForeignKey = array(
-			'email_tpls' => 'owner_id',
-			'hosting_plans' => 'reseller_id',
-			'orders' => 'user_id',
-			'orders_settings' => 'user_id',
-			'reseller_props' => 'reseller_id',
-			'tickets' => 'ticket_to',
-			'tickets' => 'ticket_from',
-			'user_gui_props' => 'user_id',
-			'web_software' => 'reseller_id');
-
-		$stmt = execute_query('SELECT `admin_id` FROM `admin`');
-		$usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
-
-		foreach ($tablesToForeignKey as $table => $foreignKey) {
-			$sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
-		}
-
-		return $sqlUpd;
 	}
 
 	/**
@@ -1720,7 +1689,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_110(){
+	protected function _databaseUpdate_110()
+    {
 		return array(
 			$this->_dropColumn('domain', 'external_mail_status'),
 			$this->_dropColumn('domain_aliasses', 'external_mail_status'),
@@ -1733,7 +1703,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Sascha Bay <worst.case@gmx.de>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_111(){
+	protected function _databaseUpdate_111()
+    {
 		return "
 			ALTER TABLE `mail_users` CHANGE `quota` `quota` INT( 10 ) NULL DEFAULT '104857600'
 		";
@@ -1746,7 +1717,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @return array Stack of SQL statements to be executed
 	 */
-	protected function _databaseUpdate_112(){
+	protected function _databaseUpdate_112()
+    {
 		return array(
 			'ALTER TABLE `quotalimits` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\'',
 			'ALTER TABLE `quotatallies` CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT \'\''
@@ -1769,4 +1741,139 @@ class iMSCP_Update_Database extends iMSCP_Update
 		);
 	}
 
+    /**
+     * #447: External mail server feature is broken
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_114()
+    {
+        return array(
+            // domain_dns.domain_id field should never be set to zero
+            "UPDATE
+              `domain_dns` AS `t1`
+             SET
+              `t1`.`domain_id` = (SELECT `t2`.`domain_id` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`)
+             WHERE
+              `t1`.`domain_id` = 0",
+            // domain_dns.domain_dns field should not be empty (domain related entries)
+            "UPDATE
+                `domain_dns` AS `t1`
+             SET
+                `t1`.`domain_dns` = CONCAT((SELECT `t2`.`domain_name` FROM `domain` AS `t2` WHERE `t1`.`domain_id` = `t2`.`domain_id`), '.')
+             WHERE
+                `t1`.`domain_dns` = ''
+             AND
+                `t1`.`protected` = 'yes'",
+            // domain_dns.domain_dns field should not be empty (domain aliases related entries)
+            "UPDATE
+                `domain_dns` AS `t1`
+             SET
+                `t1`.`domain_dns` = CONCAT((SELECT `t2`.`alias_name` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`), '.')
+             WHERE
+                `t1`.`domain_dns` = ''
+             AND
+                `t1`.`protected` = 'yes'",
+            // domain_dns.domain_dns with value * must be completed with the domain name (domain related entries)
+            "UPDATE
+              `domain_dns` AS `t1`
+             SET
+              `t1`.`domain_dns` = CONCAT('*.', (SELECT `t2`.`domain_name` FROM `domain` AS `t2` WHERE `t1`.`domain_id` = `t2`.`domain_id`), '.')
+             WHERE
+              `t1`.`alias_id` = 0
+             AND
+              `t1`.`domain_dns` = '*'
+             AND
+              `t1`.`protected` = 'yes'",
+            // domain_dns.domain_dns with value * must be completed with the domain name (domain aliases related entries)
+            "UPDATE
+              `domain_dns` AS `t1`
+             SET
+              `t1`.`domain_dns` = CONCAT('*.', (SELECT `t2`.`alias_name` FROM `domain_aliasses` AS `t2` WHERE `t1`.`alias_id` = `t2`.`alias_id`), '.')
+             WHERE
+              `t1`.`alias_id` <> 0
+             AND
+              `t1`.`domain_dns` = '*'
+             AND
+              `t1`.`protected` = 'yes'",
+            // If a domain has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
+            "UPDATE
+              `domain` AS `t1`
+             SET
+              `t1`.`external_mail` = 'wildcard'
+             WHERE
+              0 = (SELECT COUNT(`t2`.`domain_dns_id`) FROM `domain_dns` AS `t2` WHERE `t2`.`domain_id` = `t1`.`domain_id` AND `t2`.`alias_id` = 0 AND `t2`.`domain_dns` NOT LIKE '*.%')
+             AND
+              `t1`.external_mail = 'on'",
+            // If a domain alias has only wildcard MX entries for external servers, update the domain.external_mail field to 'wildcard'
+            "UPDATE
+              `domain_aliasses` AS `t1`
+             SET
+              `t1`.`external_mail` = 'wildcard'
+             WHERE
+              `t1`.`alias_id` <> 0
+             AND
+              0 = (SELECT COUNT(`t2`.`domain_dns_id`) FROM `domain_dns` AS `t2` WHERE `t2`.`alias_id` = `t1`.`alias_id` AND `t2`.`domain_dns` NOT LIKE '*.%')
+             AND
+              `t1`.`external_mail` = 'on'",
+            // Custom DNS CNAME record set via external mail feature are no longer allowed (User will have to re-add them)
+            // via the custom DNS interface (easy update way)
+            "DELETE FROM `domain_dns` WHERE `domain_type` = 'CNAME' AND `protected` = 'yes'"
+        );
+    }
+
+    /**
+     * #145: Deletes possible orphan items in many tables
+     *
+     * Moved from database update 70 due to duplicate key in foreign keys map.
+     *
+     * @author Laurent Declercq <l.declercq@i-mscp.net>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_115()
+    {
+        $sqlUpd = array();
+
+        $tablesToForeignKey = array(
+            'email_tpls' => 'owner_id',
+            'hosting_plans' => 'reseller_id',
+            'orders' => 'user_id',
+            'orders_settings' => 'user_id',
+            'reseller_props' => 'reseller_id',
+            'tickets' => array('ticket_to', 'ticket_from'),
+            'user_gui_props' => 'user_id',
+            'web_software' => 'reseller_id'
+        );
+
+        $stmt = execute_query('SELECT `admin_id` FROM `admin`');
+        $usersIds = implode(',', $stmt->fetchall(PDO::FETCH_COLUMN));
+
+        foreach ($tablesToForeignKey as $table => $foreignKey) {
+            if (is_array($foreignKey)) {
+                foreach ($foreignKey as $key) {
+                    $sqlUpd[] = "DELETE FROM `$table` WHERE `$key` NOT IN ($usersIds)";
+                }
+            } else {
+                $sqlUpd[] = "DELETE FROM `$table` WHERE `$foreignKey` NOT IN ($usersIds)";
+            }
+        }
+
+        return $sqlUpd;
+    }
+
+    /**
+     * Disk detail integration
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_116()
+    {
+        return array(
+            $this->_addColumn('domain', 'domain_disk_file', 'bigint(20) unsigned default NULL AFTER `domain_disk_usage`'),
+            $this->_addColumn('domain', 'domain_disk_mail', 'bigint(20) unsigned default NULL AFTER `domain_disk_file`'),
+            $this->_addColumn('domain', 'domain_disk_sql', 'bigint(20) unsigned default NULL AFTER `domain_disk_mail`')
+        );
+    }
 }

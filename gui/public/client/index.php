@@ -172,10 +172,14 @@ function client_generateFeatureStatus($tpl)
 			 'PHP_DIRECTIVES_EDITOR_STATUS' => customerHasFeature('php_editor') ? $trYes : $trNo,
 			 'CGI_FEATURE_STATUS' => customerHasFeature('cgi') ? $trYes : $trNo,
 			 'CUSTOM_DNS_RECORDS_FEATURE_STATUS' => customerHasFeature('custom_dns_records') ? $trYes : $trNo,
-			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo));
+             'EXTERNAL_MAIL_SERVERS_FEATURE_STATUS' => customerHasFeature(array('mail', 'external_mail')) ? $trYes : $trNo,
+			 'APP_INSTALLER_FEATURE_STATUS' => customerHasFeature('aps') ? $trYes : $trNo,
+             'AWSTATS_FEATURE_STATUS' => customerHasFeature('awstats') ? $trYes : $trNo
+        )
+    );
 
 	if (customerHasFeature('backup')) {
-		$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+		$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 		// Backup feature for customer can also be disabled by reseller via GUI
 		switch ($domainProperties['allowbackup']) {
@@ -197,12 +201,6 @@ function client_generateFeatureStatus($tpl)
 	} else {
 		$tpl->assign('BACKUP_FEATURE_STATUS', $trNo);
 	}
-
-	if (customerHasFeature('awstats')) {
-		$tpl->assign('AWSTATS_FEATURE_STATUS', $trYes);
-	} else {
-		$tpl->assign('AWSTATS_FEATURE_STATUS', $trNo);
-	}
 }
 
 /**
@@ -213,7 +211,7 @@ function client_generateFeatureStatus($tpl)
  */
 function client_makeTrafficUsage($domainId)
 {
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
 	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
 
@@ -281,7 +279,7 @@ function client_generateDomainExpiresInformation($tpl)
 {
 	/** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
-	$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+	$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 	if ($domainProperties['domain_expires'] != 0) {
 		$domainRemainingTime = '';
@@ -324,7 +322,7 @@ iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart)
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
-check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
+check_login('user', $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('layout', 'shared/layouts/ui.tpl');
@@ -350,7 +348,7 @@ client_generateSupportSystemNotices();
 client_generateDomainExpiresInformation($tpl);
 client_generateFeatureStatus($tpl);
 
-$domainProperties = get_domain_default_props($_SESSION['user_id'], true);
+$domainProperties = get_domain_default_props($_SESSION['user_id']);
 
 list(
 	$domainTrafficPercent, $domainTrafficUsage
@@ -391,7 +389,7 @@ $tpl->assign(
 		 'TR_DOMAIN_ALIASES_FEATURE' => tr('Domain aliases'),
 		 'DOMAIN_ALIASES_FEATURE_STATUS' => gen_num_limit_msg($domainAliasCount, $domainProperties['domain_alias_limit']),
 		 'SUBDOMAINS_FEATURE_STATUS' => gen_num_limit_msg($subdomainCount, $domainProperties['domain_subd_limit']),
-		 'TR_SUBDOMAINS_FEATURE' => tr('Subdomains') . (($domainProperties['domain_alias_limit'] != -1)? '<br />(<small>' .  tr('Including domain aliases subdomains') . '</small>)' : ''),
+		 'TR_SUBDOMAINS_FEATURE' => tr('Subdomains'),
 		 'TR_FTP_ACCOUNTS_FEATURE' => tr('Ftp accounts'),
 		 'FTP_ACCOUNTS_FEATURE_STATUS' => gen_num_limit_msg($ftpAccountsCount, $domainProperties['domain_ftpacc_limit']),
 		 'TR_MAIL_ACCOUNTS_FEATURE' => tr('Mail accounts'),
@@ -404,12 +402,21 @@ $tpl->assign(
 		 'TR_PHP_DIRECTIVES_EDITOR_SUPPORT_FEATURE' => tr('PHP Editor'),
 		 'TR_CGI_SUPPORT_FEATURE' => tr('CGI'),
 		 'TR_CUSTOM_DNS_RECORDS_FEATURE' => tr('Custom DNS records'),
+         'TR_EXTERNAL_MAIL_SERVER_FEATURE' => tr('External Mail Servers'),
 		 'TR_APP_INSTALLER_FEATURE' => tr('Softwares installer'),
 		 'TR_BACKUP_FEATURE' => tr('Backup'),
 		 'TR_AWSTATS_FEATURE' => tr('Web statistics (AWStats)'),
-
 		 'TR_TRAFFIC_USAGE' => tr('Traffic usage'),
-		 'TR_DISK_USAGE' => tr('Disk usage')));
+		 'TR_DISK_USAGE' => tr('Disk usage'),
+         'TR_DISK_USAGE_DETAIL' => tr('Disk usage detail'),
+         'TR_DISK_FILE_USAGE' => tr('File usage'),
+         'DISK_FILESIZE' => bytesHuman($domainProperties['domain_disk_file']),
+         'TR_DISK_DATABASE_USAGE' => tr('Database usage'),
+         'DISK_SQLSIZE' => bytesHuman($domainProperties['domain_disk_sql']),
+         'TR_DISK_MAIL_USAGE' => tr('Mail usage'),
+         'DISK_MAILSIZE' => bytesHuman($domainProperties['domain_disk_mail'])
+    )
+);
 
 generatePageMessage($tpl);
 

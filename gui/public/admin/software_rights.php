@@ -31,7 +31,7 @@ require 'imscp-lib.php';
 
 iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 
-check_login(__FILE__);
+check_login('admin');
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -70,7 +70,7 @@ $tpl->assign(
 		'ISP_LOGO' => layout_getUserLogo()));
 
 $res_cnt = get_reseller_rights($tpl, $software_id);
-$res_list = get_reseller_list ($tpl, $software_id);
+get_reseller_list($tpl, $software_id);
 
 $query = "
 	SELECT
