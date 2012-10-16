@@ -106,14 +106,14 @@ class Socket extends AbstractAdapter
             throw new \RuntimeException('Http request failed: Trying to write but we are connected to the wrong host');
         }
 
-        // Build request
+        // Build request Line
         $path = $url['path'];
         if (null !== $url['query']) {
             $path .= '?' . $url['query'];
         }
-
         $request = "{$this->options['method']} {$path} HTTP/{$this->options['httpversion']}\r\n"; // HTTP request line
 
+        // Build request headers
         foreach ($headers as $name => $value) { // Headers
             if (is_string($name)) {
                 $value = ucfirst($name) . ": $value";
@@ -122,9 +122,10 @@ class Socket extends AbstractAdapter
             $request .= "$value\r\n";
         }
 
-        $request .= "\r\n" . $body; // Request body
+        // Add request body
+        $request .= "\r\n" . $body;
 
-        // Write request
+        // Write request to the server
         if (!@fwrite($this->socket, $request)) {
             throw new \RuntimeException('Http request failed: Unable to write request to server');
         }
@@ -171,6 +172,9 @@ class Socket extends AbstractAdapter
         $this->checkSocketReadTimeout();
 
         // Parse the raw response to retrieve both Status-line and headers
+        echo '<strong>Response (Only headers)</strong>', "\n\n";
+        echo $response, "\n";
+
         $responseArr = $this->parseRawResponse($response);
         $statusCode = $responseArr['status_code'];
 
@@ -279,6 +283,8 @@ class Socket extends AbstractAdapter
             $this->close();
         }
 
+        echo '<strong>Entire response</strong>', "\n\n";
+        echo $response, "\n";
         return $response;
     }
 

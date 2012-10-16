@@ -47,17 +47,17 @@ use iMSCP\Http\Client\Adapter\Socket;
 class Client
 {
     /**
-     * @var array Supported HTTP authentication methods (digest still not implemented)
+     * @var array Supported HTTP authentication methods (digest is not implemented yet)
      */
     protected $supportedAuthMethod = array('basic', 'digest');
 
     /**
-     * @var array Supported HTTP version
+     * @var array Supported HTTP versions
      */
     protected $httpVersions = array('1.0', '1.1');
 
     /**
-     * @var array Allowed HTTP methods
+     * @var array Supported HTTP methods
      */
     protected $httpMethods = array('HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE');
 
@@ -65,20 +65,22 @@ class Client
      * @var array Default options
      */
     protected $options = array(
-        'maxredirects' => 5,
-        'strictredirects' => false,
-        'useragent' => 'iMSCP/1.1.0 iMSCP_Http_Client Mozilla/5.0',
+        'maxredirects' => 5, // How many redirection are allowed for a request?
+        'strictredirects' => false, // Flag indicating whether strict redirection should be applyed (See
+        'useragent' => 'iMSCP/1.1.0 iMSCP_Http_Client',
         'timeout' => 10,
         'httpversion' => '1.1',
         'keepalive' => false,
         'rfc3986strict' => false,
         'encodecookies' => true,
+        'keepcookies' => true, // Flag indicating whether cookies of previous request should be keep
+        'keepheaders' => true, // Flag indicating whether headers from previous request should be keep
 
         // HTTP parameters
-        'method' => 'GET', // HTTP method to use (see above)
-        'headers' => null, // OPTIONAL An array containing raw header string or an associative array of header fieldname/fieldvalue
-        'cookies' => null, // OPTIONAL an array of cookies
-        'body' => null, // OPTIONAL Either a raw string representing request body or an array|object describing POST parameters
+        'method' => 'GET', // HTTP method to use (see above for supported HTTP methods)
+        'headers' => null, // An string containing raw headers or an associative array of header fieldname/fieldvalue
+        'cookies' => null, // an array of cookies (see below for the expected structure)
+        'body' => null, // Either a string representing the request body (properly encoded), or an array or object describing POST parameters
     );
 
     /**
@@ -121,7 +123,8 @@ class Client
      *            'expires' => '1381791292',
      *            'path' => '/',
      *            'domain' => '.nuxwin.com'
-     *         ...
+     *            'secure' =>  false,
+     *            'httponly => true
      *     ),
      *  'body' => array(
      *        'param1' => 'value'
@@ -148,22 +151,51 @@ class Client
     /**
      * Set options by merging them with default and any previously set options
      *
+     * @throws \InvalidArgumentException
      * @param array $options Options
      * @return Client
      */
     public function setOptions(array $options = array())
     {
-        // Process some normalization
         $options = array_change_key_case($options, CASE_LOWER);
 
-        if (isset($options['headers']) && is_array($options['headers'])) {
-            $options['headers'] = array_change_key_case($options['headers'], CASE_LOWER);
+        if (isset($options['headers'])) {
+            if (is_array($options['headers'])) {
+                $options['headers'] = array_change_key_case($options['headers'], CASE_LOWER);
+            } elseif (is_string($options['headers'])) {
+                $options['headers'] = $this->parseRawHeaders($options['headers']);
+            } else {
+                throw new \InvalidArgumentException(
+                    'Http request faild: headers option should either be a string or array'
+                );
+            }
         }
 
-        if (isset($options['cookies']) && is_array($options['cookies'])) {
-            foreach ($options['cookies'] as &$cookie) {
-                $cookie = array_change_key_case($cookie, CASE_LOWER);
+        if (isset($options['cookies'])) {
+            if (!is_array($options['cookies'])) {
+                throw new \InvalidArgumentException('HTTP request failed: Cookies options must be an array');
             }
+
+            foreach($options['cookies'] as &$cookie) {
+                $cookie = array_change_key_case($cookie, CASE_LOWER);
+
+                if (!is_array($cookie)) {
+                    throw new \InvalidArgumentException(
+                        'Http request failed: Any cookie definition should be provided as an array'
+                    );
+                } elseif (!isset($cookie['name'])) {
+                    throw new \InvalidArgumentException(
+                        'Http request failed: A cookie name is required to generate a field value for this cookie'
+                    );
+                } elseif (preg_match("/[=,; \t\r\n\013\014]/", $cookie['name'])) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Http request failed: Invalid cookie name provided: %s', $cookie['name'])
+                    );
+                }
+            }
+
+            $this->storeCookies($options['cookies']);
+            unset($options['cookies']);
         }
 
         $this->options = array_merge($this->options, $options);
@@ -177,7 +209,7 @@ class Client
     }
 
     /**
-     * Returns options
+     * Returns options as currently defined
      *
      * @return array
      */
@@ -205,7 +237,7 @@ class Client
      *
      * @return AbstractAdapter
      */
-    protected function getAdapter()
+    public function getAdapter()
     {
         if (null === $this->adapter) {
             $this->setAdapter(new Socket());
@@ -228,6 +260,8 @@ class Client
         if (null !== $options) {
             $this->setOptions($options);
         }
+
+        $this->redirectCount = 0;
 
         // Get client adapter
         $adapter = $this->getAdapter();
@@ -261,8 +295,8 @@ class Client
             $secure = ($url['scheme'] == 'https');
 
             // Prepare cookie header
-            $cookieHeaderValue = $this->prepareCookieHeader($url);
-            if (!empty($cookieHeaderValue)) {
+            $cookieHeaderValue = $this->prepareCookieHeader($url['host'], $url['path'], $secure);
+            if ($cookieHeaderValue) {
                 $headers['Cookie'] = $cookieHeaderValue;
             }
 
@@ -273,13 +307,14 @@ class Client
                 throw new \RuntimeException('Http request failed: Unable to read the response or response is empty');
             }
 
-            ########################################## Response treatment ##############################################
+            ####################################### Server response treatment ##########################################
 
             // Parse the server response from the client adapter
             $response = static::parseRawResponse($response);
 
+            // If we get cookies from server (Set-Cookie headers) We add it to our stack of cookies
             if (!empty($response['cookies'])) {
-                array_merge((array)$this->options['cookies'], $response['cookies']);
+                $this->storeCookies($response['cookies']);
             }
 
             // If we got redirected, look for the 'Location' header
@@ -290,7 +325,7 @@ class Client
 
                 // Check whether we send the exact same request again, or drop the parameters and send a GET request
                 if ($statusCode == 303 || ((!$this->options['strictredirects']) && ($statusCode == 302 || $statusCode == 301))) {
-                    $this->resetParameters();
+                    $this->resetHttpParameters();
                 }
 
                 // If we got a well formed absolute URI
@@ -322,7 +357,7 @@ class Client
     }
 
     /**
-     * Do an HEAD request
+     * Convenience method to do an HEAD request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -335,7 +370,7 @@ class Client
     }
 
     /**
-     * Do an HTTP GET request
+     * Convenience method to do an HTTP GET request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -348,7 +383,7 @@ class Client
     }
 
     /**
-     * Do an HTTP POST request
+     * Convenience method to do an HTTP POST request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -361,7 +396,7 @@ class Client
     }
 
     /**
-     * Do an HTTP PUT request
+     * Convenience method to do an HTTP PUT request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -374,7 +409,7 @@ class Client
     }
 
     /**
-     * Do an HTTP DELETE request
+     * Convenience method to do an HTTP DELETE request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -387,7 +422,7 @@ class Client
     }
 
     /**
-     * Do an HTTP PATCH request
+     * Convenience method to do an HTTP PATCH request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -400,7 +435,7 @@ class Client
     }
 
     /**
-     * Do an HTTP TRACE request
+     * Convenience method to do an HTTP TRACE request
      *
      * @param string $url URL
      * @param array $options Request options
@@ -454,8 +489,6 @@ class Client
                 $cookie = static::parseSetCookieHeader($cookie);
                 $cookies[$cookie['name']] = $cookie;
             }
-            // Remove the Set-Cookie header from headers stack since the cookies have their own stack
-            unset($headers['set-cookie']);
         }
 
         $body = $response[1];
@@ -490,6 +523,38 @@ class Client
             'cookies' => $cookies,
             'body' => $body
         );
+    }
+
+    /**
+     * Returns number of redirections made
+     *
+     * @return int|null
+     */
+    public function getRedirectCount()
+    {
+        return $this->redirectCount;
+    }
+
+    /**
+     * Reset all HTTP parameters
+     *
+     * @param bool $clearCookies Whether or not cookie must be cleared
+     * @return Client
+     */
+    public function resetHttpParameters($clearCookies = false)
+    {
+        $this->authData = null;
+        $this->encType = null;
+        $this->options['method'] = 'GET';
+        $this->options['headers'] = null;
+
+        if ($clearCookies) {
+            $this->options['cookies'] = null;
+        }
+
+        $this->options['body'] = null;
+
+        return $this;
     }
 
     /**
@@ -593,15 +658,6 @@ class Client
             $headers = explode("\n", preg_replace('/\n[ \t]/', ' ', str_replace("\r\n", "\n", $headers)));
             $headersArr = array();
 
-            // If a redirection has taken place, The headers for each page request may have been passed.
-            // In this case, determine the final HTTP header and parse from there.
-            //for ($i = count($headers) - 1; $i >= 0; $i--) {
-            //	if (!empty($headers[$i]) && false === strpos($headers[$i], ':')) {
-            //		$headers = array_splice($headers, $i);
-            //		break;
-            //	}
-            //}
-
             foreach ((array)$headers as $header) {
                 if (!empty($header)) {
                     list($key, $value) = explode(':', $header, 2);
@@ -638,13 +694,7 @@ class Client
     {
         $headers = $this->options['headers'];
 
-        if (!empty($headers)) {
-            // If we got raw headers string, we parse it
-            if (is_string($headers)) {
-                $headers = $this->parseRawHeaders($headers);
-                $this->options['headers'] = $headers; // Avoid to repeat this job many times in case we got redirects
-            }
-        } else {
+        if (empty($headers)) {
             $headers = array();
         }
 
@@ -653,6 +703,7 @@ class Client
         // Set Host header
         if ($this->options['httpversion'] == '1.1') {
             $host = $url['host'];
+
             // If the port is not default, add it
             if (!(($url['scheme'] == 'http' && $url['port'] == 80) || ($url['scheme'] == 'https' && $url['port'] == 443))) {
                 $host .= ':' . $url['port'];
@@ -689,12 +740,16 @@ class Client
                 case 'basic' :
                     // In basic authentication, the user name cannot contain ":"
                     if (strpos($this->authData['user'], ':') !== false) {
-                        throw new \InvalidArgumentException("Http request failed: The user name cannot contain ':' in Basic HTTP authentication");
+                        throw new \InvalidArgumentException(
+                            "Http request failed: The user name cannot contain ':' in Basic HTTP authentication"
+                        );
                     }
                     $newHeaders['authorization'] = 'Basic ' . base64_encode($this->authData['user'] . ':' . $this->authData['password']);
                     break;
                 case 'digest' :
-                    throw new \InvalidArgumentException("Http request failed: The digest authentication is not implemented yet");
+                    throw new \InvalidArgumentException(
+                        "Http request failed: The digest authentication is not implemented yet"
+                    );
             }
         }
 
@@ -730,50 +785,57 @@ class Client
      *   'expires => '1381804035'
      *   'path' => '/
      *   'domain => '.i-mscp.net'
+     *   'secure' => 1 // bool
+     *   'httponly => '' // bool
      *   ...
      * )
      *
-     * @param string $cookieString
+     * @param string $setCookie
      * @return array Array representation of a cookie
      * @throws \InvalidArgumentException
      */
-    protected static function parseSetCookieHeader($cookieString)
+    protected static function parseSetCookieHeader($setCookie)
     {
-        if (!is_string($cookieString)) {
+        if (!is_string($setCookie)) {
             throw new \InvalidArgumentException('Http request failed: Invalid header provided.');
         }
 
         $cookie = array();
 
-        if (is_string($cookieString)) {
-            // Assume it's a header string direct from a previous request
-            $pairs = explode(';', $cookieString);
+        // Assume it's a header string direct from a previous request
+        $pairs = explode(';', $setCookie);
 
-            // Special handling for first pair; name=value. Also be careful of "=" in value
-            $name = trim(substr($pairs[0], 0, strpos($pairs[0], '=')));
-            $value = substr($pairs[0], strpos($pairs[0], '=') + 1);
-            $cookie['name'] = $name;
-            $cookie['value'] = urldecode($value);
-            array_shift($pairs); // Removes name=value from items.
+        // Special handling for first pair; name=value. Also be careful of "=" in value
+        $name = trim(substr($pairs[0], 0, strpos($pairs[0], '=')));
+        $value = substr($pairs[0], strpos($pairs[0], '=') + 1);
+        $cookie['name'] = $name;
+        $cookie['value'] = urldecode($value);
+        $cookie['path'] = null;
+        $cookie['domain'] = null;
 
-            // Set everything else as a property
-            foreach ($pairs as $pair) {
-                $pair = rtrim($pair);
+        array_shift($pairs); // Removes name=value from items.
 
-                if (empty($pair)) { // Handles the cookie ending in ; which results in a empty final pair
-                    continue;
-                }
+        // Set everything else as a property
+        foreach ($pairs as $pair) {
+            $pair = rtrim($pair);
 
-                list($key, $value) = strpos($pair, '=') ? explode('=', $pair) : array($pair, '');
-
-                $key = strtolower(trim($key));
-
-                if ('expires' == $key && is_string($value)) {
-                    $value = strtotime($value);
-                }
-
-                $cookie[$key] = $value;
+            if (empty($pair)) { // Handles cookie ending in ; which results in a empty final pair
+                continue;
             }
+
+            list($key, $value) = strpos($pair, '=') ? explode('=', $pair) : array($pair, '');
+
+            $key = strtolower(trim($key));
+
+            if ($key == 'expires' && is_string($value)) {
+                $value = strtotime($value);
+            } elseif ($key == 'secure') {
+                $value = true;
+            } elseif ($key == 'httponly') {
+                $value = true;
+            }
+
+            $cookie[$key] = $value;
         }
 
         return $cookie;
@@ -782,46 +844,67 @@ class Client
     /**
      * Prepare Cookie header
      *
-     * Will return a string such as: cookie1=value; cookie2=value
+     * Return a string such as: cookie1=value; cookie2=value
+     *
+     * The following tests are made to know whether a cookie should be sent to the server
+     *  - The cookie should not be expired
+     *  - If the cookie domain attribut is set, it must be in the request domain
+     *  - If the cookie path is set, it must be in the request path
+     *  - If the cookie secure attribut is set, the request should be secure
      *
      * @throws \InvalidArgumentException
-     * @param array $url URL components
+     * @param string $host Host
+     * @param string $path Path
+     * @param bool $secure
      * @return string
      */
-    protected function prepareCookieHeader($url)
+    protected function prepareCookieHeader($host, $path, $secure)
     {
-        $cookies =& $this->options['cookies'];
+        $cookies = $this->options['cookies'];
+        $cookiesToSend = array();
 
-        if (null !== $cookies && !is_array($cookies)) {
-            throw new \InvalidArgumentException('HTTP request failed: Cookies options must be an array');
-        }
+        if (null !== $cookies) {
+            if (!empty($cookies)) {
+                $encodeCookies = $this->options['encodecookies'];
 
-        $cookieString = '';
+                foreach ($cookies as $identifier => &$cookie) {
+                    if (isset($cookies['expires']) && is_int($cookie['expires']) && $cookies['expires'] < time()) {
+                        unset($cookies[$identifier]);
+                        continue;
+                    }
+                    elseif (
+                        (isset($cookie['domain']) && (strrpos($host, $cookie['domain']) === false)) ||
+                        (isset($cookie['path']) && (strpos($path, $cookie['path']) !== 0)) ||
+                        (isset($cookie['secure']) && $cookie['secure'] !== $secure)
+                    ) {
+                        continue;
+                    }
 
-        if (!empty($cookies)) {
-            foreach ($cookies as $name => &$cookie) {
-                if (!is_array($cookie)) {
-                    throw new \InvalidArgumentException('HTTP request failed: Any cookie definition should be provided as an array');
-                } elseif (!isset($cookie['name'])) {
-                    throw new \InvalidArgumentException('A cookie name is required to generate a field value for this cookie');
+                    $cookiesToSend[] = $cookie['name'] . '=' . (($encodeCookies) ? urlencode($cookie['value']) : $cookie['value']);
                 }
-
-                $name = (is_int($name)) ? $cookie['name'] : $name; // Ensure we have proper identifier for the cookie
-
-                // If cookie is expired, unset it
-                if (isset($cookies['expires']) && is_int($cookie['expires']) && $cookies['expires'] < time()) {
-                    unset($cookies[$name]);
-                    continue;
-                }
-
-                // Todo Encode value ?
-                $cookieString .= $cookie['name'] . '=' . $cookie['value'] . '; ';
             }
-
-            $cookieString = substr($cookieString, 0, -2);
         }
 
-        return $cookieString;
+        return implode('; ', $cookiesToSend);
+    }
+
+    /**
+     * Store cookies
+     *
+     * @param array $cookies Cookies
+     * @throws \InvalidArgumentException
+     */
+    protected function storeCookies(array $cookies)
+    {
+        foreach ($cookies as $key => $cookie) {
+            // Generate unique cookie identifier for later use
+            $domain = (!empty($cookie['domain'])) ? $cookie['domain'] : null;
+            $path = (!empty($cookie['path'])) ? $cookie['path'] : null;
+            $cookies[$cookie['name'] . $domain . $path] = $cookie;
+            unset($cookies[$key]);
+        }
+
+        $this->options['cookies'] = array_merge((array)$this->options['cookies'], $cookies);
     }
 
     /**
@@ -844,7 +927,12 @@ class Client
             return $body;
         }
 
-        $headers =& $this->options['headers'];
+        $headers = $this->options['headers'];
+
+        if (is_string($headers)) {
+            $headers = $this->parseRawHeaders($headers);
+        }
+
 
         if (isset($headers['content-type'])) {
             $this->encType = $headers['content-type'];
@@ -860,7 +948,7 @@ class Client
                 $body = http_build_query($body);
             } else {
                 throw new \RuntimeException(
-                    printf("HTTP request failed: Cannot handle content type '%s' automatically", $this->encType)
+                    sprintf("HTTP request failed: Cannot handle content type '%s' automatically", $this->encType)
                 );
             }
         }
@@ -869,11 +957,11 @@ class Client
     }
 
     /**
-     * Decode a chunked HTTP message body
+     * Decode a chunked HTTP response message body
      *
      * @throws \RuntimeException
-     * @param string $body Chunked HTTP message body
-     * @return string Decoded HTTP message body
+     * @param string $body Chunked HTTP response message body
+     * @return string Decoded HTTP response message body
      */
     protected static function decodeChunckedMessage($body)
     {
@@ -894,11 +982,11 @@ class Client
     }
 
     /**
-     * Decode a gzip encoded HTTP message body
+     * Decode a gzip encoded HTTP response message body
      *
      * @throws \RuntimeException
      * @param  string $body Gzip encoded HTTP message body
-     * @return string Decoded HTTP message body
+     * @return string Decoded HTTP response message body
      */
     protected static function decodeGzipMessage($body)
     {
@@ -910,11 +998,11 @@ class Client
     }
 
     /**
-     * Decode a zlib deflated HTTP message body
+     * Decode a zlib deflated HTTP response message body
      *
      * @throws \RuntimeException
-     * @param  string $body zlib deflated HTTP message body
-     * @return string Decoded HTTP message body
+     * @param  string $body zlib deflated HTTP response message body
+     * @return string Decoded HTTP response message body
      */
     protected static function decodeDeflateMessage($body)
     {
@@ -933,22 +1021,5 @@ class Client
         }
 
         return gzinflate($body);
-    }
-
-    /**
-     * Reset all HTTP parameters
-     *
-     * @return Client
-     */
-    protected function resetParameters()
-    {
-        $this->authData = null;
-        $this->encType = null;
-        $this->options['method'] = 'GET';
-        $this->options['headers'] = null;
-        $this->options['cookies'] = null;
-        $this->options['body'] = null;
-
-        return $this;
     }
 }
